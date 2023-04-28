@@ -18,6 +18,7 @@ import useFilteredWorkItems from "./useFilteredWorkItems";
 import { sortBy } from "lodash";
 
 type Props = {
+  projectId: string;
   workItems: WorkItem[];
   ignoredItems: WorkItem[];
   onWorkItemAdded: (workItem: WorkItem) => void;
@@ -26,6 +27,7 @@ type Props = {
 };
 
 export default function IssuesView({
+  projectId,
   workItems,
   ignoredItems,
   onWorkItemAdded,
@@ -102,7 +104,7 @@ export default function IssuesView({
             </div>
           )}
         </div>
-        {addOtherIssueEnabled && <OtherIssueInput onWorkItemAdded={onIssueAdded} />}
+        {addOtherIssueEnabled && <OtherIssueInput projectId={projectId} onWorkItemAdded={onIssueAdded} />}
         {searchEnabled && (
           <FormInput
             name="search-issues"

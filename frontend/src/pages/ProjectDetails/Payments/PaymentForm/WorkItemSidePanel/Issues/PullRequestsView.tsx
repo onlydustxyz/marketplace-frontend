@@ -18,6 +18,7 @@ import FormInput from "src/components/FormInput";
 import { sortBy } from "lodash";
 
 type Props = {
+  projectId: string;
   workItems: WorkItem[];
   ignoredItems: WorkItem[];
   onWorkItemAdded: (workItem: WorkItem) => void;
@@ -26,6 +27,7 @@ type Props = {
 };
 
 export default function PullRequestsView({
+  projectId,
   workItems,
   ignoredItems,
   onWorkItemAdded,
@@ -103,7 +105,7 @@ export default function PullRequestsView({
             </div>
           )}
         </div>
-        {addOtherPrEnabled && <OtherPrInput onWorkItemAdded={onIssueAdded} />}
+        {addOtherPrEnabled && <OtherPrInput projectId={projectId} onWorkItemAdded={onIssueAdded} />}
         {searchEnabled && (
           <FormInput
             name="search-prs"

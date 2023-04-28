@@ -1,10 +1,10 @@
-import { chain, filter, find } from "lodash";
+import { chain, filter, find, some } from "lodash";
 import { useMemo } from "react";
 import { WorkItem } from "src/components/GithubIssue";
 import IssuesView from "./IssuesView";
 import PullRequestsView from "./PullRequestsView";
 import useIgnoredIssues from "./useIgnoredIssues";
-import { Type } from "src/__generated/graphql";
+import { IssueDetailsFragment, Type } from "src/__generated/graphql";
 
 type Props = {
   type: Type;
@@ -38,6 +38,7 @@ export default function Issues({ type, projectId, workItems, onWorkItemAdded, un
     <>
       {type === Type.PullRequest && (
         <PullRequestsView
+          projectId={projectId}
           workItems={issues}
           ignoredItems={ignoredIssues}
           onWorkItemAdded={addAndUnignoreItem}
@@ -47,6 +48,7 @@ export default function Issues({ type, projectId, workItems, onWorkItemAdded, un
       )}
       {type === Type.Issue && (
         <IssuesView
+          projectId={projectId}
           workItems={issues}
           ignoredItems={ignoredIssues}
           onWorkItemAdded={addAndUnignoreItem}
@@ -57,3 +59,11 @@ export default function Issues({ type, projectId, workItems, onWorkItemAdded, un
     </>
   );
 }
+
+export const issueToWorkItem = (
+  projectId: string,
+  { ignoredForProjects, ...props }: IssueDetailsFragment
+): WorkItem => ({
+  ...props,
+  ignored: some(ignoredForProjects, { projectId }),
+});
