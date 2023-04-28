@@ -23,12 +23,18 @@ install: install docker/re db/up db/update-remote-dump db/migrate db/load-fixtur
 rust/install:
 	rustup install $(RUST_VERSION)
 
+diesel/install: rust/install
+	cargo install diesel_cli
+
 # ----------------------------------------------------------
 #                 Dependencies installation
 # ----------------------------------------------------------
 
+.env:
+	@cp .env.example .env
+
 # Install all the dependencies
-install/all: rust/install frontend/install hasura/install playwright/install
+install/all: .env rust/install frontend/install hasura/install playwright/install
 
 node_modules:
 	yarn
@@ -71,7 +77,7 @@ db/connect: db/up
 	docker compose exec -u postgres db psql marketplace_db
 
 # Runs the migrations
-db/migrate: db/up
+db/migrate: db/up diesel/install
 	diesel migration run
 
 # Creates and downloads a remote database dump
@@ -94,10 +100,10 @@ db/load-fixtures: db/up
 # ----------------------------------------------------------
 
 # Starts the backend stack in background
-backend/background-start: event-store/background-start event-listeners/background-start action-dequeuer/background-start api/background-start github-proxy/background-start dusty-bot/background-start
+backend/background-start: event-store/background-start event-listeners/background-start action-dequeuer/background-start api/background-start github-indexer/background-start github-proxy/background-start dusty-bot/background-start
 
 # Stops the background backend stack, if running
-backend/background-stop: event-store/background-stop event-listeners/background-stop action-dequeuer/background-stop api/background-stop github-proxy/background-stop dusty-bot/background-stop
+backend/background-stop: event-store/background-stop event-listeners/background-stop action-dequeuer/background-stop api/background-stop github-indexer/background-stop github-proxy/background-stop dusty-bot/background-stop
 
 api.pid:
 	@./scripts/cargo-run.sh api
@@ -167,6 +173,17 @@ action-dequeuer/background-start: action-dequeuer.pid
 action-dequeuer/background-stop:
 	@./scripts/stop-app.sh action-dequeuer
 
+github-indexer.pid:
+	@cargo run --bin github-indexer > github-indexer.log 2>&1 & echo $$! > github-indexer.pid
+	@echo "App github-indexer started with PID: `cat github-indexer.pid`"
+
+# Starts the github indexer in background
+github-indexer/background-start: github-indexer.pid
+
+# Stops the background github indexer, if running
+github-indexer/background-stop:
+	@./scripts/stop-app.sh github-indexer
+
 # ----------------------------------------------------------
 #                           Frontend
 # ----------------------------------------------------------
@@ -203,7 +220,7 @@ hasura/start:
 hasura/start-refresh-stop: backend/background-start hasura/refresh backend/background-stop
 
 # Refreshes the local Hasura metadata
-hasura/refresh: db/migrate
+hasura/refresh:
 	docker compose exec -u postgres db psql marketplace_db -c "DELETE FROM hdb_catalog.hdb_metadata"
 	yarn --cwd ./hasura hasura --skip-update-check md apply
 	yarn --cwd ./hasura hasura --skip-update-check md ic drop
