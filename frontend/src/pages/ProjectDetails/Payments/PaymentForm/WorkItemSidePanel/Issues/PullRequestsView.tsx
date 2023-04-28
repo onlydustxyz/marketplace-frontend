@@ -16,6 +16,7 @@ import { useFormContext } from "react-hook-form";
 import useFilteredWorkItems from "./useFilteredWorkItems";
 import SearchLine from "src/icons/SearchLine";
 import FormInput from "src/components/FormInput";
+import { sortBy } from "lodash";
 
 type Props<T, E> = {
   workItems: WorkItem[];
@@ -61,15 +62,19 @@ export default function PullRequestsView<T, E>({
     }
   }, [searchEnabled]);
 
-  const searchPattern = watch("search-prs");
-  const filteredWorkItems = useFilteredWorkItems({ pattern: searchPattern, workItems });
-
   const showIgnoredItemsName = "show-ignored-items";
   const { control } = useForm({ defaultValues: { [showIgnoredItemsName]: false } });
   const showIgnoredItems = useWatch({
     control,
     name: showIgnoredItemsName,
   });
+
+  const visibleItems = showIgnoredItems
+    ? sortBy([...workItems, ...ignoredItems.map(item => ({ ...item, ignored: true }))], "createdAt")
+    : workItems;
+
+  const searchPattern = watch("search-issues");
+  const filteredWorkItems = useFilteredWorkItems({ pattern: searchPattern, workItems: visibleItems });
 
   return (
     <div className="flex flex-col gap-4 overflow-hidden -mr-4 h-full">
@@ -117,7 +122,7 @@ export default function PullRequestsView<T, E>({
         )}
       </div>
       <QueryWrapper query={query}>
-        {filteredWorkItems.length + (showIgnoredItems ? ignoredItems.length : 0) > 0 ? (
+        {filteredWorkItems.length > 0 ? (
           <div
             data-testid="elligible-pulls"
             className="flex flex-col gap-3 h-full p-px pr-4 overflow-auto scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded"
@@ -128,22 +133,10 @@ export default function PullRequestsView<T, E>({
                 workItem={pr}
                 action={Action.Add}
                 onClick={() => onIssueAdded(pr)}
-                secondaryAction={Action.Ignore}
-                onSecondaryClick={() => onWorkItemIgnored(pr)}
+                secondaryAction={pr.ignored ? Action.UnIgnore : Action.Ignore}
+                onSecondaryClick={() => (pr.ignored ? onWorkItemUnignored(pr) : onWorkItemIgnored(pr))}
               />
             ))}
-            {showIgnoredItems &&
-              ignoredItems.map(pr => (
-                <GithubIssue
-                  key={pr.id}
-                  workItem={pr}
-                  action={Action.Add}
-                  onClick={() => onIssueAdded(pr)}
-                  secondaryAction={Action.UnIgnore}
-                  onSecondaryClick={() => onWorkItemUnignored(pr)}
-                  ignored
-                />
-              ))}
           </div>
         ) : (
           <div className="mr-4">

@@ -51,14 +51,25 @@ const View: React.FC<Props> = ({
   const { T } = useIntl();
   const navigate = useNavigate();
   const [sidePanelOpen, setSidePanelOpen] = useState(false);
+  const [workItemsPrefilled, setWorkItemsPrefilled] = useState(false);
 
   const { workItems, add: addWorkItem, remove: removeWorkItem, clear: clearWorkItems } = useWorkItems();
 
   useEffect(() => onWorkItemsChange(workItems), [workItems, onWorkItemsChange]);
   useEffect(() => {
-    clearWorkItems();
-    getUnpaidMergedPullsQuery.data?.forEach(addWorkItem);
-  }, [getUnpaidMergedPullsQuery.data, contributor, addWorkItem, clearWorkItems]);
+    if (!workItemsPrefilled && getUnpaidMergedPullsQuery.data) {
+      clearWorkItems();
+      getUnpaidMergedPullsQuery.data?.forEach(addWorkItem);
+      setWorkItemsPrefilled(true);
+    }
+  }, [
+    getUnpaidMergedPullsQuery.data,
+    contributor,
+    addWorkItem,
+    clearWorkItems,
+    workItemsPrefilled,
+    setWorkItemsPrefilled,
+  ]);
 
   const displayCallout = contributor && !contributor?.user?.userId;
 
