@@ -179,6 +179,8 @@ export const GITHUB_ISSUE_FRAGMENTS = gql`
     mergedAt
     ignoredForProjects {
       projectId
+      repoId
+      issueNumber
     }
   }
 `;

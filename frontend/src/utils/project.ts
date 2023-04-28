@@ -118,6 +118,8 @@ gql`
     mergedAt
     ignoredForProjects {
       projectId
+      repoId
+      issueNumber
     }
   }
 

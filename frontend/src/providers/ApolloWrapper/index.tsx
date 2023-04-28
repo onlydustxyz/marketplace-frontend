@@ -138,10 +138,13 @@ const ApolloWrapper: React.FC<PropsWithChildren> = ({ children }) => {
     ]),
     cache: new InMemoryCache({
       typePolicies: {
+        AuthGithubUsers: {
+          keyFields: ["userId"],
+        },
         ProjectDetails: {
           keyFields: ["projectId"],
         },
-        PojectGithubRepos: {
+        ProjectGithubRepos: {
           keyFields: ["projectId", "githubRepoId"],
         },
         ProjectLeads: {
@@ -166,7 +169,7 @@ const ApolloWrapper: React.FC<PropsWithChildren> = ({ children }) => {
         GithubIssues: {
           fields: {
             ignoredForProjects: {
-              merge: (existing = [], incoming) => uniqBy([...existing, ...incoming], "__ref"),
+              //   merge: (existing = [], incoming) => uniqBy([...existing, ...incoming], "__ref"),
             },
           },
         },

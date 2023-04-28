@@ -1,5 +1,13 @@
+import { reject } from "lodash";
 import { useCallback } from "react";
-import { IgnoreIssueDocument, UnignoreIssueDocument } from "src/__generated/graphql";
+import {
+  GithubIssueDetailsFragment,
+  GithubIssueDetailsFragmentDoc,
+  IgnoreIssueDocument,
+  IgnoreIssueMutationVariables,
+  IgnoredGithubIssues,
+  UnignoreIssueDocument,
+} from "src/__generated/graphql";
 import { WorkItem } from "src/components/GithubIssue";
 import { useHasuraMutation } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
@@ -13,13 +21,33 @@ export default function useIgnoredIssues() {
       ignoreIssue({
         variables: { projectId, repoId: workItem.repoId, issueNumber: workItem.number },
         context: { graphqlErrorDisplay: "toaster" },
-        update: cache =>
-          cache.modify({
+        update: (cache, _, { variables }) => {
+          const { projectId, repoId, issueNumber } = variables as IgnoreIssueMutationVariables;
+          const issue: GithubIssueDetailsFragment | null = cache.readFragment({
+            fragment: GithubIssueDetailsFragmentDoc,
             id: `GithubIssues:${workItem.id}`,
-            fields: {
-              ignoredForProjects: () => [{ projectId }],
-            },
-          }),
+          });
+
+          if (issue) {
+            const newIssue: GithubIssueDetailsFragment = {
+              ...issue,
+              ignoredForProjects: [
+                {
+                  projectId,
+                  repoId,
+                  issueNumber,
+                  __typename: "IgnoredGithubIssues",
+                },
+                ...issue.ignoredForProjects,
+              ],
+            };
+
+            cache.writeFragment({
+              data: newIssue,
+              fragment: GithubIssueDetailsFragmentDoc,
+            });
+          }
+        },
       }),
     [ignoreIssue]
   );
@@ -29,13 +57,23 @@ export default function useIgnoredIssues() {
       unignoreIssue({
         variables: { projectId, repoId: workItem.repoId, issueNumber: workItem.number },
         context: { graphqlErrorDisplay: "toaster" },
-        update: cache =>
+        update: (cache, _, { variables }) => {
+          const { projectId, repoId, issueNumber } = variables as IgnoreIssueMutationVariables;
           cache.modify({
             id: `GithubIssues:${workItem.id}`,
             fields: {
-              ignoredForProjects: () => [],
+              ignoredForProjects: existing =>
+                reject(existing, {
+                  __ref: cache.identify({
+                    projectId,
+                    repoId,
+                    issueNumber,
+                    __typename: "IgnoredGithubIssues",
+                  } as IgnoredGithubIssues),
+                }),
             },
-          }),
+          });
+        },
       }),
     [unignoreIssue]
   );

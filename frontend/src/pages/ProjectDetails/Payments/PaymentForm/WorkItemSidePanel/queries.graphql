@@ -20,16 +20,6 @@ fragment RepositoryOwnerAndName on Repo {
 query getPaidWorkItems($projectId: uuid!) {
   projectsByPk(id: $projectId) {
     id
-    githubRepos {
-      projectId
-      githubRepoId
-      githubRepoDetails {
-        id
-        content {
-          ...RepositoryOwnerAndName
-        }
-      }
-    }
     budgets {
       id
       paymentRequests {

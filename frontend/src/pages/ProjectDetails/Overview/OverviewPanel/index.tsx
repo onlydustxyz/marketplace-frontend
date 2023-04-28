@@ -57,8 +57,11 @@ export const GET_PROJECT_CONTRIBUTORS_FOR_OVERVIEW_PANEL_QUERY = gql`
         projectId
         githubRepoId
         githubRepoDetails {
+          id
           content {
+            id
             contributors {
+              id
               login
               avatarUrl
             }

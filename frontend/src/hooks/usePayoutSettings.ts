@@ -37,6 +37,7 @@ export const GET_USER_PAYOUT_SETTINGS = gql`
   ${USER_PAYOUT_SETTINGS_FRAGMENT}
   query GetUserPayoutSettings($githubUserId: bigint!) {
     authGithubUsers(where: { githubUserId: { _eq: $githubUserId } }) {
+      userId
       user {
         id
         userInfo {
