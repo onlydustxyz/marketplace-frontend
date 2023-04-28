@@ -13,8 +13,9 @@ import { useEffect, useState } from "react";
 import WorkItemSidePanel from "./WorkItemSidePanel";
 import GithubIssue, { Action, WorkItem } from "src/components/GithubIssue";
 import Callout from "src/components/Callout";
-import { GithubContributorFragment } from "src/__generated/graphql";
+import { GithubContributorFragment, Status, Type } from "src/__generated/graphql";
 import useWorkItems from "./useWorkItems";
+import { filter } from "lodash";
 
 interface Props {
   projectId: string;
@@ -23,7 +24,7 @@ interface Props {
   onWorkItemsChange: (workItems: WorkItem[]) => void;
   contributor: GithubContributorFragment | null | undefined;
   setContributor: (contributor: GithubContributorFragment | null | undefined) => void;
-  getUnpaidMergedPullsQuery: { data?: WorkItem[] | null; loading: boolean };
+  unpaidIssues?: WorkItem[] | null;
 }
 
 type TitleProps = {
@@ -45,7 +46,7 @@ const View: React.FC<Props> = ({
   projectId,
   contributor,
   setContributor,
-  getUnpaidMergedPullsQuery,
+  unpaidIssues,
 }) => {
   const { T } = useIntl();
   const navigate = useNavigate();
@@ -56,19 +57,12 @@ const View: React.FC<Props> = ({
 
   useEffect(() => onWorkItemsChange(workItems), [workItems, onWorkItemsChange]);
   useEffect(() => {
-    if (!workItemsPrefilled && getUnpaidMergedPullsQuery.data) {
+    if (!workItemsPrefilled && unpaidIssues) {
       clearWorkItems();
-      getUnpaidMergedPullsQuery.data?.forEach(addWorkItem);
+      filter(unpaidIssues, { type: Type.PullRequest, status: Status.Merged }).forEach(addWorkItem);
       setWorkItemsPrefilled(true);
     }
-  }, [
-    getUnpaidMergedPullsQuery.data,
-    contributor,
-    addWorkItem,
-    clearWorkItems,
-    workItemsPrefilled,
-    setWorkItemsPrefilled,
-  ]);
+  }, [unpaidIssues, contributor, addWorkItem, clearWorkItems, workItemsPrefilled, setWorkItemsPrefilled]);
 
   const displayCallout = contributor && !contributor?.user?.userId;
 
@@ -134,6 +128,7 @@ const View: React.FC<Props> = ({
                 projectId={projectId}
                 open={sidePanelOpen}
                 setOpen={setSidePanelOpen}
+                unpaidIssues={unpaidIssues}
                 workItems={workItems}
                 onWorkItemAdded={addWorkItem}
                 contributorHandle={contributor.login}

@@ -9,7 +9,7 @@ import usePaymentRequests from "src/hooks/usePaymentRequests";
 import { ProjectRoutePaths, RoutePaths } from "src/App";
 import { WorkItem } from "src/components/GithubIssue";
 import { GithubContributorFragment } from "src/__generated/graphql";
-import useUnpaidIssues, { IssueState, IssueType } from "./WorkItemSidePanel/Issues/useUnpaidIssues";
+import useUnpaidIssues from "./WorkItemSidePanel/Issues/useUnpaidIssues";
 
 export const SEARCH_MAX_DAYS_COUNT = 60;
 
@@ -37,11 +37,9 @@ const PaymentForm: React.FC = () => {
 
   const [contributor, setContributor] = useState<GithubContributorFragment | null | undefined>(null);
 
-  const getUnpaidMergedPullsQuery = useUnpaidIssues({
+  const { data: unpaidIssues } = useUnpaidIssues({
     projectId,
     authorId: contributor?.id,
-    type: IssueType.PullRequest,
-    state: IssueState.Merged,
   });
 
   const { handleSubmit } = formMethods;
@@ -92,7 +90,7 @@ const PaymentForm: React.FC = () => {
             onWorkItemsChange={onWorkItemsChange}
             contributor={contributor}
             setContributor={setContributor}
-            getUnpaidMergedPullsQuery={getUnpaidMergedPullsQuery}
+            unpaidIssues={unpaidIssues}
           />
         </form>
       </FormProvider>

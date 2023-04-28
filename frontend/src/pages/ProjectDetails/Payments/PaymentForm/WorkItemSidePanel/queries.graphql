@@ -1,21 +1,8 @@
-query SearchIssues(
-  $projectId: uuid!
-  $authorId: bigint!
-  $status: [String!]!
-  $type: jsonb!
-  $createdSince: timestamp!
-) {
+query SearchIssues($projectId: uuid!, $authorId: bigint!, $createdSince: timestamp!) {
   projectsByPk(id: $projectId) {
     id
     githubRepos {
-      repoIssues(
-        where: {
-          authorId: { _eq: $authorId }
-          status: { _hasKeysAll: $status }
-          createdAt: { _gte: $createdSince }
-          type: { _eq: $type }
-        }
-      ) {
+      repoIssues(where: { authorId: { _eq: $authorId }, createdAt: { _gte: $createdSince } }) {
         ...GithubIssueDetails
       }
     }

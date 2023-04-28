@@ -3,25 +3,19 @@ import { useMemo } from "react";
 import { WorkItem } from "src/components/GithubIssue";
 import IssuesView from "./IssuesView";
 import PullRequestsView from "./PullRequestsView";
-import useUnpaidIssues, { IssueType } from "./useUnpaidIssues";
 import useIgnoredIssues from "./useIgnoredIssues";
+import { Type } from "src/__generated/graphql";
 
 type Props = {
-  type: IssueType;
+  type: Type;
   projectId: string;
   contributorId: number;
   workItems: WorkItem[];
+  unpaidIssues: WorkItem[];
   onWorkItemAdded: (workItem: WorkItem) => void;
 };
 
-export default function Issues({ type, projectId, contributorId, workItems, onWorkItemAdded }: Props) {
-  const { data: unpaidIssues } = useUnpaidIssues({
-    projectId,
-    authorId: contributorId,
-    type,
-    includeIgnored: true,
-  });
-
+export default function Issues({ type, projectId, workItems, onWorkItemAdded, unpaidIssues }: Props) {
   const initialIgnoredIssues = useMemo(() => filter(unpaidIssues || [], "ignored"), [projectId, unpaidIssues]);
 
   const {
@@ -42,7 +36,7 @@ export default function Issues({ type, projectId, contributorId, workItems, onWo
 
   return (
     <>
-      {type === IssueType.PullRequest && (
+      {type === Type.PullRequest && (
         <PullRequestsView
           workItems={issues}
           ignoredItems={ignoredIssues}
@@ -51,7 +45,7 @@ export default function Issues({ type, projectId, contributorId, workItems, onWo
           onWorkItemUnignored={workItem => unignoreIssue(projectId, workItem)}
         />
       )}
-      {type === IssueType.Issue && (
+      {type === Type.Issue && (
         <IssuesView
           workItems={issues}
           ignoredItems={ignoredIssues}

@@ -6,6 +6,7 @@ import {
   GithubIssueDetailsFragment,
   SearchIssuesDocument,
   SearchIssuesQuery,
+  Type,
 } from "src/__generated/graphql";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
@@ -13,24 +14,12 @@ import { daysFromNow } from "src/utils/date";
 import { SEARCH_MAX_DAYS_COUNT } from "src/pages/ProjectDetails/Payments/PaymentForm";
 import { WorkItem } from "src/components/GithubIssue";
 
-export enum IssueType {
-  PullRequest = "PullRequest",
-  Issue = "Issue",
-}
-
-export enum IssueState {
-  Merged = "Merged",
-}
-
 type Props = {
   projectId: string;
-  type: IssueType;
   authorId: number;
-  state?: IssueState;
-  includeIgnored?: boolean;
 };
 
-export default function useUnpaidIssues({ projectId, type, state, authorId, includeIgnored = false }: Props) {
+export default function useUnpaidIssues({ projectId, authorId }: Props) {
   const getPaidItemsQuery = useHasuraQuery<GetPaidWorkItemsQuery>(
     GetPaidWorkItemsDocument,
     HasuraUserRole.RegisteredUser,
@@ -45,8 +34,6 @@ export default function useUnpaidIssues({ projectId, type, state, authorId, incl
     variables: {
       projectId,
       authorId,
-      status: state ? [state] : [],
-      type,
       createdSince,
     },
     skip: !authorId || !projectId,
@@ -67,21 +54,21 @@ export default function useUnpaidIssues({ projectId, type, state, authorId, incl
         .differenceWith(paidItems, (pr, paidItem) => {
           return pr.repoId === paidItem.repoId && pr.number === paidItem.issueNumber;
         })
-        .filter(item => includeIgnored || !item.ignored)
         .sortBy("createdAt")
         .reverse()
         .value(),
-    [searchPrQuery.data?.projectsByPk, paidItems, projectId, includeIgnored]
+    [searchPrQuery.data?.projectsByPk, paidItems, projectId]
   );
   return { data: elligibleIssues, loading: searchPrQuery.loading || getPaidItemsQuery.loading };
 }
 
 const issueToWorkItem = (
   projectId: string,
-  { ignoredForProjects, issueNumber: number, status, ...props }: GithubIssueDetailsFragment
+  { ignoredForProjects, issueNumber: number, status, type, ...props }: GithubIssueDetailsFragment
 ): WorkItem => ({
   ...props,
   number,
+  type: type === "PullRequest" ? Type.PullRequest : Type.Issue,
   status: status.toUpperCase(),
   ignored: some(ignoredForProjects, { projectId }),
 });
