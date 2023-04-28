@@ -20,7 +20,7 @@ import { TokenRefreshLink } from "apollo-link-token-refresh";
 import { TokenSet } from "src/types";
 import axios from "axios";
 import { RetryLink } from "@apollo/client/link/retry";
-import { PaymentRequests, WorkItems } from "src/__generated/graphql";
+import { WorkItems } from "src/__generated/graphql";
 import { useImpersonationClaims } from "src/hooks/useImpersonationClaims";
 
 type ErrorDisplay = "screen" | "toaster" | "none";

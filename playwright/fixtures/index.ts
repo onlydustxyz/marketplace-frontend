@@ -16,6 +16,7 @@ type PopulatedDataFixtures = {
   projects: Record<string, Project>;
   payments: Record<string, Record<number, Payment[]>>;
   signIn: (user: User) => Promise<void>;
+  logout: () => Promise<void>;
 };
 
 export const test = base.extend<PopulatedDataFixtures>({
@@ -60,6 +61,13 @@ export const test = base.extend<PopulatedDataFixtures>({
       await setLocalStorageTest("hasura_token", user.session, page);
       await page.reload();
       await expect(page.locator("#profile-button").getByText(user.github.login, { exact: true })).toBeVisible();
+    });
+  },
+
+  logout: async ({ page }, use) => {
+    await use(async () => {
+      await page.getByTestId("profile-button").click();
+      await page.getByTestId("logout-button").click();
     });
   },
 });

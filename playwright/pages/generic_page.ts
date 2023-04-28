@@ -26,6 +26,11 @@ export class GenericPage {
     await expect(this.profileButton).toHaveText(user.github.login);
   }
 
+  async expectToBeLoggedInAs(user: User) {
+    await expect(this.impersonationBanner).not.toBeVisible();
+    await expect(this.profileButton).toHaveText(user.github.login);
+  }
+
   async clickOnMenuItem(menuItem: string) {
     await this.header.locator(`a[href="${menuItem}"]`).click();
   }
