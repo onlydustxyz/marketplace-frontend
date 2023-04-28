@@ -1,18 +1,10 @@
-import { useCallback, useLayoutEffect } from "react";
+import { useCallback } from "react";
 import { IgnoreIssueDocument, UnignoreIssueDocument } from "src/__generated/graphql";
 import { WorkItem } from "src/components/GithubIssue";
 import { useHasuraMutation } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
-import useWorkItems from "src/pages/ProjectDetails/Payments/PaymentForm/useWorkItems";
 
-export default function useIgnoredIssues(issues: WorkItem[]) {
-  const { workItems, add, remove, clear } = useWorkItems();
-
-  useLayoutEffect(() => {
-    clear();
-    add(issues);
-  }, [issues]);
-
+export default function useIgnoredIssues() {
   const [ignoreIssue] = useHasuraMutation(IgnoreIssueDocument, HasuraUserRole.RegisteredUser);
   const [unignoreIssue] = useHasuraMutation(UnignoreIssueDocument, HasuraUserRole.RegisteredUser);
 
@@ -21,16 +13,15 @@ export default function useIgnoredIssues(issues: WorkItem[]) {
       ignoreIssue({
         variables: { projectId, repoId: workItem.repoId, issueNumber: workItem.number },
         context: { graphqlErrorDisplay: "toaster" },
-        onCompleted: () => add(workItem),
         update: cache =>
           cache.modify({
-            id: `Issue:${workItem.id}`,
+            id: `GithubIssues:${workItem.id}`,
             fields: {
               ignoredForProjects: () => [{ projectId }],
             },
           }),
       }),
-    [ignoreIssue, add]
+    [ignoreIssue]
   );
 
   const unignore = useCallback(
@@ -38,17 +29,16 @@ export default function useIgnoredIssues(issues: WorkItem[]) {
       unignoreIssue({
         variables: { projectId, repoId: workItem.repoId, issueNumber: workItem.number },
         context: { graphqlErrorDisplay: "toaster" },
-        onCompleted: () => remove(workItem),
         update: cache =>
           cache.modify({
-            id: `Issue:${workItem.id}`,
+            id: `GithubIssues:${workItem.id}`,
             fields: {
               ignoredForProjects: () => [],
             },
           }),
       }),
-    [unignoreIssue, remove]
+    [unignoreIssue]
   );
 
-  return { issues: workItems, ignore, unignore };
+  return { ignore, unignore };
 }

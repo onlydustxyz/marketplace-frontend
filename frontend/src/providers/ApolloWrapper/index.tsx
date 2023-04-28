@@ -151,7 +151,7 @@ const ApolloWrapper: React.FC<PropsWithChildren> = ({ children }) => {
             },
           },
         },
-        GithubPulls: {
+        GithubIssues: {
           fields: {
             ignoredForProjects: {
               merge: (existing = [], incoming) => uniqBy([...existing, ...incoming], "__ref"),

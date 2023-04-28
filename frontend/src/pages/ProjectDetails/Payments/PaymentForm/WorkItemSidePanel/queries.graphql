@@ -2,6 +2,8 @@ query SearchIssues($projectId: uuid!, $authorId: bigint!, $createdSince: timesta
   projectsByPk(id: $projectId) {
     id
     githubRepos {
+      projectId
+      githubRepoId
       repoIssues(where: { authorId: { _eq: $authorId }, createdAt: { _gte: $createdSince } }) {
         ...GithubIssueDetails
       }

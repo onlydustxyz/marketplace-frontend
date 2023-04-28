@@ -1,4 +1,4 @@
-import { chain, filter, find, some } from "lodash";
+import { chain, some } from "lodash";
 import { useMemo } from "react";
 import { WorkItem } from "src/components/GithubIssue";
 import IssuesView from "./IssuesView";
@@ -16,22 +16,16 @@ type Props = {
 };
 
 export default function Issues({ type, projectId, workItems, onWorkItemAdded, unpaidIssues }: Props) {
-  const initialIgnoredIssues = useMemo(() => filter(unpaidIssues || [], "ignored"), [projectId, unpaidIssues]);
-
-  const {
-    issues: ignoredIssues,
-    ignore: ignoreIssue,
-    unignore: unignoreIssue,
-  } = useIgnoredIssues(initialIgnoredIssues);
+  const { ignore: ignoreIssue, unignore: unignoreIssue } = useIgnoredIssues();
 
   const addAndUnignoreItem = (workItem: WorkItem) => {
-    if (find(ignoredIssues, { id: workItem.id })) unignoreIssue(projectId, workItem);
+    if (workItem.ignored) unignoreIssue(projectId, workItem);
     onWorkItemAdded(workItem);
   };
 
   const issues: WorkItem[] = useMemo(
-    () => chain(unpaidIssues).differenceBy(workItems, "id").differenceBy(ignoredIssues, "id").value(),
-    [unpaidIssues, workItems, ignoredIssues]
+    () => chain(unpaidIssues).differenceBy(workItems, "id").value(),
+    [unpaidIssues, workItems]
   );
 
   return (
@@ -40,7 +34,6 @@ export default function Issues({ type, projectId, workItems, onWorkItemAdded, un
         <PullRequestsView
           projectId={projectId}
           workItems={issues}
-          ignoredItems={ignoredIssues}
           onWorkItemAdded={addAndUnignoreItem}
           onWorkItemIgnored={workItem => ignoreIssue(projectId, workItem)}
           onWorkItemUnignored={workItem => unignoreIssue(projectId, workItem)}
@@ -50,7 +43,6 @@ export default function Issues({ type, projectId, workItems, onWorkItemAdded, un
         <IssuesView
           projectId={projectId}
           workItems={issues}
-          ignoredItems={ignoredIssues}
           onWorkItemAdded={addAndUnignoreItem}
           onWorkItemIgnored={workItem => ignoreIssue(projectId, workItem)}
           onWorkItemUnignored={workItem => unignoreIssue(projectId, workItem)}

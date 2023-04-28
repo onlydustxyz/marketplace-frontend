@@ -15,12 +15,11 @@ import FormInput from "src/components/FormInput";
 import SearchLine from "src/icons/SearchLine";
 import { useFormContext } from "react-hook-form";
 import useFilteredWorkItems from "./useFilteredWorkItems";
-import { sortBy } from "lodash";
+import { filter, some } from "lodash";
 
 type Props = {
   projectId: string;
   workItems: WorkItem[];
-  ignoredItems: WorkItem[];
   onWorkItemAdded: (workItem: WorkItem) => void;
   onWorkItemIgnored: (workItem: WorkItem) => void;
   onWorkItemUnignored: (workItem: WorkItem) => void;
@@ -29,7 +28,6 @@ type Props = {
 export default function IssuesView({
   projectId,
   workItems,
-  ignoredItems,
   onWorkItemAdded,
   onWorkItemIgnored,
   onWorkItemUnignored,
@@ -55,9 +53,7 @@ export default function IssuesView({
   };
 
   useEffect(() => {
-    if (searchEnabled === false) {
-      resetField("search-issues");
-    }
+    if (searchEnabled === false) resetField("search-issues");
   }, [searchEnabled]);
 
   const showIgnoredItemsName = "show-ignored-items";
@@ -67,9 +63,7 @@ export default function IssuesView({
     name: showIgnoredItemsName,
   });
 
-  const visibleItems = showIgnoredItems
-    ? sortBy([...workItems, ...ignoredItems.map(item => ({ ...item, ignored: true }))], "createdAt").reverse()
-    : workItems;
+  const visibleItems = showIgnoredItems ? workItems : filter(workItems, { ignored: false });
 
   const searchPattern = watch("search-issues");
   const filteredWorkItems = useFilteredWorkItems({ pattern: searchPattern, workItems: visibleItems });
@@ -96,7 +90,7 @@ export default function IssuesView({
               />
             )}
           </div>
-          {ignoredItems.length > 0 && (
+          {some(workItems, { ignored: true }) && (
             <div className="flex flex-row items-center gap-2 text-greyscale-50 font-walsheim font-normal text-sm">
               <EyeOffLine />
               {T("payment.form.workItems.showIgnored")}

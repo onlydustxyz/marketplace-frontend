@@ -59,7 +59,7 @@ const View: React.FC<Props> = ({
   useEffect(() => {
     if (!workItemsPrefilled && unpaidIssues) {
       clearWorkItems();
-      filter(unpaidIssues, { type: Type.PullRequest, status: Status.Merged }).forEach(addWorkItem);
+      addWorkItem(filter(unpaidIssues, { type: Type.PullRequest, status: Status.Merged, ignored: false }));
       setWorkItemsPrefilled(true);
     }
   }, [unpaidIssues, contributor, addWorkItem, clearWorkItems, workItemsPrefilled, setWorkItemsPrefilled]);
