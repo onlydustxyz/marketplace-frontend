@@ -100,10 +100,10 @@ db/load-fixtures: db/up
 # ----------------------------------------------------------
 
 # Starts the backend stack in background
-backend/background-start: event-store/background-start event-listeners/background-start action-dequeuer/background-start api/background-start github-proxy/background-start dusty-bot/background-start
+backend/background-start: event-store/background-start event-listeners/background-start action-dequeuer/background-start api/background-start github-indexer/background-start github-proxy/background-start dusty-bot/background-start
 
 # Stops the background backend stack, if running
-backend/background-stop: event-store/background-stop event-listeners/background-stop action-dequeuer/background-stop api/background-stop github-proxy/background-stop dusty-bot/background-stop
+backend/background-stop: event-store/background-stop event-listeners/background-stop action-dequeuer/background-stop api/background-stop github-indexer/background-stop github-proxy/background-stop dusty-bot/background-stop
 
 api.pid:
 	@./scripts/cargo-run.sh api
@@ -172,6 +172,17 @@ action-dequeuer/background-start: action-dequeuer.pid
 # Stops the background action dequeuer, if running
 action-dequeuer/background-stop:
 	@./scripts/stop-app.sh action-dequeuer
+
+github-indexer.pid:
+	@cargo run --bin github-indexer > github-indexer.log 2>&1 & echo $$! > github-indexer.pid
+	@echo "App github-indexer started with PID: `cat github-indexer.pid`"
+
+# Starts the github indexer in background
+github-indexer/background-start: github-indexer.pid
+
+# Stops the background github indexer, if running
+github-indexer/background-stop:
+	@./scripts/stop-app.sh github-indexer
 
 # ----------------------------------------------------------
 #                           Frontend
