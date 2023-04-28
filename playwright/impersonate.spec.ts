@@ -31,4 +31,21 @@ test.describe("As an admin, I", () => {
 
     await expect(paymentsPage.sidePanel).toContainText(`to ${users.Olivier.github.login} (you)`);
   });
+
+  test("retain the login state when impersonating", async ({ page, users, signIn, logout }) => {
+    await signIn(users.Anthony);
+    const appPage = new GenericPage(page);
+    await appPage.expectToBeLoggedInAs(users.Anthony);
+
+    const impersonationPage = new ImpersonationPage(page);
+    await impersonationPage.goto(users.Olivier);
+    await impersonationPage.submitForm();
+    await appPage.expectToBeImpersonating(users.Olivier);
+
+    await logout();
+    await appPage.expectToBeLoggedInAs(users.Anthony);
+
+    await logout();
+    await appPage.expectToBeAnonymous();
+  });
 });

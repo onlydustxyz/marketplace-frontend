@@ -32,6 +32,7 @@ const MockAuthProvider = ({ children }: { children: React.ReactNode }) => {
     } as unknown as User,
     githubUserId: 123,
     invalidImpersonation: false,
+    impersonating: false,
   };
   const methods = useForm();
   return (

@@ -10,7 +10,7 @@ const ImpersonationPage = () => {
   const { userId } = useParams();
   const navigate = useNavigate();
   const { setImpersonationSet, clearImpersonationSet } = useImpersonationClaims();
-  const { invalidImpersonation, user } = useAuth();
+  const { invalidImpersonation, impersonating } = useAuth();
 
   const onPasswordSubmit = (password: string) => {
     if (userId) {
@@ -31,10 +31,10 @@ const ImpersonationPage = () => {
   }, [invalidImpersonation]);
 
   useEffect(() => {
-    if (user) {
+    if (impersonating) {
       navigate(RoutePaths.Projects);
     }
-  }, [user]);
+  }, [impersonating]);
 
   return (
     <>
