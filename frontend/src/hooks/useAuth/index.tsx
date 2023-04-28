@@ -18,6 +18,7 @@ export type AuthContextType = {
   roles: UserRole[];
   ledProjectIds: string[];
   githubUserId?: number;
+  impersonating: boolean;
   invalidImpersonation: boolean;
 };
 
@@ -78,6 +79,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     ledProjectIds: impersonating ? impersonatedLedProjectIds : ledProjectIds,
     githubUserId: impersonating ? impersonatedGithubUserId : githubUserId,
     invalidImpersonation,
+    impersonating,
   };
 
   if (value.user) {
