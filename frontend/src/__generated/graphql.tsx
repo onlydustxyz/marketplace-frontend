@@ -691,12 +691,6 @@ export enum EthereumIdentityType {
   EthereumName = 'ETHEREUM_NAME'
 }
 
-export type Filters = {
-  createdSince: InputMaybe<Scalars['DateTimeUtc']>;
-  state: InputMaybe<State>;
-  updatedSince: InputMaybe<Scalars['DateTimeUtc']>;
-};
-
 /** columns and relationships of "github_issues" */
 export type GithubIssues = {
   __typename?: 'GithubIssues';
@@ -1107,19 +1101,12 @@ export type GithubRepoDetails = {
   content: Maybe<Repo>;
   id: Scalars['bigint'];
   languages: Scalars['jsonb'];
-  pullRequests: Maybe<Array<Issue>>;
 };
 
 
 /** columns and relationships of "github_repo_details" */
 export type GithubRepoDetailsLanguagesArgs = {
   path: InputMaybe<Scalars['String']>;
-};
-
-
-/** columns and relationships of "github_repo_details" */
-export type GithubRepoDetailsPullRequestsArgs = {
-  filters: InputMaybe<Filters>;
 };
 
 /** aggregated selection of "github_repo_details" */
@@ -3760,13 +3747,6 @@ export type SponsorsUpdates = {
   _set: InputMaybe<SponsorsSetInput>;
   where: SponsorsBoolExp;
 };
-
-export enum State {
-  All = 'ALL',
-  Closed = 'CLOSED',
-  Merged = 'MERGED',
-  Open = 'OPEN'
-}
 
 export enum Status {
   Cancelled = 'CANCELLED',
@@ -8527,7 +8507,6 @@ export type Query_Root = {
   budgetsByPk: Maybe<Budgets>;
   fetchIssue: Maybe<Issue>;
   fetchIssueByRepositoryId: Maybe<Issue>;
-  fetchPullsByRepoId: Maybe<Array<Issue>>;
   fetchRepositoryDetails: Maybe<Repo>;
   fetchUserDetails: Maybe<User>;
   fetchUserDetailsById: Maybe<User>;
@@ -8840,12 +8819,6 @@ export type Query_RootFetchIssueArgs = {
 export type Query_RootFetchIssueByRepositoryIdArgs = {
   issueNumber: Scalars['Int'];
   repositoryId: Scalars['Int'];
-};
-
-
-export type Query_RootFetchPullsByRepoIdArgs = {
-  filters: InputMaybe<Filters>;
-  repoId: Scalars['GithubRepoId'];
 };
 
 
