@@ -8600,7 +8600,6 @@ export type Query_Root = {
   projectsSponsorsAggregate: ProjectsSponsorsAggregate;
   /** fetch data from the table: "projects_sponsors" using primary key columns */
   projectsSponsorsByPk: Maybe<ProjectsSponsors>;
-  searchIssues: Maybe<Array<Issue>>;
   searchUsers: Maybe<Array<User>>;
   /** fetch data from the table: "sponsors" */
   sponsors: Array<Sponsors>;
@@ -9120,15 +9119,6 @@ export type Query_RootProjectsSponsorsAggregateArgs = {
 export type Query_RootProjectsSponsorsByPkArgs = {
   projectId: Scalars['uuid'];
   sponsorId: Scalars['uuid'];
-};
-
-
-export type Query_RootSearchIssuesArgs = {
-  order: InputMaybe<Scalars['String']>;
-  page: InputMaybe<Scalars['Int']>;
-  perPage: InputMaybe<Scalars['Int']>;
-  query: Scalars['String'];
-  sort: InputMaybe<Scalars['String']>;
 };
 
 
@@ -11235,8 +11225,6 @@ export type UnignoreIssueMutation = { __typename?: 'mutation_root', unignoreIssu
 export type SearchIssuesQueryVariables = Exact<{
   projectId: Scalars['uuid'];
   authorId: Scalars['bigint'];
-  status: Array<Scalars['String']> | Scalars['String'];
-  type: Scalars['jsonb'];
   createdSince: Scalars['timestamp'];
 }>;
 
@@ -12973,12 +12961,12 @@ export type UnignoreIssueMutationHookResult = ReturnType<typeof useUnignoreIssue
 export type UnignoreIssueMutationResult = Apollo.MutationResult<UnignoreIssueMutation>;
 export type UnignoreIssueMutationOptions = Apollo.BaseMutationOptions<UnignoreIssueMutation, UnignoreIssueMutationVariables>;
 export const SearchIssuesDocument = gql`
-    query SearchIssues($projectId: uuid!, $authorId: bigint!, $status: [String!]!, $type: jsonb!, $createdSince: timestamp!) {
+    query SearchIssues($projectId: uuid!, $authorId: bigint!, $createdSince: timestamp!) {
   projectsByPk(id: $projectId) {
     id
     githubRepos {
       repoIssues(
-        where: {authorId: {_eq: $authorId}, status: {_hasKeysAll: $status}, createdAt: {_gte: $createdSince}, type: {_eq: $type}}
+        where: {authorId: {_eq: $authorId}, createdAt: {_gte: $createdSince}}
       ) {
         ...GithubIssueDetails
       }
@@ -13001,8 +12989,6 @@ export const SearchIssuesDocument = gql`
  *   variables: {
  *      projectId: // value for 'projectId'
  *      authorId: // value for 'authorId'
- *      status: // value for 'status'
- *      type: // value for 'type'
  *      createdSince: // value for 'createdSince'
  *   },
  * });
