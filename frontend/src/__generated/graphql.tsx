@@ -11229,7 +11229,7 @@ export type SearchIssuesQueryVariables = Exact<{
 }>;
 
 
-export type SearchIssuesQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', repoIssues: Array<{ __typename?: 'GithubIssues', id: any, repoId: any, issueNumber: any, title: string, htmlUrl: string, authorId: any, type: any, status: any, createdAt: any, closedAt: any | null, mergedAt: any | null, ignoredForProjects: Array<{ __typename?: 'IgnoredGithubIssues', projectId: any }> }> }> } | null };
+export type SearchIssuesQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', projectId: any, githubRepoId: any, repoIssues: Array<{ __typename?: 'GithubIssues', id: any, repoId: any, issueNumber: any, title: string, htmlUrl: string, authorId: any, type: any, status: any, createdAt: any, closedAt: any | null, mergedAt: any | null, ignoredForProjects: Array<{ __typename?: 'IgnoredGithubIssues', projectId: any }> }> }> } | null };
 
 export type RepositoryOwnerAndNameFragment = { __typename?: 'Repo', id: any, owner: string, name: string };
 
@@ -12776,6 +12776,8 @@ export const SearchIssuesDocument = gql`
   projectsByPk(id: $projectId) {
     id
     githubRepos {
+      projectId
+      githubRepoId
       repoIssues(
         where: {authorId: {_eq: $authorId}, createdAt: {_gte: $createdSince}}
       ) {
