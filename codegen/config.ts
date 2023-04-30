@@ -47,5 +47,12 @@ module.exports = {
         },
       },
     },
+    "./doc/data_diagram.md": {
+      plugins: {
+        "codegen/plugins/mermaid-markdown": {
+          entryTypes: ["Projects"],
+        },
+      },
+    },
   },
 };
