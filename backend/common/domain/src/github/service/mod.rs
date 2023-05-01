@@ -6,9 +6,7 @@ pub use fetch::{
 
 use crate::SubscriberCallbackError;
 mod search;
-pub use search::{
-	IssueService as SearchIssueService, Service as SearchService, UserService as SearchUserService,
-};
+pub use search::{Service as SearchService, UserService as SearchUserService};
 
 pub mod filters;
 pub use filters::Filters;

@@ -26,6 +26,7 @@ const mockPayments: PaymentRequestFragment[] = [
     workItems: [
       {
         __typename: "WorkItems",
+        paymentId: "c0cfdf80-bbba-4512-b5ec-066dfa9529b1",
         repoId: 123456,
         issueNumber: 1,
       },
@@ -40,6 +41,7 @@ const mockPayments: PaymentRequestFragment[] = [
     workItems: [
       {
         __typename: "WorkItems",
+        paymentId: "6397226d-0461-4451-962c-a61e36fd324b",
         repoId: 123456,
         issueNumber: 26,
       },
@@ -53,6 +55,7 @@ const mockPayments: PaymentRequestFragment[] = [
     recipientId: GITHUB_USER_ID2,
     workItems: [
       {
+        paymentId: "6397226d-0461-4451-962c-a61e36fd3sju",
         repoId: 123456,
         issueNumber: 653,
       },

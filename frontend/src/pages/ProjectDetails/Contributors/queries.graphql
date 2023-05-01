@@ -6,6 +6,7 @@ fragment PaymentRequestDetailsForContributorsTable on PaymentRequests {
   }
   amountInUsd
   workItems {
+    paymentId
     repoId
     issueNumber
   }
@@ -44,6 +45,8 @@ fragment ProjectContributorsForTable on Projects {
     name
   }
   githubRepos {
+    projectId
+    githubRepoId
     ...GithubRepoContributorsFields
   }
   budgets {

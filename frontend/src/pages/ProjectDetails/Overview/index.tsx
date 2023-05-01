@@ -128,6 +128,7 @@ export const GET_PROJECT_OVERVIEW_DETAILS = gql`
         logoUrl
       }
       githubRepos {
+        projectId
         githubRepoId
         githubRepoDetails {
           content {

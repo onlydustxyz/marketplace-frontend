@@ -1,6 +1,13 @@
-query searchIssues($query: String!, $order: String, $sort: String, $perPage: Int) {
-  searchIssues(query: $query, order: $order, sort: $sort, perPage: $perPage) {
-    ...IssueDetails
+query SearchIssues($projectId: uuid!, $authorId: bigint!, $createdSince: timestamp!) {
+  projectsByPk(id: $projectId) {
+    id
+    githubRepos {
+      projectId
+      githubRepoId
+      repoIssues(where: { authorId: { _eq: $authorId }, createdAt: { _gte: $createdSince } }) {
+        ...GithubIssueDetails
+      }
+    }
   }
 }
 
@@ -12,19 +19,13 @@ fragment RepositoryOwnerAndName on Repo {
 
 query getPaidWorkItems($projectId: uuid!) {
   projectsByPk(id: $projectId) {
-    githubRepos {
-      githubRepoDetails {
-        id
-        content {
-          ...RepositoryOwnerAndName
-        }
-      }
-    }
+    id
     budgets {
       id
       paymentRequests {
         id
         workItems {
+          paymentId
           repoId
           issueNumber
         }
@@ -41,7 +42,10 @@ query fetchIssue($repoOwner: String!, $repoName: String!, $issueNumber: Int!) {
 
 query GetProjectRepos($projectId: uuid!) {
   projectsByPk(id: $projectId) {
+    id
     githubRepos {
+      projectId
+      githubRepoId
       githubRepoDetails {
         id
         content {

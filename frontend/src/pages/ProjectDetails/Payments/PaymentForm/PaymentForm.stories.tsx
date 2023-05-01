@@ -142,10 +142,7 @@ Default.args = {
   setContributor: () => {
     return;
   },
-  getUnpaidMergedPullsQuery: {
-    data: [],
-    loading: false,
-  },
+  unpaidIssues: [],
 };
 
 Default.parameters = {

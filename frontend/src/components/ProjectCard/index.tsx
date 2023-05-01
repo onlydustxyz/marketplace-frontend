@@ -199,11 +199,14 @@ export const PROJECT_CARD_FRAGMENT = gql`
     }
     projectLeads {
       userId
+      projectId
       user {
         ...ProjectLead
       }
     }
     githubRepos {
+      projectId
+      githubRepoId
       ...ProjectCardGithubRepoFields
     }
     projectSponsors {

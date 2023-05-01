@@ -5,6 +5,7 @@ use serde::{Deserialize, Serialize};
 pub enum Event {
 	Repo(GithubRepo),
 	PullRequest(GithubIssue),
+	Issue(GithubIssue),
 }
 
 impl MessagePayload for Event {}

@@ -4763,53 +4763,6 @@
         "possibleTypes": null
       },
       {
-        "kind": "INPUT_OBJECT",
-        "name": "Filters",
-        "description": null,
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "createdSince",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "DateTimeUtc",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "state",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "State",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "updatedSince",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "DateTimeUtc",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
         "kind": "SCALAR",
         "name": "Float",
         "description": "The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](https://en.wikipedia.org/wiki/IEEE_floating_point).",
@@ -4841,8 +4794,8 @@
       },
       {
         "kind": "OBJECT",
-        "name": "GithubPulls",
-        "description": "columns and relationships of \"github_pulls\"",
+        "name": "GithubIssues",
+        "description": "columns and relationships of \"github_issues\"",
         "fields": [
           {
             "name": "authorId",
@@ -4861,6 +4814,18 @@
             "deprecationReason": null
           },
           {
+            "name": "closedAt",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "timestamp",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "createdAt",
             "description": null,
             "args": [],
@@ -4870,6 +4835,22 @@
               "ofType": {
                 "kind": "SCALAR",
                 "name": "timestamp",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "htmlUrl",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               }
             },
@@ -5129,6 +5110,80 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "status",
+            "description": null,
+            "args": [
+              {
+                "name": "path",
+                "description": "JSON select path",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "jsonb",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "title",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "type",
+            "description": null,
+            "args": [
+              {
+                "name": "path",
+                "description": "JSON select path",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "jsonb",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -5138,8 +5193,8 @@
       },
       {
         "kind": "OBJECT",
-        "name": "GithubPullsAggregate",
-        "description": "aggregated selection of \"github_pulls\"",
+        "name": "GithubIssuesAggregate",
+        "description": "aggregated selection of \"github_issues\"",
         "fields": [
           {
             "name": "aggregate",
@@ -5147,7 +5202,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "GithubPullsAggregateFields",
+              "name": "GithubIssuesAggregateFields",
               "ofType": null
             },
             "isDeprecated": false,
@@ -5168,7 +5223,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "OBJECT",
-                    "name": "GithubPulls",
+                    "name": "GithubIssues",
                     "ofType": null
                   }
                 }
@@ -5185,8 +5240,8 @@
       },
       {
         "kind": "OBJECT",
-        "name": "GithubPullsAggregateFields",
-        "description": "aggregate fields of \"github_pulls\"",
+        "name": "GithubIssuesAggregateFields",
+        "description": "aggregate fields of \"github_issues\"",
         "fields": [
           {
             "name": "avg",
@@ -5194,7 +5249,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "GithubPullsAvgFields",
+              "name": "GithubIssuesAvgFields",
               "ofType": null
             },
             "isDeprecated": false,
@@ -5215,7 +5270,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "ENUM",
-                      "name": "GithubPullsSelectColumn",
+                      "name": "GithubIssuesSelectColumn",
                       "ofType": null
                     }
                   }
@@ -5255,7 +5310,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "GithubPullsMaxFields",
+              "name": "GithubIssuesMaxFields",
               "ofType": null
             },
             "isDeprecated": false,
@@ -5267,7 +5322,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "GithubPullsMinFields",
+              "name": "GithubIssuesMinFields",
               "ofType": null
             },
             "isDeprecated": false,
@@ -5279,7 +5334,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "GithubPullsStddevFields",
+              "name": "GithubIssuesStddevFields",
               "ofType": null
             },
             "isDeprecated": false,
@@ -5291,7 +5346,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "GithubPullsStddev_popFields",
+              "name": "GithubIssuesStddev_popFields",
               "ofType": null
             },
             "isDeprecated": false,
@@ -5303,7 +5358,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "GithubPullsStddev_sampFields",
+              "name": "GithubIssuesStddev_sampFields",
               "ofType": null
             },
             "isDeprecated": false,
@@ -5315,7 +5370,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "GithubPullsSumFields",
+              "name": "GithubIssuesSumFields",
               "ofType": null
             },
             "isDeprecated": false,
@@ -5327,7 +5382,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "GithubPullsVar_popFields",
+              "name": "GithubIssuesVar_popFields",
               "ofType": null
             },
             "isDeprecated": false,
@@ -5339,7 +5394,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "GithubPullsVar_sampFields",
+              "name": "GithubIssuesVar_sampFields",
               "ofType": null
             },
             "isDeprecated": false,
@@ -5351,7 +5406,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "GithubPullsVarianceFields",
+              "name": "GithubIssuesVarianceFields",
               "ofType": null
             },
             "isDeprecated": false,
@@ -5365,8 +5420,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "GithubPullsAggregateOrderBy",
-        "description": "order by aggregate values of table \"github_pulls\"",
+        "name": "GithubIssuesAggregateOrderBy",
+        "description": "order by aggregate values of table \"github_issues\"",
         "fields": null,
         "inputFields": [
           {
@@ -5374,7 +5429,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "github_pulls_avg_order_by",
+              "name": "github_issues_avg_order_by",
               "ofType": null
             },
             "defaultValue": null,
@@ -5398,7 +5453,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "github_pulls_max_order_by",
+              "name": "github_issues_max_order_by",
               "ofType": null
             },
             "defaultValue": null,
@@ -5410,7 +5465,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "github_pulls_min_order_by",
+              "name": "github_issues_min_order_by",
               "ofType": null
             },
             "defaultValue": null,
@@ -5422,7 +5477,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "github_pulls_stddev_order_by",
+              "name": "github_issues_stddev_order_by",
               "ofType": null
             },
             "defaultValue": null,
@@ -5434,7 +5489,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "github_pulls_stddev_pop_order_by",
+              "name": "github_issues_stddev_pop_order_by",
               "ofType": null
             },
             "defaultValue": null,
@@ -5446,7 +5501,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "github_pulls_stddev_samp_order_by",
+              "name": "github_issues_stddev_samp_order_by",
               "ofType": null
             },
             "defaultValue": null,
@@ -5458,7 +5513,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "github_pulls_sum_order_by",
+              "name": "github_issues_sum_order_by",
               "ofType": null
             },
             "defaultValue": null,
@@ -5470,7 +5525,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "github_pulls_var_pop_order_by",
+              "name": "github_issues_var_pop_order_by",
               "ofType": null
             },
             "defaultValue": null,
@@ -5482,7 +5537,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "github_pulls_var_samp_order_by",
+              "name": "github_issues_var_samp_order_by",
               "ofType": null
             },
             "defaultValue": null,
@@ -5494,7 +5549,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "github_pulls_variance_order_by",
+              "name": "github_issues_variance_order_by",
               "ofType": null
             },
             "defaultValue": null,
@@ -5508,8 +5563,43 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "GithubPullsArrRelInsertInput",
-        "description": "input type for inserting array relation for remote table \"github_pulls\"",
+        "name": "GithubIssuesAppendInput",
+        "description": "append existing jsonb value of filtered columns with new jsonb value",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "status",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "jsonb",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "type",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "jsonb",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "GithubIssuesArrRelInsertInput",
+        "description": "input type for inserting array relation for remote table \"github_issues\"",
         "fields": null,
         "inputFields": [
           {
@@ -5526,7 +5616,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "INPUT_OBJECT",
-                    "name": "GithubPullsInsertInput",
+                    "name": "GithubIssuesInsertInput",
                     "ofType": null
                   }
                 }
@@ -5541,7 +5631,7 @@
             "description": "upsert condition",
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "GithubPullsOnConflict",
+              "name": "GithubIssuesOnConflict",
               "ofType": null
             },
             "defaultValue": null,
@@ -5555,7 +5645,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "GithubPullsAvgFields",
+        "name": "GithubIssuesAvgFields",
         "description": "aggregate avg on columns",
         "fields": [
           {
@@ -5614,8 +5704,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "GithubPullsBoolExp",
-        "description": "Boolean expression to filter rows from the table \"github_pulls\". All fields are combined with a logical 'AND'.",
+        "name": "GithubIssuesBoolExp",
+        "description": "Boolean expression to filter rows from the table \"github_issues\". All fields are combined with a logical 'AND'.",
         "fields": null,
         "inputFields": [
           {
@@ -5629,7 +5719,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "INPUT_OBJECT",
-                  "name": "GithubPullsBoolExp",
+                  "name": "GithubIssuesBoolExp",
                   "ofType": null
                 }
               }
@@ -5643,7 +5733,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "GithubPullsBoolExp",
+              "name": "GithubIssuesBoolExp",
               "ofType": null
             },
             "defaultValue": null,
@@ -5661,7 +5751,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "INPUT_OBJECT",
-                  "name": "GithubPullsBoolExp",
+                  "name": "GithubIssuesBoolExp",
                   "ofType": null
                 }
               }
@@ -5683,11 +5773,35 @@
             "deprecationReason": null
           },
           {
+            "name": "closedAt",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "TimestampComparisonExp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "createdAt",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "TimestampComparisonExp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "htmlUrl",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "StringComparisonExp",
               "ofType": null
             },
             "defaultValue": null,
@@ -5765,6 +5879,42 @@
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "status",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "JsonbComparisonExp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "title",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "StringComparisonExp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "type",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "JsonbComparisonExp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "interfaces": null,
@@ -5773,8 +5923,8 @@
       },
       {
         "kind": "ENUM",
-        "name": "GithubPullsConstraint",
-        "description": "unique or primary key constraints on table \"github_pulls\"",
+        "name": "GithubIssuesConstraint",
+        "description": "unique or primary key constraints on table \"github_issues\"",
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -5790,8 +5940,129 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "GithubPullsIncInput",
-        "description": "input type for incrementing numeric columns in table \"github_pulls\"",
+        "name": "GithubIssuesDeleteAtPathInput",
+        "description": "delete the field or element with specified path (for JSON arrays, negative integers count from the end)",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "status",
+            "description": null,
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "type",
+            "description": null,
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "GithubIssuesDeleteElemInput",
+        "description": "delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "status",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "type",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "GithubIssuesDeleteKeyInput",
+        "description": "delete key/value pair or string element. key/value pairs are matched based on their key value",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "status",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "type",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "GithubIssuesIncInput",
+        "description": "input type for incrementing numeric columns in table \"github_issues\"",
         "fields": null,
         "inputFields": [
           {
@@ -5849,8 +6120,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "GithubPullsInsertInput",
-        "description": "input type for inserting data into table \"github_pulls\"",
+        "name": "GithubIssuesInsertInput",
+        "description": "input type for inserting data into table \"github_issues\"",
         "fields": null,
         "inputFields": [
           {
@@ -5866,11 +6137,35 @@
             "deprecationReason": null
           },
           {
+            "name": "closedAt",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "timestamp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "createdAt",
             "description": null,
             "type": {
               "kind": "SCALAR",
               "name": "timestamp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "htmlUrl",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
               "ofType": null
             },
             "defaultValue": null,
@@ -5936,6 +6231,42 @@
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "status",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "jsonb",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "title",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "type",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "jsonb",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "interfaces": null,
@@ -5944,7 +6275,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "GithubPullsMaxFields",
+        "name": "GithubIssuesMaxFields",
         "description": "aggregate max on columns",
         "fields": [
           {
@@ -5960,12 +6291,36 @@
             "deprecationReason": null
           },
           {
+            "name": "closedAt",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "timestamp",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "createdAt",
             "description": null,
             "args": [],
             "type": {
               "kind": "SCALAR",
               "name": "timestamp",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "htmlUrl",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
               "ofType": null
             },
             "isDeprecated": false,
@@ -6018,6 +6373,18 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "title",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -6027,7 +6394,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "GithubPullsMinFields",
+        "name": "GithubIssuesMinFields",
         "description": "aggregate min on columns",
         "fields": [
           {
@@ -6043,12 +6410,36 @@
             "deprecationReason": null
           },
           {
+            "name": "closedAt",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "timestamp",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "createdAt",
             "description": null,
             "args": [],
             "type": {
               "kind": "SCALAR",
               "name": "timestamp",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "htmlUrl",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
               "ofType": null
             },
             "isDeprecated": false,
@@ -6101,6 +6492,18 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "title",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -6110,8 +6513,8 @@
       },
       {
         "kind": "OBJECT",
-        "name": "GithubPullsMutationResponse",
-        "description": "response of any mutation on the table \"github_pulls\"",
+        "name": "GithubIssuesMutationResponse",
+        "description": "response of any mutation on the table \"github_issues\"",
         "fields": [
           {
             "name": "affected_rows",
@@ -6144,7 +6547,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "OBJECT",
-                    "name": "GithubPulls",
+                    "name": "GithubIssues",
                     "ofType": null
                   }
                 }
@@ -6161,8 +6564,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "GithubPullsOnConflict",
-        "description": "on_conflict condition type for table \"github_pulls\"",
+        "name": "GithubIssuesOnConflict",
+        "description": "on_conflict condition type for table \"github_issues\"",
         "fields": null,
         "inputFields": [
           {
@@ -6173,7 +6576,7 @@
               "name": null,
               "ofType": {
                 "kind": "ENUM",
-                "name": "GithubPullsConstraint",
+                "name": "GithubIssuesConstraint",
                 "ofType": null
               }
             },
@@ -6195,7 +6598,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "ENUM",
-                    "name": "GithubPullsUpdateColumn",
+                    "name": "GithubIssuesUpdateColumn",
                     "ofType": null
                   }
                 }
@@ -6210,7 +6613,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "GithubPullsBoolExp",
+              "name": "GithubIssuesBoolExp",
               "ofType": null
             },
             "defaultValue": null,
@@ -6224,8 +6627,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "GithubPullsOrderBy",
-        "description": "Ordering options when selecting data from \"github_pulls\".",
+        "name": "GithubIssuesOrderBy",
+        "description": "Ordering options when selecting data from \"github_issues\".",
         "fields": null,
         "inputFields": [
           {
@@ -6241,7 +6644,31 @@
             "deprecationReason": null
           },
           {
+            "name": "closedAt",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "createdAt",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "htmlUrl",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -6311,6 +6738,42 @@
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "status",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "title",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "type",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "interfaces": null,
@@ -6319,8 +6782,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "GithubPullsPkColumnsInput",
-        "description": "primary key columns input for table: github_pulls",
+        "name": "GithubIssuesPkColumnsInput",
+        "description": "primary key columns input for table: github_issues",
         "fields": null,
         "inputFields": [
           {
@@ -6345,9 +6808,44 @@
         "possibleTypes": null
       },
       {
+        "kind": "INPUT_OBJECT",
+        "name": "GithubIssuesPrependInput",
+        "description": "prepend existing jsonb value of filtered columns with new jsonb value",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "status",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "jsonb",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "type",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "jsonb",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
         "kind": "ENUM",
-        "name": "GithubPullsSelectColumn",
-        "description": "select columns of table \"github_pulls\"",
+        "name": "GithubIssuesSelectColumn",
+        "description": "select columns of table \"github_issues\"",
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -6359,7 +6857,19 @@
             "deprecationReason": null
           },
           {
+            "name": "closedAt",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "createdAt",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "htmlUrl",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
@@ -6387,14 +6897,32 @@
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "status",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "title",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "type",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "possibleTypes": null
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "GithubPullsSetInput",
-        "description": "input type for updating data in table \"github_pulls\"",
+        "name": "GithubIssuesSetInput",
+        "description": "input type for updating data in table \"github_issues\"",
         "fields": null,
         "inputFields": [
           {
@@ -6410,11 +6938,35 @@
             "deprecationReason": null
           },
           {
+            "name": "closedAt",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "timestamp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "createdAt",
             "description": null,
             "type": {
               "kind": "SCALAR",
               "name": "timestamp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "htmlUrl",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
               "ofType": null
             },
             "defaultValue": null,
@@ -6468,6 +7020,42 @@
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "status",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "jsonb",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "title",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "type",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "jsonb",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "interfaces": null,
@@ -6476,7 +7064,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "GithubPullsStddevFields",
+        "name": "GithubIssuesStddevFields",
         "description": "aggregate stddev on columns",
         "fields": [
           {
@@ -6535,7 +7123,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "GithubPullsStddev_popFields",
+        "name": "GithubIssuesStddev_popFields",
         "description": "aggregate stddev_pop on columns",
         "fields": [
           {
@@ -6594,7 +7182,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "GithubPullsStddev_sampFields",
+        "name": "GithubIssuesStddev_sampFields",
         "description": "aggregate stddev_samp on columns",
         "fields": [
           {
@@ -6653,7 +7241,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "GithubPullsSumFields",
+        "name": "GithubIssuesSumFields",
         "description": "aggregate sum on columns",
         "fields": [
           {
@@ -6712,8 +7300,8 @@
       },
       {
         "kind": "ENUM",
-        "name": "GithubPullsUpdateColumn",
-        "description": "update columns of table \"github_pulls\"",
+        "name": "GithubIssuesUpdateColumn",
+        "description": "update columns of table \"github_issues\"",
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -6725,7 +7313,19 @@
             "deprecationReason": null
           },
           {
+            "name": "closedAt",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "createdAt",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "htmlUrl",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
@@ -6753,22 +7353,100 @@
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "status",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "title",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "type",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "possibleTypes": null
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "GithubPullsUpdates",
+        "name": "GithubIssuesUpdates",
         "description": null,
         "fields": null,
         "inputFields": [
+          {
+            "name": "_append",
+            "description": "append existing jsonb value of filtered columns with new jsonb value",
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "GithubIssuesAppendInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "_deleteAtPath",
+            "description": "delete the field or element with specified path (for JSON arrays, negative integers count from the end)",
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "GithubIssuesDeleteAtPathInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "_deleteElem",
+            "description": "delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array",
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "GithubIssuesDeleteElemInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "_deleteKey",
+            "description": "delete key/value pair or string element. key/value pairs are matched based on their key value",
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "GithubIssuesDeleteKeyInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "_inc",
             "description": "increments the numeric columns with given value of the filtered values",
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "GithubPullsIncInput",
+              "name": "GithubIssuesIncInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "_prepend",
+            "description": "prepend existing jsonb value of filtered columns with new jsonb value",
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "GithubIssuesPrependInput",
               "ofType": null
             },
             "defaultValue": null,
@@ -6780,7 +7458,7 @@
             "description": "sets the columns of the filtered rows to the given values",
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "GithubPullsSetInput",
+              "name": "GithubIssuesSetInput",
               "ofType": null
             },
             "defaultValue": null,
@@ -6795,7 +7473,7 @@
               "name": null,
               "ofType": {
                 "kind": "INPUT_OBJECT",
-                "name": "GithubPullsBoolExp",
+                "name": "GithubIssuesBoolExp",
                 "ofType": null
               }
             },
@@ -6810,7 +7488,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "GithubPullsVar_popFields",
+        "name": "GithubIssuesVar_popFields",
         "description": "aggregate var_pop on columns",
         "fields": [
           {
@@ -6869,7 +7547,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "GithubPullsVar_sampFields",
+        "name": "GithubIssuesVar_sampFields",
         "description": "aggregate var_samp on columns",
         "fields": [
           {
@@ -6928,7 +7606,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "GithubPullsVarianceFields",
+        "name": "GithubIssuesVarianceFields",
         "description": "aggregate variance on columns",
         "fields": [
           {
@@ -7042,39 +7720,6 @@
                 "kind": "SCALAR",
                 "name": "jsonb",
                 "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "pullRequests",
-            "description": null,
-            "args": [
-              {
-                "name": "filters",
-                "description": null,
-                "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "Filters",
-                  "ofType": null
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              }
-            ],
-            "type": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "OBJECT",
-                  "name": "Issue",
-                  "ofType": null
-                }
               }
             },
             "isDeprecated": false,
@@ -18050,7 +18695,7 @@
             "deprecationReason": null
           },
           {
-            "name": "repoPulls",
+            "name": "repoIssues",
             "description": "An array relationship",
             "args": [
               {
@@ -18064,7 +18709,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "ENUM",
-                      "name": "GithubPullsSelectColumn",
+                      "name": "GithubIssuesSelectColumn",
                       "ofType": null
                     }
                   }
@@ -18108,7 +18753,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "GithubPullsOrderBy",
+                      "name": "GithubIssuesOrderBy",
                       "ofType": null
                     }
                   }
@@ -18122,7 +18767,7 @@
                 "description": "filter the rows returned",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "GithubPullsBoolExp",
+                  "name": "GithubIssuesBoolExp",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -18141,7 +18786,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "OBJECT",
-                    "name": "GithubPulls",
+                    "name": "GithubIssues",
                     "ofType": null
                   }
                 }
@@ -18151,7 +18796,7 @@
             "deprecationReason": null
           },
           {
-            "name": "repoPullsAggregate",
+            "name": "repoIssuesAggregate",
             "description": "An aggregate relationship",
             "args": [
               {
@@ -18165,7 +18810,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "ENUM",
-                      "name": "GithubPullsSelectColumn",
+                      "name": "GithubIssuesSelectColumn",
                       "ofType": null
                     }
                   }
@@ -18209,7 +18854,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "GithubPullsOrderBy",
+                      "name": "GithubIssuesOrderBy",
                       "ofType": null
                     }
                   }
@@ -18223,7 +18868,7 @@
                 "description": "filter the rows returned",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "GithubPullsBoolExp",
+                  "name": "GithubIssuesBoolExp",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -18236,7 +18881,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "GithubPullsAggregate",
+                "name": "GithubIssuesAggregate",
                 "ofType": null
               }
             },
@@ -18796,11 +19441,11 @@
             "deprecationReason": null
           },
           {
-            "name": "repoPulls",
+            "name": "repoIssues",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "GithubPullsBoolExp",
+              "name": "GithubIssuesBoolExp",
               "ofType": null
             },
             "defaultValue": null,
@@ -18808,11 +19453,11 @@
             "deprecationReason": null
           },
           {
-            "name": "repoPulls_aggregate",
+            "name": "repoIssues_aggregate",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "github_pulls_aggregate_bool_exp",
+              "name": "github_issues_aggregate_bool_exp",
               "ofType": null
             },
             "defaultValue": null,
@@ -18919,11 +19564,11 @@
             "deprecationReason": null
           },
           {
-            "name": "repoPulls",
+            "name": "repoIssues",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "GithubPullsArrRelInsertInput",
+              "name": "GithubIssuesArrRelInsertInput",
               "ofType": null
             },
             "defaultValue": null,
@@ -19174,11 +19819,11 @@
             "deprecationReason": null
           },
           {
-            "name": "repoPullsAggregate",
+            "name": "repoIssuesAggregate",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "GithubPullsAggregateOrderBy",
+              "name": "GithubIssuesAggregateOrderBy",
               "ofType": null
             },
             "defaultValue": null,
@@ -24544,41 +25189,6 @@
         ],
         "interfaces": null,
         "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "ENUM",
-        "name": "State",
-        "description": null,
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": [
-          {
-            "name": "ALL",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "CLOSED",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "MERGED",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "OPEN",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
         "possibleTypes": null
       },
       {
@@ -40611,7 +41221,7 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "github_pulls_aggregate_bool_exp",
+        "name": "github_issues_aggregate_bool_exp",
         "description": null,
         "fields": null,
         "inputFields": [
@@ -40620,7 +41230,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "github_pulls_aggregate_bool_exp_count",
+              "name": "github_issues_aggregate_bool_exp_count",
               "ofType": null
             },
             "defaultValue": null,
@@ -40634,7 +41244,7 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "github_pulls_aggregate_bool_exp_count",
+        "name": "github_issues_aggregate_bool_exp_count",
         "description": null,
         "fields": null,
         "inputFields": [
@@ -40649,7 +41259,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "ENUM",
-                  "name": "GithubPullsSelectColumn",
+                  "name": "GithubIssuesSelectColumn",
                   "ofType": null
                 }
               }
@@ -40675,7 +41285,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "GithubPullsBoolExp",
+              "name": "GithubIssuesBoolExp",
               "ofType": null
             },
             "defaultValue": null,
@@ -40705,8 +41315,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "github_pulls_avg_order_by",
-        "description": "order by avg() on columns of table \"github_pulls\"",
+        "name": "github_issues_avg_order_by",
+        "description": "order by avg() on columns of table \"github_issues\"",
         "fields": null,
         "inputFields": [
           {
@@ -40764,8 +41374,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "github_pulls_max_order_by",
-        "description": "order by max() on columns of table \"github_pulls\"",
+        "name": "github_issues_max_order_by",
+        "description": "order by max() on columns of table \"github_issues\"",
         "fields": null,
         "inputFields": [
           {
@@ -40781,7 +41391,31 @@
             "deprecationReason": null
           },
           {
+            "name": "closedAt",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "createdAt",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "htmlUrl",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -40839,6 +41473,18 @@
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "title",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "interfaces": null,
@@ -40847,8 +41493,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "github_pulls_min_order_by",
-        "description": "order by min() on columns of table \"github_pulls\"",
+        "name": "github_issues_min_order_by",
+        "description": "order by min() on columns of table \"github_issues\"",
         "fields": null,
         "inputFields": [
           {
@@ -40864,7 +41510,31 @@
             "deprecationReason": null
           },
           {
+            "name": "closedAt",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "createdAt",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "htmlUrl",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -40922,6 +41592,18 @@
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "title",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "interfaces": null,
@@ -40930,8 +41612,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "github_pulls_stddev_order_by",
-        "description": "order by stddev() on columns of table \"github_pulls\"",
+        "name": "github_issues_stddev_order_by",
+        "description": "order by stddev() on columns of table \"github_issues\"",
         "fields": null,
         "inputFields": [
           {
@@ -40989,8 +41671,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "github_pulls_stddev_pop_order_by",
-        "description": "order by stddev_pop() on columns of table \"github_pulls\"",
+        "name": "github_issues_stddev_pop_order_by",
+        "description": "order by stddev_pop() on columns of table \"github_issues\"",
         "fields": null,
         "inputFields": [
           {
@@ -41048,8 +41730,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "github_pulls_stddev_samp_order_by",
-        "description": "order by stddev_samp() on columns of table \"github_pulls\"",
+        "name": "github_issues_stddev_samp_order_by",
+        "description": "order by stddev_samp() on columns of table \"github_issues\"",
         "fields": null,
         "inputFields": [
           {
@@ -41107,8 +41789,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "github_pulls_streamCursorInput",
-        "description": "Streaming cursor of the table \"github_pulls\"",
+        "name": "github_issues_streamCursorInput",
+        "description": "Streaming cursor of the table \"github_issues\"",
         "fields": null,
         "inputFields": [
           {
@@ -41119,7 +41801,7 @@
               "name": null,
               "ofType": {
                 "kind": "INPUT_OBJECT",
-                "name": "github_pulls_streamCursorValueInput",
+                "name": "github_issues_streamCursorValueInput",
                 "ofType": null
               }
             },
@@ -41146,7 +41828,7 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "github_pulls_streamCursorValueInput",
+        "name": "github_issues_streamCursorValueInput",
         "description": "Initial value of the column from where the streaming should start",
         "fields": null,
         "inputFields": [
@@ -41163,11 +41845,35 @@
             "deprecationReason": null
           },
           {
+            "name": "closedAt",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "timestamp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "createdAt",
             "description": null,
             "type": {
               "kind": "SCALAR",
               "name": "timestamp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "htmlUrl",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
               "ofType": null
             },
             "defaultValue": null,
@@ -41221,6 +41927,42 @@
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "status",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "jsonb",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "title",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "type",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "jsonb",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "interfaces": null,
@@ -41229,8 +41971,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "github_pulls_sum_order_by",
-        "description": "order by sum() on columns of table \"github_pulls\"",
+        "name": "github_issues_sum_order_by",
+        "description": "order by sum() on columns of table \"github_issues\"",
         "fields": null,
         "inputFields": [
           {
@@ -41288,8 +42030,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "github_pulls_var_pop_order_by",
-        "description": "order by var_pop() on columns of table \"github_pulls\"",
+        "name": "github_issues_var_pop_order_by",
+        "description": "order by var_pop() on columns of table \"github_issues\"",
         "fields": null,
         "inputFields": [
           {
@@ -41347,8 +42089,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "github_pulls_var_samp_order_by",
-        "description": "order by var_samp() on columns of table \"github_pulls\"",
+        "name": "github_issues_var_samp_order_by",
+        "description": "order by var_samp() on columns of table \"github_issues\"",
         "fields": null,
         "inputFields": [
           {
@@ -41406,8 +42148,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "github_pulls_variance_order_by",
-        "description": "order by variance() on columns of table \"github_pulls\"",
+        "name": "github_issues_variance_order_by",
+        "description": "order by variance() on columns of table \"github_issues\"",
         "fields": null,
         "inputFields": [
           {
@@ -43200,8 +43942,8 @@
             "deprecationReason": null
           },
           {
-            "name": "deleteGithubPulls",
-            "description": "delete data from the table: \"github_pulls\"",
+            "name": "deleteGithubIssues",
+            "description": "delete data from the table: \"github_issues\"",
             "args": [
               {
                 "name": "where",
@@ -43211,7 +43953,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "INPUT_OBJECT",
-                    "name": "GithubPullsBoolExp",
+                    "name": "GithubIssuesBoolExp",
                     "ofType": null
                   }
                 },
@@ -43222,15 +43964,15 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "GithubPullsMutationResponse",
+              "name": "GithubIssuesMutationResponse",
               "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "deleteGithubPullsByPk",
-            "description": "delete single row from the table: \"github_pulls\"",
+            "name": "deleteGithubIssuesByPk",
+            "description": "delete single row from the table: \"github_issues\"",
             "args": [
               {
                 "name": "id",
@@ -43251,7 +43993,7 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "GithubPulls",
+              "name": "GithubIssues",
               "ofType": null
             },
             "isDeprecated": false,
@@ -45033,8 +45775,8 @@
             "deprecationReason": null
           },
           {
-            "name": "insertGithubPulls",
-            "description": "insert data into the table: \"github_pulls\"",
+            "name": "insertGithubIssues",
+            "description": "insert data into the table: \"github_issues\"",
             "args": [
               {
                 "name": "objects",
@@ -45050,7 +45792,7 @@
                       "name": null,
                       "ofType": {
                         "kind": "INPUT_OBJECT",
-                        "name": "GithubPullsInsertInput",
+                        "name": "GithubIssuesInsertInput",
                         "ofType": null
                       }
                     }
@@ -45065,7 +45807,7 @@
                 "description": "upsert condition",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "GithubPullsOnConflict",
+                  "name": "GithubIssuesOnConflict",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -45075,15 +45817,15 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "GithubPullsMutationResponse",
+              "name": "GithubIssuesMutationResponse",
               "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "insertGithubPullsOne",
-            "description": "insert a single row into the table: \"github_pulls\"",
+            "name": "insertGithubIssuesOne",
+            "description": "insert a single row into the table: \"github_issues\"",
             "args": [
               {
                 "name": "object",
@@ -45093,7 +45835,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "INPUT_OBJECT",
-                    "name": "GithubPullsInsertInput",
+                    "name": "GithubIssuesInsertInput",
                     "ofType": null
                   }
                 },
@@ -45106,7 +45848,7 @@
                 "description": "upsert condition",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "GithubPullsOnConflict",
+                  "name": "GithubIssuesOnConflict",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -45116,7 +45858,7 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "GithubPulls",
+              "name": "GithubIssues",
               "ofType": null
             },
             "isDeprecated": false,
@@ -48232,15 +48974,75 @@
             "deprecationReason": null
           },
           {
-            "name": "updateGithubPulls",
-            "description": "update data of the table: \"github_pulls\"",
+            "name": "updateGithubIssues",
+            "description": "update data of the table: \"github_issues\"",
             "args": [
+              {
+                "name": "_append",
+                "description": "append existing jsonb value of filtered columns with new jsonb value",
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "GithubIssuesAppendInput",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "_deleteAtPath",
+                "description": "delete the field or element with specified path (for JSON arrays, negative integers count from the end)",
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "GithubIssuesDeleteAtPathInput",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "_deleteElem",
+                "description": "delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array",
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "GithubIssuesDeleteElemInput",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "_deleteKey",
+                "description": "delete key/value pair or string element. key/value pairs are matched based on their key value",
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "GithubIssuesDeleteKeyInput",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
               {
                 "name": "_inc",
                 "description": "increments the numeric columns with given value of the filtered values",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "GithubPullsIncInput",
+                  "name": "GithubIssuesIncInput",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "_prepend",
+                "description": "prepend existing jsonb value of filtered columns with new jsonb value",
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "GithubIssuesPrependInput",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -48252,7 +49054,7 @@
                 "description": "sets the columns of the filtered rows to the given values",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "GithubPullsSetInput",
+                  "name": "GithubIssuesSetInput",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -48267,7 +49069,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "INPUT_OBJECT",
-                    "name": "GithubPullsBoolExp",
+                    "name": "GithubIssuesBoolExp",
                     "ofType": null
                   }
                 },
@@ -48278,22 +49080,82 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "GithubPullsMutationResponse",
+              "name": "GithubIssuesMutationResponse",
               "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "updateGithubPullsByPk",
-            "description": "update single row of the table: \"github_pulls\"",
+            "name": "updateGithubIssuesByPk",
+            "description": "update single row of the table: \"github_issues\"",
             "args": [
+              {
+                "name": "_append",
+                "description": "append existing jsonb value of filtered columns with new jsonb value",
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "GithubIssuesAppendInput",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "_deleteAtPath",
+                "description": "delete the field or element with specified path (for JSON arrays, negative integers count from the end)",
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "GithubIssuesDeleteAtPathInput",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "_deleteElem",
+                "description": "delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array",
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "GithubIssuesDeleteElemInput",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "_deleteKey",
+                "description": "delete key/value pair or string element. key/value pairs are matched based on their key value",
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "GithubIssuesDeleteKeyInput",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
               {
                 "name": "_inc",
                 "description": "increments the numeric columns with given value of the filtered values",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "GithubPullsIncInput",
+                  "name": "GithubIssuesIncInput",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "_prepend",
+                "description": "prepend existing jsonb value of filtered columns with new jsonb value",
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "GithubIssuesPrependInput",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -48305,7 +49167,7 @@
                 "description": "sets the columns of the filtered rows to the given values",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "GithubPullsSetInput",
+                  "name": "GithubIssuesSetInput",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -48320,7 +49182,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "INPUT_OBJECT",
-                    "name": "GithubPullsPkColumnsInput",
+                    "name": "GithubIssuesPkColumnsInput",
                     "ofType": null
                   }
                 },
@@ -48331,15 +49193,15 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "GithubPulls",
+              "name": "GithubIssues",
               "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "updateGithubPullsMany",
-            "description": "update multiples rows of table: \"github_pulls\"",
+            "name": "updateGithubIssuesMany",
+            "description": "update multiples rows of table: \"github_issues\"",
             "args": [
               {
                 "name": "updates",
@@ -48355,7 +49217,7 @@
                       "name": null,
                       "ofType": {
                         "kind": "INPUT_OBJECT",
-                        "name": "GithubPullsUpdates",
+                        "name": "GithubIssuesUpdates",
                         "ofType": null
                       }
                     }
@@ -48371,7 +49233,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "GithubPullsMutationResponse",
+                "name": "GithubIssuesMutationResponse",
                 "ofType": null
               }
             },
@@ -55993,55 +56855,6 @@
             "deprecationReason": null
           },
           {
-            "name": "fetchPullsByRepoId",
-            "description": null,
-            "args": [
-              {
-                "name": "filters",
-                "description": null,
-                "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "Filters",
-                  "ofType": null
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "repoId",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "GithubRepoId",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              }
-            ],
-            "type": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "OBJECT",
-                  "name": "Issue",
-                  "ofType": null
-                }
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "fetchRepositoryDetails",
             "description": null,
             "args": [
@@ -56129,8 +56942,8 @@
             "deprecationReason": null
           },
           {
-            "name": "githubPulls",
-            "description": "fetch data from the table: \"github_pulls\"",
+            "name": "githubIssues",
+            "description": "fetch data from the table: \"github_issues\"",
             "args": [
               {
                 "name": "distinctOn",
@@ -56143,7 +56956,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "ENUM",
-                      "name": "GithubPullsSelectColumn",
+                      "name": "GithubIssuesSelectColumn",
                       "ofType": null
                     }
                   }
@@ -56187,7 +57000,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "GithubPullsOrderBy",
+                      "name": "GithubIssuesOrderBy",
                       "ofType": null
                     }
                   }
@@ -56201,7 +57014,7 @@
                 "description": "filter the rows returned",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "GithubPullsBoolExp",
+                  "name": "GithubIssuesBoolExp",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -56220,7 +57033,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "OBJECT",
-                    "name": "GithubPulls",
+                    "name": "GithubIssues",
                     "ofType": null
                   }
                 }
@@ -56230,8 +57043,8 @@
             "deprecationReason": null
           },
           {
-            "name": "githubPullsAggregate",
-            "description": "fetch aggregated fields from the table: \"github_pulls\"",
+            "name": "githubIssuesAggregate",
+            "description": "fetch aggregated fields from the table: \"github_issues\"",
             "args": [
               {
                 "name": "distinctOn",
@@ -56244,7 +57057,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "ENUM",
-                      "name": "GithubPullsSelectColumn",
+                      "name": "GithubIssuesSelectColumn",
                       "ofType": null
                     }
                   }
@@ -56288,7 +57101,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "GithubPullsOrderBy",
+                      "name": "GithubIssuesOrderBy",
                       "ofType": null
                     }
                   }
@@ -56302,7 +57115,7 @@
                 "description": "filter the rows returned",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "GithubPullsBoolExp",
+                  "name": "GithubIssuesBoolExp",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -56315,7 +57128,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "GithubPullsAggregate",
+                "name": "GithubIssuesAggregate",
                 "ofType": null
               }
             },
@@ -56323,8 +57136,8 @@
             "deprecationReason": null
           },
           {
-            "name": "githubPullsByPk",
-            "description": "fetch data from the table: \"github_pulls\" using primary key columns",
+            "name": "githubIssuesByPk",
+            "description": "fetch data from the table: \"github_issues\" using primary key columns",
             "args": [
               {
                 "name": "id",
@@ -56345,7 +57158,7 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "GithubPulls",
+              "name": "GithubIssues",
               "ofType": null
             },
             "isDeprecated": false,
@@ -58705,91 +59518,6 @@
               "kind": "OBJECT",
               "name": "ProjectsSponsors",
               "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "searchIssues",
-            "description": null,
-            "args": [
-              {
-                "name": "order",
-                "description": null,
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "page",
-                "description": null,
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "perPage",
-                "description": null,
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "query",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "sort",
-                "description": null,
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              }
-            ],
-            "type": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "OBJECT",
-                  "name": "Issue",
-                  "ofType": null
-                }
-              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -62548,8 +63276,8 @@
             "deprecationReason": null
           },
           {
-            "name": "githubPulls",
-            "description": "fetch data from the table: \"github_pulls\"",
+            "name": "githubIssues",
+            "description": "fetch data from the table: \"github_issues\"",
             "args": [
               {
                 "name": "distinctOn",
@@ -62562,7 +63290,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "ENUM",
-                      "name": "GithubPullsSelectColumn",
+                      "name": "GithubIssuesSelectColumn",
                       "ofType": null
                     }
                   }
@@ -62606,7 +63334,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "GithubPullsOrderBy",
+                      "name": "GithubIssuesOrderBy",
                       "ofType": null
                     }
                   }
@@ -62620,7 +63348,7 @@
                 "description": "filter the rows returned",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "GithubPullsBoolExp",
+                  "name": "GithubIssuesBoolExp",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -62639,7 +63367,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "OBJECT",
-                    "name": "GithubPulls",
+                    "name": "GithubIssues",
                     "ofType": null
                   }
                 }
@@ -62649,8 +63377,8 @@
             "deprecationReason": null
           },
           {
-            "name": "githubPullsAggregate",
-            "description": "fetch aggregated fields from the table: \"github_pulls\"",
+            "name": "githubIssuesAggregate",
+            "description": "fetch aggregated fields from the table: \"github_issues\"",
             "args": [
               {
                 "name": "distinctOn",
@@ -62663,7 +63391,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "ENUM",
-                      "name": "GithubPullsSelectColumn",
+                      "name": "GithubIssuesSelectColumn",
                       "ofType": null
                     }
                   }
@@ -62707,7 +63435,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "GithubPullsOrderBy",
+                      "name": "GithubIssuesOrderBy",
                       "ofType": null
                     }
                   }
@@ -62721,7 +63449,7 @@
                 "description": "filter the rows returned",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "GithubPullsBoolExp",
+                  "name": "GithubIssuesBoolExp",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -62734,7 +63462,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "GithubPullsAggregate",
+                "name": "GithubIssuesAggregate",
                 "ofType": null
               }
             },
@@ -62742,8 +63470,8 @@
             "deprecationReason": null
           },
           {
-            "name": "githubPullsByPk",
-            "description": "fetch data from the table: \"github_pulls\" using primary key columns",
+            "name": "githubIssuesByPk",
+            "description": "fetch data from the table: \"github_issues\" using primary key columns",
             "args": [
               {
                 "name": "id",
@@ -62764,15 +63492,15 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "GithubPulls",
+              "name": "GithubIssues",
               "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "githubPullsStream",
-            "description": "fetch data from the table in a streaming manner: \"github_pulls\"",
+            "name": "githubIssuesStream",
+            "description": "fetch data from the table in a streaming manner: \"github_issues\"",
             "args": [
               {
                 "name": "batchSize",
@@ -62801,7 +63529,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "github_pulls_streamCursorInput",
+                      "name": "github_issues_streamCursorInput",
                       "ofType": null
                     }
                   }
@@ -62815,7 +63543,7 @@
                 "description": "filter the rows returned",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "GithubPullsBoolExp",
+                  "name": "GithubIssuesBoolExp",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -62834,7 +63562,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "OBJECT",
-                    "name": "GithubPulls",
+                    "name": "GithubIssues",
                     "ofType": null
                   }
                 }

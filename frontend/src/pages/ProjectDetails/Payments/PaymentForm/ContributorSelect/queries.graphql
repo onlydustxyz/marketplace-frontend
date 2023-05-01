@@ -2,6 +2,8 @@ fragment ProjectContributorsForPaymentSelect on Projects {
   ...ProjectContributorsByLeader
   id
   githubRepos {
+    projectId
+    githubRepoId
     githubRepoDetails {
       id
       content {
@@ -17,6 +19,7 @@ fragment ProjectContributorsForPaymentSelect on Projects {
     paymentRequests {
       id
       workItems {
+        paymentId
         repoId
         issueNumber
       }

@@ -26,6 +26,7 @@ const contributor3: ContributorIdFragment = {
 const githubRepo1: ProjectCardGithubRepoFieldsFragment & ArrayElement<ProjectContributorsFragment["githubRepos"]> = {
   __typename: "ProjectGithubRepos",
   githubRepoId: 1000,
+  projectId: "123",
   githubRepoDetails: {
     id: 1000,
     languages: { Cairo: 1000, Rust: 100, HTML: 150 },
@@ -39,6 +40,7 @@ const githubRepo1: ProjectCardGithubRepoFieldsFragment & ArrayElement<ProjectCon
 const githubRepo2: ProjectCardGithubRepoFieldsFragment & ArrayElement<ProjectContributorsFragment["githubRepos"]> = {
   __typename: "ProjectGithubRepos",
   githubRepoId: 1001,
+  projectId: "123",
   githubRepoDetails: {
     id: 1001,
     languages: { Rust: 80, Go: 40, Cairo: 2000 },
@@ -61,6 +63,7 @@ const PROJECT: Project = {
   projectLeads: [
     {
       userId: "user-1",
+      projectId: "123",
       user: {
         id: "user-1",
         displayName: "oscarwroche",

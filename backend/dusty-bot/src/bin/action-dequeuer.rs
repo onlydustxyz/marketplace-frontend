@@ -5,6 +5,7 @@ use domain::{Subscriber, SubscriberCallbackError};
 use dotenv::dotenv;
 use dusty_bot::{Action, Config, GithubService, DUSTY_BOT_ACTION_QUEUE};
 use infrastructure::{amqp::UniqueMessage, config, event_bus::consumer, github, tracing::Tracer};
+use olog::info;
 
 #[tokio::main]
 async fn main() -> Result<()> {
@@ -34,6 +35,8 @@ async fn process(
 	github: Arc<dyn GithubService>,
 	action: Action,
 ) -> Result<(), SubscriberCallbackError> {
+	info!(action = action.to_string(), "Prcoessing DustyBot action");
+
 	match action {
 		Action::CloseIssue {
 			repo_owner,

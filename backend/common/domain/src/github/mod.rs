@@ -2,7 +2,7 @@ mod service;
 pub use service::{
 	filters as service_filters, Error as ServiceError, FetchIssueService, FetchRepoService,
 	FetchService, FetchUserService, Filters as ServiceFilters, Result as ServiceResult,
-	SearchIssueService, SearchService, SearchUserService, Service,
+	SearchService, SearchUserService, Service,
 };
 
 mod repo;

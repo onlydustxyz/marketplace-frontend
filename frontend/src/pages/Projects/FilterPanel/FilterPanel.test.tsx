@@ -15,6 +15,7 @@ const projects1: GetAllFilterOptionsQuery["projects"][number] = {
   githubRepos: [
     {
       __typename: "ProjectGithubRepos",
+      projectId: "project-1",
       githubRepoId: 1,
       githubRepoDetails: {
         __typename: "GithubRepoDetails",
@@ -25,7 +26,7 @@ const projects1: GetAllFilterOptionsQuery["projects"][number] = {
   ],
   projectSponsors: [{ sponsor: { id: "sponsor-1", name: "Sponsor 1" } }],
   budgets: [{ __typename: "Budgets", id: "budget-1" }],
-  projectLeads: [{ __typename: "ProjectLeads", userId: "user-1" }],
+  projectLeads: [{ __typename: "ProjectLeads", userId: "user-1", projectId: "project-1" }],
   pendingInvitations: [],
 };
 
@@ -36,6 +37,7 @@ const projects2: GetAllFilterOptionsQuery["projects"][number] = {
     {
       __typename: "ProjectGithubRepos",
       githubRepoId: 2,
+      projectId: "project-2",
       githubRepoDetails: {
         __typename: "GithubRepoDetails",
         id: 2,
@@ -48,7 +50,7 @@ const projects2: GetAllFilterOptionsQuery["projects"][number] = {
     { sponsor: { id: "sponsor-2", name: "Sponsor 2" } },
   ],
   budgets: [{ __typename: "Budgets", id: "budget-1" }],
-  projectLeads: [{ __typename: "ProjectLeads", userId: "user-1" }],
+  projectLeads: [{ __typename: "ProjectLeads", userId: "user-1", projectId: "project-2" }],
   pendingInvitations: [],
 };
 
@@ -58,6 +60,7 @@ const projects3: GetAllFilterOptionsQuery["projects"][number] = {
   githubRepos: [
     {
       __typename: "ProjectGithubRepos",
+      projectId: "project-3",
       githubRepoId: 3,
       githubRepoDetails: {
         __typename: "GithubRepoDetails",
@@ -68,7 +71,7 @@ const projects3: GetAllFilterOptionsQuery["projects"][number] = {
   ],
   projectSponsors: [],
   budgets: [{ __typename: "Budgets", id: "budget-1" }],
-  projectLeads: [{ __typename: "ProjectLeads", userId: "user-1" }],
+  projectLeads: [{ __typename: "ProjectLeads", userId: "user-1", projectId: "project-3" }],
   pendingInvitations: [],
 };
 
@@ -78,6 +81,7 @@ const projects4: GetAllFilterOptionsQuery["projects"][number] = {
   githubRepos: [
     {
       __typename: "ProjectGithubRepos",
+      projectId: "project-4",
       githubRepoId: 4,
       githubRepoDetails: {
         __typename: "GithubRepoDetails",
@@ -89,7 +93,7 @@ const projects4: GetAllFilterOptionsQuery["projects"][number] = {
   ],
   projectSponsors: [],
   budgets: [{ __typename: "Budgets", id: "budget-1" }],
-  projectLeads: [{ __typename: "ProjectLeads", userId: "user-1" }],
+  projectLeads: [{ __typename: "ProjectLeads", userId: "user-1", projectId: "project-4" }],
   pendingInvitations: [],
 };
 
@@ -99,6 +103,7 @@ const projects5: GetAllFilterOptionsQuery["projects"][number] = {
   githubRepos: [
     {
       __typename: "ProjectGithubRepos",
+      projectId: "project-5",
       githubRepoId: 5,
       githubRepoDetails: {
         __typename: "GithubRepoDetails",
@@ -110,12 +115,7 @@ const projects5: GetAllFilterOptionsQuery["projects"][number] = {
   ],
   budgets: [],
   projectSponsors: [{ sponsor: { id: "sponsor-3", name: "Sponsor 3" } }],
-  projectLeads: [
-    {
-      __typename: "ProjectLeads",
-      userId: "user-1",
-    },
-  ],
+  projectLeads: [{ __typename: "ProjectLeads", userId: "user-1", projectId: "project-5" }],
   pendingInvitations: [],
 };
 

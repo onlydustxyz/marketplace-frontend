@@ -1,18 +1,15 @@
-import { useCallback, useLayoutEffect } from "react";
-import { IgnoreIssueDocument, UnignoreIssueDocument } from "src/__generated/graphql";
+import { useCallback } from "react";
+import {
+  IgnoreIssueDocument,
+  IgnoredGithubIssueIdFragment,
+  IgnoredGithubIssueIdFragmentDoc,
+  UnignoreIssueDocument,
+} from "src/__generated/graphql";
 import { WorkItem } from "src/components/GithubIssue";
 import { useHasuraMutation } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
-import useWorkItems from "src/pages/ProjectDetails/Payments/PaymentForm/useWorkItems";
 
-export default function useIgnoredIssues(issues: WorkItem[]) {
-  const { workItems, add, remove, clear } = useWorkItems();
-
-  useLayoutEffect(() => {
-    clear();
-    issues.forEach(add);
-  }, [issues]);
-
+export default function useIgnoredIssues() {
   const [ignoreIssue] = useHasuraMutation(IgnoreIssueDocument, HasuraUserRole.RegisteredUser);
   const [unignoreIssue] = useHasuraMutation(UnignoreIssueDocument, HasuraUserRole.RegisteredUser);
 
@@ -21,16 +18,21 @@ export default function useIgnoredIssues(issues: WorkItem[]) {
       ignoreIssue({
         variables: { projectId, repoId: workItem.repoId, issueNumber: workItem.number },
         context: { graphqlErrorDisplay: "toaster" },
-        onCompleted: () => add(workItem),
-        update: cache =>
+        update: (cache, _, { variables }) => {
+          const ignoredIssue = cache.writeFragment({
+            data: ignoredIssueFragment(variables),
+            fragment: IgnoredGithubIssueIdFragmentDoc,
+          });
           cache.modify({
-            id: `Issue:${workItem.id}`,
+            id: `GithubIssues:${workItem.id}`,
             fields: {
-              ignoredForProjects: () => [{ projectId }],
+              ignoredForProjects: existing => [...existing, ignoredIssue],
             },
-          }),
+          });
+          console.log(cache);
+        },
       }),
-    [ignoreIssue, add]
+    [ignoreIssue]
   );
 
   const unignore = useCallback(
@@ -38,17 +40,20 @@ export default function useIgnoredIssues(issues: WorkItem[]) {
       unignoreIssue({
         variables: { projectId, repoId: workItem.repoId, issueNumber: workItem.number },
         context: { graphqlErrorDisplay: "toaster" },
-        onCompleted: () => remove(workItem),
-        update: cache =>
-          cache.modify({
-            id: `Issue:${workItem.id}`,
-            fields: {
-              ignoredForProjects: () => [],
-            },
-          }),
+        update: (cache, _, { variables }) => {
+          const ignoredIssue = ignoredIssueFragment(variables);
+          cache.evict({ id: cache.identify(ignoredIssue) });
+        },
       }),
-    [unignoreIssue, remove]
+    [unignoreIssue]
   );
 
-  return { issues: workItems, ignore, unignore };
+  return { ignore, unignore };
 }
+
+const ignoredIssueFragment = (
+  issue?: Partial<IgnoredGithubIssueIdFragment>
+): Partial<IgnoredGithubIssueIdFragment> => ({
+  __typename: "IgnoredGithubIssues",
+  ...issue,
+});

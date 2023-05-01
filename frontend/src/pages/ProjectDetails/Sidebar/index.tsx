@@ -6,6 +6,7 @@ import {
   GetProjectsForSidebarQuery,
   ProjectContributorsFragmentDoc,
   SidebarProjectDetailsFragment,
+  VisibleProjectFragmentDoc,
 } from "src/__generated/graphql";
 import { gql } from "@apollo/client";
 import { useAuth } from "src/hooks/useAuth";
@@ -14,7 +15,7 @@ import { sortBy } from "lodash";
 import { ProjectRoutePaths } from "src/App";
 import { useIntl } from "src/hooks/useIntl";
 import isDefined from "src/utils/isDefined";
-import { isProjectVisible, VISIBLE_PROJECT_FRAGMENT } from "src/utils/project";
+import { isProjectVisible } from "src/utils/project";
 
 export type ProjectDetailsTab = {
   label: string;
@@ -85,7 +86,7 @@ const projectFromQuery = (project: SidebarProjectDetailsFragment) => ({
 
 export const GET_PROJECTS_FOR_SIDEBAR_QUERY = gql`
   ${ProjectContributorsFragmentDoc}
-  ${VISIBLE_PROJECT_FRAGMENT}
+  ${VisibleProjectFragmentDoc}
   fragment SidebarProjectDetails on Projects {
     ...ProjectContributors
     id

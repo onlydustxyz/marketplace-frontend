@@ -186,11 +186,9 @@
           type Query {
             fetchIssue(repoOwner: String!, repoName: String!, issueNumber: Int!): Issue
             fetchIssueByRepositoryId(repositoryId: Int!, issueNumber: Int!): Issue
-            fetchPullsByRepoId(repoId: GithubRepoId!, filters: Filters): [Issue!]
             fetchRepositoryDetails(id: Int!): Repo
             fetchUserDetails(username: String!): User
             fetchUserDetailsById(userId: Int!): User
-            searchIssues(query: String!, sort: String, order: String, perPage: Int, page: Int): [Issue!]
             searchUsers(query: String!, sort: String, order: String, perPage: Int, page: Int): [User!]
           }
           type Repo {
@@ -210,12 +208,6 @@
             id: GithubUserId!
             login: String!
           }
-          enum State {
-            ALL
-            CLOSED
-            MERGED
-            OPEN
-          }
           enum Status {
             CANCELLED
             CLOSED
@@ -226,10 +218,6 @@
           enum Type {
             ISSUE
             PULL_REQUEST
-          }
-          input Filters {
-            createdSince: DateTimeUtc
-            state: State
           }
     - role: public
       definition:

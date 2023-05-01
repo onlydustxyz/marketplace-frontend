@@ -10,7 +10,10 @@ use url::Url;
 
 use crate::{Entity, GithubRepoId, GithubUser};
 
-#[derive(Clone, Debug, GraphQLEnum, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(
+	Clone, Copy, Debug, GraphQLEnum, PartialEq, Eq, Serialize, Deserialize, AsExpression, FromToSql,
+)]
+#[sql_type = "diesel::sql_types::Jsonb"]
 pub enum Status {
 	Open,
 	Closed,
@@ -19,7 +22,8 @@ pub enum Status {
 	Cancelled,
 }
 
-#[derive(Clone, Debug, GraphQLEnum, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, GraphQLEnum, Serialize, Deserialize, AsExpression, FromToSql)]
+#[sql_type = "diesel::sql_types::Jsonb"]
 pub enum Type {
 	Issue,
 	PullRequest,

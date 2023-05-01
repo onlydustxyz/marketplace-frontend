@@ -1,13 +1,13 @@
 use std::sync::Arc;
 
 use derive_more::Constructor;
-use infrastructure::database::{schema::github_pulls::dsl, Client};
+use infrastructure::database::{schema::github_issues::dsl, Client};
 
-use crate::domain::GithubPull;
+use crate::domain::GithubIssue;
 
 #[derive(DieselRepository, Constructor, Clone)]
-#[entity(GithubPull)]
-#[table(dsl::github_pulls)]
+#[entity(GithubIssue)]
+#[table(dsl::github_issues)]
 #[id(dsl::id)]
 #[features(insert, update)]
 #[mock]

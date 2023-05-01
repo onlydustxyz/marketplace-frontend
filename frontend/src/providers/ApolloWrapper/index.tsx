@@ -20,7 +20,6 @@ import { TokenRefreshLink } from "apollo-link-token-refresh";
 import { TokenSet } from "src/types";
 import axios from "axios";
 import { RetryLink } from "@apollo/client/link/retry";
-import { WorkItems } from "src/__generated/graphql";
 import { useImpersonationClaims } from "src/hooks/useImpersonationClaims";
 
 type ErrorDisplay = "screen" | "toaster" | "none";
@@ -139,8 +138,26 @@ const ApolloWrapper: React.FC<PropsWithChildren> = ({ children }) => {
     ]),
     cache: new InMemoryCache({
       typePolicies: {
+        AuthGithubUsers: {
+          keyFields: ["userId"],
+        },
         ProjectDetails: {
           keyFields: ["projectId"],
+        },
+        ProjectGithubRepos: {
+          keyFields: ["projectId", "githubRepoId"],
+        },
+        ProjectLeads: {
+          keyFields: ["userId", "projectId"],
+        },
+        UserInfo: {
+          keyFields: ["userId"],
+        },
+        WorkItems: {
+          keyFields: ["paymentId", "repoId", "issueNumber"],
+        },
+        IgnoredGithubIssues: {
+          keyFields: ["projectId", "repoId", "issueNumber"],
         },
         Budgets: {
           fields: {
@@ -149,17 +166,17 @@ const ApolloWrapper: React.FC<PropsWithChildren> = ({ children }) => {
             },
           },
         },
-        GithubPulls: {
+        GithubIssues: {
           fields: {
             ignoredForProjects: {
-              merge: (existing = [], incoming) => uniqBy([...existing, ...incoming], "__ref"),
+              //   merge: (existing = [], incoming) => uniqBy([...existing, ...incoming], "__ref"),
             },
           },
         },
         PaymentRequests: {
           fields: {
             workItems: {
-              merge: (_, incoming: WorkItems[]) => incoming,
+              merge: (_, incoming) => incoming,
             },
           },
         },

@@ -37,11 +37,18 @@ const ALL_PROJECTS_RESULT_NO_INVITATIONS: { data: GetProjectsQueryResult["data"]
           },
         },
         pendingInvitations: [],
-        projectLeads: [{ userId: "user-1", user: { id: "user-1", displayName: "project lead", avatarUrl: "avatar" } }],
+        projectLeads: [
+          {
+            userId: "user-1",
+            projectId: "1",
+            user: { id: "user-1", displayName: "project lead", avatarUrl: "avatar" },
+          },
+        ],
         projectSponsors: [],
         githubRepos: [
           {
             githubRepoId: 123456,
+            projectId: "1",
             githubRepoDetails: {
               id: 123456,
               languages: [],
@@ -75,6 +82,7 @@ const ALL_PROJECTS_RESULT_NO_INVITATIONS: { data: GetProjectsQueryResult["data"]
         pendingInvitations: [],
         githubRepos: [
           {
+            projectId: "2",
             githubRepoId: 123456,
             githubRepoDetails: {
               id: 123456,
@@ -86,7 +94,13 @@ const ALL_PROJECTS_RESULT_NO_INVITATIONS: { data: GetProjectsQueryResult["data"]
             },
           },
         ],
-        projectLeads: [{ userId: "user-1", user: { id: "user-1", displayName: "project lead", avatarUrl: "avatar" } }],
+        projectLeads: [
+          {
+            userId: "user-1",
+            projectId: "2",
+            user: { id: "user-1", displayName: "project lead", avatarUrl: "avatar" },
+          },
+        ],
         projectSponsors: [],
       },
     ],
@@ -118,6 +132,7 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
         pendingInvitations: [],
         githubRepos: [
           {
+            projectId: "1",
             githubRepoId: 123456,
             githubRepoDetails: {
               id: 123456,
@@ -129,7 +144,13 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
             },
           },
         ],
-        projectLeads: [{ userId: "user-1", user: { id: "user-1", displayName: "project lead", avatarUrl: "avatar" } }],
+        projectLeads: [
+          {
+            userId: "user-1",
+            projectId: "1",
+            user: { id: "user-1", displayName: "project lead", avatarUrl: "avatar" },
+          },
+        ],
         projectSponsors: [],
       },
       {
@@ -154,6 +175,7 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
         pendingInvitations: [],
         githubRepos: [
           {
+            projectId: "2",
             githubRepoId: 123456,
             githubRepoDetails: {
               id: 123456,
@@ -165,7 +187,13 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
             },
           },
         ],
-        projectLeads: [{ userId: "user-1", user: { id: "user-1", displayName: "project lead", avatarUrl: "avatar" } }],
+        projectLeads: [
+          {
+            userId: "user-1",
+            projectId: "2",
+            user: { id: "user-1", displayName: "project lead", avatarUrl: "avatar" },
+          },
+        ],
         projectSponsors: [],
       },
       {
@@ -190,6 +218,7 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
         pendingInvitations: [{ id: "invitation-1", githubUserId: TEST_GITHUB_USER_ID }],
         githubRepos: [
           {
+            projectId: "3",
             githubRepoId: 123456,
             githubRepoDetails: {
               id: 123456,
@@ -201,7 +230,13 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
             },
           },
         ],
-        projectLeads: [{ userId: "user-1", user: { id: "user-1", displayName: "project lead", avatarUrl: "avatar" } }],
+        projectLeads: [
+          {
+            userId: "user-1",
+            projectId: "3",
+            user: { id: "user-1", displayName: "project lead", avatarUrl: "avatar" },
+          },
+        ],
         projectSponsors: [],
       },
     ],
@@ -222,6 +257,7 @@ const projectWithNoBudget: ProjectCardFieldsFragment = {
   },
   githubRepos: [
     {
+      projectId: "project-with-no-budget",
       githubRepoId: 123456,
       githubRepoDetails: {
         id: 123456,
@@ -234,7 +270,13 @@ const projectWithNoBudget: ProjectCardFieldsFragment = {
     },
   ],
   pendingInvitations: [],
-  projectLeads: [{ userId: "user-1", user: { id: "user-1", displayName: "leader", avatarUrl: "avatar" } }],
+  projectLeads: [
+    {
+      userId: "user-1",
+      projectId: "project-with-no-budget",
+      user: { id: "user-1", displayName: "leader", avatarUrl: "avatar" },
+    },
+  ],
   projectSponsors: [],
 };
 
@@ -252,7 +294,13 @@ const projectWithNoRepo: ProjectCardFieldsFragment = {
   },
   githubRepos: [],
   pendingInvitations: [],
-  projectLeads: [{ userId: "user-1", user: { id: "user-1", displayName: "leader", avatarUrl: "avatar" } }],
+  projectLeads: [
+    {
+      userId: "user-1",
+      projectId: "project-with-no-repo",
+      user: { id: "user-1", displayName: "leader", avatarUrl: "avatar" },
+    },
+  ],
   projectSponsors: [],
 };
 
@@ -270,6 +318,7 @@ const projectWithNoLeader: ProjectCardFieldsFragment = {
   },
   githubRepos: [
     {
+      projectId: "project-with-no-leader",
       githubRepoId: 123456,
       githubRepoDetails: {
         id: 123456,
@@ -318,6 +367,7 @@ const projectWithNoLeaderAndInviteForWrongUser: ProjectCardFieldsFragment = {
   },
   githubRepos: [
     {
+      projectId: "project-with-no-leader-and-invite-for-wrong-user",
       githubRepoId: 123456,
       githubRepoDetails: {
         id: 123456,
@@ -348,6 +398,7 @@ const projectWithNoLeaderAndInvite: ProjectCardFieldsFragment = {
   },
   githubRepos: [
     {
+      projectId: "project-with-no-leader-and-invite",
       githubRepoId: 123456,
       githubRepoDetails: {
         id: 123456,

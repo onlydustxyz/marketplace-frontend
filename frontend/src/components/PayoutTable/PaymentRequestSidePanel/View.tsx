@@ -16,6 +16,7 @@ import Button, { ButtonSize } from "src/components/Button";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import ConfirmationModal from "./ConfirmationModal";
 import classNames from "classnames";
+import { issueToWorkItem } from "src/pages/ProjectDetails/Payments/PaymentForm/WorkItemSidePanel/Issues";
 
 export type Props = {
   open: boolean;
@@ -118,7 +119,9 @@ export default function View({
           <div className="flex flex-col gap-3 h-full p-px pr-4 overflow-auto scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded">
             {workItems?.map(
               workItem =>
-                workItem.githubIssue && <GithubIssue key={workItem.githubIssue?.id} workItem={workItem.githubIssue} />
+                workItem.githubIssue && (
+                  <GithubIssue key={workItem.githubIssue?.id} workItem={issueToWorkItem(workItem.githubIssue)} />
+                )
             )}
           </div>
         </div>

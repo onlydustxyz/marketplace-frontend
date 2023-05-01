@@ -63,6 +63,7 @@ export default function FeedbackButton() {
 export const GET_USER_IDENTITY_QUERY = gql`
   query UserIdentity($userId: uuid!) {
     userInfo(where: { userId: { _eq: $userId } }) {
+      userId
       identity
     }
   }

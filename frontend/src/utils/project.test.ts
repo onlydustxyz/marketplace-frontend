@@ -3,9 +3,10 @@ import {
   ContributorIdFragment,
   ContributorsTableFieldsFragment,
   ProjectContributorsFragment,
-  PullDetailsFragment,
+  GithubIssueDetailsFragment,
   Status,
   WorkItem,
+  Type,
 } from "src/__generated/graphql";
 import { countUnpaidMergedPullsByContributor, getContributors } from "./project";
 
@@ -30,6 +31,7 @@ const project: ProjectContributorsFragment = {
   githubRepos: [
     {
       __typename: "ProjectGithubRepos",
+      projectId: "project-1",
       githubRepoId: REPO1_ID,
       githubRepoDetails: {
         id: REPO1_ID,
@@ -38,6 +40,7 @@ const project: ProjectContributorsFragment = {
     },
     {
       __typename: "ProjectGithubRepos",
+      projectId: "project-1",
       githubRepoId: REPO2_ID,
       githubRepoDetails: {
         id: REPO2_ID,
@@ -81,19 +84,31 @@ describe("countUnpaidMergedPullsByContributor", () => {
       issueNumber: id + 1,
     }));
 
-    const mergedPaidPulls: PullDetailsFragment[] = paidItems.map(({ repoId, issueNumber }, index) => ({
+    const mergedPaidPulls: GithubIssueDetailsFragment[] = paidItems.map(({ repoId, issueNumber }, index) => ({
       id: 2000 + index,
       repoId,
       issueNumber,
+      closedAt: new Date(),
+      createdAt: new Date(),
+      mergedAt: new Date(),
+      htmlUrl: "",
+      title: "title",
+      type: Type.PullRequest,
       authorId: users[index].id,
       status: Status.Merged,
       ignoredForProjects: [],
     }));
 
-    const mergedUnPaidPulls: PullDetailsFragment[] = range(0, 10).map(id => ({
+    const mergedUnPaidPulls: GithubIssueDetailsFragment[] = range(0, 10).map(id => ({
       id: 3000 + id,
       repoId: 3000 + id,
       issueNumber: id,
+      closedAt: new Date(),
+      createdAt: new Date(),
+      mergedAt: new Date(),
+      htmlUrl: "",
+      title: "title",
+      type: Type.PullRequest,
       authorId: users[id % users.length].id,
       status: Status.Merged,
       ignoredForProjects: [],
@@ -106,7 +121,7 @@ describe("countUnpaidMergedPullsByContributor", () => {
           githubRepoDetails: {
             content: { contributors: [...users] },
           },
-          repoPulls: [...mergedPaidPulls, ...mergedUnPaidPulls],
+          repoIssues: [...mergedPaidPulls, ...mergedUnPaidPulls],
         },
       ],
       budgets: [

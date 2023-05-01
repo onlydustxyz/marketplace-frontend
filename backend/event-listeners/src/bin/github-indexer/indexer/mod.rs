@@ -2,9 +2,9 @@ mod error;
 use error::*;
 
 pub mod composite;
+pub mod issues;
 pub mod logged;
 pub mod published;
-pub mod pulls;
 pub mod repo;
 pub mod with_state;
 

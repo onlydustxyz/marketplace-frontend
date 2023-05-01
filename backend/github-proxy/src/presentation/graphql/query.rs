@@ -1,7 +1,4 @@
-use domain::{
-	GithubIssue, GithubIssueNumber, GithubRepo, GithubRepoId, GithubServiceFilters, GithubUser,
-	GithubUserId,
-};
+use domain::{GithubIssue, GithubIssueNumber, GithubRepo, GithubRepoId, GithubUser, GithubUserId};
 use juniper::{graphql_object, DefaultScalarValue};
 use olog::{error, warn};
 
@@ -36,22 +33,6 @@ impl Query {
 			.github_service()
 			.ok()?
 			.user(&username)
-			.await
-			.map_err(Error::from)
-			.logged()
-			.ok()
-	}
-
-	pub async fn fetch_pulls_by_repo_id(
-		&self,
-		context: &Context,
-		repo_id: GithubRepoId,
-		filters: Option<GithubServiceFilters>,
-	) -> Option<Vec<GithubIssue>> {
-		context
-			.github_service()
-			.ok()?
-			.pulls_by_repo_id(&repo_id, &filters.unwrap_or_default())
 			.await
 			.map_err(Error::from)
 			.logged()
@@ -123,31 +104,6 @@ impl Query {
 			.github_service_with_user_pat()
 			.ok()?
 			.users(
-				&query,
-				sort,
-				order,
-				per_page.and_then(|n| u8::try_from(n).ok()),
-				page.and_then(|n| u32::try_from(n).ok()),
-			)
-			.await
-			.map_err(Error::from)
-			.logged()
-			.ok()
-	}
-
-	pub async fn search_issues(
-		&self,
-		context: &Context,
-		query: String,
-		sort: Option<String>,
-		order: Option<String>,
-		per_page: Option<i32>,
-		page: Option<i32>,
-	) -> Option<Vec<GithubIssue>> {
-		context
-			.github_service_with_user_pat()
-			.ok()?
-			.issues(
 				&query,
 				sort,
 				order,

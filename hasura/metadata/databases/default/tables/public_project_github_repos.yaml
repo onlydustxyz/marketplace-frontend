@@ -21,14 +21,14 @@ object_relationships:
           name: projects
           schema: public
 array_relationships:
-  - name: repoPulls
+  - name: repoIssues
     using:
       manual_configuration:
         column_mapping:
           github_repo_id: repo_id
         insertion_order: null
         remote_table:
-          name: github_pulls
+          name: github_issues
           schema: public
 select_permissions:
   - role: public
