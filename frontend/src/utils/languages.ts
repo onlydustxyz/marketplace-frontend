@@ -46,7 +46,7 @@ export const getDeduplicatedAggregatedLanguages = function (
     }, {});
 };
 
-export const GITHUB_REPOS_LANGUAGES_FRAGMENT = gql`
+gql`
   fragment GithubRepoLanguagesFields on ProjectGithubRepos {
     githubRepoId
     githubRepoDetails {

@@ -29,6 +29,7 @@ const props = (args: { name: string; shortDescription: string; projectLeadsCount
   projectLeads: [
     {
       userId: "user-1",
+      projectId: "123",
       user: {
         id: "user-1",
         displayName: "oscarwroche",
@@ -37,6 +38,7 @@ const props = (args: { name: string; shortDescription: string; projectLeadsCount
     },
     {
       userId: "user-2",
+      projectId: "123",
       user: {
         id: "user-2",
         displayName: "AnthonyBuisset",
@@ -45,6 +47,7 @@ const props = (args: { name: string; shortDescription: string; projectLeadsCount
     },
     {
       userId: "user-3",
+      projectId: "123",
       user: {
         id: "user-3",
         displayName: "ofux",
@@ -53,6 +56,7 @@ const props = (args: { name: string; shortDescription: string; projectLeadsCount
     },
     {
       userId: "user-4",
+      projectId: "123",
       user: {
         id: "user-4",
         displayName: "tdelabro",
@@ -61,6 +65,7 @@ const props = (args: { name: string; shortDescription: string; projectLeadsCount
     },
     {
       userId: "user-5",
+      projectId: "123",
       user: {
         id: "user-5",
         displayName: "BernardStanislas",
@@ -69,6 +74,7 @@ const props = (args: { name: string; shortDescription: string; projectLeadsCount
     },
     {
       userId: "user-6",
+      projectId: "123",
       user: {
         id: "user-6",
         displayName: "gregcha",
@@ -79,6 +85,7 @@ const props = (args: { name: string; shortDescription: string; projectLeadsCount
   githubRepos: [
     {
       githubRepoId: 12345,
+      projectId: "123",
       githubRepoDetails: {
         id: 12345,
         languages: { Ejs: 2200, Rust: 1000 },
@@ -90,6 +97,7 @@ const props = (args: { name: string; shortDescription: string; projectLeadsCount
     },
     {
       githubRepoId: 666,
+      projectId: "123",
       githubRepoDetails: {
         id: 666,
         languages: { Pascal: 1000000, Rust: 3000 },

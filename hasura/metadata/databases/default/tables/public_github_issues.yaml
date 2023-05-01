@@ -1,5 +1,5 @@
 table:
-  name: github_pulls
+  name: github_issues
   schema: public
 array_relationships:
   - name: ignoredForProjects
@@ -16,10 +16,15 @@ select_permissions:
   - role: registered_user
     permission:
       columns:
-        - id
-        - repo_id
-        - issue_number
-        - created_at
         - author_id
+        - id
+        - issue_number
+        - repo_id
+        - status
+        - type
+        - html_url
+        - title
+        - closed_at
+        - created_at
         - merged_at
       filter: {}

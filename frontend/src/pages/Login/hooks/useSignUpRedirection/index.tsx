@@ -73,7 +73,9 @@ export const PENDING_PROJECT_LEADER_INVITATIONS_QUERY = gql`
 export const PENDING_USER_PAYMENTS = gql`
   query PendingUserPayments($userId: uuid!) {
     user(id: $userId) {
+      id
       githubUser {
+        userId
         paymentRequests {
           id
           amountInUsd

@@ -38,7 +38,7 @@ export default function usePaymentRequests(projectId?: string) {
           id: paymentId,
           amountInUsd: amount,
           recipientId: contributorId,
-          workItems: reason.workItems,
+          workItems: reason.workItems.map(workItem => ({ paymentId, ...workItem })),
           payments: [],
           requestedAt: Date.now(),
         },
@@ -67,6 +67,10 @@ export default function usePaymentRequests(projectId?: string) {
           paymentRequests: current => reject(current, { __ref: `PaymentRequests:${paymentId}` }),
           remainingAmount: remainingAmount => remainingAmount + amount,
         },
+      });
+
+      cache.evict({
+        id: `PaymentRequests:${paymentId}`,
       });
     },
   });

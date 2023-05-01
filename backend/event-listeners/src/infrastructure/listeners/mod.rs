@@ -16,7 +16,7 @@ use webhook::EventWebHook;
 use crate::{
 	domain::*,
 	infrastructure::database::{
-		BudgetRepository, CrmGithubRepoRepository, GithubPullsRepository,
+		BudgetRepository, CrmGithubRepoRepository, GithubIssuesRepository,
 		GithubRepoDetailsRepository, GithubRepoIndexRepository, PaymentRepository,
 		PaymentRequestRepository, ProjectGithubRepoDetailsRepository, ProjectLeadRepository,
 		ProjectRepository, WorkItemRepository,
@@ -54,7 +54,7 @@ pub async fn spawn_all(
 		CrmProjector::new(CrmGithubRepoRepository::new(database.clone())).spawn(
 			event_bus::consumer_with_exchange(config.amqp(), GITHUB_EVENTS_EXCHANGE, "crm").await?,
 		),
-		GithubPullsProjector::new(GithubPullsRepository::new(database)).spawn(
+		GithubIssuesRepositoryProjector::new(GithubIssuesRepository::new(database)).spawn(
 			event_bus::consumer_with_exchange(
 				config.amqp(),
 				GITHUB_EVENTS_EXCHANGE,

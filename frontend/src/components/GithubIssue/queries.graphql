@@ -1,0 +1,15 @@
+fragment IssueDetails on Issue {
+  id
+  repoId
+  number
+  type
+  status
+  title
+  htmlUrl
+  createdAt
+  closedAt
+  mergedAt
+  ignoredForProjects {
+    ...IgnoredGithubIssueId
+  }
+}

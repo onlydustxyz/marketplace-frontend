@@ -108,6 +108,7 @@ const IMPERSONATED_USER_QUERY = gql`
         role
       }
       githubUser {
+        userId
         githubUserId
       }
     }
@@ -117,6 +118,7 @@ const IMPERSONATED_USER_QUERY = gql`
 const IMPERSONATED_LEAD_PROJECTS_QUERY = gql`
   query ImpersonatedLeadProjects($userId: uuid!) {
     projectLeads(where: { userId: { _eq: $userId } }) {
+      userId
       projectId
     }
   }

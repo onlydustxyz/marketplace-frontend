@@ -52,10 +52,16 @@ export const SPONSOR_FRAGMENT = gql`
 export const GET_PROJECT_CONTRIBUTORS_FOR_OVERVIEW_PANEL_QUERY = gql`
   query GetProjectContributorsForOverview($projectId: uuid!) {
     projectsByPk(id: $projectId) {
+      id
       githubRepos {
+        projectId
+        githubRepoId
         githubRepoDetails {
+          id
           content {
+            id
             contributors {
+              id
               login
               avatarUrl
             }

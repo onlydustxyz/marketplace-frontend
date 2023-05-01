@@ -4,7 +4,11 @@ import { WorkItem } from "src/components/GithubIssue";
 
 type WorkItemAction =
   | {
-      action: "add" | "remove";
+      action: "add";
+      workItem: WorkItem | WorkItem[];
+    }
+  | {
+      action: "remove";
       workItem: WorkItem;
     }
   | {
@@ -14,7 +18,7 @@ type WorkItemAction =
 function workItemsReducer(workItems: WorkItem[], action: WorkItemAction) {
   switch (action.action) {
     case "add":
-      return sortBy(uniqBy([...workItems, action.workItem], "id"), "createdAt").reverse();
+      return sortBy(uniqBy([...workItems, ...[action.workItem].flat()], "id"), "createdAt").reverse();
     case "remove":
       return workItems.filter(w => w !== action.workItem);
     case "clear":
@@ -25,7 +29,7 @@ function workItemsReducer(workItems: WorkItem[], action: WorkItemAction) {
 export default function useWorkItems() {
   const [workItems, dispatchWorkItems] = useReducer(workItemsReducer, []);
 
-  const add = useCallback((workItem: WorkItem) => dispatchWorkItems({ action: "add", workItem }), []);
+  const add = useCallback((workItem: WorkItem | WorkItem[]) => dispatchWorkItems({ action: "add", workItem }), []);
   const remove = useCallback((workItem: WorkItem) => dispatchWorkItems({ action: "remove", workItem }), []);
   const clear = useCallback(() => dispatchWorkItems({ action: "clear" }), []);
 

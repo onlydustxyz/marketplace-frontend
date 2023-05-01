@@ -41,7 +41,13 @@ const currentProject: ProjectDetails & SidebarProjectDetails & ProjectContributo
   sponsors: [],
   languages: {},
   withInvitation: false,
-  githubRepos: [{ githubRepoId: 123456, githubRepoDetails: { id: 123456, content: { id: 123456, contributors } } }],
+  githubRepos: [
+    {
+      projectId: "test-project-id",
+      githubRepoId: 123456,
+      githubRepoDetails: { id: 123456, content: { id: 123456, contributors } },
+    },
+  ],
   budgets: [],
 };
 
@@ -59,7 +65,13 @@ const otherProject: ProjectDetails & SidebarProjectDetails & ProjectContributors
   sponsors: [],
   languages: {},
   withInvitation: false,
-  githubRepos: [{ githubRepoId: 123456, githubRepoDetails: { id: 123456, content: { id: 123456, contributors } } }],
+  githubRepos: [
+    {
+      projectId: "other-project-id",
+      githubRepoId: 123456,
+      githubRepoDetails: { id: 123456, content: { id: 123456, contributors } },
+    },
+  ],
   budgets: [],
 };
 

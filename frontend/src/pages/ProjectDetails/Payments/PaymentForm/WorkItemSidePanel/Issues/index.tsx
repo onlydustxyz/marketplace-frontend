@@ -1,75 +1,61 @@
-import { chain, find } from "lodash";
+import { chain, some } from "lodash";
 import { useMemo } from "react";
 import { WorkItem } from "src/components/GithubIssue";
 import IssuesView from "./IssuesView";
 import PullRequestsView from "./PullRequestsView";
-import useUnpaidIssues, { IssueType } from "./useUnpaidIssues";
 import useIgnoredIssues from "./useIgnoredIssues";
+import { IssueDetailsFragment, Type } from "src/__generated/graphql";
 
 type Props = {
-  type: IssueType;
+  type: Type;
   projectId: string;
-  contributorHandle: string;
+  contributorId: number;
   workItems: WorkItem[];
+  unpaidIssues: WorkItem[];
   onWorkItemAdded: (workItem: WorkItem) => void;
 };
 
-export default function Issues({ type, projectId, contributorHandle, workItems, onWorkItemAdded }: Props) {
-  const { data: unpaidIssues, loading } = useUnpaidIssues({
-    projectId,
-    filters: { author: contributorHandle, type },
-    includeIgnored: true,
-  });
-
-  const initialIgnoredIssues = useMemo(
-    () => unpaidIssues?.filter((issue: WorkItem) => find(issue.ignoredForProjects, { projectId })) || [],
-    [projectId, unpaidIssues]
-  );
-
-  const {
-    issues: ignoredIssues,
-    ignore: ignoreIssue,
-    unignore: unignoreIssue,
-  } = useIgnoredIssues(initialIgnoredIssues);
+export default function Issues({ type, projectId, workItems, onWorkItemAdded, unpaidIssues }: Props) {
+  const { ignore: ignoreIssue, unignore: unignoreIssue } = useIgnoredIssues();
 
   const addAndUnignoreItem = (workItem: WorkItem) => {
-    if (find(ignoredIssues, { id: workItem.id })) unignoreIssue(projectId, workItem);
+    if (workItem.ignored) unignoreIssue(projectId, workItem);
     onWorkItemAdded(workItem);
   };
 
   const issues: WorkItem[] = useMemo(
-    () => chain(unpaidIssues).differenceBy(workItems, "id").differenceBy(ignoredIssues, "id").value(),
-    [unpaidIssues, workItems, ignoredIssues]
+    () => chain(unpaidIssues).differenceBy(workItems, "id").value(),
+    [unpaidIssues, workItems]
   );
 
   return (
     <>
-      {type === IssueType.PullRequest && (
+      {type === Type.PullRequest && (
         <PullRequestsView
+          projectId={projectId}
           workItems={issues}
-          ignoredItems={ignoredIssues}
           onWorkItemAdded={addAndUnignoreItem}
           onWorkItemIgnored={workItem => ignoreIssue(projectId, workItem)}
           onWorkItemUnignored={workItem => unignoreIssue(projectId, workItem)}
-          query={{
-            data: unpaidIssues,
-            loading,
-          }}
         />
       )}
-      {type === IssueType.Issue && (
+      {type === Type.Issue && (
         <IssuesView
+          projectId={projectId}
           workItems={issues}
-          ignoredItems={ignoredIssues}
           onWorkItemAdded={addAndUnignoreItem}
           onWorkItemIgnored={workItem => ignoreIssue(projectId, workItem)}
           onWorkItemUnignored={workItem => unignoreIssue(projectId, workItem)}
-          query={{
-            data: unpaidIssues,
-            loading,
-          }}
         />
       )}
     </>
   );
 }
+
+export const issueToWorkItem = (
+  { ignoredForProjects, ...props }: IssueDetailsFragment,
+  projectId?: string
+): WorkItem => ({
+  ...props,
+  ignored: some(ignoredForProjects, { projectId }),
+});

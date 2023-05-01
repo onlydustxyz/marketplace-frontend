@@ -36,10 +36,12 @@ const mockPaymentRequest = {
   amountInUsd: 1000,
   workItems: [
     {
+      paymentId: "request-1",
       repoId: 123456,
       issueNumber: 123,
     },
     {
+      paymentId: "request-1",
       repoId: 123456,
       issueNumber: 124,
     },
@@ -52,8 +54,8 @@ const mockPaymentRequest2 = {
   amountInUsd: 500,
   workItems: [
     {
+      paymentId: "request-2",
       repoId: 123456,
-
       issueNumber: 123,
     },
   ],
@@ -127,7 +129,10 @@ const graphQlMocks = [
         projectsByPk: {
           __typename: "Projects",
           id: TEST_PROJECT_ID,
-          githubRepos: [githubRepo1, githubRepo2],
+          githubRepos: [
+            { projectId: TEST_PROJECT_ID, ...githubRepo1 },
+            { projectId: TEST_PROJECT_ID, ...githubRepo2 },
+          ],
           budgets: [],
           projectDetails: {
             projectId: TEST_PROJECT_ID,

@@ -1,5 +1,4 @@
-import { gql } from "@apollo/client";
-import { PullDetailsFragment, VisibleProjectFragment } from "src/__generated/graphql";
+import { GithubIssueDetailsFragment, VisibleProjectFragment } from "src/__generated/graphql";
 import { chain, find, flatMap, some, uniqBy } from "lodash";
 import isDefined from "src/utils/isDefined";
 import { ContributorIdFragment } from "src/__generated/graphql";
@@ -21,32 +20,13 @@ export const isProjectVisible =
     return hasRepos && hasBudget && (hasLeaders || !!hasInvitation);
   };
 
-export const VISIBLE_PROJECT_FRAGMENT = gql`
-  fragment VisibleProject on Projects {
-    id
-    projectLeads {
-      userId
-    }
-    githubRepos {
-      githubRepoId
-    }
-    budgets {
-      id
-    }
-    pendingInvitations {
-      id
-      githubUserId
-    }
-  }
-`;
-
 type Project<R> = {
   id: string;
   githubRepos: Array<{
     githubRepoDetails: {
       content: { contributors: Array<R | null> } | null;
     } | null;
-    repoPulls?: PullDetailsFragment[] | null;
+    repoIssues?: GithubIssueDetailsFragment[] | null;
   }> | null;
   budgets: Array<{
     paymentRequests: Array<{ githubRecipient: R | null }>;
@@ -82,66 +62,17 @@ export const countUnpaidMergedPullsByContributor = (project?: Project<Contributo
     .mapValues(requests => flatMap(requests, "workItems"))
     .value();
 
-  const notPaid = ({ authorId, repoId, issueNumber }: PullDetailsFragment) =>
+  const notPaid = ({ authorId, repoId, issueNumber }: GithubIssueDetailsFragment) =>
     !some(paidItemsByLogin[authorId], { repoId, issueNumber });
 
-  const notIgnored = ({ ignoredForProjects }: PullDetailsFragment) =>
+  const notIgnored = ({ ignoredForProjects }: GithubIssueDetailsFragment) =>
     !find(ignoredForProjects, { projectId: project?.id });
 
   return chain(project?.githubRepos)
-    .flatMap("repoPulls")
+    .flatMap("repoIssues")
     .filter(isDefined)
     .filter(notPaid)
     .filter(notIgnored)
     .countBy("authorId")
     .value();
 };
-
-gql`
-  fragment ContributorId on User {
-    id
-  }
-
-  fragment PullDetails on GithubPulls {
-    id
-    repoId
-    issueNumber
-    authorId
-    ignoredForProjects {
-      projectId
-    }
-  }
-
-  fragment ProjectContributors on Projects {
-    id
-    githubRepos {
-      githubRepoId
-      githubRepoDetails {
-        id
-        content {
-          id
-          contributors {
-            ...ContributorId
-          }
-        }
-      }
-    }
-    budgets {
-      id
-      paymentRequests {
-        id
-        githubRecipient {
-          ...ContributorId
-        }
-      }
-    }
-  }
-
-  fragment ProjectContributorsByLeader on Projects {
-    githubRepos {
-      repoPulls(where: { createdAt: { _gte: $createdSince }, mergedAt: { _isNull: false } }) {
-        ...PullDetails
-      }
-    }
-  }
-`;

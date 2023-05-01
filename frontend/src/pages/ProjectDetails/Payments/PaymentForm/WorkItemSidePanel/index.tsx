@@ -8,13 +8,16 @@ import GitPullRequestLine from "src/icons/GitPullRequestLine";
 import IssueOpen from "src/assets/icons/IssueOpen";
 import OtherWorkForm from "./OtherWorkForm";
 import DiscussLine from "src/icons/DiscussLine";
-import { IssueType } from "./Issues/useUnpaidIssues";
+import { filter } from "lodash";
+import { Type } from "src/__generated/graphql";
 
 type Props = {
   projectId: string;
   open: boolean;
   setOpen: (value: boolean) => void;
+  contributorId: number;
   contributorHandle: string;
+  unpaidIssues?: WorkItem[] | null;
   workItems: WorkItem[];
   onWorkItemAdded: (workItem: WorkItem) => void;
 };
@@ -27,7 +30,9 @@ enum Tabs {
 
 export default function WorkItemSidePanel({
   projectId,
+  contributorId,
   contributorHandle,
+  unpaidIssues,
   workItems,
   onWorkItemAdded,
   ...props
@@ -59,19 +64,21 @@ export default function WorkItemSidePanel({
       {selectedTab === Tabs.PullRequests && (
         <Issues
           projectId={projectId}
-          contributorHandle={contributorHandle}
+          contributorId={contributorId}
           workItems={workItems}
+          unpaidIssues={filter(unpaidIssues, { type: Type.PullRequest })}
           onWorkItemAdded={onWorkItemAdded}
-          type={IssueType.PullRequest}
+          type={Type.PullRequest}
         />
       )}
       {selectedTab === Tabs.Issues && (
         <Issues
           projectId={projectId}
-          contributorHandle={contributorHandle}
+          contributorId={contributorId}
           workItems={workItems}
+          unpaidIssues={filter(unpaidIssues, { type: Type.Issue })}
           onWorkItemAdded={onWorkItemAdded}
-          type={IssueType.Issue}
+          type={Type.Issue}
         />
       )}
       {selectedTab === Tabs.Other && (

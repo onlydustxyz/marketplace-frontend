@@ -9,7 +9,6 @@ use futures::{stream::empty, Stream, StreamExt, TryStreamExt};
 use octocrab::{
 	models::{
 		issues::{Comment, Issue},
-		pulls::PullRequest,
 		repos::Content,
 		Repository, User,
 	},
@@ -208,11 +207,11 @@ impl Client {
 	}
 
 	#[instrument(skip(self))]
-	pub async fn pulls_by_repo_id(
+	pub async fn issues_by_repo_id(
 		&self,
 		id: &GithubRepoId,
 		filters: &GithubServiceFilters,
-	) -> Result<Vec<PullRequest>, Error> {
+	) -> Result<Vec<Issue>, Error> {
 		let sort = if filters.updated_since.is_some() {
 			Sort::Updated
 		} else {
@@ -227,14 +226,14 @@ impl Client {
 			.per_page(100);
 
 		let url = format!(
-			"{}repositories/{id}/pulls?{}",
+			"{}repositories/{id}/issues?{}",
 			self.octocrab().base_url,
 			query_params.to_query_string()?
 		)
 		.parse()?;
 
-		let pulls = self
-			.stream_as::<PullRequest>(
+		let issues = self
+			.stream_as::<Issue>(
 				url,
 				100 * self.config().max_calls_per_request.map(PositiveCount::get).unwrap_or(3),
 			)
@@ -242,7 +241,7 @@ impl Client {
 			.filter_with(*filters)
 			.collect()
 			.await;
-		Ok(pulls)
+		Ok(issues)
 	}
 
 	#[instrument(skip(self))]

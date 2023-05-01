@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import Callout from "src/components/Callout";
 import GithubIssue, { Action, WorkItem } from "src/components/GithubIssue";
-import QueryWrapper, { QueryResult } from "src/components/QueryWrapper";
 import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
 import Link from "src/icons/Link";
@@ -16,25 +15,23 @@ import { useFormContext } from "react-hook-form";
 import useFilteredWorkItems from "./useFilteredWorkItems";
 import SearchLine from "src/icons/SearchLine";
 import FormInput from "src/components/FormInput";
-import { sortBy } from "lodash";
+import { filter, some } from "lodash";
 
-type Props<T, E> = {
+type Props = {
+  projectId: string;
   workItems: WorkItem[];
-  ignoredItems: WorkItem[];
   onWorkItemAdded: (workItem: WorkItem) => void;
   onWorkItemIgnored: (workItem: WorkItem) => void;
   onWorkItemUnignored: (workItem: WorkItem) => void;
-  query: QueryResult<T, E>;
 };
 
-export default function PullRequestsView<T, E>({
+export default function PullRequestsView({
+  projectId,
   workItems,
-  ignoredItems,
   onWorkItemAdded,
   onWorkItemIgnored,
   onWorkItemUnignored,
-  query,
-}: Props<T, E>) {
+}: Props) {
   const { T } = useIntl();
   const { watch, resetField } = useFormContext();
 
@@ -57,9 +54,7 @@ export default function PullRequestsView<T, E>({
   };
 
   useEffect(() => {
-    if (searchEnabled === false) {
-      resetField("search-prs");
-    }
+    if (searchEnabled === false) resetField("search-prs");
   }, [searchEnabled]);
 
   const showIgnoredItemsName = "show-ignored-items";
@@ -69,9 +64,7 @@ export default function PullRequestsView<T, E>({
     name: showIgnoredItemsName,
   });
 
-  const visibleItems = showIgnoredItems
-    ? sortBy([...workItems, ...ignoredItems.map(item => ({ ...item, ignored: true }))], "createdAt")
-    : workItems;
+  const visibleItems = showIgnoredItems ? workItems : filter(workItems, { ignored: false });
 
   const searchPattern = watch("search-issues");
   const filteredWorkItems = useFilteredWorkItems({ pattern: searchPattern, workItems: visibleItems });
@@ -98,7 +91,7 @@ export default function PullRequestsView<T, E>({
               />
             )}
           </div>
-          {ignoredItems.length > 0 && (
+          {some(workItems, { ignored: true }) && (
             <div className="flex flex-row items-center gap-2 text-greyscale-50 font-walsheim font-normal text-sm">
               <EyeOffLine />
               {T("payment.form.workItems.showIgnored")}
@@ -106,7 +99,7 @@ export default function PullRequestsView<T, E>({
             </div>
           )}
         </div>
-        {addOtherPrEnabled && <OtherPrInput onWorkItemAdded={onIssueAdded} />}
+        {addOtherPrEnabled && <OtherPrInput projectId={projectId} onWorkItemAdded={onIssueAdded} />}
         {searchEnabled && (
           <FormInput
             name="search-prs"
@@ -118,35 +111,34 @@ export default function PullRequestsView<T, E>({
                 <SearchLine className="text-spaceBlue-200 text-xl" />
               </div>
             }
+            inputProps={{ autoFocus: true }}
           />
         )}
       </div>
-      <QueryWrapper query={query}>
-        {filteredWorkItems.length > 0 ? (
-          <div
-            data-testid="elligible-pulls"
-            className="flex flex-col gap-3 h-full p-px pr-4 overflow-auto scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded"
-          >
-            {filteredWorkItems.map(pr => (
-              <GithubIssue
-                key={pr.id}
-                workItem={pr}
-                action={Action.Add}
-                onClick={() => onIssueAdded(pr)}
-                secondaryAction={pr.ignored ? Action.UnIgnore : Action.Ignore}
-                onSecondaryClick={() => (pr.ignored ? onWorkItemUnignored(pr) : onWorkItemIgnored(pr))}
-              />
-            ))}
-          </div>
-        ) : (
-          <div className="mr-4">
-            <EmptyState />
-          </div>
-        )}
-        <div className="mr-4">
-          <Callout>{T("payment.form.workItems.pullRequests.moreCallout", { count: SEARCH_MAX_DAYS_COUNT })}</Callout>
+      {filteredWorkItems.length > 0 ? (
+        <div
+          data-testid="elligible-pulls"
+          className="flex flex-col gap-3 h-full p-px pr-4 overflow-auto scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded"
+        >
+          {filteredWorkItems.map(pr => (
+            <GithubIssue
+              key={pr.id}
+              workItem={pr}
+              action={Action.Add}
+              onClick={() => onIssueAdded(pr)}
+              secondaryAction={pr.ignored ? Action.UnIgnore : Action.Ignore}
+              onSecondaryClick={() => (pr.ignored ? onWorkItemUnignored(pr) : onWorkItemIgnored(pr))}
+            />
+          ))}
         </div>
-      </QueryWrapper>
+      ) : (
+        <div className="mr-4">
+          <EmptyState />
+        </div>
+      )}
+      <div className="mr-4">
+        <Callout>{T("payment.form.workItems.pullRequests.moreCallout", { count: SEARCH_MAX_DAYS_COUNT })}</Callout>
+      </div>
     </div>
   );
 }

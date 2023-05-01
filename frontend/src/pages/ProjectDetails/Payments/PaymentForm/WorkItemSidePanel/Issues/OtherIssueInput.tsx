@@ -10,20 +10,22 @@ import { useFormContext, useFormState } from "react-hook-form";
 import { parseIssueLink, REGEX_VALID_GITHUB_ISSUE_URL } from "src/utils/github";
 import Link from "src/icons/Link";
 import classNames from "classnames";
+import { issueToWorkItem } from ".";
 
 type Props = {
+  projectId: string;
   onWorkItemAdded: (workItem: WorkItem) => void;
 };
 
 const INPUT_NAME = "otherIssueLink";
 
-export default function OtherIssueInput({ onWorkItemAdded }: Props) {
+export default function OtherIssueInput({ projectId, onWorkItemAdded }: Props) {
   const { T } = useIntl();
 
   const [fetchIssue] = useHasuraLazyQuery<FetchIssueQuery>(FetchIssueDocument, HasuraUserRole.RegisteredUser, {
     onCompleted: data => {
       if (data.fetchIssue) {
-        onWorkItemAdded(data.fetchIssue);
+        onWorkItemAdded(issueToWorkItem(data.fetchIssue, projectId));
         resetField(INPUT_NAME);
       } else {
         setError(INPUT_NAME, {
@@ -86,6 +88,7 @@ export default function OtherIssueInput({ onWorkItemAdded }: Props) {
             />
           </div>
         }
+        inputProps={{ autoFocus: true }}
       >
         <div onClick={validateOtherIssue} data-testid="add-other-issue-btn">
           <Button

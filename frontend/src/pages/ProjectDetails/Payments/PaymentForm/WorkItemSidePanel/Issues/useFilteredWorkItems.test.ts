@@ -2,33 +2,42 @@ import useFilteredWorkItems from "./useFilteredWorkItems";
 import { WorkItem } from "src/components/GithubIssue";
 import { Type, Status } from "src/__generated/graphql";
 
-const workItemTemplate = {
-  id: 1,
-  type: Type.Issue,
-  status: Status.Merged,
-  htmlUrl: "",
-  repoId: 1,
-  closedAt: null,
-  createdAt: null,
-  mergedAt: null,
-  ignoredForProjects: [],
-};
-
 const workItems: WorkItem[] = [
   {
+    id: "1",
+    type: Type.Issue,
+    status: Status.Merged,
+    htmlUrl: "",
+    repoId: 1,
+    createdAt: new Date(),
+    mergedAt: new Date(),
+    ignored: false,
     number: 100,
     title: "foo bar",
-    ...workItemTemplate,
   },
   {
+    id: "1",
+    type: Type.Issue,
+    status: Status.Merged,
+    htmlUrl: "",
+    repoId: 1,
+    createdAt: new Date(),
+    mergedAt: new Date(),
+    ignored: false,
     number: 150,
     title: "foo plop",
-    ...workItemTemplate,
   },
   {
+    id: "1",
+    type: Type.Issue,
+    status: Status.Merged,
+    htmlUrl: "",
+    repoId: 1,
+    createdAt: new Date(),
+    mergedAt: new Date(),
+    ignored: false,
     number: 222,
     title: "croute",
-    ...workItemTemplate,
   },
 ];
 

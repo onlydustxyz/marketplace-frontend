@@ -1,4 +1,3 @@
-import { gql } from "@apollo/client";
 import IssueClosed from "src/assets/icons/IssueClosed";
 import { useIntl } from "src/hooks/useIntl";
 import Add from "src/icons/Add";
@@ -9,7 +8,7 @@ import Subtract from "src/icons/SubtractLine";
 import Time from "src/icons/TimeLine";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { parsePullRequestOrIssueLink } from "src/utils/github";
-import { IssueDetailsFragment, Status, Type } from "src/__generated/graphql";
+import { Status, Type } from "src/__generated/graphql";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import Card from "src/components/Card";
 import GithubIssueLink from "./GithubIssueLink";
@@ -28,9 +27,20 @@ export enum Action {
   UnIgnore = "unignore",
 }
 
-export type WorkItem = IssueDetailsFragment & {
-  ignored?: boolean;
-};
+export type WorkItem = {
+  id: string;
+  repoId: number;
+  number: number;
+  type: Type;
+  title: string;
+  htmlUrl: string;
+  createdAt: Date;
+  ignored: boolean;
+} & (
+  | { status: Status.Open }
+  | { status: Status.Merged; mergedAt: Date }
+  | { status: Status.Cancelled | Status.Closed | Status.Completed; closedAt: Date }
+);
 
 export type Props = {
   action?: Action;
@@ -113,7 +123,7 @@ function ActionButton({ id, action, ignored, onClick }: ActionButtonProps) {
   );
 }
 
-function IssueStatus({ issue }: { issue: IssueDetailsFragment }) {
+function IssueStatus({ issue }: { issue: WorkItem }) {
   const { T } = useIntl();
 
   return (
@@ -153,21 +163,3 @@ function IssueStatus({ issue }: { issue: IssueDetailsFragment }) {
     </>
   );
 }
-
-export const GITHUB_ISSUE_FRAGMENTS = gql`
-  fragment IssueDetails on Issue {
-    id
-    repoId
-    number
-    type
-    status
-    title
-    htmlUrl
-    createdAt
-    closedAt
-    mergedAt
-    ignoredForProjects {
-      projectId
-    }
-  }
-`;

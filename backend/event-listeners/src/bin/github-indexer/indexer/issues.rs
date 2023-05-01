@@ -25,10 +25,10 @@ impl super::Indexer for Indexer {
 
 		let events = self
 			.github_fetch_service
-			.pulls_by_repo_id(repo_index.repo_id(), &filters)
+			.issues_by_repo_id(repo_index.repo_id(), &filters)
 			.await?
 			.into_iter()
-			.map(GithubEvent::PullRequest)
+			.map(GithubEvent::Issue)
 			.collect();
 
 		Ok(events)

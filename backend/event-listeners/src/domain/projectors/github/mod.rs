@@ -1,2 +1,2 @@
 pub mod crm;
-pub mod pulls;
+pub mod issues;

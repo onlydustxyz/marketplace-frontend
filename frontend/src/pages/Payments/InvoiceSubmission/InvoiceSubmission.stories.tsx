@@ -18,6 +18,7 @@ const [payment1, payment2, payment3]: Payment[] = range(1, 4).map(id => ({
   },
   workItems: [
     {
+      paymentId: `payment-${id}`,
       repoId: 123456,
       issueNumber: 123,
     },
