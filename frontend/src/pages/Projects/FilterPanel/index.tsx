@@ -1,16 +1,15 @@
 import { gql } from "@apollo/client";
 import { useAuth } from "src/hooks/useAuth";
-import { useCachableHasuraQuery } from "src/hooks/useHasuraQuery";
-import { HasuraUserRole } from "src/types";
 import { getDeduplicatedAggregatedLanguages, getMostUsedLanguages } from "src/utils/languages";
 import { isProjectVisible } from "src/utils/project";
 import {
-  GetAllFilterOptionsQuery,
   GithubRepoLanguagesFieldsFragmentDoc,
   VisibleProjectFragmentDoc,
+  useGetAllFilterOptionsQuery,
 } from "src/__generated/graphql";
 import View from "./View";
 import { chain } from "lodash";
+import { contextWithCacheHeaders } from "src/utils/headers";
 
 type Props = {
   isProjectLeader: boolean;
@@ -18,10 +17,7 @@ type Props = {
 
 export default function FilterPanel({ isProjectLeader }: Props) {
   const { githubUserId } = useAuth();
-  const filterOptionsQuery = useCachableHasuraQuery<GetAllFilterOptionsQuery>(
-    GET_ALL_FILTER_OPTIONS_QUERY,
-    HasuraUserRole.Public
-  );
+  const filterOptionsQuery = useGetAllFilterOptionsQuery(contextWithCacheHeaders);
 
   const visibleProjects = chain(filterOptionsQuery.data?.projects).filter(isProjectVisible(githubUserId));
 
