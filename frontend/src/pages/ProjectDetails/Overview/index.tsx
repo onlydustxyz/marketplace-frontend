@@ -1,11 +1,10 @@
 import { useIntl } from "src/hooks/useIntl";
-import { Contributor, HasuraUserRole } from "src/types";
+import { Contributor } from "src/types";
 import OverviewPanel from "./OverviewPanel";
 import { useOutletContext } from "react-router-dom";
 import { ReactNode, useEffect, useState } from "react";
-import { GetProjectOverviewDetailsQuery, ProjectLeadFragment, SponsorFragment } from "src/__generated/graphql";
+import { ProjectLeadFragment, SponsorFragment, useGetProjectOverviewDetailsQuery } from "src/__generated/graphql";
 import { gql } from "@apollo/client";
-import { useCachableHasuraQuery } from "src/hooks/useHasuraQuery";
 import QueryWrapper from "src/components/QueryWrapper";
 import Card from "src/components/Card";
 import GithubRepoDetails from "./GithubRepoDetails";
@@ -15,6 +14,7 @@ import Badge, { BadgeSize } from "src/components/Badge";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import Title from "src/pages/ProjectDetails/Title";
 import MarkdownPreview from "src/components/MarkdownPreview";
+import { contextWithCacheHeaders } from "src/utils/headers";
 
 type OutletContext = {
   leads?: ProjectLeadFragment[];
@@ -40,13 +40,10 @@ export default function Overview() {
     projectId,
   } = useOutletContext<OutletContext>();
 
-  const { data, loading } = useCachableHasuraQuery<GetProjectOverviewDetailsQuery>(
-    GET_PROJECT_OVERVIEW_DETAILS,
-    HasuraUserRole.Public,
-    {
-      variables: { projectId },
-    }
-  );
+  const { data, loading } = useGetProjectOverviewDetailsQuery({
+    variables: { projectId },
+    ...contextWithCacheHeaders,
+  });
 
   const logoUrl = data?.projectsByPk?.projectDetails?.logoUrl || onlyDustLogo;
   const description = data?.projectsByPk?.projectDetails?.longDescription || LOREM_IPSUM;

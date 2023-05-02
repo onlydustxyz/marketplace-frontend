@@ -1,25 +1,21 @@
 import { gql } from "@apollo/client";
-import { useCachableHasuraQuery } from "src/hooks/useHasuraQuery";
-import { HasuraUserRole } from "src/types";
 import {
-  GetGithubRepositoryDetailsQuery,
   GithubRepoDynamicDetailsFragmentDoc,
   GithubRepoStaticDetailsFragmentDoc,
+  useGetGithubRepositoryDetailsQuery,
 } from "src/__generated/graphql";
 import View from "./View";
+import { contextWithCacheHeaders } from "src/utils/headers";
 
 type Props = {
   githubRepoId: number;
 };
 
 export default function GithubRepoDetails({ githubRepoId }: Props) {
-  const { data } = useCachableHasuraQuery<GetGithubRepositoryDetailsQuery>(
-    GET_GITHUB_REPOSITORY_DETAILS_QUERY,
-    HasuraUserRole.Public,
-    {
-      variables: { githubRepoId },
-    }
-  );
+  const { data } = useGetGithubRepositoryDetailsQuery({
+    variables: { githubRepoId },
+    ...contextWithCacheHeaders,
+  });
 
   const githubRepoDetails = data?.githubRepoDetailsByPk &&
     data?.githubRepoDetailsByPk?.content && { ...data.githubRepoDetailsByPk, ...data.githubRepoDetailsByPk?.content };

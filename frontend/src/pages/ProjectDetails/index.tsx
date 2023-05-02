@@ -3,13 +3,13 @@ import { useEffect } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import QueryWrapper from "src/components/QueryWrapper";
 import { useAuth } from "src/hooks/useAuth";
-import { useCachableHasuraQuery } from "src/hooks/useHasuraQuery";
-import { HasuraUserRole, LanguageMap } from "src/types";
+import { LanguageMap } from "src/types";
 import {
   GetProjectQuery,
   ProjectLeadFragment,
   SponsorFragment,
   useAcceptProjectLeaderInvitationMutation,
+  useGetProjectQuery,
 } from "src/__generated/graphql";
 import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 import { SessionMethod, useSessionDispatch, useSession } from "src/hooks/useSession";
@@ -17,6 +17,7 @@ import View from "./View";
 import { PROJECT_CARD_FRAGMENT } from "src/components/ProjectCard";
 import { isProjectVisible } from "src/utils/project";
 import { RoutePaths } from "src/App";
+import { contextWithCacheHeaders } from "src/utils/headers";
 
 type ProjectDetailsParams = {
   projectId: string;
@@ -45,9 +46,10 @@ const ProjectDetails: React.FC = () => {
     context: { graphqlErrorDisplay: "toaster" },
   });
 
-  const getProjectQuery = useCachableHasuraQuery<GetProjectQuery>(GET_PROJECT_QUERY, HasuraUserRole.Public, {
+  const getProjectQuery = useGetProjectQuery({
     variables: { id: projectId },
     skip: !projectId,
+    ...contextWithCacheHeaders,
   });
 
   const project = getProjectQuery.data?.projectsByPk;

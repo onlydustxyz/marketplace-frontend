@@ -1,13 +1,10 @@
 import Card from "src/components/Card";
 import ContributorsTableFallback from "src/components/ContributorsTableFallback";
 import ContributorsTable from "src/pages/ProjectDetails/Contributors/ContributorsTable";
-import { useCachableHasuraQuery } from "src/hooks/useHasuraQuery";
 import { useIntl } from "src/hooks/useIntl";
-import { HasuraUserRole } from "src/types";
 import {
-  GetProjectContributorsDocument,
-  GetProjectContributorsQuery,
   useGetProjectContributorsAsLeaderQuery,
+  useGetProjectContributorsQuery,
   useGetProjectRemainingBudgetQuery,
 } from "src/__generated/graphql";
 import { useAuth } from "src/hooks/useAuth";
@@ -18,6 +15,7 @@ import { Suspense } from "react";
 import { useMemo } from "react";
 import { daysFromNow } from "src/utils/date";
 import { SEARCH_MAX_DAYS_COUNT } from "src/pages/ProjectDetails/Payments/PaymentForm";
+import { contextWithCacheHeaders } from "src/utils/headers";
 
 export default function Contributors() {
   const { T } = useIntl();
@@ -26,14 +24,11 @@ export default function Contributors() {
 
   const isProjectLeader = !!ledProjectIds.find(element => element === projectId);
 
-  const getProjectContributorsQueryAsPublic = useCachableHasuraQuery<GetProjectContributorsQuery>(
-    GetProjectContributorsDocument,
-    HasuraUserRole.Public,
-    {
-      variables: { projectId },
-      skip: isProjectLeader,
-    }
-  );
+  const getProjectContributorsQueryAsPublic = useGetProjectContributorsQuery({
+    variables: { projectId },
+    skip: isProjectLeader,
+    ...contextWithCacheHeaders,
+  });
 
   const createdSince = useMemo(() => daysFromNow(SEARCH_MAX_DAYS_COUNT), []);
 

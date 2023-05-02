@@ -1,14 +1,13 @@
-import { gql } from "@apollo/client";
+import { gql, useSuspenseQuery_experimental } from "@apollo/client";
 import { sortBy } from "lodash";
 import { useMemo } from "react";
 import ProjectCard, { PROJECT_CARD_FRAGMENT } from "src/components/ProjectCard";
 import { useAuth } from "src/hooks/useAuth";
-import { useCachableHasuraSuspensedQuery } from "src/hooks/useHasuraQuery";
-import { HasuraUserRole } from "src/types";
 import { isProjectVisible } from "src/utils/project";
-import { GetProjectsQuery } from "src/__generated/graphql";
 import { Ownership as ProjectOwnership, useProjectFilter } from "src/pages/Projects/useProjectFilter";
 import AllProjectsFallback from "./AllProjectsFallback";
+import { contextWithCacheHeaders } from "src/utils/headers";
+import { GetProjectsQuery } from "src/__generated/graphql";
 
 export default function AllProjects() {
   const { ledProjectIds, githubUserId, isLoggedIn } = useAuth();
@@ -17,11 +16,11 @@ export default function AllProjects() {
     clear: clearFilters,
   } = useProjectFilter();
 
-  const getProjectsQuery = useCachableHasuraSuspensedQuery<GetProjectsQuery>(
+  const getProjectsQuery = useSuspenseQuery_experimental<GetProjectsQuery>(
     buildGetProjectsQuery(technologies, sponsors),
-    HasuraUserRole.Public,
     {
       variables: { languages: technologies, sponsors },
+      ...contextWithCacheHeaders,
     }
   );
 

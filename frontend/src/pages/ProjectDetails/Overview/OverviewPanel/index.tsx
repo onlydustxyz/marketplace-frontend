@@ -1,10 +1,13 @@
 import { gql } from "@apollo/client";
 import { uniqBy } from "lodash";
-import { useCachableHasuraQuery } from "src/hooks/useHasuraQuery";
-import { HasuraUserRole } from "src/types";
 import isDefined from "src/utils/isDefined";
-import { GetProjectContributorsForOverviewQuery, ProjectLeadFragment, SponsorFragment } from "src/__generated/graphql";
+import {
+  ProjectLeadFragment,
+  SponsorFragment,
+  useGetProjectContributorsForOverviewQuery,
+} from "src/__generated/graphql";
 import OverviewPanelView from "./View";
+import { contextWithCacheHeaders } from "src/utils/headers";
 
 interface OverviewPanelProps {
   leads?: ProjectLeadFragment[];
@@ -16,11 +19,10 @@ interface OverviewPanelProps {
 }
 
 export default function OverviewPanel({ projectId, ...props }: OverviewPanelProps) {
-  const getProjectContributorsForOverview = useCachableHasuraQuery<GetProjectContributorsForOverviewQuery>(
-    GET_PROJECT_CONTRIBUTORS_FOR_OVERVIEW_PANEL_QUERY,
-    HasuraUserRole.Public,
-    { variables: { projectId } }
-  );
+  const getProjectContributorsForOverview = useGetProjectContributorsForOverviewQuery({
+    variables: { projectId },
+    ...contextWithCacheHeaders,
+  });
 
   const contributors = uniqBy(
     getProjectContributorsForOverview?.data?.projectsByPk?.githubRepos
