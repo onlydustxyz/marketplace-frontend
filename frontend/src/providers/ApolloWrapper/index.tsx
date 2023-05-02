@@ -3,6 +3,7 @@ import { ApolloClient, ApolloProvider, SuspenseCache, disableFragmentWarnings } 
 import useApolloLink from "./links";
 import useApolloCache from "./cache";
 import { useRoles } from "src/hooks/useAuth/useRoles";
+import config from "src/config";
 
 disableFragmentWarnings();
 
@@ -12,7 +13,9 @@ export default function ApolloWrapper({ children }: PropsWithChildren) {
   const suspenseCache = new SuspenseCache();
   const { isLoggedIn } = useRoles();
 
-  const [client] = useState(() => new ApolloClient({ link, cache }));
+  const [client] = useState(
+    () => new ApolloClient({ link, cache, connectToDevTools: config.ENVIRONMENT !== "production" })
+  );
 
   // Update the link whenever the accessToken changes
   client.setLink(link);
