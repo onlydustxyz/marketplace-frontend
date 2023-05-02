@@ -1,10 +1,8 @@
 import { gql } from "@apollo/client";
-import { HasuraUserRole } from "src/types";
 import { useForm, SubmitHandler, FormProvider, Controller, SubmitErrorHandler } from "react-hook-form";
 import IBAN from "iban";
 
 import Input from "src/components/FormInput";
-import { useHasuraMutation } from "src/hooks/useHasuraQuery";
 import ProfileRadioGroup from "./ProfileRadioGroup";
 import { useIntl } from "src/hooks/useIntl";
 import {
@@ -12,6 +10,7 @@ import {
   PayoutSettingsType,
   UserInfo,
   UpdateProfileInfoMutationVariables,
+  useUpdateProfileInfoMutation,
 } from "src/__generated/graphql";
 import Card from "src/components/Card";
 import { useShowToaster } from "src/hooks/useToaster";
@@ -124,7 +123,7 @@ const ProfileForm: React.FC<PropsType> = ({
   } = formMethods;
   const showToaster = useShowToaster();
 
-  const [updateUser, { loading }] = useHasuraMutation(UPDATE_USER_MUTATION, HasuraUserRole.RegisteredUser, {
+  const [updateUser, { loading }] = useUpdateProfileInfoMutation({
     context: {
       graphqlErrorDisplay: "toaster",
     },

@@ -1,17 +1,15 @@
 import { useCallback } from "react";
 import {
-  IgnoreIssueDocument,
   IgnoredGithubIssueIdFragment,
   IgnoredGithubIssueIdFragmentDoc,
-  UnignoreIssueDocument,
+  useIgnoreIssueMutation,
+  useUnignoreIssueMutation,
 } from "src/__generated/graphql";
 import { WorkItem } from "src/components/GithubIssue";
-import { useHasuraMutation } from "src/hooks/useHasuraQuery";
-import { HasuraUserRole } from "src/types";
 
 export default function useIgnoredIssues() {
-  const [ignoreIssue] = useHasuraMutation(IgnoreIssueDocument, HasuraUserRole.RegisteredUser);
-  const [unignoreIssue] = useHasuraMutation(UnignoreIssueDocument, HasuraUserRole.RegisteredUser);
+  const [ignoreIssue] = useIgnoreIssueMutation();
+  const [unignoreIssue] = useUnignoreIssueMutation();
 
   const ignore = useCallback(
     (projectId: string, workItem: WorkItem) =>

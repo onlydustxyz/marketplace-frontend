@@ -1,11 +1,9 @@
 import { gql } from "@apollo/client";
-import { HasuraUserRole } from "src/types";
 import isDefined from "src/utils/isDefined";
-import { GetUserPayoutSettingsQuery } from "src/__generated/graphql";
-import { useHasuraQuery } from "./useHasuraQuery";
+import { useGetUserPayoutSettingsQuery } from "src/__generated/graphql";
 
 export default function usePayoutSettings(githubUserId?: number) {
-  const query = useHasuraQuery<GetUserPayoutSettingsQuery>(GET_USER_PAYOUT_SETTINGS, HasuraUserRole.RegisteredUser, {
+  const query = useGetUserPayoutSettingsQuery({
     variables: { githubUserId },
     skip: !githubUserId,
     fetchPolicy: "network-only",

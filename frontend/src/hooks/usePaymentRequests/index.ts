@@ -1,31 +1,23 @@
-import { useHasuraMutation, useHasuraQuery } from "src/hooks/useHasuraQuery";
-import { HasuraUserRole } from "src/types";
 import {
-  CancelPaymentRequestDocument,
   CancelPaymentRequestMutationResult,
-  GetPaymentRequestsForProjectDocument,
-  GetPaymentRequestsForProjectQuery,
   PaymentRequestFragment,
   PaymentRequestFragmentDoc,
-  RequestPaymentDocument,
   RequestPaymentMutationResult,
   RequestPaymentMutationVariables,
+  useCancelPaymentRequestMutation,
+  useGetPaymentRequestsForProjectQuery,
+  useRequestPaymentMutation,
 } from "src/__generated/graphql";
 import { reject } from "lodash";
 
 export default function usePaymentRequests(projectId?: string) {
-  const getPaymentRequestsQuery = useHasuraQuery<GetPaymentRequestsForProjectQuery>(
-    GetPaymentRequestsForProjectDocument,
-    HasuraUserRole.RegisteredUser,
-    {
-      variables: { projectId },
-      skip: !projectId,
-      nextFetchPolicy: "cache-only",
-    }
-  );
-
-  const [requestNewPayment] = useHasuraMutation(RequestPaymentDocument, HasuraUserRole.RegisteredUser, {
+  const getPaymentRequestsQuery = useGetPaymentRequestsForProjectQuery({
     variables: { projectId },
+    skip: !projectId,
+    nextFetchPolicy: "cache-only",
+  });
+
+  const [requestNewPayment] = useRequestPaymentMutation({
     context: { graphqlErrorDisplay: "toaster" },
     update: (cache, result, { variables }) => {
       const { budgetId, paymentId, amount } = (result as RequestPaymentMutationResult).data?.requestPayment || {};
@@ -54,8 +46,7 @@ export default function usePaymentRequests(projectId?: string) {
     },
   });
 
-  const [cancelPaymentRequest] = useHasuraMutation(CancelPaymentRequestDocument, HasuraUserRole.RegisteredUser, {
-    variables: { projectId },
+  const [cancelPaymentRequest] = useCancelPaymentRequestMutation({
     context: { graphqlErrorDisplay: "toaster" },
     update: (cache, result) => {
       const { budgetId, paymentId, amount } =

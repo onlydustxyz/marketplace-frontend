@@ -5,9 +5,8 @@ import Card from "src/components/Card";
 import PayoutTable from "src/components/PayoutTable";
 import QueryWrapper from "src/components/QueryWrapper";
 import { useAuth } from "src/hooks/useAuth";
-import { useHasuraQuery } from "src/hooks/useHasuraQuery";
-import { Currency, HasuraUserRole, PaymentStatus } from "src/types";
-import { GetPaymentRequestsQuery, UserPaymentRequestFragment } from "src/__generated/graphql";
+import { Currency, PaymentStatus } from "src/types";
+import { UserPaymentRequestFragment, useGetPaymentRequestsQuery } from "src/__generated/graphql";
 import { useT } from "talkr";
 import TotalEarnings from "./TotalEarnings";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
@@ -19,15 +18,11 @@ const Payments = () => {
   const { githubUserId } = useAuth();
   const { T } = useT();
 
-  const getPaymentRequestsQuery = useHasuraQuery<GetPaymentRequestsQuery>(
-    GET_PAYMENTS_QUERY,
-    HasuraUserRole.RegisteredUser,
-    {
-      variables: { githubUserId },
-      skip: !githubUserId,
-      fetchPolicy: "network-only",
-    }
-  );
+  const getPaymentRequestsQuery = useGetPaymentRequestsQuery({
+    variables: { githubUserId },
+    skip: !githubUserId,
+    fetchPolicy: "network-only",
+  });
 
   const { valid: payoutSettingsValid, invoiceNeeded, data: userInfos } = usePayoutSettings(githubUserId);
 

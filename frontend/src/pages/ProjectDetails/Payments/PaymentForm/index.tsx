@@ -48,7 +48,7 @@ const PaymentForm: React.FC = () => {
     async formData => {
       if (contributor)
         await requestNewPayment({
-          ...mapFormDataToSchema({ ...formData, contributor }),
+          ...mapFormDataToSchema(projectId, { ...formData, contributor }),
           onCompleted: () => {
             showToaster(T("payment.form.sent"));
             navigate(generatePath(RoutePaths.ProjectDetails, { projectId }) + "/" + ProjectRoutePaths.Payments);
@@ -98,9 +98,10 @@ const PaymentForm: React.FC = () => {
   );
 };
 
-const mapFormDataToSchema = ({ workItems, amountToWire, hoursWorked, contributor }: Inputs) => {
+const mapFormDataToSchema = (projectId: string, { workItems, amountToWire, hoursWorked, contributor }: Inputs) => {
   return {
     variables: {
+      projectId,
       contributorId: contributor.id,
       amount: amountToWire,
       hoursWorked,

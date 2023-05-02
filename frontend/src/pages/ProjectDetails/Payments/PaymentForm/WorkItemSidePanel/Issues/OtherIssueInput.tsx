@@ -3,9 +3,7 @@ import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { useIntl } from "src/hooks/useIntl";
 import Input from "src/components/FormInput";
 import { WorkItem } from "src/components/GithubIssue";
-import { FetchIssueDocument, FetchIssueQuery } from "src/__generated/graphql";
-import { useHasuraLazyQuery } from "src/hooks/useHasuraQuery";
-import { HasuraUserRole } from "src/types";
+import { useFetchIssueLazyQuery } from "src/__generated/graphql";
 import { useFormContext, useFormState } from "react-hook-form";
 import { parseIssueLink, REGEX_VALID_GITHUB_ISSUE_URL } from "src/utils/github";
 import Link from "src/icons/Link";
@@ -22,7 +20,7 @@ const INPUT_NAME = "otherIssueLink";
 export default function OtherIssueInput({ projectId, onWorkItemAdded }: Props) {
   const { T } = useIntl();
 
-  const [fetchIssue] = useHasuraLazyQuery<FetchIssueQuery>(FetchIssueDocument, HasuraUserRole.RegisteredUser, {
+  const [fetchIssue] = useFetchIssueLazyQuery({
     onCompleted: data => {
       if (data.fetchIssue) {
         onWorkItemAdded(issueToWorkItem(data.fetchIssue, projectId));

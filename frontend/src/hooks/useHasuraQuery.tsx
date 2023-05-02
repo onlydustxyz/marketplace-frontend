@@ -1,13 +1,9 @@
 import {
   QueryHookOptions,
-  MutationHookOptions,
   TypedDocumentNode,
   useQuery,
-  useMutation,
   QueryResult,
   OperationVariables,
-  useLazyQuery,
-  LazyQueryResultTuple,
   useSuspenseQuery_experimental,
   UseSuspenseQueryResult,
   SuspenseQueryHookOptions,
@@ -15,44 +11,12 @@ import {
 import merge from "lodash/merge";
 import { HasuraUserRole } from "src/types";
 
-export const useHasuraQuery = <T, V = OperationVariables>(
-  query: TypedDocumentNode<T, V>,
-  role: HasuraUserRole,
-  options: QueryHookOptions<T, V> = {}
-): QueryResult<T, V> => {
-  return useQuery(query, merge(options, { context: { headers: { "X-Hasura-Role": role } } }));
-};
-
-export const useHasuraLazyQuery = <T, V = OperationVariables>(
-  query: TypedDocumentNode<T, V>,
-  role: HasuraUserRole,
-  options: QueryHookOptions<T, V> = {}
-): LazyQueryResultTuple<T, V> => {
-  return useLazyQuery(query, merge(options, { context: { headers: { "X-Hasura-Role": role } } }));
-};
-
-export const useHasuraSuspensedQuery = <T, V extends OperationVariables = OperationVariables>(
-  query: TypedDocumentNode<T, V>,
-  role: HasuraUserRole,
-  options: SuspenseQueryHookOptions<T, V> = {}
-): UseSuspenseQueryResult<T, V> => {
-  return useSuspenseQuery_experimental(query, merge(options, { context: { headers: { "X-Hasura-Role": role } } }));
-};
-
 export const useCachableHasuraQuery = <T, V = OperationVariables>(
   query: TypedDocumentNode<T, V>,
   role: HasuraUserRole,
   options: QueryHookOptions<T, V> = {}
 ): QueryResult<T, V> => {
   return useQuery(query, merge(options, { context: { headers: { "X-Hasura-Role": role, "X-Cache-Api": 1 } } }));
-};
-
-export const useCachableHasuraLazyQuery = <T, V = OperationVariables>(
-  query: TypedDocumentNode<T, V>,
-  role: HasuraUserRole,
-  options: QueryHookOptions<T, V> = {}
-): LazyQueryResultTuple<T, V> => {
-  return useLazyQuery(query, merge(options, { context: { headers: { "X-Hasura-Role": role, "X-Cache-Api": 1 } } }));
 };
 
 export const useCachableHasuraSuspensedQuery = <T, V extends OperationVariables = OperationVariables>(
@@ -64,12 +28,4 @@ export const useCachableHasuraSuspensedQuery = <T, V extends OperationVariables 
     query,
     merge(options, { context: { headers: { "X-Hasura-Role": role, "X-Cache-Api": 1 } } })
   );
-};
-
-export const useHasuraMutation = <T,>(
-  query: TypedDocumentNode<T>,
-  role: HasuraUserRole,
-  options: MutationHookOptions<T> = {}
-) => {
-  return useMutation<T>(query, merge(options, { context: { headers: { "X-Hasura-Role": role } } }));
 };

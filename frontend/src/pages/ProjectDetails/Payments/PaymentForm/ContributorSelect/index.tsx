@@ -1,12 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
-import { useHasuraQuery } from "src/hooks/useHasuraQuery";
-import { HasuraUserRole } from "src/types";
 import {
-  GetProjectContributorsForPaymentSelectDocument,
-  GetProjectContributorsForPaymentSelectQuery,
   GithubContributorFragment,
-  SearchGithubUsersByHandleSubstringDocument,
-  SearchGithubUsersByHandleSubstringQuery,
+  useGetProjectContributorsForPaymentSelectQuery,
+  useSearchGithubUsersByHandleSubstringQuery,
 } from "src/__generated/graphql";
 import { getContributors } from "src/utils/project";
 import View from "./View";
@@ -35,22 +31,14 @@ export default function ContributorSelect({ projectId, contributor, setContribut
 
   const createdSince = useMemo(() => daysFromNow(SEARCH_MAX_DAYS_COUNT), []);
 
-  const getProjectContributorsQuery = useHasuraQuery<GetProjectContributorsForPaymentSelectQuery>(
-    GetProjectContributorsForPaymentSelectDocument,
-    HasuraUserRole.RegisteredUser,
-    {
-      variables: { projectId, createdSince },
-    }
-  );
+  const getProjectContributorsQuery = useGetProjectContributorsForPaymentSelectQuery({
+    variables: { projectId, createdSince },
+  });
 
-  const searchGithubUsersByHandleSubstringQuery = useHasuraQuery<SearchGithubUsersByHandleSubstringQuery>(
-    SearchGithubUsersByHandleSubstringDocument,
-    HasuraUserRole.RegisteredUser,
-    {
-      variables: { handleSubstringQuery },
-      skip: (githubHandleSubstring?.length || 0) < 2 || githubHandleSubstring !== debouncedGithubHandleSubstring,
-    }
-  );
+  const searchGithubUsersByHandleSubstringQuery = useSearchGithubUsersByHandleSubstringQuery({
+    variables: { handleSubstringQuery },
+    skip: (githubHandleSubstring?.length || 0) < 2 || githubHandleSubstring !== debouncedGithubHandleSubstring,
+  });
 
   const { contributors: internalContributors } = useMemo(
     () => getContributors(getProjectContributorsQuery.data?.projectsByPk),

@@ -5,19 +5,15 @@ import Button, { Width } from "src/components/Button";
 import Callout from "src/components/Callout";
 import { WorkItem } from "src/components/GithubIssue";
 import { useAuth } from "src/hooks/useAuth";
-import { useHasuraMutation, useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
 import CheckLine from "src/icons/CheckLine";
-import { HasuraUserRole } from "src/types";
 import isDefined from "src/utils/isDefined";
 import {
-  CreateIssueDocument,
-  CreateIssueMutation,
   CreateIssueMutationVariables,
-  GetProjectReposDocument,
-  GetProjectReposQuery,
   RepositoryOwnerAndNameFragment,
+  useCreateIssueMutation,
+  useGetProjectReposQuery,
 } from "src/__generated/graphql";
 import Description from "./Description";
 import RepoSelect from "./RepoSelect";
@@ -52,7 +48,7 @@ export default function OtherWorkForm({ projectId, contributorHandle, onWorkItem
     author: contributorHandle,
   });
 
-  const { data } = useHasuraQuery<GetProjectReposQuery>(GetProjectReposDocument, HasuraUserRole.RegisteredUser, {
+  const { data } = useGetProjectReposQuery({
     variables: { projectId },
   });
 
@@ -73,25 +69,21 @@ export default function OtherWorkForm({ projectId, contributorHandle, onWorkItem
     setSelectedWorkKind(DEFAULT_WORK_KIND);
   };
 
-  const [createIssue, { loading }] = useHasuraMutation<CreateIssueMutation>(
-    CreateIssueDocument,
-    HasuraUserRole.RegisteredUser,
-    {
-      variables: {
-        projectId: projectId,
-        githubRepoId: selectedRepo?.id,
-        title: title || defaultTitle,
-        description,
-        assignees: [leader?.displayName, contributorHandle],
-      } as CreateIssueMutationVariables,
-      context: { graphqlErrorDisplay: "toaster" },
-      onCompleted: data => {
-        clearForm();
-        onWorkItemAdded(issueToWorkItem(data.createIssue, projectId));
-        showToaster(T("payment.form.workItems.other.success"));
-      },
-    }
-  );
+  const [createIssue, { loading }] = useCreateIssueMutation({
+    variables: {
+      projectId: projectId,
+      githubRepoId: selectedRepo?.id,
+      title: title || defaultTitle,
+      description,
+      assignees: [leader?.displayName, contributorHandle],
+    } as CreateIssueMutationVariables,
+    context: { graphqlErrorDisplay: "toaster" },
+    onCompleted: data => {
+      clearForm();
+      onWorkItemAdded(issueToWorkItem(data.createIssue, projectId));
+      showToaster(T("payment.form.workItems.other.success"));
+    },
+  });
 
   return (
     <div className="flex flex-col gap-4 relative">
