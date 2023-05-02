@@ -4,8 +4,7 @@ import matchers from "@testing-library/jest-dom/matchers";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import PaymentsList from "./List";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
-import { GithubUserFragment, PaymentRequestFragment } from "src/__generated/graphql";
-import { GET_GITHUB_USER_QUERY } from "src/hooks/useGithubUser";
+import { GetGithubUserDocument, GithubUserFragment, PaymentRequestFragment } from "src/__generated/graphql";
 
 expect.extend(matchers);
 
@@ -56,7 +55,7 @@ const githubUserMock: GithubUserFragment = {
 const graphQlMocks = [
   {
     request: {
-      query: GET_GITHUB_USER_QUERY,
+      query: GetGithubUserDocument,
       variables: {
         githubUserId: GITHUB_USER_ID,
       },

@@ -1,17 +1,15 @@
 import { SuspenseCache } from "@apollo/client";
 import { MockedProvider } from "@apollo/client/testing";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { GET_GITHUB_USER_QUERY } from "src/hooks/useGithubUser";
 import { GET_USER_PAYOUT_SETTINGS } from "src/hooks/usePayoutSettings";
 import { Currency } from "src/types";
-import { PaymentRequestFragment, UserPayoutSettingsFragment } from "src/__generated/graphql";
+import { GetGithubUserDocument, PaymentRequestFragment, UserPayoutSettingsFragment } from "src/__generated/graphql";
 
 import PaymentTable from ".";
 
 export default {
   title: "PaymentTable",
   component: PaymentTable,
-} as ComponentMeta<typeof PaymentTable>;
+};
 
 const GITHUB_USER_ID = 595505;
 const GITHUB_USER_ID2 = 1321654;
@@ -68,7 +66,7 @@ const mockPayments: PaymentRequestFragment[] = [
 const mocks = [
   {
     request: {
-      query: GET_GITHUB_USER_QUERY,
+      query: GetGithubUserDocument,
       variables: { githubUserId: GITHUB_USER_ID },
     },
     result: {
@@ -84,7 +82,7 @@ const mocks = [
   },
   {
     request: {
-      query: GET_GITHUB_USER_QUERY,
+      query: GetGithubUserDocument,
       variables: { githubUserId: GITHUB_USER_ID2 },
     },
     result: {
@@ -123,10 +121,10 @@ const mocks = [
 
 const suspenseCache = new SuspenseCache();
 
-const Template: ComponentStory<typeof PaymentTable> = () => (
-  <MockedProvider mocks={mocks} suspenseCache={suspenseCache}>
-    <PaymentTable projectId="project-1" payments={mockPayments} />
-  </MockedProvider>
-);
-
-export const Default = Template.bind({});
+export const Default = {
+  render: () => (
+    <MockedProvider mocks={mocks} suspenseCache={suspenseCache}>
+      <PaymentTable projectId="project-1" payments={mockPayments} />
+    </MockedProvider>
+  ),
+};
