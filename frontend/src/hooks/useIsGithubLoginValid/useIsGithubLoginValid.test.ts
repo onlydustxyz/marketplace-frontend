@@ -1,14 +1,15 @@
 import { MockedProvider } from "@apollo/client/testing";
 import { waitFor } from "@testing-library/react";
 import { renderHook } from "@testing-library/react-hooks";
-import useFindGithubUser, { FIND_USER_QUERY } from ".";
+import useFindGithubUser from ".";
+import { FindUserQueryForPaymentFormDocument } from "src/__generated/graphql";
 
 const GITHUB_USER_LOGIN = "github-user-login";
 const GITHUB_USER_ID = 12346587;
 
 const findUserQueryMock = {
   request: {
-    query: FIND_USER_QUERY,
+    query: FindUserQueryForPaymentFormDocument,
     variables: { username: GITHUB_USER_LOGIN },
   },
   result: {

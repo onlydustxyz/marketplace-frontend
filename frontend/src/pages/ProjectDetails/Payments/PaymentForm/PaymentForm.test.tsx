@@ -7,7 +7,6 @@ import { CLAIMS_KEY, PROJECTS_LED_KEY } from "src/types";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import PaymentForm from ".";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
-import { FIND_USER_QUERY } from "src/hooks/useIsGithubLoginValid";
 import {
   FetchIssueDocument,
   FetchIssueQueryResult,
@@ -21,6 +20,7 @@ import {
   GetProjectContributorsForPaymentSelectDocument,
   GetProjectContributorsForPaymentSelectQueryResult,
   Status,
+  FindUserQueryForPaymentFormDocument,
 } from "src/__generated/graphql";
 import { MockedResponse } from "@apollo/client/testing";
 import { GithubContributorFragment } from "src/__generated/graphql";
@@ -92,7 +92,7 @@ const fetchPrMock: MockedResponse = {
 const graphQlMocks = [
   {
     request: {
-      query: FIND_USER_QUERY,
+      query: FindUserQueryForPaymentFormDocument,
       variables: {
         username: "test-user-name",
       },

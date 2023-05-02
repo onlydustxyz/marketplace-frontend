@@ -12,16 +12,13 @@ export default function useGithubUser(githubUserId: number) {
   };
 }
 
-export const GITHUB_USER_FRAGMENT = gql`
+gql`
   fragment GithubUser on User {
     id
     login
     avatarUrl
   }
-`;
 
-export const GET_GITHUB_USER_QUERY = gql`
-  ${GITHUB_USER_FRAGMENT}
   query GetGithubUser($githubUserId: Int!) {
     fetchUserDetailsById(userId: $githubUserId) {
       ...GithubUser

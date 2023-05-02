@@ -1,8 +1,8 @@
 import { MockedProvider } from "@apollo/client/testing";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { FormProvider, useForm } from "react-hook-form";
-import { FIND_USER_QUERY } from "src/hooks/useIsGithubLoginValid";
 import {
+  FindUserQueryForPaymentFormDocument,
   GetProjectContributorsForPaymentSelectDocument,
   GetProjectContributorsForPaymentSelectQueryResult,
 } from "src/__generated/graphql";
@@ -97,7 +97,7 @@ const mocks = [
   },
   {
     request: {
-      query: FIND_USER_QUERY,
+      query: FindUserQueryForPaymentFormDocument,
       variables: {
         username: "bernardstanislas",
       },
