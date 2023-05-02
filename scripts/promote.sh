@@ -10,13 +10,6 @@ check_args() {
     [[ -z $FROM_ENV ||  -z $TO_ENV ]] && exit_error "Invalid arguments, you must specify at least --staging or --production flag"
 }
 
-check_uptodate_with_main() {
-    current_branch=`git branch --show-current`
-    [ $current_branch != "main" ] && exit_error "You are not on 'main' branch"
-    git pull
-    [ $? -ne 0 ] && exit_error "Unable to pull with remote"
-}
-
 check_cwd() {
     root_dir=`git rev-parse --show-toplevel`
     [ $? -ne 0 ] && exit_error "You are not in a git directory"
@@ -114,7 +107,6 @@ check_command git
 check_command heroku
 
 check_cwd
-check_uptodate_with_main
 
 ask "Do you want to deploy the backends"
 if [ $? -eq 0 ]; then
