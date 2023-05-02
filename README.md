@@ -25,7 +25,13 @@
 > This repo contains highly experimental code.
 > Expect rapid iteration.
 
+# Global architecture
+
 ![Global architecture](doc/architecture.excalidraw.png)
+
+# Data Diagram
+
+[Data Diagram](./doc/data_diagram.md)
 
 # 📡 Backend
 

@@ -1,4 +1,3 @@
-import { useApolloClient } from "@apollo/client";
 import axios from "axios";
 import { createContext, PropsWithChildren, useContext } from "react";
 import { useNavigate } from "react-router-dom";
@@ -42,13 +41,9 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 
   const login = async (refreshToken: RefreshToken) => {
     await setFromRefreshToken(refreshToken);
-    await client.clearStore();
   };
 
-  const client = useApolloClient();
-
   const logout = async () => {
-    await client.clearStore();
     if (!impersonating) {
       await axios.post(`${config.HASURA_AUTH_BASE_URL}/signout`, {
         refreshToken: tokenSet?.refreshToken,
