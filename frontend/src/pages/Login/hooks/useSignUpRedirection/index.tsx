@@ -56,16 +56,14 @@ const getRedirectionUrl = (
   return RoutePaths.Projects;
 };
 
-export const PENDING_PROJECT_LEADER_INVITATIONS_QUERY = gql`
+gql`
   query PendingProjectLeaderInvitations($githubUserId: bigint) {
     pendingProjectLeaderInvitations(where: { githubUserId: { _eq: $githubUserId } }) {
       id
       projectId
     }
   }
-`;
 
-export const PENDING_USER_PAYMENTS = gql`
   query PendingUserPayments($userId: uuid!) {
     user(id: $userId) {
       id

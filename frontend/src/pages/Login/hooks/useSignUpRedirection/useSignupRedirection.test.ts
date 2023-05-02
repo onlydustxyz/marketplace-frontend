@@ -1,12 +1,16 @@
 import { renderHook } from "@testing-library/react-hooks";
-import useSignupRedirection, { PENDING_PROJECT_LEADER_INVITATIONS_QUERY, PENDING_USER_PAYMENTS, User } from ".";
+import useSignupRedirection, { User } from ".";
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import { MockedProvider, MockedResponse } from "@apollo/client/testing";
 import { RoutePaths } from "src/App";
 import { generatePath } from "react-router-dom";
 import { waitFor } from "@testing-library/react";
-import { GET_USER_PAYOUT_SETTINGS } from "src/hooks/usePayoutSettings";
-import { UserPayoutSettingsFragment } from "src/__generated/graphql";
+import {
+  GetUserPayoutSettingsDocument,
+  PendingProjectLeaderInvitationsDocument,
+  PendingUserPaymentsDocument,
+  UserPayoutSettingsFragment,
+} from "src/__generated/graphql";
 
 const render = (user: User, mocks?: ReadonlyArray<MockedResponse>) =>
   renderHook(() => useSignupRedirection(user), { wrapper: MockedProvider, initialProps: { mocks } });
@@ -17,7 +21,7 @@ const projectId = "project-id";
 
 const pendingProjectLeadInvitationMock = {
   request: {
-    query: PENDING_PROJECT_LEADER_INVITATIONS_QUERY,
+    query: PendingProjectLeaderInvitationsDocument,
     variables: { githubUserId },
   },
   result: {
@@ -34,7 +38,7 @@ const pendingProjectLeadInvitationMock = {
 
 const pendingPaymentsMock = {
   request: {
-    query: PENDING_USER_PAYMENTS,
+    query: PendingUserPaymentsDocument,
     variables: { userId },
   },
   newData: vi.fn(() => ({})),
@@ -42,7 +46,7 @@ const pendingPaymentsMock = {
 
 const payoutSettingsMock = {
   request: {
-    query: GET_USER_PAYOUT_SETTINGS,
+    query: GetUserPayoutSettingsDocument,
     variables: { githubUserId },
   },
   newData: vi.fn(() => ({})),

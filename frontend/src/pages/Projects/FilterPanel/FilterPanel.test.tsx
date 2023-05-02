@@ -1,9 +1,9 @@
 import { describe, expect, it, vi } from "vitest";
 import { screen } from "@testing-library/react";
 import matchers from "@testing-library/jest-dom/matchers";
-import FilterPanel, { GET_ALL_FILTER_OPTIONS_QUERY } from ".";
+import FilterPanel from ".";
 import { renderWithIntl, MemoryRouterProviderFactory } from "src/test/utils";
-import { GetAllFilterOptionsQuery } from "src/__generated/graphql";
+import { GetAllFilterOptionsDocument, GetAllFilterOptionsQuery } from "src/__generated/graphql";
 import { MockedResponse } from "@apollo/client/testing";
 import { MockedProjectFilterProvider } from "src/pages/Projects/useProjectFilter";
 
@@ -122,7 +122,7 @@ const projects5: GetAllFilterOptionsQuery["projects"][number] = {
 const graphQlMocks = [
   {
     request: {
-      query: GET_ALL_FILTER_OPTIONS_QUERY,
+      query: GetAllFilterOptionsDocument,
     },
     result: {
       data: {

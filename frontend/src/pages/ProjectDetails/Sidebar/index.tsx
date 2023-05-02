@@ -78,7 +78,7 @@ const projectFromQuery = (project: SidebarProjectDetailsFragment) => ({
   withInvitation: project.pendingInvitations?.at(0)?.id,
 });
 
-export const GET_PROJECTS_FOR_SIDEBAR_QUERY = gql`
+gql`
   ${ProjectContributorsFragmentDoc}
   ${VisibleProjectFragmentDoc}
   fragment SidebarProjectDetails on Projects {

@@ -4,10 +4,8 @@ import userEvent from "@testing-library/user-event";
 import matchers from "@testing-library/jest-dom/matchers";
 
 import ProfilePage from ".";
-import { GET_PROFILE_QUERY } from "src/pages/Profile";
 import { CLAIMS_KEY, PROJECTS_LED_KEY } from "src/types";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
-import { UPDATE_USER_MUTATION } from "./components/ProfileForm";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
 import {
   IdentityInput,
@@ -17,6 +15,8 @@ import {
   IdentityType,
   PayoutSettingsType,
   UpdateProfileInfoMutationVariables,
+  UpdateProfileInfoDocument,
+  ProfileDocument,
 } from "src/__generated/graphql";
 
 const INVALID_ETHEREUM_ADDRESS = "0x1234567890";
@@ -161,7 +161,7 @@ vi.mock("jwt-decode", () => ({
 
 const buildMockProfileQuery = (userResponse: UserInfo) => ({
   request: {
-    query: GET_PROFILE_QUERY,
+    query: ProfileDocument,
     variables: { userId: userResponse.userId },
   },
   result: {
@@ -223,7 +223,7 @@ const buildMockMutationUpdateUser = (userInfo: UserInfo) => {
 
   return {
     request: {
-      query: UPDATE_USER_MUTATION,
+      query: UpdateProfileInfoDocument,
       variables,
     },
     newData: vi.fn(() => ({ data: { updateProfileInfo: userInfo.userId } })),

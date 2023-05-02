@@ -44,7 +44,7 @@ export default function FilterPanel({ isProjectLeader }: Props) {
   );
 }
 
-export const GET_ALL_FILTER_OPTIONS_QUERY = gql`
+gql`
   ${VisibleProjectFragmentDoc}
   ${GithubRepoLanguagesFieldsFragmentDoc}
   query GetAllFilterOptions {

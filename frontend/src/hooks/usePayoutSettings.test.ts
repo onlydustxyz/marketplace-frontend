@@ -1,8 +1,8 @@
 import { MockedProvider, MockedResponse } from "@apollo/client/testing";
 import { waitFor } from "@testing-library/react";
 import { renderHook } from "@testing-library/react-hooks";
-import { UserPayoutSettingsFragment } from "src/__generated/graphql";
-import usePayoutSettings, { GET_USER_PAYOUT_SETTINGS } from "./usePayoutSettings";
+import { GetUserPayoutSettingsDocument, UserPayoutSettingsFragment } from "src/__generated/graphql";
+import usePayoutSettings from "./usePayoutSettings";
 
 const GITHUB_USER_ID = 12345;
 
@@ -11,7 +11,7 @@ const render = (mocks: MockedResponse[]) =>
 
 const mockGetPayoutSettingsQuery = <T, I>(payoutSettings: T, arePayoutSettingsValid: boolean, identity?: I) => ({
   request: {
-    query: GET_USER_PAYOUT_SETTINGS,
+    query: GetUserPayoutSettingsDocument,
     variables: { githubUserId: GITHUB_USER_ID },
   },
   result: {
