@@ -1,8 +1,12 @@
 import { SuspenseCache } from "@apollo/client";
 import { MockedProvider } from "@apollo/client/testing";
-import { GET_USER_PAYOUT_SETTINGS } from "src/hooks/usePayoutSettings";
 import { Currency } from "src/types";
-import { GetGithubUserDocument, PaymentRequestFragment, UserPayoutSettingsFragment } from "src/__generated/graphql";
+import {
+  GetGithubUserDocument,
+  GetUserPayoutSettingsDocument,
+  PaymentRequestFragment,
+  UserPayoutSettingsFragment,
+} from "src/__generated/graphql";
 
 import PaymentTable from ".";
 
@@ -98,7 +102,7 @@ const mocks = [
   },
   {
     request: {
-      query: GET_USER_PAYOUT_SETTINGS,
+      query: GetUserPayoutSettingsDocument,
       variables: { githubUserId: GITHUB_USER_ID2 },
     },
     result: {

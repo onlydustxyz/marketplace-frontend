@@ -7,13 +7,12 @@ expect.extend(matchers);
 import { generatePath, Route, Routes } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
-import ProjectDetails, { GET_PROJECT_QUERY } from ".";
+import ProjectDetails from ".";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
 import { LOCAL_STORAGE_SESSION_KEY } from "src/hooks/useSession";
 import { CLAIMS_KEY, GITHUB_USERID_KEY, PROJECTS_LED_KEY } from "src/types";
-import { GET_PROJECTS_FOR_SIDEBAR_QUERY } from "./Sidebar";
 import Overview from "src/pages/ProjectDetails/Overview";
-import { GetProjectQueryResult } from "src/__generated/graphql";
+import { GetProjectDocument, GetProjectQueryResult, GetProjectsForSidebarDocument } from "src/__generated/graphql";
 import { merge } from "lodash";
 
 const TEST_LED_PROJECT_ID = "test-led-project-id";
@@ -54,7 +53,7 @@ vi.mock("jwt-decode", () => ({
 
 const getProjectMock = {
   request: {
-    query: GET_PROJECT_QUERY,
+    query: GetProjectDocument,
     variables: {
       id: TEST_PROJECT_ID,
     },
@@ -101,7 +100,7 @@ const getProjectMock = {
 
 const getLedProjectMock = {
   request: {
-    query: GET_PROJECT_QUERY,
+    query: GetProjectDocument,
     variables: {
       id: TEST_LED_PROJECT_ID,
     },
@@ -147,7 +146,7 @@ const getLedProjectMock = {
 };
 
 const getProjectForSidebarMock = {
-  request: { query: GET_PROJECTS_FOR_SIDEBAR_QUERY },
+  request: { query: GetProjectsForSidebarDocument },
   result: {
     data: {
       projects: [

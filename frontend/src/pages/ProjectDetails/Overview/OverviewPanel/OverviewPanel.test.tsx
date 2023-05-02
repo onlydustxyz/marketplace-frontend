@@ -3,7 +3,8 @@ import { screen } from "@testing-library/react";
 import matchers from "@testing-library/jest-dom/matchers";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
-import OverviewPanel, { GET_PROJECT_CONTRIBUTORS_FOR_OVERVIEW_PANEL_QUERY } from ".";
+import OverviewPanel from ".";
+import { GetProjectContributorsForOverviewDocument } from "src/__generated/graphql";
 
 expect.extend(matchers);
 
@@ -27,7 +28,7 @@ const TEST_PROJECT_ID = "test-project-id";
 const graphQlMocks = [
   {
     request: {
-      query: GET_PROJECT_CONTRIBUTORS_FOR_OVERVIEW_PANEL_QUERY,
+      query: GetProjectContributorsForOverviewDocument,
       variables: {
         projectId: TEST_PROJECT_ID,
       },

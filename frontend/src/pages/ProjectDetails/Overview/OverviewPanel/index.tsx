@@ -34,24 +34,20 @@ export default function OverviewPanel({ projectId, ...props }: OverviewPanelProp
   return <OverviewPanelView {...props} contributors={contributors} />;
 }
 
-export const PROJECT_LEAD_FRAGMENT = gql`
+gql`
   fragment ProjectLead on users {
     id
     displayName
     avatarUrl
   }
-`;
 
-export const SPONSOR_FRAGMENT = gql`
   fragment Sponsor on Sponsors {
     id
     name
     logoUrl
     url
   }
-`;
 
-export const GET_PROJECT_CONTRIBUTORS_FOR_OVERVIEW_PANEL_QUERY = gql`
   query GetProjectContributorsForOverview($projectId: uuid!) {
     projectsByPk(id: $projectId) {
       id

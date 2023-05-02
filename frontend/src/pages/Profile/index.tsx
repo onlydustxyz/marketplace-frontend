@@ -73,7 +73,7 @@ const Profile: React.FC = () => {
   );
 };
 
-export const GET_PROFILE_QUERY = gql`
+gql`
   ${UserPayoutSettingsFragmentDoc}
   query Profile($userId: uuid!) {
     userInfoByPk(userId: $userId) {

@@ -449,7 +449,7 @@ const ProfileForm: React.FC<PropsType> = ({
   );
 };
 
-export const UPDATE_USER_MUTATION = gql`
+gql`
   mutation updateProfileInfo(
     $contactInformation: ContactInformation
     $identity: IdentityInput

@@ -6,6 +6,7 @@ import { useAuth } from "src/hooks/useAuth";
 import { LanguageMap } from "src/types";
 import {
   GetProjectQuery,
+  ProjectCardFieldsFragmentDoc,
   ProjectLeadFragment,
   SponsorFragment,
   useAcceptProjectLeaderInvitationMutation,
@@ -14,7 +15,6 @@ import {
 import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 import { SessionMethod, useSessionDispatch, useSession } from "src/hooks/useSession";
 import View from "./View";
-import { PROJECT_CARD_FRAGMENT } from "src/components/ProjectCard";
 import { isProjectVisible } from "src/utils/project";
 import { RoutePaths } from "src/App";
 import { contextWithCacheHeaders } from "src/utils/headers";
@@ -108,16 +108,14 @@ const projectFromQuery = (project: GetProjectQuery["projectsByPk"], githubUserId
   sponsors: project?.projectSponsors?.map(projectSponsor => projectSponsor.sponsor) || [],
 });
 
-export const GET_PROJECT_QUERY = gql`
-  ${PROJECT_CARD_FRAGMENT}
+gql`
+  ${ProjectCardFieldsFragmentDoc}
   query GetProject($id: uuid!) {
     projectsByPk(id: $id) {
       ...ProjectCardFields
     }
   }
-`;
 
-gql`
   mutation acceptProjectLeaderInvitation($invitationId: Uuid!) {
     acceptProjectLeaderInvitation(invitationId: $invitationId)
   }

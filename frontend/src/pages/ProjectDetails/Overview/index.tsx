@@ -114,7 +114,7 @@ export default function Overview() {
   );
 }
 
-export const GET_PROJECT_OVERVIEW_DETAILS = gql`
+gql`
   query GetProjectOverviewDetails($projectId: uuid!) {
     projectsByPk(id: $projectId) {
       id

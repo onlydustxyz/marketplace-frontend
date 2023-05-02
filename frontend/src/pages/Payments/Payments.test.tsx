@@ -2,10 +2,10 @@ import { describe, expect, it, Mock, vi } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
 import matchers from "@testing-library/jest-dom/matchers";
 
-import PaymentsPage, { GET_PAYMENTS_QUERY } from ".";
+import PaymentsPage from ".";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import { useRoles } from "src/hooks/useAuth/useRoles";
-import { UserPaymentRequestFragment } from "src/__generated/graphql";
+import { GetPaymentRequestsDocument, UserPaymentRequestFragment } from "src/__generated/graphql";
 
 expect.extend(matchers);
 
@@ -71,7 +71,7 @@ const buildMockPaymentsQuery = (
   paymentRequests: Record<string, unknown>[] = [mockContribution]
 ) => ({
   request: {
-    query: GET_PAYMENTS_QUERY,
+    query: GetPaymentRequestsDocument,
     variables: {
       githubUserId,
     },
@@ -93,7 +93,7 @@ describe('"Payments" page', () => {
 
     const queryMock = {
       request: {
-        query: GET_PAYMENTS_QUERY,
+        query: GetPaymentRequestsDocument,
         variables: {
           githubUserId,
         },

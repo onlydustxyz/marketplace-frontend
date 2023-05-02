@@ -23,7 +23,7 @@ export default function GithubRepoDetails({ githubRepoId }: Props) {
   return <>{githubRepoDetails && <View {...githubRepoDetails} />}</>;
 }
 
-export const GET_GITHUB_REPOSITORY_DETAILS_QUERY = gql`
+gql`
   ${GithubRepoStaticDetailsFragmentDoc}
   ${GithubRepoDynamicDetailsFragmentDoc}
   query GetGithubRepositoryDetails($githubRepoId: bigint!) {

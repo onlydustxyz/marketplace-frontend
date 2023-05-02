@@ -6,36 +6,34 @@ import userEvent from "@testing-library/user-event";
 import App, { RoutePaths } from ".";
 import { AUTH_CODE_QUERY_KEY } from "src/pages/Login";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
-import { GET_PROFILE_QUERY } from "src/pages/Profile";
 import { CLAIMS_KEY, GITHUB_USERID_KEY, PROJECTS_LED_KEY, TokenSet } from "src/types";
-import { GET_PROJECT_QUERY } from "src/pages/ProjectDetails";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
-import { GET_PROJECTS_FOR_SIDEBAR_QUERY } from "src/pages/ProjectDetails/Sidebar";
 import { buildGetProjectsQuery } from "src/pages/Projects/AllProjects";
-import {
-  PENDING_PROJECT_LEADER_INVITATIONS_QUERY,
-  PENDING_USER_PAYMENTS,
-} from "src/pages/Login/hooks/useSignUpRedirection";
 import { LOCAL_STORAGE_SESSION_KEY } from "src/hooks/useSession";
 import { generatePath } from "react-router-dom";
-import { GET_PAYMENTS_QUERY } from "src/pages/Payments";
-import { GET_PROJECT_CONTRIBUTORS_FOR_OVERVIEW_PANEL_QUERY } from "src/pages/ProjectDetails/Overview/OverviewPanel";
 import {
+  GetGithubRepositoryDetailsDocument,
   GetGithubRepositoryDetailsQueryResult,
+  GetPaymentRequestsDocument,
   GetPaymentRequestsQueryResult,
+  GetProjectContributorsForOverviewDocument,
   GetProjectContributorsForOverviewQueryResult,
+  GetProjectDocument,
+  GetProjectOverviewDetailsDocument,
   GetProjectOverviewDetailsQueryResult,
   GetProjectQueryResult,
+  GetProjectsForSidebarDocument,
   GetProjectsForSidebarQueryResult,
   GetProjectsQueryResult,
+  GetUserPayoutSettingsDocument,
+  PendingProjectLeaderInvitationsDocument,
   PendingProjectLeaderInvitationsQueryResult,
+  PendingUserPaymentsDocument,
   PendingUserPaymentsQueryResult,
+  ProfileDocument,
   ProfileQueryResult,
   UserPayoutSettingsFragment,
 } from "src/__generated/graphql";
-import { GET_GITHUB_REPOSITORY_DETAILS_QUERY } from "src/pages/ProjectDetails/Overview/GithubRepoDetails";
-import { GET_PROJECT_OVERVIEW_DETAILS } from "src/pages/ProjectDetails/Overview";
-import { GET_USER_PAYOUT_SETTINGS } from "src/hooks/usePayoutSettings";
 
 const AUTH_CODE_TEST_VALUE = "code";
 const LOGGING_IN_TEXT_QUERY = /logging in.../i;
@@ -231,7 +229,7 @@ const graphQlMocks = [
   },
   {
     request: {
-      query: GET_PROFILE_QUERY,
+      query: ProfileDocument,
       variables: {
         id: TEST_USER_ID,
       },
@@ -251,7 +249,7 @@ const graphQlMocks = [
   },
   {
     request: {
-      query: GET_PROJECT_QUERY,
+      query: GetProjectDocument,
       variables: {
         id: TEST_PROJECT_ID,
       },
@@ -260,7 +258,7 @@ const graphQlMocks = [
   },
   {
     request: {
-      query: GET_PROJECT_QUERY,
+      query: GetProjectDocument,
       variables: {
         id: TEST_PROJECT_ID,
       },
@@ -269,7 +267,7 @@ const graphQlMocks = [
   },
   {
     request: {
-      query: GET_PROJECTS_FOR_SIDEBAR_QUERY,
+      query: GetProjectsForSidebarDocument,
     },
     result: {
       data: {
@@ -307,7 +305,7 @@ const graphQlMocks = [
     },
   },
   {
-    request: { query: GET_PROJECT_CONTRIBUTORS_FOR_OVERVIEW_PANEL_QUERY },
+    request: { query: GetProjectContributorsForOverviewDocument },
     result: {
       data: {
         projectsByPk: {
@@ -327,14 +325,14 @@ const graphQlMocks = [
   },
   {
     request: {
-      query: GET_PROJECT_OVERVIEW_DETAILS,
+      query: GetProjectOverviewDetailsDocument,
       variables: { projectId: TEST_PROJECT_ID },
     },
     result: PROJECT_OVERVIEW_DETAILS_RESULT,
   },
   {
     request: {
-      query: GET_GITHUB_REPOSITORY_DETAILS_QUERY,
+      query: GetGithubRepositoryDetailsDocument,
       variables: { githubRepoId: TEST_GITHUB_REPO_ID },
     },
     result: GITHUB_REPO_DETAILS_RESULT,
@@ -343,7 +341,7 @@ const graphQlMocks = [
 
 const pendingProjectLeadInvitationMock = {
   request: {
-    query: PENDING_PROJECT_LEADER_INVITATIONS_QUERY,
+    query: PendingProjectLeaderInvitationsDocument,
     variables: { githubUserId: TEST_GITHUB_USER_ID },
   },
   result: {
@@ -360,7 +358,7 @@ const pendingProjectLeadInvitationMock = {
 
 const pendingPaymentsMock = {
   request: {
-    query: PENDING_USER_PAYMENTS,
+    query: PendingUserPaymentsDocument,
     variables: { userId: TEST_USER_ID },
   },
   result: {
@@ -381,7 +379,7 @@ const pendingPaymentsMock = {
 
 const paymentRequestsMock = {
   request: {
-    query: GET_PAYMENTS_QUERY,
+    query: GetPaymentRequestsDocument,
     variables: {
       githubUserId: TEST_GITHUB_USER_ID,
     },
@@ -430,7 +428,7 @@ const paymentRequestsMock = {
 
 const payoutSettingsMock = {
   request: {
-    query: GET_USER_PAYOUT_SETTINGS,
+    query: GetUserPayoutSettingsDocument,
     variables: { githubUserId: TEST_GITHUB_USER_ID },
   },
   result: {
