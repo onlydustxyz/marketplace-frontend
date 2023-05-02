@@ -3,8 +3,12 @@
 SCRIPT_DIR=`readlink -f $0 | xargs dirname`
 . $SCRIPT_DIR/utils.sh
 
-FROM_ENV=staging
-TO_ENV=production
+FROM_ENV=
+TO_ENV=
+
+check_args() {
+    [[ -z $FROM_ENV ||  -z $TO_ENV ]] && exit_error "Invalid arguments, you must specify at least --staging or --production flag"
+}
 
 check_uptodate_with_main() {
     current_branch=`git branch --show-current`
@@ -76,6 +80,36 @@ deploy_backends() {
     fi
 }
 
+usage() {
+  echo "Usage: $0 [ --staging | --production ]"
+  echo "  --staging         Promote to staging"
+  echo "  --production      Promote to production"
+  echo ""
+}
+
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    --staging)
+      FROM_ENV=develop
+      TO_ENV=staging
+      shift
+      ;;
+    --production)
+      FROM_ENV=staging
+      TO_ENV=production
+      shift
+      ;;
+    --help | -h)
+      usage
+      exit 0
+      ;;
+    *)
+      exit_error "Error: unrecognized option '$1'"
+      ;;
+  esac
+done
+
+check_args
 check_command git
 check_command heroku
 check_command vercel
