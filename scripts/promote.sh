@@ -112,7 +112,6 @@ done
 check_args
 check_command git
 check_command heroku
-check_command vercel
 
 check_cwd
 check_uptodate_with_main
@@ -120,15 +119,6 @@ check_uptodate_with_main
 ask "Do you want to deploy the backends"
 if [ $? -eq 0 ]; then
     deploy_backends
-fi
-
-if [ $TO_ENV = "production" ]; then
-    ask "Do you want to deploy the frontend"
-    if [ $? -eq 0 ]; then
-        execute vercel pull --environment $TO_ENV
-        execute vercel build --prod
-        execute vercel deploy --prod --prebuilt
-    fi
 fi
 
 log_info "📌 Do not forget to promote Retool apps 😉"
