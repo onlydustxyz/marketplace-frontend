@@ -1,16 +1,14 @@
 import Card from "src/components/Card";
 import ContributorsTableFallback from "src/components/ContributorsTableFallback";
 import ContributorsTable from "src/pages/ProjectDetails/Contributors/ContributorsTable";
-import { useCachableHasuraQuery, useHasuraQuery } from "src/hooks/useHasuraQuery";
+import { useCachableHasuraQuery } from "src/hooks/useHasuraQuery";
 import { useIntl } from "src/hooks/useIntl";
 import { HasuraUserRole } from "src/types";
 import {
-  GetProjectContributorsAsLeaderDocument,
-  GetProjectContributorsAsLeaderQuery,
   GetProjectContributorsDocument,
   GetProjectContributorsQuery,
-  GetProjectRemainingBudgetDocument,
-  GetProjectRemainingBudgetQuery,
+  useGetProjectContributorsAsLeaderQuery,
+  useGetProjectRemainingBudgetQuery,
 } from "src/__generated/graphql";
 import { useAuth } from "src/hooks/useAuth";
 import { useOutletContext } from "react-router-dom";
@@ -39,27 +37,19 @@ export default function Contributors() {
 
   const createdSince = useMemo(() => daysFromNow(SEARCH_MAX_DAYS_COUNT), []);
 
-  const getProjectContributorsQueryAsLeader = useHasuraQuery<GetProjectContributorsAsLeaderQuery>(
-    GetProjectContributorsAsLeaderDocument,
-    HasuraUserRole.RegisteredUser,
-    {
-      variables: { projectId, createdSince },
-      skip: !isProjectLeader,
-    }
-  );
+  const getProjectContributorsQueryAsLeader = useGetProjectContributorsAsLeaderQuery({
+    variables: { projectId, createdSince },
+    skip: !isProjectLeader,
+  });
 
   const getProjectContributorsQuery = isProjectLeader
     ? getProjectContributorsQueryAsLeader
     : getProjectContributorsQueryAsPublic;
 
-  const getProjectRemainingBudget = useHasuraQuery<GetProjectRemainingBudgetQuery>(
-    GetProjectRemainingBudgetDocument,
-    HasuraUserRole.RegisteredUser,
-    {
-      variables: { projectId },
-      skip: !isProjectLeader,
-    }
-  );
+  const getProjectRemainingBudget = useGetProjectRemainingBudgetQuery({
+    variables: { projectId },
+    skip: !isProjectLeader,
+  });
 
   const { contributors } = getContributors(getProjectContributorsQuery.data?.projectsByPk);
 

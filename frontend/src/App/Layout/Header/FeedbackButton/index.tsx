@@ -2,25 +2,19 @@ import { gql } from "@apollo/client";
 import { SliderButton } from "@typeform/embed-react";
 import classNames from "classnames";
 import { useAuth } from "src/hooks/useAuth";
-import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { useIntl } from "src/hooks/useIntl";
 import DiscussLine from "src/icons/DiscussLine";
-import { HasuraUserRole } from "src/types";
-import { UserIdentityQuery } from "src/__generated/graphql";
+import { useUserIdentityQuery } from "src/__generated/graphql";
 
 export default function FeedbackButton() {
   const { isLoggedIn, user } = useAuth();
   const { T } = useIntl();
 
-  const getUserIdentityQuery = useHasuraQuery<UserIdentityQuery>(
-    GET_USER_IDENTITY_QUERY,
-    HasuraUserRole.RegisteredUser,
-    {
-      skip: !isLoggedIn,
-      fetchPolicy: "network-only",
-      variables: { userId: user?.id },
-    }
-  );
+  const getUserIdentityQuery = useUserIdentityQuery({
+    skip: !isLoggedIn,
+    fetchPolicy: "network-only",
+    variables: { userId: user?.id },
+  });
 
   const userInfo = getUserIdentityQuery.data?.userInfo;
   const identity = userInfo && userInfo.length > 0 ? userInfo[0].identity?.Person : undefined;

@@ -1,7 +1,10 @@
 import { gql } from "@apollo/client";
 import { useEffect, useMemo } from "react";
-import { ImpersonatedLeadProjectsQuery, ImpersonatedUserQuery } from "src/__generated/graphql";
-import { useHasuraQuery } from "src/hooks/useHasuraQuery";
+import {
+  ImpersonatedUserQuery,
+  useImpersonatedLeadProjectsQuery,
+  useImpersonatedUserQuery,
+} from "src/__generated/graphql";
 import { useImpersonationClaims } from "src/hooks/useImpersonationClaims";
 import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
@@ -12,7 +15,7 @@ export const useImpersonation = () => {
   const showToaster = useShowToaster();
   const { T } = useIntl();
 
-  const impersonatedUserQuery = useHasuraQuery<ImpersonatedUserQuery>(IMPERSONATED_USER_QUERY, HasuraUserRole.Admin, {
+  const impersonatedUserQuery = useImpersonatedUserQuery({
     context: {
       graphqlErrorDisplay: "none",
     },
@@ -39,19 +42,15 @@ export const useImpersonation = () => {
 
   const invalidImpersonation = !!impersonatedUserQuery.error;
 
-  const leadProjectsQuery = useHasuraQuery<ImpersonatedLeadProjectsQuery>(
-    IMPERSONATED_LEAD_PROJECTS_QUERY,
-    HasuraUserRole.Admin,
-    {
-      context: {
-        graphqlErrorDisplay: "none",
-      },
-      variables: {
-        userId: impersonationSet?.userId,
-      },
-      skip: !impersonationSet,
-    }
-  );
+  const leadProjectsQuery = useImpersonatedLeadProjectsQuery({
+    context: {
+      graphqlErrorDisplay: "none",
+    },
+    variables: {
+      userId: impersonationSet?.userId,
+    },
+    skip: !impersonationSet,
+  });
 
   const impersonatedUser = impersonatedUserQuery.data?.user
     ? mapImpersonatedUser(impersonatedUserQuery.data.user)
@@ -89,7 +88,7 @@ export const useImpersonation = () => {
   };
 };
 
-const IMPERSONATED_USER_QUERY = gql`
+gql`
   query ImpersonatedUser($id: uuid!) {
     user(id: $id) {
       id
@@ -115,7 +114,7 @@ const IMPERSONATED_USER_QUERY = gql`
   }
 `;
 
-const IMPERSONATED_LEAD_PROJECTS_QUERY = gql`
+gql`
   query ImpersonatedLeadProjects($userId: uuid!) {
     projectLeads(where: { userId: { _eq: $userId } }) {
       userId

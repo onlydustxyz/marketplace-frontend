@@ -3,9 +3,14 @@ import { useEffect } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import QueryWrapper from "src/components/QueryWrapper";
 import { useAuth } from "src/hooks/useAuth";
-import { useCachableHasuraQuery, useHasuraMutation } from "src/hooks/useHasuraQuery";
+import { useCachableHasuraQuery } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole, LanguageMap } from "src/types";
-import { GetProjectQuery, ProjectLeadFragment, SponsorFragment } from "src/__generated/graphql";
+import {
+  GetProjectQuery,
+  ProjectLeadFragment,
+  SponsorFragment,
+  useAcceptProjectLeaderInvitationMutation,
+} from "src/__generated/graphql";
 import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 import { SessionMethod, useSessionDispatch, useSession } from "src/hooks/useSession";
 import View from "./View";
@@ -36,13 +41,9 @@ const ProjectDetails: React.FC = () => {
   const { lastVisitedProjectId } = useSession();
   const dispatchSession = useSessionDispatch();
 
-  const [acceptInvitation, acceptInvitationResponse] = useHasuraMutation(
-    ACCEPT_PROJECT_LEADER_INVITATION_MUTATION,
-    HasuraUserRole.RegisteredUser,
-    {
-      context: { graphqlErrorDisplay: "toaster" },
-    }
-  );
+  const [acceptInvitation, acceptInvitationResponse] = useAcceptProjectLeaderInvitationMutation({
+    context: { graphqlErrorDisplay: "toaster" },
+  });
 
   const getProjectQuery = useCachableHasuraQuery<GetProjectQuery>(GET_PROJECT_QUERY, HasuraUserRole.Public, {
     variables: { id: projectId },
@@ -114,7 +115,7 @@ export const GET_PROJECT_QUERY = gql`
   }
 `;
 
-const ACCEPT_PROJECT_LEADER_INVITATION_MUTATION = gql`
+gql`
   mutation acceptProjectLeaderInvitation($invitationId: Uuid!) {
     acceptProjectLeaderInvitation(invitationId: $invitationId)
   }

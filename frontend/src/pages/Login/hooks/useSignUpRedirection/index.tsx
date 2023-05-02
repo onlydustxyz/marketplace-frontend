@@ -1,10 +1,13 @@
-import { gql, OperationVariables, QueryResult } from "@apollo/client";
+import { gql } from "@apollo/client";
 import { generatePath } from "react-router-dom";
 import { RoutePaths } from "src/App";
-import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import usePayoutSettings from "src/hooks/usePayoutSettings";
-import { HasuraUserRole } from "src/types";
-import { PendingProjectLeaderInvitationsQuery, PendingUserPaymentsQuery } from "src/__generated/graphql";
+import {
+  PendingProjectLeaderInvitationsQueryHookResult,
+  PendingUserPaymentsQueryHookResult,
+  usePendingProjectLeaderInvitationsQuery,
+  usePendingUserPaymentsQuery,
+} from "src/__generated/graphql";
 
 export type User = {
   githubUserId?: number;
@@ -12,25 +15,17 @@ export type User = {
 };
 
 export default function useSignupRedirection({ githubUserId, userId }: User) {
-  const pendingProjectLeaderInvitationsQuery = useHasuraQuery<PendingProjectLeaderInvitationsQuery>(
-    PENDING_PROJECT_LEADER_INVITATIONS_QUERY,
-    HasuraUserRole.RegisteredUser,
-    {
-      variables: { githubUserId },
-      skip: !githubUserId,
-    }
-  );
+  const pendingProjectLeaderInvitationsQuery = usePendingProjectLeaderInvitationsQuery({
+    variables: { githubUserId },
+    skip: !githubUserId,
+  });
 
   const { valid: validPayoutInfo, loading: payoutSettingsQueryLoading } = usePayoutSettings(githubUserId);
 
-  const pendingUserPaymentsQuery = useHasuraQuery<PendingUserPaymentsQuery>(
-    PENDING_USER_PAYMENTS,
-    HasuraUserRole.RegisteredUser,
-    {
-      variables: { userId: userId },
-      skip: !userId,
-    }
-  );
+  const pendingUserPaymentsQuery = usePendingUserPaymentsQuery({
+    variables: { userId: userId },
+    skip: !userId,
+  });
 
   return {
     loading:
@@ -40,8 +35,8 @@ export default function useSignupRedirection({ githubUserId, userId }: User) {
 }
 
 const getRedirectionUrl = (
-  pendingProjectLeaderInvitationsQuery: QueryResult<PendingProjectLeaderInvitationsQuery, OperationVariables>,
-  pendingUserPaymentsAndPayoutSettingsQuery: QueryResult<PendingUserPaymentsQuery, OperationVariables>,
+  pendingProjectLeaderInvitationsQuery: PendingProjectLeaderInvitationsQueryHookResult,
+  pendingUserPaymentsAndPayoutSettingsQuery: PendingUserPaymentsQueryHookResult,
   validPayoutInfo: boolean | null | undefined
 ) => {
   const pendingPaymentRequests =

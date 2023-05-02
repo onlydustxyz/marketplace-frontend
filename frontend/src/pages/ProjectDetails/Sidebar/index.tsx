@@ -1,12 +1,10 @@
 import { ProjectDetails } from "..";
-import { HasuraUserRole } from "src/types";
 import View from "./View";
-import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import {
-  GetProjectsForSidebarQuery,
   ProjectContributorsFragmentDoc,
   SidebarProjectDetailsFragment,
   VisibleProjectFragmentDoc,
+  useGetProjectsForSidebarQuery,
 } from "src/__generated/graphql";
 import { gql } from "@apollo/client";
 import { useAuth } from "src/hooks/useAuth";
@@ -32,14 +30,10 @@ export default function ProjectsSidebar({ currentProject }: Props) {
 
   const isProjectMine = (project: ProjectDetails) => ledProjectIds.includes(project.id);
 
-  const getProjectsForSidebarQuery = useHasuraQuery<GetProjectsForSidebarQuery>(
-    GET_PROJECTS_FOR_SIDEBAR_QUERY,
-    HasuraUserRole.RegisteredUser,
-    {
-      variables: { ledProjectIds, githubUserId },
-      skip: !isLoggedIn,
-    }
-  );
+  const getProjectsForSidebarQuery = useGetProjectsForSidebarQuery({
+    variables: { ledProjectIds, githubUserId },
+    skip: !isLoggedIn,
+  });
 
   const projects =
     getProjectsForSidebarQuery?.data?.projects

@@ -1,10 +1,8 @@
 import { gql } from "@apollo/client";
-import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { useAuth } from "src/hooks/useAuth";
-import { HasuraUserRole } from "src/types";
 import QueryWrapper from "src/components/QueryWrapper";
 import ProfileForm from "./components/ProfileForm";
-import { ProfileQuery, UserPayoutSettingsFragmentDoc } from "src/__generated/graphql";
+import { UserPayoutSettingsFragmentDoc, useProfileQuery } from "src/__generated/graphql";
 import { useIntl } from "src/hooks/useIntl";
 import { useNavigate, useLocation } from "react-router-dom";
 import { RoutePaths } from "src/App";
@@ -16,7 +14,7 @@ import usePayoutSettings from "src/hooks/usePayoutSettings";
 const Profile: React.FC = () => {
   const { isLoggedIn, githubUserId, user } = useAuth();
   const { T } = useIntl();
-  const getProfileQuery = useHasuraQuery<ProfileQuery>(GET_PROFILE_QUERY, HasuraUserRole.RegisteredUser, {
+  const getProfileQuery = useProfileQuery({
     skip: !isLoggedIn || !user?.id,
     variables: { userId: user?.id },
     fetchPolicy: "network-only",

@@ -2,11 +2,9 @@ import { gql } from "@apollo/client";
 import { useLocation } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import { useAuth } from "src/hooks/useAuth";
-import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { useIntl } from "src/hooks/useIntl";
 import { SessionMethod, useSessionDispatch } from "src/hooks/useSession";
-import { HasuraUserRole } from "src/types";
-import { GetPaymentRequestIdsQuery } from "src/__generated/graphql";
+import { useGetPaymentRequestIdsQuery } from "src/__generated/graphql";
 import View from "./View";
 import { useImpersonationClaims } from "src/hooks/useImpersonationClaims";
 
@@ -18,14 +16,10 @@ export default function Header() {
   const { impersonationSet } = useImpersonationClaims();
   const impersonating = !!impersonationSet;
 
-  const { data: paymentRequestIdsQueryData } = useHasuraQuery<GetPaymentRequestIdsQuery>(
-    GET_MY_CONTRIBUTION_IDS_QUERY,
-    HasuraUserRole.RegisteredUser,
-    {
-      variables: { githubUserId },
-      skip: !githubUserId,
-    }
-  );
+  const { data: paymentRequestIdsQueryData } = useGetPaymentRequestIdsQuery({
+    variables: { githubUserId },
+    skip: !githubUserId,
+  });
   const hasPayments =
     paymentRequestIdsQueryData?.paymentRequests && paymentRequestIdsQueryData.paymentRequests.length > 0;
 

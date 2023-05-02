@@ -1,15 +1,11 @@
 import { chain, some } from "lodash";
 import { useMemo } from "react";
 import {
-  GetPaidWorkItemsDocument,
-  GetPaidWorkItemsQuery,
   GithubIssueDetailsFragment,
-  SearchIssuesDocument,
-  SearchIssuesQuery,
   Type,
+  useGetPaidWorkItemsQuery,
+  useSearchIssuesQuery,
 } from "src/__generated/graphql";
-import { useHasuraQuery } from "src/hooks/useHasuraQuery";
-import { HasuraUserRole } from "src/types";
 import { daysFromNow } from "src/utils/date";
 import { SEARCH_MAX_DAYS_COUNT } from "src/pages/ProjectDetails/Payments/PaymentForm";
 import { WorkItem } from "src/components/GithubIssue";
@@ -20,17 +16,13 @@ type Props = {
 };
 
 export default function useUnpaidIssues({ projectId, authorId }: Props) {
-  const getPaidItemsQuery = useHasuraQuery<GetPaidWorkItemsQuery>(
-    GetPaidWorkItemsDocument,
-    HasuraUserRole.RegisteredUser,
-    {
-      variables: { projectId },
-    }
-  );
+  const getPaidItemsQuery = useGetPaidWorkItemsQuery({
+    variables: { projectId },
+  });
 
   const createdSince = useMemo(() => daysFromNow(SEARCH_MAX_DAYS_COUNT), [daysFromNow, SEARCH_MAX_DAYS_COUNT]);
 
-  const searchPrQuery = useHasuraQuery<SearchIssuesQuery>(SearchIssuesDocument, HasuraUserRole.RegisteredUser, {
+  const searchPrQuery = useSearchIssuesQuery({
     variables: {
       projectId,
       authorId,

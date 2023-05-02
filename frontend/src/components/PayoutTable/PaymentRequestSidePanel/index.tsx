@@ -1,9 +1,8 @@
 import { gql } from "@apollo/client";
 import { useAuth } from "src/hooks/useAuth";
-import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import usePayoutSettings from "src/hooks/usePayoutSettings";
-import { HasuraUserRole, PaymentStatus } from "src/types";
-import { IssueDetailsFragmentDoc, PaymentRequestDetailsQuery } from "src/__generated/graphql";
+import { PaymentStatus } from "src/types";
+import { IssueDetailsFragmentDoc, usePaymentRequestDetailsQuery } from "src/__generated/graphql";
 import View from "./View";
 import usePaymentRequests from "src/hooks/usePaymentRequests";
 import { useShowToaster } from "src/hooks/useToaster";
@@ -19,14 +18,10 @@ type Props = {
 
 export default function PaymentRequestSidePanel({ projectId, paymentId, projectLeaderView, setOpen, ...props }: Props) {
   const { user, githubUserId } = useAuth();
-  const { data, loading } = useHasuraQuery<PaymentRequestDetailsQuery>(
-    GET_PAYMENT_REQUEST_DETAILS,
-    HasuraUserRole.RegisteredUser,
-    {
-      variables: { id: paymentId },
-      skip: !githubUserId || !user,
-    }
-  );
+  const { data, loading } = usePaymentRequestDetailsQuery({
+    variables: { id: paymentId },
+    skip: !githubUserId || !user,
+  });
 
   const showToaster = useShowToaster();
   const { T } = useIntl();
@@ -44,7 +39,7 @@ export default function PaymentRequestSidePanel({ projectId, paymentId, projectL
 
   const onPaymentCancel = () =>
     cancelPaymentRequest({
-      variables: { paymentId },
+      variables: { projectId, paymentId },
       onCompleted: () => {
         setOpen(false);
         showToaster(T("payment.form.cancelled"));
@@ -69,7 +64,7 @@ export default function PaymentRequestSidePanel({ projectId, paymentId, projectL
   );
 }
 
-const GET_PAYMENT_REQUEST_DETAILS = gql`
+gql`
   ${IssueDetailsFragmentDoc}
   fragment PaymentRequestDetails on PaymentRequests {
     id
