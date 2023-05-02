@@ -88,6 +88,6 @@ test.describe("As an anonymous user, I", () => {
       queryAsAnonymous<GetPaymentsQuery, GetPaymentsQueryVariables>({
         query: GetPaymentsDocument,
       })
-    ).rejects.toThrow("field 'recipient' not found in type: 'PaymentRequests'");
+    ).rejects.toThrow("field 'accessToken' not found in type: 'AuthGithubUsers'");
   });
 });
