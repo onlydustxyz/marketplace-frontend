@@ -1,13 +1,13 @@
 import { gql, useSuspenseQuery_experimental } from "@apollo/client";
 import { sortBy } from "lodash";
 import { useMemo } from "react";
-import ProjectCard, { PROJECT_CARD_FRAGMENT } from "src/components/ProjectCard";
+import ProjectCard from "src/components/ProjectCard";
 import { useAuth } from "src/hooks/useAuth";
 import { isProjectVisible } from "src/utils/project";
 import { Ownership as ProjectOwnership, useProjectFilter } from "src/pages/Projects/useProjectFilter";
 import AllProjectsFallback from "./AllProjectsFallback";
 import { contextWithCacheHeaders } from "src/utils/headers";
-import { GetProjectsQuery } from "src/__generated/graphql";
+import { GetProjectsQuery, ProjectCardFieldsFragmentDoc } from "src/__generated/graphql";
 
 export default function AllProjects() {
   const { ledProjectIds, githubUserId, isLoggedIn } = useAuth();
@@ -60,7 +60,7 @@ const buildQueryFilters = (technologies: string[], sponsors: string[]) => {
 };
 
 export const buildGetProjectsQuery = (technologies: string[], sponsors: string[]) => gql`
-  ${PROJECT_CARD_FRAGMENT}
+  ${ProjectCardFieldsFragmentDoc}
   query GetProjects($languages: [String!], $sponsors: [String!]) {
     projects(${buildQueryFilters(technologies, sponsors)}orderBy: {budgetsAggregate: {sum: {spentAmount: DESC}}}) {
       ...ProjectCardFields
