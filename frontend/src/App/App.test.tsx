@@ -26,6 +26,7 @@ import {
   GetProjectsForSidebarQueryResult,
   GetProjectsQueryResult,
   GetUserPayoutSettingsDocument,
+  GetUserPayoutSettingsQueryResult,
   PendingProjectLeaderInvitationsDocument,
   PendingProjectLeaderInvitationsQueryResult,
   PendingUserPaymentsDocument,
@@ -405,15 +406,19 @@ const paymentRequestsMock = {
           workItems: [
             {
               __typename: "WorkItems",
+              paymentId: "705e6b37-d0ee-4e87-b681-7009dd691965",
               repoId: 123456,
               issueNumber: 123,
             },
           ],
+          invoiceReceivedAt: null,
           budget: {
             id: "budget-1",
             project: {
               id: "632d5da7-e590-4815-85ea-82a5585e6049",
               projectDetails: {
+                __typename: "ProjectDetails",
+                projectId: "632d5da7-e590-4815-85ea-82a5585e6049",
                 shortDescription: "SOOOOOO awesome",
                 logoUrl: null,
                 name: "MyAwesomeProject",
@@ -435,16 +440,23 @@ const payoutSettingsMock = {
     data: {
       authGithubUsers: [
         {
+          __typename: "AuthGithubUsers",
+          userId: TEST_USER_ID,
           user: {
+            __typename: "users",
+            id: TEST_USER_ID,
             userInfo: {
               __typename: "UserInfo",
+              userId: TEST_USER_ID,
+              identity: null,
+              location: null,
               payoutSettings: null,
               arePayoutSettingsValid: false,
             } as UserPayoutSettingsFragment,
           },
         },
       ],
-    },
+    } as GetUserPayoutSettingsQueryResult["data"],
   },
 };
 
