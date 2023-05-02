@@ -3,6 +3,13 @@
 SCRIPT_DIR=`readlink -f $0 | xargs dirname`
 . $SCRIPT_DIR/utils.sh
 
+FROM_ENV=
+TO_ENV=
+
+check_args() {
+    [[ -z $FROM_ENV ||  -z $TO_ENV ]] && exit_error "Invalid arguments, you must specify at least --staging or --production flag"
+}
+
 check_uptodate_with_main() {
     current_branch=`git branch --show-current`
     [ $current_branch != "main" ] && exit_error "You are not on 'main' branch"
@@ -23,16 +30,16 @@ slug_commit() {
 
 deploy_backends() {
     log_info "Creating DB backup..."
-    execute heroku pg:backups:capture -a od-hasura-production
+    execute heroku pg:backups:capture -a od-hasura-$TO_ENV
 
     log_info "Retrieving apps infos..."
-    staging_commit=`slug_commit od-api-staging`
-    production_commit=`slug_commit od-api-production`
+    from_commit=`slug_commit od-api-$FROM_ENV`
+    to_commit=`slug_commit od-api-$TO_ENV`
 
-    print "Checking diff from $production_commit to $staging_commit"
+    print "Checking diff from $to_commit to $from_commit"
 
-    log_info "Checking diff to be loaded in production"
-    git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' $production_commit..$staging_commit | tee
+    log_info "Checking diff to be loaded in $TO_ENV"
+    git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' $to_commit..$from_commit | tee
 
     echo
     ask "OK to continue"
@@ -45,7 +52,7 @@ deploy_backends() {
         # 5. event-store: to handle new events
         for app in github-proxy dusty-bot api event-listeners event-store
         do
-            execute heroku pipelines:promote --app od-$app-staging --to od-$app-production
+            execute heroku pipelines:promote --app od-$app-$FROM_ENV --to od-$app-$TO_ENV
         done
 
         while [[ "$(curl -s -o /dev/null -L -w ''%{http_code}'' api.onlydust.xyz/health)" != "200" ]]
@@ -55,10 +62,10 @@ deploy_backends() {
         done
 
         log_info Checking events sanity
-        heroku run -a od-api-production events_sanity_checks
+        heroku run -a od-api-$TO_ENV events_sanity_checks
 
         log_info "Checking diff in environment variables"
-        GIT_DIFF_CMD="git diff $production_commit..$staging_commit -- docker-compose.yml .env.example"
+        GIT_DIFF_CMD="git diff $to_commit..$from_commit -- docker-compose.yml .env.example"
         DIFF=`eval $GIT_DIFF_CMD`
         if [ -n "$DIFF" ]; then
             execute $GIT_DIFF_CMD
@@ -68,11 +75,41 @@ deploy_backends() {
         fi
 
         log_info "Reloading hasura metadata"
-        heroku run -a od-api-production hasura metadata apply --skip-update-check
-        heroku run -a od-api-production hasura metadata reload --skip-update-check
+        heroku run -a od-api-$TO_ENV hasura metadata apply --skip-update-check
+        heroku run -a od-api-$TO_ENV hasura metadata reload --skip-update-check
     fi
 }
 
+usage() {
+  echo "Usage: $0 [ --staging | --production ]"
+  echo "  --staging         Promote to staging"
+  echo "  --production      Promote to production"
+  echo ""
+}
+
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    --staging)
+      FROM_ENV=develop
+      TO_ENV=staging
+      shift
+      ;;
+    --production)
+      FROM_ENV=staging
+      TO_ENV=production
+      shift
+      ;;
+    --help | -h)
+      usage
+      exit 0
+      ;;
+    *)
+      exit_error "Error: unrecognized option '$1'"
+      ;;
+  esac
+done
+
+check_args
 check_command git
 check_command heroku
 check_command vercel
@@ -85,11 +122,13 @@ if [ $? -eq 0 ]; then
     deploy_backends
 fi
 
-ask "Do you want to deploy the frontend"
-if [ $? -eq 0 ]; then
-    execute vercel pull --environment production
-    execute vercel build --prod
-    execute vercel deploy --prod --prebuilt
+if [ $TO_ENV = "production" ]; then
+    ask "Do you want to deploy the frontend"
+    if [ $? -eq 0 ]; then
+        execute vercel pull --environment $TO_ENV
+        execute vercel build --prod
+        execute vercel deploy --prod --prebuilt
+    fi
 fi
 
 log_info "📌 Do not forget to promote Retool apps 😉"
