@@ -5,7 +5,8 @@ import { withRouter } from "storybook-addon-react-router-v6";
 import { SuspenseCache } from "@apollo/client";
 import { MockedProvider } from "@apollo/client/testing";
 
-import FeedbackButton, { GET_USER_IDENTITY_QUERY } from ".";
+import FeedbackButton from ".";
+import { UserIdentityDocument } from "src/__generated/graphql";
 
 export default {
   title: "FeedbackButton",
@@ -39,7 +40,7 @@ const MockAuthProvider = ({ children }: { children: React.ReactNode }) => {
 const mocks = [
   {
     request: {
-      query: GET_USER_IDENTITY_QUERY,
+      query: UserIdentityDocument,
       variables: { userId: USER_ID },
     },
     result: {

@@ -40,7 +40,7 @@ export default function Header() {
   );
 }
 
-export const GET_MY_CONTRIBUTION_IDS_QUERY = gql`
+gql`
   query GetPaymentRequestIds($githubUserId: bigint!) {
     paymentRequests(where: { recipientId: { _eq: $githubUserId } }) {
       id

@@ -10,10 +10,10 @@ import { MockedProvider } from "@apollo/client/testing";
 import { LOCAL_STORAGE_TOKEN_SET_KEY, TokenSetProvider } from "src/hooks/useTokenSet";
 import { SessionProvider } from "src/hooks/useSession";
 import { ToasterProvider } from "src/hooks/useToaster";
-import { GET_MY_CONTRIBUTION_IDS_QUERY } from "./Header";
 import { useRoles } from "src/hooks/useAuth/useRoles";
 import { HasuraUserRole } from "src/types";
 import { ImpersonationClaimsProvider } from "src/hooks/useImpersonationClaims";
+import { GetPaymentRequestIdsDocument } from "src/__generated/graphql";
 
 expect.extend(matchers);
 
@@ -45,7 +45,7 @@ vi.mock("src/hooks/useAuth/useRoles");
 
 const buildMockPaymentsQuery = (githubUserId: number, paymentRequests: Record<string, unknown>[] = []) => ({
   request: {
-    query: GET_MY_CONTRIBUTION_IDS_QUERY,
+    query: GetPaymentRequestIdsDocument,
     variables: {
       githubUserId,
     },
@@ -72,7 +72,7 @@ describe('"Layout" component', () => {
 
     const queryMock = {
       request: {
-        query: GET_MY_CONTRIBUTION_IDS_QUERY,
+        query: GetPaymentRequestIdsDocument,
         variables: {
           githubUserId,
         },

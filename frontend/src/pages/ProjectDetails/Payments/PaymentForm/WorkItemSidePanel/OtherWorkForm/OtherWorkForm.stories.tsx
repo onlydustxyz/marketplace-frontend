@@ -1,10 +1,9 @@
 import { MockedProvider, MockedResponse } from "@apollo/client/testing";
 import { FormProvider, useForm } from "react-hook-form";
-import { GET_USER_IDENTITY_QUERY } from "src/App/Layout/Header/FeedbackButton";
 import { AuthContext, AuthContextType } from "src/hooks/useAuth";
 import { ToasterProvider } from "src/hooks/useToaster";
 import { User } from "src/types";
-import { GetProjectReposDocument, GetProjectReposQueryResult } from "src/__generated/graphql";
+import { GetProjectReposDocument, GetProjectReposQueryResult, UserIdentityDocument } from "src/__generated/graphql";
 import OtherWorkForm from ".";
 
 export default {
@@ -45,7 +44,7 @@ const MockAuthProvider = ({ children }: { children: React.ReactNode }) => {
 const mocks: MockedResponse[] = [
   {
     request: {
-      query: GET_USER_IDENTITY_QUERY,
+      query: UserIdentityDocument,
       variables: { userId: USER_ID },
     },
     result: {

@@ -44,14 +44,12 @@ export default function View({ id, name, htmlUrl, description, languages, stars,
   );
 }
 
-export const GITHUB_REPO_STATIC_DETAILS_FRAGMENT = gql`
+gql`
   fragment GithubRepoStaticDetails on GithubRepoDetails {
     id
     languages
   }
-`;
 
-export const GITHUB_REPO_DYNAMIC_DETAILS_FRAGMENT = gql`
   fragment GithubRepoDynamicDetails on Repo {
     id
     owner

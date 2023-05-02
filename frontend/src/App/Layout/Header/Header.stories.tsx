@@ -3,12 +3,12 @@ import { RoutePaths } from "src/App";
 import { AuthContext, AuthContextType } from "src/hooks/useAuth";
 import { User } from "src/types";
 import { withRouter } from "storybook-addon-react-router-v6";
-import { GET_USER_IDENTITY_QUERY } from "./FeedbackButton";
 import { SuspenseCache } from "@apollo/client";
 import { MockedProvider } from "@apollo/client/testing";
 
 import Header from "./View";
 import { responsiveChromatic } from "src/test/utils";
+import { UserIdentityDocument } from "src/__generated/graphql";
 
 export default {
   title: "Header",
@@ -44,7 +44,7 @@ const MockAuthProvider = ({ children }: { children: React.ReactNode }) => {
 const mocks = [
   {
     request: {
-      query: GET_USER_IDENTITY_QUERY,
+      query: UserIdentityDocument,
       variables: { userId: USER_ID },
     },
     result: {
