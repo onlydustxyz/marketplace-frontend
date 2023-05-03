@@ -66,7 +66,7 @@ export default function PullRequestsView({
 
   const visibleItems = showIgnoredItems ? workItems : filter(workItems, { ignored: false });
 
-  const searchPattern = watch("search-issues");
+  const searchPattern = watch("search-prs");
   const filteredWorkItems = useFilteredWorkItems({ pattern: searchPattern, workItems: visibleItems });
 
   return (
