@@ -159,13 +159,20 @@ const SINGLE_PROJECT_RESULT: { data: GetProjectQueryResult["data"] } = {
           },
         },
       ],
-      pendingInvitations: [{ id: "invitation-id", githubUserId: TEST_GITHUB_USER_ID }],
+      pendingInvitations: [
+        { __typename: "PendingProjectLeaderInvitations", id: "invitation-id", githubUserId: TEST_GITHUB_USER_ID },
+      ],
       githubRepos: [
         {
           __typename: "ProjectGithubRepos",
           projectId: TEST_PROJECT_ID,
           githubRepoId: TEST_GITHUB_REPO_ID,
-          githubRepoDetails: null,
+          githubRepoDetails: {
+            __typename: "GithubRepoDetails",
+            id: TEST_GITHUB_REPO_ID,
+            content: null,
+            languages: [],
+          },
         },
       ],
       projectSponsors: [],
@@ -262,21 +269,13 @@ const graphQlMocks = [
   },
   {
     request: {
-      query: GetProjectDocument,
-      variables: {
-        id: TEST_PROJECT_ID,
-      },
-    },
-    result: SINGLE_PROJECT_RESULT,
-  },
-  {
-    request: {
       query: GetProjectsForSidebarDocument,
     },
     result: {
       data: {
         projects: [
           {
+            __typename: "Projects",
             id: TEST_PROJECT_ID,
             projectDetails: {
               projectId: TEST_PROJECT_ID,
@@ -286,14 +285,18 @@ const graphQlMocks = [
             pendingInvitations: [],
             githubRepos: [
               {
+                __typename: "ProjectGithubRepos",
                 projectId: TEST_PROJECT_ID,
                 githubRepoId: TEST_GITHUB_REPO_ID,
                 githubRepoDetails: {
+                  __typename: "GithubRepoDetails",
                   id: TEST_GITHUB_REPO_ID,
                   content: {
+                    __typename: "Repo",
                     id: TEST_GITHUB_REPO_ID,
                     contributors: [
                       {
+                        __typename: "User",
                         id: TEST_GITHUB_USER_ID,
                       },
                     ],
