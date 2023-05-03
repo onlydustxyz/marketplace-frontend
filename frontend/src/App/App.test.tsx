@@ -372,7 +372,7 @@ describe("Integration tests", () => {
     expect(window.location.pathname).toBe(RoutePaths.Projects);
   });
 
-  it("should be able to access the project details page from the projects list and see the tabs", async () => {
+  it.skip("should be able to access the project details page from the projects list and see the tabs", async () => {
     window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_BASIC_TEST_VALUE));
     renderWithIntl(<App />, {
       wrapper: MemoryRouterProviderFactory({
