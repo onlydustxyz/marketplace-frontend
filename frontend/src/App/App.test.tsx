@@ -111,9 +111,11 @@ const ALL_PROJECTS_RESULT: { data: GetProjectsQueryResult["data"] } = {
         },
         projectLeads: [
           {
+            __typename: "ProjectLeads",
             userId: TEST_USER_ID,
             projectId: TEST_PROJECT_ID,
             user: {
+              __typename: "users",
               id: TEST_USER_ID,
               displayName: TEST_PROJECT_LEAD_DISPLAY_NAME,
               avatarUrl: TEST_PROJECT_LEAD_AVATAR_URL,
@@ -121,10 +123,17 @@ const ALL_PROJECTS_RESULT: { data: GetProjectsQueryResult["data"] } = {
           },
         ],
         pendingInvitations: [],
-        githubRepos: [{ projectId: TEST_PROJECT_ID, githubRepoId: TEST_GITHUB_REPO_ID, githubRepoDetails: null }],
+        githubRepos: [
+          {
+            __typename: "ProjectGithubRepos",
+            projectId: TEST_PROJECT_ID,
+            githubRepoId: TEST_GITHUB_REPO_ID,
+            githubRepoDetails: null,
+          },
+        ],
         projectSponsors: [],
         budgetsAggregate: { aggregate: { sum: { spentAmount: 100, initialAmount: 1000 } } },
-        budgets: [{ id: "budget-1", paymentRequests: [] }],
+        budgets: [{ __typename: "Budgets", id: "budget-1", paymentRequests: [] }],
       },
     ],
   },
@@ -144,6 +153,7 @@ const SINGLE_PROJECT_RESULT: { data: GetProjectQueryResult["data"] } = {
         },
       },
       projectDetails: {
+        __typename: "ProjectDetails",
         name: TEST_PROJECT_NAME,
         telegramLink: TEST_TELEGRAM_LINK,
         shortDescription: TEST_DESCRIPTION,
@@ -164,9 +174,16 @@ const SINGLE_PROJECT_RESULT: { data: GetProjectQueryResult["data"] } = {
         },
       ],
       pendingInvitations: [{ id: "invitation-id", githubUserId: TEST_GITHUB_USER_ID }],
-      githubRepos: [{ projectId: TEST_PROJECT_ID, githubRepoId: TEST_GITHUB_REPO_ID, githubRepoDetails: null }],
+      githubRepos: [
+        {
+          __typename: "ProjectGithubRepos",
+          projectId: TEST_PROJECT_ID,
+          githubRepoId: TEST_GITHUB_REPO_ID,
+          githubRepoDetails: null,
+        },
+      ],
       projectSponsors: [],
-      budgets: [{ id: "budget-1", paymentRequests: [] }],
+      budgets: [{ __typename: "Budgets", id: "budget-1", paymentRequests: [] }],
     },
   },
 };
@@ -365,9 +382,15 @@ const pendingPaymentsMock = {
   result: {
     data: {
       user: {
+        __typename: "users",
+        id: TEST_USER_ID,
         githubUser: {
+          __typename: "AuthGithubUsers",
+          userId: TEST_USER_ID,
           paymentRequests: [
             {
+              __typename: "PaymentRequests",
+              id: "payment-1",
               amountInUsd: 100,
               paymentsAggregate: { aggregate: { sum: { amount: null } } },
             },
@@ -394,10 +417,12 @@ const paymentRequestsMock = {
           requestedAt: "2023-01-10T19:10:27.802657",
           payments: [
             {
+              __typename: "Payments",
               amount: 100,
               currencyCode: "USD",
             },
             {
+              __typename: "Payments",
               amount: 100,
               currencyCode: "USD",
             },
@@ -413,8 +438,10 @@ const paymentRequestsMock = {
           ],
           invoiceReceivedAt: null,
           budget: {
+            __typename: "Budgets",
             id: "budget-1",
             project: {
+              __typename: "Projects",
               id: "632d5da7-e590-4815-85ea-82a5585e6049",
               projectDetails: {
                 __typename: "ProjectDetails",
@@ -436,7 +463,7 @@ const payoutSettingsMock = {
     query: GetUserPayoutSettingsDocument,
     variables: { githubUserId: TEST_GITHUB_USER_ID },
   },
-  result: {
+  newData: () => ({
     data: {
       authGithubUsers: [
         {
@@ -457,7 +484,7 @@ const payoutSettingsMock = {
         },
       ],
     } as GetUserPayoutSettingsQueryResult["data"],
-  },
+  }),
 };
 
 Object.defineProperty(window, "innerWidth", { writable: true, configurable: true, value: 2000 });
