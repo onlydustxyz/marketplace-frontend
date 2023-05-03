@@ -6,7 +6,7 @@ use derive_new::new;
 use domain::{GithubFetchIssueService, GithubServiceFilters};
 use event_listeners::domain::{GithubEvent, GithubRepoIndex};
 
-use super::Result;
+use super::{error::IgnoreErrors, Result};
 
 #[derive(new)]
 pub struct Indexer {
@@ -26,7 +26,8 @@ impl super::Indexer for Indexer {
 		let events = self
 			.github_fetch_service
 			.issues_by_repo_id(repo_index.repo_id(), &filters)
-			.await?
+			.await
+			.ignore_non_fatal_errors()?
 			.into_iter()
 			.map(GithubEvent::Issue)
 			.collect();

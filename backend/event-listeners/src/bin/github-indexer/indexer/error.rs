@@ -1,5 +1,6 @@
 use domain::{GithubServiceError, PublisherError};
 use infrastructure::database::DatabaseError;
+use olog::error;
 use thiserror::Error;
 
 #[derive(Debug, Error)]
@@ -13,3 +14,24 @@ pub enum Error {
 }
 
 pub type Result<T> = std::result::Result<T, Error>;
+
+pub trait IgnoreErrors {
+	fn ignore_non_fatal_errors(self) -> Self;
+}
+
+impl<T: Default> IgnoreErrors for std::result::Result<T, GithubServiceError> {
+	fn ignore_non_fatal_errors(self) -> Self {
+		if let Err(error) = self {
+			return match error {
+				domain::GithubServiceError::NotFound(_)
+				| domain::GithubServiceError::InvalidInput(_)
+				| domain::GithubServiceError::MissingField(_) => {
+					error!(error = error.to_string(), "This error was ignored");
+					Ok(T::default())
+				},
+				domain::GithubServiceError::Other(_) => Err(error),
+			};
+		}
+		self
+	}
+}

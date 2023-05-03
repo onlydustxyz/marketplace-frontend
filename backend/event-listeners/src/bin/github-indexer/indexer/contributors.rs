@@ -5,7 +5,7 @@ use derive_new::new;
 use domain::GithubFetchRepoService;
 use event_listeners::domain::{GithubEvent, GithubRepoIndex};
 
-use super::Result;
+use super::{error::IgnoreErrors, Result};
 
 #[derive(new)]
 pub struct Indexer {
@@ -18,7 +18,8 @@ impl super::Indexer for Indexer {
 		let events = self
 			.github_fetch_service
 			.repo_contributors(repo_index.repo_id())
-			.await?
+			.await
+			.ignore_non_fatal_errors()?
 			.into_iter()
 			.map(GithubEvent::User)
 			.collect();
