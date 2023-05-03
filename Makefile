@@ -13,7 +13,7 @@ help:
 	@awk '/^# -+/{getline; sub(/^#[ ]+/, ""); section=$$0 "\n\n"; getline;} /^# /{sub(/^# /, ""); desc=$$0; getline; if ($$0 ~ /^[a-zA-Z0-9].*\/.*[^$#\\t=]*:([^=]|$$)|help|install/) {sub(/:.*/, ""); printf "%s%s  %-30s %s\n", (section != "" ? "\n" : ""), section, $$0, desc; section=""; getline}}' Makefile
 
 # Setups the dev whole dev environment
-install: install docker/re db/up db/update-remote-dump db/migrate db/load-fixtures hasura/start-clean-stop playwright/start-test-stop
+install: install/all docker/re db/up hasura/start-refresh-stop
 
 # ----------------------------------------------------------
 #                     Tools installation
