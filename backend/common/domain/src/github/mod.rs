@@ -1,8 +1,8 @@
 mod service;
 pub use service::{
 	filters as service_filters, Error as ServiceError, FetchIssueService, FetchRepoService,
-	FetchService, FetchUserService, IssueFilters as ServiceIssueFilters, Result as ServiceResult,
-	SearchService, SearchUserService, Service,
+	FetchService, FetchUserService, IssueFilters as ServiceIssueFilters, NotInFilters,
+	Result as ServiceResult, SearchService, SearchUserService, Service,
 };
 
 mod repo;

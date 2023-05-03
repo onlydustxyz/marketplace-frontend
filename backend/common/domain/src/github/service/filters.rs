@@ -1,4 +1,5 @@
 use chrono::{DateTime, Utc};
+use derive_new::new;
 use juniper::{GraphQLEnum, GraphQLInputObject};
 
 #[derive(Debug, Default, Clone, Copy, GraphQLInputObject)]
@@ -13,4 +14,9 @@ pub enum IssueState {
 	Open,
 	Closed,
 	All,
+}
+
+#[derive(Debug, Default, Clone, new)]
+pub struct NotInFilters<T> {
+	pub values: Vec<T>,
 }

@@ -3,7 +3,7 @@ use std::{fmt::Debug, future::ready, pin::Pin};
 use anyhow::anyhow;
 use domain::{
 	GithubIssueNumber, GithubRepoContributor, GithubRepoId, GithubRepoLanguages,
-	GithubServiceIssueFilters, GithubUserId, PositiveCount,
+	GithubServiceIssueFilters, GithubUserId, NotInFilters, PositiveCount,
 };
 use futures::{stream::empty, Stream, StreamExt, TryStreamExt};
 use octocrab::{
@@ -174,6 +174,7 @@ impl Client {
 	pub async fn get_contributors_by_repository_id(
 		&self,
 		id: &GithubRepoId,
+		filters: &NotInFilters<GithubUserId>,
 	) -> Result<Vec<GithubRepoContributor>, Error> {
 		let query_params = QueryParams::default().page(1).per_page(100);
 
@@ -190,6 +191,7 @@ impl Client {
 				100 * self.config().max_calls_per_request.map(PositiveCount::get).unwrap_or(3),
 			)
 			.await?
+			.filter_with(filters.clone())
 			.collect()
 			.await;
 		Ok(contributors)

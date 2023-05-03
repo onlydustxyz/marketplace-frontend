@@ -1,7 +1,7 @@
 use async_trait::async_trait;
 use domain::{
 	GithubFetchRepoService, GithubRepo, GithubRepoContributor, GithubRepoId, GithubRepoLanguages,
-	GithubServiceError, GithubServiceResult,
+	GithubServiceError, GithubServiceResult, GithubUserId, NotInFilters,
 };
 use tracing::instrument;
 
@@ -28,8 +28,9 @@ impl GithubFetchRepoService for github::Client {
 	async fn repo_contributors(
 		&self,
 		repo_id: &GithubRepoId,
+		filters: &NotInFilters<GithubUserId>,
 	) -> GithubServiceResult<Vec<GithubRepoContributor>> {
-		let users = self.get_contributors_by_repository_id(repo_id).await?;
+		let users = self.get_contributors_by_repository_id(repo_id, filters).await?;
 		Ok(users)
 	}
 }

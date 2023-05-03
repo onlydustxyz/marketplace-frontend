@@ -8,6 +8,7 @@ use derive_more::Constructor;
 use futures::{ready, Stream};
 use pin_project_lite::pin_project;
 
+mod contributors;
 mod issues;
 
 pub trait StreamFilterWith<F>: Stream
