@@ -69,6 +69,14 @@ diesel::table! {
 }
 
 diesel::table! {
+    github_user_indexes (user_id) {
+        user_id -> Int8,
+        last_indexed_time -> Nullable<Timestamp>,
+        is_registered -> Bool,
+    }
+}
+
+diesel::table! {
     github_users (id) {
         id -> Int8,
         login -> Text,
@@ -196,6 +204,7 @@ diesel::allow_tables_to_appear_in_same_query!(
     github_issues,
     github_repo_details,
     github_repo_indexes,
+    github_user_indexes,
     github_users,
     ignored_github_issues,
     payment_requests,

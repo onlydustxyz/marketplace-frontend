@@ -22,7 +22,7 @@ impl EventListener<GithubEvent> for Projector {
 			GithubEvent::PullRequest(issue) | GithubEvent::Issue(issue) => {
 				self.github_issues_repository.upsert(&issue.into())?;
 			},
-			GithubEvent::Repo(_) | GithubEvent::User(_) => (),
+			GithubEvent::Repo(_) | GithubEvent::User(_) | GithubEvent::NewContributor(_) => (),
 		}
 		Ok(())
 	}
