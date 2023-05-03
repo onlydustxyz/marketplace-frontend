@@ -37,7 +37,6 @@ import {
 } from "src/__generated/graphql";
 
 const AUTH_CODE_TEST_VALUE = "code";
-const LOGGING_IN_TEXT_QUERY = /logging in.../i;
 const TEST_USER_ID = "test-user-id";
 const TEST_GITHUB_USER_ID = 123456789;
 const TEST_USER_EMAIL = "test@user.email";
@@ -58,6 +57,13 @@ const TEST_PROJECT_LEAD_DISPLAY_NAME = "test-project-lead-display-name";
 const TEST_PROJECT_LEAD_AVATAR_URL = "http://foo.bar/plop.png";
 
 expect.extend(matchers);
+
+const mockedNavigate = vi.fn();
+
+vi.mock("react-router-dom", async () => {
+  const mod = await vi.importActual<typeof import("react-router-dom")>("react-router-dom");
+  return { ...mod, useNavigate: () => mockedNavigate };
+});
 
 const HASURA_TOKEN_BASIC_TEST_VALUE = {
   user: {
@@ -501,8 +507,7 @@ describe("Integration tests", () => {
         mocks: graphQlMocks,
       }),
     });
-    await screen.findAllByText(TEST_PROJECT_NAME);
-    expect(screen.queryByText(LOGGING_IN_TEXT_QUERY)).not.toBeInTheDocument();
+    await waitFor(() => expect(mockedNavigate).toHaveBeenCalledWith(RoutePaths.Projects));
   });
 
   it("should be able to access the profile page and display profile info when having a token in local storage", async () => {
@@ -559,7 +564,7 @@ describe("Integration tests", () => {
     });
     userEvent.click(await screen.findByTestId(PROFILE_BUTTON_TEST_ID));
     userEvent.click(await screen.findByTestId(LOGOUT_BUTTON_TEST_ID));
-    await screen.findAllByText(TEST_PROJECT_NAME);
+    await waitFor(() => expect(mockedNavigate).toHaveBeenCalledWith(RoutePaths.Projects));
   });
 
   it("should redirect to project details with pending invitation at first sign-in", async () => {
@@ -569,10 +574,14 @@ describe("Integration tests", () => {
         mocks: [...graphQlMocks, pendingProjectLeadInvitationMock],
       }),
     });
-    await screen.findByTestId("accept-invite-button");
+    await waitFor(() =>
+      expect(mockedNavigate).toHaveBeenCalledWith(
+        generatePath(RoutePaths.ProjectDetails, { projectId: TEST_PROJECT_ID })
+      )
+    );
   });
 
-  it("should redirect to profile page if pending payments and missing payout info at first sign-in", async () => {
+  it("should redirect to payments page if pending payments and missing payout info at first sign-in", async () => {
     window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_WITH_VALID_JWT_TEST_VALUE));
     renderWithIntl(<App />, {
       wrapper: MemoryRouterProviderFactory({
@@ -580,7 +589,7 @@ describe("Integration tests", () => {
         mocks: [...graphQlMocks, pendingPaymentsMock, paymentRequestsMock, payoutSettingsMock],
       }),
     });
-    await screen.findByText("MyAwesomeProject");
+    await waitFor(() => expect(mockedNavigate).toHaveBeenCalledWith(RoutePaths.Payments));
   });
 
   it("should redirect to last visited page if not first sign-in", async () => {
@@ -598,6 +607,10 @@ describe("Integration tests", () => {
         mocks: graphQlMocks,
       }),
     });
-    await screen.findByTestId("accept-invite-button");
+    await waitFor(() =>
+      expect(mockedNavigate).toHaveBeenCalledWith(
+        generatePath(RoutePaths.ProjectDetails, { projectId: TEST_PROJECT_ID })
+      )
+    );
   });
 });
