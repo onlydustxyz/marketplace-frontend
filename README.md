@@ -13,9 +13,10 @@
     <a href="https://codecov.io/gh/onlydustxyz/marketplace" > 
         <img src="https://img.shields.io/codecov/c/gh/onlydustxyz/marketplace?style=for-the-badge&token=BCU5QG0IFJ"/>
     </a>
+    <img src="https://github.com/onlydustxyz/marketplace/actions/workflows/install.yml/badge.svg" />
   </p>
   
-  <h3 align="center">Backend services monorepo to operate the contribution marketplace.</h3>
+  <h3 align="center">Marketplace monorepo</h3>
 
 </h3>
 </div>
@@ -33,11 +34,15 @@
 
 [Data Diagram](./doc/data_diagram.md)
 
-# 📡 Backend
+# Development
 
 ## 🎗️ Prerequisites
 
-### 1. Setup your environment
+- [rust](https://www.rust-lang.org/tools/install)
+- [yarn](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable)
+- [docker](https://docs.docker.com/get-docker/)
+
+## 📦 Installation
 
 ```
 cp .env.example .env
@@ -45,35 +50,18 @@ cp .env.example .env
 
 Then modify the values tagged with `REPLACE_AT_INSTALLATION` according to your personal accounts.
 
-### 2. Start the docker stack
-
-Make sure `docker` is installed (see [Installation instructions](https://docs.docker.com/get-docker/)).
+You can now run the project installation script:
 
 ```
-docker compose up -d
-```
-
-### 3. Setup the database
-
-Make sure `Diesel CLI` is installed (see [installation instructions](https://diesel.rs/guides/getting-started)):
-
-Then, use `Diesel` to initialize the data model and the database:
-
-```
-source .env
-diesel setup
-diesel migration run
-```
-
-## 📦 Installation
-
-To build the project, run the following command:
-
-```
-cargo build
+make install
 ```
 
 ## 🔬 Usage
+
+List all available commands:
+```
+make
+```
 
 Below are some examples of usage.
 
@@ -107,7 +95,53 @@ For convenience, some commands are available from the root of the repo:
 make hasura/start # Apply metadata and start the console
 ```
 
+### 🔬 Frontend
+
+To run in development mode
+
+```bash
+yarn dev
+```
+
+To run in development mode with a the staging backend
+
+```bash
+yarn dev --mode staging
+```
+
+#### 🛠 Build
+
+```bash
+yarn build
+```
+
+To run build locally :
+
+```bash
+yarn preview
+```
+
+### 📚 Storybook
+
+To view components in isolation using [Storybook](https://storybook.js.org/)
+
+```bash
+yarn storybook
+```
+
+### 🕸 GraphQL codegen
+
+To generate types from the Hasura GraphQL schema during development
+
+```bash
+yarn generate --watch
+```
+
+Use the `HASURA_URL` and `HASURA_SECRET_KEY` environment variables to connect to a custom Hasura environment
+
 ## 🌡️ Testing
+
+### Backend
 
 Make sure the docker is up and running.
 Then run the following command:
@@ -116,9 +150,16 @@ Then run the following command:
 cargo test
 ```
 
+### Frontend unit/integration
+
+```bash
+yarn test
+```
+
 ### End-to-end testing
 
 ```
+make app/background-start
 make playwright/test
 ```
 
@@ -169,74 +210,6 @@ $~ heroku drains --json --app onlydust-backend-production
 ]
 ```
 
-# 📺 Frontend
-
-## 🎟️ Description
-
-This repository contains the code for the OnlyDust marketplace frontend.
-
-## 🎗️ Prerequisites
-
-Install [yarn](https://classic.yarnpkg.com/en/docs/install).
-
-## 📦 Installation
-
-```bash
-yarn install
-```
-
-## 🔬 Usage
-
-To run in development mode
-
-```bash
-yarn dev
-```
-
-To run in development mode with a the staging backend
-
-```bash
-yarn dev --mode staging
-```
-
-### 📚 Storybook
-
-To view components in isolation using [Storybook](https://storybook.js.org/)
-
-```bash
-yarn storybook
-```
-
-### 🕸 GraphQL codegen
-
-To generate types from the Hasura GraphQL schema during development
-
-```bash
-yarn generate --watch
-```
-
-Use the `HASURA_URL` and `HASURA_SECRET_KEY` environment variables to connect to a custom Hasura environment
-
-## 🌡️ Testing
-
-### Unit/integration
-
-```bash
-yarn test
-```
-
-## 🛠 Build
-
-```bash
-yarn build
-```
-
-To run build locally :
-
-```bash
-yarn preview
-```
-
 # 📄 License
 
 **marketplace** is released under [MIT](LICENSE).
@@ -244,3 +217,4 @@ yarn preview
 # Acknowledgements
 
 This project is tested with BrowserStack.
+
