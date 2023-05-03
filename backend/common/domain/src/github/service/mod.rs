@@ -9,7 +9,7 @@ mod search;
 pub use search::{Service as SearchService, UserService as SearchUserService};
 
 pub mod filters;
-pub use filters::Filters;
+pub use filters::IssueFilters;
 use thiserror::Error;
 
 #[derive(Debug, Error)]

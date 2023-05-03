@@ -3,7 +3,7 @@ use std::sync::Arc;
 use async_trait::async_trait;
 use chrono::Utc;
 use derive_new::new;
-use domain::{GithubFetchIssueService, GithubServiceFilters};
+use domain::{GithubFetchIssueService, GithubServiceIssueFilters};
 use event_listeners::domain::{GithubEvent, GithubRepoIndex};
 
 use super::{error::IgnoreErrors, Result};
@@ -16,7 +16,7 @@ pub struct Indexer {
 #[async_trait]
 impl super::Indexer for Indexer {
 	async fn index(&self, repo_index: GithubRepoIndex) -> Result<Vec<GithubEvent>> {
-		let filters = GithubServiceFilters {
+		let filters = GithubServiceIssueFilters {
 			updated_since: repo_index
 				.last_indexed_time()
 				.and_then(|datetime| datetime.and_local_timezone(Utc).latest()),

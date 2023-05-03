@@ -51,7 +51,7 @@ pub use github::{
 	IssueType as GithubIssueType, Languages as GithubRepoLanguages, Repo as GithubRepo,
 	RepoId as GithubRepoId, SearchService as GithubSearchService,
 	SearchUserService as GithubSearchUserService, Service as GithubService,
-	ServiceError as GithubServiceError, ServiceFilters as GithubServiceFilters,
+	ServiceError as GithubServiceError, ServiceIssueFilters as GithubServiceIssueFilters,
 	ServiceResult as GithubServiceResult, User as GithubUser, UserId as GithubUserId,
 };
 

@@ -2,7 +2,7 @@ use std::{fmt::Debug, future::ready, pin::Pin};
 
 use anyhow::anyhow;
 use domain::{
-	GithubIssueNumber, GithubRepoId, GithubRepoLanguages, GithubServiceFilters, GithubUser,
+	GithubIssueNumber, GithubRepoId, GithubRepoLanguages, GithubServiceIssueFilters, GithubUser,
 	GithubUserId, PositiveCount,
 };
 use futures::{stream::empty, Stream, StreamExt, TryStreamExt};
@@ -235,7 +235,7 @@ impl Client {
 	pub async fn issues_by_repo_id(
 		&self,
 		id: &GithubRepoId,
-		filters: &GithubServiceFilters,
+		filters: &GithubServiceIssueFilters,
 	) -> Result<Vec<Issue>, Error> {
 		let sort = if filters.updated_since.is_some() {
 			Sort::Updated

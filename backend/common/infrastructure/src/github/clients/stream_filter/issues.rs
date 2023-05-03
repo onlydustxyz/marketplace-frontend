@@ -1,10 +1,10 @@
-use domain::GithubServiceFilters;
+use domain::GithubServiceIssueFilters;
 use octocrab::models::issues::Issue;
 
 use super::{Decision, Filter};
 
-impl Filter for Issue {
-	fn filter(self, filters: &GithubServiceFilters) -> Decision<Self> {
+impl Filter<GithubServiceIssueFilters> for Issue {
+	fn filter(self, filters: &GithubServiceIssueFilters) -> Decision<Self> {
 		if let Some(created_since) = filters.created_since {
 			if self.created_at < created_since {
 				// Found a pr created before `created_since`,
@@ -27,7 +27,6 @@ impl Filter for Issue {
 
 #[cfg(test)]
 mod tests {
-	use domain::github_service_filters::State;
 	use rstest::*;
 
 	use super::*;
@@ -81,7 +80,7 @@ mod tests {
 
 	#[rstest]
 	fn filter_by_created_since(issue: Issue) {
-		let filters = GithubServiceFilters {
+		let filters = GithubServiceIssueFilters {
 			created_since: "2023-03-10T10:00:00Z".parse().ok(),
 			..Default::default()
 		};
@@ -91,7 +90,7 @@ mod tests {
 
 	#[rstest]
 	fn filter_by_created_since_on_exact_date(issue: Issue) {
-		let filters = GithubServiceFilters {
+		let filters = GithubServiceIssueFilters {
 			created_since: "2023-04-18T13:15:05Z".parse().ok(),
 			..Default::default()
 		};
@@ -101,8 +100,7 @@ mod tests {
 
 	#[rstest]
 	fn end_stream_if_created_before(issue: Issue) {
-		let filters = GithubServiceFilters {
-			state: Some(State::Merged),
+		let filters = GithubServiceIssueFilters {
 			created_since: "2023-05-18T13:15:05Z".parse().ok(),
 			..Default::default()
 		};

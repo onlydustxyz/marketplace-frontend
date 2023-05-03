@@ -5,32 +5,30 @@ use std::{
 };
 
 use derive_more::Constructor;
-use domain::GithubServiceFilters;
 use futures::{ready, Stream};
 use pin_project_lite::pin_project;
 
 mod issues;
-mod pulls;
 
-pub trait StreamFilterWith: Stream
+pub trait StreamFilterWith<F>: Stream
 where
 	Self: Sized,
 {
-	fn filter_with(self, filters: GithubServiceFilters) -> FilterWith<Self> {
+	fn filter_with(self, filters: F) -> FilterWith<Self, F> {
 		FilterWith::new(self, filters)
 	}
 }
 
-impl<S: Stream> StreamFilterWith for S {}
+impl<S: Stream, F> StreamFilterWith<F> for S {}
 
 pin_project! {
 	#[derive(Constructor)]
 	#[must_use = "streams do nothing unless polled"]
-	pub struct FilterWith<St: Stream>
+	pub struct FilterWith<St: Stream, F>
 	{
 		#[pin]
 		stream: St,
-		filters: GithubServiceFilters,
+		filters: F,
 	}
 }
 
@@ -42,11 +40,11 @@ enum Decision<I> {
 	End, // Item is not valid, neither are the rest. End of the stream.
 }
 
-trait Filter: Sized {
-	fn filter(self, filters: &GithubServiceFilters) -> Decision<Self>;
+trait Filter<F>: Sized {
+	fn filter(self, filters: &F) -> Decision<Self>;
 }
 
-impl<St: Stream<Item = Item>, Item: Filter> Stream for FilterWith<St> {
+impl<F, St: Stream<Item = Item>, Item: Filter<F>> Stream for FilterWith<St, F> {
 	type Item = St::Item;
 
 	fn poll_next(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Option<St::Item>> {

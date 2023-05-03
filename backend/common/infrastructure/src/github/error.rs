@@ -29,10 +29,10 @@ impl From<octocrab::Error> for Error {
 						_ => Error::Other(anyhow!(error)),
 					};
 				}
-				return match source.status() {
+				match source.status() {
 					Some(status) if status == 404 => Error::NotFound(anyhow!(error)),
 					_ => Error::Other(anyhow!(error)),
-				};
+				}
 			},
 			octocrab::Error::GitHub {
 				source,
