@@ -21,7 +21,7 @@ impl super::Indexer for Indexer {
 			.await
 			.ignore_non_fatal_errors()?
 			.into_iter()
-			.map(|user| GithubEvent::NewContributor(*user.id()))
+			.map(|contributor| GithubEvent::NewContributor(*contributor.id()))
 			.collect();
 
 		Ok(events)
