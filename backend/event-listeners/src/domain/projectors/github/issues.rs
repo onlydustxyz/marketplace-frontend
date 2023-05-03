@@ -20,20 +20,17 @@ impl EventListener<GithubEvent> for Projector {
 	async fn on_event(&self, event: &GithubEvent) -> Result<(), SubscriberCallbackError> {
 		match event {
 			GithubEvent::PullRequest(issue) | GithubEvent::Issue(issue) => {
-				let issue = issue.clone().try_into().map_err(SubscriberCallbackError::Discard)?;
-				self.github_issues_repository.upsert(&issue)?;
+				self.github_issues_repository.upsert(&issue.into())?;
 			},
-			GithubEvent::Repo(_) => (),
+			GithubEvent::Repo(_) | GithubEvent::User(_) => (),
 		}
 		Ok(())
 	}
 }
 
-impl TryFrom<domain::GithubIssue> for GithubIssue {
-	type Error = anyhow::Error;
-
-	fn try_from(issue: domain::GithubIssue) -> anyhow::Result<Self> {
-		Ok(GithubIssue::new(
+impl From<&domain::GithubIssue> for GithubIssue {
+	fn from(issue: &domain::GithubIssue) -> Self {
+		GithubIssue::new(
 			*issue.id(),
 			*issue.repo_id(),
 			(*issue.number() as i64).into(),
@@ -45,6 +42,6 @@ impl TryFrom<domain::GithubIssue> for GithubIssue {
 			issue.title().clone(),
 			issue.html_url().to_string(),
 			issue.closed_at().map(|date| date.naive_utc()),
-		))
+		)
 	}
 }

@@ -69,6 +69,15 @@ diesel::table! {
 }
 
 diesel::table! {
+    github_users (id) {
+        id -> Int8,
+        login -> Text,
+        avatar_url -> Text,
+        html_url -> Text,
+    }
+}
+
+diesel::table! {
     ignored_github_issues (project_id, repo_id, issue_number) {
         project_id -> Uuid,
         repo_id -> Int8,
@@ -187,6 +196,7 @@ diesel::allow_tables_to_appear_in_same_query!(
     github_issues,
     github_repo_details,
     github_repo_indexes,
+    github_users,
     ignored_github_issues,
     payment_requests,
     payments,

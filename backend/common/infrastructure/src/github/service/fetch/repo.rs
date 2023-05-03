@@ -1,7 +1,7 @@
 use async_trait::async_trait;
 use domain::{
 	GithubFetchRepoService, GithubRepo, GithubRepoId, GithubRepoLanguages, GithubServiceError,
-	GithubServiceResult,
+	GithubServiceResult, GithubUser,
 };
 use tracing::instrument;
 
@@ -22,5 +22,14 @@ impl GithubFetchRepoService for github::Client {
 	async fn repo_languages(&self, id: &GithubRepoId) -> GithubServiceResult<GithubRepoLanguages> {
 		let languages = self.get_languages_by_repository_id(id).await?;
 		Ok(languages)
+	}
+
+	#[instrument(skip(self))]
+	async fn repo_contributors(
+		&self,
+		repo_id: &GithubRepoId,
+	) -> GithubServiceResult<Vec<GithubUser>> {
+		let users = self.get_contributors_by_repository_id(repo_id).await?;
+		Ok(users)
 	}
 }
