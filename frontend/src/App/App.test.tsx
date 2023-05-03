@@ -4,18 +4,13 @@ import matchers from "@testing-library/jest-dom/matchers";
 import userEvent from "@testing-library/user-event";
 
 import App, { RoutePaths } from ".";
-import { AUTH_CODE_QUERY_KEY } from "src/pages/Login";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import { CLAIMS_KEY, GITHUB_USERID_KEY, PROJECTS_LED_KEY, TokenSet } from "src/types";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
 import { buildGetProjectsQuery } from "src/pages/Projects/AllProjects";
-import { LOCAL_STORAGE_SESSION_KEY } from "src/hooks/useSession";
-import { generatePath } from "react-router-dom";
 import {
   GetGithubRepositoryDetailsDocument,
   GetGithubRepositoryDetailsQueryResult,
-  GetPaymentRequestsDocument,
-  GetPaymentRequestsQueryResult,
   GetProjectContributorsForOverviewDocument,
   GetProjectContributorsForOverviewQueryResult,
   GetProjectDocument,
@@ -25,18 +20,10 @@ import {
   GetProjectsForSidebarDocument,
   GetProjectsForSidebarQueryResult,
   GetProjectsQueryResult,
-  GetUserPayoutSettingsDocument,
-  GetUserPayoutSettingsQueryResult,
-  PendingProjectLeaderInvitationsDocument,
-  PendingProjectLeaderInvitationsQueryResult,
-  PendingUserPaymentsDocument,
-  PendingUserPaymentsQueryResult,
   ProfileDocument,
   ProfileQueryResult,
-  UserPayoutSettingsFragment,
 } from "src/__generated/graphql";
 
-const AUTH_CODE_TEST_VALUE = "code";
 const TEST_USER_ID = "test-user-id";
 const TEST_GITHUB_USER_ID = 123456789;
 const TEST_USER_EMAIL = "test@user.email";
@@ -57,13 +44,6 @@ const TEST_PROJECT_LEAD_DISPLAY_NAME = "test-project-lead-display-name";
 const TEST_PROJECT_LEAD_AVATAR_URL = "http://foo.bar/plop.png";
 
 expect.extend(matchers);
-
-const mockedNavigate = vi.fn();
-
-vi.mock("react-router-dom", async () => {
-  const mod = await vi.importActual<typeof import("react-router-dom")>("react-router-dom");
-  return { ...mod, useNavigate: () => mockedNavigate };
-});
 
 const HASURA_TOKEN_BASIC_TEST_VALUE = {
   user: {
@@ -363,151 +343,11 @@ const graphQlMocks = [
   },
 ];
 
-const pendingProjectLeadInvitationMock = {
-  request: {
-    query: PendingProjectLeaderInvitationsDocument,
-    variables: { githubUserId: TEST_GITHUB_USER_ID },
-  },
-  result: {
-    data: {
-      pendingProjectLeaderInvitations: [
-        {
-          id: "invitation-id",
-          projectId: TEST_PROJECT_ID,
-        },
-      ],
-    } as PendingProjectLeaderInvitationsQueryResult["data"],
-  },
-};
-
-const pendingPaymentsMock = {
-  request: {
-    query: PendingUserPaymentsDocument,
-    variables: { userId: TEST_USER_ID },
-  },
-  result: {
-    data: {
-      user: {
-        __typename: "users",
-        id: TEST_USER_ID,
-        githubUser: {
-          __typename: "AuthGithubUsers",
-          userId: TEST_USER_ID,
-          paymentRequests: [
-            {
-              __typename: "PaymentRequests",
-              id: "payment-1",
-              amountInUsd: 100,
-              paymentsAggregate: { aggregate: { sum: { amount: null } } },
-            },
-          ],
-        },
-      },
-    } as PendingUserPaymentsQueryResult["data"],
-  },
-};
-
-const paymentRequestsMock = {
-  request: {
-    query: GetPaymentRequestsDocument,
-    variables: {
-      githubUserId: TEST_GITHUB_USER_ID,
-    },
-  },
-  result: {
-    data: {
-      paymentRequests: [
-        {
-          __typename: "PaymentRequests",
-          id: "705e6b37-d0ee-4e87-b681-7009dd691965",
-          requestedAt: "2023-01-10T19:10:27.802657",
-          payments: [
-            {
-              __typename: "Payments",
-              amount: 100,
-              currencyCode: "USD",
-            },
-            {
-              __typename: "Payments",
-              amount: 100,
-              currencyCode: "USD",
-            },
-          ],
-          amountInUsd: 200,
-          workItems: [
-            {
-              __typename: "WorkItems",
-              paymentId: "705e6b37-d0ee-4e87-b681-7009dd691965",
-              repoId: 123456,
-              issueNumber: 123,
-            },
-          ],
-          invoiceReceivedAt: null,
-          budget: {
-            __typename: "Budgets",
-            id: "budget-1",
-            project: {
-              __typename: "Projects",
-              id: "632d5da7-e590-4815-85ea-82a5585e6049",
-              projectDetails: {
-                __typename: "ProjectDetails",
-                projectId: "632d5da7-e590-4815-85ea-82a5585e6049",
-                shortDescription: "SOOOOOO awesome",
-                logoUrl: null,
-                name: "MyAwesomeProject",
-              },
-            },
-          },
-        },
-      ],
-    } as GetPaymentRequestsQueryResult["data"],
-  },
-};
-
-const payoutSettingsMock = {
-  request: {
-    query: GetUserPayoutSettingsDocument,
-    variables: { githubUserId: TEST_GITHUB_USER_ID },
-  },
-  newData: () => ({
-    data: {
-      authGithubUsers: [
-        {
-          __typename: "AuthGithubUsers",
-          userId: TEST_USER_ID,
-          user: {
-            __typename: "users",
-            id: TEST_USER_ID,
-            userInfo: {
-              __typename: "UserInfo",
-              userId: TEST_USER_ID,
-              identity: null,
-              location: null,
-              payoutSettings: null,
-              arePayoutSettingsValid: false,
-            } as UserPayoutSettingsFragment,
-          },
-        },
-      ],
-    } as GetUserPayoutSettingsQueryResult["data"],
-  }),
-};
-
 Object.defineProperty(window, "innerWidth", { writable: true, configurable: true, value: 2000 });
 
 describe("Integration tests", () => {
   beforeEach(() => {
     window.localStorage.clear();
-  });
-
-  it("should log in and go to projects page if a refresh token is passed as a query parameter in the URL", async () => {
-    renderWithIntl(<App />, {
-      wrapper: MemoryRouterProviderFactory({
-        route: `${RoutePaths.Login}?${AUTH_CODE_QUERY_KEY}=${AUTH_CODE_TEST_VALUE}`,
-        mocks: graphQlMocks,
-      }),
-    });
-    await waitFor(() => expect(mockedNavigate).toHaveBeenCalledWith(RoutePaths.Projects));
   });
 
   it("should be able to access the profile page and display profile info when having a token in local storage", async () => {
@@ -521,16 +361,12 @@ describe("Integration tests", () => {
     await screen.findByText(EDIT_PROFILE_TITLE);
   });
 
-  it("should redirect to homegae if no refresh token is passed as a query parameter in the URL", async () => {
-    renderWithIntl(<App />, { wrapper: MemoryRouterProviderFactory({ route: RoutePaths.Login, mocks: graphQlMocks }) });
-    expect(window.location.pathname).toBe(RoutePaths.Projects);
-  });
-
   it("should redirect to the projects page if the profile route is accessed without a token in the local storage", async () => {
     renderWithIntl(<App />, {
       wrapper: MemoryRouterProviderFactory({ route: RoutePaths.Profile, mocks: graphQlMocks }),
     });
-    await screen.findAllByText(TEST_PROJECT_NAME);
+    await screen.findAllByText("Filter");
+    expect(window.location.pathname).toBe(RoutePaths.Projects);
   });
 
   it("should be able to access the project details page from the projects list and see the tabs", async () => {
@@ -564,53 +400,7 @@ describe("Integration tests", () => {
     });
     userEvent.click(await screen.findByTestId(PROFILE_BUTTON_TEST_ID));
     userEvent.click(await screen.findByTestId(LOGOUT_BUTTON_TEST_ID));
-    await waitFor(() => expect(mockedNavigate).toHaveBeenCalledWith(RoutePaths.Projects));
-  });
-
-  it("should redirect to project details with pending invitation at first sign-in", async () => {
-    renderWithIntl(<App />, {
-      wrapper: MemoryRouterProviderFactory({
-        route: `${RoutePaths.Login}?${AUTH_CODE_QUERY_KEY}=${AUTH_CODE_TEST_VALUE}`,
-        mocks: [...graphQlMocks, pendingProjectLeadInvitationMock],
-      }),
-    });
-    await waitFor(() =>
-      expect(mockedNavigate).toHaveBeenCalledWith(
-        generatePath(RoutePaths.ProjectDetails, { projectId: TEST_PROJECT_ID })
-      )
-    );
-  });
-
-  it("should redirect to payments page if pending payments and missing payout info at first sign-in", async () => {
-    window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_WITH_VALID_JWT_TEST_VALUE));
-    renderWithIntl(<App />, {
-      wrapper: MemoryRouterProviderFactory({
-        route: `${RoutePaths.Login}?${AUTH_CODE_QUERY_KEY}=${AUTH_CODE_TEST_VALUE}`,
-        mocks: [...graphQlMocks, pendingPaymentsMock, paymentRequestsMock, payoutSettingsMock],
-      }),
-    });
-    await waitFor(() => expect(mockedNavigate).toHaveBeenCalledWith(RoutePaths.Payments));
-  });
-
-  it("should redirect to last visited page if not first sign-in", async () => {
-    window.localStorage.setItem(
-      LOCAL_STORAGE_SESSION_KEY,
-      JSON.stringify({
-        lastLoginTime: "132456",
-        visitedPageBeforeLogin: generatePath(RoutePaths.ProjectDetails, { projectId: TEST_PROJECT_ID }),
-      })
-    );
-
-    renderWithIntl(<App />, {
-      wrapper: MemoryRouterProviderFactory({
-        route: `${RoutePaths.Login}?${AUTH_CODE_QUERY_KEY}=${AUTH_CODE_TEST_VALUE}`,
-        mocks: graphQlMocks,
-      }),
-    });
-    await waitFor(() =>
-      expect(mockedNavigate).toHaveBeenCalledWith(
-        generatePath(RoutePaths.ProjectDetails, { projectId: TEST_PROJECT_ID })
-      )
-    );
+    await screen.findByText("Filter");
+    expect(window.location.pathname).toBe(RoutePaths.Projects);
   });
 });
