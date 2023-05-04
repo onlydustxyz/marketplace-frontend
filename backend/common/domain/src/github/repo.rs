@@ -1,6 +1,5 @@
 use std::collections::HashMap;
 
-use derive::StreamFilter;
 use derive_getters::Getters;
 use derive_more::{AsRef, Display, From, Into};
 use derive_new::new;
@@ -35,9 +34,7 @@ impl TryFrom<Languages> for serde_json::Value {
 	}
 }
 
-#[derive(
-	new, Debug, Clone, Getters, GraphQLObject, Serialize, Deserialize, StreamFilter, PartialEq, Eq,
-)]
+#[derive(new, Debug, Clone, Getters, GraphQLObject, Serialize, Deserialize, PartialEq, Eq)]
 pub struct Contributor {
 	id: GithubUserId,
 	login: String,

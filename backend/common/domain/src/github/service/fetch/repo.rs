@@ -5,9 +5,7 @@ use async_trait::async_trait;
 use mockall::automock;
 
 use super::Result;
-use crate::{
-	contributor_stream_filter, GithubRepo, GithubRepoContributor, GithubRepoId, GithubRepoLanguages,
-};
+use crate::{stream_filter, GithubRepo, GithubRepoContributor, GithubRepoId, GithubRepoLanguages};
 
 #[cfg_attr(test, automock)]
 #[async_trait]
@@ -17,6 +15,6 @@ pub trait Service: Send + Sync {
 	async fn repo_contributors(
 		&self,
 		repo_id: &GithubRepoId,
-		filters: Arc<dyn contributor_stream_filter::Filter>,
+		filters: Arc<dyn stream_filter::Filter<I = GithubRepoContributor>>,
 	) -> Result<Vec<GithubRepoContributor>>;
 }

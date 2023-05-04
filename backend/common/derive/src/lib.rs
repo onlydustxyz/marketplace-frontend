@@ -7,7 +7,6 @@ use syn::{parse::Parse, DeriveInput, Ident};
 mod diesel_mapping_repository;
 mod diesel_repository;
 mod from_to_sql;
-mod stream_filter;
 
 /// Implements a mapping repository between two entities using Diesel.
 ///
@@ -115,24 +114,6 @@ pub fn diesel_repository(input: TokenStream) -> TokenStream {
 pub fn to_sql(input: TokenStream) -> TokenStream {
 	let derive_input: DeriveInput = syn::parse(input).unwrap();
 	from_to_sql::impl_from_to_sql_macro(derive_input)
-}
-
-/// Parse a StreamFilter derive macro.
-/// This macro generates the traits that one can implement in order to filter streams.
-///
-/// ```compile_fail
-/// # #[macro_use] extern crate derive;
-///
-/// #[derive(StreamFilter)]
-/// struct Person {
-///     firstname: String,
-///     lastname: String,
-/// }
-/// ```
-#[proc_macro_derive(StreamFilter)]
-pub fn stream_filter(input: TokenStream) -> TokenStream {
-	let derive_input: DeriveInput = syn::parse(input).unwrap();
-	stream_filter::impl_stream_filter(derive_input)
 }
 
 fn find_attr<T: Parse>(ast: &DeriveInput, attr_name: &str) -> T {

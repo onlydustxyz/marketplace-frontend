@@ -1,11 +1,14 @@
-use std::{fmt::Debug, future::ready, pin::Pin, sync::Arc};
+use std::{
+	fmt::Debug,
+	future::{self, ready},
+	pin::Pin,
+	sync::Arc,
+};
 
 use anyhow::anyhow;
 use domain::{
-	contributor_stream_filter,
-	contributor_stream_filter::StreamFilterWith as GithubRepoContributorStreamFilterWith,
-	issue_stream_filter::StreamFilterWith as GithubIssueStreamFilterWith, GithubIssue,
-	GithubIssueNumber, GithubRepoContributor, GithubRepoId, GithubRepoLanguages,
+	stream_filter::{self, StreamFilterWith},
+	GithubIssue, GithubIssueNumber, GithubRepoContributor, GithubRepoId, GithubRepoLanguages,
 	GithubServiceIssueFilters, GithubUserId, PositiveCount,
 };
 use futures::{stream::empty, Stream, StreamExt, TryStreamExt};
@@ -177,7 +180,7 @@ impl Client {
 	pub async fn get_contributors_by_repository_id(
 		&self,
 		id: &GithubRepoId,
-		filters: Arc<dyn contributor_stream_filter::Filter>,
+		filters: Arc<dyn stream_filter::Filter<I = GithubRepoContributor>>,
 	) -> Result<Vec<GithubRepoContributor>, Error> {
 		let query_params = QueryParams::default().page(1).per_page(100);
 
@@ -194,7 +197,7 @@ impl Client {
 				100 * self.config().max_calls_per_request.map(PositiveCount::get).unwrap_or(3),
 			)
 			.await?
-			.filter_contributors_with(filters)
+			.filter_with(filters)
 			.collect()
 			.await;
 		Ok(contributors)
@@ -268,21 +271,23 @@ impl Client {
 				100 * self.config().max_calls_per_request.map(PositiveCount::get).unwrap_or(3),
 			)
 			.await?
-			.filter_map(|issue| async move {
-				match GithubIssue::from_octocrab_issue(issue.clone(), *id) {
-					Ok(issue) => Some(issue),
-					Err(e) => {
-						error!(
-							error = e.to_string(),
-							repository_id = id.to_string(),
-							issue_id = issue.id.0,
-							"Failed to process issue"
-						);
-						None
-					},
-				}
+			.filter_map(|issue| {
+				future::ready({
+					match GithubIssue::from_octocrab_issue(issue.clone(), *id) {
+						Ok(issue) => Some(issue),
+						Err(e) => {
+							error!(
+								error = e.to_string(),
+								repository_id = id.to_string(),
+								issue_id = issue.id.0,
+								"Failed to process issue"
+							);
+							None
+						},
+					}
+				})
 			})
-			.filter_issues_with(Arc::new(*filters))
+			.filter_with(Arc::new(*filters))
 			.collect()
 			.await;
 		Ok(issues)

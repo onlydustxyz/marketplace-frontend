@@ -6,15 +6,12 @@ pub use service::{
 };
 
 mod repo;
-pub use repo::{
-	contributor_stream_filter, Contributor as RepoContributor, Id as RepoId, Languages, Repo,
-};
+pub use repo::{Contributor as RepoContributor, Id as RepoId, Languages, Repo};
 
 mod user;
 pub use user::{Id as UserId, User};
 
 mod issue;
 pub use issue::{
-	issue_stream_filter, Id as IssueId, Issue, Number as IssueNumber, Status as IssueStatus,
-	Type as IssueType,
+	Id as IssueId, Issue, Number as IssueNumber, Status as IssueStatus, Type as IssueType,
 };

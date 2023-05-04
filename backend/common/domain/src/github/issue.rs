@@ -32,9 +32,7 @@ pub enum Type {
 }
 
 #[allow(clippy::too_many_arguments)]
-#[derive(
-	Clone, Debug, new, Getters, GraphQLObject, Serialize, Deserialize, StreamFilter, PartialEq, Eq,
-)]
+#[derive(Clone, Debug, new, Getters, GraphQLObject, Serialize, Deserialize, PartialEq, Eq)]
 pub struct Issue {
 	id: Id,
 	repo_id: GithubRepoId,

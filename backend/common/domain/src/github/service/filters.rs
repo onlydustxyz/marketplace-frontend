@@ -1,7 +1,7 @@
 use chrono::{DateTime, Utc};
 use juniper::{GraphQLEnum, GraphQLInputObject};
 
-use crate::{issue_stream_filter, GithubIssue};
+use crate::{stream_filter, GithubIssue};
 
 #[derive(Debug, Default, Clone, Copy, GraphQLInputObject)]
 pub struct IssueFilters {
@@ -17,13 +17,15 @@ pub enum IssueState {
 	All,
 }
 
-impl issue_stream_filter::Filter for IssueFilters {
-	fn filter(&self, item: GithubIssue) -> issue_stream_filter::Decision {
+impl stream_filter::Filter for IssueFilters {
+	type I = GithubIssue;
+
+	fn filter(&self, item: GithubIssue) -> stream_filter::Decision<GithubIssue> {
 		if let Some(created_since) = self.created_since {
 			if *item.created_at() < created_since {
 				// Found a pr created before `created_since`,
 				// assuming stream is ordered, we can end here
-				return issue_stream_filter::Decision::End;
+				return stream_filter::Decision::End;
 			}
 		}
 
@@ -31,11 +33,11 @@ impl issue_stream_filter::Filter for IssueFilters {
 			if *item.updated_at() < updated_since {
 				// Found a pr updated before `updated_since`,
 				// assuming stream is ordered, we can end here
-				return issue_stream_filter::Decision::End;
+				return stream_filter::Decision::End;
 			}
 		}
 
-		issue_stream_filter::Decision::Take(item)
+		stream_filter::Decision::Take(item)
 	}
 }
 
@@ -45,7 +47,7 @@ mod tests {
 	use url::Url;
 
 	use super::*;
-	use crate::{issue_stream_filter::Filter, *};
+	use crate::{stream_filter::Filter, *};
 
 	#[fixture]
 	fn issue() -> GithubIssue {
@@ -83,7 +85,7 @@ mod tests {
 
 		assert_eq!(
 			filters.filter(issue.clone()),
-			issue_stream_filter::Decision::Take(issue)
+			stream_filter::Decision::Take(issue)
 		);
 	}
 
@@ -96,7 +98,7 @@ mod tests {
 
 		assert_eq!(
 			filters.filter(issue.clone()),
-			issue_stream_filter::Decision::Take(issue)
+			stream_filter::Decision::Take(issue)
 		);
 	}
 
@@ -107,6 +109,6 @@ mod tests {
 			..Default::default()
 		};
 
-		assert_eq!(filters.filter(issue), issue_stream_filter::Decision::End);
+		assert_eq!(filters.filter(issue), stream_filter::Decision::End);
 	}
 }
