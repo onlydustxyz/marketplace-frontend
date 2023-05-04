@@ -89,8 +89,11 @@ impl EventListener<Event> for Projector {
 								*work_item.repo_id(),
 								*work_item.issue_number(),
 							))?;
-							self.github_repo_index_repository
-								.upsert(&GithubRepoIndex::new(*work_item.repo_id(), None))
+							self.github_repo_index_repository.upsert(&GithubRepoIndex::new(
+								*work_item.repo_id(),
+								None,
+								None,
+							))
 						})?;
 					},
 					PaymentEvent::Cancelled { id: payment_id } => {

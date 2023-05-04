@@ -33,6 +33,7 @@ impl<I: super::Indexer> super::Indexer for Indexer<I> {
 		self.github_repo_index_repository.upsert(&GithubRepoIndex::new(
 			*repo_index.repo_id(),
 			Some(Utc::now().naive_utc()),
+			repo_index.state().clone(),
 		))?;
 
 		Ok(events)
