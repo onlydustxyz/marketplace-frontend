@@ -11,6 +11,8 @@ pub enum Error {
 	GithubService(#[from] GithubServiceError),
 	#[error("Internal Error")]
 	Publisher(#[from] PublisherError),
+	#[error("Internal Error")]
+	Serialization(#[from] serde_json::Error),
 }
 
 pub type Result<T> = std::result::Result<T, Error>;

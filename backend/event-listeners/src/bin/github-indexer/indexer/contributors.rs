@@ -4,11 +4,11 @@ use async_trait::async_trait;
 use derive_new::new;
 use domain::{stream_filter, GithubFetchRepoService, GithubRepoContributor};
 use event_listeners::{
-	domain::{GithubEvent, GithubRepoIndex},
+	domain::{GithubEvent, GithubRepoIndex, IndexerState},
 	infrastructure::database::GithubUserIndexRepository,
 };
 
-use super::{error::IgnoreErrors, Result};
+use super::{IgnoreIndexerErrors, Result};
 
 pub struct Indexer {
 	github_fetch_service: Arc<dyn GithubFetchRepoService>,
@@ -31,7 +31,10 @@ impl Indexer {
 
 #[async_trait]
 impl super::Indexer for Indexer {
-	async fn index(&self, repo_index: GithubRepoIndex) -> Result<Vec<GithubEvent>> {
+	async fn index(
+		&self,
+		repo_index: GithubRepoIndex,
+	) -> Result<(Vec<GithubEvent>, Option<IndexerState>)> {
 		let events = self
 			.github_fetch_service
 			.repo_contributors(repo_index.repo_id(), self.not_in_user_index_filter.clone())
@@ -41,7 +44,7 @@ impl super::Indexer for Indexer {
 			.map(|contributor| GithubEvent::NewContributor(*contributor.id()))
 			.collect();
 
-		Ok(events)
+		Ok((events, None))
 	}
 }
 
