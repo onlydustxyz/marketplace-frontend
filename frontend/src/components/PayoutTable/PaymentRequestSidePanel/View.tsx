@@ -16,7 +16,7 @@ import Button, { ButtonSize } from "src/components/Button";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import ConfirmationModal from "./ConfirmationModal";
 import classNames from "classnames";
-import { issueToWorkItem } from "src/pages/ProjectDetails/Payments/PaymentForm/WorkItemSidePanel/Issues";
+import { issueToWorkItem } from "src/pages/ProjectDetails/Payments/PaymentForm/WorkItemSidePanel/Issues/useUnpaidIssues";
 
 export type Props = {
   open: boolean;

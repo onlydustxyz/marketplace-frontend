@@ -8,22 +8,20 @@ import { useFormContext, useFormState } from "react-hook-form";
 import { parsePullRequestLink, REGEX_VALID_GITHUB_PULL_REQUEST_URL } from "src/utils/github";
 import Link from "src/icons/Link";
 import classNames from "classnames";
-import { issueToWorkItem } from ".";
 
 type Props = {
-  projectId: string;
   onWorkItemAdded: (workItem: WorkItem) => void;
 };
 
 const INPUT_NAME = "otherPrLink";
 
-export default function OtherPrInput({ projectId, onWorkItemAdded }: Props) {
+export default function OtherPrInput({ onWorkItemAdded }: Props) {
   const { T } = useIntl();
 
   const [fetchIssue] = useFetchIssueLazyQuery({
     onCompleted: data => {
       if (data.fetchIssue) {
-        onWorkItemAdded(issueToWorkItem(data.fetchIssue, projectId));
+        onWorkItemAdded(data.fetchIssue);
         resetField(INPUT_NAME);
       } else {
         setError(INPUT_NAME, {

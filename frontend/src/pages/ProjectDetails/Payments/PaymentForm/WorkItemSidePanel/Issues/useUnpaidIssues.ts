@@ -37,7 +37,7 @@ export default function useUnpaidIssues({ projectId, authorId }: Props) {
       paidItems &&
       chain(searchPrQuery.data?.projectsByPk.githubRepos)
         .flatMap("repoIssues")
-        .map(issue => issueToWorkItem(projectId, issue))
+        .map(issue => issueToWorkItem(issue, projectId))
         .differenceWith(paidItems, (pr, paidItem) => {
           return pr.repoId === paidItem.repoId && pr.number === paidItem.issueNumber;
         })
@@ -49,9 +49,9 @@ export default function useUnpaidIssues({ projectId, authorId }: Props) {
   return { data: elligibleIssues, loading: searchPrQuery.loading || getPaidItemsQuery.loading };
 }
 
-const issueToWorkItem = (
-  projectId: string,
-  { ignoredForProjects, issueNumber: number, status, type, ...props }: GithubIssueFragment
+export const issueToWorkItem = (
+  { ignoredForProjects, issueNumber: number, status, type, ...props }: GithubIssueFragment,
+  projectId?: string
 ): WorkItem => ({
   ...props,
   number,

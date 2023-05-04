@@ -1,6 +1,6 @@
 import { range } from "lodash";
 import { PaymentStatus } from "src/types";
-import { LiveGithubIssueFragment, PaymentRequestDetailsFragment, Status, Type } from "src/__generated/graphql";
+import { GithubIssueFragment, PaymentRequestDetailsFragment, Status, Type } from "src/__generated/graphql";
 import View, { Props } from "./View";
 import { daysFromNow } from "src/utils/date";
 
@@ -42,11 +42,12 @@ export default {
   },
 };
 
-const issues: LiveGithubIssueFragment[] = range(1, 50).map(id => ({
-  __typename: "Issue",
+const issues: GithubIssueFragment[] = range(1, 50).map(id => ({
+  __typename: "GithubIssues",
   id: id,
   repoId: 123456,
-  number: id,
+  issueNumber: id,
+  authorId: 123456,
   type: Type.Issue,
   title: "Update README.md",
   status: Status.Open,
@@ -82,7 +83,7 @@ const payment: PaymentRequestDetailsFragment = {
   workItems: issues.map(githubIssue => ({
     paymentId: "880819f1-2ab9-406d-9bf1-3012b6f565bc",
     repoId: githubIssue.repoId,
-    issueNumber: githubIssue.number,
+    issueNumber: githubIssue.issueNumber,
     githubIssue,
   })),
 };

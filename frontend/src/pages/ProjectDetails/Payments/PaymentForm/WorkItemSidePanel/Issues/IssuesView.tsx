@@ -18,20 +18,13 @@ import useFilteredWorkItems from "./useFilteredWorkItems";
 import { filter, some } from "lodash";
 
 type Props = {
-  projectId: string;
   workItems: WorkItem[];
   onWorkItemAdded: (workItem: WorkItem) => void;
   onWorkItemIgnored: (workItem: WorkItem) => void;
   onWorkItemUnignored: (workItem: WorkItem) => void;
 };
 
-export default function IssuesView({
-  projectId,
-  workItems,
-  onWorkItemAdded,
-  onWorkItemIgnored,
-  onWorkItemUnignored,
-}: Props) {
+export default function IssuesView({ workItems, onWorkItemAdded, onWorkItemIgnored, onWorkItemUnignored }: Props) {
   const { T } = useIntl();
   const { watch, resetField } = useFormContext();
 
@@ -98,7 +91,7 @@ export default function IssuesView({
             </div>
           )}
         </div>
-        {addOtherIssueEnabled && <OtherIssueInput projectId={projectId} onWorkItemAdded={onIssueAdded} />}
+        {addOtherIssueEnabled && <OtherIssueInput onWorkItemAdded={onIssueAdded} />}
         {searchEnabled && (
           <FormInput
             name="search-issues"

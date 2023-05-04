@@ -19,7 +19,6 @@ import Description from "./Description";
 import RepoSelect from "./RepoSelect";
 import Title from "./Title";
 import WorkKinds, { WORK_KINDS } from "./WorkKinds";
-import { issueToWorkItem } from "src/pages/ProjectDetails/Payments/PaymentForm/WorkItemSidePanel/Issues";
 
 type WorkKind = {
   icon: ReactElement;
@@ -80,7 +79,7 @@ export default function OtherWorkForm({ projectId, contributorHandle, onWorkItem
     context: { graphqlErrorDisplay: "toaster" },
     onCompleted: data => {
       clearForm();
-      onWorkItemAdded(issueToWorkItem(data.createIssue, projectId));
+      onWorkItemAdded(data.createIssue);
       showToaster(T("payment.form.workItems.other.success"));
     },
   });

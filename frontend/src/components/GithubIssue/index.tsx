@@ -35,7 +35,7 @@ export type WorkItem = {
   title: string;
   htmlUrl: string;
   createdAt: Date;
-  ignored: boolean;
+  ignored?: boolean;
 } & (
   | { status: Status.Open }
   | { status: Status.Merged; mergedAt: Date }
