@@ -15,7 +15,7 @@ pub struct Indexer {
 #[async_trait]
 impl super::Indexer for Indexer {
 	async fn index(&self, repo_index: GithubRepoIndex) -> Result<Vec<GithubEvent>> {
-		let repo = self.github_fetch_service.repo_by_id(repo_index.repo_id()).await?;
+		let (_, repo) = self.github_fetch_service.etagged_repo_by_id(repo_index.repo_id()).await?;
 		Ok(vec![GithubEvent::Repo(repo)])
 	}
 }

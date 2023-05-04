@@ -21,6 +21,20 @@ impl GithubFetchRepoService for github::Client {
 	}
 
 	#[instrument(skip(self))]
+	async fn etagged_repo_by_id(
+		&self,
+		id: &GithubRepoId,
+	) -> GithubServiceResult<(Option<String>, GithubRepo)> {
+		let (etag, repo) = self.get_etagged_repository_by_id_with_etag(id).await?;
+
+		let repo = GithubRepo::try_from_octocrab_repo(self, repo)
+			.await
+			.map_err(GithubServiceError::Other)?;
+
+		Ok((etag.map(|etag| etag.to_string()), repo))
+	}
+
+	#[instrument(skip(self))]
 	async fn repo_languages(&self, id: &GithubRepoId) -> GithubServiceResult<GithubRepoLanguages> {
 		let languages = self.get_languages_by_repository_id(id).await?;
 		Ok(languages)
