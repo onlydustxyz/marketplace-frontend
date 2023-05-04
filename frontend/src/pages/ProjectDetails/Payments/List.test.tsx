@@ -4,7 +4,7 @@ import matchers from "@testing-library/jest-dom/matchers";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import PaymentsList from "./List";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
-import { GetGithubUserDocument, GithubUserFragment, PaymentRequestFragment } from "src/__generated/graphql";
+import { GetGithubUserDocument, GithubUserFragment, ExtendedPaymentRequestFragment } from "src/__generated/graphql";
 
 expect.extend(matchers);
 
@@ -20,7 +20,7 @@ const HASURA_TOKEN_BASIC_TEST_VALUE = {
   creationDate: new Date().getTime(),
 };
 
-const paymentRequestMock: PaymentRequestFragment = {
+const paymentRequestMock: ExtendedPaymentRequestFragment = {
   __typename: "PaymentRequests",
   id: "705e6b37-d0ee-4e87-b681-7009dd691965",
   recipientId: GITHUB_USER_ID,

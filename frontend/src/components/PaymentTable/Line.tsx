@@ -8,13 +8,13 @@ import displayRelativeDate from "src/utils/displayRelativeDate";
 import useGithubUser from "src/hooks/useGithubUser";
 import { Field, SortingFields } from "src/hooks/usePaymentSorting";
 import { useEffect } from "react";
-import { PaymentRequestFragment } from "src/__generated/graphql";
+import { ExtendedPaymentRequestFragment } from "src/__generated/graphql";
 import usePayoutSettings from "src/hooks/usePayoutSettings";
 import { useIntl } from "src/hooks/useIntl";
 import { pretty } from "src/utils/id";
 
 type Props = {
-  payment: PaymentRequestFragment & Sortable;
+  payment: ExtendedPaymentRequestFragment & Sortable;
   setSortingFields: (sortingFields: SortingFields) => void;
   onClick: () => void;
   selected: boolean;

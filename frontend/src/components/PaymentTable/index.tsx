@@ -3,13 +3,13 @@ import Table from "src/components/Table";
 import usePaymentSorting, { SortingFields } from "src/hooks/usePaymentSorting";
 import Headers from "./Headers";
 import PaymentLine from "./Line";
-import { PaymentRequestFragment } from "src/__generated/graphql";
+import { ExtendedPaymentRequestFragment } from "src/__generated/graphql";
 import { useMemo, useState } from "react";
 import PaymentRequestSidePanel from "src/components/PayoutTable/PaymentRequestSidePanel";
 
 type Props = {
   projectId: string;
-  payments: (PaymentRequestFragment & Sortable)[];
+  payments: (ExtendedPaymentRequestFragment & Sortable)[];
 };
 
 export default function PaymentTable({ projectId, payments }: Props) {
@@ -23,7 +23,7 @@ export default function PaymentTable({ projectId, payments }: Props) {
 
   const sortedPayments = useMemo(() => sort(sortablePayments), [sort, sortablePayments]);
 
-  const [selectedPayment, setSelectedPayment] = useState<PaymentRequestFragment | null>(null);
+  const [selectedPayment, setSelectedPayment] = useState<ExtendedPaymentRequestFragment | null>(null);
   const [sidePanelOpen, setSidePanelOpen] = useState(false);
 
   return (

@@ -11,6 +11,11 @@ fragment PaymentRequest on PaymentRequests {
       count
     }
   }
+  requestedAt
+}
+
+fragment ExtendedPaymentRequest on PaymentRequests {
+  ...PaymentRequest
   paymentsAggregate {
     aggregate {
       sum {
@@ -18,5 +23,4 @@ fragment PaymentRequest on PaymentRequests {
       }
     }
   }
-  requestedAt
 }

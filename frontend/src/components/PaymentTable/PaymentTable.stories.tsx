@@ -3,7 +3,7 @@ import { MockedProvider } from "@apollo/client/testing";
 import {
   GetGithubUserDocument,
   GetUserPayoutSettingsDocument,
-  PaymentRequestFragment,
+  ExtendedPaymentRequestFragment,
   UserPayoutSettingsFragment,
 } from "src/__generated/graphql";
 
@@ -19,7 +19,7 @@ const GITHUB_USER_ID2 = 1321654;
 
 const yearsFromNow = (years: number) => new Date(Date.now() - years * 365 * 24 * 3600 * 1000);
 
-const mockPayments: PaymentRequestFragment[] = [
+const mockPayments: ExtendedPaymentRequestFragment[] = [
   {
     amountInUsd: 200,
     id: "c0cfdf80-bbba-4512-b5ec-066dfa9529b1",

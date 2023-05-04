@@ -7,13 +7,13 @@ import ProjectPaymentTableFallback from "src/components/ProjectPaymentTableFallb
 import { useIntl } from "src/hooks/useIntl";
 import RemainingBudget from "src/pages/ProjectDetails/Payments/RemainingBudget";
 import { Sortable } from "src/types";
-import { PaymentRequestFragment } from "src/__generated/graphql";
+import { ExtendedPaymentRequestFragment } from "src/__generated/graphql";
 import Title from "src/pages/ProjectDetails/Title";
 
 const PaymentList: React.FC = () => {
   const { projectId, payments, budget } = useOutletContext<{
     projectId: string;
-    payments: (PaymentRequestFragment & Sortable)[];
+    payments: (ExtendedPaymentRequestFragment & Sortable)[];
     budget: { initialAmount: number; remainingAmount: number };
   }>();
 

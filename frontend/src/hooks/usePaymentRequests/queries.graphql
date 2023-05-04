@@ -6,7 +6,7 @@ query GetPaymentRequestsForProject($projectId: uuid!) {
       initialAmount
       remainingAmount
       paymentRequests {
-        ...PaymentRequest
+        ...ExtendedPaymentRequest
       }
     }
   }

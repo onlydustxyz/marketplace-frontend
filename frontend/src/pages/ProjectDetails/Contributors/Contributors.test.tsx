@@ -36,7 +36,6 @@ const mockPaymentRequest: PaymentRequestFragment = {
   id: "request-1",
   amountInUsd: 1000,
   workItemsAggregate: { aggregate: { count: 2 } },
-  paymentsAggregate: { aggregate: { sum: { amount: 0 } } },
   requestedAt: new Date(),
   recipientId: 122345,
 };
@@ -45,7 +44,6 @@ const mockPaymentRequest2: PaymentRequestFragment = {
   id: "request-2",
   amountInUsd: 500,
   workItemsAggregate: { aggregate: { count: 1 } },
-  paymentsAggregate: { aggregate: { sum: { amount: 0 } } },
   requestedAt: new Date(),
   recipientId: 122345,
 };

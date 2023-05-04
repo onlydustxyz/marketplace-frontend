@@ -70,7 +70,7 @@ gql`
       githubUser {
         userId
         paymentRequests {
-          ...PaymentRequest
+          ...ExtendedPaymentRequest
         }
       }
     }
