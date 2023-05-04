@@ -2,7 +2,7 @@ provider "heroku" {
 }
 
 resource "heroku_app" "api" {
-  name = "od-api-develop"
+  name = var.api_app_name
   region = "eu"
   organization {
     name = "onlydust"
@@ -10,7 +10,7 @@ resource "heroku_app" "api" {
 }
 
 resource "heroku_app" "hasura" {
-  name = "od-hasura-develop"
+  name = var.hasura_app_name
   region = "eu"
   organization {
     name = "onlydust"
@@ -19,6 +19,6 @@ resource "heroku_app" "hasura" {
 
 resource "heroku_addon" "database" {
   app  = heroku_app.hasura.name
-  plan = "heroku-postgresql:standard-0"
+  plan = var.postgres_plan
 }
 
