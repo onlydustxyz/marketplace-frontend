@@ -1,6 +1,10 @@
-mod error;
 use async_trait::async_trait;
+
+mod error;
 pub use error::{Error, Result};
+
+mod state;
+pub use state::State;
 
 use crate::domain::{GithubEvent, GithubRepoIndex};
 

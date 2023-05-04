@@ -4,7 +4,8 @@ use derive_getters::{Dissolve, Getters};
 use derive_more::Constructor;
 use domain::GithubRepoId;
 use serde::{Deserialize, Serialize};
-use serde_json::Value;
+
+use crate::domain::IndexerState;
 
 #[derive(
 	Default,
@@ -25,7 +26,7 @@ use serde_json::Value;
 pub struct GithubRepoIndex {
 	repo_id: GithubRepoId,
 	last_indexed_time: Option<NaiveDateTime>,
-	state: Option<Value>,
+	state: Option<IndexerState>,
 }
 
 impl domain::Entity for GithubRepoIndex {

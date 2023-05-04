@@ -11,4 +11,4 @@ mod github;
 pub use github::Event as GithubEvent;
 
 mod indexer;
-pub use indexer::{Error as IndexerError, Indexer, Result as IndexerResult};
+pub use indexer::{Error as IndexerError, Indexer, Result as IndexerResult, State as IndexerState};
