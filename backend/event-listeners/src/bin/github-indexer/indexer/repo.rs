@@ -4,7 +4,7 @@ use async_trait::async_trait;
 use derive_new::new;
 use domain::GithubFetchRepoService;
 use event_listeners::domain::{GithubEvent, GithubRepoIndex};
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use super::Result;
 
@@ -15,7 +15,7 @@ pub struct Indexer {
 	github_fetch_service: Arc<dyn GithubFetchRepoService>,
 }
 
-#[derive(Debug, Default, Deserialize)]
+#[derive(Debug, Default, Serialize, Deserialize)]
 struct State {
 	etag: Option<String>,
 }
@@ -26,16 +26,13 @@ impl super::Indexer for Indexer {
 		let (etag, repo) =
 			self.github_fetch_service.etagged_repo_by_id(repo_index.repo_id()).await?;
 
-		let state: State = repo_index
-			.state()
-			.clone()
-			.unwrap_or_default()
-			.get(INDEXER_NAME)?
-			.unwrap_or_default();
+		let mut state = repo_index.state().clone().unwrap_or_default();
+		let indexer_state: State = state.get(INDEXER_NAME)?.unwrap_or_default();
 
-		if state.etag == etag {
+		if indexer_state.etag == etag {
 			Ok(vec![])
 		} else {
+			state.set(INDEXER_NAME, State { etag })?;
 			Ok(vec![GithubEvent::Repo(repo)])
 		}
 	}

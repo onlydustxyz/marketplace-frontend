@@ -15,7 +15,7 @@ impl State {
 		Ok(())
 	}
 
-	pub fn get<S>(&mut self, key: &str) -> serde_json::Result<Option<S>>
+	pub fn get<S>(&self, key: &str) -> serde_json::Result<Option<S>>
 	where
 		for<'de> S: Deserialize<'de>,
 	{
