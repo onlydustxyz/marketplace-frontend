@@ -50,7 +50,10 @@ export default function PaymentLine({ payment, setSortingFields, onClick, select
             <div className="flex flex-col truncate justify-center pb-0.5">
               <div className="font-medium text-sm text-greyscale-50 font-walsheim">{recipient.login}</div>
               <div className="text-spaceBlue-200">
-                {T("payment.table.paymentRequest", { id: pretty(payment.id), count: payment.workItems.length })}
+                {T("payment.table.paymentRequest", {
+                  id: pretty(payment.id),
+                  count: payment.workItemsAggregate.aggregate?.count,
+                })}
               </div>
             </div>
           </Cell>

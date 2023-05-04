@@ -25,14 +25,7 @@ const mockPayments: PaymentRequestFragment[] = [
     amountInUsd: 200,
     id: "c0cfdf80-bbba-4512-b5ec-066dfa9529b1",
     recipientId: GITHUB_USER_ID,
-    workItems: [
-      {
-        __typename: "WorkItems",
-        paymentId: "c0cfdf80-bbba-4512-b5ec-066dfa9529b1",
-        repoId: 123456,
-        issueNumber: 1,
-      },
-    ],
+    workItemsAggregate: { aggregate: { count: 1 } },
     requestedAt: yearsFromNow(6),
     payments: [{ amount: 200, currencyCode: Currency.USD }],
   },
@@ -40,14 +33,7 @@ const mockPayments: PaymentRequestFragment[] = [
     amountInUsd: 100,
     id: "6397226d-0461-4451-962c-a61e36fd324b",
     recipientId: GITHUB_USER_ID,
-    workItems: [
-      {
-        __typename: "WorkItems",
-        paymentId: "6397226d-0461-4451-962c-a61e36fd324b",
-        repoId: 123456,
-        issueNumber: 26,
-      },
-    ],
+    workItemsAggregate: { aggregate: { count: 1 } },
     requestedAt: yearsFromNow(3),
     payments: [],
   },
@@ -55,13 +41,7 @@ const mockPayments: PaymentRequestFragment[] = [
     amountInUsd: 100,
     id: "6397226d-0461-4451-962c-a61e36fd3sju",
     recipientId: GITHUB_USER_ID2,
-    workItems: [
-      {
-        paymentId: "6397226d-0461-4451-962c-a61e36fd3sju",
-        repoId: 123456,
-        issueNumber: 653,
-      },
-    ],
+    workItemsAggregate: { aggregate: { count: 1 } },
     requestedAt: yearsFromNow(3),
     payments: [],
   },

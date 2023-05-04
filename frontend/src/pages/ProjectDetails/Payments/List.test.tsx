@@ -35,13 +35,7 @@ const paymentRequestMock: PaymentRequestFragment = {
     },
   ],
   amountInUsd: 200,
-  workItems: [
-    {
-      paymentId: "payment-1",
-      repoId: 123456,
-      issueNumber: 123,
-    },
-  ],
+  workItemsAggregate: { aggregate: { count: 1 } },
   requestedAt: new Date(),
 };
 

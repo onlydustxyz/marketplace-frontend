@@ -30,7 +30,7 @@ export default function usePaymentRequests(projectId?: string) {
           id: paymentId,
           amountInUsd: amount,
           recipientId: contributorId,
-          workItems: reason.workItems.map(workItem => ({ paymentId, ...workItem })),
+          workItemsAggregate: { aggregate: { count: reason.workItems.length } },
           payments: [],
           requestedAt: Date.now(),
         },

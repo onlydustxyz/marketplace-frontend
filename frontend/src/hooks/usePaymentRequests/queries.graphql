@@ -1,17 +1,3 @@
-fragment PaymentRequest on PaymentRequests {
-  id
-  recipientId
-  amountInUsd
-  workItems {
-    ...WorkItemId
-  }
-  payments {
-    amount
-    currencyCode
-  }
-  requestedAt
-}
-
 query GetPaymentRequestsForProject($projectId: uuid!) {
   projectsByPk(id: $projectId) {
     id

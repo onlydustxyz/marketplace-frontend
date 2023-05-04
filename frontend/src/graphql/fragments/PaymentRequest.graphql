@@ -1,0 +1,19 @@
+fragment PaymentRequestId on PaymentRequests {
+  id
+}
+
+fragment PaymentRequest on PaymentRequests {
+  id
+  recipientId
+  amountInUsd
+  workItemsAggregate {
+    aggregate {
+      count
+    }
+  }
+  payments {
+    amount
+    currencyCode
+  }
+  requestedAt
+}
