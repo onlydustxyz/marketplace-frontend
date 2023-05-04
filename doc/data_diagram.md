@@ -60,14 +60,12 @@ class Issue {
    createdAt: DateTimeUtc!
    htmlUrl: Url!
    id: GithubIssueId!
-   ignoredForProjects: [IgnoredGithubIssues!]!
    mergedAt: DateTimeUtc
    number: Int!
    repoId: GithubRepoId!
    status: Status!
    title: String!
    type: Type!
-   updatedAt: DateTimeUtc!
 }
 
 class Payment {
@@ -192,7 +190,7 @@ class UserInfo {
 }
 
 class WorkItems {
-   githubIssue: Issue
+   githubIssue: GithubIssues
    ignoredForProjects: [IgnoredGithubIssues!]!
    issueNumber: bigint!
    paymentId: uuid!
@@ -300,7 +298,6 @@ Budgets --* PaymentRequests
 GithubIssues --* IgnoredGithubIssues
 GithubRepoDetails -- Repo
 Issue -- User
-Issue --* IgnoredGithubIssues
 PaymentRequests -- AuthGithubUsers
 PaymentRequests -- Budgets
 PaymentRequests -- User
@@ -327,7 +324,7 @@ Repo --* User
 Sponsors --* ProjectsSponsors
 User -- AuthGithubUsers
 User --* PaymentRequests
-WorkItems -- Issue
+WorkItems -- GithubIssues
 WorkItems --* IgnoredGithubIssues
 authProviders --* authUserProviders
 authRefreshTokens -- users
