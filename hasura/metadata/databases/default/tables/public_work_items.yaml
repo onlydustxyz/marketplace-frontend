@@ -33,3 +33,4 @@ select_permissions:
         - repo_id
         - issue_number
       filter: {}
+      allow_aggregations: true
