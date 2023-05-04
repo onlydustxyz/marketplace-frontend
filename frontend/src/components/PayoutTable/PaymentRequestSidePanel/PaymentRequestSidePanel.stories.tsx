@@ -1,6 +1,6 @@
 import { range } from "lodash";
 import { PaymentStatus } from "src/types";
-import { IssueDetailsFragment, PaymentRequestDetailsFragment, Status, Type } from "src/__generated/graphql";
+import { LiveGithubIssueFragment, PaymentRequestDetailsFragment, Status, Type } from "src/__generated/graphql";
 import View, { Props } from "./View";
 import { daysFromNow } from "src/utils/date";
 
@@ -42,7 +42,7 @@ export default {
   },
 };
 
-const issues: IssueDetailsFragment[] = range(1, 50).map(id => ({
+const issues: LiveGithubIssueFragment[] = range(1, 50).map(id => ({
   __typename: "Issue",
   id: id,
   repoId: 123456,

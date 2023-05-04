@@ -5,7 +5,7 @@ query SearchIssues($projectId: uuid!, $authorId: bigint!, $createdSince: timesta
       projectId
       githubRepoId
       repoIssues(where: { authorId: { _eq: $authorId }, createdAt: { _gte: $createdSince } }) {
-        ...GithubIssueDetails
+        ...GithubIssue
       }
     }
   }
@@ -34,7 +34,7 @@ query getPaidWorkItems($projectId: uuid!) {
 
 query fetchIssue($repoOwner: String!, $repoName: String!, $issueNumber: Int!) {
   fetchIssue(repoOwner: $repoOwner, repoName: $repoName, issueNumber: $issueNumber) {
-    ...IssueDetails
+    ...LiveGithubIssue
   }
 }
 
@@ -56,6 +56,6 @@ query GetProjectRepos($projectId: uuid!) {
 
 mutation CreateIssue($projectId: Uuid!, $githubRepoId: Int!, $title: String!, $description: String!) {
   createIssue(projectId: $projectId, githubRepoId: $githubRepoId, title: $title, description: $description) {
-    ...IssueDetails
+    ...LiveGithubIssue
   }
 }

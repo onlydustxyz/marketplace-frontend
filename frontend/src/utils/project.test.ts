@@ -3,7 +3,7 @@ import {
   GithubUserIdFragment,
   ContributorsTableFieldsFragment,
   ProjectContributorsFragment,
-  GithubIssueDetailsFragment,
+  GithubIssueFragment,
   Status,
   WorkItem,
   Type,
@@ -84,7 +84,7 @@ describe("countUnpaidMergedPullsByContributor", () => {
       issueNumber: id + 1,
     }));
 
-    const mergedPaidPulls: GithubIssueDetailsFragment[] = paidItems.map(({ repoId, issueNumber }, index) => ({
+    const mergedPaidPulls: GithubIssueFragment[] = paidItems.map(({ repoId, issueNumber }, index) => ({
       id: 2000 + index,
       repoId,
       issueNumber,
@@ -99,7 +99,7 @@ describe("countUnpaidMergedPullsByContributor", () => {
       ignoredForProjects: [],
     }));
 
-    const mergedUnPaidPulls: GithubIssueDetailsFragment[] = range(0, 10).map(id => ({
+    const mergedUnPaidPulls: GithubIssueFragment[] = range(0, 10).map(id => ({
       id: 3000 + id,
       repoId: 3000 + id,
       issueNumber: id,

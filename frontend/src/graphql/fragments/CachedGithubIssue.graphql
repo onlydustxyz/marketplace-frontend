@@ -1,0 +1,20 @@
+fragment GithubIssueId on GithubIssues {
+  id
+}
+
+fragment GithubIssue on GithubIssues {
+  ...GithubIssueId
+  repoId
+  issueNumber
+  title
+  htmlUrl
+  authorId
+  type
+  status
+  createdAt
+  closedAt
+  mergedAt
+  ignoredForProjects {
+    ...IgnoredGithubIssueId
+  }
+}

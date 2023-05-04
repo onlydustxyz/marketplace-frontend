@@ -4,7 +4,7 @@ import { WorkItem } from "src/components/GithubIssue";
 import IssuesView from "./IssuesView";
 import PullRequestsView from "./PullRequestsView";
 import useIgnoredIssues from "./useIgnoredIssues";
-import { IssueDetailsFragment, Type } from "src/__generated/graphql";
+import { LiveGithubIssueFragment, Type } from "src/__generated/graphql";
 
 type Props = {
   type: Type;
@@ -53,7 +53,7 @@ export default function Issues({ type, projectId, workItems, onWorkItemAdded, un
 }
 
 export const issueToWorkItem = (
-  { ignoredForProjects, ...props }: IssueDetailsFragment,
+  { ignoredForProjects, ...props }: LiveGithubIssueFragment,
   projectId?: string
 ): WorkItem => ({
   ...props,

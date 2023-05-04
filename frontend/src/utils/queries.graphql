@@ -1,26 +1,3 @@
-fragment IgnoredGithubIssueId on IgnoredGithubIssues {
-  projectId
-  repoId
-  issueNumber
-}
-
-fragment GithubIssueDetails on GithubIssues {
-  id
-  repoId
-  issueNumber
-  title
-  htmlUrl
-  authorId
-  type
-  status
-  createdAt
-  closedAt
-  mergedAt
-  ignoredForProjects {
-    ...IgnoredGithubIssueId
-  }
-}
-
 fragment VisibleProject on Projects {
   id
   projectLeads {
@@ -71,7 +48,7 @@ fragment ProjectContributorsByLeader on Projects {
     projectId
     githubRepoId
     repoIssues(where: { createdAt: { _gte: $createdSince }, type: { _eq: "PullRequest" }, status: { _eq: "Merged" } }) {
-      ...GithubIssueDetails
+      ...GithubIssue
     }
   }
 }
