@@ -25,6 +25,7 @@ export default function usePaymentRequests(projectId?: string) {
 
       const newPaymentRequestRef = cache.writeFragment<ExtendedPaymentRequestFragment>({
         fragment: ExtendedPaymentRequestFragmentDoc,
+        fragmentName: "ExtendedPaymentRequest",
         data: {
           __typename: "PaymentRequests",
           id: paymentId,
