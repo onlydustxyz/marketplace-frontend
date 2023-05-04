@@ -6,9 +6,7 @@ fragment PaymentRequestDetailsForContributorsTable on PaymentRequests {
   }
   amountInUsd
   workItems {
-    paymentId
-    repoId
-    issueNumber
+    ...WorkItemId
   }
 }
 

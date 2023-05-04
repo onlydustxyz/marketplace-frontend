@@ -101,12 +101,6 @@ const mapApiPaymentsToProps = (apiPayment: UserPaymentRequestFragment): Payment 
 };
 
 gql`
-  fragment WorkItem on WorkItems {
-    paymentId
-    repoId
-    issueNumber
-  }
-
   fragment UserPaymentRequest on PaymentRequests {
     id
     requestedAt

@@ -89,9 +89,7 @@ gql`
       avatarUrl
     }
     workItems {
-      paymentId
-      repoId
-      issueNumber
+      ...WorkItemId
       githubIssue {
         ...IssueDetails
       }
