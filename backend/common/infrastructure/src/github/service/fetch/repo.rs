@@ -31,7 +31,7 @@ impl GithubFetchRepoService for github::Client {
 			.await
 			.map_err(GithubServiceError::Other)?;
 
-		Ok((etag.map(|etag| etag.to_string()), repo))
+		Ok((etag, repo))
 	}
 
 	#[instrument(skip(self))]

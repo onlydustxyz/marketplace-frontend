@@ -23,7 +23,7 @@ impl<I: super::Indexer> Indexer<I> {
 
 		let results = try_join_all(handles).await?;
 
-		Ok(results.into_iter().map(|(events, _)| events).flatten().collect())
+		Ok(results.into_iter().flat_map(|(events, _)| events).collect())
 	}
 }
 
