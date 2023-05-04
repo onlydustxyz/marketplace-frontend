@@ -1,7 +1,7 @@
 use async_trait::async_trait;
 
 mod error;
-pub use error::{Error, Result};
+pub use error::{Error, IgnoreErrors, Result};
 
 mod state;
 pub use state::State;

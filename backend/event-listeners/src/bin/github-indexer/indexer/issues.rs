@@ -6,7 +6,7 @@ use derive_new::new;
 use domain::{GithubFetchIssueService, GithubServiceIssueFilters};
 use event_listeners::domain::{GithubEvent, GithubRepoIndex, IndexerState};
 
-use super::{error::IgnoreErrors, Result};
+use super::{IgnoreIndexerErrors, Result};
 
 #[derive(new)]
 pub struct Indexer {
