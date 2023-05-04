@@ -26,4 +26,9 @@ impl State {
 
 		Ok(state)
 	}
+
+	pub fn merge(mut self, other: Self) -> Self {
+		self.indexer_states.extend(other.indexer_states);
+		self
+	}
 }

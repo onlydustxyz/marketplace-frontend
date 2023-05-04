@@ -3,7 +3,7 @@ use std::sync::Arc;
 use async_trait::async_trait;
 use derive_new::new;
 use domain::GithubFetchRepoService;
-use event_listeners::domain::{GithubEvent, GithubRepoIndex};
+use event_listeners::domain::{GithubEvent, GithubRepoIndex, IndexerState};
 use serde::{Deserialize, Serialize};
 
 use super::Result;
@@ -22,7 +22,10 @@ struct State {
 
 #[async_trait]
 impl super::Indexer for Indexer {
-	async fn index(&self, repo_index: GithubRepoIndex) -> Result<Vec<GithubEvent>> {
+	async fn index(
+		&self,
+		repo_index: GithubRepoIndex,
+	) -> Result<(Vec<GithubEvent>, Option<IndexerState>)> {
 		let (etag, repo) =
 			self.github_fetch_service.etagged_repo_by_id(repo_index.repo_id()).await?;
 
@@ -30,10 +33,10 @@ impl super::Indexer for Indexer {
 		let indexer_state: State = state.get(INDEXER_NAME)?.unwrap_or_default();
 
 		if indexer_state.etag == etag {
-			Ok(vec![])
+			Ok((vec![], Some(state)))
 		} else {
 			state.set(INDEXER_NAME, State { etag })?;
-			Ok(vec![GithubEvent::Repo(repo)])
+			Ok((vec![GithubEvent::Repo(repo)], Some(state)))
 		}
 	}
 }
