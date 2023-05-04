@@ -31,7 +31,7 @@ export default function usePaymentRequests(projectId?: string) {
           amountInUsd: amount,
           recipientId: contributorId,
           workItemsAggregate: { aggregate: { count: reason.workItems.length } },
-          payments: [],
+          paymentsAggregate: { aggregate: { sum: { amount: 0 } } },
           requestedAt: Date.now(),
         },
       });

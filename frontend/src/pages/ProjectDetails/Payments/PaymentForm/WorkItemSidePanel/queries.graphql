@@ -23,7 +23,7 @@ query getPaidWorkItems($projectId: uuid!) {
     budgets {
       id
       paymentRequests {
-        id
+        ...PaymentRequestId
         workItems {
           ...WorkItemId
         }

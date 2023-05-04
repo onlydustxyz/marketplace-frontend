@@ -3,7 +3,7 @@ fragment PaymentRequestId on PaymentRequests {
 }
 
 fragment PaymentRequest on PaymentRequests {
-  id
+  ...PaymentRequestId
   recipientId
   amountInUsd
   workItemsAggregate {
@@ -11,9 +11,12 @@ fragment PaymentRequest on PaymentRequests {
       count
     }
   }
-  payments {
-    amount
-    currencyCode
+  paymentsAggregate {
+    aggregate {
+      sum {
+        amount
+      }
+    }
   }
   requestedAt
 }

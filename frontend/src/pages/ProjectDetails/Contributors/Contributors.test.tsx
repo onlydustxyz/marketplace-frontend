@@ -9,6 +9,7 @@ import {
   GetProjectContributorsDocument,
   GetProjectContributorsQueryResult,
   GithubRepoContributorsFieldsFragment,
+  PaymentRequestFragment,
 } from "src/__generated/graphql";
 
 expect.extend(matchers);
@@ -31,35 +32,22 @@ const HASURA_TOKEN_BASIC_TEST_VALUE = {
   creationDate: new Date().getTime(),
 };
 
-const mockPaymentRequest = {
+const mockPaymentRequest: PaymentRequestFragment = {
   id: "request-1",
   amountInUsd: 1000,
-  workItems: [
-    {
-      paymentId: "request-1",
-      repoId: 123456,
-      issueNumber: 123,
-    },
-    {
-      paymentId: "request-1",
-      repoId: 123456,
-      issueNumber: 124,
-    },
-  ],
-  budget: { id: "budget-id", projectId: TEST_PROJECT_ID },
+  workItemsAggregate: { aggregate: { count: 2 } },
+  paymentsAggregate: { aggregate: { sum: { amount: 0 } } },
+  requestedAt: new Date(),
+  recipientId: 122345,
 };
 
-const mockPaymentRequest2 = {
+const mockPaymentRequest2: PaymentRequestFragment = {
   id: "request-2",
   amountInUsd: 500,
-  workItems: [
-    {
-      paymentId: "request-2",
-      repoId: 123456,
-      issueNumber: 123,
-    },
-  ],
-  budget: { id: "budget-id", projectId: TEST_PROJECT_ID },
+  workItemsAggregate: { aggregate: { count: 1 } },
+  paymentsAggregate: { aggregate: { sum: { amount: 0 } } },
+  requestedAt: new Date(),
+  recipientId: 122345,
 };
 
 const contributor1: ContributorsTableFieldsFragment = {

@@ -1,6 +1,5 @@
 import { SuspenseCache } from "@apollo/client";
 import { MockedProvider } from "@apollo/client/testing";
-import { Currency } from "src/types";
 import {
   GetGithubUserDocument,
   GetUserPayoutSettingsDocument,
@@ -27,7 +26,7 @@ const mockPayments: PaymentRequestFragment[] = [
     recipientId: GITHUB_USER_ID,
     workItemsAggregate: { aggregate: { count: 1 } },
     requestedAt: yearsFromNow(6),
-    payments: [{ amount: 200, currencyCode: Currency.USD }],
+    paymentsAggregate: { aggregate: { sum: { amount: 200 } } },
   },
   {
     amountInUsd: 100,
@@ -35,7 +34,7 @@ const mockPayments: PaymentRequestFragment[] = [
     recipientId: GITHUB_USER_ID,
     workItemsAggregate: { aggregate: { count: 1 } },
     requestedAt: yearsFromNow(3),
-    payments: [],
+    paymentsAggregate: { aggregate: { sum: { amount: 0 } } },
   },
   {
     amountInUsd: 100,
@@ -43,7 +42,7 @@ const mockPayments: PaymentRequestFragment[] = [
     recipientId: GITHUB_USER_ID2,
     workItemsAggregate: { aggregate: { count: 1 } },
     requestedAt: yearsFromNow(3),
-    payments: [],
+    paymentsAggregate: { aggregate: { sum: { amount: 0 } } },
   },
 ];
 

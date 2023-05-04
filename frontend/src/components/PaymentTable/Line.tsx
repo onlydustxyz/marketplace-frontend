@@ -24,7 +24,7 @@ export default function PaymentLine({ payment, setSortingFields, onClick, select
   const { valid: payoutSettingsValid } = usePayoutSettings(payment.recipientId);
   const { data: recipient } = useGithubUser(payment.recipientId);
 
-  const paidAmount = payment.payments.reduce((total, payment) => total + payment.amount, 0);
+  const paidAmount = payment.paymentsAggregate.aggregate?.sum?.amount;
   const paymentStatus = paidAmount === payment.amountInUsd ? PaymentStatus.ACCEPTED : PaymentStatus.WAITING_PAYMENT;
 
   const { T } = useIntl();

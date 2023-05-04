@@ -18,15 +18,14 @@ export default function ContributorsTable({
   projectId,
 }: Props) {
   const contributors = contributorFragments.map(c => {
-    const paymentRequests = c.paymentRequests?.filter(r => r.budget?.projectId === projectId) || [];
-
     return {
       login: c.login,
       avatarUrl: c.avatarUrl,
       htmlUrl: c.htmlUrl,
       isRegistered: !!c.user?.userId,
-      totalEarned: paymentRequests.reduce((acc, r) => acc + r.amountInUsd || 0, 0),
-      paidContributions: paymentRequests.reduce((acc, r) => acc + r.workItems?.length, 0) || 0,
+      totalEarned: c.paymentRequests.reduce((acc, r) => acc + r.amountInUsd || 0, 0),
+      paidContributions:
+        c.paymentRequests.reduce((acc, r) => acc + (r.workItemsAggregate.aggregate?.count || 0), 0) || 0,
       unpaidMergedPullsCount: c.unpaidMergedPullsCount,
     };
   });

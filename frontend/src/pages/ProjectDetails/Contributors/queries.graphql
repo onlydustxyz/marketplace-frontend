@@ -1,15 +1,3 @@
-fragment PaymentRequestDetailsForContributorsTable on PaymentRequests {
-  id
-  budget {
-    id
-    projectId
-  }
-  amountInUsd
-  workItems {
-    ...WorkItemId
-  }
-}
-
 fragment ContributorsTableFields on User {
   id
   login
@@ -18,8 +6,8 @@ fragment ContributorsTableFields on User {
   user {
     userId
   }
-  paymentRequests {
-    ...PaymentRequestDetailsForContributorsTable
+  paymentRequests(where: { budget: { projectId: { _eq: $projectId } } }) {
+    ...PaymentRequest
   }
 }
 
@@ -50,7 +38,7 @@ fragment ProjectContributorsForTable on Projects {
   budgets {
     id
     paymentRequests {
-      ...PaymentRequestDetailsForContributorsTable
+      ...PaymentRequest
       githubRecipient {
         ...ContributorsTableFields
       }

@@ -10,16 +10,7 @@ const GITHUB_USER_ID_2 = 654321;
 
 const paymentRequestTemplate = {
   id: "705e6b37-d0ee-4e87-b681-7009dd691965",
-  payments: [
-    {
-      amount: 100,
-      currencyCode: "USD",
-    },
-    {
-      amount: 100,
-      currencyCode: "USD",
-    },
-  ],
+  paymentsAggregate: { aggregate: { sum: { amount: 200 } } },
   amountInUsd: 200,
   workItemsAggregate: { aggregate: { count: 1 } },
 };

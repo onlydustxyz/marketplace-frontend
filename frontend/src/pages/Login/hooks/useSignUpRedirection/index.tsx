@@ -70,15 +70,7 @@ gql`
       githubUser {
         userId
         paymentRequests {
-          id
-          amountInUsd
-          paymentsAggregate {
-            aggregate {
-              sum {
-                amount
-              }
-            }
-          }
+          ...PaymentRequest
         }
       }
     }

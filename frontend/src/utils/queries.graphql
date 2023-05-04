@@ -62,7 +62,7 @@ fragment ProjectContributors on Projects {
   budgets {
     id
     paymentRequests {
-      id
+      ...PaymentRequestId
       githubRecipient {
         ...ContributorId
       }

@@ -24,16 +24,7 @@ const paymentRequestMock: PaymentRequestFragment = {
   __typename: "PaymentRequests",
   id: "705e6b37-d0ee-4e87-b681-7009dd691965",
   recipientId: GITHUB_USER_ID,
-  payments: [
-    {
-      amount: 100,
-      currencyCode: "USD",
-    },
-    {
-      amount: 100,
-      currencyCode: "USD",
-    },
-  ],
+  paymentsAggregate: { aggregate: { sum: { amount: 200 } } },
   amountInUsd: 200,
   workItemsAggregate: { aggregate: { count: 1 } },
   requestedAt: new Date(),
