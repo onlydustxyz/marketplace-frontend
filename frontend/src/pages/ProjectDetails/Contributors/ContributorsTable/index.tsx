@@ -1,11 +1,11 @@
 import { rates } from "src/hooks/useWorkEstimation";
 import { generatePath, useNavigate } from "react-router-dom";
-import { ContributorsTableFieldsFragment } from "src/__generated/graphql";
 import View, { Contributor } from "./View";
 import { ProjectPaymentsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
+import { GithubUserWithPaymentRequestsForProjectFragment } from "src/__generated/graphql";
 
 type Props = {
-  contributors: (ContributorsTableFieldsFragment & { unpaidMergedPullsCount?: number })[];
+  contributors: (GithubUserWithPaymentRequestsForProjectFragment & { unpaidMergedPullsCount?: number })[];
   isProjectLeader: boolean;
   remainingBudget: number;
   projectId: string;

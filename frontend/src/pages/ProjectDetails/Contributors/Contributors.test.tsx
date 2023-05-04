@@ -5,10 +5,9 @@ import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
 import Contributors from ".";
 import {
-  ContributorsTableFieldsFragment,
   GetProjectContributorsDocument,
   GetProjectContributorsQueryResult,
-  GithubRepoContributorsFieldsFragment,
+  GithubUserWithPaymentRequestsForProjectFragment,
   PaymentRequestFragment,
 } from "src/__generated/graphql";
 
@@ -48,7 +47,7 @@ const mockPaymentRequest2: PaymentRequestFragment = {
   recipientId: 122345,
 };
 
-const contributor1: ContributorsTableFieldsFragment = {
+const contributor1: GithubUserWithPaymentRequestsForProjectFragment = {
   __typename: "User",
   id: 123456,
   avatarUrl: "avatar_url",
@@ -58,7 +57,7 @@ const contributor1: ContributorsTableFieldsFragment = {
   paymentRequests: [mockPaymentRequest, mockPaymentRequest],
 };
 
-const contributor2: ContributorsTableFieldsFragment = {
+const contributor2: GithubUserWithPaymentRequestsForProjectFragment = {
   __typename: "User",
   id: 123457,
   avatarUrl: "avatar_url",
@@ -68,7 +67,7 @@ const contributor2: ContributorsTableFieldsFragment = {
   paymentRequests: [mockPaymentRequest2],
 };
 
-const contributor3: ContributorsTableFieldsFragment = {
+const contributor3: GithubUserWithPaymentRequestsForProjectFragment = {
   __typename: "User",
   id: 123458,
   avatarUrl: "avatar_url",
@@ -76,30 +75,6 @@ const contributor3: ContributorsTableFieldsFragment = {
   htmlUrl: "https://github.com/oscarwroche",
   user: null,
   paymentRequests: [],
-};
-
-const githubRepo1: GithubRepoContributorsFieldsFragment = {
-  __typename: "ProjectGithubRepos",
-  githubRepoId: 1000,
-  githubRepoDetails: {
-    id: 1000,
-    content: {
-      id: 1000,
-      contributors: [contributor1, contributor2],
-    },
-  },
-};
-
-const githubRepo2: GithubRepoContributorsFieldsFragment = {
-  __typename: "ProjectGithubRepos",
-  githubRepoId: 1001,
-  githubRepoDetails: {
-    id: 1001,
-    content: {
-      id: 1001,
-      contributors: [contributor1, contributor3],
-    },
-  },
 };
 
 const graphQlMocks = [
@@ -116,8 +91,30 @@ const graphQlMocks = [
           __typename: "Projects",
           id: TEST_PROJECT_ID,
           githubRepos: [
-            { projectId: TEST_PROJECT_ID, ...githubRepo1 },
-            { projectId: TEST_PROJECT_ID, ...githubRepo2 },
+            {
+              projectId: TEST_PROJECT_ID,
+              __typename: "ProjectGithubRepos",
+              githubRepoId: 1000,
+              githubRepoDetails: {
+                id: 1000,
+                content: {
+                  id: 1000,
+                  contributors: [contributor1, contributor2],
+                },
+              },
+            },
+            {
+              projectId: TEST_PROJECT_ID,
+              __typename: "ProjectGithubRepos",
+              githubRepoId: 1001,
+              githubRepoDetails: {
+                id: 1001,
+                content: {
+                  id: 1001,
+                  contributors: [contributor1, contributor3],
+                },
+              },
+            },
           ],
           budgets: [],
           projectDetails: {

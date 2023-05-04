@@ -1,55 +1,22 @@
-fragment ContributorsTableFields on User {
-  ...GithubUser
-  paymentRequests(where: { budget: { projectId: { _eq: $projectId } } }) {
-    ...PaymentRequest
-  }
-}
-
-fragment GithubRepoContributorsFields on ProjectGithubRepos {
-  githubRepoId
-  githubRepoDetails {
-    id
-    content {
-      id
-      contributors {
-        ...ContributorsTableFields
-      }
-    }
-  }
-}
-
-fragment ProjectContributorsForTable on Projects {
-  id
-  projectDetails {
-    projectId
-    name
-  }
-  githubRepos {
-    projectId
-    githubRepoId
-    ...GithubRepoContributorsFields
-  }
-  budgets {
-    id
-    paymentRequests {
-      ...PaymentRequest
-      githubRecipient {
-        ...ContributorsTableFields
-      }
-    }
-  }
-}
-
 query GetProjectContributors($projectId: uuid!) {
   projectsByPk(id: $projectId) {
-    ...ProjectContributorsForTable
+    projectDetails {
+      projectId
+      name
+    }
+    ...ProjectContributorsWithPaymentSummary
   }
 }
 
 query GetProjectContributorsAsLeader($projectId: uuid!, $createdSince: timestamp) {
   projectsByPk(id: $projectId) {
-    ...ProjectContributorsForTable
-    ...ProjectContributorsByLeader
+    projectDetails {
+      projectId
+      name
+    }
+    ...ProjectContributorsWithPaymentSummary
+    ...LastProjectMergedPullRequests
+    ...ProjectPaidWorkItems
   }
 }
 

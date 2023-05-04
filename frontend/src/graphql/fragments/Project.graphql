@@ -1,0 +1,83 @@
+fragment ProjectContributors on Projects {
+  id
+  githubRepos {
+    projectId
+    githubRepoId
+    githubRepoDetails {
+      id
+      content {
+        id
+        contributors {
+          ...GithubUser
+        }
+      }
+    }
+  }
+  budgets {
+    id
+    paymentRequests {
+      ...PaymentRequestId
+      githubRecipient {
+        ...GithubUser
+      }
+    }
+  }
+}
+
+fragment LastProjectMergedPullRequests on Projects {
+  githubRepos {
+    projectId
+    githubRepoId
+    repoIssues(where: { createdAt: { _gte: $createdSince }, type: { _eq: "PullRequest" }, status: { _eq: "Merged" } }) {
+      ...GithubIssue
+    }
+  }
+}
+
+fragment LastProjectMergedPullRequests on Projects {
+  githubRepos {
+    projectId
+    githubRepoId
+    repoIssues(where: { createdAt: { _gte: $createdSince }, type: { _eq: "PullRequest" }, status: { _eq: "Merged" } }) {
+      ...GithubIssue
+    }
+  }
+}
+
+fragment ProjectPaidWorkItems on Projects {
+  budgets {
+    id
+    paymentRequests {
+      ...PaymentRequestId
+      workItems {
+        ...WorkItemId
+      }
+    }
+  }
+}
+
+fragment ProjectContributorsWithPaymentSummary on Projects {
+  ...ProjectContributors
+  githubRepos {
+    projectId
+    githubRepoId
+    githubRepoDetails {
+      id
+      content {
+        id
+        contributors {
+          ...GithubUserWithPaymentRequestsForProject
+        }
+      }
+    }
+  }
+  budgets {
+    id
+    paymentRequests {
+      ...PaymentRequestId
+      githubRecipient {
+        ...GithubUserWithPaymentRequestsForProject
+      }
+    }
+  }
+}

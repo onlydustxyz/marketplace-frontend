@@ -1,31 +1,7 @@
 fragment ProjectContributorsForPaymentSelect on Projects {
-  ...ProjectContributorsByLeader
-  id
-  githubRepos {
-    projectId
-    githubRepoId
-    githubRepoDetails {
-      id
-      content {
-        id
-        contributors {
-          ...GithubContributor
-        }
-      }
-    }
-  }
-  budgets {
-    id
-    paymentRequests {
-      ...PaymentRequestId
-      workItems {
-        ...WorkItemId
-      }
-      githubRecipient {
-        ...GithubContributor
-      }
-    }
-  }
+  ...ProjectContributors
+  ...LastProjectMergedPullRequests
+  ...ProjectPaidWorkItems
 }
 
 query SearchGithubUsersByHandleSubstring($handleSubstringQuery: String!) {

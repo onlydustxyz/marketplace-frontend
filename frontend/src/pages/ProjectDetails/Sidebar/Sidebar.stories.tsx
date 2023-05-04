@@ -1,7 +1,7 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { range } from "lodash";
 import { ProjectDetailsTab } from "src/pages/ProjectDetails/Sidebar";
-import { ProjectContributorsFragment } from "src/__generated/graphql";
+import { GithubUserFragment, ProjectContributorsFragment } from "src/__generated/graphql";
 import { withRouter } from "storybook-addon-react-router-v6";
 import { ProjectDetails } from "..";
 import View, { SidebarProjectDetails } from "./View";
@@ -23,8 +23,12 @@ const availableTabs: ProjectDetailsTab[] = [
   },
 ];
 
-const contributors = range(4).map(id => ({
+const contributors: GithubUserFragment[] = range(4).map(id => ({
   id,
+  login: `user-${id}`,
+  avatarUrl: "",
+  htmlUrl: "",
+  user: null,
 }));
 
 const currentProject: ProjectDetails & SidebarProjectDetails & ProjectContributorsFragment = {

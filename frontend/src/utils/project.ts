@@ -1,4 +1,4 @@
-import { VisibleProjectFragment, GithubIssueFragment } from "src/__generated/graphql";
+import { VisibleProjectFragment, GithubIssueFragment, WorkItemIdFragment } from "src/__generated/graphql";
 import { chain, find, flatMap, some, uniqBy } from "lodash";
 import isDefined from "src/utils/isDefined";
 import { GithubUserIdFragment } from "src/__generated/graphql";
@@ -29,7 +29,7 @@ type Project<R> = {
     repoIssues?: GithubIssueFragment[] | null;
   }> | null;
   budgets: Array<{
-    paymentRequests: Array<{ githubRecipient: R | null }>;
+    paymentRequests: Array<{ githubRecipient: R | null; workItems?: Array<WorkItemIdFragment | null> }>;
   }>;
 };
 
@@ -57,9 +57,9 @@ export function getContributors<R extends GithubUserIdFragment>(
 
 export const countUnpaidMergedPullsByContributor = (project?: Project<GithubUserIdFragment | null> | null) => {
   const paidItemsByLogin = chain(project?.budgets)
-    .flatMap("paymentRequests")
-    .groupBy("githubRecipient.id")
-    .mapValues(requests => flatMap(requests, "workItems"))
+    .flatMap(b => b.paymentRequests)
+    .groupBy(p => p.githubRecipient?.id)
+    .mapValues(requests => flatMap(requests, r => r.workItems))
     .value();
 
   const notPaid = ({ authorId, repoId, issueNumber }: GithubIssueFragment) =>
@@ -69,10 +69,10 @@ export const countUnpaidMergedPullsByContributor = (project?: Project<GithubUser
     !find(ignoredForProjects, { projectId: project?.id });
 
   return chain(project?.githubRepos)
-    .flatMap("repoIssues")
+    .flatMap(r => r.repoIssues)
     .filter(isDefined)
     .filter(notPaid)
     .filter(notIgnored)
-    .countBy("authorId")
+    .countBy(p => p.authorId)
     .value();
 };

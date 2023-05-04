@@ -298,6 +298,10 @@ const graphQlMocks = [
                       {
                         __typename: "User",
                         id: TEST_GITHUB_USER_ID,
+                        login: "user",
+                        avatarUrl: "",
+                        htmlUrl: "",
+                        user: null,
                       },
                     ],
                   },

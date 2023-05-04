@@ -16,39 +16,3 @@ fragment VisibleProject on Projects {
     githubUserId
   }
 }
-
-fragment ProjectContributors on Projects {
-  id
-  githubRepos {
-    projectId
-    githubRepoId
-    githubRepoDetails {
-      id
-      content {
-        id
-        contributors {
-          ...GithubUserId
-        }
-      }
-    }
-  }
-  budgets {
-    id
-    paymentRequests {
-      ...PaymentRequestId
-      githubRecipient {
-        ...GithubUserId
-      }
-    }
-  }
-}
-
-fragment ProjectContributorsByLeader on Projects {
-  githubRepos {
-    projectId
-    githubRepoId
-    repoIssues(where: { createdAt: { _gte: $createdSince }, type: { _eq: "PullRequest" }, status: { _eq: "Merged" } }) {
-      ...GithubIssue
-    }
-  }
-}
