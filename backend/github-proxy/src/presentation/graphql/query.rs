@@ -1,4 +1,4 @@
-use domain::{GithubIssue, GithubIssueNumber, GithubRepo, GithubRepoId, GithubUser, GithubUserId};
+use domain::{GithubIssueNumber, GithubRepo, GithubRepoId, GithubUser, GithubUserId};
 use juniper::{graphql_object, DefaultScalarValue};
 use olog::{error, warn};
 
@@ -51,24 +51,6 @@ impl Query {
 			.github_service()
 			.ok()?
 			.issue(&repo_owner, &repo_name, &issue_number)
-			.await
-			.map_err(Error::from)
-			.logged()
-			.ok()
-	}
-
-	pub async fn fetch_issue_by_repository_id(
-		&self,
-		context: &Context,
-		repository_id: i32,
-		issue_number: i32,
-	) -> Option<GithubIssue> {
-		let repository_id = GithubRepoId::from(repository_id as i64);
-		let issue_number = GithubIssueNumber::from(issue_number as i64);
-		context
-			.github_service()
-			.ok()?
-			.issue_by_repo_id(&repository_id, &issue_number)
 			.await
 			.map_err(Error::from)
 			.logged()

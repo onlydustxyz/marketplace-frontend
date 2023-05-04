@@ -242,19 +242,6 @@ impl Client {
 	}
 
 	#[instrument(skip(self))]
-	pub async fn get_issue_by_repository_id(
-		&self,
-		repo_id: &GithubRepoId,
-		issue_number: &GithubIssueNumber,
-	) -> Result<Issue, Error> {
-		self.get_as(format!(
-			"{}repositories/{repo_id}/issues/{issue_number}",
-			self.octocrab().base_url
-		))
-		.await
-	}
-
-	#[instrument(skip(self))]
 	pub async fn get_user_by_name(&self, username: &str) -> Result<User, Error> {
 		self.get_as(format!("{}users/{username}", self.octocrab().base_url)).await
 	}

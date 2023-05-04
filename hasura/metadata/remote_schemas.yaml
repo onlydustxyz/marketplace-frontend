@@ -185,7 +185,6 @@
           }
           type Query {
             fetchIssue(repoOwner: String!, repoName: String!, issueNumber: Int!): Issue
-            fetchIssueByRepositoryId(repositoryId: Int!, issueNumber: Int!): Issue
             fetchRepositoryDetails(id: Int!): Repo
             fetchUserDetails(username: String!): User
             fetchUserDetailsById(userId: Int!): User
@@ -244,7 +243,6 @@
             type: Type!
           }
           type Query {
-            fetchIssueByRepositoryId(repositoryId: Int!, issueNumber: Int!): Issue
             fetchRepositoryDetails(id: Int!): Repo
             fetchUserDetailsById(userId: Int!): User
             helloFromGithubProxy: String!

@@ -30,14 +30,4 @@ impl GithubFetchIssueService for github::Client {
 		let repo_id = self.get_issue_repository_id(&issue).await?;
 		GithubIssue::from_octocrab_issue(issue, repo_id).map_err(GithubServiceError::Other)
 	}
-
-	#[instrument(skip(self))]
-	async fn issue_by_repo_id(
-		&self,
-		repo_id: &GithubRepoId,
-		issue_number: &GithubIssueNumber,
-	) -> GithubServiceResult<GithubIssue> {
-		let issue = self.get_issue_by_repository_id(repo_id, issue_number).await?;
-		GithubIssue::from_octocrab_issue(issue, *repo_id).map_err(GithubServiceError::Other)
-	}
 }
