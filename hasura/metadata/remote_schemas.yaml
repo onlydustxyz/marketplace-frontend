@@ -300,16 +300,5 @@
                 schema: auth
           name: user
       type_name: User
-    - relationships:
-        - definition:
-            to_source:
-              field_mapping:
-                number: issue_number
-                repoId: repo_id
-              relationship_type: array
-              source: default
-              table:
-                name: ignored_github_issues
-                schema: public
-          name: ignoredForProjects
+    - relationships: []
       type_name: Issue

@@ -1,6 +1,17 @@
 table:
   name: work_items
   schema: public
+object_relationships:
+  - name: githubIssue
+    using:
+      manual_configuration:
+        column_mapping:
+          issue_number: issue_number
+          repo_id: repo_id
+        insertion_order: null
+        remote_table:
+          name: github_issues
+          schema: public
 array_relationships:
   - name: ignoredForProjects
     using:
@@ -12,19 +23,6 @@ array_relationships:
         remote_table:
           name: ignored_github_issues
           schema: public
-remote_relationships:
-  - definition:
-      to_remote_schema:
-        lhs_fields:
-          - issue_number
-          - repo_id
-        remote_field:
-          fetchIssueByRepositoryId:
-            arguments:
-              issueNumber: $issue_number
-              repositoryId: $repo_id
-        remote_schema: GithubProxy
-    name: githubIssue
 select_permissions:
   - role: public
     permission:
