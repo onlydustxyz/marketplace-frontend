@@ -1,11 +1,13 @@
 extern crate proc_macro;
 
+use convert_case::{Case, Casing};
 use proc_macro::TokenStream;
-use syn::{parse::Parse, DeriveInput};
+use syn::{parse::Parse, DeriveInput, Ident};
 
 mod diesel_mapping_repository;
 mod diesel_repository;
 mod from_to_sql;
+mod stream_filter;
 
 /// Implements a mapping repository between two entities using Diesel.
 ///
@@ -115,6 +117,24 @@ pub fn to_sql(input: TokenStream) -> TokenStream {
 	from_to_sql::impl_from_to_sql_macro(derive_input)
 }
 
+/// Parse a StreamFilter derive macro.
+/// This macro generates the traits that one can implement in order to filter streams.
+///
+/// ```compile_fail
+/// # #[macro_use] extern crate derive;
+///
+/// #[derive(StreamFilter)]
+/// struct Person {
+///     firstname: String,
+///     lastname: String,
+/// }
+/// ```
+#[proc_macro_derive(StreamFilter)]
+pub fn stream_filter(input: TokenStream) -> TokenStream {
+	let derive_input: DeriveInput = syn::parse(input).unwrap();
+	stream_filter::impl_stream_filter(derive_input)
+}
+
 fn find_attr<T: Parse>(ast: &DeriveInput, attr_name: &str) -> T {
 	ast.attrs
 		.iter()
@@ -126,4 +146,8 @@ fn find_attr<T: Parse>(ast: &DeriveInput, attr_name: &str) -> T {
 
 fn has_attr(derive_input: &syn::DeriveInput, attr_name: &str) -> bool {
 	derive_input.attrs.iter().any(|a| a.path.is_ident(attr_name))
+}
+
+fn ident_to_snake_case(ident: &Ident) -> String {
+	ident.to_string().from_case(Case::UpperCamel).to_case(Case::Snake)
 }
