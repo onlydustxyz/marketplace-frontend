@@ -1,21 +1,25 @@
 import { range } from "lodash";
 import {
-  ContributorIdFragment,
-  ContributorsTableFieldsFragment,
-  ProjectContributorsFragment,
-  GithubIssueDetailsFragment,
+  GithubUserIdFragment,
+  GithubIssueFragment,
   Status,
-  WorkItem,
   Type,
+  WorkItemIdFragment,
+  ProjectContributorsWithPaymentSummaryFragment,
+  GithubUserWithPaymentRequestsForProjectFragment,
 } from "src/__generated/graphql";
 import { countUnpaidMergedPullsByContributor, getContributors } from "./project";
 
 const REPO1_ID = 123456;
 const REPO2_ID = 321654;
 
-const [contributor1, contributor2, contributor3, contributor4, contributor5]: ContributorsTableFieldsFragment[] = range(
-  5
-).map(id => ({
+const [
+  contributor1,
+  contributor2,
+  contributor3,
+  contributor4,
+  contributor5,
+]: GithubUserWithPaymentRequestsForProjectFragment[] = range(5).map(id => ({
   __typename: "User",
   id,
   login: "contributor" + id,
@@ -25,7 +29,7 @@ const [contributor1, contributor2, contributor3, contributor4, contributor5]: Co
   paymentRequests: [],
 }));
 
-const project: ProjectContributorsFragment = {
+const project: ProjectContributorsWithPaymentSummaryFragment = {
   __typename: "Projects",
   id: "12345",
   githubRepos: [
@@ -75,16 +79,17 @@ describe("useProjectContributors", () => {
 
 describe("countUnpaidMergedPullsByContributor", () => {
   it("should count unpaid merged PRs by author login", () => {
-    const users: ContributorIdFragment[] = range(0, 3).map(id => ({
+    const users: GithubUserIdFragment[] = range(0, 3).map(id => ({
       id: 1000 + id,
     }));
 
-    const paidItems: WorkItem[] = range(0, 3).map(id => ({
+    const paidItems: WorkItemIdFragment[] = range(0, 3).map(id => ({
       repoId: 1000 + id,
       issueNumber: id + 1,
+      paymentId: 1000 + id,
     }));
 
-    const mergedPaidPulls: GithubIssueDetailsFragment[] = paidItems.map(({ repoId, issueNumber }, index) => ({
+    const mergedPaidPulls: GithubIssueFragment[] = paidItems.map(({ repoId, issueNumber }, index) => ({
       id: 2000 + index,
       repoId,
       issueNumber,
@@ -99,7 +104,7 @@ describe("countUnpaidMergedPullsByContributor", () => {
       ignoredForProjects: [],
     }));
 
-    const mergedUnPaidPulls: GithubIssueDetailsFragment[] = range(0, 10).map(id => ({
+    const mergedUnPaidPulls: GithubIssueFragment[] = range(0, 10).map(id => ({
       id: 3000 + id,
       repoId: 3000 + id,
       issueNumber: id,

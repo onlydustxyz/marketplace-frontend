@@ -23,16 +23,17 @@ import {
   FindUserQueryForPaymentFormDocument,
 } from "src/__generated/graphql";
 import { MockedResponse } from "@apollo/client/testing";
-import { GithubContributorFragment } from "src/__generated/graphql";
+import { GithubUserFragment } from "src/__generated/graphql";
 import { daysFromNow } from "src/utils/date";
 
 const TEST_USER = { id: "test-user-id", displayName: "test-login", githubUser: { githubUserId: 748483646584 } };
-const TEST_GITHUB_USER: GithubContributorFragment = {
+const TEST_GITHUB_USER: GithubUserFragment = {
   __typename: "User",
   id: 23326,
   login: "test-login",
   avatarUrl: "test-avatar-url",
   user: { userId: "test-user-id" },
+  htmlUrl: "html-url",
 };
 
 const HASURA_TOKEN_BASIC_TEST_VALUE = {

@@ -2,25 +2,37 @@ import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import ProjectCard, { Project } from ".";
 import { screen } from "@testing-library/react";
 import {
-  ContributorIdFragment,
+  GithubUserFragment,
   ProjectCardGithubRepoFieldsFragment,
   ProjectContributorsFragment,
 } from "src/__generated/graphql";
 import { ArrayElement } from "src/types";
 
-const contributor1: ContributorIdFragment = {
+const contributor1: GithubUserFragment = {
   __typename: "User",
   id: 123456,
+  login: "contributor1",
+  htmlUrl: "",
+  avatarUrl: "",
+  user: null,
 };
 
-const contributor2: ContributorIdFragment = {
+const contributor2: GithubUserFragment = {
   __typename: "User",
   id: 123457,
+  login: "contributor2",
+  htmlUrl: "",
+  avatarUrl: "",
+  user: null,
 };
 
-const contributor3: ContributorIdFragment = {
+const contributor3: GithubUserFragment = {
   __typename: "User",
   id: 123458,
+  login: "contributor3",
+  htmlUrl: "",
+  avatarUrl: "",
+  user: null,
 };
 
 const githubRepo1: ProjectCardGithubRepoFieldsFragment & ArrayElement<ProjectContributorsFragment["githubRepos"]> = {

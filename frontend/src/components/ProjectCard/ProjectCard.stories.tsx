@@ -4,6 +4,8 @@ import { responsiveChromatic } from "src/test/utils";
 import { withRouter } from "storybook-addon-react-router-v6";
 
 import ProjectCard, { Project } from ".";
+import { range } from "lodash";
+import { GithubUserFragment } from "src/__generated/graphql";
 
 export default {
   title: "ProjectCard",
@@ -16,6 +18,14 @@ const Template: ComponentStory<JSXElementConstructor<typeof args>> = args => (
 );
 
 export const Default = Template.bind({});
+
+const [user1, user2, user3, user4]: GithubUserFragment[] = range(0, 4).map(id => ({
+  id,
+  login: `user-${id}`,
+  htmlUrl: "",
+  avatarUrl: "",
+  user: null,
+}));
 
 const props = (args: { name: string; shortDescription: string; projectLeadsCount: number }): Project => ({
   id: 123,
@@ -91,7 +101,7 @@ const props = (args: { name: string; shortDescription: string; projectLeadsCount
         languages: { Ejs: 2200, Rust: 1000 },
         content: {
           id: 12345,
-          contributors: [{ id: 100 }, { id: 837 }],
+          contributors: [user1, user4],
         },
       },
     },
@@ -103,7 +113,7 @@ const props = (args: { name: string; shortDescription: string; projectLeadsCount
         languages: { Pascal: 1000000, Rust: 3000 },
         content: {
           id: 666,
-          contributors: [{ id: 100 }, { id: 777 }],
+          contributors: [user1, user2],
         },
       },
     },
@@ -112,8 +122,8 @@ const props = (args: { name: string; shortDescription: string; projectLeadsCount
     {
       id: "budget-1",
       paymentRequests: [
-        { id: "payment-1", githubRecipient: { id: 777 } },
-        { id: "payment-2", githubRecipient: { id: 778 } },
+        { id: "payment-1", githubRecipient: user2 },
+        { id: "payment-2", githubRecipient: user3 },
       ],
     },
   ],

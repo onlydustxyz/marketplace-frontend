@@ -1,5 +1,5 @@
 import { ComponentStory } from "@storybook/react";
-import { GithubContributorFragment } from "src/__generated/graphql";
+import { GithubUserFragment } from "src/__generated/graphql";
 
 import ContributorSelectView from "./View";
 
@@ -7,11 +7,12 @@ export default {
   title: "ContributorsSelect",
 };
 
-const filteredContributors: (GithubContributorFragment & { unpaidMergedPullsCount?: number })[] = [
+const filteredContributors: (GithubUserFragment & { unpaidMergedPullsCount?: number })[] = [
   {
     id: 1111,
     login: "antho",
     avatarUrl: "https://avatars.githubusercontent.com/u/43467246?v=4",
+    htmlUrl: "https://github.com/AnthonyBuisset",
     user: null,
     unpaidMergedPullsCount: 3,
   },
@@ -19,34 +20,39 @@ const filteredContributors: (GithubContributorFragment & { unpaidMergedPullsCoun
     id: 2222,
     login: "stan",
     avatarUrl: "https://avatars.githubusercontent.com/u/4435377?v=4",
+    htmlUrl: "https://github.com/bernardstanislas",
     user: { userId: "user-id" },
   },
   {
     id: 3333,
     login: "ofux",
     avatarUrl: "https://avatars.githubusercontent.com/u/595505?v=4",
+    htmlUrl: "https://github.com/ofux",
     user: null,
     unpaidMergedPullsCount: 10,
   },
 ];
 
-const filteredExternalContributors: GithubContributorFragment[] = [
+const filteredExternalContributors: GithubUserFragment[] = [
   {
     id: 4444,
     login: "oscar",
     avatarUrl: "https://avatars.githubusercontent.com/u/21149076?v=4",
+    htmlUrl: "https://github.com/oscarwroche",
     user: { userId: "user-id" },
   },
   {
     id: 5555,
     login: "gregoire",
     avatarUrl: "https://avatars.githubusercontent.com/u/8642470?v=4",
+    htmlUrl: "https://github.com/gregcha",
     user: { userId: "user-id" },
   },
   {
     id: 6666,
     login: "timothee",
     avatarUrl: "https://avatars.githubusercontent.com/u/34384633?v=4",
+    htmlUrl: "https://github.com/tdelabrouille",
     user: { userId: "user-id" },
   },
 ];

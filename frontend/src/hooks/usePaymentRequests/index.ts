@@ -1,7 +1,7 @@
 import {
   CancelPaymentRequestMutationResult,
-  PaymentRequestFragment,
-  PaymentRequestFragmentDoc,
+  ExtendedPaymentRequestFragment,
+  ExtendedPaymentRequestFragmentDoc,
   RequestPaymentMutationResult,
   RequestPaymentMutationVariables,
   useCancelPaymentRequestMutation,
@@ -23,15 +23,16 @@ export default function usePaymentRequests(projectId?: string) {
       const { budgetId, paymentId, amount } = (result as RequestPaymentMutationResult).data?.requestPayment || {};
       const { contributorId, reason } = variables as RequestPaymentMutationVariables;
 
-      const newPaymentRequestRef = cache.writeFragment<PaymentRequestFragment>({
-        fragment: PaymentRequestFragmentDoc,
+      const newPaymentRequestRef = cache.writeFragment<ExtendedPaymentRequestFragment>({
+        fragment: ExtendedPaymentRequestFragmentDoc,
+        fragmentName: "ExtendedPaymentRequest",
         data: {
           __typename: "PaymentRequests",
           id: paymentId,
           amountInUsd: amount,
           recipientId: contributorId,
-          workItems: reason.workItems.map(workItem => ({ paymentId, ...workItem })),
-          payments: [],
+          workItemsAggregate: { aggregate: { count: reason.workItems.length } },
+          paymentsAggregate: { aggregate: { sum: { amount: 0 } } },
           requestedAt: Date.now(),
         },
       });

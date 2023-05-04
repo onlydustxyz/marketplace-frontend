@@ -1,11 +1,6 @@
 import { chain, some } from "lodash";
 import { useMemo } from "react";
-import {
-  GithubIssueDetailsFragment,
-  Type,
-  useGetPaidWorkItemsQuery,
-  useSearchIssuesQuery,
-} from "src/__generated/graphql";
+import { GithubIssueFragment, Type, useGetPaidWorkItemsQuery, useSearchIssuesQuery } from "src/__generated/graphql";
 import { daysFromNow } from "src/utils/date";
 import { SEARCH_MAX_DAYS_COUNT } from "src/pages/ProjectDetails/Payments/PaymentForm";
 import { WorkItem } from "src/components/GithubIssue";
@@ -56,7 +51,7 @@ export default function useUnpaidIssues({ projectId, authorId }: Props) {
 
 const issueToWorkItem = (
   projectId: string,
-  { ignoredForProjects, issueNumber: number, status, type, ...props }: GithubIssueDetailsFragment
+  { ignoredForProjects, issueNumber: number, status, type, ...props }: GithubIssueFragment
 ): WorkItem => ({
   ...props,
   number,

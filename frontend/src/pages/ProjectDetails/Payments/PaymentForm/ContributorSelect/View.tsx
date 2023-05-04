@@ -1,5 +1,5 @@
 import { Combobox } from "@headlessui/react";
-import { GithubContributorFragment } from "src/__generated/graphql";
+import { GithubUserFragment } from "src/__generated/graphql";
 import classNames from "classnames";
 import Contributor from "src/components/Contributor";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
@@ -16,10 +16,10 @@ interface ContributorSelectViewProps {
   setSelectedGithubHandle: (selectedGithubHandle: string | null) => void;
   githubHandleSubstring: string;
   setGithubHandleSubstring: (githubHandleSubstring: string) => void;
-  filteredContributors: (GithubContributorFragment[] & { unpaidMergedPullsCount?: number }) | undefined;
-  filteredExternalContributors: GithubContributorFragment[] | undefined;
+  filteredContributors: (GithubUserFragment[] & { unpaidMergedPullsCount?: number }) | undefined;
+  filteredExternalContributors: GithubUserFragment[] | undefined;
   isSearchGithubUsersByHandleSubstringQueryLoading: boolean;
-  contributor: GithubContributorFragment | null | undefined;
+  contributor: GithubUserFragment | null | undefined;
   debouncedGithubHandleSubstring: string;
 }
 
@@ -157,11 +157,11 @@ export default function ContributorSelectView({
   );
 }
 
-interface ContributorSubListProps<T extends GithubContributorFragment> {
+interface ContributorSubListProps<T extends GithubUserFragment> {
   contributors?: (T & { unpaidMergedPullsCount?: number })[];
 }
 
-function ContributorSubList<T extends GithubContributorFragment>({ contributors }: ContributorSubListProps<T>) {
+function ContributorSubList<T extends GithubUserFragment>({ contributors }: ContributorSubListProps<T>) {
   const { T } = useIntl();
 
   return (

@@ -1,10 +1,9 @@
 import { SuspenseCache } from "@apollo/client";
 import { MockedProvider } from "@apollo/client/testing";
-import { Currency } from "src/types";
 import {
   GetGithubUserDocument,
   GetUserPayoutSettingsDocument,
-  PaymentRequestFragment,
+  ExtendedPaymentRequestFragment,
   UserPayoutSettingsFragment,
 } from "src/__generated/graphql";
 
@@ -20,50 +19,30 @@ const GITHUB_USER_ID2 = 1321654;
 
 const yearsFromNow = (years: number) => new Date(Date.now() - years * 365 * 24 * 3600 * 1000);
 
-const mockPayments: PaymentRequestFragment[] = [
+const mockPayments: ExtendedPaymentRequestFragment[] = [
   {
     amountInUsd: 200,
     id: "c0cfdf80-bbba-4512-b5ec-066dfa9529b1",
     recipientId: GITHUB_USER_ID,
-    workItems: [
-      {
-        __typename: "WorkItems",
-        paymentId: "c0cfdf80-bbba-4512-b5ec-066dfa9529b1",
-        repoId: 123456,
-        issueNumber: 1,
-      },
-    ],
+    workItemsAggregate: { aggregate: { count: 1 } },
     requestedAt: yearsFromNow(6),
-    payments: [{ amount: 200, currencyCode: Currency.USD }],
+    paymentsAggregate: { aggregate: { sum: { amount: 200 } } },
   },
   {
     amountInUsd: 100,
     id: "6397226d-0461-4451-962c-a61e36fd324b",
     recipientId: GITHUB_USER_ID,
-    workItems: [
-      {
-        __typename: "WorkItems",
-        paymentId: "6397226d-0461-4451-962c-a61e36fd324b",
-        repoId: 123456,
-        issueNumber: 26,
-      },
-    ],
+    workItemsAggregate: { aggregate: { count: 1 } },
     requestedAt: yearsFromNow(3),
-    payments: [],
+    paymentsAggregate: { aggregate: { sum: { amount: 0 } } },
   },
   {
     amountInUsd: 100,
     id: "6397226d-0461-4451-962c-a61e36fd3sju",
     recipientId: GITHUB_USER_ID2,
-    workItems: [
-      {
-        paymentId: "6397226d-0461-4451-962c-a61e36fd3sju",
-        repoId: 123456,
-        issueNumber: 653,
-      },
-    ],
+    workItemsAggregate: { aggregate: { count: 1 } },
     requestedAt: yearsFromNow(3),
-    payments: [],
+    paymentsAggregate: { aggregate: { sum: { amount: 0 } } },
   },
 ];
 

@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 import WorkItemSidePanel from "./WorkItemSidePanel";
 import GithubIssue, { Action, WorkItem } from "src/components/GithubIssue";
 import Callout from "src/components/Callout";
-import { GithubContributorFragment, Status, Type } from "src/__generated/graphql";
+import { GithubUserFragment, Status, Type } from "src/__generated/graphql";
 import useWorkItems from "./useWorkItems";
 import { filter } from "lodash";
 
@@ -22,8 +22,8 @@ interface Props {
   budget: Budget;
   onWorkEstimationChange: (amountToPay: number, hoursWorked: number) => void;
   onWorkItemsChange: (workItems: WorkItem[]) => void;
-  contributor: GithubContributorFragment | null | undefined;
-  setContributor: (contributor: GithubContributorFragment | null | undefined) => void;
+  contributor: GithubUserFragment | null | undefined;
+  setContributor: (contributor: GithubUserFragment | null | undefined) => void;
   unpaidIssues?: WorkItem[] | null;
 }
 

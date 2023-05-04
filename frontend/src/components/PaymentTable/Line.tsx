@@ -8,13 +8,13 @@ import displayRelativeDate from "src/utils/displayRelativeDate";
 import useGithubUser from "src/hooks/useGithubUser";
 import { Field, SortingFields } from "src/hooks/usePaymentSorting";
 import { useEffect } from "react";
-import { PaymentRequestFragment } from "src/__generated/graphql";
+import { ExtendedPaymentRequestFragment } from "src/__generated/graphql";
 import usePayoutSettings from "src/hooks/usePayoutSettings";
 import { useIntl } from "src/hooks/useIntl";
 import { pretty } from "src/utils/id";
 
 type Props = {
-  payment: PaymentRequestFragment & Sortable;
+  payment: ExtendedPaymentRequestFragment & Sortable;
   setSortingFields: (sortingFields: SortingFields) => void;
   onClick: () => void;
   selected: boolean;
@@ -24,7 +24,7 @@ export default function PaymentLine({ payment, setSortingFields, onClick, select
   const { valid: payoutSettingsValid } = usePayoutSettings(payment.recipientId);
   const { data: recipient } = useGithubUser(payment.recipientId);
 
-  const paidAmount = payment.payments.reduce((total, payment) => total + payment.amount, 0);
+  const paidAmount = payment.paymentsAggregate.aggregate?.sum?.amount;
   const paymentStatus = paidAmount === payment.amountInUsd ? PaymentStatus.ACCEPTED : PaymentStatus.WAITING_PAYMENT;
 
   const { T } = useIntl();
@@ -50,7 +50,10 @@ export default function PaymentLine({ payment, setSortingFields, onClick, select
             <div className="flex flex-col truncate justify-center pb-0.5">
               <div className="font-medium text-sm text-greyscale-50 font-walsheim">{recipient.login}</div>
               <div className="text-spaceBlue-200">
-                {T("payment.table.paymentRequest", { id: pretty(payment.id), count: payment.workItems.length })}
+                {T("payment.table.paymentRequest", {
+                  id: pretty(payment.id),
+                  count: payment.workItemsAggregate.aggregate?.count,
+                })}
               </div>
             </div>
           </Cell>

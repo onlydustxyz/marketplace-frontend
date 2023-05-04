@@ -1,5 +1,9 @@
-fragment IssueDetails on Issue {
+fragment LiveGithubIssueId on Issue {
   id
+}
+
+fragment LiveGithubIssue on Issue {
+  ...LiveGithubIssueId
   repoId
   number
   type

@@ -1,0 +1,9 @@
+fragment WorkItemId on WorkItems {
+  paymentId
+  repoId
+  issueNumber
+}
+
+fragment WorkItem on WorkItems {
+  ...WorkItemId
+}

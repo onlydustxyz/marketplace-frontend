@@ -8,7 +8,7 @@ import { generatePath, useNavigate, useOutletContext } from "react-router-dom";
 import usePaymentRequests from "src/hooks/usePaymentRequests";
 import { ProjectRoutePaths, RoutePaths } from "src/App";
 import { WorkItem } from "src/components/GithubIssue";
-import { GithubContributorFragment } from "src/__generated/graphql";
+import { GithubUserFragment } from "src/__generated/graphql";
 import useUnpaidIssues from "./WorkItemSidePanel/Issues/useUnpaidIssues";
 
 export const SEARCH_MAX_DAYS_COUNT = 60;
@@ -35,7 +35,7 @@ const PaymentForm: React.FC = () => {
     mode: "all",
   });
 
-  const [contributor, setContributor] = useState<GithubContributorFragment | null | undefined>(null);
+  const [contributor, setContributor] = useState<GithubUserFragment | null | undefined>(null);
 
   const { data: unpaidIssues } = useUnpaidIssues({
     projectId,
