@@ -27,21 +27,25 @@ class Budgets {
    spentAmount: numeric!
 }
 
-class GithubPulls {
+class GithubIssues {
    authorId: bigint!
+   closedAt: timestamp
    createdAt: timestamp!
+   htmlUrl: String!
    id: bigint!
    ignoredForProjects: [IgnoredGithubIssues!]!
    issueNumber: bigint!
    mergedAt: timestamp
    repoId: bigint!
+   status: jsonb!
+   title: String!
+   type: jsonb!
 }
 
 class GithubRepoDetails {
    content: Repo
    id: bigint!
    languages: jsonb!
-   pullRequests: [Issue!]
 }
 
 class IgnoredGithubIssues {
@@ -121,7 +125,7 @@ class ProjectGithubRepos {
    githubRepoId: bigint!
    project: Projects
    projectId: uuid!
-   repoPulls: [GithubPulls!]!
+   repoIssues: [GithubIssues!]!
 }
 
 class ProjectLeads {
@@ -292,9 +296,8 @@ AuthGithubUsers -- users
 AuthGithubUsers --* PaymentRequests
 Budgets -- Projects
 Budgets --* PaymentRequests
-GithubPulls --* IgnoredGithubIssues
+GithubIssues --* IgnoredGithubIssues
 GithubRepoDetails -- Repo
-GithubRepoDetails --* Issue
 Issue -- User
 Issue --* IgnoredGithubIssues
 PaymentRequests -- AuthGithubUsers
@@ -308,7 +311,7 @@ PendingProjectLeaderInvitations -- AuthGithubUsers
 PendingProjectLeaderInvitations -- Projects
 ProjectGithubRepos -- GithubRepoDetails
 ProjectGithubRepos -- Projects
-ProjectGithubRepos --* GithubPulls
+ProjectGithubRepos --* GithubIssues
 ProjectLeads -- Projects
 ProjectLeads -- users
 Projects -- ProjectDetails
