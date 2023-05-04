@@ -50,6 +50,7 @@ pub async fn spawn_all(
 			BudgetRepository::new(database.clone()),
 			WorkItemRepository::new(database.clone()),
 			GithubRepoIndexRepository::new(database.clone()),
+			GithubUserIndexRepository::new(database.clone()),
 		)
 		.spawn(event_bus::event_consumer(config.amqp(), "budgets").await?),
 		CrmProjector::new(CrmGithubRepoRepository::new(database.clone())).spawn(

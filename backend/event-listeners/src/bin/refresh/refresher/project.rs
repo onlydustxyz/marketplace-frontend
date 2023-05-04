@@ -5,8 +5,9 @@ use event_listeners::{
 	domain::{BudgetProjector, ProjectProjector},
 	infrastructure::database::{
 		BudgetRepository, GithubRepoDetailsRepository, GithubRepoIndexRepository,
-		PaymentRepository, PaymentRequestRepository, ProjectGithubRepoDetailsRepository,
-		ProjectLeadRepository, ProjectRepository, WorkItemRepository,
+		GithubUserIndexRepository, PaymentRepository, PaymentRequestRepository,
+		ProjectGithubRepoDetailsRepository, ProjectLeadRepository, ProjectRepository,
+		WorkItemRepository,
 	},
 };
 use infrastructure::{database, github};
@@ -29,6 +30,7 @@ pub fn create(database: Arc<database::Client>, github: Arc<github::Client>) -> i
 		BudgetRepository::new(database.clone()),
 		WorkItemRepository::new(database.clone()),
 		GithubRepoIndexRepository::new(database.clone()),
+		GithubUserIndexRepository::new(database.clone()),
 	);
 
 	Refresher::<Project>::new(

@@ -8,10 +8,12 @@ use rust_decimal::{prelude::ToPrimitive, Decimal};
 use tracing::instrument;
 
 use crate::{
-	domain::{Budget, EventListener, GithubRepoIndex, Payment, PaymentRequest, WorkItem},
+	domain::{
+		Budget, EventListener, GithubRepoIndex, GithubUserIndex, Payment, PaymentRequest, WorkItem,
+	},
 	infrastructure::database::{
-		BudgetRepository, GithubRepoIndexRepository, PaymentRepository, PaymentRequestRepository,
-		WorkItemRepository,
+		BudgetRepository, GithubRepoIndexRepository, GithubUserIndexRepository, PaymentRepository,
+		PaymentRequestRepository, WorkItemRepository,
 	},
 };
 
@@ -22,6 +24,7 @@ pub struct Projector {
 	budget_repository: BudgetRepository,
 	work_item_repository: WorkItemRepository,
 	github_repo_index_repository: GithubRepoIndexRepository,
+	github_user_index_repository: GithubUserIndexRepository,
 }
 
 #[async_trait]
@@ -95,6 +98,12 @@ impl EventListener<Event> for Projector {
 								None,
 							))
 						})?;
+
+						self.github_user_index_repository.try_insert(&GithubUserIndex::new(
+							*recipient_id,
+							None,
+							false,
+						))?;
 					},
 					PaymentEvent::Cancelled { id: payment_id } => {
 						let payment_request =
