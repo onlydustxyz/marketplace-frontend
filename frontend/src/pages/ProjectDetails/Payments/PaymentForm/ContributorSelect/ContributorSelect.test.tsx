@@ -10,7 +10,7 @@ import ContributorSelect from ".";
 import {
   GetProjectContributorsForPaymentSelectDocument,
   GetProjectContributorsForPaymentSelectQueryResult,
-  GithubContributorFragment,
+  GithubUserFragment,
 } from "src/__generated/graphql";
 import { daysFromNow } from "src/utils/date";
 
@@ -18,19 +18,21 @@ vi.mock("src/utils/date", () => ({
   daysFromNow: () => new Date(2022, 3, 10),
 }));
 
-const TEST_USER: GithubContributorFragment = {
+const TEST_USER: GithubUserFragment = {
   __typename: "User",
   id: 123456,
   login: "test-user-name",
   avatarUrl: "test-avatar-url",
+  htmlUrl: "test-html-url",
   user: { userId: "test-user-id" },
 };
 
-const TEST_OTHER_USER: GithubContributorFragment = {
+const TEST_OTHER_USER: GithubUserFragment = {
   __typename: "User",
   id: 654321,
   login: "test-other-user-name",
   avatarUrl: "test-avatar-url",
+  htmlUrl: "test-html-url",
   user: { userId: "test-other-user-id" },
 };
 
@@ -96,7 +98,7 @@ const graphQlMocks = [
 const RECIPIENT_INPUT_LABEL = /Search by Github handle/i;
 
 describe('"ContributorSelect" component', () => {
-  let contributor: GithubContributorFragment | null | undefined = null;
+  let contributor: GithubUserFragment | null | undefined = null;
 
   beforeAll(() => {
     window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_BASIC_TEST_VALUE));
@@ -108,7 +110,7 @@ describe('"ContributorSelect" component', () => {
       <ContributorSelect
         projectId={TEST_PROJECT_ID}
         contributor={null}
-        setContributor={(newContributor: GithubContributorFragment | null | undefined) => {
+        setContributor={(newContributor: GithubUserFragment | null | undefined) => {
           contributor = newContributor;
         }}
       />,

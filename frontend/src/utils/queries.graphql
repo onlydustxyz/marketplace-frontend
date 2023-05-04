@@ -1,7 +1,3 @@
-fragment ContributorId on User {
-  id
-}
-
 fragment IgnoredGithubIssueId on IgnoredGithubIssues {
   projectId
   repoId
@@ -54,7 +50,7 @@ fragment ProjectContributors on Projects {
       content {
         id
         contributors {
-          ...ContributorId
+          ...GithubUserId
         }
       }
     }
@@ -64,7 +60,7 @@ fragment ProjectContributors on Projects {
     paymentRequests {
       ...PaymentRequestId
       githubRecipient {
-        ...ContributorId
+        ...GithubUserId
       }
     }
   }

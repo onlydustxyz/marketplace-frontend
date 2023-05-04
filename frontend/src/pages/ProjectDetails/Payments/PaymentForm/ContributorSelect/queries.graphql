@@ -30,12 +30,7 @@ fragment ProjectContributorsForPaymentSelect on Projects {
 
 query SearchGithubUsersByHandleSubstring($handleSubstringQuery: String!) {
   searchUsers(query: $handleSubstringQuery, sort: "followers", order: "desc") {
-    id
-    login
-    avatarUrl
-    user {
-      userId
-    }
+    ...GithubUser
   }
 }
 

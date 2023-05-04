@@ -1,9 +1,9 @@
-import { GithubContributorFragment, WorkItem } from "src/__generated/graphql";
+import { GithubUserFragment, WorkItem } from "src/__generated/graphql";
 
 export type Inputs = {
   workItems: WorkItem[];
   contributorHandle: string | null;
-  contributor: GithubContributorFragment;
+  contributor: GithubUserFragment;
   memo: string;
   remainingBudget: number;
   hoursWorked: number;

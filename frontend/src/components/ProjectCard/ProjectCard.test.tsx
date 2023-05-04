@@ -2,23 +2,23 @@ import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import ProjectCard, { Project } from ".";
 import { screen } from "@testing-library/react";
 import {
-  ContributorIdFragment,
+  GithubUserIdFragment,
   ProjectCardGithubRepoFieldsFragment,
   ProjectContributorsFragment,
 } from "src/__generated/graphql";
 import { ArrayElement } from "src/types";
 
-const contributor1: ContributorIdFragment = {
+const contributor1: GithubUserIdFragment = {
   __typename: "User",
   id: 123456,
 };
 
-const contributor2: ContributorIdFragment = {
+const contributor2: GithubUserIdFragment = {
   __typename: "User",
   id: 123457,
 };
 
-const contributor3: ContributorIdFragment = {
+const contributor3: GithubUserIdFragment = {
   __typename: "User",
   id: 123458,
 };

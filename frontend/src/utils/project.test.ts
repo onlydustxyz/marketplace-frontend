@@ -1,6 +1,6 @@
 import { range } from "lodash";
 import {
-  ContributorIdFragment,
+  GithubUserIdFragment,
   ContributorsTableFieldsFragment,
   ProjectContributorsFragment,
   GithubIssueDetailsFragment,
@@ -75,7 +75,7 @@ describe("useProjectContributors", () => {
 
 describe("countUnpaidMergedPullsByContributor", () => {
   it("should count unpaid merged PRs by author login", () => {
-    const users: ContributorIdFragment[] = range(0, 3).map(id => ({
+    const users: GithubUserIdFragment[] = range(0, 3).map(id => ({
       id: 1000 + id,
     }));
 

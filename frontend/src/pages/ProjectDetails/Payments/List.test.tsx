@@ -34,7 +34,9 @@ const githubUserMock: GithubUserFragment = {
   __typename: "User",
   id: GITHUB_USER_ID,
   login: "ofux",
+  htmlUrl: "https://github.com/ofux",
   avatarUrl: "https://avatars.githubusercontent.com/u/595505?v=4",
+  user: null,
 };
 
 const graphQlMocks = [

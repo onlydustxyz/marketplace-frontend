@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import {
-  GithubContributorFragment,
+  GithubUserFragment,
   useGetProjectContributorsForPaymentSelectQuery,
   useSearchGithubUsersByHandleSubstringQuery,
 } from "src/__generated/graphql";
@@ -15,8 +15,8 @@ const EXTERNAL_USER_QUERY_DEBOUNCE_TIME = 500;
 
 type Props = {
   projectId: string;
-  contributor: GithubContributorFragment | null | undefined;
-  setContributor: (contributor: GithubContributorFragment | null | undefined) => void;
+  contributor: GithubUserFragment | null | undefined;
+  setContributor: (contributor: GithubUserFragment | null | undefined) => void;
 };
 
 export default function ContributorSelect({ projectId, contributor, setContributor }: Props) {

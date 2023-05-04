@@ -1,0 +1,13 @@
+fragment GithubUserId on User {
+  id
+}
+
+fragment GithubUser on User {
+  ...GithubUserId
+  login
+  avatarUrl
+  htmlUrl
+  user {
+    userId
+  }
+}

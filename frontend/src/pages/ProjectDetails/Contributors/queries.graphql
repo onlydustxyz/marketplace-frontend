@@ -1,11 +1,5 @@
 fragment ContributorsTableFields on User {
-  id
-  login
-  avatarUrl
-  htmlUrl
-  user {
-    userId
-  }
+  ...GithubUser
   paymentRequests(where: { budget: { projectId: { _eq: $projectId } } }) {
     ...PaymentRequest
   }

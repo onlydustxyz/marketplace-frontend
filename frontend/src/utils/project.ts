@@ -1,7 +1,7 @@
 import { GithubIssueDetailsFragment, VisibleProjectFragment } from "src/__generated/graphql";
 import { chain, find, flatMap, some, uniqBy } from "lodash";
 import isDefined from "src/utils/isDefined";
-import { ContributorIdFragment } from "src/__generated/graphql";
+import { GithubUserIdFragment } from "src/__generated/graphql";
 
 export const isProjectVisible =
   (githubUserId?: number) =>
@@ -33,7 +33,7 @@ type Project<R> = {
   }>;
 };
 
-export function getContributors<R extends ContributorIdFragment>(
+export function getContributors<R extends GithubUserIdFragment>(
   project?: Project<R | null> | null
 ): { contributors: R[] } {
   const contributorsFromRepos: R[] =
@@ -55,7 +55,7 @@ export function getContributors<R extends ContributorIdFragment>(
   return { contributors };
 }
 
-export const countUnpaidMergedPullsByContributor = (project?: Project<ContributorIdFragment | null> | null) => {
+export const countUnpaidMergedPullsByContributor = (project?: Project<GithubUserIdFragment | null> | null) => {
   const paidItemsByLogin = chain(project?.budgets)
     .flatMap("paymentRequests")
     .groupBy("githubRecipient.id")

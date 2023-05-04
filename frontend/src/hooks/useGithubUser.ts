@@ -13,12 +13,6 @@ export default function useGithubUser(githubUserId: number) {
 }
 
 gql`
-  fragment GithubUser on User {
-    id
-    login
-    avatarUrl
-  }
-
   query GetGithubUser($githubUserId: Int!) {
     fetchUserDetailsById(userId: $githubUserId) {
       ...GithubUser
