@@ -1,9 +1,12 @@
-use std::{fmt::Debug, future::ready, pin::Pin};
+use std::{fmt::Debug, future::ready, pin::Pin, sync::Arc};
 
 use anyhow::anyhow;
 use domain::{
+	contributor_stream_filter,
+	contributor_stream_filter::StreamFilterWith as GithubRepoContributorStreamFilterWith,
+	issue_stream_filter::StreamFilterWith as GithubIssueStreamFilterWith, GithubIssue,
 	GithubIssueNumber, GithubRepoContributor, GithubRepoId, GithubRepoLanguages,
-	GithubServiceIssueFilters, GithubUserId, NotInFilters, PositiveCount,
+	GithubServiceIssueFilters, GithubUserId, PositiveCount,
 };
 use futures::{stream::empty, Stream, StreamExt, TryStreamExt};
 use octocrab::{
@@ -18,17 +21,17 @@ use octocrab::{
 use olog::tracing::instrument;
 use reqwest::Url;
 
-use super::{logged_response::LoggedResponse, service::QueryParams, AddHeaders, Config, Error};
+use super::{
+	logged_response::LoggedResponse, service::QueryParams, AddHeaders, Config, Error,
+	IssueFromOctocrab,
+};
 
 mod round_robin;
 pub use round_robin::Client as RoundRobinClient;
 
 mod single;
-pub use single::Client as SingleClient;
-
-mod stream_filter;
 use olog::error;
-use stream_filter::StreamFilterWith;
+pub use single::Client as SingleClient;
 
 pub enum Client {
 	Single(SingleClient),
@@ -170,11 +173,11 @@ impl Client {
 		.await
 	}
 
-	#[instrument(skip(self))]
+	#[instrument(skip(self, filters))]
 	pub async fn get_contributors_by_repository_id(
 		&self,
 		id: &GithubRepoId,
-		filters: &NotInFilters<GithubUserId>,
+		filters: Arc<dyn contributor_stream_filter::Filter>,
 	) -> Result<Vec<GithubRepoContributor>, Error> {
 		let query_params = QueryParams::default().page(1).per_page(100);
 
@@ -191,7 +194,7 @@ impl Client {
 				100 * self.config().max_calls_per_request.map(PositiveCount::get).unwrap_or(3),
 			)
 			.await?
-			.filter_with(filters.clone())
+			.filter_contributors_with(filters)
 			.collect()
 			.await;
 		Ok(contributors)
@@ -238,7 +241,7 @@ impl Client {
 		&self,
 		id: &GithubRepoId,
 		filters: &GithubServiceIssueFilters,
-	) -> Result<Vec<Issue>, Error> {
+	) -> Result<Vec<GithubIssue>, Error> {
 		let sort = if filters.updated_since.is_some() {
 			Sort::Updated
 		} else {
@@ -265,7 +268,21 @@ impl Client {
 				100 * self.config().max_calls_per_request.map(PositiveCount::get).unwrap_or(3),
 			)
 			.await?
-			.filter_with(*filters)
+			.filter_map(|issue| async move {
+				match GithubIssue::from_octocrab_issue(issue.clone(), *id) {
+					Ok(issue) => Some(issue),
+					Err(e) => {
+						error!(
+							error = e.to_string(),
+							repository_id = id.to_string(),
+							issue_id = issue.id.0,
+							"Failed to process issue"
+						);
+						None
+					},
+				}
+			})
+			.filter_issues_with(Arc::new(*filters))
 			.collect()
 			.await;
 		Ok(issues)

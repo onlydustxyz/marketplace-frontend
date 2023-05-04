@@ -1,11 +1,12 @@
+use std::sync::Arc;
+
 use async_trait::async_trait;
 #[cfg(test)]
 use mockall::automock;
 
 use super::Result;
 use crate::{
-	GithubRepo, GithubRepoContributor, GithubRepoId, GithubRepoLanguages, GithubUserId,
-	NotInFilters,
+	contributor_stream_filter, GithubRepo, GithubRepoContributor, GithubRepoId, GithubRepoLanguages,
 };
 
 #[cfg_attr(test, automock)]
@@ -16,6 +17,6 @@ pub trait Service: Send + Sync {
 	async fn repo_contributors(
 		&self,
 		repo_id: &GithubRepoId,
-		filters: &NotInFilters<GithubUserId>,
+		filters: Arc<dyn contributor_stream_filter::Filter>,
 	) -> Result<Vec<GithubRepoContributor>>;
 }

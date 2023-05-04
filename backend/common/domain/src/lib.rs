@@ -44,16 +44,16 @@ pub use budget::{Budget, Error as BudgetError, Event as BudgetEvent, Id as Budge
 
 mod github;
 pub use github::{
-	service_filters as github_service_filters, FetchIssueService as GithubFetchIssueService,
-	FetchRepoService as GithubFetchRepoService, FetchService as GithubFetchService,
-	FetchUserService as GithubFetchUserService, Issue as GithubIssue, IssueId as GithubIssueId,
-	IssueNumber as GithubIssueNumber, IssueStatus as GithubIssueStatus,
-	IssueType as GithubIssueType, Languages as GithubRepoLanguages, NotInFilters,
-	Repo as GithubRepo, RepoContributor as GithubRepoContributor, RepoId as GithubRepoId,
-	SearchService as GithubSearchService, SearchUserService as GithubSearchUserService,
-	Service as GithubService, ServiceError as GithubServiceError,
-	ServiceIssueFilters as GithubServiceIssueFilters, ServiceResult as GithubServiceResult,
-	User as GithubUser, UserId as GithubUserId,
+	contributor_stream_filter, issue_stream_filter, service_filters as github_service_filters,
+	FetchIssueService as GithubFetchIssueService, FetchRepoService as GithubFetchRepoService,
+	FetchService as GithubFetchService, FetchUserService as GithubFetchUserService,
+	Issue as GithubIssue, IssueId as GithubIssueId, IssueNumber as GithubIssueNumber,
+	IssueStatus as GithubIssueStatus, IssueType as GithubIssueType,
+	Languages as GithubRepoLanguages, Repo as GithubRepo, RepoContributor as GithubRepoContributor,
+	RepoId as GithubRepoId, SearchService as GithubSearchService,
+	SearchUserService as GithubSearchUserService, Service as GithubService,
+	ServiceError as GithubServiceError, ServiceIssueFilters as GithubServiceIssueFilters,
+	ServiceResult as GithubServiceResult, User as GithubUser, UserId as GithubUserId,
 };
 
 pub mod aggregate_root;

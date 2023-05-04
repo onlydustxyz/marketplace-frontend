@@ -48,6 +48,7 @@ impl TryFrom<create_issue::GithubIssue> for GithubIssue {
 			issue.html_url,
 			issue.status.try_into()?,
 			issue.created_at,
+			issue.updated_at,
 			issue.merged_at,
 			issue.closed_at,
 		))

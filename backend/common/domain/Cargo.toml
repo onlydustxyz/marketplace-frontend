@@ -14,6 +14,7 @@ version = "0.0.1"
 # Async
 async-trait = "0.1.56"
 futures = {version = "0.3.21", features = ["alloc"]}
+pin-project-lite = "0.2.9"
 
 # Core types
 url = "2.2.2"

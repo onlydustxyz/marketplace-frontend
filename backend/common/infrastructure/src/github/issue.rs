@@ -45,6 +45,7 @@ impl IssueFromOctocrab for GithubIssue {
 			issue.html_url,
 			status,
 			issue.created_at,
+			issue.updated_at,
 			issue.pull_request.and_then(|pr| pr.merged_at),
 			issue.closed_at,
 		))
@@ -65,6 +66,9 @@ impl IssueFromOctocrab for GithubIssue {
 		let created_at =
 			pull_request.created_at.ok_or_else(|| anyhow!("Missing field: 'created_at'"))?;
 
+		let updated_at =
+			pull_request.updated_at.ok_or_else(|| anyhow!("Missing field: 'updated_at'"))?;
+
 		let html_url = pull_request.html_url.ok_or_else(|| anyhow!("Missing field: 'html_url'"))?;
 
 		let user = pull_request.user.ok_or_else(|| anyhow!("Missing field: 'user'"))?;
@@ -79,6 +83,7 @@ impl IssueFromOctocrab for GithubIssue {
 			html_url,
 			status,
 			created_at,
+			updated_at,
 			pull_request.merged_at,
 			pull_request.closed_at,
 		))
