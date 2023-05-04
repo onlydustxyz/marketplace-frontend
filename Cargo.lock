@@ -1209,6 +1209,7 @@ dependencies = [
  "mockall",
  "mockall_double",
  "olog",
+ "pin-project-lite",
  "regex",
  "rstest",
  "rust_decimal",

@@ -1,12 +1,12 @@
 mod service;
 pub use service::{
 	filters as service_filters, Error as ServiceError, FetchIssueService, FetchRepoService,
-	FetchService, FetchUserService, Filters as ServiceFilters, Result as ServiceResult,
+	FetchService, FetchUserService, IssueFilters as ServiceIssueFilters, Result as ServiceResult,
 	SearchService, SearchUserService, Service,
 };
 
 mod repo;
-pub use repo::{Id as RepoId, Languages, Repo};
+pub use repo::{Contributor as RepoContributor, Id as RepoId, Languages, Repo};
 
 mod user;
 pub use user::{Id as UserId, User};

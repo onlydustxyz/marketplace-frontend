@@ -1,7 +1,8 @@
 extern crate proc_macro;
 
+use convert_case::{Case, Casing};
 use proc_macro::TokenStream;
-use syn::{parse::Parse, DeriveInput};
+use syn::{parse::Parse, DeriveInput, Ident};
 
 mod diesel_mapping_repository;
 mod diesel_repository;
@@ -126,4 +127,8 @@ fn find_attr<T: Parse>(ast: &DeriveInput, attr_name: &str) -> T {
 
 fn has_attr(derive_input: &syn::DeriveInput, attr_name: &str) -> bool {
 	derive_input.attrs.iter().any(|a| a.path.is_ident(attr_name))
+}
+
+fn ident_to_snake_case(ident: &Ident) -> String {
+	ident.to_string().from_case(Case::UpperCamel).to_case(Case::Snake)
 }

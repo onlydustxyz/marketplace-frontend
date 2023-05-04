@@ -49,14 +49,13 @@ impl QueryParams {
 	}
 }
 
-impl From<Option<github_service_filters::State>> for State {
-	fn from(value: Option<github_service_filters::State>) -> Self {
+impl From<Option<github_service_filters::IssueState>> for State {
+	fn from(value: Option<github_service_filters::IssueState>) -> Self {
 		value
 			.map(|state| match state {
-				github_service_filters::State::Open => State::Open,
-				github_service_filters::State::Closed => State::Closed,
-				github_service_filters::State::Merged => State::Closed,
-				github_service_filters::State::All => State::All,
+				github_service_filters::IssueState::Open => State::Open,
+				github_service_filters::IssueState::Closed => State::Closed,
+				github_service_filters::IssueState::All => State::All,
 			})
 			.unwrap_or(State::All)
 	}

@@ -17,9 +17,10 @@ use crate::{
 	domain::*,
 	infrastructure::database::{
 		BudgetRepository, CrmGithubRepoRepository, GithubIssuesRepository,
-		GithubRepoDetailsRepository, GithubRepoIndexRepository, PaymentRepository,
-		PaymentRequestRepository, ProjectGithubRepoDetailsRepository, ProjectLeadRepository,
-		ProjectRepository, WorkItemRepository,
+		GithubRepoDetailsRepository, GithubRepoIndexRepository, GithubUserIndexRepository,
+		GithubUsersRepository, PaymentRepository, PaymentRequestRepository,
+		ProjectGithubRepoDetailsRepository, ProjectLeadRepository, ProjectRepository,
+		WorkItemRepository,
 	},
 	Config, GITHUB_EVENTS_EXCHANGE,
 };
@@ -54,11 +55,27 @@ pub async fn spawn_all(
 		CrmProjector::new(CrmGithubRepoRepository::new(database.clone())).spawn(
 			event_bus::consumer_with_exchange(config.amqp(), GITHUB_EVENTS_EXCHANGE, "crm").await?,
 		),
-		GithubIssuesRepositoryProjector::new(GithubIssuesRepository::new(database)).spawn(
+		GithubIssuesRepositoryProjector::new(GithubIssuesRepository::new(database.clone())).spawn(
 			event_bus::consumer_with_exchange(
 				config.amqp(),
 				GITHUB_EVENTS_EXCHANGE,
 				"github-pulls",
+			)
+			.await?,
+		),
+		GithubUsersProjector::new(GithubUsersRepository::new(database.clone())).spawn(
+			event_bus::consumer_with_exchange(
+				config.amqp(),
+				GITHUB_EVENTS_EXCHANGE,
+				"github-users",
+			)
+			.await?,
+		),
+		GithubNewContributorsProjector::new(GithubUserIndexRepository::new(database)).spawn(
+			event_bus::consumer_with_exchange(
+				config.amqp(),
+				GITHUB_EVENTS_EXCHANGE,
+				"github-contributors",
 			)
 			.await?,
 		),

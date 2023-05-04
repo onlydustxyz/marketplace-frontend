@@ -1,7 +1,9 @@
+use std::sync::Arc;
+
 use async_trait::async_trait;
 use domain::{
-	GithubFetchRepoService, GithubRepo, GithubRepoId, GithubRepoLanguages, GithubServiceError,
-	GithubServiceResult,
+	stream_filter, GithubFetchRepoService, GithubRepo, GithubRepoContributor, GithubRepoId,
+	GithubRepoLanguages, GithubServiceError, GithubServiceResult,
 };
 use tracing::instrument;
 
@@ -22,5 +24,15 @@ impl GithubFetchRepoService for github::Client {
 	async fn repo_languages(&self, id: &GithubRepoId) -> GithubServiceResult<GithubRepoLanguages> {
 		let languages = self.get_languages_by_repository_id(id).await?;
 		Ok(languages)
+	}
+
+	#[instrument(skip(self, filters))]
+	async fn repo_contributors(
+		&self,
+		repo_id: &GithubRepoId,
+		filters: Arc<dyn stream_filter::Filter<I = GithubRepoContributor>>,
+	) -> GithubServiceResult<Vec<GithubRepoContributor>> {
+		let users = self.get_contributors_by_repository_id(repo_id, filters).await?;
+		Ok(users)
 	}
 }

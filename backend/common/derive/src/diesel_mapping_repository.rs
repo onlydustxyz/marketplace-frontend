@@ -1,10 +1,9 @@
-use convert_case::{Case, Casing};
 use proc_macro::TokenStream;
 use quote::quote;
 use syn::{Ident, Type, TypePath, TypeTuple};
 
 use super::find_attr;
-use crate::has_attr;
+use crate::{has_attr, ident_to_snake_case};
 
 trait UnwrapAsPath {
 	fn unwrap_as_path(&self) -> TypePath;
@@ -41,10 +40,6 @@ fn find_ids(input: &syn::DeriveInput) -> (TypePath, TypePath) {
 	let id1 = ids.elems.first().unwrap().unwrap_as_path();
 	let id2 = ids.elems.last().unwrap().unwrap_as_path();
 	(id1, id2)
-}
-
-fn ident_to_snake_case(ident: &Ident) -> String {
-	ident.to_string().from_case(Case::UpperCamel).to_case(Case::Snake)
 }
 
 pub fn impl_diesel_mapping_repository(input: syn::DeriveInput) -> TokenStream {

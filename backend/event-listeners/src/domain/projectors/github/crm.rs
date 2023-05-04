@@ -21,24 +21,24 @@ impl EventListener<GithubEvent> for Projector {
 	async fn on_event(&self, event: &GithubEvent) -> Result<(), SubscriberCallbackError> {
 		match event.clone() {
 			GithubEvent::Repo(repo) => {
-				let repo = repo.try_into().map_err(SubscriberCallbackError::Discard)?;
-				self.crm_github_repo_repository.upsert(&repo)?;
+				self.crm_github_repo_repository.upsert(&repo.into())?;
 			},
-			GithubEvent::Issue(_) | GithubEvent::PullRequest(_) => (),
+			GithubEvent::Issue(_)
+			| GithubEvent::PullRequest(_)
+			| GithubEvent::User(_)
+			| GithubEvent::NewContributor(_) => (),
 		}
 		Ok(())
 	}
 }
 
-impl TryFrom<GithubRepo> for CrmGithubRepo {
-	type Error = anyhow::Error;
-
-	fn try_from(repo: GithubRepo) -> anyhow::Result<Self> {
-		Ok(Self::new(
+impl From<GithubRepo> for CrmGithubRepo {
+	fn from(repo: GithubRepo) -> Self {
+		Self::new(
 			*repo.id(),
 			repo.owner().clone(),
 			repo.name().clone(),
 			Some(Utc::now().naive_utc()),
-		))
+		)
 	}
 }

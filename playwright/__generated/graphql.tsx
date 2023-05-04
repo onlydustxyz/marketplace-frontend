@@ -1589,6 +1589,7 @@ export type Issue = {
   status: Status;
   title: Scalars['String'];
   type: Type;
+  updatedAt: Scalars['DateTimeUtc'];
 };
 
 

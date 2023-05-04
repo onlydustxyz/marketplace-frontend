@@ -1,9 +1,9 @@
 use async_trait::async_trait;
 use domain::{
 	GithubFetchIssueService, GithubIssue, GithubIssueNumber, GithubRepoId, GithubServiceError,
-	GithubServiceFilters, GithubServiceResult,
+	GithubServiceIssueFilters, GithubServiceResult,
 };
-use olog::{error, tracing::instrument};
+use olog::tracing::instrument;
 
 use crate::{github, github::IssueFromOctocrab};
 
@@ -13,27 +13,9 @@ impl GithubFetchIssueService for github::Client {
 	async fn issues_by_repo_id(
 		&self,
 		repo_id: &GithubRepoId,
-		filters: &GithubServiceFilters,
+		filters: &GithubServiceIssueFilters,
 	) -> GithubServiceResult<Vec<GithubIssue>> {
-		let octocrab_issues = self.issues_by_repo_id(repo_id, filters).await?;
-		let issues = octocrab_issues
-			.into_iter()
-			.filter_map(
-				|issue| match GithubIssue::from_octocrab_issue(issue.clone(), *repo_id) {
-					Ok(issue) => Some(issue),
-					Err(e) => {
-						error!(
-							error = e.to_string(),
-							repository_id = repo_id.to_string(),
-							issue_id = issue.id.0,
-							"Failed to process issue"
-						);
-						None
-					},
-				},
-			)
-			.collect();
-
+		let issues = self.issues_by_repo_id(repo_id, filters).await?;
 		Ok(issues)
 	}
 

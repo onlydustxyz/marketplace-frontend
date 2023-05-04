@@ -18,9 +18,21 @@ impl From<octocrab::Error> for Error {
 			octocrab::Error::Http {
 				source,
 				backtrace: _,
-			} => match source.status() {
-				Some(status) if status == 404 => Error::NotFound(anyhow!(error)),
-				_ => Error::Other(anyhow!(error)),
+			} => {
+				if source.is_decode() {
+					return match std::error::Error::source(&source) {
+						Some(source)
+							if source
+								.to_string()
+								.contains("EOF while parsing a value at line 1 column 0") =>
+							Error::NotFound(anyhow!(error)),
+						_ => Error::Other(anyhow!(error)),
+					};
+				}
+				match source.status() {
+					Some(status) if status == 404 => Error::NotFound(anyhow!(error)),
+					_ => Error::Other(anyhow!(error)),
+				}
 			},
 			octocrab::Error::GitHub {
 				source,

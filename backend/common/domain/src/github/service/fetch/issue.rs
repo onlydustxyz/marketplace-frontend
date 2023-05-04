@@ -1,7 +1,7 @@
 use async_trait::async_trait;
 
 use super::Result;
-use crate::{GithubIssue, GithubIssueNumber, GithubRepoId, GithubServiceFilters};
+use crate::{GithubIssue, GithubIssueNumber, GithubRepoId, GithubServiceIssueFilters};
 
 #[async_trait]
 pub trait Service: Send + Sync {
@@ -21,6 +21,6 @@ pub trait Service: Send + Sync {
 	async fn issues_by_repo_id(
 		&self,
 		repo_id: &GithubRepoId,
-		filters: &GithubServiceFilters,
+		filters: &GithubServiceIssueFilters,
 	) -> Result<Vec<GithubIssue>>;
 }

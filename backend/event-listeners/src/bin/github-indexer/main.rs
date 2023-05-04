@@ -2,7 +2,10 @@ use std::{sync::Arc, time::Duration};
 
 use anyhow::Result;
 use dotenv::dotenv;
-use event_listeners::{infrastructure::database::GithubRepoIndexRepository, Config};
+use event_listeners::{
+	infrastructure::database::{GithubRepoIndexRepository, GithubUserIndexRepository},
+	Config,
+};
 use indexer::{logged::Logged, published::Published, with_state::WithState};
 use infrastructure::{amqp, config, database, github, tracing::Tracer};
 use olog::info;
@@ -23,6 +26,10 @@ async fn main() -> Result<()> {
 	let indexer = indexer::composite::Indexer::new(vec![
 		Arc::new(indexer::repo::Indexer::new(github.clone())),
 		Arc::new(indexer::issues::Indexer::new(github.clone())),
+		Arc::new(indexer::contributors::Indexer::new(
+			github.clone(),
+			GithubUserIndexRepository::new(database.clone()),
+		)),
 	])
 	.logged()
 	.published(event_bus)

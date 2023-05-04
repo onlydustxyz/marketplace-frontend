@@ -17,6 +17,7 @@ fragment GithubIssue on Issue {
   htmlUrl
   status
   createdAt
+  updatedAt
   mergedAt
   closedAt
 }

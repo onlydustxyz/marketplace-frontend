@@ -22,7 +22,9 @@ pub enum Status {
 	Cancelled,
 }
 
-#[derive(Clone, Copy, Debug, GraphQLEnum, Serialize, Deserialize, AsExpression, FromToSql)]
+#[derive(
+	Clone, Copy, Debug, GraphQLEnum, Serialize, Deserialize, AsExpression, FromToSql, PartialEq, Eq,
+)]
 #[sql_type = "diesel::sql_types::Jsonb"]
 pub enum Type {
 	Issue,
@@ -30,7 +32,7 @@ pub enum Type {
 }
 
 #[allow(clippy::too_many_arguments)]
-#[derive(Clone, Debug, new, Getters, GraphQLObject, Serialize, Deserialize)]
+#[derive(Clone, Debug, new, Getters, GraphQLObject, Serialize, Deserialize, PartialEq, Eq)]
 pub struct Issue {
 	id: Id,
 	repo_id: GithubRepoId,
@@ -41,6 +43,7 @@ pub struct Issue {
 	html_url: Url,
 	status: Status,
 	created_at: DateTime<Utc>,
+	updated_at: DateTime<Utc>,
 	merged_at: Option<DateTime<Utc>>,
 	closed_at: Option<DateTime<Utc>>,
 }
