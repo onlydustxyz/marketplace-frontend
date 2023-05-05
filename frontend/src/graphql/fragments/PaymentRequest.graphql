@@ -16,6 +16,9 @@ fragment PaymentRequest on PaymentRequests {
 
 fragment ExtendedPaymentRequest on PaymentRequests {
   ...PaymentRequest
+  githubRecipient {
+    ...GithubUser
+  }
   paymentsAggregate {
     aggregate {
       sum {

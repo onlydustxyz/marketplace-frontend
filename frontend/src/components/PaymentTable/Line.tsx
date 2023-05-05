@@ -5,7 +5,6 @@ import RoundedImage, { Rounding } from "src/components/RoundedImage";
 import PayoutStatus from "src/components/PayoutStatus";
 import { formatMoneyAmount } from "src/utils/money";
 import displayRelativeDate from "src/utils/displayRelativeDate";
-import useGithubUser from "src/hooks/useGithubUser";
 import { Field, SortingFields } from "src/hooks/usePaymentSorting";
 import { useEffect } from "react";
 import { ExtendedPaymentRequestFragment } from "src/__generated/graphql";
@@ -22,8 +21,8 @@ type Props = {
 
 export default function PaymentLine({ payment, setSortingFields, onClick, selected }: Props) {
   const { valid: payoutSettingsValid } = usePayoutSettings(payment.recipientId);
-  const { data: recipient } = useGithubUser(payment.recipientId);
 
+  const recipient = payment.githubRecipient;
   const paidAmount = payment.paymentsAggregate.aggregate?.sum?.amount;
   const paymentStatus = paidAmount === payment.amountInUsd ? PaymentStatus.ACCEPTED : PaymentStatus.WAITING_PAYMENT;
 

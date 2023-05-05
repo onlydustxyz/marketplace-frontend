@@ -47,7 +47,7 @@ const PaymentForm: React.FC = () => {
   const onValidSubmit: SubmitHandler<Inputs> = useCallback(
     async formData => {
       if (contributor)
-        await requestNewPayment({
+        await requestNewPayment(contributor, {
           ...mapFormDataToSchema(projectId, { ...formData, contributor }),
           onCompleted: () => {
             showToaster(T("payment.form.sent"));
