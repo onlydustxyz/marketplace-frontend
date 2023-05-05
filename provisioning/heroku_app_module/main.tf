@@ -19,15 +19,15 @@ resource "heroku_addon" "queue" {
 }
 
 resource "heroku_addon_attachment" "database_attachment" {
-  count    = var.database_id != null ? 1 : 0
+  count    = var.database_id != null || var.database_billing_app ? 1 : 0
   app_id   = heroku_app.app.id
-  addon_id = var.database_id
+  addon_id = var.database_id != null ? var.database_id : heroku_addon.database[0].id
   name     = "DATABASE"
 }
 
 resource "heroku_addon_attachment" "queue_attachment" {
-  count    = var.queue_id != null ? 1 : 0
+  count    = var.queue_id != null || var.queue_billing_app ? 1 : 0
   app_id   = heroku_app.app.id
-  addon_id = var.queue_id
+  addon_id = var.queue_id != null ? var.queue_id : heroku_addon.queue[0].id
   name     = "CLOUDAMQP"
 }
