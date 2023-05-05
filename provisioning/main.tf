@@ -19,6 +19,24 @@ resource "heroku_pipeline" "hasura" {
   }
 }
 
+resource "heroku_pipeline" "gateway" {
+  name = "gateway"
+
+  owner {
+    id   = var.team_id
+    type = "team"
+  }
+}
+
+resource "heroku_pipeline" "hasura_auth" {
+  name = "hasura-auth"
+
+  owner {
+    id   = var.team_id
+    type = "team"
+  }
+}
+
 module "hasura" {
   source               = "./heroku_app_module"
   app_name             = var.hasura_app_name
@@ -69,4 +87,18 @@ module "api" {
   pipeline_id = heroku_pipeline.backend.id
 }
 
+module "gateway" {
+  source      = "./heroku_app_module"
+  app_name    = var.gateway_app_name
+  stage       = var.stage
+  pipeline_id = heroku_pipeline.gateway.id
+}
+
+module "hasura_auth" {
+  source      = "./heroku_app_module"
+  app_name    = var.hasura_auth_app_name
+  stage       = var.stage
+  database_id = module.hasura.database_id
+  pipeline_id = heroku_pipeline.hasura_auth.id
+}
 

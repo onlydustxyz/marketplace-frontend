@@ -25,7 +25,17 @@ variable "event_listeners_app_name" {
 
 variable "api_app_name" {
   type        = string
-  description = "The name of the API app"
+  description = "The name of the api app"
+}
+
+variable "gateway_app_name" {
+  type        = string
+  description = "The name of the gateway app"
+}
+
+variable "hasura_auth_app_name" {
+  type        = string
+  description = "The name of the hasura_auth app"
 }
 
 variable "stage" {
