@@ -4,27 +4,12 @@ use event_listeners::{
 	domain::{GithubEvent, GithubRepoIndex, IndexerState},
 	infrastructure::database::GithubRepoIndexRepository,
 };
-use futures::future::try_join_all;
 
 use super::Result;
 
 pub struct Indexer<I: super::Indexer> {
 	github_repo_index_repository: GithubRepoIndexRepository,
 	indexer: I,
-}
-
-impl<I: super::Indexer> Indexer<I> {
-	pub async fn index_all(&self) -> Result<Vec<GithubEvent>> {
-		let handles = self
-			.github_repo_index_repository
-			.list()?
-			.into_iter()
-			.map(|repo_index| <Self as super::Indexer>::index(self, repo_index));
-
-		let results = try_join_all(handles).await?;
-
-		Ok(results.into_iter().flat_map(|(events, _)| events).collect())
-	}
 }
 
 #[async_trait]

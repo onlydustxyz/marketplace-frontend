@@ -1,6 +1,6 @@
 use domain::{GithubServiceError, PublisherError};
 use infrastructure::database::DatabaseError;
-use olog::error;
+use olog::warn;
 use thiserror::Error;
 
 #[derive(Debug, Error)]
@@ -28,7 +28,7 @@ impl<T: Default> IgnoreErrors for std::result::Result<T, GithubServiceError> {
 				domain::GithubServiceError::NotFound(_)
 				| domain::GithubServiceError::InvalidInput(_)
 				| domain::GithubServiceError::MissingField(_) => {
-					error!(error = error.to_string(), "This error was ignored");
+					warn!(error = error.to_string(), "This error was ignored");
 					Ok(T::default())
 				},
 				domain::GithubServiceError::Other(_) => Err(error),
