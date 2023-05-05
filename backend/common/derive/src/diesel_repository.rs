@@ -15,6 +15,7 @@ pub fn impl_diesel_repository(derive_input: syn::DeriveInput) -> TokenStream {
 
 	let table_ident = &table.path.segments.last().unwrap().ident;
 	let find_by_id_span_name = format!("{}::find_by_id", table_ident);
+	let exists_span_name = format!("{}::count", table_ident);
 	let insert_span_name = format!("{}::insert", table_ident);
 	let update_span_name = format!("{}::update", table_ident);
 	let upsert_span_name = format!("{}::upsert", table_ident);
@@ -24,6 +25,13 @@ pub fn impl_diesel_repository(derive_input: syn::DeriveInput) -> TokenStream {
 
 	let select_methods = if has_feature(&features, "select") {
 		quote! {
+			#[tracing::instrument(name = #exists_span_name, skip(self))]
+			pub fn exists(&self, id: &<#entity_type as ::domain::Entity>::Id) -> Result<bool, infrastructure::database::DatabaseError> {
+				let connection = self.0.connection()?;
+				let exists = diesel::select(diesel::dsl::exists(#table.filter(#id.eq(id)))).get_result(&*connection)?;
+				Ok(exists)
+			}
+
 			#[tracing::instrument(name = #find_by_id_span_name, skip(self))]
 			pub fn find_by_id(&self, id: &<#entity_type as ::domain::Entity>::Id) -> Result<#entity_type, infrastructure::database::DatabaseError> {
 				let connection = self.0.connection()?;
@@ -129,6 +137,7 @@ pub fn impl_diesel_repository(derive_input: syn::DeriveInput) -> TokenStream {
 		use diesel::RunQueryDsl;
 		use diesel::ExpressionMethods;
 		use diesel::query_dsl::filter_dsl::FindDsl;
+		use diesel::query_dsl::methods::FilterDsl;
 		use diesel::query_builder::{AsChangeset, QueryFragment};
 		use diesel::pg::Pg;
 
