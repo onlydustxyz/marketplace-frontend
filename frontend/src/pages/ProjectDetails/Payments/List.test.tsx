@@ -4,7 +4,7 @@ import matchers from "@testing-library/jest-dom/matchers";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import PaymentsList from "./List";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
-import { GetGithubUserDocument, GithubUserFragment, ExtendedPaymentRequestFragment } from "src/__generated/graphql";
+import { GithubUserFragment, ExtendedPaymentRequestFragment } from "src/__generated/graphql";
 
 expect.extend(matchers);
 
@@ -20,16 +20,6 @@ const HASURA_TOKEN_BASIC_TEST_VALUE = {
   creationDate: new Date().getTime(),
 };
 
-const paymentRequestMock: ExtendedPaymentRequestFragment = {
-  __typename: "PaymentRequests",
-  id: "705e6b37-d0ee-4e87-b681-7009dd691965",
-  recipientId: GITHUB_USER_ID,
-  paymentsAggregate: { aggregate: { sum: { amount: 200 } } },
-  amountInUsd: 200,
-  workItemsAggregate: { aggregate: { count: 1 } },
-  requestedAt: new Date(),
-};
-
 const githubUserMock: GithubUserFragment = {
   __typename: "User",
   id: GITHUB_USER_ID,
@@ -39,21 +29,16 @@ const githubUserMock: GithubUserFragment = {
   user: null,
 };
 
-const graphQlMocks = [
-  {
-    request: {
-      query: GetGithubUserDocument,
-      variables: {
-        githubUserId: GITHUB_USER_ID,
-      },
-    },
-    result: {
-      data: {
-        fetchUserDetailsById: githubUserMock,
-      },
-    },
-  },
-];
+const paymentRequestMock: ExtendedPaymentRequestFragment = {
+  __typename: "PaymentRequests",
+  id: "705e6b37-d0ee-4e87-b681-7009dd691965",
+  recipientId: GITHUB_USER_ID,
+  paymentsAggregate: { aggregate: { sum: { amount: 200 } } },
+  amountInUsd: 200,
+  workItemsAggregate: { aggregate: { count: 1 } },
+  requestedAt: new Date(),
+  githubRecipient: githubUserMock,
+};
 
 vi.mock("axios", () => ({
   default: {
@@ -71,7 +56,6 @@ describe("PaymentsList page", () => {
   beforeEach(() => {
     renderWithIntl(<PaymentsList />, {
       wrapper: MemoryRouterProviderFactory({
-        mocks: graphQlMocks,
         context: {
           payments: [paymentRequestMock],
           budget: {

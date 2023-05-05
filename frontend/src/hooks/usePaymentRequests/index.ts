@@ -2,6 +2,8 @@ import {
   CancelPaymentRequestMutationResult,
   ExtendedPaymentRequestFragment,
   ExtendedPaymentRequestFragmentDoc,
+  GithubUserFragment,
+  RequestPaymentMutationOptions,
   RequestPaymentMutationResult,
   RequestPaymentMutationVariables,
   useCancelPaymentRequestMutation,
@@ -17,35 +19,7 @@ export default function usePaymentRequests(projectId?: string) {
     nextFetchPolicy: "cache-only",
   });
 
-  const [requestNewPayment] = useRequestPaymentMutation({
-    context: { graphqlErrorDisplay: "toaster" },
-    update: (cache, result, { variables }) => {
-      const { budgetId, paymentId, amount } = (result as RequestPaymentMutationResult).data?.requestPayment || {};
-      const { contributorId, reason } = variables as RequestPaymentMutationVariables;
-
-      const newPaymentRequestRef = cache.writeFragment<ExtendedPaymentRequestFragment>({
-        fragment: ExtendedPaymentRequestFragmentDoc,
-        fragmentName: "ExtendedPaymentRequest",
-        data: {
-          __typename: "PaymentRequests",
-          id: paymentId,
-          amountInUsd: amount,
-          recipientId: contributorId,
-          workItemsAggregate: { aggregate: { count: reason.workItems.length } },
-          paymentsAggregate: { aggregate: { sum: { amount: 0 } } },
-          requestedAt: Date.now(),
-        },
-      });
-
-      cache.modify({
-        id: `Budgets:${budgetId}`,
-        fields: {
-          paymentRequests: paymentRequestRefs => [...paymentRequestRefs, newPaymentRequestRef],
-          remainingAmount: remainingAmount => remainingAmount - amount,
-        },
-      });
-    },
-  });
+  const [requestNewPaymentMutation] = useRequestPaymentMutation();
 
   const [cancelPaymentRequest] = useCancelPaymentRequestMutation({
     context: { graphqlErrorDisplay: "toaster" },
@@ -79,7 +53,39 @@ export default function usePaymentRequests(projectId?: string) {
       ),
       paymentRequests: getPaymentRequestsQuery.data.projectsByPk?.budgets.map(b => b.paymentRequests).flat(),
     },
-    requestNewPayment,
+
+    requestNewPayment: (recipient: GithubUserFragment, options: RequestPaymentMutationOptions) =>
+      requestNewPaymentMutation({
+        ...options,
+        context: { graphqlErrorDisplay: "toaster" },
+        update: (cache, result, { variables }) => {
+          const { budgetId, paymentId, amount } = (result as RequestPaymentMutationResult).data?.requestPayment || {};
+          const { contributorId, reason } = variables as RequestPaymentMutationVariables;
+
+          const newPaymentRequestRef = cache.writeFragment<ExtendedPaymentRequestFragment>({
+            fragment: ExtendedPaymentRequestFragmentDoc,
+            fragmentName: "ExtendedPaymentRequest",
+            data: {
+              __typename: "PaymentRequests",
+              id: paymentId,
+              amountInUsd: amount,
+              recipientId: contributorId,
+              workItemsAggregate: { aggregate: { count: reason.workItems.length } },
+              paymentsAggregate: { aggregate: { sum: { amount: 0 } } },
+              requestedAt: Date.now(),
+              githubRecipient: recipient,
+            },
+          });
+
+          cache.modify({
+            id: `Budgets:${budgetId}`,
+            fields: {
+              paymentRequests: paymentRequestRefs => [...paymentRequestRefs, newPaymentRequestRef],
+              remainingAmount: remainingAmount => remainingAmount - amount,
+            },
+          });
+        },
+      }),
     cancelPaymentRequest,
   };
 }
