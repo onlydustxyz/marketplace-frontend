@@ -18,6 +18,6 @@ variable "database_billing_app" {
 variable "database_id" {
   type        = string
   description = "The database addon id"
-  default     = ""
+  default     = null
 }
 
