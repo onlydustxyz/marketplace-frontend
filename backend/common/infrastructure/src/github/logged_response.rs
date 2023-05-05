@@ -1,6 +1,6 @@
 use async_trait::async_trait;
 use octocrab::FromResponse;
-use olog::debug;
+use olog::info;
 use reqwest::header::HeaderMap;
 
 pub(crate) struct LoggedResponse<R>(pub R);
@@ -22,7 +22,7 @@ pub trait DebugTechnicalHeaders {
 
 impl DebugTechnicalHeaders for reqwest::Response {
 	fn debug_technical_headers(&self, message: &'static str) {
-		debug!(
+		info!(
 			url = self.url().to_string(),
 			status = self.status().to_string(),
 			header_x_cache = self.get_header_as_str("X-Cache"),
