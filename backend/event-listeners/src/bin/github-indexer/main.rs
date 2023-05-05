@@ -87,6 +87,23 @@ async fn check_github_rate_limit(github: Arc<github::Client>) -> bool {
 		.parse()
 		.unwrap_or(1000);
 
-	let ratelimit = github.octocrab().ratelimit().get().await;
-	ratelimit.map(|res| res.rate.remaining > guard).unwrap_or(false)
+	match github.octocrab().ratelimit().get().await {
+		Ok(rate_limit) => {
+			olog::debug!(
+				github_rate_limit_remaining = rate_limit.rate.remaining,
+				github_rate_limit_used = rate_limit.rate.used,
+				github_rate_limit_reset = rate_limit.rate.reset,
+				github_rate_limit_limit = rate_limit.rate.limit,
+				"Github rate-limit status"
+			);
+			rate_limit.rate.remaining > guard
+		},
+		Err(error) => {
+			olog::error!(
+				error = error.to_string(),
+				"Failed while checking github rate limit"
+			);
+			false
+		},
+	}
 }
