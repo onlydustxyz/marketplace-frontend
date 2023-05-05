@@ -3,10 +3,11 @@ use std::{sync::Arc, time::Duration};
 use anyhow::Result;
 use dotenv::dotenv;
 use event_listeners::{
+	domain::{GithubEvent, Indexer},
 	infrastructure::database::{GithubRepoIndexRepository, GithubUserIndexRepository},
 	Config,
 };
-use indexer::{logged::Logged, published::Published, with_state::WithState};
+use indexer::{logged::Logged, published::Published, throttled::Throttled, with_state::WithState};
 use infrastructure::{amqp, config, database, github, tracing::Tracer};
 use olog::info;
 
@@ -23,6 +24,8 @@ async fn main() -> Result<()> {
 	)?));
 	let event_bus = Arc::new(amqp::Bus::new(config.amqp()).await?);
 
+	let repo_index_repository = GithubRepoIndexRepository::new(database.clone());
+
 	let indexer = indexer::composite::Indexer::new(vec![
 		Arc::new(indexer::repo::Indexer::new(github.clone())),
 		Arc::new(indexer::issues::Indexer::new(github.clone())),
@@ -33,13 +36,27 @@ async fn main() -> Result<()> {
 	])
 	.logged()
 	.published(event_bus)
-	.with_state(GithubRepoIndexRepository::new(database));
+	.with_state(repo_index_repository.clone())
+	.throttled(throttle_duration());
 
 	loop {
 		info!("🎶 Still alive 🎶");
-		indexer.index_all().await?;
+		index_all(&indexer, &repo_index_repository).await?;
 		sleep().await;
 	}
+}
+
+async fn index_all(
+	indexer: &dyn Indexer,
+	github_repo_index_repository: &GithubRepoIndexRepository,
+) -> Result<Vec<GithubEvent>> {
+	let mut events = vec![];
+
+	for repo_index in github_repo_index_repository.list()? {
+		events.extend(indexer.index(repo_index).await?.0);
+	}
+
+	Ok(events)
 }
 
 async fn sleep() {
@@ -49,4 +66,13 @@ async fn sleep() {
 		.unwrap_or(60);
 
 	tokio::time::sleep(Duration::from_secs(seconds)).await;
+}
+
+fn throttle_duration() -> Duration {
+	let ms = std::env::var("GITHUB_EVENTS_INDEXER_THROTTLE")
+		.unwrap_or_default()
+		.parse()
+		.unwrap_or(1);
+
+	Duration::from_millis(ms)
 }
