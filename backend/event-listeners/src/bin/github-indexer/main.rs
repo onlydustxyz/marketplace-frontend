@@ -7,10 +7,7 @@ use event_listeners::{
 	infrastructure::database::{GithubRepoIndexRepository, GithubUserIndexRepository},
 	Config,
 };
-use indexer::{
-	guarded::Guarded, logged::Logged, published::Published, throttled::Throttled,
-	with_state::WithState,
-};
+use indexer::{guarded::Guarded, logged::Logged, published::Published, with_state::WithState};
 use infrastructure::{amqp, config, database, github, tracing::Tracer};
 use olog::info;
 
@@ -38,9 +35,8 @@ async fn main() -> Result<()> {
 		)),
 	])
 	.logged()
-	.published(event_bus)
+	.published(event_bus, throttle_duration())
 	.with_state(repo_index_repository.clone())
-	.throttled(throttle_duration())
 	.guarded(|| check_github_rate_limit(github.clone()));
 
 	loop {
