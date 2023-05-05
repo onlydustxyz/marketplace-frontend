@@ -10,11 +10,21 @@ resource "heroku_pipeline" "backend" {
   }
 }
 
+resource "heroku_pipeline" "hasura" {
+  name = "hasura"
+
+  owner {
+    id   = var.team_id
+    type = "team"
+  }
+}
+
 module "hasura" {
   source               = "./heroku_app_module"
   app_name             = var.hasura_app_name
   stage                = var.stage
   database_billing_app = true
+  pipeline_id          = heroku_pipeline.hasura.id
 }
 
 module "dusty_bot" {
