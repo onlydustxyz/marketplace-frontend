@@ -19,7 +19,7 @@ impl<I: super::Indexer, Fut: Future<Output = bool> + Send, F: Fn() -> Fut + Send
 		repo_index: GithubRepoIndex,
 	) -> Result<(Vec<GithubEvent>, Option<IndexerState>)> {
 		if (self.guard)().await {
-			self.indexer.index(repo_index.clone()).await
+			self.indexer.index(repo_index).await
 		} else {
 			Ok((vec![], None))
 		}

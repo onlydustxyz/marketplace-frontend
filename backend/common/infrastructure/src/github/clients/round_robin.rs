@@ -2,7 +2,7 @@ use std::sync::{Arc, Mutex};
 
 use anyhow::anyhow;
 use octocrab::Octocrab;
-use olog::debug;
+use olog::info;
 
 use super::{AddHeaders, Config};
 
@@ -38,7 +38,7 @@ impl Client {
 			})
 			.collect();
 
-		debug!(
+		info!(
 			"Github API client setup with {} personal access tokens",
 			personal_access_tokens.len()
 		);
