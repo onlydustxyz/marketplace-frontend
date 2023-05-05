@@ -16,4 +16,5 @@ resource "heroku_addon_attachment" "database_attachment" {
   count    = var.database_id != null ? 1 : 0
   app_id   = heroku_app.app.id
   addon_id = var.database_id
+  name     = "DATABASE"
 }
