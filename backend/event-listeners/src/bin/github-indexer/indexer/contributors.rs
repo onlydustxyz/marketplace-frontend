@@ -60,9 +60,10 @@ impl stream_filter::Filter for NotInUserIndexFilter {
 		&self,
 		item: GithubRepoContributor,
 	) -> stream_filter::Decision<GithubRepoContributor> {
-		match self.github_user_index_repository.find_by_id(item.id()) {
-			Ok(_) => stream_filter::Decision::Skip,
-			Err(_) => stream_filter::Decision::Take(item),
+		if self.github_user_index_repository.exists(item.id()).unwrap_or(false) {
+			stream_filter::Decision::Skip
+		} else {
+			stream_filter::Decision::Take(item)
 		}
 	}
 }

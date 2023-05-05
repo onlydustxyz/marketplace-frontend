@@ -7,7 +7,10 @@ use event_listeners::{
 	infrastructure::database::{GithubRepoIndexRepository, GithubUserIndexRepository},
 	Config,
 };
-use indexer::{logged::Logged, published::Published, throttled::Throttled, with_state::WithState};
+use indexer::{
+	guarded::Guarded, logged::Logged, published::Published, throttled::Throttled,
+	with_state::WithState,
+};
 use infrastructure::{amqp, config, database, github, tracing::Tracer};
 use olog::info;
 
@@ -37,7 +40,8 @@ async fn main() -> Result<()> {
 	.logged()
 	.published(event_bus)
 	.with_state(repo_index_repository.clone())
-	.throttled(throttle_duration());
+	.throttled(throttle_duration())
+	.guarded(|| check_github_rate_limit(github.clone()));
 
 	loop {
 		info!("🎶 Still alive 🎶");
@@ -75,4 +79,31 @@ fn throttle_duration() -> Duration {
 		.unwrap_or(1);
 
 	Duration::from_millis(ms)
+}
+
+async fn check_github_rate_limit(github: Arc<github::Client>) -> bool {
+	let guard = std::env::var("GITHUB_RATE_LIMIT_GUARD")
+		.unwrap_or_default()
+		.parse()
+		.unwrap_or(1000);
+
+	match github.octocrab().ratelimit().get().await {
+		Ok(rate_limit) => {
+			olog::debug!(
+				github_rate_limit_remaining = rate_limit.rate.remaining,
+				github_rate_limit_used = rate_limit.rate.used,
+				github_rate_limit_reset = rate_limit.rate.reset,
+				github_rate_limit_limit = rate_limit.rate.limit,
+				"Github rate-limit status"
+			);
+			rate_limit.rate.remaining > guard
+		},
+		Err(error) => {
+			olog::error!(
+				error = error.to_string(),
+				"Failed while checking github rate limit"
+			);
+			false
+		},
+	}
 }
