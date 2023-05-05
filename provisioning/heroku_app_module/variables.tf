@@ -3,6 +3,12 @@ variable "app_name" {
   description = "The name of the Heroku app"
 }
 
+variable "pipeline_id" {
+  type        = string
+  description = "The id of the pipeline the app is attached to"
+  default     = null
+}
+
 variable "postgres_plan" {
   type        = string
   description = "The Heroku Postgres plan"
@@ -39,3 +45,7 @@ variable "queue_id" {
   default     = null
 }
 
+variable "stage" {
+  type        = string
+  description = "The pipeline stage of the apps"
+}

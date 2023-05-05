@@ -6,6 +6,13 @@ resource "heroku_app" "app" {
   }
 }
 
+resource "heroku_pipeline_coupling" "coupling" {
+  count    = var.pipeline_id != null ? 1 : 0
+  app      = heroku_app.app.id
+  pipeline = var.pipeline_id
+  stage    = var.stage
+}
+
 resource "heroku_addon" "database" {
   count = var.database_billing_app ? 1 : 0
   app   = heroku_app.app.name

@@ -28,3 +28,12 @@ variable "api_app_name" {
   description = "The name of the API app"
 }
 
+variable "stage" {
+  type        = string
+  description = "The pipeline stage the workflow corresponds to"
+}
+
+variable "team_id" {
+  type        = string
+  description = "The Heroku team id"
+}
