@@ -10,6 +10,7 @@ module "hasura" {
 module "dusty_bot" {
   source   = "./heroku_app_module"
   app_name = var.dusty_bot_app_name
+  queue_id = module.event_store.queue_id
 }
 
 module "github_proxy" {
@@ -18,21 +19,24 @@ module "github_proxy" {
 }
 
 module "event_store" {
-  source      = "./heroku_app_module"
-  app_name    = var.event_store_app_name
-  database_id = module.hasura.database_id
+  source            = "./heroku_app_module"
+  app_name          = var.event_store_app_name
+  database_id       = module.hasura.database_id
+  queue_billing_app = true
 }
 
 module "event_listeners" {
   source      = "./heroku_app_module"
   app_name    = var.event_listeners_app_name
   database_id = module.hasura.database_id
+  queue_id    = module.event_store.queue_id
 }
 
 module "api" {
   source      = "./heroku_app_module"
   app_name    = var.api_app_name
   database_id = module.hasura.database_id
+  queue_id    = module.event_store.queue_id
 }
 
 

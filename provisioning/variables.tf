@@ -28,9 +28,3 @@ variable "api_app_name" {
   description = "The name of the API app"
 }
 
-variable "postgres_plan" {
-  type        = string
-  description = "The postgres addon plan"
-  default     = "heroku-postgresql:standard-0"
-}
-
