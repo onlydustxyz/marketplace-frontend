@@ -1596,6 +1596,7 @@ export type Issue = {
   status: Status;
   title: Scalars['String'];
   type: Type;
+  updatedAt: Scalars['DateTimeUtc'];
 };
 
 export type JsonbCastExp = {
@@ -8501,7 +8502,6 @@ export type Query_Root = {
   /** fetch data from the table: "budgets" using primary key columns */
   budgetsByPk: Maybe<Budgets>;
   fetchIssue: Maybe<Issue>;
-  fetchIssueByRepositoryId: Maybe<Issue>;
   fetchRepositoryDetails: Maybe<Repo>;
   fetchUserDetails: Maybe<User>;
   fetchUserDetailsById: Maybe<User>;
@@ -8808,12 +8808,6 @@ export type Query_RootFetchIssueArgs = {
   issueNumber: Scalars['Int'];
   repoName: Scalars['String'];
   repoOwner: Scalars['String'];
-};
-
-
-export type Query_RootFetchIssueByRepositoryIdArgs = {
-  issueNumber: Scalars['Int'];
-  repositoryId: Scalars['Int'];
 };
 
 

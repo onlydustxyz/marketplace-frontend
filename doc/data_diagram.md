@@ -66,6 +66,7 @@ class Issue {
    status: Status!
    title: String!
    type: Type!
+   updatedAt: DateTimeUtc!
 }
 
 class Payment {
