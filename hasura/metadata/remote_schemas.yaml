@@ -39,6 +39,7 @@
             status: Status!
             title: String!
             type: Type!
+            updatedAt: DateTimeUtc!
           }
           type Mutation {
             acceptProjectLeaderInvitation(invitationId: Uuid!): Boolean!
@@ -182,6 +183,7 @@
             status: Status!
             title: String!
             type: Type!
+            updatedAt: DateTimeUtc!
           }
           type Query {
             fetchIssue(repoOwner: String!, repoName: String!, issueNumber: Int!): Issue
@@ -241,6 +243,7 @@
             status: Status!
             title: String!
             type: Type!
+            updatedAt: DateTimeUtc!
           }
           type Query {
             fetchRepositoryDetails(id: Int!): Repo
