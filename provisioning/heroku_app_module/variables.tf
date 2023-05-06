@@ -27,9 +27,9 @@ variable "database_billing_app" {
   default     = false
 }
 
-variable "queue_billing_app" {
+variable "amqp_billing_app" {
   type        = bool
-  description = "Is the app the queue resource billing app?"
+  description = "Is the app the amqp resource billing app?"
   default     = false
 }
 
@@ -39,9 +39,9 @@ variable "database_id" {
   default     = null
 }
 
-variable "queue_id" {
+variable "amqp_id" {
   type        = string
-  description = "The queue addon id"
+  description = "The amqp addon id"
   default     = null
 }
 
