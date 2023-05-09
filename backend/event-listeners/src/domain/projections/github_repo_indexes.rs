@@ -1,5 +1,4 @@
 use ::infrastructure::database::schema::*;
-use chrono::NaiveDateTime;
 use derive_getters::{Dissolve, Getters};
 use derive_more::Constructor;
 use domain::GithubRepoId;
@@ -12,7 +11,6 @@ use serde::{Deserialize, Serialize};
 	Getters,
 	Dissolve,
 	Insertable,
-	AsChangeset,
 	Serialize,
 	Deserialize,
 	Queryable,
@@ -23,7 +21,6 @@ use serde::{Deserialize, Serialize};
 #[primary_key(repo_id)]
 pub struct GithubRepoIndex {
 	repo_id: GithubRepoId,
-	last_indexed_time: Option<NaiveDateTime>,
 }
 
 impl domain::Entity for GithubRepoIndex {

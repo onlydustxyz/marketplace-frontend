@@ -5,6 +5,5 @@ pub mod issues;
 pub mod logged;
 pub mod published;
 pub mod repo;
-pub mod with_state;
 
 use event_listeners::domain::{IgnoreIndexerErrors, Indexer, IndexerResult as Result};

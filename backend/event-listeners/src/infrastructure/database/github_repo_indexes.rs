@@ -10,4 +10,5 @@ use crate::domain::GithubRepoIndex;
 #[table(dsl::github_repo_indexes)]
 #[id(dsl::repo_id)]
 #[mock]
+#[features(select, insert, delete)]
 pub struct Repository(Arc<Client>);

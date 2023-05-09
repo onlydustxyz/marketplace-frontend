@@ -14,13 +14,9 @@ impl<I: super::Indexer> super::Indexer for Indexer<I> {
 		let events = self.indexer.index(repo_index.clone()).await?;
 
 		info!(
-			"Found {} events when indexing repo {} since {}",
+			"Found {} events when indexing repo {}",
 			events.len(),
 			repo_index.repo_id(),
-			repo_index
-				.last_indexed_time()
-				.map(|date| date.to_string())
-				.unwrap_or_else(|| String::from("forever"))
 		);
 
 		Ok(events)

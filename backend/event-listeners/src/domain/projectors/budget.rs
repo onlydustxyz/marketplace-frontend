@@ -93,14 +93,11 @@ impl EventListener<Event> for Projector {
 								*work_item.issue_number(),
 							))?;
 							self.github_repo_index_repository
-								.upsert(&GithubRepoIndex::new(*work_item.repo_id(), None))
+								.try_insert(&GithubRepoIndex::new(*work_item.repo_id()))
 						})?;
 
-						self.github_user_index_repository.try_insert(&GithubUserIndex::new(
-							*recipient_id,
-							None,
-							false,
-						))?;
+						self.github_user_index_repository
+							.try_insert(&GithubUserIndex::new(*recipient_id, false))?;
 					},
 					PaymentEvent::Cancelled { id: payment_id } => {
 						let payment_request =
