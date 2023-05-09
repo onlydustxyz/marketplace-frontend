@@ -24,11 +24,15 @@
 > ## ⚠️ WARNING! ⚠️
 >
 > This repo contains highly experimental code.
-> Expect rapid iteration. 
+> Expect rapid iteration.
 
 # Global architecture
 
 ![Global architecture](doc/architecture.excalidraw.png)
+
+# Github indexing
+
+![Github indexing](doc/github_indexing.excalidraw.png)
 
 # Data Diagram
 
@@ -59,6 +63,7 @@ make install
 ## 🔬 Usage
 
 List all available commands:
+
 ```
 make
 ```
@@ -217,4 +222,3 @@ $~ heroku drains --json --app onlydust-backend-production
 # Acknowledgements
 
 This project is tested with BrowserStack.
-
