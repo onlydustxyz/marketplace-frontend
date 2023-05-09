@@ -6,10 +6,9 @@ use domain::{GithubRepo, SubscriberCallbackError};
 use tracing::instrument;
 
 use crate::{
-	domain::{CrmGithubRepo, EventListener, GithubEvent, GithubIssue, GithubUser, GithubUserIndex},
+	domain::{CrmGithubRepo, EventListener, GithubEvent, GithubIssue, GithubUser},
 	infrastructure::database::{
-		CrmGithubRepoRepository, GithubIssuesRepository, GithubUserIndexRepository,
-		GithubUsersRepository,
+		CrmGithubRepoRepository, GithubIssuesRepository, GithubUsersRepository,
 	},
 };
 
@@ -18,7 +17,6 @@ pub struct Projector {
 	crm_github_repo_repository: CrmGithubRepoRepository,
 	github_issues_repository: GithubIssuesRepository,
 	github_users_repository: GithubUsersRepository,
-	github_user_index_repository: GithubUserIndexRepository,
 }
 
 #[async_trait]

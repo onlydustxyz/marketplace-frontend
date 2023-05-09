@@ -1,5 +1,5 @@
 use async_trait::async_trait;
-use event_listeners::domain::{GithubEvent, GithubRepoIndex, IndexerState};
+use event_listeners::domain::{GithubEvent, GithubRepoIndex};
 use olog::info;
 
 use super::Result;
@@ -10,11 +10,8 @@ pub struct Indexer<I: super::Indexer> {
 
 #[async_trait]
 impl<I: super::Indexer> super::Indexer for Indexer<I> {
-	async fn index(
-		&self,
-		repo_index: GithubRepoIndex,
-	) -> Result<(Vec<GithubEvent>, Option<IndexerState>)> {
-		let (events, state) = self.indexer.index(repo_index.clone()).await?;
+	async fn index(&self, repo_index: GithubRepoIndex) -> Result<Vec<GithubEvent>> {
+		let events = self.indexer.index(repo_index.clone()).await?;
 
 		info!(
 			"Found {} events when indexing repo {} since {}",
@@ -26,7 +23,7 @@ impl<I: super::Indexer> super::Indexer for Indexer<I> {
 				.unwrap_or_else(|| String::from("forever"))
 		);
 
-		Ok((events, state))
+		Ok(events)
 	}
 }
 

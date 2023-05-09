@@ -62,11 +62,8 @@ impl EventListener<Event> for Projector {
 						.await
 						.map_err(SubscriberCallbackError::Fatal)?;
 					self.project_github_repo_details_repository.try_insert(id, github_repo_id)?;
-					self.github_repo_index_repository.upsert(&GithubRepoIndex::new(
-						*github_repo_id,
-						None,
-						None,
-					))?;
+					self.github_repo_index_repository
+						.upsert(&GithubRepoIndex::new(*github_repo_id, None))?;
 				},
 				ProjectEvent::GithubRepoUnlinked { id, github_repo_id } => {
 					self.project_github_repo_details_repository.delete(id, github_repo_id)?;

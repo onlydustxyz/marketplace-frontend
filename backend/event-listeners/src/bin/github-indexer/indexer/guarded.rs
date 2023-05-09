@@ -1,7 +1,7 @@
 use std::future::Future;
 
 use async_trait::async_trait;
-use event_listeners::domain::{GithubEvent, GithubRepoIndex, IndexerState};
+use event_listeners::domain::{GithubEvent, GithubRepoIndex};
 
 use super::Result;
 
@@ -14,14 +14,11 @@ pub struct Indexer<I: super::Indexer, Fut: Future<Output = bool>, F: Fn() -> Fut
 impl<I: super::Indexer, Fut: Future<Output = bool> + Send, F: Fn() -> Fut + Send + Sync>
 	super::Indexer for Indexer<I, Fut, F>
 {
-	async fn index(
-		&self,
-		repo_index: GithubRepoIndex,
-	) -> Result<(Vec<GithubEvent>, Option<IndexerState>)> {
+	async fn index(&self, repo_index: GithubRepoIndex) -> Result<Vec<GithubEvent>> {
 		if (self.guard)().await {
 			self.indexer.index(repo_index).await
 		} else {
-			Ok((vec![], None))
+			Ok(vec![])
 		}
 	}
 }

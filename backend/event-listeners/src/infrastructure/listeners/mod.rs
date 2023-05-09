@@ -57,7 +57,6 @@ pub async fn spawn_all(
 			CrmGithubRepoRepository::new(database.clone()),
 			GithubIssuesRepository::new(database.clone()),
 			GithubUsersRepository::new(database.clone()),
-			GithubUserIndexRepository::new(database.clone()),
 		)
 		.spawn(
 			event_bus::consumer_with_exchange(

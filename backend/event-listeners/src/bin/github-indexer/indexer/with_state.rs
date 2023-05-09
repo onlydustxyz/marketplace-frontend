@@ -1,7 +1,7 @@
 use async_trait::async_trait;
 use chrono::Utc;
 use event_listeners::{
-	domain::{GithubEvent, GithubRepoIndex, IndexerState},
+	domain::{GithubEvent, GithubRepoIndex},
 	infrastructure::database::GithubRepoIndexRepository,
 };
 
@@ -14,21 +14,11 @@ pub struct Indexer<I: super::Indexer> {
 
 #[async_trait]
 impl<I: super::Indexer> super::Indexer for Indexer<I> {
-	async fn index(
-		&self,
-		repo_index: GithubRepoIndex,
-	) -> Result<(Vec<GithubEvent>, Option<IndexerState>)> {
-		let (events, state) = self.indexer.index(repo_index.clone()).await?;
-
-		let repo_index = GithubRepoIndex::new(
-			*repo_index.repo_id(),
-			Some(Utc::now().naive_utc()),
-			state.clone(),
-		);
-
+	async fn index(&self, repo_index: GithubRepoIndex) -> Result<Vec<GithubEvent>> {
+		let events = self.indexer.index(repo_index.clone()).await?;
+		let repo_index = GithubRepoIndex::new(*repo_index.repo_id(), Some(Utc::now().naive_utc()));
 		self.github_repo_index_repository.upsert(&repo_index)?;
-
-		Ok((events, state))
+		Ok(events)
 	}
 }
 

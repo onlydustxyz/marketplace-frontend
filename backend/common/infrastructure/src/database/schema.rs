@@ -65,7 +65,6 @@ diesel::table! {
     github_repo_indexes (repo_id) {
         repo_id -> Int8,
         last_indexed_time -> Nullable<Timestamp>,
-        state -> Nullable<Jsonb>,
     }
 }
 

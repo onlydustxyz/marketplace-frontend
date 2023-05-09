@@ -53,7 +53,7 @@ async fn index_all(
 	let mut events = vec![];
 
 	for repo_index in github_repo_index_repository.list()? {
-		events.extend(indexer.index(repo_index).await?.0);
+		events.extend(indexer.index(repo_index).await?);
 	}
 
 	Ok(events)
