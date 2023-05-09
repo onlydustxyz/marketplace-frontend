@@ -7,7 +7,7 @@ use event_listeners::{
 	domain::{GithubEvent, GithubRepoIndexRepository, Indexer},
 	Config,
 };
-use indexer::{guarded::Guarded, logged::Logged, published::Published};
+use indexer::{guarded::Guarded, logged::Logged, published::Published, with_state::WithState};
 use infrastructure::{amqp, config, database, github, tracing::Tracer};
 use olog::info;
 
@@ -25,18 +25,23 @@ async fn main() -> Result<()> {
 	let event_bus = Arc::new(amqp::Bus::new(config.amqp()).await?);
 
 	let indexer = indexer::composite::Indexer::new(vec![
-		Arc::new(indexer::repo::repo::Indexer::new(
-			github.clone(),
-			database.clone(),
-		)),
-		Arc::new(indexer::repo::issues::Indexer::new(github.clone())),
-		Arc::new(indexer::repo::contributors::Indexer::new(
-			github.clone(),
-			database.clone(),
-		)),
+		Arc::new(
+			indexer::repo::repo::Indexer::new(github.clone(), database.clone())
+				.logged()
+				.published(event_bus.clone(), throttle_duration())
+				.with_state(),
+		),
+		Arc::new(
+			indexer::repo::issues::Indexer::new(github.clone())
+				.logged()
+				.published(event_bus.clone(), throttle_duration()),
+		),
+		Arc::new(
+			indexer::repo::contributors::Indexer::new(github.clone(), database.clone())
+				.logged()
+				.published(event_bus.clone(), throttle_duration()),
+		),
 	])
-	.logged()
-	.published(event_bus, throttle_duration())
 	.guarded(|| check_github_rate_limit(github.clone()));
 
 	loop {

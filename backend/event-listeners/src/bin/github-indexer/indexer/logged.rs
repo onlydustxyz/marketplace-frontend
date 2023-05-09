@@ -2,7 +2,7 @@ use async_trait::async_trait;
 use event_listeners::domain::GithubEvent;
 use olog::info;
 
-use super::Result;
+use super::{Result, Stateful};
 
 pub struct Indexer<I: super::Indexer> {
 	indexer: I,
@@ -28,5 +28,11 @@ pub trait Logged<I: super::Indexer> {
 impl<I: super::Indexer> Logged<I> for I {
 	fn logged(self) -> Indexer<I> {
 		Indexer { indexer: self }
+	}
+}
+
+impl<I: super::Indexer + super::Stateful<I::Id>> Stateful<I::Id> for Indexer<I> {
+	fn store(&self, id: I::Id, events: &[GithubEvent]) -> anyhow::Result<()> {
+		self.indexer.store(id, events)
 	}
 }

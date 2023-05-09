@@ -5,7 +5,7 @@ use domain::{Destination, Publisher};
 use event_listeners::{domain::GithubEvent, GITHUB_EVENTS_EXCHANGE};
 use infrastructure::amqp::UniqueMessage;
 
-use super::Result;
+use super::{Result, Stateful};
 
 pub struct Indexer<I: super::Indexer> {
 	indexer: I,
@@ -50,5 +50,11 @@ impl<I: super::Indexer> Published<I> for I {
 			event_bus,
 			wait_duration_per_event,
 		}
+	}
+}
+
+impl<I: super::Indexer + super::Stateful<I::Id>> Stateful<I::Id> for Indexer<I> {
+	fn store(&self, id: I::Id, events: &[GithubEvent]) -> anyhow::Result<()> {
+		self.indexer.store(id, events)
 	}
 }
