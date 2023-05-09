@@ -10,7 +10,6 @@ use super::{Result, Stateful};
 pub struct Indexer<I: super::Indexer> {
 	indexer: I,
 	event_bus: Arc<dyn Publisher<UniqueMessage<GithubEvent>>>,
-	wait_duration_per_event: Duration,
 }
 
 #[async_trait]
@@ -24,31 +23,31 @@ impl<I: super::Indexer> super::Indexer for Indexer<I> {
 			self.event_bus
 				.publish(Destination::exchange(GITHUB_EVENTS_EXCHANGE), &event)
 				.await?;
-			tokio::time::sleep(self.wait_duration_per_event).await;
+			tokio::time::sleep(throttle_duration()).await;
 		}
 
 		Ok(events)
 	}
 }
 
+fn throttle_duration() -> Duration {
+	let ms = std::env::var("GITHUB_EVENTS_INDEXER_THROTTLE")
+		.unwrap_or_default()
+		.parse()
+		.unwrap_or(1);
+
+	Duration::from_millis(ms)
+}
+
 pub trait Published<I: super::Indexer> {
-	fn published(
-		self,
-		event_bus: Arc<dyn Publisher<UniqueMessage<GithubEvent>>>,
-		wait_duration_per_event: Duration,
-	) -> Indexer<I>;
+	fn published(self, event_bus: Arc<dyn Publisher<UniqueMessage<GithubEvent>>>) -> Indexer<I>;
 }
 
 impl<I: super::Indexer> Published<I> for I {
-	fn published(
-		self,
-		event_bus: Arc<dyn Publisher<UniqueMessage<GithubEvent>>>,
-		wait_duration_per_event: Duration,
-	) -> Indexer<I> {
+	fn published(self, event_bus: Arc<dyn Publisher<UniqueMessage<GithubEvent>>>) -> Indexer<I> {
 		Indexer {
 			indexer: self,
 			event_bus,
-			wait_duration_per_event,
 		}
 	}
 }

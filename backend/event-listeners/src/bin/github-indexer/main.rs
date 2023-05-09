@@ -28,18 +28,18 @@ async fn main() -> Result<()> {
 		Arc::new(
 			indexer::repo::repo::Indexer::new(github.clone(), database.clone())
 				.logged()
-				.published(event_bus.clone(), throttle_duration())
+				.published(event_bus.clone())
 				.with_state(),
 		),
 		Arc::new(
 			indexer::repo::issues::Indexer::new(github.clone())
 				.logged()
-				.published(event_bus.clone(), throttle_duration()),
+				.published(event_bus.clone()),
 		),
 		Arc::new(
 			indexer::repo::contributors::Indexer::new(github.clone(), database.clone())
 				.logged()
-				.published(event_bus.clone(), throttle_duration()),
+				.published(event_bus.clone()),
 		),
 	])
 	.guarded(|| check_github_rate_limit(github.clone()));
@@ -71,15 +71,6 @@ async fn sleep() {
 		.unwrap_or(60);
 
 	tokio::time::sleep(Duration::from_secs(seconds)).await;
-}
-
-fn throttle_duration() -> Duration {
-	let ms = std::env::var("GITHUB_EVENTS_INDEXER_THROTTLE")
-		.unwrap_or_default()
-		.parse()
-		.unwrap_or(1);
-
-	Duration::from_millis(ms)
 }
 
 async fn check_github_rate_limit(github: Arc<github::Client>) -> bool {
