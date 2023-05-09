@@ -13,9 +13,6 @@ pub use clients::{Client, RoundRobinClient, SingleClient};
 mod error;
 pub use error::Error;
 
-mod logged_response;
-pub use logged_response::DebugTechnicalHeaders;
-
 mod issue;
 pub use issue::IssueFromOctocrab;
 
