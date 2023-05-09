@@ -8,8 +8,8 @@ use std::{
 use anyhow::anyhow;
 use domain::{
 	stream_filter::{self, StreamFilterWith},
-	GithubIssue, GithubIssueNumber, GithubRepoContributor, GithubRepoId, GithubRepoLanguages,
-	GithubServiceIssueFilters, GithubUserId, PositiveCount,
+	GithubIssue, GithubIssueNumber, GithubRepoId, GithubRepoLanguages, GithubServiceIssueFilters,
+	GithubUser, GithubUserId, PositiveCount,
 };
 use futures::{stream::empty, Stream, StreamExt, TryStreamExt};
 use octocrab::{
@@ -197,8 +197,8 @@ impl Client {
 	pub async fn get_contributors_by_repository_id(
 		&self,
 		id: &GithubRepoId,
-		filters: Arc<dyn stream_filter::Filter<I = GithubRepoContributor>>,
-	) -> Result<Vec<GithubRepoContributor>, Error> {
+		filters: Arc<dyn stream_filter::Filter<I = GithubUser>>,
+	) -> Result<Vec<GithubUser>, Error> {
 		let query_params = QueryParams::default().page(1).per_page(100);
 
 		let url = format!(
@@ -209,7 +209,7 @@ impl Client {
 		.parse()?;
 
 		let contributors = self
-			.stream_as::<GithubRepoContributor>(
+			.stream_as::<GithubUser>(
 				url,
 				100 * self.config().max_calls_per_request.map(PositiveCount::get).unwrap_or(3),
 			)

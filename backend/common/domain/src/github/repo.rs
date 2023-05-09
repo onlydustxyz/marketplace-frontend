@@ -7,7 +7,7 @@ use juniper::{GraphQLObject, ParseScalarResult, ParseScalarValue, Value};
 use serde::{Deserialize, Serialize};
 use url::Url;
 
-use crate::{GithubUser, GithubUserId};
+use crate::GithubUser;
 
 #[allow(clippy::too_many_arguments)]
 #[derive(new, Debug, Getters, GraphQLObject, Clone, Serialize, Deserialize)]
@@ -32,12 +32,6 @@ impl TryFrom<Languages> for serde_json::Value {
 	fn try_from(value: Languages) -> Result<Self, Self::Error> {
 		serde_json::to_value(value.0)
 	}
-}
-
-#[derive(new, Debug, Clone, Getters, GraphQLObject, Serialize, Deserialize, PartialEq, Eq)]
-pub struct Contributor {
-	id: GithubUserId,
-	login: String,
 }
 
 #[derive(

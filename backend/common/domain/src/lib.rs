@@ -49,11 +49,10 @@ pub use github::{
 	FetchUserService as GithubFetchUserService, Issue as GithubIssue, IssueId as GithubIssueId,
 	IssueNumber as GithubIssueNumber, IssueStatus as GithubIssueStatus,
 	IssueType as GithubIssueType, Languages as GithubRepoLanguages, Repo as GithubRepo,
-	RepoContributor as GithubRepoContributor, RepoId as GithubRepoId,
-	SearchService as GithubSearchService, SearchUserService as GithubSearchUserService,
-	Service as GithubService, ServiceError as GithubServiceError,
-	ServiceIssueFilters as GithubServiceIssueFilters, ServiceResult as GithubServiceResult,
-	User as GithubUser, UserId as GithubUserId,
+	RepoId as GithubRepoId, SearchService as GithubSearchService,
+	SearchUserService as GithubSearchUserService, Service as GithubService,
+	ServiceError as GithubServiceError, ServiceIssueFilters as GithubServiceIssueFilters,
+	ServiceResult as GithubServiceResult, User as GithubUser, UserId as GithubUserId,
 };
 
 pub mod aggregate_root;
