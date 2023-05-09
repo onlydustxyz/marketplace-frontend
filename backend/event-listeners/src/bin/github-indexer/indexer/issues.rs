@@ -2,8 +2,8 @@ use std::sync::Arc;
 
 use async_trait::async_trait;
 use derive_new::new;
-use domain::{GithubFetchIssueService, GithubServiceIssueFilters};
-use event_listeners::domain::{GithubEvent, GithubRepoIndex};
+use domain::{GithubFetchIssueService, GithubRepoId, GithubServiceIssueFilters};
+use event_listeners::domain::GithubEvent;
 
 use super::{IgnoreIndexerErrors, Result};
 
@@ -14,7 +14,7 @@ pub struct Indexer {
 
 #[async_trait]
 impl super::Indexer for Indexer {
-	async fn index(&self, repo_index: GithubRepoIndex) -> Result<Vec<GithubEvent>> {
+	async fn index(&self, repo_id: GithubRepoId) -> Result<Vec<GithubEvent>> {
 		let filters = GithubServiceIssueFilters {
 			updated_since: None, // TODO
 			..Default::default()
@@ -22,7 +22,7 @@ impl super::Indexer for Indexer {
 
 		let events = self
 			.github_fetch_service
-			.issues_by_repo_id(repo_index.repo_id(), &filters)
+			.issues_by_repo_id(&repo_id, &filters)
 			.await
 			.ignore_non_fatal_errors()?
 			.into_iter()

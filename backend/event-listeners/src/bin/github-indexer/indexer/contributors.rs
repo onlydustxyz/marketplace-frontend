@@ -2,11 +2,8 @@ use std::sync::Arc;
 
 use async_trait::async_trait;
 use derive_new::new;
-use domain::{stream_filter, GithubFetchRepoService, GithubUser};
-use event_listeners::{
-	domain::{GithubEvent, GithubRepoIndex},
-	infrastructure::database::GithubUserIndexRepository,
-};
+use domain::{stream_filter, GithubFetchRepoService, GithubRepoId, GithubUser};
+use event_listeners::{domain::GithubEvent, infrastructure::database::GithubUserIndexRepository};
 
 use super::{IgnoreIndexerErrors, Result};
 
@@ -31,10 +28,10 @@ impl Indexer {
 
 #[async_trait]
 impl super::Indexer for Indexer {
-	async fn index(&self, repo_index: GithubRepoIndex) -> Result<Vec<GithubEvent>> {
+	async fn index(&self, repo_id: GithubRepoId) -> Result<Vec<GithubEvent>> {
 		let events = self
 			.github_fetch_service
-			.repo_contributors(repo_index.repo_id(), self.not_in_user_index_filter.clone())
+			.repo_contributors(&repo_id, self.not_in_user_index_filter.clone())
 			.await
 			.ignore_non_fatal_errors()?
 			.into_iter()
