@@ -21,3 +21,14 @@ impl<ID: Copy + Display + Send + Sync> super::Indexer for Indexer<ID> {
 		Ok(try_join_all(handles).await?.into_iter().flatten().collect())
 	}
 }
+
+pub trait Arced
+where
+	Self: Sized,
+{
+	fn arced(self) -> Arc<Self> {
+		Arc::new(self)
+	}
+}
+
+impl<T> Arced for T {}
