@@ -1,7 +1,7 @@
 use domain::GithubRepoId;
 use event_listeners::domain::Indexer;
 
-use super::{IgnoreIndexerErrors, Result};
+use super::{IgnoreIndexerErrors, Result, Stateful};
 
 pub mod contributors;
 pub mod issues;
