@@ -1,5 +1,6 @@
 mod budget;
 mod crm;
+mod error;
 mod github_issues;
 mod github_repo_details;
 mod github_repo_indexes;

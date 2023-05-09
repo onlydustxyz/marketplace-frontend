@@ -6,7 +6,7 @@ use std::{
 
 use async_trait::async_trait;
 use derive_new::new;
-use domain::{GithubFetchRepoService, GithubRepo, GithubRepoId, LogErr};
+use domain::{GithubFetchRepoService, GithubRepo, GithubRepoId};
 use event_listeners::domain::{GithubEvent, GithubRepoIndexRepository};
 use serde::{Deserialize, Serialize};
 
@@ -30,15 +30,16 @@ impl State {
 }
 
 impl Indexer {
-	fn get_state(&self, repo_id: GithubRepoId) -> Option<State> {
-		self.github_repo_index_repository
-			.select_repo_indexer_state(&repo_id)
-			.ok()
-			.and_then(|state| {
-				serde_json::from_value(state)
-					.log_err("Unable to deserialize repo indexer state")
-					.ok()
-			})
+	fn get_state(&self, repo_id: GithubRepoId) -> anyhow::Result<Option<State>> {
+		let state = match self.github_repo_index_repository.select_repo_indexer_state(&repo_id)? {
+			Some(state) => {
+				let state = serde_json::from_value(state)?;
+				Some(state)
+			},
+			_ => None,
+		};
+
+		Ok(state)
 	}
 }
 
@@ -49,7 +50,7 @@ impl super::Indexer for Indexer {
 	async fn index(&self, repo_id: GithubRepoId) -> Result<Vec<GithubEvent>> {
 		let repo = self.github_fetch_service.repo_by_id(&repo_id).await?;
 
-		let events = match self.get_state(repo_id) {
+		let events = match self.get_state(repo_id)? {
 			Some(state) if state == State::new(&repo) => vec![],
 			_ => vec![GithubEvent::Repo(repo)],
 		};
@@ -68,7 +69,7 @@ impl super::Stateful<GithubRepoId> for Indexer {
 	fn store(&self, id: GithubRepoId, events: &[GithubEvent]) -> anyhow::Result<()> {
 		if let Some(GithubEvent::Repo(repo)) = events.last() {
 			self.github_repo_index_repository
-				.upsert_repo_indexer_state(&id, serde_json::to_value(State::new(repo))?)?;
+				.update_repo_indexer_state(&id, serde_json::to_value(State::new(repo))?)?;
 		}
 		Ok(())
 	}
