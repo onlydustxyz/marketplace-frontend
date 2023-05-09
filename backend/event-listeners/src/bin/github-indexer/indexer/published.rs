@@ -1,7 +1,7 @@
 use std::{sync::Arc, time::Duration};
 
 use async_trait::async_trait;
-use domain::{Destination, GithubRepoId, Publisher};
+use domain::{Destination, Publisher};
 use event_listeners::{domain::GithubEvent, GITHUB_EVENTS_EXCHANGE};
 use infrastructure::amqp::UniqueMessage;
 
@@ -15,7 +15,9 @@ pub struct Indexer<I: super::Indexer> {
 
 #[async_trait]
 impl<I: super::Indexer> super::Indexer for Indexer<I> {
-	async fn index(&self, repo_id: GithubRepoId) -> Result<Vec<GithubEvent>> {
+	type Id = I::Id;
+
+	async fn index(&self, repo_id: Self::Id) -> Result<Vec<GithubEvent>> {
 		let events = self.indexer.index(repo_id).await?;
 
 		for event in events.clone().into_iter().map(UniqueMessage::new) {

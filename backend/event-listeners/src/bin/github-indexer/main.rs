@@ -1,6 +1,7 @@
 use std::{sync::Arc, time::Duration};
 
 use anyhow::Result;
+use domain::GithubRepoId;
 use dotenv::dotenv;
 use event_listeners::{
 	domain::{GithubEvent, Indexer},
@@ -27,9 +28,9 @@ async fn main() -> Result<()> {
 	let repo_index_repository = GithubRepoIndexRepository::new(database.clone());
 
 	let indexer = indexer::composite::Indexer::new(vec![
-		Arc::new(indexer::repo::Indexer::new(github.clone())),
-		Arc::new(indexer::issues::Indexer::new(github.clone())),
-		Arc::new(indexer::contributors::Indexer::new(
+		Arc::new(indexer::repo::repo::Indexer::new(github.clone())),
+		Arc::new(indexer::repo::issues::Indexer::new(github.clone())),
+		Arc::new(indexer::repo::contributors::Indexer::new(
 			github.clone(),
 			GithubUserIndexRepository::new(database.clone()),
 		)),
@@ -46,7 +47,7 @@ async fn main() -> Result<()> {
 }
 
 async fn index_all(
-	indexer: &dyn Indexer,
+	indexer: &dyn Indexer<Id = GithubRepoId>,
 	github_repo_index_repository: &GithubRepoIndexRepository,
 ) -> Result<Vec<GithubEvent>> {
 	let mut events = vec![];

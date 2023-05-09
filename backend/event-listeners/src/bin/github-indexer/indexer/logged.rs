@@ -1,5 +1,4 @@
 use async_trait::async_trait;
-use domain::GithubRepoId;
 use event_listeners::domain::GithubEvent;
 use olog::info;
 
@@ -11,10 +10,12 @@ pub struct Indexer<I: super::Indexer> {
 
 #[async_trait]
 impl<I: super::Indexer> super::Indexer for Indexer<I> {
-	async fn index(&self, repo_id: GithubRepoId) -> Result<Vec<GithubEvent>> {
-		let events = self.indexer.index(repo_id).await?;
+	type Id = I::Id;
 
-		info!("Found {} events when indexing repo {repo_id}", events.len(),);
+	async fn index(&self, id: Self::Id) -> Result<Vec<GithubEvent>> {
+		let events = self.indexer.index(id).await?;
+
+		info!("Found {} events when indexing repo {id}", events.len(),);
 
 		Ok(events)
 	}

@@ -14,6 +14,8 @@ pub struct Indexer {
 
 #[async_trait]
 impl super::Indexer for Indexer {
+	type Id = GithubRepoId;
+
 	async fn index(&self, repo_id: GithubRepoId) -> Result<Vec<GithubEvent>> {
 		let filters = GithubServiceIssueFilters {
 			updated_since: None, // TODO
