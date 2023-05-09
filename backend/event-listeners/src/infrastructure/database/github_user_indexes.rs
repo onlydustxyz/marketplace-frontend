@@ -1,13 +1,17 @@
-use std::sync::Arc;
+use infrastructure::database::Client;
 
-use derive_more::Constructor;
-use infrastructure::database::{schema::github_user_indexes::dsl, Client};
+use crate::domain::{GithubUserIndexRepository, RepositoryResult};
 
-use crate::domain::GithubUserIndex;
+impl GithubUserIndexRepository for Client {
+	fn exists(&self, repo_id: &domain::GithubUserId) -> RepositoryResult<bool> {
+		todo!()
+	}
 
-#[derive(DieselRepository, Constructor, Clone)]
-#[entity(GithubUserIndex)]
-#[table(dsl::github_user_indexes)]
-#[id(dsl::user_id)]
-#[mock]
-pub struct Repository(Arc<Client>);
+	fn try_insert(
+		&self,
+		repo_id: &domain::GithubUserId,
+		is_registered: bool,
+	) -> RepositoryResult<()> {
+		todo!()
+	}
+}

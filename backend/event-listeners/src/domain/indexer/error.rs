@@ -3,16 +3,22 @@ use infrastructure::database::DatabaseError;
 use olog::warn;
 use thiserror::Error;
 
+use crate::domain::RepositoryError;
+
 #[derive(Debug, Error)]
 pub enum Error {
 	#[error("Internal Error")]
 	Database(#[from] DatabaseError),
 	#[error(transparent)]
 	GithubService(#[from] GithubServiceError),
+	#[error(transparent)]
+	Repository(#[from] RepositoryError),
 	#[error("Internal Error")]
 	Publisher(#[from] PublisherError),
 	#[error("Internal Error")]
 	Serialization(#[from] serde_json::Error),
+	#[error("Internal Error")]
+	Other(#[from] anyhow::Error),
 }
 
 pub type Result<T> = std::result::Result<T, Error>;

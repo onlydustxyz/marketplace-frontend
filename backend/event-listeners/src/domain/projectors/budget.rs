@@ -1,4 +1,4 @@
-use std::convert::TryFrom;
+use std::{convert::TryFrom, sync::Arc};
 
 use anyhow::{anyhow, Result};
 use async_trait::async_trait;
@@ -9,11 +9,11 @@ use tracing::instrument;
 
 use crate::{
 	domain::{
-		Budget, EventListener, GithubRepoIndex, GithubUserIndex, Payment, PaymentRequest, WorkItem,
+		Budget, EventListener, GithubRepoIndexRepository, GithubUserIndexRepository, Payment,
+		PaymentRequest, WorkItem,
 	},
 	infrastructure::database::{
-		BudgetRepository, GithubRepoIndexRepository, GithubUserIndexRepository, PaymentRepository,
-		PaymentRequestRepository, WorkItemRepository,
+		BudgetRepository, PaymentRepository, PaymentRequestRepository, WorkItemRepository,
 	},
 };
 
@@ -23,8 +23,8 @@ pub struct Projector {
 	payment_repository: PaymentRepository,
 	budget_repository: BudgetRepository,
 	work_item_repository: WorkItemRepository,
-	github_repo_index_repository: GithubRepoIndexRepository,
-	github_user_index_repository: GithubUserIndexRepository,
+	github_repo_index_repository: Arc<dyn GithubRepoIndexRepository>,
+	github_user_index_repository: Arc<dyn GithubUserIndexRepository>,
 }
 
 #[async_trait]
@@ -86,18 +86,20 @@ impl EventListener<Event> for Projector {
 							i32::try_from(duration_worked.num_hours()).unwrap_or(0),
 						))?;
 
-						reason.work_items().iter().try_for_each(|work_item| {
-							self.work_item_repository.upsert(&WorkItem::new(
-								*payment_id,
-								*work_item.repo_id(),
-								*work_item.issue_number(),
-							))?;
-							self.github_repo_index_repository
-								.try_insert(&GithubRepoIndex::new(*work_item.repo_id()))
-						})?;
+						reason.work_items().iter().try_for_each(
+							|work_item| -> Result<(), SubscriberCallbackError> {
+								self.work_item_repository.upsert(&WorkItem::new(
+									*payment_id,
+									*work_item.repo_id(),
+									*work_item.issue_number(),
+								))?;
+								self.github_repo_index_repository
+									.try_insert(work_item.repo_id())?;
+								Ok(())
+							},
+						)?;
 
-						self.github_user_index_repository
-							.try_insert(&GithubUserIndex::new(*recipient_id, false))?;
+						self.github_user_index_repository.try_insert(recipient_id, false)?;
 					},
 					PaymentEvent::Cancelled { id: payment_id } => {
 						let payment_request =

@@ -1,14 +1,32 @@
-use std::sync::Arc;
+use infrastructure::database::Client;
 
-use derive_more::Constructor;
-use infrastructure::database::{schema::github_repo_indexes::dsl, Client};
+use crate::domain::{GithubRepoIndexRepository, RepositoryResult};
 
-use crate::domain::GithubRepoIndex;
+impl GithubRepoIndexRepository for Client {
+	fn try_insert(&self, repo_id: &domain::GithubRepoId) -> RepositoryResult<()> {
+		todo!()
+	}
 
-#[derive(DieselRepository, Constructor, Clone)]
-#[entity(GithubRepoIndex)]
-#[table(dsl::github_repo_indexes)]
-#[id(dsl::repo_id)]
-#[mock]
-#[features(select, insert, delete)]
-pub struct Repository(Arc<Client>);
+	fn delete(&self, repo_id: &domain::GithubRepoId) -> RepositoryResult<()> {
+		todo!()
+	}
+
+	fn list(&self) -> RepositoryResult<Vec<domain::GithubRepoId>> {
+		todo!()
+	}
+
+	fn select_repo_indexer_state(
+		&self,
+		repo_id: &domain::GithubRepoId,
+	) -> RepositoryResult<serde_json::Value> {
+		todo!()
+	}
+
+	fn upsert_repo_indexer_state(
+		&self,
+		repo_id: &domain::GithubRepoId,
+		state: serde_json::Value,
+	) -> RepositoryResult<()> {
+		todo!()
+	}
+}

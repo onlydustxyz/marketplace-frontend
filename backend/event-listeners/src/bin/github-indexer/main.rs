@@ -4,8 +4,7 @@ use anyhow::Result;
 use domain::GithubRepoId;
 use dotenv::dotenv;
 use event_listeners::{
-	domain::{GithubEvent, Indexer},
-	infrastructure::database::{GithubRepoIndexRepository, GithubUserIndexRepository},
+	domain::{GithubEvent, GithubRepoIndexRepository, Indexer},
 	Config,
 };
 use indexer::{guarded::Guarded, logged::Logged, published::Published};
@@ -25,14 +24,15 @@ async fn main() -> Result<()> {
 	)?));
 	let event_bus = Arc::new(amqp::Bus::new(config.amqp()).await?);
 
-	let repo_index_repository = GithubRepoIndexRepository::new(database.clone());
-
 	let indexer = indexer::composite::Indexer::new(vec![
-		Arc::new(indexer::repo::repo::Indexer::new(github.clone())),
+		Arc::new(indexer::repo::repo::Indexer::new(
+			github.clone(),
+			database.clone(),
+		)),
 		Arc::new(indexer::repo::issues::Indexer::new(github.clone())),
 		Arc::new(indexer::repo::contributors::Indexer::new(
 			github.clone(),
-			GithubUserIndexRepository::new(database.clone()),
+			database.clone(),
 		)),
 	])
 	.logged()
@@ -41,19 +41,19 @@ async fn main() -> Result<()> {
 
 	loop {
 		info!("🎶 Still alive 🎶");
-		index_all(&indexer, &repo_index_repository).await?;
+		index_all(&indexer, database.clone()).await?;
 		sleep().await;
 	}
 }
 
 async fn index_all(
 	indexer: &dyn Indexer<Id = GithubRepoId>,
-	github_repo_index_repository: &GithubRepoIndexRepository,
+	github_repo_index_repository: Arc<dyn GithubRepoIndexRepository>,
 ) -> Result<Vec<GithubEvent>> {
 	let mut events = vec![];
 
-	for repo_index in github_repo_index_repository.list()? {
-		events.extend(indexer.index(*repo_index.repo_id()).await?);
+	for repo_id in github_repo_index_repository.list()? {
+		events.extend(indexer.index(repo_id).await?);
 	}
 
 	Ok(events)

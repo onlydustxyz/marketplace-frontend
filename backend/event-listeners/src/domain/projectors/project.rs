@@ -7,10 +7,10 @@ use domain::{Event, GithubRepoId, GithubService, ProjectEvent, SubscriberCallbac
 use tracing::instrument;
 
 use crate::{
-	domain::{projections::Project, EventListener, GithubRepoDetails, GithubRepoIndex},
+	domain::{projections::Project, EventListener, GithubRepoDetails, GithubRepoIndexRepository},
 	infrastructure::database::{
-		GithubRepoDetailsRepository, GithubRepoIndexRepository, ProjectGithubRepoDetailsRepository,
-		ProjectLeadRepository, ProjectRepository,
+		GithubRepoDetailsRepository, ProjectGithubRepoDetailsRepository, ProjectLeadRepository,
+		ProjectRepository,
 	},
 };
 
@@ -20,7 +20,7 @@ pub struct Projector {
 	project_lead_repository: ProjectLeadRepository,
 	github_repo_details_repository: GithubRepoDetailsRepository,
 	project_github_repo_details_repository: ProjectGithubRepoDetailsRepository,
-	github_repo_index_repository: GithubRepoIndexRepository,
+	github_repo_index_repository: Arc<dyn GithubRepoIndexRepository>,
 	github_service: Arc<dyn GithubService>,
 }
 
@@ -38,7 +38,6 @@ impl Projector {
 			.find_all_projects_of(github_repo_id)?;
 		if projects.is_empty() {
 			self.github_repo_details_repository.delete(github_repo_id)?;
-			self.github_repo_index_repository.delete(github_repo_id)?;
 		}
 		Ok(())
 	}
@@ -62,8 +61,7 @@ impl EventListener<Event> for Projector {
 						.await
 						.map_err(SubscriberCallbackError::Fatal)?;
 					self.project_github_repo_details_repository.try_insert(id, github_repo_id)?;
-					self.github_repo_index_repository
-						.try_insert(&GithubRepoIndex::new(*github_repo_id))?;
+					self.github_repo_index_repository.try_insert(github_repo_id)?;
 				},
 				ProjectEvent::GithubRepoUnlinked { id, github_repo_id } => {
 					self.project_github_repo_details_repository.delete(id, github_repo_id)?;

@@ -7,7 +7,9 @@ use juniper::{GraphQLObject, ParseScalarResult, ParseScalarValue, Value};
 use serde::{Deserialize, Serialize};
 use url::Url;
 
-#[derive(new, Debug, Clone, Getters, GraphQLObject, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(
+	new, Debug, Clone, Getters, GraphQLObject, Serialize, Deserialize, PartialEq, Eq, Hash,
+)]
 pub struct User {
 	id: Id,
 	login: String,

@@ -3,7 +3,7 @@ use std::sync::Arc;
 use async_trait::async_trait;
 use derive_new::new;
 use domain::{stream_filter, GithubFetchRepoService, GithubRepoId, GithubUser};
-use event_listeners::{domain::GithubEvent, infrastructure::database::GithubUserIndexRepository};
+use event_listeners::domain::{GithubEvent, GithubUserIndexRepository};
 
 use super::{IgnoreIndexerErrors, Result};
 
@@ -15,7 +15,7 @@ pub struct Indexer {
 impl Indexer {
 	pub fn new(
 		github_fetch_service: Arc<dyn GithubFetchRepoService>,
-		github_user_index_repository: GithubUserIndexRepository,
+		github_user_index_repository: Arc<dyn GithubUserIndexRepository>,
 	) -> Self {
 		Self {
 			github_fetch_service,
@@ -46,7 +46,7 @@ impl super::Indexer for Indexer {
 
 #[derive(new)]
 struct NotInUserIndexFilter {
-	github_user_index_repository: GithubUserIndexRepository,
+	github_user_index_repository: Arc<dyn GithubUserIndexRepository>,
 }
 
 impl stream_filter::Filter for NotInUserIndexFilter {

@@ -14,3 +14,9 @@ mod indexer;
 pub use indexer::{
 	Error as IndexerError, IgnoreErrors as IgnoreIndexerErrors, Indexer, Result as IndexerResult,
 };
+
+mod repositories;
+pub use repositories::{
+	Error as RepositoryError, GithubRepoIndexRepository, GithubUserIndexRepository,
+	Result as RepositoryResult,
+};

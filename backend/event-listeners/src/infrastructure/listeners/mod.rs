@@ -17,10 +17,9 @@ use crate::{
 	domain::*,
 	infrastructure::database::{
 		BudgetRepository, CrmGithubRepoRepository, GithubIssuesRepository,
-		GithubRepoDetailsRepository, GithubRepoIndexRepository, GithubUserIndexRepository,
-		GithubUsersRepository, PaymentRepository, PaymentRequestRepository,
-		ProjectGithubRepoDetailsRepository, ProjectLeadRepository, ProjectRepository,
-		WorkItemRepository,
+		GithubRepoDetailsRepository, GithubUsersRepository, PaymentRepository,
+		PaymentRequestRepository, ProjectGithubRepoDetailsRepository, ProjectLeadRepository,
+		ProjectRepository, WorkItemRepository,
 	},
 	Config, GITHUB_EVENTS_EXCHANGE,
 };
@@ -40,7 +39,7 @@ pub async fn spawn_all(
 			ProjectLeadRepository::new(database.clone()),
 			GithubRepoDetailsRepository::new(database.clone()),
 			ProjectGithubRepoDetailsRepository::new(database.clone()),
-			GithubRepoIndexRepository::new(database.clone()),
+			database.clone(),
 			github,
 		)
 		.spawn(event_bus::event_consumer(config.amqp(), "projects").await?),
@@ -49,8 +48,8 @@ pub async fn spawn_all(
 			PaymentRepository::new(database.clone()),
 			BudgetRepository::new(database.clone()),
 			WorkItemRepository::new(database.clone()),
-			GithubRepoIndexRepository::new(database.clone()),
-			GithubUserIndexRepository::new(database.clone()),
+			database.clone(),
+			database.clone(),
 		)
 		.spawn(event_bus::event_consumer(config.amqp(), "budgets").await?),
 		GithubProjector::new(

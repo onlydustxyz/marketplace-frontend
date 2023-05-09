@@ -13,7 +13,7 @@ impl<I: super::Indexer + super::Stateful<I::Id>> super::Indexer for Indexer<I> {
 
 	async fn index(&self, id: Self::Id) -> Result<Vec<GithubEvent>> {
 		let events = self.indexer.index(id).await?;
-		self.indexer.store(&events)?;
+		self.indexer.store(id, &events)?;
 		Ok(events)
 	}
 }
