@@ -24,10 +24,7 @@ use octocrab::{
 use olog::tracing::instrument;
 use reqwest::Url;
 
-use super::{
-	logged_response::LoggedResponse, service::QueryParams, AddHeaders, Config, Error,
-	IssueFromOctocrab,
-};
+use super::{service::QueryParams, AddHeaders, Config, Error, IssueFromOctocrab};
 
 mod round_robin;
 pub use round_robin::Client as RoundRobinClient;
@@ -134,8 +131,8 @@ impl Client {
 		U: AsRef<str> + Debug + Send,
 		R: FromResponse,
 	{
-		let result: LoggedResponse<R> = self.octocrab().get(url, None::<&()>).await?;
-		Ok(result.0)
+		let response = self.octocrab().get(url, None::<&()>).await?;
+		Ok(response)
 	}
 
 	#[instrument(skip(self))]
