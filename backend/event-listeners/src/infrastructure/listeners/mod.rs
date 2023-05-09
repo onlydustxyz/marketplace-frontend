@@ -53,30 +53,17 @@ pub async fn spawn_all(
 			GithubUserIndexRepository::new(database.clone()),
 		)
 		.spawn(event_bus::event_consumer(config.amqp(), "budgets").await?),
-		CrmProjector::new(CrmGithubRepoRepository::new(database.clone())).spawn(
-			event_bus::consumer_with_exchange(config.amqp(), GITHUB_EVENTS_EXCHANGE, "crm").await?,
-		),
-		GithubIssuesRepositoryProjector::new(GithubIssuesRepository::new(database.clone())).spawn(
+		GithubProjector::new(
+			CrmGithubRepoRepository::new(database.clone()),
+			GithubIssuesRepository::new(database.clone()),
+			GithubUsersRepository::new(database.clone()),
+			GithubUserIndexRepository::new(database.clone()),
+		)
+		.spawn(
 			event_bus::consumer_with_exchange(
 				config.amqp(),
 				GITHUB_EVENTS_EXCHANGE,
-				"github-pulls",
-			)
-			.await?,
-		),
-		GithubUsersProjector::new(GithubUsersRepository::new(database.clone())).spawn(
-			event_bus::consumer_with_exchange(
-				config.amqp(),
-				GITHUB_EVENTS_EXCHANGE,
-				"github-users",
-			)
-			.await?,
-		),
-		GithubNewContributorsProjector::new(GithubUserIndexRepository::new(database)).spawn(
-			event_bus::consumer_with_exchange(
-				config.amqp(),
-				GITHUB_EVENTS_EXCHANGE,
-				"github-contributors",
+				"github-events",
 			)
 			.await?,
 		),

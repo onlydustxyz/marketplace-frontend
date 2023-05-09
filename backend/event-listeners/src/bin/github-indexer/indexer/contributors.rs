@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use async_trait::async_trait;
 use derive_new::new;
-use domain::{stream_filter, GithubFetchRepoService, GithubRepoContributor};
+use domain::{stream_filter, GithubFetchRepoService, GithubUser};
 use event_listeners::{
 	domain::{GithubEvent, GithubRepoIndex, IndexerState},
 	infrastructure::database::GithubUserIndexRepository,
@@ -54,12 +54,9 @@ struct NotInUserIndexFilter {
 }
 
 impl stream_filter::Filter for NotInUserIndexFilter {
-	type I = GithubRepoContributor;
+	type I = GithubUser;
 
-	fn filter(
-		&self,
-		item: GithubRepoContributor,
-	) -> stream_filter::Decision<GithubRepoContributor> {
+	fn filter(&self, item: GithubUser) -> stream_filter::Decision<GithubUser> {
 		if self.github_user_index_repository.exists(item.id()).unwrap_or(false) {
 			stream_filter::Decision::Skip
 		} else {
