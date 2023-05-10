@@ -1,8 +1,4 @@
-use std::{
-	collections::hash_map::DefaultHasher,
-	hash::{Hash, Hasher},
-	sync::Arc,
-};
+use std::sync::Arc;
 
 use async_trait::async_trait;
 use derive_new::new;
@@ -11,6 +7,7 @@ use event_listeners::domain::{GithubEvent, GithubRepoIndexRepository};
 use serde::{Deserialize, Serialize};
 
 use super::Result;
+use crate::indexer::hash;
 
 #[derive(new)]
 pub struct Indexer {
@@ -57,12 +54,6 @@ impl super::Indexer for Indexer {
 
 		Ok(events)
 	}
-}
-
-fn hash<T: Hash>(t: &T) -> u64 {
-	let mut s = DefaultHasher::new();
-	t.hash(&mut s);
-	s.finish()
 }
 
 impl super::Stateful<GithubRepoId> for Indexer {
