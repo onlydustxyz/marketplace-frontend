@@ -108,10 +108,10 @@ To run in development mode
 yarn dev
 ```
 
-To run in development mode with a the staging backend
+To run in development mode with the develop backend
 
 ```bash
-yarn dev --mode staging
+yarn dev --mode backend
 ```
 
 #### 🛠 Build
