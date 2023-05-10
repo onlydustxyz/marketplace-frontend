@@ -32,9 +32,10 @@ async fn main() -> Result<()> {
 			.published(event_bus.clone())
 			.with_state()
 			.arced(),
-		indexer::repo::issues::Indexer::new(github.clone())
+		indexer::repo::issues::Indexer::new(github.clone(), database.clone())
 			.logged()
 			.published(event_bus.clone())
+			.with_state()
 			.arced(),
 		indexer::repo::contributors::Indexer::new(github.clone(), database.clone())
 			.logged()

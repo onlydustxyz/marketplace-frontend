@@ -21,6 +21,12 @@ struct State {
 }
 
 impl State {
+	fn json(&self) -> serde_json::Result<serde_json::Value> {
+		serde_json::to_value(self)
+	}
+}
+
+impl State {
 	pub fn new(repo: &GithubRepo) -> Self {
 		Self { hash: hash(repo) }
 	}
@@ -59,8 +65,9 @@ impl super::Indexer for Indexer {
 impl super::Stateful<GithubRepoId> for Indexer {
 	fn store(&self, id: GithubRepoId, events: &[GithubEvent]) -> anyhow::Result<()> {
 		if let Some(GithubEvent::Repo(repo)) = events.last() {
+			let state = State::new(repo);
 			self.github_repo_index_repository
-				.update_repo_indexer_state(&id, serde_json::to_value(State::new(repo))?)?;
+				.update_repo_indexer_state(&id, state.json()?)?;
 		}
 		Ok(())
 	}
