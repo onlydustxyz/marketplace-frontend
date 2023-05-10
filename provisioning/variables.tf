@@ -47,3 +47,20 @@ variable "team_id" {
   type        = string
   description = "The Heroku team id"
 }
+
+variable "common_config" {
+  description = "Common application configuration"
+  type = object({
+    vars = object({
+      DD_AGENT_MAJOR_VERSION = string
+      DD_DYNO_HOST           = string
+      DD_LOG_TO_CONSOLE      = string
+      DD_SITE                = string
+      GITHUB_BASE_URL        = string
+    })
+    sensitive_vars = object({
+      GITHUB_PAT = string
+      DD_API_KEY = string
+    })
+  })
+}

@@ -1,6 +1,6 @@
 resource "heroku_config" "api" {
-  vars           = var.api_config.vars
-  sensitive_vars = var.api_config.sensitive_vars
+  vars           = merge(var.common_config.vars, var.api_config.vars)
+  sensitive_vars = merge(var.common_config.sensitive_vars, var.api_config.sensitive_vars)
 }
 
 resource "heroku_app_config_association" "api" {
@@ -14,12 +14,7 @@ variable "api_config" {
   type = object({
     vars = object({
       AWS_REGION                = string
-      DD_AGENT_MAJOR_VERSION    = string
-      DD_DYNO_HOST              = string
-      DD_LOG_TO_CONSOLE         = string
-      DD_SITE                   = string
       DD_ENABLE_HEROKU_POSTGRES = string
-      GITHUB_BASE_URL           = string
       GRAPHQL_BASE_URL          = string
       HASURA_GRAPHQL_ENDPOINT   = string
       PROCFILE                  = string
@@ -32,8 +27,6 @@ variable "api_config" {
       AWS_SECRET_ACCESS_KEY       = string
       HASURA_GRAPHQL_ADMIN_SECRET = string
       INFURA_API_KEY              = string
-      GITHUB_PAT                  = string
-      DD_API_KEY                  = string
       BACKEND_GRAPHQL_API_KEY     = string
     })
   })
