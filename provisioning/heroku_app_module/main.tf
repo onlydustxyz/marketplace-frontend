@@ -4,6 +4,8 @@ resource "heroku_app" "app" {
   organization {
     name = "onlydust"
   }
+  stack      = var.stack
+  buildpacks = var.buildpacks
 }
 
 resource "heroku_pipeline_coupling" "coupling" {

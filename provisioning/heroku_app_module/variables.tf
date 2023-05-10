@@ -49,3 +49,15 @@ variable "stage" {
   type        = string
   description = "The pipeline stage of the apps"
 }
+
+variable "buildpacks" {
+  type        = list(string)
+  description = "The application buildpacks"
+  default     = []
+}
+
+variable "stack" {
+  type        = string
+  description = "The application stack, between heroku-22 and container"
+  default     = "heroku-22"
+}
