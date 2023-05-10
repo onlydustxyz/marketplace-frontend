@@ -1,7 +1,7 @@
 use std::{sync::Arc, time::Duration};
 
 use anyhow::Result;
-use domain::LogErr;
+use domain::{GithubRepoId, GithubUserId, LogErr};
 use dotenv::dotenv;
 use event_listeners::{
 	domain::{GithubEvent, Indexable, Indexer, IndexerRepository},
@@ -40,13 +40,21 @@ async fn main() -> Result<()> {
 		indexer::user::Indexer::new(github.clone(), database.clone())
 			.logged()
 			.published(event_bus.clone())
+			.with_state()
 			.arced(),
 	])
 	.guarded(|| check_github_rate_limit(github.clone()));
 
+	let user_indexer = indexer::user::Indexer::new(github.clone(), database.clone())
+		.logged()
+		.published(event_bus.clone())
+		.with_state()
+		.guarded(|| check_github_rate_limit(github.clone()));
+
 	loop {
 		info!("🎶 Still alive 🎶");
-		index_all(&repo_indexer, database.clone()).await?;
+		index_all::<GithubRepoId>(&repo_indexer, database.clone()).await?;
+		index_all::<GithubUserId>(&user_indexer, database.clone()).await?;
 		sleep().await;
 	}
 }
