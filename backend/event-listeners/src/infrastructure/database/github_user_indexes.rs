@@ -5,15 +5,6 @@ use infrastructure::database::{schema::github_user_indexes::dsl, Client};
 use crate::domain::{GithubUserIndexRepository, RepositoryResult};
 
 impl GithubUserIndexRepository for Client {
-	fn exists(&self, user_id: &GithubUserId) -> RepositoryResult<bool> {
-		let connection = self.connection()?;
-		let exists = diesel::select(diesel::dsl::exists(
-			dsl::github_user_indexes.filter(dsl::user_id.eq(user_id)),
-		))
-		.get_result(&*connection)?;
-		Ok(exists)
-	}
-
 	fn try_insert(&self, user_id: &GithubUserId) -> RepositoryResult<()> {
 		let connection = self.connection()?;
 		diesel::insert_into(dsl::github_user_indexes)
