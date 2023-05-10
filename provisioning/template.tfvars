@@ -94,3 +94,10 @@ github_proxy_config = {
     GITHUB_PROXY_GRAPHQL_API_KEY = "op://tech/backend/$APP_ENV/github-proxy-graphql-api-key"
   }
 }
+
+gateway_config = {
+  vars = {
+    OD_API_HOST         = "develop.hasura.onlydust.xyz"
+    OD_GATEWAY_BASE_URL = "https://develop.gateway.onlydust.xyz"
+  }
+}
