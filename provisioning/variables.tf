@@ -47,3 +47,18 @@ variable "team_id" {
   type        = string
   description = "The Heroku team id"
 }
+
+variable "datadog_config" {
+  description = "Datadog agent configuration"
+  type = object({
+    vars = object({
+      DD_AGENT_MAJOR_VERSION = string
+      DD_DYNO_HOST           = string
+      DD_LOG_TO_CONSOLE      = string
+      DD_SITE                = string
+    })
+    sensitive_vars = object({
+      DD_API_KEY = string
+    })
+  })
+}

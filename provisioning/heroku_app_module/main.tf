@@ -4,6 +4,8 @@ resource "heroku_app" "app" {
   organization {
     name = "onlydust"
   }
+  stack      = var.stack
+  buildpacks = var.buildpacks
 }
 
 resource "heroku_pipeline_coupling" "coupling" {
@@ -37,4 +39,9 @@ resource "heroku_addon_attachment" "amqp_attachment" {
   app_id   = heroku_app.app.id
   addon_id = var.amqp_id != null ? var.amqp_id : heroku_addon.amqp[0].id
   name     = "CLOUDAMQP"
+}
+
+resource "heroku_app_feature" "metadata" {
+  app  = heroku_app.app.name
+  name = "runtime-dyno-metadata"
 }
