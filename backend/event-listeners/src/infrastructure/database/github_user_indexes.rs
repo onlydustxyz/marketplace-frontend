@@ -1,4 +1,4 @@
-use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
+use diesel::{ExpressionMethods, OptionalExtension, QueryDsl, RunQueryDsl};
 use domain::GithubUserId;
 use infrastructure::database::{schema::github_user_indexes::dsl, Client};
 
@@ -34,19 +34,26 @@ impl GithubUserIndexRepository for Client {
 		let state = dsl::github_user_indexes
 			.select(dsl::contributors_indexer_state)
 			.filter(dsl::user_id.eq(user_id))
-			.first(&*connection)?;
+			.first(&*connection)
+			.optional()?
+			.flatten();
 		Ok(state)
 	}
 
-	fn update_contributors_indexer_state(
+	fn upsert_contributors_indexer_state(
 		&self,
 		user_id: &GithubUserId,
 		state: serde_json::Value,
 	) -> RepositoryResult<()> {
 		let connection = self.connection()?;
-		diesel::update(dsl::github_user_indexes)
+		diesel::insert_into(dsl::github_user_indexes)
+			.values((
+				dsl::user_id.eq(user_id),
+				dsl::contributors_indexer_state.eq(state.clone()),
+			))
+			.on_conflict(dsl::user_id)
+			.do_update()
 			.set(dsl::contributors_indexer_state.eq(state))
-			.filter(dsl::user_id.eq(user_id))
 			.execute(&*connection)?;
 		Ok(())
 	}
