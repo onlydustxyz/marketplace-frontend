@@ -1,29 +1,35 @@
+use std::marker::PhantomData;
+
 use async_trait::async_trait;
-use event_listeners::domain::GithubEvent;
+use event_listeners::domain::{GithubEvent, Indexable};
 
 use super::Result;
 
-pub struct Indexer<I: super::Indexer + super::Stateful<I::Id>> {
+pub struct Indexer<Id: Indexable, I: super::Indexer<Id> + super::Stateful<Id>> {
 	indexer: I,
+	_phantom: PhantomData<Id>,
 }
 
 #[async_trait]
-impl<I: super::Indexer + super::Stateful<I::Id>> super::Indexer for Indexer<I> {
-	type Id = I::Id;
-
-	async fn index(&self, id: Self::Id) -> Result<Vec<GithubEvent>> {
+impl<Id: Indexable + Sync, I: super::Indexer<Id> + super::Stateful<Id>> super::Indexer<Id>
+	for Indexer<Id, I>
+{
+	async fn index(&self, id: Id) -> Result<Vec<GithubEvent>> {
 		let events = self.indexer.index(id).await?;
 		self.indexer.store(id, &events)?;
 		Ok(events)
 	}
 }
 
-pub trait WithState<I: super::Indexer + super::Stateful<I::Id>> {
-	fn with_state(self) -> Indexer<I>;
+pub trait WithState<Id: Indexable, I: super::Indexer<Id> + super::Stateful<Id>> {
+	fn with_state(self) -> Indexer<Id, I>;
 }
 
-impl<I: super::Indexer + super::Stateful<I::Id>> WithState<I> for I {
-	fn with_state(self) -> Indexer<I> {
-		Indexer { indexer: self }
+impl<Id: Indexable, I: super::Indexer<Id> + super::Stateful<Id>> WithState<Id, I> for I {
+	fn with_state(self) -> Indexer<Id, I> {
+		Indexer {
+			indexer: self,
+			_phantom: Default::default(),
+		}
 	}
 }

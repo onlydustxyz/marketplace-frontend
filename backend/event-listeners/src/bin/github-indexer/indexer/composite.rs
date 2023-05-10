@@ -1,22 +1,20 @@
-use std::{fmt::Display, sync::Arc};
+use std::sync::Arc;
 
 use async_trait::async_trait;
 use derive_new::new;
-use event_listeners::domain::GithubEvent;
+use event_listeners::domain::{GithubEvent, Indexable};
 use futures::future::try_join_all;
 
 use super::Result;
 
 #[derive(new)]
-pub struct Indexer<ID> {
-	indexers: Vec<Arc<dyn super::Indexer<Id = ID>>>,
+pub struct Indexer<Id: Indexable> {
+	indexers: Vec<Arc<dyn super::Indexer<Id>>>,
 }
 
 #[async_trait]
-impl<ID: Copy + Display + Send + Sync> super::Indexer for Indexer<ID> {
-	type Id = ID;
-
-	async fn index(&self, id: Self::Id) -> Result<Vec<GithubEvent>> {
+impl<Id: Indexable + Sync> super::Indexer<Id> for Indexer<Id> {
+	async fn index(&self, id: Id) -> Result<Vec<GithubEvent>> {
 		let handles = self.indexers.iter().map(|indexer| indexer.index(id));
 		Ok(try_join_all(handles).await?.into_iter().flatten().collect())
 	}

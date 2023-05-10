@@ -47,9 +47,7 @@ impl Indexer {
 }
 
 #[async_trait]
-impl super::Indexer for Indexer {
-	type Id = GithubRepoId;
-
+impl super::Indexer<GithubRepoId> for Indexer {
 	async fn index(&self, repo_id: GithubRepoId) -> Result<Vec<GithubEvent>> {
 		let repo = self.github_fetch_service.repo_by_id(&repo_id).await?;
 

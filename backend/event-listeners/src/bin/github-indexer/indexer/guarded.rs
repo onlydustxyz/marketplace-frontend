@@ -1,22 +1,26 @@
-use std::future::Future;
+use std::{future::Future, marker::PhantomData};
 
 use async_trait::async_trait;
-use event_listeners::domain::GithubEvent;
+use event_listeners::domain::{GithubEvent, Indexable};
 
 use super::Result;
 
-pub struct Indexer<I: super::Indexer, Fut: Future<Output = bool>, F: Fn() -> Fut> {
+pub struct Indexer<Id: Indexable, I: super::Indexer<Id>, Fut: Future<Output = bool>, F: Fn() -> Fut>
+{
 	indexer: I,
 	guard: F,
+	_phantom: PhantomData<Id>,
 }
 
 #[async_trait]
-impl<I: super::Indexer, Fut: Future<Output = bool> + Send, F: Fn() -> Fut + Send + Sync>
-	super::Indexer for Indexer<I, Fut, F>
+impl<
+	Id: Indexable + Sync,
+	I: super::Indexer<Id>,
+	Fut: Future<Output = bool> + Send,
+	F: Fn() -> Fut + Send + Sync,
+> super::Indexer<Id> for Indexer<Id, I, Fut, F>
 {
-	type Id = I::Id;
-
-	async fn index(&self, id: Self::Id) -> Result<Vec<GithubEvent>> {
+	async fn index(&self, id: Id) -> Result<Vec<GithubEvent>> {
 		if (self.guard)().await {
 			self.indexer.index(id).await
 		} else {
@@ -25,15 +29,22 @@ impl<I: super::Indexer, Fut: Future<Output = bool> + Send, F: Fn() -> Fut + Send
 	}
 }
 
-pub trait Guarded<I: super::Indexer> {
-	fn guarded<Fut: Future<Output = bool>, F: Fn() -> Fut>(self, guard: F) -> Indexer<I, Fut, F>;
+pub trait Guarded<Id: Indexable, I: super::Indexer<Id>> {
+	fn guarded<Fut: Future<Output = bool>, F: Fn() -> Fut>(
+		self,
+		guard: F,
+	) -> Indexer<Id, I, Fut, F>;
 }
 
-impl<I: super::Indexer> Guarded<I> for I {
-	fn guarded<Fut: Future<Output = bool>, F: Fn() -> Fut>(self, guard: F) -> Indexer<I, Fut, F> {
+impl<Id: Indexable, I: super::Indexer<Id>> Guarded<Id, I> for I {
+	fn guarded<Fut: Future<Output = bool>, F: Fn() -> Fut>(
+		self,
+		guard: F,
+	) -> Indexer<Id, I, Fut, F> {
 		Indexer {
 			indexer: self,
 			guard,
+			_phantom: Default::default(),
 		}
 	}
 }

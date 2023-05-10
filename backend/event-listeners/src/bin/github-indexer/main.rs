@@ -52,7 +52,7 @@ async fn main() -> Result<()> {
 }
 
 async fn index_all(
-	indexer: &dyn Indexer<Id = GithubRepoId>,
+	indexer: &dyn Indexer<GithubRepoId>,
 	github_repo_index_repository: Arc<dyn GithubRepoIndexRepository>,
 ) -> Result<Vec<GithubEvent>> {
 	let mut events = vec![];

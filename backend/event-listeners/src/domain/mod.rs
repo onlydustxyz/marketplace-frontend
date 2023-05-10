@@ -12,7 +12,8 @@ pub use github::Event as GithubEvent;
 
 mod indexer;
 pub use indexer::{
-	Error as IndexerError, IgnoreErrors as IgnoreIndexerErrors, Indexer, Result as IndexerResult,
+	Error as IndexerError, IgnoreErrors as IgnoreIndexerErrors, Indexable, Indexer,
+	Result as IndexerResult,
 };
 
 mod repositories;

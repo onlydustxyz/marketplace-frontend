@@ -8,8 +8,13 @@ pub use error::{Error, IgnoreErrors, Result};
 use crate::domain::GithubEvent;
 
 #[async_trait]
-pub trait Indexer: Send + Sync {
-	type Id: Copy + Display + Send;
-
-	async fn index(&self, id: Self::Id) -> Result<Vec<GithubEvent>>;
+pub trait Indexer<Id>: Send + Sync
+where
+	Id: Indexable,
+{
+	async fn index(&self, id: Id) -> Result<Vec<GithubEvent>>;
 }
+
+pub trait Indexable: Copy + Display + Send {}
+
+impl<I: Copy + Display + Send> Indexable for I {}

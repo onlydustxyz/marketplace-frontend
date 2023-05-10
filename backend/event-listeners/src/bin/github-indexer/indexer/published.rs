@@ -1,22 +1,24 @@
-use std::{sync::Arc, time::Duration};
+use std::{marker::PhantomData, sync::Arc, time::Duration};
 
 use async_trait::async_trait;
 use domain::{Destination, Publisher};
-use event_listeners::{domain::GithubEvent, GITHUB_EVENTS_EXCHANGE};
+use event_listeners::{
+	domain::{GithubEvent, Indexable},
+	GITHUB_EVENTS_EXCHANGE,
+};
 use infrastructure::amqp::UniqueMessage;
 
 use super::{Result, Stateful};
 
-pub struct Indexer<I: super::Indexer> {
+pub struct Indexer<Id: Indexable, I: super::Indexer<Id>> {
 	indexer: I,
 	event_bus: Arc<dyn Publisher<UniqueMessage<GithubEvent>>>,
+	_phantom: PhantomData<Id>,
 }
 
 #[async_trait]
-impl<I: super::Indexer> super::Indexer for Indexer<I> {
-	type Id = I::Id;
-
-	async fn index(&self, repo_id: Self::Id) -> Result<Vec<GithubEvent>> {
+impl<Id: Indexable + Sync, I: super::Indexer<Id>> super::Indexer<Id> for Indexer<Id, I> {
+	async fn index(&self, repo_id: Id) -> Result<Vec<GithubEvent>> {
 		let events = self.indexer.index(repo_id).await?;
 
 		for event in events.clone().into_iter().map(UniqueMessage::new) {
@@ -39,21 +41,26 @@ fn throttle_duration() -> Duration {
 	Duration::from_millis(ms)
 }
 
-pub trait Published<I: super::Indexer> {
-	fn published(self, event_bus: Arc<dyn Publisher<UniqueMessage<GithubEvent>>>) -> Indexer<I>;
+pub trait Published<Id: Indexable, I: super::Indexer<Id>> {
+	fn published(self, event_bus: Arc<dyn Publisher<UniqueMessage<GithubEvent>>>)
+	-> Indexer<Id, I>;
 }
 
-impl<I: super::Indexer> Published<I> for I {
-	fn published(self, event_bus: Arc<dyn Publisher<UniqueMessage<GithubEvent>>>) -> Indexer<I> {
+impl<Id: Indexable, I: super::Indexer<Id>> Published<Id, I> for I {
+	fn published(
+		self,
+		event_bus: Arc<dyn Publisher<UniqueMessage<GithubEvent>>>,
+	) -> Indexer<Id, I> {
 		Indexer {
 			indexer: self,
 			event_bus,
+			_phantom: Default::default(),
 		}
 	}
 }
 
-impl<I: super::Indexer + super::Stateful<I::Id>> Stateful<I::Id> for Indexer<I> {
-	fn store(&self, id: I::Id, events: &[GithubEvent]) -> anyhow::Result<()> {
+impl<Id: Indexable, I: super::Indexer<Id> + super::Stateful<Id>> Stateful<Id> for Indexer<Id, I> {
+	fn store(&self, id: Id, events: &[GithubEvent]) -> anyhow::Result<()> {
 		self.indexer.store(id, events)
 	}
 }
