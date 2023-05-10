@@ -71,3 +71,8 @@ Secrets are stored on 1password, in the `Tech` vault.
 Each entry then has several fields, depending on the environment.
 
 For example, to access the Github Personal Access Token for the develop environment, you will use `op://tech/gihtub pat/develop`.
+
+### Should every configuration variables be in 1Password?
+
+No, only secrets should live in 1Password. It is the same distinction between `vars` and `sensitive_vars` in the `heroku_config`.
+If your config lives in `vars`, then put it directly in the `template.tfvars`. If it lives in `sensitive_vars`, put it in `1Password`.
