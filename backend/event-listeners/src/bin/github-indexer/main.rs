@@ -1,10 +1,10 @@
 use std::{sync::Arc, time::Duration};
 
 use anyhow::Result;
-use domain::GithubRepoId;
+use domain::LogErr;
 use dotenv::dotenv;
 use event_listeners::{
-	domain::{GithubEvent, GithubRepoIndexRepository, Indexer},
+	domain::{GithubEvent, Indexable, Indexer, IndexerRepository},
 	Config,
 };
 use indexer::{
@@ -26,7 +26,7 @@ async fn main() -> Result<()> {
 	)?));
 	let event_bus = Arc::new(amqp::Bus::new(config.amqp()).await?);
 
-	let indexer = indexer::composite::Indexer::new(vec![
+	let repo_indexer = indexer::composite::Indexer::new(vec![
 		indexer::repo::Indexer::new(github.clone(), database.clone())
 			.logged()
 			.published(event_bus.clone())
@@ -46,19 +46,19 @@ async fn main() -> Result<()> {
 
 	loop {
 		info!("🎶 Still alive 🎶");
-		index_all(&indexer, database.clone()).await?;
+		index_all(&repo_indexer, database.clone()).await?;
 		sleep().await;
 	}
 }
 
-async fn index_all(
-	indexer: &dyn Indexer<GithubRepoId>,
-	github_repo_index_repository: Arc<dyn GithubRepoIndexRepository>,
+async fn index_all<Id: Indexable>(
+	indexer: &dyn Indexer<Id>,
+	repository: Arc<dyn IndexerRepository<Id>>,
 ) -> Result<Vec<GithubEvent>> {
 	let mut events = vec![];
 
-	for repo_id in github_repo_index_repository.list()? {
-		events.extend(indexer.index(repo_id).await?);
+	for id in repository.list_items_to_index()? {
+		events.extend(indexer.index(id).await?);
 	}
 
 	Ok(events)
@@ -79,23 +79,14 @@ async fn check_github_rate_limit(github: Arc<github::Client>) -> bool {
 		.parse()
 		.unwrap_or(1000);
 
-	match github.octocrab().ratelimit().get().await {
-		Ok(rate_limit) => {
-			olog::info!(
-				github_rate_limit_remaining = rate_limit.rate.remaining,
-				github_rate_limit_used = rate_limit.rate.used,
-				github_rate_limit_reset = rate_limit.rate.reset,
-				github_rate_limit_limit = rate_limit.rate.limit,
-				"Github rate-limit status"
-			);
-			rate_limit.rate.remaining > guard
-		},
-		Err(error) => {
-			olog::error!(
-				error = error.to_string(),
-				"Failed while checking github rate limit"
-			);
-			false
-		},
-	}
+	let remaining = github
+		.octocrab()
+		.ratelimit()
+		.get()
+		.await
+		.log_err("Failed while checking github rate limit")
+		.map(|rate_limit| rate_limit.rate.remaining)
+		.unwrap_or_default();
+
+	remaining > guard
 }

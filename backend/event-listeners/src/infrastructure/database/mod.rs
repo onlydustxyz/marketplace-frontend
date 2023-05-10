@@ -6,6 +6,7 @@ mod github_repo_details;
 mod github_repo_indexes;
 mod github_user_indexes;
 mod github_users;
+mod indexer;
 mod payment;
 mod payment_request;
 #[allow(clippy::extra_unused_lifetimes)]

@@ -22,12 +22,6 @@ impl GithubRepoIndexRepository for Client {
 		Ok(())
 	}
 
-	fn list(&self) -> RepositoryResult<Vec<GithubRepoId>> {
-		let connection = self.connection()?;
-		let ids = dsl::github_repo_indexes.select(dsl::repo_id).load(&*connection)?;
-		Ok(ids)
-	}
-
 	fn select_repo_indexer_state(
 		&self,
 		repo_id: &GithubRepoId,

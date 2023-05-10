@@ -6,3 +6,6 @@ pub use github_user_indexes::Repository as GithubUserIndexRepository;
 
 mod error;
 pub use error::*;
+
+mod indexer;
+pub use indexer::Repository as IndexerRepository;

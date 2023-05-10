@@ -19,5 +19,5 @@ pub use indexer::{
 mod repositories;
 pub use repositories::{
 	Error as RepositoryError, GithubRepoIndexRepository, GithubUserIndexRepository,
-	Result as RepositoryResult,
+	IndexerRepository, Result as RepositoryResult,
 };
