@@ -4,7 +4,7 @@ BEGIN
   -- Insert or update a row into table github_user_indexes when a row is inserted in auth.user_providers
   INSERT INTO public.github_user_indexes (user_id)
     VALUES (NEW.provider_user_id::bigint)
-  ON CONFLICT DO NOTHING;
+  ON CONFLICT (user_id) DO NOTHING;
 
   RETURN NEW;
 END;
