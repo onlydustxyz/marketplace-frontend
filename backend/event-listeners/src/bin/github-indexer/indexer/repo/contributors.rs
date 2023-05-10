@@ -70,7 +70,7 @@ impl super::Stateful<GithubRepoId> for Indexer {
 			})
 			.try_for_each(|user| {
 				self.github_user_index_repository
-					.upsert_contributors_indexer_state(user.id(), State::new(&user).json()?)?;
+					.upsert_contributors_indexer_state(user.id(), State::new(user).json()?)?;
 				anyhow::Ok(())
 			})?;
 		Ok(())
