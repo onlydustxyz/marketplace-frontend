@@ -1,10 +1,12 @@
 mod budget;
 mod crm;
+mod error;
 mod github_issues;
 mod github_repo_details;
 mod github_repo_indexes;
 mod github_user_indexes;
 mod github_users;
+mod indexer;
 mod payment;
 mod payment_request;
 #[allow(clippy::extra_unused_lifetimes)]
@@ -17,8 +19,6 @@ pub use budget::Repository as BudgetRepository;
 pub use crm::GithubRepoRepository as CrmGithubRepoRepository;
 pub use github_issues::Repository as GithubIssuesRepository;
 pub use github_repo_details::Repository as GithubRepoDetailsRepository;
-pub use github_repo_indexes::Repository as GithubRepoIndexRepository;
-pub use github_user_indexes::Repository as GithubUserIndexRepository;
 pub use github_users::Repository as GithubUsersRepository;
 pub use payment::Repository as PaymentRepository;
 pub use payment_request::Repository as PaymentRequestRepository;

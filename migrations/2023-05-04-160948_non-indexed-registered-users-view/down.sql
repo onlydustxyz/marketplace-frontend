@@ -1,0 +1,2 @@
+DROP TRIGGER insert_github_user_indexes_from_auth_users_trigger ON auth.user_providers;
+DROP FUNCTION public.insert_github_user_indexes_from_auth_users();

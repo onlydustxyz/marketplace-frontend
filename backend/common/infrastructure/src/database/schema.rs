@@ -64,16 +64,15 @@ diesel::table! {
 diesel::table! {
     github_repo_indexes (repo_id) {
         repo_id -> Int8,
-        last_indexed_time -> Nullable<Timestamp>,
-        state -> Nullable<Jsonb>,
+        repo_indexer_state -> Nullable<Jsonb>,
+        issues_indexer_state -> Nullable<Jsonb>,
     }
 }
 
 diesel::table! {
     github_user_indexes (user_id) {
         user_id -> Int8,
-        last_indexed_time -> Nullable<Timestamp>,
-        is_registered -> Bool,
+        user_indexer_state -> Nullable<Jsonb>,
     }
 }
 

@@ -1,13 +1,15 @@
 use std::{sync::Arc, time::Duration};
 
 use anyhow::Result;
+use domain::{GithubRepoId, GithubUserId, LogErr};
 use dotenv::dotenv;
 use event_listeners::{
-	domain::{GithubEvent, Indexer},
-	infrastructure::database::{GithubRepoIndexRepository, GithubUserIndexRepository},
+	domain::{GithubEvent, Indexable, Indexer, IndexerRepository},
 	Config,
 };
-use indexer::{guarded::Guarded, logged::Logged, published::Published, with_state::WithState};
+use indexer::{
+	composite::Arced, guarded::Guarded, logged::Logged, published::Published, with_state::WithState,
+};
 use infrastructure::{amqp, config, database, github, tracing::Tracer};
 use olog::info;
 
@@ -24,36 +26,47 @@ async fn main() -> Result<()> {
 	)?));
 	let event_bus = Arc::new(amqp::Bus::new(config.amqp()).await?);
 
-	let repo_index_repository = GithubRepoIndexRepository::new(database.clone());
-
-	let indexer = indexer::composite::Indexer::new(vec![
-		Arc::new(indexer::repo::Indexer::new(github.clone())),
-		Arc::new(indexer::issues::Indexer::new(github.clone())),
-		Arc::new(indexer::contributors::Indexer::new(
-			github.clone(),
-			GithubUserIndexRepository::new(database.clone()),
-		)),
+	let repo_indexer = indexer::composite::Indexer::new(vec![
+		indexer::repo::Indexer::new(github.clone(), database.clone())
+			.logged()
+			.published(event_bus.clone())
+			.with_state()
+			.arced(),
+		indexer::issues::Indexer::new(github.clone(), database.clone())
+			.logged()
+			.published(event_bus.clone())
+			.with_state()
+			.arced(),
+		indexer::user::Indexer::new(github.clone(), database.clone())
+			.logged()
+			.published(event_bus.clone())
+			.with_state()
+			.arced(),
 	])
-	.logged()
-	.published(event_bus, throttle_duration())
-	.with_state(repo_index_repository.clone())
 	.guarded(|| check_github_rate_limit(github.clone()));
+
+	let user_indexer = indexer::user::Indexer::new(github.clone(), database.clone())
+		.logged()
+		.published(event_bus.clone())
+		.with_state()
+		.guarded(|| check_github_rate_limit(github.clone()));
 
 	loop {
 		info!("🎶 Still alive 🎶");
-		index_all(&indexer, &repo_index_repository).await?;
+		index_all::<GithubRepoId>(&repo_indexer, database.clone()).await?;
+		index_all::<GithubUserId>(&user_indexer, database.clone()).await?;
 		sleep().await;
 	}
 }
 
-async fn index_all(
-	indexer: &dyn Indexer,
-	github_repo_index_repository: &GithubRepoIndexRepository,
+async fn index_all<Id: Indexable>(
+	indexer: &dyn Indexer<Id>,
+	repository: Arc<dyn IndexerRepository<Id>>,
 ) -> Result<Vec<GithubEvent>> {
 	let mut events = vec![];
 
-	for repo_index in github_repo_index_repository.list()? {
-		events.extend(indexer.index(repo_index).await?.0);
+	for id in repository.list_items_to_index()? {
+		events.extend(indexer.index(id).await?);
 	}
 
 	Ok(events)
@@ -68,38 +81,20 @@ async fn sleep() {
 	tokio::time::sleep(Duration::from_secs(seconds)).await;
 }
 
-fn throttle_duration() -> Duration {
-	let ms = std::env::var("GITHUB_EVENTS_INDEXER_THROTTLE")
-		.unwrap_or_default()
-		.parse()
-		.unwrap_or(1);
-
-	Duration::from_millis(ms)
-}
-
 async fn check_github_rate_limit(github: Arc<github::Client>) -> bool {
 	let guard = std::env::var("GITHUB_RATE_LIMIT_GUARD")
 		.unwrap_or_default()
 		.parse()
 		.unwrap_or(1000);
 
-	match github.octocrab().ratelimit().get().await {
-		Ok(rate_limit) => {
-			olog::info!(
-				github_rate_limit_remaining = rate_limit.rate.remaining,
-				github_rate_limit_used = rate_limit.rate.used,
-				github_rate_limit_reset = rate_limit.rate.reset,
-				github_rate_limit_limit = rate_limit.rate.limit,
-				"Github rate-limit status"
-			);
-			rate_limit.rate.remaining > guard
-		},
-		Err(error) => {
-			olog::error!(
-				error = error.to_string(),
-				"Failed while checking github rate limit"
-			);
-			false
-		},
-	}
+	let remaining = github
+		.octocrab()
+		.ratelimit()
+		.get()
+		.await
+		.log_err("Failed while checking github rate limit")
+		.map(|rate_limit| rate_limit.rate.remaining)
+		.unwrap_or_default();
+
+	remaining > guard
 }

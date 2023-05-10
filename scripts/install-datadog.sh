@@ -32,6 +32,7 @@ add_log_drain() {
 
 add_log_drain hasura hasura
 add_log_drain hasura-auth auth
+add_log_drain gateway gateway
 
 
 #################### AGENT + DRAIN ####################

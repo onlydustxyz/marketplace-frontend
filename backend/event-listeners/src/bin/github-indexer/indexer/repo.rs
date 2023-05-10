@@ -2,41 +2,71 @@ use std::sync::Arc;
 
 use async_trait::async_trait;
 use derive_new::new;
-use domain::GithubFetchRepoService;
-use event_listeners::domain::{GithubEvent, GithubRepoIndex, IndexerState};
+use domain::{GithubFetchRepoService, GithubRepo, GithubRepoId};
+use event_listeners::domain::{GithubEvent, GithubRepoIndexRepository};
 use serde::{Deserialize, Serialize};
 
 use super::Result;
-
-static INDEXER_NAME: &str = "RepoIndexer";
+use crate::indexer::hash;
 
 #[derive(new)]
 pub struct Indexer {
 	github_fetch_service: Arc<dyn GithubFetchRepoService>,
+	github_repo_index_repository: Arc<dyn GithubRepoIndexRepository>,
 }
 
-#[derive(Debug, Default, Serialize, Deserialize)]
+#[derive(Clone, Serialize, Deserialize, PartialEq, Eq)]
 struct State {
-	etag: Option<String>,
+	hash: u64,
+}
+
+impl State {
+	fn json(&self) -> serde_json::Result<serde_json::Value> {
+		serde_json::to_value(self)
+	}
+}
+
+impl State {
+	pub fn new(repo: &GithubRepo) -> Self {
+		Self { hash: hash(repo) }
+	}
+}
+
+impl Indexer {
+	fn get_state(&self, repo_id: GithubRepoId) -> anyhow::Result<Option<State>> {
+		let state = match self.github_repo_index_repository.select_repo_indexer_state(&repo_id)? {
+			Some(state) => {
+				let state = serde_json::from_value(state)?;
+				Some(state)
+			},
+			_ => None,
+		};
+
+		Ok(state)
+	}
 }
 
 #[async_trait]
-impl super::Indexer for Indexer {
-	async fn index(
-		&self,
-		repo_index: GithubRepoIndex,
-	) -> Result<(Vec<GithubEvent>, Option<IndexerState>)> {
-		let (etag, repo) =
-			self.github_fetch_service.etagged_repo_by_id(repo_index.repo_id()).await?;
+impl super::Indexer<GithubRepoId> for Indexer {
+	async fn index(&self, repo_id: GithubRepoId) -> Result<Vec<GithubEvent>> {
+		let repo = self.github_fetch_service.repo_by_id(&repo_id).await?;
 
-		let mut state = repo_index.state().clone().unwrap_or_default();
-		let indexer_state: State = state.get(INDEXER_NAME)?.unwrap_or_default();
+		let events = match self.get_state(repo_id)? {
+			Some(state) if state == State::new(&repo) => vec![],
+			_ => vec![GithubEvent::Repo(repo)],
+		};
 
-		if indexer_state.etag == etag {
-			Ok((vec![], Some(state)))
-		} else {
-			state.set(INDEXER_NAME, State { etag })?;
-			Ok((vec![GithubEvent::Repo(repo)], Some(state)))
+		Ok(events)
+	}
+}
+
+impl super::Stateful<GithubRepoId> for Indexer {
+	fn store(&self, id: GithubRepoId, events: &[GithubEvent]) -> anyhow::Result<()> {
+		if let Some(GithubEvent::Repo(repo)) = events.last() {
+			let state = State::new(repo);
+			self.github_repo_index_repository
+				.update_repo_indexer_state(&id, state.json()?)?;
 		}
+		Ok(())
 	}
 }

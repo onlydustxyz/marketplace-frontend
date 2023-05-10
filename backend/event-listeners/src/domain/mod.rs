@@ -12,6 +12,12 @@ pub use github::Event as GithubEvent;
 
 mod indexer;
 pub use indexer::{
-	Error as IndexerError, IgnoreErrors as IgnoreIndexerErrors, Indexer, Result as IndexerResult,
-	State as IndexerState,
+	Error as IndexerError, IgnoreErrors as IgnoreIndexerErrors, Indexable, Indexer,
+	Result as IndexerResult,
+};
+
+mod repositories;
+pub use repositories::{
+	Error as RepositoryError, GithubRepoIndexRepository, GithubUserIndexRepository,
+	IndexerRepository, Result as RepositoryResult,
 };

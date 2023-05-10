@@ -8,8 +8,8 @@ use std::{
 use anyhow::anyhow;
 use domain::{
 	stream_filter::{self, StreamFilterWith},
-	GithubIssue, GithubIssueNumber, GithubRepoContributor, GithubRepoId, GithubRepoLanguages,
-	GithubServiceIssueFilters, GithubUserId, PositiveCount,
+	GithubIssue, GithubIssueNumber, GithubRepoId, GithubRepoLanguages, GithubServiceIssueFilters,
+	GithubUser, GithubUserId, PositiveCount,
 };
 use futures::{stream::empty, Stream, StreamExt, TryStreamExt};
 use octocrab::{
@@ -162,26 +162,6 @@ impl Client {
 	}
 
 	#[instrument(skip(self))]
-	pub async fn get_etagged_repository_by_id_with_etag(
-		&self,
-		id: &GithubRepoId,
-	) -> Result<(Option<String>, Repository), Error> {
-		let request = self.octocrab().request_builder(
-			format!("{}repositories/{id}", self.octocrab().base_url),
-			reqwest::Method::GET,
-		);
-
-		let response = self.octocrab().execute(request).await?;
-		let etag = response
-			.headers()
-			.get("ETag")
-			.and_then(|value| value.to_str().ok())
-			.map(ToOwned::to_owned);
-
-		Ok((etag, Repository::from_response(response).await?))
-	}
-
-	#[instrument(skip(self))]
 	pub async fn get_languages_by_repository_id(
 		&self,
 		id: &GithubRepoId,
@@ -197,8 +177,8 @@ impl Client {
 	pub async fn get_contributors_by_repository_id(
 		&self,
 		id: &GithubRepoId,
-		filters: Arc<dyn stream_filter::Filter<I = GithubRepoContributor>>,
-	) -> Result<Vec<GithubRepoContributor>, Error> {
+		filters: Arc<dyn stream_filter::Filter<I = GithubUser>>,
+	) -> Result<Vec<GithubUser>, Error> {
 		let query_params = QueryParams::default().page(1).per_page(100);
 
 		let url = format!(
@@ -209,7 +189,7 @@ impl Client {
 		.parse()?;
 
 		let contributors = self
-			.stream_as::<GithubRepoContributor>(
+			.stream_as::<GithubUser>(
 				url,
 				100 * self.config().max_calls_per_request.map(PositiveCount::get).unwrap_or(3),
 			)
