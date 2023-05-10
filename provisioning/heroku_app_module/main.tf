@@ -38,3 +38,8 @@ resource "heroku_addon_attachment" "amqp_attachment" {
   addon_id = var.amqp_id != null ? var.amqp_id : heroku_addon.amqp[0].id
   name     = "CLOUDAMQP"
 }
+
+resource "heroku_app_feature" "metadata" {
+  app  = heroku_app.app.name
+  name = "runtime-dyno-metadata"
+}
