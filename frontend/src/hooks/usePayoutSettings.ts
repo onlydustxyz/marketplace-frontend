@@ -10,7 +10,9 @@ export default function usePayoutSettings(githubUserId?: number) {
   });
 
   const userInfo = query.data?.authGithubUsers.at(0)?.user?.userInfo;
-  const valid = query.data?.authGithubUsers.at(0)?.user?.userInfo?.arePayoutSettingsValid;
+  const valid = query.data
+    ? query.data.authGithubUsers.at(0)?.user?.userInfo?.arePayoutSettingsValid || false
+    : undefined;
   const invoiceNeeded = isDefined(query.data?.authGithubUsers.at(0)?.user?.userInfo?.identity?.Company);
 
   return {
