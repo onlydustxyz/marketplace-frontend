@@ -9,17 +9,15 @@ hasura_auth_app_name     = "od-hasura-auth-develop"
 stage                    = "development"
 team_id                  = "f7679932-cfed-446d-96cc-74641c2ae407"
 
-common_config = {
+datadog_config = {
   vars = {
     DD_AGENT_MAJOR_VERSION = "7"
     DD_DYNO_HOST           = "true"
     DD_LOG_TO_CONSOLE      = "false"
     DD_SITE                = "datadoghq.eu"
-    GITHUB_BASE_URL        = "https://develop.gateway.onlydust.xyz/github/"
   }
   sensitive_vars = {
     DD_API_KEY = "op://tech/datadog/$APP_ENV/api-key"
-    GITHUB_PAT = "op://tech/github/$APP_ENV/personal-access-token"
   }
 }
 
@@ -33,6 +31,7 @@ api_config = {
     PROFILE                   = "production"
     ROCKET_CLI_COLORS         = "false"
     RUST_LOG                  = "info"
+    GITHUB_BASE_URL           = "https://develop.gateway.onlydust.xyz/github/"
   }
   sensitive_vars = {
     AWS_ACCESS_KEY_ID           = "op://tech/aws/$APP_ENV/access-key-id"
@@ -40,6 +39,7 @@ api_config = {
     BACKEND_GRAPHQL_API_KEY     = "op://tech/backend/$APP_ENV/api-graphql-api-key"
     HASURA_GRAPHQL_ADMIN_SECRET = "op://tech/hasura/$APP_ENV/admin-secret"
     INFURA_API_KEY              = "op://tech/infura/$APP_ENV/api-key"
+    GITHUB_PAT                  = "op://tech/github/$APP_ENV/personal-access-token"
   }
 }
 
@@ -49,9 +49,11 @@ dusty_bot_config = {
     PROFILE                     = "production"
     RUST_LOG                    = "info"
     DUSTY_BOT_THROTTLE_DURATION = "20"
+    GITHUB_BASE_URL             = "https://develop.gateway.onlydust.xyz/github/"
   }
   sensitive_vars = {
     DUSTY_BOT_GRAPHQL_API_KEY = "op://tech/backend/$APP_ENV/dusty-bot-graphql-api-key"
+    GITHUB_PAT                = "op://tech/github/$APP_ENV/personal-access-token"
   }
 }
 
