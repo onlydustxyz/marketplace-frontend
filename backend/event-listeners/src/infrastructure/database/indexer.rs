@@ -36,7 +36,7 @@ impl IndexerRepository<GithubUserId> for Client {
 			WHERE
 				user_indexer_state IS NULL OR (
 					users.id IS NOT NULL AND
-					(user_indexer_state ->> 'last_updated_time')::TIMESTAMP < NOW() - 1
+					(user_indexer_state ->> 'last_updated_time')::TIMESTAMP < NOW() - INTERVAL '1 DAY'
 				)
 			"#;
 
