@@ -79,3 +79,18 @@ event_listeners_config = {
     GITHUB_PAT = "op://tech/github/$APP_ENV/personal-access-token"
   }
 }
+
+github_proxy_config = {
+  vars = {
+    PROCFILE                           = "backend/github-proxy/Procfile"
+    PROFILE                            = "production"
+    RUST_LOG                           = "info"
+    ROCKET_CLI_COLORS                  = "false"
+    GITHUB_BASE_URL                    = "https://develop.gateway.onlydust.xyz/github/"
+    GITHUB_REVERSE_PROXY_CACHE_CONTROL = "public, max-age=600, s-maxage=600, stale-while-revalidate=3600, stale-if-error=666"
+  }
+  sensitive_vars = {
+    GITHUB_PAT                   = "op://tech/github/$APP_ENV/personal-access-token"
+    GITHUB_PROXY_GRAPHQL_API_KEY = "op://tech/backend/$APP_ENV/github-proxy-graphql-api-key"
+  }
+}
