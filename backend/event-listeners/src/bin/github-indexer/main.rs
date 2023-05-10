@@ -27,17 +27,17 @@ async fn main() -> Result<()> {
 	let event_bus = Arc::new(amqp::Bus::new(config.amqp()).await?);
 
 	let indexer = indexer::composite::Indexer::new(vec![
-		indexer::repo::repo::Indexer::new(github.clone(), database.clone())
+		indexer::repo::Indexer::new(github.clone(), database.clone())
 			.logged()
 			.published(event_bus.clone())
 			.with_state()
 			.arced(),
-		indexer::repo::issues::Indexer::new(github.clone(), database.clone())
+		indexer::issues::Indexer::new(github.clone(), database.clone())
 			.logged()
 			.published(event_bus.clone())
 			.with_state()
 			.arced(),
-		indexer::repo::contributors::Indexer::new(github.clone(), database.clone())
+		indexer::user::Indexer::new(github.clone(), database.clone())
 			.logged()
 			.published(event_bus.clone())
 			.arced(),

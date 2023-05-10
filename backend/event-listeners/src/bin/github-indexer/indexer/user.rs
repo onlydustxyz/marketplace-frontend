@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use async_trait::async_trait;
 use derive_new::new;
-use domain::{stream_filter, GithubFetchRepoService, GithubRepoId, GithubUser, GithubUserId};
+use domain::{stream_filter, GithubFetchService, GithubRepoId, GithubUser, GithubUserId};
 use event_listeners::domain::{GithubEvent, GithubUserIndexRepository};
 use olog::error;
 use serde::{Deserialize, Serialize};
@@ -26,14 +26,14 @@ impl State {
 }
 
 pub struct Indexer {
-	github_fetch_service: Arc<dyn GithubFetchRepoService>,
+	github_fetch_service: Arc<dyn GithubFetchService>,
 	github_user_index_repository: Arc<dyn GithubUserIndexRepository>,
 	user_hash_filter: Arc<UserHashFilter>,
 }
 
 impl Indexer {
 	pub fn new(
-		github_fetch_service: Arc<dyn GithubFetchRepoService>,
+		github_fetch_service: Arc<dyn GithubFetchService>,
 		github_user_index_repository: Arc<dyn GithubUserIndexRepository>,
 	) -> Self {
 		Indexer {
@@ -41,6 +41,31 @@ impl Indexer {
 			github_user_index_repository: github_user_index_repository.clone(),
 			user_hash_filter: Arc::new(UserHashFilter::new(github_user_index_repository)),
 		}
+	}
+}
+
+#[async_trait]
+impl super::Indexer<GithubUserId> for Indexer {
+	async fn index(&self, user_id: GithubUserId) -> Result<Vec<GithubEvent>> {
+		let events = self
+			.github_fetch_service
+			.user_by_id(&user_id)
+			.await
+			.map(|user| vec![GithubEvent::User(user)])
+			.ignore_non_fatal_errors()?;
+
+		Ok(events)
+	}
+}
+
+impl super::Stateful<GithubUserId> for Indexer {
+	fn store(&self, id: GithubUserId, events: &[GithubEvent]) -> anyhow::Result<()> {
+		if let Some(GithubEvent::User(user)) = events.last() {
+			let state = State::new(user);
+			self.github_user_index_repository
+				.upsert_user_indexer_state(&id, state.json()?)?;
+		}
+		Ok(())
 	}
 }
 
@@ -70,7 +95,7 @@ impl super::Stateful<GithubRepoId> for Indexer {
 			})
 			.try_for_each(|user| {
 				self.github_user_index_repository
-					.upsert_contributors_indexer_state(user.id(), State::new(user).json()?)?;
+					.upsert_user_indexer_state(user.id(), State::new(user).json()?)?;
 				anyhow::Ok(())
 			})?;
 		Ok(())
@@ -105,14 +130,13 @@ impl stream_filter::Filter for UserHashFilter {
 
 impl UserHashFilter {
 	fn get_state(&self, user_id: &GithubUserId) -> anyhow::Result<Option<State>> {
-		let state =
-			match self.github_user_index_repository.select_contributors_indexer_state(user_id)? {
-				Some(state) => {
-					let state = serde_json::from_value(state)?;
-					Some(state)
-				},
-				_ => None,
-			};
+		let state = match self.github_user_index_repository.select_user_indexer_state(user_id)? {
+			Some(state) => {
+				let state = serde_json::from_value(state)?;
+				Some(state)
+			},
+			_ => None,
+		};
 
 		Ok(state)
 	}

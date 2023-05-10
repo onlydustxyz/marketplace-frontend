@@ -74,7 +74,6 @@ diesel::table! {
         user_id -> Int8,
         is_registered -> Bool,
         user_indexer_state -> Nullable<Jsonb>,
-        contributors_indexer_state -> Nullable<Jsonb>,
     }
 }
 

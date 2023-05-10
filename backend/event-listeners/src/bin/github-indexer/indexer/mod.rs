@@ -1,8 +1,10 @@
 pub mod composite;
 pub mod guarded;
+pub mod issues;
 pub mod logged;
 pub mod published;
 pub mod repo;
+pub mod user;
 pub mod with_state;
 
 use std::{
