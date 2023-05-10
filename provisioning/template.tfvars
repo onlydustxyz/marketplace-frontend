@@ -57,3 +57,11 @@ dusty_bot_config = {
   }
 }
 
+event_store_config = {
+  vars = {
+    PROCFILE          = "backend/event-store/Procfile"
+    PROFILE           = "production"
+    RUST_LOG          = "info"
+    ROCKET_CLI_COLORS = "false"
+  }
+}
