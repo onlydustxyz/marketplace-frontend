@@ -65,3 +65,17 @@ event_store_config = {
     ROCKET_CLI_COLORS = "false"
   }
 }
+
+event_listeners_config = {
+  vars = {
+    PROCFILE                     = "backend/event-listeners/Procfile"
+    PROFILE                      = "production"
+    RUST_LOG                     = "info"
+    ROCKET_CLI_COLORS            = "false"
+    GITHUB_BASE_URL              = "https://develop.gateway.onlydust.xyz/github/"
+    GITHUB_MAX_CALLS_PER_REQUEST = "500"
+  }
+  sensitive_vars = {
+    GITHUB_PAT = "op://tech/github/$APP_ENV/personal-access-token"
+  }
+}
