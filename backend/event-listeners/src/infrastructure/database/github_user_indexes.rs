@@ -14,13 +14,10 @@ impl GithubUserIndexRepository for Client {
 		Ok(exists)
 	}
 
-	fn try_insert(&self, user_id: &GithubUserId, is_registered: bool) -> RepositoryResult<()> {
+	fn try_insert(&self, user_id: &GithubUserId) -> RepositoryResult<()> {
 		let connection = self.connection()?;
 		diesel::insert_into(dsl::github_user_indexes)
-			.values((
-				dsl::user_id.eq(user_id),
-				dsl::is_registered.eq(is_registered),
-			))
+			.values((dsl::user_id.eq(user_id),))
 			.on_conflict_do_nothing()
 			.execute(&*connection)?;
 		Ok(())

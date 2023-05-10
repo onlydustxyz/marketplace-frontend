@@ -99,7 +99,7 @@ impl EventListener<Event> for Projector {
 							},
 						)?;
 
-						self.github_user_index_repository.try_insert(recipient_id, false)?;
+						self.github_user_index_repository.try_insert(recipient_id)?;
 					},
 					PaymentEvent::Cancelled { id: payment_id } => {
 						let payment_request =
