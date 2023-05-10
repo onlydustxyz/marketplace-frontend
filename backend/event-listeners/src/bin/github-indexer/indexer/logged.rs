@@ -16,7 +16,7 @@ impl<Id: Indexable + Sync, I: super::Indexer<Id>> super::Indexer<Id> for Indexer
 	async fn index(&self, id: Id) -> Result<Vec<GithubEvent>> {
 		let events = self.indexer.index(id).await?;
 
-		info!("Found {} events when indexing repo {id}", events.len(),);
+		info!("Found {} events when indexing entity {id}", events.len(),);
 
 		Ok(events)
 	}
