@@ -54,15 +54,9 @@ gql`
       githubRepos {
         projectId
         githubRepoId
-        githubRepoDetails {
-          id
-          content {
-            id
-            contributors {
-              id
-              login
-              avatarUrl
-            }
+        repoContributors {
+          user {
+            ...GithubUser
           }
         }
       }

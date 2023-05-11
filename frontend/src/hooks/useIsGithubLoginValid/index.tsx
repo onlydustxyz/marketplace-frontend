@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-import { GithubUserFragmentDoc, useFindUserQueryForPaymentFormLazyQuery } from "src/__generated/graphql";
+import { useFindUserQueryForPaymentFormLazyQuery } from "src/__generated/graphql";
 
 export default function useFindGithubUser() {
   const [trigger, query] = useFindUserQueryForPaymentFormLazyQuery({
@@ -17,18 +17,9 @@ export default function useFindGithubUser() {
 }
 
 gql`
-  ${GithubUserFragmentDoc}
-
-  fragment GithubContributor on User {
-    ...GithubUser
-    user {
-      userId
-    }
-  }
-
   query FindUserQueryForPaymentForm($username: String!) {
     fetchUserDetails(username: $username) {
-      ...GithubContributor
+      ...LiveGithubUser
     }
   }
 `;

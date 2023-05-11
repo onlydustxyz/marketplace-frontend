@@ -1,0 +1,13 @@
+fragment GithubRepoId on CrmGithubRepos {
+  id
+}
+
+fragment GithubRepo on CrmGithubRepos {
+  ...GithubRepoId
+  owner
+  name
+  description
+  stars
+  forkCount
+  htmlUrl
+}

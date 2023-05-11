@@ -127,10 +127,9 @@ gql`
       githubRepos {
         projectId
         githubRepoId
-        githubRepoDetails {
-          content {
-            stars
-          }
+        repo {
+          ...GithubRepoId
+          stars
         }
       }
     }

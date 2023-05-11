@@ -1,9 +1,9 @@
-fragment GithubUserId on User {
+fragment LiveGithubUserId on User {
   id
 }
 
-fragment GithubUser on User {
-  ...GithubUserId
+fragment LiveGithubUser on User {
+  ...LiveGithubUserId
   login
   avatarUrl
   htmlUrl
@@ -12,8 +12,8 @@ fragment GithubUser on User {
   }
 }
 
-fragment GithubUserWithPaymentRequestsForProject on User {
-  ...GithubUser
+fragment LiveGithubUserWithPaymentRequestsForProject on User {
+  ...LiveGithubUser
   paymentRequests(where: { budget: { projectId: { _eq: $projectId } } }) {
     ...PaymentRequest
   }

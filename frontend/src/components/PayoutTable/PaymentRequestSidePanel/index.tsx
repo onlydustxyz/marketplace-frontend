@@ -83,10 +83,8 @@ gql`
       displayName
       avatarUrl
     }
-    githubRecipient {
-      id
-      login
-      avatarUrl
+    liveGithubRecipient {
+      ...LiveGithubUser
     }
     workItems {
       ...WorkItemId

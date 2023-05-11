@@ -1,4 +1,3 @@
-import { gql } from "@apollo/client";
 import Card from "src/components/Card";
 import GithubLink from "src/pages/ProjectDetails/Overview/GithubRepoDetails/GithubLink";
 import Tag, { TagSize } from "src/components/Tag";
@@ -43,20 +42,3 @@ export default function View({ id, name, htmlUrl, description, languages, stars,
     </Card>
   );
 }
-
-gql`
-  fragment GithubRepoStaticDetails on GithubRepoDetails {
-    id
-    languages
-  }
-
-  fragment GithubRepoDynamicDetails on Repo {
-    id
-    owner
-    name
-    description
-    stars
-    forksCount
-    htmlUrl
-  }
-`;

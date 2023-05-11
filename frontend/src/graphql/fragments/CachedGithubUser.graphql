@@ -1,0 +1,20 @@
+fragment GithubUserId on GithubUsers {
+  id
+}
+
+fragment GithubUser on GithubUsers {
+  ...GithubUserId
+  login
+  avatarUrl
+  htmlUrl
+  user {
+    userId
+  }
+}
+
+fragment GithubUserWithPaymentRequestsForProject on GithubUsers {
+  ...GithubUser
+  paymentRequests(where: { budget: { projectId: { _eq: $projectId } } }) {
+    ...PaymentRequest
+  }
+}
