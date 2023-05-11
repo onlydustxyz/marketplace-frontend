@@ -15,7 +15,7 @@ export const projects: Record<string, ProjectFixture> = {
     sponsors: ["StarkNet"],
   },
   ProjectA: {
-    name: "Project A",
+    name: "Project A with a really really long name",
     shortDescription: "A",
     longDescription: "AAA",
     telegramLink: "https://t.me/a",
