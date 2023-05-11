@@ -1,9 +1,8 @@
 use derive_more::{Display, From, Into};
-use iban::Iban;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use crate::{BlockchainNetwork, EthereumAddress, TransactionHash};
+use crate::{BlockchainNetwork, EthereumAddress, Iban, TransactionHash};
 
 #[derive(
 	Debug,

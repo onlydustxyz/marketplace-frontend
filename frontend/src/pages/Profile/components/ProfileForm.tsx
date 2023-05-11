@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 import { useForm, SubmitHandler, FormProvider, Controller, SubmitErrorHandler } from "react-hook-form";
-import IBAN from "iban";
+import IBANParser from "iban";
 
 import Input from "src/components/FormInput";
 import ProfileRadioGroup from "./ProfileRadioGroup";
@@ -101,7 +101,9 @@ const ProfileForm: React.FC<PropsType> = ({
         ? PayoutSettingsDisplayType.BankAddress
         : PayoutSettingsDisplayType.EthereumIdentity,
       ethIdentity: user?.payoutSettings?.EthTransfer?.Address || user?.payoutSettings?.EthTransfer?.Name,
-      IBAN: user?.payoutSettings?.WireTransfer?.IBAN,
+      IBAN: user?.payoutSettings?.WireTransfer?.IBAN
+        ? IBANParser.printFormat(user?.payoutSettings?.WireTransfer?.IBAN)
+        : undefined,
       BIC: user?.payoutSettings?.WireTransfer?.BIC,
       email: user?.contactInformation?.email || authenticatedUser?.email,
       telegram: user?.contactInformation?.telegram,
@@ -340,11 +342,11 @@ const ProfileForm: React.FC<PropsType> = ({
                         options={{
                           required: { value: !!BICValue, message: T("profile.form.ibanRequired") },
                           validate: value => {
-                            return !value?.trim() || IBAN.isValid(value) || T("profile.form.ibanInvalid");
+                            return !value?.trim() || IBANParser.isValid(value) || T("profile.form.ibanInvalid");
                           },
                         }}
                         requiredForPayment={true}
-                        value={value && IBAN.printFormat(value)}
+                        value={value && IBANParser.printFormat(value)}
                         onChange={onChange}
                         onBlur={() => {
                           if (touchedFields.BIC) {
@@ -560,7 +562,7 @@ const mapFormDataToSchema = ({
   if (payoutType === PayoutSettingsType.BankAddress && IBAN && BIC) {
     variables.payoutSettings = {
       optEthAddress: null,
-      optBankAddress: { IBAN, BIC },
+      optBankAddress: { IBAN: IBANParser.electronicFormat(IBAN), BIC },
       optEthName: null,
       type: PayoutSettingsType.BankAddress,
     };

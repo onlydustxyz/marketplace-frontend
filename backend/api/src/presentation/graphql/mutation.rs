@@ -1,9 +1,8 @@
 use anyhow::anyhow;
 use domain::{
-	Amount, BlockchainNetwork, Currency, GithubIssue, GithubIssueNumber, GithubRepoId, LogErr,
-	PaymentReason, PaymentReceipt, ProjectId, UserId,
+	Amount, BlockchainNetwork, Currency, GithubIssue, GithubIssueNumber, GithubRepoId, Iban,
+	LogErr, PaymentReason, PaymentReceipt, ProjectId, UserId,
 };
-use iban::Iban;
 use juniper::{graphql_object, DefaultScalarValue, Nullable};
 use rusty_money::Money;
 use url::Url;
@@ -67,7 +66,7 @@ impl Mutation {
 		payment_id: Uuid,
 		amount: String,
 		currency_code: String,
-		recipient_iban: String,
+		recipient_iban: Iban,
 		transaction_reference: String,
 	) -> Result<Uuid> {
 		let currency = rusty_money::iso::find(&currency_code).ok_or_else(|| {
@@ -76,9 +75,6 @@ impl Mutation {
 
 		let amount = Money::from_str(&amount, currency)
 			.map_err(|e| Error::InvalidRequest(anyhow::Error::msg(e)))?;
-
-		let recipient_iban =
-			recipient_iban.parse::<Iban>().map_err(|e| Error::InvalidRequest(e.into()))?;
 
 		let receipt_id = context
 			.process_payment_usecase
