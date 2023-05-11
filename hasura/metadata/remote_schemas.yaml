@@ -24,8 +24,8 @@
           scalar GithubIssueNumber
           scalar GithubRepoId
           scalar GithubUserId
-          scalar Id
           scalar Iban
+          scalar Id
           scalar Url
           scalar Uuid
           type Issue {

@@ -14,21 +14,10 @@ services:
       - db:/var/lib/postgresql/data
       - ./scripts/initdb.d:/docker-entrypoint-initdb.d:ro
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready", "-U", "postgres"]
+      test: [ "CMD-SHELL", "pg_isready", "-U", "postgres" ]
       interval: 2s
       timeout: 1s
       retries: 20
-
-  httpmock:
-    container_name: httpmock
-    image: alexliesenfeld/httpmock:latest
-    restart: unless-stopped
-    ports:
-      - 5001:5000
-    volumes:
-      - ./docker/httpmocks:/mocks
-    environment:
-      HTTPMOCK_MOCK_FILES_DIR: /mocks
 
   rabbitmq:
     container_name: rabbitmq
@@ -109,6 +98,5 @@ services:
 
 volumes:
   rabbitmq:
-  httpmocks:
   db:
     driver: local
