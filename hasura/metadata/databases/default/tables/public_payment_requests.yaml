@@ -11,6 +11,15 @@ object_relationships:
         remote_table:
           name: budgets
           schema: public
+  - name: githubRecipient
+    using:
+      manual_configuration:
+        column_mapping:
+          recipient_id: id
+        insertion_order: null
+        remote_table:
+          name: github_users
+          schema: public
   - name: recipient
     using:
       manual_configuration:
@@ -58,7 +67,7 @@ remote_relationships:
             arguments:
               userId: $recipient_id
         remote_schema: GithubProxy
-    name: githubRecipient
+    name: liveGithubRecipient
 select_permissions:
   - role: public
     permission:

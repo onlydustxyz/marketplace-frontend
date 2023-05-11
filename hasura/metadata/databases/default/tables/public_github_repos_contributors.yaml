@@ -1,0 +1,20 @@
+table:
+  name: github_repos_contributors
+  schema: public
+object_relationships:
+  - name: user
+    using:
+      manual_configuration:
+        column_mapping:
+          user_id: id
+        insertion_order: null
+        remote_table:
+          name: github_users
+          schema: public
+select_permissions:
+  - role: public
+    permission:
+      columns:
+        - repo_id
+        - user_id
+      filter: {}

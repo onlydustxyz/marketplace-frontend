@@ -1,0 +1,26 @@
+table:
+  name: crm_github_repos
+  schema: public
+object_relationships:
+  - name: languages
+    using:
+      manual_configuration:
+        column_mapping:
+          id: id
+        insertion_order: null
+        remote_table:
+          name: github_repo_details
+          schema: public
+select_permissions:
+  - role: public
+    permission:
+      columns:
+        - id
+        - fork_count
+        - stars
+        - description
+        - html_url
+        - name
+        - owner
+        - updated_at
+      filter: {}
