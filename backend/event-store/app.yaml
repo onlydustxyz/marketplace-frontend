@@ -5,10 +5,10 @@ default:
 
 local:
   database:
-    url: postgres://postgres:postgres@localhost/marketplace_db
+    url: postgres://postgres:postgres@db/marketplace_db
     pool_max_size: 20
   amqp:
-    url: "amqp://127.0.0.1:5672/%2f"
+    url: amqp://rabbitmq:5672/%2f
   tracer:
     json: false
     ansi: true
