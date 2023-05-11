@@ -1,6 +1,14 @@
 resource "heroku_config" "dusty_bot" {
-  vars           = merge(local.datadog_config.vars, var.dusty_bot_config.vars)
-  sensitive_vars = merge(local.datadog_config.sensitive_vars, var.dusty_bot_config.sensitive_vars)
+  vars = merge(
+    local.datadog_config.vars,
+    local.github_config.vars,
+    var.dusty_bot_config.vars
+  )
+  sensitive_vars = merge(
+    local.datadog_config.sensitive_vars,
+    local.github_config.sensitive_vars,
+    var.dusty_bot_config.sensitive_vars
+  )
 }
 
 resource "heroku_app_config_association" "dusty_bot" {
@@ -17,11 +25,9 @@ variable "dusty_bot_config" {
       PROCFILE                    = string
       PROFILE                     = string
       RUST_LOG                    = string
-      GITHUB_BASE_URL             = string
     })
     sensitive_vars = object({
       DUSTY_BOT_GRAPHQL_API_KEY = string
-      GITHUB_PAT                = string
     })
   })
 }

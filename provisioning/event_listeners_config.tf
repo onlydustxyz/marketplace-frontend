@@ -1,6 +1,13 @@
 resource "heroku_config" "event_listeners" {
-  vars           = merge(local.datadog_config.vars, var.event_listeners_config.vars)
-  sensitive_vars = merge(local.datadog_config.sensitive_vars, var.event_listeners_config.sensitive_vars)
+  vars = merge(
+    local.datadog_config.vars,
+    local.github_config.vars,
+    var.event_listeners_config.vars
+  )
+  sensitive_vars = merge(
+    local.datadog_config.sensitive_vars,
+    local.github_config.sensitive_vars
+  )
 }
 
 resource "heroku_app_config_association" "event_listeners" {
@@ -17,11 +24,7 @@ variable "event_listeners_config" {
       PROFILE                      = string
       RUST_LOG                     = string
       ROCKET_CLI_COLORS            = string
-      GITHUB_BASE_URL              = string
       GITHUB_MAX_CALLS_PER_REQUEST = string
-    })
-    sensitive_vars = object({
-      GITHUB_PAT = string
     })
   })
 }

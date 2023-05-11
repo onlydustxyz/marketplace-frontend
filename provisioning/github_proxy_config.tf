@@ -1,6 +1,14 @@
 resource "heroku_config" "github_proxy" {
-  vars           = merge(local.datadog_config.vars, var.github_proxy_config.vars)
-  sensitive_vars = merge(local.datadog_config.sensitive_vars, var.github_proxy_config.sensitive_vars)
+  vars = merge(
+    local.datadog_config.vars,
+    local.github_config.vars,
+    var.github_proxy_config.vars
+  )
+  sensitive_vars = merge(
+    local.datadog_config.sensitive_vars,
+    local.github_config.sensitive_vars,
+    var.github_proxy_config.sensitive_vars
+  )
 }
 
 resource "heroku_app_config_association" "github_proxy" {
@@ -17,11 +25,9 @@ variable "github_proxy_config" {
       PROFILE                            = string
       RUST_LOG                           = string
       ROCKET_CLI_COLORS                  = string
-      GITHUB_BASE_URL                    = string
       GITHUB_REVERSE_PROXY_CACHE_CONTROL = string
     })
     sensitive_vars = object({
-      GITHUB_PAT                   = string
       GITHUB_PROXY_GRAPHQL_API_KEY = string
     })
   })

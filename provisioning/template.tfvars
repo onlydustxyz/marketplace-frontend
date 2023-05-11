@@ -8,7 +8,6 @@ api_config = {
     PROFILE                   = "production"
     ROCKET_CLI_COLORS         = "false"
     RUST_LOG                  = "info"
-    GITHUB_BASE_URL           = "https://develop.gateway.onlydust.xyz/github/"
   }
   sensitive_vars = {
     AWS_ACCESS_KEY_ID           = "op://tech/aws/$APP_ENV/access-key-id"
@@ -16,7 +15,6 @@ api_config = {
     BACKEND_GRAPHQL_API_KEY     = "op://tech/backend/$APP_ENV/api-graphql-api-key"
     HASURA_GRAPHQL_ADMIN_SECRET = "op://tech/hasura/$APP_ENV/admin-secret"
     INFURA_API_KEY              = "op://tech/infura/$APP_ENV/api-key"
-    GITHUB_PAT                  = "op://tech/github/$APP_ENV/personal-access-token"
   }
 }
 
@@ -26,11 +24,9 @@ dusty_bot_config = {
     PROFILE                     = "production"
     RUST_LOG                    = "info"
     DUSTY_BOT_THROTTLE_DURATION = "20"
-    GITHUB_BASE_URL             = "https://develop.gateway.onlydust.xyz/github/"
   }
   sensitive_vars = {
     DUSTY_BOT_GRAPHQL_API_KEY = "op://tech/backend/$APP_ENV/dusty-bot-graphql-api-key"
-    GITHUB_PAT                = "op://tech/github/$APP_ENV/personal-access-token"
   }
 }
 
@@ -49,11 +45,7 @@ event_listeners_config = {
     PROFILE                      = "production"
     RUST_LOG                     = "info"
     ROCKET_CLI_COLORS            = "false"
-    GITHUB_BASE_URL              = "https://develop.gateway.onlydust.xyz/github/"
     GITHUB_MAX_CALLS_PER_REQUEST = "500"
-  }
-  sensitive_vars = {
-    GITHUB_PAT = "op://tech/github/$APP_ENV/personal-access-token"
   }
 }
 
@@ -63,19 +55,10 @@ github_proxy_config = {
     PROFILE                            = "production"
     RUST_LOG                           = "info"
     ROCKET_CLI_COLORS                  = "false"
-    GITHUB_BASE_URL                    = "https://develop.gateway.onlydust.xyz/github/"
     GITHUB_REVERSE_PROXY_CACHE_CONTROL = "public, max-age=600, s-maxage=600, stale-while-revalidate=3600, stale-if-error=666"
   }
   sensitive_vars = {
-    GITHUB_PAT                   = "op://tech/github/$APP_ENV/personal-access-token"
     GITHUB_PROXY_GRAPHQL_API_KEY = "op://tech/backend/$APP_ENV/github-proxy-graphql-api-key"
-  }
-}
-
-gateway_config = {
-  vars = {
-    OD_API_HOST         = "develop.hasura.onlydust.xyz"
-    OD_GATEWAY_BASE_URL = "https://develop.gateway.onlydust.xyz"
   }
 }
 

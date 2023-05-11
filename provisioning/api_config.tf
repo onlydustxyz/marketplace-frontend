@@ -1,6 +1,14 @@
 resource "heroku_config" "api" {
-  vars           = merge(local.datadog_config.vars, var.api_config.vars)
-  sensitive_vars = merge(local.datadog_config.sensitive_vars, var.api_config.sensitive_vars)
+  vars = merge(
+    local.datadog_config.vars,
+    local.github_config.vars,
+    var.api_config.vars
+  )
+  sensitive_vars = merge(
+    local.datadog_config.sensitive_vars,
+    local.github_config.sensitive_vars,
+    var.api_config.sensitive_vars
+  )
 }
 
 resource "heroku_app_config_association" "api" {
@@ -21,7 +29,6 @@ variable "api_config" {
       PROFILE                   = string
       ROCKET_CLI_COLORS         = string
       RUST_LOG                  = string
-      GITHUB_BASE_URL           = string
     })
     sensitive_vars = object({
       AWS_ACCESS_KEY_ID           = string
@@ -29,7 +36,6 @@ variable "api_config" {
       HASURA_GRAPHQL_ADMIN_SECRET = string
       INFURA_API_KEY              = string
       BACKEND_GRAPHQL_API_KEY     = string
-      GITHUB_PAT                  = string
     })
   })
 }

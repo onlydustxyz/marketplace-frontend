@@ -9,6 +9,15 @@ resource "heroku_app_config_association" "hasura" {
   sensitive_vars = heroku_config.hasura.sensitive_vars
 }
 
+variable "hasura_hostname" {
+  type    = string
+  default = null
+}
+
+locals {
+  hasura_hostname = var.hasura_hostname != null ? var.hasura_hostname : "${var.environment}.hasura.onlydust.xyz"
+}
+
 variable "hasura_config" {
   description = "The hasura application configuration"
   type = object({
