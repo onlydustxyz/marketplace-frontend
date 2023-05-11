@@ -12,6 +12,7 @@ interface Props {
   budget: { initialAmount: number; remainingAmount: number };
   missingContributor: boolean;
   missingWorkItem: boolean;
+  requestNewPaymentMutationLoading: boolean;
   canIncrease: boolean;
   canDecrease: boolean;
   amountToPay: number;
@@ -30,6 +31,7 @@ export default function WorkEstimation({
   amountToPay,
   missingContributor,
   missingWorkItem,
+  requestNewPaymentMutationLoading,
   stepNumber,
   steps,
 }: Props) {
@@ -107,7 +109,7 @@ export default function WorkEstimation({
         </div>
         {!disabled && (
           <div className="p-6 pt-5 w-full">
-            <Button htmlType="submit" width={Width.Full}>
+            <Button htmlType="submit" width={Width.Full} disabled={requestNewPaymentMutationLoading}>
               <span>{T("payment.form.confirm")}</span>
             </Button>
           </div>

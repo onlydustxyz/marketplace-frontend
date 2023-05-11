@@ -19,7 +19,7 @@ export default function usePaymentRequests(projectId?: string) {
     nextFetchPolicy: "cache-only",
   });
 
-  const [requestNewPaymentMutation] = useRequestPaymentMutation();
+  const [requestNewPaymentMutation, { loading: requestNewPaymentMutationLoading }] = useRequestPaymentMutation();
 
   const [cancelPaymentRequest] = useCancelPaymentRequestMutation({
     context: { graphqlErrorDisplay: "toaster" },
@@ -87,5 +87,6 @@ export default function usePaymentRequests(projectId?: string) {
         },
       }),
     cancelPaymentRequest,
+    requestNewPaymentMutationLoading,
   };
 }

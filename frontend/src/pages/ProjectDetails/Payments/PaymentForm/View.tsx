@@ -25,6 +25,7 @@ interface Props {
   contributor: GithubUserFragment | null | undefined;
   setContributor: (contributor: GithubUserFragment | null | undefined) => void;
   unpaidIssues?: WorkItem[] | null;
+  requestNewPaymentMutationLoading: boolean;
 }
 
 type TitleProps = {
@@ -47,6 +48,7 @@ const View: React.FC<Props> = ({
   contributor,
   setContributor,
   unpaidIssues,
+  requestNewPaymentMutationLoading,
 }) => {
   const { T } = useIntl();
   const navigate = useNavigate();
@@ -145,6 +147,7 @@ const View: React.FC<Props> = ({
             budget={budget}
             missingContributor={!contributor}
             missingWorkItem={workItems.length === 0}
+            requestNewPaymentMutationLoading={requestNewPaymentMutationLoading}
           />
         </div>
       </div>
