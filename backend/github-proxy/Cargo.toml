@@ -23,7 +23,7 @@ reqwest = "0.11.13"
 url = "2.2.2"
 
 # Http Server
-juniper = {version = "0.15.10"}
+juniper = {version = "0.15.11"}
 juniper_rocket = {version = "0.8.2"}
 rocket = {version = "0.5.0-rc.2", features = ["json", "uuid"]}
 
