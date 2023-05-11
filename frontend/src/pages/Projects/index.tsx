@@ -23,7 +23,7 @@ export default function Projects() {
             <div className="hidden xl:block basis-80 shrink-0 sticky top-0">
               <FilterPanel isProjectLeader={!!ledProjectIds.length} />
             </div>
-            <div className="grow">
+            <div className="grow min-w-0">
               <Suspense fallback={<Loader />}>
                 <AllProjects />
               </Suspense>
