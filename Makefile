@@ -246,3 +246,8 @@ playwright/test:
 playwright/clean:
 	rm -f "playwright/marketplace_db_dump"
 	rm -rf "playwright/fixtures/__generated"
+
+# Update snapshots for both local and CI
+playwright/update-snapshots:
+	yarn playwright test __populate
+	yarn playwright test --update-snapshots responsive
