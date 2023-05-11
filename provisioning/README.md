@@ -4,11 +4,12 @@ Infrastructure is hosted for the backend on Heroku and for the frontend on Verce
 
 Backend is getting progressively provisioned with Terraform.
 
+Terraform is used with [Terraform Cloud](https://app.terraform.io/app/onlydust-marketplace/) to store the state of the infrastructure as well as the secrets.
+
 ## Prerequisites
 
 - [awscli](https://aws.amazon.com/fr/cli/)
 - [terraform](https://developer.hashicorp.com/terraform/downloads)
-- [1password-cli](https://developer.1password.com/docs/cli/get-started/#install)
 
 ## Installation
 
@@ -17,35 +18,16 @@ Backend is getting progressively provisioned with Terraform.
 To interact with the Heroku API, you need to have your API key. Get it from your Heroku account settings (https://dashboard.heroku.com/account).
 Replace the missing variables asking your colleagues.
 
-### 1password
-
-Configure the 1password CLI according to [their documentation](https://developer.1password.com/docs/cli/get-started/#install).
-Then create the secrets config:
-
-```
-env APP_ENV={develop,staging,production} op inject -i template.tfvars -o {develop,staging,production}.tfvars
-```
-
 ### Terraform
 
 ```
-op run -- terraform init
+terraform init
+terraform login
 ```
 
 ## Usage
 
-All commands are run with the 1Password CLI as a wrapping command – `op run --` –, in order to inject secrets as env variables.
-
-```
-terraform workspace select {develop,staging,production}
-op run -- terraform plan -var-file {develop,staging,production}.tfvars
-```
-
-Review the output, check that the modifications planned are correct. If so:
-
-```
-op run -- terraform apply -var-file {develop,staging,production}.tfvars
-```
+There is nothing special to do, since everything is handled by Terraform Cloud.
 
 ## Importing existing infrastructure under Terraform supervision
 
@@ -59,23 +41,12 @@ The game is to fill the `{develop,staging,production}.tfvars` files with the cor
 Then, using the [Heroku API](https://devcenter.heroku.com/articles/platform-api-reference), find the relevant uuids to feed into commands such as:
 
 ```
-op run -- terraform import -var-file=develop.tfvars module.hasura_auth.heroku_pipeline_coupling.coupling[0] da1c964d-6d01-4786-9ac4-cc967e5814d2
+terraform import module.hasura_auth.heroku_pipeline_coupling.coupling[0] da1c964d-6d01-4786-9ac4-cc967e5814d2
 ```
 
 ## Configuring the apps
 
-Apps are configured using Terraform variables files, created by the `op inject` command.
-
-Secrets are stored on 1password, in the `Tech` vault.
-
-Each entry then has several fields, depending on the environment.
-
-For example, to access the Github Personal Access Token for the develop environment, you will use `op://tech/gihtub pat/develop`.
-
-### Should every configuration variables be in 1Password?
-
-No, only secrets should live in 1Password. It is the same distinction between `vars` and `sensitive_vars` in the `heroku_config`.
-If your config lives in `vars`, then put it directly in the `template.tfvars`. If it lives in `sensitive_vars`, put it in `1Password`.
+Apps are configured using Terraform Cloud and local configuration variables, spread among the `*.tf` files.
 
 ## Design choices
 

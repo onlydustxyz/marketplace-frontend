@@ -1,5 +1,3 @@
 .terraform
 terraform.tfstate*
-!.env
-develop.tfvars
 
