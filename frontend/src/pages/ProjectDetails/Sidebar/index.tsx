@@ -38,7 +38,7 @@ export default function ProjectsSidebar({ currentProject }: Props) {
   const projects =
     getProjectsForSidebarQuery?.data?.projects
       .filter(isProjectVisible(githubUserId))
-      .map(project => projectFromQuery(project)) || [];
+      .map(project => projectFromQuery(project, githubUserId)) || [];
   const sortedProjects = sortBy([...projects], ["withInvitation", "name"]);
 
   const AvailableTabs: Record<string, ProjectDetailsTab> = {
@@ -71,11 +71,13 @@ export default function ProjectsSidebar({ currentProject }: Props) {
   );
 }
 
-const projectFromQuery = (project: SidebarProjectDetailsFragment) => ({
+const projectFromQuery = (project: SidebarProjectDetailsFragment, githubUserId?: number) => ({
   ...project,
   name: project.projectDetails?.name || "",
   logoUrl: project.projectDetails?.logoUrl || onlyDustLogo,
-  withInvitation: project.pendingInvitations?.at(0)?.id,
+  withInvitation:
+    githubUserId !== undefined &&
+    project.pendingInvitations?.map(pendingInvitation => pendingInvitation.githubUserId).includes(githubUserId),
 });
 
 gql`
@@ -91,6 +93,7 @@ gql`
     }
     pendingInvitations {
       id
+      githubUserId
     }
   }
 
