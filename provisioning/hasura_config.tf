@@ -15,7 +15,13 @@ variable "hasura_hostname" {
 }
 
 locals {
-  hasura_hostname = var.hasura_hostname != null ? var.hasura_hostname : "${var.environment}.hasura.onlydust.xyz"
+  hasura_hostname    = var.hasura_hostname != null ? var.hasura_hostname : "${var.environment}.hasura.onlydust.xyz"
+  hasura_graphql_url = "https://${local.hasura_hostname}/v1/graphql"
+}
+
+variable "hasura_admin_secret" {
+  type      = string
+  sensitive = true
 }
 
 variable "hasura_config" {

@@ -1,23 +1,3 @@
-api_config = {
-  vars = {
-    AWS_REGION                = "eu-west-1"
-    DD_ENABLE_HEROKU_POSTGRES = "true"
-    GRAPHQL_BASE_URL          = "https://develop.hasura.onlydust.xyz/v1/graphql"
-    HASURA_GRAPHQL_ENDPOINT   = "https://develop.hasura.onlydust.xyz"
-    PROCFILE                  = "backend/api/Procfile"
-    PROFILE                   = "production"
-    ROCKET_CLI_COLORS         = "false"
-    RUST_LOG                  = "info"
-  }
-  sensitive_vars = {
-    AWS_ACCESS_KEY_ID           = "op://tech/aws/$APP_ENV/access-key-id"
-    AWS_SECRET_ACCESS_KEY       = "op://tech/aws/$APP_ENV/secret-access-key"
-    BACKEND_GRAPHQL_API_KEY     = "op://tech/backend/$APP_ENV/api-graphql-api-key"
-    HASURA_GRAPHQL_ADMIN_SECRET = "op://tech/hasura/$APP_ENV/admin-secret"
-    INFURA_API_KEY              = "op://tech/infura/$APP_ENV/api-key"
-  }
-}
-
 dusty_bot_config = {
   vars = {
     PROCFILE                    = "backend/dusty-bot/Procfile"
