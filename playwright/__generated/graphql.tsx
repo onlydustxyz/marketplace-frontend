@@ -22,6 +22,7 @@ export type Scalars = {
   GithubIssueNumber: any;
   GithubRepoId: any;
   GithubUserId: any;
+  Iban: any;
   Id: any;
   Url: any;
   Uuid: any;
@@ -294,7 +295,7 @@ export type AuthGithubUsersVarianceFields = {
 
 export type BankAddress = {
   BIC: Scalars['String'];
-  IBAN: Scalars['String'];
+  IBAN: Scalars['Iban'];
 };
 
 /** Boolean expression to compare columns of type "bigint". All fields are combined with logical 'AND'. */
@@ -6652,7 +6653,7 @@ export type Mutation_RootAddFiatPaymentReceiptArgs = {
   currencyCode: Scalars['String'];
   paymentId: Scalars['Uuid'];
   projectId: Scalars['Uuid'];
-  recipientIban: Scalars['String'];
+  recipientIban: Scalars['Iban'];
   transactionReference: Scalars['String'];
 };
 
@@ -11251,7 +11252,7 @@ export type CreateIssueMutationVariables = Exact<{
 
 export type CreateIssueMutation = { __typename?: 'mutation_root', createIssue: { __typename?: 'Issue', repoId: any, number: number, type: Type, status: Status, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null, id: any, ignoredForProjects: Array<{ __typename?: 'IgnoredGithubIssues', projectId: any, repoId: any, issueNumber: any }> } };
 
-export type SidebarProjectDetailsFragment = { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, logoUrl: string | null } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', projectId: any, githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, content: { __typename?: 'Repo', id: any, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: any, htmlUrl: any, id: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null }> } | null } | null }>, budgets: Array<{ __typename?: 'Budgets', id: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, githubRecipient: { __typename?: 'User', login: string, avatarUrl: any, htmlUrl: any, id: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null } | null }> }> };
+export type SidebarProjectDetailsFragment = { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, logoUrl: string | null } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', projectId: any, githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, content: { __typename?: 'Repo', id: any, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: any, htmlUrl: any, id: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null }> } | null } | null }>, budgets: Array<{ __typename?: 'Budgets', id: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, githubRecipient: { __typename?: 'User', login: string, avatarUrl: any, htmlUrl: any, id: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null } | null }> }> };
 
 export type GetProjectsForSidebarQueryVariables = Exact<{
   ledProjectIds: InputMaybe<Array<Scalars['uuid']> | Scalars['uuid']>;
@@ -11328,7 +11329,7 @@ export type AddFiatPaymentReceiptMutationVariables = Exact<{
   paymentId: Scalars['Uuid'];
   amount: Scalars['String'];
   currencyCode: Scalars['String'];
-  recipientIban: Scalars['String'];
+  recipientIban: Scalars['Iban'];
   transactionReference: Scalars['String'];
 }>;
 
@@ -11889,6 +11890,7 @@ export const SidebarProjectDetailsFragmentDoc = gql`
   }
   pendingInvitations {
     id
+    githubUserId
   }
 }
     ${ProjectContributorsFragmentDoc}`;
@@ -13508,7 +13510,7 @@ export type AddEthPaymentReceiptMutationHookResult = ReturnType<typeof useAddEth
 export type AddEthPaymentReceiptMutationResult = Apollo.MutationResult<AddEthPaymentReceiptMutation>;
 export type AddEthPaymentReceiptMutationOptions = Apollo.BaseMutationOptions<AddEthPaymentReceiptMutation, AddEthPaymentReceiptMutationVariables>;
 export const AddFiatPaymentReceiptDocument = gql`
-    mutation addFiatPaymentReceipt($projectId: Uuid!, $paymentId: Uuid!, $amount: String!, $currencyCode: String!, $recipientIban: String!, $transactionReference: String!) {
+    mutation addFiatPaymentReceipt($projectId: Uuid!, $paymentId: Uuid!, $amount: String!, $currencyCode: String!, $recipientIban: Iban!, $transactionReference: String!) {
   addFiatPaymentReceipt(
     projectId: $projectId
     paymentId: $paymentId

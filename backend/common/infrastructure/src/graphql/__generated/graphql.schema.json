@@ -1853,7 +1853,7 @@
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "String",
+                "name": "Iban",
                 "ofType": null
               }
             },
@@ -8894,6 +8894,16 @@
         "kind": "SCALAR",
         "name": "GithubUserId",
         "description": "A GitHub user ID, represented as an integer",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "SCALAR",
+        "name": "Iban",
+        "description": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -43086,7 +43096,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "SCALAR",
-                    "name": "String",
+                    "name": "Iban",
                     "ofType": null
                   }
                 },
