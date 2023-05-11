@@ -19,7 +19,7 @@ mutation addEthPaymentReceipt($projectId:Uuid!, $paymentId:Uuid!, $amount:String
 `);
 
 export const ADD_FIAT_PAYMENT_RECEIPT = gql(`
-mutation addFiatPaymentReceipt($projectId:Uuid!, $paymentId:Uuid!, $amount:String!, $currencyCode:String!, $recipientIban:String!, $transactionReference:String!) {
+mutation addFiatPaymentReceipt($projectId:Uuid!, $paymentId:Uuid!, $amount:String!, $currencyCode:String!, $recipientIban:Iban!, $transactionReference:String!) {
     addFiatPaymentReceipt(projectId: $projectId, paymentId: $paymentId, amount: $amount, currencyCode: $currencyCode, recipientIban: $recipientIban, transactionReference: $transactionReference)
 }
 `);
