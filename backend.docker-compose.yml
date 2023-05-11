@@ -1,0 +1,145 @@
+version: "3.8"
+services:
+  db:
+    extends:
+      file: docker-compose.yml
+      service: db
+
+  rabbitmq:
+    extends:
+      file: docker-compose.yml
+      service: rabbitmq
+
+  hasura:
+    extends:
+      file: docker-compose.yml
+      service: hasura
+
+  hasura-auth:
+    extends:
+      file: docker-compose.yml
+      service: hasura-auth
+
+  api:
+    container_name: api
+    image: rust:1.66
+    depends_on:
+      db:
+        condition: service_healthy
+      hasura-auth:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    volumes:
+      - .:/app
+      - cargo-cache:/usr/local/cargo
+    command: bash -c "cd /app && cargo run -p api"
+    ports:
+      - 8000
+    healthcheck:
+      test: curl -f http://localhost:8000 || exit 1
+      interval: 2s
+      timeout: 1s
+      retries: 30
+
+  github-proxy:
+    container_name: github-proxy
+    image: rust:1.66
+    volumes:
+      - .:/app
+      - cargo-cache:/usr/local/cargo
+    command: bash -c "cd /app && cargo run -p github-proxy"
+    ports:
+      - 8001
+    healthcheck:
+      test: curl -f http://localhost:8001 || exit 1
+      interval: 2s
+      timeout: 1s
+      retries: 30
+
+  dusty-bot:
+    container_name: dusty-bot
+    image: rust:1.66
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    volumes:
+      - .:/app
+      - cargo-cache:/usr/local/cargo
+    command: bash -c "cd /app && cargo run -p dusty-bot"
+    ports:
+      - 8002
+    healthcheck:
+      test: curl -f http://localhost:8002 || exit 1
+      interval: 2s
+      timeout: 1s
+      retries: 30
+
+  action-dequeuer:
+    container_name: action-dequeuer
+    image: rust:1.66
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    volumes:
+      - .:/app
+      - cargo-cache:/usr/local/cargo
+    command: bash -c "cd /app && cargo run -p dusty-bot --bin action-dequeuer"
+
+  event-store:
+    container_name: event-store
+    image: rust:1.66
+    depends_on:
+      db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    volumes:
+      - .:/app
+      - cargo-cache:/usr/local/cargo
+    command: bash -c "cd /app && cargo run -p event-store"
+
+  event-listeners:
+    container_name: event-listeners
+    image: rust:1.66
+    depends_on:
+      db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    volumes:
+      - .:/app
+      - cargo-cache:/usr/local/cargo
+    command: bash -c "cd /app && cargo run -p event-listeners"
+
+  github-indexer:
+    container_name: github-indexer
+    image: rust:1.66
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    volumes:
+      - .:/app
+      - cargo-cache:/usr/local/cargo
+    command: bash -c "cd /app && cargo run -p event-listeners --bin github-indexer"
+
+  frontend:
+    container_name: frontend
+    build:
+      context: ..
+      dockerfile: frontend.DockerFile
+    volumes:
+      - .:/app
+    ports:
+      - 5173:5173
+    healthcheck:
+      test: curl -f http://localhost:5173 || exit 1
+      interval: 2s
+      timeout: 1s
+      retries: 30
+
+volumes:
+  cargo-cache:
+  rabbitmq:
+  db:
+    driver: local
