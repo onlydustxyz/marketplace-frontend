@@ -44,7 +44,9 @@ impl Indexer {
 impl super::Indexer<GithubRepoId> for Indexer {
 	async fn index(&self, repo_id: GithubRepoId) -> Result<Vec<GithubEvent>> {
 		let filters = GithubServiceIssueFilters {
-			updated_since: self.get_state(repo_id)?.map(|state| state.last_update_time),
+			updated_since: self
+				.get_state(repo_id)?
+				.map(|state| state.last_update_time + chrono::Duration::milliseconds(1)),
 			..Default::default()
 		};
 
