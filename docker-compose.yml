@@ -96,6 +96,15 @@ services:
       timeout: 1s
       retries: 30
 
+  github-proxy:
+    container_name: github-proxy
+    image: rust:1.66
+    volumes:
+      - .:/app
+    command: bash -c "cd /app && cargo run -p github-proxy"
+    ports:
+      - 8001
+
 volumes:
   rabbitmq:
   httpmocks:
