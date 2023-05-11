@@ -36,6 +36,12 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
+    healthcheck:
+      test: bash -c ':> /dev/tcp/127.0.0.1/5672' || exit 1
+      interval: 2s
+      timeout: 1s
+      retries: 10
+      start_period: 5s
 
   graphql-engine:
     container_name: graphql-engine
@@ -112,6 +118,7 @@ services:
     image: rust:1.66
     volumes:
       - .:/app
+      - cargo-cache:/usr/local/cargo
     command: bash -c "cd /app && cargo run -p github-proxy"
     ports:
       - 8001
@@ -119,13 +126,18 @@ services:
   dusty-bot:
     container_name: dusty-bot
     image: rust:1.66
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
     volumes:
       - .:/app
+      - cargo-cache:/usr/local/cargo
     command: bash -c "cd /app && cargo run -p dusty-bot"
     ports:
       - 8002
 
 volumes:
   rabbitmq:
+  cargo-cache:
   db:
     driver: local
