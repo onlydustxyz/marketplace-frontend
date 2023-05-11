@@ -1,11 +1,9 @@
-locals {
-  github_config = {
-    vars = {
-      GITHUB_BASE_URL = local.github_base_url
-    }
-    sensitive_vars = {
-      GITHUB_PAT = var.github_personal_access_token
-    }
+resource "heroku_config" "github" {
+  vars = {
+    GITHUB_BASE_URL = local.github_base_url
+  }
+  sensitive_vars = {
+    GITHUB_PAT = var.github_personal_access_token
   }
 }
 
