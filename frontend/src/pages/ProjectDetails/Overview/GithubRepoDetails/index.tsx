@@ -13,8 +13,11 @@ export default function GithubRepoDetails({ githubRepoId }: Props) {
     ...contextWithCacheHeaders,
   });
 
-  const githubRepoDetails = data?.githubRepoDetailsByPk &&
-    data?.githubRepoDetailsByPk?.content && { ...data.githubRepoDetailsByPk, ...data.githubRepoDetailsByPk?.content };
+  const githubRepoDetails = data?.crmGithubReposByPk &&
+    data?.crmGithubReposByPk?.languages?.languages && {
+      ...data?.crmGithubReposByPk,
+      ...data?.crmGithubReposByPk?.languages,
+    };
 
   return <>{githubRepoDetails && <View {...githubRepoDetails} />}</>;
 }

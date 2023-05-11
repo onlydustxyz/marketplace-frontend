@@ -26,7 +26,7 @@ export default function OverviewPanel({ projectId, ...props }: OverviewPanelProp
 
   const contributors = uniqBy(
     getProjectContributorsForOverview?.data?.projectsByPk?.githubRepos
-      .map(githubRepo => githubRepo?.githubRepoDetails?.content?.contributors)
+      .map(githubRepo => githubRepo?.repoContributors.map(c => c.user))
       .flat(),
     contributor => contributor?.login
   ).filter(isDefined);

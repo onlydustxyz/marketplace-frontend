@@ -6,12 +6,14 @@ import CodeSSlashLine from "src/icons/CodeSSlashLine";
 import ForkLine from "src/icons/ForkLine";
 import StarLine from "src/icons/StarLine";
 import { getMostUsedLanguages } from "src/utils/languages";
-import { GithubRepoDynamicDetailsFragment, GithubRepoStaticDetailsFragment } from "src/__generated/graphql";
+import { GithubRepoFragment } from "src/__generated/graphql";
+import { LanguageMap } from "src/types";
 
-type Props = Omit<GithubRepoStaticDetailsFragment & GithubRepoDynamicDetailsFragment, "__typename">;
+type Props = GithubRepoFragment & { languages: LanguageMap };
 
-export default function View({ id, name, htmlUrl, description, languages, stars, forksCount }: Props) {
+export default function View({ id, name, htmlUrl, description, languages, stars, forkCount }: Props) {
   const { T } = useIntl();
+
   return (
     <Card dataTestId={`github-repo-${id}`} className="flex flex-row justify-between p-3" padded={false} blurred={false}>
       <div className="flex flex-col justify-between font-walsheim text-greyscale-50 font-normal p-3 w-5/6 gap-5">
@@ -34,7 +36,7 @@ export default function View({ id, name, htmlUrl, description, languages, stars,
           </div>
           <div className="flex flex-row gap-1 items-center">
             <ForkLine className="fill-greyscale-200" />
-            {forksCount}
+            {forkCount}
           </div>
         </div>
       </div>

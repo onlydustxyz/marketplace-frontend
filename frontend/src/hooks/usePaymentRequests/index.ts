@@ -2,7 +2,6 @@ import {
   CancelPaymentRequestMutationResult,
   ExtendedPaymentRequestFragment,
   ExtendedPaymentRequestFragmentDoc,
-  GithubUserFragment,
   RequestPaymentMutationOptions,
   RequestPaymentMutationResult,
   RequestPaymentMutationVariables,
@@ -11,6 +10,7 @@ import {
   useRequestPaymentMutation,
 } from "src/__generated/graphql";
 import { reject } from "lodash";
+import { ContributorFragment } from "src/types";
 
 export default function usePaymentRequests(projectId?: string) {
   const getPaymentRequestsQuery = useGetPaymentRequestsForProjectQuery({
@@ -54,13 +54,14 @@ export default function usePaymentRequests(projectId?: string) {
       paymentRequests: getPaymentRequestsQuery.data.projectsByPk?.budgets.map(b => b.paymentRequests).flat(),
     },
 
-    requestNewPayment: (recipient: GithubUserFragment, options: RequestPaymentMutationOptions) =>
+    requestNewPayment: (recipient: ContributorFragment, options: RequestPaymentMutationOptions) =>
       requestNewPaymentMutation({
         ...options,
         context: { graphqlErrorDisplay: "toaster" },
         update: (cache, result, { variables }) => {
           const { budgetId, paymentId, amount } = (result as RequestPaymentMutationResult).data?.requestPayment || {};
           const { contributorId, reason } = variables as RequestPaymentMutationVariables;
+          console.log(recipient);
 
           const newPaymentRequestRef = cache.writeFragment<ExtendedPaymentRequestFragment>({
             fragment: ExtendedPaymentRequestFragmentDoc,
@@ -73,7 +74,10 @@ export default function usePaymentRequests(projectId?: string) {
               workItemsAggregate: { aggregate: { count: reason.workItems.length } },
               paymentsAggregate: { aggregate: { sum: { amount: 0 } } },
               requestedAt: Date.now(),
-              githubRecipient: recipient,
+              githubRecipient: {
+                ...recipient,
+                __typename: "GithubUsers",
+              },
             },
           });
 

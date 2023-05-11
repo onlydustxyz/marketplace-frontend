@@ -23,9 +23,9 @@ export const isProjectVisible =
 type Project<R> = {
   id: string;
   githubRepos: Array<{
-    githubRepoDetails: {
-      content: { contributors: Array<R | null> } | null;
-    } | null;
+    repoContributors: Array<{
+      user: R | null;
+    }>;
     repoIssues?: GithubIssueFragment[] | null;
   }> | null;
   budgets: Array<{
@@ -37,7 +37,7 @@ export function getContributors<R extends GithubUserIdFragment>(
   project?: Project<R | null> | null
 ): { contributors: R[] } {
   const contributorsFromRepos: R[] =
-    project?.githubRepos?.flatMap(repo => repo.githubRepoDetails?.content?.contributors).filter(isDefined) || [];
+    project?.githubRepos?.flatMap(repo => repo.repoContributors.map(c => c.user)).filter(isDefined) || [];
 
   const contributorsFromPaymentRequests: R[] =
     project?.budgets

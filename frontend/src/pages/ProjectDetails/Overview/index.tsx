@@ -1,9 +1,13 @@
 import { useIntl } from "src/hooks/useIntl";
-import { Contributor } from "src/types";
 import OverviewPanel from "./OverviewPanel";
 import { useOutletContext } from "react-router-dom";
 import { ReactNode, useEffect, useState } from "react";
-import { ProjectLeadFragment, SponsorFragment, useGetProjectOverviewDetailsQuery } from "src/__generated/graphql";
+import {
+  GithubUserFragment,
+  ProjectLeadFragment,
+  SponsorFragment,
+  useGetProjectOverviewDetailsQuery,
+} from "src/__generated/graphql";
 import { gql } from "@apollo/client";
 import QueryWrapper from "src/components/QueryWrapper";
 import Card from "src/components/Card";
@@ -20,7 +24,7 @@ type OutletContext = {
   leads?: ProjectLeadFragment[];
   totalSpentAmountInUsd: number;
   totalInitialAmountInUsd: number;
-  contributors?: Contributor[];
+  contributors?: GithubUserFragment[];
   projectId: string;
   sponsors: SponsorFragment[];
   telegramLink: string | null;
@@ -57,8 +61,7 @@ export default function Overview() {
     if (githubRepos) {
       const githubReposCopy = [...githubRepos];
       githubReposCopy.sort(
-        (githubRepoA, githubRepoB) =>
-          (githubRepoB?.githubRepoDetails?.content?.stars ?? 0) - (githubRepoA?.githubRepoDetails?.content?.stars ?? 0)
+        (githubRepoA, githubRepoB) => (githubRepoB?.repo?.stars ?? 0) - (githubRepoA?.repo?.stars ?? 0)
       );
       setSortedGithubRepos(githubReposCopy);
     }
