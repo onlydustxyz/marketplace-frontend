@@ -118,6 +118,11 @@ services:
     command: bash -c "cd /app && cargo run -p api"
     ports:
       - 8000
+    healthcheck:
+      test: curl -f http://localhost:8000 || exit 1
+      interval: 2s
+      timeout: 1s
+      retries: 30
 
   github-proxy:
     container_name: github-proxy
@@ -128,6 +133,11 @@ services:
     command: bash -c "cd /app && cargo run -p github-proxy"
     ports:
       - 8001
+    healthcheck:
+      test: curl -f http://localhost:8001 || exit 1
+      interval: 2s
+      timeout: 1s
+      retries: 30
 
   dusty-bot:
     container_name: dusty-bot
@@ -141,6 +151,11 @@ services:
     command: bash -c "cd /app && cargo run -p dusty-bot"
     ports:
       - 8002
+    healthcheck:
+      test: curl -f http://localhost:8002 || exit 1
+      interval: 2s
+      timeout: 1s
+      retries: 30
 
   action-dequeuer:
     container_name: action-dequeuer
