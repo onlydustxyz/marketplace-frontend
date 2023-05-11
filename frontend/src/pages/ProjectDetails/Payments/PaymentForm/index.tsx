@@ -25,7 +25,7 @@ const PaymentForm: React.FC = () => {
     };
   }>();
 
-  const { requestNewPayment } = usePaymentRequests(projectId);
+  const { requestNewPayment, requestNewPaymentMutationLoading } = usePaymentRequests(projectId);
 
   const formMethods = useForm<Inputs>({
     defaultValues: {
@@ -91,6 +91,7 @@ const PaymentForm: React.FC = () => {
             contributor={contributor}
             setContributor={setContributor}
             unpaidIssues={unpaidIssues}
+            requestNewPaymentMutationLoading={requestNewPaymentMutationLoading}
           />
         </form>
       </FormProvider>

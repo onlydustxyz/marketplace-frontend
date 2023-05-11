@@ -6,9 +6,16 @@ interface Props {
   budget: { initialAmount: number; remainingAmount: number };
   missingContributor: boolean;
   missingWorkItem: boolean;
+  requestNewPaymentMutationLoading: boolean;
 }
 
-export default function WorkEstimation({ onChange, budget, missingContributor, missingWorkItem }: Props) {
+export default function WorkEstimation({
+  onChange,
+  budget,
+  missingContributor,
+  missingWorkItem,
+  requestNewPaymentMutationLoading,
+}: Props) {
   const { amountToPay, stepNumber, steps, tryDecreaseNumberOfDays, tryIncreaseNumberOfDays, canDecrease, canIncrease } =
     useWorkEstimation(onChange, budget);
 
@@ -25,6 +32,7 @@ export default function WorkEstimation({ onChange, budget, missingContributor, m
         budget,
         missingContributor,
         missingWorkItem,
+        requestNewPaymentMutationLoading,
       }}
     />
   );
