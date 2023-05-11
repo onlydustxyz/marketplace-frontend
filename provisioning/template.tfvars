@@ -1,15 +1,3 @@
-dusty_bot_config = {
-  vars = {
-    PROCFILE                    = "backend/dusty-bot/Procfile"
-    PROFILE                     = "production"
-    RUST_LOG                    = "info"
-    DUSTY_BOT_THROTTLE_DURATION = "20"
-  }
-  sensitive_vars = {
-    DUSTY_BOT_GRAPHQL_API_KEY = "op://tech/backend/$APP_ENV/dusty-bot-graphql-api-key"
-  }
-}
-
 event_store_config = {
   vars = {
     PROCFILE          = "backend/event-store/Procfile"
