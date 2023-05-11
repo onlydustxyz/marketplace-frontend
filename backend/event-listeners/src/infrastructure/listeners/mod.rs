@@ -17,9 +17,9 @@ use crate::{
 	domain::*,
 	infrastructure::database::{
 		BudgetRepository, CrmGithubRepoRepository, GithubIssuesRepository,
-		GithubRepoDetailsRepository, GithubUsersRepository, PaymentRepository,
-		PaymentRequestRepository, ProjectGithubRepoDetailsRepository, ProjectLeadRepository,
-		ProjectRepository, WorkItemRepository,
+		GithubRepoDetailsRepository, GithubReposContributorsRepository, GithubUsersRepository,
+		PaymentRepository, PaymentRequestRepository, ProjectGithubRepoDetailsRepository,
+		ProjectLeadRepository, ProjectRepository, WorkItemRepository,
 	},
 	Config, GITHUB_EVENTS_EXCHANGE,
 };
@@ -56,6 +56,7 @@ pub async fn spawn_all(
 			CrmGithubRepoRepository::new(database.clone()),
 			GithubIssuesRepository::new(database.clone()),
 			GithubUsersRepository::new(database.clone()),
+			GithubReposContributorsRepository::new(database.clone()),
 		)
 		.spawn(
 			event_bus::consumer_with_exchange(

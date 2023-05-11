@@ -8,7 +8,8 @@ use tracing::instrument;
 use crate::{
 	domain::{CrmGithubRepo, EventListener, GithubEvent, GithubIssue, GithubUser},
 	infrastructure::database::{
-		CrmGithubRepoRepository, GithubIssuesRepository, GithubUsersRepository,
+		CrmGithubRepoRepository, GithubIssuesRepository, GithubReposContributorsRepository,
+		GithubUsersRepository,
 	},
 };
 
@@ -17,15 +18,20 @@ pub struct Projector {
 	crm_github_repo_repository: CrmGithubRepoRepository,
 	github_issues_repository: GithubIssuesRepository,
 	github_users_repository: GithubUsersRepository,
+	github_repos_contributors_repository: GithubReposContributorsRepository,
 }
 
 #[async_trait]
 impl EventListener<GithubEvent> for Projector {
-	#[instrument(name = "crm_projection", skip(self))]
+	#[instrument(name = "github_projection", skip(self))]
 	async fn on_event(&self, event: &GithubEvent) -> Result<(), SubscriberCallbackError> {
 		match event {
 			GithubEvent::Repo(repo) => {
 				self.crm_github_repo_repository.upsert(&repo.into())?;
+				repo.contributors().into_iter().try_for_each(|contributor| {
+					self.github_repos_contributors_repository
+						.try_insert(repo.id(), contributor.id())
+				})?;
 			},
 			GithubEvent::PullRequest(issue) | GithubEvent::Issue(issue) => {
 				self.github_issues_repository.upsert(&issue.into())?;
