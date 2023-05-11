@@ -105,6 +105,15 @@ services:
     ports:
       - 8001
 
+  dusty-bot:
+    container_name: dusty-bot
+    image: rust:1.66
+    volumes:
+      - .:/app
+    command: bash -c "cd /app && cargo run -p dusty-bot"
+    ports:
+      - 8002
+
 volumes:
   rabbitmq:
   httpmocks:
