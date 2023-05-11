@@ -39,6 +39,16 @@ locals {
   }
 }
 
+variable "api_hostname" {
+  type    = string
+  default = null
+}
+
+locals {
+  api_hostname    = var.api_hostname != null ? var.api_hostname : "${var.environment}.api.onlydust.xyz"
+  api_graphql_url = "https://${local.api_hostname}/graphql"
+}
+
 variable "aws_access_key_id" {
   type      = string
   sensitive = true

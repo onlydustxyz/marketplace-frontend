@@ -36,3 +36,13 @@ variable "github_proxy_graphql_api_key" {
   type      = string
   sensitive = true
 }
+
+variable "github_proxy_hostname" {
+  type    = string
+  default = null
+}
+
+locals {
+  github_proxy_hostname    = var.github_proxy_hostname != null ? var.github_proxy_hostname : "${var.environment}.github.onlydust.xyz"
+  github_proxy_graphql_url = "https://${local.github_proxy_hostname}/graphql"
+}

@@ -1,24 +1,3 @@
-hasura_config = {
-  vars = {
-    BACKEND_GRAPHQL_URL                             = "https://develop.api.onlydust.xyz/graphql"
-    DUSTY_BOT_GRAPHQL_URL                           = "https://develop.dustybot.onlydust.xyz/graphql"
-    GITHUB_PROXY_GRAPHQL_URL                        = "https://develop.github.onlydust.xyz/graphql"
-    HASURA_GRAPHQL_DEFAULT_NAMING_CONVENTION        = "graphql-default"
-    HASURA_GRAPHQL_ENABLE_CONSOLE                   = "true"
-    HASURA_GRAPHQL_ENABLE_REMOTE_SCHEMA_PERMISSIONS = "true"
-    HASURA_GRAPHQL_EXPERIMENTAL_FEATURES            = "naming_convention"
-    HASURA_GRAPHQL_LOG_LEVEL                        = "warn"
-    HASURA_GRAPHQL_UNAUTHORIZED_ROLE                = "public"
-  }
-  sensitive_vars = {
-    BACKEND_GRAPHQL_API_KEY      = "op://tech/backend/$APP_ENV/api-graphql-api-key"
-    DUSTY_BOT_GRAPHQL_API_KEY    = "op://tech/backend/$APP_ENV/dusty-bot-graphql-api-key"
-    GITHUB_PROXY_GRAPHQL_API_KEY = "op://tech/backend/$APP_ENV/github-proxy-graphql-api-key"
-    HASURA_GRAPHQL_ADMIN_SECRET  = "op://tech/hasura/$APP_ENV/admin-secret"
-    HASURA_GRAPHQL_JWT_SECRET    = "op://tech/hasura/$APP_ENV/jwt-secret"
-  }
-}
-
 hasura_auth_config = {
   vars = {
     AUTH_CLIENT_URL                 = "https://develop.app.onlydust.xyz/login"
