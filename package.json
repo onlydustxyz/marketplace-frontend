@@ -13,6 +13,13 @@
     "chromatic": "npx chromatic --project-token=2118ca8bdd40",
     "generate": "graphql-codegen --config codegen/config.ts",
     "postbuild": "./scripts/upload-sourcemaps.sh",
+    "backend:api": "cargo run -p api",
+    "backend:event-store": "cargo run -p event-store",
+    "backend:event-listeners": "cargo run -p event-listeners",
+    "backend:github-proxy": "cargo run -p github-proxy",
+    "backend:action-dequeuer": "cargo run --bin action-dequeuer",
+    "backend:github-indexer": "cargo run --bin github-indexer",
+    "hasura:refresh": "make hasura/refresh",
     "dependency-cruiser": "depcruise --config .dependency-cruiser.js frontend/src"
   },
   "dependencies": {
