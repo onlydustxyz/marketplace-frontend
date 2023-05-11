@@ -205,6 +205,23 @@ services:
       - cargo-cache:/usr/local/cargo
     command: bash -c "cd /app && cargo run -p event-listeners --bin github-indexer"
 
+  frontend:
+    container_name: frontend
+    build:
+      context: .
+      dockerfile: docker/frontend.DockerFile
+    volumes:
+      - .:/app
+    environment:
+      - NPM_CONFIG_PREFIX=/node_modules
+    ports:
+      - 5173:5173
+    healthcheck:
+      test: curl -f http://localhost:5173 || exit 1
+      interval: 2s
+      timeout: 1s
+      retries: 30
+
 volumes:
   rabbitmq:
   httpmocks:
