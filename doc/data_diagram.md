@@ -27,6 +27,18 @@ class Budgets {
    spentAmount: numeric!
 }
 
+class CrmGithubRepos {
+   description: String!
+   forkCount: Int!
+   htmlUrl: String!
+   id: bigint!
+   languages: GithubRepoDetails
+   name: String!
+   owner: String!
+   stars: Int!
+   updatedAt: timestamp
+}
+
 class GithubIssues {
    authorId: bigint!
    closedAt: timestamp
@@ -43,9 +55,23 @@ class GithubIssues {
 }
 
 class GithubRepoDetails {
-   content: Repo
    id: bigint!
    languages: jsonb!
+}
+
+class GithubReposContributors {
+   repoId: bigint!
+   user: GithubUsers
+   userId: bigint!
+}
+
+class GithubUsers {
+   avatarUrl: String!
+   htmlUrl: String!
+   id: bigint!
+   login: String!
+   paymentRequests: [PaymentRequests!]!
+   user: AuthGithubUsers
 }
 
 class IgnoredGithubIssues {
@@ -81,10 +107,11 @@ class PaymentRequests {
    amountInUsd: bigint!
    budget: Budgets
    budgetId: uuid!
-   githubRecipient: User
+   githubRecipient: GithubUsers
    hoursWorked: Int!
    id: uuid!
    invoiceReceivedAt: timestamp
+   liveGithubRecipient: User
    payments: [Payments!]!
    recipient: AuthGithubUsers
    recipientId: bigint!
@@ -126,6 +153,8 @@ class ProjectGithubRepos {
    githubRepoId: bigint!
    project: Projects
    projectId: uuid!
+   repo: CrmGithubRepos
+   repoContributors: [GithubReposContributors!]!
    repoIssues: [GithubIssues!]!
 }
 
@@ -297,12 +326,16 @@ AuthGithubUsers -- users
 AuthGithubUsers --* PaymentRequests
 Budgets -- Projects
 Budgets --* PaymentRequests
+CrmGithubRepos -- GithubRepoDetails
 GithubIssues --* IgnoredGithubIssues
-GithubRepoDetails -- Repo
+GithubReposContributors -- GithubUsers
+GithubUsers -- AuthGithubUsers
+GithubUsers --* PaymentRequests
 Issue -- User
 Issue --* IgnoredGithubIssues
 PaymentRequests -- AuthGithubUsers
 PaymentRequests -- Budgets
+PaymentRequests -- GithubUsers
 PaymentRequests -- User
 PaymentRequests -- users
 PaymentRequests --* Payments
@@ -310,9 +343,11 @@ PaymentRequests --* WorkItems
 Payments -- PaymentRequests
 PendingProjectLeaderInvitations -- AuthGithubUsers
 PendingProjectLeaderInvitations -- Projects
+ProjectGithubRepos -- CrmGithubRepos
 ProjectGithubRepos -- GithubRepoDetails
 ProjectGithubRepos -- Projects
 ProjectGithubRepos --* GithubIssues
+ProjectGithubRepos --* GithubReposContributors
 ProjectLeads -- Projects
 ProjectLeads -- users
 Projects -- ProjectDetails
