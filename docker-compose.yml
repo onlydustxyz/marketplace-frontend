@@ -102,6 +102,23 @@ services:
       timeout: 1s
       retries: 30
 
+  api:
+    container_name: api
+    image: rust:1.66
+    depends_on:
+      db:
+        condition: service_healthy
+      hasura-auth:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    volumes:
+      - .:/app
+      - cargo-cache:/usr/local/cargo
+    command: bash -c "cd /app && cargo run -p api"
+    ports:
+      - 8000
+
   github-proxy:
     container_name: github-proxy
     image: rust:1.66
