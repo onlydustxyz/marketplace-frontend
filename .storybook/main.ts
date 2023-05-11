@@ -1,6 +1,3 @@
-import postcss from "postcss";
-import * as tailwindcss from "../tailwind.config";
-
 const config = {
   stories: ["../frontend/src/**/*.mdx", "../frontend/src/**/*.stories.@(js|jsx|ts|tsx)"],
   addons: [
@@ -8,20 +5,7 @@ const config = {
     "@storybook/addon-essentials",
     "@storybook/addon-interactions",
     "storybook-addon-react-router-v6",
-    {
-      name: "@storybook/addon-postcss",
-      options: {
-        postcssLoaderOptions: {
-          implementation: postcss,
-          postcssOptions: {
-            plugins: {
-              tailwindcss,
-              autoprefixer: {},
-            },
-          },
-        },
-      },
-    },
+    "@storybook/addon-styling",
   ],
   framework: {
     name: "@storybook/react-vite",
