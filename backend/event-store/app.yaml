@@ -2,24 +2,24 @@ default:
   amqp:
     connection_retry_interval_ms: 6000
     connection_retry_count: 100
+  database:
+    url: $DATABASE_URL
 
 local:
-  database:
-    url: postgres://postgres:postgres@localhost/marketplace_db
-    pool_max_size: 3
   amqp:
-    url: "amqp://127.0.0.1:5672/%2f"
+    url: $AMQP_URL
+  database:
+    pool_max_size: 3
   tracer:
     json: false
     ansi: true
     location: true
 
 production:
-  database:
-    url: $DATABASE_URL
-    pool_max_size: 3
   amqp:
     url: $CLOUDAMQP_URL
+  database:
+    pool_max_size: 3
   tracer:
     json: true
     ansi: false
