@@ -84,3 +84,9 @@ If your config lives in `vars`, then put it directly in the `template.tfvars`. I
 Some variables have a default value, and can be overridden if provided in the Terraform Cloud workspace.
 
 For example, the `github_base_url` defaults to `https://${var.environment}.gateway.onlydust.xyz/github/`, but can be overridden in the `production` workspace on Terraform Cloud to `https://gateway.onlydust.xyz/github/`.
+
+### If you can version-control a variable, do it
+
+Most variables must live in the repository, in `.tf` files. Any secret must live in Terraform Cloud, as well as environment-specific variables.
+
+For example, for hostnames, since there is a discrepancy between pre-production pattern `{env}.onlydust.xyz` vs `onlydust.xyz` for production, it could be tempting to have a workspace-specific variable, but it actually is better using a default variable pattern as described in the previous section, as it ends up committing more configuration.
