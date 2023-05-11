@@ -1,6 +1,21 @@
 resource "heroku_config" "hasura_auth" {
-  vars           = var.hasura_auth_config.vars
-  sensitive_vars = var.hasura_auth_config.sensitive_vars
+  vars = {
+    AUTH_CLIENT_URL                 = local.frontend_login_url
+    AUTH_JWT_CUSTOM_CLAIMS          = "{\"projectsLeaded\":\"projectsLeaded[].projectId\",\"githubUserId\":\"githubUser.githubUserId\",\"githubAccessToken\":\"githubUser.accessToken\"}"
+    AUTH_LOG_LEVEL                  = "info"
+    AUTH_PROVIDER_GITHUB_ENABLED    = "true"
+    AUTH_SERVER_URL                 = "https://${local.hasura_auth_hostname}"
+    AUTH_USER_DEFAULT_ALLOWED_ROLES = "me,public,registered_user"
+    AUTH_USER_DEFAULT_ROLE          = "registered_user"
+    HASURA_GRAPHQL_GRAPHQL_URL      = local.hasura_graphql_url
+    NODE_ENV                        = "development"
+  }
+  sensitive_vars = {
+    AUTH_PROVIDER_GITHUB_CLIENT_ID     = var.github_app_client_id
+    AUTH_PROVIDER_GITHUB_CLIENT_SECRET = var.github_app_client_secret
+    HASURA_GRAPHQL_ADMIN_SECRET        = var.hasura_admin_secret
+    HASURA_GRAPHQL_JWT_SECRET          = var.hasura_jwt_secret
+  }
 }
 
 resource "heroku_app_config_association" "hasura_auth" {
@@ -9,25 +24,27 @@ resource "heroku_app_config_association" "hasura_auth" {
   sensitive_vars = heroku_config.hasura_auth.sensitive_vars
 }
 
-variable "hasura_auth_config" {
-  description = "The hasura-auth application configuration"
-  type = object({
-    vars = object({
-      AUTH_CLIENT_URL                 = string
-      AUTH_JWT_CUSTOM_CLAIMS          = string
-      AUTH_LOG_LEVEL                  = string
-      AUTH_PROVIDER_GITHUB_ENABLED    = string
-      AUTH_SERVER_URL                 = string
-      AUTH_USER_DEFAULT_ALLOWED_ROLES = string
-      AUTH_USER_DEFAULT_ROLE          = string
-      HASURA_GRAPHQL_GRAPHQL_URL      = string
-      NODE_ENV                        = string
-    })
-    sensitive_vars = object({
-      AUTH_PROVIDER_GITHUB_CLIENT_ID     = string
-      AUTH_PROVIDER_GITHUB_CLIENT_SECRET = string
-      HASURA_GRAPHQL_ADMIN_SECRET        = string
-      HASURA_GRAPHQL_JWT_SECRET          = string
-    })
-  })
+variable "frontend_hostname" {
+  type    = string
+  default = null
+}
+
+variable "hasura_auth_hostname" {
+  type    = string
+  default = null
+}
+
+locals {
+  frontend_hostname    = var.frontend_hostname != null ? var.frontend_hostname : "${var.environment}.app.onlydust.xyz"
+  hasura_auth_hostname = var.hasura_auth_hostname != null ? var.hasura_auth_hostname : "${var.environment}.auth.onlydust.xyz"
+  frontend_login_url   = "https://${local.frontend_hostname}/login"
+}
+
+variable "github_app_client_id" {
+  type = string
+}
+
+variable "github_app_client_secret" {
+  type      = string
+  sensitive = true
 }
