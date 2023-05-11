@@ -51,6 +51,10 @@ impl From<&GithubRepo> for CrmGithubRepo {
 			repo.owner().clone(),
 			repo.name().clone(),
 			Some(Utc::now().naive_utc()),
+			repo.description().clone(),
+			*repo.stars(),
+			*repo.forks_count(),
+			repo.html_url().to_string(),
 		)
 	}
 }

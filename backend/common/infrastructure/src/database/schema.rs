@@ -16,6 +16,10 @@ diesel::table! {
         owner -> Text,
         name -> Text,
         updated_at -> Nullable<Timestamp>,
+        description -> Text,
+        stars -> Int4,
+        fork_count -> Int4,
+        html_url -> Text,
     }
 }
 

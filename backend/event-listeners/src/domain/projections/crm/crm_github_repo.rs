@@ -26,6 +26,10 @@ pub struct CrmGithubRepo {
 	owner: String,
 	name: String,
 	updated_at: Option<NaiveDateTime>,
+	description: String,
+	stars: i32,
+	fork_count: i32,
+	html_url: String,
 }
 
 impl domain::Entity for CrmGithubRepo {
