@@ -153,6 +153,17 @@ services:
     ports:
       - 8002
 
+  action-dequeuer:
+    container_name: action-dequeuer
+    image: rust:1.66
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    volumes:
+      - .:/app
+      - cargo-cache:/usr/local/cargo
+    command: bash -c "cd /app && cargo run -p dusty-bot --bin action-dequeuer"
+
   event-store:
     container_name: event-store
     image: rust:1.66
@@ -178,6 +189,17 @@ services:
       - .:/app
       - cargo-cache:/usr/local/cargo
     command: bash -c "cd /app && cargo run -p event-listeners"
+
+  github-indexer:
+    container_name: github-indexer
+    image: rust:1.66
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    volumes:
+      - .:/app
+      - cargo-cache:/usr/local/cargo
+    command: bash -c "cd /app && cargo run -p event-listeners --bin github-indexer"
 
 volumes:
   rabbitmq:
