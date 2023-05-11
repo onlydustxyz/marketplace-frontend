@@ -155,6 +155,19 @@ services:
       - cargo-cache:/usr/local/cargo
     command: bash -c "cd /app && cargo run -p event-store"
 
+  event-listeners:
+    container_name: event-listeners
+    image: rust:1.66
+    depends_on:
+      db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    volumes:
+      - .:/app
+      - cargo-cache:/usr/local/cargo
+    command: bash -c "cd /app && cargo run -p event-listeners"
+
 volumes:
   rabbitmq:
   httpmocks:
