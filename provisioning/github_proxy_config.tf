@@ -1,6 +1,6 @@
 resource "heroku_config" "github_proxy" {
-  vars           = merge(var.datadog_config.vars, var.github_proxy_config.vars)
-  sensitive_vars = merge(var.datadog_config.sensitive_vars, var.github_proxy_config.sensitive_vars)
+  vars           = merge(local.datadog_config.vars, var.github_proxy_config.vars)
+  sensitive_vars = merge(local.datadog_config.sensitive_vars, var.github_proxy_config.sensitive_vars)
 }
 
 resource "heroku_app_config_association" "github_proxy" {

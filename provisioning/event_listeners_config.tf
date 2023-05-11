@@ -1,6 +1,6 @@
 resource "heroku_config" "event_listeners" {
-  vars           = merge(var.datadog_config.vars, var.event_listeners_config.vars)
-  sensitive_vars = merge(var.datadog_config.sensitive_vars, var.event_listeners_config.sensitive_vars)
+  vars           = merge(local.datadog_config.vars, var.event_listeners_config.vars)
+  sensitive_vars = merge(local.datadog_config.sensitive_vars, var.event_listeners_config.sensitive_vars)
 }
 
 resource "heroku_app_config_association" "event_listeners" {

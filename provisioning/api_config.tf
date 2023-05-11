@@ -1,6 +1,6 @@
 resource "heroku_config" "api" {
-  vars           = merge(var.datadog_config.vars, var.api_config.vars)
-  sensitive_vars = merge(var.datadog_config.sensitive_vars, var.api_config.sensitive_vars)
+  vars           = merge(local.datadog_config.vars, var.api_config.vars)
+  sensitive_vars = merge(local.datadog_config.sensitive_vars, var.api_config.sensitive_vars)
 }
 
 resource "heroku_app_config_association" "api" {

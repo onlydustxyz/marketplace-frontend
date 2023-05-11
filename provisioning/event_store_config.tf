@@ -1,6 +1,6 @@
 resource "heroku_config" "event_store" {
-  vars           = merge(var.datadog_config.vars, var.event_store_config.vars)
-  sensitive_vars = var.datadog_config.sensitive_vars
+  vars           = merge(local.datadog_config.vars, var.event_store_config.vars)
+  sensitive_vars = local.datadog_config.sensitive_vars
 }
 
 resource "heroku_app_config_association" "event_store" {

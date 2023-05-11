@@ -1,6 +1,6 @@
 resource "heroku_config" "dusty_bot" {
-  vars           = merge(var.datadog_config.vars, var.dusty_bot_config.vars)
-  sensitive_vars = merge(var.datadog_config.sensitive_vars, var.dusty_bot_config.sensitive_vars)
+  vars           = merge(local.datadog_config.vars, var.dusty_bot_config.vars)
+  sensitive_vars = merge(local.datadog_config.sensitive_vars, var.dusty_bot_config.sensitive_vars)
 }
 
 resource "heroku_app_config_association" "dusty_bot" {
