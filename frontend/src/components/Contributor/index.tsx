@@ -36,35 +36,37 @@ const Contributor = ({ onClick, contributor }: Props) => {
           rounding={Rounding.Circle}
         />
       </div>
-      <div className="flex items-center gap-1.5">
-        <div>
-          <span
-            className={classNames("text-greyscale-50 font-medium text-sm", {
-              "text-spacePurple-200 group-hover/line:underline decoration-1 underline-offset-1": clickable,
-            })}
-          >
-            {contributor.login}
-          </span>
+      <div className="flex gap-2">
+        <div className="flex items-center gap-1.5">
+          <div>
+            <span
+              className={classNames("text-greyscale-50 font-medium text-sm", {
+                "text-spacePurple-200 group-hover/line:underline decoration-1 underline-offset-1": clickable,
+              })}
+            >
+              {contributor.login}
+            </span>
+          </div>
+          {contributor.isRegistered && (
+            <>
+              <img
+                id={`od-logo-${contributor.login}`}
+                src={onlyDustLogo}
+                className="h-3.5 mt-px"
+                data-tooltip-content={T("contributor.table.userRegisteredTooltip")}
+              />
+              <Tooltip anchorId={`od-logo-${contributor.login}`}>
+                <div className="w-36">{T("contributor.table.userRegisteredTooltip")}</div>
+              </Tooltip>
+            </>
+          )}
         </div>
-        {contributor.isRegistered && (
-          <>
-            <img
-              id={`od-logo-${contributor.login}`}
-              src={onlyDustLogo}
-              className="h-3.5 mt-px"
-              data-tooltip-content={T("contributor.table.userRegisteredTooltip")}
-            />
-            <Tooltip anchorId={`od-logo-${contributor.login}`}>
-              <div className="w-36">{T("contributor.table.userRegisteredTooltip")}</div>
-            </Tooltip>
-          </>
+        {clickable && (
+          <div className="mt-0.5">
+            <ExternalLinkLine className="text-spacePurple-500 invisible group-hover/line:visible" />
+          </div>
         )}
       </div>
-      {clickable && (
-        <div className="ml-1 mt-0.5">
-          <ExternalLinkLine className="text-spacePurple-500 invisible group-hover/line:visible" />
-        </div>
-      )}
     </div>
   );
 };
