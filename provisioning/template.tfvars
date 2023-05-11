@@ -1,16 +1,3 @@
-github_proxy_config = {
-  vars = {
-    PROCFILE                           = "backend/github-proxy/Procfile"
-    PROFILE                            = "production"
-    RUST_LOG                           = "info"
-    ROCKET_CLI_COLORS                  = "false"
-    GITHUB_REVERSE_PROXY_CACHE_CONTROL = "public, max-age=600, s-maxage=600, stale-while-revalidate=3600, stale-if-error=666"
-  }
-  sensitive_vars = {
-    GITHUB_PROXY_GRAPHQL_API_KEY = "op://tech/backend/$APP_ENV/github-proxy-graphql-api-key"
-  }
-}
-
 hasura_config = {
   vars = {
     BACKEND_GRAPHQL_URL                             = "https://develop.api.onlydust.xyz/graphql"
