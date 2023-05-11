@@ -1,30 +1,31 @@
 default:
-  http:
-    api_keys:
-      graphql: $BACKEND_GRAPHQL_API_KEY
+  amqp:
+    connection_retry_interval_ms: 6000
+    connection_retry_count: 100
+  database:
+    url: $DATABASE_URL
   github:
     base_url: $GITHUB_BASE_URL
     personal_access_tokens: $GITHUB_PAT
     max_calls_per_request: $GITHUB_MAX_CALLS_PER_REQUEST
-  web3:
-    url: https://mainnet.infura.io/v3/$INFURA_API_KEY
-  amqp:
-    connection_retry_interval_ms: 6000
-    connection_retry_count: 100
-  s3:
-    images_bucket_name: onlydust-app-images
-    bucket_region: eu-west-1
   graphql_client:
     base_url: $GRAPHQL_BASE_URL
     headers:
       x-hasura-admin-secret: $HASURA_GRAPHQL_ADMIN_SECRET
+  http:
+    api_keys:
+      graphql: $BACKEND_GRAPHQL_API_KEY
+  s3:
+    images_bucket_name: onlydust-app-images
+    bucket_region: eu-west-1
+  web3:
+    url: https://mainnet.infura.io/v3/$INFURA_API_KEY
 
 local:
   database:
-    url: postgres://postgres:postgres@localhost/marketplace_db
     pool_max_size: 3
   amqp:
-    url: "amqp://127.0.0.1:5672/%2f"
+    url: $AMQP_URL
   tracer:
     json: false
     ansi: true
@@ -32,7 +33,6 @@ local:
 
 production:
   database:
-    url: $DATABASE_URL
     pool_max_size: 3
   amqp:
     url: $CLOUDAMQP_URL
