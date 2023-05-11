@@ -15,3 +15,6 @@ pub use ethereum_identity::EthereumIdentity;
 
 mod positive_count;
 pub use positive_count::Count as PositiveCount;
+
+mod iban;
+pub use self::iban::Iban;

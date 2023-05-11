@@ -1,4 +1,4 @@
-use domain::EthereumIdentity;
+use domain::{EthereumIdentity, Iban};
 use juniper::GraphQLInputObject;
 use serde::{Deserialize, Serialize};
 
@@ -15,5 +15,5 @@ pub enum PayoutSettings {
 #[allow(non_snake_case)]
 pub struct BankAddress {
 	BIC: String,
-	IBAN: String,
+	IBAN: Iban,
 }
