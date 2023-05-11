@@ -9,7 +9,7 @@ import {
 import { ArrayElement } from "src/types";
 
 const contributor1: GithubUserFragment = {
-  __typename: "User",
+  __typename: "GithubUsers",
   id: 123456,
   login: "contributor1",
   htmlUrl: "",
@@ -18,7 +18,7 @@ const contributor1: GithubUserFragment = {
 };
 
 const contributor2: GithubUserFragment = {
-  __typename: "User",
+  __typename: "GithubUsers",
   id: 123457,
   login: "contributor2",
   htmlUrl: "",
@@ -27,7 +27,7 @@ const contributor2: GithubUserFragment = {
 };
 
 const contributor3: GithubUserFragment = {
-  __typename: "User",
+  __typename: "GithubUsers",
   id: 123458,
   login: "contributor3",
   htmlUrl: "",
@@ -39,13 +39,10 @@ const githubRepo1: ProjectCardGithubRepoFieldsFragment & ArrayElement<ProjectCon
   __typename: "ProjectGithubRepos",
   githubRepoId: 1000,
   projectId: "123",
+  repoContributors: [contributor1, contributor2].map(user => ({ user })),
   githubRepoDetails: {
     id: 1000,
     languages: { Cairo: 1000, Rust: 100, HTML: 150 },
-    content: {
-      id: 1000,
-      contributors: [contributor1, contributor2],
-    },
   },
 };
 
@@ -53,13 +50,10 @@ const githubRepo2: ProjectCardGithubRepoFieldsFragment & ArrayElement<ProjectCon
   __typename: "ProjectGithubRepos",
   githubRepoId: 1001,
   projectId: "123",
+  repoContributors: [contributor1, contributor3].map(user => ({ user })),
   githubRepoDetails: {
     id: 1001,
     languages: { Rust: 80, Go: 40, Cairo: 2000 },
-    content: {
-      id: 1001,
-      contributors: [contributor1, contributor3],
-    },
   },
 };
 

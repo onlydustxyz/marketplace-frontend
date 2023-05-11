@@ -23,5 +23,5 @@ Default.args = {
   },
   description: "ZK-EVM type 3 written in Cairo, leveraging STARK proof system.",
   stars: 308,
-  forksCount: 67,
+  forkCount: 67,
 };

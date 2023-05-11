@@ -49,13 +49,10 @@ const ALL_PROJECTS_RESULT_NO_INVITATIONS: { data: GetProjectsQueryResult["data"]
           {
             githubRepoId: 123456,
             projectId: "1",
+            repoContributors: [],
             githubRepoDetails: {
               id: 123456,
               languages: [],
-              content: {
-                id: 123456,
-                contributors: [],
-              },
             },
           },
         ],
@@ -84,13 +81,10 @@ const ALL_PROJECTS_RESULT_NO_INVITATIONS: { data: GetProjectsQueryResult["data"]
           {
             projectId: "2",
             githubRepoId: 123456,
+            repoContributors: [],
             githubRepoDetails: {
               id: 123456,
               languages: [],
-              content: {
-                id: 123456,
-                contributors: [],
-              },
             },
           },
         ],
@@ -134,13 +128,10 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
           {
             projectId: "1",
             githubRepoId: 123456,
+            repoContributors: [],
             githubRepoDetails: {
               id: 123456,
               languages: [],
-              content: {
-                id: 123456,
-                contributors: [],
-              },
             },
           },
         ],
@@ -177,13 +168,10 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
           {
             projectId: "2",
             githubRepoId: 123456,
+            repoContributors: [],
             githubRepoDetails: {
               id: 123456,
               languages: [],
-              content: {
-                id: 123456,
-                contributors: [],
-              },
             },
           },
         ],
@@ -220,13 +208,10 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
           {
             projectId: "3",
             githubRepoId: 123456,
+            repoContributors: [],
             githubRepoDetails: {
               id: 123456,
               languages: [],
-              content: {
-                id: 123456,
-                contributors: [],
-              },
             },
           },
         ],
@@ -259,13 +244,10 @@ const projectWithNoBudget: ProjectCardFieldsFragment = {
     {
       projectId: "project-with-no-budget",
       githubRepoId: 123456,
+      repoContributors: [],
       githubRepoDetails: {
         id: 123456,
         languages: [],
-        content: {
-          id: 123456,
-          contributors: [],
-        },
       },
     },
   ],
@@ -320,13 +302,10 @@ const projectWithNoLeader: ProjectCardFieldsFragment = {
     {
       projectId: "project-with-no-leader",
       githubRepoId: 123456,
+      repoContributors: [],
       githubRepoDetails: {
         id: 123456,
         languages: [],
-        content: {
-          id: 123456,
-          contributors: [],
-        },
       },
     },
   ],
@@ -369,13 +348,10 @@ const projectWithNoLeaderAndInviteForWrongUser: ProjectCardFieldsFragment = {
     {
       projectId: "project-with-no-leader-and-invite-for-wrong-user",
       githubRepoId: 123456,
+      repoContributors: [],
       githubRepoDetails: {
         id: 123456,
         languages: [],
-        content: {
-          id: 123456,
-          contributors: [],
-        },
       },
     },
   ],
@@ -400,13 +376,10 @@ const projectWithNoLeaderAndInvite: ProjectCardFieldsFragment = {
     {
       projectId: "project-with-no-leader-and-invite",
       githubRepoId: 123456,
+      repoContributors: [],
       githubRepoDetails: {
         id: 123456,
         languages: [],
-        content: {
-          id: 123456,
-          contributors: [],
-        },
       },
     },
   ],

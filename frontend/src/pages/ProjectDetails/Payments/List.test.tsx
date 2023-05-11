@@ -21,7 +21,7 @@ const HASURA_TOKEN_BASIC_TEST_VALUE = {
 };
 
 const githubUserMock: GithubUserFragment = {
-  __typename: "User",
+  __typename: "GithubUsers",
   id: GITHUB_USER_ID,
   login: "ofux",
   htmlUrl: "https://github.com/ofux",

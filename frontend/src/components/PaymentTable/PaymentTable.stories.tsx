@@ -20,7 +20,7 @@ const GITHUB_USER_ID2 = 1321654;
 const yearsFromNow = (years: number) => new Date(Date.now() - years * 365 * 24 * 3600 * 1000);
 
 const githubRecipient1: GithubUserFragment = {
-  __typename: "User",
+  __typename: "GithubUsers",
   id: GITHUB_USER_ID,
   login: "ofux",
   avatarUrl: "https://avatars.githubusercontent.com/u/595505?v=4",
@@ -29,7 +29,7 @@ const githubRecipient1: GithubUserFragment = {
 };
 
 const githubRecipient2: GithubUserFragment = {
-  __typename: "User",
+  __typename: "GithubUsers",
   id: GITHUB_USER_ID2,
   login: "Vitalik",
   avatarUrl: "https://pbs.twimg.com/profile_images/977496875887558661/L86xyLF4_400x400.jpg",

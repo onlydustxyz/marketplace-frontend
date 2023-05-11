@@ -5,6 +5,7 @@ import {
   FindUserQueryForPaymentFormDocument,
   GetProjectContributorsForPaymentSelectDocument,
   GetProjectContributorsForPaymentSelectQueryResult,
+  GithubUserFragment,
 } from "src/__generated/graphql";
 import { withRouter } from "storybook-addon-react-router-v6";
 
@@ -23,40 +24,45 @@ export default {
 } as ComponentMeta<typeof PaymentForm>;
 
 const projectId = "yolo";
-const BERNARDSTANISLAS = {
+const BERNARDSTANISLAS: GithubUserFragment = {
   avatarUrl: "https://avatars.githubusercontent.com/u/4435377?v=4",
   id: 4435377,
   login: "bernardstanislas",
   user: null,
-  __typename: "User",
+  __typename: "GithubUsers",
+  htmlUrl: "",
 };
-const OSCARWROCHE = {
+const OSCARWROCHE: GithubUserFragment = {
   login: "oscarwroche",
   avatarUrl: "https://avatars.githubusercontent.com/u/21149076?v=4",
   id: 21149076,
   user: null,
-  __typename: "User",
+  __typename: "GithubUsers",
+  htmlUrl: "",
 };
-const OFUX = {
+const OFUX: GithubUserFragment = {
   login: "ofux",
   avatarUrl: "https://avatars.githubusercontent.com/u/595505?v=4",
   id: 595505,
   user: { userId: "yolo" },
-  __typename: "User",
+  __typename: "GithubUsers",
+  htmlUrl: "",
 };
-const ANTHONYBUISSET = {
+const ANTHONYBUISSET: GithubUserFragment = {
   login: "anthonybuisset",
   avatarUrl: "https://avatars.githubusercontent.com/u/43467246?v=4",
   id: 43467246,
   user: null,
-  __typename: "User",
+  __typename: "GithubUsers",
+  htmlUrl: "",
 };
-const TDELABRO = {
+const TDELABRO: GithubUserFragment = {
   login: "tdelabro",
   avatarUrl: "https://avatars.githubusercontent.com/u/34384633?v=4",
   id: 34384633,
   user: null,
-  __typename: "User",
+  __typename: "GithubUsers",
+  htmlUrl: "",
 };
 
 const mocks = [
@@ -70,25 +76,25 @@ const mocks = [
     result: {
       data: {
         projectsByPk: {
-          id: "project-1",
+          budgets: [],
+          id: projectId,
           githubRepos: [
             {
-              githubRepoDetails: {
-                content: {
-                  contributors: [
-                    BERNARDSTANISLAS,
-                    OSCARWROCHE,
-                    OFUX,
-                    ANTHONYBUISSET,
-                    TDELABRO,
-                    OSCARWROCHE,
-                    OFUX,
-                    ANTHONYBUISSET,
-                    TDELABRO,
-                    BERNARDSTANISLAS,
-                  ],
-                },
-              },
+              projectId,
+              githubRepoId: 123456,
+              repoIssues: [],
+              repoContributors: [
+                BERNARDSTANISLAS,
+                OSCARWROCHE,
+                OFUX,
+                ANTHONYBUISSET,
+                TDELABRO,
+                OSCARWROCHE,
+                OFUX,
+                ANTHONYBUISSET,
+                TDELABRO,
+                BERNARDSTANISLAS,
+              ].map(user => ({ user })),
             },
           ],
         },

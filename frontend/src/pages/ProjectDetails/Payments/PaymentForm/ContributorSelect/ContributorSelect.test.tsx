@@ -19,7 +19,7 @@ vi.mock("src/utils/date", () => ({
 }));
 
 const TEST_USER: GithubUserFragment = {
-  __typename: "User",
+  __typename: "GithubUsers",
   id: 123456,
   login: "test-user-name",
   avatarUrl: "test-avatar-url",
@@ -28,7 +28,7 @@ const TEST_USER: GithubUserFragment = {
 };
 
 const TEST_OTHER_USER: GithubUserFragment = {
-  __typename: "User",
+  __typename: "GithubUsers",
   id: 654321,
   login: "test-other-user-name",
   avatarUrl: "test-avatar-url",
@@ -78,14 +78,8 @@ const graphQlMocks = [
             {
               projectId: TEST_PROJECT_ID,
               githubRepoId: 123456,
-              githubRepoDetails: {
-                id: 123456,
-                content: {
-                  id: 123456,
-                  contributors: [TEST_USER, TEST_OTHER_USER],
-                },
-              },
               repoIssues: [],
+              repoContributors: [TEST_USER, TEST_OTHER_USER].map(user => ({ user })),
             },
           ],
           budgets: [],

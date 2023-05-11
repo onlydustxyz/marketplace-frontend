@@ -49,7 +49,7 @@ const currentProject: ProjectDetails & SidebarProjectDetails & ProjectContributo
     {
       projectId: "test-project-id",
       githubRepoId: 123456,
-      githubRepoDetails: { id: 123456, content: { id: 123456, contributors } },
+      repoContributors: contributors.map(user => ({ user })),
     },
   ],
   budgets: [],
@@ -73,7 +73,7 @@ const otherProject: ProjectDetails & SidebarProjectDetails & ProjectContributors
     {
       projectId: "other-project-id",
       githubRepoId: 123456,
-      githubRepoDetails: { id: 123456, content: { id: 123456, contributors } },
+      repoContributors: contributors.map(user => ({ user })),
     },
   ],
   budgets: [],

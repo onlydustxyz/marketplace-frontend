@@ -61,10 +61,12 @@ const payment: PaymentRequestDetailsFragment = {
   __typename: "PaymentRequests",
   id: "880819f1-2ab9-406d-9bf1-3012b6f565bc",
   amountInUsd: 2500,
-  githubRecipient: {
+  liveGithubRecipient: {
     id: 595505,
     login: "ofux",
     avatarUrl: "https://avatars.githubusercontent.com/u/595505?v=4",
+    user: null,
+    htmlUrl: "",
   },
   invoiceReceivedAt: null,
   requestedAt: daysFromNow(7),
@@ -115,7 +117,7 @@ export const Default = {
       {...props}
       {...props.payoutStatus}
       userId={props.requestorIsYou ? payment.requestor?.id : "other"}
-      githubUserId={(props.recipientIsYou && payment.githubRecipient?.id) || 0}
+      githubUserId={(props.recipientIsYou && payment.liveGithubRecipient?.id) || 0}
       workItems={payment.workItems.slice(0, props.workItemsCount)}
     />
   ),

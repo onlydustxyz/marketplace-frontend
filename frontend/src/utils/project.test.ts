@@ -20,7 +20,7 @@ const [
   contributor4,
   contributor5,
 ]: GithubUserWithPaymentRequestsForProjectFragment[] = range(5).map(id => ({
-  __typename: "User",
+  __typename: "GithubUsers",
   id,
   login: "contributor" + id,
   htmlUrl: "htmlUrl" + id,
@@ -37,19 +37,13 @@ const project: ProjectContributorsWithPaymentSummaryFragment = {
       __typename: "ProjectGithubRepos",
       projectId: "project-1",
       githubRepoId: REPO1_ID,
-      githubRepoDetails: {
-        id: REPO1_ID,
-        content: { id: REPO1_ID, contributors: [contributor1, contributor2] },
-      },
+      repoContributors: [{ user: contributor1 }, { user: contributor2 }],
     },
     {
       __typename: "ProjectGithubRepos",
       projectId: "project-1",
       githubRepoId: REPO2_ID,
-      githubRepoDetails: {
-        id: REPO2_ID,
-        content: { id: REPO2_ID, contributors: [contributor2, contributor3] },
-      },
+      repoContributors: [{ user: contributor2 }, { user: contributor3 }],
     },
   ],
   budgets: [
@@ -123,9 +117,7 @@ describe("countUnpaidMergedPullsByContributor", () => {
       id: "12345",
       githubRepos: [
         {
-          githubRepoDetails: {
-            content: { contributors: [...users] },
-          },
+          repoContributors: users.map(user => ({ user })),
           repoIssues: [...mergedPaidPulls, ...mergedUnPaidPulls],
         },
       ],

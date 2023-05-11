@@ -4,7 +4,10 @@ import matchers from "@testing-library/jest-dom/matchers";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
 import OverviewPanel from ".";
-import { GetProjectContributorsForOverviewDocument } from "src/__generated/graphql";
+import {
+  GetProjectContributorsForOverviewDocument,
+  GetProjectContributorsForOverviewQueryResult,
+} from "src/__generated/graphql";
 
 expect.extend(matchers);
 
@@ -38,22 +41,14 @@ const graphQlMocks = [
         projectsByPk: {
           githubRepos: [
             {
-              githubRepoDetails: {
-                content: {
-                  contributors: [{ login: "test-login", avatarUrl: "test-url" }],
-                },
-              },
+              repoContributors: [{ user: { login: "test-login", avatarUrl: "test-url" } }],
             },
             {
-              githubRepoDetails: {
-                content: {
-                  contributors: [{ login: "test-login", avatarUrl: "test-url" }],
-                },
-              },
+              repoContributors: [{ user: { login: "test-login", avatarUrl: "test-url" } }],
             },
           ],
         },
-      },
+      } as GetProjectContributorsForOverviewQueryResult["data"],
     },
   },
 ];

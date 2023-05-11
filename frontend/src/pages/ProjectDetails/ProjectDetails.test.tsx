@@ -91,7 +91,9 @@ const getProjectMock = {
           },
         ],
         budgets: [{ id: "budget-1", paymentRequests: [] }],
-        githubRepos: [{ githubRepoId: 123456, projectId: TEST_PROJECT_ID, githubRepoDetails: null }],
+        githubRepos: [
+          { githubRepoId: 123456, projectId: TEST_PROJECT_ID, githubRepoDetails: null, repoContributors: [] },
+        ],
         projectSponsors: [],
       },
     } as GetProjectQueryResult["data"],
@@ -138,7 +140,9 @@ const getLedProjectMock = {
           },
         ],
         budgets: [{ id: "budget-1", paymentRequests: [] }],
-        githubRepos: [{ projectId: TEST_LED_PROJECT_ID, githubRepoId: 123456, githubRepoDetails: null }],
+        githubRepos: [
+          { projectId: TEST_LED_PROJECT_ID, githubRepoId: 123456, githubRepoDetails: null, repoContributors: [] },
+        ],
         projectSponsors: [],
       },
     } as GetProjectQueryResult["data"],

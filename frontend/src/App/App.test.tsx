@@ -115,6 +115,7 @@ const ALL_PROJECTS_RESULT: { data: GetProjectsQueryResult["data"] } = {
             projectId: TEST_PROJECT_ID,
             githubRepoId: TEST_GITHUB_REPO_ID,
             githubRepoDetails: null,
+            repoContributors: [],
           },
         ],
         projectSponsors: [],
@@ -167,10 +168,10 @@ const SINGLE_PROJECT_RESULT: { data: GetProjectQueryResult["data"] } = {
           __typename: "ProjectGithubRepos",
           projectId: TEST_PROJECT_ID,
           githubRepoId: TEST_GITHUB_REPO_ID,
+          repoContributors: [],
           githubRepoDetails: {
             __typename: "GithubRepoDetails",
             id: TEST_GITHUB_REPO_ID,
-            content: null,
             languages: [],
           },
         },
@@ -183,19 +184,19 @@ const SINGLE_PROJECT_RESULT: { data: GetProjectQueryResult["data"] } = {
 
 const GITHUB_REPO_DETAILS_RESULT: { data: GetGithubRepositoryDetailsQueryResult["data"] } = {
   data: {
-    githubRepoDetailsByPk: {
-      __typename: "GithubRepoDetails",
+    crmGithubReposByPk: {
+      __typename: "CrmGithubRepos",
       id: TEST_GITHUB_REPO_ID,
-      languages: {},
-      content: {
-        __typename: "Repo",
+      owner: TEST_GITHUB_REPO_OWNER,
+      name: TEST_GITHUB_REPO_NAME,
+      description: TEST_GITHUB_REPO_CONTENT,
+      htmlUrl: "url",
+      stars: 0,
+      forkCount: 0,
+      languages: {
+        __typename: "GithubRepoDetails",
         id: TEST_GITHUB_REPO_ID,
-        owner: TEST_GITHUB_REPO_OWNER,
-        name: TEST_GITHUB_REPO_NAME,
-        description: TEST_GITHUB_REPO_CONTENT,
-        htmlUrl: "url",
-        stars: 0,
-        forksCount: 0,
+        languages: {},
       },
     },
   },
@@ -216,7 +217,7 @@ const PROJECT_OVERVIEW_DETAILS_RESULT: { data: GetProjectOverviewDetailsQueryRes
         {
           projectId: TEST_PROJECT_ID,
           githubRepoId: TEST_GITHUB_REPO_ID,
-          githubRepoDetails: { content: { stars: 1000 } },
+          repo: { id: TEST_GITHUB_REPO_ID, stars: 1000 },
         },
       ],
     },
@@ -288,24 +289,18 @@ const graphQlMocks = [
                 __typename: "ProjectGithubRepos",
                 projectId: TEST_PROJECT_ID,
                 githubRepoId: TEST_GITHUB_REPO_ID,
-                githubRepoDetails: {
-                  __typename: "GithubRepoDetails",
-                  id: TEST_GITHUB_REPO_ID,
-                  content: {
-                    __typename: "Repo",
-                    id: TEST_GITHUB_REPO_ID,
-                    contributors: [
-                      {
-                        __typename: "User",
-                        id: TEST_GITHUB_USER_ID,
-                        login: "user",
-                        avatarUrl: "",
-                        htmlUrl: "",
-                        user: null,
-                      },
-                    ],
+                repoContributors: [
+                  {
+                    user: {
+                      __typename: "GithubUsers",
+                      id: TEST_GITHUB_USER_ID,
+                      login: "user",
+                      avatarUrl: "",
+                      htmlUrl: "",
+                      user: null,
+                    },
                   },
-                },
+                ],
               },
             ],
             budgets: [],
@@ -323,11 +318,10 @@ const graphQlMocks = [
           __typename: "Projects",
           githubRepos: [
             {
-              githubRepoDetails: {
-                content: {
-                  contributors: [{ login: TEST_GITHUB_CONTRIBUTOR_LOGIN, avatarUrl: "avatarUrl" }],
-                },
-              },
+              __typename: "ProjectGithubRepos",
+              projectId: TEST_PROJECT_ID,
+              githubRepoId: TEST_GITHUB_REPO_ID,
+              repoContributors: [{ user: { login: TEST_GITHUB_CONTRIBUTOR_LOGIN, avatarUrl: "avatarUrl" } }],
             },
           ],
         },
