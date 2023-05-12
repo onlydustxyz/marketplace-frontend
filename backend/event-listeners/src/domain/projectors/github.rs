@@ -27,17 +27,16 @@ impl EventListener<GithubEvent> for Projector {
 	async fn on_event(&self, event: &GithubEvent) -> Result<(), SubscriberCallbackError> {
 		match event.clone() {
 			GithubEvent::Repo(repo) => {
-				self.crm_github_repo_repository.upsert(&repo.clone().into())?;
-				repo.contributors().iter().try_for_each(|contributor| {
-					self.github_repos_contributors_repository
-						.try_insert(repo.id(), contributor.id())
-				})?;
+				self.crm_github_repo_repository.upsert(&repo.into())?;
 			},
 			GithubEvent::PullRequest(issue) | GithubEvent::Issue(issue) => {
 				self.github_issues_repository.upsert(&issue.into())?;
 			},
-			GithubEvent::User(user) => {
-				self.github_users_repository.upsert(&user.into())?;
+			GithubEvent::User { user, repo_id } => {
+				self.github_users_repository.upsert(&user.clone().into())?;
+				if let Some(repo_id) = repo_id {
+					self.github_repos_contributors_repository.try_insert(&repo_id, user.id())?;
+				}
 			},
 		}
 		Ok(())

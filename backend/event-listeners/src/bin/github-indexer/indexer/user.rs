@@ -51,7 +51,12 @@ impl super::Indexer<GithubUserId> for Indexer {
 			.github_fetch_service
 			.user_by_id(&user_id)
 			.await
-			.map(|user| vec![GithubEvent::User(user)])
+			.map(|user| {
+				vec![GithubEvent::User {
+					user,
+					repo_id: None,
+				}]
+			})
 			.ignore_non_fatal_errors()?;
 
 		Ok(events)
@@ -60,7 +65,7 @@ impl super::Indexer<GithubUserId> for Indexer {
 
 impl super::Stateful<GithubUserId> for Indexer {
 	fn store(&self, id: GithubUserId, events: &[GithubEvent]) -> anyhow::Result<()> {
-		if let Some(GithubEvent::User(user)) = events.last() {
+		if let Some(GithubEvent::User { user, .. }) = events.last() {
 			let state = State::new(user);
 			self.github_user_index_repository
 				.upsert_user_indexer_state(&id, state.json()?)?;
@@ -78,7 +83,10 @@ impl super::Indexer<GithubRepoId> for Indexer {
 			.await
 			.ignore_non_fatal_errors()?
 			.into_iter()
-			.map(GithubEvent::User)
+			.map(|user| GithubEvent::User {
+				user,
+				repo_id: Some(repo_id),
+			})
 			.collect();
 
 		Ok(events)
@@ -90,7 +98,7 @@ impl super::Stateful<GithubRepoId> for Indexer {
 		events
 			.iter()
 			.filter_map(|event| match event {
-				GithubEvent::User(user) => Some(user),
+				GithubEvent::User { user, .. } => Some(user),
 				_ => None,
 			})
 			.try_for_each(|user| {
