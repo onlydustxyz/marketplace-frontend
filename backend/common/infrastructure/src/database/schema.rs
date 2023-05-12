@@ -60,13 +60,6 @@ diesel::table! {
 }
 
 diesel::table! {
-    github_repo_details (id) {
-        id -> Int8,
-        languages -> Jsonb,
-    }
-}
-
-diesel::table! {
     github_repo_indexes (repo_id) {
         repo_id -> Int8,
         repo_indexer_state -> Nullable<Jsonb>,
@@ -214,7 +207,6 @@ diesel::allow_tables_to_appear_in_same_query!(
     event_deduplications,
     events,
     github_issues,
-    github_repo_details,
     github_repo_indexes,
     github_repos_contributors,
     github_user_indexes,
