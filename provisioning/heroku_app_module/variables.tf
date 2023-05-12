@@ -3,6 +3,11 @@ variable "app_name" {
   description = "The name of the Heroku app"
 }
 
+variable "app_domain" {
+  type        = string
+  description = "The hostname of the Heroku app"
+}
+
 variable "pipeline_id" {
   type        = string
   description = "The id of the pipeline the app is attached to"
@@ -60,4 +65,16 @@ variable "stack" {
   type        = string
   description = "The application stack, between heroku-22 and container"
   default     = "heroku-22"
+}
+
+variable "datadog_api_key" {
+  type = string
+}
+
+variable "datadog_site" {
+  type = string
+}
+
+variable "environment" {
+  type = string
 }
