@@ -54,11 +54,11 @@ LEFT OUTER JOIN (
 )]
 #[case(
 	"
-SELECT github_repo_details.id as github_repo_id, crm_github_repos.owner as github_repo_owner,
-crm_github_repos.name as github_repo_name, github_repo_details.languages as
-github_repo_languages, project_github_repos.project_id FROM github_repo_details
-INNER JOIN project_github_repos ON project_github_repos.github_repo_id = github_repo_details.id
-INNER JOIN crm_github_repos ON crm_github_repos.id = github_repo_details.id;
+SELECT crm_github_repos.id as github_repo_id, crm_github_repos.owner as github_repo_owner,
+crm_github_repos.name as github_repo_name, crm_github_repos.languages as
+github_repo_languages, project_github_repos.project_id
+FROM crm_github_repos
+INNER JOIN project_github_repos ON project_github_repos.github_repo_id = crm_github_repos.id;
 "
 )]
 #[case("
