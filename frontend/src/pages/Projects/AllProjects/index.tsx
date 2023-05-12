@@ -51,7 +51,7 @@ export default function AllProjects() {
 const buildQueryFilters = (technologies: string[], sponsors: string[]) => {
   const filters = [];
   if (technologies.length) {
-    filters.push("githubRepos: {githubRepoDetails: {languages: {_hasKeysAny: $languages}}}");
+    filters.push("githubRepos: {repo: {languages: {_hasKeysAny: $languages}}}");
   }
   if (sponsors.length) {
     filters.push("projectSponsors: {sponsor: {name: {_in: $sponsors}}}");

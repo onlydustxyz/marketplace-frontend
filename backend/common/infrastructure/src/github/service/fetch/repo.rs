@@ -7,16 +7,14 @@ use domain::{
 };
 use tracing::instrument;
 
-use crate::{github, github::RepoFromOctocrab};
+use crate::github::{self, OctocrabRepo};
 
 #[async_trait]
 impl GithubFetchRepoService for github::Client {
 	#[instrument(skip(self))]
 	async fn repo_by_id(&self, id: &GithubRepoId) -> GithubServiceResult<GithubRepo> {
 		let repo = self.get_repository_by_id(id).await?;
-		let repo = GithubRepo::try_from_octocrab_repo(self, repo)
-			.await
-			.map_err(GithubServiceError::Other)?;
+		let repo = OctocrabRepo::from(repo).try_into().map_err(GithubServiceError::Other)?;
 		Ok(repo)
 	}
 

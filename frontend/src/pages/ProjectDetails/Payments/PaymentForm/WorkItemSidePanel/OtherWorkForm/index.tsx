@@ -11,7 +11,7 @@ import CheckLine from "src/icons/CheckLine";
 import isDefined from "src/utils/isDefined";
 import {
   CreateIssueMutationVariables,
-  RepositoryOwnerAndNameFragment,
+  GithubRepoFragment,
   useCreateIssueMutation,
   useGetProjectReposQuery,
 } from "src/__generated/graphql";
@@ -39,7 +39,7 @@ export default function OtherWorkForm({ projectId, contributorHandle, onWorkItem
   const { user: leader } = useAuth();
 
   const [selectedWorkKind, setSelectedWorkKind] = useState<WorkKind>(DEFAULT_WORK_KIND);
-  const [selectedRepo, setSelectedRepo] = useState<RepositoryOwnerAndNameFragment | null>();
+  const [selectedRepo, setSelectedRepo] = useState<GithubRepoFragment | null>();
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
 
@@ -52,10 +52,7 @@ export default function OtherWorkForm({ projectId, contributorHandle, onWorkItem
     variables: { projectId },
   });
 
-  const repos = sortBy(
-    data?.projectsByPk?.githubRepos.map(repo => repo.githubRepoDetails?.content) || [],
-    "name"
-  ).filter(isDefined);
+  const repos = sortBy(data?.projectsByPk?.githubRepos.map(repo => repo.repo) || [], "name").filter(isDefined);
 
   useEffect(() => {
     if (!selectedRepo) setSelectedRepo(repos[0]);

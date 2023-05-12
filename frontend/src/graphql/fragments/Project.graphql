@@ -3,13 +3,9 @@ fragment ProjectContributors on Projects {
   githubRepos {
     projectId
     githubRepoId
-    githubRepoDetails {
-      id
-      content {
-        id
-        contributors {
-          ...GithubUser
-        }
+    repoContributors {
+      user {
+        ...GithubUser
       }
     }
   }
@@ -61,13 +57,9 @@ fragment ProjectContributorsWithPaymentSummary on Projects {
   githubRepos {
     projectId
     githubRepoId
-    githubRepoDetails {
-      id
-      content {
-        id
-        contributors {
-          ...GithubUserWithPaymentRequestsForProject
-        }
+    repoContributors {
+      user {
+        ...GithubUserWithPaymentRequestsForProject
       }
     }
   }

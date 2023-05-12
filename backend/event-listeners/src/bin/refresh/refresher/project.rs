@@ -4,23 +4,20 @@ use domain::Project;
 use event_listeners::{
 	domain::{BudgetProjector, ProjectProjector},
 	infrastructure::database::{
-		BudgetRepository, GithubRepoDetailsRepository, PaymentRepository, PaymentRequestRepository,
-		ProjectGithubRepoDetailsRepository, ProjectLeadRepository, ProjectRepository,
-		WorkItemRepository,
+		BudgetRepository, PaymentRepository, PaymentRequestRepository,
+		ProjectGithubReposRepository, ProjectLeadRepository, ProjectRepository, WorkItemRepository,
 	},
 };
-use infrastructure::{database, github};
+use infrastructure::database;
 
 use super::{Refreshable, Refresher};
 
-pub fn create(database: Arc<database::Client>, github: Arc<github::Client>) -> impl Refreshable {
+pub fn create(database: Arc<database::Client>) -> impl Refreshable {
 	let project_projector = ProjectProjector::new(
 		ProjectRepository::new(database.clone()),
 		ProjectLeadRepository::new(database.clone()),
-		GithubRepoDetailsRepository::new(database.clone()),
-		ProjectGithubRepoDetailsRepository::new(database.clone()),
+		ProjectGithubReposRepository::new(database.clone()),
 		database.clone(),
-		github,
 	);
 
 	let budget_projector = BudgetProjector::new(

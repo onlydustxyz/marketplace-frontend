@@ -7,7 +7,7 @@ use juniper::{GraphQLObject, ParseScalarResult, ParseScalarValue, Value};
 use serde::{Deserialize, Serialize};
 use url::Url;
 
-use crate::GithubUser;
+use crate::Entity;
 
 #[allow(clippy::too_many_arguments)]
 #[derive(new, Debug, Getters, GraphQLObject, Clone, Serialize, Deserialize, Hash)]
@@ -15,12 +15,15 @@ pub struct Repo {
 	id: Id,
 	owner: String,
 	name: String,
-	contributors: Vec<GithubUser>,
 	logo_url: Url,
 	html_url: Url,
 	description: String,
 	stars: i32,
 	forks_count: i32,
+}
+
+impl Entity for Repo {
+	type Id = Id;
 }
 
 #[derive(From, Into, Serialize, Deserialize)]

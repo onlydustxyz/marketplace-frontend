@@ -22,7 +22,7 @@ impl stream_filter::Filter for IssueFilters {
 
 	fn filter(&self, item: GithubIssue) -> stream_filter::Decision<GithubIssue> {
 		if let Some(created_since) = self.created_since {
-			if *item.created_at() < created_since {
+			if item.created_at < created_since {
 				// Found a pr created before `created_since`,
 				// assuming stream is ordered, we can end here
 				return stream_filter::Decision::End;
@@ -30,7 +30,7 @@ impl stream_filter::Filter for IssueFilters {
 		}
 
 		if let Some(updated_since) = self.updated_since {
-			if *item.updated_at() < updated_since {
+			if item.updated_at < updated_since {
 				// Found a pr updated before `updated_since`,
 				// assuming stream is ordered, we can end here
 				return stream_filter::Decision::End;
@@ -51,29 +51,29 @@ mod tests {
 
 	#[fixture]
 	fn issue() -> GithubIssue {
-		GithubIssue::new(
-			1278125016u64.into(),
-			43214u64.into(),
-			17,
-			GithubIssueType::Issue,
-			"Super issue".to_string(),
-			GithubUser::new(
+		GithubIssue {
+			id: 1278125016u64.into(),
+			repo_id: 43214u64.into(),
+			number: 17i64.into(),
+			r#type: GithubIssueType::Issue,
+			title: "Super issue".to_string(),
+			author: GithubUser::new(
 				666u64.into(),
 				"foooooo".to_string(),
 				Url::parse("https://github.com/aaa").unwrap(),
 				Url::parse("https://github.com/bbb").unwrap(),
 			),
-			Url::parse("https://github.com/onlydustxyz/marketplace/issues/17").unwrap(),
-			GithubIssueStatus::Open,
-			DateTime::parse_from_rfc3339("2023-04-18T13:15:05Z")
+			html_url: Url::parse("https://github.com/onlydustxyz/marketplace/issues/17").unwrap(),
+			status: GithubIssueStatus::Open,
+			created_at: DateTime::parse_from_rfc3339("2023-04-18T13:15:05Z")
 				.unwrap()
 				.with_timezone(&Utc),
-			DateTime::parse_from_rfc3339("2023-04-18T13:15:05Z")
+			updated_at: DateTime::parse_from_rfc3339("2023-04-18T13:15:05Z")
 				.unwrap()
 				.with_timezone(&Utc),
-			None,
-			None,
-		)
+			merged_at: None,
+			closed_at: None,
+		}
 	}
 
 	#[rstest]

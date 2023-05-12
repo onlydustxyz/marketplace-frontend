@@ -104,7 +104,7 @@ const projectFromQuery = (project: GetProjectQuery["projectsByPk"], githubUserId
   totalSpentAmountInUsd: project?.budgetsAggregate.aggregate?.sum?.spentAmount,
   totalInitialAmountInUsd: project?.budgetsAggregate.aggregate?.sum?.initialAmount,
   telegramLink: project?.projectDetails?.telegramLink,
-  languages: (project?.githubRepos?.length === 1 && project?.githubRepos[0].githubRepoDetails?.languages) || {},
+  languages: (project?.githubRepos?.length === 1 && project?.githubRepos[0].repo?.languages) || {},
   sponsors: project?.projectSponsors?.map(projectSponsor => projectSponsor.sponsor) || [],
 });
 

@@ -1,10 +1,9 @@
 #[allow(clippy::extra_unused_lifetimes)]
 mod budget;
-mod crm;
 #[allow(clippy::extra_unused_lifetimes)]
 mod github_issues;
 #[allow(clippy::extra_unused_lifetimes)]
-mod github_repo_details;
+mod github_repos;
 #[allow(clippy::extra_unused_lifetimes)]
 mod github_users;
 #[allow(clippy::extra_unused_lifetimes)]
@@ -17,9 +16,8 @@ mod project;
 mod work_item;
 
 pub use budget::Budget;
-pub use crm::CrmGithubRepo;
 pub use github_issues::GithubIssue;
-pub use github_repo_details::GithubRepoDetails;
+pub use github_repos::GithubRepo;
 pub use github_users::GithubUser;
 pub use payment::Payment;
 pub use payment_request::PaymentRequest;

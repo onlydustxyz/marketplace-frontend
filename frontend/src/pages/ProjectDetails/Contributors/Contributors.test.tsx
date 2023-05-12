@@ -48,7 +48,7 @@ const mockPaymentRequest2: PaymentRequestFragment = {
 };
 
 const contributor1: GithubUserWithPaymentRequestsForProjectFragment = {
-  __typename: "User",
+  __typename: "GithubUsers",
   id: 123456,
   avatarUrl: "avatar_url",
   login: "ofux",
@@ -58,7 +58,7 @@ const contributor1: GithubUserWithPaymentRequestsForProjectFragment = {
 };
 
 const contributor2: GithubUserWithPaymentRequestsForProjectFragment = {
-  __typename: "User",
+  __typename: "GithubUsers",
   id: 123457,
   avatarUrl: "avatar_url",
   login: "AnthonyBuisset",
@@ -68,7 +68,7 @@ const contributor2: GithubUserWithPaymentRequestsForProjectFragment = {
 };
 
 const contributor3: GithubUserWithPaymentRequestsForProjectFragment = {
-  __typename: "User",
+  __typename: "GithubUsers",
   id: 123458,
   avatarUrl: "avatar_url",
   login: "oscarwroche",
@@ -92,28 +92,16 @@ const graphQlMocks = [
           id: TEST_PROJECT_ID,
           githubRepos: [
             {
-              projectId: TEST_PROJECT_ID,
               __typename: "ProjectGithubRepos",
+              projectId: TEST_PROJECT_ID,
               githubRepoId: 1000,
-              githubRepoDetails: {
-                id: 1000,
-                content: {
-                  id: 1000,
-                  contributors: [contributor1, contributor2],
-                },
-              },
+              repoContributors: [contributor1, contributor2].map(user => ({ user })),
             },
             {
-              projectId: TEST_PROJECT_ID,
               __typename: "ProjectGithubRepos",
+              projectId: TEST_PROJECT_ID,
               githubRepoId: 1001,
-              githubRepoDetails: {
-                id: 1001,
-                content: {
-                  id: 1001,
-                  contributors: [contributor1, contributor3],
-                },
-              },
+              repoContributors: [contributor1, contributor3].map(user => ({ user })),
             },
           ],
           budgets: [],

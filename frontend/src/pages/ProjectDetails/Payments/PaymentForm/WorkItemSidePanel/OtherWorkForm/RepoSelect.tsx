@@ -3,12 +3,12 @@ import classNames from "classnames";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
-import { RepositoryOwnerAndNameFragment } from "src/__generated/graphql";
+import { GithubRepoFragment } from "src/__generated/graphql";
 
 type Props = {
-  repos: RepositoryOwnerAndNameFragment[];
-  repo: RepositoryOwnerAndNameFragment;
-  setRepo: (repo: RepositoryOwnerAndNameFragment) => void;
+  repos: GithubRepoFragment[];
+  repo: GithubRepoFragment;
+  setRepo: (repo: GithubRepoFragment) => void;
 };
 
 export default function RepoSelect({ repos, repo, setRepo }: Props) {

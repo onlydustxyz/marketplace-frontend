@@ -1,0 +1,17 @@
+table:
+  name: github_repos
+  schema: public
+select_permissions:
+  - role: public
+    permission:
+      columns:
+        - id
+        - fork_count
+        - stars
+        - languages
+        - description
+        - html_url
+        - name
+        - owner
+        - updated_at
+      filter: {}

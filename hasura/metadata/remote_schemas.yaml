@@ -35,11 +35,12 @@
             htmlUrl: Url!
             id: GithubIssueId!
             mergedAt: DateTimeUtc
-            number: Int!
+            number: GithubIssueNumber!
             repoId: GithubRepoId!
             status: Status!
             title: String!
             type: Type!
+            updatedAt: DateTimeUtc!
           }
           type Mutation {
             acceptProjectLeaderInvitation(invitationId: Uuid!): Boolean!
@@ -168,6 +169,7 @@
           }
           scalar DateTimeUtc
           scalar GithubIssueId
+          scalar GithubIssueNumber
           scalar GithubRepoId
           scalar GithubUserId
           scalar Url
@@ -178,88 +180,18 @@
             htmlUrl: Url!
             id: GithubIssueId!
             mergedAt: DateTimeUtc
-            number: Int!
+            number: GithubIssueNumber!
             repoId: GithubRepoId!
             status: Status!
             title: String!
             type: Type!
+            updatedAt: DateTimeUtc!
           }
           type Query {
             fetchIssue(repoOwner: String!, repoName: String!, issueNumber: Int!): Issue
             fetchIssueByRepositoryId(repositoryId: Int!, issueNumber: Int!): Issue
-            fetchRepositoryDetails(id: Int!): Repo
-            fetchUserDetails(username: String!): User
             fetchUserDetailsById(userId: Int!): User
             searchUsers(query: String!, sort: String, order: String, perPage: Int, page: Int): [User!]
-          }
-          type Repo {
-            contributors: [User!]!
-            description: String!
-            forksCount: Int!
-            htmlUrl: Url!
-            id: GithubRepoId!
-            logoUrl: Url!
-            name: String!
-            owner: String!
-            stars: Int!
-          }
-          type User {
-            avatarUrl: Url!
-            htmlUrl: Url!
-            id: GithubUserId!
-            login: String!
-          }
-          enum Status {
-            CANCELLED
-            CLOSED
-            COMPLETED
-            MERGED
-            OPEN
-          }
-          enum Type {
-            ISSUE
-            PULL_REQUEST
-          }
-    - role: public
-      definition:
-        schema: |
-          schema {
-            query: Query
-          }
-          scalar DateTimeUtc
-          scalar GithubIssueId
-          scalar GithubRepoId
-          scalar GithubUserId
-          scalar Url
-          type Issue {
-            author: User!
-            closedAt: DateTimeUtc
-            createdAt: DateTimeUtc!
-            htmlUrl: Url!
-            id: GithubIssueId!
-            mergedAt: DateTimeUtc
-            number: Int!
-            repoId: GithubRepoId!
-            status: Status!
-            title: String!
-            type: Type!
-          }
-          type Query {
-            fetchIssueByRepositoryId(repositoryId: Int!, issueNumber: Int!): Issue
-            fetchRepositoryDetails(id: Int!): Repo
-            fetchUserDetailsById(userId: Int!): User
-            helloFromGithubProxy: String!
-          }
-          type Repo {
-            contributors: [User!]!
-            description: String!
-            forksCount: Int!
-            htmlUrl: Url!
-            id: GithubRepoId!
-            logoUrl: Url!
-            name: String!
-            owner: String!
-            stars: Int!
           }
           type User {
             avatarUrl: Url!

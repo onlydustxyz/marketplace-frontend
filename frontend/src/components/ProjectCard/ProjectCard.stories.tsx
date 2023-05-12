@@ -96,25 +96,19 @@ const props = (args: { name: string; shortDescription: string; projectLeadsCount
     {
       githubRepoId: 12345,
       projectId: "123",
-      githubRepoDetails: {
+      repoContributors: [user1, user4].map(user => ({ user })),
+      repo: {
         id: 12345,
         languages: { Ejs: 2200, Rust: 1000 },
-        content: {
-          id: 12345,
-          contributors: [user1, user4],
-        },
       },
     },
     {
       githubRepoId: 666,
       projectId: "123",
-      githubRepoDetails: {
+      repoContributors: [user1, user2].map(user => ({ user })),
+      repo: {
         id: 666,
         languages: { Pascal: 1000000, Rust: 3000 },
-        content: {
-          id: 666,
-          contributors: [user1, user2],
-        },
       },
     },
   ],

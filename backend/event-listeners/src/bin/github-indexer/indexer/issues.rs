@@ -68,7 +68,7 @@ impl super::Stateful<GithubRepoId> for Indexer {
 		let mut updated_times: Vec<_> = events
 			.iter()
 			.filter_map(|event| match event {
-				GithubEvent::Issue(issue) => Some(*issue.updated_at()),
+				GithubEvent::Issue(issue) => Some(issue.updated_at),
 				_ => None,
 			})
 			.collect();

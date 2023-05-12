@@ -1,5 +1,5 @@
 import { ComponentStory } from "@storybook/react";
-import { GithubUserFragment } from "src/__generated/graphql";
+import { GithubUserFragment, LiveGithubUserFragment } from "src/__generated/graphql";
 
 import ContributorSelectView from "./View";
 
@@ -33,7 +33,7 @@ const filteredContributors: (GithubUserFragment & { unpaidMergedPullsCount?: num
   },
 ];
 
-const filteredExternalContributors: GithubUserFragment[] = [
+const filteredExternalContributors: LiveGithubUserFragment[] = [
   {
     id: 4444,
     login: "oscar",

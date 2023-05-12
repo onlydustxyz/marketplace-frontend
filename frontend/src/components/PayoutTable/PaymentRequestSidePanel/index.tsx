@@ -32,7 +32,7 @@ export default function PaymentRequestSidePanel({ projectId, paymentId, projectL
       : PaymentStatus.WAITING_PAYMENT;
 
   const { invoiceNeeded, valid: payoutSettingsValid } = usePayoutSettings(
-    data?.paymentRequestsByPk?.githubRecipient?.id
+    data?.paymentRequestsByPk?.liveGithubRecipient?.id
   );
 
   const { cancelPaymentRequest } = usePaymentRequests(projectId);
@@ -83,10 +83,8 @@ gql`
       displayName
       avatarUrl
     }
-    githubRecipient {
-      id
-      login
-      avatarUrl
+    liveGithubRecipient {
+      ...LiveGithubUser
     }
     workItems {
       ...WorkItemId

@@ -42,10 +42,31 @@ class GithubIssues {
    type: jsonb!
 }
 
-class GithubRepoDetails {
-   content: Repo
+class GithubRepos {
+   description: String!
+   forkCount: Int!
+   htmlUrl: String!
    id: bigint!
    languages: jsonb!
+   name: String!
+   owner: String!
+   stars: Int!
+   updatedAt: timestamp
+}
+
+class GithubReposContributors {
+   repoId: bigint!
+   user: GithubUsers
+   userId: bigint!
+}
+
+class GithubUsers {
+   avatarUrl: String!
+   htmlUrl: String!
+   id: bigint!
+   login: String!
+   paymentRequests: [PaymentRequests!]!
+   user: AuthGithubUsers
 }
 
 class IgnoredGithubIssues {
@@ -62,7 +83,7 @@ class Issue {
    id: GithubIssueId!
    ignoredForProjects: [IgnoredGithubIssues!]!
    mergedAt: DateTimeUtc
-   number: Int!
+   number: GithubIssueNumber!
    repoId: GithubRepoId!
    status: Status!
    title: String!
@@ -81,10 +102,11 @@ class PaymentRequests {
    amountInUsd: bigint!
    budget: Budgets
    budgetId: uuid!
-   githubRecipient: User
+   githubRecipient: GithubUsers
    hoursWorked: Int!
    id: uuid!
    invoiceReceivedAt: timestamp
+   liveGithubRecipient: User
    payments: [Payments!]!
    recipient: AuthGithubUsers
    recipientId: bigint!
@@ -122,10 +144,11 @@ class ProjectDetails {
 }
 
 class ProjectGithubRepos {
-   githubRepoDetails: GithubRepoDetails
    githubRepoId: bigint!
    project: Projects
    projectId: uuid!
+   repo: GithubRepos
+   repoContributors: [GithubReposContributors!]!
    repoIssues: [GithubIssues!]!
 }
 
@@ -151,18 +174,6 @@ class ProjectsSponsors {
    projectId: uuid!
    sponsor: Sponsors!
    sponsorId: uuid!
-}
-
-class Repo {
-   contributors: [User!]!
-   description: String!
-   forksCount: Int!
-   htmlUrl: Url!
-   id: GithubRepoId!
-   logoUrl: Url!
-   name: String!
-   owner: String!
-   stars: Int!
 }
 
 class Sponsors {
@@ -298,11 +309,14 @@ AuthGithubUsers --* PaymentRequests
 Budgets -- Projects
 Budgets --* PaymentRequests
 GithubIssues --* IgnoredGithubIssues
-GithubRepoDetails -- Repo
+GithubReposContributors -- GithubUsers
+GithubUsers -- AuthGithubUsers
+GithubUsers --* PaymentRequests
 Issue -- User
 Issue --* IgnoredGithubIssues
 PaymentRequests -- AuthGithubUsers
 PaymentRequests -- Budgets
+PaymentRequests -- GithubUsers
 PaymentRequests -- User
 PaymentRequests -- users
 PaymentRequests --* Payments
@@ -310,9 +324,10 @@ PaymentRequests --* WorkItems
 Payments -- PaymentRequests
 PendingProjectLeaderInvitations -- AuthGithubUsers
 PendingProjectLeaderInvitations -- Projects
-ProjectGithubRepos -- GithubRepoDetails
+ProjectGithubRepos -- GithubRepos
 ProjectGithubRepos -- Projects
 ProjectGithubRepos --* GithubIssues
+ProjectGithubRepos --* GithubReposContributors
 ProjectLeads -- Projects
 ProjectLeads -- users
 Projects -- ProjectDetails
@@ -323,7 +338,6 @@ Projects --* ProjectLeads
 Projects --* ProjectsSponsors
 ProjectsSponsors -- Projects
 ProjectsSponsors -- Sponsors
-Repo --* User
 Sponsors --* ProjectsSponsors
 User -- AuthGithubUsers
 User --* PaymentRequests

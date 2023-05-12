@@ -2,15 +2,6 @@ table:
   name: project_github_repos
   schema: public
 object_relationships:
-  - name: githubRepoDetails
-    using:
-      manual_configuration:
-        column_mapping:
-          github_repo_id: id
-        insertion_order: null
-        remote_table:
-          name: github_repo_details
-          schema: public
   - name: project
     using:
       manual_configuration:
@@ -20,7 +11,25 @@ object_relationships:
         remote_table:
           name: projects
           schema: public
+  - name: repo
+    using:
+      manual_configuration:
+        column_mapping:
+          github_repo_id: id
+        insertion_order: null
+        remote_table:
+          name: github_repos
+          schema: public
 array_relationships:
+  - name: repoContributors
+    using:
+      manual_configuration:
+        column_mapping:
+          github_repo_id: repo_id
+        insertion_order: null
+        remote_table:
+          name: github_repos_contributors
+          schema: public
   - name: repoIssues
     using:
       manual_configuration:

@@ -1,14 +1,12 @@
 use std::str::FromStr;
 
 use chrono::{DateTime, Utc};
-use derive_getters::Getters;
 use derive_more::{AsRef, Display, From, Into};
-use derive_new::new;
 use juniper::{GraphQLEnum, GraphQLObject, ParseScalarResult, ParseScalarValue, Value};
 use serde::{Deserialize, Serialize};
 use url::Url;
 
-use crate::{Entity, GithubRepoId, GithubUser};
+use crate::{Entity, GithubIssueNumber, GithubRepoId, GithubUser};
 
 #[derive(
 	Clone, Copy, Debug, GraphQLEnum, PartialEq, Eq, Serialize, Deserialize, AsExpression, FromToSql,
@@ -31,21 +29,20 @@ pub enum Type {
 	PullRequest,
 }
 
-#[allow(clippy::too_many_arguments)]
-#[derive(Clone, Debug, new, Getters, GraphQLObject, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Clone, Debug, GraphQLObject, Serialize, Deserialize, PartialEq, Eq)]
 pub struct Issue {
-	id: Id,
-	repo_id: GithubRepoId,
-	number: i32,
-	r#type: Type,
-	title: String,
-	author: GithubUser,
-	html_url: Url,
-	status: Status,
-	created_at: DateTime<Utc>,
-	updated_at: DateTime<Utc>,
-	merged_at: Option<DateTime<Utc>>,
-	closed_at: Option<DateTime<Utc>>,
+	pub id: Id,
+	pub repo_id: GithubRepoId,
+	pub number: GithubIssueNumber,
+	pub r#type: Type,
+	pub title: String,
+	pub author: GithubUser,
+	pub html_url: Url,
+	pub status: Status,
+	pub created_at: DateTime<Utc>,
+	pub updated_at: DateTime<Utc>,
+	pub merged_at: Option<DateTime<Utc>>,
+	pub closed_at: Option<DateTime<Utc>>,
 }
 
 impl Entity for Issue {

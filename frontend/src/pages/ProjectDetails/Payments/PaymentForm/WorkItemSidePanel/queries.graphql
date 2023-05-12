@@ -11,12 +11,6 @@ query SearchIssues($projectId: uuid!, $authorId: bigint!, $createdSince: timesta
   }
 }
 
-fragment RepositoryOwnerAndName on Repo {
-  id
-  owner
-  name
-}
-
 query getPaidWorkItems($projectId: uuid!) {
   projectsByPk(id: $projectId) {
     id
@@ -44,11 +38,8 @@ query GetProjectRepos($projectId: uuid!) {
     githubRepos {
       projectId
       githubRepoId
-      githubRepoDetails {
-        id
-        content {
-          ...RepositoryOwnerAndName
-        }
+      repo {
+        ...GithubRepo
       }
     }
   }

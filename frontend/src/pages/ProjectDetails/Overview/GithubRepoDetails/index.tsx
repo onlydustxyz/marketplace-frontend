@@ -1,9 +1,5 @@
 import { gql } from "@apollo/client";
-import {
-  GithubRepoDynamicDetailsFragmentDoc,
-  GithubRepoStaticDetailsFragmentDoc,
-  useGetGithubRepositoryDetailsQuery,
-} from "src/__generated/graphql";
+import { useGetGithubRepositoryDetailsQuery } from "src/__generated/graphql";
 import View from "./View";
 import { contextWithCacheHeaders } from "src/utils/headers";
 
@@ -17,21 +13,13 @@ export default function GithubRepoDetails({ githubRepoId }: Props) {
     ...contextWithCacheHeaders,
   });
 
-  const githubRepoDetails = data?.githubRepoDetailsByPk &&
-    data?.githubRepoDetailsByPk?.content && { ...data.githubRepoDetailsByPk, ...data.githubRepoDetailsByPk?.content };
-
-  return <>{githubRepoDetails && <View {...githubRepoDetails} />}</>;
+  return <>{data?.githubReposByPk && <View {...data?.githubReposByPk} />}</>;
 }
 
 gql`
-  ${GithubRepoStaticDetailsFragmentDoc}
-  ${GithubRepoDynamicDetailsFragmentDoc}
   query GetGithubRepositoryDetails($githubRepoId: bigint!) {
-    githubRepoDetailsByPk(id: $githubRepoId) {
-      ...GithubRepoStaticDetails
-      content {
-        ...GithubRepoDynamicDetails
-      }
+    githubReposByPk(id: $githubRepoId) {
+      ...GithubRepo
     }
   }
 `;

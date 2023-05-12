@@ -11,15 +11,6 @@ diesel::table! {
 }
 
 diesel::table! {
-    crm_github_repos (id) {
-        id -> Int8,
-        owner -> Text,
-        name -> Text,
-        updated_at -> Nullable<Timestamp>,
-    }
-}
-
-diesel::table! {
     event_deduplications (deduplication_id) {
         deduplication_id -> Text,
         event_index -> Int4,
@@ -55,17 +46,31 @@ diesel::table! {
 }
 
 diesel::table! {
-    github_repo_details (id) {
+    github_repo_indexes (repo_id) {
+        repo_id -> Int8,
+        repo_indexer_state -> Nullable<Jsonb>,
+        issues_indexer_state -> Nullable<Jsonb>,
+    }
+}
+
+diesel::table! {
+    github_repos (id) {
         id -> Int8,
+        owner -> Text,
+        name -> Text,
+        updated_at -> Nullable<Timestamp>,
+        description -> Text,
+        stars -> Int4,
+        fork_count -> Int4,
+        html_url -> Text,
         languages -> Jsonb,
     }
 }
 
 diesel::table! {
-    github_repo_indexes (repo_id) {
+    github_repos_contributors (repo_id, user_id) {
         repo_id -> Int8,
-        repo_indexer_state -> Nullable<Jsonb>,
-        issues_indexer_state -> Nullable<Jsonb>,
+        user_id -> Int8,
     }
 }
 
@@ -198,12 +203,12 @@ diesel::joinable!(projects_sponsors -> sponsors (sponsor_id));
 
 diesel::allow_tables_to_appear_in_same_query!(
     budgets,
-    crm_github_repos,
     event_deduplications,
     events,
     github_issues,
-    github_repo_details,
     github_repo_indexes,
+    github_repos,
+    github_repos_contributors,
     github_user_indexes,
     github_users,
     ignored_github_issues,

@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
 import {
-  GithubUserFragment,
   useGetProjectContributorsForPaymentSelectQuery,
   useSearchGithubUsersByHandleSubstringQuery,
 } from "src/__generated/graphql";
@@ -10,13 +9,14 @@ import { useLocation } from "react-router-dom";
 import { daysFromNow } from "src/utils/date";
 import { SEARCH_MAX_DAYS_COUNT } from "..";
 import useDebounce from "src/hooks/useDebounce";
+import { ContributorFragment } from "src/types";
 
 const EXTERNAL_USER_QUERY_DEBOUNCE_TIME = 500;
 
 type Props = {
   projectId: string;
-  contributor: GithubUserFragment | null | undefined;
-  setContributor: (contributor: GithubUserFragment | null | undefined) => void;
+  contributor: ContributorFragment | null | undefined;
+  setContributor: (contributor: ContributorFragment | null | undefined) => void;
 };
 
 export default function ContributorSelect({ projectId, contributor, setContributor }: Props) {

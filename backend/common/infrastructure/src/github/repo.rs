@@ -1,30 +1,16 @@
 use anyhow::{anyhow, Result};
-use async_trait::async_trait;
-use domain::{GithubRepo, GithubUser};
+use derive_more::*;
+use domain::GithubRepo;
 use octocrab::models::Repository;
 
-use super::{user::UserFromOctocrab, Contributors};
-use crate::github;
+#[derive(Clone, From, Into)]
+pub struct OctocrabRepo(Repository);
 
-#[async_trait]
-pub trait RepoFromOctocrab {
-	async fn try_from_octocrab_repo(
-		client: &github::Client,
-		repo: Repository,
-	) -> Result<GithubRepo>;
-}
+impl TryFrom<OctocrabRepo> for GithubRepo {
+	type Error = anyhow::Error;
 
-#[async_trait]
-impl RepoFromOctocrab for GithubRepo {
-	async fn try_from_octocrab_repo(
-		client: &github::Client,
-		repo: Repository,
-	) -> Result<GithubRepo> {
-		let contributor_url = repo.contributors_url.map(|url| client.fix_github_host(&url));
-		let contributors: Contributors = match contributor_url {
-			Some(url) => client.get_as(url?).await?,
-			None => Default::default(),
-		};
+	fn try_from(repo: OctocrabRepo) -> Result<GithubRepo> {
+		let repo = repo.0;
 
 		let owner = repo.owner.ok_or_else(|| anyhow!("Missing field 'owner'"))?;
 		let html_url = repo.html_url.ok_or_else(|| anyhow!("Missing field 'html_url'"))?;
@@ -33,7 +19,6 @@ impl RepoFromOctocrab for GithubRepo {
 			(repo.id.0 as i64).into(),
 			owner.login,
 			repo.name,
-			contributors.into_iter().map(GithubUser::from_octocrab_user).collect(),
 			owner.avatar_url,
 			html_url,
 			repo.description.unwrap_or_default(),

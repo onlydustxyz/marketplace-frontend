@@ -1,6 +1,8 @@
 use anyhow::{anyhow, Result};
 use async_trait::async_trait;
-use domain::{GithubIssue, GithubIssueStatus, GithubIssueType, GithubRepoId, GithubUser};
+use domain::{
+	GithubIssue, GithubIssueNumber, GithubIssueStatus, GithubIssueType, GithubRepoId, GithubUser,
+};
 use graphql_client::GraphQLQuery;
 use infrastructure::graphql::{self, scalars::*};
 
@@ -38,20 +40,20 @@ impl TryFrom<create_issue::GithubIssue> for GithubIssue {
 	type Error = anyhow::Error;
 
 	fn try_from(issue: create_issue::GithubIssue) -> Result<Self, Self::Error> {
-		Ok(Self::new(
-			issue.id,
-			issue.repo_id,
-			issue.number.try_into()?,
-			issue.type_.try_into()?,
-			issue.title,
-			issue.author.into(),
-			issue.html_url,
-			issue.status.try_into()?,
-			issue.created_at,
-			issue.updated_at,
-			issue.merged_at,
-			issue.closed_at,
-		))
+		Ok(Self {
+			id: issue.id,
+			repo_id: issue.repo_id,
+			number: issue.number,
+			r#type: issue.type_.try_into()?,
+			title: issue.title,
+			author: issue.author.into(),
+			html_url: issue.html_url,
+			status: issue.status.try_into()?,
+			created_at: issue.created_at,
+			updated_at: issue.updated_at,
+			merged_at: issue.merged_at,
+			closed_at: issue.closed_at,
+		})
 	}
 }
 

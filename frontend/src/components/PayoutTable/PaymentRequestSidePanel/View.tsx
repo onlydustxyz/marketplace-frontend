@@ -44,7 +44,7 @@ export default function View({
   githubUserId,
   status,
   amountInUsd,
-  githubRecipient,
+  liveGithubRecipient,
   requestor,
   requestedAt,
   workItems,
@@ -90,11 +90,11 @@ export default function View({
               })}
             </Details>
           )}
-          {githubRecipient && (
+          {liveGithubRecipient && (
             <Details>
-              <RoundedImage alt={githubRecipient.login} src={githubRecipient.avatarUrl} size={ImageSize.Xxs} />
-              {T(`payment.table.detailsPanel.to.${githubRecipient.id === githubUserId ? "you" : "other"}`, {
-                user: githubRecipient.login,
+              <RoundedImage alt={liveGithubRecipient.login} src={liveGithubRecipient.avatarUrl} size={ImageSize.Xxs} />
+              {T(`payment.table.detailsPanel.to.${liveGithubRecipient.id === githubUserId ? "you" : "other"}`, {
+                user: liveGithubRecipient.login,
               })}
             </Details>
           )}

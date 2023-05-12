@@ -12,12 +12,7 @@ import CodeSSlashLine from "src/icons/CodeSSlashLine";
 import { buildLanguageString, getDeduplicatedAggregatedLanguages } from "src/utils/languages";
 import { formatMoneyAmount } from "src/utils/money";
 import { useMediaQuery } from "usehooks-ts";
-import {
-  ProjectCardGithubRepoFieldsFragmentDoc,
-  ProjectContributorsFragmentDoc,
-  ProjectLeadFragmentDoc,
-  SponsorFragmentDoc,
-} from "src/__generated/graphql";
+import { ProjectContributorsFragmentDoc, ProjectLeadFragmentDoc, SponsorFragmentDoc } from "src/__generated/graphql";
 import User3Line from "src/icons/User3Line";
 import FundsLine from "src/icons/FundsLine";
 import Tooltip, { TooltipPosition } from "src/components/Tooltip";
@@ -163,18 +158,9 @@ export default function ProjectCard({
 }
 
 gql`
-  fragment ProjectCardGithubRepoFields on ProjectGithubRepos {
-    githubRepoId
-    githubRepoDetails {
-      id
-      languages
-    }
-  }
-
   ${ProjectLeadFragmentDoc}
   ${SponsorFragmentDoc}
   ${ProjectContributorsFragmentDoc}
-  ${ProjectCardGithubRepoFieldsFragmentDoc}
   fragment ProjectCardFields on Projects {
     id
     ...ProjectContributors
@@ -210,7 +196,10 @@ gql`
     githubRepos {
       projectId
       githubRepoId
-      ...ProjectCardGithubRepoFields
+      repo {
+        ...GithubRepoId
+        languages
+      }
     }
     projectSponsors {
       sponsor {

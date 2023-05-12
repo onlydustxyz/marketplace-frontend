@@ -6,7 +6,7 @@ fragment ProjectContributorsForPaymentSelect on Projects {
 
 query SearchGithubUsersByHandleSubstring($handleSubstringQuery: String!) {
   searchUsers(query: $handleSubstringQuery, sort: "followers", order: "desc") {
-    ...GithubUser
+    ...LiveGithubUser
   }
 }
 

@@ -1,15 +1,10 @@
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import ProjectCard, { Project } from ".";
 import { screen } from "@testing-library/react";
-import {
-  GithubUserFragment,
-  ProjectCardGithubRepoFieldsFragment,
-  ProjectContributorsFragment,
-} from "src/__generated/graphql";
-import { ArrayElement } from "src/types";
+import { GithubUserFragment } from "src/__generated/graphql";
 
 const contributor1: GithubUserFragment = {
-  __typename: "User",
+  __typename: "GithubUsers",
   id: 123456,
   login: "contributor1",
   htmlUrl: "",
@@ -18,7 +13,7 @@ const contributor1: GithubUserFragment = {
 };
 
 const contributor2: GithubUserFragment = {
-  __typename: "User",
+  __typename: "GithubUsers",
   id: 123457,
   login: "contributor2",
   htmlUrl: "",
@@ -27,7 +22,7 @@ const contributor2: GithubUserFragment = {
 };
 
 const contributor3: GithubUserFragment = {
-  __typename: "User",
+  __typename: "GithubUsers",
   id: 123458,
   login: "contributor3",
   htmlUrl: "",
@@ -35,31 +30,23 @@ const contributor3: GithubUserFragment = {
   user: null,
 };
 
-const githubRepo1: ProjectCardGithubRepoFieldsFragment & ArrayElement<ProjectContributorsFragment["githubRepos"]> = {
-  __typename: "ProjectGithubRepos",
+const githubRepo1 = {
   githubRepoId: 1000,
   projectId: "123",
-  githubRepoDetails: {
+  repoContributors: [contributor1, contributor2].map(user => ({ user })),
+  repo: {
     id: 1000,
     languages: { Cairo: 1000, Rust: 100, HTML: 150 },
-    content: {
-      id: 1000,
-      contributors: [contributor1, contributor2],
-    },
   },
 };
 
-const githubRepo2: ProjectCardGithubRepoFieldsFragment & ArrayElement<ProjectContributorsFragment["githubRepos"]> = {
-  __typename: "ProjectGithubRepos",
+const githubRepo2 = {
   githubRepoId: 1001,
   projectId: "123",
-  githubRepoDetails: {
+  repoContributors: [contributor1, contributor3].map(user => ({ user })),
+  repo: {
     id: 1001,
     languages: { Rust: 80, Go: 40, Cairo: 2000 },
-    content: {
-      id: 1001,
-      contributors: [contributor1, contributor3],
-    },
   },
 };
 
@@ -83,7 +70,10 @@ const PROJECT: Project = {
       },
     },
   ],
-  githubRepos: [githubRepo1, githubRepo2],
+  githubRepos: [
+    { __typename: "ProjectGithubRepos", ...githubRepo1 },
+    { __typename: "ProjectGithubRepos", ...githubRepo2 },
+  ],
   budgetsAggregate: {
     aggregate: {
       sum: {

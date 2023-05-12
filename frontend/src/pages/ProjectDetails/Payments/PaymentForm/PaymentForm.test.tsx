@@ -20,7 +20,6 @@ import {
   GetProjectContributorsForPaymentSelectDocument,
   GetProjectContributorsForPaymentSelectQueryResult,
   Status,
-  FindUserQueryForPaymentFormDocument,
 } from "src/__generated/graphql";
 import { MockedResponse } from "@apollo/client/testing";
 import { GithubUserFragment } from "src/__generated/graphql";
@@ -28,7 +27,7 @@ import { daysFromNow } from "src/utils/date";
 
 const TEST_USER = { id: "test-user-id", displayName: "test-login", githubUser: { githubUserId: 748483646584 } };
 const TEST_GITHUB_USER: GithubUserFragment = {
-  __typename: "User",
+  __typename: "GithubUsers",
   id: 23326,
   login: "test-login",
   avatarUrl: "test-avatar-url",
@@ -91,25 +90,6 @@ const fetchPrMock: MockedResponse = {
 };
 
 const graphQlMocks = [
-  {
-    request: {
-      query: FindUserQueryForPaymentFormDocument,
-      variables: {
-        username: "test-user-name",
-      },
-    },
-    newData: vi.fn(() => ({
-      data: {
-        fetchUserDetails: {
-          id: TEST_USER.githubUser.githubUserId,
-          login: TEST_USER.displayName,
-          avatarUrl: "",
-          user: null,
-          __typename: "User",
-        },
-      },
-    })),
-  },
   fetchPrMock,
   {
     request: {
@@ -128,13 +108,7 @@ const graphQlMocks = [
             {
               githubRepoId: 123456,
               projectId: TEST_PROJECT_ID,
-              githubRepoDetails: {
-                id: 123456,
-                content: {
-                  id: 123456,
-                  contributors: [TEST_GITHUB_USER],
-                },
-              },
+              repoContributors: [{ user: TEST_GITHUB_USER }],
               repoIssues: [],
             },
           ],
@@ -158,10 +132,6 @@ const graphQlMocks = [
             {
               projectId: TEST_PROJECT_ID,
               githubRepoId: 123456,
-              githubRepoDetails: {
-                id: 123456,
-                content: { __typename: "Repo", id: 123456, owner: "owner", name: "name" },
-              },
             },
           ],
           budgets: [],
