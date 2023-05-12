@@ -1,6 +1,8 @@
 use anyhow::{anyhow, Result};
 use async_trait::async_trait;
-use domain::{GithubIssue, GithubIssueStatus, GithubIssueType, GithubRepoId, GithubUser};
+use domain::{
+	GithubIssue, GithubIssueNumber, GithubIssueStatus, GithubIssueType, GithubRepoId, GithubUser,
+};
 use graphql_client::GraphQLQuery;
 use infrastructure::graphql::{self, scalars::*};
 

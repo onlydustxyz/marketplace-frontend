@@ -3,14 +3,13 @@ use std::sync::Arc;
 use anyhow::Result;
 use async_trait::async_trait;
 use derive_new::new;
-use domain::{Event, GithubRepoId, GithubService, ProjectEvent, SubscriberCallbackError};
+use domain::{Event, ProjectEvent, SubscriberCallbackError};
 use tracing::instrument;
 
 use crate::{
-	domain::{projections::Project, EventListener, GithubRepoDetails, GithubRepoIndexRepository},
+	domain::{projections::Project, EventListener, GithubRepoIndexRepository},
 	infrastructure::database::{
-		GithubRepoDetailsRepository, ProjectGithubRepoDetailsRepository, ProjectLeadRepository,
-		ProjectRepository,
+		ProjectGithubReposRepository, ProjectLeadRepository, ProjectRepository,
 	},
 };
 
@@ -18,29 +17,8 @@ use crate::{
 pub struct Projector {
 	project_repository: ProjectRepository,
 	project_lead_repository: ProjectLeadRepository,
-	github_repo_details_repository: GithubRepoDetailsRepository,
-	project_github_repo_details_repository: ProjectGithubRepoDetailsRepository,
+	project_github_repos_repository: ProjectGithubReposRepository,
 	github_repo_index_repository: Arc<dyn GithubRepoIndexRepository>,
-	github_service: Arc<dyn GithubService>,
-}
-
-impl Projector {
-	async fn update_github_repo_details(&self, github_repo_id: &GithubRepoId) -> Result<()> {
-		let languages = self.github_service.repo_languages(github_repo_id).await?.try_into()?;
-		let repo_details = GithubRepoDetails::new(*github_repo_id, languages);
-		self.github_repo_details_repository.upsert(&repo_details)?;
-		Ok(())
-	}
-
-	fn remove_orphan_github_repo_details(&self, github_repo_id: &GithubRepoId) -> Result<()> {
-		let projects = self
-			.project_github_repo_details_repository
-			.find_all_projects_of(github_repo_id)?;
-		if projects.is_empty() {
-			self.github_repo_details_repository.delete(github_repo_id)?;
-		}
-		Ok(())
-	}
 }
 
 #[async_trait]
@@ -57,16 +35,11 @@ impl EventListener<Event> for Projector {
 					self.project_lead_repository.delete(id, leader_id)?,
 				ProjectEvent::Budget { .. } => (),
 				ProjectEvent::GithubRepoLinked { id, github_repo_id } => {
-					self.update_github_repo_details(github_repo_id)
-						.await
-						.map_err(SubscriberCallbackError::Fatal)?;
-					self.project_github_repo_details_repository.try_insert(id, github_repo_id)?;
+					self.project_github_repos_repository.try_insert(id, github_repo_id)?;
 					self.github_repo_index_repository.try_insert(github_repo_id)?;
 				},
 				ProjectEvent::GithubRepoUnlinked { id, github_repo_id } => {
-					self.project_github_repo_details_repository.delete(id, github_repo_id)?;
-					self.remove_orphan_github_repo_details(github_repo_id)
-						.map_err(SubscriberCallbackError::Fatal)?;
+					self.project_github_repos_repository.delete(id, github_repo_id)?;
 				},
 			},
 		}
