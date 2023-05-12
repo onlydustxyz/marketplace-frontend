@@ -36,9 +36,16 @@ We then need to map it progressively to Terraform config, to prevent Terraform f
 
 This is done by importing existing infrastructure into Terraform state.
 
-The game is to fill the `{develop,staging,production}.tfvars` files with the correct value.
+You will use for this the command `terraform import RESOURCE_ID HEROKU_ID`.
 
-Then, using the [Heroku API](https://devcenter.heroku.com/articles/platform-api-reference), find the relevant uuids to feed into commands such as:
+Despite using Terraform Cloud, this operation is done locally by the developers.
+
+The command is run from a local terminal, and will update the state stored in Terraform Cloud, but will not benefit from the remote variables defined on Terraform Cloud.
+We therefore need to have placeholders for required variables, hence the `local.auto.tfvars` file.
+
+Not having the actual secrets when running the `terraform import` command is not an issue since no change to the infrastructure will be attempted with this command, so the configuration of secrets values wont be altered by these placeholders.
+
+To proceed, using the [Heroku API](https://devcenter.heroku.com/articles/platform-api-reference), find the relevant uuids to feed into commands such as:
 
 ```
 terraform import module.hasura_auth.heroku_pipeline_coupling.coupling[0] da1c964d-6d01-4786-9ac4-cc967e5814d2
