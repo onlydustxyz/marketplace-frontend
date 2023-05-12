@@ -132,10 +132,6 @@ const graphQlMocks = [
             {
               projectId: TEST_PROJECT_ID,
               githubRepoId: 123456,
-              githubRepoDetails: {
-                id: 123456,
-                content: { __typename: "Repo", id: 123456, owner: "owner", name: "name" },
-              },
             },
           ],
           budgets: [],
