@@ -14,6 +14,7 @@ export const dumpDB = () => {
         --exclude-table=github_issues \
         --exclude-table=github_users \
         --exclude-table=crm_github_repos \
+        --exclude-table=github_repos_contributors \
         ${DATABASE_URL} > "${DUMP_PATH}"`,
     {
       stdio: "pipe",
