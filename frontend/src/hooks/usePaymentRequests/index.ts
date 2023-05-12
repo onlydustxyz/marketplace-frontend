@@ -61,7 +61,6 @@ export default function usePaymentRequests(projectId?: string) {
         update: (cache, result, { variables }) => {
           const { budgetId, paymentId, amount } = (result as RequestPaymentMutationResult).data?.requestPayment || {};
           const { contributorId, reason } = variables as RequestPaymentMutationVariables;
-          console.log(recipient);
 
           const newPaymentRequestRef = cache.writeFragment<ExtendedPaymentRequestFragment>({
             fragment: ExtendedPaymentRequestFragmentDoc,
@@ -86,6 +85,20 @@ export default function usePaymentRequests(projectId?: string) {
             fields: {
               paymentRequests: paymentRequestRefs => [...paymentRequestRefs, newPaymentRequestRef],
               remainingAmount: remainingAmount => remainingAmount - amount,
+            },
+          });
+
+          cache.modify({
+            id: `GithubUsers:${recipient.id}`,
+            fields: {
+              paymentRequests: paymentRequestRefs => [...paymentRequestRefs, newPaymentRequestRef],
+            },
+          });
+
+          cache.modify({
+            id: cache.identify({ __typename: "AuthGithubUsers", userId: recipient.user?.userId }),
+            fields: {
+              paymentRequests: paymentRequestRefs => [...paymentRequestRefs, newPaymentRequestRef],
             },
           });
         },
