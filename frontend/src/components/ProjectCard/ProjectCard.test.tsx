@@ -1,12 +1,7 @@
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import ProjectCard, { Project } from ".";
 import { screen } from "@testing-library/react";
-import {
-  GithubUserFragment,
-  ProjectCardGithubRepoFieldsFragment,
-  ProjectContributorsFragment,
-} from "src/__generated/graphql";
-import { ArrayElement } from "src/types";
+import { GithubUserFragment } from "src/__generated/graphql";
 
 const contributor1: GithubUserFragment = {
   __typename: "GithubUsers",
@@ -35,23 +30,21 @@ const contributor3: GithubUserFragment = {
   user: null,
 };
 
-const githubRepo1: ProjectCardGithubRepoFieldsFragment & ArrayElement<ProjectContributorsFragment["githubRepos"]> = {
-  __typename: "ProjectGithubRepos",
+const githubRepo1 = {
   githubRepoId: 1000,
   projectId: "123",
   repoContributors: [contributor1, contributor2].map(user => ({ user })),
-  githubRepoDetails: {
+  repo: {
     id: 1000,
     languages: { Cairo: 1000, Rust: 100, HTML: 150 },
   },
 };
 
-const githubRepo2: ProjectCardGithubRepoFieldsFragment & ArrayElement<ProjectContributorsFragment["githubRepos"]> = {
-  __typename: "ProjectGithubRepos",
+const githubRepo2 = {
   githubRepoId: 1001,
   projectId: "123",
   repoContributors: [contributor1, contributor3].map(user => ({ user })),
-  githubRepoDetails: {
+  repo: {
     id: 1001,
     languages: { Rust: 80, Go: 40, Cairo: 2000 },
   },
@@ -77,7 +70,10 @@ const PROJECT: Project = {
       },
     },
   ],
-  githubRepos: [githubRepo1, githubRepo2],
+  githubRepos: [
+    { __typename: "ProjectGithubRepos", ...githubRepo1 },
+    { __typename: "ProjectGithubRepos", ...githubRepo2 },
+  ],
   budgetsAggregate: {
     aggregate: {
       sum: {

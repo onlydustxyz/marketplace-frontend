@@ -6,7 +6,7 @@ import { GithubRepoLanguagesFieldsFragment } from "src/__generated/graphql";
 const githubRepo1: GithubRepoLanguagesFieldsFragment = {
   __typename: "ProjectGithubRepos",
   githubRepoId: 1000,
-  githubRepoDetails: {
+  repo: {
     id: 1000,
     languages: { Cairo: 1000, Rust: 100, HTML: 150 },
   },
@@ -15,7 +15,7 @@ const githubRepo1: GithubRepoLanguagesFieldsFragment = {
 const githubRepo2: GithubRepoLanguagesFieldsFragment = {
   __typename: "ProjectGithubRepos",
   githubRepoId: 1001,
-  githubRepoDetails: {
+  repo: {
     id: 1001,
     languages: { Rust: 80, Go: 40, Cairo: 2000 },
   },

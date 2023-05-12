@@ -114,7 +114,7 @@ const ALL_PROJECTS_RESULT: { data: GetProjectsQueryResult["data"] } = {
             __typename: "ProjectGithubRepos",
             projectId: TEST_PROJECT_ID,
             githubRepoId: TEST_GITHUB_REPO_ID,
-            githubRepoDetails: null,
+            repo: null,
             repoContributors: [],
           },
         ],
@@ -169,8 +169,8 @@ const SINGLE_PROJECT_RESULT: { data: GetProjectQueryResult["data"] } = {
           projectId: TEST_PROJECT_ID,
           githubRepoId: TEST_GITHUB_REPO_ID,
           repoContributors: [],
-          githubRepoDetails: {
-            __typename: "GithubRepoDetails",
+          repo: {
+            __typename: "CrmGithubRepos",
             id: TEST_GITHUB_REPO_ID,
             languages: [],
           },
