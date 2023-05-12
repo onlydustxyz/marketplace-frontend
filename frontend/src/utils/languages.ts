@@ -32,7 +32,7 @@ export const getDeduplicatedAggregatedLanguages = function (
     return {};
   }
   return githubRepos
-    .map(repo => repo.githubRepoDetails?.languages)
+    .map(repo => repo.repo?.languages)
     .filter(isDefined) // ⚠️ runtime type guard
     .reduce((aggregated_languages, languages) => {
       for (const [language, line_count] of Object.entries(languages)) {
