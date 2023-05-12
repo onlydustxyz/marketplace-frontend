@@ -51,6 +51,7 @@ module "event_store" {
   datadog_api_key  = var.datadog_api_key
   datadog_site     = local.datadog_site
   environment      = var.environment
+  worker           = true
 }
 
 module "event_listeners" {
@@ -65,6 +66,7 @@ module "event_listeners" {
   datadog_api_key = var.datadog_api_key
   datadog_site    = local.datadog_site
   environment     = var.environment
+  worker          = true
 }
 
 module "api" {
