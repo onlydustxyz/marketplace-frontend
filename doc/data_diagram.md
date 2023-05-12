@@ -27,18 +27,6 @@ class Budgets {
    spentAmount: numeric!
 }
 
-class CrmGithubRepos {
-   description: String!
-   forkCount: Int!
-   htmlUrl: String!
-   id: bigint!
-   languages: jsonb!
-   name: String!
-   owner: String!
-   stars: Int!
-   updatedAt: timestamp
-}
-
 class GithubIssues {
    authorId: bigint!
    closedAt: timestamp
@@ -52,6 +40,18 @@ class GithubIssues {
    status: jsonb!
    title: String!
    type: jsonb!
+}
+
+class GithubRepos {
+   description: String!
+   forkCount: Int!
+   htmlUrl: String!
+   id: bigint!
+   languages: jsonb!
+   name: String!
+   owner: String!
+   stars: Int!
+   updatedAt: timestamp
 }
 
 class GithubReposContributors {
@@ -147,7 +147,7 @@ class ProjectGithubRepos {
    githubRepoId: bigint!
    project: Projects
    projectId: uuid!
-   repo: CrmGithubRepos
+   repo: GithubRepos
    repoContributors: [GithubReposContributors!]!
    repoIssues: [GithubIssues!]!
 }
@@ -324,7 +324,7 @@ PaymentRequests --* WorkItems
 Payments -- PaymentRequests
 PendingProjectLeaderInvitations -- AuthGithubUsers
 PendingProjectLeaderInvitations -- Projects
-ProjectGithubRepos -- CrmGithubRepos
+ProjectGithubRepos -- GithubRepos
 ProjectGithubRepos -- Projects
 ProjectGithubRepos --* GithubIssues
 ProjectGithubRepos --* GithubReposContributors
