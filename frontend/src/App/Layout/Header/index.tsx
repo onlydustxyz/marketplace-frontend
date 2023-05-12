@@ -20,8 +20,8 @@ export default function Header() {
     variables: { githubUserId },
     skip: !githubUserId,
   });
-  const hasPayments =
-    paymentRequestIdsQueryData?.paymentRequests && paymentRequestIdsQueryData.paymentRequests.length > 0;
+
+  const hasPayments = paymentRequestIdsQueryData?.githubUsersByPk?.paymentRequests.length || 0 > 0;
 
   const myContributionsMenuItem = hasPayments ? T("navbar.payments") : undefined;
   const projectsMenuItem = myContributionsMenuItem ? T("navbar.projects") : undefined;
@@ -42,8 +42,11 @@ export default function Header() {
 
 gql`
   query GetPaymentRequestIds($githubUserId: bigint!) {
-    paymentRequests(where: { recipientId: { _eq: $githubUserId } }) {
-      id
+    githubUsersByPk(id: $githubUserId) {
+      ...GithubUserId
+      paymentRequests {
+        ...PaymentRequestId
+      }
     }
   }
 `;
