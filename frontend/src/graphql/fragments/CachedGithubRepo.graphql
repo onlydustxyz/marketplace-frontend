@@ -10,4 +10,5 @@ fragment GithubRepo on CrmGithubRepos {
   stars
   forkCount
   htmlUrl
+  languages
 }

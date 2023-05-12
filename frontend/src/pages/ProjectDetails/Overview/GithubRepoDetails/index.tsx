@@ -26,10 +26,6 @@ gql`
   query GetGithubRepositoryDetails($githubRepoId: bigint!) {
     crmGithubReposByPk(id: $githubRepoId) {
       ...GithubRepo
-      languages {
-        id
-        languages
-      }
     }
   }
 `;

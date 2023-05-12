@@ -49,7 +49,7 @@ export const getDeduplicatedAggregatedLanguages = function (
 gql`
   fragment GithubRepoLanguagesFields on ProjectGithubRepos {
     githubRepoId
-    githubRepoDetails {
+    repo {
       id
       languages
     }
