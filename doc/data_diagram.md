@@ -176,17 +176,6 @@ class ProjectsSponsors {
    sponsorId: uuid!
 }
 
-class Repo {
-   description: String!
-   forksCount: Int!
-   htmlUrl: Url!
-   id: GithubRepoId!
-   logoUrl: Url!
-   name: String!
-   owner: String!
-   stars: Int!
-}
-
 class Sponsors {
    id: uuid!
    logoUrl: String!

@@ -4149,18 +4149,6 @@ export type Reason = {
   workItems: Array<WorkItem>;
 };
 
-export type Repo = {
-  __typename?: 'Repo';
-  description: Scalars['String'];
-  forksCount: Scalars['Int'];
-  htmlUrl: Scalars['Url'];
-  id: Scalars['GithubRepoId'];
-  logoUrl: Scalars['Url'];
-  name: Scalars['String'];
-  owner: Scalars['String'];
-  stars: Scalars['Int'];
-};
-
 /** columns and relationships of "sponsors" */
 export type Sponsors = {
   __typename?: 'Sponsors';
@@ -9337,8 +9325,6 @@ export type Query_Root = {
   crmGithubReposByPk: Maybe<CrmGithubRepos>;
   fetchIssue: Maybe<Issue>;
   fetchIssueByRepositoryId: Maybe<Issue>;
-  fetchRepositoryDetails: Maybe<Repo>;
-  fetchUserDetails: Maybe<User>;
   fetchUserDetailsById: Maybe<User>;
   /** fetch data from the table: "github_issues" */
   githubIssues: Array<GithubIssues>;
@@ -9360,7 +9346,6 @@ export type Query_Root = {
   githubUsersByPk: Maybe<GithubUsers>;
   hello: Scalars['String'];
   helloFromDustyBot: Scalars['String'];
-  helloFromGithubProxy: Scalars['String'];
   /** fetch data from the table: "ignored_github_issues" */
   ignoredGithubIssues: Array<IgnoredGithubIssues>;
   /** fetch aggregated fields from the table: "ignored_github_issues" */
@@ -9678,16 +9663,6 @@ export type Query_RootFetchIssueArgs = {
 export type Query_RootFetchIssueByRepositoryIdArgs = {
   issueNumber: Scalars['Int'];
   repositoryId: Scalars['Int'];
-};
-
-
-export type Query_RootFetchRepositoryDetailsArgs = {
-  id: Scalars['Int'];
-};
-
-
-export type Query_RootFetchUserDetailsArgs = {
-  username: Scalars['String'];
 };
 
 
@@ -11997,13 +11972,6 @@ export type ImpersonatedLeadProjectsQueryVariables = Exact<{
 
 export type ImpersonatedLeadProjectsQuery = { __typename?: 'query_root', projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any, projectId: any }> };
 
-export type FindUserQueryForPaymentFormQueryVariables = Exact<{
-  username: Scalars['String'];
-}>;
-
-
-export type FindUserQueryForPaymentFormQuery = { __typename?: 'query_root', fetchUserDetails: { __typename?: 'User', login: string, avatarUrl: any, htmlUrl: any, id: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null } | null };
-
 export type GetPaymentRequestsForProjectQueryVariables = Exact<{
   projectId: Scalars['uuid'];
 }>;
@@ -12882,41 +12850,6 @@ export function useImpersonatedLeadProjectsLazyQuery(baseOptions?: Apollo.LazyQu
 export type ImpersonatedLeadProjectsQueryHookResult = ReturnType<typeof useImpersonatedLeadProjectsQuery>;
 export type ImpersonatedLeadProjectsLazyQueryHookResult = ReturnType<typeof useImpersonatedLeadProjectsLazyQuery>;
 export type ImpersonatedLeadProjectsQueryResult = Apollo.QueryResult<ImpersonatedLeadProjectsQuery, ImpersonatedLeadProjectsQueryVariables>;
-export const FindUserQueryForPaymentFormDocument = gql`
-    query FindUserQueryForPaymentForm($username: String!) {
-  fetchUserDetails(username: $username) {
-    ...LiveGithubUser
-  }
-}
-    ${LiveGithubUserFragmentDoc}`;
-
-/**
- * __useFindUserQueryForPaymentFormQuery__
- *
- * To run a query within a React component, call `useFindUserQueryForPaymentFormQuery` and pass it any options that fit your needs.
- * When your component renders, `useFindUserQueryForPaymentFormQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useFindUserQueryForPaymentFormQuery({
- *   variables: {
- *      username: // value for 'username'
- *   },
- * });
- */
-export function useFindUserQueryForPaymentFormQuery(baseOptions: Apollo.QueryHookOptions<FindUserQueryForPaymentFormQuery, FindUserQueryForPaymentFormQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindUserQueryForPaymentFormQuery, FindUserQueryForPaymentFormQueryVariables>(FindUserQueryForPaymentFormDocument, options);
-      }
-export function useFindUserQueryForPaymentFormLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindUserQueryForPaymentFormQuery, FindUserQueryForPaymentFormQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindUserQueryForPaymentFormQuery, FindUserQueryForPaymentFormQueryVariables>(FindUserQueryForPaymentFormDocument, options);
-        }
-export type FindUserQueryForPaymentFormQueryHookResult = ReturnType<typeof useFindUserQueryForPaymentFormQuery>;
-export type FindUserQueryForPaymentFormLazyQueryHookResult = ReturnType<typeof useFindUserQueryForPaymentFormLazyQuery>;
-export type FindUserQueryForPaymentFormQueryResult = Apollo.QueryResult<FindUserQueryForPaymentFormQuery, FindUserQueryForPaymentFormQueryVariables>;
 export const GetPaymentRequestsForProjectDocument = gql`
     query GetPaymentRequestsForProject($projectId: uuid!) {
   projectsByPk(id: $projectId) {
