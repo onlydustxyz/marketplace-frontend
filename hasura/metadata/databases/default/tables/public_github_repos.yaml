@@ -1,5 +1,5 @@
 table:
-  name: crm_github_repos
+  name: github_repos
   schema: public
 select_permissions:
   - role: public

@@ -18,7 +18,7 @@ object_relationships:
           github_repo_id: id
         insertion_order: null
         remote_table:
-          name: crm_github_repos
+          name: github_repos
           schema: public
 array_relationships:
   - name: repoContributors
