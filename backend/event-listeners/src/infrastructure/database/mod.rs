@@ -1,8 +1,8 @@
 mod budget;
-mod crm;
 mod error;
 mod github_issues;
 mod github_repo_indexes;
+mod github_repos;
 mod github_repos_contributors;
 mod github_user_indexes;
 mod github_users;
@@ -16,8 +16,8 @@ mod project_lead;
 mod work_item;
 
 pub use budget::Repository as BudgetRepository;
-pub use crm::GithubRepoRepository as CrmGithubRepoRepository;
 pub use github_issues::Repository as GithubIssuesRepository;
+pub use github_repos::Repository as GithubReposRepository;
 pub use github_repos_contributors::Repository as GithubReposContributorsRepository;
 pub use github_users::Repository as GithubUsersRepository;
 pub use payment::Repository as PaymentRepository;

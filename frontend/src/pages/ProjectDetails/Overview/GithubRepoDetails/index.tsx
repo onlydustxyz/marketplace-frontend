@@ -13,12 +13,12 @@ export default function GithubRepoDetails({ githubRepoId }: Props) {
     ...contextWithCacheHeaders,
   });
 
-  return <>{data?.crmGithubReposByPk && <View {...data?.crmGithubReposByPk} />}</>;
+  return <>{data?.githubReposByPk && <View {...data?.githubReposByPk} />}</>;
 }
 
 gql`
   query GetGithubRepositoryDetails($githubRepoId: bigint!) {
-    crmGithubReposByPk(id: $githubRepoId) {
+    githubReposByPk(id: $githubRepoId) {
       ...GithubRepo
     }
   }

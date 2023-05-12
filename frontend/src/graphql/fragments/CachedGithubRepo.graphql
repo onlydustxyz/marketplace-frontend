@@ -1,8 +1,8 @@
-fragment GithubRepoId on CrmGithubRepos {
+fragment GithubRepoId on GithubRepos {
   id
 }
 
-fragment GithubRepo on CrmGithubRepos {
+fragment GithubRepo on GithubRepos {
   ...GithubRepoId
   owner
   name

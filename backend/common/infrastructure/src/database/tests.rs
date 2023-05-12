@@ -54,11 +54,11 @@ LEFT OUTER JOIN (
 )]
 #[case(
 	"
-SELECT crm_github_repos.id as github_repo_id, crm_github_repos.owner as github_repo_owner,
-crm_github_repos.name as github_repo_name, crm_github_repos.languages as
+SELECT github_repos.id as github_repo_id, github_repos.owner as github_repo_owner,
+github_repos.name as github_repo_name, github_repos.languages as
 github_repo_languages, project_github_repos.project_id
-FROM crm_github_repos
-INNER JOIN project_github_repos ON project_github_repos.github_repo_id = crm_github_repos.id;
+FROM github_repos
+INNER JOIN project_github_repos ON project_github_repos.github_repo_id = github_repos.id;
 "
 )]
 #[case("
@@ -69,7 +69,7 @@ INNER JOIN budgets ON payment_requests.budget_id = budgets.id
 LEFT OUTER JOIN (
 	SELECT string_agg('https://github.com/'||r.owner||'/'||r.name||'/issues/'||issue_number, ', ') AS Items, payment_id
 	FROM work_items
-	INNER JOIN crm_github_repos AS r ON id = work_items.repo_id
+	INNER JOIN github_repos AS r ON id = work_items.repo_id
 	GROUP BY payment_id
 ) Items ON (payment_requests.id = Items.payment_id)
 INNER JOIN (

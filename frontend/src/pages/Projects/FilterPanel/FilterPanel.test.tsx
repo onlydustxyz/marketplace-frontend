@@ -18,7 +18,7 @@ const projects1: GetAllFilterOptionsQuery["projects"][number] = {
       projectId: "project-1",
       githubRepoId: 1,
       repo: {
-        __typename: "CrmGithubRepos",
+        __typename: "GithubRepos",
         id: 1,
         languages: { "C++": 1234, Shell: 123, Makefile: 10 },
       },
@@ -39,7 +39,7 @@ const projects2: GetAllFilterOptionsQuery["projects"][number] = {
       githubRepoId: 2,
       projectId: "project-2",
       repo: {
-        __typename: "CrmGithubRepos",
+        __typename: "GithubRepos",
         id: 2,
         languages: { Rust: 1234, Shell: 123 },
       },
@@ -63,7 +63,7 @@ const projects3: GetAllFilterOptionsQuery["projects"][number] = {
       projectId: "project-3",
       githubRepoId: 3,
       repo: {
-        __typename: "CrmGithubRepos",
+        __typename: "GithubRepos",
         id: 3,
         languages: { TypeScript: 1234 },
       },
@@ -84,7 +84,7 @@ const projects4: GetAllFilterOptionsQuery["projects"][number] = {
       projectId: "project-4",
       githubRepoId: 4,
       repo: {
-        __typename: "CrmGithubRepos",
+        __typename: "GithubRepos",
 
         id: 4,
         languages: { Go: 5555, C: 123 },
@@ -106,7 +106,7 @@ const projects5: GetAllFilterOptionsQuery["projects"][number] = {
       projectId: "project-5",
       githubRepoId: 5,
       repo: {
-        __typename: "CrmGithubRepos",
+        __typename: "GithubRepos",
         id: 5,
         languages: { Elisp: 666 },
       },

@@ -4,13 +4,13 @@ use anyhow::Result;
 use async_trait::async_trait;
 use chrono::Utc;
 use derive_new::new;
-use domain::{GithubFetchRepoService, GithubRepo, SubscriberCallbackError};
+use domain::{GithubFetchRepoService, SubscriberCallbackError};
 use tracing::instrument;
 
 use crate::{
-	domain::{CrmGithubRepo, EventListener, GithubEvent, GithubIssue, GithubUser},
+	domain::{EventListener, GithubEvent, GithubIssue, GithubRepo, GithubUser},
 	infrastructure::database::{
-		CrmGithubRepoRepository, GithubIssuesRepository, GithubReposContributorsRepository,
+		GithubIssuesRepository, GithubReposContributorsRepository, GithubReposRepository,
 		GithubUsersRepository,
 	},
 };
@@ -18,17 +18,17 @@ use crate::{
 #[derive(new)]
 pub struct Projector {
 	github_fetch_service: Arc<dyn GithubFetchRepoService>,
-	crm_github_repo_repository: CrmGithubRepoRepository,
+	github_repo_repository: GithubReposRepository,
 	github_issues_repository: GithubIssuesRepository,
 	github_users_repository: GithubUsersRepository,
 	github_repos_contributors_repository: GithubReposContributorsRepository,
 }
 
 impl Projector {
-	async fn build_repo(&self, repo: &GithubRepo) -> Result<CrmGithubRepo> {
+	async fn build_repo(&self, repo: &domain::GithubRepo) -> Result<GithubRepo> {
 		let languages = self.github_fetch_service.repo_languages(repo.id()).await?;
 
-		Ok(CrmGithubRepo {
+		Ok(GithubRepo {
 			id: *repo.id(),
 			owner: repo.owner().clone(),
 			name: repo.name().clone(),
@@ -48,7 +48,7 @@ impl EventListener<GithubEvent> for Projector {
 	async fn on_event(&self, event: &GithubEvent) -> Result<(), SubscriberCallbackError> {
 		match event.clone() {
 			GithubEvent::Repo(repo) => {
-				self.crm_github_repo_repository.upsert(
+				self.github_repo_repository.upsert(
 					&self.build_repo(&repo).await.map_err(SubscriberCallbackError::Discard)?,
 				)?;
 			},

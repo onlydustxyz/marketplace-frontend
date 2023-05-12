@@ -170,7 +170,7 @@ const SINGLE_PROJECT_RESULT: { data: GetProjectQueryResult["data"] } = {
           githubRepoId: TEST_GITHUB_REPO_ID,
           repoContributors: [],
           repo: {
-            __typename: "CrmGithubRepos",
+            __typename: "GithubRepos",
             id: TEST_GITHUB_REPO_ID,
             languages: [],
           },
@@ -184,8 +184,8 @@ const SINGLE_PROJECT_RESULT: { data: GetProjectQueryResult["data"] } = {
 
 const GITHUB_REPO_DETAILS_RESULT: { data: GetGithubRepositoryDetailsQueryResult["data"] } = {
   data: {
-    crmGithubReposByPk: {
-      __typename: "CrmGithubRepos",
+    githubReposByPk: {
+      __typename: "GithubRepos",
       id: TEST_GITHUB_REPO_ID,
       owner: TEST_GITHUB_REPO_OWNER,
       name: TEST_GITHUB_REPO_NAME,

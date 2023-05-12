@@ -7,9 +7,9 @@ use serde::{Deserialize, Serialize};
 #[derive(
 	Default, Debug, Clone, Insertable, AsChangeset, Serialize, Deserialize, Queryable, Identifiable,
 )]
-#[table_name = "crm_github_repos"]
+#[table_name = "github_repos"]
 #[primary_key(id)]
-pub struct CrmGithubRepo {
+pub struct GithubRepo {
 	pub id: GithubRepoId,
 	pub owner: String,
 	pub name: String,
@@ -21,6 +21,6 @@ pub struct CrmGithubRepo {
 	pub languages: serde_json::Value,
 }
 
-impl domain::Entity for CrmGithubRepo {
+impl domain::Entity for GithubRepo {
 	type Id = GithubRepoId;
 }
