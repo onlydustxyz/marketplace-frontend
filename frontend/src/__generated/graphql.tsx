@@ -680,12 +680,17 @@ export type CrmGithubRepos = {
   forkCount: Scalars['Int'];
   htmlUrl: Scalars['String'];
   id: Scalars['bigint'];
-  /** An object relationship */
-  languages: Maybe<GithubRepoDetails>;
+  languages: Scalars['jsonb'];
   name: Scalars['String'];
   owner: Scalars['String'];
   stars: Scalars['Int'];
   updatedAt: Maybe<Scalars['timestamp']>;
+};
+
+
+/** columns and relationships of "crm_github_repos" */
+export type CrmGithubReposLanguagesArgs = {
+  path: InputMaybe<Scalars['String']>;
 };
 
 /** aggregated selection of "crm_github_repos" */
@@ -718,6 +723,11 @@ export type CrmGithubReposAggregateFieldsCountArgs = {
   distinct: InputMaybe<Scalars['Boolean']>;
 };
 
+/** append existing jsonb value of filtered columns with new jsonb value */
+export type CrmGithubReposAppendInput = {
+  languages: InputMaybe<Scalars['jsonb']>;
+};
+
 /** aggregate avg on columns */
 export type CrmGithubReposAvgFields = {
   __typename?: 'CrmGithubReposAvgFields';
@@ -735,7 +745,7 @@ export type CrmGithubReposBoolExp = {
   forkCount: InputMaybe<IntComparisonExp>;
   htmlUrl: InputMaybe<StringComparisonExp>;
   id: InputMaybe<BigintComparisonExp>;
-  languages: InputMaybe<GithubRepoDetailsBoolExp>;
+  languages: InputMaybe<JsonbComparisonExp>;
   name: InputMaybe<StringComparisonExp>;
   owner: InputMaybe<StringComparisonExp>;
   stars: InputMaybe<IntComparisonExp>;
@@ -747,6 +757,21 @@ export enum CrmGithubReposConstraint {
   /** unique or primary key constraint on columns "id" */
   CrmGithubReposPkey = 'crm_github_repos_pkey'
 }
+
+/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+export type CrmGithubReposDeleteAtPathInput = {
+  languages: InputMaybe<Array<Scalars['String']>>;
+};
+
+/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+export type CrmGithubReposDeleteElemInput = {
+  languages: InputMaybe<Scalars['Int']>;
+};
+
+/** delete key/value pair or string element. key/value pairs are matched based on their key value */
+export type CrmGithubReposDeleteKeyInput = {
+  languages: InputMaybe<Scalars['String']>;
+};
 
 /** input type for incrementing numeric columns in table "crm_github_repos" */
 export type CrmGithubReposIncInput = {
@@ -761,7 +786,7 @@ export type CrmGithubReposInsertInput = {
   forkCount: InputMaybe<Scalars['Int']>;
   htmlUrl: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['bigint']>;
-  languages: InputMaybe<GithubRepoDetailsObjRelInsertInput>;
+  languages: InputMaybe<Scalars['jsonb']>;
   name: InputMaybe<Scalars['String']>;
   owner: InputMaybe<Scalars['String']>;
   stars: InputMaybe<Scalars['Int']>;
@@ -823,7 +848,7 @@ export type CrmGithubReposOrderBy = {
   forkCount: InputMaybe<OrderBy>;
   htmlUrl: InputMaybe<OrderBy>;
   id: InputMaybe<OrderBy>;
-  languages: InputMaybe<GithubRepoDetailsOrderBy>;
+  languages: InputMaybe<OrderBy>;
   name: InputMaybe<OrderBy>;
   owner: InputMaybe<OrderBy>;
   stars: InputMaybe<OrderBy>;
@@ -833,6 +858,11 @@ export type CrmGithubReposOrderBy = {
 /** primary key columns input for table: crm_github_repos */
 export type CrmGithubReposPkColumnsInput = {
   id: Scalars['bigint'];
+};
+
+/** prepend existing jsonb value of filtered columns with new jsonb value */
+export type CrmGithubReposPrependInput = {
+  languages: InputMaybe<Scalars['jsonb']>;
 };
 
 /** select columns of table "crm_github_repos" */
@@ -845,6 +875,8 @@ export enum CrmGithubReposSelectColumn {
   HtmlUrl = 'htmlUrl',
   /** column name */
   Id = 'id',
+  /** column name */
+  Languages = 'languages',
   /** column name */
   Name = 'name',
   /** column name */
@@ -861,6 +893,7 @@ export type CrmGithubReposSetInput = {
   forkCount: InputMaybe<Scalars['Int']>;
   htmlUrl: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['bigint']>;
+  languages: InputMaybe<Scalars['jsonb']>;
   name: InputMaybe<Scalars['String']>;
   owner: InputMaybe<Scalars['String']>;
   stars: InputMaybe<Scalars['Int']>;
@@ -910,6 +943,8 @@ export enum CrmGithubReposUpdateColumn {
   /** column name */
   Id = 'id',
   /** column name */
+  Languages = 'languages',
+  /** column name */
   Name = 'name',
   /** column name */
   Owner = 'owner',
@@ -920,8 +955,18 @@ export enum CrmGithubReposUpdateColumn {
 }
 
 export type CrmGithubReposUpdates = {
+  /** append existing jsonb value of filtered columns with new jsonb value */
+  _append: InputMaybe<CrmGithubReposAppendInput>;
+  /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+  _deleteAtPath: InputMaybe<CrmGithubReposDeleteAtPathInput>;
+  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+  _deleteElem: InputMaybe<CrmGithubReposDeleteElemInput>;
+  /** delete key/value pair or string element. key/value pairs are matched based on their key value */
+  _deleteKey: InputMaybe<CrmGithubReposDeleteKeyInput>;
   /** increments the numeric columns with given value of the filtered values */
   _inc: InputMaybe<CrmGithubReposIncInput>;
+  /** prepend existing jsonb value of filtered columns with new jsonb value */
+  _prepend: InputMaybe<CrmGithubReposPrependInput>;
   /** sets the columns of the filtered rows to the given values */
   _set: InputMaybe<CrmGithubReposSetInput>;
   where: CrmGithubReposBoolExp;
@@ -1372,234 +1417,6 @@ export type GithubIssuesVarianceFields = {
   id: Maybe<Scalars['Float']>;
   issueNumber: Maybe<Scalars['Float']>;
   repoId: Maybe<Scalars['Float']>;
-};
-
-/** columns and relationships of "github_repo_details" */
-export type GithubRepoDetails = {
-  __typename?: 'GithubRepoDetails';
-  id: Scalars['bigint'];
-  languages: Scalars['jsonb'];
-};
-
-
-/** columns and relationships of "github_repo_details" */
-export type GithubRepoDetailsLanguagesArgs = {
-  path: InputMaybe<Scalars['String']>;
-};
-
-/** aggregated selection of "github_repo_details" */
-export type GithubRepoDetailsAggregate = {
-  __typename?: 'GithubRepoDetailsAggregate';
-  aggregate: Maybe<GithubRepoDetailsAggregateFields>;
-  nodes: Array<GithubRepoDetails>;
-};
-
-/** aggregate fields of "github_repo_details" */
-export type GithubRepoDetailsAggregateFields = {
-  __typename?: 'GithubRepoDetailsAggregateFields';
-  avg: Maybe<GithubRepoDetailsAvgFields>;
-  count: Scalars['Int'];
-  max: Maybe<GithubRepoDetailsMaxFields>;
-  min: Maybe<GithubRepoDetailsMinFields>;
-  stddev: Maybe<GithubRepoDetailsStddevFields>;
-  stddevPop: Maybe<GithubRepoDetailsStddev_PopFields>;
-  stddevSamp: Maybe<GithubRepoDetailsStddev_SampFields>;
-  sum: Maybe<GithubRepoDetailsSumFields>;
-  varPop: Maybe<GithubRepoDetailsVar_PopFields>;
-  varSamp: Maybe<GithubRepoDetailsVar_SampFields>;
-  variance: Maybe<GithubRepoDetailsVarianceFields>;
-};
-
-
-/** aggregate fields of "github_repo_details" */
-export type GithubRepoDetailsAggregateFieldsCountArgs = {
-  columns: InputMaybe<Array<GithubRepoDetailsSelectColumn>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
-};
-
-/** append existing jsonb value of filtered columns with new jsonb value */
-export type GithubRepoDetailsAppendInput = {
-  languages: InputMaybe<Scalars['jsonb']>;
-};
-
-/** aggregate avg on columns */
-export type GithubRepoDetailsAvgFields = {
-  __typename?: 'GithubRepoDetailsAvgFields';
-  id: Maybe<Scalars['Float']>;
-};
-
-/** Boolean expression to filter rows from the table "github_repo_details". All fields are combined with a logical 'AND'. */
-export type GithubRepoDetailsBoolExp = {
-  _and: InputMaybe<Array<GithubRepoDetailsBoolExp>>;
-  _not: InputMaybe<GithubRepoDetailsBoolExp>;
-  _or: InputMaybe<Array<GithubRepoDetailsBoolExp>>;
-  id: InputMaybe<BigintComparisonExp>;
-  languages: InputMaybe<JsonbComparisonExp>;
-};
-
-/** unique or primary key constraints on table "github_repo_details" */
-export enum GithubRepoDetailsConstraint {
-  /** unique or primary key constraint on columns "id" */
-  GithubRepoDetailsPkey = 'github_repo_details_pkey'
-}
-
-/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
-export type GithubRepoDetailsDeleteAtPathInput = {
-  languages: InputMaybe<Array<Scalars['String']>>;
-};
-
-/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
-export type GithubRepoDetailsDeleteElemInput = {
-  languages: InputMaybe<Scalars['Int']>;
-};
-
-/** delete key/value pair or string element. key/value pairs are matched based on their key value */
-export type GithubRepoDetailsDeleteKeyInput = {
-  languages: InputMaybe<Scalars['String']>;
-};
-
-/** input type for incrementing numeric columns in table "github_repo_details" */
-export type GithubRepoDetailsIncInput = {
-  id: InputMaybe<Scalars['bigint']>;
-};
-
-/** input type for inserting data into table "github_repo_details" */
-export type GithubRepoDetailsInsertInput = {
-  id: InputMaybe<Scalars['bigint']>;
-  languages: InputMaybe<Scalars['jsonb']>;
-};
-
-/** aggregate max on columns */
-export type GithubRepoDetailsMaxFields = {
-  __typename?: 'GithubRepoDetailsMaxFields';
-  id: Maybe<Scalars['bigint']>;
-};
-
-/** aggregate min on columns */
-export type GithubRepoDetailsMinFields = {
-  __typename?: 'GithubRepoDetailsMinFields';
-  id: Maybe<Scalars['bigint']>;
-};
-
-/** response of any mutation on the table "github_repo_details" */
-export type GithubRepoDetailsMutationResponse = {
-  __typename?: 'GithubRepoDetailsMutationResponse';
-  /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
-  /** data from the rows affected by the mutation */
-  returning: Array<GithubRepoDetails>;
-};
-
-/** input type for inserting object relation for remote table "github_repo_details" */
-export type GithubRepoDetailsObjRelInsertInput = {
-  data: GithubRepoDetailsInsertInput;
-  /** upsert condition */
-  onConflict: InputMaybe<GithubRepoDetailsOnConflict>;
-};
-
-/** on_conflict condition type for table "github_repo_details" */
-export type GithubRepoDetailsOnConflict = {
-  constraint: GithubRepoDetailsConstraint;
-  update_columns: Array<GithubRepoDetailsUpdateColumn>;
-  where: InputMaybe<GithubRepoDetailsBoolExp>;
-};
-
-/** Ordering options when selecting data from "github_repo_details". */
-export type GithubRepoDetailsOrderBy = {
-  id: InputMaybe<OrderBy>;
-  languages: InputMaybe<OrderBy>;
-};
-
-/** primary key columns input for table: github_repo_details */
-export type GithubRepoDetailsPkColumnsInput = {
-  id: Scalars['bigint'];
-};
-
-/** prepend existing jsonb value of filtered columns with new jsonb value */
-export type GithubRepoDetailsPrependInput = {
-  languages: InputMaybe<Scalars['jsonb']>;
-};
-
-/** select columns of table "github_repo_details" */
-export enum GithubRepoDetailsSelectColumn {
-  /** column name */
-  Id = 'id',
-  /** column name */
-  Languages = 'languages'
-}
-
-/** input type for updating data in table "github_repo_details" */
-export type GithubRepoDetailsSetInput = {
-  id: InputMaybe<Scalars['bigint']>;
-  languages: InputMaybe<Scalars['jsonb']>;
-};
-
-/** aggregate stddev on columns */
-export type GithubRepoDetailsStddevFields = {
-  __typename?: 'GithubRepoDetailsStddevFields';
-  id: Maybe<Scalars['Float']>;
-};
-
-/** aggregate stddev_pop on columns */
-export type GithubRepoDetailsStddev_PopFields = {
-  __typename?: 'GithubRepoDetailsStddev_popFields';
-  id: Maybe<Scalars['Float']>;
-};
-
-/** aggregate stddev_samp on columns */
-export type GithubRepoDetailsStddev_SampFields = {
-  __typename?: 'GithubRepoDetailsStddev_sampFields';
-  id: Maybe<Scalars['Float']>;
-};
-
-/** aggregate sum on columns */
-export type GithubRepoDetailsSumFields = {
-  __typename?: 'GithubRepoDetailsSumFields';
-  id: Maybe<Scalars['bigint']>;
-};
-
-/** update columns of table "github_repo_details" */
-export enum GithubRepoDetailsUpdateColumn {
-  /** column name */
-  Id = 'id',
-  /** column name */
-  Languages = 'languages'
-}
-
-export type GithubRepoDetailsUpdates = {
-  /** append existing jsonb value of filtered columns with new jsonb value */
-  _append: InputMaybe<GithubRepoDetailsAppendInput>;
-  /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
-  _deleteAtPath: InputMaybe<GithubRepoDetailsDeleteAtPathInput>;
-  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
-  _deleteElem: InputMaybe<GithubRepoDetailsDeleteElemInput>;
-  /** delete key/value pair or string element. key/value pairs are matched based on their key value */
-  _deleteKey: InputMaybe<GithubRepoDetailsDeleteKeyInput>;
-  /** increments the numeric columns with given value of the filtered values */
-  _inc: InputMaybe<GithubRepoDetailsIncInput>;
-  /** prepend existing jsonb value of filtered columns with new jsonb value */
-  _prepend: InputMaybe<GithubRepoDetailsPrependInput>;
-  /** sets the columns of the filtered rows to the given values */
-  _set: InputMaybe<GithubRepoDetailsSetInput>;
-  where: GithubRepoDetailsBoolExp;
-};
-
-/** aggregate var_pop on columns */
-export type GithubRepoDetailsVar_PopFields = {
-  __typename?: 'GithubRepoDetailsVar_popFields';
-  id: Maybe<Scalars['Float']>;
-};
-
-/** aggregate var_samp on columns */
-export type GithubRepoDetailsVar_SampFields = {
-  __typename?: 'GithubRepoDetailsVar_sampFields';
-  id: Maybe<Scalars['Float']>;
-};
-
-/** aggregate variance on columns */
-export type GithubRepoDetailsVarianceFields = {
-  __typename?: 'GithubRepoDetailsVarianceFields';
-  id: Maybe<Scalars['Float']>;
 };
 
 /** columns and relationships of "github_repos_contributors" */
@@ -2325,7 +2142,7 @@ export type Issue = {
   ignoredForProjects: Array<IgnoredGithubIssues>;
   ignoredForProjectsAggregate: IgnoredGithubIssuesAggregate;
   mergedAt: Maybe<Scalars['DateTimeUtc']>;
-  number: Scalars['Int'];
+  number: Scalars['GithubIssueNumber'];
   repoId: Scalars['GithubRepoId'];
   status: Status;
   title: Scalars['String'];
@@ -3510,8 +3327,6 @@ export type ProjectDetailsUpdates = {
 /** columns and relationships of "project_github_repos" */
 export type ProjectGithubRepos = {
   __typename?: 'ProjectGithubRepos';
-  /** An object relationship */
-  githubRepoDetails: Maybe<GithubRepoDetails>;
   githubRepoId: Scalars['bigint'];
   /** An object relationship */
   project: Maybe<Projects>;
@@ -3631,7 +3446,6 @@ export type ProjectGithubReposBoolExp = {
   _and: InputMaybe<Array<ProjectGithubReposBoolExp>>;
   _not: InputMaybe<ProjectGithubReposBoolExp>;
   _or: InputMaybe<Array<ProjectGithubReposBoolExp>>;
-  githubRepoDetails: InputMaybe<GithubRepoDetailsBoolExp>;
   githubRepoId: InputMaybe<BigintComparisonExp>;
   project: InputMaybe<ProjectsBoolExp>;
   projectId: InputMaybe<UuidComparisonExp>;
@@ -3655,7 +3469,6 @@ export type ProjectGithubReposIncInput = {
 
 /** input type for inserting data into table "project_github_repos" */
 export type ProjectGithubReposInsertInput = {
-  githubRepoDetails: InputMaybe<GithubRepoDetailsObjRelInsertInput>;
   githubRepoId: InputMaybe<Scalars['bigint']>;
   project: InputMaybe<ProjectsObjRelInsertInput>;
   projectId: InputMaybe<Scalars['uuid']>;
@@ -3696,7 +3509,6 @@ export type ProjectGithubReposOnConflict = {
 
 /** Ordering options when selecting data from "project_github_repos". */
 export type ProjectGithubReposOrderBy = {
-  githubRepoDetails: InputMaybe<GithubRepoDetailsOrderBy>;
   githubRepoId: InputMaybe<OrderBy>;
   project: InputMaybe<ProjectsOrderBy>;
   projectId: InputMaybe<OrderBy>;
@@ -4339,7 +4151,6 @@ export type Reason = {
 
 export type Repo = {
   __typename?: 'Repo';
-  contributors: Array<User>;
   description: Scalars['String'];
   forksCount: Scalars['Int'];
   htmlUrl: Scalars['Url'];
@@ -6835,6 +6646,7 @@ export type Crm_Github_Repos_StreamCursorValueInput = {
   forkCount: InputMaybe<Scalars['Int']>;
   htmlUrl: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['bigint']>;
+  languages: InputMaybe<Scalars['jsonb']>;
   name: InputMaybe<Scalars['String']>;
   owner: InputMaybe<Scalars['String']>;
   stars: InputMaybe<Scalars['Int']>;
@@ -6963,20 +6775,6 @@ export type Github_Issues_Variance_Order_By = {
   id: InputMaybe<OrderBy>;
   issueNumber: InputMaybe<OrderBy>;
   repoId: InputMaybe<OrderBy>;
-};
-
-/** Streaming cursor of the table "github_repo_details" */
-export type Github_Repo_Details_StreamCursorInput = {
-  /** Stream column input with initial value */
-  initialValue: Github_Repo_Details_StreamCursorValueInput;
-  /** cursor ordering */
-  ordering: InputMaybe<CursorOrdering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type Github_Repo_Details_StreamCursorValueInput = {
-  id: InputMaybe<Scalars['bigint']>;
-  languages: InputMaybe<Scalars['jsonb']>;
 };
 
 export type Github_Repos_Contributors_Aggregate_Bool_Exp = {
@@ -7221,10 +7019,6 @@ export type Mutation_Root = {
   deleteGithubIssues: Maybe<GithubIssuesMutationResponse>;
   /** delete single row from the table: "github_issues" */
   deleteGithubIssuesByPk: Maybe<GithubIssues>;
-  /** delete data from the table: "github_repo_details" */
-  deleteGithubRepoDetails: Maybe<GithubRepoDetailsMutationResponse>;
-  /** delete single row from the table: "github_repo_details" */
-  deleteGithubRepoDetailsByPk: Maybe<GithubRepoDetails>;
   /** delete data from the table: "github_repos_contributors" */
   deleteGithubReposContributors: Maybe<GithubReposContributorsMutationResponse>;
   /** delete single row from the table: "github_repos_contributors" */
@@ -7330,10 +7124,6 @@ export type Mutation_Root = {
   insertGithubIssues: Maybe<GithubIssuesMutationResponse>;
   /** insert a single row into the table: "github_issues" */
   insertGithubIssuesOne: Maybe<GithubIssues>;
-  /** insert data into the table: "github_repo_details" */
-  insertGithubRepoDetails: Maybe<GithubRepoDetailsMutationResponse>;
-  /** insert a single row into the table: "github_repo_details" */
-  insertGithubRepoDetailsOne: Maybe<GithubRepoDetails>;
   /** insert data into the table: "github_repos_contributors" */
   insertGithubReposContributors: Maybe<GithubReposContributorsMutationResponse>;
   /** insert a single row into the table: "github_repos_contributors" */
@@ -7469,12 +7259,6 @@ export type Mutation_Root = {
   updateGithubIssuesByPk: Maybe<GithubIssues>;
   /** update multiples rows of table: "github_issues" */
   updateGithubIssuesMany: Maybe<Array<Maybe<GithubIssuesMutationResponse>>>;
-  /** update data of the table: "github_repo_details" */
-  updateGithubRepoDetails: Maybe<GithubRepoDetailsMutationResponse>;
-  /** update single row of the table: "github_repo_details" */
-  updateGithubRepoDetailsByPk: Maybe<GithubRepoDetails>;
-  /** update multiples rows of table: "github_repo_details" */
-  updateGithubRepoDetailsMany: Maybe<Array<Maybe<GithubRepoDetailsMutationResponse>>>;
   /** update data of the table: "github_repos_contributors" */
   updateGithubReposContributors: Maybe<GithubReposContributorsMutationResponse>;
   /** update single row of the table: "github_repos_contributors" */
@@ -7763,18 +7547,6 @@ export type Mutation_RootDeleteGithubIssuesArgs = {
 
 /** mutation root */
 export type Mutation_RootDeleteGithubIssuesByPkArgs = {
-  id: Scalars['bigint'];
-};
-
-
-/** mutation root */
-export type Mutation_RootDeleteGithubRepoDetailsArgs = {
-  where: GithubRepoDetailsBoolExp;
-};
-
-
-/** mutation root */
-export type Mutation_RootDeleteGithubRepoDetailsByPkArgs = {
   id: Scalars['bigint'];
 };
 
@@ -8124,20 +7896,6 @@ export type Mutation_RootInsertGithubIssuesArgs = {
 export type Mutation_RootInsertGithubIssuesOneArgs = {
   object: GithubIssuesInsertInput;
   onConflict: InputMaybe<GithubIssuesOnConflict>;
-};
-
-
-/** mutation root */
-export type Mutation_RootInsertGithubRepoDetailsArgs = {
-  objects: Array<GithubRepoDetailsInsertInput>;
-  onConflict: InputMaybe<GithubRepoDetailsOnConflict>;
-};
-
-
-/** mutation root */
-export type Mutation_RootInsertGithubRepoDetailsOneArgs = {
-  object: GithubRepoDetailsInsertInput;
-  onConflict: InputMaybe<GithubRepoDetailsOnConflict>;
 };
 
 
@@ -8621,7 +8379,12 @@ export type Mutation_RootUpdateBudgetsManyArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdateCrmGithubReposArgs = {
+  _append: InputMaybe<CrmGithubReposAppendInput>;
+  _deleteAtPath: InputMaybe<CrmGithubReposDeleteAtPathInput>;
+  _deleteElem: InputMaybe<CrmGithubReposDeleteElemInput>;
+  _deleteKey: InputMaybe<CrmGithubReposDeleteKeyInput>;
   _inc: InputMaybe<CrmGithubReposIncInput>;
+  _prepend: InputMaybe<CrmGithubReposPrependInput>;
   _set: InputMaybe<CrmGithubReposSetInput>;
   where: CrmGithubReposBoolExp;
 };
@@ -8629,7 +8392,12 @@ export type Mutation_RootUpdateCrmGithubReposArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdateCrmGithubReposByPkArgs = {
+  _append: InputMaybe<CrmGithubReposAppendInput>;
+  _deleteAtPath: InputMaybe<CrmGithubReposDeleteAtPathInput>;
+  _deleteElem: InputMaybe<CrmGithubReposDeleteElemInput>;
+  _deleteKey: InputMaybe<CrmGithubReposDeleteKeyInput>;
   _inc: InputMaybe<CrmGithubReposIncInput>;
+  _prepend: InputMaybe<CrmGithubReposPrependInput>;
   _set: InputMaybe<CrmGithubReposSetInput>;
   pk_columns: CrmGithubReposPkColumnsInput;
 };
@@ -8670,38 +8438,6 @@ export type Mutation_RootUpdateGithubIssuesByPkArgs = {
 /** mutation root */
 export type Mutation_RootUpdateGithubIssuesManyArgs = {
   updates: Array<GithubIssuesUpdates>;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdateGithubRepoDetailsArgs = {
-  _append: InputMaybe<GithubRepoDetailsAppendInput>;
-  _deleteAtPath: InputMaybe<GithubRepoDetailsDeleteAtPathInput>;
-  _deleteElem: InputMaybe<GithubRepoDetailsDeleteElemInput>;
-  _deleteKey: InputMaybe<GithubRepoDetailsDeleteKeyInput>;
-  _inc: InputMaybe<GithubRepoDetailsIncInput>;
-  _prepend: InputMaybe<GithubRepoDetailsPrependInput>;
-  _set: InputMaybe<GithubRepoDetailsSetInput>;
-  where: GithubRepoDetailsBoolExp;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdateGithubRepoDetailsByPkArgs = {
-  _append: InputMaybe<GithubRepoDetailsAppendInput>;
-  _deleteAtPath: InputMaybe<GithubRepoDetailsDeleteAtPathInput>;
-  _deleteElem: InputMaybe<GithubRepoDetailsDeleteElemInput>;
-  _deleteKey: InputMaybe<GithubRepoDetailsDeleteKeyInput>;
-  _inc: InputMaybe<GithubRepoDetailsIncInput>;
-  _prepend: InputMaybe<GithubRepoDetailsPrependInput>;
-  _set: InputMaybe<GithubRepoDetailsSetInput>;
-  pk_columns: GithubRepoDetailsPkColumnsInput;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdateGithubRepoDetailsManyArgs = {
-  updates: Array<GithubRepoDetailsUpdates>;
 };
 
 
@@ -9610,12 +9346,6 @@ export type Query_Root = {
   githubIssuesAggregate: GithubIssuesAggregate;
   /** fetch data from the table: "github_issues" using primary key columns */
   githubIssuesByPk: Maybe<GithubIssues>;
-  /** fetch data from the table: "github_repo_details" */
-  githubRepoDetails: Array<GithubRepoDetails>;
-  /** fetch aggregated fields from the table: "github_repo_details" */
-  githubRepoDetailsAggregate: GithubRepoDetailsAggregate;
-  /** fetch data from the table: "github_repo_details" using primary key columns */
-  githubRepoDetailsByPk: Maybe<GithubRepoDetails>;
   /** fetch data from the table: "github_repos_contributors" */
   githubReposContributors: Array<GithubReposContributors>;
   /** fetch aggregated fields from the table: "github_repos_contributors" */
@@ -9985,29 +9715,6 @@ export type Query_RootGithubIssuesAggregateArgs = {
 
 
 export type Query_RootGithubIssuesByPkArgs = {
-  id: Scalars['bigint'];
-};
-
-
-export type Query_RootGithubRepoDetailsArgs = {
-  distinctOn: InputMaybe<Array<GithubRepoDetailsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<GithubRepoDetailsOrderBy>>;
-  where: InputMaybe<GithubRepoDetailsBoolExp>;
-};
-
-
-export type Query_RootGithubRepoDetailsAggregateArgs = {
-  distinctOn: InputMaybe<Array<GithubRepoDetailsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<GithubRepoDetailsOrderBy>>;
-  where: InputMaybe<GithubRepoDetailsBoolExp>;
-};
-
-
-export type Query_RootGithubRepoDetailsByPkArgs = {
   id: Scalars['bigint'];
 };
 
@@ -10477,14 +10184,6 @@ export type Subscription_Root = {
   githubIssuesByPk: Maybe<GithubIssues>;
   /** fetch data from the table in a streaming manner: "github_issues" */
   githubIssuesStream: Array<GithubIssues>;
-  /** fetch data from the table: "github_repo_details" */
-  githubRepoDetails: Array<GithubRepoDetails>;
-  /** fetch aggregated fields from the table: "github_repo_details" */
-  githubRepoDetailsAggregate: GithubRepoDetailsAggregate;
-  /** fetch data from the table: "github_repo_details" using primary key columns */
-  githubRepoDetailsByPk: Maybe<GithubRepoDetails>;
-  /** fetch data from the table in a streaming manner: "github_repo_details" */
-  githubRepoDetailsStream: Array<GithubRepoDetails>;
   /** fetch data from the table: "github_repos_contributors" */
   githubReposContributors: Array<GithubReposContributors>;
   /** fetch aggregated fields from the table: "github_repos_contributors" */
@@ -10930,36 +10629,6 @@ export type Subscription_RootGithubIssuesStreamArgs = {
   batchSize: Scalars['Int'];
   cursor: Array<InputMaybe<Github_Issues_StreamCursorInput>>;
   where: InputMaybe<GithubIssuesBoolExp>;
-};
-
-
-export type Subscription_RootGithubRepoDetailsArgs = {
-  distinctOn: InputMaybe<Array<GithubRepoDetailsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<GithubRepoDetailsOrderBy>>;
-  where: InputMaybe<GithubRepoDetailsBoolExp>;
-};
-
-
-export type Subscription_RootGithubRepoDetailsAggregateArgs = {
-  distinctOn: InputMaybe<Array<GithubRepoDetailsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<GithubRepoDetailsOrderBy>>;
-  where: InputMaybe<GithubRepoDetailsBoolExp>;
-};
-
-
-export type Subscription_RootGithubRepoDetailsByPkArgs = {
-  id: Scalars['bigint'];
-};
-
-
-export type Subscription_RootGithubRepoDetailsStreamArgs = {
-  batchSize: Scalars['Int'];
-  cursor: Array<InputMaybe<Github_Repo_Details_StreamCursorInput>>;
-  where: InputMaybe<GithubRepoDetailsBoolExp>;
 };
 
 
@@ -12259,18 +11928,16 @@ export type GetPaymentRequestIdsQueryVariables = Exact<{
 
 export type GetPaymentRequestIdsQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any }> };
 
-export type PaymentRequestDetailsFragment = { __typename?: 'PaymentRequests', id: any, amountInUsd: any, requestedAt: any, invoiceReceivedAt: any | null, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', max: { __typename?: 'PaymentsMaxFields', processedAt: any | null } | null, sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null }, requestor: { __typename?: 'users', id: any, displayName: string, avatarUrl: string } | null, liveGithubRecipient: { __typename?: 'User', login: string, avatarUrl: any, htmlUrl: any, id: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null } | null, workItems: Array<{ __typename?: 'WorkItems', paymentId: any, repoId: any, issueNumber: any, githubIssue: { __typename?: 'Issue', repoId: any, number: number, type: Type, status: Status, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null, id: any, ignoredForProjects: Array<{ __typename?: 'IgnoredGithubIssues', projectId: any, repoId: any, issueNumber: any }> } | null }> };
+export type PaymentRequestDetailsFragment = { __typename?: 'PaymentRequests', id: any, amountInUsd: any, requestedAt: any, invoiceReceivedAt: any | null, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', max: { __typename?: 'PaymentsMaxFields', processedAt: any | null } | null, sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null }, requestor: { __typename?: 'users', id: any, displayName: string, avatarUrl: string } | null, liveGithubRecipient: { __typename?: 'User', login: string, avatarUrl: any, htmlUrl: any, id: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null } | null, workItems: Array<{ __typename?: 'WorkItems', paymentId: any, repoId: any, issueNumber: any, githubIssue: { __typename?: 'Issue', repoId: any, number: any, type: Type, status: Status, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null, id: any, ignoredForProjects: Array<{ __typename?: 'IgnoredGithubIssues', projectId: any, repoId: any, issueNumber: any }> } | null }> };
 
 export type PaymentRequestDetailsQueryVariables = Exact<{
   id: Scalars['uuid'];
 }>;
 
 
-export type PaymentRequestDetailsQuery = { __typename?: 'query_root', paymentRequestsByPk: { __typename?: 'PaymentRequests', id: any, amountInUsd: any, requestedAt: any, invoiceReceivedAt: any | null, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', max: { __typename?: 'PaymentsMaxFields', processedAt: any | null } | null, sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null }, requestor: { __typename?: 'users', id: any, displayName: string, avatarUrl: string } | null, liveGithubRecipient: { __typename?: 'User', login: string, avatarUrl: any, htmlUrl: any, id: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null } | null, workItems: Array<{ __typename?: 'WorkItems', paymentId: any, repoId: any, issueNumber: any, githubIssue: { __typename?: 'Issue', repoId: any, number: number, type: Type, status: Status, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null, id: any, ignoredForProjects: Array<{ __typename?: 'IgnoredGithubIssues', projectId: any, repoId: any, issueNumber: any }> } | null }> } | null };
+export type PaymentRequestDetailsQuery = { __typename?: 'query_root', paymentRequestsByPk: { __typename?: 'PaymentRequests', id: any, amountInUsd: any, requestedAt: any, invoiceReceivedAt: any | null, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', max: { __typename?: 'PaymentsMaxFields', processedAt: any | null } | null, sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null }, requestor: { __typename?: 'users', id: any, displayName: string, avatarUrl: string } | null, liveGithubRecipient: { __typename?: 'User', login: string, avatarUrl: any, htmlUrl: any, id: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null } | null, workItems: Array<{ __typename?: 'WorkItems', paymentId: any, repoId: any, issueNumber: any, githubIssue: { __typename?: 'Issue', repoId: any, number: any, type: Type, status: Status, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null, id: any, ignoredForProjects: Array<{ __typename?: 'IgnoredGithubIssues', projectId: any, repoId: any, issueNumber: any }> } | null }> } | null };
 
-export type ProjectCardGithubRepoFieldsFragment = { __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, languages: any } | null };
-
-export type ProjectCardFieldsFragment = { __typename?: 'Projects', id: any, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null, initialAmount: any | null } | null } | null }, budgets: Array<{ __typename?: 'Budgets', id: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, githubRecipient: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null } | null }> }>, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, telegramLink: string | null, logoUrl: string | null, shortDescription: string } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any, projectId: any, user: { __typename?: 'users', id: any, displayName: string, avatarUrl: string } | null }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', projectId: any, githubRepoId: any, repoContributors: Array<{ __typename?: 'GithubReposContributors', user: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null } | null }>, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, languages: any } | null }>, projectSponsors: Array<{ __typename?: 'ProjectsSponsors', sponsor: { __typename?: 'Sponsors', id: any, name: string, logoUrl: string, url: string | null } }> };
+export type ProjectCardFieldsFragment = { __typename?: 'Projects', id: any, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null, initialAmount: any | null } | null } | null }, budgets: Array<{ __typename?: 'Budgets', id: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, githubRecipient: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null } | null }> }>, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, telegramLink: string | null, logoUrl: string | null, shortDescription: string } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any, projectId: any, user: { __typename?: 'users', id: any, displayName: string, avatarUrl: string } | null }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', projectId: any, githubRepoId: any, repo: { __typename?: 'CrmGithubRepos', languages: any, id: any } | null, repoContributors: Array<{ __typename?: 'GithubReposContributors', user: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null } | null }> }>, projectSponsors: Array<{ __typename?: 'ProjectsSponsors', sponsor: { __typename?: 'Sponsors', id: any, name: string, logoUrl: string, url: string | null } }> };
 
 export type GithubIssueIdFragment = { __typename?: 'GithubIssues', id: any };
 
@@ -12278,7 +11945,7 @@ export type GithubIssueFragment = { __typename?: 'GithubIssues', repoId: any, is
 
 export type GithubRepoIdFragment = { __typename?: 'CrmGithubRepos', id: any };
 
-export type GithubRepoFragment = { __typename?: 'CrmGithubRepos', owner: string, name: string, description: string, stars: number, forkCount: number, htmlUrl: string, id: any };
+export type GithubRepoFragment = { __typename?: 'CrmGithubRepos', owner: string, name: string, description: string, stars: number, forkCount: number, htmlUrl: string, languages: any, id: any };
 
 export type GithubUserIdFragment = { __typename?: 'GithubUsers', id: any };
 
@@ -12308,7 +11975,7 @@ export type WorkItemFragment = { __typename?: 'WorkItems', paymentId: any, repoI
 
 export type LiveGithubIssueIdFragment = { __typename?: 'Issue', id: any };
 
-export type LiveGithubIssueFragment = { __typename?: 'Issue', repoId: any, number: number, type: Type, status: Status, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null, id: any, ignoredForProjects: Array<{ __typename?: 'IgnoredGithubIssues', projectId: any, repoId: any, issueNumber: any }> };
+export type LiveGithubIssueFragment = { __typename?: 'Issue', repoId: any, number: any, type: Type, status: Status, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null, id: any, ignoredForProjects: Array<{ __typename?: 'IgnoredGithubIssues', projectId: any, repoId: any, issueNumber: any }> };
 
 export type LiveGithubUserIdFragment = { __typename?: 'User', id: any };
 
@@ -12446,7 +12113,7 @@ export type GetGithubRepositoryDetailsQueryVariables = Exact<{
 }>;
 
 
-export type GetGithubRepositoryDetailsQuery = { __typename?: 'query_root', crmGithubReposByPk: { __typename?: 'CrmGithubRepos', owner: string, name: string, description: string, stars: number, forkCount: number, htmlUrl: string, id: any, languages: { __typename?: 'GithubRepoDetails', id: any, languages: any } | null } | null };
+export type GetGithubRepositoryDetailsQuery = { __typename?: 'query_root', crmGithubReposByPk: { __typename?: 'CrmGithubRepos', owner: string, name: string, description: string, stars: number, forkCount: number, htmlUrl: string, languages: any, id: any } | null };
 
 export type ProjectLeadFragment = { __typename?: 'users', id: any, displayName: string, avatarUrl: string };
 
@@ -12524,14 +12191,14 @@ export type FetchIssueQueryVariables = Exact<{
 }>;
 
 
-export type FetchIssueQuery = { __typename?: 'query_root', fetchIssue: { __typename?: 'Issue', repoId: any, number: number, type: Type, status: Status, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null, id: any, ignoredForProjects: Array<{ __typename?: 'IgnoredGithubIssues', projectId: any, repoId: any, issueNumber: any }> } | null };
+export type FetchIssueQuery = { __typename?: 'query_root', fetchIssue: { __typename?: 'Issue', repoId: any, number: any, type: Type, status: Status, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null, id: any, ignoredForProjects: Array<{ __typename?: 'IgnoredGithubIssues', projectId: any, repoId: any, issueNumber: any }> } | null };
 
 export type GetProjectReposQueryVariables = Exact<{
   projectId: Scalars['uuid'];
 }>;
 
 
-export type GetProjectReposQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', projectId: any, githubRepoId: any, repo: { __typename?: 'CrmGithubRepos', owner: string, name: string, description: string, stars: number, forkCount: number, htmlUrl: string, id: any } | null }> } | null };
+export type GetProjectReposQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', projectId: any, githubRepoId: any, repo: { __typename?: 'CrmGithubRepos', owner: string, name: string, description: string, stars: number, forkCount: number, htmlUrl: string, languages: any, id: any } | null }> } | null };
 
 export type CreateIssueMutationVariables = Exact<{
   projectId: Scalars['Uuid'];
@@ -12541,7 +12208,7 @@ export type CreateIssueMutationVariables = Exact<{
 }>;
 
 
-export type CreateIssueMutation = { __typename?: 'mutation_root', createIssue: { __typename?: 'Issue', repoId: any, number: number, type: Type, status: Status, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null, id: any, ignoredForProjects: Array<{ __typename?: 'IgnoredGithubIssues', projectId: any, repoId: any, issueNumber: any }> } };
+export type CreateIssueMutation = { __typename?: 'mutation_root', createIssue: { __typename?: 'Issue', repoId: any, number: any, type: Type, status: Status, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null, id: any, ignoredForProjects: Array<{ __typename?: 'IgnoredGithubIssues', projectId: any, repoId: any, issueNumber: any }> } };
 
 export type SidebarProjectDetailsFragment = { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, logoUrl: string | null } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', projectId: any, githubRepoId: any, repoContributors: Array<{ __typename?: 'GithubReposContributors', user: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null } | null }> }>, budgets: Array<{ __typename?: 'Budgets', id: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, githubRecipient: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null } | null }> }> };
 
@@ -12558,7 +12225,7 @@ export type GetProjectQueryVariables = Exact<{
 }>;
 
 
-export type GetProjectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null, initialAmount: any | null } | null } | null }, budgets: Array<{ __typename?: 'Budgets', id: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, githubRecipient: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null } | null }> }>, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, telegramLink: string | null, logoUrl: string | null, shortDescription: string } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any, projectId: any, user: { __typename?: 'users', id: any, displayName: string, avatarUrl: string } | null }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', projectId: any, githubRepoId: any, repoContributors: Array<{ __typename?: 'GithubReposContributors', user: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null } | null }>, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, languages: any } | null }>, projectSponsors: Array<{ __typename?: 'ProjectsSponsors', sponsor: { __typename?: 'Sponsors', id: any, name: string, logoUrl: string, url: string | null } }> } | null };
+export type GetProjectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null, initialAmount: any | null } | null } | null }, budgets: Array<{ __typename?: 'Budgets', id: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, githubRecipient: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null } | null }> }>, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, telegramLink: string | null, logoUrl: string | null, shortDescription: string } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any, projectId: any, user: { __typename?: 'users', id: any, displayName: string, avatarUrl: string } | null }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', projectId: any, githubRepoId: any, repo: { __typename?: 'CrmGithubRepos', languages: any, id: any } | null, repoContributors: Array<{ __typename?: 'GithubReposContributors', user: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null } | null }> }>, projectSponsors: Array<{ __typename?: 'ProjectsSponsors', sponsor: { __typename?: 'Sponsors', id: any, name: string, logoUrl: string, url: string | null } }> } | null };
 
 export type AcceptProjectLeaderInvitationMutationVariables = Exact<{
   invitationId: Scalars['Uuid'];
@@ -12573,205 +12240,16 @@ export type GetProjectsQueryVariables = Exact<{
 }>;
 
 
-export type GetProjectsQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', id: any, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null, initialAmount: any | null } | null } | null }, budgets: Array<{ __typename?: 'Budgets', id: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, githubRecipient: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null } | null }> }>, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, telegramLink: string | null, logoUrl: string | null, shortDescription: string } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any, projectId: any, user: { __typename?: 'users', id: any, displayName: string, avatarUrl: string } | null }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', projectId: any, githubRepoId: any, repoContributors: Array<{ __typename?: 'GithubReposContributors', user: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null } | null }>, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, languages: any } | null }>, projectSponsors: Array<{ __typename?: 'ProjectsSponsors', sponsor: { __typename?: 'Sponsors', id: any, name: string, logoUrl: string, url: string | null } }> }> };
+export type GetProjectsQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', id: any, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null, initialAmount: any | null } | null } | null }, budgets: Array<{ __typename?: 'Budgets', id: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, githubRecipient: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null } | null }> }>, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, telegramLink: string | null, logoUrl: string | null, shortDescription: string } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any, projectId: any, user: { __typename?: 'users', id: any, displayName: string, avatarUrl: string } | null }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', projectId: any, githubRepoId: any, repo: { __typename?: 'CrmGithubRepos', languages: any, id: any } | null, repoContributors: Array<{ __typename?: 'GithubReposContributors', user: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null } | null }> }>, projectSponsors: Array<{ __typename?: 'ProjectsSponsors', sponsor: { __typename?: 'Sponsors', id: any, name: string, logoUrl: string, url: string | null } }> }> };
 
 export type GetAllFilterOptionsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllFilterOptionsQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', id: any, projectSponsors: Array<{ __typename?: 'ProjectsSponsors', sponsor: { __typename?: 'Sponsors', id: any, name: string } }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', projectId: any, githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, languages: any } | null }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any, projectId: any }>, budgets: Array<{ __typename?: 'Budgets', id: any }>, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> }> };
+export type GetAllFilterOptionsQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', id: any, projectSponsors: Array<{ __typename?: 'ProjectsSponsors', sponsor: { __typename?: 'Sponsors', id: any, name: string } }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', projectId: any, githubRepoId: any, repo: { __typename?: 'CrmGithubRepos', id: any, languages: any } | null }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any, projectId: any }>, budgets: Array<{ __typename?: 'Budgets', id: any }>, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> }> };
 
-export type GithubRepoLanguagesFieldsFragment = { __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, languages: any } | null };
+export type GithubRepoLanguagesFieldsFragment = { __typename?: 'ProjectGithubRepos', githubRepoId: any, repo: { __typename?: 'CrmGithubRepos', id: any, languages: any } | null };
 
 export type VisibleProjectFragment = { __typename?: 'Projects', id: any, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any, projectId: any }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', projectId: any, githubRepoId: any }>, budgets: Array<{ __typename?: 'Budgets', id: any }>, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> };
-
-export type GetUserDetailsQueryVariables = Exact<{
-  userId: Scalars['uuid'];
-}>;
-
-
-export type GetUserDetailsQuery = { __typename?: 'query_root', user: { __typename?: 'users', email: any | null, userInfo: { __typename?: 'UserInfo', location: any | null, identity: any | null, contactInformation: any | null, payoutSettings: any | null } | null, githubUser: { __typename?: 'AuthGithubUsers', accessToken: string | null, refreshToken: string | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', payments: Array<{ __typename?: 'Payments', receipt: any }> }> } | null } | null };
-
-export type GetPaymentsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetPaymentsQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', recipient: { __typename?: 'AuthGithubUsers', accessToken: string | null, refreshToken: string | null } | null, payments: Array<{ __typename?: 'Payments', receipt: any }> }> };
-
-export type RejectInvoiceMutationVariables = Exact<{
-  paymentReferences: Array<PaymentReference> | PaymentReference;
-}>;
-
-
-export type RejectInvoiceMutation = { __typename?: 'mutation_root', rejectInvoice: number };
-
-export type AddEthPaymentReceiptMutationVariables = Exact<{
-  projectId: Scalars['Uuid'];
-  paymentId: Scalars['Uuid'];
-  amount: Scalars['String'];
-  currencyCode: Scalars['String'];
-  recipientIdentity: EthereumIdentityInput;
-  transactionHash: Scalars['String'];
-}>;
-
-
-export type AddEthPaymentReceiptMutation = { __typename?: 'mutation_root', addEthPaymentReceipt: any };
-
-export type AddFiatPaymentReceiptMutationVariables = Exact<{
-  projectId: Scalars['Uuid'];
-  paymentId: Scalars['Uuid'];
-  amount: Scalars['String'];
-  currencyCode: Scalars['String'];
-  recipientIban: Scalars['Iban'];
-  transactionReference: Scalars['String'];
-}>;
-
-
-export type AddFiatPaymentReceiptMutation = { __typename?: 'mutation_root', addFiatPaymentReceipt: any };
-
-export type PaymentRequestsByPkQueryVariables = Exact<{
-  paymentId: Scalars['uuid'];
-}>;
-
-
-export type PaymentRequestsByPkQuery = { __typename?: 'query_root', paymentRequestsByPk: { __typename?: 'PaymentRequests', id: any } | null };
-
-export type CreateProjectMutationVariables = Exact<{
-  projectName: Scalars['String'];
-  telegramLink: Scalars['Url'];
-  logoUrl: Scalars['Url'];
-  shortDescription: Scalars['String'];
-  longDescription: Scalars['String'];
-  initialBudget: InputMaybe<Scalars['Int']>;
-}>;
-
-
-export type CreateProjectMutation = { __typename?: 'mutation_root', createProject: any };
-
-export type UpdateProjectMutationVariables = Exact<{
-  projectId: Scalars['Uuid'];
-  name: InputMaybe<Scalars['String']>;
-  telegramLink: InputMaybe<Scalars['Url']>;
-  logoUrl: InputMaybe<Scalars['Url']>;
-  shortDescription: InputMaybe<Scalars['String']>;
-  longDescription: InputMaybe<Scalars['String']>;
-}>;
-
-
-export type UpdateProjectMutation = { __typename?: 'mutation_root', updateProject: any };
-
-export type GetProjectBudgetQueryVariables = Exact<{
-  projectId: Scalars['uuid'];
-}>;
-
-
-export type GetProjectBudgetQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', budgets: Array<{ __typename?: 'Budgets', id: any }> } | null };
-
-export type UpdateBudgetAllocationMutationVariables = Exact<{
-  projectId: Scalars['Uuid'];
-  amount: Scalars['Int'];
-}>;
-
-
-export type UpdateBudgetAllocationMutation = { __typename?: 'mutation_root', updateBudgetAllocation: any };
-
-export type LinkGithubRepoMutationVariables = Exact<{
-  projectId: Scalars['Uuid'];
-  githubRepoId: Scalars['Int'];
-}>;
-
-
-export type LinkGithubRepoMutation = { __typename?: 'mutation_root', linkGithubRepo: any };
-
-export type UnlinkGithubRepoMutationVariables = Exact<{
-  projectId: Scalars['Uuid'];
-  githubRepoId: Scalars['Int'];
-}>;
-
-
-export type UnlinkGithubRepoMutation = { __typename?: 'mutation_root', unlinkGithubRepo: any };
-
-export type UnassignProjectLeadMutationVariables = Exact<{
-  projectId: Scalars['Uuid'];
-  userId: Scalars['Uuid'];
-}>;
-
-
-export type UnassignProjectLeadMutation = { __typename?: 'mutation_root', unassignProjectLead: boolean };
-
-export type InviteProjectLeaderMutationVariables = Exact<{
-  projectId: Scalars['Uuid'];
-  githubUserId: Scalars['Int'];
-}>;
-
-
-export type InviteProjectLeaderMutation = { __typename?: 'mutation_root', inviteProjectLeader: any };
-
-export type CreateSponsorMutationVariables = Exact<{
-  name: Scalars['String'];
-  logoUrl: Scalars['Url'];
-  url: InputMaybe<Scalars['Url']>;
-}>;
-
-
-export type CreateSponsorMutation = { __typename?: 'mutation_root', createSponsor: any };
-
-export type UpdateSponsorMutationVariables = Exact<{
-  sponsorId: Scalars['Uuid'];
-  name: InputMaybe<Scalars['String']>;
-  logoUrl: InputMaybe<Scalars['Url']>;
-  url: InputMaybe<Scalars['Url']>;
-}>;
-
-
-export type UpdateSponsorMutation = { __typename?: 'mutation_root', updateSponsor: any };
-
-export type AddSponsorToProjectMutationVariables = Exact<{
-  projectId: Scalars['Uuid'];
-  sponsorId: Scalars['Uuid'];
-}>;
-
-
-export type AddSponsorToProjectMutation = { __typename?: 'mutation_root', addSponsorToProject: any };
-
-export type RemoveSponsorFromProjectMutationVariables = Exact<{
-  projectId: Scalars['Uuid'];
-  sponsorId: Scalars['Uuid'];
-}>;
-
-
-export type RemoveSponsorFromProjectMutation = { __typename?: 'mutation_root', removeSponsorFromProject: any };
-
-export type GetUserByEmailQueryVariables = Exact<{
-  email: Scalars['citext'];
-}>;
-
-
-export type GetUserByEmailQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: any }> };
-
-export type SetUserEmailVerifiedMutationVariables = Exact<{
-  userId: Scalars['uuid'];
-}>;
-
-
-export type SetUserEmailVerifiedMutation = { __typename?: 'mutation_root', updateUser: { __typename?: 'users', id: any } | null };
-
-export type CreateGithubAuthUserMutationVariables = Exact<{
-  userId: Scalars['uuid'];
-  githubUserId: Scalars['String'];
-  accessToken: Scalars['String'];
-}>;
-
-
-export type CreateGithubAuthUserMutation = { __typename?: 'mutation_root', insertAuthUserProvider: { __typename?: 'authUserProviders', id: any } | null };
-
-export type UpdateProfileMutationVariables = Exact<{
-  contactInformation: ContactInformation;
-  identity: IdentityInput;
-  location: Location;
-  payoutSettings: PayoutSettingsInput;
-}>;
-
-
-export type UpdateProfileMutation = { __typename?: 'mutation_root', updateProfileInfo: any };
 
 export const LiveGithubUserIdFragmentDoc = gql`
     fragment LiveGithubUserId on User {
@@ -12916,13 +12394,9 @@ export const ProjectLeadFragmentDoc = gql`
   avatarUrl
 }
     `;
-export const ProjectCardGithubRepoFieldsFragmentDoc = gql`
-    fragment ProjectCardGithubRepoFields on ProjectGithubRepos {
-  githubRepoId
-  githubRepoDetails {
-    id
-    languages
-  }
+export const GithubRepoIdFragmentDoc = gql`
+    fragment GithubRepoId on CrmGithubRepos {
+  id
 }
     `;
 export const SponsorFragmentDoc = gql`
@@ -12969,7 +12443,10 @@ export const ProjectCardFieldsFragmentDoc = gql`
   githubRepos {
     projectId
     githubRepoId
-    ...ProjectCardGithubRepoFields
+    repo {
+      ...GithubRepoId
+      languages
+    }
   }
   projectSponsors {
     sponsor {
@@ -12979,13 +12456,8 @@ export const ProjectCardFieldsFragmentDoc = gql`
 }
     ${ProjectContributorsFragmentDoc}
 ${ProjectLeadFragmentDoc}
-${ProjectCardGithubRepoFieldsFragmentDoc}
+${GithubRepoIdFragmentDoc}
 ${SponsorFragmentDoc}`;
-export const GithubRepoIdFragmentDoc = gql`
-    fragment GithubRepoId on CrmGithubRepos {
-  id
-}
-    `;
 export const GithubRepoFragmentDoc = gql`
     fragment GithubRepo on CrmGithubRepos {
   ...GithubRepoId
@@ -12995,6 +12467,7 @@ export const GithubRepoFragmentDoc = gql`
   stars
   forkCount
   htmlUrl
+  languages
 }
     ${GithubRepoIdFragmentDoc}`;
 export const PaymentRequestFragmentDoc = gql`
@@ -13188,7 +12661,7 @@ export const SidebarProjectDetailsFragmentDoc = gql`
 export const GithubRepoLanguagesFieldsFragmentDoc = gql`
     fragment GithubRepoLanguagesFields on ProjectGithubRepos {
   githubRepoId
-  githubRepoDetails {
+  repo {
     id
     languages
   }
@@ -13958,10 +13431,6 @@ export const GetGithubRepositoryDetailsDocument = gql`
     query GetGithubRepositoryDetails($githubRepoId: bigint!) {
   crmGithubReposByPk(id: $githubRepoId) {
     ...GithubRepo
-    languages {
-      id
-      languages
-    }
   }
 }
     ${GithubRepoFragmentDoc}`;
@@ -14626,804 +14095,3 @@ export function useGetAllFilterOptionsLazyQuery(baseOptions?: Apollo.LazyQueryHo
 export type GetAllFilterOptionsQueryHookResult = ReturnType<typeof useGetAllFilterOptionsQuery>;
 export type GetAllFilterOptionsLazyQueryHookResult = ReturnType<typeof useGetAllFilterOptionsLazyQuery>;
 export type GetAllFilterOptionsQueryResult = Apollo.QueryResult<GetAllFilterOptionsQuery, GetAllFilterOptionsQueryVariables>;
-export const GetUserDetailsDocument = gql`
-    query getUserDetails($userId: uuid!) {
-  user(id: $userId) {
-    email
-    userInfo {
-      location
-      identity
-      contactInformation
-      payoutSettings
-    }
-    githubUser {
-      accessToken
-      refreshToken
-      paymentRequests {
-        payments {
-          receipt
-        }
-      }
-    }
-  }
-}
-    `;
-
-/**
- * __useGetUserDetailsQuery__
- *
- * To run a query within a React component, call `useGetUserDetailsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetUserDetailsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetUserDetailsQuery({
- *   variables: {
- *      userId: // value for 'userId'
- *   },
- * });
- */
-export function useGetUserDetailsQuery(baseOptions: Apollo.QueryHookOptions<GetUserDetailsQuery, GetUserDetailsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetUserDetailsQuery, GetUserDetailsQueryVariables>(GetUserDetailsDocument, options);
-      }
-export function useGetUserDetailsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserDetailsQuery, GetUserDetailsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetUserDetailsQuery, GetUserDetailsQueryVariables>(GetUserDetailsDocument, options);
-        }
-export type GetUserDetailsQueryHookResult = ReturnType<typeof useGetUserDetailsQuery>;
-export type GetUserDetailsLazyQueryHookResult = ReturnType<typeof useGetUserDetailsLazyQuery>;
-export type GetUserDetailsQueryResult = Apollo.QueryResult<GetUserDetailsQuery, GetUserDetailsQueryVariables>;
-export const GetPaymentsDocument = gql`
-    query getPayments {
-  paymentRequests {
-    recipient {
-      accessToken
-      refreshToken
-    }
-    payments {
-      receipt
-    }
-  }
-}
-    `;
-
-/**
- * __useGetPaymentsQuery__
- *
- * To run a query within a React component, call `useGetPaymentsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetPaymentsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetPaymentsQuery({
- *   variables: {
- *   },
- * });
- */
-export function useGetPaymentsQuery(baseOptions?: Apollo.QueryHookOptions<GetPaymentsQuery, GetPaymentsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetPaymentsQuery, GetPaymentsQueryVariables>(GetPaymentsDocument, options);
-      }
-export function useGetPaymentsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPaymentsQuery, GetPaymentsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetPaymentsQuery, GetPaymentsQueryVariables>(GetPaymentsDocument, options);
-        }
-export type GetPaymentsQueryHookResult = ReturnType<typeof useGetPaymentsQuery>;
-export type GetPaymentsLazyQueryHookResult = ReturnType<typeof useGetPaymentsLazyQuery>;
-export type GetPaymentsQueryResult = Apollo.QueryResult<GetPaymentsQuery, GetPaymentsQueryVariables>;
-export const RejectInvoiceDocument = gql`
-    mutation rejectInvoice($paymentReferences: [PaymentReference!]!) {
-  rejectInvoice(paymentReferences: $paymentReferences)
-}
-    `;
-export type RejectInvoiceMutationFn = Apollo.MutationFunction<RejectInvoiceMutation, RejectInvoiceMutationVariables>;
-
-/**
- * __useRejectInvoiceMutation__
- *
- * To run a mutation, you first call `useRejectInvoiceMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useRejectInvoiceMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [rejectInvoiceMutation, { data, loading, error }] = useRejectInvoiceMutation({
- *   variables: {
- *      paymentReferences: // value for 'paymentReferences'
- *   },
- * });
- */
-export function useRejectInvoiceMutation(baseOptions?: Apollo.MutationHookOptions<RejectInvoiceMutation, RejectInvoiceMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<RejectInvoiceMutation, RejectInvoiceMutationVariables>(RejectInvoiceDocument, options);
-      }
-export type RejectInvoiceMutationHookResult = ReturnType<typeof useRejectInvoiceMutation>;
-export type RejectInvoiceMutationResult = Apollo.MutationResult<RejectInvoiceMutation>;
-export type RejectInvoiceMutationOptions = Apollo.BaseMutationOptions<RejectInvoiceMutation, RejectInvoiceMutationVariables>;
-export const AddEthPaymentReceiptDocument = gql`
-    mutation addEthPaymentReceipt($projectId: Uuid!, $paymentId: Uuid!, $amount: String!, $currencyCode: String!, $recipientIdentity: EthereumIdentityInput!, $transactionHash: String!) {
-  addEthPaymentReceipt(
-    projectId: $projectId
-    paymentId: $paymentId
-    amount: $amount
-    currencyCode: $currencyCode
-    recipientIdentity: $recipientIdentity
-    transactionHash: $transactionHash
-  )
-}
-    `;
-export type AddEthPaymentReceiptMutationFn = Apollo.MutationFunction<AddEthPaymentReceiptMutation, AddEthPaymentReceiptMutationVariables>;
-
-/**
- * __useAddEthPaymentReceiptMutation__
- *
- * To run a mutation, you first call `useAddEthPaymentReceiptMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useAddEthPaymentReceiptMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [addEthPaymentReceiptMutation, { data, loading, error }] = useAddEthPaymentReceiptMutation({
- *   variables: {
- *      projectId: // value for 'projectId'
- *      paymentId: // value for 'paymentId'
- *      amount: // value for 'amount'
- *      currencyCode: // value for 'currencyCode'
- *      recipientIdentity: // value for 'recipientIdentity'
- *      transactionHash: // value for 'transactionHash'
- *   },
- * });
- */
-export function useAddEthPaymentReceiptMutation(baseOptions?: Apollo.MutationHookOptions<AddEthPaymentReceiptMutation, AddEthPaymentReceiptMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<AddEthPaymentReceiptMutation, AddEthPaymentReceiptMutationVariables>(AddEthPaymentReceiptDocument, options);
-      }
-export type AddEthPaymentReceiptMutationHookResult = ReturnType<typeof useAddEthPaymentReceiptMutation>;
-export type AddEthPaymentReceiptMutationResult = Apollo.MutationResult<AddEthPaymentReceiptMutation>;
-export type AddEthPaymentReceiptMutationOptions = Apollo.BaseMutationOptions<AddEthPaymentReceiptMutation, AddEthPaymentReceiptMutationVariables>;
-export const AddFiatPaymentReceiptDocument = gql`
-    mutation addFiatPaymentReceipt($projectId: Uuid!, $paymentId: Uuid!, $amount: String!, $currencyCode: String!, $recipientIban: Iban!, $transactionReference: String!) {
-  addFiatPaymentReceipt(
-    projectId: $projectId
-    paymentId: $paymentId
-    amount: $amount
-    currencyCode: $currencyCode
-    recipientIban: $recipientIban
-    transactionReference: $transactionReference
-  )
-}
-    `;
-export type AddFiatPaymentReceiptMutationFn = Apollo.MutationFunction<AddFiatPaymentReceiptMutation, AddFiatPaymentReceiptMutationVariables>;
-
-/**
- * __useAddFiatPaymentReceiptMutation__
- *
- * To run a mutation, you first call `useAddFiatPaymentReceiptMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useAddFiatPaymentReceiptMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [addFiatPaymentReceiptMutation, { data, loading, error }] = useAddFiatPaymentReceiptMutation({
- *   variables: {
- *      projectId: // value for 'projectId'
- *      paymentId: // value for 'paymentId'
- *      amount: // value for 'amount'
- *      currencyCode: // value for 'currencyCode'
- *      recipientIban: // value for 'recipientIban'
- *      transactionReference: // value for 'transactionReference'
- *   },
- * });
- */
-export function useAddFiatPaymentReceiptMutation(baseOptions?: Apollo.MutationHookOptions<AddFiatPaymentReceiptMutation, AddFiatPaymentReceiptMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<AddFiatPaymentReceiptMutation, AddFiatPaymentReceiptMutationVariables>(AddFiatPaymentReceiptDocument, options);
-      }
-export type AddFiatPaymentReceiptMutationHookResult = ReturnType<typeof useAddFiatPaymentReceiptMutation>;
-export type AddFiatPaymentReceiptMutationResult = Apollo.MutationResult<AddFiatPaymentReceiptMutation>;
-export type AddFiatPaymentReceiptMutationOptions = Apollo.BaseMutationOptions<AddFiatPaymentReceiptMutation, AddFiatPaymentReceiptMutationVariables>;
-export const PaymentRequestsByPkDocument = gql`
-    query paymentRequestsByPk($paymentId: uuid!) {
-  paymentRequestsByPk(id: $paymentId) {
-    id
-  }
-}
-    `;
-
-/**
- * __usePaymentRequestsByPkQuery__
- *
- * To run a query within a React component, call `usePaymentRequestsByPkQuery` and pass it any options that fit your needs.
- * When your component renders, `usePaymentRequestsByPkQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = usePaymentRequestsByPkQuery({
- *   variables: {
- *      paymentId: // value for 'paymentId'
- *   },
- * });
- */
-export function usePaymentRequestsByPkQuery(baseOptions: Apollo.QueryHookOptions<PaymentRequestsByPkQuery, PaymentRequestsByPkQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<PaymentRequestsByPkQuery, PaymentRequestsByPkQueryVariables>(PaymentRequestsByPkDocument, options);
-      }
-export function usePaymentRequestsByPkLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PaymentRequestsByPkQuery, PaymentRequestsByPkQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<PaymentRequestsByPkQuery, PaymentRequestsByPkQueryVariables>(PaymentRequestsByPkDocument, options);
-        }
-export type PaymentRequestsByPkQueryHookResult = ReturnType<typeof usePaymentRequestsByPkQuery>;
-export type PaymentRequestsByPkLazyQueryHookResult = ReturnType<typeof usePaymentRequestsByPkLazyQuery>;
-export type PaymentRequestsByPkQueryResult = Apollo.QueryResult<PaymentRequestsByPkQuery, PaymentRequestsByPkQueryVariables>;
-export const CreateProjectDocument = gql`
-    mutation createProject($projectName: String!, $telegramLink: Url!, $logoUrl: Url!, $shortDescription: String!, $longDescription: String!, $initialBudget: Int) {
-  createProject(
-    name: $projectName
-    telegramLink: $telegramLink
-    logoUrl: $logoUrl
-    shortDescription: $shortDescription
-    longDescription: $longDescription
-    initialBudget: $initialBudget
-  )
-}
-    `;
-export type CreateProjectMutationFn = Apollo.MutationFunction<CreateProjectMutation, CreateProjectMutationVariables>;
-
-/**
- * __useCreateProjectMutation__
- *
- * To run a mutation, you first call `useCreateProjectMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateProjectMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createProjectMutation, { data, loading, error }] = useCreateProjectMutation({
- *   variables: {
- *      projectName: // value for 'projectName'
- *      telegramLink: // value for 'telegramLink'
- *      logoUrl: // value for 'logoUrl'
- *      shortDescription: // value for 'shortDescription'
- *      longDescription: // value for 'longDescription'
- *      initialBudget: // value for 'initialBudget'
- *   },
- * });
- */
-export function useCreateProjectMutation(baseOptions?: Apollo.MutationHookOptions<CreateProjectMutation, CreateProjectMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateProjectMutation, CreateProjectMutationVariables>(CreateProjectDocument, options);
-      }
-export type CreateProjectMutationHookResult = ReturnType<typeof useCreateProjectMutation>;
-export type CreateProjectMutationResult = Apollo.MutationResult<CreateProjectMutation>;
-export type CreateProjectMutationOptions = Apollo.BaseMutationOptions<CreateProjectMutation, CreateProjectMutationVariables>;
-export const UpdateProjectDocument = gql`
-    mutation updateProject($projectId: Uuid!, $name: String, $telegramLink: Url, $logoUrl: Url, $shortDescription: String, $longDescription: String) {
-  updateProject(
-    id: $projectId
-    name: $name
-    telegramLink: $telegramLink
-    logoUrl: $logoUrl
-    shortDescription: $shortDescription
-    longDescription: $longDescription
-  )
-}
-    `;
-export type UpdateProjectMutationFn = Apollo.MutationFunction<UpdateProjectMutation, UpdateProjectMutationVariables>;
-
-/**
- * __useUpdateProjectMutation__
- *
- * To run a mutation, you first call `useUpdateProjectMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateProjectMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updateProjectMutation, { data, loading, error }] = useUpdateProjectMutation({
- *   variables: {
- *      projectId: // value for 'projectId'
- *      name: // value for 'name'
- *      telegramLink: // value for 'telegramLink'
- *      logoUrl: // value for 'logoUrl'
- *      shortDescription: // value for 'shortDescription'
- *      longDescription: // value for 'longDescription'
- *   },
- * });
- */
-export function useUpdateProjectMutation(baseOptions?: Apollo.MutationHookOptions<UpdateProjectMutation, UpdateProjectMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateProjectMutation, UpdateProjectMutationVariables>(UpdateProjectDocument, options);
-      }
-export type UpdateProjectMutationHookResult = ReturnType<typeof useUpdateProjectMutation>;
-export type UpdateProjectMutationResult = Apollo.MutationResult<UpdateProjectMutation>;
-export type UpdateProjectMutationOptions = Apollo.BaseMutationOptions<UpdateProjectMutation, UpdateProjectMutationVariables>;
-export const GetProjectBudgetDocument = gql`
-    query getProjectBudget($projectId: uuid!) {
-  projectsByPk(id: $projectId) {
-    budgets {
-      id
-    }
-  }
-}
-    `;
-
-/**
- * __useGetProjectBudgetQuery__
- *
- * To run a query within a React component, call `useGetProjectBudgetQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetProjectBudgetQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetProjectBudgetQuery({
- *   variables: {
- *      projectId: // value for 'projectId'
- *   },
- * });
- */
-export function useGetProjectBudgetQuery(baseOptions: Apollo.QueryHookOptions<GetProjectBudgetQuery, GetProjectBudgetQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetProjectBudgetQuery, GetProjectBudgetQueryVariables>(GetProjectBudgetDocument, options);
-      }
-export function useGetProjectBudgetLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProjectBudgetQuery, GetProjectBudgetQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetProjectBudgetQuery, GetProjectBudgetQueryVariables>(GetProjectBudgetDocument, options);
-        }
-export type GetProjectBudgetQueryHookResult = ReturnType<typeof useGetProjectBudgetQuery>;
-export type GetProjectBudgetLazyQueryHookResult = ReturnType<typeof useGetProjectBudgetLazyQuery>;
-export type GetProjectBudgetQueryResult = Apollo.QueryResult<GetProjectBudgetQuery, GetProjectBudgetQueryVariables>;
-export const UpdateBudgetAllocationDocument = gql`
-    mutation updateBudgetAllocation($projectId: Uuid!, $amount: Int!) {
-  updateBudgetAllocation(projectId: $projectId, newRemainingAmountInUsd: $amount)
-}
-    `;
-export type UpdateBudgetAllocationMutationFn = Apollo.MutationFunction<UpdateBudgetAllocationMutation, UpdateBudgetAllocationMutationVariables>;
-
-/**
- * __useUpdateBudgetAllocationMutation__
- *
- * To run a mutation, you first call `useUpdateBudgetAllocationMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateBudgetAllocationMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updateBudgetAllocationMutation, { data, loading, error }] = useUpdateBudgetAllocationMutation({
- *   variables: {
- *      projectId: // value for 'projectId'
- *      amount: // value for 'amount'
- *   },
- * });
- */
-export function useUpdateBudgetAllocationMutation(baseOptions?: Apollo.MutationHookOptions<UpdateBudgetAllocationMutation, UpdateBudgetAllocationMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateBudgetAllocationMutation, UpdateBudgetAllocationMutationVariables>(UpdateBudgetAllocationDocument, options);
-      }
-export type UpdateBudgetAllocationMutationHookResult = ReturnType<typeof useUpdateBudgetAllocationMutation>;
-export type UpdateBudgetAllocationMutationResult = Apollo.MutationResult<UpdateBudgetAllocationMutation>;
-export type UpdateBudgetAllocationMutationOptions = Apollo.BaseMutationOptions<UpdateBudgetAllocationMutation, UpdateBudgetAllocationMutationVariables>;
-export const LinkGithubRepoDocument = gql`
-    mutation linkGithubRepo($projectId: Uuid!, $githubRepoId: Int!) {
-  linkGithubRepo(projectId: $projectId, githubRepoId: $githubRepoId)
-}
-    `;
-export type LinkGithubRepoMutationFn = Apollo.MutationFunction<LinkGithubRepoMutation, LinkGithubRepoMutationVariables>;
-
-/**
- * __useLinkGithubRepoMutation__
- *
- * To run a mutation, you first call `useLinkGithubRepoMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useLinkGithubRepoMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [linkGithubRepoMutation, { data, loading, error }] = useLinkGithubRepoMutation({
- *   variables: {
- *      projectId: // value for 'projectId'
- *      githubRepoId: // value for 'githubRepoId'
- *   },
- * });
- */
-export function useLinkGithubRepoMutation(baseOptions?: Apollo.MutationHookOptions<LinkGithubRepoMutation, LinkGithubRepoMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<LinkGithubRepoMutation, LinkGithubRepoMutationVariables>(LinkGithubRepoDocument, options);
-      }
-export type LinkGithubRepoMutationHookResult = ReturnType<typeof useLinkGithubRepoMutation>;
-export type LinkGithubRepoMutationResult = Apollo.MutationResult<LinkGithubRepoMutation>;
-export type LinkGithubRepoMutationOptions = Apollo.BaseMutationOptions<LinkGithubRepoMutation, LinkGithubRepoMutationVariables>;
-export const UnlinkGithubRepoDocument = gql`
-    mutation unlinkGithubRepo($projectId: Uuid!, $githubRepoId: Int!) {
-  unlinkGithubRepo(projectId: $projectId, githubRepoId: $githubRepoId)
-}
-    `;
-export type UnlinkGithubRepoMutationFn = Apollo.MutationFunction<UnlinkGithubRepoMutation, UnlinkGithubRepoMutationVariables>;
-
-/**
- * __useUnlinkGithubRepoMutation__
- *
- * To run a mutation, you first call `useUnlinkGithubRepoMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUnlinkGithubRepoMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [unlinkGithubRepoMutation, { data, loading, error }] = useUnlinkGithubRepoMutation({
- *   variables: {
- *      projectId: // value for 'projectId'
- *      githubRepoId: // value for 'githubRepoId'
- *   },
- * });
- */
-export function useUnlinkGithubRepoMutation(baseOptions?: Apollo.MutationHookOptions<UnlinkGithubRepoMutation, UnlinkGithubRepoMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UnlinkGithubRepoMutation, UnlinkGithubRepoMutationVariables>(UnlinkGithubRepoDocument, options);
-      }
-export type UnlinkGithubRepoMutationHookResult = ReturnType<typeof useUnlinkGithubRepoMutation>;
-export type UnlinkGithubRepoMutationResult = Apollo.MutationResult<UnlinkGithubRepoMutation>;
-export type UnlinkGithubRepoMutationOptions = Apollo.BaseMutationOptions<UnlinkGithubRepoMutation, UnlinkGithubRepoMutationVariables>;
-export const UnassignProjectLeadDocument = gql`
-    mutation unassignProjectLead($projectId: Uuid!, $userId: Uuid!) {
-  unassignProjectLead(projectId: $projectId, userId: $userId)
-}
-    `;
-export type UnassignProjectLeadMutationFn = Apollo.MutationFunction<UnassignProjectLeadMutation, UnassignProjectLeadMutationVariables>;
-
-/**
- * __useUnassignProjectLeadMutation__
- *
- * To run a mutation, you first call `useUnassignProjectLeadMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUnassignProjectLeadMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [unassignProjectLeadMutation, { data, loading, error }] = useUnassignProjectLeadMutation({
- *   variables: {
- *      projectId: // value for 'projectId'
- *      userId: // value for 'userId'
- *   },
- * });
- */
-export function useUnassignProjectLeadMutation(baseOptions?: Apollo.MutationHookOptions<UnassignProjectLeadMutation, UnassignProjectLeadMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UnassignProjectLeadMutation, UnassignProjectLeadMutationVariables>(UnassignProjectLeadDocument, options);
-      }
-export type UnassignProjectLeadMutationHookResult = ReturnType<typeof useUnassignProjectLeadMutation>;
-export type UnassignProjectLeadMutationResult = Apollo.MutationResult<UnassignProjectLeadMutation>;
-export type UnassignProjectLeadMutationOptions = Apollo.BaseMutationOptions<UnassignProjectLeadMutation, UnassignProjectLeadMutationVariables>;
-export const InviteProjectLeaderDocument = gql`
-    mutation inviteProjectLeader($projectId: Uuid!, $githubUserId: Int!) {
-  inviteProjectLeader(projectId: $projectId, githubUserId: $githubUserId)
-}
-    `;
-export type InviteProjectLeaderMutationFn = Apollo.MutationFunction<InviteProjectLeaderMutation, InviteProjectLeaderMutationVariables>;
-
-/**
- * __useInviteProjectLeaderMutation__
- *
- * To run a mutation, you first call `useInviteProjectLeaderMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useInviteProjectLeaderMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [inviteProjectLeaderMutation, { data, loading, error }] = useInviteProjectLeaderMutation({
- *   variables: {
- *      projectId: // value for 'projectId'
- *      githubUserId: // value for 'githubUserId'
- *   },
- * });
- */
-export function useInviteProjectLeaderMutation(baseOptions?: Apollo.MutationHookOptions<InviteProjectLeaderMutation, InviteProjectLeaderMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<InviteProjectLeaderMutation, InviteProjectLeaderMutationVariables>(InviteProjectLeaderDocument, options);
-      }
-export type InviteProjectLeaderMutationHookResult = ReturnType<typeof useInviteProjectLeaderMutation>;
-export type InviteProjectLeaderMutationResult = Apollo.MutationResult<InviteProjectLeaderMutation>;
-export type InviteProjectLeaderMutationOptions = Apollo.BaseMutationOptions<InviteProjectLeaderMutation, InviteProjectLeaderMutationVariables>;
-export const CreateSponsorDocument = gql`
-    mutation createSponsor($name: String!, $logoUrl: Url!, $url: Url) {
-  createSponsor(name: $name, logoUrl: $logoUrl, url: $url)
-}
-    `;
-export type CreateSponsorMutationFn = Apollo.MutationFunction<CreateSponsorMutation, CreateSponsorMutationVariables>;
-
-/**
- * __useCreateSponsorMutation__
- *
- * To run a mutation, you first call `useCreateSponsorMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateSponsorMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createSponsorMutation, { data, loading, error }] = useCreateSponsorMutation({
- *   variables: {
- *      name: // value for 'name'
- *      logoUrl: // value for 'logoUrl'
- *      url: // value for 'url'
- *   },
- * });
- */
-export function useCreateSponsorMutation(baseOptions?: Apollo.MutationHookOptions<CreateSponsorMutation, CreateSponsorMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateSponsorMutation, CreateSponsorMutationVariables>(CreateSponsorDocument, options);
-      }
-export type CreateSponsorMutationHookResult = ReturnType<typeof useCreateSponsorMutation>;
-export type CreateSponsorMutationResult = Apollo.MutationResult<CreateSponsorMutation>;
-export type CreateSponsorMutationOptions = Apollo.BaseMutationOptions<CreateSponsorMutation, CreateSponsorMutationVariables>;
-export const UpdateSponsorDocument = gql`
-    mutation updateSponsor($sponsorId: Uuid!, $name: String, $logoUrl: Url, $url: Url) {
-  updateSponsor(sponsorId: $sponsorId, name: $name, logoUrl: $logoUrl, url: $url)
-}
-    `;
-export type UpdateSponsorMutationFn = Apollo.MutationFunction<UpdateSponsorMutation, UpdateSponsorMutationVariables>;
-
-/**
- * __useUpdateSponsorMutation__
- *
- * To run a mutation, you first call `useUpdateSponsorMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateSponsorMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updateSponsorMutation, { data, loading, error }] = useUpdateSponsorMutation({
- *   variables: {
- *      sponsorId: // value for 'sponsorId'
- *      name: // value for 'name'
- *      logoUrl: // value for 'logoUrl'
- *      url: // value for 'url'
- *   },
- * });
- */
-export function useUpdateSponsorMutation(baseOptions?: Apollo.MutationHookOptions<UpdateSponsorMutation, UpdateSponsorMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateSponsorMutation, UpdateSponsorMutationVariables>(UpdateSponsorDocument, options);
-      }
-export type UpdateSponsorMutationHookResult = ReturnType<typeof useUpdateSponsorMutation>;
-export type UpdateSponsorMutationResult = Apollo.MutationResult<UpdateSponsorMutation>;
-export type UpdateSponsorMutationOptions = Apollo.BaseMutationOptions<UpdateSponsorMutation, UpdateSponsorMutationVariables>;
-export const AddSponsorToProjectDocument = gql`
-    mutation addSponsorToProject($projectId: Uuid!, $sponsorId: Uuid!) {
-  addSponsorToProject(projectId: $projectId, sponsorId: $sponsorId)
-}
-    `;
-export type AddSponsorToProjectMutationFn = Apollo.MutationFunction<AddSponsorToProjectMutation, AddSponsorToProjectMutationVariables>;
-
-/**
- * __useAddSponsorToProjectMutation__
- *
- * To run a mutation, you first call `useAddSponsorToProjectMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useAddSponsorToProjectMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [addSponsorToProjectMutation, { data, loading, error }] = useAddSponsorToProjectMutation({
- *   variables: {
- *      projectId: // value for 'projectId'
- *      sponsorId: // value for 'sponsorId'
- *   },
- * });
- */
-export function useAddSponsorToProjectMutation(baseOptions?: Apollo.MutationHookOptions<AddSponsorToProjectMutation, AddSponsorToProjectMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<AddSponsorToProjectMutation, AddSponsorToProjectMutationVariables>(AddSponsorToProjectDocument, options);
-      }
-export type AddSponsorToProjectMutationHookResult = ReturnType<typeof useAddSponsorToProjectMutation>;
-export type AddSponsorToProjectMutationResult = Apollo.MutationResult<AddSponsorToProjectMutation>;
-export type AddSponsorToProjectMutationOptions = Apollo.BaseMutationOptions<AddSponsorToProjectMutation, AddSponsorToProjectMutationVariables>;
-export const RemoveSponsorFromProjectDocument = gql`
-    mutation removeSponsorFromProject($projectId: Uuid!, $sponsorId: Uuid!) {
-  removeSponsorFromProject(projectId: $projectId, sponsorId: $sponsorId)
-}
-    `;
-export type RemoveSponsorFromProjectMutationFn = Apollo.MutationFunction<RemoveSponsorFromProjectMutation, RemoveSponsorFromProjectMutationVariables>;
-
-/**
- * __useRemoveSponsorFromProjectMutation__
- *
- * To run a mutation, you first call `useRemoveSponsorFromProjectMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useRemoveSponsorFromProjectMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [removeSponsorFromProjectMutation, { data, loading, error }] = useRemoveSponsorFromProjectMutation({
- *   variables: {
- *      projectId: // value for 'projectId'
- *      sponsorId: // value for 'sponsorId'
- *   },
- * });
- */
-export function useRemoveSponsorFromProjectMutation(baseOptions?: Apollo.MutationHookOptions<RemoveSponsorFromProjectMutation, RemoveSponsorFromProjectMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<RemoveSponsorFromProjectMutation, RemoveSponsorFromProjectMutationVariables>(RemoveSponsorFromProjectDocument, options);
-      }
-export type RemoveSponsorFromProjectMutationHookResult = ReturnType<typeof useRemoveSponsorFromProjectMutation>;
-export type RemoveSponsorFromProjectMutationResult = Apollo.MutationResult<RemoveSponsorFromProjectMutation>;
-export type RemoveSponsorFromProjectMutationOptions = Apollo.BaseMutationOptions<RemoveSponsorFromProjectMutation, RemoveSponsorFromProjectMutationVariables>;
-export const GetUserByEmailDocument = gql`
-    query getUserByEmail($email: citext!) {
-  users(where: {email: {_eq: $email}}) {
-    id
-  }
-}
-    `;
-
-/**
- * __useGetUserByEmailQuery__
- *
- * To run a query within a React component, call `useGetUserByEmailQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetUserByEmailQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetUserByEmailQuery({
- *   variables: {
- *      email: // value for 'email'
- *   },
- * });
- */
-export function useGetUserByEmailQuery(baseOptions: Apollo.QueryHookOptions<GetUserByEmailQuery, GetUserByEmailQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetUserByEmailQuery, GetUserByEmailQueryVariables>(GetUserByEmailDocument, options);
-      }
-export function useGetUserByEmailLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserByEmailQuery, GetUserByEmailQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetUserByEmailQuery, GetUserByEmailQueryVariables>(GetUserByEmailDocument, options);
-        }
-export type GetUserByEmailQueryHookResult = ReturnType<typeof useGetUserByEmailQuery>;
-export type GetUserByEmailLazyQueryHookResult = ReturnType<typeof useGetUserByEmailLazyQuery>;
-export type GetUserByEmailQueryResult = Apollo.QueryResult<GetUserByEmailQuery, GetUserByEmailQueryVariables>;
-export const SetUserEmailVerifiedDocument = gql`
-    mutation setUserEmailVerified($userId: uuid!) {
-  updateUser(pk_columns: {id: $userId}, _set: {emailVerified: true}) {
-    id
-  }
-}
-    `;
-export type SetUserEmailVerifiedMutationFn = Apollo.MutationFunction<SetUserEmailVerifiedMutation, SetUserEmailVerifiedMutationVariables>;
-
-/**
- * __useSetUserEmailVerifiedMutation__
- *
- * To run a mutation, you first call `useSetUserEmailVerifiedMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useSetUserEmailVerifiedMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [setUserEmailVerifiedMutation, { data, loading, error }] = useSetUserEmailVerifiedMutation({
- *   variables: {
- *      userId: // value for 'userId'
- *   },
- * });
- */
-export function useSetUserEmailVerifiedMutation(baseOptions?: Apollo.MutationHookOptions<SetUserEmailVerifiedMutation, SetUserEmailVerifiedMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<SetUserEmailVerifiedMutation, SetUserEmailVerifiedMutationVariables>(SetUserEmailVerifiedDocument, options);
-      }
-export type SetUserEmailVerifiedMutationHookResult = ReturnType<typeof useSetUserEmailVerifiedMutation>;
-export type SetUserEmailVerifiedMutationResult = Apollo.MutationResult<SetUserEmailVerifiedMutation>;
-export type SetUserEmailVerifiedMutationOptions = Apollo.BaseMutationOptions<SetUserEmailVerifiedMutation, SetUserEmailVerifiedMutationVariables>;
-export const CreateGithubAuthUserDocument = gql`
-    mutation createGithubAuthUser($userId: uuid!, $githubUserId: String!, $accessToken: String!) {
-  insertAuthUserProvider(
-    object: {userId: $userId, providerId: "github", providerUserId: $githubUserId, accessToken: $accessToken}
-    onConflict: {constraint: user_providers_provider_id_provider_user_id_key, update_columns: userId}
-  ) {
-    id
-  }
-}
-    `;
-export type CreateGithubAuthUserMutationFn = Apollo.MutationFunction<CreateGithubAuthUserMutation, CreateGithubAuthUserMutationVariables>;
-
-/**
- * __useCreateGithubAuthUserMutation__
- *
- * To run a mutation, you first call `useCreateGithubAuthUserMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateGithubAuthUserMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createGithubAuthUserMutation, { data, loading, error }] = useCreateGithubAuthUserMutation({
- *   variables: {
- *      userId: // value for 'userId'
- *      githubUserId: // value for 'githubUserId'
- *      accessToken: // value for 'accessToken'
- *   },
- * });
- */
-export function useCreateGithubAuthUserMutation(baseOptions?: Apollo.MutationHookOptions<CreateGithubAuthUserMutation, CreateGithubAuthUserMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateGithubAuthUserMutation, CreateGithubAuthUserMutationVariables>(CreateGithubAuthUserDocument, options);
-      }
-export type CreateGithubAuthUserMutationHookResult = ReturnType<typeof useCreateGithubAuthUserMutation>;
-export type CreateGithubAuthUserMutationResult = Apollo.MutationResult<CreateGithubAuthUserMutation>;
-export type CreateGithubAuthUserMutationOptions = Apollo.BaseMutationOptions<CreateGithubAuthUserMutation, CreateGithubAuthUserMutationVariables>;
-export const UpdateProfileDocument = gql`
-    mutation updateProfile($contactInformation: ContactInformation!, $identity: IdentityInput!, $location: Location!, $payoutSettings: PayoutSettingsInput!) {
-  updateProfileInfo(
-    contactInformation: $contactInformation
-    identity: $identity
-    location: $location
-    payoutSettings: $payoutSettings
-  )
-}
-    `;
-export type UpdateProfileMutationFn = Apollo.MutationFunction<UpdateProfileMutation, UpdateProfileMutationVariables>;
-
-/**
- * __useUpdateProfileMutation__
- *
- * To run a mutation, you first call `useUpdateProfileMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateProfileMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updateProfileMutation, { data, loading, error }] = useUpdateProfileMutation({
- *   variables: {
- *      contactInformation: // value for 'contactInformation'
- *      identity: // value for 'identity'
- *      location: // value for 'location'
- *      payoutSettings: // value for 'payoutSettings'
- *   },
- * });
- */
-export function useUpdateProfileMutation(baseOptions?: Apollo.MutationHookOptions<UpdateProfileMutation, UpdateProfileMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateProfileMutation, UpdateProfileMutationVariables>(UpdateProfileDocument, options);
-      }
-export type UpdateProfileMutationHookResult = ReturnType<typeof useUpdateProfileMutation>;
-export type UpdateProfileMutationResult = Apollo.MutationResult<UpdateProfileMutation>;
-export type UpdateProfileMutationOptions = Apollo.BaseMutationOptions<UpdateProfileMutation, UpdateProfileMutationVariables>;

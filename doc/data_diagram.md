@@ -32,7 +32,7 @@ class CrmGithubRepos {
    forkCount: Int!
    htmlUrl: String!
    id: bigint!
-   languages: GithubRepoDetails
+   languages: jsonb!
    name: String!
    owner: String!
    stars: Int!
@@ -52,11 +52,6 @@ class GithubIssues {
    status: jsonb!
    title: String!
    type: jsonb!
-}
-
-class GithubRepoDetails {
-   id: bigint!
-   languages: jsonb!
 }
 
 class GithubReposContributors {
@@ -88,7 +83,7 @@ class Issue {
    id: GithubIssueId!
    ignoredForProjects: [IgnoredGithubIssues!]!
    mergedAt: DateTimeUtc
-   number: Int!
+   number: GithubIssueNumber!
    repoId: GithubRepoId!
    status: Status!
    title: String!
@@ -149,7 +144,6 @@ class ProjectDetails {
 }
 
 class ProjectGithubRepos {
-   githubRepoDetails: GithubRepoDetails
    githubRepoId: bigint!
    project: Projects
    projectId: uuid!
@@ -183,7 +177,6 @@ class ProjectsSponsors {
 }
 
 class Repo {
-   contributors: [User!]!
    description: String!
    forksCount: Int!
    htmlUrl: Url!
@@ -326,7 +319,6 @@ AuthGithubUsers -- users
 AuthGithubUsers --* PaymentRequests
 Budgets -- Projects
 Budgets --* PaymentRequests
-CrmGithubRepos -- GithubRepoDetails
 GithubIssues --* IgnoredGithubIssues
 GithubReposContributors -- GithubUsers
 GithubUsers -- AuthGithubUsers
@@ -344,7 +336,6 @@ Payments -- PaymentRequests
 PendingProjectLeaderInvitations -- AuthGithubUsers
 PendingProjectLeaderInvitations -- Projects
 ProjectGithubRepos -- CrmGithubRepos
-ProjectGithubRepos -- GithubRepoDetails
 ProjectGithubRepos -- Projects
 ProjectGithubRepos --* GithubIssues
 ProjectGithubRepos --* GithubReposContributors
@@ -358,7 +349,6 @@ Projects --* ProjectLeads
 Projects --* ProjectsSponsors
 ProjectsSponsors -- Projects
 ProjectsSponsors -- Sponsors
-Repo --* User
 Sponsors --* ProjectsSponsors
 User -- AuthGithubUsers
 User --* PaymentRequests
