@@ -1,8 +1,10 @@
+use std::sync::Arc;
+
 use anyhow::Result;
 use async_trait::async_trait;
 use chrono::Utc;
 use derive_new::new;
-use domain::{GithubRepo, SubscriberCallbackError};
+use domain::{GithubFetchRepoService, GithubRepo, SubscriberCallbackError};
 use tracing::instrument;
 
 use crate::{
@@ -15,10 +17,29 @@ use crate::{
 
 #[derive(new)]
 pub struct Projector {
+	github_fetch_service: Arc<dyn GithubFetchRepoService>,
 	crm_github_repo_repository: CrmGithubRepoRepository,
 	github_issues_repository: GithubIssuesRepository,
 	github_users_repository: GithubUsersRepository,
 	github_repos_contributors_repository: GithubReposContributorsRepository,
+}
+
+impl Projector {
+	async fn build_repo(&self, repo: &GithubRepo) -> Result<CrmGithubRepo> {
+		let languages = self.github_fetch_service.repo_languages(repo.id()).await?;
+
+		Ok(CrmGithubRepo {
+			id: *repo.id(),
+			owner: repo.owner().clone(),
+			name: repo.name().clone(),
+			updated_at: Some(Utc::now().naive_utc()),
+			description: repo.description().clone(),
+			stars: *repo.stars(),
+			fork_count: *repo.forks_count(),
+			html_url: repo.html_url().to_string(),
+			languages: serde_json::to_value(languages)?,
+		})
+	}
 }
 
 #[async_trait]
@@ -27,7 +48,9 @@ impl EventListener<GithubEvent> for Projector {
 	async fn on_event(&self, event: &GithubEvent) -> Result<(), SubscriberCallbackError> {
 		match event.clone() {
 			GithubEvent::Repo(repo) => {
-				self.crm_github_repo_repository.upsert(&repo.into())?;
+				self.crm_github_repo_repository.upsert(
+					&self.build_repo(&repo).await.map_err(SubscriberCallbackError::Discard)?,
+				)?;
 			},
 			GithubEvent::PullRequest(issue) | GithubEvent::Issue(issue) => {
 				self.github_issues_repository.upsert(&issue.into())?;
@@ -40,21 +63,6 @@ impl EventListener<GithubEvent> for Projector {
 			},
 		}
 		Ok(())
-	}
-}
-
-impl From<GithubRepo> for CrmGithubRepo {
-	fn from(repo: GithubRepo) -> Self {
-		Self {
-			id: *repo.id(),
-			owner: repo.owner().clone(),
-			name: repo.name().clone(),
-			updated_at: Some(Utc::now().naive_utc()),
-			description: repo.description().clone(),
-			stars: *repo.stars(),
-			fork_count: *repo.forks_count(),
-			html_url: repo.html_url().to_string(),
-		}
 	}
 }
 

@@ -1,24 +1,17 @@
 use anyhow::{anyhow, Result};
-use async_trait::async_trait;
+use derive_more::*;
 use domain::GithubRepo;
 use octocrab::models::Repository;
 
-use crate::github;
+#[derive(Clone, From, Into)]
+pub struct OctocrabRepo(Repository);
 
-#[async_trait]
-pub trait RepoFromOctocrab {
-	async fn try_from_octocrab_repo(
-		client: &github::Client,
-		repo: Repository,
-	) -> Result<GithubRepo>;
-}
+impl TryFrom<OctocrabRepo> for GithubRepo {
+	type Error = anyhow::Error;
 
-#[async_trait]
-impl RepoFromOctocrab for GithubRepo {
-	async fn try_from_octocrab_repo(
-		client: &github::Client,
-		repo: Repository,
-	) -> Result<GithubRepo> {
+	fn try_from(repo: OctocrabRepo) -> Result<GithubRepo> {
+		let repo = repo.0;
+
 		let owner = repo.owner.ok_or_else(|| anyhow!("Missing field 'owner'"))?;
 		let html_url = repo.html_url.ok_or_else(|| anyhow!("Missing field 'html_url'"))?;
 

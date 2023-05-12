@@ -40,7 +40,7 @@ pub async fn spawn_all(
 			GithubRepoDetailsRepository::new(database.clone()),
 			ProjectGithubRepoDetailsRepository::new(database.clone()),
 			database.clone(),
-			github,
+			github.clone(),
 		)
 		.spawn(event_bus::event_consumer(config.amqp(), "projects").await?),
 		BudgetProjector::new(
@@ -53,6 +53,7 @@ pub async fn spawn_all(
 		)
 		.spawn(event_bus::event_consumer(config.amqp(), "budgets").await?),
 		GithubProjector::new(
+			github,
 			CrmGithubRepoRepository::new(database.clone()),
 			GithubIssuesRepository::new(database.clone()),
 			GithubUsersRepository::new(database.clone()),

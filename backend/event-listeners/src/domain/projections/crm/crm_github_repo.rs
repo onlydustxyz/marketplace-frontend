@@ -18,6 +18,7 @@ pub struct CrmGithubRepo {
 	pub stars: i32,
 	pub fork_count: i32,
 	pub html_url: String,
+	pub languages: serde_json::Value,
 }
 
 impl domain::Entity for CrmGithubRepo {

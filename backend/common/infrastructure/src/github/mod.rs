@@ -22,7 +22,7 @@ mod user;
 pub use user::UserFromOctocrab;
 
 mod repo;
-pub use repo::RepoFromOctocrab;
+pub use repo::OctocrabRepo;
 
 #[derive(Deserialize, Clone, Default)]
 pub struct Config {
