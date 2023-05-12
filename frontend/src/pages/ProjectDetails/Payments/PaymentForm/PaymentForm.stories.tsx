@@ -2,7 +2,6 @@ import { MockedProvider } from "@apollo/client/testing";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { FormProvider, useForm } from "react-hook-form";
 import {
-  FindUserQueryForPaymentFormDocument,
   GetProjectContributorsForPaymentSelectDocument,
   GetProjectContributorsForPaymentSelectQueryResult,
   GithubUserFragment,
@@ -99,19 +98,6 @@ const mocks = [
           ],
         },
       } as GetProjectContributorsForPaymentSelectQueryResult["data"],
-    },
-  },
-  {
-    request: {
-      query: FindUserQueryForPaymentFormDocument,
-      variables: {
-        username: "bernardstanislas",
-      },
-    },
-    result: {
-      data: {
-        fetchUserDetails: BERNARDSTANISLAS,
-      },
     },
   },
 ];

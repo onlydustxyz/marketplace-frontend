@@ -1,4 +1,4 @@
-use domain::{GithubIssue, GithubIssueNumber, GithubRepo, GithubRepoId, GithubUser, GithubUserId};
+use domain::{GithubIssue, GithubIssueNumber, GithubRepoId, GithubUser, GithubUserId};
 use juniper::{graphql_object, DefaultScalarValue};
 use olog::{error, warn};
 
@@ -8,37 +8,6 @@ pub struct Query;
 
 #[graphql_object(context=Context, Scalar = DefaultScalarValue)]
 impl Query {
-	pub fn hello_from_github_proxy(&self) -> &str {
-		"Raclette!"
-	}
-
-	pub async fn fetch_repository_details(&self, context: &Context, id: i32) -> Option<GithubRepo> {
-		let repository_id = GithubRepoId::from(id as i64);
-		context
-			.github_service()
-			.ok()?
-			.repo_by_id(&repository_id)
-			.await
-			.map_err(Error::from)
-			.logged()
-			.ok()
-	}
-
-	pub async fn fetch_user_details(
-		&self,
-		context: &Context,
-		username: String,
-	) -> Option<GithubUser> {
-		context
-			.github_service()
-			.ok()?
-			.user(&username)
-			.await
-			.map_err(Error::from)
-			.logged()
-			.ok()
-	}
-
 	pub async fn fetch_issue(
 		&self,
 		context: &Context,

@@ -43,7 +43,7 @@ impl TryFrom<create_issue::GithubIssue> for GithubIssue {
 		Ok(Self {
 			id: issue.id,
 			repo_id: issue.repo_id,
-			number: issue.number.try_into()?,
+			number: issue.number,
 			r#type: issue.type_.try_into()?,
 			title: issue.title,
 			author: issue.author.into(),

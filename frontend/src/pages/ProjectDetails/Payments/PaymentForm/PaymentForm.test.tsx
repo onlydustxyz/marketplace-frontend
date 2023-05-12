@@ -20,7 +20,6 @@ import {
   GetProjectContributorsForPaymentSelectDocument,
   GetProjectContributorsForPaymentSelectQueryResult,
   Status,
-  FindUserQueryForPaymentFormDocument,
 } from "src/__generated/graphql";
 import { MockedResponse } from "@apollo/client/testing";
 import { GithubUserFragment } from "src/__generated/graphql";
@@ -91,25 +90,6 @@ const fetchPrMock: MockedResponse = {
 };
 
 const graphQlMocks = [
-  {
-    request: {
-      query: FindUserQueryForPaymentFormDocument,
-      variables: {
-        username: "test-user-name",
-      },
-    },
-    newData: vi.fn(() => ({
-      data: {
-        fetchUserDetails: {
-          id: TEST_USER.githubUser.githubUserId,
-          login: TEST_USER.displayName,
-          avatarUrl: "",
-          user: null,
-          __typename: "User",
-        },
-      },
-    })),
-  },
   fetchPrMock,
   {
     request: {
