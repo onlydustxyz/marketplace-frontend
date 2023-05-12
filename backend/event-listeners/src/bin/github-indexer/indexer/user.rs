@@ -1,46 +1,75 @@
-use std::sync::Arc;
+use std::{collections::HashSet, sync::Arc};
 
 use async_trait::async_trait;
 use derive_new::new;
-use domain::{stream_filter, GithubFetchService, GithubRepoId, GithubUser, GithubUserId};
+use domain::{stream_filter, GithubFetchService, GithubRepoId, GithubUser, GithubUserId, LogErr};
 use event_listeners::domain::{GithubEvent, GithubUserIndexRepository};
-use olog::error;
 use serde::{Deserialize, Serialize};
+use stream_filter::Decision;
 
-use super::{IgnoreIndexerErrors, Result};
-use crate::indexer::hash;
+use super::{hash, IgnoreIndexerErrors, Result};
 
-#[derive(Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Default, Clone, Serialize, Deserialize, PartialEq, Eq)]
 struct State {
-	hash: u64,
+	pub hash: u64,
+	pub repo_ids: HashSet<GithubRepoId>,
 }
 
 impl State {
-	pub fn new(user: &GithubUser) -> Self {
-		Self { hash: hash(user) }
+	pub fn json(&self) -> serde_json::Result<serde_json::Value> {
+		serde_json::to_value(self)
 	}
 
-	fn json(&self) -> serde_json::Result<serde_json::Value> {
-		serde_json::to_value(self)
+	fn get(
+		github_user_index_repository: &dyn GithubUserIndexRepository,
+		user_id: &GithubUserId,
+	) -> anyhow::Result<Option<State>> {
+		let state = match github_user_index_repository.select_user_indexer_state(user_id)? {
+			Some(state) => {
+				let state = serde_json::from_value(state)?;
+				Some(state)
+			},
+			_ => None,
+		};
+
+		Ok(state)
+	}
+
+	fn matches(&self, user: &GithubUser, repo_id: &GithubRepoId) -> bool {
+		self.hash == hash(user) && self.repo_ids.contains(repo_id)
+	}
+
+	fn with(mut self, user: &GithubUser, repo_id: Option<GithubRepoId>) -> Self {
+		if let Some(repo_id) = repo_id {
+			self.repo_ids.insert(repo_id);
+		}
+		Self {
+			hash: hash(user),
+			..self
+		}
 	}
 }
 
+#[derive(new)]
 pub struct Indexer {
 	github_fetch_service: Arc<dyn GithubFetchService>,
 	github_user_index_repository: Arc<dyn GithubUserIndexRepository>,
-	user_hash_filter: Arc<UserHashFilter>,
 }
 
 impl Indexer {
-	pub fn new(
-		github_fetch_service: Arc<dyn GithubFetchService>,
-		github_user_index_repository: Arc<dyn GithubUserIndexRepository>,
-	) -> Self {
-		Indexer {
-			github_fetch_service,
-			github_user_index_repository: github_user_index_repository.clone(),
-			user_hash_filter: Arc::new(UserHashFilter::new(github_user_index_repository)),
-		}
+	fn get_state(&self, user_id: &GithubUserId) -> anyhow::Result<Option<State>> {
+		State::get(self.github_user_index_repository.as_ref(), user_id)
+	}
+
+	fn update_state_with(
+		&self,
+		user: &GithubUser,
+		repo_id: Option<GithubRepoId>,
+	) -> anyhow::Result<()> {
+		let state = self.get_state(user.id())?.unwrap_or_default().with(user, repo_id);
+		self.github_user_index_repository
+			.upsert_user_indexer_state(user.id(), state.json()?)?;
+		Ok(())
 	}
 }
 
@@ -64,11 +93,9 @@ impl super::Indexer<GithubUserId> for Indexer {
 }
 
 impl super::Stateful<GithubUserId> for Indexer {
-	fn store(&self, id: GithubUserId, events: &[GithubEvent]) -> anyhow::Result<()> {
+	fn store(&self, _: GithubUserId, events: &[GithubEvent]) -> anyhow::Result<()> {
 		if let Some(GithubEvent::User { user, .. }) = events.last() {
-			let state = State::new(user);
-			self.github_user_index_repository
-				.upsert_user_indexer_state(&id, state.json()?)?;
+			self.update_state_with(user, None)?;
 		}
 		Ok(())
 	}
@@ -77,9 +104,14 @@ impl super::Stateful<GithubUserId> for Indexer {
 #[async_trait]
 impl super::Indexer<GithubRepoId> for Indexer {
 	async fn index(&self, repo_id: GithubRepoId) -> Result<Vec<GithubEvent>> {
+		let user_hash_filter = Arc::new(UserHashFilter::new(
+			self.github_user_index_repository.clone(),
+			repo_id,
+		));
+
 		let events = self
 			.github_fetch_service
-			.repo_contributors(&repo_id, self.user_hash_filter.clone())
+			.repo_contributors(&repo_id, user_hash_filter)
 			.await
 			.ignore_non_fatal_errors()?
 			.into_iter()
@@ -94,18 +126,15 @@ impl super::Indexer<GithubRepoId> for Indexer {
 }
 
 impl super::Stateful<GithubRepoId> for Indexer {
-	fn store(&self, _: GithubRepoId, events: &[GithubEvent]) -> anyhow::Result<()> {
+	fn store(&self, repo_id: GithubRepoId, events: &[GithubEvent]) -> anyhow::Result<()> {
 		events
 			.iter()
 			.filter_map(|event| match event {
 				GithubEvent::User { user, .. } => Some(user),
 				_ => None,
 			})
-			.try_for_each(|user| {
-				self.github_user_index_repository
-					.upsert_user_indexer_state(user.id(), State::new(user).json()?)?;
-				anyhow::Ok(())
-			})?;
+			.try_for_each(|user| self.update_state_with(user, Some(repo_id)))?;
+
 		Ok(())
 	}
 }
@@ -113,39 +142,18 @@ impl super::Stateful<GithubRepoId> for Indexer {
 #[derive(new)]
 struct UserHashFilter {
 	github_user_index_repository: Arc<dyn GithubUserIndexRepository>,
+	repo_id: GithubRepoId,
 }
 
 impl stream_filter::Filter for UserHashFilter {
 	type I = GithubUser;
 
-	fn filter(&self, user: GithubUser) -> stream_filter::Decision<GithubUser> {
-		match self.get_state(user.id()) {
-			Ok(state) => match state {
-				Some(state) if state == State::new(&user) => stream_filter::Decision::Skip,
-				_ => stream_filter::Decision::Take(user),
-			},
-			Err(error) => {
-				error!(
-					error = error.to_string(),
-					user = user.id().to_string(),
-					"Failed to retreive contributors indexer state"
-				);
-				stream_filter::Decision::Skip
-			},
+	fn filter(&self, user: GithubUser) -> Decision<GithubUser> {
+		match State::get(self.github_user_index_repository.as_ref(), user.id())
+			.log_err("Failed to retreive contributors indexer state")
+		{
+			Ok(Some(state)) if state.matches(&user, &self.repo_id) => Decision::Skip,
+			_ => Decision::Take(user),
 		}
-	}
-}
-
-impl UserHashFilter {
-	fn get_state(&self, user_id: &GithubUserId) -> anyhow::Result<Option<State>> {
-		let state = match self.github_user_index_repository.select_user_indexer_state(user_id)? {
-			Some(state) => {
-				let state = serde_json::from_value(state)?;
-				Some(state)
-			},
-			_ => None,
-		};
-
-		Ok(state)
 	}
 }
