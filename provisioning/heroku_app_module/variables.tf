@@ -78,3 +78,9 @@ variable "datadog_site" {
 variable "environment" {
   type = string
 }
+
+variable "worker" {
+  type        = bool
+  description = "Whether the app is a worker, or an application listening to $PORT"
+  default     = false
+}
