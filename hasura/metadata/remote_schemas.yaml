@@ -35,7 +35,7 @@
             htmlUrl: Url!
             id: GithubIssueId!
             mergedAt: DateTimeUtc
-            number: Int!
+            number: GithubIssueNumber!
             repoId: GithubRepoId!
             status: Status!
             title: String!
@@ -168,6 +168,7 @@
           }
           scalar DateTimeUtc
           scalar GithubIssueId
+          scalar GithubIssueNumber
           scalar GithubRepoId
           scalar GithubUserId
           scalar Url
@@ -178,7 +179,7 @@
             htmlUrl: Url!
             id: GithubIssueId!
             mergedAt: DateTimeUtc
-            number: Int!
+            number: GithubIssueNumber!
             repoId: GithubRepoId!
             status: Status!
             title: String!
@@ -193,7 +194,6 @@
             searchUsers(query: String!, sort: String, order: String, perPage: Int, page: Int): [User!]
           }
           type Repo {
-            contributors: [User!]!
             description: String!
             forksCount: Int!
             htmlUrl: Url!
@@ -228,6 +228,7 @@
           }
           scalar DateTimeUtc
           scalar GithubIssueId
+          scalar GithubIssueNumber
           scalar GithubRepoId
           scalar GithubUserId
           scalar Url
@@ -238,7 +239,7 @@
             htmlUrl: Url!
             id: GithubIssueId!
             mergedAt: DateTimeUtc
-            number: Int!
+            number: GithubIssueNumber!
             repoId: GithubRepoId!
             status: Status!
             title: String!
@@ -251,7 +252,6 @@
             helloFromGithubProxy: String!
           }
           type Repo {
-            contributors: [User!]!
             description: String!
             forksCount: Int!
             htmlUrl: Url!

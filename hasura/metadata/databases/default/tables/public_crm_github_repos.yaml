@@ -1,16 +1,6 @@
 table:
   name: crm_github_repos
   schema: public
-object_relationships:
-  - name: languages
-    using:
-      manual_configuration:
-        column_mapping:
-          id: id
-        insertion_order: null
-        remote_table:
-          name: github_repo_details
-          schema: public
 select_permissions:
   - role: public
     permission:
@@ -18,6 +8,7 @@ select_permissions:
         - id
         - fork_count
         - stars
+        - languages
         - description
         - html_url
         - name

@@ -10,7 +10,6 @@
 - "!include public_budgets.yaml"
 - "!include public_crm_github_repos.yaml"
 - "!include public_github_issues.yaml"
-- "!include public_github_repo_details.yaml"
 - "!include public_github_repos_contributors.yaml"
 - "!include public_github_users.yaml"
 - "!include public_ignored_github_issues.yaml"
