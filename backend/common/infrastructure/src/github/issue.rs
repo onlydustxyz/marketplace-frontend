@@ -35,20 +35,20 @@ impl IssueFromOctocrab for GithubIssue {
 
 		let status = get_status_from_issue(&issue)?;
 
-		Ok(domain::GithubIssue::new(
+		Ok(domain::GithubIssue {
 			id,
 			repo_id,
 			number,
-			issue_type,
-			issue.title,
-			GithubUser::from_octocrab_user(issue.user),
-			issue.html_url,
+			r#type: issue_type,
+			title: issue.title,
+			author: GithubUser::from_octocrab_user(issue.user),
+			html_url: issue.html_url,
 			status,
-			issue.created_at,
-			issue.updated_at,
-			issue.pull_request.and_then(|pr| pr.merged_at),
-			issue.closed_at,
-		))
+			created_at: issue.created_at,
+			updated_at: issue.updated_at,
+			merged_at: issue.pull_request.and_then(|pr| pr.merged_at),
+			closed_at: issue.closed_at,
+		})
 	}
 
 	fn from_octocrab_pull_request(
@@ -73,20 +73,20 @@ impl IssueFromOctocrab for GithubIssue {
 
 		let user = pull_request.user.ok_or_else(|| anyhow!("Missing field: 'user'"))?;
 
-		Ok(domain::GithubIssue::new(
+		Ok(domain::GithubIssue {
 			id,
 			repo_id,
 			number,
-			GithubIssueType::PullRequest,
+			r#type: GithubIssueType::PullRequest,
 			title,
-			GithubUser::from_octocrab_user(*user),
+			author: GithubUser::from_octocrab_user(*user),
 			html_url,
 			status,
 			created_at,
 			updated_at,
-			pull_request.merged_at,
-			pull_request.closed_at,
-		))
+			merged_at: pull_request.merged_at,
+			closed_at: pull_request.closed_at,
+		})
 	}
 }
 
