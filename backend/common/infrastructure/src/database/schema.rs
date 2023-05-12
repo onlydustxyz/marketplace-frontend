@@ -20,6 +20,7 @@ diesel::table! {
         stars -> Int4,
         fork_count -> Int4,
         html_url -> Text,
+        languages -> Jsonb,
     }
 }
 
