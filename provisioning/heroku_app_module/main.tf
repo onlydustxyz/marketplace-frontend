@@ -45,3 +45,8 @@ resource "heroku_app_feature" "metadata" {
   app  = heroku_app.app.name
   name = "runtime-dyno-metadata"
 }
+
+resource "heroku_drain" "drain" {
+  app           = heroku_app.app.id
+  sensitive_url = "https://http-intake.logs.${var.datadog_site}/api/v2/logs/?dd-api-key=${var.datadog_api_key}&ddsource=heroku&env=${var.environment}&service=${var.app_name}&host=${var.app_domain}"
+}
