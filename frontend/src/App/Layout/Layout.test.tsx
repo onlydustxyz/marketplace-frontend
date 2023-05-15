@@ -13,7 +13,7 @@ import { ToasterProvider } from "src/hooks/useToaster";
 import { useRoles } from "src/hooks/useAuth/useRoles";
 import { HasuraUserRole } from "src/types";
 import { ImpersonationClaimsProvider } from "src/hooks/useImpersonationClaims";
-import { GetPaymentRequestIdsDocument } from "src/__generated/graphql";
+import { GetPaymentRequestIdsDocument, GetPaymentRequestIdsQueryResult } from "src/__generated/graphql";
 
 expect.extend(matchers);
 
@@ -52,8 +52,10 @@ const buildMockPaymentsQuery = (githubUserId: number, paymentRequests: Record<st
   },
   result: {
     data: {
-      paymentRequests,
-    },
+      githubUsersByPk: {
+        paymentRequests,
+      },
+    } as GetPaymentRequestIdsQueryResult["data"],
   },
 });
 

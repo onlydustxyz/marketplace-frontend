@@ -11901,7 +11901,7 @@ export type GetPaymentRequestIdsQueryVariables = Exact<{
 }>;
 
 
-export type GetPaymentRequestIdsQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any }> };
+export type GetPaymentRequestIdsQuery = { __typename?: 'query_root', githubUsersByPk: { __typename?: 'GithubUsers', id: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any }> } | null };
 
 export type PaymentRequestDetailsFragment = { __typename?: 'PaymentRequests', id: any, amountInUsd: any, requestedAt: any, invoiceReceivedAt: any | null, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', max: { __typename?: 'PaymentsMaxFields', processedAt: any | null } | null, sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null }, requestor: { __typename?: 'users', id: any, displayName: string, avatarUrl: string } | null, liveGithubRecipient: { __typename?: 'User', login: string, avatarUrl: any, htmlUrl: any, id: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null } | null, workItems: Array<{ __typename?: 'WorkItems', paymentId: any, repoId: any, issueNumber: any, githubIssue: { __typename?: 'Issue', repoId: any, number: any, type: Type, status: Status, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null, id: any, ignoredForProjects: Array<{ __typename?: 'IgnoredGithubIssues', projectId: any, repoId: any, issueNumber: any }> } | null }> };
 
@@ -12882,11 +12882,15 @@ export type UserIdentityLazyQueryHookResult = ReturnType<typeof useUserIdentityL
 export type UserIdentityQueryResult = Apollo.QueryResult<UserIdentityQuery, UserIdentityQueryVariables>;
 export const GetPaymentRequestIdsDocument = gql`
     query GetPaymentRequestIds($githubUserId: bigint!) {
-  paymentRequests(where: {recipientId: {_eq: $githubUserId}}) {
-    id
+  githubUsersByPk(id: $githubUserId) {
+    ...GithubUserId
+    paymentRequests {
+      ...PaymentRequestId
+    }
   }
 }
-    `;
+    ${GithubUserIdFragmentDoc}
+${PaymentRequestIdFragmentDoc}`;
 
 /**
  * __useGetPaymentRequestIdsQuery__
