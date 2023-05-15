@@ -88,6 +88,7 @@ const ALL_PROJECTS_RESULT: { data: GetProjectsQueryResult["data"] } = {
       {
         __typename: "Projects",
         id: TEST_PROJECT_ID,
+        contributorsAggregate: { aggregate: { count: 0 } },
         projectDetails: {
           __typename: "ProjectDetails",
           projectId: TEST_PROJECT_ID,
@@ -116,12 +117,11 @@ const ALL_PROJECTS_RESULT: { data: GetProjectsQueryResult["data"] } = {
             projectId: TEST_PROJECT_ID,
             githubRepoId: TEST_GITHUB_REPO_ID,
             repo: null,
-            repoContributors: [],
           },
         ],
         projectSponsors: [],
         budgetsAggregate: { aggregate: { sum: { spentAmount: 100, initialAmount: 1000 } } },
-        budgets: [{ __typename: "Budgets", id: "budget-1", paymentRequests: [] }],
+        budgets: [{ __typename: "Budgets", id: "budget-1" }],
       },
     ],
   },
@@ -140,6 +140,7 @@ const SINGLE_PROJECT_RESULT: { data: GetProjectQueryResult["data"] } = {
           },
         },
       },
+      contributorsAggregate: { aggregate: { count: 0 } },
       projectDetails: {
         __typename: "ProjectDetails",
         name: TEST_PROJECT_NAME,
@@ -169,7 +170,6 @@ const SINGLE_PROJECT_RESULT: { data: GetProjectQueryResult["data"] } = {
           __typename: "ProjectGithubRepos",
           projectId: TEST_PROJECT_ID,
           githubRepoId: TEST_GITHUB_REPO_ID,
-          repoContributors: [],
           repo: {
             __typename: "GithubRepos",
             id: TEST_GITHUB_REPO_ID,
@@ -178,7 +178,7 @@ const SINGLE_PROJECT_RESULT: { data: GetProjectQueryResult["data"] } = {
         },
       ],
       projectSponsors: [],
-      budgets: [{ __typename: "Budgets", id: "budget-1", paymentRequests: [] }],
+      budgets: [{ __typename: "Budgets", id: "budget-1" }],
     },
   },
 };

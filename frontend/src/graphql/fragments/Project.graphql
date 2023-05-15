@@ -1,3 +1,7 @@
+fragment ProjectId on Projects {
+  id
+}
+
 fragment ProjectContributors on Projects {
   id
   githubRepos {

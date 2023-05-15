@@ -1,4 +1,3 @@
-import { gql } from "@apollo/client";
 import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 import { generatePath, Link } from "react-router-dom";
 import { RoutePaths } from "src/App";
@@ -12,7 +11,6 @@ import CodeSSlashLine from "src/icons/CodeSSlashLine";
 import { buildLanguageString, getDeduplicatedAggregatedLanguages } from "src/utils/languages";
 import { formatMoneyAmount } from "src/utils/money";
 import { useMediaQuery } from "usehooks-ts";
-import { ProjectContributorsFragmentDoc, ProjectLeadFragmentDoc, SponsorFragmentDoc } from "src/__generated/graphql";
 import User3Line from "src/icons/User3Line";
 import FundsLine from "src/icons/FundsLine";
 import Tooltip, { TooltipPosition } from "src/components/Tooltip";
@@ -20,7 +18,6 @@ import ProjectTitle from "./ProjectTitle";
 import isDefined from "src/utils/isDefined";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import Tag, { TagSize } from "src/components/Tag";
-import { getContributors } from "src/utils/project";
 import { ArrayElement } from "src/types";
 import { GetProjectsQuery } from "src/__generated/graphql";
 
@@ -37,7 +34,7 @@ export default function ProjectCard({
   githubRepos,
   projectLeads,
   budgetsAggregate,
-  budgets,
+  contributorsAggregate,
   projectSponsors,
 }: ProjectCardProps) {
   const { T } = useIntl();
@@ -46,8 +43,8 @@ export default function ProjectCard({
   const totalInitialAmountInUsd = budgetsAggregate?.aggregate?.sum?.initialAmount;
 
   const topSponsors = projectSponsors?.map(projectSponsor => projectSponsor.sponsor).slice(0, 3) || [];
-  const { contributors } = getContributors({ id, githubRepos, budgets });
   const languages = getDeduplicatedAggregatedLanguages(githubRepos);
+  const contributorsCount = contributorsAggregate.aggregate?.count || 0;
 
   const card = (
     <Card
@@ -85,10 +82,10 @@ export default function ProjectCard({
                   {T("project.details.githubRepos.count", { count: githubRepos.length })}
                 </Tag>
               )}
-              {contributors.length > 0 && (
+              {contributorsCount > 0 && (
                 <Tag testid={`contributor-count-${id}`} size={TagSize.Small}>
                   <User3Line />
-                  {T("project.details.contributors.count", { count: contributors.length })}
+                  {T("project.details.contributors.count", { count: contributorsCount })}
                 </Tag>
               )}
               {totalSpentAmountInUsd !== undefined && (
@@ -156,55 +153,3 @@ export default function ProjectCard({
     card
   );
 }
-
-gql`
-  ${ProjectLeadFragmentDoc}
-  ${SponsorFragmentDoc}
-  ${ProjectContributorsFragmentDoc}
-  fragment ProjectCardFields on Projects {
-    id
-    ...ProjectContributors
-    budgetsAggregate {
-      aggregate {
-        sum {
-          spentAmount
-          initialAmount
-        }
-      }
-    }
-    budgets {
-      id
-    }
-    projectDetails {
-      projectId
-      name
-      telegramLink
-      logoUrl
-      shortDescription
-    }
-    pendingInvitations {
-      id
-      githubUserId
-    }
-    projectLeads {
-      userId
-      projectId
-      user {
-        ...ProjectLead
-      }
-    }
-    githubRepos {
-      projectId
-      githubRepoId
-      repo {
-        ...GithubRepoId
-        languages
-      }
-    }
-    projectSponsors {
-      sponsor {
-        ...Sponsor
-      }
-    }
-  }
-`;

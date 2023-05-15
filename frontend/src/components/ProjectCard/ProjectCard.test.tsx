@@ -1,39 +1,10 @@
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import ProjectCard, { Project } from ".";
 import { screen } from "@testing-library/react";
-import { GithubUserFragment } from "src/__generated/graphql";
-
-const contributor1: GithubUserFragment = {
-  __typename: "GithubUsers",
-  id: 123456,
-  login: "contributor1",
-  htmlUrl: "",
-  avatarUrl: "",
-  user: null,
-};
-
-const contributor2: GithubUserFragment = {
-  __typename: "GithubUsers",
-  id: 123457,
-  login: "contributor2",
-  htmlUrl: "",
-  avatarUrl: "",
-  user: null,
-};
-
-const contributor3: GithubUserFragment = {
-  __typename: "GithubUsers",
-  id: 123458,
-  login: "contributor3",
-  htmlUrl: "",
-  avatarUrl: "",
-  user: null,
-};
 
 const githubRepo1 = {
   githubRepoId: 1000,
   projectId: "123",
-  repoContributors: [contributor1, contributor2].map(user => ({ user })),
   repo: {
     id: 1000,
     languages: { Cairo: 1000, Rust: 100, HTML: 150 },
@@ -43,7 +14,6 @@ const githubRepo1 = {
 const githubRepo2 = {
   githubRepoId: 1001,
   projectId: "123",
-  repoContributors: [contributor1, contributor3].map(user => ({ user })),
   repo: {
     id: 1001,
     languages: { Rust: 80, Go: 40, Cairo: 2000 },
@@ -52,6 +22,7 @@ const githubRepo2 = {
 
 const PROJECT: Project = {
   id: 123,
+  contributorsAggregate: { aggregate: { count: 3 } },
   projectDetails: {
     projectId: "123",
     name: "ZeroSync",
@@ -82,7 +53,7 @@ const PROJECT: Project = {
       },
     },
   },
-  budgets: [{ id: "budget-1", paymentRequests: [] }],
+  budgets: [{ id: "budget-1" }],
   pendingInvitations: [{ id: "croute", githubUserId: "github-user-id" }],
   projectSponsors: [
     {
