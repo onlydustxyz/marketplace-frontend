@@ -3747,6 +3747,10 @@ export type Projects = {
   /** An aggregate relationship */
   budgetsAggregate: BudgetsAggregate;
   /** An array relationship */
+  contributors: Array<ProjectsContributorsView>;
+  /** An aggregate relationship */
+  contributorsAggregate: ProjectsContributorsViewAggregate;
+  /** An array relationship */
   githubRepos: Array<ProjectGithubRepos>;
   /** An aggregate relationship */
   githubReposAggregate: ProjectGithubReposAggregate;
@@ -3785,6 +3789,26 @@ export type ProjectsBudgetsAggregateArgs = {
   offset: InputMaybe<Scalars['Int']>;
   orderBy: InputMaybe<Array<BudgetsOrderBy>>;
   where: InputMaybe<BudgetsBoolExp>;
+};
+
+
+/** columns and relationships of "projects" */
+export type ProjectsContributorsArgs = {
+  distinctOn: InputMaybe<Array<ProjectsContributorsViewSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ProjectsContributorsViewOrderBy>>;
+  where: InputMaybe<ProjectsContributorsViewBoolExp>;
+};
+
+
+/** columns and relationships of "projects" */
+export type ProjectsContributorsAggregateArgs = {
+  distinctOn: InputMaybe<Array<ProjectsContributorsViewSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ProjectsContributorsViewOrderBy>>;
+  where: InputMaybe<ProjectsContributorsViewBoolExp>;
 };
 
 
@@ -3896,6 +3920,8 @@ export type ProjectsBoolExp = {
   _or: InputMaybe<Array<ProjectsBoolExp>>;
   budgets: InputMaybe<BudgetsBoolExp>;
   budgets_aggregate: InputMaybe<Budgets_Aggregate_Bool_Exp>;
+  contributors: InputMaybe<ProjectsContributorsViewBoolExp>;
+  contributors_aggregate: InputMaybe<Projects_Contributors_View_Aggregate_Bool_Exp>;
   githubRepos: InputMaybe<ProjectGithubReposBoolExp>;
   githubRepos_aggregate: InputMaybe<Project_Github_Repos_Aggregate_Bool_Exp>;
   id: InputMaybe<UuidComparisonExp>;
@@ -3914,9 +3940,163 @@ export enum ProjectsConstraint {
   ProjectsPkey = 'projects_pkey'
 }
 
+/** columns and relationships of "projects_contributors_view" */
+export type ProjectsContributorsView = {
+  __typename?: 'ProjectsContributorsView';
+  /** An object relationship */
+  githubUser: Maybe<GithubUsers>;
+  githubUserId: Maybe<Scalars['bigint']>;
+  projectId: Maybe<Scalars['uuid']>;
+};
+
+/** aggregated selection of "projects_contributors_view" */
+export type ProjectsContributorsViewAggregate = {
+  __typename?: 'ProjectsContributorsViewAggregate';
+  aggregate: Maybe<ProjectsContributorsViewAggregateFields>;
+  nodes: Array<ProjectsContributorsView>;
+};
+
+/** aggregate fields of "projects_contributors_view" */
+export type ProjectsContributorsViewAggregateFields = {
+  __typename?: 'ProjectsContributorsViewAggregateFields';
+  avg: Maybe<ProjectsContributorsViewAvgFields>;
+  count: Scalars['Int'];
+  max: Maybe<ProjectsContributorsViewMaxFields>;
+  min: Maybe<ProjectsContributorsViewMinFields>;
+  stddev: Maybe<ProjectsContributorsViewStddevFields>;
+  stddevPop: Maybe<ProjectsContributorsViewStddev_PopFields>;
+  stddevSamp: Maybe<ProjectsContributorsViewStddev_SampFields>;
+  sum: Maybe<ProjectsContributorsViewSumFields>;
+  varPop: Maybe<ProjectsContributorsViewVar_PopFields>;
+  varSamp: Maybe<ProjectsContributorsViewVar_SampFields>;
+  variance: Maybe<ProjectsContributorsViewVarianceFields>;
+};
+
+
+/** aggregate fields of "projects_contributors_view" */
+export type ProjectsContributorsViewAggregateFieldsCountArgs = {
+  columns: InputMaybe<Array<ProjectsContributorsViewSelectColumn>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "projects_contributors_view" */
+export type ProjectsContributorsViewAggregateOrderBy = {
+  avg: InputMaybe<Projects_Contributors_View_Avg_Order_By>;
+  count: InputMaybe<OrderBy>;
+  max: InputMaybe<Projects_Contributors_View_Max_Order_By>;
+  min: InputMaybe<Projects_Contributors_View_Min_Order_By>;
+  stddev: InputMaybe<Projects_Contributors_View_Stddev_Order_By>;
+  stddev_pop: InputMaybe<Projects_Contributors_View_Stddev_Pop_Order_By>;
+  stddev_samp: InputMaybe<Projects_Contributors_View_Stddev_Samp_Order_By>;
+  sum: InputMaybe<Projects_Contributors_View_Sum_Order_By>;
+  var_pop: InputMaybe<Projects_Contributors_View_Var_Pop_Order_By>;
+  var_samp: InputMaybe<Projects_Contributors_View_Var_Samp_Order_By>;
+  variance: InputMaybe<Projects_Contributors_View_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "projects_contributors_view" */
+export type ProjectsContributorsViewArrRelInsertInput = {
+  data: Array<ProjectsContributorsViewInsertInput>;
+};
+
+/** aggregate avg on columns */
+export type ProjectsContributorsViewAvgFields = {
+  __typename?: 'ProjectsContributorsViewAvgFields';
+  githubUserId: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "projects_contributors_view". All fields are combined with a logical 'AND'. */
+export type ProjectsContributorsViewBoolExp = {
+  _and: InputMaybe<Array<ProjectsContributorsViewBoolExp>>;
+  _not: InputMaybe<ProjectsContributorsViewBoolExp>;
+  _or: InputMaybe<Array<ProjectsContributorsViewBoolExp>>;
+  githubUser: InputMaybe<GithubUsersBoolExp>;
+  githubUserId: InputMaybe<BigintComparisonExp>;
+  projectId: InputMaybe<UuidComparisonExp>;
+};
+
+/** input type for inserting data into table "projects_contributors_view" */
+export type ProjectsContributorsViewInsertInput = {
+  githubUser: InputMaybe<GithubUsersObjRelInsertInput>;
+  githubUserId: InputMaybe<Scalars['bigint']>;
+  projectId: InputMaybe<Scalars['uuid']>;
+};
+
+/** aggregate max on columns */
+export type ProjectsContributorsViewMaxFields = {
+  __typename?: 'ProjectsContributorsViewMaxFields';
+  githubUserId: Maybe<Scalars['bigint']>;
+  projectId: Maybe<Scalars['uuid']>;
+};
+
+/** aggregate min on columns */
+export type ProjectsContributorsViewMinFields = {
+  __typename?: 'ProjectsContributorsViewMinFields';
+  githubUserId: Maybe<Scalars['bigint']>;
+  projectId: Maybe<Scalars['uuid']>;
+};
+
+/** Ordering options when selecting data from "projects_contributors_view". */
+export type ProjectsContributorsViewOrderBy = {
+  githubUser: InputMaybe<GithubUsersOrderBy>;
+  githubUserId: InputMaybe<OrderBy>;
+  projectId: InputMaybe<OrderBy>;
+};
+
+/** select columns of table "projects_contributors_view" */
+export enum ProjectsContributorsViewSelectColumn {
+  /** column name */
+  GithubUserId = 'githubUserId',
+  /** column name */
+  ProjectId = 'projectId'
+}
+
+/** aggregate stddev on columns */
+export type ProjectsContributorsViewStddevFields = {
+  __typename?: 'ProjectsContributorsViewStddevFields';
+  githubUserId: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type ProjectsContributorsViewStddev_PopFields = {
+  __typename?: 'ProjectsContributorsViewStddev_popFields';
+  githubUserId: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type ProjectsContributorsViewStddev_SampFields = {
+  __typename?: 'ProjectsContributorsViewStddev_sampFields';
+  githubUserId: Maybe<Scalars['Float']>;
+};
+
+/** aggregate sum on columns */
+export type ProjectsContributorsViewSumFields = {
+  __typename?: 'ProjectsContributorsViewSumFields';
+  githubUserId: Maybe<Scalars['bigint']>;
+};
+
+/** aggregate var_pop on columns */
+export type ProjectsContributorsViewVar_PopFields = {
+  __typename?: 'ProjectsContributorsViewVar_popFields';
+  githubUserId: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type ProjectsContributorsViewVar_SampFields = {
+  __typename?: 'ProjectsContributorsViewVar_sampFields';
+  githubUserId: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type ProjectsContributorsViewVarianceFields = {
+  __typename?: 'ProjectsContributorsViewVarianceFields';
+  githubUserId: Maybe<Scalars['Float']>;
+};
+
 /** input type for inserting data into table "projects" */
 export type ProjectsInsertInput = {
   budgets: InputMaybe<BudgetsArrRelInsertInput>;
+  contributors: InputMaybe<ProjectsContributorsViewArrRelInsertInput>;
   githubRepos: InputMaybe<ProjectGithubReposArrRelInsertInput>;
   id: InputMaybe<Scalars['uuid']>;
   pendingInvitations: InputMaybe<PendingProjectLeaderInvitationsArrRelInsertInput>;
@@ -3963,6 +4143,7 @@ export type ProjectsOnConflict = {
 /** Ordering options when selecting data from "projects". */
 export type ProjectsOrderBy = {
   budgetsAggregate: InputMaybe<BudgetsAggregateOrderBy>;
+  contributorsAggregate: InputMaybe<ProjectsContributorsViewAggregateOrderBy>;
   githubReposAggregate: InputMaybe<ProjectGithubReposAggregateOrderBy>;
   id: InputMaybe<OrderBy>;
   pendingInvitationsAggregate: InputMaybe<PendingProjectLeaderInvitationsAggregateOrderBy>;
@@ -9213,6 +9394,83 @@ export type Project_Leads_StreamCursorValueInput = {
   userId: InputMaybe<Scalars['uuid']>;
 };
 
+export type Projects_Contributors_View_Aggregate_Bool_Exp = {
+  count: InputMaybe<Projects_Contributors_View_Aggregate_Bool_Exp_Count>;
+};
+
+export type Projects_Contributors_View_Aggregate_Bool_Exp_Count = {
+  arguments: InputMaybe<Array<ProjectsContributorsViewSelectColumn>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+  filter: InputMaybe<ProjectsContributorsViewBoolExp>;
+  predicate: IntComparisonExp;
+};
+
+/** order by avg() on columns of table "projects_contributors_view" */
+export type Projects_Contributors_View_Avg_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+};
+
+/** order by max() on columns of table "projects_contributors_view" */
+export type Projects_Contributors_View_Max_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+  projectId: InputMaybe<OrderBy>;
+};
+
+/** order by min() on columns of table "projects_contributors_view" */
+export type Projects_Contributors_View_Min_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+  projectId: InputMaybe<OrderBy>;
+};
+
+/** order by stddev() on columns of table "projects_contributors_view" */
+export type Projects_Contributors_View_Stddev_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+};
+
+/** order by stddev_pop() on columns of table "projects_contributors_view" */
+export type Projects_Contributors_View_Stddev_Pop_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+};
+
+/** order by stddev_samp() on columns of table "projects_contributors_view" */
+export type Projects_Contributors_View_Stddev_Samp_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+};
+
+/** Streaming cursor of the table "projects_contributors_view" */
+export type Projects_Contributors_View_StreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: Projects_Contributors_View_StreamCursorValueInput;
+  /** cursor ordering */
+  ordering: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Projects_Contributors_View_StreamCursorValueInput = {
+  githubUserId: InputMaybe<Scalars['bigint']>;
+  projectId: InputMaybe<Scalars['uuid']>;
+};
+
+/** order by sum() on columns of table "projects_contributors_view" */
+export type Projects_Contributors_View_Sum_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+};
+
+/** order by var_pop() on columns of table "projects_contributors_view" */
+export type Projects_Contributors_View_Var_Pop_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+};
+
+/** order by var_samp() on columns of table "projects_contributors_view" */
+export type Projects_Contributors_View_Var_Samp_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+};
+
+/** order by variance() on columns of table "projects_contributors_view" */
+export type Projects_Contributors_View_Variance_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+};
+
 export type Projects_Sponsors_Aggregate_Bool_Exp = {
   count: InputMaybe<Projects_Sponsors_Aggregate_Bool_Exp_Count>;
 };
@@ -9394,6 +9652,10 @@ export type Query_Root = {
   projectsAggregate: ProjectsAggregate;
   /** fetch data from the table: "projects" using primary key columns */
   projectsByPk: Maybe<Projects>;
+  /** fetch data from the table: "projects_contributors_view" */
+  projectsContributorsView: Array<ProjectsContributorsView>;
+  /** fetch aggregated fields from the table: "projects_contributors_view" */
+  projectsContributorsViewAggregate: ProjectsContributorsViewAggregate;
   /** fetch data from the table: "projects_sponsors" */
   projectsSponsors: Array<ProjectsSponsors>;
   /** fetch aggregated fields from the table: "projects_sponsors" */
@@ -9929,6 +10191,24 @@ export type Query_RootProjectsByPkArgs = {
 };
 
 
+export type Query_RootProjectsContributorsViewArgs = {
+  distinctOn: InputMaybe<Array<ProjectsContributorsViewSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ProjectsContributorsViewOrderBy>>;
+  where: InputMaybe<ProjectsContributorsViewBoolExp>;
+};
+
+
+export type Query_RootProjectsContributorsViewAggregateArgs = {
+  distinctOn: InputMaybe<Array<ProjectsContributorsViewSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ProjectsContributorsViewOrderBy>>;
+  where: InputMaybe<ProjectsContributorsViewBoolExp>;
+};
+
+
 export type Query_RootProjectsSponsorsArgs = {
   distinctOn: InputMaybe<Array<ProjectsSponsorsSelectColumn>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -10237,6 +10517,12 @@ export type Subscription_Root = {
   projectsAggregate: ProjectsAggregate;
   /** fetch data from the table: "projects" using primary key columns */
   projectsByPk: Maybe<Projects>;
+  /** fetch data from the table: "projects_contributors_view" */
+  projectsContributorsView: Array<ProjectsContributorsView>;
+  /** fetch aggregated fields from the table: "projects_contributors_view" */
+  projectsContributorsViewAggregate: ProjectsContributorsViewAggregate;
+  /** fetch data from the table in a streaming manner: "projects_contributors_view" */
+  projectsContributorsViewStream: Array<ProjectsContributorsView>;
   /** fetch data from the table: "projects_sponsors" */
   projectsSponsors: Array<ProjectsSponsors>;
   /** fetch aggregated fields from the table: "projects_sponsors" */
@@ -10902,6 +11188,31 @@ export type Subscription_RootProjectsAggregateArgs = {
 
 export type Subscription_RootProjectsByPkArgs = {
   id: Scalars['uuid'];
+};
+
+
+export type Subscription_RootProjectsContributorsViewArgs = {
+  distinctOn: InputMaybe<Array<ProjectsContributorsViewSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ProjectsContributorsViewOrderBy>>;
+  where: InputMaybe<ProjectsContributorsViewBoolExp>;
+};
+
+
+export type Subscription_RootProjectsContributorsViewAggregateArgs = {
+  distinctOn: InputMaybe<Array<ProjectsContributorsViewSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ProjectsContributorsViewOrderBy>>;
+  where: InputMaybe<ProjectsContributorsViewBoolExp>;
+};
+
+
+export type Subscription_RootProjectsContributorsViewStreamArgs = {
+  batchSize: Scalars['Int'];
+  cursor: Array<InputMaybe<Projects_Contributors_View_StreamCursorInput>>;
+  where: InputMaybe<ProjectsContributorsViewBoolExp>;
 };
 
 
@@ -12203,8 +12514,8 @@ export type AcceptProjectLeaderInvitationMutationVariables = Exact<{
 export type AcceptProjectLeaderInvitationMutation = { __typename?: 'mutation_root', acceptProjectLeaderInvitation: boolean };
 
 export type GetProjectsQueryVariables = Exact<{
-  languages: InputMaybe<Array<Scalars['String']> | Scalars['String']>;
-  sponsors: InputMaybe<Array<Scalars['String']> | Scalars['String']>;
+  where: InputMaybe<ProjectsBoolExp>;
+  orderBy: InputMaybe<Array<ProjectsOrderBy> | ProjectsOrderBy>;
 }>;
 
 
@@ -14140,8 +14451,8 @@ export type AcceptProjectLeaderInvitationMutationHookResult = ReturnType<typeof 
 export type AcceptProjectLeaderInvitationMutationResult = Apollo.MutationResult<AcceptProjectLeaderInvitationMutation>;
 export type AcceptProjectLeaderInvitationMutationOptions = Apollo.BaseMutationOptions<AcceptProjectLeaderInvitationMutation, AcceptProjectLeaderInvitationMutationVariables>;
 export const GetProjectsDocument = gql`
-    query GetProjects($languages: [String!], $sponsors: [String!]) {
-  projects(orderBy: {budgetsAggregate: {sum: {spentAmount: DESC}}}) {
+    query GetProjects($where: ProjectsBoolExp, $orderBy: [ProjectsOrderBy!]) {
+  projects(where: $where, orderBy: $orderBy) {
     ...ProjectCardFields
   }
 }
@@ -14159,8 +14470,8 @@ export const GetProjectsDocument = gql`
  * @example
  * const { data, loading, error } = useGetProjectsQuery({
  *   variables: {
- *      languages: // value for 'languages'
- *      sponsors: // value for 'sponsors'
+ *      where: // value for 'where'
+ *      orderBy: // value for 'orderBy'
  *   },
  * });
  */
