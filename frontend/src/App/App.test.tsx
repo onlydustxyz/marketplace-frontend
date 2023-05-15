@@ -7,7 +7,6 @@ import App, { RoutePaths } from ".";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import { CLAIMS_KEY, GITHUB_USERID_KEY, PROJECTS_LED_KEY, TokenSet } from "src/types";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
-import { buildGetProjectsQuery } from "src/pages/Projects/AllProjects";
 import {
   GetGithubRepositoryDetailsDocument,
   GetGithubRepositoryDetailsQueryResult,
@@ -17,9 +16,11 @@ import {
   GetProjectOverviewDetailsDocument,
   GetProjectOverviewDetailsQueryResult,
   GetProjectQueryResult,
+  GetProjectsDocument,
   GetProjectsForSidebarDocument,
   GetProjectsForSidebarQueryResult,
   GetProjectsQueryResult,
+  OrderBy,
   ProfileDocument,
   ProfileQueryResult,
 } from "src/__generated/graphql";
@@ -227,15 +228,21 @@ const PROJECT_OVERVIEW_DETAILS_RESULT: { data: GetProjectOverviewDetailsQueryRes
 const graphQlMocks = [
   {
     request: {
-      query: buildGetProjectsQuery([], []),
-      variables: { languages: [], sponsors: [] },
+      query: GetProjectsDocument,
+      variables: {
+        where: {},
+        orderBy: { budgetsAggregate: { sum: { spentAmount: OrderBy.Desc } } },
+      },
     },
     result: ALL_PROJECTS_RESULT,
   },
   {
     request: {
-      query: buildGetProjectsQuery([], []),
-      variables: { languages: [], sponsors: [] },
+      query: GetProjectsDocument,
+      variables: {
+        where: {},
+        orderBy: { budgetsAggregate: { sum: { spentAmount: OrderBy.Desc } } },
+      },
     },
     result: ALL_PROJECTS_RESULT,
   },

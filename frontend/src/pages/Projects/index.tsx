@@ -19,7 +19,7 @@ export enum Sorting {
   TotalBudget = "totalBudget",
 }
 
-const PROJECT_SORTINGS = [
+export const PROJECT_SORTINGS = [
   Sorting.ProjectName,
   Sorting.ReposCount,
   Sorting.ContributorsCount,
@@ -57,7 +57,7 @@ export default function Projects() {
             </div>
             <div className="grow min-w-0">
               <Suspense fallback={<Loader />}>
-                <AllProjects />
+                <AllProjects sorting={projectSorting || DEFAULT_SORTING} />
               </Suspense>
             </div>
           </div>

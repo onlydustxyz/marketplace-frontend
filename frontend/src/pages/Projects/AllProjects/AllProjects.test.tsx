@@ -2,12 +2,19 @@ import { describe, expect, it, vi } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
 import matchers from "@testing-library/jest-dom/matchers";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
-import AllProjects, { buildGetProjectsQuery } from ".";
+import AllProjects from ".";
 import { CLAIMS_KEY, GITHUB_USERID_KEY, PROJECTS_LED_KEY } from "src/types";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
-import { GetProjectsQueryResult, ProjectCardFieldsFragment } from "src/__generated/graphql";
+import {
+  GetProjectsDocument,
+  GetProjectsQueryResult,
+  GetProjectsQueryVariables,
+  OrderBy,
+  ProjectCardFieldsFragment,
+} from "src/__generated/graphql";
 import { MockedProjectFilterProvider, Ownership, ProjectFilter } from "src/pages/Projects/useProjectFilter";
 import { MockedResponse } from "@apollo/client/testing";
+import { Sorting } from "..";
 
 expect.extend(matchers);
 
@@ -391,8 +398,11 @@ const projectWithNoLeaderAndInvite: ProjectCardFieldsFragment = {
 const buildGraphQlMocks = (projectsQueryResult: { data: GetProjectsQueryResult["data"] }) => [
   {
     request: {
-      query: buildGetProjectsQuery([], []),
-      variables: { languages: [], sponsors: [] },
+      query: GetProjectsDocument,
+      variables: {
+        where: {},
+        orderBy: { budgetsAggregate: { sum: { spentAmount: OrderBy.Desc } } },
+      } as GetProjectsQueryVariables,
     },
     result: projectsQueryResult,
   },
@@ -427,7 +437,7 @@ vi.mock("jwt-decode", () => ({
 const render = ({ projectFilter, mocks }: { projectFilter?: ProjectFilter; mocks: MockedResponse[] }) =>
   renderWithIntl(
     <MockedProjectFilterProvider projectFilter={projectFilter}>
-      <AllProjects />
+      <AllProjects sorting={Sorting.MoneyGranted} />
     </MockedProjectFilterProvider>,
     {
       wrapper: MemoryRouterProviderFactory({

@@ -1,5 +1,5 @@
-import { gql, useSuspenseQuery_experimental } from "@apollo/client";
-import { sortBy } from "lodash";
+import { useSuspenseQuery_experimental } from "@apollo/client";
+import { merge, sortBy } from "lodash";
 import { useMemo } from "react";
 import ProjectCard from "src/components/ProjectCard";
 import { useAuth } from "src/hooks/useAuth";
@@ -7,22 +7,33 @@ import { isProjectVisible } from "src/utils/project";
 import { Ownership as ProjectOwnership, useProjectFilter } from "src/pages/Projects/useProjectFilter";
 import AllProjectsFallback from "./AllProjectsFallback";
 import { contextWithCacheHeaders } from "src/utils/headers";
-import { GetProjectsQuery, ProjectCardFieldsFragmentDoc } from "src/__generated/graphql";
+import {
+  GetProjectsDocument,
+  GetProjectsQuery,
+  OrderBy,
+  ProjectsBoolExp,
+  ProjectsOrderBy,
+} from "src/__generated/graphql";
+import { Sorting } from "..";
 
-export default function AllProjects() {
+type Props = {
+  sorting: Sorting;
+};
+
+export default function AllProjects({ sorting }: Props) {
   const { ledProjectIds, githubUserId, isLoggedIn } = useAuth();
   const {
     projectFilter: { technologies, sponsors, ownership },
     clear: clearFilters,
   } = useProjectFilter();
 
-  const getProjectsQuery = useSuspenseQuery_experimental<GetProjectsQuery>(
-    buildGetProjectsQuery(technologies, sponsors),
-    {
-      variables: { languages: technologies, sponsors },
-      ...contextWithCacheHeaders,
-    }
-  );
+  const getProjectsQuery = useSuspenseQuery_experimental<GetProjectsQuery>(GetProjectsDocument, {
+    variables: {
+      where: buildQueryFilters(technologies, sponsors),
+      orderBy: buildQuerySorting(sorting),
+    },
+    ...contextWithCacheHeaders,
+  });
 
   const projects = useMemo(() => {
     let projects = getProjectsQuery.data?.projects.map(p => ({
@@ -48,22 +59,35 @@ export default function AllProjects() {
   );
 }
 
-const buildQueryFilters = (technologies: string[], sponsors: string[]) => {
-  const filters = [];
+const buildQueryFilters = (technologies: string[], sponsors: string[]): ProjectsBoolExp => {
+  let filters = {} as ProjectsBoolExp;
+
   if (technologies.length) {
-    filters.push("githubRepos: {repo: {languages: {_hasKeysAny: $languages}}}");
+    filters = merge(filters, { githubRepos: { repo: { languages: { _hasKeysAny: technologies } } } });
   }
+
   if (sponsors.length) {
-    filters.push("projectSponsors: {sponsor: {name: {_in: $sponsors}}}");
+    filters = merge(filters, { projectSponsors: { sponsor: { name: { _in: sponsors } } } });
   }
-  return filters.length ? `where: {${filters.join(", ")}}, ` : "";
+
+  return filters;
 };
 
-export const buildGetProjectsQuery = (technologies: string[], sponsors: string[]) => gql`
-  ${ProjectCardFieldsFragmentDoc}
-  query GetProjects($languages: [String!], $sponsors: [String!]) {
-    projects(${buildQueryFilters(technologies, sponsors)}orderBy: {budgetsAggregate: {sum: {spentAmount: DESC}}}) {
-      ...ProjectCardFields
-    }
+const buildQuerySorting = (sorting: Sorting): ProjectsOrderBy => {
+  const orderBy = {} as ProjectsOrderBy;
+
+  switch (sorting) {
+    case Sorting.ProjectName:
+      return merge(orderBy, { projectDetails: { name: OrderBy.Asc } });
+    case Sorting.ContributorsCount:
+      return merge(orderBy, { contributorsAggregate: { count: OrderBy.Desc } });
+    case Sorting.ReposCount:
+      return merge(orderBy, { githubReposAggregate: { count: OrderBy.Desc } });
+    case Sorting.LeftToSpend:
+      return merge(orderBy, { budgetsAggregate: { sum: { remainingAmount: OrderBy.Desc } } });
+    case Sorting.MoneyGranted:
+      return merge(orderBy, { budgetsAggregate: { sum: { spentAmount: OrderBy.Desc } } });
+    case Sorting.TotalBudget:
+      return merge(orderBy, { budgetsAggregate: { sum: { initialAmount: OrderBy.Desc } } });
   }
-`;
+};
