@@ -9,6 +9,7 @@ resource "heroku_config" "hasura" {
     HASURA_GRAPHQL_EXPERIMENTAL_FEATURES            = "naming_convention"
     HASURA_GRAPHQL_LOG_LEVEL                        = "warn"
     HASURA_GRAPHQL_UNAUTHORIZED_ROLE                = "public"
+    ENV                                             = var.environment
   }
   sensitive_vars = {
     BACKEND_GRAPHQL_API_KEY      = var.api_graphql_api_key

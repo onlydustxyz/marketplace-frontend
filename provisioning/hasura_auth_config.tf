@@ -9,6 +9,7 @@ resource "heroku_config" "hasura_auth" {
     AUTH_USER_DEFAULT_ROLE          = "registered_user"
     HASURA_GRAPHQL_GRAPHQL_URL      = local.hasura_graphql_url
     NODE_ENV                        = "development"
+    ENV                             = var.environment
   }
   sensitive_vars = {
     AUTH_PROVIDER_GITHUB_CLIENT_ID     = var.github_app_client_id

@@ -4,6 +4,7 @@ resource "heroku_config" "event_store" {
     PROFILE           = "production"
     RUST_LOG          = "info"
     ROCKET_CLI_COLORS = "false"
+    ENV               = var.environment
   }
 }
 

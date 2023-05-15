@@ -5,6 +5,7 @@ resource "heroku_config" "github_proxy" {
     RUST_LOG                           = "info"
     ROCKET_CLI_COLORS                  = "false"
     GITHUB_REVERSE_PROXY_CACHE_CONTROL = "public, max-age=600, s-maxage=600, stale-while-revalidate=3600, stale-if-error=666"
+    ENV                                = var.environment
   }
   sensitive_vars = {
     GITHUB_PROXY_GRAPHQL_API_KEY = var.github_proxy_graphql_api_key

@@ -4,6 +4,7 @@ resource "heroku_config" "dusty_bot" {
     PROFILE                     = "production"
     RUST_LOG                    = "info"
     DUSTY_BOT_THROTTLE_DURATION = "20"
+    ENV                         = var.environment
   }
   sensitive_vars = {
     DUSTY_BOT_GRAPHQL_API_KEY = var.dusty_bot_graphql_api_key

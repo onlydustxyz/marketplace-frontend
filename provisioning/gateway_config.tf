@@ -2,6 +2,7 @@ resource "heroku_config" "gateway" {
   vars = {
     OD_API_HOST         = local.hasura_hostname
     OD_GATEWAY_BASE_URL = "https://${local.gateway_hostname}"
+    ENV                 = var.environment
   }
 }
 

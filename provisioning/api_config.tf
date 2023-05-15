@@ -8,6 +8,7 @@ resource "heroku_config" "api" {
     RUST_LOG                  = "info"
     GRAPHQL_BASE_URL          = local.hasura_graphql_url
     HASURA_GRAPHQL_ENDPOINT   = "https://${local.hasura_hostname}"
+    ENV                       = var.environment
   }
   sensitive_vars = {
     AWS_ACCESS_KEY_ID           = var.aws_access_key_id
