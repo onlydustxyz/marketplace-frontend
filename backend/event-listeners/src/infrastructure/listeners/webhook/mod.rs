@@ -2,66 +2,25 @@ use std::env;
 
 use anyhow::Result;
 use async_trait::async_trait;
-use derive_more::From;
 use domain::{Event, SubscriberCallbackError};
 use olog::{error, info};
-use serde::{ser::SerializeStruct, Serialize, Serializer};
-use serde_json::json;
 use tracing::instrument;
 use url::Url;
 
 use crate::domain::EventListener;
 
+mod event;
+use event::Event as WebHookEvent;
+
 const WEBHOOK_TARGET_ENV_VAR: &str = "EVENT_WEBHOOK_TARGET";
 
-#[derive(From)]
-struct WebhookEvent(Event);
-
-impl Serialize for WebhookEvent {
-	fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-	where
-		S: Serializer,
-	{
-		use serde::ser::Error;
-
-		let mut state = serializer.serialize_struct("Event", 3)?;
-
-		let event_object = json!(self.0)
-			.as_object()
-			.cloned()
-			.ok_or(Error::custom("Event must be an object"))?;
-
-		let aggregate_name = event_object.keys().next().ok_or(Error::custom(
-			"Event must have the aggregate name as first level key",
-		))?;
-
-		let aggregate_event_object =
-			event_object.values().next().and_then(|v| v.as_object()).ok_or(Error::custom(
-				"Event must have an object as first level value",
-			))?;
-
-		let event_name = aggregate_event_object.keys().next().ok_or(Error::custom(
-			"Event must have the event name as second level key",
-		))?;
-
-		let payload = aggregate_event_object.values().next().ok_or(Error::custom(
-			"Event must have someting as the second level value",
-		))?;
-
-		state.serialize_field("aggregate_name", aggregate_name)?;
-		state.serialize_field("event_name", event_name)?;
-		state.serialize_field("payload", payload)?;
-		state.end()
-	}
-}
-
 pub struct EventWebHook {
-	web_client: reqwest::Client,
+	client: reqwest::Client,
 }
 
 impl EventWebHook {
 	pub fn new(client: reqwest::Client) -> Self {
-		Self { web_client: client }
+		Self { client }
 	}
 }
 
@@ -76,7 +35,7 @@ enum Error {
 #[async_trait]
 impl EventListener<Event> for EventWebHook {
 	async fn on_event(&self, event: &Event) -> Result<(), SubscriberCallbackError> {
-		match send_event_to_webhook(&self.web_client, event).await {
+		match send_event_to_webhook(&self.client, event).await {
 			Ok(()) => {},
 			Err(e) => match e {
 				Error::EnvVarNotSet(_) => info!(
@@ -101,7 +60,7 @@ async fn send_event_to_webhook(client: &reqwest::Client, event: &Event) -> Resul
 	let target = Url::parse(&env_var).map_err(Error::InvalidEnvVar)?;
 	let res = client
 		.post(target.clone())
-		.json(&WebhookEvent::from(event.to_owned()))
+		.json(&WebHookEvent(event.to_owned()))
 		.send()
 		.await
 		.map_err(Error::FailToSendRequest)?;
@@ -122,6 +81,7 @@ mod tests {
 	};
 	use mockito;
 	use rstest::*;
+	use serde_json::json;
 
 	use super::*;
 
@@ -189,7 +149,7 @@ mod tests {
 	#[rstest]
 	fn webhook_event_serialize(project_created_event: ProjectEvent, project_id: &ProjectId) {
 		let event: Event = project_created_event.into();
-		let json_value = serde_json::to_value(WebhookEvent::from(event)).unwrap();
+		let json_value = serde_json::to_value(Event::from(event)).unwrap();
 
 		let expected_json_value = json!({
 			"aggregate_name":"Project",
