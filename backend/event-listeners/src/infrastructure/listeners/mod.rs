@@ -1,11 +1,12 @@
 mod logger;
 use logger::Logger;
+use url::Url;
 
 mod webhook;
 use std::sync::Arc;
 
 use anyhow::Result;
-use domain::{MessagePayload, Subscriber, SubscriberCallbackError};
+use domain::{LogErr, MessagePayload, Subscriber, SubscriberCallbackError};
 use infrastructure::{
 	amqp::{ConsumableBus, UniqueMessage},
 	database, event_bus, github,
@@ -29,10 +30,8 @@ pub async fn spawn_all(
 	database: Arc<database::Client>,
 	github: Arc<github::Client>,
 ) -> Result<Vec<JoinHandle<()>>> {
-	let handles = [
+	let mut handles = vec![
 		Logger.spawn(event_bus::event_consumer(config.amqp(), "logger").await?),
-		EventWebHook::new(reqwest)
-			.spawn(event_bus::event_consumer(config.amqp(), "event-webhooks").await?),
 		ProjectProjector::new(
 			ProjectRepository::new(database.clone()),
 			ProjectLeadRepository::new(database.clone()),
@@ -70,7 +69,14 @@ pub async fn spawn_all(
 		),
 	];
 
-	Ok(handles.into())
+	if let Some(target) = webhook_target() {
+		handles.push(
+			EventWebHook::new(reqwest.clone(), target)
+				.spawn(event_bus::event_consumer(config.amqp(), "event-webhooks").await?),
+		)
+	}
+
+	Ok(handles)
 }
 
 trait Spawnable<E: MessagePayload> {
@@ -95,4 +101,10 @@ async fn notify_event_listener<E>(
 	event: E,
 ) -> Result<(), SubscriberCallbackError> {
 	listener.on_event(&event).await.map_err(SubscriberCallbackError::from)
+}
+
+fn webhook_target() -> Option<Url> {
+	std::env::var("EVENT_WEBHOOK_TARGET")
+		.ok()
+		.and_then(|target| target.parse().log_err("Invalid webhook target URL").ok())
 }
