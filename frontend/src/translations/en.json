@@ -415,6 +415,15 @@
       "clearFiltersButton": "Clear filters",
       "subTitle": "Try removing a filter",
       "title": "Nothing to show"
+    },
+    "sorting": {
+      "label": "Sort by ",
+      "projectName": "Project name",
+      "reposCount": "Number of repositories",
+      "contributorsCount": "Number of contributors",
+      "moneyGranted": "Money granted",
+      "leftToSpend": "Money left to spend",
+      "totalBudget": "Total budget"
     }
   },
   "seniority": {
