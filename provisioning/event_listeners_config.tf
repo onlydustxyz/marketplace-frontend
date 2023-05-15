@@ -5,6 +5,7 @@ resource "heroku_config" "event_listeners" {
     RUST_LOG                     = "info"
     ROCKET_CLI_COLORS            = "false"
     GITHUB_MAX_CALLS_PER_REQUEST = "500"
+    ENV                          = var.environment
   }
 }
 
