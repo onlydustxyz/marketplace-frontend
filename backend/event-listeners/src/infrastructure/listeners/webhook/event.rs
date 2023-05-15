@@ -35,9 +35,17 @@ impl Serialize for Event {
 			"Event must have someting as the second level value",
 		))?;
 
+		if let Some(env) = environment() {
+			state.serialize_field("environment", &env)?;
+		}
+
 		state.serialize_field("aggregate_name", aggregate_name)?;
 		state.serialize_field("event_name", event_name)?;
 		state.serialize_field("payload", payload)?;
 		state.end()
 	}
+}
+
+fn environment() -> Option<String> {
+	std::env::var("ENV").ok()
 }

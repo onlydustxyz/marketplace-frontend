@@ -58,8 +58,11 @@ impl EventListener<Event> for EventWebHook {
 
 #[cfg(test)]
 mod tests {
+	use std::ffi::OsString;
+
 	use assert_matches::assert_matches;
 	use domain::{ProjectEvent, ProjectId};
+	use envtestkit::set_env;
 	use mockito;
 	use rstest::*;
 	use serde_json::json;
@@ -104,12 +107,15 @@ mod tests {
 
 	#[rstest]
 	fn webhook_event_serialize(project_created_event: ProjectEvent, project_id: &ProjectId) {
+		let _test = set_env(OsString::from("ENV"), "local");
+
 		let event: domain::Event = project_created_event.into();
 		let json_value = serde_json::to_value(WebHookEvent(event)).unwrap();
 
 		let expected_json_value = json!({
 			"aggregate_name":"Project",
 			"event_name":"Created",
+			"environment":"local",
 			"payload":{
 				"id": project_id.to_string(),
 			}
