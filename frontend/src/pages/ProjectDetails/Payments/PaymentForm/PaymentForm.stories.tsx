@@ -139,7 +139,6 @@ Default.args = {
   setContributor: () => {
     return;
   },
-  unpaidIssues: [],
 };
 
 Default.parameters = {

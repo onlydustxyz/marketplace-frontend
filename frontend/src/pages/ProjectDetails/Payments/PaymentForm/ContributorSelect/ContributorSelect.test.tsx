@@ -13,7 +13,6 @@ import {
   GithubUserFragment,
   GithubUserWithPaymentRequestsForProjectFragment,
 } from "src/__generated/graphql";
-import { daysFromNow } from "src/utils/date";
 
 vi.mock("src/utils/date", () => ({
   daysFromNow: () => new Date(2022, 3, 10),
@@ -69,7 +68,6 @@ const graphQlMocks = [
       query: GetProjectContributorsForPaymentSelectDocument,
       variables: {
         projectId: TEST_PROJECT_ID,
-        createdSince: daysFromNow(60),
       },
     },
     result: {

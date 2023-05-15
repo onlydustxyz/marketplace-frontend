@@ -1,5 +1,4 @@
-import { chain, some } from "lodash";
-import { useMemo } from "react";
+import { some } from "lodash";
 import { WorkItem } from "src/components/GithubIssue";
 import IssuesView from "./IssuesView";
 import PullRequestsView from "./PullRequestsView";
@@ -11,11 +10,10 @@ type Props = {
   projectId: string;
   contributorId: number;
   workItems: WorkItem[];
-  unpaidIssues: WorkItem[];
   onWorkItemAdded: (workItem: WorkItem) => void;
 };
 
-export default function Issues({ type, projectId, workItems, onWorkItemAdded, unpaidIssues }: Props) {
+export default function Issues({ type, projectId, contributorId, workItems, onWorkItemAdded }: Props) {
   const { ignore: ignoreIssue, unignore: unignoreIssue } = useIgnoredIssues();
 
   const addAndUnignoreItem = (workItem: WorkItem) => {
@@ -23,17 +21,13 @@ export default function Issues({ type, projectId, workItems, onWorkItemAdded, un
     onWorkItemAdded(workItem);
   };
 
-  const issues: WorkItem[] = useMemo(
-    () => chain(unpaidIssues).differenceBy(workItems, "id").value(),
-    [unpaidIssues, workItems]
-  );
-
   return (
     <>
       {type === Type.PullRequest && (
         <PullRequestsView
           projectId={projectId}
-          workItems={issues}
+          contributorId={contributorId}
+          workItems={workItems}
           onWorkItemAdded={addAndUnignoreItem}
           onWorkItemIgnored={workItem => ignoreIssue(projectId, workItem)}
           onWorkItemUnignored={workItem => unignoreIssue(projectId, workItem)}
@@ -42,7 +36,8 @@ export default function Issues({ type, projectId, workItems, onWorkItemAdded, un
       {type === Type.Issue && (
         <IssuesView
           projectId={projectId}
-          workItems={issues}
+          contributorId={contributorId}
+          workItems={workItems}
           onWorkItemAdded={addAndUnignoreItem}
           onWorkItemIgnored={workItem => ignoreIssue(projectId, workItem)}
           onWorkItemUnignored={workItem => unignoreIssue(projectId, workItem)}

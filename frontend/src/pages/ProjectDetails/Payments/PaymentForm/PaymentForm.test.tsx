@@ -23,7 +23,7 @@ import {
   GithubUserWithPaymentRequestsForProjectFragment,
 } from "src/__generated/graphql";
 import { MockedResponse } from "@apollo/client/testing";
-import { daysFromNow } from "src/utils/date";
+import { GithubUserFragment } from "src/__generated/graphql";
 
 const TEST_USER = { id: "test-user-id", displayName: "test-login", githubUser: { githubUserId: 748483646584 } };
 const TEST_GITHUB_USER: GithubUserWithPaymentRequestsForProjectFragment = {
@@ -97,7 +97,6 @@ const graphQlMocks = [
       query: GetProjectContributorsForPaymentSelectDocument,
       variables: {
         projectId: TEST_PROJECT_ID,
-        createdSince: daysFromNow(60),
       },
     },
     result: {

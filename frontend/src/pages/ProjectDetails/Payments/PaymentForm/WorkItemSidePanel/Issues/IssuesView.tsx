@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import Callout from "src/components/Callout";
+import { useEffect, useMemo, useState } from "react";
 import GithubIssue, { Action, WorkItem } from "src/components/GithubIssue";
 import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
@@ -7,7 +6,6 @@ import Link from "src/icons/Link";
 import EmptyState from "src/pages/ProjectDetails/Payments/PaymentForm/WorkItemSidePanel/EmptyState";
 import Toggle from "src/pages/ProjectDetails/Payments/PaymentForm/WorkItemSidePanel/Toggle";
 import OtherIssueInput from "./OtherIssueInput";
-import { SEARCH_MAX_DAYS_COUNT } from "src/pages/ProjectDetails/Payments/PaymentForm";
 import FormToggle from "src/pages/ProjectDetails/Payments/PaymentForm/WorkItemSidePanel/OtherWorkForm/FormToggle";
 import { useForm, useWatch } from "react-hook-form";
 import EyeOffLine from "src/icons/EyeOffLine";
@@ -15,10 +13,13 @@ import FormInput from "src/components/FormInput";
 import SearchLine from "src/icons/SearchLine";
 import { useFormContext } from "react-hook-form";
 import useFilteredWorkItems from "./useFilteredWorkItems";
-import { filter, some } from "lodash";
+import { chain, filter, some } from "lodash";
+import useUnpaidIssues from "./useUnpaidIssues";
+import { Type } from "src/__generated/graphql";
 
 type Props = {
   projectId: string;
+  contributorId: number;
   workItems: WorkItem[];
   onWorkItemAdded: (workItem: WorkItem) => void;
   onWorkItemIgnored: (workItem: WorkItem) => void;
@@ -27,6 +28,7 @@ type Props = {
 
 export default function IssuesView({
   projectId,
+  contributorId,
   workItems,
   onWorkItemAdded,
   onWorkItemIgnored,
@@ -63,10 +65,21 @@ export default function IssuesView({
     name: showIgnoredItemsName,
   });
 
-  const visibleItems = showIgnoredItems ? workItems : filter(workItems, { ignored: false });
+  const { data: unpaidIssues } = useUnpaidIssues({
+    projectId,
+    authorId: contributorId,
+    type: Type.Issue,
+  });
+
+  const issues: WorkItem[] = useMemo(
+    () => chain(unpaidIssues).differenceBy(workItems, "id").value(),
+    [unpaidIssues, workItems]
+  );
+
+  const visibleIssues = showIgnoredItems ? issues : filter(issues, { ignored: false });
 
   const searchPattern = watch("search-issues");
-  const filteredWorkItems = useFilteredWorkItems({ pattern: searchPattern, workItems: visibleItems });
+  const filteredIssues = useFilteredWorkItems({ pattern: searchPattern, workItems: visibleIssues });
 
   return (
     <div className="flex flex-col gap-4 overflow-hidden -mr-4 h-full">
@@ -80,7 +93,7 @@ export default function IssuesView({
               label={T("payment.form.workItems.issues.addOther.toggle")}
               testId="add-other-issue-toggle"
             />
-            {workItems.length > 0 && (
+            {issues.length > 0 && (
               <Toggle
                 enabled={searchEnabled}
                 setEnabled={setSearchEnabled}
@@ -90,7 +103,7 @@ export default function IssuesView({
               />
             )}
           </div>
-          {some(workItems, { ignored: true }) && (
+          {some(issues, { ignored: true }) && (
             <div className="flex flex-row items-center gap-2 text-greyscale-50 font-walsheim font-normal text-sm">
               <EyeOffLine />
               {T("payment.form.workItems.showIgnored")}
@@ -114,12 +127,12 @@ export default function IssuesView({
           />
         )}
       </div>
-      {filteredWorkItems.length > 0 ? (
+      {filteredIssues.length > 0 ? (
         <div
           data-testid="elligible-issues"
           className="flex flex-col gap-3 h-full p-px pr-4 overflow-auto scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded"
         >
-          {filteredWorkItems.map(issue => (
+          {filteredIssues.map(issue => (
             <GithubIssue
               key={issue.id}
               workItem={issue}
@@ -136,9 +149,6 @@ export default function IssuesView({
           <EmptyState />
         </div>
       )}
-      <div className="mr-4">
-        <Callout>{T("payment.form.workItems.issues.moreCallout", { count: SEARCH_MAX_DAYS_COUNT })}</Callout>
-      </div>
     </div>
   );
 }

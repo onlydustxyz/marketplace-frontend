@@ -8,10 +8,8 @@ import { generatePath, useNavigate, useOutletContext } from "react-router-dom";
 import usePaymentRequests from "src/hooks/usePaymentRequests";
 import { ProjectRoutePaths, RoutePaths } from "src/App";
 import { WorkItem } from "src/components/GithubIssue";
-import { GithubUserFragment } from "src/__generated/graphql";
+import { GithubUserFragment, Type } from "src/__generated/graphql";
 import useUnpaidIssues from "./WorkItemSidePanel/Issues/useUnpaidIssues";
-
-export const SEARCH_MAX_DAYS_COUNT = 60;
 
 const PaymentForm: React.FC = () => {
   const { T } = useIntl();
@@ -37,9 +35,10 @@ const PaymentForm: React.FC = () => {
 
   const [contributor, setContributor] = useState<GithubUserFragment | null | undefined>(null);
 
-  const { data: unpaidIssues } = useUnpaidIssues({
+  const { data: unpaidPRs } = useUnpaidIssues({
     projectId,
     authorId: contributor?.id,
+    type: Type.PullRequest,
   });
 
   const { handleSubmit } = formMethods;
@@ -90,7 +89,7 @@ const PaymentForm: React.FC = () => {
             onWorkItemsChange={onWorkItemsChange}
             contributor={contributor}
             setContributor={setContributor}
-            unpaidIssues={unpaidIssues}
+            unpaidPRs={unpaidPRs}
             requestNewPaymentMutationLoading={requestNewPaymentMutationLoading}
           />
         </form>
