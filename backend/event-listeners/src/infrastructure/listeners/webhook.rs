@@ -2,6 +2,7 @@ use std::env;
 
 use anyhow::Result;
 use async_trait::async_trait;
+use derive_more::From;
 use domain::{Event, SubscriberCallbackError};
 use olog::{error, info};
 use serde::{ser::SerializeStruct, Serialize, Serializer};
@@ -13,39 +14,39 @@ use crate::domain::EventListener;
 
 const WEBHOOK_TARGET_ENV_VAR: &str = "EVENT_WEBHOOK_TARGET";
 
+#[derive(From)]
 struct WebhookEvent(Event);
-
-impl WebhookEvent {
-	pub fn new(event: Event) -> Self {
-		Self(event)
-	}
-}
 
 impl Serialize for WebhookEvent {
 	fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
 	where
 		S: Serializer,
 	{
+		use serde::ser::Error;
+
 		let mut state = serializer.serialize_struct("Event", 3)?;
-		let event_object = json!(self.0).as_object().expect("Event must be an object").clone();
-		let aggregate_name = event_object
-			.keys()
-			.next()
-			.expect("Event must have the aggregate name as first level key");
-		let aggregate_event_object = event_object
-			.values()
-			.next()
-			.expect("Event must have someting as the first level value")
+
+		let event_object = json!(self.0)
 			.as_object()
-			.expect("Event must have an object as first level value");
-		let event_name = aggregate_event_object
-			.keys()
-			.next()
-			.expect("Event must have the event name as second level key");
-		let payload = aggregate_event_object
-			.values()
-			.next()
-			.expect("Event must have someting as the second level value");
+			.cloned()
+			.ok_or(Error::custom("Event must be an object"))?;
+
+		let aggregate_name = event_object.keys().next().ok_or(Error::custom(
+			"Event must have the aggregate name as first level key",
+		))?;
+
+		let aggregate_event_object =
+			event_object.values().next().and_then(|v| v.as_object()).ok_or(Error::custom(
+				"Event must have an object as first level value",
+			))?;
+
+		let event_name = aggregate_event_object.keys().next().ok_or(Error::custom(
+			"Event must have the event name as second level key",
+		))?;
+
+		let payload = aggregate_event_object.values().next().ok_or(Error::custom(
+			"Event must have someting as the second level value",
+		))?;
 
 		state.serialize_field("aggregate_name", aggregate_name)?;
 		state.serialize_field("event_name", event_name)?;
@@ -100,7 +101,7 @@ async fn send_event_to_webhook(client: &reqwest::Client, event: &Event) -> Resul
 	let target = Url::parse(&env_var).map_err(Error::InvalidEnvVar)?;
 	let res = client
 		.post(target.clone())
-		.json(&WebhookEvent::new(event.to_owned()))
+		.json(&WebhookEvent::from(event.to_owned()))
 		.send()
 		.await
 		.map_err(Error::FailToSendRequest)?;
@@ -188,7 +189,7 @@ mod tests {
 	#[rstest]
 	fn webhook_event_serialize(project_created_event: ProjectEvent, project_id: &ProjectId) {
 		let event: Event = project_created_event.into();
-		let json_value = serde_json::to_value(WebhookEvent::new(event)).unwrap();
+		let json_value = serde_json::to_value(WebhookEvent::from(event)).unwrap();
 
 		let expected_json_value = json!({
 			"aggregate_name":"Project",
