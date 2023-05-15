@@ -18,3 +18,4 @@ select_permissions:
         - github_user_id
         - project_id
       filter: {}
+      allow_aggregations: true
