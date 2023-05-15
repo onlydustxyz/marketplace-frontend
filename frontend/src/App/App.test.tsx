@@ -296,22 +296,11 @@ const graphQlMocks = [
                 __typename: "ProjectGithubRepos",
                 projectId: TEST_PROJECT_ID,
                 githubRepoId: TEST_GITHUB_REPO_ID,
-                repoContributors: [
-                  {
-                    user: {
-                      __typename: "GithubUsers",
-                      id: TEST_GITHUB_USER_ID,
-                      login: "user",
-                      avatarUrl: "",
-                      htmlUrl: "",
-                      user: null,
-                    },
-                  },
-                ],
               },
             ],
             budgets: [],
             projectLeads: [],
+            contributorsAggregate: { aggregate: { count: 1 } },
           },
         ],
       } as GetProjectsForSidebarQueryResult["data"],

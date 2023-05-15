@@ -9,12 +9,11 @@ import { ProjectDetailsTab } from ".";
 import { generatePath, NavLink, useNavigate } from "react-router-dom";
 import classNames from "classnames";
 import ProjectOption from "./ProjectOption";
-import { ProjectContributorsFragment } from "src/__generated/graphql";
 
 interface Props {
   expandable: boolean;
   currentProject: ProjectDetails;
-  allProjects: (SidebarProjectDetails & ProjectContributorsFragment)[];
+  allProjects: SidebarProjectDetails[];
   availableTabs: ProjectDetailsTab[];
 }
 
@@ -23,6 +22,7 @@ export interface SidebarProjectDetails {
   name: string;
   logoUrl: string;
   withInvitation: boolean;
+  contributorsCount: number;
 }
 
 export default function View({ expandable, currentProject, allProjects, availableTabs }: Props) {
