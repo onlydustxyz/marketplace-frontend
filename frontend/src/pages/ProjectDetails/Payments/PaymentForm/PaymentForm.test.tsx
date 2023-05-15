@@ -20,19 +20,20 @@ import {
   GetProjectContributorsForPaymentSelectDocument,
   GetProjectContributorsForPaymentSelectQueryResult,
   Status,
+  GithubUserWithPaymentRequestsForProjectFragment,
 } from "src/__generated/graphql";
 import { MockedResponse } from "@apollo/client/testing";
-import { GithubUserFragment } from "src/__generated/graphql";
 import { daysFromNow } from "src/utils/date";
 
 const TEST_USER = { id: "test-user-id", displayName: "test-login", githubUser: { githubUserId: 748483646584 } };
-const TEST_GITHUB_USER: GithubUserFragment = {
+const TEST_GITHUB_USER: GithubUserWithPaymentRequestsForProjectFragment = {
   __typename: "GithubUsers",
   id: 23326,
   login: "test-login",
   avatarUrl: "test-avatar-url",
   user: { userId: "test-user-id" },
   htmlUrl: "html-url",
+  paymentRequests: [],
 };
 
 const HASURA_TOKEN_BASIC_TEST_VALUE = {
@@ -104,11 +105,11 @@ const graphQlMocks = [
         projectsByPk: {
           __typename: "Projects",
           id: TEST_PROJECT_ID,
+          contributors: [{ githubUser: TEST_GITHUB_USER }],
           githubRepos: [
             {
               githubRepoId: 123456,
               projectId: TEST_PROJECT_ID,
-              repoContributors: [{ user: TEST_GITHUB_USER }],
               repoIssues: [],
             },
           ],

@@ -1,5 +1,5 @@
 fragment ProjectContributorsForPaymentSelect on Projects {
-  ...ProjectContributors
+  ...ProjectContributorsWithPaymentSummary
   ...LastProjectMergedPullRequests
   ...ProjectPaidWorkItems
 }

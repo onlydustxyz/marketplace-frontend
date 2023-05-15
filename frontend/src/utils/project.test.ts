@@ -10,16 +10,7 @@ import {
 } from "src/__generated/graphql";
 import { countUnpaidMergedPullsByContributor, getContributors } from "./project";
 
-const REPO1_ID = 123456;
-const REPO2_ID = 321654;
-
-const [
-  contributor1,
-  contributor2,
-  contributor3,
-  contributor4,
-  contributor5,
-]: GithubUserWithPaymentRequestsForProjectFragment[] = range(5).map(id => ({
+const contributors: GithubUserWithPaymentRequestsForProjectFragment[] = range(5).map(id => ({
   __typename: "GithubUsers",
   id,
   login: "contributor" + id,
@@ -31,42 +22,12 @@ const [
 
 const project: ProjectContributorsWithPaymentSummaryFragment = {
   __typename: "Projects",
-  id: "12345",
-  githubRepos: [
-    {
-      __typename: "ProjectGithubRepos",
-      projectId: "project-1",
-      githubRepoId: REPO1_ID,
-      repoContributors: [{ user: contributor1 }, { user: contributor2 }],
-    },
-    {
-      __typename: "ProjectGithubRepos",
-      projectId: "project-1",
-      githubRepoId: REPO2_ID,
-      repoContributors: [{ user: contributor2 }, { user: contributor3 }],
-    },
-  ],
-  budgets: [
-    {
-      id: "budget-1",
-      paymentRequests: [
-        { id: "p1", githubRecipient: contributor3 },
-        { id: "p2", githubRecipient: contributor4 },
-      ],
-    },
-    {
-      id: "budget-2",
-      paymentRequests: [
-        { id: "p3", githubRecipient: contributor4 },
-        { id: "p4", githubRecipient: contributor5 },
-      ],
-    },
-  ],
+  contributors: contributors.map(githubUser => ({ githubUser })),
 };
 
 describe("useProjectContributors", () => {
   test("should return deduplicated contributors", async () => {
-    const { contributors } = getContributors(project);
+    const contributors = getContributors(project);
     expect(contributors).toHaveLength(5);
   });
 });
@@ -117,8 +78,9 @@ describe("countUnpaidMergedPullsByContributor", () => {
       id: "12345",
       githubRepos: [
         {
-          repoContributors: users.map(user => ({ user })),
           repoIssues: [...mergedPaidPulls, ...mergedUnPaidPulls],
+          projectId: "12345",
+          githubRepoId: 123456,
         },
       ],
       budgets: [
@@ -126,8 +88,9 @@ describe("countUnpaidMergedPullsByContributor", () => {
           paymentRequests: paidItems.map((workItem, index) => ({
             id: `payment-${index + 1}`,
             workItems: [workItem],
-            githubRecipient: users[index % users.length],
+            recipientId: users[index % users.length].id,
           })),
+          id: "budget-1",
         },
       ],
     });
