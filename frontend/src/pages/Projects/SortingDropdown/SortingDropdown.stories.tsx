@@ -1,4 +1,5 @@
 import SortingDropdown from ".";
+import { PROJECT_SORTINGS, Sorting } from "..";
 
 export default {
   title: "SortingDropdown",
@@ -6,5 +7,7 @@ export default {
 };
 
 export const Default = {
-  render: () => <SortingDropdown />,
+  render: () => (
+    <SortingDropdown all={PROJECT_SORTINGS} current={Sorting.MoneyGranted} onChange={Function.prototype()} />
+  ),
 };
