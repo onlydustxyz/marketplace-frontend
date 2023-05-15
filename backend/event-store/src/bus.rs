@@ -8,7 +8,7 @@ pub async fn consumer(config: &Config) -> Result<ConsumableBus, BusError> {
 	let event_bus = Bus::new(config)
 		.await?
 		.with_queue(
-			QUEUE_NAME,
+			QUEUE_NAME.to_string(),
 			QueueDeclareOptions {
 				// allows multiple connections to this queue, and do not delete the queue when
 				// connection is closed

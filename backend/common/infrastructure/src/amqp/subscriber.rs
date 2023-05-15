@@ -140,7 +140,7 @@ mod tests {
 	impl Bus {
 		async fn init(self, queue_name: &'static str) -> ConsumableBus {
 			self.with_queue(
-				queue_name,
+				queue_name.to_string(),
 				QueueDeclareOptions {
 					durable: false,    // do not persist messages
 					exclusive: true,   // only one consumer on this queue

@@ -69,11 +69,10 @@ pub async fn spawn_all(
 		),
 	];
 
-	if let Some(target) = webhook_target() {
-		handles.push(
-			EventWebHook::new(reqwest.clone(), target)
-				.spawn(event_bus::event_consumer(config.amqp(), "event-webhooks").await?),
-		)
+	for (index, target) in webhook_targets().into_iter().enumerate() {
+		handles.push(EventWebHook::new(reqwest.clone(), target).spawn(
+			event_bus::event_consumer(config.amqp(), format!("event-webhooks-{index}")).await?,
+		))
 	}
 
 	Ok(handles)
@@ -103,8 +102,13 @@ async fn notify_event_listener<E>(
 	listener.on_event(&event).await.map_err(SubscriberCallbackError::from)
 }
 
-fn webhook_target() -> Option<Url> {
+fn webhook_targets() -> Vec<Url> {
 	std::env::var("EVENT_WEBHOOK_TARGET")
-		.ok()
-		.and_then(|target| target.parse().log_err("Invalid webhook target URL").ok())
+		.map(|targets| {
+			targets
+				.split(',')
+				.filter_map(|target| target.parse().log_err("Invalid webhook target URL").ok())
+				.collect()
+		})
+		.unwrap_or_default()
 }

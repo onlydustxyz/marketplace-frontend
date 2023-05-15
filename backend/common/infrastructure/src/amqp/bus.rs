@@ -70,10 +70,10 @@ impl Bus {
 
 	pub async fn with_queue(
 		self,
-		queue_name: &'static str,
+		queue_name: String,
 		options: QueueDeclareOptions,
 	) -> Result<ConsumableBus, Error> {
-		self.channel.queue_declare(queue_name, options, Default::default()).await?;
+		self.channel.queue_declare(&queue_name, options, Default::default()).await?;
 		ConsumableBus::new(self, queue_name).await
 	}
 
@@ -101,15 +101,15 @@ impl Bus {
 
 pub struct ConsumableBus {
 	bus: Bus,
-	queue_name: &'static str,
+	queue_name: String,
 	consumer: RwLock<Consumer>,
 }
 
 impl ConsumableBus {
-	async fn new(bus: Bus, queue_name: &'static str) -> Result<Self, Error> {
+	async fn new(bus: Bus, queue_name: String) -> Result<Self, Error> {
 		let consumer = bus
 			.channel
-			.basic_consume(queue_name, "", Default::default(), Default::default())
+			.basic_consume(&queue_name, "", Default::default(), Default::default())
 			.await?;
 
 		Ok(Self {
@@ -119,8 +119,8 @@ impl ConsumableBus {
 		})
 	}
 
-	pub fn queue_name(&self) -> &'static str {
-		self.queue_name
+	pub fn queue_name(&self) -> &str {
+		&self.queue_name
 	}
 
 	pub async fn with_exchange(self, exchange_name: &'static str) -> Result<Self, Error> {
@@ -140,7 +140,7 @@ impl ConsumableBus {
 		self.bus
 			.channel
 			.queue_bind(
-				self.queue_name,
+				&self.queue_name,
 				exchange_name,
 				"",
 				Default::default(),
