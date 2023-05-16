@@ -24,12 +24,13 @@ export type SortingFields = {
 export default function usePaymentSorting(): {
   sort: <T extends Sortable>(sortables: T[]) => T[];
   sorting: Sorting;
-  applySorting: (field: Field) => void;
+  applySorting: (field: Field, ascending: boolean) => void;
 } {
   const [sorting, setSorting] = useState({ field: Field.Date, ascending: false });
 
   const applySorting = useCallback(
-    (field: Field) => setSorting({ field, ascending: sorting.field === field ? !sorting.ascending : true }),
+    (field: Field, ascending: boolean) =>
+      setSorting({ field, ascending: sorting.field === field ? !sorting.ascending : ascending }),
     [sorting]
   );
 
