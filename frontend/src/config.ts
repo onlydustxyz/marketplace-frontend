@@ -14,7 +14,6 @@ const config = {
   HASURA_BASE_WS_URL: import.meta.env.VITE_HASURA_BASE_WS_URL,
   LOGIN_URL: import.meta.env.VITE_LOGIN_URL ?? `${import.meta.env.VITE_HASURA_AUTH_BASE_URL}/signin/provider/github`,
   ENVIRONMENT: import.meta.env.VITE_ENV,
-  FAKE_TIME: import.meta.env.VITE_FAKE_TIME,
   MAINTENANCE: import.meta.env.VITE_MAINTENANCE,
 };
 

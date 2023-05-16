@@ -23,7 +23,6 @@ import {
   GithubUserWithPaymentRequestsForProjectFragment,
 } from "src/__generated/graphql";
 import { MockedResponse } from "@apollo/client/testing";
-import { daysFromNow } from "src/utils/date";
 
 const TEST_USER = { id: "test-user-id", displayName: "test-login", githubUser: { githubUserId: 748483646584 } };
 const TEST_GITHUB_USER: GithubUserWithPaymentRequestsForProjectFragment = {
@@ -97,7 +96,6 @@ const graphQlMocks = [
       query: GetProjectContributorsForPaymentSelectDocument,
       variables: {
         projectId: TEST_PROJECT_ID,
-        createdSince: daysFromNow(60),
       },
     },
     result: {
@@ -168,7 +166,7 @@ const intersectionObserverMock = () => ({
 window.IntersectionObserver = vi.fn().mockImplementation(intersectionObserverMock);
 
 const ADD_WORK_ITEM_BUTTON_ID = "add-work-item-btn";
-const ADD_OTHER_PR_TOGGLE_ID = "add-other-pr-toggle";
+const ADD_OTHER_PR_TOGGLE_ID = "add-other-pullRequests-toggle";
 
 const RECIPIENT_INPUT_LABEL = /Search by Github handle/i;
 

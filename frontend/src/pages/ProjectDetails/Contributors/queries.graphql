@@ -8,7 +8,7 @@ query GetProjectContributors($projectId: uuid!) {
   }
 }
 
-query GetProjectContributorsAsLeader($projectId: uuid!, $createdSince: timestamp) {
+query GetProjectContributorsAsLeader($projectId: uuid!) {
   projectsByPk(id: $projectId) {
     projectDetails {
       projectId

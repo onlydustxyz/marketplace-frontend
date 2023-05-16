@@ -9,7 +9,6 @@ import onlyDustLogo from "assets/img/onlydust-logo.png";
 import { useIntl } from "src/hooks/useIntl";
 import Badge, { BadgeIcon, BadgeSize } from "src/components/Badge";
 import Tooltip from "src/components/Tooltip";
-import { SEARCH_MAX_DAYS_COUNT } from "..";
 import { ContributorFragment } from "src/types";
 
 interface ContributorSelectViewProps {
@@ -191,7 +190,7 @@ function ContributorSubList<T extends ContributorFragment>({ contributors }: Con
                     size={BadgeSize.Small}
                   />
                   <Tooltip anchorId={`pr-count-badge-${contributor.id}`}>
-                    {T("payment.form.contributor.unpaidMergedPrCountTooltip", { count: SEARCH_MAX_DAYS_COUNT })}
+                    {T("payment.form.contributor.unpaidMergedPrCountTooltip")}
                   </Tooltip>
                 </>
               )}

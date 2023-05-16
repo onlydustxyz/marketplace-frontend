@@ -12376,7 +12376,6 @@ export type GetProjectContributorsQuery = { __typename?: 'query_root', projectsB
 
 export type GetProjectContributorsAsLeaderQueryVariables = Exact<{
   projectId: Scalars['uuid'];
-  createdSince: InputMaybe<Scalars['timestamp']>;
 }>;
 
 
@@ -12425,7 +12424,6 @@ export type SearchGithubUsersByHandleSubstringQuery = { __typename?: 'query_root
 
 export type GetProjectContributorsForPaymentSelectQueryVariables = Exact<{
   projectId: Scalars['uuid'];
-  createdSince: InputMaybe<Scalars['timestamp']>;
 }>;
 
 
@@ -12452,7 +12450,7 @@ export type UnignoreIssueMutation = { __typename?: 'mutation_root', unignoreIssu
 export type SearchIssuesQueryVariables = Exact<{
   projectId: Scalars['uuid'];
   authorId: Scalars['bigint'];
-  createdSince: Scalars['timestamp'];
+  type: Scalars['jsonb'];
 }>;
 
 
@@ -13075,9 +13073,7 @@ export const LastProjectMergedPullRequestsFragmentDoc = gql`
   githubRepos {
     projectId
     githubRepoId
-    repoIssues(
-      where: {createdAt: {_gte: $createdSince}, type: {_eq: "PullRequest"}, status: {_eq: "Merged"}}
-    ) {
+    repoIssues(where: {type: {_eq: "PullRequest"}, status: {_eq: "Merged"}}) {
       ...GithubIssue
     }
   }
@@ -13784,7 +13780,7 @@ export type GetProjectContributorsQueryHookResult = ReturnType<typeof useGetProj
 export type GetProjectContributorsLazyQueryHookResult = ReturnType<typeof useGetProjectContributorsLazyQuery>;
 export type GetProjectContributorsQueryResult = Apollo.QueryResult<GetProjectContributorsQuery, GetProjectContributorsQueryVariables>;
 export const GetProjectContributorsAsLeaderDocument = gql`
-    query GetProjectContributorsAsLeader($projectId: uuid!, $createdSince: timestamp) {
+    query GetProjectContributorsAsLeader($projectId: uuid!) {
   projectsByPk(id: $projectId) {
     projectDetails {
       projectId
@@ -13812,7 +13808,6 @@ ${ProjectPaidWorkItemsFragmentDoc}`;
  * const { data, loading, error } = useGetProjectContributorsAsLeaderQuery({
  *   variables: {
  *      projectId: // value for 'projectId'
- *      createdSince: // value for 'createdSince'
  *   },
  * });
  */
@@ -14030,7 +14025,7 @@ export type SearchGithubUsersByHandleSubstringQueryHookResult = ReturnType<typeo
 export type SearchGithubUsersByHandleSubstringLazyQueryHookResult = ReturnType<typeof useSearchGithubUsersByHandleSubstringLazyQuery>;
 export type SearchGithubUsersByHandleSubstringQueryResult = Apollo.QueryResult<SearchGithubUsersByHandleSubstringQuery, SearchGithubUsersByHandleSubstringQueryVariables>;
 export const GetProjectContributorsForPaymentSelectDocument = gql`
-    query GetProjectContributorsForPaymentSelect($projectId: uuid!, $createdSince: timestamp) {
+    query GetProjectContributorsForPaymentSelect($projectId: uuid!) {
   projectsByPk(id: $projectId) {
     ...ProjectContributorsForPaymentSelect
   }
@@ -14050,7 +14045,6 @@ export const GetProjectContributorsForPaymentSelectDocument = gql`
  * const { data, loading, error } = useGetProjectContributorsForPaymentSelectQuery({
  *   variables: {
  *      projectId: // value for 'projectId'
- *      createdSince: // value for 'createdSince'
  *   },
  * });
  */
@@ -14132,15 +14126,13 @@ export type UnignoreIssueMutationHookResult = ReturnType<typeof useUnignoreIssue
 export type UnignoreIssueMutationResult = Apollo.MutationResult<UnignoreIssueMutation>;
 export type UnignoreIssueMutationOptions = Apollo.BaseMutationOptions<UnignoreIssueMutation, UnignoreIssueMutationVariables>;
 export const SearchIssuesDocument = gql`
-    query SearchIssues($projectId: uuid!, $authorId: bigint!, $createdSince: timestamp!) {
+    query SearchIssues($projectId: uuid!, $authorId: bigint!, $type: jsonb!) {
   projectsByPk(id: $projectId) {
     id
     githubRepos {
       projectId
       githubRepoId
-      repoIssues(
-        where: {authorId: {_eq: $authorId}, createdAt: {_gte: $createdSince}}
-      ) {
+      repoIssues(where: {authorId: {_eq: $authorId}, type: {_eq: $type}}) {
         ...GithubIssue
       }
     }
@@ -14162,7 +14154,7 @@ export const SearchIssuesDocument = gql`
  *   variables: {
  *      projectId: // value for 'projectId'
  *      authorId: // value for 'authorId'
- *      createdSince: // value for 'createdSince'
+ *      type: // value for 'type'
  *   },
  * });
  */

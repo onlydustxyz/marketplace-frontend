@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 import WorkItemSidePanel from "./WorkItemSidePanel";
 import GithubIssue, { Action, WorkItem } from "src/components/GithubIssue";
 import Callout from "src/components/Callout";
-import { GithubUserFragment, Status, Type } from "src/__generated/graphql";
+import { GithubUserFragment, Status } from "src/__generated/graphql";
 import useWorkItems from "./useWorkItems";
 import { filter } from "lodash";
 
@@ -24,7 +24,7 @@ interface Props {
   onWorkItemsChange: (workItems: WorkItem[]) => void;
   contributor: GithubUserFragment | null | undefined;
   setContributor: (contributor: GithubUserFragment | null | undefined) => void;
-  unpaidIssues?: WorkItem[] | null;
+  unpaidPRs: WorkItem[] | null | undefined;
   requestNewPaymentMutationLoading: boolean;
 }
 
@@ -47,7 +47,7 @@ const View: React.FC<Props> = ({
   projectId,
   contributor,
   setContributor,
-  unpaidIssues,
+  unpaidPRs,
   requestNewPaymentMutationLoading,
 }) => {
   const { T } = useIntl();
@@ -59,12 +59,12 @@ const View: React.FC<Props> = ({
 
   useEffect(() => onWorkItemsChange(workItems), [workItems, onWorkItemsChange]);
   useEffect(() => {
-    if (!workItemsPrefilled && unpaidIssues) {
+    if (!workItemsPrefilled && unpaidPRs) {
       clearWorkItems();
-      addWorkItem(filter(unpaidIssues, { type: Type.PullRequest, status: Status.Merged, ignored: false }));
+      addWorkItem(filter(unpaidPRs, { status: Status.Merged, ignored: false }));
       setWorkItemsPrefilled(true);
     }
-  }, [unpaidIssues, contributor, addWorkItem, clearWorkItems, workItemsPrefilled, setWorkItemsPrefilled]);
+  }, [unpaidPRs, contributor, addWorkItem, clearWorkItems, workItemsPrefilled, setWorkItemsPrefilled]);
 
   useEffect(() => setWorkItemsPrefilled(false), [contributor]);
 
@@ -132,7 +132,6 @@ const View: React.FC<Props> = ({
                 projectId={projectId}
                 open={sidePanelOpen}
                 setOpen={setSidePanelOpen}
-                unpaidIssues={unpaidIssues}
                 workItems={workItems}
                 onWorkItemAdded={addWorkItem}
                 contributorHandle={contributor.login}

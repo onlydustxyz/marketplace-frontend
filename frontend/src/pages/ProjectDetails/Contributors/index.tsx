@@ -12,9 +12,6 @@ import { useOutletContext } from "react-router-dom";
 import { getContributors } from "src/utils/project";
 import Title from "src/pages/ProjectDetails/Title";
 import { Suspense } from "react";
-import { useMemo } from "react";
-import { daysFromNow } from "src/utils/date";
-import { SEARCH_MAX_DAYS_COUNT } from "src/pages/ProjectDetails/Payments/PaymentForm";
 import { contextWithCacheHeaders } from "src/utils/headers";
 
 export default function Contributors() {
@@ -30,10 +27,8 @@ export default function Contributors() {
     ...contextWithCacheHeaders,
   });
 
-  const createdSince = useMemo(() => daysFromNow(SEARCH_MAX_DAYS_COUNT), []);
-
   const getProjectContributorsQueryAsLeader = useGetProjectContributorsAsLeaderQuery({
-    variables: { projectId, createdSince },
+    variables: { projectId },
     skip: !isProjectLeader,
   });
 

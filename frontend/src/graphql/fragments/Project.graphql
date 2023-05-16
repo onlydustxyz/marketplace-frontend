@@ -28,7 +28,7 @@ fragment LastProjectMergedPullRequests on Projects {
   githubRepos {
     projectId
     githubRepoId
-    repoIssues(where: { createdAt: { _gte: $createdSince }, type: { _eq: "PullRequest" }, status: { _eq: "Merged" } }) {
+    repoIssues(where: { type: { _eq: "PullRequest" }, status: { _eq: "Merged" } }) {
       ...GithubIssue
     }
   }

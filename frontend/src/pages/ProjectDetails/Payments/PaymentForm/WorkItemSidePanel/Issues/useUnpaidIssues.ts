@@ -1,27 +1,24 @@
 import { chain, some } from "lodash";
 import { useMemo } from "react";
 import { GithubIssueFragment, Type, useGetPaidWorkItemsQuery, useSearchIssuesQuery } from "src/__generated/graphql";
-import { daysFromNow } from "src/utils/date";
-import { SEARCH_MAX_DAYS_COUNT } from "src/pages/ProjectDetails/Payments/PaymentForm";
 import { WorkItem } from "src/components/GithubIssue";
 
 type Props = {
   projectId: string;
   authorId: number;
+  type: Type;
 };
 
-export default function useUnpaidIssues({ projectId, authorId }: Props) {
+export default function useUnpaidIssues({ projectId, authorId, type }: Props) {
   const getPaidItemsQuery = useGetPaidWorkItemsQuery({
     variables: { projectId },
   });
 
-  const createdSince = useMemo(() => daysFromNow(SEARCH_MAX_DAYS_COUNT), [daysFromNow, SEARCH_MAX_DAYS_COUNT]);
-
-  const searchPrQuery = useSearchIssuesQuery({
+  const searchIssuesQuery = useSearchIssuesQuery({
     variables: {
       projectId,
       authorId,
-      createdSince,
+      type: type === Type.Issue ? "Issue" : "PullRequest",
     },
     skip: !authorId || !projectId,
   });
@@ -33,9 +30,9 @@ export default function useUnpaidIssues({ projectId, authorId }: Props) {
 
   const elligibleIssues: WorkItem[] | undefined | null = useMemo(
     () =>
-      searchPrQuery.data?.projectsByPk &&
+      searchIssuesQuery.data?.projectsByPk &&
       paidItems &&
-      chain(searchPrQuery.data?.projectsByPk.githubRepos)
+      chain(searchIssuesQuery.data?.projectsByPk.githubRepos)
         .flatMap("repoIssues")
         .map(issue => issueToWorkItem(projectId, issue))
         .differenceWith(paidItems, (pr, paidItem) => {
@@ -44,9 +41,12 @@ export default function useUnpaidIssues({ projectId, authorId }: Props) {
         .sortBy("createdAt")
         .reverse()
         .value(),
-    [searchPrQuery.data?.projectsByPk, paidItems, projectId]
+    [searchIssuesQuery.data?.projectsByPk, paidItems, projectId]
   );
-  return { data: elligibleIssues, loading: searchPrQuery.loading || getPaidItemsQuery.loading };
+  return {
+    data: elligibleIssues,
+    loading: searchIssuesQuery.loading || getPaidItemsQuery.loading,
+  };
 }
 
 const issueToWorkItem = (

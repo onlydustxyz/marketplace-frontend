@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Callout from "src/components/Callout";
 import GithubIssue, { Action, WorkItem } from "src/components/GithubIssue";
 import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
@@ -7,7 +6,6 @@ import Link from "src/icons/Link";
 import EmptyState from "src/pages/ProjectDetails/Payments/PaymentForm/WorkItemSidePanel/EmptyState";
 import Toggle from "src/pages/ProjectDetails/Payments/PaymentForm/WorkItemSidePanel/Toggle";
 import OtherIssueInput from "./OtherIssueInput";
-import { SEARCH_MAX_DAYS_COUNT } from "src/pages/ProjectDetails/Payments/PaymentForm";
 import FormToggle from "src/pages/ProjectDetails/Payments/PaymentForm/WorkItemSidePanel/OtherWorkForm/FormToggle";
 import { useForm, useWatch } from "react-hook-form";
 import EyeOffLine from "src/icons/EyeOffLine";
@@ -16,24 +14,28 @@ import SearchLine from "src/icons/SearchLine";
 import { useFormContext } from "react-hook-form";
 import useFilteredWorkItems from "./useFilteredWorkItems";
 import { filter, some } from "lodash";
+import { Type } from "src/__generated/graphql";
 
 type Props = {
   projectId: string;
-  workItems: WorkItem[];
+  issues: WorkItem[];
+  type: Type;
   onWorkItemAdded: (workItem: WorkItem) => void;
   onWorkItemIgnored: (workItem: WorkItem) => void;
   onWorkItemUnignored: (workItem: WorkItem) => void;
 };
 
-export default function IssuesView({
+export default function View({
   projectId,
-  workItems,
+  issues,
+  type,
   onWorkItemAdded,
   onWorkItemIgnored,
   onWorkItemUnignored,
 }: Props) {
   const { T } = useIntl();
   const { watch, resetField } = useFormContext();
+  const tabName = type === Type.Issue ? "issues" : "pullRequests";
 
   const [addOtherIssueEnabled, setStateAddOtherIssueEnabled] = useState(false);
   const [searchEnabled, setStateSearchEnabled] = useState(false);
@@ -49,11 +51,11 @@ export default function IssuesView({
 
   const onIssueAdded = (item: WorkItem) => {
     onWorkItemAdded(item);
-    showToaster(T("payment.form.workItems.issues.addedToaster"));
+    showToaster(T(`payment.form.workItems.${tabName}.addedToaster`));
   };
 
   useEffect(() => {
-    if (searchEnabled === false) resetField("search-issues");
+    if (searchEnabled === false) resetField(`search-${tabName}`);
   }, [searchEnabled]);
 
   const showIgnoredItemsName = "show-ignored-items";
@@ -63,10 +65,10 @@ export default function IssuesView({
     name: showIgnoredItemsName,
   });
 
-  const visibleItems = showIgnoredItems ? workItems : filter(workItems, { ignored: false });
+  const visibleIssues = showIgnoredItems ? issues : filter(issues, { ignored: false });
 
-  const searchPattern = watch("search-issues");
-  const filteredWorkItems = useFilteredWorkItems({ pattern: searchPattern, workItems: visibleItems });
+  const searchPattern = watch(`search-${tabName}`);
+  const filteredIssues = useFilteredWorkItems({ pattern: searchPattern, workItems: visibleIssues });
 
   return (
     <div className="flex flex-col gap-4 overflow-hidden -mr-4 h-full">
@@ -77,20 +79,20 @@ export default function IssuesView({
               enabled={addOtherIssueEnabled}
               setEnabled={setAddOtherIssueEnabled}
               icon={<Link />}
-              label={T("payment.form.workItems.issues.addOther.toggle")}
-              testId="add-other-issue-toggle"
+              label={T(`payment.form.workItems.${tabName}.addOther.toggle`)}
+              testId={`add-other-${tabName}-toggle`}
             />
-            {workItems.length > 0 && (
+            {issues.length > 0 && (
               <Toggle
                 enabled={searchEnabled}
                 setEnabled={setSearchEnabled}
                 icon={<SearchLine />}
-                label={T("payment.form.workItems.issues.search")}
+                label={T(`payment.form.workItems.${tabName}.search`)}
                 testId="search-toggle"
               />
             )}
           </div>
-          {some(workItems, { ignored: true }) && (
+          {some(issues, { ignored: true }) && (
             <div className="flex flex-row items-center gap-2 text-greyscale-50 font-walsheim font-normal text-sm">
               <EyeOffLine />
               {T("payment.form.workItems.showIgnored")}
@@ -98,11 +100,11 @@ export default function IssuesView({
             </div>
           )}
         </div>
-        {addOtherIssueEnabled && <OtherIssueInput projectId={projectId} onWorkItemAdded={onIssueAdded} />}
+        {addOtherIssueEnabled && <OtherIssueInput projectId={projectId} type={type} onWorkItemAdded={onIssueAdded} />}
         {searchEnabled && (
           <FormInput
-            name="search-issues"
-            placeholder={T("payment.form.workItems.issues.searchPlaceholder")}
+            name={`search-${tabName}`}
+            placeholder={T(`payment.form.workItems.${tabName}.searchPlaceholder`)}
             withMargin={false}
             inputClassName="pl-10"
             prefixComponent={
@@ -114,12 +116,12 @@ export default function IssuesView({
           />
         )}
       </div>
-      {filteredWorkItems.length > 0 ? (
+      {filteredIssues.length > 0 ? (
         <div
-          data-testid="elligible-issues"
+          data-testid={`elligible-${tabName}`}
           className="flex flex-col gap-3 h-full p-px pr-4 overflow-auto scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded"
         >
-          {filteredWorkItems.map(issue => (
+          {filteredIssues.map(issue => (
             <GithubIssue
               key={issue.id}
               workItem={issue}
@@ -136,9 +138,6 @@ export default function IssuesView({
           <EmptyState />
         </div>
       )}
-      <div className="mr-4">
-        <Callout>{T("payment.form.workItems.issues.moreCallout", { count: SEARCH_MAX_DAYS_COUNT })}</Callout>
-      </div>
     </div>
   );
 }

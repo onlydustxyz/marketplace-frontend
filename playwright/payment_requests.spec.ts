@@ -3,7 +3,7 @@ import { expect } from "@playwright/test";
 import { restoreDB } from "./commands/db/db_utils";
 import { ProjectPage } from "./pages/project";
 import { User } from "./types";
-import { mutateAsAdmin, retry, sleep } from "./commands/common";
+import { mutateAsAdmin, retry } from "./commands/common";
 import {
   AddEthPaymentReceiptDocument,
   AddEthPaymentReceiptMutation,
@@ -126,10 +126,6 @@ test.describe("As a project lead, I", () => {
     const paymentsPage = new ProjectPaymentsPage(page, project);
 
     expect(await paymentsPage.remainingBudget()).toBe("$85,600");
-
-    // TODO: Remove when we do not fake time anymore
-    await sleep(1000);
-    await page.reload();
 
     const payment = paymentsPage.paymentList().nth(1);
     await payment.click();

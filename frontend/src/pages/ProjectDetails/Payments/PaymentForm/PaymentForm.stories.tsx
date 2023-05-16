@@ -80,6 +80,7 @@ const mocks = [
     result: {
       data: {
         projectsByPk: {
+          __typename: "Projects",
           budgets: [],
           id: projectId,
           contributors: [
@@ -93,7 +94,7 @@ const mocks = [
             ANTHONYBUISSET,
             TDELABRO,
             BERNARDSTANISLAS,
-          ].map(githubUser => ({ githubUser })),
+          ].map(githubUser => ({ __typename: "ProjectsContributorsView", githubUser })),
           githubRepos: [
             {
               projectId,
@@ -139,7 +140,8 @@ Default.args = {
   setContributor: () => {
     return;
   },
-  unpaidIssues: [],
+  unpaidPRs: [],
+  requestNewPaymentMutationLoading: false,
 };
 
 Default.parameters = {
