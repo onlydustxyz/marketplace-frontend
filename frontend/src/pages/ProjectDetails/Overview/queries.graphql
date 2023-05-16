@@ -1,0 +1,46 @@
+query GetProjectOverviewDetails($projectId: uuid!) {
+  projectsByPk(id: $projectId) {
+    ...ProjectId
+    projectDetails {
+      projectId
+      name
+      longDescription
+      logoUrl
+      telegramLink
+    }
+    githubRepos {
+      repo {
+        ...GithubRepoId
+        stars
+      }
+    }
+    projectSponsors {
+      sponsor {
+        ...Sponsor
+      }
+    }
+    contributors(limit: 3) {
+      githubUser {
+        ...GithubUser
+      }
+    }
+    contributorsAggregate {
+      aggregate {
+        count
+      }
+    }
+    projectLeads {
+      user {
+        ...ProjectLead
+      }
+    }
+    budgetsAggregate {
+      aggregate {
+        sum {
+          initialAmount
+          spentAmount
+        }
+      }
+    }
+  }
+}

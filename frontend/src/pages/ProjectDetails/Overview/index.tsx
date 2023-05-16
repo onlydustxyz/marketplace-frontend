@@ -1,14 +1,8 @@
 import { useIntl } from "src/hooks/useIntl";
 import OverviewPanel from "./OverviewPanel";
 import { useOutletContext } from "react-router-dom";
-import { ReactNode, useEffect, useState } from "react";
-import {
-  GithubUserFragment,
-  ProjectLeadFragment,
-  SponsorFragment,
-  useGetProjectOverviewDetailsQuery,
-} from "src/__generated/graphql";
-import { gql } from "@apollo/client";
+import { ReactNode } from "react";
+import { useGetProjectOverviewDetailsQuery } from "src/__generated/graphql";
 import QueryWrapper from "src/components/QueryWrapper";
 import Card from "src/components/Card";
 import GithubRepoDetails from "./GithubRepoDetails";
@@ -19,30 +13,17 @@ import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import Title from "src/pages/ProjectDetails/Title";
 import MarkdownPreview from "src/components/MarkdownPreview";
 import { contextWithCacheHeaders } from "src/utils/headers";
+import { sortBy } from "lodash";
+import isDefined from "src/utils/isDefined";
 
 type OutletContext = {
-  leads?: ProjectLeadFragment[];
-  totalSpentAmountInUsd: number;
-  totalInitialAmountInUsd: number;
-  contributors?: GithubUserFragment[];
   projectId: string;
-  sponsors: SponsorFragment[];
-  telegramLink: string | null;
   children: ReactNode;
 };
 
 export default function Overview() {
   const { T } = useIntl();
-  const {
-    leads,
-    totalSpentAmountInUsd,
-    totalInitialAmountInUsd,
-    contributors,
-    sponsors,
-    telegramLink,
-    children,
-    projectId,
-  } = useOutletContext<OutletContext>();
+  const { projectId, children } = useOutletContext<OutletContext>();
 
   const { data, loading } = useGetProjectOverviewDetailsQuery({
     variables: { projectId },
@@ -51,21 +32,14 @@ export default function Overview() {
 
   const logoUrl = data?.projectsByPk?.projectDetails?.logoUrl || onlyDustLogo;
   const description = data?.projectsByPk?.projectDetails?.longDescription || LOREM_IPSUM;
-  const githubReposCount = data?.projectsByPk?.githubRepos.length || 0;
-
-  const githubRepos = data?.projectsByPk?.githubRepos;
-
-  const [sortedGithubRepos, setSortedGithubRepos] = useState(githubRepos);
-
-  useEffect(() => {
-    if (githubRepos) {
-      const githubReposCopy = [...githubRepos];
-      githubReposCopy.sort(
-        (githubRepoA, githubRepoB) => (githubRepoB?.repo?.stars ?? 0) - (githubRepoA?.repo?.stars ?? 0)
-      );
-      setSortedGithubRepos(githubReposCopy);
-    }
-  }, [githubRepos]);
+  const githubRepos = sortBy(data?.projectsByPk?.githubRepos, "repo.stars").reverse();
+  const sponsors = data?.projectsByPk?.projectSponsors.map(s => s.sponsor) || [];
+  const telegramLink = data?.projectsByPk?.projectDetails?.telegramLink || null;
+  const topContributors = data?.projectsByPk?.contributors.map(c => c.githubUser).filter(isDefined) || [];
+  const totalContributorsCount = data?.projectsByPk?.contributorsAggregate.aggregate?.count || 0;
+  const leads = data?.projectsByPk?.projectLeads.map(u => u.user).filter(isDefined);
+  const totalInitialAmountInUsd = data?.projectsByPk?.budgetsAggregate.aggregate?.sum?.initialAmount;
+  const totalSpentAmountInUsd = data?.projectsByPk?.budgetsAggregate.aggregate?.sum?.spentAmount;
 
   return (
     <>
@@ -90,12 +64,12 @@ export default function Overview() {
                   <GitRepositoryLine className="text-white text-2xl" />
                   {T("project.details.overview.repositories.title")}
                 </div>
-                <Badge value={githubReposCount} size={BadgeSize.Small} />
+                <Badge value={githubRepos.length} size={BadgeSize.Small} />
               </div>
               <div className="grid grid-cols-2 gap-3">
-                {sortedGithubRepos &&
-                  sortedGithubRepos.map(githubRepo => (
-                    <GithubRepoDetails key={githubRepo.githubRepoId} githubRepoId={githubRepo.githubRepoId} />
+                {githubRepos &&
+                  githubRepos.map(githubRepo => (
+                    <GithubRepoDetails key={githubRepo.repo?.id} githubRepoId={githubRepo.repo?.id} />
                   ))}
               </div>
             </Card>
@@ -103,41 +77,19 @@ export default function Overview() {
         </QueryWrapper>
         <OverviewPanel
           {...{
-            leads,
-            projectId,
-            contributors,
-            totalSpentAmountInUsd,
-            totalInitialAmountInUsd,
             sponsors,
             telegramLink,
+            topContributors,
+            totalContributorsCount,
+            leads,
+            totalInitialAmountInUsd,
+            totalSpentAmountInUsd,
           }}
         />
       </div>
     </>
   );
 }
-
-gql`
-  query GetProjectOverviewDetails($projectId: uuid!) {
-    projectsByPk(id: $projectId) {
-      id
-      projectDetails {
-        projectId
-        name
-        longDescription
-        logoUrl
-      }
-      githubRepos {
-        projectId
-        githubRepoId
-        repo {
-          ...GithubRepoId
-          stars
-        }
-      }
-    }
-  }
-`;
 
 const LOREM_IPSUM = `
 Lorem ipsum dolor sit amet, consectetur *adipiscing elit*. Sed non risus. **Suspendisse lectus** tortor, dignissim sit amet:

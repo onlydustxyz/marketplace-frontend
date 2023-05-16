@@ -1,0 +1,9 @@
+fragment UserId on users {
+  id
+}
+
+fragment ProjectLead on users {
+  ...UserId
+  displayName
+  avatarUrl
+}

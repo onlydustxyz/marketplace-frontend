@@ -1,0 +1,10 @@
+fragment SponsorId on Sponsors {
+  id
+}
+
+fragment Sponsor on Sponsors {
+  ...SponsorId
+  name
+  logoUrl
+  url
+}
