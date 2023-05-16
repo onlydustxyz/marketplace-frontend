@@ -10,12 +10,6 @@ export default function useApolloCache() {
       ProjectDetails: {
         keyFields: ["projectId"],
       },
-      ProjectGithubRepos: {
-        keyFields: ["projectId", "githubRepoId"],
-      },
-      ProjectLeads: {
-        keyFields: ["userId", "projectId"],
-      },
       UserInfo: {
         keyFields: ["userId"],
       },
