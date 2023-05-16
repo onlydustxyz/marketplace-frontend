@@ -10,8 +10,6 @@ import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
 import {
   GetGithubRepositoryDetailsDocument,
   GetGithubRepositoryDetailsQueryResult,
-  GetProjectContributorsForOverviewDocument,
-  GetProjectContributorsForOverviewQueryResult,
   GetProjectDocument,
   GetProjectOverviewDetailsDocument,
   GetProjectOverviewDetailsQueryResult,
@@ -213,11 +211,19 @@ const PROJECT_OVERVIEW_DETAILS_RESULT: { data: GetProjectOverviewDetailsQueryRes
         name: TEST_PROJECT_NAME,
         logoUrl: null,
         longDescription: "This is the long description",
+        telegramLink: TEST_TELEGRAM_LINK,
       },
+      budgetsAggregate: { aggregate: { sum: { initialAmount: 0, spentAmount: 0 } } },
+      contributors: [
+        {
+          githubUser: { login: TEST_GITHUB_CONTRIBUTOR_LOGIN, avatarUrl: "avatarUrl", htmlUrl: "", id: 1, user: null },
+        },
+      ],
+      contributorsAggregate: { aggregate: { count: 1 } },
+      projectLeads: [],
+      projectSponsors: [],
       githubRepos: [
         {
-          projectId: TEST_PROJECT_ID,
-          githubRepoId: TEST_GITHUB_REPO_ID,
           repo: { id: TEST_GITHUB_REPO_ID, stars: 1000 },
         },
       ],
@@ -304,24 +310,6 @@ const graphQlMocks = [
           },
         ],
       } as GetProjectsForSidebarQueryResult["data"],
-    },
-  },
-  {
-    request: { query: GetProjectContributorsForOverviewDocument },
-    result: {
-      data: {
-        projectsByPk: {
-          __typename: "Projects",
-          githubRepos: [
-            {
-              __typename: "ProjectGithubRepos",
-              projectId: TEST_PROJECT_ID,
-              githubRepoId: TEST_GITHUB_REPO_ID,
-              repoContributors: [{ user: { login: TEST_GITHUB_CONTRIBUTOR_LOGIN, avatarUrl: "avatarUrl" } }],
-            },
-          ],
-        },
-      } as GetProjectContributorsForOverviewQueryResult["data"],
     },
   },
   {
