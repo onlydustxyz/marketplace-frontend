@@ -31,6 +31,10 @@ export class BrowseProjectsPage {
     return projectLocator;
   }
 
+  projects() {
+    return this.page.getByTestId("project-card");
+  }
+
   async expectProjectsToBeVisible(...projects: Project[]) {
     for (const project of projects) {
       await this.expectProjectToBeVisible(project);
@@ -54,6 +58,11 @@ export class BrowseProjectsPage {
     await this.getFilterLocator(filter).click();
   }
 
+  async sortBy(criterion: string) {
+    await this.getSortByLocator().click();
+    await this.page.getByRole("option", { name: criterion }).click();
+  }
+
   async clearFilters() {
     await this.page.getByText("Clear all", { exact: true }).click();
   }
@@ -64,5 +73,9 @@ export class BrowseProjectsPage {
 
   getFilterLocator(filter: string) {
     return this.page.getByText(filter, { exact: true });
+  }
+
+  getSortByLocator() {
+    return this.page.getByText("Sort by");
   }
 }

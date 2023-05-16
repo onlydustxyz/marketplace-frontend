@@ -1,0 +1,21 @@
+table:
+  name: projects_contributors_view
+  schema: public
+object_relationships:
+  - name: githubUser
+    using:
+      manual_configuration:
+        column_mapping:
+          github_user_id: id
+        insertion_order: null
+        remote_table:
+          name: github_users
+          schema: public
+select_permissions:
+  - role: public
+    permission:
+      columns:
+        - github_user_id
+        - project_id
+      filter: {}
+      allow_aggregations: true

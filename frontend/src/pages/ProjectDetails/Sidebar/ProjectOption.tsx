@@ -3,19 +3,15 @@ import ShootingStar from "src/assets/icons/ShootingStar";
 import CheckLine from "src/icons/CheckLine";
 import RoundedImage from "src/components/RoundedImage";
 import { useIntl } from "src/hooks/useIntl";
-import { getContributors } from "src/utils/project";
 import { SidebarProjectDetails } from "./View";
-import { ProjectContributorsFragment } from "src/__generated/graphql";
 
 interface Props {
-  project: SidebarProjectDetails & ProjectContributorsFragment;
+  project: SidebarProjectDetails;
   isSelected: boolean;
 }
 
 export default function ProjectOption({ project, isSelected }: Props) {
   const { T } = useIntl();
-  const { contributors } = getContributors(project);
-  const nbContributors = contributors.length;
 
   return (
     <Listbox.Option
@@ -30,7 +26,7 @@ export default function ProjectOption({ project, isSelected }: Props) {
           <div className="flex flex-col flex-1 justify-self-start truncate">
             <div className="truncate text-base font-medium">{project.name}</div>
             <div className="truncate text-sm font-regular text-slate-400">
-              {T("project.details.sidebar.contributors", { count: nbContributors })}
+              {T("project.details.sidebar.contributors", { count: project.contributorsCount })}
             </div>
           </div>
           <>

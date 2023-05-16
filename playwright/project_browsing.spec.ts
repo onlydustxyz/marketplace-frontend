@@ -8,7 +8,7 @@ test.describe("As a visitor, I", () => {
     restoreDB();
   });
 
-  test("can list and filter projects", async ({ page, projects }) => {
+  test("can list, filter and sort projects", async ({ page, projects }) => {
     const browseProjectsPage = new BrowseProjectsPage(page);
     await browseProjectsPage.goto();
 
@@ -47,6 +47,18 @@ test.describe("As a visitor, I", () => {
     await browseProjectsPage.filterBy("StarkNet");
     await browseProjectsPage.expectProjectsToBeVisible(projects.ProjectA, projects.ProjectB, projects.Kakarot);
     await browseProjectsPage.expectProjectsNotToBeVisible(projects.Empty);
+
+    await browseProjectsPage.clearFilters();
+
+    // Test sorting
+    await browseProjectsPage.sortBy("contributors");
+    await expect(browseProjectsPage.projects().first().getByText(projects.Kakarot.name, { exact: true })).toBeVisible();
+    await browseProjectsPage.sortBy("repositories");
+    await expect(
+      browseProjectsPage.projects().first().getByText(projects.ProjectA.name, { exact: true })
+    ).toBeVisible();
+    await browseProjectsPage.sortBy("name");
+    await expect(browseProjectsPage.projects().first().getByText(projects.Empty.name, { exact: true })).toBeVisible();
   });
 
   test("cannot access restricted projects page", async ({ page, projects }) => {

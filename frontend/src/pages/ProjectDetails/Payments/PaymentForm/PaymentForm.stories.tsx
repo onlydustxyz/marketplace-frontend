@@ -4,7 +4,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import {
   GetProjectContributorsForPaymentSelectDocument,
   GetProjectContributorsForPaymentSelectQueryResult,
-  GithubUserFragment,
+  GithubUserWithPaymentRequestsForProjectFragment,
 } from "src/__generated/graphql";
 import { withRouter } from "storybook-addon-react-router-v6";
 
@@ -23,45 +23,50 @@ export default {
 } as ComponentMeta<typeof PaymentForm>;
 
 const projectId = "yolo";
-const BERNARDSTANISLAS: GithubUserFragment = {
+const BERNARDSTANISLAS: GithubUserWithPaymentRequestsForProjectFragment = {
   avatarUrl: "https://avatars.githubusercontent.com/u/4435377?v=4",
   id: 4435377,
   login: "bernardstanislas",
   user: null,
   __typename: "GithubUsers",
   htmlUrl: "",
+  paymentRequests: [],
 };
-const OSCARWROCHE: GithubUserFragment = {
+const OSCARWROCHE: GithubUserWithPaymentRequestsForProjectFragment = {
   login: "oscarwroche",
   avatarUrl: "https://avatars.githubusercontent.com/u/21149076?v=4",
   id: 21149076,
   user: null,
   __typename: "GithubUsers",
   htmlUrl: "",
+  paymentRequests: [],
 };
-const OFUX: GithubUserFragment = {
+const OFUX: GithubUserWithPaymentRequestsForProjectFragment = {
   login: "ofux",
   avatarUrl: "https://avatars.githubusercontent.com/u/595505?v=4",
   id: 595505,
   user: { userId: "yolo" },
   __typename: "GithubUsers",
   htmlUrl: "",
+  paymentRequests: [],
 };
-const ANTHONYBUISSET: GithubUserFragment = {
+const ANTHONYBUISSET: GithubUserWithPaymentRequestsForProjectFragment = {
   login: "anthonybuisset",
   avatarUrl: "https://avatars.githubusercontent.com/u/43467246?v=4",
   id: 43467246,
   user: null,
   __typename: "GithubUsers",
   htmlUrl: "",
+  paymentRequests: [],
 };
-const TDELABRO: GithubUserFragment = {
+const TDELABRO: GithubUserWithPaymentRequestsForProjectFragment = {
   login: "tdelabro",
   avatarUrl: "https://avatars.githubusercontent.com/u/34384633?v=4",
   id: 34384633,
   user: null,
   __typename: "GithubUsers",
   htmlUrl: "",
+  paymentRequests: [],
 };
 
 const mocks = [
@@ -77,23 +82,23 @@ const mocks = [
         projectsByPk: {
           budgets: [],
           id: projectId,
+          contributors: [
+            BERNARDSTANISLAS,
+            OSCARWROCHE,
+            OFUX,
+            ANTHONYBUISSET,
+            TDELABRO,
+            OSCARWROCHE,
+            OFUX,
+            ANTHONYBUISSET,
+            TDELABRO,
+            BERNARDSTANISLAS,
+          ].map(githubUser => ({ githubUser })),
           githubRepos: [
             {
               projectId,
               githubRepoId: 123456,
               repoIssues: [],
-              repoContributors: [
-                BERNARDSTANISLAS,
-                OSCARWROCHE,
-                OFUX,
-                ANTHONYBUISSET,
-                TDELABRO,
-                OSCARWROCHE,
-                OFUX,
-                ANTHONYBUISSET,
-                TDELABRO,
-                BERNARDSTANISLAS,
-              ].map(user => ({ user })),
             },
           ],
         },

@@ -11,6 +11,7 @@ import {
   GetProjectContributorsForPaymentSelectDocument,
   GetProjectContributorsForPaymentSelectQueryResult,
   GithubUserFragment,
+  GithubUserWithPaymentRequestsForProjectFragment,
 } from "src/__generated/graphql";
 import { daysFromNow } from "src/utils/date";
 
@@ -18,22 +19,24 @@ vi.mock("src/utils/date", () => ({
   daysFromNow: () => new Date(2022, 3, 10),
 }));
 
-const TEST_USER: GithubUserFragment = {
+const TEST_USER: GithubUserWithPaymentRequestsForProjectFragment = {
   __typename: "GithubUsers",
   id: 123456,
   login: "test-user-name",
   avatarUrl: "test-avatar-url",
   htmlUrl: "test-html-url",
   user: { userId: "test-user-id" },
+  paymentRequests: [],
 };
 
-const TEST_OTHER_USER: GithubUserFragment = {
+const TEST_OTHER_USER: GithubUserWithPaymentRequestsForProjectFragment = {
   __typename: "GithubUsers",
   id: 654321,
   login: "test-other-user-name",
   avatarUrl: "test-avatar-url",
   htmlUrl: "test-html-url",
   user: { userId: "test-other-user-id" },
+  paymentRequests: [],
 };
 
 const HASURA_TOKEN_BASIC_TEST_VALUE = {
@@ -74,12 +77,12 @@ const graphQlMocks = [
         projectsByPk: {
           __typename: "Projects",
           id: TEST_PROJECT_ID,
+          contributors: [TEST_USER, TEST_OTHER_USER].map(githubUser => ({ githubUser })),
           githubRepos: [
             {
               projectId: TEST_PROJECT_ID,
               githubRepoId: 123456,
               repoIssues: [],
-              repoContributors: [TEST_USER, TEST_OTHER_USER].map(user => ({ user })),
             },
           ],
           budgets: [],

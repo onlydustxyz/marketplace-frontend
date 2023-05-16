@@ -46,7 +46,7 @@ export default function Contributors() {
     skip: !isProjectLeader,
   });
 
-  const { contributors } = getContributors(getProjectContributorsQuery.data?.projectsByPk);
+  const contributors = getContributors(getProjectContributorsQuery.data?.projectsByPk);
 
   const remainingBudget = getProjectRemainingBudget.data?.projectsByPk?.budgets.at(0)?.remainingAmount;
 

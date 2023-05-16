@@ -2,12 +2,19 @@ import { describe, expect, it, vi } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
 import matchers from "@testing-library/jest-dom/matchers";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
-import AllProjects, { buildGetProjectsQuery } from ".";
+import AllProjects from ".";
 import { CLAIMS_KEY, GITHUB_USERID_KEY, PROJECTS_LED_KEY } from "src/types";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
-import { GetProjectsQueryResult, ProjectCardFieldsFragment } from "src/__generated/graphql";
+import {
+  GetProjectsDocument,
+  GetProjectsQueryResult,
+  GetProjectsQueryVariables,
+  OrderBy,
+  ProjectCardFieldsFragment,
+} from "src/__generated/graphql";
 import { MockedProjectFilterProvider, Ownership, ProjectFilter } from "src/pages/Projects/useProjectFilter";
 import { MockedResponse } from "@apollo/client/testing";
+import { Sorting } from "..";
 
 expect.extend(matchers);
 
@@ -27,7 +34,7 @@ const ALL_PROJECTS_RESULT_NO_INVITATIONS: { data: GetProjectsQueryResult["data"]
           logoUrl: null,
           telegramLink: null,
         },
-        budgets: [{ id: "budget-1", paymentRequests: [] }],
+        budgets: [{ id: "budget-1" }],
         budgetsAggregate: {
           aggregate: {
             sum: {
@@ -36,6 +43,7 @@ const ALL_PROJECTS_RESULT_NO_INVITATIONS: { data: GetProjectsQueryResult["data"]
             },
           },
         },
+        contributorsAggregate: { aggregate: { count: 0 } },
         pendingInvitations: [],
         projectLeads: [
           {
@@ -49,7 +57,6 @@ const ALL_PROJECTS_RESULT_NO_INVITATIONS: { data: GetProjectsQueryResult["data"]
           {
             githubRepoId: 123456,
             projectId: "1",
-            repoContributors: [],
             repo: {
               id: 123456,
               languages: [],
@@ -67,7 +74,7 @@ const ALL_PROJECTS_RESULT_NO_INVITATIONS: { data: GetProjectsQueryResult["data"]
           logoUrl: null,
           telegramLink: null,
         },
-        budgets: [{ id: "budget-2", paymentRequests: [] }],
+        budgets: [{ id: "budget-2" }],
         budgetsAggregate: {
           aggregate: {
             sum: {
@@ -76,12 +83,12 @@ const ALL_PROJECTS_RESULT_NO_INVITATIONS: { data: GetProjectsQueryResult["data"]
             },
           },
         },
+        contributorsAggregate: { aggregate: { count: 0 } },
         pendingInvitations: [],
         githubRepos: [
           {
             projectId: "2",
             githubRepoId: 123456,
-            repoContributors: [],
             repo: {
               id: 123456,
               languages: [],
@@ -114,7 +121,7 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
           shortDescription: "short description",
           telegramLink: null,
         },
-        budgets: [{ id: "budget-1", paymentRequests: [] }],
+        budgets: [{ id: "budget-1" }],
         budgetsAggregate: {
           aggregate: {
             sum: {
@@ -123,12 +130,12 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
             },
           },
         },
+        contributorsAggregate: { aggregate: { count: 0 } },
         pendingInvitations: [],
         githubRepos: [
           {
             projectId: "1",
             githubRepoId: 123456,
-            repoContributors: [],
             repo: {
               id: 123456,
               languages: [],
@@ -154,7 +161,7 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
           shortDescription: "short description",
           telegramLink: null,
         },
-        budgets: [{ id: "budget-2", paymentRequests: [] }],
+        budgets: [{ id: "budget-2" }],
         budgetsAggregate: {
           aggregate: {
             sum: {
@@ -163,12 +170,12 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
             },
           },
         },
+        contributorsAggregate: { aggregate: { count: 0 } },
         pendingInvitations: [],
         githubRepos: [
           {
             projectId: "2",
             githubRepoId: 123456,
-            repoContributors: [],
             repo: {
               id: 123456,
               languages: [],
@@ -194,7 +201,7 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
           shortDescription: "short description",
           telegramLink: null,
         },
-        budgets: [{ id: "budget-3", paymentRequests: [] }],
+        budgets: [{ id: "budget-3" }],
         budgetsAggregate: {
           aggregate: {
             sum: {
@@ -203,12 +210,12 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
             },
           },
         },
+        contributorsAggregate: { aggregate: { count: 0 } },
         pendingInvitations: [{ id: "invitation-1", githubUserId: TEST_GITHUB_USER_ID }],
         githubRepos: [
           {
             projectId: "3",
             githubRepoId: 123456,
-            repoContributors: [],
             repo: {
               id: 123456,
               languages: [],
@@ -233,6 +240,7 @@ const projectWithNoBudget: ProjectCardFieldsFragment = {
   id: "project-with-no-budget",
   budgets: [],
   budgetsAggregate: { aggregate: { sum: { spentAmount: 0, initialAmount: 1000 } } },
+  contributorsAggregate: { aggregate: { count: 0 } },
   projectDetails: {
     projectId: "project-with-no-budget",
     name: "No budget",
@@ -244,7 +252,6 @@ const projectWithNoBudget: ProjectCardFieldsFragment = {
     {
       projectId: "project-with-no-budget",
       githubRepoId: 123456,
-      repoContributors: [],
       repo: {
         id: 123456,
         languages: [],
@@ -265,8 +272,9 @@ const projectWithNoBudget: ProjectCardFieldsFragment = {
 const projectWithNoRepo: ProjectCardFieldsFragment = {
   __typename: "Projects",
   id: "project-with-no-repo",
-  budgets: [{ id: "budget-1", paymentRequests: [] }],
+  budgets: [{ id: "budget-1" }],
   budgetsAggregate: { aggregate: { sum: { spentAmount: 0, initialAmount: 1000 } } },
+  contributorsAggregate: { aggregate: { count: 0 } },
   projectDetails: {
     projectId: "project-with-no-repo",
     name: "No budget",
@@ -289,8 +297,9 @@ const projectWithNoRepo: ProjectCardFieldsFragment = {
 const projectWithNoLeader: ProjectCardFieldsFragment = {
   __typename: "Projects",
   id: "project-with-no-leader",
-  budgets: [{ id: "budget-1", paymentRequests: [] }],
+  budgets: [{ id: "budget-1" }],
   budgetsAggregate: { aggregate: { sum: { spentAmount: 0, initialAmount: 1000 } } },
+  contributorsAggregate: { aggregate: { count: 0 } },
   projectDetails: {
     projectId: "project-with-no-leader",
     name: "No budget",
@@ -302,7 +311,6 @@ const projectWithNoLeader: ProjectCardFieldsFragment = {
     {
       projectId: "project-with-no-leader",
       githubRepoId: 123456,
-      repoContributors: [],
       repo: {
         id: 123456,
         languages: [],
@@ -319,6 +327,7 @@ const projectInvalidWithInvite: ProjectCardFieldsFragment = {
   id: "project-with-only-invite",
   budgets: [],
   budgetsAggregate: { aggregate: { sum: { spentAmount: 0, initialAmount: 1000 } } },
+  contributorsAggregate: { aggregate: { count: 0 } },
   projectDetails: {
     projectId: "project-with-only-invite",
     name: "Nothing but invited",
@@ -335,8 +344,9 @@ const projectInvalidWithInvite: ProjectCardFieldsFragment = {
 const projectWithNoLeaderAndInviteForWrongUser: ProjectCardFieldsFragment = {
   __typename: "Projects",
   id: "project-with-no-leader-and-invite-for-wrong-user",
-  budgets: [{ id: "budget-1", paymentRequests: [] }],
+  budgets: [{ id: "budget-1" }],
   budgetsAggregate: { aggregate: { sum: { spentAmount: 0, initialAmount: 1000 } } },
+  contributorsAggregate: { aggregate: { count: 0 } },
   projectDetails: {
     projectId: "project-with-no-leader",
     name: "No leader but invite",
@@ -348,7 +358,6 @@ const projectWithNoLeaderAndInviteForWrongUser: ProjectCardFieldsFragment = {
     {
       projectId: "project-with-no-leader-and-invite-for-wrong-user",
       githubRepoId: 123456,
-      repoContributors: [],
       repo: {
         id: 123456,
         languages: [],
@@ -363,7 +372,8 @@ const projectWithNoLeaderAndInviteForWrongUser: ProjectCardFieldsFragment = {
 const projectWithNoLeaderAndInvite: ProjectCardFieldsFragment = {
   __typename: "Projects",
   id: "project-with-no-leader-and-invite",
-  budgets: [{ id: "budget-1", paymentRequests: [] }],
+  contributorsAggregate: { aggregate: { count: 0 } },
+  budgets: [{ id: "budget-1" }],
   budgetsAggregate: { aggregate: { sum: { spentAmount: 0, initialAmount: 1000 } } },
   projectDetails: {
     projectId: "project-with-no-leader",
@@ -376,7 +386,6 @@ const projectWithNoLeaderAndInvite: ProjectCardFieldsFragment = {
     {
       projectId: "project-with-no-leader-and-invite",
       githubRepoId: 123456,
-      repoContributors: [],
       repo: {
         id: 123456,
         languages: [],
@@ -391,8 +400,11 @@ const projectWithNoLeaderAndInvite: ProjectCardFieldsFragment = {
 const buildGraphQlMocks = (projectsQueryResult: { data: GetProjectsQueryResult["data"] }) => [
   {
     request: {
-      query: buildGetProjectsQuery([], []),
-      variables: { languages: [], sponsors: [] },
+      query: GetProjectsDocument,
+      variables: {
+        where: {},
+        orderBy: { budgetsAggregate: { sum: { spentAmount: OrderBy.Desc } } },
+      } as GetProjectsQueryVariables,
     },
     result: projectsQueryResult,
   },
@@ -427,7 +439,7 @@ vi.mock("jwt-decode", () => ({
 const render = ({ projectFilter, mocks }: { projectFilter?: ProjectFilter; mocks: MockedResponse[] }) =>
   renderWithIntl(
     <MockedProjectFilterProvider projectFilter={projectFilter}>
-      <AllProjects />
+      <AllProjects sorting={Sorting.MoneyGranted} />
     </MockedProjectFilterProvider>,
     {
       wrapper: MemoryRouterProviderFactory({

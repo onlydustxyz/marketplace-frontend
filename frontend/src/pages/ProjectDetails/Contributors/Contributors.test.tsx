@@ -90,6 +90,7 @@ const graphQlMocks = [
         projectsByPk: {
           __typename: "Projects",
           id: TEST_PROJECT_ID,
+          contributors: [contributor1, contributor2, contributor3].map(githubUser => ({ githubUser })),
           githubRepos: [
             {
               __typename: "ProjectGithubRepos",

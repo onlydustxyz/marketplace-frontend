@@ -1,12 +1,6 @@
 import { ProjectDetails } from "..";
-import View from "./View";
-import {
-  ProjectContributorsFragmentDoc,
-  SidebarProjectDetailsFragment,
-  VisibleProjectFragmentDoc,
-  useGetProjectsForSidebarQuery,
-} from "src/__generated/graphql";
-import { gql } from "@apollo/client";
+import View, { SidebarProjectDetails } from "./View";
+import { SidebarProjectDetailsFragment, useGetProjectsForSidebarQuery } from "src/__generated/graphql";
 import { useAuth } from "src/hooks/useAuth";
 import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 import { sortBy } from "lodash";
@@ -39,7 +33,7 @@ export default function ProjectsSidebar({ currentProject }: Props) {
     getProjectsForSidebarQuery?.data?.projects
       .filter(isProjectVisible(githubUserId))
       .map(project => projectFromQuery(project, githubUserId)) || [];
-  const sortedProjects = sortBy([...projects], ["withInvitation", "name"]);
+  const sortedProjects = sortBy(projects, ["withInvitation", "name"]);
 
   const AvailableTabs: Record<string, ProjectDetailsTab> = {
     overview: {
@@ -71,40 +65,12 @@ export default function ProjectsSidebar({ currentProject }: Props) {
   );
 }
 
-const projectFromQuery = (project: SidebarProjectDetailsFragment, githubUserId?: number) => ({
+const projectFromQuery = (project: SidebarProjectDetailsFragment, githubUserId?: number): SidebarProjectDetails => ({
   ...project,
   name: project.projectDetails?.name || "",
   logoUrl: project.projectDetails?.logoUrl || onlyDustLogo,
   withInvitation:
     githubUserId !== undefined &&
     project.pendingInvitations?.map(pendingInvitation => pendingInvitation.githubUserId).includes(githubUserId),
+  contributorsCount: project.contributorsAggregate.aggregate?.count || 0,
 });
-
-gql`
-  ${ProjectContributorsFragmentDoc}
-  ${VisibleProjectFragmentDoc}
-  fragment SidebarProjectDetails on Projects {
-    ...ProjectContributors
-    id
-    projectDetails {
-      projectId
-      name
-      logoUrl
-    }
-    pendingInvitations {
-      id
-      githubUserId
-    }
-  }
-
-  query GetProjectsForSidebar($ledProjectIds: [uuid!], $githubUserId: bigint) {
-    projects(
-      where: {
-        _or: [{ id: { _in: $ledProjectIds } }, { pendingInvitations: { githubUserId: { _eq: $githubUserId } } }]
-      }
-    ) {
-      ...SidebarProjectDetails
-      ...VisibleProject
-    }
-  }
-`;

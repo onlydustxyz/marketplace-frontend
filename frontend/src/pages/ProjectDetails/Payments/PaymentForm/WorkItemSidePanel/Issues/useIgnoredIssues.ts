@@ -27,7 +27,6 @@ export default function useIgnoredIssues() {
               ignoredForProjects: existing => [...existing, ignoredIssue],
             },
           });
-          console.log(cache);
         },
       }),
     [ignoreIssue]

@@ -1,7 +1,5 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { range } from "lodash";
 import { ProjectDetailsTab } from "src/pages/ProjectDetails/Sidebar";
-import { GithubUserFragment, ProjectContributorsFragment } from "src/__generated/graphql";
 import { withRouter } from "storybook-addon-react-router-v6";
 import { ProjectDetails } from "..";
 import View, { SidebarProjectDetails } from "./View";
@@ -23,15 +21,7 @@ const availableTabs: ProjectDetailsTab[] = [
   },
 ];
 
-const contributors: GithubUserFragment[] = range(4).map(id => ({
-  id,
-  login: `user-${id}`,
-  avatarUrl: "",
-  htmlUrl: "",
-  user: null,
-}));
-
-const currentProject: ProjectDetails & SidebarProjectDetails & ProjectContributorsFragment = {
+const currentProject: ProjectDetails & SidebarProjectDetails = {
   id: "test-project-id",
   name: "Our project",
   logoUrl: "https://avatars.githubusercontent.com/u/98735558?v=4",
@@ -45,17 +35,10 @@ const currentProject: ProjectDetails & SidebarProjectDetails & ProjectContributo
   sponsors: [],
   languages: {},
   withInvitation: false,
-  githubRepos: [
-    {
-      projectId: "test-project-id",
-      githubRepoId: 123456,
-      repoContributors: contributors.map(user => ({ user })),
-    },
-  ],
-  budgets: [],
+  contributorsCount: 4,
 };
 
-const otherProject: ProjectDetails & SidebarProjectDetails & ProjectContributorsFragment = {
+const otherProject: ProjectDetails & SidebarProjectDetails = {
   id: "other-project-id",
   name: "Other project",
   logoUrl: "https://avatars.githubusercontent.com/u/98735558?v=4",
@@ -69,14 +52,7 @@ const otherProject: ProjectDetails & SidebarProjectDetails & ProjectContributors
   sponsors: [],
   languages: {},
   withInvitation: false,
-  githubRepos: [
-    {
-      projectId: "other-project-id",
-      githubRepoId: 123456,
-      repoContributors: contributors.map(user => ({ user })),
-    },
-  ],
-  budgets: [],
+  contributorsCount: 4,
 };
 
 const expandable = true;

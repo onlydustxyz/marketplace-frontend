@@ -161,12 +161,19 @@ class ProjectLeads {
 
 class Projects {
    budgets: [Budgets!]!
+   contributors: [ProjectsContributorsView!]!
    githubRepos: [ProjectGithubRepos!]!
    id: uuid!
    pendingInvitations: [PendingProjectLeaderInvitations!]!
    projectDetails: ProjectDetails
    projectLeads: [ProjectLeads!]!
    projectSponsors: [ProjectsSponsors!]!
+}
+
+class ProjectsContributorsView {
+   githubUser: GithubUsers
+   githubUserId: bigint
+   projectId: uuid
 }
 
 class ProjectsSponsors {
@@ -335,7 +342,9 @@ Projects --* Budgets
 Projects --* PendingProjectLeaderInvitations
 Projects --* ProjectGithubRepos
 Projects --* ProjectLeads
+Projects --* ProjectsContributorsView
 Projects --* ProjectsSponsors
+ProjectsContributorsView -- GithubUsers
 ProjectsSponsors -- Projects
 ProjectsSponsors -- Sponsors
 Sponsors --* ProjectsSponsors

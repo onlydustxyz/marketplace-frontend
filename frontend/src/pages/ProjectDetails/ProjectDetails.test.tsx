@@ -78,6 +78,7 @@ const getProjectMock = {
           shortDescription: TEST_DESCRIPTION,
           logoUrl: null,
         },
+        contributorsAggregate: { aggregate: { count: 0 } },
         pendingInvitations: [{ id: "test-invitation-id", githubUserId: TEST_GITHUB_USER_ID }],
         projectLeads: [
           {
@@ -90,8 +91,8 @@ const getProjectMock = {
             },
           },
         ],
-        budgets: [{ id: "budget-1", paymentRequests: [] }],
-        githubRepos: [{ githubRepoId: 123456, projectId: TEST_PROJECT_ID, repo: null, repoContributors: [] }],
+        budgets: [{ id: "budget-1" }],
+        githubRepos: [{ githubRepoId: 123456, projectId: TEST_PROJECT_ID, repo: null }],
         projectSponsors: [],
       },
     } as GetProjectQueryResult["data"],
@@ -118,6 +119,7 @@ const getLedProjectMock = {
             },
           },
         },
+        contributorsAggregate: { aggregate: { count: 0 } },
         projectDetails: {
           projectId: TEST_LED_PROJECT_ID,
           name: TEST_LED_PROJECT_NAME,
@@ -137,8 +139,8 @@ const getLedProjectMock = {
             },
           },
         ],
-        budgets: [{ id: "budget-1", paymentRequests: [] }],
-        githubRepos: [{ projectId: TEST_LED_PROJECT_ID, githubRepoId: 123456, repo: null, repoContributors: [] }],
+        budgets: [{ id: "budget-1" }],
+        githubRepos: [{ projectId: TEST_LED_PROJECT_ID, githubRepoId: 123456, repo: null }],
         projectSponsors: [],
       },
     } as GetProjectQueryResult["data"],

@@ -21,6 +21,15 @@ array_relationships:
         remote_table:
           name: budgets
           schema: public
+  - name: contributors
+    using:
+      manual_configuration:
+        column_mapping:
+          id: project_id
+        insertion_order: null
+        remote_table:
+          name: projects_contributors_view
+          schema: public
   - name: githubRepos
     using:
       manual_configuration:

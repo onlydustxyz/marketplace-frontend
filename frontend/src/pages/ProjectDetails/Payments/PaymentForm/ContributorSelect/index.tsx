@@ -40,7 +40,7 @@ export default function ContributorSelect({ projectId, contributor, setContribut
     skip: (githubHandleSubstring?.length || 0) < 2 || githubHandleSubstring !== debouncedGithubHandleSubstring,
   });
 
-  const { contributors: internalContributors } = useMemo(
+  const internalContributors = useMemo(
     () => getContributors(getProjectContributorsQuery.data?.projectsByPk),
     [getProjectContributorsQuery.data]
   );

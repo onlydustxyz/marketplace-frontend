@@ -1,0 +1,50 @@
+fragment ProjectCardFields on Projects {
+  ...ProjectId
+  contributorsAggregate {
+    aggregate {
+      count
+    }
+  }
+  budgetsAggregate {
+    aggregate {
+      sum {
+        spentAmount
+        initialAmount
+      }
+    }
+  }
+  budgets {
+    id
+  }
+  projectDetails {
+    projectId
+    name
+    telegramLink
+    logoUrl
+    shortDescription
+  }
+  pendingInvitations {
+    id
+    githubUserId
+  }
+  projectLeads {
+    userId
+    projectId
+    user {
+      ...ProjectLead
+    }
+  }
+  githubRepos {
+    projectId
+    githubRepoId
+    repo {
+      ...GithubRepoId
+      languages
+    }
+  }
+  projectSponsors {
+    sponsor {
+      ...Sponsor
+    }
+  }
+}

@@ -1,7 +1,14 @@
-import { VisibleProjectFragment, GithubIssueFragment, WorkItemIdFragment } from "src/__generated/graphql";
-import { chain, find, flatMap, some, uniqBy } from "lodash";
+import {
+  VisibleProjectFragment,
+  GithubIssueFragment,
+  ProjectContributorsWithPaymentSummaryFragment,
+  LastProjectMergedPullRequestsFragment,
+  ProjectPaidWorkItemsFragment,
+  GithubUserWithPaymentRequestsForProjectFragment,
+} from "src/__generated/graphql";
+import { chain, find, flatMap, some } from "lodash";
 import isDefined from "src/utils/isDefined";
-import { GithubUserIdFragment } from "src/__generated/graphql";
+import { Maybe } from "graphql/jsutils/Maybe";
 
 export const isProjectVisible =
   (githubUserId?: number) =>
@@ -20,45 +27,29 @@ export const isProjectVisible =
     return hasRepos && hasBudget && (hasLeaders || !!hasInvitation);
   };
 
-type Project<R> = {
-  id: string;
-  githubRepos: Array<{
-    repoContributors: Array<{
-      user: R | null;
-    }>;
-    repoIssues?: GithubIssueFragment[] | null;
-  }> | null;
-  budgets: Array<{
-    paymentRequests: Array<{ githubRecipient: R | null; workItems?: Array<WorkItemIdFragment | null> }>;
-  }>;
-};
-
-export function getContributors<R extends GithubUserIdFragment>(
-  project?: Project<R | null> | null
-): { contributors: R[] } {
-  const contributorsFromRepos: R[] =
-    project?.githubRepos?.flatMap(repo => repo.repoContributors.map(c => c.user)).filter(isDefined) || [];
-
-  const contributorsFromPaymentRequests: R[] =
-    project?.budgets
-      ?.flatMap(budget => budget.paymentRequests)
-      .map(paymentRequest => paymentRequest?.githubRecipient)
-      .filter(isDefined) || [];
-
+export function getContributors(
+  project?: Maybe<ProjectContributorsWithPaymentSummaryFragment> &
+    Partial<Maybe<ProjectPaidWorkItemsFragment & LastProjectMergedPullRequestsFragment>>
+): (GithubUserWithPaymentRequestsForProjectFragment & { unpaidMergedPullsCount?: number })[] {
   const unpaidMergedPullsByContributor = project ? countUnpaidMergedPullsByContributor(project) : {};
 
-  const contributors = uniqBy([...contributorsFromRepos, ...contributorsFromPaymentRequests], "id").map(c => ({
-    ...c,
-    unpaidMergedPullsCount: unpaidMergedPullsByContributor[c.id],
-  }));
-
-  return { contributors };
+  return (
+    project?.contributors
+      .map(c => c.githubUser)
+      .filter(isDefined)
+      .map(user => ({
+        ...user,
+        unpaidMergedPullsCount: unpaidMergedPullsByContributor[user.id],
+      })) || []
+  );
 }
 
-export const countUnpaidMergedPullsByContributor = (project?: Project<GithubUserIdFragment | null> | null) => {
+export const countUnpaidMergedPullsByContributor = (
+  project?: Partial<Maybe<ProjectPaidWorkItemsFragment & LastProjectMergedPullRequestsFragment>>
+) => {
   const paidItemsByLogin = chain(project?.budgets)
     .flatMap(b => b.paymentRequests)
-    .groupBy(p => p.githubRecipient?.id)
+    .groupBy(p => p.recipientId)
     .mapValues(requests => flatMap(requests, r => r.workItems))
     .value();
 

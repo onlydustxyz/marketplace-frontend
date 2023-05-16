@@ -7,7 +7,6 @@ import App, { RoutePaths } from ".";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import { CLAIMS_KEY, GITHUB_USERID_KEY, PROJECTS_LED_KEY, TokenSet } from "src/types";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
-import { buildGetProjectsQuery } from "src/pages/Projects/AllProjects";
 import {
   GetGithubRepositoryDetailsDocument,
   GetGithubRepositoryDetailsQueryResult,
@@ -17,9 +16,11 @@ import {
   GetProjectOverviewDetailsDocument,
   GetProjectOverviewDetailsQueryResult,
   GetProjectQueryResult,
+  GetProjectsDocument,
   GetProjectsForSidebarDocument,
   GetProjectsForSidebarQueryResult,
   GetProjectsQueryResult,
+  OrderBy,
   ProfileDocument,
   ProfileQueryResult,
 } from "src/__generated/graphql";
@@ -87,6 +88,7 @@ const ALL_PROJECTS_RESULT: { data: GetProjectsQueryResult["data"] } = {
       {
         __typename: "Projects",
         id: TEST_PROJECT_ID,
+        contributorsAggregate: { aggregate: { count: 0 } },
         projectDetails: {
           __typename: "ProjectDetails",
           projectId: TEST_PROJECT_ID,
@@ -115,12 +117,11 @@ const ALL_PROJECTS_RESULT: { data: GetProjectsQueryResult["data"] } = {
             projectId: TEST_PROJECT_ID,
             githubRepoId: TEST_GITHUB_REPO_ID,
             repo: null,
-            repoContributors: [],
           },
         ],
         projectSponsors: [],
         budgetsAggregate: { aggregate: { sum: { spentAmount: 100, initialAmount: 1000 } } },
-        budgets: [{ __typename: "Budgets", id: "budget-1", paymentRequests: [] }],
+        budgets: [{ __typename: "Budgets", id: "budget-1" }],
       },
     ],
   },
@@ -139,6 +140,7 @@ const SINGLE_PROJECT_RESULT: { data: GetProjectQueryResult["data"] } = {
           },
         },
       },
+      contributorsAggregate: { aggregate: { count: 0 } },
       projectDetails: {
         __typename: "ProjectDetails",
         name: TEST_PROJECT_NAME,
@@ -168,7 +170,6 @@ const SINGLE_PROJECT_RESULT: { data: GetProjectQueryResult["data"] } = {
           __typename: "ProjectGithubRepos",
           projectId: TEST_PROJECT_ID,
           githubRepoId: TEST_GITHUB_REPO_ID,
-          repoContributors: [],
           repo: {
             __typename: "GithubRepos",
             id: TEST_GITHUB_REPO_ID,
@@ -177,7 +178,7 @@ const SINGLE_PROJECT_RESULT: { data: GetProjectQueryResult["data"] } = {
         },
       ],
       projectSponsors: [],
-      budgets: [{ __typename: "Budgets", id: "budget-1", paymentRequests: [] }],
+      budgets: [{ __typename: "Budgets", id: "budget-1" }],
     },
   },
 };
@@ -227,15 +228,21 @@ const PROJECT_OVERVIEW_DETAILS_RESULT: { data: GetProjectOverviewDetailsQueryRes
 const graphQlMocks = [
   {
     request: {
-      query: buildGetProjectsQuery([], []),
-      variables: { languages: [], sponsors: [] },
+      query: GetProjectsDocument,
+      variables: {
+        where: {},
+        orderBy: { budgetsAggregate: { sum: { spentAmount: OrderBy.Desc } } },
+      },
     },
     result: ALL_PROJECTS_RESULT,
   },
   {
     request: {
-      query: buildGetProjectsQuery([], []),
-      variables: { languages: [], sponsors: [] },
+      query: GetProjectsDocument,
+      variables: {
+        where: {},
+        orderBy: { budgetsAggregate: { sum: { spentAmount: OrderBy.Desc } } },
+      },
     },
     result: ALL_PROJECTS_RESULT,
   },
@@ -289,22 +296,11 @@ const graphQlMocks = [
                 __typename: "ProjectGithubRepos",
                 projectId: TEST_PROJECT_ID,
                 githubRepoId: TEST_GITHUB_REPO_ID,
-                repoContributors: [
-                  {
-                    user: {
-                      __typename: "GithubUsers",
-                      id: TEST_GITHUB_USER_ID,
-                      login: "user",
-                      avatarUrl: "",
-                      htmlUrl: "",
-                      user: null,
-                    },
-                  },
-                ],
               },
             ],
             budgets: [],
             projectLeads: [],
+            contributorsAggregate: { aggregate: { count: 1 } },
           },
         ],
       } as GetProjectsForSidebarQueryResult["data"],
