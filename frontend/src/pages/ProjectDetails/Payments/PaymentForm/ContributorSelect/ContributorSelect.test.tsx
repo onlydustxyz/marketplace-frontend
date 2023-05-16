@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import matchers from "@testing-library/jest-dom/matchers";
+import { VirtuosoMockContext } from "react-virtuoso";
 
 import { CLAIMS_KEY, PROJECTS_LED_KEY } from "src/types";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
@@ -102,13 +103,15 @@ describe('"ContributorSelect" component', () => {
   beforeEach(() => {
     contributor = null;
     renderWithIntl(
-      <ContributorSelect
-        projectId={TEST_PROJECT_ID}
-        contributor={null}
-        setContributor={(newContributor: GithubUserFragment | null | undefined) => {
-          contributor = newContributor;
-        }}
-      />,
+      <VirtuosoMockContext.Provider value={{ viewportHeight: 1000, itemHeight: 36 }}>
+        <ContributorSelect
+          projectId={TEST_PROJECT_ID}
+          contributor={null}
+          setContributor={(newContributor: GithubUserFragment | null | undefined) => {
+            contributor = newContributor;
+          }}
+        />
+      </VirtuosoMockContext.Provider>,
       {
         wrapper: MemoryRouterProviderFactory({
           mocks: graphQlMocks,

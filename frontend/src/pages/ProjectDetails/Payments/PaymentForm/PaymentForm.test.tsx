@@ -23,6 +23,7 @@ import {
   GithubUserWithPaymentRequestsForProjectFragment,
 } from "src/__generated/graphql";
 import { MockedResponse } from "@apollo/client/testing";
+import { VirtuosoMockContext } from "react-virtuoso";
 
 const TEST_USER = { id: "test-user-id", displayName: "test-login", githubUser: { githubUserId: 748483646584 } };
 const TEST_GITHUB_USER: GithubUserWithPaymentRequestsForProjectFragment = {
@@ -176,15 +177,20 @@ describe('"PaymentForm" component', () => {
   });
 
   beforeEach(() => {
-    renderWithIntl(<PaymentForm />, {
-      wrapper: MemoryRouterProviderFactory({
-        mocks: graphQlMocks,
-        context: {
-          projectId: TEST_PROJECT_ID,
-          budget: { initialAmount: 10000, remainingAmount: 4000 },
-        },
-      }),
-    });
+    renderWithIntl(
+      <VirtuosoMockContext.Provider value={{ viewportHeight: 1000, itemHeight: 36 }}>
+        <PaymentForm />
+      </VirtuosoMockContext.Provider>,
+      {
+        wrapper: MemoryRouterProviderFactory({
+          mocks: graphQlMocks,
+          context: {
+            projectId: TEST_PROJECT_ID,
+            budget: { initialAmount: 10000, remainingAmount: 4000 },
+          },
+        }),
+      }
+    );
   });
 
   it("should show the right input / button labels", async () => {
