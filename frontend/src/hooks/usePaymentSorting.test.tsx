@@ -33,13 +33,21 @@ describe("useWorkEstimation", () => {
     expect(result.current.sorting.ascending).toEqual(false);
   });
 
+  it("should sort Amount in descending order by default", () => {
+    const { result } = renderHook(() => usePaymentSorting());
+    act(() => result.current.applySorting(Field.Amount, false));
+    expect(result.current.sorting.field).toEqual(Field.Amount);
+    expect(result.current.sorting.ascending).toEqual(false);
+    expect(result.current.sort(payments)[0].id).toEqual("id2");
+  });
+
   it("should be able to sort by date", () => {
     const { result } = renderHook(() => usePaymentSorting());
-    act(() => result.current.applySorting(Field.Date));
+    act(() => result.current.applySorting(Field.Date, true));
     expect(result.current.sorting.field).toEqual(Field.Date);
     expect(result.current.sorting.ascending).toEqual(true);
     expect(result.current.sort(payments)[0].id).toEqual("id1");
-    act(() => result.current.applySorting(Field.Date));
+    act(() => result.current.applySorting(Field.Date, true));
     expect(result.current.sorting.field).toEqual(Field.Date);
     expect(result.current.sorting.ascending).toEqual(false);
     expect(result.current.sort(payments)[0].id).toEqual("id2");
@@ -47,11 +55,11 @@ describe("useWorkEstimation", () => {
 
   it("should be able to sort by contribution", () => {
     const { result } = renderHook(() => usePaymentSorting());
-    act(() => result.current.applySorting(Field.Contribution));
+    act(() => result.current.applySorting(Field.Contribution, true));
     expect(result.current.sorting.field).toEqual(Field.Contribution);
     expect(result.current.sorting.ascending).toEqual(true);
     expect(result.current.sort(payments)[0].id).toEqual("id2");
-    act(() => result.current.applySorting(Field.Contribution));
+    act(() => result.current.applySorting(Field.Contribution, true));
     expect(result.current.sorting.field).toEqual(Field.Contribution);
     expect(result.current.sorting.ascending).toEqual(false);
     expect(result.current.sort(payments)[0].id).toEqual("id1");
@@ -59,11 +67,11 @@ describe("useWorkEstimation", () => {
 
   it("should be able to sort by amount", () => {
     const { result } = renderHook(() => usePaymentSorting());
-    act(() => result.current.applySorting(Field.Amount));
+    act(() => result.current.applySorting(Field.Amount, true));
     expect(result.current.sorting.field).toEqual(Field.Amount);
     expect(result.current.sorting.ascending).toEqual(true);
     expect(result.current.sort(payments)[0].id).toEqual("id1");
-    act(() => result.current.applySorting(Field.Amount));
+    act(() => result.current.applySorting(Field.Amount, true));
     expect(result.current.sorting.field).toEqual(Field.Amount);
     expect(result.current.sorting.ascending).toEqual(false);
     expect(result.current.sort(payments)[0].id).toEqual("id2");
@@ -71,11 +79,11 @@ describe("useWorkEstimation", () => {
 
   it("should be able to sort by status", () => {
     const { result } = renderHook(() => usePaymentSorting());
-    act(() => result.current.applySorting(Field.Status));
+    act(() => result.current.applySorting(Field.Status, true));
     expect(result.current.sorting.field).toEqual(Field.Status);
     expect(result.current.sorting.ascending).toEqual(true);
     expect(result.current.sort(payments)[0].id).toEqual("id2");
-    act(() => result.current.applySorting(Field.Status));
+    act(() => result.current.applySorting(Field.Status, true));
     expect(result.current.sorting.field).toEqual(Field.Status);
     expect(result.current.sorting.ascending).toEqual(false);
     expect(result.current.sort(payments)[0].id).toEqual("id1");
