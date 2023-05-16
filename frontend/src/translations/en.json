@@ -129,7 +129,7 @@
           "addOther": {
             "toggle": "Add other PR",
             "notALink": "Oops, this doesn't look like a pull request",
-            "invalidPrLink": "Hmm... we can't find this PR. Check the link and try again",
+            "invalidLink": "Hmm... we can't find this PR. Check the link and try again",
             "placeholder": "github.com/example/repo/pull/472",
             "label": "Add specific PR using URL"
           },
@@ -142,7 +142,7 @@
           "addOther": {
             "toggle": "Add other issue",
             "notALink": "Oops, this doesn't look like an issue",
-            "invalidIssueLink": "Hmm... we can't find this issue. Check the link and try again",
+            "invalidLink": "Hmm... we can't find this issue. Check the link and try again",
             "placeholder": "github.com/example/repo/issues/472",
             "label": "Add specific issue using URL"
           },

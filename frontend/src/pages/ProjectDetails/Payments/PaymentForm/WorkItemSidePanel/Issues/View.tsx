@@ -100,7 +100,7 @@ export default function View({
             </div>
           )}
         </div>
-        {addOtherIssueEnabled && <OtherIssueInput projectId={projectId} onWorkItemAdded={onIssueAdded} />}
+        {addOtherIssueEnabled && <OtherIssueInput projectId={projectId} type={type} onWorkItemAdded={onIssueAdded} />}
         {searchEnabled && (
           <FormInput
             name={`search-${tabName}`}

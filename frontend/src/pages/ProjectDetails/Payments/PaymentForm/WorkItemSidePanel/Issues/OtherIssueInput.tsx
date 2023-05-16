@@ -3,39 +3,45 @@ import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { useIntl } from "src/hooks/useIntl";
 import Input from "src/components/FormInput";
 import { WorkItem } from "src/components/GithubIssue";
-import { useFetchIssueLazyQuery } from "src/__generated/graphql";
+import { Type, useFetchIssueLazyQuery } from "src/__generated/graphql";
 import { useFormContext, useFormState } from "react-hook-form";
-import { parseIssueLink, REGEX_VALID_GITHUB_ISSUE_URL } from "src/utils/github";
+import {
+  parseIssueLink,
+  REGEX_VALID_GITHUB_ISSUE_URL,
+  parsePullRequestLink,
+  REGEX_VALID_GITHUB_PULL_REQUEST_URL,
+} from "src/utils/github";
 import Link from "src/icons/Link";
 import classNames from "classnames";
 import { issueToWorkItem } from ".";
 
 type Props = {
   projectId: string;
+  type: Type;
   onWorkItemAdded: (workItem: WorkItem) => void;
 };
 
-const INPUT_NAME = "otherIssueLink";
-
-export default function OtherIssueInput({ projectId, onWorkItemAdded }: Props) {
+export default function OtherIssueInput({ projectId, type, onWorkItemAdded }: Props) {
   const { T } = useIntl();
+  const inputName = type === Type.Issue ? "otherIssueLink" : "otherPullRequestLink";
+  const tKey = type === Type.Issue ? "issues" : "pullRequests";
 
   const [fetchIssue] = useFetchIssueLazyQuery({
     onCompleted: data => {
       if (data.fetchIssue) {
         onWorkItemAdded(issueToWorkItem(data.fetchIssue, projectId));
-        resetField(INPUT_NAME);
+        resetField(inputName);
       } else {
-        setError(INPUT_NAME, {
+        setError(inputName, {
           type: "validate",
-          message: T("payment.form.workItems.issues.addOther.invalidIssueLink"),
+          message: T(`payment.form.workItems.${tKey}.addOther.invalidLink`),
         });
       }
     },
     onError: () =>
-      setError(INPUT_NAME, {
+      setError(inputName, {
         type: "validate",
-        message: T("payment.form.workItems.issues.addOther.invalidIssueLink"),
+        message: T(`payment.form.workItems.${tKey}.addOther.invalidLink`),
       }),
     context: {
       graphqlErrorDisplay: "none",
@@ -43,11 +49,14 @@ export default function OtherIssueInput({ projectId, onWorkItemAdded }: Props) {
   });
 
   const { watch, setError, resetField } = useFormContext();
-  const { errors } = useFormState({ name: INPUT_NAME });
-  const otherIssueLink = watch(INPUT_NAME);
-  const otherIssueLinkError = errors[INPUT_NAME];
+  const { errors } = useFormState({ name: inputName });
+  const otherIssueLink = watch(inputName);
+  const otherIssueLinkError = errors[inputName];
 
-  const { repoOwner, repoName, issueNumber } = useMemo(() => parseIssueLink(otherIssueLink), [otherIssueLink]);
+  const { repoOwner, repoName, issueNumber } = useMemo(
+    () => (type === Type.Issue ? parseIssueLink(otherIssueLink) : parsePullRequestLink(otherIssueLink)),
+    [otherIssueLink]
+  );
 
   const validateOtherIssue = () =>
     fetchIssue({
@@ -61,16 +70,16 @@ export default function OtherIssueInput({ projectId, onWorkItemAdded }: Props) {
   return (
     <div className="p-4 flex flex-col gap-2 border border-greyscale-50/12 rounded-lg">
       <div className="font-walsheim font-medium text-base text-greyscale-50">
-        {T("payment.form.workItems.issues.addOther.label")}
+        {T(`payment.form.workItems.${tKey}.addOther.label`)}
       </div>
       <Input
-        name={INPUT_NAME}
-        placeholder={T("payment.form.workItems.issues.addOther.placeholder")}
+        name={inputName}
+        placeholder={T(`payment.form.workItems.${tKey}.addOther.placeholder`)}
         withMargin={false}
         options={{
           pattern: {
-            value: REGEX_VALID_GITHUB_ISSUE_URL,
-            message: T("payment.form.workItems.issues.addOther.notALink"),
+            value: type === Type.Issue ? REGEX_VALID_GITHUB_ISSUE_URL : REGEX_VALID_GITHUB_PULL_REQUEST_URL,
+            message: T(`payment.form.workItems.${tKey}.addOther.notALink`),
           },
         }}
         inputClassName="pl-10"
@@ -88,7 +97,7 @@ export default function OtherIssueInput({ projectId, onWorkItemAdded }: Props) {
         }
         inputProps={{ autoFocus: true }}
       >
-        <div onClick={validateOtherIssue} data-testid="add-other-issue-btn">
+        <div onClick={validateOtherIssue} data-testid={`add-other-${tKey}-btn`}>
           <Button
             size={ButtonSize.LgLowHeight}
             type={ButtonType.Secondary}

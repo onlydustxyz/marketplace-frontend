@@ -84,11 +84,11 @@ export class NewPaymentPage {
 
       // Add other PR
       if (otherPullRequests.length > 0) {
-        await this.page.locator("[data-testid=add-other-pr-toggle]").click();
+        await this.page.locator("[data-testid=add-other-pullRequests-toggle]").click();
 
         for (const pr of otherPullRequests) {
-          await this.page.locator("#otherPrLink").fill(pr);
-          await this.page.getByTestId("add-other-pr-btn").click();
+          await this.page.locator("#otherPullRequestLink").fill(pr);
+          await this.page.getByTestId("add-other-pullRequests-btn").click();
           await expect(this.page.getByText(`#${pr.split("/").at(-1)}`)).toBeVisible();
         }
       }
@@ -106,11 +106,11 @@ export class NewPaymentPage {
 
       // Add other issues
       if (otherIssues.length > 0) {
-        await this.page.locator("[data-testid=add-other-issue-toggle]").click();
+        await this.page.locator("[data-testid=add-other-issues-toggle]").click();
 
         for (const issue of otherIssues) {
           await this.page.locator("#otherIssueLink").fill(issue);
-          await this.page.getByTestId("add-other-issue-btn").click();
+          await this.page.getByTestId("add-other-issues-btn").click();
           await expect(this.page.getByText(`#${issue.split("/").at(-1)}`)).toBeVisible();
         }
       }
