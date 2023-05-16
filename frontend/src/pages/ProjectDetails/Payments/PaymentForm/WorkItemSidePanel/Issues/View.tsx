@@ -25,7 +25,7 @@ type Props = {
   onWorkItemUnignored: (workItem: WorkItem) => void;
 };
 
-export default function IssuesView({
+export default function View({
   projectId,
   issues,
   type,

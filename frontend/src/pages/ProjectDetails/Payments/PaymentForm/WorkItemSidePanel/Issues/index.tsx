@@ -1,6 +1,6 @@
 import { chain, some } from "lodash";
 import { WorkItem } from "src/components/GithubIssue";
-import IssuesView from "./IssuesView";
+import View from "./View";
 import useIgnoredIssues from "./useIgnoredIssues";
 import { LiveGithubIssueFragment, Type } from "src/__generated/graphql";
 import useUnpaidIssues from "./useUnpaidIssues";
@@ -34,7 +34,7 @@ export default function Issues({ type, projectId, contributorId, workItems, onWo
   );
 
   return (
-    <IssuesView
+    <View
       projectId={projectId}
       issues={issues}
       type={type}
