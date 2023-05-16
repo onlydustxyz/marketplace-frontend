@@ -12,3 +12,74 @@ select_permissions:
         - short_description
         - long_description
       filter: {}
+event_triggers:
+  - name: project_details_update
+    definition:
+      delete:
+        columns: '*'
+      enable_manual: false
+      insert:
+        columns: '*'
+      update:
+        columns: '*'
+    retry_conf:
+      interval_sec: 10
+      num_retries: 0
+      timeout_sec: 60
+    webhook_from_env: HASURA_EVENT_WEBHOOK
+    headers:
+      - name: environment
+        value_from_env: ENV
+    request_transform:
+      body:
+        action: transform
+        template: |-
+          {
+            "event": {
+              "op": {{$body?.event?.op}},
+              "data": {
+                "old": {
+                  "project_id": {{$body?.event?.data?.old?.project_id}},
+                  "short_description": {{$body?.event?.data?.old?.short_description}},
+                  "telegram_link": {{$body?.event?.data?.old?.telegram_link}},
+                  "logo_url": {{$body?.event?.data?.old?.logo_url}},
+                  "name": {{$body?.event?.data?.old?.name}},
+                  "long_description": {{$body?.event?.data?.old?.long_description}}
+                },
+                "new": {
+                  "project_id": {{$body?.event?.data?.new?.project_id}},
+                  "short_description": {{$body?.event?.data?.new?.short_description}},
+                  "telegram_link": {{$body?.event?.data?.new?.telegram_link}},
+                  "logo_url": {{$body?.event?.data?.new?.logo_url}},
+                  "name": {{$body?.event?.data?.new?.name}},
+                  "long_description": {{$body?.event?.data?.new?.long_description}}
+                }
+              },
+              "trace_context": {
+                "trace_id": {{$body?.event?.trace_context?.trace_id}},
+                "span_id": {{$body?.event?.trace_context?.span_id}}
+              }
+            },
+            "created_at": {{$body?.created_at}},
+            "id": {{$body?.id}},
+            "delivery_info": {
+              "max_retries": {{$body?.delivery_info?.max_retries}},
+              "current_retry": {{$body?.delivery_info?.current_retry}}
+            },
+            "trigger": {
+              "name": {{$body?.trigger?.name}}
+            },
+            "table": {
+              "schema": {{$body?.table?.schema}},
+              "name": {{$body?.table?.name}}
+            }
+          }
+      template_engine: Kriti
+      version: 2
+    cleanup_config:
+      batch_size: 10000
+      clean_invocation_logs: false
+      clear_older_than: 168
+      paused: true
+      schedule: 0 0 * * *
+      timeout: 60

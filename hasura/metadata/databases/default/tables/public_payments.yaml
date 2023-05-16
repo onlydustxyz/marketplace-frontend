@@ -43,3 +43,74 @@ select_permissions:
           recipient_id:
             _eq: X-Hasura-githubUserId
       allow_aggregations: true
+event_triggers:
+  - name: payment_update
+    definition:
+      delete:
+        columns: '*'
+      enable_manual: false
+      insert:
+        columns: '*'
+      update:
+        columns: '*'
+    retry_conf:
+      interval_sec: 10
+      num_retries: 0
+      timeout_sec: 60
+    webhook_from_env: HASURA_EVENT_WEBHOOK
+    headers:
+      - name: environment
+        value_from_env: ENV
+    request_transform:
+      body:
+        action: transform
+        template: |-
+          {
+            "event": {
+              "op": {{$body?.event?.op}},
+              "data": {
+                "old": {
+                  "amount": {{$body?.event?.data?.old?.amount}},
+                  "receipt": {{$body?.event?.data?.old?.receipt}},
+                  "request_id": {{$body?.event?.data?.old?.request_id}},
+                  "processed_at": {{$body?.event?.data?.old?.processed_at}},
+                  "id": {{$body?.event?.data?.old?.id}},
+                  "currency_code": {{$body?.event?.data?.old?.currency_code}}
+                },
+                "new": {
+                  "amount": {{$body?.event?.data?.new?.amount}},
+                  "receipt": {{$body?.event?.data?.new?.receipt}},
+                  "request_id": {{$body?.event?.data?.new?.request_id}},
+                  "processed_at": {{$body?.event?.data?.new?.processed_at}},
+                  "id": {{$body?.event?.data?.new?.id}},
+                  "currency_code": {{$body?.event?.data?.new?.currency_code}}
+                }
+              },
+              "trace_context": {
+                "trace_id": {{$body?.event?.trace_context?.trace_id}},
+                "span_id": {{$body?.event?.trace_context?.span_id}}
+              }
+            },
+            "created_at": {{$body?.created_at}},
+            "id": {{$body?.id}},
+            "delivery_info": {
+              "max_retries": {{$body?.delivery_info?.max_retries}},
+              "current_retry": {{$body?.delivery_info?.current_retry}}
+            },
+            "trigger": {
+              "name": {{$body?.trigger?.name}}
+            },
+            "table": {
+              "schema": {{$body?.table?.schema}},
+              "name": {{$body?.table?.name}}
+            }
+          }
+      template_engine: Kriti
+      version: 2
+    cleanup_config:
+      batch_size: 10000
+      clean_invocation_logs: false
+      clear_older_than: 168
+      paused: true
+      schedule: 0 0 * * *
+      timeout: 60

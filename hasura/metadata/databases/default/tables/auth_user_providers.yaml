@@ -46,3 +46,78 @@ object_relationships:
   - name: user
     using:
       foreign_key_constraint_on: user_id
+event_triggers:
+  - name: auth_user_providers_update
+    definition:
+      delete:
+        columns: '*'
+      enable_manual: false
+      insert:
+        columns: '*'
+      update:
+        columns: '*'
+    retry_conf:
+      interval_sec: 10
+      num_retries: 0
+      timeout_sec: 60
+    webhook_from_env: HASURA_EVENT_WEBHOOK
+    headers:
+      - name: environment
+        value_from_env: ENV
+    request_transform:
+      body:
+        action: transform
+        template: |-
+          {
+            "event": {
+              "op": {{$body?.event?.op}},
+              "data": {
+                "old": {
+                  "user_id": {{$body?.event?.data?.old?.user_id}},
+                  "id": {{$body?.event?.data?.old?.id}},
+                  "created_at": {{$body?.event?.data?.old?.created_at}},
+                  "updated_at": {{$body?.event?.data?.old?.updated_at}},
+                  "access_token": {{$body?.event?.data?.old?.access_token}},
+                  "refresh_token": {{$body?.event?.data?.old?.refresh_token}},
+                  "provider_id": {{$body?.event?.data?.old?.provider_id}},
+                  "provider_user_id": {{$body?.event?.data?.old?.provider_user_id}}
+                },
+                "new": {
+                  "user_id": {{$body?.event?.data?.new?.user_id}},
+                  "id": {{$body?.event?.data?.new?.id}},
+                  "created_at": {{$body?.event?.data?.new?.created_at}},
+                  "updated_at": {{$body?.event?.data?.new?.updated_at}},
+                  "access_token": {{$body?.event?.data?.new?.access_token}},
+                  "refresh_token": {{$body?.event?.data?.new?.refresh_token}},
+                  "provider_id": {{$body?.event?.data?.new?.provider_id}},
+                  "provider_user_id": {{$body?.event?.data?.new?.provider_user_id}}
+                }
+              },
+              "trace_context": {
+                "trace_id": {{$body?.event?.trace_context?.trace_id}},
+                "span_id": {{$body?.event?.trace_context?.span_id}}
+              }
+            },
+            "created_at": {{$body?.created_at}},
+            "id": {{$body?.id}},
+            "delivery_info": {
+              "max_retries": {{$body?.delivery_info?.max_retries}},
+              "current_retry": {{$body?.delivery_info?.current_retry}}
+            },
+            "trigger": {
+              "name": {{$body?.trigger?.name}}
+            },
+            "table": {
+              "schema": {{$body?.table?.schema}},
+              "name": {{$body?.table?.name}}
+            }
+          }
+      template_engine: Kriti
+      version: 2
+    cleanup_config:
+      batch_size: 10000
+      clean_invocation_logs: false
+      clear_older_than: 168
+      paused: true
+      schedule: 0 0 * * *
+      timeout: 60
