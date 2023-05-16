@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import GithubIssue, { Action, WorkItem } from "src/components/GithubIssue";
 import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
@@ -13,14 +13,13 @@ import FormInput from "src/components/FormInput";
 import SearchLine from "src/icons/SearchLine";
 import { useFormContext } from "react-hook-form";
 import useFilteredWorkItems from "./useFilteredWorkItems";
-import { chain, filter, some } from "lodash";
-import useUnpaidIssues from "./useUnpaidIssues";
+import { filter, some } from "lodash";
 import { Type } from "src/__generated/graphql";
 
 type Props = {
   projectId: string;
-  contributorId: number;
-  workItems: WorkItem[];
+  issues: WorkItem[];
+  type: Type;
   onWorkItemAdded: (workItem: WorkItem) => void;
   onWorkItemIgnored: (workItem: WorkItem) => void;
   onWorkItemUnignored: (workItem: WorkItem) => void;
@@ -28,14 +27,15 @@ type Props = {
 
 export default function IssuesView({
   projectId,
-  contributorId,
-  workItems,
+  issues,
+  type,
   onWorkItemAdded,
   onWorkItemIgnored,
   onWorkItemUnignored,
 }: Props) {
   const { T } = useIntl();
   const { watch, resetField } = useFormContext();
+  const tabName = type === Type.Issue ? "issues" : "pullRequests";
 
   const [addOtherIssueEnabled, setStateAddOtherIssueEnabled] = useState(false);
   const [searchEnabled, setStateSearchEnabled] = useState(false);
@@ -51,11 +51,11 @@ export default function IssuesView({
 
   const onIssueAdded = (item: WorkItem) => {
     onWorkItemAdded(item);
-    showToaster(T("payment.form.workItems.issues.addedToaster"));
+    showToaster(T(`payment.form.workItems.${tabName}.addedToaster`));
   };
 
   useEffect(() => {
-    if (searchEnabled === false) resetField("search-issues");
+    if (searchEnabled === false) resetField(`search-${tabName}`);
   }, [searchEnabled]);
 
   const showIgnoredItemsName = "show-ignored-items";
@@ -65,20 +65,9 @@ export default function IssuesView({
     name: showIgnoredItemsName,
   });
 
-  const { data: unpaidIssues } = useUnpaidIssues({
-    projectId,
-    authorId: contributorId,
-    type: Type.Issue,
-  });
-
-  const issues: WorkItem[] = useMemo(
-    () => chain(unpaidIssues).differenceBy(workItems, "id").value(),
-    [unpaidIssues, workItems]
-  );
-
   const visibleIssues = showIgnoredItems ? issues : filter(issues, { ignored: false });
 
-  const searchPattern = watch("search-issues");
+  const searchPattern = watch(`search-${tabName}`);
   const filteredIssues = useFilteredWorkItems({ pattern: searchPattern, workItems: visibleIssues });
 
   return (
@@ -90,15 +79,15 @@ export default function IssuesView({
               enabled={addOtherIssueEnabled}
               setEnabled={setAddOtherIssueEnabled}
               icon={<Link />}
-              label={T("payment.form.workItems.issues.addOther.toggle")}
-              testId="add-other-issue-toggle"
+              label={T(`payment.form.workItems.${tabName}.addOther.toggle`)}
+              testId={`add-other-${tabName}-toggle`}
             />
             {issues.length > 0 && (
               <Toggle
                 enabled={searchEnabled}
                 setEnabled={setSearchEnabled}
                 icon={<SearchLine />}
-                label={T("payment.form.workItems.issues.search")}
+                label={T(`payment.form.workItems.${tabName}.search`)}
                 testId="search-toggle"
               />
             )}
@@ -114,8 +103,8 @@ export default function IssuesView({
         {addOtherIssueEnabled && <OtherIssueInput projectId={projectId} onWorkItemAdded={onIssueAdded} />}
         {searchEnabled && (
           <FormInput
-            name="search-issues"
-            placeholder={T("payment.form.workItems.issues.searchPlaceholder")}
+            name={`search-${tabName}`}
+            placeholder={T(`payment.form.workItems.${tabName}.searchPlaceholder`)}
             withMargin={false}
             inputClassName="pl-10"
             prefixComponent={
@@ -129,7 +118,7 @@ export default function IssuesView({
       </div>
       {filteredIssues.length > 0 ? (
         <div
-          data-testid="elligible-issues"
+          data-testid={`elligible-${tabName}`}
           className="flex flex-col gap-3 h-full p-px pr-4 overflow-auto scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded"
         >
           {filteredIssues.map(issue => (
