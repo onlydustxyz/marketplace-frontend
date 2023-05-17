@@ -140,7 +140,7 @@ const View: React.FC<Props> = ({
             )}
           </div>
         </div>
-        <div className="basis-2/5">
+        <div className="basis-2/5 sticky top-4">
           <WorkEstimation
             onChange={onWorkEstimationChange}
             budget={budget}
