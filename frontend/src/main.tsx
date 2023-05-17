@@ -23,9 +23,11 @@ import config from "./config";
 import Maintenance from "./Maintenance";
 import TagManager from "react-gtm-module";
 
-TagManager.initialize({
-  gtmId: "GTM-KPMKBTW",
-});
+if (config.GTM_ID) {
+  TagManager.initialize({
+    gtmId: config.GTM_ID,
+  });
+}
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <IntlProvider>
