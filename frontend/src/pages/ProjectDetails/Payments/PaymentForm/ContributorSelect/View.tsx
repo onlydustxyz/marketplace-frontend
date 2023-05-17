@@ -130,7 +130,10 @@ export default function ContributorSelectView({
               )}
             </Combobox.Button>
             <Combobox.Options>
-              {githubHandleSubstring && githubHandleSubstring.length < 3 ? (
+              {filteredContributors &&
+              filteredContributors.length === 0 &&
+              githubHandleSubstring &&
+              githubHandleSubstring.length < 3 ? (
                 <div className="pb-6">
                   <span className="text-greyscale-100 italic pb-6 px-4">
                     {T("payment.form.contributor.select.fallback.typeMoreCharacters")}
@@ -138,6 +141,8 @@ export default function ContributorSelectView({
                 </div>
               ) : filteredContributors &&
                 filteredContributors.length === 0 &&
+                (!filteredExternalContributors ||
+                  (filteredExternalContributors && filteredExternalContributors.length === 0)) &&
                 !isSearchGithubUsersByHandleSubstringQueryLoading &&
                 debouncedGithubHandleSubstring === githubHandleSubstring ? (
                 <div className="pb-6">
