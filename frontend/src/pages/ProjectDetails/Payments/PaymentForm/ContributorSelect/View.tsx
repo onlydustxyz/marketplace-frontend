@@ -41,30 +41,11 @@ export default function ContributorSelectView({
 }: ContributorSelectViewProps) {
   const { T } = useIntl();
 
-  const showExternalUsersSection = !!(githubHandleSubstring && githubHandleSubstring.length > 2);
-
-  let lines: Line<ContributorFragment>[] = [];
-
-  if (filteredContributors && filteredContributors.length > 0) {
-    lines = lines.concat(
-      filteredContributors.map(contributor => ({
-        type: "contributor",
-        contributor,
-      }))
-    );
-  }
-
-  if (showExternalUsersSection && filteredExternalContributors && filteredExternalContributors.length) {
-    lines.push({ type: "separator" });
-    lines = lines.concat(
-      filteredExternalContributors.map(contributor => ({
-        type: "contributor",
-        contributor,
-      }))
-    );
-  }
-
-  lines.push({ type: "lastLine" });
+  const contributorLines = buildContributorLines(
+    githubHandleSubstring,
+    filteredContributors,
+    filteredExternalContributors
+  );
 
   return (
     <Combobox
@@ -164,8 +145,8 @@ export default function ContributorSelectView({
                     {T("payment.form.contributor.select.fallback.noUser")}
                   </span>
                 </div>
-              ) : lines.length > 0 ? (
-                <VirtualizedContributorSubList lines={lines} />
+              ) : contributorLines.length > 0 ? (
+                <VirtualizedContributorSubList lines={contributorLines} />
               ) : (
                 <div />
               )}
@@ -177,10 +158,49 @@ export default function ContributorSelectView({
   );
 }
 
+function buildContributorLines(
+  githubHandleSubstring: string,
+  filteredContributors: (GithubUserFragment[] & { unpaidMergedPullsCount?: number }) | undefined,
+  filteredExternalContributors: LiveGithubUserFragment[] | undefined
+) {
+  const showExternalUsersSection = !!(githubHandleSubstring && githubHandleSubstring.length > 2);
+
+  let lines: Line<ContributorFragment>[] = [];
+
+  if (filteredContributors && filteredContributors.length > 0) {
+    lines = lines.concat(
+      filteredContributors.map(contributor => ({
+        type: LineType.Contributor,
+        contributor,
+      }))
+    );
+  }
+
+  if (showExternalUsersSection && filteredExternalContributors && filteredExternalContributors.length) {
+    lines.push({ type: LineType.Separator });
+    lines = lines.concat(
+      filteredExternalContributors.map(contributor => ({
+        type: LineType.Contributor,
+        contributor,
+      }))
+    );
+  }
+
+  lines.push({ type: LineType.LastLine });
+
+  return lines;
+}
+
+enum LineType {
+  Contributor = "Contributor",
+  Separator = "Separator",
+  LastLine = "LastLine",
+}
+
 type Line<T extends ContributorFragment> =
-  | { type: "contributor"; contributor: T & { unpaidMergedPullsCount?: number } }
-  | { type: "separator" }
-  | { type: "lastLine" };
+  | { type: LineType.Contributor; contributor: T & { unpaidMergedPullsCount?: number } }
+  | { type: LineType.Separator }
+  | { type: LineType.LastLine };
 
 interface ContributorSubListProps<T extends ContributorFragment> {
   lines?: Line<T>[];
@@ -218,7 +238,7 @@ function VirtualizedContributorSubList<T extends ContributorFragment>({ lines }:
       data={lines}
       components={{ List, Scroller }}
       itemContent={(_, line) => {
-        if (line.type === "contributor") {
+        if (line.type === LineType.Contributor) {
           const contributor = line.contributor;
           return (
             <Combobox.Option key={contributor.id} value={contributor.login}>
@@ -252,7 +272,7 @@ function VirtualizedContributorSubList<T extends ContributorFragment>({ lines }:
               )}
             </Combobox.Option>
           );
-        } else if (line.type === "separator") {
+        } else if (line.type === LineType.Separator) {
           return (
             <div className="font-medium text-md pb-1 pt-4 text-spaceBlue-200">
               {T("payment.form.contributor.select.externalUsers")}
