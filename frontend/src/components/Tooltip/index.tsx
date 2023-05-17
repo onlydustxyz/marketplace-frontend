@@ -12,9 +12,16 @@ type Props = {
   anchorId: string;
   position?: TooltipPosition;
   visible?: boolean;
+  clickable?: boolean;
 } & PropsWithChildren;
 
-export default function Tooltip({ anchorId, position = TooltipPosition.Bottom, visible = true, children }: Props) {
+export default function Tooltip({
+  anchorId,
+  position = TooltipPosition.Bottom,
+  visible = true,
+  clickable,
+  children,
+}: Props) {
   return (
     <ReactTooltip
       anchorId={anchorId}
@@ -32,6 +39,7 @@ export default function Tooltip({ anchorId, position = TooltipPosition.Bottom, v
         opacity: visible ? 100 : 0,
         zIndex: 10,
       }}
+      clickable={clickable}
     >
       {children}
     </ReactTooltip>

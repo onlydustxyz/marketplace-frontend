@@ -20,6 +20,7 @@ import BankCardLine from "src/icons/BankCardLine";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import Tooltip from "src/components/Tooltip";
 import IBAN from "iban";
+import ExternalLink from "src/components/ExternalLink";
 
 enum Align {
   Top = "top",
@@ -129,7 +130,30 @@ export default function View({
                     recipient: formattedReceipt?.shortDetails,
                   })}
                 </ReactMarkdown>
-                <Tooltip anchorId="payment-receipt">{formattedReceipt?.fullDetails}</Tooltip>
+                <Tooltip anchorId="payment-receipt" clickable>
+                  <div className="flex flex-col items-start">
+                    <div>
+                      {T(`payment.table.detailsPanel.processedTooltip.${formattedReceipt?.type}.recipient`, {
+                        recipient: formattedReceipt?.fullDetails,
+                      })}
+                    </div>
+
+                    {formattedReceipt?.type === "crypto" ? (
+                      <ExternalLink
+                        url={`https://etherscan.io/tx/${formattedReceipt?.reference}`}
+                        text={T(`payment.table.detailsPanel.processedTooltip.${formattedReceipt?.type}.reference`, {
+                          reference: formattedReceipt?.reference,
+                        })}
+                      />
+                    ) : (
+                      <div>
+                        {T(`payment.table.detailsPanel.processedTooltip.${formattedReceipt?.type}.reference`, {
+                          reference: formattedReceipt?.reference,
+                        })}
+                      </div>
+                    )}
+                  </div>
+                </Tooltip>
               </div>
             </Details>
           )}
@@ -154,32 +178,35 @@ export default function View({
 }
 
 type Receipt = {
-  OnChainPayment?: { recipient_address?: string };
-  FiatPayment?: { recipient_iban: string };
+  OnChainPayment?: { recipient_address: string; transaction_hash: string };
+  FiatPayment?: { recipient_iban: string; transaction_reference: string };
 };
 
 type FormattedReceipt = {
   type: "crypto" | "fiat";
   shortDetails: string;
   fullDetails: string;
+  reference: string;
 };
 
 const formatReceipt = (receipt?: Receipt): FormattedReceipt | undefined => {
-  const address = receipt?.OnChainPayment?.recipient_address;
-  const iban = receipt?.FiatPayment?.recipient_iban;
-
-  if (address)
+  if (receipt?.OnChainPayment) {
+    const address = receipt?.OnChainPayment.recipient_address;
     return {
       type: "crypto",
       shortDetails: `0x...${address.substring(address.length - 5)}`,
       fullDetails: address,
+      reference: receipt?.OnChainPayment.transaction_hash,
     };
-  else if (iban)
+  } else if (receipt?.FiatPayment) {
+    const iban = receipt?.FiatPayment.recipient_iban;
     return {
       type: "fiat",
       shortDetails: `**** ${iban.substring(iban.length - 3)}`,
       fullDetails: IBAN.printFormat(iban),
+      reference: receipt?.FiatPayment.transaction_reference,
     };
+  }
 };
 
 type CancelPaymentButtonProps = {

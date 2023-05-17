@@ -248,6 +248,16 @@
           "crypto": "Processed on __processedAt__\n via **Crypto Wire** on __recipient__",
           "fiat": "Processed on __processedAt__\n via **Bank Wire** on account __recipient__"
         },
+        "processedTooltip": {
+          "crypto": {
+            "recipient": "Address: __recipient__",
+            "reference": "Transaction hash: __reference__"
+          },
+          "fiat": {
+            "recipient": "IBAN: __recipient__",
+            "reference": "Reference: __reference__"
+          }
+        },
         "title": "Payment #__id__",
         "to": {
           "you": "to __user__ (you)",
