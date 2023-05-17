@@ -17,6 +17,7 @@ import classNames from "classnames";
 import { issueToWorkItem } from "src/pages/ProjectDetails/Payments/PaymentForm/WorkItemSidePanel/Issues";
 import { formatDateTime } from "src/utils/date";
 import BankCardLine from "src/icons/BankCardLine";
+import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 
 export type Props = {
   open: boolean;
@@ -109,10 +110,12 @@ export default function View({
           {status === PaymentStatus.ACCEPTED && payments?.at(0)?.processedAt && (
             <Details>
               <BankCardLine className="text-base" />
-              {T(`payment.table.detailsPanel.processedAt.${formattedReceipt?.type}`, {
-                processedAt: formatDateTime(new Date(payments?.at(0)?.processedAt)),
-                recipient: formattedReceipt?.shortDetails,
-              })}
+              <ReactMarkdown>
+                {T(`payment.table.detailsPanel.processedAt.${formattedReceipt?.type}`, {
+                  processedAt: formatDateTime(new Date(payments?.at(0)?.processedAt)),
+                  recipient: formattedReceipt?.shortDetails,
+                })}
+              </ReactMarkdown>
             </Details>
           )}
         </div>
