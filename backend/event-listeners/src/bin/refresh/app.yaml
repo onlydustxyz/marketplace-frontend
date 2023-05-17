@@ -14,7 +14,7 @@ default:
 local:
   database:
     url: postgres://postgres:postgres@localhost/marketplace_db
-    pool_max_size: 20
+    pool_max_size: 3
   amqp:
     url: "amqp://127.0.0.1:5672/%2f"
 
