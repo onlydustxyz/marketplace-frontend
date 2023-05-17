@@ -18,6 +18,8 @@ import { issueToWorkItem } from "src/pages/ProjectDetails/Payments/PaymentForm/W
 import { formatDateTime } from "src/utils/date";
 import BankCardLine from "src/icons/BankCardLine";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import Tooltip from "src/components/Tooltip";
+import IBAN from "iban";
 
 enum Align {
   Top = "top",
@@ -120,12 +122,15 @@ export default function View({
           {status === PaymentStatus.ACCEPTED && payments?.at(0)?.processedAt && (
             <Details align={Align.Top}>
               <BankCardLine className="text-base" />
-              <ReactMarkdown className="whitespace-pre-wrap">
-                {T(`payment.table.detailsPanel.processedAt.${formattedReceipt?.type}`, {
-                  processedAt: formatDateTime(new Date(payments?.at(0)?.processedAt)),
-                  recipient: formattedReceipt?.shortDetails,
-                })}
-              </ReactMarkdown>
+              <div id="payment-receipt">
+                <ReactMarkdown className="whitespace-pre-wrap">
+                  {T(`payment.table.detailsPanel.processedAt.${formattedReceipt?.type}`, {
+                    processedAt: formatDateTime(new Date(payments?.at(0)?.processedAt)),
+                    recipient: formattedReceipt?.shortDetails,
+                  })}
+                </ReactMarkdown>
+                <Tooltip anchorId="payment-receipt">{formattedReceipt?.fullDetails}</Tooltip>
+              </div>
             </Details>
           )}
         </div>
@@ -156,6 +161,7 @@ type Receipt = {
 type FormattedReceipt = {
   type: "crypto" | "fiat";
   shortDetails: string;
+  fullDetails: string;
 };
 
 const formatReceipt = (receipt?: Receipt): FormattedReceipt | undefined => {
@@ -166,11 +172,13 @@ const formatReceipt = (receipt?: Receipt): FormattedReceipt | undefined => {
     return {
       type: "crypto",
       shortDetails: `0x...${address.substring(address.length - 5)}`,
+      fullDetails: address,
     };
   else if (iban)
     return {
       type: "fiat",
       shortDetails: `**** ${iban.substring(iban.length - 3)}`,
+      fullDetails: IBAN.printFormat(iban),
     };
 };
 
