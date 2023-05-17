@@ -189,12 +189,8 @@ update_permissions:
 event_triggers:
   - name: auth_users_update
     definition:
-      delete:
-        columns: '*'
       enable_manual: false
       insert:
-        columns: '*'
-      update:
         columns: '*'
     retry_conf:
       interval_sec: 10
@@ -204,90 +200,6 @@ event_triggers:
     headers:
       - name: environment
         value_from_env: ENV
-    request_transform:
-      body:
-        action: transform
-        template: |-
-          {
-            "event": {
-              "op": {{$body?.event?.op}},
-              "data": {
-                "old": {
-                  "last_seen": {{$body?.event?.data?.old?.last_seen}},
-                  "metadata": {{$body?.event?.data?.old?.metadata}},
-                  "id": {{$body?.event?.data?.old?.id}},
-                  "created_at": {{$body?.event?.data?.old?.created_at}},
-                  "updated_at": {{$body?.event?.data?.old?.updated_at}},
-                  "disabled": {{$body?.event?.data?.old?.disabled}},
-                  "email_verified": {{$body?.event?.data?.old?.email_verified}},
-                  "phone_number_verified": {{$body?.event?.data?.old?.phone_number_verified}},
-                  "otp_hash_expires_at": {{$body?.event?.data?.old?.otp_hash_expires_at}},
-                  "is_anonymous": {{$body?.event?.data?.old?.is_anonymous}},
-                  "ticket_expires_at": {{$body?.event?.data?.old?.ticket_expires_at}},
-                  "locale": {{$body?.event?.data?.old?.locale}},
-                  "email": {{$body?.event?.data?.old?.email}},
-                  "phone_number": {{$body?.event?.data?.old?.phone_number}},
-                  "password_hash": {{$body?.event?.data?.old?.password_hash}},
-                  "new_email": {{$body?.event?.data?.old?.new_email}},
-                  "otp_method_last_used": {{$body?.event?.data?.old?.otp_method_last_used}},
-                  "otp_hash": {{$body?.event?.data?.old?.otp_hash}},
-                  "totp_secret": {{$body?.event?.data?.old?.totp_secret}},
-                  "active_mfa_type": {{$body?.event?.data?.old?.active_mfa_type}},
-                  "ticket": {{$body?.event?.data?.old?.ticket}},
-                  "webauthn_current_challenge": {{$body?.event?.data?.old?.webauthn_current_challenge}},
-                  "display_name": {{$body?.event?.data?.old?.display_name}},
-                  "avatar_url": {{$body?.event?.data?.old?.avatar_url}},
-                  "default_role": {{$body?.event?.data?.old?.default_role}}
-                },
-                "new": {
-                  "last_seen": {{$body?.event?.data?.new?.last_seen}},
-                  "metadata": {{$body?.event?.data?.new?.metadata}},
-                  "id": {{$body?.event?.data?.new?.id}},
-                  "created_at": {{$body?.event?.data?.new?.created_at}},
-                  "updated_at": {{$body?.event?.data?.new?.updated_at}},
-                  "disabled": {{$body?.event?.data?.new?.disabled}},
-                  "email_verified": {{$body?.event?.data?.new?.email_verified}},
-                  "phone_number_verified": {{$body?.event?.data?.new?.phone_number_verified}},
-                  "otp_hash_expires_at": {{$body?.event?.data?.new?.otp_hash_expires_at}},
-                  "is_anonymous": {{$body?.event?.data?.new?.is_anonymous}},
-                  "ticket_expires_at": {{$body?.event?.data?.new?.ticket_expires_at}},
-                  "locale": {{$body?.event?.data?.new?.locale}},
-                  "email": {{$body?.event?.data?.new?.email}},
-                  "phone_number": {{$body?.event?.data?.new?.phone_number}},
-                  "password_hash": {{$body?.event?.data?.new?.password_hash}},
-                  "new_email": {{$body?.event?.data?.new?.new_email}},
-                  "otp_method_last_used": {{$body?.event?.data?.new?.otp_method_last_used}},
-                  "otp_hash": {{$body?.event?.data?.new?.otp_hash}},
-                  "totp_secret": {{$body?.event?.data?.new?.totp_secret}},
-                  "active_mfa_type": {{$body?.event?.data?.new?.active_mfa_type}},
-                  "ticket": {{$body?.event?.data?.new?.ticket}},
-                  "webauthn_current_challenge": {{$body?.event?.data?.new?.webauthn_current_challenge}},
-                  "display_name": {{$body?.event?.data?.new?.display_name}},
-                  "avatar_url": {{$body?.event?.data?.new?.avatar_url}},
-                  "default_role": {{$body?.event?.data?.new?.default_role}}
-                }
-              },
-              "trace_context": {
-                "trace_id": {{$body?.event?.trace_context?.trace_id}},
-                "span_id": {{$body?.event?.trace_context?.span_id}}
-              }
-            },
-            "created_at": {{$body?.created_at}},
-            "id": {{$body?.id}},
-            "delivery_info": {
-              "max_retries": {{$body?.delivery_info?.max_retries}},
-              "current_retry": {{$body?.delivery_info?.current_retry}}
-            },
-            "trigger": {
-              "name": {{$body?.trigger?.name}}
-            },
-            "table": {
-              "schema": {{$body?.table?.schema}},
-              "name": {{$body?.table?.name}}
-            }
-          }
-      template_engine: Kriti
-      version: 2
     cleanup_config:
       batch_size: 10000
       clean_invocation_logs: false
