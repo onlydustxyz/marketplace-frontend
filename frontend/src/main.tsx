@@ -21,6 +21,13 @@ import ErrorFallback from "./ErrorFallback";
 import { ErrorBoundary } from "react-error-boundary";
 import config from "./config";
 import Maintenance from "./Maintenance";
+import TagManager from "react-gtm-module";
+
+if (config.GTM_ID) {
+  TagManager.initialize({
+    gtmId: config.GTM_ID,
+  });
+}
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <IntlProvider>

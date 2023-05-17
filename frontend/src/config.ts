@@ -15,6 +15,7 @@ const config = {
   LOGIN_URL: import.meta.env.VITE_LOGIN_URL ?? `${import.meta.env.VITE_HASURA_AUTH_BASE_URL}/signin/provider/github`,
   ENVIRONMENT: import.meta.env.VITE_ENV,
   MAINTENANCE: import.meta.env.VITE_MAINTENANCE,
+  GTM_ID: import.meta.env.VITE_GTM_ID,
 };
 
 export default config;
