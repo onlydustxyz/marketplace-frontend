@@ -8,7 +8,6 @@ import { useIntl } from "src/hooks/useIntl";
 import CheckLine from "src/icons/CheckLine";
 import Time from "src/icons/TimeLine";
 import { PaymentStatus } from "src/types";
-import displayRelativeDate from "src/utils/displayRelativeDate";
 import { pretty } from "src/utils/id";
 import { formatMoneyAmount } from "src/utils/money";
 import { PaymentRequestDetailsFragment } from "src/__generated/graphql";
@@ -17,6 +16,7 @@ import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import ConfirmationModal from "./ConfirmationModal";
 import classNames from "classnames";
 import { issueToWorkItem } from "src/pages/ProjectDetails/Payments/PaymentForm/WorkItemSidePanel/Issues";
+import { formatDateTime } from "src/utils/date";
 
 export type Props = {
   open: boolean;
@@ -98,15 +98,17 @@ export default function View({
               })}
             </Details>
           )}
-          <Details>
-            <Time className="text-base" />
-            {T("payment.table.detailsPanel.requestedAt", { requestedAt: displayRelativeDate(requestedAt) })}
-          </Details>
-          {status === PaymentStatus.ACCEPTED && (
+          {requestedAt && (
+            <Details>
+              <Time className="text-base" />
+              {T("payment.table.detailsPanel.requestedAt", { requestedAt: formatDateTime(new Date(requestedAt)) })}
+            </Details>
+          )}
+          {status === PaymentStatus.ACCEPTED && paymentsAggregate?.aggregate?.max?.processedAt && (
             <Details>
               <CheckLine className="text-base" />
               {T("payment.table.detailsPanel.processedAt", {
-                processedAt: displayRelativeDate(paymentsAggregate?.aggregate?.max?.processedAt),
+                processedAt: formatDateTime(new Date(paymentsAggregate?.aggregate?.max?.processedAt)),
               })}
             </Details>
           )}
