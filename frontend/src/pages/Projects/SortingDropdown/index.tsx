@@ -37,7 +37,7 @@ export default function SortingDropdown<T>({ all, current, onChange }: Props) {
             className="flex flex-row items-center justify-between px-4 py-3 hover:bg-white/5"
           >
             <span>{T(`projects.sorting.${value}`)}</span>
-            <CheckLine className="text-xl hidden ui-selected:block" />
+            <CheckLine className="text-xl hidden ui-selected:block -my-1" />
           </Listbox.Option>
         ))}
       </Listbox.Options>
