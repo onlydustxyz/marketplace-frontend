@@ -14,15 +14,7 @@ services:
       - db:/var/lib/postgresql/data
       - ./scripts/initdb.d:/docker-entrypoint-initdb.d:ro
     healthcheck:
-      test:
-        [
-          "CMD",
-          "pg_isready",
-          "-d",
-          "marketplace_db",
-          "-U",
-          "postgres"
-        ]
+      test: [ "CMD", "pg_isready", "-d", "marketplace_db", "-U", "postgres" ]
       interval: 2s
       timeout: 1s
       retries: 20
@@ -64,8 +56,6 @@ services:
       HASURA_GRAPHQL_JWT_SECRET: ${HASURA_GRAPHQL_JWT_SECRET}
       HASURA_GRAPHQL_EXPERIMENTAL_FEATURES: naming_convention
       HASURA_GRAPHQL_DEFAULT_NAMING_CONVENTION: graphql-default
-      HASURA_EVENT_WEBHOOK: https://eno01e1r2hpsj.x.pipedream.net/
-      ENV: local
     extra_hosts:
       - "host.docker.internal:host-gateway"
     healthcheck:
