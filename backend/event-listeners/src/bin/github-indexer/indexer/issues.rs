@@ -3,8 +3,10 @@ use std::sync::Arc;
 use async_trait::async_trait;
 use chrono::{DateTime, Utc};
 use derive_new::new;
-use domain::{GithubFetchIssueService, GithubRepoId, GithubServiceIssueFilters};
-use event_listeners::domain::{GithubEvent, GithubRepoIndexRepository};
+use domain::{
+	GithubFetchIssueService, GithubRepoId, GithubServiceIssueFilters, GithubUserId, LogErr,
+};
+use event_listeners::domain::{GithubEvent, GithubRepoIndexRepository, GithubUserIndexRepository};
 use serde::{Deserialize, Serialize};
 
 use super::{IgnoreIndexerErrors, Result};
@@ -13,6 +15,7 @@ use super::{IgnoreIndexerErrors, Result};
 pub struct Indexer {
 	github_fetch_service: Arc<dyn GithubFetchIssueService>,
 	github_repo_index_repository: Arc<dyn GithubRepoIndexRepository>,
+	github_user_index_repository: Arc<dyn GithubUserIndexRepository>,
 }
 
 #[derive(new, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -38,6 +41,13 @@ impl Indexer {
 
 		Ok(state)
 	}
+
+	fn index_author(&self, user_id: &GithubUserId) {
+		let _ = self
+			.github_user_index_repository
+			.try_insert(user_id)
+			.log_err("Failed to add issue's author to user indexes");
+	}
 }
 
 #[async_trait]
@@ -56,7 +66,16 @@ impl super::Indexer<GithubRepoId> for Indexer {
 			.await
 			.ignore_non_fatal_errors()?
 			.into_iter()
-			.map(GithubEvent::Issue)
+			.flat_map(|issue| {
+				self.index_author(issue.author.id());
+				vec![
+					GithubEvent::Issue(issue.clone()),
+					GithubEvent::User {
+						user: issue.author,
+						repo_id: Some(repo_id),
+					},
+				]
+			})
 			.collect();
 
 		Ok(events)

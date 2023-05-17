@@ -3,7 +3,7 @@ use domain::GithubUserId;
 use super::Result;
 
 pub trait Repository: Send + Sync {
-	fn try_insert(&self, repo_id: &GithubUserId) -> Result<()>;
+	fn try_insert(&self, user_id: &GithubUserId) -> Result<()>;
 
 	fn select_user_indexer_state(
 		&self,
