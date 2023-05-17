@@ -1,0 +1,37 @@
+fragment PaymentRequestDetails on PaymentRequests {
+  id
+  amountInUsd
+  requestedAt
+  payments(limit: 1) {
+    processedAt
+    receipt
+  }
+  invoiceReceivedAt
+  requestor {
+    id
+    displayName
+    avatarUrl
+  }
+  liveGithubRecipient {
+    ...LiveGithubUser
+  }
+  workItems {
+    ...WorkItemId
+    githubIssue {
+      ...LiveGithubIssue
+    }
+  }
+  paymentsAggregate {
+    aggregate {
+      sum {
+        amount
+      }
+    }
+  }
+}
+
+query PaymentRequestDetails($id: uuid!) {
+  paymentRequestsByPk(id: $id) {
+    ...PaymentRequestDetails
+  }
+}

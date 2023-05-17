@@ -244,7 +244,10 @@
           "other": "from __user__"
         },
         "requestedAt": "Created on __requestedAt__",
-        "processedAt": "Processed on __processedAt__",
+        "processedAt": {
+          "crypto": "Processed on __processedAt__ via Crypto Wire on __recipient__",
+          "fiat": "Processed on __processedAt__ via Bank Wire on account __recipient__"
+        },
         "title": "Payment #__id__",
         "to": {
           "you": "to __user__ (you)",

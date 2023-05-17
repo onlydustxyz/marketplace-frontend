@@ -51,12 +51,14 @@ export default function View({
   payoutInfoMissing,
   invoiceNeeded,
   invoiceReceivedAt,
-  paymentsAggregate,
+  payments,
   projectLeaderView,
   onPaymentCancel,
   ...props
 }: Props) {
   const { T } = useIntl();
+
+  const formattedReceipt = formatReceipt(payments?.at(0)?.receipt);
 
   return (
     <SidePanel
@@ -104,11 +106,12 @@ export default function View({
               {T("payment.table.detailsPanel.requestedAt", { requestedAt: formatDateTime(new Date(requestedAt)) })}
             </Details>
           )}
-          {status === PaymentStatus.ACCEPTED && paymentsAggregate?.aggregate?.max?.processedAt && (
+          {status === PaymentStatus.ACCEPTED && payments?.at(0)?.processedAt && (
             <Details>
               <BankCardLine className="text-base" />
-              {T("payment.table.detailsPanel.processedAt", {
-                processedAt: formatDateTime(new Date(paymentsAggregate?.aggregate?.max?.processedAt)),
+              {T(`payment.table.detailsPanel.processedAt.${formattedReceipt?.type}`, {
+                processedAt: formatDateTime(new Date(payments?.at(0)?.processedAt)),
+                recipient: formattedReceipt?.shortDetails,
               })}
             </Details>
           )}
@@ -131,6 +134,32 @@ export default function View({
     </SidePanel>
   );
 }
+
+type Receipt = {
+  OnChainPayment?: { recipient_address?: string };
+  FiatPayment?: { recipient_iban: string };
+};
+
+type FormattedReceipt = {
+  type: "crypto" | "fiat";
+  shortDetails: string;
+};
+
+const formatReceipt = (receipt?: Receipt): FormattedReceipt | undefined => {
+  const address = receipt?.OnChainPayment?.recipient_address;
+  const iban = receipt?.FiatPayment?.recipient_iban;
+
+  if (address)
+    return {
+      type: "crypto",
+      shortDetails: `0x...${address.substring(address.length - 5)}`,
+    };
+  else if (iban)
+    return {
+      type: "fiat",
+      shortDetails: `**** ${iban.substring(iban.length - 3)}`,
+    };
+};
 
 type CancelPaymentButtonProps = {
   onPaymentCancel: () => void;
