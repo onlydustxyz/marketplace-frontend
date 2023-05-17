@@ -19,6 +19,11 @@ import { formatDateTime } from "src/utils/date";
 import BankCardLine from "src/icons/BankCardLine";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 
+enum Align {
+  Top = "top",
+  Center = "center",
+}
+
 export type Props = {
   open: boolean;
   setOpen: (value: boolean) => void;
@@ -32,8 +37,13 @@ export type Props = {
   onPaymentCancel: () => void;
 } & Partial<PaymentRequestDetailsFragment>;
 
-const Details = ({ children }: PropsWithChildren) => (
-  <div className="flex flex-row gap-2 items-center text-greyscale-300 font-walsheim font-normal text-sm">
+const Details = ({ align = Align.Center, children }: PropsWithChildren & { align?: Align }) => (
+  <div
+    className={classNames("flex flex-row gap-2 text-greyscale-300 font-walsheim font-normal text-sm", {
+      "items-center": align === Align.Center,
+      "items-start": align === Align.Top,
+    })}
+  >
     {children}
   </div>
 );
@@ -108,9 +118,9 @@ export default function View({
             </Details>
           )}
           {status === PaymentStatus.ACCEPTED && payments?.at(0)?.processedAt && (
-            <Details>
+            <Details align={Align.Top}>
               <BankCardLine className="text-base" />
-              <ReactMarkdown>
+              <ReactMarkdown className="whitespace-pre-wrap">
                 {T(`payment.table.detailsPanel.processedAt.${formattedReceipt?.type}`, {
                   processedAt: formatDateTime(new Date(payments?.at(0)?.processedAt)),
                   recipient: formattedReceipt?.shortDetails,
