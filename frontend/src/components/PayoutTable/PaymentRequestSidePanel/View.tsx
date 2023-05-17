@@ -5,7 +5,6 @@ import QueryWrapper from "src/components/QueryWrapper";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import SidePanel from "src/components/SidePanel";
 import { useIntl } from "src/hooks/useIntl";
-import CheckLine from "src/icons/CheckLine";
 import Time from "src/icons/TimeLine";
 import { PaymentStatus } from "src/types";
 import { pretty } from "src/utils/id";
@@ -17,6 +16,7 @@ import ConfirmationModal from "./ConfirmationModal";
 import classNames from "classnames";
 import { issueToWorkItem } from "src/pages/ProjectDetails/Payments/PaymentForm/WorkItemSidePanel/Issues";
 import { formatDateTime } from "src/utils/date";
+import BankCardLine from "src/icons/BankCardLine";
 
 export type Props = {
   open: boolean;
@@ -106,7 +106,7 @@ export default function View({
           )}
           {status === PaymentStatus.ACCEPTED && paymentsAggregate?.aggregate?.max?.processedAt && (
             <Details>
-              <CheckLine className="text-base" />
+              <BankCardLine className="text-base" />
               {T("payment.table.detailsPanel.processedAt", {
                 processedAt: formatDateTime(new Date(paymentsAggregate?.aggregate?.max?.processedAt)),
               })}
