@@ -42,8 +42,8 @@ export default function View({ contributors, isProjectLeader, remainingBudget, o
     ascending: false,
   });
 
-  const applySorting = (field: Field) =>
-    setSorting({ field, ascending: sorting.field === field ? !sorting.ascending : true });
+  const applySorting = (field: Field, ascending: boolean) =>
+    setSorting({ field, ascending: sorting.field === field ? !sorting.ascending : ascending });
 
   const sortedContributors = useMemo(() => {
     const sorted = sortBy([...contributors], contributor => {

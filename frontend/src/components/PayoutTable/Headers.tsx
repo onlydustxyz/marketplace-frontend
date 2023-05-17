@@ -10,29 +10,29 @@ import { Field, Sorting } from "src/hooks/usePaymentSorting";
 
 type Props = {
   sorting: Sorting;
-  applySorting: (field: Field) => void;
+  applySorting: (field: Field, ascending: boolean) => void;
 };
 
 export default function Headers({ sorting, applySorting }: Props) {
   const { T } = useIntl();
   return (
     <HeaderLine>
-      <HeaderCell width={HeaderCellWidth.Sixth} onClick={() => applySorting(Field.Date)} horizontalMargin>
+      <HeaderCell width={HeaderCellWidth.Sixth} onClick={() => applySorting(Field.Date, false)} horizontalMargin>
         <TimeLine className="p-px font-normal" />
         <span>{T("payment.table.date")}</span>
         <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.Date} />
       </HeaderCell>
-      <HeaderCell width={HeaderCellWidth.Third} onClick={() => applySorting(Field.Contribution)} horizontalMargin>
+      <HeaderCell width={HeaderCellWidth.Third} onClick={() => applySorting(Field.Contribution, true)} horizontalMargin>
         <FolderLine className="p-px font-normal" />
         <span>{T("payment.table.contribution")}</span>
         <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.Contribution} />
       </HeaderCell>
-      <HeaderCell width={HeaderCellWidth.Sixth} onClick={() => applySorting(Field.Amount)} horizontalMargin>
+      <HeaderCell width={HeaderCellWidth.Sixth} onClick={() => applySorting(Field.Amount, false)} horizontalMargin>
         <MoneyDollarCircleLine className="p-px font-normal" />
         <span>{T("payment.table.amount")}</span>
         <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.Amount} />
       </HeaderCell>
-      <HeaderCell width={HeaderCellWidth.Quarter} onClick={() => applySorting(Field.Status)} horizontalMargin>
+      <HeaderCell width={HeaderCellWidth.Quarter} onClick={() => applySorting(Field.Status, true)} horizontalMargin>
         <FocusLine className="p-px font-normal" />
         <span>{T("payment.table.status")}</span>
         <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.Status} />

@@ -10,7 +10,7 @@ import GitMergeLine from "src/icons/GitMergeLine";
 
 type Props = {
   sorting: Sorting;
-  applySorting: (field: Field) => void;
+  applySorting: (field: Field, ascending: boolean) => void;
   isProjectLeader: boolean;
 };
 
@@ -19,17 +19,17 @@ export default function Headers({ sorting, applySorting, isProjectLeader }: Prop
 
   return (
     <HeaderLine className="text-sm text-spaceBlue-200">
-      <HeaderCell onClick={() => applySorting(Field.Login)}>
+      <HeaderCell onClick={() => applySorting(Field.Login, true)}>
         <User3Line />
         {T("contributor.table.contributor")}
         <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.Login} />
       </HeaderCell>
-      <HeaderCell onClick={() => applySorting(Field.TotalEarned)}>
+      <HeaderCell onClick={() => applySorting(Field.TotalEarned, false)}>
         <MoneyDollarCircleLine />
         {T("contributor.table.totalEarned")}
         <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.TotalEarned} />
       </HeaderCell>
-      <HeaderCell onClick={() => applySorting(Field.PaidContributions)}>
+      <HeaderCell onClick={() => applySorting(Field.PaidContributions, false)}>
         <CheckLine />
         {T("contributor.table.paidContributions")}
         <SortingArrow
@@ -39,7 +39,7 @@ export default function Headers({ sorting, applySorting, isProjectLeader }: Prop
       </HeaderCell>
       {isProjectLeader && (
         <>
-          <HeaderCell onClick={() => applySorting(Field.LeftToPay)}>
+          <HeaderCell onClick={() => applySorting(Field.LeftToPay, false)}>
             <GitMergeLine />
             {T("contributor.table.leftToPay")}
             <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.LeftToPay} />
