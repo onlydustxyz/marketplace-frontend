@@ -1,0 +1,18 @@
+query GetAllFilterOptions {
+  projects {
+    ...VisibleProject
+    projectSponsors {
+      sponsor {
+        id
+        name
+      }
+    }
+    githubRepos {
+      projectId
+      githubRepoId
+      repo {
+        ...GithubRepoLanguages
+      }
+    }
+  }
+}

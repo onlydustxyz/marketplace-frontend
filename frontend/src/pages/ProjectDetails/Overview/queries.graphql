@@ -10,7 +10,7 @@ query GetProjectOverviewDetails($projectId: uuid!) {
     }
     githubRepos {
       repo {
-        ...GithubRepoId
+        ...GithubRepoLanguages
         stars
       }
     }

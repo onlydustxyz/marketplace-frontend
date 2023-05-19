@@ -38,8 +38,7 @@ fragment ProjectCardFields on Projects {
     projectId
     githubRepoId
     repo {
-      ...GithubRepoId
-      languages
+      ...GithubRepoLanguages
     }
   }
   projectSponsors {

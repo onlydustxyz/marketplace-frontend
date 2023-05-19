@@ -15,6 +15,9 @@ import MarkdownPreview from "src/components/MarkdownPreview";
 import { contextWithCacheHeaders } from "src/utils/headers";
 import { sortBy } from "lodash";
 import isDefined from "src/utils/isDefined";
+import { buildLanguageString, getDeduplicatedAggregatedLanguages } from "src/utils/languages";
+import Tag, { TagSize } from "src/components/Tag";
+import CodeSSlashLine from "src/icons/CodeSSlashLine";
 
 type OutletContext = {
   projectId: string;
@@ -41,6 +44,7 @@ export default function Overview() {
   const leads = data?.projectsByPk?.projectLeads.map(u => u.user).filter(isDefined);
   const totalInitialAmountInUsd = data?.projectsByPk?.budgetsAggregate.aggregate?.sum?.initialAmount;
   const totalSpentAmountInUsd = data?.projectsByPk?.budgetsAggregate.aggregate?.sum?.spentAmount;
+  const languages = getDeduplicatedAggregatedLanguages(data?.projectsByPk?.githubRepos.map(r => r.repo));
 
   return (
     <>
@@ -56,7 +60,15 @@ export default function Overview() {
                   src={logoUrl}
                   className="w-20 h-20 flex-shrink-0 rounded-lg bg-spaceBlue-900"
                 />
-                <div className="font-belwe font-normal text-2xl text-greyscale-50">{projectName}</div>
+                <div className="flex flex-col gap-1">
+                  <div className="font-belwe font-normal text-2xl text-greyscale-50">{projectName}</div>
+                  {Object.keys(languages).length > 0 && (
+                    <Tag size={TagSize.Small}>
+                      <CodeSSlashLine />
+                      {buildLanguageString(languages)}
+                    </Tag>
+                  )}
+                </div>
               </div>
               <MarkdownPreview>{description}</MarkdownPreview>
             </Card>

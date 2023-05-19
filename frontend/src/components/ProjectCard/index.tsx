@@ -43,7 +43,7 @@ export default function ProjectCard({
   const totalInitialAmountInUsd = budgetsAggregate?.aggregate?.sum?.initialAmount;
 
   const topSponsors = projectSponsors?.map(projectSponsor => projectSponsor.sponsor).slice(0, 3) || [];
-  const languages = getDeduplicatedAggregatedLanguages(githubRepos);
+  const languages = getDeduplicatedAggregatedLanguages(githubRepos.map(r => r.repo));
   const contributorsCount = contributorsAggregate.aggregate?.count || 0;
 
   const card = (
