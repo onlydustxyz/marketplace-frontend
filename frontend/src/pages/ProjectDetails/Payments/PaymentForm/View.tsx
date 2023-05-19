@@ -9,13 +9,14 @@ import { useNavigate } from "react-router-dom";
 import CloseLine from "src/icons/CloseLine";
 import Title from "src/pages/ProjectDetails/Title";
 import Add from "src/icons/Add";
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement, useEffect, useRef, useState } from "react";
 import WorkItemSidePanel from "./WorkItemSidePanel";
 import GithubIssue, { Action, WorkItem } from "src/components/GithubIssue";
 import Callout from "src/components/Callout";
 import { GithubUserFragment, Status } from "src/__generated/graphql";
 import useWorkItems from "./useWorkItems";
 import { filter } from "lodash";
+import useIsInViewport from "./useIsInViewport";
 
 interface Props {
   projectId: string;
@@ -58,6 +59,9 @@ const View: React.FC<Props> = ({
   const [workItemsPrefilled, setWorkItemsPrefilled] = useState(false);
 
   const { workItems, add: addWorkItem, remove: removeWorkItem, clear: clearWorkItems } = useWorkItems();
+
+  const openWorkItemPanelButtonRef = useRef<HTMLDivElement>(null);
+  const openWorkItemPanelButtonInViewport = useIsInViewport(openWorkItemPanelButtonRef);
 
   useEffect(() => onWorkItemsChange(workItems), [workItems, onWorkItemsChange]);
   useEffect(() => {
@@ -111,14 +115,16 @@ const View: React.FC<Props> = ({
                   <SectionTitle
                     title={T("payment.form.workItems.title")}
                     rightAction={
-                      <Button
-                        size={ButtonSize.Sm}
-                        type={ButtonType.Secondary}
-                        onClick={() => setSidePanelOpen(true)}
-                        iconOnly
-                      >
-                        <Add />
-                      </Button>
+                      openWorkItemPanelButtonInViewport ? undefined : (
+                        <Button
+                          size={ButtonSize.Sm}
+                          type={ButtonType.Secondary}
+                          onClick={() => setSidePanelOpen(true)}
+                          iconOnly
+                        >
+                          <Add />
+                        </Button>
+                      )
                     }
                   />
                   <div className="flex flex-col gap-3 mx-4 pt-4" data-testid="added-work-items">
@@ -132,7 +138,12 @@ const View: React.FC<Props> = ({
                       />
                     ))}
                   </div>
-                  <div onClick={() => setSidePanelOpen(true)} data-testid="add-work-item-btn" className="mx-4 pt-8">
+                  <div
+                    ref={openWorkItemPanelButtonRef}
+                    onClick={() => setSidePanelOpen(true)}
+                    data-testid="add-work-item-btn"
+                    className="mx-4 pt-8"
+                  >
                     <Button size={ButtonSize.Md} type={ButtonType.Secondary} width={Width.Full}>
                       <Add />
                       {T("payment.form.workItems.addWorkItem")}
