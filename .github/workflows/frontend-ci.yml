@@ -19,6 +19,7 @@ on:
 
 env:
   VITE_ENV: local
+  VITE_LANGUAGES_FILTER: CSS,Dockerfile,Handlebars,HTML,Jupyter Notebook,Makefile,Nix,SCSS,Shell
 
 jobs:
   build:
