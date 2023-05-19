@@ -7,7 +7,7 @@ import { toLower } from "lodash";
 
 const REMOVED_LANGUAGES = config.LANGUAGES_FILTER?.split(",").map(toLower) || [];
 
-export const getMostUsedLanguages = (languageMap: LanguageMap, count = 2) => {
+export const getMostUsedLanguages = (languageMap: LanguageMap, count = 3) => {
   if (!languageMap) {
     return [];
   }
