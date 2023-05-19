@@ -28,6 +28,7 @@ describe.each([
       html: 100,
       css: 10,
       Rust: 10000,
+      Javascript: 1,
     },
     count: 2,
     expected: ["Rust", "Cairo"],
@@ -38,9 +39,12 @@ describe.each([
       html: 100,
       css: 100,
       Rust: 10000,
+      Javascript: 10000,
+      Go: 10000,
+      Dart: 10000,
     },
     count: 9,
-    expected: ["Rust", "Cairo", "css", "html"],
+    expected: ["Dart", "Go", "Javascript", "Rust", "Cairo"],
   },
   {
     languages: {
@@ -48,9 +52,10 @@ describe.each([
       html: 100,
       css: 100,
       Rust: 100,
+      Javascript: 100,
     },
     count: 3,
-    expected: ["Cairo", "css", "html"],
+    expected: ["Cairo", "Javascript", "Rust"],
   },
   {
     languages: {},

@@ -16,6 +16,7 @@ const config = {
   ENVIRONMENT: import.meta.env.VITE_ENV,
   MAINTENANCE: import.meta.env.VITE_MAINTENANCE,
   GTM_ID: import.meta.env.VITE_GTM_ID,
+  LANGUAGES_FILTER: import.meta.env.VITE_LANGUAGES_FILTER,
 };
 
 export default config;
