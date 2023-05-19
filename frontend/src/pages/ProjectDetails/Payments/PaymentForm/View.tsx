@@ -116,14 +116,16 @@ const View: React.FC<Props> = ({
                     title={T("payment.form.workItems.title")}
                     rightAction={
                       openWorkItemPanelButtonInViewport ? undefined : (
-                        <Button
-                          size={ButtonSize.Sm}
-                          type={ButtonType.Secondary}
-                          onClick={() => setSidePanelOpen(true)}
-                          iconOnly
-                        >
-                          <Add />
-                        </Button>
+                        <div className="-mt-2">
+                          <Button
+                            size={ButtonSize.Sm}
+                            type={ButtonType.Secondary}
+                            onClick={() => setSidePanelOpen(true)}
+                            iconOnly
+                          >
+                            <Add />
+                          </Button>
+                        </div>
                       )
                     }
                   />
