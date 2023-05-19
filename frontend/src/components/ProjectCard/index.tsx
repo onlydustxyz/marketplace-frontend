@@ -65,11 +65,11 @@ export default function ProjectCard({
               logoUrl={projectDetails?.logoUrl || onlyDustLogo}
             />
             {Object.keys(languages).length > 0 && (
-              <div className="hidden lg:flex flex-row border border-neutral-600 w-fit px-3 py-1 rounded-2xl gap-2 text-sm items-center">
-                <CodeSSlashLine className="text-greyscale-50" />
-                <div className="text-white" data-testid={`languages-${id}`}>
+              <div className="hidden lg:block">
+                <Tag testid={`languages-${id}`} size={TagSize.Small}>
+                  <CodeSSlashLine />
                   {buildLanguageString(languages)}
-                </div>
+                </Tag>
               </div>
             )}
           </div>
