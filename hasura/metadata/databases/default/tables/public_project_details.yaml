@@ -5,10 +5,11 @@ select_permissions:
   - role: public
     permission:
       columns:
-        - name
+        - hiring
         - logo_url
-        - project_id
-        - telegram_link
-        - short_description
         - long_description
+        - name
+        - short_description
+        - telegram_link
+        - project_id
       filter: {}
