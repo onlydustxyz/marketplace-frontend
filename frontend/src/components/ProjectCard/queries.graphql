@@ -22,6 +22,7 @@ fragment ProjectCardFields on Projects {
     telegramLink
     logoUrl
     shortDescription
+    hiring
   }
   pendingInvitations {
     id

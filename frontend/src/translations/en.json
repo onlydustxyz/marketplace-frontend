@@ -333,6 +333,7 @@
   },
   "project": {
     "amountGranted": "Granted: __granted__ / __total__",
+    "hiring": "Looking for contributors",
     "details": {
       "contributors": {
         "count": {

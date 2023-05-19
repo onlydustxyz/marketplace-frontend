@@ -20,6 +20,7 @@ import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import Tag, { TagSize } from "src/components/Tag";
 import { ArrayElement } from "src/types";
 import { GetProjectsQuery } from "src/__generated/graphql";
+import RecordCircleLine from "src/icons/RecordCircleLine";
 
 export type Project = ArrayElement<GetProjectsQuery["projects"]>;
 
@@ -49,12 +50,20 @@ export default function ProjectCard({
   const card = (
     <Card
       selectable={isXl}
-      className={classNames("bg-noise-light hover:bg-right", {
+      className={classNames("bg-noise-light hover:bg-right relative", {
         "xl:bg-orange-500/8 xl:hover:bg-orange-500/12": pendingInvitations?.length > 0,
       })}
       border={CardBorder.Medium}
       dataTestId="project-card"
     >
+      {projectDetails?.hiring && (
+        <div className="absolute right-3.5 -top-3.5">
+          <Tag size={TagSize.Small} opaque>
+            <RecordCircleLine />
+            {T("project.hiring")}
+          </Tag>
+        </div>
+      )}
       <div className="flex flex-col gap-5">
         <div className="flex flex-col lg:flex-row w-full lg:divide-x divide-stone-100/8 gap-4 lg:gap-6 justify-items-center font-walsheim">
           <div className="lg:flex flex-col basis-1/3 min-w-0 gap-y-5">

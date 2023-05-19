@@ -26,6 +26,7 @@ const props = (args: { name: string; shortDescription: string; projectLeadsCount
     telegramLink: "https://app.onlydust.xyz/projects/92f022a9-dbd8-446f-a2a5-b161ccb4541c",
     shortDescription: args.shortDescription,
     logoUrl: "https://avatars.githubusercontent.com/u/115809607?v=4",
+    hiring: true,
   },
   projectLeads: [
     {

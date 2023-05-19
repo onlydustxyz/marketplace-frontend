@@ -17,9 +17,10 @@ export type TagProps = {
   size: TagSize;
   borderColor?: TagBorderColor;
   testid?: string;
+  opaque?: boolean;
 } & PropsWithChildren;
 
-export default function Tag({ id, size, borderColor = TagBorderColor.Grey, testid, children }: TagProps) {
+export default function Tag({ id, size, borderColor = TagBorderColor.Grey, testid, opaque, children }: TagProps) {
   return (
     <div data-testid={testid} id={id} className="w-fit rounded-full p-px overflow-hidden">
       <div
@@ -36,8 +37,8 @@ export default function Tag({ id, size, borderColor = TagBorderColor.Grey, testi
             "before:bg-multi-color-gradient before:animate-spin-invert-slow": borderColor === TagBorderColor.MultiColor,
           },
           {
-            "bg-spaceBlue-900": borderColor === TagBorderColor.MultiColor,
-            "bg-white/2": borderColor === TagBorderColor.Grey,
+            "bg-spaceBlue-900": borderColor === TagBorderColor.MultiColor || opaque,
+            "bg-white/2": borderColor === TagBorderColor.Grey && !opaque,
           }
         )}
       >
