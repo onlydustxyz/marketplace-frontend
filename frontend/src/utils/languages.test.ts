@@ -1,24 +1,18 @@
 import { describe, expect } from "vitest";
 import { getDeduplicatedAggregatedLanguages, getMostUsedLanguages } from "./languages";
 import { LanguageMap } from "src/types";
-import { GithubRepoLanguagesFieldsFragment } from "src/__generated/graphql";
+import { GithubRepoLanguagesFragment } from "src/__generated/graphql";
 
-const githubRepo1: GithubRepoLanguagesFieldsFragment = {
-  __typename: "ProjectGithubRepos",
-  githubRepoId: 1000,
-  repo: {
-    id: 1000,
-    languages: { Cairo: 1000, Rust: 100, HTML: 150 },
-  },
+const githubRepo1: GithubRepoLanguagesFragment = {
+  __typename: "GithubRepos",
+  id: 1000,
+  languages: { Cairo: 1000, Rust: 100, HTML: 150 },
 };
 
-const githubRepo2: GithubRepoLanguagesFieldsFragment = {
-  __typename: "ProjectGithubRepos",
-  githubRepoId: 1001,
-  repo: {
-    id: 1001,
-    languages: { Rust: 80, Go: 40, Cairo: 2000 },
-  },
+const githubRepo2: GithubRepoLanguagesFragment = {
+  __typename: "GithubRepos",
+  id: 1001,
+  languages: { Rust: 80, Go: 40, Cairo: 2000 },
 };
 
 describe.each([

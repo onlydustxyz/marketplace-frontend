@@ -224,7 +224,7 @@ const PROJECT_OVERVIEW_DETAILS_RESULT: { data: GetProjectOverviewDetailsQueryRes
       projectSponsors: [],
       githubRepos: [
         {
-          repo: { id: TEST_GITHUB_REPO_ID, stars: 1000 },
+          repo: { id: TEST_GITHUB_REPO_ID, stars: 1000, languages: {} },
         },
       ],
     },

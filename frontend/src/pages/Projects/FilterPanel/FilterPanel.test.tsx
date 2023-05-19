@@ -146,7 +146,7 @@ describe("FilterPanel", () => {
     vi.resetAllMocks();
   });
 
-  it("should display first 2 technologies of projects, all sponsors, and be sorted", async () => {
+  it("should display first 3 technologies of projects, all sponsors, and be sorted", async () => {
     render(false, { mocks: graphQlMocks });
 
     const allOptions = await screen.findAllByRole("option");
