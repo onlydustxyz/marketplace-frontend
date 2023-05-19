@@ -37,6 +37,7 @@ impl Usecase {
 		long_description: Option<NonEmptyTrimmedString>,
 		telegram_link: Nullable<Url>,
 		logo_url: Nullable<Url>,
+		hiring: Option<bool>,
 	) -> Result<(), DomainError> {
 		let mut project = self.project_details_repository.find_by_id(&project_id)?;
 
@@ -59,6 +60,9 @@ impl Usecase {
 			} else {
 				project = project.with_logo_url(None);
 			}
+		}
+		if let Some(hiring) = hiring {
+			project = project.with_hiring(hiring)
 		}
 
 		self.project_details_repository.update(&project_id, project)?;
@@ -129,14 +133,15 @@ mod tests {
 			.with(eq(project_id))
 			.once()
 			.returning(move |_| {
-				Ok(ProjectDetails::new(
+				Ok(ProjectDetails {
 					project_id,
-					"old name".to_string(),
-					None,
-					None,
-					"foo".to_string(),
-					"bar".to_string(),
-				))
+					name: "old name".to_string(),
+					telegram_link: None,
+					logo_url: None,
+					short_description: "foo".to_string(),
+					long_description: "bar".to_string(),
+					hiring: false,
+				})
 			});
 		project_details_repository
 			.expect_update()
@@ -156,6 +161,7 @@ mod tests {
 				Some(long_description),
 				Nullable::Some(telegram_link),
 				Nullable::Some(logo_url),
+				Some(true),
 			)
 			.await
 			.unwrap();
@@ -181,14 +187,15 @@ mod tests {
 			.with(eq(project_id))
 			.once()
 			.returning(move |_| {
-				Ok(ProjectDetails::new(
+				Ok(ProjectDetails {
 					project_id,
-					"old name".to_string(),
-					None,
-					None,
-					"foo".to_string(),
-					"bar".to_string(),
-				))
+					name: "old name".to_string(),
+					telegram_link: None,
+					logo_url: None,
+					short_description: "foo".to_string(),
+					long_description: "bar".to_string(),
+					hiring: false,
+				})
 			});
 
 		let telegram_link_clone = telegram_link.clone();
@@ -196,14 +203,15 @@ mod tests {
 			.expect_update()
 			.withf(move |_, input: &ProjectDetails| {
 				input.clone()
-					== ProjectDetails::new(
+					== ProjectDetails {
 						project_id,
-						"old name".to_string(),
-						Some(telegram_link_clone.to_string()),
-						Some("http://img-store.com/1234.jpg".to_string()),
-						"foo".to_string(),
-						"long_description".to_string(),
-					)
+						name: "old name".to_string(),
+						telegram_link: Some(telegram_link_clone.to_string()),
+						logo_url: Some("http://img-store.com/1234.jpg".to_string()),
+						short_description: "foo".to_string(),
+						long_description: "long_description".to_string(),
+						hiring: true,
+					}
 			})
 			.once()
 			.returning(|_, _: ProjectDetails| Ok(()));
@@ -218,6 +226,7 @@ mod tests {
 				Some(long_description),
 				Nullable::Some(telegram_link),
 				Nullable::Some(logo_url),
+				Some(true),
 			)
 			.await
 			.unwrap();

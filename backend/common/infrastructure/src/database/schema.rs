@@ -138,6 +138,7 @@ diesel::table! {
         name -> Text,
         short_description -> Text,
         long_description -> Text,
+        hiring -> Bool,
     }
 }
 

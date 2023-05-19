@@ -25,34 +25,15 @@ use serde::{Deserialize, Serialize};
 #[changeset_options(treat_none_as_null = "true")]
 pub struct ProjectDetails {
 	#[diesel(deserialize_as = "uuid::Uuid")]
-	project_id: ProjectId,
-	telegram_link: Option<String>,
-	logo_url: Option<String>,
-	name: String,
-	short_description: String,
-	long_description: String,
+	pub project_id: ProjectId,
+	pub telegram_link: Option<String>,
+	pub logo_url: Option<String>,
+	pub name: String,
+	pub short_description: String,
+	pub long_description: String,
+	pub hiring: bool,
 }
 
 impl domain::Entity for ProjectDetails {
 	type Id = ProjectId;
-}
-
-impl ProjectDetails {
-	pub fn new(
-		project_id: ProjectId,
-		name: String,
-		telegram_link: Option<String>,
-		logo_url: Option<String>,
-		short_description: String,
-		long_description: String,
-	) -> Self {
-		Self {
-			project_id,
-			telegram_link,
-			logo_url,
-			name,
-			short_description,
-			long_description,
-		}
-	}
 }

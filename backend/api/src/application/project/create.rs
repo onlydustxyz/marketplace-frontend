@@ -41,6 +41,7 @@ impl Usecase {
 		telegram_link: Option<Url>,
 		logo_url: Option<Url>,
 		initial_budget: Option<Amount>,
+		hiring: bool,
 	) -> Result<ProjectId, DomainError> {
 		let project_id = ProjectId::new();
 
@@ -58,14 +59,15 @@ impl Usecase {
 			None => None,
 		};
 
-		self.project_details_repository.upsert(&ProjectDetails::new(
+		self.project_details_repository.upsert(&ProjectDetails {
 			project_id,
-			name.into(),
-			telegram_link.map(|url| url.to_string()),
-			stored_logo_url,
-			short_description.into(),
-			long_description.into(),
-		))?;
+			name: name.into(),
+			telegram_link: telegram_link.map(|url| url.to_string()),
+			logo_url: stored_logo_url,
+			short_description: short_description.into(),
+			long_description: long_description.into(),
+			hiring,
+		})?;
 
 		events
 			.into_iter()
