@@ -27,7 +27,8 @@ test.describe("As a visitor, I", () => {
     await browseProjectsPage.expectProjectsNotToBeVisible(projects.RepoLess);
 
     // Filtering
-    await browseProjectsPage.expectFiltersToBeVisible("Rust", "HTML", "StarkNet", "Ether Foundation");
+    await browseProjectsPage.expectFiltersToBeVisible("Rust", "StarkNet", "Ether Foundation");
+    await browseProjectsPage.expectFiltersNotToBeVisible("HTML");
 
     // Test filter
     await browseProjectsPage.filterBy("Rust");
