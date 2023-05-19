@@ -1,0 +1,26 @@
+query ImpersonatedUser($id: uuid!) {
+  user(id: $id) {
+    id
+    createdAt
+    displayName
+    email
+    avatarUrl
+    locale
+    isAnonymous
+    defaultRole
+    emailVerified
+    phoneNumber
+    phoneNumberVerified
+    activeMfaType
+    roles {
+      role
+    }
+    githubUser {
+      userId
+      githubUserId
+    }
+    projectsLeaded {
+      projectId
+    }
+  }
+}
