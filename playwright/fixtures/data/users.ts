@@ -107,4 +107,11 @@ export const users: Record<string, UserFixture> = {
       login: "oscarwroche",
     },
   },
+  Gregoire: {
+    email: "gregoire@super-mail.org",
+    github: {
+      id: 8642470,
+      login: "gregcha",
+    },
+  },
 };

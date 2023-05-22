@@ -24,6 +24,7 @@ export const projects: Record<string, ProjectFixture> = {
     leaders: ["TokioRs"],
     repos: ["A", "B"],
     sponsors: ["StarkNet"],
+    hiring: true,
   },
   ProjectB: {
     name: "Project B",

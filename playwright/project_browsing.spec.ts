@@ -2,6 +2,7 @@ import { test } from "./fixtures";
 import { expect } from "@playwright/test";
 import { restoreDB } from "./commands/db/db_utils";
 import { BrowseProjectsPage } from "./pages/browse_projects_page";
+import { ProjectPage } from "./pages/project";
 
 test.describe("As a visitor, I", () => {
   test.beforeAll(async () => {
@@ -77,5 +78,50 @@ test.describe("As a registered user, I", () => {
     await signIn(users.Olivier);
     await page.goto(`/projects/${projects.ProjectA.id}/payments`);
     await expect(page).toHaveURL(`/projects/${projects.ProjectA.id}`);
+  });
+
+  test("can express my interest to a project", async ({ page, projects, users, signIn }) => {
+    const project = projects.ProjectA;
+    const lead = users.TokioRs;
+    const applicant = users.Gregoire;
+
+    const projectPage = new ProjectPage(page, project);
+
+    // Gregoire is new on the plateform, wants to apply on the project
+    await signIn(applicant);
+    await projectPage.goto();
+    {
+      const overviewPage = await projectPage.overview();
+      await expect(overviewPage.applyButton()).toBeVisible();
+      await expect(overviewPage.applyButton()).not.toBeDisabled();
+      await overviewPage.applyButton().click();
+      await expect(overviewPage.applyButton()).toBeDisabled();
+    }
+
+    // Project lead cannot see the apply button
+    await signIn(lead);
+    await projectPage.goto();
+    {
+      const overviewPage = await projectPage.overview();
+      await expect(overviewPage.applyButton()).not.toBeVisible();
+    }
+
+    // He request a payment for Gregoire's first contribution
+    {
+      const paymentsPage = await projectPage.payments();
+      const newPaymentPage = await paymentsPage.newPayment();
+      await newPaymentPage.requestPayment({
+        recipient: applicant,
+        otherPullRequests: ["https://github.com/od-mocks/cool-repo-A/pull/1"],
+      });
+    }
+
+    // Gregoire is now a contributor, he cannot see the apply button anymore
+    await signIn(applicant);
+    await projectPage.goto();
+    {
+      const overviewPage = await projectPage.overview();
+      await expect(overviewPage.applyButton()).not.toBeVisible();
+    }
   });
 });
