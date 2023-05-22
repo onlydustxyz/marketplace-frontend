@@ -12,3 +12,8 @@ fragment GithubRepo on GithubRepos {
   htmlUrl
   languages
 }
+
+fragment GithubRepoLanguages on GithubRepos {
+  ...GithubRepoId
+  languages
+}

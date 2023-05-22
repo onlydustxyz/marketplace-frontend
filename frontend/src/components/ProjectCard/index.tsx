@@ -43,7 +43,7 @@ export default function ProjectCard({
   const totalInitialAmountInUsd = budgetsAggregate?.aggregate?.sum?.initialAmount;
 
   const topSponsors = projectSponsors?.map(projectSponsor => projectSponsor.sponsor).slice(0, 3) || [];
-  const languages = getDeduplicatedAggregatedLanguages(githubRepos);
+  const languages = getDeduplicatedAggregatedLanguages(githubRepos.map(r => r.repo));
   const contributorsCount = contributorsAggregate.aggregate?.count || 0;
 
   const card = (
@@ -65,11 +65,11 @@ export default function ProjectCard({
               logoUrl={projectDetails?.logoUrl || onlyDustLogo}
             />
             {Object.keys(languages).length > 0 && (
-              <div className="hidden lg:flex flex-row border border-neutral-600 w-fit px-3 py-1 rounded-2xl gap-2 text-sm items-center">
-                <CodeSSlashLine className="text-greyscale-50" />
-                <div className="text-white" data-testid={`languages-${id}`}>
+              <div className="hidden lg:block">
+                <Tag testid={`languages-${id}`} size={TagSize.Small}>
+                  <CodeSSlashLine />
                   {buildLanguageString(languages)}
-                </div>
+                </Tag>
               </div>
             )}
           </div>

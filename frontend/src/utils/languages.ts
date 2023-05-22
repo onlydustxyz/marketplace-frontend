@@ -1,13 +1,12 @@
-import { gql } from "@apollo/client";
 import { LanguageMap } from "src/types";
-import { GithubRepoLanguagesFieldsFragment } from "src/__generated/graphql";
+import { GithubRepoLanguagesFragment, Maybe } from "src/__generated/graphql";
 import isDefined from "./isDefined";
 import config from "src/config";
 import { toLower } from "lodash";
 
 const REMOVED_LANGUAGES = config.LANGUAGES_FILTER?.split(",").map(toLower) || [];
 
-export const getMostUsedLanguages = (languageMap: LanguageMap, count = 2) => {
+export const getMostUsedLanguages = (languageMap: LanguageMap, count = 3) => {
   if (!languageMap) {
     return [];
   }
@@ -31,13 +30,13 @@ export const buildLanguageString = (languageMap: LanguageMap) => {
 };
 
 export const getDeduplicatedAggregatedLanguages = function (
-  githubRepos: GithubRepoLanguagesFieldsFragment[] | undefined
+  githubRepos: Maybe<GithubRepoLanguagesFragment>[] | undefined
 ): LanguageMap {
   if (githubRepos === undefined) {
     return {};
   }
   return githubRepos
-    .map(repo => repo.repo?.languages)
+    .map(repo => repo?.languages)
     .filter(isDefined) // ⚠️ runtime type guard
     .reduce((aggregated_languages, languages) => {
       for (const [language, line_count] of Object.entries(languages)) {
@@ -50,13 +49,3 @@ export const getDeduplicatedAggregatedLanguages = function (
       return aggregated_languages;
     }, {});
 };
-
-gql`
-  fragment GithubRepoLanguagesFields on ProjectGithubRepos {
-    githubRepoId
-    repo {
-      id
-      languages
-    }
-  }
-`;

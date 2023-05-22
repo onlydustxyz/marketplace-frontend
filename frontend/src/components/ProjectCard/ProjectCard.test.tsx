@@ -121,6 +121,6 @@ describe("'ProjectCard' component", () => {
     });
 
     const languagesString = screen.getByTestId(`languages-${PROJECT.id}`);
-    expect(languagesString.textContent).toContain("cairo, rust");
+    expect(languagesString.textContent).toContain("cairo, rust, go");
   });
 });
