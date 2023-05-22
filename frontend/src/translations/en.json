@@ -334,6 +334,10 @@
   "project": {
     "amountGranted": "Granted: __granted__ / __total__",
     "hiring": "Looking for contributors",
+    "showInterest": {
+      "connected": "Show interest",
+      "notConnected": "Connect to show interest"
+    },
     "details": {
       "contributors": {
         "count": {

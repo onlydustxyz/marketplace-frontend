@@ -18,6 +18,9 @@ import isDefined from "src/utils/isDefined";
 import { buildLanguageString, getDeduplicatedAggregatedLanguages } from "src/utils/languages";
 import Tag, { TagSize } from "src/components/Tag";
 import CodeSSlashLine from "src/icons/CodeSSlashLine";
+import Callout from "src/components/Callout";
+import RecordCircleLine from "src/icons/RecordCircleLine";
+import Button, { ButtonSize, Width } from "src/components/Button";
 
 type OutletContext = {
   projectId: string;
@@ -45,6 +48,7 @@ export default function Overview() {
   const totalInitialAmountInUsd = data?.projectsByPk?.budgetsAggregate.aggregate?.sum?.initialAmount;
   const totalSpentAmountInUsd = data?.projectsByPk?.budgetsAggregate.aggregate?.sum?.spentAmount;
   const languages = getDeduplicatedAggregatedLanguages(data?.projectsByPk?.githubRepos.map(r => r.repo));
+  const hiring = data?.projectsByPk?.projectDetails?.hiring;
 
   return (
     <>
@@ -89,17 +93,32 @@ export default function Overview() {
             </Card>
           </div>
         </QueryWrapper>
-        <OverviewPanel
-          {...{
-            sponsors,
-            telegramLink,
-            topContributors,
-            totalContributorsCount,
-            leads,
-            totalInitialAmountInUsd,
-            totalSpentAmountInUsd,
-          }}
-        />
+        <div className="flex flex-col gap-4">
+          {hiring && (
+            <Callout>
+              <div className="flex flex-col gap-3">
+                <div className="flex flex-row gap-2 items-center text-spaceBlue-200 font-walsheim font-medium text-sm">
+                  <RecordCircleLine />
+                  {T("project.hiring").toUpperCase()}
+                </div>
+                <Button size={ButtonSize.Md} width={Width.Full}>
+                  {T("project.showInterest.connected")}
+                </Button>
+              </div>
+            </Callout>
+          )}
+          <OverviewPanel
+            {...{
+              sponsors,
+              telegramLink,
+              topContributors,
+              totalContributorsCount,
+              leads,
+              totalInitialAmountInUsd,
+              totalSpentAmountInUsd,
+            }}
+          />
+        </div>
       </div>
     </>
   );
