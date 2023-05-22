@@ -1,6 +1,6 @@
 import { useIntl } from "src/hooks/useIntl";
 import OverviewPanel from "./OverviewPanel";
-import { useOutletContext } from "react-router-dom";
+import { useLocation, useOutletContext } from "react-router-dom";
 import { ReactNode } from "react";
 import { useGetProjectOverviewDetailsQuery } from "src/__generated/graphql";
 import QueryWrapper from "src/components/QueryWrapper";
@@ -21,6 +21,9 @@ import CodeSSlashLine from "src/icons/CodeSSlashLine";
 import Callout from "src/components/Callout";
 import RecordCircleLine from "src/icons/RecordCircleLine";
 import Button, { ButtonSize, Width } from "src/components/Button";
+import { useAuth } from "src/hooks/useAuth";
+import { LOGIN_URL } from "src/App/Layout/Header/GithubLink";
+import { SessionMethod, useSessionDispatch } from "src/hooks/useSession";
 
 type OutletContext = {
   projectId: string;
@@ -30,6 +33,9 @@ type OutletContext = {
 export default function Overview() {
   const { T } = useIntl();
   const { projectId, children } = useOutletContext<OutletContext>();
+  const { isLoggedIn } = useAuth();
+  const dispatchSession = useSessionDispatch();
+  const location = useLocation();
 
   const { data, loading } = useGetProjectOverviewDetailsQuery({
     variables: { projectId },
@@ -101,9 +107,22 @@ export default function Overview() {
                   <RecordCircleLine />
                   {T("project.hiring").toUpperCase()}
                 </div>
-                <Button size={ButtonSize.Md} width={Width.Full}>
-                  {T("project.showInterest.connected")}
-                </Button>
+                {isLoggedIn ? (
+                  <Button size={ButtonSize.Md} width={Width.Full}>
+                    {T("project.showInterest.connected")}
+                  </Button>
+                ) : (
+                  <a
+                    href={LOGIN_URL}
+                    onClick={() =>
+                      dispatchSession({ method: SessionMethod.SetVisitedPageBeforeLogin, value: location.pathname })
+                    }
+                  >
+                    <Button size={ButtonSize.Md} width={Width.Full}>
+                      {T("project.showInterest.notConnected")}
+                    </Button>
+                  </a>
+                )}
               </div>
             </Callout>
           )}
