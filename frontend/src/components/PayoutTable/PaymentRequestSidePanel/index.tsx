@@ -1,8 +1,7 @@
-import { gql } from "@apollo/client";
 import { useAuth } from "src/hooks/useAuth";
 import usePayoutSettings from "src/hooks/usePayoutSettings";
 import { PaymentStatus } from "src/types";
-import { LiveGithubIssueFragmentDoc, usePaymentRequestDetailsQuery } from "src/__generated/graphql";
+import { usePaymentRequestDetailsQuery } from "src/__generated/graphql";
 import View from "./View";
 import usePaymentRequests from "src/hooks/usePaymentRequests";
 import { useShowToaster } from "src/hooks/useToaster";
@@ -63,47 +62,3 @@ export default function PaymentRequestSidePanel({ projectId, paymentId, projectL
     />
   );
 }
-
-gql`
-  ${LiveGithubIssueFragmentDoc}
-  fragment PaymentRequestDetails on PaymentRequests {
-    id
-    amountInUsd
-    requestedAt
-    paymentsAggregate {
-      aggregate {
-        max {
-          processedAt
-        }
-      }
-    }
-    invoiceReceivedAt
-    requestor {
-      id
-      displayName
-      avatarUrl
-    }
-    liveGithubRecipient {
-      ...LiveGithubUser
-    }
-    workItems {
-      ...WorkItemId
-      githubIssue {
-        ...LiveGithubIssue
-      }
-    }
-    paymentsAggregate {
-      aggregate {
-        sum {
-          amount
-        }
-      }
-    }
-  }
-
-  query PaymentRequestDetails($id: uuid!) {
-    paymentRequestsByPk(id: $id) {
-      ...PaymentRequestDetails
-    }
-  }
-`;

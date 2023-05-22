@@ -5,10 +5,8 @@ import QueryWrapper from "src/components/QueryWrapper";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import SidePanel from "src/components/SidePanel";
 import { useIntl } from "src/hooks/useIntl";
-import CheckLine from "src/icons/CheckLine";
 import Time from "src/icons/TimeLine";
 import { PaymentStatus } from "src/types";
-import displayRelativeDate from "src/utils/displayRelativeDate";
 import { pretty } from "src/utils/id";
 import { formatMoneyAmount } from "src/utils/money";
 import { PaymentRequestDetailsFragment } from "src/__generated/graphql";
@@ -17,6 +15,17 @@ import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import ConfirmationModal from "./ConfirmationModal";
 import classNames from "classnames";
 import { issueToWorkItem } from "src/pages/ProjectDetails/Payments/PaymentForm/WorkItemSidePanel/Issues";
+import { formatDateTime } from "src/utils/date";
+import BankCardLine from "src/icons/BankCardLine";
+import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import Tooltip from "src/components/Tooltip";
+import IBAN from "iban";
+import ExternalLink from "src/components/ExternalLink";
+
+enum Align {
+  Top = "top",
+  Center = "center",
+}
 
 export type Props = {
   open: boolean;
@@ -31,8 +40,13 @@ export type Props = {
   onPaymentCancel: () => void;
 } & Partial<PaymentRequestDetailsFragment>;
 
-const Details = ({ children }: PropsWithChildren) => (
-  <div className="flex flex-row gap-2 items-center text-greyscale-300 font-walsheim font-normal text-sm">
+const Details = ({ align = Align.Center, children }: PropsWithChildren & { align?: Align }) => (
+  <div
+    className={classNames("flex flex-row gap-2 text-greyscale-300 font-walsheim font-normal text-sm", {
+      "items-center": align === Align.Center,
+      "items-start": align === Align.Top,
+    })}
+  >
     {children}
   </div>
 );
@@ -51,12 +65,14 @@ export default function View({
   payoutInfoMissing,
   invoiceNeeded,
   invoiceReceivedAt,
-  paymentsAggregate,
+  payments,
   projectLeaderView,
   onPaymentCancel,
   ...props
 }: Props) {
   const { T } = useIntl();
+
+  const formattedReceipt = formatReceipt(payments?.at(0)?.receipt);
 
   return (
     <SidePanel
@@ -98,16 +114,47 @@ export default function View({
               })}
             </Details>
           )}
-          <Details>
-            <Time className="text-base" />
-            {T("payment.table.detailsPanel.requestedAt", { requestedAt: displayRelativeDate(requestedAt) })}
-          </Details>
-          {status === PaymentStatus.ACCEPTED && (
+          {requestedAt && (
             <Details>
-              <CheckLine className="text-base" />
-              {T("payment.table.detailsPanel.processedAt", {
-                processedAt: displayRelativeDate(paymentsAggregate?.aggregate?.max?.processedAt),
-              })}
+              <Time className="text-base" />
+              {T("payment.table.detailsPanel.requestedAt", { requestedAt: formatDateTime(new Date(requestedAt)) })}
+            </Details>
+          )}
+          {status === PaymentStatus.ACCEPTED && payments?.at(0)?.processedAt && (
+            <Details align={Align.Top}>
+              <BankCardLine className="text-base" />
+              <div id="payment-receipt">
+                <ReactMarkdown className="whitespace-pre-wrap">
+                  {T(`payment.table.detailsPanel.processedAt.${formattedReceipt?.type}`, {
+                    processedAt: formatDateTime(new Date(payments?.at(0)?.processedAt)),
+                    recipient: formattedReceipt?.shortDetails,
+                  })}
+                </ReactMarkdown>
+                <Tooltip anchorId="payment-receipt" clickable>
+                  <div className="flex flex-col items-start">
+                    <div>
+                      {T(`payment.table.detailsPanel.processedTooltip.${formattedReceipt?.type}.recipient`, {
+                        recipient: formattedReceipt?.fullDetails,
+                      })}
+                    </div>
+
+                    {formattedReceipt?.type === "crypto" ? (
+                      <ExternalLink
+                        url={`https://etherscan.io/tx/${formattedReceipt?.reference}`}
+                        text={T(`payment.table.detailsPanel.processedTooltip.${formattedReceipt?.type}.reference`, {
+                          reference: formattedReceipt?.reference,
+                        })}
+                      />
+                    ) : (
+                      <div>
+                        {T(`payment.table.detailsPanel.processedTooltip.${formattedReceipt?.type}.reference`, {
+                          reference: formattedReceipt?.reference,
+                        })}
+                      </div>
+                    )}
+                  </div>
+                </Tooltip>
+              </div>
             </Details>
           )}
         </div>
@@ -129,6 +176,38 @@ export default function View({
     </SidePanel>
   );
 }
+
+type Receipt = {
+  OnChainPayment?: { recipient_address: string; transaction_hash: string };
+  FiatPayment?: { recipient_iban: string; transaction_reference: string };
+};
+
+type FormattedReceipt = {
+  type: "crypto" | "fiat";
+  shortDetails: string;
+  fullDetails: string;
+  reference: string;
+};
+
+const formatReceipt = (receipt?: Receipt): FormattedReceipt | undefined => {
+  if (receipt?.OnChainPayment) {
+    const address = receipt?.OnChainPayment.recipient_address;
+    return {
+      type: "crypto",
+      shortDetails: `0x...${address.substring(address.length - 5)}`,
+      fullDetails: address,
+      reference: receipt?.OnChainPayment.transaction_hash,
+    };
+  } else if (receipt?.FiatPayment) {
+    const iban = receipt?.FiatPayment.recipient_iban;
+    return {
+      type: "fiat",
+      shortDetails: `**** ${iban.substring(iban.length - 3)}`,
+      fullDetails: IBAN.printFormat(iban),
+      reference: receipt?.FiatPayment.transaction_reference,
+    };
+  }
+};
 
 type CancelPaymentButtonProps = {
   onPaymentCancel: () => void;
