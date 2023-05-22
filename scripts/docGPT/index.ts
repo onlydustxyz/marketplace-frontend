@@ -1,11 +1,10 @@
 import * as dotenv from "dotenv";
-import { decorate } from "./gpt.ts";
-import { readFile, writeFile } from "fs/promises";
+import { decorateFiles } from "./gpt.ts";
+import { list } from "./git.ts";
+import { isLargerThan, isRust } from "./file.ts";
 
 dotenv.config();
 
-const FILE = "../../backend/event-listeners/src/bin/github-indexer/indexer/user.rs";
-
-readFile(FILE)
-  .then(code => decorate(code.toString()))
-  .then(code => writeFile(FILE, code));
+list("../..")
+  .then(files => files.filter(isRust).filter(isLargerThan(512)))
+  .then(decorateFiles);
