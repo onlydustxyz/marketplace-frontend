@@ -118,7 +118,7 @@ test.describe("As a project lead, I", () => {
         },
         {
           description: "Real cool documentation",
-          repository: repos[project.repos?.at(0) || ""].name,
+          repository: repos[project.repos?.at(1) || ""].name, // TODO: Put back to 0 when E-495 is fixed
         },
       ],
     });

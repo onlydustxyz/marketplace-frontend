@@ -79,7 +79,7 @@ export class NewPaymentPage {
       // Select PR in list
       const elligiblePulls = this.page.getByTestId("elligible-pulls").getByRole("button");
       for (const index of pullRequestIndexes.sort().reverse()) {
-        await elligiblePulls.nth(index).click();
+        await elligiblePulls.nth(index * 2).click();
       }
 
       // Add other PR
@@ -101,7 +101,7 @@ export class NewPaymentPage {
       // Select issues in list
       const elligibleIssues = this.page.getByTestId("elligible-issues").getByRole("button");
       for (const index of sortBy(issuesIndexes).reverse()) {
-        await elligibleIssues.nth(index).click();
+        await elligibleIssues.nth(index * 2).click();
       }
 
       // Add other issues
@@ -154,7 +154,7 @@ export class NewPaymentPage {
   workItem = (text: string) => this.page.locator("[data-testid='elligible-issues'] > div", { hasText: text });
   addWorkItem = (text: string) => this.workItem(text).locator("button").first().click();
   ignoreWorkItem = (text: string) => this.workItem(text).locator("button").nth(1).click();
-  showIgnoredToggle = () => this.page.locator('[id="headlessui-switch-\\:re\\:"]');
+  showIgnoredToggle = () => this.page.getByRole("switch").nth(2);
 }
 
 export class PaymentTable {

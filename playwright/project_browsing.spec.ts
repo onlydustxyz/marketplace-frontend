@@ -3,6 +3,7 @@ import { expect } from "@playwright/test";
 import { restoreDB } from "./commands/db/db_utils";
 import { BrowseProjectsPage } from "./pages/browse_projects_page";
 import { ProjectPage } from "./pages/project";
+import { retry } from "./commands/common";
 
 test.describe("As a visitor, I", () => {
   test.beforeAll(async () => {
@@ -121,6 +122,13 @@ test.describe("As a registered user, I", () => {
     await projectPage.goto();
     {
       const overviewPage = await projectPage.overview();
+      await retry(
+        async () => {
+          await page.reload();
+          return await overviewPage.applyButton().isVisible();
+        },
+        visible => !visible
+      );
       await expect(overviewPage.applyButton()).not.toBeVisible();
     }
   });
