@@ -27,7 +27,7 @@ export default function SidePanel({ title, open, setOpen, action, children }: Pr
       leaveTo="translate-x-full"
     >
       <Dialog onClose={setOpen} as={Fragment}>
-        <Dialog.Panel className="fixed z-10 inset-y-0 right-0 max-h-screen w-5/12 flex flex-col bg-greyscale-900 py-8 px-6 gap-8">
+        <Dialog.Panel className="fixed z-10 inset-y-0 right-0 h-screen w-5/12 flex flex-col bg-greyscale-900 gap-8">
           <div className="absolute top-3.5 right-3.5 flex flex-row gap-2">
             {action}
             <Button
@@ -40,7 +40,7 @@ export default function SidePanel({ title, open, setOpen, action, children }: Pr
               <CloseLine />
             </Button>
           </div>
-          <Dialog.Title className="font-belwe font-normal text-2xl text-greyscale-50">{title}</Dialog.Title>
+          <Dialog.Title className="font-belwe font-normal text-2xl text-greyscale-50 pt-8 px-6">{title}</Dialog.Title>
           {children}
         </Dialog.Panel>
       </Dialog>

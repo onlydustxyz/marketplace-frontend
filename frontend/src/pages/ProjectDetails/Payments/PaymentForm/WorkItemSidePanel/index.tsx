@@ -40,7 +40,7 @@ export default function WorkItemSidePanel({
 
   return (
     <SidePanel {...props} title={T("payment.form.workItems.addWorkItem")}>
-      <div className="flex flex-row items-center gap-8 border-b border-greyscale-50/8">
+      <div className="flex flex-row items-center gap-8 border-b border-greyscale-50/8 px-6">
         <Tab
           testId="tab-pull-requests"
           active={selectedTab === Tabs.PullRequests}

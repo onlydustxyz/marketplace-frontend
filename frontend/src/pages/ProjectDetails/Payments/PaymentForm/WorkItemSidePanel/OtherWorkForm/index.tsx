@@ -83,15 +83,17 @@ export default function OtherWorkForm({ projectId, contributorHandle, onWorkItem
   });
 
   return (
-    <div className="flex flex-col gap-4 relative">
-      <div className="font-belwe font-normal text-base text-greyscale-50">
-        {T("payment.form.workItems.other.title")}
+    <div className="flex flex-col justify-between h-full gap-4 min-h-0">
+      <div className="flex flex-col justify-start gap-4 overflow-y-auto min-h-0 px-6">
+        <div className="font-belwe font-normal text-base text-greyscale-50">
+          {T("payment.form.workItems.other.title")}
+        </div>
+        <WorkKinds workKind={selectedWorkKind} setWorkKind={setSelectedWorkKind} />
+        <Title title={title} setTitle={setTitle} defaultTitle={defaultTitle} />
+        <Description description={description} setDescription={setDescription} />
+        <Callout>{T("payment.form.workItems.other.callout")}</Callout>
       </div>
-      <WorkKinds workKind={selectedWorkKind} setWorkKind={setSelectedWorkKind} />
-      <Title title={title} setTitle={setTitle} defaultTitle={defaultTitle} />
-      <Description description={description} setDescription={setDescription} />
-      <Callout>{T("payment.form.workItems.other.callout")}</Callout>
-      <div className="fixed bottom-0 inset-x-0 flex flex-row gap-8 px-6 py-6 bg-white/2 border-t border-greyscale-50/8">
+      <div className="flex flex-row grow-0 gap-8 bg-white/2 border-t border-greyscale-50/8 px-6 py-8">
         {selectedRepo ? (
           <RepoSelect repos={repos} repo={selectedRepo} setRepo={setSelectedRepo} />
         ) : (
