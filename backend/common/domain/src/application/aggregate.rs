@@ -12,17 +12,9 @@ pub enum Status {
 }
 
 #[serde_as]
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Getters)]
+#[derive(Debug, Default, Clone, PartialEq, Eq, Serialize, Deserialize, Getters)]
 pub struct Application {
 	id: ApplicationId,
-}
-
-impl Default for Application {
-	fn default() -> Self {
-		Self {
-			id: Default::default(),
-		}
-	}
 }
 
 impl Entity for Application {

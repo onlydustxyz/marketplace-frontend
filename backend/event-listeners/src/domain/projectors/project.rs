@@ -3,13 +3,14 @@ use std::sync::Arc;
 use anyhow::Result;
 use async_trait::async_trait;
 use derive_new::new;
-use domain::{Event, ProjectEvent, SubscriberCallbackError};
+use domain::{ApplicationEvent, Event, ProjectEvent, SubscriberCallbackError};
 use tracing::instrument;
 
 use crate::{
-	domain::{projections::Project, EventListener, GithubRepoIndexRepository},
+	domain::{projections::Project, Application, EventListener, GithubRepoIndexRepository},
 	infrastructure::database::{
-		ProjectGithubReposRepository, ProjectLeadRepository, ProjectRepository,
+		ApplicationRepository, ProjectGithubReposRepository, ProjectLeadRepository,
+		ProjectRepository,
 	},
 };
 
@@ -19,6 +20,7 @@ pub struct Projector {
 	project_lead_repository: ProjectLeadRepository,
 	project_github_repos_repository: ProjectGithubReposRepository,
 	github_repo_index_repository: Arc<dyn GithubRepoIndexRepository>,
+	applications_repository: ApplicationRepository,
 }
 
 #[async_trait]
@@ -40,6 +42,22 @@ impl EventListener<Event> for Projector {
 				},
 				ProjectEvent::GithubRepoUnlinked { id, github_repo_id } => {
 					self.project_github_repos_repository.delete(id, github_repo_id)?;
+				},
+				ProjectEvent::Application {
+					id: project_id,
+					event,
+				} => {
+					let ApplicationEvent::Received {
+						id,
+						applicant_id,
+						received_at,
+					} = event;
+					self.applications_repository.upsert(&Application {
+						id: *id,
+						project_id: *project_id,
+						applicant_id: *applicant_id,
+						received_at: *received_at,
+					})?;
 				},
 			},
 		}
