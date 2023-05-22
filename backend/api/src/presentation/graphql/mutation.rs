@@ -376,6 +376,14 @@ impl Mutation {
 		Ok(true)
 	}
 
+	pub async fn apply_to_project(context: &Context, project_id: ProjectId) -> Result<Uuid> {
+		let caller_id = *context.caller_info()?.user_id();
+
+		let application_id = context.apply_to_project_usecase.apply(project_id, caller_id).await?;
+
+		Ok(application_id.into())
+	}
+
 	pub async fn create_sponsor(
 		context: &Context,
 		name: String,

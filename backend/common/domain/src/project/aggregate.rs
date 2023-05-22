@@ -1,6 +1,6 @@
 use std::collections::HashSet;
 
-use chrono::Duration;
+use chrono::{Duration, Utc};
 use derive_getters::{Dissolve, Getters};
 use derive_more::Constructor;
 use thiserror::Error;
@@ -78,6 +78,7 @@ impl EventSourcable for Project {
 				self.github_repos.remove(github_repo_id);
 				self
 			},
+			ProjectEvent::Application { .. } => self,
 		}
 	}
 }
@@ -237,6 +238,21 @@ impl Project {
 			.into_iter()
 			.map(|event| ProjectEvent::Budget { id: self.id, event })
 			.collect())
+	}
+
+	pub fn apply(
+		&self,
+		applicant_id: UserId,
+		application_id: ApplicationId,
+	) -> Result<Vec<<Self as Aggregate>::Event>> {
+		Ok(vec![ProjectEvent::Application {
+			id: self.id,
+			event: ApplicationEvent::Received {
+				id: application_id,
+				applicant_id,
+				received_at: Utc::now().naive_utc(),
+			},
+		}])
 	}
 }
 
