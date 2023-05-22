@@ -30,6 +30,7 @@ export default function Overview() {
     ...contextWithCacheHeaders,
   });
 
+  const projectName = data?.projectsByPk?.projectDetails?.name;
   const logoUrl = data?.projectsByPk?.projectDetails?.logoUrl || onlyDustLogo;
   const description = data?.projectsByPk?.projectDetails?.longDescription || LOREM_IPSUM;
   const githubRepos = sortBy(data?.projectsByPk?.githubRepos, "repo.stars").reverse();
@@ -48,15 +49,16 @@ export default function Overview() {
       <div className="flex flex-row gap-6">
         <QueryWrapper query={{ data, loading }}>
           <div className="flex flex-col gap-4 w-full">
-            <Card className={classNames("px-6 py-4 flex flex-row gap-6")}>
-              <img
-                alt={data?.projectsByPk?.projectDetails?.name}
-                src={logoUrl}
-                className="w-32 h-32 flex-shrink-0 rounded-lg bg-spaceBlue-900"
-              />
-              <div className="self-center">
-                <MarkdownPreview>{description}</MarkdownPreview>
+            <Card className={classNames("px-6 py-4 flex flex-col gap-4")}>
+              <div className="flex flex-row items-center gap-4">
+                <img
+                  alt={data?.projectsByPk?.projectDetails?.name}
+                  src={logoUrl}
+                  className="w-20 h-20 flex-shrink-0 rounded-lg bg-spaceBlue-900"
+                />
+                <div className="font-belwe font-normal text-2xl text-greyscale-50">{projectName}</div>
               </div>
+              <MarkdownPreview>{description}</MarkdownPreview>
             </Card>
             <Card className="flex flex-col gap-4">
               <div className="flex flex-row font-walsheim font-medium text-base text-greyscale-50 items-center border-b border-greyscale-50/8 pb-2 justify-between">

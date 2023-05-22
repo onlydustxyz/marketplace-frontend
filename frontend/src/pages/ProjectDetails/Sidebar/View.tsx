@@ -50,11 +50,13 @@ export default function View({ expandable, currentProject, allProjects, availabl
             disabled={!expandable}
           >
             <div className="flex flex-col w-full border-2 rounded-2xl border-neutral-700 divide-y divide-neutral-700 bg-white/2 absolute backdrop-blur-4xl z-10">
-              <Listbox.Button className={`p-4 font-medium text-2xl ${expandable ? "hover:cursor-pointer" : ""}`}>
-                <div className="flex flex-row gap-3 items-center">
+              <Listbox.Button
+                className={`p-4 font-medium text-xl text-greyscale-50 ${expandable ? "hover:cursor-pointer" : ""}`}
+              >
+                <div className="flex flex-row gap-4 items-center">
                   <RoundedImage src={currentProject.logoUrl} alt="Project Logo" size={ImageSize.Md} />
-                  <div className="truncate grow font-belwe text-left">{currentProject.name}</div>
-                  {expandable && <UpDownChevrons className="h-5 w-5 fill-gray-400" />}
+                  <div className="truncate grow font-walsheim text-left">{currentProject.name}</div>
+                  {expandable && <UpDownChevrons className="h-5 w-5 fill-greyscale-50/50" />}
                 </div>
               </Listbox.Button>
               <Listbox.Options className="flex flex-col divide-y max-h-116 overflow-y-auto rounded-b-2xl scrollbar-thin scrollbar-w-1.5 scrollbar-thumb-white/12 scrollbar-thumb-rounded">
