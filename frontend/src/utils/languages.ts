@@ -2,6 +2,10 @@ import { gql } from "@apollo/client";
 import { LanguageMap } from "src/types";
 import { GithubRepoLanguagesFieldsFragment } from "src/__generated/graphql";
 import isDefined from "./isDefined";
+import config from "src/config";
+import { toLower } from "lodash";
+
+const REMOVED_LANGUAGES = config.LANGUAGES_FILTER?.split(",").map(toLower) || [];
 
 export const getMostUsedLanguages = (languageMap: LanguageMap, count = 2) => {
   if (!languageMap) {
@@ -16,7 +20,8 @@ export const getMostUsedLanguages = (languageMap: LanguageMap, count = 2) => {
       return lineCountDifference;
     })
   );
-  return [...sortedLanguages.keys()].slice(0, count);
+
+  return [...sortedLanguages.keys()].filter(l => !REMOVED_LANGUAGES.includes(l?.toLowerCase())).slice(0, count);
 };
 
 export const buildLanguageString = (languageMap: LanguageMap) => {

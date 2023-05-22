@@ -54,6 +54,12 @@ export class BrowseProjectsPage {
     }
   }
 
+  async expectFiltersNotToBeVisible(...filters: string[]) {
+    for (const filter of filters) {
+      await expect(this.getFilterLocator(filter)).not.toBeVisible();
+    }
+  }
+
   async filterBy(filter: string) {
     await this.getFilterLocator(filter).click();
   }

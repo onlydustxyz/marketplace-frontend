@@ -150,15 +150,14 @@ describe("FilterPanel", () => {
     render(false, { mocks: graphQlMocks });
 
     const allOptions = await screen.findAllByRole("option");
-    expect(allOptions.length).toBe(8);
+    expect(allOptions.length).toBe(7);
     expect(allOptions[0]).toHaveTextContent("C");
     expect(allOptions[1]).toHaveTextContent("C++");
     expect(allOptions[2]).toHaveTextContent("Go");
     expect(allOptions[3]).toHaveTextContent("Rust");
-    expect(allOptions[4]).toHaveTextContent("Shell");
-    expect(allOptions[5]).toHaveTextContent("TypeScript");
-    expect(allOptions[6]).toHaveTextContent("Sponsor 1");
-    expect(allOptions[7]).toHaveTextContent("Sponsor 2");
+    expect(allOptions[4]).toHaveTextContent("TypeScript");
+    expect(allOptions[5]).toHaveTextContent("Sponsor 1");
+    expect(allOptions[6]).toHaveTextContent("Sponsor 2");
   });
 
   it("should display 'Mine only' when user is leader'", async () => {
