@@ -1,15 +1,11 @@
 import * as dotenv from "dotenv";
-import { OpenAI } from "langchain";
+import { decorate } from "./gpt.ts";
+import { readFile, writeFile } from "fs/promises";
 
 dotenv.config();
 
-const model = new OpenAI({
-  modelName: "gpt-3.5-turbo",
-  openAIApiKey: process.env.OPENAI_API_KEY,
-});
+const FILE = "../../backend/event-listeners/src/bin/github-indexer/indexer/user.rs";
 
-const res = await model.call(
-  "What's a good idea for an application to build with GPT-3?"
-);
-
-console.log(res);
+readFile(FILE)
+  .then(code => decorate(code.toString()))
+  .then(code => writeFile(FILE, code));
