@@ -53,9 +53,13 @@ export default function PaymentLine({
       [Field.Date]: payment.requestedAt,
       [Field.Contribution]: payment.project?.title?.toLocaleLowerCase() + payment.id,
       [Field.Amount]: payment.amount.value,
-      [Field.Status]: getPaymentStatusOrder(payment.status),
+      [Field.Status]: getPaymentStatusOrder({
+        status: payment.status,
+        pendingPayoutInfo: payoutInfoMissing,
+        pendingInvoice: invoiceNeeded && !payment.invoiceReceived,
+      }),
     });
-  }, []);
+  }, [payment.status, payoutInfoMissing, invoiceNeeded, payment.invoiceReceived]);
 
   const { T } = useIntl();
 

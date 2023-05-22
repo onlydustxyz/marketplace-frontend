@@ -72,14 +72,20 @@ export enum PaymentStatus {
   WAITING_PAYMENT = "WAITING_PAYMENT",
 }
 
-export function getPaymentStatusOrder(status: PaymentStatus | "payout_missing"): number {
+export function getPaymentStatusOrder({
+  status,
+  pendingPayoutInfo,
+  pendingInvoice,
+}: {
+  status: PaymentStatus;
+  pendingPayoutInfo: boolean;
+  pendingInvoice?: boolean;
+}): number {
   switch (status) {
     case PaymentStatus.WAITING_PAYMENT:
-      return 0;
+      return pendingPayoutInfo || pendingInvoice ? -1 : 0;
     case PaymentStatus.ACCEPTED:
       return 1;
-    default:
-      return -1;
   }
 }
 

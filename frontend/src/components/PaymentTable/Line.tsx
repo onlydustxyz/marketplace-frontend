@@ -34,10 +34,13 @@ export default function PaymentLine({ payment, setSortingFields, onClick, select
         [Field.Date]: new Date(payment.requestedAt),
         [Field.Contribution]: recipient.login.toLocaleLowerCase() + payment.id,
         [Field.Amount]: payment.amountInUsd,
-        [Field.Status]: getPaymentStatusOrder(paymentStatus),
+        [Field.Status]: getPaymentStatusOrder({
+          status: paymentStatus,
+          pendingPayoutInfo: !payoutSettingsValid,
+        }),
       });
     }
-  }, [recipient?.login]);
+  }, [recipient?.login, paymentStatus, payoutSettingsValid]);
 
   return (
     <>
