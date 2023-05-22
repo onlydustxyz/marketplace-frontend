@@ -46,6 +46,10 @@ query GetProjectOverviewDetails($projectId: uuid!) {
     applications {
       ...Applicant
     }
+    pendingInvitations {
+      id
+      githubUserId
+    }
   }
 }
 
