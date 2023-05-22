@@ -251,3 +251,9 @@ playwright/clean:
 playwright/update-snapshots:
 	yarn playwright test __populate
 	yarn playwright test --update-snapshots responsive
+
+# ----------------------------------------------------------
+#                    Doc GPT
+# ----------------------------------------------------------
+docgpt/start:
+	yarn --cwd scripts/docGPT start
