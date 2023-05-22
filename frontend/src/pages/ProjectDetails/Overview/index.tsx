@@ -124,11 +124,9 @@ export default function Overview() {
                       disabled={alreadyApplied}
                       onClick={applyToProject}
                     >
-                      {T("project.showInterest.connected")}
+                      {T("applications.applyButton")}
                     </Button>
-                    {alreadyApplied && (
-                      <Tooltip anchorId="applyButton">{T("project.showInterest.appliedTooltip")}</Tooltip>
-                    )}
+                    {alreadyApplied && <Tooltip anchorId="applyButton">{T("applications.appliedTooltip")}</Tooltip>}
                   </div>
                 ) : (
                   <a
@@ -138,7 +136,7 @@ export default function Overview() {
                     }
                   >
                     <Button size={ButtonSize.Md} width={Width.Full}>
-                      {T("project.showInterest.notConnected")}
+                      {T("applications.appliedTooltip")}
                     </Button>
                   </a>
                 )}

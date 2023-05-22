@@ -10,7 +10,7 @@ export default function useApplications(projectId: string) {
 
   const [applyToProject] = useApplyToProjectMutation({
     variables: { projectId },
-    onCompleted: () => showToaster(T("project.showInterest.confirmationToaster")),
+    onCompleted: () => showToaster(T("applications.confirmationToaster")),
     update: (cache, { data }) => {
       const application = cache.writeFragment<ApplicantFragment>({
         fragment: ApplicantFragmentDoc,
