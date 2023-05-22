@@ -335,8 +335,10 @@
     "amountGranted": "Granted: __granted__ / __total__",
     "hiring": "Looking for contributors",
     "showInterest": {
+      "appliedTooltip": "Thanks for showing your interest!",
       "connected": "Show interest",
-      "notConnected": "Connect to show interest"
+      "notConnected": "Connect to show interest",
+      "confirmationToaster": "Thank you we'll contact you shortly"
     },
     "details": {
       "contributors": {

@@ -24,6 +24,8 @@ import Button, { ButtonSize, Width } from "src/components/Button";
 import { useAuth } from "src/hooks/useAuth";
 import { LOGIN_URL } from "src/App/Layout/Header/GithubLink";
 import { SessionMethod, useSessionDispatch } from "src/hooks/useSession";
+import Tooltip from "src/components/Tooltip";
+import useApplications from "./useApplications";
 
 type OutletContext = {
   projectId: string;
@@ -33,7 +35,7 @@ type OutletContext = {
 export default function Overview() {
   const { T } = useIntl();
   const { projectId, children } = useOutletContext<OutletContext>();
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, user } = useAuth();
   const dispatchSession = useSessionDispatch();
   const location = useLocation();
 
@@ -41,6 +43,8 @@ export default function Overview() {
     variables: { projectId },
     ...contextWithCacheHeaders,
   });
+
+  const { applyToProject } = useApplications(projectId);
 
   const projectName = data?.projectsByPk?.projectDetails?.name;
   const logoUrl = data?.projectsByPk?.projectDetails?.logoUrl || onlyDustLogo;
@@ -55,6 +59,7 @@ export default function Overview() {
   const totalSpentAmountInUsd = data?.projectsByPk?.budgetsAggregate.aggregate?.sum?.spentAmount;
   const languages = getDeduplicatedAggregatedLanguages(data?.projectsByPk?.githubRepos.map(r => r.repo));
   const hiring = data?.projectsByPk?.projectDetails?.hiring;
+  const alreadyApplied = data?.projectsByPk?.applications.some(a => a.applicantId === user?.id);
 
   return (
     <>
@@ -108,9 +113,14 @@ export default function Overview() {
                   {T("project.hiring").toUpperCase()}
                 </div>
                 {isLoggedIn ? (
-                  <Button size={ButtonSize.Md} width={Width.Full}>
-                    {T("project.showInterest.connected")}
-                  </Button>
+                  <div id="applyButton">
+                    <Button size={ButtonSize.Md} width={Width.Full} disabled={alreadyApplied} onClick={applyToProject}>
+                      {T("project.showInterest.connected")}
+                    </Button>
+                    {alreadyApplied && (
+                      <Tooltip anchorId="applyButton">{T("project.showInterest.appliedTooltip")}</Tooltip>
+                    )}
+                  </div>
                 ) : (
                   <a
                     href={LOGIN_URL}

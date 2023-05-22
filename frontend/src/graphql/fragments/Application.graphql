@@ -1,0 +1,8 @@
+fragment ApplicationId on Applications {
+  id
+}
+
+fragment Applicant on Applications {
+  ...ApplicationId
+  applicantId
+}
