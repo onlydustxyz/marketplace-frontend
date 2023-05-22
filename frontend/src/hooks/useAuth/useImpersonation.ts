@@ -1,10 +1,5 @@
-import { gql } from "@apollo/client";
-import { useEffect, useMemo } from "react";
-import {
-  ImpersonatedUserQuery,
-  useImpersonatedLeadProjectsQuery,
-  useImpersonatedUserQuery,
-} from "src/__generated/graphql";
+import { useEffect } from "react";
+import { ImpersonatedUserQuery, useImpersonatedUserQuery } from "src/__generated/graphql";
 import { useImpersonationClaims } from "src/hooks/useImpersonationClaims";
 import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
@@ -42,25 +37,13 @@ export const useImpersonation = () => {
 
   const invalidImpersonation = !!impersonatedUserQuery.error;
 
-  const leadProjectsQuery = useImpersonatedLeadProjectsQuery({
-    context: {
-      graphqlErrorDisplay: "none",
-    },
-    variables: {
-      userId: impersonationSet?.userId,
-    },
-    skip: !impersonationSet,
-  });
-
   const impersonatedUser = impersonatedUserQuery.data?.user
     ? mapImpersonatedUser(impersonatedUserQuery.data.user)
     : null;
 
   const impersonatedGithubUserId = impersonatedUserQuery.data?.user?.githubUser?.githubUserId as number | undefined;
-  const impersonatedLedProjectIds: string[] = useMemo(
-    () => leadProjectsQuery.data?.projectLeads.map(lead => lead.projectId) ?? [],
-    [leadProjectsQuery.data]
-  );
+  const impersonatedLedProjectIds: string[] =
+    impersonatedUserQuery.data?.user?.projectsLeaded.map(l => l.projectId) || [];
 
   const impersonatedRoles =
     impersonatedLedProjectIds.length > 0
@@ -68,7 +51,7 @@ export const useImpersonation = () => {
       : [HasuraUserRole.RegisteredUser];
 
   useEffect(() => {
-    if (impersonatedGithubUserId === undefined || impersonatedLedProjectIds.length === 0) {
+    if (impersonatedGithubUserId === undefined) {
       return;
     }
     setCustomClaims({
@@ -87,41 +70,6 @@ export const useImpersonation = () => {
     stopImpersonation: clearImpersonationSet,
   };
 };
-
-gql`
-  query ImpersonatedUser($id: uuid!) {
-    user(id: $id) {
-      id
-      createdAt
-      displayName
-      email
-      avatarUrl
-      locale
-      isAnonymous
-      defaultRole
-      emailVerified
-      phoneNumber
-      phoneNumberVerified
-      activeMfaType
-      roles {
-        role
-      }
-      githubUser {
-        userId
-        githubUserId
-      }
-    }
-  }
-`;
-
-gql`
-  query ImpersonatedLeadProjects($userId: uuid!) {
-    projectLeads(where: { userId: { _eq: $userId } }) {
-      userId
-      projectId
-    }
-  }
-`;
 
 const mapImpersonatedUser = (user: ImpersonatedUserQuery["user"]): User | null => {
   if (user === null) {
