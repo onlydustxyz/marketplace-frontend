@@ -148,6 +148,7 @@ class ProjectDetails {
    rank: Int!
    shortDescription: String!
    telegramLink: String
+   visibility: jsonb!
 }
 
 class ProjectGithubRepos {
