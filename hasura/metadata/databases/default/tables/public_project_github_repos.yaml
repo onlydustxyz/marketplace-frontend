@@ -46,3 +46,4 @@ select_permissions:
         - project_id
         - github_repo_id
       filter: {}
+      allow_aggregations: true
