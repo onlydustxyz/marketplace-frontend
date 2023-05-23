@@ -26,6 +26,7 @@ import { LOGIN_URL } from "src/App/Layout/Header/GithubLink";
 import { SessionMethod, useSessionDispatch } from "src/hooks/useSession";
 import Tooltip from "src/components/Tooltip";
 import useApplications from "./useApplications";
+import LockFill from "src/icons/LockFill";
 
 type OutletContext = {
   projectId: string;
@@ -71,15 +72,18 @@ export default function Overview() {
       <div className="flex flex-row gap-6">
         <QueryWrapper query={{ data, loading }}>
           <div className="flex flex-col gap-4 w-full">
-            <Card className={classNames("px-6 py-4 flex flex-col gap-4")}>
+            <Card className={classNames("px-6 py-4 flex flex-col gap-4 z-10")}>
               <div className="flex flex-row items-center gap-4">
                 <img
                   alt={data?.projectsByPk?.projectDetails?.name}
                   src={logoUrl}
                   className="w-20 h-20 flex-shrink-0 rounded-lg bg-spaceBlue-900"
                 />
-                <div className="flex flex-col gap-1">
-                  <div className="font-belwe font-normal text-2xl text-greyscale-50">{projectName}</div>
+                <div className="flex flex-col gap-1 w-full">
+                  <div className="flex flex-row items-center justify-between font-belwe font-normal text-2xl text-greyscale-50">
+                    {projectName}
+                    {data?.projectsByPk?.projectDetails?.visibility === "Private" && <PrivateTag />}
+                  </div>
                   {Object.keys(languages).length > 0 && (
                     <Tag size={TagSize.Small}>
                       <CodeSSlashLine />
@@ -168,3 +172,16 @@ Lorem ipsum dolor sit amet, consectetur *adipiscing elit*. Sed non risus. **Susp
 
 Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi. Proin porttitor, orci nec nonummy molestie, enim est eleifend mi, non fermentum diam nisl sit amet erat. Duis semper. Duis arcu massa, scelerisque vitae, consequat in, pretium a, enim. Pellentesque congue.
 `;
+
+function PrivateTag() {
+  const { T } = useIntl();
+
+  return (
+    <div id="private-tag">
+      <div className="flex flex-row gap-2 items-center py-1 px-2.5 text-orange-500 font-medium font-walsheim text-xs rounded-lg bg-orange-900 hover:cursor-default">
+        <LockFill /> {T("project.visibility.private.name")}
+      </div>
+      <Tooltip anchorId="private-tag">{T("project.visibility.private.tooltip")}</Tooltip>
+    </div>
+  );
+}

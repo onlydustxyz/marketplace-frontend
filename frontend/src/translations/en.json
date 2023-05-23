@@ -342,7 +342,8 @@
     "hiring": "Looking for contributors",
     "visibility": {
       "private": {
-        "tooltip": "Private project · only visible to you"
+        "tooltip": "Private project · only visible to you",
+        "name": "Private"
       }
     },
     "details": {

@@ -8,6 +8,7 @@ query GetProjectOverviewDetails($projectId: uuid!) {
       logoUrl
       telegramLink
       hiring
+      visibility
     }
     githubRepos {
       repo {
