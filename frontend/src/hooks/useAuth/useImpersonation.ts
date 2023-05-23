@@ -41,9 +41,9 @@ export const useImpersonation = () => {
     ? mapImpersonatedUser(impersonatedUserQuery.data.user)
     : null;
 
-  const impersonatedGithubUserId = impersonatedUserQuery.data?.user?.githubUser?.githubUserId as number | undefined;
+  const impersonatedGithubUserId = impersonatedUserQuery.data?.user?.registeredUser?.githubUserId as number | undefined;
   const impersonatedLedProjectIds: string[] =
-    impersonatedUserQuery.data?.user?.projectsLeaded.map(l => l.projectId) || [];
+    impersonatedUserQuery.data?.user?.registeredUser?.projectsLeaded.map(l => l.projectId) || [];
 
   const impersonatedRoles =
     impersonatedLedProjectIds.length > 0

@@ -9,11 +9,9 @@ export default function usePayoutSettings(githubUserId?: number) {
     fetchPolicy: "network-only",
   });
 
-  const userInfo = query.data?.authGithubUsers.at(0)?.user?.userInfo;
-  const valid = query.data
-    ? query.data.authGithubUsers.at(0)?.user?.userInfo?.arePayoutSettingsValid || false
-    : undefined;
-  const invoiceNeeded = isDefined(query.data?.authGithubUsers.at(0)?.user?.userInfo?.identity?.Company);
+  const userInfo = query.data?.registeredUsers.at(0)?.userInfo;
+  const valid = query.data ? query.data.registeredUsers.at(0)?.userInfo?.arePayoutSettingsValid || false : undefined;
+  const invoiceNeeded = isDefined(query.data?.registeredUsers.at(0)?.userInfo?.identity?.Company);
 
   return {
     ...query,

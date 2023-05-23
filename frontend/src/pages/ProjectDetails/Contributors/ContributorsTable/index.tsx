@@ -22,7 +22,7 @@ export default function ContributorsTable({
       login: c.login,
       avatarUrl: c.avatarUrl,
       htmlUrl: c.htmlUrl,
-      isRegistered: !!c.user?.userId,
+      isRegistered: !!c.user?.id,
       totalEarned: c.paymentRequests.reduce((acc, r) => acc + r.amountInUsd || 0, 0),
       paidContributions:
         c.paymentRequests.reduce((acc, r) => acc + (r.workItemsAggregate.aggregate?.count || 0), 0) || 0,

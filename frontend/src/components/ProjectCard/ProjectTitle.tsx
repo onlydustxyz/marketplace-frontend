@@ -18,23 +18,23 @@ const ProjectLeads = ({ leads, id }: { leads: ProjectLeadFragment[]; id: string 
     <div className="text-sm flex flex-row text-spaceBlue-200 gap-1 items-center pt-0.5">
       {leads.length > 0 && (
         <div className="whitespace-nowrap truncate">
-          {T("project.ledBy", { name: leads[0]?.displayName, count: leads.length })}
+          {T("project.ledBy", { name: leads[0]?.login, count: leads.length })}
         </div>
       )}
       <div className="flex flex-row -space-x-1" id={`projectLeads-${id}`}>
         {leads.map(lead => (
           <RoundedImage
             rounding={Rounding.Circle}
-            alt={lead.displayName}
+            alt={lead.login || ""}
             size={ImageSize.Xxs}
             key={lead.id}
-            src={lead.avatarUrl}
+            src={lead.avatarUrl || ""}
           />
         ))}
       </div>
       {leads.length > 1 && (
         <Tooltip anchorId={`projectLeads-${id}`} position={TooltipPosition.Top}>
-          {formatList(leads.map(lead => lead.displayName))}
+          {formatList(leads.map(lead => lead.login || ""))}
         </Tooltip>
       )}
     </div>

@@ -74,7 +74,7 @@ const View: React.FC<Props> = ({
 
   useEffect(() => setWorkItemsPrefilled(false), [contributor]);
 
-  const displayCallout = contributor && !contributor?.user?.userId;
+  const displayCallout = contributor && !contributor?.user?.id;
 
   return (
     <>

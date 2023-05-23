@@ -95,7 +95,7 @@ export default function ContributorSelectView({
                         {selectedGithubHandle}
                       </div>
                     )}
-                    {contributor?.user?.userId && <img src={onlyDustLogo} className="w-3.5 ml-1.5" />}
+                    {contributor?.user?.id && <img src={onlyDustLogo} className="w-3.5 ml-1.5" />}
                   </div>
                   <ArrowDownSLine />
                 </div>
@@ -257,7 +257,7 @@ function VirtualizedContributorSubList<T extends ContributorFragment>({ lines }:
                     contributor={{
                       avatarUrl: contributor.avatarUrl,
                       login: contributor.login,
-                      isRegistered: !!contributor.user?.userId,
+                      isRegistered: !!contributor.user?.id,
                     }}
                   />
                   {contributor.unpaidMergedPullsCount && (

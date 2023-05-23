@@ -96,7 +96,7 @@ export default function usePaymentRequests(projectId?: string) {
           });
 
           cache.modify({
-            id: cache.identify({ __typename: "AuthGithubUsers", userId: recipient.user?.userId }),
+            id: cache.identify({ __typename: "AuthGithubUsers", userId: recipient.user?.id }),
             fields: {
               paymentRequests: paymentRequestRefs => [...paymentRequestRefs, newPaymentRequestRef],
             },
