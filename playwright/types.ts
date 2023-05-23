@@ -46,6 +46,7 @@ export type ProjectFixture = {
   repos?: string[];
   sponsors?: string[];
   hiring?: boolean;
+  rank?: number;
 };
 
 export type Project = ProjectFixture & {

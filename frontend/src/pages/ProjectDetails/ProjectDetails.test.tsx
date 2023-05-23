@@ -78,6 +78,7 @@ const getProjectMock = {
           shortDescription: TEST_DESCRIPTION,
           logoUrl: null,
           hiring: false,
+          rank: 0,
         },
         contributorsAggregate: { aggregate: { count: 0 } },
         pendingInvitations: [{ id: "test-invitation-id", githubUserId: TEST_GITHUB_USER_ID }],
@@ -128,6 +129,7 @@ const getLedProjectMock = {
           shortDescription: TEST_DESCRIPTION,
           logoUrl: null,
           hiring: false,
+          rank: 0,
         },
         pendingInvitations: [],
         projectLeads: [

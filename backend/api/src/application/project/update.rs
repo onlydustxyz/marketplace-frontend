@@ -38,6 +38,7 @@ impl Usecase {
 		telegram_link: Nullable<Url>,
 		logo_url: Nullable<Url>,
 		hiring: Option<bool>,
+		rank: Option<i32>,
 	) -> Result<(), DomainError> {
 		let mut project = self.project_details_repository.find_by_id(&project_id)?;
 
@@ -63,6 +64,9 @@ impl Usecase {
 		}
 		if let Some(hiring) = hiring {
 			project = project.with_hiring(hiring)
+		}
+		if let Some(rank) = rank {
+			project = project.with_rank(rank)
 		}
 
 		self.project_details_repository.update(&project_id, project)?;
@@ -141,6 +145,7 @@ mod tests {
 					short_description: "foo".to_string(),
 					long_description: "bar".to_string(),
 					hiring: false,
+					rank: 0,
 				})
 			});
 		project_details_repository
@@ -162,6 +167,7 @@ mod tests {
 				Nullable::Some(telegram_link),
 				Nullable::Some(logo_url),
 				Some(true),
+				Some(32),
 			)
 			.await
 			.unwrap();
@@ -195,6 +201,7 @@ mod tests {
 					short_description: "foo".to_string(),
 					long_description: "bar".to_string(),
 					hiring: false,
+					rank: 0,
 				})
 			});
 
@@ -211,6 +218,7 @@ mod tests {
 						short_description: "foo".to_string(),
 						long_description: "long_description".to_string(),
 						hiring: true,
+						rank: 32,
 					}
 			})
 			.once()
@@ -227,6 +235,7 @@ mod tests {
 				Nullable::Some(telegram_link),
 				Nullable::Some(logo_url),
 				Some(true),
+				Some(32),
 			)
 			.await
 			.unwrap();

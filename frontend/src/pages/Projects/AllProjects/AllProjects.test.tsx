@@ -2,14 +2,13 @@ import { describe, expect, it, vi } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
 import matchers from "@testing-library/jest-dom/matchers";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
-import AllProjects from ".";
+import AllProjects, { buildQuerySorting } from ".";
 import { CLAIMS_KEY, GITHUB_USERID_KEY, PROJECTS_LED_KEY } from "src/types";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
 import {
   GetProjectsDocument,
   GetProjectsQueryResult,
   GetProjectsQueryVariables,
-  OrderBy,
   ProjectCardFieldsFragment,
 } from "src/__generated/graphql";
 import { MockedProjectFilterProvider, Ownership, ProjectFilter } from "src/pages/Projects/useProjectFilter";
@@ -34,6 +33,7 @@ const ALL_PROJECTS_RESULT_NO_INVITATIONS: { data: GetProjectsQueryResult["data"]
           logoUrl: null,
           telegramLink: null,
           hiring: false,
+          rank: 0,
         },
         budgets: [{ id: "budget-1" }],
         budgetsAggregate: {
@@ -75,6 +75,7 @@ const ALL_PROJECTS_RESULT_NO_INVITATIONS: { data: GetProjectsQueryResult["data"]
           logoUrl: null,
           telegramLink: null,
           hiring: false,
+          rank: 0,
         },
         budgets: [{ id: "budget-2" }],
         budgetsAggregate: {
@@ -123,6 +124,7 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
           shortDescription: "short description",
           telegramLink: null,
           hiring: false,
+          rank: 0,
         },
         budgets: [{ id: "budget-1" }],
         budgetsAggregate: {
@@ -164,6 +166,7 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
           shortDescription: "short description",
           telegramLink: null,
           hiring: false,
+          rank: 0,
         },
         budgets: [{ id: "budget-2" }],
         budgetsAggregate: {
@@ -205,6 +208,7 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
           shortDescription: "short description",
           telegramLink: null,
           hiring: false,
+          rank: 0,
         },
         budgets: [{ id: "budget-3" }],
         budgetsAggregate: {
@@ -253,6 +257,7 @@ const projectWithNoBudget: ProjectCardFieldsFragment = {
     telegramLink: null,
     logoUrl: null,
     hiring: false,
+    rank: 0,
   },
   githubRepos: [
     {
@@ -288,6 +293,7 @@ const projectWithNoRepo: ProjectCardFieldsFragment = {
     telegramLink: null,
     logoUrl: null,
     hiring: false,
+    rank: 0,
   },
   githubRepos: [],
   pendingInvitations: [],
@@ -314,6 +320,7 @@ const projectWithNoLeader: ProjectCardFieldsFragment = {
     telegramLink: null,
     logoUrl: null,
     hiring: false,
+    rank: 0,
   },
   githubRepos: [
     {
@@ -343,6 +350,7 @@ const projectInvalidWithInvite: ProjectCardFieldsFragment = {
     telegramLink: null,
     logoUrl: null,
     hiring: false,
+    rank: 0,
   },
   githubRepos: [],
   pendingInvitations: [{ id: "invitation-1", githubUserId: TEST_GITHUB_USER_ID }],
@@ -363,6 +371,7 @@ const projectWithNoLeaderAndInviteForWrongUser: ProjectCardFieldsFragment = {
     telegramLink: null,
     logoUrl: null,
     hiring: false,
+    rank: 0,
   },
   githubRepos: [
     {
@@ -392,6 +401,7 @@ const projectWithNoLeaderAndInvite: ProjectCardFieldsFragment = {
     telegramLink: null,
     logoUrl: null,
     hiring: false,
+    rank: 0,
   },
   githubRepos: [
     {
@@ -414,7 +424,7 @@ const buildGraphQlMocks = (projectsQueryResult: { data: GetProjectsQueryResult["
       query: GetProjectsDocument,
       variables: {
         where: {},
-        orderBy: { budgetsAggregate: { sum: { spentAmount: OrderBy.Desc } } },
+        orderBy: buildQuerySorting(Sorting.MoneyGranted),
       } as GetProjectsQueryVariables,
     },
     result: projectsQueryResult,

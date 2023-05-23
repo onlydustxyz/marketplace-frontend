@@ -30,6 +30,7 @@ const PROJECT: Project = {
     shortDescription: "A short description",
     logoUrl: "https://avatars.githubusercontent.com/u/115809607?v=4",
     hiring: false,
+    rank: 0,
   },
   projectLeads: [
     {

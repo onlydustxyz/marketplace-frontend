@@ -155,6 +155,7 @@ impl Mutation {
 		logo_url: Option<Url>,
 		initial_budget: Option<i32>,
 		hiring: Option<bool>,
+		rank: Option<i32>,
 	) -> Result<Uuid> {
 		let project_id = context
 			.create_project_usecase
@@ -168,6 +169,7 @@ impl Mutation {
 					Money::from_major(initial_budget as i64, rusty_money::crypto::USDC).into()
 				}),
 				hiring.unwrap_or_default(),
+				rank.unwrap_or_default(),
 			)
 			.await?;
 
@@ -183,6 +185,7 @@ impl Mutation {
 		telegram_link: Nullable<Url>,
 		logo_url: Nullable<Url>,
 		hiring: Option<bool>,
+		rank: Option<i32>,
 	) -> Result<Uuid> {
 		context
 			.update_project_usecase
@@ -194,6 +197,7 @@ impl Mutation {
 				telegram_link,
 				logo_url,
 				hiring,
+				rank,
 			)
 			.await?;
 

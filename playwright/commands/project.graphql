@@ -6,6 +6,7 @@ mutation createProject(
   $longDescription: String!
   $initialBudget: Int
   $hiring: Boolean
+  $rank: Int
 ) {
   createProject(
     name: $projectName
@@ -15,6 +16,7 @@ mutation createProject(
     longDescription: $longDescription
     initialBudget: $initialBudget
     hiring: $hiring
+    rank: $rank
   )
 }
 
@@ -26,6 +28,7 @@ mutation updateProject(
   $shortDescription: String
   $longDescription: String
   $hiring: Boolean
+  $rank: Int
 ) {
   updateProject(
     id: $projectId
@@ -35,6 +38,7 @@ mutation updateProject(
     shortDescription: $shortDescription
     longDescription: $longDescription
     hiring: $hiring
+    rank: $rank
   )
 }
 

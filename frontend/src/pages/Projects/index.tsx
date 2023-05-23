@@ -11,6 +11,7 @@ import SortingDropdown from "./SortingDropdown";
 import { useLocalStorage } from "react-use";
 
 export enum Sorting {
+  Trending = "trending",
   ProjectName = "projectName",
   ReposCount = "reposCount",
   ContributorsCount = "contributorsCount",
@@ -20,6 +21,7 @@ export enum Sorting {
 }
 
 export const PROJECT_SORTINGS = [
+  Sorting.Trending,
   Sorting.ProjectName,
   Sorting.ReposCount,
   Sorting.ContributorsCount,
@@ -28,7 +30,7 @@ export const PROJECT_SORTINGS = [
   Sorting.TotalBudget,
 ];
 
-const DEFAULT_SORTING = Sorting.MoneyGranted;
+const DEFAULT_SORTING = Sorting.Trending;
 
 export default function Projects() {
   const { T } = useT();

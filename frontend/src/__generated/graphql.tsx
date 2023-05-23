@@ -3317,6 +3317,7 @@ export type ProjectDetails = {
   longDescription: Scalars['String'];
   name: Scalars['String'];
   projectId: Scalars['uuid'];
+  rank: Scalars['Int'];
   shortDescription: Scalars['String'];
   telegramLink: Maybe<Scalars['String']>;
 };
@@ -3331,9 +3332,17 @@ export type ProjectDetailsAggregate = {
 /** aggregate fields of "project_details" */
 export type ProjectDetailsAggregateFields = {
   __typename?: 'ProjectDetailsAggregateFields';
+  avg: Maybe<ProjectDetailsAvgFields>;
   count: Scalars['Int'];
   max: Maybe<ProjectDetailsMaxFields>;
   min: Maybe<ProjectDetailsMinFields>;
+  stddev: Maybe<ProjectDetailsStddevFields>;
+  stddevPop: Maybe<ProjectDetailsStddev_PopFields>;
+  stddevSamp: Maybe<ProjectDetailsStddev_SampFields>;
+  sum: Maybe<ProjectDetailsSumFields>;
+  varPop: Maybe<ProjectDetailsVar_PopFields>;
+  varSamp: Maybe<ProjectDetailsVar_SampFields>;
+  variance: Maybe<ProjectDetailsVarianceFields>;
 };
 
 
@@ -3341,6 +3350,12 @@ export type ProjectDetailsAggregateFields = {
 export type ProjectDetailsAggregateFieldsCountArgs = {
   columns: InputMaybe<Array<ProjectDetailsSelectColumn>>;
   distinct: InputMaybe<Scalars['Boolean']>;
+};
+
+/** aggregate avg on columns */
+export type ProjectDetailsAvgFields = {
+  __typename?: 'ProjectDetailsAvgFields';
+  rank: Maybe<Scalars['Float']>;
 };
 
 /** Boolean expression to filter rows from the table "project_details". All fields are combined with a logical 'AND'. */
@@ -3353,6 +3368,7 @@ export type ProjectDetailsBoolExp = {
   longDescription: InputMaybe<StringComparisonExp>;
   name: InputMaybe<StringComparisonExp>;
   projectId: InputMaybe<UuidComparisonExp>;
+  rank: InputMaybe<IntComparisonExp>;
   shortDescription: InputMaybe<StringComparisonExp>;
   telegramLink: InputMaybe<StringComparisonExp>;
 };
@@ -3363,6 +3379,11 @@ export enum ProjectDetailsConstraint {
   ProjectDetailsPkey = 'project_details_pkey'
 }
 
+/** input type for incrementing numeric columns in table "project_details" */
+export type ProjectDetailsIncInput = {
+  rank: InputMaybe<Scalars['Int']>;
+};
+
 /** input type for inserting data into table "project_details" */
 export type ProjectDetailsInsertInput = {
   hiring: InputMaybe<Scalars['Boolean']>;
@@ -3370,6 +3391,7 @@ export type ProjectDetailsInsertInput = {
   longDescription: InputMaybe<Scalars['String']>;
   name: InputMaybe<Scalars['String']>;
   projectId: InputMaybe<Scalars['uuid']>;
+  rank: InputMaybe<Scalars['Int']>;
   shortDescription: InputMaybe<Scalars['String']>;
   telegramLink: InputMaybe<Scalars['String']>;
 };
@@ -3381,6 +3403,7 @@ export type ProjectDetailsMaxFields = {
   longDescription: Maybe<Scalars['String']>;
   name: Maybe<Scalars['String']>;
   projectId: Maybe<Scalars['uuid']>;
+  rank: Maybe<Scalars['Int']>;
   shortDescription: Maybe<Scalars['String']>;
   telegramLink: Maybe<Scalars['String']>;
 };
@@ -3392,6 +3415,7 @@ export type ProjectDetailsMinFields = {
   longDescription: Maybe<Scalars['String']>;
   name: Maybe<Scalars['String']>;
   projectId: Maybe<Scalars['uuid']>;
+  rank: Maybe<Scalars['Int']>;
   shortDescription: Maybe<Scalars['String']>;
   telegramLink: Maybe<Scalars['String']>;
 };
@@ -3426,6 +3450,7 @@ export type ProjectDetailsOrderBy = {
   longDescription: InputMaybe<OrderBy>;
   name: InputMaybe<OrderBy>;
   projectId: InputMaybe<OrderBy>;
+  rank: InputMaybe<OrderBy>;
   shortDescription: InputMaybe<OrderBy>;
   telegramLink: InputMaybe<OrderBy>;
 };
@@ -3448,6 +3473,8 @@ export enum ProjectDetailsSelectColumn {
   /** column name */
   ProjectId = 'projectId',
   /** column name */
+  Rank = 'rank',
+  /** column name */
   ShortDescription = 'shortDescription',
   /** column name */
   TelegramLink = 'telegramLink'
@@ -3460,8 +3487,33 @@ export type ProjectDetailsSetInput = {
   longDescription: InputMaybe<Scalars['String']>;
   name: InputMaybe<Scalars['String']>;
   projectId: InputMaybe<Scalars['uuid']>;
+  rank: InputMaybe<Scalars['Int']>;
   shortDescription: InputMaybe<Scalars['String']>;
   telegramLink: InputMaybe<Scalars['String']>;
+};
+
+/** aggregate stddev on columns */
+export type ProjectDetailsStddevFields = {
+  __typename?: 'ProjectDetailsStddevFields';
+  rank: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type ProjectDetailsStddev_PopFields = {
+  __typename?: 'ProjectDetailsStddev_popFields';
+  rank: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type ProjectDetailsStddev_SampFields = {
+  __typename?: 'ProjectDetailsStddev_sampFields';
+  rank: Maybe<Scalars['Float']>;
+};
+
+/** aggregate sum on columns */
+export type ProjectDetailsSumFields = {
+  __typename?: 'ProjectDetailsSumFields';
+  rank: Maybe<Scalars['Int']>;
 };
 
 /** update columns of table "project_details" */
@@ -3477,15 +3529,37 @@ export enum ProjectDetailsUpdateColumn {
   /** column name */
   ProjectId = 'projectId',
   /** column name */
+  Rank = 'rank',
+  /** column name */
   ShortDescription = 'shortDescription',
   /** column name */
   TelegramLink = 'telegramLink'
 }
 
 export type ProjectDetailsUpdates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<ProjectDetailsIncInput>;
   /** sets the columns of the filtered rows to the given values */
   _set: InputMaybe<ProjectDetailsSetInput>;
   where: ProjectDetailsBoolExp;
+};
+
+/** aggregate var_pop on columns */
+export type ProjectDetailsVar_PopFields = {
+  __typename?: 'ProjectDetailsVar_popFields';
+  rank: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type ProjectDetailsVar_SampFields = {
+  __typename?: 'ProjectDetailsVar_sampFields';
+  rank: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type ProjectDetailsVarianceFields = {
+  __typename?: 'ProjectDetailsVarianceFields';
+  rank: Maybe<Scalars['Float']>;
 };
 
 /** columns and relationships of "project_github_repos" */
@@ -7838,6 +7912,7 @@ export type Mutation_RootCreateProjectArgs = {
   logoUrl: InputMaybe<Scalars['Url']>;
   longDescription: Scalars['String'];
   name: Scalars['String'];
+  rank: InputMaybe<Scalars['Int']>;
   shortDescription: Scalars['String'];
   telegramLink: InputMaybe<Scalars['Url']>;
 };
@@ -9071,6 +9146,7 @@ export type Mutation_RootUpdateProjectArgs = {
   logoUrl: InputMaybe<Scalars['Url']>;
   longDescription: InputMaybe<Scalars['String']>;
   name: InputMaybe<Scalars['String']>;
+  rank: InputMaybe<Scalars['Int']>;
   shortDescription: InputMaybe<Scalars['String']>;
   telegramLink: InputMaybe<Scalars['Url']>;
 };
@@ -9078,6 +9154,7 @@ export type Mutation_RootUpdateProjectArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdateProjectDetailsArgs = {
+  _inc: InputMaybe<ProjectDetailsIncInput>;
   _set: InputMaybe<ProjectDetailsSetInput>;
   where: ProjectDetailsBoolExp;
 };
@@ -9085,6 +9162,7 @@ export type Mutation_RootUpdateProjectDetailsArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdateProjectDetailsByPkArgs = {
+  _inc: InputMaybe<ProjectDetailsIncInput>;
   _set: InputMaybe<ProjectDetailsSetInput>;
   pk_columns: ProjectDetailsPkColumnsInput;
 };
@@ -9581,6 +9659,7 @@ export type Project_Details_StreamCursorValueInput = {
   longDescription: InputMaybe<Scalars['String']>;
   name: InputMaybe<Scalars['String']>;
   projectId: InputMaybe<Scalars['uuid']>;
+  rank: InputMaybe<Scalars['Int']>;
   shortDescription: InputMaybe<Scalars['String']>;
   telegramLink: InputMaybe<Scalars['String']>;
 };
@@ -12595,7 +12674,7 @@ export type PaymentRequestDetailsQueryVariables = Exact<{
 
 export type PaymentRequestDetailsQuery = { __typename?: 'query_root', paymentRequestsByPk: { __typename?: 'PaymentRequests', id: any, amountInUsd: any, requestedAt: any, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', processedAt: any, receipt: any }>, requestor: { __typename?: 'users', id: any, displayName: string, avatarUrl: string } | null, liveGithubRecipient: { __typename?: 'User', login: string, avatarUrl: any, htmlUrl: any, id: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null } | null, workItems: Array<{ __typename?: 'WorkItems', paymentId: any, repoId: any, issueNumber: any, githubIssue: { __typename?: 'Issue', repoId: any, number: any, type: Type, status: Status, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null, id: any, ignoredForProjects: Array<{ __typename?: 'IgnoredGithubIssues', projectId: any, repoId: any, issueNumber: any }> } | null }>, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null } } | null };
 
-export type ProjectCardFieldsFragment = { __typename?: 'Projects', id: any, contributorsAggregate: { __typename?: 'ProjectsContributorsViewAggregate', aggregate: { __typename?: 'ProjectsContributorsViewAggregateFields', count: number } | null }, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null, initialAmount: any | null } | null } | null }, budgets: Array<{ __typename?: 'Budgets', id: any }>, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, telegramLink: string | null, logoUrl: string | null, shortDescription: string, hiring: boolean } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any, projectId: any, user: { __typename?: 'users', displayName: string, avatarUrl: string, id: any } | null }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', projectId: any, githubRepoId: any, repo: { __typename?: 'GithubRepos', languages: any, id: any } | null }>, projectSponsors: Array<{ __typename?: 'ProjectsSponsors', sponsor: { __typename?: 'Sponsors', name: string, logoUrl: string, url: string | null, id: any } }> };
+export type ProjectCardFieldsFragment = { __typename?: 'Projects', id: any, contributorsAggregate: { __typename?: 'ProjectsContributorsViewAggregate', aggregate: { __typename?: 'ProjectsContributorsViewAggregateFields', count: number } | null }, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null, initialAmount: any | null } | null } | null }, budgets: Array<{ __typename?: 'Budgets', id: any }>, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, telegramLink: string | null, logoUrl: string | null, shortDescription: string, hiring: boolean, rank: number } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any, projectId: any, user: { __typename?: 'users', displayName: string, avatarUrl: string, id: any } | null }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', projectId: any, githubRepoId: any, repo: { __typename?: 'GithubRepos', languages: any, id: any } | null }>, projectSponsors: Array<{ __typename?: 'ProjectsSponsors', sponsor: { __typename?: 'Sponsors', name: string, logoUrl: string, url: string | null, id: any } }> };
 
 export type ApplicationIdFragment = { __typename?: 'Applications', id: any };
 
@@ -12879,7 +12958,7 @@ export type GetProjectQueryVariables = Exact<{
 }>;
 
 
-export type GetProjectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, contributorsAggregate: { __typename?: 'ProjectsContributorsViewAggregate', aggregate: { __typename?: 'ProjectsContributorsViewAggregateFields', count: number } | null }, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null, initialAmount: any | null } | null } | null }, budgets: Array<{ __typename?: 'Budgets', id: any }>, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, telegramLink: string | null, logoUrl: string | null, shortDescription: string, hiring: boolean } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any, projectId: any, user: { __typename?: 'users', displayName: string, avatarUrl: string, id: any } | null }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', projectId: any, githubRepoId: any, repo: { __typename?: 'GithubRepos', languages: any, id: any } | null }>, projectSponsors: Array<{ __typename?: 'ProjectsSponsors', sponsor: { __typename?: 'Sponsors', name: string, logoUrl: string, url: string | null, id: any } }> } | null };
+export type GetProjectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, contributorsAggregate: { __typename?: 'ProjectsContributorsViewAggregate', aggregate: { __typename?: 'ProjectsContributorsViewAggregateFields', count: number } | null }, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null, initialAmount: any | null } | null } | null }, budgets: Array<{ __typename?: 'Budgets', id: any }>, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, telegramLink: string | null, logoUrl: string | null, shortDescription: string, hiring: boolean, rank: number } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any, projectId: any, user: { __typename?: 'users', displayName: string, avatarUrl: string, id: any } | null }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', projectId: any, githubRepoId: any, repo: { __typename?: 'GithubRepos', languages: any, id: any } | null }>, projectSponsors: Array<{ __typename?: 'ProjectsSponsors', sponsor: { __typename?: 'Sponsors', name: string, logoUrl: string, url: string | null, id: any } }> } | null };
 
 export type AcceptProjectLeaderInvitationMutationVariables = Exact<{
   invitationId: Scalars['Uuid'];
@@ -12894,7 +12973,7 @@ export type GetProjectsQueryVariables = Exact<{
 }>;
 
 
-export type GetProjectsQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', id: any, contributorsAggregate: { __typename?: 'ProjectsContributorsViewAggregate', aggregate: { __typename?: 'ProjectsContributorsViewAggregateFields', count: number } | null }, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null, initialAmount: any | null } | null } | null }, budgets: Array<{ __typename?: 'Budgets', id: any }>, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, telegramLink: string | null, logoUrl: string | null, shortDescription: string, hiring: boolean } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any, projectId: any, user: { __typename?: 'users', displayName: string, avatarUrl: string, id: any } | null }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', projectId: any, githubRepoId: any, repo: { __typename?: 'GithubRepos', languages: any, id: any } | null }>, projectSponsors: Array<{ __typename?: 'ProjectsSponsors', sponsor: { __typename?: 'Sponsors', name: string, logoUrl: string, url: string | null, id: any } }> }> };
+export type GetProjectsQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', id: any, contributorsAggregate: { __typename?: 'ProjectsContributorsViewAggregate', aggregate: { __typename?: 'ProjectsContributorsViewAggregateFields', count: number } | null }, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null, initialAmount: any | null } | null } | null }, budgets: Array<{ __typename?: 'Budgets', id: any }>, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, telegramLink: string | null, logoUrl: string | null, shortDescription: string, hiring: boolean, rank: number } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any, projectId: any, user: { __typename?: 'users', displayName: string, avatarUrl: string, id: any } | null }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', projectId: any, githubRepoId: any, repo: { __typename?: 'GithubRepos', languages: any, id: any } | null }>, projectSponsors: Array<{ __typename?: 'ProjectsSponsors', sponsor: { __typename?: 'Sponsors', name: string, logoUrl: string, url: string | null, id: any } }> }> };
 
 export type GetAllFilterOptionsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -13058,6 +13137,7 @@ export const ProjectCardFieldsFragmentDoc = gql`
     logoUrl
     shortDescription
     hiring
+    rank
   }
   pendingInvitations {
     id

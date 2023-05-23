@@ -23,6 +23,7 @@ fragment ProjectCardFields on Projects {
     logoUrl
     shortDescription
     hiring
+    rank
   }
   pendingInvitations {
     id

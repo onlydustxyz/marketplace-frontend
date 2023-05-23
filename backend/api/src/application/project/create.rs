@@ -42,6 +42,7 @@ impl Usecase {
 		logo_url: Option<Url>,
 		initial_budget: Option<Amount>,
 		hiring: bool,
+		rank: i32,
 	) -> Result<ProjectId, DomainError> {
 		let project_id = ProjectId::new();
 
@@ -66,6 +67,7 @@ impl Usecase {
 			logo_url: stored_logo_url,
 			short_description: short_description.into(),
 			long_description: long_description.into(),
+			rank,
 			hiring,
 		})?;
 

@@ -35,6 +35,7 @@ const populateProject = async (
     variables: {
       projectName: project.name,
       hiring: project.hiring ?? null,
+      rank: project.rank ?? null,
       ...project,
     },
   });
