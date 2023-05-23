@@ -30,11 +30,24 @@ export const Hiring = {
   },
 };
 
+export const Private = {
+  render: () => (
+    <ProjectCard
+      {...props({ ...args, visibility: "Private" })}
+      pendingInvitations={args.withInvitation ? props(args).pendingInvitations : []}
+    />
+  ),
+  parameters: {
+    backgrounds: { default: "space" },
+  },
+};
+
 const props = (args: {
   name: string;
   shortDescription: string;
   projectLeadsCount: number;
   hiring: boolean;
+  visibility: string;
 }): Project => ({
   id: 123,
   contributorsAggregate: { aggregate: { count: 4 } },
@@ -46,6 +59,7 @@ const props = (args: {
     logoUrl: "https://avatars.githubusercontent.com/u/115809607?v=4",
     hiring: args.hiring,
     rank: 0,
+    visibility: args.visibility,
   },
   projectLeads: [
     {
@@ -171,4 +185,5 @@ const args = {
   projectLeadsCount: 1,
   hiring: false,
   rank: 0,
+  visibility: "Public",
 };

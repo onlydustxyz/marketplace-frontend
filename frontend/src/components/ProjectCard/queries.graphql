@@ -24,12 +24,13 @@ fragment ProjectCardFields on Projects {
     shortDescription
     hiring
     rank
+    visibility
   }
   pendingInvitations {
     id
     githubUserId
   }
-  projectLeads(orderBy: {user: {githubUserId: ASC}}) {
+  projectLeads(orderBy: { user: { githubUserId: ASC } }) {
     userId
     projectId
     user {
