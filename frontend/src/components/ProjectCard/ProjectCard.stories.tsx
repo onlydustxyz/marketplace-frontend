@@ -45,6 +45,7 @@ const props = (args: {
     shortDescription: args.shortDescription,
     logoUrl: "https://avatars.githubusercontent.com/u/115809607?v=4",
     hiring: args.hiring,
+    rank: 0,
   },
   projectLeads: [
     {
@@ -169,4 +170,5 @@ const args = {
   withInvitation: false,
   projectLeadsCount: 1,
   hiring: false,
+  rank: 0,
 };

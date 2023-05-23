@@ -73,7 +73,7 @@ const buildQueryFilters = (technologies: string[], sponsors: string[]): Projects
   return filters;
 };
 
-const buildQuerySorting = (sorting: Sorting): ProjectsOrderBy[] => {
+export const buildQuerySorting = (sorting: Sorting): ProjectsOrderBy[] => {
   const orderBy = {} as ProjectsOrderBy;
 
   switch (sorting) {

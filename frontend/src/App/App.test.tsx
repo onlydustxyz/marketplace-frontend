@@ -18,10 +18,11 @@ import {
   GetProjectsForSidebarDocument,
   GetProjectsForSidebarQueryResult,
   GetProjectsQueryResult,
-  OrderBy,
   ProfileDocument,
   ProfileQueryResult,
 } from "src/__generated/graphql";
+import { buildQuerySorting } from "src/pages/Projects/AllProjects";
+import { Sorting } from "src/pages/Projects";
 
 const TEST_USER_ID = "test-user-id";
 const TEST_GITHUB_USER_ID = 123456789;
@@ -95,6 +96,7 @@ const ALL_PROJECTS_RESULT: { data: GetProjectsQueryResult["data"] } = {
           shortDescription: TEST_DESCRIPTION,
           logoUrl: null,
           hiring: false,
+          rank: 0,
         },
         projectLeads: [
           {
@@ -148,6 +150,7 @@ const SINGLE_PROJECT_RESULT: { data: GetProjectQueryResult["data"] } = {
         projectId: TEST_PROJECT_ID,
         logoUrl: null,
         hiring: false,
+        rank: 0,
       },
       projectLeads: [
         {
@@ -242,7 +245,7 @@ const graphQlMocks = [
       query: GetProjectsDocument,
       variables: {
         where: {},
-        orderBy: { budgetsAggregate: { sum: { spentAmount: OrderBy.Desc } } },
+        orderBy: buildQuerySorting(Sorting.Trending),
       },
     },
     result: ALL_PROJECTS_RESULT,
@@ -252,7 +255,7 @@ const graphQlMocks = [
       query: GetProjectsDocument,
       variables: {
         where: {},
-        orderBy: { budgetsAggregate: { sum: { spentAmount: OrderBy.Desc } } },
+        orderBy: buildQuerySorting(Sorting.Trending),
       },
     },
     result: ALL_PROJECTS_RESULT,
