@@ -71,7 +71,7 @@ export default function View({
   const filteredIssues = useFilteredWorkItems({ pattern: searchPattern, workItems: visibleIssues });
 
   return (
-    <div className="flex flex-col gap-4 overflow-hidden -mr-4 h-full">
+    <div className="flex flex-col gap-4 overflow-hidden -mr-4 h-full px-6">
       <div className="flex flex-col gap-3 mr-4">
         <div className="flex flex-row items-center justify-between">
           <div className="flex flex-row gap-3">
