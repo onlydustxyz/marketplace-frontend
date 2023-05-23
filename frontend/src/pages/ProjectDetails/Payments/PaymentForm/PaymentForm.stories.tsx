@@ -45,7 +45,7 @@ const OFUX: GithubUserWithPaymentRequestsForProjectFragment = {
   login: "ofux",
   avatarUrl: "https://avatars.githubusercontent.com/u/595505?v=4",
   id: 595505,
-  user: { userId: "yolo" },
+  user: { id: "yolo" },
   __typename: "GithubUsers",
   htmlUrl: "",
   paymentRequests: [],

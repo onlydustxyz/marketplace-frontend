@@ -52,8 +52,8 @@ test.describe("As a logged user, I", () => {
       },
     });
 
-    expect(result.data.user).not.toBeNull();
-    expect(deepCheckContainsOnlyNullOrEmptyArrays(result.data.user)).toBeTruthy();
+    expect(result.data.registeredUsers).not.toBeNull();
+    expect(deepCheckContainsOnlyNullOrEmptyArrays(result.data.registeredUsers)).toBeTruthy();
   });
 
   test("can't get details about other's payments''", async ({ users }) => {
@@ -80,7 +80,7 @@ test.describe("As an anonymous user, I", () => {
           userId: users.Olivier.id,
         },
       })
-    ).rejects.toThrow("field 'email' not found in type: 'users'");
+    ).rejects.toThrow("field 'email' not found in type: 'RegisteredUsers'");
   });
 
   test("can't get details about other's payments''", async () => {
@@ -88,6 +88,6 @@ test.describe("As an anonymous user, I", () => {
       queryAsAnonymous<GetPaymentsQuery, GetPaymentsQueryVariables>({
         query: GetPaymentsDocument,
       })
-    ).rejects.toThrow("field 'accessToken' not found in type: 'AuthGithubUsers'");
+    ).rejects.toThrow("field 'email' not found in type: 'RegisteredUsers'");
   });
 });

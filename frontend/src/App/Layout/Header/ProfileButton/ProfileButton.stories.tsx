@@ -13,14 +13,14 @@ export default {
 
 type Props = {
   avatarUrl: string;
-  displayName: string;
+  login: string;
   payoutSettingsInvalid: boolean;
   logout: () => void;
 };
 
 const props: Props = {
   avatarUrl: "https://avatars.githubusercontent.com/u/10167015?v=4",
-  displayName: "lechinoix",
+  login: "lechinoix",
   payoutSettingsInvalid: false,
   logout: () => {
     return;

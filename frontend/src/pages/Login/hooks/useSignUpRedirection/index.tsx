@@ -39,10 +39,9 @@ const getRedirectionUrl = (
   pendingUserPaymentsAndPayoutSettingsQuery: PendingUserPaymentsQueryHookResult,
   validPayoutInfo: boolean | null | undefined
 ) => {
-  const pendingPaymentRequests =
-    pendingUserPaymentsAndPayoutSettingsQuery.data?.user?.githubUser?.paymentRequests.filter(
-      r => r.amountInUsd > r.paymentsAggregate.aggregate?.sum?.amount
-    );
+  const pendingPaymentRequests = pendingUserPaymentsAndPayoutSettingsQuery.data?.registeredUsers
+    ?.at(0)
+    ?.paymentRequests.filter(r => r.amountInUsd > r.paymentsAggregate.aggregate?.sum?.amount);
 
   if (!validPayoutInfo && pendingPaymentRequests && pendingPaymentRequests.length > 0) {
     return RoutePaths.Payments;
@@ -65,13 +64,11 @@ gql`
   }
 
   query PendingUserPayments($userId: uuid!) {
-    user(id: $userId) {
-      id
-      githubUser {
-        userId
-        paymentRequests {
-          ...ExtendedPaymentRequest
-        }
+    registeredUsers(where: { id: { _eq: $userId } }) {
+      ...UserId
+      githubUserId
+      paymentRequests {
+        ...ExtendedPaymentRequest
       }
     }
   }

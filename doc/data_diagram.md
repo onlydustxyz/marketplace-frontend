@@ -10,17 +10,15 @@ class Applications {
    receivedAt: timestamp!
 }
 
-class AuthGithubUsers {
+class AuthUserGithubProvider {
    accessToken: String
    createdAt: timestamptz
    githubUserId: bigint
    id: uuid
-   paymentRequests: [PaymentRequests!]!
    providerId: String
    providerUserId: String
    refreshToken: String
    updatedAt: timestamptz
-   user: users
    userId: uuid
 }
 
@@ -73,7 +71,7 @@ class GithubUsers {
    id: bigint!
    login: String!
    paymentRequests: [PaymentRequests!]!
-   user: AuthGithubUsers
+   user: RegisteredUsers
 }
 
 class IgnoredGithubIssues {
@@ -115,10 +113,10 @@ class PaymentRequests {
    invoiceReceivedAt: timestamp
    liveGithubRecipient: User
    payments: [Payments!]!
-   recipient: AuthGithubUsers
+   recipient: RegisteredUsers
    recipientId: bigint!
    requestedAt: timestamp!
-   requestor: users
+   requestor: RegisteredUsers
    requestorId: uuid!
    workItems: [WorkItems!]!
 }
@@ -134,11 +132,11 @@ class Payments {
 }
 
 class PendingProjectLeaderInvitations {
-   githubUser: AuthGithubUsers
    githubUserId: bigint!
    id: uuid!
    project: Projects
    projectId: uuid!
+   user: RegisteredUsers
 }
 
 class ProjectDetails {
@@ -164,7 +162,7 @@ class ProjectGithubRepos {
 class ProjectLeads {
    project: Projects
    projectId: uuid!
-   user: users
+   user: RegisteredUsers
    userId: uuid!
 }
 
@@ -193,6 +191,19 @@ class ProjectsSponsors {
    sponsorId: uuid!
 }
 
+class RegisteredUsers {
+   avatarUrl: String
+   email: citext
+   githubUserId: bigint
+   htmlUrl: String
+   id: uuid
+   lastSeen: timestamptz
+   login: String
+   paymentRequests: [PaymentRequests!]!
+   projectsLeaded: [ProjectLeads!]!
+   userInfo: UserInfo
+}
+
 class Sponsors {
    id: uuid!
    logoUrl: String!
@@ -207,7 +218,7 @@ class User {
    id: GithubUserId!
    login: String!
    paymentRequests: [PaymentRequests!]!
-   user: AuthGithubUsers
+   user: RegisteredUsers
 }
 
 class UserInfo {
@@ -296,7 +307,6 @@ class users {
    displayName: String!
    email: citext
    emailVerified: Boolean!
-   githubUser: AuthGithubUsers
    id: uuid!
    isAnonymous: Boolean!
    lastSeen: timestamptz
@@ -309,44 +319,41 @@ class users {
    passwordHash: String
    phoneNumber: String
    phoneNumberVerified: Boolean!
-   projectsLeaded: [ProjectLeads!]!
    refreshTokens: [authRefreshTokens!]!
+   registeredUser: RegisteredUsers
    roles: [authUserRoles!]!
    securityKeys: [authUserSecurityKeys!]!
    ticket: String
    ticketExpiresAt: timestamptz!
    totpSecret: String
    updatedAt: timestamptz!
-   userInfo: UserInfo
+   userGithubProvider: AuthUserGithubProvider
    userProviders: [authUserProviders!]!
 }
 
-AuthGithubUsers -- users
-AuthGithubUsers --* PaymentRequests
 Budgets -- Projects
 Budgets --* PaymentRequests
 GithubIssues --* IgnoredGithubIssues
 GithubReposContributors -- GithubUsers
-GithubUsers -- AuthGithubUsers
+GithubUsers -- RegisteredUsers
 GithubUsers --* PaymentRequests
 Issue -- User
 Issue --* IgnoredGithubIssues
-PaymentRequests -- AuthGithubUsers
 PaymentRequests -- Budgets
 PaymentRequests -- GithubUsers
+PaymentRequests -- RegisteredUsers
 PaymentRequests -- User
-PaymentRequests -- users
 PaymentRequests --* Payments
 PaymentRequests --* WorkItems
 Payments -- PaymentRequests
-PendingProjectLeaderInvitations -- AuthGithubUsers
 PendingProjectLeaderInvitations -- Projects
+PendingProjectLeaderInvitations -- RegisteredUsers
 ProjectGithubRepos -- GithubRepos
 ProjectGithubRepos -- Projects
 ProjectGithubRepos --* GithubIssues
 ProjectGithubRepos --* GithubReposContributors
 ProjectLeads -- Projects
-ProjectLeads -- users
+ProjectLeads -- RegisteredUsers
 Projects -- ProjectDetails
 Projects --* Applications
 Projects --* Budgets
@@ -358,8 +365,11 @@ Projects --* ProjectsSponsors
 ProjectsContributorsView -- GithubUsers
 ProjectsSponsors -- Projects
 ProjectsSponsors -- Sponsors
+RegisteredUsers -- UserInfo
+RegisteredUsers --* PaymentRequests
+RegisteredUsers --* ProjectLeads
 Sponsors --* ProjectsSponsors
-User -- AuthGithubUsers
+User -- RegisteredUsers
 User --* PaymentRequests
 WorkItems -- Issue
 WorkItems --* IgnoredGithubIssues
@@ -372,10 +382,9 @@ authUserProviders -- users
 authUserRoles -- authRoles
 authUserRoles -- users
 authUserSecurityKeys -- users
-users -- AuthGithubUsers
-users -- UserInfo
+users -- AuthUserGithubProvider
+users -- RegisteredUsers
 users -- authRoles
-users --* ProjectLeads
 users --* authRefreshTokens
 users --* authUserProviders
 users --* authUserRoles

@@ -2,9 +2,7 @@ query ImpersonatedUser($id: uuid!) {
   user(id: $id) {
     id
     createdAt
-    displayName
     email
-    avatarUrl
     locale
     isAnonymous
     defaultRole
@@ -15,12 +13,23 @@ query ImpersonatedUser($id: uuid!) {
     roles {
       role
     }
-    githubUser {
-      userId
+    registeredUser {
+      id
       githubUserId
-    }
-    projectsLeaded {
-      projectId
+      login
+      avatarUrl
+      projectsLeaded {
+        projectId
+      }
     }
   }
+}
+
+query GetRegisteredUser($id: uuid!) {
+    registeredUsers(where: { id: { _eq: $id } }) {
+      ...UserId
+      githubUserId
+      login
+      avatarUrl
+    }
 }

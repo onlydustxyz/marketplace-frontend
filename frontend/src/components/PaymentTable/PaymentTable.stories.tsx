@@ -5,6 +5,7 @@ import {
   ExtendedPaymentRequestFragment,
   UserPayoutSettingsFragment,
   GithubUserFragment,
+  GetUserPayoutSettingsQueryResult,
 } from "src/__generated/graphql";
 
 import PaymentTable from ".";
@@ -75,18 +76,16 @@ const mocks = [
     },
     result: {
       data: {
-        authGithubUsers: [
+        registeredUsers: [
           {
-            user: {
-              userInfo: {
-                __typename: "UserInfo",
-                payoutSettings: { EthTransfer: { Name: "vitalik.eth" } },
-                arePayoutSettingsValid: true,
-              } as UserPayoutSettingsFragment,
-            },
+            userInfo: {
+              __typename: "UserInfo",
+              payoutSettings: { EthTransfer: { Name: "vitalik.eth" } },
+              arePayoutSettingsValid: true,
+            } as UserPayoutSettingsFragment,
           },
         ],
-      },
+      } as GetUserPayoutSettingsQueryResult["data"],
     },
   },
 ];

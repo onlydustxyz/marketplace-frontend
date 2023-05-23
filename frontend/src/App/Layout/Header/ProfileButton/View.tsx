@@ -10,12 +10,12 @@ import ErrorWarningLine from "src/icons/ErrorWarningLine";
 
 type Props = {
   avatarUrl: string | null;
-  displayName: string;
+  login: string;
   logout: () => void;
   payoutSettingsInvalid: boolean;
 };
 
-const View = ({ avatarUrl, displayName, logout, payoutSettingsInvalid }: Props) => {
+const View = ({ avatarUrl, login, logout, payoutSettingsInvalid }: Props) => {
   const location = useLocation();
   const { T } = useIntl();
   const [menuItemsVisible, setMenuItemsVisible] = useState(false);
@@ -39,7 +39,7 @@ const View = ({ avatarUrl, displayName, logout, payoutSettingsInvalid }: Props) 
             data-testid="profile-button"
           >
             {avatarUrl && <img className="w-8 rounded-full" src={avatarUrl} />}
-            <div className={classNames({ "mr-1": !payoutSettingsInvalid })}>{displayName}</div>
+            <div className={classNames({ "mr-1": !payoutSettingsInvalid })}>{login}</div>
             {payoutSettingsInvalid && <ErrorWarningLine className="text-xl text-orange-500" />}
           </Menu.Button>
           {payoutSettingsInvalid && (

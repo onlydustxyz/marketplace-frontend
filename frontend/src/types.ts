@@ -25,7 +25,7 @@ export type TokenSet = {
   accessTokenExpiresIn: number;
   creationDate: Date;
   refreshToken: RefreshToken;
-  user: User;
+  user: TokenSetUser;
 };
 
 export type AccessToken = Branded<string, "AccessToken">;
@@ -36,12 +36,10 @@ export type ImpersonationSet = {
   userId: Uuid;
 };
 
-export type User = {
+export type TokenSetUser = {
   id: Uuid;
   createdAt: Date;
-  displayName: string;
   email: string;
-  avatarUrl: Url | null;
   locale: Locale;
   isAnonymous: boolean;
   defaultRole: HasuraUserRole;
@@ -50,6 +48,11 @@ export type User = {
   phoneNumberVerified: boolean;
   activeMfaType: string | null;
   roles: HasuraUserRole[];
+};
+
+export type User = TokenSetUser & {
+  login: string;
+  avatarUrl: Url | null;
 };
 
 type Url = string;

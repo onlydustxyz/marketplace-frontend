@@ -1,16 +1,16 @@
 table:
-  name: github_users
-  schema: auth
+  name: registered_users
+  schema: public
 object_relationships:
-  - name: user
+  - name: userInfo
     using:
       manual_configuration:
         column_mapping:
-          user_id: id
+          id: user_id
         insertion_order: null
         remote_table:
-          name: users
-          schema: auth
+          name: user_info
+          schema: public
 array_relationships:
   - name: paymentRequests
     using:
@@ -21,30 +21,35 @@ array_relationships:
         remote_table:
           name: payment_requests
           schema: public
+  - name: projectsLeaded
+    using:
+      manual_configuration:
+        column_mapping:
+          id: user_id
+        insertion_order: null
+        remote_table:
+          name: project_leads
+          schema: public
 select_permissions:
-  - role: project_lead_specific
-    permission:
-      columns:
-        - github_user_id
-        - user_id
-      filter: {}
   - role: public
     permission:
       columns:
-        - user_id
+        - avatar_url
+        - github_user_id
+        - html_url
+        - id
+        - login
       filter: {}
   - role: registered_user_specific
     permission:
       columns:
+        - email
         - github_user_id
-        - access_token
-        - provider_id
-        - provider_user_id
-        - refresh_token
-        - created_at
-        - updated_at
+        - avatar_url
+        - html_url
+        - login
+        - last_seen
         - id
-        - user_id
       filter:
-        user_id:
+        id:
           _eq: X-Hasura-User-Id

@@ -29,7 +29,7 @@ fragment ProjectCardFields on Projects {
     id
     githubUserId
   }
-  projectLeads {
+  projectLeads(orderBy: {user: {githubUserId: ASC}}) {
     userId
     projectId
     user {

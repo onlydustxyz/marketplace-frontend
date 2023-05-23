@@ -32,7 +32,7 @@ impl IndexerRepository<GithubUserId> for Client {
 				indexes.user_id
 			FROM
 				github_user_indexes indexes
-				LEFT JOIN auth.github_users users ON users.github_user_id = indexes.user_id
+				LEFT JOIN registered_users users ON users.github_user_id = indexes.user_id
 			WHERE
 				user_indexer_state IS NULL OR (
 					users.id IS NOT NULL AND

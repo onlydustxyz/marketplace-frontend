@@ -4,9 +4,6 @@ import { uniqBy } from "lodash";
 export default function useApolloCache() {
   return new InMemoryCache({
     typePolicies: {
-      AuthGithubUsers: {
-        keyFields: ["userId"],
-      },
       ProjectDetails: {
         keyFields: ["projectId"],
       },

@@ -72,7 +72,7 @@ export default function OtherWorkForm({ projectId, contributorHandle, onWorkItem
       githubRepoId: selectedRepo?.id,
       title: title || defaultTitle,
       description,
-      assignees: [leader?.displayName, contributorHandle],
+      assignees: [leader?.login, contributorHandle],
     } as CreateIssueMutationVariables,
     context: { graphqlErrorDisplay: "toaster" },
     onCompleted: data => {

@@ -53,7 +53,7 @@ const props = (args: {
       projectId: "123",
       user: {
         id: "user-1",
-        displayName: "oscarwroche",
+        login: "oscarwroche",
         avatarUrl: "https://avatars.githubusercontent.com/u/21149076?v=4",
       },
     },
@@ -62,7 +62,7 @@ const props = (args: {
       projectId: "123",
       user: {
         id: "user-2",
-        displayName: "AnthonyBuisset",
+        login: "AnthonyBuisset",
         avatarUrl: "https://avatars.githubusercontent.com/u/43467246?v=4",
       },
     },
@@ -71,7 +71,7 @@ const props = (args: {
       projectId: "123",
       user: {
         id: "user-3",
-        displayName: "ofux",
+        login: "ofux",
         avatarUrl: "https://avatars.githubusercontent.com/u/595505?v=4",
       },
     },
@@ -80,7 +80,7 @@ const props = (args: {
       projectId: "123",
       user: {
         id: "user-4",
-        displayName: "tdelabro",
+        login: "tdelabro",
         avatarUrl: "https://avatars.githubusercontent.com/u/34384633?v=4",
       },
     },
@@ -89,7 +89,7 @@ const props = (args: {
       projectId: "123",
       user: {
         id: "user-5",
-        displayName: "BernardStanislas",
+        login: "BernardStanislas",
         avatarUrl: "https://avatars.githubusercontent.com/u/4435377?v=4",
       },
     },
@@ -98,7 +98,7 @@ const props = (args: {
       projectId: "123",
       user: {
         id: "user-6",
-        displayName: "gregcha",
+        login: "gregcha",
         avatarUrl: "https://avatars.githubusercontent.com/u/8642470?v=4",
       },
     },

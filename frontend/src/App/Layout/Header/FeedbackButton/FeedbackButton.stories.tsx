@@ -28,7 +28,7 @@ const MockAuthProvider = ({ children }: { children: React.ReactNode }) => {
     user: {
       id: USER_ID,
       email: "foo@bar.fr",
-      displayName: "foobar",
+      login: "foobar",
     } as unknown as User,
     githubUserId: 123,
     invalidImpersonation: false,

@@ -91,12 +91,11 @@ const pendingPaymentsMock = {
   },
   result: {
     data: {
-      user: {
-        __typename: "users",
-        id: TEST_USER_ID,
-        githubUser: {
-          __typename: "AuthGithubUsers",
-          userId: TEST_USER_ID,
+      registeredUsers: [
+        {
+          __typename: "RegisteredUsers",
+          id: TEST_USER_ID,
+          githubUserId: TEST_GITHUB_USER_ID,
           paymentRequests: [
             {
               __typename: "PaymentRequests",
@@ -106,7 +105,7 @@ const pendingPaymentsMock = {
             },
           ],
         },
-      },
+      ],
     } as PendingUserPaymentsQueryResult["data"],
   },
 };
@@ -175,22 +174,18 @@ const payoutSettingsMock = {
   },
   result: {
     data: {
-      authGithubUsers: [
+      registeredUsers: [
         {
-          __typename: "AuthGithubUsers",
-          userId: TEST_USER_ID,
-          user: {
-            __typename: "users",
-            id: TEST_USER_ID,
-            userInfo: {
-              __typename: "UserInfo",
-              userId: TEST_USER_ID,
-              identity: null,
-              location: null,
-              payoutSettings: null,
-              arePayoutSettingsValid: false,
-            } as UserPayoutSettingsFragment,
-          },
+          __typename: "RegisteredUsers",
+          id: TEST_USER_ID,
+          userInfo: {
+            __typename: "UserInfo",
+            userId: TEST_USER_ID,
+            identity: null,
+            location: null,
+            payoutSettings: null,
+            arePayoutSettingsValid: false,
+          } as UserPayoutSettingsFragment,
         },
       ],
     } as GetUserPayoutSettingsQueryResult["data"],

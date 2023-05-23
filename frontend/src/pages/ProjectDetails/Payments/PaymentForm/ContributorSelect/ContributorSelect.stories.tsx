@@ -21,7 +21,7 @@ const filteredContributors: (GithubUserFragment & { unpaidMergedPullsCount?: num
     login: "stan",
     avatarUrl: "https://avatars.githubusercontent.com/u/4435377?v=4",
     htmlUrl: "https://github.com/bernardstanislas",
-    user: { userId: "user-id" },
+    user: { id: "user-id" },
   },
   {
     id: 3333,
@@ -39,21 +39,21 @@ const filteredExternalContributors: LiveGithubUserFragment[] = [
     login: "oscar",
     avatarUrl: "https://avatars.githubusercontent.com/u/21149076?v=4",
     htmlUrl: "https://github.com/oscarwroche",
-    user: { userId: "user-id" },
+    user: { id: "user-id" },
   },
   {
     id: 5555,
     login: "gregoire",
     avatarUrl: "https://avatars.githubusercontent.com/u/8642470?v=4",
     htmlUrl: "https://github.com/gregcha",
-    user: { userId: "user-id" },
+    user: { id: "user-id" },
   },
   {
     id: 6666,
     login: "timothee",
     avatarUrl: "https://avatars.githubusercontent.com/u/34384633?v=4",
     htmlUrl: "https://github.com/tdelabrouille",
-    user: { userId: "user-id" },
+    user: { id: "user-id" },
   },
 ];
 

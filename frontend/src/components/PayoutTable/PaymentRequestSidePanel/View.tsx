@@ -100,9 +100,9 @@ export default function View({
           </div>
           {requestor && (
             <Details>
-              <RoundedImage alt={requestor.displayName} src={requestor.avatarUrl} size={ImageSize.Xxs} />
+              <RoundedImage alt={requestor.login || ""} src={requestor.avatarUrl || ""} size={ImageSize.Xxs} />
               {T(`payment.table.detailsPanel.from.${requestor.id === userId ? "you" : "other"}`, {
-                user: requestor.displayName,
+                user: requestor.login,
               })}
             </Details>
           )}

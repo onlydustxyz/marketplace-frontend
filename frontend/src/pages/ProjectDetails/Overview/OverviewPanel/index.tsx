@@ -29,7 +29,7 @@ export default function OverviewPanel({
 }: Props) {
   const { T } = useIntl();
 
-  const projectLeads = leads?.filter(lead => isDefined(lead?.displayName)) || [];
+  const projectLeads = leads?.filter(lead => isDefined(lead?.login)) || [];
 
   return (
     <Card
@@ -47,9 +47,9 @@ export default function OverviewPanel({
             {projectLeads.map(lead => (
               <ClickableUser
                 key={lead.id}
-                name={lead.displayName}
+                name={lead.login || ""}
                 logoUrl={lead.avatarUrl}
-                url={`https://github.com/${lead.displayName}`}
+                url={`https://github.com/${lead.login}`}
               />
             ))}
           </div>
