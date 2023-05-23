@@ -1,20 +1,29 @@
 import { useAuth } from "src/hooks/useAuth";
 import { getDeduplicatedAggregatedLanguages, getMostUsedLanguages } from "src/utils/languages";
-import { isProjectVisible } from "src/utils/project";
 import { useGetAllFilterOptionsQuery } from "src/__generated/graphql";
 import View from "./View";
 import { chain } from "lodash";
 import { contextWithCacheHeaders } from "src/utils/headers";
+import { isProjectVisibleToUser } from "src/hooks/useProjectVisibility";
 
 type Props = {
   isProjectLeader: boolean;
 };
 
 export default function FilterPanel({ isProjectLeader }: Props) {
-  const { githubUserId } = useAuth();
+  const { user, githubUserId } = useAuth();
   const filterOptionsQuery = useGetAllFilterOptionsQuery(contextWithCacheHeaders);
 
-  const visibleProjects = chain(filterOptionsQuery.data?.projects).filter(isProjectVisible(githubUserId));
+  const visibleProjects = chain(filterOptionsQuery.data?.projects).filter(
+    project =>
+      isProjectVisibleToUser({
+        project,
+        user: {
+          userId: user?.id,
+          githubUserId,
+        },
+      }) !== false
+  );
 
   const availableTechnologies = visibleProjects
     .flatMap(p => getMostUsedLanguages(getDeduplicatedAggregatedLanguages(p.githubRepos.map(r => r.repo))))

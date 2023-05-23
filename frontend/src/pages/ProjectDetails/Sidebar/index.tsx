@@ -7,7 +7,7 @@ import { sortBy } from "lodash";
 import { ProjectRoutePaths } from "src/App";
 import { useIntl } from "src/hooks/useIntl";
 import isDefined from "src/utils/isDefined";
-import { isProjectVisible } from "src/utils/project";
+import { isProjectVisibleToUser } from "src/hooks/useProjectVisibility";
 
 export type ProjectDetailsTab = {
   label: string;
@@ -19,7 +19,7 @@ interface Props {
 }
 
 export default function ProjectsSidebar({ currentProject }: Props) {
-  const { isLoggedIn, ledProjectIds, githubUserId } = useAuth();
+  const { isLoggedIn, ledProjectIds, githubUserId, user } = useAuth();
   const { T } = useIntl();
 
   const isProjectMine = (project: ProjectDetails) => ledProjectIds.includes(project.id);
@@ -31,7 +31,7 @@ export default function ProjectsSidebar({ currentProject }: Props) {
 
   const projects =
     getProjectsForSidebarQuery?.data?.projects
-      .filter(isProjectVisible(githubUserId))
+      .filter(project => isProjectVisibleToUser({ project, user: { githubUserId, userId: user?.id } }))
       .map(project => projectFromQuery(project, githubUserId)) || [];
   const sortedProjects = sortBy(projects, ["withInvitation", "name"]);
 

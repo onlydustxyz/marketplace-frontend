@@ -1,5 +1,6 @@
 fragment ProjectCardFields on Projects {
   ...ProjectId
+  ...ProjectVisibilityDetails
   contributorsAggregate {
     aggregate {
       count
@@ -13,9 +14,6 @@ fragment ProjectCardFields on Projects {
       }
     }
   }
-  budgets {
-    id
-  }
   projectDetails {
     projectId
     name
@@ -24,7 +22,6 @@ fragment ProjectCardFields on Projects {
     shortDescription
     hiring
     rank
-    visibility
   }
   pendingInvitations {
     id

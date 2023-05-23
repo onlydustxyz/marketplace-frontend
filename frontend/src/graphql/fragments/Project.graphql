@@ -55,3 +55,33 @@ fragment ProjectContributorsWithPaymentSummary on Projects {
     }
   }
 }
+
+fragment ProjectVisibilityDetails on Projects {
+  ...ProjectId
+  projectDetails {
+    projectId
+    visibility
+  }
+  githubReposAggregate {
+    aggregate {
+      count
+    }
+  }
+  contributors {
+    githubUser {
+      ...GithubUser
+    }
+  }
+  projectLeads {
+    userId
+  }
+  budgetsAggregate {
+    aggregate {
+      count
+    }
+  }
+  pendingInvitations {
+    id
+    githubUserId
+  }
+}

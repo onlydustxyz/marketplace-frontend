@@ -1,0 +1,5 @@
+query GetProjectVisibilityDetails($projectId: uuid!) {
+  projectsByPk(id: $projectId) {
+    ...ProjectVisibilityDetails
+  }
+}

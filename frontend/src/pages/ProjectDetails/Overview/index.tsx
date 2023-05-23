@@ -27,6 +27,7 @@ import { SessionMethod, useSessionDispatch } from "src/hooks/useSession";
 import Tooltip from "src/components/Tooltip";
 import useApplications from "./useApplications";
 import LockFill from "src/icons/LockFill";
+import useProjectVisibility from "src/hooks/useProjectVisibility";
 
 type OutletContext = {
   projectId: string;
@@ -36,7 +37,7 @@ type OutletContext = {
 export default function Overview() {
   const { T } = useIntl();
   const { projectId, children } = useOutletContext<OutletContext>();
-  const { isLoggedIn, user, githubUserId } = useAuth();
+  const { isLoggedIn, user } = useAuth();
   const dispatchSession = useSessionDispatch();
   const location = useLocation();
 
@@ -61,9 +62,7 @@ export default function Overview() {
   const languages = getDeduplicatedAggregatedLanguages(data?.projectsByPk?.githubRepos.map(r => r.repo));
   const hiring = data?.projectsByPk?.projectDetails?.hiring;
   const alreadyApplied = data?.projectsByPk?.applications.some(a => a.applicantId === user?.id);
-  const isContributor = data?.projectsByPk?.contributors.some(c => c.githubUser?.id === githubUserId);
-  const isProjectLead = data?.projectsByPk?.projectLeads.some(l => l.user?.id === user?.id);
-  const isInvited = data?.projectsByPk?.pendingInvitations.some(i => i.githubUserId === githubUserId);
+  const { isCurrentUserMember } = useProjectVisibility(projectId);
 
   return (
     <>
@@ -112,7 +111,7 @@ export default function Overview() {
           </div>
         </QueryWrapper>
         <div className="flex flex-col gap-4">
-          {hiring && !(isProjectLead || isContributor || isInvited) && (
+          {hiring && !isCurrentUserMember && (
             <Callout>
               <div className="flex flex-col gap-3">
                 <div className="flex flex-row gap-2 items-center text-spaceBlue-200 font-walsheim font-medium text-sm">
