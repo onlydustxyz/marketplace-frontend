@@ -77,6 +77,8 @@ const buildQuerySorting = (sorting: Sorting): ProjectsOrderBy => {
   const orderBy = {} as ProjectsOrderBy;
 
   switch (sorting) {
+    case Sorting.Trending:
+      return merge(orderBy, { projectDetails: { rank: OrderBy.Desc } });
     case Sorting.ProjectName:
       return merge(orderBy, { projectDetails: { name: OrderBy.Asc } });
     case Sorting.ContributorsCount:

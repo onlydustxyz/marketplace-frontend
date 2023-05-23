@@ -7,7 +7,5 @@ export default {
 };
 
 export const Default = {
-  render: () => (
-    <SortingDropdown all={PROJECT_SORTINGS} current={Sorting.MoneyGranted} onChange={Function.prototype()} />
-  ),
+  render: () => <SortingDropdown all={PROJECT_SORTINGS} current={Sorting.Trending} onChange={Function.prototype()} />,
 };
