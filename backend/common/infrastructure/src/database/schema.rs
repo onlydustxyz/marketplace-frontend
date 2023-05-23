@@ -149,6 +149,7 @@ diesel::table! {
         long_description -> Text,
         hiring -> Bool,
         rank -> Int4,
+        visibility -> Jsonb,
     }
 }
 
