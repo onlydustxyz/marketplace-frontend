@@ -32,7 +32,7 @@ export default function FeedbackButton() {
             firstname: identity?.firstname || "",
             lastname: identity?.lastname || "",
             email: user.email,
-            github: user.displayName,
+            github: user.login,
           }}
           transitiveSearchParams={true}
         >

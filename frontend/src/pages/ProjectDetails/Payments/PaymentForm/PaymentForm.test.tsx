@@ -25,7 +25,7 @@ import {
 import { MockedResponse } from "@apollo/client/testing";
 import { VirtuosoMockContext } from "react-virtuoso";
 
-const TEST_USER = { id: "test-user-id", displayName: "test-login", githubUser: { githubUserId: 748483646584 } };
+const TEST_USER = { id: "test-user-id", login: "test-login", githubUser: { githubUserId: 748483646584 } };
 const TEST_GITHUB_USER: GithubUserWithPaymentRequestsForProjectFragment = {
   __typename: "GithubUsers",
   id: 23326,
@@ -200,7 +200,7 @@ describe('"PaymentForm" component', () => {
 
   it("should display an error when the reason is not a valid link to a github issue", async () => {
     await userEvent.click(await screen.findByText(RECIPIENT_INPUT_LABEL));
-    await userEvent.click(await screen.findByText(TEST_USER.displayName));
+    await userEvent.click(await screen.findByText(TEST_USER.login));
     await userEvent.click(await screen.findByTestId(ADD_WORK_ITEM_BUTTON_ID));
     await userEvent.click(await screen.findByTestId(ADD_OTHER_PR_TOGGLE_ID));
     await userEvent.type(await screen.findByPlaceholderText(/github.com/i), "not-a-link");

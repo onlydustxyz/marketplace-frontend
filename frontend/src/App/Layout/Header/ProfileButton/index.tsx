@@ -5,7 +5,7 @@ import { usePendingUserPaymentsQuery } from "src/__generated/graphql";
 
 const ProfileButton = () => {
   const { user, logout, githubUserId } = useAuth();
-  const { avatarUrl, displayName } = user ?? { avatarUrl: null, displayName: "My Account" };
+  const { avatarUrl, login } = user ?? { avatarUrl: null, login: "My Account" };
 
   const { valid } = usePayoutSettings(githubUserId);
   const { data } = usePendingUserPaymentsQuery({ variables: { userId: user?.id }, skip: (valid ?? true) || !user?.id });
@@ -17,7 +17,7 @@ const ProfileButton = () => {
 
   const payoutSettingsInvalid = valid === false && pendingPaymentRequestsCount > 0;
 
-  return <View {...{ avatarUrl, displayName, logout, payoutSettingsInvalid }} />;
+  return <View {...{ avatarUrl, login, logout, payoutSettingsInvalid }} />;
 };
 
 export default ProfileButton;

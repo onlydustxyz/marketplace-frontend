@@ -8,6 +8,7 @@ import { accessTokenExpired, useTokenSet } from "src/hooks/useTokenSet";
 import { RefreshToken, User, UserRole } from "src/types";
 import { datadogRum } from "@datadog/browser-rum";
 import { useImpersonation } from "src/hooks/useAuth/useImpersonation";
+import { useUser } from "./useUser";
 
 export type AuthContextType = {
   login: (refreshToken: RefreshToken) => void;
@@ -63,7 +64,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     setFromRefreshToken(tokenSet.refreshToken);
   }
 
-  const user = impersonating ? impersonatedUser : tokenSet ? tokenSet?.user : null;
+  const user = useUser(impersonating ? impersonatedUser : tokenSet ? tokenSet?.user : null);
 
   const value = {
     user,
@@ -80,7 +81,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   if (value.user) {
     datadogRum.setUser({
       id: value.user.id,
-      name: value.user.displayName,
+      name: value.user.login,
     });
   } else {
     datadogRum.clearUser();

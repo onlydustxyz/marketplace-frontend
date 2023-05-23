@@ -3,7 +3,7 @@ import { ImpersonatedUserQuery, useImpersonatedUserQuery } from "src/__generated
 import { useImpersonationClaims } from "src/hooks/useImpersonationClaims";
 import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
-import { CustomUserRole, HasuraUserRole, Locale, User } from "src/types";
+import { CustomUserRole, HasuraUserRole, Locale, TokenSetUser } from "src/types";
 
 export const useImpersonation = () => {
   const { impersonationSet, clearImpersonationSet, setCustomClaims } = useImpersonationClaims();
@@ -19,7 +19,7 @@ export const useImpersonation = () => {
     },
     skip: !impersonationSet,
     onCompleted(data) {
-      if (!data.user) {
+      if (!data.user || !data.user.registeredUser?.login) {
         showToaster(T("impersonation.form.errors.unknownUser", { userId: impersonationSet?.userId }), {
           isError: true,
         });
@@ -71,7 +71,7 @@ export const useImpersonation = () => {
   };
 };
 
-const mapImpersonatedUser = (user: ImpersonatedUserQuery["user"]): User | null => {
+const mapImpersonatedUser = (user: ImpersonatedUserQuery["user"]): TokenSetUser | null => {
   if (user === null) {
     return null;
   }
