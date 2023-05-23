@@ -85,7 +85,7 @@ export default function View({
       }
     >
       <QueryWrapper query={{ loading, data: requestedAt }}>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 px-6">
           <PayoutStatus
             {...{
               id: "details-payout-status",
@@ -158,8 +158,10 @@ export default function View({
             </Details>
           )}
         </div>
-        <div className="border-t border-greyscale-50/12" />
-        <div className="flex flex-col gap-3 overflow-hidden -mr-4 h-full">
+        <div className="px-6">
+          <div className="border-t border-greyscale-50/12" />
+        </div>
+        <div className="flex flex-col gap-3 overflow-hidden -mr-4 h-full px-6">
           <div className="font-belwe font-normal text-base text-greyscale-50">
             {T("payment.table.detailsPanel.workItems")}
           </div>
