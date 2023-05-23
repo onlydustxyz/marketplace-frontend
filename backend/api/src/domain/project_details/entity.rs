@@ -1,8 +1,10 @@
-use ::domain::ProjectId;
-use ::infrastructure::database::schema::*;
 use derive_getters::{Dissolve, Getters};
 use derive_setters::Setters;
+use domain::ProjectId;
+use infrastructure::database::schema::*;
 use serde::{Deserialize, Serialize};
+
+use crate::domain::ProjectVisibility;
 
 #[derive(
 	Default,
@@ -33,6 +35,7 @@ pub struct ProjectDetails {
 	pub long_description: String,
 	pub hiring: bool,
 	pub rank: i32,
+	pub visibility: ProjectVisibility,
 }
 
 impl domain::Entity for ProjectDetails {

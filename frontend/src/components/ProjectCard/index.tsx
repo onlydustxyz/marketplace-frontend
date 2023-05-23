@@ -72,6 +72,7 @@ export default function ProjectCard({
               projectName={projectDetails?.name || ""}
               projectLeads={projectLeads?.map(lead => lead.user).filter(isDefined) || []}
               logoUrl={projectDetails?.logoUrl || onlyDustLogo}
+              private={projectDetails?.visibility === "Private"}
             />
             {Object.keys(languages).length > 0 && (
               <div className="hidden lg:block">

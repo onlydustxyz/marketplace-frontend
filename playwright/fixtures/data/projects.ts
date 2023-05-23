@@ -58,4 +58,16 @@ export const projects: Record<string, ProjectFixture> = {
     repos: ["empty"],
     leaders: ["Oscar"],
   },
+  Private: {
+    name: "Private Project",
+    shortDescription: "I am hidden to public",
+    longDescription: "Only you can see me",
+    telegramLink: "https://t.me/b",
+    logoUrl: "https://raw.githubusercontent.com/od-mocks/cool.repo.B/main/logo-b.png",
+    initialBudget: 20000,
+    leaders: ["Oscar"],
+    pendingLeaderInvitations: ["Anthony"],
+    repos: ["kakarot"],
+    visibility: "PRIVATE",
+  },
 };

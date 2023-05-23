@@ -10,7 +10,10 @@ use uuid::Uuid;
 
 use super::{dto, Context, Error, Result};
 use crate::{
-	domain::user_info::{ContactInformation, Identity, Location, PayoutSettings},
+	domain::{
+		user_info::{ContactInformation, Identity, Location, PayoutSettings},
+		ProjectVisibility,
+	},
 	presentation::http::dto::{
 		EthereumIdentityInput, IdentityInput, OptionalNonEmptyTrimmedString, PaymentReference,
 		PayoutSettingsInput,
@@ -156,6 +159,7 @@ impl Mutation {
 		initial_budget: Option<i32>,
 		hiring: Option<bool>,
 		rank: Option<i32>,
+		visibility: Option<ProjectVisibility>,
 	) -> Result<Uuid> {
 		let project_id = context
 			.create_project_usecase
@@ -170,6 +174,7 @@ impl Mutation {
 				}),
 				hiring.unwrap_or_default(),
 				rank.unwrap_or_default(),
+				visibility.unwrap_or_default(),
 			)
 			.await?;
 
@@ -186,6 +191,7 @@ impl Mutation {
 		logo_url: Nullable<Url>,
 		hiring: Option<bool>,
 		rank: Option<i32>,
+		visibility: Option<ProjectVisibility>,
 	) -> Result<Uuid> {
 		context
 			.update_project_usecase
@@ -198,6 +204,7 @@ impl Mutation {
 				logo_url,
 				hiring,
 				rank,
+				visibility,
 			)
 			.await?;
 

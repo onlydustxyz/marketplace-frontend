@@ -7,7 +7,8 @@ use tracing::instrument;
 use url::Url;
 
 use crate::{
-	domain::ImageStoreService, infrastructure::database::ProjectDetailsRepository,
+	domain::{ImageStoreService, ProjectVisibility},
+	infrastructure::database::ProjectDetailsRepository,
 	presentation::http::dto::NonEmptyTrimmedString,
 };
 
@@ -39,6 +40,7 @@ impl Usecase {
 		logo_url: Nullable<Url>,
 		hiring: Option<bool>,
 		rank: Option<i32>,
+		visibility: Option<ProjectVisibility>,
 	) -> Result<(), DomainError> {
 		let mut project = self.project_details_repository.find_by_id(&project_id)?;
 
@@ -67,6 +69,9 @@ impl Usecase {
 		}
 		if let Some(rank) = rank {
 			project = project.with_rank(rank)
+		}
+		if let Some(visibility) = visibility {
+			project = project.with_visibility(visibility)
 		}
 
 		self.project_details_repository.update(&project_id, project)?;
@@ -146,6 +151,7 @@ mod tests {
 					long_description: "bar".to_string(),
 					hiring: false,
 					rank: 0,
+					visibility: ProjectVisibility::Public,
 				})
 			});
 		project_details_repository
@@ -168,6 +174,7 @@ mod tests {
 				Nullable::Some(logo_url),
 				Some(true),
 				Some(32),
+				Some(ProjectVisibility::Public),
 			)
 			.await
 			.unwrap();
@@ -202,6 +209,7 @@ mod tests {
 					long_description: "bar".to_string(),
 					hiring: false,
 					rank: 0,
+					visibility: ProjectVisibility::Public,
 				})
 			});
 
@@ -219,6 +227,7 @@ mod tests {
 						long_description: "long_description".to_string(),
 						hiring: true,
 						rank: 32,
+						visibility: ProjectVisibility::Private,
 					}
 			})
 			.once()
@@ -236,6 +245,7 @@ mod tests {
 				Nullable::Some(logo_url),
 				Some(true),
 				Some(32),
+				Some(ProjectVisibility::Private),
 			)
 			.await
 			.unwrap();

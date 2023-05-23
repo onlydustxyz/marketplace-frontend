@@ -3,7 +3,6 @@ import { merge, sortBy } from "lodash";
 import { useMemo } from "react";
 import ProjectCard from "src/components/ProjectCard";
 import { useAuth } from "src/hooks/useAuth";
-import { isProjectVisible } from "src/utils/project";
 import { Ownership as ProjectOwnership, useProjectFilter } from "src/pages/Projects/useProjectFilter";
 import AllProjectsFallback from "./AllProjectsFallback";
 import { contextWithCacheHeaders } from "src/utils/headers";
@@ -15,13 +14,14 @@ import {
   ProjectsOrderBy,
 } from "src/__generated/graphql";
 import { Sorting } from "..";
+import { isProjectVisibleToUser } from "src/hooks/useProjectVisibility";
 
 type Props = {
   sorting: Sorting;
 };
 
 export default function AllProjects({ sorting }: Props) {
-  const { ledProjectIds, githubUserId, isLoggedIn } = useAuth();
+  const { ledProjectIds, githubUserId, isLoggedIn, user } = useAuth();
   const {
     projectFilter: { technologies, sponsors, ownership },
     clear: clearFilters,
@@ -45,7 +45,10 @@ export default function AllProjects({ sorting }: Props) {
         project => ledProjectIds.includes(project.id) || project.pendingInvitations.length > 0
       );
     }
-    return sortBy(projects?.filter(isProjectVisible(githubUserId)), p => !p.pendingInvitations.length);
+    return sortBy(
+      projects?.filter(project => isProjectVisibleToUser({ project, user: { userId: user?.id, githubUserId } })),
+      p => !p.pendingInvitations.length
+    );
   }, [getProjectsQuery.data?.projects, ledProjectIds, ownership, isLoggedIn, githubUserId]);
 
   return (

@@ -340,6 +340,12 @@
   "project": {
     "amountGranted": "Granted: __granted__ / __total__",
     "hiring": "Looking for contributors",
+    "visibility": {
+      "private": {
+        "tooltip": "Private project · only visible to you",
+        "name": "Private"
+      }
+    },
     "details": {
       "contributors": {
         "count": {

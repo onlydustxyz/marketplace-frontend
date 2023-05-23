@@ -15,9 +15,9 @@ import {
 import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 import { SessionMethod, useSessionDispatch, useSession } from "src/hooks/useSession";
 import View from "./View";
-import { isProjectVisible } from "src/utils/project";
 import { RoutePaths } from "src/App";
 import { contextWithCacheHeaders } from "src/utils/headers";
+import useProjectVisibility from "src/hooks/useProjectVisibility";
 
 type ProjectDetailsParams = {
   projectId: string;
@@ -52,6 +52,8 @@ const ProjectDetails: React.FC = () => {
     ...contextWithCacheHeaders,
   });
 
+  const { visibleToCurrentUser } = useProjectVisibility(projectId);
+
   const project = getProjectQuery.data?.projectsByPk;
 
   useEffect(() => {
@@ -72,7 +74,7 @@ const ProjectDetails: React.FC = () => {
   return (
     <QueryWrapper query={getProjectQuery}>
       {project !== undefined &&
-        (isProjectVisible(githubUserId)(project) ? (
+        (visibleToCurrentUser !== false ? (
           <View
             currentProject={projectFromQuery(project, githubUserId)}
             onInvitationAccepted={(invitationId: string) => {

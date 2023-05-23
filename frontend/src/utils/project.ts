@@ -1,5 +1,4 @@
 import {
-  VisibleProjectFragment,
   GithubIssueFragment,
   ProjectContributorsWithPaymentSummaryFragment,
   LastProjectMergedPullRequestsFragment,
@@ -9,23 +8,6 @@ import {
 import { chain, find, flatMap, some } from "lodash";
 import isDefined from "src/utils/isDefined";
 import { Maybe } from "graphql/jsutils/Maybe";
-
-export const isProjectVisible =
-  (githubUserId?: number) =>
-  <T extends VisibleProjectFragment>(project: T | null): boolean => {
-    if (!project) {
-      return false;
-    }
-
-    const hasLeaders = project.projectLeads.length > 0;
-    const hasRepos = project.githubRepos.length > 0;
-    const hasBudget = project.budgets.length > 0;
-    const hasInvitation =
-      githubUserId &&
-      project.pendingInvitations.map(pendingInvitation => pendingInvitation.githubUserId).includes(githubUserId);
-
-    return hasRepos && hasBudget && (hasLeaders || !!hasInvitation);
-  };
 
 export function getContributors(
   project?: Maybe<ProjectContributorsWithPaymentSummaryFragment> &

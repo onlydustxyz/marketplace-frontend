@@ -22183,6 +22183,35 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "visibility",
+            "description": null,
+            "args": [
+              {
+                "name": "path",
+                "description": "JSON select path",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "jsonb",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -22418,6 +22447,29 @@
         "possibleTypes": null
       },
       {
+        "kind": "INPUT_OBJECT",
+        "name": "ProjectDetailsAppendInput",
+        "description": "append existing jsonb value of filtered columns with new jsonb value",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "visibility",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "jsonb",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
         "kind": "OBJECT",
         "name": "ProjectDetailsAvgFields",
         "description": "aggregate avg on columns",
@@ -22593,6 +22645,18 @@
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "visibility",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "JsonbComparisonExp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "interfaces": null,
@@ -22614,6 +22678,83 @@
             "deprecationReason": null
           }
         ],
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "ProjectDetailsDeleteAtPathInput",
+        "description": "delete the field or element with specified path (for JSON arrays, negative integers count from the end)",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "visibility",
+            "description": null,
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "ProjectDetailsDeleteElemInput",
+        "description": "delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "visibility",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "ProjectDetailsDeleteKeyInput",
+        "description": "delete key/value pair or string element. key/value pairs are matched based on their key value",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "visibility",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
         "possibleTypes": null
       },
       {
@@ -22735,6 +22876,18 @@
             "type": {
               "kind": "SCALAR",
               "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "visibility",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "jsonb",
               "ofType": null
             },
             "defaultValue": null,
@@ -23190,6 +23343,18 @@
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "visibility",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "interfaces": null,
@@ -23213,6 +23378,29 @@
                 "name": "uuid",
                 "ofType": null
               }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "ProjectDetailsPrependInput",
+        "description": "prepend existing jsonb value of filtered columns with new jsonb value",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "visibility",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "jsonb",
+              "ofType": null
             },
             "defaultValue": null,
             "isDeprecated": false,
@@ -23275,6 +23463,12 @@
           },
           {
             "name": "telegramLink",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "visibility",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
@@ -23378,6 +23572,18 @@
             "type": {
               "kind": "SCALAR",
               "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "visibility",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "jsonb",
               "ofType": null
             },
             "defaultValue": null,
@@ -23536,6 +23742,12 @@
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "visibility",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "possibleTypes": null
@@ -23547,11 +23759,71 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "_append",
+            "description": "append existing jsonb value of filtered columns with new jsonb value",
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "ProjectDetailsAppendInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "_deleteAtPath",
+            "description": "delete the field or element with specified path (for JSON arrays, negative integers count from the end)",
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "ProjectDetailsDeleteAtPathInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "_deleteElem",
+            "description": "delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array",
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "ProjectDetailsDeleteElemInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "_deleteKey",
+            "description": "delete key/value pair or string element. key/value pairs are matched based on their key value",
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "ProjectDetailsDeleteKeyInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "_inc",
             "description": "increments the numeric columns with given value of the filtered values",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "ProjectDetailsIncInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "_prepend",
+            "description": "prepend existing jsonb value of filtered columns with new jsonb value",
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "ProjectDetailsPrependInput",
               "ofType": null
             },
             "defaultValue": null,
@@ -35772,6 +36044,29 @@
         ],
         "interfaces": null,
         "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
+        "name": "Visibility",
+        "description": null,
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "PRIVATE",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "PUBLIC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
         "possibleTypes": null
       },
       {
@@ -52597,6 +52892,18 @@
                 "defaultValue": null,
                 "isDeprecated": false,
                 "deprecationReason": null
+              },
+              {
+                "name": "visibility",
+                "description": null,
+                "type": {
+                  "kind": "ENUM",
+                  "name": "Visibility",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               }
             ],
             "type": {
@@ -60484,6 +60791,18 @@
                 "defaultValue": null,
                 "isDeprecated": false,
                 "deprecationReason": null
+              },
+              {
+                "name": "visibility",
+                "description": null,
+                "type": {
+                  "kind": "ENUM",
+                  "name": "Visibility",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               }
             ],
             "type": {
@@ -60503,11 +60822,71 @@
             "description": "update data of the table: \"project_details\"",
             "args": [
               {
+                "name": "_append",
+                "description": "append existing jsonb value of filtered columns with new jsonb value",
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "ProjectDetailsAppendInput",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "_deleteAtPath",
+                "description": "delete the field or element with specified path (for JSON arrays, negative integers count from the end)",
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "ProjectDetailsDeleteAtPathInput",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "_deleteElem",
+                "description": "delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array",
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "ProjectDetailsDeleteElemInput",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "_deleteKey",
+                "description": "delete key/value pair or string element. key/value pairs are matched based on their key value",
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "ProjectDetailsDeleteKeyInput",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
                 "name": "_inc",
                 "description": "increments the numeric columns with given value of the filtered values",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "ProjectDetailsIncInput",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "_prepend",
+                "description": "prepend existing jsonb value of filtered columns with new jsonb value",
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "ProjectDetailsPrependInput",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -60556,11 +60935,71 @@
             "description": "update single row of the table: \"project_details\"",
             "args": [
               {
+                "name": "_append",
+                "description": "append existing jsonb value of filtered columns with new jsonb value",
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "ProjectDetailsAppendInput",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "_deleteAtPath",
+                "description": "delete the field or element with specified path (for JSON arrays, negative integers count from the end)",
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "ProjectDetailsDeleteAtPathInput",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "_deleteElem",
+                "description": "delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array",
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "ProjectDetailsDeleteElemInput",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "_deleteKey",
+                "description": "delete key/value pair or string element. key/value pairs are matched based on their key value",
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "ProjectDetailsDeleteKeyInput",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
                 "name": "_inc",
                 "description": "increments the numeric columns with given value of the filtered values",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "ProjectDetailsIncInput",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "_prepend",
+                "description": "prepend existing jsonb value of filtered columns with new jsonb value",
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "ProjectDetailsPrependInput",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -63967,6 +64406,18 @@
             "type": {
               "kind": "SCALAR",
               "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "visibility",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "jsonb",
               "ofType": null
             },
             "defaultValue": null,

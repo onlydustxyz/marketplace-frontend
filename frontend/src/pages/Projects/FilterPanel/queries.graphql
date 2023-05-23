@@ -1,6 +1,6 @@
 query GetAllFilterOptions {
   projects {
-    ...VisibleProject
+    ...ProjectVisibilityDetails
     projectSponsors {
       sponsor {
         id

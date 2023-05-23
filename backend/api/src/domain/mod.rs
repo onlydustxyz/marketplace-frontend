@@ -5,7 +5,7 @@ pub mod permissions;
 pub use permissions::Permissions;
 
 mod project_details;
-pub use project_details::ProjectDetails;
+pub use project_details::{ProjectDetails, Visibility as ProjectVisibility};
 
 #[allow(clippy::extra_unused_lifetimes)]
 pub mod user_info;

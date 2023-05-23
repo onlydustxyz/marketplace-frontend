@@ -21,6 +21,6 @@ query GetProjectsForSidebar($ledProjectIds: [uuid!], $githubUserId: bigint) {
     where: { _or: [{ id: { _in: $ledProjectIds } }, { pendingInvitations: { githubUserId: { _eq: $githubUserId } } }] }
   ) {
     ...SidebarProjectDetails
-    ...VisibleProject
+    ...ProjectVisibilityDetails
   }
 }

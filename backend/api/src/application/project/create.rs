@@ -7,7 +7,7 @@ use reqwest::Url;
 use tracing::instrument;
 
 use crate::{
-	domain::{ImageStoreService, ProjectDetails, Publishable},
+	domain::{ImageStoreService, ProjectDetails, ProjectVisibility, Publishable},
 	infrastructure::database::ProjectDetailsRepository,
 	presentation::http::dto::NonEmptyTrimmedString,
 };
@@ -43,6 +43,7 @@ impl Usecase {
 		initial_budget: Option<Amount>,
 		hiring: bool,
 		rank: i32,
+		visibility: ProjectVisibility,
 	) -> Result<ProjectId, DomainError> {
 		let project_id = ProjectId::new();
 
@@ -69,6 +70,7 @@ impl Usecase {
 			long_description: long_description.into(),
 			rank,
 			hiring,
+			visibility,
 		})?;
 
 		events

@@ -1,5 +1,6 @@
 fragment ProjectCardFields on Projects {
   ...ProjectId
+  ...ProjectVisibilityDetails
   contributorsAggregate {
     aggregate {
       count
@@ -12,9 +13,6 @@ fragment ProjectCardFields on Projects {
         initialAmount
       }
     }
-  }
-  budgets {
-    id
   }
   projectDetails {
     projectId
@@ -29,7 +27,7 @@ fragment ProjectCardFields on Projects {
     id
     githubUserId
   }
-  projectLeads(orderBy: {user: {githubUserId: ASC}}) {
+  projectLeads(orderBy: { user: { githubUserId: ASC } }) {
     userId
     projectId
     user {
