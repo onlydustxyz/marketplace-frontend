@@ -73,23 +73,44 @@ const buildQueryFilters = (technologies: string[], sponsors: string[]): Projects
   return filters;
 };
 
-const buildQuerySorting = (sorting: Sorting): ProjectsOrderBy => {
+const buildQuerySorting = (sorting: Sorting): ProjectsOrderBy[] => {
   const orderBy = {} as ProjectsOrderBy;
 
   switch (sorting) {
     case Sorting.Trending:
-      return merge(orderBy, { projectDetails: { rank: OrderBy.Desc } });
+      return [merge(orderBy, { projectDetails: { rank: OrderBy.Desc } }), ...buildQuerySorting(Sorting.LeftToSpend)];
+
     case Sorting.ProjectName:
-      return merge(orderBy, { projectDetails: { name: OrderBy.Asc } });
+      return [merge(orderBy, { projectDetails: { name: OrderBy.Asc } })];
+
     case Sorting.ContributorsCount:
-      return merge(orderBy, { contributorsAggregate: { count: OrderBy.Desc } });
+      return [
+        merge(orderBy, { contributorsAggregate: { count: OrderBy.Desc } }),
+        ...buildQuerySorting(Sorting.ProjectName),
+      ];
+
     case Sorting.ReposCount:
-      return merge(orderBy, { githubReposAggregate: { count: OrderBy.Desc } });
+      return [
+        merge(orderBy, { githubReposAggregate: { count: OrderBy.Desc } }),
+        ...buildQuerySorting(Sorting.ProjectName),
+      ];
+
     case Sorting.LeftToSpend:
-      return merge(orderBy, { budgetsAggregate: { sum: { remainingAmount: OrderBy.Desc } } });
+      return [
+        merge(orderBy, { budgetsAggregate: { sum: { remainingAmount: OrderBy.Desc } } }),
+        ...buildQuerySorting(Sorting.ProjectName),
+      ];
+
     case Sorting.MoneyGranted:
-      return merge(orderBy, { budgetsAggregate: { sum: { spentAmount: OrderBy.Desc } } });
+      return [
+        merge(orderBy, { budgetsAggregate: { sum: { spentAmount: OrderBy.Desc } } }),
+        ...buildQuerySorting(Sorting.ProjectName),
+      ];
+
     case Sorting.TotalBudget:
-      return merge(orderBy, { budgetsAggregate: { sum: { initialAmount: OrderBy.Desc } } });
+      return [
+        merge(orderBy, { budgetsAggregate: { sum: { initialAmount: OrderBy.Desc } } }),
+        ...buildQuerySorting(Sorting.ProjectName),
+      ];
   }
 };
