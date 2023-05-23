@@ -1,5 +1,3 @@
-import { ComponentStory } from "@storybook/react";
-import { JSXElementConstructor } from "react";
 import { responsiveChromatic } from "src/test/utils";
 import { withRouter } from "storybook-addon-react-router-v6";
 
@@ -11,13 +9,33 @@ export default {
   decorators: [withRouter],
 };
 
-const Template: ComponentStory<JSXElementConstructor<typeof args>> = args => (
-  <ProjectCard {...props(args)} pendingInvitations={args.withInvitation ? props(args).pendingInvitations : []} />
-);
+export const Default = {
+  render: () => (
+    <ProjectCard {...props(args)} pendingInvitations={args.withInvitation ? props(args).pendingInvitations : []} />
+  ),
+  parameters: {
+    backgrounds: { default: "space" },
+  },
+};
 
-export const Default = Template.bind({});
+export const Hiring = {
+  render: () => (
+    <ProjectCard
+      {...props({ ...args, hiring: true })}
+      pendingInvitations={args.withInvitation ? props(args).pendingInvitations : []}
+    />
+  ),
+  parameters: {
+    backgrounds: { default: "space" },
+  },
+};
 
-const props = (args: { name: string; shortDescription: string; projectLeadsCount: number }): Project => ({
+const props = (args: {
+  name: string;
+  shortDescription: string;
+  projectLeadsCount: number;
+  hiring: boolean;
+}): Project => ({
   id: 123,
   contributorsAggregate: { aggregate: { count: 4 } },
   projectDetails: {
@@ -26,7 +44,7 @@ const props = (args: { name: string; shortDescription: string; projectLeadsCount
     telegramLink: "https://app.onlydust.xyz/projects/92f022a9-dbd8-446f-a2a5-b161ccb4541c",
     shortDescription: args.shortDescription,
     logoUrl: "https://avatars.githubusercontent.com/u/115809607?v=4",
-    hiring: true,
+    hiring: args.hiring,
   },
   projectLeads: [
     {
@@ -150,12 +168,5 @@ const args = {
     "Don't trust. Verify. ZeroSync allows to verify Bitcoin's chain state in an instant. No need to download hundreds of gigabytes of blocks. A compact cryptographic proof suffices to validate the entire history of transactions and everyone's current balances.",
   withInvitation: false,
   projectLeadsCount: 1,
-};
-
-Default.args = args;
-
-Default.parameters = {
-  backgrounds: {
-    default: "space",
-  },
+  hiring: false,
 };
