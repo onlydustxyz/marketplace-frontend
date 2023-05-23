@@ -147,6 +147,7 @@ class ProjectDetails {
    longDescription: String!
    name: String!
    projectId: uuid!
+   rank: Int!
    shortDescription: String!
    telegramLink: String
 }
