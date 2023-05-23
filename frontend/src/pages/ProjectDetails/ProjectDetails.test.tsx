@@ -12,7 +12,13 @@ import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
 import { LOCAL_STORAGE_SESSION_KEY } from "src/hooks/useSession";
 import { CLAIMS_KEY, GITHUB_USERID_KEY, PROJECTS_LED_KEY } from "src/types";
 import Overview from "src/pages/ProjectDetails/Overview";
-import { GetProjectDocument, GetProjectQueryResult, GetProjectsForSidebarDocument } from "src/__generated/graphql";
+import {
+  GetProjectDocument,
+  GetProjectQueryResult,
+  GetProjectsForSidebarDocument,
+  GetProjectVisibilityDetailsDocument,
+  GetProjectVisibilityDetailsQueryResult,
+} from "src/__generated/graphql";
 import { merge } from "lodash";
 
 const TEST_LED_PROJECT_ID = "test-led-project-id";
@@ -65,12 +71,15 @@ const getProjectMock = {
         id: TEST_PROJECT_ID,
         budgetsAggregate: {
           aggregate: {
+            count: 1,
             sum: {
               spentAmount: 1000,
               initialAmount: 1000,
             },
           },
         },
+        contributors: [],
+        githubReposAggregate: { aggregate: { count: 1 } },
         projectDetails: {
           projectId: TEST_PROJECT_ID,
           name: TEST_PROJECT_NAME,
@@ -79,6 +88,7 @@ const getProjectMock = {
           logoUrl: null,
           hiring: false,
           rank: 0,
+          visibility: "Public",
         },
         contributorsAggregate: { aggregate: { count: 0 } },
         pendingInvitations: [{ id: "test-invitation-id", githubUserId: TEST_GITHUB_USER_ID }],
@@ -93,13 +103,35 @@ const getProjectMock = {
             },
           },
         ],
-        budgets: [{ id: "budget-1" }],
         githubRepos: [{ githubRepoId: 123456, projectId: TEST_PROJECT_ID, repo: null }],
         projectSponsors: [],
       },
     } as GetProjectQueryResult["data"],
   },
 };
+
+const getProjectVisibilityMock = (projectId: string) => ({
+  request: {
+    query: GetProjectVisibilityDetailsDocument,
+    variables: {
+      projectId,
+    },
+  },
+  result: {
+    data: {
+      projectsByPk: {
+        __typename: "Projects",
+        id: projectId,
+        budgetsAggregate: { aggregate: { count: 1 } },
+        contributors: [],
+        githubReposAggregate: { aggregate: { count: 1 } },
+        pendingInvitations: [],
+        projectLeads: [{ userId: "user-1" }],
+        projectDetails: { projectId, visibility: "Public" },
+      },
+    } as GetProjectVisibilityDetailsQueryResult["data"],
+  },
+});
 
 const getLedProjectMock = {
   request: {
@@ -115,12 +147,15 @@ const getLedProjectMock = {
         id: TEST_LED_PROJECT_ID,
         budgetsAggregate: {
           aggregate: {
+            count: 1,
             sum: {
               spentAmount: 1000,
               initialAmount: 1000,
             },
           },
         },
+        contributors: [],
+        githubReposAggregate: { aggregate: { count: 1 } },
         contributorsAggregate: { aggregate: { count: 0 } },
         projectDetails: {
           projectId: TEST_LED_PROJECT_ID,
@@ -130,6 +165,7 @@ const getLedProjectMock = {
           logoUrl: null,
           hiring: false,
           rank: 0,
+          visibility: "Public",
         },
         pendingInvitations: [],
         projectLeads: [
@@ -143,7 +179,6 @@ const getLedProjectMock = {
             },
           },
         ],
-        budgets: [{ id: "budget-1" }],
         githubRepos: [{ projectId: TEST_LED_PROJECT_ID, githubRepoId: 123456, repo: null }],
         projectSponsors: [],
       },
@@ -173,7 +208,13 @@ const getProjectForSidebarMock = {
   },
 };
 
-const graphQlMocks = [getProjectMock, getLedProjectMock, getProjectForSidebarMock];
+const graphQlMocks = [
+  getProjectMock,
+  getLedProjectMock,
+  getProjectForSidebarMock,
+  getProjectVisibilityMock(TEST_LED_PROJECT_ID),
+  getProjectVisibilityMock(TEST_PROJECT_ID),
+];
 
 describe('"ProjectDetails" page', () => {
   beforeAll(() => {

@@ -34,10 +34,13 @@ const ALL_PROJECTS_RESULT_NO_INVITATIONS: { data: GetProjectsQueryResult["data"]
           telegramLink: null,
           hiring: false,
           rank: 0,
+          visibility: "Public",
         },
-        budgets: [{ id: "budget-1" }],
+        contributors: [],
+        githubReposAggregate: { aggregate: { count: 1 } },
         budgetsAggregate: {
           aggregate: {
+            count: 1,
             sum: {
               spentAmount: 1000,
               initialAmount: 1000,
@@ -76,10 +79,11 @@ const ALL_PROJECTS_RESULT_NO_INVITATIONS: { data: GetProjectsQueryResult["data"]
           telegramLink: null,
           hiring: false,
           rank: 0,
+          visibility: "Public",
         },
-        budgets: [{ id: "budget-2" }],
         budgetsAggregate: {
           aggregate: {
+            count: 1,
             sum: {
               spentAmount: 999,
               initialAmount: 1000,
@@ -87,6 +91,8 @@ const ALL_PROJECTS_RESULT_NO_INVITATIONS: { data: GetProjectsQueryResult["data"]
           },
         },
         contributorsAggregate: { aggregate: { count: 0 } },
+        contributors: [],
+        githubReposAggregate: { aggregate: { count: 1 } },
         pendingInvitations: [],
         githubRepos: [
           {
@@ -125,16 +131,19 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
           telegramLink: null,
           hiring: false,
           rank: 0,
+          visibility: "Public",
         },
-        budgets: [{ id: "budget-1" }],
         budgetsAggregate: {
           aggregate: {
+            count: 1,
             sum: {
               spentAmount: 1000,
               initialAmount: 1000,
             },
           },
         },
+        contributors: [],
+        githubReposAggregate: { aggregate: { count: 1 } },
         contributorsAggregate: { aggregate: { count: 0 } },
         pendingInvitations: [],
         githubRepos: [
@@ -167,16 +176,19 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
           telegramLink: null,
           hiring: false,
           rank: 0,
+          visibility: "Public",
         },
-        budgets: [{ id: "budget-2" }],
         budgetsAggregate: {
           aggregate: {
+            count: 1,
             sum: {
               spentAmount: 999,
               initialAmount: 1000,
             },
           },
         },
+        contributors: [],
+        githubReposAggregate: { aggregate: { count: 1 } },
         contributorsAggregate: { aggregate: { count: 0 } },
         pendingInvitations: [],
         githubRepos: [
@@ -209,16 +221,19 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
           telegramLink: null,
           hiring: false,
           rank: 0,
+          visibility: "Public",
         },
-        budgets: [{ id: "budget-3" }],
         budgetsAggregate: {
           aggregate: {
+            count: 1,
             sum: {
               spentAmount: 0,
               initialAmount: 1000,
             },
           },
         },
+        contributors: [],
+        githubReposAggregate: { aggregate: { count: 1 } },
         contributorsAggregate: { aggregate: { count: 0 } },
         pendingInvitations: [{ id: "invitation-1", githubUserId: TEST_GITHUB_USER_ID }],
         githubRepos: [
@@ -247,9 +262,15 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
 const projectWithNoBudget: ProjectCardFieldsFragment = {
   __typename: "Projects",
   id: "project-with-no-budget",
-  budgets: [],
-  budgetsAggregate: { aggregate: { sum: { spentAmount: 0, initialAmount: 1000 } } },
+  budgetsAggregate: {
+    aggregate: {
+      count: 0,
+      sum: { spentAmount: 0, initialAmount: 1000 },
+    },
+  },
   contributorsAggregate: { aggregate: { count: 0 } },
+  contributors: [],
+  githubReposAggregate: { aggregate: { count: 1 } },
   projectDetails: {
     projectId: "project-with-no-budget",
     name: "No budget",
@@ -258,6 +279,7 @@ const projectWithNoBudget: ProjectCardFieldsFragment = {
     logoUrl: null,
     hiring: false,
     rank: 0,
+    visibility: "Public",
   },
   githubRepos: [
     {
@@ -283,9 +305,15 @@ const projectWithNoBudget: ProjectCardFieldsFragment = {
 const projectWithNoRepo: ProjectCardFieldsFragment = {
   __typename: "Projects",
   id: "project-with-no-repo",
-  budgets: [{ id: "budget-1" }],
-  budgetsAggregate: { aggregate: { sum: { spentAmount: 0, initialAmount: 1000 } } },
+  budgetsAggregate: {
+    aggregate: {
+      count: 1,
+      sum: { spentAmount: 0, initialAmount: 1000 },
+    },
+  },
   contributorsAggregate: { aggregate: { count: 0 } },
+  contributors: [],
+  githubReposAggregate: { aggregate: { count: 0 } },
   projectDetails: {
     projectId: "project-with-no-repo",
     name: "No budget",
@@ -294,6 +322,7 @@ const projectWithNoRepo: ProjectCardFieldsFragment = {
     logoUrl: null,
     hiring: false,
     rank: 0,
+    visibility: "Public",
   },
   githubRepos: [],
   pendingInvitations: [],
@@ -310,9 +339,15 @@ const projectWithNoRepo: ProjectCardFieldsFragment = {
 const projectWithNoLeader: ProjectCardFieldsFragment = {
   __typename: "Projects",
   id: "project-with-no-leader",
-  budgets: [{ id: "budget-1" }],
-  budgetsAggregate: { aggregate: { sum: { spentAmount: 0, initialAmount: 1000 } } },
+  budgetsAggregate: {
+    aggregate: {
+      count: 1,
+      sum: { spentAmount: 0, initialAmount: 1000 },
+    },
+  },
   contributorsAggregate: { aggregate: { count: 0 } },
+  contributors: [],
+  githubReposAggregate: { aggregate: { count: 1 } },
   projectDetails: {
     projectId: "project-with-no-leader",
     name: "No budget",
@@ -321,6 +356,7 @@ const projectWithNoLeader: ProjectCardFieldsFragment = {
     logoUrl: null,
     hiring: false,
     rank: 0,
+    visibility: "Public",
   },
   githubRepos: [
     {
@@ -340,9 +376,15 @@ const projectWithNoLeader: ProjectCardFieldsFragment = {
 const projectInvalidWithInvite: ProjectCardFieldsFragment = {
   __typename: "Projects",
   id: "project-with-only-invite",
-  budgets: [],
-  budgetsAggregate: { aggregate: { sum: { spentAmount: 0, initialAmount: 1000 } } },
+  budgetsAggregate: {
+    aggregate: {
+      count: 0,
+      sum: { spentAmount: 0, initialAmount: 1000 },
+    },
+  },
   contributorsAggregate: { aggregate: { count: 0 } },
+  contributors: [],
+  githubReposAggregate: { aggregate: { count: 0 } },
   projectDetails: {
     projectId: "project-with-only-invite",
     name: "Nothing but invited",
@@ -351,6 +393,7 @@ const projectInvalidWithInvite: ProjectCardFieldsFragment = {
     logoUrl: null,
     hiring: false,
     rank: 0,
+    visibility: "Public",
   },
   githubRepos: [],
   pendingInvitations: [{ id: "invitation-1", githubUserId: TEST_GITHUB_USER_ID }],
@@ -361,9 +404,15 @@ const projectInvalidWithInvite: ProjectCardFieldsFragment = {
 const projectWithNoLeaderAndInviteForWrongUser: ProjectCardFieldsFragment = {
   __typename: "Projects",
   id: "project-with-no-leader-and-invite-for-wrong-user",
-  budgets: [{ id: "budget-1" }],
-  budgetsAggregate: { aggregate: { sum: { spentAmount: 0, initialAmount: 1000 } } },
+  budgetsAggregate: {
+    aggregate: {
+      count: 1,
+      sum: { spentAmount: 0, initialAmount: 1000 },
+    },
+  },
   contributorsAggregate: { aggregate: { count: 0 } },
+  contributors: [],
+  githubReposAggregate: { aggregate: { count: 1 } },
   projectDetails: {
     projectId: "project-with-no-leader",
     name: "No leader but invite",
@@ -372,6 +421,7 @@ const projectWithNoLeaderAndInviteForWrongUser: ProjectCardFieldsFragment = {
     logoUrl: null,
     hiring: false,
     rank: 0,
+    visibility: "Public",
   },
   githubRepos: [
     {
@@ -392,8 +442,14 @@ const projectWithNoLeaderAndInvite: ProjectCardFieldsFragment = {
   __typename: "Projects",
   id: "project-with-no-leader-and-invite",
   contributorsAggregate: { aggregate: { count: 0 } },
-  budgets: [{ id: "budget-1" }],
-  budgetsAggregate: { aggregate: { sum: { spentAmount: 0, initialAmount: 1000 } } },
+  contributors: [],
+  githubReposAggregate: { aggregate: { count: 1 } },
+  budgetsAggregate: {
+    aggregate: {
+      count: 1,
+      sum: { spentAmount: 0, initialAmount: 1000 },
+    },
+  },
   projectDetails: {
     projectId: "project-with-no-leader",
     name: "No leader but invite",
@@ -402,6 +458,7 @@ const projectWithNoLeaderAndInvite: ProjectCardFieldsFragment = {
     logoUrl: null,
     hiring: false,
     rank: 0,
+    visibility: "Public",
   },
   githubRepos: [
     {

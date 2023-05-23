@@ -22,6 +22,8 @@ const githubRepo2 = {
 
 const PROJECT: Project = {
   id: 123,
+  contributors: [],
+  githubReposAggregate: { aggregate: { count: 2 } },
   contributorsAggregate: { aggregate: { count: 3 } },
   projectDetails: {
     projectId: "123",
@@ -31,6 +33,7 @@ const PROJECT: Project = {
     logoUrl: "https://avatars.githubusercontent.com/u/115809607?v=4",
     hiring: false,
     rank: 0,
+    visibility: "Public",
   },
   projectLeads: [
     {
@@ -49,13 +52,13 @@ const PROJECT: Project = {
   ],
   budgetsAggregate: {
     aggregate: {
+      count: 1,
       sum: {
         spentAmount: 47550,
         initialAmount: 100000,
       },
     },
   },
-  budgets: [{ id: "budget-1" }],
   pendingInvitations: [{ id: "croute", githubUserId: "github-user-id" }],
   projectSponsors: [
     {

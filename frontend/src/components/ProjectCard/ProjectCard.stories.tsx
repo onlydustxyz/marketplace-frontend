@@ -50,6 +50,8 @@ const props = (args: {
   visibility: string;
 }): Project => ({
   id: 123,
+  contributors: [],
+  githubReposAggregate: { aggregate: { count: 4 } },
   contributorsAggregate: { aggregate: { count: 4 } },
   projectDetails: {
     projectId: "123",
@@ -135,13 +137,9 @@ const props = (args: {
       },
     },
   ],
-  budgets: [
-    {
-      id: "budget-1",
-    },
-  ],
   budgetsAggregate: {
     aggregate: {
+      count: 1,
       sum: {
         spentAmount: 47550,
         initialAmount: 100000,

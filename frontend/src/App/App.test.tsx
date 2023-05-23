@@ -87,7 +87,9 @@ const ALL_PROJECTS_RESULT: { data: GetProjectsQueryResult["data"] } = {
       {
         __typename: "Projects",
         id: TEST_PROJECT_ID,
+        contributors: [],
         contributorsAggregate: { aggregate: { count: 0 } },
+        githubReposAggregate: { aggregate: { count: 1 } },
         projectDetails: {
           __typename: "ProjectDetails",
           projectId: TEST_PROJECT_ID,
@@ -97,6 +99,7 @@ const ALL_PROJECTS_RESULT: { data: GetProjectsQueryResult["data"] } = {
           logoUrl: null,
           hiring: false,
           rank: 0,
+          visibility: "Public",
         },
         projectLeads: [
           {
@@ -121,8 +124,7 @@ const ALL_PROJECTS_RESULT: { data: GetProjectsQueryResult["data"] } = {
           },
         ],
         projectSponsors: [],
-        budgetsAggregate: { aggregate: { sum: { spentAmount: 100, initialAmount: 1000 } } },
-        budgets: [{ __typename: "Budgets", id: "budget-1" }],
+        budgetsAggregate: { aggregate: { count: 1, sum: { spentAmount: 100, initialAmount: 1000 } } },
       },
     ],
   },
@@ -135,13 +137,16 @@ const SINGLE_PROJECT_RESULT: { data: GetProjectQueryResult["data"] } = {
       id: TEST_PROJECT_ID,
       budgetsAggregate: {
         aggregate: {
+          count: 1,
           sum: {
             spentAmount: 123,
             initialAmount: 1000,
           },
         },
       },
+      contributors: [],
       contributorsAggregate: { aggregate: { count: 0 } },
+      githubReposAggregate: { aggregate: { count: 1 } },
       projectDetails: {
         __typename: "ProjectDetails",
         name: TEST_PROJECT_NAME,
@@ -151,6 +156,7 @@ const SINGLE_PROJECT_RESULT: { data: GetProjectQueryResult["data"] } = {
         logoUrl: null,
         hiring: false,
         rank: 0,
+        visibility: "Public",
       },
       projectLeads: [
         {
@@ -181,7 +187,6 @@ const SINGLE_PROJECT_RESULT: { data: GetProjectQueryResult["data"] } = {
         },
       ],
       projectSponsors: [],
-      budgets: [{ __typename: "Budgets", id: "budget-1" }],
     },
   },
 };
@@ -218,6 +223,7 @@ const PROJECT_OVERVIEW_DETAILS_RESULT: { data: GetProjectOverviewDetailsQueryRes
         longDescription: "This is the long description",
         telegramLink: TEST_TELEGRAM_LINK,
         hiring: false,
+        visibility: "Public",
       },
       pendingInvitations: [],
       budgetsAggregate: { aggregate: { sum: { initialAmount: 0, spentAmount: 0 } } },
@@ -303,18 +309,14 @@ const graphQlMocks = [
               projectId: TEST_PROJECT_ID,
               name: TEST_PROJECT_NAME,
               logoUrl: null,
+              visibility: "Public",
             },
             pendingInvitations: [],
-            githubRepos: [
-              {
-                __typename: "ProjectGithubRepos",
-                projectId: TEST_PROJECT_ID,
-                githubRepoId: TEST_GITHUB_REPO_ID,
-              },
-            ],
-            budgets: [],
             projectLeads: [],
-            contributorsAggregate: { aggregate: { count: 1 } },
+            contributorsAggregate: { aggregate: { count: 0 } },
+            githubReposAggregate: { aggregate: { count: 1 } },
+            budgetsAggregate: { aggregate: { count: 1 } },
+            contributors: [],
           },
         ],
       } as GetProjectsForSidebarQueryResult["data"],
