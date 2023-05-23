@@ -15,12 +15,12 @@ query ImpersonatedUser($id: uuid!) {
     roles {
       role
     }
-    githubUser {
-      userId
+    registeredUser {
+      id
       githubUserId
-    }
-    projectsLeaded {
-      projectId
+      projectsLeaded {
+        projectId
+      }
     }
   }
 }

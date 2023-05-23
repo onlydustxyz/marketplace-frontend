@@ -1,19 +1,16 @@
 query getUserDetails($userId: uuid!) {
-  user(id: $userId) {
+  registeredUsers(where: { id: { _eq: $userId } }) {
     email
+    lastSeen
     userInfo {
       location
       identity
       contactInformation
       payoutSettings
     }
-    githubUser {
-      accessToken
-      refreshToken
-      paymentRequests {
-        payments {
-          receipt
-        }
+    paymentRequests {
+      payments {
+        receipt
       }
     }
   }
@@ -22,8 +19,8 @@ query getUserDetails($userId: uuid!) {
 query getPayments {
   paymentRequests {
     recipient {
-      accessToken
-      refreshToken
+      email
+      lastSeen
     }
     payments {
       receipt

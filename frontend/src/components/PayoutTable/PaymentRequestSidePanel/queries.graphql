@@ -9,7 +9,7 @@ fragment PaymentRequestDetails on PaymentRequests {
   invoiceReceivedAt
   requestor {
     id
-    displayName
+    login
     avatarUrl
   }
   liveGithubRecipient {

@@ -1,9 +1,9 @@
-fragment UserId on users {
+fragment UserId on RegisteredUsers {
   id
 }
 
-fragment ProjectLead on users {
+fragment ProjectLead on RegisteredUsers {
   ...UserId
-  displayName
+  login
   avatarUrl
 }

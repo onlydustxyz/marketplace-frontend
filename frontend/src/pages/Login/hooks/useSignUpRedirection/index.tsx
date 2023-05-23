@@ -65,13 +65,11 @@ gql`
   }
 
   query PendingUserPayments($userId: uuid!) {
-    user(id: $userId) {
-      id
-      githubUser {
-        userId
-        paymentRequests {
-          ...ExtendedPaymentRequest
-        }
+    registeredUsers(where: { id: { _eq: $userId } }) {
+      ...UserId
+      githubUserId
+      paymentRequests {
+        ...ExtendedPaymentRequest
       }
     }
   }

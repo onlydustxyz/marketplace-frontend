@@ -33,13 +33,11 @@ gql`
   }
 
   query GetUserPayoutSettings($githubUserId: bigint!) {
-    authGithubUsers(where: { githubUserId: { _eq: $githubUserId } }) {
-      userId
-      user {
-        id
-        userInfo {
-          ...UserPayoutSettings
-        }
+    registeredUsers(where: { githubUserId: { _eq: $githubUserId } }) {
+      ...UserId
+      githubUserId
+      userInfo {
+        ...UserPayoutSettings
       }
     }
   }
