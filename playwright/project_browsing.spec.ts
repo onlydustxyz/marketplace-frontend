@@ -54,6 +54,9 @@ test.describe("As a visitor, I", () => {
     await browseProjectsPage.clearFilters();
 
     // Test sorting
+    await expect(
+      browseProjectsPage.projects().first().getByText(projects.ProjectB.name, { exact: true })
+    ).toBeVisible();
     await browseProjectsPage.sortBy("contributors");
     await expect(browseProjectsPage.projects().first().getByText(projects.Kakarot.name, { exact: true })).toBeVisible();
     await browseProjectsPage.sortBy("repositories");

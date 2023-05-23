@@ -37,6 +37,7 @@ export const projects: Record<string, ProjectFixture> = {
     pendingLeaderInvitations: ["Anthony"],
     repos: ["B"],
     sponsors: ["StarkNet", "Ether Foundation"],
+    rank: 100,
   },
   RepoLess: {
     name: "Repo-less project",
