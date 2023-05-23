@@ -1,6 +1,7 @@
 import { readFileSync, writeFileSync } from "fs";
 import { OpenAI, PromptTemplate } from "langchain";
 import { size } from "./file.ts";
+import { SingleBar } from "cli-progress";
 
 const MODEL = new OpenAI({
   modelName: "gpt-3.5-turbo",
@@ -30,6 +31,9 @@ export const decorateFiles = async (paths: string[]) => {
 
   const MAX_TOKENS_PER_MIN = 85000;
 
+  const progress = new SingleBar({});
+  progress.start(paths.length, 0);
+
   for (const [index, path] of paths.entries()) {
     const fileTokens = tokens(path);
     if (sentTokens + fileTokens > MAX_TOKENS_PER_MIN) {
@@ -40,6 +44,7 @@ export const decorateFiles = async (paths: string[]) => {
       startTime = Date.now();
     }
 
+    progress.update(index + 1, { filename: path });
     requests.push(decorateFile(path));
     sentTokens += fileTokens;
   }
