@@ -72,7 +72,7 @@ fragment ProjectVisibilityDetails on Projects {
       ...GithubUser
     }
   }
-  projectLeads {
+  projectLeads(orderBy: { user: { githubUserId: ASC } }) {
     userId
   }
   budgetsAggregate {
