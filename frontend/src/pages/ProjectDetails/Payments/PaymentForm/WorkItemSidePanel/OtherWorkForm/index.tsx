@@ -84,7 +84,7 @@ export default function OtherWorkForm({ projectId, contributorHandle, onWorkItem
 
   return (
     <div className="flex flex-col justify-between h-full gap-4 min-h-0">
-      <div className="flex flex-col justify-start gap-4 overflow-y-auto min-h-0 px-6">
+      <div className="flex flex-col justify-start gap-4 overflow-y-auto min-h-0 px-6 scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded">
         <div className="font-belwe font-normal text-base text-greyscale-50">
           {T("payment.form.workItems.other.title")}
         </div>
