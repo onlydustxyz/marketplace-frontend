@@ -1,4 +1,4 @@
-use std::collections::HashSet;
+use std::collections::{HashMap, HashSet};
 
 use chrono::{Duration, Utc};
 use derive_getters::{Dissolve, Getters};
@@ -23,6 +23,8 @@ pub enum Error {
 	Infrastructure(anyhow::Error),
 	#[error(transparent)]
 	Budget(#[from] BudgetError),
+	#[error("User already applied to this project")]
+	UserAlreadyApplied,
 }
 
 type Result<T> = std::result::Result<T, Error>;
@@ -33,6 +35,7 @@ pub struct Project {
 	leaders: HashSet<UserId>,
 	budget: Option<Budget>,
 	github_repos: HashSet<GithubRepoId>,
+	applications: HashMap<ApplicationId, Application>,
 }
 
 impl Entity for Project {
@@ -78,7 +81,13 @@ impl EventSourcable for Project {
 				self.github_repos.remove(github_repo_id);
 				self
 			},
-			ProjectEvent::Application { .. } => self,
+			ProjectEvent::Application { event, .. } => {
+				self.applications.insert(
+					*event.aggregate_id(),
+					Application::from_events(&[event.clone()]),
+				);
+				self
+			},
 		}
 	}
 }
@@ -245,6 +254,14 @@ impl Project {
 		applicant_id: UserId,
 		application_id: ApplicationId,
 	) -> Result<Vec<<Self as Aggregate>::Event>> {
+		if self
+			.applications()
+			.iter()
+			.any(|(_, application)| application.applicant_id() == &applicant_id)
+		{
+			return Err(Error::UserAlreadyApplied);
+		}
+
 		Ok(vec![ProjectEvent::Application {
 			id: self.id,
 			event: ApplicationEvent::Received {
@@ -274,7 +291,7 @@ mod tests {
 	}
 
 	#[fixture]
-	fn leader_id() -> UserId {
+	fn user_id() -> UserId {
 		Uuid::from_str("f2e47686-6cfa-403d-be32-795c6aa78fff").unwrap().into()
 	}
 
@@ -332,28 +349,28 @@ mod tests {
 	}
 
 	#[rstest]
-	fn test_assign_leader(project_created: ProjectEvent, leader_id: UserId, project_id: ProjectId) {
+	fn test_assign_leader(project_created: ProjectEvent, user_id: UserId, project_id: ProjectId) {
 		let project = Project::from_events(&[project_created]);
 
-		let events = project.assign_leader(leader_id.to_owned()).unwrap();
+		let events = project.assign_leader(user_id.to_owned()).unwrap();
 
 		assert_eq!(events.len(), 1);
 		assert_eq!(
 			events[0],
 			ProjectEvent::LeaderAssigned {
 				id: project_id,
-				leader_id
+				leader_id: user_id
 			}
 		);
 	}
 
 	#[rstest]
-	fn test_assign_twice_the_same_leader(project_created: ProjectEvent, leader_id: UserId) {
+	fn test_assign_twice_the_same_leader(project_created: ProjectEvent, user_id: UserId) {
 		let project = Project::from_events(&[project_created]);
-		let events = project.assign_leader(leader_id.to_owned()).unwrap();
+		let events = project.assign_leader(user_id.to_owned()).unwrap();
 		let project = project.apply_events(&events);
 
-		let result = project.assign_leader(leader_id.to_owned());
+		let result = project.assign_leader(user_id.to_owned());
 
 		assert!(result.is_err());
 		assert_matches!(result.unwrap_err(), Error::LeaderAlreadyAssigned);
@@ -381,5 +398,17 @@ mod tests {
 				event: BudgetEvent::Allocated { .. }
 			}
 		);
+	}
+
+	#[rstest]
+	fn user_cannot_apply_twice(project_created: ProjectEvent, user_id: UserId) {
+		let project = Project::from_events(&[project_created]);
+		let events = project.apply(user_id, Uuid::new_v4().into()).unwrap();
+		let project = project.apply_events(&events);
+
+		let result = project.apply(user_id, Uuid::new_v4().into());
+
+		assert!(result.is_err());
+		assert_matches!(result.unwrap_err(), Error::UserAlreadyApplied);
 	}
 }

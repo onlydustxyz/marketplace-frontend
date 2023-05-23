@@ -2,7 +2,7 @@ use derive_getters::Getters;
 use serde::{Deserialize, Serialize};
 use serde_with::serde_as;
 
-use crate::{Aggregate, ApplicationEvent, ApplicationId, Entity, EventSourcable};
+use crate::{Aggregate, ApplicationEvent, ApplicationId, Entity, EventSourcable, UserId};
 
 #[derive(Debug, Default, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Status {
@@ -15,6 +15,7 @@ pub enum Status {
 #[derive(Debug, Default, Clone, PartialEq, Eq, Serialize, Deserialize, Getters)]
 pub struct Application {
 	id: ApplicationId,
+	applicant_id: UserId,
 }
 
 impl Entity for Application {
@@ -28,7 +29,12 @@ impl Aggregate for Application {
 impl EventSourcable for Application {
 	fn apply_event(self, event: &Self::Event) -> Self {
 		match event {
-			ApplicationEvent::Received { id, .. } => Self { id: *id },
+			ApplicationEvent::Received {
+				id, applicant_id, ..
+			} => Self {
+				id: *id,
+				applicant_id: *applicant_id,
+			},
 		}
 	}
 }
