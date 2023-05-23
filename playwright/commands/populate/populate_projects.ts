@@ -34,6 +34,7 @@ const populateProject = async (
     mutation: CreateProjectDocument,
     variables: {
       projectName: project.name,
+      hiring: project.hiring ?? null,
       ...project,
     },
   });

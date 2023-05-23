@@ -1,6 +1,15 @@
 // @generated automatically by Diesel CLI.
 
 diesel::table! {
+    applications (id) {
+        id -> Uuid,
+        received_at -> Timestamp,
+        project_id -> Uuid,
+        applicant_id -> Uuid,
+    }
+}
+
+diesel::table! {
     budgets (id) {
         id -> Uuid,
         project_id -> Nullable<Uuid>,
@@ -138,6 +147,7 @@ diesel::table! {
         name -> Text,
         short_description -> Text,
         long_description -> Text,
+        hiring -> Bool,
     }
 }
 
@@ -202,6 +212,7 @@ diesel::joinable!(projects_sponsors -> projects (project_id));
 diesel::joinable!(projects_sponsors -> sponsors (sponsor_id));
 
 diesel::allow_tables_to_appear_in_same_query!(
+    applications,
     budgets,
     event_deduplications,
     events,

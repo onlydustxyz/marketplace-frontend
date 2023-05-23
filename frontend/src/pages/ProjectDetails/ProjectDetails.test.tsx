@@ -77,6 +77,7 @@ const getProjectMock = {
           telegramLink: TEST_TELEGRAM_LINK,
           shortDescription: TEST_DESCRIPTION,
           logoUrl: null,
+          hiring: false,
         },
         contributorsAggregate: { aggregate: { count: 0 } },
         pendingInvitations: [{ id: "test-invitation-id", githubUserId: TEST_GITHUB_USER_ID }],
@@ -126,6 +127,7 @@ const getLedProjectMock = {
           telegramLink: TEST_TELEGRAM_LINK,
           shortDescription: TEST_DESCRIPTION,
           logoUrl: null,
+          hiring: false,
         },
         pendingInvitations: [],
         projectLeads: [

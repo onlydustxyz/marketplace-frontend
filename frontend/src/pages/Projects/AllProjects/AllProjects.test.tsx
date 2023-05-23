@@ -33,6 +33,7 @@ const ALL_PROJECTS_RESULT_NO_INVITATIONS: { data: GetProjectsQueryResult["data"]
           shortDescription: "short description",
           logoUrl: null,
           telegramLink: null,
+          hiring: false,
         },
         budgets: [{ id: "budget-1" }],
         budgetsAggregate: {
@@ -73,6 +74,7 @@ const ALL_PROJECTS_RESULT_NO_INVITATIONS: { data: GetProjectsQueryResult["data"]
           shortDescription: "short description",
           logoUrl: null,
           telegramLink: null,
+          hiring: false,
         },
         budgets: [{ id: "budget-2" }],
         budgetsAggregate: {
@@ -120,6 +122,7 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
           logoUrl: null,
           shortDescription: "short description",
           telegramLink: null,
+          hiring: false,
         },
         budgets: [{ id: "budget-1" }],
         budgetsAggregate: {
@@ -160,6 +163,7 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
           logoUrl: null,
           shortDescription: "short description",
           telegramLink: null,
+          hiring: false,
         },
         budgets: [{ id: "budget-2" }],
         budgetsAggregate: {
@@ -200,6 +204,7 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
           logoUrl: null,
           shortDescription: "short description",
           telegramLink: null,
+          hiring: false,
         },
         budgets: [{ id: "budget-3" }],
         budgetsAggregate: {
@@ -247,6 +252,7 @@ const projectWithNoBudget: ProjectCardFieldsFragment = {
     shortDescription: "This project has no budget yet",
     telegramLink: null,
     logoUrl: null,
+    hiring: false,
   },
   githubRepos: [
     {
@@ -281,6 +287,7 @@ const projectWithNoRepo: ProjectCardFieldsFragment = {
     shortDescription: "This project has no repo yet",
     telegramLink: null,
     logoUrl: null,
+    hiring: false,
   },
   githubRepos: [],
   pendingInvitations: [],
@@ -306,6 +313,7 @@ const projectWithNoLeader: ProjectCardFieldsFragment = {
     shortDescription: "This project has no leader yet",
     telegramLink: null,
     logoUrl: null,
+    hiring: false,
   },
   githubRepos: [
     {
@@ -334,6 +342,7 @@ const projectInvalidWithInvite: ProjectCardFieldsFragment = {
     shortDescription: "This project has just been created and will only be visible to the invited leader",
     telegramLink: null,
     logoUrl: null,
+    hiring: false,
   },
   githubRepos: [],
   pendingInvitations: [{ id: "invitation-1", githubUserId: TEST_GITHUB_USER_ID }],
@@ -353,6 +362,7 @@ const projectWithNoLeaderAndInviteForWrongUser: ProjectCardFieldsFragment = {
     shortDescription: "This project has no leader yet",
     telegramLink: null,
     logoUrl: null,
+    hiring: false,
   },
   githubRepos: [
     {
@@ -381,6 +391,7 @@ const projectWithNoLeaderAndInvite: ProjectCardFieldsFragment = {
     shortDescription: "This project has no leader yet",
     telegramLink: null,
     logoUrl: null,
+    hiring: false,
   },
   githubRepos: [
     {

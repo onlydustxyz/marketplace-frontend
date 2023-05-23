@@ -36,6 +36,9 @@ pub use payment::{
 	Status as PaymentStatus, WorkItem as PaymentWorkItem,
 };
 
+mod application;
+pub use application::{Application, Event as ApplicationEvent, Id as ApplicationId};
+
 mod user;
 pub use user::{Entity as User, Id as UserId};
 

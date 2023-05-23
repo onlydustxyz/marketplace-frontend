@@ -1,5 +1,6 @@
 pub mod accept_leader_invitation;
 pub mod add_sponsor;
+pub mod apply;
 pub mod create;
 pub mod ignored_issues;
 pub mod invite_leader;

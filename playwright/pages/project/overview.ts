@@ -17,4 +17,5 @@ export class ProjectOverviewPage {
   sponsors = () => this.page.getByTestId("sponsors").allTextContents();
   moreInfo = () => this.page.getByTestId("more-info").textContent();
   repository = (id: number) => this.page.getByTestId(`github-repo-${id}`);
+  applyButton = () => this.page.getByTestId("apply-btn");
 }

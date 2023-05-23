@@ -47,6 +47,7 @@ pub struct Context {
 	pub update_user_info_usecase: application::user::update_profile_info::Usecase,
 	pub create_github_issue_usecase: application::github::create_issue::Usecase,
 	pub ignored_github_issues_usecase: application::project::ignored_issues::Usecase,
+	pub apply_to_project_usecase: application::project::apply::Usecase,
 	pub ens: Arc<ens::Client>,
 }
 
@@ -144,11 +145,15 @@ impl Context {
 				ArePayoutSettingsValid::new(ens.clone()),
 			),
 			create_github_issue_usecase: application::github::create_issue::Usecase::new(
-				project_repository,
+				project_repository.clone(),
 				graphql,
 			),
 			ignored_github_issues_usecase: application::project::ignored_issues::Usecase::new(
 				ignored_github_issues_repository,
+			),
+			apply_to_project_usecase: application::project::apply::Usecase::new(
+				project_repository,
+				event_publisher,
 			),
 			ens,
 		}

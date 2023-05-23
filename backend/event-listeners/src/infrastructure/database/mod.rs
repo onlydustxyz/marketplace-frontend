@@ -1,3 +1,4 @@
+mod applications;
 mod budget;
 mod error;
 mod github_issues;
@@ -15,6 +16,7 @@ mod project_github_repos;
 mod project_lead;
 mod work_item;
 
+pub use applications::Repository as ApplicationRepository;
 pub use budget::Repository as BudgetRepository;
 pub use github_issues::Repository as GithubIssuesRepository;
 pub use github_repos::Repository as GithubReposRepository;

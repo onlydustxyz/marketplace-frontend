@@ -1,6 +1,6 @@
 import { useIntl } from "src/hooks/useIntl";
 import OverviewPanel from "./OverviewPanel";
-import { useOutletContext } from "react-router-dom";
+import { useLocation, useOutletContext } from "react-router-dom";
 import { ReactNode } from "react";
 import { useGetProjectOverviewDetailsQuery } from "src/__generated/graphql";
 import QueryWrapper from "src/components/QueryWrapper";
@@ -18,6 +18,14 @@ import isDefined from "src/utils/isDefined";
 import { buildLanguageString, getDeduplicatedAggregatedLanguages } from "src/utils/languages";
 import Tag, { TagSize } from "src/components/Tag";
 import CodeSSlashLine from "src/icons/CodeSSlashLine";
+import Callout from "src/components/Callout";
+import RecordCircleLine from "src/icons/RecordCircleLine";
+import Button, { ButtonSize, Width } from "src/components/Button";
+import { useAuth } from "src/hooks/useAuth";
+import { LOGIN_URL } from "src/App/Layout/Header/GithubLink";
+import { SessionMethod, useSessionDispatch } from "src/hooks/useSession";
+import Tooltip from "src/components/Tooltip";
+import useApplications from "./useApplications";
 
 type OutletContext = {
   projectId: string;
@@ -27,11 +35,16 @@ type OutletContext = {
 export default function Overview() {
   const { T } = useIntl();
   const { projectId, children } = useOutletContext<OutletContext>();
+  const { isLoggedIn, user, githubUserId } = useAuth();
+  const dispatchSession = useSessionDispatch();
+  const location = useLocation();
 
   const { data, loading } = useGetProjectOverviewDetailsQuery({
     variables: { projectId },
     ...contextWithCacheHeaders,
   });
+
+  const { applyToProject } = useApplications(projectId);
 
   const projectName = data?.projectsByPk?.projectDetails?.name;
   const logoUrl = data?.projectsByPk?.projectDetails?.logoUrl || onlyDustLogo;
@@ -45,6 +58,11 @@ export default function Overview() {
   const totalInitialAmountInUsd = data?.projectsByPk?.budgetsAggregate.aggregate?.sum?.initialAmount;
   const totalSpentAmountInUsd = data?.projectsByPk?.budgetsAggregate.aggregate?.sum?.spentAmount;
   const languages = getDeduplicatedAggregatedLanguages(data?.projectsByPk?.githubRepos.map(r => r.repo));
+  const hiring = data?.projectsByPk?.projectDetails?.hiring;
+  const alreadyApplied = data?.projectsByPk?.applications.some(a => a.applicantId === user?.id);
+  const isContributor = data?.projectsByPk?.contributors.some(c => c.githubUser?.id === githubUserId);
+  const isProjectLead = data?.projectsByPk?.projectLeads.some(l => l.user?.id === user?.id);
+  const isInvited = data?.projectsByPk?.pendingInvitations.some(i => i.githubUserId === githubUserId);
 
   return (
     <>
@@ -89,17 +107,54 @@ export default function Overview() {
             </Card>
           </div>
         </QueryWrapper>
-        <OverviewPanel
-          {...{
-            sponsors,
-            telegramLink,
-            topContributors,
-            totalContributorsCount,
-            leads,
-            totalInitialAmountInUsd,
-            totalSpentAmountInUsd,
-          }}
-        />
+        <div className="flex flex-col gap-4">
+          {hiring && !(isProjectLead || isContributor || isInvited) && (
+            <Callout>
+              <div className="flex flex-col gap-3">
+                <div className="flex flex-row gap-2 items-center text-spaceBlue-200 font-walsheim font-medium text-sm">
+                  <RecordCircleLine />
+                  {T("project.hiring").toUpperCase()}
+                </div>
+                {isLoggedIn ? (
+                  <div id="applyButton">
+                    <Button
+                      data-testid="apply-btn"
+                      size={ButtonSize.Md}
+                      width={Width.Full}
+                      disabled={alreadyApplied}
+                      onClick={applyToProject}
+                    >
+                      {T("applications.applyButton")}
+                    </Button>
+                    {alreadyApplied && <Tooltip anchorId="applyButton">{T("applications.appliedTooltip")}</Tooltip>}
+                  </div>
+                ) : (
+                  <a
+                    href={LOGIN_URL}
+                    onClick={() =>
+                      dispatchSession({ method: SessionMethod.SetVisitedPageBeforeLogin, value: location.pathname })
+                    }
+                  >
+                    <Button size={ButtonSize.Md} width={Width.Full}>
+                      {T("applications.appliedTooltip")}
+                    </Button>
+                  </a>
+                )}
+              </div>
+            </Callout>
+          )}
+          <OverviewPanel
+            {...{
+              sponsors,
+              telegramLink,
+              topContributors,
+              totalContributorsCount,
+              leads,
+              totalInitialAmountInUsd,
+              totalSpentAmountInUsd,
+            }}
+          />
+        </div>
       </div>
     </>
   );

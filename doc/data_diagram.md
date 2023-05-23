@@ -3,6 +3,13 @@
 ```mermaid
 classDiagram
 
+class Applications {
+   applicantId: uuid!
+   id: uuid!
+   projectId: uuid!
+   receivedAt: timestamp!
+}
+
 class AuthGithubUsers {
    accessToken: String
    createdAt: timestamptz
@@ -135,6 +142,7 @@ class PendingProjectLeaderInvitations {
 }
 
 class ProjectDetails {
+   hiring: Boolean!
    logoUrl: String
    longDescription: String!
    name: String!
@@ -160,6 +168,7 @@ class ProjectLeads {
 }
 
 class Projects {
+   applications: [Applications!]!
    budgets: [Budgets!]!
    contributors: [ProjectsContributorsView!]!
    githubRepos: [ProjectGithubRepos!]!
@@ -338,6 +347,7 @@ ProjectGithubRepos --* GithubReposContributors
 ProjectLeads -- Projects
 ProjectLeads -- users
 Projects -- ProjectDetails
+Projects --* Applications
 Projects --* Budgets
 Projects --* PendingProjectLeaderInvitations
 Projects --* ProjectGithubRepos

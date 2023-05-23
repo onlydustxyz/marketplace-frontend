@@ -44,6 +44,7 @@
           }
           type Mutation {
             acceptProjectLeaderInvitation(invitationId: Uuid!): Boolean!
+            applyToProject(projectId: Id!): Uuid!
             cancelPaymentRequest(projectId: Uuid!, paymentId: Uuid!): Payment!
             createIssue(projectId: Uuid!, githubRepoId: Int!, title: String!, description: String!): Issue!
             ignoreIssue(projectId: Uuid!, repoId: GithubRepoId!, issueNumber: GithubIssueNumber!): Boolean!
@@ -143,6 +144,20 @@
           type Query {
             hello: String!
           }
+  remote_relationships:
+    - relationships:
+        - definition:
+            to_source:
+              field_mapping:
+                number: issue_number
+                repoId: repo_id
+              relationship_type: array
+              source: default
+              table:
+                name: ignored_github_issues
+                schema: public
+          name: ignoredForProjects
+      type_name: Issue
 - name: DustyBot
   definition:
     url_from_env: DUSTY_BOT_GRAPHQL_URL

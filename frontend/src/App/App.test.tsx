@@ -94,6 +94,7 @@ const ALL_PROJECTS_RESULT: { data: GetProjectsQueryResult["data"] } = {
           telegramLink: TEST_TELEGRAM_LINK,
           shortDescription: TEST_DESCRIPTION,
           logoUrl: null,
+          hiring: false,
         },
         projectLeads: [
           {
@@ -146,6 +147,7 @@ const SINGLE_PROJECT_RESULT: { data: GetProjectQueryResult["data"] } = {
         shortDescription: TEST_DESCRIPTION,
         projectId: TEST_PROJECT_ID,
         logoUrl: null,
+        hiring: false,
       },
       projectLeads: [
         {
@@ -212,7 +214,9 @@ const PROJECT_OVERVIEW_DETAILS_RESULT: { data: GetProjectOverviewDetailsQueryRes
         logoUrl: null,
         longDescription: "This is the long description",
         telegramLink: TEST_TELEGRAM_LINK,
+        hiring: false,
       },
+      pendingInvitations: [],
       budgetsAggregate: { aggregate: { sum: { initialAmount: 0, spentAmount: 0 } } },
       contributors: [
         {
@@ -227,6 +231,7 @@ const PROJECT_OVERVIEW_DETAILS_RESULT: { data: GetProjectOverviewDetailsQueryRes
           repo: { id: TEST_GITHUB_REPO_ID, stars: 1000, languages: {} },
         },
       ],
+      applications: [],
     },
   },
 };

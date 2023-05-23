@@ -45,6 +45,7 @@ export type ProjectFixture = {
   pendingLeaderInvitations?: string[];
   repos?: string[];
   sponsors?: string[];
+  hiring?: boolean;
 };
 
 export type Project = ProjectFixture & {
