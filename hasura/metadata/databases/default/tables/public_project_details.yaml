@@ -6,6 +6,7 @@ select_permissions:
     permission:
       columns:
         - hiring
+        - rank
         - logo_url
         - long_description
         - name
