@@ -91,34 +91,16 @@ object_relationships:
   - name: defaultRoleByRole
     using:
       foreign_key_constraint_on: default_role
-  - name: githubUser
+  - name: registeredUser
     using:
       manual_configuration:
         column_mapping:
-          id: user_id
+          id: id
         insertion_order: null
         remote_table:
-          name: github_users
-          schema: auth
-  - name: userInfo
-    using:
-      manual_configuration:
-        column_mapping:
-          id: user_id
-        insertion_order: null
-        remote_table:
-          name: user_info
+          name: registered_users
           schema: public
 array_relationships:
-  - name: projectsLeaded
-    using:
-      manual_configuration:
-        column_mapping:
-          id: user_id
-        insertion_order: null
-        remote_table:
-          name: project_leads
-          schema: public
   - name: refreshTokens
     using:
       foreign_key_constraint_on:
@@ -147,45 +129,6 @@ array_relationships:
         table:
           name: user_providers
           schema: auth
-select_permissions:
-  - role: public
-    permission:
-      columns:
-        - avatar_url
-        - display_name
-        - id
-      filter: {}
-  - role: registered_user_specific
-    permission:
-      columns:
-        - active_mfa_type
-        - avatar_url
-        - created_at
-        - default_role
-        - disabled
-        - display_name
-        - email
-        - email_verified
-        - id
-        - is_anonymous
-        - locale
-        - metadata
-        - new_email
-        - phone_number
-        - phone_number_verified
-      filter:
-        id:
-          _eq: X-Hasura-User-Id
-update_permissions:
-  - role: registered_user_specific
-    permission:
-      columns:
-        - email
-        - metadata
-      filter:
-        id:
-          _eq: X-Hasura-User-Id
-      check: null
 event_triggers:
   - name: auth_users_update
     definition:

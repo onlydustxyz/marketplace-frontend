@@ -9,8 +9,8 @@ object_relationships:
           id: github_user_id
         insertion_order: null
         remote_table:
-          name: github_users
-          schema: auth
+          name: registered_users
+          schema: public
 array_relationships:
   - name: paymentRequests
     using:

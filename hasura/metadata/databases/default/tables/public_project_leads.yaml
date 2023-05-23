@@ -18,8 +18,8 @@ object_relationships:
           user_id: id
         insertion_order: null
         remote_table:
-          name: users
-          schema: auth
+          name: registered_users
+          schema: public
 select_permissions:
   - role: public
     permission:

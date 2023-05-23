@@ -244,8 +244,8 @@
               relationship_type: object
               source: default
               table:
-                name: github_users
-                schema: auth
+                name: registered_users
+                schema: public
           name: user
       type_name: User
     - relationships:

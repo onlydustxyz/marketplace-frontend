@@ -1,4 +1,3 @@
-- "!include auth_github_users.yaml"
 - "!include auth_provider_requests.yaml"
 - "!include auth_providers.yaml"
 - "!include auth_refresh_tokens.yaml"
@@ -23,6 +22,7 @@
 - "!include public_projects.yaml"
 - "!include public_projects_contributors_view.yaml"
 - "!include public_projects_sponsors.yaml"
+- "!include public_registered_users.yaml"
 - "!include public_sponsors.yaml"
 - "!include public_user_info.yaml"
 - "!include public_work_items.yaml"

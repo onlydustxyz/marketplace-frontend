@@ -27,8 +27,8 @@ object_relationships:
           recipient_id: github_user_id
         insertion_order: null
         remote_table:
-          name: github_users
-          schema: auth
+          name: registered_users
+          schema: public
   - name: requestor
     using:
       manual_configuration:
@@ -36,8 +36,8 @@ object_relationships:
           requestor_id: id
         insertion_order: null
         remote_table:
-          name: users
-          schema: auth
+          name: registered_users
+          schema: public
 array_relationships:
   - name: payments
     using:
