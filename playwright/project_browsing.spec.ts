@@ -24,6 +24,7 @@ test.describe("As a visitor, I", () => {
       contributors: "2 contributors",
       repositories: "1 repository",
     });
+    await browseProjectsPage.expectProjectsNotToBeVisible(projects.Private);
 
     await browseProjectsPage.expectProjectsToBeVisible(projects.Kakarot, projects.Empty);
     await browseProjectsPage.expectProjectsNotToBeVisible(projects.RepoLess);
@@ -82,6 +83,20 @@ test.describe("As a registered user, I", () => {
     await signIn(users.Olivier);
     await page.goto(`/projects/${projects.ProjectA.id}/payments`);
     await expect(page).toHaveURL(`/projects/${projects.ProjectA.id}`);
+  });
+
+  test("can see private project I am a member of", async ({ page, projects, users, signIn }) => {
+    await signIn(users.Oscar);
+    const browseProjectsPage = new BrowseProjectsPage(page);
+    await browseProjectsPage.goto();
+    await browseProjectsPage.expectProjectsToBeVisible(projects.Private);
+  });
+
+  test("cannot see private project I am not a member of", async ({ page, projects, users, signIn }) => {
+    await signIn(users.Olivier);
+    const browseProjectsPage = new BrowseProjectsPage(page);
+    await browseProjectsPage.goto();
+    await browseProjectsPage.expectProjectsNotToBeVisible(projects.Private);
   });
 
   test("can express my interest to a project", async ({ page, projects, users, signIn }) => {

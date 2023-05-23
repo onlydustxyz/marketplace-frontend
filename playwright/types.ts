@@ -47,6 +47,7 @@ export type ProjectFixture = {
   sponsors?: string[];
   hiring?: boolean;
   rank?: number;
+  visibility?: "PUBLIC" | "PRIVATE";
 };
 
 export type Project = ProjectFixture & {
