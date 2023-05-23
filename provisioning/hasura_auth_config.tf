@@ -1,7 +1,7 @@
 resource "heroku_config" "hasura_auth" {
   vars = {
     AUTH_CLIENT_URL                 = local.frontend_login_url
-    AUTH_JWT_CUSTOM_CLAIMS          = "{\"projectsLeaded\":\"projectsLeaded[].projectId\",\"githubUserId\":\"githubUser.githubUserId\",\"githubAccessToken\":\"githubUser.accessToken\"}"
+    AUTH_JWT_CUSTOM_CLAIMS          = "{\"projectsLeaded\":\"registeredUser.projectsLeaded[].projectId\",\"githubUserId\":\"registeredUser.githubUserId\",\"githubAccessToken\":\"userGithubProvider.accessToken\"}"
     AUTH_LOG_LEVEL                  = "info"
     AUTH_PROVIDER_GITHUB_ENABLED    = "true"
     AUTH_SERVER_URL                 = "https://${local.hasura_auth_hostname}"

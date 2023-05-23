@@ -100,6 +100,15 @@ object_relationships:
         remote_table:
           name: registered_users
           schema: public
+  - name: userGithubProvider
+    using:
+      manual_configuration:
+        column_mapping:
+          id: user_id
+        insertion_order: null
+        remote_table:
+          name: user_github_provider
+          schema: auth
 array_relationships:
   - name: refreshTokens
     using:
