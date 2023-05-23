@@ -32,6 +32,7 @@ pub struct ProjectDetails {
 	pub short_description: String,
 	pub long_description: String,
 	pub hiring: bool,
+	pub rank: i32,
 }
 
 impl domain::Entity for ProjectDetails {
