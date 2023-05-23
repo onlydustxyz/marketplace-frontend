@@ -31,7 +31,7 @@ const TEST_GITHUB_USER: GithubUserWithPaymentRequestsForProjectFragment = {
   id: 23326,
   login: "test-login",
   avatarUrl: "test-avatar-url",
-  user: { userId: "test-user-id" },
+  user: { id: "test-user-id" },
   htmlUrl: "html-url",
   paymentRequests: [],
 };

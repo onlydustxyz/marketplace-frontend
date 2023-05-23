@@ -88,7 +88,7 @@ const getProjectMock = {
             projectId: TEST_PROJECT_ID,
             user: {
               id: "test-user-id",
-              displayName: TEST_PROJECT_LEAD_DISPLAY_NAME,
+              login: TEST_PROJECT_LEAD_DISPLAY_NAME,
               avatarUrl: TEST_PROJECT_LEAD_AVATAR_URL,
             },
           },
@@ -138,7 +138,7 @@ const getLedProjectMock = {
             projectId: TEST_LED_PROJECT_ID,
             user: {
               id: "test-user-id",
-              displayName: TEST_PROJECT_LEAD_DISPLAY_NAME,
+              login: TEST_PROJECT_LEAD_DISPLAY_NAME,
               avatarUrl: TEST_PROJECT_LEAD_AVATAR_URL,
             },
           },

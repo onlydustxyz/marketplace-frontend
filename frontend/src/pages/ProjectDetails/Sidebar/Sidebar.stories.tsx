@@ -28,7 +28,7 @@ const currentProject: ProjectDetails & SidebarProjectDetails = {
   leads: [
     {
       id: "leader-id",
-      displayName: "Leader",
+      login: "Leader",
       avatarUrl: "https://avatars.githubusercontent.com/u/98735558?v=4",
     },
   ],
@@ -45,7 +45,7 @@ const otherProject: ProjectDetails & SidebarProjectDetails = {
   leads: [
     {
       id: "leader-id",
-      displayName: "Leader",
+      login: "Leader",
       avatarUrl: "https://avatars.githubusercontent.com/u/98735558?v=4",
     },
   ],

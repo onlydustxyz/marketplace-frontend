@@ -50,7 +50,7 @@ const ALL_PROJECTS_RESULT_NO_INVITATIONS: { data: GetProjectsQueryResult["data"]
           {
             userId: "user-1",
             projectId: "1",
-            user: { id: "user-1", displayName: "project lead", avatarUrl: "avatar" },
+            user: { id: "user-1", login: "project lead", avatarUrl: "avatar" },
           },
         ],
         projectSponsors: [],
@@ -102,7 +102,7 @@ const ALL_PROJECTS_RESULT_NO_INVITATIONS: { data: GetProjectsQueryResult["data"]
           {
             userId: "user-1",
             projectId: "2",
-            user: { id: "user-1", displayName: "project lead", avatarUrl: "avatar" },
+            user: { id: "user-1", login: "project lead", avatarUrl: "avatar" },
           },
         ],
         projectSponsors: [],
@@ -151,7 +151,7 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
           {
             userId: "user-1",
             projectId: "1",
-            user: { id: "user-1", displayName: "project lead", avatarUrl: "avatar" },
+            user: { id: "user-1", login: "project lead", avatarUrl: "avatar" },
           },
         ],
         projectSponsors: [],
@@ -193,7 +193,7 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
           {
             userId: "user-1",
             projectId: "2",
-            user: { id: "user-1", displayName: "project lead", avatarUrl: "avatar" },
+            user: { id: "user-1", login: "project lead", avatarUrl: "avatar" },
           },
         ],
         projectSponsors: [],
@@ -235,7 +235,7 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
           {
             userId: "user-1",
             projectId: "3",
-            user: { id: "user-1", displayName: "project lead", avatarUrl: "avatar" },
+            user: { id: "user-1", login: "project lead", avatarUrl: "avatar" },
           },
         ],
         projectSponsors: [],
@@ -274,7 +274,7 @@ const projectWithNoBudget: ProjectCardFieldsFragment = {
     {
       userId: "user-1",
       projectId: "project-with-no-budget",
-      user: { id: "user-1", displayName: "leader", avatarUrl: "avatar" },
+      user: { id: "user-1", login: "leader", avatarUrl: "avatar" },
     },
   ],
   projectSponsors: [],
@@ -301,7 +301,7 @@ const projectWithNoRepo: ProjectCardFieldsFragment = {
     {
       userId: "user-1",
       projectId: "project-with-no-repo",
-      user: { id: "user-1", displayName: "leader", avatarUrl: "avatar" },
+      user: { id: "user-1", login: "leader", avatarUrl: "avatar" },
     },
   ],
   projectSponsors: [],

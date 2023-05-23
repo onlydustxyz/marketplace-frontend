@@ -17,17 +17,17 @@ export const Default = {
         leads: [
           {
             id: "user-1",
-            displayName: "anthonybuisset",
+            login: "anthonybuisset",
             avatarUrl: "https://avatars.githubusercontent.com/u/43467246?v=4",
           },
           {
             id: "user-2",
-            displayName: "bernardstanislas",
+            login: "bernardstanislas",
             avatarUrl: "https://avatars.githubusercontent.com/u/4435377?v=4",
           },
           {
             id: "user-3",
-            displayName: "oscarwroche",
+            login: "oscarwroche",
             avatarUrl: "https://avatars.githubusercontent.com/u/21149076?v=4",
           },
         ],

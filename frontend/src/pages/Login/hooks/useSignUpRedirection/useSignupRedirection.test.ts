@@ -7,8 +7,11 @@ import { generatePath } from "react-router-dom";
 import { waitFor } from "@testing-library/react";
 import {
   GetUserPayoutSettingsDocument,
+  GetUserPayoutSettingsQueryResult,
   PendingProjectLeaderInvitationsDocument,
+  PendingProjectLeaderInvitationsQueryResult,
   PendingUserPaymentsDocument,
+  PendingUserPaymentsQueryResult,
   UserPayoutSettingsFragment,
 } from "src/__generated/graphql";
 
@@ -32,7 +35,7 @@ const pendingProjectLeadInvitationMock = {
           projectId,
         },
       ],
-    },
+    } as PendingProjectLeaderInvitationsQueryResult["data"],
   },
 };
 
@@ -72,9 +75,8 @@ describe("useSignupRedirection", () => {
   it("should return MyContributions if pending payments and no payout settings", async () => {
     const mock = pendingPaymentsMock.newData.mockReturnValue({
       data: {
-        user: {
-          userInfo: { payoutSettings: null },
-          githubUser: {
+        registeredUsers: [
+          {
             paymentRequests: [
               {
                 amountInUsd: 100,
@@ -82,24 +84,22 @@ describe("useSignupRedirection", () => {
               },
             ],
           },
-        },
-      },
+        ],
+      } as PendingUserPaymentsQueryResult["data"],
     });
 
     payoutSettingsMock.newData.mockReturnValue({
       data: {
-        authGithubUsers: [
+        registeredUsers: [
           {
-            user: {
-              userInfo: {
-                __typename: "UserInfo",
-                payoutSettings: null,
-                arePayoutSettingsValid: false,
-              } as UserPayoutSettingsFragment,
-            },
+            userInfo: {
+              __typename: "UserInfo",
+              payoutSettings: null,
+              arePayoutSettingsValid: false,
+            } as UserPayoutSettingsFragment,
           },
         ],
-      },
+      } as GetUserPayoutSettingsQueryResult["data"],
     });
 
     const { result } = render({ userId, githubUserId }, [pendingPaymentsMock, payoutSettingsMock]);
@@ -114,8 +114,8 @@ describe("useSignupRedirection", () => {
   it("should return Projects if pending payments but payout settings are filled", async () => {
     const mock = pendingPaymentsMock.newData.mockReturnValue({
       data: {
-        user: {
-          githubUser: {
+        registeredUsers: [
+          {
             paymentRequests: [
               {
                 amountInUsd: 100,
@@ -123,24 +123,22 @@ describe("useSignupRedirection", () => {
               },
             ],
           },
-        },
-      },
+        ],
+      } as PendingUserPaymentsQueryResult["data"],
     });
 
     payoutSettingsMock.newData.mockReturnValue({
       data: {
-        authGithubUsers: [
+        registeredUsers: [
           {
-            user: {
-              userInfo: {
-                __typename: "UserInfo",
-                payoutSettings: null,
-                arePayoutSettingsValid: true,
-              } as UserPayoutSettingsFragment,
-            },
+            userInfo: {
+              __typename: "UserInfo",
+              payoutSettings: null,
+              arePayoutSettingsValid: true,
+            } as UserPayoutSettingsFragment,
           },
         ],
-      },
+      } as GetUserPayoutSettingsQueryResult["data"],
     });
 
     const { result } = render({ userId, githubUserId }, [pendingPaymentsMock, payoutSettingsMock]);
@@ -155,8 +153,8 @@ describe("useSignupRedirection", () => {
   it("should return Projects if no pending payments and no payout settings", async () => {
     const mock = pendingPaymentsMock.newData.mockReturnValue({
       data: {
-        user: {
-          githubUser: {
+        registeredUsers: [
+          {
             paymentRequests: [
               {
                 amountInUsd: 100,
@@ -164,24 +162,22 @@ describe("useSignupRedirection", () => {
               },
             ],
           },
-        },
-      },
+        ],
+      } as PendingUserPaymentsQueryResult["data"],
     });
 
     payoutSettingsMock.newData.mockReturnValue({
       data: {
-        authGithubUsers: [
+        registeredUsers: [
           {
-            user: {
-              userInfo: {
-                __typename: "UserInfo",
-                payoutSettings: null,
-                arePayoutSettingsValid: false,
-              } as UserPayoutSettingsFragment,
-            },
+            userInfo: {
+              __typename: "UserInfo",
+              payoutSettings: null,
+              arePayoutSettingsValid: false,
+            } as UserPayoutSettingsFragment,
           },
         ],
-      },
+      } as GetUserPayoutSettingsQueryResult["data"],
     });
 
     const { result } = render({ userId, githubUserId }, [pendingPaymentsMock, payoutSettingsMock]);
@@ -196,8 +192,8 @@ describe("useSignupRedirection", () => {
   it("should return MyContributions if both invited and pending payments with no payout settings", async () => {
     const mock = pendingPaymentsMock.newData.mockReturnValue({
       data: {
-        user: {
-          githubUser: {
+        registeredUsers: [
+          {
             paymentRequests: [
               {
                 amountInUsd: 100,
@@ -205,24 +201,22 @@ describe("useSignupRedirection", () => {
               },
             ],
           },
-        },
-      },
+        ],
+      } as PendingUserPaymentsQueryResult["data"],
     });
 
     payoutSettingsMock.newData.mockReturnValue({
       data: {
-        authGithubUsers: [
+        registeredUsers: [
           {
-            user: {
-              userInfo: {
-                __typename: "UserInfo",
-                payoutSettings: null,
-                arePayoutSettingsValid: false,
-              } as UserPayoutSettingsFragment,
-            },
+            userInfo: {
+              __typename: "UserInfo",
+              payoutSettings: null,
+              arePayoutSettingsValid: false,
+            } as UserPayoutSettingsFragment,
           },
         ],
-      },
+      } as GetUserPayoutSettingsQueryResult["data"],
     });
 
     const { result } = render({ userId, githubUserId }, [

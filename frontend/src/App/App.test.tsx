@@ -104,9 +104,9 @@ const ALL_PROJECTS_RESULT: { data: GetProjectsQueryResult["data"] } = {
             userId: TEST_USER_ID,
             projectId: TEST_PROJECT_ID,
             user: {
-              __typename: "users",
+              __typename: "RegisteredUsers",
               id: TEST_USER_ID,
-              displayName: TEST_PROJECT_LEAD_DISPLAY_NAME,
+              login: TEST_PROJECT_LEAD_DISPLAY_NAME,
               avatarUrl: TEST_PROJECT_LEAD_AVATAR_URL,
             },
           },
@@ -158,9 +158,9 @@ const SINGLE_PROJECT_RESULT: { data: GetProjectQueryResult["data"] } = {
           projectId: TEST_PROJECT_ID,
           userId: TEST_USER_ID,
           user: {
-            __typename: "users",
+            __typename: "RegisteredUsers",
             id: TEST_USER_ID,
-            displayName: TEST_PROJECT_LEAD_DISPLAY_NAME,
+            login: TEST_PROJECT_LEAD_DISPLAY_NAME,
             avatarUrl: TEST_PROJECT_LEAD_AVATAR_URL,
           },
         },
