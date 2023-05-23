@@ -1,3 +1,5 @@
+/// This module contains the implementation of the `Amount` and `Currency` structs, 
+/// as well as several implementations of their associated traits.
 use std::ops::{Add, Deref, Mul, Sub};
 
 use derive_getters::Getters;
@@ -6,6 +8,7 @@ use rust_decimal::Decimal;
 use rusty_money::{FormattableCurrency, Money};
 use serde::{Deserialize, Serialize};
 
+/// Represents an amount of money, consisting of a decimal value and a currency.
 #[derive(
 	Debug,
 	Default,
@@ -20,7 +23,9 @@ use serde::{Deserialize, Serialize};
 	Constructor,
 )]
 pub struct Amount {
+	/// The decimal value of the amount.
 	amount: Decimal,
+	/// The currency of the amount.
 	currency: Currency,
 }
 
@@ -45,6 +50,11 @@ impl Sub<&Self> for Amount {
 	type Output = Self;
 
 	fn sub(self, rhs: &Self) -> Self::Output {
+        /// Subtracts the given amount from this amount, returning a new `Amount`.
+        ///
+        /// # Panics
+        ///
+        /// Panics if the two amounts have different currencies.
 		assert_eq!(
 			self.currency, rhs.currency,
 			"Cannot substract with different currencies"
@@ -78,10 +88,13 @@ impl Mul<i64> for Amount {
 	}
 }
 
+/// Specifies the currency of an amount.
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize, Display)]
 pub enum Currency {
+	/// A cryptocurrency with the given symbol.
 	Crypto(String),
 }
+
 
 impl Default for Currency {
 	fn default() -> Self {
@@ -91,6 +104,7 @@ impl Default for Currency {
 
 impl<'a, T: FormattableCurrency> From<Money<'a, T>> for Amount {
 	fn from(amount: Money<'a, T>) -> Self {
+        /// Creates a new `Amount` from a `Money` value.
 		Self::new(
 			*amount.amount(),
 			Currency::Crypto(amount.currency().to_string()),

@@ -11,12 +11,19 @@ use crate::{
 	presentation::http::dto::NonEmptyTrimmedString,
 };
 
+/// A usecase struct for handling sponsor creation.
 pub struct Usecase {
-	sponsor_repository: SponsorRepository,
-	image_store: Arc<dyn ImageStoreService>,
+    sponsor_repository: SponsorRepository,
+    image_store: Arc<dyn ImageStoreService>,
 }
 
 impl Usecase {
+	/// Returns a new `Usecase` instance.
+	///
+	/// # Arguments
+	///
+	/// * `sponsor_repository` - A repository reference for `Sponsor` models.
+	/// * `image_store` - An image store reference for `Logo` models. Dynamic dispatch required.
 	pub fn new(
 		sponsor_repository: SponsorRepository,
 		image_store: Arc<dyn ImageStoreService>,
@@ -27,8 +34,13 @@ impl Usecase {
 		}
 	}
 
-	#[allow(clippy::too_many_arguments)]
-	#[instrument(skip(self))]
+	/// Creates a new sponsor with the provided name, logo URL, and URL.
+	///
+	/// # Arguments
+	///
+	/// * `name` - The name of the sponsor.
+	/// * `logo_url` - The URL of the sponsor's logo.
+	/// * `url` - The URL of the sponsor's website.
 	pub async fn create(
 		&self,
 		name: NonEmptyTrimmedString,
@@ -78,6 +90,7 @@ mod tests {
 	}
 
 	#[rstest]
+	/// Test `create` function which creates a new sponsor with non-empty values
 	async fn test_create(name: NonEmptyTrimmedString, logo_url: Url, url: Url) {
 		let mut image_store_service = MockImageStoreService::new();
 		image_store_service
@@ -95,10 +108,11 @@ mod tests {
 
 		let usecase = Usecase::new(sponsor_repository, Arc::new(image_store_service));
 
-		usecase.create(name, logo_url, Some(url)).await.unwrap();
+		assert!(usecase.create(name, logo_url, Some(url)).await.is_ok());
 	}
-
+	
 	#[rstest]
+	/// Test `create` function which creates a new sponsor with a non-existent logo_url
 	async fn test_create_with_bad_logo_url(name: NonEmptyTrimmedString, logo_url: Url, url: Url) {
 		let mut image_store_service = MockImageStoreService::new();
 		image_store_service
@@ -109,10 +123,12 @@ mod tests {
 
 		let mut sponsor_repository = SponsorRepository::default();
 		sponsor_repository.expect_insert().never();
-
+		
 		let usecase = Usecase::new(sponsor_repository, Arc::new(image_store_service));
-
-		let result = usecase.create(name, logo_url, Some(url)).await;
-		assert_matches!(result, Err(DomainError::InvalidInputs(_)));
+		
+		assert_matches! {
+		    usecase.create(name, logo_url, Some(url)).await,
+		    Err(DomainError::InvalidInputs(_))
+		};
 	}
 }

@@ -1,77 +1,68 @@
-mod auth;
-pub use auth::{
-	User as AuthUser, UserRepository as AuthUserRepository,
-	UserRepositoryError as AuthUserRepositoryError,
-	UserRepositoryResult as AuthUserRepositoryResult,
-};
-
-mod value_objects;
-pub use value_objects::*;
-
-mod event;
-pub use event::Event;
-
-mod aggregate;
-pub use aggregate::{Aggregate, Event as AggregateEvent, EventSourcable};
-
-mod entity;
-pub use entity::Entity;
-
-mod error;
-pub use error::*;
-
-mod messaging;
-pub use messaging::{
-	Destination, Message, Payload as MessagePayload, Publisher, PublisherError, Subscriber,
-	SubscriberCallbackError, SubscriberError,
-};
-
-mod project;
-pub use project::{Error as ProjectError, Event as ProjectEvent, Id as ProjectId, Project};
-
-mod payment;
-pub use payment::{
-	Error as PaymentError, Event as PaymentEvent, Id as PaymentId, Payment,
-	Reason as PaymentReason, Receipt as PaymentReceipt, ReceiptId as PaymentReceiptId,
-	Status as PaymentStatus, WorkItem as PaymentWorkItem,
-};
-
-mod user;
-pub use user::{Entity as User, Id as UserId};
-
-mod budget;
-pub use budget::{Budget, Error as BudgetError, Event as BudgetEvent, Id as BudgetId};
-
-mod github;
-pub use github::{
-	service_filters as github_service_filters, FetchIssueService as GithubFetchIssueService,
-	FetchRepoService as GithubFetchRepoService, FetchService as GithubFetchService,
-	FetchUserService as GithubFetchUserService, Issue as GithubIssue, IssueId as GithubIssueId,
-	IssueNumber as GithubIssueNumber, IssueStatus as GithubIssueStatus,
-	IssueType as GithubIssueType, Languages as GithubRepoLanguages, Repo as GithubRepo,
-	RepoId as GithubRepoId, SearchService as GithubSearchService,
-	SearchUserService as GithubSearchUserService, Service as GithubService,
-	ServiceError as GithubServiceError, ServiceIssueFilters as GithubServiceIssueFilters,
-	ServiceResult as GithubServiceResult, User as GithubUser, UserId as GithubUserId,
-};
-
-pub mod aggregate_root;
-#[cfg(test)]
-pub use aggregate_root::MockRepository as MockAggregateRootRepository;
-pub use aggregate_root::{
-	AggregateRoot, Error as AggregateRootRepositoryError, Repository as AggregateRootRepository,
-};
-
-pub mod event_store;
-pub use event_store::{Error as EventStoreError, Store as EventStore};
-
-pub mod specifications;
-pub use specifications::Error as SpecificationError;
-
-pub mod stream_filter;
-
-#[macro_use]
-extern crate diesel;
-
-#[macro_use]
-extern crate derive;
+//! This crate provides a framework for building event-sourced systems.
+//!
+//! # Modules
+//!
+//! - `auth`: Defines the `User` entity and related types and traits for user authentication and authorization.
+//! - `value_objects`: Defines various value objects commonly used in event-sourced systems.
+//! - `event`: Defines the `Event` trait and related types for event sourcing.
+//! - `aggregate`: Defines the `Aggregate` trait and related types for aggregates in event-sourced systems.
+//! - `entity`: Defines the `Entity` trait for entities in event-sourced systems.
+//! - `error`: Defines various error types used throughout the crate.
+//! - `messaging`: Defines types and traits related to messaging in event-sourced systems.
+//! - `project`: Defines the `Project` entity and related types and traits for managing projects in event-sourced systems.
+//! - `payment`: Defines the `Payment` entity and related types and traits for managing payments in event-sourced systems.
+//! - `user`: Defines the `User` entity and related types and traits for managing users in event-sourced systems.
+//! - `budget`: Defines the `Budget` entity and related types and traits for managing budgets in event-sourced systems.
+//! - `github`: Provides a wrapper around the GitHub API for use in event-sourced systems.
+//!
+//! # Submodules
+//!
+//! - `aggregate_root`: Defines the `AggregateRoot` and `AggregateRootRepository` types and traits for managing aggregates.
+//! - `event_store`: Defines the `EventStore` type and trait for storing and retrieving events.
+//! - `specifications`: Provides types and traits for defining specifications for querying entities.
+//! - `stream_filter`: Provides a `StreamFilter` type for filtering event streams.
+//!
+//! # Examples
+//!
+//! ```rust
+//! use event_sourcing::{Aggregate, Entity, Event, ValueObject};
+//!
+//! #[derive(Debug, Clone, PartialEq, Eq, Hash, ValueObject)]
+//! pub struct Email(String);
+//!
+//! #[derive(Debug, Clone, PartialEq, Event)]
+//! #[event_source(user)]
+//! pub enum UserEvent {
+//!     Registered { email: Email },
+//!     EmailChanged { email: Email },
+//! }
+//!
+//! #[derive(Debug, Clone)]
+//! pub struct User {
+//!     id: u64,
+//!     email: Email,
+//! }
+//!
+//! impl Entity for User {
+//!     type Id = u64;
+//!
+//!     fn id(&self) -> Self::Id {
+//!         self.id
+//!     }
+//! }
+//!
+//! impl Aggregate for User {
+//!     type Event = UserEvent;
+//!
+//!     fn apply_event(&mut self, event: Self::Event) {
+//!         match event {
+//!             UserEvent::Registered { email } => {
+//!                 self.email = email;
+//!             }
+//!             UserEvent::EmailChanged { email } => {
+//!                 self.email = email;
+//!             }
+//!         }
+//!     }
+//! }
+//! ```

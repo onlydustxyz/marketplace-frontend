@@ -1,3 +1,12 @@
+/// This module defines a payout settings input struct.
+/// 
+/// `PayoutSettingsInput` is used as an input for a GraphQL mutation that allows the user to update their payout settings.
+/// 
+/// `PayoutSettingsType` is an enum that specifies which type of payout setting is being updated and is used as a field for the `PayoutSettingsInput`. 
+/// 
+/// The `PayoutSettingsInput` struct contains an optional `EthereumAddress`, `BankAddress`, or `EthereumName` attribute, depending on which `PayoutSettingsType` is selected.
+/// 
+/// `PayoutSettings` is a domain struct representing the payout settings for a user. It can either hold an `EthereumIdentity` or a `BankAddress`, depending on the payout settings type.
 use derive_more::From;
 use domain::{EthereumAddress, EthereumIdentity, EthereumName};
 use juniper::{GraphQLEnum, GraphQLInputObject};
@@ -15,7 +24,20 @@ pub struct PayoutSettingsInput {
 
 impl TryFrom<PayoutSettingsInput> for PayoutSettings {
 	type Error = anyhow::Error;
-
+	
+	/// Try to create a `PayoutSettings` object from a `PayoutSettingsInput` object.
+	/// 
+	/// # Arguments
+	/// 
+	/// * `input` - A `PayoutSettingsInput` object.
+	/// 
+	/// # Errors
+	/// 
+	/// This function returns an error if the wrong `PayoutSettingsType` is selected and the corresponding field is not provided.
+	/// 
+	/// # Returns
+	/// 
+	/// A `PayoutSettings` object.
 	fn try_from(input: PayoutSettingsInput) -> Result<Self, Self::Error> {
 		let typ = input.r#type;
 		match typ {
@@ -47,6 +69,7 @@ impl TryFrom<PayoutSettingsInput> for PayoutSettings {
 	}
 }
 
+/// An enum representing the type of payout setting being updated.
 #[derive(Debug, Clone, Serialize, Deserialize, GraphQLEnum)]
 pub enum PayoutSettingsType {
 	EthereumAddress,

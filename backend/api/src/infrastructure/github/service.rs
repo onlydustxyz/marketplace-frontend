@@ -1,3 +1,4 @@
+/// This module defines implementation of GithubService for the Github Client
 use async_trait::async_trait;
 use domain::{GithubIssueNumber, GithubServiceResult};
 use infrastructure::github;
@@ -6,6 +7,16 @@ use crate::domain::GithubService;
 
 #[async_trait]
 impl GithubService for github::Client {
+	/// This method returns the latest comment by the bot on the issue
+	///
+	/// # Arguments
+	///
+	/// * `repo_owner` - The owner of the repository where the issue is located
+	/// * `repo_name` - The name of the repository where the issue is located
+	/// * `issue_number` - The GithubIssueNumber associated with the issue
+	///
+	/// # Returns
+	/// This method returns a GithubServiceResult with the latest comment by the bot on the issue
 	async fn get_latest_own_comment_on_issue(
 		&self,
 		repo_owner: &str,

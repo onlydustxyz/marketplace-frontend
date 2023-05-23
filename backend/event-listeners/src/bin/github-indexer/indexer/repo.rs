@@ -1,72 +1,191 @@
-use std::sync::Arc;
-
-use async_trait::async_trait;
-use derive_new::new;
-use domain::{GithubFetchRepoService, GithubRepo, GithubRepoId};
-use event_listeners::domain::{GithubEvent, GithubRepoIndexRepository};
-use serde::{Deserialize, Serialize};
-
-use super::Result;
-use crate::indexer::hash;
-
-#[derive(new)]
+/// Indexer is a struct responsible for indexing Github repositories and tracking their state.
+///
+/// # Example
+///
+/// ```
+/// use std::sync::Arc;
+/// use async_trait::async_trait;
+/// use domain::{GithubFetchRepoService, GithubRepo, GithubRepoId};
+/// use event_listeners::domain::{GithubEvent, GithubRepoIndexRepository};
+///
+/// use super::Result;
+/// use crate::indexer::hash;
+///
+/// #[derive(new)]
+/// pub struct Indexer {
+///     github_fetch_service: Arc<dyn GithubFetchRepoService>,
+///     github_repo_index_repository: Arc<dyn GithubRepoIndexRepository>,
+/// }
+///
+/// #[derive(Clone, Serialize, Deserialize, PartialEq, Eq)]
+/// struct State {
+///     hash: u64,
+/// }
+///
+/// impl State {
+///     fn json(&self) -> serde_json::Result<serde_json::Value> {
+///         serde_json::to_value(self)
+///     }
+/// }
+///
+/// impl State {
+///     pub fn new(repo: &GithubRepo) -> Self {
+///         Self { hash: hash(repo) }
+///     }
+/// }
+///
+/// #[async_trait]
+/// impl super::Indexer<GithubRepoId> for Indexer {
+///     /// This async function fetches Github repository by its id and returns a vector of Github events.
+///     ///
+///     /// # Arguments
+///     ///
+///     /// * `repo_id` - A `GithubRepoId` type that represents a Github repository ID.
+///     ///
+///     /// # Returns
+///     ///
+///     /// * A `Result` containing a vector of `GithubEvent`s.
+///     async fn index(&self, repo_id: GithubRepoId) -> Result<Vec<GithubEvent>> {
+///         let repo = self.github_fetch_service.repo_by_id(&repo_id).await?;
+///
+///         let events = match self.get_state(repo_id)? {
+///             Some(state) if state == State::new(&repo) => vec![],
+///             _ => vec![GithubEvent::Repo(repo)],
+///         };
+///
+///         Ok(events)
+///     }
+/// }
+///
+/// impl Indexer {
+///     /// This function gets the current state of the repo from the GithubRepoIndexRepository.
+///     ///
+///     /// # Arguments
+///     ///
+///     /// * `repo_id` - A `GithubRepoId` type that represents a Github repository ID.
+///     ///
+///     /// # Returns
+///     ///
+///     /// * An `anyhow::Result` containing an `Option` of `State`.
+///     fn get_state(&self, repo_id: GithubRepoId) -> anyhow::Result<Option<State>> {
+///         let state = match self.github_repo_index_repository.select_repo_indexer_state(&repo_id)? {
+///             Some(state) => {
+///                 let state = serde_json::from_value(state)?;
+///                 Some(state)
+///             },
+///             _ => None,
+///         };
+///
+///         Ok(state)
+///     }
+/// }
+///
+/// impl super::Stateful<GithubRepoId> for Indexer {
+///     /// This function stores the latest state of the repo to the GithubRepoIndexRepository.
+///     ///
+///     /// # Arguments
+///     ///
+///     /// * `id` - A `GithubRepoId` type that represents a Github repository ID.
+///     /// * `events` - A slice of `GithubEvent`s.
+///     ///
+///     /// # Returns
+///     ///
+///     /// * An `anyhow::Result`.
+///     fn store(&self, id: GithubRepoId, events: &[GithubEvent]) -> anyhow::Result<()> {
+///         if let Some(GithubEvent::Repo(repo)) = events.last() {
+///             let state = State::new(repo);
+///             self.github_repo_index_repository
+///                 .update_repo_indexer_state(&id, state.json()?)?;
+///         }
+///         Ok(())
+///     }
+/// }
+/// ```
 pub struct Indexer {
-	github_fetch_service: Arc<dyn GithubFetchRepoService>,
-	github_repo_index_repository: Arc<dyn GithubRepoIndexRepository>,
+    github_fetch_service: Arc<dyn GithubFetchRepoService>,
+    github_repo_index_repository: Arc<dyn GithubRepoIndexRepository>,
 }
 
 #[derive(Clone, Serialize, Deserialize, PartialEq, Eq)]
 struct State {
-	hash: u64,
+    hash: u64,
 }
 
 impl State {
-	fn json(&self) -> serde_json::Result<serde_json::Value> {
-		serde_json::to_value(self)
-	}
+    fn json(&self) -> serde_json::Result<serde_json::Value> {
+        serde_json::to_value(self)
+    }
 }
 
 impl State {
-	pub fn new(repo: &GithubRepo) -> Self {
-		Self { hash: hash(repo) }
-	}
+    pub fn new(repo: &GithubRepo) -> Self {
+        Self { hash: hash(repo) }
+    }
 }
 
 impl Indexer {
-	fn get_state(&self, repo_id: GithubRepoId) -> anyhow::Result<Option<State>> {
-		let state = match self.github_repo_index_repository.select_repo_indexer_state(&repo_id)? {
-			Some(state) => {
-				let state = serde_json::from_value(state)?;
-				Some(state)
-			},
-			_ => None,
-		};
+    /// This function gets the current state of the repo from the GithubRepoIndexRepository.
+    ///
+    /// # Arguments
+    ///
+    /// * `repo_id` - A `GithubRepoId` type that represents a Github repository ID.
+    ///
+    /// # Returns
+    ///
+    /// * An `anyhow::Result` containing an `Option` of `State`.
+    fn get_state(&self, repo_id: GithubRepoId) -> anyhow::Result<Option<State>> {
+        let state = match self.github_repo_index_repository.select_repo_indexer_state(&repo_id)? {
+            Some(state) => {
+                let state = serde_json::from_value(state)?;
+                Some(state)
+            },
+            _ => None,
+        };
 
-		Ok(state)
-	}
+        Ok(state)
+    }
 }
 
 #[async_trait]
 impl super::Indexer<GithubRepoId> for Indexer {
-	async fn index(&self, repo_id: GithubRepoId) -> Result<Vec<GithubEvent>> {
-		let repo = self.github_fetch_service.repo_by_id(&repo_id).await?;
+    /// This async function fetches Github repository by its id and returns a vector of Github events.
+    ///
+    /// # Arguments
+    ///
+    /// * `repo_id` - A `GithubRepoId` type that represents a Github repository ID.
+    ///
+    /// # Returns
+    ///
+    /// * A `Result` containing a vector of `GithubEvent`s.
+    async fn index(&self, repo_id: GithubRepoId) -> Result<Vec<GithubEvent>> {
+        let repo = self.github_fetch_service.repo_by_id(&repo_id).await?;
 
-		let events = match self.get_state(repo_id)? {
-			Some(state) if state == State::new(&repo) => vec![],
-			_ => vec![GithubEvent::Repo(repo)],
-		};
+        let events = match self.get_state(repo_id)? {
+            Some(state) if state == State::new(&repo) => vec![],
+            _ => vec![GithubEvent::Repo(repo)],
+        };
 
-		Ok(events)
-	}
+        Ok(events)
+    }
 }
 
 impl super::Stateful<GithubRepoId> for Indexer {
-	fn store(&self, id: GithubRepoId, events: &[GithubEvent]) -> anyhow::Result<()> {
-		if let Some(GithubEvent::Repo(repo)) = events.last() {
-			let state = State::new(repo);
-			self.github_repo_index_repository
-				.update_repo_indexer_state(&id, state.json()?)?;
-		}
-		Ok(())
-	}
+    /// This function stores the latest state of the repo to the GithubRepoIndexRepository.
+    ///
+    /// # Arguments
+    ///
+    /// * `id` - A `GithubRepoId` type that represents a Github repository ID.
+    /// * `events` - A slice of `GithubEvent`s.
+    ///
+    /// # Returns
+    ///
+    /// * An `anyhow::Result`.
+    fn store(&self, id: GithubRepoId, events: &[GithubEvent]) -> anyhow::Result<()> {
+        if let Some(GithubEvent::Repo(repo)) = events.last() {
+            let state = State::new(repo);
+            self.github_repo_index_repository
+                .update_repo_indexer_state(&id, state.json()?)?;
+        }
+        Ok(())
+    }
 }

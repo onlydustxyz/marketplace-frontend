@@ -8,6 +8,7 @@ use url::Url;
 
 use crate::{Entity, GithubIssueNumber, GithubRepoId, GithubUser};
 
+/// Represents the status of an issue
 #[derive(
 	Clone, Copy, Debug, GraphQLEnum, PartialEq, Eq, Serialize, Deserialize, AsExpression, FromToSql,
 )]
@@ -20,6 +21,7 @@ pub enum Status {
 	Cancelled,
 }
 
+/// Represents the type of an issue
 #[derive(
 	Clone, Copy, Debug, GraphQLEnum, Serialize, Deserialize, AsExpression, FromToSql, PartialEq, Eq,
 )]
@@ -29,19 +31,32 @@ pub enum Type {
 	PullRequest,
 }
 
+/// Represents a GitHub issue
 #[derive(Clone, Debug, GraphQLObject, Serialize, Deserialize, PartialEq, Eq)]
 pub struct Issue {
+	/// The unique ID of the issue
 	pub id: Id,
+	/// The ID of the GitHub repository that the issue belongs to
 	pub repo_id: GithubRepoId,
+	/// The number of the issue
 	pub number: GithubIssueNumber,
+	/// The type of the issue
 	pub r#type: Type,
+	/// The title of the issue
 	pub title: String,
+	/// The author of the issue
 	pub author: GithubUser,
+	/// The URL of the issue in HTML format
 	pub html_url: Url,
+	/// The status of the issue
 	pub status: Status,
+	/// The timestamp representing when the issue was created
 	pub created_at: DateTime<Utc>,
+	/// The timestamp representing when the issue was last updated
 	pub updated_at: DateTime<Utc>,
+	/// The timestamp representing when the issue was merged (if it is a Pull Request and has been merged)
 	pub merged_at: Option<DateTime<Utc>>,
+	/// The timestamp representing when the issue was closed (if it has been closed)
 	pub closed_at: Option<DateTime<Utc>>,
 }
 
@@ -49,6 +64,7 @@ impl Entity for Issue {
 	type Id = Id;
 }
 
+/// Represents a number, used for issue IDs and numbers
 #[derive(
 	Debug,
 	Clone,
@@ -113,6 +129,7 @@ where
 	}
 }
 
+/// Represents the ID of an issue
 #[derive(
 	Debug,
 	Clone,

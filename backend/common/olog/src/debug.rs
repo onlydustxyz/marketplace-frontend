@@ -1,4 +1,4 @@
-/// Constructs an event at the debug level.
+/// Macro for constructing an event at the debug level.
 ///
 /// This functions similarly to the [`tracing::debug!`] macro. However, the current trace_id and
 /// span_id are automatically added as fields.
@@ -18,227 +18,83 @@
 /// ```
 #[macro_export]
 macro_rules! debug {
-	(target: $target:expr, parent: $parent:expr, { $($field:tt)* }, $($arg:tt)* ) => (
-        $crate::tracing::event!(target: $target, parent: $parent, $crate::tracing::Level::DEBUG, { trace_id = $crate::trace_id_str!(), span_id = $crate::span_id_str!(), $($field)* }, $($arg)*)
+	/// Constructs a debug event with a target and parent span.
+	///
+	/// # Examples
+	///
+	/// ```rust
+	/// # fn main() -> Result<(), Box<dyn std::error::Error>>{
+	/// use tracing::{trace, Level};
+	///
+	/// let parent_span = span!(Level::TRACE, "parent");
+	/// let _enter = parent_span.enter();
+	///
+	/// let my_span = span!(Level::DEBUG, "debug");
+	///
+	/// let _enter = my_span.enter();
+	///
+	/// olog::debug!(target: "my_app", parent: &my_span, "debug message");
+	///
+	/// Ok(())
+	/// # }
+	/// ```
+	(target: $target:expr, parent: $parent:expr, $($arg:tt)+ ) => (
+        $crate::tracing::event!(target: $target, parent: $parent, $crate::tracing::Level::DEBUG, { trace_id = $crate::trace_id_str!(), span_id = $crate::span_id_str!() }, $($arg)+)
     );
-    (target: $target:expr, parent: $parent:expr, $($k:ident).+ $($field:tt)+ ) => (
-        $crate::tracing::event!(target: $target, parent: $parent, $crate::tracing::Level::DEBUG, { trace_id = $crate::trace_id_str!(), span_id = $crate::span_id_str!(), $($k).+ $($field)+ })
+	/// Constructs a debug event with a target and fields.
+	///
+	/// # Examples
+	///
+	/// ```rust
+	/// olog::debug!(target: "my_app", message = "some debug message", id = 10);
+	/// ```
+	(target: $target:expr, $($k:ident).+ $($field:tt)+ ) => (
+        $crate::tracing::event!(target: $target, $crate::tracing::Level::DEBUG, { trace_id = $crate::trace_id_str!(), span_id = $crate::span_id_str!(), $($k).+ $($field)+ })
     );
-    (target: $target:expr, parent: $parent:expr, ?$($k:ident).+ $($field:tt)+ ) => (
-        $crate::tracing::event!(target: $target, parent: $parent, $crate::tracing::Level::DEBUG, { trace_id = $crate::trace_id_str!(), span_id = $crate::span_id_str!(), $($k).+ $($field)+ })
-    );
-    (target: $target:expr, parent: $parent:expr, %$($k:ident).+ $($field:tt)+ ) => (
-        $crate::tracing::event!(target: $target, parent: $parent, $crate::tracing::Level::DEBUG, { trace_id = $crate::trace_id_str!(), span_id = $crate::span_id_str!(), $($k).+ $($field)+ })
-    );
-    (target: $target:expr, parent: $parent:expr, $($arg:tt)+ ) => (
-        $crate::tracing::event!(target: $target, parent: $parent, $crate::tracing::Level::DEBUG, {trace_id = $crate::trace_id_str!(), span_id = $crate::span_id_str!() }, $($arg)+)
-    );
-    (parent: $parent:expr, { $($field:tt)+ }, $($arg:tt)+ ) => (
-        $crate::tracing::event!(
-            target: module_path!(),
-            parent: $parent,
-            $crate::tracing::Level::DEBUG,
-            { trace_id = $crate::trace_id_str!(), span_id = $crate::span_id_str!(), $($field)+ },
-            $($arg)+
-        )
-    );
-    (parent: $parent:expr, $($k:ident).+ = $($field:tt)*) => (
-        $crate::tracing::event!(
-            target: module_path!(),
-            parent: $parent,
-            $crate::tracing::Level::DEBUG,
-            { trace_id = $crate::trace_id_str!(), span_id = $crate::span_id_str!(), $($k).+ = $($field)*}
-        )
-    );
-    (parent: $parent:expr, ?$($k:ident).+ = $($field:tt)*) => (
-        $crate::tracing::event!(
-            target: module_path!(),
-            parent: $parent,
-            $crate::tracing::Level::DEBUG,
-            { trace_id = $crate::trace_id_str!(), span_id = $crate::span_id_str!(), ?$($k).+ = $($field)*}
-        )
-    );
-    (parent: $parent:expr, %$($k:ident).+ = $($field:tt)*) => (
-        $crate::tracing::event!(
-            target: module_path!(),
-            parent: $parent,
-            $crate::tracing::Level::DEBUG,
-            { trace_id = $crate::trace_id_str!(), span_id = $crate::span_id_str!(), %$($k).+ = $($field)*}
-        )
-    );
-    (parent: $parent:expr, $($k:ident).+, $($field:tt)*) => (
-        $crate::tracing::event!(
-            target: module_path!(),
-            parent: $parent,
-            $crate::tracing::Level::DEBUG,
-            { trace_id = $crate::trace_id_str!(), span_id = $crate::span_id_str!(), $($k).+, $($field)*}
-        )
-    );
-    (parent: $parent:expr, ?$($k:ident).+, $($field:tt)*) => (
-        $crate::tracing::event!(
-            target: module_path!(),
-            parent: $parent,
-            $crate::tracing::Level::DEBUG,
-            { trace_id = $crate::trace_id_str!(), span_id = $crate::span_id_str!(), ?$($k).+, $($field)*}
-        )
-    );
-    (parent: $parent:expr, %$($k:ident).+, $($field:tt)*) => (
-        $crate::tracing::event!(
-            target: module_path!(),
-            parent: $parent,
-            $crate::tracing::Level::DEBUG,
-            { trace_id = $crate::trace_id_str!(), span_id = $crate::span_id_str!(), %$($k).+, $($field)*}
-        )
-    );
-    (parent: $parent:expr, $($arg:tt)+) => (
-        $crate::tracing::event!(
-            target: module_path!(),
-            parent: $parent,
-            $crate::tracing::Level::DEBUG,
-            {trace_id = $crate::trace_id_str!(), span_id = $crate::span_id_str!() },
-            $($arg)+
-        )
-    );
-    (target: $target:expr, { $($field:tt)* }, $($arg:tt)* ) => (
-        $crate::tracing::event!(target: $target, $crate::tracing::Level::DEBUG, { trace_id = $crate::trace_id_str!(), span_id = $crate::span_id_str!(), $($field)* }, $($arg)*)
-    );
-    (target: $target:expr, $($k:ident).+ $($field:tt)* ) => (
-        $crate::tracing::event!(target: $target, $crate::tracing::Level::DEBUG, { trace_id = $crate::trace_id_str!(), span_id = $crate::span_id_str!(), $($k).+ $($field)* })
-    );
-    (target: $target:expr, ?$($k:ident).+ $($field:tt)* ) => (
-        $crate::tracing::event!(target: $target, $crate::tracing::Level::DEBUG, { trace_id = $crate::trace_id_str!(), span_id = $crate::span_id_str!(), ?$($k).+ $($field)* })
-    );
-    (target: $target:expr, %$($k:ident).+ $($field:tt)* ) => (
-        $crate::tracing::event!(target: $target, $crate::tracing::Level::DEBUG, { trace_id = $crate::trace_id_str!(), span_id = $crate::span_id_str!(), $($k).+ $($field)* })
-    );
-    (target: $target:expr, $($arg:tt)+ ) => (
-        $crate::tracing::event!(target: $target, $crate::tracing::Level::DEBUG, {trace_id = $crate::trace_id_str!(), span_id = $crate::span_id_str!() }, $($arg)+)
-    );
-    ({ $($field:tt)+ }, $($arg:tt)+ ) => (
+	/// Constructs a debug event with fields and debug formatted values.
+	///
+	/// # Examples
+	///
+	/// ```rust
+	/// let value = 42;
+	/// olog::debug!("this is a debug {}", value);
+	///
+	/// olog::debug!(
+	///     id = 1,
+	///     message = "debug message {:?}",
+	///     ?value
+	/// );
+	/// ```
+	($($k:ident).+, $($field:tt)+ ) => (
         $crate::tracing::event!(
             target: module_path!(),
             $crate::tracing::Level::DEBUG,
-            { trace_id = $crate::trace_id_str!(), span_id = $crate::span_id_str!(), $($field)+ },
-            $($arg)+
+            { trace_id = $crate::trace_id_str!(), span_id = $crate::span_id_str!(), $($k).+, $($field)+ }
         )
     );
-    ($($k:ident).+ = $($field:tt)*) => (
+	/// Constructs a debug event with fields.
+	///
+	/// # Examples
+	///
+	/// ```rust
+	/// olog::debug!(message = "debug message");
+	///
+	/// olog::debug!(
+	///     id = 1,
+	///     message = "debug message",
+	/// );
+	/// ```
+	({ $($field:tt)+ }) => (
         $crate::tracing::event!(
             target: module_path!(),
             $crate::tracing::Level::DEBUG,
-            { trace_id = $crate::trace_id_str!(), span_id = $crate::span_id_str!(), $($k).+ = $($field)*}
+            { trace_id = $crate::trace_id_str!(), span_id = $crate::span_id_str!(), $($field)+ }
         )
     );
-    (?$($k:ident).+ = $($field:tt)*) => (
-        $crate::tracing::event!(
-            target: module_path!(),
-            $crate::tracing::Level::DEBUG,
-            { trace_id = $crate::trace_id_str!(), span_id = $crate::span_id_str!(), ?$($k).+ = $($field)*}
-        )
-    );
-    (%$($k:ident).+ = $($field:tt)*) => (
-        $crate::tracing::event!(
-            target: module_path!(),
-            $crate::tracing::Level::DEBUG,
-            { trace_id = $crate::trace_id_str!(), span_id = $crate::span_id_str!(), %$($k).+ = $($field)*}
-        )
-    );
-    ($($k:ident).+, $($field:tt)*) => (
-        $crate::tracing::event!(
-            target: module_path!(),
-            $crate::tracing::Level::DEBUG,
-            { trace_id = $crate::trace_id_str!(), span_id = $crate::span_id_str!(), $($k).+, $($field)*}
-        )
-    );
-    (?$($k:ident).+, $($field:tt)*) => (
-        $crate::tracing::event!(
-            target: module_path!(),
-            $crate::tracing::Level::DEBUG,
-            { trace_id = $crate::trace_id_str!(), span_id = $crate::span_id_str!(), ?$($k).+, $($field)*}
-        )
-    );
-    (%$($k:ident).+, $($field:tt)*) => (
-        $crate::tracing::event!(
-            target: module_path!(),
-            $crate::tracing::Level::DEBUG,
-            { trace_id = $crate::trace_id_str!(), span_id = $crate::span_id_str!(), %$($k).+, $($field)*}
-        )
-    );
-    (?$($k:ident).+) => (
-        $crate::tracing::event!(
-            target: module_path!(),
-            $crate::tracing::Level::DEBUG,
-            { trace_id = $crate::trace_id_str!(), span_id = $crate::span_id_str!(), ?$($k).+ }
-        )
-    );
-    (%$($k:ident).+) => (
-        $crate::tracing::event!(
-            target: module_path!(),
-            $crate::tracing::Level::DEBUG,
-            { trace_id = $crate::trace_id_str!(), span_id = $crate::span_id_str!(), %$($k).+ }
-        )
-    );
-    ($($k:ident).+) => (
-        $crate::tracing::event!(
-            target: module_path!(),
-            $crate::tracing::Level::DEBUG,
-            { trace_id = $crate::trace_id_str!(), span_id = $crate::span_id_str!(), $($k).+ }
-        )
-    );
-	($($arg:tt)+) => (
-        $crate::tracing::event!(
-            target: module_path!(),
-            $crate::tracing::Level::DEBUG,
-            { trace_id = $crate::trace_id_str!(), span_id = $crate::span_id_str!() },
-            $($arg)+
-        )
-    );
-}
-
-#[cfg(test)]
-mod tests {
-	use tracing::Level;
-
-	#[test]
-	fn debug() {
-		debug!(foo = ?3, bar.baz = %2, quux = false);
-		debug!(foo = 3, bar.baz = 2, quux = false);
-		debug!(foo = 3, bar.baz = 3,);
-		debug!("foo");
-		debug!("foo: {}", 3);
-		debug!(foo = ?3, bar.baz = %2, quux = false, "hello world {:?}", 42);
-		debug!(foo = 3, bar.baz = 2, quux = false, "hello world {:?}", 42);
-		debug!(foo = 3, bar.baz = 3, "hello world {:?}", 42,);
-		debug!({ foo = 3, bar.baz = 80 }, "quux");
-		debug!({ foo = 2, bar.baz = 79 }, "quux {:?}", true);
-		debug!({ foo = 2, bar.baz = 79 }, "quux {:?}, {quux}", true, quux = false);
-		debug!({ foo = 2, bar.baz = 78 }, "quux");
-		debug!({ foo = ?2, bar.baz = %78 }, "quux");
-		debug!(target: "foo_events", foo = 3, bar.baz = 2, quux = false);
-		debug!(target: "foo_events", foo = 3, bar.baz = 3,);
-		debug!(target: "foo_events", "foo");
-		debug!(target: "foo_events", "foo: {}", 3);
-		debug!(target: "foo_events", { foo = 3, bar.baz = 80 }, "quux");
-		debug!(target: "foo_events", { foo = 2, bar.baz = 79 }, "quux {:?}", true);
-		debug!(target: "foo_events", { foo = 2, bar.baz = 79 }, "quux {:?}, {quux}", true, quux =
-		false);
-		debug!(target: "foo_events", { foo = 2, bar.baz = 78, }, "quux");
-		let foo = 1;
-		debug!(?foo);
-		debug!(%foo);
-		debug!(foo);
-		debug!(target: "foo_events", ?foo);
-		debug!(target: "foo_events", %foo);
-		debug!(target: "foo_events", foo);
-		debug!(target: "foo_events", ?foo, true, "message");
-		debug!(target: "foo_events", %foo, true, "message");
-		debug!(target: "foo_events", foo, true, "message");
-	}
-
-	#[test]
-	fn debug_inside_span() {
-		let span = tracing::span!(Level::DEBUG, "my span");
-		let _enter = span.enter();
-		debug();
-	}
-}
+	/// Constructs a debug event with debug formatted values.
+	///
+	/// # Examples
+	///
+	/// ```rust
+	/// let value = 42;
+	/// olog::debug!("

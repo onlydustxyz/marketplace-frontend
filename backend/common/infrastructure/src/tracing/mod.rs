@@ -1,84 +1,115 @@
 use anyhow::Result;
 use opentelemetry::{
-	global::shutdown_tracer_provider,
-	sdk::trace::{self, RandomIdGenerator, Sampler},
+    global::shutdown_tracer_provider,
+    sdk::trace::{self, RandomIdGenerator, Sampler},
 };
 use opentelemetry_datadog::ApiVersion;
 use serde::Deserialize;
 use tracing_subscriber::{fmt::Subscriber, layer::SubscriberExt, EnvFilter};
 
+/// This struct represents the OpenTelemetry tracer.
 pub struct Tracer;
 
+/// This struct represents the configuration options for the tracer.
 #[derive(Deserialize, Clone)]
 pub struct Config {
-	ansi: bool,
-	json: bool,
-	location: bool,
+    ansi: bool,
+    json: bool,
+    location: bool,
 }
 
 impl Tracer {
-	pub fn init(config: &Config, service_name: &str) -> Result<Self> {
-		// Install a new OpenTelemetry trace pipeline
-		let otel_tracer = opentelemetry_datadog::new_pipeline()
-			.with_service_name(service_name)
-			.with_version(ApiVersion::Version05)
-			.with_trace_config(
-				trace::config()
-					.with_sampler(Sampler::AlwaysOn)
-					.with_id_generator(RandomIdGenerator::default()),
-			)
-			.install_batch(opentelemetry::runtime::Tokio)?;
+    /// Initialize and install a new OpenTelemetry trace pipeline.
+    ///
+    /// # Arguments
+    ///
+    /// * `config` - The configuration options for the tracer.
+    /// * `service_name` - The name of the service.
+    ///
+    /// # Returns
+    ///
+    /// A `Result` containing the initialized tracer if successful, or an `Error` if unsuccessful.
+    pub fn init(config: &Config, service_name: &str) -> Result<Self> {
+        let otel_tracer = opentelemetry_datadog::new_pipeline()
+            .with_service_name(service_name)
+            .with_version(ApiVersion::Version05)
+            .with_trace_config(
+                trace::config()
+                    .with_sampler(Sampler::AlwaysOn)
+                    .with_id_generator(RandomIdGenerator::default()),
+            )
+            .install_batch(opentelemetry::runtime::Tokio)?;
 
-		if config.json {
-			Self::setup_json_subscriber(config, otel_tracer)?;
-		} else {
-			Self::setup_pretty_subscriber(config, otel_tracer)?;
-		};
+        if config.json {
+            Self::setup_json_subscriber(config, otel_tracer)?;
+        } else {
+            Self::setup_pretty_subscriber(config, otel_tracer)?;
+        };
 
-		// Init a simple "logger" that converts all `log` records into `tracing` `Event`s
-		olog::LogTracer::init()?;
+        // Init a simple "logger" that converts all `log` records into `tracing` `Event`s
+        olog::LogTracer::init()?;
 
-		Ok(Tracer {})
-	}
+        Ok(Tracer {})
+    }
 
-	fn setup_pretty_subscriber(
-		config: &Config,
-		tracer: opentelemetry::sdk::trace::Tracer,
-	) -> Result<(), tracing::subscriber::SetGlobalDefaultError> {
-		let subscriber = Subscriber::builder()
-			.with_env_filter(EnvFilter::from_default_env())
-			.with_ansi(config.ansi)
-			.with_file(config.location)
-			.with_line_number(config.location)
-			.finish();
+    /// Setup a pretty subscriber with the configured tracer.
+    ///
+    /// # Arguments
+    ///
+    /// * `config` - The configuration options for the tracer.
+    /// * `tracer` - The initialized OpenTelemetry tracer.
+    ///
+    /// # Returns
+    ///
+    /// A `Result` indicating success or failure.
+    fn setup_pretty_subscriber(
+        config: &Config,
+        tracer: opentelemetry::sdk::trace::Tracer,
+    ) -> Result<(), tracing::subscriber::SetGlobalDefaultError> {
+        let subscriber = Subscriber::builder()
+            .with_env_filter(EnvFilter::from_default_env())
+            .with_ansi(config.ansi)
+            .with_file(config.location)
+            .with_line_number(config.location)
+            .finish();
 
-		// Create a tracing layer with the configured tracer
-		let telemetry = tracing_opentelemetry::layer().with_tracer(tracer);
-		tracing::subscriber::set_global_default(subscriber.with(telemetry))
-	}
+        // Create a tracing layer with the configured tracer
+        let telemetry = tracing_opentelemetry::layer().with_tracer(tracer);
+        tracing::subscriber::set_global_default(subscriber.with(telemetry))
+    }
 
-	fn setup_json_subscriber(
-		config: &Config,
-		tracer: opentelemetry::sdk::trace::Tracer,
-	) -> Result<(), tracing::subscriber::SetGlobalDefaultError> {
-		let subscriber = Subscriber::builder()
-			.json()
-			.with_env_filter(EnvFilter::from_default_env())
-			.with_ansi(false)
-			.with_file(config.location)
-			.with_line_number(config.location)
-			.with_current_span(false)
-			.with_span_list(false)
-			.finish();
+    /// Setup a JSON subscriber with the configured tracer.
+    ///
+    /// # Arguments
+    ///
+    /// * `config` - The configuration options for the tracer.
+    /// * `tracer` - The initialized OpenTelemetry tracer.
+    ///
+    /// # Returns
+    ///
+    /// A `Result` indicating success or failure.
+    fn setup_json_subscriber(
+        config: &Config,
+        tracer: opentelemetry::sdk::trace::Tracer,
+    ) -> Result<(), tracing::subscriber::SetGlobalDefaultError> {
+        let subscriber = Subscriber::builder()
+            .json()
+            .with_env_filter(EnvFilter::from_default_env())
+            .with_ansi(false)
+            .with_file(config.location)
+            .with_line_number(config.location)
+            .with_current_span(false)
+            .with_span_list(false)
+            .finish();
 
-		// Create a tracing layer with the configured tracer
-		let telemetry = tracing_opentelemetry::layer().with_tracer(tracer);
-		tracing::subscriber::set_global_default(subscriber.with(telemetry))
-	}
+        // Create a tracing layer with the configured tracer
+        let telemetry = tracing_opentelemetry::layer().with_tracer(tracer);
+        tracing::subscriber::set_global_default(subscriber.with(telemetry))
+    }
 }
 
 impl Drop for Tracer {
-	fn drop(&mut self) {
-		shutdown_tracer_provider();
-	}
+    fn drop(&mut self) {
+        shutdown_tracer_provider();
+    }
 }

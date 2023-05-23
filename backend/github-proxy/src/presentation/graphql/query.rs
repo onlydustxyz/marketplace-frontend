@@ -1,13 +1,20 @@
+#![deny(missing_docs)]
+//! This module provides a GraphQL query implementation that fetches data from the Github API.
 use domain::{GithubIssue, GithubIssueNumber, GithubRepoId, GithubUser, GithubUserId};
 use juniper::{graphql_object, DefaultScalarValue};
 use olog::{error, warn};
 
 use super::{Context, Error};
 
+/// A query object for fetching data from Github API.
 pub struct Query;
 
 #[graphql_object(context=Context, Scalar = DefaultScalarValue)]
 impl Query {
+	/// Fetches Github issue by issue number.
+	/// `repo_owner` - Owner of the repository to which the issue belongs.
+	/// `repo_name` - Name of the repository to which the issue belongs.
+	/// `issue_number` - Issue number.
 	pub async fn fetch_issue(
 		&self,
 		context: &Context,
@@ -26,6 +33,9 @@ impl Query {
 			.ok()
 	}
 
+	/// Fetches Github issue by repository ID and issue number.
+	/// `repository_id` - ID of the repository to which the issue belongs.
+	/// `issue_number` - Issue number.
 	pub async fn fetch_issue_by_repository_id(
 		&self,
 		context: &Context,
@@ -44,6 +54,8 @@ impl Query {
 			.ok()
 	}
 
+	/// Fetches Github user details by user ID.
+	/// `user_id` - ID of the user.
 	pub async fn fetch_user_details_by_id(
 		&self,
 		context: &Context,
@@ -60,6 +72,12 @@ impl Query {
 			.ok()
 	}
 
+	/// Searches Github users based on query string, sort order, search order and pagination.
+	/// `query` - Search query string.
+	/// `sort` - Sort order. Defaults to `None`.
+	/// `order` - Search order. Defaults to `None`.
+	/// `per_page` - Number of results per page. Defaults to `None`.
+	/// `page` - Page number. Defaults to `None`.
 	pub async fn search_users(
 		&self,
 		context: &Context,
@@ -86,7 +104,9 @@ impl Query {
 	}
 }
 
+/// A trait for logging errors in `Result` objects.
 trait Logged {
+	/// Logs and returns `self`.
 	fn logged(self) -> Self;
 }
 

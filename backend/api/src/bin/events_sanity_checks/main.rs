@@ -6,11 +6,14 @@ use domain::{AggregateEvent, EventSourcable, EventStore, Payment, Project};
 use dotenv::dotenv;
 use infrastructure::{
 	config,
-	database::{init_pool, Client as DatabaseClient},
-	tracing::Tracer,
+    database::{init_pool, Client as DatabaseClient},
+    tracing::Tracer,
 };
+
 use olog::error;
 
+/// Runs sanity checks on the event store by verifying that all events can be loaded and deserialized
+/// correctly for both `Project` and `Payment`.
 #[tokio::main]
 async fn main() {
 	if let Err(error) = try_run().await {
@@ -18,8 +21,10 @@ async fn main() {
 	}
 }
 
+/// Tries to run the checks on the event store.
 async fn try_run() -> Result<()> {
 	dotenv().ok();
+
 	let config: Config = config::load("backend/api/src/bin/events_sanity_checks/app.yaml")?;
 	let _tracer = Tracer::init(config.tracer(), "events_sanity_checks")?;
 
@@ -31,6 +36,8 @@ async fn try_run() -> Result<()> {
 	Ok(())
 }
 
+/// Checks that all events for the given type can be successfully deserialized
+/// given the current state of the event store.
 fn check_events<A: EventSourcable>(event_store: Arc<dyn EventStore<A>>) -> Result<()> {
 	let event_ids: HashSet<A::Id> =
 		event_store.list()?.iter().map(|event| event.aggregate_id().clone()).collect();

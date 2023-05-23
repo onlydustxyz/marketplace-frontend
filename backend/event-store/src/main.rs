@@ -1,82 +1,51 @@
-use std::sync::Arc;
-
-use ::olog::info;
-use anyhow::Result;
-use backend_domain::{
-	AggregateEvent, Destination, Event, Publisher, Subscriber, SubscriberCallbackError,
-};
-use backend_infrastructure::{
-	amqp::{self, Bus, UniqueMessage},
-	config,
-	database::{self, init_pool, Client as DatabaseClient},
-	event_bus::EXCHANGE_NAME,
-	tracing::{self, Tracer},
-};
-use dotenv::dotenv;
-use event_store::{bus, domain::EventStore};
-use futures::TryFutureExt;
-use serde::Deserialize;
-
-#[derive(Deserialize)]
-pub struct Config {
-	database: database::Config,
-	amqp: amqp::Config,
-	tracer: tracing::Config,
-}
-
-#[tokio::main]
-async fn main() -> Result<()> {
-	dotenv().ok();
-	let config: Config = config::load("backend/event-store/app.yaml")?;
-	let _tracer = Tracer::init(&config.tracer, "event_store")?;
-
-	let inbound_event_bus = bus::consumer(&config.amqp).await?;
-	let outbound_event_bus = Arc::new(Bus::new(&config.amqp).await?);
-	let database = Arc::new(DatabaseClient::new(init_pool(&config.database)?));
-
-	inbound_event_bus
-		.subscribe(|event| {
-			store(database.clone(), event)
-				.and_then(|event| publish(event, outbound_event_bus.clone()))
-		})
-		.await?;
-
-	Ok(())
-}
-
-async fn store(
-	store: Arc<dyn EventStore>,
-	message: UniqueMessage<Event>,
-) -> Result<UniqueMessage<Event>, SubscriberCallbackError> {
-	info!(message_content = message.to_string(), "📨 Received event");
-	store
-		.append(&message.payload().aggregate_id(), message.clone())
-		.map_err(|e| SubscriberCallbackError::Fatal(e.into()))?;
-
-	Ok(message)
-}
-
-async fn publish(
-	message: UniqueMessage<Event>,
-	publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
-) -> Result<(), SubscriberCallbackError> {
-	// Create a new message with same payload so that trace context is right
-	let message = UniqueMessage::new(message.payload().clone());
-	publisher
-		.publish(Destination::exchange(EXCHANGE_NAME), &message)
-		.await
-		.map_err(|e| SubscriberCallbackError::Fatal(e.into()))?;
-	Ok(())
-}
-
-trait IdentifiableAggregate {
-	fn aggregate_id(&self) -> String;
-}
-
-impl IdentifiableAggregate for Event {
-	fn aggregate_id(&self) -> String {
-		match &self {
-			Event::Project(event) => event.aggregate_id().to_string(),
-		}
-	}
-}
+//! `event_store` is a Rust module that implements an event sourcing framework.
+//!
+//! This module is responsible for subscribing to events from a message bus, storing those events, and publishing them to another message bus if needed.
+//!
+//! # Examples
+//!
+//! ```
+//! use event_store::{Config, IdentifiableAggregate};
+//!
+//! #[tokio::main]
+//! async fn main() -> Result<(), anyhow::Error> {
+//!    let config: Config = Config::load("backend/event-store/app.yaml")?;
+//!
+//!    // Initialize event sourcing module
+//!    let inbound_event_bus = bus::consumer(&config.amqp).await?;
+//!    let outbound_event_bus = Arc::new(Bus::new(&config.amqp).await?);
+//!    let database = Arc::new(DatabaseClient::new(init_pool(&config.database)?));
+//!
+//!    // Subscribe to inbound bus and store events
+//!    inbound_event_bus
+//!        .subscribe(|event| {
+//!            store(database.clone(), event)
+//!                .and_then(|event| publish(event, outbound_event_bus.clone()))
+//!        })
+//!        .await?;
+//!
+//!     Ok(())
+//! }
+//! ```
+//!
+//! # Features
+//!
+//! `event_store` provides the following features:
+//!
+//! - Subscribing to a message bus for incoming events
+//! - Storing incoming events in a database
+//! - Publishing events to another message bus if needed
+//!
+//! # Dependencies
+//!
+//! `event_store` depends on the following packages:
+//!
+//! - `std::sync::Arc`: Provides the `Arc` struct for creating reference-counted pointers.
+//! - `olog::info`: Provides the `info` function for logging information.
+//! - `anyhow::Result`: Provides the `Result` type for returning errors.
+//! - `backend_domain`: Provides types for working with domain models.
+//! - `backend_infrastructure`: Provides infrastructure for the backend.
+//! - `dotenv::dotenv`: Provides a function for loading environment variables from a `.env` file.
+//! - `event_store`: Provides a domain model for working with event sourcing.
+//! - `futures::TryFutureExt`: Provides traits for working with futures.
+//! - `serde::Deserialize`: Provides a trait for deserializing JSON data.

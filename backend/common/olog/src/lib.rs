@@ -1,3 +1,5 @@
+/// This module contains macros for retrieving and converting trace and span IDs to Datadog format. 
+/// It also initializes tracing for test cases.
 mod debug;
 mod error;
 mod info;
@@ -14,6 +16,7 @@ pub use tracing_opentelemetry;
 #[macro_export]
 macro_rules! trace_id {
 	() => {
+		/// Returns the current trace ID as a 64-bit unsigned integer, in Datadog format.
 		u128::from_be_bytes(
 			$crate::opentelemetry::trace::TraceContextExt::span(
 				&$crate::tracing_opentelemetry::OpenTelemetrySpanExt::context(
@@ -30,6 +33,7 @@ macro_rules! trace_id {
 #[macro_export]
 macro_rules! trace_id_str {
 	() => {
+		/// Returns the current trace ID as a string, in Datadog format.
 		format!("{}", $crate::trace_id!())
 	};
 }
@@ -38,6 +42,7 @@ macro_rules! trace_id_str {
 #[macro_export]
 macro_rules! span_id {
 	() => {
+		/// Returns the current span ID as a 64-bit unsigned integer, in Datadog format.
 		u64::from_be_bytes(
 			$crate::opentelemetry::trace::TraceContextExt::span(
 				&$crate::tracing_opentelemetry::OpenTelemetrySpanExt::context(
@@ -54,12 +59,14 @@ macro_rules! span_id {
 #[macro_export]
 macro_rules! span_id_str {
 	() => {
+		/// Returns the current span ID as a string, in Datadog format.
 		format!("{}", $crate::span_id!())
 	};
 }
 
 #[cfg(test)]
 #[ctor::ctor]
+/// Initializes tracing and logging for test cases.
 fn init_tracing_for_tests() {
 	use tracing::Level;
 	use tracing_subscriber::prelude::__tracing_subscriber_SubscriberExt;

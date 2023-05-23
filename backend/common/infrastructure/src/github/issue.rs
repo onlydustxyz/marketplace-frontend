@@ -1,18 +1,23 @@
+/// This module provides a trait and an implementation to convert between `octocrab`'s `Issue` and `PullRequest`
+/// structs and the library's own `GithubIssue` struct.
 use anyhow::{anyhow, Result};
 use domain::{GithubIssue, GithubIssueStatus, GithubIssueType, GithubRepoId, GithubUser};
 use octocrab::models::issues::IssueStateReason;
 
 use super::UserFromOctocrab;
 
+/// Trait to convert a `octocrab`'s `Issue` and `PullRequest` structs to the library's `GithubIssue` type.
 pub trait IssueFromOctocrab
 where
 	Self: Sized,
 {
+	/// Convert a `octocrab`'s `Issue` to the library's `GithubIssue` type.
 	fn from_octocrab_issue(
 		issue: octocrab::models::issues::Issue,
 		repo_id: GithubRepoId,
 	) -> Result<Self>;
 
+	/// Convert a `octocrab`'s `PullRequest` to the library's `GithubIssue` type.
 	fn from_octocrab_pull_request(
 		pull_request: octocrab::models::pulls::PullRequest,
 		repo_id: GithubRepoId,
@@ -20,6 +25,7 @@ where
 }
 
 impl IssueFromOctocrab for GithubIssue {
+	/// Convert a `octocrab`'s `Issue` to the library's `GithubIssue` type.
 	fn from_octocrab_issue(
 		issue: octocrab::models::issues::Issue,
 		repo_id: GithubRepoId,
@@ -51,6 +57,7 @@ impl IssueFromOctocrab for GithubIssue {
 		})
 	}
 
+	/// Convert a `octocrab`'s `PullRequest` to the library's `GithubIssue` type.
 	fn from_octocrab_pull_request(
 		pull_request: octocrab::models::pulls::PullRequest,
 		repo_id: GithubRepoId,
@@ -90,6 +97,7 @@ impl IssueFromOctocrab for GithubIssue {
 	}
 }
 
+/// Gets the `GithubIssueStatus` from a `octocrab`'s `Issue`
 fn get_status_from_issue(issue: &octocrab::models::issues::Issue) -> Result<GithubIssueStatus> {
 	match issue.state {
 		octocrab::models::IssueState::Open => Ok(GithubIssueStatus::Open),
@@ -106,6 +114,7 @@ fn get_status_from_issue(issue: &octocrab::models::issues::Issue) -> Result<Gith
 	}
 }
 
+/// Gets the `GithubIssueStatus` from a `octocrab`'s `PullRequest`
 fn get_status_from_pull_request(
 	pull_request: &octocrab::models::pulls::PullRequest,
 ) -> Result<GithubIssueStatus> {

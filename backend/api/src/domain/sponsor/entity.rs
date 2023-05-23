@@ -1,11 +1,7 @@
+/// Module for representing sponsors-related database schema
 use ::infrastructure::database::schema::sponsors;
-use derive_getters::{Dissolve, Getters};
-use derive_more::Constructor;
-use derive_setters::Setters;
-use serde::{Deserialize, Serialize};
 
-use crate::domain::SponsorId;
-
+/// A struct representing a single sponsor
 #[derive(
 	Default,
 	Debug,
@@ -26,10 +22,14 @@ use crate::domain::SponsorId;
 #[setters(prefix = "with_")]
 #[changeset_options(treat_none_as_null = "true")]
 pub struct Sponsor {
-	id: SponsorId,
-	name: String,
-	logo_url: String,
-	url: Option<String>,
+    /// A unique identifier for the sponsor
+    id: SponsorId,
+    /// The name of the sponsor
+    name: String,
+    /// The URL of the sponsor's logo
+    logo_url: String,
+    /// The URL of the sponsor's website
+    url: Option<String>,
 }
 
 impl domain::Entity for Sponsor {

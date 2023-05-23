@@ -1,10 +1,13 @@
+/// This module contains the implementation of the `Event` struct and its `Serialize` trait.
 use anyhow::Result;
 use serde::{ser::SerializeStruct, Serialize, Serializer};
 use serde_json::json;
 
+/// This struct represents an event.
 pub struct Event(pub domain::Event);
 
 impl Serialize for Event {
+	/// Serializes the `Event` struct into a JSON object.
 	fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
 	where
 		S: Serializer,
@@ -49,6 +52,7 @@ impl Serialize for Event {
 	}
 }
 
+/// Returns an optional string representing the environment.
 fn environment() -> Option<String> {
 	std::env::var("ENV").ok()
 }

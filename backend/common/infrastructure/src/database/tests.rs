@@ -3,23 +3,26 @@ use rstest::*;
 
 use super::Config;
 
+/// Fixture to create a test `Config` object.
 #[fixture]
 #[once]
 fn config() -> Config {
-	Config::new(
-		"postgres://postgres:postgres@localhost/marketplace_db".to_string(),
-		20,
-	)
+    Config::new(
+        "postgres://postgres:postgres@localhost/marketplace_db".to_string(),
+        20,
+    )
 }
 
+/// Fixture to create a new database connection.
 #[fixture]
 fn connection(config: &Config) -> PgConnection {
-	PgConnection::establish(config.url()).unwrap()
+    PgConnection::establish(config.url()).unwrap()
 }
 
+/// Test function to execute queries on the CRM database.
 #[rstest]
 #[case(
-	"
+    "
 SELECT auth.users.id, information.CompanyNum, information.CompanyName, information.firstname,
 information.lastname, information.number, information.street, information.post_code,
 information.city, information.country, information.BIC, information.IBAN, information.name,
@@ -38,7 +41,7 @@ address     FROM user_info
 "
 )]
 #[case(
-	"
+    "
 SELECT projects.id, project_details.name, project_details.short_description,
 project_details.long_description, telegram_link, logo_url, user_id, initial_amount,
 remaining_amount, created.timestamp FROM projects
@@ -53,7 +56,7 @@ LEFT OUTER JOIN (
 "
 )]
 #[case(
-	"
+    "
 SELECT github_repos.id as github_repo_id, github_repos.owner as github_repo_owner,
 github_repos.name as github_repo_name, github_repos.languages as
 github_repo_languages, project_github_repos.project_id
@@ -67,10 +70,10 @@ requestor_id, Items.items AS PRs, requested.timestamp as Requested, processed.ti
 Processed FROM payment_requests
 INNER JOIN budgets ON payment_requests.budget_id = budgets.id
 LEFT OUTER JOIN (
-	SELECT string_agg('https://github.com/'||r.owner||'/'||r.name||'/issues/'||issue_number, ', ') AS Items, payment_id
-	FROM work_items
-	INNER JOIN github_repos AS r ON id = work_items.repo_id
-	GROUP BY payment_id
+    SELECT string_agg('https://github.com/'||r.owner||'/'||r.name||'/issues/'||issue_number, ', ') AS Items, payment_id
+    FROM work_items
+    INNER JOIN github_repos AS r ON id = work_items.repo_id
+    GROUP BY payment_id
 ) Items ON (payment_requests.id = Items.payment_id)
 INNER JOIN (
   SELECT payload->'Budget'->'event'->'Payment'->'event'->'Requested'->>'id' as id, \"timestamp\"
@@ -84,12 +87,12 @@ LEFT OUTER JOIN (
 ) processed ON (payment_requests.id::TEXT = processed.id);
 ")]
 #[case(
-	"
+    "
 SELECT id, project_id, github_user_id
 FROM pending_project_leader_invitations;
 "
 )]
 async fn crm_select(#[case] query: &str, connection: PgConnection) {
-	let result = sql_query(query).execute(&connection);
-	assert!(result.is_ok(), "Error during query execution: {:?}", result);
+    let result = sql_query(query).execute(&connection);
+    assert!(result.is_ok(), "Error during query execution: {:?}", result);
 }

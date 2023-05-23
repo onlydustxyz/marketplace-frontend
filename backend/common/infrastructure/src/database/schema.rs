@@ -1,4 +1,30 @@
-// @generated automatically by Diesel CLI.
+/**
+* Defines a set of tables used by the system.
+* The tables include:
+*   - budgets: contains budget information, such as the amount spent and remaining amount.
+*   - event_deduplications: contains information about events that have already been processed, to avoid duplicates.
+*   - events: contains information about events in the system, such as their timestamp and payload.
+*   - github_issues: contains information about issues in GitHub repositories.
+*   - github_repo_indexes: contains information about indexed GitHub repositories.
+*   - github_repos: contains information about GitHub repositories.
+*   - github_repos_contributors: contains information about contributors to GitHub repositories.
+*   - github_user_indexes: contains information about indexed GitHub users.
+*   - github_users: contains information about GitHub users.
+*   - ignored_github_issues: contains information about GitHub issues that are ignored by the system.
+*   - payment_requests: contains information about payment requests, such as the amount and requester.
+*   - payments: contains information about payments made.
+*   - pending_project_leader_invitations: contains information about pending invitations to become a project leader.
+*   - project_details: contains information about project details, such as its description and logo.
+*   - project_github_repos: contains information about project-related GitHub repositories.
+*   - project_leads: contains information about project leaders.
+*   - projects: contains information about projects.
+*   - projects_sponsors: contains information about project sponsors.
+*   - sponsors: contains information about sponsors.
+*   - user_info: contains information about user profiles, such as their identity and location.
+*   - work_items: contains information about work items, such as the payment and issue number.
+*    
+* @generated automatically by Diesel CLI.
+*/
 
 diesel::table! {
     budgets (id) {

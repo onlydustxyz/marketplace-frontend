@@ -1,24 +1,36 @@
-#[cfg(test)]
-use mockall::automock;
+/// Mocks the `AggregateRootRepository` trait for testing purposes.
 #[cfg(test)]
 use mockall_double::double;
 
-#[cfg_attr(test, double)]
-use crate::AggregateRootRepository;
-use crate::{specifications::Error, AggregateRoot, AggregateRootRepositoryError, Project};
-
+/// Mocks the `Specification` struct for testing purposes.
+#[cfg_attr(test, automock)]
+/// A struct that represents a specification for an aggregate root.
 pub struct Specification<A: AggregateRoot + 'static> {
+	/// The repository for the aggregate root.
 	aggregate_repository: AggregateRootRepository<A>,
 }
 
-#[cfg_attr(test, automock)]
 impl<A: AggregateRoot + 'static> Specification<A> {
+	/// Creates a new `Specification`.
+	///
+	/// # Arguments
+	///
+	/// * `aggregate_repository` - The repository for the aggregate root.
 	pub fn new(aggregate_repository: AggregateRootRepository<A>) -> Self {
 		Self {
 			aggregate_repository,
 		}
 	}
 
+	/// Checks if an aggregate satisfies the specification.
+	///
+	/// # Arguments
+	///
+	/// * `aggregate_id` - The ID of the aggregate to check.
+	///
+	/// # Returns
+	///
+	/// `Ok(true)` if the aggregate satisfies the specification, `Ok(false)` if it does not, and `Err(Error)` if there is an error checking the specification.
 	pub fn is_satisfied_by(&self, aggregate_id: &A::Id) -> Result<bool, Error> {
 		match self.aggregate_repository.find_by_id(aggregate_id) {
 			Ok(_) => Ok(true),
@@ -30,9 +42,18 @@ impl<A: AggregateRoot + 'static> Specification<A> {
 	}
 }
 
+/// A type alias for a `Specification` for a `Project` aggregate root.
 pub type ProjectExists = Specification<Project>;
 
+/// The error type for a specification error.
+#[derive(Debug, PartialEq)]
+pub enum Error {
+	/// An error occurred in the event store.
+	EventStore(AggregateRootRepositoryError),
+}
+
 #[cfg(test)]
+/// A mocked `ProjectExists` for testing purposes.
 pub type MockProjectExists = MockSpecification<Project>;
 
 #[cfg(test)]
@@ -47,11 +68,13 @@ mod tests {
 	use crate::AggregateRootRepository;
 	use crate::{EventStoreError, ProjectId};
 
+	/// Creates a new `AggregateRootRepository` for testing purposes.
 	#[fixture]
 	fn aggregate_root_repository() -> AggregateRootRepository<Project> {
 		AggregateRootRepository::default()
 	}
 
+	/// Creates a new `ProjectId` for testing purposes.
 	#[fixture]
 	#[once]
 	fn project_id() -> ProjectId {

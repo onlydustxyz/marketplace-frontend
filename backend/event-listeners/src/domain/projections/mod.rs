@@ -1,20 +1,28 @@
-#[allow(clippy::extra_unused_lifetimes)]
+/// This module contains the `Budget` struct which is used to represent a budget for a project.
 mod budget;
-#[allow(clippy::extra_unused_lifetimes)]
+
+/// This module contains the `GithubIssue` struct which is used to represent an issue in a Github repository.
 mod github_issues;
-#[allow(clippy::extra_unused_lifetimes)]
+
+/// This module contains the `GithubRepo` struct which is used to represent a Github repository.
 mod github_repos;
-#[allow(clippy::extra_unused_lifetimes)]
+
+/// This module contains the `GithubUser` struct which is used to represent a user on Github.
 mod github_users;
-#[allow(clippy::extra_unused_lifetimes)]
+
+/// This module contains the `Payment` struct which is used to represent a payment.
 mod payment;
-#[allow(clippy::extra_unused_lifetimes)]
+
+/// This module contains the `PaymentRequest` struct which is used to represent a payment request.
 mod payment_request;
-#[allow(clippy::extra_unused_lifetimes)]
+
+/// This module contains the `Project` struct which is used to represent a project.
 mod project;
-#[allow(clippy::extra_unused_lifetimes)]
+
+/// This module contains the `WorkItem` struct which is used to represent a work item for a project.
 mod work_item;
 
+/// Re-exports the structs from the various sub-modules for convenience.
 pub use budget::Budget;
 pub use github_issues::GithubIssue;
 pub use github_repos::GithubRepo;

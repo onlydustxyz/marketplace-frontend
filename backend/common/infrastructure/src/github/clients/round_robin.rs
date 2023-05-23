@@ -6,13 +6,26 @@ use olog::info;
 
 use super::{AddHeaders, Config};
 
+/// Github API client that manages a pool of Octocrab instances.
 pub struct Client {
+    /// List of Octocrab instances, each associated to a personal access token.
 	octocrab_clients: Vec<Octocrab>,
+    /// Index of the next Octocrab instance to use in `octocrab_clients`, protected by a mutex.
 	next_octocrab_clients_index: Arc<Mutex<usize>>,
+    /// Config used to create the Octocrab instances.
 	config: Config,
 }
 
 impl Client {
+    /// Creates a new instance of the Github API client that manages a pool of Octocrab instances.
+    ///
+    /// # Arguments
+    ///
+    /// * `config` - Configuration used to create the Octocrab instances.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if no `personal_access_token` is provided in the configuration.
 	pub fn new(config: &Config) -> anyhow::Result<Self> {
 		let personal_access_tokens: Vec<&str> = config
 			.personal_access_tokens
@@ -50,6 +63,7 @@ impl Client {
 		})
 	}
 
+    /// Gets the next Octocrab instance from the pool of Octocrab instances.
 	pub fn octocrab(&self) -> &Octocrab {
 		let mut index = self.next_octocrab_clients_index.lock().unwrap();
 		let next_octocrab = &self.octocrab_clients[*index];
@@ -57,6 +71,7 @@ impl Client {
 		next_octocrab
 	}
 
+    /// Gets the configuration used to create the Octocrab instances.
 	pub fn config(&self) -> &Config {
 		&self.config
 	}

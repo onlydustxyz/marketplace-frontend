@@ -1,3 +1,5 @@
+/// This module provides a `Repository` for the `Payment` entity. The `Repository` uses an `Arc` of a
+/// `Client`, provided by infrastructure::database, for handling the database connection.
 use std::sync::Arc;
 
 use derive_more::Constructor;
@@ -5,6 +7,7 @@ use infrastructure::database::{schema::payments::dsl, Client};
 
 use crate::domain::Payment;
 
+/// Represents a repository for the `Payment` entity.
 #[derive(DieselRepository, Constructor)]
 #[entity(Payment)]
 #[table(dsl::payments)]
@@ -24,6 +27,7 @@ mod tests {
 
 	use super::*;
 
+	/// Returns a new instance of `Config` for testing purposes.
 	#[fixture]
 	#[once]
 	fn config() -> Config {
@@ -33,12 +37,15 @@ mod tests {
 		)
 	}
 
+	/// Initializes a new instance of `Repository` for testing purposes.
 	#[fixture]
 	fn repository(config: &Config) -> Repository {
 		dotenv().ok();
 		Repository(Arc::new(Client::new(init_pool(config))))
 	}
 
+	/// Tests the `DeriveDieselRepository` macro by inserting, updating, deleting and clearing a
+	/// `Payment` entity.
 	#[rstest]
 	fn test_macro(repository: Repository) {
 		let payment_id = Uuid::new_v4().into();

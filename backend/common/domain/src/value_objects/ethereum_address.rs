@@ -1,17 +1,22 @@
+/// This module manages Ethereum address manipulation
 use serde::{Deserialize, Serialize};
-use thiserror::Error;
+use std::convert::TryFrom;
 use web3::types::H160;
+use thiserror::Error;
 
+/// This struct represents an Ethereum address as a `0x` prefixed hexadecimal string
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(transparent)]
 pub struct EthereumAddress(String);
 
 impl Default for EthereumAddress {
+	/// Returns a default `EthereumAddress` that contains only 0's
 	fn default() -> Self {
 		Self("0x00".to_string())
 	}
 }
 
+/// This enum represents all possible errors that can occur from parsing an `EthereumAddress` from a `&str`
 #[derive(Debug, Error)]
 pub enum EthereumAddressFromStrError {
 	#[error("Input should be at least 3 characters long")]
@@ -57,6 +62,7 @@ impl TryFrom<&str> for EthereumAddress {
 	}
 }
 
+/// This trait implements the `GraphQLScalar` trait from the `juniper` crate for `EthereumAddress`
 #[juniper::graphql_scalar(
 	description = "A `0x` prefixed hexadecimal string representing 20 bytes of data"
 )]
@@ -78,6 +84,7 @@ where
 }
 
 impl From<H160> for EthereumAddress {
+	/// Converts an `H160` to an `EthereumAddress`
 	fn from(address: H160) -> Self {
 		Self(format!("{address:#x}"))
 	}
