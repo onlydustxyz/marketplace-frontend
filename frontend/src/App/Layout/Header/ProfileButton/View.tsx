@@ -1,14 +1,13 @@
 import { Menu, Transition } from "@headlessui/react";
 import classNames from "classnames";
 import { Fragment, PropsWithChildren, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { RoutePaths } from "src/App";
 import Dot from "src/assets/icons/Dot";
 import { withTooltip } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import LogoutBoxRLine from "src/icons/LogoutBoxRLine";
 import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
+import PayoutInfoSidePanel from "./PayoutInfoSidePanel";
 
 type Props = {
   avatarUrl: string | null;
@@ -20,11 +19,9 @@ type Props = {
 const View = ({ avatarUrl, login, logout, payoutSettingsInvalid }: Props) => {
   const { T } = useIntl();
 
-  const location = useLocation();
-  const navigate = useNavigate();
-
   const [menuItemsVisible, setMenuItemsVisible] = useState(false);
   const [tooltipVisible, setTooltipVisible] = useState(false);
+  const [payoutInfoSidePanelOpen, setPayoutInfoSidePanelOpen] = useState(false);
 
   return (
     <div className="relative">
@@ -71,7 +68,7 @@ const View = ({ avatarUrl, login, logout, payoutSettingsInvalid }: Props) => {
               <MenuItem secondary disabled>
                 {T("navbar.profile.title").toUpperCase()}
               </MenuItem>
-              <MenuItem onClick={() => navigate(RoutePaths.Profile, { state: { prev: location } })}>
+              <MenuItem onClick={() => setPayoutInfoSidePanelOpen(true)}>
                 <MoneyDollarCircleLine className="text-xl" />
                 <div className="grow">{T("navbar.profile.payoutInfo")}</div>
                 {payoutSettingsInvalid && <Dot className="fill-orange-500 w-1.5" />}
@@ -84,6 +81,7 @@ const View = ({ avatarUrl, login, logout, payoutSettingsInvalid }: Props) => {
           </Menu.Items>
         </Transition>
       </Menu>
+      <PayoutInfoSidePanel open={payoutInfoSidePanelOpen} setOpen={setPayoutInfoSidePanelOpen} />
     </div>
   );
 };
