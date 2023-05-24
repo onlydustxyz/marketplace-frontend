@@ -180,7 +180,7 @@ export default function View({
 }
 
 type Receipt = {
-  OnChainPayment?: { recipient_address: string; transaction_hash: string };
+  OnChainPayment?: { recipient_address: string; recipient_ens?: string; transaction_hash: string };
   FiatPayment?: { recipient_iban: string; transaction_reference: string };
 };
 
@@ -194,9 +194,11 @@ type FormattedReceipt = {
 const formatReceipt = (receipt?: Receipt): FormattedReceipt | undefined => {
   if (receipt?.OnChainPayment) {
     const address = receipt?.OnChainPayment.recipient_address;
+    const ens = receipt?.OnChainPayment.recipient_ens;
+
     return {
       type: "crypto",
-      shortDetails: `0x...${address.substring(address.length - 5)}`,
+      shortDetails: ens ?? `0x...${address.substring(address.length - 5)}`,
       fullDetails: address,
       reference: receipt?.OnChainPayment.transaction_hash,
     };
