@@ -2,7 +2,7 @@ import onlyDustLogo from "assets/img/onlydust-logo.png";
 import classNames from "classnames";
 import { MouseEventHandler } from "react";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
-import Tooltip from "src/components/Tooltip";
+import { withTooltip } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 import ExternalLinkLine from "src/icons/ExternalLinkLine";
 
@@ -53,11 +53,8 @@ const Contributor = ({ onClick, contributor }: Props) => {
                 id={`od-logo-${contributor.login}`}
                 src={onlyDustLogo}
                 className="h-3.5 mt-px"
-                data-tooltip-content={T("contributor.table.userRegisteredTooltip")}
+                {...withTooltip(T("contributor.table.userRegisteredTooltip"), { className: "w-36" })}
               />
-              <Tooltip anchorId={`od-logo-${contributor.login}`}>
-                <div className="w-36">{T("contributor.table.userRegisteredTooltip")}</div>
-              </Tooltip>
             </>
           )}
         </div>

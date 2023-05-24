@@ -8,7 +8,7 @@ import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import onlyDustLogo from "assets/img/onlydust-logo.png";
 import { useIntl } from "src/hooks/useIntl";
 import Badge, { BadgeIcon, BadgeSize } from "src/components/Badge";
-import Tooltip from "src/components/Tooltip";
+import { withTooltip } from "src/components/Tooltip";
 import { ContributorFragment } from "src/types";
 import { Virtuoso } from "react-virtuoso";
 import { forwardRef } from "react";
@@ -261,17 +261,12 @@ function VirtualizedContributorSubList<T extends ContributorFragment>({ lines }:
                     }}
                   />
                   {contributor.unpaidMergedPullsCount && (
-                    <>
-                      <Badge
-                        id={`pr-count-badge-${contributor.id}`}
-                        value={contributor.unpaidMergedPullsCount}
-                        icon={BadgeIcon.GitMerge}
-                        size={BadgeSize.Small}
-                      />
-                      <Tooltip anchorId={`pr-count-badge-${contributor.id}`}>
-                        {T("payment.form.contributor.unpaidMergedPrCountTooltip")}
-                      </Tooltip>
-                    </>
+                    <Badge
+                      value={contributor.unpaidMergedPullsCount}
+                      icon={BadgeIcon.GitMerge}
+                      size={BadgeSize.Small}
+                      {...withTooltip(T("payment.form.contributor.unpaidMergedPrCountTooltip"))}
+                    />
                   )}
                 </li>
               )}

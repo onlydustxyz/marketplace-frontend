@@ -1,4 +1,5 @@
 import { PropsWithChildren } from "react";
+import { createPortal } from "react-dom";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 
 export enum TooltipPosition {
@@ -8,24 +9,32 @@ export enum TooltipPosition {
   Right = "right",
 }
 
-type Props = {
-  anchorId: string;
+const GLOBAL_TOOLTIP_ID = "global-tooltip";
+
+type CommonProps = {
   position?: TooltipPosition;
   visible?: boolean;
+};
+
+type TooltipProps = {
+  id?: string;
   clickable?: boolean;
-} & PropsWithChildren;
+  anchorSelect?: string;
+} & CommonProps &
+  PropsWithChildren;
 
 export default function Tooltip({
-  anchorId,
+  id = GLOBAL_TOOLTIP_ID,
   position = TooltipPosition.Bottom,
-  visible = true,
   clickable,
+  anchorSelect,
   children,
-}: Props) {
-  return (
+}: TooltipProps) {
+  return createPortal(
     <ReactTooltip
-      anchorId={anchorId}
+      id={id}
       place={position}
+      anchorSelect={anchorSelect}
       style={{
         background: "#313030",
         fontFamily: "GT Walsheim",
@@ -36,12 +45,37 @@ export default function Tooltip({
         color: "#F3F0EE",
         borderRadius: 8,
         padding: "12 8",
-        opacity: visible ? 100 : 0,
+        opacity: 100,
         zIndex: 10,
       }}
       clickable={clickable}
-    >
-      {children}
-    </ReactTooltip>
+      render={({ content, activeAnchor }) =>
+        content ? (
+          <div className={activeAnchor?.getAttribute("data-tooltip-classname") || undefined}>{content}</div>
+        ) : (
+          children
+        )
+      }
+    />,
+    document.body
   );
 }
+
+type WithTooltipOptions = { className?: string } & CommonProps;
+
+export function withTooltip(content: string, options?: WithTooltipOptions) {
+  const { visible = true, position = TooltipPosition.Bottom, className } = options || {};
+
+  return (
+    visible && {
+      "data-tooltip-id": GLOBAL_TOOLTIP_ID,
+      "data-tooltip-content": content,
+      "data-tooltip-place": position,
+      "data-tooltip-classname": className,
+    }
+  );
+}
+
+export const withCustomTooltip = (id: string) => ({
+  "data-tooltip-id": id,
+});

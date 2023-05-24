@@ -4,7 +4,7 @@ import CheckLine from "src/icons/CheckLine";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import Time from "src/icons/TimeLine";
 import { PaymentStatus } from "src/types";
-import Tooltip from "src/components/Tooltip";
+import { withTooltip } from "src/components/Tooltip";
 
 type Props = {
   id: string;
@@ -14,18 +14,11 @@ type Props = {
   isProjectLeaderView?: boolean;
 };
 
-export default function PayoutStatus({
-  id,
-  status,
-  payoutInfoMissing,
-  isProjectLeaderView = false,
-  invoiceNeeded,
-}: Props) {
-  return buildTag(id, status, payoutInfoMissing, isProjectLeaderView, !!invoiceNeeded);
+export default function PayoutStatus({ status, payoutInfoMissing, isProjectLeaderView = false, invoiceNeeded }: Props) {
+  return buildTag(status, payoutInfoMissing, isProjectLeaderView, !!invoiceNeeded);
 }
 
 const buildTag = (
-  id: string,
   status: PaymentStatus,
   payoutInfoMissing: boolean,
   isProjectLeaderView: boolean,
@@ -34,83 +27,68 @@ const buildTag = (
   switch (status) {
     case PaymentStatus.WAITING_PAYMENT:
       return payoutInfoMissing
-        ? PayoutInfoMissingTag(id, isProjectLeaderView)
+        ? PayoutInfoMissingTag(isProjectLeaderView)
         : invoiceNeeded && !isProjectLeaderView
-        ? InvoiceNeededTag(id)
-        : ProcessingTag(id);
+        ? InvoiceNeededTag()
+        : ProcessingTag();
     case PaymentStatus.ACCEPTED:
-      return CompleteTag(id);
+      return CompleteTag();
   }
 };
 
-const CompleteTag = (id: string) => {
+const CompleteTag = () => {
   const { T } = useIntl();
 
   return (
-    <>
-      <Tag id={id} size={TagSize.Medium}>
-        <CheckLine className="text-greyscale-50" />
-        <span className="text-greyscale-50 font-normal">{T("payment.status.complete")}</span>
-      </Tag>
-      <Tooltip anchorId={id}>
-        <div className="w-36">{T("payment.status.tooltip.complete")}</div>
-      </Tooltip>
-    </>
+    <Tag size={TagSize.Medium} {...withTooltip(T("payment.status.tooltip.complete"), { className: "w-36" })}>
+      <CheckLine className="text-greyscale-50" />
+      <span className="text-greyscale-50 font-normal">{T("payment.status.complete")}</span>
+    </Tag>
   );
 };
 
-const ProcessingTag = (id: string) => {
+const ProcessingTag = () => {
   const { T } = useIntl();
 
   return (
-    <>
-      <Tag id={id} size={TagSize.Medium}>
-        <Time className="text-greyscale-50" />
-        <span className="text-greyscale-50 font-normal">{T("payment.status.processing")}</span>
-      </Tag>
-      <Tooltip anchorId={id}>
-        <div className="w-44">{T("payment.status.tooltip.processing")}</div>
-      </Tooltip>
-    </>
+    <Tag size={TagSize.Medium} {...withTooltip(T("payment.status.tooltip.processing"), { className: "w-44" })}>
+      <Time className="text-greyscale-50" />
+      <span className="text-greyscale-50 font-normal">{T("payment.status.processing")}</span>
+    </Tag>
   );
 };
 
-const PayoutInfoMissingTag = (id: string, isProjectLeaderView: boolean) => {
+const PayoutInfoMissingTag = (isProjectLeaderView: boolean) => {
   const { T } = useIntl();
 
   return (
-    <>
-      <Tag
-        id={id}
-        size={TagSize.Medium}
-        borderColor={isProjectLeaderView ? TagBorderColor.Grey : TagBorderColor.MultiColor}
-      >
-        <ErrorWarningLine className="text-pink-500" />
-        <span className="text-greyscale-50 whitespace-nowrap font-normal">
-          {isProjectLeaderView ? T("payment.status.pending") : T("payment.status.payoutInfoMissing")}
-        </span>
-      </Tag>
-      <Tooltip anchorId={id}>
-        <div className="w-52">
-          {isProjectLeaderView ? T("payment.status.tooltip.pending") : T("payment.status.tooltip.payoutInfoMissing")}
-        </div>
-      </Tooltip>
-    </>
+    <Tag
+      size={TagSize.Medium}
+      borderColor={isProjectLeaderView ? TagBorderColor.Grey : TagBorderColor.MultiColor}
+      {...withTooltip(
+        isProjectLeaderView ? T("payment.status.tooltip.pending") : T("payment.status.tooltip.payoutInfoMissing"),
+        { className: "w-52" }
+      )}
+    >
+      <ErrorWarningLine className="text-pink-500" />
+      <span className="text-greyscale-50 whitespace-nowrap font-normal">
+        {isProjectLeaderView ? T("payment.status.pending") : T("payment.status.payoutInfoMissing")}
+      </span>
+    </Tag>
   );
 };
 
-const InvoiceNeededTag = (id: string) => {
+const InvoiceNeededTag = () => {
   const { T } = useIntl();
 
   return (
-    <>
-      <Tag id={id} size={TagSize.Medium} borderColor={TagBorderColor.MultiColor}>
-        <ErrorWarningLine className="text-pink-500" />
-        <span className="text-greyscale-50 whitespace-nowrap font-normal">{T("payment.status.invoicePending")}</span>
-      </Tag>
-      <Tooltip anchorId={id}>
-        <div className="w-64">{T("payment.status.tooltip.invoicePending")}</div>
-      </Tooltip>
-    </>
+    <Tag
+      size={TagSize.Medium}
+      borderColor={TagBorderColor.MultiColor}
+      {...withTooltip(T("payment.status.tooltip.invoicePending"), { className: "w-64" })}
+    >
+      <ErrorWarningLine className="text-pink-500" />
+      <span className="text-greyscale-50 whitespace-nowrap font-normal">{T("payment.status.invoicePending")}</span>
+    </Tag>
   );
 };

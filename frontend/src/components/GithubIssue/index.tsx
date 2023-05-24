@@ -12,13 +12,13 @@ import { Status, Type } from "src/__generated/graphql";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import Card from "src/components/Card";
 import GithubIssueLink from "./GithubIssueLink";
-import Tooltip from "src/components/Tooltip";
 import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
 import IssueCancelled from "src/assets/icons/IssueCancelled";
 import IssueOpen from "src/assets/icons/IssueOpen";
 import EyeOffLine from "src/icons/EyeOffLine";
 import EyeLine from "src/icons/EyeLine";
 import classNames from "classnames";
+import { withTooltip } from "src/components/Tooltip";
 
 export enum Action {
   Add = "add",
@@ -70,9 +70,7 @@ export default function GithubIssue({
         "mt-1": addMarginTopForVirtuosoDisplay,
       })}
     >
-      {action && (
-        <ActionButton id={`github-issue-action-${workItem.id}`} action={action} onClick={onClick} ignored={ignored} />
-      )}
+      {action && <ActionButton action={action} onClick={onClick} ignored={ignored} />}
       <div className="flex flex-col gap-2 font-walsheim w-full">
         <div className="flex font-medium text-sm text-greyscale-50">
           <GithubIssueLink url={workItem.htmlUrl} text={`#${workItem.number} · ${workItem.title}`} />
@@ -91,42 +89,35 @@ export default function GithubIssue({
           </div>
         </div>
       </div>
-      {secondaryAction && (
-        <ActionButton
-          id={`github-issue-secondary-action-${workItem.id}`}
-          action={secondaryAction}
-          onClick={onSecondaryClick}
-          ignored={ignored}
-        />
-      )}
+      {secondaryAction && <ActionButton action={secondaryAction} onClick={onSecondaryClick} ignored={ignored} />}
     </Card>
   );
 }
 
 type ActionButtonProps = {
-  id: string;
   action: Action;
   ignored: boolean;
   onClick?: () => void;
 };
 
-function ActionButton({ id, action, ignored, onClick }: ActionButtonProps) {
+function ActionButton({ action, ignored, onClick }: ActionButtonProps) {
   const { T } = useIntl();
 
   return (
-    <>
-      <div className={classNames({ "opacity-70": ignored })}>
-        <Button size={ButtonSize.Sm} type={ButtonType.Secondary} id={id} onClick={onClick} iconOnly>
-          {action === Action.Add && <Add />}
-          {action === Action.Remove && <Subtract />}
-          {action === Action.Ignore && <EyeOffLine />}
-          {action === Action.UnIgnore && <EyeLine />}
-        </Button>
-      </div>
-      {action === Action.Add && <Tooltip anchorId={id}>{T("githubIssue.tooltip.add")}</Tooltip>}
-      {action === Action.Ignore && <Tooltip anchorId={id}>{T("githubIssue.tooltip.ignore")}</Tooltip>}
-      {action === Action.UnIgnore && <Tooltip anchorId={id}>{T("githubIssue.tooltip.unignore")}</Tooltip>}
-    </>
+    <div className={classNames({ "opacity-70": ignored })}>
+      <Button
+        size={ButtonSize.Sm}
+        type={ButtonType.Secondary}
+        onClick={onClick}
+        iconOnly
+        {...withTooltip(T(`githubIssue.tooltip.${action}`))}
+      >
+        {action === Action.Add && <Add />}
+        {action === Action.Remove && <Subtract />}
+        {action === Action.Ignore && <EyeOffLine />}
+        {action === Action.UnIgnore && <EyeLine />}
+      </Button>
+    </div>
   );
 }
 

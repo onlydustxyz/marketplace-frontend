@@ -4,7 +4,7 @@ import { Fragment, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import Dot from "src/assets/icons/Dot";
-import Tooltip from "src/components/Tooltip";
+import { withTooltip } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 
@@ -37,16 +37,14 @@ const View = ({ avatarUrl, login, logout, payoutSettingsInvalid }: Props) => {
               }
             )}
             data-testid="profile-button"
+            {...withTooltip(T("profile.button.payoutSettingsInvalidTooltip"), {
+              visible: payoutSettingsInvalid && tooltipVisible && !menuItemsVisible,
+            })}
           >
             {avatarUrl && <img className="w-8 rounded-full" src={avatarUrl} />}
             <div className={classNames({ "mr-1": !payoutSettingsInvalid })}>{login}</div>
             {payoutSettingsInvalid && <ErrorWarningLine className="text-xl text-orange-500" />}
           </Menu.Button>
-          {payoutSettingsInvalid && (
-            <Tooltip anchorId="profile-button" visible={tooltipVisible && !menuItemsVisible}>
-              <div className="w-52">{T("profile.button.payoutSettingsInvalidTooltip")}</div>
-            </Tooltip>
-          )}
         </div>
         <Transition
           as={Fragment}
