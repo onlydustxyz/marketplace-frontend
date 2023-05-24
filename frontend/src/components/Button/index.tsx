@@ -54,10 +54,46 @@ export default function Button({
         {
           "hover:shadow-none": !disabled,
         },
+
         {
-          "shadow-bottom-sm": type === ButtonType.Primary && !hover,
-          "drop-shadow-bottom-sm": type === ButtonType.Secondary,
+          "shadow-bottom-sm": type === ButtonType.Primary,
+
+          "bg-greyscale-50": type === ButtonType.Primary && !disabled && !hover,
+          "text-spaceBlue-900": type === ButtonType.Primary && !disabled && !hover,
+
+          "bg-spaceBlue-800": type === ButtonType.Primary && disabled && !hover,
+          "text-spaceBlue-500": type === ButtonType.Primary && disabled && !hover,
+
+          "hover:text-spacePurple-900 hover:outline hover:outline-4 hover:outline-spacePurple-800 hover:bg-spacePurple-50":
+            type === ButtonType.Primary && !disabled,
+          "text-spacePurple-900 outline outline-4 outline-spacePurple-800 bg-spacePurple-50":
+            type === ButtonType.Primary && !disabled && hover,
         },
+
+        {
+          "drop-shadow-bottom-sm": type === ButtonType.Secondary,
+
+          "bg-white/5 backdrop-blur-lg border": type === ButtonType.Secondary && !disabled && !hover,
+          "text-greyscale-50": type === ButtonType.Secondary && !disabled && !hover,
+
+          "text-greyscale-50/8": type === ButtonType.Secondary && disabled && !hover,
+          "bg-white/2 border-greyscale-50/8": type === ButtonType.Secondary && disabled && !hover,
+
+          "hover:text-spacePurple-400 hover:bg-spacePurple-900 hover:border-spacePurple-400":
+            type === ButtonType.Secondary && !disabled,
+          "text-spacePurple-400 bg-spacePurple-900 border-spacePurple-400":
+            type === ButtonType.Secondary && !disabled && hover,
+        },
+
+        {
+          "text-spacePurple-500": type === ButtonType.Ternary && !disabled && !hover,
+
+          "text-greyscale-600": type === ButtonType.Ternary && disabled && !hover,
+
+          "hover:text-spacePurple-400 hover:bg-spacePurple-900": type === ButtonType.Ternary && !disabled,
+          "text-spacePurple-400 bg-spacePurple-900": type === ButtonType.Ternary && !disabled && hover,
+        },
+
         {
           "w-full": width === Width.Full,
           "w-fit": width === Width.Fit && !iconOnly,
@@ -80,34 +116,6 @@ export default function Button({
           "p-3.5 w-12 h-12": size === ButtonSize.LgLowHeight || size === ButtonSize.Md,
           "p-2 w-8 h-8": size === ButtonSize.Sm,
           "p-1 w-6 h-6": size === ButtonSize.Xs,
-        },
-        {
-          "bg-greyscale-50": type === ButtonType.Primary && !disabled && !hover,
-          "bg-white/5 backdrop-blur-lg border": type === ButtonType.Secondary && !disabled && !hover,
-        },
-        {
-          "text-spaceBlue-900": type === ButtonType.Primary && !disabled && !hover,
-          "text-greyscale-50": type === ButtonType.Secondary && !disabled && !hover,
-          "text-spacePurple-500": type === ButtonType.Ternary && !disabled && !hover,
-          "text-spaceBlue-500": type === ButtonType.Primary && disabled && !hover,
-          "text-greyscale-50/8": type === ButtonType.Secondary && disabled && !hover,
-          "text-greyscale-600": type === ButtonType.Ternary && disabled && !hover,
-        },
-        {
-          "bg-spaceBlue-800": type === ButtonType.Primary && disabled && !hover,
-          "bg-white/2 border-greyscale-50/8": type === ButtonType.Secondary && disabled && !hover,
-        },
-        {
-          "hover:text-spacePurple-900 hover:outline hover:outline-4 hover:outline-spacePurple-800 hover:bg-spacePurple-50":
-            type === ButtonType.Primary && !disabled,
-          "text-spacePurple-900 outline outline-4 outline-spacePurple-800 bg-spacePurple-50":
-            type === ButtonType.Primary && !disabled && hover,
-          "hover:text-spacePurple-400 hover:bg-spacePurple-900 hover:border-spacePurple-400":
-            type === ButtonType.Secondary && !disabled,
-          "text-spacePurple-400 bg-spacePurple-900 border-spacePurple-400":
-            type === ButtonType.Secondary && !disabled && hover,
-          "hover:text-spacePurple-400 hover:bg-spacePurple-900": type === ButtonType.Ternary && !disabled,
-          "text-spacePurple-400 bg-spacePurple-900": type === ButtonType.Ternary && !disabled && hover,
         }
       )}
       type={htmlType}
