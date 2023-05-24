@@ -28,7 +28,7 @@ export default function useUnpaidIssues({ projectId, authorId, type }: Props) {
     [getPaidItemsQuery.data?.projectsByPk?.budgets]
   );
 
-  const elligibleIssues: WorkItem[] | undefined | null = useMemo(
+  const eligibleIssues: WorkItem[] | undefined | null = useMemo(
     () =>
       searchIssuesQuery.data?.projectsByPk &&
       paidItems &&
@@ -44,7 +44,7 @@ export default function useUnpaidIssues({ projectId, authorId, type }: Props) {
     [searchIssuesQuery.data?.projectsByPk, paidItems, projectId]
   );
   return {
-    data: elligibleIssues,
+    data: eligibleIssues,
     loading: searchIssuesQuery.loading || getPaidItemsQuery.loading,
   };
 }

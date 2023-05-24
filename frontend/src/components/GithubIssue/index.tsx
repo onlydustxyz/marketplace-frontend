@@ -49,6 +49,7 @@ export type Props = {
   onSecondaryClick?: () => void;
   workItem: WorkItem;
   ignored?: boolean;
+  addMarginTopForVirtuosoDisplay?: boolean;
 };
 
 export default function GithubIssue({
@@ -58,11 +59,17 @@ export default function GithubIssue({
   onClick,
   onSecondaryClick,
   ignored = false,
+  addMarginTopForVirtuosoDisplay = false,
 }: Props) {
   const { repoName } = parsePullRequestOrIssueLink(workItem.htmlUrl);
 
   return (
-    <Card padded={false} className="p-4 flex flex-row gap-3 hover:bg-noise-light hover:backdrop-blur-4xl rounded-2xl">
+    <Card
+      padded={false}
+      className={classNames("p-4 flex flex-row gap-3 hover:bg-noise-light hover:backdrop-blur-4xl rounded-2xl ", {
+        "mt-1": addMarginTopForVirtuosoDisplay,
+      })}
+    >
       {action && (
         <ActionButton id={`github-issue-action-${workItem.id}`} action={action} onClick={onClick} ignored={ignored} />
       )}

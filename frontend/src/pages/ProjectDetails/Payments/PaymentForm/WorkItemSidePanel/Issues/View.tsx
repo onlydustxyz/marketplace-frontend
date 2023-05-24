@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { forwardRef, useEffect, useState } from "react";
 import GithubIssue, { Action, WorkItem } from "src/components/GithubIssue";
 import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
@@ -15,6 +15,9 @@ import { useFormContext } from "react-hook-form";
 import useFilteredWorkItems from "./useFilteredWorkItems";
 import { filter, some } from "lodash";
 import { Type } from "src/__generated/graphql";
+import { Virtuoso } from "react-virtuoso";
+
+const THEORETICAL_MAX_SCREEN_HEIGHT = 2000;
 
 type Props = {
   projectId: string;
@@ -71,7 +74,7 @@ export default function View({
   const filteredIssues = useFilteredWorkItems({ pattern: searchPattern, workItems: visibleIssues });
 
   return (
-    <div className="flex flex-col gap-4 overflow-hidden -mr-4 h-full px-6">
+    <div className="flex flex-col gap-3 overflow-hidden -mr-4 h-full px-6">
       <div className="flex flex-col gap-3 mr-4">
         <div className="flex flex-row items-center justify-between">
           <div className="flex flex-row gap-3">
@@ -117,22 +120,9 @@ export default function View({
         )}
       </div>
       {filteredIssues.length > 0 ? (
-        <div
-          data-testid={`elligible-${tabName}`}
-          className="flex flex-col gap-3 h-full p-px pr-4 overflow-auto scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded"
-        >
-          {filteredIssues.map(issue => (
-            <GithubIssue
-              key={issue.id}
-              workItem={issue}
-              action={Action.Add}
-              onClick={() => onIssueAdded(issue)}
-              secondaryAction={issue.ignored ? Action.UnIgnore : Action.Ignore}
-              onSecondaryClick={() => (issue.ignored ? onWorkItemUnignored(issue) : onWorkItemIgnored(issue))}
-              ignored={issue.ignored}
-            />
-          ))}
-        </div>
+        <VirtualizedIssueList
+          {...{ issues: filteredIssues, onIssueAdded, onWorkItemIgnored, onWorkItemUnignored, tabName }}
+        />
       ) : (
         <div className="mr-4">
           <EmptyState />
@@ -141,3 +131,57 @@ export default function View({
     </div>
   );
 }
+
+const Scroller = forwardRef<HTMLDivElement>((props, ref) => (
+  <div
+    className="overflow-auto scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded"
+    {...props}
+    ref={ref}
+  />
+));
+
+Scroller.displayName = "Scroller";
+
+const ListBuilder = (tabName: string) => {
+  const ListComponent = forwardRef<HTMLDivElement>((props, ref) => (
+    <div className="flex flex-col gap-2 h-full p-px mr-1.5" {...props} ref={ref} data-testid={`eligible-${tabName}`} />
+  ));
+  ListComponent.displayName = "List";
+  return ListComponent;
+};
+
+interface VirtualizedIssueListProps {
+  issues: WorkItem[];
+  onIssueAdded: (workItem: WorkItem) => void;
+  onWorkItemIgnored: (workItem: WorkItem) => void;
+  onWorkItemUnignored: (workItem: WorkItem) => void;
+  tabName: string;
+}
+
+const VirtualizedIssueList = ({
+  issues,
+  onIssueAdded,
+  onWorkItemIgnored,
+  onWorkItemUnignored,
+  tabName,
+}: VirtualizedIssueListProps) => {
+  return (
+    <Virtuoso
+      data={issues}
+      components={{ Scroller, List: ListBuilder(tabName) }}
+      style={{ height: THEORETICAL_MAX_SCREEN_HEIGHT }}
+      itemContent={(_, issue) => (
+        <GithubIssue
+          key={issue.id}
+          workItem={issue}
+          action={Action.Add}
+          onClick={() => onIssueAdded(issue)}
+          secondaryAction={issue.ignored ? Action.UnIgnore : Action.Ignore}
+          onSecondaryClick={() => (issue.ignored ? onWorkItemUnignored(issue) : onWorkItemIgnored(issue))}
+          ignored={issue.ignored}
+          addMarginTopForVirtuosoDisplay={true}
+        />
+      )}
+    />
+  );
+};
