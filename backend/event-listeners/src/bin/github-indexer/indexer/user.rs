@@ -1,6 +1,7 @@
 use std::{collections::HashSet, sync::Arc};
 
 use async_trait::async_trait;
+use chrono::{DateTime, Utc};
 use derive_new::new;
 use domain::{stream_filter, GithubFetchService, GithubRepoId, GithubUser, GithubUserId, LogErr};
 use event_listeners::domain::{GithubEvent, GithubUserIndexRepository};
@@ -13,6 +14,7 @@ use super::{hash, IgnoreIndexerErrors, Result};
 struct State {
 	pub hash: u64,
 	pub repo_ids: HashSet<GithubRepoId>,
+	pub last_updated_time: DateTime<Utc>,
 }
 
 impl State {
@@ -45,6 +47,7 @@ impl State {
 		}
 		Self {
 			hash: hash(user),
+			last_updated_time: Utc::now(),
 			..self
 		}
 	}
