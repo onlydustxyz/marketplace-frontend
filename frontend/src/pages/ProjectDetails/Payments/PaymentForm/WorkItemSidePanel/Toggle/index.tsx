@@ -23,8 +23,9 @@ const Toggle: React.FC<Props> = ({ testId, label, icon, enabled, setEnabled }) =
         "text-sm h-8 gap-2 rounded-large px-4 py-2",
         "backdrop-blur-lg border",
         "cursor-pointer select-none",
+        "hover:text-spacePurple-100 hover:border-spacePurple-200",
         {
-          "text-spacePurple-400 bg-spacePurple-900 border-spacePurple-400": enabled,
+          "text-spacePurple-200 bg-spacePurple-900 border-spacePurple-400": enabled,
           "bg-white/5": !enabled,
         }
       )}
