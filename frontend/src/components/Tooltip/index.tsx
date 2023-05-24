@@ -1,4 +1,5 @@
 import { PropsWithChildren } from "react";
+import { createPortal } from "react-dom";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 
 export enum TooltipPosition {
@@ -29,7 +30,7 @@ export default function Tooltip({
   anchorSelect,
   children,
 }: TooltipProps) {
-  return (
+  return createPortal(
     <ReactTooltip
       id={id}
       place={position}
@@ -55,7 +56,8 @@ export default function Tooltip({
           children
         )
       }
-    />
+    />,
+    document.body
   );
 }
 
