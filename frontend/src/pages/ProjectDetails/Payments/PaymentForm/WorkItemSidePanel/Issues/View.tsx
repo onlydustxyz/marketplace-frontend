@@ -142,11 +142,13 @@ const Scroller = forwardRef<HTMLDivElement>((props, ref) => (
 
 Scroller.displayName = "Scroller";
 
-const List = forwardRef<HTMLDivElement>((props, ref) => (
-  <div className="flex flex-col gap-2 h-full p-px mr-1.5" {...props} ref={ref} />
-));
-
-List.displayName = "List";
+const ListBuilder = (tabName: string) => {
+  const ListComponent = forwardRef<HTMLDivElement>((props, ref) => (
+    <div className="flex flex-col gap-2 h-full p-px mr-1.5" {...props} ref={ref} data-testid={`eligible-${tabName}`} />
+  ));
+  ListComponent.displayName = "List";
+  return ListComponent;
+};
 
 interface VirtualizedIssueListProps {
   issues: WorkItem[];
@@ -166,8 +168,7 @@ const VirtualizedIssueList = ({
   return (
     <Virtuoso
       data={issues}
-      components={{ Scroller, List }}
-      data-testid={`eligible-${tabName}`}
+      components={{ Scroller, List: ListBuilder(tabName) }}
       style={{ height: THEORETICAL_MAX_SCREEN_HEIGHT }}
       itemContent={(_, issue) => (
         <GithubIssue
