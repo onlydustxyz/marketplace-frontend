@@ -4,7 +4,7 @@ import { ProjectPaymentsRoutePaths } from "src/App";
 import CurrencyLine from "src/icons/CurrencyLine";
 import { useT } from "talkr";
 import Button, { ButtonSize, Width } from "src/components/Button";
-import Tooltip, { TooltipPosition } from "src/components/Tooltip";
+import { withTooltip } from "src/components/Tooltip";
 
 interface ProjectPaymentTableFallbackProps {
   disabled?: boolean;
@@ -26,17 +26,12 @@ const ProjectPaymentTableFallback = ({ disabled = false }: ProjectPaymentTableFa
         </span>
       </div>
       {disabled ? (
-        <>
-          <div id="disabled-new-payment-button">
-            <Button size={ButtonSize.Lg} disabled>
-              <CurrencyLine />
-              <span>{T("project.details.tableFallback.newPayment")}</span>
-            </Button>
-          </div>
-          <Tooltip anchorId="disabled-new-payment-button" position={TooltipPosition.Bottom}>
-            <div className="w-fit">{T("project.details.tableFallback.disabledButtonTooltip")}</div>
-          </Tooltip>
-        </>
+        <div {...withTooltip(T("project.details.tableFallback.disabledButtonTooltip"))}>
+          <Button size={ButtonSize.Lg} disabled>
+            <CurrencyLine />
+            <span>{T("project.details.tableFallback.newPayment")}</span>
+          </Button>
+        </div>
       ) : (
         <Link to={ProjectPaymentsRoutePaths.New}>
           <Button width={Width.Full} size={ButtonSize.Lg}>

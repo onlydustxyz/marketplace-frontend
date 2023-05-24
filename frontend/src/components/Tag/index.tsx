@@ -20,9 +20,17 @@ export type TagProps = {
   opaque?: boolean;
 } & PropsWithChildren;
 
-export default function Tag({ id, size, borderColor = TagBorderColor.Grey, testid, opaque, children }: TagProps) {
+export default function Tag({
+  id,
+  size,
+  borderColor = TagBorderColor.Grey,
+  testid,
+  opaque,
+  children,
+  ...rest
+}: TagProps) {
   return (
-    <div data-testid={testid} id={id} className="w-fit rounded-full p-px overflow-hidden">
+    <div data-testid={testid} id={id} className="w-fit rounded-full p-px overflow-hidden" {...rest}>
       <div
         className={classNames(
           "flex items-center justify-center w-fit gap-1 rounded-full font-walsheim font-normal text-white relative h-7",

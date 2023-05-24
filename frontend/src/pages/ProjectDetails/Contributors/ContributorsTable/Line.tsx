@@ -1,7 +1,7 @@
 import { useIntl } from "src/hooks/useIntl";
 import Line from "src/components/Table/Line";
 import Cell, { CellHeight } from "src/components/Table/Cell";
-import Tooltip from "src/components/Tooltip";
+import { withTooltip } from "src/components/Tooltip";
 import { linkClickHandlerFactory } from "src/utils/clickHandler";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import SendPlane2Line from "src/icons/SendPlane2Line";
@@ -40,23 +40,18 @@ export default function ContributorLine({
         <>
           <Cell height={CellHeight.Small} horizontalMargin={false}>
             {contributor.unpaidMergedPullsCount ? (
-              <>
-                <Badge
-                  id={`pr-count-badge-${contributor.login}`}
-                  size={BadgeSize.Small}
-                  icon={BadgeIcon.GitMerge}
-                  value={contributor.unpaidMergedPullsCount}
-                />
-                <Tooltip anchorId={`pr-count-badge-${contributor.login}`}>
-                  {T("payment.form.contributor.unpaidMergedPrCountTooltip")}
-                </Tooltip>
-              </>
+              <Badge
+                size={BadgeSize.Small}
+                icon={BadgeIcon.GitMerge}
+                value={contributor.unpaidMergedPullsCount}
+                {...withTooltip(T("payment.form.contributor.unpaidMergedPrCountTooltip"))}
+              />
             ) : (
               "-"
             )}
           </Cell>
           <Cell height={CellHeight.Small} horizontalMargin={false} className="invisible group-hover/line:visible">
-            <div id={`sendPaymentButton-${contributor.login}`}>
+            <div {...withTooltip(T("contributor.table.noBudgetLeft"), { visible: isSendingNewPaymentDisabled })}>
               <Button
                 type={ButtonType.Secondary}
                 size={ButtonSize.Sm}
@@ -68,11 +63,6 @@ export default function ContributorLine({
                 <div>{T("project.details.contributors.sendPayment")}</div>
               </Button>
             </div>
-            {isSendingNewPaymentDisabled && (
-              <Tooltip anchorId={`sendPaymentButton-${contributor.login}`}>
-                {T("contributor.table.noBudgetLeft")}
-              </Tooltip>
-            )}
           </Cell>
         </>
       ) : (

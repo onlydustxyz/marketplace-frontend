@@ -8,24 +8,32 @@ export enum TooltipPosition {
   Right = "right",
 }
 
-type Props = {
-  anchorId: string;
+const GLOBAL_TOOLTIP_ID = "global-tooltip";
+
+type CommonProps = {
   position?: TooltipPosition;
   visible?: boolean;
+};
+
+type TooltipProps = {
+  id?: string;
   clickable?: boolean;
-} & PropsWithChildren;
+  anchorSelect?: string;
+} & CommonProps &
+  PropsWithChildren;
 
 export default function Tooltip({
-  anchorId,
+  id = GLOBAL_TOOLTIP_ID,
   position = TooltipPosition.Bottom,
-  visible = true,
   clickable,
+  anchorSelect,
   children,
-}: Props) {
+}: TooltipProps) {
   return (
     <ReactTooltip
-      anchorId={anchorId}
+      id={id}
       place={position}
+      anchorSelect={anchorSelect}
       style={{
         background: "#313030",
         fontFamily: "GT Walsheim",
@@ -36,7 +44,7 @@ export default function Tooltip({
         color: "#F3F0EE",
         borderRadius: 8,
         padding: "12 8",
-        opacity: visible ? 100 : 0,
+        opacity: 100,
         zIndex: 10,
       }}
       clickable={clickable}
@@ -45,3 +53,21 @@ export default function Tooltip({
     </ReactTooltip>
   );
 }
+
+type WithTooltipOptions = CommonProps;
+
+export function withTooltip(content: string, options?: WithTooltipOptions) {
+  const { visible = true, position = TooltipPosition.Bottom } = options || {};
+
+  return (
+    visible && {
+      "data-tooltip-id": GLOBAL_TOOLTIP_ID,
+      "data-tooltip-content": content,
+      "data-tooltip-place": position,
+    }
+  );
+}
+
+export const withCustomTooltip = (id: string) => ({
+  "data-tooltip-id": id,
+});

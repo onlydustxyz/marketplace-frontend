@@ -24,7 +24,7 @@ import Button, { ButtonSize, Width } from "src/components/Button";
 import { useAuth } from "src/hooks/useAuth";
 import { LOGIN_URL } from "src/App/Layout/Header/GithubLink";
 import { SessionMethod, useSessionDispatch } from "src/hooks/useSession";
-import Tooltip from "src/components/Tooltip";
+import { withTooltip } from "src/components/Tooltip";
 import useApplications from "./useApplications";
 import LockFill from "src/icons/LockFill";
 import useProjectVisibility from "src/hooks/useProjectVisibility";
@@ -126,10 +126,12 @@ export default function Overview() {
                       width={Width.Full}
                       disabled={alreadyApplied}
                       onClick={applyToProject}
+                      {...withTooltip(T("payment.form.contributor.unpaidMergedPrCountTooltip"), {
+                        visible: alreadyApplied,
+                      })}
                     >
                       {T("applications.applyButton")}
                     </Button>
-                    {alreadyApplied && <Tooltip anchorId="applyButton">{T("applications.appliedTooltip")}</Tooltip>}
                   </div>
                 ) : (
                   <a
@@ -176,11 +178,11 @@ function PrivateTag() {
   const { T } = useIntl();
 
   return (
-    <div id="private-tag">
-      <div className="flex flex-row gap-2 items-center py-1 px-2.5 text-orange-500 font-medium font-walsheim text-xs rounded-lg bg-orange-900 hover:cursor-default">
-        <LockFill /> {T("project.visibility.private.name")}
-      </div>
-      <Tooltip anchorId="private-tag">{T("project.visibility.private.tooltip")}</Tooltip>
+    <div
+      className="flex flex-row gap-2 items-center py-1 px-2.5 text-orange-500 font-medium font-walsheim text-xs rounded-lg bg-orange-900 hover:cursor-default"
+      {...withTooltip(T("project.visibility.private.tooltip"))}
+    >
+      <LockFill /> {T("project.visibility.private.name")}
     </div>
   );
 }

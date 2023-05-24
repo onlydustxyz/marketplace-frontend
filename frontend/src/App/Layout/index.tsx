@@ -4,6 +4,7 @@ import ResponsivityFallback from "./ResponsivityFallback";
 import { Toaster } from "src/components/Toaster";
 
 import Header from "./Header";
+import Tooltip from "src/components/Tooltip";
 
 export default function Layout() {
   const location = useLocation();
@@ -24,6 +25,7 @@ export default function Layout() {
         <Header />
         <Outlet />
         <Toaster />
+        <Tooltip />
       </div>
     </div>
   );

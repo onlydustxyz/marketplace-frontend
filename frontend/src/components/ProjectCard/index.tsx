@@ -13,7 +13,7 @@ import { formatMoneyAmount } from "src/utils/money";
 import { useMediaQuery } from "usehooks-ts";
 import User3Line from "src/icons/User3Line";
 import FundsLine from "src/icons/FundsLine";
-import Tooltip, { TooltipPosition } from "src/components/Tooltip";
+import { TooltipPosition, withTooltip } from "src/components/Tooltip";
 import ProjectTitle from "./ProjectTitle";
 import isDefined from "src/utils/isDefined";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
@@ -100,7 +100,21 @@ export default function ProjectCard({
               )}
               {totalSpentAmountInUsd !== undefined && (
                 <>
-                  <Tag id={`sponsor-list-${id}`} testid={`sponsor-list-${id}`} size={TagSize.Small}>
+                  <Tag
+                    testid={`sponsor-list-${id}`}
+                    size={TagSize.Small}
+                    {...withTooltip(
+                      T("project.fundedBy", {
+                        count: topSponsors.length,
+                        topSponsorsString: topSponsors.map(sponsor => sponsor.name).join(", "),
+                        leftToSpend: formatMoneyAmount({
+                          amount: totalInitialAmountInUsd - totalSpentAmountInUsd,
+                          notation: "compact",
+                        }),
+                      }),
+                      { position: TooltipPosition.Top }
+                    )}
+                  >
                     {projectSponsors?.length ? (
                       <>
                         <div className="flex flex-row -space-x-1">
@@ -125,18 +139,6 @@ export default function ProjectCard({
                         })
                       : formatMoneyAmount({ amount: totalSpentAmountInUsd, notation: "compact" })}
                   </Tag>
-                  <Tooltip anchorId={`sponsor-list-${id}`} position={TooltipPosition.Top}>
-                    <div className="w-fit">
-                      {T("project.fundedBy", {
-                        count: topSponsors.length,
-                        topSponsorsString: topSponsors.map(sponsor => sponsor.name).join(", "),
-                        leftToSpend: formatMoneyAmount({
-                          amount: totalInitialAmountInUsd - totalSpentAmountInUsd,
-                          notation: "compact",
-                        }),
-                      })}
-                    </div>
-                  </Tooltip>
                 </>
               )}
             </div>

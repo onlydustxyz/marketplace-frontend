@@ -17,7 +17,7 @@ type Props = {
   value: number;
 };
 
-export default function Badge({ id, icon, size, value }: Props) {
+export default function Badge({ id, icon, size, value, ...rest }: Props) {
   return (
     <div
       id={id}
@@ -29,6 +29,7 @@ export default function Badge({ id, icon, size, value }: Props) {
           "w-8 h-8 px-3 gap-1": size === BadgeSize.Large,
         }
       )}
+      {...rest}
     >
       {icon && (
         <i

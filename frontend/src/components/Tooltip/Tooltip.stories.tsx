@@ -1,6 +1,4 @@
-import { ComponentStory } from "@storybook/react";
-import { JSXElementConstructor } from "react";
-import Tooltip, { TooltipPosition } from ".";
+import Tooltip, { TooltipPosition, withTooltip } from ".";
 
 export default {
   title: "Tooltip",
@@ -14,19 +12,16 @@ export default {
   },
 };
 
-const Template: ComponentStory<JSXElementConstructor<typeof args>> = args => (
-  <div className="w-96 h-96 flex items-center justify-center">
-    <span id="anchor-id">Hover me!</span>
-    <Tooltip anchorId="anchor-id" position={args.position}>
-      {args.text}
-    </Tooltip>
-  </div>
-);
-
 const args = {
   text: "Fill in your payment information to get paid",
   position: TooltipPosition.Bottom,
 };
 
-export const Default = Template.bind({});
-Default.args = args;
+export const Default = {
+  render: () => (
+    <div className="w-96 h-96 flex items-center justify-center">
+      <span {...withTooltip(args.text, { position: args.position })}>Hover me!</span>
+      <Tooltip />
+    </div>
+  ),
+};
