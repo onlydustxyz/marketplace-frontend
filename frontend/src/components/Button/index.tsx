@@ -56,13 +56,13 @@ export default function Button({
         },
 
         {
-          "shadow-bottom-sm": type === ButtonType.Primary,
+          "shadow-bottom-sm": type === ButtonType.Primary && !disabled && !hover,
 
           "bg-greyscale-50": type === ButtonType.Primary && !disabled && !hover,
           "text-spaceBlue-900": type === ButtonType.Primary && !disabled && !hover,
 
-          "bg-spaceBlue-800": type === ButtonType.Primary && disabled && !hover,
-          "text-spaceBlue-500": type === ButtonType.Primary && disabled && !hover,
+          "bg-greyscale-700": type === ButtonType.Primary && disabled && !hover,
+          "text-greyscale-500": type === ButtonType.Primary && disabled && !hover,
 
           "hover:text-spacePurple-900 hover:outline hover:outline-4 hover:outline-spacePurple-800 hover:bg-spacePurple-50":
             type === ButtonType.Primary && !disabled,
