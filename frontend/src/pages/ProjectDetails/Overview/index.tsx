@@ -119,16 +119,17 @@ export default function Overview() {
                   {T("project.hiring").toUpperCase()}
                 </div>
                 {isLoggedIn ? (
-                  <div id="applyButton">
+                  <div
+                    {...withTooltip(T("applications.appliedTooltip"), {
+                      visible: alreadyApplied,
+                    })}
+                  >
                     <Button
                       data-testid="apply-btn"
                       size={ButtonSize.Md}
                       width={Width.Full}
                       disabled={alreadyApplied}
                       onClick={applyToProject}
-                      {...withTooltip(T("payment.form.contributor.unpaidMergedPrCountTooltip"), {
-                        visible: alreadyApplied,
-                      })}
                     >
                       {T("applications.applyButton")}
                     </Button>
