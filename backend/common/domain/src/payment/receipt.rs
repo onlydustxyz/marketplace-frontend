@@ -2,7 +2,7 @@ use derive_more::{Display, From, Into};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use crate::{BlockchainNetwork, EthereumAddress, Iban, TransactionHash};
+use crate::{BlockchainNetwork, EthereumAddress, EthereumName, Iban, TransactionHash};
 
 #[derive(
 	Debug,
@@ -35,6 +35,7 @@ pub enum Receipt {
 	OnChainPayment {
 		network: BlockchainNetwork,
 		recipient_address: EthereumAddress,
+		recipient_ens: Option<EthereumName>,
 		transaction_hash: TransactionHash,
 	},
 	FiatPayment {

@@ -262,6 +262,7 @@ mod tests {
 		PaymentReceipt::OnChainPayment {
 			network: BlockchainNetwork::Ethereum,
 			recipient_address: EthereumAddress::try_from(CONTRACT_ADDRESSES[0]).unwrap(),
+			recipient_ens: None,
 			transaction_hash: TRANSACTION_HASHES[0].parse().unwrap(),
 		}
 	}

@@ -76,7 +76,7 @@ mod tests {
 	use uuid::Uuid;
 
 	use super::*;
-	use crate::{BlockchainNetwork, Currency, TransactionHash};
+	use crate::{BlockchainNetwork, Currency, EthereumName, TransactionHash};
 
 	#[fixture]
 	fn payment_id() -> PaymentId {
@@ -110,6 +110,7 @@ mod tests {
 			receipt: PaymentReceipt::OnChainPayment {
 				network: BlockchainNetwork::Ethereum,
 				recipient_address: recipient_address.try_into().unwrap(),
+				recipient_ens: None,
 				transaction_hash: transaction_hash.clone(),
 			},
 			processed_at: NaiveDateTime::new(
@@ -134,6 +135,7 @@ mod tests {
 						"OnChainPayment":{
 							"network":"Ethereum",
 							"recipient_address": recipient_address,
+							"recipient_ens": None::<EthereumName>,
 							"transaction_hash": transaction_hash,
 						}
 					},

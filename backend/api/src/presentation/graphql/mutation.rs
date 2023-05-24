@@ -41,8 +41,8 @@ impl Mutation {
 			.map_err(|e| Error::InvalidRequest(anyhow::Error::msg(e)))?;
 
 		let eth_identity = recipient_identity.try_into().map_err(Error::InvalidRequest)?;
-		let ethereum_address = match eth_identity {
-			domain::EthereumIdentity::Address(addr) => addr,
+		let ethereum_address = match &eth_identity {
+			domain::EthereumIdentity::Address(addr) => addr.clone(),
 			domain::EthereumIdentity::Name(name) => context.ens.eth_address(name.as_str()).await?,
 		};
 
@@ -55,6 +55,10 @@ impl Mutation {
 				PaymentReceipt::OnChainPayment {
 					network: BlockchainNetwork::Ethereum,
 					recipient_address: ethereum_address,
+					recipient_ens: match eth_identity {
+						domain::EthereumIdentity::Name(name) => Some(name),
+						_ => None,
+					},
 					transaction_hash,
 				},
 			)
