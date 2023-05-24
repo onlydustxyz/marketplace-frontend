@@ -77,9 +77,9 @@ export class NewPaymentPage {
       await this.pullRequestsTab().click();
 
       // Select PR in list
-      const elligiblePulls = this.page.getByTestId("elligible-pulls").getByRole("button");
+      const eligiblePulls = this.page.getByTestId("eligible-pulls").getByRole("button");
       for (const index of pullRequestIndexes.sort().reverse()) {
-        await elligiblePulls.nth(index * 2).click();
+        await eligiblePulls.nth(index * 2).click();
       }
 
       // Add other PR
@@ -99,9 +99,9 @@ export class NewPaymentPage {
       await this.issuesTab().click();
 
       // Select issues in list
-      const elligibleIssues = this.page.getByTestId("elligible-issues").getByRole("button");
+      const eligibleIssues = this.page.getByTestId("eligible-issues").getByRole("button");
       for (const index of sortBy(issuesIndexes).reverse()) {
-        await elligibleIssues.nth(index * 2).click();
+        await eligibleIssues.nth(index * 2).click();
       }
 
       // Add other issues
@@ -151,7 +151,7 @@ export class NewPaymentPage {
   issuesTab = () => this.page.getByTestId("tab-issues");
   otherWorkTab = () => this.page.getByTestId("tab-other-work");
 
-  workItem = (text: string) => this.page.locator("[data-testid='elligible-issues'] > div", { hasText: text });
+  workItem = (text: string) => this.page.locator("[data-testid='eligible-issues'] > div", { hasText: text });
   addWorkItem = (text: string) => this.workItem(text).locator("button").first().click();
   ignoreWorkItem = (text: string) => this.workItem(text).locator("button").nth(1).click();
   showIgnoredToggle = () => this.page.getByRole("switch").nth(2);
