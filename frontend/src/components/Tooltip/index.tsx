@@ -48,22 +48,28 @@ export default function Tooltip({
         zIndex: 10,
       }}
       clickable={clickable}
-    >
-      {children}
-    </ReactTooltip>
+      render={({ content, activeAnchor }) =>
+        content ? (
+          <div className={activeAnchor?.getAttribute("data-tooltip-classname") || undefined}>{content}</div>
+        ) : (
+          children
+        )
+      }
+    />
   );
 }
 
-type WithTooltipOptions = CommonProps;
+type WithTooltipOptions = { className?: string } & CommonProps;
 
 export function withTooltip(content: string, options?: WithTooltipOptions) {
-  const { visible = true, position = TooltipPosition.Bottom } = options || {};
+  const { visible = true, position = TooltipPosition.Bottom, className } = options || {};
 
   return (
     visible && {
       "data-tooltip-id": GLOBAL_TOOLTIP_ID,
       "data-tooltip-content": content,
       "data-tooltip-place": position,
+      "data-tooltip-classname": className,
     }
   );
 }

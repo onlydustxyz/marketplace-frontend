@@ -53,7 +53,7 @@ const Contributor = ({ onClick, contributor }: Props) => {
                 id={`od-logo-${contributor.login}`}
                 src={onlyDustLogo}
                 className="h-3.5 mt-px"
-                {...withTooltip(T("contributor.table.userRegisteredTooltip"))}
+                {...withTooltip(T("contributor.table.userRegisteredTooltip"), { className: "w-36" })}
               />
             </>
           )}

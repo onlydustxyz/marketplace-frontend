@@ -112,7 +112,7 @@ export default function ProjectCard({
                           notation: "compact",
                         }),
                       }),
-                      { position: TooltipPosition.Top }
+                      { position: TooltipPosition.Top, className: "w-fit" }
                     )}
                   >
                     {projectSponsors?.length ? (
