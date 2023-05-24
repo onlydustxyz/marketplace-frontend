@@ -8,7 +8,7 @@ export default function useApplications(projectId: string) {
   const showToaster = useShowToaster();
   const { T } = useIntl();
 
-  const [applyToProject] = useApplyToProjectMutation({
+  const [applyToProject, { loading }] = useApplyToProjectMutation({
     variables: { projectId },
     onCompleted: () => showToaster(T("applications.confirmationToaster")),
     update: (cache, { data }) => {
@@ -33,5 +33,6 @@ export default function useApplications(projectId: string) {
 
   return {
     applyToProject,
+    loading,
   };
 }

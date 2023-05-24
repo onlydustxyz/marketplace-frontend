@@ -46,7 +46,7 @@ export default function Overview() {
     ...contextWithCacheHeaders,
   });
 
-  const { applyToProject } = useApplications(projectId);
+  const { applyToProject, loading: applyToProjectLoading } = useApplications(projectId);
 
   const projectName = data?.projectsByPk?.projectDetails?.name;
   const logoUrl = data?.projectsByPk?.projectDetails?.logoUrl || onlyDustLogo;
@@ -128,7 +128,7 @@ export default function Overview() {
                       data-testid="apply-btn"
                       size={ButtonSize.Md}
                       width={Width.Full}
-                      disabled={alreadyApplied}
+                      disabled={alreadyApplied || applyToProjectLoading}
                       onClick={applyToProject}
                     >
                       {T("applications.applyButton")}
