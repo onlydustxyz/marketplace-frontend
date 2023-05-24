@@ -10,6 +10,7 @@ export default function useApplications(projectId: string) {
 
   const [applyToProject, { loading }] = useApplyToProjectMutation({
     variables: { projectId },
+    context: { graphqlErrorDisplay: "toaster" },
     onCompleted: () => showToaster(T("applications.confirmationToaster")),
     update: (cache, { data }) => {
       const application = cache.writeFragment<ApplicantFragment>({
