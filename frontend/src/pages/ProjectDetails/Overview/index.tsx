@@ -139,7 +139,7 @@ export default function Overview() {
                     }
                   >
                     <Button size={ButtonSize.Md} width={Width.Full}>
-                      {T("applications.appliedTooltip")}
+                      {T("applications.connectToApplyButton")}
                     </Button>
                   </a>
                 )}
