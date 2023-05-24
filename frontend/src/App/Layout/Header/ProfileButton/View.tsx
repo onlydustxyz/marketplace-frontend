@@ -1,12 +1,14 @@
 import { Menu, Transition } from "@headlessui/react";
 import classNames from "classnames";
-import { Fragment, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Fragment, PropsWithChildren, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import Dot from "src/assets/icons/Dot";
 import { withTooltip } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
+import LogoutBoxRLine from "src/icons/LogoutBoxRLine";
+import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 
 type Props = {
   avatarUrl: string | null;
@@ -16,8 +18,11 @@ type Props = {
 };
 
 const View = ({ avatarUrl, login, logout, payoutSettingsInvalid }: Props) => {
-  const location = useLocation();
   const { T } = useIntl();
+
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const [menuItemsVisible, setMenuItemsVisible] = useState(false);
   const [tooltipVisible, setTooltipVisible] = useState(false);
 
@@ -58,44 +63,52 @@ const View = ({ avatarUrl, login, logout, payoutSettingsInvalid }: Props) => {
           <Menu.Items
             onFocus={() => setMenuItemsVisible(true)}
             onBlur={() => setMenuItemsVisible(false)}
-            className="
-							absolute right-0 mt-3 w-40 origin-top-right
-							divide-y divide-stone-100/8 rounded-md bg-white/2 backdrop-blur-4xl shadow-lg ring-1 ring-stone-100/8
-                            text-greyscale-50 text-sm font-walsheim
-							focus:outline-none z-20 overflow-hidden"
+            className=" absolute right-0 mt-3 w-56 origin-top-right pt-2 pb-1
+						rounded-md bg-white/5 backdrop-blur-4xl shadow-lg ring-1 ring-greyscale-50/8
+						focus:outline-none z-20 overflow-hidden"
           >
-            <Menu.Item>
-              {({ active }) => (
-                <Link
-                  to={RoutePaths.Profile}
-                  state={{ prev: location }}
-                  className={`${
-                    active ? "bg-white/4" : "bg-white/2"
-                  } group flex w-full items-center justify-between px-4 py-3 cursor-pointer`}
-                >
-                  {T("profile.edit")}
-                  {payoutSettingsInvalid && <Dot className="fill-orange-500 w-1.5" />}
-                </Link>
-              )}
-            </Menu.Item>
-            <Menu.Item>
-              {({ active }) => (
-                <button
-                  onClick={logout}
-                  className={`${
-                    active ? "bg-white/4" : "bg-white/2"
-                  } group flex w-full items-center px-4 py-3 cursor-pointer`}
-                  data-testid="logout-button"
-                >
-                  {T("navbar.logout")}
-                </button>
-              )}
-            </Menu.Item>
+            <div className="pb-2 border-b border-greyscale-50/8">
+              <MenuItem secondary disabled>
+                {T("navbar.profile.title").toUpperCase()}
+              </MenuItem>
+              <MenuItem onClick={() => navigate(RoutePaths.Profile, { state: { prev: location } })}>
+                <MoneyDollarCircleLine className="text-xl" />
+                <div className="grow">{T("navbar.profile.payoutInfo")}</div>
+                {payoutSettingsInvalid && <Dot className="fill-orange-500 w-1.5" />}
+              </MenuItem>
+            </div>
+            <MenuItem secondary onClick={logout} data-testid="logout-button">
+              <LogoutBoxRLine className="text-xl" />
+              {T("navbar.logout")}
+            </MenuItem>
           </Menu.Items>
         </Transition>
       </Menu>
     </div>
   );
 };
+
+type MenuItemProps = {
+  disabled?: boolean;
+  onClick?: () => void;
+  secondary?: boolean;
+} & PropsWithChildren;
+
+const MenuItem = ({ disabled = false, onClick, secondary = false, children, ...rest }: MenuItemProps) => (
+  <Menu.Item
+    {...rest}
+    disabled={disabled}
+    as="div"
+    className={classNames("ui-active:bg-white/4 px-4 py-2 flex flex-row gap-3 items-center text-sm font-walsheim", {
+      "cursor-pointer": !disabled,
+      "cursor-default": disabled,
+      "text-greyscale-50": !secondary,
+      "text-spaceBlue-200": secondary,
+    })}
+    onClick={onClick}
+  >
+    {children}
+  </Menu.Item>
+);
 
 export default View;
