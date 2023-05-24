@@ -68,7 +68,6 @@ git_push() {
     git branch -D $LOCAL_BRANCH
 }
 
-
 backup_database() {
     log_info "Creating DB backup..."
     execute heroku pg:backups:capture -a od-hasura-$TO_ENV
