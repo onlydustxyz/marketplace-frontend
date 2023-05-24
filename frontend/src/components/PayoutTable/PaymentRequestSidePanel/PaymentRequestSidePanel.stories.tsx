@@ -69,7 +69,7 @@ const payment: PaymentRequestDetailsFragment = {
     htmlUrl: "",
   },
   invoiceReceivedAt: null,
-  requestedAt: daysFromNow(7),
+  requestedAt: new Date("2023-05-17T16:24:00"),
   paymentsAggregate: {
     aggregate: {
       sum: { amount: 0 },
@@ -77,7 +77,7 @@ const payment: PaymentRequestDetailsFragment = {
   },
   payments: [
     {
-      processedAt: daysFromNow(2),
+      processedAt: new Date("2023-05-22T16:24:00"),
       receipt: {},
     },
   ],
