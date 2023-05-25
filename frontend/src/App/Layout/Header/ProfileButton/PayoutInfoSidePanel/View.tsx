@@ -6,7 +6,6 @@ import { useIntl } from "src/hooks/useIntl";
 import BuildingLine from "src/icons/BuildingLine";
 import CheckLine from "src/icons/CheckLine";
 import User3Line from "src/icons/User3Line";
-import ProfileRadioGroup from "src/components/ProfileRadioGroup";
 import { PayoutSettingsDisplayType, ProfileType } from "./types";
 import Callout from "src/components/Callout";
 import Input from "src/components/FormInput";
@@ -18,6 +17,7 @@ import IBANParser from "iban";
 import LockFill from "src/icons/LockFill";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
+import ProfileRadioGroup from "./ProfileRadioGroup";
 
 const ETHEREUM_ADDRESS_OR_ENV_DOMAIN_REGEXP =
   /(^0x[a-fA-F0-9]{40}$)|(^[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?$)/gi;
