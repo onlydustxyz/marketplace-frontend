@@ -1,9 +1,11 @@
 import { useIntl } from "src/hooks/useIntl";
 import OverviewPanel from "./OverviewPanel";
 import { useLocation, useOutletContext } from "react-router-dom";
-import { ReactNode } from "react";
-import { useGetProjectOverviewDetailsQuery } from "src/__generated/graphql";
-import QueryWrapper from "src/components/QueryWrapper";
+import {
+  GetProjectOverviewDetailsDocument,
+  GetProjectOverviewDetailsQuery,
+  useAcceptProjectLeaderInvitationMutation,
+} from "src/__generated/graphql";
 import Card from "src/components/Card";
 import GithubRepoDetails from "./GithubRepoDetails";
 import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
@@ -23,30 +25,32 @@ import RecordCircleLine from "src/icons/RecordCircleLine";
 import Button, { ButtonSize, Width } from "src/components/Button";
 import { useAuth } from "src/hooks/useAuth";
 import { LOGIN_URL } from "src/App/Layout/Header/GithubLink";
-import { SessionMethod, useSessionDispatch } from "src/hooks/useSession";
+import { SessionMethod, useSession, useSessionDispatch } from "src/hooks/useSession";
 import { withTooltip } from "src/components/Tooltip";
 import useApplications from "./useApplications";
 import LockFill from "src/icons/LockFill";
 import useProjectVisibility from "src/hooks/useProjectVisibility";
+import ProjectLeadInvitation from "src/components/ProjectLeadInvitation";
+import { useSuspenseQuery_experimental } from "@apollo/client";
+import { useEffect } from "react";
 
 type OutletContext = {
   projectId: string;
-  children: ReactNode;
 };
 
 export default function Overview() {
   const { T } = useIntl();
-  const { projectId, children } = useOutletContext<OutletContext>();
-  const { isLoggedIn, user } = useAuth();
-  const dispatchSession = useSessionDispatch();
+  const { projectId } = useOutletContext<OutletContext>();
+  const { isLoggedIn, githubUserId } = useAuth();
+  const { ledProjectIds } = useAuth();
+  const { lastVisitedProjectId } = useSession();
   const location = useLocation();
+  const dispatchSession = useSessionDispatch();
 
-  const { data, loading } = useGetProjectOverviewDetailsQuery({
+  const { data } = useSuspenseQuery_experimental<GetProjectOverviewDetailsQuery>(GetProjectOverviewDetailsDocument, {
     variables: { projectId },
     ...contextWithCacheHeaders,
   });
-
-  const { applyToProject, loading: applyToProjectLoading } = useApplications(projectId);
 
   const projectName = data?.projectsByPk?.projectDetails?.name;
   const logoUrl = data?.projectsByPk?.projectDetails?.logoUrl || onlyDustLogo;
@@ -61,55 +65,67 @@ export default function Overview() {
   const totalSpentAmountInUsd = data?.projectsByPk?.budgetsAggregate.aggregate?.sum?.spentAmount;
   const languages = getDeduplicatedAggregatedLanguages(data?.projectsByPk?.githubRepos.map(r => r.repo));
   const hiring = data?.projectsByPk?.projectDetails?.hiring;
-  const alreadyApplied = data?.projectsByPk?.applications.some(a => a.applicantId === user?.id);
+  const invitationId = data?.projectsByPk?.pendingInvitations.find(i => i.githubUserId === githubUserId)?.id;
+
+  const { alreadyApplied, applyToProject } = useApplications(projectId);
   const { isCurrentUserMember } = useProjectVisibility(projectId);
+
+  const [acceptInvitation] = useAcceptProjectLeaderInvitationMutation({
+    context: { graphqlErrorDisplay: "toaster" },
+    variables: { invitationId },
+    onCompleted: window.location.reload,
+  });
+
+  useEffect(() => {
+    if (projectId && ((projectId !== lastVisitedProjectId && ledProjectIds.includes(projectId)) || !!invitationId)) {
+      dispatchSession({ method: SessionMethod.SetLastVisitedProjectId, value: projectId });
+    }
+  }, [projectId, ledProjectIds]);
 
   return (
     <>
       <Title>{T("project.details.overview.title")}</Title>
-      {children}
+      {invitationId && <ProjectLeadInvitation projectName={projectName} onClick={acceptInvitation} />}
       <div className="flex flex-row gap-6">
-        <QueryWrapper query={{ data, loading }}>
-          <div className="flex flex-col gap-4 w-full">
-            <Card className={classNames("px-6 py-4 flex flex-col gap-4 z-10")}>
-              <div className="flex flex-row items-center gap-4">
-                <img
-                  alt={data?.projectsByPk?.projectDetails?.name}
-                  src={logoUrl}
-                  className="w-20 h-20 flex-shrink-0 rounded-lg bg-spaceBlue-900"
-                />
-                <div className="flex flex-col gap-1 w-full">
-                  <div className="flex flex-row items-center justify-between font-belwe font-normal text-2xl text-greyscale-50">
-                    {projectName}
-                    {data?.projectsByPk?.projectDetails?.visibility === "Private" && <PrivateTag />}
-                  </div>
-                  {Object.keys(languages).length > 0 && (
-                    <Tag size={TagSize.Small}>
-                      <CodeSSlashLine />
-                      {buildLanguageString(languages)}
-                    </Tag>
-                  )}
+        <div className="flex flex-col gap-4 w-full">
+          <Card className={classNames("px-6 py-4 flex flex-col gap-4 z-10")}>
+            <div className="flex flex-row items-center gap-4">
+              <img
+                alt={data?.projectsByPk?.projectDetails?.name}
+                src={logoUrl}
+                className="w-20 h-20 flex-shrink-0 rounded-lg bg-spaceBlue-900"
+              />
+              <div className="flex flex-col gap-1 w-full">
+                <div className="flex flex-row items-center justify-between font-belwe font-normal text-2xl text-greyscale-50">
+                  {projectName}
+                  {data?.projectsByPk?.projectDetails?.visibility === "Private" && <PrivateTag />}
                 </div>
+                {Object.keys(languages).length > 0 && (
+                  <Tag size={TagSize.Small}>
+                    <CodeSSlashLine />
+                    {buildLanguageString(languages)}
+                  </Tag>
+                )}
               </div>
-              <MarkdownPreview>{description}</MarkdownPreview>
-            </Card>
-            <Card className="flex flex-col gap-4">
-              <div className="flex flex-row font-walsheim font-medium text-base text-greyscale-50 items-center border-b border-greyscale-50/8 pb-2 justify-between">
-                <div className="flex flex-row items-center gap-3">
-                  <GitRepositoryLine className="text-white text-2xl" />
-                  {T("project.details.overview.repositories.title")}
-                </div>
-                <Badge value={githubRepos.length} size={BadgeSize.Small} />
+            </div>
+            <MarkdownPreview>{description}</MarkdownPreview>
+          </Card>
+          <Card className="flex flex-col gap-4">
+            <div className="flex flex-row font-walsheim font-medium text-base text-greyscale-50 items-center border-b border-greyscale-50/8 pb-2 justify-between">
+              <div className="flex flex-row items-center gap-3">
+                <GitRepositoryLine className="text-white text-2xl" />
+                {T("project.details.overview.repositories.title")}
               </div>
-              <div className="grid grid-cols-2 gap-3">
-                {githubRepos &&
-                  githubRepos.map(githubRepo => (
-                    <GithubRepoDetails key={githubRepo.repo?.id} githubRepoId={githubRepo.repo?.id} />
-                  ))}
-              </div>
-            </Card>
-          </div>
-        </QueryWrapper>
+              <Badge value={githubRepos.length} size={BadgeSize.Small} />
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              {githubRepos &&
+                githubRepos.map(githubRepo => (
+                  <GithubRepoDetails key={githubRepo.repo?.id} githubRepoId={githubRepo.repo?.id} />
+                ))}
+            </div>
+          </Card>
+        </div>
         <div className="flex flex-col gap-4">
           {hiring && !isCurrentUserMember && (
             <Callout>
@@ -128,7 +144,7 @@ export default function Overview() {
                       data-testid="apply-btn"
                       size={ButtonSize.Md}
                       width={Width.Full}
-                      disabled={alreadyApplied || applyToProjectLoading}
+                      disabled={alreadyApplied}
                       onClick={applyToProject}
                     >
                       {T("applications.applyButton")}

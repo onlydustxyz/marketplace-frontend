@@ -21,6 +21,8 @@ import {
   GetProjectContributorsForPaymentSelectQueryResult,
   Status,
   GithubUserWithPaymentRequestsForProjectFragment,
+  GetPaymentRequestsForProjectDocument,
+  GetPaymentRequestsForProjectQueryResult,
 } from "src/__generated/graphql";
 import { MockedResponse } from "@apollo/client/testing";
 import { VirtuosoMockContext } from "react-virtuoso";
@@ -155,6 +157,21 @@ const graphQlMocks = [
           githubRepos: [],
         },
       } as SearchIssuesQueryResult["data"],
+    },
+  },
+  {
+    request: {
+      query: GetPaymentRequestsForProjectDocument,
+      variables: { projectId: TEST_PROJECT_ID },
+    },
+    result: {
+      data: {
+        projectsByPk: {
+          __typename: "Projects",
+          id: TEST_PROJECT_ID,
+          budgets: [],
+        },
+      } as GetPaymentRequestsForProjectQueryResult["data"],
     },
   },
 ];

@@ -10,10 +10,8 @@ import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
 import {
   GetGithubRepositoryDetailsDocument,
   GetGithubRepositoryDetailsQueryResult,
-  GetProjectDocument,
   GetProjectOverviewDetailsDocument,
   GetProjectOverviewDetailsQueryResult,
-  GetProjectQueryResult,
   GetProjectsDocument,
   GetProjectsForSidebarDocument,
   GetProjectsForSidebarQueryResult,
@@ -130,67 +128,6 @@ const ALL_PROJECTS_RESULT: { data: GetProjectsQueryResult["data"] } = {
   },
 };
 
-const SINGLE_PROJECT_RESULT: { data: GetProjectQueryResult["data"] } = {
-  data: {
-    projectsByPk: {
-      __typename: "Projects",
-      id: TEST_PROJECT_ID,
-      budgetsAggregate: {
-        aggregate: {
-          count: 1,
-          sum: {
-            spentAmount: 123,
-            initialAmount: 1000,
-          },
-        },
-      },
-      contributors: [],
-      contributorsAggregate: { aggregate: { count: 0 } },
-      githubReposAggregate: { aggregate: { count: 1 } },
-      projectDetails: {
-        __typename: "ProjectDetails",
-        name: TEST_PROJECT_NAME,
-        telegramLink: TEST_TELEGRAM_LINK,
-        shortDescription: TEST_DESCRIPTION,
-        projectId: TEST_PROJECT_ID,
-        logoUrl: null,
-        hiring: false,
-        rank: 0,
-        visibility: "Public",
-      },
-      projectLeads: [
-        {
-          __typename: "ProjectLeads",
-          projectId: TEST_PROJECT_ID,
-          userId: TEST_USER_ID,
-          user: {
-            __typename: "RegisteredUsers",
-            id: TEST_USER_ID,
-            login: TEST_PROJECT_LEAD_DISPLAY_NAME,
-            avatarUrl: TEST_PROJECT_LEAD_AVATAR_URL,
-          },
-        },
-      ],
-      pendingInvitations: [
-        { __typename: "PendingProjectLeaderInvitations", id: "invitation-id", githubUserId: TEST_GITHUB_USER_ID },
-      ],
-      githubRepos: [
-        {
-          __typename: "ProjectGithubRepos",
-          projectId: TEST_PROJECT_ID,
-          githubRepoId: TEST_GITHUB_REPO_ID,
-          repo: {
-            __typename: "GithubRepos",
-            id: TEST_GITHUB_REPO_ID,
-            languages: [],
-          },
-        },
-      ],
-      projectSponsors: [],
-    },
-  },
-};
-
 const GITHUB_REPO_DETAILS_RESULT: { data: GetGithubRepositoryDetailsQueryResult["data"] } = {
   data: {
     githubReposByPk: {
@@ -240,7 +177,6 @@ const PROJECT_OVERVIEW_DETAILS_RESULT: { data: GetProjectOverviewDetailsQueryRes
           repo: { id: TEST_GITHUB_REPO_ID, stars: 1000, languages: {} },
         },
       ],
-      applications: [],
     },
   },
 };
@@ -285,15 +221,6 @@ const graphQlMocks = [
         },
       } as ProfileQueryResult["data"],
     },
-  },
-  {
-    request: {
-      query: GetProjectDocument,
-      variables: {
-        id: TEST_PROJECT_ID,
-      },
-    },
-    result: SINGLE_PROJECT_RESULT,
   },
   {
     request: {

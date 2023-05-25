@@ -110,7 +110,9 @@ function ActionButton({ action, ignored, onClick }: ActionButtonProps) {
         type={ButtonType.Secondary}
         onClick={onClick}
         iconOnly
-        {...withTooltip(T(`githubIssue.tooltip.${action}`))}
+        {...withTooltip(action !== Action.Remove ? T(`githubIssue.tooltip.${action}`) : "", {
+          visible: action !== Action.Remove,
+        })}
       >
         {action === Action.Add && <Add />}
         {action === Action.Remove && <Subtract />}

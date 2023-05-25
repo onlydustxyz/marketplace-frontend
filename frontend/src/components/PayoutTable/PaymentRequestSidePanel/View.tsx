@@ -37,7 +37,7 @@ export type Props = {
   payoutInfoMissing: boolean;
   invoiceNeeded?: boolean;
   projectLeaderView?: boolean;
-  onPaymentCancel: () => void;
+  onPaymentCancel?: () => void;
 } & Partial<PaymentRequestDetailsFragment>;
 
 const Details = ({ align = Align.Center, children }: PropsWithChildren & { align?: Align }) => (
@@ -79,7 +79,7 @@ export default function View({
       {...props}
       title={T("payment.table.detailsPanel.title", { id: pretty(id) })}
       action={
-        projectLeaderView && status === PaymentStatus.WAITING_PAYMENT ? (
+        projectLeaderView && onPaymentCancel && status === PaymentStatus.WAITING_PAYMENT ? (
           <CancelPaymentButton onPaymentCancel={onPaymentCancel} />
         ) : undefined
       }
