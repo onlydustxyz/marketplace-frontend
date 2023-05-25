@@ -17,7 +17,7 @@ import MarkdownPreview from "src/components/MarkdownPreview";
 import { contextWithCacheHeaders } from "src/utils/headers";
 import { sortBy } from "lodash";
 import isDefined from "src/utils/isDefined";
-import { buildLanguageString, getDeduplicatedAggregatedLanguages } from "src/utils/languages";
+import { buildLanguageString, getDeduplicatedAggregatedLanguages, getMostUsedLanguages } from "src/utils/languages";
 import Tag, { TagSize } from "src/components/Tag";
 import CodeSSlashLine from "src/icons/CodeSSlashLine";
 import Callout from "src/components/Callout";
@@ -63,7 +63,9 @@ export default function Overview() {
   const leads = data?.projectsByPk?.projectLeads.map(u => u.user).filter(isDefined);
   const totalInitialAmountInUsd = data?.projectsByPk?.budgetsAggregate.aggregate?.sum?.initialAmount;
   const totalSpentAmountInUsd = data?.projectsByPk?.budgetsAggregate.aggregate?.sum?.spentAmount;
-  const languages = getDeduplicatedAggregatedLanguages(data?.projectsByPk?.githubRepos.map(r => r.repo));
+  const languages = getMostUsedLanguages(
+    getDeduplicatedAggregatedLanguages(data?.projectsByPk?.githubRepos.map(r => r.repo))
+  );
   const hiring = data?.projectsByPk?.projectDetails?.hiring;
   const invitationId = data?.projectsByPk?.pendingInvitations.find(i => i.githubUserId === githubUserId)?.id;
 
@@ -100,7 +102,7 @@ export default function Overview() {
                   {projectName}
                   {data?.projectsByPk?.projectDetails?.visibility === "Private" && <PrivateTag />}
                 </div>
-                {Object.keys(languages).length > 0 && (
+                {languages.length > 0 && (
                   <Tag size={TagSize.Small}>
                     <CodeSSlashLine />
                     {buildLanguageString(languages)}
