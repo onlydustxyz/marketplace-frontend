@@ -197,6 +197,7 @@ diesel::table! {
         payout_settings -> Nullable<Jsonb>,
         contact_information -> Nullable<Jsonb>,
         are_payout_settings_valid -> Bool,
+        tc_last_accepted_at -> Nullable<Timestamp>,
     }
 }
 
