@@ -1,11 +1,14 @@
 use anyhow::anyhow;
+use chrono::Utc;
 use domain::UserId;
 use infrastructure::database::DatabaseError;
 use thiserror::Error;
 
 use crate::{
 	domain::{
-		user_info::{ContactInformation, Identity, Location, PayoutSettings},
+		user_info::{
+			ContactInformation, Identity, Location, PayoutSettings, UserTermsAndConditionsInfo,
+		},
 		ArePayoutSettingsValid, UserInfo,
 	},
 	infrastructure::database::UserInfoRepository,
@@ -66,6 +69,17 @@ impl Usecase {
 			contact_information,
 		);
 		self.user_info_repository.upsert(&user_info)?;
+
+		Ok(())
+	}
+
+	pub async fn accept_tc(&self, caller_id: UserId) -> Result<()> {
+		self.user_info_repository.update(
+			&caller_id,
+			UserTermsAndConditionsInfo {
+				tc_last_accepted_at: Some(Utc::now().naive_utc()),
+			},
+		)?;
 
 		Ok(())
 	}

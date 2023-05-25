@@ -338,6 +338,14 @@ impl Mutation {
 		Ok(caller_id.into())
 	}
 
+	pub async fn accept_tc(context: &Context) -> Result<Uuid> {
+		let caller_id = *context.caller_info()?.user_id();
+
+		context.update_user_info_usecase.accept_tc(caller_id).await?;
+
+		Ok(caller_id.into())
+	}
+
 	pub async fn invite_project_leader(
 		context: &Context,
 		project_id: Uuid,

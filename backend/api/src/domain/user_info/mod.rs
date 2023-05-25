@@ -1,7 +1,8 @@
 use ::infrastructure::database::schema::*;
+use chrono::NaiveDateTime;
 use derive_getters::{Dissolve, Getters};
 use derive_more::Constructor;
-use diesel::{pg::Pg, Queryable};
+use diesel::{pg::Pg, Insertable, Queryable};
 use domain::UserId;
 use serde::{Deserialize, Serialize};
 
@@ -43,6 +44,14 @@ pub struct UserInfo {
 	contact_information: Option<ContactInformation>,
 }
 
+#[derive(Debug, Clone, Constructor, Getters, Dissolve, Serialize, Deserialize, AsChangeset)]
+#[table_name = "user_info"]
+#[primary_key(user_id)]
+#[changeset_options(treat_none_as_null = "true")]
+pub struct UserTermsAndConditionsInfo {
+	pub tc_last_accepted_at: Option<NaiveDateTime>,
+}
+
 impl domain::Entity for UserInfo {
 	type Id = UserId;
 }
@@ -56,6 +65,7 @@ where
 		Option<PayoutSettings>,
 		Option<ContactInformation>,
 		bool,
+		Option<NaiveDateTime>,
 	): Queryable<ST, Pg>,
 {
 	type Row = <(
@@ -65,10 +75,11 @@ where
 		Option<PayoutSettings>,
 		Option<ContactInformation>,
 		bool,
+		Option<NaiveDateTime>,
 	) as Queryable<ST, Pg>>::Row;
 
 	fn build(row: Self::Row) -> Self {
-		let (user_id, identity, location, payout_settings, contact_information, _) =
+		let (user_id, identity, location, payout_settings, contact_information, _, _) =
 			Queryable::build(row);
 		Self {
 			user_id,
