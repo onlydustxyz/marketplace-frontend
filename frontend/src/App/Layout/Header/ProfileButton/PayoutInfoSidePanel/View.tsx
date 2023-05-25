@@ -6,7 +6,7 @@ import { useIntl } from "src/hooks/useIntl";
 import BuildingLine from "src/icons/BuildingLine";
 import CheckLine from "src/icons/CheckLine";
 import User3Line from "src/icons/User3Line";
-import ProfileRadioGroup from "src/pages/Profile/components/ProfileRadioGroup";
+import ProfileRadioGroup from "src/components/ProfileRadioGroup";
 import { PayoutSettingsDisplayType, ProfileType } from "./types";
 import Callout from "src/components/Callout";
 import Input from "src/components/FormInput";

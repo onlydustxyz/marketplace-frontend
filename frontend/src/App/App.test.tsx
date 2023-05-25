@@ -25,7 +25,6 @@ import { Sorting } from "src/pages/Projects";
 const TEST_USER_ID = "test-user-id";
 const TEST_GITHUB_USER_ID = 123456789;
 const TEST_USER_EMAIL = "test@user.email";
-const EDIT_PROFILE_TITLE = "Edit profile";
 const PROFILE_BUTTON_TEST_ID = "profile-button";
 const LOGOUT_BUTTON_TEST_ID = "logout-button";
 
@@ -270,25 +269,6 @@ Object.defineProperty(window, "innerWidth", { writable: true, configurable: true
 describe("Integration tests", () => {
   beforeEach(() => {
     window.localStorage.clear();
-  });
-
-  it("should be able to access the profile page and display profile info when having a token in local storage", async () => {
-    window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_BASIC_TEST_VALUE));
-    renderWithIntl(<App />, {
-      wrapper: MemoryRouterProviderFactory({
-        route: `${RoutePaths.Profile}`,
-        mocks: graphQlMocks,
-      }),
-    });
-    await screen.findByText(EDIT_PROFILE_TITLE);
-  });
-
-  it("should redirect to the projects page if the profile route is accessed without a token in the local storage", async () => {
-    renderWithIntl(<App />, {
-      wrapper: MemoryRouterProviderFactory({ route: RoutePaths.Profile, mocks: graphQlMocks }),
-    });
-    await screen.findAllByText("Filter");
-    expect(window.location.pathname).toBe(RoutePaths.Projects);
   });
 
   it.skip("should be able to access the project details page from the projects list and see the tabs", async () => {
