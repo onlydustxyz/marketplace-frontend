@@ -1,5 +1,9 @@
 import isDefined from "src/utils/isDefined";
-import { useGetUserPayoutSettingsQuery, useUpdatePayoutSettingsMutation } from "src/__generated/graphql";
+import {
+  GetUserPayoutSettingsDocument,
+  useGetUserPayoutSettingsQuery,
+  useUpdatePayoutSettingsMutation,
+} from "src/__generated/graphql";
 import { useShowToaster } from "src/hooks/useToaster";
 import { useIntl } from "src/hooks/useIntl";
 
@@ -20,6 +24,7 @@ export default function usePayoutSettings(githubUserId?: number) {
   const [updatePayoutSettings, { loading: updatePayoutSettingsLoading }] = useUpdatePayoutSettingsMutation({
     context: { graphqlErrorDisplay: "toaster" },
     onCompleted: () => showToaster(T("profile.form.success")),
+    refetchQueries: [GetUserPayoutSettingsDocument],
   });
 
   return {
