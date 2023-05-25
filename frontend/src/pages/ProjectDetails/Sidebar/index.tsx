@@ -66,9 +66,10 @@ export default function ProjectsSidebar({ projectId }: Props) {
     },
   };
 
-  const availableTabs = isProjectMine(currentProject)
-    ? [AvailableTabs.overview, AvailableTabs.contributors, AvailableTabs.payments]
-    : [AvailableTabs.overview, AvailableTabs.contributors];
+  const availableTabs =
+    currentProject && ledProjectIds.includes(currentProject?.id)
+      ? [AvailableTabs.overview, AvailableTabs.contributors, AvailableTabs.payments]
+      : [AvailableTabs.overview, AvailableTabs.contributors];
   return currentProject ? (
     <View
       availableTabs={availableTabs}

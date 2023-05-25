@@ -5,7 +5,7 @@ import Headers from "./Headers";
 import PaymentLine from "./Line";
 import { ExtendedPaymentRequestFragment } from "src/__generated/graphql";
 import { useMemo, useState } from "react";
-import PaymentRequestSidePanel from "src/components/PayoutTable/PaymentRequestSidePanel";
+import { PaymentRequestSidePanelAsLeader } from "src/components/PayoutTable/PaymentRequestSidePanel";
 
 type Props = {
   projectId: string;
@@ -43,8 +43,7 @@ export default function PaymentTable({ projectId, payments }: Props) {
         ))}
       </Table>
       {selectedPayment && (
-        <PaymentRequestSidePanel
-          projectLeaderView
+        <PaymentRequestSidePanelAsLeader
           projectId={projectId}
           open={sidePanelOpen}
           setOpen={setSidePanelOpen}
