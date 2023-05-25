@@ -14,9 +14,10 @@ type Props = {
   login: string;
   logout: () => void;
   payoutSettingsInvalid: boolean;
+  githubUserId?: number;
 };
 
-const View = ({ avatarUrl, login, logout, payoutSettingsInvalid }: Props) => {
+const View = ({ githubUserId, avatarUrl, login, logout, payoutSettingsInvalid }: Props) => {
   const { T } = useIntl();
 
   const [menuItemsVisible, setMenuItemsVisible] = useState(false);
@@ -81,7 +82,11 @@ const View = ({ avatarUrl, login, logout, payoutSettingsInvalid }: Props) => {
           </Menu.Items>
         </Transition>
       </Menu>
-      <PayoutInfoSidePanel open={payoutInfoSidePanelOpen} setOpen={setPayoutInfoSidePanelOpen} />
+      <PayoutInfoSidePanel
+        githubUserId={githubUserId}
+        open={payoutInfoSidePanelOpen}
+        setOpen={setPayoutInfoSidePanelOpen}
+      />
     </div>
   );
 };

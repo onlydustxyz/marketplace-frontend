@@ -10,7 +10,6 @@ import {
 } from "src/__generated/graphql";
 import { useShowToaster } from "src/hooks/useToaster";
 import { useEffect } from "react";
-import { useAuth } from "src/hooks/useAuth";
 import View from "./View";
 import usePayoutSettings from "src/hooks/usePayoutSettings";
 import { PayoutSettingsDisplayType, ProfileType, UserPayoutInfo } from "./types";
@@ -19,12 +18,12 @@ import SidePanel from "src/components/SidePanel";
 const ENS_DOMAIN_REGEXP = /^[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?$/gi;
 
 type Props = {
+  githubUserId?: number;
   open: boolean;
   setOpen: (value: boolean) => void;
 };
 
-export default function PayoutInfoSidePanel({ open, setOpen }: Props) {
-  const { githubUserId } = useAuth();
+export default function PayoutInfoSidePanel({ githubUserId, open, setOpen }: Props) {
   const { T } = useIntl();
 
   const { data: user, valid: payoutSettingsValid } = usePayoutSettings(githubUserId);
@@ -92,8 +91,8 @@ export default function PayoutInfoSidePanel({ open, setOpen }: Props) {
   return (
     <SidePanel open={open} setOpen={setOpen} title={T("navbar.profile.payoutInfo")}>
       <FormProvider {...formMethods}>
-          <View payoutSettingsValid={payoutSettingsValid} saveButtonDisabled={updateUserLoading} />
         <form id="payout-info-form" className="h-full min-h-0" onSubmit={handleSubmit(onSubmit, onSubmitError)}>
+          <View payoutSettingsValid={payoutSettingsValid} saveButtonDisabled={updateUserLoading || !isDirty} />
         </form>
       </FormProvider>
     </SidePanel>
