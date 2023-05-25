@@ -1,4 +1,4 @@
-import { useForm, SubmitHandler, FormProvider, SubmitErrorHandler } from "react-hook-form";
+import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
 import IBANParser from "iban";
 
 import { useIntl } from "src/hooks/useIntl";
@@ -36,7 +36,7 @@ export default function PayoutInfoSidePanel({ githubUserId, open, setOpen }: Pro
   const formMethods = useForm<UserPayoutInfo>({
     mode: "onBlur",
     reValidateMode: "onBlur",
-    shouldFocusError: false,
+    shouldFocusError: true,
   });
 
   const { watch, handleSubmit, setValue, formState, reset } = formMethods;
@@ -50,14 +50,6 @@ export default function PayoutInfoSidePanel({ githubUserId, open, setOpen }: Pro
     reset(formData);
   };
 
-  // TODO keep this ?
-  const onSubmitError: SubmitErrorHandler<UserPayoutInfo> = () => {
-    const errorLabel = document.querySelector("label > div.text-orange-500");
-    if (errorLabel) {
-      errorLabel.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  };
-
   const profileType = watch("profileType");
 
   useEffect(() => {
@@ -69,7 +61,7 @@ export default function PayoutInfoSidePanel({ githubUserId, open, setOpen }: Pro
   return (
     <SidePanel open={open} setOpen={setOpen} title={T("navbar.profile.payoutInfo")}>
       <FormProvider {...formMethods}>
-        <form id="payout-info-form" className="h-full min-h-0" onSubmit={handleSubmit(onSubmit, onSubmitError)}>
+        <form id="payout-info-form" className="h-full min-h-0" onSubmit={handleSubmit(onSubmit)}>
           <View
             payoutSettingsValid={payoutSettingsValid}
             saveButtonDisabled={updatePayoutSettingsLoading || !isDirty}
