@@ -46,8 +46,6 @@ export default function Overview() {
     ...contextWithCacheHeaders,
   });
 
-  const { applyToProject, loading: applyToProjectLoading } = useApplications(projectId);
-
   const projectName = data?.projectsByPk?.projectDetails?.name;
   const logoUrl = data?.projectsByPk?.projectDetails?.logoUrl || onlyDustLogo;
   const description = data?.projectsByPk?.projectDetails?.longDescription || LOREM_IPSUM;
@@ -61,7 +59,7 @@ export default function Overview() {
   const totalSpentAmountInUsd = data?.projectsByPk?.budgetsAggregate.aggregate?.sum?.spentAmount;
   const languages = getDeduplicatedAggregatedLanguages(data?.projectsByPk?.githubRepos.map(r => r.repo));
   const hiring = data?.projectsByPk?.projectDetails?.hiring;
-  const alreadyApplied = data?.projectsByPk?.applications.some(a => a.applicantId === user?.id);
+  const { alreadyApplied, applyToProject } = useApplications(projectId);
   const { isCurrentUserMember } = useProjectVisibility(projectId);
 
   return (
@@ -128,7 +126,7 @@ export default function Overview() {
                       data-testid="apply-btn"
                       size={ButtonSize.Md}
                       width={Width.Full}
-                      disabled={alreadyApplied || applyToProjectLoading}
+                      disabled={alreadyApplied}
                       onClick={applyToProject}
                     >
                       {T("applications.applyButton")}
