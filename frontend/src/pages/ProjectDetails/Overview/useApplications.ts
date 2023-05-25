@@ -17,7 +17,7 @@ export default function useApplications(projectId: string) {
     variables: { projectId },
   });
 
-  const [applyToProject, { loading }] = useApplyToProjectMutation({
+  const [applyToProject] = useApplyToProjectMutation({
     variables: { projectId },
     context: { graphqlErrorDisplay: "toaster" },
     onCompleted: () => showToaster(T("applications.confirmationToaster")),
@@ -46,6 +46,5 @@ export default function useApplications(projectId: string) {
     applications: data?.projectsByPk?.applications,
     alreadyApplied: data?.projectsByPk?.applications.some(a => a.applicantId === user?.id),
     applyToProject,
-    loading,
   };
 }
