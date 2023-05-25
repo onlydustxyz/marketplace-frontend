@@ -1,12 +1,15 @@
-import { ProjectDetails } from "..";
 import View, { SidebarProjectDetails } from "./View";
-import { SidebarProjectDetailsFragment, useGetProjectsForSidebarQuery } from "src/__generated/graphql";
+import {
+  Maybe,
+  SidebarProjectDetailsFragment,
+  useGetCurrentProjectForSidebarQuery,
+  useGetProjectsForSidebarQuery,
+} from "src/__generated/graphql";
 import { useAuth } from "src/hooks/useAuth";
 import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
-import { sortBy } from "lodash";
+import { chain } from "lodash";
 import { ProjectRoutePaths } from "src/App";
 import { useIntl } from "src/hooks/useIntl";
-import isDefined from "src/utils/isDefined";
 import { isProjectVisibleToUser } from "src/hooks/useProjectVisibility";
 
 export type ProjectDetailsTab = {
@@ -15,25 +18,38 @@ export type ProjectDetailsTab = {
 };
 
 interface Props {
-  currentProject: ProjectDetails;
+  projectId: string;
 }
 
-export default function ProjectsSidebar({ currentProject }: Props) {
-  const { isLoggedIn, ledProjectIds, githubUserId, user } = useAuth();
+export default function ProjectsSidebar({ projectId }: Props) {
+  const { ledProjectIds, githubUserId, user } = useAuth();
   const { T } = useIntl();
 
-  const isProjectMine = (project: ProjectDetails) => ledProjectIds.includes(project.id);
+  const isProjectMine = (project?: Maybe<SidebarProjectDetails>) =>
+    (project && ledProjectIds.includes(project?.id)) || project?.withInvitation;
+
+  const getCurrentProjectsForSidebarQuery = useGetCurrentProjectForSidebarQuery({
+    variables: { projectId },
+  });
+
+  const currentProject =
+    getCurrentProjectsForSidebarQuery.data?.projectsByPk &&
+    projectFromQuery(getCurrentProjectsForSidebarQuery.data?.projectsByPk, githubUserId);
 
   const getProjectsForSidebarQuery = useGetProjectsForSidebarQuery({
     variables: { ledProjectIds, githubUserId },
-    skip: !isLoggedIn,
+    skip: !isProjectMine(currentProject),
   });
 
   const projects =
     getProjectsForSidebarQuery?.data?.projects
       .filter(project => isProjectVisibleToUser({ project, user: { githubUserId, userId: user?.id } }))
       .map(project => projectFromQuery(project, githubUserId)) || [];
-  const sortedProjects = sortBy(projects, ["withInvitation", "name"]);
+
+  const sortedProjects = chain(projects)
+    .sortBy("name")
+    .sortBy(p => !p.withInvitation)
+    .value();
 
   const AvailableTabs: Record<string, ProjectDetailsTab> = {
     overview: {
@@ -53,15 +69,15 @@ export default function ProjectsSidebar({ currentProject }: Props) {
   const availableTabs = isProjectMine(currentProject)
     ? [AvailableTabs.overview, AvailableTabs.contributors, AvailableTabs.payments]
     : [AvailableTabs.overview, AvailableTabs.contributors];
-  return (
+  return currentProject ? (
     <View
       availableTabs={availableTabs}
       currentProject={currentProject}
       allProjects={sortedProjects}
-      expandable={
-        (isProjectMine(currentProject) || isDefined(currentProject.invitationId)) && sortedProjects.length > 1
-      }
+      expandable={isProjectMine(currentProject) ? sortedProjects.length > 1 : false}
     />
+  ) : (
+    <div />
   );
 }
 
@@ -69,8 +85,6 @@ const projectFromQuery = (project: SidebarProjectDetailsFragment, githubUserId?:
   ...project,
   name: project.projectDetails?.name || "",
   logoUrl: project.projectDetails?.logoUrl || onlyDustLogo,
-  withInvitation:
-    githubUserId !== undefined &&
-    project.pendingInvitations?.map(pendingInvitation => pendingInvitation.githubUserId).includes(githubUserId),
+  withInvitation: project.pendingInvitations?.some(i => i.githubUserId === githubUserId),
   contributorsCount: project.contributorsAggregate.aggregate?.count || 0,
 });

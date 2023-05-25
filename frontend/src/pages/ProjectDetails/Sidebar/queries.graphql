@@ -24,3 +24,10 @@ query GetProjectsForSidebar($ledProjectIds: [uuid!], $githubUserId: bigint) {
     ...ProjectVisibilityDetails
   }
 }
+
+query GetCurrentProjectForSidebar($projectId: uuid!) {
+  projectsByPk(id: $projectId) {
+    ...SidebarProjectDetails
+    ...ProjectVisibilityDetails
+  }
+}
