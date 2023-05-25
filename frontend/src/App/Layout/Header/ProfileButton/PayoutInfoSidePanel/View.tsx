@@ -17,6 +17,7 @@ import BitcoinLine from "src/icons/BitcoinLine";
 import IBANParser from "iban";
 import LockFill from "src/icons/LockFill";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import ErrorWarningLine from "src/icons/ErrorWarningLine";
 
 const ETHEREUM_ADDRESS_OR_ENV_DOMAIN_REGEXP =
   /(^0x[a-fA-F0-9]{40}$)|(^[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?$)/gi;
@@ -25,9 +26,10 @@ const BIC_REGEXP = /^[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?$/i;
 type Props = {
   payoutSettingsValid?: boolean;
   saveButtonDisabled: boolean;
+  unsavedChanges: boolean;
 };
 
-export default function View({ payoutSettingsValid, saveButtonDisabled }: Props) {
+export default function View({ payoutSettingsValid, saveButtonDisabled, unsavedChanges }: Props) {
   const { T } = useIntl();
   const {
     watch,
@@ -263,8 +265,16 @@ export default function View({ payoutSettingsValid, saveButtonDisabled }: Props)
       </div>
       <div className="flex flex-row items-center justify-between bg-white/2 border-t border-greyscale-50/8 px-8 py-5">
         <Tag size={TagSize.Medium}>
-          <CheckLine />
-          {T("profile.form.saveStatus.saved")}
+          {unsavedChanges ? (
+            <div className="text-orange-500 flex flex-row items-center gap-1">
+              <ErrorWarningLine /> {T("profile.form.saveStatus.unsaved")}
+            </div>
+          ) : (
+            <>
+              <CheckLine />
+              {T("profile.form.saveStatus.saved")}
+            </>
+          )}
         </Tag>
         <Button
           size={ButtonSize.Md}

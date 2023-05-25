@@ -2,7 +2,13 @@ import { useForm, SubmitHandler, FormProvider, SubmitErrorHandler } from "react-
 import IBANParser from "iban";
 
 import { useIntl } from "src/hooks/useIntl";
-import { IdentityType, PayoutSettingsType, UpdatePayoutSettingsMutationVariables } from "src/__generated/graphql";
+import {
+  IdentityType,
+  Maybe,
+  PayoutSettingsType,
+  UpdatePayoutSettingsMutationVariables,
+  UserPayoutSettingsFragment,
+} from "src/__generated/graphql";
 import { useEffect } from "react";
 import View from "./View";
 import usePayoutSettings from "src/hooks/usePayoutSettings";
@@ -28,40 +34,20 @@ export default function PayoutInfoSidePanel({ githubUserId, open, setOpen }: Pro
   } = usePayoutSettings(githubUserId);
 
   const formMethods = useForm<UserPayoutInfo>({
-    defaultValues: {
-      profileType: user?.identity?.Company ? ProfileType.Company : ProfileType.Individual,
-      firstname: user?.identity?.Company
-        ? user?.identity?.Company?.owner?.firstname
-        : user?.identity?.Person?.firstname,
-      lastname: user?.identity?.Company ? user?.identity?.Company?.owner?.lastname : user?.identity?.Person?.lastname,
-      companyName: user?.identity?.Company?.name,
-      identificationNumber: user?.identity?.Company?.identification_number,
-      address: user?.location?.address,
-      postCode: user?.location?.post_code,
-      city: user?.location?.city,
-      country: user?.location?.country,
-      payoutSettingsType: user?.payoutSettings?.EthTransfer?.Address
-        ? PayoutSettingsDisplayType.EthereumIdentity
-        : user?.payoutSettings?.EthTransfer?.Domain
-        ? PayoutSettingsDisplayType.EthereumIdentity
-        : user?.payoutSettings?.WireTransfer
-        ? PayoutSettingsDisplayType.BankAddress
-        : PayoutSettingsDisplayType.EthereumIdentity,
-      ethIdentity: user?.payoutSettings?.EthTransfer?.Address || user?.payoutSettings?.EthTransfer?.Name,
-      IBAN: user?.payoutSettings?.WireTransfer?.IBAN
-        ? IBANParser.printFormat(user?.payoutSettings?.WireTransfer?.IBAN)
-        : undefined,
-      BIC: user?.payoutSettings?.WireTransfer?.BIC,
-    },
     mode: "onBlur",
     reValidateMode: "onBlur",
     shouldFocusError: false,
   });
 
-  const { watch, handleSubmit, setValue } = formMethods;
+  const { watch, handleSubmit, setValue, formState, reset } = formMethods;
+  const { isDirty } = formState;
+
+  useEffect(() => reset(decodeQuery(user)), [user]);
 
   const onSubmit: SubmitHandler<UserPayoutInfo> = formData => {
     updatePayoutSettings(mapFormDataToSchema(formData));
+    // optimisticly set form's defaultValues to submitted form data to avoid flickering related to isDirty
+    reset(formData);
   };
 
   // TODO keep this ?
@@ -87,6 +73,7 @@ export default function PayoutInfoSidePanel({ githubUserId, open, setOpen }: Pro
           <View
             payoutSettingsValid={payoutSettingsValid}
             saveButtonDisabled={updatePayoutSettingsLoading || !isDirty}
+            unsavedChanges={isDirty}
           />
         </form>
       </FormProvider>
@@ -183,3 +170,30 @@ const mapFormDataToSchema = ({
 
   return { variables };
 };
+
+// Setting empty strings instead of undefined is required to make isDirty work properly
+const decodeQuery = (user?: Maybe<UserPayoutSettingsFragment>): UserPayoutInfo => ({
+  profileType: user?.identity?.Company ? ProfileType.Company : ProfileType.Individual,
+  firstname:
+    (user?.identity?.Company ? user?.identity?.Company?.owner?.firstname : user?.identity?.Person?.firstname) || "",
+  lastname:
+    (user?.identity?.Company ? user?.identity?.Company?.owner?.lastname : user?.identity?.Person?.lastname) || "",
+  companyName: user?.identity?.Company?.name || "",
+  identificationNumber: user?.identity?.Company?.identification_number || "",
+  address: user?.location?.address || "",
+  postCode: user?.location?.post_code || "",
+  city: user?.location?.city || "",
+  country: user?.location?.country || "",
+  payoutSettingsType: user?.payoutSettings?.EthTransfer?.Address
+    ? PayoutSettingsDisplayType.EthereumIdentity
+    : user?.payoutSettings?.EthTransfer?.Domain
+    ? PayoutSettingsDisplayType.EthereumIdentity
+    : user?.payoutSettings?.WireTransfer
+    ? PayoutSettingsDisplayType.BankAddress
+    : PayoutSettingsDisplayType.EthereumIdentity,
+  ethIdentity: user?.payoutSettings?.EthTransfer?.Address || user?.payoutSettings?.EthTransfer?.Name || "",
+  IBAN: user?.payoutSettings?.WireTransfer?.IBAN
+    ? IBANParser.printFormat(user?.payoutSettings?.WireTransfer?.IBAN)
+    : "",
+  BIC: user?.payoutSettings?.WireTransfer?.BIC || "",
+});
