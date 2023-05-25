@@ -13494,10 +13494,10 @@ export type CreateGithubAuthUserMutationVariables = Exact<{
 export type CreateGithubAuthUserMutation = { __typename?: 'mutation_root', insertAuthUserProvider: { __typename?: 'authUserProviders', id: any } | null };
 
 export type UpdateProfileMutationVariables = Exact<{
-  contactInformation: ContactInformation;
-  identity: IdentityInput;
-  location: Location;
-  payoutSettings: PayoutSettingsInput;
+  contactInformation: InputMaybe<ContactInformation>;
+  identity: InputMaybe<IdentityInput>;
+  location: InputMaybe<Location>;
+  payoutSettings: InputMaybe<PayoutSettingsInput>;
 }>;
 
 
@@ -16173,7 +16173,7 @@ export type CreateGithubAuthUserMutationHookResult = ReturnType<typeof useCreate
 export type CreateGithubAuthUserMutationResult = Apollo.MutationResult<CreateGithubAuthUserMutation>;
 export type CreateGithubAuthUserMutationOptions = Apollo.BaseMutationOptions<CreateGithubAuthUserMutation, CreateGithubAuthUserMutationVariables>;
 export const UpdateProfileDocument = gql`
-    mutation updateProfile($contactInformation: ContactInformation!, $identity: IdentityInput!, $location: Location!, $payoutSettings: PayoutSettingsInput!) {
+    mutation updateProfile($contactInformation: ContactInformation, $identity: IdentityInput, $location: Location, $payoutSettings: PayoutSettingsInput) {
   updateProfileInfo(
     contactInformation: $contactInformation
     identity: $identity
