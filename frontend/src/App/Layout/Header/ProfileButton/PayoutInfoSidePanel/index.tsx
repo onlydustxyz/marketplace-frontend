@@ -92,8 +92,8 @@ export default function PayoutInfoSidePanel({ open, setOpen }: Props) {
   return (
     <SidePanel open={open} setOpen={setOpen} title={T("navbar.profile.payoutInfo")}>
       <FormProvider {...formMethods}>
-        <form id="payout-info-form" className="h-full" onSubmit={handleSubmit(onSubmit, onSubmitError)}>
           <View payoutSettingsValid={payoutSettingsValid} saveButtonDisabled={updateUserLoading} />
+        <form id="payout-info-form" className="h-full min-h-0" onSubmit={handleSubmit(onSubmit, onSubmitError)}>
         </form>
       </FormProvider>
     </SidePanel>

@@ -43,8 +43,8 @@ export default function View({ payoutSettingsValid, saveButtonDisabled }: Props)
   const BICValue = watch("BIC");
 
   return (
-    <div className="flex flex-col justify-between h-full">
-      <div className="flex flex-col gap-6 m-6">
+    <div className="flex flex-col justify-between h-full min-h-0 overflow-y-auto">
+      <div className="flex flex-col gap-6 px-6 min-h-0 scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded">
         <Tag size={TagSize.Medium}>
           <div
             className={classNames({
@@ -261,7 +261,7 @@ export default function View({ payoutSettingsValid, saveButtonDisabled }: Props)
           <ReactMarkdown className="whitespace-pre-wrap text-sm">{T("profile.form.privacyNotice")}</ReactMarkdown>
         </div>
       </div>
-      <div className="flex flex-row items-center grow-0 justify-between bg-white/2 border-t border-greyscale-50/8 px-8 py-5">
+      <div className="flex flex-row items-center justify-between bg-white/2 border-t border-greyscale-50/8 px-8 py-5">
         <Tag size={TagSize.Medium}>
           <CheckLine />
           {T("profile.form.saveStatus.saved")}

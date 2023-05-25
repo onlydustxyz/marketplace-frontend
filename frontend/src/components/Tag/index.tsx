@@ -30,7 +30,7 @@ export default function Tag({
   ...rest
 }: TagProps) {
   return (
-    <div data-testid={testid} id={id} className="w-fit rounded-full p-px overflow-hidden" {...rest}>
+    <div data-testid={testid} id={id} className="w-fit rounded-full p-px overflow-hidden shrink-0" {...rest}>
       <div
         className={classNames(
           "flex items-center justify-center w-fit gap-1 rounded-full font-walsheim font-normal text-white relative h-7",
