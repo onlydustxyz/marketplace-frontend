@@ -16,15 +16,12 @@ import {
   GetProjectsForSidebarDocument,
   GetProjectsForSidebarQueryResult,
   GetProjectsQueryResult,
-  ProfileDocument,
-  ProfileQueryResult,
 } from "src/__generated/graphql";
 import { buildQuerySorting } from "src/pages/Projects/AllProjects";
 import { Sorting } from "src/pages/Projects";
 
 const TEST_USER_ID = "test-user-id";
 const TEST_GITHUB_USER_ID = 123456789;
-const TEST_USER_EMAIL = "test@user.email";
 const PROFILE_BUTTON_TEST_ID = "profile-button";
 const LOGOUT_BUTTON_TEST_ID = "logout-button";
 
@@ -200,26 +197,6 @@ const graphQlMocks = [
       },
     },
     result: ALL_PROJECTS_RESULT,
-  },
-  {
-    request: {
-      query: ProfileDocument,
-      variables: {
-        id: TEST_USER_ID,
-      },
-    },
-    result: {
-      data: {
-        userInfoByPk: {
-          __typename: "UserInfo",
-          userId: TEST_USER_ID,
-          contactInformation: { email: TEST_USER_EMAIL },
-          identity: null,
-          location: null,
-          payoutSettings: null,
-        },
-      } as ProfileQueryResult["data"],
-    },
   },
   {
     request: {

@@ -14,9 +14,21 @@ import {
   PendingUserPaymentsQueryResult,
   UserPayoutSettingsFragment,
 } from "src/__generated/graphql";
+import { ToasterProvider } from "src/hooks/useToaster";
+import { PropsWithChildren } from "react";
+
+type WrapperProps = {
+  mocks?: ReadonlyArray<MockedResponse>;
+} & PropsWithChildren;
+
+const wrapper = ({ children, mocks }: WrapperProps) => (
+  <ToasterProvider>
+    <MockedProvider mocks={mocks}>{children}</MockedProvider>
+  </ToasterProvider>
+);
 
 const render = (user: User, mocks?: ReadonlyArray<MockedResponse>) =>
-  renderHook(() => useSignupRedirection(user), { wrapper: MockedProvider, initialProps: { mocks } });
+  renderHook(() => useSignupRedirection(user), { wrapper, initialProps: { mocks } });
 
 const githubUserId = 123456789;
 const userId = "user-id";
