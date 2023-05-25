@@ -228,6 +228,7 @@ class UserInfo {
    identity: jsonb
    location: jsonb
    payoutSettings: jsonb
+   tcLastAcceptedAt: timestamp
    userId: uuid!
 }
 

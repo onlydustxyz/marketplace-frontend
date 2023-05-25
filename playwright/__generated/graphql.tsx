@@ -5136,6 +5136,7 @@ export type UserInfo = {
   identity: Maybe<Scalars['jsonb']>;
   location: Maybe<Scalars['jsonb']>;
   payoutSettings: Maybe<Scalars['jsonb']>;
+  tcLastAcceptedAt: Maybe<Scalars['timestamp']>;
   userId: Scalars['uuid'];
 };
 
@@ -5203,6 +5204,7 @@ export type UserInfoBoolExp = {
   identity: InputMaybe<JsonbComparisonExp>;
   location: InputMaybe<JsonbComparisonExp>;
   payoutSettings: InputMaybe<JsonbComparisonExp>;
+  tcLastAcceptedAt: InputMaybe<TimestampComparisonExp>;
   userId: InputMaybe<UuidComparisonExp>;
 };
 
@@ -5242,18 +5244,21 @@ export type UserInfoInsertInput = {
   identity: InputMaybe<Scalars['jsonb']>;
   location: InputMaybe<Scalars['jsonb']>;
   payoutSettings: InputMaybe<Scalars['jsonb']>;
+  tcLastAcceptedAt: InputMaybe<Scalars['timestamp']>;
   userId: InputMaybe<Scalars['uuid']>;
 };
 
 /** aggregate max on columns */
 export type UserInfoMaxFields = {
   __typename?: 'UserInfoMaxFields';
+  tcLastAcceptedAt: Maybe<Scalars['timestamp']>;
   userId: Maybe<Scalars['uuid']>;
 };
 
 /** aggregate min on columns */
 export type UserInfoMinFields = {
   __typename?: 'UserInfoMinFields';
+  tcLastAcceptedAt: Maybe<Scalars['timestamp']>;
   userId: Maybe<Scalars['uuid']>;
 };
 
@@ -5287,6 +5292,7 @@ export type UserInfoOrderBy = {
   identity: InputMaybe<OrderBy>;
   location: InputMaybe<OrderBy>;
   payoutSettings: InputMaybe<OrderBy>;
+  tcLastAcceptedAt: InputMaybe<OrderBy>;
   userId: InputMaybe<OrderBy>;
 };
 
@@ -5316,6 +5322,8 @@ export enum UserInfoSelectColumn {
   /** column name */
   PayoutSettings = 'payoutSettings',
   /** column name */
+  TcLastAcceptedAt = 'tcLastAcceptedAt',
+  /** column name */
   UserId = 'userId'
 }
 
@@ -5325,6 +5333,7 @@ export type UserInfoSetInput = {
   identity: InputMaybe<Scalars['jsonb']>;
   location: InputMaybe<Scalars['jsonb']>;
   payoutSettings: InputMaybe<Scalars['jsonb']>;
+  tcLastAcceptedAt: InputMaybe<Scalars['timestamp']>;
   userId: InputMaybe<Scalars['uuid']>;
 };
 
@@ -5338,6 +5347,8 @@ export enum UserInfoUpdateColumn {
   Location = 'location',
   /** column name */
   PayoutSettings = 'payoutSettings',
+  /** column name */
+  TcLastAcceptedAt = 'tcLastAcceptedAt',
   /** column name */
   UserId = 'userId'
 }
@@ -7704,6 +7715,7 @@ export type Ignored_Github_Issues_Variance_Order_By = {
 export type Mutation_Root = {
   __typename?: 'mutation_root';
   acceptProjectLeaderInvitation: Scalars['Boolean'];
+  acceptTc: Scalars['Uuid'];
   addEthPaymentReceipt: Scalars['Uuid'];
   addFiatPaymentReceipt: Scalars['Uuid'];
   addSponsorToProject: Scalars['Uuid'];
@@ -12182,6 +12194,7 @@ export type User_Info_StreamCursorValueInput = {
   identity: InputMaybe<Scalars['jsonb']>;
   location: InputMaybe<Scalars['jsonb']>;
   payoutSettings: InputMaybe<Scalars['jsonb']>;
+  tcLastAcceptedAt: InputMaybe<Scalars['timestamp']>;
   userId: InputMaybe<Scalars['uuid']>;
 };
 
