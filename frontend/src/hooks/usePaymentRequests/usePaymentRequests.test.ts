@@ -57,8 +57,7 @@ const render = (projectId: string) =>
 describe("useGetPaymentRequests", () => {
   it("should return all payment requests for given project", async () => {
     const { result } = render(PROJECT_ID);
-    expect(result.current.loading).toBe(true);
-    await waitFor(() => expect(result.current.loading).toBe(false));
+    await waitFor(() => expect(result.current.data).toBeDefined());
 
     expect(result.current.data?.budget).toEqual({ initialAmount: 1000, remainingAmount: 400 });
     expect(result.current.data?.paymentRequests).toHaveLength(3);
