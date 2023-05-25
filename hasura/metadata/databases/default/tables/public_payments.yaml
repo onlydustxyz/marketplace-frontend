@@ -19,7 +19,6 @@ select_permissions:
         - currency_code
         - id
         - processed_at
-        - receipt
         - request_id
       filter:
         paymentRequest:

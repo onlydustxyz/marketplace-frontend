@@ -250,9 +250,10 @@
           "other": "from __user__"
         },
         "requestedAt": "Created on __requestedAt__",
-        "processedAt": {
-          "crypto": "Processed on __processedAt__\n via **Crypto Wire** on __recipient__",
-          "fiat": "Processed on __processedAt__\n via **Bank Wire** on account __recipient__"
+        "processedAt": "Processed on __processedAt__",
+        "processedVia": {
+          "crypto": "via **Crypto Wire** on __recipient__",
+          "fiat": "via **Bank Wire** on account __recipient__"
         },
         "processedTooltip": {
           "crypto": {

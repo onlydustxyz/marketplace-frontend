@@ -21,6 +21,7 @@ import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import Tooltip, { withCustomTooltip } from "src/components/Tooltip";
 import IBAN from "iban";
 import ExternalLink from "src/components/ExternalLink";
+import isDefined from "src/utils/isDefined";
 
 enum Align {
   Top = "top",
@@ -121,41 +122,50 @@ export default function View({
             </Details>
           )}
           {status === PaymentStatus.ACCEPTED && payments?.at(0)?.processedAt && (
-            <Details align={Align.Top}>
+            <Details align={formattedReceipt ? Align.Top : Align.Center}>
               <BankCardLine className="text-base" />
               <ReactMarkdown
                 className="payment-receipt whitespace-pre-wrap"
                 {...withCustomTooltip("payment-receipt-tooltip")}
               >
-                {T(`payment.table.detailsPanel.processedAt.${formattedReceipt?.type}`, {
-                  processedAt: formatDateTime(new Date(payments?.at(0)?.processedAt)),
-                  recipient: formattedReceipt?.shortDetails,
-                })}
+                {[
+                  T("payment.table.detailsPanel.processedAt", {
+                    processedAt: formatDateTime(new Date(payments?.at(0)?.processedAt)),
+                  }),
+                  formattedReceipt &&
+                    T(`payment.table.detailsPanel.processedVia.${formattedReceipt?.type}`, {
+                      recipient: formattedReceipt?.shortDetails,
+                    }),
+                ]
+                  .filter(isDefined)
+                  .join("\n")}
               </ReactMarkdown>
-              <Tooltip anchorSelect=".payment-receipt" clickable>
-                <div className="flex flex-col items-start">
-                  <div>
-                    {T(`payment.table.detailsPanel.processedTooltip.${formattedReceipt?.type}.recipient`, {
-                      recipient: formattedReceipt?.fullDetails,
-                    })}
-                  </div>
-
-                  {formattedReceipt?.type === "crypto" ? (
-                    <ExternalLink
-                      url={`https://etherscan.io/tx/${formattedReceipt?.reference}`}
-                      text={T(`payment.table.detailsPanel.processedTooltip.${formattedReceipt?.type}.reference`, {
-                        reference: formattedReceipt?.reference,
-                      })}
-                    />
-                  ) : (
+              {formattedReceipt && (
+                <Tooltip anchorSelect=".payment-receipt" clickable>
+                  <div className="flex flex-col items-start">
                     <div>
-                      {T(`payment.table.detailsPanel.processedTooltip.${formattedReceipt?.type}.reference`, {
-                        reference: formattedReceipt?.reference,
+                      {T(`payment.table.detailsPanel.processedTooltip.${formattedReceipt?.type}.recipient`, {
+                        recipient: formattedReceipt?.fullDetails,
                       })}
                     </div>
-                  )}
-                </div>
-              </Tooltip>
+
+                    {formattedReceipt?.type === "crypto" ? (
+                      <ExternalLink
+                        url={`https://etherscan.io/tx/${formattedReceipt?.reference}`}
+                        text={T(`payment.table.detailsPanel.processedTooltip.${formattedReceipt?.type}.reference`, {
+                          reference: formattedReceipt?.reference,
+                        })}
+                      />
+                    ) : (
+                      <div>
+                        {T(`payment.table.detailsPanel.processedTooltip.${formattedReceipt?.type}.reference`, {
+                          reference: formattedReceipt?.reference,
+                        })}
+                      </div>
+                    )}
+                  </div>
+                </Tooltip>
+              )}
             </Details>
           )}
         </div>
