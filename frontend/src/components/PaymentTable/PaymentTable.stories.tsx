@@ -9,6 +9,7 @@ import {
 } from "src/__generated/graphql";
 
 import PaymentTable from ".";
+import { ToasterProvider } from "src/hooks/useToaster";
 
 export default {
   title: "PaymentTable",
@@ -78,10 +79,15 @@ const mocks = [
       data: {
         registeredUsers: [
           {
+            githubUserId: GITHUB_USER_ID2,
+            id: "user-1",
             userInfo: {
               __typename: "UserInfo",
               payoutSettings: { EthTransfer: { Name: "vitalik.eth" } },
               arePayoutSettingsValid: true,
+              userId: "user-1",
+              identity: null,
+              location: null,
             } as UserPayoutSettingsFragment,
           },
         ],
@@ -94,8 +100,10 @@ const suspenseCache = new SuspenseCache();
 
 export const Default = {
   render: () => (
-    <MockedProvider mocks={mocks} suspenseCache={suspenseCache}>
-      <PaymentTable projectId="project-1" payments={mockPayments} />
-    </MockedProvider>
+    <ToasterProvider>
+      <MockedProvider mocks={mocks} suspenseCache={suspenseCache}>
+        <PaymentTable projectId="project-1" payments={mockPayments} />
+      </MockedProvider>
+    </ToasterProvider>
   ),
 };

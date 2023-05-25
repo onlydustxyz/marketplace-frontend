@@ -1,6 +1,7 @@
 import { withRouter } from "storybook-addon-react-router-v6";
 
 import ProfileButton from "./View";
+import { ToasterProvider } from "src/hooks/useToaster";
 
 export default {
   title: "ProfileButton",
@@ -37,8 +38,10 @@ export const Default = {
 
 export const MissingPayoutSettings = {
   render: (args: Props) => (
-    <div className="ml-32">
-      <ProfileButton {...props} {...{ payoutSettingsInvalid: true }} {...args} />
-    </div>
+    <ToasterProvider>
+      <div className="ml-32">
+        <ProfileButton {...props} {...{ payoutSettingsInvalid: true }} {...args} />
+      </div>
+    </ToasterProvider>
   ),
 };
