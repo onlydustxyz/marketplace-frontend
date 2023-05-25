@@ -1,8 +1,12 @@
-import { gql } from "@apollo/client";
 import isDefined from "src/utils/isDefined";
-import { useGetUserPayoutSettingsQuery } from "src/__generated/graphql";
+import { useGetUserPayoutSettingsQuery, useUpdatePayoutSettingsMutation } from "src/__generated/graphql";
+import { useShowToaster } from "src/hooks/useToaster";
+import { useIntl } from "src/hooks/useIntl";
 
 export default function usePayoutSettings(githubUserId?: number) {
+  const showToaster = useShowToaster();
+  const { T } = useIntl();
+
   const query = useGetUserPayoutSettingsQuery({
     variables: { githubUserId },
     skip: !githubUserId,
@@ -13,30 +17,17 @@ export default function usePayoutSettings(githubUserId?: number) {
   const valid = query.data ? query.data.registeredUsers.at(0)?.userInfo?.arePayoutSettingsValid || false : undefined;
   const invoiceNeeded = isDefined(query.data?.registeredUsers.at(0)?.userInfo?.identity?.Company);
 
+  const [updatePayoutSettings, { loading: updatePayoutSettingsLoading }] = useUpdatePayoutSettingsMutation({
+    context: { graphqlErrorDisplay: "toaster" },
+    onCompleted: () => showToaster(T("profile.form.success")),
+  });
+
   return {
     ...query,
     data: userInfo,
     valid,
     invoiceNeeded,
+    updatePayoutSettings,
+    updatePayoutSettingsLoading,
   };
 }
-
-gql`
-  fragment UserPayoutSettings on UserInfo {
-    userId
-    identity
-    location
-    payoutSettings
-    arePayoutSettingsValid
-  }
-
-  query GetUserPayoutSettings($githubUserId: bigint!) {
-    registeredUsers(where: { githubUserId: { _eq: $githubUserId } }) {
-      ...UserId
-      githubUserId
-      userInfo {
-        ...UserPayoutSettings
-      }
-    }
-  }
-`;

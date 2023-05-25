@@ -2,13 +2,7 @@ import { useForm, SubmitHandler, FormProvider, SubmitErrorHandler } from "react-
 import IBANParser from "iban";
 
 import { useIntl } from "src/hooks/useIntl";
-import {
-  IdentityType,
-  PayoutSettingsType,
-  UpdateProfileInfoMutationVariables,
-  useUpdateProfileInfoMutation,
-} from "src/__generated/graphql";
-import { useShowToaster } from "src/hooks/useToaster";
+import { IdentityType, PayoutSettingsType, UpdatePayoutSettingsMutationVariables } from "src/__generated/graphql";
 import { useEffect } from "react";
 import View from "./View";
 import usePayoutSettings from "src/hooks/usePayoutSettings";
@@ -26,7 +20,12 @@ type Props = {
 export default function PayoutInfoSidePanel({ githubUserId, open, setOpen }: Props) {
   const { T } = useIntl();
 
-  const { data: user, valid: payoutSettingsValid } = usePayoutSettings(githubUserId);
+  const {
+    data: user,
+    valid: payoutSettingsValid,
+    updatePayoutSettings,
+    updatePayoutSettingsLoading,
+  } = usePayoutSettings(githubUserId);
 
   const formMethods = useForm<UserPayoutInfo>({
     defaultValues: {
@@ -60,16 +59,9 @@ export default function PayoutInfoSidePanel({ githubUserId, open, setOpen }: Pro
   });
 
   const { watch, handleSubmit, setValue } = formMethods;
-  const showToaster = useShowToaster();
-
-  // TODO set optimimistic ?
-  const [updateUser, { loading: updateUserLoading }] = useUpdateProfileInfoMutation({
-    context: { graphqlErrorDisplay: "toaster" },
-    onCompleted: () => showToaster(T("profile.form.success")),
-  });
 
   const onSubmit: SubmitHandler<UserPayoutInfo> = formData => {
-    updateUser(mapFormDataToSchema(formData));
+    updatePayoutSettings(mapFormDataToSchema(formData));
   };
 
   // TODO keep this ?
@@ -92,7 +84,10 @@ export default function PayoutInfoSidePanel({ githubUserId, open, setOpen }: Pro
     <SidePanel open={open} setOpen={setOpen} title={T("navbar.profile.payoutInfo")}>
       <FormProvider {...formMethods}>
         <form id="payout-info-form" className="h-full min-h-0" onSubmit={handleSubmit(onSubmit, onSubmitError)}>
-          <View payoutSettingsValid={payoutSettingsValid} saveButtonDisabled={updateUserLoading || !isDirty} />
+          <View
+            payoutSettingsValid={payoutSettingsValid}
+            saveButtonDisabled={updatePayoutSettingsLoading || !isDirty}
+          />
         </form>
       </FormProvider>
     </SidePanel>
@@ -114,8 +109,7 @@ const mapFormDataToSchema = ({
   BIC,
   identificationNumber,
 }: UserPayoutInfo) => {
-  const variables: UpdateProfileInfoMutationVariables = {
-    contactInformation: null,
+  const variables: UpdatePayoutSettingsMutationVariables = {
     identity: null,
     location: null,
     payoutSettings: null,

@@ -13100,6 +13100,15 @@ export type GetUserPayoutSettingsQueryVariables = Exact<{
 
 export type GetUserPayoutSettingsQuery = { __typename?: 'query_root', registeredUsers: Array<{ __typename?: 'RegisteredUsers', githubUserId: any | null, id: any | null, userInfo: { __typename?: 'UserInfo', userId: any, identity: any | null, location: any | null, payoutSettings: any | null, arePayoutSettingsValid: boolean } | null }> };
 
+export type UpdatePayoutSettingsMutationVariables = Exact<{
+  identity: InputMaybe<IdentityInput>;
+  location: InputMaybe<Location>;
+  payoutSettings: InputMaybe<PayoutSettingsInput>;
+}>;
+
+
+export type UpdatePayoutSettingsMutation = { __typename?: 'mutation_root', updateProfileInfo: any };
+
 export type GetProjectVisibilityDetailsQueryVariables = Exact<{
   projectId: Scalars['uuid'];
 }>;
@@ -13136,23 +13145,6 @@ export type GetPaymentRequestsQueryVariables = Exact<{
 
 
 export type GetPaymentRequestsQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, requestedAt: any, amountInUsd: any, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, workItems: Array<{ __typename?: 'WorkItems', paymentId: any, repoId: any, issueNumber: any }>, budget: { __typename?: 'Budgets', id: any, project: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, shortDescription: string, logoUrl: string | null } | null } | null } | null }> };
-
-export type UpdateProfileInfoMutationVariables = Exact<{
-  contactInformation: InputMaybe<ContactInformation>;
-  identity: InputMaybe<IdentityInput>;
-  location: InputMaybe<Location>;
-  payoutSettings: InputMaybe<PayoutSettingsInput>;
-}>;
-
-
-export type UpdateProfileInfoMutation = { __typename?: 'mutation_root', updateProfileInfo: any };
-
-export type ProfileQueryVariables = Exact<{
-  userId: Scalars['uuid'];
-}>;
-
-
-export type ProfileQuery = { __typename?: 'query_root', userInfoByPk: { __typename?: 'UserInfo', userId: any, identity: any | null, contactInformation: any | null, location: any | null, payoutSettings: any | null, arePayoutSettingsValid: boolean } | null };
 
 export type GetProjectContributorsQueryVariables = Exact<{
   projectId: Scalars['uuid'];
@@ -14342,6 +14334,43 @@ export function useGetUserPayoutSettingsLazyQuery(baseOptions?: Apollo.LazyQuery
 export type GetUserPayoutSettingsQueryHookResult = ReturnType<typeof useGetUserPayoutSettingsQuery>;
 export type GetUserPayoutSettingsLazyQueryHookResult = ReturnType<typeof useGetUserPayoutSettingsLazyQuery>;
 export type GetUserPayoutSettingsQueryResult = Apollo.QueryResult<GetUserPayoutSettingsQuery, GetUserPayoutSettingsQueryVariables>;
+export const UpdatePayoutSettingsDocument = gql`
+    mutation updatePayoutSettings($identity: IdentityInput, $location: Location, $payoutSettings: PayoutSettingsInput) {
+  updateProfileInfo(
+    identity: $identity
+    location: $location
+    payoutSettings: $payoutSettings
+  )
+}
+    `;
+export type UpdatePayoutSettingsMutationFn = Apollo.MutationFunction<UpdatePayoutSettingsMutation, UpdatePayoutSettingsMutationVariables>;
+
+/**
+ * __useUpdatePayoutSettingsMutation__
+ *
+ * To run a mutation, you first call `useUpdatePayoutSettingsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdatePayoutSettingsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updatePayoutSettingsMutation, { data, loading, error }] = useUpdatePayoutSettingsMutation({
+ *   variables: {
+ *      identity: // value for 'identity'
+ *      location: // value for 'location'
+ *      payoutSettings: // value for 'payoutSettings'
+ *   },
+ * });
+ */
+export function useUpdatePayoutSettingsMutation(baseOptions?: Apollo.MutationHookOptions<UpdatePayoutSettingsMutation, UpdatePayoutSettingsMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdatePayoutSettingsMutation, UpdatePayoutSettingsMutationVariables>(UpdatePayoutSettingsDocument, options);
+      }
+export type UpdatePayoutSettingsMutationHookResult = ReturnType<typeof useUpdatePayoutSettingsMutation>;
+export type UpdatePayoutSettingsMutationResult = Apollo.MutationResult<UpdatePayoutSettingsMutation>;
+export type UpdatePayoutSettingsMutationOptions = Apollo.BaseMutationOptions<UpdatePayoutSettingsMutation, UpdatePayoutSettingsMutationVariables>;
 export const GetProjectVisibilityDetailsDocument = gql`
     query GetProjectVisibilityDetails($projectId: uuid!) {
   projectsByPk(id: $projectId) {
@@ -14519,84 +14548,6 @@ export function useGetPaymentRequestsLazyQuery(baseOptions?: Apollo.LazyQueryHoo
 export type GetPaymentRequestsQueryHookResult = ReturnType<typeof useGetPaymentRequestsQuery>;
 export type GetPaymentRequestsLazyQueryHookResult = ReturnType<typeof useGetPaymentRequestsLazyQuery>;
 export type GetPaymentRequestsQueryResult = Apollo.QueryResult<GetPaymentRequestsQuery, GetPaymentRequestsQueryVariables>;
-export const UpdateProfileInfoDocument = gql`
-    mutation updateProfileInfo($contactInformation: ContactInformation, $identity: IdentityInput, $location: Location, $payoutSettings: PayoutSettingsInput) {
-  updateProfileInfo(
-    identity: $identity
-    location: $location
-    payoutSettings: $payoutSettings
-    contactInformation: $contactInformation
-  )
-}
-    `;
-export type UpdateProfileInfoMutationFn = Apollo.MutationFunction<UpdateProfileInfoMutation, UpdateProfileInfoMutationVariables>;
-
-/**
- * __useUpdateProfileInfoMutation__
- *
- * To run a mutation, you first call `useUpdateProfileInfoMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateProfileInfoMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updateProfileInfoMutation, { data, loading, error }] = useUpdateProfileInfoMutation({
- *   variables: {
- *      contactInformation: // value for 'contactInformation'
- *      identity: // value for 'identity'
- *      location: // value for 'location'
- *      payoutSettings: // value for 'payoutSettings'
- *   },
- * });
- */
-export function useUpdateProfileInfoMutation(baseOptions?: Apollo.MutationHookOptions<UpdateProfileInfoMutation, UpdateProfileInfoMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateProfileInfoMutation, UpdateProfileInfoMutationVariables>(UpdateProfileInfoDocument, options);
-      }
-export type UpdateProfileInfoMutationHookResult = ReturnType<typeof useUpdateProfileInfoMutation>;
-export type UpdateProfileInfoMutationResult = Apollo.MutationResult<UpdateProfileInfoMutation>;
-export type UpdateProfileInfoMutationOptions = Apollo.BaseMutationOptions<UpdateProfileInfoMutation, UpdateProfileInfoMutationVariables>;
-export const ProfileDocument = gql`
-    query Profile($userId: uuid!) {
-  userInfoByPk(userId: $userId) {
-    userId
-    identity
-    contactInformation
-    location
-    ...UserPayoutSettings
-  }
-}
-    ${UserPayoutSettingsFragmentDoc}`;
-
-/**
- * __useProfileQuery__
- *
- * To run a query within a React component, call `useProfileQuery` and pass it any options that fit your needs.
- * When your component renders, `useProfileQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useProfileQuery({
- *   variables: {
- *      userId: // value for 'userId'
- *   },
- * });
- */
-export function useProfileQuery(baseOptions: Apollo.QueryHookOptions<ProfileQuery, ProfileQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<ProfileQuery, ProfileQueryVariables>(ProfileDocument, options);
-      }
-export function useProfileLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProfileQuery, ProfileQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<ProfileQuery, ProfileQueryVariables>(ProfileDocument, options);
-        }
-export type ProfileQueryHookResult = ReturnType<typeof useProfileQuery>;
-export type ProfileLazyQueryHookResult = ReturnType<typeof useProfileLazyQuery>;
-export type ProfileQueryResult = Apollo.QueryResult<ProfileQuery, ProfileQueryVariables>;
 export const GetProjectContributorsDocument = gql`
     query GetProjectContributors($projectId: uuid!) {
   projectsByPk(id: $projectId) {
