@@ -1,5 +1,3 @@
-import { SuspenseCache } from "@apollo/client";
-import { MockedProvider } from "@apollo/client/testing";
 import {
   GetUserPayoutSettingsDocument,
   ExtendedPaymentRequestFragment,
@@ -10,11 +8,7 @@ import {
 
 import PaymentTable from ".";
 import { ToasterProvider } from "src/hooks/useToaster";
-
-export default {
-  title: "PaymentTable",
-  component: PaymentTable,
-};
+import withMockedProvider from "src/test/storybook/decorators/withMockedProvider";
 
 const GITHUB_USER_ID = 595505;
 const GITHUB_USER_ID2 = 1321654;
@@ -96,14 +90,16 @@ const mocks = [
   },
 ];
 
-const suspenseCache = new SuspenseCache();
+export default {
+  title: "PaymentTable",
+  component: PaymentTable,
+  decorators: [withMockedProvider(mocks)],
+};
 
 export const Default = {
   render: () => (
     <ToasterProvider>
-      <MockedProvider mocks={mocks} suspenseCache={suspenseCache}>
-        <PaymentTable projectId="project-1" payments={mockPayments} />
-      </MockedProvider>
+      <PaymentTable projectId="project-1" payments={mockPayments} />
     </ToasterProvider>
   ),
 };

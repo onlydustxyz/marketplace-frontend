@@ -1,24 +1,20 @@
-import { ToasterProvider } from "src/hooks/useToaster";
+import withMockedProvider from "src/test/storybook/decorators/withMockedProvider";
 import PayoutInfoSidePanel from ".";
-import { MockedProvider } from "@apollo/client/testing";
+import withToasterProvider from "src/test/storybook/decorators/withToasterProvider";
 
 export default {
   title: "PayoutInfoSidePanel",
   component: PayoutInfoSidePanel,
-  decorators: [],
+  decorators: [withToasterProvider, withMockedProvider()],
 };
 
 export const Default = {
   render: () => (
-    <ToasterProvider>
-      <MockedProvider>
-        <PayoutInfoSidePanel
-          open={true}
-          setOpen={() => {
-            return;
-          }}
-        />
-      </MockedProvider>
-    </ToasterProvider>
+    <PayoutInfoSidePanel
+      open={true}
+      setOpen={() => {
+        return;
+      }}
+    />
   ),
 };

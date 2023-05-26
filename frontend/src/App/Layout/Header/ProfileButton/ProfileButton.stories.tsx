@@ -1,12 +1,11 @@
-import { withRouter } from "storybook-addon-react-router-v6";
-
+import withMockedProvider from "src/test/storybook/decorators/withMockedProvider";
 import ProfileButton from "./View";
-import { ToasterProvider } from "src/hooks/useToaster";
+import withToasterProvider from "src/test/storybook/decorators/withToasterProvider";
 
 export default {
   title: "ProfileButton",
   component: ProfileButton,
-  decorators: [withRouter],
+  decorators: [withToasterProvider, withMockedProvider()],
   argTypes: {
     payoutSettingsInvalid: { type: "boolean" },
   },
@@ -38,10 +37,8 @@ export const Default = {
 
 export const MissingPayoutSettings = {
   render: (args: Props) => (
-    <ToasterProvider>
-      <div className="ml-32">
-        <ProfileButton {...props} {...{ payoutSettingsInvalid: true }} {...args} />
-      </div>
-    </ToasterProvider>
+    <div className="ml-32">
+      <ProfileButton {...props} {...{ payoutSettingsInvalid: true }} {...args} />
+    </div>
   ),
 };

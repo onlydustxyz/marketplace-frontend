@@ -1,13 +1,14 @@
 import { range } from "lodash";
 import { Payment } from "src/components/PayoutTable/Line";
-import { ToasterProvider } from "src/hooks/useToaster";
 import { Currency, PaymentStatus } from "src/types";
 import { UserInfo } from "src/__generated/graphql";
 import InvoiceSubmission from "./View";
+import withToasterProvider from "src/test/storybook/decorators/withToasterProvider";
 
 export default {
   title: "InvoiceSubmission",
   component: InvoiceSubmission,
+  decorators: [withToasterProvider],
 };
 
 const [payment1, payment2, payment3]: Payment[] = range(1, 4).map(id => ({
@@ -52,17 +53,15 @@ const userInfos: UserInfo = {
 
 export const Default = {
   render: () => (
-    <ToasterProvider>
-      <div style={{ width: 320 }}>
-        <InvoiceSubmission
-          paymentRequests={[payment1, payment2, payment3]}
-          githubUserId={123456}
-          userInfos={userInfos}
-          markInvoiceAsReceived={() => {
-            return;
-          }}
-        />
-      </div>
-    </ToasterProvider>
+    <div style={{ width: 320 }}>
+      <InvoiceSubmission
+        paymentRequests={[payment1, payment2, payment3]}
+        githubUserId={123456}
+        userInfos={userInfos}
+        markInvoiceAsReceived={() => {
+          return;
+        }}
+      />
+    </div>
   ),
 };

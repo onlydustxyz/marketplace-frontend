@@ -1,6 +1,3 @@
-import { MockedProvider } from "@apollo/client/testing";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { FormProvider, useForm } from "react-hook-form";
 import {
   GetProjectContributorsForPaymentSelectDocument,
   GetProjectContributorsForPaymentSelectQueryResult,
@@ -9,18 +6,9 @@ import {
 import { withRouter } from "storybook-addon-react-router-v6";
 
 import PaymentForm from "./View";
-
-export default {
-  title: "PaymentForm",
-  argTypes: {
-    loading: {
-      table: {
-        disable: true,
-      },
-    },
-  },
-  decorators: [withRouter],
-} as ComponentMeta<typeof PaymentForm>;
+import withMockedProvider from "src/test/storybook/decorators/withMockedProvider";
+import React from "react";
+import withFormProvider from "src/test/storybook/decorators/withFormProvider";
 
 const projectId = "yolo";
 const BERNARDSTANISLAS: GithubUserWithPaymentRequestsForProjectFragment = {
@@ -108,26 +96,7 @@ const mocks = [
   },
 ];
 
-const Template: ComponentStory<typeof PaymentForm> = args => {
-  const methods = useForm({
-    defaultValues: {
-      remainingBudget: args.budget.remainingAmount,
-    },
-  });
-  return (
-    <MockedProvider mocks={mocks}>
-      <FormProvider {...methods}>
-        <div className="flex flex-col gap-6">
-          <PaymentForm {...args} />
-        </div>
-      </FormProvider>
-    </MockedProvider>
-  );
-};
-
-export const Default = Template.bind({});
-
-Default.args = {
+const args = {
   budget: { initialAmount: 5000, remainingAmount: 3000 },
   onWorkEstimationChange: () => {
     return;
@@ -144,16 +113,44 @@ Default.args = {
   requestNewPaymentMutationLoading: false,
 };
 
-Default.parameters = {
-  backgrounds: {
-    default: "space",
+export default {
+  title: "PaymentForm",
+  argTypes: {
+    loading: {
+      table: {
+        disable: true,
+      },
+    },
   },
-  docs: {
-    // Prevents Storybook crash see https://github.com/storybookjs/storybook/issues/17098#issuecomment-1049679681
-    source: {
-      code: "Your code snippet goes here.",
-      language: "yml",
-      type: "auto",
+  decorators: [
+    withRouter,
+    withMockedProvider(mocks),
+    withFormProvider({
+      defaultValues: {
+        remainingBudget: args.budget.remainingAmount,
+      },
+    }),
+  ],
+};
+
+export const Default = {
+  render: () => (
+    <div className="flex flex-col gap-6">
+      <PaymentForm {...args} />
+    </div>
+  ),
+
+  parameters: {
+    backgrounds: {
+      default: "space",
+    },
+    docs: {
+      // Prevents Storybook crash see https://github.com/storybookjs/storybook/issues/17098#issuecomment-1049679681
+      source: {
+        code: "Your code snippet goes here.",
+        language: "yml",
+        type: "auto",
+      },
     },
   },
 };
