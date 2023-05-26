@@ -4,7 +4,10 @@ use juniper::{graphql_value, DefaultScalarValue, FieldError, IntoFieldError};
 use olog::error;
 use thiserror::Error;
 
-use crate::application::user::update_profile_info::Error as UpdateProfileInfoError;
+use crate::application::user::{
+	accept_terms_and_conditions::Error as AcceptTermsAndConditionsError,
+	update_profile_info::Error as UpdateProfileInfoError,
+};
 
 #[derive(Debug, Error)]
 pub enum Error {
@@ -44,6 +47,14 @@ impl From<UpdateProfileInfoError> for Error {
 			UpdateProfileInfoError::Repository(e) => e.into(),
 			UpdateProfileInfoError::Internal(e) => Self::InternalError(e),
 			UpdateProfileInfoError::InvalidInput(e) => Self::InvalidRequest(e),
+		}
+	}
+}
+
+impl From<AcceptTermsAndConditionsError> for Error {
+	fn from(error: AcceptTermsAndConditionsError) -> Self {
+		match error {
+			AcceptTermsAndConditionsError::Repository(e) => e.into(),
 		}
 	}
 }
