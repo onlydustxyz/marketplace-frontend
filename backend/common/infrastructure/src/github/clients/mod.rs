@@ -8,8 +8,8 @@ use std::{
 use anyhow::anyhow;
 use domain::{
 	stream_filter::{self, StreamFilterWith},
-	GithubIssue, GithubIssueNumber, GithubRepoId, GithubRepoLanguages, GithubServiceIssueFilters,
-	GithubUser, GithubUserId, PositiveCount,
+	GithubFullUser, GithubIssue, GithubIssueNumber, GithubRepoId, GithubRepoLanguages,
+	GithubServiceIssueFilters, GithubUser, GithubUserId, PositiveCount,
 };
 use futures::{stream::empty, Stream, StreamExt, TryStreamExt};
 use octocrab::{
@@ -288,6 +288,19 @@ impl Client {
 	#[instrument(skip(self))]
 	pub async fn get_user_by_id(&self, id: &GithubUserId) -> Result<User, Error> {
 		self.get_as(format!("{}user/{id}", self.octocrab().base_url)).await
+	}
+
+	#[instrument(skip(self))]
+	pub async fn get_full_user_by_id(&self, id: &GithubUserId) -> Result<GithubFullUser, Error> {
+		let mut user: GithubFullUser =
+			self.get_as(format!("{}user/{id}", self.octocrab().base_url)).await?;
+		user.social_accounts = self
+			.get_as(format!(
+				"{}user/{id}/social_accounts",
+				self.octocrab().base_url
+			))
+			.await?;
+		Ok(user)
 	}
 
 	#[instrument(skip(self))]

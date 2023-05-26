@@ -61,6 +61,9 @@ impl EventListener<GithubEvent> for Projector {
 					self.github_repos_contributors_repository.try_insert(&repo_id, user.id())?;
 				}
 			},
+			GithubEvent::FullUser(user) => {
+				self.github_users_repository.upsert(&user.into())?;
+			},
 		}
 		Ok(())
 	}
@@ -86,11 +89,86 @@ impl From<domain::GithubIssue> for GithubIssue {
 
 impl From<domain::GithubUser> for GithubUser {
 	fn from(user: domain::GithubUser) -> Self {
-		GithubUser::new(
-			*user.id(),
-			user.login().clone(),
-			user.avatar_url().to_string(),
-			user.html_url().to_string(),
-		)
+		Self {
+			id: *user.id(),
+			login: user.login().clone(),
+			avatar_url: user.avatar_url().to_string(),
+			html_url: user.html_url().to_string(),
+			..Default::default()
+		}
+	}
+}
+
+impl From<domain::GithubFullUser> for GithubUser {
+	fn from(user: domain::GithubFullUser) -> Self {
+		Self {
+			id: user.id,
+			login: user.login.clone(),
+			avatar_url: user.avatar_url.to_string(),
+			html_url: user.html_url.to_string(),
+			bio: user.bio.clone(),
+			location: user.location.clone(),
+			website: user.blog.as_ref().map(|url| url.to_string()),
+			twitter: user.get_social_account_url("twitter"),
+			linkedin: user.get_social_account_url("linkedin"),
+			telegram: user
+				.social_accounts
+				.iter()
+				.find(|social_account| {
+					social_account.url.starts_with("https://t.me")
+						|| social_account.url.starts_with("https://telegram.me")
+				})
+				.map(|social_account| social_account.url.clone()),
+		}
+	}
+}
+#[cfg(test)]
+mod test {
+	use domain::GithubUserSocialAccount;
+	use rstest::rstest;
+
+	use super::*;
+
+	fn full_user(social_accounts: Vec<GithubUserSocialAccount>) -> domain::GithubFullUser {
+		domain::GithubFullUser {
+			id: 1u64.into(),
+			login: "ofuxet".to_string(),
+			avatar_url: "https://avatars.githubusercontent.com/u/70494?v=4".parse().unwrap(),
+			html_url: "https://github.com/ofuxet".parse().unwrap(),
+			bio: None,
+			location: None,
+			blog: None,
+			social_accounts,
+		}
+	}
+
+	fn user(
+		twitter: Option<String>,
+		linkedin: Option<String>,
+		telegram: Option<String>,
+	) -> GithubUser {
+		GithubUser {
+			id: 1u64.into(),
+			login: "ofuxet".to_string(),
+			avatar_url: "https://avatars.githubusercontent.com/u/70494?v=4".to_string(),
+			html_url: "https://github.com/ofuxet".to_string(),
+			bio: None,
+			location: None,
+			website: None,
+			twitter,
+			linkedin,
+			telegram,
+		}
+	}
+
+	#[rstest]
+	#[case(full_user(vec![]), user(None, None, None))]
+	#[case(full_user(vec![
+		GithubUserSocialAccount{ provider:"twitter".to_string(), url:"https://twitter.com/ofuxet".parse().unwrap()},
+		GithubUserSocialAccount{ provider:"linkedin".to_string(), url:"https://linkedin.com/ofuxet".parse().unwrap()},
+		GithubUserSocialAccount{ provider:"generic".to_string(), url:"https://t.me/ofuxet".parse().unwrap()}
+		]), user(Some("https://twitter.com/ofuxet".to_string()), Some("https://linkedin.com/ofuxet".to_string()), Some("https://t.me/ofuxet".to_string())))]
+	fn from_full_user(#[case] input: domain::GithubFullUser, #[case] expected: GithubUser) {
+		assert_eq!(GithubUser::from(input), expected)
 	}
 }

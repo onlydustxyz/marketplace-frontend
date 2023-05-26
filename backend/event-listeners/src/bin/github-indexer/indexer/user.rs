@@ -3,7 +3,10 @@ use std::{collections::HashSet, sync::Arc};
 use async_trait::async_trait;
 use chrono::{DateTime, Utc};
 use derive_new::new;
-use domain::{stream_filter, GithubFetchService, GithubRepoId, GithubUser, GithubUserId, LogErr};
+use domain::{
+	stream_filter, GithubFetchService, GithubFullUser, GithubRepoId, GithubUser, GithubUserId,
+	LogErr,
+};
 use event_listeners::domain::{GithubEvent, GithubUserIndexRepository};
 use serde::{Deserialize, Serialize};
 use stream_filter::Decision;
@@ -13,6 +16,7 @@ use super::{hash, IgnoreIndexerErrors, Result};
 #[derive(Default, Clone, Serialize, Deserialize, PartialEq, Eq)]
 struct State {
 	pub hash: u64,
+	pub hash_full: u64,
 	pub repo_ids: HashSet<GithubRepoId>,
 	pub last_updated_time: DateTime<Utc>,
 }
@@ -41,13 +45,18 @@ impl State {
 		self.hash == hash(user) && self.repo_ids.contains(repo_id)
 	}
 
-	fn with(mut self, user: &GithubUser, repo_id: Option<GithubRepoId>) -> Self {
-		if let Some(repo_id) = repo_id {
-			self.repo_ids.insert(repo_id);
+	fn with_full_user(self, user: &GithubFullUser) -> Self {
+		Self {
+			hash_full: hash(user),
+			last_updated_time: Utc::now(),
+			..self
 		}
+	}
+
+	fn with_user_and_repo(mut self, user: &GithubUser, repo_id: GithubRepoId) -> Self {
+		self.repo_ids.insert(repo_id);
 		Self {
 			hash: hash(user),
-			last_updated_time: Utc::now(),
 			..self
 		}
 	}
@@ -64,12 +73,20 @@ impl Indexer {
 		State::get(self.github_user_index_repository.as_ref(), user_id)
 	}
 
-	fn update_state_with(
+	fn update_state_with_full_user(&self, user: &GithubFullUser) -> anyhow::Result<()> {
+		let state = self.get_state(user.id())?.unwrap_or_default().with_full_user(user);
+		self.github_user_index_repository
+			.upsert_user_indexer_state(user.id(), state.json()?)?;
+		Ok(())
+	}
+
+	fn update_state_with_repo(
 		&self,
 		user: &GithubUser,
-		repo_id: Option<GithubRepoId>,
+		repo_id: GithubRepoId,
 	) -> anyhow::Result<()> {
-		let state = self.get_state(user.id())?.unwrap_or_default().with(user, repo_id);
+		let state =
+			self.get_state(user.id())?.unwrap_or_default().with_user_and_repo(user, repo_id);
 		self.github_user_index_repository
 			.upsert_user_indexer_state(user.id(), state.json()?)?;
 		Ok(())
@@ -81,14 +98,9 @@ impl super::Indexer<GithubUserId> for Indexer {
 	async fn index(&self, user_id: GithubUserId) -> Result<Vec<GithubEvent>> {
 		let events = self
 			.github_fetch_service
-			.user_by_id(&user_id)
+			.full_user_by_id(&user_id)
 			.await
-			.map(|user| {
-				vec![GithubEvent::User {
-					user,
-					repo_id: None,
-				}]
-			})
+			.map(|user| vec![GithubEvent::FullUser(user)])
 			.ignore_non_fatal_errors()?;
 
 		Ok(events)
@@ -97,8 +109,8 @@ impl super::Indexer<GithubUserId> for Indexer {
 
 impl super::Stateful<GithubUserId> for Indexer {
 	fn store(&self, _: GithubUserId, events: &[GithubEvent]) -> anyhow::Result<()> {
-		if let Some(GithubEvent::User { user, .. }) = events.last() {
-			self.update_state_with(user, None)?;
+		if let Some(GithubEvent::FullUser(user)) = events.last() {
+			self.update_state_with_full_user(user)?;
 		}
 		Ok(())
 	}
@@ -136,7 +148,7 @@ impl super::Stateful<GithubRepoId> for Indexer {
 				GithubEvent::User { user, .. } => Some(user),
 				_ => None,
 			})
-			.try_for_each(|user| self.update_state_with(user, Some(repo_id)))?;
+			.try_for_each(|user| self.update_state_with_repo(user, repo_id))?;
 
 		Ok(())
 	}

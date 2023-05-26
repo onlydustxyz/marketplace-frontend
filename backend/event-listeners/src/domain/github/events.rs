@@ -1,4 +1,4 @@
-use domain::{GithubIssue, GithubRepo, GithubRepoId, GithubUser, MessagePayload};
+use domain::{GithubFullUser, GithubIssue, GithubRepo, GithubRepoId, GithubUser, MessagePayload};
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -10,6 +10,7 @@ pub enum Event {
 		user: GithubUser,
 		repo_id: Option<GithubRepoId>,
 	},
+	FullUser(GithubFullUser),
 }
 
 impl MessagePayload for Event {}
