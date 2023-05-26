@@ -5066,6 +5066,125 @@ export type StringComparisonExp = {
   _similar: InputMaybe<Scalars['String']>;
 };
 
+/** columns and relationships of "terms_and_conditions_acceptances" */
+export type TermsAndConditionsAcceptances = {
+  __typename?: 'TermsAndConditionsAcceptances';
+  acceptanceDate: Scalars['timestamp'];
+  userId: Scalars['uuid'];
+};
+
+/** aggregated selection of "terms_and_conditions_acceptances" */
+export type TermsAndConditionsAcceptancesAggregate = {
+  __typename?: 'TermsAndConditionsAcceptancesAggregate';
+  aggregate: Maybe<TermsAndConditionsAcceptancesAggregateFields>;
+  nodes: Array<TermsAndConditionsAcceptances>;
+};
+
+/** aggregate fields of "terms_and_conditions_acceptances" */
+export type TermsAndConditionsAcceptancesAggregateFields = {
+  __typename?: 'TermsAndConditionsAcceptancesAggregateFields';
+  count: Scalars['Int'];
+  max: Maybe<TermsAndConditionsAcceptancesMaxFields>;
+  min: Maybe<TermsAndConditionsAcceptancesMinFields>;
+};
+
+
+/** aggregate fields of "terms_and_conditions_acceptances" */
+export type TermsAndConditionsAcceptancesAggregateFieldsCountArgs = {
+  columns: InputMaybe<Array<TermsAndConditionsAcceptancesSelectColumn>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
+/** Boolean expression to filter rows from the table "terms_and_conditions_acceptances". All fields are combined with a logical 'AND'. */
+export type TermsAndConditionsAcceptancesBoolExp = {
+  _and: InputMaybe<Array<TermsAndConditionsAcceptancesBoolExp>>;
+  _not: InputMaybe<TermsAndConditionsAcceptancesBoolExp>;
+  _or: InputMaybe<Array<TermsAndConditionsAcceptancesBoolExp>>;
+  acceptanceDate: InputMaybe<TimestampComparisonExp>;
+  userId: InputMaybe<UuidComparisonExp>;
+};
+
+/** unique or primary key constraints on table "terms_and_conditions_acceptances" */
+export enum TermsAndConditionsAcceptancesConstraint {
+  /** unique or primary key constraint on columns "user_id" */
+  TermsAndConditionsAcceptancesPkey = 'terms_and_conditions_acceptances_pkey'
+}
+
+/** input type for inserting data into table "terms_and_conditions_acceptances" */
+export type TermsAndConditionsAcceptancesInsertInput = {
+  acceptanceDate: InputMaybe<Scalars['timestamp']>;
+  userId: InputMaybe<Scalars['uuid']>;
+};
+
+/** aggregate max on columns */
+export type TermsAndConditionsAcceptancesMaxFields = {
+  __typename?: 'TermsAndConditionsAcceptancesMaxFields';
+  acceptanceDate: Maybe<Scalars['timestamp']>;
+  userId: Maybe<Scalars['uuid']>;
+};
+
+/** aggregate min on columns */
+export type TermsAndConditionsAcceptancesMinFields = {
+  __typename?: 'TermsAndConditionsAcceptancesMinFields';
+  acceptanceDate: Maybe<Scalars['timestamp']>;
+  userId: Maybe<Scalars['uuid']>;
+};
+
+/** response of any mutation on the table "terms_and_conditions_acceptances" */
+export type TermsAndConditionsAcceptancesMutationResponse = {
+  __typename?: 'TermsAndConditionsAcceptancesMutationResponse';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<TermsAndConditionsAcceptances>;
+};
+
+/** on_conflict condition type for table "terms_and_conditions_acceptances" */
+export type TermsAndConditionsAcceptancesOnConflict = {
+  constraint: TermsAndConditionsAcceptancesConstraint;
+  update_columns: Array<TermsAndConditionsAcceptancesUpdateColumn>;
+  where: InputMaybe<TermsAndConditionsAcceptancesBoolExp>;
+};
+
+/** Ordering options when selecting data from "terms_and_conditions_acceptances". */
+export type TermsAndConditionsAcceptancesOrderBy = {
+  acceptanceDate: InputMaybe<OrderBy>;
+  userId: InputMaybe<OrderBy>;
+};
+
+/** primary key columns input for table: terms_and_conditions_acceptances */
+export type TermsAndConditionsAcceptancesPkColumnsInput = {
+  userId: Scalars['uuid'];
+};
+
+/** select columns of table "terms_and_conditions_acceptances" */
+export enum TermsAndConditionsAcceptancesSelectColumn {
+  /** column name */
+  AcceptanceDate = 'acceptanceDate',
+  /** column name */
+  UserId = 'userId'
+}
+
+/** input type for updating data in table "terms_and_conditions_acceptances" */
+export type TermsAndConditionsAcceptancesSetInput = {
+  acceptanceDate: InputMaybe<Scalars['timestamp']>;
+  userId: InputMaybe<Scalars['uuid']>;
+};
+
+/** update columns of table "terms_and_conditions_acceptances" */
+export enum TermsAndConditionsAcceptancesUpdateColumn {
+  /** column name */
+  AcceptanceDate = 'acceptanceDate',
+  /** column name */
+  UserId = 'userId'
+}
+
+export type TermsAndConditionsAcceptancesUpdates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<TermsAndConditionsAcceptancesSetInput>;
+  where: TermsAndConditionsAcceptancesBoolExp;
+};
+
 /** Boolean expression to compare columns of type "timestamp". All fields are combined with logical 'AND'. */
 export type TimestampComparisonExp = {
   _eq: InputMaybe<Scalars['timestamp']>;
@@ -7704,6 +7823,7 @@ export type Ignored_Github_Issues_Variance_Order_By = {
 export type Mutation_Root = {
   __typename?: 'mutation_root';
   acceptProjectLeaderInvitation: Scalars['Boolean'];
+  acceptTermsAndConditions: Scalars['Uuid'];
   addEthPaymentReceipt: Scalars['Uuid'];
   addFiatPaymentReceipt: Scalars['Uuid'];
   addSponsorToProject: Scalars['Uuid'];
@@ -7806,6 +7926,10 @@ export type Mutation_Root = {
   deleteSponsors: Maybe<SponsorsMutationResponse>;
   /** delete single row from the table: "sponsors" */
   deleteSponsorsByPk: Maybe<Sponsors>;
+  /** delete data from the table: "terms_and_conditions_acceptances" */
+  deleteTermsAndConditionsAcceptances: Maybe<TermsAndConditionsAcceptancesMutationResponse>;
+  /** delete single row from the table: "terms_and_conditions_acceptances" */
+  deleteTermsAndConditionsAcceptancesByPk: Maybe<TermsAndConditionsAcceptances>;
   /** delete single row from the table: "auth.users" */
   deleteUser: Maybe<Users>;
   /** delete data from the table: "user_info" */
@@ -7915,6 +8039,10 @@ export type Mutation_Root = {
   insertSponsors: Maybe<SponsorsMutationResponse>;
   /** insert a single row into the table: "sponsors" */
   insertSponsorsOne: Maybe<Sponsors>;
+  /** insert data into the table: "terms_and_conditions_acceptances" */
+  insertTermsAndConditionsAcceptances: Maybe<TermsAndConditionsAcceptancesMutationResponse>;
+  /** insert a single row into the table: "terms_and_conditions_acceptances" */
+  insertTermsAndConditionsAcceptancesOne: Maybe<TermsAndConditionsAcceptances>;
   /** insert a single row into the table: "auth.users" */
   insertUser: Maybe<Users>;
   /** insert data into the table: "user_info" */
@@ -8083,6 +8211,12 @@ export type Mutation_Root = {
   updateSponsorsByPk: Maybe<Sponsors>;
   /** update multiples rows of table: "sponsors" */
   updateSponsorsMany: Maybe<Array<Maybe<SponsorsMutationResponse>>>;
+  /** update data of the table: "terms_and_conditions_acceptances" */
+  updateTermsAndConditionsAcceptances: Maybe<TermsAndConditionsAcceptancesMutationResponse>;
+  /** update single row of the table: "terms_and_conditions_acceptances" */
+  updateTermsAndConditionsAcceptancesByPk: Maybe<TermsAndConditionsAcceptances>;
+  /** update multiples rows of table: "terms_and_conditions_acceptances" */
+  updateTermsAndConditionsAcceptancesMany: Maybe<Array<Maybe<TermsAndConditionsAcceptancesMutationResponse>>>;
   /** update single row of the table: "auth.users" */
   updateUser: Maybe<Users>;
   /** update data of the table: "user_info" */
@@ -8472,6 +8606,18 @@ export type Mutation_RootDeleteSponsorsByPkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDeleteTermsAndConditionsAcceptancesArgs = {
+  where: TermsAndConditionsAcceptancesBoolExp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteTermsAndConditionsAcceptancesByPkArgs = {
+  userId: Scalars['uuid'];
+};
+
+
+/** mutation root */
 export type Mutation_RootDeleteUserArgs = {
   id: Scalars['uuid'];
 };
@@ -8848,6 +8994,20 @@ export type Mutation_RootInsertSponsorsArgs = {
 export type Mutation_RootInsertSponsorsOneArgs = {
   object: SponsorsInsertInput;
   onConflict: InputMaybe<SponsorsOnConflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsertTermsAndConditionsAcceptancesArgs = {
+  objects: Array<TermsAndConditionsAcceptancesInsertInput>;
+  onConflict: InputMaybe<TermsAndConditionsAcceptancesOnConflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsertTermsAndConditionsAcceptancesOneArgs = {
+  object: TermsAndConditionsAcceptancesInsertInput;
+  onConflict: InputMaybe<TermsAndConditionsAcceptancesOnConflict>;
 };
 
 
@@ -9550,6 +9710,26 @@ export type Mutation_RootUpdateSponsorsByPkArgs = {
 /** mutation root */
 export type Mutation_RootUpdateSponsorsManyArgs = {
   updates: Array<SponsorsUpdates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateTermsAndConditionsAcceptancesArgs = {
+  _set: InputMaybe<TermsAndConditionsAcceptancesSetInput>;
+  where: TermsAndConditionsAcceptancesBoolExp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateTermsAndConditionsAcceptancesByPkArgs = {
+  _set: InputMaybe<TermsAndConditionsAcceptancesSetInput>;
+  pk_columns: TermsAndConditionsAcceptancesPkColumnsInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateTermsAndConditionsAcceptancesManyArgs = {
+  updates: Array<TermsAndConditionsAcceptancesUpdates>;
 };
 
 
@@ -10332,6 +10512,12 @@ export type Query_Root = {
   sponsorsAggregate: SponsorsAggregate;
   /** fetch data from the table: "sponsors" using primary key columns */
   sponsorsByPk: Maybe<Sponsors>;
+  /** fetch data from the table: "terms_and_conditions_acceptances" */
+  termsAndConditionsAcceptances: Array<TermsAndConditionsAcceptances>;
+  /** fetch aggregated fields from the table: "terms_and_conditions_acceptances" */
+  termsAndConditionsAcceptancesAggregate: TermsAndConditionsAcceptancesAggregate;
+  /** fetch data from the table: "terms_and_conditions_acceptances" using primary key columns */
+  termsAndConditionsAcceptancesByPk: Maybe<TermsAndConditionsAcceptances>;
   /** fetch data from the table: "auth.users" using primary key columns */
   user: Maybe<Users>;
   /** fetch data from the table: "user_info" */
@@ -10969,6 +11155,29 @@ export type Query_RootSponsorsByPkArgs = {
 };
 
 
+export type Query_RootTermsAndConditionsAcceptancesArgs = {
+  distinctOn: InputMaybe<Array<TermsAndConditionsAcceptancesSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<TermsAndConditionsAcceptancesOrderBy>>;
+  where: InputMaybe<TermsAndConditionsAcceptancesBoolExp>;
+};
+
+
+export type Query_RootTermsAndConditionsAcceptancesAggregateArgs = {
+  distinctOn: InputMaybe<Array<TermsAndConditionsAcceptancesSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<TermsAndConditionsAcceptancesOrderBy>>;
+  where: InputMaybe<TermsAndConditionsAcceptancesBoolExp>;
+};
+
+
+export type Query_RootTermsAndConditionsAcceptancesByPkArgs = {
+  userId: Scalars['uuid'];
+};
+
+
 export type Query_RootUserArgs = {
   id: Scalars['uuid'];
 };
@@ -11278,6 +11487,14 @@ export type Subscription_Root = {
   sponsorsByPk: Maybe<Sponsors>;
   /** fetch data from the table in a streaming manner: "sponsors" */
   sponsorsStream: Array<Sponsors>;
+  /** fetch data from the table: "terms_and_conditions_acceptances" */
+  termsAndConditionsAcceptances: Array<TermsAndConditionsAcceptances>;
+  /** fetch aggregated fields from the table: "terms_and_conditions_acceptances" */
+  termsAndConditionsAcceptancesAggregate: TermsAndConditionsAcceptancesAggregate;
+  /** fetch data from the table: "terms_and_conditions_acceptances" using primary key columns */
+  termsAndConditionsAcceptancesByPk: Maybe<TermsAndConditionsAcceptances>;
+  /** fetch data from the table in a streaming manner: "terms_and_conditions_acceptances" */
+  termsAndConditionsAcceptancesStream: Array<TermsAndConditionsAcceptances>;
   /** fetch data from the table: "auth.users" using primary key columns */
   user: Maybe<Users>;
   /** fetch data from the table: "user_info" */
@@ -12076,6 +12293,36 @@ export type Subscription_RootSponsorsStreamArgs = {
 };
 
 
+export type Subscription_RootTermsAndConditionsAcceptancesArgs = {
+  distinctOn: InputMaybe<Array<TermsAndConditionsAcceptancesSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<TermsAndConditionsAcceptancesOrderBy>>;
+  where: InputMaybe<TermsAndConditionsAcceptancesBoolExp>;
+};
+
+
+export type Subscription_RootTermsAndConditionsAcceptancesAggregateArgs = {
+  distinctOn: InputMaybe<Array<TermsAndConditionsAcceptancesSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<TermsAndConditionsAcceptancesOrderBy>>;
+  where: InputMaybe<TermsAndConditionsAcceptancesBoolExp>;
+};
+
+
+export type Subscription_RootTermsAndConditionsAcceptancesByPkArgs = {
+  userId: Scalars['uuid'];
+};
+
+
+export type Subscription_RootTermsAndConditionsAcceptancesStreamArgs = {
+  batchSize: Scalars['Int'];
+  cursor: Array<InputMaybe<Terms_And_Conditions_Acceptances_StreamCursorInput>>;
+  where: InputMaybe<TermsAndConditionsAcceptancesBoolExp>;
+};
+
+
 export type Subscription_RootUserArgs = {
   id: Scalars['uuid'];
 };
@@ -12165,6 +12412,20 @@ export type Subscription_RootWorkItemsStreamArgs = {
   batchSize: Scalars['Int'];
   cursor: Array<InputMaybe<Work_Items_StreamCursorInput>>;
   where: InputMaybe<WorkItemsBoolExp>;
+};
+
+/** Streaming cursor of the table "terms_and_conditions_acceptances" */
+export type Terms_And_Conditions_Acceptances_StreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: Terms_And_Conditions_Acceptances_StreamCursorValueInput;
+  /** cursor ordering */
+  ordering: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Terms_And_Conditions_Acceptances_StreamCursorValueInput = {
+  acceptanceDate: InputMaybe<Scalars['timestamp']>;
+  userId: InputMaybe<Scalars['uuid']>;
 };
 
 /** Streaming cursor of the table "user_info" */

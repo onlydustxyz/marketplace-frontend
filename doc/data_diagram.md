@@ -213,6 +213,11 @@ class Sponsors {
    url: String
 }
 
+class TermsAndConditionsAcceptances {
+   acceptanceDate: timestamp!
+   userId: uuid!
+}
+
 class User {
    avatarUrl: Url!
    htmlUrl: Url!
