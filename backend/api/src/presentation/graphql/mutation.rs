@@ -338,6 +338,17 @@ impl Mutation {
 		Ok(caller_id.into())
 	}
 
+	pub async fn accept_terms_and_conditions(context: &Context) -> Result<Uuid> {
+		let caller_id = *context.caller_info()?.user_id();
+
+		context
+			.accept_terms_and_conditions_usecase
+			.accept_terms_and_conditions(caller_id)
+			.await?;
+
+		Ok(caller_id.into())
+	}
+
 	pub async fn invite_project_leader(
 		context: &Context,
 		project_id: Uuid,
