@@ -44,15 +44,32 @@ pub struct UserInfo {
 	contact_information: Option<ContactInformation>,
 }
 
-#[derive(Debug, Clone, Constructor, Getters, Dissolve, Serialize, Deserialize, AsChangeset)]
+#[derive(
+	Debug,
+	Clone,
+	Constructor,
+	Getters,
+	Dissolve,
+	Serialize,
+	Identifiable,
+	Insertable,
+	Deserialize,
+	AsChangeset,
+)]
 #[table_name = "user_info"]
 #[primary_key(user_id)]
 #[changeset_options(treat_none_as_null = "true")]
 pub struct UserTermsAndConditionsInfo {
+	#[diesel(deserialize_as = "uuid::Uuid")]
+	user_id: UserId,
 	pub tc_last_accepted_at: Option<NaiveDateTime>,
 }
 
 impl domain::Entity for UserInfo {
+	type Id = UserId;
+}
+
+impl domain::Entity for UserTermsAndConditionsInfo {
 	type Id = UserId;
 }
 
@@ -87,6 +104,37 @@ where
 			location,
 			payout_settings,
 			contact_information,
+		}
+	}
+}
+
+impl<ST> Queryable<ST, Pg> for UserTermsAndConditionsInfo
+where
+	(
+		UserId,
+		Option<Identity>,
+		Option<Location>,
+		Option<PayoutSettings>,
+		Option<ContactInformation>,
+		bool,
+		Option<NaiveDateTime>,
+	): Queryable<ST, Pg>,
+{
+	type Row = <(
+		UserId,
+		Option<Identity>,
+		Option<Location>,
+		Option<PayoutSettings>,
+		Option<ContactInformation>,
+		bool,
+		Option<NaiveDateTime>,
+	) as Queryable<ST, Pg>>::Row;
+
+	fn build(row: Self::Row) -> Self {
+		let (user_id, _, _, _, _, _, tc_last_accepted_at) = Queryable::build(row);
+		Self {
+			user_id,
+			tc_last_accepted_at,
 		}
 	}
 }

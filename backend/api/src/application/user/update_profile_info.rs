@@ -11,7 +11,7 @@ use crate::{
 		},
 		ArePayoutSettingsValid, UserInfo,
 	},
-	infrastructure::database::UserInfoRepository,
+	infrastructure::database::{UserInfoRepository, UserTermsAndConditionsInfoRepository},
 };
 
 #[derive(Debug, Error)]
@@ -28,16 +28,19 @@ type Result<T> = std::result::Result<T, Error>;
 
 pub struct Usecase {
 	user_info_repository: UserInfoRepository,
+	user_terms_and_conditions_infos_repository: UserTermsAndConditionsInfoRepository,
 	payout_settings_are_valid: ArePayoutSettingsValid,
 }
 
 impl Usecase {
 	pub fn new(
 		user_info_repository: UserInfoRepository,
+		user_terms_and_conditions_infos_repository: UserTermsAndConditionsInfoRepository,
 		payout_settings_are_valid: ArePayoutSettingsValid,
 	) -> Self {
 		Self {
 			user_info_repository,
+			user_terms_and_conditions_infos_repository,
 			payout_settings_are_valid,
 		}
 	}
@@ -74,12 +77,8 @@ impl Usecase {
 	}
 
 	pub async fn accept_tc(&self, caller_id: UserId) -> Result<()> {
-		self.user_info_repository.update(
-			&caller_id,
-			UserTermsAndConditionsInfo {
-				tc_last_accepted_at: Some(Utc::now().naive_utc()),
-			},
-		)?;
+		let user_tc_info = UserTermsAndConditionsInfo::new(caller_id, Some(Utc::now().naive_utc()));
+		self.user_terms_and_conditions_infos_repository.upsert(&user_tc_info)?;
 
 		Ok(())
 	}

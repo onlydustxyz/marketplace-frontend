@@ -9,7 +9,7 @@ pub use project_details::{ProjectDetails, Visibility as ProjectVisibility};
 
 #[allow(clippy::extra_unused_lifetimes)]
 pub mod user_info;
-pub use user_info::UserInfo;
+pub use user_info::{UserInfo, UserTermsAndConditionsInfo};
 
 mod specifications;
 #[cfg(test)]
