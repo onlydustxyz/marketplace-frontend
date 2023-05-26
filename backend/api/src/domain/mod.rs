@@ -11,6 +11,9 @@ pub use project_details::{ProjectDetails, Visibility as ProjectVisibility};
 pub mod user_info;
 pub use user_info::UserInfo;
 
+pub mod terms_and_conditions_acceptance;
+pub use terms_and_conditions_acceptance::TermsAndConditionsAcceptance;
+
 mod specifications;
 #[cfg(test)]
 pub use specifications::MockGithubRepoExists;
