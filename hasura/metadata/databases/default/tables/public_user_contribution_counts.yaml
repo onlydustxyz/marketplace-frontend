@@ -1,0 +1,12 @@
+table:
+  name: user_contribution_counts
+  schema: public
+select_permissions:
+  - role: public
+    permission:
+      columns:
+        - count
+        - github_user_id
+        - week
+        - year
+      filter: {}
