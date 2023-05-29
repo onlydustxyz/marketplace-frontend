@@ -37,7 +37,7 @@ async fn main() -> Result<()> {
 			.published(event_bus.clone())
 			.with_state()
 			.arced(),
-		indexer::user::Indexer::new(github.clone(), database.clone())
+		indexer::contributors::Indexer::new(github.clone(), database.clone())
 			.logged()
 			.published(event_bus.clone())
 			.with_state()

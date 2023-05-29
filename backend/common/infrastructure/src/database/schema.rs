@@ -87,6 +87,7 @@ diesel::table! {
     github_user_indexes (user_id) {
         user_id -> Int8,
         user_indexer_state -> Nullable<Jsonb>,
+        contributor_indexer_state -> Nullable<Jsonb>,
     }
 }
 

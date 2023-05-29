@@ -35,8 +35,6 @@ impl IndexerRepository<GithubUserId> for Client {
 				LEFT JOIN registered_users users ON users.github_user_id = indexes.user_id
 			WHERE
 				user_indexer_state IS NULL OR
-				NOT(user_indexer_state ? 'hash_full') OR
-				(user_indexer_state ->> 'hash_full') = '0' OR
 				(
 					users.id IS NOT NULL AND
 					(user_indexer_state ->> 'last_updated_time')::TIMESTAMP < NOW() - INTERVAL '1 DAY'

@@ -1,4 +1,5 @@
 pub mod composite;
+pub mod contributors;
 pub mod guarded;
 pub mod issues;
 pub mod logged;
