@@ -52,7 +52,7 @@ impl EventListener<GithubEvent> for Projector {
 					&self.build_repo(&repo).await.map_err(SubscriberCallbackError::Discard)?,
 				)?;
 			},
-			GithubEvent::PullRequest(issue) | GithubEvent::Issue(issue) => {
+			GithubEvent::Issue(issue) => {
 				self.github_issues_repository.upsert(&issue.into())?;
 			},
 			GithubEvent::User { user, repo_id } => {
