@@ -285,6 +285,8 @@
     }
   },
   "profile": {
+    "joinedAt": "Joined in __joinedAt__",
+    "firstContributedAt": "First contributed in __firstContributedAt__",
     "button": {
       "payoutSettingsInvalidTooltip": "You're unable to receive payments. Click to fill up required info"
     },

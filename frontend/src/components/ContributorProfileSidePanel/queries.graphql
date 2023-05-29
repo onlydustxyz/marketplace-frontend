@@ -1,5 +1,30 @@
+fragment UserProfileId on UserProfiles {
+  githubUserId
+}
+
+fragment UserProfile on UserProfiles {
+  ...UserProfileId
+  login
+  avatarUrl
+  htmlUrl
+  location
+  bio
+  languages
+  createdAt
+  firstContributedAt
+  lastSeen
+  email
+  twitter
+  telegram
+  linkedin
+  discord
+  website
+  totalContributionCount
+  totalMoneyGranted
+}
+
 query UserProfile($githubUserId: bigint!) {
-  githubUsersByPk(id: $githubUserId) {
-    ...GithubUser
+  userProfiles(where: {githubUserId: {_eq: $githubUserId}}) {
+    ...UserProfile
   }
 }

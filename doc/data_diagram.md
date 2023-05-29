@@ -67,11 +67,17 @@ class GithubReposContributors {
 
 class GithubUsers {
    avatarUrl: String!
+   bio: String
    htmlUrl: String!
    id: bigint!
+   linkedin: String
+   location: String
    login: String!
    paymentRequests: [PaymentRequests!]!
+   telegram: String
+   twitter: String
    user: RegisteredUsers
+   website: String
 }
 
 class IgnoredGithubIssues {
@@ -182,6 +188,7 @@ class Projects {
 class ProjectsContributorsView {
    githubUser: GithubUsers
    githubUserId: bigint
+   project: Projects
    projectId: uuid
 }
 
@@ -222,6 +229,13 @@ class User {
    user: RegisteredUsers
 }
 
+class UserContributionCounts {
+   count: bigint
+   githubUserId: bigint
+   week: float8
+   year: float8
+}
+
 class UserInfo {
    arePayoutSettingsValid: Boolean!
    contactInformation: jsonb
@@ -229,6 +243,31 @@ class UserInfo {
    location: jsonb
    payoutSettings: jsonb
    userId: uuid!
+}
+
+class UserProfiles {
+   avatarUrl: String
+   bio: String
+   createdAt: timestamptz
+   discord: String
+   email: String
+   firstContributedAt: timestamp
+   githubUserId: bigint
+   htmlUrl: String
+   languages: jsonb
+   lastSeen: timestamptz
+   linkedin: String
+   location: String
+   login: String
+   projectsContributed: [ProjectsContributorsView!]!
+   projectsLeaded: [ProjectLeads!]!
+   telegram: String
+   totalContributionCount: bigint
+   totalMoneyGranted: numeric
+   twitter: String
+   updatedAt: timestamptz
+   userId: uuid
+   website: String
 }
 
 class WorkItems {
@@ -364,6 +403,7 @@ Projects --* ProjectLeads
 Projects --* ProjectsContributorsView
 Projects --* ProjectsSponsors
 ProjectsContributorsView -- GithubUsers
+ProjectsContributorsView -- Projects
 ProjectsSponsors -- Projects
 ProjectsSponsors -- Sponsors
 RegisteredUsers -- UserInfo
@@ -372,6 +412,8 @@ RegisteredUsers --* ProjectLeads
 Sponsors --* ProjectsSponsors
 User -- RegisteredUsers
 User --* PaymentRequests
+UserProfiles --* ProjectLeads
+UserProfiles --* ProjectsContributorsView
 WorkItems -- Issue
 WorkItems --* IgnoredGithubIssues
 authProviders --* authUserProviders

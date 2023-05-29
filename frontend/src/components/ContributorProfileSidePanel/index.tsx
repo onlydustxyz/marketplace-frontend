@@ -1,5 +1,6 @@
 import { useUserProfileQuery } from "src/__generated/graphql";
 import View from "./View";
+import { contextWithCacheHeaders } from "src/utils/headers";
 
 type Props = {
   githubUserId: number;
@@ -8,7 +9,8 @@ type Props = {
 };
 
 export default function ContributorProfileSidePanel({ githubUserId, ...rest }: Props) {
-  const { data } = useUserProfileQuery({ variables: { githubUserId } });
+  const { data } = useUserProfileQuery({ variables: { githubUserId }, ...contextWithCacheHeaders });
+  const userProfile = data?.userProfiles.at(0);
 
-  return data?.githubUsersByPk ? <View {...rest} {...data?.githubUsersByPk} /> : <div />;
+  return userProfile ? <View profile={userProfile} {...rest} /> : <div />;
 }
