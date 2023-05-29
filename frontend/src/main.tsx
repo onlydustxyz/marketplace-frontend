@@ -21,6 +21,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import config from "./config";
 import Maintenance from "./Maintenance";
 import TagManager from "react-gtm-module";
+import { TermsAndConditionsAcceptanceDateProvider } from "src/hooks/useTermsAndConditionsAcceptanceDate";
 
 if (config.GTM_ID) {
   TagManager.initialize({
@@ -37,7 +38,16 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
             <TokenSetProvider>
               <ToasterProvider>
                 <ApolloWrapper>
-                  <AuthProvider>{config.MAINTENANCE ? <Maintenance /> : <App />}</AuthProvider>
+                  <AuthProvider>
+                    {config.MAINTENANCE ? (
+                      <Maintenance />
+                    ) : (
+                      <TermsAndConditionsAcceptanceDateProvider>
+                        {" "}
+                        <App />{" "}
+                      </TermsAndConditionsAcceptanceDateProvider>
+                    )}
+                  </AuthProvider>
                 </ApolloWrapper>
               </ToasterProvider>
             </TokenSetProvider>
