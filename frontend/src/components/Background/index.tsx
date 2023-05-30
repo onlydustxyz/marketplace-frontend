@@ -24,7 +24,7 @@ const Background = forwardRef(function Background(
       })}
     >
       <div
-        className={classNames("bg-space bg-no-repeat bg-fixed bg-clip-content min-h-full", roundedBorders, {
+        className={classNames("bg-space bg-no-repeat bg-fixed bg-clip-content min-h-full h-full", roundedBorders, {
           "md:mr-6": !withSidebar,
         })}
       >
