@@ -3,6 +3,7 @@ import plugin from "tailwindcss/plugin";
 import scrollbar from "tailwind-scrollbar";
 import headlessUi from "@headlessui/tailwindcss";
 import typography from "@tailwindcss/typography";
+import forms from "@tailwindcss/forms";
 
 const config: Config = {
   content: ["./index.html", "./frontend/src/**/*.{js,ts,jsx,tsx}"],
@@ -140,6 +141,7 @@ const config: Config = {
     typography,
     headlessUi,
     scrollbar({ nocompatible: true }),
+    forms,
     plugin(function ({ addComponents }) {
       const pseudoOutline = {
         position: "relative",
