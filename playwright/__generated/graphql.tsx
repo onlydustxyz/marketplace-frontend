@@ -13250,6 +13250,13 @@ export type PaymentRequestDetailsQuery = { __typename?: 'query_root', paymentReq
 
 export type ProjectCardFieldsFragment = { __typename?: 'Projects', id: any, contributorsAggregate: { __typename?: 'ProjectsContributorsViewAggregate', aggregate: { __typename?: 'ProjectsContributorsViewAggregateFields', count: number } | null }, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number, sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null, initialAmount: any | null } | null } | null }, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, telegramLink: string | null, logoUrl: string | null, shortDescription: string, hiring: boolean, rank: number, visibility: any } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any, projectId: any, user: { __typename?: 'RegisteredUsers', login: string | null, avatarUrl: string | null, id: any | null } | null }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', projectId: any, githubRepoId: any, repo: { __typename?: 'GithubRepos', languages: any, id: any } | null }>, projectSponsors: Array<{ __typename?: 'ProjectsSponsors', sponsor: { __typename?: 'Sponsors', name: string, logoUrl: string, url: string | null, id: any } }>, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributorsView', githubUser: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null }> };
 
+export type GetTermsAndConditionsAcceptancesQueryVariables = Exact<{
+  userId: Scalars['uuid'];
+}>;
+
+
+export type GetTermsAndConditionsAcceptancesQuery = { __typename?: 'query_root', termsAndConditionsAcceptancesByPk: { __typename?: 'TermsAndConditionsAcceptances', acceptanceDate: any } | null };
+
 export type ApplicationIdFragment = { __typename?: 'Applications', id: any };
 
 export type ApplicantFragment = { __typename?: 'Applications', applicantId: any, id: any };
@@ -13367,13 +13374,6 @@ export type GetProjectVisibilityDetailsQueryVariables = Exact<{
 
 
 export type GetProjectVisibilityDetailsQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, visibility: any } | null, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributorsView', githubUser: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number } | null }, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> } | null };
-
-export type GetTermsAndConditionsAcceptancesQueryVariables = Exact<{
-  userId: Scalars['uuid'];
-}>;
-
-
-export type GetTermsAndConditionsAcceptancesQuery = { __typename?: 'query_root', termsAndConditionsAcceptancesByPk: { __typename?: 'TermsAndConditionsAcceptances', acceptanceDate: any } | null };
 
 export type PendingProjectLeaderInvitationsQueryVariables = Exact<{
   githubUserId: InputMaybe<Scalars['bigint']>;
@@ -14343,6 +14343,41 @@ export function usePaymentRequestDetailsLazyQuery(baseOptions?: Apollo.LazyQuery
 export type PaymentRequestDetailsQueryHookResult = ReturnType<typeof usePaymentRequestDetailsQuery>;
 export type PaymentRequestDetailsLazyQueryHookResult = ReturnType<typeof usePaymentRequestDetailsLazyQuery>;
 export type PaymentRequestDetailsQueryResult = Apollo.QueryResult<PaymentRequestDetailsQuery, PaymentRequestDetailsQueryVariables>;
+export const GetTermsAndConditionsAcceptancesDocument = gql`
+    query GetTermsAndConditionsAcceptances($userId: uuid!) {
+  termsAndConditionsAcceptancesByPk(userId: $userId) {
+    acceptanceDate
+  }
+}
+    `;
+
+/**
+ * __useGetTermsAndConditionsAcceptancesQuery__
+ *
+ * To run a query within a React component, call `useGetTermsAndConditionsAcceptancesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTermsAndConditionsAcceptancesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTermsAndConditionsAcceptancesQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useGetTermsAndConditionsAcceptancesQuery(baseOptions: Apollo.QueryHookOptions<GetTermsAndConditionsAcceptancesQuery, GetTermsAndConditionsAcceptancesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTermsAndConditionsAcceptancesQuery, GetTermsAndConditionsAcceptancesQueryVariables>(GetTermsAndConditionsAcceptancesDocument, options);
+      }
+export function useGetTermsAndConditionsAcceptancesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTermsAndConditionsAcceptancesQuery, GetTermsAndConditionsAcceptancesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTermsAndConditionsAcceptancesQuery, GetTermsAndConditionsAcceptancesQueryVariables>(GetTermsAndConditionsAcceptancesDocument, options);
+        }
+export type GetTermsAndConditionsAcceptancesQueryHookResult = ReturnType<typeof useGetTermsAndConditionsAcceptancesQuery>;
+export type GetTermsAndConditionsAcceptancesLazyQueryHookResult = ReturnType<typeof useGetTermsAndConditionsAcceptancesLazyQuery>;
+export type GetTermsAndConditionsAcceptancesQueryResult = Apollo.QueryResult<GetTermsAndConditionsAcceptancesQuery, GetTermsAndConditionsAcceptancesQueryVariables>;
 export const ImpersonatedUserDocument = gql`
     query ImpersonatedUser($id: uuid!) {
   user(id: $id) {
@@ -14638,41 +14673,6 @@ export function useGetProjectVisibilityDetailsLazyQuery(baseOptions?: Apollo.Laz
 export type GetProjectVisibilityDetailsQueryHookResult = ReturnType<typeof useGetProjectVisibilityDetailsQuery>;
 export type GetProjectVisibilityDetailsLazyQueryHookResult = ReturnType<typeof useGetProjectVisibilityDetailsLazyQuery>;
 export type GetProjectVisibilityDetailsQueryResult = Apollo.QueryResult<GetProjectVisibilityDetailsQuery, GetProjectVisibilityDetailsQueryVariables>;
-export const GetTermsAndConditionsAcceptancesDocument = gql`
-    query GetTermsAndConditionsAcceptances($userId: uuid!) {
-  termsAndConditionsAcceptancesByPk(userId: $userId) {
-    acceptanceDate
-  }
-}
-    `;
-
-/**
- * __useGetTermsAndConditionsAcceptancesQuery__
- *
- * To run a query within a React component, call `useGetTermsAndConditionsAcceptancesQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetTermsAndConditionsAcceptancesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetTermsAndConditionsAcceptancesQuery({
- *   variables: {
- *      userId: // value for 'userId'
- *   },
- * });
- */
-export function useGetTermsAndConditionsAcceptancesQuery(baseOptions: Apollo.QueryHookOptions<GetTermsAndConditionsAcceptancesQuery, GetTermsAndConditionsAcceptancesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetTermsAndConditionsAcceptancesQuery, GetTermsAndConditionsAcceptancesQueryVariables>(GetTermsAndConditionsAcceptancesDocument, options);
-      }
-export function useGetTermsAndConditionsAcceptancesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTermsAndConditionsAcceptancesQuery, GetTermsAndConditionsAcceptancesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetTermsAndConditionsAcceptancesQuery, GetTermsAndConditionsAcceptancesQueryVariables>(GetTermsAndConditionsAcceptancesDocument, options);
-        }
-export type GetTermsAndConditionsAcceptancesQueryHookResult = ReturnType<typeof useGetTermsAndConditionsAcceptancesQuery>;
-export type GetTermsAndConditionsAcceptancesLazyQueryHookResult = ReturnType<typeof useGetTermsAndConditionsAcceptancesLazyQuery>;
-export type GetTermsAndConditionsAcceptancesQueryResult = Apollo.QueryResult<GetTermsAndConditionsAcceptancesQuery, GetTermsAndConditionsAcceptancesQueryVariables>;
 export const PendingProjectLeaderInvitationsDocument = gql`
     query PendingProjectLeaderInvitations($githubUserId: bigint) {
   pendingProjectLeaderInvitations(where: {githubUserId: {_eq: $githubUserId}}) {
