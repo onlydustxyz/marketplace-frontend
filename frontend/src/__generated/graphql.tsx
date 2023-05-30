@@ -13577,6 +13577,11 @@ export type GetAllFilterOptionsQueryVariables = Exact<{ [key: string]: never; }>
 
 export type GetAllFilterOptionsQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', id: any, projectSponsors: Array<{ __typename?: 'ProjectsSponsors', sponsor: { __typename?: 'Sponsors', id: any, name: string } }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', projectId: any, githubRepoId: any, repo: { __typename?: 'GithubRepos', languages: any, id: any } | null }>, projectDetails: { __typename?: 'ProjectDetails', projectId: any, visibility: any } | null, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributorsView', githubUser: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number } | null }, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> }> };
 
+export type AcceptTermsAndConditionsMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AcceptTermsAndConditionsMutation = { __typename?: 'mutation_root', acceptTermsAndConditions: any };
+
 export type GetUserDetailsQueryVariables = Exact<{
   userId: Scalars['uuid'];
 }>;
@@ -15709,6 +15714,36 @@ export function useGetAllFilterOptionsLazyQuery(baseOptions?: Apollo.LazyQueryHo
 export type GetAllFilterOptionsQueryHookResult = ReturnType<typeof useGetAllFilterOptionsQuery>;
 export type GetAllFilterOptionsLazyQueryHookResult = ReturnType<typeof useGetAllFilterOptionsLazyQuery>;
 export type GetAllFilterOptionsQueryResult = Apollo.QueryResult<GetAllFilterOptionsQuery, GetAllFilterOptionsQueryVariables>;
+export const AcceptTermsAndConditionsDocument = gql`
+    mutation AcceptTermsAndConditions {
+  acceptTermsAndConditions
+}
+    `;
+export type AcceptTermsAndConditionsMutationFn = Apollo.MutationFunction<AcceptTermsAndConditionsMutation, AcceptTermsAndConditionsMutationVariables>;
+
+/**
+ * __useAcceptTermsAndConditionsMutation__
+ *
+ * To run a mutation, you first call `useAcceptTermsAndConditionsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAcceptTermsAndConditionsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [acceptTermsAndConditionsMutation, { data, loading, error }] = useAcceptTermsAndConditionsMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAcceptTermsAndConditionsMutation(baseOptions?: Apollo.MutationHookOptions<AcceptTermsAndConditionsMutation, AcceptTermsAndConditionsMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AcceptTermsAndConditionsMutation, AcceptTermsAndConditionsMutationVariables>(AcceptTermsAndConditionsDocument, options);
+      }
+export type AcceptTermsAndConditionsMutationHookResult = ReturnType<typeof useAcceptTermsAndConditionsMutation>;
+export type AcceptTermsAndConditionsMutationResult = Apollo.MutationResult<AcceptTermsAndConditionsMutation>;
+export type AcceptTermsAndConditionsMutationOptions = Apollo.BaseMutationOptions<AcceptTermsAndConditionsMutation, AcceptTermsAndConditionsMutationVariables>;
 export const GetUserDetailsDocument = gql`
     query getUserDetails($userId: uuid!) {
   registeredUsers(where: {id: {_eq: $userId}}) {
