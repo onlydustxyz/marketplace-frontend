@@ -3,10 +3,7 @@ use std::{collections::HashSet, sync::Arc};
 use async_trait::async_trait;
 use chrono::{DateTime, Utc};
 use derive_new::new;
-use domain::{
-	stream_filter, GithubFetchService, GithubRepoId, GithubUser, GithubUserId,
-	LogErr,
-};
+use domain::{stream_filter, GithubFetchService, GithubRepoId, GithubUser, GithubUserId, LogErr};
 use event_listeners::domain::{GithubEvent, GithubUserIndexRepository};
 use serde::{Deserialize, Serialize};
 use stream_filter::Decision;
@@ -87,10 +84,7 @@ impl super::Indexer<GithubRepoId> for Indexer {
 			.await
 			.ignore_non_fatal_errors()?
 			.into_iter()
-			.map(|user| GithubEvent::User {
-				user,
-				repo_id: Some(repo_id),
-			})
+			.map(|user| GithubEvent::User { user, repo_id })
 			.collect();
 
 		Ok(events)

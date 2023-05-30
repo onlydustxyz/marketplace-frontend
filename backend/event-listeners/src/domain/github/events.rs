@@ -7,7 +7,7 @@ pub enum Event {
 	Issue(GithubIssue),
 	User {
 		user: GithubUser,
-		repo_id: Option<GithubRepoId>,
+		repo_id: GithubRepoId,
 	},
 	FullUser(GithubFullUser),
 }

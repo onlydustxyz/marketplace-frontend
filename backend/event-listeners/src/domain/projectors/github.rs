@@ -57,9 +57,7 @@ impl EventListener<GithubEvent> for Projector {
 			},
 			GithubEvent::User { user, repo_id } => {
 				self.github_users_repository.upsert(&user.clone().into())?;
-				if let Some(repo_id) = repo_id {
-					self.github_repos_contributors_repository.try_insert(&repo_id, user.id())?;
-				}
+				self.github_repos_contributors_repository.try_insert(&repo_id, user.id())?;
 			},
 			GithubEvent::FullUser(user) => {
 				self.github_users_repository.upsert(&user.into())?;
