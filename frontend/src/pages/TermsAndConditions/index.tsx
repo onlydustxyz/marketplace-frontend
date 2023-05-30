@@ -8,6 +8,7 @@ import { useAcceptTermsAndConditionsMutation } from "src/__generated/graphql";
 export const TermsAndConditions = () => {
   const [showTermsAndConditions, setShowTermsAndConditions] = useState(false);
   const [acceptTermsAndConditionsMutation, { data, loading, error }] = useAcceptTermsAndConditionsMutation();
+  const [checked, setChecked] = useState(false);
   return (
     <Background roundedBorders={BackgroundRoundedBorders.Full}>
       <div className="h-full flex flex-col justify-center items-center text-greyscale-50">
@@ -116,11 +117,13 @@ export const TermsAndConditions = () => {
                     <div className="flex flex-row gap-3 items-center">
                       <input
                         type="checkbox"
+                        checked={checked}
+                        onClick={() => setChecked(!checked)}
                         className="w-5 h-5 bg-white/8 hover:bg-white/2 checked:bg-spacePurple-500 rounded border border-greyscale-50/20 checked:border-spacePurple-700 focus:ring-0 focus:ring-offset-0 cursor-pointer enabled:ring-0 checked:focus:bg-spacePurple-500 checked:hover:bg-spacePurple-500/90  checked:hover:border-spacePurple-700"
                       />
                       I agree to the full terms & conditions & the privacy policy
                     </div>
-                    <Button onClick={() => acceptTermsAndConditionsMutation()} width={Width.Full}>
+                    <Button onClick={() => acceptTermsAndConditionsMutation()} width={Width.Full} disabled={!checked}>
                       Accept terms and conditions
                     </Button>
                   </div>
