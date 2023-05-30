@@ -236,6 +236,16 @@ class UserContributionCounts {
    year: float8
 }
 
+class UserContributionProjects {
+   contributionCount: numeric
+   githubUserId: bigint
+   maxContributionDate: timestamp
+   minContributionDate: timestamp
+   moneyGranted: numeric
+   project: Projects
+   projectId: uuid
+}
+
 class UserInfo {
    arePayoutSettingsValid: Boolean!
    contactInformation: jsonb
@@ -251,7 +261,6 @@ class UserProfiles {
    createdAt: timestamptz
    discord: String
    email: String
-   firstContributedAt: timestamp
    githubUserId: bigint
    htmlUrl: String
    languages: jsonb
@@ -259,13 +268,10 @@ class UserProfiles {
    linkedin: String
    location: String
    login: String
-   projectsContributed: [ProjectsContributorsView!]!
+   projects: [UserContributionProjects!]!
    projectsLeaded: [ProjectLeads!]!
    telegram: String
-   totalContributionCount: bigint
-   totalMoneyGranted: numeric
    twitter: String
-   updatedAt: timestamptz
    userId: uuid
    website: String
 }
@@ -412,8 +418,9 @@ RegisteredUsers --* ProjectLeads
 Sponsors --* ProjectsSponsors
 User -- RegisteredUsers
 User --* PaymentRequests
+UserContributionProjects -- Projects
 UserProfiles --* ProjectLeads
-UserProfiles --* ProjectsContributorsView
+UserProfiles --* UserContributionProjects
 WorkItems -- Issue
 WorkItems --* IgnoredGithubIssues
 authProviders --* authUserProviders

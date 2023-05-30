@@ -39,8 +39,11 @@ export default function WorkItemSidePanel({
   const [selectedTab, setSelectedTab] = useState(Tabs.PullRequests);
 
   return (
-    <SidePanel {...props} title={T("payment.form.workItems.addWorkItem")}>
+    <SidePanel {...props}>
       <div className="flex flex-row items-center gap-8 border-b border-greyscale-50/8 px-6">
+        <div className="font-belwe font-normal text-2xl text-greyscale-50 pt-8 px-6">
+          {T("payment.form.workItems.addWorkItem")}
+        </div>
         <Tab
           testId="tab-pull-requests"
           active={selectedTab === Tabs.PullRequests}

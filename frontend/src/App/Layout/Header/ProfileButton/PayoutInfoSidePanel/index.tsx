@@ -59,16 +59,22 @@ export default function PayoutInfoSidePanel({ githubUserId, open, setOpen }: Pro
   }, [profileType]);
 
   return (
-    <SidePanel open={open} setOpen={setOpen} title={T("navbar.profile.payoutInfo")}>
-      <FormProvider {...formMethods}>
-        <form id="payout-info-form" className="h-full min-h-0" onSubmit={handleSubmit(onSubmit)}>
-          <View
-            payoutSettingsValid={payoutSettingsValid}
-            saveButtonDisabled={updatePayoutSettingsLoading || !isDirty}
-            unsavedChanges={isDirty}
-          />
-        </form>
-      </FormProvider>
+    <SidePanel open={open} setOpen={setOpen}>
+      <div className="flex flex-col gap-8">
+        <div className="font-belwe font-normal text-2xl text-greyscale-50 pt-8 px-6">
+          {T("navbar.profile.payoutInfo")}
+        </div>
+
+        <FormProvider {...formMethods}>
+          <form id="payout-info-form" className="h-full min-h-0" onSubmit={handleSubmit(onSubmit)}>
+            <View
+              payoutSettingsValid={payoutSettingsValid}
+              saveButtonDisabled={updatePayoutSettingsLoading || !isDirty}
+              unsavedChanges={isDirty}
+            />
+          </form>
+        </FormProvider>
+      </div>
     </SidePanel>
   );
 }

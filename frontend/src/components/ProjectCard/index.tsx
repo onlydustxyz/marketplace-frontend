@@ -76,8 +76,8 @@ export default function ProjectCard({
             />
             {languages.length > 0 && (
               <div className="hidden lg:block">
-                <Tag testid={`languages-${id}`} size={TagSize.Small}>
-                  <CodeSSlashLine />
+                <Tag testid={`languages-${id}`} size={TagSize.Large}>
+                  <CodeSSlashLine className="text-xl" />
                   {buildLanguageString(languages)}
                 </Tag>
               </div>

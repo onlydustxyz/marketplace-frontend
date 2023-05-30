@@ -11,7 +11,6 @@ fragment UserProfile on UserProfiles {
   bio
   languages
   createdAt
-  firstContributedAt
   lastSeen
   email
   twitter
@@ -19,12 +18,60 @@ fragment UserProfile on UserProfiles {
   linkedin
   discord
   website
-  totalContributionCount
-  totalMoneyGranted
+}
+
+fragment Contributions on UserContributionProjects {
+  projectId
+  maxContributionDate
+  contributionCount
+  project {
+    ...ProfileProject
+  }
+}
+
+fragment ProfileProject on Projects {
+  id
+  projectDetails {
+    projectId
+    logoUrl
+    name
+  }
+  contributorsAggregate {
+    aggregate {
+      count
+    }
+  }
+  budgetsAggregate {
+    aggregate {
+      sum {
+        spentAmount
+      }
+    }
+  }
 }
 
 query UserProfile($githubUserId: bigint!) {
-  userProfiles(where: {githubUserId: {_eq: $githubUserId}}) {
+  userProfiles(where: { githubUserId: { _eq: $githubUserId } }) {
     ...UserProfile
+    projects {
+      ...Contributions
+    }
+    projectsAggregate {
+      aggregate {
+        sum {
+          moneyGranted
+        }
+        min {
+          minContributionDate
+        }
+        count
+      }
+    }
+    projectsLeaded {
+      projectId
+      project {
+        ...ProfileProject
+      }
+    }
   }
 }

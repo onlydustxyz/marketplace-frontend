@@ -31,8 +31,7 @@ SELECT
     u.last_seen AS last_seen,
     u.display_name AS login_at_signup,
     u.avatar_url AS avatar_url_at_signup,
-    u.created_at AS created_at,
-    u.updated_at AS updated_at
+    u.created_at AS created_at
 FROM
     auth.users u
     INNER JOIN auth.user_providers up ON u.id = up.user_id
@@ -61,18 +60,7 @@ SELECT
     --------------------------------------
     au.id AS user_id,
     au.created_at AS created_at,
-    au.updated_at AS updated_at,
     au.last_seen AS last_seen,
-    contribution_stats.min_date AS first_contributed_at,
-    contribution_stats.total_count AS total_contribution_count,
-    (
-        SELECT
-            SUM(amount_in_usd)
-        FROM
-            payment_requests
-        WHERE
-            recipient_id = gu.id
-    ) AS total_money_granted,
     --------------------------------------
     -- NULLABLE and overridable
     --------------------------------------
@@ -91,18 +79,6 @@ FROM
     LEFT JOIN user_profile_info upi ON upi.id = au.id
     LEFT JOIN LATERAL (
         SELECT
-            COUNT(gi.id) AS total_count,
-            MIN(COALESCE(gi.merged_at, gi.created_at)) AS min_date
-        FROM
-            payment_requests p
-            INNER JOIN work_items w ON w.payment_id = p.id
-            INNER JOIN github_issues gi ON gi.repo_id = w.repo_id
-            AND gi.issue_number = w.issue_number
-        WHERE
-            p.recipient_id = gu.id
-    ) AS contribution_stats ON 1 = 1
-    LEFT JOIN LATERAL (
-        SELECT
             jsonb_concat_agg (gr.languages) AS languages
         FROM
             github_repos_contributors grp
@@ -116,8 +92,8 @@ CREATE OR REPLACE VIEW
     user_contribution_counts AS
 SELECT
     p.recipient_id AS github_user_id,
-    DATE_PART('year', COALESCE(gi.merged_at, gi.created_at)) AS "year",
-    DATE_PART('week', COALESCE(gi.merged_at, gi.created_at)) AS "week",
+    DATE_PART('year', gi.created_at) AS "year",
+    DATE_PART('week', gi.created_at) AS "week",
     COUNT(gi.id) AS "count"
 FROM
     payment_requests p
@@ -128,3 +104,32 @@ GROUP BY
     github_user_id,
     "year",
     "week";
+
+
+CREATE OR REPLACE VIEW
+    user_contribution_projects AS
+SELECT
+    p.recipient_id AS github_user_id,
+    b.project_id AS project_id,
+    SUM(p.amount_in_usd) AS money_granted,
+    SUM(contribution_stats.total_count) AS contribution_count,
+    MIN(contribution_stats.min_date) AS min_contribution_date,
+    MAX(contribution_stats.max_date) AS max_contribution_date
+FROM
+    payment_requests p
+    INNER JOIN budgets b ON b.id = p.budget_id
+    INNER JOIN LATERAL (
+    SELECT
+		COUNT(gi.id) AS total_count,
+		MIN(gi.created_at) AS min_date,
+		MAX(gi.created_at) AS max_date
+	FROM
+		work_items w
+		INNER JOIN github_issues gi ON gi.repo_id = w.repo_id
+			AND gi.issue_number = w.issue_number
+	WHERE
+		w.payment_id = p.id
+	) contribution_stats ON 1=1
+GROUP BY
+    p.recipient_id,
+    b.project_id;

@@ -287,6 +287,32 @@
   "profile": {
     "joinedAt": "Joined in __joinedAt__",
     "firstContributedAt": "First contributed in __firstContributedAt__",
+    "sections": {
+      "technologies": {
+        "title": "Technologies"
+      },
+      "stats": {
+        "contributorOn": "Contributor on",
+        "leadOn": "Lead on",
+        "granted": "Granted money",
+        "title": "Stats",
+        "projects": {
+          "one": "project",
+          "many": "projects"
+        }
+      },
+      "projects": {
+        "contributionCount": {
+          "zero": "No contribution",
+          "one": "1 contribution",
+          "many": "__count__ contributions"
+        },
+        "projectLead": "Project lead",
+        "lastContribution": "Latest __lastContribution__",
+        "projectLeadSince": "Since __since__",
+        "title": "Projects"
+      }
+    },
     "button": {
       "payoutSettingsInvalidTooltip": "You're unable to receive payments. Click to fill up required info"
     },

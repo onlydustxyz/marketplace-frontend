@@ -4,6 +4,9 @@ DROP VIEW user_profiles;
 DROP VIEW user_contribution_counts;
 
 
+DROP VIEW user_contribution_projects;
+
+
 DROP TABLE user_profile_info;
 
 

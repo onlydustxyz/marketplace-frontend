@@ -2,14 +2,14 @@ table:
   name: user_profiles
   schema: public
 array_relationships:
-  - name: projectsContributed
+  - name: projects
     using:
       manual_configuration:
         column_mapping:
           github_user_id: github_user_id
         insertion_order: null
         remote_table:
-          name: projects_contributors_view
+          name: user_contribution_projects
           schema: public
   - name: projectsLeaded
     using:
@@ -25,9 +25,7 @@ select_permissions:
     permission:
       columns:
         - github_user_id
-        - total_contribution_count
         - languages
-        - total_money_granted
         - avatar_url
         - bio
         - discord
@@ -41,7 +39,5 @@ select_permissions:
         - website
         - created_at
         - last_seen
-        - updated_at
-        - first_contributed_at
         - user_id
       filter: {}
