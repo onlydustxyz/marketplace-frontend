@@ -87,13 +87,24 @@ export default function View({ profile, projects, headerColor, ...rest }: Props)
                     <GlobalLine /> {new URL(profile.website).hostname}
                   </div>
                 )}
-                {profile.createdAt && (
+
+                {profile.createdAt ? (
                   <div className="flex flex-row gap-1 items-center text-base text-greyscale-300">
                     <img id={`od-logo-${profile.login}`} src={onlyDustLogo} className="h-3.5 mt-px" />
                     {T("profile.joinedAt", {
                       joinedAt: formatDateShort(new Date(profile.createdAt)),
                     })}
                   </div>
+                ) : (
+                  profile.projectsAggregate.aggregate?.min?.minContributionDate && (
+                    <div className="text-base text-greyscale-300">
+                      {T("profile.firstContributedAt", {
+                        firstContributedAt: formatDateShort(
+                          new Date(profile.projectsAggregate.aggregate?.min?.minContributionDate)
+                        ),
+                      })}
+                    </div>
+                  )
                 )}
               </div>
             )}
@@ -132,53 +143,53 @@ export default function View({ profile, projects, headerColor, ...rest }: Props)
           </div>
 
           <div className="flex flex-col gap-8 px-8 py-12">
-            <Section title={T("profile.sections.technologies.title")}>
-              <div className="flex flex-wrap gap-2">
-                {languages.map((language, index) => (
-                  <Tag key={language} size={TagSize.Medium}>
-                    <div className="w-4 h-4 flex items-center justify-center text-xs text-greyscale-50 bg-white/5 rounded-[4px]">
-                      {index + 1}
-                    </div>
-                    <div className="text-greyscale-50 text-sm">{language}</div>
-                  </Tag>
-                ))}
-              </div>
-            </Section>
+            {languages.length > 0 && (
+              <Section title={T("profile.sections.technologies.title")}>
+                <div className="flex flex-wrap gap-2">
+                  {languages.map((language, index) => (
+                    <Tag key={language} size={TagSize.Medium}>
+                      <div className="w-4 h-4 flex items-center justify-center text-xs text-greyscale-50 bg-white/5 rounded-[4px]">
+                        {index + 1}
+                      </div>
+                      <div className="text-greyscale-50 text-sm">{language}</div>
+                    </Tag>
+                  ))}
+                </div>
+              </Section>
+            )}
             <Section title={T("profile.sections.stats.title")}>
               <div className="grid grid-cols-3 gap-4">
                 <StatCard
                   title={T("profile.sections.stats.contributorOn")}
-                  counter={"12"}
-                  description={T("profile.sections.stats.projects", { count: 12 })}
+                  counter={profile.projectsAggregate.aggregate?.count + ""}
+                  description={T("profile.sections.stats.projects", {
+                    count: profile.projectsAggregate.aggregate?.count,
+                  })}
                 />
                 <StatCard
                   title={T("profile.sections.stats.leadOn")}
-                  counter={"1"}
-                  description={T("profile.sections.stats.projects", { count: 1 })}
+                  counter={profile.projectsLeaded.length.toString()}
+                  description={T("profile.sections.stats.projects", { count: profile.projectsLeaded.length })}
                 />
                 <StatCard
                   title={T("profile.sections.stats.granted")}
-                  counter={formatMoneyAmount({ amount: 17000, notation: "compact" })}
+                  counter={formatMoneyAmount({
+                    amount: profile.projectsAggregate.aggregate?.sum?.moneyGranted || 0,
+                    notation: "compact",
+                  })}
                 />
               </div>
             </Section>
-            <Section title={T("profile.sections.projects.title")}>
-              <div className="grid grid-cols-3 gap-3">
-                {projects.map(project => (
-                  <ProjectCard key={project.id} {...project} />
-                ))}
-              </div>
-            </Section>
+            {projects.length > 0 && (
+              <Section title={T("profile.sections.projects.title")}>
+                <div className="grid grid-cols-3 gap-3">
+                  {projects.map(project => (
+                    <ProjectCard key={project.id} {...project} />
+                  ))}
+                </div>
+              </Section>
+            )}
           </div>
-          {!profile.createdAt && profile.projectsAggregate.aggregate?.min?.minContributionDate && (
-            <div>
-              {T("profile.firstContributedAt", {
-                firstContributedAt: formatDateShort(
-                  new Date(profile.projectsAggregate.aggregate?.min?.minContributionDate)
-                ),
-              })}
-            </div>
-          )}
         </div>
       </div>
     </SidePanel>

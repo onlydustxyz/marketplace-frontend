@@ -1,4 +1,4 @@
-import { UserProfileFragment } from "src/__generated/graphql";
+import { ContributionsFragment, ProfileProjectFragment, UserProfileFragment } from "src/__generated/graphql";
 import ContributorProfileSidePanel, { HeaderColor } from "./View";
 import { Project } from "./ProjectCard";
 import { daysFromNow, minutesFromNow } from "src/utils/date";
@@ -44,8 +44,8 @@ const profile: UserProfileFragment = {
     Cairo: 100,
     Solidity: 20,
   },
-  projects: [],
-  projectsLeaded: [],
+  projects: [{} as ContributionsFragment, {} as ContributionsFragment, {} as ContributionsFragment],
+  projectsLeaded: [{ projectId: "", project: {} as ProfileProjectFragment }],
   projectsAggregate: {
     aggregate: {
       sum: {
