@@ -170,10 +170,12 @@ export default function View({ profile, projects, headerColor, ...rest }: Props)
               </div>
             </Section>
           </div>
-          {!profile.createdAt && profile.firstContributedAt && (
+          {!profile.createdAt && profile.projectsAggregate.aggregate?.min?.minContributionDate && (
             <div>
               {T("profile.firstContributedAt", {
-                firstContributedAt: formatDateShort(new Date(profile.firstContributedAt)),
+                firstContributedAt: formatDateShort(
+                  new Date(profile.projectsAggregate.aggregate?.min?.minContributionDate)
+                ),
               })}
             </div>
           )}

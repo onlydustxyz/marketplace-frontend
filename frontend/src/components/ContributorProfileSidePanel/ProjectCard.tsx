@@ -17,8 +17,8 @@ export type Project = {
   contributorCount: number;
   totalGranted: number;
   leadSince?: Date;
-  lastContribution: Date;
-  contributionCount: number;
+  lastContribution?: Date;
+  contributionCount?: number;
 };
 
 export default function ProjectCard({
@@ -64,11 +64,13 @@ export default function ProjectCard({
             {leadSince ? (
               <>{T("profile.sections.projects.projectLeadSince", { since: displayRelativeDate(leadSince) })}</>
             ) : (
-              <>
-                {T("profile.sections.projects.lastContribution", {
-                  lastContribution: displayRelativeDate(lastContribution),
-                })}
-              </>
+              lastContribution && (
+                <>
+                  {T("profile.sections.projects.lastContribution", {
+                    lastContribution: displayRelativeDate(lastContribution),
+                  })}
+                </>
+              )
             )}
           </div>
         </div>

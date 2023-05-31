@@ -2,8 +2,7 @@ fragment UserProfileId on UserProfiles {
   githubUserId
 }
 
-fragment UserProfile on UserProfiles {
-  ...UserProfileId
+fragment UserProfileDetails on UserProfiles {
   login
   avatarUrl
   htmlUrl
@@ -50,9 +49,9 @@ fragment ProfileProject on Projects {
   }
 }
 
-query UserProfile($githubUserId: bigint!) {
-  userProfiles(where: { githubUserId: { _eq: $githubUserId } }) {
-    ...UserProfile
+fragment UserProfile on UserProfiles {
+    ...UserProfileId
+    ...UserProfileDetails
     projects {
       ...Contributions
     }
@@ -73,5 +72,10 @@ query UserProfile($githubUserId: bigint!) {
         ...ProfileProject
       }
     }
+}
+
+query UserProfile($githubUserId: bigint!) {
+  userProfiles(where: { githubUserId: { _eq: $githubUserId } }) {
+    ...UserProfile
   }
 }
