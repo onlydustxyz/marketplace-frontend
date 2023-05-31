@@ -49,30 +49,40 @@ fragment ProfileProject on Projects {
   }
 }
 
+fragment ContributionCount on UserContributionCounts {
+  year
+  week
+  count
+}
+
 fragment UserProfile on UserProfiles {
-    ...UserProfileId
-    ...UserProfileDetails
-    projects {
-      ...Contributions
-    }
-    projectsAggregate {
-      aggregate {
-        sum {
-          moneyGranted
-        }
-        min {
-          minContributionDate
-        }
-        count
+  ...UserProfileId
+  ...UserProfileDetails
+  projects {
+    ...Contributions
+  }
+  projectsAggregate {
+    aggregate {
+      sum {
+        moneyGranted
+        contributionCount
       }
-    }
-    projectsLeaded {
-      projectId
-      assignedAt
-      project {
-        ...ProfileProject
+      min {
+        minContributionDate
       }
+      count
     }
+  }
+  projectsLeaded {
+    projectId
+    assignedAt
+    project {
+      ...ProfileProject
+    }
+  }
+  contributionCounts(orderBy: [{ year: DESC, week: DESC }], limit: 9) {
+    ...ContributionCount
+  }
 }
 
 query UserProfile($githubUserId: bigint!) {

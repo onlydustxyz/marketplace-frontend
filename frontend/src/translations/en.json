@@ -296,11 +296,13 @@
         "title": "Technologies"
       },
       "stats": {
+        "contributions": "Contributions",
         "contributorOn": "Contributor on",
         "leadOn": "Lead on",
         "granted": "Granted money",
         "title": "Stats",
         "projects": {
+          "zero": "project",
           "one": "project",
           "many": "projects"
         }

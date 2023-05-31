@@ -259,6 +259,7 @@ class UserInfo {
 class UserProfiles {
    avatarUrl: String
    bio: String
+   contributionCounts: [UserContributionCounts!]!
    createdAt: timestamptz
    discord: String
    email: String
@@ -421,6 +422,7 @@ User -- RegisteredUsers
 User --* PaymentRequests
 UserContributionProjects -- Projects
 UserProfiles --* ProjectLeads
+UserProfiles --* UserContributionCounts
 UserProfiles --* UserContributionProjects
 WorkItems -- Issue
 WorkItems --* IgnoredGithubIssues

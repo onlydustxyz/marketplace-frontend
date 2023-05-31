@@ -2,6 +2,15 @@ table:
   name: user_profiles
   schema: public
 array_relationships:
+  - name: contributionCounts
+    using:
+      manual_configuration:
+        column_mapping:
+          github_user_id: github_user_id
+        insertion_order: null
+        remote_table:
+          name: user_contribution_counts
+          schema: public
   - name: projects
     using:
       manual_configuration:

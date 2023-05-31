@@ -1,12 +1,13 @@
 import Card from "src/components/Card";
-import ContributionGraph, { Entry } from "./View";
+import ContributionGraph from ".";
+import { ContributionCountFragment } from "src/__generated/graphql";
 
 export default {
   title: "ContributionGraph",
   component: ContributionGraph,
 };
 
-const entries: Entry[] = [
+const entries: ContributionCountFragment[] = [
   { year: 2023, week: 14, count: 0 },
   { year: 2023, week: 15, count: 2 },
   { year: 2023, week: 16, count: 1 },

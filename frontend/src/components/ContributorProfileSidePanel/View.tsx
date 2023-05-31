@@ -1,8 +1,8 @@
-import { UserProfileFragment } from "src/__generated/graphql";
+import { ContributionCountFragment, UserProfileFragment } from "src/__generated/graphql";
 import SidePanel from "src/components/SidePanel";
 import { useIntl } from "src/hooks/useIntl";
 import MapPinLine from "src/icons/MapPinLine";
-import { formatDateShort } from "src/utils/date";
+import { daysFromNow, formatDateShort, weekNumber } from "src/utils/date";
 import onlyDustLogo from "assets/img/onlydust-logo.png";
 import GlobalLine from "src/icons/GlobalLine";
 import SocialLink from "./SocialLink";
@@ -13,7 +13,7 @@ import Telegram from "src/assets/icons/Telegram";
 import classNames from "classnames";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import remarkGfm from "remark-gfm";
-import { sortBy } from "lodash";
+import { chain, last, range, sortBy } from "lodash";
 import LinkedinBoxFill from "src/icons/LinkedinBoxFill";
 import Tag, { TagSize } from "src/components/Tag";
 import MailLine from "src/icons/MailLine";
@@ -22,6 +22,9 @@ import { Section } from "./Section";
 import ProjectCard, { Project } from "./ProjectCard";
 import StatCard from "./StatCard";
 import { formatMoneyAmount } from "src/utils/money";
+import Card from "src/components/Card";
+import ArrowRightUpLine from "src/icons/ArrowRightUpLine";
+import ContributionGraph from "./ContributionGraph";
 
 export enum HeaderColor {
   Blue = "blue",
@@ -38,10 +41,31 @@ type Props = {
   headerColor: HeaderColor;
 };
 
+const MAX_CONTRIBUTION_COUNTS = 9;
+
+const EMPTY_DATA: ContributionCountFragment[] = range(MAX_CONTRIBUTION_COUNTS, 0, -1)
+  .map(c => daysFromNow(7 * c))
+  .map(
+    date =>
+      ({
+        year: date.getFullYear(),
+        week: weekNumber(date),
+        count: 0,
+      } as ContributionCountFragment)
+  );
+
 export default function View({ profile, projects, headerColor, ...rest }: Props) {
   const { T } = useIntl();
 
   const languages = sortBy(Object.keys(profile.languages), l => profile.languages[l]).reverse();
+
+  const contributionCounts = chain(profile.contributionCounts)
+    .unionWith(EMPTY_DATA, (e1, e2) => e1.year === e2.year && e1.week === e2.week)
+    .sortBy(["year", "week"])
+    .reverse()
+    .take(MAX_CONTRIBUTION_COUNTS)
+    .reverse()
+    .value();
 
   return (
     <SidePanel {...rest}>
@@ -178,6 +202,25 @@ export default function View({ profile, projects, headerColor, ...rest }: Props)
                     notation: "compact",
                   })}
                 />
+                <Card
+                  blurred
+                  padded={false}
+                  className="flex flex-col bg-noise-light px-4 py-2 col-span-3 overflow-visible"
+                >
+                  <div className="flex flex-row items-center gap-3">
+                    <div className="font-walsheim font-medium text-sm uppercase text-greyscale-300 w-full">
+                      {T("profile.sections.stats.contributions")}
+                    </div>
+                    <div className="font-belwe font-normal text-4xl text-greyscale-50">
+                      {profile.projectsAggregate.aggregate?.sum?.contributionCount}
+                    </div>
+                    <div className="flex flex-row items-center gap-0.5 rounded-full py-0.5 px-2 bg-white/5 border border-greyscale-50/12 backdrop-blur-lg shadow-heavy text-sm self-end">
+                      <ArrowRightUpLine className="text-spacePurple-500" />
+                      <div className="text-greyscale-200">{`+${last(contributionCounts)?.count}`}</div>
+                    </div>
+                  </div>
+                  <ContributionGraph entries={contributionCounts} />
+                </Card>
               </div>
             </Section>
             {projects.length > 0 && (

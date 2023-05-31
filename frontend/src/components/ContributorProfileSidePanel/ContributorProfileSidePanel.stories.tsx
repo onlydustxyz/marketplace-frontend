@@ -45,6 +45,17 @@ const profileFull: UserProfileFragment = {
     Cairo: 100,
     Solidity: 20,
   },
+  contributionCounts: [
+    { year: 2023, week: 14, count: 0 },
+    { year: 2023, week: 15, count: 2 },
+    { year: 2023, week: 16, count: 1 },
+    { year: 2023, week: 17, count: 5 },
+    { year: 2023, week: 18, count: 3 },
+    { year: 2023, week: 19, count: 4 },
+    { year: 2023, week: 20, count: 1 },
+    { year: 2023, week: 21, count: 2 },
+    { year: 2023, week: 22, count: 5 },
+  ],
   projects: [],
   projectsLeaded: [
     { projectId: "", assignedAt: "2023-03-15T11:00:11.674+00:00", project: {} as ProfileProjectFragment },
@@ -53,6 +64,7 @@ const profileFull: UserProfileFragment = {
     aggregate: {
       sum: {
         moneyGranted: 23000,
+        contributionCount: 124,
       },
       min: {
         minContributionDate: "2023-02-31T11:31:09.674+00:00",
@@ -81,12 +93,18 @@ const profileNotSignedUp: UserProfileFragment = {
   languages: {
     Rust: 123,
   },
+  contributionCounts: [
+    { year: 2023, week: 17, count: 4 },
+    { year: 2023, week: 20, count: 1 },
+    { year: 2023, week: 22, count: 2 },
+  ],
   projects: [],
   projectsLeaded: [],
   projectsAggregate: {
     aggregate: {
       sum: {
         moneyGranted: 12000,
+        contributionCount: 7,
       },
       min: {
         minContributionDate: "2023-02-31T11:31:09.674+00:00",
@@ -113,11 +131,13 @@ const profileMinimalist: UserProfileFragment = {
   linkedin: null,
   discord: null,
   website: null,
+  contributionCounts: [],
   projects: [],
   projectsAggregate: {
     aggregate: {
       sum: {
         moneyGranted: null,
+        contributionCount: 0,
       },
       min: {
         minContributionDate: null,
