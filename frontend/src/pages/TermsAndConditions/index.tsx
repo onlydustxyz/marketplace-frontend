@@ -3,8 +3,9 @@ import OnlyDustLogo, { OnlyDustLogoWidth } from "src/App/Layout/Header/OnlyDustL
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import Button, { Width } from "src/components/Button";
 import Card from "src/components/Card";
-import SidePanel from "src/components/SidePanel";
 import { useAcceptTermsAndConditionsMutation } from "src/__generated/graphql";
+import FullTermsAndConditionsSidePanel from "./FullTermsAndConditionsSidePanel";
+import PrivacyPolicySidePanel from "./PrivacyPolicySidePanel";
 
 export const TermsAndConditions = () => {
   const [showTermsAndConditions, setShowTermsAndConditions] = useState(false);
@@ -15,14 +16,8 @@ export const TermsAndConditions = () => {
   return (
     <Background roundedBorders={BackgroundRoundedBorders.Full}>
       <div className="h-full flex flex-col justify-center items-center text-greyscale-50">
-        {
-          <SidePanel
-            title="Full terms ans conditions"
-            open={showFullTermsAndConditions}
-            setOpen={setShowFullTermsAndConditions}
-          />
-        }
-        {<SidePanel title="Privacy policy" open={showPrivacyPolicy} setOpen={setShowPrivacyPolicy} />}
+        <FullTermsAndConditionsSidePanel {...{ showFullTermsAndConditions, setShowFullTermsAndConditions }} />
+        <PrivacyPolicySidePanel {...{ showPrivacyPolicy, setShowPrivacyPolicy }} />
         <div className="w-1/2 my-16">
           {!showTermsAndConditions ? (
             <Card
