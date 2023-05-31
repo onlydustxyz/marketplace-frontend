@@ -46,7 +46,9 @@ const profileFull: UserProfileFragment = {
     Solidity: 20,
   },
   projects: [],
-  projectsLeaded: [{ projectId: "", project: {} as ProfileProjectFragment }],
+  projectsLeaded: [
+    { projectId: "", assignedAt: "2023-03-15T11:00:11.674+00:00", project: {} as ProfileProjectFragment },
+  ],
   projectsAggregate: {
     aggregate: {
       sum: {

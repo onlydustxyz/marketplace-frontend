@@ -26429,6 +26429,22 @@
         "description": "columns and relationships of \"project_leads\"",
         "fields": [
           {
+            "name": "assignedAt",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "timestamp",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "project",
             "description": "An object relationship",
             "args": [],
@@ -26774,6 +26790,18 @@
             "deprecationReason": null
           },
           {
+            "name": "assignedAt",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "TimestampComparisonExp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "project",
             "description": null,
             "type": {
@@ -26850,6 +26878,18 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "assignedAt",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "timestamp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "project",
             "description": null,
             "type": {
@@ -26908,6 +26948,18 @@
         "description": "aggregate max on columns",
         "fields": [
           {
+            "name": "assignedAt",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "timestamp",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "projectId",
             "description": null,
             "args": [],
@@ -26942,6 +26994,18 @@
         "name": "ProjectLeadsMinFields",
         "description": "aggregate min on columns",
         "fields": [
+          {
+            "name": "assignedAt",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "timestamp",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "projectId",
             "description": null,
@@ -27093,6 +27157,18 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "assignedAt",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "project",
             "description": null,
             "type": {
@@ -27197,6 +27273,12 @@
         "interfaces": null,
         "enumValues": [
           {
+            "name": "assignedAt",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "projectId",
             "description": "column name",
             "isDeprecated": false,
@@ -27217,6 +27299,18 @@
         "description": "input type for updating data in table \"project_leads\"",
         "fields": null,
         "inputFields": [
+          {
+            "name": "assignedAt",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "timestamp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "projectId",
             "description": null,
@@ -27254,6 +27348,12 @@
         "inputFields": null,
         "interfaces": null,
         "enumValues": [
+          {
+            "name": "assignedAt",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "projectId",
             "description": "column name",
@@ -70204,6 +70304,18 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "assignedAt",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "projectId",
             "description": null,
             "type": {
@@ -70238,6 +70350,18 @@
         "description": "order by min() on columns of table \"project_leads\"",
         "fields": null,
         "inputFields": [
+          {
+            "name": "assignedAt",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "projectId",
             "description": null,
@@ -70312,6 +70436,18 @@
         "description": "Initial value of the column from where the streaming should start",
         "fields": null,
         "inputFields": [
+          {
+            "name": "assignedAt",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "timestamp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "projectId",
             "description": null,

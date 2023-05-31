@@ -3,7 +3,6 @@ import View, { HeaderColor } from "./View";
 import { contextWithCacheHeaders } from "src/utils/headers";
 import { Project } from "./ProjectCard";
 import { unionBy } from "lodash";
-import { daysFromNow } from "src/utils/date";
 
 type Props = {
   githubUserId: number;
@@ -21,7 +20,7 @@ export default function ContributorProfileSidePanel({ githubUserId, ...rest }: P
           id: project.projectId,
           name: project.project?.projectDetails?.name || "",
           logoUrl: project.project?.projectDetails?.logoUrl || "",
-          leadSince: daysFromNow(30),
+          leadSince: new Date(project.assignedAt),
           contributorCount: project.project?.contributorsAggregate.aggregate?.count || 0,
           totalGranted: project.project?.budgetsAggregate.aggregate?.sum?.spentAmount || 0,
         } as Project)

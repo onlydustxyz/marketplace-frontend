@@ -167,6 +167,7 @@ class ProjectGithubRepos {
 }
 
 class ProjectLeads {
+   assignedAt: timestamp!
    project: Projects
    projectId: uuid!
    user: RegisteredUsers

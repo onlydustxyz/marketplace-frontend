@@ -68,6 +68,7 @@ fragment UserProfile on UserProfiles {
     }
     projectsLeaded {
       projectId
+      assignedAt
       project {
         ...ProfileProject
       }
