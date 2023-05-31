@@ -9,7 +9,7 @@ import LogoutBoxRLine from "src/icons/LogoutBoxRLine";
 import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import PayoutInfoSidePanel from "./PayoutInfoSidePanel";
 import User3Line from "src/icons/User3Line";
-import ContributorProfileSidePanel from "src/components/ContributorProfileSidePanel";
+import ContributorProfileSidePanel from "./ContributorProfileSidePanel";
 
 type Props = {
   avatarUrl: string | null;
