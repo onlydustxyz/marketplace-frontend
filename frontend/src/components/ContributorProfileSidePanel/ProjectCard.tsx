@@ -36,11 +36,11 @@ export default function ProjectCard({
 
   return (
     <Link to={generatePath(RoutePaths.ProjectDetails, { projectId: id })}>
-      <Card blurred selectable padded={false} className="flex flex-col bg-noise-light">
-        <div className="flex flex-col p-4 gap-3">
+      <Card blurred selectable padded={false} className="flex flex-col bg-noise-light h-full">
+        <div className="flex flex-col p-4 gap-3 h-full">
           <RoundedImage src={logoUrl} alt={name} />
-          <div className="flex flex-col gap-2">
-            <div className="font-belwe font-normal text-base text-greyscale-50">{name}</div>
+          <div className="flex flex-col gap-2 h-full">
+            <div className="font-belwe font-normal text-base text-greyscale-50 h-full">{name}</div>
             <div className="flex flex-row gap-1 items-center">
               <Tag
                 size={TagSize.Small}
@@ -57,7 +57,7 @@ export default function ProjectCard({
             </div>
           </div>
         </div>
-        <div className="flex flex-col px-4 py-3 gap-1 h-full bg-white/5 rounded-b-2xl border-t border-greyscale-50/8">
+        <div className="flex flex-col px-4 py-3 gap-1 h-fit bg-white/5 rounded-b-2xl border-t border-greyscale-50/8">
           <div className="font-walsheim font-medium text-sm text-greyscale-50">
             {leadSince ? (
               <div className="flex flex-row items-center gap-1">
