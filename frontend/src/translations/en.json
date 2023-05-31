@@ -288,6 +288,9 @@
   "profile": {
     "joinedAt": "Joined in __joinedAt__",
     "firstContributedAt": "First contributed in __firstContributedAt__",
+    "valueCopiedToClipboard": "__valueName__ copied to clipboard",
+    "email": "Email address",
+    "discord": "Discord username",
     "sections": {
       "technologies": {
         "title": "Technologies"

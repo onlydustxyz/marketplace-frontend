@@ -125,7 +125,7 @@ export default function View({ profile, projects, headerColor, ...rest }: Props)
                 </SocialLink>
               )}
               {profile.discord && (
-                <SocialLink link={profile.discord}>
+                <SocialLink copyableValue={profile.discord} copyableValueName={T("profile.discord")}>
                   <DiscordFill />
                 </SocialLink>
               )}
@@ -135,7 +135,7 @@ export default function View({ profile, projects, headerColor, ...rest }: Props)
                 </SocialLink>
               )}
               {profile.email && (
-                <SocialLink link={profile.email}>
+                <SocialLink copyableValue={profile.email} copyableValueName={T("profile.email")}>
                   <MailLine />
                 </SocialLink>
               )}
