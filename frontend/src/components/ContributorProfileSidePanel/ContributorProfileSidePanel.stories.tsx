@@ -44,6 +44,19 @@ const profile: UserProfileFragment = {
     Cairo: 100,
     Solidity: 20,
   },
+  projects: [],
+  projectsLeaded: [],
+  projectsAggregate: {
+    aggregate: {
+      sum: {
+        moneyGranted: 23000,
+      },
+      min: {
+        minContributionDate: "2023-02-31T11:31:09.674+00:00",
+      },
+      count: 0,
+    },
+  },
 };
 
 const kakarot: Project = {
