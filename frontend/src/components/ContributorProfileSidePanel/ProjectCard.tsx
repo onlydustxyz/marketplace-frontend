@@ -9,6 +9,7 @@ import { useIntl } from "src/hooks/useIntl";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { Link, generatePath } from "react-router-dom";
 import { RoutePaths } from "src/App";
+import { withTooltip } from "src/components/Tooltip";
 
 export type Project = {
   id: string;
@@ -40,11 +41,17 @@ export default function ProjectCard({
           <RoundedImage src={logoUrl} alt={name} />
           <div className="flex flex-col gap-2">
             <div className="font-belwe font-normal text-base text-greyscale-50">{name}</div>
-            <div className="flex flex-row items-center justify-between">
-              <Tag size={TagSize.Small}>
+            <div className="flex flex-row gap-1 items-center">
+              <Tag
+                size={TagSize.Small}
+                {...withTooltip(T("profile.sections.projects.contributorCount"), { className: "w-fit" })}
+              >
                 <User3Line /> {contributorCount}
               </Tag>
-              <Tag size={TagSize.Small}>
+              <Tag
+                size={TagSize.Small}
+                {...withTooltip(T("profile.sections.projects.moneyGranted"), { className: "w-fit" })}
+              >
                 <FundsLine /> {formatMoneyAmount({ amount: totalGranted, notation: "compact" })}
               </Tag>
             </div>
