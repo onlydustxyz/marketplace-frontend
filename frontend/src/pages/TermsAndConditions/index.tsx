@@ -3,15 +3,26 @@ import OnlyDustLogo, { OnlyDustLogoWidth } from "src/App/Layout/Header/OnlyDustL
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import Button, { Width } from "src/components/Button";
 import Card from "src/components/Card";
+import SidePanel from "src/components/SidePanel";
 import { useAcceptTermsAndConditionsMutation } from "src/__generated/graphql";
 
 export const TermsAndConditions = () => {
   const [showTermsAndConditions, setShowTermsAndConditions] = useState(false);
   const [acceptTermsAndConditionsMutation, { data, loading, error }] = useAcceptTermsAndConditionsMutation();
   const [checked, setChecked] = useState(false);
+  const [showFullTermsAndConditions, setShowFullTermsAndConditions] = useState(false);
+  const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
   return (
     <Background roundedBorders={BackgroundRoundedBorders.Full}>
       <div className="h-full flex flex-col justify-center items-center text-greyscale-50">
+        {
+          <SidePanel
+            title="Full terms ans conditions"
+            open={showFullTermsAndConditions}
+            setOpen={setShowFullTermsAndConditions}
+          />
+        }
+        {<SidePanel title="Privacy policy" open={showPrivacyPolicy} setOpen={setShowPrivacyPolicy} />}
         <div className="w-1/2 my-16">
           {!showTermsAndConditions ? (
             <Card
@@ -121,7 +132,19 @@ export const TermsAndConditions = () => {
                         onClick={() => setChecked(!checked)}
                         className="w-5 h-5 bg-white/8 hover:bg-white/2 checked:bg-spacePurple-500 rounded border border-greyscale-50/20 checked:border-spacePurple-700 focus:ring-0 focus:ring-offset-0 cursor-pointer enabled:ring-0 checked:focus:bg-spacePurple-500 checked:hover:bg-spacePurple-500/90  checked:hover:border-spacePurple-700"
                       />
-                      I agree to the full terms & conditions & the privacy policy
+                      <p>
+                        I agree to the{" "}
+                        <span
+                          onClick={() => setShowFullTermsAndConditions(true)}
+                          className="inline underline cursor-pointer"
+                        >
+                          full terms & conditions
+                        </span>{" "}
+                        & the{" "}
+                        <span onClick={() => setShowPrivacyPolicy(true)} className="inline underline cursor-pointer">
+                          privacy policy
+                        </span>
+                      </p>
                     </div>
                     <Button onClick={() => acceptTermsAndConditionsMutation()} width={Width.Full} disabled={!checked}>
                       Accept terms and conditions
