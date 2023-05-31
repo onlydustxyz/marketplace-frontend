@@ -97,7 +97,11 @@
       "button": "Feedback",
       "popupTitle": "Feedback form"
     },
-    "logout": "Logout",
+    "logout": "Log out",
+    "profile": {
+      "title": "Your account",
+      "payoutInfo": "Payout information"
+    },
     "payments": "Payments",
     "projects": "Projects",
     "signInWithGithub": "Connect"
@@ -284,7 +288,6 @@
     "button": {
       "payoutSettingsInvalidTooltip": "You're unable to receive payments. Click to fill up required info"
     },
-    "edit": "Edit profile",
     "form": {
       "address": "Street address",
       "bankWire": "Bank wire",
@@ -324,13 +327,18 @@
       "profileType": "Account type",
       "profileTypeCompany": "Company",
       "profileTypeIndividual": "Individual",
-      "send": "Save profile",
+      "send": "Save payout info",
       "success": "Changes saved",
       "telegram": "Telegram",
       "telegramPlaceholder": "Telegram",
       "twitter": "Twitter",
       "twitterPlaceholder": "Twitter",
-      "typeOfProfile": "Profile type"
+      "typeOfProfile": "Profile type",
+      "privacyNotice": "Your info remains private.\n We'll only use it to process payments.",
+      "saveStatus": {
+        "unsaved": "Unsaved changes",
+        "saved": "All changes saved"
+      }
     },
     "missing": {
       "button": "Complete payout information",

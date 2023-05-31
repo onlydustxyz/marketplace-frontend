@@ -58,11 +58,12 @@ export class EditProfilePage {
   }
 
   async goto() {
-    await this.page.goto("/profile");
+    await this.page.getByTestId("profile-button").click();
+    await this.page.getByText(/payout info/i).click();
   }
 
   async submitForm() {
-    await this.page.locator("[data-testid='profile-form-submit-button']").click();
+    await this.page.getByTestId("profile-form-submit-button").click();
     await expect(this.page.getByTestId("toaster-message")).toHaveText("Changes saved");
   }
 
@@ -110,18 +111,9 @@ export class EditProfilePage {
         profile.payoutSettings?.optEthAddress || profile.payoutSettings?.optEthName || ""
       );
     }
-
-    await this.email.clear();
-    await this.email.type(profile.contactInformation?.email || "");
-    await this.telegram.clear();
-    await this.telegram.type(profile.contactInformation?.telegram || "");
-    await this.twitter.clear();
-    await this.twitter.type(profile.contactInformation?.twitter || "");
-    await this.discord.clear();
-    await this.discord.type(profile.contactInformation?.discord || "");
   }
 
-  async expectForm(profile: UserProfile, preFilledEmail: string) {
+  async expectForm(profile: UserProfile) {
     let personIdentity: PersonIdentity | null | undefined;
 
     if (profile.identity?.type === IdentityType.Company) {
@@ -148,10 +140,5 @@ export class EditProfilePage {
         profile.payoutSettings?.optEthAddress || profile.payoutSettings?.optEthName || ""
       );
     }
-
-    await expect(this.email).toHaveValue(profile.contactInformation?.email || preFilledEmail);
-    await expect(this.telegram).toHaveValue(profile.contactInformation?.telegram || "");
-    await expect(this.twitter).toHaveValue(profile.contactInformation?.twitter || "");
-    await expect(this.discord).toHaveValue(profile.contactInformation?.discord || "");
   }
 }

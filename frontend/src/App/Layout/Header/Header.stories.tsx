@@ -1,45 +1,12 @@
-import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { RoutePaths } from "src/App";
-import { AuthContext, AuthContextType } from "src/hooks/useAuth";
-import { User } from "src/types";
 import { withRouter } from "storybook-addon-react-router-v6";
-import { SuspenseCache } from "@apollo/client";
-import { MockedProvider } from "@apollo/client/testing";
 
 import Header from "./View";
 import { responsiveChromatic } from "src/test/utils";
 import { UserIdentityDocument } from "src/__generated/graphql";
-
-export default {
-  title: "Header",
-  component: Header,
-  parameters: responsiveChromatic,
-  decorators: [withRouter],
-} as ComponentMeta<typeof Header>;
+import withMockedProvider from "src/test/storybook/decorators/withMockedProvider";
 
 const USER_ID = "e2ee731a-2697-4306-bf4b-c807f6fda0d7";
-
-const MockAuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const mockedValue: AuthContextType = {
-    isLoggedIn: true,
-    ledProjectIds: [],
-    login: () => {
-      return;
-    },
-    logout: () => Promise.resolve(),
-    roles: [],
-    user: {
-      id: USER_ID,
-      email: "le@chinoix.fr",
-      login: "lechinoix",
-      avatarUrl: "https://avatars.githubusercontent.com/u/10167015?v=4",
-    } as unknown as User,
-    githubUserId: 123,
-    invalidImpersonation: false,
-    impersonating: false,
-  };
-  return <AuthContext.Provider value={mockedValue}>{children}</AuthContext.Provider>;
-};
 
 const mocks = [
   {
@@ -64,19 +31,14 @@ const mocks = [
   },
 ];
 
-const suspenseCache = new SuspenseCache();
+export default {
+  title: "Header",
+  component: Header,
+  parameters: responsiveChromatic,
+  decorators: [withRouter, withMockedProvider(mocks)],
+};
 
-const Template: ComponentStory<typeof Header> = args => (
-  <MockedProvider mocks={mocks} suspenseCache={suspenseCache}>
-    <MockAuthProvider>
-      <Header {...args} />
-    </MockAuthProvider>
-  </MockedProvider>
-);
-
-export const Default = Template.bind({});
-
-Default.args = {
+const args = {
   menuItems: {
     [RoutePaths.Projects]: "Projects",
     [RoutePaths.Payments]: "Payments",
@@ -86,4 +48,8 @@ Default.args = {
   impersonating: false,
 };
 
-Default.parameters = { layout: "fullscreen", backgrounds: { default: "space" } };
+export const Default = {
+  render: () => <Header {...args} />,
+
+  parameters: { layout: "fullscreen", backgrounds: { default: "space" } },
+};

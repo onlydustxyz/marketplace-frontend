@@ -1,41 +1,11 @@
-import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { AuthContext, AuthContextType } from "src/hooks/useAuth";
-import { User } from "src/types";
 import { withRouter } from "storybook-addon-react-router-v6";
-import { SuspenseCache } from "@apollo/client";
-import { MockedProvider } from "@apollo/client/testing";
 
 import FeedbackButton from ".";
 import { UserIdentityDocument } from "src/__generated/graphql";
-
-export default {
-  title: "FeedbackButton",
-  component: FeedbackButton,
-  decorators: [withRouter],
-} as ComponentMeta<typeof FeedbackButton>;
+import withMockedProvider from "src/test/storybook/decorators/withMockedProvider";
+import withAuthProvider from "src/test/storybook/decorators/withAuthProvider";
 
 const USER_ID = "e2ee731a-2697-4306-bf4b-c807f6fda0d7";
-
-const MockAuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const mockedValue: AuthContextType = {
-    isLoggedIn: true,
-    ledProjectIds: [],
-    login: () => {
-      return;
-    },
-    logout: () => Promise.resolve(),
-    roles: [],
-    user: {
-      id: USER_ID,
-      email: "foo@bar.fr",
-      login: "foobar",
-    } as unknown as User,
-    githubUserId: 123,
-    invalidImpersonation: false,
-    impersonating: false,
-  };
-  return <AuthContext.Provider value={mockedValue}>{children}</AuthContext.Provider>;
-};
 
 const mocks = [
   {
@@ -60,14 +30,12 @@ const mocks = [
   },
 ];
 
-const suspenseCache = new SuspenseCache();
+export default {
+  title: "FeedbackButton",
+  component: FeedbackButton,
+  decorators: [withRouter, withMockedProvider(mocks), withAuthProvider({ userId: USER_ID })],
+};
 
-const Template: ComponentStory<typeof FeedbackButton> = () => (
-  <MockedProvider mocks={mocks} suspenseCache={suspenseCache}>
-    <MockAuthProvider>
-      <FeedbackButton />
-    </MockAuthProvider>
-  </MockedProvider>
-);
-
-export const Default = Template.bind({});
+export const Default = {
+  render: () => <FeedbackButton />,
+};

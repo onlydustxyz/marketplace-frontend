@@ -7,11 +7,23 @@ import {
   UserPayoutSettingsFragment,
 } from "src/__generated/graphql";
 import usePayoutSettings from "./usePayoutSettings";
+import { PropsWithChildren } from "react";
+import { ToasterProvider } from "./useToaster";
 
 const GITHUB_USER_ID = 12345;
 
+type WrapperProps = {
+  mocks?: ReadonlyArray<MockedResponse>;
+} & PropsWithChildren;
+
+const wrapper = ({ children, mocks }: WrapperProps) => (
+  <ToasterProvider>
+    <MockedProvider mocks={mocks}>{children}</MockedProvider>
+  </ToasterProvider>
+);
+
 const render = (mocks: MockedResponse[]) =>
-  renderHook(() => usePayoutSettings(GITHUB_USER_ID), { wrapper: MockedProvider, initialProps: { mocks } });
+  renderHook(() => usePayoutSettings(GITHUB_USER_ID), { wrapper, initialProps: { mocks } });
 
 const mockGetPayoutSettingsQuery = <T, I>(payoutSettings: T, arePayoutSettingsValid: boolean, identity?: I) => ({
   request: {

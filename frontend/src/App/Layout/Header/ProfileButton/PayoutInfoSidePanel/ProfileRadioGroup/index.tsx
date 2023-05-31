@@ -8,16 +8,14 @@ type Option = {
   icon: ReactElement;
 };
 
-type PropsType = {
+type Props = {
   name: string;
   label?: string;
   options: Option[];
   requiredForPayment?: boolean;
 };
 
-const ProfileRadioGroup: React.FC<PropsType> = ({ name, label, options, requiredForPayment = false }) => {
+export default function ProfileRadioGroup({ name, label, options, requiredForPayment = false }: Props) {
   const { register } = useFormContext();
   return <View {...{ options, label, register: register(name), requiredForPayment }} />;
-};
-
-export default ProfileRadioGroup;
+}

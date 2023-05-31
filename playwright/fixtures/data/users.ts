@@ -9,6 +9,7 @@ export const users: Record<string, UserFixture> = {
       login: "tokio-rs",
     },
     profile: {
+      populate: false,
       identity: {
         type: IdentityType.Company,
         optCompany: {
@@ -46,6 +47,7 @@ export const users: Record<string, UserFixture> = {
       login: "ofux",
     },
     profile: {
+      populate: false,
       identity: {
         type: IdentityType.Person,
         optCompany: null,

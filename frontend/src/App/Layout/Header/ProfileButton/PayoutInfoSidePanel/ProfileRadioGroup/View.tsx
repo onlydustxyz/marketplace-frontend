@@ -16,7 +16,7 @@ type PropsType = {
 
 export default function View({ label, options, register, requiredForPayment }: PropsType) {
   return (
-    <label className="flex flex-col flex-grow gap-2 mb-6">
+    <label className="flex flex-col gap-2">
       <div className="font-medium text-sm text-greyscale-300 tracking-tight">
         {label}
         {requiredForPayment && <span className="text-orange-500 pl-0.5">{"*"}</span>}

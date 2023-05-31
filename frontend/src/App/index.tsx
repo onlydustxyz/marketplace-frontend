@@ -6,7 +6,6 @@ import ProtectedRoute from "src/App/ProtectedRoute";
 
 const Login = lazy(() => import("src/pages/Login"));
 const Projects = lazy(() => import("src/pages/Projects"));
-const Profile = lazy(() => import("src/pages/Profile"));
 const Payments = lazy(() => import("src/pages/Payments"));
 const ProjectDetails = lazy(() => import("src/pages/ProjectDetails"));
 const ProjectDetailsOverview = lazy(() => import("src/pages/ProjectDetails/Overview"));
@@ -24,7 +23,6 @@ export enum RoutePaths {
   Home = "/",
   Projects = "/",
   Login = "/login",
-  Profile = "/profile",
   ProjectDetails = "/projects/:projectId",
   Payments = "/payments",
   CatchAll = "*",
@@ -83,14 +81,6 @@ function App() {
         {
           path: RoutePaths.Projects,
           element: <Projects />,
-        },
-        {
-          path: RoutePaths.Profile,
-          element: (
-            <ProtectedRoute requiredRole={HasuraUserRole.RegisteredUser}>
-              <Profile />
-            </ProtectedRoute>
-          ),
         },
         {
           path: RoutePaths.Payments,
