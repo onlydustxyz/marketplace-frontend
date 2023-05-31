@@ -171,6 +171,7 @@ diesel::table! {
     project_leads (project_id, user_id) {
         project_id -> Uuid,
         user_id -> Uuid,
+        assigned_at -> Timestamp,
     }
 }
 

@@ -31,8 +31,15 @@ impl EventListener<Event> for Projector {
 			Event::Project(event) => match event {
 				ProjectEvent::Created { id } =>
 					self.project_repository.try_insert(&Project::new(*id))?,
-				ProjectEvent::LeaderAssigned { id, leader_id } =>
-					self.project_lead_repository.try_insert(id, leader_id)?,
+				ProjectEvent::LeaderAssigned {
+					id,
+					leader_id,
+					assigned_at,
+				} => self.project_lead_repository.try_insert_with_metadata(
+					id,
+					leader_id,
+					assigned_at,
+				)?,
 				ProjectEvent::LeaderUnassigned { id, leader_id } =>
 					self.project_lead_repository.delete(id, leader_id)?,
 				ProjectEvent::Budget { .. } => (),

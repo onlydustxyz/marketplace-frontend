@@ -121,6 +121,7 @@ impl Project {
 		Ok(vec![ProjectEvent::LeaderAssigned {
 			id: self.id,
 			leader_id,
+			assigned_at: Utc::now().naive_utc(),
 		}])
 	}
 
@@ -355,11 +356,15 @@ mod tests {
 		let events = project.assign_leader(user_id.to_owned()).unwrap();
 
 		assert_eq!(events.len(), 1);
-		assert_eq!(
+		assert_matches!(
 			events[0],
 			ProjectEvent::LeaderAssigned {
-				id: project_id,
-				leader_id: user_id
+				id,
+				leader_id,
+				..
+			} => {
+				assert_eq!(id, project_id);
+				assert_eq!(leader_id, user_id);
 			}
 		);
 	}
