@@ -25,6 +25,7 @@ import { formatMoneyAmount } from "src/utils/money";
 import Card from "src/components/Card";
 import ArrowRightUpLine from "src/icons/ArrowRightUpLine";
 import ContributionGraph from "./ContributionGraph";
+import { filterRemovedLanguages } from "src/utils/languages";
 
 export enum HeaderColor {
   Blue = "blue",
@@ -57,7 +58,7 @@ const EMPTY_DATA: ContributionCountFragment[] = range(0, MAX_CONTRIBUTION_COUNTS
 export default function View({ profile, projects, headerColor, ...rest }: Props) {
   const { T } = useIntl();
 
-  const languages = sortBy(Object.keys(profile.languages), l => profile.languages[l]).reverse();
+  const languages = filterRemovedLanguages(sortBy(Object.keys(profile.languages), l => profile.languages[l]).reverse());
 
   const contributionCounts = chain(profile.contributionCounts)
     .unionWith(EMPTY_DATA, (e1, e2) => e1.year === e2.year && e1.week === e2.week)

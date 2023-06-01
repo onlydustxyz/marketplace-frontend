@@ -20,8 +20,11 @@ export const getMostUsedLanguages = (languageMap: LanguageMap, count = 3) => {
     })
   );
 
-  return [...sortedLanguages.keys()].filter(l => !REMOVED_LANGUAGES.includes(l?.toLowerCase())).slice(0, count);
+  return filterRemovedLanguages([...sortedLanguages.keys()]).slice(0, count);
 };
+
+export const filterRemovedLanguages = (languages: string[]) =>
+  languages.filter(l => !REMOVED_LANGUAGES.includes(l?.toLowerCase()));
 
 export const buildLanguageString = (languages: string[]) => {
   return languages.map(str => str.toLowerCase()).join(", ");
