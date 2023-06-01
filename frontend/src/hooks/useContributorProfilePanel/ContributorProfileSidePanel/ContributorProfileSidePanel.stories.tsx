@@ -206,6 +206,9 @@ export const Default = {
       headerColor={headerColor}
     />
   ),
+  parameters: {
+    chromatic: { delay: 1500 },
+  },
 };
 
 export const NotSignedUp = {
@@ -220,6 +223,9 @@ export const NotSignedUp = {
       headerColor={headerColor}
     />
   ),
+  parameters: {
+    chromatic: { delay: 1500 },
+  },
 };
 
 export const Minimalist = {
@@ -234,4 +240,7 @@ export const Minimalist = {
       headerColor={headerColor}
     />
   ),
+  parameters: {
+    chromatic: { delay: 1500 },
+  },
 };
