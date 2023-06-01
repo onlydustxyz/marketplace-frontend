@@ -6,6 +6,7 @@ import Headers from "./Headers";
 import ContributorLine from "./Line";
 
 export type Contributor = {
+  id: number;
   login: string;
   avatarUrl: string;
   htmlUrl: string;

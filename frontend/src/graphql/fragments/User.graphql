@@ -6,4 +6,5 @@ fragment ProjectLead on RegisteredUsers {
   ...UserId
   login
   avatarUrl
+  githubUserId
 }

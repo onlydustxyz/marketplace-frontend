@@ -1,11 +1,18 @@
 import withMockedProvider from "src/test/storybook/decorators/withMockedProvider";
 import ProfileButton from "./View";
 import withToasterProvider from "src/test/storybook/decorators/withToasterProvider";
+import withSidePanelStackProvider from "src/test/storybook/decorators/withSidePanelStackProvider";
+import withContributorProfilePanelProvider from "src/test/storybook/decorators/withContributorProfilePanelProvider";
 
 export default {
   title: "ProfileButton",
   component: ProfileButton,
-  decorators: [withToasterProvider, withMockedProvider()],
+  decorators: [
+    withToasterProvider,
+    withMockedProvider(),
+    withSidePanelStackProvider,
+    withContributorProfilePanelProvider,
+  ],
   argTypes: {
     payoutSettingsInvalid: { type: "boolean" },
   },

@@ -27,4 +27,7 @@ export const Default = {
       </div>
     </Card>
   ),
+  parameters: {
+    chromatic: { delay: 1500 },
+  },
 };

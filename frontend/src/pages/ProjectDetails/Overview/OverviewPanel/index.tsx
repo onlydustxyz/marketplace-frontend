@@ -5,8 +5,8 @@ import { useIntl } from "src/hooks/useIntl";
 import isDefined from "src/utils/isDefined";
 import { formatMoneyAmount } from "src/utils/money";
 import { GithubUserFragment, ProjectLeadFragment, SponsorFragment } from "src/__generated/graphql";
-import ClickableUser from "./ClickableUser";
 import Section, { SectionIcon } from "./Section";
+import ClickableUser from "src/components/ClickableUser";
 
 interface Props {
   leads?: ProjectLeadFragment[];
@@ -48,8 +48,8 @@ export default function OverviewPanel({
               <ClickableUser
                 key={lead.id}
                 name={lead.login || ""}
-                logoUrl={lead.avatarUrl}
-                url={`https://github.com/${lead.login}`}
+                avatarUrl={lead.avatarUrl}
+                githubUserId={lead.githubUserId}
               />
             ))}
           </div>
@@ -98,7 +98,12 @@ export default function OverviewPanel({
         >
           <div data-testid="sponsors" className="flex flex-row flex-wrap gap-3">
             {sponsors.map(sponsor => (
-              <ClickableUser key={sponsor.id} name={sponsor.name} logoUrl={sponsor.logoUrl} url={sponsor.url} />
+              <ClickableUser
+                key={sponsor.id}
+                name={sponsor.name}
+                avatarUrl={sponsor.logoUrl}
+                externalUrl={sponsor.url}
+              />
             ))}
           </div>
         </Section>

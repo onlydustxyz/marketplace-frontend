@@ -105,6 +105,7 @@ const ALL_PROJECTS_RESULT: { data: GetProjectsQueryResult["data"] } = {
               id: TEST_USER_ID,
               login: TEST_PROJECT_LEAD_DISPLAY_NAME,
               avatarUrl: TEST_PROJECT_LEAD_AVATAR_URL,
+              githubUserId: 12345,
             },
           },
         ],

@@ -43,6 +43,7 @@ const PROJECT: Project = {
         id: "user-1",
         login: "oscarwroche",
         avatarUrl: "https://avatars.githubusercontent.com/u/21149076?v=4",
+        githubUserId: 21149076,
       },
     },
   ],

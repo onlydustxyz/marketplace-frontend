@@ -22,6 +22,7 @@ import Tooltip, { withCustomTooltip } from "src/components/Tooltip";
 import IBAN from "iban";
 import ExternalLink from "src/components/ExternalLink";
 import isDefined from "src/utils/isDefined";
+import ClickableUser from "src/components/ClickableUser";
 
 enum Align {
   Top = "top",
@@ -102,12 +103,14 @@ export default function View({
             <div className="font-belwe font-normal text-5xl text-greyscale-50">
               {formatMoneyAmount({ amount: amountInUsd })}
             </div>
-            {requestor && (
+            {requestor?.login && (
               <Details>
                 <RoundedImage alt={requestor.login || ""} src={requestor.avatarUrl || ""} size={ImageSize.Xxs} />
-                {T(`payment.table.detailsPanel.from.${requestor.id === userId ? "you" : "other"}`, {
-                  user: requestor.login,
-                })}
+                <div className="flex flex-row items-center gap-1">
+                  {T("payment.table.detailsPanel.from")}
+                  <ClickableUser name={requestor.login} githubUserId={requestor.githubUserId} />
+                  {requestor.id === userId && T("payment.table.detailsPanel.you")}
+                </div>
               </Details>
             )}
             {liveGithubRecipient && (
@@ -117,9 +120,11 @@ export default function View({
                   src={liveGithubRecipient.avatarUrl}
                   size={ImageSize.Xxs}
                 />
-                {T(`payment.table.detailsPanel.to.${liveGithubRecipient.id === githubUserId ? "you" : "other"}`, {
-                  user: liveGithubRecipient.login,
-                })}
+                <div className="flex flex-row items-center gap-1">
+                  {T("payment.table.detailsPanel.to")}
+                  <ClickableUser name={liveGithubRecipient.login} githubUserId={liveGithubRecipient.id} />
+                  {liveGithubRecipient.id === githubUserId && T("payment.table.detailsPanel.you")}
+                </div>
               </Details>
             )}
             {requestedAt && (

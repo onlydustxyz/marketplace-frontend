@@ -4,6 +4,7 @@ import { ProjectLeadFragment } from "src/__generated/graphql";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import { TooltipPosition, withTooltip } from "src/components/Tooltip";
 import LockFill from "src/icons/LockFill";
+import ClickableUser from "src/components/ClickableUser";
 
 type Props = {
   projectId: string;
@@ -19,8 +20,11 @@ const ProjectLeads = ({ leads }: { leads: ProjectLeadFragment[] }) => {
   return (
     <div className="text-sm flex flex-row text-spaceBlue-200 gap-1 items-center pt-0.5">
       {leads.length > 0 && (
-        <div className="whitespace-nowrap truncate">
-          {T("project.ledBy", { name: leads[0]?.login, count: leads.length })}
+        <div className="flex flex-row gap-1 whitespace-nowrap truncate">
+          {T("project.ledBy", { count: leads.length })}
+          {leads.length === 1 && leads[0].login && (
+            <ClickableUser name={leads[0].login} githubUserId={leads[0].githubUserId} />
+          )}
         </div>
       )}
       <div

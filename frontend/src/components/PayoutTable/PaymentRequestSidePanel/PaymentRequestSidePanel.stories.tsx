@@ -3,6 +3,8 @@ import { PaymentStatus } from "src/types";
 import { LiveGithubIssueFragment, PaymentRequestDetailsFragment, Status, Type } from "src/__generated/graphql";
 import View, { Props } from "./View";
 import { daysFromNow } from "src/utils/date";
+import withSidePanelStackProvider from "src/test/storybook/decorators/withSidePanelStackProvider";
+import withContributorProfilePanelProvider from "src/test/storybook/decorators/withContributorProfilePanelProvider";
 
 const statuses = {
   payoutInfoMissingAsLeader: {
@@ -19,6 +21,7 @@ const statuses = {
 export default {
   title: "PaymentRequestSidePanel",
   component: View,
+  decorators: [withSidePanelStackProvider, withContributorProfilePanelProvider],
   argTypes: {
     payoutStatus: {
       options: Object.keys(statuses),
@@ -85,6 +88,7 @@ const payment: PaymentRequestDetailsFragment = {
     id: "53c45a8e-c762-48b0-a677-6f48ddb8a66b",
     login: "Antho",
     avatarUrl: "https://avatars.githubusercontent.com/u/43467246?v=4",
+    githubUserId: 43467246,
   },
   workItems: issues.map(githubIssue => ({
     paymentId: "880819f1-2ab9-406d-9bf1-3012b6f565bc",

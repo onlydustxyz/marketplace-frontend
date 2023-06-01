@@ -29,7 +29,9 @@ test.describe("As an admin, I", () => {
     await expect(paymentsPage.payments).toHaveCount(6);
     await paymentsPage.payments.first().click();
 
-    await expect(paymentsPage.sidePanel).toContainText(`to ${users.Olivier.github.login} (you)`);
+    await expect(paymentsPage.sidePanel).toContainText("to");
+    await expect(paymentsPage.sidePanel).toContainText(users.Olivier.github.login);
+    await expect(paymentsPage.sidePanel).toContainText("(you)");
   });
 
   test("retain the login state when impersonating", async ({ page, users, signIn, logout }) => {

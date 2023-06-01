@@ -9,7 +9,7 @@ import LogoutBoxRLine from "src/icons/LogoutBoxRLine";
 import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import PayoutInfoSidePanel from "./PayoutInfoSidePanel";
 import User3Line from "src/icons/User3Line";
-import ContributorProfileSidePanel from "./ContributorProfileSidePanel";
+import { useContributorProfilePanel } from "src/hooks/useContributorProfilePanel";
 
 type Props = {
   avatarUrl: string | null;
@@ -25,7 +25,8 @@ const View = ({ githubUserId, avatarUrl, login, logout, payoutSettingsInvalid }:
   const [menuItemsVisible, setMenuItemsVisible] = useState(false);
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const [payoutInfoSidePanelOpen, setPayoutInfoSidePanelOpen] = useState(false);
-  const [profileSidePanelOpen, setProfileSidePanelOpen] = useState(false);
+
+  const { open: openContributorProfileSidePanel } = useContributorProfilePanel();
 
   return (
     <div className="relative">
@@ -72,7 +73,7 @@ const View = ({ githubUserId, avatarUrl, login, logout, payoutSettingsInvalid }:
               <MenuItem secondary disabled>
                 {T("navbar.profile.title").toUpperCase()}
               </MenuItem>
-              <MenuItem onClick={() => setProfileSidePanelOpen(true)}>
+              <MenuItem onClick={() => githubUserId && openContributorProfileSidePanel(githubUserId)}>
                 <User3Line className="text-xl" />
                 <div className="grow">{T("navbar.profile.publicProfile")}</div>
               </MenuItem>
@@ -89,13 +90,6 @@ const View = ({ githubUserId, avatarUrl, login, logout, payoutSettingsInvalid }:
           </Menu.Items>
         </Transition>
       </Menu>
-      {githubUserId && (
-        <ContributorProfileSidePanel
-          githubUserId={githubUserId}
-          open={profileSidePanelOpen}
-          setOpen={setProfileSidePanelOpen}
-        />
-      )}
       <PayoutInfoSidePanel
         githubUserId={githubUserId}
         open={payoutInfoSidePanelOpen}
