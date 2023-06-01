@@ -26,6 +26,7 @@ import {
 } from "src/__generated/graphql";
 import { MockedResponse } from "@apollo/client/testing";
 import { VirtuosoMockContext } from "react-virtuoso";
+import { ContributorProfilePanelProvider } from "src/hooks/useContributorProfilePanel";
 
 const TEST_USER = { id: "test-user-id", login: "test-login", githubUser: { githubUserId: 748483646584 } };
 const TEST_GITHUB_USER: GithubUserWithPaymentRequestsForProjectFragment = {
@@ -200,7 +201,9 @@ describe('"PaymentForm" component', () => {
   beforeEach(() => {
     renderWithIntl(
       <VirtuosoMockContext.Provider value={{ viewportHeight: 1000, itemHeight: 36 }}>
-        <PaymentForm />
+        <ContributorProfilePanelProvider>
+          <PaymentForm />
+        </ContributorProfilePanelProvider>
       </VirtuosoMockContext.Provider>,
       {
         wrapper: MemoryRouterProviderFactory({

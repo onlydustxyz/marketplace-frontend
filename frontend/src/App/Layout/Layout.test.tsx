@@ -14,6 +14,7 @@ import { useRoles } from "src/hooks/useAuth/useRoles";
 import { HasuraUserRole } from "src/types";
 import { ImpersonationClaimsProvider } from "src/hooks/useImpersonationClaims";
 import { GetPaymentRequestIdsDocument, GetPaymentRequestIdsQueryResult } from "src/__generated/graphql";
+import { ContributorProfilePanelProvider } from "src/hooks/useContributorProfilePanel";
 
 expect.extend(matchers);
 
@@ -171,7 +172,9 @@ const renderTest = () => {
           <TokenSetProvider>
             <ImpersonationClaimsProvider>
               <AuthProvider>
-                <Layout />
+                <ContributorProfilePanelProvider>
+                  <Layout />
+                </ContributorProfilePanelProvider>
               </AuthProvider>
             </ImpersonationClaimsProvider>
           </TokenSetProvider>
