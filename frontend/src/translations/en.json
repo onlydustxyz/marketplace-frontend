@@ -250,10 +250,7 @@
             "title": "Are you sure?"
           }
         },
-        "from": {
-          "you": "from __user__ (you)",
-          "other": "from __user__"
-        },
+        "from": "from",
         "requestedAt": "Created on __requestedAt__",
         "processedAt": "Processed on __processedAt__",
         "processedVia": {
@@ -271,10 +268,8 @@
           }
         },
         "title": "Payment #__id__",
-        "to": {
-          "you": "to __user__ (you)",
-          "other": "to __user__"
-        },
+        "to": "to",
+        "you": "(you)",
         "workItems": "Included in payment"
       },
       "status": "Status"
