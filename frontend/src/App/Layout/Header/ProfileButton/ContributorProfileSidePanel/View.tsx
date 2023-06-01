@@ -43,7 +43,7 @@ type Props = {
 
 const MAX_CONTRIBUTION_COUNTS = 9;
 
-const EMPTY_DATA: ContributionCountFragment[] = range(MAX_CONTRIBUTION_COUNTS, 0, -1)
+const EMPTY_DATA: ContributionCountFragment[] = range(0, MAX_CONTRIBUTION_COUNTS)
   .map(c => daysFromNow(7 * c))
   .map(
     date =>
