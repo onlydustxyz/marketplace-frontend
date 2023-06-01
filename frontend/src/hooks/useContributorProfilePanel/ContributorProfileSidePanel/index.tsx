@@ -3,6 +3,7 @@ import View, { HeaderColor } from "./View";
 import { contextWithCacheHeaders } from "src/utils/headers";
 import { Project } from "./ProjectCard";
 import { unionBy } from "lodash";
+import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 
 type Props = {
   githubUserId: number;
@@ -28,7 +29,7 @@ export default function ContributorProfileSidePanel({ githubUserId, ...rest }: P
     userProfile?.projects.map(project => ({
       id: project.projectId,
       name: project.project?.projectDetails?.name || "",
-      logoUrl: project.project?.projectDetails?.logoUrl || "",
+      logoUrl: project.project?.projectDetails?.logoUrl || onlyDustLogo,
       contributionCount: project.contributionCount,
       lastContribution: project.maxContributionDate,
       contributorCount: project.project?.contributorsAggregate.aggregate?.count || 0,
