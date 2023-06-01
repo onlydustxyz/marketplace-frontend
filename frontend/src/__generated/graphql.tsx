@@ -11095,6 +11095,7 @@ export type Query_Root = {
   registeredUsers: Array<RegisteredUsers>;
   /** fetch aggregated fields from the table: "registered_users" */
   registeredUsersAggregate: RegisteredUsersAggregate;
+  releaseDate: Scalars['String'];
   searchUsers: Maybe<Array<User>>;
   /** fetch data from the table: "sponsors" */
   sponsors: Array<Sponsors>;
@@ -14285,6 +14286,11 @@ export type GetPaymentRequestIdsQueryVariables = Exact<{
 
 export type GetPaymentRequestIdsQuery = { __typename?: 'query_root', githubUsersByPk: { __typename?: 'GithubUsers', id: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any }> } | null };
 
+export type GetReleaseDateQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetReleaseDateQuery = { __typename?: 'query_root', releaseDate: string };
+
 export type PaymentRequestDetailsFragment = { __typename?: 'PaymentRequests', id: any, amountInUsd: any, requestedAt: any, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', processedAt: any, receipt: any }>, requestor: { __typename?: 'RegisteredUsers', id: any | null, login: string | null, avatarUrl: string | null, githubUserId: any | null } | null, liveGithubRecipient: { __typename?: 'User', login: string, avatarUrl: any, htmlUrl: any, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, workItems: Array<{ __typename?: 'WorkItems', paymentId: any, repoId: any, issueNumber: any, githubIssue: { __typename?: 'Issue', repoId: any, number: any, type: Type, status: Status, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null, id: any, ignoredForProjects: Array<{ __typename?: 'IgnoredGithubIssues', projectId: any, repoId: any, issueNumber: any }> } | null }>, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null } };
 
 export type PaymentRequestDetailsQueryVariables = Exact<{
@@ -15269,6 +15275,38 @@ export function useGetPaymentRequestIdsLazyQuery(baseOptions?: Apollo.LazyQueryH
 export type GetPaymentRequestIdsQueryHookResult = ReturnType<typeof useGetPaymentRequestIdsQuery>;
 export type GetPaymentRequestIdsLazyQueryHookResult = ReturnType<typeof useGetPaymentRequestIdsLazyQuery>;
 export type GetPaymentRequestIdsQueryResult = Apollo.QueryResult<GetPaymentRequestIdsQuery, GetPaymentRequestIdsQueryVariables>;
+export const GetReleaseDateDocument = gql`
+    query GetReleaseDate {
+  releaseDate
+}
+    `;
+
+/**
+ * __useGetReleaseDateQuery__
+ *
+ * To run a query within a React component, call `useGetReleaseDateQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetReleaseDateQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetReleaseDateQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetReleaseDateQuery(baseOptions?: Apollo.QueryHookOptions<GetReleaseDateQuery, GetReleaseDateQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetReleaseDateQuery, GetReleaseDateQueryVariables>(GetReleaseDateDocument, options);
+      }
+export function useGetReleaseDateLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetReleaseDateQuery, GetReleaseDateQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetReleaseDateQuery, GetReleaseDateQueryVariables>(GetReleaseDateDocument, options);
+        }
+export type GetReleaseDateQueryHookResult = ReturnType<typeof useGetReleaseDateQuery>;
+export type GetReleaseDateLazyQueryHookResult = ReturnType<typeof useGetReleaseDateLazyQuery>;
+export type GetReleaseDateQueryResult = Apollo.QueryResult<GetReleaseDateQuery, GetReleaseDateQueryVariables>;
 export const PaymentRequestDetailsDocument = gql`
     query PaymentRequestDetails($id: uuid!) {
   paymentRequestsByPk(id: $id) {
