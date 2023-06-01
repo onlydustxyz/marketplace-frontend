@@ -55,7 +55,9 @@ export default function Overview() {
   const projectName = data?.projectsByPk?.projectDetails?.name;
   const logoUrl = data?.projectsByPk?.projectDetails?.logoUrl || onlyDustLogo;
   const description = data?.projectsByPk?.projectDetails?.longDescription || LOREM_IPSUM;
-  const githubRepos = sortBy(data?.projectsByPk?.githubRepos, "repo.stars").reverse();
+  const githubRepos = sortBy(data?.projectsByPk?.githubRepos, "repo.stars")
+    .reverse()
+    .filter(r => r.repo);
   const sponsors = data?.projectsByPk?.projectSponsors.map(s => s.sponsor) || [];
   const telegramLink = data?.projectsByPk?.projectDetails?.telegramLink || null;
   const topContributors = data?.projectsByPk?.contributors.map(c => c.githubUser).filter(isDefined) || [];
@@ -63,9 +65,7 @@ export default function Overview() {
   const leads = data?.projectsByPk?.projectLeads.map(u => u.user).filter(isDefined);
   const totalInitialAmountInUsd = data?.projectsByPk?.budgetsAggregate.aggregate?.sum?.initialAmount;
   const totalSpentAmountInUsd = data?.projectsByPk?.budgetsAggregate.aggregate?.sum?.spentAmount;
-  const languages = getMostUsedLanguages(
-    getDeduplicatedAggregatedLanguages(data?.projectsByPk?.githubRepos.map(r => r.repo))
-  );
+  const languages = getMostUsedLanguages(getDeduplicatedAggregatedLanguages(githubRepos.map(r => r.repo)));
   const hiring = data?.projectsByPk?.projectDetails?.hiring;
   const invitationId = data?.projectsByPk?.pendingInvitations.find(i => i.githubUserId === githubUserId)?.id;
 
