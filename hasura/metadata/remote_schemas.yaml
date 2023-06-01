@@ -60,7 +60,7 @@
             projectId: Id!
           }
           type Query {
-            hello: String!
+            releaseDate: String!
           }
           type User {
             avatarUrl: Url!
@@ -142,7 +142,7 @@
             query: Query
           }
           type Query {
-            hello: String!
+            releaseDate: String!
           }
   remote_relationships:
     - relationships:
