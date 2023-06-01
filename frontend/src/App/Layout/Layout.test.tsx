@@ -15,6 +15,7 @@ import { HasuraUserRole } from "src/types";
 import { ImpersonationClaimsProvider } from "src/hooks/useImpersonationClaims";
 import { GetPaymentRequestIdsDocument, GetPaymentRequestIdsQueryResult } from "src/__generated/graphql";
 import { ContributorProfilePanelProvider } from "src/hooks/useContributorProfilePanel";
+import { SidePanelStackProvider } from "src/hooks/useSidePanelStack";
 
 expect.extend(matchers);
 
@@ -172,9 +173,11 @@ const renderTest = () => {
           <TokenSetProvider>
             <ImpersonationClaimsProvider>
               <AuthProvider>
-                <ContributorProfilePanelProvider>
-                  <Layout />
-                </ContributorProfilePanelProvider>
+                <SidePanelStackProvider>
+                  <ContributorProfilePanelProvider>
+                    <Layout />
+                  </ContributorProfilePanelProvider>
+                </SidePanelStackProvider>
               </AuthProvider>
             </ImpersonationClaimsProvider>
           </TokenSetProvider>

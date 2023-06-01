@@ -4,11 +4,12 @@ import { Project } from "./ProjectCard";
 import { daysFromNow, minutesFromNow } from "src/utils/date";
 import { withRouter } from "storybook-addon-react-router-v6";
 import withToasterProvider from "src/test/storybook/decorators/withToasterProvider";
+import withSidePanelStackProvider from "src/test/storybook/decorators/withSidePanelStackProvider";
 
 export default {
   title: "ContributorProfileSidePanel",
   component: ContributorProfileSidePanel,
-  decorators: [withRouter, withToasterProvider],
+  decorators: [withRouter, withToasterProvider, withSidePanelStackProvider],
   argTypes: {
     headerColor: {
       control: {

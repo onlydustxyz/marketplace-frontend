@@ -2,11 +2,12 @@ import { responsiveChromatic } from "src/test/utils";
 import { withRouter } from "storybook-addon-react-router-v6";
 
 import ProjectCard, { Project } from ".";
+import withContributorProfilePanelProvider from "src/test/storybook/decorators/withContributorProfilePanelProvider";
 
 export default {
   title: "ProjectCard",
   parameters: responsiveChromatic,
-  decorators: [withRouter],
+  decorators: [withRouter, withContributorProfilePanelProvider],
 };
 
 export const Default = {

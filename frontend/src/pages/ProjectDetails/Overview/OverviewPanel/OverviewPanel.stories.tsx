@@ -1,7 +1,9 @@
+import withContributorProfilePanelProvider from "src/test/storybook/decorators/withContributorProfilePanelProvider";
 import OverviewPanel from ".";
 
 export default {
   title: "OverviewPanel",
+  decorators: [withContributorProfilePanelProvider],
 };
 
 export const Default = {

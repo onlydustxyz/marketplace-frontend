@@ -1,8 +1,10 @@
+import withContributorProfilePanelProvider from "src/test/storybook/decorators/withContributorProfilePanelProvider";
 import Contributor from ".";
 
 export default {
   title: "Contributor",
   component: Contributor,
+  decorators: [withContributorProfilePanelProvider],
 };
 
 const contributor = {

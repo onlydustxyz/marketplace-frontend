@@ -1,9 +1,11 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import ContributorsTable, { Contributor } from "./View";
+import withContributorProfilePanelProvider from "src/test/storybook/decorators/withContributorProfilePanelProvider";
 
 export default {
   title: "ContributorsTable",
   component: ContributorsTable,
+  decorators: [withContributorProfilePanelProvider],
 } as ComponentMeta<typeof ContributorsTable>;
 
 const mockContributors: Contributor[] = [
