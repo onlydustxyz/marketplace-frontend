@@ -21,6 +21,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import config from "./config";
 import Maintenance from "./Maintenance";
 import TagManager from "react-gtm-module";
+import { ContributorProfilePanelProvider } from "./hooks/useContributorProfilePanel";
 
 if (config.GTM_ID) {
   TagManager.initialize({
@@ -37,7 +38,11 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
             <TokenSetProvider>
               <ToasterProvider>
                 <ApolloWrapper>
-                  <AuthProvider>{config.MAINTENANCE ? <Maintenance /> : <App />}</AuthProvider>
+                  <AuthProvider>
+                    <ContributorProfilePanelProvider>
+                      {config.MAINTENANCE ? <Maintenance /> : <App />}
+                    </ContributorProfilePanelProvider>
+                  </AuthProvider>
                 </ApolloWrapper>
               </ToasterProvider>
             </TokenSetProvider>
