@@ -8,6 +8,7 @@ import StarLine from "src/icons/StarLine";
 import { useIntl } from "src/hooks/useIntl";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { withTooltip } from "src/components/Tooltip";
+import PrivateTag from "src/components/PrivateTag";
 
 export type Project = {
   id: string;
@@ -18,6 +19,7 @@ export type Project = {
   leadSince?: Date;
   lastContribution?: Date;
   contributionCount?: number;
+  private?: boolean;
 };
 
 export default function ProjectCard({
@@ -28,13 +30,21 @@ export default function ProjectCard({
   leadSince,
   contributionCount,
   lastContribution,
+  private: private_,
 }: Project) {
   const { T } = useIntl();
 
   return (
     <Card blurred selectable padded={false} className="flex flex-col bg-noise-light h-full">
       <div className="flex flex-col p-4 gap-3 h-full">
-        <RoundedImage src={logoUrl} alt={name} />
+        <div className="relative w-fit">
+          <RoundedImage src={logoUrl} alt={name} />
+          {private_ && (
+            <div className="absolute -right-2.5 -bottom-2.5">
+              <PrivateTag />
+            </div>
+          )}
+        </div>
         <div className="flex flex-col gap-2 h-full">
           <div className="font-belwe font-normal text-base text-greyscale-50 h-full">{name}</div>
           <div className="flex flex-row gap-1 items-center">

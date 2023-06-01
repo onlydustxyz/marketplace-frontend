@@ -36,6 +36,7 @@ export default function ContributorProfileSidePanel({ githubUserId, ...rest }: P
             leadSince: new Date(project.assignedAt + "Z"),
             contributorCount: project.project?.contributorsAggregate.aggregate?.count || 0,
             totalGranted: project.project?.budgetsAggregate.aggregate?.sum?.spentAmount || 0,
+            private: project.project?.projectDetails?.visibility === "Private",
           } as Project)
       ),
     userProfile?.projects
@@ -54,6 +55,7 @@ export default function ContributorProfileSidePanel({ githubUserId, ...rest }: P
         lastContribution: project.maxContributionDate,
         contributorCount: project.project?.contributorsAggregate.aggregate?.count || 0,
         totalGranted: project.project?.budgetsAggregate.aggregate?.sum?.spentAmount || 0,
+        private: project.project?.projectDetails?.visibility === "Private",
       })),
     "id"
   );
