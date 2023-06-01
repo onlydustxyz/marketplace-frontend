@@ -468,7 +468,7 @@
     },
     "ledBy": {
       "many": "__count__ project leads",
-      "one": "Led by __name__"
+      "one": "Led by"
     },
     "projectLeadInvitation": {
       "prompt": "You've been promoted to Project Lead",

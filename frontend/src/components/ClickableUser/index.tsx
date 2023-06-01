@@ -17,7 +17,12 @@ export default function ClickableUser({ name, githubUserId, avatarUrl, externalU
   return (
     <div
       className="flex flex-row gap-2 items-center text-sm font-normal"
-      onClick={() => githubUserId && open(githubUserId)}
+      onClick={e => {
+        if (githubUserId) {
+          e.preventDefault();
+          open(githubUserId);
+        }
+      }}
     >
       {avatarUrl && <RoundedImage alt={name} rounding={Rounding.Circle} size={ImageSize.Sm} src={avatarUrl} />}
       {externalUrl ? (
