@@ -1,4 +1,4 @@
-import { ContributionCountFragment, UserProfileFragment } from "src/__generated/graphql";
+import { ContributionCountFragment, Maybe, UserProfileFragment } from "src/__generated/graphql";
 import SidePanel from "src/components/SidePanel";
 import { useIntl } from "src/hooks/useIntl";
 import MapPinLine from "src/icons/MapPinLine";
@@ -67,6 +67,8 @@ export default function View({ profile, projects, headerColor, ...rest }: Props)
     .reverse()
     .value();
 
+  const website = parseWebsite(profile.website);
+
   return (
     <SidePanel {...rest}>
       <div className="flex flex-col h-full">
@@ -87,7 +89,9 @@ export default function View({ profile, projects, headerColor, ...rest }: Props)
             />
           )}
           <div className="flex flex-col gap-2">
-            <div className="font-belwe font-normal text-3xl text-white">{profile.login}</div>
+            <div data-testid="login" className="font-belwe font-normal text-3xl text-white">
+              {profile.login}
+            </div>
             {profile.location && (
               <div className="flex flex-row gap-2 items-center font-walsheim font-normal text-base text-greyscale-400">
                 <MapPinLine />
@@ -106,9 +110,9 @@ export default function View({ profile, projects, headerColor, ...rest }: Props)
                     {profile.bio}
                   </ReactMarkdown>
                 )}
-                {profile.website && (
+                {website && (
                   <div className="flex flex-row gap-1 items-center text-base text-greyscale-300">
-                    <GlobalLine /> {new URL(profile.website).hostname}
+                    <GlobalLine /> {website}
                   </div>
                 )}
 
@@ -238,3 +242,13 @@ export default function View({ profile, projects, headerColor, ...rest }: Props)
     </SidePanel>
   );
 }
+
+export const parseWebsite = (website: Maybe<string>) => {
+  try {
+    return new URL(website || "").hostname;
+  } catch (e) {
+    const regex = /([^/?#]+)(?:[/?#]|$)/i;
+    const matches = (website || "").match(regex);
+    return matches?.at(1);
+  }
+};
