@@ -19,16 +19,19 @@ export const Default = {
             id: "user-1",
             login: "anthonybuisset",
             avatarUrl: "https://avatars.githubusercontent.com/u/43467246?v=4",
+            githubUserId: 43467246,
           },
           {
             id: "user-2",
             login: "bernardstanislas",
             avatarUrl: "https://avatars.githubusercontent.com/u/4435377?v=4",
+            githubUserId: 4435377,
           },
           {
             id: "user-3",
             login: "oscarwroche",
             avatarUrl: "https://avatars.githubusercontent.com/u/21149076?v=4",
+            githubUserId: 21149076,
           },
         ],
         sponsors: [
