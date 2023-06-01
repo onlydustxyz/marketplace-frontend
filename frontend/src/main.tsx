@@ -22,6 +22,7 @@ import config from "./config";
 import Maintenance from "./Maintenance";
 import TagManager from "react-gtm-module";
 import { ContributorProfilePanelProvider } from "./hooks/useContributorProfilePanel";
+import { SidePanelStackProvider } from "./hooks/useSidePanelStack";
 
 if (config.GTM_ID) {
   TagManager.initialize({
@@ -39,9 +40,11 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
               <ToasterProvider>
                 <ApolloWrapper>
                   <AuthProvider>
-                    <ContributorProfilePanelProvider>
-                      {config.MAINTENANCE ? <Maintenance /> : <App />}
-                    </ContributorProfilePanelProvider>
+                    <SidePanelStackProvider>
+                      <ContributorProfilePanelProvider>
+                        {config.MAINTENANCE ? <Maintenance /> : <App />}
+                      </ContributorProfilePanelProvider>
+                    </SidePanelStackProvider>
                   </AuthProvider>
                 </ApolloWrapper>
               </ToasterProvider>
