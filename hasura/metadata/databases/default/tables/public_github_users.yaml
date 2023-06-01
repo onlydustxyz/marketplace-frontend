@@ -27,6 +27,12 @@ select_permissions:
       columns:
         - id
         - avatar_url
+        - bio
         - html_url
+        - linkedin
+        - location
         - login
+        - telegram
+        - twitter
+        - website
       filter: {}

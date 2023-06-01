@@ -38,7 +38,7 @@ export default function Tag({
           {
             "py-1 px-2 text-xs": size === TagSize.Small,
             "py-1.5 px-3 text-sm": size === TagSize.Medium,
-            "py-2 px-4 text-sm": size === TagSize.Large,
+            "py-1.5 px-4 text-sm": size === TagSize.Large,
           },
           {
             "border border-greyscale-50/8": borderColor === TagBorderColor.Grey,

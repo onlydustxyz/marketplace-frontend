@@ -23,6 +23,38 @@ impl Entity for User {
 	type Id = Id;
 }
 
+#[derive(Debug, Clone, Getters, GraphQLObject, Serialize, Deserialize, PartialEq, Eq, Hash)]
+pub struct FullUser {
+	pub id: Id,
+	pub login: String,
+	pub avatar_url: Url,
+	pub html_url: Url,
+	pub bio: Option<String>,
+	pub location: Option<String>,
+	pub blog: Option<String>,
+	#[serde(default)]
+	pub social_accounts: Vec<SocialAccount>,
+}
+
+impl Entity for FullUser {
+	type Id = Id;
+}
+
+impl FullUser {
+	pub fn get_social_account_url(&self, provider: &str) -> Option<String> {
+		self.social_accounts
+			.iter()
+			.find(|social_account| social_account.provider == provider)
+			.map(|social_account| social_account.url.clone())
+	}
+}
+
+#[derive(Debug, Clone, Getters, GraphQLObject, Serialize, Deserialize, PartialEq, Eq, Hash)]
+pub struct SocialAccount {
+	pub provider: String,
+	pub url: String,
+}
+
 #[derive(
 	Debug,
 	Clone,

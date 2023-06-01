@@ -28,7 +28,34 @@ impl GithubUserIndexRepository for Client {
 		Ok(state)
 	}
 
-	fn upsert_user_indexer_state(
+	fn update_user_indexer_state(
+		&self,
+		user_id: &GithubUserId,
+		state: serde_json::Value,
+	) -> RepositoryResult<()> {
+		let connection = self.connection()?;
+		diesel::update(dsl::github_user_indexes)
+			.set(dsl::user_indexer_state.eq(state))
+			.filter(dsl::user_id.eq(user_id))
+			.execute(&*connection)?;
+		Ok(())
+	}
+
+	fn select_contributor_indexer_state(
+		&self,
+		user_id: &GithubUserId,
+	) -> RepositoryResult<Option<serde_json::Value>> {
+		let connection = self.connection()?;
+		let state = dsl::github_user_indexes
+			.select(dsl::contributor_indexer_state)
+			.filter(dsl::user_id.eq(user_id))
+			.first(&*connection)
+			.optional()?
+			.flatten();
+		Ok(state)
+	}
+
+	fn upsert_contributor_indexer_state(
 		&self,
 		user_id: &GithubUserId,
 		state: serde_json::Value,
@@ -37,11 +64,11 @@ impl GithubUserIndexRepository for Client {
 		diesel::insert_into(dsl::github_user_indexes)
 			.values((
 				dsl::user_id.eq(user_id),
-				dsl::user_indexer_state.eq(state.clone()),
+				dsl::contributor_indexer_state.eq(state.clone()),
 			))
 			.on_conflict(dsl::user_id)
 			.do_update()
-			.set(dsl::user_indexer_state.eq(state))
+			.set(dsl::contributor_indexer_state.eq(state))
 			.execute(&*connection)?;
 		Ok(())
 	}

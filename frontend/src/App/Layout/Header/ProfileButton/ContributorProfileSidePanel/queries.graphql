@@ -1,0 +1,92 @@
+fragment UserProfileId on UserProfiles {
+  githubUserId
+}
+
+fragment UserProfileDetails on UserProfiles {
+  login
+  avatarUrl
+  htmlUrl
+  location
+  bio
+  languages
+  createdAt
+  lastSeen
+  email
+  twitter
+  telegram
+  linkedin
+  discord
+  website
+}
+
+fragment Contributions on UserContributionProjects {
+  projectId
+  maxContributionDate
+  contributionCount
+  project {
+    ...ProfileProject
+  }
+}
+
+fragment ProfileProject on Projects {
+  id
+  projectDetails {
+    projectId
+    logoUrl
+    name
+  }
+  contributorsAggregate {
+    aggregate {
+      count
+    }
+  }
+  budgetsAggregate {
+    aggregate {
+      sum {
+        spentAmount
+      }
+    }
+  }
+}
+
+fragment ContributionCount on UserContributionCounts {
+  year
+  week
+  count
+}
+
+fragment UserProfile on UserProfiles {
+  ...UserProfileId
+  ...UserProfileDetails
+  projects {
+    ...Contributions
+  }
+  projectsAggregate {
+    aggregate {
+      sum {
+        moneyGranted
+        contributionCount
+      }
+      min {
+        minContributionDate
+      }
+      count
+    }
+  }
+  projectsLeaded {
+    projectId
+    assignedAt
+    project {
+      ...ProfileProject
+    }
+  }
+  contributionCounts(orderBy: [{ year: DESC, week: DESC }], limit: 9) {
+    ...ContributionCount
+  }
+}
+
+query UserProfile($githubUserId: bigint!) {
+  userProfiles(where: { githubUserId: { _eq: $githubUserId } }) {
+    ...UserProfile
+  }
+}

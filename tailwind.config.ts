@@ -98,6 +98,10 @@ const config: Config = {
         "noise-light": "url('src/assets/img/noise-light.png')",
         "noise-medium": "url('src/assets/img/noise-medium.png')",
         "noise-heavy": "url('src/assets/img/noise-heavy.png')",
+        "profile-blue": "url('src/assets/img/user-profile-bg-blue.svg')",
+        "profile-cyan": "url('src/assets/img/user-profile-bg-cyan.svg')",
+        "profile-magenta": "url('src/assets/img/user-profile-bg-magenta.svg')",
+        "profile-yellow": "url('src/assets/img/user-profile-bg-yellow.svg')",
         "space-card": "url('src/assets/img/space-card-bg.png')",
         space: `
             url('src/assets/img/dust-top-right.png'),

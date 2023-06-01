@@ -67,11 +67,17 @@ class GithubReposContributors {
 
 class GithubUsers {
    avatarUrl: String!
+   bio: String
    htmlUrl: String!
    id: bigint!
+   linkedin: String
+   location: String
    login: String!
    paymentRequests: [PaymentRequests!]!
+   telegram: String
+   twitter: String
    user: RegisteredUsers
+   website: String
 }
 
 class IgnoredGithubIssues {
@@ -161,6 +167,7 @@ class ProjectGithubRepos {
 }
 
 class ProjectLeads {
+   assignedAt: timestamp!
    project: Projects
    projectId: uuid!
    user: RegisteredUsers
@@ -182,6 +189,7 @@ class Projects {
 class ProjectsContributorsView {
    githubUser: GithubUsers
    githubUserId: bigint
+   project: Projects
    projectId: uuid
 }
 
@@ -222,6 +230,23 @@ class User {
    user: RegisteredUsers
 }
 
+class UserContributionCounts {
+   count: bigint
+   githubUserId: bigint
+   week: float8
+   year: float8
+}
+
+class UserContributionProjects {
+   contributionCount: numeric
+   githubUserId: bigint
+   maxContributionDate: timestamp
+   minContributionDate: timestamp
+   moneyGranted: numeric
+   project: Projects
+   projectId: uuid
+}
+
 class UserInfo {
    arePayoutSettingsValid: Boolean!
    contactInformation: jsonb
@@ -229,6 +254,28 @@ class UserInfo {
    location: jsonb
    payoutSettings: jsonb
    userId: uuid!
+}
+
+class UserProfiles {
+   avatarUrl: String
+   bio: String
+   contributionCounts: [UserContributionCounts!]!
+   createdAt: timestamptz
+   discord: String
+   email: String
+   githubUserId: bigint
+   htmlUrl: String
+   languages: jsonb
+   lastSeen: timestamptz
+   linkedin: String
+   location: String
+   login: String
+   projects: [UserContributionProjects!]!
+   projectsLeaded: [ProjectLeads!]!
+   telegram: String
+   twitter: String
+   userId: uuid
+   website: String
 }
 
 class WorkItems {
@@ -364,6 +411,7 @@ Projects --* ProjectLeads
 Projects --* ProjectsContributorsView
 Projects --* ProjectsSponsors
 ProjectsContributorsView -- GithubUsers
+ProjectsContributorsView -- Projects
 ProjectsSponsors -- Projects
 ProjectsSponsors -- Sponsors
 RegisteredUsers -- UserInfo
@@ -372,6 +420,10 @@ RegisteredUsers --* ProjectLeads
 Sponsors --* ProjectsSponsors
 User -- RegisteredUsers
 User --* PaymentRequests
+UserContributionProjects -- Projects
+UserProfiles --* ProjectLeads
+UserProfiles --* UserContributionCounts
+UserProfiles --* UserContributionProjects
 WorkItems -- Issue
 WorkItems --* IgnoredGithubIssues
 authProviders --* authUserProviders

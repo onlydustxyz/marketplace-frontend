@@ -9,7 +9,7 @@ mod repo;
 pub use repo::{Id as RepoId, Languages, Repo};
 
 mod user;
-pub use user::{Id as UserId, User};
+pub use user::{FullUser, Id as UserId, SocialAccount, User};
 
 mod issue;
 pub use issue::{

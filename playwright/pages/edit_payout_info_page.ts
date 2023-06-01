@@ -2,7 +2,7 @@ import { expect, Locator, Page } from "@playwright/test";
 import { UserProfile } from "../types";
 import { IdentityType, PayoutSettingsType, PersonIdentity } from "../__generated/graphql";
 
-export class EditProfilePage {
+export class EditPayoutInfoPage {
   readonly page: Page;
 
   readonly accountTypeIndividualButton: Locator;

@@ -39,46 +39,55 @@ export default function WorkItemSidePanel({
   const [selectedTab, setSelectedTab] = useState(Tabs.PullRequests);
 
   return (
-    <SidePanel {...props} title={T("payment.form.workItems.addWorkItem")}>
-      <div className="flex flex-row items-center gap-8 border-b border-greyscale-50/8 px-6">
-        <Tab
-          testId="tab-pull-requests"
-          active={selectedTab === Tabs.PullRequests}
-          onClick={() => setSelectedTab(Tabs.PullRequests)}
-        >
-          <GitPullRequestLine />
-          {T("payment.form.workItems.pullRequests.tab")}
-        </Tab>
-        <Tab testId="tab-issues" active={selectedTab === Tabs.Issues} onClick={() => setSelectedTab(Tabs.Issues)}>
-          <IssueOpen />
-          {T("payment.form.workItems.issues.tab")}
-        </Tab>
-        <Tab testId="tab-other-work" active={selectedTab === Tabs.Other} onClick={() => setSelectedTab(Tabs.Other)}>
-          <DiscussLine />
-          {T("payment.form.workItems.other.tab")}
-        </Tab>
+    <SidePanel {...props}>
+      <div className="flex flex-col gap-8">
+        <div className="font-belwe font-normal text-2xl text-greyscale-50 pt-8 px-6">
+          {T("payment.form.workItems.addWorkItem")}
+        </div>
+        <div className="flex flex-row items-center gap-8 border-b border-greyscale-50/8 px-6">
+          <Tab
+            testId="tab-pull-requests"
+            active={selectedTab === Tabs.PullRequests}
+            onClick={() => setSelectedTab(Tabs.PullRequests)}
+          >
+            <GitPullRequestLine />
+            {T("payment.form.workItems.pullRequests.tab")}
+          </Tab>
+          <Tab testId="tab-issues" active={selectedTab === Tabs.Issues} onClick={() => setSelectedTab(Tabs.Issues)}>
+            <IssueOpen />
+            {T("payment.form.workItems.issues.tab")}
+          </Tab>
+          <Tab testId="tab-other-work" active={selectedTab === Tabs.Other} onClick={() => setSelectedTab(Tabs.Other)}>
+            <DiscussLine />
+            {T("payment.form.workItems.other.tab")}
+          </Tab>
+        </div>
+        {selectedTab === Tabs.PullRequests && (
+          <Issues
+            projectId={projectId}
+            contributorId={contributorId}
+            workItems={workItems}
+            onWorkItemAdded={onWorkItemAdded}
+            type={Type.PullRequest}
+          />
+        )}
+        {selectedTab === Tabs.Issues && (
+          <Issues
+            projectId={projectId}
+            contributorId={contributorId}
+            workItems={workItems}
+            onWorkItemAdded={onWorkItemAdded}
+            type={Type.Issue}
+          />
+        )}
+        {selectedTab === Tabs.Other && (
+          <OtherWorkForm
+            projectId={projectId}
+            contributorHandle={contributorHandle}
+            onWorkItemAdded={onWorkItemAdded}
+          />
+        )}
       </div>
-      {selectedTab === Tabs.PullRequests && (
-        <Issues
-          projectId={projectId}
-          contributorId={contributorId}
-          workItems={workItems}
-          onWorkItemAdded={onWorkItemAdded}
-          type={Type.PullRequest}
-        />
-      )}
-      {selectedTab === Tabs.Issues && (
-        <Issues
-          projectId={projectId}
-          contributorId={contributorId}
-          workItems={workItems}
-          onWorkItemAdded={onWorkItemAdded}
-          type={Type.Issue}
-        />
-      )}
-      {selectedTab === Tabs.Other && (
-        <OtherWorkForm projectId={projectId} contributorHandle={contributorHandle} onWorkItemAdded={onWorkItemAdded} />
-      )}
     </SidePanel>
   );
 }

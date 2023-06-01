@@ -4,13 +4,12 @@ import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import CloseLine from "src/icons/CloseLine";
 
 type Props = {
-  title: string;
   open: boolean;
   setOpen: (value: boolean) => void;
   action?: ReactElement;
 } & PropsWithChildren;
 
-export default function SidePanel({ title, open, setOpen, action, children }: Props) {
+export default function SidePanel({ open, setOpen, action, children }: Props) {
   useEffect(() => {
     document.body.style.setProperty("overflow", "auto");
   }, [open]);
@@ -27,7 +26,7 @@ export default function SidePanel({ title, open, setOpen, action, children }: Pr
       leaveTo="translate-x-full"
     >
       <Dialog onClose={setOpen} as={Fragment}>
-        <Dialog.Panel className="fixed z-10 inset-y-0 right-0 h-screen w-5/12 flex flex-col bg-greyscale-900 gap-8">
+        <Dialog.Panel className="fixed z-10 inset-y-0 right-0 h-screen w-5/12 bg-greyscale-900">
           <div className="absolute top-3.5 right-3.5 flex flex-row gap-2">
             {action}
             <Button
@@ -40,7 +39,6 @@ export default function SidePanel({ title, open, setOpen, action, children }: Pr
               <CloseLine />
             </Button>
           </div>
-          <Dialog.Title className="font-belwe font-normal text-2xl text-greyscale-50 pt-8 px-6">{title}</Dialog.Title>
           {children}
         </Dialog.Panel>
       </Dialog>

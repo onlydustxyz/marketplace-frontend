@@ -75,7 +75,7 @@ export default function Overview() {
   const [acceptInvitation] = useAcceptProjectLeaderInvitationMutation({
     context: { graphqlErrorDisplay: "toaster" },
     variables: { invitationId },
-    onCompleted: window.location.reload,
+    onCompleted: () => window.location.reload(),
   });
 
   useEffect(() => {

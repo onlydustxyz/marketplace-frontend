@@ -9,7 +9,17 @@ pub trait Repository: Send + Sync {
 		&self,
 		user_id: &GithubUserId,
 	) -> Result<Option<serde_json::Value>>;
-	fn upsert_user_indexer_state(
+	fn update_user_indexer_state(
+		&self,
+		user_id: &GithubUserId,
+		state: serde_json::Value,
+	) -> Result<()>;
+
+	fn select_contributor_indexer_state(
+		&self,
+		user_id: &GithubUserId,
+	) -> Result<Option<serde_json::Value>>;
+	fn upsert_contributor_indexer_state(
 		&self,
 		user_id: &GithubUserId,
 		state: serde_json::Value,

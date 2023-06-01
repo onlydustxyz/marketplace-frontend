@@ -100,6 +100,7 @@
     "logout": "Log out",
     "profile": {
       "title": "Your account",
+      "publicProfile": "Public profile",
       "payoutInfo": "Payout information"
     },
     "payments": "Payments",
@@ -285,6 +286,41 @@
     }
   },
   "profile": {
+    "joinedAt": "Joined in __joinedAt__",
+    "firstContributedAt": "Contributed first on __firstContributedAt__",
+    "valueCopiedToClipboard": "__valueName__ copied to clipboard",
+    "email": "Email address",
+    "discord": "Discord username",
+    "sections": {
+      "technologies": {
+        "title": "Technologies"
+      },
+      "stats": {
+        "contributions": "Contributions",
+        "contributorOn": "Contributor on",
+        "leadOn": "Lead on",
+        "granted": "Granted money",
+        "title": "Stats",
+        "projects": {
+          "zero": "project",
+          "one": "project",
+          "many": "projects"
+        }
+      },
+      "projects": {
+        "contributionCount": {
+          "zero": "No contribution",
+          "one": "1 contribution",
+          "many": "__count__ contributions"
+        },
+        "projectLead": "Project lead",
+        "lastContribution": "Latest __lastContribution__",
+        "projectLeadSince": "Since __since__",
+        "title": "Projects",
+        "contributorCount": "Number of contributors",
+        "moneyGranted": "Total granted"
+      }
+    },
     "button": {
       "payoutSettingsInvalidTooltip": "You're unable to receive payments. Click to fill up required info"
     },

@@ -33,6 +33,7 @@ mod test {
 		let event = Event::Project(ProjectEvent::LeaderAssigned {
 			id: Default::default(),
 			leader_id: Default::default(),
+			assigned_at: Default::default(),
 		});
 		assert_json_include!(
 			actual: serde_json::from_str::<Value>(&event.to_string()).unwrap(),
