@@ -20,7 +20,7 @@ export default function ContributorProfileSidePanel({ githubUserId, ...rest }: P
           id: project.projectId,
           name: project.project?.projectDetails?.name || "",
           logoUrl: project.project?.projectDetails?.logoUrl || "",
-          leadSince: new Date(project.assignedAt),
+          leadSince: new Date(project.assignedAt + "Z"),
           contributorCount: project.project?.contributorsAggregate.aggregate?.count || 0,
           totalGranted: project.project?.budgetsAggregate.aggregate?.sum?.spentAmount || 0,
         } as Project)
