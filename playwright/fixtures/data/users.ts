@@ -8,7 +8,7 @@ export const users: Record<string, UserFixture> = {
       id: 20248544,
       login: "tokio-rs",
     },
-    profile: {
+    payoutInfo: {
       populate: false,
       identity: {
         type: IdentityType.Company,
@@ -37,7 +37,6 @@ export const users: Record<string, UserFixture> = {
         optEthAddress: null,
         optEthName: null,
       },
-      contactInformation: null,
     },
   },
   Olivier: {
@@ -46,7 +45,7 @@ export const users: Record<string, UserFixture> = {
       id: 595505,
       login: "ofux",
     },
-    profile: {
+    payoutInfo: {
       populate: false,
       identity: {
         type: IdentityType.Person,
@@ -68,7 +67,6 @@ export const users: Record<string, UserFixture> = {
         optEthAddress: null,
         optEthName: "vitalik.eth",
       },
-      contactInformation: null,
     },
   },
   Anthony: {
@@ -77,7 +75,7 @@ export const users: Record<string, UserFixture> = {
       id: 43467246,
       login: "AnthonyBuisset",
     },
-    profile: {
+    payoutInfo: {
       populate: false,
       identity: {
         type: IdentityType.Person,
@@ -99,7 +97,6 @@ export const users: Record<string, UserFixture> = {
         optEthName: null,
         optBankAddress: null,
       },
-      contactInformation: null,
     },
   },
   Oscar: {

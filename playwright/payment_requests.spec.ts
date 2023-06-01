@@ -11,7 +11,7 @@ import {
   EthereumIdentityType,
 } from "./__generated/graphql";
 import { ProjectPaymentsPage } from "./pages/project/payments";
-import { EditProfilePage } from "./pages/edit_profile_page";
+import { EditPayoutInfoPage } from "./pages/edit_payout_info_page";
 import { populateReceipt } from "./commands/populate/populate_payments";
 
 test.describe("As a project lead, I", () => {
@@ -242,12 +242,12 @@ test.describe("As a project lead, I", () => {
     );
     expect(pendingStatus).toBe("Pending");
 
-    // 2. Edit profile info, payment is "processing"
-    const editProfilePage = new EditProfilePage(page);
+    // 2. Edit payout info, payment is "processing"
+    const editPayoutInfoPage = new EditPayoutInfoPage(page);
     await signIn(recipient);
-    await editProfilePage.goto();
-    recipient.profile && (await editProfilePage.fillForm(recipient.profile));
-    await editProfilePage.submitForm();
+    await editPayoutInfoPage.goto();
+    recipient.payoutInfo && (await editPayoutInfoPage.fillForm(recipient.payoutInfo));
+    await editPayoutInfoPage.submitForm();
 
     const processingStatus = await retry(
       async () => {
