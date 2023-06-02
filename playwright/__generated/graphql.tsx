@@ -796,6 +796,551 @@ export type ContactInformation = {
   twitter: InputMaybe<Scalars['String']>;
 };
 
+/** columns and relationships of "contribution_counts" */
+export type ContributionCounts = {
+  __typename?: 'ContributionCounts';
+  githubUserId: Maybe<Scalars['bigint']>;
+  paidCount: Maybe<Scalars['bigint']>;
+  unpaidCount: Maybe<Scalars['bigint']>;
+  week: Maybe<Scalars['float8']>;
+  year: Maybe<Scalars['float8']>;
+};
+
+/** aggregated selection of "contribution_counts" */
+export type ContributionCountsAggregate = {
+  __typename?: 'ContributionCountsAggregate';
+  aggregate: Maybe<ContributionCountsAggregateFields>;
+  nodes: Array<ContributionCounts>;
+};
+
+/** aggregate fields of "contribution_counts" */
+export type ContributionCountsAggregateFields = {
+  __typename?: 'ContributionCountsAggregateFields';
+  avg: Maybe<ContributionCountsAvgFields>;
+  count: Scalars['Int'];
+  max: Maybe<ContributionCountsMaxFields>;
+  min: Maybe<ContributionCountsMinFields>;
+  stddev: Maybe<ContributionCountsStddevFields>;
+  stddevPop: Maybe<ContributionCountsStddev_PopFields>;
+  stddevSamp: Maybe<ContributionCountsStddev_SampFields>;
+  sum: Maybe<ContributionCountsSumFields>;
+  varPop: Maybe<ContributionCountsVar_PopFields>;
+  varSamp: Maybe<ContributionCountsVar_SampFields>;
+  variance: Maybe<ContributionCountsVarianceFields>;
+};
+
+
+/** aggregate fields of "contribution_counts" */
+export type ContributionCountsAggregateFieldsCountArgs = {
+  columns: InputMaybe<Array<ContributionCountsSelectColumn>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "contribution_counts" */
+export type ContributionCountsAggregateOrderBy = {
+  avg: InputMaybe<Contribution_Counts_Avg_Order_By>;
+  count: InputMaybe<OrderBy>;
+  max: InputMaybe<Contribution_Counts_Max_Order_By>;
+  min: InputMaybe<Contribution_Counts_Min_Order_By>;
+  stddev: InputMaybe<Contribution_Counts_Stddev_Order_By>;
+  stddev_pop: InputMaybe<Contribution_Counts_Stddev_Pop_Order_By>;
+  stddev_samp: InputMaybe<Contribution_Counts_Stddev_Samp_Order_By>;
+  sum: InputMaybe<Contribution_Counts_Sum_Order_By>;
+  var_pop: InputMaybe<Contribution_Counts_Var_Pop_Order_By>;
+  var_samp: InputMaybe<Contribution_Counts_Var_Samp_Order_By>;
+  variance: InputMaybe<Contribution_Counts_Variance_Order_By>;
+};
+
+/** aggregate avg on columns */
+export type ContributionCountsAvgFields = {
+  __typename?: 'ContributionCountsAvgFields';
+  githubUserId: Maybe<Scalars['Float']>;
+  paidCount: Maybe<Scalars['Float']>;
+  unpaidCount: Maybe<Scalars['Float']>;
+  week: Maybe<Scalars['Float']>;
+  year: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "contribution_counts". All fields are combined with a logical 'AND'. */
+export type ContributionCountsBoolExp = {
+  _and: InputMaybe<Array<ContributionCountsBoolExp>>;
+  _not: InputMaybe<ContributionCountsBoolExp>;
+  _or: InputMaybe<Array<ContributionCountsBoolExp>>;
+  githubUserId: InputMaybe<BigintComparisonExp>;
+  paidCount: InputMaybe<BigintComparisonExp>;
+  unpaidCount: InputMaybe<BigintComparisonExp>;
+  week: InputMaybe<Float8ComparisonExp>;
+  year: InputMaybe<Float8ComparisonExp>;
+};
+
+/** aggregate max on columns */
+export type ContributionCountsMaxFields = {
+  __typename?: 'ContributionCountsMaxFields';
+  githubUserId: Maybe<Scalars['bigint']>;
+  paidCount: Maybe<Scalars['bigint']>;
+  unpaidCount: Maybe<Scalars['bigint']>;
+  week: Maybe<Scalars['float8']>;
+  year: Maybe<Scalars['float8']>;
+};
+
+/** aggregate min on columns */
+export type ContributionCountsMinFields = {
+  __typename?: 'ContributionCountsMinFields';
+  githubUserId: Maybe<Scalars['bigint']>;
+  paidCount: Maybe<Scalars['bigint']>;
+  unpaidCount: Maybe<Scalars['bigint']>;
+  week: Maybe<Scalars['float8']>;
+  year: Maybe<Scalars['float8']>;
+};
+
+/** Ordering options when selecting data from "contribution_counts". */
+export type ContributionCountsOrderBy = {
+  githubUserId: InputMaybe<OrderBy>;
+  paidCount: InputMaybe<OrderBy>;
+  unpaidCount: InputMaybe<OrderBy>;
+  week: InputMaybe<OrderBy>;
+  year: InputMaybe<OrderBy>;
+};
+
+/** select columns of table "contribution_counts" */
+export enum ContributionCountsSelectColumn {
+  /** column name */
+  GithubUserId = 'githubUserId',
+  /** column name */
+  PaidCount = 'paidCount',
+  /** column name */
+  UnpaidCount = 'unpaidCount',
+  /** column name */
+  Week = 'week',
+  /** column name */
+  Year = 'year'
+}
+
+/** aggregate stddev on columns */
+export type ContributionCountsStddevFields = {
+  __typename?: 'ContributionCountsStddevFields';
+  githubUserId: Maybe<Scalars['Float']>;
+  paidCount: Maybe<Scalars['Float']>;
+  unpaidCount: Maybe<Scalars['Float']>;
+  week: Maybe<Scalars['Float']>;
+  year: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type ContributionCountsStddev_PopFields = {
+  __typename?: 'ContributionCountsStddev_popFields';
+  githubUserId: Maybe<Scalars['Float']>;
+  paidCount: Maybe<Scalars['Float']>;
+  unpaidCount: Maybe<Scalars['Float']>;
+  week: Maybe<Scalars['Float']>;
+  year: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type ContributionCountsStddev_SampFields = {
+  __typename?: 'ContributionCountsStddev_sampFields';
+  githubUserId: Maybe<Scalars['Float']>;
+  paidCount: Maybe<Scalars['Float']>;
+  unpaidCount: Maybe<Scalars['Float']>;
+  week: Maybe<Scalars['Float']>;
+  year: Maybe<Scalars['Float']>;
+};
+
+/** aggregate sum on columns */
+export type ContributionCountsSumFields = {
+  __typename?: 'ContributionCountsSumFields';
+  githubUserId: Maybe<Scalars['bigint']>;
+  paidCount: Maybe<Scalars['bigint']>;
+  unpaidCount: Maybe<Scalars['bigint']>;
+  week: Maybe<Scalars['float8']>;
+  year: Maybe<Scalars['float8']>;
+};
+
+/** aggregate var_pop on columns */
+export type ContributionCountsVar_PopFields = {
+  __typename?: 'ContributionCountsVar_popFields';
+  githubUserId: Maybe<Scalars['Float']>;
+  paidCount: Maybe<Scalars['Float']>;
+  unpaidCount: Maybe<Scalars['Float']>;
+  week: Maybe<Scalars['Float']>;
+  year: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type ContributionCountsVar_SampFields = {
+  __typename?: 'ContributionCountsVar_sampFields';
+  githubUserId: Maybe<Scalars['Float']>;
+  paidCount: Maybe<Scalars['Float']>;
+  unpaidCount: Maybe<Scalars['Float']>;
+  week: Maybe<Scalars['Float']>;
+  year: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type ContributionCountsVarianceFields = {
+  __typename?: 'ContributionCountsVarianceFields';
+  githubUserId: Maybe<Scalars['Float']>;
+  paidCount: Maybe<Scalars['Float']>;
+  unpaidCount: Maybe<Scalars['Float']>;
+  week: Maybe<Scalars['Float']>;
+  year: Maybe<Scalars['Float']>;
+};
+
+/** columns and relationships of "contribution_stats" */
+export type ContributionStats = {
+  __typename?: 'ContributionStats';
+  count: Maybe<Scalars['bigint']>;
+  githubUserId: Maybe<Scalars['bigint']>;
+  maxDate: Maybe<Scalars['timestamp']>;
+  minDate: Maybe<Scalars['timestamp']>;
+  projectId: Maybe<Scalars['uuid']>;
+};
+
+/** aggregated selection of "contribution_stats" */
+export type ContributionStatsAggregate = {
+  __typename?: 'ContributionStatsAggregate';
+  aggregate: Maybe<ContributionStatsAggregateFields>;
+  nodes: Array<ContributionStats>;
+};
+
+/** aggregate fields of "contribution_stats" */
+export type ContributionStatsAggregateFields = {
+  __typename?: 'ContributionStatsAggregateFields';
+  avg: Maybe<ContributionStatsAvgFields>;
+  count: Scalars['Int'];
+  max: Maybe<ContributionStatsMaxFields>;
+  min: Maybe<ContributionStatsMinFields>;
+  stddev: Maybe<ContributionStatsStddevFields>;
+  stddevPop: Maybe<ContributionStatsStddev_PopFields>;
+  stddevSamp: Maybe<ContributionStatsStddev_SampFields>;
+  sum: Maybe<ContributionStatsSumFields>;
+  varPop: Maybe<ContributionStatsVar_PopFields>;
+  varSamp: Maybe<ContributionStatsVar_SampFields>;
+  variance: Maybe<ContributionStatsVarianceFields>;
+};
+
+
+/** aggregate fields of "contribution_stats" */
+export type ContributionStatsAggregateFieldsCountArgs = {
+  columns: InputMaybe<Array<ContributionStatsSelectColumn>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "contribution_stats" */
+export type ContributionStatsAggregateOrderBy = {
+  avg: InputMaybe<Contribution_Stats_Avg_Order_By>;
+  count: InputMaybe<OrderBy>;
+  max: InputMaybe<Contribution_Stats_Max_Order_By>;
+  min: InputMaybe<Contribution_Stats_Min_Order_By>;
+  stddev: InputMaybe<Contribution_Stats_Stddev_Order_By>;
+  stddev_pop: InputMaybe<Contribution_Stats_Stddev_Pop_Order_By>;
+  stddev_samp: InputMaybe<Contribution_Stats_Stddev_Samp_Order_By>;
+  sum: InputMaybe<Contribution_Stats_Sum_Order_By>;
+  var_pop: InputMaybe<Contribution_Stats_Var_Pop_Order_By>;
+  var_samp: InputMaybe<Contribution_Stats_Var_Samp_Order_By>;
+  variance: InputMaybe<Contribution_Stats_Variance_Order_By>;
+};
+
+/** aggregate avg on columns */
+export type ContributionStatsAvgFields = {
+  __typename?: 'ContributionStatsAvgFields';
+  count: Maybe<Scalars['Float']>;
+  githubUserId: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "contribution_stats". All fields are combined with a logical 'AND'. */
+export type ContributionStatsBoolExp = {
+  _and: InputMaybe<Array<ContributionStatsBoolExp>>;
+  _not: InputMaybe<ContributionStatsBoolExp>;
+  _or: InputMaybe<Array<ContributionStatsBoolExp>>;
+  count: InputMaybe<BigintComparisonExp>;
+  githubUserId: InputMaybe<BigintComparisonExp>;
+  maxDate: InputMaybe<TimestampComparisonExp>;
+  minDate: InputMaybe<TimestampComparisonExp>;
+  projectId: InputMaybe<UuidComparisonExp>;
+};
+
+/** aggregate max on columns */
+export type ContributionStatsMaxFields = {
+  __typename?: 'ContributionStatsMaxFields';
+  count: Maybe<Scalars['bigint']>;
+  githubUserId: Maybe<Scalars['bigint']>;
+  maxDate: Maybe<Scalars['timestamp']>;
+  minDate: Maybe<Scalars['timestamp']>;
+  projectId: Maybe<Scalars['uuid']>;
+};
+
+/** aggregate min on columns */
+export type ContributionStatsMinFields = {
+  __typename?: 'ContributionStatsMinFields';
+  count: Maybe<Scalars['bigint']>;
+  githubUserId: Maybe<Scalars['bigint']>;
+  maxDate: Maybe<Scalars['timestamp']>;
+  minDate: Maybe<Scalars['timestamp']>;
+  projectId: Maybe<Scalars['uuid']>;
+};
+
+/** Ordering options when selecting data from "contribution_stats". */
+export type ContributionStatsOrderBy = {
+  count: InputMaybe<OrderBy>;
+  githubUserId: InputMaybe<OrderBy>;
+  maxDate: InputMaybe<OrderBy>;
+  minDate: InputMaybe<OrderBy>;
+  projectId: InputMaybe<OrderBy>;
+};
+
+/** select columns of table "contribution_stats" */
+export enum ContributionStatsSelectColumn {
+  /** column name */
+  Count = 'count',
+  /** column name */
+  GithubUserId = 'githubUserId',
+  /** column name */
+  MaxDate = 'maxDate',
+  /** column name */
+  MinDate = 'minDate',
+  /** column name */
+  ProjectId = 'projectId'
+}
+
+/** aggregate stddev on columns */
+export type ContributionStatsStddevFields = {
+  __typename?: 'ContributionStatsStddevFields';
+  count: Maybe<Scalars['Float']>;
+  githubUserId: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type ContributionStatsStddev_PopFields = {
+  __typename?: 'ContributionStatsStddev_popFields';
+  count: Maybe<Scalars['Float']>;
+  githubUserId: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type ContributionStatsStddev_SampFields = {
+  __typename?: 'ContributionStatsStddev_sampFields';
+  count: Maybe<Scalars['Float']>;
+  githubUserId: Maybe<Scalars['Float']>;
+};
+
+/** aggregate sum on columns */
+export type ContributionStatsSumFields = {
+  __typename?: 'ContributionStatsSumFields';
+  count: Maybe<Scalars['bigint']>;
+  githubUserId: Maybe<Scalars['bigint']>;
+};
+
+/** aggregate var_pop on columns */
+export type ContributionStatsVar_PopFields = {
+  __typename?: 'ContributionStatsVar_popFields';
+  count: Maybe<Scalars['Float']>;
+  githubUserId: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type ContributionStatsVar_SampFields = {
+  __typename?: 'ContributionStatsVar_sampFields';
+  count: Maybe<Scalars['Float']>;
+  githubUserId: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type ContributionStatsVarianceFields = {
+  __typename?: 'ContributionStatsVarianceFields';
+  count: Maybe<Scalars['Float']>;
+  githubUserId: Maybe<Scalars['Float']>;
+};
+
+/** columns and relationships of "contributions" */
+export type Contributions = {
+  __typename?: 'Contributions';
+  createdAt: Maybe<Scalars['timestamp']>;
+  githubIssueId: Maybe<Scalars['bigint']>;
+  githubUserId: Maybe<Scalars['bigint']>;
+  issueNumber: Maybe<Scalars['bigint']>;
+  projectId: Maybe<Scalars['uuid']>;
+  repoId: Maybe<Scalars['bigint']>;
+};
+
+/** aggregated selection of "contributions" */
+export type ContributionsAggregate = {
+  __typename?: 'ContributionsAggregate';
+  aggregate: Maybe<ContributionsAggregateFields>;
+  nodes: Array<Contributions>;
+};
+
+/** aggregate fields of "contributions" */
+export type ContributionsAggregateFields = {
+  __typename?: 'ContributionsAggregateFields';
+  avg: Maybe<ContributionsAvgFields>;
+  count: Scalars['Int'];
+  max: Maybe<ContributionsMaxFields>;
+  min: Maybe<ContributionsMinFields>;
+  stddev: Maybe<ContributionsStddevFields>;
+  stddevPop: Maybe<ContributionsStddev_PopFields>;
+  stddevSamp: Maybe<ContributionsStddev_SampFields>;
+  sum: Maybe<ContributionsSumFields>;
+  varPop: Maybe<ContributionsVar_PopFields>;
+  varSamp: Maybe<ContributionsVar_SampFields>;
+  variance: Maybe<ContributionsVarianceFields>;
+};
+
+
+/** aggregate fields of "contributions" */
+export type ContributionsAggregateFieldsCountArgs = {
+  columns: InputMaybe<Array<ContributionsSelectColumn>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "contributions" */
+export type ContributionsAggregateOrderBy = {
+  avg: InputMaybe<Contributions_Avg_Order_By>;
+  count: InputMaybe<OrderBy>;
+  max: InputMaybe<Contributions_Max_Order_By>;
+  min: InputMaybe<Contributions_Min_Order_By>;
+  stddev: InputMaybe<Contributions_Stddev_Order_By>;
+  stddev_pop: InputMaybe<Contributions_Stddev_Pop_Order_By>;
+  stddev_samp: InputMaybe<Contributions_Stddev_Samp_Order_By>;
+  sum: InputMaybe<Contributions_Sum_Order_By>;
+  var_pop: InputMaybe<Contributions_Var_Pop_Order_By>;
+  var_samp: InputMaybe<Contributions_Var_Samp_Order_By>;
+  variance: InputMaybe<Contributions_Variance_Order_By>;
+};
+
+/** aggregate avg on columns */
+export type ContributionsAvgFields = {
+  __typename?: 'ContributionsAvgFields';
+  githubIssueId: Maybe<Scalars['Float']>;
+  githubUserId: Maybe<Scalars['Float']>;
+  issueNumber: Maybe<Scalars['Float']>;
+  repoId: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "contributions". All fields are combined with a logical 'AND'. */
+export type ContributionsBoolExp = {
+  _and: InputMaybe<Array<ContributionsBoolExp>>;
+  _not: InputMaybe<ContributionsBoolExp>;
+  _or: InputMaybe<Array<ContributionsBoolExp>>;
+  createdAt: InputMaybe<TimestampComparisonExp>;
+  githubIssueId: InputMaybe<BigintComparisonExp>;
+  githubUserId: InputMaybe<BigintComparisonExp>;
+  issueNumber: InputMaybe<BigintComparisonExp>;
+  projectId: InputMaybe<UuidComparisonExp>;
+  repoId: InputMaybe<BigintComparisonExp>;
+};
+
+/** aggregate max on columns */
+export type ContributionsMaxFields = {
+  __typename?: 'ContributionsMaxFields';
+  createdAt: Maybe<Scalars['timestamp']>;
+  githubIssueId: Maybe<Scalars['bigint']>;
+  githubUserId: Maybe<Scalars['bigint']>;
+  issueNumber: Maybe<Scalars['bigint']>;
+  projectId: Maybe<Scalars['uuid']>;
+  repoId: Maybe<Scalars['bigint']>;
+};
+
+/** aggregate min on columns */
+export type ContributionsMinFields = {
+  __typename?: 'ContributionsMinFields';
+  createdAt: Maybe<Scalars['timestamp']>;
+  githubIssueId: Maybe<Scalars['bigint']>;
+  githubUserId: Maybe<Scalars['bigint']>;
+  issueNumber: Maybe<Scalars['bigint']>;
+  projectId: Maybe<Scalars['uuid']>;
+  repoId: Maybe<Scalars['bigint']>;
+};
+
+/** Ordering options when selecting data from "contributions". */
+export type ContributionsOrderBy = {
+  createdAt: InputMaybe<OrderBy>;
+  githubIssueId: InputMaybe<OrderBy>;
+  githubUserId: InputMaybe<OrderBy>;
+  issueNumber: InputMaybe<OrderBy>;
+  projectId: InputMaybe<OrderBy>;
+  repoId: InputMaybe<OrderBy>;
+};
+
+/** select columns of table "contributions" */
+export enum ContributionsSelectColumn {
+  /** column name */
+  CreatedAt = 'createdAt',
+  /** column name */
+  GithubIssueId = 'githubIssueId',
+  /** column name */
+  GithubUserId = 'githubUserId',
+  /** column name */
+  IssueNumber = 'issueNumber',
+  /** column name */
+  ProjectId = 'projectId',
+  /** column name */
+  RepoId = 'repoId'
+}
+
+/** aggregate stddev on columns */
+export type ContributionsStddevFields = {
+  __typename?: 'ContributionsStddevFields';
+  githubIssueId: Maybe<Scalars['Float']>;
+  githubUserId: Maybe<Scalars['Float']>;
+  issueNumber: Maybe<Scalars['Float']>;
+  repoId: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type ContributionsStddev_PopFields = {
+  __typename?: 'ContributionsStddev_popFields';
+  githubIssueId: Maybe<Scalars['Float']>;
+  githubUserId: Maybe<Scalars['Float']>;
+  issueNumber: Maybe<Scalars['Float']>;
+  repoId: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type ContributionsStddev_SampFields = {
+  __typename?: 'ContributionsStddev_sampFields';
+  githubIssueId: Maybe<Scalars['Float']>;
+  githubUserId: Maybe<Scalars['Float']>;
+  issueNumber: Maybe<Scalars['Float']>;
+  repoId: Maybe<Scalars['Float']>;
+};
+
+/** aggregate sum on columns */
+export type ContributionsSumFields = {
+  __typename?: 'ContributionsSumFields';
+  githubIssueId: Maybe<Scalars['bigint']>;
+  githubUserId: Maybe<Scalars['bigint']>;
+  issueNumber: Maybe<Scalars['bigint']>;
+  repoId: Maybe<Scalars['bigint']>;
+};
+
+/** aggregate var_pop on columns */
+export type ContributionsVar_PopFields = {
+  __typename?: 'ContributionsVar_popFields';
+  githubIssueId: Maybe<Scalars['Float']>;
+  githubUserId: Maybe<Scalars['Float']>;
+  issueNumber: Maybe<Scalars['Float']>;
+  repoId: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type ContributionsVar_SampFields = {
+  __typename?: 'ContributionsVar_sampFields';
+  githubIssueId: Maybe<Scalars['Float']>;
+  githubUserId: Maybe<Scalars['Float']>;
+  issueNumber: Maybe<Scalars['Float']>;
+  repoId: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type ContributionsVarianceFields = {
+  __typename?: 'ContributionsVarianceFields';
+  githubIssueId: Maybe<Scalars['Float']>;
+  githubUserId: Maybe<Scalars['Float']>;
+  issueNumber: Maybe<Scalars['Float']>;
+  repoId: Maybe<Scalars['Float']>;
+};
+
 /** ordering argument of a cursor */
 export enum CursorOrdering {
   /** ascending ordering of the cursor */
@@ -2817,6 +3362,158 @@ export type PaymentRequestsVarianceFields = {
   amountInUsd: Maybe<Scalars['Float']>;
   hoursWorked: Maybe<Scalars['Float']>;
   recipientId: Maybe<Scalars['Float']>;
+};
+
+/** columns and relationships of "payment_stats" */
+export type PaymentStats = {
+  __typename?: 'PaymentStats';
+  githubUserId: Maybe<Scalars['bigint']>;
+  moneyGranted: Maybe<Scalars['numeric']>;
+  projectId: Maybe<Scalars['uuid']>;
+};
+
+/** aggregated selection of "payment_stats" */
+export type PaymentStatsAggregate = {
+  __typename?: 'PaymentStatsAggregate';
+  aggregate: Maybe<PaymentStatsAggregateFields>;
+  nodes: Array<PaymentStats>;
+};
+
+/** aggregate fields of "payment_stats" */
+export type PaymentStatsAggregateFields = {
+  __typename?: 'PaymentStatsAggregateFields';
+  avg: Maybe<PaymentStatsAvgFields>;
+  count: Scalars['Int'];
+  max: Maybe<PaymentStatsMaxFields>;
+  min: Maybe<PaymentStatsMinFields>;
+  stddev: Maybe<PaymentStatsStddevFields>;
+  stddevPop: Maybe<PaymentStatsStddev_PopFields>;
+  stddevSamp: Maybe<PaymentStatsStddev_SampFields>;
+  sum: Maybe<PaymentStatsSumFields>;
+  varPop: Maybe<PaymentStatsVar_PopFields>;
+  varSamp: Maybe<PaymentStatsVar_SampFields>;
+  variance: Maybe<PaymentStatsVarianceFields>;
+};
+
+
+/** aggregate fields of "payment_stats" */
+export type PaymentStatsAggregateFieldsCountArgs = {
+  columns: InputMaybe<Array<PaymentStatsSelectColumn>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "payment_stats" */
+export type PaymentStatsAggregateOrderBy = {
+  avg: InputMaybe<Payment_Stats_Avg_Order_By>;
+  count: InputMaybe<OrderBy>;
+  max: InputMaybe<Payment_Stats_Max_Order_By>;
+  min: InputMaybe<Payment_Stats_Min_Order_By>;
+  stddev: InputMaybe<Payment_Stats_Stddev_Order_By>;
+  stddev_pop: InputMaybe<Payment_Stats_Stddev_Pop_Order_By>;
+  stddev_samp: InputMaybe<Payment_Stats_Stddev_Samp_Order_By>;
+  sum: InputMaybe<Payment_Stats_Sum_Order_By>;
+  var_pop: InputMaybe<Payment_Stats_Var_Pop_Order_By>;
+  var_samp: InputMaybe<Payment_Stats_Var_Samp_Order_By>;
+  variance: InputMaybe<Payment_Stats_Variance_Order_By>;
+};
+
+/** aggregate avg on columns */
+export type PaymentStatsAvgFields = {
+  __typename?: 'PaymentStatsAvgFields';
+  githubUserId: Maybe<Scalars['Float']>;
+  moneyGranted: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "payment_stats". All fields are combined with a logical 'AND'. */
+export type PaymentStatsBoolExp = {
+  _and: InputMaybe<Array<PaymentStatsBoolExp>>;
+  _not: InputMaybe<PaymentStatsBoolExp>;
+  _or: InputMaybe<Array<PaymentStatsBoolExp>>;
+  githubUserId: InputMaybe<BigintComparisonExp>;
+  moneyGranted: InputMaybe<NumericComparisonExp>;
+  projectId: InputMaybe<UuidComparisonExp>;
+};
+
+/** aggregate max on columns */
+export type PaymentStatsMaxFields = {
+  __typename?: 'PaymentStatsMaxFields';
+  githubUserId: Maybe<Scalars['bigint']>;
+  moneyGranted: Maybe<Scalars['numeric']>;
+  projectId: Maybe<Scalars['uuid']>;
+};
+
+/** aggregate min on columns */
+export type PaymentStatsMinFields = {
+  __typename?: 'PaymentStatsMinFields';
+  githubUserId: Maybe<Scalars['bigint']>;
+  moneyGranted: Maybe<Scalars['numeric']>;
+  projectId: Maybe<Scalars['uuid']>;
+};
+
+/** Ordering options when selecting data from "payment_stats". */
+export type PaymentStatsOrderBy = {
+  githubUserId: InputMaybe<OrderBy>;
+  moneyGranted: InputMaybe<OrderBy>;
+  projectId: InputMaybe<OrderBy>;
+};
+
+/** select columns of table "payment_stats" */
+export enum PaymentStatsSelectColumn {
+  /** column name */
+  GithubUserId = 'githubUserId',
+  /** column name */
+  MoneyGranted = 'moneyGranted',
+  /** column name */
+  ProjectId = 'projectId'
+}
+
+/** aggregate stddev on columns */
+export type PaymentStatsStddevFields = {
+  __typename?: 'PaymentStatsStddevFields';
+  githubUserId: Maybe<Scalars['Float']>;
+  moneyGranted: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type PaymentStatsStddev_PopFields = {
+  __typename?: 'PaymentStatsStddev_popFields';
+  githubUserId: Maybe<Scalars['Float']>;
+  moneyGranted: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type PaymentStatsStddev_SampFields = {
+  __typename?: 'PaymentStatsStddev_sampFields';
+  githubUserId: Maybe<Scalars['Float']>;
+  moneyGranted: Maybe<Scalars['Float']>;
+};
+
+/** aggregate sum on columns */
+export type PaymentStatsSumFields = {
+  __typename?: 'PaymentStatsSumFields';
+  githubUserId: Maybe<Scalars['bigint']>;
+  moneyGranted: Maybe<Scalars['numeric']>;
+};
+
+/** aggregate var_pop on columns */
+export type PaymentStatsVar_PopFields = {
+  __typename?: 'PaymentStatsVar_popFields';
+  githubUserId: Maybe<Scalars['Float']>;
+  moneyGranted: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type PaymentStatsVar_SampFields = {
+  __typename?: 'PaymentStatsVar_sampFields';
+  githubUserId: Maybe<Scalars['Float']>;
+  moneyGranted: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type PaymentStatsVarianceFields = {
+  __typename?: 'PaymentStatsVarianceFields';
+  githubUserId: Maybe<Scalars['Float']>;
+  moneyGranted: Maybe<Scalars['Float']>;
 };
 
 /** columns and relationships of "payments" */
@@ -5224,366 +5921,6 @@ export type UserPaymentRequestsAggregateArgs = {
   where: InputMaybe<PaymentRequestsBoolExp>;
 };
 
-/** columns and relationships of "user_contribution_counts" */
-export type UserContributionCounts = {
-  __typename?: 'UserContributionCounts';
-  count: Maybe<Scalars['bigint']>;
-  githubUserId: Maybe<Scalars['bigint']>;
-  week: Maybe<Scalars['float8']>;
-  year: Maybe<Scalars['float8']>;
-};
-
-/** aggregated selection of "user_contribution_counts" */
-export type UserContributionCountsAggregate = {
-  __typename?: 'UserContributionCountsAggregate';
-  aggregate: Maybe<UserContributionCountsAggregateFields>;
-  nodes: Array<UserContributionCounts>;
-};
-
-/** aggregate fields of "user_contribution_counts" */
-export type UserContributionCountsAggregateFields = {
-  __typename?: 'UserContributionCountsAggregateFields';
-  avg: Maybe<UserContributionCountsAvgFields>;
-  count: Scalars['Int'];
-  max: Maybe<UserContributionCountsMaxFields>;
-  min: Maybe<UserContributionCountsMinFields>;
-  stddev: Maybe<UserContributionCountsStddevFields>;
-  stddevPop: Maybe<UserContributionCountsStddev_PopFields>;
-  stddevSamp: Maybe<UserContributionCountsStddev_SampFields>;
-  sum: Maybe<UserContributionCountsSumFields>;
-  varPop: Maybe<UserContributionCountsVar_PopFields>;
-  varSamp: Maybe<UserContributionCountsVar_SampFields>;
-  variance: Maybe<UserContributionCountsVarianceFields>;
-};
-
-
-/** aggregate fields of "user_contribution_counts" */
-export type UserContributionCountsAggregateFieldsCountArgs = {
-  columns: InputMaybe<Array<UserContributionCountsSelectColumn>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
-};
-
-/** order by aggregate values of table "user_contribution_counts" */
-export type UserContributionCountsAggregateOrderBy = {
-  avg: InputMaybe<User_Contribution_Counts_Avg_Order_By>;
-  count: InputMaybe<OrderBy>;
-  max: InputMaybe<User_Contribution_Counts_Max_Order_By>;
-  min: InputMaybe<User_Contribution_Counts_Min_Order_By>;
-  stddev: InputMaybe<User_Contribution_Counts_Stddev_Order_By>;
-  stddev_pop: InputMaybe<User_Contribution_Counts_Stddev_Pop_Order_By>;
-  stddev_samp: InputMaybe<User_Contribution_Counts_Stddev_Samp_Order_By>;
-  sum: InputMaybe<User_Contribution_Counts_Sum_Order_By>;
-  var_pop: InputMaybe<User_Contribution_Counts_Var_Pop_Order_By>;
-  var_samp: InputMaybe<User_Contribution_Counts_Var_Samp_Order_By>;
-  variance: InputMaybe<User_Contribution_Counts_Variance_Order_By>;
-};
-
-/** aggregate avg on columns */
-export type UserContributionCountsAvgFields = {
-  __typename?: 'UserContributionCountsAvgFields';
-  count: Maybe<Scalars['Float']>;
-  githubUserId: Maybe<Scalars['Float']>;
-  week: Maybe<Scalars['Float']>;
-  year: Maybe<Scalars['Float']>;
-};
-
-/** Boolean expression to filter rows from the table "user_contribution_counts". All fields are combined with a logical 'AND'. */
-export type UserContributionCountsBoolExp = {
-  _and: InputMaybe<Array<UserContributionCountsBoolExp>>;
-  _not: InputMaybe<UserContributionCountsBoolExp>;
-  _or: InputMaybe<Array<UserContributionCountsBoolExp>>;
-  count: InputMaybe<BigintComparisonExp>;
-  githubUserId: InputMaybe<BigintComparisonExp>;
-  week: InputMaybe<Float8ComparisonExp>;
-  year: InputMaybe<Float8ComparisonExp>;
-};
-
-/** aggregate max on columns */
-export type UserContributionCountsMaxFields = {
-  __typename?: 'UserContributionCountsMaxFields';
-  count: Maybe<Scalars['bigint']>;
-  githubUserId: Maybe<Scalars['bigint']>;
-  week: Maybe<Scalars['float8']>;
-  year: Maybe<Scalars['float8']>;
-};
-
-/** aggregate min on columns */
-export type UserContributionCountsMinFields = {
-  __typename?: 'UserContributionCountsMinFields';
-  count: Maybe<Scalars['bigint']>;
-  githubUserId: Maybe<Scalars['bigint']>;
-  week: Maybe<Scalars['float8']>;
-  year: Maybe<Scalars['float8']>;
-};
-
-/** Ordering options when selecting data from "user_contribution_counts". */
-export type UserContributionCountsOrderBy = {
-  count: InputMaybe<OrderBy>;
-  githubUserId: InputMaybe<OrderBy>;
-  week: InputMaybe<OrderBy>;
-  year: InputMaybe<OrderBy>;
-};
-
-/** select columns of table "user_contribution_counts" */
-export enum UserContributionCountsSelectColumn {
-  /** column name */
-  Count = 'count',
-  /** column name */
-  GithubUserId = 'githubUserId',
-  /** column name */
-  Week = 'week',
-  /** column name */
-  Year = 'year'
-}
-
-/** aggregate stddev on columns */
-export type UserContributionCountsStddevFields = {
-  __typename?: 'UserContributionCountsStddevFields';
-  count: Maybe<Scalars['Float']>;
-  githubUserId: Maybe<Scalars['Float']>;
-  week: Maybe<Scalars['Float']>;
-  year: Maybe<Scalars['Float']>;
-};
-
-/** aggregate stddev_pop on columns */
-export type UserContributionCountsStddev_PopFields = {
-  __typename?: 'UserContributionCountsStddev_popFields';
-  count: Maybe<Scalars['Float']>;
-  githubUserId: Maybe<Scalars['Float']>;
-  week: Maybe<Scalars['Float']>;
-  year: Maybe<Scalars['Float']>;
-};
-
-/** aggregate stddev_samp on columns */
-export type UserContributionCountsStddev_SampFields = {
-  __typename?: 'UserContributionCountsStddev_sampFields';
-  count: Maybe<Scalars['Float']>;
-  githubUserId: Maybe<Scalars['Float']>;
-  week: Maybe<Scalars['Float']>;
-  year: Maybe<Scalars['Float']>;
-};
-
-/** aggregate sum on columns */
-export type UserContributionCountsSumFields = {
-  __typename?: 'UserContributionCountsSumFields';
-  count: Maybe<Scalars['bigint']>;
-  githubUserId: Maybe<Scalars['bigint']>;
-  week: Maybe<Scalars['float8']>;
-  year: Maybe<Scalars['float8']>;
-};
-
-/** aggregate var_pop on columns */
-export type UserContributionCountsVar_PopFields = {
-  __typename?: 'UserContributionCountsVar_popFields';
-  count: Maybe<Scalars['Float']>;
-  githubUserId: Maybe<Scalars['Float']>;
-  week: Maybe<Scalars['Float']>;
-  year: Maybe<Scalars['Float']>;
-};
-
-/** aggregate var_samp on columns */
-export type UserContributionCountsVar_SampFields = {
-  __typename?: 'UserContributionCountsVar_sampFields';
-  count: Maybe<Scalars['Float']>;
-  githubUserId: Maybe<Scalars['Float']>;
-  week: Maybe<Scalars['Float']>;
-  year: Maybe<Scalars['Float']>;
-};
-
-/** aggregate variance on columns */
-export type UserContributionCountsVarianceFields = {
-  __typename?: 'UserContributionCountsVarianceFields';
-  count: Maybe<Scalars['Float']>;
-  githubUserId: Maybe<Scalars['Float']>;
-  week: Maybe<Scalars['Float']>;
-  year: Maybe<Scalars['Float']>;
-};
-
-/** columns and relationships of "user_contribution_projects" */
-export type UserContributionProjects = {
-  __typename?: 'UserContributionProjects';
-  contributionCount: Maybe<Scalars['numeric']>;
-  githubUserId: Maybe<Scalars['bigint']>;
-  maxContributionDate: Maybe<Scalars['timestamp']>;
-  minContributionDate: Maybe<Scalars['timestamp']>;
-  moneyGranted: Maybe<Scalars['numeric']>;
-  /** An object relationship */
-  project: Maybe<Projects>;
-  projectId: Maybe<Scalars['uuid']>;
-};
-
-/** aggregated selection of "user_contribution_projects" */
-export type UserContributionProjectsAggregate = {
-  __typename?: 'UserContributionProjectsAggregate';
-  aggregate: Maybe<UserContributionProjectsAggregateFields>;
-  nodes: Array<UserContributionProjects>;
-};
-
-/** aggregate fields of "user_contribution_projects" */
-export type UserContributionProjectsAggregateFields = {
-  __typename?: 'UserContributionProjectsAggregateFields';
-  avg: Maybe<UserContributionProjectsAvgFields>;
-  count: Scalars['Int'];
-  max: Maybe<UserContributionProjectsMaxFields>;
-  min: Maybe<UserContributionProjectsMinFields>;
-  stddev: Maybe<UserContributionProjectsStddevFields>;
-  stddevPop: Maybe<UserContributionProjectsStddev_PopFields>;
-  stddevSamp: Maybe<UserContributionProjectsStddev_SampFields>;
-  sum: Maybe<UserContributionProjectsSumFields>;
-  varPop: Maybe<UserContributionProjectsVar_PopFields>;
-  varSamp: Maybe<UserContributionProjectsVar_SampFields>;
-  variance: Maybe<UserContributionProjectsVarianceFields>;
-};
-
-
-/** aggregate fields of "user_contribution_projects" */
-export type UserContributionProjectsAggregateFieldsCountArgs = {
-  columns: InputMaybe<Array<UserContributionProjectsSelectColumn>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
-};
-
-/** order by aggregate values of table "user_contribution_projects" */
-export type UserContributionProjectsAggregateOrderBy = {
-  avg: InputMaybe<User_Contribution_Projects_Avg_Order_By>;
-  count: InputMaybe<OrderBy>;
-  max: InputMaybe<User_Contribution_Projects_Max_Order_By>;
-  min: InputMaybe<User_Contribution_Projects_Min_Order_By>;
-  stddev: InputMaybe<User_Contribution_Projects_Stddev_Order_By>;
-  stddev_pop: InputMaybe<User_Contribution_Projects_Stddev_Pop_Order_By>;
-  stddev_samp: InputMaybe<User_Contribution_Projects_Stddev_Samp_Order_By>;
-  sum: InputMaybe<User_Contribution_Projects_Sum_Order_By>;
-  var_pop: InputMaybe<User_Contribution_Projects_Var_Pop_Order_By>;
-  var_samp: InputMaybe<User_Contribution_Projects_Var_Samp_Order_By>;
-  variance: InputMaybe<User_Contribution_Projects_Variance_Order_By>;
-};
-
-/** aggregate avg on columns */
-export type UserContributionProjectsAvgFields = {
-  __typename?: 'UserContributionProjectsAvgFields';
-  contributionCount: Maybe<Scalars['Float']>;
-  githubUserId: Maybe<Scalars['Float']>;
-  moneyGranted: Maybe<Scalars['Float']>;
-};
-
-/** Boolean expression to filter rows from the table "user_contribution_projects". All fields are combined with a logical 'AND'. */
-export type UserContributionProjectsBoolExp = {
-  _and: InputMaybe<Array<UserContributionProjectsBoolExp>>;
-  _not: InputMaybe<UserContributionProjectsBoolExp>;
-  _or: InputMaybe<Array<UserContributionProjectsBoolExp>>;
-  contributionCount: InputMaybe<NumericComparisonExp>;
-  githubUserId: InputMaybe<BigintComparisonExp>;
-  maxContributionDate: InputMaybe<TimestampComparisonExp>;
-  minContributionDate: InputMaybe<TimestampComparisonExp>;
-  moneyGranted: InputMaybe<NumericComparisonExp>;
-  project: InputMaybe<ProjectsBoolExp>;
-  projectId: InputMaybe<UuidComparisonExp>;
-};
-
-/** aggregate max on columns */
-export type UserContributionProjectsMaxFields = {
-  __typename?: 'UserContributionProjectsMaxFields';
-  contributionCount: Maybe<Scalars['numeric']>;
-  githubUserId: Maybe<Scalars['bigint']>;
-  maxContributionDate: Maybe<Scalars['timestamp']>;
-  minContributionDate: Maybe<Scalars['timestamp']>;
-  moneyGranted: Maybe<Scalars['numeric']>;
-  projectId: Maybe<Scalars['uuid']>;
-};
-
-/** aggregate min on columns */
-export type UserContributionProjectsMinFields = {
-  __typename?: 'UserContributionProjectsMinFields';
-  contributionCount: Maybe<Scalars['numeric']>;
-  githubUserId: Maybe<Scalars['bigint']>;
-  maxContributionDate: Maybe<Scalars['timestamp']>;
-  minContributionDate: Maybe<Scalars['timestamp']>;
-  moneyGranted: Maybe<Scalars['numeric']>;
-  projectId: Maybe<Scalars['uuid']>;
-};
-
-/** Ordering options when selecting data from "user_contribution_projects". */
-export type UserContributionProjectsOrderBy = {
-  contributionCount: InputMaybe<OrderBy>;
-  githubUserId: InputMaybe<OrderBy>;
-  maxContributionDate: InputMaybe<OrderBy>;
-  minContributionDate: InputMaybe<OrderBy>;
-  moneyGranted: InputMaybe<OrderBy>;
-  project: InputMaybe<ProjectsOrderBy>;
-  projectId: InputMaybe<OrderBy>;
-};
-
-/** select columns of table "user_contribution_projects" */
-export enum UserContributionProjectsSelectColumn {
-  /** column name */
-  ContributionCount = 'contributionCount',
-  /** column name */
-  GithubUserId = 'githubUserId',
-  /** column name */
-  MaxContributionDate = 'maxContributionDate',
-  /** column name */
-  MinContributionDate = 'minContributionDate',
-  /** column name */
-  MoneyGranted = 'moneyGranted',
-  /** column name */
-  ProjectId = 'projectId'
-}
-
-/** aggregate stddev on columns */
-export type UserContributionProjectsStddevFields = {
-  __typename?: 'UserContributionProjectsStddevFields';
-  contributionCount: Maybe<Scalars['Float']>;
-  githubUserId: Maybe<Scalars['Float']>;
-  moneyGranted: Maybe<Scalars['Float']>;
-};
-
-/** aggregate stddev_pop on columns */
-export type UserContributionProjectsStddev_PopFields = {
-  __typename?: 'UserContributionProjectsStddev_popFields';
-  contributionCount: Maybe<Scalars['Float']>;
-  githubUserId: Maybe<Scalars['Float']>;
-  moneyGranted: Maybe<Scalars['Float']>;
-};
-
-/** aggregate stddev_samp on columns */
-export type UserContributionProjectsStddev_SampFields = {
-  __typename?: 'UserContributionProjectsStddev_sampFields';
-  contributionCount: Maybe<Scalars['Float']>;
-  githubUserId: Maybe<Scalars['Float']>;
-  moneyGranted: Maybe<Scalars['Float']>;
-};
-
-/** aggregate sum on columns */
-export type UserContributionProjectsSumFields = {
-  __typename?: 'UserContributionProjectsSumFields';
-  contributionCount: Maybe<Scalars['numeric']>;
-  githubUserId: Maybe<Scalars['bigint']>;
-  moneyGranted: Maybe<Scalars['numeric']>;
-};
-
-/** aggregate var_pop on columns */
-export type UserContributionProjectsVar_PopFields = {
-  __typename?: 'UserContributionProjectsVar_popFields';
-  contributionCount: Maybe<Scalars['Float']>;
-  githubUserId: Maybe<Scalars['Float']>;
-  moneyGranted: Maybe<Scalars['Float']>;
-};
-
-/** aggregate var_samp on columns */
-export type UserContributionProjectsVar_SampFields = {
-  __typename?: 'UserContributionProjectsVar_sampFields';
-  contributionCount: Maybe<Scalars['Float']>;
-  githubUserId: Maybe<Scalars['Float']>;
-  moneyGranted: Maybe<Scalars['Float']>;
-};
-
-/** aggregate variance on columns */
-export type UserContributionProjectsVarianceFields = {
-  __typename?: 'UserContributionProjectsVarianceFields';
-  contributionCount: Maybe<Scalars['Float']>;
-  githubUserId: Maybe<Scalars['Float']>;
-  moneyGranted: Maybe<Scalars['Float']>;
-};
-
 /** columns and relationships of "user_info" */
 export type UserInfo = {
   __typename?: 'UserInfo';
@@ -5819,10 +6156,18 @@ export type UserProfiles = {
   __typename?: 'UserProfiles';
   avatarUrl: Maybe<Scalars['String']>;
   bio: Maybe<Scalars['String']>;
-  /** An array relationship */
-  contributionCounts: Array<UserContributionCounts>;
-  /** An aggregate relationship */
-  contributionCountsAggregate: UserContributionCountsAggregate;
+  /** fetch data from the table: "contribution_counts" */
+  contributionCounts: Array<ContributionCounts>;
+  /** fetch aggregated fields from the table: "contribution_counts" */
+  contributionCountsAggregate: ContributionCountsAggregate;
+  /** fetch data from the table: "contribution_stats" */
+  contributionStats: Array<ContributionStats>;
+  /** fetch aggregated fields from the table: "contribution_stats" */
+  contributionStatsAggregate: ContributionStatsAggregate;
+  /** fetch data from the table: "contributions" */
+  contributions: Array<Contributions>;
+  /** fetch aggregated fields from the table: "contributions" */
+  contributionsAggregate: ContributionsAggregate;
   createdAt: Maybe<Scalars['timestamptz']>;
   discord: Maybe<Scalars['String']>;
   email: Maybe<Scalars['String']>;
@@ -5834,9 +6179,13 @@ export type UserProfiles = {
   location: Maybe<Scalars['String']>;
   login: Maybe<Scalars['String']>;
   /** An array relationship */
-  projects: Array<UserContributionProjects>;
+  paymentStats: Array<PaymentStats>;
   /** An aggregate relationship */
-  projectsAggregate: UserContributionProjectsAggregate;
+  paymentStatsAggregate: PaymentStatsAggregate;
+  /** An array relationship */
+  projectsContributed: Array<ProjectsContributorsView>;
+  /** An aggregate relationship */
+  projectsContributedAggregate: ProjectsContributorsViewAggregate;
   /** An array relationship */
   projectsLeaded: Array<ProjectLeads>;
   /** An aggregate relationship */
@@ -5850,21 +6199,61 @@ export type UserProfiles = {
 
 /** columns and relationships of "user_profiles" */
 export type UserProfilesContributionCountsArgs = {
-  distinctOn: InputMaybe<Array<UserContributionCountsSelectColumn>>;
+  distinctOn: InputMaybe<Array<ContributionCountsSelectColumn>>;
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<UserContributionCountsOrderBy>>;
-  where: InputMaybe<UserContributionCountsBoolExp>;
+  orderBy: InputMaybe<Array<ContributionCountsOrderBy>>;
+  where: InputMaybe<ContributionCountsBoolExp>;
 };
 
 
 /** columns and relationships of "user_profiles" */
 export type UserProfilesContributionCountsAggregateArgs = {
-  distinctOn: InputMaybe<Array<UserContributionCountsSelectColumn>>;
+  distinctOn: InputMaybe<Array<ContributionCountsSelectColumn>>;
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<UserContributionCountsOrderBy>>;
-  where: InputMaybe<UserContributionCountsBoolExp>;
+  orderBy: InputMaybe<Array<ContributionCountsOrderBy>>;
+  where: InputMaybe<ContributionCountsBoolExp>;
+};
+
+
+/** columns and relationships of "user_profiles" */
+export type UserProfilesContributionStatsArgs = {
+  distinctOn: InputMaybe<Array<ContributionStatsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ContributionStatsOrderBy>>;
+  where: InputMaybe<ContributionStatsBoolExp>;
+};
+
+
+/** columns and relationships of "user_profiles" */
+export type UserProfilesContributionStatsAggregateArgs = {
+  distinctOn: InputMaybe<Array<ContributionStatsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ContributionStatsOrderBy>>;
+  where: InputMaybe<ContributionStatsBoolExp>;
+};
+
+
+/** columns and relationships of "user_profiles" */
+export type UserProfilesContributionsArgs = {
+  distinctOn: InputMaybe<Array<ContributionsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ContributionsOrderBy>>;
+  where: InputMaybe<ContributionsBoolExp>;
+};
+
+
+/** columns and relationships of "user_profiles" */
+export type UserProfilesContributionsAggregateArgs = {
+  distinctOn: InputMaybe<Array<ContributionsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ContributionsOrderBy>>;
+  where: InputMaybe<ContributionsBoolExp>;
 };
 
 
@@ -5875,22 +6264,42 @@ export type UserProfilesLanguagesArgs = {
 
 
 /** columns and relationships of "user_profiles" */
-export type UserProfilesProjectsArgs = {
-  distinctOn: InputMaybe<Array<UserContributionProjectsSelectColumn>>;
+export type UserProfilesPaymentStatsArgs = {
+  distinctOn: InputMaybe<Array<PaymentStatsSelectColumn>>;
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<UserContributionProjectsOrderBy>>;
-  where: InputMaybe<UserContributionProjectsBoolExp>;
+  orderBy: InputMaybe<Array<PaymentStatsOrderBy>>;
+  where: InputMaybe<PaymentStatsBoolExp>;
 };
 
 
 /** columns and relationships of "user_profiles" */
-export type UserProfilesProjectsAggregateArgs = {
-  distinctOn: InputMaybe<Array<UserContributionProjectsSelectColumn>>;
+export type UserProfilesPaymentStatsAggregateArgs = {
+  distinctOn: InputMaybe<Array<PaymentStatsSelectColumn>>;
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<UserContributionProjectsOrderBy>>;
-  where: InputMaybe<UserContributionProjectsBoolExp>;
+  orderBy: InputMaybe<Array<PaymentStatsOrderBy>>;
+  where: InputMaybe<PaymentStatsBoolExp>;
+};
+
+
+/** columns and relationships of "user_profiles" */
+export type UserProfilesProjectsContributedArgs = {
+  distinctOn: InputMaybe<Array<ProjectsContributorsViewSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ProjectsContributorsViewOrderBy>>;
+  where: InputMaybe<ProjectsContributorsViewBoolExp>;
+};
+
+
+/** columns and relationships of "user_profiles" */
+export type UserProfilesProjectsContributedAggregateArgs = {
+  distinctOn: InputMaybe<Array<ProjectsContributorsViewSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ProjectsContributorsViewOrderBy>>;
+  where: InputMaybe<ProjectsContributorsViewBoolExp>;
 };
 
 
@@ -5956,8 +6365,12 @@ export type UserProfilesBoolExp = {
   _or: InputMaybe<Array<UserProfilesBoolExp>>;
   avatarUrl: InputMaybe<StringComparisonExp>;
   bio: InputMaybe<StringComparisonExp>;
-  contributionCounts: InputMaybe<UserContributionCountsBoolExp>;
-  contributionCounts_aggregate: InputMaybe<User_Contribution_Counts_Aggregate_Bool_Exp>;
+  contributionCounts: InputMaybe<ContributionCountsBoolExp>;
+  contributionCounts_aggregate: InputMaybe<Contribution_Counts_Aggregate_Bool_Exp>;
+  contributionStats: InputMaybe<ContributionStatsBoolExp>;
+  contributionStats_aggregate: InputMaybe<Contribution_Stats_Aggregate_Bool_Exp>;
+  contributions: InputMaybe<ContributionsBoolExp>;
+  contributions_aggregate: InputMaybe<Contributions_Aggregate_Bool_Exp>;
   createdAt: InputMaybe<TimestamptzComparisonExp>;
   discord: InputMaybe<StringComparisonExp>;
   email: InputMaybe<StringComparisonExp>;
@@ -5968,10 +6381,12 @@ export type UserProfilesBoolExp = {
   linkedin: InputMaybe<StringComparisonExp>;
   location: InputMaybe<StringComparisonExp>;
   login: InputMaybe<StringComparisonExp>;
-  projects: InputMaybe<UserContributionProjectsBoolExp>;
+  paymentStats: InputMaybe<PaymentStatsBoolExp>;
+  paymentStats_aggregate: InputMaybe<Payment_Stats_Aggregate_Bool_Exp>;
+  projectsContributed: InputMaybe<ProjectsContributorsViewBoolExp>;
+  projectsContributed_aggregate: InputMaybe<Projects_Contributors_View_Aggregate_Bool_Exp>;
   projectsLeaded: InputMaybe<ProjectLeadsBoolExp>;
   projectsLeaded_aggregate: InputMaybe<Project_Leads_Aggregate_Bool_Exp>;
-  projects_aggregate: InputMaybe<User_Contribution_Projects_Aggregate_Bool_Exp>;
   telegram: InputMaybe<StringComparisonExp>;
   twitter: InputMaybe<StringComparisonExp>;
   userId: InputMaybe<UuidComparisonExp>;
@@ -6022,7 +6437,9 @@ export type UserProfilesMinFields = {
 export type UserProfilesOrderBy = {
   avatarUrl: InputMaybe<OrderBy>;
   bio: InputMaybe<OrderBy>;
-  contributionCountsAggregate: InputMaybe<UserContributionCountsAggregateOrderBy>;
+  contributionCountsAggregate: InputMaybe<ContributionCountsAggregateOrderBy>;
+  contributionStatsAggregate: InputMaybe<ContributionStatsAggregateOrderBy>;
+  contributionsAggregate: InputMaybe<ContributionsAggregateOrderBy>;
   createdAt: InputMaybe<OrderBy>;
   discord: InputMaybe<OrderBy>;
   email: InputMaybe<OrderBy>;
@@ -6033,7 +6450,8 @@ export type UserProfilesOrderBy = {
   linkedin: InputMaybe<OrderBy>;
   location: InputMaybe<OrderBy>;
   login: InputMaybe<OrderBy>;
-  projectsAggregate: InputMaybe<UserContributionProjectsAggregateOrderBy>;
+  paymentStatsAggregate: InputMaybe<PaymentStatsAggregateOrderBy>;
+  projectsContributedAggregate: InputMaybe<ProjectsContributorsViewAggregateOrderBy>;
   projectsLeadedAggregate: InputMaybe<ProjectLeadsAggregateOrderBy>;
   telegram: InputMaybe<OrderBy>;
   twitter: InputMaybe<OrderBy>;
@@ -8125,6 +8543,469 @@ export type Budgets_Variance_Order_By = {
   initialAmount: InputMaybe<OrderBy>;
   remainingAmount: InputMaybe<OrderBy>;
   spentAmount: InputMaybe<OrderBy>;
+};
+
+export type Contribution_Counts_Aggregate_Bool_Exp = {
+  avg: InputMaybe<Contribution_Counts_Aggregate_Bool_Exp_Avg>;
+  corr: InputMaybe<Contribution_Counts_Aggregate_Bool_Exp_Corr>;
+  count: InputMaybe<Contribution_Counts_Aggregate_Bool_Exp_Count>;
+  covar_samp: InputMaybe<Contribution_Counts_Aggregate_Bool_Exp_Covar_Samp>;
+  max: InputMaybe<Contribution_Counts_Aggregate_Bool_Exp_Max>;
+  min: InputMaybe<Contribution_Counts_Aggregate_Bool_Exp_Min>;
+  stddev_samp: InputMaybe<Contribution_Counts_Aggregate_Bool_Exp_Stddev_Samp>;
+  sum: InputMaybe<Contribution_Counts_Aggregate_Bool_Exp_Sum>;
+  var_samp: InputMaybe<Contribution_Counts_Aggregate_Bool_Exp_Var_Samp>;
+};
+
+export type Contribution_Counts_Aggregate_Bool_Exp_Avg = {
+  arguments: Contribution_Counts_Select_Column_Contribution_Counts_Aggregate_Bool_Exp_Avg_Arguments_Columns;
+  distinct: InputMaybe<Scalars['Boolean']>;
+  filter: InputMaybe<ContributionCountsBoolExp>;
+  predicate: Float8ComparisonExp;
+};
+
+export type Contribution_Counts_Aggregate_Bool_Exp_Corr = {
+  arguments: Contribution_Counts_Aggregate_Bool_Exp_Corr_Arguments;
+  distinct: InputMaybe<Scalars['Boolean']>;
+  filter: InputMaybe<ContributionCountsBoolExp>;
+  predicate: Float8ComparisonExp;
+};
+
+export type Contribution_Counts_Aggregate_Bool_Exp_Corr_Arguments = {
+  X: Contribution_Counts_Select_Column_Contribution_Counts_Aggregate_Bool_Exp_Corr_Arguments_Columns;
+  Y: Contribution_Counts_Select_Column_Contribution_Counts_Aggregate_Bool_Exp_Corr_Arguments_Columns;
+};
+
+export type Contribution_Counts_Aggregate_Bool_Exp_Count = {
+  arguments: InputMaybe<Array<ContributionCountsSelectColumn>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+  filter: InputMaybe<ContributionCountsBoolExp>;
+  predicate: IntComparisonExp;
+};
+
+export type Contribution_Counts_Aggregate_Bool_Exp_Covar_Samp = {
+  arguments: Contribution_Counts_Aggregate_Bool_Exp_Covar_Samp_Arguments;
+  distinct: InputMaybe<Scalars['Boolean']>;
+  filter: InputMaybe<ContributionCountsBoolExp>;
+  predicate: Float8ComparisonExp;
+};
+
+export type Contribution_Counts_Aggregate_Bool_Exp_Covar_Samp_Arguments = {
+  X: Contribution_Counts_Select_Column_Contribution_Counts_Aggregate_Bool_Exp_Covar_Samp_Arguments_Columns;
+  Y: Contribution_Counts_Select_Column_Contribution_Counts_Aggregate_Bool_Exp_Covar_Samp_Arguments_Columns;
+};
+
+export type Contribution_Counts_Aggregate_Bool_Exp_Max = {
+  arguments: Contribution_Counts_Select_Column_Contribution_Counts_Aggregate_Bool_Exp_Max_Arguments_Columns;
+  distinct: InputMaybe<Scalars['Boolean']>;
+  filter: InputMaybe<ContributionCountsBoolExp>;
+  predicate: Float8ComparisonExp;
+};
+
+export type Contribution_Counts_Aggregate_Bool_Exp_Min = {
+  arguments: Contribution_Counts_Select_Column_Contribution_Counts_Aggregate_Bool_Exp_Min_Arguments_Columns;
+  distinct: InputMaybe<Scalars['Boolean']>;
+  filter: InputMaybe<ContributionCountsBoolExp>;
+  predicate: Float8ComparisonExp;
+};
+
+export type Contribution_Counts_Aggregate_Bool_Exp_Stddev_Samp = {
+  arguments: Contribution_Counts_Select_Column_Contribution_Counts_Aggregate_Bool_Exp_Stddev_Samp_Arguments_Columns;
+  distinct: InputMaybe<Scalars['Boolean']>;
+  filter: InputMaybe<ContributionCountsBoolExp>;
+  predicate: Float8ComparisonExp;
+};
+
+export type Contribution_Counts_Aggregate_Bool_Exp_Sum = {
+  arguments: Contribution_Counts_Select_Column_Contribution_Counts_Aggregate_Bool_Exp_Sum_Arguments_Columns;
+  distinct: InputMaybe<Scalars['Boolean']>;
+  filter: InputMaybe<ContributionCountsBoolExp>;
+  predicate: Float8ComparisonExp;
+};
+
+export type Contribution_Counts_Aggregate_Bool_Exp_Var_Samp = {
+  arguments: Contribution_Counts_Select_Column_Contribution_Counts_Aggregate_Bool_Exp_Var_Samp_Arguments_Columns;
+  distinct: InputMaybe<Scalars['Boolean']>;
+  filter: InputMaybe<ContributionCountsBoolExp>;
+  predicate: Float8ComparisonExp;
+};
+
+/** order by avg() on columns of table "contribution_counts" */
+export type Contribution_Counts_Avg_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+  paidCount: InputMaybe<OrderBy>;
+  unpaidCount: InputMaybe<OrderBy>;
+  week: InputMaybe<OrderBy>;
+  year: InputMaybe<OrderBy>;
+};
+
+/** order by max() on columns of table "contribution_counts" */
+export type Contribution_Counts_Max_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+  paidCount: InputMaybe<OrderBy>;
+  unpaidCount: InputMaybe<OrderBy>;
+  week: InputMaybe<OrderBy>;
+  year: InputMaybe<OrderBy>;
+};
+
+/** order by min() on columns of table "contribution_counts" */
+export type Contribution_Counts_Min_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+  paidCount: InputMaybe<OrderBy>;
+  unpaidCount: InputMaybe<OrderBy>;
+  week: InputMaybe<OrderBy>;
+  year: InputMaybe<OrderBy>;
+};
+
+/** select "contribution_counts_aggregate_bool_exp_avg_arguments_columns" columns of table "contribution_counts" */
+export enum Contribution_Counts_Select_Column_Contribution_Counts_Aggregate_Bool_Exp_Avg_Arguments_Columns {
+  /** column name */
+  Week = 'week',
+  /** column name */
+  Year = 'year'
+}
+
+/** select "contribution_counts_aggregate_bool_exp_corr_arguments_columns" columns of table "contribution_counts" */
+export enum Contribution_Counts_Select_Column_Contribution_Counts_Aggregate_Bool_Exp_Corr_Arguments_Columns {
+  /** column name */
+  Week = 'week',
+  /** column name */
+  Year = 'year'
+}
+
+/** select "contribution_counts_aggregate_bool_exp_covar_samp_arguments_columns" columns of table "contribution_counts" */
+export enum Contribution_Counts_Select_Column_Contribution_Counts_Aggregate_Bool_Exp_Covar_Samp_Arguments_Columns {
+  /** column name */
+  Week = 'week',
+  /** column name */
+  Year = 'year'
+}
+
+/** select "contribution_counts_aggregate_bool_exp_max_arguments_columns" columns of table "contribution_counts" */
+export enum Contribution_Counts_Select_Column_Contribution_Counts_Aggregate_Bool_Exp_Max_Arguments_Columns {
+  /** column name */
+  Week = 'week',
+  /** column name */
+  Year = 'year'
+}
+
+/** select "contribution_counts_aggregate_bool_exp_min_arguments_columns" columns of table "contribution_counts" */
+export enum Contribution_Counts_Select_Column_Contribution_Counts_Aggregate_Bool_Exp_Min_Arguments_Columns {
+  /** column name */
+  Week = 'week',
+  /** column name */
+  Year = 'year'
+}
+
+/** select "contribution_counts_aggregate_bool_exp_stddev_samp_arguments_columns" columns of table "contribution_counts" */
+export enum Contribution_Counts_Select_Column_Contribution_Counts_Aggregate_Bool_Exp_Stddev_Samp_Arguments_Columns {
+  /** column name */
+  Week = 'week',
+  /** column name */
+  Year = 'year'
+}
+
+/** select "contribution_counts_aggregate_bool_exp_sum_arguments_columns" columns of table "contribution_counts" */
+export enum Contribution_Counts_Select_Column_Contribution_Counts_Aggregate_Bool_Exp_Sum_Arguments_Columns {
+  /** column name */
+  Week = 'week',
+  /** column name */
+  Year = 'year'
+}
+
+/** select "contribution_counts_aggregate_bool_exp_var_samp_arguments_columns" columns of table "contribution_counts" */
+export enum Contribution_Counts_Select_Column_Contribution_Counts_Aggregate_Bool_Exp_Var_Samp_Arguments_Columns {
+  /** column name */
+  Week = 'week',
+  /** column name */
+  Year = 'year'
+}
+
+/** order by stddev() on columns of table "contribution_counts" */
+export type Contribution_Counts_Stddev_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+  paidCount: InputMaybe<OrderBy>;
+  unpaidCount: InputMaybe<OrderBy>;
+  week: InputMaybe<OrderBy>;
+  year: InputMaybe<OrderBy>;
+};
+
+/** order by stddev_pop() on columns of table "contribution_counts" */
+export type Contribution_Counts_Stddev_Pop_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+  paidCount: InputMaybe<OrderBy>;
+  unpaidCount: InputMaybe<OrderBy>;
+  week: InputMaybe<OrderBy>;
+  year: InputMaybe<OrderBy>;
+};
+
+/** order by stddev_samp() on columns of table "contribution_counts" */
+export type Contribution_Counts_Stddev_Samp_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+  paidCount: InputMaybe<OrderBy>;
+  unpaidCount: InputMaybe<OrderBy>;
+  week: InputMaybe<OrderBy>;
+  year: InputMaybe<OrderBy>;
+};
+
+/** Streaming cursor of the table "contribution_counts" */
+export type Contribution_Counts_StreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: Contribution_Counts_StreamCursorValueInput;
+  /** cursor ordering */
+  ordering: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Contribution_Counts_StreamCursorValueInput = {
+  githubUserId: InputMaybe<Scalars['bigint']>;
+  paidCount: InputMaybe<Scalars['bigint']>;
+  unpaidCount: InputMaybe<Scalars['bigint']>;
+  week: InputMaybe<Scalars['float8']>;
+  year: InputMaybe<Scalars['float8']>;
+};
+
+/** order by sum() on columns of table "contribution_counts" */
+export type Contribution_Counts_Sum_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+  paidCount: InputMaybe<OrderBy>;
+  unpaidCount: InputMaybe<OrderBy>;
+  week: InputMaybe<OrderBy>;
+  year: InputMaybe<OrderBy>;
+};
+
+/** order by var_pop() on columns of table "contribution_counts" */
+export type Contribution_Counts_Var_Pop_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+  paidCount: InputMaybe<OrderBy>;
+  unpaidCount: InputMaybe<OrderBy>;
+  week: InputMaybe<OrderBy>;
+  year: InputMaybe<OrderBy>;
+};
+
+/** order by var_samp() on columns of table "contribution_counts" */
+export type Contribution_Counts_Var_Samp_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+  paidCount: InputMaybe<OrderBy>;
+  unpaidCount: InputMaybe<OrderBy>;
+  week: InputMaybe<OrderBy>;
+  year: InputMaybe<OrderBy>;
+};
+
+/** order by variance() on columns of table "contribution_counts" */
+export type Contribution_Counts_Variance_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+  paidCount: InputMaybe<OrderBy>;
+  unpaidCount: InputMaybe<OrderBy>;
+  week: InputMaybe<OrderBy>;
+  year: InputMaybe<OrderBy>;
+};
+
+export type Contribution_Stats_Aggregate_Bool_Exp = {
+  count: InputMaybe<Contribution_Stats_Aggregate_Bool_Exp_Count>;
+};
+
+export type Contribution_Stats_Aggregate_Bool_Exp_Count = {
+  arguments: InputMaybe<Array<ContributionStatsSelectColumn>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+  filter: InputMaybe<ContributionStatsBoolExp>;
+  predicate: IntComparisonExp;
+};
+
+/** order by avg() on columns of table "contribution_stats" */
+export type Contribution_Stats_Avg_Order_By = {
+  count: InputMaybe<OrderBy>;
+  githubUserId: InputMaybe<OrderBy>;
+};
+
+/** order by max() on columns of table "contribution_stats" */
+export type Contribution_Stats_Max_Order_By = {
+  count: InputMaybe<OrderBy>;
+  githubUserId: InputMaybe<OrderBy>;
+  maxDate: InputMaybe<OrderBy>;
+  minDate: InputMaybe<OrderBy>;
+  projectId: InputMaybe<OrderBy>;
+};
+
+/** order by min() on columns of table "contribution_stats" */
+export type Contribution_Stats_Min_Order_By = {
+  count: InputMaybe<OrderBy>;
+  githubUserId: InputMaybe<OrderBy>;
+  maxDate: InputMaybe<OrderBy>;
+  minDate: InputMaybe<OrderBy>;
+  projectId: InputMaybe<OrderBy>;
+};
+
+/** order by stddev() on columns of table "contribution_stats" */
+export type Contribution_Stats_Stddev_Order_By = {
+  count: InputMaybe<OrderBy>;
+  githubUserId: InputMaybe<OrderBy>;
+};
+
+/** order by stddev_pop() on columns of table "contribution_stats" */
+export type Contribution_Stats_Stddev_Pop_Order_By = {
+  count: InputMaybe<OrderBy>;
+  githubUserId: InputMaybe<OrderBy>;
+};
+
+/** order by stddev_samp() on columns of table "contribution_stats" */
+export type Contribution_Stats_Stddev_Samp_Order_By = {
+  count: InputMaybe<OrderBy>;
+  githubUserId: InputMaybe<OrderBy>;
+};
+
+/** Streaming cursor of the table "contribution_stats" */
+export type Contribution_Stats_StreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: Contribution_Stats_StreamCursorValueInput;
+  /** cursor ordering */
+  ordering: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Contribution_Stats_StreamCursorValueInput = {
+  count: InputMaybe<Scalars['bigint']>;
+  githubUserId: InputMaybe<Scalars['bigint']>;
+  maxDate: InputMaybe<Scalars['timestamp']>;
+  minDate: InputMaybe<Scalars['timestamp']>;
+  projectId: InputMaybe<Scalars['uuid']>;
+};
+
+/** order by sum() on columns of table "contribution_stats" */
+export type Contribution_Stats_Sum_Order_By = {
+  count: InputMaybe<OrderBy>;
+  githubUserId: InputMaybe<OrderBy>;
+};
+
+/** order by var_pop() on columns of table "contribution_stats" */
+export type Contribution_Stats_Var_Pop_Order_By = {
+  count: InputMaybe<OrderBy>;
+  githubUserId: InputMaybe<OrderBy>;
+};
+
+/** order by var_samp() on columns of table "contribution_stats" */
+export type Contribution_Stats_Var_Samp_Order_By = {
+  count: InputMaybe<OrderBy>;
+  githubUserId: InputMaybe<OrderBy>;
+};
+
+/** order by variance() on columns of table "contribution_stats" */
+export type Contribution_Stats_Variance_Order_By = {
+  count: InputMaybe<OrderBy>;
+  githubUserId: InputMaybe<OrderBy>;
+};
+
+export type Contributions_Aggregate_Bool_Exp = {
+  count: InputMaybe<Contributions_Aggregate_Bool_Exp_Count>;
+};
+
+export type Contributions_Aggregate_Bool_Exp_Count = {
+  arguments: InputMaybe<Array<ContributionsSelectColumn>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+  filter: InputMaybe<ContributionsBoolExp>;
+  predicate: IntComparisonExp;
+};
+
+/** order by avg() on columns of table "contributions" */
+export type Contributions_Avg_Order_By = {
+  githubIssueId: InputMaybe<OrderBy>;
+  githubUserId: InputMaybe<OrderBy>;
+  issueNumber: InputMaybe<OrderBy>;
+  repoId: InputMaybe<OrderBy>;
+};
+
+/** order by max() on columns of table "contributions" */
+export type Contributions_Max_Order_By = {
+  createdAt: InputMaybe<OrderBy>;
+  githubIssueId: InputMaybe<OrderBy>;
+  githubUserId: InputMaybe<OrderBy>;
+  issueNumber: InputMaybe<OrderBy>;
+  projectId: InputMaybe<OrderBy>;
+  repoId: InputMaybe<OrderBy>;
+};
+
+/** order by min() on columns of table "contributions" */
+export type Contributions_Min_Order_By = {
+  createdAt: InputMaybe<OrderBy>;
+  githubIssueId: InputMaybe<OrderBy>;
+  githubUserId: InputMaybe<OrderBy>;
+  issueNumber: InputMaybe<OrderBy>;
+  projectId: InputMaybe<OrderBy>;
+  repoId: InputMaybe<OrderBy>;
+};
+
+/** order by stddev() on columns of table "contributions" */
+export type Contributions_Stddev_Order_By = {
+  githubIssueId: InputMaybe<OrderBy>;
+  githubUserId: InputMaybe<OrderBy>;
+  issueNumber: InputMaybe<OrderBy>;
+  repoId: InputMaybe<OrderBy>;
+};
+
+/** order by stddev_pop() on columns of table "contributions" */
+export type Contributions_Stddev_Pop_Order_By = {
+  githubIssueId: InputMaybe<OrderBy>;
+  githubUserId: InputMaybe<OrderBy>;
+  issueNumber: InputMaybe<OrderBy>;
+  repoId: InputMaybe<OrderBy>;
+};
+
+/** order by stddev_samp() on columns of table "contributions" */
+export type Contributions_Stddev_Samp_Order_By = {
+  githubIssueId: InputMaybe<OrderBy>;
+  githubUserId: InputMaybe<OrderBy>;
+  issueNumber: InputMaybe<OrderBy>;
+  repoId: InputMaybe<OrderBy>;
+};
+
+/** Streaming cursor of the table "contributions" */
+export type Contributions_StreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: Contributions_StreamCursorValueInput;
+  /** cursor ordering */
+  ordering: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Contributions_StreamCursorValueInput = {
+  createdAt: InputMaybe<Scalars['timestamp']>;
+  githubIssueId: InputMaybe<Scalars['bigint']>;
+  githubUserId: InputMaybe<Scalars['bigint']>;
+  issueNumber: InputMaybe<Scalars['bigint']>;
+  projectId: InputMaybe<Scalars['uuid']>;
+  repoId: InputMaybe<Scalars['bigint']>;
+};
+
+/** order by sum() on columns of table "contributions" */
+export type Contributions_Sum_Order_By = {
+  githubIssueId: InputMaybe<OrderBy>;
+  githubUserId: InputMaybe<OrderBy>;
+  issueNumber: InputMaybe<OrderBy>;
+  repoId: InputMaybe<OrderBy>;
+};
+
+/** order by var_pop() on columns of table "contributions" */
+export type Contributions_Var_Pop_Order_By = {
+  githubIssueId: InputMaybe<OrderBy>;
+  githubUserId: InputMaybe<OrderBy>;
+  issueNumber: InputMaybe<OrderBy>;
+  repoId: InputMaybe<OrderBy>;
+};
+
+/** order by var_samp() on columns of table "contributions" */
+export type Contributions_Var_Samp_Order_By = {
+  githubIssueId: InputMaybe<OrderBy>;
+  githubUserId: InputMaybe<OrderBy>;
+  issueNumber: InputMaybe<OrderBy>;
+  repoId: InputMaybe<OrderBy>;
+};
+
+/** order by variance() on columns of table "contributions" */
+export type Contributions_Variance_Order_By = {
+  githubIssueId: InputMaybe<OrderBy>;
+  githubUserId: InputMaybe<OrderBy>;
+  issueNumber: InputMaybe<OrderBy>;
+  repoId: InputMaybe<OrderBy>;
 };
 
 export type Github_Issues_Aggregate_Bool_Exp = {
@@ -10512,6 +11393,94 @@ export type Payment_Requests_Variance_Order_By = {
   recipientId: InputMaybe<OrderBy>;
 };
 
+export type Payment_Stats_Aggregate_Bool_Exp = {
+  count: InputMaybe<Payment_Stats_Aggregate_Bool_Exp_Count>;
+};
+
+export type Payment_Stats_Aggregate_Bool_Exp_Count = {
+  arguments: InputMaybe<Array<PaymentStatsSelectColumn>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+  filter: InputMaybe<PaymentStatsBoolExp>;
+  predicate: IntComparisonExp;
+};
+
+/** order by avg() on columns of table "payment_stats" */
+export type Payment_Stats_Avg_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+  moneyGranted: InputMaybe<OrderBy>;
+};
+
+/** order by max() on columns of table "payment_stats" */
+export type Payment_Stats_Max_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+  moneyGranted: InputMaybe<OrderBy>;
+  projectId: InputMaybe<OrderBy>;
+};
+
+/** order by min() on columns of table "payment_stats" */
+export type Payment_Stats_Min_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+  moneyGranted: InputMaybe<OrderBy>;
+  projectId: InputMaybe<OrderBy>;
+};
+
+/** order by stddev() on columns of table "payment_stats" */
+export type Payment_Stats_Stddev_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+  moneyGranted: InputMaybe<OrderBy>;
+};
+
+/** order by stddev_pop() on columns of table "payment_stats" */
+export type Payment_Stats_Stddev_Pop_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+  moneyGranted: InputMaybe<OrderBy>;
+};
+
+/** order by stddev_samp() on columns of table "payment_stats" */
+export type Payment_Stats_Stddev_Samp_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+  moneyGranted: InputMaybe<OrderBy>;
+};
+
+/** Streaming cursor of the table "payment_stats" */
+export type Payment_Stats_StreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: Payment_Stats_StreamCursorValueInput;
+  /** cursor ordering */
+  ordering: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Payment_Stats_StreamCursorValueInput = {
+  githubUserId: InputMaybe<Scalars['bigint']>;
+  moneyGranted: InputMaybe<Scalars['numeric']>;
+  projectId: InputMaybe<Scalars['uuid']>;
+};
+
+/** order by sum() on columns of table "payment_stats" */
+export type Payment_Stats_Sum_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+  moneyGranted: InputMaybe<OrderBy>;
+};
+
+/** order by var_pop() on columns of table "payment_stats" */
+export type Payment_Stats_Var_Pop_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+  moneyGranted: InputMaybe<OrderBy>;
+};
+
+/** order by var_samp() on columns of table "payment_stats" */
+export type Payment_Stats_Var_Samp_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+  moneyGranted: InputMaybe<OrderBy>;
+};
+
+/** order by variance() on columns of table "payment_stats" */
+export type Payment_Stats_Variance_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+  moneyGranted: InputMaybe<OrderBy>;
+};
+
 export type Payments_Aggregate_Bool_Exp = {
   count: InputMaybe<Payments_Aggregate_Bool_Exp_Count>;
 };
@@ -11004,6 +11973,18 @@ export type Query_Root = {
   budgetsAggregate: BudgetsAggregate;
   /** fetch data from the table: "budgets" using primary key columns */
   budgetsByPk: Maybe<Budgets>;
+  /** fetch data from the table: "contribution_counts" */
+  contributionCounts: Array<ContributionCounts>;
+  /** fetch aggregated fields from the table: "contribution_counts" */
+  contributionCountsAggregate: ContributionCountsAggregate;
+  /** fetch data from the table: "contribution_stats" */
+  contributionStats: Array<ContributionStats>;
+  /** fetch aggregated fields from the table: "contribution_stats" */
+  contributionStatsAggregate: ContributionStatsAggregate;
+  /** fetch data from the table: "contributions" */
+  contributions: Array<Contributions>;
+  /** fetch aggregated fields from the table: "contributions" */
+  contributionsAggregate: ContributionsAggregate;
   fetchIssue: Maybe<Issue>;
   fetchIssueByRepositoryId: Maybe<Issue>;
   fetchUserDetailsById: Maybe<User>;
@@ -11045,6 +12026,10 @@ export type Query_Root = {
   paymentRequestsAggregate: PaymentRequestsAggregate;
   /** fetch data from the table: "payment_requests" using primary key columns */
   paymentRequestsByPk: Maybe<PaymentRequests>;
+  /** An array relationship */
+  paymentStats: Array<PaymentStats>;
+  /** An aggregate relationship */
+  paymentStatsAggregate: PaymentStatsAggregate;
   /** An array relationship */
   payments: Array<Payments>;
   /** An aggregate relationship */
@@ -11105,14 +12090,6 @@ export type Query_Root = {
   sponsorsByPk: Maybe<Sponsors>;
   /** fetch data from the table: "auth.users" using primary key columns */
   user: Maybe<Users>;
-  /** fetch data from the table: "user_contribution_counts" */
-  userContributionCounts: Array<UserContributionCounts>;
-  /** fetch aggregated fields from the table: "user_contribution_counts" */
-  userContributionCountsAggregate: UserContributionCountsAggregate;
-  /** fetch data from the table: "user_contribution_projects" */
-  userContributionProjects: Array<UserContributionProjects>;
-  /** fetch aggregated fields from the table: "user_contribution_projects" */
-  userContributionProjectsAggregate: UserContributionProjectsAggregate;
   /** fetch data from the table: "user_info" */
   userInfo: Array<UserInfo>;
   /** fetch aggregated fields from the table: "user_info" */
@@ -11361,6 +12338,60 @@ export type Query_RootBudgetsByPkArgs = {
 };
 
 
+export type Query_RootContributionCountsArgs = {
+  distinctOn: InputMaybe<Array<ContributionCountsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ContributionCountsOrderBy>>;
+  where: InputMaybe<ContributionCountsBoolExp>;
+};
+
+
+export type Query_RootContributionCountsAggregateArgs = {
+  distinctOn: InputMaybe<Array<ContributionCountsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ContributionCountsOrderBy>>;
+  where: InputMaybe<ContributionCountsBoolExp>;
+};
+
+
+export type Query_RootContributionStatsArgs = {
+  distinctOn: InputMaybe<Array<ContributionStatsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ContributionStatsOrderBy>>;
+  where: InputMaybe<ContributionStatsBoolExp>;
+};
+
+
+export type Query_RootContributionStatsAggregateArgs = {
+  distinctOn: InputMaybe<Array<ContributionStatsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ContributionStatsOrderBy>>;
+  where: InputMaybe<ContributionStatsBoolExp>;
+};
+
+
+export type Query_RootContributionsArgs = {
+  distinctOn: InputMaybe<Array<ContributionsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ContributionsOrderBy>>;
+  where: InputMaybe<ContributionsBoolExp>;
+};
+
+
+export type Query_RootContributionsAggregateArgs = {
+  distinctOn: InputMaybe<Array<ContributionsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ContributionsOrderBy>>;
+  where: InputMaybe<ContributionsBoolExp>;
+};
+
+
 export type Query_RootFetchIssueArgs = {
   issueNumber: Scalars['Int'];
   repoName: Scalars['String'];
@@ -11517,6 +12548,24 @@ export type Query_RootPaymentRequestsAggregateArgs = {
 
 export type Query_RootPaymentRequestsByPkArgs = {
   id: Scalars['uuid'];
+};
+
+
+export type Query_RootPaymentStatsArgs = {
+  distinctOn: InputMaybe<Array<PaymentStatsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<PaymentStatsOrderBy>>;
+  where: InputMaybe<PaymentStatsBoolExp>;
+};
+
+
+export type Query_RootPaymentStatsAggregateArgs = {
+  distinctOn: InputMaybe<Array<PaymentStatsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<PaymentStatsOrderBy>>;
+  where: InputMaybe<PaymentStatsBoolExp>;
 };
 
 
@@ -11757,42 +12806,6 @@ export type Query_RootUserArgs = {
 };
 
 
-export type Query_RootUserContributionCountsArgs = {
-  distinctOn: InputMaybe<Array<UserContributionCountsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<UserContributionCountsOrderBy>>;
-  where: InputMaybe<UserContributionCountsBoolExp>;
-};
-
-
-export type Query_RootUserContributionCountsAggregateArgs = {
-  distinctOn: InputMaybe<Array<UserContributionCountsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<UserContributionCountsOrderBy>>;
-  where: InputMaybe<UserContributionCountsBoolExp>;
-};
-
-
-export type Query_RootUserContributionProjectsArgs = {
-  distinctOn: InputMaybe<Array<UserContributionProjectsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<UserContributionProjectsOrderBy>>;
-  where: InputMaybe<UserContributionProjectsBoolExp>;
-};
-
-
-export type Query_RootUserContributionProjectsAggregateArgs = {
-  distinctOn: InputMaybe<Array<UserContributionProjectsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<UserContributionProjectsOrderBy>>;
-  where: InputMaybe<UserContributionProjectsBoolExp>;
-};
-
-
 export type Query_RootUserInfoArgs = {
   distinctOn: InputMaybe<Array<UserInfoSelectColumn>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -11991,6 +13004,24 @@ export type Subscription_Root = {
   budgetsByPk: Maybe<Budgets>;
   /** fetch data from the table in a streaming manner: "budgets" */
   budgetsStream: Array<Budgets>;
+  /** fetch data from the table: "contribution_counts" */
+  contributionCounts: Array<ContributionCounts>;
+  /** fetch aggregated fields from the table: "contribution_counts" */
+  contributionCountsAggregate: ContributionCountsAggregate;
+  /** fetch data from the table in a streaming manner: "contribution_counts" */
+  contributionCountsStream: Array<ContributionCounts>;
+  /** fetch data from the table: "contribution_stats" */
+  contributionStats: Array<ContributionStats>;
+  /** fetch aggregated fields from the table: "contribution_stats" */
+  contributionStatsAggregate: ContributionStatsAggregate;
+  /** fetch data from the table in a streaming manner: "contribution_stats" */
+  contributionStatsStream: Array<ContributionStats>;
+  /** fetch data from the table: "contributions" */
+  contributions: Array<Contributions>;
+  /** fetch aggregated fields from the table: "contributions" */
+  contributionsAggregate: ContributionsAggregate;
+  /** fetch data from the table in a streaming manner: "contributions" */
+  contributionsStream: Array<Contributions>;
   /** fetch data from the table: "github_issues" */
   githubIssues: Array<GithubIssues>;
   /** fetch aggregated fields from the table: "github_issues" */
@@ -12039,6 +13070,12 @@ export type Subscription_Root = {
   paymentRequestsByPk: Maybe<PaymentRequests>;
   /** fetch data from the table in a streaming manner: "payment_requests" */
   paymentRequestsStream: Array<PaymentRequests>;
+  /** An array relationship */
+  paymentStats: Array<PaymentStats>;
+  /** An aggregate relationship */
+  paymentStatsAggregate: PaymentStatsAggregate;
+  /** fetch data from the table in a streaming manner: "payment_stats" */
+  paymentStatsStream: Array<PaymentStats>;
   /** An array relationship */
   payments: Array<Payments>;
   /** An aggregate relationship */
@@ -12117,18 +13154,6 @@ export type Subscription_Root = {
   sponsorsStream: Array<Sponsors>;
   /** fetch data from the table: "auth.users" using primary key columns */
   user: Maybe<Users>;
-  /** fetch data from the table: "user_contribution_counts" */
-  userContributionCounts: Array<UserContributionCounts>;
-  /** fetch aggregated fields from the table: "user_contribution_counts" */
-  userContributionCountsAggregate: UserContributionCountsAggregate;
-  /** fetch data from the table in a streaming manner: "user_contribution_counts" */
-  userContributionCountsStream: Array<UserContributionCounts>;
-  /** fetch data from the table: "user_contribution_projects" */
-  userContributionProjects: Array<UserContributionProjects>;
-  /** fetch aggregated fields from the table: "user_contribution_projects" */
-  userContributionProjectsAggregate: UserContributionProjectsAggregate;
-  /** fetch data from the table in a streaming manner: "user_contribution_projects" */
-  userContributionProjectsStream: Array<UserContributionProjects>;
   /** fetch data from the table: "user_info" */
   userInfo: Array<UserInfo>;
   /** fetch aggregated fields from the table: "user_info" */
@@ -12455,6 +13480,81 @@ export type Subscription_RootBudgetsStreamArgs = {
 };
 
 
+export type Subscription_RootContributionCountsArgs = {
+  distinctOn: InputMaybe<Array<ContributionCountsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ContributionCountsOrderBy>>;
+  where: InputMaybe<ContributionCountsBoolExp>;
+};
+
+
+export type Subscription_RootContributionCountsAggregateArgs = {
+  distinctOn: InputMaybe<Array<ContributionCountsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ContributionCountsOrderBy>>;
+  where: InputMaybe<ContributionCountsBoolExp>;
+};
+
+
+export type Subscription_RootContributionCountsStreamArgs = {
+  batchSize: Scalars['Int'];
+  cursor: Array<InputMaybe<Contribution_Counts_StreamCursorInput>>;
+  where: InputMaybe<ContributionCountsBoolExp>;
+};
+
+
+export type Subscription_RootContributionStatsArgs = {
+  distinctOn: InputMaybe<Array<ContributionStatsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ContributionStatsOrderBy>>;
+  where: InputMaybe<ContributionStatsBoolExp>;
+};
+
+
+export type Subscription_RootContributionStatsAggregateArgs = {
+  distinctOn: InputMaybe<Array<ContributionStatsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ContributionStatsOrderBy>>;
+  where: InputMaybe<ContributionStatsBoolExp>;
+};
+
+
+export type Subscription_RootContributionStatsStreamArgs = {
+  batchSize: Scalars['Int'];
+  cursor: Array<InputMaybe<Contribution_Stats_StreamCursorInput>>;
+  where: InputMaybe<ContributionStatsBoolExp>;
+};
+
+
+export type Subscription_RootContributionsArgs = {
+  distinctOn: InputMaybe<Array<ContributionsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ContributionsOrderBy>>;
+  where: InputMaybe<ContributionsBoolExp>;
+};
+
+
+export type Subscription_RootContributionsAggregateArgs = {
+  distinctOn: InputMaybe<Array<ContributionsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ContributionsOrderBy>>;
+  where: InputMaybe<ContributionsBoolExp>;
+};
+
+
+export type Subscription_RootContributionsStreamArgs = {
+  batchSize: Scalars['Int'];
+  cursor: Array<InputMaybe<Contributions_StreamCursorInput>>;
+  where: InputMaybe<ContributionsBoolExp>;
+};
+
+
 export type Subscription_RootGithubIssuesArgs = {
   distinctOn: InputMaybe<Array<GithubIssuesSelectColumn>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -12635,6 +13735,31 @@ export type Subscription_RootPaymentRequestsStreamArgs = {
   batchSize: Scalars['Int'];
   cursor: Array<InputMaybe<Payment_Requests_StreamCursorInput>>;
   where: InputMaybe<PaymentRequestsBoolExp>;
+};
+
+
+export type Subscription_RootPaymentStatsArgs = {
+  distinctOn: InputMaybe<Array<PaymentStatsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<PaymentStatsOrderBy>>;
+  where: InputMaybe<PaymentStatsBoolExp>;
+};
+
+
+export type Subscription_RootPaymentStatsAggregateArgs = {
+  distinctOn: InputMaybe<Array<PaymentStatsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<PaymentStatsOrderBy>>;
+  where: InputMaybe<PaymentStatsBoolExp>;
+};
+
+
+export type Subscription_RootPaymentStatsStreamArgs = {
+  batchSize: Scalars['Int'];
+  cursor: Array<InputMaybe<Payment_Stats_StreamCursorInput>>;
+  where: InputMaybe<PaymentStatsBoolExp>;
 };
 
 
@@ -12936,56 +14061,6 @@ export type Subscription_RootUserArgs = {
 };
 
 
-export type Subscription_RootUserContributionCountsArgs = {
-  distinctOn: InputMaybe<Array<UserContributionCountsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<UserContributionCountsOrderBy>>;
-  where: InputMaybe<UserContributionCountsBoolExp>;
-};
-
-
-export type Subscription_RootUserContributionCountsAggregateArgs = {
-  distinctOn: InputMaybe<Array<UserContributionCountsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<UserContributionCountsOrderBy>>;
-  where: InputMaybe<UserContributionCountsBoolExp>;
-};
-
-
-export type Subscription_RootUserContributionCountsStreamArgs = {
-  batchSize: Scalars['Int'];
-  cursor: Array<InputMaybe<User_Contribution_Counts_StreamCursorInput>>;
-  where: InputMaybe<UserContributionCountsBoolExp>;
-};
-
-
-export type Subscription_RootUserContributionProjectsArgs = {
-  distinctOn: InputMaybe<Array<UserContributionProjectsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<UserContributionProjectsOrderBy>>;
-  where: InputMaybe<UserContributionProjectsBoolExp>;
-};
-
-
-export type Subscription_RootUserContributionProjectsAggregateArgs = {
-  distinctOn: InputMaybe<Array<UserContributionProjectsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<UserContributionProjectsOrderBy>>;
-  where: InputMaybe<UserContributionProjectsBoolExp>;
-};
-
-
-export type Subscription_RootUserContributionProjectsStreamArgs = {
-  batchSize: Scalars['Int'];
-  cursor: Array<InputMaybe<User_Contribution_Projects_StreamCursorInput>>;
-  where: InputMaybe<UserContributionProjectsBoolExp>;
-};
-
-
 export type Subscription_RootUserInfoArgs = {
   distinctOn: InputMaybe<Array<UserInfoSelectColumn>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -13095,356 +14170,6 @@ export type Subscription_RootWorkItemsStreamArgs = {
   batchSize: Scalars['Int'];
   cursor: Array<InputMaybe<Work_Items_StreamCursorInput>>;
   where: InputMaybe<WorkItemsBoolExp>;
-};
-
-export type User_Contribution_Counts_Aggregate_Bool_Exp = {
-  avg: InputMaybe<User_Contribution_Counts_Aggregate_Bool_Exp_Avg>;
-  corr: InputMaybe<User_Contribution_Counts_Aggregate_Bool_Exp_Corr>;
-  count: InputMaybe<User_Contribution_Counts_Aggregate_Bool_Exp_Count>;
-  covar_samp: InputMaybe<User_Contribution_Counts_Aggregate_Bool_Exp_Covar_Samp>;
-  max: InputMaybe<User_Contribution_Counts_Aggregate_Bool_Exp_Max>;
-  min: InputMaybe<User_Contribution_Counts_Aggregate_Bool_Exp_Min>;
-  stddev_samp: InputMaybe<User_Contribution_Counts_Aggregate_Bool_Exp_Stddev_Samp>;
-  sum: InputMaybe<User_Contribution_Counts_Aggregate_Bool_Exp_Sum>;
-  var_samp: InputMaybe<User_Contribution_Counts_Aggregate_Bool_Exp_Var_Samp>;
-};
-
-export type User_Contribution_Counts_Aggregate_Bool_Exp_Avg = {
-  arguments: User_Contribution_Counts_Select_Column_User_Contribution_Counts_Aggregate_Bool_Exp_Avg_Arguments_Columns;
-  distinct: InputMaybe<Scalars['Boolean']>;
-  filter: InputMaybe<UserContributionCountsBoolExp>;
-  predicate: Float8ComparisonExp;
-};
-
-export type User_Contribution_Counts_Aggregate_Bool_Exp_Corr = {
-  arguments: User_Contribution_Counts_Aggregate_Bool_Exp_Corr_Arguments;
-  distinct: InputMaybe<Scalars['Boolean']>;
-  filter: InputMaybe<UserContributionCountsBoolExp>;
-  predicate: Float8ComparisonExp;
-};
-
-export type User_Contribution_Counts_Aggregate_Bool_Exp_Corr_Arguments = {
-  X: User_Contribution_Counts_Select_Column_User_Contribution_Counts_Aggregate_Bool_Exp_Corr_Arguments_Columns;
-  Y: User_Contribution_Counts_Select_Column_User_Contribution_Counts_Aggregate_Bool_Exp_Corr_Arguments_Columns;
-};
-
-export type User_Contribution_Counts_Aggregate_Bool_Exp_Count = {
-  arguments: InputMaybe<Array<UserContributionCountsSelectColumn>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
-  filter: InputMaybe<UserContributionCountsBoolExp>;
-  predicate: IntComparisonExp;
-};
-
-export type User_Contribution_Counts_Aggregate_Bool_Exp_Covar_Samp = {
-  arguments: User_Contribution_Counts_Aggregate_Bool_Exp_Covar_Samp_Arguments;
-  distinct: InputMaybe<Scalars['Boolean']>;
-  filter: InputMaybe<UserContributionCountsBoolExp>;
-  predicate: Float8ComparisonExp;
-};
-
-export type User_Contribution_Counts_Aggregate_Bool_Exp_Covar_Samp_Arguments = {
-  X: User_Contribution_Counts_Select_Column_User_Contribution_Counts_Aggregate_Bool_Exp_Covar_Samp_Arguments_Columns;
-  Y: User_Contribution_Counts_Select_Column_User_Contribution_Counts_Aggregate_Bool_Exp_Covar_Samp_Arguments_Columns;
-};
-
-export type User_Contribution_Counts_Aggregate_Bool_Exp_Max = {
-  arguments: User_Contribution_Counts_Select_Column_User_Contribution_Counts_Aggregate_Bool_Exp_Max_Arguments_Columns;
-  distinct: InputMaybe<Scalars['Boolean']>;
-  filter: InputMaybe<UserContributionCountsBoolExp>;
-  predicate: Float8ComparisonExp;
-};
-
-export type User_Contribution_Counts_Aggregate_Bool_Exp_Min = {
-  arguments: User_Contribution_Counts_Select_Column_User_Contribution_Counts_Aggregate_Bool_Exp_Min_Arguments_Columns;
-  distinct: InputMaybe<Scalars['Boolean']>;
-  filter: InputMaybe<UserContributionCountsBoolExp>;
-  predicate: Float8ComparisonExp;
-};
-
-export type User_Contribution_Counts_Aggregate_Bool_Exp_Stddev_Samp = {
-  arguments: User_Contribution_Counts_Select_Column_User_Contribution_Counts_Aggregate_Bool_Exp_Stddev_Samp_Arguments_Columns;
-  distinct: InputMaybe<Scalars['Boolean']>;
-  filter: InputMaybe<UserContributionCountsBoolExp>;
-  predicate: Float8ComparisonExp;
-};
-
-export type User_Contribution_Counts_Aggregate_Bool_Exp_Sum = {
-  arguments: User_Contribution_Counts_Select_Column_User_Contribution_Counts_Aggregate_Bool_Exp_Sum_Arguments_Columns;
-  distinct: InputMaybe<Scalars['Boolean']>;
-  filter: InputMaybe<UserContributionCountsBoolExp>;
-  predicate: Float8ComparisonExp;
-};
-
-export type User_Contribution_Counts_Aggregate_Bool_Exp_Var_Samp = {
-  arguments: User_Contribution_Counts_Select_Column_User_Contribution_Counts_Aggregate_Bool_Exp_Var_Samp_Arguments_Columns;
-  distinct: InputMaybe<Scalars['Boolean']>;
-  filter: InputMaybe<UserContributionCountsBoolExp>;
-  predicate: Float8ComparisonExp;
-};
-
-/** order by avg() on columns of table "user_contribution_counts" */
-export type User_Contribution_Counts_Avg_Order_By = {
-  count: InputMaybe<OrderBy>;
-  githubUserId: InputMaybe<OrderBy>;
-  week: InputMaybe<OrderBy>;
-  year: InputMaybe<OrderBy>;
-};
-
-/** order by max() on columns of table "user_contribution_counts" */
-export type User_Contribution_Counts_Max_Order_By = {
-  count: InputMaybe<OrderBy>;
-  githubUserId: InputMaybe<OrderBy>;
-  week: InputMaybe<OrderBy>;
-  year: InputMaybe<OrderBy>;
-};
-
-/** order by min() on columns of table "user_contribution_counts" */
-export type User_Contribution_Counts_Min_Order_By = {
-  count: InputMaybe<OrderBy>;
-  githubUserId: InputMaybe<OrderBy>;
-  week: InputMaybe<OrderBy>;
-  year: InputMaybe<OrderBy>;
-};
-
-/** select "user_contribution_counts_aggregate_bool_exp_avg_arguments_columns" columns of table "user_contribution_counts" */
-export enum User_Contribution_Counts_Select_Column_User_Contribution_Counts_Aggregate_Bool_Exp_Avg_Arguments_Columns {
-  /** column name */
-  Week = 'week',
-  /** column name */
-  Year = 'year'
-}
-
-/** select "user_contribution_counts_aggregate_bool_exp_corr_arguments_columns" columns of table "user_contribution_counts" */
-export enum User_Contribution_Counts_Select_Column_User_Contribution_Counts_Aggregate_Bool_Exp_Corr_Arguments_Columns {
-  /** column name */
-  Week = 'week',
-  /** column name */
-  Year = 'year'
-}
-
-/** select "user_contribution_counts_aggregate_bool_exp_covar_samp_arguments_columns" columns of table "user_contribution_counts" */
-export enum User_Contribution_Counts_Select_Column_User_Contribution_Counts_Aggregate_Bool_Exp_Covar_Samp_Arguments_Columns {
-  /** column name */
-  Week = 'week',
-  /** column name */
-  Year = 'year'
-}
-
-/** select "user_contribution_counts_aggregate_bool_exp_max_arguments_columns" columns of table "user_contribution_counts" */
-export enum User_Contribution_Counts_Select_Column_User_Contribution_Counts_Aggregate_Bool_Exp_Max_Arguments_Columns {
-  /** column name */
-  Week = 'week',
-  /** column name */
-  Year = 'year'
-}
-
-/** select "user_contribution_counts_aggregate_bool_exp_min_arguments_columns" columns of table "user_contribution_counts" */
-export enum User_Contribution_Counts_Select_Column_User_Contribution_Counts_Aggregate_Bool_Exp_Min_Arguments_Columns {
-  /** column name */
-  Week = 'week',
-  /** column name */
-  Year = 'year'
-}
-
-/** select "user_contribution_counts_aggregate_bool_exp_stddev_samp_arguments_columns" columns of table "user_contribution_counts" */
-export enum User_Contribution_Counts_Select_Column_User_Contribution_Counts_Aggregate_Bool_Exp_Stddev_Samp_Arguments_Columns {
-  /** column name */
-  Week = 'week',
-  /** column name */
-  Year = 'year'
-}
-
-/** select "user_contribution_counts_aggregate_bool_exp_sum_arguments_columns" columns of table "user_contribution_counts" */
-export enum User_Contribution_Counts_Select_Column_User_Contribution_Counts_Aggregate_Bool_Exp_Sum_Arguments_Columns {
-  /** column name */
-  Week = 'week',
-  /** column name */
-  Year = 'year'
-}
-
-/** select "user_contribution_counts_aggregate_bool_exp_var_samp_arguments_columns" columns of table "user_contribution_counts" */
-export enum User_Contribution_Counts_Select_Column_User_Contribution_Counts_Aggregate_Bool_Exp_Var_Samp_Arguments_Columns {
-  /** column name */
-  Week = 'week',
-  /** column name */
-  Year = 'year'
-}
-
-/** order by stddev() on columns of table "user_contribution_counts" */
-export type User_Contribution_Counts_Stddev_Order_By = {
-  count: InputMaybe<OrderBy>;
-  githubUserId: InputMaybe<OrderBy>;
-  week: InputMaybe<OrderBy>;
-  year: InputMaybe<OrderBy>;
-};
-
-/** order by stddev_pop() on columns of table "user_contribution_counts" */
-export type User_Contribution_Counts_Stddev_Pop_Order_By = {
-  count: InputMaybe<OrderBy>;
-  githubUserId: InputMaybe<OrderBy>;
-  week: InputMaybe<OrderBy>;
-  year: InputMaybe<OrderBy>;
-};
-
-/** order by stddev_samp() on columns of table "user_contribution_counts" */
-export type User_Contribution_Counts_Stddev_Samp_Order_By = {
-  count: InputMaybe<OrderBy>;
-  githubUserId: InputMaybe<OrderBy>;
-  week: InputMaybe<OrderBy>;
-  year: InputMaybe<OrderBy>;
-};
-
-/** Streaming cursor of the table "user_contribution_counts" */
-export type User_Contribution_Counts_StreamCursorInput = {
-  /** Stream column input with initial value */
-  initialValue: User_Contribution_Counts_StreamCursorValueInput;
-  /** cursor ordering */
-  ordering: InputMaybe<CursorOrdering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type User_Contribution_Counts_StreamCursorValueInput = {
-  count: InputMaybe<Scalars['bigint']>;
-  githubUserId: InputMaybe<Scalars['bigint']>;
-  week: InputMaybe<Scalars['float8']>;
-  year: InputMaybe<Scalars['float8']>;
-};
-
-/** order by sum() on columns of table "user_contribution_counts" */
-export type User_Contribution_Counts_Sum_Order_By = {
-  count: InputMaybe<OrderBy>;
-  githubUserId: InputMaybe<OrderBy>;
-  week: InputMaybe<OrderBy>;
-  year: InputMaybe<OrderBy>;
-};
-
-/** order by var_pop() on columns of table "user_contribution_counts" */
-export type User_Contribution_Counts_Var_Pop_Order_By = {
-  count: InputMaybe<OrderBy>;
-  githubUserId: InputMaybe<OrderBy>;
-  week: InputMaybe<OrderBy>;
-  year: InputMaybe<OrderBy>;
-};
-
-/** order by var_samp() on columns of table "user_contribution_counts" */
-export type User_Contribution_Counts_Var_Samp_Order_By = {
-  count: InputMaybe<OrderBy>;
-  githubUserId: InputMaybe<OrderBy>;
-  week: InputMaybe<OrderBy>;
-  year: InputMaybe<OrderBy>;
-};
-
-/** order by variance() on columns of table "user_contribution_counts" */
-export type User_Contribution_Counts_Variance_Order_By = {
-  count: InputMaybe<OrderBy>;
-  githubUserId: InputMaybe<OrderBy>;
-  week: InputMaybe<OrderBy>;
-  year: InputMaybe<OrderBy>;
-};
-
-export type User_Contribution_Projects_Aggregate_Bool_Exp = {
-  count: InputMaybe<User_Contribution_Projects_Aggregate_Bool_Exp_Count>;
-};
-
-export type User_Contribution_Projects_Aggregate_Bool_Exp_Count = {
-  arguments: InputMaybe<Array<UserContributionProjectsSelectColumn>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
-  filter: InputMaybe<UserContributionProjectsBoolExp>;
-  predicate: IntComparisonExp;
-};
-
-/** order by avg() on columns of table "user_contribution_projects" */
-export type User_Contribution_Projects_Avg_Order_By = {
-  contributionCount: InputMaybe<OrderBy>;
-  githubUserId: InputMaybe<OrderBy>;
-  moneyGranted: InputMaybe<OrderBy>;
-};
-
-/** order by max() on columns of table "user_contribution_projects" */
-export type User_Contribution_Projects_Max_Order_By = {
-  contributionCount: InputMaybe<OrderBy>;
-  githubUserId: InputMaybe<OrderBy>;
-  maxContributionDate: InputMaybe<OrderBy>;
-  minContributionDate: InputMaybe<OrderBy>;
-  moneyGranted: InputMaybe<OrderBy>;
-  projectId: InputMaybe<OrderBy>;
-};
-
-/** order by min() on columns of table "user_contribution_projects" */
-export type User_Contribution_Projects_Min_Order_By = {
-  contributionCount: InputMaybe<OrderBy>;
-  githubUserId: InputMaybe<OrderBy>;
-  maxContributionDate: InputMaybe<OrderBy>;
-  minContributionDate: InputMaybe<OrderBy>;
-  moneyGranted: InputMaybe<OrderBy>;
-  projectId: InputMaybe<OrderBy>;
-};
-
-/** order by stddev() on columns of table "user_contribution_projects" */
-export type User_Contribution_Projects_Stddev_Order_By = {
-  contributionCount: InputMaybe<OrderBy>;
-  githubUserId: InputMaybe<OrderBy>;
-  moneyGranted: InputMaybe<OrderBy>;
-};
-
-/** order by stddev_pop() on columns of table "user_contribution_projects" */
-export type User_Contribution_Projects_Stddev_Pop_Order_By = {
-  contributionCount: InputMaybe<OrderBy>;
-  githubUserId: InputMaybe<OrderBy>;
-  moneyGranted: InputMaybe<OrderBy>;
-};
-
-/** order by stddev_samp() on columns of table "user_contribution_projects" */
-export type User_Contribution_Projects_Stddev_Samp_Order_By = {
-  contributionCount: InputMaybe<OrderBy>;
-  githubUserId: InputMaybe<OrderBy>;
-  moneyGranted: InputMaybe<OrderBy>;
-};
-
-/** Streaming cursor of the table "user_contribution_projects" */
-export type User_Contribution_Projects_StreamCursorInput = {
-  /** Stream column input with initial value */
-  initialValue: User_Contribution_Projects_StreamCursorValueInput;
-  /** cursor ordering */
-  ordering: InputMaybe<CursorOrdering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type User_Contribution_Projects_StreamCursorValueInput = {
-  contributionCount: InputMaybe<Scalars['numeric']>;
-  githubUserId: InputMaybe<Scalars['bigint']>;
-  maxContributionDate: InputMaybe<Scalars['timestamp']>;
-  minContributionDate: InputMaybe<Scalars['timestamp']>;
-  moneyGranted: InputMaybe<Scalars['numeric']>;
-  projectId: InputMaybe<Scalars['uuid']>;
-};
-
-/** order by sum() on columns of table "user_contribution_projects" */
-export type User_Contribution_Projects_Sum_Order_By = {
-  contributionCount: InputMaybe<OrderBy>;
-  githubUserId: InputMaybe<OrderBy>;
-  moneyGranted: InputMaybe<OrderBy>;
-};
-
-/** order by var_pop() on columns of table "user_contribution_projects" */
-export type User_Contribution_Projects_Var_Pop_Order_By = {
-  contributionCount: InputMaybe<OrderBy>;
-  githubUserId: InputMaybe<OrderBy>;
-  moneyGranted: InputMaybe<OrderBy>;
-};
-
-/** order by var_samp() on columns of table "user_contribution_projects" */
-export type User_Contribution_Projects_Var_Samp_Order_By = {
-  contributionCount: InputMaybe<OrderBy>;
-  githubUserId: InputMaybe<OrderBy>;
-  moneyGranted: InputMaybe<OrderBy>;
-};
-
-/** order by variance() on columns of table "user_contribution_projects" */
-export type User_Contribution_Projects_Variance_Order_By = {
-  contributionCount: InputMaybe<OrderBy>;
-  githubUserId: InputMaybe<OrderBy>;
-  moneyGranted: InputMaybe<OrderBy>;
 };
 
 /** Streaming cursor of the table "user_info" */
@@ -14382,20 +15107,22 @@ export type UserProfileIdFragment = { __typename?: 'UserProfiles', githubUserId:
 
 export type UserProfileDetailsFragment = { __typename?: 'UserProfiles', login: string | null, avatarUrl: string | null, htmlUrl: string | null, location: string | null, bio: string | null, languages: any | null, createdAt: any | null, lastSeen: any | null, email: string | null, twitter: string | null, telegram: string | null, linkedin: string | null, discord: string | null, website: string | null };
 
-export type ContributionsFragment = { __typename?: 'UserContributionProjects', projectId: any | null, maxContributionDate: any | null, contributionCount: any | null, project: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, logoUrl: string | null, name: string, visibility: any } | null, contributorsAggregate: { __typename?: 'ProjectsContributorsViewAggregate', aggregate: { __typename?: 'ProjectsContributorsViewAggregateFields', count: number } | null }, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number, sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributorsView', githubUser: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> } | null };
+export type ContributionStatFragment = { __typename?: 'ContributionStats', projectId: any | null, maxDate: any | null, minDate: any | null, count: any | null };
+
+export type PaymentStatFragment = { __typename?: 'PaymentStats', projectId: any | null, moneyGranted: any | null };
 
 export type ProfileProjectFragment = { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, logoUrl: string | null, name: string, visibility: any } | null, contributorsAggregate: { __typename?: 'ProjectsContributorsViewAggregate', aggregate: { __typename?: 'ProjectsContributorsViewAggregateFields', count: number } | null }, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number, sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributorsView', githubUser: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> };
 
-export type ContributionCountFragment = { __typename?: 'UserContributionCounts', year: any | null, week: any | null, count: any | null };
+export type ContributionCountFragment = { __typename?: 'ContributionCounts', year: any | null, week: any | null, paidCount: any | null, unpaidCount: any | null };
 
-export type UserProfileFragment = { __typename?: 'UserProfiles', githubUserId: any | null, login: string | null, avatarUrl: string | null, htmlUrl: string | null, location: string | null, bio: string | null, languages: any | null, createdAt: any | null, lastSeen: any | null, email: string | null, twitter: string | null, telegram: string | null, linkedin: string | null, discord: string | null, website: string | null, projects: Array<{ __typename?: 'UserContributionProjects', projectId: any | null, maxContributionDate: any | null, contributionCount: any | null, project: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, logoUrl: string | null, name: string, visibility: any } | null, contributorsAggregate: { __typename?: 'ProjectsContributorsViewAggregate', aggregate: { __typename?: 'ProjectsContributorsViewAggregateFields', count: number } | null }, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number, sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributorsView', githubUser: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> } | null }>, projectsAggregate: { __typename?: 'UserContributionProjectsAggregate', aggregate: { __typename?: 'UserContributionProjectsAggregateFields', count: number, sum: { __typename?: 'UserContributionProjectsSumFields', moneyGranted: any | null, contributionCount: any | null } | null, min: { __typename?: 'UserContributionProjectsMinFields', minContributionDate: any | null } | null } | null }, projectsLeaded: Array<{ __typename?: 'ProjectLeads', projectId: any, assignedAt: any, project: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, logoUrl: string | null, name: string, visibility: any } | null, contributorsAggregate: { __typename?: 'ProjectsContributorsViewAggregate', aggregate: { __typename?: 'ProjectsContributorsViewAggregateFields', count: number } | null }, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number, sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributorsView', githubUser: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> } | null }>, contributionCounts: Array<{ __typename?: 'UserContributionCounts', year: any | null, week: any | null, count: any | null }> };
+export type UserProfileFragment = { __typename?: 'UserProfiles', githubUserId: any | null, login: string | null, avatarUrl: string | null, htmlUrl: string | null, location: string | null, bio: string | null, languages: any | null, createdAt: any | null, lastSeen: any | null, email: string | null, twitter: string | null, telegram: string | null, linkedin: string | null, discord: string | null, website: string | null, contributionStats: Array<{ __typename?: 'ContributionStats', projectId: any | null, maxDate: any | null, minDate: any | null, count: any | null }>, contributionStatsAggregate: { __typename?: 'ContributionStatsAggregate', aggregate: { __typename?: 'ContributionStatsAggregateFields', sum: { __typename?: 'ContributionStatsSumFields', count: any | null } | null, min: { __typename?: 'ContributionStatsMinFields', minDate: any | null } | null } | null }, paymentStats: Array<{ __typename?: 'PaymentStats', projectId: any | null, moneyGranted: any | null }>, paymentStatsAggregate: { __typename?: 'PaymentStatsAggregate', aggregate: { __typename?: 'PaymentStatsAggregateFields', sum: { __typename?: 'PaymentStatsSumFields', moneyGranted: any | null } | null } | null }, projectsContributed: Array<{ __typename?: 'ProjectsContributorsView', project: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, logoUrl: string | null, name: string, visibility: any } | null, contributorsAggregate: { __typename?: 'ProjectsContributorsViewAggregate', aggregate: { __typename?: 'ProjectsContributorsViewAggregateFields', count: number } | null }, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number, sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributorsView', githubUser: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> } | null }>, projectsContributedAggregate: { __typename?: 'ProjectsContributorsViewAggregate', aggregate: { __typename?: 'ProjectsContributorsViewAggregateFields', count: number } | null }, projectsLeaded: Array<{ __typename?: 'ProjectLeads', projectId: any, assignedAt: any, project: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, logoUrl: string | null, name: string, visibility: any } | null, contributorsAggregate: { __typename?: 'ProjectsContributorsViewAggregate', aggregate: { __typename?: 'ProjectsContributorsViewAggregateFields', count: number } | null }, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number, sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributorsView', githubUser: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> } | null }>, contributionCounts: Array<{ __typename?: 'ContributionCounts', year: any | null, week: any | null, paidCount: any | null, unpaidCount: any | null }> };
 
 export type UserProfileQueryVariables = Exact<{
   githubUserId: Scalars['bigint'];
 }>;
 
 
-export type UserProfileQuery = { __typename?: 'query_root', userProfiles: Array<{ __typename?: 'UserProfiles', githubUserId: any | null, login: string | null, avatarUrl: string | null, htmlUrl: string | null, location: string | null, bio: string | null, languages: any | null, createdAt: any | null, lastSeen: any | null, email: string | null, twitter: string | null, telegram: string | null, linkedin: string | null, discord: string | null, website: string | null, projects: Array<{ __typename?: 'UserContributionProjects', projectId: any | null, maxContributionDate: any | null, contributionCount: any | null, project: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, logoUrl: string | null, name: string, visibility: any } | null, contributorsAggregate: { __typename?: 'ProjectsContributorsViewAggregate', aggregate: { __typename?: 'ProjectsContributorsViewAggregateFields', count: number } | null }, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number, sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributorsView', githubUser: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> } | null }>, projectsAggregate: { __typename?: 'UserContributionProjectsAggregate', aggregate: { __typename?: 'UserContributionProjectsAggregateFields', count: number, sum: { __typename?: 'UserContributionProjectsSumFields', moneyGranted: any | null, contributionCount: any | null } | null, min: { __typename?: 'UserContributionProjectsMinFields', minContributionDate: any | null } | null } | null }, projectsLeaded: Array<{ __typename?: 'ProjectLeads', projectId: any, assignedAt: any, project: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, logoUrl: string | null, name: string, visibility: any } | null, contributorsAggregate: { __typename?: 'ProjectsContributorsViewAggregate', aggregate: { __typename?: 'ProjectsContributorsViewAggregateFields', count: number } | null }, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number, sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributorsView', githubUser: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> } | null }>, contributionCounts: Array<{ __typename?: 'UserContributionCounts', year: any | null, week: any | null, count: any | null }> }> };
+export type UserProfileQuery = { __typename?: 'query_root', userProfiles: Array<{ __typename?: 'UserProfiles', githubUserId: any | null, login: string | null, avatarUrl: string | null, htmlUrl: string | null, location: string | null, bio: string | null, languages: any | null, createdAt: any | null, lastSeen: any | null, email: string | null, twitter: string | null, telegram: string | null, linkedin: string | null, discord: string | null, website: string | null, contributionStats: Array<{ __typename?: 'ContributionStats', projectId: any | null, maxDate: any | null, minDate: any | null, count: any | null }>, contributionStatsAggregate: { __typename?: 'ContributionStatsAggregate', aggregate: { __typename?: 'ContributionStatsAggregateFields', sum: { __typename?: 'ContributionStatsSumFields', count: any | null } | null, min: { __typename?: 'ContributionStatsMinFields', minDate: any | null } | null } | null }, paymentStats: Array<{ __typename?: 'PaymentStats', projectId: any | null, moneyGranted: any | null }>, paymentStatsAggregate: { __typename?: 'PaymentStatsAggregate', aggregate: { __typename?: 'PaymentStatsAggregateFields', sum: { __typename?: 'PaymentStatsSumFields', moneyGranted: any | null } | null } | null }, projectsContributed: Array<{ __typename?: 'ProjectsContributorsView', project: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, logoUrl: string | null, name: string, visibility: any } | null, contributorsAggregate: { __typename?: 'ProjectsContributorsViewAggregate', aggregate: { __typename?: 'ProjectsContributorsViewAggregateFields', count: number } | null }, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number, sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributorsView', githubUser: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> } | null }>, projectsContributedAggregate: { __typename?: 'ProjectsContributorsViewAggregate', aggregate: { __typename?: 'ProjectsContributorsViewAggregateFields', count: number } | null }, projectsLeaded: Array<{ __typename?: 'ProjectLeads', projectId: any, assignedAt: any, project: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, logoUrl: string | null, name: string, visibility: any } | null, contributorsAggregate: { __typename?: 'ProjectsContributorsViewAggregate', aggregate: { __typename?: 'ProjectsContributorsViewAggregateFields', count: number } | null }, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number, sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributorsView', githubUser: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> } | null }>, contributionCounts: Array<{ __typename?: 'ContributionCounts', year: any | null, week: any | null, paidCount: any | null, unpaidCount: any | null }> }> };
 
 export type GetPaymentRequestsForProjectQueryVariables = Exact<{
   projectId: Scalars['uuid'];
@@ -15182,6 +15909,20 @@ export const UserProfileDetailsFragmentDoc = gql`
   website
 }
     `;
+export const ContributionStatFragmentDoc = gql`
+    fragment ContributionStat on ContributionStats {
+  projectId
+  maxDate
+  minDate
+  count
+}
+    `;
+export const PaymentStatFragmentDoc = gql`
+    fragment PaymentStat on PaymentStats {
+  projectId
+  moneyGranted
+}
+    `;
 export const ProfileProjectFragmentDoc = gql`
     fragment ProfileProject on Projects {
   ...ProjectVisibilityDetails
@@ -15205,39 +15946,48 @@ export const ProfileProjectFragmentDoc = gql`
   }
 }
     ${ProjectVisibilityDetailsFragmentDoc}`;
-export const ContributionsFragmentDoc = gql`
-    fragment Contributions on UserContributionProjects {
-  projectId
-  maxContributionDate
-  contributionCount
-  project {
-    ...ProfileProject
-  }
-}
-    ${ProfileProjectFragmentDoc}`;
 export const ContributionCountFragmentDoc = gql`
-    fragment ContributionCount on UserContributionCounts {
+    fragment ContributionCount on ContributionCounts {
   year
   week
-  count
+  paidCount
+  unpaidCount
 }
     `;
 export const UserProfileFragmentDoc = gql`
     fragment UserProfile on UserProfiles {
   ...UserProfileId
   ...UserProfileDetails
-  projects {
-    ...Contributions
+  contributionStats {
+    ...ContributionStat
   }
-  projectsAggregate {
+  contributionStatsAggregate {
+    aggregate {
+      sum {
+        count
+      }
+      min {
+        minDate
+      }
+    }
+  }
+  paymentStats {
+    ...PaymentStat
+  }
+  paymentStatsAggregate {
     aggregate {
       sum {
         moneyGranted
-        contributionCount
       }
-      min {
-        minContributionDate
-      }
+    }
+  }
+  projectsContributed {
+    project {
+      ...ProfileProject
+    }
+  }
+  projectsContributedAggregate {
+    aggregate {
       count
     }
   }
@@ -15254,7 +16004,8 @@ export const UserProfileFragmentDoc = gql`
 }
     ${UserProfileIdFragmentDoc}
 ${UserProfileDetailsFragmentDoc}
-${ContributionsFragmentDoc}
+${ContributionStatFragmentDoc}
+${PaymentStatFragmentDoc}
 ${ProfileProjectFragmentDoc}
 ${ContributionCountFragmentDoc}`;
 export const UserPayoutSettingsFragmentDoc = gql`
