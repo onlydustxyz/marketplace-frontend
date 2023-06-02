@@ -8,6 +8,11 @@
   "contributions": {
     "empty": "No contributions yet"
   },
+  "contributionGraph": {
+    "paid": "Paid",
+    "tooltip": "Paid: __paidCount__\nUnPaid: __unpaidCount__",
+    "unpaid": "Unpaid"
+  },
   "contributor": {
     "table": {
       "contributor": "Contributor",

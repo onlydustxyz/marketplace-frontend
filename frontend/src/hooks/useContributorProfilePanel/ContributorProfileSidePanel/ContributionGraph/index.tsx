@@ -1,35 +1,58 @@
 import { max, range } from "lodash";
-import { Area, AreaChart, ReferenceLine, ResponsiveContainer, XAxis, YAxis } from "recharts";
+import { Area, AreaChart, Legend, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import Dot from "./Dot";
 import Label from "./Label";
 import Tick from "./Tick";
 import { ContributionCountFragment } from "src/__generated/graphql";
+import CustomTooltip from "./Tootip";
+import CustomLegend from "./Legend";
+import { useIntl } from "src/hooks/useIntl";
 
 type Props = {
   entries: ContributionCountFragment[];
 };
 
 export default function ContributionGraph({ entries }: Props) {
-  const maxCount = max(entries.map(e => e.count)) || 0;
+  const { T } = useIntl();
+
+  const maxCount = max(entries.map(e => e.paidCount + e.unpaidCount)) || 0;
 
   return (
     <ResponsiveContainer minWidth={200} height={200}>
       <AreaChart data={entries} margin={{ top: 30, right: 5, left: 5 }}>
         <defs>
-          <linearGradient id="fillGradient" x1="0" y1="-1" x2="0" y2="1">
-            <stop offset="00%" stopColor="#AE00FF" stopOpacity={1} />
+          <linearGradient id="fillGradientPrimary" x1="0" y1="-1" x2="0" y2="1">
+            <stop offset="0%" stopColor="#AE00FF" stopOpacity={1} />
             <stop offset="100%" stopColor="#AE00FF" stopOpacity={0} />
+          </linearGradient>
+          <linearGradient id="fillGradientSecondary" x1="0" y1="-1" x2="0" y2="1">
+            <stop offset="50%" stopColor="#262D5B" stopOpacity={1} />
+            <stop offset="100%" stopColor="#262D5B" stopOpacity={0} />
           </linearGradient>
         </defs>
         <Area
-          dataKey="count"
+          name={T("contributionGraph.unpaid")}
+          dataKey="unpaidCount"
+          stroke="#262D5B"
+          strokeWidth={2}
+          fill="url(#fillGradientSecondary)"
+          fillOpacity={0.8}
+          dot={<Dot secondary />}
+          stackId={1}
+        />
+        <Area
+          name={T("contributionGraph.paid")}
+          dataKey="paidCount"
           stroke="#8B00CC"
           strokeWidth={2}
-          fill="url(#fillGradient)"
+          fill="url(#fillGradientPrimary)"
           fillOpacity={0.8}
           dot={<Dot />}
           label={<Label />}
+          stackId={1}
         />
+        <Tooltip content={<CustomTooltip />} />
+        <Legend content={<CustomLegend />} />
         <YAxis scale="linear" width={0} domain={[0, maxCount + 1]} />
         <XAxis dataKey={formatDate} tickLine={false} tick={<Tick />} interval={0} opacity={0.08} stroke="#F3F0EE" />
         {range(1, maxCount + 2).map(y => (

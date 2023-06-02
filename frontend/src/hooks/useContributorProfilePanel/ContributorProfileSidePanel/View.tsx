@@ -48,21 +48,19 @@ const MAX_CONTRIBUTION_COUNTS = 9;
 
 const EMPTY_DATA: ContributionCountFragment[] = range(0, MAX_CONTRIBUTION_COUNTS)
   .map(c => daysFromNow(7 * c))
-  .map(
-    date =>
-      ({
-        year: date.getFullYear(),
-        week: weekNumber(date),
-        count: 0,
-      } as ContributionCountFragment)
-  );
+  .map(date => ({
+    year: date.getFullYear(),
+    week: weekNumber(date),
+    paidCount: 0,
+    unpaidCount: 0,
+  }));
 
 export default function View({ profile, projects, headerColor, setOpen, ...rest }: Props) {
   const { T } = useIntl();
 
   const languages = filterRemovedLanguages(sortBy(Object.keys(profile.languages), l => profile.languages[l]).reverse());
 
-  const contributionCounts = chain(profile.contributionCounts)
+  const contributionsCount = chain(profile.contributionCounts)
     .unionWith(EMPTY_DATA, (e1, e2) => e1.year === e2.year && e1.week === e2.week)
     .sortBy(["year", "week"])
     .reverse()
@@ -127,11 +125,11 @@ export default function View({ profile, projects, headerColor, setOpen, ...rest 
                     })}
                   </div>
                 ) : (
-                  profile.projectsAggregate.aggregate?.min?.minContributionDate && (
+                  profile.contributionStatsAggregate.aggregate?.min?.minDate && (
                     <div className="text-base text-greyscale-300">
                       {T("profile.firstContributedAt", {
                         firstContributedAt: formatDateShort(
-                          new Date(profile.projectsAggregate.aggregate?.min?.minContributionDate)
+                          new Date(profile.contributionStatsAggregate.aggregate?.min?.minDate)
                         ),
                       })}
                     </div>
@@ -192,9 +190,9 @@ export default function View({ profile, projects, headerColor, setOpen, ...rest 
               <div className="grid grid-cols-3 gap-4">
                 <StatCard
                   title={T("profile.sections.stats.contributorOn")}
-                  counter={profile.projectsAggregate.aggregate?.count + ""}
+                  counter={profile.projectsContributedAggregate.aggregate?.count + ""}
                   description={T("profile.sections.stats.projects", {
-                    count: profile.projectsAggregate.aggregate?.count,
+                    count: profile.projectsContributedAggregate.aggregate?.count,
                   })}
                 />
                 <StatCard
@@ -205,7 +203,7 @@ export default function View({ profile, projects, headerColor, setOpen, ...rest 
                 <StatCard
                   title={T("profile.sections.stats.granted")}
                   counter={formatMoneyAmount({
-                    amount: profile.projectsAggregate.aggregate?.sum?.moneyGranted || 0,
+                    amount: profile.paymentStatsAggregate.aggregate?.sum?.moneyGranted || 0,
                     notation: "compact",
                   })}
                 />
@@ -219,14 +217,16 @@ export default function View({ profile, projects, headerColor, setOpen, ...rest 
                       {T("profile.sections.stats.contributions")}
                     </div>
                     <div className="font-belwe font-normal text-4xl text-greyscale-50">
-                      {profile.projectsAggregate.aggregate?.sum?.contributionCount}
+                      {profile.contributionStatsAggregate.aggregate?.sum?.count}
                     </div>
                     <div className="flex flex-row items-center gap-0.5 rounded-full py-0.5 px-2 bg-white/5 border border-greyscale-50/12 backdrop-blur-lg shadow-heavy text-sm self-end">
                       <ArrowRightUpLine className="text-spacePurple-500" />
-                      <div className="text-greyscale-200">{`+${last(contributionCounts)?.count}`}</div>
+                      <div className="text-greyscale-200">{`+${
+                        last(contributionsCount)?.paidCount + last(contributionsCount)?.unpaidCount
+                      }`}</div>
                     </div>
                   </div>
-                  <ContributionGraph entries={contributionCounts} />
+                  <ContributionGraph entries={contributionsCount} />
                 </Card>
               </div>
             </Section>

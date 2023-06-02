@@ -9,16 +9,43 @@ array_relationships:
           github_user_id: github_user_id
         insertion_order: null
         remote_table:
-          name: user_contribution_counts
+          name: contribution_counts
           schema: public
-  - name: projects
+  - name: contributionStats
     using:
       manual_configuration:
         column_mapping:
           github_user_id: github_user_id
         insertion_order: null
         remote_table:
-          name: user_contribution_projects
+          name: contribution_stats
+          schema: public
+  - name: contributions
+    using:
+      manual_configuration:
+        column_mapping:
+          github_user_id: github_user_id
+        insertion_order: null
+        remote_table:
+          name: contributions
+          schema: public
+  - name: paymentStats
+    using:
+      manual_configuration:
+        column_mapping:
+          github_user_id: github_user_id
+        insertion_order: null
+        remote_table:
+          name: payment_stats
+          schema: public
+  - name: projectsContributed
+    using:
+      manual_configuration:
+        column_mapping:
+          github_user_id: github_user_id
+        insertion_order: null
+        remote_table:
+          name: projects_contributors_view
           schema: public
   - name: projectsLeaded
     using:

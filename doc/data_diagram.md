@@ -32,6 +32,31 @@ class Budgets {
    spentAmount: numeric!
 }
 
+class ContributionCounts {
+   githubUserId: bigint
+   paidCount: bigint
+   unpaidCount: bigint
+   week: float8
+   year: float8
+}
+
+class ContributionStats {
+   count: bigint
+   githubUserId: bigint
+   maxDate: timestamp
+   minDate: timestamp
+   projectId: uuid
+}
+
+class Contributions {
+   createdAt: timestamp
+   githubIssueId: bigint
+   githubUserId: bigint
+   issueNumber: bigint
+   projectId: uuid
+   repoId: bigint
+}
+
 class GithubIssues {
    authorId: bigint!
    closedAt: timestamp
@@ -125,6 +150,12 @@ class PaymentRequests {
    requestor: RegisteredUsers
    requestorId: uuid!
    workItems: [WorkItems!]!
+}
+
+class PaymentStats {
+   githubUserId: bigint
+   moneyGranted: numeric
+   projectId: uuid
 }
 
 class Payments {
@@ -230,23 +261,6 @@ class User {
    user: RegisteredUsers
 }
 
-class UserContributionCounts {
-   count: bigint
-   githubUserId: bigint
-   week: float8
-   year: float8
-}
-
-class UserContributionProjects {
-   contributionCount: numeric
-   githubUserId: bigint
-   maxContributionDate: timestamp
-   minContributionDate: timestamp
-   moneyGranted: numeric
-   project: Projects
-   projectId: uuid
-}
-
 class UserInfo {
    arePayoutSettingsValid: Boolean!
    contactInformation: jsonb
@@ -259,7 +273,9 @@ class UserInfo {
 class UserProfiles {
    avatarUrl: String
    bio: String
-   contributionCounts: [UserContributionCounts!]!
+   contributionCounts: [ContributionCounts!]!
+   contributionStats: [ContributionStats!]!
+   contributions: [Contributions!]!
    createdAt: timestamptz
    discord: String
    email: String
@@ -270,7 +286,8 @@ class UserProfiles {
    linkedin: String
    location: String
    login: String
-   projects: [UserContributionProjects!]!
+   paymentStats: [PaymentStats!]!
+   projectsContributed: [ProjectsContributorsView!]!
    projectsLeaded: [ProjectLeads!]!
    telegram: String
    twitter: String
@@ -420,10 +437,12 @@ RegisteredUsers --* ProjectLeads
 Sponsors --* ProjectsSponsors
 User -- RegisteredUsers
 User --* PaymentRequests
-UserContributionProjects -- Projects
+UserProfiles --* ContributionCounts
+UserProfiles --* ContributionStats
+UserProfiles --* Contributions
+UserProfiles --* PaymentStats
 UserProfiles --* ProjectLeads
-UserProfiles --* UserContributionCounts
-UserProfiles --* UserContributionProjects
+UserProfiles --* ProjectsContributorsView
 WorkItems -- Issue
 WorkItems --* IgnoredGithubIssues
 authProviders --* authUserProviders

@@ -1,9 +1,10 @@
-type Props = {
-  cx?: number;
-  cy?: number;
-};
+import { DotProps } from "recharts";
 
-export default function Dot({ cx = 0, cy = 0 }: Props) {
+type Props = {
+  secondary?: boolean;
+} & DotProps;
+
+export default function Dot({ cx = 0, cy = 0, secondary }: Props) {
   return (
     <svg
       x={cx - 5}
@@ -14,7 +15,14 @@ export default function Dot({ cx = 0, cy = 0 }: Props) {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <circle cx={5} cy={5} r="3.5" fill="#EFCCFF" stroke="#AE00FF" strokeWidth="3" />
+      <circle
+        cx={5}
+        cy={5}
+        r="3.5"
+        fill={secondary ? "#BABDCE" : "#EFCCFF"}
+        stroke={secondary ? "#262D5B" : "#AE00FF"}
+        strokeWidth="3"
+      />
     </svg>
   );
 }
