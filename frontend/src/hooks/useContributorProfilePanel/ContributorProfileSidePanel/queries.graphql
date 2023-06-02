@@ -29,6 +29,7 @@ fragment Contributions on UserContributionProjects {
 }
 
 fragment ProfileProject on Projects {
+  ...ProjectVisibilityDetails
   id
   projectDetails {
     projectId

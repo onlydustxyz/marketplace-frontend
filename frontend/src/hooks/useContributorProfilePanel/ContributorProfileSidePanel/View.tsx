@@ -26,6 +26,8 @@ import Card from "src/components/Card";
 import ArrowRightUpLine from "src/icons/ArrowRightUpLine";
 import ContributionGraph from "./ContributionGraph";
 import { filterRemovedLanguages } from "src/utils/languages";
+import { Link, generatePath } from "react-router-dom";
+import { RoutePaths } from "src/App";
 
 export enum HeaderColor {
   Blue = "blue",
@@ -55,7 +57,7 @@ const EMPTY_DATA: ContributionCountFragment[] = range(0, MAX_CONTRIBUTION_COUNTS
       } as ContributionCountFragment)
   );
 
-export default function View({ profile, projects, headerColor, ...rest }: Props) {
+export default function View({ profile, projects, headerColor, setOpen, ...rest }: Props) {
   const { T } = useIntl();
 
   const languages = filterRemovedLanguages(sortBy(Object.keys(profile.languages), l => profile.languages[l]).reverse());
@@ -71,7 +73,7 @@ export default function View({ profile, projects, headerColor, ...rest }: Props)
   const website = parseWebsite(profile.website);
 
   return (
-    <SidePanel {...rest}>
+    <SidePanel {...rest} setOpen={setOpen}>
       <div className="flex flex-col h-full">
         <div
           className={classNames("h-36 w-full bg-cover shrink-0", {
@@ -232,7 +234,13 @@ export default function View({ profile, projects, headerColor, ...rest }: Props)
               <Section title={T("profile.sections.projects.title")}>
                 <div className="grid grid-cols-3 gap-3">
                   {projects.map(project => (
-                    <ProjectCard key={project.id} {...project} />
+                    <Link
+                      onClick={() => setOpen(false)}
+                      key={project.id}
+                      to={generatePath(RoutePaths.ProjectDetails, { projectId: project.id })}
+                    >
+                      <ProjectCard {...project} />
+                    </Link>
                   ))}
                 </div>
               </Section>

@@ -46,7 +46,7 @@ export default function Tooltip({
         borderRadius: 8,
         padding: "12 8",
         opacity: 100,
-        zIndex: 10,
+        zIndex: 10000,
       }}
       clickable={clickable}
       render={({ content, activeAnchor }) =>

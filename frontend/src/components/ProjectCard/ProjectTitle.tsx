@@ -3,8 +3,8 @@ import { formatList } from "src/utils/list";
 import { ProjectLeadFragment } from "src/__generated/graphql";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import { TooltipPosition, withTooltip } from "src/components/Tooltip";
-import LockFill from "src/icons/LockFill";
 import ClickableUser from "src/components/ClickableUser";
+import PrivateTag from "src/components/PrivateTag";
 
 type Props = {
   projectId: string;
@@ -63,19 +63,6 @@ export default function ProjectTitle({ projectName, projectLeads, logoUrl, priva
         <div className="text-2xl font-medium font-belwe truncate">{projectName}</div>
         <ProjectLeads leads={projectLeads} />
       </div>
-    </div>
-  );
-}
-
-function PrivateTag() {
-  const { T } = useIntl();
-
-  return (
-    <div
-      className="rounded-full w-5 h-5 p-1 bg-orange-500 text-greyscale-50 text-xs leading-3 hover:outline hover:outline-2 hover:outline-orange-500/30"
-      {...withTooltip(T("project.visibility.private.tooltip"))}
-    >
-      <LockFill />
     </div>
   );
 }
