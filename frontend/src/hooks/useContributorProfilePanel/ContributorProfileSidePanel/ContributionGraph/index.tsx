@@ -8,23 +8,18 @@ import CustomTooltip from "./Tootip";
 import CustomLegend from "./Legend";
 import { useIntl } from "src/hooks/useIntl";
 
-export type ContributionCount = ContributionCountFragment & {
-  unpaidCount: number;
-};
-
 type Props = {
-  entries: ContributionCount[];
+  entries: ContributionCountFragment[];
 };
 
 export default function ContributionGraph({ entries }: Props) {
   const { T } = useIntl();
 
-  const data = entries.map(e => ({ ...e, totalCount: e.count + e.unpaidCount }));
-  const maxCount = max(data.map(e => e.totalCount)) || 0;
+  const maxCount = max(entries.map(e => e.paidCount + e.unpaidCount)) || 0;
 
   return (
     <ResponsiveContainer minWidth={200} height={200}>
-      <AreaChart data={data} margin={{ top: 30, right: 5, left: 5 }}>
+      <AreaChart data={entries} margin={{ top: 30, right: 5, left: 5 }}>
         <defs>
           <linearGradient id="fillGradientPrimary" x1="0" y1="-1" x2="0" y2="1">
             <stop offset="0%" stopColor="#AE00FF" stopOpacity={1} />
@@ -47,7 +42,7 @@ export default function ContributionGraph({ entries }: Props) {
         />
         <Area
           name={T("contributionGraph.paid")}
-          dataKey="count"
+          dataKey="paidCount"
           stroke="#8B00CC"
           strokeWidth={2}
           fill="url(#fillGradientPrimary)"

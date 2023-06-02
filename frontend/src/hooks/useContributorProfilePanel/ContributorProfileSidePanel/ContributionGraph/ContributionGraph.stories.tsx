@@ -1,21 +1,22 @@
 import Card from "src/components/Card";
-import ContributionGraph, { ContributionCount } from ".";
+import ContributionGraph from ".";
+import { ContributionCountFragment } from "src/__generated/graphql";
 
 export default {
   title: "ContributionGraph",
   component: ContributionGraph,
 };
 
-const entries: ContributionCount[] = [
-  { year: 2023, week: 14, count: 0, unpaidCount: 2 },
-  { year: 2023, week: 15, count: 2, unpaidCount: 0 },
-  { year: 2023, week: 16, count: 1, unpaidCount: 1 },
-  { year: 2023, week: 17, count: 5, unpaidCount: 0 },
-  { year: 2023, week: 18, count: 3, unpaidCount: 0 },
-  { year: 2023, week: 19, count: 4, unpaidCount: 3 },
-  { year: 2023, week: 20, count: 1, unpaidCount: 0 },
-  { year: 2023, week: 21, count: 2, unpaidCount: 4 },
-  { year: 2023, week: 22, count: 5, unpaidCount: 1 },
+const entries: ContributionCountFragment[] = [
+  { year: 2023, week: 14, paidCount: 0, unpaidCount: 2 },
+  { year: 2023, week: 15, paidCount: 2, unpaidCount: 0 },
+  { year: 2023, week: 16, paidCount: 1, unpaidCount: 1 },
+  { year: 2023, week: 17, paidCount: 5, unpaidCount: 0 },
+  { year: 2023, week: 18, paidCount: 3, unpaidCount: 0 },
+  { year: 2023, week: 19, paidCount: 4, unpaidCount: 3 },
+  { year: 2023, week: 20, paidCount: 1, unpaidCount: 0 },
+  { year: 2023, week: 21, paidCount: 2, unpaidCount: 4 },
+  { year: 2023, week: 22, paidCount: 5, unpaidCount: 1 },
 ];
 
 export const Default = {

@@ -47,32 +47,25 @@ const profileFull: UserProfileFragment = {
     Solidity: 20,
   },
   contributionCounts: [
-    { year: 2023, week: 14, count: 0 },
-    { year: 2023, week: 15, count: 2 },
-    { year: 2023, week: 16, count: 1 },
-    { year: 2023, week: 17, count: 5 },
-    { year: 2023, week: 18, count: 3 },
-    { year: 2023, week: 19, count: 4 },
-    { year: 2023, week: 20, count: 1 },
-    { year: 2023, week: 21, count: 2 },
-    { year: 2023, week: 22, count: 5 },
+    { year: 2023, week: 14, paidCount: 0, unpaidCount: 0 },
+    { year: 2023, week: 15, paidCount: 2, unpaidCount: 0 },
+    { year: 2023, week: 16, paidCount: 1, unpaidCount: 0 },
+    { year: 2023, week: 17, paidCount: 5, unpaidCount: 0 },
+    { year: 2023, week: 18, paidCount: 3, unpaidCount: 0 },
+    { year: 2023, week: 19, paidCount: 4, unpaidCount: 0 },
+    { year: 2023, week: 20, paidCount: 1, unpaidCount: 0 },
+    { year: 2023, week: 21, paidCount: 2, unpaidCount: 0 },
+    { year: 2023, week: 22, paidCount: 5, unpaidCount: 0 },
   ],
-  projects: [],
   projectsLeaded: [
     { projectId: "", assignedAt: "2023-03-15T11:00:11.674+00:00", project: {} as ProfileProjectFragment },
   ],
-  projectsAggregate: {
-    aggregate: {
-      sum: {
-        moneyGranted: 23000,
-        contributionCount: 124,
-      },
-      min: {
-        minContributionDate: "2023-02-31T11:31:09.674+00:00",
-      },
-      count: 3,
-    },
-  },
+  contributionStats: [],
+  contributionStatsAggregate: { aggregate: { min: { minDate: "2023-02-31T11:31:09.674+00:00" }, sum: { count: 124 } } },
+  paymentStats: [],
+  paymentStatsAggregate: { aggregate: { sum: { moneyGranted: 23000 } } },
+  projectsContributed: [],
+  projectsContributedAggregate: { aggregate: { count: 3 } },
 };
 
 const profileNotSignedUp: UserProfileFragment = {
@@ -95,24 +88,17 @@ const profileNotSignedUp: UserProfileFragment = {
     Rust: 123,
   },
   contributionCounts: [
-    { year: 2023, week: 17, count: 4 },
-    { year: 2023, week: 20, count: 1 },
-    { year: 2023, week: 22, count: 2 },
+    { year: 2023, week: 17, paidCount: 4, unpaidCount: 1 },
+    { year: 2023, week: 20, paidCount: 1, unpaidCount: 0 },
+    { year: 2023, week: 22, paidCount: 2, unpaidCount: 2 },
   ],
-  projects: [],
   projectsLeaded: [],
-  projectsAggregate: {
-    aggregate: {
-      sum: {
-        moneyGranted: 12000,
-        contributionCount: 7,
-      },
-      min: {
-        minContributionDate: "2023-02-31T11:31:09.674+00:00",
-      },
-      count: 1,
-    },
-  },
+  contributionStats: [],
+  contributionStatsAggregate: { aggregate: { min: { minDate: "2023-02-31T11:31:09.674+00:00" }, sum: { count: 7 } } },
+  paymentStats: [],
+  paymentStatsAggregate: { aggregate: { sum: { moneyGranted: 12000 } } },
+  projectsContributed: [],
+  projectsContributedAggregate: { aggregate: { count: 1 } },
 };
 
 const profileMinimalist: UserProfileFragment = {
@@ -133,20 +119,13 @@ const profileMinimalist: UserProfileFragment = {
   discord: null,
   website: null,
   contributionCounts: [],
-  projects: [],
-  projectsAggregate: {
-    aggregate: {
-      sum: {
-        moneyGranted: null,
-        contributionCount: 0,
-      },
-      min: {
-        minContributionDate: null,
-      },
-      count: 0,
-    },
-  },
   projectsLeaded: [],
+  contributionStats: [],
+  contributionStatsAggregate: { aggregate: null },
+  paymentStats: [],
+  paymentStatsAggregate: { aggregate: null },
+  projectsContributed: [],
+  projectsContributedAggregate: { aggregate: { count: 0 } },
 };
 
 const kakarot: Project = {

@@ -19,13 +19,16 @@ fragment UserProfileDetails on UserProfiles {
   website
 }
 
-fragment Contributions on UserContributionProjects {
+fragment ContributionStat on ContributionStats {
   projectId
-  maxContributionDate
-  contributionCount
-  project {
-    ...ProfileProject
-  }
+  maxDate
+  minDate
+  count
+}
+
+fragment PaymentStat on PaymentStats {
+  projectId
+  moneyGranted
 }
 
 fragment ProfileProject on Projects {
@@ -50,27 +53,46 @@ fragment ProfileProject on Projects {
   }
 }
 
-fragment ContributionCount on UserContributionCounts {
+fragment ContributionCount on ContributionCounts {
   year
   week
-  count
+  paidCount
+  unpaidCount
 }
 
 fragment UserProfile on UserProfiles {
   ...UserProfileId
   ...UserProfileDetails
-  projects {
-    ...Contributions
+  contributionStats {
+    ...ContributionStat
   }
-  projectsAggregate {
+  contributionStatsAggregate {
+    aggregate {
+      sum {
+        count
+      }
+      min {
+        minDate
+      }
+    }
+  }
+  paymentStats {
+    ...PaymentStat
+  }
+  paymentStatsAggregate {
     aggregate {
       sum {
         moneyGranted
-        contributionCount
       }
-      min {
-        minContributionDate
-      }
+    }
+  }
+  projectsContributed {
+    project {
+      ...ProfileProject
+    }
+  }
+  projectsContributedAggregate {
+    aggregate {
       count
     }
   }
