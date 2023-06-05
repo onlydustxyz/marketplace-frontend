@@ -113,10 +113,10 @@ export default function View({ profile, projects, headerColor, setOpen, ...rest 
                     {profile.bio}
                   </ReactMarkdown>
                 )}
-                {website && profile.website && (
+                {website && (
                   <div className="flex flex-row gap-1 items-center text-base text-greyscale-300">
                     <GlobalLine />
-                    <ExternalLink url={profile.website} text={website} />
+                    <ExternalLink url={website.url} text={website.hostname} />
                   </div>
                 )}
 
@@ -257,10 +257,23 @@ export default function View({ profile, projects, headerColor, setOpen, ...rest 
 
 export const parseWebsite = (website: Maybe<string>) => {
   try {
-    return new URL(website || "").hostname;
+    const url = new URL(website || "");
+    return {
+      hostname: url.hostname,
+      url: url.toString(),
+    };
   } catch (e) {
-    const regex = /([^/?#]+)(?:[/?#]|$)/i;
+    const regex = /^(https?:\/\/)?([^\s:/?#]+)(.*)?$/;
+
     const matches = (website || "").match(regex);
-    return matches?.at(1);
+    if (matches) {
+      const protocol = matches[1];
+      const hostname = matches[2];
+      const path = matches[3];
+      return {
+        hostname,
+        url: `${protocol || "https://"}${hostname}${path || ""}`,
+      };
+    }
   }
 };
