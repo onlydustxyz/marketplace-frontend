@@ -11,7 +11,8 @@
   "contributionGraph": {
     "paid": "Paid",
     "tooltip": "Paid: __paidCount__\nNot paid: __unpaidCount__",
-    "unpaid": "Not paid"
+    "unpaid": "Not paid",
+    "progressionTooltip": "Progression since last week"
   },
   "contributor": {
     "table": {

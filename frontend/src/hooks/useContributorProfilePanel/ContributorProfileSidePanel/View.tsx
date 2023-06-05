@@ -29,6 +29,7 @@ import { filterRemovedLanguages } from "src/utils/languages";
 import { Link, generatePath } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import ExternalLink from "src/components/ExternalLink";
+import { withTooltip } from "src/components/Tooltip";
 
 export enum HeaderColor {
   Blue = "blue",
@@ -222,7 +223,10 @@ export default function View({ profile, projects, headerColor, setOpen, ...rest 
                     <div className="font-belwe font-normal text-4xl pb-1 text-greyscale-50">
                       {profile.contributionStatsAggregate.aggregate?.sum?.count || 0}
                     </div>
-                    <div className="flex flex-row items-center gap-0.5 rounded-full py-0.5 px-2 bg-white/5 border border-greyscale-50/12 backdrop-blur-lg shadow-heavy text-sm">
+                    <div
+                      className="flex flex-row items-center gap-0.5 rounded-full py-0.5 px-2 bg-white/5 border border-greyscale-50/12 backdrop-blur-lg shadow-heavy text-sm"
+                      {...withTooltip(T("contributionGraph.progressionTooltip"))}
+                    >
                       <ArrowRightUpLine className="text-spacePurple-500" />
                       <div className="text-greyscale-200">{`+${
                         last(contributionsCount)?.paidCount + last(contributionsCount)?.unpaidCount
