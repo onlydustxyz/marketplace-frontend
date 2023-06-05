@@ -74,37 +74,38 @@ export default function View({ profile, projects, headerColor, setOpen, ...rest 
   return (
     <SidePanel {...rest} setOpen={setOpen}>
       <div className="flex flex-col h-full">
-        <div
-          className={classNames("h-36 w-full bg-cover shrink-0", {
-            "bg-profile-blue": headerColor === HeaderColor.Blue,
-            "bg-profile-cyan": headerColor === HeaderColor.Cyan,
-            "bg-profile-magenta": headerColor === HeaderColor.Magenta,
-            "bg-profile-yellow": headerColor === HeaderColor.Yellow,
-          })}
-        />
+        <div className="z-10">
+          <div
+            className={classNames("h-24 w-full bg-cover shrink-0", {
+              "bg-profile-blue": headerColor === HeaderColor.Blue,
+              "bg-profile-cyan": headerColor === HeaderColor.Cyan,
+              "bg-profile-magenta": headerColor === HeaderColor.Magenta,
+              "bg-profile-yellow": headerColor === HeaderColor.Yellow,
+            })}
+          />
 
-        <div className="flex flex-col gap-6 px-8">
           {profile.avatarUrl && (
             <img
               src={profile.avatarUrl}
-              className="rounded-full w-24 h-24 -mt-12 outline outline-4 outline-greyscale-50/12"
+              className="rounded-full w-24 h-24 ml-8 -mt-12 outline outline-4 outline-greyscale-50/12"
             />
           )}
-          <div className="flex flex-col gap-2">
-            <div data-testid="login" className="font-belwe font-normal text-3xl text-white">
-              {profile.login}
-            </div>
-            {profile.location && (
-              <div className="flex flex-row gap-2 items-center font-walsheim font-normal text-base text-greyscale-400">
-                <MapPinLine />
-                {profile.location}
-              </div>
-            )}
-          </div>
         </div>
 
-        <div className="mr-2 scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded">
-          <div className="flex flex-col gap-6 pt-6 px-8">
+        <div className="-mt-10 pt-16 mr-2 mb-2 scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded">
+          <div className="flex flex-col gap-6 px-8">
+            <div className="flex flex-col gap-2">
+              <div data-testid="login" className="font-belwe font-normal text-3xl text-white">
+                {profile.login}
+              </div>
+              {profile.location && (
+                <div className="flex flex-row gap-2 items-center font-walsheim font-normal text-base text-greyscale-400">
+                  <MapPinLine />
+                  {profile.location}
+                </div>
+              )}
+            </div>
+
             {(profile.bio || profile.location || profile.createdAt) && (
               <div className="flex flex-col gap-4 font-walsheim font-normal">
                 {profile.bio && (
