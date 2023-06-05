@@ -28,6 +28,7 @@ import ContributionGraph from "./ContributionGraph";
 import { filterRemovedLanguages } from "src/utils/languages";
 import { Link, generatePath } from "react-router-dom";
 import { RoutePaths } from "src/App";
+import ExternalLink from "src/components/ExternalLink";
 
 export enum HeaderColor {
   Blue = "blue",
@@ -111,9 +112,10 @@ export default function View({ profile, projects, headerColor, setOpen, ...rest 
                     {profile.bio}
                   </ReactMarkdown>
                 )}
-                {website && (
+                {website && profile.website && (
                   <div className="flex flex-row gap-1 items-center text-base text-greyscale-300">
-                    <GlobalLine /> {website}
+                    <GlobalLine />
+                    <ExternalLink url={profile.website} text={website} />
                   </div>
                 )}
 
