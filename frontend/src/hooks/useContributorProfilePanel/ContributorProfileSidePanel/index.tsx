@@ -62,7 +62,8 @@ export default function ContributorProfileSidePanel({ githubUserId, ...rest }: P
           contributorCount: project.contributorsAggregate?.aggregate?.count || 0,
           totalGranted: project.budgetsAggregate?.aggregate?.sum?.spentAmount || 0,
         } as Project)
-    );
+    )
+    .filter(project => project.leadSince || project.contributionCount);
 
   return userProfile ? (
     <View profile={userProfile} projects={projects} {...rest} headerColor={HeaderColor.Blue} />
