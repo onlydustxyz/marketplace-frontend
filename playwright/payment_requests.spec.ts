@@ -24,11 +24,21 @@ test.describe("As a project lead, I", () => {
     test.slow();
   });
 
-  test("can request a payment", async ({ page, projects, users, repos, signIn, context, request }) => {
+  test("can request a payment", async ({
+    page,
+    projects,
+    users,
+    repos,
+    signIn,
+    context,
+    request,
+    acceptTermsAndConditions,
+  }) => {
     const recipient = users.Anthony;
     const project = projects.ProjectA;
 
     await signIn(users.TokioRs);
+    await acceptTermsAndConditions();
     const projectPage = await new ProjectPage(page, project).goto();
     const overviewPage = await projectPage.overview();
 

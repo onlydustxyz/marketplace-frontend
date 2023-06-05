@@ -79,27 +79,48 @@ test.describe("As a registered user, I", () => {
     restoreDB();
   });
 
-  test("cannot access restricted projects page", async ({ page, projects, users, signIn }) => {
+  test("cannot access restricted projects page", async ({
+    page,
+    projects,
+    users,
+    signIn,
+    acceptTermsAndConditions,
+  }) => {
     await signIn(users.Olivier);
+    await acceptTermsAndConditions();
     await page.goto(`/projects/${projects.ProjectA.id}/payments`);
     await expect(page).toHaveURL(`/projects/${projects.ProjectA.id}`);
   });
 
-  test("can see private project I am a member of", async ({ page, projects, users, signIn }) => {
+  test("can see private project I am a member of", async ({
+    page,
+    projects,
+    users,
+    signIn,
+    acceptTermsAndConditions,
+  }) => {
     await signIn(users.Oscar);
+    await acceptTermsAndConditions();
     const browseProjectsPage = new BrowseProjectsPage(page);
     await browseProjectsPage.goto();
     await browseProjectsPage.expectProjectsToBeVisible(projects.Private);
   });
 
-  test("cannot see private project I am not a member of", async ({ page, projects, users, signIn }) => {
+  test("cannot see private project I am not a member of", async ({
+    page,
+    projects,
+    users,
+    signIn,
+    acceptTermsAndConditions,
+  }) => {
     await signIn(users.Olivier);
+    await acceptTermsAndConditions();
     const browseProjectsPage = new BrowseProjectsPage(page);
     await browseProjectsPage.goto();
     await browseProjectsPage.expectProjectsNotToBeVisible(projects.Private);
   });
 
-  test("can express my interest to a project", async ({ page, projects, users, signIn }) => {
+  test("can express my interest to a project", async ({ page, projects, users, signIn, acceptTermsAndConditions }) => {
     const project = projects.ProjectA;
     const lead = users.TokioRs;
     const applicant = users.Gregoire;
@@ -108,6 +129,7 @@ test.describe("As a registered user, I", () => {
 
     // Gregoire is new on the plateform, wants to apply on the project
     await signIn(applicant);
+    await acceptTermsAndConditions();
     await projectPage.goto();
     {
       const overviewPage = await projectPage.overview();
@@ -119,6 +141,7 @@ test.describe("As a registered user, I", () => {
 
     // Project lead cannot see the apply button
     await signIn(lead);
+    await acceptTermsAndConditions();
     await projectPage.goto();
     {
       const overviewPage = await projectPage.overview();

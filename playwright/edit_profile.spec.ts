@@ -10,8 +10,9 @@ test.describe("As an individual, I", () => {
     restoreDB();
   });
 
-  test.beforeEach(async ({ page, signIn, users }) => {
+  test.beforeEach(async ({ page, signIn, users, acceptTermsAndConditions }) => {
     await signIn(users.Olivier);
+    await acceptTermsAndConditions();
     editProfilePage = new EditProfilePage(page);
     await editProfilePage.goto();
   });
@@ -36,8 +37,9 @@ test.describe("As a company, I", () => {
     restoreDB();
   });
 
-  test.beforeEach(async ({ page, signIn, users }) => {
+  test.beforeEach(async ({ page, signIn, users, acceptTermsAndConditions }) => {
     await signIn(users.TokioRs);
+    await acceptTermsAndConditions();
     editProfilePage = new EditProfilePage(page);
     await editProfilePage.goto();
   });
