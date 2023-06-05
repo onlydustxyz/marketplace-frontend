@@ -5,10 +5,11 @@ import { User } from "src/types";
 
 type Props = {
   userId?: string;
+  githubUserId?: number;
 };
 
 export default function withAuthProvider(props: Props = {}) {
-  const { userId = "user-id" } = props;
+  const { userId = "user-id", githubUserId = 10167015 } = props;
 
   return (Story: StoryFn) => {
     const mockedValue: AuthContextType = {
@@ -23,12 +24,13 @@ export default function withAuthProvider(props: Props = {}) {
         id: userId,
         email: "le@chinoix.fr",
         login: "lechinoix",
-        avatarUrl: "https://avatars.githubusercontent.com/u/10167015?v=4",
+        avatarUrl: `https://avatars.githubusercontent.com/u/${githubUserId}?v=4`,
       } as User,
-      githubUserId: 123,
+      githubUserId,
       invalidImpersonation: false,
       impersonating: false,
     };
+
     return (
       <AuthContext.Provider value={mockedValue}>
         <Story />

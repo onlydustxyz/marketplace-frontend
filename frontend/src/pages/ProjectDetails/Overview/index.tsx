@@ -110,7 +110,7 @@ export default function Overview() {
                 )}
               </div>
             </div>
-            <MarkdownPreview>{description}</MarkdownPreview>
+            <MarkdownPreview className="text-sm">{description}</MarkdownPreview>
           </Card>
           <Card className="flex flex-col gap-4">
             <div className="flex flex-row font-walsheim font-medium text-base text-greyscale-50 items-center border-b border-greyscale-50/8 pb-2 justify-between">

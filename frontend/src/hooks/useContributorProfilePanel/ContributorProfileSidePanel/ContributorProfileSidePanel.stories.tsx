@@ -1,10 +1,11 @@
 import { ProfileProjectFragment, UserProfileFragment } from "src/__generated/graphql";
-import ContributorProfileSidePanel, { HeaderColor } from "./View";
-import { Project } from "./ProjectCard";
+import ContributorProfileSidePanel from "./View";
+import { Project } from "./ReadOnlyView/ProjectCard";
 import { daysFromNow, minutesFromNow } from "src/utils/date";
 import { withRouter } from "storybook-addon-react-router-v6";
 import withToasterProvider from "src/test/storybook/decorators/withToasterProvider";
 import withSidePanelStackProvider from "src/test/storybook/decorators/withSidePanelStackProvider";
+import { HeaderColor } from "./Header";
 
 export default {
   title: "ContributorProfileSidePanel",
@@ -190,6 +191,24 @@ export const Default = {
       profile={profileFull}
       projects={[kakarot, wtf, checkpoint, poseidon]}
       headerColor={headerColor}
+    />
+  ),
+  parameters: {
+    chromatic: { delay: 1500 },
+  },
+};
+
+export const Own = {
+  render: ({ headerColor = HeaderColor.Cyan }: Args) => (
+    <ContributorProfileSidePanel
+      open={true}
+      setOpen={() => {
+        return;
+      }}
+      profile={profileFull}
+      projects={[kakarot, wtf, checkpoint, poseidon]}
+      headerColor={headerColor}
+      isOwn
     />
   ),
   parameters: {

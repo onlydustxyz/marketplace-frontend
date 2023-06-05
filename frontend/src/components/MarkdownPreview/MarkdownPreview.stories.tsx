@@ -4,6 +4,7 @@ export default {
   title: "MarkdownPreview",
 };
 const props: Props = {
+  className: "text-sm",
   children: `
 # 📡 Backend
 

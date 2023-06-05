@@ -1,4 +1,4 @@
-import { parseWebsite } from "./View";
+import { parseWebsite } from "./utils";
 
 describe("parseWebsite", () => {
   it("should return the website hostname in best effort", () => {

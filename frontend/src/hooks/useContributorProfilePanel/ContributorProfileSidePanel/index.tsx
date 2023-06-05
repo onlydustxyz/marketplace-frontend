@@ -1,12 +1,13 @@
 import { ProfileProjectFragment, useUserProfileQuery } from "src/__generated/graphql";
-import View, { HeaderColor } from "./View";
+import View from "./View";
 import { contextWithCacheHeaders } from "src/utils/headers";
-import { Project } from "./ProjectCard";
+import { Project } from "./ReadOnlyView/ProjectCard";
 import { find, unionBy } from "lodash";
 import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 import { isProjectVisibleToUser } from "src/hooks/useProjectVisibility";
 import { useAuth } from "src/hooks/useAuth";
 import isDefined from "src/utils/isDefined";
+import { HeaderColor } from "./Header";
 
 type Props = {
   githubUserId: number;
@@ -66,7 +67,13 @@ export default function ContributorProfileSidePanel({ githubUserId, ...rest }: P
     .filter(project => project.leadSince || project.contributionCount);
 
   return userProfile ? (
-    <View profile={userProfile} projects={projects} {...rest} headerColor={HeaderColor.Blue} />
+    <View
+      isOwn={currentUserGithubId === userProfile.githubUserId}
+      profile={userProfile}
+      projects={projects}
+      {...rest}
+      headerColor={HeaderColor.Blue}
+    />
   ) : (
     <div />
   );
