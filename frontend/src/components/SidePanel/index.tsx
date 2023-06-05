@@ -46,7 +46,7 @@ export default function SidePanel({ open, setOpen, action, children }: Props) {
           className={"fixed blur-0 inset-y-0 right-0 h-screen w-5/12 bg-greyscale-900"}
           style={{ zIndex: 10 + panelIndex }}
         >
-          <div className="absolute top-3.5 right-3.5 flex flex-row gap-2">
+          <div className="absolute top-3.5 right-3.5 flex flex-row gap-2 z-20">
             {action}
             <Button
               size={ButtonSize.Sm}
