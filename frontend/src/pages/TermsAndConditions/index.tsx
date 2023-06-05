@@ -1,4 +1,6 @@
 import { PropsWithChildren, useState } from "react";
+import { Navigate } from "react-router-dom";
+import { RoutePaths } from "src/App";
 import OnlyDustLogo, { OnlyDustLogoWidth } from "src/App/Layout/Header/OnlyDustLogo";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import Button, { Width } from "src/components/Button";
@@ -9,7 +11,7 @@ import PrivacyPolicySidePanel from "./PrivacyPolicySidePanel";
 
 export const TermsAndConditions = () => {
   const [showTermsAndConditions, setShowTermsAndConditions] = useState(false);
-  const [acceptTermsAndConditionsMutation, { data, loading, error }] = useAcceptTermsAndConditionsMutation();
+  const [acceptTermsAndConditionsMutation, { data }] = useAcceptTermsAndConditionsMutation();
   const [checked, setChecked] = useState(false);
   const [showFullTermsAndConditions, setShowFullTermsAndConditions] = useState(false);
   const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
@@ -147,11 +149,7 @@ export const TermsAndConditions = () => {
                   </div>
                 </Card>
               )}
-              {data && (
-                <Card>
-                  <div>Terms and conditions accepted !</div>
-                </Card>
-              )}
+              {data && <Navigate to={RoutePaths.Home} />}
             </>
           )}
         </div>
