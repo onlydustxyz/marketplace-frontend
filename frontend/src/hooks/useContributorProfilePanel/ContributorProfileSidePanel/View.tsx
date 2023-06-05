@@ -29,6 +29,7 @@ import { filterRemovedLanguages } from "src/utils/languages";
 import { Link, generatePath } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import ExternalLink from "src/components/ExternalLink";
+import { withTooltip } from "src/components/Tooltip";
 
 export enum HeaderColor {
   Blue = "blue",
@@ -113,10 +114,10 @@ export default function View({ profile, projects, headerColor, setOpen, ...rest 
                     {profile.bio}
                   </ReactMarkdown>
                 )}
-                {website && profile.website && (
+                {website && (
                   <div className="flex flex-row gap-1 items-center text-base text-greyscale-300">
                     <GlobalLine />
-                    <ExternalLink url={profile.website} text={website} />
+                    <ExternalLink url={website.url} text={website.hostname} />
                   </div>
                 )}
 
@@ -222,7 +223,10 @@ export default function View({ profile, projects, headerColor, setOpen, ...rest 
                     <div className="font-belwe font-normal text-4xl pb-1 text-greyscale-50">
                       {profile.contributionStatsAggregate.aggregate?.sum?.count || 0}
                     </div>
-                    <div className="flex flex-row items-center gap-0.5 rounded-full py-0.5 px-2 bg-white/5 border border-greyscale-50/12 backdrop-blur-lg shadow-heavy text-sm">
+                    <div
+                      className="flex flex-row items-center gap-0.5 rounded-full py-0.5 px-2 bg-white/5 border border-greyscale-50/12 backdrop-blur-lg shadow-heavy text-sm"
+                      {...withTooltip(T("contributionGraph.progressionTooltip"))}
+                    >
                       <ArrowRightUpLine className="text-spacePurple-500" />
                       <div className="text-greyscale-200">{`+${
                         last(contributionsCount)?.paidCount + last(contributionsCount)?.unpaidCount
@@ -257,10 +261,23 @@ export default function View({ profile, projects, headerColor, setOpen, ...rest 
 
 export const parseWebsite = (website: Maybe<string>) => {
   try {
-    return new URL(website || "").hostname;
+    const url = new URL(website || "");
+    return {
+      hostname: url.hostname,
+      url: url.toString(),
+    };
   } catch (e) {
-    const regex = /([^/?#]+)(?:[/?#]|$)/i;
+    const regex = /^(https?:\/\/)?([^\s:/?#]+)(.*)?$/;
+
     const matches = (website || "").match(regex);
-    return matches?.at(1);
+    if (matches) {
+      const protocol = matches[1];
+      const hostname = matches[2];
+      const path = matches[3];
+      return {
+        hostname,
+        url: `${protocol || "https://"}${hostname}${path || ""}`,
+      };
+    }
   }
 };
