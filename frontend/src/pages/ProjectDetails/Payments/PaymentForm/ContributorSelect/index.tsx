@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { useSearchGithubUsersByHandleSubstringQuery } from "src/__generated/graphql";
 import View from "./View";
 import { useLocation } from "react-router-dom";
-import useDebounce from "src/hooks/useDebounce";
 import useProjectContributors from "src/hooks/useProjectContributors";
 import { Contributor } from "src/pages/ProjectDetails/Payments/PaymentForm/types";
+import { useDebounce } from "usehooks-ts";
 
 const EXTERNAL_USER_QUERY_DEBOUNCE_TIME = 500;
 
