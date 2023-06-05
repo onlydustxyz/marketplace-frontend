@@ -144,6 +144,21 @@ yarn generate --watch
 
 Use the `HASURA_URL` and `HASURA_SECRET_KEY` environment variables to connect to a custom Hasura environment
 
+### 📚 Update list of supported languages
+
+You'll need `yq` and `jq`
+
+```bash
+brew install yq jq
+```
+
+To update the list of supported languages (taken from Github) used to autocomplete technologies
+in the profile edit form
+
+```bash
+yarn update-languages
+```
+
 ## 🌡️ Testing
 
 ### Backend
