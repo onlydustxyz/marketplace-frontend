@@ -219,10 +219,10 @@ export default function View({ profile, projects, headerColor, setOpen, ...rest 
                     <div className="font-walsheim font-medium text-sm uppercase text-greyscale-300 w-full">
                       {T("profile.sections.stats.contributions")}
                     </div>
-                    <div className="font-belwe font-normal text-4xl text-greyscale-50">
-                      {profile.contributionStatsAggregate.aggregate?.sum?.count}
+                    <div className="font-belwe font-normal text-4xl pb-1 text-greyscale-50">
+                      {profile.contributionStatsAggregate.aggregate?.sum?.count || 0}
                     </div>
-                    <div className="flex flex-row items-center gap-0.5 rounded-full py-0.5 px-2 bg-white/5 border border-greyscale-50/12 backdrop-blur-lg shadow-heavy text-sm self-end">
+                    <div className="flex flex-row items-center gap-0.5 rounded-full py-0.5 px-2 bg-white/5 border border-greyscale-50/12 backdrop-blur-lg shadow-heavy text-sm">
                       <ArrowRightUpLine className="text-spacePurple-500" />
                       <div className="text-greyscale-200">{`+${
                         last(contributionsCount)?.paidCount + last(contributionsCount)?.unpaidCount
