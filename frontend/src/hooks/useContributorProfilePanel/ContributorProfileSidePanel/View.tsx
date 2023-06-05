@@ -102,7 +102,7 @@ export default function View({ profile, projects, headerColor, setOpen, ...rest 
           </div>
         </div>
 
-        <div className="-pr-4 pr-4 overflow-auto scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded">
+        <div className="mr-2 scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded">
           <div className="flex flex-col gap-6 pt-6 px-8">
             {(profile.bio || profile.location || profile.createdAt) && (
               <div className="flex flex-col gap-4 font-walsheim font-normal">
