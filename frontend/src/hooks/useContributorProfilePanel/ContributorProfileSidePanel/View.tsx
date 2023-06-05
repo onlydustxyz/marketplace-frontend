@@ -28,6 +28,7 @@ import ContributionGraph from "./ContributionGraph";
 import { filterRemovedLanguages } from "src/utils/languages";
 import { Link, generatePath } from "react-router-dom";
 import { RoutePaths } from "src/App";
+import ExternalLink from "src/components/ExternalLink";
 
 export enum HeaderColor {
   Blue = "blue",
@@ -73,37 +74,38 @@ export default function View({ profile, projects, headerColor, setOpen, ...rest 
   return (
     <SidePanel {...rest} setOpen={setOpen}>
       <div className="flex flex-col h-full">
-        <div
-          className={classNames("h-36 w-full bg-cover shrink-0", {
-            "bg-profile-blue": headerColor === HeaderColor.Blue,
-            "bg-profile-cyan": headerColor === HeaderColor.Cyan,
-            "bg-profile-magenta": headerColor === HeaderColor.Magenta,
-            "bg-profile-yellow": headerColor === HeaderColor.Yellow,
-          })}
-        />
+        <div className="z-10">
+          <div
+            className={classNames("h-24 w-full bg-cover shrink-0", {
+              "bg-profile-blue": headerColor === HeaderColor.Blue,
+              "bg-profile-cyan": headerColor === HeaderColor.Cyan,
+              "bg-profile-magenta": headerColor === HeaderColor.Magenta,
+              "bg-profile-yellow": headerColor === HeaderColor.Yellow,
+            })}
+          />
 
-        <div className="flex flex-col gap-6 px-8">
           {profile.avatarUrl && (
             <img
               src={profile.avatarUrl}
-              className="rounded-full w-24 h-24 -mt-12 outline outline-4 outline-greyscale-50/12"
+              className="rounded-full w-24 h-24 ml-8 -mt-12 outline outline-4 outline-greyscale-50/12"
             />
           )}
-          <div className="flex flex-col gap-2">
-            <div data-testid="login" className="font-belwe font-normal text-3xl text-white">
-              {profile.login}
-            </div>
-            {profile.location && (
-              <div className="flex flex-row gap-2 items-center font-walsheim font-normal text-base text-greyscale-400">
-                <MapPinLine />
-                {profile.location}
-              </div>
-            )}
-          </div>
         </div>
 
-        <div className="-pr-4 pr-4 overflow-auto scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded">
-          <div className="flex flex-col gap-6 pt-6 px-8">
+        <div className="-mt-10 pt-16 mr-2 mb-2 scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded">
+          <div className="flex flex-col gap-6 px-8">
+            <div className="flex flex-col gap-2">
+              <div data-testid="login" className="font-belwe font-normal text-3xl text-white">
+                {profile.login}
+              </div>
+              {profile.location && (
+                <div className="flex flex-row gap-2 items-center font-walsheim font-normal text-base text-greyscale-400">
+                  <MapPinLine />
+                  {profile.location}
+                </div>
+              )}
+            </div>
+
             {(profile.bio || profile.location || profile.createdAt) && (
               <div className="flex flex-col gap-4 font-walsheim font-normal">
                 {profile.bio && (
@@ -111,9 +113,10 @@ export default function View({ profile, projects, headerColor, setOpen, ...rest 
                     {profile.bio}
                   </ReactMarkdown>
                 )}
-                {website && (
+                {website && profile.website && (
                   <div className="flex flex-row gap-1 items-center text-base text-greyscale-300">
-                    <GlobalLine /> {website}
+                    <GlobalLine />
+                    <ExternalLink url={profile.website} text={website} />
                   </div>
                 )}
 
@@ -216,10 +219,10 @@ export default function View({ profile, projects, headerColor, setOpen, ...rest 
                     <div className="font-walsheim font-medium text-sm uppercase text-greyscale-300 w-full">
                       {T("profile.sections.stats.contributions")}
                     </div>
-                    <div className="font-belwe font-normal text-4xl text-greyscale-50">
-                      {profile.contributionStatsAggregate.aggregate?.sum?.count}
+                    <div className="font-belwe font-normal text-4xl pb-1 text-greyscale-50">
+                      {profile.contributionStatsAggregate.aggregate?.sum?.count || 0}
                     </div>
-                    <div className="flex flex-row items-center gap-0.5 rounded-full py-0.5 px-2 bg-white/5 border border-greyscale-50/12 backdrop-blur-lg shadow-heavy text-sm self-end">
+                    <div className="flex flex-row items-center gap-0.5 rounded-full py-0.5 px-2 bg-white/5 border border-greyscale-50/12 backdrop-blur-lg shadow-heavy text-sm">
                       <ArrowRightUpLine className="text-spacePurple-500" />
                       <div className="text-greyscale-200">{`+${
                         last(contributionsCount)?.paidCount + last(contributionsCount)?.unpaidCount

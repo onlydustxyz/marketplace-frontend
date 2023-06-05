@@ -12,6 +12,11 @@ type Props = {
   entries: ContributionCountFragment[];
 };
 
+export enum Color {
+  Primary = "#AE00FF",
+  Secondary = "#06B6D4",
+}
+
 export default function ContributionGraph({ entries }: Props) {
   const { T } = useIntl();
 
@@ -22,22 +27,22 @@ export default function ContributionGraph({ entries }: Props) {
       <AreaChart data={entries} margin={{ top: 30, right: 5, left: 5 }}>
         <defs>
           <linearGradient id="fillGradientPrimary" x1="0" y1="-1" x2="0" y2="1">
-            <stop offset="0%" stopColor="#AE00FF" stopOpacity={1} />
-            <stop offset="100%" stopColor="#AE00FF" stopOpacity={0} />
+            <stop offset="0%" stopColor={Color.Primary} stopOpacity={1} />
+            <stop offset="100%" stopColor={Color.Primary} stopOpacity={0} />
           </linearGradient>
           <linearGradient id="fillGradientSecondary" x1="0" y1="-1" x2="0" y2="1">
-            <stop offset="50%" stopColor="#262D5B" stopOpacity={1} />
-            <stop offset="100%" stopColor="#262D5B" stopOpacity={0} />
+            <stop offset="0%" stopColor={Color.Secondary} stopOpacity={1} />
+            <stop offset="100%" stopColor={Color.Secondary} stopOpacity={0} />
           </linearGradient>
         </defs>
         <Area
           name={T("contributionGraph.unpaid")}
           dataKey="unpaidCount"
-          stroke="#262D5B"
+          stroke={Color.Secondary}
           strokeWidth={2}
           fill="url(#fillGradientSecondary)"
           fillOpacity={0.8}
-          dot={<Dot secondary />}
+          dot={<Dot color={Color.Secondary} />}
           stackId={1}
         />
         <Area

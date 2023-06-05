@@ -10,8 +10,8 @@
   },
   "contributionGraph": {
     "paid": "Paid",
-    "tooltip": "Paid: __paidCount__\nUnPaid: __unpaidCount__",
-    "unpaid": "Unpaid"
+    "tooltip": "Paid: __paidCount__\nNot paid: __unpaidCount__",
+    "unpaid": "Not paid"
   },
   "contributor": {
     "table": {

@@ -60,7 +60,7 @@ export default function PayoutInfoSidePanel({ githubUserId, open, setOpen }: Pro
 
   return (
     <SidePanel open={open} setOpen={setOpen}>
-      <div className="flex flex-col gap-4 h-full">
+      <div className="flex flex-col h-full">
         <div className="font-belwe font-normal text-2xl text-greyscale-50 pt-8 mx-6 pb-4 border-b border-b-greyscale-50/8">
           {T("navbar.profile.payoutInfo")}
         </div>
