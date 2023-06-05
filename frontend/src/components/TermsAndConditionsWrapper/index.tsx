@@ -4,7 +4,7 @@ import { useAuth } from "src/hooks/useAuth";
 import { generatePath, Navigate, useLocation } from "react-router-dom";
 import { RoutePaths } from "src/App";
 
-const TERMS_AND_CONDITIONS_LAST_REDACTION_DATE = "2023-10-01";
+const TERMS_AND_CONDITIONS_LAST_REDACTION_DATE = "2023-06-01";
 
 export default function TermsAndConditionsAcceptanceDateProvider({ children }: PropsWithChildren) {
   const { user } = useAuth();
