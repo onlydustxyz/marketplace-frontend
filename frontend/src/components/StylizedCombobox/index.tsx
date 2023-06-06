@@ -3,24 +3,26 @@ import { useState } from "react";
 import classNames from "classnames";
 import SearchLine from "src/icons/SearchLine";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
+import { Virtuoso } from "react-virtuoso";
+import { forwardRef } from "react";
 
-export type Props<T> =
+export type Props<T> = {
+  options: T[];
+  optionFilter: (query: string, option: T) => boolean;
+  placeholder: string;
+  maxDisplayedOptions: number;
+} & (
   | {
-      options: T[];
       selectedOptions: T[];
       setSelectedOptions: (value: T[]) => void;
-      optionFilter: (query: string, option: T) => boolean;
-      placeholder: string;
       multiple: true;
     }
   | {
-      options: T[];
       selectedOptions: T;
       setSelectedOptions: (value: T) => void;
-      optionFilter: (query: string, option: T) => boolean;
-      placeholder: string;
       multiple?: false;
-    };
+    }
+);
 
 export interface Option {
   key: () => string;
@@ -35,13 +37,14 @@ export default function StylizedCombobox<T extends Option | { toString: () => st
   optionFilter,
   placeholder,
   multiple,
+  maxDisplayedOptions,
 }: Props<T>) {
   const [query, setQuery] = useState("");
 
   const filteredOptions = query === "" ? options : options.filter(option => optionFilter(query, option));
 
   const children = ({ open }: { open: boolean }) => (
-    <>
+    <div>
       <Combobox.Button as="div">
         <div
           className={classNames(
@@ -59,36 +62,22 @@ export default function StylizedCombobox<T extends Option | { toString: () => st
               onChange={event => setQuery(event.target.value)}
               className={classNames("border-none outline-none w-full bg-transparent font-normal text-sm")}
               placeholder={open ? "" : placeholder}
+              autoComplete="off"
             />
           </div>
           <ArrowDownSLine className="text-2xl" />
         </div>
       </Combobox.Button>
-      <Combobox.Options className="flex flex-col w-full mt-2 cursor-pointer bg-greyscale-800 border border-greyscale-50/12 backdrop-blur-lg rounded-2xl">
-        {filteredOptions.map((option, index, languages) => (
-          <Combobox.Option
-            key={(option as Option).key ? (option as Option).key() : option.toString()}
-            value={(option as Option).value ? (option as Option).value() : option.toString()}
-          >
-            {({ active }) => (
-              <div
-                className={classNames(
-                  "flex px-4 py-2 font-walsheim text-sm text-greyscale-50",
-                  {
-                    "border-b border-greyscale-50/8": index < languages.length - 1,
-                    "rounded-t-2xl pt-4": index === 0,
-                    "rounded-b-2xl pb-4": index === languages.length - 1,
-                  },
-                  { "bg-greyscale-800": !active, "bg-greyscale-600": active }
-                )}
-              >
-                {(option as Option).displayValue ? (option as Option).displayValue() : option.toString()}
-              </div>
-            )}
-          </Combobox.Option>
-        ))}
+      <Combobox.Options className="flex flex-col w-full mt-2">
+        {filteredOptions.length > 0 ? (
+          <div className="cursor-pointer bg-greyscale-800 border border-greyscale-50/12 backdrop-blur-lg rounded-2xl overflow-hidden">
+            <VirtualizedOptions options={filteredOptions} lineHeight={32} maxDisplayedOptions={maxDisplayedOptions} />
+          </div>
+        ) : (
+          <div />
+        )}
       </Combobox.Options>
-    </>
+    </div>
   );
 
   return multiple ? (
@@ -99,5 +88,76 @@ export default function StylizedCombobox<T extends Option | { toString: () => st
     <Combobox value={selectedOptions} onChange={value => setSelectedOptions(value)}>
       {children}
     </Combobox>
+  );
+}
+
+const List = forwardRef<HTMLDivElement>((props, ref) => {
+  return <div {...props} ref={ref} />;
+});
+
+List.displayName = "List";
+
+const Scroller = forwardRef<HTMLDivElement>((props, ref) => {
+  return (
+    <div
+      className="scrollbar-thin scrollbar-w-1.5 scrollbar-thumb-gray-500 scrollbar-thumb-rounded overflow-y-auto overflow-x-hidden bg-transparent"
+      {...props}
+      ref={ref}
+    />
+  );
+});
+
+Scroller.displayName = "Scroller";
+
+function VirtualizedOptions<T extends Option | { toString: () => string }>({
+  options,
+  lineHeight,
+  maxDisplayedOptions,
+}: {
+  options: T[];
+  lineHeight: number;
+  maxDisplayedOptions: number;
+}) {
+  return (
+    <Virtuoso
+      style={{
+        height:
+          /* N-1 lines have a height of lineHeight+1 because of the border-bottom */
+          Math.min(options.length - 1, maxDisplayedOptions - 1) * (lineHeight + 1) +
+          /* Last line has a height of lineHeight */
+          lineHeight +
+          /* Adds additional height due to first & last lines additional padding */
+          (options.length < maxDisplayedOptions ? 16 : 8),
+      }}
+      data={options}
+      components={{ List, Scroller }}
+      itemContent={(index, option) => {
+        return (
+          <Combobox.Option
+            key={(option as Option).key ? (option as Option).key() : option.toString()}
+            value={(option as Option).value ? (option as Option).value() : option.toString()}
+          >
+            {({ active }) => (
+              <div
+                className={classNames(
+                  "flex px-4 py-2 -mr-1.5 font-walsheim text-sm leading-4 text-greyscale-50",
+                  {
+                    "bg-greyscale-800": !active,
+                    "bg-greyscale-600": active,
+                  },
+                  {
+                    "border-b border-greyscale-50/8": index < options.length - 1,
+                    "rounded-t-2xl pt-4": index === 0,
+                    "rounded-b-2xl pb-4": index === options.length - 1,
+                  }
+                )}
+              >
+                {(option as Option).displayValue ? (option as Option).displayValue() : option.toString()}
+              </div>
+            )}
+          </Combobox.Option>
+        );
+      }}
+    />
   );
 }

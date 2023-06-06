@@ -17,6 +17,7 @@ const props: Props<string> = {
   },
   optionFilter: (query: string, option: string) => option.toLowerCase().includes(query.toLowerCase()),
   placeholder: "People name",
+  maxDisplayedOptions: 3,
 };
 
 export const Default = {
@@ -36,6 +37,7 @@ const propsMulti: Props<string> = {
   optionFilter: (query: string, option: string) => option.toLowerCase().includes(query.toLowerCase()),
   placeholder: "People name",
   multiple: true,
+  maxDisplayedOptions: 3,
 };
 
 export const Multi = {
