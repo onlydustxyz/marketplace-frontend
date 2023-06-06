@@ -4,7 +4,6 @@ import classNames from "classnames";
 import SearchLine from "src/icons/SearchLine";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import { Virtuoso } from "react-virtuoso";
-import { forwardRef } from "react";
 
 export type Props<T> = {
   options: T[];
@@ -91,24 +90,6 @@ export default function StylizedCombobox<T extends Option | { toString: () => st
   );
 }
 
-const List = forwardRef<HTMLDivElement>((props, ref) => {
-  return <div {...props} ref={ref} />;
-});
-
-List.displayName = "List";
-
-const Scroller = forwardRef<HTMLDivElement>((props, ref) => {
-  return (
-    <div
-      className="scrollbar-thin scrollbar-w-1.5 scrollbar-thumb-gray-500 scrollbar-thumb-rounded overflow-y-auto overflow-x-hidden bg-transparent"
-      {...props}
-      ref={ref}
-    />
-  );
-});
-
-Scroller.displayName = "Scroller";
-
 function VirtualizedOptions<T extends Option | { toString: () => string }>({
   options,
   lineHeight,
@@ -130,31 +111,19 @@ function VirtualizedOptions<T extends Option | { toString: () => string }>({
           (options.length < maxDisplayedOptions ? 16 : 8),
       }}
       data={options}
-      components={{ List, Scroller }}
       itemContent={(index, option) => {
         return (
           <Combobox.Option
             key={(option as Option).key ? (option as Option).key() : option.toString()}
             value={(option as Option).value ? (option as Option).value() : option.toString()}
-          >
-            {({ active }) => (
-              <div
-                className={classNames(
-                  "flex px-4 py-2 -mr-1.5 font-walsheim text-sm leading-4 text-greyscale-50",
-                  {
-                    "bg-greyscale-800": !active,
-                    "bg-greyscale-600": active,
-                  },
-                  {
-                    "border-b border-greyscale-50/8": index < options.length - 1,
-                    "rounded-t-2xl pt-4": index === 0,
-                    "rounded-b-2xl pb-4": index === options.length - 1,
-                  }
-                )}
-              >
-                {(option as Option).displayValue ? (option as Option).displayValue() : option.toString()}
-              </div>
+            className={classNames(
+              "flex px-4 py-2 font-walsheim text-sm leading-4 text-greyscale-50 bg-greyscale-800 ui-active:bg-greyscale-600",
+              {
+                "border-b border-greyscale-50/8": index < options.length - 1,
+              }
             )}
+          >
+            {(option as Option).displayValue ? (option as Option).displayValue() : option.toString()}
           </Combobox.Option>
         );
       }}
