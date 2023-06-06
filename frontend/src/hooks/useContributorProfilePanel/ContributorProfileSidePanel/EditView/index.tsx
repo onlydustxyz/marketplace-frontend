@@ -12,6 +12,8 @@ import Input, { Size } from "src/components/FormInput";
 import { FormProvider, useForm } from "react-hook-form";
 import GlobalLine from "src/icons/GlobalLine";
 import MapPinLine from "src/icons/MapPinLine";
+import { UserProfileInfo, fromFragment } from "./types";
+import { useEffect } from "react";
 
 type Props = {
   profile: UserProfileFragment;
@@ -22,11 +24,11 @@ type Props = {
 export default function EditView({ profile, headerColor, setEditMode }: Props) {
   const { T } = useIntl();
 
-  const unsavedChanges = false;
-  const saveButtonDisabled = false;
+  const formMethods = useForm<UserProfileInfo>();
+  const { handleSubmit, reset, formState } = formMethods;
+  const { isDirty } = formState;
 
-  const formMethods = useForm();
-  const { handleSubmit } = formMethods;
+  useEffect(() => reset(fromFragment(profile)), [profile]);
 
   const onSubmit = () => setEditMode(false);
 
@@ -78,7 +80,7 @@ export default function EditView({ profile, headerColor, setEditMode }: Props) {
 
           <div className="flex flex-row items-center justify-between bg-white/2 border-t border-greyscale-50/8 px-8 py-5">
             <Tag size={TagSize.Medium}>
-              {unsavedChanges ? (
+              {isDirty ? (
                 <div className="text-orange-500 flex flex-row items-center gap-1">
                   <ErrorWarningLine /> {T("profile.form.saveStatus.unsaved")}
                 </div>
@@ -89,13 +91,9 @@ export default function EditView({ profile, headerColor, setEditMode }: Props) {
                 </>
               )}
             </Tag>
-            <Button
-              size={ButtonSize.Md}
-              htmlType="submit"
-              data-testid="profile-form-submit-button"
-              disabled={saveButtonDisabled}
-            >
-              {T("profile.form.send")}
+            <Button size={ButtonSize.Md} htmlType="submit" data-testid="profile-form-submit-button">
+              <CheckLine />
+              {T("profile.form.done")}
             </Button>
           </div>
         </div>

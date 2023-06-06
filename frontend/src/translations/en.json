@@ -378,6 +378,7 @@
       "profileTypeCompany": "Company",
       "profileTypeIndividual": "Individual",
       "send": "Save payout info",
+      "done": "Done",
       "success": "Changes saved",
       "telegram": "Telegram",
       "telegramPlaceholder": "Telegram",
