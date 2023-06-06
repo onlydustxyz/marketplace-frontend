@@ -40,7 +40,7 @@ export default function WorkItemSidePanel({
 
   return (
     <SidePanel {...props}>
-      <div className="flex flex-col gap-8">
+      <div className="flex flex-col gap-8 h-full">
         <div className="font-belwe font-normal text-2xl text-greyscale-50 pt-8 px-6">
           {T("payment.form.workItems.addWorkItem")}
         </div>

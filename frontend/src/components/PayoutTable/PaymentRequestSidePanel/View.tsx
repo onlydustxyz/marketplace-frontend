@@ -86,7 +86,7 @@ export default function View({
       }
     >
       <QueryWrapper query={{ loading, data: requestedAt }}>
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-8 h-full">
           <div className="font-belwe font-normal text-2xl text-greyscale-50 pt-8 px-6">
             {T("payment.table.detailsPanel.title", { id: pretty(id) })}
           </div>
@@ -188,7 +188,7 @@ export default function View({
             <div className="font-belwe font-normal text-base text-greyscale-50">
               {T("payment.table.detailsPanel.workItems")}
             </div>
-            <div className="flex flex-col gap-3 h-full p-px pr-4 overflow-auto scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded">
+            <div className="flex flex-col gap-3 h-full p-px pr-4 pb-6 overflow-auto scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded">
               {workItems?.map(
                 workItem =>
                   workItem.githubIssue && (
