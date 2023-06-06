@@ -104,8 +104,8 @@ describe("useSignupRedirection", () => {
       data: {
         registeredUsers: [
           {
-            userInfo: {
-              __typename: "UserInfo",
+            userPayoutInfo: {
+              __typename: "UserPayoutInfo",
               payoutSettings: null,
               arePayoutSettingsValid: false,
             } as UserPayoutSettingsFragment,
@@ -143,8 +143,8 @@ describe("useSignupRedirection", () => {
       data: {
         registeredUsers: [
           {
-            userInfo: {
-              __typename: "UserInfo",
+            userPayoutInfo: {
+              __typename: "UserPayoutInfo",
               payoutSettings: null,
               arePayoutSettingsValid: true,
             } as UserPayoutSettingsFragment,
@@ -182,8 +182,8 @@ describe("useSignupRedirection", () => {
       data: {
         registeredUsers: [
           {
-            userInfo: {
-              __typename: "UserInfo",
+            userPayoutInfo: {
+              __typename: "UserPayoutInfo",
               payoutSettings: null,
               arePayoutSettingsValid: false,
             } as UserPayoutSettingsFragment,
@@ -221,8 +221,8 @@ describe("useSignupRedirection", () => {
       data: {
         registeredUsers: [
           {
-            userInfo: {
-              __typename: "UserInfo",
+            userPayoutInfo: {
+              __typename: "UserPayoutInfo",
               payoutSettings: null,
               arePayoutSettingsValid: false,
             } as UserPayoutSettingsFragment,

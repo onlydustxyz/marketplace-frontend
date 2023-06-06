@@ -6,7 +6,7 @@ use api::{
 		database::{
 			IgnoredGithubIssuesRepository, PendingProjectLeaderInvitationsRepository,
 			ProjectDetailsRepository, ProjectSponsorRepository, SponsorRepository,
-			UserInfoRepository,
+			UserPayoutInfoRepository,
 		},
 		simple_storage,
 	},
@@ -49,7 +49,7 @@ async fn main() -> Result<()> {
 		ProjectSponsorRepository::new(database.clone()),
 		PendingProjectLeaderInvitationsRepository::new(database.clone()),
 		IgnoredGithubIssuesRepository::new(database.clone()),
-		UserInfoRepository::new(database),
+		UserPayoutInfoRepository::new(database),
 		Arc::new(infrastructure_graphql::Client::new(
 			config.graphql_client(),
 		)?),

@@ -30,6 +30,6 @@
 - "!include public_projects_sponsors.yaml"
 - "!include public_registered_users.yaml"
 - "!include public_sponsors.yaml"
-- "!include public_user_info.yaml"
+- "!include public_user_payout_info.yaml"
 - "!include public_user_profiles.yaml"
 - "!include public_work_items.yaml"

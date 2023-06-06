@@ -17,7 +17,6 @@
           }
           scalar Amount
           scalar DateTimeUtc
-          scalar Email
           scalar EthereumAddress
           scalar EthereumName
           scalar GithubIssueId
@@ -51,7 +50,7 @@
             markInvoiceAsReceived(paymentReferences: [PaymentReference!]!): Int!
             requestPayment(projectId: Uuid!, recipientId: Int!, amountInUsd: Int!, hoursWorked: Int!, reason: Reason!): Payment!
             unignoreIssue(projectId: Uuid!, repoId: GithubRepoId!, issueNumber: GithubIssueNumber!): Boolean!
-            updateProfileInfo(location: Location, identity: IdentityInput, payoutSettings: PayoutSettingsInput, contactInformation: ContactInformation): Uuid!
+            updatePayoutInfo(location: Location, identity: IdentityInput, payoutSettings: PayoutSettingsInput): Uuid!
           }
           type Payment {
             amount: Amount!
@@ -96,12 +95,6 @@
             identificationNumber: String
             name: String
             owner: PersonIdentity
-          }
-          input ContactInformation {
-            discord: String
-            email: Email
-            telegram: String
-            twitter: String
           }
           input IdentityInput {
             optCompany: CompanyIdentity

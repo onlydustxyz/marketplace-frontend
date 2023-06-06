@@ -16,8 +16,8 @@ export default function FeedbackButton() {
     variables: { userId: user?.id },
   });
 
-  const userInfo = getUserIdentityQuery.data?.userInfo;
-  const identity = userInfo && userInfo.length > 0 ? userInfo[0].identity?.Person : undefined;
+  const userPayoutInfo = getUserIdentityQuery.data?.userPayoutInfo;
+  const identity = userPayoutInfo && userPayoutInfo.length > 0 ? userPayoutInfo[0].identity?.Person : undefined;
 
   return (
     <>
@@ -56,7 +56,7 @@ export default function FeedbackButton() {
 
 gql`
   query UserIdentity($userId: uuid!) {
-    userInfo(where: { userId: { _eq: $userId } }) {
+    userPayoutInfo(where: { userId: { _eq: $userId } }) {
       userId
       identity
     }

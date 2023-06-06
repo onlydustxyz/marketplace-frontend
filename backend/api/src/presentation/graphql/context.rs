@@ -16,7 +16,7 @@ use crate::{
 		database::{
 			IgnoredGithubIssuesRepository, PendingProjectLeaderInvitationsRepository,
 			ProjectDetailsRepository, ProjectSponsorRepository, SponsorRepository,
-			UserInfoRepository,
+			UserPayoutInfoRepository,
 		},
 		simple_storage,
 		web3::ens,
@@ -44,7 +44,7 @@ pub struct Context {
 	pub accept_project_leader_invitation_usecase:
 		application::project::accept_leader_invitation::Usecase,
 	pub project_details_repository: ProjectDetailsRepository,
-	pub update_user_info_usecase: application::user::update_profile_info::Usecase,
+	pub update_user_payout_info_usecase: application::user::update_payout_info::Usecase,
 	pub create_github_issue_usecase: application::github::create_issue::Usecase,
 	pub ignored_github_issues_usecase: application::project::ignored_issues::Usecase,
 	pub apply_to_project_usecase: application::project::apply::Usecase,
@@ -63,7 +63,7 @@ impl Context {
 		project_sponsor_repository: ProjectSponsorRepository,
 		pending_project_leader_invitations_repository: PendingProjectLeaderInvitationsRepository,
 		ignored_github_issues_repository: IgnoredGithubIssuesRepository,
-		user_info_repository: UserInfoRepository,
+		user_info_repository: UserPayoutInfoRepository,
 		graphql: Arc<graphql::Client>,
 		github: Arc<github::Client>,
 		ens: Arc<ens::Client>,
@@ -140,7 +140,7 @@ impl Context {
 					project_repository.clone(),
 				),
 			project_details_repository,
-			update_user_info_usecase: application::user::update_profile_info::Usecase::new(
+			update_user_payout_info_usecase: application::user::update_payout_info::Usecase::new(
 				user_info_repository,
 				ArePayoutSettingsValid::new(ens.clone()),
 			),

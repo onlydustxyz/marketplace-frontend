@@ -7,9 +7,6 @@ use serde::{Deserialize, Serialize};
 
 mod email;
 
-mod contact_information;
-pub use contact_information::ContactInformation;
-
 mod identity;
 pub use identity::{CompanyIdentity, Identity, PersonIdentity};
 
@@ -31,30 +28,28 @@ pub use location::Location;
 	Deserialize,
 	AsChangeset,
 )]
-#[table_name = "user_info"]
+#[table_name = "user_payout_info"]
 #[primary_key(user_id)]
 #[changeset_options(treat_none_as_null = "true")]
-pub struct UserInfo {
+pub struct UserPayoutInfo {
 	#[diesel(deserialize_as = "uuid::Uuid")]
 	user_id: UserId,
 	identity: Option<Identity>,
 	location: Option<Location>,
 	payout_settings: Option<PayoutSettings>,
-	contact_information: Option<ContactInformation>,
 }
 
-impl domain::Entity for UserInfo {
+impl domain::Entity for UserPayoutInfo {
 	type Id = UserId;
 }
 
-impl<ST> Queryable<ST, Pg> for UserInfo
+impl<ST> Queryable<ST, Pg> for UserPayoutInfo
 where
 	(
 		UserId,
 		Option<Identity>,
 		Option<Location>,
 		Option<PayoutSettings>,
-		Option<ContactInformation>,
 		bool,
 	): Queryable<ST, Pg>,
 {
@@ -63,19 +58,16 @@ where
 		Option<Identity>,
 		Option<Location>,
 		Option<PayoutSettings>,
-		Option<ContactInformation>,
 		bool,
 	) as Queryable<ST, Pg>>::Row;
 
 	fn build(row: Self::Row) -> Self {
-		let (user_id, identity, location, payout_settings, contact_information, _) =
-			Queryable::build(row);
+		let (user_id, identity, location, payout_settings, _) = Queryable::build(row);
 		Self {
 			user_id,
 			identity,
 			location,
 			payout_settings,
-			contact_information,
 		}
 	}
 }

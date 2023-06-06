@@ -6219,65 +6219,6 @@
         "possibleTypes": null
       },
       {
-        "kind": "INPUT_OBJECT",
-        "name": "ContactInformation",
-        "description": null,
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "discord",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "email",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "Email",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "telegram",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "twitter",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
         "kind": "OBJECT",
         "name": "ContributionCounts",
         "description": "columns and relationships of \"api.contribution_counts\"",
@@ -14946,16 +14887,6 @@
         "kind": "SCALAR",
         "name": "DateTimeUtc",
         "description": "DateTime",
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "SCALAR",
-        "name": "Email",
-        "description": "A valid email address",
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -26246,6 +26177,22 @@
           },
           {
             "name": "budgetId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Id",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "commandId",
             "description": null,
             "args": [],
             "type": {
@@ -42857,12 +42804,12 @@
             "deprecationReason": null
           },
           {
-            "name": "userInfo",
+            "name": "userPayoutInfo",
             "description": "An object relationship",
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "UserInfo",
+              "name": "UserPayoutInfo",
               "ofType": null
             },
             "isDeprecated": false,
@@ -43315,11 +43262,11 @@
             "deprecationReason": null
           },
           {
-            "name": "userInfo",
+            "name": "userPayoutInfo",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "UserInfoBoolExp",
+              "name": "UserPayoutInfoBoolExp",
               "ofType": null
             },
             "defaultValue": null,
@@ -43446,11 +43393,11 @@
             "deprecationReason": null
           },
           {
-            "name": "userInfo",
+            "name": "userPayoutInfo",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "UserInfoObjRelInsertInput",
+              "name": "UserPayoutInfoObjRelInsertInput",
               "ofType": null
             },
             "defaultValue": null,
@@ -43794,11 +43741,11 @@
             "deprecationReason": null
           },
           {
-            "name": "userInfo",
+            "name": "userPayoutInfo",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "UserInfoOrderBy",
+              "name": "UserPayoutInfoOrderBy",
               "ofType": null
             },
             "defaultValue": null,
@@ -46078,8 +46025,8 @@
       },
       {
         "kind": "OBJECT",
-        "name": "UserInfo",
-        "description": "columns and relationships of \"user_info\"",
+        "name": "UserPayoutInfo",
+        "description": "columns and relationships of \"user_payout_info\"",
         "fields": [
           {
             "name": "arePayoutSettingsValid",
@@ -46093,31 +46040,6 @@
                 "name": "Boolean",
                 "ofType": null
               }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "contactInformation",
-            "description": null,
-            "args": [
-              {
-                "name": "path",
-                "description": "JSON select path",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              }
-            ],
-            "type": {
-              "kind": "SCALAR",
-              "name": "jsonb",
-              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -46221,8 +46143,8 @@
       },
       {
         "kind": "OBJECT",
-        "name": "UserInfoAggregate",
-        "description": "aggregated selection of \"user_info\"",
+        "name": "UserPayoutInfoAggregate",
+        "description": "aggregated selection of \"user_payout_info\"",
         "fields": [
           {
             "name": "aggregate",
@@ -46230,7 +46152,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "UserInfoAggregateFields",
+              "name": "UserPayoutInfoAggregateFields",
               "ofType": null
             },
             "isDeprecated": false,
@@ -46251,7 +46173,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "OBJECT",
-                    "name": "UserInfo",
+                    "name": "UserPayoutInfo",
                     "ofType": null
                   }
                 }
@@ -46268,8 +46190,8 @@
       },
       {
         "kind": "OBJECT",
-        "name": "UserInfoAggregateFields",
-        "description": "aggregate fields of \"user_info\"",
+        "name": "UserPayoutInfoAggregateFields",
+        "description": "aggregate fields of \"user_payout_info\"",
         "fields": [
           {
             "name": "count",
@@ -46286,7 +46208,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "ENUM",
-                      "name": "UserInfoSelectColumn",
+                      "name": "UserPayoutInfoSelectColumn",
                       "ofType": null
                     }
                   }
@@ -46326,7 +46248,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "UserInfoMaxFields",
+              "name": "UserPayoutInfoMaxFields",
               "ofType": null
             },
             "isDeprecated": false,
@@ -46338,7 +46260,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "UserInfoMinFields",
+              "name": "UserPayoutInfoMinFields",
               "ofType": null
             },
             "isDeprecated": false,
@@ -46352,22 +46274,10 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "UserInfoAppendInput",
+        "name": "UserPayoutInfoAppendInput",
         "description": "append existing jsonb value of filtered columns with new jsonb value",
         "fields": null,
         "inputFields": [
-          {
-            "name": "contactInformation",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "jsonb",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
           {
             "name": "identity",
             "description": null,
@@ -46411,8 +46321,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "UserInfoBoolExp",
-        "description": "Boolean expression to filter rows from the table \"user_info\". All fields are combined with a logical 'AND'.",
+        "name": "UserPayoutInfoBoolExp",
+        "description": "Boolean expression to filter rows from the table \"user_payout_info\". All fields are combined with a logical 'AND'.",
         "fields": null,
         "inputFields": [
           {
@@ -46426,7 +46336,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "INPUT_OBJECT",
-                  "name": "UserInfoBoolExp",
+                  "name": "UserPayoutInfoBoolExp",
                   "ofType": null
                 }
               }
@@ -46440,7 +46350,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "UserInfoBoolExp",
+              "name": "UserPayoutInfoBoolExp",
               "ofType": null
             },
             "defaultValue": null,
@@ -46458,7 +46368,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "INPUT_OBJECT",
-                  "name": "UserInfoBoolExp",
+                  "name": "UserPayoutInfoBoolExp",
                   "ofType": null
                 }
               }
@@ -46473,18 +46383,6 @@
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "BooleanComparisonExp",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "contactInformation",
-            "description": null,
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "JsonbComparisonExp",
               "ofType": null
             },
             "defaultValue": null,
@@ -46546,8 +46444,8 @@
       },
       {
         "kind": "ENUM",
-        "name": "UserInfoConstraint",
-        "description": "unique or primary key constraints on table \"user_info\"",
+        "name": "UserPayoutInfoConstraint",
+        "description": "unique or primary key constraints on table \"user_payout_info\"",
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -46563,31 +46461,11 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "UserInfoDeleteAtPathInput",
+        "name": "UserPayoutInfoDeleteAtPathInput",
         "description": "delete the field or element with specified path (for JSON arrays, negative integers count from the end)",
         "fields": null,
         "inputFields": [
           {
-            "name": "contactInformation",
-            "description": null,
-            "type": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                }
-              }
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "identity",
             "description": null,
             "type": {
@@ -46654,23 +46532,11 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "UserInfoDeleteElemInput",
+        "name": "UserPayoutInfoDeleteElemInput",
         "description": "delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array",
         "fields": null,
         "inputFields": [
           {
-            "name": "contactInformation",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "identity",
             "description": null,
             "type": {
@@ -46713,23 +46579,11 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "UserInfoDeleteKeyInput",
+        "name": "UserPayoutInfoDeleteKeyInput",
         "description": "delete key/value pair or string element. key/value pairs are matched based on their key value",
         "fields": null,
         "inputFields": [
           {
-            "name": "contactInformation",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "identity",
             "description": null,
             "type": {
@@ -46772,22 +46626,10 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "UserInfoInsertInput",
-        "description": "input type for inserting data into table \"user_info\"",
+        "name": "UserPayoutInfoInsertInput",
+        "description": "input type for inserting data into table \"user_payout_info\"",
         "fields": null,
         "inputFields": [
-          {
-            "name": "contactInformation",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "jsonb",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
           {
             "name": "identity",
             "description": null,
@@ -46843,7 +46685,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "UserInfoMaxFields",
+        "name": "UserPayoutInfoMaxFields",
         "description": "aggregate max on columns",
         "fields": [
           {
@@ -46866,7 +46708,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "UserInfoMinFields",
+        "name": "UserPayoutInfoMinFields",
         "description": "aggregate min on columns",
         "fields": [
           {
@@ -46889,8 +46731,8 @@
       },
       {
         "kind": "OBJECT",
-        "name": "UserInfoMutationResponse",
-        "description": "response of any mutation on the table \"user_info\"",
+        "name": "UserPayoutInfoMutationResponse",
+        "description": "response of any mutation on the table \"user_payout_info\"",
         "fields": [
           {
             "name": "affected_rows",
@@ -46923,7 +46765,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "OBJECT",
-                    "name": "UserInfo",
+                    "name": "UserPayoutInfo",
                     "ofType": null
                   }
                 }
@@ -46940,8 +46782,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "UserInfoObjRelInsertInput",
-        "description": "input type for inserting object relation for remote table \"user_info\"",
+        "name": "UserPayoutInfoObjRelInsertInput",
+        "description": "input type for inserting object relation for remote table \"user_payout_info\"",
         "fields": null,
         "inputFields": [
           {
@@ -46952,7 +46794,7 @@
               "name": null,
               "ofType": {
                 "kind": "INPUT_OBJECT",
-                "name": "UserInfoInsertInput",
+                "name": "UserPayoutInfoInsertInput",
                 "ofType": null
               }
             },
@@ -46965,7 +46807,7 @@
             "description": "upsert condition",
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "UserInfoOnConflict",
+              "name": "UserPayoutInfoOnConflict",
               "ofType": null
             },
             "defaultValue": null,
@@ -46979,8 +46821,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "UserInfoOnConflict",
-        "description": "on_conflict condition type for table \"user_info\"",
+        "name": "UserPayoutInfoOnConflict",
+        "description": "on_conflict condition type for table \"user_payout_info\"",
         "fields": null,
         "inputFields": [
           {
@@ -46991,7 +46833,7 @@
               "name": null,
               "ofType": {
                 "kind": "ENUM",
-                "name": "UserInfoConstraint",
+                "name": "UserPayoutInfoConstraint",
                 "ofType": null
               }
             },
@@ -47013,7 +46855,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "ENUM",
-                    "name": "UserInfoUpdateColumn",
+                    "name": "UserPayoutInfoUpdateColumn",
                     "ofType": null
                   }
                 }
@@ -47028,7 +46870,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "UserInfoBoolExp",
+              "name": "UserPayoutInfoBoolExp",
               "ofType": null
             },
             "defaultValue": null,
@@ -47042,24 +46884,12 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "UserInfoOrderBy",
-        "description": "Ordering options when selecting data from \"user_info\".",
+        "name": "UserPayoutInfoOrderBy",
+        "description": "Ordering options when selecting data from \"user_payout_info\".",
         "fields": null,
         "inputFields": [
           {
             "name": "arePayoutSettingsValid",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "contactInformation",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -47125,8 +46955,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "UserInfoPkColumnsInput",
-        "description": "primary key columns input for table: user_info",
+        "name": "UserPayoutInfoPkColumnsInput",
+        "description": "primary key columns input for table: user_payout_info",
         "fields": null,
         "inputFields": [
           {
@@ -47152,22 +46982,10 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "UserInfoPrependInput",
+        "name": "UserPayoutInfoPrependInput",
         "description": "prepend existing jsonb value of filtered columns with new jsonb value",
         "fields": null,
         "inputFields": [
-          {
-            "name": "contactInformation",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "jsonb",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
           {
             "name": "identity",
             "description": null,
@@ -47211,20 +47029,14 @@
       },
       {
         "kind": "ENUM",
-        "name": "UserInfoSelectColumn",
-        "description": "select columns of table \"user_info\"",
+        "name": "UserPayoutInfoSelectColumn",
+        "description": "select columns of table \"user_payout_info\"",
         "fields": null,
         "inputFields": null,
         "interfaces": null,
         "enumValues": [
           {
             "name": "arePayoutSettingsValid",
-            "description": "column name",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "contactInformation",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
@@ -47258,22 +47070,10 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "UserInfoSetInput",
-        "description": "input type for updating data in table \"user_info\"",
+        "name": "UserPayoutInfoSetInput",
+        "description": "input type for updating data in table \"user_payout_info\"",
         "fields": null,
         "inputFields": [
-          {
-            "name": "contactInformation",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "jsonb",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
           {
             "name": "identity",
             "description": null,
@@ -47329,18 +47129,12 @@
       },
       {
         "kind": "ENUM",
-        "name": "UserInfoUpdateColumn",
-        "description": "update columns of table \"user_info\"",
+        "name": "UserPayoutInfoUpdateColumn",
+        "description": "update columns of table \"user_payout_info\"",
         "fields": null,
         "inputFields": null,
         "interfaces": null,
         "enumValues": [
-          {
-            "name": "contactInformation",
-            "description": "column name",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
           {
             "name": "identity",
             "description": "column name",
@@ -47370,7 +47164,7 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "UserInfoUpdates",
+        "name": "UserPayoutInfoUpdates",
         "description": null,
         "fields": null,
         "inputFields": [
@@ -47379,7 +47173,7 @@
             "description": "append existing jsonb value of filtered columns with new jsonb value",
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "UserInfoAppendInput",
+              "name": "UserPayoutInfoAppendInput",
               "ofType": null
             },
             "defaultValue": null,
@@ -47391,7 +47185,7 @@
             "description": "delete the field or element with specified path (for JSON arrays, negative integers count from the end)",
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "UserInfoDeleteAtPathInput",
+              "name": "UserPayoutInfoDeleteAtPathInput",
               "ofType": null
             },
             "defaultValue": null,
@@ -47403,7 +47197,7 @@
             "description": "delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array",
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "UserInfoDeleteElemInput",
+              "name": "UserPayoutInfoDeleteElemInput",
               "ofType": null
             },
             "defaultValue": null,
@@ -47415,7 +47209,7 @@
             "description": "delete key/value pair or string element. key/value pairs are matched based on their key value",
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "UserInfoDeleteKeyInput",
+              "name": "UserPayoutInfoDeleteKeyInput",
               "ofType": null
             },
             "defaultValue": null,
@@ -47427,7 +47221,7 @@
             "description": "prepend existing jsonb value of filtered columns with new jsonb value",
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "UserInfoPrependInput",
+              "name": "UserPayoutInfoPrependInput",
               "ofType": null
             },
             "defaultValue": null,
@@ -47439,7 +47233,7 @@
             "description": "sets the columns of the filtered rows to the given values",
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "UserInfoSetInput",
+              "name": "UserPayoutInfoSetInput",
               "ofType": null
             },
             "defaultValue": null,
@@ -47454,7 +47248,7 @@
               "name": null,
               "ofType": {
                 "kind": "INPUT_OBJECT",
-                "name": "UserInfoBoolExp",
+                "name": "UserPayoutInfoBoolExp",
                 "ofType": null
               }
             },
@@ -69420,8 +69214,8 @@
             "deprecationReason": null
           },
           {
-            "name": "deleteUserInfo",
-            "description": "delete data from the table: \"user_info\"",
+            "name": "deleteUserPayoutInfo",
+            "description": "delete data from the table: \"user_payout_info\"",
             "args": [
               {
                 "name": "where",
@@ -69431,7 +69225,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "INPUT_OBJECT",
-                    "name": "UserInfoBoolExp",
+                    "name": "UserPayoutInfoBoolExp",
                     "ofType": null
                   }
                 },
@@ -69442,15 +69236,15 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "UserInfoMutationResponse",
+              "name": "UserPayoutInfoMutationResponse",
               "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "deleteUserInfoByPk",
-            "description": "delete single row from the table: \"user_info\"",
+            "name": "deleteUserPayoutInfoByPk",
+            "description": "delete single row from the table: \"user_payout_info\"",
             "args": [
               {
                 "name": "userId",
@@ -69471,7 +69265,7 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "UserInfo",
+              "name": "UserPayoutInfo",
               "ofType": null
             },
             "isDeprecated": false,
@@ -71839,8 +71633,8 @@
             "deprecationReason": null
           },
           {
-            "name": "insertUserInfo",
-            "description": "insert data into the table: \"user_info\"",
+            "name": "insertUserPayoutInfo",
+            "description": "insert data into the table: \"user_payout_info\"",
             "args": [
               {
                 "name": "objects",
@@ -71856,7 +71650,7 @@
                       "name": null,
                       "ofType": {
                         "kind": "INPUT_OBJECT",
-                        "name": "UserInfoInsertInput",
+                        "name": "UserPayoutInfoInsertInput",
                         "ofType": null
                       }
                     }
@@ -71871,7 +71665,7 @@
                 "description": "upsert condition",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "UserInfoOnConflict",
+                  "name": "UserPayoutInfoOnConflict",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -71881,15 +71675,15 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "UserInfoMutationResponse",
+              "name": "UserPayoutInfoMutationResponse",
               "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "insertUserInfoOne",
-            "description": "insert a single row into the table: \"user_info\"",
+            "name": "insertUserPayoutInfoOne",
+            "description": "insert a single row into the table: \"user_payout_info\"",
             "args": [
               {
                 "name": "object",
@@ -71899,7 +71693,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "INPUT_OBJECT",
-                    "name": "UserInfoInsertInput",
+                    "name": "UserPayoutInfoInsertInput",
                     "ofType": null
                   }
                 },
@@ -71912,7 +71706,7 @@
                 "description": "upsert condition",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "UserInfoOnConflict",
+                  "name": "UserPayoutInfoOnConflict",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -71922,7 +71716,7 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "UserInfo",
+              "name": "UserPayoutInfo",
               "ofType": null
             },
             "isDeprecated": false,
@@ -75429,6 +75223,59 @@
             "deprecationReason": null
           },
           {
+            "name": "updatePayoutInfo",
+            "description": null,
+            "args": [
+              {
+                "name": "identity",
+                "description": null,
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "IdentityInput",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "location",
+                "description": null,
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "Location",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "payoutSettings",
+                "description": null,
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "PayoutSettingsInput",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Uuid",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "updatePendingProjectLeaderInvitations",
             "description": "update data of the table: \"pending_project_leader_invitations\"",
             "args": [
@@ -75569,71 +75416,6 @@
               "ofType": {
                 "kind": "OBJECT",
                 "name": "PendingProjectLeaderInvitationsMutationResponse",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "updateProfileInfo",
-            "description": null,
-            "args": [
-              {
-                "name": "contactInformation",
-                "description": null,
-                "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "ContactInformation",
-                  "ofType": null
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "identity",
-                "description": null,
-                "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "IdentityInput",
-                  "ofType": null
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "location",
-                "description": null,
-                "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "Location",
-                  "ofType": null
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "payoutSettings",
-                "description": null,
-                "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "PayoutSettingsInput",
-                  "ofType": null
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              }
-            ],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Uuid",
                 "ofType": null
               }
             },
@@ -76846,15 +76628,15 @@
             "deprecationReason": null
           },
           {
-            "name": "updateUserInfo",
-            "description": "update data of the table: \"user_info\"",
+            "name": "updateUserPayoutInfo",
+            "description": "update data of the table: \"user_payout_info\"",
             "args": [
               {
                 "name": "_append",
                 "description": "append existing jsonb value of filtered columns with new jsonb value",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "UserInfoAppendInput",
+                  "name": "UserPayoutInfoAppendInput",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -76866,7 +76648,7 @@
                 "description": "delete the field or element with specified path (for JSON arrays, negative integers count from the end)",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "UserInfoDeleteAtPathInput",
+                  "name": "UserPayoutInfoDeleteAtPathInput",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -76878,7 +76660,7 @@
                 "description": "delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "UserInfoDeleteElemInput",
+                  "name": "UserPayoutInfoDeleteElemInput",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -76890,7 +76672,7 @@
                 "description": "delete key/value pair or string element. key/value pairs are matched based on their key value",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "UserInfoDeleteKeyInput",
+                  "name": "UserPayoutInfoDeleteKeyInput",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -76902,7 +76684,7 @@
                 "description": "prepend existing jsonb value of filtered columns with new jsonb value",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "UserInfoPrependInput",
+                  "name": "UserPayoutInfoPrependInput",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -76914,7 +76696,7 @@
                 "description": "sets the columns of the filtered rows to the given values",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "UserInfoSetInput",
+                  "name": "UserPayoutInfoSetInput",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -76929,7 +76711,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "INPUT_OBJECT",
-                    "name": "UserInfoBoolExp",
+                    "name": "UserPayoutInfoBoolExp",
                     "ofType": null
                   }
                 },
@@ -76940,22 +76722,22 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "UserInfoMutationResponse",
+              "name": "UserPayoutInfoMutationResponse",
               "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "updateUserInfoByPk",
-            "description": "update single row of the table: \"user_info\"",
+            "name": "updateUserPayoutInfoByPk",
+            "description": "update single row of the table: \"user_payout_info\"",
             "args": [
               {
                 "name": "_append",
                 "description": "append existing jsonb value of filtered columns with new jsonb value",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "UserInfoAppendInput",
+                  "name": "UserPayoutInfoAppendInput",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -76967,7 +76749,7 @@
                 "description": "delete the field or element with specified path (for JSON arrays, negative integers count from the end)",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "UserInfoDeleteAtPathInput",
+                  "name": "UserPayoutInfoDeleteAtPathInput",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -76979,7 +76761,7 @@
                 "description": "delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "UserInfoDeleteElemInput",
+                  "name": "UserPayoutInfoDeleteElemInput",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -76991,7 +76773,7 @@
                 "description": "delete key/value pair or string element. key/value pairs are matched based on their key value",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "UserInfoDeleteKeyInput",
+                  "name": "UserPayoutInfoDeleteKeyInput",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -77003,7 +76785,7 @@
                 "description": "prepend existing jsonb value of filtered columns with new jsonb value",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "UserInfoPrependInput",
+                  "name": "UserPayoutInfoPrependInput",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -77015,7 +76797,7 @@
                 "description": "sets the columns of the filtered rows to the given values",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "UserInfoSetInput",
+                  "name": "UserPayoutInfoSetInput",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -77030,7 +76812,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "INPUT_OBJECT",
-                    "name": "UserInfoPkColumnsInput",
+                    "name": "UserPayoutInfoPkColumnsInput",
                     "ofType": null
                   }
                 },
@@ -77041,15 +76823,15 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "UserInfo",
+              "name": "UserPayoutInfo",
               "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "updateUserInfoMany",
-            "description": "update multiples rows of table: \"user_info\"",
+            "name": "updateUserPayoutInfoMany",
+            "description": "update multiples rows of table: \"user_payout_info\"",
             "args": [
               {
                 "name": "updates",
@@ -77065,7 +76847,7 @@
                       "name": null,
                       "ofType": {
                         "kind": "INPUT_OBJECT",
-                        "name": "UserInfoUpdates",
+                        "name": "UserPayoutInfoUpdates",
                         "ofType": null
                       }
                     }
@@ -77081,7 +76863,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "UserInfoMutationResponse",
+                "name": "UserPayoutInfoMutationResponse",
                 "ofType": null
               }
             },
@@ -88433,8 +88215,8 @@
             "deprecationReason": null
           },
           {
-            "name": "userInfo",
-            "description": "fetch data from the table: \"user_info\"",
+            "name": "userPayoutInfo",
+            "description": "fetch data from the table: \"user_payout_info\"",
             "args": [
               {
                 "name": "distinctOn",
@@ -88447,7 +88229,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "ENUM",
-                      "name": "UserInfoSelectColumn",
+                      "name": "UserPayoutInfoSelectColumn",
                       "ofType": null
                     }
                   }
@@ -88491,7 +88273,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "UserInfoOrderBy",
+                      "name": "UserPayoutInfoOrderBy",
                       "ofType": null
                     }
                   }
@@ -88505,7 +88287,7 @@
                 "description": "filter the rows returned",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "UserInfoBoolExp",
+                  "name": "UserPayoutInfoBoolExp",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -88524,7 +88306,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "OBJECT",
-                    "name": "UserInfo",
+                    "name": "UserPayoutInfo",
                     "ofType": null
                   }
                 }
@@ -88534,8 +88316,8 @@
             "deprecationReason": null
           },
           {
-            "name": "userInfoAggregate",
-            "description": "fetch aggregated fields from the table: \"user_info\"",
+            "name": "userPayoutInfoAggregate",
+            "description": "fetch aggregated fields from the table: \"user_payout_info\"",
             "args": [
               {
                 "name": "distinctOn",
@@ -88548,7 +88330,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "ENUM",
-                      "name": "UserInfoSelectColumn",
+                      "name": "UserPayoutInfoSelectColumn",
                       "ofType": null
                     }
                   }
@@ -88592,7 +88374,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "UserInfoOrderBy",
+                      "name": "UserPayoutInfoOrderBy",
                       "ofType": null
                     }
                   }
@@ -88606,7 +88388,7 @@
                 "description": "filter the rows returned",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "UserInfoBoolExp",
+                  "name": "UserPayoutInfoBoolExp",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -88619,7 +88401,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "UserInfoAggregate",
+                "name": "UserPayoutInfoAggregate",
                 "ofType": null
               }
             },
@@ -88627,8 +88409,8 @@
             "deprecationReason": null
           },
           {
-            "name": "userInfoByPk",
-            "description": "fetch data from the table: \"user_info\" using primary key columns",
+            "name": "userPayoutInfoByPk",
+            "description": "fetch data from the table: \"user_payout_info\" using primary key columns",
             "args": [
               {
                 "name": "userId",
@@ -88649,7 +88431,7 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "UserInfo",
+              "name": "UserPayoutInfo",
               "ofType": null
             },
             "isDeprecated": false,
@@ -98611,8 +98393,8 @@
             "deprecationReason": null
           },
           {
-            "name": "userInfo",
-            "description": "fetch data from the table: \"user_info\"",
+            "name": "userPayoutInfo",
+            "description": "fetch data from the table: \"user_payout_info\"",
             "args": [
               {
                 "name": "distinctOn",
@@ -98625,7 +98407,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "ENUM",
-                      "name": "UserInfoSelectColumn",
+                      "name": "UserPayoutInfoSelectColumn",
                       "ofType": null
                     }
                   }
@@ -98669,7 +98451,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "UserInfoOrderBy",
+                      "name": "UserPayoutInfoOrderBy",
                       "ofType": null
                     }
                   }
@@ -98683,7 +98465,7 @@
                 "description": "filter the rows returned",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "UserInfoBoolExp",
+                  "name": "UserPayoutInfoBoolExp",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -98702,7 +98484,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "OBJECT",
-                    "name": "UserInfo",
+                    "name": "UserPayoutInfo",
                     "ofType": null
                   }
                 }
@@ -98712,8 +98494,8 @@
             "deprecationReason": null
           },
           {
-            "name": "userInfoAggregate",
-            "description": "fetch aggregated fields from the table: \"user_info\"",
+            "name": "userPayoutInfoAggregate",
+            "description": "fetch aggregated fields from the table: \"user_payout_info\"",
             "args": [
               {
                 "name": "distinctOn",
@@ -98726,7 +98508,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "ENUM",
-                      "name": "UserInfoSelectColumn",
+                      "name": "UserPayoutInfoSelectColumn",
                       "ofType": null
                     }
                   }
@@ -98770,7 +98552,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "UserInfoOrderBy",
+                      "name": "UserPayoutInfoOrderBy",
                       "ofType": null
                     }
                   }
@@ -98784,7 +98566,7 @@
                 "description": "filter the rows returned",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "UserInfoBoolExp",
+                  "name": "UserPayoutInfoBoolExp",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -98797,7 +98579,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "UserInfoAggregate",
+                "name": "UserPayoutInfoAggregate",
                 "ofType": null
               }
             },
@@ -98805,8 +98587,8 @@
             "deprecationReason": null
           },
           {
-            "name": "userInfoByPk",
-            "description": "fetch data from the table: \"user_info\" using primary key columns",
+            "name": "userPayoutInfoByPk",
+            "description": "fetch data from the table: \"user_payout_info\" using primary key columns",
             "args": [
               {
                 "name": "userId",
@@ -98827,15 +98609,15 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "UserInfo",
+              "name": "UserPayoutInfo",
               "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "userInfoStream",
-            "description": "fetch data from the table in a streaming manner: \"user_info\"",
+            "name": "userPayoutInfoStream",
+            "description": "fetch data from the table in a streaming manner: \"user_payout_info\"",
             "args": [
               {
                 "name": "batchSize",
@@ -98864,7 +98646,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "user_info_streamCursorInput",
+                      "name": "user_payout_info_streamCursorInput",
                       "ofType": null
                     }
                   }
@@ -98878,7 +98660,7 @@
                 "description": "filter the rows returned",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "UserInfoBoolExp",
+                  "name": "UserPayoutInfoBoolExp",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -98897,7 +98679,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "OBJECT",
-                    "name": "UserInfo",
+                    "name": "UserPayoutInfo",
                     "ofType": null
                   }
                 }
@@ -99796,8 +99578,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "user_info_streamCursorInput",
-        "description": "Streaming cursor of the table \"user_info\"",
+        "name": "user_payout_info_streamCursorInput",
+        "description": "Streaming cursor of the table \"user_payout_info\"",
         "fields": null,
         "inputFields": [
           {
@@ -99808,7 +99590,7 @@
               "name": null,
               "ofType": {
                 "kind": "INPUT_OBJECT",
-                "name": "user_info_streamCursorValueInput",
+                "name": "user_payout_info_streamCursorValueInput",
                 "ofType": null
               }
             },
@@ -99835,7 +99617,7 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "user_info_streamCursorValueInput",
+        "name": "user_payout_info_streamCursorValueInput",
         "description": "Initial value of the column from where the streaming should start",
         "fields": null,
         "inputFields": [
@@ -99845,18 +99627,6 @@
             "type": {
               "kind": "SCALAR",
               "name": "Boolean",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "contactInformation",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "jsonb",
               "ofType": null
             },
             "defaultValue": null,

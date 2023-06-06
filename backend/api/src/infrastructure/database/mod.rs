@@ -2,9 +2,9 @@ mod project_details;
 #[cfg_attr(test, mockall_double::double)]
 pub use project_details::Repository as ProjectDetailsRepository;
 
-mod user_info;
+mod user_payout_info;
 #[cfg_attr(test, mockall_double::double)]
-pub use user_info::Repository as UserInfoRepository;
+pub use user_payout_info::Repository as UserPayoutInfoRepository;
 
 mod pending_project_leader_invitations;
 pub use pending_project_leader_invitations::Repository as PendingProjectLeaderInvitationsRepository;

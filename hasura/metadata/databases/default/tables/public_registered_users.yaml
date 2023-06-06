@@ -2,14 +2,14 @@ table:
   name: registered_users
   schema: public
 object_relationships:
-  - name: userInfo
+  - name: userPayoutInfo
     using:
       manual_configuration:
         column_mapping:
           id: user_id
         insertion_order: null
         remote_table:
-          name: user_info
+          name: user_payout_info
           schema: public
 array_relationships:
   - name: paymentRequests

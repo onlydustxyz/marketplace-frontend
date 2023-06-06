@@ -1,4 +1,4 @@
-fragment UserPayoutSettings on UserInfo {
+fragment UserPayoutSettings on UserPayoutInfo {
   userId
   identity
   location
@@ -10,12 +10,12 @@ query GetUserPayoutSettings($githubUserId: bigint!) {
   registeredUsers(where: { githubUserId: { _eq: $githubUserId } }) {
     ...UserId
     githubUserId
-    userInfo {
+    userPayoutInfo {
       ...UserPayoutSettings
     }
   }
 }
 
 mutation updatePayoutSettings($identity: IdentityInput, $location: Location, $payoutSettings: PayoutSettingsInput) {
-  updateProfileInfo(identity: $identity, location: $location, payoutSettings: $payoutSettings)
+  updatePayoutInfo(identity: $identity, location: $location, payoutSettings: $payoutSettings)
 }

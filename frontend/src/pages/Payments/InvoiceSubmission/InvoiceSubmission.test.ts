@@ -1,7 +1,7 @@
 import { range } from "lodash";
 import { Payment } from "src/components/PayoutTable/Line";
 import { Currency, PaymentStatus } from "src/types";
-import { UserInfo } from "src/__generated/graphql";
+import { UserPayoutInfo } from "src/__generated/graphql";
 import { buildHiddenFields } from "./View";
 
 const paymentRequests: Payment[] = range(1, 4).map(id => ({
@@ -22,7 +22,7 @@ const paymentRequests: Payment[] = range(1, 4).map(id => ({
   invoiceReceived: id % 2 === 0,
 }));
 
-const userInfos: UserInfo = {
+const userInfos: UserPayoutInfo = {
   userId: "user-1",
   identity: {
     Company: {
@@ -31,7 +31,6 @@ const userInfos: UserInfo = {
       owner: { firstname: "James", lastname: "Bond" },
     },
   },
-  contactInformation: {},
   location: {
     address: "007 Big Ben Street",
     post_code: "007GB",

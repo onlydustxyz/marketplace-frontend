@@ -34,8 +34,8 @@ const mockGetPayoutSettingsQuery = <T, I>(payoutSettings: T, arePayoutSettingsVa
     data: {
       registeredUsers: [
         {
-          userInfo: {
-            __typename: "UserInfo",
+          userPayoutInfo: {
+            __typename: "UserPayoutInfo",
             identity,
             payoutSettings,
             arePayoutSettingsValid,

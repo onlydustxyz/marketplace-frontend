@@ -75,8 +75,8 @@ const mocks = [
           {
             githubUserId: GITHUB_USER_ID2,
             id: "user-1",
-            userInfo: {
-              __typename: "UserInfo",
+            userPayoutInfo: {
+              __typename: "UserPayoutInfo",
               payoutSettings: { EthTransfer: { Name: "vitalik.eth" } },
               arePayoutSettingsValid: true,
               userId: "user-1",

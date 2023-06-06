@@ -4,7 +4,7 @@ use juniper::{graphql_value, DefaultScalarValue, FieldError, IntoFieldError};
 use olog::error;
 use thiserror::Error;
 
-use crate::application::user::update_profile_info::Error as UpdateProfileInfoError;
+use crate::application::user::update_payout_info::Error as UpdateUserPayoutInfoError;
 
 #[derive(Debug, Error)]
 pub enum Error {
@@ -38,12 +38,12 @@ impl From<DomainError> for Error {
 	}
 }
 
-impl From<UpdateProfileInfoError> for Error {
-	fn from(error: UpdateProfileInfoError) -> Self {
+impl From<UpdateUserPayoutInfoError> for Error {
+	fn from(error: UpdateUserPayoutInfoError) -> Self {
 		match error {
-			UpdateProfileInfoError::Repository(e) => e.into(),
-			UpdateProfileInfoError::Internal(e) => Self::InternalError(e),
-			UpdateProfileInfoError::InvalidInput(e) => Self::InvalidRequest(e),
+			UpdateUserPayoutInfoError::Repository(e) => e.into(),
+			UpdateUserPayoutInfoError::Internal(e) => Self::InternalError(e),
+			UpdateUserPayoutInfoError::InvalidInput(e) => Self::InvalidRequest(e),
 		}
 	}
 }

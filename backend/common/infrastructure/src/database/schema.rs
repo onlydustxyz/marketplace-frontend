@@ -209,12 +209,11 @@ diesel::table! {
 }
 
 diesel::table! {
-    user_info (user_id) {
+    user_payout_info (user_id) {
         user_id -> Uuid,
         identity -> Nullable<Jsonb>,
         location -> Nullable<Jsonb>,
         payout_settings -> Nullable<Jsonb>,
-        contact_information -> Nullable<Jsonb>,
         are_payout_settings_valid -> Bool,
     }
 }
@@ -269,7 +268,7 @@ diesel::allow_tables_to_appear_in_same_query!(
     projects,
     projects_sponsors,
     sponsors,
-    user_info,
+    user_payout_info,
     user_profile_info,
     work_items,
 );

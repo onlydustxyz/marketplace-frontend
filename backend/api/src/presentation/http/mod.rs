@@ -15,7 +15,7 @@ use crate::{
 		database::{
 			IgnoredGithubIssuesRepository, PendingProjectLeaderInvitationsRepository,
 			ProjectDetailsRepository, ProjectSponsorRepository, SponsorRepository,
-			UserInfoRepository,
+			UserPayoutInfoRepository,
 		},
 		simple_storage,
 	},
@@ -37,7 +37,7 @@ pub async fn serve(
 	project_sponsor_repository: ProjectSponsorRepository,
 	pending_project_leader_invitations_repository: PendingProjectLeaderInvitationsRepository,
 	ignored_github_issues_repository: IgnoredGithubIssuesRepository,
-	user_info_repository: UserInfoRepository,
+	user_info_repository: UserPayoutInfoRepository,
 	graphql: Arc<infrastructure::graphql::Client>,
 	github: Arc<github::Client>,
 	ens: Arc<ens::Client>,

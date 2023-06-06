@@ -2,10 +2,9 @@ query getUserDetails($userId: uuid!) {
   registeredUsers(where: { id: { _eq: $userId } }) {
     email
     lastSeen
-    userInfo {
+    userPayoutInfo {
       location
       identity
-      contactInformation
       payoutSettings
     }
     paymentRequests {

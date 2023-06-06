@@ -11,7 +11,7 @@ use uuid::Uuid;
 use super::{dto, Context, Error, Result};
 use crate::{
 	domain::{
-		user_info::{ContactInformation, Identity, Location, PayoutSettings},
+		user_payout_info::{Identity, Location, PayoutSettings},
 		ProjectVisibility,
 	},
 	presentation::http::dto::{
@@ -304,12 +304,11 @@ impl Mutation {
 		})
 	}
 
-	pub async fn update_profile_info(
+	pub async fn update_payout_info(
 		context: &Context,
 		location: Option<Location>,
 		identity: Option<IdentityInput>,
 		payout_settings: Option<PayoutSettingsInput>,
-		contact_information: Option<ContactInformation>,
 	) -> Result<Uuid> {
 		let caller_id = *context.caller_info()?.user_id();
 
@@ -327,14 +326,8 @@ impl Mutation {
 		};
 
 		context
-			.update_user_info_usecase
-			.update_profile_info(
-				caller_id,
-				identity,
-				location,
-				payout_settings,
-				contact_information,
-			)
+			.update_user_payout_info_usecase
+			.update_user_payout_info(caller_id, identity, location, payout_settings)
 			.await?;
 
 		Ok(caller_id.into())
