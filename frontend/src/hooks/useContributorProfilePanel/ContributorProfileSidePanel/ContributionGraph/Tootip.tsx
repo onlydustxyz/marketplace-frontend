@@ -1,28 +1,44 @@
-import { ReactMarkdown } from "react-markdown/lib/react-markdown";
-import remarkGfm from "remark-gfm";
 import { ContributionCountFragment } from "src/__generated/graphql";
 import { useIntl } from "src/hooks/useIntl";
+import { formatDate } from ".";
+import { Icon } from "./Legend";
 
 type Props = {
   active?: boolean;
+  hoveredBarIndex?: number;
   payload?: { payload: ContributionCountFragment }[];
 };
 
-export default function Tooltip({ active, payload }: Props) {
+export default function Tooltip({ active, hoveredBarIndex, payload }: Props) {
   const { T } = useIntl();
 
-  if (active && payload && payload.length) {
-    return (
-      <div className="bg-greyscale-800 font-walsheim font-normal text-xs text-greyscale-50 rounded-lg px-3 py-2">
-        <ReactMarkdown className="whitespace-pre" remarkPlugins={[remarkGfm]}>
-          {T("contributionGraph.tooltip", {
-            paidCount: payload.at(0)?.payload.paidCount.toString(),
-            unpaidCount: payload.at(0)?.payload.unpaidCount.toString(),
-          })}
-        </ReactMarkdown>
-      </div>
-    );
-  }
+  const count = payload?.at(0)?.payload;
 
-  return null;
+  return active && hoveredBarIndex !== undefined && count && count?.paidCount + count?.unpaidCount ? (
+    <div className="flex flex-col gap-3 bg-greyscale-800 font-walsheim font-normal text-xs text-greyscale-200 rounded-lg p-3">
+      <div>
+        <div className="uppercase">
+          {T("contributionGraph.tooltip.date", {
+            from: formatDate(count),
+            to: formatDate({ ...count, week: count.week + 1 }),
+          })}
+        </div>
+        <div className="font-medium text-greyscale-50 text-sm">
+          {T("contributionGraph.tooltip.contributionCount.total", {
+            count: count.paidCount + count.unpaidCount,
+          })}
+        </div>
+      </div>
+      <div className="flex flex-col gap-1">
+        <div className="flex flex-row items-center gap-2">
+          <Icon color="#CE66FF" opacity={1} size={12} />
+          {T("contributionGraph.tooltip.contributionCount.paid", { count: count.paidCount.toString() })}
+        </div>
+        <div className="flex flex-row items-center gap-2">
+          <Icon color="#CE66FF" opacity={1} size={12} secondary />
+          {T("contributionGraph.tooltip.contributionCount.unpaid", { count: count.unpaidCount.toString() })}
+        </div>
+      </div>
+    </div>
+  ) : null;
 }
