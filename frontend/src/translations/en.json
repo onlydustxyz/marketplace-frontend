@@ -10,7 +10,18 @@
   },
   "contributionGraph": {
     "paid": "Paid",
-    "tooltip": "Paid: __paidCount__\nNot paid: __unpaidCount__",
+    "tooltip": {
+      "contributionCount": {
+        "total": {
+          "zero": "No contribution",
+          "one": "1 contribution",
+          "many": "__count__ contributions"
+        },
+        "paid": "__count__ paid",
+        "unpaid": "__count__ not paid"
+      },
+      "date": "__from__ → __to__"
+    },
     "unpaid": "Not paid",
     "progressionTooltip": "Progression since last week"
   },

@@ -1,4 +1,5 @@
 type Props = {
+  count: number;
   x?: number;
   y?: number;
   payload?: {
@@ -7,7 +8,7 @@ type Props = {
   };
 };
 
-export default function Tick({ x, y, payload }: Props) {
+export default function XTick({ count, x, y, payload }: Props) {
   return (
     <text
       x={x}
@@ -15,8 +16,8 @@ export default function Tick({ x, y, payload }: Props) {
       dy={8}
       fontSize={10}
       fontFamily="GT Walsheim"
-      fill={payload?.index === 8 ? "#AE00FF" : "#92908F"}
-      textAnchor={payload?.index === 0 ? "start" : payload?.index === 8 ? "end" : "middle"}
+      fill={payload?.index === count - 1 ? "#AE00FF" : "#92908F"}
+      textAnchor="middle"
     >
       {(payload?.index || 0) % 2 ? "" : payload?.value}
     </text>
