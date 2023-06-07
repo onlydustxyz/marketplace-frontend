@@ -1,24 +1,3 @@
-fragment UserProfileId on UserProfiles {
-  githubUserId
-}
-
-fragment UserProfileDetails on UserProfiles {
-  login
-  avatarUrl
-  htmlUrl
-  location
-  bio
-  languages
-  createdAt
-  lastSeen
-  email
-  twitter
-  telegram
-  linkedin
-  discord
-  website
-}
-
 fragment ContributionStat on ContributionStats {
   projectId
   maxDate

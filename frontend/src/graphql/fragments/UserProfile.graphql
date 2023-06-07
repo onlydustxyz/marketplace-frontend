@@ -1,0 +1,27 @@
+fragment UserProfileId on UserProfiles {
+  githubUserId
+}
+
+fragment MinimalUserProfile on UserProfiles {
+  ...UserProfileId
+  login
+  avatarUrl
+  userId
+}
+
+fragment UserProfileDetails on UserProfiles {
+  login
+  avatarUrl
+  htmlUrl
+  location
+  bio
+  languages
+  createdAt
+  lastSeen
+  email
+  twitter
+  telegram
+  linkedin
+  discord
+  website
+}
