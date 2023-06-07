@@ -47,6 +47,8 @@ const profileFull: UserProfileFragment = {
     Solidity: 20,
   },
   contributionCounts: [
+    { year: 2023, week: 12, paidCount: 0, unpaidCount: 0 },
+    { year: 2023, week: 13, paidCount: 1, unpaidCount: 0 },
     { year: 2023, week: 14, paidCount: 0, unpaidCount: 0 },
     { year: 2023, week: 15, paidCount: 2, unpaidCount: 0 },
     { year: 2023, week: 16, paidCount: 1, unpaidCount: 0 },
@@ -56,6 +58,7 @@ const profileFull: UserProfileFragment = {
     { year: 2023, week: 20, paidCount: 1, unpaidCount: 0 },
     { year: 2023, week: 21, paidCount: 2, unpaidCount: 0 },
     { year: 2023, week: 22, paidCount: 5, unpaidCount: 0 },
+    { year: 2023, week: 23, paidCount: 5, unpaidCount: 5 },
   ],
   projectsLeaded: [
     { projectId: "", assignedAt: "2023-03-15T11:00:11.674+00:00", project: {} as ProfileProjectFragment },
@@ -89,8 +92,8 @@ const profileNotSignedUp: UserProfileFragment = {
   },
   contributionCounts: [
     { year: 2023, week: 17, paidCount: 4, unpaidCount: 1 },
-    { year: 2023, week: 20, paidCount: 1, unpaidCount: 0 },
-    { year: 2023, week: 22, paidCount: 2, unpaidCount: 2 },
+    { year: 2023, week: 20, paidCount: 1, unpaidCount: 2 },
+    { year: 2023, week: 22, paidCount: 1, unpaidCount: 0 },
   ],
   projectsLeaded: [],
   contributionStats: [],
