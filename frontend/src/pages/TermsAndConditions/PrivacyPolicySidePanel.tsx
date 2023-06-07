@@ -16,7 +16,11 @@ export default function PrivacyPolicySidePanel({
   setShowPrivacyPolicy,
 }: PrivacyPolicySidePanelProps) {
   return (
-    <SidePanel title="Privacy policy - April 2023" open={showPrivacyPolicy} setOpen={setShowPrivacyPolicy}>
+    <SidePanel
+      //	  title="Privacy policy - April 2023"
+      open={showPrivacyPolicy}
+      setOpen={setShowPrivacyPolicy}
+    >
       <div className="px-6 py-6 font-walsheim overflow-y-auto  scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded">
         <Card className="bg-noise-heavy">
           <p className="text-xl font-medium mb-2">LEGAL NOTICE</p>

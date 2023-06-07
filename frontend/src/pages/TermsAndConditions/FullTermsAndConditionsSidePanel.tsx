@@ -17,7 +17,7 @@ export default function FullTermsAndConditionsSidePanel({
 }: FullTermsAndConditionsSidePanelProps) {
   return (
     <SidePanel
-      title="Full terms ans conditions"
+      //      title="Full terms ans conditions"
       open={showFullTermsAndConditions}
       setOpen={setShowFullTermsAndConditions}
     >
