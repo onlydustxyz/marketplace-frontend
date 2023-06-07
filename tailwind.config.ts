@@ -3,9 +3,14 @@ import plugin from "tailwindcss/plugin";
 import scrollbar from "tailwind-scrollbar";
 import headlessUi from "@headlessui/tailwindcss";
 import typography from "@tailwindcss/typography";
+import path from "path";
 
 const config: Config = {
-  content: ["./index.html", "./frontend/src/**/*.{js,ts,jsx,tsx}"],
+  content: [
+    "./index.html",
+    "./frontend/src/**/*.{js,ts,jsx,tsx}",
+    path.join(require.resolve("@thaddeusjiang/react-sortable-list"), "../**/*.{js,ts,jsx,tsx}"),
+  ],
   theme: {
     extend: {
       borderRadius: {

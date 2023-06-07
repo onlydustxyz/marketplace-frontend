@@ -1,36 +1,66 @@
 import { useIntl } from "src/hooks/useIntl";
 import { LanguageMap } from "src/types";
 import { languages as knownLanguages } from "src/__generated/languages";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import StylizedCombobox from "src/components/StylizedCombobox";
+import { SortableList, SortableItemProps, SortableItem } from "@thaddeusjiang/react-sortable-list";
 
 type Props = {
-  languages: LanguageMap;
+  technologies: LanguageMap;
+  setTechnologies: Dispatch<SetStateAction<LanguageMap>>;
 };
 
-export default function EditTechnologiesCard({ languages }: Props) {
+export default function EditTechnologiesCard({ technologies, setTechnologies }: Props) {
   const { T } = useIntl();
-  const allLanguages = Object.keys(knownLanguages);
-  const [selectedLanguages, setSelectedLanguages] = useState(Object.keys(languages));
+
+  const allLanguages = Object.keys(knownLanguages).map(language => ({
+    id: language,
+    value: language,
+    displayValue: language,
+  }));
+
+  const [selectedLanguages, setSelectedLanguages] = useState<SortableItemProps[]>(
+    Object.entries(technologies)
+      .sort((lang1, lang2) => lang1[1] - lang2[1])
+      .map(([language]) => ({
+        id: language,
+        value: language,
+        displayValue: language,
+      }))
+  );
+
+  useEffect(() => {
+    setTechnologies(
+      selectedLanguages.reduce((technologies, language, index) => ({ ...technologies, [language.value]: index }), {})
+    );
+  }, [selectedLanguages]);
 
   return (
     <div className="flex flex-col gap-2 h-full">
       <div className="font-normal text-sm text-greyscale-300">{T("profile.edit.sections.technologies.rank")}</div>
       <StylizedCombobox
-        options={allLanguages.filter(language => !selectedLanguages.includes(language))}
+        options={allLanguages.filter(
+          language => !selectedLanguages.some(selectedLanguage => selectedLanguage.id === language.id)
+        )}
         selectedOptions={selectedLanguages}
         setSelectedOptions={setSelectedLanguages}
-        optionFilter={(query, language) => language.toLowerCase().includes(query.toLowerCase())}
+        optionFilter={(query, option) => option.displayValue.toLowerCase().includes(query.toLowerCase())}
         placeholder={T("profile.edit.sections.technologies.searchPlaceholder")}
         maxDisplayedOptions={5}
         multiple
       />
       {selectedLanguages.length > 0 && (
-        <ul>
-          {selectedLanguages.map(language => (
-            <li key={language}>{language}</li>
-          ))}
-        </ul>
+        <SortableList items={selectedLanguages} setItems={setSelectedLanguages}>
+          {({ items }: { items: SortableItemProps[] }) => (
+            <>
+              {items.map((item: SortableItemProps) => (
+                <SortableItem key={item.id} id={item.id}>
+                  {item.displayValue}
+                </SortableItem>
+              ))}
+            </>
+          )}
+        </SortableList>
       )}
     </div>
   );

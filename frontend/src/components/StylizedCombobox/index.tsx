@@ -24,9 +24,8 @@ export type Props<T> = {
 );
 
 export interface Option {
-  key: () => string;
-  value: () => string;
-  displayValue: () => string;
+  value: string;
+  displayValue: string;
 }
 
 export default function StylizedCombobox<T extends Option | { toString: () => string }>({
@@ -114,8 +113,8 @@ function VirtualizedOptions<T extends Option | { toString: () => string }>({
       itemContent={(index, option) => {
         return (
           <Combobox.Option
-            key={(option as Option).key ? (option as Option).key() : option.toString()}
-            value={(option as Option).value ? (option as Option).value() : option.toString()}
+            key={(option as Option).value ? (option as Option).value : option.toString()}
+            value={option}
             className={classNames(
               "flex px-4 py-2 font-walsheim text-sm leading-4 text-greyscale-50 bg-greyscale-800 ui-active:bg-greyscale-600",
               {
@@ -123,7 +122,7 @@ function VirtualizedOptions<T extends Option | { toString: () => string }>({
               }
             )}
           >
-            {(option as Option).displayValue ? (option as Option).displayValue() : option.toString()}
+            {(option as Option).displayValue ? (option as Option).displayValue : option.toString()}
           </Combobox.Option>
         );
       }}

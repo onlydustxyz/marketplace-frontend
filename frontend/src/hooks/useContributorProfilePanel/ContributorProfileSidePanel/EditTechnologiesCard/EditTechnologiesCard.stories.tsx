@@ -6,17 +6,21 @@ export default {
   component: EditTechnologiesCard,
 };
 
-const languages: LanguageMap = {
+const technologies: LanguageMap = {
   Rust: 100,
   Go: 20,
   JavaScript: 3,
   Python: 3,
 };
 
+const setTechnologies = () => {
+  //do nothing
+};
+
 export const Default = {
   render: () => (
     <div className="w-5/12">
-      <EditTechnologiesCard languages={languages} />
+      <EditTechnologiesCard technologies={technologies} setTechnologies={setTechnologies} />
     </div>
   ),
 };
