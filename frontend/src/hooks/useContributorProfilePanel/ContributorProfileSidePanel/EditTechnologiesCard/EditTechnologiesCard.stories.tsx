@@ -19,7 +19,7 @@ const setTechnologies = () => {
 
 export const Default = {
   render: () => (
-    <div className="w-5/12">
+    <div className="w-5/12 bg-greyscale-900 p-6">
       <EditTechnologiesCard technologies={technologies} setTechnologies={setTechnologies} />
     </div>
   ),
