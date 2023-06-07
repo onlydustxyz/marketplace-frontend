@@ -23,7 +23,7 @@
       "date": "__from__ → __to__"
     },
     "unpaid": "Not paid",
-    "progressionTooltip": "Progression since last week"
+    "progressionTooltip": "Variation since last week"
   },
   "contributor": {
     "table": {

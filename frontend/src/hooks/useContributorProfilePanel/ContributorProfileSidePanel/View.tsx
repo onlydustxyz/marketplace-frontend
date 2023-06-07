@@ -13,7 +13,7 @@ import Telegram from "src/assets/icons/Telegram";
 import classNames from "classnames";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import remarkGfm from "remark-gfm";
-import { chain, last, range, sortBy } from "lodash";
+import { chain, range, slice, sortBy } from "lodash";
 import LinkedinBoxFill from "src/icons/LinkedinBoxFill";
 import Tag, { TagSize } from "src/components/Tag";
 import MailLine from "src/icons/MailLine";
@@ -30,6 +30,8 @@ import { Link, generatePath } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import ExternalLink from "src/components/ExternalLink";
 import { withTooltip } from "src/components/Tooltip";
+import ArrowRightLine from "src/icons/ArrowRightLine";
+import ArrowRightDownLine from "src/icons/ArrowRightDownLine";
 
 export enum HeaderColor {
   Blue = "blue",
@@ -46,7 +48,7 @@ type Props = {
   headerColor: HeaderColor;
 };
 
-const MAX_CONTRIBUTION_COUNTS = 9;
+const MAX_CONTRIBUTION_COUNTS = 13;
 
 const EMPTY_DATA: ContributionCountFragment[] = range(0, MAX_CONTRIBUTION_COUNTS)
   .map(c => daysFromNow(7 * c))
@@ -69,6 +71,10 @@ export default function View({ profile, projects, headerColor, setOpen, ...rest 
     .take(MAX_CONTRIBUTION_COUNTS)
     .reverse()
     .value();
+
+  const [lastWeek, thisWeek] = slice(contributionsCount, -2);
+  const variationSinceLastWeek =
+    thisWeek.paidCount + thisWeek.unpaidCount - (lastWeek.paidCount + lastWeek.unpaidCount);
 
   const website = parseWebsite(profile.website);
 
@@ -123,7 +129,7 @@ export default function View({ profile, projects, headerColor, setOpen, ...rest 
 
                 {profile.createdAt ? (
                   <div className="flex flex-row gap-1 items-center text-base text-greyscale-300">
-                    <img id={`od-logo-${profile.login}`} src={onlyDustLogo} className="h-3.5 mt-px" />
+                    <img id={`od-logo-${profile.login}`} src={onlyDustLogo} className="h-3.5" />
                     {T("profile.joinedAt", {
                       joinedAt: formatDateShort(new Date(profile.createdAt)),
                     })}
@@ -227,10 +233,18 @@ export default function View({ profile, projects, headerColor, setOpen, ...rest 
                       className="flex flex-row items-center gap-0.5 rounded-full py-0.5 px-2 bg-white/5 border border-greyscale-50/12 backdrop-blur-lg shadow-heavy text-sm"
                       {...withTooltip(T("contributionGraph.progressionTooltip"))}
                     >
-                      <ArrowRightUpLine className="text-spacePurple-500" />
-                      <div className="text-greyscale-200">{`+${
-                        last(contributionsCount)?.paidCount + last(contributionsCount)?.unpaidCount
-                      }`}</div>
+                      {variationSinceLastWeek < 0 ? (
+                        <ArrowRightDownLine className="text-orange-300" />
+                      ) : variationSinceLastWeek === 0 ? (
+                        <ArrowRightLine className="text-spacePurple-200" />
+                      ) : (
+                        <ArrowRightUpLine className="text-spacePurple-500" />
+                      )}
+                      <div className="text-greyscale-200">
+                        {new Intl.NumberFormat("en-US", {
+                          signDisplay: "always",
+                        }).format(variationSinceLastWeek)}
+                      </div>
                     </div>
                   </div>
                   <ContributionGraph entries={contributionsCount} />
