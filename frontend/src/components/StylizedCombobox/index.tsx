@@ -61,6 +61,7 @@ export default function StylizedCombobox<T extends Option | { toString: () => st
               className={classNames("border-none outline-none w-full bg-transparent font-normal text-sm")}
               placeholder={open ? "" : placeholder}
               autoComplete="off"
+              value={query}
             />
           </div>
           <ArrowDownSLine className="text-2xl" />
