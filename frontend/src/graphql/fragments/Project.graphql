@@ -48,14 +48,6 @@ fragment ProjectPaidWorkItems on Projects {
   }
 }
 
-fragment ProjectContributorsWithPaymentSummary on Projects {
-  contributors {
-    githubUser {
-      ...GithubUserWithPaymentRequestsForProject
-    }
-  }
-}
-
 fragment ProjectVisibilityDetails on Projects {
   ...ProjectId
   projectDetails {

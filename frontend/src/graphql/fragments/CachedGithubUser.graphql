@@ -11,10 +11,3 @@ fragment GithubUser on GithubUsers {
     id
   }
 }
-
-fragment GithubUserWithPaymentRequestsForProject on GithubUsers {
-  ...GithubUser
-  paymentRequests(where: { budget: { projectId: { _eq: $projectId } } }) {
-    ...PaymentRequest
-  }
-}

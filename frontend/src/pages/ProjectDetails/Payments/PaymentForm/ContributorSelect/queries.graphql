@@ -1,17 +1,5 @@
-fragment ProjectContributorsForPaymentSelect on Projects {
-  ...ProjectContributorsWithPaymentSummary
-  ...LastProjectMergedPullRequests
-  ...ProjectPaidWorkItems
-}
-
 query SearchGithubUsersByHandleSubstring($handleSubstringQuery: String!) {
   searchUsers(query: $handleSubstringQuery, sort: "followers", order: "desc") {
     ...LiveGithubUser
-  }
-}
-
-query GetProjectContributorsForPaymentSelect($projectId: uuid!) {
-  projectsByPk(id: $projectId) {
-    ...ProjectContributorsForPaymentSelect
   }
 }

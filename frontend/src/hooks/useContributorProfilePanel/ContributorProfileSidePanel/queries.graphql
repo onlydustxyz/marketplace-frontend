@@ -23,7 +23,7 @@ fragment ContributionStat on ContributionStats {
   projectId
   maxDate
   minDate
-  count
+  totalCount
 }
 
 fragment PaymentStat on PaymentStats {
@@ -69,7 +69,7 @@ fragment UserProfile on UserProfiles {
   contributionStatsAggregate {
     aggregate {
       sum {
-        count
+        totalCount
       }
       min {
         minDate
