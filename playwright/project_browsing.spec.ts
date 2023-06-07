@@ -106,15 +106,8 @@ test.describe("As a registered user, I", () => {
     await browseProjectsPage.expectProjectsToBeVisible(projects.Private);
   });
 
-  test("cannot see private project I am not a member of", async ({
-    page,
-    projects,
-    users,
-    signIn,
-    acceptTermsAndConditions,
-  }) => {
+  test("cannot see private project I am not a member of", async ({ page, projects, users, signIn }) => {
     await signIn(users.Olivier);
-    await acceptTermsAndConditions();
     const browseProjectsPage = new BrowseProjectsPage(page);
     await browseProjectsPage.goto();
     await browseProjectsPage.expectProjectsNotToBeVisible(projects.Private);

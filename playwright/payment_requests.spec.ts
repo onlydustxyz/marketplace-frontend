@@ -219,6 +219,7 @@ test.describe("As a project lead, I", () => {
     projects,
     users,
     signIn,
+    acceptTermsAndConditions,
   }) => {
     const project = projects.Kakarot;
     const leader = users.TokioRs;
@@ -227,8 +228,11 @@ test.describe("As a project lead, I", () => {
 
     const projectPaymentsPage = new ProjectPaymentsPage(page, project);
 
-    const listPaymentsAs = async (user: User) => {
+    const listPaymentsAs = async (user: User, shouldAcceptTermsAndConditions?: boolean) => {
       await signIn(user);
+      if (shouldAcceptTermsAndConditions) {
+        await acceptTermsAndConditions();
+      }
       await projectPaymentsPage.goto();
       await projectPaymentsPage.reload();
     };
@@ -245,7 +249,7 @@ test.describe("As a project lead, I", () => {
     const paymentRow = projectPaymentsPage.paymentList().nth(1);
     const pendingStatus = await retry(
       async () => {
-        await listPaymentsAs(otherLeader);
+        await listPaymentsAs(otherLeader, true);
         return paymentRow.status();
       },
       value => value === "Pending"
@@ -255,6 +259,7 @@ test.describe("As a project lead, I", () => {
     // 2. Edit profile info, payment is "processing"
     const editProfilePage = new EditProfilePage(page);
     await signIn(recipient);
+    await acceptTermsAndConditions();
     await editProfilePage.goto();
     recipient.profile && (await editProfilePage.fillForm(recipient.profile));
     await editProfilePage.submitForm();
