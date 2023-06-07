@@ -240,23 +240,19 @@ function VirtualizedContributorSubList({ lines }: ContributorSubListProps) {
         if (line.type === LineType.Contributor) {
           const contributor = line.contributor;
           return (
-            <Combobox.Option key={contributor.githubUserId} value={contributor.login}>
-              {({ active }) => (
-                <li
-                  className={classNames("p-2 flex items-center justify-between", {
-                    "bg-white/4 cursor-pointer": active,
-                  })}
-                >
-                  <Contributor contributor={contributor} />
-                  {contributor.unpaidMergedPullsCount > 0 && (
-                    <Badge
-                      value={contributor.unpaidMergedPullsCount}
-                      icon={BadgeIcon.GitMerge}
-                      size={BadgeSize.Small}
-                      {...withTooltip(T("payment.form.contributor.unpaidMergedPrCountTooltip"))}
-                    />
-                  )}
-                </li>
+            <Combobox.Option
+              key={contributor.githubUserId}
+              value={contributor.login}
+              className="p-2 flex items-center justify-between ui-active:bg-white/4 ui-active:cursor-pointer"
+            >
+              <Contributor contributor={contributor} />
+              {contributor.unpaidMergedPullsCount > 0 && (
+                <Badge
+                  value={contributor.unpaidMergedPullsCount}
+                  icon={BadgeIcon.GitMerge}
+                  size={BadgeSize.Small}
+                  {...withTooltip(T("payment.form.contributor.unpaidMergedPrCountTooltip"))}
+                />
               )}
             </Combobox.Option>
           );
