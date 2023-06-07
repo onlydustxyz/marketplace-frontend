@@ -1,6 +1,29 @@
 table:
   name: contributions
   schema: public
+object_relationships:
+  - name: ignored
+    using:
+      manual_configuration:
+        column_mapping:
+          issue_number: issue_number
+          project_id: project_id
+          repo_id: repo_id
+        insertion_order: null
+        remote_table:
+          name: ignored_github_issues
+          schema: public
+array_relationships:
+  - name: workItems
+    using:
+      manual_configuration:
+        column_mapping:
+          issue_number: issue_number
+          repo_id: repo_id
+        insertion_order: null
+        remote_table:
+          name: work_items
+          schema: public
 select_permissions:
   - role: public
     permission:
@@ -12,3 +35,4 @@ select_permissions:
         - created_at
         - project_id
       filter: {}
+      allow_aggregations: true

@@ -20,6 +20,15 @@ object_relationships:
         remote_table:
           name: projects
           schema: public
+  - name: user
+    using:
+      manual_configuration:
+        column_mapping:
+          github_user_id: github_user_id
+        insertion_order: null
+        remote_table:
+          name: user_profiles
+          schema: public
 select_permissions:
   - role: public
     permission:
