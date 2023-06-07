@@ -1,20 +1,17 @@
-import { useEffect, useMemo, useState } from "react";
-import {
-  useGetProjectContributorsForPaymentSelectQuery,
-  useSearchGithubUsersByHandleSubstringQuery,
-} from "src/__generated/graphql";
-import { getContributors } from "src/utils/project";
+import { useEffect, useState } from "react";
+import { useSearchGithubUsersByHandleSubstringQuery } from "src/__generated/graphql";
 import View from "./View";
 import { useLocation } from "react-router-dom";
 import useDebounce from "src/hooks/useDebounce";
-import { ContributorFragment } from "src/types";
+import useProjectContributors from "src/hooks/useProjectContributors";
+import { Contributor } from "src/pages/ProjectDetails/Payments/PaymentForm/types";
 
 const EXTERNAL_USER_QUERY_DEBOUNCE_TIME = 500;
 
 type Props = {
   projectId: string;
-  contributor: ContributorFragment | null | undefined;
-  setContributor: (contributor: ContributorFragment | null | undefined) => void;
+  contributor?: Contributor | null | undefined;
+  setContributor: (contributor: Contributor | null | undefined) => void;
 };
 
 export default function ContributorSelect({ projectId, contributor, setContributor }: Props) {
@@ -27,36 +24,46 @@ export default function ContributorSelect({ projectId, contributor, setContribut
   const debouncedGithubHandleSubstring = useDebounce(githubHandleSubstring, EXTERNAL_USER_QUERY_DEBOUNCE_TIME);
   const handleSubstringQuery = `type:user ${debouncedGithubHandleSubstring} in:login`;
 
-  const getProjectContributorsQuery = useGetProjectContributorsForPaymentSelectQuery({
-    variables: { projectId },
-  });
+  const { contributors } = useProjectContributors(projectId);
 
   const searchGithubUsersByHandleSubstringQuery = useSearchGithubUsersByHandleSubstringQuery({
     variables: { handleSubstringQuery },
     skip: (githubHandleSubstring?.length || 0) < 2 || githubHandleSubstring !== debouncedGithubHandleSubstring,
   });
 
-  const internalContributors = useMemo(
-    () => getContributors(getProjectContributorsQuery.data?.projectsByPk),
-    [getProjectContributorsQuery.data]
-  );
+  const internalContributors: Contributor[] = contributors.map(c => ({
+    githubUserId: c.githubUserId,
+    login: c.login || "",
+    avatarUrl: c.avatarUrl || "",
+    unpaidMergedPullsCount: c.contributionStatsAggregate.aggregate?.sum?.unpaidCount || 0,
+    userId: c.userId,
+  }));
 
   const filteredContributors = sortListByLogin(
     internalContributors.filter(
       contributor =>
         !githubHandleSubstring ||
-        (githubHandleSubstring && contributor.login.toLowerCase().startsWith(githubHandleSubstring.toLowerCase()))
+        (githubHandleSubstring && contributor.login?.toLowerCase().startsWith(githubHandleSubstring.toLowerCase()))
     )
   );
 
-  const filteredExternalContributors = sortListByLogin(searchGithubUsersByHandleSubstringQuery?.data?.searchUsers)
+  const filteredExternalContributors: Contributor[] = sortListByLogin(
+    searchGithubUsersByHandleSubstringQuery?.data?.searchUsers
+  )
     ?.slice(0, 5)
     .filter(
       contributor =>
         !filteredContributors
-          .map(filteredContributor => filteredContributor.login.toLocaleLowerCase())
+          .map(filteredContributor => filteredContributor.login?.toLocaleLowerCase())
           .includes(contributor.login.toLocaleLowerCase())
-    );
+    )
+    .map(c => ({
+      githubUserId: c.id,
+      login: c.login,
+      avatarUrl: c.avatarUrl,
+      unpaidMergedPullsCount: 0,
+      userId: c.user?.id,
+    }));
 
   useEffect(() => {
     if (!contributor || (contributor && contributor.login !== selectedGithubHandle)) {
