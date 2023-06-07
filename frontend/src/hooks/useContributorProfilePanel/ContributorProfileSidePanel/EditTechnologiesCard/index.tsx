@@ -40,8 +40,8 @@ export default function EditTechnologiesCard({ technologies, setTechnologies }: 
   const DragHandler = (
     props: JSX.IntrinsicAttributes & ClassAttributes<HTMLDivElement> & HTMLAttributes<HTMLDivElement>
   ) => (
-    <div {...props}>
-      <Draggable className="cursor-grab active:cursor-grabbing text-base" />
+    <div {...props} className="cursor-grab active:cursor-grabbing text-base">
+      <Draggable />
     </div>
   );
 
@@ -71,10 +71,16 @@ export default function EditTechnologiesCard({ technologies, setTechnologies }: 
                   className="flex gap-1 items-center justify-center h-7 px-2 w-fit bg-white/2 border border-greyscale-50/8 rounded-full overflow-hidden text-greyscale-50 text-sm font-walsheim"
                 >
                   <div className="flex gap-1 items-center justify-center cursor-default">
-                    <div className="flex bg-white/5 rounded w-4 h-4 text-xs justify-center items-center">{index}</div>
+                    <div className="flex bg-white/5 rounded w-4 h-4 text-xs justify-center items-center">
+                      {index + 1}
+                    </div>
                     {item.displayValue}
                   </div>
-                  <CloseLine />
+                  <button
+                    onClick={() => setSelectedLanguages(selectedLanguages.filter(language => language.id !== item.id))}
+                  >
+                    <CloseLine />
+                  </button>
                 </SortableItem>
               ))}
             </>
