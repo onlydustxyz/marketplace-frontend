@@ -5,10 +5,9 @@ import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
 import Contributors from ".";
 import {
+  ContributorFragment,
   GetProjectContributorsDocument,
   GetProjectContributorsQueryResult,
-  GithubUserWithPaymentRequestsForProjectFragment,
-  PaymentRequestFragment,
 } from "src/__generated/graphql";
 
 expect.extend(matchers);
@@ -31,50 +30,34 @@ const HASURA_TOKEN_BASIC_TEST_VALUE = {
   creationDate: new Date().getTime(),
 };
 
-const mockPaymentRequest: PaymentRequestFragment = {
-  id: "request-1",
-  amountInUsd: 1000,
-  workItemsAggregate: { aggregate: { count: 2 } },
-  requestedAt: new Date(),
-  recipientId: 122345,
-};
-
-const mockPaymentRequest2: PaymentRequestFragment = {
-  id: "request-2",
-  amountInUsd: 500,
-  workItemsAggregate: { aggregate: { count: 1 } },
-  requestedAt: new Date(),
-  recipientId: 122345,
-};
-
-const contributor1: GithubUserWithPaymentRequestsForProjectFragment = {
-  __typename: "GithubUsers",
-  id: 123456,
+const contributor1: ContributorFragment = {
+  __typename: "UserProfiles",
+  githubUserId: 123456,
   avatarUrl: "avatar_url",
   login: "ofux",
-  htmlUrl: "https://github.com/ofux",
-  user: null,
-  paymentRequests: [mockPaymentRequest, mockPaymentRequest],
+  userId: null,
+  contributionStatsAggregate: { aggregate: { sum: { paidCount: 4, unpaidCount: 0 } } },
+  paymentStatsAggregate: { aggregate: { sum: { moneyGranted: 2000 } } },
 };
 
-const contributor2: GithubUserWithPaymentRequestsForProjectFragment = {
-  __typename: "GithubUsers",
-  id: 123457,
+const contributor2: ContributorFragment = {
+  __typename: "UserProfiles",
+  githubUserId: 123457,
   avatarUrl: "avatar_url",
   login: "AnthonyBuisset",
-  htmlUrl: "https://github.com/AnthonyBuisset",
-  user: null,
-  paymentRequests: [mockPaymentRequest2],
+  userId: null,
+  contributionStatsAggregate: { aggregate: { sum: { paidCount: 1, unpaidCount: 0 } } },
+  paymentStatsAggregate: { aggregate: { sum: { moneyGranted: 500 } } },
 };
 
-const contributor3: GithubUserWithPaymentRequestsForProjectFragment = {
-  __typename: "GithubUsers",
-  id: 123458,
+const contributor3: ContributorFragment = {
+  __typename: "UserProfiles",
+  githubUserId: 123458,
   avatarUrl: "avatar_url",
   login: "oscarwroche",
-  htmlUrl: "https://github.com/oscarwroche",
-  user: null,
-  paymentRequests: [],
+  userId: null,
+  contributionStatsAggregate: { aggregate: { sum: { paidCount: 0, unpaidCount: 0 } } },
+  paymentStatsAggregate: { aggregate: { sum: { moneyGranted: 0 } } },
 };
 
 const graphQlMocks = [
@@ -87,30 +70,7 @@ const graphQlMocks = [
     },
     result: {
       data: {
-        projectsByPk: {
-          __typename: "Projects",
-          id: TEST_PROJECT_ID,
-          contributors: [contributor1, contributor2, contributor3].map(githubUser => ({ githubUser })),
-          githubRepos: [
-            {
-              __typename: "ProjectGithubRepos",
-              projectId: TEST_PROJECT_ID,
-              githubRepoId: 1000,
-              repoContributors: [contributor1, contributor2].map(user => ({ user })),
-            },
-            {
-              __typename: "ProjectGithubRepos",
-              projectId: TEST_PROJECT_ID,
-              githubRepoId: 1001,
-              repoContributors: [contributor1, contributor3].map(user => ({ user })),
-            },
-          ],
-          budgets: [],
-          projectDetails: {
-            projectId: TEST_PROJECT_ID,
-            name: "test-project",
-          },
-        },
+        projectsContributorsView: [contributor1, contributor2, contributor3].map(user => ({ user })),
       } as GetProjectContributorsQueryResult["data"],
     },
   },
