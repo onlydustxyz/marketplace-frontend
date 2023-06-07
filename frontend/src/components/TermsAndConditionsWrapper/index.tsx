@@ -7,7 +7,7 @@ import { RoutePaths } from "src/App";
 const TERMS_AND_CONDITIONS_LAST_REDACTION_DATE = "2023-06-01";
 
 export default function TermsAndConditionsAcceptanceDateProvider({ children }: PropsWithChildren) {
-  const { user } = useAuth();
+  const { user, impersonating } = useAuth();
   const userId = user?.id;
   const { data, loading } = useGetTermsAndConditionsAcceptancesQuery({
     variables: { userId: user?.id },
@@ -19,6 +19,7 @@ export default function TermsAndConditionsAcceptanceDateProvider({ children }: P
     location.pathname !== RoutePaths.TermsAndConditions &&
     user?.id &&
     !loading &&
+    !impersonating &&
     (!data?.termsAndConditionsAcceptancesByPk?.acceptanceDate ||
       new Date(data?.termsAndConditionsAcceptancesByPk?.acceptanceDate) <
         new Date(TERMS_AND_CONDITIONS_LAST_REDACTION_DATE));
