@@ -5750,6 +5750,41 @@
         "possibleTypes": null
       },
       {
+        "kind": "INPUT_OBJECT",
+        "name": "ContributionCountsArrRelInsertInput",
+        "description": "input type for inserting array relation for remote table \"contribution_counts\"",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "data",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "ContributionCountsInsertInput",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
         "kind": "OBJECT",
         "name": "ContributionCountsAvgFields",
         "description": "aggregate avg on columns",
@@ -5932,6 +5967,77 @@
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "Float8ComparisonExp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "ContributionCountsInsertInput",
+        "description": "input type for inserting data into table \"contribution_counts\"",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "githubUserId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "paidCount",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "unpaidCount",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "week",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "float8",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "year",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "float8",
               "ofType": null
             },
             "defaultValue": null,
@@ -6700,18 +6806,6 @@
         "description": "columns and relationships of \"contribution_stats\"",
         "fields": [
           {
-            "name": "count",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "githubUserId",
             "description": null,
             "args": [],
@@ -6748,12 +6842,48 @@
             "deprecationReason": null
           },
           {
+            "name": "paidCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "projectId",
             "description": null,
             "args": [],
             "type": {
               "kind": "SCALAR",
               "name": "uuid",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "totalCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "unpaidCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
               "ofType": null
             },
             "isDeprecated": false,
@@ -7136,12 +7266,47 @@
         "possibleTypes": null
       },
       {
+        "kind": "INPUT_OBJECT",
+        "name": "ContributionStatsArrRelInsertInput",
+        "description": "input type for inserting array relation for remote table \"contribution_stats\"",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "data",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "ContributionStatsInsertInput",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
         "kind": "OBJECT",
         "name": "ContributionStatsAvgFields",
         "description": "aggregate avg on columns",
         "fields": [
           {
-            "name": "count",
+            "name": "githubUserId",
             "description": null,
             "args": [],
             "type": {
@@ -7153,7 +7318,31 @@
             "deprecationReason": null
           },
           {
-            "name": "githubUserId",
+            "name": "paidCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "totalCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "unpaidCount",
             "description": null,
             "args": [],
             "type": {
@@ -7229,18 +7418,6 @@
             "deprecationReason": null
           },
           {
-            "name": "count",
-            "description": null,
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "BigintComparisonExp",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "githubUserId",
             "description": null,
             "type": {
@@ -7270,6 +7447,18 @@
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "TimestampComparisonExp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "paidCount",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "BigintComparisonExp",
               "ofType": null
             },
             "defaultValue": null,
@@ -7287,6 +7476,125 @@
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "totalCount",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "BigintComparisonExp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "unpaidCount",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "BigintComparisonExp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "ContributionStatsInsertInput",
+        "description": "input type for inserting data into table \"contribution_stats\"",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "githubUserId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "maxDate",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "timestamp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "minDate",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "timestamp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "paidCount",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "projectId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "uuid",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "totalCount",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "unpaidCount",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "interfaces": null,
@@ -7298,18 +7606,6 @@
         "name": "ContributionStatsMaxFields",
         "description": "aggregate max on columns",
         "fields": [
-          {
-            "name": "count",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
           {
             "name": "githubUserId",
             "description": null,
@@ -7347,12 +7643,48 @@
             "deprecationReason": null
           },
           {
+            "name": "paidCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "projectId",
             "description": null,
             "args": [],
             "type": {
               "kind": "SCALAR",
               "name": "uuid",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "totalCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "unpaidCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
               "ofType": null
             },
             "isDeprecated": false,
@@ -7370,18 +7702,6 @@
         "description": "aggregate min on columns",
         "fields": [
           {
-            "name": "count",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "githubUserId",
             "description": null,
             "args": [],
@@ -7418,12 +7738,48 @@
             "deprecationReason": null
           },
           {
+            "name": "paidCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "projectId",
             "description": null,
             "args": [],
             "type": {
               "kind": "SCALAR",
               "name": "uuid",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "totalCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "unpaidCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
               "ofType": null
             },
             "isDeprecated": false,
@@ -7442,18 +7798,6 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "count",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "githubUserId",
             "description": null,
             "type": {
@@ -7490,7 +7834,43 @@
             "deprecationReason": null
           },
           {
+            "name": "paidCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "projectId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "totalCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "unpaidCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -7515,12 +7895,6 @@
         "interfaces": null,
         "enumValues": [
           {
-            "name": "count",
-            "description": "column name",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "githubUserId",
             "description": "column name",
             "isDeprecated": false,
@@ -7539,7 +7913,25 @@
             "deprecationReason": null
           },
           {
+            "name": "paidCount",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "projectId",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "totalCount",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "unpaidCount",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
@@ -7553,7 +7945,7 @@
         "description": "aggregate stddev on columns",
         "fields": [
           {
-            "name": "count",
+            "name": "githubUserId",
             "description": null,
             "args": [],
             "type": {
@@ -7565,7 +7957,31 @@
             "deprecationReason": null
           },
           {
-            "name": "githubUserId",
+            "name": "paidCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "totalCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "unpaidCount",
             "description": null,
             "args": [],
             "type": {
@@ -7588,7 +8004,7 @@
         "description": "aggregate stddev_pop on columns",
         "fields": [
           {
-            "name": "count",
+            "name": "githubUserId",
             "description": null,
             "args": [],
             "type": {
@@ -7600,7 +8016,31 @@
             "deprecationReason": null
           },
           {
-            "name": "githubUserId",
+            "name": "paidCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "totalCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "unpaidCount",
             "description": null,
             "args": [],
             "type": {
@@ -7623,7 +8063,7 @@
         "description": "aggregate stddev_samp on columns",
         "fields": [
           {
-            "name": "count",
+            "name": "githubUserId",
             "description": null,
             "args": [],
             "type": {
@@ -7635,7 +8075,31 @@
             "deprecationReason": null
           },
           {
-            "name": "githubUserId",
+            "name": "paidCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "totalCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "unpaidCount",
             "description": null,
             "args": [],
             "type": {
@@ -7658,7 +8122,7 @@
         "description": "aggregate sum on columns",
         "fields": [
           {
-            "name": "count",
+            "name": "githubUserId",
             "description": null,
             "args": [],
             "type": {
@@ -7670,7 +8134,31 @@
             "deprecationReason": null
           },
           {
-            "name": "githubUserId",
+            "name": "paidCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "totalCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "unpaidCount",
             "description": null,
             "args": [],
             "type": {
@@ -7693,7 +8181,7 @@
         "description": "aggregate var_pop on columns",
         "fields": [
           {
-            "name": "count",
+            "name": "githubUserId",
             "description": null,
             "args": [],
             "type": {
@@ -7705,7 +8193,31 @@
             "deprecationReason": null
           },
           {
-            "name": "githubUserId",
+            "name": "paidCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "totalCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "unpaidCount",
             "description": null,
             "args": [],
             "type": {
@@ -7728,7 +8240,7 @@
         "description": "aggregate var_samp on columns",
         "fields": [
           {
-            "name": "count",
+            "name": "githubUserId",
             "description": null,
             "args": [],
             "type": {
@@ -7740,7 +8252,31 @@
             "deprecationReason": null
           },
           {
-            "name": "githubUserId",
+            "name": "paidCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "totalCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "unpaidCount",
             "description": null,
             "args": [],
             "type": {
@@ -7763,7 +8299,7 @@
         "description": "aggregate variance on columns",
         "fields": [
           {
-            "name": "count",
+            "name": "githubUserId",
             "description": null,
             "args": [],
             "type": {
@@ -7775,7 +8311,31 @@
             "deprecationReason": null
           },
           {
-            "name": "githubUserId",
+            "name": "paidCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "totalCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "unpaidCount",
             "description": null,
             "args": [],
             "type": {
@@ -7834,6 +8394,18 @@
             "deprecationReason": null
           },
           {
+            "name": "ignored",
+            "description": "An object relationship",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "IgnoredGithubIssues",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "issueNumber",
             "description": null,
             "args": [],
@@ -7865,6 +8437,200 @@
               "kind": "SCALAR",
               "name": "bigint",
               "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "workItems",
+            "description": "An array relationship",
+            "args": [
+              {
+                "name": "distinctOn",
+                "description": "distinct select on columns",
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "ENUM",
+                      "name": "WorkItemsSelectColumn",
+                      "ofType": null
+                    }
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "limit",
+                "description": "limit the number of rows returned",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "offset",
+                "description": "skip the first n rows. Use only with order_by",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "orderBy",
+                "description": "sort the rows by one or more columns",
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "INPUT_OBJECT",
+                      "name": "WorkItemsOrderBy",
+                      "ofType": null
+                    }
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "where",
+                "description": "filter the rows returned",
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "WorkItemsBoolExp",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "WorkItems",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "workItemsAggregate",
+            "description": "An aggregate relationship",
+            "args": [
+              {
+                "name": "distinctOn",
+                "description": "distinct select on columns",
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "ENUM",
+                      "name": "WorkItemsSelectColumn",
+                      "ofType": null
+                    }
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "limit",
+                "description": "limit the number of rows returned",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "offset",
+                "description": "skip the first n rows. Use only with order_by",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "orderBy",
+                "description": "sort the rows by one or more columns",
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "INPUT_OBJECT",
+                      "name": "WorkItemsOrderBy",
+                      "ofType": null
+                    }
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "where",
+                "description": "filter the rows returned",
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "WorkItemsBoolExp",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "WorkItemsAggregate",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -8246,6 +9012,41 @@
         "possibleTypes": null
       },
       {
+        "kind": "INPUT_OBJECT",
+        "name": "ContributionsArrRelInsertInput",
+        "description": "input type for inserting array relation for remote table \"contributions\"",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "data",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "ContributionsInsertInput",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
         "kind": "OBJECT",
         "name": "ContributionsAvgFields",
         "description": "aggregate avg on columns",
@@ -8399,6 +9200,18 @@
             "deprecationReason": null
           },
           {
+            "name": "ignored",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "IgnoredGithubIssuesBoolExp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "issueNumber",
             "description": null,
             "type": {
@@ -8428,6 +9241,137 @@
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "BigintComparisonExp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "workItems",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "WorkItemsBoolExp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "workItems_aggregate",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "work_items_aggregate_bool_exp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "ContributionsInsertInput",
+        "description": "input type for inserting data into table \"contributions\"",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "createdAt",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "timestamp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubIssueId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubUserId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "ignored",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "IgnoredGithubIssuesObjRelInsertInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "issueNumber",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "projectId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "uuid",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "repoId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "workItems",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "WorkItemsArrRelInsertInput",
               "ofType": null
             },
             "defaultValue": null,
@@ -8648,6 +9592,18 @@
             "deprecationReason": null
           },
           {
+            "name": "ignored",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "IgnoredGithubIssuesOrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "issueNumber",
             "description": null,
             "type": {
@@ -8677,6 +9633,18 @@
             "type": {
               "kind": "ENUM",
               "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "workItemsAggregate",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "WorkItemsAggregateOrderBy",
               "ofType": null
             },
             "defaultValue": null,
@@ -9533,7 +10501,7 @@
           },
           {
             "name": "ignoredForProjects",
-            "description": null,
+            "description": "An array relationship",
             "args": [
               {
                 "name": "distinctOn",
@@ -9634,7 +10602,7 @@
           },
           {
             "name": "ignoredForProjectsAggregate",
-            "description": null,
+            "description": "An aggregate relationship",
             "args": [
               {
                 "name": "distinctOn",
@@ -18863,6 +19831,45 @@
       },
       {
         "kind": "INPUT_OBJECT",
+        "name": "IgnoredGithubIssuesObjRelInsertInput",
+        "description": "input type for inserting object relation for remote table \"ignored_github_issues\"",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "data",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "INPUT_OBJECT",
+                "name": "IgnoredGithubIssuesInsertInput",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "onConflict",
+            "description": "upsert condition",
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "IgnoredGithubIssuesOnConflict",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
         "name": "IgnoredGithubIssuesOnConflict",
         "description": "on_conflict condition type for table \"ignored_github_issues\"",
         "fields": null,
@@ -19659,7 +20666,7 @@
           },
           {
             "name": "ignoredForProjects",
-            "description": null,
+            "description": "An array relationship",
             "args": [
               {
                 "name": "distinctOn",
@@ -19760,7 +20767,7 @@
           },
           {
             "name": "ignoredForProjectsAggregate",
-            "description": null,
+            "description": "An aggregate relationship",
             "args": [
               {
                 "name": "distinctOn",
@@ -23711,6 +24718,41 @@
         "possibleTypes": null
       },
       {
+        "kind": "INPUT_OBJECT",
+        "name": "PaymentStatsArrRelInsertInput",
+        "description": "input type for inserting array relation for remote table \"payment_stats\"",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "data",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "PaymentStatsInsertInput",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
         "kind": "OBJECT",
         "name": "PaymentStatsAvgFields",
         "description": "aggregate avg on columns",
@@ -23833,6 +24875,53 @@
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "UuidComparisonExp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "PaymentStatsInsertInput",
+        "description": "input type for inserting data into table \"payment_stats\"",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "githubUserId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "moneyGranted",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "numeric",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "projectId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "uuid",
               "ofType": null
             },
             "defaultValue": null,
@@ -34066,6 +35155,18 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "user",
+            "description": "An object relationship",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "UserProfiles",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -34606,6 +35707,18 @@
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "user",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "UserProfilesBoolExp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "interfaces": null,
@@ -34660,6 +35773,18 @@
             "type": {
               "kind": "SCALAR",
               "name": "uuid",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "user",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "UserProfilesObjRelInsertInput",
               "ofType": null
             },
             "defaultValue": null,
@@ -34789,6 +35914,18 @@
             "type": {
               "kind": "ENUM",
               "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "user",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "UserProfilesOrderBy",
               "ofType": null
             },
             "defaultValue": null,
@@ -41597,7 +42734,7 @@
           },
           {
             "name": "contributionCounts",
-            "description": "fetch data from the table: \"contribution_counts\"",
+            "description": "An array relationship",
             "args": [
               {
                 "name": "distinctOn",
@@ -41698,7 +42835,7 @@
           },
           {
             "name": "contributionCountsAggregate",
-            "description": "fetch aggregated fields from the table: \"contribution_counts\"",
+            "description": "An aggregate relationship",
             "args": [
               {
                 "name": "distinctOn",
@@ -41791,7 +42928,7 @@
           },
           {
             "name": "contributionStats",
-            "description": "fetch data from the table: \"contribution_stats\"",
+            "description": "An array relationship",
             "args": [
               {
                 "name": "distinctOn",
@@ -41892,7 +43029,7 @@
           },
           {
             "name": "contributionStatsAggregate",
-            "description": "fetch aggregated fields from the table: \"contribution_stats\"",
+            "description": "An aggregate relationship",
             "args": [
               {
                 "name": "distinctOn",
@@ -41985,7 +43122,7 @@
           },
           {
             "name": "contributions",
-            "description": "fetch data from the table: \"contributions\"",
+            "description": "An array relationship",
             "args": [
               {
                 "name": "distinctOn",
@@ -42086,7 +43223,7 @@
           },
           {
             "name": "contributionsAggregate",
-            "description": "fetch aggregated fields from the table: \"contributions\"",
+            "description": "An aggregate relationship",
             "args": [
               {
                 "name": "distinctOn",
@@ -43596,6 +44733,281 @@
         "possibleTypes": null
       },
       {
+        "kind": "INPUT_OBJECT",
+        "name": "UserProfilesInsertInput",
+        "description": "input type for inserting data into table \"user_profiles\"",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "avatarUrl",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "bio",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "contributionCounts",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "ContributionCountsArrRelInsertInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "contributionStats",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "ContributionStatsArrRelInsertInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "contributions",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "ContributionsArrRelInsertInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "createdAt",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "timestamptz",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "discord",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "email",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubUserId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "htmlUrl",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "languages",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "jsonb",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "lastSeen",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "timestamptz",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "linkedin",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "location",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "login",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "paymentStats",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "PaymentStatsArrRelInsertInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "projectsContributed",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "ProjectsContributorsViewArrRelInsertInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "projectsLeaded",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "ProjectLeadsArrRelInsertInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "telegram",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "twitter",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "userId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "uuid",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "website",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
         "kind": "OBJECT",
         "name": "UserProfilesMaxFields",
         "description": "aggregate max on columns",
@@ -43974,6 +45386,33 @@
         ],
         "inputFields": null,
         "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "UserProfilesObjRelInsertInput",
+        "description": "input type for inserting object relation for remote table \"user_profiles\"",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "data",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "INPUT_OBJECT",
+                "name": "UserProfilesInsertInput",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
         "enumValues": null,
         "possibleTypes": null
       },
@@ -44750,7 +46189,7 @@
           },
           {
             "name": "ignoredForProjects",
-            "description": null,
+            "description": "An array relationship",
             "args": [
               {
                 "name": "distinctOn",
@@ -44851,7 +46290,7 @@
           },
           {
             "name": "ignoredForProjectsAggregate",
-            "description": null,
+            "description": "An aggregate relationship",
             "args": [
               {
                 "name": "distinctOn",
@@ -44970,6 +46409,18 @@
                 "name": "uuid",
                 "ofType": null
               }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "paymentRequest",
+            "description": "An object relationship",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "PaymentRequests",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -45555,6 +47006,18 @@
             "deprecationReason": null
           },
           {
+            "name": "paymentRequest",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "PaymentRequestsBoolExp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "repoId",
             "description": null,
             "type": {
@@ -45659,6 +47122,18 @@
             "type": {
               "kind": "SCALAR",
               "name": "uuid",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "paymentRequest",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "PaymentRequestsObjRelInsertInput",
               "ofType": null
             },
             "defaultValue": null,
@@ -45926,6 +47401,18 @@
             "type": {
               "kind": "ENUM",
               "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "paymentRequest",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "PaymentRequestsOrderBy",
               "ofType": null
             },
             "defaultValue": null,
@@ -60517,7 +62004,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "count",
+            "name": "githubUserId",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -60529,7 +62016,31 @@
             "deprecationReason": null
           },
           {
-            "name": "githubUserId",
+            "name": "paidCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "totalCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "unpaidCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -60552,18 +62063,6 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "count",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "githubUserId",
             "description": null,
             "type": {
@@ -60600,7 +62099,43 @@
             "deprecationReason": null
           },
           {
+            "name": "paidCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "projectId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "totalCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "unpaidCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -60623,18 +62158,6 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "count",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "githubUserId",
             "description": null,
             "type": {
@@ -60671,7 +62194,43 @@
             "deprecationReason": null
           },
           {
+            "name": "paidCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "projectId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "totalCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "unpaidCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -60694,7 +62253,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "count",
+            "name": "githubUserId",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -60706,7 +62265,31 @@
             "deprecationReason": null
           },
           {
-            "name": "githubUserId",
+            "name": "paidCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "totalCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "unpaidCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -60729,7 +62312,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "count",
+            "name": "githubUserId",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -60741,7 +62324,31 @@
             "deprecationReason": null
           },
           {
-            "name": "githubUserId",
+            "name": "paidCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "totalCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "unpaidCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -60764,7 +62371,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "count",
+            "name": "githubUserId",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -60776,7 +62383,31 @@
             "deprecationReason": null
           },
           {
-            "name": "githubUserId",
+            "name": "paidCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "totalCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "unpaidCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -60838,18 +62469,6 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "count",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "githubUserId",
             "description": null,
             "type": {
@@ -60886,11 +62505,47 @@
             "deprecationReason": null
           },
           {
+            "name": "paidCount",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "projectId",
             "description": null,
             "type": {
               "kind": "SCALAR",
               "name": "uuid",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "totalCount",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "unpaidCount",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
               "ofType": null
             },
             "defaultValue": null,
@@ -60909,7 +62564,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "count",
+            "name": "githubUserId",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -60921,7 +62576,31 @@
             "deprecationReason": null
           },
           {
-            "name": "githubUserId",
+            "name": "paidCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "totalCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "unpaidCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -60944,7 +62623,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "count",
+            "name": "githubUserId",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -60956,7 +62635,31 @@
             "deprecationReason": null
           },
           {
-            "name": "githubUserId",
+            "name": "paidCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "totalCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "unpaidCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -60979,7 +62682,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "count",
+            "name": "githubUserId",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -60991,7 +62694,31 @@
             "deprecationReason": null
           },
           {
-            "name": "githubUserId",
+            "name": "paidCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "totalCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "unpaidCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -61014,7 +62741,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "count",
+            "name": "githubUserId",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -61026,7 +62753,31 @@
             "deprecationReason": null
           },
           {
-            "name": "githubUserId",
+            "name": "paidCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "totalCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "unpaidCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -80606,7 +82357,7 @@
           },
           {
             "name": "contributionCounts",
-            "description": "fetch data from the table: \"contribution_counts\"",
+            "description": "An array relationship",
             "args": [
               {
                 "name": "distinctOn",
@@ -80707,7 +82458,7 @@
           },
           {
             "name": "contributionCountsAggregate",
-            "description": "fetch aggregated fields from the table: \"contribution_counts\"",
+            "description": "An aggregate relationship",
             "args": [
               {
                 "name": "distinctOn",
@@ -80800,7 +82551,7 @@
           },
           {
             "name": "contributionStats",
-            "description": "fetch data from the table: \"contribution_stats\"",
+            "description": "An array relationship",
             "args": [
               {
                 "name": "distinctOn",
@@ -80901,7 +82652,7 @@
           },
           {
             "name": "contributionStatsAggregate",
-            "description": "fetch aggregated fields from the table: \"contribution_stats\"",
+            "description": "An aggregate relationship",
             "args": [
               {
                 "name": "distinctOn",
@@ -80994,7 +82745,7 @@
           },
           {
             "name": "contributions",
-            "description": "fetch data from the table: \"contributions\"",
+            "description": "An array relationship",
             "args": [
               {
                 "name": "distinctOn",
@@ -81095,7 +82846,7 @@
           },
           {
             "name": "contributionsAggregate",
-            "description": "fetch aggregated fields from the table: \"contributions\"",
+            "description": "An aggregate relationship",
             "args": [
               {
                 "name": "distinctOn",
@@ -89325,7 +91076,7 @@
           },
           {
             "name": "contributionCounts",
-            "description": "fetch data from the table: \"contribution_counts\"",
+            "description": "An array relationship",
             "args": [
               {
                 "name": "distinctOn",
@@ -89426,7 +91177,7 @@
           },
           {
             "name": "contributionCountsAggregate",
-            "description": "fetch aggregated fields from the table: \"contribution_counts\"",
+            "description": "An aggregate relationship",
             "args": [
               {
                 "name": "distinctOn",
@@ -89592,7 +91343,7 @@
           },
           {
             "name": "contributionStats",
-            "description": "fetch data from the table: \"contribution_stats\"",
+            "description": "An array relationship",
             "args": [
               {
                 "name": "distinctOn",
@@ -89693,7 +91444,7 @@
           },
           {
             "name": "contributionStatsAggregate",
-            "description": "fetch aggregated fields from the table: \"contribution_stats\"",
+            "description": "An aggregate relationship",
             "args": [
               {
                 "name": "distinctOn",
@@ -89859,7 +91610,7 @@
           },
           {
             "name": "contributions",
-            "description": "fetch data from the table: \"contributions\"",
+            "description": "An array relationship",
             "args": [
               {
                 "name": "distinctOn",
@@ -89960,7 +91711,7 @@
           },
           {
             "name": "contributionsAggregate",
-            "description": "fetch aggregated fields from the table: \"contributions\"",
+            "description": "An aggregate relationship",
             "args": [
               {
                 "name": "distinctOn",

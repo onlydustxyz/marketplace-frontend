@@ -41,20 +41,24 @@ class ContributionCounts {
 }
 
 class ContributionStats {
-   count: bigint
    githubUserId: bigint
    maxDate: timestamp
    minDate: timestamp
+   paidCount: bigint
    projectId: uuid
+   totalCount: bigint
+   unpaidCount: bigint
 }
 
 class Contributions {
    createdAt: timestamp
    githubIssueId: bigint
    githubUserId: bigint
+   ignored: IgnoredGithubIssues
    issueNumber: bigint
    projectId: uuid
    repoId: bigint
+   workItems: [WorkItems!]!
 }
 
 class GithubIssues {
@@ -222,6 +226,7 @@ class ProjectsContributorsView {
    githubUserId: bigint
    project: Projects
    projectId: uuid
+   user: UserProfiles
 }
 
 class ProjectsSponsors {
@@ -300,6 +305,7 @@ class WorkItems {
    ignoredForProjects: [IgnoredGithubIssues!]!
    issueNumber: bigint!
    paymentId: uuid!
+   paymentRequest: PaymentRequests
    repoId: bigint!
 }
 
@@ -398,6 +404,8 @@ class users {
 
 Budgets -- Projects
 Budgets --* PaymentRequests
+Contributions -- IgnoredGithubIssues
+Contributions --* WorkItems
 GithubIssues --* IgnoredGithubIssues
 GithubReposContributors -- GithubUsers
 GithubUsers -- RegisteredUsers
@@ -429,6 +437,7 @@ Projects --* ProjectsContributorsView
 Projects --* ProjectsSponsors
 ProjectsContributorsView -- GithubUsers
 ProjectsContributorsView -- Projects
+ProjectsContributorsView -- UserProfiles
 ProjectsSponsors -- Projects
 ProjectsSponsors -- Sponsors
 RegisteredUsers -- UserInfo
@@ -444,6 +453,7 @@ UserProfiles --* PaymentStats
 UserProfiles --* ProjectLeads
 UserProfiles --* ProjectsContributorsView
 WorkItems -- Issue
+WorkItems -- PaymentRequests
 WorkItems --* IgnoredGithubIssues
 authProviders --* authUserProviders
 authRefreshTokens -- users
