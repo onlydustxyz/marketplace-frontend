@@ -1,6 +1,10 @@
-query GetProjectRemainingBudget($projectId: uuid!) {
+query GetProjectDetails($projectId: uuid!) {
   projectsByPk(id: $projectId) {
     id
+    projectDetails {
+      projectId
+      name
+    }
     budgets {
       id
       remainingAmount
