@@ -120,6 +120,8 @@ function VirtualizedOptions<T extends Option | { toString: () => string }>({
               "flex px-4 py-2 font-walsheim text-sm leading-4 text-greyscale-50 bg-greyscale-800 ui-active:bg-greyscale-600",
               {
                 "border-b border-greyscale-50/8": index < options.length - 1,
+                "pt-4": index === 0,
+                "pb-4": index === options.length - 1,
               }
             )}
           >
