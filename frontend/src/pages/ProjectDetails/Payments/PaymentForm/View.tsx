@@ -13,17 +13,18 @@ import { ReactElement, useEffect, useState } from "react";
 import WorkItemSidePanel from "./WorkItemSidePanel";
 import GithubIssue, { Action, WorkItem } from "src/components/GithubIssue";
 import Callout from "src/components/Callout";
-import { GithubUserFragment, Status } from "src/__generated/graphql";
+import { Status } from "src/__generated/graphql";
 import useWorkItems from "./useWorkItems";
 import { filter } from "lodash";
+import { Contributor } from "./types";
 
 interface Props {
   projectId: string;
   budget: Budget;
   onWorkEstimationChange: (amountToPay: number, hoursWorked: number) => void;
   onWorkItemsChange: (workItems: WorkItem[]) => void;
-  contributor: GithubUserFragment | null | undefined;
-  setContributor: (contributor: GithubUserFragment | null | undefined) => void;
+  contributor: Contributor | null | undefined;
+  setContributor: (contributor: Contributor | null | undefined) => void;
   unpaidPRs: WorkItem[] | null | undefined;
   requestNewPaymentMutationLoading: boolean;
 }
@@ -70,7 +71,7 @@ const View: React.FC<Props> = ({
 
   useEffect(() => setWorkItemsPrefilled(false), [contributor]);
 
-  const displayCallout = contributor && !contributor?.user?.id;
+  const displayCallout = contributor && !contributor.userId;
 
   return (
     <>
@@ -149,7 +150,7 @@ const View: React.FC<Props> = ({
                 workItems={workItems}
                 onWorkItemAdded={addWorkItem}
                 contributorHandle={contributor.login}
-                contributorId={contributor.id}
+                contributorId={contributor.githubUserId}
               />
             )}
           </div>

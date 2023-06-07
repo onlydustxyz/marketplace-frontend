@@ -1,4 +1,3 @@
-import { GithubUserFragment, LiveGithubUserFragment } from "./__generated/graphql";
 import { SortingFields } from "./hooks/usePaymentSorting";
 
 export type Branded<T, B> = T & { __brand: B };
@@ -107,8 +106,6 @@ export interface HasuraJWT {
 
 export type LanguageMap = { [languageName: string]: number };
 
-export type ContributorFragment = Omit<GithubUserFragment | LiveGithubUserFragment, "__typename">;
-
 export type PayoutSettings = {
   EthTransfer?: {
     Address?: string;
@@ -118,4 +115,11 @@ export type PayoutSettings = {
     IBAN?: string;
     BIC?: string;
   };
+};
+
+export type Contributor = {
+  githubUserId: number;
+  login: string;
+  avatarUrl: string;
+  userId?: string;
 };

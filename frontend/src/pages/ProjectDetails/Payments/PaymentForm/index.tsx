@@ -1,5 +1,5 @@
 import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
-import { Inputs } from "./types";
+import { Contributor, Inputs } from "./types";
 import { useCallback, useState } from "react";
 import { useIntl } from "src/hooks/useIntl";
 import View from "./View";
@@ -8,7 +8,7 @@ import { generatePath, useNavigate, useOutletContext } from "react-router-dom";
 import usePaymentRequests from "src/hooks/usePaymentRequests";
 import { ProjectRoutePaths, RoutePaths } from "src/App";
 import { WorkItem } from "src/components/GithubIssue";
-import { GithubUserFragment, Type } from "src/__generated/graphql";
+import { Type } from "src/__generated/graphql";
 import useUnpaidIssues from "./WorkItemSidePanel/Issues/useUnpaidIssues";
 
 const PaymentForm: React.FC = () => {
@@ -33,11 +33,11 @@ const PaymentForm: React.FC = () => {
     mode: "all",
   });
 
-  const [contributor, setContributor] = useState<GithubUserFragment | null | undefined>(null);
+  const [contributor, setContributor] = useState<Contributor | null | undefined>(null);
 
   const { data: unpaidPRs } = useUnpaidIssues({
     projectId,
-    authorId: contributor?.id,
+    authorId: contributor?.githubUserId,
     type: Type.PullRequest,
   });
 
@@ -102,7 +102,7 @@ const mapFormDataToSchema = (projectId: string, { workItems, amountToWire, hours
   return {
     variables: {
       projectId,
-      contributorId: contributor.id,
+      contributorId: contributor.githubUserId,
       amount: amountToWire,
       hoursWorked,
       reason: { workItems },

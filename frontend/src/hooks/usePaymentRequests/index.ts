@@ -11,7 +11,7 @@ import {
   useRequestPaymentMutation,
 } from "src/__generated/graphql";
 import { reject } from "lodash";
-import { ContributorFragment } from "src/types";
+import { Contributor } from "src/types";
 import { useSuspenseQuery_experimental } from "@apollo/client";
 
 export default function usePaymentRequests(projectId?: string) {
@@ -57,7 +57,7 @@ export default function usePaymentRequests(projectId?: string) {
       paymentRequests: getPaymentRequestsQuery.data.projectsByPk?.budgets.map(b => b.paymentRequests).flat(),
     },
 
-    requestNewPayment: (recipient: ContributorFragment, options: RequestPaymentMutationOptions) =>
+    requestNewPayment: (recipient: Contributor, options: RequestPaymentMutationOptions) =>
       requestNewPaymentMutation({
         ...options,
         context: { graphqlErrorDisplay: "toaster" },
@@ -77,8 +77,12 @@ export default function usePaymentRequests(projectId?: string) {
               paymentsAggregate: { aggregate: { sum: { amount: 0 } } },
               requestedAt: Date.now(),
               githubRecipient: {
-                ...recipient,
                 __typename: "GithubUsers",
+                id: recipient.githubUserId,
+                avatarUrl: recipient.avatarUrl,
+                login: recipient.login,
+                user: recipient.userId ? { id: recipient.userId } : null,
+                htmlUrl: "",
               },
             },
           });
@@ -92,14 +96,14 @@ export default function usePaymentRequests(projectId?: string) {
           });
 
           cache.modify({
-            id: `GithubUsers:${recipient.id}`,
+            id: `GithubUsers:${recipient.githubUserId}`,
             fields: {
               paymentRequests: paymentRequestRefs => [...paymentRequestRefs, newPaymentRequestRef],
             },
           });
 
           cache.modify({
-            id: `RegisteredUsers:${recipient.user?.id}`,
+            id: `RegisteredUsers:${recipient.userId}`,
             fields: {
               paymentRequests: paymentRequestRefs => [...paymentRequestRefs, newPaymentRequestRef],
             },

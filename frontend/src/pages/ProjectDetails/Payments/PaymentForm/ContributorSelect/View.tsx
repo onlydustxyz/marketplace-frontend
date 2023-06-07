@@ -1,7 +1,5 @@
 import { Combobox } from "@headlessui/react";
-import { GithubUserFragment, LiveGithubUserFragment } from "src/__generated/graphql";
 import classNames from "classnames";
-import Contributor from "src/components/Contributor";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import User3Line from "src/icons/User3Line";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
@@ -9,9 +7,10 @@ import onlyDustLogo from "assets/img/onlydust-logo.png";
 import { useIntl } from "src/hooks/useIntl";
 import Badge, { BadgeIcon, BadgeSize } from "src/components/Badge";
 import { withTooltip } from "src/components/Tooltip";
-import { ContributorFragment } from "src/types";
+import Contributor from "src/components/Contributor";
 import { Virtuoso } from "react-virtuoso";
 import { forwardRef } from "react";
+import { Contributor as ContributorType } from "src/pages/ProjectDetails/Payments/PaymentForm/types";
 
 const MAX_CONTRIBUTOR_SELECT_SCROLLER_HEIGHT_PX = 240;
 const CONTRIBUTOR_SELECT_LINE_HEIGHT_PX = 36;
@@ -21,10 +20,10 @@ interface ContributorSelectViewProps {
   setSelectedGithubHandle: (selectedGithubHandle: string | null) => void;
   githubHandleSubstring: string;
   setGithubHandleSubstring: (githubHandleSubstring: string) => void;
-  filteredContributors: (GithubUserFragment[] & { unpaidMergedPullsCount?: number }) | undefined;
-  filteredExternalContributors: LiveGithubUserFragment[] | undefined;
+  filteredContributors?: ContributorType[];
+  filteredExternalContributors: ContributorType[] | undefined;
   isSearchGithubUsersByHandleSubstringQueryLoading: boolean;
-  contributor: ContributorFragment | null | undefined;
+  contributor: ContributorType | null | undefined;
   debouncedGithubHandleSubstring: string;
 }
 
@@ -48,12 +47,7 @@ export default function ContributorSelectView({
   );
 
   return (
-    <Combobox
-      value={selectedGithubHandle}
-      onChange={value => {
-        setSelectedGithubHandle(value);
-      }}
-    >
+    <Combobox value={selectedGithubHandle} onChange={setSelectedGithubHandle}>
       {({ open }) => (
         <div className={classNames("absolute w-full top-0", { "bg-whiteFakeOpacity-5 rounded-2xl": open })}>
           <div
@@ -95,7 +89,7 @@ export default function ContributorSelectView({
                         {selectedGithubHandle}
                       </div>
                     )}
-                    {contributor?.user?.id && <img src={onlyDustLogo} className="w-3.5 ml-1.5" />}
+                    {contributor?.userId && <img src={onlyDustLogo} className="w-3.5 ml-1.5" />}
                   </div>
                   <ArrowDownSLine />
                 </div>
@@ -165,12 +159,12 @@ export default function ContributorSelectView({
 
 function buildContributorLines(
   githubHandleSubstring: string,
-  filteredContributors: (GithubUserFragment[] & { unpaidMergedPullsCount?: number }) | undefined,
-  filteredExternalContributors: LiveGithubUserFragment[] | undefined
+  filteredContributors?: ContributorType[],
+  filteredExternalContributors?: ContributorType[]
 ) {
   const showExternalUsersSection = !!(githubHandleSubstring && githubHandleSubstring.length > 2);
 
-  let lines: Line<ContributorFragment>[] = [];
+  let lines: Line[] = [];
 
   if (filteredContributors && filteredContributors.length > 0) {
     lines = lines.concat(
@@ -202,13 +196,13 @@ enum LineType {
   LastLine = "LastLine",
 }
 
-type Line<T extends ContributorFragment> =
-  | { type: LineType.Contributor; contributor: T & { unpaidMergedPullsCount?: number } }
+type Line =
+  | { type: LineType.Contributor; contributor: ContributorType }
   | { type: LineType.Separator }
   | { type: LineType.LastLine };
 
-interface ContributorSubListProps<T extends ContributorFragment> {
-  lines?: Line<T>[];
+interface ContributorSubListProps {
+  lines?: Line[];
 }
 
 const List = forwardRef<HTMLDivElement>((props, ref) => {
@@ -229,7 +223,7 @@ const Scroller = forwardRef<HTMLDivElement>((props, ref) => {
 
 Scroller.displayName = "Scroller";
 
-function VirtualizedContributorSubList<T extends ContributorFragment>({ lines }: ContributorSubListProps<T>) {
+function VirtualizedContributorSubList({ lines }: ContributorSubListProps) {
   const { T } = useIntl();
 
   return (
@@ -246,21 +240,15 @@ function VirtualizedContributorSubList<T extends ContributorFragment>({ lines }:
         if (line.type === LineType.Contributor) {
           const contributor = line.contributor;
           return (
-            <Combobox.Option key={contributor.id} value={contributor.login}>
+            <Combobox.Option key={contributor.githubUserId} value={contributor.login}>
               {({ active }) => (
                 <li
                   className={classNames("p-2 flex items-center justify-between", {
                     "bg-white/4 cursor-pointer": active,
                   })}
                 >
-                  <Contributor
-                    contributor={{
-                      avatarUrl: contributor.avatarUrl,
-                      login: contributor.login,
-                      isRegistered: !!contributor.user?.id,
-                    }}
-                  />
-                  {contributor.unpaidMergedPullsCount && (
+                  <Contributor contributor={contributor} />
+                  {contributor.unpaidMergedPullsCount > 0 && (
                     <Badge
                       value={contributor.unpaidMergedPullsCount}
                       icon={BadgeIcon.GitMerge}

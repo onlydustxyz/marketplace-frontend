@@ -2,16 +2,10 @@ import onlyDustLogo from "assets/img/onlydust-logo.png";
 import { withTooltip } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 import ClickableUser from "src/components/ClickableUser";
-
-export type Contributor = {
-  id?: number;
-  avatarUrl: string;
-  login: string;
-  isRegistered: boolean;
-};
+import { Contributor as ContributorType } from "src/types";
 
 type Props = {
-  contributor: Contributor;
+  contributor: ContributorType;
 };
 
 export default function Contributor({ contributor }: Props) {
@@ -19,8 +13,12 @@ export default function Contributor({ contributor }: Props) {
 
   return (
     <div className="flex items-center gap-1.5">
-      <ClickableUser name={contributor.login} avatarUrl={contributor.avatarUrl} githubUserId={contributor.id} />
-      {contributor.isRegistered && (
+      <ClickableUser
+        name={contributor.login}
+        avatarUrl={contributor.avatarUrl}
+        githubUserId={contributor.githubUserId}
+      />
+      {contributor.userId && (
         <>
           <img
             id={`od-logo-${contributor.login}`}

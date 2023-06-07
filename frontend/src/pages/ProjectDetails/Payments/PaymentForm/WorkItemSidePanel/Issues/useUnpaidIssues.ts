@@ -5,7 +5,7 @@ import { WorkItem } from "src/components/GithubIssue";
 
 type Props = {
   projectId: string;
-  authorId: number;
+  authorId?: number;
   type: Type;
 };
 
