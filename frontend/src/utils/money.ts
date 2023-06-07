@@ -14,13 +14,17 @@ export const formatMoneyAmount = ({ amount, currency = Currency.USD, notation = 
         currency,
         maximumFractionDigits: maximumFractionDigits({ amount, notation }),
         notation,
-      }).format(amount);
+      })
+        .format(amount)
+        .replace("K", "k");
     case Currency.USDC:
     case Currency.ETH:
       return `${currency} ${Intl.NumberFormat("en-US", {
         maximumFractionDigits: maximumFractionDigits({ amount, notation }),
         notation,
-      }).format(amount)}`;
+      })
+        .format(amount)
+        .replace("K", "k")}`;
   }
 };
 
