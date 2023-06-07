@@ -6,6 +6,7 @@ import StylizedCombobox from "src/components/StylizedCombobox";
 import { SortableList, SortableItemProps, SortableItem } from "@thaddeusjiang/react-sortable-list";
 import Draggable from "src/icons/Draggable";
 import CloseLine from "src/icons/CloseLine";
+import classNames from "classnames";
 
 type Props = {
   technologies: LanguageMap;
@@ -40,7 +41,14 @@ export default function EditTechnologiesCard({ technologies, setTechnologies }: 
   const DragHandler = (
     props: JSX.IntrinsicAttributes & ClassAttributes<HTMLDivElement> & HTMLAttributes<HTMLDivElement>
   ) => (
-    <div {...props} className="cursor-grab active:cursor-grabbing text-base">
+    <div
+      {...props}
+      className={classNames(
+        "flex gap-1 items-center justify-center pl-2 pr-1 w-fit",
+        "bg-white/2 border border-greyscale-50/8 rounded-full rounded-r-none border-r-0",
+        "cursor-grab active:cursor-grabbing text-base"
+      )}
+    >
       <Draggable />
     </div>
   );
@@ -68,19 +76,26 @@ export default function EditTechnologiesCard({ technologies, setTechnologies }: 
                   key={item.id}
                   id={item.id}
                   DragHandler={DragHandler}
-                  className="flex gap-1 items-center justify-center h-7 px-2 w-fit bg-white/2 border border-greyscale-50/8 rounded-full overflow-hidden text-greyscale-50 text-sm font-walsheim"
+                  className="flex h-7 text-greyscale-50 font-walsheim"
                 >
-                  <div className="flex gap-1 items-center justify-center cursor-default">
-                    <div className="flex bg-white/5 rounded w-4 h-4 text-xs justify-center items-center">
+                  <div
+                    className={classNames(
+                      "flex gap-1 items-center justify-center pr-2 w-fit",
+                      "bg-white/2 border border-greyscale-50/8 rounded-full rounded-l-none border-l-0 text-sm"
+                    )}
+                  >
+                    <div className="flex bg-white/5 rounded w-4 h-4 text-xs justify-center items-center cursor-default">
                       {index + 1}
                     </div>
-                    {item.displayValue}
+                    <div className="cursor-default">{item.displayValue}</div>
+                    <button
+                      onClick={() =>
+                        setSelectedLanguages(selectedLanguages.filter(language => language.id !== item.id))
+                      }
+                    >
+                      <CloseLine />
+                    </button>
                   </div>
-                  <button
-                    onClick={() => setSelectedLanguages(selectedLanguages.filter(language => language.id !== item.id))}
-                  >
-                    <CloseLine />
-                  </button>
                 </SortableItem>
               ))}
             </>
