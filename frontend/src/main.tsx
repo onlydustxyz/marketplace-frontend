@@ -4,7 +4,7 @@ import TagManager from "react-gtm-module";
 import { ErrorBoundary } from "react-error-boundary";
 
 import ApolloWrapper from "src/providers/ApolloWrapper";
-import TermsAndConditionsWrapper from "src/components/TermsAndConditionsWrapper";
+import TermsAndConditionsWrapper from "./App/TermsAndConditionsWrapper";
 import { AuthProvider } from "src/hooks/useAuth";
 import App from "./App";
 import "./datadog";
