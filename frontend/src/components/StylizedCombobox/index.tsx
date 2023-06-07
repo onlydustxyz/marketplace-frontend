@@ -46,14 +46,14 @@ export default function StylizedCombobox<T extends Option | { toString: () => st
       <Combobox.Button as="div">
         <div
           className={classNames(
-            "flex flex-row items-center justify-between w-full rounded-lg px-1.5 h-9 bg-white/5 border border-greyscale-50/8 text-greyscale-400",
+            "flex flex-row items-center justify-between w-full rounded-lg px-1.5 h-8 bg-white/5 border border-greyscale-50/8 text-greyscale-400",
             {
               "bg-spacePurple-900 text-spacePurple-500 ring-solid ring-2 ring-spacePurple-500": open,
             }
           )}
         >
           <div className="flex flex-row items-center w-full cursor-default gap-2.5">
-            <div className="pt-1 text-lg">
+            <div className="pt-0.5 text-lg">
               <SearchLine />
             </div>
             <Combobox.Input

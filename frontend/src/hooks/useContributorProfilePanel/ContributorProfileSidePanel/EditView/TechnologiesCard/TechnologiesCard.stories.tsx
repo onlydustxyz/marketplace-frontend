@@ -1,9 +1,9 @@
 import { LanguageMap } from "src/types";
-import EditTechnologiesCard from ".";
+import TechnologiesCard from ".";
 
 export default {
-  title: "EditTechnologiesCard",
-  component: EditTechnologiesCard,
+  title: "TechnologiesCard",
+  component: TechnologiesCard,
 };
 
 const technologies: LanguageMap = {
@@ -20,7 +20,7 @@ const setTechnologies = () => {
 export const Default = {
   render: () => (
     <div className="w-5/12 bg-greyscale-900 p-6">
-      <EditTechnologiesCard technologies={technologies} setTechnologies={setTechnologies} />
+      <TechnologiesCard technologies={technologies} setTechnologies={setTechnologies} />
     </div>
   ),
 };

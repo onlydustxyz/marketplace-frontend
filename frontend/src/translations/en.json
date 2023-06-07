@@ -306,7 +306,9 @@
     "discord": "Discord username",
     "sections": {
       "technologies": {
-        "title": "Technologies"
+        "title": "Technologies",
+        "subtitle": "Rank from most to least proficient.",
+        "searchPlaceholder": "Search technologies"
       },
       "stats": {
         "contributions": "Contributions",
