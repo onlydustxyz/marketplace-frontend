@@ -3,16 +3,16 @@ import ContributorsTableFallback from "src/components/ContributorsTableFallback"
 import ContributorsTable from "src/pages/ProjectDetails/Contributors/ContributorsTable";
 import { useIntl } from "src/hooks/useIntl";
 import {
-  useGetProjectContributorsAsLeaderQuery,
-  useGetProjectContributorsQuery,
+  GetProjectContributorsAsLeaderDocument,
+  GetProjectContributorsDocument,
   useGetProjectRemainingBudgetQuery,
 } from "src/__generated/graphql";
 import { useAuth } from "src/hooks/useAuth";
 import { useOutletContext } from "react-router-dom";
 import { getContributors } from "src/utils/project";
 import Title from "src/pages/ProjectDetails/Title";
-import { Suspense } from "react";
 import { contextWithCacheHeaders } from "src/utils/headers";
+import { useSuspenseQuery_experimental } from "@apollo/client";
 
 export default function Contributors() {
   const { T } = useIntl();
@@ -21,20 +21,13 @@ export default function Contributors() {
 
   const isProjectLeader = !!ledProjectIds.find(element => element === projectId);
 
-  const getProjectContributorsQueryAsPublic = useGetProjectContributorsQuery({
-    variables: { projectId },
-    skip: isProjectLeader,
-    ...contextWithCacheHeaders,
-  });
-
-  const getProjectContributorsQueryAsLeader = useGetProjectContributorsAsLeaderQuery({
-    variables: { projectId },
-    skip: !isProjectLeader,
-  });
-
-  const getProjectContributorsQuery = isProjectLeader
-    ? getProjectContributorsQueryAsLeader
-    : getProjectContributorsQueryAsPublic;
+  const getProjectContributorsQuery = useSuspenseQuery_experimental(
+    isProjectLeader ? GetProjectContributorsAsLeaderDocument : GetProjectContributorsDocument,
+    {
+      variables: { projectId },
+      ...contextWithCacheHeaders,
+    }
+  );
 
   const getProjectRemainingBudget = useGetProjectRemainingBudgetQuery({
     variables: { projectId },
@@ -48,18 +41,13 @@ export default function Contributors() {
   return (
     <>
       <Title>{T("project.details.contributors.title")}</Title>
-      <Suspense fallback={<div />}>
-        {contributors?.length > 0 && (
-          <Card className="h-full">
-            <ContributorsTable {...{ contributors, isProjectLeader, remainingBudget, projectId }} />
-          </Card>
-        )}
-        {!contributors.length && !getProjectContributorsQuery.loading && (
-          <ContributorsTableFallback
-            projectName={getProjectContributorsQuery.data?.projectsByPk?.projectDetails?.name}
-          />
-        )}
-      </Suspense>
+      {contributors?.length > 0 ? (
+        <Card className="h-full">
+          <ContributorsTable {...{ contributors, isProjectLeader, remainingBudget, projectId }} />
+        </Card>
+      ) : (
+        <ContributorsTableFallback projectName={getProjectContributorsQuery.data?.projectsByPk?.projectDetails?.name} />
+      )}
     </>
   );
 }

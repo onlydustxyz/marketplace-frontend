@@ -87,6 +87,7 @@ diesel::table! {
     github_user_indexes (user_id) {
         user_id -> Int8,
         user_indexer_state -> Nullable<Jsonb>,
+        contributor_indexer_state -> Nullable<Jsonb>,
     }
 }
 
@@ -96,6 +97,12 @@ diesel::table! {
         login -> Text,
         avatar_url -> Text,
         html_url -> Text,
+        bio -> Nullable<Text>,
+        location -> Nullable<Text>,
+        website -> Nullable<Text>,
+        twitter -> Nullable<Text>,
+        linkedin -> Nullable<Text>,
+        telegram -> Nullable<Text>,
     }
 }
 
@@ -164,6 +171,7 @@ diesel::table! {
     project_leads (project_id, user_id) {
         project_id -> Uuid,
         user_id -> Uuid,
+        assigned_at -> Timestamp,
     }
 }
 
@@ -208,6 +216,21 @@ diesel::table! {
 }
 
 diesel::table! {
+    user_profile_info (id) {
+        id -> Uuid,
+        email -> Nullable<Text>,
+        bio -> Nullable<Text>,
+        location -> Nullable<Text>,
+        website -> Nullable<Text>,
+        twitter -> Nullable<Text>,
+        linkedin -> Nullable<Text>,
+        telegram -> Nullable<Text>,
+        discord -> Nullable<Text>,
+        languages -> Nullable<Jsonb>,
+    }
+}
+
+diesel::table! {
     work_items (payment_id, repo_id, issue_number) {
         payment_id -> Uuid,
         issue_number -> Int8,
@@ -243,5 +266,6 @@ diesel::allow_tables_to_appear_in_same_query!(
     sponsors,
     terms_and_conditions_acceptances,
     user_info,
+    user_profile_info,
     work_items,
 );

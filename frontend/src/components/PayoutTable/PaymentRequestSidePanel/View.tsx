@@ -21,6 +21,8 @@ import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import Tooltip, { withCustomTooltip } from "src/components/Tooltip";
 import IBAN from "iban";
 import ExternalLink from "src/components/ExternalLink";
+import isDefined from "src/utils/isDefined";
+import ClickableUser from "src/components/ClickableUser";
 
 enum Align {
   Top = "top",
@@ -37,7 +39,7 @@ export type Props = {
   payoutInfoMissing: boolean;
   invoiceNeeded?: boolean;
   projectLeaderView?: boolean;
-  onPaymentCancel: () => void;
+  onPaymentCancel?: () => void;
 } & Partial<PaymentRequestDetailsFragment>;
 
 const Details = ({ align = Align.Center, children }: PropsWithChildren & { align?: Align }) => (
@@ -77,102 +79,123 @@ export default function View({
   return (
     <SidePanel
       {...props}
-      title={T("payment.table.detailsPanel.title", { id: pretty(id) })}
       action={
-        projectLeaderView && status === PaymentStatus.WAITING_PAYMENT ? (
+        projectLeaderView && onPaymentCancel && status === PaymentStatus.WAITING_PAYMENT ? (
           <CancelPaymentButton onPaymentCancel={onPaymentCancel} />
         ) : undefined
       }
     >
       <QueryWrapper query={{ loading, data: requestedAt }}>
-        <div className="flex flex-col gap-2 px-6">
-          <PayoutStatus
-            {...{
-              id: "details-payout-status",
-              status: status,
-              payoutInfoMissing,
-              invoiceNeeded: invoiceNeeded && !invoiceReceivedAt,
-              isProjectLeaderView: projectLeaderView,
-            }}
-          />
-          <div className="font-belwe font-normal text-5xl text-greyscale-50">
-            {formatMoneyAmount({ amount: amountInUsd })}
+        <div className="flex flex-col gap-8 h-full">
+          <div className="font-belwe font-normal text-2xl text-greyscale-50 pt-8 px-6">
+            {T("payment.table.detailsPanel.title", { id: pretty(id) })}
           </div>
-          {requestor && (
-            <Details>
-              <RoundedImage alt={requestor.login || ""} src={requestor.avatarUrl || ""} size={ImageSize.Xxs} />
-              {T(`payment.table.detailsPanel.from.${requestor.id === userId ? "you" : "other"}`, {
-                user: requestor.login,
-              })}
-            </Details>
-          )}
-          {liveGithubRecipient && (
-            <Details>
-              <RoundedImage alt={liveGithubRecipient.login} src={liveGithubRecipient.avatarUrl} size={ImageSize.Xxs} />
-              {T(`payment.table.detailsPanel.to.${liveGithubRecipient.id === githubUserId ? "you" : "other"}`, {
-                user: liveGithubRecipient.login,
-              })}
-            </Details>
-          )}
-          {requestedAt && (
-            <Details>
-              <Time className="text-base" />
-              {T("payment.table.detailsPanel.requestedAt", { requestedAt: formatDateTime(new Date(requestedAt)) })}
-            </Details>
-          )}
-          {status === PaymentStatus.ACCEPTED && payments?.at(0)?.processedAt && (
-            <Details align={Align.Top}>
-              <BankCardLine className="text-base" />
-              <ReactMarkdown
-                className="payment-receipt whitespace-pre-wrap"
-                {...withCustomTooltip("payment-receipt-tooltip")}
-              >
-                {T(`payment.table.detailsPanel.processedAt.${formattedReceipt?.type}`, {
-                  processedAt: formatDateTime(new Date(payments?.at(0)?.processedAt)),
-                  recipient: formattedReceipt?.shortDetails,
-                })}
-              </ReactMarkdown>
-              <Tooltip anchorSelect=".payment-receipt" clickable>
-                <div className="flex flex-col items-start">
-                  <div>
-                    {T(`payment.table.detailsPanel.processedTooltip.${formattedReceipt?.type}.recipient`, {
-                      recipient: formattedReceipt?.fullDetails,
-                    })}
-                  </div>
-
-                  {formattedReceipt?.type === "crypto" ? (
-                    <ExternalLink
-                      url={`https://etherscan.io/tx/${formattedReceipt?.reference}`}
-                      text={T(`payment.table.detailsPanel.processedTooltip.${formattedReceipt?.type}.reference`, {
-                        reference: formattedReceipt?.reference,
-                      })}
-                    />
-                  ) : (
-                    <div>
-                      {T(`payment.table.detailsPanel.processedTooltip.${formattedReceipt?.type}.reference`, {
-                        reference: formattedReceipt?.reference,
-                      })}
-                    </div>
-                  )}
+          <div className="flex flex-col gap-2 px-6">
+            <PayoutStatus
+              {...{
+                id: "details-payout-status",
+                status: status,
+                payoutInfoMissing,
+                invoiceNeeded: invoiceNeeded && !invoiceReceivedAt,
+                isProjectLeaderView: projectLeaderView,
+              }}
+            />
+            <div className="font-belwe font-normal text-5xl text-greyscale-50">
+              {formatMoneyAmount({ amount: amountInUsd })}
+            </div>
+            {requestor?.login && (
+              <Details>
+                <RoundedImage alt={requestor.login || ""} src={requestor.avatarUrl || ""} size={ImageSize.Xxs} />
+                <div className="flex flex-row items-center gap-1">
+                  {T("payment.table.detailsPanel.from")}
+                  <ClickableUser name={requestor.login} githubUserId={requestor.githubUserId} />
+                  {requestor.id === userId && T("payment.table.detailsPanel.you")}
                 </div>
-              </Tooltip>
-            </Details>
-          )}
-        </div>
-        <div className="px-6">
-          <div className="border-t border-greyscale-50/12" />
-        </div>
-        <div className="flex flex-col gap-3 overflow-hidden -mr-4 h-full px-6">
-          <div className="font-belwe font-normal text-base text-greyscale-50">
-            {T("payment.table.detailsPanel.workItems")}
-          </div>
-          <div className="flex flex-col gap-3 h-full p-px pr-4 overflow-auto scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded">
-            {workItems?.map(
-              workItem =>
-                workItem.githubIssue && (
-                  <GithubIssue key={workItem.githubIssue?.id} workItem={issueToWorkItem(workItem.githubIssue)} />
-                )
+              </Details>
             )}
+            {liveGithubRecipient && (
+              <Details>
+                <RoundedImage
+                  alt={liveGithubRecipient.login}
+                  src={liveGithubRecipient.avatarUrl}
+                  size={ImageSize.Xxs}
+                />
+                <div className="flex flex-row items-center gap-1">
+                  {T("payment.table.detailsPanel.to")}
+                  <ClickableUser name={liveGithubRecipient.login} githubUserId={liveGithubRecipient.id} />
+                  {liveGithubRecipient.id === githubUserId && T("payment.table.detailsPanel.you")}
+                </div>
+              </Details>
+            )}
+            {requestedAt && (
+              <Details>
+                <Time className="text-base" />
+                {T("payment.table.detailsPanel.requestedAt", { requestedAt: formatDateTime(new Date(requestedAt)) })}
+              </Details>
+            )}
+            {status === PaymentStatus.ACCEPTED && payments?.at(0)?.processedAt && (
+              <Details align={formattedReceipt ? Align.Top : Align.Center}>
+                <BankCardLine className="text-base" />
+                <ReactMarkdown
+                  className="payment-receipt whitespace-pre-wrap"
+                  {...withCustomTooltip("payment-receipt-tooltip")}
+                >
+                  {[
+                    T("payment.table.detailsPanel.processedAt", {
+                      processedAt: formatDateTime(new Date(payments?.at(0)?.processedAt)),
+                    }),
+                    formattedReceipt &&
+                      T(`payment.table.detailsPanel.processedVia.${formattedReceipt?.type}`, {
+                        recipient: formattedReceipt?.shortDetails,
+                      }),
+                  ]
+                    .filter(isDefined)
+                    .join("\n")}
+                </ReactMarkdown>
+                {formattedReceipt && (
+                  <Tooltip anchorSelect=".payment-receipt" clickable>
+                    <div className="flex flex-col items-start">
+                      <div>
+                        {T(`payment.table.detailsPanel.processedTooltip.${formattedReceipt?.type}.recipient`, {
+                          recipient: formattedReceipt?.fullDetails,
+                        })}
+                      </div>
+
+                      {formattedReceipt?.type === "crypto" ? (
+                        <ExternalLink
+                          url={`https://etherscan.io/tx/${formattedReceipt?.reference}`}
+                          text={T(`payment.table.detailsPanel.processedTooltip.${formattedReceipt?.type}.reference`, {
+                            reference: formattedReceipt?.reference,
+                          })}
+                        />
+                      ) : (
+                        <div>
+                          {T(`payment.table.detailsPanel.processedTooltip.${formattedReceipt?.type}.reference`, {
+                            reference: formattedReceipt?.reference,
+                          })}
+                        </div>
+                      )}
+                    </div>
+                  </Tooltip>
+                )}
+              </Details>
+            )}
+          </div>
+          <div className="px-6">
+            <div className="border-t border-greyscale-50/12" />
+          </div>
+          <div className="flex flex-col gap-3 overflow-hidden -mr-4 h-full px-6">
+            <div className="font-belwe font-normal text-base text-greyscale-50">
+              {T("payment.table.detailsPanel.workItems")}
+            </div>
+            <div className="flex flex-col gap-3 h-full p-px pr-4 pb-6 overflow-auto scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded">
+              {workItems?.map(
+                workItem =>
+                  workItem.githubIssue && (
+                    <GithubIssue key={workItem.githubIssue?.id} workItem={issueToWorkItem(workItem.githubIssue)} />
+                  )
+              )}
+            </div>
           </div>
         </div>
       </QueryWrapper>

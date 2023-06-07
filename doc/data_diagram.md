@@ -32,6 +32,31 @@ class Budgets {
    spentAmount: numeric!
 }
 
+class ContributionCounts {
+   githubUserId: bigint
+   paidCount: bigint
+   unpaidCount: bigint
+   week: float8
+   year: float8
+}
+
+class ContributionStats {
+   count: bigint
+   githubUserId: bigint
+   maxDate: timestamp
+   minDate: timestamp
+   projectId: uuid
+}
+
+class Contributions {
+   createdAt: timestamp
+   githubIssueId: bigint
+   githubUserId: bigint
+   issueNumber: bigint
+   projectId: uuid
+   repoId: bigint
+}
+
 class GithubIssues {
    authorId: bigint!
    closedAt: timestamp
@@ -67,11 +92,17 @@ class GithubReposContributors {
 
 class GithubUsers {
    avatarUrl: String!
+   bio: String
    htmlUrl: String!
    id: bigint!
+   linkedin: String
+   location: String
    login: String!
    paymentRequests: [PaymentRequests!]!
+   telegram: String
+   twitter: String
    user: RegisteredUsers
+   website: String
 }
 
 class IgnoredGithubIssues {
@@ -121,6 +152,12 @@ class PaymentRequests {
    workItems: [WorkItems!]!
 }
 
+class PaymentStats {
+   githubUserId: bigint
+   moneyGranted: numeric
+   projectId: uuid
+}
+
 class Payments {
    amount: numeric!
    currencyCode: String!
@@ -161,6 +198,7 @@ class ProjectGithubRepos {
 }
 
 class ProjectLeads {
+   assignedAt: timestamp!
    project: Projects
    projectId: uuid!
    user: RegisteredUsers
@@ -182,6 +220,7 @@ class Projects {
 class ProjectsContributorsView {
    githubUser: GithubUsers
    githubUserId: bigint
+   project: Projects
    projectId: uuid
 }
 
@@ -234,6 +273,31 @@ class UserInfo {
    location: jsonb
    payoutSettings: jsonb
    userId: uuid!
+}
+
+class UserProfiles {
+   avatarUrl: String
+   bio: String
+   contributionCounts: [ContributionCounts!]!
+   contributionStats: [ContributionStats!]!
+   contributions: [Contributions!]!
+   createdAt: timestamptz
+   discord: String
+   email: String
+   githubUserId: bigint
+   htmlUrl: String
+   languages: jsonb
+   lastSeen: timestamptz
+   linkedin: String
+   location: String
+   login: String
+   paymentStats: [PaymentStats!]!
+   projectsContributed: [ProjectsContributorsView!]!
+   projectsLeaded: [ProjectLeads!]!
+   telegram: String
+   twitter: String
+   userId: uuid
+   website: String
 }
 
 class WorkItems {
@@ -369,6 +433,7 @@ Projects --* ProjectLeads
 Projects --* ProjectsContributorsView
 Projects --* ProjectsSponsors
 ProjectsContributorsView -- GithubUsers
+ProjectsContributorsView -- Projects
 ProjectsSponsors -- Projects
 ProjectsSponsors -- Sponsors
 RegisteredUsers -- UserInfo
@@ -377,6 +442,12 @@ RegisteredUsers --* ProjectLeads
 Sponsors --* ProjectsSponsors
 User -- RegisteredUsers
 User --* PaymentRequests
+UserProfiles --* ContributionCounts
+UserProfiles --* ContributionStats
+UserProfiles --* Contributions
+UserProfiles --* PaymentStats
+UserProfiles --* ProjectLeads
+UserProfiles --* ProjectsContributorsView
 WorkItems -- Issue
 WorkItems --* IgnoredGithubIssues
 authProviders --* authUserProviders

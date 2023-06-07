@@ -1,12 +1,11 @@
-import { lazy, Suspense } from "react";
-import { RouteObject, useRoutes } from "react-router-dom";
+import { lazy, Suspense, useEffect } from "react";
+import { RouteObject, useLocation, useRoutes } from "react-router-dom";
 
 import Layout from "src/App/Layout";
 import ProtectedRoute from "src/App/ProtectedRoute";
 
 const Login = lazy(() => import("src/pages/Login"));
 const Projects = lazy(() => import("src/pages/Projects"));
-const Profile = lazy(() => import("src/pages/Profile"));
 const Payments = lazy(() => import("src/pages/Payments"));
 const ProjectDetails = lazy(() => import("src/pages/ProjectDetails"));
 const ProjectDetailsOverview = lazy(() => import("src/pages/ProjectDetails/Overview"));
@@ -20,12 +19,12 @@ import LoaderFallback from "src/components/Loader";
 import ErrorTrigger from "src/pages/ErrorTrigger";
 import ImpersonationPage from "src/pages/Impersonation";
 import { TermsAndConditions } from "src/pages/TermsAndConditions";
+import useReloadOnNewRelease from "./useReloadOnNewRelease";
 
 export enum RoutePaths {
   Home = "/",
   Projects = "/",
   Login = "/login",
-  Profile = "/profile",
   ProjectDetails = "/projects/:projectId",
   Payments = "/payments",
   CatchAll = "*",
@@ -46,6 +45,13 @@ export enum ProjectPaymentsRoutePaths {
 }
 
 function App() {
+  const location = useLocation();
+  const reloadOnNewRelease = useReloadOnNewRelease();
+
+  useEffect(() => {
+    reloadOnNewRelease();
+  }, [location]);
+
   const projectRoutes: RouteObject[] = [
     {
       index: true,
@@ -90,14 +96,6 @@ function App() {
         {
           path: RoutePaths.TermsAndConditions,
           element: <TermsAndConditions />,
-        },
-        {
-          path: RoutePaths.Profile,
-          element: (
-            <ProtectedRoute requiredRole={HasuraUserRole.RegisteredUser}>
-              <Profile />
-            </ProtectedRoute>
-          ),
         },
         {
           path: RoutePaths.Payments,

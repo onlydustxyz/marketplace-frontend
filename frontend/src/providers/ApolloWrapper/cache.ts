@@ -23,6 +23,13 @@ export default function useApolloCache() {
           },
         },
       },
+      GithubUsers: {
+        fields: {
+          paymentRequests: {
+            merge: (existing = [], incoming) => uniqBy([...existing, ...incoming], "__ref"),
+          },
+        },
+      },
       Projects: {
         fields: {
           applications: {

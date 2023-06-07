@@ -11,6 +11,7 @@ fragment PaymentRequestDetails on PaymentRequests {
     id
     login
     avatarUrl
+    githubUserId
   }
   liveGithubRecipient {
     ...LiveGithubUser

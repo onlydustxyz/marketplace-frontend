@@ -11,7 +11,7 @@ import {
   EthereumIdentityType,
 } from "./__generated/graphql";
 import { ProjectPaymentsPage } from "./pages/project/payments";
-import { EditProfilePage } from "./pages/edit_profile_page";
+import { EditPayoutInfoPage } from "./pages/edit_payout_info_page";
 import { populateReceipt } from "./commands/populate/populate_payments";
 
 test.describe("As a project lead, I", () => {
@@ -57,7 +57,7 @@ test.describe("As a project lead, I", () => {
     );
 
     expect(await overviewPage.contributorsCount()).toBe(3);
-    expect(await overviewPage.grantedAmount()).toBe("$13.4K / $100K — $86.6K left to spend");
+    expect(await overviewPage.grantedAmount()).toBe("$13.4k / $100k — $86.6k left to spend");
 
     const contributorsPage = await projectPage.contributors();
     const contributors = await contributorsPage.contributorsTable();
@@ -144,8 +144,7 @@ test.describe("As a project lead, I", () => {
 
     expect(sidePanel.getByText(`Payment #${(await payment.paymentId())?.substring(0, 5).toUpperCase()}`)).toBeVisible();
     await expect(sidePanel.getByText("$1,000")).toBeVisible();
-    await expect(sidePanel.getByText("from tokio-rs (you)")).toBeVisible();
-    await expect(sidePanel.getByText("to AnthonyBuisset")).toBeVisible();
+    await expect(sidePanel.getByText("from")).toBeVisible();
     await expect(sidePanel.locator("div", { hasText: "#4 · Create a-new-file.txt" }).first()).toBeVisible(); // auto added
     await expect(sidePanel.locator("div", { hasText: "#2 · Another update README.md" }).first()).toBeVisible();
     await expect(sidePanel.locator("div", { hasText: "#1 · Update README.md" }).first()).toBeVisible();
@@ -256,13 +255,13 @@ test.describe("As a project lead, I", () => {
     );
     expect(pendingStatus).toBe("Pending");
 
-    // 2. Edit profile info, payment is "processing"
-    const editProfilePage = new EditProfilePage(page);
+    // 2. Edit payout info, payment is "processing"
+    const editPayoutInfoPage = new EditPayoutInfoPage(page);
     await signIn(recipient);
     await acceptTermsAndConditions();
-    await editProfilePage.goto();
-    recipient.profile && (await editProfilePage.fillForm(recipient.profile));
-    await editProfilePage.submitForm();
+    await editPayoutInfoPage.goto();
+    recipient.payoutInfo && (await editPayoutInfoPage.fillForm(recipient.payoutInfo));
+    await editPayoutInfoPage.submitForm();
 
     const processingStatus = await retry(
       async () => {

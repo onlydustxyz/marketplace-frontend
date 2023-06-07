@@ -10,4 +10,9 @@ impl Query {
 		olog::info!("So hungry!");
 		"Couscous!"
 	}
+
+	pub fn release_date(&self) -> String {
+		std::env::var("HEROKU_RELEASE_CREATED_AT")
+			.unwrap_or_else(|_| "2023-01-01T08:00:00Z".to_string())
+	}
 }

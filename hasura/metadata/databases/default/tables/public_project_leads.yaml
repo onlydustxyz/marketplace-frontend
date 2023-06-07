@@ -24,6 +24,7 @@ select_permissions:
   - role: public
     permission:
       columns:
+        - assigned_at
         - project_id
         - user_id
       filter: {}

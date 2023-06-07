@@ -36,7 +36,7 @@ export default function Projects() {
   const { T } = useT();
   const { ledProjectIds } = useAuth();
 
-  const [projectSorting, setProjectSorting] = useLocalStorage("PROJECT_SORTING", DEFAULT_SORTING);
+  const [projectSorting, setProjectSorting] = useLocalStorage("PROJECT_SORTING_2", DEFAULT_SORTING);
   const [ref] = useScrollRestoration();
 
   return (

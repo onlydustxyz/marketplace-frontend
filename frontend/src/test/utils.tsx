@@ -11,6 +11,8 @@ import { Toaster } from "src/components/Toaster";
 import { viewportConfig } from "src/config";
 import { SuspenseCache } from "@apollo/client";
 import { ImpersonationClaimsProvider } from "src/hooks/useImpersonationClaims";
+import { ContributorProfilePanelProvider } from "src/hooks/useContributorProfilePanel";
+import { SidePanelStackProvider } from "src/hooks/useSidePanelStack";
 
 interface MemoryRouterProviderFactoryProps {
   route?: string;
@@ -39,15 +41,19 @@ export const MemoryRouterProviderFactory =
                 }}
               >
                 <MemoryRouter initialEntries={[route]}>
-                  {context ? (
-                    <Routes>
-                      <Route path="/" element={<Outlet context={context} />}>
-                        <Route index element={<AuthProvider>{children}</AuthProvider>} />
-                      </Route>
-                    </Routes>
-                  ) : (
-                    <AuthProvider>{children}</AuthProvider>
-                  )}
+                  <SidePanelStackProvider>
+                    <ContributorProfilePanelProvider>
+                      {context ? (
+                        <Routes>
+                          <Route path="/" element={<Outlet context={context} />}>
+                            <Route index element={<AuthProvider>{children}</AuthProvider>} />
+                          </Route>
+                        </Routes>
+                      ) : (
+                        <AuthProvider>{children}</AuthProvider>
+                      )}
+                    </ContributorProfilePanelProvider>
+                  </SidePanelStackProvider>
                 </MemoryRouter>
               </MockedProvider>
             </ImpersonationClaimsProvider>

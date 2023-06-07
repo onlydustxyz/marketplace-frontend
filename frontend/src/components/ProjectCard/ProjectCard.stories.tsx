@@ -2,11 +2,12 @@ import { responsiveChromatic } from "src/test/utils";
 import { withRouter } from "storybook-addon-react-router-v6";
 
 import ProjectCard, { Project } from ".";
+import withContributorProfilePanelProvider from "src/test/storybook/decorators/withContributorProfilePanelProvider";
 
 export default {
   title: "ProjectCard",
   parameters: responsiveChromatic,
-  decorators: [withRouter],
+  decorators: [withRouter, withContributorProfilePanelProvider],
 };
 
 export const Default = {
@@ -71,6 +72,7 @@ const props = (args: {
         id: "user-1",
         login: "oscarwroche",
         avatarUrl: "https://avatars.githubusercontent.com/u/21149076?v=4",
+        githubUserId: 21149076,
       },
     },
     {
@@ -80,6 +82,7 @@ const props = (args: {
         id: "user-2",
         login: "AnthonyBuisset",
         avatarUrl: "https://avatars.githubusercontent.com/u/43467246?v=4",
+        githubUserId: 43467246,
       },
     },
     {
@@ -89,6 +92,7 @@ const props = (args: {
         id: "user-3",
         login: "ofux",
         avatarUrl: "https://avatars.githubusercontent.com/u/595505?v=4",
+        githubUserId: 595505,
       },
     },
     {
@@ -98,6 +102,7 @@ const props = (args: {
         id: "user-4",
         login: "tdelabro",
         avatarUrl: "https://avatars.githubusercontent.com/u/34384633?v=4",
+        githubUserId: 34384633,
       },
     },
     {
@@ -107,6 +112,7 @@ const props = (args: {
         id: "user-5",
         login: "BernardStanislas",
         avatarUrl: "https://avatars.githubusercontent.com/u/4435377?v=4",
+        githubUserId: 4435377,
       },
     },
     {
@@ -116,6 +122,7 @@ const props = (args: {
         id: "user-6",
         login: "gregcha",
         avatarUrl: "https://avatars.githubusercontent.com/u/8642470?v=4",
+        githubUserId: 8642470,
       },
     },
   ].slice(0, args.projectLeadsCount),

@@ -19,6 +19,7 @@ export default function ContributorsTable({
 }: Props) {
   const contributors = contributorFragments.map(c => {
     return {
+      id: c.id,
       login: c.login,
       avatarUrl: c.avatarUrl,
       htmlUrl: c.htmlUrl,

@@ -22,6 +22,8 @@ import { ImpersonationClaimsProvider } from "src/hooks/useImpersonationClaims";
 import ErrorFallback from "./ErrorFallback";
 import config from "./config";
 import Maintenance from "./Maintenance";
+import { ContributorProfilePanelProvider } from "./hooks/useContributorProfilePanel";
+import { SidePanelStackProvider } from "./hooks/useSidePanelStack";
 
 if (config.GTM_ID) {
   TagManager.initialize({
@@ -39,13 +41,17 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
               <ToasterProvider>
                 <ApolloWrapper>
                   <AuthProvider>
-                    {config.MAINTENANCE ? (
-                      <Maintenance />
-                    ) : (
-                      <TermsAndConditionsWrapper>
-                        <App />
-                      </TermsAndConditionsWrapper>
-                    )}
+                    <SidePanelStackProvider>
+                      <ContributorProfilePanelProvider>
+                        {config.MAINTENANCE ? (
+                          <Maintenance />
+                        ) : (
+                          <TermsAndConditionsWrapper>
+                            <App />
+                          </TermsAndConditionsWrapper>
+                        )}
+                      </ContributorProfilePanelProvider>
+                    </SidePanelStackProvider>
                   </AuthProvider>
                 </ApolloWrapper>
               </ToasterProvider>

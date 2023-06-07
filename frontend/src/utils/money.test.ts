@@ -9,8 +9,8 @@ describe("Money", () => {
 
   it("should be formatted in compact mode in dollars", () => {
     expect(formatMoneyAmount({ amount: 123, notation: "compact" })).toBe("$123");
-    expect(formatMoneyAmount({ amount: 12345, notation: "compact" })).toBe("$12.3K");
-    expect(formatMoneyAmount({ amount: 12010, notation: "compact" })).toBe("$12K");
+    expect(formatMoneyAmount({ amount: 12345, notation: "compact" })).toBe("$12.3k");
+    expect(formatMoneyAmount({ amount: 12010, notation: "compact" })).toBe("$12k");
   });
 
   it("should be formatted in USDC", () => {
@@ -19,7 +19,7 @@ describe("Money", () => {
 
   it("should be formatted in compact mode in USDC", () => {
     expect(formatMoneyAmount({ amount: 123, currency: Currency.USDC, notation: "compact" })).toBe("USDC 123");
-    expect(formatMoneyAmount({ amount: 12345, currency: Currency.USDC, notation: "compact" })).toBe("USDC 12.3K");
-    expect(formatMoneyAmount({ amount: 12010, currency: Currency.USDC, notation: "compact" })).toBe("USDC 12K");
+    expect(formatMoneyAmount({ amount: 12345, currency: Currency.USDC, notation: "compact" })).toBe("USDC 12.3k");
+    expect(formatMoneyAmount({ amount: 12010, currency: Currency.USDC, notation: "compact" })).toBe("USDC 12k");
   });
 });

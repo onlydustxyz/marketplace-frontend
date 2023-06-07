@@ -44,9 +44,6 @@ query GetProjectOverviewDetails($projectId: uuid!) {
         }
       }
     }
-    applications {
-      ...Applicant
-    }
     pendingInvitations {
       id
       githubUserId
@@ -54,6 +51,19 @@ query GetProjectOverviewDetails($projectId: uuid!) {
   }
 }
 
+query GetProjectApplications($projectId: uuid!) {
+  projectsByPk(id: $projectId) {
+    ...ProjectId
+    applications {
+      ...Applicant
+    }
+  }
+}
+
 mutation ApplyToProject($projectId: Id!) {
   applyToProject(projectId: $projectId)
+}
+
+mutation acceptProjectLeaderInvitation($invitationId: Uuid!) {
+  acceptProjectLeaderInvitation(invitationId: $invitationId)
 }

@@ -154,7 +154,9 @@ pub fn impl_diesel_mapping_repository(input: syn::DeriveInput) -> TokenStream {
 			> {
 				let connection = self.0.connection()?;
 
-				let result = #table.filter(#id1.eq(id1)).load::<(
+				let result = #table.filter(#id1.eq(id1))
+				.select((#id1, #id2))
+				.load::<(
 					<#entity1 as domain::Entity>::Id,
 					<#entity2 as domain::Entity>::Id,
 				)>(&*connection)?;
@@ -172,7 +174,9 @@ pub fn impl_diesel_mapping_repository(input: syn::DeriveInput) -> TokenStream {
 			> {
 				let connection = self.0.connection()?;
 
-				let result = #table.filter(#id2.eq(id2)).load::<(
+				let result = #table.filter(#id2.eq(id2))
+				.select((#id1, #id2))
+				.load::<(
 					<#entity1 as domain::Entity>::Id,
 					<#entity2 as domain::Entity>::Id,
 				)>(&*connection)?;
@@ -191,7 +195,9 @@ pub fn impl_diesel_mapping_repository(input: syn::DeriveInput) -> TokenStream {
 			> {
 				let connection = self.0.connection()?;
 
-				let result = #table.filter(#id1.eq(id1).and(#id2.eq(id2))).load::<(
+				let result = #table.filter(#id1.eq(id1).and(#id2.eq(id2)))
+				.select((#id1, #id2))
+				.load::<(
 					<#entity1 as domain::Entity>::Id,
 					<#entity2 as domain::Entity>::Id,
 				)>(&*connection)?;

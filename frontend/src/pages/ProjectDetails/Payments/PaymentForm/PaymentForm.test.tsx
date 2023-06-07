@@ -21,9 +21,12 @@ import {
   GetProjectContributorsForPaymentSelectQueryResult,
   Status,
   GithubUserWithPaymentRequestsForProjectFragment,
+  GetPaymentRequestsForProjectDocument,
+  GetPaymentRequestsForProjectQueryResult,
 } from "src/__generated/graphql";
 import { MockedResponse } from "@apollo/client/testing";
 import { VirtuosoMockContext } from "react-virtuoso";
+import { ContributorProfilePanelProvider } from "src/hooks/useContributorProfilePanel";
 
 const TEST_USER = { id: "test-user-id", login: "test-login", githubUser: { githubUserId: 748483646584 } };
 const TEST_GITHUB_USER: GithubUserWithPaymentRequestsForProjectFragment = {
@@ -51,9 +54,13 @@ vi.mock("jwt-decode", () => ({
   default: () => ({ [CLAIMS_KEY]: { [PROJECTS_LED_KEY]: '{"test-project-id"}' } }),
 }));
 
-vi.mock("src/utils/date", () => ({
-  daysFromNow: () => new Date(2022, 3, 10),
-}));
+vi.mock("src/utils/date", async () => {
+  const actual = await vi.importActual<typeof import("src/utils/date")>("src/utils/date");
+  return {
+    ...actual,
+    daysFromNow: () => new Date(2022, 3, 10),
+  };
+});
 
 vi.mock("axios", () => ({
   default: {
@@ -157,6 +164,21 @@ const graphQlMocks = [
       } as SearchIssuesQueryResult["data"],
     },
   },
+  {
+    request: {
+      query: GetPaymentRequestsForProjectDocument,
+      variables: { projectId: TEST_PROJECT_ID },
+    },
+    result: {
+      data: {
+        projectsByPk: {
+          __typename: "Projects",
+          id: TEST_PROJECT_ID,
+          budgets: [],
+        },
+      } as GetPaymentRequestsForProjectQueryResult["data"],
+    },
+  },
 ];
 
 const intersectionObserverMock = () => ({
@@ -179,7 +201,9 @@ describe('"PaymentForm" component', () => {
   beforeEach(() => {
     renderWithIntl(
       <VirtuosoMockContext.Provider value={{ viewportHeight: 1000, itemHeight: 36 }}>
-        <PaymentForm />
+        <ContributorProfilePanelProvider>
+          <PaymentForm />
+        </ContributorProfilePanelProvider>
       </VirtuosoMockContext.Provider>,
       {
         wrapper: MemoryRouterProviderFactory({

@@ -13,13 +13,12 @@ import { LOCAL_STORAGE_SESSION_KEY } from "src/hooks/useSession";
 import { CLAIMS_KEY, GITHUB_USERID_KEY, PROJECTS_LED_KEY } from "src/types";
 import Overview from "src/pages/ProjectDetails/Overview";
 import {
-  GetProjectDocument,
-  GetProjectQueryResult,
+  GetProjectOverviewDetailsDocument,
+  GetProjectOverviewDetailsQueryResult,
   GetProjectsForSidebarDocument,
   GetProjectVisibilityDetailsDocument,
   GetProjectVisibilityDetailsQueryResult,
 } from "src/__generated/graphql";
-import { merge } from "lodash";
 
 const TEST_LED_PROJECT_ID = "test-led-project-id";
 const TEST_PROJECT_ID = "test-project-id";
@@ -59,9 +58,9 @@ vi.mock("jwt-decode", () => ({
 
 const getProjectMock = {
   request: {
-    query: GetProjectDocument,
+    query: GetProjectOverviewDetailsDocument,
     variables: {
-      id: TEST_PROJECT_ID,
+      projectId: TEST_PROJECT_ID,
     },
   },
   result: {
@@ -85,6 +84,7 @@ const getProjectMock = {
           name: TEST_PROJECT_NAME,
           telegramLink: TEST_TELEGRAM_LINK,
           shortDescription: TEST_DESCRIPTION,
+          longDescription: TEST_DESCRIPTION,
           logoUrl: null,
           hiring: false,
           rank: 0,
@@ -94,19 +94,18 @@ const getProjectMock = {
         pendingInvitations: [{ id: "test-invitation-id", githubUserId: TEST_GITHUB_USER_ID }],
         projectLeads: [
           {
-            userId: "test-user-id",
-            projectId: TEST_PROJECT_ID,
             user: {
               id: "test-user-id",
               login: TEST_PROJECT_LEAD_DISPLAY_NAME,
               avatarUrl: TEST_PROJECT_LEAD_AVATAR_URL,
+              githubUserId: 12345,
             },
           },
         ],
-        githubRepos: [{ githubRepoId: 123456, projectId: TEST_PROJECT_ID, repo: null }],
+        githubRepos: [{ repo: null }],
         projectSponsors: [],
       },
-    } as GetProjectQueryResult["data"],
+    } as GetProjectOverviewDetailsQueryResult["data"],
   },
 };
 
@@ -135,9 +134,9 @@ const getProjectVisibilityMock = (projectId: string) => ({
 
 const getLedProjectMock = {
   request: {
-    query: GetProjectDocument,
+    query: GetProjectOverviewDetailsDocument,
     variables: {
-      id: TEST_LED_PROJECT_ID,
+      projectId: TEST_LED_PROJECT_ID,
     },
   },
   result: {
@@ -162,6 +161,7 @@ const getLedProjectMock = {
           name: TEST_LED_PROJECT_NAME,
           telegramLink: TEST_TELEGRAM_LINK,
           shortDescription: TEST_DESCRIPTION,
+          longDescription: TEST_DESCRIPTION,
           logoUrl: null,
           hiring: false,
           rank: 0,
@@ -170,19 +170,18 @@ const getLedProjectMock = {
         pendingInvitations: [],
         projectLeads: [
           {
-            userId: "test-user-id",
-            projectId: TEST_LED_PROJECT_ID,
             user: {
               id: "test-user-id",
               login: TEST_PROJECT_LEAD_DISPLAY_NAME,
               avatarUrl: TEST_PROJECT_LEAD_AVATAR_URL,
+              githubUserId: 12345,
             },
           },
         ],
-        githubRepos: [{ projectId: TEST_LED_PROJECT_ID, githubRepoId: 123456, repo: null }],
+        githubRepos: [{ repo: null }],
         projectSponsors: [],
       },
-    } as GetProjectQueryResult["data"],
+    } as GetProjectOverviewDetailsQueryResult["data"],
   },
 };
 
@@ -244,17 +243,12 @@ describe('"ProjectDetails" page', () => {
   });
 
   it("should store the project id if it is a project led by the user", async () => {
-    renderWithIntl(
-      <Routes>
-        <Route path="/projects/:projectId" element={<ProjectDetails />}></Route>
-      </Routes>,
-      {
-        wrapper: MemoryRouterProviderFactory({
-          route: generatePath(RoutePaths.ProjectDetails, { projectId: TEST_LED_PROJECT_ID }),
-          mocks: graphQlMocks,
-        }),
-      }
-    );
+    renderWithIntl(<Overview />, {
+      wrapper: MemoryRouterProviderFactory({
+        mocks: graphQlMocks,
+        context: { projectId: TEST_LED_PROJECT_ID },
+      }),
+    });
     await waitFor(() => {
       expect(JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_SESSION_KEY) || "{}").lastVisitedProjectId).toBe(
         TEST_LED_PROJECT_ID
@@ -263,17 +257,12 @@ describe('"ProjectDetails" page', () => {
   });
 
   it("should store the project id if the user has been invited as project lead", async () => {
-    renderWithIntl(
-      <Routes>
-        <Route path="/projects/:projectId" element={<ProjectDetails />}></Route>
-      </Routes>,
-      {
-        wrapper: MemoryRouterProviderFactory({
-          route: generatePath(RoutePaths.ProjectDetails, { projectId: TEST_PROJECT_ID }),
-          mocks: graphQlMocks,
-        }),
-      }
-    );
+    renderWithIntl(<Overview />, {
+      wrapper: MemoryRouterProviderFactory({
+        mocks: graphQlMocks,
+        context: { projectId: TEST_PROJECT_ID },
+      }),
+    });
 
     await waitFor(() => {
       expect(JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_SESSION_KEY) || "{}").lastVisitedProjectId).toBe(
@@ -308,7 +297,7 @@ describe('"ProjectDetails" page', () => {
       {
         wrapper: MemoryRouterProviderFactory({
           route: generatePath(RoutePaths.ProjectDetails, { projectId: TEST_LED_PROJECT_ID }),
-          mocks: [merge(getProjectMock, { result: { data: { projectsByPk: { githubRepos: [] } } } })],
+          mocks: [getProjectMock],
         }),
       }
     );

@@ -1,45 +1,13 @@
-import { MockedProvider, MockedResponse } from "@apollo/client/testing";
-import { FormProvider, useForm } from "react-hook-form";
-import { AuthContext, AuthContextType } from "src/hooks/useAuth";
-import { ToasterProvider } from "src/hooks/useToaster";
-import { User } from "src/types";
+import { MockedResponse } from "@apollo/client/testing";
 import { GetProjectReposDocument, GetProjectReposQueryResult, UserIdentityDocument } from "src/__generated/graphql";
 import OtherWorkForm from ".";
-
-export default {
-  title: "OtherWorkForm",
-  component: OtherWorkForm,
-};
+import withToasterProvider from "src/test/storybook/decorators/withToasterProvider";
+import withMockedProvider from "src/test/storybook/decorators/withMockedProvider";
+import withAuthProvider from "src/test/storybook/decorators/withAuthProvider";
+import withFormProvider from "src/test/storybook/decorators/withFormProvider";
 
 const USER_ID = "e2ee731a-2697-4306-bf4b-c807f6fda0d7";
 const PROJECT_ID = "project-1";
-
-const MockAuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const mockedValue: AuthContextType = {
-    isLoggedIn: true,
-    ledProjectIds: [],
-    login: () => {
-      return;
-    },
-    logout: () => Promise.resolve(),
-    roles: [],
-    user: {
-      id: USER_ID,
-      email: "le@chinoix.fr",
-      login: "lechinoix",
-      avatarUrl: "https://avatars.githubusercontent.com/u/10167015?v=4",
-    } as unknown as User,
-    githubUserId: 123,
-    invalidImpersonation: false,
-    impersonating: false,
-  };
-  const methods = useForm();
-  return (
-    <FormProvider {...methods}>
-      <AuthContext.Provider value={mockedValue}>{children}</AuthContext.Provider>
-    </FormProvider>
-  );
-};
 
 const mocks: MockedResponse[] = [
   {
@@ -92,14 +60,19 @@ const mocks: MockedResponse[] = [
   },
 ];
 
+export default {
+  title: "OtherWorkForm",
+  component: OtherWorkForm,
+  decorators: [
+    withToasterProvider,
+    withMockedProvider(mocks),
+    withAuthProvider({ userId: USER_ID }),
+    withFormProvider(),
+  ],
+};
+
 export const Default = {
   render: () => (
-    <MockedProvider mocks={mocks}>
-      <MockAuthProvider>
-        <ToasterProvider>
-          <OtherWorkForm projectId={PROJECT_ID} contributorHandle="ofux" onWorkItemAdded={Function.prototype()} />
-        </ToasterProvider>
-      </MockAuthProvider>
-    </MockedProvider>
+    <OtherWorkForm projectId={PROJECT_ID} contributorHandle="ofux" onWorkItemAdded={Function.prototype()} />
   ),
 };

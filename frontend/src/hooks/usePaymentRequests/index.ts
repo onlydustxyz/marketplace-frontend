@@ -2,22 +2,25 @@ import {
   CancelPaymentRequestMutationResult,
   ExtendedPaymentRequestFragment,
   ExtendedPaymentRequestFragmentDoc,
+  GetPaymentRequestsForProjectDocument,
+  GetPaymentRequestsForProjectQuery,
   RequestPaymentMutationOptions,
   RequestPaymentMutationResult,
   RequestPaymentMutationVariables,
   useCancelPaymentRequestMutation,
-  useGetPaymentRequestsForProjectQuery,
   useRequestPaymentMutation,
 } from "src/__generated/graphql";
 import { reject } from "lodash";
 import { ContributorFragment } from "src/types";
+import { useSuspenseQuery_experimental } from "@apollo/client";
 
 export default function usePaymentRequests(projectId?: string) {
-  const getPaymentRequestsQuery = useGetPaymentRequestsForProjectQuery({
-    variables: { projectId },
-    skip: !projectId,
-    nextFetchPolicy: "cache-only",
-  });
+  const getPaymentRequestsQuery = useSuspenseQuery_experimental<GetPaymentRequestsForProjectQuery>(
+    GetPaymentRequestsForProjectDocument,
+    {
+      variables: { projectId },
+    }
+  );
 
   const [requestNewPaymentMutation, { loading: requestNewPaymentMutationLoading }] = useRequestPaymentMutation();
 

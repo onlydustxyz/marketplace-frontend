@@ -2,7 +2,6 @@ import { useIntl } from "src/hooks/useIntl";
 import Line from "src/components/Table/Line";
 import Cell, { CellHeight } from "src/components/Table/Cell";
 import { withTooltip } from "src/components/Tooltip";
-import { linkClickHandlerFactory } from "src/utils/clickHandler";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import SendPlane2Line from "src/icons/SendPlane2Line";
 import { Contributor as ContributorType } from "./View";
@@ -28,7 +27,7 @@ export default function ContributorLine({
   return (
     <Line key={contributor.login} className="h-10">
       <Cell height={CellHeight.Small} horizontalMargin={false} className="-ml-px">
-        <Contributor contributor={contributor} onClick={linkClickHandlerFactory(contributor.htmlUrl)} />
+        <Contributor contributor={contributor} />
       </Cell>
       <Cell height={CellHeight.Small} horizontalMargin={false}>{`${
         contributor?.totalEarned ? formatMoneyAmount({ amount: contributor.totalEarned }) : "-"

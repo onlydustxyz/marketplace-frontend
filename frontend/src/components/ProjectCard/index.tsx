@@ -8,7 +8,7 @@ import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import { viewportConfig } from "src/config";
 import { useIntl } from "src/hooks/useIntl";
 import CodeSSlashLine from "src/icons/CodeSSlashLine";
-import { buildLanguageString, getDeduplicatedAggregatedLanguages } from "src/utils/languages";
+import { buildLanguageString, getDeduplicatedAggregatedLanguages, getMostUsedLanguages } from "src/utils/languages";
 import { formatMoneyAmount } from "src/utils/money";
 import { useMediaQuery } from "usehooks-ts";
 import User3Line from "src/icons/User3Line";
@@ -44,7 +44,7 @@ export default function ProjectCard({
   const totalInitialAmountInUsd = budgetsAggregate?.aggregate?.sum?.initialAmount;
 
   const topSponsors = projectSponsors?.map(projectSponsor => projectSponsor.sponsor).slice(0, 3) || [];
-  const languages = getDeduplicatedAggregatedLanguages(githubRepos.map(r => r.repo));
+  const languages = getMostUsedLanguages(getDeduplicatedAggregatedLanguages(githubRepos.map(r => r.repo)));
   const contributorsCount = contributorsAggregate.aggregate?.count || 0;
 
   const card = (
@@ -74,10 +74,10 @@ export default function ProjectCard({
               logoUrl={projectDetails?.logoUrl || onlyDustLogo}
               private={projectDetails?.visibility === "Private"}
             />
-            {Object.keys(languages).length > 0 && (
+            {languages.length > 0 && (
               <div className="hidden lg:block">
-                <Tag testid={`languages-${id}`} size={TagSize.Small}>
-                  <CodeSSlashLine />
+                <Tag testid={`languages-${id}`} size={TagSize.Large}>
+                  <CodeSSlashLine className="text-xl" />
                   {buildLanguageString(languages)}
                 </Tag>
               </div>

@@ -1,0 +1,21 @@
+fragment UserPayoutSettings on UserInfo {
+  userId
+  identity
+  location
+  payoutSettings
+  arePayoutSettingsValid
+}
+
+query GetUserPayoutSettings($githubUserId: bigint!) {
+  registeredUsers(where: { githubUserId: { _eq: $githubUserId } }) {
+    ...UserId
+    githubUserId
+    userInfo {
+      ...UserPayoutSettings
+    }
+  }
+}
+
+mutation updatePayoutSettings($identity: IdentityInput, $location: Location, $payoutSettings: PayoutSettingsInput) {
+  updateProfileInfo(identity: $identity, location: $location, payoutSettings: $payoutSettings)
+}

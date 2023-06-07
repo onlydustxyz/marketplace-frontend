@@ -8,6 +8,23 @@
   "contributions": {
     "empty": "No contributions yet"
   },
+  "contributionGraph": {
+    "paid": "Paid",
+    "tooltip": {
+      "contributionCount": {
+        "total": {
+          "zero": "No contribution",
+          "one": "1 contribution",
+          "many": "__count__ contributions"
+        },
+        "paid": "__count__ paid",
+        "unpaid": "__count__ not paid"
+      },
+      "date": "__from__ → __to__"
+    },
+    "unpaid": "Not paid",
+    "progressionTooltip": "Variation since last week"
+  },
   "contributor": {
     "table": {
       "contributor": "Contributor",
@@ -97,7 +114,12 @@
       "button": "Feedback",
       "popupTitle": "Feedback form"
     },
-    "logout": "Logout",
+    "logout": "Log out",
+    "profile": {
+      "title": "Your account",
+      "publicProfile": "Public profile",
+      "payoutInfo": "Payout information"
+    },
     "payments": "Payments",
     "projects": "Projects",
     "signInWithGithub": "Connect"
@@ -245,14 +267,12 @@
             "title": "Are you sure?"
           }
         },
-        "from": {
-          "you": "from __user__ (you)",
-          "other": "from __user__"
-        },
+        "from": "from",
         "requestedAt": "Created on __requestedAt__",
-        "processedAt": {
-          "crypto": "Processed on __processedAt__\n via **Crypto Wire** on __recipient__",
-          "fiat": "Processed on __processedAt__\n via **Bank Wire** on account __recipient__"
+        "processedAt": "Processed on __processedAt__",
+        "processedVia": {
+          "crypto": "via **Crypto Wire** on __recipient__",
+          "fiat": "via **Bank Wire** on account __recipient__"
         },
         "processedTooltip": {
           "crypto": {
@@ -265,10 +285,8 @@
           }
         },
         "title": "Payment #__id__",
-        "to": {
-          "you": "to __user__ (you)",
-          "other": "to __user__"
-        },
+        "to": "to",
+        "you": "(you)",
         "workItems": "Included in payment"
       },
       "status": "Status"
@@ -280,10 +298,44 @@
     }
   },
   "profile": {
+    "joinedAt": "Joined in __joinedAt__",
+    "firstContributedAt": "Contributed first on __firstContributedAt__",
+    "valueCopiedToClipboard": "__valueName__ copied to clipboard",
+    "email": "Email address",
+    "discord": "Discord username",
+    "sections": {
+      "technologies": {
+        "title": "Technologies"
+      },
+      "stats": {
+        "contributions": "Contributions",
+        "contributorOn": "Contributor on",
+        "leadOn": "Lead on",
+        "granted": "Granted money",
+        "title": "Stats",
+        "projects": {
+          "zero": "project",
+          "one": "project",
+          "many": "projects"
+        }
+      },
+      "projects": {
+        "contributionCount": {
+          "zero": "No contribution",
+          "one": "1 contribution",
+          "many": "__count__ contributions"
+        },
+        "projectLead": "Project lead",
+        "lastContribution": "Latest __lastContribution__",
+        "projectLeadSince": "Since __since__",
+        "title": "Projects",
+        "contributorCount": "Number of contributors",
+        "moneyGranted": "Total granted"
+      }
+    },
     "button": {
       "payoutSettingsInvalidTooltip": "You're unable to receive payments. Click to fill up required info"
     },
-    "edit": "Edit profile",
     "form": {
       "address": "Street address",
       "bankWire": "Bank wire",
@@ -323,13 +375,18 @@
       "profileType": "Account type",
       "profileTypeCompany": "Company",
       "profileTypeIndividual": "Individual",
-      "send": "Save profile",
+      "send": "Save payout info",
       "success": "Changes saved",
       "telegram": "Telegram",
       "telegramPlaceholder": "Telegram",
       "twitter": "Twitter",
       "twitterPlaceholder": "Twitter",
-      "typeOfProfile": "Profile type"
+      "typeOfProfile": "Profile type",
+      "privacyNotice": "Your info remains private.\n We'll only use it to process payments.",
+      "saveStatus": {
+        "unsaved": "Unsaved changes",
+        "saved": "All changes saved"
+      }
     },
     "missing": {
       "button": "Complete payout information",
@@ -423,7 +480,7 @@
     },
     "ledBy": {
       "many": "__count__ project leads",
-      "one": "Led by __name__"
+      "one": "Led by"
     },
     "projectLeadInvitation": {
       "prompt": "You've been promoted to Project Lead",

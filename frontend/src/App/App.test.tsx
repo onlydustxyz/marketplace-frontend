@@ -10,24 +10,18 @@ import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
 import {
   GetGithubRepositoryDetailsDocument,
   GetGithubRepositoryDetailsQueryResult,
-  GetProjectDocument,
   GetProjectOverviewDetailsDocument,
   GetProjectOverviewDetailsQueryResult,
-  GetProjectQueryResult,
   GetProjectsDocument,
   GetProjectsForSidebarDocument,
   GetProjectsForSidebarQueryResult,
   GetProjectsQueryResult,
-  ProfileDocument,
-  ProfileQueryResult,
 } from "src/__generated/graphql";
 import { buildQuerySorting } from "src/pages/Projects/AllProjects";
 import { Sorting } from "src/pages/Projects";
 
 const TEST_USER_ID = "test-user-id";
 const TEST_GITHUB_USER_ID = 123456789;
-const TEST_USER_EMAIL = "test@user.email";
-const EDIT_PROFILE_TITLE = "Edit profile";
 const PROFILE_BUTTON_TEST_ID = "profile-button";
 const LOGOUT_BUTTON_TEST_ID = "logout-button";
 
@@ -111,6 +105,7 @@ const ALL_PROJECTS_RESULT: { data: GetProjectsQueryResult["data"] } = {
               id: TEST_USER_ID,
               login: TEST_PROJECT_LEAD_DISPLAY_NAME,
               avatarUrl: TEST_PROJECT_LEAD_AVATAR_URL,
+              githubUserId: 12345,
             },
           },
         ],
@@ -127,67 +122,6 @@ const ALL_PROJECTS_RESULT: { data: GetProjectsQueryResult["data"] } = {
         budgetsAggregate: { aggregate: { count: 1, sum: { spentAmount: 100, initialAmount: 1000 } } },
       },
     ],
-  },
-};
-
-const SINGLE_PROJECT_RESULT: { data: GetProjectQueryResult["data"] } = {
-  data: {
-    projectsByPk: {
-      __typename: "Projects",
-      id: TEST_PROJECT_ID,
-      budgetsAggregate: {
-        aggregate: {
-          count: 1,
-          sum: {
-            spentAmount: 123,
-            initialAmount: 1000,
-          },
-        },
-      },
-      contributors: [],
-      contributorsAggregate: { aggregate: { count: 0 } },
-      githubReposAggregate: { aggregate: { count: 1 } },
-      projectDetails: {
-        __typename: "ProjectDetails",
-        name: TEST_PROJECT_NAME,
-        telegramLink: TEST_TELEGRAM_LINK,
-        shortDescription: TEST_DESCRIPTION,
-        projectId: TEST_PROJECT_ID,
-        logoUrl: null,
-        hiring: false,
-        rank: 0,
-        visibility: "Public",
-      },
-      projectLeads: [
-        {
-          __typename: "ProjectLeads",
-          projectId: TEST_PROJECT_ID,
-          userId: TEST_USER_ID,
-          user: {
-            __typename: "RegisteredUsers",
-            id: TEST_USER_ID,
-            login: TEST_PROJECT_LEAD_DISPLAY_NAME,
-            avatarUrl: TEST_PROJECT_LEAD_AVATAR_URL,
-          },
-        },
-      ],
-      pendingInvitations: [
-        { __typename: "PendingProjectLeaderInvitations", id: "invitation-id", githubUserId: TEST_GITHUB_USER_ID },
-      ],
-      githubRepos: [
-        {
-          __typename: "ProjectGithubRepos",
-          projectId: TEST_PROJECT_ID,
-          githubRepoId: TEST_GITHUB_REPO_ID,
-          repo: {
-            __typename: "GithubRepos",
-            id: TEST_GITHUB_REPO_ID,
-            languages: [],
-          },
-        },
-      ],
-      projectSponsors: [],
-    },
   },
 };
 
@@ -240,7 +174,6 @@ const PROJECT_OVERVIEW_DETAILS_RESULT: { data: GetProjectOverviewDetailsQueryRes
           repo: { id: TEST_GITHUB_REPO_ID, stars: 1000, languages: {} },
         },
       ],
-      applications: [],
     },
   },
 };
@@ -265,35 +198,6 @@ const graphQlMocks = [
       },
     },
     result: ALL_PROJECTS_RESULT,
-  },
-  {
-    request: {
-      query: ProfileDocument,
-      variables: {
-        id: TEST_USER_ID,
-      },
-    },
-    result: {
-      data: {
-        userInfoByPk: {
-          __typename: "UserInfo",
-          userId: TEST_USER_ID,
-          contactInformation: { email: TEST_USER_EMAIL },
-          identity: null,
-          location: null,
-          payoutSettings: null,
-        },
-      } as ProfileQueryResult["data"],
-    },
-  },
-  {
-    request: {
-      query: GetProjectDocument,
-      variables: {
-        id: TEST_PROJECT_ID,
-      },
-    },
-    result: SINGLE_PROJECT_RESULT,
   },
   {
     request: {
@@ -343,25 +247,6 @@ Object.defineProperty(window, "innerWidth", { writable: true, configurable: true
 describe("Integration tests", () => {
   beforeEach(() => {
     window.localStorage.clear();
-  });
-
-  it("should be able to access the profile page and display profile info when having a token in local storage", async () => {
-    window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_BASIC_TEST_VALUE));
-    renderWithIntl(<App />, {
-      wrapper: MemoryRouterProviderFactory({
-        route: `${RoutePaths.Profile}`,
-        mocks: graphQlMocks,
-      }),
-    });
-    await screen.findByText(EDIT_PROFILE_TITLE);
-  });
-
-  it("should redirect to the projects page if the profile route is accessed without a token in the local storage", async () => {
-    renderWithIntl(<App />, {
-      wrapper: MemoryRouterProviderFactory({ route: RoutePaths.Profile, mocks: graphQlMocks }),
-    });
-    await screen.findAllByText("Filter");
-    expect(window.location.pathname).toBe(RoutePaths.Projects);
   });
 
   it.skip("should be able to access the project details page from the projects list and see the tabs", async () => {

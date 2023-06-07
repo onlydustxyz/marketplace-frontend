@@ -1,11 +1,4 @@
-import {
-  ContactInformation,
-  EthereumIdentityInput,
-  IdentityInput,
-  Location,
-  PayoutSettingsInput,
-  Reason,
-} from "./__generated/graphql";
+import { EthereumIdentityInput, IdentityInput, Location, PayoutSettingsInput, Reason } from "./__generated/graphql";
 
 export type Url = string;
 export type Uuid = string;
@@ -16,15 +9,14 @@ export type UserFixture = {
     id: number;
     login: string;
   };
-  profile?: UserProfile;
+  payoutInfo?: UserPayoutInfo;
 };
 
-export type UserProfile = {
+export type UserPayoutInfo = {
   populate?: boolean;
   identity: IdentityInput | null;
   location: Location | null;
   payoutSettings: PayoutSettingsInput | null;
-  contactInformation: ContactInformation | null;
 };
 
 export type User = UserFixture & {

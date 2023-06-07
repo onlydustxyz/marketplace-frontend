@@ -15,9 +15,13 @@ import {
   GithubUserWithPaymentRequestsForProjectFragment,
 } from "src/__generated/graphql";
 
-vi.mock("src/utils/date", () => ({
-  daysFromNow: () => new Date(2022, 3, 10),
-}));
+vi.mock("src/utils/date", async () => {
+  const actual = await vi.importActual<typeof import("src/utils/date")>("src/utils/date");
+  return {
+    ...actual,
+    daysFromNow: () => new Date(2022, 3, 10),
+  };
+});
 
 const TEST_USER: GithubUserWithPaymentRequestsForProjectFragment = {
   __typename: "GithubUsers",

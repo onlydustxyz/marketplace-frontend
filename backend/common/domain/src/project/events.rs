@@ -1,5 +1,6 @@
 use std::fmt::Display;
 
+use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
 
 use crate::{
@@ -14,6 +15,7 @@ pub enum Event {
 	LeaderAssigned {
 		id: ProjectId,
 		leader_id: UserId,
+		assigned_at: NaiveDateTime,
 	},
 	LeaderUnassigned {
 		id: ProjectId,

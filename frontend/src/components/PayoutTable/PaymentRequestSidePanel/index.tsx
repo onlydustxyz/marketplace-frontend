@@ -8,22 +8,23 @@ import { useShowToaster } from "src/hooks/useToaster";
 import { useIntl } from "src/hooks/useIntl";
 
 type Props = {
-  projectId?: string;
   open: boolean;
   setOpen: (open: boolean) => void;
   paymentId: string;
-  projectLeaderView?: boolean;
 };
 
-export default function PaymentRequestSidePanel({ projectId, paymentId, projectLeaderView, setOpen, ...props }: Props) {
+export default function PaymentRequestSidePanel({
+  paymentId,
+  ...props
+}: Props & {
+  onPaymentCancel?: () => void;
+  projectLeaderView?: boolean;
+}) {
   const { user, githubUserId } = useAuth();
   const { data, loading } = usePaymentRequestDetailsQuery({
     variables: { id: paymentId },
     skip: !githubUserId || !user,
   });
-
-  const showToaster = useShowToaster();
-  const { T } = useIntl();
 
   const status =
     data?.paymentRequestsByPk?.paymentsAggregate.aggregate?.sum?.amount === data?.paymentRequestsByPk?.amountInUsd
@@ -33,6 +34,30 @@ export default function PaymentRequestSidePanel({ projectId, paymentId, projectL
   const { invoiceNeeded, valid: payoutSettingsValid } = usePayoutSettings(
     data?.paymentRequestsByPk?.liveGithubRecipient?.id
   );
+
+  return (
+    <View
+      {...props}
+      loading={loading}
+      {...data?.paymentRequestsByPk}
+      id={paymentId}
+      userId={user?.id}
+      githubUserId={githubUserId}
+      status={status}
+      invoiceNeeded={invoiceNeeded}
+      payoutInfoMissing={!payoutSettingsValid}
+    />
+  );
+}
+
+export function PaymentRequestSidePanelAsLeader({
+  projectId,
+  paymentId,
+  setOpen,
+  ...props
+}: Props & { projectId: string }) {
+  const showToaster = useShowToaster();
+  const { T } = useIntl();
 
   const { cancelPaymentRequest } = usePaymentRequests(projectId);
 
@@ -46,18 +71,11 @@ export default function PaymentRequestSidePanel({ projectId, paymentId, projectL
     });
 
   return (
-    <View
+    <PaymentRequestSidePanel
       {...props}
+      projectLeaderView
+      paymentId={paymentId}
       setOpen={setOpen}
-      loading={loading}
-      {...data?.paymentRequestsByPk}
-      id={paymentId}
-      userId={user?.id}
-      githubUserId={githubUserId}
-      status={status}
-      invoiceNeeded={invoiceNeeded}
-      payoutInfoMissing={!payoutSettingsValid}
-      projectLeaderView={projectLeaderView}
       onPaymentCancel={onPaymentCancel}
     />
   );

@@ -1,4 +1,9 @@
-import { ApplicantFragment, ApplicantFragmentDoc, useApplyToProjectMutation } from "src/__generated/graphql";
+import {
+  ApplicantFragment,
+  ApplicantFragmentDoc,
+  useApplyToProjectMutation,
+  useGetProjectApplicationsQuery,
+} from "src/__generated/graphql";
 import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
@@ -8,10 +13,15 @@ export default function useApplications(projectId: string) {
   const showToaster = useShowToaster();
   const { T } = useIntl();
 
-  const [applyToProject, { loading }] = useApplyToProjectMutation({
+  const { data } = useGetProjectApplicationsQuery({
+    variables: { projectId },
+  });
+
+  const [applyToProject] = useApplyToProjectMutation({
     variables: { projectId },
     context: { graphqlErrorDisplay: "toaster" },
     onCompleted: () => showToaster(T("applications.confirmationToaster")),
+    optimisticResponse: { applyToProject: "new_application" },
     update: (cache, { data }) => {
       const application = cache.writeFragment<ApplicantFragment>({
         fragment: ApplicantFragmentDoc,
@@ -33,7 +43,8 @@ export default function useApplications(projectId: string) {
   });
 
   return {
+    applications: data?.projectsByPk?.applications,
+    alreadyApplied: data?.projectsByPk?.applications.some(a => a.applicantId === user?.id),
     applyToProject,
-    loading,
   };
 }

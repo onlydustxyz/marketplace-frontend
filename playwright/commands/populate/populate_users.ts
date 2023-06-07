@@ -4,8 +4,8 @@ import { users } from "../../fixtures/data/users";
 import { User, UserFixture } from "../../types";
 import {
   UpdateProfileDocument,
-  UpdateProfileInfoMutation,
-  UpdateProfileInfoMutationVariables,
+  UpdateProfileMutation,
+  UpdateProfileMutationVariables,
 } from "../../__generated/graphql";
 import { mutateAsRegisteredUser } from "../common";
 import { createGithubUser, signinUser } from "../user";
@@ -20,7 +20,7 @@ const populateUser = async (request: APIRequestContext, user: UserFixture) => {
   const session = await signinUser(request, credentials);
 
   if (user.profile && user.profile.populate !== false) {
-    await mutateAsRegisteredUser<UpdateProfileInfoMutation, UpdateProfileInfoMutationVariables>(session.accessToken, {
+    await mutateAsRegisteredUser<UpdateProfileMutation, UpdateProfileMutationVariables>(session.accessToken, {
       mutation: UpdateProfileDocument,
       variables: user.profile,
     });
