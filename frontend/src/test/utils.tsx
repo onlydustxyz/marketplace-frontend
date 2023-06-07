@@ -1,5 +1,5 @@
 import { MemoryRouter, Outlet, Route, Routes } from "react-router-dom";
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, Suspense } from "react";
 import { MockedProvider, MockedResponse } from "@apollo/client/testing";
 import { AuthProvider } from "src/hooks/useAuth";
 import { render, RenderOptions } from "@testing-library/react";
@@ -27,40 +27,49 @@ export const MemoryRouterProviderFactory =
   // eslint-disable-next-line react/display-name
   ({ children }: PropsWithChildren) =>
     (
-      <ToasterProvider>
-        <SessionProvider>
-          <TokenSetProvider>
-            <ImpersonationClaimsProvider>
-              <MockedProvider
-                mocks={mocks}
-                addTypename={false}
-                suspenseCache={suspenseCache}
-                defaultOptions={{
-                  query: { fetchPolicy: "no-cache" },
-                  watchQuery: { fetchPolicy: "no-cache" },
-                }}
-              >
-                <MemoryRouter initialEntries={[route]}>
-                  <SidePanelStackProvider>
-                    <ContributorProfilePanelProvider>
+      <Suspense fallback={<div />}>
+        <ToasterProvider>
+          <SessionProvider>
+            <TokenSetProvider>
+              <ImpersonationClaimsProvider>
+                <MockedProvider
+                  mocks={mocks}
+                  addTypename={false}
+                  suspenseCache={suspenseCache}
+                  defaultOptions={{
+                    query: { fetchPolicy: "no-cache" },
+                    watchQuery: { fetchPolicy: "no-cache" },
+                  }}
+                >
+                  <MemoryRouter initialEntries={[route]}>
+                    <SidePanelStackProvider>
                       {context ? (
                         <Routes>
                           <Route path="/" element={<Outlet context={context} />}>
-                            <Route index element={<AuthProvider>{children}</AuthProvider>} />
+                            <Route
+                              index
+                              element={
+                                <AuthProvider>
+                                  <ContributorProfilePanelProvider>{children}</ContributorProfilePanelProvider>
+                                </AuthProvider>
+                              }
+                            />
                           </Route>
                         </Routes>
                       ) : (
-                        <AuthProvider>{children}</AuthProvider>
+                        <AuthProvider>
+                          <ContributorProfilePanelProvider>{children}</ContributorProfilePanelProvider>
+                        </AuthProvider>
                       )}
-                    </ContributorProfilePanelProvider>
-                  </SidePanelStackProvider>
-                </MemoryRouter>
-              </MockedProvider>
-            </ImpersonationClaimsProvider>
-          </TokenSetProvider>
-        </SessionProvider>
-        <Toaster />
-      </ToasterProvider>
+                    </SidePanelStackProvider>
+                  </MemoryRouter>
+                </MockedProvider>
+              </ImpersonationClaimsProvider>
+            </TokenSetProvider>
+          </SessionProvider>
+          <Toaster />
+        </ToasterProvider>
+      </Suspense>
     );
 
 export const renderWithIntl = (ui: React.ReactElement, options?: RenderOptions) =>
