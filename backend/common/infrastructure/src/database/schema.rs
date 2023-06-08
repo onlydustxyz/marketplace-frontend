@@ -20,6 +20,16 @@ diesel::table! {
 }
 
 diesel::table! {
+    commands (id) {
+        id -> Uuid,
+        processing_count -> Int4,
+        created_at -> Timestamp,
+        updated_at -> Nullable<Timestamp>,
+        metadata -> Jsonb,
+    }
+}
+
+diesel::table! {
     event_deduplications (deduplication_id) {
         deduplication_id -> Text,
         event_index -> Int4,
@@ -34,6 +44,7 @@ diesel::table! {
         aggregate_id -> Varchar,
         payload -> Jsonb,
         metadata -> Nullable<Jsonb>,
+        command_id -> Nullable<Uuid>,
     }
 }
 
@@ -239,6 +250,7 @@ diesel::joinable!(projects_sponsors -> sponsors (sponsor_id));
 diesel::allow_tables_to_appear_in_same_query!(
     applications,
     budgets,
+    commands,
     event_deduplications,
     events,
     github_issues,
