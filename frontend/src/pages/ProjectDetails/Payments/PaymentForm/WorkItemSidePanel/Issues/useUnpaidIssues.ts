@@ -11,7 +11,8 @@ type Props = {
 
 export default function useUnpaidIssues({ projectId, authorId, type }: Props) {
   const getPaidItemsQuery = useGetPaidWorkItemsQuery({
-    variables: { projectId },
+    variables: { projectId, githubUserId: authorId },
+    skip: !authorId || !projectId,
   });
 
   const searchIssuesQuery = useSearchIssuesQuery({
@@ -24,8 +25,8 @@ export default function useUnpaidIssues({ projectId, authorId, type }: Props) {
   });
 
   const paidItems = useMemo(
-    () => getPaidItemsQuery.data?.projectsByPk?.budgets.flatMap(b => b.paymentRequests).flatMap(p => p.workItems),
-    [getPaidItemsQuery.data?.projectsByPk?.budgets]
+    () => getPaidItemsQuery.data?.paymentRequests.flatMap(p => p.workItems),
+    [getPaidItemsQuery.data?.paymentRequests]
   );
 
   const eligibleIssues: WorkItem[] | undefined | null = useMemo(

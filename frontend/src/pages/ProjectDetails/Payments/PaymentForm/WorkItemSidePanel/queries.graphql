@@ -4,24 +4,18 @@ query SearchIssues($projectId: uuid!, $authorId: bigint!, $type: jsonb!) {
     githubRepos {
       projectId
       githubRepoId
-      repoIssues(where: { authorId: { _eq: $authorId }, type: {_eq: $type} }) {
+      repoIssues(where: { authorId: { _eq: $authorId }, type: { _eq: $type } }) {
         ...GithubIssue
       }
     }
   }
 }
 
-query getPaidWorkItems($projectId: uuid!) {
-  projectsByPk(id: $projectId) {
-    id
-    budgets {
-      id
-      paymentRequests {
-        ...PaymentRequestId
-        workItems {
-          ...WorkItemId
-        }
-      }
+query getPaidWorkItems($projectId: uuid!, $githubUserId: bigint!) {
+  paymentRequests(where: { budget: { projectId: { _eq: $projectId } }, recipientId: { _eq: $githubUserId } }) {
+    ...PaymentRequestId
+    workItems {
+      ...WorkItemId
     }
   }
 }
