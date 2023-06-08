@@ -16,11 +16,11 @@ export const TermsAndConditions = () => {
   const [showFullTermsAndConditions, setShowFullTermsAndConditions] = useState(false);
   const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
   return (
-    <Background roundedBorders={BackgroundRoundedBorders.Full}>
-      <div className="h-full flex flex-col justify-center items-center text-greyscale-50">
+    <Background roundedBorders={BackgroundRoundedBorders.Full} centeredContent={!showTermsAndConditions}>
+      <div className="flex flex-col justify-center items-center text-greyscale-50">
         <FullTermsAndConditionsSidePanel {...{ showFullTermsAndConditions, setShowFullTermsAndConditions }} />
         <PrivacyPolicySidePanel {...{ showPrivacyPolicy, setShowPrivacyPolicy }} />
-        <div className="w-1/2 my-16">
+        <div className="w-1/2">
           {!showTermsAndConditions ? (
             <Card
               className="flex flex-col justify-between gap-7 items-center px-24 pt-20 pb-12 relative mx-auto"
