@@ -783,6 +783,166 @@ export type CitextComparisonExp = {
   _similar: InputMaybe<Scalars['citext']>;
 };
 
+/** columns and relationships of "api.commands" */
+export type Commands = {
+  __typename?: 'Commands';
+  createdAt: Maybe<Scalars['timestamp']>;
+  id: Maybe<Scalars['uuid']>;
+  processingCount: Maybe<Scalars['Int']>;
+  projectId: Maybe<Scalars['uuid']>;
+  updatedAt: Maybe<Scalars['timestamp']>;
+};
+
+/** aggregated selection of "api.commands" */
+export type CommandsAggregate = {
+  __typename?: 'CommandsAggregate';
+  aggregate: Maybe<CommandsAggregateFields>;
+  nodes: Array<Commands>;
+};
+
+/** aggregate fields of "api.commands" */
+export type CommandsAggregateFields = {
+  __typename?: 'CommandsAggregateFields';
+  avg: Maybe<CommandsAvgFields>;
+  count: Scalars['Int'];
+  max: Maybe<CommandsMaxFields>;
+  min: Maybe<CommandsMinFields>;
+  stddev: Maybe<CommandsStddevFields>;
+  stddevPop: Maybe<CommandsStddev_PopFields>;
+  stddevSamp: Maybe<CommandsStddev_SampFields>;
+  sum: Maybe<CommandsSumFields>;
+  varPop: Maybe<CommandsVar_PopFields>;
+  varSamp: Maybe<CommandsVar_SampFields>;
+  variance: Maybe<CommandsVarianceFields>;
+};
+
+
+/** aggregate fields of "api.commands" */
+export type CommandsAggregateFieldsCountArgs = {
+  columns: InputMaybe<Array<CommandsSelectColumn>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
+/** aggregate avg on columns */
+export type CommandsAvgFields = {
+  __typename?: 'CommandsAvgFields';
+  processingCount: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "api.commands". All fields are combined with a logical 'AND'. */
+export type CommandsBoolExp = {
+  _and: InputMaybe<Array<CommandsBoolExp>>;
+  _not: InputMaybe<CommandsBoolExp>;
+  _or: InputMaybe<Array<CommandsBoolExp>>;
+  createdAt: InputMaybe<TimestampComparisonExp>;
+  id: InputMaybe<UuidComparisonExp>;
+  processingCount: InputMaybe<IntComparisonExp>;
+  projectId: InputMaybe<UuidComparisonExp>;
+  updatedAt: InputMaybe<TimestampComparisonExp>;
+};
+
+/** aggregate max on columns */
+export type CommandsMaxFields = {
+  __typename?: 'CommandsMaxFields';
+  createdAt: Maybe<Scalars['timestamp']>;
+  id: Maybe<Scalars['uuid']>;
+  processingCount: Maybe<Scalars['Int']>;
+  projectId: Maybe<Scalars['uuid']>;
+  updatedAt: Maybe<Scalars['timestamp']>;
+};
+
+/** aggregate min on columns */
+export type CommandsMinFields = {
+  __typename?: 'CommandsMinFields';
+  createdAt: Maybe<Scalars['timestamp']>;
+  id: Maybe<Scalars['uuid']>;
+  processingCount: Maybe<Scalars['Int']>;
+  projectId: Maybe<Scalars['uuid']>;
+  updatedAt: Maybe<Scalars['timestamp']>;
+};
+
+/** Ordering options when selecting data from "api.commands". */
+export type CommandsOrderBy = {
+  createdAt: InputMaybe<OrderBy>;
+  id: InputMaybe<OrderBy>;
+  processingCount: InputMaybe<OrderBy>;
+  projectId: InputMaybe<OrderBy>;
+  updatedAt: InputMaybe<OrderBy>;
+};
+
+/** select columns of table "api.commands" */
+export enum CommandsSelectColumn {
+  /** column name */
+  CreatedAt = 'createdAt',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  ProcessingCount = 'processingCount',
+  /** column name */
+  ProjectId = 'projectId',
+  /** column name */
+  UpdatedAt = 'updatedAt'
+}
+
+/** aggregate stddev on columns */
+export type CommandsStddevFields = {
+  __typename?: 'CommandsStddevFields';
+  processingCount: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type CommandsStddev_PopFields = {
+  __typename?: 'CommandsStddev_popFields';
+  processingCount: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type CommandsStddev_SampFields = {
+  __typename?: 'CommandsStddev_sampFields';
+  processingCount: Maybe<Scalars['Float']>;
+};
+
+/** aggregate sum on columns */
+export type CommandsSumFields = {
+  __typename?: 'CommandsSumFields';
+  processingCount: Maybe<Scalars['Int']>;
+};
+
+/** aggregate var_pop on columns */
+export type CommandsVar_PopFields = {
+  __typename?: 'CommandsVar_popFields';
+  processingCount: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type CommandsVar_SampFields = {
+  __typename?: 'CommandsVar_sampFields';
+  processingCount: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type CommandsVarianceFields = {
+  __typename?: 'CommandsVarianceFields';
+  processingCount: Maybe<Scalars['Float']>;
+};
+
+/** Streaming cursor of the table "Commands" */
+export type Commands_StreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: Commands_StreamCursorValueInput;
+  /** cursor ordering */
+  ordering: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Commands_StreamCursorValueInput = {
+  createdAt: InputMaybe<Scalars['timestamp']>;
+  id: InputMaybe<Scalars['uuid']>;
+  processingCount: InputMaybe<Scalars['Int']>;
+  projectId: InputMaybe<Scalars['uuid']>;
+  updatedAt: InputMaybe<Scalars['timestamp']>;
+};
+
 export type CompanyIdentity = {
   identificationNumber: InputMaybe<Scalars['String']>;
   name: InputMaybe<Scalars['String']>;
@@ -12169,6 +12329,10 @@ export type Query_Root = {
   budgetsAggregate: BudgetsAggregate;
   /** fetch data from the table: "budgets" using primary key columns */
   budgetsByPk: Maybe<Budgets>;
+  /** fetch data from the table: "api.commands" */
+  commands: Array<Commands>;
+  /** fetch aggregated fields from the table: "api.commands" */
+  commandsAggregate: CommandsAggregate;
   /** An array relationship */
   contributionCounts: Array<ContributionCounts>;
   /** An aggregate relationship */
@@ -12531,6 +12695,24 @@ export type Query_RootBudgetsAggregateArgs = {
 
 export type Query_RootBudgetsByPkArgs = {
   id: Scalars['uuid'];
+};
+
+
+export type Query_RootCommandsArgs = {
+  distinctOn: InputMaybe<Array<CommandsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<CommandsOrderBy>>;
+  where: InputMaybe<CommandsBoolExp>;
+};
+
+
+export type Query_RootCommandsAggregateArgs = {
+  distinctOn: InputMaybe<Array<CommandsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<CommandsOrderBy>>;
+  where: InputMaybe<CommandsBoolExp>;
 };
 
 
@@ -13122,6 +13304,8 @@ export type Sponsors_StreamCursorValueInput = {
 
 export type Subscription_Root = {
   __typename?: 'subscription_root';
+  /** fetch data from the table in a streaming manner: "api.commands" */
+  CommandsStream: Array<Commands>;
   /** An array relationship */
   applications: Array<Applications>;
   /** An aggregate relationship */
@@ -13200,6 +13384,10 @@ export type Subscription_Root = {
   budgetsByPk: Maybe<Budgets>;
   /** fetch data from the table in a streaming manner: "budgets" */
   budgetsStream: Array<Budgets>;
+  /** fetch data from the table: "api.commands" */
+  commands: Array<Commands>;
+  /** fetch aggregated fields from the table: "api.commands" */
+  commandsAggregate: CommandsAggregate;
   /** An array relationship */
   contributionCounts: Array<ContributionCounts>;
   /** An aggregate relationship */
@@ -13378,6 +13566,13 @@ export type Subscription_Root = {
   workItemsByPk: Maybe<WorkItems>;
   /** fetch data from the table in a streaming manner: "work_items" */
   workItemsStream: Array<WorkItems>;
+};
+
+
+export type Subscription_RootCommandsStreamArgs = {
+  batchSize: Scalars['Int'];
+  cursor: Array<InputMaybe<Commands_StreamCursorInput>>;
+  where: InputMaybe<CommandsBoolExp>;
 };
 
 
@@ -13673,6 +13868,24 @@ export type Subscription_RootBudgetsStreamArgs = {
   batchSize: Scalars['Int'];
   cursor: Array<InputMaybe<Budgets_StreamCursorInput>>;
   where: InputMaybe<BudgetsBoolExp>;
+};
+
+
+export type Subscription_RootCommandsArgs = {
+  distinctOn: InputMaybe<Array<CommandsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<CommandsOrderBy>>;
+  where: InputMaybe<CommandsBoolExp>;
+};
+
+
+export type Subscription_RootCommandsAggregateArgs = {
+  distinctOn: InputMaybe<Array<CommandsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<CommandsOrderBy>>;
+  where: InputMaybe<CommandsBoolExp>;
 };
 
 
@@ -15221,6 +15434,14 @@ export type PaymentRequestDetailsQueryVariables = Exact<{
 
 export type PaymentRequestDetailsQuery = { __typename?: 'query_root', paymentRequestsByPk: { __typename?: 'PaymentRequests', id: any, amountInUsd: any, requestedAt: any, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', processedAt: any, receipt: any }>, requestor: { __typename?: 'RegisteredUsers', id: any | null, login: string | null, avatarUrl: string | null, githubUserId: any | null } | null, liveGithubRecipient: { __typename?: 'User', login: string, avatarUrl: any, htmlUrl: any, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, workItems: Array<{ __typename?: 'WorkItems', paymentId: any, repoId: any, issueNumber: any, githubIssue: { __typename?: 'Issue', repoId: any, number: any, type: Type, status: Status, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null, id: any, ignoredForProjects: Array<{ __typename?: 'IgnoredGithubIssues', projectId: any, repoId: any, issueNumber: any }> } | null }>, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null } } | null };
 
+export type CancelPaymentRequestMutationVariables = Exact<{
+  projectId: Scalars['Uuid'];
+  paymentId: Scalars['Uuid'];
+}>;
+
+
+export type CancelPaymentRequestMutation = { __typename?: 'mutation_root', cancelPaymentRequest: { __typename?: 'Payment', projectId: any, budgetId: any, paymentId: any, amount: any } };
+
 export type ProjectCardFieldsFragment = { __typename?: 'Projects', id: any, contributorsAggregate: { __typename?: 'ProjectsContributorsViewAggregate', aggregate: { __typename?: 'ProjectsContributorsViewAggregateFields', count: number } | null }, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number, sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null, initialAmount: any | null } | null } | null }, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, telegramLink: string | null, logoUrl: string | null, shortDescription: string, hiring: boolean, rank: number, visibility: any } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any, projectId: any, user: { __typename?: 'RegisteredUsers', login: string | null, avatarUrl: string | null, githubUserId: any | null, id: any | null } | null }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', projectId: any, githubRepoId: any, repo: { __typename?: 'GithubRepos', languages: any, id: any } | null }>, projectSponsors: Array<{ __typename?: 'ProjectsSponsors', sponsor: { __typename?: 'Sponsors', name: string, logoUrl: string, url: string | null, id: any } }>, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributorsView', githubUser: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null }> };
 
 export type ApplicationIdFragment = { __typename?: 'Applications', id: any };
@@ -15315,32 +15536,6 @@ export type UserProfileQueryVariables = Exact<{
 
 
 export type UserProfileQuery = { __typename?: 'query_root', userProfiles: Array<{ __typename?: 'UserProfiles', githubUserId: any | null, login: string | null, avatarUrl: string | null, htmlUrl: string | null, location: string | null, bio: string | null, languages: any | null, createdAt: any | null, lastSeen: any | null, email: string | null, twitter: string | null, telegram: string | null, linkedin: string | null, discord: string | null, website: string | null, contributionStats: Array<{ __typename?: 'ContributionStats', projectId: any | null, maxDate: any | null, minDate: any | null, totalCount: any | null }>, contributionStatsAggregate: { __typename?: 'ContributionStatsAggregate', aggregate: { __typename?: 'ContributionStatsAggregateFields', sum: { __typename?: 'ContributionStatsSumFields', totalCount: any | null } | null, min: { __typename?: 'ContributionStatsMinFields', minDate: any | null } | null } | null }, paymentStats: Array<{ __typename?: 'PaymentStats', projectId: any | null, moneyGranted: any | null }>, paymentStatsAggregate: { __typename?: 'PaymentStatsAggregate', aggregate: { __typename?: 'PaymentStatsAggregateFields', sum: { __typename?: 'PaymentStatsSumFields', moneyGranted: any | null } | null } | null }, projectsContributed: Array<{ __typename?: 'ProjectsContributorsView', project: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, logoUrl: string | null, name: string, visibility: any } | null, contributorsAggregate: { __typename?: 'ProjectsContributorsViewAggregate', aggregate: { __typename?: 'ProjectsContributorsViewAggregateFields', count: number } | null }, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number, sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributorsView', githubUser: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> } | null }>, projectsContributedAggregate: { __typename?: 'ProjectsContributorsViewAggregate', aggregate: { __typename?: 'ProjectsContributorsViewAggregateFields', count: number } | null }, projectsLeaded: Array<{ __typename?: 'ProjectLeads', projectId: any, assignedAt: any, project: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, logoUrl: string | null, name: string, visibility: any } | null, contributorsAggregate: { __typename?: 'ProjectsContributorsViewAggregate', aggregate: { __typename?: 'ProjectsContributorsViewAggregateFields', count: number } | null }, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number, sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributorsView', githubUser: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> } | null }>, contributionCounts: Array<{ __typename?: 'ContributionCounts', year: any | null, week: any | null, paidCount: any | null, unpaidCount: any | null }> }> };
-
-export type GetPaymentRequestsForProjectQueryVariables = Exact<{
-  projectId: Scalars['uuid'];
-}>;
-
-
-export type GetPaymentRequestsForProjectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, budgets: Array<{ __typename?: 'Budgets', id: any, initialAmount: any, remainingAmount: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', recipientId: any, amountInUsd: any, requestedAt: any, id: any, githubRecipient: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null }, workItemsAggregate: { __typename?: 'WorkItemsAggregate', aggregate: { __typename?: 'WorkItemsAggregateFields', count: number } | null } }> }> } | null };
-
-export type RequestPaymentMutationVariables = Exact<{
-  amount: Scalars['Int'];
-  contributorId: Scalars['Int'];
-  hoursWorked: Scalars['Int'];
-  projectId: Scalars['Uuid'];
-  reason: Reason;
-}>;
-
-
-export type RequestPaymentMutation = { __typename?: 'mutation_root', requestPayment: { __typename?: 'Payment', projectId: any, budgetId: any, paymentId: any, amount: any } };
-
-export type CancelPaymentRequestMutationVariables = Exact<{
-  projectId: Scalars['Uuid'];
-  paymentId: Scalars['Uuid'];
-}>;
-
-
-export type CancelPaymentRequestMutation = { __typename?: 'mutation_root', cancelPaymentRequest: { __typename?: 'Payment', projectId: any, budgetId: any, paymentId: any, amount: any } };
 
 export type UserPayoutSettingsFragment = { __typename?: 'UserInfo', userId: any, identity: any | null, location: any | null, payoutSettings: any | null, arePayoutSettingsValid: boolean };
 
@@ -15516,6 +15711,24 @@ export type CreateIssueMutationVariables = Exact<{
 
 export type CreateIssueMutation = { __typename?: 'mutation_root', createIssue: { __typename?: 'Issue', repoId: any, number: any, type: Type, status: Status, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null, id: any, ignoredForProjects: Array<{ __typename?: 'IgnoredGithubIssues', projectId: any, repoId: any, issueNumber: any }> } };
 
+export type GetPaymentRequestsForProjectQueryVariables = Exact<{
+  projectId: Scalars['uuid'];
+}>;
+
+
+export type GetPaymentRequestsForProjectQuery = { __typename?: 'query_root', budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', initialAmount: any | null, remainingAmount: any | null } | null } | null }, paymentRequests: Array<{ __typename?: 'PaymentRequests', recipientId: any, amountInUsd: any, requestedAt: any, id: any, githubRecipient: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null }, workItemsAggregate: { __typename?: 'WorkItemsAggregate', aggregate: { __typename?: 'WorkItemsAggregateFields', count: number } | null } }> };
+
+export type RequestPaymentMutationVariables = Exact<{
+  amount: Scalars['Int'];
+  contributorId: Scalars['Int'];
+  hoursWorked: Scalars['Int'];
+  projectId: Scalars['Uuid'];
+  reason: Reason;
+}>;
+
+
+export type RequestPaymentMutation = { __typename?: 'mutation_root', requestPayment: { __typename?: 'Payment', projectId: any, budgetId: any, paymentId: any, amount: any } };
+
 export type SidebarProjectDetailsFragment = { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, logoUrl: string | null } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }>, contributorsAggregate: { __typename?: 'ProjectsContributorsViewAggregate', aggregate: { __typename?: 'ProjectsContributorsViewAggregateFields', count: number } | null } };
 
 export type GetProjectsForSidebarQueryVariables = Exact<{
@@ -15545,6 +15758,13 @@ export type GetAllFilterOptionsQueryVariables = Exact<{ [key: string]: never; }>
 
 
 export type GetAllFilterOptionsQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', id: any, projectSponsors: Array<{ __typename?: 'ProjectsSponsors', sponsor: { __typename?: 'Sponsors', id: any, name: string } }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', projectId: any, githubRepoId: any, repo: { __typename?: 'GithubRepos', languages: any, id: any } | null }>, projectDetails: { __typename?: 'ProjectDetails', projectId: any, visibility: any } | null, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributorsView', githubUser: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number } | null }, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> }> };
+
+export type CountProcessingCommandsQueryVariables = Exact<{
+  projectId: Scalars['uuid'];
+}>;
+
+
+export type CountProcessingCommandsQuery = { __typename?: 'query_root', commandsAggregate: { __typename?: 'CommandsAggregate', aggregate: { __typename?: 'CommandsAggregateFields', count: number } | null } };
 
 export type GetUserDetailsQueryVariables = Exact<{
   userId: Scalars['uuid'];
@@ -16460,6 +16680,43 @@ export function usePaymentRequestDetailsLazyQuery(baseOptions?: Apollo.LazyQuery
 export type PaymentRequestDetailsQueryHookResult = ReturnType<typeof usePaymentRequestDetailsQuery>;
 export type PaymentRequestDetailsLazyQueryHookResult = ReturnType<typeof usePaymentRequestDetailsLazyQuery>;
 export type PaymentRequestDetailsQueryResult = Apollo.QueryResult<PaymentRequestDetailsQuery, PaymentRequestDetailsQueryVariables>;
+export const CancelPaymentRequestDocument = gql`
+    mutation CancelPaymentRequest($projectId: Uuid!, $paymentId: Uuid!) {
+  cancelPaymentRequest(projectId: $projectId, paymentId: $paymentId) {
+    projectId
+    budgetId
+    paymentId
+    amount
+  }
+}
+    `;
+export type CancelPaymentRequestMutationFn = Apollo.MutationFunction<CancelPaymentRequestMutation, CancelPaymentRequestMutationVariables>;
+
+/**
+ * __useCancelPaymentRequestMutation__
+ *
+ * To run a mutation, you first call `useCancelPaymentRequestMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCancelPaymentRequestMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [cancelPaymentRequestMutation, { data, loading, error }] = useCancelPaymentRequestMutation({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *      paymentId: // value for 'paymentId'
+ *   },
+ * });
+ */
+export function useCancelPaymentRequestMutation(baseOptions?: Apollo.MutationHookOptions<CancelPaymentRequestMutation, CancelPaymentRequestMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CancelPaymentRequestMutation, CancelPaymentRequestMutationVariables>(CancelPaymentRequestDocument, options);
+      }
+export type CancelPaymentRequestMutationHookResult = ReturnType<typeof useCancelPaymentRequestMutation>;
+export type CancelPaymentRequestMutationResult = Apollo.MutationResult<CancelPaymentRequestMutation>;
+export type CancelPaymentRequestMutationOptions = Apollo.BaseMutationOptions<CancelPaymentRequestMutation, CancelPaymentRequestMutationVariables>;
 export const ImpersonatedUserDocument = gql`
     query ImpersonatedUser($id: uuid!) {
   user(id: $id) {
@@ -16589,132 +16846,6 @@ export function useUserProfileLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type UserProfileQueryHookResult = ReturnType<typeof useUserProfileQuery>;
 export type UserProfileLazyQueryHookResult = ReturnType<typeof useUserProfileLazyQuery>;
 export type UserProfileQueryResult = Apollo.QueryResult<UserProfileQuery, UserProfileQueryVariables>;
-export const GetPaymentRequestsForProjectDocument = gql`
-    query GetPaymentRequestsForProject($projectId: uuid!) {
-  projectsByPk(id: $projectId) {
-    id
-    budgets {
-      id
-      initialAmount
-      remainingAmount
-      paymentRequests {
-        ...ExtendedPaymentRequest
-      }
-    }
-  }
-}
-    ${ExtendedPaymentRequestFragmentDoc}`;
-
-/**
- * __useGetPaymentRequestsForProjectQuery__
- *
- * To run a query within a React component, call `useGetPaymentRequestsForProjectQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetPaymentRequestsForProjectQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetPaymentRequestsForProjectQuery({
- *   variables: {
- *      projectId: // value for 'projectId'
- *   },
- * });
- */
-export function useGetPaymentRequestsForProjectQuery(baseOptions: Apollo.QueryHookOptions<GetPaymentRequestsForProjectQuery, GetPaymentRequestsForProjectQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetPaymentRequestsForProjectQuery, GetPaymentRequestsForProjectQueryVariables>(GetPaymentRequestsForProjectDocument, options);
-      }
-export function useGetPaymentRequestsForProjectLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPaymentRequestsForProjectQuery, GetPaymentRequestsForProjectQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetPaymentRequestsForProjectQuery, GetPaymentRequestsForProjectQueryVariables>(GetPaymentRequestsForProjectDocument, options);
-        }
-export type GetPaymentRequestsForProjectQueryHookResult = ReturnType<typeof useGetPaymentRequestsForProjectQuery>;
-export type GetPaymentRequestsForProjectLazyQueryHookResult = ReturnType<typeof useGetPaymentRequestsForProjectLazyQuery>;
-export type GetPaymentRequestsForProjectQueryResult = Apollo.QueryResult<GetPaymentRequestsForProjectQuery, GetPaymentRequestsForProjectQueryVariables>;
-export const RequestPaymentDocument = gql`
-    mutation RequestPayment($amount: Int!, $contributorId: Int!, $hoursWorked: Int!, $projectId: Uuid!, $reason: Reason!) {
-  requestPayment(
-    amountInUsd: $amount
-    hoursWorked: $hoursWorked
-    projectId: $projectId
-    reason: $reason
-    recipientId: $contributorId
-  ) {
-    projectId
-    budgetId
-    paymentId
-    amount
-  }
-}
-    `;
-export type RequestPaymentMutationFn = Apollo.MutationFunction<RequestPaymentMutation, RequestPaymentMutationVariables>;
-
-/**
- * __useRequestPaymentMutation__
- *
- * To run a mutation, you first call `useRequestPaymentMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useRequestPaymentMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [requestPaymentMutation, { data, loading, error }] = useRequestPaymentMutation({
- *   variables: {
- *      amount: // value for 'amount'
- *      contributorId: // value for 'contributorId'
- *      hoursWorked: // value for 'hoursWorked'
- *      projectId: // value for 'projectId'
- *      reason: // value for 'reason'
- *   },
- * });
- */
-export function useRequestPaymentMutation(baseOptions?: Apollo.MutationHookOptions<RequestPaymentMutation, RequestPaymentMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<RequestPaymentMutation, RequestPaymentMutationVariables>(RequestPaymentDocument, options);
-      }
-export type RequestPaymentMutationHookResult = ReturnType<typeof useRequestPaymentMutation>;
-export type RequestPaymentMutationResult = Apollo.MutationResult<RequestPaymentMutation>;
-export type RequestPaymentMutationOptions = Apollo.BaseMutationOptions<RequestPaymentMutation, RequestPaymentMutationVariables>;
-export const CancelPaymentRequestDocument = gql`
-    mutation CancelPaymentRequest($projectId: Uuid!, $paymentId: Uuid!) {
-  cancelPaymentRequest(projectId: $projectId, paymentId: $paymentId) {
-    projectId
-    budgetId
-    paymentId
-    amount
-  }
-}
-    `;
-export type CancelPaymentRequestMutationFn = Apollo.MutationFunction<CancelPaymentRequestMutation, CancelPaymentRequestMutationVariables>;
-
-/**
- * __useCancelPaymentRequestMutation__
- *
- * To run a mutation, you first call `useCancelPaymentRequestMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCancelPaymentRequestMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [cancelPaymentRequestMutation, { data, loading, error }] = useCancelPaymentRequestMutation({
- *   variables: {
- *      projectId: // value for 'projectId'
- *      paymentId: // value for 'paymentId'
- *   },
- * });
- */
-export function useCancelPaymentRequestMutation(baseOptions?: Apollo.MutationHookOptions<CancelPaymentRequestMutation, CancelPaymentRequestMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CancelPaymentRequestMutation, CancelPaymentRequestMutationVariables>(CancelPaymentRequestDocument, options);
-      }
-export type CancelPaymentRequestMutationHookResult = ReturnType<typeof useCancelPaymentRequestMutation>;
-export type CancelPaymentRequestMutationResult = Apollo.MutationResult<CancelPaymentRequestMutation>;
-export type CancelPaymentRequestMutationOptions = Apollo.BaseMutationOptions<CancelPaymentRequestMutation, CancelPaymentRequestMutationVariables>;
 export const GetUserPayoutSettingsDocument = gql`
     query GetUserPayoutSettings($githubUserId: bigint!) {
   registeredUsers(where: {githubUserId: {_eq: $githubUserId}}) {
@@ -17582,6 +17713,95 @@ export function useCreateIssueMutation(baseOptions?: Apollo.MutationHookOptions<
 export type CreateIssueMutationHookResult = ReturnType<typeof useCreateIssueMutation>;
 export type CreateIssueMutationResult = Apollo.MutationResult<CreateIssueMutation>;
 export type CreateIssueMutationOptions = Apollo.BaseMutationOptions<CreateIssueMutation, CreateIssueMutationVariables>;
+export const GetPaymentRequestsForProjectDocument = gql`
+    query GetPaymentRequestsForProject($projectId: uuid!) {
+  budgetsAggregate(where: {projectId: {_eq: $projectId}}) {
+    aggregate {
+      sum {
+        initialAmount
+        remainingAmount
+      }
+    }
+  }
+  paymentRequests(where: {budget: {projectId: {_eq: $projectId}}}) {
+    ...ExtendedPaymentRequest
+  }
+}
+    ${ExtendedPaymentRequestFragmentDoc}`;
+
+/**
+ * __useGetPaymentRequestsForProjectQuery__
+ *
+ * To run a query within a React component, call `useGetPaymentRequestsForProjectQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPaymentRequestsForProjectQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPaymentRequestsForProjectQuery({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *   },
+ * });
+ */
+export function useGetPaymentRequestsForProjectQuery(baseOptions: Apollo.QueryHookOptions<GetPaymentRequestsForProjectQuery, GetPaymentRequestsForProjectQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetPaymentRequestsForProjectQuery, GetPaymentRequestsForProjectQueryVariables>(GetPaymentRequestsForProjectDocument, options);
+      }
+export function useGetPaymentRequestsForProjectLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPaymentRequestsForProjectQuery, GetPaymentRequestsForProjectQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetPaymentRequestsForProjectQuery, GetPaymentRequestsForProjectQueryVariables>(GetPaymentRequestsForProjectDocument, options);
+        }
+export type GetPaymentRequestsForProjectQueryHookResult = ReturnType<typeof useGetPaymentRequestsForProjectQuery>;
+export type GetPaymentRequestsForProjectLazyQueryHookResult = ReturnType<typeof useGetPaymentRequestsForProjectLazyQuery>;
+export type GetPaymentRequestsForProjectQueryResult = Apollo.QueryResult<GetPaymentRequestsForProjectQuery, GetPaymentRequestsForProjectQueryVariables>;
+export const RequestPaymentDocument = gql`
+    mutation RequestPayment($amount: Int!, $contributorId: Int!, $hoursWorked: Int!, $projectId: Uuid!, $reason: Reason!) {
+  requestPayment(
+    amountInUsd: $amount
+    hoursWorked: $hoursWorked
+    projectId: $projectId
+    reason: $reason
+    recipientId: $contributorId
+  ) {
+    projectId
+    budgetId
+    paymentId
+    amount
+  }
+}
+    `;
+export type RequestPaymentMutationFn = Apollo.MutationFunction<RequestPaymentMutation, RequestPaymentMutationVariables>;
+
+/**
+ * __useRequestPaymentMutation__
+ *
+ * To run a mutation, you first call `useRequestPaymentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRequestPaymentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [requestPaymentMutation, { data, loading, error }] = useRequestPaymentMutation({
+ *   variables: {
+ *      amount: // value for 'amount'
+ *      contributorId: // value for 'contributorId'
+ *      hoursWorked: // value for 'hoursWorked'
+ *      projectId: // value for 'projectId'
+ *      reason: // value for 'reason'
+ *   },
+ * });
+ */
+export function useRequestPaymentMutation(baseOptions?: Apollo.MutationHookOptions<RequestPaymentMutation, RequestPaymentMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RequestPaymentMutation, RequestPaymentMutationVariables>(RequestPaymentDocument, options);
+      }
+export type RequestPaymentMutationHookResult = ReturnType<typeof useRequestPaymentMutation>;
+export type RequestPaymentMutationResult = Apollo.MutationResult<RequestPaymentMutation>;
+export type RequestPaymentMutationOptions = Apollo.BaseMutationOptions<RequestPaymentMutation, RequestPaymentMutationVariables>;
 export const GetProjectsForSidebarDocument = gql`
     query GetProjectsForSidebar($ledProjectIds: [uuid!], $githubUserId: bigint) {
   projects(
@@ -17743,6 +17963,45 @@ export function useGetAllFilterOptionsLazyQuery(baseOptions?: Apollo.LazyQueryHo
 export type GetAllFilterOptionsQueryHookResult = ReturnType<typeof useGetAllFilterOptionsQuery>;
 export type GetAllFilterOptionsLazyQueryHookResult = ReturnType<typeof useGetAllFilterOptionsLazyQuery>;
 export type GetAllFilterOptionsQueryResult = Apollo.QueryResult<GetAllFilterOptionsQuery, GetAllFilterOptionsQueryVariables>;
+export const CountProcessingCommandsDocument = gql`
+    query CountProcessingCommands($projectId: uuid!) {
+  commandsAggregate(
+    where: {projectId: {_eq: $projectId}, processingCount: {_gt: 0}}
+  ) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+
+/**
+ * __useCountProcessingCommandsQuery__
+ *
+ * To run a query within a React component, call `useCountProcessingCommandsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCountProcessingCommandsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCountProcessingCommandsQuery({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *   },
+ * });
+ */
+export function useCountProcessingCommandsQuery(baseOptions: Apollo.QueryHookOptions<CountProcessingCommandsQuery, CountProcessingCommandsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CountProcessingCommandsQuery, CountProcessingCommandsQueryVariables>(CountProcessingCommandsDocument, options);
+      }
+export function useCountProcessingCommandsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CountProcessingCommandsQuery, CountProcessingCommandsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CountProcessingCommandsQuery, CountProcessingCommandsQueryVariables>(CountProcessingCommandsDocument, options);
+        }
+export type CountProcessingCommandsQueryHookResult = ReturnType<typeof useCountProcessingCommandsQuery>;
+export type CountProcessingCommandsLazyQueryHookResult = ReturnType<typeof useCountProcessingCommandsLazyQuery>;
+export type CountProcessingCommandsQueryResult = Apollo.QueryResult<CountProcessingCommandsQuery, CountProcessingCommandsQueryVariables>;
 export const GetUserDetailsDocument = gql`
     query getUserDetails($userId: uuid!) {
   registeredUsers(where: {id: {_eq: $userId}}) {

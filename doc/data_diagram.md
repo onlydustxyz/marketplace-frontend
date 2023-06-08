@@ -32,6 +32,14 @@ class Budgets {
    spentAmount: numeric!
 }
 
+class Commands {
+   createdAt: timestamp
+   id: uuid
+   processingCount: Int
+   projectId: uuid
+   updatedAt: timestamp
+}
+
 class ContributionCounts {
    githubUserId: bigint
    paidCount: bigint
