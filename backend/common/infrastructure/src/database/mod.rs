@@ -1,3 +1,4 @@
+pub mod repositories;
 pub mod schema;
 
 #[cfg(test)]
