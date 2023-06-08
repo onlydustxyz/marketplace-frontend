@@ -120,6 +120,6 @@ export type PayoutSettings = {
 export type Contributor = {
   githubUserId: number;
   login: string;
-  avatarUrl: string;
+  avatarUrl: string | null;
   userId?: string;
 };

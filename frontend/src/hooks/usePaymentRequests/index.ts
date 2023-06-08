@@ -12,10 +12,10 @@ import {
 } from "src/__generated/graphql";
 import { reject } from "lodash";
 import { Contributor } from "src/types";
-import { useSuspenseQuery_experimental } from "@apollo/client";
+import { useSuspenseQuery_experimental as useSuspenseQuery } from "@apollo/client";
 
 export default function usePaymentRequests(projectId?: string) {
-  const getPaymentRequestsQuery = useSuspenseQuery_experimental<GetPaymentRequestsForProjectQuery>(
+  const getPaymentRequestsQuery = useSuspenseQuery<GetPaymentRequestsForProjectQuery>(
     GetPaymentRequestsForProjectDocument,
     {
       variables: { projectId },
@@ -79,7 +79,7 @@ export default function usePaymentRequests(projectId?: string) {
               githubRecipient: {
                 __typename: "GithubUsers",
                 id: recipient.githubUserId,
-                avatarUrl: recipient.avatarUrl,
+                avatarUrl: recipient.avatarUrl || "",
                 login: recipient.login,
                 user: recipient.userId ? { id: recipient.userId } : null,
                 htmlUrl: "",

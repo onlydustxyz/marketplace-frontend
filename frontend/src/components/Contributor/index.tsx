@@ -1,23 +1,47 @@
 import onlyDustLogo from "assets/img/onlydust-logo.png";
 import { withTooltip } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
-import ClickableUser from "src/components/ClickableUser";
 import { Contributor as ContributorType } from "src/types";
+import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
+import classNames from "classnames";
+import { useContributorProfilePanel } from "src/hooks/useContributorProfilePanel";
 
 type Props = {
   contributor: ContributorType;
+  clickable?: boolean;
 };
 
-export default function Contributor({ contributor }: Props) {
+export default function Contributor({ contributor, clickable }: Props) {
   const { T } = useIntl();
+  const { open } = useContributorProfilePanel();
 
   return (
     <div className="flex items-center gap-1.5">
-      <ClickableUser
-        name={contributor.login}
-        avatarUrl={contributor.avatarUrl}
-        githubUserId={contributor.githubUserId}
-      />
+      <div
+        className="flex flex-row gap-2 items-center text-sm font-normal"
+        onClick={e => {
+          if (clickable) {
+            e.preventDefault();
+            open(contributor.githubUserId);
+          }
+        }}
+      >
+        {contributor.avatarUrl && (
+          <RoundedImage
+            alt={contributor.githubUserId.toString()}
+            rounding={Rounding.Circle}
+            size={ImageSize.Sm}
+            src={contributor.avatarUrl}
+          />
+        )}
+        <div
+          className={classNames({
+            "hover:underline truncate text-spacePurple-300 hover:cursor-pointer": clickable,
+          })}
+        >
+          {contributor.login}
+        </div>
+      </div>
       {contributor.userId && (
         <>
           <img

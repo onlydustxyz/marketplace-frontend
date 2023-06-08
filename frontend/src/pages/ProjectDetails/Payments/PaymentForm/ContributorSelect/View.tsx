@@ -68,7 +68,7 @@ export default function ContributorSelectView({
                 >
                   <div className="flex flex-row items-center w-full">
                     <div className="pr-2 text-2xl">
-                      {contributor ? (
+                      {contributor?.avatarUrl ? (
                         <div className="pr-0.5">
                           <RoundedImage
                             src={contributor.avatarUrl}
