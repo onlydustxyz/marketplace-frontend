@@ -74,7 +74,10 @@ impl CommandRepository for Client {
 		let connection = self.connection()?;
 		let new_processing_count: i32 = diesel::update(dsl::commands)
 			.filter(dsl::id.eq(id))
-			.set(dsl::processing_count.eq(dsl::processing_count - amount))
+			.set((
+				dsl::processing_count.eq(dsl::processing_count - amount),
+				dsl::updated_at.eq(Utc::now().naive_utc()),
+			))
 			.returning(dsl::processing_count)
 			.get_result(&*connection)?;
 
