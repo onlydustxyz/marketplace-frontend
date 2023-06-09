@@ -1,17 +1,20 @@
 import { Outlet, useOutletContext } from "react-router-dom";
-import usePaymentRequests from "src/hooks/usePaymentRequests";
+import { useGetPaymentRequestsForProjectQuery } from "src/__generated/graphql";
 
 export default function Payments() {
   const { projectId } = useOutletContext<{ projectId: string }>();
-  const {
-    data: { budget, paymentRequests: payments },
-  } = usePaymentRequests(projectId);
+  const { data } = useGetPaymentRequestsForProjectQuery({
+    variables: { projectId },
+  });
 
   return (
     <Outlet
       context={{
-        payments,
-        budget,
+        payments: data?.paymentRequests || [],
+        budget: {
+          initialAmount: data?.budgetsAggregate.aggregate?.sum?.initialAmount,
+          remainingAmount: data?.budgetsAggregate.aggregate?.sum?.remainingAmount,
+        },
         projectId,
       }}
     />

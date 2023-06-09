@@ -1,9 +1,8 @@
 import { useAuth } from "src/hooks/useAuth";
 import usePayoutSettings from "src/hooks/usePayoutSettings";
 import { PaymentStatus } from "src/types";
-import { usePaymentRequestDetailsQuery } from "src/__generated/graphql";
+import { useCancelPaymentRequestMutation, usePaymentRequestDetailsQuery } from "src/__generated/graphql";
 import View from "./View";
-import usePaymentRequests from "src/hooks/usePaymentRequests";
 import { useShowToaster } from "src/hooks/useToaster";
 import { useIntl } from "src/hooks/useIntl";
 
@@ -59,16 +58,14 @@ export function PaymentRequestSidePanelAsLeader({
   const showToaster = useShowToaster();
   const { T } = useIntl();
 
-  const { cancelPaymentRequest } = usePaymentRequests(projectId);
-
-  const onPaymentCancel = () =>
-    cancelPaymentRequest({
-      variables: { projectId, paymentId },
-      onCompleted: () => {
-        setOpen(false);
-        showToaster(T("payment.form.cancelled"));
-      },
-    });
+  const [cancelPaymentRequest] = useCancelPaymentRequestMutation({
+    variables: { projectId, paymentId },
+    context: { graphqlErrorDisplay: "toaster" },
+    onCompleted: () => {
+      setOpen(false);
+      showToaster(T("payment.form.cancelled"));
+    },
+  });
 
   return (
     <PaymentRequestSidePanel
@@ -76,7 +73,7 @@ export function PaymentRequestSidePanelAsLeader({
       projectLeaderView
       paymentId={paymentId}
       setOpen={setOpen}
-      onPaymentCancel={onPaymentCancel}
+      onPaymentCancel={cancelPaymentRequest}
     />
   );
 }

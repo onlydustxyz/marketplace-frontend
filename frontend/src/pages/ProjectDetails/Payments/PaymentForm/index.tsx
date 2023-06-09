@@ -5,10 +5,9 @@ import { useIntl } from "src/hooks/useIntl";
 import View from "./View";
 import { useShowToaster } from "src/hooks/useToaster";
 import { generatePath, useNavigate, useOutletContext } from "react-router-dom";
-import usePaymentRequests from "src/hooks/usePaymentRequests";
 import { ProjectRoutePaths, RoutePaths } from "src/App";
 import { WorkItem } from "src/components/GithubIssue";
-import { Type } from "src/__generated/graphql";
+import { Type, useRequestPaymentMutation } from "src/__generated/graphql";
 import useUnpaidIssues from "./WorkItemSidePanel/Issues/useUnpaidIssues";
 
 const PaymentForm: React.FC = () => {
@@ -23,7 +22,13 @@ const PaymentForm: React.FC = () => {
     };
   }>();
 
-  const { requestNewPayment, requestNewPaymentMutationLoading } = usePaymentRequests(projectId);
+  const [requestNewPayment, { loading: requestNewPaymentMutationLoading }] = useRequestPaymentMutation({
+    context: { graphqlErrorDisplay: "toaster" },
+    onCompleted: () => {
+      showToaster(T("payment.form.sent"));
+      navigate(generatePath(RoutePaths.ProjectDetails, { projectId }) + "/" + ProjectRoutePaths.Payments);
+    },
+  });
 
   const formMethods = useForm<Inputs>({
     defaultValues: {
@@ -44,14 +49,10 @@ const PaymentForm: React.FC = () => {
   const { handleSubmit } = formMethods;
 
   const onValidSubmit: SubmitHandler<Inputs> = useCallback(
-    async formData => {
+    formData => {
       if (contributor)
-        await requestNewPayment(contributor, {
-          ...mapFormDataToSchema(projectId, { ...formData, contributor }),
-          onCompleted: () => {
-            showToaster(T("payment.form.sent"));
-            navigate(generatePath(RoutePaths.ProjectDetails, { projectId }) + "/" + ProjectRoutePaths.Payments);
-          },
+        requestNewPayment({
+          variables: mapFormDataToVariables(projectId, { ...formData, contributor }),
         });
     },
     [contributor, projectId]
@@ -98,15 +99,13 @@ const PaymentForm: React.FC = () => {
   );
 };
 
-const mapFormDataToSchema = (projectId: string, { workItems, amountToWire, hoursWorked, contributor }: Inputs) => {
+const mapFormDataToVariables = (projectId: string, { workItems, amountToWire, hoursWorked, contributor }: Inputs) => {
   return {
-    variables: {
-      projectId,
-      contributorId: contributor.githubUserId,
-      amount: amountToWire,
-      hoursWorked,
-      reason: { workItems },
-    },
+    projectId,
+    contributorId: contributor.githubUserId,
+    amount: amountToWire,
+    hoursWorked,
+    reason: { workItems },
   };
 };
 

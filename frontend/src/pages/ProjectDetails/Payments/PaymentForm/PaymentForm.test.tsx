@@ -39,7 +39,8 @@ const graphQlMocks = [
     },
     result: {
       data: {
-        projectsByPk: null,
+        paymentRequests: [],
+        budgetsAggregate: { aggregate: null },
       } as GetPaymentRequestsForProjectQueryResult["data"],
     },
   },
