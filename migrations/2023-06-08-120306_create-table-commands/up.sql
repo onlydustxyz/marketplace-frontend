@@ -19,10 +19,10 @@ CREATE VIEW
     api.commands AS
 SELECT
     id,
-    processing_count,
+    MAX(processing_count, 0) AS processing_count,
     created_at,
     updated_at,
     "Project" AS project_id
 FROM
     public.commands c,
-    jsonb_to_recordset(c.metadata -> 'aggregates') AS m ("Project" UUID);
+    JSONB_TO_RECORDSET(c.metadata -> 'aggregates') AS m ("Project" UUID);

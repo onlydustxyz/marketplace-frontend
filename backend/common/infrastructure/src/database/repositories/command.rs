@@ -72,10 +72,19 @@ impl CommandRepository for Client {
 
 	fn decrease_processing_count(&self, id: &CommandId, amount: i32) -> anyhow::Result<()> {
 		let connection = self.connection()?;
-		diesel::update(dsl::commands)
+		let new_processing_count: i32 = diesel::update(dsl::commands)
 			.filter(dsl::id.eq(id))
 			.set(dsl::processing_count.eq(dsl::processing_count - amount))
-			.execute(&*connection)?;
+			.returning(dsl::processing_count)
+			.get_result(&*connection)?;
+
+		if new_processing_count < 0 {
+			olog::error!(
+				command_id = id.to_string(),
+				new_processing_count = new_processing_count,
+				"Command processing count is negative"
+			)
+		}
 		Ok(())
 	}
 }
