@@ -54,8 +54,8 @@ pub use github::{
 
 mod command;
 pub use command::{
-	repository::Repository as CommandRepository, Aggregate as CommandEventAggregate, CommandEvent,
-	Entity as Command, Id as CommandId, IntoCommandEvent,
+	repository::Repository as CommandRepository, AggregateId as CommandAggregateId,
+	Entity as Command, Id as CommandId,
 };
 
 pub mod aggregate_root;

@@ -9,3 +9,5 @@ mod subscriber;
 
 mod unique_message;
 pub use unique_message::UniqueMessage;
+
+mod command;

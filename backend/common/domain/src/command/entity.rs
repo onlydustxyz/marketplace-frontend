@@ -14,32 +14,40 @@ pub struct Entity {
 	pub metadata: Metadata,
 }
 
+impl Entity {
+	pub fn new(id: CommandId) -> Self {
+		Self {
+			id,
+			created_at: Utc::now(),
+			..Default::default()
+		}
+	}
+}
+
 impl crate::Entity for Entity {
 	type Id = CommandId;
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct Metadata {
-	aggregates: HashSet<Aggregate>,
+	aggregates: HashSet<AggregateId>,
 }
 
 impl Metadata {
-	pub fn add_aggregate(&mut self, aggregate_metadata: Aggregate) {
+	pub fn add_aggregate(&mut self, aggregate_metadata: AggregateId) {
 		self.aggregates.insert(aggregate_metadata);
 	}
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
-pub enum Aggregate {
+pub enum AggregateId {
 	Project(ProjectId),
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-pub struct CommandEvent {
-	pub command_id: CommandId,
-	pub aggregate: Aggregate,
-}
-
-pub trait IntoCommandEvent {
-	fn into(&self) -> CommandEvent;
+impl From<Event> for AggregateId {
+	fn from(event: Event) -> Self {
+		match event {
+			Event::Project(e) => Self::Project(*e.aggregate_id()),
+		}
+	}
 }

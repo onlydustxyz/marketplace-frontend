@@ -52,15 +52,9 @@ impl TryFrom<domain::Command> for Command {
 impl CommandRepository for Client {
 	fn find_by_id_or_default(&self, id: &CommandId) -> anyhow::Result<domain::Command> {
 		let connection = self.connection()?;
-		let command: Option<Command> = dsl::commands.find(*id).first(&*connection).optional()?;
-		if let Some(command) = command {
-			command.try_into()
-		} else {
-			Ok(domain::Command {
-				id: *id,
-				created_at: Utc::now(),
-				..Default::default()
-			})
+		match dsl::commands.find(*id).first::<Command>(&*connection).optional()? {
+			Some(command) => command.try_into(),
+			_ => Ok(domain::Command::new(*id)),
 		}
 	}
 

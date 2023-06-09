@@ -5,7 +5,7 @@ use std::{
 
 use chrono::{NaiveDateTime, Utc};
 use derive_getters::Getters;
-use domain::{Message, MessagePayload};
+use domain::{CommandId, Message, MessagePayload};
 use olog::{
 	opentelemetry::{
 		propagation::{Extractor, TextMapPropagator},
@@ -21,6 +21,7 @@ use uuid::Uuid;
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Getters)]
 pub struct UniqueMessage<P> {
 	id: Uuid,
+	command_id: Option<CommandId>,
 	timestamp: NaiveDateTime,
 	metadata: Value,
 	payload: P,
@@ -46,10 +47,18 @@ impl<P> UniqueMessage<P> {
 			.inject_context(&Span::current().context(), &mut trace_context);
 		Self {
 			id: Uuid::new_v4(),
+			command_id: None,
 			payload,
 			timestamp: Utc::now().naive_utc(),
 			metadata: Default::default(),
 			trace_context,
+		}
+	}
+
+	pub fn with_command(self, command_id: CommandId) -> Self {
+		Self {
+			command_id: Some(command_id),
+			..self
 		}
 	}
 }
