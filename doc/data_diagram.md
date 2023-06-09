@@ -56,17 +56,17 @@ class ContributionStats {
    projectId: uuid
    totalCount: bigint
    unpaidCount: bigint
+   unpaidUnignoredCount: bigint
 }
 
 class Contributions {
    createdAt: timestamp
    githubIssueId: bigint
    githubUserId: bigint
-   ignored: IgnoredGithubIssues
+   ignored: Boolean
    issueNumber: bigint
    projectId: uuid
    repoId: bigint
-   workItems: [WorkItems!]!
 }
 
 class GithubIssues {
@@ -412,8 +412,6 @@ class users {
 
 Budgets -- Projects
 Budgets --* PaymentRequests
-Contributions -- IgnoredGithubIssues
-Contributions --* WorkItems
 GithubIssues --* IgnoredGithubIssues
 GithubReposContributors -- GithubUsers
 GithubUsers -- RegisteredUsers
