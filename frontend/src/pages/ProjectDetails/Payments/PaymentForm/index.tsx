@@ -9,6 +9,7 @@ import { ProjectRoutePaths, RoutePaths } from "src/App";
 import { WorkItem } from "src/components/GithubIssue";
 import { Type, useRequestPaymentMutation } from "src/__generated/graphql";
 import useUnpaidIssues from "./WorkItemSidePanel/Issues/useUnpaidIssues";
+import { useCommands } from "src/providers/Commands";
 
 const PaymentForm: React.FC = () => {
   const { T } = useIntl();
@@ -22,9 +23,12 @@ const PaymentForm: React.FC = () => {
     };
   }>();
 
+  const { notify } = useCommands();
+
   const [requestNewPayment, { loading: requestNewPaymentMutationLoading }] = useRequestPaymentMutation({
     context: { graphqlErrorDisplay: "toaster" },
     onCompleted: () => {
+      notify(projectId);
       showToaster(T("payment.form.sent"));
       navigate(generatePath(RoutePaths.ProjectDetails, { projectId }) + "/" + ProjectRoutePaths.Payments);
     },

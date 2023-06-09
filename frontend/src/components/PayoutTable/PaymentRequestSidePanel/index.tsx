@@ -5,6 +5,7 @@ import { useCancelPaymentRequestMutation, usePaymentRequestDetailsQuery } from "
 import View from "./View";
 import { useShowToaster } from "src/hooks/useToaster";
 import { useIntl } from "src/hooks/useIntl";
+import { useCommands } from "src/providers/Commands";
 
 type Props = {
   open: boolean;
@@ -57,11 +58,13 @@ export function PaymentRequestSidePanelAsLeader({
 }: Props & { projectId: string }) {
   const showToaster = useShowToaster();
   const { T } = useIntl();
+  const { notify } = useCommands();
 
   const [cancelPaymentRequest] = useCancelPaymentRequestMutation({
     variables: { projectId, paymentId },
     context: { graphqlErrorDisplay: "toaster" },
     onCompleted: () => {
+      notify(projectId);
       setOpen(false);
       showToaster(T("payment.form.cancelled"));
     },
