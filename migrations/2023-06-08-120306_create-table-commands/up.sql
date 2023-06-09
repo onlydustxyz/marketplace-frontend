@@ -19,7 +19,7 @@ CREATE VIEW
     api.commands AS
 SELECT
     id,
-    MAX(processing_count, 0) AS processing_count,
+    GREATEST(processing_count, 0) AS processing_count,
     created_at,
     updated_at,
     "Project" AS project_id
