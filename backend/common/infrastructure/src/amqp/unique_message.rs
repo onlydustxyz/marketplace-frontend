@@ -61,6 +61,14 @@ impl<P> UniqueMessage<P> {
 			..self
 		}
 	}
+
+	pub fn copy(self) -> Self {
+		let message = Self::new(self.payload);
+		match self.command_id {
+			Some(command_id) => message.with_command(command_id),
+			_ => message,
+		}
+	}
 }
 
 impl<P: Serialize> Display for UniqueMessage<P> {
