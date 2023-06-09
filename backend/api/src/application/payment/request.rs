@@ -4,8 +4,8 @@ use anyhow::Result;
 use chrono::Duration;
 use derive_more::Constructor;
 use domain::{
-	AggregateRootRepository, Budget, DomainError, Event, EventSourcable, GithubUserId, Payment,
-	PaymentId, PaymentReason, Project, ProjectId, Publisher, UserId,
+	AggregateRootRepository, Budget, CommandId, DomainError, Event, EventSourcable, GithubUserId,
+	Payment, PaymentId, PaymentReason, Project, ProjectId, Publisher, UserId,
 };
 use infrastructure::amqp::UniqueMessage;
 use rusty_money::{crypto, Money};
@@ -29,7 +29,7 @@ impl Usecase {
 		amount_in_usd: u32,
 		hours_worked: u32,
 		reason: PaymentReason,
-	) -> Result<(Project, Budget, Payment), DomainError> {
+	) -> Result<(Project, Budget, Payment, CommandId), DomainError> {
 		let project = self.project_repository.find_by_id(&project_id)?;
 		let new_payment_id = PaymentId::new();
 
@@ -48,15 +48,16 @@ impl Usecase {
 		let project = project.apply_events(&events);
 		let budget = project.budget().clone().unwrap();
 		let payment = budget.payments().get(&new_payment_id).cloned().unwrap();
+		let command_id = CommandId::new();
 
 		events
 			.into_iter()
 			.map(Event::from)
-			.map(UniqueMessage::new)
+			.map(|payload| UniqueMessage::new(payload).with_command(command_id))
 			.collect::<Vec<_>>()
 			.publish(self.event_publisher.clone())
 			.await?;
 
-		Ok((project, budget, payment))
+		Ok((project, budget, payment, command_id))
 	}
 }

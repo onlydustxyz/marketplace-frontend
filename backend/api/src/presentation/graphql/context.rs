@@ -1,9 +1,9 @@
 use std::sync::Arc;
 
 use derive_getters::Getters;
-use domain::{AggregateRootRepository, Event, GithubUserId, Project, Publisher, UserId};
+use domain::{AggregateRootRepository, GithubUserId, Project, UserId};
 use infrastructure::{
-	amqp::{self, UniqueMessage},
+	amqp::{self, CommandPublisher},
 	github, graphql,
 };
 use presentation::http::guards::OptionUserId;
@@ -56,7 +56,7 @@ impl Context {
 	pub fn new(
 		caller_permissions: Box<dyn Permissions>,
 		caller_info: OptionUserId,
-		event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
+		command_bus: Arc<CommandPublisher<amqp::Bus>>,
 		project_repository: AggregateRootRepository<Project>,
 		project_details_repository: ProjectDetailsRepository,
 		sponsor_repository: SponsorRepository,
@@ -68,35 +68,35 @@ impl Context {
 		github: Arc<github::Client>,
 		ens: Arc<ens::Client>,
 		simple_storage: Arc<simple_storage::Client>,
-		publisher: Arc<amqp::Bus>,
+		bus: Arc<amqp::Bus>,
 	) -> Self {
 		Self {
 			caller_permissions,
 			caller_info,
 			request_payment_usecase: application::payment::request::Usecase::new(
-				event_publisher.to_owned(),
+				command_bus.to_owned(),
 				project_repository.clone(),
 			),
 			process_payment_usecase: application::payment::process::Usecase::new(
-				event_publisher.to_owned(),
+				bus.to_owned(),
 				project_repository.clone(),
-				application::dusty_bot::close_issues::Usecase::new(github.clone(), publisher),
+				application::dusty_bot::close_issues::Usecase::new(github.clone(), bus.to_owned()),
 			),
 			cancel_payment_usecase: application::payment::cancel::Usecase::new(
-				event_publisher.to_owned(),
+				command_bus.to_owned(),
 				project_repository.clone(),
 			),
 			invoice_usecase: application::payment::invoice::Usecase::new(
-				event_publisher.to_owned(),
+				bus.to_owned(),
 				project_repository.clone(),
 			),
 			create_project_usecase: application::project::create::Usecase::new(
-				event_publisher.to_owned(),
+				bus.to_owned(),
 				project_details_repository.clone(),
 				simple_storage.clone(),
 			),
 			update_budget_allocation_usecase: application::budget::allocate::Usecase::new(
-				event_publisher.to_owned(),
+				bus.to_owned(),
 				project_repository.clone(),
 			),
 			update_project_usecase: application::project::update::Usecase::new(
@@ -104,12 +104,12 @@ impl Context {
 				simple_storage.clone(),
 			),
 			link_github_repo_usecase: application::project::link_github_repo::Usecase::new(
-				event_publisher.to_owned(),
+				bus.to_owned(),
 				project_repository.clone(),
 				github,
 			),
 			unlink_github_repo_usecase: application::project::unlink_github_repo::Usecase::new(
-				event_publisher.to_owned(),
+				bus.to_owned(),
 				project_repository.clone(),
 			),
 			create_sponsor_usecase: application::sponsor::create::Usecase::new(
@@ -127,7 +127,7 @@ impl Context {
 				project_sponsor_repository,
 			),
 			remove_project_leader_usecase: application::project::remove_leader::Usecase::new(
-				event_publisher.to_owned(),
+				bus.to_owned(),
 				project_repository.clone(),
 			),
 			invite_project_leader_usecase: application::project::invite_leader::Usecase::new(
@@ -135,7 +135,7 @@ impl Context {
 			),
 			accept_project_leader_invitation_usecase:
 				application::project::accept_leader_invitation::Usecase::new(
-					event_publisher.to_owned(),
+					bus.to_owned(),
 					pending_project_leader_invitations_repository,
 					project_repository.clone(),
 				),
@@ -153,7 +153,7 @@ impl Context {
 			),
 			apply_to_project_usecase: application::project::apply::Usecase::new(
 				project_repository,
-				event_publisher,
+				bus,
 			),
 			ens,
 		}
