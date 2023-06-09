@@ -35,7 +35,7 @@ export default function ContributorSelect({ projectId, contributor, setContribut
     githubUserId: c.githubUserId,
     login: c.login || "",
     avatarUrl: c.avatarUrl || "",
-    unpaidMergedPullsCount: c.contributionStatsAggregate.aggregate?.sum?.unpaidCount || 0,
+    unpaidMergedPullsCount: c.contributionStatsAggregate.aggregate?.sum?.unpaidUnignoredCount || 0,
     userId: c.userId,
   }));
 

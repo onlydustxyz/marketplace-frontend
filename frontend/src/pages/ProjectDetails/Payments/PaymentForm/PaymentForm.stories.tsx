@@ -17,7 +17,7 @@ const BERNARDSTANISLAS: ContributorFragment = {
   login: "bernardstanislas",
   avatarUrl: "https://avatars.githubusercontent.com/u/4435377?v=4",
   userId: null,
-  contributionStatsAggregate: { aggregate: { sum: { paidCount: 0, unpaidCount: 0 } } },
+  contributionStatsAggregate: { aggregate: { sum: { paidCount: 0, unpaidUnignoredCount: 0 } } },
   paymentStatsAggregate: { aggregate: { sum: { moneyGranted: 0 } } },
 };
 const OSCARWROCHE: ContributorFragment = {
@@ -26,7 +26,7 @@ const OSCARWROCHE: ContributorFragment = {
   githubUserId: 21149076,
   userId: null,
   __typename: "UserProfiles",
-  contributionStatsAggregate: { aggregate: { sum: { paidCount: 0, unpaidCount: 0 } } },
+  contributionStatsAggregate: { aggregate: { sum: { paidCount: 0, unpaidUnignoredCount: 0 } } },
   paymentStatsAggregate: { aggregate: { sum: { moneyGranted: 0 } } },
 };
 const OFUX: ContributorFragment = {
@@ -35,7 +35,7 @@ const OFUX: ContributorFragment = {
   githubUserId: 595505,
   userId: "yolo",
   __typename: "UserProfiles",
-  contributionStatsAggregate: { aggregate: { sum: { paidCount: 0, unpaidCount: 0 } } },
+  contributionStatsAggregate: { aggregate: { sum: { paidCount: 0, unpaidUnignoredCount: 0 } } },
   paymentStatsAggregate: { aggregate: { sum: { moneyGranted: 0 } } },
 };
 const ANTHONYBUISSET: ContributorFragment = {
@@ -44,7 +44,7 @@ const ANTHONYBUISSET: ContributorFragment = {
   githubUserId: 43467246,
   userId: null,
   __typename: "UserProfiles",
-  contributionStatsAggregate: { aggregate: { sum: { paidCount: 0, unpaidCount: 0 } } },
+  contributionStatsAggregate: { aggregate: { sum: { paidCount: 0, unpaidUnignoredCount: 0 } } },
   paymentStatsAggregate: { aggregate: { sum: { moneyGranted: 0 } } },
 };
 const TDELABRO: ContributorFragment = {
@@ -53,7 +53,7 @@ const TDELABRO: ContributorFragment = {
   login: "tdelabro",
   avatarUrl: "https://avatars.githubusercontent.com/u/34384633?v=4",
   userId: null,
-  contributionStatsAggregate: { aggregate: { sum: { paidCount: 0, unpaidCount: 0 } } },
+  contributionStatsAggregate: { aggregate: { sum: { paidCount: 0, unpaidUnignoredCount: 0 } } },
   paymentStatsAggregate: { aggregate: { sum: { moneyGranted: 0 } } },
 };
 

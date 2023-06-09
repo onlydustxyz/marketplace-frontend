@@ -21,7 +21,7 @@ const TEST_CONTRIBUTOR: ContributorFragment = {
   login: "test-login",
   avatarUrl: "test-avatar-url",
   userId: "test-user-id",
-  contributionStatsAggregate: { aggregate: { sum: { paidCount: 0, unpaidCount: 0 } } },
+  contributionStatsAggregate: { aggregate: { sum: { paidCount: 0, unpaidUnignoredCount: 0 } } },
   paymentStatsAggregate: { aggregate: { sum: { moneyGranted: 0 } } },
 };
 

@@ -36,7 +36,7 @@ const contributor1: ContributorFragment = {
   avatarUrl: "avatar_url",
   login: "ofux",
   userId: null,
-  contributionStatsAggregate: { aggregate: { sum: { paidCount: 4, unpaidCount: 0 } } },
+  contributionStatsAggregate: { aggregate: { sum: { paidCount: 4, unpaidUnignoredCount: 0 } } },
   paymentStatsAggregate: { aggregate: { sum: { moneyGranted: 2000 } } },
 };
 
@@ -46,7 +46,7 @@ const contributor2: ContributorFragment = {
   avatarUrl: "avatar_url",
   login: "AnthonyBuisset",
   userId: null,
-  contributionStatsAggregate: { aggregate: { sum: { paidCount: 1, unpaidCount: 0 } } },
+  contributionStatsAggregate: { aggregate: { sum: { paidCount: 1, unpaidUnignoredCount: 0 } } },
   paymentStatsAggregate: { aggregate: { sum: { moneyGranted: 500 } } },
 };
 
@@ -56,7 +56,7 @@ const contributor3: ContributorFragment = {
   avatarUrl: "avatar_url",
   login: "oscarwroche",
   userId: null,
-  contributionStatsAggregate: { aggregate: { sum: { paidCount: 0, unpaidCount: 0 } } },
+  contributionStatsAggregate: { aggregate: { sum: { paidCount: 0, unpaidUnignoredCount: 0 } } },
   paymentStatsAggregate: { aggregate: { sum: { moneyGranted: 0 } } },
 };
 
