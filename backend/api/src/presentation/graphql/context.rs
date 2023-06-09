@@ -83,7 +83,7 @@ impl Context {
 				application::dusty_bot::close_issues::Usecase::new(github.clone(), bus.to_owned()),
 			),
 			cancel_payment_usecase: application::payment::cancel::Usecase::new(
-				command_bus.to_owned(),
+				command_bus,
 				project_repository.clone(),
 			),
 			invoice_usecase: application::payment::invoice::Usecase::new(

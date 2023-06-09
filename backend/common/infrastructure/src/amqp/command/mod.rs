@@ -5,4 +5,4 @@ mod subscriber;
 pub use subscriber::CommandSubscriberDecorator;
 
 mod message;
-pub use message::Decorator as MessageDecorator;
+pub use message::Decorator as CommandMessage;

@@ -6,14 +6,14 @@ use domain::{
 	AggregateRootRepository, Budget, CommandId, DomainError, Event, EventSourcable, Payment,
 	PaymentId, Project, ProjectId, Publisher,
 };
-use infrastructure::amqp::UniqueMessage;
+use infrastructure::amqp::CommandMessage;
 use tracing::instrument;
 
 use crate::domain::Publishable;
 
 #[derive(Constructor)]
 pub struct Usecase {
-	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
+	event_publisher: Arc<dyn Publisher<CommandMessage<Event>>>,
 	project_repository: AggregateRootRepository<Project>,
 }
 
@@ -39,7 +39,7 @@ impl Usecase {
 		events
 			.into_iter()
 			.map(Event::from)
-			.map(|payload| UniqueMessage::new(payload).with_command(command_id))
+			.map(|payload| CommandMessage::new(command_id, payload))
 			.collect::<Vec<_>>()
 			.publish(self.event_publisher.clone())
 			.await?;
