@@ -5,6 +5,7 @@ use domain::{
 	CommandAggregateId, CommandId, CommandRepository, Destination, Event, Publisher, PublisherError,
 };
 
+use super::MessageDecorator;
 use crate::amqp::UniqueMessage;
 
 pub struct CommandPublisher<P>
@@ -52,25 +53,23 @@ where
 }
 
 #[async_trait]
-impl<P> Publisher<UniqueMessage<Event>> for CommandPublisher<P>
+impl<P> Publisher<MessageDecorator<Event>> for CommandPublisher<P>
 where
 	P: Publisher<UniqueMessage<Event>>,
 {
 	async fn publish(
 		&self,
 		destination: Destination,
-		message: &UniqueMessage<Event>,
+		message: &MessageDecorator<Event>,
 	) -> Result<(), PublisherError> {
-		match message.command_id() {
-			Some(command_id) => {
-				self.upsert_command(command_id, message.payload().clone().into())?;
-				self.publisher.publish(destination, message).await.map_err(|error| {
-					self.cancel_command(command_id);
-					error
-				})
-			},
-			None => self.publisher.publish(destination, message).await,
-		}
+		self.upsert_command(
+			&message.command_id(),
+			message.inner().payload().clone().into(),
+		)?;
+		self.publisher.publish(destination, message.inner()).await.map_err(|error| {
+			self.cancel_command(&message.command_id());
+			error
+		})
 	}
 }
 
