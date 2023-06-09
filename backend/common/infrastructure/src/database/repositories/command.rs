@@ -76,11 +76,11 @@ impl CommandRepository for Client {
 		Ok(())
 	}
 
-	fn decrease_processing_count(&self, id: &CommandId) -> anyhow::Result<()> {
+	fn decrease_processing_count(&self, id: &CommandId, amount: i32) -> anyhow::Result<()> {
 		let connection = self.connection()?;
 		diesel::update(dsl::commands)
 			.filter(dsl::id.eq(id))
-			.set(dsl::processing_count.eq(dsl::processing_count - 1))
+			.set(dsl::processing_count.eq(dsl::processing_count - amount))
 			.execute(&*connection)?;
 		Ok(())
 	}

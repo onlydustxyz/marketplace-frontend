@@ -7,5 +7,5 @@ pub trait Repository: Send + Sync {
 
 	fn upsert(&self, command: Command) -> Result<()>;
 
-	fn decrease_processing_count(&self, id: &CommandId) -> Result<()>;
+	fn decrease_processing_count(&self, id: &CommandId, amount: i32) -> Result<()>;
 }
