@@ -13,6 +13,7 @@ import { SuspenseCache } from "@apollo/client";
 import { ImpersonationClaimsProvider } from "src/hooks/useImpersonationClaims";
 import { ContributorProfilePanelProvider } from "src/hooks/useContributorProfilePanel";
 import { SidePanelStackProvider } from "src/hooks/useSidePanelStack";
+import { CommandsProvider } from "src/providers/Commands";
 
 interface MemoryRouterProviderFactoryProps {
   route?: string;
@@ -42,26 +43,28 @@ export const MemoryRouterProviderFactory =
                   }}
                 >
                   <MemoryRouter initialEntries={[route]}>
-                    <SidePanelStackProvider>
-                      {context ? (
-                        <Routes>
-                          <Route path="/" element={<Outlet context={context} />}>
-                            <Route
-                              index
-                              element={
-                                <AuthProvider>
-                                  <ContributorProfilePanelProvider>{children}</ContributorProfilePanelProvider>
-                                </AuthProvider>
-                              }
-                            />
-                          </Route>
-                        </Routes>
-                      ) : (
-                        <AuthProvider>
-                          <ContributorProfilePanelProvider>{children}</ContributorProfilePanelProvider>
-                        </AuthProvider>
-                      )}
-                    </SidePanelStackProvider>
+                    <CommandsProvider>
+                      <SidePanelStackProvider>
+                        {context ? (
+                          <Routes>
+                            <Route path="/" element={<Outlet context={context} />}>
+                              <Route
+                                index
+                                element={
+                                  <AuthProvider>
+                                    <ContributorProfilePanelProvider>{children}</ContributorProfilePanelProvider>
+                                  </AuthProvider>
+                                }
+                              />
+                            </Route>
+                          </Routes>
+                        ) : (
+                          <AuthProvider>
+                            <ContributorProfilePanelProvider>{children}</ContributorProfilePanelProvider>
+                          </AuthProvider>
+                        )}
+                      </SidePanelStackProvider>
+                    </CommandsProvider>
                   </MemoryRouter>
                 </MockedProvider>
               </ImpersonationClaimsProvider>
