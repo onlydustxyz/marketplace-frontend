@@ -43,6 +43,7 @@ impl EventStore for Client {
 			aggregate_id: aggregate_id.to_owned(),
 			payload: serialize_event(&domain_event)?,
 			metadata: storable_event.metadata().clone(),
+			command_id: storable_event.command_id().map(Into::into),
 		};
 
 		connection

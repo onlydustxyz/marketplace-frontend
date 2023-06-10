@@ -61,7 +61,8 @@ async fn publish(
 	publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 ) -> Result<(), SubscriberCallbackError> {
 	// Create a new message with same payload so that trace context is right
-	let message = UniqueMessage::new(message.payload().clone());
+	let message = message.copy();
+
 	publisher
 		.publish(Destination::exchange(EXCHANGE_NAME), &message)
 		.await

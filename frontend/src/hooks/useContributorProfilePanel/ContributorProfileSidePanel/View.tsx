@@ -227,7 +227,7 @@ export default function View({ profile, projects, headerColor, setOpen, ...rest 
                       {T("profile.sections.stats.contributions")}
                     </div>
                     <div className="font-belwe font-normal text-4xl pb-1 text-greyscale-50">
-                      {profile.contributionStatsAggregate.aggregate?.sum?.count || 0}
+                      {profile.contributionStatsAggregate.aggregate?.sum?.totalCount || 0}
                     </div>
                     <div
                       className="flex flex-row items-center gap-0.5 rounded-full py-0.5 px-2 bg-white/5 border border-greyscale-50/12 backdrop-blur-lg shadow-heavy text-sm"

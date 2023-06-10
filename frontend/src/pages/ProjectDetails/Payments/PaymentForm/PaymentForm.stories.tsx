@@ -1,97 +1,87 @@
-import {
-  GetProjectContributorsForPaymentSelectDocument,
-  GetProjectContributorsForPaymentSelectQueryResult,
-  GithubUserWithPaymentRequestsForProjectFragment,
-} from "src/__generated/graphql";
 import { withRouter } from "storybook-addon-react-router-v6";
 
 import PaymentForm from "./View";
 import withMockedProvider from "src/test/storybook/decorators/withMockedProvider";
-import React from "react";
 import withFormProvider from "src/test/storybook/decorators/withFormProvider";
+import {
+  ContributorFragment,
+  GetProjectContributorsDocument,
+  GetProjectContributorsQueryResult,
+} from "src/__generated/graphql";
+import withSuspense from "src/test/storybook/decorators/withSuspense";
+import withCommandProvider from "src/test/storybook/decorators/withCommandProvider";
+import withContributorProfilePanelProvider from "src/test/storybook/decorators/withContributorProfilePanelProvider";
 
 const projectId = "yolo";
-const BERNARDSTANISLAS: GithubUserWithPaymentRequestsForProjectFragment = {
-  avatarUrl: "https://avatars.githubusercontent.com/u/4435377?v=4",
-  id: 4435377,
+const BERNARDSTANISLAS: ContributorFragment = {
+  __typename: "UserProfiles",
+  githubUserId: 4435377,
   login: "bernardstanislas",
-  user: null,
-  __typename: "GithubUsers",
-  htmlUrl: "",
-  paymentRequests: [],
+  avatarUrl: "https://avatars.githubusercontent.com/u/4435377?v=4",
+  userId: null,
+  contributionStatsAggregate: { aggregate: { sum: { paidCount: 0, unpaidUnignoredCount: 0 } } },
+  paymentStatsAggregate: { aggregate: { sum: { moneyGranted: 0 } } },
 };
-const OSCARWROCHE: GithubUserWithPaymentRequestsForProjectFragment = {
+const OSCARWROCHE: ContributorFragment = {
   login: "oscarwroche",
   avatarUrl: "https://avatars.githubusercontent.com/u/21149076?v=4",
-  id: 21149076,
-  user: null,
-  __typename: "GithubUsers",
-  htmlUrl: "",
-  paymentRequests: [],
+  githubUserId: 21149076,
+  userId: null,
+  __typename: "UserProfiles",
+  contributionStatsAggregate: { aggregate: { sum: { paidCount: 0, unpaidUnignoredCount: 0 } } },
+  paymentStatsAggregate: { aggregate: { sum: { moneyGranted: 0 } } },
 };
-const OFUX: GithubUserWithPaymentRequestsForProjectFragment = {
+const OFUX: ContributorFragment = {
   login: "ofux",
   avatarUrl: "https://avatars.githubusercontent.com/u/595505?v=4",
-  id: 595505,
-  user: { id: "yolo" },
-  __typename: "GithubUsers",
-  htmlUrl: "",
-  paymentRequests: [],
+  githubUserId: 595505,
+  userId: "yolo",
+  __typename: "UserProfiles",
+  contributionStatsAggregate: { aggregate: { sum: { paidCount: 0, unpaidUnignoredCount: 0 } } },
+  paymentStatsAggregate: { aggregate: { sum: { moneyGranted: 0 } } },
 };
-const ANTHONYBUISSET: GithubUserWithPaymentRequestsForProjectFragment = {
+const ANTHONYBUISSET: ContributorFragment = {
   login: "anthonybuisset",
   avatarUrl: "https://avatars.githubusercontent.com/u/43467246?v=4",
-  id: 43467246,
-  user: null,
-  __typename: "GithubUsers",
-  htmlUrl: "",
-  paymentRequests: [],
+  githubUserId: 43467246,
+  userId: null,
+  __typename: "UserProfiles",
+  contributionStatsAggregate: { aggregate: { sum: { paidCount: 0, unpaidUnignoredCount: 0 } } },
+  paymentStatsAggregate: { aggregate: { sum: { moneyGranted: 0 } } },
 };
-const TDELABRO: GithubUserWithPaymentRequestsForProjectFragment = {
+const TDELABRO: ContributorFragment = {
+  __typename: "UserProfiles",
+  githubUserId: 34384633,
   login: "tdelabro",
   avatarUrl: "https://avatars.githubusercontent.com/u/34384633?v=4",
-  id: 34384633,
-  user: null,
-  __typename: "GithubUsers",
-  htmlUrl: "",
-  paymentRequests: [],
+  userId: null,
+  contributionStatsAggregate: { aggregate: { sum: { paidCount: 0, unpaidUnignoredCount: 0 } } },
+  paymentStatsAggregate: { aggregate: { sum: { moneyGranted: 0 } } },
 };
 
 const mocks = [
   {
     request: {
-      query: GetProjectContributorsForPaymentSelectDocument,
+      query: GetProjectContributorsDocument,
       variables: {
         projectId,
       },
     },
     result: {
       data: {
-        projectsByPk: {
-          __typename: "Projects",
-          budgets: [],
-          id: projectId,
-          contributors: [
-            BERNARDSTANISLAS,
-            OSCARWROCHE,
-            OFUX,
-            ANTHONYBUISSET,
-            TDELABRO,
-            OSCARWROCHE,
-            OFUX,
-            ANTHONYBUISSET,
-            TDELABRO,
-            BERNARDSTANISLAS,
-          ].map(githubUser => ({ __typename: "ProjectsContributorsView", githubUser })),
-          githubRepos: [
-            {
-              projectId,
-              githubRepoId: 123456,
-              repoIssues: [],
-            },
-          ],
-        },
-      } as GetProjectContributorsForPaymentSelectQueryResult["data"],
+        projectsContributorsView: [
+          BERNARDSTANISLAS,
+          OSCARWROCHE,
+          OFUX,
+          ANTHONYBUISSET,
+          TDELABRO,
+          OSCARWROCHE,
+          OFUX,
+          ANTHONYBUISSET,
+          TDELABRO,
+          BERNARDSTANISLAS,
+        ].map(user => ({ user })),
+      } as GetProjectContributorsQueryResult["data"],
     },
   },
 ];
@@ -130,6 +120,9 @@ export default {
         remainingBudget: args.budget.remainingAmount,
       },
     }),
+    withSuspense,
+    withCommandProvider,
+    withContributorProfilePanelProvider,
   ],
 };
 

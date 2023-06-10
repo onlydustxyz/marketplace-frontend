@@ -2,10 +2,10 @@ import { rates } from "src/hooks/useWorkEstimation";
 import { generatePath, useNavigate } from "react-router-dom";
 import View, { Contributor } from "./View";
 import { ProjectPaymentsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
-import { GithubUserWithPaymentRequestsForProjectFragment } from "src/__generated/graphql";
+import { ContributorFragment } from "src/__generated/graphql";
 
 type Props = {
-  contributors: (GithubUserWithPaymentRequestsForProjectFragment & { unpaidMergedPullsCount?: number })[];
+  contributors: ContributorFragment[];
   isProjectLeader: boolean;
   remainingBudget: number;
   projectId: string;
@@ -19,16 +19,14 @@ export default function ContributorsTable({
 }: Props) {
   const contributors = contributorFragments.map(c => {
     return {
-      id: c.id,
-      login: c.login,
-      avatarUrl: c.avatarUrl,
-      htmlUrl: c.htmlUrl,
-      isRegistered: !!c.user?.id,
-      totalEarned: c.paymentRequests.reduce((acc, r) => acc + r.amountInUsd || 0, 0),
-      paidContributions:
-        c.paymentRequests.reduce((acc, r) => acc + (r.workItemsAggregate.aggregate?.count || 0), 0) || 0,
-      unpaidMergedPullsCount: c.unpaidMergedPullsCount,
-    };
+      githubUserId: c.githubUserId,
+      login: c.login || "",
+      avatarUrl: c.avatarUrl || "",
+      userId: c.userId,
+      totalEarned: c.paymentStatsAggregate.aggregate?.sum?.moneyGranted || 0,
+      paidContributionsCount: c.contributionStatsAggregate.aggregate?.sum?.paidCount || 0,
+      unpaidMergedPullsCount: c.contributionStatsAggregate.aggregate?.sum?.unpaidUnignoredCount || 0,
+    } as Contributor;
   });
 
   const navigate = useNavigate();

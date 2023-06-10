@@ -10,7 +10,7 @@ array_relationships:
         insertion_order: null
         remote_table:
           name: contribution_counts
-          schema: public
+          schema: api
   - name: contributionStats
     using:
       manual_configuration:
@@ -19,7 +19,7 @@ array_relationships:
         insertion_order: null
         remote_table:
           name: contribution_stats
-          schema: public
+          schema: api
   - name: contributions
     using:
       manual_configuration:
@@ -28,7 +28,7 @@ array_relationships:
         insertion_order: null
         remote_table:
           name: contributions
-          schema: public
+          schema: api
   - name: paymentStats
     using:
       manual_configuration:

@@ -16,7 +16,8 @@ use api::{
 use domain::AggregateRootRepository;
 use dotenv::dotenv;
 use infrastructure::{
-	amqp, config, database, github, graphql as infrastructure_graphql, tracing::Tracer, web3::ens,
+	amqp, amqp::CommandPublisherDecorator, config, database, github,
+	graphql as infrastructure_graphql, tracing::Tracer, web3::ens,
 };
 use olog::info;
 
@@ -37,7 +38,11 @@ async fn main() -> Result<()> {
 	http::serve(
 		config.http().clone(),
 		graphql::create_schema(),
-		Arc::new(amqp::Bus::new(config.amqp()).await?),
+		Arc::new(
+			amqp::Bus::new(config.amqp())
+				.await?
+				.into_command_publisher(database.clone(), expected_processing_count_per_event()),
+		),
 		AggregateRootRepository::new(database.clone()),
 		ProjectDetailsRepository::new(database.clone()),
 		SponsorRepository::new(database.clone()),
@@ -57,4 +62,11 @@ async fn main() -> Result<()> {
 
 	info!("👋 Gracefully shut down");
 	Ok(())
+}
+
+fn expected_processing_count_per_event() -> i32 {
+	std::env::var("DOMAIN_EVENT_PROJECTORS_COUNT")
+		.unwrap_or_default()
+		.parse()
+		.unwrap_or(2)
 }

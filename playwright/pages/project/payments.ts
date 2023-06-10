@@ -66,7 +66,7 @@ export class NewPaymentPage {
     if (recipient) {
       await this.page.getByText("Search by Github handle").click();
       await this.page.getByTestId("contributor-selection-input").fill(recipient.github.login);
-      await this.page.getByRole("listitem").first().click();
+      await this.page.getByRole("option", { name: recipient.github.login }).first().click();
     }
 
     // Add work items

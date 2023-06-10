@@ -1,3 +1,4 @@
+import { Visibility } from "../../__generated/graphql";
 import { ProjectFixture } from "../../types";
 
 export const projects: Record<string, ProjectFixture> = {
@@ -68,6 +69,6 @@ export const projects: Record<string, ProjectFixture> = {
     leaders: ["Oscar"],
     pendingLeaderInvitations: ["Anthony"],
     repos: ["kakarot"],
-    visibility: "PRIVATE",
+    visibility: Visibility.Private,
   },
 };

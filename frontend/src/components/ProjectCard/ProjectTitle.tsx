@@ -3,7 +3,7 @@ import { formatList } from "src/utils/list";
 import { ProjectLeadFragment } from "src/__generated/graphql";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import { TooltipPosition, withTooltip } from "src/components/Tooltip";
-import ClickableUser from "src/components/ClickableUser";
+import Contributor from "src/components/Contributor";
 import PrivateTag from "src/components/PrivateTag";
 
 type Props = {
@@ -23,7 +23,14 @@ const ProjectLeads = ({ leads }: { leads: ProjectLeadFragment[] }) => {
         <div className="flex flex-row gap-1 whitespace-nowrap truncate">
           {T("project.ledBy", { count: leads.length })}
           {leads.length === 1 && leads[0].login && (
-            <ClickableUser name={leads[0].login} githubUserId={leads[0].githubUserId} />
+            <Contributor
+              contributor={{
+                githubUserId: leads[0].githubUserId,
+                login: leads[0].login,
+                avatarUrl: null,
+              }}
+              clickable
+            />
           )}
         </div>
       )}

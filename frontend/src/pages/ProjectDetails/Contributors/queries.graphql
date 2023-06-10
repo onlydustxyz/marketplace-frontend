@@ -1,28 +1,10 @@
-query GetProjectContributors($projectId: uuid!) {
-  projectsByPk(id: $projectId) {
-    projectDetails {
-      projectId
-      name
-    }
-    ...ProjectContributorsWithPaymentSummary
-  }
-}
-
-query GetProjectContributorsAsLeader($projectId: uuid!) {
-  projectsByPk(id: $projectId) {
-    projectDetails {
-      projectId
-      name
-    }
-    ...ProjectContributorsWithPaymentSummary
-    ...LastProjectMergedPullRequests
-    ...ProjectPaidWorkItems
-  }
-}
-
-query GetProjectRemainingBudget($projectId: uuid!) {
+query GetProjectDetails($projectId: uuid!) {
   projectsByPk(id: $projectId) {
     id
+    projectDetails {
+      projectId
+      name
+    }
     budgets {
       id
       remainingAmount

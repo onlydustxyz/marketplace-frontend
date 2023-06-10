@@ -27,13 +27,13 @@ export default function ContributorLine({
   return (
     <Line key={contributor.login} className="h-10">
       <Cell height={CellHeight.Small} horizontalMargin={false} className="-ml-px">
-        <Contributor contributor={contributor} />
+        <Contributor contributor={contributor} clickable />
       </Cell>
       <Cell height={CellHeight.Small} horizontalMargin={false}>{`${
         contributor?.totalEarned ? formatMoneyAmount({ amount: contributor.totalEarned }) : "-"
       }`}</Cell>
       <Cell height={CellHeight.Small} horizontalMargin={false}>
-        {contributor.paidContributions || "-"}
+        {contributor.paidContributionsCount || "-"}
       </Cell>
       {isProjectLeader ? (
         <>
