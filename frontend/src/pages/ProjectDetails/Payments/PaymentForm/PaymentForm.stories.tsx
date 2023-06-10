@@ -2,13 +2,15 @@ import { withRouter } from "storybook-addon-react-router-v6";
 
 import PaymentForm from "./View";
 import withMockedProvider from "src/test/storybook/decorators/withMockedProvider";
-import React from "react";
 import withFormProvider from "src/test/storybook/decorators/withFormProvider";
 import {
   ContributorFragment,
   GetProjectContributorsDocument,
   GetProjectContributorsQueryResult,
 } from "src/__generated/graphql";
+import withSuspense from "src/test/storybook/decorators/withSuspense";
+import withCommandProvider from "src/test/storybook/decorators/withCommandProvider";
+import withContributorProfilePanelProvider from "src/test/storybook/decorators/withContributorProfilePanelProvider";
 
 const projectId = "yolo";
 const BERNARDSTANISLAS: ContributorFragment = {
@@ -118,6 +120,9 @@ export default {
         remainingBudget: args.budget.remainingAmount,
       },
     }),
+    withSuspense,
+    withCommandProvider,
+    withContributorProfilePanelProvider,
   ],
 };
 

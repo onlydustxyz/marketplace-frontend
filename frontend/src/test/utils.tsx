@@ -28,7 +28,7 @@ export const MemoryRouterProviderFactory =
   // eslint-disable-next-line react/display-name
   ({ children }: PropsWithChildren) =>
     (
-      <Suspense fallback={<div />}>
+      <Suspense>
         <ToasterProvider>
           <SessionProvider>
             <TokenSetProvider>
