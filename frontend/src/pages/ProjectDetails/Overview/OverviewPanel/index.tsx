@@ -7,7 +7,7 @@ import { formatMoneyAmount } from "src/utils/money";
 import { GithubUserFragment, ProjectLeadFragment, SponsorFragment } from "src/__generated/graphql";
 import Section, { SectionIcon } from "./Section";
 import Contributor from "src/components/Contributor";
-import Sponsor from "src/components/Sponsor";
+import Sponsor from "./Sponsor";
 
 interface Props {
   leads?: ProjectLeadFragment[];
