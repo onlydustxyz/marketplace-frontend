@@ -142,6 +142,7 @@ class Issue {
 class Payment {
    amount: Amount!
    budgetId: Id!
+   commandId: Id!
    paymentId: Id!
    projectId: Id!
 }
@@ -254,7 +255,7 @@ class RegisteredUsers {
    login: String
    paymentRequests: [PaymentRequests!]!
    projectsLeaded: [ProjectLeads!]!
-   userInfo: UserInfo
+   userPayoutInfo: UserPayoutInfo
 }
 
 class Sponsors {
@@ -274,9 +275,8 @@ class User {
    user: RegisteredUsers
 }
 
-class UserInfo {
+class UserPayoutInfo {
    arePayoutSettingsValid: Boolean!
-   contactInformation: jsonb
    identity: jsonb
    location: jsonb
    payoutSettings: jsonb
@@ -446,7 +446,7 @@ ProjectsContributorsView -- Projects
 ProjectsContributorsView -- UserProfiles
 ProjectsSponsors -- Projects
 ProjectsSponsors -- Sponsors
-RegisteredUsers -- UserInfo
+RegisteredUsers -- UserPayoutInfo
 RegisteredUsers --* PaymentRequests
 RegisteredUsers --* ProjectLeads
 Sponsors --* ProjectsSponsors

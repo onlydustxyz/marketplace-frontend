@@ -15,7 +15,6 @@ export type Scalars = {
   Float: number;
   Amount: any;
   DateTimeUtc: any;
-  Email: any;
   EthereumAddress: any;
   EthereumName: any;
   GithubIssueId: any;
@@ -947,13 +946,6 @@ export type CompanyIdentity = {
   identificationNumber: InputMaybe<Scalars['String']>;
   name: InputMaybe<Scalars['String']>;
   owner: InputMaybe<PersonIdentity>;
-};
-
-export type ContactInformation = {
-  discord: InputMaybe<Scalars['String']>;
-  email: InputMaybe<Scalars['Email']>;
-  telegram: InputMaybe<Scalars['String']>;
-  twitter: InputMaybe<Scalars['String']>;
 };
 
 /** columns and relationships of "api.contribution_counts" */
@@ -3765,6 +3757,7 @@ export type Payment = {
   __typename?: 'Payment';
   amount: Scalars['Amount'];
   budgetId: Scalars['Id'];
+  commandId: Scalars['Id'];
   paymentId: Scalars['Id'];
   projectId: Scalars['Id'];
 };
@@ -6224,7 +6217,7 @@ export type RegisteredUsers = {
   /** An aggregate relationship */
   projectsLeadedAggregate: ProjectLeadsAggregate;
   /** An object relationship */
-  userInfo: Maybe<UserInfo>;
+  userPayoutInfo: Maybe<UserPayoutInfo>;
 };
 
 
@@ -6319,7 +6312,7 @@ export type RegisteredUsersBoolExp = {
   paymentRequests_aggregate: InputMaybe<Payment_Requests_Aggregate_Bool_Exp>;
   projectsLeaded: InputMaybe<ProjectLeadsBoolExp>;
   projectsLeaded_aggregate: InputMaybe<Project_Leads_Aggregate_Bool_Exp>;
-  userInfo: InputMaybe<UserInfoBoolExp>;
+  userPayoutInfo: InputMaybe<UserPayoutInfoBoolExp>;
 };
 
 /** input type for inserting data into table "registered_users" */
@@ -6333,7 +6326,7 @@ export type RegisteredUsersInsertInput = {
   login: InputMaybe<Scalars['String']>;
   paymentRequests: InputMaybe<PaymentRequestsArrRelInsertInput>;
   projectsLeaded: InputMaybe<ProjectLeadsArrRelInsertInput>;
-  userInfo: InputMaybe<UserInfoObjRelInsertInput>;
+  userPayoutInfo: InputMaybe<UserPayoutInfoObjRelInsertInput>;
 };
 
 /** aggregate max on columns */
@@ -6376,7 +6369,7 @@ export type RegisteredUsersOrderBy = {
   login: InputMaybe<OrderBy>;
   paymentRequestsAggregate: InputMaybe<PaymentRequestsAggregateOrderBy>;
   projectsLeadedAggregate: InputMaybe<ProjectLeadsAggregateOrderBy>;
-  userInfo: InputMaybe<UserInfoOrderBy>;
+  userPayoutInfo: InputMaybe<UserPayoutInfoOrderBy>;
 };
 
 /** select columns of table "registered_users" */
@@ -6720,11 +6713,10 @@ export type UserPaymentRequestsAggregateArgs = {
   where: InputMaybe<PaymentRequestsBoolExp>;
 };
 
-/** columns and relationships of "user_info" */
-export type UserInfo = {
-  __typename?: 'UserInfo';
+/** columns and relationships of "user_payout_info" */
+export type UserPayoutInfo = {
+  __typename?: 'UserPayoutInfo';
   arePayoutSettingsValid: Scalars['Boolean'];
-  contactInformation: Maybe<Scalars['jsonb']>;
   identity: Maybe<Scalars['jsonb']>;
   location: Maybe<Scalars['jsonb']>;
   payoutSettings: Maybe<Scalars['jsonb']>;
@@ -6732,105 +6724,93 @@ export type UserInfo = {
 };
 
 
-/** columns and relationships of "user_info" */
-export type UserInfoContactInformationArgs = {
+/** columns and relationships of "user_payout_info" */
+export type UserPayoutInfoIdentityArgs = {
   path: InputMaybe<Scalars['String']>;
 };
 
 
-/** columns and relationships of "user_info" */
-export type UserInfoIdentityArgs = {
+/** columns and relationships of "user_payout_info" */
+export type UserPayoutInfoLocationArgs = {
   path: InputMaybe<Scalars['String']>;
 };
 
 
-/** columns and relationships of "user_info" */
-export type UserInfoLocationArgs = {
+/** columns and relationships of "user_payout_info" */
+export type UserPayoutInfoPayoutSettingsArgs = {
   path: InputMaybe<Scalars['String']>;
 };
 
-
-/** columns and relationships of "user_info" */
-export type UserInfoPayoutSettingsArgs = {
-  path: InputMaybe<Scalars['String']>;
+/** aggregated selection of "user_payout_info" */
+export type UserPayoutInfoAggregate = {
+  __typename?: 'UserPayoutInfoAggregate';
+  aggregate: Maybe<UserPayoutInfoAggregateFields>;
+  nodes: Array<UserPayoutInfo>;
 };
 
-/** aggregated selection of "user_info" */
-export type UserInfoAggregate = {
-  __typename?: 'UserInfoAggregate';
-  aggregate: Maybe<UserInfoAggregateFields>;
-  nodes: Array<UserInfo>;
-};
-
-/** aggregate fields of "user_info" */
-export type UserInfoAggregateFields = {
-  __typename?: 'UserInfoAggregateFields';
+/** aggregate fields of "user_payout_info" */
+export type UserPayoutInfoAggregateFields = {
+  __typename?: 'UserPayoutInfoAggregateFields';
   count: Scalars['Int'];
-  max: Maybe<UserInfoMaxFields>;
-  min: Maybe<UserInfoMinFields>;
+  max: Maybe<UserPayoutInfoMaxFields>;
+  min: Maybe<UserPayoutInfoMinFields>;
 };
 
 
-/** aggregate fields of "user_info" */
-export type UserInfoAggregateFieldsCountArgs = {
-  columns: InputMaybe<Array<UserInfoSelectColumn>>;
+/** aggregate fields of "user_payout_info" */
+export type UserPayoutInfoAggregateFieldsCountArgs = {
+  columns: InputMaybe<Array<UserPayoutInfoSelectColumn>>;
   distinct: InputMaybe<Scalars['Boolean']>;
 };
 
 /** append existing jsonb value of filtered columns with new jsonb value */
-export type UserInfoAppendInput = {
-  contactInformation: InputMaybe<Scalars['jsonb']>;
+export type UserPayoutInfoAppendInput = {
   identity: InputMaybe<Scalars['jsonb']>;
   location: InputMaybe<Scalars['jsonb']>;
   payoutSettings: InputMaybe<Scalars['jsonb']>;
 };
 
-/** Boolean expression to filter rows from the table "user_info". All fields are combined with a logical 'AND'. */
-export type UserInfoBoolExp = {
-  _and: InputMaybe<Array<UserInfoBoolExp>>;
-  _not: InputMaybe<UserInfoBoolExp>;
-  _or: InputMaybe<Array<UserInfoBoolExp>>;
+/** Boolean expression to filter rows from the table "user_payout_info". All fields are combined with a logical 'AND'. */
+export type UserPayoutInfoBoolExp = {
+  _and: InputMaybe<Array<UserPayoutInfoBoolExp>>;
+  _not: InputMaybe<UserPayoutInfoBoolExp>;
+  _or: InputMaybe<Array<UserPayoutInfoBoolExp>>;
   arePayoutSettingsValid: InputMaybe<BooleanComparisonExp>;
-  contactInformation: InputMaybe<JsonbComparisonExp>;
   identity: InputMaybe<JsonbComparisonExp>;
   location: InputMaybe<JsonbComparisonExp>;
   payoutSettings: InputMaybe<JsonbComparisonExp>;
   userId: InputMaybe<UuidComparisonExp>;
 };
 
-/** unique or primary key constraints on table "user_info" */
-export enum UserInfoConstraint {
+/** unique or primary key constraints on table "user_payout_info" */
+export enum UserPayoutInfoConstraint {
   /** unique or primary key constraint on columns "user_id" */
   UserInfoPkey = 'user_info_pkey'
 }
 
 /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
-export type UserInfoDeleteAtPathInput = {
-  contactInformation: InputMaybe<Array<Scalars['String']>>;
+export type UserPayoutInfoDeleteAtPathInput = {
   identity: InputMaybe<Array<Scalars['String']>>;
   location: InputMaybe<Array<Scalars['String']>>;
   payoutSettings: InputMaybe<Array<Scalars['String']>>;
 };
 
 /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
-export type UserInfoDeleteElemInput = {
-  contactInformation: InputMaybe<Scalars['Int']>;
+export type UserPayoutInfoDeleteElemInput = {
   identity: InputMaybe<Scalars['Int']>;
   location: InputMaybe<Scalars['Int']>;
   payoutSettings: InputMaybe<Scalars['Int']>;
 };
 
 /** delete key/value pair or string element. key/value pairs are matched based on their key value */
-export type UserInfoDeleteKeyInput = {
-  contactInformation: InputMaybe<Scalars['String']>;
+export type UserPayoutInfoDeleteKeyInput = {
   identity: InputMaybe<Scalars['String']>;
   location: InputMaybe<Scalars['String']>;
   payoutSettings: InputMaybe<Scalars['String']>;
 };
 
-/** input type for inserting data into table "user_info" */
-export type UserInfoInsertInput = {
-  contactInformation: InputMaybe<Scalars['jsonb']>;
+/** input type for inserting data into table "user_payout_info" */
+export type UserPayoutInfoInsertInput = {
   identity: InputMaybe<Scalars['jsonb']>;
   location: InputMaybe<Scalars['jsonb']>;
   payoutSettings: InputMaybe<Scalars['jsonb']>;
@@ -6838,69 +6818,65 @@ export type UserInfoInsertInput = {
 };
 
 /** aggregate max on columns */
-export type UserInfoMaxFields = {
-  __typename?: 'UserInfoMaxFields';
+export type UserPayoutInfoMaxFields = {
+  __typename?: 'UserPayoutInfoMaxFields';
   userId: Maybe<Scalars['uuid']>;
 };
 
 /** aggregate min on columns */
-export type UserInfoMinFields = {
-  __typename?: 'UserInfoMinFields';
+export type UserPayoutInfoMinFields = {
+  __typename?: 'UserPayoutInfoMinFields';
   userId: Maybe<Scalars['uuid']>;
 };
 
-/** response of any mutation on the table "user_info" */
-export type UserInfoMutationResponse = {
-  __typename?: 'UserInfoMutationResponse';
+/** response of any mutation on the table "user_payout_info" */
+export type UserPayoutInfoMutationResponse = {
+  __typename?: 'UserPayoutInfoMutationResponse';
   /** number of rows affected by the mutation */
   affected_rows: Scalars['Int'];
   /** data from the rows affected by the mutation */
-  returning: Array<UserInfo>;
+  returning: Array<UserPayoutInfo>;
 };
 
-/** input type for inserting object relation for remote table "user_info" */
-export type UserInfoObjRelInsertInput = {
-  data: UserInfoInsertInput;
+/** input type for inserting object relation for remote table "user_payout_info" */
+export type UserPayoutInfoObjRelInsertInput = {
+  data: UserPayoutInfoInsertInput;
   /** upsert condition */
-  onConflict: InputMaybe<UserInfoOnConflict>;
+  onConflict: InputMaybe<UserPayoutInfoOnConflict>;
 };
 
-/** on_conflict condition type for table "user_info" */
-export type UserInfoOnConflict = {
-  constraint: UserInfoConstraint;
-  update_columns: Array<UserInfoUpdateColumn>;
-  where: InputMaybe<UserInfoBoolExp>;
+/** on_conflict condition type for table "user_payout_info" */
+export type UserPayoutInfoOnConflict = {
+  constraint: UserPayoutInfoConstraint;
+  update_columns: Array<UserPayoutInfoUpdateColumn>;
+  where: InputMaybe<UserPayoutInfoBoolExp>;
 };
 
-/** Ordering options when selecting data from "user_info". */
-export type UserInfoOrderBy = {
+/** Ordering options when selecting data from "user_payout_info". */
+export type UserPayoutInfoOrderBy = {
   arePayoutSettingsValid: InputMaybe<OrderBy>;
-  contactInformation: InputMaybe<OrderBy>;
   identity: InputMaybe<OrderBy>;
   location: InputMaybe<OrderBy>;
   payoutSettings: InputMaybe<OrderBy>;
   userId: InputMaybe<OrderBy>;
 };
 
-/** primary key columns input for table: user_info */
-export type UserInfoPkColumnsInput = {
+/** primary key columns input for table: user_payout_info */
+export type UserPayoutInfoPkColumnsInput = {
   userId: Scalars['uuid'];
 };
 
 /** prepend existing jsonb value of filtered columns with new jsonb value */
-export type UserInfoPrependInput = {
-  contactInformation: InputMaybe<Scalars['jsonb']>;
+export type UserPayoutInfoPrependInput = {
   identity: InputMaybe<Scalars['jsonb']>;
   location: InputMaybe<Scalars['jsonb']>;
   payoutSettings: InputMaybe<Scalars['jsonb']>;
 };
 
-/** select columns of table "user_info" */
-export enum UserInfoSelectColumn {
+/** select columns of table "user_payout_info" */
+export enum UserPayoutInfoSelectColumn {
   /** column name */
   ArePayoutSettingsValid = 'arePayoutSettingsValid',
-  /** column name */
-  ContactInformation = 'contactInformation',
   /** column name */
   Identity = 'identity',
   /** column name */
@@ -6911,19 +6887,16 @@ export enum UserInfoSelectColumn {
   UserId = 'userId'
 }
 
-/** input type for updating data in table "user_info" */
-export type UserInfoSetInput = {
-  contactInformation: InputMaybe<Scalars['jsonb']>;
+/** input type for updating data in table "user_payout_info" */
+export type UserPayoutInfoSetInput = {
   identity: InputMaybe<Scalars['jsonb']>;
   location: InputMaybe<Scalars['jsonb']>;
   payoutSettings: InputMaybe<Scalars['jsonb']>;
   userId: InputMaybe<Scalars['uuid']>;
 };
 
-/** update columns of table "user_info" */
-export enum UserInfoUpdateColumn {
-  /** column name */
-  ContactInformation = 'contactInformation',
+/** update columns of table "user_payout_info" */
+export enum UserPayoutInfoUpdateColumn {
   /** column name */
   Identity = 'identity',
   /** column name */
@@ -6934,20 +6907,20 @@ export enum UserInfoUpdateColumn {
   UserId = 'userId'
 }
 
-export type UserInfoUpdates = {
+export type UserPayoutInfoUpdates = {
   /** append existing jsonb value of filtered columns with new jsonb value */
-  _append: InputMaybe<UserInfoAppendInput>;
+  _append: InputMaybe<UserPayoutInfoAppendInput>;
   /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
-  _deleteAtPath: InputMaybe<UserInfoDeleteAtPathInput>;
+  _deleteAtPath: InputMaybe<UserPayoutInfoDeleteAtPathInput>;
   /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
-  _deleteElem: InputMaybe<UserInfoDeleteElemInput>;
+  _deleteElem: InputMaybe<UserPayoutInfoDeleteElemInput>;
   /** delete key/value pair or string element. key/value pairs are matched based on their key value */
-  _deleteKey: InputMaybe<UserInfoDeleteKeyInput>;
+  _deleteKey: InputMaybe<UserPayoutInfoDeleteKeyInput>;
   /** prepend existing jsonb value of filtered columns with new jsonb value */
-  _prepend: InputMaybe<UserInfoPrependInput>;
+  _prepend: InputMaybe<UserPayoutInfoPrependInput>;
   /** sets the columns of the filtered rows to the given values */
-  _set: InputMaybe<UserInfoSetInput>;
-  where: UserInfoBoolExp;
+  _set: InputMaybe<UserPayoutInfoSetInput>;
+  where: UserPayoutInfoBoolExp;
 };
 
 /** columns and relationships of "user_profiles" */
@@ -9828,10 +9801,10 @@ export type Mutation_Root = {
   deleteSponsorsByPk: Maybe<Sponsors>;
   /** delete single row from the table: "auth.users" */
   deleteUser: Maybe<Users>;
-  /** delete data from the table: "user_info" */
-  deleteUserInfo: Maybe<UserInfoMutationResponse>;
-  /** delete single row from the table: "user_info" */
-  deleteUserInfoByPk: Maybe<UserInfo>;
+  /** delete data from the table: "user_payout_info" */
+  deleteUserPayoutInfo: Maybe<UserPayoutInfoMutationResponse>;
+  /** delete single row from the table: "user_payout_info" */
+  deleteUserPayoutInfoByPk: Maybe<UserPayoutInfo>;
   /** delete data from the table: "auth.users" */
   deleteUsers: Maybe<UsersMutationResponse>;
   /** delete data from the table: "work_items" */
@@ -9937,10 +9910,10 @@ export type Mutation_Root = {
   insertSponsorsOne: Maybe<Sponsors>;
   /** insert a single row into the table: "auth.users" */
   insertUser: Maybe<Users>;
-  /** insert data into the table: "user_info" */
-  insertUserInfo: Maybe<UserInfoMutationResponse>;
-  /** insert a single row into the table: "user_info" */
-  insertUserInfoOne: Maybe<UserInfo>;
+  /** insert data into the table: "user_payout_info" */
+  insertUserPayoutInfo: Maybe<UserPayoutInfoMutationResponse>;
+  /** insert a single row into the table: "user_payout_info" */
+  insertUserPayoutInfoOne: Maybe<UserPayoutInfo>;
   /** insert data into the table: "auth.users" */
   insertUsers: Maybe<UsersMutationResponse>;
   /** insert data into the table: "work_items" */
@@ -10058,13 +10031,13 @@ export type Mutation_Root = {
   updatePaymentsByPk: Maybe<Payments>;
   /** update multiples rows of table: "payments" */
   updatePaymentsMany: Maybe<Array<Maybe<PaymentsMutationResponse>>>;
+  updatePayoutInfo: Scalars['Uuid'];
   /** update data of the table: "pending_project_leader_invitations" */
   updatePendingProjectLeaderInvitations: Maybe<PendingProjectLeaderInvitationsMutationResponse>;
   /** update single row of the table: "pending_project_leader_invitations" */
   updatePendingProjectLeaderInvitationsByPk: Maybe<PendingProjectLeaderInvitations>;
   /** update multiples rows of table: "pending_project_leader_invitations" */
   updatePendingProjectLeaderInvitationsMany: Maybe<Array<Maybe<PendingProjectLeaderInvitationsMutationResponse>>>;
-  updateProfileInfo: Scalars['Uuid'];
   updateProject: Scalars['Uuid'];
   /** update data of the table: "project_details" */
   updateProjectDetails: Maybe<ProjectDetailsMutationResponse>;
@@ -10105,12 +10078,12 @@ export type Mutation_Root = {
   updateSponsorsMany: Maybe<Array<Maybe<SponsorsMutationResponse>>>;
   /** update single row of the table: "auth.users" */
   updateUser: Maybe<Users>;
-  /** update data of the table: "user_info" */
-  updateUserInfo: Maybe<UserInfoMutationResponse>;
-  /** update single row of the table: "user_info" */
-  updateUserInfoByPk: Maybe<UserInfo>;
-  /** update multiples rows of table: "user_info" */
-  updateUserInfoMany: Maybe<Array<Maybe<UserInfoMutationResponse>>>;
+  /** update data of the table: "user_payout_info" */
+  updateUserPayoutInfo: Maybe<UserPayoutInfoMutationResponse>;
+  /** update single row of the table: "user_payout_info" */
+  updateUserPayoutInfoByPk: Maybe<UserPayoutInfo>;
+  /** update multiples rows of table: "user_payout_info" */
+  updateUserPayoutInfoMany: Maybe<Array<Maybe<UserPayoutInfoMutationResponse>>>;
   /** update data of the table: "auth.users" */
   updateUsers: Maybe<UsersMutationResponse>;
   /** update multiples rows of table: "auth.users" */
@@ -10498,13 +10471,13 @@ export type Mutation_RootDeleteUserArgs = {
 
 
 /** mutation root */
-export type Mutation_RootDeleteUserInfoArgs = {
-  where: UserInfoBoolExp;
+export type Mutation_RootDeleteUserPayoutInfoArgs = {
+  where: UserPayoutInfoBoolExp;
 };
 
 
 /** mutation root */
-export type Mutation_RootDeleteUserInfoByPkArgs = {
+export type Mutation_RootDeleteUserPayoutInfoByPkArgs = {
   userId: Scalars['uuid'];
 };
 
@@ -10879,16 +10852,16 @@ export type Mutation_RootInsertUserArgs = {
 
 
 /** mutation root */
-export type Mutation_RootInsertUserInfoArgs = {
-  objects: Array<UserInfoInsertInput>;
-  onConflict: InputMaybe<UserInfoOnConflict>;
+export type Mutation_RootInsertUserPayoutInfoArgs = {
+  objects: Array<UserPayoutInfoInsertInput>;
+  onConflict: InputMaybe<UserPayoutInfoOnConflict>;
 };
 
 
 /** mutation root */
-export type Mutation_RootInsertUserInfoOneArgs = {
-  object: UserInfoInsertInput;
-  onConflict: InputMaybe<UserInfoOnConflict>;
+export type Mutation_RootInsertUserPayoutInfoOneArgs = {
+  object: UserPayoutInfoInsertInput;
+  onConflict: InputMaybe<UserPayoutInfoOnConflict>;
 };
 
 
@@ -11386,6 +11359,14 @@ export type Mutation_RootUpdatePaymentsManyArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdatePayoutInfoArgs = {
+  identity: InputMaybe<IdentityInput>;
+  location: InputMaybe<Location>;
+  payoutSettings: InputMaybe<PayoutSettingsInput>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdatePendingProjectLeaderInvitationsArgs = {
   _inc: InputMaybe<PendingProjectLeaderInvitationsIncInput>;
   _set: InputMaybe<PendingProjectLeaderInvitationsSetInput>;
@@ -11404,15 +11385,6 @@ export type Mutation_RootUpdatePendingProjectLeaderInvitationsByPkArgs = {
 /** mutation root */
 export type Mutation_RootUpdatePendingProjectLeaderInvitationsManyArgs = {
   updates: Array<PendingProjectLeaderInvitationsUpdates>;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdateProfileInfoArgs = {
-  contactInformation: InputMaybe<ContactInformation>;
-  identity: InputMaybe<IdentityInput>;
-  location: InputMaybe<Location>;
-  payoutSettings: InputMaybe<PayoutSettingsInput>;
 };
 
 
@@ -11586,32 +11558,32 @@ export type Mutation_RootUpdateUserArgs = {
 
 
 /** mutation root */
-export type Mutation_RootUpdateUserInfoArgs = {
-  _append: InputMaybe<UserInfoAppendInput>;
-  _deleteAtPath: InputMaybe<UserInfoDeleteAtPathInput>;
-  _deleteElem: InputMaybe<UserInfoDeleteElemInput>;
-  _deleteKey: InputMaybe<UserInfoDeleteKeyInput>;
-  _prepend: InputMaybe<UserInfoPrependInput>;
-  _set: InputMaybe<UserInfoSetInput>;
-  where: UserInfoBoolExp;
+export type Mutation_RootUpdateUserPayoutInfoArgs = {
+  _append: InputMaybe<UserPayoutInfoAppendInput>;
+  _deleteAtPath: InputMaybe<UserPayoutInfoDeleteAtPathInput>;
+  _deleteElem: InputMaybe<UserPayoutInfoDeleteElemInput>;
+  _deleteKey: InputMaybe<UserPayoutInfoDeleteKeyInput>;
+  _prepend: InputMaybe<UserPayoutInfoPrependInput>;
+  _set: InputMaybe<UserPayoutInfoSetInput>;
+  where: UserPayoutInfoBoolExp;
 };
 
 
 /** mutation root */
-export type Mutation_RootUpdateUserInfoByPkArgs = {
-  _append: InputMaybe<UserInfoAppendInput>;
-  _deleteAtPath: InputMaybe<UserInfoDeleteAtPathInput>;
-  _deleteElem: InputMaybe<UserInfoDeleteElemInput>;
-  _deleteKey: InputMaybe<UserInfoDeleteKeyInput>;
-  _prepend: InputMaybe<UserInfoPrependInput>;
-  _set: InputMaybe<UserInfoSetInput>;
-  pk_columns: UserInfoPkColumnsInput;
+export type Mutation_RootUpdateUserPayoutInfoByPkArgs = {
+  _append: InputMaybe<UserPayoutInfoAppendInput>;
+  _deleteAtPath: InputMaybe<UserPayoutInfoDeleteAtPathInput>;
+  _deleteElem: InputMaybe<UserPayoutInfoDeleteElemInput>;
+  _deleteKey: InputMaybe<UserPayoutInfoDeleteKeyInput>;
+  _prepend: InputMaybe<UserPayoutInfoPrependInput>;
+  _set: InputMaybe<UserPayoutInfoSetInput>;
+  pk_columns: UserPayoutInfoPkColumnsInput;
 };
 
 
 /** mutation root */
-export type Mutation_RootUpdateUserInfoManyArgs = {
-  updates: Array<UserInfoUpdates>;
+export type Mutation_RootUpdateUserPayoutInfoManyArgs = {
+  updates: Array<UserPayoutInfoUpdates>;
 };
 
 
@@ -12466,12 +12438,12 @@ export type Query_Root = {
   sponsorsByPk: Maybe<Sponsors>;
   /** fetch data from the table: "auth.users" using primary key columns */
   user: Maybe<Users>;
-  /** fetch data from the table: "user_info" */
-  userInfo: Array<UserInfo>;
-  /** fetch aggregated fields from the table: "user_info" */
-  userInfoAggregate: UserInfoAggregate;
-  /** fetch data from the table: "user_info" using primary key columns */
-  userInfoByPk: Maybe<UserInfo>;
+  /** fetch data from the table: "user_payout_info" */
+  userPayoutInfo: Array<UserPayoutInfo>;
+  /** fetch aggregated fields from the table: "user_payout_info" */
+  userPayoutInfoAggregate: UserPayoutInfoAggregate;
+  /** fetch data from the table: "user_payout_info" using primary key columns */
+  userPayoutInfoByPk: Maybe<UserPayoutInfo>;
   /** fetch data from the table: "user_profiles" */
   userProfiles: Array<UserProfiles>;
   /** fetch aggregated fields from the table: "user_profiles" */
@@ -13200,25 +13172,25 @@ export type Query_RootUserArgs = {
 };
 
 
-export type Query_RootUserInfoArgs = {
-  distinctOn: InputMaybe<Array<UserInfoSelectColumn>>;
+export type Query_RootUserPayoutInfoArgs = {
+  distinctOn: InputMaybe<Array<UserPayoutInfoSelectColumn>>;
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<UserInfoOrderBy>>;
-  where: InputMaybe<UserInfoBoolExp>;
+  orderBy: InputMaybe<Array<UserPayoutInfoOrderBy>>;
+  where: InputMaybe<UserPayoutInfoBoolExp>;
 };
 
 
-export type Query_RootUserInfoAggregateArgs = {
-  distinctOn: InputMaybe<Array<UserInfoSelectColumn>>;
+export type Query_RootUserPayoutInfoAggregateArgs = {
+  distinctOn: InputMaybe<Array<UserPayoutInfoSelectColumn>>;
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<UserInfoOrderBy>>;
-  where: InputMaybe<UserInfoBoolExp>;
+  orderBy: InputMaybe<Array<UserPayoutInfoOrderBy>>;
+  where: InputMaybe<UserPayoutInfoBoolExp>;
 };
 
 
-export type Query_RootUserInfoByPkArgs = {
+export type Query_RootUserPayoutInfoByPkArgs = {
   userId: Scalars['uuid'];
 };
 
@@ -13554,14 +13526,14 @@ export type Subscription_Root = {
   sponsorsStream: Array<Sponsors>;
   /** fetch data from the table: "auth.users" using primary key columns */
   user: Maybe<Users>;
-  /** fetch data from the table: "user_info" */
-  userInfo: Array<UserInfo>;
-  /** fetch aggregated fields from the table: "user_info" */
-  userInfoAggregate: UserInfoAggregate;
-  /** fetch data from the table: "user_info" using primary key columns */
-  userInfoByPk: Maybe<UserInfo>;
-  /** fetch data from the table in a streaming manner: "user_info" */
-  userInfoStream: Array<UserInfo>;
+  /** fetch data from the table: "user_payout_info" */
+  userPayoutInfo: Array<UserPayoutInfo>;
+  /** fetch aggregated fields from the table: "user_payout_info" */
+  userPayoutInfoAggregate: UserPayoutInfoAggregate;
+  /** fetch data from the table: "user_payout_info" using primary key columns */
+  userPayoutInfoByPk: Maybe<UserPayoutInfo>;
+  /** fetch data from the table in a streaming manner: "user_payout_info" */
+  userPayoutInfoStream: Array<UserPayoutInfo>;
   /** fetch data from the table: "user_profiles" */
   userProfiles: Array<UserProfiles>;
   /** fetch aggregated fields from the table: "user_profiles" */
@@ -14486,33 +14458,33 @@ export type Subscription_RootUserArgs = {
 };
 
 
-export type Subscription_RootUserInfoArgs = {
-  distinctOn: InputMaybe<Array<UserInfoSelectColumn>>;
+export type Subscription_RootUserPayoutInfoArgs = {
+  distinctOn: InputMaybe<Array<UserPayoutInfoSelectColumn>>;
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<UserInfoOrderBy>>;
-  where: InputMaybe<UserInfoBoolExp>;
+  orderBy: InputMaybe<Array<UserPayoutInfoOrderBy>>;
+  where: InputMaybe<UserPayoutInfoBoolExp>;
 };
 
 
-export type Subscription_RootUserInfoAggregateArgs = {
-  distinctOn: InputMaybe<Array<UserInfoSelectColumn>>;
+export type Subscription_RootUserPayoutInfoAggregateArgs = {
+  distinctOn: InputMaybe<Array<UserPayoutInfoSelectColumn>>;
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<UserInfoOrderBy>>;
-  where: InputMaybe<UserInfoBoolExp>;
+  orderBy: InputMaybe<Array<UserPayoutInfoOrderBy>>;
+  where: InputMaybe<UserPayoutInfoBoolExp>;
 };
 
 
-export type Subscription_RootUserInfoByPkArgs = {
+export type Subscription_RootUserPayoutInfoByPkArgs = {
   userId: Scalars['uuid'];
 };
 
 
-export type Subscription_RootUserInfoStreamArgs = {
+export type Subscription_RootUserPayoutInfoStreamArgs = {
   batchSize: Scalars['Int'];
-  cursor: Array<InputMaybe<User_Info_StreamCursorInput>>;
-  where: InputMaybe<UserInfoBoolExp>;
+  cursor: Array<InputMaybe<User_Payout_Info_StreamCursorInput>>;
+  where: InputMaybe<UserPayoutInfoBoolExp>;
 };
 
 
@@ -14597,18 +14569,17 @@ export type Subscription_RootWorkItemsStreamArgs = {
   where: InputMaybe<WorkItemsBoolExp>;
 };
 
-/** Streaming cursor of the table "user_info" */
-export type User_Info_StreamCursorInput = {
+/** Streaming cursor of the table "user_payout_info" */
+export type User_Payout_Info_StreamCursorInput = {
   /** Stream column input with initial value */
-  initialValue: User_Info_StreamCursorValueInput;
+  initialValue: User_Payout_Info_StreamCursorValueInput;
   /** cursor ordering */
   ordering: InputMaybe<CursorOrdering>;
 };
 
 /** Initial value of the column from where the streaming should start */
-export type User_Info_StreamCursorValueInput = {
+export type User_Payout_Info_StreamCursorValueInput = {
   arePayoutSettingsValid: InputMaybe<Scalars['Boolean']>;
-  contactInformation: InputMaybe<Scalars['jsonb']>;
   identity: InputMaybe<Scalars['jsonb']>;
   location: InputMaybe<Scalars['jsonb']>;
   payoutSettings: InputMaybe<Scalars['jsonb']>;
@@ -15427,7 +15398,7 @@ export type UserIdentityQueryVariables = Exact<{
 }>;
 
 
-export type UserIdentityQuery = { __typename?: 'query_root', userInfo: Array<{ __typename?: 'UserInfo', userId: any, identity: any | null }> };
+export type UserIdentityQuery = { __typename?: 'query_root', userPayoutInfo: Array<{ __typename?: 'UserPayoutInfo', userId: any, identity: any | null }> };
 
 export type GetPaymentRequestIdsQueryVariables = Exact<{
   githubUserId: Scalars['bigint'];
@@ -15553,14 +15524,14 @@ export type UserProfileQueryVariables = Exact<{
 
 export type UserProfileQuery = { __typename?: 'query_root', userProfiles: Array<{ __typename?: 'UserProfiles', githubUserId: any | null, login: string | null, avatarUrl: string | null, htmlUrl: string | null, location: string | null, bio: string | null, languages: any | null, createdAt: any | null, lastSeen: any | null, email: string | null, twitter: string | null, telegram: string | null, linkedin: string | null, discord: string | null, website: string | null, contributionStats: Array<{ __typename?: 'ContributionStats', projectId: any | null, maxDate: any | null, minDate: any | null, totalCount: any | null }>, contributionStatsAggregate: { __typename?: 'ContributionStatsAggregate', aggregate: { __typename?: 'ContributionStatsAggregateFields', sum: { __typename?: 'ContributionStatsSumFields', totalCount: any | null } | null, min: { __typename?: 'ContributionStatsMinFields', minDate: any | null } | null } | null }, paymentStats: Array<{ __typename?: 'PaymentStats', projectId: any | null, moneyGranted: any | null }>, paymentStatsAggregate: { __typename?: 'PaymentStatsAggregate', aggregate: { __typename?: 'PaymentStatsAggregateFields', sum: { __typename?: 'PaymentStatsSumFields', moneyGranted: any | null } | null } | null }, projectsContributed: Array<{ __typename?: 'ProjectsContributorsView', project: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, logoUrl: string | null, name: string, visibility: any } | null, contributorsAggregate: { __typename?: 'ProjectsContributorsViewAggregate', aggregate: { __typename?: 'ProjectsContributorsViewAggregateFields', count: number } | null }, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number, sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributorsView', githubUser: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> } | null }>, projectsContributedAggregate: { __typename?: 'ProjectsContributorsViewAggregate', aggregate: { __typename?: 'ProjectsContributorsViewAggregateFields', count: number } | null }, projectsLeaded: Array<{ __typename?: 'ProjectLeads', projectId: any, assignedAt: any, project: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, logoUrl: string | null, name: string, visibility: any } | null, contributorsAggregate: { __typename?: 'ProjectsContributorsViewAggregate', aggregate: { __typename?: 'ProjectsContributorsViewAggregateFields', count: number } | null }, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number, sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributorsView', githubUser: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> } | null }>, contributionCounts: Array<{ __typename?: 'ContributionCounts', year: any | null, week: any | null, paidCount: any | null, unpaidCount: any | null }> }> };
 
-export type UserPayoutSettingsFragment = { __typename?: 'UserInfo', userId: any, identity: any | null, location: any | null, payoutSettings: any | null, arePayoutSettingsValid: boolean };
+export type UserPayoutSettingsFragment = { __typename?: 'UserPayoutInfo', userId: any, identity: any | null, location: any | null, payoutSettings: any | null, arePayoutSettingsValid: boolean };
 
 export type GetUserPayoutSettingsQueryVariables = Exact<{
   githubUserId: Scalars['bigint'];
 }>;
 
 
-export type GetUserPayoutSettingsQuery = { __typename?: 'query_root', registeredUsers: Array<{ __typename?: 'RegisteredUsers', githubUserId: any | null, id: any | null, userInfo: { __typename?: 'UserInfo', userId: any, identity: any | null, location: any | null, payoutSettings: any | null, arePayoutSettingsValid: boolean } | null }> };
+export type GetUserPayoutSettingsQuery = { __typename?: 'query_root', registeredUsers: Array<{ __typename?: 'RegisteredUsers', githubUserId: any | null, id: any | null, userPayoutInfo: { __typename?: 'UserPayoutInfo', userId: any, identity: any | null, location: any | null, payoutSettings: any | null, arePayoutSettingsValid: boolean } | null }> };
 
 export type UpdatePayoutSettingsMutationVariables = Exact<{
   identity: InputMaybe<IdentityInput>;
@@ -15569,7 +15540,7 @@ export type UpdatePayoutSettingsMutationVariables = Exact<{
 }>;
 
 
-export type UpdatePayoutSettingsMutation = { __typename?: 'mutation_root', updateProfileInfo: any };
+export type UpdatePayoutSettingsMutation = { __typename?: 'mutation_root', updatePayoutInfo: any };
 
 export type ContributorFragment = { __typename?: 'UserProfiles', login: string | null, avatarUrl: string | null, userId: any | null, githubUserId: any | null, contributionStatsAggregate: { __typename?: 'ContributionStatsAggregate', aggregate: { __typename?: 'ContributionStatsAggregateFields', sum: { __typename?: 'ContributionStatsSumFields', paidCount: any | null, unpaidUnignoredCount: any | null } | null } | null }, paymentStatsAggregate: { __typename?: 'PaymentStatsAggregate', aggregate: { __typename?: 'PaymentStatsAggregateFields', sum: { __typename?: 'PaymentStatsSumFields', moneyGranted: any | null } | null } | null } };
 
@@ -15787,7 +15758,7 @@ export type GetUserDetailsQueryVariables = Exact<{
 }>;
 
 
-export type GetUserDetailsQuery = { __typename?: 'query_root', registeredUsers: Array<{ __typename?: 'RegisteredUsers', email: any | null, lastSeen: any | null, userInfo: { __typename?: 'UserInfo', location: any | null, identity: any | null, contactInformation: any | null, payoutSettings: any | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', payments: Array<{ __typename?: 'Payments', receipt: any }> }> }> };
+export type GetUserDetailsQuery = { __typename?: 'query_root', registeredUsers: Array<{ __typename?: 'RegisteredUsers', email: any | null, lastSeen: any | null, userPayoutInfo: { __typename?: 'UserPayoutInfo', location: any | null, identity: any | null, payoutSettings: any | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', payments: Array<{ __typename?: 'Payments', receipt: any }> }> }> };
 
 export type GetPaymentsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -15968,14 +15939,13 @@ export type CreateGithubAuthUserMutationVariables = Exact<{
 export type CreateGithubAuthUserMutation = { __typename?: 'mutation_root', insertAuthUserProvider: { __typename?: 'authUserProviders', id: any } | null };
 
 export type UpdateProfileMutationVariables = Exact<{
-  contactInformation: InputMaybe<ContactInformation>;
   identity: InputMaybe<IdentityInput>;
   location: InputMaybe<Location>;
   payoutSettings: InputMaybe<PayoutSettingsInput>;
 }>;
 
 
-export type UpdateProfileMutation = { __typename?: 'mutation_root', updateProfileInfo: any };
+export type UpdateProfileMutation = { __typename?: 'mutation_root', updatePayoutInfo: any };
 
 export const LiveGithubUserIdFragmentDoc = gql`
     fragment LiveGithubUserId on User {
@@ -16467,7 +16437,7 @@ ${PaymentStatFragmentDoc}
 ${ProfileProjectFragmentDoc}
 ${ContributionCountFragmentDoc}`;
 export const UserPayoutSettingsFragmentDoc = gql`
-    fragment UserPayoutSettings on UserInfo {
+    fragment UserPayoutSettings on UserPayoutInfo {
   userId
   identity
   location
@@ -16556,7 +16526,7 @@ export const SidebarProjectDetailsFragmentDoc = gql`
     ${ProjectIdFragmentDoc}`;
 export const UserIdentityDocument = gql`
     query UserIdentity($userId: uuid!) {
-  userInfo(where: {userId: {_eq: $userId}}) {
+  userPayoutInfo(where: {userId: {_eq: $userId}}) {
     userId
     identity
   }
@@ -16867,7 +16837,7 @@ export const GetUserPayoutSettingsDocument = gql`
   registeredUsers(where: {githubUserId: {_eq: $githubUserId}}) {
     ...UserId
     githubUserId
-    userInfo {
+    userPayoutInfo {
       ...UserPayoutSettings
     }
   }
@@ -16904,7 +16874,7 @@ export type GetUserPayoutSettingsLazyQueryHookResult = ReturnType<typeof useGetU
 export type GetUserPayoutSettingsQueryResult = Apollo.QueryResult<GetUserPayoutSettingsQuery, GetUserPayoutSettingsQueryVariables>;
 export const UpdatePayoutSettingsDocument = gql`
     mutation updatePayoutSettings($identity: IdentityInput, $location: Location, $payoutSettings: PayoutSettingsInput) {
-  updateProfileInfo(
+  updatePayoutInfo(
     identity: $identity
     location: $location
     payoutSettings: $payoutSettings
@@ -18023,10 +17993,9 @@ export const GetUserDetailsDocument = gql`
   registeredUsers(where: {id: {_eq: $userId}}) {
     email
     lastSeen
-    userInfo {
+    userPayoutInfo {
       location
       identity
-      contactInformation
       payoutSettings
     }
     paymentRequests {
@@ -18790,9 +18759,8 @@ export type CreateGithubAuthUserMutationHookResult = ReturnType<typeof useCreate
 export type CreateGithubAuthUserMutationResult = Apollo.MutationResult<CreateGithubAuthUserMutation>;
 export type CreateGithubAuthUserMutationOptions = Apollo.BaseMutationOptions<CreateGithubAuthUserMutation, CreateGithubAuthUserMutationVariables>;
 export const UpdateProfileDocument = gql`
-    mutation updateProfile($contactInformation: ContactInformation, $identity: IdentityInput, $location: Location, $payoutSettings: PayoutSettingsInput) {
-  updateProfileInfo(
-    contactInformation: $contactInformation
+    mutation updateProfile($identity: IdentityInput, $location: Location, $payoutSettings: PayoutSettingsInput) {
+  updatePayoutInfo(
     identity: $identity
     location: $location
     payoutSettings: $payoutSettings
@@ -18814,7 +18782,6 @@ export type UpdateProfileMutationFn = Apollo.MutationFunction<UpdateProfileMutat
  * @example
  * const [updateProfileMutation, { data, loading, error }] = useUpdateProfileMutation({
  *   variables: {
- *      contactInformation: // value for 'contactInformation'
  *      identity: // value for 'identity'
  *      location: // value for 'location'
  *      payoutSettings: // value for 'payoutSettings'
