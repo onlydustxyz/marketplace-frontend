@@ -122,7 +122,7 @@ impl EventListener<Event> for Projector {
 						amount.currency().to_string(),
 						serde_json::to_value(receipt)
 							.map_err(|e| SubscriberCallbackError::Discard(e.into()))?,
-						(*payment_id).into(),
+						*payment_id,
 						*processed_at,
 					))?,
 					PaymentEvent::InvoiceReceived {

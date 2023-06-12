@@ -31,7 +31,7 @@ impl NamedAggregate for Budget {
 impl<A: NamedAggregate> EventStore<A> for Client {
 	#[instrument(name = "EventStore::list_by_id", skip_all, fields(aggregate_id = aggregate_id.to_string()))]
 	fn list_by_id(&self, aggregate_id: &A::Id) -> Result<Vec<A::Event>, EventStoreError> {
-		let connection = self.connection().map_err(|e| {
+		let mut connection = self.connection().map_err(|e| {
 			error!("Failed to connect to database: {e}");
 			EventStoreError::Connection(e.into())
 		})?;
@@ -42,7 +42,7 @@ impl<A: NamedAggregate> EventStore<A> for Client {
 			.filter(events::aggregate_name.eq_all(A::name()))
 			.order_by(events::timestamp)
 			.then_order_by(events::index)
-			.load::<Value>(&*connection)
+			.load::<Value>(&mut *connection)
 			.map_err(|e| {
 				error!(
 					"Failed to retrieve {} events of aggregate {aggregate_id} from database: {e}",
@@ -56,7 +56,7 @@ impl<A: NamedAggregate> EventStore<A> for Client {
 
 	#[instrument(name = "EventStore::list", skip_all)]
 	fn list(&self) -> Result<Vec<A::Event>, EventStoreError> {
-		let connection = self.connection().map_err(|e| {
+		let mut connection = self.connection().map_err(|e| {
 			error!("Failed to connect to database: {e}");
 			EventStoreError::Connection(e.into())
 		})?;
@@ -66,7 +66,7 @@ impl<A: NamedAggregate> EventStore<A> for Client {
 			.filter(events::aggregate_name.eq_all(A::name()))
 			.order_by(events::timestamp)
 			.then_order_by(events::index)
-			.load::<Value>(&*connection)
+			.load::<Value>(&mut *connection)
 			.map_err(|e| {
 				error!("Failed to retrieve {} events from database: {e}", A::name());
 				EventStoreError::List(e.into())

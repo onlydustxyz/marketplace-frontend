@@ -16,7 +16,7 @@ impl Repository {
 		repo_id: &GithubRepoId,
 		issue_number: &GithubIssueNumber,
 	) -> Result<(), DatabaseError> {
-		let connection = self.0.connection()?;
+		let mut connection = self.0.connection()?;
 		diesel::insert_into(dsl::ignored_github_issues)
 			.values((
 				dsl::project_id.eq(project_id),
@@ -24,7 +24,7 @@ impl Repository {
 				dsl::issue_number.eq(issue_number),
 			))
 			.on_conflict_do_nothing()
-			.execute(&*connection)?;
+			.execute(&mut *connection)?;
 		Ok(())
 	}
 
@@ -35,14 +35,14 @@ impl Repository {
 		repo_id: &GithubRepoId,
 		issue_number: &GithubIssueNumber,
 	) -> Result<(), DatabaseError> {
-		let connection = self.0.connection()?;
+		let mut connection = self.0.connection()?;
 		diesel::delete(
 			dsl::ignored_github_issues
 				.filter(dsl::project_id.eq(project_id))
 				.filter(dsl::repo_id.eq(repo_id))
 				.filter(dsl::issue_number.eq(issue_number)),
 		)
-		.execute(&*connection)?;
+		.execute(&mut *connection)?;
 		Ok(())
 	}
 }

@@ -6,3 +6,6 @@ pub use events::Event;
 
 mod id;
 pub use id::Id;
+
+mod visibility;
+pub use visibility::Visibility;

@@ -18,13 +18,14 @@ futures = {version = "0.3.21", features = ["alloc"]}
 tokio = {version = "1.18.2", features = ["full"]}
 
 # Database
-diesel = {version = "1.4.8", default-features = false, features = [
+diesel = {version = "2.1.0", default-features = false, features = [
   "postgres",
   "serde_json",
-  "uuidv07",
+  "uuid",
   "chrono",
 ]}
-uuid = {version = "0.8.2", default_features = false, features = [
+diesel-derive-newtype = "2.1.0"
+uuid = {version = "1.3.3", default_features = false, features = [
   "v4",
   "serde",
 ]}

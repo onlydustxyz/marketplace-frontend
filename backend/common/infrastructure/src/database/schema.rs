@@ -1,5 +1,19 @@
 // @generated automatically by Diesel CLI.
 
+pub mod sql_types {
+    #[derive(diesel::sql_types::SqlType)]
+    #[diesel(postgres_type(name = "github_issue_status"))]
+    pub struct GithubIssueStatus;
+
+    #[derive(diesel::sql_types::SqlType)]
+    #[diesel(postgres_type(name = "github_issue_type"))]
+    pub struct GithubIssueType;
+
+    #[derive(diesel::sql_types::SqlType)]
+    #[diesel(postgres_type(name = "project_visibility"))]
+    pub struct ProjectVisibility;
+}
+
 diesel::table! {
     applications (id) {
         id -> Uuid,
@@ -49,6 +63,10 @@ diesel::table! {
 }
 
 diesel::table! {
+    use diesel::sql_types::*;
+    use super::sql_types::GithubIssueType;
+    use super::sql_types::GithubIssueStatus;
+
     github_issues (id) {
         id -> Int8,
         repo_id -> Int8,
@@ -57,8 +75,8 @@ diesel::table! {
         author_id -> Int8,
         merged_at -> Nullable<Timestamp>,
         #[sql_name = "type"]
-        type_ -> Jsonb,
-        status -> Jsonb,
+        type_ -> GithubIssueType,
+        status -> GithubIssueStatus,
         title -> Text,
         html_url -> Text,
         closed_at -> Nullable<Timestamp>,
@@ -158,6 +176,9 @@ diesel::table! {
 }
 
 diesel::table! {
+    use diesel::sql_types::*;
+    use super::sql_types::ProjectVisibility;
+
     project_details (project_id) {
         project_id -> Uuid,
         telegram_link -> Nullable<Text>,
@@ -167,7 +188,7 @@ diesel::table! {
         long_description -> Text,
         hiring -> Bool,
         rank -> Int4,
-        visibility -> Jsonb,
+        visibility -> ProjectVisibility,
     }
 }
 

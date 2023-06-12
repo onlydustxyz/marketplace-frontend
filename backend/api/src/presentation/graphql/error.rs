@@ -24,7 +24,7 @@ impl From<DatabaseError> for Error {
 			DatabaseError::Connection(e) => Error::InternalError(e),
 			DatabaseError::Migration(e) => Error::InternalError(e),
 			DatabaseError::Transaction(e) => Error::InvalidRequest(e.into()),
-			DatabaseError::Pool(e) => Error::InternalError(e.into()),
+			DatabaseError::Pool(e) => Error::InternalError(e),
 		}
 	}
 }

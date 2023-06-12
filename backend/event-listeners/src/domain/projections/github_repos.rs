@@ -7,8 +7,6 @@ use serde::{Deserialize, Serialize};
 #[derive(
 	Default, Debug, Clone, Insertable, AsChangeset, Serialize, Deserialize, Queryable, Identifiable,
 )]
-#[table_name = "github_repos"]
-#[primary_key(id)]
 pub struct GithubRepo {
 	pub id: GithubRepoId,
 	pub owner: String,

@@ -8,7 +8,7 @@ use domain::{GithubFetchRepoService, SubscriberCallbackError};
 use tracing::instrument;
 
 use crate::{
-	domain::{EventListener, GithubEvent, GithubIssue, GithubRepo, GithubUser},
+	domain::{EventListener, GithubEvent, GithubRepo, GithubUser},
 	infrastructure::database::{
 		GithubIssuesRepository, GithubReposContributorsRepository, GithubReposRepository,
 		GithubUsersRepository,
@@ -64,24 +64,6 @@ impl EventListener<GithubEvent> for Projector {
 			},
 		}
 		Ok(())
-	}
-}
-
-impl From<domain::GithubIssue> for GithubIssue {
-	fn from(issue: domain::GithubIssue) -> Self {
-		GithubIssue {
-			id: issue.id,
-			repo_id: issue.repo_id,
-			issue_number: issue.number,
-			created_at: issue.created_at.naive_utc(),
-			author_id: *issue.author.id(),
-			merged_at: issue.merged_at.map(|date| date.naive_utc()),
-			type_: issue.r#type,
-			status: issue.status,
-			title: issue.title,
-			html_url: issue.html_url.to_string(),
-			closed_at: issue.closed_at.map(|date| date.naive_utc()),
-		}
 	}
 }
 

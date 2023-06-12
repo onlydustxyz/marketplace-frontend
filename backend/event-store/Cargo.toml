@@ -11,10 +11,7 @@ version = "0.0.1"
 
 [dependencies]
 # Database
-diesel = {version = "1.4.8", default-features = false, features = [
-  "postgres",
-  "serde_json",
-]}
+diesel = {version = "2.1.0", default-features = false, features = ["postgres","extras"]}
 
 # RabbitMQ
 lapin = "2.1.1"
@@ -47,7 +44,7 @@ backend_infrastructure = {path = "../common/infrastructure", package = "infrastr
 olog = {path = "../common/olog"}
 
 # TO REMOVE
-uuid = {version = "0.8.2", default_features = false, features = [
+uuid = {version = "1.3.3", default_features = false, features = [
   "v4",
   "serde",
 ]}

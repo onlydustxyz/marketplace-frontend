@@ -1,9 +1,9 @@
+use backend_domain::CommandId;
 use backend_infrastructure::database::schema::*;
 use chrono::NaiveDateTime;
 use diesel::Insertable;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
-use uuid::Uuid;
 
 #[derive(Insertable, Debug, Serialize, Deserialize)]
 pub struct Event {
@@ -12,7 +12,7 @@ pub struct Event {
 	pub aggregate_id: String,
 	pub payload: Value,
 	pub metadata: Value,
-	pub command_id: Option<Uuid>,
+	pub command_id: Option<CommandId>,
 }
 
 #[derive(Insertable, Debug, Serialize, Deserialize)]

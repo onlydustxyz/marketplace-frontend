@@ -14,6 +14,7 @@ pub struct Repository(Arc<Client>);
 #[cfg(test)]
 mod tests {
 	use chrono::Utc;
+	use domain::PaymentId;
 	use dotenv::dotenv;
 	use infrastructure::database::Config;
 	use rstest::*;
@@ -47,7 +48,7 @@ mod tests {
 			dec!(500.45),
 			"USDC".to_string(),
 			json!({}),
-			Uuid::new_v4(),
+			PaymentId::new(),
 			Utc::now().naive_utc(),
 		);
 

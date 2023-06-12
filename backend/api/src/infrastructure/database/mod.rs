@@ -1,4 +1,5 @@
 mod project_details;
+pub use project_details::ProjectDetails;
 #[cfg_attr(test, mockall_double::double)]
 pub use project_details::Repository as ProjectDetailsRepository;
 

@@ -2,16 +2,14 @@ use std::str::FromStr;
 
 use chrono::{DateTime, Utc};
 use derive_more::{AsRef, Display, From, Into};
+use diesel_derive_newtype::DieselNewType;
 use juniper::{GraphQLEnum, GraphQLObject, ParseScalarResult, ParseScalarValue, Value};
 use serde::{Deserialize, Serialize};
 use url::Url;
 
 use crate::{Entity, GithubIssueNumber, GithubRepoId, GithubUser};
 
-#[derive(
-	Clone, Copy, Debug, GraphQLEnum, PartialEq, Eq, Serialize, Deserialize, AsExpression, FromToSql,
-)]
-#[sql_type = "diesel::sql_types::Jsonb"]
+#[derive(Clone, Copy, Debug, GraphQLEnum, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Status {
 	Open,
 	Closed,
@@ -20,10 +18,7 @@ pub enum Status {
 	Cancelled,
 }
 
-#[derive(
-	Clone, Copy, Debug, GraphQLEnum, Serialize, Deserialize, AsExpression, FromToSql, PartialEq, Eq,
-)]
-#[sql_type = "diesel::sql_types::Jsonb"]
+#[derive(Clone, Copy, Debug, GraphQLEnum, Serialize, Deserialize, PartialEq, Eq)]
 pub enum Type {
 	Issue,
 	PullRequest,
@@ -63,11 +58,8 @@ impl Entity for Issue {
 	From,
 	Into,
 	AsRef,
-	AsExpression,
-	FromToSql,
-	FromSqlRow,
+	DieselNewType,
 )]
-#[sql_type = "diesel::sql_types::BigInt"]
 pub struct Number(i64);
 
 impl FromStr for Number {
@@ -127,11 +119,8 @@ where
 	From,
 	Into,
 	AsRef,
-	AsExpression,
-	FromToSql,
-	FromSqlRow,
+	DieselNewType,
 )]
-#[sql_type = "diesel::sql_types::BigInt"]
 pub struct Id(i64);
 
 impl FromStr for Id {

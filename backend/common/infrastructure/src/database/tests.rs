@@ -89,7 +89,7 @@ SELECT id, project_id, github_user_id
 FROM pending_project_leader_invitations;
 "
 )]
-async fn crm_select(#[case] query: &str, connection: PgConnection) {
-	let result = sql_query(query).execute(&connection);
+fn crm_select(#[case] query: &str, mut connection: PgConnection) {
+	let result = sql_query(query).execute(&mut connection);
 	assert!(result.is_ok(), "Error during query execution: {:?}", result);
 }

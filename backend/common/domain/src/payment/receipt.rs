@@ -1,4 +1,5 @@
 use derive_more::{Display, From, Into};
+use diesel_derive_newtype::DieselNewType;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
@@ -17,11 +18,8 @@ use crate::{BlockchainNetwork, EthereumAddress, EthereumName, Iban, TransactionH
 	Display,
 	From,
 	Into,
-	AsExpression,
-	FromToSql,
-	FromSqlRow,
+	DieselNewType,
 )]
-#[sql_type = "diesel::sql_types::Uuid"]
 pub struct Id(Uuid);
 
 impl Id {

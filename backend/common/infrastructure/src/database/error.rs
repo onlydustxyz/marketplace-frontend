@@ -11,7 +11,7 @@ pub enum Error {
 	#[error(transparent)]
 	Transaction(#[from] DieselError),
 	#[error(transparent)]
-	Pool(#[from] r2d2::Error),
+	Pool(anyhow::Error),
 }
 
 impl From<Error> for SubscriberCallbackError {
@@ -20,7 +20,7 @@ impl From<Error> for SubscriberCallbackError {
 			Error::Connection(e) => Self::Fatal(e),
 			Error::Migration(e) => Self::Fatal(e),
 			Error::Transaction(e) => Self::Discard(e.into()),
-			Error::Pool(e) => Self::Fatal(e.into()),
+			Error::Pool(e) => Self::Fatal(e),
 		}
 	}
 }
@@ -31,7 +31,7 @@ impl From<Error> for DomainError {
 			Error::Connection(e) => Self::InternalError(e),
 			Error::Migration(e) => Self::InternalError(e),
 			Error::Transaction(e) => Self::InvalidInputs(e.into()),
-			Error::Pool(e) => Self::InternalError(e.into()),
+			Error::Pool(e) => Self::InternalError(e),
 		}
 	}
 }

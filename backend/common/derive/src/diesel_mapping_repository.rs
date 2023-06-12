@@ -104,42 +104,42 @@ pub fn impl_diesel_mapping_repository(input: syn::DeriveInput) -> TokenStream {
 		impl #repository_name {
 			#[tracing::instrument(name = #insert_span_name, skip(self))]
 			pub fn try_insert(&self, id1: &<#entity1 as domain::Entity>::Id, id2: &<#entity2 as domain::Entity>::Id) -> Result<(), infrastructure::database::DatabaseError> {
-				let connection = self.0.connection()?;
+				let mut connection = self.0.connection()?;
 
 				diesel::insert_into(#table)
 					.values((#id1.eq(id1), #id2.eq(id2)))
 					.on_conflict_do_nothing()
-					.execute(&*connection)?;
+					.execute(&mut *connection)?;
 
 				Ok(())
 			}
 
 			#[tracing::instrument(name = #delete_span_name, skip(self))]
 			pub fn delete(&self, id1: &<#entity1 as domain::Entity>::Id, id2: &<#entity2 as domain::Entity>::Id) -> Result<(), infrastructure::database::DatabaseError> {
-				let connection = self.0.connection()?;
+				let mut connection = self.0.connection()?;
 
 				diesel::delete(#table.filter(#id1.eq(id1)).filter(#id2.eq(id2)))
-					.execute(&*connection)?;
+					.execute(&mut *connection)?;
 
 				Ok(())
 			}
 
 			#[tracing::instrument(name = #delete_all_entity2_of_span_name, skip(self))]
 			pub fn #delete_all_entity2_of(&self, id1: &<#entity1 as domain::Entity>::Id) -> Result<(), infrastructure::database::DatabaseError> {
-				let connection = self.0.connection()?;
+				let mut connection = self.0.connection()?;
 
 				diesel::delete(#table.filter(#id1.eq(id1)))
-					.execute(&*connection)?;
+					.execute(&mut *connection)?;
 
 				Ok(())
 			}
 
 			#[tracing::instrument(name = #delete_all_entity1_of_span_name, skip(self))]
 			pub fn #delete_all_entity1_of(&self, id2: &<#entity2 as domain::Entity>::Id) -> Result<(), infrastructure::database::DatabaseError> {
-				let connection = self.0.connection()?;
+				let mut connection = self.0.connection()?;
 
 				diesel::delete(#table.filter(#id2.eq(id2)))
-					.execute(&*connection)?;
+					.execute(&mut *connection)?;
 
 				Ok(())
 			}
@@ -152,14 +152,14 @@ pub fn impl_diesel_mapping_repository(input: syn::DeriveInput) -> TokenStream {
 				Vec<(<#entity1 as domain::Entity>::Id, <#entity2 as domain::Entity>::Id)>,
 				infrastructure::database::DatabaseError,
 			> {
-				let connection = self.0.connection()?;
+				let mut connection = self.0.connection()?;
 
 				let result = #table.filter(#id1.eq(id1))
 				.select((#id1, #id2))
 				.load::<(
 					<#entity1 as domain::Entity>::Id,
 					<#entity2 as domain::Entity>::Id,
-				)>(&*connection)?;
+				)>(&mut *connection)?;
 
 				Ok(result)
 			}
@@ -172,14 +172,14 @@ pub fn impl_diesel_mapping_repository(input: syn::DeriveInput) -> TokenStream {
 				Vec<(<#entity1 as domain::Entity>::Id, <#entity2 as domain::Entity>::Id)>,
 				infrastructure::database::DatabaseError,
 			> {
-				let connection = self.0.connection()?;
+				let mut connection = self.0.connection()?;
 
 				let result = #table.filter(#id2.eq(id2))
 				.select((#id1, #id2))
 				.load::<(
 					<#entity1 as domain::Entity>::Id,
 					<#entity2 as domain::Entity>::Id,
-				)>(&*connection)?;
+				)>(&mut *connection)?;
 
 				Ok(result)
 			}
@@ -193,14 +193,14 @@ pub fn impl_diesel_mapping_repository(input: syn::DeriveInput) -> TokenStream {
 				bool,
 				infrastructure::database::DatabaseError,
 			> {
-				let connection = self.0.connection()?;
+				let mut connection = self.0.connection()?;
 
 				let result = #table.filter(#id1.eq(id1).and(#id2.eq(id2)))
 				.select((#id1, #id2))
 				.load::<(
 					<#entity1 as domain::Entity>::Id,
 					<#entity2 as domain::Entity>::Id,
-				)>(&*connection)?;
+				)>(&mut *connection)?;
 
 				Ok(!result.is_empty())
 			}

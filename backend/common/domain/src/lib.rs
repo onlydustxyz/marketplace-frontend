@@ -20,7 +20,10 @@ pub use messaging::{
 };
 
 mod project;
-pub use project::{Error as ProjectError, Event as ProjectEvent, Id as ProjectId, Project};
+pub use project::{
+	Error as ProjectError, Event as ProjectEvent, Id as ProjectId, Project,
+	Visibility as ProjectVisibility,
+};
 
 mod payment;
 pub use payment::{
@@ -72,9 +75,3 @@ pub mod specifications;
 pub use specifications::Error as SpecificationError;
 
 pub mod stream_filter;
-
-#[macro_use]
-extern crate diesel;
-
-#[macro_use]
-extern crate derive;

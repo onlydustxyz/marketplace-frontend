@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::domain::user_payout_info::{CompanyIdentity, Identity, PersonIdentity};
 
-#[derive(Debug, Clone, Serialize, Deserialize, AsExpression, From, GraphQLInputObject)]
+#[derive(Debug, Clone, Serialize, Deserialize, From, GraphQLInputObject)]
 pub struct IdentityInput {
 	r#type: IdentityType,
 	opt_person: Option<PersonIdentity>,

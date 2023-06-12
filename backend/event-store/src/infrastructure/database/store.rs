@@ -31,7 +31,7 @@ impl NamedAggregate for Event {
 impl EventStore for Client {
 	#[instrument(name = "EventStore::append", skip(self))]
 	fn append(&self, aggregate_id: &str, storable_event: UniqueMessage<Event>) -> Result<()> {
-		let connection = self.connection().map_err(|e| {
+		let mut connection = self.connection().map_err(|e| {
 			error!("Failed to connect to database: {e}");
 			EventStoreError::Connection(e.into())
 		})?;
@@ -47,12 +47,12 @@ impl EventStore for Client {
 		};
 
 		connection
-			.transaction(|| {
+			.transaction(|connection| {
 				let already_exists: bool = diesel::select(exists(
 					dsl::event_deduplications
 						.filter(dsl::deduplication_id.eq(storable_event.id().to_string())),
 				))
-				.get_result(&*connection)?;
+				.get_result(&mut *connection)?;
 
 				if already_exists {
 					error!(
@@ -65,7 +65,7 @@ impl EventStore for Client {
 				let inserted_event_index: i32 = diesel::insert_into(events::table)
 					.values(&event)
 					.returning(index)
-					.get_result(&*connection)?;
+					.get_result(&mut *connection)?;
 
 				let deduplication = models::EventDeduplication {
 					deduplication_id: storable_event.id().to_string(),
@@ -74,7 +74,7 @@ impl EventStore for Client {
 
 				diesel::insert_into(event_deduplications::table)
 					.values(&deduplication)
-					.execute(&*connection)?;
+					.execute(&mut *connection)?;
 
 				Ok(())
 			})

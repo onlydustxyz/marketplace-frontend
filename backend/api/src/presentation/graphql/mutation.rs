@@ -1,7 +1,7 @@
 use anyhow::anyhow;
 use domain::{
 	Amount, BlockchainNetwork, Currency, GithubIssue, GithubIssueNumber, GithubRepoId, Iban,
-	LogErr, PaymentReason, PaymentReceipt, ProjectId, UserId,
+	LogErr, PaymentReason, PaymentReceipt, ProjectId, ProjectVisibility, UserId,
 };
 use juniper::{graphql_object, DefaultScalarValue, Nullable};
 use rusty_money::Money;
@@ -10,10 +10,7 @@ use uuid::Uuid;
 
 use super::{dto, Context, Error, Result};
 use crate::{
-	domain::{
-		user_payout_info::{Identity, Location, PayoutSettings},
-		ProjectVisibility,
-	},
+	domain::user_payout_info::{Identity, Location, PayoutSettings},
 	presentation::http::dto::{
 		EthereumIdentityInput, IdentityInput, OptionalNonEmptyTrimmedString, PaymentReference,
 		PayoutSettingsInput,

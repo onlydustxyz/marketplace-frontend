@@ -4,7 +4,7 @@ use domain::{GithubIssueNumber, GithubRepoId, PaymentId};
 use infrastructure::database::schema::work_items;
 
 #[derive(Debug, Insertable, Identifiable, Queryable, new, Getters)]
-#[primary_key(payment_id, repo_id, issue_number)]
+#[diesel(primary_key(payment_id, repo_id, issue_number))]
 pub struct WorkItem {
 	payment_id: PaymentId,
 	repo_id: GithubRepoId,

@@ -1,5 +1,5 @@
 use chrono::{NaiveDateTime, TimeZone, Utc};
-use diesel::{query_dsl::filter_dsl::FindDsl, ExpressionMethods, OptionalExtension, RunQueryDsl};
+use diesel::{ExpressionMethods, OptionalExtension, QueryDsl, RunQueryDsl};
 use domain::{CommandId, CommandRepository};
 use serde::{Deserialize, Serialize};
 
@@ -11,9 +11,7 @@ use crate::database::{
 #[derive(
 	Debug, Clone, Insertable, Serialize, Deserialize, Queryable, AsChangeset, Identifiable,
 )]
-#[primary_key(id)]
 pub struct Command {
-	#[diesel(deserialize_as = "uuid::Uuid")]
 	pub id: CommandId,
 	pub processing_count: i32,
 	pub created_at: NaiveDateTime,
@@ -51,8 +49,8 @@ impl TryFrom<domain::Command> for Command {
 
 impl CommandRepository for Client {
 	fn find_by_id_or_default(&self, id: &CommandId) -> anyhow::Result<domain::Command> {
-		let connection = self.connection()?;
-		match dsl::commands.find(*id).first::<Command>(&*connection).optional()? {
+		let mut connection = self.connection()?;
+		match dsl::commands.find(*id).first::<Command>(&mut *connection).optional()? {
 			Some(command) => command.try_into(),
 			_ => Ok(domain::Command::new(*id)),
 		}
@@ -60,18 +58,18 @@ impl CommandRepository for Client {
 
 	fn upsert(&self, command: domain::Command) -> anyhow::Result<()> {
 		let command: Command = command.try_into()?;
-		let connection = self.connection()?;
+		let mut connection = self.connection()?;
 		diesel::insert_into(dsl::commands)
 			.values(command.clone())
 			.on_conflict(dsl::id)
 			.do_update()
 			.set(command)
-			.execute(&*connection)?;
+			.execute(&mut *connection)?;
 		Ok(())
 	}
 
 	fn decrease_processing_count(&self, id: &CommandId, amount: i32) -> anyhow::Result<()> {
-		let connection = self.connection()?;
+		let mut connection = self.connection()?;
 		let new_processing_count: i32 = diesel::update(dsl::commands)
 			.filter(dsl::id.eq(id))
 			.set((
@@ -79,7 +77,7 @@ impl CommandRepository for Client {
 				dsl::updated_at.eq(Utc::now().naive_utc()),
 			))
 			.returning(dsl::processing_count)
-			.get_result(&*connection)?;
+			.get_result(&mut *connection)?;
 
 		if new_processing_count < 0 {
 			olog::error!(

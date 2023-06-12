@@ -1,7 +1,7 @@
 use ::infrastructure::database::schema::*;
 use derive_getters::{Dissolve, Getters};
 use derive_more::Constructor;
-use diesel::{pg::Pg, Queryable};
+use diesel::{expression::AsExpression, pg::Pg, Queryable};
 use domain::UserId;
 use serde::{Deserialize, Serialize};
 
@@ -26,13 +26,11 @@ pub use location::Location;
 	Identifiable,
 	Serialize,
 	Deserialize,
+	AsExpression,
 	AsChangeset,
 )]
-#[table_name = "user_payout_info"]
-#[primary_key(user_id)]
-#[changeset_options(treat_none_as_null = "true")]
+#[diesel(table_name = user_payout_info, primary_key(user_id), treat_none_as_null = true, sql_type = diesel::sql_types::Jsonb)]
 pub struct UserPayoutInfo {
-	#[diesel(deserialize_as = "uuid::Uuid")]
 	user_id: UserId,
 	identity: Option<Identity>,
 	location: Option<Location>,
@@ -61,13 +59,13 @@ where
 		bool,
 	) as Queryable<ST, Pg>>::Row;
 
-	fn build(row: Self::Row) -> Self {
-		let (user_id, identity, location, payout_settings, _) = Queryable::build(row);
-		Self {
+	fn build(row: Self::Row) -> diesel::deserialize::Result<Self> {
+		let (user_id, identity, location, payout_settings, _) = Queryable::build(row)?;
+		Ok(Self {
 			user_id,
 			identity,
 			location,
 			payout_settings,
-		}
+		})
 	}
 }

@@ -3,6 +3,7 @@ use std::collections::HashMap;
 use derive_getters::Getters;
 use derive_more::{AsRef, Display, From, Into};
 use derive_new::new;
+use diesel_derive_newtype::DieselNewType;
 use juniper::{GraphQLObject, ParseScalarResult, ParseScalarValue, Value};
 use serde::{Deserialize, Serialize};
 use url::Url;
@@ -51,11 +52,8 @@ impl TryFrom<Languages> for serde_json::Value {
 	Into,
 	AsRef,
 	Hash,
-	AsExpression,
-	FromToSql,
-	FromSqlRow,
+	DieselNewType,
 )]
-#[sql_type = "diesel::sql_types::BigInt"]
 pub struct Id(i64);
 
 impl From<u64> for Id {

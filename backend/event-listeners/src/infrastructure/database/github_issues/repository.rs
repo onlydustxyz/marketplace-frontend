@@ -3,7 +3,7 @@ use std::sync::Arc;
 use derive_more::Constructor;
 use infrastructure::database::{schema::github_issues::dsl, Client};
 
-use crate::domain::GithubIssue;
+use super::GithubIssue;
 
 #[derive(DieselRepository, Constructor, Clone)]
 #[entity(GithubIssue)]

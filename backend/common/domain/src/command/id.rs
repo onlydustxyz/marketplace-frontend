@@ -1,6 +1,7 @@
 use std::str::FromStr;
 
 use derive_more::{AsRef, Display, From, Into};
+use diesel_derive_newtype::DieselNewType;
 use juniper::GraphQLScalarValue;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
@@ -19,12 +20,9 @@ use uuid::Uuid;
 	From,
 	Into,
 	AsRef,
-	AsExpression,
-	FromToSql,
-	FromSqlRow,
+	DieselNewType,
 	GraphQLScalarValue,
 )]
-#[sql_type = "diesel::sql_types::Uuid"]
 pub struct Id(Uuid);
 
 impl Id {
