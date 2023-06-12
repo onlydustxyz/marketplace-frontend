@@ -30,6 +30,7 @@ type PropsType = {
   as?: React.ElementType;
   inputProps?: React.InputHTMLAttributes<HTMLInputElement> | React.TextareaHTMLAttributes<HTMLTextAreaElement>;
   size?: Size;
+  disabled?: boolean;
 } & PropsWithChildren;
 
 export default function Input({
@@ -54,6 +55,7 @@ export default function Input({
   children,
   as,
   inputProps,
+  disabled,
   size = Size.Md,
 }: PropsType) {
   const { register } = useFormContext();
@@ -89,6 +91,7 @@ export default function Input({
         children,
         as,
         inputProps,
+        disabled,
         size,
       }}
     />

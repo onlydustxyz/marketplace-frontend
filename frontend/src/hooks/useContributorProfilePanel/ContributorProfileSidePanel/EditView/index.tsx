@@ -9,11 +9,19 @@ import Header, { HeaderColor } from "src/hooks/useContributorProfilePanel/Contri
 import Card from "./Card";
 import { Section } from "./Section";
 import Input, { Size } from "src/components/FormInput";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider, useForm, useFormContext } from "react-hook-form";
 import GlobalLine from "src/icons/GlobalLine";
 import MapPinLine from "src/icons/MapPinLine";
 import { UserProfileInfo, fromFragment } from "./types";
 import { useEffect } from "react";
+import GithubLogo from "src/icons/GithubLogo";
+import Telegram from "src/assets/icons/Telegram";
+import TwitterFill from "src/icons/TwitterFill";
+import DiscordFill from "src/icons/DiscordFill";
+import LinkedinBoxFill from "src/icons/LinkedinBoxFill";
+import MailLine from "src/icons/MailLine";
+import CloseLine from "src/icons/CloseLine";
+import classNames from "classnames";
 
 type Props = {
   profile: UserProfileFragment;
@@ -51,7 +59,7 @@ export default function EditView({ profile, headerColor, setEditMode }: Props) {
                     withMargin={false}
                     name="location"
                     prefixComponent={<MapPinLine />}
-                    inputClassName="pl-8"
+                    inputClassName="pl-9"
                   />
                 </Section>
                 <Section title={T("profile.form.bio")}>
@@ -71,8 +79,64 @@ export default function EditView({ profile, headerColor, setEditMode }: Props) {
                     withMargin={false}
                     name="website"
                     prefixComponent={<GlobalLine />}
-                    inputClassName="pl-8"
+                    inputClassName="pl-9"
                   />
+                </Section>
+              </Card>
+              <Card>
+                <Section title={T("profile.form.contactInfo")}>
+                  <div className="flex flex-col gap-3">
+                    <Input
+                      size={Size.Sm}
+                      withMargin={false}
+                      name="githubHandle"
+                      prefixComponent={<GithubLogo className="text-greyscale-600" />}
+                      suffixComponent={<ClearFieldButton name="githubHandle" disabled />}
+                      inputClassName="pl-9"
+                      disabled
+                    />
+                    <Input
+                      size={Size.Sm}
+                      withMargin={false}
+                      name="email"
+                      prefixComponent={<MailLine className="text-greyscale-600" />}
+                      suffixComponent={<ClearFieldButton name="email" disabled />}
+                      inputClassName="pl-9"
+                      disabled
+                    />
+                    <Input
+                      size={Size.Sm}
+                      withMargin={false}
+                      name="telegram"
+                      prefixComponent={<Telegram size={16} />}
+                      suffixComponent={<ClearFieldButton name="telegram" />}
+                      inputClassName="pl-9"
+                    />
+                    <Input
+                      size={Size.Sm}
+                      withMargin={false}
+                      name="twitter"
+                      prefixComponent={<TwitterFill />}
+                      suffixComponent={<ClearFieldButton name="twitter" />}
+                      inputClassName="pl-9"
+                    />
+                    <Input
+                      size={Size.Sm}
+                      withMargin={false}
+                      name="discord"
+                      prefixComponent={<DiscordFill />}
+                      suffixComponent={<ClearFieldButton name="discord" />}
+                      inputClassName="pl-9"
+                    />
+                    <Input
+                      size={Size.Sm}
+                      withMargin={false}
+                      name="linkedin"
+                      prefixComponent={<LinkedinBoxFill />}
+                      suffixComponent={<ClearFieldButton name="linkedin" />}
+                      inputClassName="pl-9"
+                    />
+                  </div>
                 </Section>
               </Card>
             </div>
@@ -99,5 +163,25 @@ export default function EditView({ profile, headerColor, setEditMode }: Props) {
         </div>
       </form>
     </FormProvider>
+  );
+}
+
+type CloseButtonProps = {
+  name: string;
+  disabled?: boolean;
+};
+
+function ClearFieldButton({ name, disabled }: CloseButtonProps) {
+  const { setValue } = useFormContext();
+  return (
+    <CloseLine
+      className={classNames("flex place-items-center absolute right-0 mr-3", {
+        "text-greyscale-600": disabled,
+        "hover:text-spacePurple-200 cursor-pointer": !disabled,
+      })}
+      onClick={() => {
+        if (!disabled) setValue(name, "");
+      }}
+    />
   );
 }

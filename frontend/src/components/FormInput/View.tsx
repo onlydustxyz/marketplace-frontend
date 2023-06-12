@@ -35,6 +35,7 @@ type PropsType = {
   negativeZIndex?: boolean;
   as?: React.ElementType;
   inputProps?: React.InputHTMLAttributes<HTMLInputElement> | React.TextareaHTMLAttributes<HTMLTextAreaElement>;
+  disabled?: boolean;
   size: Size;
 } & PropsWithChildren;
 
@@ -69,6 +70,7 @@ const View: React.FC<PropsType> = ({
   negativeZIndex = false,
   as = "input",
   inputProps,
+  disabled,
   size,
 }) => {
   const isValidationError = error?.type === InputErrorType.Pattern || error?.type === InputErrorType.Validate;
@@ -99,7 +101,8 @@ const View: React.FC<PropsType> = ({
             placeholder,
             type,
             className: classNames(
-              "w-full bg-white/5 rounded-xl font-walsheim font-normal text-greyscale-50",
+              "w-full bg-white/5 rounded-xl font-walsheim font-normal",
+              { "text-greyscale-50": !disabled, "text-greyscale-600": disabled },
               "border border-greyscale-50/[0.08]",
               "placeholder:text-spaceBlue-200",
               "focus:placeholder:text-spacePurple-200/60 focus:outline-double focus:outline-spacePurple-500 focus:border-spacePurple-500 focus:bg-spacePurple-900",
@@ -117,6 +120,7 @@ const View: React.FC<PropsType> = ({
             onKeyDown,
             style: negativeZIndex ? { zIndex: -1 } : {},
             "data-testid": register.name,
+            disabled,
             ...inputProps,
           })}
           {prefixComponent && <div className="absolute left-0 ml-3">{prefixComponent}</div>}
