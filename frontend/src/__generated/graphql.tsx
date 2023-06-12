@@ -29,8 +29,11 @@ export type Scalars = {
   bytea: any;
   citext: any;
   float8: any;
+  github_issue_status: any;
+  github_issue_type: any;
   jsonb: any;
   numeric: any;
+  project_visibility: any;
   timestamp: any;
   timestamptz: any;
   uuid: any;
@@ -2147,6 +2150,32 @@ export type Float8ComparisonExp = {
   _nin: InputMaybe<Array<Scalars['float8']>>;
 };
 
+/** Boolean expression to compare columns of type "github_issue_status". All fields are combined with logical 'AND'. */
+export type GithubIssueStatusComparisonExp = {
+  _eq: InputMaybe<Scalars['github_issue_status']>;
+  _gt: InputMaybe<Scalars['github_issue_status']>;
+  _gte: InputMaybe<Scalars['github_issue_status']>;
+  _in: InputMaybe<Array<Scalars['github_issue_status']>>;
+  _isNull: InputMaybe<Scalars['Boolean']>;
+  _lt: InputMaybe<Scalars['github_issue_status']>;
+  _lte: InputMaybe<Scalars['github_issue_status']>;
+  _neq: InputMaybe<Scalars['github_issue_status']>;
+  _nin: InputMaybe<Array<Scalars['github_issue_status']>>;
+};
+
+/** Boolean expression to compare columns of type "github_issue_type". All fields are combined with logical 'AND'. */
+export type GithubIssueTypeComparisonExp = {
+  _eq: InputMaybe<Scalars['github_issue_type']>;
+  _gt: InputMaybe<Scalars['github_issue_type']>;
+  _gte: InputMaybe<Scalars['github_issue_type']>;
+  _in: InputMaybe<Array<Scalars['github_issue_type']>>;
+  _isNull: InputMaybe<Scalars['Boolean']>;
+  _lt: InputMaybe<Scalars['github_issue_type']>;
+  _lte: InputMaybe<Scalars['github_issue_type']>;
+  _neq: InputMaybe<Scalars['github_issue_type']>;
+  _nin: InputMaybe<Array<Scalars['github_issue_type']>>;
+};
+
 /** columns and relationships of "github_issues" */
 export type GithubIssues = {
   __typename?: 'GithubIssues';
@@ -2160,9 +2189,9 @@ export type GithubIssues = {
   issueNumber: Scalars['bigint'];
   mergedAt: Maybe<Scalars['timestamp']>;
   repoId: Scalars['bigint'];
-  status: Scalars['jsonb'];
+  status: Scalars['github_issue_status'];
   title: Scalars['String'];
-  type: Scalars['jsonb'];
+  type: Scalars['github_issue_type'];
 };
 
 
@@ -2183,18 +2212,6 @@ export type GithubIssuesIgnoredForProjectsAggregateArgs = {
   offset: InputMaybe<Scalars['Int']>;
   orderBy: InputMaybe<Array<IgnoredGithubIssuesOrderBy>>;
   where: InputMaybe<IgnoredGithubIssuesBoolExp>;
-};
-
-
-/** columns and relationships of "github_issues" */
-export type GithubIssuesStatusArgs = {
-  path: InputMaybe<Scalars['String']>;
-};
-
-
-/** columns and relationships of "github_issues" */
-export type GithubIssuesTypeArgs = {
-  path: InputMaybe<Scalars['String']>;
 };
 
 /** aggregated selection of "github_issues" */
@@ -2242,12 +2259,6 @@ export type GithubIssuesAggregateOrderBy = {
   variance: InputMaybe<Github_Issues_Variance_Order_By>;
 };
 
-/** append existing jsonb value of filtered columns with new jsonb value */
-export type GithubIssuesAppendInput = {
-  status: InputMaybe<Scalars['jsonb']>;
-  type: InputMaybe<Scalars['jsonb']>;
-};
-
 /** input type for inserting array relation for remote table "github_issues" */
 export type GithubIssuesArrRelInsertInput = {
   data: Array<GithubIssuesInsertInput>;
@@ -2279,9 +2290,9 @@ export type GithubIssuesBoolExp = {
   issueNumber: InputMaybe<BigintComparisonExp>;
   mergedAt: InputMaybe<TimestampComparisonExp>;
   repoId: InputMaybe<BigintComparisonExp>;
-  status: InputMaybe<JsonbComparisonExp>;
+  status: InputMaybe<GithubIssueStatusComparisonExp>;
   title: InputMaybe<StringComparisonExp>;
-  type: InputMaybe<JsonbComparisonExp>;
+  type: InputMaybe<GithubIssueTypeComparisonExp>;
 };
 
 /** unique or primary key constraints on table "github_issues" */
@@ -2289,24 +2300,6 @@ export enum GithubIssuesConstraint {
   /** unique or primary key constraint on columns "id" */
   GithubPullsPkey = 'github_pulls_pkey'
 }
-
-/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
-export type GithubIssuesDeleteAtPathInput = {
-  status: InputMaybe<Array<Scalars['String']>>;
-  type: InputMaybe<Array<Scalars['String']>>;
-};
-
-/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
-export type GithubIssuesDeleteElemInput = {
-  status: InputMaybe<Scalars['Int']>;
-  type: InputMaybe<Scalars['Int']>;
-};
-
-/** delete key/value pair or string element. key/value pairs are matched based on their key value */
-export type GithubIssuesDeleteKeyInput = {
-  status: InputMaybe<Scalars['String']>;
-  type: InputMaybe<Scalars['String']>;
-};
 
 /** input type for incrementing numeric columns in table "github_issues" */
 export type GithubIssuesIncInput = {
@@ -2327,9 +2320,9 @@ export type GithubIssuesInsertInput = {
   issueNumber: InputMaybe<Scalars['bigint']>;
   mergedAt: InputMaybe<Scalars['timestamp']>;
   repoId: InputMaybe<Scalars['bigint']>;
-  status: InputMaybe<Scalars['jsonb']>;
+  status: InputMaybe<Scalars['github_issue_status']>;
   title: InputMaybe<Scalars['String']>;
-  type: InputMaybe<Scalars['jsonb']>;
+  type: InputMaybe<Scalars['github_issue_type']>;
 };
 
 /** aggregate max on columns */
@@ -2343,7 +2336,9 @@ export type GithubIssuesMaxFields = {
   issueNumber: Maybe<Scalars['bigint']>;
   mergedAt: Maybe<Scalars['timestamp']>;
   repoId: Maybe<Scalars['bigint']>;
+  status: Maybe<Scalars['github_issue_status']>;
   title: Maybe<Scalars['String']>;
+  type: Maybe<Scalars['github_issue_type']>;
 };
 
 /** aggregate min on columns */
@@ -2357,7 +2352,9 @@ export type GithubIssuesMinFields = {
   issueNumber: Maybe<Scalars['bigint']>;
   mergedAt: Maybe<Scalars['timestamp']>;
   repoId: Maybe<Scalars['bigint']>;
+  status: Maybe<Scalars['github_issue_status']>;
   title: Maybe<Scalars['String']>;
+  type: Maybe<Scalars['github_issue_type']>;
 };
 
 /** response of any mutation on the table "github_issues" */
@@ -2397,12 +2394,6 @@ export type GithubIssuesPkColumnsInput = {
   id: Scalars['bigint'];
 };
 
-/** prepend existing jsonb value of filtered columns with new jsonb value */
-export type GithubIssuesPrependInput = {
-  status: InputMaybe<Scalars['jsonb']>;
-  type: InputMaybe<Scalars['jsonb']>;
-};
-
 /** select columns of table "github_issues" */
 export enum GithubIssuesSelectColumn {
   /** column name */
@@ -2439,9 +2430,9 @@ export type GithubIssuesSetInput = {
   issueNumber: InputMaybe<Scalars['bigint']>;
   mergedAt: InputMaybe<Scalars['timestamp']>;
   repoId: InputMaybe<Scalars['bigint']>;
-  status: InputMaybe<Scalars['jsonb']>;
+  status: InputMaybe<Scalars['github_issue_status']>;
   title: InputMaybe<Scalars['String']>;
-  type: InputMaybe<Scalars['jsonb']>;
+  type: InputMaybe<Scalars['github_issue_type']>;
 };
 
 /** aggregate stddev on columns */
@@ -2507,18 +2498,8 @@ export enum GithubIssuesUpdateColumn {
 }
 
 export type GithubIssuesUpdates = {
-  /** append existing jsonb value of filtered columns with new jsonb value */
-  _append: InputMaybe<GithubIssuesAppendInput>;
-  /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
-  _deleteAtPath: InputMaybe<GithubIssuesDeleteAtPathInput>;
-  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
-  _deleteElem: InputMaybe<GithubIssuesDeleteElemInput>;
-  /** delete key/value pair or string element. key/value pairs are matched based on their key value */
-  _deleteKey: InputMaybe<GithubIssuesDeleteKeyInput>;
   /** increments the numeric columns with given value of the filtered values */
   _inc: InputMaybe<GithubIssuesIncInput>;
-  /** prepend existing jsonb value of filtered columns with new jsonb value */
-  _prepend: InputMaybe<GithubIssuesPrependInput>;
   /** sets the columns of the filtered rows to the given values */
   _set: InputMaybe<GithubIssuesSetInput>;
   where: GithubIssuesBoolExp;
@@ -4851,13 +4832,7 @@ export type ProjectDetails = {
   rank: Scalars['Int'];
   shortDescription: Scalars['String'];
   telegramLink: Maybe<Scalars['String']>;
-  visibility: Scalars['jsonb'];
-};
-
-
-/** columns and relationships of "project_details" */
-export type ProjectDetailsVisibilityArgs = {
-  path: InputMaybe<Scalars['String']>;
+  visibility: Scalars['project_visibility'];
 };
 
 /** aggregated selection of "project_details" */
@@ -4890,11 +4865,6 @@ export type ProjectDetailsAggregateFieldsCountArgs = {
   distinct: InputMaybe<Scalars['Boolean']>;
 };
 
-/** append existing jsonb value of filtered columns with new jsonb value */
-export type ProjectDetailsAppendInput = {
-  visibility: InputMaybe<Scalars['jsonb']>;
-};
-
 /** aggregate avg on columns */
 export type ProjectDetailsAvgFields = {
   __typename?: 'ProjectDetailsAvgFields';
@@ -4914,7 +4884,7 @@ export type ProjectDetailsBoolExp = {
   rank: InputMaybe<IntComparisonExp>;
   shortDescription: InputMaybe<StringComparisonExp>;
   telegramLink: InputMaybe<StringComparisonExp>;
-  visibility: InputMaybe<JsonbComparisonExp>;
+  visibility: InputMaybe<ProjectVisibilityComparisonExp>;
 };
 
 /** unique or primary key constraints on table "project_details" */
@@ -4922,21 +4892,6 @@ export enum ProjectDetailsConstraint {
   /** unique or primary key constraint on columns "project_id" */
   ProjectDetailsPkey = 'project_details_pkey'
 }
-
-/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
-export type ProjectDetailsDeleteAtPathInput = {
-  visibility: InputMaybe<Array<Scalars['String']>>;
-};
-
-/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
-export type ProjectDetailsDeleteElemInput = {
-  visibility: InputMaybe<Scalars['Int']>;
-};
-
-/** delete key/value pair or string element. key/value pairs are matched based on their key value */
-export type ProjectDetailsDeleteKeyInput = {
-  visibility: InputMaybe<Scalars['String']>;
-};
 
 /** input type for incrementing numeric columns in table "project_details" */
 export type ProjectDetailsIncInput = {
@@ -4953,7 +4908,7 @@ export type ProjectDetailsInsertInput = {
   rank: InputMaybe<Scalars['Int']>;
   shortDescription: InputMaybe<Scalars['String']>;
   telegramLink: InputMaybe<Scalars['String']>;
-  visibility: InputMaybe<Scalars['jsonb']>;
+  visibility: InputMaybe<Scalars['project_visibility']>;
 };
 
 /** aggregate max on columns */
@@ -4966,6 +4921,7 @@ export type ProjectDetailsMaxFields = {
   rank: Maybe<Scalars['Int']>;
   shortDescription: Maybe<Scalars['String']>;
   telegramLink: Maybe<Scalars['String']>;
+  visibility: Maybe<Scalars['project_visibility']>;
 };
 
 /** aggregate min on columns */
@@ -4978,6 +4934,7 @@ export type ProjectDetailsMinFields = {
   rank: Maybe<Scalars['Int']>;
   shortDescription: Maybe<Scalars['String']>;
   telegramLink: Maybe<Scalars['String']>;
+  visibility: Maybe<Scalars['project_visibility']>;
 };
 
 /** response of any mutation on the table "project_details" */
@@ -5021,11 +4978,6 @@ export type ProjectDetailsPkColumnsInput = {
   projectId: Scalars['uuid'];
 };
 
-/** prepend existing jsonb value of filtered columns with new jsonb value */
-export type ProjectDetailsPrependInput = {
-  visibility: InputMaybe<Scalars['jsonb']>;
-};
-
 /** select columns of table "project_details" */
 export enum ProjectDetailsSelectColumn {
   /** column name */
@@ -5058,7 +5010,7 @@ export type ProjectDetailsSetInput = {
   rank: InputMaybe<Scalars['Int']>;
   shortDescription: InputMaybe<Scalars['String']>;
   telegramLink: InputMaybe<Scalars['String']>;
-  visibility: InputMaybe<Scalars['jsonb']>;
+  visibility: InputMaybe<Scalars['project_visibility']>;
 };
 
 /** aggregate stddev on columns */
@@ -5108,18 +5060,8 @@ export enum ProjectDetailsUpdateColumn {
 }
 
 export type ProjectDetailsUpdates = {
-  /** append existing jsonb value of filtered columns with new jsonb value */
-  _append: InputMaybe<ProjectDetailsAppendInput>;
-  /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
-  _deleteAtPath: InputMaybe<ProjectDetailsDeleteAtPathInput>;
-  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
-  _deleteElem: InputMaybe<ProjectDetailsDeleteElemInput>;
-  /** delete key/value pair or string element. key/value pairs are matched based on their key value */
-  _deleteKey: InputMaybe<ProjectDetailsDeleteKeyInput>;
   /** increments the numeric columns with given value of the filtered values */
   _inc: InputMaybe<ProjectDetailsIncInput>;
-  /** prepend existing jsonb value of filtered columns with new jsonb value */
-  _prepend: InputMaybe<ProjectDetailsPrependInput>;
   /** sets the columns of the filtered rows to the given values */
   _set: InputMaybe<ProjectDetailsSetInput>;
   where: ProjectDetailsBoolExp;
@@ -5567,6 +5509,19 @@ export type ProjectLeadsUpdates = {
   /** sets the columns of the filtered rows to the given values */
   _set: InputMaybe<ProjectLeadsSetInput>;
   where: ProjectLeadsBoolExp;
+};
+
+/** Boolean expression to compare columns of type "project_visibility". All fields are combined with logical 'AND'. */
+export type ProjectVisibilityComparisonExp = {
+  _eq: InputMaybe<Scalars['project_visibility']>;
+  _gt: InputMaybe<Scalars['project_visibility']>;
+  _gte: InputMaybe<Scalars['project_visibility']>;
+  _in: InputMaybe<Array<Scalars['project_visibility']>>;
+  _isNull: InputMaybe<Scalars['Boolean']>;
+  _lt: InputMaybe<Scalars['project_visibility']>;
+  _lte: InputMaybe<Scalars['project_visibility']>;
+  _neq: InputMaybe<Scalars['project_visibility']>;
+  _nin: InputMaybe<Array<Scalars['project_visibility']>>;
 };
 
 /** columns and relationships of "projects" */
@@ -9382,7 +9337,9 @@ export type Github_Issues_Max_Order_By = {
   issueNumber: InputMaybe<OrderBy>;
   mergedAt: InputMaybe<OrderBy>;
   repoId: InputMaybe<OrderBy>;
+  status: InputMaybe<OrderBy>;
   title: InputMaybe<OrderBy>;
+  type: InputMaybe<OrderBy>;
 };
 
 /** order by min() on columns of table "github_issues" */
@@ -9395,7 +9352,9 @@ export type Github_Issues_Min_Order_By = {
   issueNumber: InputMaybe<OrderBy>;
   mergedAt: InputMaybe<OrderBy>;
   repoId: InputMaybe<OrderBy>;
+  status: InputMaybe<OrderBy>;
   title: InputMaybe<OrderBy>;
+  type: InputMaybe<OrderBy>;
 };
 
 /** order by stddev() on columns of table "github_issues" */
@@ -9440,9 +9399,9 @@ export type Github_Issues_StreamCursorValueInput = {
   issueNumber: InputMaybe<Scalars['bigint']>;
   mergedAt: InputMaybe<Scalars['timestamp']>;
   repoId: InputMaybe<Scalars['bigint']>;
-  status: InputMaybe<Scalars['jsonb']>;
+  status: InputMaybe<Scalars['github_issue_status']>;
   title: InputMaybe<Scalars['String']>;
-  type: InputMaybe<Scalars['jsonb']>;
+  type: InputMaybe<Scalars['github_issue_type']>;
 };
 
 /** order by sum() on columns of table "github_issues" */
@@ -11176,12 +11135,7 @@ export type Mutation_RootUpdateBudgetsManyArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdateGithubIssuesArgs = {
-  _append: InputMaybe<GithubIssuesAppendInput>;
-  _deleteAtPath: InputMaybe<GithubIssuesDeleteAtPathInput>;
-  _deleteElem: InputMaybe<GithubIssuesDeleteElemInput>;
-  _deleteKey: InputMaybe<GithubIssuesDeleteKeyInput>;
   _inc: InputMaybe<GithubIssuesIncInput>;
-  _prepend: InputMaybe<GithubIssuesPrependInput>;
   _set: InputMaybe<GithubIssuesSetInput>;
   where: GithubIssuesBoolExp;
 };
@@ -11189,12 +11143,7 @@ export type Mutation_RootUpdateGithubIssuesArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdateGithubIssuesByPkArgs = {
-  _append: InputMaybe<GithubIssuesAppendInput>;
-  _deleteAtPath: InputMaybe<GithubIssuesDeleteAtPathInput>;
-  _deleteElem: InputMaybe<GithubIssuesDeleteElemInput>;
-  _deleteKey: InputMaybe<GithubIssuesDeleteKeyInput>;
   _inc: InputMaybe<GithubIssuesIncInput>;
-  _prepend: InputMaybe<GithubIssuesPrependInput>;
   _set: InputMaybe<GithubIssuesSetInput>;
   pk_columns: GithubIssuesPkColumnsInput;
 };
@@ -11404,12 +11353,7 @@ export type Mutation_RootUpdateProjectArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdateProjectDetailsArgs = {
-  _append: InputMaybe<ProjectDetailsAppendInput>;
-  _deleteAtPath: InputMaybe<ProjectDetailsDeleteAtPathInput>;
-  _deleteElem: InputMaybe<ProjectDetailsDeleteElemInput>;
-  _deleteKey: InputMaybe<ProjectDetailsDeleteKeyInput>;
   _inc: InputMaybe<ProjectDetailsIncInput>;
-  _prepend: InputMaybe<ProjectDetailsPrependInput>;
   _set: InputMaybe<ProjectDetailsSetInput>;
   where: ProjectDetailsBoolExp;
 };
@@ -11417,12 +11361,7 @@ export type Mutation_RootUpdateProjectDetailsArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdateProjectDetailsByPkArgs = {
-  _append: InputMaybe<ProjectDetailsAppendInput>;
-  _deleteAtPath: InputMaybe<ProjectDetailsDeleteAtPathInput>;
-  _deleteElem: InputMaybe<ProjectDetailsDeleteElemInput>;
-  _deleteKey: InputMaybe<ProjectDetailsDeleteKeyInput>;
   _inc: InputMaybe<ProjectDetailsIncInput>;
-  _prepend: InputMaybe<ProjectDetailsPrependInput>;
   _set: InputMaybe<ProjectDetailsSetInput>;
   pk_columns: ProjectDetailsPkColumnsInput;
 };
@@ -12010,7 +11949,7 @@ export type Project_Details_StreamCursorValueInput = {
   rank: InputMaybe<Scalars['Int']>;
   shortDescription: InputMaybe<Scalars['String']>;
   telegramLink: InputMaybe<Scalars['String']>;
-  visibility: InputMaybe<Scalars['jsonb']>;
+  visibility: InputMaybe<Scalars['project_visibility']>;
 };
 
 export type Project_Github_Repos_Aggregate_Bool_Exp = {
@@ -15658,7 +15597,7 @@ export type UnignoreIssueMutation = { __typename?: 'mutation_root', unignoreIssu
 export type SearchIssuesQueryVariables = Exact<{
   projectId: Scalars['uuid'];
   authorId: Scalars['bigint'];
-  type: Scalars['jsonb'];
+  type: Scalars['github_issue_type'];
 }>;
 
 
@@ -17296,7 +17235,7 @@ export type UnignoreIssueMutationHookResult = ReturnType<typeof useUnignoreIssue
 export type UnignoreIssueMutationResult = Apollo.MutationResult<UnignoreIssueMutation>;
 export type UnignoreIssueMutationOptions = Apollo.BaseMutationOptions<UnignoreIssueMutation, UnignoreIssueMutationVariables>;
 export const SearchIssuesDocument = gql`
-    query SearchIssues($projectId: uuid!, $authorId: bigint!, $type: jsonb!) {
+    query SearchIssues($projectId: uuid!, $authorId: bigint!, $type: github_issue_type!) {
   projectsByPk(id: $projectId) {
     id
     githubRepos {

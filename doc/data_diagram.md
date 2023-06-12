@@ -79,9 +79,9 @@ class GithubIssues {
    issueNumber: bigint!
    mergedAt: timestamp
    repoId: bigint!
-   status: jsonb!
+   status: github_issue_status!
    title: String!
-   type: jsonb!
+   type: github_issue_type!
 }
 
 class GithubRepos {
@@ -198,7 +198,7 @@ class ProjectDetails {
    rank: Int!
    shortDescription: String!
    telegramLink: String
-   visibility: jsonb!
+   visibility: project_visibility!
 }
 
 class ProjectGithubRepos {
