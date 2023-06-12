@@ -61,7 +61,7 @@ derive = {path = "../derive"}
 olog = {path = "../olog"}
 
 # Graphql
-juniper = {version = "0.15.11"}
+juniper = {git = "https://github.com/onlydustxyz/juniper", rev="3ea95737b7665bdaa7636ef3aa4d96cc4ef5c5f7"}
 
 [dev-dependencies]
 assert-json-diff = "2.0.2"

@@ -38,7 +38,7 @@ reqwest = {version = "0.11", default-features = false}
 url = "2.2.2"
 
 # Http Server
-juniper = "0.15.10"
+juniper = {git = "https://github.com/onlydustxyz/juniper", rev="3ea95737b7665bdaa7636ef3aa4d96cc4ef5c5f7"}
 juniper_warp = "0.7.0"
 warp = "0.3.3"
 
