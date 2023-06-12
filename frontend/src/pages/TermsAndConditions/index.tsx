@@ -9,7 +9,7 @@ import { useAcceptTermsAndConditionsMutation } from "src/__generated/graphql";
 import FullTermsAndConditionsSidePanel from "./FullTermsAndConditionsSidePanel";
 import PrivacyPolicySidePanel from "./PrivacyPolicySidePanel";
 
-export const TermsAndConditions = () => {
+export default function TermsAndConditions() {
   const [showTermsAndConditions, setShowTermsAndConditions] = useState(false);
   const [acceptTermsAndConditionsMutation, { data }] = useAcceptTermsAndConditionsMutation();
   return (
@@ -28,7 +28,7 @@ export const TermsAndConditions = () => {
       </div>
     </Background>
   );
-};
+}
 
 interface TermsAndConditionsPromptCardProps {
   setShowTermsAndConditions: (showTermsAndConditions: boolean) => void;

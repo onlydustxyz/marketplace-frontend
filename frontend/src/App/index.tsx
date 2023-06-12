@@ -18,7 +18,7 @@ import { CustomUserRole, HasuraUserRole } from "src/types";
 import LoaderFallback from "src/components/Loader";
 import ErrorTrigger from "src/pages/ErrorTrigger";
 import ImpersonationPage from "src/pages/Impersonation";
-import { TermsAndConditions } from "src/pages/TermsAndConditions";
+import TermsAndConditions from "src/pages/TermsAndConditions";
 import useReloadOnNewRelease from "./useReloadOnNewRelease";
 
 export enum RoutePaths {
