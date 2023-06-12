@@ -10,7 +10,7 @@ export default function TermsAndConditionsAcceptanceDateProvider({ children }: P
   const { user, impersonating } = useAuth();
   const userId = user?.id;
   const { data, loading } = useGetTermsAndConditionsAcceptancesQuery({
-    variables: { userId: user?.id },
+    variables: { userId },
     skip: !userId,
   });
   const location = useLocation();
