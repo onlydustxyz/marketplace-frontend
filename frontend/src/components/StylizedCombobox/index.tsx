@@ -106,9 +106,7 @@ function VirtualizedOptions<T extends Option | { toString: () => string }>({
           /* N-1 lines have a height of lineHeight+1 because of the border-bottom */
           Math.min(options.length - 1, maxDisplayedOptions - 1) * (lineHeight + 1) +
           /* Last line has a height of lineHeight */
-          lineHeight +
-          /* Adds additional height due to first & last lines additional padding */
-          (options.length < maxDisplayedOptions ? 16 : 8),
+          lineHeight,
       }}
       data={options}
       itemContent={(index, option) => {
@@ -120,8 +118,6 @@ function VirtualizedOptions<T extends Option | { toString: () => string }>({
               "flex px-4 py-2 font-walsheim text-sm leading-4 text-greyscale-50 bg-greyscale-800 ui-active:bg-greyscale-600",
               {
                 "border-b border-greyscale-50/8": index < options.length - 1,
-                "pt-4": index === 0,
-                "pb-4": index === options.length - 1,
               }
             )}
           >
