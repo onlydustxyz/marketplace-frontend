@@ -1,4 +1,4 @@
-query SearchIssues($projectId: uuid!, $authorId: bigint!, $type: jsonb!) {
+query SearchIssues($projectId: uuid!, $authorId: bigint!, $type: github_issue_type!) {
   projectsByPk(id: $projectId) {
     id
     githubRepos {
