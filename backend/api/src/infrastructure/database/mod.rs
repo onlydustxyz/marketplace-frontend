@@ -22,3 +22,6 @@ pub use sponsor::Repository as SponsorRepository;
 
 mod ignored_github_issues;
 pub use ignored_github_issues::Repository as IgnoredGithubIssuesRepository;
+
+mod contact_informations;
+pub use contact_informations::Repository as ContactInformationsRepository;

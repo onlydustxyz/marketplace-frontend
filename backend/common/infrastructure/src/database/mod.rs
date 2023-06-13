@@ -1,3 +1,4 @@
+pub mod contact_information;
 pub mod github_issue;
 pub mod project;
 pub mod repositories;

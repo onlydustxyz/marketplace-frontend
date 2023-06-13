@@ -5,6 +5,7 @@ use domain::{
 	Amount, BlockchainNetwork, Currency, GithubIssue, GithubIssueNumber, GithubRepoId, Iban,
 	Languages, LogErr, PaymentReason, PaymentReceipt, ProjectId, ProjectVisibility, UserId,
 };
+use infrastructure::database::contact_information::ContactInformation;
 use juniper::{graphql_object, DefaultScalarValue, Nullable};
 use rusty_money::Money;
 use url::Url;
@@ -540,6 +541,7 @@ impl Mutation {
 		website: Option<String>,
 		languages: Option<Vec<Language>>,
 		weekly_allocated_time: dto::AllocatedTime,
+		contact_informations: Vec<dto::ContactInformation>,
 	) -> Result<bool> {
 		let caller_id = *context.caller_info()?.user_id();
 
@@ -556,6 +558,15 @@ impl Mutation {
 				website,
 				languages.map(Languages::from),
 				weekly_allocated_time.into(),
+				contact_informations
+					.into_iter()
+					.map(|info| ContactInformation {
+						user_id: caller_id,
+						channel: info.channel.into(),
+						contact: info.contact,
+						public: info.public,
+					})
+					.collect(),
 			)
 			.await?;
 		Ok(true)

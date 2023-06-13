@@ -14,9 +14,10 @@ use crate::{
 	domain::{ArePayoutSettingsValid, Permissions},
 	infrastructure::{
 		database::{
-			IgnoredGithubIssuesRepository, PendingProjectLeaderInvitationsRepository,
-			ProjectDetailsRepository, ProjectSponsorRepository, SponsorRepository,
-			UserPayoutInfoRepository, UserProfileInfoRepository,
+			ContactInformationsRepository, IgnoredGithubIssuesRepository,
+			PendingProjectLeaderInvitationsRepository, ProjectDetailsRepository,
+			ProjectSponsorRepository, SponsorRepository, UserPayoutInfoRepository,
+			UserProfileInfoRepository,
 		},
 		simple_storage,
 		web3::ens,
@@ -66,6 +67,7 @@ impl Context {
 		ignored_github_issues_repository: IgnoredGithubIssuesRepository,
 		user_info_repository: UserPayoutInfoRepository,
 		user_profile_info_repository: UserProfileInfoRepository,
+		contact_informations_repository: ContactInformationsRepository,
 		graphql: Arc<graphql::Client>,
 		github: Arc<github::Client>,
 		ens: Arc<ens::Client>,
@@ -159,6 +161,7 @@ impl Context {
 			),
 			update_user_profile_info_usecase: application::user::update_profile_info::Usecase::new(
 				user_profile_info_repository,
+				contact_informations_repository,
 			),
 			ens,
 		}
