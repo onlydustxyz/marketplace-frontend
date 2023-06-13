@@ -1,12 +1,13 @@
-import { describe, it, vi, expect } from "vitest";
-import { screen } from "@testing-library/react";
+import { describe, it, vi } from "vitest";
+import { screen, waitForElementToBeRemoved } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 
 import TermsAndConditions from ".";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import { CLAIMS_KEY, GITHUB_USERID_KEY, PROJECTS_LED_KEY, TokenSet } from "src/types";
-import { AcceptTermsAndConditionsDocument } from "src/__generated/graphql";
+import { AcceptTermsAndConditionsDocument, GetTermsAndConditionsAcceptancesDocument } from "src/__generated/graphql";
+import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
 
 const TEST_USER_ID = "test-user-id";
 const TEST_GITHUB_USER_ID = 123456789;
@@ -54,12 +55,22 @@ const mocks = [
     request: {
       query: AcceptTermsAndConditionsDocument,
     },
-    result: { data: {} },
+    result: { data: { acceptTermsAndConditions: {} } },
+  },
+  {
+    request: {
+      query: GetTermsAndConditionsAcceptancesDocument,
+      variables: {
+        userId: TEST_USER_ID,
+      },
+    },
+    result: { data: { termsAndConditionsAcceptancesByPk: { acceptanceDate: "2023-06-13T16:07:59.125227" } } },
   },
 ];
 
 describe("Terms and Conditions page", () => {
   it("the terms and conditions should be clickable", async () => {
+    window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_WITH_VALID_JWT_TEST_VALUE));
     renderWithIntl(<TermsAndConditions />, { wrapper: MemoryRouterProviderFactory({ mocks }) });
     await userEvent.click(await screen.findByText("Let’s get reading!"));
     await screen.findByText("Summary of our Terms & Conditions");
@@ -68,6 +79,7 @@ describe("Terms and Conditions page", () => {
     await userEvent.click(await screen.findByRole("checkbox"));
     await userEvent.click(await screen.findByText("Accept terms and conditions"));
     // should navigate
-    expect(screen.queryByText("Accept terms and conditions")).not.toBeInTheDocument();
+    const element = screen.queryByText("Accept terms and conditions");
+    await waitForElementToBeRemoved(element);
   });
 });
