@@ -3,7 +3,7 @@ import SidePanel from "src/components/SidePanel";
 
 import { Project } from "./ReadOnlyView/ProjectCard";
 import ReadOnlyView from "./ReadOnlyView";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import EditView from "./EditView";
 import { HeaderColor } from "./Header";
 
@@ -16,11 +16,14 @@ type Props = {
   isOwn?: boolean;
 };
 
-export default function View({ isOwn, profile, projects, headerColor, setOpen, ...rest }: Props) {
+export default function View({ isOwn, profile, projects, headerColor, open, setOpen }: Props) {
   const [editMode, setEditMode] = useState(false);
+  useEffect(() => {
+    if (!open) setEditMode(false);
+  }, [open]);
 
   return (
-    <SidePanel {...rest} setOpen={setOpen}>
+    <SidePanel open={open} setOpen={setOpen}>
       {editMode ? (
         <EditView profile={profile} headerColor={headerColor} setEditMode={setEditMode} />
       ) : (
