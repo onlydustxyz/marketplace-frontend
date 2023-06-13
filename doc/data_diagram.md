@@ -309,6 +309,7 @@ class UserProfiles {
    projectsLeaded: [ProjectLeads!]!
    userId: uuid
    website: String
+   weeklyAllocatedTime: allocated_time
 }
 
 class WorkItems {
