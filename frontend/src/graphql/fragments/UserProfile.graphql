@@ -40,4 +40,5 @@ fragment UserProfileDetails on UserProfiles {
     public
   }
   weeklyAllocatedTime
+  lookingForAJob
 }

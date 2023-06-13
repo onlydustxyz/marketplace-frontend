@@ -541,6 +541,7 @@ impl Mutation {
 		website: Option<String>,
 		languages: Option<Vec<Language>>,
 		weekly_allocated_time: dto::AllocatedTime,
+		looking_for_a_job: bool,
 		contact_informations: Vec<dto::ContactInformation>,
 	) -> Result<bool> {
 		let caller_id = *context.caller_info()?.user_id();
@@ -558,6 +559,7 @@ impl Mutation {
 				website,
 				languages.map(Languages::from),
 				weekly_allocated_time.into(),
+				looking_for_a_job,
 				contact_informations
 					.into_iter()
 					.map(|info| ContactInformation {

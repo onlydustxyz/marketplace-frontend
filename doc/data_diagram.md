@@ -304,6 +304,7 @@ class UserProfiles {
    lastSeen: timestamptz
    location: String
    login: String
+   lookingForAJob: Boolean
    paymentStats: [PaymentStats!]!
    projectsContributed: [ProjectsContributorsView!]!
    projectsLeaded: [ProjectLeads!]!

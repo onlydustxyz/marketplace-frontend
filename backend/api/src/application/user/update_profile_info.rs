@@ -23,6 +23,7 @@ impl Usecase {
 		website: Option<String>,
 		languages: Option<Languages>,
 		weekly_allocated_time: AllocatedTime,
+		looking_for_a_job: bool,
 		contact_informations: Vec<ContactInformation>,
 	) -> Result<(), DomainError> {
 		self.user_profile_info_repository.upsert(&UserProfile {
@@ -31,6 +32,7 @@ impl Usecase {
 			location,
 			website,
 			languages: languages.map(diesel_json::Json::new),
+			looking_for_a_job,
 			weekly_allocated_time,
 		})?;
 

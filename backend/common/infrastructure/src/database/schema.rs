@@ -270,6 +270,7 @@ diesel::table! {
         website -> Nullable<Text>,
         languages -> Nullable<Jsonb>,
         weekly_allocated_time -> AllocatedTime,
+        looking_for_a_job -> Bool,
     }
 }
 

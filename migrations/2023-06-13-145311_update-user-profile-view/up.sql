@@ -15,7 +15,8 @@ SELECT
     COALESCE(upi.location, gu.location) AS location,
     COALESCE(upi.website, gu.website) AS website,
     COALESCE(upi.languages, repos_stats.languages) AS languages,
-    upi.weekly_allocated_time as weekly_allocated_time
+    upi.weekly_allocated_time as weekly_allocated_time,
+    upi.looking_for_a_job as looking_for_a_job
 FROM
     github_users gu
     LEFT JOIN auth_users au ON au.github_user_id = gu.id

@@ -91,18 +91,19 @@ select_permissions:
   - role: registered_user
     permission:
       columns:
-        - weekly_allocated_time
-        - github_user_id
-        - languages
         - avatar_url
         - bio
+        - created_at
+        - github_user_id
         - html_url
+        - languages
+        - last_seen
         - location
         - login
-        - website
-        - created_at
-        - last_seen
+        - looking_for_a_job
         - user_id
+        - website
+        - weekly_allocated_time
       filter:
         github_user_id:
           _eq: X-Hasura-githubUserId

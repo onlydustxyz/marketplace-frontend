@@ -18,6 +18,7 @@ pub struct UserProfile {
 	pub website: Option<String>,
 	pub languages: Option<Json<Languages>>,
 	pub weekly_allocated_time: AllocatedTime,
+	pub looking_for_a_job: bool,
 }
 
 impl domain::Entity for UserProfile {
