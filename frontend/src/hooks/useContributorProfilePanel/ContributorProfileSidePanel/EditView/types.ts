@@ -19,6 +19,7 @@ export class UserProfileInfo {
   isLinkedInPublic: boolean;
   languages: LanguageMap;
   weeklyAllocatedTime: WeeklyTimeAllocation;
+  lookingForAJob: boolean;
 
   constructor(fragment: UserProfileFragment) {
     this.bio = fragment.bio || "";
@@ -38,5 +39,6 @@ export class UserProfileInfo {
     this.isLinkedInPublic = fragment.linkedin.at(0)?.public ?? true;
     this.languages = fragment.languages;
     this.weeklyAllocatedTime = fragment.weeklyAllocatedTime;
+    this.lookingForAJob = fragment.lookingForAJob || false;
   }
 }

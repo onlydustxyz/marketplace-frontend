@@ -25,6 +25,7 @@ import TechnologiesCard from "./TechnologiesCard";
 import FormSelect from "src/components/FormSelect";
 import { WeeklyTimeAllocation } from "src/types";
 import LockFill from "src/icons/LockFill";
+import FormToggle from "src/components/FormToggle";
 
 type Props = {
   profile: UserProfileFragment;
@@ -144,6 +145,11 @@ export default function EditView({ profile, headerColor, setEditMode }: Props) {
                     name="weeklyAllocatedTime"
                     options={Object.entries(weeklyTimeAllocations).map(([value, label]) => ({ value, label }))}
                     control={control}
+                  />
+                  <FormToggle
+                    name="lookingForAJob"
+                    control={control}
+                    label={T("profile.form.weeklyAllocatedTime.lookingForAJob")}
                   />
                 </Section>
               </Card>
