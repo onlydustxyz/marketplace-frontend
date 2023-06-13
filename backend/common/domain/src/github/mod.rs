@@ -6,7 +6,7 @@ pub use service::{
 };
 
 mod repo;
-pub use repo::{Id as RepoId, Languages, Repo};
+pub use repo::{Id as RepoId, Repo};
 
 mod user;
 pub use user::{FullUser, Id as UserId, SocialAccount, User};

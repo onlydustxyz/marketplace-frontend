@@ -181,6 +181,7 @@ dependencies = [
  "derive_setters",
  "diesel",
  "diesel-derive-newtype",
+ "diesel_json",
  "domain",
  "dotenv",
  "dusty-bot",
@@ -1161,6 +1162,17 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 2.0.18",
+]
+
+[[package]]
+name = "diesel_json"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f0cecc06aa653220c690379a47b3eed7b8c30c70becdd5a627c060239c98867d"
+dependencies = [
+ "diesel",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]
@@ -2250,6 +2262,7 @@ dependencies = [
  "derive_more",
  "diesel",
  "diesel-derive-enum",
+ "diesel_json",
  "diesel_migrations",
  "domain",
  "dotenv",

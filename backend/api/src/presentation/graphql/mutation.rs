@@ -1,7 +1,10 @@
+use std::collections::HashMap;
+
 use anyhow::anyhow;
 use domain::{
-	Amount, BlockchainNetwork, Currency, GithubIssue, GithubIssueNumber, GithubRepoId, Iban,
-	LogErr, PaymentReason, PaymentReceipt, ProjectId, ProjectVisibility, UserId,
+	AllocatedTime, Amount, BlockchainNetwork, Currency, GithubIssue, GithubIssueNumber,
+	GithubRepoId, Iban, Languages, LogErr, PaymentReason, PaymentReceipt, ProjectId,
+	ProjectVisibility, UserId,
 };
 use juniper::{graphql_object, DefaultScalarValue, Nullable};
 use rusty_money::Money;
@@ -11,9 +14,12 @@ use uuid::Uuid;
 use super::{dto, Context, Error, Result};
 use crate::{
 	domain::user_payout_info::{Identity, Location, PayoutSettings},
-	presentation::http::dto::{
-		EthereumIdentityInput, IdentityInput, OptionalNonEmptyTrimmedString, PaymentReference,
-		PayoutSettingsInput,
+	presentation::{
+		graphql::dto::Language,
+		http::dto::{
+			EthereumIdentityInput, IdentityInput, OptionalNonEmptyTrimmedString, PaymentReference,
+			PayoutSettingsInput,
+		},
 	},
 };
 
@@ -524,6 +530,35 @@ impl Mutation {
 			&issue_number,
 		)?;
 
+		Ok(true)
+	}
+
+	pub async fn update_user_profile(
+		&self,
+		context: &Context,
+		bio: Option<String>,
+		location: Option<String>,
+		website: Option<String>,
+		languages: Option<Vec<Language>>,
+		weekly_allocated_time: AllocatedTime,
+	) -> Result<bool> {
+		let caller_id = *context.caller_info()?.user_id();
+
+		let languages: Option<HashMap<String, i32>> = languages.map(|languages| {
+			languages.into_iter().map(|language| (language.name, language.weight)).collect()
+		});
+
+		context
+			.update_user_profile_info_usecase
+			.update_user_profile_info(
+				caller_id,
+				bio,
+				location,
+				website,
+				languages.map(Languages::from),
+				weekly_allocated_time.into(),
+			)
+			.await?;
 		Ok(true)
 	}
 }

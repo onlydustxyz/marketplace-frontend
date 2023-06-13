@@ -4,6 +4,7 @@ pub mod repositories;
 pub mod schema;
 #[cfg(test)]
 mod tests;
+pub mod user_profile;
 
 mod error;
 use diesel::{

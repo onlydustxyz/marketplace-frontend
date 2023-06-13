@@ -25,6 +25,7 @@ diesel = {version = "2.1.0", default-features = false, features = [
   "chrono",
 ]}
 diesel-derive-newtype = "2.1.0"
+diesel_json = "0.2.0"
 uuid = {version = "1.3.3", default_features = false, features = [
   "v4",
   "serde",

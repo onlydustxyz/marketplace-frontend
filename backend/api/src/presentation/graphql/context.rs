@@ -16,7 +16,7 @@ use crate::{
 		database::{
 			IgnoredGithubIssuesRepository, PendingProjectLeaderInvitationsRepository,
 			ProjectDetailsRepository, ProjectSponsorRepository, SponsorRepository,
-			UserPayoutInfoRepository,
+			UserPayoutInfoRepository, UserProfileInfoRepository,
 		},
 		simple_storage,
 		web3::ens,
@@ -48,6 +48,7 @@ pub struct Context {
 	pub create_github_issue_usecase: application::github::create_issue::Usecase,
 	pub ignored_github_issues_usecase: application::project::ignored_issues::Usecase,
 	pub apply_to_project_usecase: application::project::apply::Usecase,
+	pub update_user_profile_info_usecase: application::user::update_profile_info::Usecase,
 	pub ens: Arc<ens::Client>,
 }
 
@@ -64,6 +65,7 @@ impl Context {
 		pending_project_leader_invitations_repository: PendingProjectLeaderInvitationsRepository,
 		ignored_github_issues_repository: IgnoredGithubIssuesRepository,
 		user_info_repository: UserPayoutInfoRepository,
+		user_profile_info_repository: UserProfileInfoRepository,
 		graphql: Arc<graphql::Client>,
 		github: Arc<github::Client>,
 		ens: Arc<ens::Client>,
@@ -154,6 +156,9 @@ impl Context {
 			apply_to_project_usecase: application::project::apply::Usecase::new(
 				project_repository,
 				bus,
+			),
+			update_user_profile_info_usecase: application::user::update_profile_info::Usecase::new(
+				user_profile_info_repository,
 			),
 			ens,
 		}

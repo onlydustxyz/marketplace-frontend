@@ -2,6 +2,10 @@
 
 pub mod sql_types {
     #[derive(diesel::sql_types::SqlType)]
+    #[diesel(postgres_type(name = "allocated_time"))]
+    pub struct AllocatedTime;
+
+    #[derive(diesel::sql_types::SqlType)]
     #[diesel(postgres_type(name = "contact_channel"))]
     pub struct ContactChannel;
 
@@ -256,12 +260,16 @@ diesel::table! {
 }
 
 diesel::table! {
+    use diesel::sql_types::*;
+    use super::sql_types::AllocatedTime;
+
     user_profile_info (id) {
         id -> Uuid,
         bio -> Nullable<Text>,
         location -> Nullable<Text>,
         website -> Nullable<Text>,
         languages -> Nullable<Jsonb>,
+        weekly_allocated_time -> AllocatedTime,
     }
 }
 
