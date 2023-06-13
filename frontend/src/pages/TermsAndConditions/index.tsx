@@ -1,5 +1,5 @@
 import { PropsWithChildren, useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import OnlyDustLogo, { OnlyDustLogoWidth } from "src/App/Layout/Header/OnlyDustLogo";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
