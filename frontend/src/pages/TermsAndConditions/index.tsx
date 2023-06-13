@@ -1,17 +1,27 @@
 import { PropsWithChildren, useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import OnlyDustLogo, { OnlyDustLogoWidth } from "src/App/Layout/Header/OnlyDustLogo";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import Button, { Width } from "src/components/Button";
 import Card from "src/components/Card";
-import { useAcceptTermsAndConditionsMutation } from "src/__generated/graphql";
+import { useAuth } from "src/hooks/useAuth";
+import { GetTermsAndConditionsAcceptancesDocument, useAcceptTermsAndConditionsMutation } from "src/__generated/graphql";
 import FullTermsAndConditionsSidePanel from "./FullTermsAndConditionsSidePanel";
 import PrivacyPolicySidePanel from "./PrivacyPolicySidePanel";
 
 export default function TermsAndConditions() {
+  const { user } = useAuth();
   const [showTermsAndConditions, setShowTermsAndConditions] = useState(false);
-  const [acceptTermsAndConditionsMutation, { data }] = useAcceptTermsAndConditionsMutation();
+  const [acceptTermsAndConditionsMutation, { data }] = useAcceptTermsAndConditionsMutation({
+    awaitRefetchQueries: true,
+    refetchQueries: [{ query: GetTermsAndConditionsAcceptancesDocument, variables: { userId: user?.id } }],
+  });
+  const navigate = useNavigate();
+  const handleAcceptTermsAndConditions = async () => {
+    await acceptTermsAndConditionsMutation();
+    navigate(RoutePaths.Home);
+  };
   return (
     <Background roundedBorders={BackgroundRoundedBorders.Full} centeredContent={!showTermsAndConditions}>
       <div className="flex flex-col justify-center items-center text-greyscale-50">
@@ -19,10 +29,7 @@ export default function TermsAndConditions() {
           {!showTermsAndConditions ? (
             <TermsAndConditionsPromptCard {...{ setShowTermsAndConditions }} />
           ) : (
-            <>
-              {!data && <TermsAndConditionsMainCard {...{ acceptTermsAndConditionsMutation }} />}
-              {data && <Navigate to={RoutePaths.Home} />}
-            </>
+            <>{!data && <TermsAndConditionsMainCard {...{ handleAcceptTermsAndConditions }} />}</>
           )}
         </div>
       </div>
@@ -55,10 +62,10 @@ const TermsAndConditionsPromptCard = ({ setShowTermsAndConditions }: TermsAndCon
 );
 
 interface TermsAndConditionsMainCardProps {
-  acceptTermsAndConditionsMutation: () => void;
+  handleAcceptTermsAndConditions: () => void;
 }
 
-const TermsAndConditionsMainCard = ({ acceptTermsAndConditionsMutation }: TermsAndConditionsMainCardProps) => {
+const TermsAndConditionsMainCard = ({ handleAcceptTermsAndConditions }: TermsAndConditionsMainCardProps) => {
   const [checked, setChecked] = useState(false);
   const [showFullTermsAndConditions, setShowFullTermsAndConditions] = useState(false);
   const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
@@ -160,7 +167,7 @@ const TermsAndConditionsMainCard = ({ acceptTermsAndConditionsMutation }: TermsA
                 </span>
               </p>
             </div>
-            <Button onClick={() => acceptTermsAndConditionsMutation()} width={Width.Full} disabled={!checked}>
+            <Button onClick={() => handleAcceptTermsAndConditions()} width={Width.Full} disabled={!checked}>
               Accept terms and conditions
             </Button>
           </div>

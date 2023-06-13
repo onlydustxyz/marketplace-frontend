@@ -6,13 +6,12 @@ import { RoutePaths } from "src/App";
 
 export const TERMS_AND_CONDITIONS_LAST_REDACTION_DATE = "2023-06-01";
 
-export default function TermsAndConditionsAcceptanceDateProvider({ children }: PropsWithChildren) {
+export default function TermsAndConditionsWrapper({ children }: PropsWithChildren) {
   const { user, impersonating } = useAuth();
   const userId = user?.id;
   const { data, loading } = useGetTermsAndConditionsAcceptancesQuery({
     variables: { userId },
     skip: !userId,
-    fetchPolicy: "no-cache",
   });
   const location = useLocation();
 
