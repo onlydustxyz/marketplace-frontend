@@ -40,6 +40,13 @@ class Commands {
    updatedAt: timestamp
 }
 
+class ContactInformations {
+   channel: contact_channel
+   contact: String
+   githubUserId: bigint
+   public: Boolean
+}
+
 class ContributionCounts {
    githubUserId: bigint
    paidCount: bigint
@@ -286,24 +293,20 @@ class UserPayoutInfo {
 class UserProfiles {
    avatarUrl: String
    bio: String
+   contactInformations: [ContactInformations!]!
    contributionCounts: [ContributionCounts!]!
    contributionStats: [ContributionStats!]!
    contributions: [Contributions!]!
    createdAt: timestamptz
-   discord: String
-   email: String
    githubUserId: bigint
    htmlUrl: String
    languages: jsonb
    lastSeen: timestamptz
-   linkedin: String
    location: String
    login: String
    paymentStats: [PaymentStats!]!
    projectsContributed: [ProjectsContributorsView!]!
    projectsLeaded: [ProjectLeads!]!
-   telegram: String
-   twitter: String
    userId: uuid
    website: String
 }
@@ -452,6 +455,7 @@ RegisteredUsers --* ProjectLeads
 Sponsors --* ProjectsSponsors
 User -- RegisteredUsers
 User --* PaymentRequests
+UserProfiles --* ContactInformations
 UserProfiles --* ContributionCounts
 UserProfiles --* ContributionStats
 UserProfiles --* Contributions
