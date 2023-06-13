@@ -1,6 +1,5 @@
 import { sortBy } from "lodash";
-import { useEffect, useState } from "react";
-import { ReactElement } from "react-markdown/lib/react-markdown";
+import { FormEventHandler, useEffect, useState } from "react";
 import Button, { Width } from "src/components/Button";
 import Callout from "src/components/Callout";
 import { WorkItem } from "src/components/GithubIssue";
@@ -18,15 +17,14 @@ import {
 import Description from "./Description";
 import RepoSelect from "./RepoSelect";
 import Title from "./Title";
-import WorkKinds, { WORK_KINDS } from "./WorkKinds";
 import { issueToWorkItem } from "src/pages/ProjectDetails/Payments/PaymentForm/WorkItemSidePanel/Issues";
-
-type WorkKind = {
-  icon: ReactElement;
-  labelKey: string;
-};
-
-const DEFAULT_WORK_KIND = WORK_KINDS[0];
+import DraftLine from "src/icons/DraftLine";
+import TeamLine from "src/icons/TeamLine";
+import ExchangeDollarLine from "src/icons/ExchangeDollarLine";
+import MoreLine from "src/icons/MoreLine";
+import FormSelect from "src/components/FormSelect";
+import { FormProvider, useForm } from "react-hook-form";
+import { OtherWork } from "./types";
 
 type Props = {
   projectId: string;
@@ -38,13 +36,29 @@ export default function OtherWorkForm({ projectId, contributorHandle, onWorkItem
   const { T } = useIntl();
   const { user: leader } = useAuth();
 
-  const [selectedWorkKind, setSelectedWorkKind] = useState<WorkKind>(DEFAULT_WORK_KIND);
+  const workKinds = [
+    { icon: <DraftLine />, label: T("payment.form.workItems.other.kinds.documentation") },
+    { icon: <TeamLine />, label: T("payment.form.workItems.other.kinds.meeting") },
+    { icon: <ExchangeDollarLine />, label: T("payment.form.workItems.other.kinds.subscription") },
+    { icon: <MoreLine />, label: T("payment.form.workItems.other.kinds.other") },
+  ];
+  const defaultWorkKind = workKinds[0].label;
+
   const [selectedRepo, setSelectedRepo] = useState<GithubRepoFragment | null>();
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
 
+  const formMethods = useForm<OtherWork>({
+    defaultValues: {
+      workKind: defaultWorkKind,
+    },
+  });
+
+  const { watch, setValue, control, handleSubmit } = formMethods;
+  const workKind = watch("workKind");
+
   const defaultTitle = T("payment.form.workItems.other.issue.defaultTitle", {
-    kind: T(selectedWorkKind.labelKey),
+    kind: workKind,
     author: contributorHandle,
   });
 
@@ -63,7 +77,7 @@ export default function OtherWorkForm({ projectId, contributorHandle, onWorkItem
   const clearForm = () => {
     setTitle("");
     setDescription("");
-    setSelectedWorkKind(DEFAULT_WORK_KIND);
+    setValue("workKind", defaultWorkKind);
   };
 
   const [createIssue, { loading }] = useCreateIssueMutation({
@@ -82,28 +96,36 @@ export default function OtherWorkForm({ projectId, contributorHandle, onWorkItem
     },
   });
 
+  const onSubmit: FormEventHandler<HTMLFormElement> = e => {
+    e.preventDefault();
+    handleSubmit(() => createIssue())(e);
+    e.stopPropagation();
+  };
+
   return (
-    <div className="flex flex-col justify-between h-full gap-4 min-h-0">
-      <div className="flex flex-col justify-start gap-4 overflow-y-auto min-h-0 px-6 scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded">
-        <div className="font-belwe font-normal text-base text-greyscale-50">
-          {T("payment.form.workItems.other.title")}
+    <FormProvider {...formMethods}>
+      <form className="flex flex-col justify-between h-full gap-4 min-h-0" onSubmit={onSubmit}>
+        <div className="flex flex-col justify-start gap-4 overflow-y-auto min-h-0 px-6 scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded">
+          <div className="font-belwe font-normal text-base text-greyscale-50">
+            {T("payment.form.workItems.other.title")}
+          </div>
+          <FormSelect name="workKind" options={workKinds} control={control} />
+          <Title title={title} setTitle={setTitle} defaultTitle={defaultTitle} />
+          <Description description={description} setDescription={setDescription} />
+          <Callout>{T("payment.form.workItems.other.callout")}</Callout>
         </div>
-        <WorkKinds workKind={selectedWorkKind} setWorkKind={setSelectedWorkKind} />
-        <Title title={title} setTitle={setTitle} defaultTitle={defaultTitle} />
-        <Description description={description} setDescription={setDescription} />
-        <Callout>{T("payment.form.workItems.other.callout")}</Callout>
-      </div>
-      <div className="flex flex-row grow-0 gap-8 bg-white/2 border-t border-greyscale-50/8 px-6 py-8">
-        {selectedRepo ? (
-          <RepoSelect repos={repos} repo={selectedRepo} setRepo={setSelectedRepo} />
-        ) : (
-          <div className="w-full" />
-        )}
-        <Button width={Width.Full} disabled={!selectedWorkKind || !description || loading} onClick={createIssue}>
-          <CheckLine />
-          {T("payment.form.workItems.other.footer.submitButton")}
-        </Button>
-      </div>
-    </div>
+        <div className="flex flex-row grow-0 gap-8 bg-white/2 border-t border-greyscale-50/8 px-6 py-8">
+          {selectedRepo ? (
+            <RepoSelect repos={repos} repo={selectedRepo} setRepo={setSelectedRepo} />
+          ) : (
+            <div className="w-full" />
+          )}
+          <Button width={Width.Full} disabled={!workKind || !description || loading} htmlType="submit">
+            <CheckLine />
+            {T("payment.form.workItems.other.footer.submitButton")}
+          </Button>
+        </div>
+      </form>
+    </FormProvider>
   );
 }
