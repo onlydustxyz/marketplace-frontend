@@ -36,3 +36,12 @@ query PaymentRequestDetails($id: uuid!) {
     ...PaymentRequestDetails
   }
 }
+
+mutation CancelPaymentRequest($projectId: Uuid!, $paymentId: Uuid!) {
+  cancelPaymentRequest(projectId: $projectId, paymentId: $paymentId) {
+    projectId
+    budgetId
+    paymentId
+    amount
+  }
+}

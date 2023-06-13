@@ -104,21 +104,22 @@ impl Mutation {
 		project_id: Uuid,
 		payment_id: Uuid,
 	) -> Result<dto::Payment> {
-		let (project, budget, payment) = context
+		let (project, budget, payment, command_id) = context
 			.cancel_payment_usecase
 			.cancel(&project_id.into(), &payment_id.into())
 			.await?;
 
-		Ok(dto::Payment::new(
-			*project.id(),
-			*budget.id(),
-			*payment.id(),
-			payment
+		Ok(dto::Payment {
+			project_id: *project.id(),
+			budget_id: *budget.id(),
+			payment_id: *payment.id(),
+			command_id,
+			amount: payment
 				.requested_usd_amount()
 				.try_into()
 				.log_err("Could not format payment amount")
 				.unwrap_or_default(),
-		))
+		})
 	}
 
 	pub async fn mark_invoice_as_received(
@@ -278,7 +279,7 @@ impl Mutation {
 			));
 		}
 
-		let (project, budget, payment) = context
+		let (project, budget, payment, command_id) = context
 			.request_payment_usecase
 			.request(
 				project_id.into(),
@@ -290,16 +291,17 @@ impl Mutation {
 			)
 			.await?;
 
-		Ok(dto::Payment::new(
-			*project.id(),
-			*budget.id(),
-			*payment.id(),
-			payment
+		Ok(dto::Payment {
+			project_id: *project.id(),
+			budget_id: *budget.id(),
+			payment_id: *payment.id(),
+			command_id,
+			amount: payment
 				.requested_usd_amount()
 				.try_into()
 				.log_err("Could not format payment amount")
 				.unwrap_or_default(),
-		))
+		})
 	}
 
 	pub async fn update_profile_info(

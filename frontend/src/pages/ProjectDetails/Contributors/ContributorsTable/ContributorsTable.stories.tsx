@@ -10,33 +10,29 @@ export default {
 
 const mockContributors: Contributor[] = [
   {
+    githubUserId: 595505,
     login: "ofux",
     avatarUrl: "https://avatars.githubusercontent.com/u/595505?v=4",
-    htmlUrl: "https://github.com/ofux",
-    isRegistered: true,
-    paidContributions: 3,
+    userId: "user-1",
+    paidContributionsCount: 3,
     totalEarned: 2000,
     unpaidMergedPullsCount: 3,
-    id: 595505,
   },
   {
+    githubUserId: 43467246,
     login: "AnthonyBuisset",
     avatarUrl: "https://avatars.githubusercontent.com/u/43467246?v=4",
-    htmlUrl: "https://github.com/AnthonyBuisset",
-    isRegistered: true,
-    paidContributions: 1,
+    userId: "user-2",
+    paidContributionsCount: 1,
     totalEarned: 500,
     unpaidMergedPullsCount: 10,
-    id: 43467246,
   },
   {
+    githubUserId: 34384633,
     login: "tdelabro",
     avatarUrl: "https://avatars.githubusercontent.com/u/34384633?v=4",
-    htmlUrl: "https://github.com/tdelabro",
-    isRegistered: false,
-    paidContributions: 0,
+    paidContributionsCount: 0,
     totalEarned: 0,
-    id: 34384633,
   },
 ];
 

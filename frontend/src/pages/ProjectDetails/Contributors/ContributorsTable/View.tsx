@@ -4,22 +4,18 @@ import { useMemo, useState } from "react";
 import { sortBy } from "lodash";
 import Headers from "./Headers";
 import ContributorLine from "./Line";
+import { Contributor as ContributorBase } from "src/types";
 
-export type Contributor = {
-  id: number;
-  login: string;
-  avatarUrl: string;
-  htmlUrl: string;
-  isRegistered: boolean;
+export type Contributor = ContributorBase & {
   totalEarned: number;
-  paidContributions: number;
+  paidContributionsCount: number;
   unpaidMergedPullsCount?: number;
 };
 
 export enum Field {
   Login = "login",
   TotalEarned = "totalEarned",
-  PaidContributions = "paidContributions",
+  PaidContributions = "paidContributionsCount",
   LeftToPay = "unpaidMergedPullsCount",
 }
 

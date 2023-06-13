@@ -71,7 +71,7 @@ test.describe("As a project lead, I", () => {
     expect(await contributors.byName("oscarwroche").leftToPay()).toContain("1");
 
     expect(await contributors.byName("ofux").totalEarned()).toBe("$13,200");
-    expect(await contributors.byName("ofux").paidContributions()).toBe("7");
+    expect(await contributors.byName("ofux").paidContributions()).toBe("2");
     expect(await contributors.byName("ofux").leftToPay()).toBe("-");
 
     const newPaymentPage = await contributors.byName(recipient.github.login).pay();

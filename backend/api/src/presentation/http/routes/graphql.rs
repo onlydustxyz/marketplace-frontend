@@ -1,8 +1,8 @@
 use std::sync::Arc;
 
-use domain::{AggregateRootRepository, Event, Project, Publisher};
+use domain::{AggregateRootRepository, Project};
 use infrastructure::{
-	amqp::{self, UniqueMessage},
+	amqp::{self},
 	github, graphql,
 };
 use juniper_rocket::{GraphQLRequest, GraphQLResponse};
@@ -47,7 +47,7 @@ pub async fn get_graphql_handler(
 	maybe_user_id: OptionUserId,
 	request: GraphQLRequest,
 	schema: &State<Schema>,
-	event_publisher: &State<Arc<dyn Publisher<UniqueMessage<Event>>>>,
+	command_bus: &State<Arc<amqp::CommandPublisher<amqp::Bus>>>,
 	project_repository: &State<AggregateRootRepository<Project>>,
 	project_details_repository: &State<ProjectDetailsRepository>,
 	sponsor_repository: &State<SponsorRepository>,
@@ -60,14 +60,14 @@ pub async fn get_graphql_handler(
 	terms_and_conditions_acceptance_repository: &State<TermsAndConditionsAcceptanceRepository>,
 	graphql: &State<Arc<graphql::Client>>,
 	github: &State<Arc<github::Client>>,
-	amqp: &State<Arc<amqp::Bus>>,
+	bus: &State<Arc<amqp::Bus>>,
 	ens: &State<Arc<ens::Client>>,
 	simple_storage: &State<Arc<simple_storage::Client>>,
 ) -> GraphQLResponse {
 	let context = Context::new(
 		role.to_permissions((*project_repository).clone()),
 		maybe_user_id,
-		(*event_publisher).clone(),
+		(*command_bus).clone(),
 		(*project_repository).clone(),
 		(*project_details_repository).clone(),
 		(*sponsor_repository).clone(),
@@ -80,7 +80,7 @@ pub async fn get_graphql_handler(
 		(*github).clone(),
 		(*ens).clone(),
 		(*simple_storage).clone(),
-		(*amqp).clone(),
+		(*bus).clone(),
 	);
 	request.execute(schema, &context).await
 }
@@ -94,7 +94,7 @@ pub async fn post_graphql_handler(
 	maybe_user_id: OptionUserId,
 	request: GraphQLRequest,
 	schema: &State<Schema>,
-	event_publisher: &State<Arc<dyn Publisher<UniqueMessage<Event>>>>,
+	command_bus: &State<Arc<amqp::CommandPublisher<amqp::Bus>>>,
 	project_repository: &State<AggregateRootRepository<Project>>,
 	project_details_repository: &State<ProjectDetailsRepository>,
 	sponsor_repository: &State<SponsorRepository>,
@@ -107,14 +107,14 @@ pub async fn post_graphql_handler(
 	terms_and_conditions_acceptance_repository: &State<TermsAndConditionsAcceptanceRepository>,
 	graphql: &State<Arc<graphql::Client>>,
 	github: &State<Arc<github::Client>>,
-	amqp: &State<Arc<amqp::Bus>>,
+	bus: &State<Arc<amqp::Bus>>,
 	ens: &State<Arc<ens::Client>>,
 	simple_storage: &State<Arc<simple_storage::Client>>,
 ) -> GraphQLResponse {
 	let context = Context::new(
 		role.to_permissions((*project_repository).clone()),
 		maybe_user_id,
-		(*event_publisher).clone(),
+		(*command_bus).clone(),
 		(*project_repository).clone(),
 		(*project_details_repository).clone(),
 		(*sponsor_repository).clone(),
@@ -127,7 +127,7 @@ pub async fn post_graphql_handler(
 		(*github).clone(),
 		(*ens).clone(),
 		(*simple_storage).clone(),
-		(*amqp).clone(),
+		(*bus).clone(),
 	);
 	request.execute(schema, &context).await
 }

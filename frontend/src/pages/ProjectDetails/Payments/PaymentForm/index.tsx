@@ -1,15 +1,15 @@
 import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
-import { Inputs } from "./types";
+import { Contributor, Inputs } from "./types";
 import { useCallback, useState } from "react";
 import { useIntl } from "src/hooks/useIntl";
 import View from "./View";
 import { useShowToaster } from "src/hooks/useToaster";
 import { generatePath, useNavigate, useOutletContext } from "react-router-dom";
-import usePaymentRequests from "src/hooks/usePaymentRequests";
 import { ProjectRoutePaths, RoutePaths } from "src/App";
 import { WorkItem } from "src/components/GithubIssue";
-import { GithubUserFragment, Type } from "src/__generated/graphql";
+import { Type, useRequestPaymentMutation } from "src/__generated/graphql";
 import useUnpaidIssues from "./WorkItemSidePanel/Issues/useUnpaidIssues";
+import { useCommands } from "src/providers/Commands";
 
 const PaymentForm: React.FC = () => {
   const { T } = useIntl();
@@ -23,7 +23,16 @@ const PaymentForm: React.FC = () => {
     };
   }>();
 
-  const { requestNewPayment, requestNewPaymentMutationLoading } = usePaymentRequests(projectId);
+  const { notify } = useCommands();
+
+  const [requestNewPayment, { loading: requestNewPaymentMutationLoading }] = useRequestPaymentMutation({
+    context: { graphqlErrorDisplay: "toaster" },
+    onCompleted: () => {
+      notify(projectId);
+      showToaster(T("payment.form.sent"));
+      navigate(generatePath(RoutePaths.ProjectDetails, { projectId }) + "/" + ProjectRoutePaths.Payments);
+    },
+  });
 
   const formMethods = useForm<Inputs>({
     defaultValues: {
@@ -33,25 +42,21 @@ const PaymentForm: React.FC = () => {
     mode: "all",
   });
 
-  const [contributor, setContributor] = useState<GithubUserFragment | null | undefined>(null);
+  const [contributor, setContributor] = useState<Contributor | null | undefined>(null);
 
   const { data: unpaidPRs } = useUnpaidIssues({
     projectId,
-    authorId: contributor?.id,
+    authorId: contributor?.githubUserId,
     type: Type.PullRequest,
   });
 
   const { handleSubmit } = formMethods;
 
   const onValidSubmit: SubmitHandler<Inputs> = useCallback(
-    async formData => {
+    formData => {
       if (contributor)
-        await requestNewPayment(contributor, {
-          ...mapFormDataToSchema(projectId, { ...formData, contributor }),
-          onCompleted: () => {
-            showToaster(T("payment.form.sent"));
-            navigate(generatePath(RoutePaths.ProjectDetails, { projectId }) + "/" + ProjectRoutePaths.Payments);
-          },
+        requestNewPayment({
+          variables: mapFormDataToVariables(projectId, { ...formData, contributor }),
         });
     },
     [contributor, projectId]
@@ -98,15 +103,13 @@ const PaymentForm: React.FC = () => {
   );
 };
 
-const mapFormDataToSchema = (projectId: string, { workItems, amountToWire, hoursWorked, contributor }: Inputs) => {
+const mapFormDataToVariables = (projectId: string, { workItems, amountToWire, hoursWorked, contributor }: Inputs) => {
   return {
-    variables: {
-      projectId,
-      contributorId: contributor.id,
-      amount: amountToWire,
-      hoursWorked,
-      reason: { workItems },
-    },
+    projectId,
+    contributorId: contributor.githubUserId,
+    amount: amountToWire,
+    hoursWorked,
+    reason: { workItems },
   };
 };
 

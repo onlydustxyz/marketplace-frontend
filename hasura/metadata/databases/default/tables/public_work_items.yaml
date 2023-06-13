@@ -1,6 +1,16 @@
 table:
   name: work_items
   schema: public
+object_relationships:
+  - name: paymentRequest
+    using:
+      manual_configuration:
+        column_mapping:
+          payment_id: id
+        insertion_order: null
+        remote_table:
+          name: payment_requests
+          schema: public
 array_relationships:
   - name: ignoredForProjects
     using:

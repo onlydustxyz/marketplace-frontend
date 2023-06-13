@@ -64,7 +64,9 @@ const profileFull: UserProfileFragment = {
     { projectId: "", assignedAt: "2023-03-15T11:00:11.674+00:00", project: {} as ProfileProjectFragment },
   ],
   contributionStats: [],
-  contributionStatsAggregate: { aggregate: { min: { minDate: "2023-02-31T11:31:09.674+00:00" }, sum: { count: 124 } } },
+  contributionStatsAggregate: {
+    aggregate: { min: { minDate: "2023-02-31T11:31:09.674+00:00" }, sum: { totalCount: 124 } },
+  },
   paymentStats: [],
   paymentStatsAggregate: { aggregate: { sum: { moneyGranted: 23000 } } },
   projectsContributed: [],
@@ -97,7 +99,9 @@ const profileNotSignedUp: UserProfileFragment = {
   ],
   projectsLeaded: [],
   contributionStats: [],
-  contributionStatsAggregate: { aggregate: { min: { minDate: "2023-02-31T11:31:09.674+00:00" }, sum: { count: 7 } } },
+  contributionStatsAggregate: {
+    aggregate: { min: { minDate: "2023-02-31T11:31:09.674+00:00" }, sum: { totalCount: 7 } },
+  },
   paymentStats: [],
   paymentStatsAggregate: { aggregate: { sum: { moneyGranted: 12000 } } },
   projectsContributed: [],

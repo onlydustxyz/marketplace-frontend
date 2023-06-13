@@ -22,7 +22,7 @@ import Tooltip, { withCustomTooltip } from "src/components/Tooltip";
 import IBAN from "iban";
 import ExternalLink from "src/components/ExternalLink";
 import isDefined from "src/utils/isDefined";
-import ClickableUser from "src/components/ClickableUser";
+import Contributor from "src/components/Contributor";
 
 enum Align {
   Top = "top",
@@ -108,7 +108,10 @@ export default function View({
                 <RoundedImage alt={requestor.login || ""} src={requestor.avatarUrl || ""} size={ImageSize.Xxs} />
                 <div className="flex flex-row items-center gap-1">
                   {T("payment.table.detailsPanel.from")}
-                  <ClickableUser name={requestor.login} githubUserId={requestor.githubUserId} />
+                  <Contributor
+                    contributor={{ login: requestor.login || "", githubUserId: requestor.id, avatarUrl: null }}
+                    clickable
+                  />
                   {requestor.id === userId && T("payment.table.detailsPanel.you")}
                 </div>
               </Details>
@@ -122,7 +125,14 @@ export default function View({
                 />
                 <div className="flex flex-row items-center gap-1">
                   {T("payment.table.detailsPanel.to")}
-                  <ClickableUser name={liveGithubRecipient.login} githubUserId={liveGithubRecipient.id} />
+                  <Contributor
+                    contributor={{
+                      login: liveGithubRecipient.login,
+                      githubUserId: liveGithubRecipient.id,
+                      avatarUrl: null,
+                    }}
+                    clickable
+                  />
                   {liveGithubRecipient.id === githubUserId && T("payment.table.detailsPanel.you")}
                 </div>
               </Details>

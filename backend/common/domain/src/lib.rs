@@ -52,6 +52,12 @@ pub use github::{
 	User as GithubUser, UserId as GithubUserId,
 };
 
+mod command;
+pub use command::{
+	repository::Repository as CommandRepository, AggregateId as CommandAggregateId,
+	Entity as Command, Id as CommandId,
+};
+
 pub mod aggregate_root;
 #[cfg(test)]
 pub use aggregate_root::MockRepository as MockAggregateRootRepository;

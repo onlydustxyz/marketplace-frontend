@@ -1,10 +1,10 @@
 use std::sync::Arc;
 
-use ::domain::{AggregateRootRepository, Event, Project, Publisher};
+use ::domain::{AggregateRootRepository, Project};
 use anyhow::Result;
 use http::Config;
 use infrastructure::{
-	amqp::{self, UniqueMessage},
+	amqp::{self, CommandPublisher},
 	github,
 	web3::ens,
 };
@@ -30,7 +30,7 @@ mod routes;
 pub async fn serve(
 	config: Config,
 	schema: graphql::Schema,
-	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
+	command_bus: Arc<CommandPublisher<amqp::Bus>>,
 	project_repository: AggregateRootRepository<Project>,
 	project_details_repository: ProjectDetailsRepository,
 	sponsor_repository: SponsorRepository,
@@ -43,12 +43,12 @@ pub async fn serve(
 	github: Arc<github::Client>,
 	ens: Arc<ens::Client>,
 	simple_storage: Arc<simple_storage::Client>,
-	publisher: Arc<amqp::Bus>,
+	bus: Arc<amqp::Bus>,
 ) -> Result<()> {
 	let _ = rocket::custom(http::config::rocket("backend/api/Rocket.toml"))
 		.manage(config)
 		.manage(schema)
-		.manage(event_publisher)
+		.manage(command_bus)
 		.manage(project_repository)
 		.manage(project_details_repository)
 		.manage(sponsor_repository)
@@ -61,7 +61,7 @@ pub async fn serve(
 		.manage(github)
 		.manage(ens)
 		.manage(simple_storage)
-		.manage(publisher)
+		.manage(bus)
 		.mount("/", routes![http::routes::health_check,])
 		.mount(
 			"/",

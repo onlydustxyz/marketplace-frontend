@@ -1,14 +1,15 @@
 query GetPaymentRequestsForProject($projectId: uuid!) {
-  projectsByPk(id: $projectId) {
-    id
-    budgets {
-      id
-      initialAmount
-      remainingAmount
-      paymentRequests {
-        ...ExtendedPaymentRequest
+  budgetsAggregate(where: { projectId: { _eq: $projectId } }) {
+    aggregate {
+      sum {
+        initialAmount
+        remainingAmount
       }
     }
+  }
+
+  paymentRequests(where: { budget: { projectId: { _eq: $projectId } } }) {
+    ...ExtendedPaymentRequest
   }
 }
 
@@ -20,15 +21,6 @@ mutation RequestPayment($amount: Int!, $contributorId: Int!, $hoursWorked: Int!,
     reason: $reason
     recipientId: $contributorId
   ) {
-    projectId
-    budgetId
-    paymentId
-    amount
-  }
-}
-
-mutation CancelPaymentRequest($projectId: Uuid!, $paymentId: Uuid!) {
-  cancelPaymentRequest(projectId: $projectId, paymentId: $paymentId) {
     projectId
     budgetId
     paymentId

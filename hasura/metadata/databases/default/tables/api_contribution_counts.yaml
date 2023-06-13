@@ -1,0 +1,21 @@
+table:
+  name: contribution_counts
+  schema: api
+configuration:
+  column_config: {}
+  custom_column_names: {}
+  custom_name: ContributionCounts
+  custom_root_fields:
+    select: contributionCounts
+    select_aggregate: contributionCountsAggregate
+select_permissions:
+  - role: public
+    permission:
+      columns:
+        - github_user_id
+        - paid_count
+        - unpaid_count
+        - week
+        - year
+      filter: {}
+      allow_aggregations: true

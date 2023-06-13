@@ -8,7 +8,7 @@ use std::sync::Arc;
 use anyhow::Result;
 use domain::{LogErr, MessagePayload, Subscriber, SubscriberCallbackError};
 use infrastructure::{
-	amqp::{ConsumableBus, UniqueMessage},
+	amqp::{CommandSubscriberDecorator, UniqueMessage},
 	database, event_bus, github,
 };
 use tokio::task::JoinHandle;
@@ -40,7 +40,11 @@ pub async fn spawn_all(
 			database.clone(),
 			ApplicationRepository::new(database.clone()),
 		)
-		.spawn(event_bus::event_consumer(config.amqp(), "projects").await?),
+		.spawn(
+			event_bus::event_consumer(config.amqp(), "projects")
+				.await?
+				.into_command_subscriber(database.clone()),
+		),
 		BudgetProjector::new(
 			PaymentRequestRepository::new(database.clone()),
 			PaymentRepository::new(database.clone()),
@@ -49,7 +53,11 @@ pub async fn spawn_all(
 			database.clone(),
 			database.clone(),
 		)
-		.spawn(event_bus::event_consumer(config.amqp(), "budgets").await?),
+		.spawn(
+			event_bus::event_consumer(config.amqp(), "budgets")
+				.await?
+				.into_command_subscriber(database.clone()),
+		),
 		GithubProjector::new(
 			github,
 			GithubReposRepository::new(database.clone()),
@@ -80,12 +88,17 @@ pub async fn spawn_all(
 	Ok(handles)
 }
 
-trait Spawnable<E: MessagePayload> {
-	fn spawn(self, bus: ConsumableBus) -> JoinHandle<()>;
+trait Spawnable<E: MessagePayload + Send + Sync, S: Subscriber<UniqueMessage<E>> + Send + Sync> {
+	fn spawn(self, bus: S) -> JoinHandle<()>;
 }
 
-impl<E: MessagePayload + Send + Sync, EL: EventListener<E> + 'static> Spawnable<E> for EL {
-	fn spawn(self, bus: ConsumableBus) -> JoinHandle<()> {
+impl<
+	E: MessagePayload + Send + Sync,
+	S: Subscriber<UniqueMessage<E>> + Send + Sync + 'static,
+	EL: EventListener<E> + 'static,
+> Spawnable<E, S> for EL
+{
+	fn spawn(self, bus: S) -> JoinHandle<()> {
 		let listener = Arc::new(self);
 		tokio::spawn(async move {
 			bus.subscribe(|message: UniqueMessage<E>| {

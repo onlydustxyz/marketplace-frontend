@@ -1,6 +1,13 @@
 table:
   name: contributions
-  schema: public
+  schema: api
+configuration:
+  column_config: {}
+  custom_column_names: {}
+  custom_name: Contributions
+  custom_root_fields:
+    select: contributions
+    select_aggregate: contributionsAggregate
 select_permissions:
   - role: public
     permission:
@@ -9,6 +16,8 @@ select_permissions:
         - github_user_id
         - issue_number
         - repo_id
+        - ignored
         - created_at
         - project_id
       filter: {}
+      allow_aggregations: true

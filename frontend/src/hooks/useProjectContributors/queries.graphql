@@ -1,0 +1,26 @@
+fragment Contributor on UserProfiles {
+  ...MinimalUserProfile
+  contributionStatsAggregate(where: { projectId: { _eq: $projectId } }) {
+    aggregate {
+      sum {
+        paidCount
+        unpaidUnignoredCount
+      }
+    }
+  }
+  paymentStatsAggregate(where: { projectId: { _eq: $projectId } }) {
+    aggregate {
+      sum {
+        moneyGranted
+      }
+    }
+  }
+}
+
+query GetProjectContributors($projectId: uuid!) {
+  projectsContributorsView(where: { projectId: { _eq: $projectId } }) {
+    user {
+      ...Contributor
+    }
+  }
+}

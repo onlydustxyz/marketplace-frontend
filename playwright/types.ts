@@ -1,4 +1,11 @@
-import { EthereumIdentityInput, IdentityInput, Location, PayoutSettingsInput, Reason } from "./__generated/graphql";
+import {
+  EthereumIdentityInput,
+  IdentityInput,
+  Location,
+  PayoutSettingsInput,
+  Reason,
+  Visibility,
+} from "./__generated/graphql";
 
 export type Url = string;
 export type Uuid = string;
@@ -39,7 +46,7 @@ export type ProjectFixture = {
   sponsors?: string[];
   hiring?: boolean;
   rank?: number;
-  visibility?: "PUBLIC" | "PRIVATE";
+  visibility?: Visibility;
 };
 
 export type Project = ProjectFixture & {

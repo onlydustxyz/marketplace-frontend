@@ -1,0 +1,24 @@
+table:
+  name: contribution_stats
+  schema: api
+configuration:
+  column_config: {}
+  custom_column_names: {}
+  custom_name: ContributionStats
+  custom_root_fields:
+    select: contributionStats
+    select_aggregate: contributionStatsAggregate
+select_permissions:
+  - role: public
+    permission:
+      columns:
+        - github_user_id
+        - paid_count
+        - total_count
+        - unpaid_count
+        - unpaid_unignored_count
+        - max_date
+        - min_date
+        - project_id
+      filter: {}
+      allow_aggregations: true
