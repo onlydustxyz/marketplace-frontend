@@ -5,6 +5,7 @@ export class UserProfileInfo {
   bio: string;
   website: string;
   githubHandle: string;
+  isGithubHandlePublic: boolean;
 
   email: string;
   isEmailPublic: boolean;
@@ -22,6 +23,7 @@ export class UserProfileInfo {
     this.location = fragment.location || "";
     this.website = fragment.website || "";
     this.githubHandle = fragment.login || "";
+    this.isGithubHandlePublic = true;
     this.email = fragment.email.at(0)?.contact || "";
     this.isEmailPublic = fragment.email.at(0)?.public ?? true;
     this.telegram = fragment.telegram.at(0)?.contact || "";

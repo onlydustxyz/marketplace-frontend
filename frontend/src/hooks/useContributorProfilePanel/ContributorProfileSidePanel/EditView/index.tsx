@@ -9,7 +9,7 @@ import Header, { HeaderColor } from "src/hooks/useContributorProfilePanel/Contri
 import Card from "./Card";
 import { Section } from "./Section";
 import Input, { Size } from "src/components/FormInput";
-import { FormProvider, useForm, useFormContext } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import GlobalLine from "src/icons/GlobalLine";
 import MapPinLine from "src/icons/MapPinLine";
 import { UserProfileInfo } from "./types";
@@ -20,8 +20,7 @@ import TwitterFill from "src/icons/TwitterFill";
 import DiscordFill from "src/icons/DiscordFill";
 import LinkedinBoxFill from "src/icons/LinkedinBoxFill";
 import MailLine from "src/icons/MailLine";
-import CloseLine from "src/icons/CloseLine";
-import classNames from "classnames";
+import ContactInformation from "./ContactInformation";
 
 type Props = {
   profile: UserProfileFragment;
@@ -86,56 +85,27 @@ export default function EditView({ profile, headerColor, setEditMode }: Props) {
               <Card>
                 <Section title={T("profile.form.contactInfo")}>
                   <div className="flex flex-col gap-3">
-                    <Input
-                      size={Size.Sm}
-                      withMargin={false}
+                    <ContactInformation
                       name="githubHandle"
-                      prefixComponent={<GithubLogo className="text-greyscale-600" />}
-                      suffixComponent={<ClearFieldButton name="githubHandle" disabled />}
-                      inputClassName="pl-9"
-                      disabled
+                      icon={<GithubLogo className="text-greyscale-600" />}
+                      editDisabled
+                      visibilityName="isGithubHandlePublic"
+                      visibilityDisabled
                     />
-                    <Input
-                      size={Size.Sm}
-                      withMargin={false}
+                    <ContactInformation
                       name="email"
-                      prefixComponent={<MailLine className="text-greyscale-600" />}
-                      suffixComponent={<ClearFieldButton name="email" disabled />}
-                      inputClassName="pl-9"
-                      disabled
+                      icon={<MailLine className="text-greyscale-600" />}
+                      editDisabled
+                      visibilityName="isEmailPublic"
                     />
-                    <Input
-                      size={Size.Sm}
-                      withMargin={false}
+                    <ContactInformation
                       name="telegram"
-                      prefixComponent={<Telegram size={16} />}
-                      suffixComponent={<ClearFieldButton name="telegram" />}
-                      inputClassName="pl-9"
+                      icon={<Telegram size={16} />}
+                      visibilityName="isTelegramPublic"
                     />
-                    <Input
-                      size={Size.Sm}
-                      withMargin={false}
-                      name="twitter"
-                      prefixComponent={<TwitterFill />}
-                      suffixComponent={<ClearFieldButton name="twitter" />}
-                      inputClassName="pl-9"
-                    />
-                    <Input
-                      size={Size.Sm}
-                      withMargin={false}
-                      name="discord"
-                      prefixComponent={<DiscordFill />}
-                      suffixComponent={<ClearFieldButton name="discord" />}
-                      inputClassName="pl-9"
-                    />
-                    <Input
-                      size={Size.Sm}
-                      withMargin={false}
-                      name="linkedin"
-                      prefixComponent={<LinkedinBoxFill />}
-                      suffixComponent={<ClearFieldButton name="linkedin" />}
-                      inputClassName="pl-9"
-                    />
+                    <ContactInformation name="twitter" icon={<TwitterFill />} visibilityName="isTwitterPublic" />
+                    <ContactInformation name="discord" icon={<DiscordFill />} visibilityName="isDiscordPublic" />
+                    <ContactInformation name="linkedin" icon={<LinkedinBoxFill />} visibilityName="isLinkedInPublic" />
                   </div>
                 </Section>
               </Card>
@@ -163,25 +133,5 @@ export default function EditView({ profile, headerColor, setEditMode }: Props) {
         </div>
       </form>
     </FormProvider>
-  );
-}
-
-type CloseButtonProps = {
-  name: string;
-  disabled?: boolean;
-};
-
-function ClearFieldButton({ name, disabled }: CloseButtonProps) {
-  const { setValue } = useFormContext();
-  return (
-    <CloseLine
-      className={classNames("flex place-items-center absolute right-0 mr-3", {
-        "text-greyscale-600": disabled,
-        "hover:text-spacePurple-200 cursor-pointer": !disabled,
-      })}
-      onClick={() => {
-        if (!disabled) setValue(name, "");
-      }}
-    />
   );
 }

@@ -1,8 +1,9 @@
+import { DOMAttributes } from "react";
+
 type Props = {
   className?: string;
-  onClick?: () => void;
-};
+} & DOMAttributes<HTMLElement>;
 
-export default function CloseLine({ className, onClick }: Props) {
-  return <i className={`ri-close-line ${className}`} onClick={onClick} />;
+export default function CloseLine({ className, ...props }: Props) {
+  return <i className={`ri-close-line ${className}`} {...props} />;
 }
