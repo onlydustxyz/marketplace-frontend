@@ -1,7 +1,7 @@
 import { useIntl } from "src/hooks/useIntl";
 import { LanguageMap } from "src/types";
 import { languages as knownLanguages } from "src/__generated/languages";
-import { ClassAttributes, Dispatch, HTMLAttributes, SetStateAction, useEffect, useState } from "react";
+import { ClassAttributes, HTMLAttributes, useEffect, useState } from "react";
 import StylizedCombobox from "src/components/StylizedCombobox";
 import { SortableList, SortableItemProps, SortableItem } from "@thaddeusjiang/react-sortable-list";
 import Draggable from "src/icons/Draggable";
@@ -12,7 +12,7 @@ import { Section } from "src/hooks/useContributorProfilePanel/ContributorProfile
 
 type Props = {
   technologies: LanguageMap;
-  setTechnologies: Dispatch<SetStateAction<LanguageMap>>;
+  setTechnologies: (languages: LanguageMap) => void;
 };
 
 export default function TechnologiesCard({ technologies, setTechnologies }: Props) {

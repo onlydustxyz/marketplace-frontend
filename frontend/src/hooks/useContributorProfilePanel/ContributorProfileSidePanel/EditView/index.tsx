@@ -21,6 +21,7 @@ import DiscordFill from "src/icons/DiscordFill";
 import LinkedinBoxFill from "src/icons/LinkedinBoxFill";
 import MailLine from "src/icons/MailLine";
 import ContactInformation from "./ContactInformation";
+import TechnologiesCard from "./TechnologiesCard";
 
 type Props = {
   profile: UserProfileFragment;
@@ -32,10 +33,12 @@ export default function EditView({ profile, headerColor, setEditMode }: Props) {
   const { T } = useIntl();
 
   const formMethods = useForm<UserProfileInfo>();
-  const { handleSubmit, reset, formState } = formMethods;
+  const { handleSubmit, reset, formState, watch, setValue } = formMethods;
   const { isDirty } = formState;
 
   useEffect(() => reset(new UserProfileInfo(profile)), [profile]);
+
+  const languages = watch("languages", {});
 
   const onSubmit = () => setEditMode(false);
 
@@ -43,10 +46,10 @@ export default function EditView({ profile, headerColor, setEditMode }: Props) {
     <FormProvider {...formMethods}>
       <form id="payout-info-form" className="h-full min-h-0" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col h-full justify-between">
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-6 min-h-0">
             <Header color={headerColor} avatarUrl={profile.avatarUrl} />
 
-            <div className="flex flex-col gap-6 mx-8">
+            <div className="flex flex-col gap-6 pb-12 ml-8 mr-2 pr-6 scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded">
               <div data-testid="login" className="font-belwe font-normal text-3xl text-white">
                 {profile.login}
               </div>
@@ -109,6 +112,10 @@ export default function EditView({ profile, headerColor, setEditMode }: Props) {
                   </div>
                 </Section>
               </Card>
+              <TechnologiesCard
+                technologies={languages}
+                setTechnologies={languages => setValue("languages", languages)}
+              />
             </div>
           </div>
 

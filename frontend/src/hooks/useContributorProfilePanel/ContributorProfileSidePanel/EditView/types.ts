@@ -1,4 +1,5 @@
 import { UserProfileFragment } from "src/__generated/graphql";
+import { LanguageMap } from "src/types";
 
 export class UserProfileInfo {
   location: string;
@@ -6,7 +7,6 @@ export class UserProfileInfo {
   website: string;
   githubHandle: string;
   isGithubHandlePublic: boolean;
-
   email: string;
   isEmailPublic: boolean;
   telegram: string;
@@ -17,6 +17,7 @@ export class UserProfileInfo {
   isDiscordPublic: boolean;
   linkedin: string;
   isLinkedInPublic: boolean;
+  languages: LanguageMap;
 
   constructor(fragment: UserProfileFragment) {
     this.bio = fragment.bio || "";
@@ -34,5 +35,6 @@ export class UserProfileInfo {
     this.isDiscordPublic = fragment.discord.at(0)?.public ?? true;
     this.linkedin = fragment.linkedin.at(0)?.contact || "";
     this.isLinkedInPublic = fragment.linkedin.at(0)?.public ?? true;
+    this.languages = fragment.languages;
   }
 }
