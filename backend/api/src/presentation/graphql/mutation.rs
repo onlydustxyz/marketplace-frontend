@@ -2,9 +2,8 @@ use std::collections::HashMap;
 
 use anyhow::anyhow;
 use domain::{
-	AllocatedTime, Amount, BlockchainNetwork, Currency, GithubIssue, GithubIssueNumber,
-	GithubRepoId, Iban, Languages, LogErr, PaymentReason, PaymentReceipt, ProjectId,
-	ProjectVisibility, UserId,
+	Amount, BlockchainNetwork, Currency, GithubIssue, GithubIssueNumber, GithubRepoId, Iban,
+	Languages, LogErr, PaymentReason, PaymentReceipt, ProjectId, ProjectVisibility, UserId,
 };
 use juniper::{graphql_object, DefaultScalarValue, Nullable};
 use rusty_money::Money;
@@ -540,7 +539,7 @@ impl Mutation {
 		location: Option<String>,
 		website: Option<String>,
 		languages: Option<Vec<Language>>,
-		weekly_allocated_time: AllocatedTime,
+		weekly_allocated_time: dto::AllocatedTime,
 	) -> Result<bool> {
 		let caller_id = *context.caller_info()?.user_id();
 

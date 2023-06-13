@@ -9,14 +9,3 @@ pub enum AllocatedTime {
 	OneToThreeDays,
 	MoreThanThreeDays,
 }
-
-impl From<domain::AllocatedTime> for AllocatedTime {
-	fn from(value: domain::AllocatedTime) -> Self {
-		match value {
-			domain::AllocatedTime::None => Self::None,
-			domain::AllocatedTime::LessThanOneDay => Self::LessThanOneDay,
-			domain::AllocatedTime::OneToThreeDays => Self::OneToThreeDays,
-			domain::AllocatedTime::MoreThanThreeDays => Self::MoreThanThreeDays,
-		}
-	}
-}

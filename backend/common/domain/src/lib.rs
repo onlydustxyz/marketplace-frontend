@@ -60,9 +60,6 @@ pub use command::{
 	Entity as Command, Id as CommandId,
 };
 
-mod user_profile;
-pub use user_profile::AllocatedTime;
-
 pub mod aggregate_root;
 #[cfg(test)]
 pub use aggregate_root::MockRepository as MockAggregateRootRepository;
