@@ -76,15 +76,33 @@ select_permissions:
   - role: public
     permission:
       columns:
-        - github_user_id
-        - login
         - avatar_url
+        - bio
+        - created_at
+        - github_user_id
         - html_url
+        - languages
+        - last_seen
+        - location
+        - login
         - user_id
+        - website
+      filter: {}
+  - role: registered_user
+    permission:
+      columns:
+        - weekly_allocated_time
+        - github_user_id
+        - languages
+        - avatar_url
+        - bio
+        - html_url
+        - location
+        - login
+        - website
         - created_at
         - last_seen
-        - bio
-        - location
-        - website
-        - languages
-      filter: {}
+        - user_id
+      filter:
+        github_user_id:
+          _eq: X-Hasura-githubUserId
