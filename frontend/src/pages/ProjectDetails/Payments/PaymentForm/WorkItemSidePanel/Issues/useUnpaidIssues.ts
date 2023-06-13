@@ -19,7 +19,7 @@ export default function useUnpaidIssues({ projectId, authorId, type }: Props) {
     variables: {
       projectId,
       authorId,
-      type: type === Type.Issue ? "Issue" : "PullRequest",
+      type: type === Type.Issue ? "issue" : "pull_request",
     },
     skip: !authorId || !projectId,
   });
