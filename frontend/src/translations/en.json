@@ -388,6 +388,15 @@
       "twitterPlaceholder": "Twitter",
       "typeOfProfile": "Profile type",
       "privacyNotice": "Your info remains private.\n We'll only use it to process payments.",
+      "weeklyAllocatedTime": {
+        "title": "Weekly allocated time",
+        "none": "None",
+        "lessThan1Day": "Less than 1 day",
+        "1to3days": "1 to 3 days",
+        "moreThan3days": "More than 3 days",
+        "lookingForAJob": "I'm looking for a job",
+        "privacyNotice": "Private information"
+      },
       "saveStatus": {
         "unsaved": "Unsaved changes",
         "saved": "All changes saved"

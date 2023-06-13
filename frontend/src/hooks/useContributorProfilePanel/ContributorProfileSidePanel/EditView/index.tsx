@@ -22,6 +22,9 @@ import LinkedinBoxFill from "src/icons/LinkedinBoxFill";
 import MailLine from "src/icons/MailLine";
 import ContactInformation from "./ContactInformation";
 import TechnologiesCard from "./TechnologiesCard";
+import FormSelect from "src/components/FormSelect";
+import { WeeklyTimeAllocation } from "src/types";
+import LockFill from "src/icons/LockFill";
 
 type Props = {
   profile: UserProfileFragment;
@@ -33,12 +36,18 @@ export default function EditView({ profile, headerColor, setEditMode }: Props) {
   const { T } = useIntl();
 
   const formMethods = useForm<UserProfileInfo>();
-  const { handleSubmit, reset, formState, watch, setValue } = formMethods;
+  const { handleSubmit, reset, formState, watch, setValue, control } = formMethods;
   const { isDirty } = formState;
 
   useEffect(() => reset(new UserProfileInfo(profile)), [profile]);
 
   const languages = watch("languages", {});
+  const weeklyTimeAllocations: { [key in WeeklyTimeAllocation]: string } = {
+    [WeeklyTimeAllocation.None]: T("profile.form.weeklyAllocatedTime.none"),
+    [WeeklyTimeAllocation.LessThanADay]: T("profile.form.weeklyAllocatedTime.lessThan1Day"),
+    [WeeklyTimeAllocation.OneToThreeDays]: T("profile.form.weeklyAllocatedTime.1to3days"),
+    [WeeklyTimeAllocation.MoreThanThreeDays]: T("profile.form.weeklyAllocatedTime.moreThan3days"),
+  };
 
   const onSubmit = () => setEditMode(false);
 
@@ -86,7 +95,7 @@ export default function EditView({ profile, headerColor, setEditMode }: Props) {
                 </Section>
               </Card>
               <Card>
-                <Section title={T("profile.form.contactInfo")}>
+                <Section gap="wide" title={T("profile.form.contactInfo")}>
                   <div className="flex flex-col gap-3">
                     <ContactInformation
                       name="githubHandle"
@@ -116,6 +125,28 @@ export default function EditView({ profile, headerColor, setEditMode }: Props) {
                 technologies={languages}
                 setTechnologies={languages => setValue("languages", languages)}
               />
+              <Card>
+                <Section
+                  gap="wide"
+                  title={
+                    <div className="flex flex-row items-center justify-between">
+                      {T("profile.form.weeklyAllocatedTime.title")}
+                      <Tag size={TagSize.Small}>
+                        <div className="text-orange-500 flex flex-row items-center gap-1">
+                          <LockFill />
+                          {T("profile.form.weeklyAllocatedTime.privacyNotice")}
+                        </div>
+                      </Tag>
+                    </div>
+                  }
+                >
+                  <FormSelect
+                    name="weeklyAllocatedTime"
+                    options={Object.entries(weeklyTimeAllocations).map(([value, label]) => ({ value, label }))}
+                    control={control}
+                  />
+                </Section>
+              </Card>
             </div>
           </div>
 

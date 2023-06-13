@@ -1,5 +1,5 @@
 import { UserProfileFragment } from "src/__generated/graphql";
-import { LanguageMap } from "src/types";
+import { LanguageMap, WeeklyTimeAllocation } from "src/types";
 
 export class UserProfileInfo {
   location: string;
@@ -18,6 +18,7 @@ export class UserProfileInfo {
   linkedin: string;
   isLinkedInPublic: boolean;
   languages: LanguageMap;
+  weeklyAllocatedTime: WeeklyTimeAllocation;
 
   constructor(fragment: UserProfileFragment) {
     this.bio = fragment.bio || "";
@@ -36,5 +37,6 @@ export class UserProfileInfo {
     this.linkedin = fragment.linkedin.at(0)?.contact || "";
     this.isLinkedInPublic = fragment.linkedin.at(0)?.public ?? true;
     this.languages = fragment.languages;
+    this.weeklyAllocatedTime = fragment.weeklyAllocatedTime;
   }
 }

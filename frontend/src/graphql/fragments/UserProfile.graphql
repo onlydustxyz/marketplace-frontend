@@ -39,4 +39,5 @@ fragment UserProfileDetails on UserProfiles {
     contact
     public
   }
+  weeklyAllocatedTime
 }

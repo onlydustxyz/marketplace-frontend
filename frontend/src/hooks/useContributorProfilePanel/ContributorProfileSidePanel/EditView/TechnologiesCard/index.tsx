@@ -58,10 +58,11 @@ export default function TechnologiesCard({ technologies, setTechnologies }: Prop
   return (
     <Card>
       <Section
+        gap="wide"
         title={T("profile.edit.sections.technologies.title")}
         subtitle={T("profile.edit.sections.technologies.subtitle")}
       >
-        <div className="pt-2 pb-4">
+        <div className="pb-4">
           <StylizedCombobox
             options={allLanguages.filter(
               language => !selectedLanguages.some(selectedLanguage => selectedLanguage.id === language.id)

@@ -16,7 +16,7 @@ export default function View({ options, ...props }: Props) {
           <Listbox.Option
             key={index}
             as="div"
-            value={value.label}
+            value={value.value ?? value.label}
             className={classNames(
               "flex flex-row gap-1 items-center",
               "py-2 px-3 w-fit text-neutral-100 font-walsheim font-normal text-sm bg-white/8 border border-greyscale-50/8 rounded-xl",
