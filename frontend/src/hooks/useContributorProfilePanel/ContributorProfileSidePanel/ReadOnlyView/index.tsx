@@ -73,6 +73,12 @@ export default function ReadOnlyView({ isOwn, profile, projects, headerColor, se
   const variationSinceLastWeek =
     thisWeek.paidCount + thisWeek.unpaidCount - (lastWeek.paidCount + lastWeek.unpaidCount);
 
+  const email = profile.email.at(0)?.public && profile.email.at(0)?.contact;
+  const telegram = profile.telegram.at(0)?.public && profile.telegram.at(0)?.contact;
+  const twitter = profile.twitter.at(0)?.public && profile.twitter.at(0)?.contact;
+  const discord = profile.discord.at(0)?.public && profile.discord.at(0)?.contact;
+  const linkedin = profile.linkedin.at(0)?.public && profile.linkedin.at(0)?.contact;
+
   return (
     <div className="flex flex-col h-full">
       <Header color={headerColor} avatarUrl={profile.avatarUrl} />
@@ -139,28 +145,28 @@ export default function ReadOnlyView({ isOwn, profile, projects, headerColor, se
                 <GithubLogo />
               </SocialLink>
             )}
-            {profile.telegram && (
-              <SocialLink link={profile.telegram}>
+            {telegram && (
+              <SocialLink link={telegram}>
                 <Telegram className="fill-greyscale-200" size={20} />
               </SocialLink>
             )}
-            {profile.twitter && (
-              <SocialLink link={profile.twitter}>
+            {twitter && (
+              <SocialLink link={twitter}>
                 <TwitterFill />
               </SocialLink>
             )}
-            {profile.discord && (
-              <SocialLink copyableValue={profile.discord} copyableValueName={T("profile.discord")}>
+            {discord && (
+              <SocialLink copyableValue={discord} copyableValueName={T("profile.discord")}>
                 <DiscordFill />
               </SocialLink>
             )}
-            {profile.linkedin && (
-              <SocialLink link={profile.linkedin}>
+            {linkedin && (
+              <SocialLink link={linkedin}>
                 <LinkedinBoxFill />
               </SocialLink>
             )}
-            {profile.email && (
-              <SocialLink copyableValue={profile.email} copyableValueName={T("profile.email")}>
+            {email && (
+              <SocialLink copyableValue={email} copyableValueName={T("profile.email")}>
                 <MailLine />
               </SocialLink>
             )}
