@@ -2,6 +2,10 @@
 
 pub mod sql_types {
     #[derive(diesel::sql_types::SqlType)]
+    #[diesel(postgres_type(name = "contact_channel"))]
+    pub struct ContactChannel;
+
+    #[derive(diesel::sql_types::SqlType)]
     #[diesel(postgres_type(name = "github_issue_status"))]
     pub struct GithubIssueStatus;
 
@@ -40,6 +44,18 @@ diesel::table! {
         created_at -> Timestamp,
         updated_at -> Nullable<Timestamp>,
         metadata -> Jsonb,
+    }
+}
+
+diesel::table! {
+    use diesel::sql_types::*;
+    use super::sql_types::ContactChannel;
+
+    contact_informations (user_id, channel) {
+        user_id -> Uuid,
+        channel -> ContactChannel,
+        contact -> Text,
+        public -> Bool,
     }
 }
 
@@ -242,14 +258,9 @@ diesel::table! {
 diesel::table! {
     user_profile_info (id) {
         id -> Uuid,
-        email -> Nullable<Text>,
         bio -> Nullable<Text>,
         location -> Nullable<Text>,
         website -> Nullable<Text>,
-        twitter -> Nullable<Text>,
-        linkedin -> Nullable<Text>,
-        telegram -> Nullable<Text>,
-        discord -> Nullable<Text>,
         languages -> Nullable<Jsonb>,
     }
 }
@@ -271,6 +282,7 @@ diesel::allow_tables_to_appear_in_same_query!(
     applications,
     budgets,
     commands,
+    contact_informations,
     event_deduplications,
     events,
     github_issues,
