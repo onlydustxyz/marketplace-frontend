@@ -12,6 +12,7 @@ export default function TermsAndConditionsAcceptanceDateProvider({ children }: P
   const { data, loading } = useGetTermsAndConditionsAcceptancesQuery({
     variables: { userId },
     skip: !userId,
+    fetchPolicy: "no-cache",
   });
   const location = useLocation();
 
