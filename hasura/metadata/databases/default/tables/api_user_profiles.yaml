@@ -1,7 +1,23 @@
 table:
   name: user_profiles
-  schema: public
+  schema: api
+configuration:
+  column_config: {}
+  custom_column_names: {}
+  custom_name: UserProfiles
+  custom_root_fields:
+    select: userProfiles
+    select_aggregate: userProfilesAggregate
 array_relationships:
+  - name: contactInformations
+    using:
+      manual_configuration:
+        column_mapping:
+          github_user_id: github_user_id
+        insertion_order: null
+        remote_table:
+          name: contact_informations
+          schema: api
   - name: contributionCounts
     using:
       manual_configuration:
@@ -61,19 +77,14 @@ select_permissions:
     permission:
       columns:
         - github_user_id
-        - languages
-        - avatar_url
-        - bio
-        - discord
-        - email
-        - html_url
-        - linkedin
-        - location
         - login
-        - telegram
-        - twitter
-        - website
+        - avatar_url
+        - html_url
+        - user_id
         - created_at
         - last_seen
-        - user_id
+        - bio
+        - location
+        - website
+        - languages
       filter: {}
