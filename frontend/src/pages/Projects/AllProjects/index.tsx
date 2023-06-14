@@ -1,4 +1,4 @@
-import { useSuspenseQuery_experimental } from "@apollo/client";
+import { useSuspenseQuery_experimental as useSuspenseQuery } from "@apollo/client";
 import { merge, sortBy } from "lodash";
 import { useMemo } from "react";
 import ProjectCard from "src/components/ProjectCard";
@@ -27,7 +27,7 @@ export default function AllProjects({ sorting }: Props) {
     clear: clearFilters,
   } = useProjectFilter();
 
-  const getProjectsQuery = useSuspenseQuery_experimental<GetProjectsQuery>(GetProjectsDocument, {
+  const getProjectsQuery = useSuspenseQuery<GetProjectsQuery>(GetProjectsDocument, {
     variables: {
       where: buildQueryFilters(technologies, sponsors),
       orderBy: buildQuerySorting(sorting),

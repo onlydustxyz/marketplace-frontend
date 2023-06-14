@@ -30,7 +30,7 @@ const projects1: GetAllFilterOptionsQuery["projects"][number] = {
   pendingInvitations: [],
   contributors: [],
   githubReposAggregate: { aggregate: { count: 1 } },
-  projectDetails: { visibility: "Public", projectId: "project-1" },
+  projectDetails: { visibility: "public", projectId: "project-1" },
 };
 
 const projects2: GetAllFilterOptionsQuery["projects"][number] = {
@@ -57,7 +57,7 @@ const projects2: GetAllFilterOptionsQuery["projects"][number] = {
   pendingInvitations: [],
   contributors: [],
   githubReposAggregate: { aggregate: { count: 1 } },
-  projectDetails: { visibility: "Public", projectId: "project-2" },
+  projectDetails: { visibility: "public", projectId: "project-2" },
 };
 
 const projects3: GetAllFilterOptionsQuery["projects"][number] = {
@@ -81,7 +81,7 @@ const projects3: GetAllFilterOptionsQuery["projects"][number] = {
   pendingInvitations: [],
   contributors: [],
   githubReposAggregate: { aggregate: { count: 1 } },
-  projectDetails: { visibility: "Public", projectId: "project-3" },
+  projectDetails: { visibility: "public", projectId: "project-3" },
 };
 
 const projects4: GetAllFilterOptionsQuery["projects"][number] = {
@@ -106,7 +106,7 @@ const projects4: GetAllFilterOptionsQuery["projects"][number] = {
   pendingInvitations: [],
   contributors: [],
   githubReposAggregate: { aggregate: { count: 1 } },
-  projectDetails: { visibility: "Public", projectId: "project-4" },
+  projectDetails: { visibility: "public", projectId: "project-4" },
 };
 
 const projects5: GetAllFilterOptionsQuery["projects"][number] = {
@@ -130,7 +130,7 @@ const projects5: GetAllFilterOptionsQuery["projects"][number] = {
   pendingInvitations: [],
   contributors: [],
   githubReposAggregate: { aggregate: { count: 1 } },
-  projectDetails: { visibility: "Public", projectId: "project-5" },
+  projectDetails: { visibility: "public", projectId: "project-5" },
 };
 
 const graphQlMocks = [
