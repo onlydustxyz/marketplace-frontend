@@ -1,7 +1,7 @@
 import { useIntl } from "src/hooks/useIntl";
 import { LanguageMap } from "src/types";
 import { languages as knownLanguages } from "src/__generated/languages";
-import { ClassAttributes, HTMLAttributes, useEffect, useState } from "react";
+import { ClassAttributes, HTMLAttributes } from "react";
 import StylizedCombobox from "src/components/StylizedCombobox";
 import { SortableList, SortableItemProps, SortableItem } from "@thaddeusjiang/react-sortable-list";
 import Draggable from "src/icons/Draggable";
@@ -15,7 +15,7 @@ type Props = {
   setTechnologies: (languages: LanguageMap) => void;
 };
 
-export default function TechnologiesCard({ technologies, setTechnologies }: Props) {
+export default function TechnologiesCard({ technologies = {}, setTechnologies }: Props) {
   const { T } = useIntl();
 
   const allLanguages = Object.keys(knownLanguages).map(language => ({
@@ -24,21 +24,20 @@ export default function TechnologiesCard({ technologies, setTechnologies }: Prop
     displayValue: language,
   }));
 
-  const [selectedLanguages, setSelectedLanguages] = useState<SortableItemProps[]>(
-    Object.entries(technologies)
-      .sort((lang1, lang2) => lang1[1] - lang2[1])
-      .map(([language]) => ({
-        id: language,
-        value: language,
-        displayValue: language,
-      }))
-  );
+  const selectedLanguages: SortableItemProps[] = Object.entries(technologies)
+    .sort((lang1, lang2) => lang1[1] - lang2[1])
+    .map(([language]) => ({
+      id: language,
+      value: language,
+      displayValue: language,
+    }));
 
-  useEffect(() => {
+  const setSelectedLanguages = (setter: SortableItemProps[] | ((prev: SortableItemProps[]) => SortableItemProps[])) => {
+    const languages = typeof setter === "function" ? setter(selectedLanguages) : setter;
     setTechnologies(
-      selectedLanguages.reduce((technologies, language, index) => ({ ...technologies, [language.value]: index }), {})
+      languages.reduce((technologies, language, index) => ({ ...technologies, [language.value]: index }), {})
     );
-  }, [selectedLanguages]);
+  };
 
   const DragHandler = (
     props: JSX.IntrinsicAttributes & ClassAttributes<HTMLDivElement> & HTMLAttributes<HTMLDivElement>

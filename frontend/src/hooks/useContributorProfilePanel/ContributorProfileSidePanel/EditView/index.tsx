@@ -9,7 +9,7 @@ import Header, { HeaderColor } from "src/hooks/useContributorProfilePanel/Contri
 import Card from "./Card";
 import { Section } from "./Section";
 import Input, { Size } from "src/components/FormInput";
-import { FormProvider, useForm } from "react-hook-form";
+import { Controller, FormProvider, useForm } from "react-hook-form";
 import GlobalLine from "src/icons/GlobalLine";
 import MapPinLine from "src/icons/MapPinLine";
 import { UserProfileInfo } from "./types";
@@ -37,12 +37,11 @@ export default function EditView({ profile, headerColor, setEditMode }: Props) {
   const { T } = useIntl();
 
   const formMethods = useForm<UserProfileInfo>();
-  const { handleSubmit, reset, formState, watch, setValue, control } = formMethods;
+  const { handleSubmit, reset, formState, control } = formMethods;
   const { isDirty } = formState;
 
   useEffect(() => reset(new UserProfileInfo(profile)), [profile]);
 
-  const languages = watch("languages", {});
   const weeklyTimeAllocations: { [key in WeeklyTimeAllocation]: string } = {
     [WeeklyTimeAllocation.None]: T("profile.form.weeklyAllocatedTime.none"),
     [WeeklyTimeAllocation.LessThanADay]: T("profile.form.weeklyAllocatedTime.lessThan1Day"),
@@ -54,7 +53,7 @@ export default function EditView({ profile, headerColor, setEditMode }: Props) {
 
   return (
     <FormProvider {...formMethods}>
-      <form id="payout-info-form" className="h-full min-h-0" onSubmit={handleSubmit(onSubmit)}>
+      <form id="profile-info-form" className="h-full min-h-0" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col h-full justify-between">
           <div className="flex flex-col gap-6 min-h-0">
             <Header color={headerColor} avatarUrl={profile.avatarUrl} />
@@ -122,10 +121,13 @@ export default function EditView({ profile, headerColor, setEditMode }: Props) {
                   </div>
                 </Section>
               </Card>
-              <TechnologiesCard
-                technologies={languages}
-                setTechnologies={languages => setValue("languages", languages)}
+              <Controller
+                name="languages"
+                render={({ field: { value, onChange } }) => (
+                  <TechnologiesCard technologies={value} setTechnologies={onChange} />
+                )}
               />
+
               <Card>
                 <Section
                   gap="wide"
