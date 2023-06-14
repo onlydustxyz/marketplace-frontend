@@ -20,7 +20,7 @@ select_permissions:
         public:
           _eq: true
       allow_aggregations: true
-  - role: registered_user
+  - role: registered_user_specific
     permission:
       columns:
         - channel

@@ -2,10 +2,10 @@ table:
   name: ignored_github_issues
   schema: public
 select_permissions:
-  - role: registered_user
+  - role: registered_user_specific
     permission:
       columns:
-        - project_id
-        - repo_id
         - issue_number
+        - repo_id
+        - project_id
       filter: {}
