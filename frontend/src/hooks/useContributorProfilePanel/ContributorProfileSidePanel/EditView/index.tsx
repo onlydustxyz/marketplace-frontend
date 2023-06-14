@@ -1,4 +1,9 @@
-import { UserProfileFragment } from "src/__generated/graphql";
+import {
+  AllocatedTime,
+  UserProfileDocument,
+  UserProfileFragment,
+  useUpdateUserProfileMutation,
+} from "src/__generated/graphql";
 import { useIntl } from "src/hooks/useIntl";
 
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
@@ -12,7 +17,7 @@ import Input, { Size } from "src/components/FormInput";
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import GlobalLine from "src/icons/GlobalLine";
 import MapPinLine from "src/icons/MapPinLine";
-import { UserProfileInfo, fromFragment } from "./types";
+import { DefaultUserProfileInfo, UserProfileInfo, fromFragment, toVariables } from "./types";
 import { useEffect } from "react";
 import GithubLogo from "src/icons/GithubLogo";
 import Telegram from "src/assets/icons/Telegram";
@@ -23,7 +28,6 @@ import MailLine from "src/icons/MailLine";
 import ContactInformation from "./ContactInformation";
 import TechnologiesCard from "./TechnologiesCard";
 import FormSelect from "src/components/FormSelect";
-import { WeeklyTimeAllocation } from "src/types";
 import LockFill from "src/icons/LockFill";
 import FormToggle from "src/components/FormToggle";
 
@@ -36,20 +40,25 @@ type Props = {
 export default function EditView({ profile, headerColor, setEditMode }: Props) {
   const { T } = useIntl();
 
-  const formMethods = useForm<UserProfileInfo>();
+  const formMethods = useForm<UserProfileInfo>({ defaultValues: DefaultUserProfileInfo });
   const { handleSubmit, reset, formState, control } = formMethods;
   const { isDirty } = formState;
 
   useEffect(() => reset(fromFragment(profile)), [profile]);
 
-  const weeklyTimeAllocations: { [key in WeeklyTimeAllocation]: string } = {
-    [WeeklyTimeAllocation.None]: T("profile.form.weeklyAllocatedTime.none"),
-    [WeeklyTimeAllocation.LessThanADay]: T("profile.form.weeklyAllocatedTime.lessThan1Day"),
-    [WeeklyTimeAllocation.OneToThreeDays]: T("profile.form.weeklyAllocatedTime.1to3days"),
-    [WeeklyTimeAllocation.MoreThanThreeDays]: T("profile.form.weeklyAllocatedTime.moreThan3days"),
+  const weeklyTimeAllocations: { [key in AllocatedTime]: string } = {
+    [AllocatedTime.None]: T("profile.form.weeklyAllocatedTime.none"),
+    [AllocatedTime.LessThanOneDay]: T("profile.form.weeklyAllocatedTime.lessThan1Day"),
+    [AllocatedTime.OneToThreeDays]: T("profile.form.weeklyAllocatedTime.1to3days"),
+    [AllocatedTime.MoreThanThreeDays]: T("profile.form.weeklyAllocatedTime.moreThan3days"),
   };
 
-  const onSubmit = () => setEditMode(false);
+  const [updateUserProfileInfo] = useUpdateUserProfileMutation({
+    refetchQueries: [{ query: UserProfileDocument, variables: { githubUserId: profile.githubUserId } }],
+    onCompleted: () => setEditMode(false),
+  });
+
+  const onSubmit = (formData: UserProfileInfo) => updateUserProfileInfo({ variables: toVariables(formData) });
 
   return (
     <FormProvider {...formMethods}>

@@ -106,13 +106,6 @@ export interface HasuraJWT {
 
 export type LanguageMap = { [languageName: string]: number };
 
-export enum WeeklyTimeAllocation {
-  None = "none",
-  LessThanADay = "lt1day",
-  OneToThreeDays = "1to3days",
-  MoreThanThreeDays = "gt3days",
-}
-
 export type PayoutSettings = {
   EthTransfer?: {
     Address?: string;
