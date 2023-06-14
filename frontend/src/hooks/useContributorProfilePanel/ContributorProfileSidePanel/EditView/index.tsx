@@ -12,7 +12,7 @@ import Input, { Size } from "src/components/FormInput";
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import GlobalLine from "src/icons/GlobalLine";
 import MapPinLine from "src/icons/MapPinLine";
-import { UserProfileInfo } from "./types";
+import { UserProfileInfo, fromFragment } from "./types";
 import { useEffect } from "react";
 import GithubLogo from "src/icons/GithubLogo";
 import Telegram from "src/assets/icons/Telegram";
@@ -40,7 +40,7 @@ export default function EditView({ profile, headerColor, setEditMode }: Props) {
   const { handleSubmit, reset, formState, control } = formMethods;
   const { isDirty } = formState;
 
-  useEffect(() => reset(new UserProfileInfo(profile)), [profile]);
+  useEffect(() => reset(fromFragment(profile)), [profile]);
 
   const weeklyTimeAllocations: { [key in WeeklyTimeAllocation]: string } = {
     [WeeklyTimeAllocation.None]: T("profile.form.weeklyAllocatedTime.none"),
