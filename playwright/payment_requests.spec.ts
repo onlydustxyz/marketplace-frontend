@@ -125,7 +125,12 @@ test.describe("As a project lead, I", () => {
 
     const paymentsPage = new ProjectPaymentsPage(page, project);
 
-    expect(await paymentsPage.remainingBudget()).toBe("$85,600");
+    const remainingBudget = await retry(
+      () => paymentsPage.remainingBudget(),
+      remainingBudget => remainingBudget === "$85,600",
+      100
+    );
+    expect(remainingBudget).toBe("$85,600");
 
     const payment = paymentsPage.paymentList().nth(1);
     await payment.click();
