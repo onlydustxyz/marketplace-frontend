@@ -29,7 +29,7 @@ export default function TechnologiesCard({ technologies = {}, setTechnologies }:
 
   const selectedLanguages: SortableItemProps[] = Object.entries(technologies)
     .filter(([name]) => isLanguageValid(name))
-    .sort((lang1, lang2) => lang1[1] - lang2[1])
+    .sort((lang1, lang2) => lang2[1] - lang1[1])
     .map(([language]) => ({
       id: language,
       value: language,
@@ -39,7 +39,10 @@ export default function TechnologiesCard({ technologies = {}, setTechnologies }:
   const setSelectedLanguages = (setter: SortableItemProps[] | ((prev: SortableItemProps[]) => SortableItemProps[])) => {
     const languages = typeof setter === "function" ? setter(selectedLanguages) : setter;
     setTechnologies(
-      languages.reduce((technologies, language, index) => ({ ...technologies, [language.value]: index }), {})
+      languages.reduce(
+        (technologies, language, index) => ({ ...technologies, [language.value]: languages.length - index }),
+        {}
+      )
     );
   };
 
