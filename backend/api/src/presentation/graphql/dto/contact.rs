@@ -16,7 +16,7 @@ impl From<Channel> for infrastructure::database::contact_information::Channel {
 			Channel::Telegram => Self::Telegram,
 			Channel::Twitter => Self::Twitter,
 			Channel::Discord => Self::Discord,
-			Channel::LinkedIn => Self::LinkedIn,
+			Channel::LinkedIn => Self::Linkedin,
 		}
 	}
 }

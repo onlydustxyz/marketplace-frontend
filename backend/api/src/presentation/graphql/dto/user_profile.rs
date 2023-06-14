@@ -13,9 +13,9 @@ impl From<AllocatedTime> for infrastructure::database::user_profile::AllocatedTi
 	fn from(value: AllocatedTime) -> Self {
 		match value {
 			AllocatedTime::None => Self::None,
-			AllocatedTime::LessThanOneDay => Self::LessThanOneDay,
-			AllocatedTime::OneToThreeDays => Self::OneToThreeDays,
-			AllocatedTime::MoreThanThreeDays => Self::MoreThanThreeDays,
+			AllocatedTime::LessThanOneDay => Self::Lt1day,
+			AllocatedTime::OneToThreeDays => Self::_1to3days,
+			AllocatedTime::MoreThanThreeDays => Self::Gt3days,
 		}
 	}
 }

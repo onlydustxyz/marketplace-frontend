@@ -8,5 +8,5 @@ pub enum Channel {
 	Telegram,
 	Twitter,
 	Discord,
-	LinkedIn,
+	Linkedin,
 }
