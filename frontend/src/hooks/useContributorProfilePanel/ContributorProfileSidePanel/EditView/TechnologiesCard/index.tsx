@@ -9,6 +9,7 @@ import CloseLine from "src/icons/CloseLine";
 import classNames from "classnames";
 import Card from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/EditView/Card";
 import { Section } from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/EditView/Section";
+import { isLanguageValid } from "src/utils/languages";
 
 type Props = {
   technologies: LanguageMap;
@@ -18,13 +19,16 @@ type Props = {
 export default function TechnologiesCard({ technologies = {}, setTechnologies }: Props) {
   const { T } = useIntl();
 
-  const allLanguages = Object.keys(knownLanguages).map(language => ({
-    id: language,
-    value: language,
-    displayValue: language,
-  }));
+  const allLanguages = Object.keys(knownLanguages)
+    .filter(isLanguageValid)
+    .map(language => ({
+      id: language,
+      value: language,
+      displayValue: language,
+    }));
 
   const selectedLanguages: SortableItemProps[] = Object.entries(technologies)
+    .filter(([name]) => isLanguageValid(name))
     .sort((lang1, lang2) => lang1[1] - lang2[1])
     .map(([language]) => ({
       id: language,

@@ -20,7 +20,6 @@ import { formatMoneyAmount } from "src/utils/money";
 import Card from "src/components/Card";
 import ArrowRightUpLine from "src/icons/ArrowRightUpLine";
 import ContributionGraph from "./ContributionGraph";
-import { filterRemovedLanguages } from "src/utils/languages";
 import { Link, generatePath } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import Button, { ButtonSize } from "src/components/Button";
@@ -33,6 +32,7 @@ import MarkdownPreview from "src/components/MarkdownPreview";
 import classNames from "classnames";
 import ArrowRightDownLine from "src/icons/ArrowRightDownLine";
 import ArrowRightLine from "src/icons/ArrowRightLine";
+import { isLanguageValid } from "src/utils/languages";
 
 type Props = {
   profile: UserProfileFragment;
@@ -57,7 +57,9 @@ const EMPTY_DATA: ContributionCountFragment[] = range(0, MAX_CONTRIBUTION_COUNTS
 export default function ReadOnlyView({ isOwn, profile, projects, headerColor, setOpen, setEditMode }: Props) {
   const { T } = useIntl();
 
-  const languages = filterRemovedLanguages(sortBy(Object.keys(profile.languages), l => profile.languages[l]).reverse());
+  const languages = sortBy(Object.keys(profile.languages), l => profile.languages[l])
+    .reverse()
+    .filter(isLanguageValid);
 
   const contributionsCount = chain(profile.contributionCounts)
     .unionWith(EMPTY_DATA, (e1, e2) => e1.year === e2.year && e1.week === e2.week)
