@@ -55,6 +55,7 @@ export default function EditView({ profile, headerColor, setEditMode }: Props) {
 
   const [updateUserProfileInfo] = useUpdateUserProfileMutation({
     refetchQueries: [{ query: UserProfileDocument, variables: { githubUserId: profile.githubUserId } }],
+    awaitRefetchQueries: true,
     onCompleted: () => setEditMode(false),
   });
 
