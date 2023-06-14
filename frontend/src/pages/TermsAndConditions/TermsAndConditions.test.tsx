@@ -1,5 +1,5 @@
 import { describe, it, vi } from "vitest";
-import { screen, waitForElementToBeRemoved } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 
@@ -78,8 +78,6 @@ describe("Terms and Conditions page", () => {
     await userEvent.click(await screen.findByText("Accept terms and conditions"));
     await userEvent.click(await screen.findByRole("checkbox"));
     await userEvent.click(await screen.findByText("Accept terms and conditions"));
-    // should navigate
-    const element = screen.queryByText("Accept terms and conditions");
-    await waitForElementToBeRemoved(element);
+    expect(screen.queryByText("Accept terms and conditions")).not.toBeInTheDocument();
   });
 });
