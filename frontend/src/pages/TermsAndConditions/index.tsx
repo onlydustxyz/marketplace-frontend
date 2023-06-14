@@ -14,14 +14,23 @@ export default function TermsAndConditions() {
   const { user } = useAuth();
   const [showTermsAndConditions, setShowTermsAndConditions] = useState(false);
   const [acceptTermsAndConditionsMutation, { data }] = useAcceptTermsAndConditionsMutation({
-    awaitRefetchQueries: true,
-    refetchQueries: [{ query: GetTermsAndConditionsAcceptancesDocument, variables: { userId: user?.id } }],
+    update: cache => {
+      cache.writeQuery({
+        query: GetTermsAndConditionsAcceptancesDocument,
+        variables: { userId: user?.id },
+        data: {
+          termsAndConditionsAcceptancesByPk: {
+            acceptanceDate: new Date(),
+          },
+        },
+      });
+    },
+    onCompleted: () => {
+      navigate(RoutePaths.Home);
+    },
   });
   const navigate = useNavigate();
-  const handleAcceptTermsAndConditions = async () => {
-    await acceptTermsAndConditionsMutation();
-    navigate(RoutePaths.Home);
-  };
+
   return (
     <Background roundedBorders={BackgroundRoundedBorders.Full} centeredContent={!showTermsAndConditions}>
       <div className="flex flex-col justify-center items-center text-greyscale-50">
@@ -29,7 +38,11 @@ export default function TermsAndConditions() {
           {!showTermsAndConditions ? (
             <TermsAndConditionsPromptCard {...{ setShowTermsAndConditions }} />
           ) : (
-            <>{!data && <TermsAndConditionsMainCard {...{ handleAcceptTermsAndConditions }} />}</>
+            <>
+              {!data && (
+                <TermsAndConditionsMainCard handleAcceptTermsAndConditions={acceptTermsAndConditionsMutation} />
+              )}
+            </>
           )}
         </div>
       </div>
