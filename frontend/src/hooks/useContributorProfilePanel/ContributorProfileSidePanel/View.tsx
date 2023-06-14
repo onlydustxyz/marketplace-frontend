@@ -1,4 +1,4 @@
-import { UserProfileFragment } from "src/__generated/graphql";
+import { OwnUserProfileDetailsFragment, UserProfileFragment } from "src/__generated/graphql";
 import SidePanel from "src/components/SidePanel";
 
 import { Project } from "./ReadOnlyView/ProjectCard";
@@ -25,7 +25,11 @@ export default function View({ isOwn, profile, projects, headerColor, open, setO
   return (
     <SidePanel open={open} setOpen={setOpen}>
       {editMode ? (
-        <EditView profile={profile} headerColor={headerColor} setEditMode={setEditMode} />
+        <EditView
+          profile={profile as UserProfileFragment & OwnUserProfileDetailsFragment}
+          headerColor={headerColor}
+          setEditMode={setEditMode}
+        />
       ) : (
         <ReadOnlyView
           setOpen={setOpen}

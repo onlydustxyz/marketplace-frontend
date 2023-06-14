@@ -1,6 +1,7 @@
 import {
   AllocatedTime,
   Channel,
+  OwnUserProfileDetailsFragment,
   UpdateUserProfileMutationVariables,
   UserProfileFragment,
 } from "src/__generated/graphql";
@@ -27,7 +28,7 @@ export type UserProfileInfo = {
   lookingForAJob: boolean;
 };
 
-export const fromFragment = (fragment: UserProfileFragment): UserProfileInfo => ({
+export const fromFragment = (fragment: UserProfileFragment & OwnUserProfileDetailsFragment): UserProfileInfo => ({
   bio: fragment.bio ?? "",
   location: fragment.location ?? "",
   website: fragment.website ?? "",

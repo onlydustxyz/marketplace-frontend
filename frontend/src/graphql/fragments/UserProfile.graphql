@@ -39,6 +39,9 @@ fragment UserProfileDetails on UserProfiles {
     contact
     public
   }
+}
+
+fragment OwnUserProfileDetails on UserProfiles {
   weeklyAllocatedTime
   lookingForAJob
 }

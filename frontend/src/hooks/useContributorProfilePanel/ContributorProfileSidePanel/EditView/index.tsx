@@ -1,5 +1,6 @@
 import {
   AllocatedTime,
+  OwnUserProfileDetailsFragment,
   UserProfileDocument,
   UserProfileFragment,
   useUpdateUserProfileMutation,
@@ -32,7 +33,7 @@ import LockFill from "src/icons/LockFill";
 import FormToggle from "src/components/FormToggle";
 
 type Props = {
-  profile: UserProfileFragment;
+  profile: UserProfileFragment & OwnUserProfileDetailsFragment;
   headerColor: HeaderColor;
   setEditMode: (value: boolean) => void;
 };

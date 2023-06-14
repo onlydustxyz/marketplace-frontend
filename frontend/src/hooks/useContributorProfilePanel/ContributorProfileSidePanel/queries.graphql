@@ -93,6 +93,13 @@ query UserProfile($githubUserId: bigint!) {
   }
 }
 
+query OwnUserProfile($githubUserId: bigint!) {
+  userProfiles(where: { githubUserId: { _eq: $githubUserId } }) {
+    ...UserProfile
+    ...OwnUserProfileDetails
+  }
+}
+
 mutation updateUserProfile(
   $bio: String!
   $contactInformations: [Information!]!
