@@ -1,4 +1,3 @@
-import { merge } from "lodash";
 import {
   AllocatedTime,
   Channel,
@@ -28,47 +27,26 @@ export type UserProfileInfo = {
   lookingForAJob: boolean;
 };
 
-export const DefaultUserProfileInfo: UserProfileInfo = {
-  location: "",
-  bio: "",
-  website: "",
-  githubHandle: "",
+export const fromFragment = (fragment: UserProfileFragment): UserProfileInfo => ({
+  bio: fragment.bio ?? "",
+  location: fragment.location ?? "",
+  website: fragment.website ?? "",
+  githubHandle: fragment.login ?? "",
   isGithubHandlePublic: true,
-  email: "",
-  isEmailPublic: true,
-  telegram: "",
-  isTelegramPublic: true,
-  twitter: "",
-  isTwitterPublic: true,
-  discord: "",
-  isDiscordPublic: true,
-  linkedin: "",
-  isLinkedInPublic: true,
-  languages: {},
-  weeklyAllocatedTime: AllocatedTime.None,
-  lookingForAJob: true,
-};
-
-export const fromFragment = (fragment: UserProfileFragment): UserProfileInfo =>
-  merge(DefaultUserProfileInfo, {
-    bio: fragment.bio,
-    location: fragment.location,
-    website: fragment.website,
-    githubHandle: fragment.login,
-    email: fragment.email.at(0)?.contact,
-    isEmailPublic: fragment.email.at(0)?.public,
-    telegram: fragment.telegram.at(0)?.contact,
-    isTelegramPublic: fragment.telegram.at(0)?.public,
-    twitter: fragment.twitter.at(0)?.contact,
-    isTwitterPublic: fragment.twitter.at(0)?.public,
-    discord: fragment.discord.at(0)?.contact,
-    isDiscordPublic: fragment.discord.at(0)?.public,
-    linkedin: fragment.linkedin.at(0)?.contact,
-    isLinkedInPublic: fragment.linkedin.at(0)?.public,
-    languages: fragment.languages,
-    weeklyAllocatedTime: translateTimeAllocation(fragment.weeklyAllocatedTime),
-    lookingForAJob: fragment.lookingForAJob,
-  });
+  email: fragment.email.at(0)?.contact || "",
+  isEmailPublic: fragment.email.at(0)?.public ?? true,
+  telegram: fragment.telegram.at(0)?.contact ?? "",
+  isTelegramPublic: fragment.telegram.at(0)?.public ?? true,
+  twitter: fragment.twitter.at(0)?.contact ?? "",
+  isTwitterPublic: fragment.twitter.at(0)?.public ?? true,
+  discord: fragment.discord.at(0)?.contact ?? "",
+  isDiscordPublic: fragment.discord.at(0)?.public ?? true,
+  linkedin: fragment.linkedin.at(0)?.contact ?? "",
+  isLinkedInPublic: fragment.linkedin.at(0)?.public ?? true,
+  languages: fragment.languages ?? {},
+  weeklyAllocatedTime: translateTimeAllocation(fragment.weeklyAllocatedTime) ?? AllocatedTime.None,
+  lookingForAJob: fragment.lookingForAJob ?? false,
+});
 
 export const toVariables = (profile: UserProfileInfo): UpdateUserProfileMutationVariables => ({
   bio: profile.bio,

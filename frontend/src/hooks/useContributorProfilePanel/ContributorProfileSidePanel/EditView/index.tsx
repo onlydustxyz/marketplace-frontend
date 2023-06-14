@@ -17,7 +17,7 @@ import Input, { Size } from "src/components/FormInput";
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import GlobalLine from "src/icons/GlobalLine";
 import MapPinLine from "src/icons/MapPinLine";
-import { DefaultUserProfileInfo, UserProfileInfo, fromFragment, toVariables } from "./types";
+import { UserProfileInfo, fromFragment, toVariables } from "./types";
 import { useEffect } from "react";
 import GithubLogo from "src/icons/GithubLogo";
 import Telegram from "src/assets/icons/Telegram";
@@ -40,7 +40,7 @@ type Props = {
 export default function EditView({ profile, headerColor, setEditMode }: Props) {
   const { T } = useIntl();
 
-  const formMethods = useForm<UserProfileInfo>({ defaultValues: DefaultUserProfileInfo });
+  const formMethods = useForm<UserProfileInfo>({ defaultValues: fromFragment(profile) });
   const { handleSubmit, reset, formState, control } = formMethods;
   const { isDirty } = formState;
 
