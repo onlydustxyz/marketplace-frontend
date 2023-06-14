@@ -49,7 +49,7 @@ function ClearFieldButton({ name, disabled }: CloseButtonProps) {
       onClick={e => {
         if (!disabled) {
           e.preventDefault();
-          setValue(name, "");
+          setValue(name, "", { shouldDirty: true });
         }
       }}
     />
@@ -74,7 +74,7 @@ function VisibilityButton({ name, disabled }: VisibilityButtonProps) {
       onClick={e => {
         if (!disabled) {
           e.preventDefault();
-          setValue(name, false);
+          setValue(name, false, { shouldDirty: true });
         }
       }}
     />
@@ -87,7 +87,7 @@ function VisibilityButton({ name, disabled }: VisibilityButtonProps) {
       onClick={e => {
         if (!disabled) {
           e.preventDefault();
-          setValue(name, true);
+          setValue(name, true, { shouldDirty: true });
         }
       }}
     />
