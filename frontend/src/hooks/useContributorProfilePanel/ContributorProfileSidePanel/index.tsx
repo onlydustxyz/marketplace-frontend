@@ -56,7 +56,7 @@ export default function ContributorProfileSidePanel({ githubUserId, ...rest }: P
           name: project.projectDetails?.name,
           logoUrl: project.projectDetails?.logoUrl || onlyDustLogo,
           leadSince: project.leadSince,
-          private: project.projectDetails?.visibility === "Private",
+          private: project.projectDetails?.visibility === "private",
           contributionCount: find(userProfile?.contributionStats, { projectId: project.id })?.totalCount,
           lastContribution: find(userProfile?.contributionStats, { projectId: project.id })?.maxDate,
           contributorCount: project.contributorsAggregate?.aggregate?.count || 0,

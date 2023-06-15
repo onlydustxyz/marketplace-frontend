@@ -100,7 +100,7 @@ export default function Overview() {
               <div className="flex flex-col gap-1 w-full">
                 <div className="flex flex-row items-center justify-between font-belwe font-normal text-2xl text-greyscale-50">
                   {projectName}
-                  {data?.projectsByPk?.projectDetails?.visibility === "Private" && <PrivateTag />}
+                  {data?.projectsByPk?.projectDetails?.visibility === "private" && <PrivateTag />}
                 </div>
                 {languages.length > 0 && (
                   <Tag size={TagSize.Small}>
