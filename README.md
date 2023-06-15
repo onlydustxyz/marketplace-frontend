@@ -24,7 +24,7 @@
 > ## ⚠️ WARNING! ⚠️
 >
 > This repo contains highly experimental code.
-> Expect rapid iteration.
+> Expect rapid iteration!
 
 # Global architecture
 
