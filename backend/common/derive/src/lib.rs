@@ -5,6 +5,7 @@ use proc_macro::TokenStream;
 use syn::{parse::Parse, DeriveInput, Ident};
 
 mod diesel_mapping_repository;
+mod diesel_model;
 mod diesel_repository;
 
 /// Implements a mapping repository between two entities using Diesel.
@@ -71,6 +72,22 @@ pub fn diesel_mapping_repository(input: TokenStream) -> TokenStream {
 pub fn diesel_repository(input: TokenStream) -> TokenStream {
 	let derive_input: DeriveInput = syn::parse(input).unwrap();
 	diesel_repository::impl_diesel_repository(derive_input)
+}
+
+/// Implements the model trait for this struct using Diesel.
+/// The struct must also derive other diesel traits.
+///
+/// ```compile_fail
+/// #[derive(Debug, Insertable, Identifiable, Queryable, AsChangeset, Model)]
+/// pub struct ProjectDetails {
+///     project_id: ProjectId,
+///     name: String
+/// }
+/// ```
+#[proc_macro_derive(Model)]
+pub fn derive_model(input: TokenStream) -> TokenStream {
+	let derive_input: DeriveInput = syn::parse(input).unwrap();
+	diesel_model::impl_derive_model(derive_input)
 }
 
 fn find_attr<T: Parse>(ast: &DeriveInput, attr_name: &str) -> T {
