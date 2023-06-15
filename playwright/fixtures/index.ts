@@ -17,6 +17,7 @@ type PopulatedDataFixtures = {
   payments: Record<string, Record<number, Payment[]>>;
   signIn: (user: User) => Promise<void>;
   logout: () => Promise<void>;
+  acceptTermsAndConditions: () => Promise<void>;
 };
 
 export const test = base.extend<PopulatedDataFixtures>({
@@ -68,6 +69,14 @@ export const test = base.extend<PopulatedDataFixtures>({
     await use(async () => {
       await page.getByTestId("profile-button").click();
       await page.getByTestId("logout-button").click();
+    });
+  },
+
+  acceptTermsAndConditions: async ({ page }, use) => {
+    await use(async () => {
+      await page.getByText("Let’s get reading!").click();
+      await page.getByRole("checkbox").click();
+      await page.getByText("Accept terms and conditions").click();
     });
   },
 });

@@ -8,6 +8,9 @@ pub use permissions::Permissions;
 pub mod user_payout_info;
 pub use user_payout_info::UserPayoutInfo;
 
+pub mod terms_and_conditions_acceptance;
+pub use terms_and_conditions_acceptance::TermsAndConditionsAcceptance;
+
 mod specifications;
 #[cfg(test)]
 pub use specifications::MockGithubRepoExists;

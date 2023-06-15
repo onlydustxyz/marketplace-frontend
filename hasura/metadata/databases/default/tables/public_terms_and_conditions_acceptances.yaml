@@ -1,0 +1,12 @@
+table:
+  name: terms_and_conditions_acceptances
+  schema: public
+select_permissions:
+  - role: registered_user_specific
+    permission:
+      columns:
+        - acceptance_date
+        - user_id
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id

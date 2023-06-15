@@ -7,12 +7,10 @@ import { retry } from "./commands/common";
 test.describe("As a signed-in user, I", () => {
   let viewPage: ViewProfilePage;
 
-  test.beforeAll(async () => {
+  test.beforeEach(async ({ page, signIn, users, acceptTermsAndConditions }) => {
     restoreDB();
-  });
-
-  test.beforeEach(async ({ page, signIn, users }) => {
     await signIn(users.Olivier);
+    await acceptTermsAndConditions();
     viewPage = new ViewProfilePage(page);
     await viewPage.goto();
   });

@@ -6,8 +6,8 @@ use api::{
 		database::{
 			ContactInformationsRepository, IgnoredGithubIssuesRepository,
 			PendingProjectLeaderInvitationsRepository, ProjectDetailsRepository,
-			ProjectSponsorRepository, SponsorRepository, UserPayoutInfoRepository,
-			UserProfileInfoRepository,
+			ProjectSponsorRepository, SponsorRepository, TermsAndConditionsAcceptanceRepository,
+			UserPayoutInfoRepository, UserProfileInfoRepository,
 		},
 		simple_storage,
 	},
@@ -52,7 +52,8 @@ async fn main() -> Result<()> {
 		IgnoredGithubIssuesRepository::new(database.clone()),
 		UserPayoutInfoRepository::new(database.clone()),
 		UserProfileInfoRepository::new(database.clone()),
-		ContactInformationsRepository::new(database),
+		ContactInformationsRepository::new(database.clone()),
+		TermsAndConditionsAcceptanceRepository::new(database),
 		Arc::new(infrastructure_graphql::Client::new(
 			config.graphql_client(),
 		)?),

@@ -9,10 +9,11 @@ export enum BackgroundRoundedBorders {
 type Props = {
   roundedBorders: BackgroundRoundedBorders;
   withSidebar?: boolean;
+  centeredContent?: boolean;
 } & PropsWithChildren;
 
 const Background = forwardRef(function Background(
-  { roundedBorders, withSidebar = false, children }: Props,
+  { roundedBorders, withSidebar = false, centeredContent = false, children }: Props,
   ref: ForwardedRef<HTMLDivElement>
 ) {
   return (
@@ -24,9 +25,14 @@ const Background = forwardRef(function Background(
       })}
     >
       <div
-        className={classNames("bg-space bg-no-repeat bg-fixed bg-clip-content min-h-full", roundedBorders, {
-          "md:mr-6": !withSidebar,
-        })}
+        className={classNames(
+          "bg-space bg-no-repeat bg-fixed bg-clip-content min-h-full",
+          roundedBorders,
+          {
+            "md:mr-6": !withSidebar,
+          },
+          { "flex flex-col justify-center": centeredContent }
+        )}
       >
         {children}
       </div>

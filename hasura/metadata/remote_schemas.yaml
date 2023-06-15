@@ -43,6 +43,7 @@
           }
           type Mutation {
             acceptProjectLeaderInvitation(invitationId: Uuid!): Boolean!
+            acceptTermsAndConditions: Uuid!
             applyToProject(projectId: Id!): Uuid!
             cancelPaymentRequest(projectId: Uuid!, paymentId: Uuid!): Payment!
             createIssue(projectId: Uuid!, githubRepoId: Int!, title: String!, description: String!): Issue!

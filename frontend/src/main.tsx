@@ -1,7 +1,10 @@
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
+import TagManager from "react-gtm-module";
+import { ErrorBoundary } from "react-error-boundary";
 
 import ApolloWrapper from "src/providers/ApolloWrapper";
+import TermsAndConditionsWrapper from "./App/TermsAndConditionsWrapper";
 import { AuthProvider } from "src/hooks/useAuth";
 import App from "./App";
 import "./datadog";
@@ -17,10 +20,8 @@ import { SessionProvider } from "./hooks/useSession";
 import { ToasterProvider } from "./hooks/useToaster";
 import { ImpersonationClaimsProvider } from "src/hooks/useImpersonationClaims";
 import ErrorFallback from "./ErrorFallback";
-import { ErrorBoundary } from "react-error-boundary";
 import config from "./config";
 import Maintenance from "./Maintenance";
-import TagManager from "react-gtm-module";
 import { ContributorProfilePanelProvider } from "./hooks/useContributorProfilePanel";
 import { SidePanelStackProvider } from "./hooks/useSidePanelStack";
 import { CommandsProvider } from "./providers/Commands";
@@ -44,7 +45,13 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
                     <AuthProvider>
                       <SidePanelStackProvider>
                         <ContributorProfilePanelProvider>
-                          {config.MAINTENANCE ? <Maintenance /> : <App />}
+                          {config.MAINTENANCE ? (
+                            <Maintenance />
+                          ) : (
+                            <TermsAndConditionsWrapper>
+                              <App />
+                            </TermsAndConditionsWrapper>
+                          )}
                         </ContributorProfilePanelProvider>
                       </SidePanelStackProvider>
                     </AuthProvider>

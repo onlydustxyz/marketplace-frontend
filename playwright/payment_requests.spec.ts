@@ -24,11 +24,21 @@ test.describe("As a project lead, I", () => {
     test.slow();
   });
 
-  test("can request a payment", async ({ page, projects, users, repos, signIn, context, request }) => {
+  test("can request a payment", async ({
+    page,
+    projects,
+    users,
+    repos,
+    signIn,
+    context,
+    request,
+    acceptTermsAndConditions,
+  }) => {
     const recipient = users.Anthony;
     const project = projects.ProjectA;
 
     await signIn(users.TokioRs);
+    await acceptTermsAndConditions();
     const projectPage = await new ProjectPage(page, project).goto();
     const overviewPage = await projectPage.overview();
 
@@ -213,6 +223,7 @@ test.describe("As a project lead, I", () => {
     projects,
     users,
     signIn,
+    acceptTermsAndConditions,
   }) => {
     const project = projects.Kakarot;
     const leader = users.TokioRs;
@@ -221,8 +232,11 @@ test.describe("As a project lead, I", () => {
 
     const projectPaymentsPage = new ProjectPaymentsPage(page, project);
 
-    const listPaymentsAs = async (user: User) => {
+    const listPaymentsAs = async (user: User, shouldAcceptTermsAndConditions?: boolean) => {
       await signIn(user);
+      if (shouldAcceptTermsAndConditions) {
+        await acceptTermsAndConditions();
+      }
       await projectPaymentsPage.goto();
       await projectPaymentsPage.reload();
     };
@@ -239,7 +253,7 @@ test.describe("As a project lead, I", () => {
     const paymentRow = projectPaymentsPage.paymentList().nth(1);
     const pendingStatus = await retry(
       async () => {
-        await listPaymentsAs(otherLeader);
+        await listPaymentsAs(otherLeader, true);
         return paymentRow.status();
       },
       value => value === "Pending"
@@ -249,6 +263,7 @@ test.describe("As a project lead, I", () => {
     // 2. Edit payout info, payment is "processing"
     const editPayoutInfoPage = new EditPayoutInfoPage(page);
     await signIn(recipient);
+    await acceptTermsAndConditions();
     await editPayoutInfoPage.goto();
     recipient.payoutInfo && (await editPayoutInfoPage.fillForm(recipient.payoutInfo));
     await editPayoutInfoPage.submitForm();

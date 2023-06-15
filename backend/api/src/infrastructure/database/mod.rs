@@ -10,6 +10,9 @@ pub use user_payout_info::Repository as UserPayoutInfoRepository;
 mod user_profile_info;
 pub use user_profile_info::Repository as UserProfileInfoRepository;
 
+mod terms_and_conditions_acceptance;
+pub use terms_and_conditions_acceptance::Repository as TermsAndConditionsAcceptanceRepository;
+
 mod pending_project_leader_invitations;
 pub use pending_project_leader_invitations::Repository as PendingProjectLeaderInvitationsRepository;
 

@@ -34,8 +34,15 @@ test.describe("As an admin, I", () => {
     await expect(paymentsPage.sidePanel).toContainText("(you)");
   });
 
-  test("retain the login state when impersonating", async ({ page, users, signIn, logout }) => {
+  test("retain the login state when impersonating", async ({
+    page,
+    users,
+    signIn,
+    logout,
+    acceptTermsAndConditions,
+  }) => {
     await signIn(users.Anthony);
+    await acceptTermsAndConditions();
     const appPage = new GenericPage(page);
     await appPage.expectToBeLoggedInAs(users.Anthony);
 

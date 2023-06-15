@@ -17,9 +17,10 @@ type Props = {
   logout: () => void;
   payoutSettingsInvalid: boolean;
   githubUserId?: number;
+  hideProfileItems?: boolean;
 };
 
-const View = ({ githubUserId, avatarUrl, login, logout, payoutSettingsInvalid }: Props) => {
+const View = ({ githubUserId, avatarUrl, login, logout, payoutSettingsInvalid, hideProfileItems }: Props) => {
   const { T } = useIntl();
 
   const [menuItemsVisible, setMenuItemsVisible] = useState(false);
@@ -69,20 +70,23 @@ const View = ({ githubUserId, avatarUrl, login, logout, payoutSettingsInvalid }:
 						rounded-md bg-white/5 backdrop-blur-4xl shadow-lg ring-1 ring-greyscale-50/8
 						focus:outline-none z-20 overflow-hidden"
           >
-            <div className="pb-2 border-b border-greyscale-50/8">
-              <MenuItem secondary disabled>
-                {T("navbar.profile.title").toUpperCase()}
-              </MenuItem>
-              <MenuItem onClick={() => githubUserId && openContributorProfileSidePanel(githubUserId)}>
-                <User3Line className="text-xl" />
-                <div className="grow">{T("navbar.profile.publicProfile")}</div>
-              </MenuItem>
-              <MenuItem onClick={() => setPayoutInfoSidePanelOpen(true)}>
-                <MoneyDollarCircleLine className="text-xl" />
-                <div className="grow">{T("navbar.profile.payoutInfo")}</div>
-                {payoutSettingsInvalid && <Dot className="fill-orange-500 w-1.5" />}
-              </MenuItem>
-            </div>
+            {!hideProfileItems && (
+              <div className="pb-2 border-b border-greyscale-50/8">
+                <MenuItem secondary disabled>
+                  {T("navbar.profile.title").toUpperCase()}
+                </MenuItem>
+                <MenuItem onClick={() => githubUserId && openContributorProfileSidePanel(githubUserId)}>
+                  <User3Line className="text-xl" />
+                  <div className="grow">{T("navbar.profile.publicProfile")}</div>
+                </MenuItem>
+                <MenuItem onClick={() => setPayoutInfoSidePanelOpen(true)}>
+                  <MoneyDollarCircleLine className="text-xl" />
+                  <div className="grow">{T("navbar.profile.payoutInfo")}</div>
+                  {payoutSettingsInvalid && <Dot className="fill-orange-500 w-1.5" />}
+                </MenuItem>
+              </div>
+            )}
+
             <MenuItem secondary onClick={logout} data-testid="logout-button">
               <LogoutBoxRLine className="text-xl" />
               {T("navbar.logout")}
