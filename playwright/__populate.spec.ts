@@ -7,6 +7,7 @@ import { sleep } from "./commands/common";
 test.describe("Once and before all test suites, ", () => {
   test("cleanup and populate some data", async ({ request }) => {
     test.skip(fs.existsSync(DUMP_PATH), `DB dump already exists at ${DUMP_PATH}`);
+    test.slow();
 
     console.time("Fixtures populated in");
     cleanupDB();
