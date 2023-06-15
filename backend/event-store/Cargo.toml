@@ -17,7 +17,6 @@ diesel = {version = "2.1.0", default-features = false, features = ["postgres","e
 lapin = "2.1.1"
 
 # Async
-async-trait = "0.1.56"
 futures = {version = "0.3.21", features = ["alloc"]}
 tokio = {version = "1.18.2", features = ["full"]}
 
@@ -42,9 +41,3 @@ thiserror = "1.0.31"
 backend_domain = {path = "../common/domain", package = "domain"}
 backend_infrastructure = {path = "../common/infrastructure", package = "infrastructure"}
 olog = {path = "../common/olog"}
-
-# TO REMOVE
-uuid = {version = "1.3.3", default_features = false, features = [
-  "v4",
-  "serde",
-]}
