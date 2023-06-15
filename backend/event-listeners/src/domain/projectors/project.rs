@@ -4,13 +4,13 @@ use anyhow::Result;
 use async_trait::async_trait;
 use derive_new::new;
 use domain::{ApplicationEvent, Event, ProjectEvent, SubscriberCallbackError};
+use infrastructure::database::Repository;
 use tracing::instrument;
 
 use crate::{
 	domain::{projections::Project, Application, EventListener, GithubRepoIndexRepository},
 	infrastructure::database::{
-		ApplicationRepository, ProjectGithubReposRepository, ProjectLeadRepository,
-		ProjectRepository,
+		ProjectGithubReposRepository, ProjectLeadRepository, ProjectRepository,
 	},
 };
 
@@ -20,7 +20,7 @@ pub struct Projector {
 	project_lead_repository: ProjectLeadRepository,
 	project_github_repos_repository: ProjectGithubReposRepository,
 	github_repo_index_repository: Arc<dyn GithubRepoIndexRepository>,
-	applications_repository: ApplicationRepository,
+	applications_repository: Arc<dyn Repository<Application>>,
 }
 
 #[async_trait]
@@ -59,7 +59,7 @@ impl EventListener<Event> for Projector {
 						applicant_id,
 						received_at,
 					} = event;
-					self.applications_repository.upsert(&Application {
+					self.applications_repository.upsert(Application {
 						id,
 						project_id,
 						applicant_id,
