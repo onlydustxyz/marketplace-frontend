@@ -92,3 +92,30 @@ query UserProfile($githubUserId: bigint!) {
     ...UserProfile
   }
 }
+
+query OwnUserProfile($githubUserId: bigint!) {
+  userProfiles(where: { githubUserId: { _eq: $githubUserId } }) {
+    ...UserProfile
+    ...OwnUserProfileDetails
+  }
+}
+
+mutation updateUserProfile(
+  $bio: String!
+  $contactInformations: [Information!]!
+  $languages: [Language!]!
+  $location: String!
+  $lookingForAJob: Boolean!
+  $website: String!
+  $weeklyAllocatedTime: AllocatedTime!
+) {
+  updateUserProfile(
+    bio: $bio
+    contactInformations: $contactInformations
+    languages: $languages
+    location: $location
+    lookingForAJob: $lookingForAJob
+    website: $website
+    weeklyAllocatedTime: $weeklyAllocatedTime
+  )
+}

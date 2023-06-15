@@ -1,13 +1,15 @@
 use std::sync::Arc;
 
 use anyhow::Result;
-use domain::{Amount, DomainError, Event, EventSourcable, Project, ProjectId, Publisher};
+use domain::{
+	Amount, DomainError, Event, EventSourcable, Project, ProjectId, ProjectVisibility, Publisher,
+};
 use infrastructure::amqp::UniqueMessage;
 use reqwest::Url;
 use tracing::instrument;
 
 use crate::{
-	domain::{ImageStoreService, ProjectDetails, ProjectVisibility, Publishable},
+	domain::{ImageStoreService, Publishable},
 	infrastructure::database::ProjectDetailsRepository,
 	presentation::http::dto::NonEmptyTrimmedString,
 };
@@ -61,17 +63,20 @@ impl Usecase {
 			None => None,
 		};
 
-		self.project_details_repository.upsert(&ProjectDetails {
-			project_id,
-			name: name.into(),
-			telegram_link: telegram_link.map(|url| url.to_string()),
-			logo_url: stored_logo_url,
-			short_description: short_description.into(),
-			long_description: long_description.into(),
-			rank,
-			hiring,
-			visibility,
-		})?;
+		// TODO turn this into proper DTO
+		self.project_details_repository.upsert(
+			&crate::infrastructure::database::ProjectDetails {
+				project_id,
+				name: name.into(),
+				telegram_link: telegram_link.map(|url| url.to_string()),
+				logo_url: stored_logo_url,
+				short_description: short_description.into(),
+				long_description: long_description.into(),
+				rank,
+				hiring,
+				visibility: visibility.into(),
+			},
+		)?;
 
 		events
 			.into_iter()

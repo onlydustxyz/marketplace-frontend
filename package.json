@@ -22,7 +22,8 @@
     "backend:dusty-bot": "cargo run -p dusty-bot",
     "hasura:refresh": "make hasura/refresh",
     "hasura:console": "make hasura/start",
-    "dependency-cruiser": "depcruise --config .dependency-cruiser.js frontend/src"
+    "dependency-cruiser": "depcruise --config .dependency-cruiser.js frontend/src",
+    "update-languages": "./scripts/generate-github-languages-file.sh"
   },
   "dependencies": {
     "@apollo/client": "3.8.0-alpha.5",
@@ -31,6 +32,7 @@
     "@headlessui/tailwindcss": "^0.1.2",
     "@tag0/use-text-width": "^1.2.0",
     "@tailwindcss/typography": "^0.5.8",
+    "@thaddeusjiang/react-sortable-list": "^0.1.1",
     "@typeform/embed-react": "^2.15.0",
     "@types/react-gtm-module": "^2.0.1",
     "apollo-link-token-refresh": "^0.4.0",
@@ -55,7 +57,7 @@
     "react-virtuoso": "^4.3.2",
     "recharts": "^2.6.2",
     "remark-gfm": "^3.0.1",
-    "remixicon": "^2.5.0",
+    "remixicon": "^3.3.0",
     "tailwind-scrollbar": "^2.1.0",
     "tailwindcss": "^3.3.1",
     "talkr": "^3.3.8",

@@ -1,8 +1,11 @@
+use std::collections::HashMap;
+
 use anyhow::anyhow;
 use domain::{
 	Amount, BlockchainNetwork, Currency, GithubIssue, GithubIssueNumber, GithubRepoId, Iban,
-	LogErr, PaymentReason, PaymentReceipt, ProjectId, UserId,
+	Languages, LogErr, PaymentReason, PaymentReceipt, ProjectId, ProjectVisibility, UserId,
 };
+use infrastructure::database::contact_information::ContactInformation;
 use juniper::{graphql_object, DefaultScalarValue, Nullable};
 use rusty_money::Money;
 use url::Url;
@@ -10,13 +13,13 @@ use uuid::Uuid;
 
 use super::{dto, Context, Error, Result};
 use crate::{
-	domain::{
-		user_info::{ContactInformation, Identity, Location, PayoutSettings},
-		ProjectVisibility,
-	},
-	presentation::http::dto::{
-		EthereumIdentityInput, IdentityInput, OptionalNonEmptyTrimmedString, PaymentReference,
-		PayoutSettingsInput,
+	domain::user_payout_info::{Identity, Location, PayoutSettings},
+	presentation::{
+		graphql::dto::Language,
+		http::dto::{
+			EthereumIdentityInput, IdentityInput, OptionalNonEmptyTrimmedString, PaymentReference,
+			PayoutSettingsInput,
+		},
 	},
 };
 
@@ -304,12 +307,11 @@ impl Mutation {
 		})
 	}
 
-	pub async fn update_profile_info(
+	pub async fn update_payout_info(
 		context: &Context,
 		location: Option<Location>,
 		identity: Option<IdentityInput>,
 		payout_settings: Option<PayoutSettingsInput>,
-		contact_information: Option<ContactInformation>,
 	) -> Result<Uuid> {
 		let caller_id = *context.caller_info()?.user_id();
 
@@ -327,14 +329,8 @@ impl Mutation {
 		};
 
 		context
-			.update_user_info_usecase
-			.update_profile_info(
-				caller_id,
-				identity,
-				location,
-				payout_settings,
-				contact_information,
-			)
+			.update_user_payout_info_usecase
+			.update_user_payout_info(caller_id, identity, location, payout_settings)
 			.await?;
 
 		Ok(caller_id.into())
@@ -545,6 +541,47 @@ impl Mutation {
 			&issue_number,
 		)?;
 
+		Ok(true)
+	}
+
+	pub async fn update_user_profile(
+		&self,
+		context: &Context,
+		bio: Option<String>,
+		location: Option<String>,
+		website: Option<String>,
+		languages: Option<Vec<Language>>,
+		weekly_allocated_time: dto::AllocatedTime,
+		looking_for_a_job: bool,
+		contact_informations: Vec<dto::ContactInformation>,
+	) -> Result<bool> {
+		let caller_id = *context.caller_info()?.user_id();
+
+		let languages: Option<HashMap<String, i32>> = languages.map(|languages| {
+			languages.into_iter().map(|language| (language.name, language.weight)).collect()
+		});
+
+		context
+			.update_user_profile_info_usecase
+			.update_user_profile_info(
+				caller_id,
+				bio,
+				location,
+				website,
+				languages.map(Languages::from),
+				weekly_allocated_time.into(),
+				looking_for_a_job,
+				contact_informations
+					.into_iter()
+					.map(|info| ContactInformation {
+						user_id: caller_id,
+						channel: info.channel.into(),
+						contact: info.contact,
+						public: info.public,
+					})
+					.collect(),
+			)
+			.await?;
 		Ok(true)
 	}
 }

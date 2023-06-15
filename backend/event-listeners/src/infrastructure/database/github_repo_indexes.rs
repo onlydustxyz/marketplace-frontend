@@ -6,19 +6,19 @@ use crate::domain::{GithubRepoIndexRepository, RepositoryResult};
 
 impl GithubRepoIndexRepository for Client {
 	fn try_insert(&self, repo_id: &GithubRepoId) -> RepositoryResult<()> {
-		let connection = self.connection()?;
+		let mut connection = self.connection()?;
 		diesel::insert_into(dsl::github_repo_indexes)
 			.values(dsl::repo_id.eq(repo_id))
 			.on_conflict_do_nothing()
-			.execute(&*connection)?;
+			.execute(&mut *connection)?;
 		Ok(())
 	}
 
 	fn delete(&self, repo_id: &GithubRepoId) -> RepositoryResult<()> {
-		let connection = self.connection()?;
+		let mut connection = self.connection()?;
 		diesel::delete(dsl::github_repo_indexes)
 			.filter(dsl::repo_id.eq(repo_id))
-			.execute(&*connection)?;
+			.execute(&mut *connection)?;
 		Ok(())
 	}
 
@@ -26,11 +26,11 @@ impl GithubRepoIndexRepository for Client {
 		&self,
 		repo_id: &GithubRepoId,
 	) -> RepositoryResult<Option<serde_json::Value>> {
-		let connection = self.connection()?;
+		let mut connection = self.connection()?;
 		let state = dsl::github_repo_indexes
 			.select(dsl::repo_indexer_state)
 			.filter(dsl::repo_id.eq(repo_id))
-			.first(&*connection)?;
+			.first(&mut *connection)?;
 		Ok(state)
 	}
 
@@ -39,11 +39,11 @@ impl GithubRepoIndexRepository for Client {
 		repo_id: &GithubRepoId,
 		state: serde_json::Value,
 	) -> RepositoryResult<()> {
-		let connection = self.connection()?;
+		let mut connection = self.connection()?;
 		diesel::update(dsl::github_repo_indexes)
 			.set(dsl::repo_indexer_state.eq(state))
 			.filter(dsl::repo_id.eq(repo_id))
-			.execute(&*connection)?;
+			.execute(&mut *connection)?;
 		Ok(())
 	}
 
@@ -51,11 +51,11 @@ impl GithubRepoIndexRepository for Client {
 		&self,
 		repo_id: &GithubRepoId,
 	) -> RepositoryResult<Option<serde_json::Value>> {
-		let connection = self.connection()?;
+		let mut connection = self.connection()?;
 		let state = dsl::github_repo_indexes
 			.select(dsl::issues_indexer_state)
 			.filter(dsl::repo_id.eq(repo_id))
-			.first(&*connection)?;
+			.first(&mut *connection)?;
 		Ok(state)
 	}
 
@@ -64,11 +64,11 @@ impl GithubRepoIndexRepository for Client {
 		repo_id: &GithubRepoId,
 		state: serde_json::Value,
 	) -> RepositoryResult<()> {
-		let connection = self.connection()?;
+		let mut connection = self.connection()?;
 		diesel::update(dsl::github_repo_indexes)
 			.set(dsl::issues_indexer_state.eq(state))
 			.filter(dsl::repo_id.eq(repo_id))
-			.execute(&*connection)?;
+			.execute(&mut *connection)?;
 		Ok(())
 	}
 }

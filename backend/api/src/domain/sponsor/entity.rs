@@ -22,9 +22,8 @@ use crate::domain::SponsorId;
 	Constructor,
 	PartialEq,
 )]
-#[table_name = "sponsors"]
+#[diesel(table_name = sponsors, treat_none_as_null = true)]
 #[setters(prefix = "with_")]
-#[changeset_options(treat_none_as_null = "true")]
 pub struct Sponsor {
 	id: SponsorId,
 	name: String,

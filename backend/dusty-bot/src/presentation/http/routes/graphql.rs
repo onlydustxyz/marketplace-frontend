@@ -31,7 +31,7 @@ pub async fn get_graphql_handler(
 	github: &State<Arc<github::Client>>,
 ) -> GraphQLResponse {
 	let context = Context::new((*github).clone());
-	request.execute(schema, &context).await
+	request.execute(schema.inner(), &context).await
 }
 
 #[post("/graphql", data = "<request>")]
@@ -43,5 +43,5 @@ pub async fn post_graphql_handler(
 	github: &State<Arc<github::Client>>,
 ) -> GraphQLResponse {
 	let context = Context::new((*github).clone());
-	request.execute(schema, &context).await
+	request.execute(schema.inner(), &context).await
 }

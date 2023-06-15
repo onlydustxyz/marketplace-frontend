@@ -1,12 +1,13 @@
-import { ProfileProjectFragment, useUserProfileQuery } from "src/__generated/graphql";
-import View, { HeaderColor } from "./View";
-import { contextWithCacheHeaders } from "src/utils/headers";
-import { Project } from "./ProjectCard";
+import { ProfileProjectFragment } from "src/__generated/graphql";
+import View from "./View";
+import { Project } from "./ReadOnlyView/ProjectCard";
 import { find, unionBy } from "lodash";
 import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 import { isProjectVisibleToUser } from "src/hooks/useProjectVisibility";
 import { useAuth } from "src/hooks/useAuth";
 import isDefined from "src/utils/isDefined";
+import { HeaderColor } from "./Header";
+import useUserProfile from "./useUserProfile";
 
 type Props = {
   githubUserId: number;
@@ -20,8 +21,7 @@ type AugmentedProfileProjectFragment = {
 
 export default function ContributorProfileSidePanel({ githubUserId, ...rest }: Props) {
   const { user: currentUser, githubUserId: currentUserGithubId } = useAuth();
-  const { data } = useUserProfileQuery({ variables: { githubUserId }, ...contextWithCacheHeaders });
-  const userProfile = data?.userProfiles.at(0);
+  const { userProfile } = useUserProfile(githubUserId);
 
   const projectLeaded =
     userProfile?.projectsLeaded
@@ -56,7 +56,7 @@ export default function ContributorProfileSidePanel({ githubUserId, ...rest }: P
           name: project.projectDetails?.name,
           logoUrl: project.projectDetails?.logoUrl || onlyDustLogo,
           leadSince: project.leadSince,
-          private: project.projectDetails?.visibility === "Private",
+          private: project.projectDetails?.visibility === "private",
           contributionCount: find(userProfile?.contributionStats, { projectId: project.id })?.totalCount,
           lastContribution: find(userProfile?.contributionStats, { projectId: project.id })?.maxDate,
           contributorCount: project.contributorsAggregate?.aggregate?.count || 0,
@@ -66,7 +66,13 @@ export default function ContributorProfileSidePanel({ githubUserId, ...rest }: P
     .filter(project => project.leadSince || project.contributionCount);
 
   return userProfile ? (
-    <View profile={userProfile} projects={projects} {...rest} headerColor={HeaderColor.Blue} />
+    <View
+      isOwn={currentUserGithubId === userProfile.githubUserId}
+      profile={userProfile}
+      projects={projects}
+      {...rest}
+      headerColor={HeaderColor.Blue}
+    />
   ) : (
     <div />
   );

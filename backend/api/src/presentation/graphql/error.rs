@@ -6,7 +6,7 @@ use thiserror::Error;
 
 use crate::application::user::{
 	accept_terms_and_conditions::Error as AcceptTermsAndConditionsError,
-	update_profile_info::Error as UpdateProfileInfoError,
+	update_payout_info::Error as UpdateUserPayoutInfoError,
 };
 
 #[derive(Debug, Error)]
@@ -27,7 +27,7 @@ impl From<DatabaseError> for Error {
 			DatabaseError::Connection(e) => Error::InternalError(e),
 			DatabaseError::Migration(e) => Error::InternalError(e),
 			DatabaseError::Transaction(e) => Error::InvalidRequest(e.into()),
-			DatabaseError::Pool(e) => Error::InternalError(e.into()),
+			DatabaseError::Pool(e) => Error::InternalError(e),
 		}
 	}
 }
@@ -41,12 +41,12 @@ impl From<DomainError> for Error {
 	}
 }
 
-impl From<UpdateProfileInfoError> for Error {
-	fn from(error: UpdateProfileInfoError) -> Self {
+impl From<UpdateUserPayoutInfoError> for Error {
+	fn from(error: UpdateUserPayoutInfoError) -> Self {
 		match error {
-			UpdateProfileInfoError::Repository(e) => e.into(),
-			UpdateProfileInfoError::Internal(e) => Self::InternalError(e),
-			UpdateProfileInfoError::InvalidInput(e) => Self::InvalidRequest(e),
+			UpdateUserPayoutInfoError::Repository(e) => e.into(),
+			UpdateUserPayoutInfoError::Internal(e) => Self::InternalError(e),
+			UpdateUserPayoutInfoError::InvalidInput(e) => Self::InvalidRequest(e),
 		}
 	}
 }

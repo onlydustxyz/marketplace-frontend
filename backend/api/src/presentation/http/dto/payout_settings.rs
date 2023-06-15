@@ -3,9 +3,9 @@ use domain::{EthereumAddress, EthereumIdentity, EthereumName};
 use juniper::{GraphQLEnum, GraphQLInputObject};
 use serde::{Deserialize, Serialize};
 
-use crate::domain::user_info::{BankAddress, PayoutSettings};
+use crate::domain::user_payout_info::{BankAddress, PayoutSettings};
 
-#[derive(Debug, Clone, Serialize, Deserialize, AsExpression, From, GraphQLInputObject)]
+#[derive(Debug, Clone, Serialize, Deserialize, From, GraphQLInputObject)]
 pub struct PayoutSettingsInput {
 	r#type: PayoutSettingsType,
 	opt_eth_address: Option<EthereumAddress>,

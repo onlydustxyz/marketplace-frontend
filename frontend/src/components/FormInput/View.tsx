@@ -10,6 +10,7 @@ import ImageCard, {
 import headerElementBackground from "src/assets/img/alert-bg.png";
 import classNames from "classnames";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
+import { Size } from ".";
 
 type PropsType = {
   label?: string;
@@ -34,6 +35,8 @@ type PropsType = {
   negativeZIndex?: boolean;
   as?: React.ElementType;
   inputProps?: React.InputHTMLAttributes<HTMLInputElement> | React.TextareaHTMLAttributes<HTMLTextAreaElement>;
+  disabled?: boolean;
+  size: Size;
 } & PropsWithChildren;
 
 export enum InputErrorDisplay {
@@ -67,6 +70,8 @@ const View: React.FC<PropsType> = ({
   negativeZIndex = false,
   as = "input",
   inputProps,
+  disabled,
+  size,
 }) => {
   const isValidationError = error?.type === InputErrorType.Pattern || error?.type === InputErrorType.Validate;
   const showError = error && (!isValidationError || showValidationErrors) && errorDisplay === InputErrorDisplay.Normal;
@@ -96,8 +101,17 @@ const View: React.FC<PropsType> = ({
             placeholder,
             type,
             className: classNames(
-              "w-full bg-white/5 border border-greyscale-50/[0.08] rounded-xl font-walsheim font-normal text-base px-4 py-3 text-greyscale-50 placeholder:text-spaceBlue-200 focus:placeholder:text-spacePurple-200/60 focus:outline-double focus:outline-spacePurple-500 focus:border-spacePurple-500 focus:bg-spacePurple-900",
-              { "border outline-1 border-orange-500": showError, "h-11": as === "input" },
+              "w-full bg-white/5 rounded-xl font-walsheim font-normal",
+              { "text-greyscale-50": !disabled, "text-greyscale-600": disabled },
+              "border border-greyscale-50/[0.08]",
+              "placeholder:text-spaceBlue-200",
+              "focus:placeholder:text-spacePurple-200/60 focus:outline-double focus:outline-spacePurple-500 focus:border-spacePurple-500 focus:bg-spacePurple-900",
+              {
+                "border outline-1 border-orange-500": showError,
+                "h-11": as === "input",
+                "px-4 py-3 text-base": size === Size.Md,
+                "px-3 py-2 text-sm": size === Size.Sm,
+              },
               inputClassName
             ),
             value,
@@ -106,6 +120,7 @@ const View: React.FC<PropsType> = ({
             onKeyDown,
             style: negativeZIndex ? { zIndex: -1 } : {},
             "data-testid": register.name,
+            disabled,
             ...inputProps,
           })}
           {prefixComponent && <div className="absolute left-0 ml-3">{prefixComponent}</div>}

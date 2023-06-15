@@ -1,14 +1,13 @@
 use std::sync::Arc;
 
 use anyhow::Result;
-use domain::{DomainError, ProjectId};
+use domain::{DomainError, ProjectId, ProjectVisibility};
 use juniper::Nullable;
 use tracing::instrument;
 use url::Url;
 
 use crate::{
-	domain::{ImageStoreService, ProjectVisibility},
-	infrastructure::database::ProjectDetailsRepository,
+	domain::ImageStoreService, infrastructure::database::ProjectDetailsRepository,
 	presentation::http::dto::NonEmptyTrimmedString,
 };
 
@@ -71,7 +70,7 @@ impl Usecase {
 			project = project.with_rank(rank)
 		}
 		if let Some(visibility) = visibility {
-			project = project.with_visibility(visibility)
+			project = project.with_visibility(visibility.into()) // TODO turn this into proper DTO
 		}
 
 		self.project_details_repository.update(&project_id, project)?;
@@ -84,11 +83,12 @@ impl Usecase {
 mod tests {
 
 	use ::url::Url;
+	use infrastructure::database::project::Visibility;
 	use mockall::predicate::eq;
 	use rstest::{fixture, rstest};
 
 	use super::*;
-	use crate::domain::{MockImageStoreService, ProjectDetails};
+	use crate::{domain::MockImageStoreService, infrastructure::database::ProjectDetails};
 
 	#[fixture]
 	fn project_id() -> ProjectId {
@@ -151,7 +151,7 @@ mod tests {
 					long_description: "bar".to_string(),
 					hiring: false,
 					rank: 0,
-					visibility: ProjectVisibility::Public,
+					visibility: Visibility::Public,
 				})
 			});
 		project_details_repository
@@ -209,7 +209,7 @@ mod tests {
 					long_description: "bar".to_string(),
 					hiring: false,
 					rank: 0,
-					visibility: ProjectVisibility::Public,
+					visibility: Visibility::Public,
 				})
 			});
 
@@ -227,7 +227,7 @@ mod tests {
 						long_description: "long_description".to_string(),
 						hiring: true,
 						rank: 32,
-						visibility: ProjectVisibility::Private,
+						visibility: Visibility::Private,
 					}
 			})
 			.once()

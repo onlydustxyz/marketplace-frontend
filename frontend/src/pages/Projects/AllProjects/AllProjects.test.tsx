@@ -34,7 +34,7 @@ const ALL_PROJECTS_RESULT_NO_INVITATIONS: { data: GetProjectsQueryResult["data"]
           telegramLink: null,
           hiring: false,
           rank: 0,
-          visibility: "Public",
+          visibility: "public",
         },
         contributors: [],
         githubReposAggregate: { aggregate: { count: 1 } },
@@ -84,7 +84,7 @@ const ALL_PROJECTS_RESULT_NO_INVITATIONS: { data: GetProjectsQueryResult["data"]
           telegramLink: null,
           hiring: false,
           rank: 0,
-          visibility: "Public",
+          visibility: "public",
         },
         budgetsAggregate: {
           aggregate: {
@@ -136,7 +136,7 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
           telegramLink: null,
           hiring: false,
           rank: 0,
-          visibility: "Public",
+          visibility: "public",
         },
         budgetsAggregate: {
           aggregate: {
@@ -181,7 +181,7 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
           telegramLink: null,
           hiring: false,
           rank: 0,
-          visibility: "Public",
+          visibility: "public",
         },
         budgetsAggregate: {
           aggregate: {
@@ -226,7 +226,7 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
           telegramLink: null,
           hiring: false,
           rank: 0,
-          visibility: "Public",
+          visibility: "public",
         },
         budgetsAggregate: {
           aggregate: {
@@ -284,7 +284,7 @@ const projectWithNoBudget: ProjectCardFieldsFragment = {
     logoUrl: null,
     hiring: false,
     rank: 0,
-    visibility: "Public",
+    visibility: "public",
   },
   githubRepos: [
     {
@@ -327,7 +327,7 @@ const projectWithNoRepo: ProjectCardFieldsFragment = {
     logoUrl: null,
     hiring: false,
     rank: 0,
-    visibility: "Public",
+    visibility: "public",
   },
   githubRepos: [],
   pendingInvitations: [],
@@ -361,7 +361,7 @@ const projectWithNoLeader: ProjectCardFieldsFragment = {
     logoUrl: null,
     hiring: false,
     rank: 0,
-    visibility: "Public",
+    visibility: "public",
   },
   githubRepos: [
     {
@@ -398,7 +398,7 @@ const projectInvalidWithInvite: ProjectCardFieldsFragment = {
     logoUrl: null,
     hiring: false,
     rank: 0,
-    visibility: "Public",
+    visibility: "public",
   },
   githubRepos: [],
   pendingInvitations: [{ id: "invitation-1", githubUserId: TEST_GITHUB_USER_ID }],
@@ -426,7 +426,7 @@ const projectWithNoLeaderAndInviteForWrongUser: ProjectCardFieldsFragment = {
     logoUrl: null,
     hiring: false,
     rank: 0,
-    visibility: "Public",
+    visibility: "public",
   },
   githubRepos: [
     {
@@ -463,7 +463,7 @@ const projectWithNoLeaderAndInvite: ProjectCardFieldsFragment = {
     logoUrl: null,
     hiring: false,
     rank: 0,
-    visibility: "Public",
+    visibility: "public",
   },
   githubRepos: [
     {

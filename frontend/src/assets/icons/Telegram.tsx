@@ -1,5 +1,5 @@
 interface TelegramProps {
-  className: string;
+  className?: string;
   size?: number;
 }
 

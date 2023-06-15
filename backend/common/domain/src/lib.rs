@@ -20,7 +20,10 @@ pub use messaging::{
 };
 
 mod project;
-pub use project::{Error as ProjectError, Event as ProjectEvent, Id as ProjectId, Project};
+pub use project::{
+	Error as ProjectError, Event as ProjectEvent, Id as ProjectId, Project,
+	Visibility as ProjectVisibility,
+};
 
 mod payment;
 pub use payment::{
@@ -44,12 +47,11 @@ pub use github::{
 	FetchRepoService as GithubFetchRepoService, FetchService as GithubFetchService,
 	FetchUserService as GithubFetchUserService, FullUser as GithubFullUser, Issue as GithubIssue,
 	IssueId as GithubIssueId, IssueNumber as GithubIssueNumber, IssueStatus as GithubIssueStatus,
-	IssueType as GithubIssueType, Languages as GithubRepoLanguages, Repo as GithubRepo,
-	RepoId as GithubRepoId, SearchService as GithubSearchService,
-	SearchUserService as GithubSearchUserService, Service as GithubService,
-	ServiceError as GithubServiceError, ServiceIssueFilters as GithubServiceIssueFilters,
-	ServiceResult as GithubServiceResult, SocialAccount as GithubUserSocialAccount,
-	User as GithubUser, UserId as GithubUserId,
+	IssueType as GithubIssueType, Repo as GithubRepo, RepoId as GithubRepoId,
+	SearchService as GithubSearchService, SearchUserService as GithubSearchUserService,
+	Service as GithubService, ServiceError as GithubServiceError,
+	ServiceIssueFilters as GithubServiceIssueFilters, ServiceResult as GithubServiceResult,
+	SocialAccount as GithubUserSocialAccount, User as GithubUser, UserId as GithubUserId,
 };
 
 mod command;
@@ -72,9 +74,3 @@ pub mod specifications;
 pub use specifications::Error as SpecificationError;
 
 pub mod stream_filter;
-
-#[macro_use]
-extern crate diesel;
-
-#[macro_use]
-extern crate derive;

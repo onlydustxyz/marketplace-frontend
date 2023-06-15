@@ -23,13 +23,13 @@ where
 {
 	type Row = <(BudgetId, Option<ProjectId>, Decimal, Decimal, Decimal) as Queryable<ST, Pg>>::Row;
 
-	fn build(row: Self::Row) -> Self {
-		let (id, project_id, initial_amount, remaining_amount, _) = Queryable::build(row);
-		Self {
+	fn build(row: Self::Row) -> diesel::deserialize::Result<Self> {
+		let (id, project_id, initial_amount, remaining_amount, _) = Queryable::build(row)?;
+		Ok(Self {
 			id,
 			project_id,
 			initial_amount,
 			remaining_amount,
-		}
+		})
 	}
 }

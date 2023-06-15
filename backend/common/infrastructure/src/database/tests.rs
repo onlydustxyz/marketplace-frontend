@@ -33,7 +33,7 @@ lastname, location->'city' as city, location->'number' as number, location->'str
 location->'post_code' as post_code, location->'country' as country,
 payout_settings->'WireTransfer'->>'BIC' as BIC, payout_settings->'WireTransfer'->>'IBAN' as IBAN,
 payout_settings->'EthTransfer'->>'Name' as name, payout_settings->'EthTransfer'->>'Address' as
-address     FROM user_info
+address     FROM user_payout_info
 ) information ON (auth.users.id = information.user_id);
 "
 )]
@@ -89,7 +89,7 @@ SELECT id, project_id, github_user_id
 FROM pending_project_leader_invitations;
 "
 )]
-async fn crm_select(#[case] query: &str, connection: PgConnection) {
-	let result = sql_query(query).execute(&connection);
+fn crm_select(#[case] query: &str, mut connection: PgConnection) {
+	let result = sql_query(query).execute(&mut connection);
 	assert!(result.is_ok(), "Error during query execution: {:?}", result);
 }

@@ -1,10 +1,11 @@
 import { ProfileProjectFragment, UserProfileFragment } from "src/__generated/graphql";
-import ContributorProfileSidePanel, { HeaderColor } from "./View";
-import { Project } from "./ProjectCard";
+import ContributorProfileSidePanel from "./View";
+import { Project } from "./ReadOnlyView/ProjectCard";
 import { daysFromNow, minutesFromNow } from "src/utils/date";
 import { withRouter } from "storybook-addon-react-router-v6";
 import withToasterProvider from "src/test/storybook/decorators/withToasterProvider";
 import withSidePanelStackProvider from "src/test/storybook/decorators/withSidePanelStackProvider";
+import { HeaderColor } from "./Header";
 
 export default {
   title: "ContributorProfileSidePanel",
@@ -30,11 +31,11 @@ const profileFull: UserProfileFragment = {
   bio: "Anthony Buisset est né le 17 décembre 1991 au Mans. Il commence la pétanque à l'âge de trois ans. Il pratique d'abord ce sport au sein de sa famille, avec son grand-père et son père.",
   createdAt: "2023-05-10T08:46:57.965219+00:00",
   lastSeen: "2023-05-20T10:10:10.965219+00:00",
-  email: "anthony@foobar.org",
-  twitter: "https://twitter.com/antho",
-  telegram: "https://telegram.me/antho",
-  linkedin: "https://linkedin.com/antho",
-  discord: "ANTHO123",
+  email: [{ contact: "anthony@foobar.org", public: true }],
+  twitter: [{ contact: "https://twitter.com/antho", public: true }],
+  telegram: [{ contact: "https://telegram.me/antho", public: true }],
+  linkedin: [{ contact: "https://linkedin.com/antho", public: true }],
+  discord: [{ contact: "ANTHO123", public: true }],
   website: "https://antho-petanque.com",
   languages: {
     Rust: 123,
@@ -83,11 +84,11 @@ const profileNotSignedUp: UserProfileFragment = {
   bio: "Anthony Buisset est né le 17 décembre 1991 au Mans. Il commence la pétanque à l'âge de trois ans. Il pratique d'abord ce sport au sein de sa famille, avec son grand-père et son père.",
   createdAt: null,
   lastSeen: null,
-  email: "anthony@foobar.org",
-  twitter: "https://twitter.com/antho",
-  telegram: null,
-  linkedin: null,
-  discord: "ANTHO123",
+  email: [{ contact: "anthony@foobar.org", public: true }],
+  twitter: [{ contact: "https://twitter.com/antho", public: true }],
+  telegram: [],
+  linkedin: [],
+  discord: [{ contact: "ANTHO123", public: true }],
   website: null,
   languages: {
     Rust: 123,
@@ -119,11 +120,11 @@ const profileMinimalist: UserProfileFragment = {
   languages: {},
   createdAt: null,
   lastSeen: null,
-  email: null,
-  twitter: null,
-  telegram: null,
-  linkedin: null,
-  discord: null,
+  email: [],
+  twitter: [],
+  telegram: [],
+  linkedin: [],
+  discord: [],
   website: null,
   contributionCounts: [],
   projectsLeaded: [],
@@ -190,6 +191,24 @@ export const Default = {
       profile={profileFull}
       projects={[kakarot, wtf, checkpoint, poseidon]}
       headerColor={headerColor}
+    />
+  ),
+  parameters: {
+    chromatic: { delay: 1500 },
+  },
+};
+
+export const Own = {
+  render: ({ headerColor = HeaderColor.Cyan }: Args) => (
+    <ContributorProfileSidePanel
+      open={true}
+      setOpen={() => {
+        return;
+      }}
+      profile={profileFull}
+      projects={[kakarot, wtf, checkpoint, poseidon]}
+      headerColor={headerColor}
+      isOwn
     />
   ),
   parameters: {

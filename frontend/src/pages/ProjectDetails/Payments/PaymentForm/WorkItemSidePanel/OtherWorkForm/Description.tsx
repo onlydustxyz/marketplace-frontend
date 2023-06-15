@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import { useForm, useWatch } from "react-hook-form";
 import Input from "src/components/FormInput";
-import FormToggle from "./FormToggle";
+import FormToggle from "src/components/FormToggle";
 import MarkdownPreview from "src/components/MarkdownPreview";
 import { useIntl } from "src/hooks/useIntl";
 
@@ -31,7 +31,7 @@ export default function Description({ description, setDescription }: Props) {
         />
       </div>
       {displayPreview ? (
-        <div className="w-full bg-white/5 border border-greyscale-50/[0.08] rounded-xl font-walsheim font-normal text-base px-4 py-3 text-greyscale-50">
+        <div className="w-full bg-white/5 border border-greyscale-50/[0.08] rounded-xl text-base px-4 py-3">
           <MarkdownPreview>{description}</MarkdownPreview>
         </div>
       ) : (

@@ -298,6 +298,7 @@
     }
   },
   "profile": {
+    "editButton": "Edit profile",
     "joinedAt": "Joined in __joinedAt__",
     "firstContributedAt": "Contributed first on __firstContributedAt__",
     "valueCopiedToClipboard": "__valueName__ copied to clipboard",
@@ -305,7 +306,9 @@
     "discord": "Discord username",
     "sections": {
       "technologies": {
-        "title": "Technologies"
+        "title": "Technologies",
+        "subtitle": "Rank from most to least proficient.",
+        "searchPlaceholder": "Search technologies"
       },
       "stats": {
         "contributions": "Contributions",
@@ -339,6 +342,7 @@
     "form": {
       "address": "Street address",
       "bankWire": "Bank wire",
+      "bio": "Bio",
       "bic": "BIC",
       "bicInvalid": "Please enter a valid BIC",
       "bicRequired": "Your BIC is required",
@@ -376,6 +380,7 @@
       "profileTypeCompany": "Company",
       "profileTypeIndividual": "Individual",
       "send": "Save payout info",
+      "done": "Done",
       "success": "Changes saved",
       "telegram": "Telegram",
       "telegramPlaceholder": "Telegram",
@@ -383,10 +388,20 @@
       "twitterPlaceholder": "Twitter",
       "typeOfProfile": "Profile type",
       "privacyNotice": "Your info remains private.\n We'll only use it to process payments.",
+      "weeklyAllocatedTime": {
+        "title": "Weekly allocated time",
+        "none": "None",
+        "lessThan1Day": "Less than 1 day",
+        "1to3days": "1 to 3 days",
+        "moreThan3days": "More than 3 days",
+        "lookingForAJob": "I'm looking for a job",
+        "privacyNotice": "Private information"
+      },
       "saveStatus": {
         "unsaved": "Unsaved changes",
         "saved": "All changes saved"
-      }
+      },
+      "website": "Website"
     },
     "missing": {
       "button": "Complete payout information",

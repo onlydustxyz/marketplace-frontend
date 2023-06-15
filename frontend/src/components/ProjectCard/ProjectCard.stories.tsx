@@ -34,7 +34,7 @@ export const Hiring = {
 export const Private = {
   render: () => (
     <ProjectCard
-      {...props({ ...args, visibility: "Private" })}
+      {...props({ ...args, visibility: "private" })}
       pendingInvitations={args.withInvitation ? props(args).pendingInvitations : []}
     />
   ),
@@ -190,5 +190,5 @@ const args = {
   projectLeadsCount: 1,
   hiring: false,
   rank: 0,
-  visibility: "Public",
+  visibility: "public",
 };

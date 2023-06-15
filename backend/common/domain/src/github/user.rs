@@ -3,6 +3,7 @@ use std::str::FromStr;
 use derive_getters::Getters;
 use derive_more::{AsRef, Display, From, Into};
 use derive_new::new;
+use diesel_derive_newtype::DieselNewType;
 use juniper::{GraphQLObject, ParseScalarResult, ParseScalarValue, Value};
 use serde::{Deserialize, Serialize};
 use url::Url;
@@ -69,11 +70,8 @@ pub struct SocialAccount {
 	From,
 	Into,
 	AsRef,
-	AsExpression,
-	FromToSql,
-	FromSqlRow,
+	DieselNewType,
 )]
-#[sql_type = "diesel::sql_types::BigInt"]
 pub struct Id(i64);
 
 impl FromStr for Id {

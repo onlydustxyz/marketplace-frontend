@@ -19,10 +19,8 @@ use serde::{Deserialize, Serialize};
 	AsChangeset,
 	Queryable,
 )]
-#[table_name = "terms_and_conditions_acceptances"]
-#[primary_key(user_id)]
+#[diesel(primary_key(user_id))]
 pub struct TermsAndConditionsAcceptance {
-	#[diesel(deserialize_as = "uuid::Uuid")]
 	user_id: UserId,
 	acceptance_date: NaiveDateTime,
 }

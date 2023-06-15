@@ -8,8 +8,8 @@ use std::{
 use anyhow::anyhow;
 use domain::{
 	stream_filter::{self, StreamFilterWith},
-	GithubFullUser, GithubIssue, GithubIssueNumber, GithubRepoId, GithubRepoLanguages,
-	GithubServiceIssueFilters, GithubUser, GithubUserId, PositiveCount,
+	GithubFullUser, GithubIssue, GithubIssueNumber, GithubRepoId, GithubServiceIssueFilters,
+	GithubUser, GithubUserId, Languages, PositiveCount,
 };
 use futures::{stream::empty, Stream, StreamExt, TryStreamExt};
 use octocrab::{
@@ -165,7 +165,7 @@ impl Client {
 	pub async fn get_languages_by_repository_id(
 		&self,
 		id: &GithubRepoId,
-	) -> Result<GithubRepoLanguages, Error> {
+	) -> Result<Languages, Error> {
 		self.get_as(format!(
 			"{}repositories/{id}/languages",
 			self.octocrab().base_url

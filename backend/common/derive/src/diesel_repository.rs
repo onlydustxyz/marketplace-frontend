@@ -27,22 +27,22 @@ pub fn impl_diesel_repository(derive_input: syn::DeriveInput) -> TokenStream {
 		quote! {
 			#[tracing::instrument(name = #exists_span_name, skip(self))]
 			pub fn exists(&self, id: &<#entity_type as ::domain::Entity>::Id) -> Result<bool, infrastructure::database::DatabaseError> {
-				let connection = self.0.connection()?;
-				let exists = diesel::select(diesel::dsl::exists(#table.filter(#id.eq(id)))).get_result(&*connection)?;
+				let mut connection = self.0.connection()?;
+				let exists = diesel::select(diesel::dsl::exists(#table.filter(#id.eq(id)))).get_result(&mut *connection)?;
 				Ok(exists)
 			}
 
 			#[tracing::instrument(name = #find_by_id_span_name, skip(self))]
 			pub fn find_by_id(&self, id: &<#entity_type as ::domain::Entity>::Id) -> Result<#entity_type, infrastructure::database::DatabaseError> {
-				let connection = self.0.connection()?;
-				let entity = #table.find(*id).first(&*connection)?;
+				let mut connection = self.0.connection()?;
+				let entity = #table.find(*id).first(&mut *connection)?;
 				Ok(entity)
 			}
 
 			#[tracing::instrument(name = #list_span_name, skip(self))]
 			pub fn list(&self) -> Result<Vec<#entity_type>, infrastructure::database::DatabaseError> {
-				let connection = self.0.connection()?;
-				let entities = #table.get_results(&*connection)?;
+				let mut connection = self.0.connection()?;
+				let entities = #table.get_results(&mut *connection)?;
 				Ok(entities)
 			}
 		}
@@ -54,18 +54,18 @@ pub fn impl_diesel_repository(derive_input: syn::DeriveInput) -> TokenStream {
 		quote! {
 			#[tracing::instrument(name = #insert_span_name, skip(self))]
 			pub fn insert(&self, entity: &#entity_type) -> Result<(), infrastructure::database::DatabaseError> {
-				let connection = self.0.connection()?;
-				diesel::insert_into(#table).values(entity).execute(&*connection)?;
+				let mut connection = self.0.connection()?;
+				diesel::insert_into(#table).values(entity).execute(&mut *connection)?;
 				Ok(())
 			}
 
 			#[tracing::instrument(name = #insert_span_name, skip(self))]
 			pub fn try_insert(&self, entity: &#entity_type) -> Result<(), infrastructure::database::DatabaseError> {
-				let connection = self.0.connection()?;
+				let mut connection = self.0.connection()?;
 				diesel::insert_into(#table)
 					.values(entity)
 					.on_conflict_do_nothing()
-					.execute(&*connection)?;
+					.execute(&mut *connection)?;
 				Ok(())
 			}
 		}
@@ -77,11 +77,11 @@ pub fn impl_diesel_repository(derive_input: syn::DeriveInput) -> TokenStream {
 		quote! {
 			#[tracing::instrument(name = #update_span_name, skip(self, change_set))]
 			pub fn update<A: AsChangeset<Target = #table, Changeset = C>, C: QueryFragment<Pg>>(&self, id: &<#entity_type as ::domain::Entity>::Id, change_set: A) -> Result<(), infrastructure::database::DatabaseError> {
-				let connection = self.0.connection()?;
+				let mut connection = self.0.connection()?;
 				diesel::update(#table)
 					.filter(#id.eq(id))
 					.set(change_set)
-					.execute(&*connection)?;
+					.execute(&mut *connection)?;
 				Ok(())
 			}
 		}
@@ -92,13 +92,13 @@ pub fn impl_diesel_repository(derive_input: syn::DeriveInput) -> TokenStream {
 		quote! {
 			#[tracing::instrument(name = #upsert_span_name, skip(self))]
 			pub fn upsert(&self, entity: &#entity_type)  -> Result<(), infrastructure::database::DatabaseError> {
-				let connection = self.0.connection()?;
+				let mut connection = self.0.connection()?;
 				diesel::insert_into(#table)
 					.values(entity)
 					.on_conflict(#id)
 					.do_update()
 					.set(entity)
-					.execute(&*connection)?;
+					.execute(&mut *connection)?;
 				Ok(())
 			}
 		}
@@ -110,15 +110,15 @@ pub fn impl_diesel_repository(derive_input: syn::DeriveInput) -> TokenStream {
 		quote! {
 			#[tracing::instrument(name = #delete_span_name, skip(self))]
 			pub fn delete(&self, id: &<#entity_type as ::domain::Entity>::Id) -> Result<(), infrastructure::database::DatabaseError> {
-				let connection = self.0.connection()?;
-				diesel::delete(#table).filter(#id.eq(id)).execute(&*connection)?;
+				let mut connection = self.0.connection()?;
+				diesel::delete(#table).filter(#id.eq(id)).execute(&mut *connection)?;
 				Ok(())
 			}
 
 			#[tracing::instrument(name = #clear_span_name, skip(self))]
 			pub fn clear(&self) -> Result<(), infrastructure::database::DatabaseError> {
-				let connection = self.0.connection()?;
-				diesel::delete(#table).execute(&*connection)?;
+				let mut connection = self.0.connection()?;
+				diesel::delete(#table).execute(&mut *connection)?;
 				Ok(())
 			}
 		}

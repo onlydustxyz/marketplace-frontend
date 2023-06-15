@@ -93,7 +93,7 @@ const ALL_PROJECTS_RESULT: { data: GetProjectsQueryResult["data"] } = {
           logoUrl: null,
           hiring: false,
           rank: 0,
-          visibility: "Public",
+          visibility: "public",
         },
         projectLeads: [
           {
@@ -157,7 +157,7 @@ const PROJECT_OVERVIEW_DETAILS_RESULT: { data: GetProjectOverviewDetailsQueryRes
         longDescription: "This is the long description",
         telegramLink: TEST_TELEGRAM_LINK,
         hiring: false,
-        visibility: "Public",
+        visibility: "public",
       },
       pendingInvitations: [],
       budgetsAggregate: { aggregate: { sum: { initialAmount: 0, spentAmount: 0 } } },
@@ -213,7 +213,7 @@ const graphQlMocks = [
               projectId: TEST_PROJECT_ID,
               name: TEST_PROJECT_NAME,
               logoUrl: null,
-              visibility: "Public",
+              visibility: "public",
             },
             pendingInvitations: [],
             projectLeads: [],

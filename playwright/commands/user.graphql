@@ -19,16 +19,6 @@ mutation createGithubAuthUser($userId: uuid!, $githubUserId: String!, $accessTok
   }
 }
 
-mutation updateProfile(
-  $contactInformation: ContactInformation
-  $identity: IdentityInput
-  $location: Location
-  $payoutSettings: PayoutSettingsInput
-) {
-  updateProfileInfo(
-    contactInformation: $contactInformation
-    identity: $identity
-    location: $location
-    payoutSettings: $payoutSettings
-  )
+mutation updatePayoutInfo($identity: IdentityInput, $location: Location, $payoutSettings: PayoutSettingsInput) {
+  updatePayoutInfo(identity: $identity, location: $location, payoutSettings: $payoutSettings)
 }

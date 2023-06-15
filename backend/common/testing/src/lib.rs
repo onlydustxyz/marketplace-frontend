@@ -1,8 +1,7 @@
 pub mod fixtures;
 
-use diesel::{pg::PgConnection, Connection};
-use r2d2_diesel::ConnectionManager;
-type Pool = r2d2::Pool<ConnectionManager<PgConnection>>;
+use diesel::{pg::PgConnection, r2d2::ConnectionManager, Connection};
+type Pool = diesel::r2d2::Pool<ConnectionManager<PgConnection>>;
 
 use infrastructure::database;
 

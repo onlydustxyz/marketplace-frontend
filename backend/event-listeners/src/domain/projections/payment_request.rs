@@ -6,7 +6,7 @@ use infrastructure::database::schema::payment_requests;
 
 #[allow(clippy::too_many_arguments)]
 #[derive(Debug, Insertable, Identifiable, Queryable, AsChangeset, new, Getters)]
-#[changeset_options(treat_none_as_null = "true")]
+#[diesel(treat_none_as_null = true)]
 pub struct PaymentRequest {
 	id: PaymentId,
 	budget_id: BudgetId,

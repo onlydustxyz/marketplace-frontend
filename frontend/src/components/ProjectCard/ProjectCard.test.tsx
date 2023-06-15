@@ -33,7 +33,7 @@ const PROJECT: Project = {
     logoUrl: "https://avatars.githubusercontent.com/u/115809607?v=4",
     hiring: false,
     rank: 0,
-    visibility: "Public",
+    visibility: "public",
   },
   projectLeads: [
     {

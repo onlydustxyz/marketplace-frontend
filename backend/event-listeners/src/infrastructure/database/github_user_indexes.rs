@@ -6,11 +6,11 @@ use crate::domain::{GithubUserIndexRepository, RepositoryResult};
 
 impl GithubUserIndexRepository for Client {
 	fn try_insert(&self, user_id: &GithubUserId) -> RepositoryResult<()> {
-		let connection = self.connection()?;
+		let mut connection = self.connection()?;
 		diesel::insert_into(dsl::github_user_indexes)
 			.values((dsl::user_id.eq(user_id),))
 			.on_conflict_do_nothing()
-			.execute(&*connection)?;
+			.execute(&mut *connection)?;
 		Ok(())
 	}
 
@@ -18,11 +18,11 @@ impl GithubUserIndexRepository for Client {
 		&self,
 		user_id: &GithubUserId,
 	) -> RepositoryResult<Option<serde_json::Value>> {
-		let connection = self.connection()?;
+		let mut connection = self.connection()?;
 		let state = dsl::github_user_indexes
 			.select(dsl::user_indexer_state)
 			.filter(dsl::user_id.eq(user_id))
-			.first(&*connection)
+			.first(&mut *connection)
 			.optional()?
 			.flatten();
 		Ok(state)
@@ -33,11 +33,11 @@ impl GithubUserIndexRepository for Client {
 		user_id: &GithubUserId,
 		state: serde_json::Value,
 	) -> RepositoryResult<()> {
-		let connection = self.connection()?;
+		let mut connection = self.connection()?;
 		diesel::update(dsl::github_user_indexes)
 			.set(dsl::user_indexer_state.eq(state))
 			.filter(dsl::user_id.eq(user_id))
-			.execute(&*connection)?;
+			.execute(&mut *connection)?;
 		Ok(())
 	}
 
@@ -45,11 +45,11 @@ impl GithubUserIndexRepository for Client {
 		&self,
 		user_id: &GithubUserId,
 	) -> RepositoryResult<Option<serde_json::Value>> {
-		let connection = self.connection()?;
+		let mut connection = self.connection()?;
 		let state = dsl::github_user_indexes
 			.select(dsl::contributor_indexer_state)
 			.filter(dsl::user_id.eq(user_id))
-			.first(&*connection)
+			.first(&mut *connection)
 			.optional()?
 			.flatten();
 		Ok(state)
@@ -60,7 +60,7 @@ impl GithubUserIndexRepository for Client {
 		user_id: &GithubUserId,
 		state: serde_json::Value,
 	) -> RepositoryResult<()> {
-		let connection = self.connection()?;
+		let mut connection = self.connection()?;
 		diesel::insert_into(dsl::github_user_indexes)
 			.values((
 				dsl::user_id.eq(user_id),
@@ -69,7 +69,7 @@ impl GithubUserIndexRepository for Client {
 			.on_conflict(dsl::user_id)
 			.do_update()
 			.set(dsl::contributor_indexer_state.eq(state))
-			.execute(&*connection)?;
+			.execute(&mut *connection)?;
 		Ok(())
 	}
 }

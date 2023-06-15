@@ -5,31 +5,27 @@ export const DUMP_PATH = "playwright/marketplace_db_dump";
 
 export const dumpDB = () => {
   const DATABASE_URL = getEnv("DATABASE_URL");
-  execSync(
-    `pg_dump \
-        --clean \
-        --exclude-schema=hdb_catalog \
-        --exclude-table=github_repo_indexes \
-        --exclude-table=github_user_indexes \
-        --exclude-table=github_issues \
-        --exclude-table=github_users \
-        --exclude-table=github_repos \
-        --exclude-table=github_repos_contributors \
-        ${DATABASE_URL} > "${DUMP_PATH}"`,
-    {
-      stdio: "pipe",
-    }
-  );
+  execSync(`pg_dump --data-only --exclude-schema=hdb_catalog ${DATABASE_URL} > "${DUMP_PATH}"`, {
+    stdio: "pipe",
+  });
 };
 
 export const restoreDB = () => {
   const DATABASE_URL = getEnv("DATABASE_URL");
+  cleanupDB();
   execSync(`if [ -f "${DUMP_PATH}" ]; then psql ${DATABASE_URL} < "${DUMP_PATH}"; fi`, { stdio: "pipe" });
 };
 
 export const cleanupDB = () => {
   const DATABASE_URL = getEnv("DATABASE_URL");
-  execSync(`rm -f "${DUMP_PATH}" && psql ${DATABASE_URL} -f "playwright/commands/db/truncate.sql"`, {
+  execSync(`psql ${DATABASE_URL} -f "playwright/commands/db/truncate.sql"`, { stdio: "pipe" });
+};
+
+export const indexerRunning = () => {
+  const DATABASE_URL = getEnv("DATABASE_URL");
+  const count = execSync(`xargs -0 psql ${DATABASE_URL} -AXqtc < ./playwright/commands/db/indexer_running.sql`, {
     stdio: "pipe",
   });
+
+  return parseInt(count.toString());
 };

@@ -6,7 +6,7 @@ import Link from "src/icons/Link";
 import EmptyState from "src/pages/ProjectDetails/Payments/PaymentForm/WorkItemSidePanel/EmptyState";
 import Toggle from "src/pages/ProjectDetails/Payments/PaymentForm/WorkItemSidePanel/Toggle";
 import OtherIssueInput from "./OtherIssueInput";
-import FormToggle from "src/pages/ProjectDetails/Payments/PaymentForm/WorkItemSidePanel/OtherWorkForm/FormToggle";
+import FormToggle from "src/components/FormToggle";
 import { useForm, useWatch } from "react-hook-form";
 import EyeOffLine from "src/icons/EyeOffLine";
 import FormInput from "src/components/FormInput";

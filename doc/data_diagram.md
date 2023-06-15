@@ -40,6 +40,13 @@ class Commands {
    updatedAt: timestamp
 }
 
+class ContactInformations {
+   channel: contact_channel
+   contact: String
+   githubUserId: bigint
+   public: Boolean
+}
+
 class ContributionCounts {
    githubUserId: bigint
    paidCount: bigint
@@ -79,9 +86,9 @@ class GithubIssues {
    issueNumber: bigint!
    mergedAt: timestamp
    repoId: bigint!
-   status: jsonb!
+   status: github_issue_status!
    title: String!
-   type: jsonb!
+   type: github_issue_type!
 }
 
 class GithubRepos {
@@ -198,7 +205,7 @@ class ProjectDetails {
    rank: Int!
    shortDescription: String!
    telegramLink: String
-   visibility: jsonb!
+   visibility: project_visibility!
 }
 
 class ProjectGithubRepos {
@@ -255,7 +262,7 @@ class RegisteredUsers {
    login: String
    paymentRequests: [PaymentRequests!]!
    projectsLeaded: [ProjectLeads!]!
-   userInfo: UserInfo
+   userPayoutInfo: UserPayoutInfo
 }
 
 class Sponsors {
@@ -280,9 +287,8 @@ class User {
    user: RegisteredUsers
 }
 
-class UserInfo {
+class UserPayoutInfo {
    arePayoutSettingsValid: Boolean!
-   contactInformation: jsonb
    identity: jsonb
    location: jsonb
    payoutSettings: jsonb
@@ -292,26 +298,24 @@ class UserInfo {
 class UserProfiles {
    avatarUrl: String
    bio: String
+   contactInformations: [ContactInformations!]!
    contributionCounts: [ContributionCounts!]!
    contributionStats: [ContributionStats!]!
    contributions: [Contributions!]!
    createdAt: timestamptz
-   discord: String
-   email: String
    githubUserId: bigint
    htmlUrl: String
    languages: jsonb
    lastSeen: timestamptz
-   linkedin: String
    location: String
    login: String
+   lookingForAJob: Boolean
    paymentStats: [PaymentStats!]!
    projectsContributed: [ProjectsContributorsView!]!
    projectsLeaded: [ProjectLeads!]!
-   telegram: String
-   twitter: String
    userId: uuid
    website: String
+   weeklyAllocatedTime: allocated_time
 }
 
 class WorkItems {
@@ -452,12 +456,13 @@ ProjectsContributorsView -- Projects
 ProjectsContributorsView -- UserProfiles
 ProjectsSponsors -- Projects
 ProjectsSponsors -- Sponsors
-RegisteredUsers -- UserInfo
+RegisteredUsers -- UserPayoutInfo
 RegisteredUsers --* PaymentRequests
 RegisteredUsers --* ProjectLeads
 Sponsors --* ProjectsSponsors
 User -- RegisteredUsers
 User --* PaymentRequests
+UserProfiles --* ContactInformations
 UserProfiles --* ContributionCounts
 UserProfiles --* ContributionStats
 UserProfiles --* Contributions

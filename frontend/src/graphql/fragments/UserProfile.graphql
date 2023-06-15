@@ -18,10 +18,30 @@ fragment UserProfileDetails on UserProfiles {
   languages
   createdAt
   lastSeen
-  email
-  twitter
-  telegram
-  linkedin
-  discord
   website
+  email: contactInformations(where: { channel: { _eq: "email" } }, limit: 1) {
+    contact
+    public
+  }
+  telegram: contactInformations(where: { channel: { _eq: "telegram" } }, limit: 1) {
+    contact
+    public
+  }
+  twitter: contactInformations(where: { channel: { _eq: "twitter" } }, limit: 1) {
+    contact
+    public
+  }
+  discord: contactInformations(where: { channel: { _eq: "discord" } }, limit: 1) {
+    contact
+    public
+  }
+  linkedin: contactInformations(where: { channel: { _eq: "linkedin" } }, limit: 1) {
+    contact
+    public
+  }
+}
+
+fragment OwnUserProfileDetails on UserProfiles {
+  weeklyAllocatedTime
+  lookingForAJob
 }

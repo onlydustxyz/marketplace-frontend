@@ -3,6 +3,11 @@ import { ChangeEventHandler, FocusEventHandler, KeyboardEventHandler, PropsWithC
 import { useFormContext, useFormState, RegisterOptions } from "react-hook-form";
 import View, { InputErrorDisplay } from "./View";
 
+export enum Size {
+  Sm = "sm",
+  Md = "md",
+}
+
 type PropsType = {
   label?: string;
   type?: string;
@@ -24,6 +29,8 @@ type PropsType = {
   withMargin?: boolean;
   as?: React.ElementType;
   inputProps?: React.InputHTMLAttributes<HTMLInputElement> | React.TextareaHTMLAttributes<HTMLTextAreaElement>;
+  size?: Size;
+  disabled?: boolean;
 } & PropsWithChildren;
 
 export default function Input({
@@ -48,6 +55,8 @@ export default function Input({
   children,
   as,
   inputProps,
+  disabled,
+  size = Size.Md,
 }: PropsType) {
   const { register } = useFormContext();
   const { errors } = useFormState({ name });
@@ -82,6 +91,8 @@ export default function Input({
         children,
         as,
         inputProps,
+        disabled,
+        size,
       }}
     />
   );

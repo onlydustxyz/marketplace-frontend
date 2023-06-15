@@ -3,7 +3,7 @@ use domain::{EthereumAddress, EthereumIdentity, EthereumName};
 use juniper::{GraphQLEnum, GraphQLInputObject};
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, Serialize, Deserialize, AsExpression, From, GraphQLInputObject)]
+#[derive(Debug, Clone, Serialize, Deserialize, From, GraphQLInputObject)]
 pub struct EthereumIdentityInput {
 	r#type: EthereumIdentityType,
 	opt_eth_address: Option<EthereumAddress>,

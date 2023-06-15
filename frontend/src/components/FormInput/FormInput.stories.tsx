@@ -1,3 +1,4 @@
+import { Size } from ".";
 import FormInput, { InputErrorDisplay } from "./View";
 
 export default {
@@ -49,6 +50,7 @@ export const Default = {
       showValidationErrors={true}
       requiredForPayment={args.requiredForPayment}
       withMargin={true}
+      size={Size.Md}
     />
   ),
 };

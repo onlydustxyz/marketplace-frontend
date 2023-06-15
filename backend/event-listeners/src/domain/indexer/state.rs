@@ -3,8 +3,8 @@ use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
-#[derive(Debug, Default, Clone, Serialize, Deserialize, AsExpression, FromToSql, FromSqlRow)]
-#[sql_type = "diesel::sql_types::Jsonb"]
+#[derive(Debug, Default, Clone, Serialize, Deserialize, AsExpression, FromSqlRow)]
+#[diesel(sql_type = diesel::sql_types::Jsonb)]
 pub struct State {
 	indexer_states: HashMap<String, Value>,
 }

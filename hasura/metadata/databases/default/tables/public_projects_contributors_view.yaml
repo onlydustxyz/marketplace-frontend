@@ -28,7 +28,7 @@ object_relationships:
         insertion_order: null
         remote_table:
           name: user_profiles
-          schema: public
+          schema: api
 select_permissions:
   - role: public
     permission:

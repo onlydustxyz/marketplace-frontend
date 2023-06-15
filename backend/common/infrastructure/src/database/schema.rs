@@ -1,5 +1,27 @@
 // @generated automatically by Diesel CLI.
 
+pub mod sql_types {
+    #[derive(diesel::sql_types::SqlType)]
+    #[diesel(postgres_type(name = "allocated_time"))]
+    pub struct AllocatedTime;
+
+    #[derive(diesel::sql_types::SqlType)]
+    #[diesel(postgres_type(name = "contact_channel"))]
+    pub struct ContactChannel;
+
+    #[derive(diesel::sql_types::SqlType)]
+    #[diesel(postgres_type(name = "github_issue_status"))]
+    pub struct GithubIssueStatus;
+
+    #[derive(diesel::sql_types::SqlType)]
+    #[diesel(postgres_type(name = "github_issue_type"))]
+    pub struct GithubIssueType;
+
+    #[derive(diesel::sql_types::SqlType)]
+    #[diesel(postgres_type(name = "project_visibility"))]
+    pub struct ProjectVisibility;
+}
+
 diesel::table! {
     applications (id) {
         id -> Uuid,
@@ -30,6 +52,18 @@ diesel::table! {
 }
 
 diesel::table! {
+    use diesel::sql_types::*;
+    use super::sql_types::ContactChannel;
+
+    contact_informations (user_id, channel) {
+        user_id -> Uuid,
+        channel -> ContactChannel,
+        contact -> Text,
+        public -> Bool,
+    }
+}
+
+diesel::table! {
     event_deduplications (deduplication_id) {
         deduplication_id -> Text,
         event_index -> Int4,
@@ -49,6 +83,10 @@ diesel::table! {
 }
 
 diesel::table! {
+    use diesel::sql_types::*;
+    use super::sql_types::GithubIssueType;
+    use super::sql_types::GithubIssueStatus;
+
     github_issues (id) {
         id -> Int8,
         repo_id -> Int8,
@@ -57,8 +95,8 @@ diesel::table! {
         author_id -> Int8,
         merged_at -> Nullable<Timestamp>,
         #[sql_name = "type"]
-        type_ -> Jsonb,
-        status -> Jsonb,
+        type_ -> GithubIssueType,
+        status -> GithubIssueStatus,
         title -> Text,
         html_url -> Text,
         closed_at -> Nullable<Timestamp>,
@@ -158,6 +196,9 @@ diesel::table! {
 }
 
 diesel::table! {
+    use diesel::sql_types::*;
+    use super::sql_types::ProjectVisibility;
+
     project_details (project_id) {
         project_id -> Uuid,
         telegram_link -> Nullable<Text>,
@@ -167,7 +208,7 @@ diesel::table! {
         long_description -> Text,
         hiring -> Bool,
         rank -> Int4,
-        visibility -> Jsonb,
+        visibility -> ProjectVisibility,
     }
 }
 
@@ -216,28 +257,27 @@ diesel::table! {
 }
 
 diesel::table! {
-    user_info (user_id) {
+    user_payout_info (user_id) {
         user_id -> Uuid,
         identity -> Nullable<Jsonb>,
         location -> Nullable<Jsonb>,
         payout_settings -> Nullable<Jsonb>,
-        contact_information -> Nullable<Jsonb>,
         are_payout_settings_valid -> Bool,
     }
 }
 
 diesel::table! {
+    use diesel::sql_types::*;
+    use super::sql_types::AllocatedTime;
+
     user_profile_info (id) {
         id -> Uuid,
-        email -> Nullable<Text>,
         bio -> Nullable<Text>,
         location -> Nullable<Text>,
         website -> Nullable<Text>,
-        twitter -> Nullable<Text>,
-        linkedin -> Nullable<Text>,
-        telegram -> Nullable<Text>,
-        discord -> Nullable<Text>,
         languages -> Nullable<Jsonb>,
+        weekly_allocated_time -> AllocatedTime,
+        looking_for_a_job -> Bool,
     }
 }
 
@@ -258,6 +298,7 @@ diesel::allow_tables_to_appear_in_same_query!(
     applications,
     budgets,
     commands,
+    contact_informations,
     event_deduplications,
     events,
     github_issues,
@@ -277,7 +318,7 @@ diesel::allow_tables_to_appear_in_same_query!(
     projects_sponsors,
     sponsors,
     terms_and_conditions_acceptances,
-    user_info,
+    user_payout_info,
     user_profile_info,
     work_items,
 );

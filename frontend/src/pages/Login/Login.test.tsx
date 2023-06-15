@@ -178,8 +178,8 @@ const payoutSettingsMock = {
         {
           __typename: "RegisteredUsers",
           id: TEST_USER_ID,
-          userInfo: {
-            __typename: "UserInfo",
+          userPayoutInfo: {
+            __typename: "UserPayoutInfo",
             userId: TEST_USER_ID,
             identity: null,
             location: null,
