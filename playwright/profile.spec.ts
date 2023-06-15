@@ -10,8 +10,9 @@ test.describe("As a signed-in user, I", () => {
     restoreDB();
   });
 
-  test.beforeEach(async ({ page, signIn, users }) => {
+  test.beforeEach(async ({ page, signIn, users, acceptTermsAndConditions }) => {
     await signIn(users.Olivier);
+    await acceptTermsAndConditions();
     profileSidePanelPage = new ProfileSidePanelPage(page);
     await profileSidePanelPage.goto();
   });

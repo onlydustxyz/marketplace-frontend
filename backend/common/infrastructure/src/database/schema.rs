@@ -209,6 +209,13 @@ diesel::table! {
 }
 
 diesel::table! {
+    terms_and_conditions_acceptances (user_id) {
+        user_id -> Uuid,
+        acceptance_date -> Timestamp,
+    }
+}
+
+diesel::table! {
     user_info (user_id) {
         user_id -> Uuid,
         identity -> Nullable<Jsonb>,
@@ -269,6 +276,7 @@ diesel::allow_tables_to_appear_in_same_query!(
     projects,
     projects_sponsors,
     sponsors,
+    terms_and_conditions_acceptances,
     user_info,
     user_profile_info,
     work_items,

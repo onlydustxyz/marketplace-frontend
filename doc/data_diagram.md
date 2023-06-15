@@ -142,6 +142,7 @@ class Issue {
 class Payment {
    amount: Amount!
    budgetId: Id!
+   commandId: Id!
    paymentId: Id!
    projectId: Id!
 }
@@ -263,6 +264,11 @@ class Sponsors {
    name: String!
    sponsorProjects: [ProjectsSponsors!]!
    url: String
+}
+
+class TermsAndConditionsAcceptances {
+   acceptanceDate: timestamp!
+   userId: uuid!
 }
 
 class User {

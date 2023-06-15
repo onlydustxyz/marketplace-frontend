@@ -1,14 +1,29 @@
 import { useAuth } from "src/hooks/useAuth";
 import View from "src/App/Layout/Header/ProfileButton/View";
 import usePayoutSettings from "src/hooks/usePayoutSettings";
-import { usePendingUserPaymentsQuery } from "src/__generated/graphql";
+import { useGetTermsAndConditionsAcceptancesQuery, usePendingUserPaymentsQuery } from "src/__generated/graphql";
+import { TERMS_AND_CONDITIONS_LAST_REDACTION_DATE } from "src/App/TermsAndConditionsWrapper";
 
 const ProfileButton = () => {
-  const { user, logout, githubUserId } = useAuth();
+  const { user, logout, githubUserId, impersonating } = useAuth();
   const { avatarUrl, login } = user ?? { avatarUrl: null, login: "My Account" };
 
   const { valid } = usePayoutSettings(githubUserId);
   const { data } = usePendingUserPaymentsQuery({ variables: { userId: user?.id }, skip: (valid ?? true) || !user?.id });
+
+  const termsAndConditionsAcceptanceQuery = useGetTermsAndConditionsAcceptancesQuery({
+    variables: { userId: user?.id },
+    skip: !user?.id,
+  });
+
+  const hideProfileItems = !!(
+    user?.id &&
+    !termsAndConditionsAcceptanceQuery.loading &&
+    !impersonating &&
+    (!termsAndConditionsAcceptanceQuery?.data?.termsAndConditionsAcceptancesByPk?.acceptanceDate ||
+      new Date(termsAndConditionsAcceptanceQuery?.data?.termsAndConditionsAcceptancesByPk?.acceptanceDate) <
+        new Date(TERMS_AND_CONDITIONS_LAST_REDACTION_DATE))
+  );
 
   const pendingPaymentRequestsCount =
     data?.registeredUsers
@@ -17,7 +32,7 @@ const ProfileButton = () => {
 
   const payoutSettingsInvalid = valid === false && pendingPaymentRequestsCount > 0;
 
-  return <View {...{ githubUserId, avatarUrl, login, logout, payoutSettingsInvalid }} />;
+  return <View {...{ githubUserId, avatarUrl, login, logout, payoutSettingsInvalid, hideProfileItems }} />;
 };
 
 export default ProfileButton;

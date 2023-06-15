@@ -27,10 +27,8 @@ export default function Card({
   return (
     <div
       className={classNames(
-        className,
         "rounded-2xl font-walsheim",
         "pseudo-outline",
-        "bg-white/2",
         {
           "w-full": fullWidth,
         },
@@ -47,7 +45,8 @@ export default function Card({
         {
           "before:border-greyscale-50/8": border === CardBorder.Light,
           "before:border-greyscale-50/12": border === CardBorder.Medium,
-        }
+        },
+        className
       )}
       data-testid={dataTestId}
     >
