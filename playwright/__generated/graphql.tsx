@@ -16289,14 +16289,14 @@ export type CreateGithubAuthUserMutationVariables = Exact<{
 
 export type CreateGithubAuthUserMutation = { __typename?: 'mutation_root', insertAuthUserProvider: { __typename?: 'authUserProviders', id: any } | null };
 
-export type UpdateProfileMutationVariables = Exact<{
+export type UpdatePayoutInfoMutationVariables = Exact<{
   identity: InputMaybe<IdentityInput>;
   location: InputMaybe<Location>;
   payoutSettings: InputMaybe<PayoutSettingsInput>;
 }>;
 
 
-export type UpdateProfileMutation = { __typename?: 'mutation_root', updatePayoutInfo: any };
+export type UpdatePayoutInfoMutation = { __typename?: 'mutation_root', updatePayoutInfo: any };
 
 export const LiveGithubUserIdFragmentDoc = gql`
     fragment LiveGithubUserId on User {
@@ -19212,8 +19212,8 @@ export function useCreateGithubAuthUserMutation(baseOptions?: Apollo.MutationHoo
 export type CreateGithubAuthUserMutationHookResult = ReturnType<typeof useCreateGithubAuthUserMutation>;
 export type CreateGithubAuthUserMutationResult = Apollo.MutationResult<CreateGithubAuthUserMutation>;
 export type CreateGithubAuthUserMutationOptions = Apollo.BaseMutationOptions<CreateGithubAuthUserMutation, CreateGithubAuthUserMutationVariables>;
-export const UpdateProfileDocument = gql`
-    mutation updateProfile($identity: IdentityInput, $location: Location, $payoutSettings: PayoutSettingsInput) {
+export const UpdatePayoutInfoDocument = gql`
+    mutation updatePayoutInfo($identity: IdentityInput, $location: Location, $payoutSettings: PayoutSettingsInput) {
   updatePayoutInfo(
     identity: $identity
     location: $location
@@ -19221,20 +19221,20 @@ export const UpdateProfileDocument = gql`
   )
 }
     `;
-export type UpdateProfileMutationFn = Apollo.MutationFunction<UpdateProfileMutation, UpdateProfileMutationVariables>;
+export type UpdatePayoutInfoMutationFn = Apollo.MutationFunction<UpdatePayoutInfoMutation, UpdatePayoutInfoMutationVariables>;
 
 /**
- * __useUpdateProfileMutation__
+ * __useUpdatePayoutInfoMutation__
  *
- * To run a mutation, you first call `useUpdateProfileMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateProfileMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useUpdatePayoutInfoMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdatePayoutInfoMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [updateProfileMutation, { data, loading, error }] = useUpdateProfileMutation({
+ * const [updatePayoutInfoMutation, { data, loading, error }] = useUpdatePayoutInfoMutation({
  *   variables: {
  *      identity: // value for 'identity'
  *      location: // value for 'location'
@@ -19242,10 +19242,10 @@ export type UpdateProfileMutationFn = Apollo.MutationFunction<UpdateProfileMutat
  *   },
  * });
  */
-export function useUpdateProfileMutation(baseOptions?: Apollo.MutationHookOptions<UpdateProfileMutation, UpdateProfileMutationVariables>) {
+export function useUpdatePayoutInfoMutation(baseOptions?: Apollo.MutationHookOptions<UpdatePayoutInfoMutation, UpdatePayoutInfoMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateProfileMutation, UpdateProfileMutationVariables>(UpdateProfileDocument, options);
+        return Apollo.useMutation<UpdatePayoutInfoMutation, UpdatePayoutInfoMutationVariables>(UpdatePayoutInfoDocument, options);
       }
-export type UpdateProfileMutationHookResult = ReturnType<typeof useUpdateProfileMutation>;
-export type UpdateProfileMutationResult = Apollo.MutationResult<UpdateProfileMutation>;
-export type UpdateProfileMutationOptions = Apollo.BaseMutationOptions<UpdateProfileMutation, UpdateProfileMutationVariables>;
+export type UpdatePayoutInfoMutationHookResult = ReturnType<typeof useUpdatePayoutInfoMutation>;
+export type UpdatePayoutInfoMutationResult = Apollo.MutationResult<UpdatePayoutInfoMutation>;
+export type UpdatePayoutInfoMutationOptions = Apollo.BaseMutationOptions<UpdatePayoutInfoMutation, UpdatePayoutInfoMutationVariables>;

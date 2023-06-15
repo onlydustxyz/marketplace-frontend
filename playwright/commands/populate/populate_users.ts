@@ -3,9 +3,9 @@ import { zip } from "lodash";
 import { users } from "../../fixtures/data/users";
 import { User, UserFixture } from "../../types";
 import {
-  UpdateProfileDocument,
-  UpdateProfileMutation,
-  UpdateProfileMutationVariables,
+  UpdatePayoutInfoDocument,
+  UpdatePayoutInfoMutation,
+  UpdatePayoutInfoMutationVariables,
 } from "../../__generated/graphql";
 import { mutateAsRegisteredUser } from "../common";
 import { createGithubUser, signinUser } from "../user";
@@ -19,10 +19,10 @@ const populateUser = async (request: APIRequestContext, user: UserFixture) => {
   const credentials = await createGithubUser(request, user.github.id, user.github.login, user.email);
   const session = await signinUser(request, credentials);
 
-  if (user.profile && user.profile.populate !== false) {
-    await mutateAsRegisteredUser<UpdateProfileMutation, UpdateProfileMutationVariables>(session.accessToken, {
-      mutation: UpdateProfileDocument,
-      variables: user.profile,
+  if (user.payoutInfo && user.payoutInfo.populate !== false) {
+    await mutateAsRegisteredUser<UpdatePayoutInfoMutation, UpdatePayoutInfoMutationVariables>(session.accessToken, {
+      mutation: UpdatePayoutInfoDocument,
+      variables: user.payoutInfo,
     });
   }
 
