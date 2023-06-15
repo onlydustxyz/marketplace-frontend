@@ -79,6 +79,7 @@ export default function TechnologiesCard({ technologies = {}, setTechnologies }:
             placeholder={T("profile.edit.sections.technologies.searchPlaceholder")}
             maxDisplayedOptions={5}
             multiple
+            testId="technologiesCombobox"
           />
         </div>
         {selectedLanguages.length > 0 && (
@@ -97,6 +98,7 @@ export default function TechnologiesCard({ technologies = {}, setTechnologies }:
                         "flex gap-1 items-center justify-center pr-2 w-fit",
                         "bg-white/2 border border-greyscale-50/8 rounded-full rounded-l-none border-l-0 text-sm"
                       )}
+                      data-technology={item.id}
                     >
                       <div className="flex bg-white/5 rounded w-4 h-4 text-xs justify-center items-center cursor-default">
                         {index + 1}

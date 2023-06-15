@@ -10,6 +10,7 @@ export type Props<T> = {
   optionFilter: (query: string, option: T) => boolean;
   placeholder: string;
   maxDisplayedOptions: number;
+  testId?: string;
 } & (
   | {
       selectedOptions: T[];
@@ -36,6 +37,7 @@ export default function StylizedCombobox<T extends Option | { toString: () => st
   placeholder,
   multiple,
   maxDisplayedOptions,
+  testId,
 }: Props<T>) {
   const [query, setQuery] = useState("");
 
@@ -43,7 +45,7 @@ export default function StylizedCombobox<T extends Option | { toString: () => st
 
   const children = ({ open }: { open: boolean }) => (
     <div>
-      <Combobox.Button as="div">
+      <Combobox.Button as="div" data-testid={testId}>
         <div
           className={classNames(
             "flex flex-row items-center justify-between w-full rounded-lg px-1.5 h-8 bg-white/5 border border-greyscale-50/8 text-greyscale-400",

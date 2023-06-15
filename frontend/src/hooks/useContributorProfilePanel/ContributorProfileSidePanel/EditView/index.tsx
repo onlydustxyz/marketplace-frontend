@@ -170,7 +170,7 @@ export default function EditView({ profile, headerColor, setEditMode }: Props) {
           </div>
 
           <div className="flex flex-row items-center justify-between bg-white/2 border-t border-greyscale-50/8 px-8 py-5">
-            <Tag size={TagSize.Medium}>
+            <Tag size={TagSize.Medium} testid="dirtyTag">
               {isDirty ? (
                 <div className="text-orange-500 flex flex-row items-center gap-1">
                   <ErrorWarningLine /> {T("profile.form.saveStatus.unsaved")}

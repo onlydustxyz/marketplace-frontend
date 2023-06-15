@@ -77,6 +77,8 @@ function VisibilityButton({ name, disabled }: VisibilityButtonProps) {
           setValue(name, false, { shouldDirty: true });
         }
       }}
+      data-testid="visibilityToggle"
+      data-state="on"
     />
   ) : (
     <EyeOffLine
@@ -90,6 +92,8 @@ function VisibilityButton({ name, disabled }: VisibilityButtonProps) {
           setValue(name, true, { shouldDirty: true });
         }
       }}
+      data-testid="visibilityToggle"
+      data-state="off"
     />
   );
 }
