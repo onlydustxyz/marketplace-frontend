@@ -11,11 +11,5 @@ version = "0.1.0"
 # Database
 diesel = {version = "2.1.0", default-features = false, features = ["postgres","extras"]}
 
-# Utils
-uuid = {version = "1.3.3", default_features = false, features = [
-  "v4",
-]}
-
 # Local dependencies
-domain = {path = "../domain"}
 infrastructure = {path = "../infrastructure"}

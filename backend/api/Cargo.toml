@@ -47,9 +47,6 @@ rocket = {version = "0.5.0-rc.2", features = ["json", "uuid"]}
 rusoto_core = "0.48.0"
 rusoto_s3 = "0.48.0"
 
-# Logs
-log = "0.4.17"
-
 # Tracing
 tracing = "0.1"
 
@@ -70,16 +67,10 @@ derive_more = "0.99.17"
 derive_setters = "0.1.5"
 dotenv = "0.15.0"
 email_address = "0.2.4"
-iban_validate = {version = "4.0.1", features = ["serde"]}
-indoc = "2.0.1"
 infer = "0.12.0"
-num-format = "0.4.4"
 rust_decimal = "1.26.1"
 rusty-money = {version = "0.4.1", features = ["iso", "crypto"]}
 tokio-retry = "0.3"
-
-# Github
-octocrab = { git = "https://github.com/onlydustxyz/octocrab.git" }
 
 # Local dependecies
 domain = {path = "../common/domain", features = ["rocket"]}

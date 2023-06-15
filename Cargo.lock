@@ -189,18 +189,13 @@ dependencies = [
  "event-store",
  "futures",
  "graphql_client",
- "iban_validate",
- "indoc",
  "infer",
  "infrastructure",
- "juniper 0.15.11 (git+https://github.com/onlydustxyz/juniper?rev=3ea95737b7665bdaa7636ef3aa4d96cc4ef5c5f7)",
+ "juniper",
  "juniper_rocket",
  "lazy_static",
- "log",
  "mockall",
  "mockall_double",
- "num-format",
- "octocrab",
  "olog",
  "presentation",
  "reqwest",
@@ -1258,7 +1253,6 @@ dependencies = [
  "async-std",
  "async-trait",
  "chrono",
- "derive",
  "derive-getters",
  "derive-new",
  "derive_more",
@@ -1266,8 +1260,7 @@ dependencies = [
  "diesel-derive-newtype",
  "futures",
  "iban_validate",
- "juniper 0.15.11 (git+https://github.com/onlydustxyz/juniper?rev=3ea95737b7665bdaa7636ef3aa4d96cc4ef5c5f7)",
- "log",
+ "juniper",
  "mockall",
  "mockall_double",
  "olog",
@@ -1282,7 +1275,6 @@ dependencies = [
  "serde_with",
  "testing",
  "thiserror",
- "tracing",
  "url",
  "uuid 1.3.3",
  "web3",
@@ -1308,17 +1300,13 @@ dependencies = [
  "assert_matches",
  "async-std",
  "async-trait",
- "chrono",
  "derive-getters",
  "derive-new",
- "derive_more",
  "domain",
  "dotenv",
- "futures",
  "infrastructure",
- "juniper 0.15.11 (git+https://github.com/onlydustxyz/juniper?rev=3ea95737b7665bdaa7636ef3aa4d96cc4ef5c5f7)",
+ "juniper",
  "juniper_rocket",
- "lazy_static",
  "mockall",
  "mockall_double",
  "octocrab",
@@ -1332,8 +1320,6 @@ dependencies = [
  "thiserror",
  "tokio",
  "tracing",
- "url",
- "uuid 1.3.3",
 ]
 
 [[package]]
@@ -1473,13 +1459,9 @@ dependencies = [
  "futures",
  "infrastructure",
  "itertools",
- "juniper 0.15.11 (git+https://github.com/onlydustxyz/juniper?rev=3ea95737b7665bdaa7636ef3aa4d96cc4ef5c5f7)",
- "juniper_warp",
- "lazy_static",
  "mockall",
  "mockall_double",
  "mockito",
- "octocrab",
  "olog",
  "reqwest",
  "rstest",
@@ -1493,7 +1475,6 @@ dependencies = [
  "tracing",
  "url",
  "uuid 1.3.3",
- "warp",
 ]
 
 [[package]]
@@ -1501,7 +1482,6 @@ name = "event-store"
 version = "0.0.1"
 dependencies = [
  "anyhow",
- "async-trait",
  "chrono",
  "diesel",
  "domain",
@@ -1515,7 +1495,6 @@ dependencies = [
  "thiserror",
  "tokio",
  "tracing",
- "uuid 1.3.3",
 ]
 
 [[package]]
@@ -1814,26 +1793,18 @@ dependencies = [
  "anyhow",
  "async-std",
  "async-trait",
- "chrono",
- "derive-getters",
- "derive-new",
- "derive_more",
  "domain",
  "dotenv",
- "figment",
  "infrastructure",
- "juniper 0.15.11 (git+https://github.com/onlydustxyz/juniper?rev=3ea95737b7665bdaa7636ef3aa4d96cc4ef5c5f7)",
+ "juniper",
  "juniper_rocket",
- "octocrab",
  "olog",
  "presentation",
- "reqwest",
  "rocket",
  "rstest",
  "serde",
  "thiserror",
  "tracing",
- "url",
 ]
 
 [[package]]
@@ -2235,12 +2206,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "indoc"
-version = "2.0.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9f2cb48b81b1dc9f39676bf99f5499babfec7cd8fe14307f7b3d747208fb5690"
-
-[[package]]
 name = "infer"
 version = "0.12.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2269,7 +2234,6 @@ dependencies = [
  "figment",
  "futures",
  "graphql_client",
- "itertools",
  "lapin",
  "lazy_static",
  "mockall",
@@ -2277,7 +2241,6 @@ dependencies = [
  "olog",
  "opentelemetry",
  "opentelemetry-datadog",
- "pin-project-lite",
  "rand 0.8.5",
  "regex",
  "reqwest",
@@ -2417,23 +2380,6 @@ dependencies = [
 [[package]]
 name = "juniper"
 version = "0.15.11"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "52adf17d43d0b526eed31fac15d9312941c5c2558ffbfb105811690b96d6e2f1"
-dependencies = [
- "async-trait",
- "fnv",
- "futures",
- "futures-enum",
- "indexmap",
- "juniper_codegen 0.15.9 (registry+https://github.com/rust-lang/crates.io-index)",
- "serde",
- "smartstring",
- "static_assertions",
-]
-
-[[package]]
-name = "juniper"
-version = "0.15.11"
 source = "git+https://github.com/onlydustxyz/juniper?rev=3ea95737b7665bdaa7636ef3aa4d96cc4ef5c5f7#3ea95737b7665bdaa7636ef3aa4d96cc4ef5c5f7"
 dependencies = [
  "async-trait",
@@ -2444,24 +2390,12 @@ dependencies = [
  "futures-enum",
  "graphql-parser 0.3.0",
  "indexmap",
- "juniper_codegen 0.15.9 (git+https://github.com/onlydustxyz/juniper?rev=3ea95737b7665bdaa7636ef3aa4d96cc4ef5c5f7)",
+ "juniper_codegen",
  "serde",
  "smartstring",
  "static_assertions",
  "url",
  "uuid 1.3.3",
-]
-
-[[package]]
-name = "juniper_codegen"
-version = "0.15.9"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "aee97671061ad50301ba077d054d295e01d31a1868fbd07902db651f987e71db"
-dependencies = [
- "proc-macro-error",
- "proc-macro2",
- "quote",
- "syn 1.0.109",
 ]
 
 [[package]]
@@ -2481,25 +2415,9 @@ version = "0.8.2"
 source = "git+https://github.com/onlydustxyz/juniper?rev=dcee7b053f30aa3a8eedad4ad57f1950a4d241ea#dcee7b053f30aa3a8eedad4ad57f1950a4d241ea"
 dependencies = [
  "futures",
- "juniper 0.15.11 (git+https://github.com/onlydustxyz/juniper?rev=3ea95737b7665bdaa7636ef3aa4d96cc4ef5c5f7)",
+ "juniper",
  "rocket",
  "serde_json",
-]
-
-[[package]]
-name = "juniper_warp"
-version = "0.7.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5d167107f6634c92f90daae1a298133377373e935d455042f90efc480fae4a52"
-dependencies = [
- "anyhow",
- "futures",
- "juniper 0.15.11 (registry+https://github.com/rust-lang/crates.io-index)",
- "serde",
- "serde_json",
- "thiserror",
- "tokio",
- "warp",
 ]
 
 [[package]]
@@ -2666,16 +2584,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6877bb514081ee2a7ff5ef9de3281f14a4dd4bceac4c09388074a6b5df8a139a"
 
 [[package]]
-name = "mime_guess"
-version = "2.0.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4192263c238a5f0d0c6bfd21f336a313a4ce1c450542449ca191bb657b4642ef"
-dependencies = [
- "mime",
- "unicase",
-]
-
-[[package]]
 name = "minimal-lexical"
 version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2831,16 +2739,6 @@ dependencies = [
  "autocfg",
  "num-integer",
  "num-traits",
-]
-
-[[package]]
-name = "num-format"
-version = "0.4.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a652d9771a63711fd3c3deb670acfbe5c30a4072e664d7a3bf5a9e1056ac72c3"
-dependencies = [
- "arrayvec",
- "itoa",
 ]
 
 [[package]]
@@ -4608,9 +4506,7 @@ name = "testing"
 version = "0.1.0"
 dependencies = [
  "diesel",
- "domain",
  "infrastructure",
- "uuid 1.3.3",
 ]
 
 [[package]]
@@ -4768,18 +4664,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "tokio-tungstenite"
-version = "0.18.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "54319c93411147bced34cb5609a80e0a8e44c5999c93903a81cd866630ec0bfd"
-dependencies = [
- "futures-util",
- "log",
- "tokio",
- "tungstenite",
-]
-
-[[package]]
 name = "tokio-util"
 version = "0.6.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4864,7 +4748,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8ce8c33a8d48bd45d624a6e523445fd21ec13d3653cd51f681abf67418f54eb8"
 dependencies = [
  "cfg-if",
- "log",
  "pin-project-lite",
  "tracing-attributes",
  "tracing-core",
@@ -4976,25 +4859,6 @@ name = "try-lock"
 version = "0.2.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3528ecfd12c466c6f163363caf2d02a71161dd5e1cc6ae7b34207ea2d42d81ed"
-
-[[package]]
-name = "tungstenite"
-version = "0.18.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "30ee6ab729cd4cf0fd55218530c4522ed30b7b6081752839b68fcec8d0960788"
-dependencies = [
- "base64 0.13.1",
- "byteorder",
- "bytes",
- "http",
- "httparse",
- "log",
- "rand 0.8.5",
- "sha1",
- "thiserror",
- "url",
- "utf-8",
-]
 
 [[package]]
 name = "typenum"
@@ -5109,12 +4973,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "utf-8"
-version = "0.7.6"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "09cc8ee72d2a9becf2f2febe0205bbed8fc6615b7cb429ad062dc7b7ddd036a9"
-
-[[package]]
 name = "utf8parse"
 version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -5180,37 +5038,6 @@ checksum = "1ce8a968cb1cd110d136ff8b819a556d6fb6d919363c61534f6860c7eb172ba0"
 dependencies = [
  "log",
  "try-lock",
-]
-
-[[package]]
-name = "warp"
-version = "0.3.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ba431ef570df1287f7f8b07e376491ad54f84d26ac473489427231e1718e1f69"
-dependencies = [
- "bytes",
- "futures-channel",
- "futures-util",
- "headers",
- "http",
- "hyper",
- "log",
- "mime",
- "mime_guess",
- "multer",
- "percent-encoding",
- "pin-project",
- "rustls-pemfile",
- "scoped-tls",
- "serde",
- "serde_json",
- "serde_urlencoded",
- "tokio",
- "tokio-stream",
- "tokio-tungstenite",
- "tokio-util 0.7.8",
- "tower-service",
- "tracing",
 ]
 
 [[package]]

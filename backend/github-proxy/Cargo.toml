@@ -8,19 +8,9 @@ edition = "2021"
 # Async
 async-trait = "0.1.56"
 
-# Config
-figment = {version ="0.10.8", features = ["env", "toml"]}
-
 # Errors
 anyhow = "1.0.57"
 thiserror = "1.0.31"
-
-# Github
-octocrab = { git = "https://github.com/onlydustxyz/octocrab.git" }
-
-# Http client
-reqwest = "0.11.13"
-url = "2.2.2"
 
 # Http Server
 juniper = {git = "https://github.com/onlydustxyz/juniper", rev="3ea95737b7665bdaa7636ef3aa4d96cc4ef5c5f7"}
@@ -34,11 +24,7 @@ serde = {version = "1.0.137", features = ["derive"]}
 tracing = "0.1"
 
 # Utils
-derive_more = "0.99.17"
 dotenv = "0.15.0"
-chrono = "0.4.23"
-derive-getters = "0.2.0"
-derive-new = "0.5.9"
 
 # Local dependecies
 infrastructure = {path = "../common/infrastructure"}
