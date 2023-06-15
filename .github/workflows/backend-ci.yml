@@ -119,6 +119,10 @@ jobs:
       - name: Run tests
         uses: ./.github/actions/coverage-checks
 
+      - name: Setup tmate session for debugging
+        uses: mxschmitt/action-tmate@v3
+        if: ${{ failure() && inputs.debug_enabled }}
+
       - name: Upload coverage results
         uses: ./.github/actions/coverage-upload
         with:
