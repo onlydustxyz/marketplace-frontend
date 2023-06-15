@@ -12,16 +12,8 @@ use super::{Error, Result};
 use crate::{
 	application,
 	domain::{ArePayoutSettingsValid, Permissions},
-	infrastructure::{
-		database::{
-			ContactInformationsRepository, IgnoredGithubIssuesRepository,
-			PendingProjectLeaderInvitationsRepository, ProjectDetailsRepository,
-			ProjectSponsorRepository, SponsorRepository, TermsAndConditionsAcceptanceRepository,
-			UserPayoutInfoRepository, UserProfileInfoRepository,
-		},
-		simple_storage,
-		web3::ens,
-	},
+	infrastructure::{simple_storage, web3::ens},
+	models::*,
 };
 
 pub struct Context {

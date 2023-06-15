@@ -5,11 +5,7 @@ use domain::DomainError;
 use reqwest::Url;
 use tracing::instrument;
 
-use crate::{
-	domain::{ImageStoreService, Sponsor, SponsorId},
-	infrastructure::database::SponsorRepository,
-	presentation::http::dto::NonEmptyTrimmedString,
-};
+use crate::{domain::ImageStoreService, models::*, presentation::http::dto::NonEmptyTrimmedString};
 
 pub struct Usecase {
 	sponsor_repository: SponsorRepository,

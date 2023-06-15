@@ -10,18 +10,7 @@ use infrastructure::{
 };
 use presentation::http;
 
-use crate::{
-	infrastructure::{
-		database::{
-			ContactInformationsRepository, IgnoredGithubIssuesRepository,
-			PendingProjectLeaderInvitationsRepository, ProjectDetailsRepository,
-			ProjectSponsorRepository, SponsorRepository, TermsAndConditionsAcceptanceRepository,
-			UserPayoutInfoRepository, UserProfileInfoRepository,
-		},
-		simple_storage,
-	},
-	presentation::graphql,
-};
+use crate::{infrastructure::simple_storage, models::*, presentation::graphql};
 
 pub mod dto;
 pub mod roles;

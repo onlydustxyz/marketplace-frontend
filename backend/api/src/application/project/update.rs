@@ -6,10 +6,7 @@ use juniper::Nullable;
 use tracing::instrument;
 use url::Url;
 
-use crate::{
-	domain::ImageStoreService, infrastructure::database::ProjectDetailsRepository,
-	presentation::http::dto::NonEmptyTrimmedString,
-};
+use crate::{domain::ImageStoreService, models::*, presentation::http::dto::NonEmptyTrimmedString};
 
 pub struct Usecase {
 	project_details_repository: ProjectDetailsRepository,
@@ -83,12 +80,12 @@ impl Usecase {
 mod tests {
 
 	use ::url::Url;
-	use infrastructure::database::project::Visibility;
+	use infrastructure::database::enums::ProjectVisibility as ProjectVisibilityEnum;
 	use mockall::predicate::eq;
 	use rstest::{fixture, rstest};
 
 	use super::*;
-	use crate::{domain::MockImageStoreService, infrastructure::database::ProjectDetails};
+	use crate::domain::MockImageStoreService;
 
 	#[fixture]
 	fn project_id() -> ProjectId {
@@ -151,7 +148,7 @@ mod tests {
 					long_description: "bar".to_string(),
 					hiring: false,
 					rank: 0,
-					visibility: Visibility::Public,
+					visibility: ProjectVisibilityEnum::Public,
 				})
 			});
 		project_details_repository
@@ -209,7 +206,7 @@ mod tests {
 					long_description: "bar".to_string(),
 					hiring: false,
 					rank: 0,
-					visibility: Visibility::Public,
+					visibility: ProjectVisibilityEnum::Public,
 				})
 			});
 
@@ -227,7 +224,7 @@ mod tests {
 						long_description: "long_description".to_string(),
 						hiring: true,
 						rank: 32,
-						visibility: Visibility::Private,
+						visibility: ProjectVisibilityEnum::Private,
 					}
 			})
 			.once()

@@ -2,7 +2,7 @@ use anyhow::Result;
 use domain::{DomainError, ProjectId};
 use tracing::instrument;
 
-use crate::{domain::SponsorId, infrastructure::database::ProjectSponsorRepository};
+use crate::models::*;
 
 pub struct Usecase {
 	project_sponsor_repository: ProjectSponsorRepository,

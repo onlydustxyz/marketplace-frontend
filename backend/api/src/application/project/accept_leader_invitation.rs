@@ -7,10 +7,7 @@ use domain::{
 use infrastructure::amqp::UniqueMessage;
 use tracing::instrument;
 
-use crate::{
-	domain::{PendingProjectLeaderInvitationId, Publishable},
-	infrastructure::database::PendingProjectLeaderInvitationsRepository,
-};
+use crate::{domain::Publishable, models::*};
 
 pub struct Usecase {
 	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,

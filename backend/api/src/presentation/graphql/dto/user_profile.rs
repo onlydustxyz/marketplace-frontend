@@ -9,7 +9,7 @@ pub enum AllocatedTime {
 	MoreThanThreeDays,
 }
 
-impl From<AllocatedTime> for infrastructure::database::user_profile::AllocatedTime {
+impl From<AllocatedTime> for infrastructure::database::enums::AllocatedTime {
 	fn from(value: AllocatedTime) -> Self {
 		match value {
 			AllocatedTime::None => Self::None,

@@ -2,15 +2,8 @@ use std::sync::Arc;
 
 use anyhow::Result;
 use api::{
-	infrastructure::{
-		database::{
-			ContactInformationsRepository, IgnoredGithubIssuesRepository,
-			PendingProjectLeaderInvitationsRepository, ProjectDetailsRepository,
-			ProjectSponsorRepository, SponsorRepository, TermsAndConditionsAcceptanceRepository,
-			UserPayoutInfoRepository, UserProfileInfoRepository,
-		},
-		simple_storage,
-	},
+	infrastructure::simple_storage,
+	models::*,
 	presentation::{graphql, http},
 	Config,
 };
