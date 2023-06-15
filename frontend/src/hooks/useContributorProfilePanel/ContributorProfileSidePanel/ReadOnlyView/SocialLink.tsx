@@ -6,15 +6,17 @@ interface SocialLinkProps extends React.PropsWithChildren {
   link?: string;
   copyableValue?: string;
   copyableValueName?: string;
+  testId?: string;
 }
 
-export default function SocialLink({ link, copyableValue, copyableValueName, children }: SocialLinkProps) {
+export default function SocialLink({ link, copyableValue, copyableValueName, testId, children }: SocialLinkProps) {
   const showToaster = useShowToaster();
   const { T } = useIntl();
 
   return (
     <div
       className="rounded-xl bg-white/4 backdrop-blur-lg"
+      data-testid={testId}
       onClick={
         link
           ? linkClickHandlerFactory(link)

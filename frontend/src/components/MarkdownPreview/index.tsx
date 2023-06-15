@@ -4,11 +4,12 @@ import remarkGfm from "remark-gfm";
 export type Props = {
   className?: string;
   children: string;
+  testId?: string;
 };
 
-export default function MarkdownPreview({ className, children }: Props) {
+export default function MarkdownPreview({ className, testId, children }: Props) {
   return (
-    <div>
+    <div data-testid={testId}>
       <ReactMarkdown
         skipHtml={true}
         remarkPlugins={[[remarkGfm]]}

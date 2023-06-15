@@ -104,7 +104,10 @@ export default function ReadOnlyView({ isOwn, profile, projects, headerColor, se
               {profile.login}
             </div>
             {profile.location && (
-              <div className="flex flex-row gap-2 items-center font-walsheim font-normal text-base text-greyscale-400">
+              <div
+                data-testid="location"
+                className="flex flex-row gap-2 items-center font-walsheim font-normal text-base text-greyscale-400"
+              >
                 <MapPinLine />
                 {profile.location}
               </div>
@@ -113,9 +116,13 @@ export default function ReadOnlyView({ isOwn, profile, projects, headerColor, se
 
           {(profile.bio || profile.location || profile.createdAt) && (
             <div className="flex flex-col gap-4 font-walsheim font-normal">
-              {profile.bio && <MarkdownPreview className="text-lg">{profile.bio}</MarkdownPreview>}
+              {profile.bio && (
+                <MarkdownPreview testId="bio" className="text-lg">
+                  {profile.bio}
+                </MarkdownPreview>
+              )}
               {website && (
-                <div className="flex flex-row gap-1 items-center text-base text-greyscale-300">
+                <div data-testid="website" className="flex flex-row gap-1 items-center text-base text-greyscale-300">
                   <GlobalLine />
                   <ExternalLink url={website.url} text={website.hostname} />
                 </div>
@@ -143,32 +150,32 @@ export default function ReadOnlyView({ isOwn, profile, projects, headerColor, se
           )}
           <div className="flex flex-row gap-2 items-center">
             {profile.htmlUrl && (
-              <SocialLink link={profile.htmlUrl}>
+              <SocialLink testId="github" link={profile.htmlUrl}>
                 <GithubLogo />
               </SocialLink>
             )}
             {telegram && (
-              <SocialLink link={telegram}>
+              <SocialLink testId="telegram" link={telegram}>
                 <Telegram className="fill-greyscale-200" size={20} />
               </SocialLink>
             )}
             {twitter && (
-              <SocialLink link={twitter}>
+              <SocialLink testId="twitter" link={twitter}>
                 <TwitterFill />
               </SocialLink>
             )}
             {discord && (
-              <SocialLink copyableValue={discord} copyableValueName={T("profile.discord")}>
+              <SocialLink testId="discord" copyableValue={discord} copyableValueName={T("profile.discord")}>
                 <DiscordFill />
               </SocialLink>
             )}
             {linkedin && (
-              <SocialLink link={linkedin}>
+              <SocialLink testId="linkedin" link={linkedin}>
                 <LinkedinBoxFill />
               </SocialLink>
             )}
             {email && (
-              <SocialLink copyableValue={email} copyableValueName={T("profile.email")}>
+              <SocialLink testId="email" copyableValue={email} copyableValueName={T("profile.email")}>
                 <MailLine />
               </SocialLink>
             )}

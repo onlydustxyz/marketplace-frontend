@@ -2,9 +2,10 @@ import { test } from "./fixtures";
 import { expect } from "@playwright/test";
 import { restoreDB } from "./commands/db/db_utils";
 import { ViewProfilePage } from "./pages/profile/view_profile";
+import { retry } from "./commands/common";
 
 test.describe("As a signed-in user, I", () => {
-  let profileSidePanelPage: ViewProfilePage;
+  let viewPage: ViewProfilePage;
 
   test.beforeAll(async () => {
     restoreDB();
@@ -12,19 +13,19 @@ test.describe("As a signed-in user, I", () => {
 
   test.beforeEach(async ({ page, signIn, users }) => {
     await signIn(users.Olivier);
-    profileSidePanelPage = new ViewProfilePage(page);
-    await profileSidePanelPage.goto();
+    viewPage = new ViewProfilePage(page);
+    await viewPage.goto();
   });
 
   test("can see my profile side panel", async ({ users }) => {
     const user = users.Olivier;
-    await expect(profileSidePanelPage.login).toHaveText(user.github.login);
+    await expect(viewPage.login).toHaveText(user.github.login);
   });
 
   test("can edit my profile side panel", async ({ users }) => {
     const user = users.Olivier;
     // ======= Edit profile
-    const editPage = await profileSidePanelPage.edit();
+    const editPage = await viewPage.edit();
     await expect(editPage.login).toHaveText(user.github.login);
     await editPage.location.fill("Vence, France");
     await editPage.bio.fill("Fullstack developer, SOLID maximalist");
@@ -66,10 +67,31 @@ test.describe("As a signed-in user, I", () => {
     await editPage.save();
 
     // ======= Check informations are visible in public profile
-    // TODO
+    await expect(viewPage.login).toHaveText(user.github.login);
+    await retry(
+      () => viewPage.location.textContent(),
+      location => location === "Vence, France"
+    );
+    await expect(viewPage.location).toHaveText("Vence, France");
+    await expect(viewPage.bio).toHaveText("Fullstack developer, SOLID maximalist");
+
+    // Contact informations
+    await expect(viewPage.github).toBeVisible();
+    await expect(viewPage.telegram).toBeVisible();
+    await expect(viewPage.twitter).not.toBeVisible();
+    await expect(viewPage.discord).not.toBeVisible();
+    await expect(viewPage.linkedin).toBeVisible();
+    await expect(viewPage.email).toBeVisible();
+
+    // Technologies
+    await expect(viewPage.technology("Pascal")).toBeVisible();
+    await expect(viewPage.technology("Haskell")).toBeVisible();
+    await expect(viewPage.technology("Ruby")).toBeVisible();
+    await expect(viewPage.technology("COBOL")).toBeVisible();
+    await expect(viewPage.technology("C++")).not.toBeVisible();
 
     // ======= Check informations are pre-filled
-    await profileSidePanelPage.edit();
+    await viewPage.edit();
     await expect(editPage.login).toHaveText(user.github.login);
     await expect(editPage.location).toHaveValue("Vence, France");
     await expect(editPage.bio).toHaveValue("Fullstack developer, SOLID maximalist");
