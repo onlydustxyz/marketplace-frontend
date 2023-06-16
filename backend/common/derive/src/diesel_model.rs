@@ -1,67 +1,19 @@
 use proc_macro::TokenStream;
 use quote::quote;
 
-pub fn impl_derive_model(derive_input: syn::DeriveInput) -> TokenStream {
+pub fn impl_derive(derive_input: syn::DeriveInput) -> TokenStream {
 	let name = &derive_input.ident;
 
 	let expanded = quote!(
 		impl ::infrastructure::database::Model<::diesel::pg::PgConnection> for #name
 		{
-			fn exists(
-				connection: &mut ::diesel::pg::PgConnection,
-				id: <Self as ::diesel::associations::Identifiable>::Id,
-			) -> ::infrastructure::database::Result<bool> {
-				use ::diesel::{associations::HasTable, QueryDsl, RunQueryDsl};
-				::diesel::select(::diesel::dsl::exists(<Self as HasTable>::table().find(id)))
-					.get_result(connection)
-					.map_err(|e| e.into())
-			}
-
-			fn find_by_id(
-				connection: &mut ::diesel::pg::PgConnection,
-				id: <Self as ::diesel::associations::Identifiable>::Id,
-			) -> ::infrastructure::database::Result<Self> {
-				use ::diesel::{associations::HasTable, QueryDsl, RunQueryDsl};
-				<Self as HasTable>::table().find(id).first(&mut *connection).map_err(Into::into)
-			}
-
-			fn list(
-				connection: &mut ::diesel::pg::PgConnection,
-			) -> ::infrastructure::database::Result<Vec<Self>> {
-				use ::diesel::{associations::HasTable, RunQueryDsl};
-				<Self as HasTable>::table().load(connection).map_err(Into::into)
-			}
-
-			fn insert(
-				self,
-				connection: &mut ::diesel::pg::PgConnection,
-			) -> ::infrastructure::database::Result<Self> {
-				use ::diesel::{associations::HasTable, RunQueryDsl};
-				::diesel::insert_into(<Self as HasTable>::table())
-					.values(self)
-					.get_result(connection)
-					.map_err(Into::into)
-			}
-
-			fn try_insert(
-				self,
-				connection: &mut ::diesel::pg::PgConnection,
-			) -> ::infrastructure::database::Result<Self> {
-				use ::diesel::{associations::HasTable, RunQueryDsl};
-				::diesel::insert_into(<Self as HasTable>::table())
-					.values(self)
-					.on_conflict_do_nothing()
-					.get_result(connection)
-					.map_err(Into::into)
-			}
-
 			fn update(
 				self,
 				connection: &mut ::diesel::pg::PgConnection,
 			) -> ::infrastructure::database::Result<Self> {
 				use ::diesel::{associations::HasTable, RunQueryDsl};
 				diesel::update(<Self as HasTable>::table())
-					.set(&self)
+					.set(self)
 					.get_result(connection)
 					.map_err(Into::into)
 			}
@@ -78,27 +30,6 @@ pub fn impl_derive_model(derive_input: syn::DeriveInput) -> TokenStream {
 					.set(&self)
 					.get_result(connection)
 					.map_err(Into::into)
-			}
-
-			fn delete(
-				connection: &mut ::diesel::pg::PgConnection,
-				id: <Self as ::diesel::associations::Identifiable>::Id,
-			) -> ::infrastructure::database::Result<Self> {
-				use ::diesel::{associations::HasTable, EqAll, RunQueryDsl, Table};
-				diesel::delete(<Self as HasTable>::table())
-					.filter(<Self as HasTable>::table().primary_key().eq_all(id))
-					.get_result(connection)
-					.map_err(Into::into)
-			}
-
-			fn clear(
-				connection: &mut ::diesel::pg::PgConnection,
-			) -> ::infrastructure::database::Result<()> {
-				use ::diesel::{associations::HasTable, RunQueryDsl};
-				diesel::delete(<Self as HasTable>::table())
-					.returning(<Self as HasTable>::table().star())
-					.execute(connection)?;
-				Ok(())
 			}
 		}
 	);

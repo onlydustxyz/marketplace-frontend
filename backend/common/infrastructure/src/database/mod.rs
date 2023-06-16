@@ -5,7 +5,7 @@ pub mod repositories;
 pub mod schema;
 
 mod model;
-pub use model::{Model, Repository};
+pub use model::{ImmutableModel, ImmutableRepository, Model, Repository};
 
 #[cfg(test)]
 mod tests;
