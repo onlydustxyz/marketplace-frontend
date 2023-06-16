@@ -56,7 +56,7 @@ where
 		for event in events {
 			let event: Event = event.into();
 			for projector in &self.projectors {
-				projector.on_event(&event).await?;
+				projector.on_event(event.clone()).await?;
 			}
 		}
 		Ok(())

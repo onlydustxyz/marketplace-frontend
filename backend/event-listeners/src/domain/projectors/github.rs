@@ -45,7 +45,7 @@ impl Projector {
 #[async_trait]
 impl EventListener<GithubEvent> for Projector {
 	#[instrument(name = "github_projection", skip(self))]
-	async fn on_event(&self, event: &GithubEvent) -> Result<(), SubscriberCallbackError> {
+	async fn on_event(&self, event: GithubEvent) -> Result<(), SubscriberCallbackError> {
 		match event.clone() {
 			GithubEvent::Repo(repo) => {
 				self.github_repo_repository.upsert(

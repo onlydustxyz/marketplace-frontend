@@ -19,7 +19,7 @@ pub struct EventWebHook {
 
 impl EventWebHook {
 	#[instrument(skip(self))]
-	async fn send(&self, event: &Event) -> Result<(), Error> {
+	async fn send(&self, event: Event) -> Result<(), Error> {
 		let res = self
 			.client
 			.post(self.target_url.clone())
@@ -42,7 +42,7 @@ enum Error {
 
 #[async_trait]
 impl EventListener<Event> for EventWebHook {
-	async fn on_event(&self, event: &Event) -> Result<(), SubscriberCallbackError> {
+	async fn on_event(&self, event: Event) -> Result<(), SubscriberCallbackError> {
 		match self.send(event).await {
 			Ok(()) => {},
 			Err(e) => match e {
@@ -98,7 +98,7 @@ mod tests {
 		let event: Event = project_created_event.into();
 
 		assert_matches!(
-			webhook.send(&event).await,
+			webhook.send(event).await,
 			Err(Error::RespondWithErrorStatusCode(_))
 		);
 

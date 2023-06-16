@@ -10,7 +10,7 @@ pub struct Logger;
 
 #[async_trait]
 impl EventListener<Value> for Logger {
-	async fn on_event(&self, event: &Value) -> Result<(), SubscriberCallbackError> {
+	async fn on_event(&self, event: Value) -> Result<(), SubscriberCallbackError> {
 		info!(event = event.to_string(), "📨 Received event");
 		Ok(())
 	}

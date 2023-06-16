@@ -26,29 +26,29 @@ pub struct Projector {
 #[async_trait]
 impl EventListener<Event> for Projector {
 	#[instrument(name = "project_projection", skip(self))]
-	async fn on_event(&self, event: &Event) -> Result<(), SubscriberCallbackError> {
+	async fn on_event(&self, event: Event) -> Result<(), SubscriberCallbackError> {
 		match event {
 			Event::Project(event) => match event {
 				ProjectEvent::Created { id } =>
-					self.project_repository.try_insert(&Project { id: *id })?,
+					self.project_repository.try_insert(&Project { id })?,
 				ProjectEvent::LeaderAssigned {
 					id,
 					leader_id,
 					assigned_at,
 				} => self.project_lead_repository.try_insert_with_metadata(
-					id,
-					leader_id,
-					assigned_at,
+					&id,
+					&leader_id,
+					&assigned_at,
 				)?,
 				ProjectEvent::LeaderUnassigned { id, leader_id } =>
-					self.project_lead_repository.delete(id, leader_id)?,
+					self.project_lead_repository.delete(&id, &leader_id)?,
 				ProjectEvent::Budget { .. } => (),
 				ProjectEvent::GithubRepoLinked { id, github_repo_id } => {
-					self.project_github_repos_repository.try_insert(id, github_repo_id)?;
-					self.github_repo_index_repository.try_insert(github_repo_id)?;
+					self.project_github_repos_repository.try_insert(&id, &github_repo_id)?;
+					self.github_repo_index_repository.try_insert(&github_repo_id)?;
 				},
 				ProjectEvent::GithubRepoUnlinked { id, github_repo_id } => {
-					self.project_github_repos_repository.delete(id, github_repo_id)?;
+					self.project_github_repos_repository.delete(&id, &github_repo_id)?;
 				},
 				ProjectEvent::Application {
 					id: project_id,
@@ -60,10 +60,10 @@ impl EventListener<Event> for Projector {
 						received_at,
 					} = event;
 					self.applications_repository.upsert(&Application {
-						id: *id,
-						project_id: *project_id,
-						applicant_id: *applicant_id,
-						received_at: *received_at,
+						id,
+						project_id,
+						applicant_id,
+						received_at,
 					})?;
 				},
 			},

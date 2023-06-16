@@ -114,7 +114,7 @@ async fn notify_event_listener<E>(
 	listener: Arc<dyn EventListener<E>>,
 	event: E,
 ) -> Result<(), SubscriberCallbackError> {
-	listener.on_event(&event).await.map_err(SubscriberCallbackError::from)
+	listener.on_event(event).await.map_err(SubscriberCallbackError::from)
 }
 
 fn webhook_targets() -> Vec<Url> {
