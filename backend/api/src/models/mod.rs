@@ -2,7 +2,7 @@ mod contact_informations;
 pub use contact_informations::{ContactInformation, Repository as ContactInformationsRepository};
 
 mod ignored_github_issues;
-pub use ignored_github_issues::Repository as IgnoredGithubIssuesRepository;
+pub use ignored_github_issues::IgnoredGithubIssue;
 
 mod pending_project_leader_invitations;
 pub use pending_project_leader_invitations::{

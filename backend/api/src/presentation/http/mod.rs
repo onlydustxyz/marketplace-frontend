@@ -5,6 +5,7 @@ use anyhow::Result;
 use http::Config;
 use infrastructure::{
 	amqp::{self, CommandPublisher},
+	database::ImmutableRepository,
 	github,
 	web3::ens,
 };
@@ -26,7 +27,7 @@ pub async fn serve(
 	sponsor_repository: SponsorRepository,
 	project_sponsor_repository: ProjectSponsorRepository,
 	pending_project_leader_invitations_repository: PendingProjectLeaderInvitationsRepository,
-	ignored_github_issues_repository: IgnoredGithubIssuesRepository,
+	ignored_github_issues_repository: Arc<dyn ImmutableRepository<IgnoredGithubIssue>>,
 	user_info_repository: UserPayoutInfoRepository,
 	user_profile_info_repository: UserProfileInfoRepository,
 	contact_informations_repository: Arc<dyn ContactInformationsRepository>,

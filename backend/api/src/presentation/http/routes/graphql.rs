@@ -3,6 +3,7 @@ use std::sync::Arc;
 use domain::{AggregateRootRepository, Project};
 use infrastructure::{
 	amqp::{self},
+	database::ImmutableRepository,
 	github, graphql,
 };
 use juniper_rocket::{GraphQLRequest, GraphQLResponse};
@@ -48,7 +49,7 @@ pub async fn get_graphql_handler(
 	pending_project_leader_invitations_repository: &State<
 		PendingProjectLeaderInvitationsRepository,
 	>,
-	ignored_github_issues_repository: &State<IgnoredGithubIssuesRepository>,
+	ignored_github_issues_repository: &State<Arc<dyn ImmutableRepository<IgnoredGithubIssue>>>,
 	user_payout_info_repository: &State<UserPayoutInfoRepository>,
 	user_profile_info_repository: &State<UserProfileInfoRepository>,
 	terms_and_conditions_acceptance_repository: &State<TermsAndConditionsAcceptanceRepository>,
@@ -99,7 +100,7 @@ pub async fn post_graphql_handler(
 	pending_project_leader_invitations_repository: &State<
 		PendingProjectLeaderInvitationsRepository,
 	>,
-	ignored_github_issues_repository: &State<IgnoredGithubIssuesRepository>,
+	ignored_github_issues_repository: &State<Arc<dyn ImmutableRepository<IgnoredGithubIssue>>>,
 	user_payout_info_repository: &State<UserPayoutInfoRepository>,
 	user_profile_info_repository: &State<UserProfileInfoRepository>,
 	terms_and_conditions_acceptance_repository: &State<TermsAndConditionsAcceptanceRepository>,
