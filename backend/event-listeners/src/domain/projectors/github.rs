@@ -5,13 +5,13 @@ use async_trait::async_trait;
 use chrono::Utc;
 use derive_new::new;
 use domain::{GithubFetchRepoService, SubscriberCallbackError};
+use infrastructure::database::ImmutableRepository;
 use tracing::instrument;
 
 use crate::{
-	domain::{EventListener, GithubEvent, GithubRepo, GithubUser},
+	domain::{EventListener, GithubEvent, GithubRepo, GithubReposContributor, GithubUser},
 	infrastructure::database::{
-		GithubIssuesRepository, GithubReposContributorsRepository, GithubReposRepository,
-		GithubUsersRepository,
+		GithubIssuesRepository, GithubReposRepository, GithubUsersRepository,
 	},
 };
 
@@ -21,7 +21,7 @@ pub struct Projector {
 	github_repo_repository: GithubReposRepository,
 	github_issues_repository: GithubIssuesRepository,
 	github_users_repository: GithubUsersRepository,
-	github_repos_contributors_repository: GithubReposContributorsRepository,
+	github_repos_contributors_repository: Arc<dyn ImmutableRepository<GithubReposContributor>>,
 }
 
 impl Projector {
@@ -57,7 +57,10 @@ impl EventListener<GithubEvent> for Projector {
 			},
 			GithubEvent::User { user, repo_id } => {
 				self.github_users_repository.upsert(&user.clone().into())?;
-				self.github_repos_contributors_repository.try_insert(&repo_id, user.id())?;
+				self.github_repos_contributors_repository.try_insert(GithubReposContributor {
+					repo_id,
+					user_id: *user.id(),
+				})?;
 			},
 			GithubEvent::FullUser(user) => {
 				self.github_users_repository.upsert(&user.into())?;
