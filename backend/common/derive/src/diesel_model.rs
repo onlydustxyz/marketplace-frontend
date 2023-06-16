@@ -11,11 +11,8 @@ pub fn impl_derive(derive_input: syn::DeriveInput) -> TokenStream {
 				self,
 				connection: &mut ::diesel::pg::PgConnection,
 			) -> ::infrastructure::database::Result<Self> {
-				use ::diesel::{associations::HasTable, RunQueryDsl};
-				diesel::update(<Self as HasTable>::table())
-					.set(self)
-					.get_result(connection)
-					.map_err(Into::into)
+				use ::diesel::RunQueryDsl;
+				diesel::update(&self).set(&self).get_result(connection).map_err(Into::into)
 			}
 
 			fn upsert(

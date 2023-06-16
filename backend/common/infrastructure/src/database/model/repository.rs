@@ -11,7 +11,7 @@ where
 	fn find_by_id(&self, id: <M as Identifiable>::Id) -> Result<M>;
 	fn list(&self) -> Result<Vec<M>>;
 	fn insert(&self, model: M) -> Result<M>;
-	fn try_insert(&self, model: M) -> Result<M>;
+	fn try_insert(&self, model: M) -> Result<Option<M>>;
 	fn delete(&self, id: <M as Identifiable>::Id) -> Result<M>;
 	fn clear(&self) -> Result<()>;
 }
@@ -40,7 +40,7 @@ where
 		model.insert(&mut *connection)
 	}
 
-	fn try_insert(&self, model: M) -> Result<M> {
+	fn try_insert(&self, model: M) -> Result<Option<M>> {
 		let mut connection = self.connection()?;
 		model.try_insert(&mut *connection)
 	}

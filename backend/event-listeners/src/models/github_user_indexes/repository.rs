@@ -7,7 +7,7 @@ use infrastructure::{
 
 use super::GithubUserIndex;
 
-pub trait Repository: database::Repository<GithubUserIndex> {
+pub trait Repository: database::ImmutableRepository<GithubUserIndex> {
 	fn select_user_indexer_state(
 		&self,
 		user_id: &GithubUserId,

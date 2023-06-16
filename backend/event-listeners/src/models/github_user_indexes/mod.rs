@@ -1,5 +1,5 @@
 mod repository;
-use diesel::Identifiable;
+use diesel::{pg::Pg, Identifiable, Queryable};
 use domain::GithubUserId;
 use infrastructure::database::schema::github_user_indexes;
 pub use repository::Repository;
@@ -11,19 +11,27 @@ use serde_json::Value;
 	Default,
 	Clone,
 	Insertable,
-	AsChangeset,
 	Identifiable,
-	Queryable,
 	QueryableByName,
 	Serialize,
 	Deserialize,
-	Model,
+	ImmutableModel,
 )]
 #[diesel(table_name = github_user_indexes, primary_key(user_id))]
 pub struct GithubUserIndex {
 	pub user_id: GithubUserId,
-	pub user_indexer_state: Option<Value>,
-	pub contributor_indexer_state: Option<Value>,
+}
+
+impl<ST> Queryable<ST, Pg> for GithubUserIndex
+where
+	(GithubUserId, Option<Value>, Option<Value>): Queryable<ST, Pg>,
+{
+	type Row = <(GithubUserId, Option<Value>, Option<Value>) as Queryable<ST, Pg>>::Row;
+
+	fn build(row: Self::Row) -> diesel::deserialize::Result<Self> {
+		let (user_id, _, _) = Queryable::build(row)?;
+		Ok(Self { user_id })
+	}
 }
 
 impl Identifiable for GithubUserIndex {

@@ -97,7 +97,6 @@ impl EventListener<Event> for Projector {
 
 						self.github_user_index_repository.try_insert(GithubUserIndex {
 							user_id: recipient_id,
-							..Default::default()
 						})?;
 					},
 					PaymentEvent::Cancelled { id: payment_id } => {

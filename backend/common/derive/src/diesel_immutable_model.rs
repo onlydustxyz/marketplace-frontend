@@ -46,12 +46,13 @@ pub fn impl_derive(derive_input: syn::DeriveInput) -> TokenStream {
 			fn try_insert(
 				self,
 				connection: &mut ::diesel::pg::PgConnection,
-			) -> ::infrastructure::database::Result<Self> {
-				use ::diesel::{associations::HasTable, RunQueryDsl};
+			) -> ::infrastructure::database::Result<Option<Self>> {
+				use ::diesel::{associations::HasTable, OptionalExtension, RunQueryDsl};
 				::diesel::insert_into(<Self as HasTable>::table())
 					.values(self)
 					.on_conflict_do_nothing()
 					.get_result(connection)
+					.optional()
 					.map_err(Into::into)
 			}
 

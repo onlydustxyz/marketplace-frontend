@@ -15,12 +15,8 @@ import { EditPayoutInfoPage } from "./pages/edit_payout_info_page";
 import { populateReceipt } from "./commands/populate/populate_payments";
 
 test.describe("As a project lead, I", () => {
-  test.beforeAll(async () => {
-    restoreDB();
-  });
-
-  // eslint-disable-next-line no-empty-pattern
   test.beforeEach(async () => {
+    restoreDB();
     test.slow();
   });
 
@@ -194,7 +190,7 @@ test.describe("As a project lead, I", () => {
     await sidePanel.getByTestId("close-add-work-item-panel-btn").click();
   });
 
-  test("can cancel a pending payment request", async ({ page, projects, users, signIn }) => {
+  test("can cancel a pending payment request", async ({ page, projects, users, signIn, acceptTermsAndConditions }) => {
     const project = projects.Kakarot;
     const leader = users.TokioRs;
     const recipient = users.Anthony;
@@ -202,6 +198,7 @@ test.describe("As a project lead, I", () => {
     const projectPaymentsPage = new ProjectPaymentsPage(page, project);
 
     await signIn(leader);
+    await acceptTermsAndConditions();
     await projectPaymentsPage.goto();
     await projectPaymentsPage.reload();
 
@@ -241,7 +238,7 @@ test.describe("As a project lead, I", () => {
       await projectPaymentsPage.reload();
     };
 
-    await listPaymentsAs(leader);
+    await listPaymentsAs(leader, true);
 
     // 1. Request a payment, payment is "pending"
     const newPaymentPage = await projectPaymentsPage.newPayment();
