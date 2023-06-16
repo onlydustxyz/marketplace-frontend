@@ -14,7 +14,7 @@ mod payments;
 #[allow(clippy::extra_unused_lifetimes)]
 mod project;
 #[allow(clippy::extra_unused_lifetimes)]
-mod work_item;
+mod work_items;
 
 pub use applications::Application;
 pub use budgets::Budget;
@@ -24,4 +24,4 @@ pub use github_users::GithubUser;
 pub use payment_requests::PaymentRequest;
 pub use payments::Payment;
 pub use project::Project;
-pub use work_item::WorkItem;
+pub use work_items::{Repository as WorkItemRepository, WorkItem};

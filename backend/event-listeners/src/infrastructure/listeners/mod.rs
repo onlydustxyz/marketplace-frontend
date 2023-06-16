@@ -18,7 +18,7 @@ use crate::{
 	domain::*,
 	infrastructure::database::{
 		GithubIssuesRepository, ProjectGithubReposRepository, ProjectLeadRepository,
-		ProjectRepository, WorkItemRepository,
+		ProjectRepository,
 	},
 	Config, GITHUB_EVENTS_EXCHANGE,
 };
@@ -47,7 +47,7 @@ pub async fn spawn_all(
 			database.clone(),
 			database.clone(),
 			database.clone(),
-			WorkItemRepository::new(database.clone()),
+			database.clone(),
 			database.clone(),
 			database.clone(),
 		)

@@ -4,7 +4,7 @@ use domain::Project;
 use event_listeners::{
 	domain::{BudgetProjector, ProjectProjector},
 	infrastructure::database::{
-		ProjectGithubReposRepository, ProjectLeadRepository, ProjectRepository, WorkItemRepository,
+		ProjectGithubReposRepository, ProjectLeadRepository, ProjectRepository,
 	},
 };
 use infrastructure::database;
@@ -24,7 +24,7 @@ pub fn create(database: Arc<database::Client>) -> impl Refreshable {
 		database.clone(),
 		database.clone(),
 		database.clone(),
-		WorkItemRepository::new(database.clone()),
+		database.clone(),
 		database.clone(),
 		database.clone(),
 	);

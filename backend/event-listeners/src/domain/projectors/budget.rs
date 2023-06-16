@@ -8,12 +8,9 @@ use infrastructure::database::Repository;
 use rust_decimal::{prelude::ToPrimitive, Decimal};
 use tracing::instrument;
 
-use crate::{
-	domain::{
-		Budget, EventListener, GithubRepoIndexRepository, GithubUserIndexRepository, Payment,
-		PaymentRequest, WorkItem,
-	},
-	infrastructure::database::WorkItemRepository,
+use crate::domain::{
+	Budget, EventListener, GithubRepoIndexRepository, GithubUserIndexRepository, Payment,
+	PaymentRequest, WorkItem, WorkItemRepository,
 };
 
 #[derive(Constructor)]
@@ -21,7 +18,7 @@ pub struct Projector {
 	payment_request_repository: Arc<dyn Repository<PaymentRequest>>,
 	payment_repository: Arc<dyn Repository<Payment>>,
 	budget_repository: Arc<dyn Repository<Budget>>,
-	work_item_repository: WorkItemRepository,
+	work_item_repository: Arc<dyn WorkItemRepository>,
 	github_repo_index_repository: Arc<dyn GithubRepoIndexRepository>,
 	github_user_index_repository: Arc<dyn GithubUserIndexRepository>,
 }
@@ -87,7 +84,7 @@ impl<'a> EventListener<Event> for Projector {
 
 						reason.work_items().iter().try_for_each(
 							|work_item| -> Result<(), SubscriberCallbackError> {
-								self.work_item_repository.upsert(&WorkItem {
+								self.work_item_repository.try_insert(WorkItem {
 									payment_id,
 									repo_id: *work_item.repo_id(),
 									issue_number: *work_item.issue_number(),
@@ -107,7 +104,7 @@ impl<'a> EventListener<Event> for Projector {
 						budget.remaining_amount += Decimal::from(payment_request.amount_in_usd);
 						self.budget_repository.update(budget)?;
 						self.payment_request_repository.delete(payment_id)?;
-						self.work_item_repository.delete_by_payment_id(&payment_id)?;
+						self.work_item_repository.delete_by_payment_id(payment_id)?;
 					},
 					PaymentEvent::Processed {
 						id: payment_id,
