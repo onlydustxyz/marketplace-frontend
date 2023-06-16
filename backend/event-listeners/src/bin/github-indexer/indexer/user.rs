@@ -13,6 +13,8 @@ use super::{hash, IgnoreIndexerErrors, Result};
 struct State {
 	pub hash: u64,
 	pub last_updated_time: DateTime<Utc>,
+	#[serde(default)]
+	pub last_indexed_time: DateTime<Utc>,
 }
 
 impl State {
@@ -43,6 +45,14 @@ impl State {
 		Self {
 			hash: hash(user),
 			last_updated_time: Utc::now(),
+			last_indexed_time: Utc::now(),
+		}
+	}
+
+	fn touched(self) -> Self {
+		Self {
+			last_indexed_time: Utc::now(),
+			..self
 		}
 	}
 }
@@ -62,6 +72,14 @@ impl Indexer {
 		let state = self.get_state(user.id())?.unwrap_or_default().with(user);
 		self.github_user_index_repository
 			.update_user_indexer_state(user.id(), state.json()?)?;
+		Ok(())
+	}
+
+	fn touch_state(&self, user_id: &GithubUserId) -> anyhow::Result<()> {
+		if let Some(state) = self.get_state(user_id)? {
+			self.github_user_index_repository
+				.update_user_indexer_state(user_id, state.touched().json()?)?;
+		}
 		Ok(())
 	}
 }
@@ -90,9 +108,11 @@ impl super::Indexer<GithubUserId> for Indexer {
 }
 
 impl super::Stateful<GithubUserId> for Indexer {
-	fn store(&self, _: GithubUserId, events: &[GithubEvent]) -> anyhow::Result<()> {
+	fn store(&self, user_id: GithubUserId, events: &[GithubEvent]) -> anyhow::Result<()> {
 		if let Some(GithubEvent::FullUser(user)) = events.last() {
 			self.update_state_with(user)?;
+		} else {
+			self.touch_state(&user_id)?;
 		}
 		Ok(())
 	}
