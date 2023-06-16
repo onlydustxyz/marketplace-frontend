@@ -15,9 +15,7 @@ use tokio::task::JoinHandle;
 use webhook::EventWebHook;
 
 use crate::{
-	domain::*,
-	infrastructure::database::{GithubIssuesRepository, ProjectLeadRepository},
-	Config, GITHUB_EVENTS_EXCHANGE,
+	domain::*, infrastructure::database::GithubIssuesRepository, Config, GITHUB_EVENTS_EXCHANGE,
 };
 
 pub async fn spawn_all(
@@ -30,7 +28,7 @@ pub async fn spawn_all(
 		Logger.spawn(event_bus::event_consumer(config.amqp(), "logger").await?),
 		ProjectProjector::new(
 			database.clone(),
-			ProjectLeadRepository::new(database.clone()),
+			database.clone(),
 			database.clone(),
 			database.clone(),
 			database.clone(),

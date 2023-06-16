@@ -7,18 +7,15 @@ use domain::{ApplicationEvent, Event, ProjectEvent, SubscriberCallbackError};
 use infrastructure::database::{ImmutableRepository, Repository};
 use tracing::instrument;
 
-use crate::{
-	domain::{
-		projections::Project, Application, EventListener, GithubRepoIndexRepository,
-		ProjectGithubRepo,
-	},
-	infrastructure::database::ProjectLeadRepository,
+use crate::domain::{
+	projections::Project, Application, EventListener, GithubRepoIndexRepository, ProjectGithubRepo,
+	ProjectLead,
 };
 
 #[derive(new)]
 pub struct Projector {
 	project_repository: Arc<dyn ImmutableRepository<Project>>,
-	project_lead_repository: ProjectLeadRepository,
+	project_lead_repository: Arc<dyn ImmutableRepository<ProjectLead>>,
 	project_github_repos_repository: Arc<dyn ImmutableRepository<ProjectGithubRepo>>,
 	github_repo_index_repository: Arc<dyn GithubRepoIndexRepository>,
 	applications_repository: Arc<dyn Repository<Application>>,
@@ -34,16 +31,19 @@ impl EventListener<Event> for Projector {
 					self.project_repository.try_insert(Project { id })?;
 				},
 				ProjectEvent::LeaderAssigned {
-					id,
+					id: project_id,
 					leader_id,
 					assigned_at,
-				} => self.project_lead_repository.try_insert_with_metadata(
-					&id,
-					&leader_id,
-					&assigned_at,
-				)?,
-				ProjectEvent::LeaderUnassigned { id, leader_id } =>
-					self.project_lead_repository.delete(&id, &leader_id)?,
+				} => {
+					self.project_lead_repository.try_insert(ProjectLead {
+						project_id,
+						user_id: leader_id,
+						assigned_at,
+					})?;
+				},
+				ProjectEvent::LeaderUnassigned { id, leader_id } => {
+					self.project_lead_repository.delete((id, leader_id))?;
+				},
 				ProjectEvent::Budget { .. } => (),
 				ProjectEvent::GithubRepoLinked {
 					id: project_id,
