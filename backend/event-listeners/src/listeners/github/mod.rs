@@ -1,3 +1,5 @@
+mod events;
+
 use std::sync::Arc;
 
 use anyhow::Result;
@@ -5,11 +7,12 @@ use async_trait::async_trait;
 use chrono::Utc;
 use derive_new::new;
 use domain::{GithubFetchRepoService, SubscriberCallbackError};
+pub use events::Event;
 use infrastructure::database::{ImmutableRepository, Repository};
 use tracing::instrument;
 
 use super::EventListener;
-use crate::{domain::GithubEvent, models::*};
+use crate::models::*;
 
 #[derive(new)]
 pub struct Projector {
@@ -39,26 +42,26 @@ impl Projector {
 }
 
 #[async_trait]
-impl EventListener<GithubEvent> for Projector {
+impl EventListener<Event> for Projector {
 	#[instrument(name = "github_projection", skip(self))]
-	async fn on_event(&self, event: GithubEvent) -> Result<(), SubscriberCallbackError> {
+	async fn on_event(&self, event: Event) -> Result<(), SubscriberCallbackError> {
 		match event.clone() {
-			GithubEvent::Repo(repo) => {
+			Event::Repo(repo) => {
 				self.github_repo_repository.upsert(
 					self.build_repo(repo).await.map_err(SubscriberCallbackError::Discard)?,
 				)?;
 			},
-			GithubEvent::Issue(issue) => {
+			Event::Issue(issue) => {
 				self.github_issues_repository.upsert(issue.into())?;
 			},
-			GithubEvent::User { user, repo_id } => {
+			Event::User { user, repo_id } => {
 				self.github_users_repository.upsert(user.clone().into())?;
 				self.github_repos_contributors_repository.try_insert(GithubReposContributor {
 					repo_id,
 					user_id: *user.id(),
 				})?;
 			},
-			GithubEvent::FullUser(user) => {
+			Event::FullUser(user) => {
 				self.github_users_repository.upsert(user.into())?;
 			},
 		}

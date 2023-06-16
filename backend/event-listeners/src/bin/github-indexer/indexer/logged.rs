@@ -1,7 +1,7 @@
 use std::marker::PhantomData;
 
 use async_trait::async_trait;
-use event_listeners::domain::GithubEvent;
+use event_listeners::listeners::github::Event as GithubEvent;
 use olog::info;
 
 use super::{Indexable, Result, Stateful};

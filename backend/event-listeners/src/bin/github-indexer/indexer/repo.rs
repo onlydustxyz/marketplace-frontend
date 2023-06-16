@@ -3,7 +3,7 @@ use std::sync::Arc;
 use async_trait::async_trait;
 use derive_new::new;
 use domain::{GithubFetchRepoService, GithubRepo, GithubRepoId};
-use event_listeners::{domain::GithubEvent, models::GithubRepoIndexRepository};
+use event_listeners::{listeners::github::Event as GithubEvent, models::GithubRepoIndexRepository};
 use serde::{Deserialize, Serialize};
 
 use super::Result;
