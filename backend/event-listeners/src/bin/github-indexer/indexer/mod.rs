@@ -6,6 +6,7 @@ pub mod issues;
 pub mod logged;
 pub mod published;
 pub mod repo;
+mod repository;
 pub mod user;
 pub mod with_state;
 
@@ -18,6 +19,7 @@ use std::{
 use async_trait::async_trait;
 use error::Result;
 use event_listeners::domain::GithubEvent;
+pub use repository::Repository;
 
 pub trait Stateful<Id> {
 	fn store(&self, id: Id, events: &[GithubEvent]) -> anyhow::Result<()>;

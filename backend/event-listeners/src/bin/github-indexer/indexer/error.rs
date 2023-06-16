@@ -1,5 +1,4 @@
 use domain::{GithubServiceError, PublisherError};
-use event_listeners::domain::RepositoryError;
 use infrastructure::database::DatabaseError;
 use olog::warn;
 use thiserror::Error;
@@ -10,8 +9,6 @@ pub enum Error {
 	Database(#[from] DatabaseError),
 	#[error(transparent)]
 	GithubService(#[from] GithubServiceError),
-	#[error(transparent)]
-	Repository(#[from] RepositoryError),
 	#[error("Internal Error")]
 	Publisher(#[from] PublisherError),
 	#[error("Internal Error")]

@@ -1,14 +1,14 @@
 use diesel::{QueryDsl, RunQueryDsl};
 use domain::{GithubRepoId, GithubUserId};
-use infrastructure::database::{
-	schema::{github_repo_indexes, github_user_indexes},
-	Client,
-};
+use event_listeners::models::GithubUserIndex;
+use infrastructure::database::{schema::github_repo_indexes, Client, Result};
 
-use crate::domain::{IndexerRepository, RepositoryResult};
+pub trait Repository<Id> {
+	fn list_items_to_index(&self) -> Result<Vec<Id>>;
+}
 
-impl IndexerRepository<GithubRepoId> for Client {
-	fn list_items_to_index(&self) -> RepositoryResult<Vec<GithubRepoId>> {
+impl Repository<GithubRepoId> for Client {
+	fn list_items_to_index(&self) -> Result<Vec<GithubRepoId>> {
 		let mut connection = self.connection()?;
 		let ids = github_repo_indexes::table
 			.select(github_repo_indexes::repo_id)
@@ -17,14 +17,8 @@ impl IndexerRepository<GithubRepoId> for Client {
 	}
 }
 
-#[derive(Debug, QueryableByName)]
-#[diesel(table_name = github_user_indexes)]
-struct GithubUserIndex {
-	user_id: GithubUserId,
-}
-
-impl IndexerRepository<GithubUserId> for Client {
-	fn list_items_to_index(&self) -> RepositoryResult<Vec<GithubUserId>> {
+impl Repository<GithubUserId> for Client {
+	fn list_items_to_index(&self) -> Result<Vec<GithubUserId>> {
 		let mut connection = self.connection()?;
 
 		const QUERY: &str = r#"

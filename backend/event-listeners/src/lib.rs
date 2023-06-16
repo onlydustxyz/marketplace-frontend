@@ -5,7 +5,6 @@ extern crate diesel;
 extern crate derive;
 
 pub mod domain;
-pub mod infrastructure;
 pub mod listeners;
 pub mod models;
 

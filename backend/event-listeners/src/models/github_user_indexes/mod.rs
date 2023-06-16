@@ -14,6 +14,7 @@ use serde_json::Value;
 	AsChangeset,
 	Identifiable,
 	Queryable,
+	QueryableByName,
 	Serialize,
 	Deserialize,
 	Model,
