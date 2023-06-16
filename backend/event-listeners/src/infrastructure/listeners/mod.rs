@@ -17,9 +17,8 @@ use webhook::EventWebHook;
 use crate::{
 	domain::*,
 	infrastructure::database::{
-		GithubIssuesRepository, GithubReposRepository, GithubUsersRepository, PaymentRepository,
-		PaymentRequestRepository, ProjectGithubReposRepository, ProjectLeadRepository,
-		ProjectRepository, WorkItemRepository,
+		GithubIssuesRepository, PaymentRepository, PaymentRequestRepository,
+		ProjectGithubReposRepository, ProjectLeadRepository, ProjectRepository, WorkItemRepository,
 	},
 	Config, GITHUB_EVENTS_EXCHANGE,
 };
@@ -59,9 +58,9 @@ pub async fn spawn_all(
 		),
 		GithubProjector::new(
 			github,
-			GithubReposRepository::new(database.clone()),
+			database.clone(),
 			GithubIssuesRepository::new(database.clone()),
-			GithubUsersRepository::new(database.clone()),
+			database.clone(),
 			database.clone(),
 		)
 		.spawn(

@@ -1,10 +1,21 @@
 use ::infrastructure::database::schema::*;
-use derive_getters::Getters;
+use diesel::Identifiable;
 use domain::GithubUserId;
 use serde::{Deserialize, Serialize};
 
 #[derive(
-	Debug, Clone, Insertable, AsChangeset, Serialize, Deserialize, Getters, Default, PartialEq, Eq,
+	Debug,
+	Default,
+	Clone,
+	Identifiable,
+	Insertable,
+	AsChangeset,
+	Queryable,
+	Serialize,
+	Deserialize,
+	PartialEq,
+	Eq,
+	Model,
 )]
 pub struct GithubUser {
 	pub id: GithubUserId,
@@ -19,6 +30,10 @@ pub struct GithubUser {
 	pub telegram: Option<String>,
 }
 
-impl domain::Entity for GithubUser {
+impl Identifiable for GithubUser {
 	type Id = GithubUserId;
+
+	fn id(self) -> Self::Id {
+		self.id
+	}
 }

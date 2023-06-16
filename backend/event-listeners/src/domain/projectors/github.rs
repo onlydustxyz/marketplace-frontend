@@ -5,22 +5,20 @@ use async_trait::async_trait;
 use chrono::Utc;
 use derive_new::new;
 use domain::{GithubFetchRepoService, SubscriberCallbackError};
-use infrastructure::database::ImmutableRepository;
+use infrastructure::database::{ImmutableRepository, Repository};
 use tracing::instrument;
 
 use crate::{
 	domain::{EventListener, GithubEvent, GithubRepo, GithubReposContributor, GithubUser},
-	infrastructure::database::{
-		GithubIssuesRepository, GithubReposRepository, GithubUsersRepository,
-	},
+	infrastructure::database::GithubIssuesRepository,
 };
 
 #[derive(new)]
 pub struct Projector {
 	github_fetch_service: Arc<dyn GithubFetchRepoService>,
-	github_repo_repository: GithubReposRepository,
+	github_repo_repository: Arc<dyn Repository<GithubRepo>>,
 	github_issues_repository: GithubIssuesRepository,
-	github_users_repository: GithubUsersRepository,
+	github_users_repository: Arc<dyn Repository<GithubUser>>,
 	github_repos_contributors_repository: Arc<dyn ImmutableRepository<GithubReposContributor>>,
 }
 
@@ -49,21 +47,21 @@ impl EventListener<GithubEvent> for Projector {
 		match event.clone() {
 			GithubEvent::Repo(repo) => {
 				self.github_repo_repository.upsert(
-					&self.build_repo(&repo).await.map_err(SubscriberCallbackError::Discard)?,
+					self.build_repo(&repo).await.map_err(SubscriberCallbackError::Discard)?,
 				)?;
 			},
 			GithubEvent::Issue(issue) => {
 				self.github_issues_repository.upsert(&issue.into())?;
 			},
 			GithubEvent::User { user, repo_id } => {
-				self.github_users_repository.upsert(&user.clone().into())?;
+				self.github_users_repository.upsert(user.clone().into())?;
 				self.github_repos_contributors_repository.try_insert(GithubReposContributor {
 					repo_id,
 					user_id: *user.id(),
 				})?;
 			},
 			GithubEvent::FullUser(user) => {
-				self.github_users_repository.upsert(&user.into())?;
+				self.github_users_repository.upsert(user.into())?;
 			},
 		}
 		Ok(())

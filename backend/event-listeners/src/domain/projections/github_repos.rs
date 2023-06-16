@@ -1,11 +1,12 @@
 use ::infrastructure::database::schema::*;
 use chrono::NaiveDateTime;
+use diesel::Identifiable;
 use domain::GithubRepoId;
 use serde::{Deserialize, Serialize};
 
 #[allow(clippy::too_many_arguments)]
 #[derive(
-	Debug, Clone, Insertable, AsChangeset, Serialize, Deserialize, Queryable, Identifiable,
+	Debug, Clone, Insertable, AsChangeset, Serialize, Deserialize, Queryable, Identifiable, Model,
 )]
 pub struct GithubRepo {
 	pub id: GithubRepoId,
@@ -19,6 +20,10 @@ pub struct GithubRepo {
 	pub languages: serde_json::Value,
 }
 
-impl domain::Entity for GithubRepo {
+impl Identifiable for GithubRepo {
 	type Id = GithubRepoId;
+
+	fn id(self) -> Self::Id {
+		self.id
+	}
 }

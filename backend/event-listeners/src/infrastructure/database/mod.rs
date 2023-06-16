@@ -1,9 +1,7 @@
 mod error;
 mod github_issues;
 mod github_repo_indexes;
-mod github_repos;
 mod github_user_indexes;
-mod github_users;
 mod indexer;
 mod payment;
 mod payment_request;
@@ -14,8 +12,6 @@ mod project_lead;
 mod work_item;
 
 pub use github_issues::Repository as GithubIssuesRepository;
-pub use github_repos::Repository as GithubReposRepository;
-pub use github_users::Repository as GithubUsersRepository;
 pub use payment::Repository as PaymentRepository;
 pub use payment_request::Repository as PaymentRequestRepository;
 pub use project::Repository as ProjectRepository;
