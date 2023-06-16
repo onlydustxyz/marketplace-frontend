@@ -4,7 +4,7 @@ use async_trait::async_trait;
 use chrono::{DateTime, Utc};
 use derive_new::new;
 use domain::{stream_filter, GithubFetchService, GithubRepoId, GithubUser, GithubUserId, LogErr};
-use event_listeners::domain::{GithubEvent, GithubUserIndexRepository};
+use event_listeners::{domain::GithubEvent, models::GithubUserIndexRepository};
 use serde::{Deserialize, Serialize};
 use stream_filter::Decision;
 

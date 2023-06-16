@@ -7,10 +7,7 @@ use domain::{ApplicationEvent, Event, ProjectEvent, SubscriberCallbackError};
 use infrastructure::database::{ImmutableRepository, Repository};
 use tracing::instrument;
 
-use crate::{
-	domain::{EventListener, GithubRepoIndexRepository},
-	models::*,
-};
+use crate::{domain::EventListener, models::*};
 
 #[derive(new)]
 pub struct Projector {
@@ -53,7 +50,10 @@ impl EventListener<Event> for Projector {
 						project_id,
 						github_repo_id,
 					})?;
-					self.github_repo_index_repository.try_insert(&github_repo_id)?;
+					self.github_repo_index_repository.try_insert(GithubRepoIndex {
+						repo_id: github_repo_id,
+						..Default::default()
+					})?;
 				},
 				ProjectEvent::GithubRepoUnlinked { id, github_repo_id } => {
 					self.project_github_repos_repository.delete((id, github_repo_id))?;

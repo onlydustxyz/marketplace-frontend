@@ -8,10 +8,7 @@ use infrastructure::database::Repository;
 use rust_decimal::{prelude::ToPrimitive, Decimal};
 use tracing::instrument;
 
-use crate::{
-	domain::{EventListener, GithubRepoIndexRepository, GithubUserIndexRepository},
-	models::*,
-};
+use crate::{domain::EventListener, models::*};
 
 #[derive(Constructor)]
 pub struct Projector {
@@ -89,13 +86,18 @@ impl<'a> EventListener<Event> for Projector {
 									repo_id: *work_item.repo_id(),
 									issue_number: *work_item.issue_number(),
 								})?;
-								self.github_repo_index_repository
-									.try_insert(work_item.repo_id())?;
+								self.github_repo_index_repository.try_insert(GithubRepoIndex {
+									repo_id: *work_item.repo_id(),
+									..Default::default()
+								})?;
 								Ok(())
 							},
 						)?;
 
-						self.github_user_index_repository.try_insert(&recipient_id)?;
+						self.github_user_index_repository.try_insert(GithubUserIndex {
+							user_id: recipient_id,
+							..Default::default()
+						})?;
 					},
 					PaymentEvent::Cancelled { id: payment_id } => {
 						let payment_request =

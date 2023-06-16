@@ -4,7 +4,7 @@ use async_trait::async_trait;
 use chrono::{DateTime, Utc};
 use derive_new::new;
 use domain::{GithubFetchIssueService, GithubRepoId, GithubServiceIssueFilters};
-use event_listeners::domain::{GithubEvent, GithubRepoIndexRepository};
+use event_listeners::{domain::GithubEvent, models::GithubRepoIndexRepository};
 use serde::{Deserialize, Serialize};
 
 use super::{error::IgnoreErrors, Result};

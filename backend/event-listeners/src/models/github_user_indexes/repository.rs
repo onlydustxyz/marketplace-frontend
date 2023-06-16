@@ -1,23 +1,39 @@
 use diesel::{ExpressionMethods, OptionalExtension, QueryDsl, RunQueryDsl};
 use domain::GithubUserId;
-use infrastructure::database::{schema::github_user_indexes::dsl, Client};
+use infrastructure::{
+	database,
+	database::{schema::github_user_indexes::dsl, Result},
+};
 
-use crate::domain::{GithubUserIndexRepository, RepositoryResult};
+use super::GithubUserIndex;
 
-impl GithubUserIndexRepository for Client {
-	fn try_insert(&self, user_id: &GithubUserId) -> RepositoryResult<()> {
-		let mut connection = self.connection()?;
-		diesel::insert_into(dsl::github_user_indexes)
-			.values((dsl::user_id.eq(user_id),))
-			.on_conflict_do_nothing()
-			.execute(&mut *connection)?;
-		Ok(())
-	}
-
+pub trait Repository: database::Repository<GithubUserIndex> {
 	fn select_user_indexer_state(
 		&self,
 		user_id: &GithubUserId,
-	) -> RepositoryResult<Option<serde_json::Value>> {
+	) -> Result<Option<serde_json::Value>>;
+	fn update_user_indexer_state(
+		&self,
+		user_id: &GithubUserId,
+		state: serde_json::Value,
+	) -> Result<()>;
+
+	fn select_contributor_indexer_state(
+		&self,
+		user_id: &GithubUserId,
+	) -> Result<Option<serde_json::Value>>;
+	fn upsert_contributor_indexer_state(
+		&self,
+		user_id: &GithubUserId,
+		state: serde_json::Value,
+	) -> Result<()>;
+}
+
+impl Repository for database::Client {
+	fn select_user_indexer_state(
+		&self,
+		user_id: &GithubUserId,
+	) -> Result<Option<serde_json::Value>> {
 		let mut connection = self.connection()?;
 		let state = dsl::github_user_indexes
 			.select(dsl::user_indexer_state)
@@ -32,7 +48,7 @@ impl GithubUserIndexRepository for Client {
 		&self,
 		user_id: &GithubUserId,
 		state: serde_json::Value,
-	) -> RepositoryResult<()> {
+	) -> Result<()> {
 		let mut connection = self.connection()?;
 		diesel::update(dsl::github_user_indexes)
 			.set(dsl::user_indexer_state.eq(state))
@@ -44,7 +60,7 @@ impl GithubUserIndexRepository for Client {
 	fn select_contributor_indexer_state(
 		&self,
 		user_id: &GithubUserId,
-	) -> RepositoryResult<Option<serde_json::Value>> {
+	) -> Result<Option<serde_json::Value>> {
 		let mut connection = self.connection()?;
 		let state = dsl::github_user_indexes
 			.select(dsl::contributor_indexer_state)
@@ -59,7 +75,7 @@ impl GithubUserIndexRepository for Client {
 		&self,
 		user_id: &GithubUserId,
 		state: serde_json::Value,
-	) -> RepositoryResult<()> {
+	) -> Result<()> {
 		let mut connection = self.connection()?;
 		diesel::insert_into(dsl::github_user_indexes)
 			.values((
