@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use anyhow::Result;
 use dotenv::dotenv;
-use event_listeners::{infrastructure::listeners, Config};
+use event_listeners::{listeners, Config};
 use futures::future::try_join_all;
 use infrastructure::{config, database, github, tracing::Tracer};
 

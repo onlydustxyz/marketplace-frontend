@@ -1,30 +1,34 @@
-mod logger;
-use logger::Logger;
-use url::Url;
+pub mod budget;
+pub mod github;
+pub mod logger;
+pub mod project;
+pub mod webhook;
 
-mod webhook;
 use std::sync::Arc;
 
 use anyhow::Result;
 use domain::{LogErr, MessagePayload, Subscriber, SubscriberCallbackError};
 use infrastructure::{
 	amqp::{CommandSubscriberDecorator, UniqueMessage},
-	database, event_bus, github,
+	database, event_bus,
+	github::Client as GithubClient,
 };
 use tokio::task::JoinHandle;
+use url::Url;
 use webhook::EventWebHook;
 
+use self::logger::Logger;
 use crate::{domain::*, Config, GITHUB_EVENTS_EXCHANGE};
 
 pub async fn spawn_all(
 	config: &Config,
 	reqwest: reqwest::Client,
 	database: Arc<database::Client>,
-	github: Arc<github::Client>,
+	github: Arc<GithubClient>,
 ) -> Result<Vec<JoinHandle<()>>> {
 	let mut handles = vec![
 		Logger.spawn(event_bus::event_consumer(config.amqp(), "logger").await?),
-		ProjectProjector::new(
+		project::Projector::new(
 			database.clone(),
 			database.clone(),
 			database.clone(),
@@ -36,7 +40,7 @@ pub async fn spawn_all(
 				.await?
 				.into_command_subscriber(database.clone()),
 		),
-		BudgetProjector::new(
+		budget::Projector::new(
 			database.clone(),
 			database.clone(),
 			database.clone(),
@@ -49,7 +53,7 @@ pub async fn spawn_all(
 				.await?
 				.into_command_subscriber(database.clone()),
 		),
-		GithubProjector::new(
+		github::Projector::new(
 			github,
 			database.clone(),
 			database.clone(),
