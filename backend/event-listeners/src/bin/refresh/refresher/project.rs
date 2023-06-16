@@ -1,31 +1,25 @@
 use std::sync::Arc;
 
 use domain::Project;
-use event_listeners::{
-	domain::{BudgetProjector, ProjectProjector},
-	infrastructure::database::{
-		ApplicationRepository, BudgetRepository, PaymentRepository, PaymentRequestRepository,
-		ProjectGithubReposRepository, ProjectLeadRepository, ProjectRepository, WorkItemRepository,
-	},
-};
+use event_listeners::listeners::*;
 use infrastructure::database;
 
 use super::{Refreshable, Refresher};
 
 pub fn create(database: Arc<database::Client>) -> impl Refreshable {
-	let project_projector = ProjectProjector::new(
-		ProjectRepository::new(database.clone()),
-		ProjectLeadRepository::new(database.clone()),
-		ProjectGithubReposRepository::new(database.clone()),
+	let project_projector = project::Projector::new(
 		database.clone(),
-		ApplicationRepository::new(database.clone()),
+		database.clone(),
+		database.clone(),
+		database.clone(),
+		database.clone(),
 	);
 
-	let budget_projector = BudgetProjector::new(
-		PaymentRequestRepository::new(database.clone()),
-		PaymentRepository::new(database.clone()),
-		BudgetRepository::new(database.clone()),
-		WorkItemRepository::new(database.clone()),
+	let budget_projector = budget::Projector::new(
+		database.clone(),
+		database.clone(),
+		database.clone(),
+		database.clone(),
 		database.clone(),
 		database.clone(),
 	);

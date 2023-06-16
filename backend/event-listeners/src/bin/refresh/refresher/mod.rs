@@ -4,9 +4,9 @@ use anyhow::{anyhow, Result};
 use async_trait::async_trait;
 use derive_more::Constructor;
 use domain::{Aggregate, AggregateEvent, Event, EventStore};
-use event_listeners::domain::EventListener;
 
 mod registry;
+use event_listeners::listeners::EventListener;
 use itertools::Itertools;
 use olog::info;
 pub use registry::{Registrable, Registry};
@@ -56,7 +56,7 @@ where
 		for event in events {
 			let event: Event = event.into();
 			for projector in &self.projectors {
-				projector.on_event(&event).await?;
+				projector.on_event(event.clone()).await?;
 			}
 		}
 		Ok(())

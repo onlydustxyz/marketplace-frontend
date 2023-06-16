@@ -3,6 +3,10 @@ pub mod enums;
 mod error;
 pub mod repositories;
 pub mod schema;
+
+mod model;
+pub use model::{ImmutableModel, ImmutableRepository, Model, Repository};
+
 #[cfg(test)]
 mod tests;
 
@@ -14,7 +18,10 @@ use diesel::{
 use diesel_migrations::EmbeddedMigrations;
 use olog::error;
 
-pub use self::{config::Config, error::Error as DatabaseError};
+pub use self::{
+	config::Config,
+	error::{Error as DatabaseError, Result},
+};
 use crate::diesel_migrations::MigrationHarness;
 
 type Pool = r2d2::Pool<ConnectionManager<PgConnection>>;
@@ -38,14 +45,14 @@ impl Client {
 }
 
 impl Client {
-	pub fn connection(&self) -> Result<PooledConnection, DatabaseError> {
+	pub fn connection(&self) -> Result<PooledConnection> {
 		self.pool.get().map_err(|e| {
 			error!("Failed to connect to get connection out of pool: {e}");
 			DatabaseError::Connection(e.into())
 		})
 	}
 
-	pub fn run_migrations(&self) -> Result<(), DatabaseError> {
+	pub fn run_migrations(&self) -> Result<()> {
 		let mut connection = self.connection()?;
 		connection.run_pending_migrations(MIGRATIONS).map_err(|e| {
 			error!("Failed to run migrations: {e}");
@@ -55,7 +62,7 @@ impl Client {
 	}
 }
 
-pub fn init_pool(config: &Config) -> Result<Pool, DatabaseError> {
+pub fn init_pool(config: &Config) -> Result<Pool> {
 	let manager = ConnectionManager::<PgConnection>::new(config.url());
 	let pool = Pool::builder()
 		.max_size(*config.pool_max_size())
