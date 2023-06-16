@@ -29,7 +29,7 @@ pub async fn serve(
 	ignored_github_issues_repository: IgnoredGithubIssuesRepository,
 	user_info_repository: UserPayoutInfoRepository,
 	user_profile_info_repository: UserProfileInfoRepository,
-	contact_informations_repository: ContactInformationsRepository,
+	contact_informations_repository: Arc<dyn ContactInformationsRepository>,
 	terms_and_conditions_acceptance_repository: TermsAndConditionsAcceptanceRepository,
 	graphql: Arc<infrastructure::graphql::Client>,
 	github: Arc<github::Client>,

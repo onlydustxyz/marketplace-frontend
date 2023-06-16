@@ -61,7 +61,7 @@ impl Context {
 		ignored_github_issues_repository: IgnoredGithubIssuesRepository,
 		user_payout_info_repository: UserPayoutInfoRepository,
 		user_profile_info_repository: UserProfileInfoRepository,
-		contact_informations_repository: ContactInformationsRepository,
+		contact_informations_repository: Arc<dyn ContactInformationsRepository>,
 		terms_and_conditions_acceptance_repository: TermsAndConditionsAcceptanceRepository,
 		graphql: Arc<graphql::Client>,
 		github: Arc<github::Client>,

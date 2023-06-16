@@ -45,7 +45,7 @@ async fn main() -> Result<()> {
 		IgnoredGithubIssuesRepository::new(database.clone()),
 		UserPayoutInfoRepository::new(database.clone()),
 		UserProfileInfoRepository::new(database.clone()),
-		ContactInformationsRepository::new(database.clone()),
+		database.clone(),
 		TermsAndConditionsAcceptanceRepository::new(database),
 		Arc::new(infrastructure_graphql::Client::new(
 			config.graphql_client(),

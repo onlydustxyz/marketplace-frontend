@@ -1,3 +1,5 @@
+use std::sync::Arc;
+
 use derive_more::Constructor;
 use domain::{DomainError, Languages, UserId};
 use infrastructure::database::enums::AllocatedTime;
@@ -7,7 +9,7 @@ use crate::models::*;
 #[derive(Constructor)]
 pub struct Usecase {
 	user_profile_info_repository: UserProfileInfoRepository,
-	contact_informations_repository: ContactInformationsRepository,
+	contact_informations_repository: Arc<dyn ContactInformationsRepository>,
 }
 
 impl Usecase {
