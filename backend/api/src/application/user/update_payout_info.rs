@@ -3,13 +3,7 @@ use domain::UserId;
 use infrastructure::database::DatabaseError;
 use thiserror::Error;
 
-use crate::{
-	domain::{
-		user_payout_info::{Identity, Location, PayoutSettings},
-		ArePayoutSettingsValid, UserPayoutInfo,
-	},
-	infrastructure::database::UserPayoutInfoRepository,
-};
+use crate::{domain::ArePayoutSettingsValid, models::*};
 
 #[derive(Debug, Error)]
 pub enum Error {

@@ -3,10 +3,7 @@ use domain::UserId;
 use infrastructure::database::DatabaseError;
 use thiserror::Error;
 
-use crate::{
-	domain::TermsAndConditionsAcceptance,
-	infrastructure::database::TermsAndConditionsAcceptanceRepository,
-};
+use crate::models::*;
 
 #[derive(Debug, Error)]
 pub enum Error {

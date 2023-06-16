@@ -1,6 +1,9 @@
 use chrono::NaiveDateTime;
 use domain::{GithubIssueId, GithubIssueNumber, GithubRepoId, GithubUserId};
-use infrastructure::{database, database::schema::github_issues};
+use infrastructure::database::{
+	enums::{GithubIssueStatus, GithubIssueType},
+	schema::github_issues,
+};
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Insertable, AsChangeset, Serialize, Deserialize)]
@@ -11,8 +14,8 @@ pub struct GithubIssue {
 	pub created_at: NaiveDateTime,
 	pub author_id: GithubUserId,
 	pub merged_at: Option<NaiveDateTime>,
-	pub type_: database::github_issue::Type,
-	pub status: database::github_issue::Status,
+	pub type_: GithubIssueType,
+	pub status: GithubIssueStatus,
 	pub title: String,
 	pub html_url: String,
 	pub closed_at: Option<NaiveDateTime>,

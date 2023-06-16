@@ -4,13 +4,6 @@ pub use publishable::Publishable;
 pub mod permissions;
 pub use permissions::Permissions;
 
-#[allow(clippy::extra_unused_lifetimes)]
-pub mod user_payout_info;
-pub use user_payout_info::UserPayoutInfo;
-
-pub mod terms_and_conditions_acceptance;
-pub use terms_and_conditions_acceptance::TermsAndConditionsAcceptance;
-
 mod specifications;
 #[cfg(test)]
 pub use specifications::MockGithubRepoExists;
@@ -22,11 +15,3 @@ pub use services::MockImageStoreService;
 pub use services::{
 	DustyBotAsyncService, DustyBotService, GithubService, ImageStoreService, ImageStoreServiceError,
 };
-
-mod pending_project_leader_invitation;
-pub use pending_project_leader_invitation::{
-	Id as PendingProjectLeaderInvitationId, PendingProjectLeaderInvitation,
-};
-
-mod sponsor;
-pub use sponsor::{Id as SponsorId, Sponsor};

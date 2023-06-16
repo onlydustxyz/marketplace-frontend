@@ -6,11 +6,7 @@ use juniper::Nullable;
 use reqwest::Url;
 use tracing::instrument;
 
-use crate::{
-	domain::{ImageStoreService, SponsorId},
-	infrastructure::database::SponsorRepository,
-	presentation::http::dto::NonEmptyTrimmedString,
-};
+use crate::{domain::ImageStoreService, models::*, presentation::http::dto::NonEmptyTrimmedString};
 
 pub struct Usecase {
 	sponsor_repository: SponsorRepository,
@@ -65,7 +61,7 @@ mod tests {
 	use rstest::{fixture, rstest};
 
 	use super::*;
-	use crate::domain::{ImageStoreServiceError, MockImageStoreService, Sponsor};
+	use crate::domain::{ImageStoreServiceError, MockImageStoreService};
 
 	#[fixture]
 	fn sponsor_id() -> SponsorId {

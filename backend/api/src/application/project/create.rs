@@ -10,7 +10,7 @@ use tracing::instrument;
 
 use crate::{
 	domain::{ImageStoreService, Publishable},
-	infrastructure::database::ProjectDetailsRepository,
+	models::*,
 	presentation::http::dto::NonEmptyTrimmedString,
 };
 
@@ -63,20 +63,17 @@ impl Usecase {
 			None => None,
 		};
 
-		// TODO turn this into proper DTO
-		self.project_details_repository.upsert(
-			&crate::infrastructure::database::ProjectDetails {
-				project_id,
-				name: name.into(),
-				telegram_link: telegram_link.map(|url| url.to_string()),
-				logo_url: stored_logo_url,
-				short_description: short_description.into(),
-				long_description: long_description.into(),
-				rank,
-				hiring,
-				visibility: visibility.into(),
-			},
-		)?;
+		self.project_details_repository.upsert(&ProjectDetails {
+			project_id,
+			name: name.into(),
+			telegram_link: telegram_link.map(|url| url.to_string()),
+			logo_url: stored_logo_url,
+			short_description: short_description.into(),
+			long_description: long_description.into(),
+			rank,
+			hiring,
+			visibility: visibility.into(),
+		})?;
 
 		events
 			.into_iter()

@@ -6,7 +6,7 @@ use domain::EthereumIdentity;
 #[cfg(test)]
 use mockall::mock;
 
-use crate::{domain::user_payout_info::PayoutSettings, infrastructure::web3::ens};
+use crate::{infrastructure::web3::ens, models::PayoutSettings};
 
 #[derive(Constructor)]
 pub struct IsValid {

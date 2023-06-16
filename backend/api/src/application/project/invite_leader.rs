@@ -2,10 +2,7 @@ use anyhow::Result;
 use domain::{DomainError, GithubUserId, ProjectId};
 use tracing::instrument;
 
-use crate::{
-	domain::{PendingProjectLeaderInvitation, PendingProjectLeaderInvitationId},
-	infrastructure::database::PendingProjectLeaderInvitationsRepository,
-};
+use crate::models::*;
 
 pub struct Usecase {
 	pending_leader_invitation_repository: PendingProjectLeaderInvitationsRepository,

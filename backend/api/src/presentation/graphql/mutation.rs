@@ -5,7 +5,6 @@ use domain::{
 	Amount, BlockchainNetwork, Currency, GithubIssue, GithubIssueNumber, GithubRepoId, Iban,
 	Languages, LogErr, PaymentReason, PaymentReceipt, ProjectId, ProjectVisibility, UserId,
 };
-use infrastructure::database::contact_information::ContactInformation;
 use juniper::{graphql_object, DefaultScalarValue, Nullable};
 use rusty_money::Money;
 use url::Url;
@@ -13,7 +12,7 @@ use uuid::Uuid;
 
 use super::{dto, Context, Error, Result};
 use crate::{
-	domain::user_payout_info::{Identity, Location, PayoutSettings},
+	models::*,
 	presentation::{
 		graphql::dto::Language,
 		http::dto::{

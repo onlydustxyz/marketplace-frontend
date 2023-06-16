@@ -3,7 +3,7 @@ use derive_more::Constructor;
 use domain::{DomainError, GithubIssueNumber, GithubRepoId, ProjectId};
 use tracing::instrument;
 
-use crate::infrastructure::database::IgnoredGithubIssuesRepository;
+use crate::models::*;
 
 #[derive(Constructor)]
 pub struct Usecase {

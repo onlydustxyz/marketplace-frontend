@@ -1,11 +1,8 @@
 use derive_more::Constructor;
 use domain::{DomainError, Languages, UserId};
-use infrastructure::database::{
-	contact_information::ContactInformation,
-	user_profile::{AllocatedTime, UserProfile},
-};
+use infrastructure::database::enums::AllocatedTime;
 
-use crate::infrastructure::database::{ContactInformationsRepository, UserProfileInfoRepository};
+use crate::models::*;
 
 #[derive(Constructor)]
 pub struct Usecase {
@@ -26,7 +23,7 @@ impl Usecase {
 		looking_for_a_job: bool,
 		contact_informations: Vec<ContactInformation>,
 	) -> Result<(), DomainError> {
-		self.user_profile_info_repository.upsert(&UserProfile {
+		self.user_profile_info_repository.upsert(&UserProfileInfo {
 			id: caller_id,
 			bio,
 			location,

@@ -9,7 +9,7 @@ pub enum Channel {
 	LinkedIn,
 }
 
-impl From<Channel> for infrastructure::database::contact_information::Channel {
+impl From<Channel> for infrastructure::database::enums::ContactChannel {
 	fn from(value: Channel) -> Self {
 		match value {
 			Channel::Email => Self::Email,

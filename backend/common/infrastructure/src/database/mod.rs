@@ -1,26 +1,21 @@
-pub mod contact_information;
-pub mod github_issue;
-pub mod project;
+mod config;
+pub mod enums;
+mod error;
 pub mod repositories;
 pub mod schema;
 #[cfg(test)]
 mod tests;
-pub mod user_profile;
 
-mod error;
+use anyhow::anyhow;
 use diesel::{
 	pg::PgConnection,
 	r2d2::{self, ConnectionManager},
 };
 use diesel_migrations::EmbeddedMigrations;
-pub use error::Error as DatabaseError;
-
-use crate::diesel_migrations::MigrationHarness;
-
-mod config;
-use anyhow::anyhow;
-pub use config::Config;
 use olog::error;
+
+pub use self::{config::Config, error::Error as DatabaseError};
+use crate::diesel_migrations::MigrationHarness;
 
 type Pool = r2d2::Pool<ConnectionManager<PgConnection>>;
 type PooledConnection = r2d2::PooledConnection<ConnectionManager<PgConnection>>;
