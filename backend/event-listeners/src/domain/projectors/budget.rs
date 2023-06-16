@@ -8,9 +8,9 @@ use infrastructure::database::Repository;
 use rust_decimal::{prelude::ToPrimitive, Decimal};
 use tracing::instrument;
 
-use crate::domain::{
-	Budget, EventListener, GithubRepoIndexRepository, GithubUserIndexRepository, Payment,
-	PaymentRequest, WorkItem, WorkItemRepository,
+use crate::{
+	domain::{EventListener, GithubRepoIndexRepository, GithubUserIndexRepository},
+	models::*,
 };
 
 #[derive(Constructor)]

@@ -7,9 +7,9 @@ use domain::{ApplicationEvent, Event, ProjectEvent, SubscriberCallbackError};
 use infrastructure::database::{ImmutableRepository, Repository};
 use tracing::instrument;
 
-use crate::domain::{
-	projections::Project, Application, EventListener, GithubRepoIndexRepository, ProjectGithubRepo,
-	ProjectLead,
+use crate::{
+	domain::{EventListener, GithubRepoIndexRepository},
+	models::*,
 };
 
 #[derive(new)]

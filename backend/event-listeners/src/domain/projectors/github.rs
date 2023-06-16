@@ -8,8 +8,9 @@ use domain::{GithubFetchRepoService, SubscriberCallbackError};
 use infrastructure::database::{ImmutableRepository, Repository};
 use tracing::instrument;
 
-use crate::domain::{
-	EventListener, GithubEvent, GithubIssue, GithubRepo, GithubReposContributor, GithubUser,
+use crate::{
+	domain::{EventListener, GithubEvent},
+	models::*,
 };
 
 #[derive(new)]
