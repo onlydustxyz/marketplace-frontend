@@ -1,8 +1,9 @@
 use chrono::NaiveDateTime;
+use diesel::Identifiable;
 use domain::{BudgetId, GithubUserId, PaymentId, UserId};
 use infrastructure::database::schema::payment_requests;
 
-#[derive(Debug, Insertable, Identifiable, Queryable, AsChangeset)]
+#[derive(Debug, Insertable, Identifiable, Queryable, AsChangeset, Model)]
 #[diesel(treat_none_as_null = true)]
 pub struct PaymentRequest {
 	pub id: PaymentId,
@@ -15,6 +16,10 @@ pub struct PaymentRequest {
 	pub hours_worked: i32,
 }
 
-impl domain::Entity for PaymentRequest {
+impl Identifiable for PaymentRequest {
 	type Id = PaymentId;
+
+	fn id(self) -> Self::Id {
+		self.id
+	}
 }

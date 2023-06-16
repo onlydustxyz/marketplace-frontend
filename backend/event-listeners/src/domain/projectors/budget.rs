@@ -13,12 +13,12 @@ use crate::{
 		Budget, EventListener, GithubRepoIndexRepository, GithubUserIndexRepository, Payment,
 		PaymentRequest, WorkItem,
 	},
-	infrastructure::database::{PaymentRepository, PaymentRequestRepository, WorkItemRepository},
+	infrastructure::database::{PaymentRepository, WorkItemRepository},
 };
 
 #[derive(Constructor)]
 pub struct Projector {
-	payment_request_repository: PaymentRequestRepository,
+	payment_request_repository: Arc<dyn Repository<PaymentRequest>>,
 	payment_repository: PaymentRepository,
 	budget_repository: Arc<dyn Repository<Budget>>,
 	work_item_repository: WorkItemRepository,
@@ -70,7 +70,7 @@ impl<'a> EventListener<Event> for Projector {
 						budget.remaining_amount -= amount.amount();
 						self.budget_repository.update(budget)?;
 
-						self.payment_request_repository.upsert(&PaymentRequest {
+						self.payment_request_repository.upsert(PaymentRequest {
 							id: payment_id,
 							budget_id,
 							requestor_id,
@@ -102,11 +102,11 @@ impl<'a> EventListener<Event> for Projector {
 					},
 					PaymentEvent::Cancelled { id: payment_id } => {
 						let payment_request =
-							self.payment_request_repository.find_by_id(&payment_id)?;
+							self.payment_request_repository.find_by_id(payment_id)?;
 						let mut budget = self.budget_repository.find_by_id(budget_id)?;
 						budget.remaining_amount += Decimal::from(payment_request.amount_in_usd);
 						self.budget_repository.update(budget)?;
-						self.payment_request_repository.delete(&payment_id)?;
+						self.payment_request_repository.delete(payment_id)?;
 						self.work_item_repository.delete_by_payment_id(&payment_id)?;
 					},
 					PaymentEvent::Processed {
@@ -129,15 +129,15 @@ impl<'a> EventListener<Event> for Projector {
 						received_at,
 					} => {
 						let mut payment_request =
-							self.payment_request_repository.find_by_id(&payment_id)?;
+							self.payment_request_repository.find_by_id(payment_id)?;
 						payment_request.invoice_received_at = Some(received_at);
-						self.payment_request_repository.update(&payment_id, payment_request)?;
+						self.payment_request_repository.update(payment_request)?;
 					},
 					PaymentEvent::InvoiceRejected { id: payment_id } => {
 						let mut payment_request =
-							self.payment_request_repository.find_by_id(&payment_id)?;
+							self.payment_request_repository.find_by_id(payment_id)?;
 						payment_request.invoice_received_at = None;
-						self.payment_request_repository.update(&payment_id, payment_request)?;
+						self.payment_request_repository.update(payment_request)?;
 					},
 				},
 			}
