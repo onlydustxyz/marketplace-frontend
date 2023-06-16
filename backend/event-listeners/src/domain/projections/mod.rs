@@ -3,9 +3,10 @@ mod applications;
 #[allow(clippy::extra_unused_lifetimes)]
 mod budgets;
 #[allow(clippy::extra_unused_lifetimes)]
+mod github_issues;
+#[allow(clippy::extra_unused_lifetimes)]
 mod github_repos;
 mod github_repos_contributors;
-#[allow(clippy::extra_unused_lifetimes)]
 mod github_users;
 #[allow(clippy::extra_unused_lifetimes)]
 mod payment_requests;
@@ -20,6 +21,7 @@ mod work_items;
 
 pub use applications::Application;
 pub use budgets::Budget;
+pub use github_issues::GithubIssue;
 pub use github_repos::GithubRepo;
 pub use github_repos_contributors::GithubReposContributor;
 pub use github_users::GithubUser;

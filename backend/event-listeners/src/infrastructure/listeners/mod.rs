@@ -14,9 +14,7 @@ use infrastructure::{
 use tokio::task::JoinHandle;
 use webhook::EventWebHook;
 
-use crate::{
-	domain::*, infrastructure::database::GithubIssuesRepository, Config, GITHUB_EVENTS_EXCHANGE,
-};
+use crate::{domain::*, Config, GITHUB_EVENTS_EXCHANGE};
 
 pub async fn spawn_all(
 	config: &Config,
@@ -54,7 +52,7 @@ pub async fn spawn_all(
 		GithubProjector::new(
 			github,
 			database.clone(),
-			GithubIssuesRepository::new(database.clone()),
+			database.clone(),
 			database.clone(),
 			database.clone(),
 		)

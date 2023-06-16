@@ -8,22 +8,21 @@ use domain::{GithubFetchRepoService, SubscriberCallbackError};
 use infrastructure::database::{ImmutableRepository, Repository};
 use tracing::instrument;
 
-use crate::{
-	domain::{EventListener, GithubEvent, GithubRepo, GithubReposContributor, GithubUser},
-	infrastructure::database::GithubIssuesRepository,
+use crate::domain::{
+	EventListener, GithubEvent, GithubIssue, GithubRepo, GithubReposContributor, GithubUser,
 };
 
 #[derive(new)]
 pub struct Projector {
 	github_fetch_service: Arc<dyn GithubFetchRepoService>,
 	github_repo_repository: Arc<dyn Repository<GithubRepo>>,
-	github_issues_repository: GithubIssuesRepository,
+	github_issues_repository: Arc<dyn Repository<GithubIssue>>,
 	github_users_repository: Arc<dyn Repository<GithubUser>>,
 	github_repos_contributors_repository: Arc<dyn ImmutableRepository<GithubReposContributor>>,
 }
 
 impl Projector {
-	async fn build_repo(&self, repo: &domain::GithubRepo) -> Result<GithubRepo> {
+	async fn build_repo(&self, repo: domain::GithubRepo) -> Result<GithubRepo> {
 		let languages = self.github_fetch_service.repo_languages(repo.id()).await?;
 
 		Ok(GithubRepo {
@@ -47,11 +46,11 @@ impl EventListener<GithubEvent> for Projector {
 		match event.clone() {
 			GithubEvent::Repo(repo) => {
 				self.github_repo_repository.upsert(
-					self.build_repo(&repo).await.map_err(SubscriberCallbackError::Discard)?,
+					self.build_repo(repo).await.map_err(SubscriberCallbackError::Discard)?,
 				)?;
 			},
 			GithubEvent::Issue(issue) => {
-				self.github_issues_repository.upsert(&issue.into())?;
+				self.github_issues_repository.upsert(issue.into())?;
 			},
 			GithubEvent::User { user, repo_id } => {
 				self.github_users_repository.upsert(user.clone().into())?;

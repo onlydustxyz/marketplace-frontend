@@ -1,4 +1,5 @@
 use chrono::NaiveDateTime;
+use diesel::Identifiable;
 use domain::{GithubIssueId, GithubIssueNumber, GithubRepoId, GithubUserId};
 use infrastructure::database::{
 	enums::{GithubIssueStatus, GithubIssueType},
@@ -6,7 +7,9 @@ use infrastructure::database::{
 };
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, Insertable, AsChangeset, Serialize, Deserialize)]
+#[derive(
+	Debug, Clone, Insertable, AsChangeset, Identifiable, Queryable, Serialize, Deserialize, Model,
+)]
 pub struct GithubIssue {
 	pub id: GithubIssueId,
 	pub repo_id: GithubRepoId,
@@ -21,8 +24,12 @@ pub struct GithubIssue {
 	pub closed_at: Option<NaiveDateTime>,
 }
 
-impl domain::Entity for GithubIssue {
+impl Identifiable for GithubIssue {
 	type Id = GithubIssueId;
+
+	fn id(self) -> Self::Id {
+		self.id
+	}
 }
 
 impl From<domain::GithubIssue> for GithubIssue {
