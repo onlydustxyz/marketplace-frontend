@@ -13,13 +13,13 @@ use crate::{
 		Budget, EventListener, GithubRepoIndexRepository, GithubUserIndexRepository, Payment,
 		PaymentRequest, WorkItem,
 	},
-	infrastructure::database::{PaymentRepository, WorkItemRepository},
+	infrastructure::database::WorkItemRepository,
 };
 
 #[derive(Constructor)]
 pub struct Projector {
 	payment_request_repository: Arc<dyn Repository<PaymentRequest>>,
-	payment_repository: PaymentRepository,
+	payment_repository: Arc<dyn Repository<Payment>>,
 	budget_repository: Arc<dyn Repository<Budget>>,
 	work_item_repository: WorkItemRepository,
 	github_repo_index_repository: Arc<dyn GithubRepoIndexRepository>,
@@ -115,15 +115,17 @@ impl<'a> EventListener<Event> for Projector {
 						amount,
 						receipt,
 						processed_at,
-					} => self.payment_repository.upsert(&Payment {
-						id: receipt_id,
-						amount: *amount.amount(),
-						currency_code: amount.currency().to_string(),
-						receipt: serde_json::to_value(receipt)
-							.map_err(|e| SubscriberCallbackError::Discard(e.into()))?,
-						request_id: payment_id,
-						processed_at,
-					})?,
+					} => {
+						self.payment_repository.upsert(Payment {
+							id: receipt_id,
+							amount: *amount.amount(),
+							currency_code: amount.currency().to_string(),
+							receipt: serde_json::to_value(receipt)
+								.map_err(|e| SubscriberCallbackError::Discard(e.into()))?,
+							request_id: payment_id,
+							processed_at,
+						})?;
+					},
 					PaymentEvent::InvoiceReceived {
 						id: payment_id,
 						received_at,
