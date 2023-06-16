@@ -1,5 +1,6 @@
 import { Maybe, ProjectVisibilityDetailsFragment, useGetProjectVisibilityDetailsQuery } from "src/__generated/graphql";
 import { useAuth } from "src/hooks/useAuth";
+import { contextWithCacheHeaders } from "src/utils/headers";
 
 export default function useProjectVisibility(projectId?: string) {
   const { user, githubUserId } = useAuth();
@@ -7,6 +8,7 @@ export default function useProjectVisibility(projectId?: string) {
   const { data } = useGetProjectVisibilityDetailsQuery({
     variables: { projectId },
     skip: !projectId,
+    ...contextWithCacheHeaders,
   });
 
   return {

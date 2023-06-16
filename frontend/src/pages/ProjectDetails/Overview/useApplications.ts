@@ -7,6 +7,7 @@ import {
 import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
+import { contextWithCacheHeaders } from "src/utils/headers";
 
 export default function useApplications(projectId: string) {
   const { user } = useAuth();
@@ -15,6 +16,7 @@ export default function useApplications(projectId: string) {
 
   const { data } = useGetProjectApplicationsQuery({
     variables: { projectId },
+    ...contextWithCacheHeaders,
   });
 
   const [applyToProject] = useApplyToProjectMutation({
