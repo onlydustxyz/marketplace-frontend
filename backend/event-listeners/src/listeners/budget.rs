@@ -22,7 +22,7 @@ pub struct Projector {
 }
 
 #[async_trait]
-impl<'a> EventListener<Event> for Projector {
+impl EventListener<Event> for Projector {
 	#[instrument(name = "budget_projection", skip(self))]
 	async fn on_event(&self, event: Event) -> Result<(), SubscriberCallbackError> {
 		if let Event::Project(ProjectEvent::Budget {
