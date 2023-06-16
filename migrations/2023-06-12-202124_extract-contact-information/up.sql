@@ -1,7 +1,7 @@
-drop view public.user_profiles;
+DROP VIEW public.user_profiles;
 
 
-CREATE TYPE contact_channel AS enum('email', 'telegram', 'twitter', 'discord', 'linkedin');
+CREATE TYPE contact_channel AS ENUM('email', 'telegram', 'twitter', 'discord', 'linkedin');
 
 
 CREATE TABLE
@@ -22,7 +22,9 @@ SELECT
     email,
     TRUE
 FROM
-    user_profile_info;
+    user_profile_info
+WHERE
+    email IS NOT NULL;
 
 
 INSERT INTO
@@ -33,7 +35,9 @@ SELECT
     telegram,
     TRUE
 FROM
-    user_profile_info;
+    user_profile_info
+WHERE
+    telegram IS NOT NULL;
 
 
 INSERT INTO
@@ -44,7 +48,9 @@ SELECT
     twitter,
     TRUE
 FROM
-    user_profile_info;
+    user_profile_info
+WHERE
+    twitter IS NOT NULL;
 
 
 INSERT INTO
@@ -55,7 +61,9 @@ SELECT
     discord,
     TRUE
 FROM
-    user_profile_info;
+    user_profile_info
+WHERE
+    discord IS NOT NULL;
 
 
 INSERT INTO
@@ -66,7 +74,9 @@ SELECT
     linkedin,
     TRUE
 FROM
-    user_profile_info;
+    user_profile_info
+WHERE
+    linkedin IS NOT NULL;
 
 
 ALTER TABLE user_profile_info
@@ -83,7 +93,7 @@ SELECT
     gu.id AS github_user_id,
     COALESCE(gu.login, au.login_at_signup) AS LOGIN,
     COALESCE(gu.avatar_url, au.avatar_url_at_signup) AS avatar_url,
-    COALESCE(gu.html_url, 'https://github.com/'::text || au.login_at_signup) AS html_url,
+    COALESCE(gu.html_url, 'https://github.com/'::TEXT || au.login_at_signup) AS html_url,
     au.id AS user_id,
     au.created_at,
     au.last_seen,
@@ -153,7 +163,7 @@ FROM
     AND ci.channel = 'email'::contact_channel
 UNION
 SELECT
-    au.github_user_id as github_user_id,
+    au.github_user_id AS github_user_id,
     ci.channel AS channel,
     ci.contact AS contact,
     ci.public AS public
