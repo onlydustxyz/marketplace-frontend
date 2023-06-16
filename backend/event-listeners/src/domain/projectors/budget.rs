@@ -4,6 +4,7 @@ use anyhow::{anyhow, Result};
 use async_trait::async_trait;
 use derive_more::Constructor;
 use domain::{BudgetEvent, Event, PaymentEvent, ProjectEvent, SubscriberCallbackError};
+use infrastructure::database::Repository;
 use rust_decimal::{prelude::ToPrimitive, Decimal};
 use tracing::instrument;
 
@@ -12,23 +13,21 @@ use crate::{
 		Budget, EventListener, GithubRepoIndexRepository, GithubUserIndexRepository, Payment,
 		PaymentRequest, WorkItem,
 	},
-	infrastructure::database::{
-		BudgetRepository, PaymentRepository, PaymentRequestRepository, WorkItemRepository,
-	},
+	infrastructure::database::{PaymentRepository, PaymentRequestRepository, WorkItemRepository},
 };
 
 #[derive(Constructor)]
 pub struct Projector {
 	payment_request_repository: PaymentRequestRepository,
 	payment_repository: PaymentRepository,
-	budget_repository: BudgetRepository,
+	budget_repository: Arc<dyn Repository<Budget>>,
 	work_item_repository: WorkItemRepository,
 	github_repo_index_repository: Arc<dyn GithubRepoIndexRepository>,
 	github_user_index_repository: Arc<dyn GithubUserIndexRepository>,
 }
 
 #[async_trait]
-impl EventListener<Event> for Projector {
+impl<'a> EventListener<Event> for Projector {
 	#[instrument(name = "budget_projection", skip(self))]
 	async fn on_event(&self, event: Event) -> Result<(), SubscriberCallbackError> {
 		if let Event::Project(ProjectEvent::Budget {
@@ -38,7 +37,7 @@ impl EventListener<Event> for Projector {
 		{
 			match event {
 				BudgetEvent::Created { id: budget_id, .. } => {
-					self.budget_repository.upsert(&Budget {
+					self.budget_repository.upsert(Budget {
 						id: budget_id,
 						project_id: Some(project_id),
 						initial_amount: Decimal::ZERO,
@@ -49,10 +48,10 @@ impl EventListener<Event> for Projector {
 					id: budget_id,
 					amount,
 				} => {
-					let mut budget = self.budget_repository.find_by_id(&budget_id)?;
+					let mut budget = self.budget_repository.find_by_id(budget_id)?;
 					budget.remaining_amount += amount;
 					budget.initial_amount += amount;
-					self.budget_repository.update(&budget_id, &budget)?;
+					self.budget_repository.update(budget)?;
 				},
 				BudgetEvent::Payment {
 					id: budget_id,
@@ -67,9 +66,9 @@ impl EventListener<Event> for Projector {
 						duration_worked,
 						requested_at,
 					} => {
-						let mut budget = self.budget_repository.find_by_id(&budget_id)?;
+						let mut budget = self.budget_repository.find_by_id(budget_id)?;
 						budget.remaining_amount -= amount.amount();
-						self.budget_repository.update(&budget_id, &budget)?;
+						self.budget_repository.update(budget)?;
 
 						self.payment_request_repository.upsert(&PaymentRequest {
 							id: payment_id,
@@ -104,9 +103,9 @@ impl EventListener<Event> for Projector {
 					PaymentEvent::Cancelled { id: payment_id } => {
 						let payment_request =
 							self.payment_request_repository.find_by_id(&payment_id)?;
-						let mut budget = self.budget_repository.find_by_id(&budget_id)?;
+						let mut budget = self.budget_repository.find_by_id(budget_id)?;
 						budget.remaining_amount += Decimal::from(payment_request.amount_in_usd);
-						self.budget_repository.update(&budget_id, &budget)?;
+						self.budget_repository.update(budget)?;
 						self.payment_request_repository.delete(&payment_id)?;
 						self.work_item_repository.delete_by_payment_id(&payment_id)?;
 					},

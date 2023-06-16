@@ -1,18 +1,14 @@
-use diesel::{pg::Pg, Queryable};
+use diesel::{pg::Pg, Identifiable, Queryable};
 use domain::{BudgetId, ProjectId};
 use infrastructure::database::schema::budgets;
 use rust_decimal::Decimal;
 
-#[derive(Debug, Insertable, Identifiable, AsChangeset)]
+#[derive(Debug, Insertable, Identifiable, AsChangeset, Model)]
 pub struct Budget {
 	pub id: BudgetId,
 	pub project_id: Option<ProjectId>,
 	pub initial_amount: Decimal,
 	pub remaining_amount: Decimal,
-}
-
-impl domain::Entity for Budget {
-	type Id = BudgetId;
 }
 
 impl<ST> Queryable<ST, Pg> for Budget
@@ -29,5 +25,13 @@ where
 			initial_amount,
 			remaining_amount,
 		})
+	}
+}
+
+impl Identifiable for Budget {
+	type Id = BudgetId;
+
+	fn id(self) -> Self::Id {
+		self.id
 	}
 }
