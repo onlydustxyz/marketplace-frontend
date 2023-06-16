@@ -4,7 +4,7 @@ use domain::SubscriberCallbackError;
 use olog::info;
 use serde_json::Value;
 
-use crate::domain::EventListener;
+use super::EventListener;
 
 pub struct Logger;
 

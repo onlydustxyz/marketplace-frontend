@@ -8,10 +8,8 @@ use domain::{GithubFetchRepoService, SubscriberCallbackError};
 use infrastructure::database::{ImmutableRepository, Repository};
 use tracing::instrument;
 
-use crate::{
-	domain::{EventListener, GithubEvent},
-	models::*,
-};
+use super::EventListener;
+use crate::{domain::GithubEvent, models::*};
 
 #[derive(new)]
 pub struct Projector {

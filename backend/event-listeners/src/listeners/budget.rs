@@ -8,7 +8,8 @@ use infrastructure::database::Repository;
 use rust_decimal::{prelude::ToPrimitive, Decimal};
 use tracing::instrument;
 
-use crate::{domain::EventListener, models::*};
+use super::EventListener;
+use crate::models::*;
 
 #[derive(Constructor)]
 pub struct Projector {

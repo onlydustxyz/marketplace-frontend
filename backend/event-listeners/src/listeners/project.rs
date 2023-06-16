@@ -7,7 +7,8 @@ use domain::{ApplicationEvent, Event, ProjectEvent, SubscriberCallbackError};
 use infrastructure::database::{ImmutableRepository, Repository};
 use tracing::instrument;
 
-use crate::{domain::EventListener, models::*};
+use super::EventListener;
+use crate::models::*;
 
 #[derive(new)]
 pub struct Projector {

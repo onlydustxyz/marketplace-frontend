@@ -6,10 +6,10 @@ use olog::error;
 use tracing::instrument;
 use url::Url;
 
-use crate::domain::EventListener;
-
 mod event;
 use event::Event as WebHookEvent;
+
+use super::EventListener;
 
 #[derive(new)]
 pub struct EventWebHook {

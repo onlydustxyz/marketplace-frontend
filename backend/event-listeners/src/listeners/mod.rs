@@ -7,6 +7,7 @@ pub mod webhook;
 use std::sync::Arc;
 
 use anyhow::Result;
+use async_trait::async_trait;
 use domain::{LogErr, MessagePayload, Subscriber, SubscriberCallbackError};
 use infrastructure::{
 	amqp::{CommandSubscriberDecorator, UniqueMessage},
@@ -18,7 +19,12 @@ use url::Url;
 use webhook::EventWebHook;
 
 use self::logger::Logger;
-use crate::{domain::*, Config, GITHUB_EVENTS_EXCHANGE};
+use crate::{Config, GITHUB_EVENTS_EXCHANGE};
+
+#[async_trait]
+pub trait EventListener<E>: Send + Sync {
+	async fn on_event(&self, event: E) -> Result<(), SubscriberCallbackError>;
+}
 
 pub async fn spawn_all(
 	config: &Config,
