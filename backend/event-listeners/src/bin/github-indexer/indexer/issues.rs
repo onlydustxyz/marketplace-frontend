@@ -7,7 +7,7 @@ use domain::{GithubFetchIssueService, GithubRepoId, GithubServiceIssueFilters};
 use event_listeners::domain::{GithubEvent, GithubRepoIndexRepository};
 use serde::{Deserialize, Serialize};
 
-use super::{IgnoreIndexerErrors, Result};
+use super::{error::IgnoreErrors, Result};
 
 #[derive(new)]
 pub struct Indexer {

@@ -4,11 +4,12 @@ use anyhow::Result;
 use domain::{GithubRepoId, GithubUserId, LogErr};
 use dotenv::dotenv;
 use event_listeners::{
-	domain::{GithubEvent, Indexable, Indexer, IndexerRepository},
+	domain::{GithubEvent, IndexerRepository},
 	Config,
 };
 use indexer::{
-	composite::Arced, guarded::Guarded, logged::Logged, published::Published, with_state::WithState,
+	composite::Arced, guarded::Guarded, logged::Logged, published::Published,
+	with_state::WithState, Indexable, Indexer,
 };
 use infrastructure::{amqp, config, database, github, tracing::Tracer};
 use olog::info;

@@ -8,7 +8,7 @@ use event_listeners::domain::{GithubEvent, GithubUserIndexRepository};
 use serde::{Deserialize, Serialize};
 use stream_filter::Decision;
 
-use super::{hash, IgnoreIndexerErrors, Result};
+use super::{error::IgnoreErrors, hash, Result};
 
 #[derive(Default, Clone, Serialize, Deserialize, PartialEq, Eq)]
 struct State {

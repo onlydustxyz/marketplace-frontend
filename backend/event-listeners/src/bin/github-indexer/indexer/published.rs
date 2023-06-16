@@ -2,13 +2,10 @@ use std::{marker::PhantomData, sync::Arc, time::Duration};
 
 use async_trait::async_trait;
 use domain::{Destination, Publisher};
-use event_listeners::{
-	domain::{GithubEvent, Indexable},
-	GITHUB_EVENTS_EXCHANGE,
-};
+use event_listeners::{domain::GithubEvent, GITHUB_EVENTS_EXCHANGE};
 use infrastructure::amqp::UniqueMessage;
 
-use super::{Result, Stateful};
+use super::{Indexable, Result, Stateful};
 
 pub struct Indexer<Id: Indexable, I: super::Indexer<Id>> {
 	indexer: I,

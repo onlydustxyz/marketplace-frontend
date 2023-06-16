@@ -1,9 +1,8 @@
 use domain::{GithubServiceError, PublisherError};
+use event_listeners::domain::RepositoryError;
 use infrastructure::database::DatabaseError;
 use olog::warn;
 use thiserror::Error;
-
-use crate::domain::RepositoryError;
 
 #[derive(Debug, Error)]
 pub enum Error {

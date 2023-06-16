@@ -1,10 +1,10 @@
 use std::marker::PhantomData;
 
 use async_trait::async_trait;
-use event_listeners::domain::{GithubEvent, Indexable};
+use event_listeners::domain::GithubEvent;
 use olog::info;
 
-use super::{Result, Stateful};
+use super::{Indexable, Result, Stateful};
 
 pub struct Indexer<Id: Indexable, I: super::Indexer<Id>> {
 	indexer: I,
