@@ -11,6 +11,7 @@ import { chain } from "lodash";
 import { ProjectRoutePaths } from "src/App";
 import { useIntl } from "src/hooks/useIntl";
 import { isProjectVisibleToUser } from "src/hooks/useProjectVisibility";
+import { contextWithCacheHeaders } from "src/utils/headers";
 
 export type ProjectDetailsTab = {
   label: string;
@@ -30,6 +31,7 @@ export default function ProjectsSidebar({ projectId }: Props) {
 
   const getCurrentProjectsForSidebarQuery = useGetCurrentProjectForSidebarQuery({
     variables: { projectId },
+    ...contextWithCacheHeaders,
   });
 
   const currentProject =
