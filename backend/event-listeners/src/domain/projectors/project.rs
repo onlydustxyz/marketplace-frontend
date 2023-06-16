@@ -4,19 +4,17 @@ use anyhow::Result;
 use async_trait::async_trait;
 use derive_new::new;
 use domain::{ApplicationEvent, Event, ProjectEvent, SubscriberCallbackError};
-use infrastructure::database::Repository;
+use infrastructure::database::{ImmutableRepository, Repository};
 use tracing::instrument;
 
 use crate::{
 	domain::{projections::Project, Application, EventListener, GithubRepoIndexRepository},
-	infrastructure::database::{
-		ProjectGithubReposRepository, ProjectLeadRepository, ProjectRepository,
-	},
+	infrastructure::database::{ProjectGithubReposRepository, ProjectLeadRepository},
 };
 
 #[derive(new)]
 pub struct Projector {
-	project_repository: ProjectRepository,
+	project_repository: Arc<dyn ImmutableRepository<Project>>,
 	project_lead_repository: ProjectLeadRepository,
 	project_github_repos_repository: ProjectGithubReposRepository,
 	github_repo_index_repository: Arc<dyn GithubRepoIndexRepository>,
@@ -29,8 +27,9 @@ impl EventListener<Event> for Projector {
 	async fn on_event(&self, event: Event) -> Result<(), SubscriberCallbackError> {
 		match event {
 			Event::Project(event) => match event {
-				ProjectEvent::Created { id } =>
-					self.project_repository.try_insert(&Project { id })?,
+				ProjectEvent::Created { id } => {
+					self.project_repository.try_insert(Project { id })?;
+				},
 				ProjectEvent::LeaderAssigned {
 					id,
 					leader_id,

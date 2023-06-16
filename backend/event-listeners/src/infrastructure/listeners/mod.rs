@@ -18,7 +18,6 @@ use crate::{
 	domain::*,
 	infrastructure::database::{
 		GithubIssuesRepository, ProjectGithubReposRepository, ProjectLeadRepository,
-		ProjectRepository,
 	},
 	Config, GITHUB_EVENTS_EXCHANGE,
 };
@@ -32,7 +31,7 @@ pub async fn spawn_all(
 	let mut handles = vec![
 		Logger.spawn(event_bus::event_consumer(config.amqp(), "logger").await?),
 		ProjectProjector::new(
-			ProjectRepository::new(database.clone()),
+			database.clone(),
 			ProjectLeadRepository::new(database.clone()),
 			ProjectGithubReposRepository::new(database.clone()),
 			database.clone(),
