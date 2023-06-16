@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 
 #[allow(clippy::too_many_arguments)]
 #[derive(
-	Default, Debug, Clone, Insertable, AsChangeset, Serialize, Deserialize, Queryable, Identifiable,
+	Debug, Clone, Insertable, AsChangeset, Serialize, Deserialize, Queryable, Identifiable,
 )]
 pub struct GithubRepo {
 	pub id: GithubRepoId,

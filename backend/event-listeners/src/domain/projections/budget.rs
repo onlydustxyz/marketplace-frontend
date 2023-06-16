@@ -1,14 +1,12 @@
-use derive_getters::Getters;
-use derive_more::Constructor;
 use diesel::{pg::Pg, Queryable};
 use domain::{BudgetId, ProjectId};
 use infrastructure::database::schema::budgets;
 use rust_decimal::Decimal;
 
-#[derive(Debug, Insertable, Identifiable, AsChangeset, Constructor, Getters)]
+#[derive(Debug, Insertable, Identifiable, AsChangeset)]
 pub struct Budget {
-	id: BudgetId,
-	project_id: Option<ProjectId>,
+	pub id: BudgetId,
+	pub project_id: Option<ProjectId>,
 	pub initial_amount: Decimal,
 	pub remaining_amount: Decimal,
 }

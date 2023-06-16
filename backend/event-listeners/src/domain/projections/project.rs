@@ -1,10 +1,9 @@
-use derive_more::Constructor;
 use domain::ProjectId;
 use infrastructure::database::schema::projects;
 
-#[derive(Debug, Insertable, Identifiable, Queryable, Constructor)]
+#[derive(Debug, Insertable, Identifiable, Queryable)]
 pub struct Project {
-	id: ProjectId,
+	pub id: ProjectId,
 }
 
 impl domain::Entity for Project {

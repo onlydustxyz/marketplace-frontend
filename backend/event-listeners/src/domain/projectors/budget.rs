@@ -38,12 +38,12 @@ impl EventListener<Event> for Projector {
 		{
 			match event {
 				BudgetEvent::Created { id: budget_id, .. } => {
-					self.budget_repository.upsert(&Budget::new(
-						*budget_id,
-						Some(*project_id),
-						Decimal::ZERO,
-						Decimal::ZERO,
-					))?;
+					self.budget_repository.upsert(&Budget {
+						id: *budget_id,
+						project_id: Some(*project_id),
+						initial_amount: Decimal::ZERO,
+						remaining_amount: Decimal::ZERO,
+					})?;
 				},
 				BudgetEvent::Allocated {
 					id: budget_id,
@@ -71,28 +71,28 @@ impl EventListener<Event> for Projector {
 						budget.remaining_amount -= amount.amount();
 						self.budget_repository.update(budget_id, &budget)?;
 
-						self.payment_request_repository.upsert(&PaymentRequest::new(
-							*payment_id,
-							*budget_id,
-							*requestor_id,
-							*recipient_id,
-							amount.amount().to_i64().ok_or_else(|| {
+						self.payment_request_repository.upsert(&PaymentRequest {
+							id: *payment_id,
+							budget_id: *budget_id,
+							requestor_id: *requestor_id,
+							recipient_id: *recipient_id,
+							amount_in_usd: amount.amount().to_i64().ok_or_else(|| {
 								SubscriberCallbackError::Discard(anyhow!(
 									"Failed to project invalid amount {amount}"
 								))
 							})?,
-							*requested_at,
-							None,
-							i32::try_from(duration_worked.num_hours()).unwrap_or(0),
-						))?;
+							requested_at: *requested_at,
+							invoice_received_at: None,
+							hours_worked: i32::try_from(duration_worked.num_hours()).unwrap_or(0),
+						})?;
 
 						reason.work_items().iter().try_for_each(
 							|work_item| -> Result<(), SubscriberCallbackError> {
-								self.work_item_repository.upsert(&WorkItem::new(
-									*payment_id,
-									*work_item.repo_id(),
-									*work_item.issue_number(),
-								))?;
+								self.work_item_repository.upsert(&WorkItem {
+									payment_id: *payment_id,
+									repo_id: *work_item.repo_id(),
+									issue_number: *work_item.issue_number(),
+								})?;
 								self.github_repo_index_repository
 									.try_insert(work_item.repo_id())?;
 								Ok(())
@@ -105,7 +105,7 @@ impl EventListener<Event> for Projector {
 						let payment_request =
 							self.payment_request_repository.find_by_id(payment_id)?;
 						let mut budget = self.budget_repository.find_by_id(budget_id)?;
-						budget.remaining_amount += Decimal::from(*payment_request.amount_in_usd());
+						budget.remaining_amount += Decimal::from(payment_request.amount_in_usd);
 						self.budget_repository.update(budget_id, &budget)?;
 						self.payment_request_repository.delete(payment_id)?;
 						self.work_item_repository.delete_by_payment_id(payment_id)?;
@@ -116,15 +116,15 @@ impl EventListener<Event> for Projector {
 						amount,
 						receipt,
 						processed_at,
-					} => self.payment_repository.upsert(&Payment::new(
-						*receipt_id,
-						*amount.amount(),
-						amount.currency().to_string(),
-						serde_json::to_value(receipt)
+					} => self.payment_repository.upsert(&Payment {
+						id: *receipt_id,
+						amount: *amount.amount(),
+						currency_code: amount.currency().to_string(),
+						receipt: serde_json::to_value(receipt)
 							.map_err(|e| SubscriberCallbackError::Discard(e.into()))?,
-						*payment_id,
-						*processed_at,
-					))?,
+						request_id: *payment_id,
+						processed_at: *processed_at,
+					})?,
 					PaymentEvent::InvoiceReceived {
 						id: payment_id,
 						received_at,

@@ -1,21 +1,18 @@
 use chrono::NaiveDateTime;
-use derive_getters::Getters;
-use derive_new::new;
 use domain::{BudgetId, GithubUserId, PaymentId, UserId};
 use infrastructure::database::schema::payment_requests;
 
-#[allow(clippy::too_many_arguments)]
-#[derive(Debug, Insertable, Identifiable, Queryable, AsChangeset, new, Getters)]
+#[derive(Debug, Insertable, Identifiable, Queryable, AsChangeset)]
 #[diesel(treat_none_as_null = true)]
 pub struct PaymentRequest {
-	id: PaymentId,
-	budget_id: BudgetId,
-	requestor_id: UserId,
-	recipient_id: GithubUserId,
-	amount_in_usd: i64,
-	requested_at: NaiveDateTime,
+	pub id: PaymentId,
+	pub budget_id: BudgetId,
+	pub requestor_id: UserId,
+	pub recipient_id: GithubUserId,
+	pub amount_in_usd: i64,
+	pub requested_at: NaiveDateTime,
 	pub invoice_received_at: Option<NaiveDateTime>,
-	hours_worked: i32,
+	pub hours_worked: i32,
 }
 
 impl domain::Entity for PaymentRequest {

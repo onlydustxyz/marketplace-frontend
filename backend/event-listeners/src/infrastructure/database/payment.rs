@@ -43,14 +43,14 @@ mod tests {
 	#[rstest]
 	fn test_macro(repository: Repository) {
 		let payment_id = Uuid::new_v4().into();
-		let payment = Payment::new(
-			payment_id,
-			dec!(500.45),
-			"USDC".to_string(),
-			json!({}),
-			PaymentId::new(),
-			Utc::now().naive_utc(),
-		);
+		let payment = Payment {
+			id: payment_id,
+			amount: dec!(500.45),
+			currency_code: "USDC".to_string(),
+			receipt: json!({}),
+			request_id: PaymentId::new(),
+			processed_at: Utc::now().naive_utc(),
+		};
 
 		assert!(repository.insert(&payment).is_ok());
 		assert!(repository.update(&payment_id, &payment).is_ok());

@@ -30,7 +30,7 @@ impl EventListener<Event> for Projector {
 		match event {
 			Event::Project(event) => match event {
 				ProjectEvent::Created { id } =>
-					self.project_repository.try_insert(&Project::new(*id))?,
+					self.project_repository.try_insert(&Project { id: *id })?,
 				ProjectEvent::LeaderAssigned {
 					id,
 					leader_id,
