@@ -3,7 +3,7 @@ use std::sync::Arc;
 use domain::{AggregateRootRepository, GithubUserId, Project, UserId};
 use infrastructure::{
 	amqp::{self, CommandPublisher},
-	database::ImmutableRepository,
+	database::{ImmutableRepository, Repository},
 	github, graphql,
 };
 use presentation::http::guards::OptionUserId;
@@ -36,7 +36,7 @@ pub struct Context {
 	pub invite_project_leader_usecase: application::project::invite_leader::Usecase,
 	pub accept_project_leader_invitation_usecase:
 		application::project::accept_leader_invitation::Usecase,
-	pub project_details_repository: ProjectDetailsRepository,
+	pub project_details_repository: Arc<dyn Repository<ProjectDetails>>,
 	pub update_user_payout_info_usecase: application::user::update_payout_info::Usecase,
 	pub create_github_issue_usecase: application::github::create_issue::Usecase,
 	pub ignored_github_issues_usecase: application::project::ignored_issues::Usecase,
@@ -54,7 +54,7 @@ impl Context {
 		caller_info: OptionUserId,
 		command_bus: Arc<CommandPublisher<amqp::Bus>>,
 		project_repository: AggregateRootRepository<Project>,
-		project_details_repository: ProjectDetailsRepository,
+		project_details_repository: Arc<dyn Repository<ProjectDetails>>,
 		sponsor_repository: SponsorRepository,
 		project_sponsor_repository: ProjectSponsorRepository,
 		pending_project_leader_invitations_repository: Arc<

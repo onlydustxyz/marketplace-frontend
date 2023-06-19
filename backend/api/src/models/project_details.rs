@@ -1,21 +1,13 @@
-mod repository;
-
-use derive_getters::{Dissolve, Getters};
 use derive_setters::Setters;
+use diesel::Identifiable;
 use domain::ProjectId;
 use infrastructure::database::{enums::ProjectVisibility, schema::project_details};
 use serde::{Deserialize, Serialize};
 
-#[cfg(test)]
-pub use self::repository::MockRepository;
-pub use self::repository::Repository;
-
 #[derive(
 	Debug,
 	Clone,
-	Getters,
 	Setters,
-	Dissolve,
 	Insertable,
 	Serialize,
 	Deserialize,
@@ -23,6 +15,8 @@ pub use self::repository::Repository;
 	AsChangeset,
 	Identifiable,
 	PartialEq,
+	Eq,
+	Model,
 )]
 #[diesel(table_name = project_details, primary_key(project_id), treat_none_as_null = true)]
 #[setters(prefix = "with_")]
@@ -38,6 +32,10 @@ pub struct ProjectDetails {
 	pub visibility: ProjectVisibility,
 }
 
-impl domain::Entity for ProjectDetails {
+impl Identifiable for ProjectDetails {
 	type Id = ProjectId;
+
+	fn id(self) -> Self::Id {
+		self.project_id
+	}
 }

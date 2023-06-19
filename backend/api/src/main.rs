@@ -38,7 +38,7 @@ async fn main() -> Result<()> {
 				.into_command_publisher(database.clone(), expected_processing_count_per_event()),
 		),
 		AggregateRootRepository::new(database.clone()),
-		ProjectDetailsRepository::new(database.clone()),
+		database.clone(),
 		SponsorRepository::new(database.clone()),
 		ProjectSponsorRepository::new(database.clone()),
 		database.clone(),

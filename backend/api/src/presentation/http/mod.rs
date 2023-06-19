@@ -5,7 +5,7 @@ use anyhow::Result;
 use http::Config;
 use infrastructure::{
 	amqp::{self, CommandPublisher},
-	database::ImmutableRepository,
+	database::{ImmutableRepository, Repository},
 	github,
 	web3::ens,
 };
@@ -23,7 +23,7 @@ pub async fn serve(
 	schema: graphql::Schema,
 	command_bus: Arc<CommandPublisher<amqp::Bus>>,
 	project_repository: AggregateRootRepository<Project>,
-	project_details_repository: ProjectDetailsRepository,
+	project_details_repository: Arc<dyn Repository<ProjectDetails>>,
 	sponsor_repository: SponsorRepository,
 	project_sponsor_repository: ProjectSponsorRepository,
 	pending_project_leader_invitations_repository: Arc<
