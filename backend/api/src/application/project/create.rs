@@ -4,7 +4,7 @@ use anyhow::Result;
 use domain::{
 	Amount, DomainError, Event, EventSourcable, Project, ProjectId, ProjectVisibility, Publisher,
 };
-use infrastructure::amqp::UniqueMessage;
+use infrastructure::{amqp::UniqueMessage, database::Repository};
 use reqwest::Url;
 use tracing::instrument;
 
@@ -16,14 +16,14 @@ use crate::{
 
 pub struct Usecase {
 	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
-	project_details_repository: ProjectDetailsRepository,
+	project_details_repository: Arc<dyn Repository<ProjectDetails>>,
 	image_store: Arc<dyn ImageStoreService>,
 }
 
 impl Usecase {
 	pub fn new(
 		event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
-		project_details_repository: ProjectDetailsRepository,
+		project_details_repository: Arc<dyn Repository<ProjectDetails>>,
 		image_store: Arc<dyn ImageStoreService>,
 	) -> Self {
 		Self {
@@ -63,7 +63,7 @@ impl Usecase {
 			None => None,
 		};
 
-		self.project_details_repository.upsert(&ProjectDetails {
+		self.project_details_repository.upsert(ProjectDetails {
 			project_id,
 			name: name.into(),
 			telegram_link: telegram_link.map(|url| url.to_string()),

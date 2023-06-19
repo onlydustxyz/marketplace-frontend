@@ -38,12 +38,9 @@ pub struct Project {
 	applications: HashMap<ApplicationId, Application>,
 }
 
-impl Entity for Project {
-	type Id = ProjectId;
-}
-
 impl Aggregate for Project {
 	type Event = ProjectEvent;
+	type Id = ProjectId;
 }
 
 impl AggregateRoot for Project {}

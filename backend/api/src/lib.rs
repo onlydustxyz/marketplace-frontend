@@ -17,3 +17,6 @@ extern crate diesel;
 
 #[macro_use]
 extern crate derive;
+
+#[macro_use]
+extern crate domain as common_domain;

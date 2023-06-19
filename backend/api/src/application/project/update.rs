@@ -2,6 +2,7 @@ use std::sync::Arc;
 
 use anyhow::Result;
 use domain::{DomainError, ProjectId, ProjectVisibility};
+use infrastructure::database::Repository;
 use juniper::Nullable;
 use tracing::instrument;
 use url::Url;
@@ -9,13 +10,13 @@ use url::Url;
 use crate::{domain::ImageStoreService, models::*, presentation::http::dto::NonEmptyTrimmedString};
 
 pub struct Usecase {
-	project_details_repository: ProjectDetailsRepository,
+	project_details_repository: Arc<dyn Repository<ProjectDetails>>,
 	image_store: Arc<dyn ImageStoreService>,
 }
 
 impl Usecase {
 	pub fn new(
-		project_details_repository: ProjectDetailsRepository,
+		project_details_repository: Arc<dyn Repository<ProjectDetails>>,
 		image_store: Arc<dyn ImageStoreService>,
 	) -> Self {
 		Self {
@@ -38,7 +39,7 @@ impl Usecase {
 		rank: Option<i32>,
 		visibility: Option<ProjectVisibility>,
 	) -> Result<(), DomainError> {
-		let mut project = self.project_details_repository.find_by_id(&project_id)?;
+		let mut project = self.project_details_repository.find_by_id(project_id)?;
 
 		if let Some(name) = name {
 			project = project.with_name(name.into());
@@ -70,7 +71,7 @@ impl Usecase {
 			project = project.with_visibility(visibility.into()) // TODO turn this into proper DTO
 		}
 
-		self.project_details_repository.update(&project_id, project)?;
+		self.project_details_repository.update(project)?;
 
 		Ok(())
 	}
@@ -80,12 +81,33 @@ impl Usecase {
 mod tests {
 
 	use ::url::Url;
-	use infrastructure::database::enums::ProjectVisibility as ProjectVisibilityEnum;
-	use mockall::predicate::eq;
+	use infrastructure::database::{
+		enums::ProjectVisibility as ProjectVisibilityEnum, ImmutableRepository, Result,
+	};
+	use mockall::{mock, predicate::eq};
 	use rstest::{fixture, rstest};
 
 	use super::*;
 	use crate::domain::MockImageStoreService;
+
+	mock! {
+		pub ProjectDetailsRepository {}
+
+		impl ImmutableRepository<ProjectDetails> for ProjectDetailsRepository {
+			fn exists(&self, id: ProjectId) -> Result<bool>;
+			fn find_by_id(&self, id: ProjectId) -> Result<ProjectDetails>;
+			fn list(&self) -> Result<Vec<ProjectDetails>>;
+			fn insert(&self, model: ProjectDetails) -> Result<ProjectDetails>;
+			fn try_insert(&self, model: ProjectDetails) -> Result<Option<ProjectDetails>>;
+			fn delete(&self, id: ProjectId) -> Result<ProjectDetails>;
+			fn clear(&self) -> Result<()>;
+		}
+
+		impl Repository<ProjectDetails> for ProjectDetailsRepository {
+			fn update(&self, model: ProjectDetails) -> Result<ProjectDetails>;
+			fn upsert(&self, model: ProjectDetails) -> Result<ProjectDetails>;
+		}
+	}
 
 	#[fixture]
 	fn project_id() -> ProjectId {
@@ -133,7 +155,7 @@ mod tests {
 			.once()
 			.returning(|_| Ok(Url::parse("http://img-store.com/1234.jpg").unwrap()));
 
-		let mut project_details_repository = ProjectDetailsRepository::default();
+		let mut project_details_repository = MockProjectDetailsRepository::default();
 		project_details_repository
 			.expect_find_by_id()
 			.with(eq(project_id))
@@ -153,13 +175,16 @@ mod tests {
 			});
 		project_details_repository
 			.expect_update()
-			.withf(|_, input: &ProjectDetails| {
-				input.logo_url().clone() == Some("http://img-store.com/1234.jpg".to_string())
+			.withf(|input: &ProjectDetails| {
+				input.logo_url == Some("http://img-store.com/1234.jpg".to_string())
 			})
 			.once()
-			.returning(|_, _: ProjectDetails| Ok(()));
+			.returning(Ok);
 
-		let usecase = Usecase::new(project_details_repository, Arc::new(image_store_service));
+		let usecase = Usecase::new(
+			Arc::new(project_details_repository),
+			Arc::new(image_store_service),
+		);
 
 		usecase
 			.update_details(
@@ -191,7 +216,7 @@ mod tests {
 			.once()
 			.returning(|_| Ok(Url::parse("http://img-store.com/1234.jpg").unwrap()));
 
-		let mut project_details_repository = ProjectDetailsRepository::default();
+		let mut project_details_repository = MockProjectDetailsRepository::default();
 		project_details_repository
 			.expect_find_by_id()
 			.with(eq(project_id))
@@ -213,7 +238,7 @@ mod tests {
 		let telegram_link_clone = telegram_link.clone();
 		project_details_repository
 			.expect_update()
-			.withf(move |_, input: &ProjectDetails| {
+			.withf(move |input: &ProjectDetails| {
 				input.clone()
 					== ProjectDetails {
 						project_id,
@@ -228,9 +253,12 @@ mod tests {
 					}
 			})
 			.once()
-			.returning(|_, _: ProjectDetails| Ok(()));
+			.returning(Ok);
 
-		let usecase = Usecase::new(project_details_repository, Arc::new(image_store_service));
+		let usecase = Usecase::new(
+			Arc::new(project_details_repository),
+			Arc::new(image_store_service),
+		);
 
 		usecase
 			.update_details(

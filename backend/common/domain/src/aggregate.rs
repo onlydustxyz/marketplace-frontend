@@ -1,10 +1,12 @@
-use std::fmt::{Debug, Display};
+use std::{
+	fmt::{Debug, Display},
+	hash::Hash,
+};
 
 use serde::{de::DeserializeOwned, Serialize};
 
-use crate::Entity;
-
-pub trait Aggregate: Entity + Send + Sync + Default + Sized {
+pub trait Aggregate: Send + Sync + Default + Sized {
+	type Id: Display + PartialEq + Eq + Hash + Clone + Send;
 	type Event: Serialize + DeserializeOwned + Debug + Display + Clone + Event<Self> + Send;
 }
 

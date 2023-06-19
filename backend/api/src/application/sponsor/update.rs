@@ -2,6 +2,7 @@ use std::sync::Arc;
 
 use anyhow::Result;
 use domain::DomainError;
+use infrastructure::database::Repository;
 use juniper::Nullable;
 use reqwest::Url;
 use tracing::instrument;
@@ -9,13 +10,13 @@ use tracing::instrument;
 use crate::{domain::ImageStoreService, models::*, presentation::http::dto::NonEmptyTrimmedString};
 
 pub struct Usecase {
-	sponsor_repository: SponsorRepository,
+	sponsor_repository: Arc<dyn Repository<Sponsor>>,
 	image_store: Arc<dyn ImageStoreService>,
 }
 
 impl Usecase {
 	pub fn new(
-		sponsor_repository: SponsorRepository,
+		sponsor_repository: Arc<dyn Repository<Sponsor>>,
 		image_store: Arc<dyn ImageStoreService>,
 	) -> Self {
 		Self {
@@ -33,7 +34,7 @@ impl Usecase {
 		logo_url: Option<Url>,
 		url: Nullable<Url>,
 	) -> Result<SponsorId, DomainError> {
-		let mut sponsor = self.sponsor_repository.find_by_id(&sponsor_id)?;
+		let mut sponsor = self.sponsor_repository.find_by_id(sponsor_id)?;
 
 		if let Some(name) = name {
 			sponsor = sponsor.with_name(name.into());
@@ -46,7 +47,7 @@ impl Usecase {
 			sponsor = sponsor.with_url(url.map(|url| url.to_string()))
 		}
 
-		self.sponsor_repository.update(&sponsor_id, sponsor)?;
+		self.sponsor_repository.update(sponsor)?;
 		Ok(sponsor_id)
 	}
 }
@@ -61,7 +62,10 @@ mod tests {
 	use rstest::{fixture, rstest};
 
 	use super::*;
-	use crate::domain::{ImageStoreServiceError, MockImageStoreService};
+	use crate::{
+		application::sponsor::test::MockSponsorRepository,
+		domain::{ImageStoreServiceError, MockImageStoreService},
+	};
 
 	#[fixture]
 	fn sponsor_id() -> SponsorId {
@@ -97,26 +101,26 @@ mod tests {
 			.once()
 			.returning(|_| Ok(Url::parse("http://img-store.com/1234.jpg").unwrap()));
 
-		let mut sponsor_repository = SponsorRepository::default();
+		let mut sponsor_repository = MockSponsorRepository::default();
 		sponsor_repository
 			.expect_find_by_id()
 			.with(eq(sponsor_id))
 			.once()
 			.returning(move |_| {
-				Ok(Sponsor::new(
-					sponsor_id,
-					"old name".to_string(),
-					"http://sponsor.org/old-image.jpg".to_string(),
-					None,
-				))
+				Ok(Sponsor {
+					id: sponsor_id,
+					name: "old name".to_string(),
+					logo_url: "http://sponsor.org/old-image.jpg".to_string(),
+					url: None,
+				})
 			});
 		sponsor_repository
 			.expect_update()
-			.withf(|_, input: &Sponsor| input.logo_url() == "http://img-store.com/1234.jpg")
+			.withf(|input: &Sponsor| input.logo_url == "http://img-store.com/1234.jpg")
 			.once()
-			.returning(|_, _: Sponsor| Ok(()));
+			.returning(Ok);
 
-		let usecase = Usecase::new(sponsor_repository, Arc::new(image_store_service));
+		let usecase = Usecase::new(Arc::new(sponsor_repository), Arc::new(image_store_service));
 
 		usecase
 			.update(sponsor_id, Some(name), Some(logo_url), Nullable::Some(url))
@@ -138,21 +142,21 @@ mod tests {
 			.once()
 			.returning(|_| Err(ImageStoreServiceError::NotFound(anyhow!("404"))));
 
-		let mut sponsor_repository = SponsorRepository::default();
+		let mut sponsor_repository = MockSponsorRepository::default();
 		sponsor_repository
 			.expect_find_by_id()
 			.with(eq(sponsor_id))
 			.once()
 			.returning(move |_| {
-				Ok(Sponsor::new(
-					sponsor_id,
-					"old name".to_string(),
-					"http://sponsor.org/old-image.jpg".to_string(),
-					None,
-				))
+				Ok(Sponsor {
+					id: sponsor_id,
+					name: "old name".to_string(),
+					logo_url: "http://sponsor.org/old-image.jpg".to_string(),
+					url: None,
+				})
 			});
 
-		let usecase = Usecase::new(sponsor_repository, Arc::new(image_store_service));
+		let usecase = Usecase::new(Arc::new(sponsor_repository), Arc::new(image_store_service));
 
 		let result = usecase
 			.update(sponsor_id, Some(name), Some(logo_url), Nullable::Some(url))

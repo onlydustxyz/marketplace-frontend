@@ -3,7 +3,6 @@ use std::sync::Arc;
 use anyhow::Result;
 use api::{
 	infrastructure::simple_storage,
-	models::*,
 	presentation::{graphql, http},
 	Config,
 };
@@ -38,15 +37,15 @@ async fn main() -> Result<()> {
 				.into_command_publisher(database.clone(), expected_processing_count_per_event()),
 		),
 		AggregateRootRepository::new(database.clone()),
-		ProjectDetailsRepository::new(database.clone()),
-		SponsorRepository::new(database.clone()),
-		ProjectSponsorRepository::new(database.clone()),
-		PendingProjectLeaderInvitationsRepository::new(database.clone()),
-		IgnoredGithubIssuesRepository::new(database.clone()),
-		UserPayoutInfoRepository::new(database.clone()),
-		UserProfileInfoRepository::new(database.clone()),
-		ContactInformationsRepository::new(database.clone()),
-		TermsAndConditionsAcceptanceRepository::new(database),
+		database.clone(),
+		database.clone(),
+		database.clone(),
+		database.clone(),
+		database.clone(),
+		database.clone(),
+		database.clone(),
+		database.clone(),
+		database,
 		Arc::new(infrastructure_graphql::Client::new(
 			config.graphql_client(),
 		)?),

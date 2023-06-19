@@ -8,8 +8,8 @@ use thiserror::Error;
 
 use super::Reason;
 use crate::{
-	Aggregate, Amount, Entity, EventSourcable, GithubUserId, PaymentEvent, PaymentId,
-	PaymentReceipt, PaymentReceiptId, PaymentWorkItem, UserId,
+	Aggregate, Amount, EventSourcable, GithubUserId, PaymentEvent, PaymentId, PaymentReceipt,
+	PaymentReceiptId, PaymentWorkItem, UserId,
 };
 
 #[derive(Debug, Default, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -48,12 +48,9 @@ impl Default for Payment {
 	}
 }
 
-impl Entity for Payment {
-	type Id = PaymentId;
-}
-
 impl Aggregate for Payment {
 	type Event = PaymentEvent;
+	type Id = PaymentId;
 }
 
 impl EventSourcable for Payment {

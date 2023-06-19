@@ -1,16 +1,22 @@
+use std::sync::Arc;
+
 use anyhow::Result;
 use domain::{DomainError, GithubUserId, ProjectId};
+use infrastructure::database::ImmutableRepository;
 use tracing::instrument;
 
 use crate::models::*;
 
 pub struct Usecase {
-	pending_leader_invitation_repository: PendingProjectLeaderInvitationsRepository,
+	pending_leader_invitation_repository:
+		Arc<dyn ImmutableRepository<PendingProjectLeaderInvitation>>,
 }
 
 impl Usecase {
 	pub fn new(
-		pending_leader_invitation_repository: PendingProjectLeaderInvitationsRepository,
+		pending_leader_invitation_repository: Arc<
+			dyn ImmutableRepository<PendingProjectLeaderInvitation>,
+		>,
 	) -> Self {
 		Self {
 			pending_leader_invitation_repository,
@@ -23,14 +29,15 @@ impl Usecase {
 		project_id: ProjectId,
 		github_user_id: GithubUserId,
 	) -> Result<PendingProjectLeaderInvitationId, DomainError> {
-		let invitation = PendingProjectLeaderInvitation::new(
-			PendingProjectLeaderInvitationId::new(),
-			project_id,
-			github_user_id,
-		);
+		let id = PendingProjectLeaderInvitationId::new();
 
-		self.pending_leader_invitation_repository.insert(&invitation)?;
+		self.pending_leader_invitation_repository
+			.insert(PendingProjectLeaderInvitation {
+				id,
+				project_id,
+				github_user_id,
+			})?;
 
-		Ok(*invitation.id())
+		Ok(id)
 	}
 }

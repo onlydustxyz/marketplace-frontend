@@ -1,14 +1,11 @@
-mod repository;
+use diesel::Identifiable;
 use diesel_json::Json;
 use domain::{Languages, UserId};
 use infrastructure::database::{enums::AllocatedTime, schema::user_profile_info};
-#[cfg(test)]
-pub use repository::MockRepository;
-pub use repository::Repository;
 use serde::{Deserialize, Serialize};
 
 #[derive(
-	Debug, Clone, Insertable, AsChangeset, Serialize, Deserialize, Queryable, Identifiable,
+	Debug, Clone, Insertable, AsChangeset, Serialize, Deserialize, Queryable, Identifiable, Model,
 )]
 #[diesel(table_name = user_profile_info, treat_none_as_null = true)]
 pub struct UserProfileInfo {
@@ -21,6 +18,10 @@ pub struct UserProfileInfo {
 	pub looking_for_a_job: bool,
 }
 
-impl domain::Entity for UserProfileInfo {
+impl Identifiable for UserProfileInfo {
 	type Id = UserId;
+
+	fn id(self) -> Self::Id {
+		self.id
+	}
 }

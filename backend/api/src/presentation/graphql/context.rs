@@ -1,9 +1,9 @@
 use std::sync::Arc;
 
-use derive_getters::Getters;
 use domain::{AggregateRootRepository, GithubUserId, Project, UserId};
 use infrastructure::{
 	amqp::{self, CommandPublisher},
+	database::{ImmutableRepository, Repository},
 	github, graphql,
 };
 use presentation::http::guards::OptionUserId;
@@ -36,7 +36,7 @@ pub struct Context {
 	pub invite_project_leader_usecase: application::project::invite_leader::Usecase,
 	pub accept_project_leader_invitation_usecase:
 		application::project::accept_leader_invitation::Usecase,
-	pub project_details_repository: ProjectDetailsRepository,
+	pub project_details_repository: Arc<dyn Repository<ProjectDetails>>,
 	pub update_user_payout_info_usecase: application::user::update_payout_info::Usecase,
 	pub create_github_issue_usecase: application::github::create_issue::Usecase,
 	pub ignored_github_issues_usecase: application::project::ignored_issues::Usecase,
@@ -54,15 +54,19 @@ impl Context {
 		caller_info: OptionUserId,
 		command_bus: Arc<CommandPublisher<amqp::Bus>>,
 		project_repository: AggregateRootRepository<Project>,
-		project_details_repository: ProjectDetailsRepository,
-		sponsor_repository: SponsorRepository,
-		project_sponsor_repository: ProjectSponsorRepository,
-		pending_project_leader_invitations_repository: PendingProjectLeaderInvitationsRepository,
-		ignored_github_issues_repository: IgnoredGithubIssuesRepository,
-		user_payout_info_repository: UserPayoutInfoRepository,
-		user_profile_info_repository: UserProfileInfoRepository,
-		contact_informations_repository: ContactInformationsRepository,
-		terms_and_conditions_acceptance_repository: TermsAndConditionsAcceptanceRepository,
+		project_details_repository: Arc<dyn Repository<ProjectDetails>>,
+		sponsor_repository: Arc<dyn Repository<Sponsor>>,
+		project_sponsor_repository: Arc<dyn ImmutableRepository<ProjectsSponsor>>,
+		pending_project_leader_invitations_repository: Arc<
+			dyn ImmutableRepository<PendingProjectLeaderInvitation>,
+		>,
+		ignored_github_issues_repository: Arc<dyn ImmutableRepository<IgnoredGithubIssue>>,
+		user_payout_info_repository: Arc<dyn Repository<UserPayoutInfo>>,
+		user_profile_info_repository: Arc<dyn Repository<UserProfileInfo>>,
+		contact_informations_repository: Arc<dyn ContactInformationsRepository>,
+		terms_and_conditions_acceptance_repository: Arc<
+			dyn Repository<TermsAndConditionsAcceptance>,
+		>,
 		graphql: Arc<graphql::Client>,
 		github: Arc<github::Client>,
 		ens: Arc<ens::Client>,
@@ -183,8 +187,7 @@ impl Context {
 
 impl juniper::Context for Context {}
 
-#[derive(Getters)]
 pub struct CallerInfo {
-	user_id: UserId,
-	github_user_id: GithubUserId,
+	pub user_id: UserId,
+	pub github_user_id: GithubUserId,
 }

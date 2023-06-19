@@ -1,13 +1,15 @@
+use std::sync::Arc;
+
 use derive_more::Constructor;
 use domain::{DomainError, Languages, UserId};
-use infrastructure::database::enums::AllocatedTime;
+use infrastructure::database::{enums::AllocatedTime, Repository};
 
 use crate::models::*;
 
 #[derive(Constructor)]
 pub struct Usecase {
-	user_profile_info_repository: UserProfileInfoRepository,
-	contact_informations_repository: ContactInformationsRepository,
+	user_profile_info_repository: Arc<dyn Repository<UserProfileInfo>>,
+	contact_informations_repository: Arc<dyn ContactInformationsRepository>,
 }
 
 impl Usecase {
@@ -23,7 +25,7 @@ impl Usecase {
 		looking_for_a_job: bool,
 		contact_informations: Vec<ContactInformation>,
 	) -> Result<(), DomainError> {
-		self.user_profile_info_repository.upsert(&UserProfileInfo {
+		self.user_profile_info_repository.upsert(UserProfileInfo {
 			id: caller_id,
 			bio,
 			location,
