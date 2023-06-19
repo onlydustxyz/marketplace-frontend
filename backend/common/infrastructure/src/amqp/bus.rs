@@ -41,15 +41,14 @@ impl Bus {
 	/// application to restart early again, and would make us enter the exponential backoff policy
 	/// of Heroku (the second restart can be delayed by up to 20 minutes (!!!) by Heroku).
 	pub async fn new(config: &Config) -> Result<Self, Error> {
-		let retry_strategy = FixedInterval::from_millis(*config.connection_retry_interval_ms())
-			.take(*config.connection_retry_count());
+		let retry_strategy = FixedInterval::from_millis(config.connection_retry_interval_ms)
+			.take(config.connection_retry_count);
 
 		let connection = Retry::spawn(retry_strategy, || async {
-			Connection::connect(config.url(), Default::default()).await.map_err(|error| {
+			Connection::connect(&config.url, Default::default()).await.map_err(|error| {
 				error!(
 					"Failed to connect to RabbitMQ: {error:?}. Retrying in {}ms for a maximum of {} attempts.",
-					config.connection_retry_interval_ms(),
-					config.connection_retry_count()
+					config.connection_retry_interval_ms, config.connection_retry_count
 				);
 				error
 			})
