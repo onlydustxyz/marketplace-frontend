@@ -35,7 +35,7 @@ mod application;
 pub use application::{Application, Event as ApplicationEvent, Id as ApplicationId};
 
 mod user;
-pub use user::{Entity as User, Id as UserId};
+pub use user::Id as UserId;
 
 mod budget;
 pub use budget::{Budget, Error as BudgetError, Event as BudgetEvent, Id as BudgetId};
