@@ -3,7 +3,6 @@ use std::sync::Arc;
 use anyhow::Result;
 use api::{
 	infrastructure::simple_storage,
-	models::*,
 	presentation::{graphql, http},
 	Config,
 };
@@ -44,7 +43,7 @@ async fn main() -> Result<()> {
 		database.clone(),
 		database.clone(),
 		database.clone(),
-		UserProfileInfoRepository::new(database.clone()),
+		database.clone(),
 		database.clone(),
 		database,
 		Arc::new(infrastructure_graphql::Client::new(

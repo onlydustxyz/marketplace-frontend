@@ -62,7 +62,7 @@ impl Context {
 		>,
 		ignored_github_issues_repository: Arc<dyn ImmutableRepository<IgnoredGithubIssue>>,
 		user_payout_info_repository: Arc<dyn Repository<UserPayoutInfo>>,
-		user_profile_info_repository: UserProfileInfoRepository,
+		user_profile_info_repository: Arc<dyn Repository<UserProfileInfo>>,
 		contact_informations_repository: Arc<dyn ContactInformationsRepository>,
 		terms_and_conditions_acceptance_repository: Arc<
 			dyn Repository<TermsAndConditionsAcceptance>,
