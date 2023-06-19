@@ -44,7 +44,7 @@ pub async fn get_graphql_handler(
 	command_bus: &State<Arc<amqp::CommandPublisher<amqp::Bus>>>,
 	project_repository: &State<AggregateRootRepository<Project>>,
 	project_details_repository: &State<Arc<dyn Repository<ProjectDetails>>>,
-	sponsor_repository: &State<SponsorRepository>,
+	sponsor_repository: &State<Arc<dyn Repository<Sponsor>>>,
 	project_sponsor_repository: &State<Arc<dyn ImmutableRepository<ProjectsSponsor>>>,
 	pending_project_leader_invitations_repository: &State<
 		Arc<dyn ImmutableRepository<PendingProjectLeaderInvitation>>,
@@ -95,7 +95,7 @@ pub async fn post_graphql_handler(
 	command_bus: &State<Arc<amqp::CommandPublisher<amqp::Bus>>>,
 	project_repository: &State<AggregateRootRepository<Project>>,
 	project_details_repository: &State<Arc<dyn Repository<ProjectDetails>>>,
-	sponsor_repository: &State<SponsorRepository>,
+	sponsor_repository: &State<Arc<dyn Repository<Sponsor>>>,
 	project_sponsor_repository: &State<Arc<dyn ImmutableRepository<ProjectsSponsor>>>,
 	pending_project_leader_invitations_repository: &State<
 		Arc<dyn ImmutableRepository<PendingProjectLeaderInvitation>>,

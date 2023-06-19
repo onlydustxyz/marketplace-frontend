@@ -2,19 +2,20 @@ use std::sync::Arc;
 
 use anyhow::Result;
 use domain::DomainError;
+use infrastructure::database::Repository;
 use reqwest::Url;
 use tracing::instrument;
 
 use crate::{domain::ImageStoreService, models::*, presentation::http::dto::NonEmptyTrimmedString};
 
 pub struct Usecase {
-	sponsor_repository: SponsorRepository,
+	sponsor_repository: Arc<dyn Repository<Sponsor>>,
 	image_store: Arc<dyn ImageStoreService>,
 }
 
 impl Usecase {
 	pub fn new(
-		sponsor_repository: SponsorRepository,
+		sponsor_repository: Arc<dyn Repository<Sponsor>>,
 		image_store: Arc<dyn ImageStoreService>,
 	) -> Self {
 		Self {
@@ -35,12 +36,12 @@ impl Usecase {
 
 		let stored_logo_url = self.image_store.store_image(&logo_url).await?.to_string();
 
-		self.sponsor_repository.insert(&Sponsor::new(
-			sponsor_id,
-			name.into(),
-			stored_logo_url,
-			url.map(|url| url.to_string()),
-		))?;
+		self.sponsor_repository.insert(Sponsor {
+			id: sponsor_id,
+			name: name.into(),
+			logo_url: stored_logo_url,
+			url: url.map(|url| url.to_string()),
+		})?;
 
 		Ok(sponsor_id)
 	}
@@ -56,7 +57,10 @@ mod tests {
 	use rstest::{fixture, rstest};
 
 	use super::*;
-	use crate::domain::{ImageStoreServiceError, MockImageStoreService};
+	use crate::{
+		application::sponsor::test::MockSponsorRepository,
+		domain::{ImageStoreServiceError, MockImageStoreService},
+	};
 
 	#[fixture]
 	fn name() -> NonEmptyTrimmedString {
@@ -82,14 +86,14 @@ mod tests {
 			.once()
 			.returning(|_| Ok(Url::parse("http://img-store.com/1234.jpg").unwrap()));
 
-		let mut sponsor_repository = SponsorRepository::default();
+		let mut sponsor_repository = MockSponsorRepository::default();
 		sponsor_repository
 			.expect_insert()
-			.withf(|input| input.logo_url() == "http://img-store.com/1234.jpg")
+			.withf(|input| input.logo_url == "http://img-store.com/1234.jpg")
 			.once()
-			.returning(|_| Ok(()));
+			.returning(Ok);
 
-		let usecase = Usecase::new(sponsor_repository, Arc::new(image_store_service));
+		let usecase = Usecase::new(Arc::new(sponsor_repository), Arc::new(image_store_service));
 
 		usecase.create(name, logo_url, Some(url)).await.unwrap();
 	}
@@ -103,10 +107,10 @@ mod tests {
 			.once()
 			.returning(|_| Err(ImageStoreServiceError::NotFound(anyhow!("404"))));
 
-		let mut sponsor_repository = SponsorRepository::default();
+		let mut sponsor_repository = MockSponsorRepository::default();
 		sponsor_repository.expect_insert().never();
 
-		let usecase = Usecase::new(sponsor_repository, Arc::new(image_store_service));
+		let usecase = Usecase::new(Arc::new(sponsor_repository), Arc::new(image_store_service));
 
 		let result = usecase.create(name, logo_url, Some(url)).await;
 		assert_matches!(result, Err(DomainError::InvalidInputs(_)));

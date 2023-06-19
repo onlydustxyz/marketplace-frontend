@@ -16,8 +16,6 @@ mod projects_sponsors;
 pub use projects_sponsors::ProjectsSponsor;
 
 mod sponsor;
-#[cfg_attr(test, mockall_double::double)]
-pub use sponsor::Repository as SponsorRepository;
 pub use sponsor::{Id as SponsorId, Sponsor};
 
 mod terms_and_conditions_acceptance;

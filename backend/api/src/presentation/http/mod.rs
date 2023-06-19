@@ -24,7 +24,7 @@ pub async fn serve(
 	command_bus: Arc<CommandPublisher<amqp::Bus>>,
 	project_repository: AggregateRootRepository<Project>,
 	project_details_repository: Arc<dyn Repository<ProjectDetails>>,
-	sponsor_repository: SponsorRepository,
+	sponsor_repository: Arc<dyn Repository<Sponsor>>,
 	project_sponsor_repository: Arc<dyn ImmutableRepository<ProjectsSponsor>>,
 	pending_project_leader_invitations_repository: Arc<
 		dyn ImmutableRepository<PendingProjectLeaderInvitation>,
