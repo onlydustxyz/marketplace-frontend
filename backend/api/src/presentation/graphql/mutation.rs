@@ -129,7 +129,7 @@ impl Mutation {
 		payment_references: Vec<PaymentReference>,
 	) -> Result<i32> {
 		for payment_reference in &payment_references {
-			let caller_id = *context.caller_info()?.user_id();
+			let caller_id = context.caller_info()?.user_id;
 
 			if !context.caller_permissions.can_mark_invoice_as_received_for_payment(
 				&(*payment_reference.project_id()).into(),
@@ -272,7 +272,7 @@ impl Mutation {
 		hours_worked: i32,
 		reason: PaymentReason,
 	) -> Result<dto::Payment> {
-		let caller_id = *context.caller_info()?.user_id();
+		let caller_id = context.caller_info()?.user_id;
 
 		if !context.caller_permissions.can_spend_budget_of_project(&project_id.into()) {
 			return Err(Error::NotAuthorized(
@@ -312,7 +312,7 @@ impl Mutation {
 		identity: Option<IdentityInput>,
 		payout_settings: Option<PayoutSettingsInput>,
 	) -> Result<Uuid> {
-		let caller_id = *context.caller_info()?.user_id();
+		let caller_id = context.caller_info()?.user_id;
 
 		let identity = match identity {
 			Some(identity_value) =>
@@ -336,7 +336,7 @@ impl Mutation {
 	}
 
 	pub async fn accept_terms_and_conditions(context: &Context) -> Result<Uuid> {
-		let caller_id = *context.caller_info()?.user_id();
+		let caller_id = context.caller_info()?.user_id;
 
 		context
 			.accept_terms_and_conditions_usecase
@@ -367,9 +367,9 @@ impl Mutation {
 		context
 			.accept_project_leader_invitation_usecase
 			.accept_leader_invitation(
-				&invitation_id.into(),
-				caller_info.user_id(),
-				caller_info.github_user_id(),
+				invitation_id.into(),
+				caller_info.user_id,
+				caller_info.github_user_id,
 			)
 			.await?;
 
@@ -400,7 +400,7 @@ impl Mutation {
 	}
 
 	pub async fn apply_to_project(context: &Context, project_id: ProjectId) -> Result<Uuid> {
-		let caller_id = *context.caller_info()?.user_id();
+		let caller_id = context.caller_info()?.user_id;
 
 		let application_id = context.apply_to_project_usecase.apply(project_id, caller_id).await?;
 
@@ -471,7 +471,7 @@ impl Mutation {
 		title: String,
 		description: String,
 	) -> Result<GithubIssue> {
-		let caller_id = *context.caller_info()?.user_id();
+		let caller_id = context.caller_info()?.user_id;
 
 		if !context
 			.caller_permissions
@@ -502,7 +502,7 @@ impl Mutation {
 		repo_id: GithubRepoId,
 		issue_number: GithubIssueNumber,
 	) -> Result<bool> {
-		let caller_id = *context.caller_info()?.user_id();
+		let caller_id = context.caller_info()?.user_id;
 
 		if !context.caller_permissions.can_ignore_issue_for_project(&project_id.into()) {
 			return Err(Error::NotAuthorized(
@@ -525,7 +525,7 @@ impl Mutation {
 		repo_id: GithubRepoId,
 		issue_number: GithubIssueNumber,
 	) -> Result<bool> {
-		let caller_id = *context.caller_info()?.user_id();
+		let caller_id = context.caller_info()?.user_id;
 
 		if !context.caller_permissions.can_ignore_issue_for_project(&project_id.into()) {
 			return Err(Error::NotAuthorized(
@@ -552,7 +552,7 @@ impl Mutation {
 		looking_for_a_job: bool,
 		contact_informations: Vec<dto::ContactInformation>,
 	) -> Result<bool> {
-		let caller_id = *context.caller_info()?.user_id();
+		let caller_id = context.caller_info()?.user_id;
 
 		let languages: Option<HashMap<String, i32>> = languages.map(|languages| {
 			languages.into_iter().map(|language| (language.name, language.weight)).collect()

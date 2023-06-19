@@ -47,7 +47,7 @@ pub async fn get_graphql_handler(
 	sponsor_repository: &State<SponsorRepository>,
 	project_sponsor_repository: &State<ProjectSponsorRepository>,
 	pending_project_leader_invitations_repository: &State<
-		PendingProjectLeaderInvitationsRepository,
+		Arc<dyn ImmutableRepository<PendingProjectLeaderInvitation>>,
 	>,
 	ignored_github_issues_repository: &State<Arc<dyn ImmutableRepository<IgnoredGithubIssue>>>,
 	user_payout_info_repository: &State<UserPayoutInfoRepository>,
@@ -98,7 +98,7 @@ pub async fn post_graphql_handler(
 	sponsor_repository: &State<SponsorRepository>,
 	project_sponsor_repository: &State<ProjectSponsorRepository>,
 	pending_project_leader_invitations_repository: &State<
-		PendingProjectLeaderInvitationsRepository,
+		Arc<dyn ImmutableRepository<PendingProjectLeaderInvitation>>,
 	>,
 	ignored_github_issues_repository: &State<Arc<dyn ImmutableRepository<IgnoredGithubIssue>>>,
 	user_payout_info_repository: &State<UserPayoutInfoRepository>,

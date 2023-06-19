@@ -26,7 +26,9 @@ pub async fn serve(
 	project_details_repository: ProjectDetailsRepository,
 	sponsor_repository: SponsorRepository,
 	project_sponsor_repository: ProjectSponsorRepository,
-	pending_project_leader_invitations_repository: PendingProjectLeaderInvitationsRepository,
+	pending_project_leader_invitations_repository: Arc<
+		dyn ImmutableRepository<PendingProjectLeaderInvitation>,
+	>,
 	ignored_github_issues_repository: Arc<dyn ImmutableRepository<IgnoredGithubIssue>>,
 	user_info_repository: UserPayoutInfoRepository,
 	user_profile_info_repository: UserProfileInfoRepository,

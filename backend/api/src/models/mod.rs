@@ -7,7 +7,6 @@ pub use ignored_github_issues::IgnoredGithubIssue;
 mod pending_project_leader_invitations;
 pub use pending_project_leader_invitations::{
 	Id as PendingProjectLeaderInvitationId, PendingProjectLeaderInvitation,
-	Repository as PendingProjectLeaderInvitationsRepository,
 };
 
 mod project_details;

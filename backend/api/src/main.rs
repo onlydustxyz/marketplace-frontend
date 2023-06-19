@@ -41,7 +41,7 @@ async fn main() -> Result<()> {
 		ProjectDetailsRepository::new(database.clone()),
 		SponsorRepository::new(database.clone()),
 		ProjectSponsorRepository::new(database.clone()),
-		PendingProjectLeaderInvitationsRepository::new(database.clone()),
+		database.clone(),
 		database.clone(),
 		UserPayoutInfoRepository::new(database.clone()),
 		UserProfileInfoRepository::new(database.clone()),
