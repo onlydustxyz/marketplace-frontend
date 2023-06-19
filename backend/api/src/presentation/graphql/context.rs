@@ -56,7 +56,7 @@ impl Context {
 		project_repository: AggregateRootRepository<Project>,
 		project_details_repository: Arc<dyn Repository<ProjectDetails>>,
 		sponsor_repository: SponsorRepository,
-		project_sponsor_repository: ProjectSponsorRepository,
+		project_sponsor_repository: Arc<dyn ImmutableRepository<ProjectsSponsor>>,
 		pending_project_leader_invitations_repository: Arc<
 			dyn ImmutableRepository<PendingProjectLeaderInvitation>,
 		>,

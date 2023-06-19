@@ -40,7 +40,7 @@ async fn main() -> Result<()> {
 		AggregateRootRepository::new(database.clone()),
 		database.clone(),
 		SponsorRepository::new(database.clone()),
-		ProjectSponsorRepository::new(database.clone()),
+		database.clone(),
 		database.clone(),
 		database.clone(),
 		UserPayoutInfoRepository::new(database.clone()),

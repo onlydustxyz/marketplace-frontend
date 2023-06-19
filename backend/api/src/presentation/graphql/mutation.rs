@@ -444,9 +444,7 @@ impl Mutation {
 		project_id: Uuid,
 		sponsor_id: Uuid,
 	) -> Result<Uuid> {
-		context
-			.add_sponsor_usecase
-			.add_sponsor(&project_id.into(), &sponsor_id.into())?;
+		context.add_sponsor_usecase.add_sponsor(project_id.into(), sponsor_id.into())?;
 
 		Ok(project_id)
 	}
@@ -458,7 +456,7 @@ impl Mutation {
 	) -> Result<Uuid> {
 		context
 			.remove_sponsor_usecase
-			.remove_sponsor(&project_id.into(), &sponsor_id.into())?;
+			.remove_sponsor(project_id.into(), sponsor_id.into())?;
 
 		Ok(project_id)
 	}

@@ -45,7 +45,7 @@ pub async fn get_graphql_handler(
 	project_repository: &State<AggregateRootRepository<Project>>,
 	project_details_repository: &State<Arc<dyn Repository<ProjectDetails>>>,
 	sponsor_repository: &State<SponsorRepository>,
-	project_sponsor_repository: &State<ProjectSponsorRepository>,
+	project_sponsor_repository: &State<Arc<dyn ImmutableRepository<ProjectsSponsor>>>,
 	pending_project_leader_invitations_repository: &State<
 		Arc<dyn ImmutableRepository<PendingProjectLeaderInvitation>>,
 	>,
@@ -96,7 +96,7 @@ pub async fn post_graphql_handler(
 	project_repository: &State<AggregateRootRepository<Project>>,
 	project_details_repository: &State<Arc<dyn Repository<ProjectDetails>>>,
 	sponsor_repository: &State<SponsorRepository>,
-	project_sponsor_repository: &State<ProjectSponsorRepository>,
+	project_sponsor_repository: &State<Arc<dyn ImmutableRepository<ProjectsSponsor>>>,
 	pending_project_leader_invitations_repository: &State<
 		Arc<dyn ImmutableRepository<PendingProjectLeaderInvitation>>,
 	>,

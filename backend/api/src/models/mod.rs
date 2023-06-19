@@ -12,8 +12,8 @@ pub use pending_project_leader_invitations::{
 mod project_details;
 pub use project_details::ProjectDetails;
 
-mod project_sponsor;
-pub use project_sponsor::Repository as ProjectSponsorRepository;
+mod projects_sponsors;
+pub use projects_sponsors::ProjectsSponsor;
 
 mod sponsor;
 #[cfg_attr(test, mockall_double::double)]
