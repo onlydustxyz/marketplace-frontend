@@ -43,7 +43,7 @@ async fn main() -> Result<()> {
 		database.clone(),
 		database.clone(),
 		database.clone(),
-		UserPayoutInfoRepository::new(database.clone()),
+		database.clone(),
 		UserProfileInfoRepository::new(database.clone()),
 		database.clone(),
 		database,

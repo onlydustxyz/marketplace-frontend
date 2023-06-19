@@ -22,8 +22,6 @@ mod terms_and_conditions_acceptance;
 pub use terms_and_conditions_acceptance::TermsAndConditionsAcceptance;
 
 mod user_payout_info;
-#[cfg_attr(test, mockall_double::double)]
-pub use user_payout_info::Repository as UserPayoutInfoRepository;
 pub use user_payout_info::{
 	BankAddress, CompanyIdentity, Identity, Location, PayoutSettings, PersonIdentity,
 	UserPayoutInfo,

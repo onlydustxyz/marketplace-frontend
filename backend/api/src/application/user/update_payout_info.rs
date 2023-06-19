@@ -1,6 +1,8 @@
+use std::sync::Arc;
+
 use anyhow::anyhow;
 use domain::UserId;
-use infrastructure::database::DatabaseError;
+use infrastructure::database::{DatabaseError, Repository};
 use thiserror::Error;
 
 use crate::{domain::ArePayoutSettingsValid, models::*};
@@ -18,13 +20,13 @@ pub enum Error {
 type Result<T> = std::result::Result<T, Error>;
 
 pub struct Usecase {
-	user_payout_info_repository: UserPayoutInfoRepository,
+	user_payout_info_repository: Arc<dyn Repository<UserPayoutInfo>>,
 	payout_settings_are_valid: ArePayoutSettingsValid,
 }
 
 impl Usecase {
 	pub fn new(
-		user_payout_info_repository: UserPayoutInfoRepository,
+		user_payout_info_repository: Arc<dyn Repository<UserPayoutInfo>>,
 		payout_settings_are_valid: ArePayoutSettingsValid,
 	) -> Self {
 		Self {
@@ -51,8 +53,12 @@ impl Usecase {
 			}
 		}
 
-		let user_info = UserPayoutInfo::new(caller_id, identity, location, payout_settings);
-		self.user_payout_info_repository.upsert(&user_info)?;
+		self.user_payout_info_repository.upsert(UserPayoutInfo {
+			user_id: caller_id,
+			identity,
+			location,
+			payout_settings,
+		})?;
 
 		Ok(())
 	}
@@ -61,10 +67,30 @@ impl Usecase {
 #[cfg(test)]
 mod tests {
 	use domain::{EthereumIdentity, EthereumName};
-	use mockall::predicate::eq;
+	use infrastructure::database::{ImmutableRepository, Result};
+	use mockall::{mock, predicate::eq};
 	use rstest::{fixture, rstest};
 
 	use super::*;
+
+	mock! {
+		pub UserPayoutInfoRepository {}
+
+		impl ImmutableRepository<UserPayoutInfo> for UserPayoutInfoRepository {
+			fn exists(&self, id: UserId) -> Result<bool>;
+			fn find_by_id(&self, id: UserId) -> Result<UserPayoutInfo>;
+			fn list(&self) -> Result<Vec<UserPayoutInfo>>;
+			fn insert(&self, model: UserPayoutInfo) -> Result<UserPayoutInfo>;
+			fn try_insert(&self, model: UserPayoutInfo) -> Result<Option<UserPayoutInfo>>;
+			fn delete(&self, id: UserId) -> Result<UserPayoutInfo>;
+			fn clear(&self) -> Result<()>;
+		}
+
+		impl Repository<UserPayoutInfo> for UserPayoutInfoRepository {
+			fn update(&self, model: UserPayoutInfo) -> Result<UserPayoutInfo>;
+			fn upsert(&self, model: UserPayoutInfo) -> Result<UserPayoutInfo>;
+		}
+	}
 
 	#[fixture]
 	fn payout_settings() -> PayoutSettings {
@@ -75,8 +101,8 @@ mod tests {
 
 	#[rstest]
 	async fn upsert_user_info_upon_valid_input(payout_settings: PayoutSettings) {
-		let mut user_info_repository = UserPayoutInfoRepository::default();
-		user_info_repository.expect_upsert().once().returning(|_| Ok(()));
+		let mut user_info_repository = MockUserPayoutInfoRepository::default();
+		user_info_repository.expect_upsert().once().returning(Ok);
 
 		let mut payout_settings_valid = ArePayoutSettingsValid::default();
 		payout_settings_valid
@@ -85,7 +111,7 @@ mod tests {
 			.with(eq(payout_settings.clone()))
 			.returning(|_| Ok(true));
 
-		let usecase = Usecase::new(user_info_repository, payout_settings_valid);
+		let usecase = Usecase::new(Arc::new(user_info_repository), payout_settings_valid);
 		let result = usecase
 			.update_user_payout_info(
 				Default::default(),
@@ -99,7 +125,7 @@ mod tests {
 
 	#[rstest]
 	async fn reject_upon_invalid_payout_settings(payout_settings: PayoutSettings) {
-		let user_info_repository = UserPayoutInfoRepository::default();
+		let user_info_repository = MockUserPayoutInfoRepository::default();
 		let mut payout_settings_valid = ArePayoutSettingsValid::default();
 		payout_settings_valid
 			.expect_is_satisfied_by()
@@ -107,7 +133,7 @@ mod tests {
 			.with(eq(payout_settings.clone()))
 			.returning(|_| Ok(false));
 
-		let usecase = Usecase::new(user_info_repository, payout_settings_valid);
+		let usecase = Usecase::new(Arc::new(user_info_repository), payout_settings_valid);
 		let result = usecase
 			.update_user_payout_info(
 				Default::default(),
