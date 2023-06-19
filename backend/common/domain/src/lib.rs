@@ -7,9 +7,6 @@ pub use event::Event;
 mod aggregate;
 pub use aggregate::{Aggregate, Event as AggregateEvent, EventSourcable};
 
-mod entity;
-pub use entity::Entity;
-
 mod error;
 pub use error::*;
 

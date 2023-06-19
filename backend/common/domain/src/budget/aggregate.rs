@@ -6,7 +6,7 @@ use rust_decimal::Decimal;
 use thiserror::Error;
 
 use crate::{
-	payment::Reason, Aggregate, AggregateEvent, Amount, BudgetEvent, BudgetId, Currency, Entity,
+	payment::Reason, Aggregate, AggregateEvent, Amount, BudgetEvent, BudgetId, Currency,
 	EventSourcable, GithubUserId, Payment, PaymentError, PaymentId, PaymentReceipt,
 	PaymentReceiptId, PaymentStatus, UserId,
 };
@@ -131,12 +131,9 @@ impl Budget {
 	}
 }
 
-impl Entity for Budget {
-	type Id = BudgetId;
-}
-
 impl Aggregate for Budget {
 	type Event = BudgetEvent;
+	type Id = BudgetId;
 }
 
 impl EventSourcable for Budget {

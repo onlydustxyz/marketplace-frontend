@@ -24,10 +24,6 @@ impl Entity {
 	}
 }
 
-impl crate::Entity for Entity {
-	type Id = CommandId;
-}
-
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct Metadata {
 	aggregates: HashSet<AggregateId>,

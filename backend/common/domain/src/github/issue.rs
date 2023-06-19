@@ -7,7 +7,7 @@ use juniper::{GraphQLEnum, GraphQLObject, ParseScalarResult, ParseScalarValue, V
 use serde::{Deserialize, Serialize};
 use url::Url;
 
-use crate::{Entity, GithubIssueNumber, GithubRepoId, GithubUser};
+use crate::{GithubIssueNumber, GithubRepoId, GithubUser};
 
 #[derive(Clone, Copy, Debug, GraphQLEnum, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Status {
@@ -38,10 +38,6 @@ pub struct Issue {
 	pub updated_at: DateTime<Utc>,
 	pub merged_at: Option<DateTime<Utc>>,
 	pub closed_at: Option<DateTime<Utc>>,
-}
-
-impl Entity for Issue {
-	type Id = Id;
 }
 
 #[derive(

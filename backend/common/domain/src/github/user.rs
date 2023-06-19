@@ -8,8 +8,6 @@ use juniper::{GraphQLObject, ParseScalarResult, ParseScalarValue, Value};
 use serde::{Deserialize, Serialize};
 use url::Url;
 
-use crate::Entity;
-
 #[derive(
 	new, Debug, Clone, Getters, GraphQLObject, Serialize, Deserialize, PartialEq, Eq, Hash,
 )]
@@ -18,10 +16,6 @@ pub struct User {
 	login: String,
 	avatar_url: Url,
 	html_url: Url,
-}
-
-impl Entity for User {
-	type Id = Id;
 }
 
 #[derive(Debug, Clone, Getters, GraphQLObject, Serialize, Deserialize, PartialEq, Eq, Hash)]
@@ -35,10 +29,6 @@ pub struct FullUser {
 	pub blog: Option<String>,
 	#[serde(default)]
 	pub social_accounts: Vec<SocialAccount>,
-}
-
-impl Entity for FullUser {
-	type Id = Id;
 }
 
 impl FullUser {
