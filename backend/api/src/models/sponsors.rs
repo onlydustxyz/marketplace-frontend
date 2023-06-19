@@ -1,11 +1,9 @@
-mod id;
-
 use derive_setters::Setters;
 use diesel::Identifiable;
 use infrastructure::database::schema::sponsors;
 use serde::{Deserialize, Serialize};
 
-pub use self::id::Id;
+create_new_type!(Id, uuid::Uuid, uuid::Uuid::new_v4());
 
 #[derive(
 	Default,

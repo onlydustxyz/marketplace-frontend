@@ -15,8 +15,8 @@ pub use project_details::ProjectDetails;
 mod projects_sponsors;
 pub use projects_sponsors::ProjectsSponsor;
 
-mod sponsor;
-pub use sponsor::{Id as SponsorId, Sponsor};
+mod sponsors;
+pub use sponsors::{Id as SponsorId, Sponsor};
 
 mod terms_and_conditions_acceptance;
 pub use terms_and_conditions_acceptance::TermsAndConditionsAcceptance;

@@ -1,11 +1,9 @@
-mod id;
-
 use diesel::Identifiable;
 use domain::{GithubUserId, ProjectId};
 use infrastructure::database::schema::pending_project_leader_invitations;
 use serde::{Deserialize, Serialize};
 
-pub use self::id::Id;
+create_new_type!(Id, uuid::Uuid, uuid::Uuid::new_v4());
 
 #[derive(
 	Default,
