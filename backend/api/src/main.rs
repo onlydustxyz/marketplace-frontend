@@ -46,7 +46,7 @@ async fn main() -> Result<()> {
 		UserPayoutInfoRepository::new(database.clone()),
 		UserProfileInfoRepository::new(database.clone()),
 		database.clone(),
-		TermsAndConditionsAcceptanceRepository::new(database),
+		database,
 		Arc::new(infrastructure_graphql::Client::new(
 			config.graphql_client(),
 		)?),

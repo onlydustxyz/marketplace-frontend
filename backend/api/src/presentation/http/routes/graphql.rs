@@ -52,7 +52,9 @@ pub async fn get_graphql_handler(
 	ignored_github_issues_repository: &State<Arc<dyn ImmutableRepository<IgnoredGithubIssue>>>,
 	user_payout_info_repository: &State<UserPayoutInfoRepository>,
 	user_profile_info_repository: &State<UserProfileInfoRepository>,
-	terms_and_conditions_acceptance_repository: &State<TermsAndConditionsAcceptanceRepository>,
+	terms_and_conditions_acceptance_repository: &State<
+		Arc<dyn Repository<TermsAndConditionsAcceptance>>,
+	>,
 	contact_informations_repository: &State<Arc<dyn ContactInformationsRepository>>,
 	graphql: &State<Arc<graphql::Client>>,
 	github: &State<Arc<github::Client>>,
@@ -103,7 +105,9 @@ pub async fn post_graphql_handler(
 	ignored_github_issues_repository: &State<Arc<dyn ImmutableRepository<IgnoredGithubIssue>>>,
 	user_payout_info_repository: &State<UserPayoutInfoRepository>,
 	user_profile_info_repository: &State<UserProfileInfoRepository>,
-	terms_and_conditions_acceptance_repository: &State<TermsAndConditionsAcceptanceRepository>,
+	terms_and_conditions_acceptance_repository: &State<
+		Arc<dyn Repository<TermsAndConditionsAcceptance>>,
+	>,
 	contact_informations_repository: &State<Arc<dyn ContactInformationsRepository>>,
 	graphql: &State<Arc<graphql::Client>>,
 	github: &State<Arc<github::Client>>,

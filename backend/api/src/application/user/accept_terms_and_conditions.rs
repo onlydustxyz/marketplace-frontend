@@ -1,6 +1,8 @@
+use std::sync::Arc;
+
 use chrono::Utc;
 use domain::UserId;
-use infrastructure::database::DatabaseError;
+use infrastructure::database::{DatabaseError, Repository};
 use thiserror::Error;
 
 use crate::models::*;
@@ -14,12 +16,14 @@ pub enum Error {
 type Result<T> = std::result::Result<T, Error>;
 
 pub struct Usecase {
-	terms_and_conditions_acceptance_repository: TermsAndConditionsAcceptanceRepository,
+	terms_and_conditions_acceptance_repository: Arc<dyn Repository<TermsAndConditionsAcceptance>>,
 }
 
 impl Usecase {
 	pub fn new(
-		terms_and_conditions_acceptance_repository: TermsAndConditionsAcceptanceRepository,
+		terms_and_conditions_acceptance_repository: Arc<
+			dyn Repository<TermsAndConditionsAcceptance>,
+		>,
 	) -> Self {
 		Self {
 			terms_and_conditions_acceptance_repository,
@@ -27,11 +31,11 @@ impl Usecase {
 	}
 
 	pub async fn accept_terms_and_conditions(&self, caller_id: UserId) -> Result<()> {
-		let terms_and_conditions_acceptance =
-			TermsAndConditionsAcceptance::new(caller_id, Utc::now().naive_utc());
-
 		self.terms_and_conditions_acceptance_repository
-			.upsert(&terms_and_conditions_acceptance)?;
+			.upsert(TermsAndConditionsAcceptance {
+				user_id: caller_id,
+				acceptance_date: Utc::now().naive_utc(),
+			})?;
 
 		Ok(())
 	}

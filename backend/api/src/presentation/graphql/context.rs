@@ -64,7 +64,9 @@ impl Context {
 		user_payout_info_repository: UserPayoutInfoRepository,
 		user_profile_info_repository: UserProfileInfoRepository,
 		contact_informations_repository: Arc<dyn ContactInformationsRepository>,
-		terms_and_conditions_acceptance_repository: TermsAndConditionsAcceptanceRepository,
+		terms_and_conditions_acceptance_repository: Arc<
+			dyn Repository<TermsAndConditionsAcceptance>,
+		>,
 		graphql: Arc<graphql::Client>,
 		github: Arc<github::Client>,
 		ens: Arc<ens::Client>,

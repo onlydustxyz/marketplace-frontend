@@ -19,9 +19,7 @@ mod sponsor;
 pub use sponsor::{Id as SponsorId, Sponsor};
 
 mod terms_and_conditions_acceptance;
-pub use terms_and_conditions_acceptance::{
-	Repository as TermsAndConditionsAcceptanceRepository, TermsAndConditionsAcceptance,
-};
+pub use terms_and_conditions_acceptance::TermsAndConditionsAcceptance;
 
 mod user_payout_info;
 #[cfg_attr(test, mockall_double::double)]
