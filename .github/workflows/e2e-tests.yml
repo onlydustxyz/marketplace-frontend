@@ -90,10 +90,18 @@ jobs:
       - name: Stop the fullstack
         run: make app/background-stop
 
-      - name: Archive code coverage results
+      - name: Upload screenshots in case of failure
         uses: actions/upload-artifact@v3
         if: ${{ failure() }}
         with:
           name: playwright-report
           path: playwright-report/
+          retention-days: 7
+
+      - name: Upload DB dump in case of failure
+        uses: actions/upload-artifact@v3
+        if: ${{ failure() }}
+        with:
+          name: playwright-db-dump
+          path: playwright/marketplace_db_dump
           retention-days: 7
