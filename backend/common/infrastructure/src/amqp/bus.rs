@@ -56,7 +56,7 @@ impl Bus {
 		.await?;
 
 		connection.on_error(|error| {
-			error!("Lost connection to RabbitMQ: {error:?}");
+			error!(error = error.to_string(), "Lost connection to RabbitMQ");
 			std::process::exit(1);
 		});
 
