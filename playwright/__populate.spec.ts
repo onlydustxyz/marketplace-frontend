@@ -12,11 +12,18 @@ test.describe("Once and before all test suites, ", () => {
     console.time("Fixtures populated in");
     cleanupDB();
     await populate(request);
-    await waitForIndexer();
+    await waitForIndexerAfterProjections(3);
     dumpDB();
     console.timeEnd("Fixtures populated in");
   });
 });
+
+const waitForIndexerAfterProjections = async (times: number) => {
+  for (let cycle = 0; cycle < times; cycle++) {
+    await waitForIndexer();
+    await sleep(1000);
+  }
+};
 
 const waitForIndexer = async () => {
   let count = indexerRunning();
