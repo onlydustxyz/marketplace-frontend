@@ -14,10 +14,10 @@ pub trait Repository: database::ImmutableRepository<ProjectGithubRepo> {
 impl Repository for database::Client {
 	fn find_projects_of_repo(&self, github_repo_id: &GithubRepoId) -> Result<Vec<ProjectId>> {
 		let mut connection = self.connection()?;
-		let state = dsl::project_github_repos
+		let projects = dsl::project_github_repos
 			.select(dsl::project_id)
 			.filter(dsl::github_repo_id.eq(github_repo_id))
 			.load(&mut *connection)?;
-		Ok(state)
+		Ok(projects)
 	}
 }

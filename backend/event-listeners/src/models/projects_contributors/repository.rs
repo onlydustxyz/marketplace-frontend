@@ -1,4 +1,4 @@
-use diesel::{ExpressionMethods, RunQueryDsl};
+use diesel::{Connection, ExpressionMethods, RunQueryDsl};
 use domain::{GithubUserId, ProjectId};
 use infrastructure::{
 	database,
@@ -47,7 +47,7 @@ impl Repository for database::Client {
 		user_id: &GithubUserId,
 	) -> Result<()> {
 		let mut connection = self.connection()?;
-		connection.build_transaction().run::<_, diesel::result::Error, _>(|tx| {
+		connection.transaction::<_, diesel::result::Error, _>(|tx| {
 			diesel::update(dsl::projects_contributors)
 				.set(dsl::link_count.eq(dsl::link_count - 1))
 				.filter(dsl::project_id.eq(project_id))

@@ -18,10 +18,10 @@ impl Repository for database::Client {
 		github_repo_id: &GithubRepoId,
 	) -> Result<Vec<GithubUserId>> {
 		let mut connection = self.connection()?;
-		let state = dsl::github_repos_contributors
+		let contributors = dsl::github_repos_contributors
 			.select(dsl::user_id)
 			.filter(dsl::repo_id.eq(github_repo_id))
 			.load(&mut *connection)?;
-		Ok(state)
+		Ok(contributors)
 	}
 }
