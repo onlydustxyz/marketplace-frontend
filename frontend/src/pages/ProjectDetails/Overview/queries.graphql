@@ -60,7 +60,7 @@ query GetProjectApplications($projectId: uuid!) {
   }
 }
 
-mutation ApplyToProject($projectId: Id!) {
+mutation ApplyToProject($projectId: Uuid!) {
   applyToProject(projectId: $projectId)
 }
 
