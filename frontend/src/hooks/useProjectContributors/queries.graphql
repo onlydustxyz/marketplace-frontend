@@ -18,7 +18,7 @@ fragment Contributor on UserProfiles {
 }
 
 query GetProjectContributors($projectId: uuid!) {
-  projectsContributorsView(where: { projectId: { _eq: $projectId } }) {
+  projectsContributors(where: { projectId: { _eq: $projectId } }) {
     user {
       ...Contributor
     }

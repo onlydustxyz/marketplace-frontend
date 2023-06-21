@@ -53,7 +53,7 @@ const graphQlMocks = [
     },
     result: {
       data: {
-        projectsContributorsView: [{ user: TEST_CONTRIBUTOR }],
+        projectsContributors: [{ user: TEST_CONTRIBUTOR }],
       } as GetProjectContributorsQueryResult["data"],
     },
   },
