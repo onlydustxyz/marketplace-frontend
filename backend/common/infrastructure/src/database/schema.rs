@@ -234,6 +234,13 @@ diesel::table! {
 }
 
 diesel::table! {
+    projects_contributors (project_id, github_user_id) {
+        project_id -> Uuid,
+        github_user_id -> Int8,
+    }
+}
+
+diesel::table! {
     projects_sponsors (project_id, sponsor_id) {
         project_id -> Uuid,
         sponsor_id -> Uuid,
@@ -315,6 +322,7 @@ diesel::allow_tables_to_appear_in_same_query!(
     project_github_repos,
     project_leads,
     projects,
+    projects_contributors,
     projects_sponsors,
     sponsors,
     terms_and_conditions_acceptances,
