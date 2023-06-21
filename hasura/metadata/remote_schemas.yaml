@@ -24,7 +24,6 @@
           scalar GithubRepoId
           scalar GithubUserId
           scalar Iban
-          scalar Id
           scalar Url
           scalar Uuid
           type Issue {
@@ -44,7 +43,7 @@
           type Mutation {
             acceptProjectLeaderInvitation(invitationId: Uuid!): Boolean!
             acceptTermsAndConditions: Uuid!
-            applyToProject(projectId: Id!): Uuid!
+            applyToProject(projectId: Uuid!): Uuid!
             cancelPaymentRequest(projectId: Uuid!, paymentId: Uuid!): Payment!
             createIssue(projectId: Uuid!, githubRepoId: Int!, title: String!, description: String!): Issue!
             ignoreIssue(projectId: Uuid!, repoId: GithubRepoId!, issueNumber: GithubIssueNumber!): Boolean!
@@ -56,10 +55,10 @@
           }
           type Payment {
             amount: Amount!
-            budgetId: Id!
-            commandId: Id!
-            paymentId: Id!
-            projectId: Id!
+            budgetId: Uuid!
+            commandId: Uuid!
+            paymentId: Uuid!
+            projectId: Uuid!
           }
           type Query {
             releaseDate: String!
