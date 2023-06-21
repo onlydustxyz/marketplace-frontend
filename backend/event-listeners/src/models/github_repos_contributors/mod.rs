@@ -1,6 +1,8 @@
+mod repository;
 use diesel::Identifiable;
 use domain::{GithubRepoId, GithubUserId};
 use infrastructure::database::schema::github_repos_contributors;
+pub use repository::Repository;
 
 #[derive(Debug, Insertable, Identifiable, Queryable, ImmutableModel)]
 #[diesel(primary_key(repo_id, user_id))]

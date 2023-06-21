@@ -256,6 +256,7 @@ diesel::table! {
     projects_contributors (project_id, github_user_id) {
         project_id -> Uuid,
         github_user_id -> Int8,
+        link_count -> Int4,
     }
 }
 

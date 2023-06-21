@@ -1,2 +1,1 @@
-SELECT
-    1;
+DROP TABLE projects_contributors;

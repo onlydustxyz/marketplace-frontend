@@ -17,6 +17,8 @@ pub struct Projector {
 	project_github_repos_repository: Arc<dyn ImmutableRepository<ProjectGithubRepo>>,
 	github_repo_index_repository: Arc<dyn GithubRepoIndexRepository>,
 	applications_repository: Arc<dyn Repository<Application>>,
+	projects_contributors_repository: Arc<dyn ProjectsContributorRepository>,
+	github_repos_contributors_repository: Arc<dyn GithubReposContributorRepository>,
 }
 
 #[async_trait]
@@ -55,9 +57,26 @@ impl EventListener<Event> for Projector {
 						repo_id: github_repo_id,
 						..Default::default()
 					})?;
+					self.github_repos_contributors_repository
+						.find_contributors_of_repo(&github_repo_id)?
+						.iter()
+						.try_for_each(|github_user_id| {
+							self.projects_contributors_repository
+								.link_project_with_contributor(&project_id, github_user_id)
+						})?;
 				},
-				ProjectEvent::GithubRepoUnlinked { id, github_repo_id } => {
-					self.project_github_repos_repository.delete((id, github_repo_id))?;
+				ProjectEvent::GithubRepoUnlinked {
+					id: project_id,
+					github_repo_id,
+				} => {
+					self.project_github_repos_repository.delete((project_id, github_repo_id))?;
+					self.github_repos_contributors_repository
+						.find_contributors_of_repo(&github_repo_id)?
+						.iter()
+						.try_for_each(|github_user_id| {
+							self.projects_contributors_repository
+								.unlink_project_with_contributor(&project_id, github_user_id)
+						})?;
 				},
 				ProjectEvent::Application {
 					id: project_id,
