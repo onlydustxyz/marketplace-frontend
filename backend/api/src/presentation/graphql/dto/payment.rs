@@ -1,13 +1,13 @@
-use domain::{BudgetId, CommandId, PaymentId, ProjectId};
 use juniper::GraphQLObject;
+use uuid::Uuid;
 
 use super::Amount;
 
 #[derive(Debug, GraphQLObject)]
 pub struct Payment {
-	pub project_id: ProjectId,
-	pub budget_id: BudgetId,
-	pub payment_id: PaymentId,
-	pub command_id: CommandId,
+	pub project_id: Uuid,
+	pub budget_id: Uuid,
+	pub payment_id: Uuid,
+	pub command_id: Uuid,
 	pub amount: Amount,
 }

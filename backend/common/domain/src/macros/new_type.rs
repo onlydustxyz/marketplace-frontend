@@ -17,7 +17,6 @@ macro_rules! create_new_type {
 			derive_more::AsRef,
 			derive_more::FromStr,
 			diesel_derive_newtype::DieselNewType,
-			juniper::GraphQLScalarValue,
 		)]
 		pub struct $name($underlying_type);
 	};

@@ -112,10 +112,10 @@ impl Mutation {
 			.await?;
 
 		Ok(dto::Payment {
-			project_id: *project.id(),
-			budget_id: *budget.id(),
-			payment_id: *payment.id(),
-			command_id,
+			project_id: (*project.id()).into(),
+			budget_id: (*budget.id()).into(),
+			payment_id: (*payment.id()).into(),
+			command_id: command_id.into(),
 			amount: payment
 				.requested_usd_amount()
 				.try_into()
@@ -294,10 +294,10 @@ impl Mutation {
 			.await?;
 
 		Ok(dto::Payment {
-			project_id: *project.id(),
-			budget_id: *budget.id(),
-			payment_id: *payment.id(),
-			command_id,
+			project_id: (*project.id()).into(),
+			budget_id: (*budget.id()).into(),
+			payment_id: (*payment.id()).into(),
+			command_id: command_id.into(),
 			amount: payment
 				.requested_usd_amount()
 				.try_into()
@@ -399,10 +399,11 @@ impl Mutation {
 		Ok(true)
 	}
 
-	pub async fn apply_to_project(context: &Context, project_id: ProjectId) -> Result<Uuid> {
+	pub async fn apply_to_project(context: &Context, project_id: Uuid) -> Result<Uuid> {
 		let caller_id = context.caller_info()?.user_id;
 
-		let application_id = context.apply_to_project_usecase.apply(project_id, caller_id).await?;
+		let application_id =
+			context.apply_to_project_usecase.apply(project_id.into(), caller_id).await?;
 
 		Ok(application_id.into())
 	}
