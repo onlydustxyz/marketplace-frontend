@@ -148,10 +148,10 @@ class Issue {
 
 class Payment {
    amount: Amount!
-   budgetId: Id!
-   commandId: Id!
-   paymentId: Id!
-   projectId: Id!
+   budgetId: Uuid!
+   commandId: Uuid!
+   paymentId: Uuid!
+   projectId: Uuid!
 }
 
 class PaymentRequests {

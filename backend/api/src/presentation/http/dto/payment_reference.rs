@@ -1,7 +1,7 @@
 use derive_getters::Getters;
 use juniper::GraphQLInputObject;
 use serde::{Deserialize, Serialize};
-use uuid::Uuid;
+use uuid08::Uuid;
 
 #[derive(Debug, Clone, Serialize, Deserialize, GraphQLInputObject, Getters)]
 pub struct PaymentReference {
