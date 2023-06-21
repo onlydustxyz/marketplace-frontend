@@ -3,7 +3,7 @@ use domain::{GithubUserId, ProjectId};
 use infrastructure::database::schema::pending_project_leader_invitations;
 use serde::{Deserialize, Serialize};
 
-create_new_type!(Id, uuid::Uuid, uuid::Uuid::new_v4());
+create_new_id!(Id);
 
 #[derive(
 	Default,

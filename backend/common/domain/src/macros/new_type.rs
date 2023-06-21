@@ -31,3 +31,22 @@ macro_rules! create_new_type {
 		}
 	};
 }
+
+#[macro_export]
+macro_rules! create_new_id {
+	($name:ident) => {
+		$crate::create_new_type!($name, uuid::Uuid, uuid::Uuid::new_v4());
+
+		impl From<uuid08::Uuid> for $name {
+			fn from(id: uuid08::Uuid) -> Self {
+				Self(uuid::Uuid::from_bytes(*id.as_bytes()))
+			}
+		}
+
+		impl From<$name> for uuid08::Uuid {
+			fn from(id: $name) -> Self {
+				uuid08::Uuid::from_bytes(*id.0.as_bytes())
+			}
+		}
+	};
+}

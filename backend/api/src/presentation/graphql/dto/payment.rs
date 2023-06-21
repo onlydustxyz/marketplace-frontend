@@ -1,5 +1,5 @@
 use juniper::GraphQLObject;
-use uuid::Uuid;
+use uuid08::Uuid;
 
 use super::Amount;
 

@@ -3,4 +3,4 @@ pub use entity::{AggregateId, Entity};
 
 pub mod repository;
 
-crate::create_new_type!(Id, uuid::Uuid, uuid::Uuid::new_v4());
+crate::create_new_id!(Id);

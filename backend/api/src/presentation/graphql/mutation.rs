@@ -8,7 +8,7 @@ use domain::{
 use juniper::{graphql_object, DefaultScalarValue, Nullable};
 use rusty_money::Money;
 use url::Url;
-use uuid::Uuid;
+use uuid08::Uuid;
 
 use super::{dto, Context, Error, Result};
 use crate::{

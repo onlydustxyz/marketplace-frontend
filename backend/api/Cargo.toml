@@ -31,6 +31,12 @@ uuid = {version = "1.3.3", default_features = false, features = [
   "serde",
 ]}
 
+uuid08 = {package = "uuid", version = "0.8", default_features = false, features = [
+  "v4",
+  "serde",
+]}
+
+
 # Graphql client
 graphql_client = "0.12.0"
 

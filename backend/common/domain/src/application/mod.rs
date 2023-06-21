@@ -4,4 +4,4 @@ pub use events::Event;
 mod aggregate;
 pub use aggregate::Application;
 
-crate::create_new_type!(Id, uuid::Uuid, uuid::Uuid::new_v4());
+crate::create_new_id!(Id);

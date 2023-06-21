@@ -3,7 +3,7 @@ use diesel::Identifiable;
 use infrastructure::database::schema::sponsors;
 use serde::{Deserialize, Serialize};
 
-create_new_type!(Id, uuid::Uuid, uuid::Uuid::new_v4());
+create_new_id!(Id);
 
 #[derive(
 	Default,
