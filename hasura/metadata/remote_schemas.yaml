@@ -51,6 +51,7 @@
             requestPayment(projectId: Uuid!, recipientId: Int!, amountInUsd: Int!, hoursWorked: Int!, reason: Reason!): Payment!
             unignoreIssue(projectId: Uuid!, repoId: GithubRepoId!, issueNumber: GithubIssueNumber!): Boolean!
             updatePayoutInfo(location: Location, identity: IdentityInput, payoutSettings: PayoutSettingsInput): Uuid!
+            updateUserAvatar: Boolean!
             updateUserProfile(bio: String, location: String, website: String, languages: [Language!], weeklyAllocatedTime: AllocatedTime!, lookingForAJob: Boolean!, contactInformations: [Information!]!): Boolean!
           }
           type Payment {
