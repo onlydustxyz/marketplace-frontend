@@ -1,0 +1,738 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title></title>
+        <meta name="robots" content="noindex" />
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var html = document.querySelector('html');
+            var sidebar = null;
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="getting-started.html"><strong aria-hidden="true">2.</strong> Setup & getting started</a></li><li class="chapter-item expanded "><a href="app-description.html"><strong aria-hidden="true">3.</strong> Description of the app</a></li><li class="chapter-item expanded "><a href="task-choice.html"><strong aria-hidden="true">4.</strong> Choosing a task to work on</a></li><li class="chapter-item expanded "><a href="types-of-feature.html"><strong aria-hidden="true">5.</strong> Coding a feature</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="git-setup.html"><strong aria-hidden="true">5.1.</strong> Git setup</a></li><li class="chapter-item expanded "><a href="adding-a-new-page.html"><strong aria-hidden="true">5.2.</strong> Adding a new page</a></li><li class="chapter-item expanded "><a href="making-a-component.html"><strong aria-hidden="true">5.3.</strong> Making a component</a></li><li class="chapter-item expanded "><a href="new-graphql-query.html"><strong aria-hidden="true">5.4.</strong> Adding a new GraphQL query</a></li><li class="chapter-item expanded "><a href="adding-tests.html"><strong aria-hidden="true">5.5.</strong> Adding tests</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="unit-tests.html"><strong aria-hidden="true">5.5.1.</strong> Unit tests</a></li><li class="chapter-item expanded "><a href="integration-tests.html"><strong aria-hidden="true">5.5.2.</strong> Integration tests</a></li><li class="chapter-item expanded "><a href="end-to-end-tests.html"><strong aria-hidden="true">5.5.3.</strong> End-to-end tests</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="making-a-pull-request.html"><strong aria-hidden="true">6.</strong> Making a pull request</a></li><li class="chapter-item expanded "><a href="code-reviews-guidelines.html"><strong aria-hidden="true">7.</strong> Reviewing a pull request</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="code-guidelines.html"><strong aria-hidden="true">7.1.</strong> Code guidelines</a></li><li class="chapter-item expanded "><a href="chromatic-reviews.html"><strong aria-hidden="true">7.2.</strong> Chromatic reviews</a></li></ol></li><li class="chapter-item expanded "><a href="qa-testing.html"><strong aria-hidden="true">8.</strong> QA testing</a></li><li class="chapter-item expanded "><a href="prod-deployment.html"><strong aria-hidden="true">9.</strong> Production deployment</a></li><li class="chapter-item expanded "><a href="known-issues.html"><strong aria-hidden="true">10.</strong> Known issues</a></li><li class="chapter-item expanded "><a href="ideas-to-explore.html"><strong aria-hidden="true">11.</strong> Ideas to explore</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
+<p>This documentation is meant to walk a contributor to the <a href="https://github.com/onlydustxyz/marketplace">OnlyDust Marketplace</a> through the completion of a
+feature, from specification to production deployment.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="getting-started"><a class="header" href="#getting-started">Getting started</a></h1>
+<h2 id="websites"><a class="header" href="#websites">Websites</a></h2>
+<h3 id="onepassword"><a class="header" href="#onepassword">OnePassword</a></h3>
+<p>Setting up the 1Password extension is useful to get the password for many of the tools used to manage our app (Heroku, Hasura for example).</p>
+<p>You should receive an invite to the organization, after which you'll be able to set up your account.</p>
+<h3 id="heroku"><a class="header" href="#heroku">Heroku</a></h3>
+<p>Heroku is used to deploy our backend and to manage environment variables.</p>
+<p>Credentials can be found in 1Password.</p>
+<h3 id="vercel"><a class="header" href="#vercel">Vercel</a></h3>
+<p>Vercel is used to deploy the frontend and manage its environment variables.</p>
+<p>It has many interesting features such as review apps and one-click rollbacks.</p>
+<p>Credentials can be found in 1Password.</p>
+<h2 id="command-line-tools"><a class="header" href="#command-line-tools">Command-line tools</a></h2>
+<h3 id="yarn"><a class="header" href="#yarn">yarn</a></h3>
+<pre><code>npm install --global yarn
+</code></pre>
+<h3 id="rust"><a class="header" href="#rust">Rust</a></h3>
+<pre><code>curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+</code></pre>
+<h3 id="heroku-1"><a class="header" href="#heroku-1">Heroku</a></h3>
+<p>With Homebrew:</p>
+<pre><code>brew tap heroku/brew &amp;&amp; brew install heroku
+</code></pre>
+<h3 id="hasura"><a class="header" href="#hasura">Hasura</a></h3>
+<p>With Home</p>
+<h2 id="desktop-apps"><a class="header" href="#desktop-apps">Desktop apps</a></h2>
+<h3 id="docker"><a class="header" href="#docker">Docker</a></h3>
+<p>Install Docker Desktop <a href="https://desktop.docker.com/mac/main/amd64/Docker.dmg">here</a>.</p>
+<h3 id="tableplus"><a class="header" href="#tableplus">TablePlus</a></h3>
+<p>TablePlus is a tool used to inspect, edit, backup... relational databases.</p>
+<p>Download Table Plus <a href="https://tableplus.com/release/osx/tableplus_latest">here</a></p>
+<h3 id="figma"><a class="header" href="#figma">Figma</a></h3>
+<p>Figma is a tool to create and share wireframes and component design.</p>
+<p>Download Figma <a href="https://www.figma.com/download/desktop/mac">here</a></p>
+<h3 id="linear"><a class="header" href="#linear">Linear</a></h3>
+<p>Linear is the tool used for product management.</p>
+<p>Download Linear <a href="https://desktop.linear.app/mac">here</a></p>
+<h2 id="browser-extensions"><a class="header" href="#browser-extensions">Browser extensions</a></h2>
+<h3 id="testing-playground"><a class="header" href="#testing-playground">Testing playground</a></h3>
+<p>Testing Playground is a Chrome extension designed to be able to easily find selectors for DOM elements.</p>
+<p>Is is useful when writing tests and can be downloaded <a href="https://chrome.google.com/webstore/detail/testing-playground">here</a></p>
+<h3 id="apollo-client-devtools"><a class="header" href="#apollo-client-devtools">Apollo Client Devtools</a></h3>
+<p>The Apollo Client Devtools are useful to see what is the current state of the Apollo Client cache, queries, etc ...</p>
+<p>They can be downloaded <a href="https://chrome.google.com/webstore/detail/apollo-client-devtools">here</a></p>
+<h3 id="react-dev-tools"><a class="header" href="#react-dev-tools">React dev tools</a></h3>
+<p>The React Developer tools are used to profile component reloads and invesitgate performance issues.</p>
+<p>They can be downloaded <a href="https://chrome.google.com/webstore/detail/react-developer-tools">here</a></p>
+<h2 id="development-setup"><a class="header" href="#development-setup">Development setup</a></h2>
+<p>The services should ideally be started in the order of the following sections.</p>
+<h3 id="environment-variables"><a class="header" href="#environment-variables">Environment variables</a></h3>
+<p>Copy the contents of the <code>.env.example</code> file into <code>.env</code>.</p>
+<p>Some variables needs to be replaced, they are tagged with the <code>REPLACE_AT_INSTALLATION</code> tag - see below for those that require some setup.</p>
+<h4 id="infura"><a class="header" href="#infura">Infura</a></h4>
+<p>Set up an account on <a href="https://www.infura.io/">Infura</a> and create a new API key</p>
+<h4 id="github-personal-access-token"><a class="header" href="#github-personal-access-token">Github Personal Access Token</a></h4>
+<p>Go to <a href="https://github.com/settings/tokens">your GitHub settings token page</a> and create a new Personal Access Tokens - Tokens (classic).</p>
+<h3 id="docker-compose"><a class="header" href="#docker-compose">Docker-compose</a></h3>
+<p>This useful command can be used to start the Docker containers, and also to wipe the database clean and restart the Docker containers at any time:</p>
+<pre><code>make docker/re
+</code></pre>
+<h3 id="backend"><a class="header" href="#backend">Backend</a></h3>
+<p>Starting the backend service is a bit more involved and requires more setup.</p>
+<pre><code>yarn run backend:api
+yarn run backend:event-store
+yarn run backend:event-listeners
+yarn run backend:github-proxy
+yarn run backend:action-dequeuer
+yarn run backend:github-indexer
+yarn run backend:dusty-bot
+</code></pre>
+<p>Then start the Hasura server:</p>
+<pre><code>yarn hasura:console
+</code></pre>
+<h3 id="frontend"><a class="header" href="#frontend">Frontend</a></h3>
+<p>Install <a href="https://vitejs.dev/">Vite</a> - with Homebrew:</p>
+<pre><code>brew install vite
+</code></pre>
+<p>Install packages with:</p>
+<pre><code>yarn
+</code></pre>
+<p>You can then start the frontend with:</p>
+<pre><code>yarn dev
+</code></pre>
+<p>If you plan on running end-to-end tests, use:</p>
+<pre><code>yarn dev ---host
+</code></pre>
+<h3 id="codegen"><a class="header" href="#codegen">Codegen</a></h3>
+<p>A code generation plugin is used to automatically generate Typescript types for the frontend,
+based on the queries provided by Hasura as well as queries defined in <code>queries.graphql</code> files.</p>
+<p>It can be launched in watch mode with the following command :</p>
+<pre><code>yarn generate --watch
+</code></pre>
+<h3 id="lazynpm-experimental"><a class="header" href="#lazynpm-experimental">LazyNPM (experimental)</a></h3>
+<p>You can use <a href="https://github.com/jesseduffield/lazynpm">LazyNPM</a> to have a graphical interface allowing to launch the scripts more quickly.</p>
+<p>This is convenient but the GUI tends to break down when one of the services encounters an error.</p>
+<p>When LazyNPM is installed, you can just launch it at the root of the project with:</p>
+<pre><code>lazynpm
+</code></pre>
+<h2 id="other"><a class="header" href="#other">Other</a></h2>
+<h3 id="how-to-create-a-project-locally-"><a class="header" href="#how-to-create-a-project-locally-">How to create a project locally ?</a></h3>
+<p>This examples works for a local setup but also work in stagin or development by going to <a href="http://develop.hasura.onlydust.xyz">the develop</a> or <a href="staging.hasura.onlydust.xyz">staging</a> Hasura consoles.</p>
+<p>Laucnh the hasura console by running:</p>
+<pre><code>yarn hasura/console
+</code></pre>
+<p>Access the GraphiQL interface (test tube icon tab) of the <a href="http://localhost:9695">local Hasura console</a>.</p>
+<p>Add a <em>mutation</em> in the lower left corner, and choose the <code>createProject</code> mutation - with as parameters (for example):</p>
+<pre><code class="language-typescript">mutation MyMutation {
+  createProject(
+    longDescription: &quot;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore ...&quot;,
+    name: &quot;Lorem&quot;,
+	shortDescription: &quot;Lorem Ipsum&quot;,
+	initialBudget: 10000,
+	visibility: PUBLIC
+  )
+}
+</code></pre>
+<p>Run the mutation with the &quot;Play&quot; symbol.</p>
+<p>The project will be created</p>
+<h3 id="how-to-become-a-project-leader-"><a class="header" href="#how-to-become-a-project-leader-">How to become a project leader ?</a></h3>
+<p>Then, save the project ID that is displayed by the interface, e.g.:</p>
+<pre><code class="language-json">{
+  &quot;data&quot;: {
+    &quot;createProject&quot;: &quot;92c22e51-5e21-44d5-bf51-d8d265849ce5&quot;
+  }
+}
+</code></pre>
+<p>Finally, you need to invite yourself as a project leader. To achieve this, you will need the project ID shown above as well as you GitHub user ID, which can be found using the <em>GitHub users API</em>, for example: https://api.github.com/users/oscarwroche .</p>
+<pre><code class="language-typescript">mutation MyMutation {
+  inviteProjectLeader(
+    githubUserId: 21149076,
+	projectId: &quot;92c22e51-5e21-44d5-bf51-d8d265849ce5&quot;
+  )
+}
+</code></pre>
+<p>Then, go to the marketplace's home page, logged in as the aforementioned GitHub user. You should see an invite that you can accept to become a project leader, and access the payment sending options.</p>
+<h4 id="linking-a-github-repo"><a class="header" href="#linking-a-github-repo">Linking a GitHub repo</a></h4>
+<p><em>It is important to follow these instructions, otherwise multiple issues will be created on public repositories when sending a payment request</em></p>
+<p><em>Fork</em> an existing repo with the <em>onlydustxyz</em> oragnization.</p>
+<p>Then, call the <code>linkGithubRepo</code> mutation using the project ID shown above, and the ID of this repo, which can be found thanks to the <em>Github Repos API</em>, for example: https://api.github.com/repos/facebook/react .</p>
+<pre><code class="language-typescript">mutation MyMutation {
+  linkGithubRepo(
+    githubRepoId: 78853160,
+	projectId: &quot;92c22e51-5e21-44d5-bf51-d8d265849ce5&quot;
+  )
+}
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="description-of-the-app"><a class="header" href="#description-of-the-app">Description of the app</a></h1>
+<p>The marketplace project is organized in different components and routes. The main entry point for the application is the <code>App</code> component, which is responsible for rendering the different pages and routes of the application. It imports various components and libraries from the React ecosystem, as well as custom components and types from the project.</p>
+<p>The <code>App</code> component defines an enumeration called <code>RoutePaths</code> that represents the different routes of the application. It also defines enumerations called <code>ProjectRoutePaths</code> and <code>ProjectPaymentsRoutePaths</code> that represent sub-routes within the project details and project payments pages, respectively.</p>
+<p>The <code>App</code> component uses the <code>useReloadOnNewRelease</code> hook to reload the application if a new release is available. It also defines arrays called <code>projectRoutes</code> and <code>routes</code> using the <code>useRoutes</code> hook. These arrays represent the routes of the application and include nested routes and protected routes based on user roles.</p>
+<p>The <code>Layout</code> component is responsible for rendering the layout of the marketplace application. It uses various components and hooks to create the desired layout, such as <code>classNames</code>, <code>Outlet</code>, <code>useLocation</code>, <code>ResponsivityFallback</code>, <code>Toaster</code>, <code>Header</code>, and <code>Tooltip</code>. The <code>Layout</code> component conditionally renders the <code>ResponsivityFallback</code> component and controls the visibility of the main content based on the current location.</p>
+<h2 id="example-of-a-page"><a class="header" href="#example-of-a-page">Example of a page</a></h2>
+<p>The <code>Projects</code> component is responsible for rendering a page that displays a list of projects. It imports dependencies and components such as <code>Background</code>, <code>FilterPanel</code>, <code>useAuth</code>, and <code>useT</code>. It defines an enum called <code>Sorting</code> for different sorting options and uses the <code>useLocalStorage</code> hook to store and retrieve the selected sorting option. The component renders the <code>Background</code> component, <code>ProjectFilterProvider</code>, and a list of projects using the <code>AllProjects</code> component.</p>
+<h2 id="example-of-a-component"><a class="header" href="#example-of-a-component">Example of a component</a></h2>
+<p>The <code>ProjectDetails</code> component is responsible for rendering the details of a specific project. It imports dependencies and components such as <code>Navigate</code>, <code>useParams</code>, <code>LanguageMap</code>, <code>ProjectLeadFragment</code>, <code>SponsorFragment</code>, and <code>View</code>. It defines an interface called <code>ProjectDetails</code> for the structure of a project object. The component uses the <code>useParams</code> hook to extract the <code>projectId</code> from the URL parameters and the <code>useProjectVisibility</code> hook to determine if the project is visible to the current user. It conditionally renders the <code>View</code> component or navigates to the <code>Projects</code> route.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="choosing-a-task-to-work-on"><a class="header" href="#choosing-a-task-to-work-on">Choosing a task to work on</a></h1>
+<h2 id="types-of-tasks"><a class="header" href="#types-of-tasks">Types of tasks</a></h2>
+<h3 id="bugs"><a class="header" href="#bugs">Bugs</a></h3>
+<p><em>Bugs</em> should be taken in priority when possible.
+They can be found in the <em>Backlog</em> column of the <em>Engineering</em> board.</p>
+<h3 id="features"><a class="header" href="#features">Features</a></h3>
+<p><em>Features</em> can also be found in the <em>Backlog</em> column of the <em>Engineering</em> board, and are sorted in descending priority order.</p>
+<h4 id="feature-specification"><a class="header" href="#feature-specification">Feature specification</a></h4>
+<p>It can be useful to write a breakdown of the necessary steps to complete a task.</p>
+<p>This can either be done in the Engineering ticket itself or by creating subtasks in the <em>Build</em> board.</p>
+<p>Creating subtasks can be achieved by clicking the <em>Add sub-issues</em> button on the ticket.</p>
+<p>Don't forget to choose the <em>Build</em> board as shown below:</p>
+<p><img src="./pictures/add-task-build-board.png" alt="adding a task to the Build board" /></p>
+<h3 id="tech-tasks"><a class="header" href="#tech-tasks">Tech tasks</a></h3>
+<p>Tech tasks can be linked to refactoring, perf issues, etc...</p>
+<p>They usually have less priority than other features.</p>
+<h4 id="spike"><a class="header" href="#spike">Spike</a></h4>
+<p>A spike is a task that is meant to start in to investigation into a complex topic (ex: setting up a new tools, investigating logging costs ...).</p>
+<p>It is usually timeboxed to one day and should result in creating other tasks with more concrete steps to take.</p>
+<h3 id="snack"><a class="header" href="#snack">Snack</a></h3>
+<p>A snack is a short task that should be completed in one or two hours.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="coding-a-feature"><a class="header" href="#coding-a-feature">Coding a feature</a></h1>
+<p>This section is a catalog of sorts, containing tasks that might often be encountered while coding a feature,
+and things to remember when doing so.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="git-setup"><a class="header" href="#git-setup">Git setup</a></h1>
+<p>Pull the <code>main</code> branch.</p>
+<p>Go to Linear and click the relevant icon to automatically get the branch name for a given issue.</p>
+<p><img src="./pictures/linear-git-branch-name.png" alt="Linear Git branch name button" /></p>
+<p>Create a branch with this name starting from <code>main</code> - for example <code>e-552-compute-profile-completion-score-and-show-it-to-current-user</code></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="adding-a-new-page"><a class="header" href="#adding-a-new-page">Adding a new page</a></h1>
+<h2 id="page-template"><a class="header" href="#page-template">Page template</a></h2>
+<pre><code class="language-typescript">export default function Page() {
+  return &lt;Background roundedBorders={BackgroundRoundedBorders.Full}&gt;
+	&lt;div className=&quot;flex flex-col justify-center items-center text-greyscale-50&quot;&gt;
+	  // Rest of content here ...
+	&lt;/div&gt;
+  &lt;/Background&gt;
+}
+</code></pre>
+<h2 id="updating-the-router"><a class="header" href="#updating-the-router">Updating the router</a></h2>
+<p>The routes variable in the App component defines the different routes of the application. It is structured as an array and includes routes for the impersonation page, projects page, terms and conditions page, payments page, login page, project details page, catch-all page, and error page.</p>
+<p>These routes are defined using the useRoutes hook from the <code>react-router-dom</code> library. The routes are nested and can be accessed by navigating through the application. For example, the project details page has nested routes for the overview, contributors, and payments sub-pages.</p>
+<p>Add the route to the <code>routes</code> object in <code>./frontend/src/App/index.tsx</code>:</p>
+<pre><code class="language-typescript">const routes = useRoutes([...]);
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="making-a-component"><a class="header" href="#making-a-component">Making a component</a></h1>
+<h2 id="separating-presentation-and-logic"><a class="header" href="#separating-presentation-and-logic">Separating presentation and logic</a></h2>
+<p>Components that have complex logic, queries, etc ... should be split in two files inside a dedicated folder: 
+<code>index.tsx</code> for the logical part and <code>View.tsx</code> for the visual part.</p>
+<p>Example:</p>
+<p><code>index.tsx</code></p>
+<pre><code class="language-typescript">export default function Component() {
+  const {data} = useQuery&lt;T&gt;(MY_QUERY);
+  return &lt;View items={data} /&gt;
+}
+</code></pre>
+<p><code>View.tsx</code></p>
+<pre><code class="language-typescript">interface ComponentViewProps {
+  data: T
+}
+
+export default function ComponentView({data} : ComponentViewProps) {
+  return &lt;div className=&quot;flex flex-row px-6 align-center&quot;&gt;
+           // ...
+		 &lt;/div&gt;
+}
+</code></pre>
+<h2 id="development-process"><a class="header" href="#development-process">Development process</a></h2>
+<h3 id="storybook"><a class="header" href="#storybook">Storybook</a></h3>
+<p>It is highly encouraged to use Storybook while implementing the design of a component.</p>
+<p>Storybook allows to display and implement a component in isolation. It is also possible to display several variants of a component - 
+which makes it the ideal place to describe a design system.</p>
+<p>This is easier to do if the component has been properly split between logic and presentation like above.</p>
+<h4 id="interface"><a class="header" href="#interface">Interface</a></h4>
+<p>Storybook can be launched using the following command:</p>
+<pre><code>yarn storybook
+</code></pre>
+<p>This will open an interface (accessible by default <a href="http://localhost:6006">locally on the 6006 port</a>).</p>
+<p>For each component, a <em>Docs</em> section displays the generated documentation for the component :</p>
+<p><img src="./pictures/storybook-docs.png" alt="Storybook docs" /></p>
+<p>Then, there is a section for each story, with the relevant parameters that can be modified to see the variants of a component.</p>
+<p><img src="./pictures/storybook-story.png" alt="Storybook story" /></p>
+<h4 id="creating-a-story"><a class="header" href="#creating-a-story">Creating a story</a></h4>
+<p>A story should be named according to the <code>&lt;COMPONENT_NAME&gt;.stories.tsx</code> (e.g. <code>Button.stories.tsx</code>) and should be colocated with the <code>index.tsx</code> and <code>View.tsx</code> files.</p>
+<h2 id="when-to-add-a-component-to-the-components-folder-"><a class="header" href="#when-to-add-a-component-to-the-components-folder-">When to add a component to the <code>components</code> folder ?</a></h2>
+<p>The folder structure of the app follows what is known as a <a href="https://hackernoon.com/fractal-a-react-app-structure-for-infinite-scale-4dab943092af">Fractal structure</a>.</p>
+<p>In other words, only add a component to the <code>components</code> folder when it is used in more than two pages or components.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="adding-a-new-graphql-query"><a class="header" href="#adding-a-new-graphql-query">Adding a new GraphQL query</a></h1>
+<h2 id="instructions"><a class="header" href="#instructions">Instructions</a></h2>
+<p>A new GraphQL query / mutation can be written in the same file as the component that needs it or in a separate <code>queries.graphql</code> / <code>mutations.graphql</code> file, in order for hooks to automatically get generated by the <a href="./getting-started.html#codegen">codegen</a>.</p>
+<p>See <a href="https://graphql.org/learn/queries/">here</a> for more information about how to write GraphQL queries and mutations.</p>
+<h2 id="example-of-how-to-add-and-use-a-query"><a class="header" href="#example-of-how-to-add-and-use-a-query">Example of how to add and use a query</a></h2>
+<h3 id="writing-the-query"><a class="header" href="#writing-the-query">Writing the query</a></h3>
+<p>The <code>gql</code> template literal is imported from the <code>@apollo/client</code> package. It is used to define GraphQL queries in the code. In the <code>GithubRepoDetails</code> component, the <code>gql</code> template literal is used to define the <code>GetGithubRepositoryDetails</code> query.</p>
+<p>Here's an example of how the <code>gql</code> template literal is used to define the query:</p>
+<pre><code class="language-typescript">import { gql } from '@apollo/client';
+
+const GetGithubRepositoryDetails = gql`
+  query GetGithubRepositoryDetails($githubRepoId: bigint) {
+    githubReposByPk(githubRepoId: $githubRepoId) {
+      ...GithubRepo
+    }
+  }
+
+  fragment GithubRepo on GithubRepo {
+    name
+    description
+    // ... other repository fields
+  }
+`;
+</code></pre>
+<p>The <code>GetGithubRepositoryDetails</code> query fetches the details of a GitHub repository based on the <code>githubRepoId</code> variable. It includes the <code>...GithubRepo</code> fragment, which specifies the fields to be fetched for the repository.</p>
+<p>The <code>gql</code> template literal allows for writing GraphQL queries in a readable and type-safe manner within JavaScript or TypeScript code. It also enables tools like Apollo Client to parse and validate the queries at build time.</p>
+<p>In the above example, the query is written inside the component, but <em>ideally the query should be written in a <code>queries.graphql</code> or <code>mutations.graphql</code> file, colocated with the relevant component</em>, just writing what is in the <code>gql</code> tag with the relevant fragments defined before being used, i.e.:</p>
+<pre><code class="language-typescript">fragment GithubRepo on GithubRepo {
+  name
+  description
+  // ... other repository fields
+}
+
+query GetGithubRepositoryDetails($githubRepoId: bigint) {
+  githubReposByPk(githubRepoId: $githubRepoId) {
+	...GithubRepo
+  }
+}
+</code></pre>
+<h3 id="hook"><a class="header" href="#hook">Hook</a></h3>
+<p>The <code>useGetGithubRepositoryDetailsQuery</code> hook is used to fetch details of a GitHub repository. It is imported from the <code>src/__generated/graphql</code> file. This hook is generated by Apollo Client based on the query added to a <code>queries.graphql file</code> </p>
+<p>To use the hook, the <code>githubRepoId</code> prop is passed as a variable to the query. The query itself is defined using the <code>gql</code> template literal tag. It is a GraphQL query named <code>GetGithubRepositoryDetails</code> that takes a single variable <code>githubRepoId</code> of type <code>bigint</code>. The query fetches the details of a GitHub repository with the given ID and includes the <code>...GithubRepo</code> fragment.</p>
+<p>Here's an example of how the <code>useGetGithubRepositoryDetailsQuery</code> hook is used in the <code>GithubRepoDetails</code> component:</p>
+<pre><code class="language-typescript">import { useGetGithubRepositoryDetailsQuery } from 'src/__generated/graphql';
+
+const GithubRepoDetails: React.FC&lt;{ githubRepoId: number }&gt; = ({ githubRepoId }) =&gt; {
+  const { data } = useGetGithubRepositoryDetailsQuery({
+    variables: { githubRepoId },
+  });
+
+  // Render the fetched data
+  if (data?.githubReposByPk) {
+    return &lt;View {...data.githubReposByPk} /&gt;;
+  }
+
+  return null;
+};
+</code></pre>
+<h3 id="using-query-results"><a class="header" href="#using-query-results">Using query results</a></h3>
+<p>The <code>View</code> component is imported from the local directory. It is used to render the fetched repository details in the <code>GithubRepoDetails</code> component. The <code>View</code> component likely contains the UI elements and layout for displaying the repository details.</p>
+<p>The <code>View</code> component receives the fetched repository details as props. In the example code above, the fetched repository details are spread as props using the spread operator (<code>...data.githubReposByPk</code>). This allows the <code>View</code> component to access and render the specific details of the GitHub repository.</p>
+<p>Here's an example of how the <code>View</code> component might be implemented:</p>
+<pre><code class="language-typescript">type ViewProps = {
+  name: string;
+  description: string;
+  // ... other repository details
+};
+
+const View: React.FC&lt;ViewProps&gt; = ({ name, description }) =&gt; {
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;{name}&lt;/h1&gt;
+      &lt;p&gt;{description}&lt;/p&gt;
+      {/* Render other repository details */}
+    &lt;/div&gt;
+  );
+};
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="adding-tests"><a class="header" href="#adding-tests">Adding tests</a></h1>
+<p>This section is about how to create new tests, with the best practices for doing so.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="unit-tests"><a class="header" href="#unit-tests">Unit tests</a></h1>
+<p>Unit tests are used to test utilities and reusable logical components (which are ofter extracted in custom hooks).</p>
+<p>They use <a href="https://vitest.dev/">Vitest</a> and <a href="https://testing-library.com/docs/react-testing-library/intro/">React Testing Library</a>.</p>
+<h2 id="testing-utility-functions"><a class="header" href="#testing-utility-functions">Testing utility functions</a></h2>
+<p>This is like your regular tests using Jest.</p>
+<h2 id="testing-hooks"><a class="header" href="#testing-hooks">Testing hooks</a></h2>
+<p>Hooks can be &quot;rendered&quot; using React Testing Library in order to be tested. </p>
+<p>There is an example in the codebase with the <code>useRoles</code> hook:</p>
+<pre><code class="language-typescript">import { renderHook } from &quot;@testing-library/react-hooks&quot;;
+
+it(&quot;should return Public role when no token is provided&quot;, () =&gt; {
+  const { result } = renderHook(() =&gt; useRoles());
+  expect(result.current.roles).toEqual([HasuraUserRole.Public]);
+});
+</code></pre>
+<p>The <code>rerender</code> function can be destructured from the result of the <code>renderHook</code> function
+in order to manually reload a hook.</p>
+<p>There is another example of this with the <code>useRoles</code> hook:</p>
+<pre><code class="language-typescript">it(&quot;should update the loggedIn flag when a token is given&quot;, () =&gt; {
+  const { result, rerender } = renderHook(
+    (accessToken?: AccessToken) =&gt; useRoles(accessToken)
+  );
+  expect(result.current.isLoggedIn).toBeFalsy();
+
+  const jwtString = &quot;some-token&quot; as AccessToken;
+  rerender(jwtString);
+
+  expect(result.current.isLoggedIn).toBeTruthy();
+});
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="integration-tests"><a class="header" href="#integration-tests">Integration tests</a></h1>
+<p>Integration test more complex behaviors, namely those of whole components.</p>
+<p>Integration tests, like unit tests, use <a href="https://vitest.dev/">Vitest</a> and <a href="https://testing-library.com/docs/react-testing-library/intro/">React Testing Library</a>, using more sophisticated features of the latter.</p>
+<h2 id="boilerplate--setup"><a class="header" href="#boilerplate--setup">Boilerplate / setup</a></h2>
+<h3 id="expect-dom-related-stuff"><a class="header" href="#expect-dom-related-stuff">Expect DOM-related stuff</a></h3>
+<p>Some content related to the DOM, and accessed with queries / selectors such as <code>screen.findByText(...)</code> needs to be compatible with the Vitest <code>expect</code> function.</p>
+<p>This is possible with the following lines of code that are present in every intregration test:</p>
+<pre><code class="language-typescript">import matchers from &quot;@testing-library/jest-dom/matchers&quot;;
+expect.extend(matchers);
+</code></pre>
+<h3 id="mocking-authentication-mechanisms"><a class="header" href="#mocking-authentication-mechanisms">Mocking authentication mechanisms</a></h3>
+<p>A few things are regularly accessed by components, such as user and auth info.
+The token refresh mechanism hence needs to be mocked.</p>
+<p>The following code is often used in the beginning of files (and could / should probably be refactored):</p>
+<pre><code class="language-typescript">const HASURA_TOKEN_WITH_VALID_JWT_TEST_VALUE = {
+  user: {
+    id: TEST_USER_ID,
+  },
+  accessToken: &quot;VALID_ACCESS_TOKEN&quot;,
+  accessTokenExpiresIn: 900,
+  creationDate: new Date().getTime(),
+  refreshToken: &quot;test-refresh-token&quot;,
+};
+
+vi.mock(&quot;axios&quot;, () =&gt; ({
+  default: {
+    post: (url: string, tokenSet?: TokenSet) =&gt; ({
+      data: tokenSet?.refreshToken ? HASURA_TOKEN_WITH_VALID_JWT_TEST_VALUE : HASURA_TOKEN_BASIC_TEST_VALUE,
+    }),
+  },
+}));
+
+vi.mock(&quot;jwt-decode&quot;, () =&gt; ({
+  default: (jwt: string) =&gt; {
+    if (jwt === &quot;VALID_ACCESS_TOKEN&quot;) {
+      return {
+        [CLAIMS_KEY]: { [PROJECTS_LED_KEY]: `{&quot;${TEST_PROJECT_ID}&quot;}`, [GITHUB_USERID_KEY]: TEST_GITHUB_USER_ID },
+      };
+    } else throw &quot;Error&quot;;
+  },
+}));
+</code></pre>
+<h3 id="mocking-history"><a class="header" href="#mocking-history">Mocking history</a></h3>
+<p>The browser history can be mocked using our <code>MemoryRouterProviderFactory</code> utility wrapper as follows (this is a modified example from the <code>src/App/App.test.tsx</code> file:</p>
+<pre><code class="language-typescript">import App, { RoutePaths } from &quot;src/App&quot;;
+
+render(&lt;App /&gt;, {
+  wrapper: MemoryRouterProviderFactory({
+	route: `${RoutePaths.Projects}`,
+  }),
+});
+</code></pre>
+<h3 id="mocking-graphql-stuff"><a class="header" href="#mocking-graphql-stuff">Mocking GraphQL stuff</a></h3>
+<p>GraphQL queries / mutations are often called in high-level components and can be mocked using the same wrapper:</p>
+<pre><code class="language-typescript">import App, { RoutePaths } from &quot;src/App&quot;;
+import { GetProjectsDocument } from &quot;src/__generated/graphql&quot;;
+
+const ALL_PROJECTS_RESULT: { data: GetProjectsQueryResult[&quot;data&quot;] } = {
+  data: {
+    projects: [
+      {
+        __typename: &quot;Projects&quot;,
+        id: TEST_PROJECT_ID,
+		// add other fields
+      },
+    ],
+  },
+};
+
+const graphQlMocks = [
+  {
+    request: {
+      query: GetProjectsDocument,
+      variables: {
+        where: {},
+      },
+    },
+    result: ALL_PROJECTS_RESULT,
+  },
+];
+
+render(&lt;App /&gt;, {
+  wrapper: MemoryRouterProviderFactory({
+	mocks: graphQlMocks,
+  }),
+});
+</code></pre>
+<p>Be careful to include the <code>__typename</code> in the result queries or fragments, otherwise queries might not be recognized properly.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="end-to-end-tests"><a class="header" href="#end-to-end-tests">End-to-end tests</a></h1>
+<p>End-to-end tests are test that launch the app, open a browser and test a few critical user paths.</p>
+<p>These tests are made using <a href="https://playwright.dev/">Playwright</a>.</p>
+<h2 id="running-the-tests"><a class="header" href="#running-the-tests">Running the tests</a></h2>
+<p>In order to run the test, the app should be running locally - with the frontend running with the <code>--host</code> flag, see <a href="./getting-started.html#development-setup">this section</a> for more info.</p>
+<p>You can then run:</p>
+<pre><code>make playwright/test
+</code></pre>
+<h3 id="running-tests-individually"><a class="header" href="#running-tests-individually">Running tests individually</a></h3>
+<p>Before running tests individually, the <code>__populate</code> test should be run:</p>
+<pre><code>yarn run playwright test --grep __populate
+</code></pre>
+<p>Then any test can be run by specifying a test name's substring after the <code>--grep</code> flag:</p>
+<pre><code>yarn run playwright test --grep TEST_NAME_SUBSTRING
+</code></pre>
+<h3 id="debug-mode"><a class="header" href="#debug-mode">Debug mode</a></h3>
+<p>Tests can be run in <em>debug mode</em>, i.e. line-per-line with a debugger, using the following command:</p>
+<pre><code>yarn run playwright test --grep TEST_NAME_SUBSTRING --debug --reporter line
+</code></pre>
+<p>This allows to either play the test while following which line the test is one, or stepping through the test line-per-line.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="making-a-pull-request"><a class="header" href="#making-a-pull-request">Making a pull request</a></h1>
+<h2 id="microcommits--gitmoji"><a class="header" href="#microcommits--gitmoji">Microcommits &amp; Gitmoji</a></h2>
+<p>Commits should strive to be as unitary as possible. Using Gitmoji for commit messages helps each commit to have a distinct purpose.</p>
+<p>This can prove very helpful for code reviews as well as for development.</p>
+<h2 id="linting"><a class="header" href="#linting">Linting</a></h2>
+<p>Linting should be configured to be applied on save in your editor.</p>
+<p>You can also manually lint the frontend code with:</p>
+<pre><code class="language-typescript">yarn lint --fix
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="reviewing-a-pull-request"><a class="header" href="#reviewing-a-pull-request">Reviewing a pull request</a></h1>
+<p>This section contains some guidelines to keep in mind when reviewing a PR.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="code-guidelines"><a class="header" href="#code-guidelines">Code guidelines</a></h1>
+<h2 id="custom-hooks"><a class="header" href="#custom-hooks">Custom hooks</a></h2>
+<p>Complex logic for a use case - particularly with complex <code>useEffect</code> calls - should be extracted in a <a href="https://react.dev/learn/reusing-logic-with-custom-hooks">custom hook</a>.</p>
+<p>See the React documentation about <a href="https://react.dev/learn/reusing-logic-with-custom-hooks#when-to-use-custom-hooks">when to use custom hooks</a>.</p>
+<p><em>Beware that custom hooks don't share state between components in which they are used</em> - in order to achieve this, you need to use a <code>Context</code>. 
+See this <a href="https://kentcdodds.com/blog/how-to-use-react-context-effectively">article by Kent C. Dodds</a> on the subject.</p>
+<h2 id="rule-of-three"><a class="header" href="#rule-of-three">Rule of three</a></h2>
+<blockquote>
+<p>Two instances of similar code do not require refactoring, but when similar code is used three times, it should be extracted into a new procedure.</p>
+</blockquote>
+<h2 id="container-and-presentational-components"><a class="header" href="#container-and-presentational-components">Container and Presentational Components</a></h2>
+<p>It is a good idea to separate a component between an <code>index.tsx</code> and a <code>View.tsx</code> file.</p>
+<p><a href="./making-a-component.html#separating-presentation-and-logic">See more about this</a></p>
+<h2 id="graphql-and-apollo-client"><a class="header" href="#graphql-and-apollo-client">GraphQL and Apollo Client</a></h2>
+<h3 id="colocate-queries-with-components"><a class="header" href="#colocate-queries-with-components">Colocate queries with components</a></h3>
+<p>Custom queries - those not provided out of the box by the code generation plugin with Hasura - should be created in a <code>queries.graphql</code> file colocated with the component.</p>
+<p>The codegen will then automatically create hooks for these custom queries.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="chromatic-reviews"><a class="header" href="#chromatic-reviews">Chromatic reviews</a></h1>
+<p><a href="https://www.chromatic.com/">Chromatic</a> is a visual regression cloud tool that uses Storybook to check whether differences in component rendering.</p>
+<p>Chromatic basically launches Storybook and takes a screenshot of a component for two commits and compares them.</p>
+<p>In our case, Chromatic is integrated in our CI/CD pipeline, and it is required to review detected Storbybook changes in Chromatic in order
+to merge a pull request.</p>
+<p>If changes are detected, then the reviewer will have to review each change and accept it manually - to inspect further, it is possible to open the Storybooks of the two branches being compared:</p>
+<p><img src="./pictures/chromatic-view-storybook.png" alt="Chromatic view Storybook" /></p>
+<p>See <a href="./making-a-component.html#storybook">this paragraph</a> for more info on how to use Storybook.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="qa-testing"><a class="header" href="#qa-testing">QA Testing</a></h1>
+<h2 id="testing-on-develop"><a class="header" href="#testing-on-develop">Testing on <code>develop</code></a></h2>
+<p>Changes merged on the <code>main</code> branch can be reviewed on the develop environment:</p>
+<p>For the platform:</p>
+<p><code>https://develop.app.onlydust.xyz/</code></p>
+<p>For Hasura:</p>
+<p><code>http://develop.hasura.onlydust.xyz</code></p>
+<h2 id="deploying-on-staging"><a class="header" href="#deploying-on-staging">Deploying on <code>staging</code></a></h2>
+<p>Staging deployment can be done using the following command:</p>
+<pre><code>./scripts/promote.sh --staging
+</code></pre>
+<p>This will run a script with several prompts.</p>
+<p>At one point, environment variables that have changed compared to the last deployment will be listed. If they haven't been updated yet on Heroku or Vercel (<a href="./getting-started#websites">see here</a>), now is the time to do it. You should also update the variables for the <em>production</em> environment.</p>
+<h2 id="launching-the-qa-session"><a class="header" href="#launching-the-qa-session">Launching the QA session</a></h2>
+<p>The QA session can be launched by typing <code>/test</code> and pressing the <code>Enter</code> key in the product channel on Slack.</p>
+<p><img src="./pictures/slack-testing-session.png" alt="Slack Testing Session" /></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="production-deployment"><a class="header" href="#production-deployment">Production deployment</a></h1>
+<p>Production deployment can be done using the following command:</p>
+<pre><code>./scripts/promote.sh --production
+</code></pre>
+<p>This will run a script with several prompts.</p>
+<p>At one point, environment variables that have changed compared to the last deployment will be listed. If they haven't been updated yet on Heroku or Vercel (<a href="./getting-started#websites">see here</a>), do it - but it should ideally have been done during staging deployment.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="known-issues"><a class="header" href="#known-issues">Known issues</a></h1>
+<h2 id="vite-hmr-going-in-a-loop-and-crashing-browser"><a class="header" href="#vite-hmr-going-in-a-loop-and-crashing-browser">Vite HMR going in a loop and crashing browser</a></h2>
+<p>HMR (Hot Module Reloading) allows to change</p>
+<p>This happens becasue a <code>.tsx.</code> file is exporting something else than React Components. To avoid this, consider moving utility function or constants to a separate file.</p>
+<h2 id="xxxxx-not-found-on-mutationquery_root"><a class="header" href="#xxxxx-not-found-on-mutationquery_root"><em>XXXXX</em> not found on <em>mutation/query_root</em></a></h2>
+<p>Go to the Hasura console and a prompt to reload metadata should appear.</p>
+<p>Go to the bottom of the screen, tick the two boxes and click the <em>Reload</em> button.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="ideas-to-explore"><a class="header" href="#ideas-to-explore">Ideas to explore</a></h1>
+<p>See this (outdated) <a href="https://linear.app/onlydust/issue/E-516/frontend-quality-improvements">link</a> for potential frontend quality improvements.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+    </div>
+    </body>
+</html>

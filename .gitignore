@@ -23,7 +23,7 @@
 .env.*
 !e2e/.env.e2e
 !.env.develop
-!.env.e2e
+!.env.example
 !.env.test
 
 # MacOS
@@ -56,8 +56,6 @@ lerna-debug.log*
 
 # Emacs
 *~
-
-# Tests
 /test-results/
 /e2e/playwright/playwright-report/
 /e2e/playwright/.cache/
