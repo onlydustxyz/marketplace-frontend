@@ -59,23 +59,10 @@ impl From<reqwest::Error> for ImageStoreServiceError {
 
 #[async_trait]
 impl ImageStoreService for Client {
-	async fn store_image(&self, original_image_url: &Url) -> Result<Url, ImageStoreServiceError> {
-		let response = reqwest::get(original_image_url.clone())
-			.await
-			.map_err(ImageStoreServiceError::from)?
-			.error_for_status()
-			.map_err(ImageStoreServiceError::from)?;
+	async fn store_image(&self, data: Vec<u8>) -> Result<Url, ImageStoreServiceError> {
+		let object_name = format!("{}.{}", calculate_hash(&data), get_image_extension(&data)?);
 
-		let image_binary_data =
-			response.bytes().await.map_err(ImageStoreServiceError::from)?.to_vec();
-
-		let object_name = format!(
-			"{}.{}",
-			calculate_hash(&image_binary_data),
-			get_image_extension(&image_binary_data)?
-		);
-
-		self.upload_data_to_s3(object_name.clone(), image_binary_data).await?;
+		self.upload_data_to_s3(object_name.clone(), data).await?;
 
 		Ok(Url::parse(
 			format!(
@@ -85,6 +72,21 @@ impl ImageStoreService for Client {
 			.as_str(),
 		)
 		.map_err(|e| ImageStoreServiceError::Other(e.into()))?)
+	}
+
+	async fn store_image_from_url(
+		&self,
+		original_image_url: &Url,
+	) -> Result<Url, ImageStoreServiceError> {
+		let response = reqwest::get(original_image_url.clone())
+			.await
+			.map_err(ImageStoreServiceError::from)?
+			.error_for_status()
+			.map_err(ImageStoreServiceError::from)?;
+
+		let data = response.bytes().await.map_err(ImageStoreServiceError::from)?.to_vec();
+
+		self.store_image(data).await
 	}
 }
 

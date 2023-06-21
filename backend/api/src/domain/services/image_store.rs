@@ -29,5 +29,6 @@ impl From<Error> for DomainError {
 #[cfg_attr(test, automock)]
 #[async_trait]
 pub trait Service: Send + Sync {
-	async fn store_image(&self, original_image_url: &Url) -> Result<Url, Error>;
+	async fn store_image(&self, data: Vec<u8>) -> Result<Url, Error>;
+	async fn store_image_from_url(&self, original_image_url: &Url) -> Result<Url, Error>;
 }

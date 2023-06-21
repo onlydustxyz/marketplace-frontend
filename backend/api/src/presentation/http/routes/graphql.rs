@@ -7,6 +7,7 @@ use infrastructure::{
 	github, graphql,
 };
 use juniper_rocket::{GraphQLRequest, GraphQLResponse};
+use juniper_rocket_multipart_handler::graphql_upload_wrapper::GraphQLUploadWrapper;
 use presentation::http::guards::{ApiKey, ApiKeyGuard, OptionUserId, Role};
 use rocket::{response::content, State};
 use tracing::instrument;
@@ -51,7 +52,7 @@ pub async fn get_graphql_handler(
 	>,
 	ignored_github_issues_repository: &State<Arc<dyn ImmutableRepository<IgnoredGithubIssue>>>,
 	user_payout_info_repository: &State<Arc<dyn Repository<UserPayoutInfo>>>,
-	user_profile_info_repository: &State<Arc<dyn Repository<UserProfileInfo>>>,
+	user_profile_info_repository: &State<Arc<dyn UserProfileInfoRepository>>,
 	terms_and_conditions_acceptance_repository: &State<
 		Arc<dyn Repository<TermsAndConditionsAcceptance>>,
 	>,
@@ -81,6 +82,7 @@ pub async fn get_graphql_handler(
 		(*ens).clone(),
 		(*simple_storage).clone(),
 		(*bus).clone(),
+		None,
 	);
 	request.execute(schema, &context).await
 }
@@ -92,7 +94,7 @@ pub async fn post_graphql_handler(
 	_api_key: ApiKeyGuard<GraphqlApiKey>,
 	role: Role,
 	maybe_user_id: OptionUserId,
-	request: GraphQLRequest,
+	request: GraphQLUploadWrapper,
 	schema: &State<Schema>,
 	command_bus: &State<Arc<amqp::CommandPublisher<amqp::Bus>>>,
 	project_repository: &State<AggregateRootRepository<Project>>,
@@ -104,7 +106,7 @@ pub async fn post_graphql_handler(
 	>,
 	ignored_github_issues_repository: &State<Arc<dyn ImmutableRepository<IgnoredGithubIssue>>>,
 	user_payout_info_repository: &State<Arc<dyn Repository<UserPayoutInfo>>>,
-	user_profile_info_repository: &State<Arc<dyn Repository<UserProfileInfo>>>,
+	user_profile_info_repository: &State<Arc<dyn UserProfileInfoRepository>>,
 	terms_and_conditions_acceptance_repository: &State<
 		Arc<dyn Repository<TermsAndConditionsAcceptance>>,
 	>,
@@ -134,6 +136,7 @@ pub async fn post_graphql_handler(
 		(*ens).clone(),
 		(*simple_storage).clone(),
 		(*bus).clone(),
+		request.files,
 	);
-	request.execute(schema, &context).await
+	request.operations.execute(schema, &context).await
 }

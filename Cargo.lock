@@ -193,6 +193,7 @@ dependencies = [
  "infrastructure",
  "juniper",
  "juniper_rocket",
+ "juniper_rocket_multipart_handler",
  "lazy_static",
  "mockall",
  "mockall_double",
@@ -2413,6 +2414,22 @@ dependencies = [
  "juniper",
  "rocket",
  "serde_json",
+]
+
+[[package]]
+name = "juniper_rocket_multipart_handler"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4028f0919613020b6308b9c161ac4c93ae70b9581f2d7aa49ada9d37b59763af"
+dependencies = [
+ "juniper",
+ "juniper_rocket",
+ "multer",
+ "rocket",
+ "serde",
+ "serde_json",
+ "tokio-util 0.7.8",
+ "uuid 1.3.3",
 ]
 
 [[package]]

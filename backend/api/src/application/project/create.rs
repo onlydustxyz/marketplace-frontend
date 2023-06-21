@@ -59,7 +59,7 @@ impl Usecase {
 		};
 
 		let stored_logo_url = match logo_url {
-			Some(url) => Some(self.image_store.store_image(&url).await?.to_string()),
+			Some(url) => Some(self.image_store.store_image_from_url(&url).await?.to_string()),
 			None => None,
 		};
 

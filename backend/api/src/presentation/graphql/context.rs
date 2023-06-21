@@ -1,4 +1,4 @@
-use std::sync::Arc;
+use std::{collections::HashMap, sync::Arc};
 
 use domain::{AggregateRootRepository, GithubUserId, Project, UserId};
 use infrastructure::{
@@ -6,6 +6,7 @@ use infrastructure::{
 	database::{ImmutableRepository, Repository},
 	github, graphql,
 };
+use juniper_rocket_multipart_handler::temp_file::TempFile;
 use presentation::http::guards::OptionUserId;
 
 use super::{Error, Result};
@@ -45,6 +46,7 @@ pub struct Context {
 		application::user::accept_terms_and_conditions::Usecase,
 	pub update_user_profile_info_usecase: application::user::update_profile_info::Usecase,
 	pub ens: Arc<ens::Client>,
+	pub files: HashMap<String, TempFile>,
 }
 
 impl Context {
@@ -62,7 +64,7 @@ impl Context {
 		>,
 		ignored_github_issues_repository: Arc<dyn ImmutableRepository<IgnoredGithubIssue>>,
 		user_payout_info_repository: Arc<dyn Repository<UserPayoutInfo>>,
-		user_profile_info_repository: Arc<dyn Repository<UserProfileInfo>>,
+		user_profile_info_repository: Arc<dyn UserProfileInfoRepository>,
 		contact_informations_repository: Arc<dyn ContactInformationsRepository>,
 		terms_and_conditions_acceptance_repository: Arc<
 			dyn Repository<TermsAndConditionsAcceptance>,
@@ -72,6 +74,7 @@ impl Context {
 		ens: Arc<ens::Client>,
 		simple_storage: Arc<simple_storage::Client>,
 		bus: Arc<amqp::Bus>,
+		files: Option<HashMap<String, TempFile>>,
 	) -> Self {
 		Self {
 			caller_permissions,
@@ -121,7 +124,7 @@ impl Context {
 			),
 			update_sponsor_usecase: application::sponsor::update::Usecase::new(
 				sponsor_repository,
-				simple_storage,
+				simple_storage.clone(),
 			),
 			add_sponsor_usecase: application::project::add_sponsor::Usecase::new(
 				project_sponsor_repository.clone(),
@@ -165,8 +168,10 @@ impl Context {
 			update_user_profile_info_usecase: application::user::update_profile_info::Usecase::new(
 				user_profile_info_repository,
 				contact_informations_repository,
+				simple_storage,
 			),
 			ens,
+			files: files.unwrap_or_default(),
 		}
 	}
 

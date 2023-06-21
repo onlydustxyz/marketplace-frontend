@@ -34,7 +34,7 @@ impl Usecase {
 	) -> Result<SponsorId, DomainError> {
 		let sponsor_id = SponsorId::new();
 
-		let stored_logo_url = self.image_store.store_image(&logo_url).await?.to_string();
+		let stored_logo_url = self.image_store.store_image_from_url(&logo_url).await?.to_string();
 
 		self.sponsor_repository.insert(Sponsor {
 			id: sponsor_id,
@@ -81,7 +81,7 @@ mod tests {
 	async fn test_create(name: NonEmptyTrimmedString, logo_url: Url, url: Url) {
 		let mut image_store_service = MockImageStoreService::new();
 		image_store_service
-			.expect_store_image()
+			.expect_store_image_from_url()
 			.with(eq(logo_url.clone()))
 			.once()
 			.returning(|_| Ok(Url::parse("http://img-store.com/1234.jpg").unwrap()));
@@ -102,7 +102,7 @@ mod tests {
 	async fn test_create_with_bad_logo_url(name: NonEmptyTrimmedString, logo_url: Url, url: Url) {
 		let mut image_store_service = MockImageStoreService::new();
 		image_store_service
-			.expect_store_image()
+			.expect_store_image_from_url()
 			.with(eq(logo_url.clone()))
 			.once()
 			.returning(|_| Err(ImageStoreServiceError::NotFound(anyhow!("404"))));

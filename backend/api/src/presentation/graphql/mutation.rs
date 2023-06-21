@@ -580,4 +580,18 @@ impl Mutation {
 			.await?;
 		Ok(true)
 	}
+
+	pub async fn update_user_avatar(&self, context: &Context) -> Result<bool> {
+		let caller_id = context.caller_info()?.user_id;
+		let avatar_data = context
+			.files
+			.get("profile_picture")
+			.ok_or_else(|| Error::InvalidRequest(anyhow!("Profile picture is missing")))?;
+
+		context
+			.update_user_profile_info_usecase
+			.update_user_avatar(caller_id, avatar_data.content.to_vec())
+			.await?;
+		Ok(true)
+	}
 }
