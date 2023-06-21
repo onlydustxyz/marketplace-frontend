@@ -22,7 +22,6 @@ export type Scalars = {
   GithubRepoId: any;
   GithubUserId: any;
   Iban: any;
-  Id: any;
   Url: any;
   Uuid: any;
   allocated_time: any;
@@ -4062,10 +4061,10 @@ export enum OrderBy {
 export type Payment = {
   __typename?: 'Payment';
   amount: Scalars['Amount'];
-  budgetId: Scalars['Id'];
-  commandId: Scalars['Id'];
-  paymentId: Scalars['Id'];
-  projectId: Scalars['Id'];
+  budgetId: Scalars['Uuid'];
+  commandId: Scalars['Uuid'];
+  paymentId: Scalars['Uuid'];
+  projectId: Scalars['Uuid'];
 };
 
 export type PaymentReference = {
@@ -10580,7 +10579,7 @@ export type Mutation_RootAddSponsorToProjectArgs = {
 
 /** mutation root */
 export type Mutation_RootApplyToProjectArgs = {
-  projectId: Scalars['Id'];
+  projectId: Scalars['Uuid'];
 };
 
 
@@ -16236,7 +16235,7 @@ export type GetProjectApplicationsQueryVariables = Exact<{
 export type GetProjectApplicationsQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, applications: Array<{ __typename?: 'Applications', applicantId: any, id: any }> } | null };
 
 export type ApplyToProjectMutationVariables = Exact<{
-  projectId: Scalars['Id'];
+  projectId: Scalars['Uuid'];
 }>;
 
 
@@ -17895,7 +17894,7 @@ export type GetProjectApplicationsQueryHookResult = ReturnType<typeof useGetProj
 export type GetProjectApplicationsLazyQueryHookResult = ReturnType<typeof useGetProjectApplicationsLazyQuery>;
 export type GetProjectApplicationsQueryResult = Apollo.QueryResult<GetProjectApplicationsQuery, GetProjectApplicationsQueryVariables>;
 export const ApplyToProjectDocument = gql`
-    mutation ApplyToProject($projectId: Id!) {
+    mutation ApplyToProject($projectId: Uuid!) {
   applyToProject(projectId: $projectId)
 }
     `;

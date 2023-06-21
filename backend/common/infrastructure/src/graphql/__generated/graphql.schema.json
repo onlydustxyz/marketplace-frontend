@@ -25681,16 +25681,6 @@
         "possibleTypes": null
       },
       {
-        "kind": "SCALAR",
-        "name": "Id",
-        "description": null,
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
         "kind": "INPUT_OBJECT",
         "name": "IdentityInput",
         "description": null,
@@ -28341,7 +28331,7 @@
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "Id",
+                "name": "Uuid",
                 "ofType": null
               }
             },
@@ -28357,7 +28347,7 @@
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "Id",
+                "name": "Uuid",
                 "ofType": null
               }
             },
@@ -28373,7 +28363,7 @@
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "Id",
+                "name": "Uuid",
                 "ofType": null
               }
             },
@@ -28389,7 +28379,7 @@
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "Id",
+                "name": "Uuid",
                 "ofType": null
               }
             },
@@ -70469,7 +70459,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "SCALAR",
-                    "name": "Id",
+                    "name": "Uuid",
                     "ofType": null
                   }
                 },
