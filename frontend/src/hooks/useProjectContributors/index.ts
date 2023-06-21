@@ -14,6 +14,6 @@ export default function useProjectContributors(projectId: string) {
   useOnProjectChange(projectId, refetch);
 
   return {
-    contributors: data.projectsContributorsView.map(u => u.user).filter(isDefined),
+    contributors: data.projectsContributors.map(u => u.user).filter(isDefined),
   };
 }

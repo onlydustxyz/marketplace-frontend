@@ -1,3 +1,5 @@
+use std::sync::Arc;
+
 use lapin::{
 	message::Delivery,
 	options::{ExchangeDeclareOptions, QueueDeclareOptions},
@@ -6,7 +8,7 @@ use lapin::{
 };
 use olog::error;
 use thiserror::Error;
-use tokio::sync::RwLock;
+use tokio::sync::{Mutex, RwLock};
 use tokio_retry::{strategy::FixedInterval, Retry};
 use tokio_stream::StreamExt;
 
@@ -21,7 +23,6 @@ pub enum Error {
 }
 
 pub struct Bus {
-	_connection: Connection,
 	channel: Channel,
 }
 
@@ -41,30 +42,9 @@ impl Bus {
 	/// application to restart early again, and would make us enter the exponential backoff policy
 	/// of Heroku (the second restart can be delayed by up to 20 minutes (!!!) by Heroku).
 	pub async fn new(config: &Config) -> Result<Self, Error> {
-		let retry_strategy = FixedInterval::from_millis(*config.connection_retry_interval_ms())
-			.take(*config.connection_retry_count());
-
-		let connection = Retry::spawn(retry_strategy, || async {
-			Connection::connect(config.url(), Default::default()).await.map_err(|error| {
-				error!(
-					"Failed to connect to RabbitMQ: {error:?}. Retrying in {}ms for a maximum of {} attempts.",
-					config.connection_retry_interval_ms(),
-					config.connection_retry_count()
-				);
-				error
-			})
-		})
-		.await?;
-
-		connection.on_error(|error| {
-			error!("Lost connection to RabbitMQ: {error:?}");
-			std::process::exit(1);
-		});
-
-		let channel = connection.create_channel().await?;
+		let connection = connect(config).await?;
 		Ok(Self {
-			_connection: connection,
-			channel,
+			channel: connection.create_channel().await?,
 		})
 	}
 
@@ -158,4 +138,45 @@ impl ConsumableBus {
 			None => Ok(None),
 		}
 	}
+}
+
+/// Retrives the open connection or connect if called for the first time
+async fn connect(config: &Config) -> Result<Arc<Connection>, Error> {
+	lazy_static! {
+		static ref CONNECTION: Mutex<Option<Arc<Connection>>> = Mutex::new(None);
+	}
+
+	let mut guard = CONNECTION.lock().await;
+	match guard.as_ref() {
+		Some(connection) => Ok(connection.clone()),
+		None => {
+			let connection = Arc::new(_do_connect(config).await?);
+			*guard = Some(connection.clone());
+			Ok(connection)
+		},
+	}
+}
+
+/// This function actually connects to RabbitMQ and must be called only once
+async fn _do_connect(config: &Config) -> Result<Connection, Error> {
+	let retry_strategy = FixedInterval::from_millis(config.connection_retry_interval_ms)
+		.take(config.connection_retry_count);
+
+	let connection = Retry::spawn(retry_strategy, || async {
+		Connection::connect(&config.url, Default::default()).await.map_err(|error| {
+			error!(
+				"Failed to connect to RabbitMQ: {error:?}. Retrying in {}ms for a maximum of {} attempts.",
+				config.connection_retry_interval_ms, config.connection_retry_count
+			);
+			error
+		})
+	})
+	.await?;
+
+	connection.on_error(|error| {
+		error!(error = error.to_string(), "Lost connection to RabbitMQ");
+		std::process::exit(1);
+	});
+
+	Ok(connection)
 }

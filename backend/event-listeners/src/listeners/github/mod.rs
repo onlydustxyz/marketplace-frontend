@@ -21,6 +21,8 @@ pub struct Projector {
 	github_issues_repository: Arc<dyn Repository<GithubIssue>>,
 	github_users_repository: Arc<dyn Repository<GithubUser>>,
 	github_repos_contributors_repository: Arc<dyn ImmutableRepository<GithubReposContributor>>,
+	projects_contributors_repository: Arc<dyn ProjectsContributorRepository>,
+	project_github_repos_repository: Arc<dyn ProjectGithubRepoRepository>,
 }
 
 impl Projector {
@@ -60,6 +62,14 @@ impl EventListener<Event> for Projector {
 					repo_id,
 					user_id: *user.id(),
 				})?;
+
+				self.project_github_repos_repository
+					.find_projects_of_repo(&repo_id)?
+					.iter()
+					.try_for_each(|project_id| {
+						self.projects_contributors_repository
+							.link_project_with_contributor(project_id, user.id())
+					})?;
 			},
 			Event::FullUser(user) => {
 				self.github_users_repository.upsert(user.into())?;

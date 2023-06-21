@@ -28,7 +28,7 @@
 - "!include public_project_github_repos.yaml"
 - "!include public_project_leads.yaml"
 - "!include public_projects.yaml"
-- "!include public_projects_contributors_view.yaml"
+- "!include public_projects_contributors.yaml"
 - "!include public_projects_sponsors.yaml"
 - "!include public_registered_users.yaml"
 - "!include public_sponsors.yaml"

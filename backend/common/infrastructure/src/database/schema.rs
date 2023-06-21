@@ -6,6 +6,10 @@ pub mod sql_types {
     pub struct AllocatedTime;
 
     #[derive(diesel::sql_types::SqlType)]
+    #[diesel(postgres_type(name = "citext"))]
+    pub struct Citext;
+
+    #[derive(diesel::sql_types::SqlType)]
     #[diesel(postgres_type(name = "contact_channel"))]
     pub struct ContactChannel;
 
@@ -28,6 +32,21 @@ diesel::table! {
         received_at -> Timestamp,
         project_id -> Uuid,
         applicant_id -> Uuid,
+    }
+}
+
+diesel::table! {
+    use diesel::sql_types::*;
+    use super::sql_types::Citext;
+
+    auth_users (id) {
+        id -> Uuid,
+        github_user_id -> Nullable<Int8>,
+        email -> Nullable<Citext>,
+        last_seen -> Nullable<Timestamp>,
+        login_at_signup -> Text,
+        avatar_url_at_signup -> Nullable<Text>,
+        created_at -> Timestamp,
     }
 }
 
@@ -234,6 +253,14 @@ diesel::table! {
 }
 
 diesel::table! {
+    projects_contributors (project_id, github_user_id) {
+        project_id -> Uuid,
+        github_user_id -> Int8,
+        link_count -> Int4,
+    }
+}
+
+diesel::table! {
     projects_sponsors (project_id, sponsor_id) {
         project_id -> Uuid,
         sponsor_id -> Uuid,
@@ -296,6 +323,7 @@ diesel::joinable!(projects_sponsors -> sponsors (sponsor_id));
 
 diesel::allow_tables_to_appear_in_same_query!(
     applications,
+    auth_users,
     budgets,
     commands,
     contact_informations,
@@ -315,6 +343,7 @@ diesel::allow_tables_to_appear_in_same_query!(
     project_github_repos,
     project_leads,
     projects,
+    projects_contributors,
     projects_sponsors,
     sponsors,
     terms_and_conditions_acceptances,

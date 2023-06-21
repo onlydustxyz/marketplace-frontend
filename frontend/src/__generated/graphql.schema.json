@@ -40532,7 +40532,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "ENUM",
-                      "name": "ProjectsContributorsViewSelectColumn",
+                      "name": "ProjectsContributorsSelectColumn",
                       "ofType": null
                     }
                   }
@@ -40576,7 +40576,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "ProjectsContributorsViewOrderBy",
+                      "name": "ProjectsContributorsOrderBy",
                       "ofType": null
                     }
                   }
@@ -40590,7 +40590,7 @@
                 "description": "filter the rows returned",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "ProjectsContributorsViewBoolExp",
+                  "name": "ProjectsContributorsBoolExp",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -40609,7 +40609,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "OBJECT",
-                    "name": "ProjectsContributorsView",
+                    "name": "ProjectsContributors",
                     "ofType": null
                   }
                 }
@@ -40633,7 +40633,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "ENUM",
-                      "name": "ProjectsContributorsViewSelectColumn",
+                      "name": "ProjectsContributorsSelectColumn",
                       "ofType": null
                     }
                   }
@@ -40677,7 +40677,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "ProjectsContributorsViewOrderBy",
+                      "name": "ProjectsContributorsOrderBy",
                       "ofType": null
                     }
                   }
@@ -40691,7 +40691,7 @@
                 "description": "filter the rows returned",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "ProjectsContributorsViewBoolExp",
+                  "name": "ProjectsContributorsBoolExp",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -40704,7 +40704,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "ProjectsContributorsViewAggregate",
+                "name": "ProjectsContributorsAggregate",
                 "ofType": null
               }
             },
@@ -41763,7 +41763,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "ProjectsContributorsViewBoolExp",
+              "name": "ProjectsContributorsBoolExp",
               "ofType": null
             },
             "defaultValue": null,
@@ -41775,7 +41775,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "projects_contributors_view_aggregate_bool_exp",
+              "name": "projects_contributors_aggregate_bool_exp",
               "ofType": null
             },
             "defaultValue": null,
@@ -41926,8 +41926,8 @@
       },
       {
         "kind": "OBJECT",
-        "name": "ProjectsContributorsView",
-        "description": "columns and relationships of \"projects_contributors_view\"",
+        "name": "ProjectsContributors",
+        "description": "columns and relationships of \"projects_contributors\"",
         "fields": [
           {
             "name": "githubUser",
@@ -41946,9 +41946,29 @@
             "description": null,
             "args": [],
             "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "bigint",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "linkCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -41970,9 +41990,13 @@
             "description": null,
             "args": [],
             "type": {
-              "kind": "SCALAR",
-              "name": "uuid",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "uuid",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -41997,8 +42021,8 @@
       },
       {
         "kind": "OBJECT",
-        "name": "ProjectsContributorsViewAggregate",
-        "description": "aggregated selection of \"projects_contributors_view\"",
+        "name": "ProjectsContributorsAggregate",
+        "description": "aggregated selection of \"projects_contributors\"",
         "fields": [
           {
             "name": "aggregate",
@@ -42006,7 +42030,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "ProjectsContributorsViewAggregateFields",
+              "name": "ProjectsContributorsAggregateFields",
               "ofType": null
             },
             "isDeprecated": false,
@@ -42027,7 +42051,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "OBJECT",
-                    "name": "ProjectsContributorsView",
+                    "name": "ProjectsContributors",
                     "ofType": null
                   }
                 }
@@ -42044,8 +42068,8 @@
       },
       {
         "kind": "OBJECT",
-        "name": "ProjectsContributorsViewAggregateFields",
-        "description": "aggregate fields of \"projects_contributors_view\"",
+        "name": "ProjectsContributorsAggregateFields",
+        "description": "aggregate fields of \"projects_contributors\"",
         "fields": [
           {
             "name": "avg",
@@ -42053,7 +42077,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "ProjectsContributorsViewAvgFields",
+              "name": "ProjectsContributorsAvgFields",
               "ofType": null
             },
             "isDeprecated": false,
@@ -42074,7 +42098,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "ENUM",
-                      "name": "ProjectsContributorsViewSelectColumn",
+                      "name": "ProjectsContributorsSelectColumn",
                       "ofType": null
                     }
                   }
@@ -42114,7 +42138,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "ProjectsContributorsViewMaxFields",
+              "name": "ProjectsContributorsMaxFields",
               "ofType": null
             },
             "isDeprecated": false,
@@ -42126,7 +42150,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "ProjectsContributorsViewMinFields",
+              "name": "ProjectsContributorsMinFields",
               "ofType": null
             },
             "isDeprecated": false,
@@ -42138,7 +42162,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "ProjectsContributorsViewStddevFields",
+              "name": "ProjectsContributorsStddevFields",
               "ofType": null
             },
             "isDeprecated": false,
@@ -42150,7 +42174,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "ProjectsContributorsViewStddev_popFields",
+              "name": "ProjectsContributorsStddev_popFields",
               "ofType": null
             },
             "isDeprecated": false,
@@ -42162,7 +42186,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "ProjectsContributorsViewStddev_sampFields",
+              "name": "ProjectsContributorsStddev_sampFields",
               "ofType": null
             },
             "isDeprecated": false,
@@ -42174,7 +42198,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "ProjectsContributorsViewSumFields",
+              "name": "ProjectsContributorsSumFields",
               "ofType": null
             },
             "isDeprecated": false,
@@ -42186,7 +42210,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "ProjectsContributorsViewVar_popFields",
+              "name": "ProjectsContributorsVar_popFields",
               "ofType": null
             },
             "isDeprecated": false,
@@ -42198,7 +42222,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "ProjectsContributorsViewVar_sampFields",
+              "name": "ProjectsContributorsVar_sampFields",
               "ofType": null
             },
             "isDeprecated": false,
@@ -42210,7 +42234,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "ProjectsContributorsViewVarianceFields",
+              "name": "ProjectsContributorsVarianceFields",
               "ofType": null
             },
             "isDeprecated": false,
@@ -42224,8 +42248,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "ProjectsContributorsViewAggregateOrderBy",
-        "description": "order by aggregate values of table \"projects_contributors_view\"",
+        "name": "ProjectsContributorsAggregateOrderBy",
+        "description": "order by aggregate values of table \"projects_contributors\"",
         "fields": null,
         "inputFields": [
           {
@@ -42233,7 +42257,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "projects_contributors_view_avg_order_by",
+              "name": "projects_contributors_avg_order_by",
               "ofType": null
             },
             "defaultValue": null,
@@ -42257,7 +42281,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "projects_contributors_view_max_order_by",
+              "name": "projects_contributors_max_order_by",
               "ofType": null
             },
             "defaultValue": null,
@@ -42269,7 +42293,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "projects_contributors_view_min_order_by",
+              "name": "projects_contributors_min_order_by",
               "ofType": null
             },
             "defaultValue": null,
@@ -42281,7 +42305,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "projects_contributors_view_stddev_order_by",
+              "name": "projects_contributors_stddev_order_by",
               "ofType": null
             },
             "defaultValue": null,
@@ -42293,7 +42317,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "projects_contributors_view_stddev_pop_order_by",
+              "name": "projects_contributors_stddev_pop_order_by",
               "ofType": null
             },
             "defaultValue": null,
@@ -42305,7 +42329,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "projects_contributors_view_stddev_samp_order_by",
+              "name": "projects_contributors_stddev_samp_order_by",
               "ofType": null
             },
             "defaultValue": null,
@@ -42317,7 +42341,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "projects_contributors_view_sum_order_by",
+              "name": "projects_contributors_sum_order_by",
               "ofType": null
             },
             "defaultValue": null,
@@ -42329,7 +42353,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "projects_contributors_view_var_pop_order_by",
+              "name": "projects_contributors_var_pop_order_by",
               "ofType": null
             },
             "defaultValue": null,
@@ -42341,7 +42365,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "projects_contributors_view_var_samp_order_by",
+              "name": "projects_contributors_var_samp_order_by",
               "ofType": null
             },
             "defaultValue": null,
@@ -42353,7 +42377,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "projects_contributors_view_variance_order_by",
+              "name": "projects_contributors_variance_order_by",
               "ofType": null
             },
             "defaultValue": null,
@@ -42367,8 +42391,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "ProjectsContributorsViewArrRelInsertInput",
-        "description": "input type for inserting array relation for remote table \"projects_contributors_view\"",
+        "name": "ProjectsContributorsArrRelInsertInput",
+        "description": "input type for inserting array relation for remote table \"projects_contributors\"",
         "fields": null,
         "inputFields": [
           {
@@ -42385,11 +42409,23 @@
                   "name": null,
                   "ofType": {
                     "kind": "INPUT_OBJECT",
-                    "name": "ProjectsContributorsViewInsertInput",
+                    "name": "ProjectsContributorsInsertInput",
                     "ofType": null
                   }
                 }
               }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "onConflict",
+            "description": "upsert condition",
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "ProjectsContributorsOnConflict",
+              "ofType": null
             },
             "defaultValue": null,
             "isDeprecated": false,
@@ -42402,11 +42438,23 @@
       },
       {
         "kind": "OBJECT",
-        "name": "ProjectsContributorsViewAvgFields",
+        "name": "ProjectsContributorsAvgFields",
         "description": "aggregate avg on columns",
         "fields": [
           {
             "name": "githubUserId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "linkCount",
             "description": null,
             "args": [],
             "type": {
@@ -42425,8 +42473,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "ProjectsContributorsViewBoolExp",
-        "description": "Boolean expression to filter rows from the table \"projects_contributors_view\". All fields are combined with a logical 'AND'.",
+        "name": "ProjectsContributorsBoolExp",
+        "description": "Boolean expression to filter rows from the table \"projects_contributors\". All fields are combined with a logical 'AND'.",
         "fields": null,
         "inputFields": [
           {
@@ -42440,7 +42488,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "INPUT_OBJECT",
-                  "name": "ProjectsContributorsViewBoolExp",
+                  "name": "ProjectsContributorsBoolExp",
                   "ofType": null
                 }
               }
@@ -42454,7 +42502,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "ProjectsContributorsViewBoolExp",
+              "name": "ProjectsContributorsBoolExp",
               "ofType": null
             },
             "defaultValue": null,
@@ -42472,7 +42520,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "INPUT_OBJECT",
-                  "name": "ProjectsContributorsViewBoolExp",
+                  "name": "ProjectsContributorsBoolExp",
                   "ofType": null
                 }
               }
@@ -42499,6 +42547,18 @@
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "BigintComparisonExp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "linkCount",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "IntComparisonExp",
               "ofType": null
             },
             "defaultValue": null,
@@ -42547,9 +42607,61 @@
         "possibleTypes": null
       },
       {
+        "kind": "ENUM",
+        "name": "ProjectsContributorsConstraint",
+        "description": "unique or primary key constraints on table \"projects_contributors\"",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "projects_contributors_pkey",
+            "description": "unique or primary key constraint on columns \"project_id\", \"github_user_id\"",
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "possibleTypes": null
+      },
+      {
         "kind": "INPUT_OBJECT",
-        "name": "ProjectsContributorsViewInsertInput",
-        "description": "input type for inserting data into table \"projects_contributors_view\"",
+        "name": "ProjectsContributorsIncInput",
+        "description": "input type for incrementing numeric columns in table \"projects_contributors\"",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "githubUserId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "linkCount",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "ProjectsContributorsInsertInput",
+        "description": "input type for inserting data into table \"projects_contributors\"",
         "fields": null,
         "inputFields": [
           {
@@ -42570,6 +42682,18 @@
             "type": {
               "kind": "SCALAR",
               "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "linkCount",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
               "ofType": null
             },
             "defaultValue": null,
@@ -42619,7 +42743,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "ProjectsContributorsViewMaxFields",
+        "name": "ProjectsContributorsMaxFields",
         "description": "aggregate max on columns",
         "fields": [
           {
@@ -42629,6 +42753,18 @@
             "type": {
               "kind": "SCALAR",
               "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "linkCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
               "ofType": null
             },
             "isDeprecated": false,
@@ -42654,7 +42790,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "ProjectsContributorsViewMinFields",
+        "name": "ProjectsContributorsMinFields",
         "description": "aggregate min on columns",
         "fields": [
           {
@@ -42664,6 +42800,18 @@
             "type": {
               "kind": "SCALAR",
               "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "linkCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
               "ofType": null
             },
             "isDeprecated": false,
@@ -42688,9 +42836,123 @@
         "possibleTypes": null
       },
       {
+        "kind": "OBJECT",
+        "name": "ProjectsContributorsMutationResponse",
+        "description": "response of any mutation on the table \"projects_contributors\"",
+        "fields": [
+          {
+            "name": "affected_rows",
+            "description": "number of rows affected by the mutation",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "returning",
+            "description": "data from the rows affected by the mutation",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "ProjectsContributors",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
         "kind": "INPUT_OBJECT",
-        "name": "ProjectsContributorsViewOrderBy",
-        "description": "Ordering options when selecting data from \"projects_contributors_view\".",
+        "name": "ProjectsContributorsOnConflict",
+        "description": "on_conflict condition type for table \"projects_contributors\"",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "constraint",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "ProjectsContributorsConstraint",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "update_columns",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "ENUM",
+                    "name": "ProjectsContributorsUpdateColumn",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "defaultValue": "[]",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "where",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "ProjectsContributorsBoolExp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "ProjectsContributorsOrderBy",
+        "description": "Ordering options when selecting data from \"projects_contributors\".",
         "fields": null,
         "inputFields": [
           {
@@ -42707,6 +42969,18 @@
           },
           {
             "name": "githubUserId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "linkCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -42759,15 +43033,64 @@
         "possibleTypes": null
       },
       {
+        "kind": "INPUT_OBJECT",
+        "name": "ProjectsContributorsPkColumnsInput",
+        "description": "primary key columns input for table: projects_contributors",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "githubUserId",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "bigint",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "projectId",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "uuid",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
         "kind": "ENUM",
-        "name": "ProjectsContributorsViewSelectColumn",
-        "description": "select columns of table \"projects_contributors_view\"",
+        "name": "ProjectsContributorsSelectColumn",
+        "description": "select columns of table \"projects_contributors\"",
         "fields": null,
         "inputFields": null,
         "interfaces": null,
         "enumValues": [
           {
             "name": "githubUserId",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "linkCount",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
@@ -42782,8 +43105,55 @@
         "possibleTypes": null
       },
       {
+        "kind": "INPUT_OBJECT",
+        "name": "ProjectsContributorsSetInput",
+        "description": "input type for updating data in table \"projects_contributors\"",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "githubUserId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "linkCount",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "projectId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "uuid",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
         "kind": "OBJECT",
-        "name": "ProjectsContributorsViewStddevFields",
+        "name": "ProjectsContributorsStddevFields",
         "description": "aggregate stddev on columns",
         "fields": [
           {
@@ -42797,6 +43167,18 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "linkCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -42806,7 +43188,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "ProjectsContributorsViewStddev_popFields",
+        "name": "ProjectsContributorsStddev_popFields",
         "description": "aggregate stddev_pop on columns",
         "fields": [
           {
@@ -42820,6 +43202,18 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "linkCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -42829,7 +43223,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "ProjectsContributorsViewStddev_sampFields",
+        "name": "ProjectsContributorsStddev_sampFields",
         "description": "aggregate stddev_samp on columns",
         "fields": [
           {
@@ -42843,6 +43237,18 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "linkCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -42852,7 +43258,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "ProjectsContributorsViewSumFields",
+        "name": "ProjectsContributorsSumFields",
         "description": "aggregate sum on columns",
         "fields": [
           {
@@ -42866,6 +43272,18 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "linkCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -42874,8 +43292,88 @@
         "possibleTypes": null
       },
       {
+        "kind": "ENUM",
+        "name": "ProjectsContributorsUpdateColumn",
+        "description": "update columns of table \"projects_contributors\"",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "githubUserId",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "linkCount",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "projectId",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "ProjectsContributorsUpdates",
+        "description": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "_inc",
+            "description": "increments the numeric columns with given value of the filtered values",
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "ProjectsContributorsIncInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "_set",
+            "description": "sets the columns of the filtered rows to the given values",
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "ProjectsContributorsSetInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "where",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "INPUT_OBJECT",
+                "name": "ProjectsContributorsBoolExp",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
         "kind": "OBJECT",
-        "name": "ProjectsContributorsViewVar_popFields",
+        "name": "ProjectsContributorsVar_popFields",
         "description": "aggregate var_pop on columns",
         "fields": [
           {
@@ -42889,20 +43387,9 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
-        "name": "ProjectsContributorsViewVar_sampFields",
-        "description": "aggregate var_samp on columns",
-        "fields": [
+          },
           {
-            "name": "githubUserId",
+            "name": "linkCount",
             "description": null,
             "args": [],
             "type": {
@@ -42921,11 +43408,58 @@
       },
       {
         "kind": "OBJECT",
-        "name": "ProjectsContributorsViewVarianceFields",
+        "name": "ProjectsContributorsVar_sampFields",
+        "description": "aggregate var_samp on columns",
+        "fields": [
+          {
+            "name": "githubUserId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "linkCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "ProjectsContributorsVarianceFields",
         "description": "aggregate variance on columns",
         "fields": [
           {
             "name": "githubUserId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "linkCount",
             "description": null,
             "args": [],
             "type": {
@@ -42977,7 +43511,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "ProjectsContributorsViewArrRelInsertInput",
+              "name": "ProjectsContributorsArrRelInsertInput",
               "ofType": null
             },
             "defaultValue": null,
@@ -43295,7 +43829,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "ProjectsContributorsViewAggregateOrderBy",
+              "name": "ProjectsContributorsAggregateOrderBy",
               "ofType": null
             },
             "defaultValue": null,
@@ -44507,7 +45041,7 @@
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "timestamptz",
+              "name": "timestamp",
               "ofType": null
             },
             "isDeprecated": false,
@@ -45304,7 +45838,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "TimestamptzComparisonExp",
+              "name": "TimestampComparisonExp",
               "ofType": null
             },
             "defaultValue": null,
@@ -45459,7 +45993,7 @@
             "description": null,
             "type": {
               "kind": "SCALAR",
-              "name": "timestamptz",
+              "name": "timestamp",
               "ofType": null
             },
             "defaultValue": null,
@@ -45590,7 +46124,7 @@
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "timestamptz",
+              "name": "timestamp",
               "ofType": null
             },
             "isDeprecated": false,
@@ -45685,7 +46219,7 @@
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "timestamptz",
+              "name": "timestamp",
               "ofType": null
             },
             "isDeprecated": false,
@@ -50861,7 +51395,7 @@
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "timestamptz",
+              "name": "timestamp",
               "ofType": null
             },
             "isDeprecated": false,
@@ -50922,7 +51456,7 @@
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "timestamptz",
+              "name": "timestamp",
               "ofType": null
             },
             "isDeprecated": false,
@@ -51173,7 +51707,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "ENUM",
-                      "name": "ProjectsContributorsViewSelectColumn",
+                      "name": "ProjectsContributorsSelectColumn",
                       "ofType": null
                     }
                   }
@@ -51217,7 +51751,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "ProjectsContributorsViewOrderBy",
+                      "name": "ProjectsContributorsOrderBy",
                       "ofType": null
                     }
                   }
@@ -51231,7 +51765,7 @@
                 "description": "filter the rows returned",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "ProjectsContributorsViewBoolExp",
+                  "name": "ProjectsContributorsBoolExp",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -51250,7 +51784,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "OBJECT",
-                    "name": "ProjectsContributorsView",
+                    "name": "ProjectsContributors",
                     "ofType": null
                   }
                 }
@@ -51274,7 +51808,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "ENUM",
-                      "name": "ProjectsContributorsViewSelectColumn",
+                      "name": "ProjectsContributorsSelectColumn",
                       "ofType": null
                     }
                   }
@@ -51318,7 +51852,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "ProjectsContributorsViewOrderBy",
+                      "name": "ProjectsContributorsOrderBy",
                       "ofType": null
                     }
                   }
@@ -51332,7 +51866,7 @@
                 "description": "filter the rows returned",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "ProjectsContributorsViewBoolExp",
+                  "name": "ProjectsContributorsBoolExp",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -51345,7 +51879,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "ProjectsContributorsViewAggregate",
+                "name": "ProjectsContributorsAggregate",
                 "ofType": null
               }
             },
@@ -52021,7 +52555,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "TimestamptzComparisonExp",
+              "name": "TimestampComparisonExp",
               "ofType": null
             },
             "defaultValue": null,
@@ -52069,7 +52603,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "TimestamptzComparisonExp",
+              "name": "TimestampComparisonExp",
               "ofType": null
             },
             "defaultValue": null,
@@ -52141,7 +52675,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "ProjectsContributorsViewBoolExp",
+              "name": "ProjectsContributorsBoolExp",
               "ofType": null
             },
             "defaultValue": null,
@@ -52153,7 +52687,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "projects_contributors_view_aggregate_bool_exp",
+              "name": "projects_contributors_aggregate_bool_exp",
               "ofType": null
             },
             "defaultValue": null,
@@ -52308,7 +52842,7 @@
             "description": null,
             "type": {
               "kind": "SCALAR",
-              "name": "timestamptz",
+              "name": "timestamp",
               "ofType": null
             },
             "defaultValue": null,
@@ -52356,7 +52890,7 @@
             "description": null,
             "type": {
               "kind": "SCALAR",
-              "name": "timestamptz",
+              "name": "timestamp",
               "ofType": null
             },
             "defaultValue": null,
@@ -52416,7 +52950,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "ProjectsContributorsViewArrRelInsertInput",
+              "name": "ProjectsContributorsArrRelInsertInput",
               "ofType": null
             },
             "defaultValue": null,
@@ -52511,7 +53045,7 @@
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "timestamptz",
+              "name": "timestamp",
               "ofType": null
             },
             "isDeprecated": false,
@@ -52547,7 +53081,7 @@
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "timestamptz",
+              "name": "timestamp",
               "ofType": null
             },
             "isDeprecated": false,
@@ -52654,7 +53188,7 @@
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "timestamptz",
+              "name": "timestamp",
               "ofType": null
             },
             "isDeprecated": false,
@@ -52690,7 +53224,7 @@
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "timestamptz",
+              "name": "timestamp",
               "ofType": null
             },
             "isDeprecated": false,
@@ -52980,7 +53514,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "ProjectsContributorsViewAggregateOrderBy",
+              "name": "ProjectsContributorsAggregateOrderBy",
               "ofType": null
             },
             "defaultValue": null,
@@ -53364,7 +53898,7 @@
             "description": null,
             "type": {
               "kind": "SCALAR",
-              "name": "timestamptz",
+              "name": "timestamp",
               "ofType": null
             },
             "defaultValue": null,
@@ -53412,7 +53946,7 @@
             "description": null,
             "type": {
               "kind": "SCALAR",
-              "name": "timestamptz",
+              "name": "timestamp",
               "ofType": null
             },
             "defaultValue": null,
@@ -72136,6 +72670,80 @@
             "deprecationReason": null
           },
           {
+            "name": "deleteProjectsContributors",
+            "description": "delete data from the table: \"projects_contributors\"",
+            "args": [
+              {
+                "name": "where",
+                "description": "filter the rows which have to be deleted",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "ProjectsContributorsBoolExp",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "ProjectsContributorsMutationResponse",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "deleteProjectsContributorsByPk",
+            "description": "delete single row from the table: \"projects_contributors\"",
+            "args": [
+              {
+                "name": "githubUserId",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "bigint",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "projectId",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "uuid",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "ProjectsContributors",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "deleteProjectsSponsors",
             "description": "delete data from the table: \"projects_sponsors\"",
             "args": [
@@ -74506,6 +75114,96 @@
             "type": {
               "kind": "OBJECT",
               "name": "ProjectsMutationResponse",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "insertProjectsContributors",
+            "description": "insert data into the table: \"projects_contributors\"",
+            "args": [
+              {
+                "name": "objects",
+                "description": "the rows to be inserted",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "NON_NULL",
+                      "name": null,
+                      "ofType": {
+                        "kind": "INPUT_OBJECT",
+                        "name": "ProjectsContributorsInsertInput",
+                        "ofType": null
+                      }
+                    }
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "onConflict",
+                "description": "upsert condition",
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "ProjectsContributorsOnConflict",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "ProjectsContributorsMutationResponse",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "insertProjectsContributorsOne",
+            "description": "insert a single row into the table: \"projects_contributors\"",
+            "args": [
+              {
+                "name": "object",
+                "description": "the row to be inserted",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "ProjectsContributorsInsertInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "onConflict",
+                "description": "upsert condition",
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "ProjectsContributorsOnConflict",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "ProjectsContributors",
               "ofType": null
             },
             "isDeprecated": false,
@@ -79162,6 +79860,153 @@
             "deprecationReason": null
           },
           {
+            "name": "updateProjectsContributors",
+            "description": "update data of the table: \"projects_contributors\"",
+            "args": [
+              {
+                "name": "_inc",
+                "description": "increments the numeric columns with given value of the filtered values",
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "ProjectsContributorsIncInput",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "_set",
+                "description": "sets the columns of the filtered rows to the given values",
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "ProjectsContributorsSetInput",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "where",
+                "description": "filter the rows which have to be updated",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "ProjectsContributorsBoolExp",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "ProjectsContributorsMutationResponse",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "updateProjectsContributorsByPk",
+            "description": "update single row of the table: \"projects_contributors\"",
+            "args": [
+              {
+                "name": "_inc",
+                "description": "increments the numeric columns with given value of the filtered values",
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "ProjectsContributorsIncInput",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "_set",
+                "description": "sets the columns of the filtered rows to the given values",
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "ProjectsContributorsSetInput",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "pk_columns",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "ProjectsContributorsPkColumnsInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "ProjectsContributors",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "updateProjectsContributorsMany",
+            "description": "update multiples rows of table: \"projects_contributors\"",
+            "args": [
+              {
+                "name": "updates",
+                "description": "updates to execute, in order",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "NON_NULL",
+                      "name": null,
+                      "ofType": {
+                        "kind": "INPUT_OBJECT",
+                        "name": "ProjectsContributorsUpdates",
+                        "ofType": null
+                      }
+                    }
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "ProjectsContributorsMutationResponse",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "updateProjectsMany",
             "description": "update multiples rows of table: \"projects\"",
             "args": [
@@ -83668,7 +84513,7 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "projects_contributors_view_aggregate_bool_exp",
+        "name": "projects_contributors_aggregate_bool_exp",
         "description": null,
         "fields": null,
         "inputFields": [
@@ -83677,7 +84522,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "projects_contributors_view_aggregate_bool_exp_count",
+              "name": "projects_contributors_aggregate_bool_exp_count",
               "ofType": null
             },
             "defaultValue": null,
@@ -83691,7 +84536,7 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "projects_contributors_view_aggregate_bool_exp_count",
+        "name": "projects_contributors_aggregate_bool_exp_count",
         "description": null,
         "fields": null,
         "inputFields": [
@@ -83706,7 +84551,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "ENUM",
-                  "name": "ProjectsContributorsViewSelectColumn",
+                  "name": "ProjectsContributorsSelectColumn",
                   "ofType": null
                 }
               }
@@ -83732,7 +84577,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "ProjectsContributorsViewBoolExp",
+              "name": "ProjectsContributorsBoolExp",
               "ofType": null
             },
             "defaultValue": null,
@@ -83762,12 +84607,24 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "projects_contributors_view_avg_order_by",
-        "description": "order by avg() on columns of table \"projects_contributors_view\"",
+        "name": "projects_contributors_avg_order_by",
+        "description": "order by avg() on columns of table \"projects_contributors\"",
         "fields": null,
         "inputFields": [
           {
             "name": "githubUserId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "linkCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -83785,12 +84642,24 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "projects_contributors_view_max_order_by",
-        "description": "order by max() on columns of table \"projects_contributors_view\"",
+        "name": "projects_contributors_max_order_by",
+        "description": "order by max() on columns of table \"projects_contributors\"",
         "fields": null,
         "inputFields": [
           {
             "name": "githubUserId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "linkCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -83820,12 +84689,24 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "projects_contributors_view_min_order_by",
-        "description": "order by min() on columns of table \"projects_contributors_view\"",
+        "name": "projects_contributors_min_order_by",
+        "description": "order by min() on columns of table \"projects_contributors\"",
         "fields": null,
         "inputFields": [
           {
             "name": "githubUserId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "linkCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -83855,12 +84736,24 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "projects_contributors_view_stddev_order_by",
-        "description": "order by stddev() on columns of table \"projects_contributors_view\"",
+        "name": "projects_contributors_stddev_order_by",
+        "description": "order by stddev() on columns of table \"projects_contributors\"",
         "fields": null,
         "inputFields": [
           {
             "name": "githubUserId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "linkCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -83878,12 +84771,24 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "projects_contributors_view_stddev_pop_order_by",
-        "description": "order by stddev_pop() on columns of table \"projects_contributors_view\"",
+        "name": "projects_contributors_stddev_pop_order_by",
+        "description": "order by stddev_pop() on columns of table \"projects_contributors\"",
         "fields": null,
         "inputFields": [
           {
             "name": "githubUserId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "linkCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -83901,12 +84806,24 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "projects_contributors_view_stddev_samp_order_by",
-        "description": "order by stddev_samp() on columns of table \"projects_contributors_view\"",
+        "name": "projects_contributors_stddev_samp_order_by",
+        "description": "order by stddev_samp() on columns of table \"projects_contributors\"",
         "fields": null,
         "inputFields": [
           {
             "name": "githubUserId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "linkCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -83924,8 +84841,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "projects_contributors_view_streamCursorInput",
-        "description": "Streaming cursor of the table \"projects_contributors_view\"",
+        "name": "projects_contributors_streamCursorInput",
+        "description": "Streaming cursor of the table \"projects_contributors\"",
         "fields": null,
         "inputFields": [
           {
@@ -83936,7 +84853,7 @@
               "name": null,
               "ofType": {
                 "kind": "INPUT_OBJECT",
-                "name": "projects_contributors_view_streamCursorValueInput",
+                "name": "projects_contributors_streamCursorValueInput",
                 "ofType": null
               }
             },
@@ -83963,7 +84880,7 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "projects_contributors_view_streamCursorValueInput",
+        "name": "projects_contributors_streamCursorValueInput",
         "description": "Initial value of the column from where the streaming should start",
         "fields": null,
         "inputFields": [
@@ -83973,6 +84890,18 @@
             "type": {
               "kind": "SCALAR",
               "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "linkCount",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
               "ofType": null
             },
             "defaultValue": null,
@@ -83998,12 +84927,24 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "projects_contributors_view_sum_order_by",
-        "description": "order by sum() on columns of table \"projects_contributors_view\"",
+        "name": "projects_contributors_sum_order_by",
+        "description": "order by sum() on columns of table \"projects_contributors\"",
         "fields": null,
         "inputFields": [
           {
             "name": "githubUserId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "linkCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -84021,12 +84962,24 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "projects_contributors_view_var_pop_order_by",
-        "description": "order by var_pop() on columns of table \"projects_contributors_view\"",
+        "name": "projects_contributors_var_pop_order_by",
+        "description": "order by var_pop() on columns of table \"projects_contributors\"",
         "fields": null,
         "inputFields": [
           {
             "name": "githubUserId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "linkCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -84044,12 +84997,24 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "projects_contributors_view_var_samp_order_by",
-        "description": "order by var_samp() on columns of table \"projects_contributors_view\"",
+        "name": "projects_contributors_var_samp_order_by",
+        "description": "order by var_samp() on columns of table \"projects_contributors\"",
         "fields": null,
         "inputFields": [
           {
             "name": "githubUserId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "linkCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -84067,12 +85032,24 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "projects_contributors_view_variance_order_by",
-        "description": "order by variance() on columns of table \"projects_contributors_view\"",
+        "name": "projects_contributors_variance_order_by",
+        "description": "order by variance() on columns of table \"projects_contributors\"",
         "fields": null,
         "inputFields": [
           {
             "name": "githubUserId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "linkCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -90682,8 +91659,8 @@
             "deprecationReason": null
           },
           {
-            "name": "projectsContributorsView",
-            "description": "fetch data from the table: \"projects_contributors_view\"",
+            "name": "projectsContributors",
+            "description": "fetch data from the table: \"projects_contributors\"",
             "args": [
               {
                 "name": "distinctOn",
@@ -90696,7 +91673,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "ENUM",
-                      "name": "ProjectsContributorsViewSelectColumn",
+                      "name": "ProjectsContributorsSelectColumn",
                       "ofType": null
                     }
                   }
@@ -90740,7 +91717,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "ProjectsContributorsViewOrderBy",
+                      "name": "ProjectsContributorsOrderBy",
                       "ofType": null
                     }
                   }
@@ -90754,7 +91731,7 @@
                 "description": "filter the rows returned",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "ProjectsContributorsViewBoolExp",
+                  "name": "ProjectsContributorsBoolExp",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -90773,7 +91750,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "OBJECT",
-                    "name": "ProjectsContributorsView",
+                    "name": "ProjectsContributors",
                     "ofType": null
                   }
                 }
@@ -90783,8 +91760,8 @@
             "deprecationReason": null
           },
           {
-            "name": "projectsContributorsViewAggregate",
-            "description": "fetch aggregated fields from the table: \"projects_contributors_view\"",
+            "name": "projectsContributorsAggregate",
+            "description": "fetch aggregated fields from the table: \"projects_contributors\"",
             "args": [
               {
                 "name": "distinctOn",
@@ -90797,7 +91774,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "ENUM",
-                      "name": "ProjectsContributorsViewSelectColumn",
+                      "name": "ProjectsContributorsSelectColumn",
                       "ofType": null
                     }
                   }
@@ -90841,7 +91818,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "ProjectsContributorsViewOrderBy",
+                      "name": "ProjectsContributorsOrderBy",
                       "ofType": null
                     }
                   }
@@ -90855,7 +91832,7 @@
                 "description": "filter the rows returned",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "ProjectsContributorsViewBoolExp",
+                  "name": "ProjectsContributorsBoolExp",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -90868,9 +91845,54 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "ProjectsContributorsViewAggregate",
+                "name": "ProjectsContributorsAggregate",
                 "ofType": null
               }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "projectsContributorsByPk",
+            "description": "fetch data from the table: \"projects_contributors\" using primary key columns",
+            "args": [
+              {
+                "name": "githubUserId",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "bigint",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "projectId",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "uuid",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "ProjectsContributors",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -92866,7 +93888,7 @@
             "description": null,
             "type": {
               "kind": "SCALAR",
-              "name": "timestamptz",
+              "name": "timestamp",
               "ofType": null
             },
             "defaultValue": null,
@@ -101159,8 +102181,8 @@
             "deprecationReason": null
           },
           {
-            "name": "projectsContributorsView",
-            "description": "fetch data from the table: \"projects_contributors_view\"",
+            "name": "projectsContributors",
+            "description": "fetch data from the table: \"projects_contributors\"",
             "args": [
               {
                 "name": "distinctOn",
@@ -101173,7 +102195,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "ENUM",
-                      "name": "ProjectsContributorsViewSelectColumn",
+                      "name": "ProjectsContributorsSelectColumn",
                       "ofType": null
                     }
                   }
@@ -101217,7 +102239,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "ProjectsContributorsViewOrderBy",
+                      "name": "ProjectsContributorsOrderBy",
                       "ofType": null
                     }
                   }
@@ -101231,7 +102253,7 @@
                 "description": "filter the rows returned",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "ProjectsContributorsViewBoolExp",
+                  "name": "ProjectsContributorsBoolExp",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -101250,7 +102272,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "OBJECT",
-                    "name": "ProjectsContributorsView",
+                    "name": "ProjectsContributors",
                     "ofType": null
                   }
                 }
@@ -101260,8 +102282,8 @@
             "deprecationReason": null
           },
           {
-            "name": "projectsContributorsViewAggregate",
-            "description": "fetch aggregated fields from the table: \"projects_contributors_view\"",
+            "name": "projectsContributorsAggregate",
+            "description": "fetch aggregated fields from the table: \"projects_contributors\"",
             "args": [
               {
                 "name": "distinctOn",
@@ -101274,7 +102296,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "ENUM",
-                      "name": "ProjectsContributorsViewSelectColumn",
+                      "name": "ProjectsContributorsSelectColumn",
                       "ofType": null
                     }
                   }
@@ -101318,7 +102340,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "ProjectsContributorsViewOrderBy",
+                      "name": "ProjectsContributorsOrderBy",
                       "ofType": null
                     }
                   }
@@ -101332,7 +102354,7 @@
                 "description": "filter the rows returned",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "ProjectsContributorsViewBoolExp",
+                  "name": "ProjectsContributorsBoolExp",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -101345,7 +102367,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "ProjectsContributorsViewAggregate",
+                "name": "ProjectsContributorsAggregate",
                 "ofType": null
               }
             },
@@ -101353,8 +102375,53 @@
             "deprecationReason": null
           },
           {
-            "name": "projectsContributorsViewStream",
-            "description": "fetch data from the table in a streaming manner: \"projects_contributors_view\"",
+            "name": "projectsContributorsByPk",
+            "description": "fetch data from the table: \"projects_contributors\" using primary key columns",
+            "args": [
+              {
+                "name": "githubUserId",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "bigint",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "projectId",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "uuid",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "ProjectsContributors",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "projectsContributorsStream",
+            "description": "fetch data from the table in a streaming manner: \"projects_contributors\"",
             "args": [
               {
                 "name": "batchSize",
@@ -101383,7 +102450,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "projects_contributors_view_streamCursorInput",
+                      "name": "projects_contributors_streamCursorInput",
                       "ofType": null
                     }
                   }
@@ -101397,7 +102464,7 @@
                 "description": "filter the rows returned",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "ProjectsContributorsViewBoolExp",
+                  "name": "ProjectsContributorsBoolExp",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -101416,7 +102483,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "OBJECT",
-                    "name": "ProjectsContributorsView",
+                    "name": "ProjectsContributors",
                     "ofType": null
                   }
                 }

@@ -228,7 +228,7 @@ class ProjectLeads {
 class Projects {
    applications: [Applications!]!
    budgets: [Budgets!]!
-   contributors: [ProjectsContributorsView!]!
+   contributors: [ProjectsContributors!]!
    githubRepos: [ProjectGithubRepos!]!
    id: uuid!
    pendingInvitations: [PendingProjectLeaderInvitations!]!
@@ -237,11 +237,12 @@ class Projects {
    projectSponsors: [ProjectsSponsors!]!
 }
 
-class ProjectsContributorsView {
+class ProjectsContributors {
    githubUser: GithubUsers
-   githubUserId: bigint
+   githubUserId: bigint!
+   linkCount: Int!
    project: Projects
-   projectId: uuid
+   projectId: uuid!
    user: UserProfiles
 }
 
@@ -258,7 +259,7 @@ class RegisteredUsers {
    githubUserId: bigint
    htmlUrl: String
    id: uuid
-   lastSeen: timestamptz
+   lastSeen: timestamp
    login: String
    paymentRequests: [PaymentRequests!]!
    projectsLeaded: [ProjectLeads!]!
@@ -302,16 +303,16 @@ class UserProfiles {
    contributionCounts: [ContributionCounts!]!
    contributionStats: [ContributionStats!]!
    contributions: [Contributions!]!
-   createdAt: timestamptz
+   createdAt: timestamp
    githubUserId: bigint
    htmlUrl: String
    languages: jsonb
-   lastSeen: timestamptz
+   lastSeen: timestamp
    location: String
    login: String
    lookingForAJob: Boolean
    paymentStats: [PaymentStats!]!
-   projectsContributed: [ProjectsContributorsView!]!
+   projectsContributed: [ProjectsContributors!]!
    projectsLeaded: [ProjectLeads!]!
    userId: uuid
    website: String
@@ -449,11 +450,11 @@ Projects --* Budgets
 Projects --* PendingProjectLeaderInvitations
 Projects --* ProjectGithubRepos
 Projects --* ProjectLeads
-Projects --* ProjectsContributorsView
+Projects --* ProjectsContributors
 Projects --* ProjectsSponsors
-ProjectsContributorsView -- GithubUsers
-ProjectsContributorsView -- Projects
-ProjectsContributorsView -- UserProfiles
+ProjectsContributors -- GithubUsers
+ProjectsContributors -- Projects
+ProjectsContributors -- UserProfiles
 ProjectsSponsors -- Projects
 ProjectsSponsors -- Sponsors
 RegisteredUsers -- UserPayoutInfo
@@ -468,7 +469,7 @@ UserProfiles --* ContributionStats
 UserProfiles --* Contributions
 UserProfiles --* PaymentStats
 UserProfiles --* ProjectLeads
-UserProfiles --* ProjectsContributorsView
+UserProfiles --* ProjectsContributors
 WorkItems -- Issue
 WorkItems -- PaymentRequests
 WorkItems --* IgnoredGithubIssues

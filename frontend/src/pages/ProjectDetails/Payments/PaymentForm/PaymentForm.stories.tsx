@@ -69,7 +69,7 @@ const mocks = [
     },
     result: {
       data: {
-        projectsContributorsView: [
+        projectsContributors: [
           BERNARDSTANISLAS,
           OSCARWROCHE,
           OFUX,

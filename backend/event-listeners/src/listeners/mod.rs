@@ -40,6 +40,8 @@ pub async fn spawn_all(
 			database.clone(),
 			database.clone(),
 			database.clone(),
+			database.clone(),
+			database.clone(),
 		)
 		.spawn(
 			event_bus::event_consumer(config.amqp(), "projects")
@@ -47,6 +49,7 @@ pub async fn spawn_all(
 				.into_command_subscriber(database.clone()),
 		),
 		budget::Projector::new(
+			database.clone(),
 			database.clone(),
 			database.clone(),
 			database.clone(),
@@ -61,6 +64,8 @@ pub async fn spawn_all(
 		),
 		github::Projector::new(
 			github,
+			database.clone(),
+			database.clone(),
 			database.clone(),
 			database.clone(),
 			database.clone(),

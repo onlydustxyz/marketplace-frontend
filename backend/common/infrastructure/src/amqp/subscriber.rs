@@ -110,7 +110,6 @@ mod tests {
 
 	use anyhow::anyhow;
 	use domain::{Message, Subscriber, SubscriberCallbackError, SubscriberError};
-	use dotenv::dotenv;
 	use lapin::options::QueueDeclareOptions;
 	use mockall::lazy_static;
 	use opentelemetry::propagation::Extractor;
@@ -118,7 +117,7 @@ mod tests {
 	use serde::{Deserialize, Serialize};
 	use tracing_test::traced_test;
 
-	use crate::amqp::{Bus, Config, ConsumableBus};
+	use crate::amqp::{test::config, Bus, Config, ConsumableBus};
 
 	#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 	enum TestMessage {
@@ -151,11 +150,6 @@ mod tests {
 			.await
 			.unwrap()
 		}
-	}
-
-	#[ctor::ctor]
-	fn init_env() {
-		dotenv().ok();
 	}
 
 	async fn publish_message(bus: &Bus, queue_name: &'static str, message: TestMessage) {
@@ -206,13 +200,6 @@ mod tests {
 
 		assert_processing_error_message(result.unwrap_err(), STOP_ERROR);
 		assert_eq!(counter.load(Ordering::SeqCst), expect_valid_message_count);
-	}
-
-	#[fixture]
-	#[once]
-	fn config() -> Config {
-		// TODO: Find a better way to have a test configuration for integration tests
-		Config::new("amqp://127.0.0.1:5672/%2f".to_string(), 200, 0)
 	}
 
 	#[fixture]
