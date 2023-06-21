@@ -32,7 +32,18 @@ const ProfileButton = () => {
 
   const payoutSettingsInvalid = valid === false && pendingPaymentRequestsCount > 0;
 
-  return <View {...{ githubUserId, avatarUrl, login, logout, payoutSettingsInvalid, hideProfileItems }} />;
+  return (
+    <View
+      {...{
+        githubUserId,
+        avatarUrl,
+        login,
+        logout,
+        showMissingPayoutSettingsState: payoutSettingsInvalid && !hideProfileItems,
+        hideProfileItems,
+      }}
+    />
+  );
 };
 
 export default ProfileButton;
