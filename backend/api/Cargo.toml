@@ -39,8 +39,8 @@ reqwest = {version = "0.11", default-features = false}
 url = "2.2.2"
 
 # Http Server
-juniper = {git = "https://github.com/onlydustxyz/juniper", rev="3ea95737b7665bdaa7636ef3aa4d96cc4ef5c5f7"}
-juniper_rocket =  {git = "https://github.com/onlydustxyz/juniper", rev="dcee7b053f30aa3a8eedad4ad57f1950a4d241ea"}
+juniper = "0.15.11"
+juniper_rocket = "0.8.2"
 rocket = {version = "0.5.0-rc.2", features = ["json", "uuid"]}
 
 # AWS
