@@ -1,5 +1,5 @@
 table:
-  name: projects_contributors_view
+  name: projects_contributors
   schema: public
 object_relationships:
   - name: githubUser

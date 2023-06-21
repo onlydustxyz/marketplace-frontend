@@ -61,7 +61,7 @@ array_relationships:
           github_user_id: github_user_id
         insertion_order: null
         remote_table:
-          name: projects_contributors_view
+          name: projects_contributors
           schema: public
   - name: projectsLeaded
     using:
