@@ -1,4 +1,5 @@
 import OnlyDustLogo, { OnlyDustLogoWidth } from "src/App/Layout/Header/OnlyDustLogo";
+import Button from "src/components/Button";
 import Card from "src/components/Card";
 
 interface TermsAndConditionsPromptCardProps {
