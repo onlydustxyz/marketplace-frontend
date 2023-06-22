@@ -9,17 +9,26 @@ import EyeOffLine from "src/icons/EyeOffLine";
 type Props = {
   icon: ReactElement;
   name: string;
+  placeholder?: string;
   editDisabled?: boolean;
   visibilityName: string;
   visibilityDisabled?: boolean;
 };
 
-export default function ContactInformation({ icon, name, editDisabled, visibilityName, visibilityDisabled }: Props) {
+export default function ContactInformation({
+  icon,
+  name,
+  placeholder,
+  editDisabled,
+  visibilityName,
+  visibilityDisabled,
+}: Props) {
   return (
     <Input
       size={Size.Sm}
       withMargin={false}
       name={name}
+      placeholder={placeholder}
       prefixComponent={icon}
       suffixComponent={
         <div className="flex flex-row gap-2 absolute right-3">

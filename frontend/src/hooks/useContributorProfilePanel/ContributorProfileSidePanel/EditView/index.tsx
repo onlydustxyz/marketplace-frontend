@@ -106,7 +106,7 @@ export default function EditView({ profile, headerColor, setEditMode }: Props) {
                 </Section>
               </Card>
               <Card>
-                <Section gap="wide" title={T("profile.form.contactInfo")}>
+                <Section gap="wide" title={T("profile.form.contactInfo.title")}>
                   <div className="flex flex-col gap-3">
                     <ContactInformation
                       name="githubHandle"
@@ -123,12 +123,28 @@ export default function EditView({ profile, headerColor, setEditMode }: Props) {
                     />
                     <ContactInformation
                       name="telegram"
+                      placeholder={T("profile.form.contactInfo.telegram")}
                       icon={<Telegram size={16} />}
                       visibilityName="isTelegramPublic"
                     />
-                    <ContactInformation name="twitter" icon={<TwitterFill />} visibilityName="isTwitterPublic" />
-                    <ContactInformation name="discord" icon={<DiscordFill />} visibilityName="isDiscordPublic" />
-                    <ContactInformation name="linkedin" icon={<LinkedinBoxFill />} visibilityName="isLinkedInPublic" />
+                    <ContactInformation
+                      name="twitter"
+                      placeholder={T("profile.form.contactInfo.twitter")}
+                      icon={<TwitterFill />}
+                      visibilityName="isTwitterPublic"
+                    />
+                    <ContactInformation
+                      name="discord"
+                      placeholder={T("profile.form.contactInfo.discord")}
+                      icon={<DiscordFill />}
+                      visibilityName="isDiscordPublic"
+                    />
+                    <ContactInformation
+                      name="linkedin"
+                      placeholder={T("profile.form.contactInfo.linkedin")}
+                      icon={<LinkedinBoxFill />}
+                      visibilityName="isLinkedInPublic"
+                    />
                   </div>
                 </Section>
               </Card>

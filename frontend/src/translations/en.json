@@ -352,7 +352,13 @@
       "companyNeedsInvoiceCallout": "As a company, you'll need to share an invoice for each payment in order to receive the funds.",
       "companyOwnerFirstName": "First name",
       "companyOwnerLastName": "Last name",
-      "contactInfo": "Contact information",
+      "contactInfo": {
+        "title": "Contact information",
+        "telegram": "Telegram",
+        "twitter": "Twitter",
+        "discord": "Discord",
+        "linkedin": "LinkedIn"
+      },
       "country": "Country",
       "cryptoWire": "Crypto wire",
       "discord": "Discord",
