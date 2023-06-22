@@ -2,6 +2,7 @@ import classNames from "classnames";
 import { useRef } from "react";
 import { Maybe, OwnUserProfileDocument, useUploadProfilePictireMutation } from "src/__generated/graphql";
 import PencilLine from "src/icons/PencilLine";
+import HeaderColorButton from "./EditView/HeaderColorButton";
 import FileInput from "./EditView/FileInput";
 
 export enum HeaderColor {
@@ -25,6 +26,10 @@ export default function Header({ color, avatarUrl, editable }: Props) {
     refetchQueries: [{ query: OwnUserProfileDocument }],
   });
 
+  const handleChangeCoverClick = (color: HeaderColor) => {
+    console.log(color);
+  };
+
   return (
     <div className="z-10">
       <div
@@ -34,7 +39,34 @@ export default function Header({ color, avatarUrl, editable }: Props) {
           "bg-profile-magenta": color === HeaderColor.Magenta,
           "bg-profile-yellow": color === HeaderColor.Yellow,
         })}
-      />
+      >
+        {editable && (
+          <div className="flex h-full w-full bg-black/30 items-center justify-center">
+            <div className="flex flex-row gap-3 px-5 h-12 w-fit items-center justify-center rounded-full bg-white/8 border border-greyscale-50/8">
+              <HeaderColorButton
+                active={color === HeaderColor.Cyan}
+                color={HeaderColor.Cyan}
+                onClick={handleChangeCoverClick}
+              />
+              <HeaderColorButton
+                active={color === HeaderColor.Magenta}
+                color={HeaderColor.Magenta}
+                onClick={handleChangeCoverClick}
+              />
+              <HeaderColorButton
+                active={color === HeaderColor.Yellow}
+                color={HeaderColor.Yellow}
+                onClick={handleChangeCoverClick}
+              />
+              <HeaderColorButton
+                active={color === HeaderColor.Blue}
+                color={HeaderColor.Blue}
+                onClick={handleChangeCoverClick}
+              />
+            </div>
+          </div>
+        )}
+      </div>
 
       {avatarUrl && (
         <div
