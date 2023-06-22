@@ -35,7 +35,7 @@ export const fromFragment = (fragment: UserProfileFragment & OwnUserProfileDetai
   githubHandle: fragment.login ?? "",
   isGithubHandlePublic: true,
   email: fragment.email.at(0)?.contact || "",
-  isEmailPublic: fragment.email.at(0)?.public ?? true,
+  isEmailPublic: fragment.email.at(0)?.public ?? false,
   telegram: fragment.telegram.at(0)?.contact ?? "",
   isTelegramPublic: fragment.telegram.at(0)?.public ?? true,
   twitter: fragment.twitter.at(0)?.contact ?? "",
