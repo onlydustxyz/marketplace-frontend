@@ -23,6 +23,9 @@ export default function ContactInformation({
   visibilityName,
   visibilityDisabled,
 }: Props) {
+  const { watch } = useFormContext();
+  const value = watch(name);
+
   return (
     <Input
       size={Size.Sm}
@@ -31,10 +34,12 @@ export default function ContactInformation({
       placeholder={placeholder}
       prefixComponent={icon}
       suffixComponent={
-        <div className="flex flex-row gap-2 absolute right-3">
-          <VisibilityButton name={visibilityName} disabled={visibilityDisabled} />
-          <ClearFieldButton name={name} disabled={editDisabled} />
-        </div>
+        value ? (
+          <div className="flex flex-row gap-2 absolute right-3">
+            <VisibilityButton name={visibilityName} disabled={visibilityDisabled} />
+            <ClearFieldButton name={name} disabled={editDisabled} />
+          </div>
+        ) : undefined
       }
       inputClassName="pl-9"
       disabled={editDisabled}
