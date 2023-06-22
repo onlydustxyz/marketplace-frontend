@@ -119,3 +119,7 @@ mutation updateUserProfile(
     weeklyAllocatedTime: $weeklyAllocatedTime
   )
 }
+
+mutation UploadProfilePictire($profile_picture: [Int!]!) {
+  updateUserAvatar(avatarData: $profile_picture)
+}

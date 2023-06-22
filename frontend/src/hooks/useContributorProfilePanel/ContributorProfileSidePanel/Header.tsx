@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import { useRef } from "react";
-import { Maybe } from "src/__generated/graphql";
+import { Maybe, OwnUserProfileDocument, useUploadProfilePictireMutation } from "src/__generated/graphql";
 import PencilLine from "src/icons/PencilLine";
 import FileInput from "./EditView/FileInput";
 
@@ -19,6 +19,11 @@ type Props = {
 
 export default function Header({ color, avatarUrl, editable }: Props) {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const [uploadProfilePicture] = useUploadProfilePictireMutation({
+    context: { graphqlErrorDisplay: "toaster" },
+    refetchQueries: [{ query: OwnUserProfileDocument }],
+  });
 
   return (
     <div className="z-10">
@@ -48,7 +53,12 @@ export default function Header({ color, avatarUrl, editable }: Props) {
             text-base text-spaceBlue-900 bg-greyscale-50
             outline outline-2 outline-black shadow-bottom-sm"
               />
-              {editable && <FileInput ref={fileInputRef} setFile={console.log} />}
+              {editable && (
+                <FileInput
+                  ref={fileInputRef}
+                  setFile={profile_picture => uploadProfilePicture({ variables: { profile_picture } })}
+                />
+              )}
             </>
           )}
         </div>
