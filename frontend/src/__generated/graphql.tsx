@@ -10623,6 +10623,7 @@ export type Mutation_Root = {
   updateTermsAndConditionsAcceptancesMany: Maybe<Array<Maybe<TermsAndConditionsAcceptancesMutationResponse>>>;
   /** update single row of the table: "auth.users" */
   updateUser: Maybe<Users>;
+  updateUserAvatar: Scalars['Boolean'];
   /** update data of the table: "user_payout_info" */
   updateUserPayoutInfo: Maybe<UserPayoutInfoMutationResponse>;
   /** update single row of the table: "user_payout_info" */
@@ -12175,6 +12176,12 @@ export type Mutation_RootUpdateUserArgs = {
   _prepend: InputMaybe<UsersPrependInput>;
   _set: InputMaybe<UsersSetInput>;
   pk_columns: UsersPkColumnsInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateUserAvatarArgs = {
+  avatarData: Array<Scalars['Int']>;
 };
 
 
@@ -16317,6 +16324,13 @@ export type UpdateUserProfileMutationVariables = Exact<{
 
 export type UpdateUserProfileMutation = { __typename?: 'mutation_root', updateUserProfile: boolean };
 
+export type UploadProfilePictireMutationVariables = Exact<{
+  profile_picture: Array<Scalars['Int']> | Scalars['Int'];
+}>;
+
+
+export type UploadProfilePictireMutation = { __typename?: 'mutation_root', updateUserAvatar: boolean };
+
 export type UserPayoutSettingsFragment = { __typename?: 'UserPayoutInfo', userId: any, identity: any | null, location: any | null, payoutSettings: any | null, arePayoutSettingsValid: boolean };
 
 export type GetUserPayoutSettingsQueryVariables = Exact<{
@@ -17547,6 +17561,37 @@ export function useUpdateUserProfileMutation(baseOptions?: Apollo.MutationHookOp
 export type UpdateUserProfileMutationHookResult = ReturnType<typeof useUpdateUserProfileMutation>;
 export type UpdateUserProfileMutationResult = Apollo.MutationResult<UpdateUserProfileMutation>;
 export type UpdateUserProfileMutationOptions = Apollo.BaseMutationOptions<UpdateUserProfileMutation, UpdateUserProfileMutationVariables>;
+export const UploadProfilePictireDocument = gql`
+    mutation UploadProfilePictire($profile_picture: [Int!]!) {
+  updateUserAvatar(avatarData: $profile_picture)
+}
+    `;
+export type UploadProfilePictireMutationFn = Apollo.MutationFunction<UploadProfilePictireMutation, UploadProfilePictireMutationVariables>;
+
+/**
+ * __useUploadProfilePictireMutation__
+ *
+ * To run a mutation, you first call `useUploadProfilePictireMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUploadProfilePictireMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [uploadProfilePictireMutation, { data, loading, error }] = useUploadProfilePictireMutation({
+ *   variables: {
+ *      profile_picture: // value for 'profile_picture'
+ *   },
+ * });
+ */
+export function useUploadProfilePictireMutation(baseOptions?: Apollo.MutationHookOptions<UploadProfilePictireMutation, UploadProfilePictireMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UploadProfilePictireMutation, UploadProfilePictireMutationVariables>(UploadProfilePictireDocument, options);
+      }
+export type UploadProfilePictireMutationHookResult = ReturnType<typeof useUploadProfilePictireMutation>;
+export type UploadProfilePictireMutationResult = Apollo.MutationResult<UploadProfilePictireMutation>;
+export type UploadProfilePictireMutationOptions = Apollo.BaseMutationOptions<UploadProfilePictireMutation, UploadProfilePictireMutationVariables>;
 export const GetUserPayoutSettingsDocument = gql`
     query GetUserPayoutSettings($githubUserId: bigint!) {
   registeredUsers(where: {githubUserId: {_eq: $githubUserId}}) {
