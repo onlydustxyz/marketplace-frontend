@@ -357,7 +357,9 @@
         "telegram": "Telegram",
         "twitter": "Twitter",
         "discord": "Discord",
-        "linkedin": "LinkedIn"
+        "linkedin": "LinkedIn",
+        "hiddenTootlip": "Hidden on public profile",
+        "visibleTootlip": "Shown on public profile"
       },
       "country": "Country",
       "cryptoWire": "Crypto wire",

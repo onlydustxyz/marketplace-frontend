@@ -5,6 +5,8 @@ import CloseLine from "src/icons/CloseLine";
 import classNames from "classnames";
 import EyeLine from "src/icons/EyeLine";
 import EyeOffLine from "src/icons/EyeOffLine";
+import { useIntl } from "src/hooks/useIntl";
+import { withTooltip } from "src/components/Tooltip";
 
 type Props = {
   icon: ReactElement;
@@ -78,6 +80,7 @@ type VisibilityButtonProps = {
 function VisibilityButton({ name, disabled }: VisibilityButtonProps) {
   const { watch, setValue } = useFormContext();
   const visible = watch(name);
+  const { T } = useIntl();
 
   return visible ? (
     <EyeLine
@@ -91,6 +94,7 @@ function VisibilityButton({ name, disabled }: VisibilityButtonProps) {
           setValue(name, false, { shouldDirty: true });
         }
       }}
+      {...withTooltip(T("profile.form.contactInfo.visibleTootlip"))}
       data-testid="visibilityToggle"
       data-state="on"
     />
@@ -106,6 +110,7 @@ function VisibilityButton({ name, disabled }: VisibilityButtonProps) {
           setValue(name, true, { shouldDirty: true });
         }
       }}
+      {...withTooltip(T("profile.form.contactInfo.hiddenTootlip"))}
       data-testid="visibilityToggle"
       data-state="off"
     />
