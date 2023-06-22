@@ -70,7 +70,7 @@ export default function EditView({ profile, headerColor, setEditMode }: Props) {
       <form id="profile-info-form" className="h-full min-h-0" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col h-full justify-between">
           <div className="flex flex-col gap-6 min-h-0">
-            <Header color={headerColor} avatarUrl={profile.avatarUrl} />
+            <Header editable color={headerColor} avatarUrl={profile.avatarUrl} />
 
             <div className="flex flex-col gap-6 -mt-[72px] pt-[72px] pb-12 pl-8 mr-2 pr-6 scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded">
               <div data-testid="login" className="font-belwe font-normal text-3xl text-white">
