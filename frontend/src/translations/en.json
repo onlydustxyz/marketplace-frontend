@@ -244,7 +244,7 @@
         "invoicePending": "An invoice is required to process your payment. Please wait up to 5 days if you already sent it.",
         "payoutInfoMissing": "Fill in your payment information to get paid",
         "pending": "Contributor needs to sign up on OnlyDust and to complete payout info to get paid",
-        "processing": "Payment is being processed by our team. Typically 3 to 5 days to receive payment"
+        "processing": "Payment is being processed by our team, usually within 2 weeks"
       }
     },
     "table": {
@@ -352,7 +352,15 @@
       "companyNeedsInvoiceCallout": "As a company, you'll need to share an invoice for each payment in order to receive the funds.",
       "companyOwnerFirstName": "First name",
       "companyOwnerLastName": "Last name",
-      "contactInfo": "Contact information",
+      "contactInfo": {
+        "title": "Contact information",
+        "telegram": "Telegram",
+        "twitter": "Twitter",
+        "discord": "Discord",
+        "linkedin": "LinkedIn",
+        "hiddenTootlip": "Hidden on public profile",
+        "visibleTootlip": "Shown on public profile"
+      },
       "country": "Country",
       "cryptoWire": "Crypto wire",
       "discord": "Discord",

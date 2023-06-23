@@ -68,20 +68,18 @@ export default function TechnologiesCard({ technologies = {}, setTechnologies }:
         title={T("profile.edit.sections.technologies.title")}
         subtitle={T("profile.edit.sections.technologies.subtitle")}
       >
-        <div className="pb-4">
-          <StylizedCombobox
-            options={allLanguages.filter(
-              language => !selectedLanguages.some(selectedLanguage => selectedLanguage.id === language.id)
-            )}
-            selectedOptions={selectedLanguages}
-            setSelectedOptions={setSelectedLanguages}
-            optionFilter={(query, option) => option.displayValue.toLowerCase().includes(query.toLowerCase())}
-            placeholder={T("profile.edit.sections.technologies.searchPlaceholder")}
-            maxDisplayedOptions={5}
-            multiple
-            testId="technologiesCombobox"
-          />
-        </div>
+        <StylizedCombobox
+          options={allLanguages.filter(
+            language => !selectedLanguages.some(selectedLanguage => selectedLanguage.id === language.id)
+          )}
+          selectedOptions={selectedLanguages}
+          setSelectedOptions={setSelectedLanguages}
+          optionFilter={(query, option) => option.displayValue.toLowerCase().includes(query.toLowerCase())}
+          placeholder={T("profile.edit.sections.technologies.searchPlaceholder")}
+          maxDisplayedOptions={5}
+          multiple
+          testId="technologiesCombobox"
+        />
         {selectedLanguages.length > 0 && (
           <SortableList items={selectedLanguages} setItems={setSelectedLanguages}>
             {({ items }: { items: SortableItemProps[] }) => (

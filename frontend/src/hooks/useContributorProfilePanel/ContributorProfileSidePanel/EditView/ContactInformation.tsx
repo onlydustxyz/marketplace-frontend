@@ -5,27 +5,43 @@ import CloseLine from "src/icons/CloseLine";
 import classNames from "classnames";
 import EyeLine from "src/icons/EyeLine";
 import EyeOffLine from "src/icons/EyeOffLine";
+import { useIntl } from "src/hooks/useIntl";
+import { withTooltip } from "src/components/Tooltip";
 
 type Props = {
   icon: ReactElement;
   name: string;
+  placeholder?: string;
   editDisabled?: boolean;
   visibilityName: string;
   visibilityDisabled?: boolean;
 };
 
-export default function ContactInformation({ icon, name, editDisabled, visibilityName, visibilityDisabled }: Props) {
+export default function ContactInformation({
+  icon,
+  name,
+  placeholder,
+  editDisabled,
+  visibilityName,
+  visibilityDisabled,
+}: Props) {
+  const { watch } = useFormContext();
+  const value = watch(name);
+
   return (
     <Input
       size={Size.Sm}
       withMargin={false}
       name={name}
+      placeholder={placeholder}
       prefixComponent={icon}
       suffixComponent={
-        <div className="flex flex-row gap-2 absolute right-3">
-          <VisibilityButton name={visibilityName} disabled={visibilityDisabled} />
-          <ClearFieldButton name={name} disabled={editDisabled} />
-        </div>
+        value ? (
+          <div className="flex flex-row gap-2 absolute right-3">
+            <VisibilityButton name={visibilityName} disabled={visibilityDisabled} />
+            <ClearFieldButton name={name} disabled={editDisabled} />
+          </div>
+        ) : undefined
       }
       inputClassName="pl-9"
       disabled={editDisabled}
@@ -64,6 +80,7 @@ type VisibilityButtonProps = {
 function VisibilityButton({ name, disabled }: VisibilityButtonProps) {
   const { watch, setValue } = useFormContext();
   const visible = watch(name);
+  const { T } = useIntl();
 
   return visible ? (
     <EyeLine
@@ -77,6 +94,7 @@ function VisibilityButton({ name, disabled }: VisibilityButtonProps) {
           setValue(name, false, { shouldDirty: true });
         }
       }}
+      {...withTooltip(T("profile.form.contactInfo.visibleTootlip"))}
       data-testid="visibilityToggle"
       data-state="on"
     />
@@ -92,6 +110,7 @@ function VisibilityButton({ name, disabled }: VisibilityButtonProps) {
           setValue(name, true, { shouldDirty: true });
         }
       }}
+      {...withTooltip(T("profile.form.contactInfo.hiddenTootlip"))}
       data-testid="visibilityToggle"
       data-state="off"
     />

@@ -69,7 +69,7 @@ export default function EditView({ profile, headerColor, setEditMode }: Props) {
           <div className="flex flex-col gap-6 min-h-0">
             <Header color={headerColor} avatarUrl={profile.avatarUrl} />
 
-            <div className="flex flex-col gap-6 -mt-[72px] pt-[72px] pb-12 ml-8 mr-2 pr-6 scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded">
+            <div className="flex flex-col gap-6 -mt-[72px] pt-[72px] pb-12 pl-8 mr-2 pr-6 scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded">
               <div data-testid="login" className="font-belwe font-normal text-3xl text-white">
                 {profile.login}
               </div>
@@ -106,7 +106,7 @@ export default function EditView({ profile, headerColor, setEditMode }: Props) {
                 </Section>
               </Card>
               <Card>
-                <Section gap="wide" title={T("profile.form.contactInfo")}>
+                <Section gap="wide" title={T("profile.form.contactInfo.title")}>
                   <div className="flex flex-col gap-3">
                     <ContactInformation
                       name="githubHandle"
@@ -123,12 +123,28 @@ export default function EditView({ profile, headerColor, setEditMode }: Props) {
                     />
                     <ContactInformation
                       name="telegram"
+                      placeholder={T("profile.form.contactInfo.telegram")}
                       icon={<Telegram size={16} />}
                       visibilityName="isTelegramPublic"
                     />
-                    <ContactInformation name="twitter" icon={<TwitterFill />} visibilityName="isTwitterPublic" />
-                    <ContactInformation name="discord" icon={<DiscordFill />} visibilityName="isDiscordPublic" />
-                    <ContactInformation name="linkedin" icon={<LinkedinBoxFill />} visibilityName="isLinkedInPublic" />
+                    <ContactInformation
+                      name="twitter"
+                      placeholder={T("profile.form.contactInfo.twitter")}
+                      icon={<TwitterFill />}
+                      visibilityName="isTwitterPublic"
+                    />
+                    <ContactInformation
+                      name="discord"
+                      placeholder={T("profile.form.contactInfo.discord")}
+                      icon={<DiscordFill />}
+                      visibilityName="isDiscordPublic"
+                    />
+                    <ContactInformation
+                      name="linkedin"
+                      placeholder={T("profile.form.contactInfo.linkedin")}
+                      icon={<LinkedinBoxFill />}
+                      visibilityName="isLinkedInPublic"
+                    />
                   </div>
                 </Section>
               </Card>
