@@ -35,9 +35,9 @@ test.describe("As a signed-in user, I", () => {
     await expect(editPage.email).toHaveValue(user.email);
     await expect(editPage.email).toBeDisabled();
     await expect(editPage.emailVisibility).toHaveAttribute("data-state", "on");
-    await editPage.telegram.fill("t.me/fu");
+    await editPage.telegram.fill("fu");
     await expect(editPage.telegramVisibility).toHaveAttribute("data-state", "on");
-    await editPage.twitter.fill("https://twitter.com/olivier");
+    await editPage.twitter.fill("olivier");
     await expect(editPage.twitterVisibility).toHaveAttribute("data-state", "on");
     await editPage.twitterVisibility.click();
     await expect(editPage.twitterVisibility).toHaveAttribute("data-state", "off");
@@ -45,7 +45,7 @@ test.describe("As a signed-in user, I", () => {
     await expect(editPage.discordVisibility).toHaveAttribute("data-state", "on");
     await editPage.discordVisibility.click();
     await expect(editPage.discordVisibility).toHaveAttribute("data-state", "off");
-    await editPage.linkedin.fill("https://linkedin.com/in/olivier.fu");
+    await editPage.linkedin.fill("olivier.fu");
     await expect(editPage.linkedinVisibility).toHaveAttribute("data-state", "on");
 
     // Technologies
@@ -101,13 +101,13 @@ test.describe("As a signed-in user, I", () => {
     await expect(editPage.email).toHaveValue(user.email);
     await expect(editPage.email).toBeDisabled();
     await expect(editPage.emailVisibility).toHaveAttribute("data-state", "on");
-    await expect(editPage.telegram).toHaveValue("t.me/fu");
+    await expect(editPage.telegram).toHaveValue("fu");
     await expect(editPage.telegramVisibility).toHaveAttribute("data-state", "on");
-    await expect(editPage.twitter).toHaveValue("https://twitter.com/olivier");
+    await expect(editPage.twitter).toHaveValue("olivier");
     await expect(editPage.twitterVisibility).toHaveAttribute("data-state", "off");
     await expect(editPage.discord).toHaveValue("fu#666");
     await expect(editPage.discordVisibility).toHaveAttribute("data-state", "off");
-    await expect(editPage.linkedin).toHaveValue("https://linkedin.com/in/olivier.fu");
+    await expect(editPage.linkedin).toHaveValue("olivier.fu");
     await expect(editPage.linkedinVisibility).toHaveAttribute("data-state", "on");
 
     // Technologies
