@@ -11,6 +11,7 @@ import headerElementBackground from "src/assets/img/alert-bg.png";
 import classNames from "classnames";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import { Size } from ".";
+import { withTooltip } from "src/components/Tooltip";
 
 type PropsType = {
   label?: string;
@@ -107,7 +108,7 @@ const View: React.FC<PropsType> = ({
               "placeholder:text-spaceBlue-200",
               "focus:placeholder:text-spacePurple-200/60 focus:outline-double focus:outline-spacePurple-500 focus:border-spacePurple-500 focus:bg-spacePurple-900",
               {
-                "border outline-1 border-orange-500": showError,
+                "outline outline-1 outline-orange-500": showError,
                 "h-11": as === "input" && size === Size.Md,
                 "h-8": as === "input" && size === Size.Sm,
                 "px-4 py-3 text-base": size === Size.Md,
@@ -125,7 +126,11 @@ const View: React.FC<PropsType> = ({
             ...inputProps,
           })}
           {prefixComponent && <div className="absolute left-0 ml-3">{prefixComponent}</div>}
-          {loading ? (
+          {showError ? (
+            <div className="text-orange-400 text-xl flex absolute right-0 mr-3" {...withTooltip(error.message ?? "")}>
+              <ErrorWarningLine />
+            </div>
+          ) : loading ? (
             <LoaderIcon className="flex animate-spin place-items-center absolute right-0 mr-3" />
           ) : (
             suffixComponent
@@ -153,11 +158,6 @@ const View: React.FC<PropsType> = ({
           </div>
         )}
       </div>
-      {showError && (
-        <div className="text-orange-500 text-base flex flex-row items-center gap-1">
-          <ErrorWarningLine /> {error?.message?.toString() || "\u00A0"}
-        </div>
-      )}
     </label>
   );
 };
