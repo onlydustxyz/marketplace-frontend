@@ -35536,6 +35536,176 @@
         "possibleTypes": null
       },
       {
+        "kind": "ENUM",
+        "name": "ProfileCover",
+        "description": null,
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "BLUE",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "CYAN",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "MAGENTA",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "YELLOW",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "ProfileCoverComparisonExp",
+        "description": "Boolean expression to compare columns of type \"profile_cover\". All fields are combined with logical 'AND'.",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "_eq",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "profile_cover",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "_gt",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "profile_cover",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "_gte",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "profile_cover",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "_in",
+            "description": null,
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "profile_cover",
+                  "ofType": null
+                }
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "_isNull",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "_lt",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "profile_cover",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "_lte",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "profile_cover",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "_neq",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "profile_cover",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "_nin",
+            "description": null,
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "profile_cover",
+                  "ofType": null
+                }
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
         "kind": "OBJECT",
         "name": "ProjectDetails",
         "description": "columns and relationships of \"project_details\"",
@@ -51420,6 +51590,18 @@
             "deprecationReason": null
           },
           {
+            "name": "cover",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "profile_cover",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "createdAt",
             "description": null,
             "args": [],
@@ -52581,6 +52763,18 @@
             "deprecationReason": null
           },
           {
+            "name": "cover",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "ProfileCoverComparisonExp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "createdAt",
             "description": null,
             "type": {
@@ -52868,6 +53062,18 @@
             "deprecationReason": null
           },
           {
+            "name": "cover",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "profile_cover",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "createdAt",
             "description": null,
             "type": {
@@ -53070,6 +53276,18 @@
             "deprecationReason": null
           },
           {
+            "name": "cover",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "profile_cover",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "createdAt",
             "description": null,
             "args": [],
@@ -53207,6 +53425,18 @@
             "type": {
               "kind": "SCALAR",
               "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "cover",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "profile_cover",
               "ofType": null
             },
             "isDeprecated": false,
@@ -53432,6 +53662,18 @@
             "deprecationReason": null
           },
           {
+            "name": "cover",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "createdAt",
             "description": null,
             "type": {
@@ -53620,6 +53862,12 @@
           },
           {
             "name": "bio",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "cover",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
@@ -53917,6 +54165,18 @@
             "type": {
               "kind": "SCALAR",
               "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "cover",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "profile_cover",
               "ofType": null
             },
             "defaultValue": null,
@@ -80619,32 +80879,7 @@
           {
             "name": "updateUserAvatar",
             "description": null,
-            "args": [
-              {
-                "name": "avatarData",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "LIST",
-                    "name": null,
-                    "ofType": {
-                      "kind": "NON_NULL",
-                      "name": null,
-                      "ofType": {
-                        "kind": "SCALAR",
-                        "name": "Int",
-                        "ofType": null
-                      }
-                    }
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              }
-            ],
+            "args": [],
             "type": {
               "kind": "NON_NULL",
               "name": null,
@@ -80935,6 +81170,18 @@
                       }
                     }
                   }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "cover",
+                "description": null,
+                "type": {
+                  "kind": "ENUM",
+                  "name": "ProfileCover",
+                  "ofType": null
                 },
                 "defaultValue": null,
                 "isDeprecated": false,
@@ -83714,6 +83961,16 @@
             "deprecationReason": null
           }
         ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "SCALAR",
+        "name": "profile_cover",
+        "description": null,
+        "fields": null,
+        "inputFields": null,
         "interfaces": null,
         "enumValues": null,
         "possibleTypes": null
