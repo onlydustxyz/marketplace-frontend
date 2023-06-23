@@ -52,7 +52,7 @@
             unignoreIssue(projectId: Uuid!, repoId: GithubRepoId!, issueNumber: GithubIssueNumber!): Boolean!
             updatePayoutInfo(location: Location, identity: IdentityInput, payoutSettings: PayoutSettingsInput): Uuid!
             updateUserAvatar: Boolean!
-            updateUserProfile(bio: String, location: String, website: String, languages: [Language!], weeklyAllocatedTime: AllocatedTime!, lookingForAJob: Boolean!, contactInformations: [Information!]!): Boolean!
+            updateUserProfile(bio: String, location: String, website: String, languages: [Language!], weeklyAllocatedTime: AllocatedTime!, lookingForAJob: Boolean!, contactInformations: [Information!]!, cover: ProfileCover): Boolean!
           }
           type Payment {
             amount: Amount!
@@ -91,6 +91,12 @@
             BANK_ADDRESS
             ETHEREUM_ADDRESS
             ETHEREUM_NAME
+          }
+          enum ProfileCover {
+            BLUE
+            CYAN
+            MAGENTA
+            YELLOW
           }
           enum Status {
             CANCELLED
