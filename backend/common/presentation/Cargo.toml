@@ -23,6 +23,7 @@ thiserror = "1.0.31"
 
 # Http Server
 rocket = "0.5.0-rc.2"
+jsonwebtoken = "8.3.0"
 
 # Serde
 serde = {version = "1.0.137", features = ["derive"]}
