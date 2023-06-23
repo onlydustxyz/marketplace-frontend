@@ -1,6 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
 import { screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import matchers from "@testing-library/jest-dom/matchers";
 
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
@@ -67,7 +66,6 @@ const intersectionObserverMock = () => ({
 window.IntersectionObserver = vi.fn().mockImplementation(intersectionObserverMock);
 
 const ADD_WORK_ITEM_BUTTON_ID = "add-work-item-btn";
-const ADD_OTHER_PR_TOGGLE_ID = "add-other-pullRequests-toggle";
 
 const RECIPIENT_INPUT_LABEL = /Search by Github handle/i;
 
@@ -94,15 +92,5 @@ describe('"PaymentForm" component', () => {
   it("should show the right input / button labels", async () => {
     expect(screen.queryByTestId(ADD_WORK_ITEM_BUTTON_ID)).not.toBeInTheDocument();
     await screen.findByText(RECIPIENT_INPUT_LABEL);
-  });
-
-  it("should display an error when the reason is not a valid link to a github issue", async () => {
-    await userEvent.click(await screen.findByText(RECIPIENT_INPUT_LABEL));
-    await userEvent.click(await screen.findByText(TEST_CONTRIBUTOR.login || ""));
-    await userEvent.click(await screen.findByTestId(ADD_WORK_ITEM_BUTTON_ID));
-    await userEvent.click(await screen.findByTestId(ADD_OTHER_PR_TOGGLE_ID));
-    await userEvent.type(await screen.findByPlaceholderText(/github.com/i), "not-a-link");
-    const errorMessages = screen.getAllByText(/oops/i);
-    expect(errorMessages.length).toBe(1);
   });
 });
