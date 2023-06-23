@@ -3246,6 +3246,7 @@ dependencies = [
  "async-trait",
  "derive-getters",
  "domain",
+ "envtestkit",
  "jsonwebtoken",
  "rocket",
  "rstest",

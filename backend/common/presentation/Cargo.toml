@@ -39,3 +39,4 @@ domain = {path = "../domain"}
 async-std = {version = "1.12.0", features = ["attributes"]}
 rstest = "0.15.0"
 assert_matches = "1.5"
+envtestkit = "1.1.2"
