@@ -3,7 +3,10 @@ mod repository;
 use diesel::{pg::Pg, Identifiable, Queryable};
 use diesel_json::Json;
 use domain::{Languages, UserId};
-use infrastructure::database::{enums::AllocatedTime, schema::user_profile_info};
+use infrastructure::database::{
+	enums::{AllocatedTime, ProfileCover},
+	schema::user_profile_info,
+};
 use serde::{Deserialize, Serialize};
 
 pub use self::repository::Repository;
@@ -18,6 +21,7 @@ pub struct UserProfileInfo {
 	pub languages: Option<Json<Languages>>,
 	pub weekly_allocated_time: AllocatedTime,
 	pub looking_for_a_job: bool,
+	pub cover: Option<ProfileCover>,
 }
 
 impl Identifiable for UserProfileInfo {
@@ -39,6 +43,7 @@ where
 		AllocatedTime,
 		bool,
 		Option<String>,
+		Option<ProfileCover>,
 	): Queryable<ST, Pg>,
 {
 	type Row = <(
@@ -50,11 +55,21 @@ where
 		AllocatedTime,
 		bool,
 		Option<String>,
+		Option<ProfileCover>,
 	) as Queryable<ST, Pg>>::Row;
 
 	fn build(row: Self::Row) -> diesel::deserialize::Result<Self> {
-		let (id, bio, location, website, languages, weekly_allocated_time, looking_for_a_job, _) =
-			Queryable::build(row)?;
+		let (
+			id,
+			bio,
+			location,
+			website,
+			languages,
+			weekly_allocated_time,
+			looking_for_a_job,
+			_,
+			cover,
+		) = Queryable::build(row)?;
 		Ok(Self {
 			id,
 			bio,
@@ -63,6 +78,7 @@ where
 			languages,
 			weekly_allocated_time,
 			looking_for_a_job,
+			cover,
 		})
 	}
 }

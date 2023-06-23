@@ -550,6 +550,7 @@ impl Mutation {
 		weekly_allocated_time: dto::AllocatedTime,
 		looking_for_a_job: bool,
 		contact_informations: Vec<dto::ContactInformation>,
+		cover: Option<dto::ProfileCover>,
 	) -> Result<bool> {
 		let caller_id = context.caller_info()?.user_id;
 
@@ -576,6 +577,7 @@ impl Mutation {
 						public: info.public,
 					})
 					.collect(),
+				cover.map(dto::ProfileCover::into),
 			)
 			.await?;
 		Ok(true)

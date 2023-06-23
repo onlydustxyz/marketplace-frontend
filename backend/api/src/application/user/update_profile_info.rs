@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use derive_more::Constructor;
 use domain::{DomainError, Languages, UserId};
-use infrastructure::database::enums::AllocatedTime;
+use infrastructure::database::enums::{AllocatedTime, ProfileCover};
 
 use crate::{domain::ImageStoreService, models::*};
 
@@ -25,6 +25,7 @@ impl Usecase {
 		weekly_allocated_time: AllocatedTime,
 		looking_for_a_job: bool,
 		contact_informations: Vec<ContactInformation>,
+		cover: Option<ProfileCover>,
 	) -> Result<(), DomainError> {
 		self.user_profile_info_repository.upsert(UserProfileInfo {
 			id,
@@ -34,6 +35,7 @@ impl Usecase {
 			languages: languages.map(diesel_json::Json::new),
 			looking_for_a_job,
 			weekly_allocated_time,
+			cover,
 		})?;
 
 		self.contact_informations_repository
