@@ -11,6 +11,7 @@ import headerElementBackground from "src/assets/img/alert-bg.png";
 import classNames from "classnames";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import { Size } from ".";
+import { withTooltip } from "src/components/Tooltip";
 
 type PropsType = {
   label?: string;
@@ -125,7 +126,11 @@ const View: React.FC<PropsType> = ({
             ...inputProps,
           })}
           {prefixComponent && <div className="absolute left-0 ml-3">{prefixComponent}</div>}
-          {loading ? (
+          {showError ? (
+            <div className="text-orange-400 text-xl flex absolute right-0 mr-3" {...withTooltip(error.message ?? "")}>
+              <ErrorWarningLine />
+            </div>
+          ) : loading ? (
             <LoaderIcon className="flex animate-spin place-items-center absolute right-0 mr-3" />
           ) : (
             suffixComponent
@@ -153,11 +158,6 @@ const View: React.FC<PropsType> = ({
           </div>
         )}
       </div>
-      {showError && (
-        <div className="text-orange-500 text-base flex flex-row items-center gap-1">
-          <ErrorWarningLine /> {error?.message?.toString() || "\u00A0"}
-        </div>
-      )}
     </label>
   );
 };
