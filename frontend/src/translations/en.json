@@ -354,6 +354,7 @@
       "companyOwnerLastName": "Last name",
       "contactInfo": {
         "title": "Contact information",
+        "error": "Please enter your __channel__ handle",
         "telegram": "Telegram",
         "twitter": "Twitter",
         "discord": "Discord",
@@ -407,7 +408,8 @@
       },
       "saveStatus": {
         "unsaved": "Unsaved changes",
-        "saved": "All changes saved"
+        "saved": "All changes saved",
+        "invalid": "The form has errors"
       },
       "website": "Website"
     },

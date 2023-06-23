@@ -27,6 +27,7 @@ export default function ContactInformation({
 }: Props) {
   const { watch } = useFormContext();
   const value = watch(name);
+  const { T } = useIntl();
 
   return (
     <Input
@@ -34,6 +35,9 @@ export default function ContactInformation({
       withMargin={false}
       name={name}
       placeholder={placeholder}
+      options={{
+        pattern: { value: /^[^/]*$/, message: T("profile.form.contactInfo.error", { channel: placeholder }) },
+      }}
       prefixComponent={icon}
       suffixComponent={
         value ? (

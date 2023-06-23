@@ -41,9 +41,12 @@ type Props = {
 export default function EditView({ profile, headerColor, setEditMode }: Props) {
   const { T } = useIntl();
 
-  const formMethods = useForm<UserProfileInfo>({ defaultValues: fromFragment(profile) });
+  const formMethods = useForm<UserProfileInfo>({
+    defaultValues: fromFragment(profile),
+    mode: "onChange",
+  });
   const { handleSubmit, reset, formState, control } = formMethods;
-  const { isDirty } = formState;
+  const { isDirty, isValid } = formState;
 
   useEffect(() => reset(fromFragment(profile)), [profile]);
 
@@ -54,7 +57,7 @@ export default function EditView({ profile, headerColor, setEditMode }: Props) {
     [AllocatedTime.MoreThanThreeDays]: T("profile.form.weeklyAllocatedTime.moreThan3days"),
   };
 
-  const [updateUserProfileInfo] = useUpdateUserProfileMutation({
+  const [updateUserProfileInfo, { loading }] = useUpdateUserProfileMutation({
     refetchQueries: [{ query: UserProfileDocument, variables: { githubUserId: profile.githubUserId } }],
     awaitRefetchQueries: true,
     onCompleted: () => setEditMode(false),
@@ -187,9 +190,10 @@ export default function EditView({ profile, headerColor, setEditMode }: Props) {
 
           <div className="flex flex-row items-center justify-between bg-white/2 border-t border-greyscale-50/8 px-8 py-5">
             <Tag size={TagSize.Medium} testid="dirtyTag">
-              {isDirty ? (
+              {isDirty || !isValid ? (
                 <div className="text-orange-500 flex flex-row items-center gap-1">
-                  <ErrorWarningLine /> {T("profile.form.saveStatus.unsaved")}
+                  <ErrorWarningLine />
+                  {isValid ? T("profile.form.saveStatus.unsaved") : T("profile.form.saveStatus.invalid")}
                 </div>
               ) : (
                 <>
@@ -198,7 +202,12 @@ export default function EditView({ profile, headerColor, setEditMode }: Props) {
                 </>
               )}
             </Tag>
-            <Button size={ButtonSize.Md} htmlType="submit" data-testid="profile-form-submit-button">
+            <Button
+              size={ButtonSize.Md}
+              htmlType="submit"
+              disabled={loading || !isValid}
+              data-testid="profile-form-submit-button"
+            >
               <CheckLine />
               {T("profile.form.done")}
             </Button>

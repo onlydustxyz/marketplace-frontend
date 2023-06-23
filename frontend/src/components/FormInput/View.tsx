@@ -108,7 +108,7 @@ const View: React.FC<PropsType> = ({
               "placeholder:text-spaceBlue-200",
               "focus:placeholder:text-spacePurple-200/60 focus:outline-double focus:outline-spacePurple-500 focus:border-spacePurple-500 focus:bg-spacePurple-900",
               {
-                "border outline-1 border-orange-500": showError,
+                "outline outline-1 outline-orange-500": showError,
                 "h-11": as === "input" && size === Size.Md,
                 "h-8": as === "input" && size === Size.Sm,
                 "px-4 py-3 text-base": size === Size.Md,
