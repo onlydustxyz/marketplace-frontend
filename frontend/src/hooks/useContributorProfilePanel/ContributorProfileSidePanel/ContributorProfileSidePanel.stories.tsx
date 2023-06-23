@@ -1,11 +1,10 @@
-import { ProfileProjectFragment, UserProfileFragment } from "src/__generated/graphql";
+import { ProfileCover, ProfileProjectFragment, UserProfileFragment } from "src/__generated/graphql";
 import ContributorProfileSidePanel from "./View";
 import { Project } from "./ReadOnlyView/ProjectCard";
 import { daysFromNow, minutesFromNow } from "src/utils/date";
 import { withRouter } from "storybook-addon-react-router-v6";
 import withToasterProvider from "src/test/storybook/decorators/withToasterProvider";
 import withSidePanelStackProvider from "src/test/storybook/decorators/withSidePanelStackProvider";
-import { HeaderColor } from "./Header";
 
 export default {
   title: "ContributorProfileSidePanel",
@@ -16,7 +15,7 @@ export default {
       control: {
         type: "select",
       },
-      options: [HeaderColor.Blue, HeaderColor.Cyan, HeaderColor.Magenta, HeaderColor.Yellow],
+      options: [ProfileCover.Blue, ProfileCover.Cyan, ProfileCover.Magenta, ProfileCover.Yellow],
     },
   },
 };
@@ -37,6 +36,7 @@ const profileFull: UserProfileFragment = {
   linkedin: [{ contact: "https://linkedin.com/antho", public: true }],
   discord: [{ contact: "ANTHO123", public: true }],
   website: "https://antho-petanque.com",
+  cover: ProfileCover.Blue,
   languages: {
     Rust: 123,
     Makefile: 12,
@@ -90,6 +90,7 @@ const profileNotSignedUp: UserProfileFragment = {
   linkedin: [],
   discord: [{ contact: "ANTHO123", public: true }],
   website: null,
+  cover: ProfileCover.Magenta,
   languages: {
     Rust: 123,
   },
@@ -126,6 +127,7 @@ const profileMinimalist: UserProfileFragment = {
   linkedin: [],
   discord: [],
   website: null,
+  cover: ProfileCover.Blue,
   contributionCounts: [],
   projectsLeaded: [],
   contributionStats: [],
@@ -177,12 +179,8 @@ const poseidon: Project = {
   lastContribution: minutesFromNow(3),
 };
 
-type Args = {
-  headerColor: HeaderColor;
-};
-
 export const Default = {
-  render: ({ headerColor = HeaderColor.Cyan }: Args) => (
+  render: () => (
     <ContributorProfileSidePanel
       open={true}
       setOpen={() => {
@@ -190,7 +188,6 @@ export const Default = {
       }}
       profile={profileFull}
       projects={[kakarot, wtf, checkpoint, poseidon]}
-      headerColor={headerColor}
     />
   ),
   parameters: {
@@ -199,7 +196,7 @@ export const Default = {
 };
 
 export const Own = {
-  render: ({ headerColor = HeaderColor.Cyan }: Args) => (
+  render: () => (
     <ContributorProfileSidePanel
       open={true}
       setOpen={() => {
@@ -207,7 +204,6 @@ export const Own = {
       }}
       profile={profileFull}
       projects={[kakarot, wtf, checkpoint, poseidon]}
-      headerColor={headerColor}
       isOwn
     />
   ),
@@ -217,7 +213,7 @@ export const Own = {
 };
 
 export const NotSignedUp = {
-  render: ({ headerColor = HeaderColor.Blue }: Args) => (
+  render: () => (
     <ContributorProfileSidePanel
       open={true}
       setOpen={() => {
@@ -225,7 +221,6 @@ export const NotSignedUp = {
       }}
       profile={profileNotSignedUp}
       projects={[wtf]}
-      headerColor={headerColor}
     />
   ),
   parameters: {
@@ -234,7 +229,7 @@ export const NotSignedUp = {
 };
 
 export const Minimalist = {
-  render: ({ headerColor = HeaderColor.Yellow }: Args) => (
+  render: () => (
     <ContributorProfileSidePanel
       open={true}
       setOpen={() => {
@@ -242,7 +237,6 @@ export const Minimalist = {
       }}
       profile={profileMinimalist}
       projects={[]}
-      headerColor={headerColor}
     />
   ),
   parameters: {

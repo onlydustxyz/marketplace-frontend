@@ -1,24 +1,18 @@
 import classNames from "classnames";
 import { useRef } from "react";
-import { Maybe, OwnUserProfileDocument, useUploadProfilePictireMutation } from "src/__generated/graphql";
+import { Maybe, OwnUserProfileDocument, ProfileCover, useUploadProfilePictireMutation } from "src/__generated/graphql";
 import PencilLine from "src/icons/PencilLine";
-import HeaderColorButton from "./EditView/HeaderColorButton";
+import HeaderCoverButton from "./EditView/HeaderCoverButton";
 import FileInput from "./EditView/FileInput";
 
-export enum HeaderColor {
-  Blue = "blue",
-  Cyan = "cyan",
-  Magenta = "magenta",
-  Yellow = "yellow",
-}
-
 type Props = {
-  color: HeaderColor;
+  cover: ProfileCover;
   avatarUrl: Maybe<string>;
   editable?: boolean;
+  onChange?: (value: ProfileCover) => void;
 };
 
-export default function Header({ color, avatarUrl, editable }: Props) {
+export default function Header({ cover: color, avatarUrl, editable, onChange }: Props) {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const [uploadProfilePicture] = useUploadProfilePictireMutation({
@@ -26,43 +20,35 @@ export default function Header({ color, avatarUrl, editable }: Props) {
     refetchQueries: [{ query: OwnUserProfileDocument }],
   });
 
-  const handleChangeCoverClick = (color: HeaderColor) => {
-    console.log(color);
+  const handleClick = (value: ProfileCover) => {
+    onChange && onChange(value);
   };
 
   return (
     <div className="z-10">
       <div
         className={classNames("h-24 w-full bg-cover shrink-0", {
-          "bg-profile-blue": color === HeaderColor.Blue,
-          "bg-profile-cyan": color === HeaderColor.Cyan,
-          "bg-profile-magenta": color === HeaderColor.Magenta,
-          "bg-profile-yellow": color === HeaderColor.Yellow,
+          "bg-profile-blue": color === ProfileCover.Blue,
+          "bg-profile-cyan": color === ProfileCover.Cyan,
+          "bg-profile-magenta": color === ProfileCover.Magenta,
+          "bg-profile-yellow": color === ProfileCover.Yellow,
         })}
       >
         {editable && (
           <div className="flex h-full w-full bg-black/30 items-center justify-center">
             <div className="flex flex-row gap-3 px-5 h-12 w-fit items-center justify-center rounded-full bg-white/8 border border-greyscale-50/8">
-              <HeaderColorButton
-                active={color === HeaderColor.Cyan}
-                color={HeaderColor.Cyan}
-                onClick={handleChangeCoverClick}
+              <HeaderCoverButton active={color === ProfileCover.Cyan} cover={ProfileCover.Cyan} onClick={handleClick} />
+              <HeaderCoverButton
+                active={color === ProfileCover.Magenta}
+                cover={ProfileCover.Magenta}
+                onClick={handleClick}
               />
-              <HeaderColorButton
-                active={color === HeaderColor.Magenta}
-                color={HeaderColor.Magenta}
-                onClick={handleChangeCoverClick}
+              <HeaderCoverButton
+                active={color === ProfileCover.Yellow}
+                cover={ProfileCover.Yellow}
+                onClick={handleClick}
               />
-              <HeaderColorButton
-                active={color === HeaderColor.Yellow}
-                color={HeaderColor.Yellow}
-                onClick={handleChangeCoverClick}
-              />
-              <HeaderColorButton
-                active={color === HeaderColor.Blue}
-                color={HeaderColor.Blue}
-                onClick={handleChangeCoverClick}
-              />
+              <HeaderCoverButton active={color === ProfileCover.Blue} cover={ProfileCover.Blue} onClick={handleClick} />
             </div>
           </div>
         )}

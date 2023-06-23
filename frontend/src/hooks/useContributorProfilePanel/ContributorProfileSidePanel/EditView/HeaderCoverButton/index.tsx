@@ -1,13 +1,13 @@
 import classNames from "classnames";
-import { HeaderColor } from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/Header";
+import { ProfileCover } from "src/__generated/graphql";
 
 type Props = {
   active: boolean;
-  color: HeaderColor;
-  onClick: (color: HeaderColor) => void;
+  cover: ProfileCover;
+  onClick: (color: ProfileCover) => void;
 };
 
-export default function HeaderColorButton({ active, color, onClick }: Props) {
+export default function HeaderCoverButton({ active, cover: color, onClick }: Props) {
   return (
     <div
       className={classNames("flex h-6 w-6 items-center justify-center rounded-full", {
@@ -17,10 +17,10 @@ export default function HeaderColorButton({ active, color, onClick }: Props) {
     >
       <button
         className={classNames("flex h-4 w-4 rounded-full bg-gradient-to-b", {
-          "from-cyan-500 to-cyan-100": color === HeaderColor.Cyan,
-          "from-fuchsia-500 to-violet-950": color === HeaderColor.Magenta,
-          "from-amber-600 to-yellow-200": color === HeaderColor.Yellow,
-          "from-midBlue-500 to-midBlue-200": color === HeaderColor.Blue,
+          "from-cyan-500 to-cyan-100": color === ProfileCover.Cyan,
+          "from-fuchsia-500 to-violet-950": color === ProfileCover.Magenta,
+          "from-amber-600 to-yellow-200": color === ProfileCover.Yellow,
+          "from-midBlue-500 to-midBlue-200": color === ProfileCover.Blue,
         })}
         onClick={e => {
           e.preventDefault();

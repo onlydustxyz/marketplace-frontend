@@ -6,7 +6,6 @@ import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 import { isProjectVisibleToUser } from "src/hooks/useProjectVisibility";
 import { useAuth } from "src/hooks/useAuth";
 import isDefined from "src/utils/isDefined";
-import { HeaderColor } from "./Header";
 import useUserProfile from "./useUserProfile";
 
 type Props = {
@@ -71,7 +70,6 @@ export default function ContributorProfileSidePanel({ githubUserId, ...rest }: P
       profile={userProfile}
       projects={projects}
       {...rest}
-      headerColor={HeaderColor.Blue}
     />
   ) : (
     <div />

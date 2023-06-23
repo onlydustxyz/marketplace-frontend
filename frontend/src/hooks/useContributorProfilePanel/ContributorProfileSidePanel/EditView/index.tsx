@@ -11,7 +11,7 @@ import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import CheckLine from "src/icons/CheckLine";
 import Button, { ButtonSize } from "src/components/Button";
 import Tag, { TagSize } from "src/components/Tag";
-import Header, { HeaderColor } from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/Header";
+import Header from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/Header";
 import Card from "./Card";
 import { Section } from "./Section";
 import Input, { Size } from "src/components/FormInput";
@@ -34,11 +34,10 @@ import FormToggle from "src/components/FormToggle";
 
 type Props = {
   profile: UserProfileFragment & OwnUserProfileDetailsFragment;
-  headerColor: HeaderColor;
   setEditMode: (value: boolean) => void;
 };
 
-export default function EditView({ profile, headerColor, setEditMode }: Props) {
+export default function EditView({ profile, setEditMode }: Props) {
   const { T } = useIntl();
 
   const formMethods = useForm<UserProfileInfo>({
@@ -70,7 +69,13 @@ export default function EditView({ profile, headerColor, setEditMode }: Props) {
       <form id="profile-info-form" className="h-full min-h-0" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col h-full justify-between">
           <div className="flex flex-col gap-6 min-h-0">
-            <Header editable color={headerColor} avatarUrl={profile.avatarUrl} />
+            <Controller
+              name="cover"
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <Header editable cover={value} avatarUrl={profile.avatarUrl} onChange={onChange} />
+              )}
+            />
 
             <div className="flex flex-col gap-6 -mt-[72px] pt-[72px] pb-12 pl-8 mr-2 pr-6 scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded">
               <div data-testid="login" className="font-belwe font-normal text-3xl text-white">

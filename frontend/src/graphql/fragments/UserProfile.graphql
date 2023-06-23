@@ -19,6 +19,7 @@ fragment UserProfileDetails on UserProfiles {
   createdAt
   lastSeen
   website
+  cover
   email: contactInformations(where: { channel: { _eq: "email" } }, limit: 1) {
     contact
     public
