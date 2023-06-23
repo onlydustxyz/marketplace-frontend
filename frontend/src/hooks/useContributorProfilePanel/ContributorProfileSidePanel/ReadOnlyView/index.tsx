@@ -117,7 +117,7 @@ export default function ReadOnlyView({ isOwn, profile, projects, headerColor, se
           {(profile.bio || profile.location || profile.createdAt) && (
             <div className="flex flex-col gap-4 font-walsheim font-normal">
               {profile.bio && (
-                <MarkdownPreview testId="bio" className="text-lg">
+                <MarkdownPreview testId="bio" className="text-lg leading-6">
                   {profile.bio}
                 </MarkdownPreview>
               )}
