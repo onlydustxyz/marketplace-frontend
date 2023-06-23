@@ -12,7 +12,7 @@ type Props = {
   onChange?: (value: ProfileCover) => void;
 };
 
-export default function Header({ cover: color, avatarUrl, editable, onChange }: Props) {
+export default function Header({ cover, avatarUrl, editable, onChange }: Props) {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const [uploadProfilePicture] = useUploadProfilePictireMutation({
@@ -28,27 +28,27 @@ export default function Header({ cover: color, avatarUrl, editable, onChange }: 
     <div className="z-10">
       <div
         className={classNames("h-24 w-full bg-cover shrink-0", {
-          "bg-profile-blue": color === ProfileCover.Blue,
-          "bg-profile-cyan": color === ProfileCover.Cyan,
-          "bg-profile-magenta": color === ProfileCover.Magenta,
-          "bg-profile-yellow": color === ProfileCover.Yellow,
+          "bg-profile-blue": cover === ProfileCover.Blue,
+          "bg-profile-cyan": cover === ProfileCover.Cyan,
+          "bg-profile-magenta": cover === ProfileCover.Magenta,
+          "bg-profile-yellow": cover === ProfileCover.Yellow,
         })}
       >
         {editable && (
           <div className="flex h-full w-full bg-black/30 items-center justify-center">
             <div className="flex flex-row gap-3 px-5 h-12 w-fit items-center justify-center rounded-full bg-white/8 border border-greyscale-50/8">
-              <HeaderCoverButton active={color === ProfileCover.Cyan} cover={ProfileCover.Cyan} onClick={handleClick} />
+              <HeaderCoverButton active={cover === ProfileCover.Cyan} cover={ProfileCover.Cyan} onClick={handleClick} />
               <HeaderCoverButton
-                active={color === ProfileCover.Magenta}
+                active={cover === ProfileCover.Magenta}
                 cover={ProfileCover.Magenta}
                 onClick={handleClick}
               />
               <HeaderCoverButton
-                active={color === ProfileCover.Yellow}
+                active={cover === ProfileCover.Yellow}
                 cover={ProfileCover.Yellow}
                 onClick={handleClick}
               />
-              <HeaderCoverButton active={color === ProfileCover.Blue} cover={ProfileCover.Blue} onClick={handleClick} />
+              <HeaderCoverButton active={cover === ProfileCover.Blue} cover={ProfileCover.Blue} onClick={handleClick} />
             </div>
           </div>
         )}
