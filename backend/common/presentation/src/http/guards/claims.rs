@@ -39,7 +39,9 @@ struct Claims {
 
 impl Claims {
 	fn try_from_jwt(jwt: &str) -> Result<Self> {
-		let token = decode::<Claims>(jwt, &jwt_secret()?, &Validation::default())?;
+		let mut validation = Validation::default();
+		validation.set_issuer(&[jwt_issuer()?]);
+		let token = decode::<Claims>(jwt, &jwt_secret()?, &validation)?;
 		Ok(token.claims)
 	}
 }
@@ -62,6 +64,10 @@ impl<'r> FromRequest<'r> for Claims {
 fn jwt_secret() -> Result<DecodingKey> {
 	let secret = std::env::var("HASURA_GRAPHQL_JWT_SECRET")?;
 	Ok(DecodingKey::from_secret(secret.as_bytes()))
+}
+
+fn jwt_issuer() -> Result<String> {
+	std::env::var("JWT_ISSUER").map_err(Into::into)
 }
 
 #[cfg(test)]
@@ -90,6 +96,18 @@ mod test {
 				OsString::from("HASURA_GRAPHQL_JWT_SECRET"),
 				"another_secret",
 			),
+			set_env(OsString::from("JWT_ISSUER"), "hasura-auth-staging"),
+		);
+
+		assert_matches!(Claims::try_from_jwt(JWT), Err(Error::Invalid(_)));
+	}
+
+	#[rstest]
+	fn invalid_jwt_issuer() {
+		let _lock = lock_test();
+		let _guards = (
+			set_env(OsString::from("HASURA_GRAPHQL_JWT_SECRET"), "secret"),
+			set_env(OsString::from("JWT_ISSUER"), "pirate"),
 		);
 
 		assert_matches!(Claims::try_from_jwt(JWT), Err(Error::Invalid(_)));
@@ -100,6 +118,7 @@ mod test {
 		let _lock = lock_test();
 		let _guards = (
 			set_env(OsString::from("HASURA_GRAPHQL_JWT_SECRET"), "secret"),
+			set_env(OsString::from("JWT_ISSUER"), "hasura-auth-staging"),
 		);
 
 		let claims = Claims::try_from_jwt(JWT).unwrap();
