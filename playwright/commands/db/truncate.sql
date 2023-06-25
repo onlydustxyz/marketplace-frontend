@@ -1,8 +1,8 @@
-CREATE FUNCTION pg_temp.truncate_schema (schema_name text) RETURNS void AS $$
+CREATE FUNCTION pg_temp.truncate_schema (schema_name TEXT) RETURNS void AS $$
 DECLARE
     table_name text;
 BEGIN
-    FOR table_name IN (SELECT tablename FROM pg_tables WHERE schemaname = schema_name)
+    FOR table_name IN (SELECT tablename FROM pg_tables WHERE schemaname = schema_name AND tablename != '__diesel_schema_migrations')
     LOOP
         EXECUTE 'TRUNCATE TABLE ' || table_name || ' RESTART IDENTITY CASCADE';
     END LOOP;

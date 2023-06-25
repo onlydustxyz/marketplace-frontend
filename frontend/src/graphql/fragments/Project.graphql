@@ -2,28 +2,6 @@ fragment ProjectId on Projects {
   id
 }
 
-fragment ProjectContributors on Projects {
-  id
-  githubRepos {
-    projectId
-    githubRepoId
-    repoContributors {
-      user {
-        ...GithubUser
-      }
-    }
-  }
-  budgets {
-    id
-    paymentRequests {
-      ...PaymentRequestId
-      githubRecipient {
-        ...GithubUser
-      }
-    }
-  }
-}
-
 fragment LastProjectMergedPullRequests on Projects {
   githubRepos {
     projectId
@@ -60,9 +38,7 @@ fragment ProjectVisibilityDetails on Projects {
     }
   }
   contributors {
-    githubUser {
-      ...GithubUser
-    }
+    githubUserId
   }
   projectLeads(orderBy: { user: { githubUserId: ASC } }) {
     userId

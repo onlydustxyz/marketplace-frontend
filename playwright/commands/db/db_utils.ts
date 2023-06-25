@@ -6,7 +6,7 @@ export const DUMP_PATH = "playwright/marketplace_db_dump";
 export const dumpDB = () => {
   const DATABASE_URL = getEnv("DATABASE_URL");
   execSync(
-    `pg_dump --disable-triggers --data-only --exclude-table=auth.migrations --exclude-table=auth.providers --exclude-table=auth.roles --exclude-schema=hdb_catalog ${DATABASE_URL} > "${DUMP_PATH}"`,
+    `pg_dump --disable-triggers --data-only --exclude-table=public.__diesel_schema_migrations --exclude-table=auth.migrations --exclude-table=auth.providers --exclude-table=auth.roles --exclude-schema=hdb_catalog ${DATABASE_URL} > "${DUMP_PATH}"`,
     {
       stdio: "pipe",
     }
