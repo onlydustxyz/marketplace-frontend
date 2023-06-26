@@ -47,6 +47,8 @@ test.describe("As a signed-in user, I", () => {
     await expect(editPage.githubHandle).toBeDisabled();
     await expect(editPage.email).toHaveValue(user.email);
     await expect(editPage.email).toBeDisabled();
+    await expect(editPage.emailVisibility).toHaveAttribute("data-state", "off");
+    await editPage.emailVisibility.click({ force: true });
     await expect(editPage.emailVisibility).toHaveAttribute("data-state", "on");
     await editPage.telegram.fill("fu");
     await expect(editPage.telegramVisibility).toHaveAttribute("data-state", "on");
