@@ -114,6 +114,7 @@ mod test {
 	#[rstest]
 	fn missing_secret() {
 		let _lock = lock_test();
+		let _guard = set_env(OsString::from("HASURA_GRAPHQL_JWT_SECRET"), "");
 		assert_matches!(Jwt::from_str(JWT), Err(Error::Configuration(_)));
 	}
 
