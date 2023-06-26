@@ -5,6 +5,8 @@ export class EditProfilePage {
   readonly page: Page;
 
   public readonly login: Locator;
+  public readonly avatar: Locator;
+  public readonly avatarFileInput: Locator;
   public readonly location: Locator;
   public readonly bio: Locator;
   public readonly website: Locator;
@@ -28,6 +30,8 @@ export class EditProfilePage {
     this.page = page;
 
     this.login = this.page.locator("[data-testid=login]");
+    this.avatar = this.page.locator("[data-testid=avatarUrl]");
+    this.avatarFileInput = this.page.locator("[data-testid=avatarFileInput]");
     this.location = this.page.getByTestId("location");
     this.bio = this.page.getByTestId("bio");
     this.website = this.page.getByTestId("website");

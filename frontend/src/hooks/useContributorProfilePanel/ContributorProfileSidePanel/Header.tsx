@@ -84,6 +84,7 @@ export default function Header({ profile, editable, onChange }: Props) {
           <img
             src={avatarUrl}
             className="rounded-full w-24 h-24 ml-8 -mt-12 outline outline-4 outline-greyscale-50/12"
+            data-testid="avatarUrl"
           />
           {editable && !uploading && (
             <>

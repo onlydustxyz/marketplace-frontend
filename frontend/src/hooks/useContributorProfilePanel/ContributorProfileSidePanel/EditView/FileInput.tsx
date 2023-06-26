@@ -12,7 +12,16 @@ const FileInput = React.forwardRef<HTMLInputElement, Props>(function FileInput({
     }
   };
 
-  return <input type="file" ref={ref} style={{ display: "none" }} onChange={onChange} accept="image/*" />;
+  return (
+    <input
+      data-testid="avatarFileInput"
+      type="file"
+      ref={ref}
+      style={{ display: "none" }}
+      onChange={onChange}
+      accept="image/*"
+    />
+  );
 });
 
 export default FileInput;

@@ -20,6 +20,18 @@ test.describe("As a signed-in user, I", () => {
     await expect(viewPage.login).toHaveText(user.github.login);
   });
 
+  test("can change my avatar", async ({ users }) => {
+    const user = users.Olivier;
+    const editPage = await viewPage.edit();
+    await expect(editPage.login).toHaveText(user.github.login);
+    await expect(editPage.avatar).toHaveAttribute("src", "https://avatars.githubusercontent.com/u/595505?v=4");
+    await editPage.avatarFileInput.setInputFiles("playwright/fixtures/fox.png");
+    await expect(editPage.avatar).toHaveAttribute(
+      "src",
+      "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/3676814822627832550.png"
+    );
+  });
+
   test("can edit my profile side panel", async ({ users }) => {
     const user = users.Olivier;
     // ======= Edit profile
