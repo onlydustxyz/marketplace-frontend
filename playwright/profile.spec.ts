@@ -28,7 +28,7 @@ test.describe("As a signed-in user, I", () => {
     await editPage.avatarFileInput.setInputFiles("playwright/fixtures/fox.png");
     await expect(editPage.avatar).toHaveAttribute(
       "src",
-      "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/3544318369051643752.webp",
+      "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/781526099633208489.webp",
       { timeout: 10000 }
     );
   });

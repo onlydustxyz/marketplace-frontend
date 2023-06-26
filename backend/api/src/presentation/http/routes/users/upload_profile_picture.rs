@@ -2,6 +2,7 @@ use std::{io::Cursor, sync::Arc};
 
 use domain::LogErr;
 use http_api_problem::HttpApiProblem;
+use image::{imageops::FilterType, GenericImageView};
 use presentation::http::guards::Claims;
 use reqwest::StatusCode;
 use rocket::{
@@ -84,8 +85,17 @@ impl TryToWebp for Vec<u8> {
 
 	fn try_to_webp(self) -> anyhow::Result<Self> {
 		let img = image::io::Reader::new(Cursor::new(self)).with_guessed_format()?.decode()?;
+
+		let (width, height) = img.dimensions();
+		let img = if width > 1024 || height > 1024 {
+			img.resize(1024, 1024, FilterType::Lanczos3)
+		} else {
+			img
+		};
+
 		let mut bytes: Vec<u8> = Vec::new();
 		img.write_to(&mut Cursor::new(&mut bytes), image::ImageOutputFormat::WebP)?;
+
 		Ok(bytes)
 	}
 }
