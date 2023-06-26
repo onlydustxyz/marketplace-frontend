@@ -1,5 +1,6 @@
-use std::sync::Arc;
+use std::{io::Cursor, sync::Arc};
 
+use domain::LogErr;
 use http_api_problem::HttpApiProblem;
 use presentation::http::guards::Claims;
 use reqwest::StatusCode;
@@ -39,7 +40,14 @@ pub async fn profile_picture(
 				.title("Unable to open profile picture")
 				.detail(e.to_string())
 		})?
-		.to_vec();
+		.to_vec()
+		.try_to_webp()
+		.log_err("Could not decode profile picture")
+		.map_err(|_| {
+			HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
+				.title("Internal error")
+				.detail("Could not decode profile picture")
+		})?;
 
 	let usecase = application::user::update_profile_info::Usecase::new(
 		user_profile_info_repository.inner().clone(),
@@ -52,10 +60,7 @@ pub async fn profile_picture(
 		.await
 		.map_err(Error::from)?;
 
-	let res = Response { picture_url };
-
-	warn!("{:?}", serde_json::to_string(&res));
-	Ok(Json(res))
+	Ok(Json(Response { picture_url }))
 }
 
 fn profile_picture_size_limit() -> ByteUnit {
@@ -64,4 +69,23 @@ fn profile_picture_size_limit() -> ByteUnit {
 		.parse::<u64>()
 		.unwrap_or(3)
 		.mebibytes()
+}
+
+trait TryToWebp
+where
+	Self: Sized,
+{
+	type Error;
+	fn try_to_webp(self) -> Result<Self, Self::Error>;
+}
+
+impl TryToWebp for Vec<u8> {
+	type Error = anyhow::Error;
+
+	fn try_to_webp(self) -> anyhow::Result<Self> {
+		let img = image::io::Reader::new(Cursor::new(self)).with_guessed_format()?.decode()?;
+		let mut bytes: Vec<u8> = Vec::new();
+		img.write_to(&mut Cursor::new(&mut bytes), image::ImageOutputFormat::WebP)?;
+		Ok(bytes)
+	}
 }
