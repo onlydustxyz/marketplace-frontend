@@ -8,7 +8,9 @@ use rocket::{
 	Request,
 };
 use serde::{Deserialize, Serialize};
+use serde_with::{serde_as, DisplayFromStr};
 use thiserror::Error;
+use uuid::Uuid;
 
 #[derive(Debug, Clone, Error, PartialEq, Eq)]
 pub enum Error {
@@ -35,6 +37,18 @@ struct JWT {
 	iat: usize,
 	iss: String,
 	sub: String,
+	#[serde(rename = "https://hasura.io/jwt/claims")]
+	claims: Claims,
+}
+
+#[serde_as]
+#[derive(Debug, Serialize, Deserialize)]
+struct Claims {
+	#[serde(rename = "x-hasura-user-id")]
+	user_id: Uuid,
+	#[serde(rename = "x-hasura-githubUserId")]
+	#[serde_as(as = "DisplayFromStr")]
+	github_user_id: u64,
 }
 
 impl FromStr for JWT {
@@ -128,5 +142,10 @@ mod test {
 		assert_eq!(jwt.iat, 1687528931);
 		assert_eq!(jwt.exp, 3687529831);
 		assert_eq!(jwt.iss, "hasura-auth-staging");
+		assert_eq!(
+			jwt.claims.user_id,
+			Uuid::from_str("747e663f-4e68-4b42-965b-b5aebedcd4c4").unwrap()
+		);
+		assert_eq!(jwt.claims.github_user_id, 43467246);
 	}
 }
