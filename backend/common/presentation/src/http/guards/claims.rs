@@ -1,4 +1,4 @@
-use std::env::VarError;
+use std::{env::VarError, str::FromStr};
 
 use async_trait::async_trait;
 use jsonwebtoken::{decode, DecodingKey, Validation};
@@ -30,29 +30,31 @@ impl From<Error> for Status {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-struct Claims {
+struct JWT {
 	exp: usize,
 	iat: usize,
 	iss: String,
 	sub: String,
 }
 
-impl Claims {
-	fn try_from_jwt(jwt: &str) -> Result<Self> {
+impl FromStr for JWT {
+	type Err = Error;
+
+	fn from_str(jwt: &str) -> Result<Self> {
 		let mut validation = Validation::default();
 		validation.set_issuer(&[jwt_issuer()?]);
-		let token = decode::<Claims>(jwt, &jwt_secret()?, &validation)?;
+		let token = decode::<JWT>(jwt, &jwt_secret()?, &validation)?;
 		Ok(token.claims)
 	}
 }
 
 #[async_trait]
-impl<'r> FromRequest<'r> for Claims {
+impl<'r> FromRequest<'r> for JWT {
 	type Error = Error;
 
 	async fn from_request(request: &'r Request<'_>) -> Outcome<Self, Self::Error> {
 		match request.headers().get_one(header::AUTHORIZATION.as_str()) {
-			Some(jwt) => match Claims::try_from_jwt(jwt) {
+			Some(jwt) => match jwt.parse() {
 				Ok(claims) => Outcome::Success(claims),
 				Err(error) => Outcome::Failure((error.clone().into(), error)),
 			},
@@ -85,7 +87,7 @@ mod test {
 	#[rstest]
 	fn missing_secret() {
 		let _lock = lock_test();
-		assert_matches!(Claims::try_from_jwt(JWT), Err(Error::Configuration(_)));
+		assert_matches!(JWT::from_str(JWT), Err(Error::Configuration(_)));
 	}
 
 	#[rstest]
@@ -99,7 +101,7 @@ mod test {
 			set_env(OsString::from("JWT_ISSUER"), "hasura-auth-staging"),
 		);
 
-		assert_matches!(Claims::try_from_jwt(JWT), Err(Error::Invalid(_)));
+		assert_matches!(JWT::from_str(JWT), Err(Error::Invalid(_)));
 	}
 
 	#[rstest]
@@ -110,7 +112,7 @@ mod test {
 			set_env(OsString::from("JWT_ISSUER"), "pirate"),
 		);
 
-		assert_matches!(Claims::try_from_jwt(JWT), Err(Error::Invalid(_)));
+		assert_matches!(JWT::from_str(JWT), Err(Error::Invalid(_)));
 	}
 
 	#[rstest]
@@ -121,10 +123,10 @@ mod test {
 			set_env(OsString::from("JWT_ISSUER"), "hasura-auth-staging"),
 		);
 
-		let claims = Claims::try_from_jwt(JWT).unwrap();
-		assert_eq!(claims.sub, "747e663f-4e68-4b42-965b-b5aebedcd4c4");
-		assert_eq!(claims.iat, 1687528931);
-		assert_eq!(claims.exp, 3687529831);
-		assert_eq!(claims.iss, "hasura-auth-staging");
+		let jwt = JWT::from_str(JWT).unwrap();
+		assert_eq!(jwt.sub, "747e663f-4e68-4b42-965b-b5aebedcd4c4");
+		assert_eq!(jwt.iat, 1687528931);
+		assert_eq!(jwt.exp, 3687529831);
+		assert_eq!(jwt.iss, "hasura-auth-staging");
 	}
 }
