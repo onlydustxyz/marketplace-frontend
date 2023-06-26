@@ -1,11 +1,12 @@
 import classNames from "classnames";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { ProfileCover, UserProfileFragment } from "src/__generated/graphql";
 import PencilLine from "src/icons/PencilLine";
 import HeaderCoverButton from "./EditView/HeaderCoverButton";
 import FileInput from "./EditView/FileInput";
 import useUploadProfilePicture from "./useProfilePictureUpload";
 import { useApolloClient } from "@apollo/client";
+import Loader from "src/assets/icons/Loader";
 
 type Props = {
   profile: UserProfileFragment;
@@ -15,6 +16,7 @@ type Props = {
 
 export default function Header({ profile, editable, onChange }: Props) {
   const { avatarUrl, cover } = profile;
+  const [uploading, setUploading] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -23,7 +25,9 @@ export default function Header({ profile, editable, onChange }: Props) {
 
   const onProfilePictureChange = async (picture: File) => {
     if (uploadProfilePicture) {
+      setUploading(true);
       const url = await uploadProfilePicture(picture);
+      setUploading(false);
       cache.modify({
         id: cache.identify(profile),
         fields: {
@@ -72,11 +76,16 @@ export default function Header({ profile, editable, onChange }: Props) {
           className={classNames("relative w-fit", { "cursor-pointer": editable })}
           onClick={() => fileInputRef.current?.click()}
         >
+          {uploading && (
+            <div className="absolute flex items-center justify-center ml-8 rounded-full w-24 h-24 bg-spaceBlue-800/50">
+              <Loader className="animate-spin" />
+            </div>
+          )}
           <img
             src={avatarUrl}
             className="rounded-full w-24 h-24 ml-8 -mt-12 outline outline-4 outline-greyscale-50/12"
           />
-          {editable && (
+          {editable && !uploading && (
             <>
               <PencilLine
                 className="absolute right-0 bottom-0
