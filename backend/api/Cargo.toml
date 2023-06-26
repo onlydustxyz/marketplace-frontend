@@ -41,6 +41,7 @@ uuid08 = {package = "uuid", version = "0.8", default_features = false, features 
 graphql_client = "0.12.0"
 
 # Http client
+http-api-problem = {version="0.56.0", features=["rocket"]}
 reqwest = {version = "0.11", default-features = false}
 url = "2.2.2"
 

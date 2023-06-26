@@ -14,6 +14,7 @@ use presentation::http;
 use crate::{infrastructure::simple_storage, models::*, presentation::graphql};
 
 pub mod dto;
+mod error;
 pub mod roles;
 mod routes;
 
@@ -68,6 +69,7 @@ pub async fn serve(
 				routes::graphql::post_graphql_handler
 			],
 		)
+		.mount("/", routes![routes::user::profile_picture])
 		.launch()
 		.await?;
 
