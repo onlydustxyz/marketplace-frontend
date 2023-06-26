@@ -10,18 +10,14 @@ export default function useUploadProfilePicture() {
 
   return tokenSet?.accessToken
     ? async (picture: File) => {
-        console.log(picture);
-        const body = new FormData();
-        body.append("data", picture);
-
         try {
-          const data = await fetch(`${config.API_BASE_URL}/users/profile_picture`, {
+          const { picture_url } = await fetch(`${config.API_BASE_URL}/users/profile_picture`, {
             method: "POST",
             headers: { Authorization: `Bearer ${tokenSet?.accessToken}` },
             body: picture,
-          });
+          }).then(data => data.json());
 
-          console.log(data);
+          return picture_url;
         } catch (error) {
           showToaster(T("profile.form.pictureUploadError"), { isError: true });
           console.error(error);

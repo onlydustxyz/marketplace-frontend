@@ -1,0 +1,6 @@
+query getUserAvatarUrl($githubUserId: bigint!) {
+  userProfiles(where: { githubUserId: { _eq: $githubUserId } }) {
+    ...UserProfileId
+    avatarUrl
+  }
+}

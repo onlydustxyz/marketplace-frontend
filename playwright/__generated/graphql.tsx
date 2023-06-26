@@ -16173,6 +16173,13 @@ export type UserIdentityQueryVariables = Exact<{
 
 export type UserIdentityQuery = { __typename?: 'query_root', userPayoutInfo: Array<{ __typename?: 'UserPayoutInfo', userId: any, identity: any | null }> };
 
+export type GetUserAvatarUrlQueryVariables = Exact<{
+  githubUserId: Scalars['bigint'];
+}>;
+
+
+export type GetUserAvatarUrlQuery = { __typename?: 'query_root', userProfiles: Array<{ __typename?: 'UserProfiles', avatarUrl: string | null, githubUserId: any | null }> };
+
 export type GetPaymentRequestIdsQueryVariables = Exact<{
   githubUserId: Scalars['bigint'];
 }>;
@@ -17366,6 +17373,42 @@ export function useUserIdentityLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
 export type UserIdentityQueryHookResult = ReturnType<typeof useUserIdentityQuery>;
 export type UserIdentityLazyQueryHookResult = ReturnType<typeof useUserIdentityLazyQuery>;
 export type UserIdentityQueryResult = Apollo.QueryResult<UserIdentityQuery, UserIdentityQueryVariables>;
+export const GetUserAvatarUrlDocument = gql`
+    query getUserAvatarUrl($githubUserId: bigint!) {
+  userProfiles(where: {githubUserId: {_eq: $githubUserId}}) {
+    ...UserProfileId
+    avatarUrl
+  }
+}
+    ${UserProfileIdFragmentDoc}`;
+
+/**
+ * __useGetUserAvatarUrlQuery__
+ *
+ * To run a query within a React component, call `useGetUserAvatarUrlQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserAvatarUrlQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserAvatarUrlQuery({
+ *   variables: {
+ *      githubUserId: // value for 'githubUserId'
+ *   },
+ * });
+ */
+export function useGetUserAvatarUrlQuery(baseOptions: Apollo.QueryHookOptions<GetUserAvatarUrlQuery, GetUserAvatarUrlQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserAvatarUrlQuery, GetUserAvatarUrlQueryVariables>(GetUserAvatarUrlDocument, options);
+      }
+export function useGetUserAvatarUrlLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserAvatarUrlQuery, GetUserAvatarUrlQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserAvatarUrlQuery, GetUserAvatarUrlQueryVariables>(GetUserAvatarUrlDocument, options);
+        }
+export type GetUserAvatarUrlQueryHookResult = ReturnType<typeof useGetUserAvatarUrlQuery>;
+export type GetUserAvatarUrlLazyQueryHookResult = ReturnType<typeof useGetUserAvatarUrlLazyQuery>;
+export type GetUserAvatarUrlQueryResult = Apollo.QueryResult<GetUserAvatarUrlQuery, GetUserAvatarUrlQueryVariables>;
 export const GetPaymentRequestIdsDocument = gql`
     query GetPaymentRequestIds($githubUserId: bigint!) {
   githubUsersByPk(id: $githubUserId) {

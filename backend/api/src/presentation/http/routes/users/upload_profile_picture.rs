@@ -5,12 +5,20 @@ use presentation::http::guards::Claims;
 use reqwest::StatusCode;
 use rocket::{
 	data::{ByteUnit, Data, ToByteUnit},
+	serde::json::Json,
 	State,
 };
+use serde::Serialize;
+use url::Url;
 
 use crate::{
 	application, infrastructure::simple_storage, models::*, presentation::http::error::Error,
 };
+
+#[derive(Debug, Serialize)]
+pub struct Response {
+	picture_url: Url,
+}
 
 #[post("/users/profile_picture", data = "<profile_picture>")]
 pub async fn profile_picture(
@@ -19,7 +27,7 @@ pub async fn profile_picture(
 	contact_informations_repository: &State<Arc<dyn ContactInformationsRepository>>,
 	simple_storage: &State<Arc<simple_storage::Client>>,
 	profile_picture: Data<'_>,
-) -> Result<(), HttpApiProblem> {
+) -> Result<Json<Response>, HttpApiProblem> {
 	let user_id = claims.user_id;
 
 	let profile_picture = profile_picture
@@ -39,12 +47,15 @@ pub async fn profile_picture(
 		simple_storage.inner().clone(),
 	);
 
-	usecase
+	let picture_url = usecase
 		.update_user_avatar(user_id.into(), profile_picture)
 		.await
 		.map_err(Error::from)?;
 
-	Ok(())
+	let res = Response { picture_url };
+
+	warn!("{:?}", serde_json::to_string(&res));
+	Ok(Json(res))
 }
 
 fn profile_picture_size_limit() -> ByteUnit {

@@ -85,7 +85,7 @@ export default function ReadOnlyView({ isOwn, profile, projects, setOpen, setEdi
 
   return (
     <div className="flex flex-col h-full">
-      <Header cover={translateProfileCover(profile.cover) ?? ProfileCover.Blue} avatarUrl={profile.avatarUrl} />
+      <Header profile={{ ...profile, cover: translateProfileCover(profile.cover) ?? ProfileCover.Blue }} />
 
       <div className="flex flex-col gap-12 -mt-12 pt-4 pb-12 ml-8 mr-2 pr-6 scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded">
         <div className="flex flex-col gap-6">

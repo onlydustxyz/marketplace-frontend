@@ -1,22 +1,37 @@
 import classNames from "classnames";
 import { useRef } from "react";
-import { Maybe, ProfileCover } from "src/__generated/graphql";
+import { ProfileCover, UserProfileFragment } from "src/__generated/graphql";
 import PencilLine from "src/icons/PencilLine";
 import HeaderCoverButton from "./EditView/HeaderCoverButton";
 import FileInput from "./EditView/FileInput";
 import useUploadProfilePicture from "./useProfilePictureUpload";
+import { useApolloClient } from "@apollo/client";
 
 type Props = {
-  cover: ProfileCover;
-  avatarUrl: Maybe<string>;
+  profile: UserProfileFragment;
   editable?: boolean;
   onChange?: (value: ProfileCover) => void;
 };
 
-export default function Header({ cover, avatarUrl, editable, onChange }: Props) {
+export default function Header({ profile, editable, onChange }: Props) {
+  const { avatarUrl, cover } = profile;
+
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const uploadProfilePicture = useUploadProfilePicture();
+  const { cache } = useApolloClient();
+
+  const onProfilePictureChange = async (picture: File) => {
+    if (uploadProfilePicture) {
+      const url = await uploadProfilePicture(picture);
+      cache.modify({
+        id: cache.identify(profile),
+        fields: {
+          avatarUrl: () => url,
+        },
+      });
+    }
+  };
 
   const handleClick = (value: ProfileCover) => {
     onChange && onChange(value);
@@ -69,7 +84,7 @@ export default function Header({ cover, avatarUrl, editable, onChange }: Props) 
             text-base text-spaceBlue-900 bg-greyscale-50
             outline outline-2 outline-black shadow-bottom-sm"
               />
-              {editable && <FileInput ref={fileInputRef} setFile={uploadProfilePicture} />}
+              {editable && <FileInput ref={fileInputRef} setFile={onProfilePictureChange} />}
             </>
           )}
         </div>

@@ -3,6 +3,7 @@ use std::sync::Arc;
 use derive_more::Constructor;
 use domain::{DomainError, Languages, UserId};
 use infrastructure::database::enums::{AllocatedTime, ProfileCover};
+use url::Url;
 
 use crate::{domain::ImageStoreService, models::*};
 
@@ -48,11 +49,11 @@ impl Usecase {
 		&self,
 		id: UserId,
 		avatar_data: Vec<u8>,
-	) -> Result<(), DomainError> {
+	) -> Result<Url, DomainError> {
 		let avatar_url = self.image_store.store_image(avatar_data).await?;
 		self.user_profile_info_repository
 			.upsert_user_avatar(id, avatar_url.to_string())?;
 
-		Ok(())
+		Ok(avatar_url)
 	}
 }

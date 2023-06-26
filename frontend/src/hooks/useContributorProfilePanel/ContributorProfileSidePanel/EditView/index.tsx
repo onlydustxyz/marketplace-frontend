@@ -1,7 +1,7 @@
 import {
   AllocatedTime,
   OwnUserProfileDetailsFragment,
-  UserProfileDocument,
+  OwnUserProfileDocument,
   UserProfileFragment,
   useUpdateUserProfileMutation,
 } from "src/__generated/graphql";
@@ -19,7 +19,6 @@ import { Controller, FormProvider, useForm } from "react-hook-form";
 import GlobalLine from "src/icons/GlobalLine";
 import MapPinLine from "src/icons/MapPinLine";
 import { UserProfileInfo, fromFragment, toVariables } from "./types";
-import { useEffect } from "react";
 import GithubLogo from "src/icons/GithubLogo";
 import Telegram from "src/assets/icons/Telegram";
 import TwitterFill from "src/icons/TwitterFill";
@@ -44,10 +43,8 @@ export default function EditView({ profile, setEditMode }: Props) {
     defaultValues: fromFragment(profile),
     mode: "onChange",
   });
-  const { handleSubmit, reset, formState, control } = formMethods;
+  const { handleSubmit, formState, control } = formMethods;
   const { isDirty, isValid } = formState;
-
-  useEffect(() => reset(fromFragment(profile)), [profile]);
 
   const weeklyTimeAllocations: { [key in AllocatedTime]: string } = {
     [AllocatedTime.None]: T("profile.form.weeklyAllocatedTime.none"),
@@ -57,9 +54,11 @@ export default function EditView({ profile, setEditMode }: Props) {
   };
 
   const [updateUserProfileInfo, { loading }] = useUpdateUserProfileMutation({
-    refetchQueries: [{ query: UserProfileDocument, variables: { githubUserId: profile.githubUserId } }],
+    refetchQueries: [{ query: OwnUserProfileDocument, variables: { githubUserId: profile.githubUserId } }],
     awaitRefetchQueries: true,
-    onCompleted: () => setEditMode(false),
+    onCompleted: () => {
+      setEditMode(false);
+    },
   });
 
   const onSubmit = (formData: UserProfileInfo) => updateUserProfileInfo({ variables: toVariables(formData) });
@@ -73,7 +72,7 @@ export default function EditView({ profile, setEditMode }: Props) {
               name="cover"
               control={control}
               render={({ field: { onChange, value } }) => (
-                <Header editable cover={value} avatarUrl={profile.avatarUrl} onChange={onChange} />
+                <Header editable profile={{ ...profile, cover: value }} onChange={onChange} />
               )}
             />
 
