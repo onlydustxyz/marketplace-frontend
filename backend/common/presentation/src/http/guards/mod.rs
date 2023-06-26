@@ -6,3 +6,6 @@ pub use role::Role;
 
 mod claims;
 pub use claims::Claims;
+
+mod cors;
+pub use cors::Cors;

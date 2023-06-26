@@ -1,4 +1,4 @@
-use std::{collections::HashMap, sync::Arc};
+use std::sync::Arc;
 
 use domain::{AggregateRootRepository, GithubUserId, Project, UserId};
 use infrastructure::{
@@ -6,7 +6,6 @@ use infrastructure::{
 	database::{ImmutableRepository, Repository},
 	github, graphql,
 };
-use juniper_rocket_multipart_handler::temp_file::TempFile;
 use presentation::http::guards::Claims;
 
 use super::{Error, Result};
@@ -46,7 +45,6 @@ pub struct Context {
 		application::user::accept_terms_and_conditions::Usecase,
 	pub update_user_profile_info_usecase: application::user::update_profile_info::Usecase,
 	pub ens: Arc<ens::Client>,
-	pub files: HashMap<String, TempFile>,
 }
 
 impl Context {
@@ -74,7 +72,6 @@ impl Context {
 		ens: Arc<ens::Client>,
 		simple_storage: Arc<simple_storage::Client>,
 		bus: Arc<amqp::Bus>,
-		files: Option<HashMap<String, TempFile>>,
 	) -> Self {
 		Self {
 			caller_permissions,
@@ -171,7 +168,6 @@ impl Context {
 				simple_storage,
 			),
 			ens,
-			files: files.unwrap_or_default(),
 		}
 	}
 

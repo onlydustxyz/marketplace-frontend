@@ -1,9 +1,10 @@
 import classNames from "classnames";
 import { useRef } from "react";
-import { Maybe, OwnUserProfileDocument, ProfileCover, useUploadProfilePictireMutation } from "src/__generated/graphql";
+import { Maybe, ProfileCover } from "src/__generated/graphql";
 import PencilLine from "src/icons/PencilLine";
 import HeaderCoverButton from "./EditView/HeaderCoverButton";
 import FileInput from "./EditView/FileInput";
+import useUploadProfilePicture from "./useProfilePictureUpload";
 
 type Props = {
   cover: ProfileCover;
@@ -15,10 +16,7 @@ type Props = {
 export default function Header({ cover, avatarUrl, editable, onChange }: Props) {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const [uploadProfilePicture] = useUploadProfilePictireMutation({
-    context: { graphqlErrorDisplay: "toaster" },
-    refetchQueries: [{ query: OwnUserProfileDocument }],
-  });
+  const uploadProfilePicture = useUploadProfilePicture();
 
   const handleClick = (value: ProfileCover) => {
     onChange && onChange(value);
@@ -71,12 +69,7 @@ export default function Header({ cover, avatarUrl, editable, onChange }: Props) 
             text-base text-spaceBlue-900 bg-greyscale-50
             outline outline-2 outline-black shadow-bottom-sm"
               />
-              {editable && (
-                <FileInput
-                  ref={fileInputRef}
-                  setFile={profile_picture => uploadProfilePicture({ variables: { profile_picture } })}
-                />
-              )}
+              {editable && <FileInput ref={fileInputRef} setFile={uploadProfilePicture} />}
             </>
           )}
         </div>

@@ -12,7 +12,7 @@ use crate::{
 	application, infrastructure::simple_storage, models::*, presentation::http::error::Error,
 };
 
-#[post("/users/profile_picture", format = "plain", data = "<profile_picture>")]
+#[post("/users/profile_picture", data = "<profile_picture>")]
 pub async fn profile_picture(
 	claims: Claims,
 	user_profile_info_repository: &State<Arc<dyn UserProfileInfoRepository>>,

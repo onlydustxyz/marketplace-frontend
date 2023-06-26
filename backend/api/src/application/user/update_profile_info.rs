@@ -51,7 +51,7 @@ impl Usecase {
 	) -> Result<(), DomainError> {
 		let avatar_url = self.image_store.store_image(avatar_data).await?;
 		self.user_profile_info_repository
-			.update_user_avatar(id, avatar_url.to_string())?;
+			.upsert_user_avatar(id, avatar_url.to_string())?;
 
 		Ok(())
 	}

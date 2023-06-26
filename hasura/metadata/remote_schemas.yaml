@@ -6,6 +6,7 @@
     headers:
       - name: api-key
         value_from_env: BACKEND_GRAPHQL_API_KEY
+    forward_client_headers: true
   comment: ""
   permissions:
     - role: registered_user
@@ -167,20 +168,6 @@
           type Query {
             releaseDate: String!
           }
-  remote_relationships:
-    - relationships:
-        - definition:
-            to_source:
-              field_mapping:
-                number: issue_number
-                repoId: repo_id
-              relationship_type: array
-              source: default
-              table:
-                name: ignored_github_issues
-                schema: public
-          name: ignoredForProjects
-      type_name: Issue
 - name: DustyBot
   definition:
     url_from_env: DUSTY_BOT_GRAPHQL_URL

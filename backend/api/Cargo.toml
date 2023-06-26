@@ -48,7 +48,6 @@ url = "2.2.2"
 # Http Server
 juniper = "0.15.11"
 juniper_rocket = "0.8.2"
-juniper_rocket_multipart_handler = "0.1.0"
 rocket = {version = "0.5.0-rc.2", features = ["json", "uuid"]}
 
 # AWS

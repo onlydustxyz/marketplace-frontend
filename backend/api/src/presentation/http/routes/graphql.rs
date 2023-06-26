@@ -7,7 +7,6 @@ use infrastructure::{
 	github, graphql,
 };
 use juniper_rocket::{GraphQLRequest, GraphQLResponse};
-use juniper_rocket_multipart_handler::graphql_upload_wrapper::GraphQLUploadWrapper;
 use presentation::http::guards::{ApiKey, ApiKeyGuard, Claims, Role};
 use rocket::{response::content, State};
 use tracing::instrument;
@@ -82,7 +81,6 @@ pub async fn get_graphql_handler(
 		(*ens).clone(),
 		(*simple_storage).clone(),
 		(*bus).clone(),
-		None,
 	);
 	request.execute(schema, &context).await
 }
@@ -94,7 +92,7 @@ pub async fn post_graphql_handler(
 	_api_key: ApiKeyGuard<GraphqlApiKey>,
 	role: Role,
 	claims: Option<Claims>,
-	request: GraphQLUploadWrapper,
+	request: GraphQLRequest,
 	schema: &State<Schema>,
 	command_bus: &State<Arc<amqp::CommandPublisher<amqp::Bus>>>,
 	project_repository: &State<AggregateRootRepository<Project>>,
@@ -136,7 +134,6 @@ pub async fn post_graphql_handler(
 		(*ens).clone(),
 		(*simple_storage).clone(),
 		(*bus).clone(),
-		request.files,
 	);
-	request.operations.execute(schema, &context).await
+	request.execute(schema, &context).await
 }

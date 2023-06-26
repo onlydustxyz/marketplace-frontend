@@ -18,7 +18,7 @@ impl From<Error> for HttpApiProblem {
 					.detail(e.to_string()),
 
 			Error::Domain(DomainError::InvalidInputs(e)) =>
-				HttpApiProblem::new(StatusCode::BAD_GATEWAY)
+				HttpApiProblem::new(StatusCode::BAD_REQUEST)
 					.title("Bad request")
 					.detail(e.to_string()),
 		}

@@ -384,6 +384,7 @@
       "payoutSettingsRequiredTag": "* required to receive payments",
       "payoutSettingsType": "Preferred payment method",
       "payoutSettingsValidTag": "You're able to receive payments",
+      "pictureUploadError": "We were not able to upload your profile picture, please try again.",
       "postCode": "Zip code",
       "profileType": "Account type",
       "profileTypeCompany": "Company",

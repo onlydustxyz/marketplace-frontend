@@ -60,7 +60,14 @@ pub async fn serve(
 		.manage(ens)
 		.manage(simple_storage)
 		.manage(bus)
-		.mount("/", routes![http::routes::health_check,])
+		.attach(http::guards::Cors)
+		.mount(
+			"/",
+			routes![
+				http::routes::health_check,
+				http::routes::options_preflight_handler
+			],
+		)
 		.mount(
 			"/",
 			routes![
@@ -69,7 +76,7 @@ pub async fn serve(
 				routes::graphql::post_graphql_handler
 			],
 		)
-		.mount("/", routes![routes::user::profile_picture])
+		.mount("/", routes![routes::users::profile_picture])
 		.launch()
 		.await?;
 
