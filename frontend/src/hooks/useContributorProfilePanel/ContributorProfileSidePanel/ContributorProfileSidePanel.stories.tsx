@@ -5,11 +5,13 @@ import { daysFromNow, minutesFromNow } from "src/utils/date";
 import { withRouter } from "storybook-addon-react-router-v6";
 import withToasterProvider from "src/test/storybook/decorators/withToasterProvider";
 import withSidePanelStackProvider from "src/test/storybook/decorators/withSidePanelStackProvider";
+import withTokenSetProvider from "src/test/storybook/decorators/withTokenSetProvider";
+import withMockedProvider from "src/test/storybook/decorators/withMockedProvider";
 
 export default {
   title: "ContributorProfileSidePanel",
   component: ContributorProfileSidePanel,
-  decorators: [withRouter, withToasterProvider, withSidePanelStackProvider],
+  decorators: [withRouter, withToasterProvider, withSidePanelStackProvider, withTokenSetProvider, withMockedProvider()],
   argTypes: {
     headerColor: {
       control: {
