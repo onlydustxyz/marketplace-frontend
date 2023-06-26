@@ -1,4 +1,4 @@
-import { ProfileCover, ProfileProjectFragment, UserProfileFragment } from "src/__generated/graphql";
+import { ProfileProjectFragment, UserProfileFragment } from "src/__generated/graphql";
 import ContributorProfileSidePanel from "./View";
 import { Project } from "./ReadOnlyView/ProjectCard";
 import { daysFromNow, minutesFromNow } from "src/utils/date";
@@ -12,14 +12,6 @@ export default {
   title: "ContributorProfileSidePanel",
   component: ContributorProfileSidePanel,
   decorators: [withRouter, withToasterProvider, withSidePanelStackProvider, withTokenSetProvider, withMockedProvider()],
-  argTypes: {
-    headerColor: {
-      control: {
-        type: "select",
-      },
-      options: [ProfileCover.Blue, ProfileCover.Cyan, ProfileCover.Magenta, ProfileCover.Yellow],
-    },
-  },
 };
 
 const profileFull: UserProfileFragment = {
@@ -38,7 +30,7 @@ const profileFull: UserProfileFragment = {
   linkedin: [{ contact: "https://linkedin.com/antho", public: true }],
   discord: [{ contact: "ANTHO123", public: true }],
   website: "https://antho-petanque.com",
-  cover: ProfileCover.Blue,
+  cover: "cyan",
   languages: {
     Rust: 123,
     Makefile: 12,
@@ -92,7 +84,7 @@ const profileNotSignedUp: UserProfileFragment = {
   linkedin: [],
   discord: [{ contact: "ANTHO123", public: true }],
   website: null,
-  cover: ProfileCover.Magenta,
+  cover: "blue",
   languages: {
     Rust: 123,
   },
@@ -129,7 +121,7 @@ const profileMinimalist: UserProfileFragment = {
   linkedin: [],
   discord: [],
   website: null,
-  cover: ProfileCover.Blue,
+  cover: "yellow",
   contributionCounts: [],
   projectsLeaded: [],
   contributionStats: [],
