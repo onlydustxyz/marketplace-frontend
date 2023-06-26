@@ -21356,6 +21356,12 @@
             "description": "unique or primary key constraint on columns \"user_id\", \"repo_id\"",
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "github_repos_contributors_user_id_repo_id_idx",
+            "description": "unique or primary key constraint on columns \"user_id\", \"repo_id\"",
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "possibleTypes": null
@@ -34757,6 +34763,12 @@
         "interfaces": null,
         "enumValues": [
           {
+            "name": "pending_project_leader_invitation_github_user_id_project_id_idx",
+            "description": "unique or primary key constraint on columns \"project_id\", \"github_user_id\"",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "pending_project_leader_invitation_project_id_github_user_id_key",
             "description": "unique or primary key constraint on columns \"project_id\", \"github_user_id\"",
             "isDeprecated": false,
@@ -38457,6 +38469,12 @@
         "interfaces": null,
         "enumValues": [
           {
+            "name": "project_github_repos_github_repo_id_project_id_idx",
+            "description": "unique or primary key constraint on columns \"github_repo_id\", \"project_id\"",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "project_github_repos_pkey",
             "description": "unique or primary key constraint on columns \"github_repo_id\", \"project_id\"",
             "isDeprecated": false,
@@ -39615,6 +39633,12 @@
         "enumValues": [
           {
             "name": "project_leads_pkey",
+            "description": "unique or primary key constraint on columns \"project_id\", \"user_id\"",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "project_leads_user_id_project_id_idx",
             "description": "unique or primary key constraint on columns \"project_id\", \"user_id\"",
             "isDeprecated": false,
             "deprecationReason": null
@@ -42784,6 +42808,12 @@
         "inputFields": null,
         "interfaces": null,
         "enumValues": [
+          {
+            "name": "projects_contributors_github_user_id_project_id_idx",
+            "description": "unique or primary key constraint on columns \"project_id\", \"github_user_id\"",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "projects_contributors_pkey",
             "description": "unique or primary key constraint on columns \"project_id\", \"github_user_id\"",
