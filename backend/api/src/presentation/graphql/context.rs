@@ -7,7 +7,7 @@ use infrastructure::{
 	github, graphql,
 };
 use juniper_rocket_multipart_handler::temp_file::TempFile;
-use presentation::http::guards::OptionUserId;
+use presentation::http::guards::Claims;
 
 use super::{Error, Result};
 use crate::{
@@ -19,7 +19,7 @@ use crate::{
 
 pub struct Context {
 	pub caller_permissions: Box<dyn Permissions>,
-	caller_info: OptionUserId,
+	caller_info: Option<Claims>,
 	pub request_payment_usecase: application::payment::request::Usecase,
 	pub process_payment_usecase: application::payment::process::Usecase,
 	pub cancel_payment_usecase: application::payment::cancel::Usecase,
@@ -53,7 +53,7 @@ impl Context {
 	#[allow(clippy::too_many_arguments)]
 	pub fn new(
 		caller_permissions: Box<dyn Permissions>,
-		caller_info: OptionUserId,
+		caller_info: Option<Claims>,
 		command_bus: Arc<CommandPublisher<amqp::Bus>>,
 		project_repository: AggregateRootRepository<Project>,
 		project_details_repository: Arc<dyn Repository<ProjectDetails>>,
@@ -176,17 +176,12 @@ impl Context {
 	}
 
 	pub fn caller_info(&self) -> Result<CallerInfo> {
-		let user_id =
-			self.caller_info.user_id().map_err(|e| Error::NotAuthenticated(e.to_string()))?;
+		let caller_info = self.caller_info.clone().ok_or(Error::NotAuthenticated)?;
 
-		let caller_info = CallerInfo {
-			user_id,
-			github_user_id: self
-				.caller_info
-				.github_user_id()
-				.map_err(|e| Error::NotAuthenticated(e.to_string()))?,
-		};
-		Ok(caller_info)
+		Ok(CallerInfo {
+			user_id: caller_info.user_id.into(),
+			github_user_id: caller_info.github_user_id.into(),
+		})
 	}
 }
 

@@ -8,7 +8,7 @@ use infrastructure::{
 };
 use juniper_rocket::{GraphQLRequest, GraphQLResponse};
 use juniper_rocket_multipart_handler::graphql_upload_wrapper::GraphQLUploadWrapper;
-use presentation::http::guards::{ApiKey, ApiKeyGuard, OptionUserId, Role};
+use presentation::http::guards::{ApiKey, ApiKeyGuard, Claims, Role};
 use rocket::{response::content, State};
 use tracing::instrument;
 
@@ -35,11 +35,11 @@ pub fn graphiql() -> content::RawHtml<String> {
 
 #[allow(clippy::too_many_arguments)]
 #[get("/graphql?<request>")]
-#[instrument(skip_all, fields(user.ids = debug(&maybe_user_id), user.role = debug(&role), graphql_request = debug(&request)))]
+#[instrument(skip_all, fields(user.ids = debug(&claims), user.role = debug(&role), graphql_request = debug(&request)))]
 pub async fn get_graphql_handler(
 	_api_key: ApiKeyGuard<GraphqlApiKey>,
 	role: Role,
-	maybe_user_id: OptionUserId,
+	claims: Option<Claims>,
 	request: GraphQLRequest,
 	schema: &State<Schema>,
 	command_bus: &State<Arc<amqp::CommandPublisher<amqp::Bus>>>,
@@ -65,7 +65,7 @@ pub async fn get_graphql_handler(
 ) -> GraphQLResponse {
 	let context = Context::new(
 		role.to_permissions((*project_repository).clone()),
-		maybe_user_id,
+		claims,
 		(*command_bus).clone(),
 		(*project_repository).clone(),
 		(*project_details_repository).clone(),
@@ -89,11 +89,11 @@ pub async fn get_graphql_handler(
 
 #[allow(clippy::too_many_arguments)]
 #[post("/graphql", data = "<request>")]
-#[instrument(skip_all, fields(user.ids = debug(&maybe_user_id), user.role = debug(&role), graphql_request = debug(&request)))]
+#[instrument(skip_all, fields(user.ids = debug(&claims), user.role = debug(&role), graphql_request = debug(&request)))]
 pub async fn post_graphql_handler(
 	_api_key: ApiKeyGuard<GraphqlApiKey>,
 	role: Role,
-	maybe_user_id: OptionUserId,
+	claims: Option<Claims>,
 	request: GraphQLUploadWrapper,
 	schema: &State<Schema>,
 	command_bus: &State<Arc<amqp::CommandPublisher<amqp::Bus>>>,
@@ -119,7 +119,7 @@ pub async fn post_graphql_handler(
 ) -> GraphQLResponse {
 	let context = Context::new(
 		role.to_permissions((*project_repository).clone()),
-		maybe_user_id,
+		claims,
 		(*command_bus).clone(),
 		(*project_repository).clone(),
 		(*project_details_repository).clone(),
