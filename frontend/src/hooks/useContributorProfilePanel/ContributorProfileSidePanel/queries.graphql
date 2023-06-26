@@ -121,7 +121,3 @@ mutation updateUserProfile(
     cover: $cover
   )
 }
-
-mutation UploadProfilePictire($profile_picture: [Int!]!) {
-  updateUserAvatar
-}
