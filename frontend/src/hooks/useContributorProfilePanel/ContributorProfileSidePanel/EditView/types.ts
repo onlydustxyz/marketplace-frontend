@@ -2,10 +2,12 @@ import {
   AllocatedTime,
   Channel,
   OwnUserProfileDetailsFragment,
+  ProfileCover,
   UpdateUserProfileMutationVariables,
   UserProfileFragment,
 } from "src/__generated/graphql";
 import { LanguageMap } from "src/types";
+import { translateProfileCover } from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/utils";
 
 export type UserProfileInfo = {
   location: string;
@@ -26,6 +28,7 @@ export type UserProfileInfo = {
   languages: LanguageMap;
   weeklyAllocatedTime: AllocatedTime;
   lookingForAJob: boolean;
+  cover: ProfileCover;
 };
 
 export const fromFragment = (fragment: UserProfileFragment & OwnUserProfileDetailsFragment): UserProfileInfo => ({
@@ -47,6 +50,7 @@ export const fromFragment = (fragment: UserProfileFragment & OwnUserProfileDetai
   languages: fragment.languages ?? {},
   weeklyAllocatedTime: translateTimeAllocation(fragment.weeklyAllocatedTime) ?? AllocatedTime.None,
   lookingForAJob: fragment.lookingForAJob ?? false,
+  cover: translateProfileCover(fragment.cover) ?? ProfileCover.Blue,
 });
 
 export const toVariables = (profile: UserProfileInfo): UpdateUserProfileMutationVariables => ({
@@ -75,6 +79,7 @@ export const toVariables = (profile: UserProfileInfo): UpdateUserProfileMutation
   lookingForAJob: profile.lookingForAJob,
   website: profile.website,
   weeklyAllocatedTime: profile.weeklyAllocatedTime,
+  cover: profile.cover,
 });
 
 const translateTimeAllocation = (timeAllocation: string): AllocatedTime | undefined => {

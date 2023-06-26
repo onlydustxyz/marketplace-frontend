@@ -14,6 +14,7 @@ use presentation::http;
 use crate::{infrastructure::simple_storage, models::*, presentation::graphql};
 
 pub mod dto;
+mod error;
 pub mod roles;
 mod routes;
 
@@ -31,7 +32,7 @@ pub async fn serve(
 	>,
 	ignored_github_issues_repository: Arc<dyn ImmutableRepository<IgnoredGithubIssue>>,
 	user_info_repository: Arc<dyn Repository<UserPayoutInfo>>,
-	user_profile_info_repository: Arc<dyn Repository<UserProfileInfo>>,
+	user_profile_info_repository: Arc<dyn UserProfileInfoRepository>,
 	contact_informations_repository: Arc<dyn ContactInformationsRepository>,
 	terms_and_conditions_acceptance_repository: Arc<dyn Repository<TermsAndConditionsAcceptance>>,
 	graphql: Arc<infrastructure::graphql::Client>,
@@ -59,7 +60,14 @@ pub async fn serve(
 		.manage(ens)
 		.manage(simple_storage)
 		.manage(bus)
-		.mount("/", routes![http::routes::health_check,])
+		.attach(http::guards::Cors)
+		.mount(
+			"/",
+			routes![
+				http::routes::health_check,
+				http::routes::options_preflight_handler
+			],
+		)
 		.mount(
 			"/",
 			routes![
@@ -68,6 +76,7 @@ pub async fn serve(
 				routes::graphql::post_graphql_handler
 			],
 		)
+		.mount("/", routes![routes::users::profile_picture])
 		.launch()
 		.await?;
 

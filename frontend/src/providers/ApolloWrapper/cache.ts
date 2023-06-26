@@ -10,6 +10,9 @@ export default function useApolloCache() {
       UserInfo: {
         keyFields: ["userId"],
       },
+      UserProfiles: {
+        keyFields: ["githubUserId"],
+      },
       WorkItems: {
         keyFields: ["paymentId", "repoId", "issueNumber"],
       },

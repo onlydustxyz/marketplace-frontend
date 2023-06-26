@@ -108,6 +108,7 @@ mutation updateUserProfile(
   $lookingForAJob: Boolean!
   $website: String!
   $weeklyAllocatedTime: AllocatedTime!
+  $cover: ProfileCover
 ) {
   updateUserProfile(
     bio: $bio
@@ -117,5 +118,6 @@ mutation updateUserProfile(
     lookingForAJob: $lookingForAJob
     website: $website
     weeklyAllocatedTime: $weeklyAllocatedTime
+    cover: $cover
   )
 }

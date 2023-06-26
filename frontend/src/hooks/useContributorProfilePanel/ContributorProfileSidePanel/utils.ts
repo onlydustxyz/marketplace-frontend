@@ -1,4 +1,4 @@
-import { Maybe } from "src/__generated/graphql";
+import { Maybe, ProfileCover } from "src/__generated/graphql";
 
 export const parseWebsite = (website: Maybe<string>) => {
   try {
@@ -20,5 +20,20 @@ export const parseWebsite = (website: Maybe<string>) => {
         url: `${protocol || "https://"}${hostname}${path || ""}`,
       };
     }
+  }
+};
+
+export const translateProfileCover = (cover: string): ProfileCover | undefined => {
+  switch (cover) {
+    case "cyan":
+      return ProfileCover.Cyan;
+    case "magenta":
+      return ProfileCover.Magenta;
+    case "yellow":
+      return ProfileCover.Yellow;
+    case "blue":
+      return ProfileCover.Blue;
+    default:
+      return undefined;
   }
 };

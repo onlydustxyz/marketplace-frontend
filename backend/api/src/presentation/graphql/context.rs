@@ -6,7 +6,7 @@ use infrastructure::{
 	database::{ImmutableRepository, Repository},
 	github, graphql,
 };
-use presentation::http::guards::OptionUserId;
+use presentation::http::guards::Claims;
 
 use super::{Error, Result};
 use crate::{
@@ -18,7 +18,7 @@ use crate::{
 
 pub struct Context {
 	pub caller_permissions: Box<dyn Permissions>,
-	caller_info: OptionUserId,
+	caller_info: Option<Claims>,
 	pub request_payment_usecase: application::payment::request::Usecase,
 	pub process_payment_usecase: application::payment::process::Usecase,
 	pub cancel_payment_usecase: application::payment::cancel::Usecase,
@@ -51,7 +51,7 @@ impl Context {
 	#[allow(clippy::too_many_arguments)]
 	pub fn new(
 		caller_permissions: Box<dyn Permissions>,
-		caller_info: OptionUserId,
+		caller_info: Option<Claims>,
 		command_bus: Arc<CommandPublisher<amqp::Bus>>,
 		project_repository: AggregateRootRepository<Project>,
 		project_details_repository: Arc<dyn Repository<ProjectDetails>>,
@@ -62,7 +62,7 @@ impl Context {
 		>,
 		ignored_github_issues_repository: Arc<dyn ImmutableRepository<IgnoredGithubIssue>>,
 		user_payout_info_repository: Arc<dyn Repository<UserPayoutInfo>>,
-		user_profile_info_repository: Arc<dyn Repository<UserProfileInfo>>,
+		user_profile_info_repository: Arc<dyn UserProfileInfoRepository>,
 		contact_informations_repository: Arc<dyn ContactInformationsRepository>,
 		terms_and_conditions_acceptance_repository: Arc<
 			dyn Repository<TermsAndConditionsAcceptance>,
@@ -121,7 +121,7 @@ impl Context {
 			),
 			update_sponsor_usecase: application::sponsor::update::Usecase::new(
 				sponsor_repository,
-				simple_storage,
+				simple_storage.clone(),
 			),
 			add_sponsor_usecase: application::project::add_sponsor::Usecase::new(
 				project_sponsor_repository.clone(),
@@ -165,23 +165,19 @@ impl Context {
 			update_user_profile_info_usecase: application::user::update_profile_info::Usecase::new(
 				user_profile_info_repository,
 				contact_informations_repository,
+				simple_storage,
 			),
 			ens,
 		}
 	}
 
 	pub fn caller_info(&self) -> Result<CallerInfo> {
-		let user_id =
-			self.caller_info.user_id().map_err(|e| Error::NotAuthenticated(e.to_string()))?;
+		let caller_info = self.caller_info.clone().ok_or(Error::NotAuthenticated)?;
 
-		let caller_info = CallerInfo {
-			user_id,
-			github_user_id: self
-				.caller_info
-				.github_user_id()
-				.map_err(|e| Error::NotAuthenticated(e.to_string()))?,
-		};
-		Ok(caller_info)
+		Ok(CallerInfo {
+			user_id: caller_info.user_id.into(),
+			github_user_id: caller_info.github_user_id.into(),
+		})
 	}
 }
 

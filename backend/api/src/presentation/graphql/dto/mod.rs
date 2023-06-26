@@ -11,4 +11,4 @@ mod contact;
 pub use contact::{Channel as ContactChannel, Information as ContactInformation};
 
 mod user_profile;
-pub use user_profile::AllocatedTime;
+pub use user_profile::{AllocatedTime, ProfileCover};

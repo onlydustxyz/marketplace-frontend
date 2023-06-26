@@ -28,4 +28,4 @@ pub use user_payout_info::{
 };
 
 mod user_profile_info;
-pub use user_profile_info::UserProfileInfo;
+pub use user_profile_info::{Repository as UserProfileInfoRepository, UserProfileInfo};

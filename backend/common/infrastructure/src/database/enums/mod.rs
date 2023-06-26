@@ -12,3 +12,6 @@ pub use github_issue_type::GithubIssueType;
 
 mod project_visibility;
 pub use project_visibility::ProjectVisibility;
+
+mod profile_cover;
+pub use profile_cover::ProfileCover;

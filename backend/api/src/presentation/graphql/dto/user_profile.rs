@@ -19,3 +19,22 @@ impl From<AllocatedTime> for infrastructure::database::enums::AllocatedTime {
 		}
 	}
 }
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, GraphQLEnum)]
+pub enum ProfileCover {
+	Cyan,
+	Magenta,
+	Yellow,
+	Blue,
+}
+
+impl From<ProfileCover> for infrastructure::database::enums::ProfileCover {
+	fn from(value: ProfileCover) -> Self {
+		match value {
+			ProfileCover::Cyan => Self::Cyan,
+			ProfileCover::Magenta => Self::Magenta,
+			ProfileCover::Yellow => Self::Yellow,
+			ProfileCover::Blue => Self::Blue,
+		}
+	}
+}

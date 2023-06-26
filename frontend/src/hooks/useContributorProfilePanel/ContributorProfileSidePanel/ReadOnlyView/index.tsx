@@ -1,4 +1,4 @@
-import { ContributionCountFragment, UserProfileFragment } from "src/__generated/graphql";
+import { ContributionCountFragment, ProfileCover, UserProfileFragment } from "src/__generated/graphql";
 import { useIntl } from "src/hooks/useIntl";
 import MapPinLine from "src/icons/MapPinLine";
 import { daysFromNow, formatDateShort, weekNumber } from "src/utils/date";
@@ -26,8 +26,11 @@ import Button, { ButtonSize } from "src/components/Button";
 import PencilLine from "src/icons/PencilLine";
 import ExternalLink from "src/components/ExternalLink";
 import { withTooltip } from "src/components/Tooltip";
-import Header, { HeaderColor } from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/Header";
-import { parseWebsite } from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/utils";
+import Header from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/Header";
+import {
+  parseWebsite,
+  translateProfileCover,
+} from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/utils";
 import MarkdownPreview from "src/components/MarkdownPreview";
 import classNames from "classnames";
 import ArrowRightDownLine from "src/icons/ArrowRightDownLine";
@@ -38,7 +41,6 @@ type Props = {
   profile: UserProfileFragment;
   projects: Project[];
   setOpen: (value: boolean) => void;
-  headerColor: HeaderColor;
   setEditMode: (value: boolean) => void;
   isOwn?: boolean;
 };
@@ -54,7 +56,7 @@ const EMPTY_DATA: ContributionCountFragment[] = range(0, MAX_CONTRIBUTION_COUNTS
     unpaidCount: 0,
   }));
 
-export default function ReadOnlyView({ isOwn, profile, projects, headerColor, setOpen, setEditMode }: Props) {
+export default function ReadOnlyView({ isOwn, profile, projects, setOpen, setEditMode }: Props) {
   const { T } = useIntl();
 
   const languages = sortBy(Object.keys(profile.languages), l => profile.languages[l])
@@ -83,7 +85,7 @@ export default function ReadOnlyView({ isOwn, profile, projects, headerColor, se
 
   return (
     <div className="flex flex-col h-full">
-      <Header color={headerColor} avatarUrl={profile.avatarUrl} />
+      <Header profile={{ ...profile, cover: translateProfileCover(profile.cover) ?? ProfileCover.Blue }} />
 
       <div className="flex flex-col gap-12 -mt-12 pt-4 pb-12 ml-8 mr-2 pr-6 scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded">
         <div className="flex flex-col gap-6">

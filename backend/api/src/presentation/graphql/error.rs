@@ -12,7 +12,7 @@ use crate::application::user::{
 #[derive(Debug, Error)]
 pub enum Error {
 	#[error("Caller should be authenticated")]
-	NotAuthenticated(String),
+	NotAuthenticated,
 	#[error("User '{0}' is not authorized to perform this action")]
 	NotAuthorized(UserId, String),
 	#[error("Invalid GraphQL request")]
@@ -74,7 +74,7 @@ impl IntoFieldError for Error {
 		error!(error = format!("{self:?}"), "Error occured");
 
 		let (msg, reason) = match &self {
-			Self::NotAuthenticated(reason) => (self.to_string(), reason.clone()),
+			Self::NotAuthenticated => (self.to_string(), "Missing JWT".to_string()),
 			Self::NotAuthorized(_, reason) => (self.to_string(), reason.clone()),
 			Self::InvalidRequest(source) => (self.to_string(), source.to_string()),
 			Self::InternalError(source) => (self.to_string(), source.to_string()),

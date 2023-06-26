@@ -6,6 +6,7 @@
     headers:
       - name: api-key
         value_from_env: BACKEND_GRAPHQL_API_KEY
+    forward_client_headers: true
   comment: ""
   permissions:
     - role: registered_user
@@ -51,7 +52,7 @@
             requestPayment(projectId: Uuid!, recipientId: Int!, amountInUsd: Int!, hoursWorked: Int!, reason: Reason!): Payment!
             unignoreIssue(projectId: Uuid!, repoId: GithubRepoId!, issueNumber: GithubIssueNumber!): Boolean!
             updatePayoutInfo(location: Location, identity: IdentityInput, payoutSettings: PayoutSettingsInput): Uuid!
-            updateUserProfile(bio: String, location: String, website: String, languages: [Language!], weeklyAllocatedTime: AllocatedTime!, lookingForAJob: Boolean!, contactInformations: [Information!]!): Boolean!
+            updateUserProfile(bio: String, location: String, website: String, languages: [Language!], weeklyAllocatedTime: AllocatedTime!, lookingForAJob: Boolean!, contactInformations: [Information!]!, cover: ProfileCover): Boolean!
           }
           type Payment {
             amount: Amount!
@@ -90,6 +91,12 @@
             BANK_ADDRESS
             ETHEREUM_ADDRESS
             ETHEREUM_NAME
+          }
+          enum ProfileCover {
+            BLUE
+            CYAN
+            MAGENTA
+            YELLOW
           }
           enum Status {
             CANCELLED
@@ -161,20 +168,6 @@
           type Query {
             releaseDate: String!
           }
-  remote_relationships:
-    - relationships:
-        - definition:
-            to_source:
-              field_mapping:
-                number: issue_number
-                repoId: repo_id
-              relationship_type: array
-              source: default
-              table:
-                name: ignored_github_issues
-                schema: public
-          name: ignoredForProjects
-      type_name: Issue
 - name: DustyBot
   definition:
     url_from_env: DUSTY_BOT_GRAPHQL_URL

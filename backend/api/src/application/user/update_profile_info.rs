@@ -2,21 +2,23 @@ use std::sync::Arc;
 
 use derive_more::Constructor;
 use domain::{DomainError, Languages, UserId};
-use infrastructure::database::{enums::AllocatedTime, Repository};
+use infrastructure::database::enums::{AllocatedTime, ProfileCover};
+use url::Url;
 
-use crate::models::*;
+use crate::{domain::ImageStoreService, models::*};
 
 #[derive(Constructor)]
 pub struct Usecase {
-	user_profile_info_repository: Arc<dyn Repository<UserProfileInfo>>,
+	user_profile_info_repository: Arc<dyn UserProfileInfoRepository>,
 	contact_informations_repository: Arc<dyn ContactInformationsRepository>,
+	image_store: Arc<dyn ImageStoreService>,
 }
 
 impl Usecase {
 	#[allow(clippy::too_many_arguments)]
 	pub async fn update_user_profile_info(
 		&self,
-		caller_id: UserId,
+		id: UserId,
 		bio: Option<String>,
 		location: Option<String>,
 		website: Option<String>,
@@ -24,20 +26,34 @@ impl Usecase {
 		weekly_allocated_time: AllocatedTime,
 		looking_for_a_job: bool,
 		contact_informations: Vec<ContactInformation>,
+		cover: Option<ProfileCover>,
 	) -> Result<(), DomainError> {
 		self.user_profile_info_repository.upsert(UserProfileInfo {
-			id: caller_id,
+			id,
 			bio,
 			location,
 			website,
 			languages: languages.map(diesel_json::Json::new),
 			looking_for_a_job,
 			weekly_allocated_time,
+			cover,
 		})?;
 
 		self.contact_informations_repository
-			.replace_all_for_user(&caller_id, contact_informations)?;
+			.replace_all_for_user(&id, contact_informations)?;
 
 		Ok(())
+	}
+
+	pub async fn update_user_avatar(
+		&self,
+		id: UserId,
+		avatar_data: Vec<u8>,
+	) -> Result<Url, DomainError> {
+		let avatar_url = self.image_store.store_image(avatar_data).await?;
+		self.user_profile_info_repository
+			.upsert_user_avatar(id, avatar_url.to_string())?;
+
+		Ok(avatar_url)
 	}
 }

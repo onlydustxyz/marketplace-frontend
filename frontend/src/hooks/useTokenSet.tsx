@@ -7,7 +7,7 @@ import { RefreshToken, TokenSet } from "src/types";
 export const LOCAL_STORAGE_TOKEN_SET_KEY = "hasura_token";
 const ACCESS_TOKEN_VALIDITY_TIME_THRESHOLD = 30;
 
-type TokenSetContextType = {
+export type TokenSetContextType = {
   tokenSet?: TokenSet | null;
   setTokenSet?: (tokenSet: TokenSet) => void;
   clearTokenSet: () => void;
@@ -38,7 +38,7 @@ const fetchNewAccessToken = async (refreshToken: RefreshToken): Promise<TokenSet
   return { ...tokenSetResponse.data, creationDate: Date.now() };
 };
 
-const TokenSetContext = createContext<TokenSetContextType | null>(null);
+export const TokenSetContext = createContext<TokenSetContextType | null>(null);
 
 export const TokenSetProvider = ({ children }: PropsWithChildren) => {
   const [tokenSet, setTokenSet, clearTokenSet] = useLocalStorage<TokenSet | null>(LOCAL_STORAGE_TOKEN_SET_KEY);

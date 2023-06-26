@@ -303,6 +303,7 @@ class UserProfiles {
    contributionCounts: [ContributionCounts!]!
    contributionStats: [ContributionStats!]!
    contributions: [Contributions!]!
+   cover: profile_cover
    createdAt: timestamp
    githubUserId: bigint
    htmlUrl: String

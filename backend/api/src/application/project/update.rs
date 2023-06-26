@@ -55,7 +55,8 @@ impl Usecase {
 		}
 		if let Some(logo_url) = logo_url.explicit() {
 			if let Some(logo_url) = logo_url {
-				let stored_logo_url = self.image_store.store_image(&logo_url).await?.to_string();
+				let stored_logo_url =
+					self.image_store.store_image_from_url(&logo_url).await?.to_string();
 				project = project.with_logo_url(Some(stored_logo_url));
 			} else {
 				project = project.with_logo_url(None);
@@ -150,7 +151,7 @@ mod tests {
 	) {
 		let mut image_store_service = MockImageStoreService::new();
 		image_store_service
-			.expect_store_image()
+			.expect_store_image_from_url()
 			.with(eq(logo_url.clone()))
 			.once()
 			.returning(|_| Ok(Url::parse("http://img-store.com/1234.jpg").unwrap()));
@@ -211,7 +212,7 @@ mod tests {
 	) {
 		let mut image_store_service = MockImageStoreService::new();
 		image_store_service
-			.expect_store_image()
+			.expect_store_image_from_url()
 			.with(eq(logo_url.clone()))
 			.once()
 			.returning(|_| Ok(Url::parse("http://img-store.com/1234.jpg").unwrap()));

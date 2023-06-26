@@ -1,7 +1,7 @@
 import {
   AllocatedTime,
   OwnUserProfileDetailsFragment,
-  UserProfileDocument,
+  OwnUserProfileDocument,
   UserProfileFragment,
   useUpdateUserProfileMutation,
 } from "src/__generated/graphql";
@@ -11,7 +11,7 @@ import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import CheckLine from "src/icons/CheckLine";
 import Button, { ButtonSize } from "src/components/Button";
 import Tag, { TagSize } from "src/components/Tag";
-import Header, { HeaderColor } from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/Header";
+import Header from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/Header";
 import Card from "./Card";
 import { Section } from "./Section";
 import Input, { Size } from "src/components/FormInput";
@@ -19,7 +19,6 @@ import { Controller, FormProvider, useForm } from "react-hook-form";
 import GlobalLine from "src/icons/GlobalLine";
 import MapPinLine from "src/icons/MapPinLine";
 import { UserProfileInfo, fromFragment, toVariables } from "./types";
-import { useEffect } from "react";
 import GithubLogo from "src/icons/GithubLogo";
 import Telegram from "src/assets/icons/Telegram";
 import TwitterFill from "src/icons/TwitterFill";
@@ -34,21 +33,18 @@ import FormToggle from "src/components/FormToggle";
 
 type Props = {
   profile: UserProfileFragment & OwnUserProfileDetailsFragment;
-  headerColor: HeaderColor;
   setEditMode: (value: boolean) => void;
 };
 
-export default function EditView({ profile, headerColor, setEditMode }: Props) {
+export default function EditView({ profile, setEditMode }: Props) {
   const { T } = useIntl();
 
   const formMethods = useForm<UserProfileInfo>({
     defaultValues: fromFragment(profile),
     mode: "onChange",
   });
-  const { handleSubmit, reset, formState, control } = formMethods;
+  const { handleSubmit, formState, control } = formMethods;
   const { isDirty, isValid } = formState;
-
-  useEffect(() => reset(fromFragment(profile)), [profile]);
 
   const weeklyTimeAllocations: { [key in AllocatedTime]: string } = {
     [AllocatedTime.None]: T("profile.form.weeklyAllocatedTime.none"),
@@ -58,9 +54,11 @@ export default function EditView({ profile, headerColor, setEditMode }: Props) {
   };
 
   const [updateUserProfileInfo, { loading }] = useUpdateUserProfileMutation({
-    refetchQueries: [{ query: UserProfileDocument, variables: { githubUserId: profile.githubUserId } }],
+    refetchQueries: [{ query: OwnUserProfileDocument, variables: { githubUserId: profile.githubUserId } }],
     awaitRefetchQueries: true,
-    onCompleted: () => setEditMode(false),
+    onCompleted: () => {
+      setEditMode(false);
+    },
   });
 
   const onSubmit = (formData: UserProfileInfo) => updateUserProfileInfo({ variables: toVariables(formData) });
@@ -70,7 +68,13 @@ export default function EditView({ profile, headerColor, setEditMode }: Props) {
       <form id="profile-info-form" className="h-full min-h-0" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col h-full justify-between">
           <div className="flex flex-col gap-6 min-h-0">
-            <Header color={headerColor} avatarUrl={profile.avatarUrl} />
+            <Controller
+              name="cover"
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <Header editable profile={{ ...profile, cover: value }} onChange={onChange} />
+              )}
+            />
 
             <div className="flex flex-col gap-6 -mt-[72px] pt-[72px] pb-12 pl-8 mr-2 pr-6 scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded">
               <div data-testid="login" className="font-belwe font-normal text-3xl text-white">

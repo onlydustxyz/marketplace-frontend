@@ -22,6 +22,10 @@ pub mod sql_types {
     pub struct GithubIssueType;
 
     #[derive(diesel::sql_types::SqlType)]
+    #[diesel(postgres_type(name = "profile_cover"))]
+    pub struct ProfileCover;
+
+    #[derive(diesel::sql_types::SqlType)]
     #[diesel(postgres_type(name = "project_visibility"))]
     pub struct ProjectVisibility;
 }
@@ -296,6 +300,7 @@ diesel::table! {
 diesel::table! {
     use diesel::sql_types::*;
     use super::sql_types::AllocatedTime;
+    use super::sql_types::ProfileCover;
 
     user_profile_info (id) {
         id -> Uuid,
@@ -305,6 +310,8 @@ diesel::table! {
         languages -> Nullable<Jsonb>,
         weekly_allocated_time -> AllocatedTime,
         looking_for_a_job -> Bool,
+        avatar_url -> Nullable<Text>,
+        cover -> Nullable<ProfileCover>,
     }
 }
 
