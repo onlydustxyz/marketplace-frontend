@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import { useAuth } from "src/hooks/useAuth";
@@ -13,6 +13,7 @@ import TermsAndConditionsPromptCard from "./PromptCard";
 
 export default function TermsAndConditions() {
   const { user } = useAuth();
+  const location = useLocation();
   const [showTermsAndConditions, setShowTermsAndConditions] = useState(false);
   const [acceptTermsAndConditionsMutation, { data }] = useAcceptTermsAndConditionsMutation({
     update: cache => {
@@ -42,7 +43,7 @@ export default function TermsAndConditions() {
     <Background roundedBorders={BackgroundRoundedBorders.Full} centeredContent={!showTermsAndConditions}>
       <div className="flex flex-col justify-center items-center text-greyscale-50">
         <div className="w-1/2">
-          {!showTermsAndConditions ? (
+          {!showTermsAndConditions && !location.state?.skipIntro ? (
             <TermsAndConditionsPromptCard {...{ setShowTermsAndConditions }} />
           ) : (
             <>

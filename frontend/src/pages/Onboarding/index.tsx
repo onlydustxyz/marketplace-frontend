@@ -6,7 +6,15 @@ import { useIntl } from "src/hooks/useIntl";
 import TechnologiesSelect from "src/components/TechnologiesSelect";
 import FormToggle from "src/components/FormToggle";
 import { Controller, FormProvider, useForm } from "react-hook-form";
-import { AllocatedTime, OwnUserProfileDocument, useUpdateUserProfileMutation } from "src/__generated/graphql";
+import {
+  AllocatedTime,
+  GetOnboardingStateDocument,
+  GetOnboardingStateQuery,
+  OwnUserProfileDocument,
+  useMarkProfileWizardAsDisplayedMutation,
+  useOwnUserProfileQuery,
+  useUpdateUserProfileMutation,
+} from "src/__generated/graphql";
 import FormSelect, { Size } from "src/components/FormSelect";
 import ContactInformations from "src/components/ContactInformations";
 import {
@@ -15,8 +23,9 @@ import {
   toVariables,
 } from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/EditView/types";
 import { useAuth } from "src/hooks/useAuth";
-import { useSuspenseQuery_experimental as useSuspenseQuery } from "@apollo/client";
 import BaseCard from "src/components/Card";
+import { useNavigate } from "react-router-dom";
+import { RoutePaths } from "src/App";
 
 const MAX_STEP = 3;
 
@@ -27,14 +36,39 @@ export default function Onboarding() {
 
   const { T } = useIntl();
 
-  const { githubUserId } = useAuth();
+  const { githubUserId, user } = useAuth();
+  const navigate = useNavigate();
 
-  const { data } = useSuspenseQuery(OwnUserProfileDocument, {
+  const { data } = useOwnUserProfileQuery({
     variables: { githubUserId },
   });
 
   const [updateUserProfileInfo] = useUpdateUserProfileMutation({
     refetchQueries: [{ query: OwnUserProfileDocument, variables: { githubUserId } }],
+    context: { graphqlErrorDisplay: "toaster" },
+    onCompleted: () => markWizzardAsCompleted(),
+  });
+
+  const [markWizzardAsCompleted] = useMarkProfileWizardAsDisplayedMutation({
+    context: { graphqlErrorDisplay: "toaster" },
+    update: cache => {
+      const cachedData = cache.readQuery<GetOnboardingStateQuery>({
+        query: GetOnboardingStateDocument,
+        variables: { userId: user?.id },
+      });
+      cache.writeQuery({
+        query: GetOnboardingStateDocument,
+        variables: { userId: user?.id },
+        data: {
+          onboardingsByPk: {
+            userId: user?.id,
+            termsAndConditionsAcceptanceDate: cachedData?.onboardingsByPk?.termsAndConditionsAcceptanceDate || null,
+            profileWizardDisplayDate: new Date(),
+          },
+        },
+      });
+    },
+    onCompleted: () => navigate(RoutePaths.Home, { state: { onboardingWizzardCompleted: true } }),
   });
 
   const onSubmit = (formData: UserProfileInfo) => updateUserProfileInfo({ variables: toVariables(formData) });
@@ -42,13 +76,14 @@ export default function Onboarding() {
   const profile = data?.userProfiles.at(0);
 
   const methods = useForm<UserProfileInfo>({
-    defaultValues: profile && fromFragment(profile),
     mode: "onChange",
   });
 
   const { handleSubmit, control, reset } = methods;
 
-  useEffect(() => reset(fromFragment(profile)), [profile]);
+  useEffect(() => {
+    if (profile) reset(fromFragment(profile));
+  }, [profile]);
 
   const weeklyTimeAllocations: { [key in AllocatedTime]: string } = {
     [AllocatedTime.None]: T("onboarding.timeAllocation.none"),
@@ -61,7 +96,7 @@ export default function Onboarding() {
     <Background roundedBorders={BackgroundRoundedBorders.Full} centeredContent>
       <FormProvider {...methods}>
         <form id="onboarding-form" className="self-center" onSubmit={handleSubmit(onSubmit)}>
-          {step === 0 && <Intro skip={console.log} start={next} />}
+          {step === 0 && <Intro skip={markWizzardAsCompleted} start={next} />}
           {step === 1 && (
             <Card
               step={step}

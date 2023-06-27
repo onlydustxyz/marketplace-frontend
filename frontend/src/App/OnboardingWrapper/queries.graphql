@@ -5,3 +5,7 @@ query GetOnboardingState($userId: uuid!) {
     profileWizardDisplayDate
   }
 }
+
+mutation MarkProfileWizardAsDisplayed {
+  markProfileWizardAsDisplayed
+}

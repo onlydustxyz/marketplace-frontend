@@ -16231,6 +16231,11 @@ export type GetOnboardingStateQueryVariables = Exact<{
 
 export type GetOnboardingStateQuery = { __typename?: 'query_root', onboardingsByPk: { __typename?: 'Onboardings', userId: any, termsAndConditionsAcceptanceDate: any | null, profileWizardDisplayDate: any | null } | null };
 
+export type MarkProfileWizardAsDisplayedMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MarkProfileWizardAsDisplayedMutation = { __typename?: 'mutation_root', markProfileWizardAsDisplayed: any };
+
 export type GetReleaseDateQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -17517,6 +17522,36 @@ export function useGetOnboardingStateLazyQuery(baseOptions?: Apollo.LazyQueryHoo
 export type GetOnboardingStateQueryHookResult = ReturnType<typeof useGetOnboardingStateQuery>;
 export type GetOnboardingStateLazyQueryHookResult = ReturnType<typeof useGetOnboardingStateLazyQuery>;
 export type GetOnboardingStateQueryResult = Apollo.QueryResult<GetOnboardingStateQuery, GetOnboardingStateQueryVariables>;
+export const MarkProfileWizardAsDisplayedDocument = gql`
+    mutation MarkProfileWizardAsDisplayed {
+  markProfileWizardAsDisplayed
+}
+    `;
+export type MarkProfileWizardAsDisplayedMutationFn = Apollo.MutationFunction<MarkProfileWizardAsDisplayedMutation, MarkProfileWizardAsDisplayedMutationVariables>;
+
+/**
+ * __useMarkProfileWizardAsDisplayedMutation__
+ *
+ * To run a mutation, you first call `useMarkProfileWizardAsDisplayedMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useMarkProfileWizardAsDisplayedMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [markProfileWizardAsDisplayedMutation, { data, loading, error }] = useMarkProfileWizardAsDisplayedMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMarkProfileWizardAsDisplayedMutation(baseOptions?: Apollo.MutationHookOptions<MarkProfileWizardAsDisplayedMutation, MarkProfileWizardAsDisplayedMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<MarkProfileWizardAsDisplayedMutation, MarkProfileWizardAsDisplayedMutationVariables>(MarkProfileWizardAsDisplayedDocument, options);
+      }
+export type MarkProfileWizardAsDisplayedMutationHookResult = ReturnType<typeof useMarkProfileWizardAsDisplayedMutation>;
+export type MarkProfileWizardAsDisplayedMutationResult = Apollo.MutationResult<MarkProfileWizardAsDisplayedMutation>;
+export type MarkProfileWizardAsDisplayedMutationOptions = Apollo.BaseMutationOptions<MarkProfileWizardAsDisplayedMutation, MarkProfileWizardAsDisplayedMutationVariables>;
 export const GetReleaseDateDocument = gql`
     query GetReleaseDate {
   releaseDate

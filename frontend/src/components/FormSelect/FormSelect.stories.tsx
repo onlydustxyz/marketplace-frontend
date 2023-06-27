@@ -22,7 +22,7 @@ export const Default = {
     <FormSelect
       value={workKinds[0].label}
       options={workKinds}
-      size={Size.Lg}
+      size={Size.Md}
       onChange={() => {
         return;
       }}
