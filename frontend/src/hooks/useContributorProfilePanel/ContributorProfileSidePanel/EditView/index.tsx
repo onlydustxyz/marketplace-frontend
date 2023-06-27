@@ -19,14 +19,8 @@ import { Controller, FormProvider, useForm } from "react-hook-form";
 import GlobalLine from "src/icons/GlobalLine";
 import MapPinLine from "src/icons/MapPinLine";
 import { UserProfileInfo, fromFragment, toVariables } from "./types";
-import GithubLogo from "src/icons/GithubLogo";
-import Telegram from "src/assets/icons/Telegram";
-import TwitterFill from "src/icons/TwitterFill";
-import DiscordFill from "src/icons/DiscordFill";
-import LinkedinBoxFill from "src/icons/LinkedinBoxFill";
-import MailLine from "src/icons/MailLine";
-import ContactInformation from "./ContactInformation";
-import TechnologiesCard from "./TechnologiesCard";
+import ContactInformations from "src/components/ContactInformations";
+import TechnologiesSelect from "src/components/TechnologiesSelect";
 import FormSelect from "src/components/FormSelect";
 import LockFill from "src/icons/LockFill";
 import FormToggle from "src/components/FormToggle";
@@ -114,53 +108,23 @@ export default function EditView({ profile, setEditMode }: Props) {
               </Card>
               <Card>
                 <Section gap="wide" title={T("profile.form.contactInfo.title")}>
-                  <div className="flex flex-col gap-3">
-                    <ContactInformation
-                      name="githubHandle"
-                      icon={<GithubLogo className="text-greyscale-600" />}
-                      editDisabled
-                      visibilityName="isGithubHandlePublic"
-                      visibilityDisabled
-                    />
-                    <ContactInformation
-                      name="email"
-                      icon={<MailLine className="text-greyscale-600" />}
-                      editDisabled
-                      visibilityName="isEmailPublic"
-                    />
-                    <ContactInformation
-                      name="telegram"
-                      placeholder={T("profile.form.contactInfo.telegram")}
-                      icon={<Telegram size={16} />}
-                      visibilityName="isTelegramPublic"
-                    />
-                    <ContactInformation
-                      name="twitter"
-                      placeholder={T("profile.form.contactInfo.twitter")}
-                      icon={<TwitterFill />}
-                      visibilityName="isTwitterPublic"
-                    />
-                    <ContactInformation
-                      name="discord"
-                      placeholder={T("profile.form.contactInfo.discord")}
-                      icon={<DiscordFill />}
-                      visibilityName="isDiscordPublic"
-                    />
-                    <ContactInformation
-                      name="linkedin"
-                      placeholder={T("profile.form.contactInfo.linkedin")}
-                      icon={<LinkedinBoxFill />}
-                      visibilityName="isLinkedInPublic"
-                    />
-                  </div>
+                  <ContactInformations />
                 </Section>
               </Card>
-              <Controller
-                name="languages"
-                render={({ field: { value, onChange } }) => (
-                  <TechnologiesCard technologies={value} setTechnologies={onChange} />
-                )}
-              />
+              <Card>
+                <Section
+                  gap="wide"
+                  title={T("profile.edit.sections.technologies.title")}
+                  subtitle={T("profile.edit.sections.technologies.subtitle")}
+                >
+                  <Controller
+                    name="languages"
+                    render={({ field: { value, onChange } }) => (
+                      <TechnologiesSelect technologies={value} setTechnologies={onChange} />
+                    )}
+                  />
+                </Section>
+              </Card>
 
               <Card>
                 <Section

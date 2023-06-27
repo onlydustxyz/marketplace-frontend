@@ -19,6 +19,7 @@ import LoaderFallback from "src/components/Loader";
 import ErrorTrigger from "src/pages/ErrorTrigger";
 import ImpersonationPage from "src/pages/Impersonation";
 import TermsAndConditions from "src/pages/TermsAndConditions";
+import Onboarding from "src/pages/Onboarding";
 import useReloadOnNewRelease from "./useReloadOnNewRelease";
 
 export enum RoutePaths {
@@ -31,6 +32,7 @@ export enum RoutePaths {
   Error = "/error",
   Impersonation = "/impersonate/:userId",
   TermsAndConditions = "/terms-and-conditions",
+  Onboarding = "/onboarding",
 }
 
 export enum ProjectRoutePaths {
@@ -96,6 +98,10 @@ function App() {
         {
           path: RoutePaths.TermsAndConditions,
           element: <TermsAndConditions />,
+        },
+        {
+          path: RoutePaths.Onboarding,
+          element: <Onboarding />,
         },
         {
           path: RoutePaths.Payments,
