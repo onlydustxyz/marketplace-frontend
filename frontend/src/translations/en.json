@@ -1,5 +1,6 @@
 {
   "applications": {
+    "notYetAppliedTooltip": "Increase your chance of being contacted by filling out your Telegram on your profile",
     "appliedTooltip": "Thanks for showing your interest!",
     "applyButton": "Show interest",
     "connectToApplyButton": "Connect to show interest",
