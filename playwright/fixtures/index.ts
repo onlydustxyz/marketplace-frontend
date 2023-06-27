@@ -17,7 +17,7 @@ type PopulatedDataFixtures = {
   payments: Record<string, Record<number, Payment[]>>;
   signIn: (user: User) => Promise<void>;
   logout: () => Promise<void>;
-  acceptTermsAndConditions: (skipOnboardingWizzard?: boolean) => Promise<void>;
+  acceptTermsAndConditions: (props?: { skipOnboardingWizzard?: boolean; skipIntro?: boolean }) => Promise<void>;
 };
 
 export const test = base.extend<PopulatedDataFixtures>({
@@ -73,9 +73,15 @@ export const test = base.extend<PopulatedDataFixtures>({
   },
 
   acceptTermsAndConditions: async ({ page }, use) => {
-    await use(async skipOnboardingWizzard => {
-      if (skipOnboardingWizzard) await page.getByText("skip").click();
-      else await page.getByText("Let’s get reading!").click();
+    await use(async (props = {}) => {
+      const { skipOnboardingWizzard, skipIntro } = props;
+      if (skipOnboardingWizzard) {
+        await page.getByText("skip").click();
+      }
+
+      if (!skipOnboardingWizzard && !skipIntro) {
+        await page.getByText("Let’s get reading!").click();
+      }
 
       await page.getByRole("checkbox").click();
       await page.getByText("Accept terms and conditions").click();

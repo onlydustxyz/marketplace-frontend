@@ -3,6 +3,7 @@ import { expect } from "@playwright/test";
 import { restoreDB } from "./commands/db/db_utils";
 import { ViewProfilePage } from "./pages/profile/view_profile";
 import { retry } from "./commands/common";
+import { OnboardingWizzardPage } from "./pages/profile/onboarding_wizzard";
 
 test.describe("As a signed-in user, I", () => {
   let viewPage: ViewProfilePage;
@@ -10,7 +11,7 @@ test.describe("As a signed-in user, I", () => {
   test.beforeEach(async ({ page, signIn, users, acceptTermsAndConditions }) => {
     restoreDB();
     await signIn(users.Olivier);
-    await acceptTermsAndConditions(true);
+    await acceptTermsAndConditions({ skipOnboardingWizzard: true });
     viewPage = new ViewProfilePage(page);
     await viewPage.goto();
   });
@@ -109,6 +110,116 @@ test.describe("As a signed-in user, I", () => {
     await expect(editPage.location).toHaveValue("Vence, France");
     await expect(editPage.bio).toHaveValue("Fullstack developer, SOLID maximalist");
     await expect(editPage.website).toHaveValue("https://ofux.com/my_profile");
+
+    // Contact informations
+    await expect(editPage.githubHandle).toHaveValue(user.github.login);
+    await expect(editPage.githubHandle).toBeDisabled();
+    await expect(editPage.email).toHaveValue(user.email);
+    await expect(editPage.email).toBeDisabled();
+    await expect(editPage.emailVisibility).toHaveAttribute("data-state", "on");
+    await expect(editPage.telegram).toHaveValue("fu");
+    await expect(editPage.telegramVisibility).toHaveAttribute("data-state", "on");
+    await expect(editPage.twitter).toHaveValue("olivier");
+    await expect(editPage.twitterVisibility).toHaveAttribute("data-state", "off");
+    await expect(editPage.discord).toHaveValue("fu#666");
+    await expect(editPage.discordVisibility).toHaveAttribute("data-state", "off");
+    await expect(editPage.linkedin).toHaveValue("olivier.fu");
+    await expect(editPage.linkedinVisibility).toHaveAttribute("data-state", "on");
+
+    // Technologies
+    await expect(editPage.selectedTechnology("Pascal")).toBeVisible();
+    await expect(editPage.selectedTechnology("Haskell")).toBeVisible();
+    await expect(editPage.selectedTechnology("Ruby")).toBeVisible();
+    await expect(editPage.selectedTechnology("COBOL")).toBeVisible();
+    await expect(editPage.selectedTechnology("C++")).not.toBeVisible();
+
+    // Weekly time allocation
+    await expect(editPage.weeklyTimeAllocation("1 to 3 days")).toHaveAttribute("data-headlessui-state", /selected/);
+    await expect(editPage.lookingForAJob).toBeChecked();
+
+    // Close
+    await expect(editPage.dirtyTag).toHaveText("All changes saved");
+    await editPage.closeButton.click();
+  });
+});
+
+test.describe("As a new user on the platform, I", () => {
+  let wizzard: OnboardingWizzardPage;
+
+  test.beforeEach(async ({ page, signIn, users }) => {
+    restoreDB();
+    await signIn(users.Olivier);
+    wizzard = new OnboardingWizzardPage(page);
+  });
+
+  test("can be onboarded", async ({ page, users, acceptTermsAndConditions }) => {
+    const user = users.Olivier;
+
+    // ======= On boarding wizzard
+    await wizzard.setup.click();
+
+    // Technologies
+    await wizzard.addTechnology("Pascal");
+    await wizzard.addTechnology("C++");
+    await wizzard.addTechnology("Haskell");
+    await wizzard.addTechnology("Ruby");
+    await wizzard.addTechnology("COBOL");
+    await wizzard.removeTechnology("C++");
+    await wizzard.next.click();
+
+    // Weekly time allocation
+    await wizzard.weeklyTimeAllocation("1 to 3 days").click();
+    await wizzard.lookingForAJob.click();
+    await wizzard.next.click();
+
+    // Contact informations
+    await expect(wizzard.githubHandle).toHaveValue(user.github.login);
+    await expect(wizzard.githubHandle).toBeDisabled();
+    await expect(wizzard.email).toHaveValue(user.email);
+    await expect(wizzard.email).toBeDisabled();
+    await expect(wizzard.emailVisibility).toHaveAttribute("data-state", "off");
+    await wizzard.emailVisibility.click({ force: true });
+    await expect(wizzard.emailVisibility).toHaveAttribute("data-state", "on");
+    await wizzard.telegram.fill("fu");
+    await expect(wizzard.telegramVisibility).toHaveAttribute("data-state", "on");
+    await wizzard.twitter.fill("olivier");
+    await expect(wizzard.twitterVisibility).toHaveAttribute("data-state", "on");
+    await wizzard.twitterVisibility.click();
+    await expect(wizzard.twitterVisibility).toHaveAttribute("data-state", "off");
+    await wizzard.discord.fill("fu#666");
+    await expect(wizzard.discordVisibility).toHaveAttribute("data-state", "on");
+    await wizzard.discordVisibility.click();
+    await expect(wizzard.discordVisibility).toHaveAttribute("data-state", "off");
+    await wizzard.linkedin.fill("olivier.fu");
+    await expect(wizzard.linkedinVisibility).toHaveAttribute("data-state", "on");
+    await wizzard.submit.click();
+
+    // Accept T&C
+    await acceptTermsAndConditions({ skipIntro: true });
+
+    // ======= Check informations are visible in public profile
+    const viewPage = new ViewProfilePage(page);
+    await viewPage.goto();
+
+    await expect(viewPage.login).toHaveText(user.github.login);
+
+    // Contact informations
+    await expect(viewPage.github).toBeVisible();
+    await expect(viewPage.telegram).toBeVisible();
+    await expect(viewPage.twitter).not.toBeVisible();
+    await expect(viewPage.discord).not.toBeVisible();
+    await expect(viewPage.linkedin).toBeVisible();
+    await expect(viewPage.email).toBeVisible();
+
+    // Technologies
+    await expect(viewPage.technology("Pascal")).toBeVisible();
+    await expect(viewPage.technology("Haskell")).toBeVisible();
+    await expect(viewPage.technology("Ruby")).toBeVisible();
+    await expect(viewPage.technology("COBOL")).toBeVisible();
+    await expect(viewPage.technology("C++")).not.toBeVisible();
+
+    // ======= Check informations are pre-filled
+    const editPage = await viewPage.edit();
 
     // Contact informations
     await expect(editPage.githubHandle).toHaveValue(user.github.login);

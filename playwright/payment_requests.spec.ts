@@ -236,7 +236,7 @@ test.describe("As a project lead, I", () => {
     ) => {
       await signIn(user);
       if (shouldAcceptTermsAndConditions) {
-        await acceptTermsAndConditions(skipOnboardingWizzard);
+        await acceptTermsAndConditions({ skipOnboardingWizzard });
       }
       await projectPaymentsPage.goto();
       await projectPaymentsPage.reload();
