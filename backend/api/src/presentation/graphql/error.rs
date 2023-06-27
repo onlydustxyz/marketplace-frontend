@@ -5,8 +5,7 @@ use olog::error;
 use thiserror::Error;
 
 use crate::application::user::{
-	accept_terms_and_conditions::Error as AcceptTermsAndConditionsError,
-	update_payout_info::Error as UpdateUserPayoutInfoError,
+	onboard::Error as OnboardingError, update_payout_info::Error as UpdateUserPayoutInfoError,
 };
 
 #[derive(Debug, Error)]
@@ -51,10 +50,10 @@ impl From<UpdateUserPayoutInfoError> for Error {
 	}
 }
 
-impl From<AcceptTermsAndConditionsError> for Error {
-	fn from(error: AcceptTermsAndConditionsError) -> Self {
+impl From<OnboardingError> for Error {
+	fn from(error: OnboardingError) -> Self {
 		match error {
-			AcceptTermsAndConditionsError::Repository(e) => e.into(),
+			OnboardingError::Repository(e) => e.into(),
 		}
 	}
 }

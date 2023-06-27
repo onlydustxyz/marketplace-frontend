@@ -41,8 +41,7 @@ pub struct Context {
 	pub create_github_issue_usecase: application::github::create_issue::Usecase,
 	pub ignored_github_issues_usecase: application::project::ignored_issues::Usecase,
 	pub apply_to_project_usecase: application::project::apply::Usecase,
-	pub accept_terms_and_conditions_usecase:
-		application::user::accept_terms_and_conditions::Usecase,
+	pub onboard_usecase: application::user::onboard::Usecase,
 	pub update_user_profile_info_usecase: application::user::update_profile_info::Usecase,
 	pub ens: Arc<ens::Client>,
 }
@@ -64,9 +63,7 @@ impl Context {
 		user_payout_info_repository: Arc<dyn Repository<UserPayoutInfo>>,
 		user_profile_info_repository: Arc<dyn UserProfileInfoRepository>,
 		contact_informations_repository: Arc<dyn ContactInformationsRepository>,
-		terms_and_conditions_acceptance_repository: Arc<
-			dyn Repository<TermsAndConditionsAcceptance>,
-		>,
+		onboarding_repository: Arc<dyn Repository<Onboarding>>,
 		graphql: Arc<graphql::Client>,
 		github: Arc<github::Client>,
 		ens: Arc<ens::Client>,
@@ -158,10 +155,7 @@ impl Context {
 				project_repository,
 				bus,
 			),
-			accept_terms_and_conditions_usecase:
-				application::user::accept_terms_and_conditions::Usecase::new(
-					terms_and_conditions_acceptance_repository,
-				),
+			onboard_usecase: application::user::onboard::Usecase::new(onboarding_repository),
 			update_user_profile_info_usecase: application::user::update_profile_info::Usecase::new(
 				user_profile_info_repository,
 				contact_informations_repository,

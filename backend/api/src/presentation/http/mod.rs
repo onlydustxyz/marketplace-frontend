@@ -34,7 +34,7 @@ pub async fn serve(
 	user_info_repository: Arc<dyn Repository<UserPayoutInfo>>,
 	user_profile_info_repository: Arc<dyn UserProfileInfoRepository>,
 	contact_informations_repository: Arc<dyn ContactInformationsRepository>,
-	terms_and_conditions_acceptance_repository: Arc<dyn Repository<TermsAndConditionsAcceptance>>,
+	onboarding_repository: Arc<dyn Repository<Onboarding>>,
 	graphql: Arc<infrastructure::graphql::Client>,
 	github: Arc<github::Client>,
 	ens: Arc<ens::Client>,
@@ -52,7 +52,7 @@ pub async fn serve(
 		.manage(pending_project_leader_invitations_repository)
 		.manage(ignored_github_issues_repository)
 		.manage(user_info_repository)
-		.manage(terms_and_conditions_acceptance_repository)
+		.manage(onboarding_repository)
 		.manage(user_profile_info_repository)
 		.manage(contact_informations_repository)
 		.manage(graphql)
