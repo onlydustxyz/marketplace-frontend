@@ -4045,6 +4045,136 @@ export type NumericComparisonExp = {
   _nin: InputMaybe<Array<Scalars['numeric']>>;
 };
 
+/** columns and relationships of "onboardings" */
+export type Onboardings = {
+  __typename?: 'Onboardings';
+  profileWizardDisplayDate: Maybe<Scalars['timestamp']>;
+  termsAndConditionsAcceptanceDate: Maybe<Scalars['timestamp']>;
+  userId: Scalars['uuid'];
+};
+
+/** aggregated selection of "onboardings" */
+export type OnboardingsAggregate = {
+  __typename?: 'OnboardingsAggregate';
+  aggregate: Maybe<OnboardingsAggregateFields>;
+  nodes: Array<Onboardings>;
+};
+
+/** aggregate fields of "onboardings" */
+export type OnboardingsAggregateFields = {
+  __typename?: 'OnboardingsAggregateFields';
+  count: Scalars['Int'];
+  max: Maybe<OnboardingsMaxFields>;
+  min: Maybe<OnboardingsMinFields>;
+};
+
+
+/** aggregate fields of "onboardings" */
+export type OnboardingsAggregateFieldsCountArgs = {
+  columns: InputMaybe<Array<OnboardingsSelectColumn>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
+/** Boolean expression to filter rows from the table "onboardings". All fields are combined with a logical 'AND'. */
+export type OnboardingsBoolExp = {
+  _and: InputMaybe<Array<OnboardingsBoolExp>>;
+  _not: InputMaybe<OnboardingsBoolExp>;
+  _or: InputMaybe<Array<OnboardingsBoolExp>>;
+  profileWizardDisplayDate: InputMaybe<TimestampComparisonExp>;
+  termsAndConditionsAcceptanceDate: InputMaybe<TimestampComparisonExp>;
+  userId: InputMaybe<UuidComparisonExp>;
+};
+
+/** unique or primary key constraints on table "onboardings" */
+export enum OnboardingsConstraint {
+  /** unique or primary key constraint on columns "user_id" */
+  TermsAndConditionsAcceptancesPkey = 'terms_and_conditions_acceptances_pkey'
+}
+
+/** input type for inserting data into table "onboardings" */
+export type OnboardingsInsertInput = {
+  profileWizardDisplayDate: InputMaybe<Scalars['timestamp']>;
+  termsAndConditionsAcceptanceDate: InputMaybe<Scalars['timestamp']>;
+  userId: InputMaybe<Scalars['uuid']>;
+};
+
+/** aggregate max on columns */
+export type OnboardingsMaxFields = {
+  __typename?: 'OnboardingsMaxFields';
+  profileWizardDisplayDate: Maybe<Scalars['timestamp']>;
+  termsAndConditionsAcceptanceDate: Maybe<Scalars['timestamp']>;
+  userId: Maybe<Scalars['uuid']>;
+};
+
+/** aggregate min on columns */
+export type OnboardingsMinFields = {
+  __typename?: 'OnboardingsMinFields';
+  profileWizardDisplayDate: Maybe<Scalars['timestamp']>;
+  termsAndConditionsAcceptanceDate: Maybe<Scalars['timestamp']>;
+  userId: Maybe<Scalars['uuid']>;
+};
+
+/** response of any mutation on the table "onboardings" */
+export type OnboardingsMutationResponse = {
+  __typename?: 'OnboardingsMutationResponse';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Onboardings>;
+};
+
+/** on_conflict condition type for table "onboardings" */
+export type OnboardingsOnConflict = {
+  constraint: OnboardingsConstraint;
+  update_columns: Array<OnboardingsUpdateColumn>;
+  where: InputMaybe<OnboardingsBoolExp>;
+};
+
+/** Ordering options when selecting data from "onboardings". */
+export type OnboardingsOrderBy = {
+  profileWizardDisplayDate: InputMaybe<OrderBy>;
+  termsAndConditionsAcceptanceDate: InputMaybe<OrderBy>;
+  userId: InputMaybe<OrderBy>;
+};
+
+/** primary key columns input for table: onboardings */
+export type OnboardingsPkColumnsInput = {
+  userId: Scalars['uuid'];
+};
+
+/** select columns of table "onboardings" */
+export enum OnboardingsSelectColumn {
+  /** column name */
+  ProfileWizardDisplayDate = 'profileWizardDisplayDate',
+  /** column name */
+  TermsAndConditionsAcceptanceDate = 'termsAndConditionsAcceptanceDate',
+  /** column name */
+  UserId = 'userId'
+}
+
+/** input type for updating data in table "onboardings" */
+export type OnboardingsSetInput = {
+  profileWizardDisplayDate: InputMaybe<Scalars['timestamp']>;
+  termsAndConditionsAcceptanceDate: InputMaybe<Scalars['timestamp']>;
+  userId: InputMaybe<Scalars['uuid']>;
+};
+
+/** update columns of table "onboardings" */
+export enum OnboardingsUpdateColumn {
+  /** column name */
+  ProfileWizardDisplayDate = 'profileWizardDisplayDate',
+  /** column name */
+  TermsAndConditionsAcceptanceDate = 'termsAndConditionsAcceptanceDate',
+  /** column name */
+  UserId = 'userId'
+}
+
+export type OnboardingsUpdates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<OnboardingsSetInput>;
+  where: OnboardingsBoolExp;
+};
+
 /** column ordering options */
 export enum OrderBy {
   /** in ascending order, nulls last */
@@ -7036,125 +7166,6 @@ export type StringComparisonExp = {
   _regex: InputMaybe<Scalars['String']>;
   /** does the column match the given SQL regular expression */
   _similar: InputMaybe<Scalars['String']>;
-};
-
-/** columns and relationships of "terms_and_conditions_acceptances" */
-export type TermsAndConditionsAcceptances = {
-  __typename?: 'TermsAndConditionsAcceptances';
-  acceptanceDate: Scalars['timestamp'];
-  userId: Scalars['uuid'];
-};
-
-/** aggregated selection of "terms_and_conditions_acceptances" */
-export type TermsAndConditionsAcceptancesAggregate = {
-  __typename?: 'TermsAndConditionsAcceptancesAggregate';
-  aggregate: Maybe<TermsAndConditionsAcceptancesAggregateFields>;
-  nodes: Array<TermsAndConditionsAcceptances>;
-};
-
-/** aggregate fields of "terms_and_conditions_acceptances" */
-export type TermsAndConditionsAcceptancesAggregateFields = {
-  __typename?: 'TermsAndConditionsAcceptancesAggregateFields';
-  count: Scalars['Int'];
-  max: Maybe<TermsAndConditionsAcceptancesMaxFields>;
-  min: Maybe<TermsAndConditionsAcceptancesMinFields>;
-};
-
-
-/** aggregate fields of "terms_and_conditions_acceptances" */
-export type TermsAndConditionsAcceptancesAggregateFieldsCountArgs = {
-  columns: InputMaybe<Array<TermsAndConditionsAcceptancesSelectColumn>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
-};
-
-/** Boolean expression to filter rows from the table "terms_and_conditions_acceptances". All fields are combined with a logical 'AND'. */
-export type TermsAndConditionsAcceptancesBoolExp = {
-  _and: InputMaybe<Array<TermsAndConditionsAcceptancesBoolExp>>;
-  _not: InputMaybe<TermsAndConditionsAcceptancesBoolExp>;
-  _or: InputMaybe<Array<TermsAndConditionsAcceptancesBoolExp>>;
-  acceptanceDate: InputMaybe<TimestampComparisonExp>;
-  userId: InputMaybe<UuidComparisonExp>;
-};
-
-/** unique or primary key constraints on table "terms_and_conditions_acceptances" */
-export enum TermsAndConditionsAcceptancesConstraint {
-  /** unique or primary key constraint on columns "user_id" */
-  TermsAndConditionsAcceptancesPkey = 'terms_and_conditions_acceptances_pkey'
-}
-
-/** input type for inserting data into table "terms_and_conditions_acceptances" */
-export type TermsAndConditionsAcceptancesInsertInput = {
-  acceptanceDate: InputMaybe<Scalars['timestamp']>;
-  userId: InputMaybe<Scalars['uuid']>;
-};
-
-/** aggregate max on columns */
-export type TermsAndConditionsAcceptancesMaxFields = {
-  __typename?: 'TermsAndConditionsAcceptancesMaxFields';
-  acceptanceDate: Maybe<Scalars['timestamp']>;
-  userId: Maybe<Scalars['uuid']>;
-};
-
-/** aggregate min on columns */
-export type TermsAndConditionsAcceptancesMinFields = {
-  __typename?: 'TermsAndConditionsAcceptancesMinFields';
-  acceptanceDate: Maybe<Scalars['timestamp']>;
-  userId: Maybe<Scalars['uuid']>;
-};
-
-/** response of any mutation on the table "terms_and_conditions_acceptances" */
-export type TermsAndConditionsAcceptancesMutationResponse = {
-  __typename?: 'TermsAndConditionsAcceptancesMutationResponse';
-  /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
-  /** data from the rows affected by the mutation */
-  returning: Array<TermsAndConditionsAcceptances>;
-};
-
-/** on_conflict condition type for table "terms_and_conditions_acceptances" */
-export type TermsAndConditionsAcceptancesOnConflict = {
-  constraint: TermsAndConditionsAcceptancesConstraint;
-  update_columns: Array<TermsAndConditionsAcceptancesUpdateColumn>;
-  where: InputMaybe<TermsAndConditionsAcceptancesBoolExp>;
-};
-
-/** Ordering options when selecting data from "terms_and_conditions_acceptances". */
-export type TermsAndConditionsAcceptancesOrderBy = {
-  acceptanceDate: InputMaybe<OrderBy>;
-  userId: InputMaybe<OrderBy>;
-};
-
-/** primary key columns input for table: terms_and_conditions_acceptances */
-export type TermsAndConditionsAcceptancesPkColumnsInput = {
-  userId: Scalars['uuid'];
-};
-
-/** select columns of table "terms_and_conditions_acceptances" */
-export enum TermsAndConditionsAcceptancesSelectColumn {
-  /** column name */
-  AcceptanceDate = 'acceptanceDate',
-  /** column name */
-  UserId = 'userId'
-}
-
-/** input type for updating data in table "terms_and_conditions_acceptances" */
-export type TermsAndConditionsAcceptancesSetInput = {
-  acceptanceDate: InputMaybe<Scalars['timestamp']>;
-  userId: InputMaybe<Scalars['uuid']>;
-};
-
-/** update columns of table "terms_and_conditions_acceptances" */
-export enum TermsAndConditionsAcceptancesUpdateColumn {
-  /** column name */
-  AcceptanceDate = 'acceptanceDate',
-  /** column name */
-  UserId = 'userId'
-}
-
-export type TermsAndConditionsAcceptancesUpdates = {
-  /** sets the columns of the filtered rows to the given values */
-  _set: InputMaybe<TermsAndConditionsAcceptancesSetInput>;
-  where: TermsAndConditionsAcceptancesBoolExp;
 };
 
 /** Boolean expression to compare columns of type "timestamp". All fields are combined with logical 'AND'. */
@@ -10310,6 +10321,10 @@ export type Mutation_Root = {
   deleteIgnoredGithubIssues: Maybe<IgnoredGithubIssuesMutationResponse>;
   /** delete single row from the table: "ignored_github_issues" */
   deleteIgnoredGithubIssuesByPk: Maybe<IgnoredGithubIssues>;
+  /** delete data from the table: "onboardings" */
+  deleteOnboardings: Maybe<OnboardingsMutationResponse>;
+  /** delete single row from the table: "onboardings" */
+  deleteOnboardingsByPk: Maybe<Onboardings>;
   /** delete data from the table: "payment_requests" */
   deletePaymentRequests: Maybe<PaymentRequestsMutationResponse>;
   /** delete single row from the table: "payment_requests" */
@@ -10350,10 +10365,6 @@ export type Mutation_Root = {
   deleteSponsors: Maybe<SponsorsMutationResponse>;
   /** delete single row from the table: "sponsors" */
   deleteSponsorsByPk: Maybe<Sponsors>;
-  /** delete data from the table: "terms_and_conditions_acceptances" */
-  deleteTermsAndConditionsAcceptances: Maybe<TermsAndConditionsAcceptancesMutationResponse>;
-  /** delete single row from the table: "terms_and_conditions_acceptances" */
-  deleteTermsAndConditionsAcceptancesByPk: Maybe<TermsAndConditionsAcceptances>;
   /** delete single row from the table: "auth.users" */
   deleteUser: Maybe<Users>;
   /** delete data from the table: "user_payout_info" */
@@ -10427,6 +10438,10 @@ export type Mutation_Root = {
   insertIgnoredGithubIssues: Maybe<IgnoredGithubIssuesMutationResponse>;
   /** insert a single row into the table: "ignored_github_issues" */
   insertIgnoredGithubIssuesOne: Maybe<IgnoredGithubIssues>;
+  /** insert data into the table: "onboardings" */
+  insertOnboardings: Maybe<OnboardingsMutationResponse>;
+  /** insert a single row into the table: "onboardings" */
+  insertOnboardingsOne: Maybe<Onboardings>;
   /** insert data into the table: "payment_requests" */
   insertPaymentRequests: Maybe<PaymentRequestsMutationResponse>;
   /** insert a single row into the table: "payment_requests" */
@@ -10467,10 +10482,6 @@ export type Mutation_Root = {
   insertSponsors: Maybe<SponsorsMutationResponse>;
   /** insert a single row into the table: "sponsors" */
   insertSponsorsOne: Maybe<Sponsors>;
-  /** insert data into the table: "terms_and_conditions_acceptances" */
-  insertTermsAndConditionsAcceptances: Maybe<TermsAndConditionsAcceptancesMutationResponse>;
-  /** insert a single row into the table: "terms_and_conditions_acceptances" */
-  insertTermsAndConditionsAcceptancesOne: Maybe<TermsAndConditionsAcceptances>;
   /** insert a single row into the table: "auth.users" */
   insertUser: Maybe<Users>;
   /** insert data into the table: "user_payout_info" */
@@ -10487,6 +10498,7 @@ export type Mutation_Root = {
   inviteProjectLeader: Scalars['Uuid'];
   linkGithubRepo: Scalars['Uuid'];
   markInvoiceAsReceived: Scalars['Int'];
+  markProfileWizardAsDisplayed: Scalars['Uuid'];
   rejectInvoice: Scalars['Int'];
   removeSponsorFromProject: Scalars['Uuid'];
   requestPayment: Payment;
@@ -10582,6 +10594,12 @@ export type Mutation_Root = {
   updateIgnoredGithubIssuesByPk: Maybe<IgnoredGithubIssues>;
   /** update multiples rows of table: "ignored_github_issues" */
   updateIgnoredGithubIssuesMany: Maybe<Array<Maybe<IgnoredGithubIssuesMutationResponse>>>;
+  /** update data of the table: "onboardings" */
+  updateOnboardings: Maybe<OnboardingsMutationResponse>;
+  /** update single row of the table: "onboardings" */
+  updateOnboardingsByPk: Maybe<Onboardings>;
+  /** update multiples rows of table: "onboardings" */
+  updateOnboardingsMany: Maybe<Array<Maybe<OnboardingsMutationResponse>>>;
   /** update data of the table: "payment_requests" */
   updatePaymentRequests: Maybe<PaymentRequestsMutationResponse>;
   /** update single row of the table: "payment_requests" */
@@ -10645,12 +10663,6 @@ export type Mutation_Root = {
   updateSponsorsByPk: Maybe<Sponsors>;
   /** update multiples rows of table: "sponsors" */
   updateSponsorsMany: Maybe<Array<Maybe<SponsorsMutationResponse>>>;
-  /** update data of the table: "terms_and_conditions_acceptances" */
-  updateTermsAndConditionsAcceptances: Maybe<TermsAndConditionsAcceptancesMutationResponse>;
-  /** update single row of the table: "terms_and_conditions_acceptances" */
-  updateTermsAndConditionsAcceptancesByPk: Maybe<TermsAndConditionsAcceptances>;
-  /** update multiples rows of table: "terms_and_conditions_acceptances" */
-  updateTermsAndConditionsAcceptancesMany: Maybe<Array<Maybe<TermsAndConditionsAcceptancesMutationResponse>>>;
   /** update single row of the table: "auth.users" */
   updateUser: Maybe<Users>;
   /** update data of the table: "user_payout_info" */
@@ -10930,6 +10942,18 @@ export type Mutation_RootDeleteIgnoredGithubIssuesByPkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDeleteOnboardingsArgs = {
+  where: OnboardingsBoolExp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteOnboardingsByPkArgs = {
+  userId: Scalars['uuid'];
+};
+
+
+/** mutation root */
 export type Mutation_RootDeletePaymentRequestsArgs = {
   where: PaymentRequestsBoolExp;
 };
@@ -11050,18 +11074,6 @@ export type Mutation_RootDeleteSponsorsArgs = {
 /** mutation root */
 export type Mutation_RootDeleteSponsorsByPkArgs = {
   id: Scalars['uuid'];
-};
-
-
-/** mutation root */
-export type Mutation_RootDeleteTermsAndConditionsAcceptancesArgs = {
-  where: TermsAndConditionsAcceptancesBoolExp;
-};
-
-
-/** mutation root */
-export type Mutation_RootDeleteTermsAndConditionsAcceptancesByPkArgs = {
-  userId: Scalars['uuid'];
 };
 
 
@@ -11320,6 +11332,20 @@ export type Mutation_RootInsertIgnoredGithubIssuesOneArgs = {
 
 
 /** mutation root */
+export type Mutation_RootInsertOnboardingsArgs = {
+  objects: Array<OnboardingsInsertInput>;
+  onConflict: InputMaybe<OnboardingsOnConflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsertOnboardingsOneArgs = {
+  object: OnboardingsInsertInput;
+  onConflict: InputMaybe<OnboardingsOnConflict>;
+};
+
+
+/** mutation root */
 export type Mutation_RootInsertPaymentRequestsArgs = {
   objects: Array<PaymentRequestsInsertInput>;
   onConflict: InputMaybe<PaymentRequestsOnConflict>;
@@ -11456,20 +11482,6 @@ export type Mutation_RootInsertSponsorsArgs = {
 export type Mutation_RootInsertSponsorsOneArgs = {
   object: SponsorsInsertInput;
   onConflict: InputMaybe<SponsorsOnConflict>;
-};
-
-
-/** mutation root */
-export type Mutation_RootInsertTermsAndConditionsAcceptancesArgs = {
-  objects: Array<TermsAndConditionsAcceptancesInsertInput>;
-  onConflict: InputMaybe<TermsAndConditionsAcceptancesOnConflict>;
-};
-
-
-/** mutation root */
-export type Mutation_RootInsertTermsAndConditionsAcceptancesOneArgs = {
-  object: TermsAndConditionsAcceptancesInsertInput;
-  onConflict: InputMaybe<TermsAndConditionsAcceptancesOnConflict>;
 };
 
 
@@ -11924,6 +11936,26 @@ export type Mutation_RootUpdateIgnoredGithubIssuesManyArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdateOnboardingsArgs = {
+  _set: InputMaybe<OnboardingsSetInput>;
+  where: OnboardingsBoolExp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateOnboardingsByPkArgs = {
+  _set: InputMaybe<OnboardingsSetInput>;
+  pk_columns: OnboardingsPkColumnsInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateOnboardingsManyArgs = {
+  updates: Array<OnboardingsUpdates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdatePaymentRequestsArgs = {
   _inc: InputMaybe<PaymentRequestsIncInput>;
   _set: InputMaybe<PaymentRequestsSetInput>;
@@ -12177,26 +12209,6 @@ export type Mutation_RootUpdateSponsorsManyArgs = {
 
 
 /** mutation root */
-export type Mutation_RootUpdateTermsAndConditionsAcceptancesArgs = {
-  _set: InputMaybe<TermsAndConditionsAcceptancesSetInput>;
-  where: TermsAndConditionsAcceptancesBoolExp;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdateTermsAndConditionsAcceptancesByPkArgs = {
-  _set: InputMaybe<TermsAndConditionsAcceptancesSetInput>;
-  pk_columns: TermsAndConditionsAcceptancesPkColumnsInput;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdateTermsAndConditionsAcceptancesManyArgs = {
-  updates: Array<TermsAndConditionsAcceptancesUpdates>;
-};
-
-
-/** mutation root */
 export type Mutation_RootUpdateUserArgs = {
   _append: InputMaybe<UsersAppendInput>;
   _deleteAtPath: InputMaybe<UsersDeleteAtPathInput>;
@@ -12288,6 +12300,21 @@ export type Mutation_RootUpdateWorkItemsByPkArgs = {
 /** mutation root */
 export type Mutation_RootUpdateWorkItemsManyArgs = {
   updates: Array<WorkItemsUpdates>;
+};
+
+/** Streaming cursor of the table "onboardings" */
+export type Onboardings_StreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: Onboardings_StreamCursorValueInput;
+  /** cursor ordering */
+  ordering: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Onboardings_StreamCursorValueInput = {
+  profileWizardDisplayDate: InputMaybe<Scalars['timestamp']>;
+  termsAndConditionsAcceptanceDate: InputMaybe<Scalars['timestamp']>;
+  userId: InputMaybe<Scalars['uuid']>;
 };
 
 export type Payment_Requests_Aggregate_Bool_Exp = {
@@ -13047,6 +13074,12 @@ export type Query_Root = {
   ignoredGithubIssuesAggregate: IgnoredGithubIssuesAggregate;
   /** fetch data from the table: "ignored_github_issues" using primary key columns */
   ignoredGithubIssuesByPk: Maybe<IgnoredGithubIssues>;
+  /** fetch data from the table: "onboardings" */
+  onboardings: Array<Onboardings>;
+  /** fetch aggregated fields from the table: "onboardings" */
+  onboardingsAggregate: OnboardingsAggregate;
+  /** fetch data from the table: "onboardings" using primary key columns */
+  onboardingsByPk: Maybe<Onboardings>;
   /** An array relationship */
   paymentRequests: Array<PaymentRequests>;
   /** An aggregate relationship */
@@ -13117,12 +13150,6 @@ export type Query_Root = {
   sponsorsAggregate: SponsorsAggregate;
   /** fetch data from the table: "sponsors" using primary key columns */
   sponsorsByPk: Maybe<Sponsors>;
-  /** fetch data from the table: "terms_and_conditions_acceptances" */
-  termsAndConditionsAcceptances: Array<TermsAndConditionsAcceptances>;
-  /** fetch aggregated fields from the table: "terms_and_conditions_acceptances" */
-  termsAndConditionsAcceptancesAggregate: TermsAndConditionsAcceptancesAggregate;
-  /** fetch data from the table: "terms_and_conditions_acceptances" using primary key columns */
-  termsAndConditionsAcceptancesByPk: Maybe<TermsAndConditionsAcceptances>;
   /** fetch data from the table: "auth.users" using primary key columns */
   user: Maybe<Users>;
   /** fetch data from the table: "user_payout_info" */
@@ -13599,6 +13626,29 @@ export type Query_RootIgnoredGithubIssuesByPkArgs = {
 };
 
 
+export type Query_RootOnboardingsArgs = {
+  distinctOn: InputMaybe<Array<OnboardingsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<OnboardingsOrderBy>>;
+  where: InputMaybe<OnboardingsBoolExp>;
+};
+
+
+export type Query_RootOnboardingsAggregateArgs = {
+  distinctOn: InputMaybe<Array<OnboardingsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<OnboardingsOrderBy>>;
+  where: InputMaybe<OnboardingsBoolExp>;
+};
+
+
+export type Query_RootOnboardingsByPkArgs = {
+  userId: Scalars['uuid'];
+};
+
+
 export type Query_RootPaymentRequestsArgs = {
   distinctOn: InputMaybe<Array<PaymentRequestsSelectColumn>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -13878,29 +13928,6 @@ export type Query_RootSponsorsByPkArgs = {
 };
 
 
-export type Query_RootTermsAndConditionsAcceptancesArgs = {
-  distinctOn: InputMaybe<Array<TermsAndConditionsAcceptancesSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<TermsAndConditionsAcceptancesOrderBy>>;
-  where: InputMaybe<TermsAndConditionsAcceptancesBoolExp>;
-};
-
-
-export type Query_RootTermsAndConditionsAcceptancesAggregateArgs = {
-  distinctOn: InputMaybe<Array<TermsAndConditionsAcceptancesSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<TermsAndConditionsAcceptancesOrderBy>>;
-  where: InputMaybe<TermsAndConditionsAcceptancesBoolExp>;
-};
-
-
-export type Query_RootTermsAndConditionsAcceptancesByPkArgs = {
-  userId: Scalars['uuid'];
-};
-
-
 export type Query_RootUserArgs = {
   id: Scalars['uuid'];
 };
@@ -14176,6 +14203,14 @@ export type Subscription_Root = {
   ignoredGithubIssuesByPk: Maybe<IgnoredGithubIssues>;
   /** fetch data from the table in a streaming manner: "ignored_github_issues" */
   ignoredGithubIssuesStream: Array<IgnoredGithubIssues>;
+  /** fetch data from the table: "onboardings" */
+  onboardings: Array<Onboardings>;
+  /** fetch aggregated fields from the table: "onboardings" */
+  onboardingsAggregate: OnboardingsAggregate;
+  /** fetch data from the table: "onboardings" using primary key columns */
+  onboardingsByPk: Maybe<Onboardings>;
+  /** fetch data from the table in a streaming manner: "onboardings" */
+  onboardingsStream: Array<Onboardings>;
   /** An array relationship */
   paymentRequests: Array<PaymentRequests>;
   /** An aggregate relationship */
@@ -14268,14 +14303,6 @@ export type Subscription_Root = {
   sponsorsByPk: Maybe<Sponsors>;
   /** fetch data from the table in a streaming manner: "sponsors" */
   sponsorsStream: Array<Sponsors>;
-  /** fetch data from the table: "terms_and_conditions_acceptances" */
-  termsAndConditionsAcceptances: Array<TermsAndConditionsAcceptances>;
-  /** fetch aggregated fields from the table: "terms_and_conditions_acceptances" */
-  termsAndConditionsAcceptancesAggregate: TermsAndConditionsAcceptancesAggregate;
-  /** fetch data from the table: "terms_and_conditions_acceptances" using primary key columns */
-  termsAndConditionsAcceptancesByPk: Maybe<TermsAndConditionsAcceptances>;
-  /** fetch data from the table in a streaming manner: "terms_and_conditions_acceptances" */
-  termsAndConditionsAcceptancesStream: Array<TermsAndConditionsAcceptances>;
   /** fetch data from the table: "auth.users" using primary key columns */
   user: Maybe<Users>;
   /** fetch data from the table: "user_payout_info" */
@@ -14887,6 +14914,36 @@ export type Subscription_RootIgnoredGithubIssuesStreamArgs = {
 };
 
 
+export type Subscription_RootOnboardingsArgs = {
+  distinctOn: InputMaybe<Array<OnboardingsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<OnboardingsOrderBy>>;
+  where: InputMaybe<OnboardingsBoolExp>;
+};
+
+
+export type Subscription_RootOnboardingsAggregateArgs = {
+  distinctOn: InputMaybe<Array<OnboardingsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<OnboardingsOrderBy>>;
+  where: InputMaybe<OnboardingsBoolExp>;
+};
+
+
+export type Subscription_RootOnboardingsByPkArgs = {
+  userId: Scalars['uuid'];
+};
+
+
+export type Subscription_RootOnboardingsStreamArgs = {
+  batchSize: Scalars['Int'];
+  cursor: Array<InputMaybe<Onboardings_StreamCursorInput>>;
+  where: InputMaybe<OnboardingsBoolExp>;
+};
+
+
 export type Subscription_RootPaymentRequestsArgs = {
   distinctOn: InputMaybe<Array<PaymentRequestsSelectColumn>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -15241,36 +15298,6 @@ export type Subscription_RootSponsorsStreamArgs = {
 };
 
 
-export type Subscription_RootTermsAndConditionsAcceptancesArgs = {
-  distinctOn: InputMaybe<Array<TermsAndConditionsAcceptancesSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<TermsAndConditionsAcceptancesOrderBy>>;
-  where: InputMaybe<TermsAndConditionsAcceptancesBoolExp>;
-};
-
-
-export type Subscription_RootTermsAndConditionsAcceptancesAggregateArgs = {
-  distinctOn: InputMaybe<Array<TermsAndConditionsAcceptancesSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<TermsAndConditionsAcceptancesOrderBy>>;
-  where: InputMaybe<TermsAndConditionsAcceptancesBoolExp>;
-};
-
-
-export type Subscription_RootTermsAndConditionsAcceptancesByPkArgs = {
-  userId: Scalars['uuid'];
-};
-
-
-export type Subscription_RootTermsAndConditionsAcceptancesStreamArgs = {
-  batchSize: Scalars['Int'];
-  cursor: Array<InputMaybe<Terms_And_Conditions_Acceptances_StreamCursorInput>>;
-  where: InputMaybe<TermsAndConditionsAcceptancesBoolExp>;
-};
-
-
 export type Subscription_RootUserArgs = {
   id: Scalars['uuid'];
 };
@@ -15378,20 +15405,6 @@ export type Subscription_RootWorkItemsStreamArgs = {
   batchSize: Scalars['Int'];
   cursor: Array<InputMaybe<Work_Items_StreamCursorInput>>;
   where: InputMaybe<WorkItemsBoolExp>;
-};
-
-/** Streaming cursor of the table "terms_and_conditions_acceptances" */
-export type Terms_And_Conditions_Acceptances_StreamCursorInput = {
-  /** Stream column input with initial value */
-  initialValue: Terms_And_Conditions_Acceptances_StreamCursorValueInput;
-  /** cursor ordering */
-  ordering: InputMaybe<CursorOrdering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type Terms_And_Conditions_Acceptances_StreamCursorValueInput = {
-  acceptanceDate: InputMaybe<Scalars['timestamp']>;
-  userId: InputMaybe<Scalars['uuid']>;
 };
 
 /** Streaming cursor of the table "user_payout_info" */
@@ -16211,12 +16224,12 @@ export type GetPaymentRequestIdsQueryVariables = Exact<{
 
 export type GetPaymentRequestIdsQuery = { __typename?: 'query_root', githubUsersByPk: { __typename?: 'GithubUsers', id: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any }> } | null };
 
-export type GetTermsAndConditionsAcceptancesQueryVariables = Exact<{
+export type GetOnboardingStateQueryVariables = Exact<{
   userId: Scalars['uuid'];
 }>;
 
 
-export type GetTermsAndConditionsAcceptancesQuery = { __typename?: 'query_root', termsAndConditionsAcceptancesByPk: { __typename?: 'TermsAndConditionsAcceptances', acceptanceDate: any } | null };
+export type GetOnboardingStateQuery = { __typename?: 'query_root', onboardingsByPk: { __typename?: 'Onboardings', userId: any, termsAndConditionsAcceptanceDate: any | null, profileWizardDisplayDate: any | null } | null };
 
 export type GetReleaseDateQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -17467,41 +17480,43 @@ export function useGetPaymentRequestIdsLazyQuery(baseOptions?: Apollo.LazyQueryH
 export type GetPaymentRequestIdsQueryHookResult = ReturnType<typeof useGetPaymentRequestIdsQuery>;
 export type GetPaymentRequestIdsLazyQueryHookResult = ReturnType<typeof useGetPaymentRequestIdsLazyQuery>;
 export type GetPaymentRequestIdsQueryResult = Apollo.QueryResult<GetPaymentRequestIdsQuery, GetPaymentRequestIdsQueryVariables>;
-export const GetTermsAndConditionsAcceptancesDocument = gql`
-    query GetTermsAndConditionsAcceptances($userId: uuid!) {
-  termsAndConditionsAcceptancesByPk(userId: $userId) {
-    acceptanceDate
+export const GetOnboardingStateDocument = gql`
+    query GetOnboardingState($userId: uuid!) {
+  onboardingsByPk(userId: $userId) {
+    userId
+    termsAndConditionsAcceptanceDate
+    profileWizardDisplayDate
   }
 }
     `;
 
 /**
- * __useGetTermsAndConditionsAcceptancesQuery__
+ * __useGetOnboardingStateQuery__
  *
- * To run a query within a React component, call `useGetTermsAndConditionsAcceptancesQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetTermsAndConditionsAcceptancesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetOnboardingStateQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetOnboardingStateQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetTermsAndConditionsAcceptancesQuery({
+ * const { data, loading, error } = useGetOnboardingStateQuery({
  *   variables: {
  *      userId: // value for 'userId'
  *   },
  * });
  */
-export function useGetTermsAndConditionsAcceptancesQuery(baseOptions: Apollo.QueryHookOptions<GetTermsAndConditionsAcceptancesQuery, GetTermsAndConditionsAcceptancesQueryVariables>) {
+export function useGetOnboardingStateQuery(baseOptions: Apollo.QueryHookOptions<GetOnboardingStateQuery, GetOnboardingStateQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetTermsAndConditionsAcceptancesQuery, GetTermsAndConditionsAcceptancesQueryVariables>(GetTermsAndConditionsAcceptancesDocument, options);
+        return Apollo.useQuery<GetOnboardingStateQuery, GetOnboardingStateQueryVariables>(GetOnboardingStateDocument, options);
       }
-export function useGetTermsAndConditionsAcceptancesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTermsAndConditionsAcceptancesQuery, GetTermsAndConditionsAcceptancesQueryVariables>) {
+export function useGetOnboardingStateLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetOnboardingStateQuery, GetOnboardingStateQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetTermsAndConditionsAcceptancesQuery, GetTermsAndConditionsAcceptancesQueryVariables>(GetTermsAndConditionsAcceptancesDocument, options);
+          return Apollo.useLazyQuery<GetOnboardingStateQuery, GetOnboardingStateQueryVariables>(GetOnboardingStateDocument, options);
         }
-export type GetTermsAndConditionsAcceptancesQueryHookResult = ReturnType<typeof useGetTermsAndConditionsAcceptancesQuery>;
-export type GetTermsAndConditionsAcceptancesLazyQueryHookResult = ReturnType<typeof useGetTermsAndConditionsAcceptancesLazyQuery>;
-export type GetTermsAndConditionsAcceptancesQueryResult = Apollo.QueryResult<GetTermsAndConditionsAcceptancesQuery, GetTermsAndConditionsAcceptancesQueryVariables>;
+export type GetOnboardingStateQueryHookResult = ReturnType<typeof useGetOnboardingStateQuery>;
+export type GetOnboardingStateLazyQueryHookResult = ReturnType<typeof useGetOnboardingStateLazyQuery>;
+export type GetOnboardingStateQueryResult = Apollo.QueryResult<GetOnboardingStateQuery, GetOnboardingStateQueryVariables>;
 export const GetReleaseDateDocument = gql`
     query GetReleaseDate {
   releaseDate

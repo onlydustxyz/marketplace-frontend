@@ -146,6 +146,12 @@ class Issue {
    updatedAt: DateTimeUtc!
 }
 
+class Onboardings {
+   profileWizardDisplayDate: timestamp
+   termsAndConditionsAcceptanceDate: timestamp
+   userId: uuid!
+}
+
 class Payment {
    amount: Amount!
    budgetId: Uuid!
@@ -272,11 +278,6 @@ class Sponsors {
    name: String!
    sponsorProjects: [ProjectsSponsors!]!
    url: String
-}
-
-class TermsAndConditionsAcceptances {
-   acceptanceDate: timestamp!
-   userId: uuid!
 }
 
 class User {
