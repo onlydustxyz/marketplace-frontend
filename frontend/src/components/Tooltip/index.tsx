@@ -66,14 +66,13 @@ type WithTooltipOptions = { className?: string } & CommonProps;
 export function withTooltip(content: string, options?: WithTooltipOptions) {
   const { visible = true, position = TooltipPosition.Bottom, className } = options || {};
 
-  return (
-    visible && {
-      "data-tooltip-id": GLOBAL_TOOLTIP_ID,
-      "data-tooltip-content": content,
-      "data-tooltip-place": position,
-      "data-tooltip-classname": className,
-    }
-  );
+  return {
+    "data-tooltip-id": GLOBAL_TOOLTIP_ID,
+    "data-tooltip-content": content,
+    "data-tooltip-place": position,
+    "data-tooltip-classname": className,
+    "data-tooltip-hidden": !visible,
+  };
 }
 
 export const withCustomTooltip = (id: string) => ({

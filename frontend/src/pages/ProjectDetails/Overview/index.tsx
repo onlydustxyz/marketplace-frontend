@@ -138,9 +138,9 @@ export default function Overview() {
                 </div>
                 {isLoggedIn ? (
                   <div
-                    {...withTooltip(T("applications.appliedTooltip"), {
-                      visible: alreadyApplied,
-                    })}
+                    {...withTooltip(
+                      T(alreadyApplied ? "applications.appliedTooltip" : "applications.notYetAppliedTooltip")
+                    )}
                   >
                     <Button
                       data-testid="apply-btn"
