@@ -38,7 +38,7 @@ const View = ({ githubUserId, avatarUrl, login, logout, showMissingPayoutSetting
             onMouseEnter={() => setTooltipVisible(true)}
             onMouseLeave={() => setTooltipVisible(false)}
             className={classNames(
-              "flex gap-2 m-0.5 justify-center outline outline-1 px-2 py-1.5 items-center rounded-full text-sm font-belwe hover:bg-noise-medium hover:outline-2 ui-open:bg-noise-medium ui-open:outline-2",
+              "flex gap-2 justify-center outline outline-1 px-2 py-1.5 items-center rounded-full text-sm font-belwe hover:bg-noise-medium hover:outline-2 ui-open:bg-noise-medium ui-open:outline-2",
               {
                 "outline-greyscale-50/12": !showMissingPayoutSettingsState,
                 "outline-orange-500": showMissingPayoutSettingsState,
@@ -49,7 +49,7 @@ const View = ({ githubUserId, avatarUrl, login, logout, showMissingPayoutSetting
               visible: showMissingPayoutSettingsState && tooltipVisible && !menuItemsVisible,
             })}
           >
-            {avatarUrl && <img className="w-8 rounded-full" src={avatarUrl} />}
+            {avatarUrl && <img className="w-8 h-8 rounded-full" src={avatarUrl} />}
             <div className={classNames({ "mr-1": !showMissingPayoutSettingsState })}>{login}</div>
             {showMissingPayoutSettingsState && <ErrorWarningLine className="text-xl text-orange-500" />}
           </Menu.Button>
