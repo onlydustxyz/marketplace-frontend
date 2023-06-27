@@ -16802,6 +16802,11 @@ export type UpdatePayoutInfoMutationVariables = Exact<{
 
 export type UpdatePayoutInfoMutation = { __typename?: 'mutation_root', updatePayoutInfo: any };
 
+export type MarkOnboardingAsCompletedMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MarkOnboardingAsCompletedMutation = { __typename?: 'mutation_root', markProfileWizardAsDisplayed: any };
+
 export const LiveGithubUserIdFragmentDoc = gql`
     fragment LiveGithubUserId on User {
   id
@@ -19862,3 +19867,33 @@ export function useUpdatePayoutInfoMutation(baseOptions?: Apollo.MutationHookOpt
 export type UpdatePayoutInfoMutationHookResult = ReturnType<typeof useUpdatePayoutInfoMutation>;
 export type UpdatePayoutInfoMutationResult = Apollo.MutationResult<UpdatePayoutInfoMutation>;
 export type UpdatePayoutInfoMutationOptions = Apollo.BaseMutationOptions<UpdatePayoutInfoMutation, UpdatePayoutInfoMutationVariables>;
+export const MarkOnboardingAsCompletedDocument = gql`
+    mutation markOnboardingAsCompleted {
+  markProfileWizardAsDisplayed
+}
+    `;
+export type MarkOnboardingAsCompletedMutationFn = Apollo.MutationFunction<MarkOnboardingAsCompletedMutation, MarkOnboardingAsCompletedMutationVariables>;
+
+/**
+ * __useMarkOnboardingAsCompletedMutation__
+ *
+ * To run a mutation, you first call `useMarkOnboardingAsCompletedMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useMarkOnboardingAsCompletedMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [markOnboardingAsCompletedMutation, { data, loading, error }] = useMarkOnboardingAsCompletedMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMarkOnboardingAsCompletedMutation(baseOptions?: Apollo.MutationHookOptions<MarkOnboardingAsCompletedMutation, MarkOnboardingAsCompletedMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<MarkOnboardingAsCompletedMutation, MarkOnboardingAsCompletedMutationVariables>(MarkOnboardingAsCompletedDocument, options);
+      }
+export type MarkOnboardingAsCompletedMutationHookResult = ReturnType<typeof useMarkOnboardingAsCompletedMutation>;
+export type MarkOnboardingAsCompletedMutationResult = Apollo.MutationResult<MarkOnboardingAsCompletedMutation>;
+export type MarkOnboardingAsCompletedMutationOptions = Apollo.BaseMutationOptions<MarkOnboardingAsCompletedMutation, MarkOnboardingAsCompletedMutationVariables>;

@@ -3,6 +3,9 @@ import { zip } from "lodash";
 import { users } from "../../fixtures/data/users";
 import { User, UserFixture } from "../../types";
 import {
+  MarkOnboardingAsCompletedDocument,
+  MarkOnboardingAsCompletedMutation,
+  MarkOnboardingAsCompletedMutationVariables,
   UpdatePayoutInfoDocument,
   UpdatePayoutInfoMutation,
   UpdatePayoutInfoMutationVariables,
@@ -24,6 +27,15 @@ const populateUser = async (request: APIRequestContext, user: UserFixture) => {
       mutation: UpdatePayoutInfoDocument,
       variables: user.payoutInfo,
     });
+  }
+
+  if (user.onboardingWizardCompleted) {
+    await mutateAsRegisteredUser<MarkOnboardingAsCompletedMutation, MarkOnboardingAsCompletedMutationVariables>(
+      session.accessToken,
+      {
+        mutation: MarkOnboardingAsCompletedDocument,
+      }
+    );
   }
 
   return {

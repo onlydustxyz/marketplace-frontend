@@ -38,6 +38,7 @@ export const users: Record<string, UserFixture> = {
         optEthName: null,
       },
     },
+    onboardingWizardCompleted: true,
   },
   Olivier: {
     email: "olivier@mymail.org",
@@ -98,6 +99,7 @@ export const users: Record<string, UserFixture> = {
         optBankAddress: null,
       },
     },
+    onboardingWizardCompleted: true,
   },
   Oscar: {
     email: "oscar@super-mail.org",
@@ -105,6 +107,7 @@ export const users: Record<string, UserFixture> = {
       id: 21149076,
       login: "oscarwroche",
     },
+    onboardingWizardCompleted: true,
   },
   Gregoire: {
     email: "gregoire@super-mail.org",
@@ -112,5 +115,6 @@ export const users: Record<string, UserFixture> = {
       id: 8642470,
       login: "gregcha",
     },
+    onboardingWizardCompleted: true,
   },
 };

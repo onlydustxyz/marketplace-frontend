@@ -12,7 +12,7 @@ test.describe("As an individual, I", () => {
 
   test.beforeEach(async ({ page, signIn, users, acceptTermsAndConditions }) => {
     await signIn(users.Olivier);
-    await acceptTermsAndConditions();
+    await acceptTermsAndConditions(true);
     editPayoutInfoPage = new EditPayoutInfoPage(page);
     await editPayoutInfoPage.goto();
   });

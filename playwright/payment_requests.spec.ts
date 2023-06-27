@@ -124,7 +124,7 @@ test.describe("As a project lead, I", () => {
         },
         {
           description: "Real cool documentation",
-          repository: repos[project.repos?.at(1) || ""].name, // TODO: Put back to 0 when E-495 is fixed
+          repository: repos[project.repos?.at(0) || ""].name,
         },
       ],
     });
@@ -229,10 +229,14 @@ test.describe("As a project lead, I", () => {
 
     const projectPaymentsPage = new ProjectPaymentsPage(page, project);
 
-    const listPaymentsAs = async (user: User, shouldAcceptTermsAndConditions?: boolean) => {
+    const listPaymentsAs = async (
+      user: User,
+      shouldAcceptTermsAndConditions?: boolean,
+      skipOnboardingWizzard?: boolean
+    ) => {
       await signIn(user);
       if (shouldAcceptTermsAndConditions) {
-        await acceptTermsAndConditions();
+        await acceptTermsAndConditions(skipOnboardingWizzard);
       }
       await projectPaymentsPage.goto();
       await projectPaymentsPage.reload();
@@ -250,7 +254,7 @@ test.describe("As a project lead, I", () => {
     const paymentRow = projectPaymentsPage.paymentList().nth(1);
     const pendingStatus = await retry(
       async () => {
-        await listPaymentsAs(otherLeader, true);
+        await listPaymentsAs(otherLeader, true, true);
         return paymentRow.status();
       },
       value => value === "Pending"

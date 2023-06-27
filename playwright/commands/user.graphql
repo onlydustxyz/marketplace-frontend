@@ -22,3 +22,7 @@ mutation createGithubAuthUser($userId: uuid!, $githubUserId: String!, $accessTok
 mutation updatePayoutInfo($identity: IdentityInput, $location: Location, $payoutSettings: PayoutSettingsInput) {
   updatePayoutInfo(identity: $identity, location: $location, payoutSettings: $payoutSettings)
 }
+
+mutation markOnboardingAsCompleted {
+  markProfileWizardAsDisplayed
+}

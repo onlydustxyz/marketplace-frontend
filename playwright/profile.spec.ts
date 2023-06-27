@@ -10,7 +10,7 @@ test.describe("As a signed-in user, I", () => {
   test.beforeEach(async ({ page, signIn, users, acceptTermsAndConditions }) => {
     restoreDB();
     await signIn(users.Olivier);
-    await acceptTermsAndConditions();
+    await acceptTermsAndConditions(true);
     viewPage = new ViewProfilePage(page);
     await viewPage.goto();
   });
