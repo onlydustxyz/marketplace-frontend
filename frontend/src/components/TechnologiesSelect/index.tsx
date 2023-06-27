@@ -74,40 +74,42 @@ export default function TechnologiesSelect({ technologies = {}, setTechnologies 
         testId="technologiesCombobox"
       />
       {selectedLanguages.length > 0 && (
-        <SortableList items={selectedLanguages} setItems={setSelectedLanguages}>
-          {({ items }: { items: SortableItemProps[] }) => (
-            <>
-              {items.map((item: SortableItemProps, index) => (
-                <SortableItem
-                  key={item.id}
-                  id={item.id}
-                  DragHandler={DragHandler}
-                  className="flex h-7 text-greyscale-50 font-walsheim"
-                >
-                  <div
-                    className={classNames(
-                      "flex gap-1 items-center justify-center pr-2 w-fit",
-                      "bg-white/2 border border-greyscale-50/8 rounded-full rounded-l-none border-l-0 text-sm"
-                    )}
-                    data-technology={item.id}
+        <div className="flex flex-col gap-2">
+          <SortableList items={selectedLanguages} setItems={setSelectedLanguages}>
+            {({ items }: { items: SortableItemProps[] }) => (
+              <>
+                {items.map((item: SortableItemProps, index) => (
+                  <SortableItem
+                    key={item.id}
+                    id={item.id}
+                    DragHandler={DragHandler}
+                    className="flex h-7 text-greyscale-50 font-walsheim"
                   >
-                    <div className="flex bg-white/5 rounded w-4 h-4 text-xs justify-center items-center cursor-default">
-                      {index + 1}
-                    </div>
-                    <div className="cursor-default">{item.displayValue}</div>
-                    <button
-                      onClick={() =>
-                        setSelectedLanguages(selectedLanguages.filter(language => language.id !== item.id))
-                      }
+                    <div
+                      className={classNames(
+                        "flex gap-1 items-center justify-center pr-2 w-fit",
+                        "bg-white/2 border border-greyscale-50/8 rounded-full rounded-l-none border-l-0 text-sm"
+                      )}
+                      data-technology={item.id}
                     >
-                      <CloseLine />
-                    </button>
-                  </div>
-                </SortableItem>
-              ))}
-            </>
-          )}
-        </SortableList>
+                      <div className="flex bg-white/5 rounded w-4 h-4 text-xs justify-center items-center cursor-default">
+                        {index + 1}
+                      </div>
+                      <div className="cursor-default">{item.displayValue}</div>
+                      <button
+                        onClick={() =>
+                          setSelectedLanguages(selectedLanguages.filter(language => language.id !== item.id))
+                        }
+                      >
+                        <CloseLine />
+                      </button>
+                    </div>
+                  </SortableItem>
+                ))}
+              </>
+            )}
+          </SortableList>
+        </div>
       )}
     </>
   );

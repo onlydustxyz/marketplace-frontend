@@ -15,7 +15,7 @@ export default function Intro({ start, skip }: Props) {
     <Card
       fullWidth={false}
       padded={false}
-      className="relative w-fit pt-[72px] p-12 flex flex-col items-center self-center bg-white/2"
+      className="relative w-fit pt-[72px] p-12 flex flex-col items-center bg-white/2"
     >
       <div className="absolute -top-10">
         <OnlyDustLogo width={OnlyDustLogoWidth.Large} />

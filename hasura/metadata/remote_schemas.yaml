@@ -44,12 +44,12 @@
           type Mutation {
             acceptProjectLeaderInvitation(invitationId: Uuid!): Boolean!
             acceptTermsAndConditions: Uuid!
-            markProfileWizardAsDisplayed: Uuid!
             applyToProject(projectId: Uuid!): Uuid!
             cancelPaymentRequest(projectId: Uuid!, paymentId: Uuid!): Payment!
             createIssue(projectId: Uuid!, githubRepoId: Int!, title: String!, description: String!): Issue!
             ignoreIssue(projectId: Uuid!, repoId: GithubRepoId!, issueNumber: GithubIssueNumber!): Boolean!
             markInvoiceAsReceived(paymentReferences: [PaymentReference!]!): Int!
+            markProfileWizardAsDisplayed: Uuid!
             requestPayment(projectId: Uuid!, recipientId: Int!, amountInUsd: Int!, hoursWorked: Int!, reason: Reason!): Payment!
             unignoreIssue(projectId: Uuid!, repoId: GithubRepoId!, issueNumber: GithubIssueNumber!): Boolean!
             updatePayoutInfo(location: Location, identity: IdentityInput, payoutSettings: PayoutSettingsInput): Uuid!

@@ -3,6 +3,7 @@ import FormSelect from "./View";
 import TeamLine from "src/icons/TeamLine";
 import ExchangeDollarLine from "src/icons/ExchangeDollarLine";
 import MoreLine from "src/icons/MoreLine";
+import { Size } from ".";
 
 export default {
   title: "FormSelect",
@@ -21,6 +22,7 @@ export const Default = {
     <FormSelect
       value={workKinds[0].label}
       options={workKinds}
+      size={Size.Lg}
       onChange={() => {
         return;
       }}
