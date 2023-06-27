@@ -22,6 +22,7 @@ export default function HeaderCoverButton({ active, cover: color, onClick }: Pro
           "from-amber-600 to-yellow-200": color === ProfileCover.Yellow,
           "from-midBlue-500 to-midBlue-200": color === ProfileCover.Blue,
         })}
+        type="button"
         onClick={e => {
           e.preventDefault();
           e.stopPropagation();
