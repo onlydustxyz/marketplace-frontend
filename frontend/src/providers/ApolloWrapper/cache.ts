@@ -33,6 +33,9 @@ export default function useApolloCache() {
           },
         },
       },
+      Onboardings: {
+        keyFields: ["userId"],
+      },
     },
   });
 }

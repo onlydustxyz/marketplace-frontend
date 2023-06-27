@@ -1,15 +1,15 @@
 import { PropsWithChildren } from "react";
-import { useGetTermsAndConditionsAcceptancesQuery } from "src/__generated/graphql";
+import { useGetOnboardingStateQuery } from "src/__generated/graphql";
 import { useAuth } from "src/hooks/useAuth";
 import { generatePath, Navigate, useLocation } from "react-router-dom";
 import { RoutePaths } from "src/App";
 
 export const TERMS_AND_CONDITIONS_LAST_REDACTION_DATE = "2023-06-01";
 
-export default function TermsAndConditionsWrapper({ children }: PropsWithChildren) {
+export default function OnboardingWrapper({ children }: PropsWithChildren) {
   const { user, impersonating } = useAuth();
   const userId = user?.id;
-  const { data, loading } = useGetTermsAndConditionsAcceptancesQuery({
+  const { data, loading } = useGetOnboardingStateQuery({
     variables: { userId },
     skip: !userId,
   });
@@ -20,8 +20,8 @@ export default function TermsAndConditionsWrapper({ children }: PropsWithChildre
     user?.id &&
     !loading &&
     !impersonating &&
-    (!data?.termsAndConditionsAcceptancesByPk?.acceptanceDate ||
-      new Date(data?.termsAndConditionsAcceptancesByPk?.acceptanceDate) <
+    (!data?.onboardingsByPk?.termsAndConditionsAcceptanceDate ||
+      new Date(data?.onboardingsByPk?.termsAndConditionsAcceptanceDate) <
         new Date(TERMS_AND_CONDITIONS_LAST_REDACTION_DATE));
 
   return termsAndConditionsValidationNeeded ? (

@@ -4,10 +4,10 @@ import { RoutePaths } from "src/App";
 import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
 import { SessionMethod, useSessionDispatch } from "src/hooks/useSession";
-import { useGetPaymentRequestIdsQuery, useGetTermsAndConditionsAcceptancesQuery } from "src/__generated/graphql";
+import { useGetPaymentRequestIdsQuery, useGetOnboardingStateQuery } from "src/__generated/graphql";
 import View from "./View";
 import { useImpersonationClaims } from "src/hooks/useImpersonationClaims";
-import { TERMS_AND_CONDITIONS_LAST_REDACTION_DATE } from "src/App/TermsAndConditionsWrapper";
+import { TERMS_AND_CONDITIONS_LAST_REDACTION_DATE } from "src/App/OnboardingWrapper";
 
 export default function Header() {
   const location = useLocation();
@@ -22,17 +22,17 @@ export default function Header() {
     skip: !githubUserId,
   });
 
-  const termsAndConditionsAcceptanceQuery = useGetTermsAndConditionsAcceptancesQuery({
+  const onboardingStateQuery = useGetOnboardingStateQuery({
     variables: { userId: user?.id },
     skip: !user?.id,
   });
 
   const hideMenuItems = !!(
     user?.id &&
-    !termsAndConditionsAcceptanceQuery.loading &&
+    !onboardingStateQuery.loading &&
     !impersonating &&
-    (!termsAndConditionsAcceptanceQuery?.data?.termsAndConditionsAcceptancesByPk?.acceptanceDate ||
-      new Date(termsAndConditionsAcceptanceQuery?.data?.termsAndConditionsAcceptancesByPk?.acceptanceDate) <
+    (!onboardingStateQuery?.data?.onboardingsByPk?.termsAndConditionsAcceptanceDate ||
+      new Date(onboardingStateQuery?.data?.onboardingsByPk?.termsAndConditionsAcceptanceDate) <
         new Date(TERMS_AND_CONDITIONS_LAST_REDACTION_DATE))
   );
 

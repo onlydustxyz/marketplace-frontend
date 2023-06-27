@@ -4,7 +4,7 @@ import TagManager from "react-gtm-module";
 import { ErrorBoundary } from "react-error-boundary";
 
 import ApolloWrapper from "src/providers/ApolloWrapper";
-import TermsAndConditionsWrapper from "./App/TermsAndConditionsWrapper";
+import OnboardingWrapper from "./App/OnboardingWrapper";
 import { AuthProvider } from "src/hooks/useAuth";
 import App from "./App";
 import "./datadog";
@@ -48,9 +48,9 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
                           {config.MAINTENANCE ? (
                             <Maintenance />
                           ) : (
-                            <TermsAndConditionsWrapper>
+                            <OnboardingWrapper>
                               <App />
-                            </TermsAndConditionsWrapper>
+                            </OnboardingWrapper>
                           )}
                         </ContributorProfilePanelProvider>
                       </SidePanelStackProvider>

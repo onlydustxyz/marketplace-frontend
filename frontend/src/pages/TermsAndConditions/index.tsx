@@ -3,7 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import { useAuth } from "src/hooks/useAuth";
-import { GetTermsAndConditionsAcceptancesDocument, useAcceptTermsAndConditionsMutation } from "src/__generated/graphql";
+import {
+  GetOnboardingStateDocument,
+  GetOnboardingStateQuery,
+  useAcceptTermsAndConditionsMutation,
+} from "src/__generated/graphql";
 import TermsAndConditionsMainCard from "./MainCard";
 import TermsAndConditionsPromptCard from "./PromptCard";
 
@@ -12,12 +16,18 @@ export default function TermsAndConditions() {
   const [showTermsAndConditions, setShowTermsAndConditions] = useState(false);
   const [acceptTermsAndConditionsMutation, { data }] = useAcceptTermsAndConditionsMutation({
     update: cache => {
+      const cachedData = cache.readQuery<GetOnboardingStateQuery>({
+        query: GetOnboardingStateDocument,
+        variables: { userId: user?.id },
+      });
       cache.writeQuery({
-        query: GetTermsAndConditionsAcceptancesDocument,
+        query: GetOnboardingStateDocument,
         variables: { userId: user?.id },
         data: {
-          termsAndConditionsAcceptancesByPk: {
-            acceptanceDate: new Date(),
+          onboardingsByPk: {
+            userId: user?.id,
+            termsAndConditionsAcceptanceDate: new Date(),
+            profileWizardDisplayDate: cachedData?.onboardingsByPk?.profileWizardDisplayDate || null,
           },
         },
       });

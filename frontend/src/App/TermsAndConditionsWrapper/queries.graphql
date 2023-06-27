@@ -1,5 +1,0 @@
-query GetTermsAndConditionsAcceptances($userId: uuid!) {
-  termsAndConditionsAcceptancesByPk(userId: $userId) {
-    acceptanceDate
-  }
-}
