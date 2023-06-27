@@ -243,10 +243,22 @@ const graphQlMocks = [
 ];
 
 Object.defineProperty(window, "innerWidth", { writable: true, configurable: true, value: 2000 });
+class ResizeObserver {
+  observe() {
+    return;
+  }
+  unobserve() {
+    return;
+  }
+  disconnect() {
+    return;
+  }
+}
 
 describe("Integration tests", () => {
   beforeEach(() => {
     window.localStorage.clear();
+    window.ResizeObserver = ResizeObserver;
   });
 
   it.skip("should be able to access the project details page from the projects list and see the tabs", async () => {
