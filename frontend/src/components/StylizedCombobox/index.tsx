@@ -1,5 +1,5 @@
 import { Combobox } from "@headlessui/react";
-import { useState } from "react";
+import { KeyboardEventHandler, useState } from "react";
 import classNames from "classnames";
 import SearchLine from "src/icons/SearchLine";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
@@ -43,6 +43,12 @@ export default function StylizedCombobox<T extends Option | { toString: () => st
 
   const filteredOptions = query === "" ? options : options.filter(option => optionFilter(query, option));
 
+  const handleKeyPress: KeyboardEventHandler<HTMLInputElement> = event => {
+    if (event.key === "Enter") {
+      setQuery("");
+    }
+  };
+
   const children = ({ open }: { open: boolean }) => (
     <div>
       <Combobox.Button as="div" data-testid={testId}>
@@ -64,6 +70,7 @@ export default function StylizedCombobox<T extends Option | { toString: () => st
               placeholder={open ? "" : placeholder}
               autoComplete="off"
               value={query}
+              onKeyDown={handleKeyPress}
             />
           </div>
           <ArrowDownSLine className="text-2xl" />
