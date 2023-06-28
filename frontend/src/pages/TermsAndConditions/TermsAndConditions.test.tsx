@@ -6,7 +6,7 @@ import "@testing-library/jest-dom";
 import TermsAndConditions from ".";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import { CLAIMS_KEY, GITHUB_USERID_KEY, PROJECTS_LED_KEY, TokenSet } from "src/types";
-import { AcceptTermsAndConditionsDocument, GetTermsAndConditionsAcceptancesDocument } from "src/__generated/graphql";
+import { AcceptTermsAndConditionsDocument, GetOnboardingStateDocument } from "src/__generated/graphql";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
 
 const TEST_USER_ID = "test-user-id";
@@ -59,12 +59,12 @@ const mocks = [
   },
   {
     request: {
-      query: GetTermsAndConditionsAcceptancesDocument,
+      query: GetOnboardingStateDocument,
       variables: {
         userId: TEST_USER_ID,
       },
     },
-    result: { data: { termsAndConditionsAcceptancesByPk: { acceptanceDate: "2023-06-13T16:07:59.125227" } } },
+    result: { data: { onboardingsByPk: { termsAndConditionsAcceptanceDate: "2023-06-13T16:07:59.125227" } } },
   },
 ];
 

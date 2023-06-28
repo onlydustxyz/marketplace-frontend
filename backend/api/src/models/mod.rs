@@ -18,8 +18,8 @@ pub use projects_sponsors::ProjectsSponsor;
 mod sponsors;
 pub use sponsors::{Id as SponsorId, Sponsor};
 
-mod terms_and_conditions_acceptance;
-pub use terms_and_conditions_acceptance::TermsAndConditionsAcceptance;
+mod onboarding;
+pub use onboarding::Onboarding;
 
 mod user_payout_info;
 pub use user_payout_info::{

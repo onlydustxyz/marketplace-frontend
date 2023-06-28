@@ -87,7 +87,7 @@ test.describe("As a registered user, I", () => {
     acceptTermsAndConditions,
   }) => {
     await signIn(users.Olivier);
-    await acceptTermsAndConditions();
+    await acceptTermsAndConditions({ skipOnboardingWizzard: true });
     await page.goto(`/projects/${projects.ProjectA.id}/payments`);
     await expect(page).toHaveURL(`/projects/${projects.ProjectA.id}`);
   });

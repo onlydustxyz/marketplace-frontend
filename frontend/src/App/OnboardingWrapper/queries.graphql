@@ -1,0 +1,11 @@
+query GetOnboardingState($userId: uuid!) {
+  onboardingsByPk(userId: $userId) {
+    userId
+    termsAndConditionsAcceptanceDate
+    profileWizardDisplayDate
+  }
+}
+
+mutation MarkProfileWizardAsDisplayed {
+  markProfileWizardAsDisplayed
+}

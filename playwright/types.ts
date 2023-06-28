@@ -17,6 +17,7 @@ export type UserFixture = {
     login: string;
   };
   payoutInfo?: UserPayoutInfo;
+  onboardingWizardCompleted?: boolean;
 };
 
 export type UserPayoutInfo = {

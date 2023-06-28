@@ -187,6 +187,14 @@ diesel::table! {
 }
 
 diesel::table! {
+    onboardings (user_id) {
+        user_id -> Uuid,
+        terms_and_conditions_acceptance_date -> Nullable<Timestamp>,
+        profile_wizard_display_date -> Nullable<Timestamp>,
+    }
+}
+
+diesel::table! {
     payment_requests (id) {
         id -> Uuid,
         budget_id -> Uuid,
@@ -281,13 +289,6 @@ diesel::table! {
 }
 
 diesel::table! {
-    terms_and_conditions_acceptances (user_id) {
-        user_id -> Uuid,
-        acceptance_date -> Timestamp,
-    }
-}
-
-diesel::table! {
     user_payout_info (user_id) {
         user_id -> Uuid,
         identity -> Nullable<Jsonb>,
@@ -343,6 +344,7 @@ diesel::allow_tables_to_appear_in_same_query!(
     github_user_indexes,
     github_users,
     ignored_github_issues,
+    onboardings,
     payment_requests,
     payments,
     pending_project_leader_invitations,
@@ -353,7 +355,6 @@ diesel::allow_tables_to_appear_in_same_query!(
     projects_contributors,
     projects_sponsors,
     sponsors,
-    terms_and_conditions_acceptances,
     user_payout_info,
     user_profile_info,
     work_items,

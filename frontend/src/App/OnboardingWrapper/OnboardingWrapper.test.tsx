@@ -2,9 +2,9 @@ import { describe, it, vi } from "vitest";
 import { screen, waitForElementToBeRemoved } from "@testing-library/react";
 import "@testing-library/jest-dom";
 
-import { GetTermsAndConditionsAcceptancesDocument } from "src/__generated/graphql";
+import { GetOnboardingStateDocument } from "src/__generated/graphql";
 import { CLAIMS_KEY, GITHUB_USERID_KEY, PROJECTS_LED_KEY, TokenSet } from "src/types";
-import TermsAndConditionsWrapper from ".";
+import OnboardingWrapper from ".";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
 import { RoutePaths } from "..";
@@ -53,11 +53,11 @@ vi.mock("jwt-decode", () => ({
 const graphQlMocksWithNoAcceptanceDate = [
   {
     request: {
-      query: GetTermsAndConditionsAcceptancesDocument,
+      query: GetOnboardingStateDocument,
       variables: { userId: TEST_USER_ID },
     },
     result: {
-      data: { termsAndConditionsAcceptancesByPk: {} },
+      data: { onboardingsByPk: {} },
     },
   },
 ];
@@ -65,11 +65,11 @@ const graphQlMocksWithNoAcceptanceDate = [
 const graphQlMocksWithInvalidAcceptanceDate = [
   {
     request: {
-      query: GetTermsAndConditionsAcceptancesDocument,
+      query: GetOnboardingStateDocument,
       variables: { userId: TEST_USER_ID },
     },
     result: {
-      data: { termsAndConditionsAcceptancesByPk: { acceptanceDate: 0 } },
+      data: { onboardingsByPk: { termsAndConditionsAcceptanceDate: 0 } },
     },
   },
 ];
@@ -77,11 +77,11 @@ const graphQlMocksWithInvalidAcceptanceDate = [
 const graphQlMocksWithValidAcceptanceDate = [
   {
     request: {
-      query: GetTermsAndConditionsAcceptancesDocument,
+      query: GetOnboardingStateDocument,
       variables: { userId: TEST_USER_ID },
     },
     result: {
-      data: { termsAndConditionsAcceptancesByPk: { acceptanceDate: 10000000000000 } },
+      data: { onboardingsByPk: { termsAndConditionsAcceptanceDate: 10000000000000 } },
     },
   },
 ];
@@ -94,9 +94,9 @@ describe("Terms and conditions wrapper", () => {
   it("shouldn't render its children if the terms and conditions haven't been accepted", async () => {
     window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_WITH_VALID_JWT_TEST_VALUE));
     renderWithIntl(
-      <TermsAndConditionsWrapper>
+      <OnboardingWrapper>
         <div>NOT TO BE DISPLAYED</div>
-      </TermsAndConditionsWrapper>,
+      </OnboardingWrapper>,
       {
         wrapper: MemoryRouterProviderFactory({
           route: `${RoutePaths.Projects}`,
@@ -112,9 +112,9 @@ describe("Terms and conditions wrapper", () => {
   it("shouldn't render its children if the terms and conditions have been accepted before the last modification date", async () => {
     window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_WITH_VALID_JWT_TEST_VALUE));
     renderWithIntl(
-      <TermsAndConditionsWrapper>
+      <OnboardingWrapper>
         <div>NOT TO BE DISPLAYED</div>
-      </TermsAndConditionsWrapper>,
+      </OnboardingWrapper>,
       {
         wrapper: MemoryRouterProviderFactory({
           mocks: graphQlMocksWithInvalidAcceptanceDate,
@@ -128,9 +128,9 @@ describe("Terms and conditions wrapper", () => {
   it("should render its children if the terms and conditions have been accepted after the last modification date", async () => {
     window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_WITH_VALID_JWT_TEST_VALUE));
     renderWithIntl(
-      <TermsAndConditionsWrapper>
+      <OnboardingWrapper>
         <div>TO BE DISPLAYED</div>
-      </TermsAndConditionsWrapper>,
+      </OnboardingWrapper>,
       {
         wrapper: MemoryRouterProviderFactory({
           mocks: graphQlMocksWithValidAcceptanceDate,

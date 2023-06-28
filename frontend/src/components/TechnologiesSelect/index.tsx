@@ -7,8 +7,6 @@ import { SortableList, SortableItemProps, SortableItem } from "@thaddeusjiang/re
 import Draggable from "src/icons/Draggable";
 import CloseLine from "src/icons/CloseLine";
 import classNames from "classnames";
-import Card from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/EditView/Card";
-import { Section } from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/EditView/Section";
 import { isLanguageValid } from "src/utils/languages";
 
 type Props = {
@@ -16,7 +14,7 @@ type Props = {
   setTechnologies: (languages: LanguageMap) => void;
 };
 
-export default function TechnologiesCard({ technologies = {}, setTechnologies }: Props) {
+export default function TechnologiesSelect({ technologies = {}, setTechnologies }: Props) {
   const { T } = useIntl();
 
   const allLanguages = Object.keys(knownLanguages)
@@ -62,25 +60,21 @@ export default function TechnologiesCard({ technologies = {}, setTechnologies }:
   );
 
   return (
-    <Card>
-      <Section
-        gap="wide"
-        title={T("profile.edit.sections.technologies.title")}
-        subtitle={T("profile.edit.sections.technologies.subtitle")}
-      >
-        <StylizedCombobox
-          options={allLanguages.filter(
-            language => !selectedLanguages.some(selectedLanguage => selectedLanguage.id === language.id)
-          )}
-          selectedOptions={selectedLanguages}
-          setSelectedOptions={setSelectedLanguages}
-          optionFilter={(query, option) => option.displayValue.toLowerCase().includes(query.toLowerCase())}
-          placeholder={T("profile.edit.sections.technologies.searchPlaceholder")}
-          maxDisplayedOptions={5}
-          multiple
-          testId="technologiesCombobox"
-        />
-        {selectedLanguages.length > 0 && (
+    <>
+      <StylizedCombobox
+        options={allLanguages.filter(
+          language => !selectedLanguages.some(selectedLanguage => selectedLanguage.id === language.id)
+        )}
+        selectedOptions={selectedLanguages}
+        setSelectedOptions={setSelectedLanguages}
+        optionFilter={(query, option) => option.displayValue.toLowerCase().includes(query.toLowerCase())}
+        placeholder={T("profile.edit.sections.technologies.searchPlaceholder")}
+        maxDisplayedOptions={5}
+        multiple
+        testId="technologiesCombobox"
+      />
+      {selectedLanguages.length > 0 && (
+        <div className="flex flex-col gap-2">
           <SortableList items={selectedLanguages} setItems={setSelectedLanguages}>
             {({ items }: { items: SortableItemProps[] }) => (
               <>
@@ -115,8 +109,8 @@ export default function TechnologiesCard({ technologies = {}, setTechnologies }:
               </>
             )}
           </SortableList>
-        )}
-      </Section>
-    </Card>
+        </div>
+      )}
+    </>
   );
 }

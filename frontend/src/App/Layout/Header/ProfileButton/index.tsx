@@ -2,11 +2,11 @@ import { useAuth } from "src/hooks/useAuth";
 import View from "src/App/Layout/Header/ProfileButton/View";
 import usePayoutSettings from "src/hooks/usePayoutSettings";
 import {
-  useGetTermsAndConditionsAcceptancesQuery,
+  useGetOnboardingStateQuery,
   useGetUserAvatarUrlQuery,
   usePendingUserPaymentsQuery,
 } from "src/__generated/graphql";
-import { TERMS_AND_CONDITIONS_LAST_REDACTION_DATE } from "src/App/TermsAndConditionsWrapper";
+import { TERMS_AND_CONDITIONS_LAST_REDACTION_DATE } from "src/App/OnboardingWrapper";
 
 const ProfileButton = () => {
   const { user, logout, githubUserId, impersonating } = useAuth();
@@ -21,17 +21,17 @@ const ProfileButton = () => {
   const { valid } = usePayoutSettings(githubUserId);
   const { data } = usePendingUserPaymentsQuery({ variables: { userId: user?.id }, skip: (valid ?? true) || !user?.id });
 
-  const termsAndConditionsAcceptanceQuery = useGetTermsAndConditionsAcceptancesQuery({
+  const onboardingStateQuery = useGetOnboardingStateQuery({
     variables: { userId: user?.id },
     skip: !user?.id,
   });
 
   const hideProfileItems = !!(
     user?.id &&
-    !termsAndConditionsAcceptanceQuery.loading &&
+    !onboardingStateQuery.loading &&
     !impersonating &&
-    (!termsAndConditionsAcceptanceQuery?.data?.termsAndConditionsAcceptancesByPk?.acceptanceDate ||
-      new Date(termsAndConditionsAcceptanceQuery?.data?.termsAndConditionsAcceptancesByPk?.acceptanceDate) <
+    (!onboardingStateQuery?.data?.onboardingsByPk?.termsAndConditionsAcceptanceDate ||
+      new Date(onboardingStateQuery?.data?.onboardingsByPk?.termsAndConditionsAcceptanceDate) <
         new Date(TERMS_AND_CONDITIONS_LAST_REDACTION_DATE))
   );
 

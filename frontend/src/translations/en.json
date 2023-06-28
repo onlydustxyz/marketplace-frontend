@@ -125,6 +125,35 @@
     "projects": "Projects",
     "signInWithGithub": "Connect"
   },
+  "onboarding": {
+    "intro": {
+      "title": "Build your contributor profile",
+      "description": "We need more information about your profile\nin order to match you with the most relevant projects.",
+      "acceptButton": "Set up profile (⏱️ 2min)",
+      "skip": "Skip for now"
+    },
+    "technologies": {
+      "title": "What are your favorite technologies?",
+      "description": "Rank the ones you most work with, from most to least proficient."
+    },
+    "timeAllocation": {
+      "title": "How much time are you willing to allocate to open source projects?",
+      "description": "If you're not sure yet, pick your best guess. You can always change it later!",
+      "none": "None",
+      "lessThan1Day": "Less than 1 day / week",
+      "1to3days": "1 to 3 days / week",
+      "moreThan3days": "More than 3 days / week",
+      "lookingForAJob": "I'm looking for a job"
+    },
+    "contact": {
+      "title": "How can we reach out?",
+      "description": "Decide which ones to show to the community!"
+    },
+    "privateNotice": "These are private information, only visible to you",
+    "backButton": "Back",
+    "nextButton": "Next",
+    "submitButton": "Submit"
+  },
   "payment": {
     "form": {
       "confirm": "Confirm payment",
