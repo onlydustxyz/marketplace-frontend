@@ -7,6 +7,8 @@ export enum ButtonSize {
   Md = "md",
   LgLowHeight = "lg-low-height",
   Lg = "lg",
+  LgRounded = "lg-rounded",
+  MdRounded = "md-rounded",
 }
 
 export enum ButtonType {
@@ -101,13 +103,17 @@ export default function Button({
         {
           "h-14 gap-3 rounded-xl": size === ButtonSize.Lg,
           "h-12 gap-3 rounded-xl": size === ButtonSize.LgLowHeight,
+          "h-11 gap-3 rounded-full": size === ButtonSize.LgRounded,
           "text-base h-12 gap-2 rounded-xl": size === ButtonSize.Md,
+          "h-11 gap-2 rounded-full": size === ButtonSize.MdRounded,
           "text-sm h-8 gap-2 rounded-large": size === ButtonSize.Sm,
           "text-xs h-6 gap-1 rounded-lg": size === ButtonSize.Xs,
         },
         !iconOnly && {
           "px-6 py-4": size === ButtonSize.Lg,
+          "px-6 py-3": size === ButtonSize.LgRounded,
           "px-4 py-3.5": size === ButtonSize.LgLowHeight || size === ButtonSize.Md,
+          "px-4 py-3": size === ButtonSize.MdRounded,
           "px-4 py-2": size === ButtonSize.Sm,
           "px-2 py-1": size === ButtonSize.Xs,
         },

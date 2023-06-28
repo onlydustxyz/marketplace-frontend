@@ -450,6 +450,10 @@
       "title": "Payout information missing"
     }
   },
+  "publicProfile": {
+    "goToOnlydust": "Go to OnlyDust",
+    "copyUrl": "Copy URL"
+  },
   "project": {
     "amountGranted": "Granted: __granted__ / __total__",
     "hiring": "Looking for contributors",
