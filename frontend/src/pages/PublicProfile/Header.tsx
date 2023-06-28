@@ -14,7 +14,7 @@ export default function Header({ userLogin }: Props) {
 
   return (
     <div className="flex items-center py-6">
-      <div className="flex w-full justify-between px-4 py-3 rounded-full bg-white/8 backdrop-blur-3xl">
+      <div className="flex w-full justify-between px-4 py-3 rounded-full bg-white/8 backdrop-blur-3xl drop-shadow-lg">
         <div className="flex items-center gap-3">
           <img className="h-9 w-9" src={onlyDustLogoWhite} alt={T("images.onlyDustLogo")} />
           <img className="h-6 mt-1" src={onlyDustTitle} alt={T("images.onlyDustTitle")} />

@@ -20,9 +20,9 @@ export default function Profile({ userLogin }: Props) {
   const { profile, projects, languages, contributionCounts, contributionCountVariationSinceLastWeek } = userProfile;
 
   return (
-    <div className="flex w-full h-full bg-greyscale-900 drop-shadow-lg rounded-3xl p-4">
-      <div className="flex flex-row divide-x divide-greyscale-50/8 gap-4">
-        <div className="flex flex-col w-full scrollbar-thin scrollbar-thumb-rounded">
+    <div className="flex w-full h-full min-h-0 bg-greyscale-900 drop-shadow-lg rounded-3xl p-4">
+      <div className="flex flex-row w-full min-h-0 divide-x divide-greyscale-50/8 gap-4">
+        <div className="flex flex-col basis-1/2 overflow-y-scroll">
           <Header
             profile={{ ...profile, cover: translateProfileCover(profile.cover) ?? ProfileCover.Blue }}
             rounded={true}
@@ -38,7 +38,7 @@ export default function Profile({ userLogin }: Props) {
             {languages.length > 0 && <TechnologiesSection languages={languages} />}
           </div>
         </div>
-        <div className="flex flex-col w-full pl-8 pr-4 scrollbar-thin scrollbar-thumb-rounded">
+        <div className="flex flex-col basis-1/2 pl-8 pr-4 overflow-y-scroll">
           <StatsSection
             profile={profile}
             contributionCounts={contributionCounts}
