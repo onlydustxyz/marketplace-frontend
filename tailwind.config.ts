@@ -109,6 +109,7 @@ const config: Config = {
         "profile-magenta": "url('src/assets/img/user-profile-bg-magenta.webp')",
         "profile-yellow": "url('src/assets/img/user-profile-bg-yellow.webp')",
         "space-card": "url('src/assets/img/space-card-bg.png')",
+        "public-profile": "url('src/assets/img/public-profile-bg.webp')",
         space: `
             url('src/assets/img/dust-top-right.png'),
             url('src/assets/img/dust-btm-left.png'),
@@ -124,6 +125,7 @@ const config: Config = {
       },
       backgroundSize: {
         space: "auto, auto, 100%",
+        "public-profile": "cover",
       },
       backdropBlur: {
         "4xl": "70px",
