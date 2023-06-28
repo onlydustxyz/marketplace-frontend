@@ -6,23 +6,23 @@ import { retry } from "./commands/common";
 import { OnboardingWizzardPage } from "./pages/profile/onboarding_wizzard";
 
 test.describe("As a signed-in user, I", () => {
-  let viewPage: ViewProfilePage;
-
-  test.beforeEach(async ({ page, context, signIn, users, acceptTermsAndConditions }) => {
+  test.beforeEach(async ({ signIn, users, acceptTermsAndConditions }) => {
     restoreDB();
     await signIn(users.Olivier);
     await acceptTermsAndConditions({ skipOnboardingWizzard: true });
-    viewPage = new ViewProfilePage(page, context);
-    await viewPage.goto();
   });
 
-  test("can see my profile side panel", async ({ users }) => {
+  test("can see my profile side panel", async ({ context, page, users }) => {
     const user = users.Olivier;
+    const viewPage = new ViewProfilePage(page, context);
+    await viewPage.goto();
     await expect(viewPage.login).toHaveText(user.github.login);
   });
 
-  test("can change my avatar", async ({ users }) => {
+  test("can change my avatar", async ({ context, page, users }) => {
     const user = users.Olivier;
+    const viewPage = new ViewProfilePage(page, context);
+    await viewPage.goto();
     const editPage = await viewPage.edit();
     await expect(editPage.login).toHaveText(user.github.login);
     await expect(editPage.avatar).toHaveAttribute("src", "https://avatars.githubusercontent.com/u/595505?v=4");
@@ -34,10 +34,19 @@ test.describe("As a signed-in user, I", () => {
     );
   });
 
-  test("can edit my profile side panel", async ({ users }) => {
+  test("can edit my profile side panel", async ({ context, page, users }) => {
     const user = users.Olivier;
+    await expect(page.getByText("profile completion")).toBeVisible();
+
+    const viewPage = new ViewProfilePage(page, context);
+    await viewPage.goto();
+
+    expect(viewPage.completionScore).toHaveCount(2);
+
     // ======= Edit profile
     const editPage = await viewPage.edit();
+    expect(viewPage.completionScore).toBeVisible();
+
     await expect(editPage.login).toHaveText(user.github.login);
     await editPage.location.fill("Vence, France");
     await editPage.bio.fill("Fullstack developer, SOLID maximalist");
@@ -81,6 +90,7 @@ test.describe("As a signed-in user, I", () => {
     await editPage.save();
 
     // ======= Check informations are visible in public profile
+    await expect(viewPage.completionScore).not.toBeVisible();
     await expect(viewPage.login).toHaveText(user.github.login);
     await retry(
       () => viewPage.location.textContent(),
@@ -125,6 +135,7 @@ test.describe("As a signed-in user, I", () => {
 
     // ======= Check informations are pre-filled
     await viewPage.edit();
+    await expect(editPage.completionScore).not.toBeVisible();
     await expect(editPage.login).toHaveText(user.github.login);
     await expect(editPage.location).toHaveValue("Vence, France");
     await expect(editPage.bio).toHaveValue("Fullstack developer, SOLID maximalist");
@@ -159,6 +170,8 @@ test.describe("As a signed-in user, I", () => {
     // Close
     await expect(editPage.dirtyTag).toHaveText("All changes saved");
     await editPage.closeButton.click();
+
+    await expect(page.getByText("profile completion")).not.toBeVisible();
   });
 });
 

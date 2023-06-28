@@ -14,6 +14,7 @@ export class ViewProfilePage {
   public readonly discord: Locator;
   public readonly linkedin: Locator;
   public readonly email: Locator;
+  public readonly completionScore: Locator;
 
   constructor(page: Page, context: BrowserContext) {
     this.page = page;
@@ -28,6 +29,7 @@ export class ViewProfilePage {
     this.discord = this.page.getByTestId("discord");
     this.linkedin = this.page.getByTestId("linkedin");
     this.email = this.page.getByTestId("email");
+    this.completionScore = this.page.getByText("profile completion");
   }
 
   goto = async () => {
