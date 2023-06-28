@@ -146,8 +146,8 @@
       "lookingForAJob": "I'm looking for a job"
     },
     "contact": {
-      "title": "How can we reach out?",
-      "description": "Decide which ones to show to the community!"
+      "title": "What's your favorite contact method?",
+      "description": "So we can match you with projects you are interested in, nothing else."
     },
     "privateNotice": "These are private information, only visible to you",
     "backButton": "Back",
