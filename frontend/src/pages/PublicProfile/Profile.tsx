@@ -4,21 +4,16 @@ import IntroSection from "src/hooks/useContributorProfilePanel/ContributorProfil
 import ProjectsSection from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/ReadOnlyView/ProjectsSection";
 import StatsSection from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/ReadOnlyView/StatsSection";
 import TechnologiesSection from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/ReadOnlyView/TechnologiesSection";
-import useUserProfile from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/useUserProfile";
+import { UserProfile } from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/useUserProfile";
 import { translateProfileCover } from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/utils";
 
 type Props = {
-  userLogin: string;
+  userProfile: UserProfile;
 };
 
-export default function Profile({ userLogin }: Props) {
-  const userProfile = useUserProfile({ githubUserLogin: userLogin });
-  if (!userProfile) {
-    return <></>;
-  }
-
-  const { profile, projects, languages, contributionCounts, contributionCountVariationSinceLastWeek } = userProfile;
-
+export default function Profile({
+  userProfile: { profile, projects, languages, contributionCounts, contributionCountVariationSinceLastWeek },
+}: Props) {
   return (
     <div className="flex w-full h-full min-h-0 bg-greyscale-900 drop-shadow-lg rounded-3xl p-4">
       <div className="flex flex-row w-full min-h-0 divide-x divide-greyscale-50/8 gap-4">

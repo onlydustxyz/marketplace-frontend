@@ -47,15 +47,15 @@ export default function useUserProfile({
 }: {
   githubUserId?: number;
   githubUserLogin?: string;
-}): UserProfile | undefined {
+}) {
   const { user: currentUser, githubUserId: currentUserGithubId } = useAuth();
 
-  const { data: dataFromUserId } = useQuery<UserProfileQuery>(
+  const { data: dataFromUserId, loading: loadingFromUserId } = useQuery<UserProfileQuery>(
     githubUserId !== undefined && currentUserGithubId === githubUserId ? OwnUserProfileDocument : UserProfileDocument,
     { variables: { githubUserId: githubUserId || 0 }, skip: githubUserId === undefined, ...contextWithCacheHeaders }
   );
 
-  const { data: dataFromUserLogin } = useUserProfileByLoginQuery({
+  const { data: dataFromUserLogin, loading: loadingFromUserLogin } = useUserProfileByLoginQuery({
     variables: { githubUserLogin: githubUserLogin || "" },
     skip: githubUserLogin === undefined,
     ...contextWithCacheHeaders,
@@ -127,13 +127,14 @@ export default function useUserProfile({
   const variationSinceLastWeek =
     lastWeek && thisWeek ? thisWeek.paidCount + thisWeek.unpaidCount - (lastWeek.paidCount + lastWeek.unpaidCount) : 0;
 
-  return (
-    profile && {
+  return {
+    data: profile && {
       profile,
       projects,
       languages,
       contributionCounts,
       contributionCountVariationSinceLastWeek: variationSinceLastWeek,
-    }
-  );
+    },
+    loading: loadingFromUserId || loadingFromUserLogin,
+  };
 }

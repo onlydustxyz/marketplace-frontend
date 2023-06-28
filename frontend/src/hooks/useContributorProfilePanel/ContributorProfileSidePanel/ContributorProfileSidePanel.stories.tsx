@@ -180,8 +180,13 @@ export const Default = {
       setOpen={() => {
         return;
       }}
-      profile={profileFull}
-      projects={[kakarot, wtf, checkpoint, poseidon]}
+      userProfile={{
+        profile: profileFull,
+        projects: [kakarot, wtf, checkpoint, poseidon],
+        languages: [],
+        contributionCounts: [],
+        contributionCountVariationSinceLastWeek: 0,
+      }}
     />
   ),
   parameters: {
@@ -196,8 +201,13 @@ export const Own = {
       setOpen={() => {
         return;
       }}
-      profile={profileFull}
-      projects={[kakarot, wtf, checkpoint, poseidon]}
+      userProfile={{
+        profile: profileFull,
+        projects: [kakarot, wtf, checkpoint, poseidon],
+        languages: [],
+        contributionCounts: [],
+        contributionCountVariationSinceLastWeek: 0,
+      }}
       isOwn
     />
   ),
@@ -213,8 +223,13 @@ export const NotSignedUp = {
       setOpen={() => {
         return;
       }}
-      profile={profileNotSignedUp}
-      projects={[wtf]}
+      userProfile={{
+        profile: profileNotSignedUp,
+        projects: [wtf],
+        languages: [],
+        contributionCounts: [],
+        contributionCountVariationSinceLastWeek: 0,
+      }}
     />
   ),
   parameters: {
@@ -229,8 +244,13 @@ export const Minimalist = {
       setOpen={() => {
         return;
       }}
-      profile={profileMinimalist}
-      projects={[]}
+      userProfile={{
+        profile: profileMinimalist,
+        projects: [],
+        languages: [],
+        contributionCounts: [],
+        contributionCountVariationSinceLastWeek: 0,
+      }}
     />
   ),
   parameters: {
