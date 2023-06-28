@@ -33,11 +33,11 @@ export default function IntroSection({ isOwn, isPublic, profile, setEditMode }: 
 
   const website = parseWebsite(profile.website);
 
-  const email = profile.email.at(0)?.public && profile.email.at(0)?.contact;
-  const telegram = profile.telegram.at(0)?.public && profile.telegram.at(0)?.contact;
-  const twitter = profile.twitter.at(0)?.public && profile.twitter.at(0)?.contact;
-  const discord = profile.discord.at(0)?.public && profile.discord.at(0)?.contact;
-  const linkedin = profile.linkedin.at(0)?.public && profile.linkedin.at(0)?.contact;
+  const email = profile.contacts.email?.public && profile.contacts.email?.contact;
+  const telegram = profile.contacts.telegram?.public && profile.contacts.telegram?.contact;
+  const twitter = profile.contacts.twitter?.public && profile.contacts.twitter?.contact;
+  const discord = profile.contacts.discord?.public && profile.contacts.discord?.contact;
+  const linkedin = profile.contacts.linkedin?.public && profile.contacts.linkedin?.contact;
 
   return (
     <div className="flex flex-col gap-6">

@@ -1,12 +1,17 @@
+import { CodegenConfig } from "@graphql-codegen/cli";
+
 const getHasuraUrl = () => process.env.HASURA_URL ?? "http://localhost:8080/v1/graphql";
 const getHasuraSecretKey = () => process.env.HASURA_SECRET_KEY ?? "myadminsecretkey";
 
-module.exports = {
-  schema: {
-    [getHasuraUrl()]: {
-      headers: { "X-Hasura-Admin-Secret": getHasuraSecretKey() },
+const config: CodegenConfig = {
+  schema: [
+    {
+      [getHasuraUrl()]: {
+        headers: { "X-Hasura-Admin-Secret": getHasuraSecretKey() },
+      },
     },
-  },
+    "./codegen/local_schema.graphql",
+  ],
   documents: ["./frontend/src/**/*.tsx", "./frontend/src/**/*.ts", "./frontend/src/**/*.graphql"],
   overwrite: true,
   generates: {
@@ -32,11 +37,15 @@ module.exports = {
       documents: ["./playwright/**/*.ts", "./playwright/**/*.graphql"],
     },
     "./doc/data_diagram.md": {
-      plugins: {
-        "codegen/plugins/mermaid-markdown": {
-          entryTypes: ["Projects"],
+      plugins: [
+        {
+          "codegen/plugins/mermaid-markdown": {
+            entryTypes: ["Projects"],
+          },
         },
-      },
+      ],
     },
   },
 };
+
+export default config;
