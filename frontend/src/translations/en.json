@@ -452,7 +452,10 @@
   },
   "publicProfile": {
     "goToOnlydust": "Go to OnlyDust",
-    "copyUrl": "Copy URL"
+    "copyUrl": "Copy URL",
+    "copyright": "© 2022 OnlyDust",
+    "separator": "·",
+    "termsAndConditions": "Terms & Conditions"
   },
   "project": {
     "amountGranted": "Granted: __granted__ / __total__",
