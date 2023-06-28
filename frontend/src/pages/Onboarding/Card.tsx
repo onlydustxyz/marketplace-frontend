@@ -4,6 +4,7 @@ import BaseCard from "src/components/Card";
 import Tag, { TagSize } from "src/components/Tag";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowLeftSLine from "src/icons/ArrowLeftSLine";
+import ArrowRightSLine from "src/icons/ArrowRightSLine";
 import CheckLine from "src/icons/CheckLine";
 import LockFill from "src/icons/LockFill";
 
@@ -57,13 +58,19 @@ export default function Card({
         <div className="w-full flex flex-row items-center justify-end gap-6 bg-white/2 p-6 rounded-b-2xl">
           {prev && (
             <Button type={ButtonType.Secondary} onClick={prev}>
-              <ArrowLeftSLine className="text-2xl" /> {T("onboarding.backButton")}
+              <ArrowLeftSLine className="text-2xl -ml-2" />
+              {T("onboarding.backButton")}
             </Button>
           )}
-          {next && <Button onClick={next}>{T("onboarding.nextButton")}</Button>}
+          {next && (
+            <Button onClick={next}>
+              {T("onboarding.nextButton")}
+              <ArrowRightSLine className="text-2xl -mr-2" />
+            </Button>
+          )}
           {submit && (
             <Button htmlType="submit">
-              <CheckLine className="text-2xl" /> {T("onboarding.submitButton")}
+              <CheckLine className="text-2xl -ml-1" /> {T("onboarding.submitButton")}
             </Button>
           )}
         </div>
