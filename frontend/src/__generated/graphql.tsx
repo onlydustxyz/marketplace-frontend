@@ -17600,7 +17600,7 @@ export type UserProfileLazyQueryHookResult = ReturnType<typeof useUserProfileLaz
 export type UserProfileQueryResult = Apollo.QueryResult<UserProfileQuery, UserProfileQueryVariables>;
 export const UserProfileByLoginDocument = gql`
     query UserProfileByLogin($githubUserLogin: String!) {
-  userProfiles(where: {login: {_eq: $githubUserLogin}}) {
+  userProfiles(where: {login: {_ilike: $githubUserLogin}}) {
     ...UserProfile
   }
 }
