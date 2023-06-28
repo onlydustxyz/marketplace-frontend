@@ -21,6 +21,7 @@ import ImpersonationPage from "src/pages/Impersonation";
 import TermsAndConditions from "src/pages/TermsAndConditions";
 import Onboarding from "src/pages/Onboarding";
 import useReloadOnNewRelease from "./useReloadOnNewRelease";
+import PublicProfilePage from "src/pages/PublicProfile";
 
 export enum RoutePaths {
   Home = "/",
@@ -33,6 +34,7 @@ export enum RoutePaths {
   Impersonation = "/impersonate/:userId",
   TermsAndConditions = "/terms-and-conditions",
   Onboarding = "/onboarding",
+  PublicProfile = "/u/:userLogin",
 }
 
 export enum ProjectRoutePaths {
@@ -86,6 +88,10 @@ function App() {
     {
       path: RoutePaths.Impersonation,
       element: <ImpersonationPage />,
+    },
+    {
+      path: RoutePaths.PublicProfile,
+      element: <PublicProfilePage />,
     },
 
     {
