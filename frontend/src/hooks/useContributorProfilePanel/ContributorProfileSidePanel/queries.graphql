@@ -93,6 +93,12 @@ query UserProfile($githubUserId: bigint!) {
   }
 }
 
+query UserProfileByLogin($githubUserLogin: String!) {
+  userProfiles(where: { login: { _eq: $githubUserLogin } }) {
+    ...UserProfile
+  }
+}
+
 query OwnUserProfile($githubUserId: bigint!) {
   userProfiles(where: { githubUserId: { _eq: $githubUserId } }) {
     ...UserProfile

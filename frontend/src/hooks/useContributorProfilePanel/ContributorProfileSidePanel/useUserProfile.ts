@@ -5,6 +5,7 @@ import {
   UserProfileDocument,
   UserProfileFragment,
   UserProfileQuery,
+  useUserProfileByLoginQuery,
 } from "src/__generated/graphql";
 import { useAuth } from "src/hooks/useAuth";
 import { contextWithCacheHeaders } from "src/utils/headers";
@@ -40,15 +41,27 @@ const EMPTY_DATA: ContributionCountFragment[] = range(0, MAX_CONTRIBUTION_COUNTS
     unpaidCount: 0,
   }));
 
-export default function useUserProfile(githubUserId: number): UserProfile | undefined {
+export default function useUserProfile({
+  githubUserId,
+  githubUserLogin,
+}: {
+  githubUserId?: number;
+  githubUserLogin?: string;
+}): UserProfile | undefined {
   const { user: currentUser, githubUserId: currentUserGithubId } = useAuth();
 
-  const { data } = useQuery<UserProfileQuery>(
-    currentUserGithubId === githubUserId ? OwnUserProfileDocument : UserProfileDocument,
-    { variables: { githubUserId }, ...contextWithCacheHeaders }
+  const { data: dataFromUserId } = useQuery<UserProfileQuery>(
+    githubUserId !== undefined && currentUserGithubId === githubUserId ? OwnUserProfileDocument : UserProfileDocument,
+    { variables: { githubUserId: githubUserId || 0 }, skip: githubUserId === undefined, ...contextWithCacheHeaders }
   );
 
-  const profile = data?.userProfiles.at(0);
+  const { data: dataFromUserLogin } = useUserProfileByLoginQuery({
+    variables: { githubUserLogin: githubUserLogin || "" },
+    skip: githubUserLogin === undefined,
+    ...contextWithCacheHeaders,
+  });
+
+  const profile = dataFromUserId?.userProfiles.at(0) || dataFromUserLogin?.userProfiles.at(0);
 
   const projectLeaded =
     profile?.projectsLeaded

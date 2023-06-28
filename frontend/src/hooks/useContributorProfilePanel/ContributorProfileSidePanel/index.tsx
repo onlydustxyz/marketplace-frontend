@@ -10,7 +10,7 @@ type Props = {
 
 export default function ContributorProfileSidePanel({ githubUserId, ...rest }: Props) {
   const { githubUserId: currentUserGithubId } = useAuth();
-  const userProfile = useUserProfile(githubUserId);
+  const userProfile = useUserProfile({ githubUserId });
 
   return userProfile ? (
     <View isOwn={currentUserGithubId === userProfile.profile.githubUserId} userProfile={userProfile} {...rest} />
