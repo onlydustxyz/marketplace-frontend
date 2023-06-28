@@ -1,6 +1,7 @@
 import { useQuery } from "@apollo/client";
 import {
   ContributionCountFragment,
+  OwnUserProfileDetailsFragment,
   OwnUserProfileDocument,
   UserProfileDocument,
   UserProfileFragment,
@@ -19,7 +20,7 @@ import { daysFromNow, weekNumber } from "src/utils/date";
 import { Project } from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/ReadOnlyView/ProjectCard";
 
 export type UserProfile = {
-  profile: UserProfileFragment;
+  profile: UserProfileFragment & OwnUserProfileDetailsFragment;
   projects: Project[];
   languages: string[];
   contributionCounts: ContributionCountFragment[];
@@ -129,7 +130,7 @@ export default function useUserProfile({
 
   return {
     data: profile && {
-      profile,
+      profile: profile as UserProfileFragment & OwnUserProfileDetailsFragment,
       projects,
       languages,
       contributionCounts,

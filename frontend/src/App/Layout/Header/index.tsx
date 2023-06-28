@@ -4,7 +4,7 @@ import { RoutePaths } from "src/App";
 import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
 import { SessionMethod, useSessionDispatch } from "src/hooks/useSession";
-import { useGetPaymentRequestIdsQuery } from "src/__generated/graphql";
+import { useGetPaymentRequestIdsQuery, useOwnUserProfileQuery } from "src/__generated/graphql";
 import View from "./View";
 import { useImpersonationClaims } from "src/hooks/useImpersonationClaims";
 import { useOnboarding } from "src/App/OnboardingProvider";
@@ -23,6 +23,7 @@ export default function Header() {
   });
 
   const { onboardingInProgress } = useOnboarding();
+  const profileQuery = useOwnUserProfileQuery({ variables: { githubUserId }, skip: !githubUserId });
 
   const hasPayments = paymentRequestIdsQueryData?.githubUsersByPk?.paymentRequests.length || 0 > 0;
 
@@ -39,6 +40,7 @@ export default function Header() {
       selectedMenuItem={location.pathname}
       onLogin={() => dispatchSession({ method: SessionMethod.SetVisitedPageBeforeLogin, value: location.pathname })}
       impersonating={impersonating}
+      profileCompletionScore={profileQuery.data?.userProfiles.at(0)?.completionScore}
     />
   );
 }

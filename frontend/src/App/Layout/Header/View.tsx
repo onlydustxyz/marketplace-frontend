@@ -8,6 +8,8 @@ import { Link } from "react-router-dom";
 import FeedbackButton from "./FeedbackButton";
 import classNames from "classnames";
 import { useIntl } from "src/hooks/useIntl";
+import CompletionBar from "src/components/CompletionBar";
+import axeCoin from "src/assets/img/axe-coin.webp";
 
 interface HeaderViewProps {
   menuItems: {
@@ -18,6 +20,7 @@ interface HeaderViewProps {
   isLoggedIn: boolean;
   onLogin?: () => void;
   impersonating?: boolean;
+  profileCompletionScore?: number;
 }
 
 export default function HeaderView({
@@ -26,6 +29,7 @@ export default function HeaderView({
   isLoggedIn,
   onLogin,
   impersonating = false,
+  profileCompletionScore,
 }: HeaderViewProps) {
   const testing = import.meta.env.NODE_ENV === "test";
   const { T } = useIntl();
@@ -61,8 +65,17 @@ export default function HeaderView({
               </div>
             )}
           </div>
-          <div className="flex flex-row gap-4 justify-end">
+          <div className="flex flex-row gap-4 justify-end items-center">
             {isLoggedIn && !testing && <FeedbackButton />}
+            {profileCompletionScore !== undefined && profileCompletionScore < 95 && (
+              <div className="flex flex-col gap-2 w-48">
+                <div className="flex flex-row items-center gap-1 font-medium font-walsheim text-sm text-greyscale-50">
+                  <img src={axeCoin} className="w-4 h-4" />
+                  {T("profile.completion", { completion: profileCompletionScore.toString() })}
+                </div>
+                <CompletionBar completionScore={profileCompletionScore} />
+              </div>
+            )}
             <div className="flex text-base text-white">
               {!isLoggedIn ? <GithubLink onClick={onLogin} /> : <ProfileButton />}
             </div>

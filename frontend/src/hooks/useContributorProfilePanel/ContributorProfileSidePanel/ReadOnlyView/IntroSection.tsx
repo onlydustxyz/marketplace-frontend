@@ -1,4 +1,4 @@
-import { UserProfileFragment } from "src/__generated/graphql";
+import { OwnUserProfileDetailsFragment, UserProfileFragment } from "src/__generated/graphql";
 import { useIntl } from "src/hooks/useIntl";
 import MapPinLine from "src/icons/MapPinLine";
 import { formatDateShort } from "src/utils/date";
@@ -20,9 +20,10 @@ import classNames from "classnames";
 import ExternalLinkLine from "src/icons/ExternalLinkLine";
 import { Link, generatePath } from "react-router-dom";
 import { RoutePaths } from "src/App";
+import CompletionBar from "src/components/CompletionBar";
 
 type Props = {
-  profile: UserProfileFragment;
+  profile: UserProfileFragment & OwnUserProfileDetailsFragment;
   setEditMode: (value: boolean) => void;
   isOwn?: boolean;
   isPublic?: boolean;
@@ -80,6 +81,15 @@ export default function IntroSection({ isOwn, isPublic, profile, setEditMode }: 
           </div>
         )}
       </div>
+
+      {profile.completionScore !== undefined && profile.completionScore < 95 && (
+        <div className="flex flex-col gap-2 w-full px-5 py-4 bg-completion-gradient rounded-2xl">
+          <div className="font-medium font-walsheim text-sm text-greyscale-50">
+            {T("profile.completion", { completion: profile.completionScore.toString() })}
+          </div>
+          <CompletionBar completionScore={profile.completionScore} />
+        </div>
+      )}
 
       {(profile.bio || profile.location || profile.createdAt) && (
         <div className="flex flex-col gap-4 font-walsheim font-normal">

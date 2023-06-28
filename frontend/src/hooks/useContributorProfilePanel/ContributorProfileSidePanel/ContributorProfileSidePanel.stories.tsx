@@ -1,4 +1,4 @@
-import { ProfileProjectFragment, UserProfileFragment } from "src/__generated/graphql";
+import { OwnUserProfileDetailsFragment, ProfileProjectFragment, UserProfileFragment } from "src/__generated/graphql";
 import ContributorProfileSidePanel from "./View";
 import { Project } from "./ReadOnlyView/ProjectCard";
 import { daysFromNow, minutesFromNow } from "src/utils/date";
@@ -200,7 +200,7 @@ export const Default = {
         return;
       }}
       userProfile={{
-        profile: profileFull,
+        profile: profileFull as UserProfileFragment & OwnUserProfileDetailsFragment,
         projects: [kakarot, wtf, checkpoint, poseidon],
         languages: ["Rust", "Go", "Typescript"],
         contributionCounts: [
@@ -226,7 +226,7 @@ export const Own = {
         return;
       }}
       userProfile={{
-        profile: profileFull,
+        profile: profileFull as UserProfileFragment & OwnUserProfileDetailsFragment,
         projects: [kakarot, wtf, checkpoint, poseidon],
         languages: ["Rust", "Go", "Typescript"],
         contributionCounts: [
@@ -252,7 +252,7 @@ export const NotSignedUp = {
         return;
       }}
       userProfile={{
-        profile: profileNotSignedUp,
+        profile: profileNotSignedUp as UserProfileFragment & OwnUserProfileDetailsFragment,
         projects: [wtf],
         languages: ["Rust", "Go", "Typescript"],
         contributionCounts: [],
@@ -273,7 +273,7 @@ export const Minimalist = {
         return;
       }}
       userProfile={{
-        profile: profileMinimalist,
+        profile: profileMinimalist as UserProfileFragment & OwnUserProfileDetailsFragment,
         projects: [],
         languages: [],
         contributionCounts: [],
