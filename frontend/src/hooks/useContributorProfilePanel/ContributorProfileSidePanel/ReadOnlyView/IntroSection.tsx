@@ -11,20 +11,24 @@ import Telegram from "src/assets/icons/Telegram";
 import LinkedinBoxFill from "src/icons/LinkedinBoxFill";
 import MailLine from "src/icons/MailLine";
 import DiscordFill from "src/icons/DiscordFill";
-import Button, { ButtonSize } from "src/components/Button";
+import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import PencilLine from "src/icons/PencilLine";
 import ExternalLink from "src/components/ExternalLink";
 import { parseWebsite } from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/utils";
 import MarkdownPreview from "src/components/MarkdownPreview";
 import classNames from "classnames";
+import ExternalLinkLine from "src/icons/ExternalLinkLine";
+import { Link, generatePath } from "react-router-dom";
+import { RoutePaths } from "src/App";
 
 type Props = {
   profile: UserProfileFragment;
   setEditMode: (value: boolean) => void;
   isOwn?: boolean;
+  isPublic?: boolean;
 };
 
-export default function IntroSection({ isOwn, profile, setEditMode }: Props) {
+export default function IntroSection({ isOwn, isPublic, profile, setEditMode }: Props) {
   const { T } = useIntl();
 
   const website = parseWebsite(profile.website);
@@ -37,17 +41,34 @@ export default function IntroSection({ isOwn, profile, setEditMode }: Props) {
 
   return (
     <div className="flex flex-col gap-6">
-      {isOwn && (
-        <div className="self-end -mr-4 z-20">
-          <Button size={ButtonSize.Sm} onClick={() => setEditMode(true)}>
-            <PencilLine />
-            {T("profile.editButton")}
-          </Button>
+      {!isPublic && (
+        <div className="self-end z-20 -mr-4 flex flex-row gap-2">
+          {isOwn && (
+            <Button size={ButtonSize.Sm} onClick={() => setEditMode(true)}>
+              <PencilLine />
+              {T("profile.editButton")}
+            </Button>
+          )}
+          <Link
+            to={generatePath(RoutePaths.PublicProfile, {
+              userLogin: profile.login || "",
+            })}
+            target="_blank"
+          >
+            <Button
+              size={ButtonSize.Sm}
+              type={ButtonType.Secondary}
+              iconOnly
+              data-testid="goto-public-profile-panel-btn"
+            >
+              <ExternalLinkLine />
+            </Button>
+          </Link>
         </div>
       )}
       <div
         className={classNames("flex flex-col gap-2", {
-          "mt-14": !isOwn,
+          "mt-6": isPublic,
         })}
       >
         <div data-testid="login" className="font-belwe font-normal text-3xl text-white">

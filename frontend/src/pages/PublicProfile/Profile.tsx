@@ -22,10 +22,11 @@ export default function Profile({
             profile={{ ...profile, cover: translateProfileCover(profile.cover) ?? ProfileCover.Blue }}
             rounded={true}
           />
-          <div className="ml-8">
+          <div className="flex flex-col gap-12 ml-8">
             <IntroSection
               profile={profile}
               isOwn={false}
+              isPublic={true}
               setEditMode={() => {
                 return;
               }}
@@ -33,7 +34,7 @@ export default function Profile({
             {languages.length > 0 && <TechnologiesSection languages={languages} />}
           </div>
         </div>
-        <div className="flex flex-col basis-1/2 pl-8 pr-4 overflow-y-scroll">
+        <div className="flex flex-col gap-12 basis-1/2 pl-8 pr-4 overflow-y-scroll">
           <StatsSection
             profile={profile}
             contributionCounts={contributionCounts}
