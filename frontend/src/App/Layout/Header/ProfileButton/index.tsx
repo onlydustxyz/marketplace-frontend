@@ -1,15 +1,11 @@
 import { useAuth } from "src/hooks/useAuth";
 import View from "src/App/Layout/Header/ProfileButton/View";
 import usePayoutSettings from "src/hooks/usePayoutSettings";
-import {
-  useGetOnboardingStateQuery,
-  useGetUserAvatarUrlQuery,
-  usePendingUserPaymentsQuery,
-} from "src/__generated/graphql";
-import { TERMS_AND_CONDITIONS_LAST_REDACTION_DATE } from "src/App/OnboardingWrapper";
+import { useGetUserAvatarUrlQuery, usePendingUserPaymentsQuery } from "src/__generated/graphql";
+import { useOnboarding } from "src/App/OnboardingProvider";
 
 const ProfileButton = () => {
-  const { user, logout, githubUserId, impersonating } = useAuth();
+  const { user, logout, githubUserId } = useAuth();
   const { login } = user ?? { login: "My Account" };
 
   const { data: profile } = useGetUserAvatarUrlQuery({
@@ -20,20 +16,7 @@ const ProfileButton = () => {
 
   const { valid } = usePayoutSettings(githubUserId);
   const { data } = usePendingUserPaymentsQuery({ variables: { userId: user?.id }, skip: (valid ?? true) || !user?.id });
-
-  const onboardingStateQuery = useGetOnboardingStateQuery({
-    variables: { userId: user?.id },
-    skip: !user?.id,
-  });
-
-  const hideProfileItems = !!(
-    user?.id &&
-    !onboardingStateQuery.loading &&
-    !impersonating &&
-    (!onboardingStateQuery?.data?.onboardingsByPk?.termsAndConditionsAcceptanceDate ||
-      new Date(onboardingStateQuery?.data?.onboardingsByPk?.termsAndConditionsAcceptanceDate) <
-        new Date(TERMS_AND_CONDITIONS_LAST_REDACTION_DATE))
-  );
+  const { onboardingInProgress } = useOnboarding();
 
   const pendingPaymentRequestsCount =
     data?.registeredUsers
@@ -49,8 +32,8 @@ const ProfileButton = () => {
         avatarUrl,
         login,
         logout,
-        showMissingPayoutSettingsState: payoutSettingsInvalid && !hideProfileItems,
-        hideProfileItems,
+        showMissingPayoutSettingsState: payoutSettingsInvalid && !onboardingInProgress,
+        hideProfileItems: onboardingInProgress,
       }}
     />
   );
