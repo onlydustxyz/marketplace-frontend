@@ -47,6 +47,14 @@ class ContactInformations {
    public: Boolean
 }
 
+class Contacts {
+   discord: ContactInformations
+   email: ContactInformations
+   linkedin: ContactInformations
+   telegram: ContactInformations
+   twitter: ContactInformations
+}
+
 class ContributionCounts {
    githubUserId: bigint
    paidCount: bigint
@@ -300,7 +308,9 @@ class UserPayoutInfo {
 class UserProfiles {
    avatarUrl: String
    bio: String
+   completionScore: Int!
    contactInformations: [ContactInformations!]!
+   contacts: Contacts!
    contributionCounts: [ContributionCounts!]!
    contributionStats: [ContributionStats!]!
    contributions: [Contributions!]!
@@ -425,6 +435,7 @@ class users {
 
 Budgets -- Projects
 Budgets --* PaymentRequests
+Contacts -- ContactInformations
 GithubIssues --* IgnoredGithubIssues
 GithubReposContributors -- GithubUsers
 GithubUsers -- RegisteredUsers
@@ -465,6 +476,7 @@ RegisteredUsers --* ProjectLeads
 Sponsors --* ProjectsSponsors
 User -- RegisteredUsers
 User --* PaymentRequests
+UserProfiles -- Contacts
 UserProfiles --* ContactInformations
 UserProfiles --* ContributionCounts
 UserProfiles --* ContributionStats

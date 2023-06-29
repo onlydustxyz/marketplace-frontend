@@ -1,4 +1,4 @@
-import { UserProfileFragment } from "src/__generated/graphql";
+import { OwnUserProfileDetailsFragment, UserProfileFragment } from "src/__generated/graphql";
 import { useIntl } from "src/hooks/useIntl";
 import MapPinLine from "src/icons/MapPinLine";
 import { formatDateShort } from "src/utils/date";
@@ -20,9 +20,10 @@ import classNames from "classnames";
 import ExternalLinkLine from "src/icons/ExternalLinkLine";
 import { Link, generatePath } from "react-router-dom";
 import { RoutePaths } from "src/App";
+import CompletionBar from "src/components/CompletionBar";
 
 type Props = {
-  profile: UserProfileFragment;
+  profile: UserProfileFragment & OwnUserProfileDetailsFragment;
   setEditMode: (value: boolean) => void;
   isOwn?: boolean;
   isPublic?: boolean;
@@ -33,11 +34,11 @@ export default function IntroSection({ isOwn, isPublic, profile, setEditMode }: 
 
   const website = parseWebsite(profile.website);
 
-  const email = profile.email.at(0)?.public && profile.email.at(0)?.contact;
-  const telegram = profile.telegram.at(0)?.public && profile.telegram.at(0)?.contact;
-  const twitter = profile.twitter.at(0)?.public && profile.twitter.at(0)?.contact;
-  const discord = profile.discord.at(0)?.public && profile.discord.at(0)?.contact;
-  const linkedin = profile.linkedin.at(0)?.public && profile.linkedin.at(0)?.contact;
+  const email = profile.contacts.email?.public && profile.contacts.email?.contact;
+  const telegram = profile.contacts.telegram?.public && profile.contacts.telegram?.contact;
+  const twitter = profile.contacts.twitter?.public && profile.contacts.twitter?.contact;
+  const discord = profile.contacts.discord?.public && profile.contacts.discord?.contact;
+  const linkedin = profile.contacts.linkedin?.public && profile.contacts.linkedin?.contact;
 
   return (
     <div className="flex flex-col gap-6">
@@ -80,6 +81,15 @@ export default function IntroSection({ isOwn, isPublic, profile, setEditMode }: 
           </div>
         )}
       </div>
+
+      {profile.completionScore !== undefined && profile.completionScore < 95 && (
+        <div className="flex flex-col gap-2 w-full px-5 py-4 bg-completion-gradient rounded-2xl">
+          <div className="font-medium font-walsheim text-sm text-greyscale-50">
+            {T("profile.completion", { completion: profile.completionScore.toString() })}
+          </div>
+          <CompletionBar completionScore={profile.completionScore} />
+        </div>
+      )}
 
       {(profile.bio || profile.location || profile.createdAt) && (
         <div className="flex flex-col gap-4 font-walsheim font-normal">

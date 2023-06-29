@@ -332,6 +332,7 @@
     "joinedAt": "Joined in __joinedAt__",
     "firstContributedAt": "Contributed first on __firstContributedAt__",
     "valueCopiedToClipboard": "__valueName__ copied to clipboard",
+    "completion": "__completion__% profile completion",
     "email": "Email address",
     "discord": "Discord username",
     "sections": {
@@ -382,6 +383,7 @@
       "companyNeedsInvoiceCallout": "As a company, you'll need to share an invoice for each payment in order to receive the funds.",
       "companyOwnerFirstName": "First name",
       "companyOwnerLastName": "Last name",
+      "completion": "__completion__% completed",
       "contactInfo": {
         "title": "Contact information",
         "error": "Please enter your __channel__ handle",

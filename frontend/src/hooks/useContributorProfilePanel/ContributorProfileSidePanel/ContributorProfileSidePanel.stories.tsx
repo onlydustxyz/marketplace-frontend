@@ -1,4 +1,4 @@
-import { ProfileProjectFragment, UserProfileFragment } from "src/__generated/graphql";
+import { OwnUserProfileDetailsFragment, ProfileProjectFragment, UserProfileFragment } from "src/__generated/graphql";
 import ContributorProfileSidePanel from "./View";
 import { Project } from "./ReadOnlyView/ProjectCard";
 import { daysFromNow, minutesFromNow } from "src/utils/date";
@@ -24,11 +24,14 @@ const profileFull: UserProfileFragment = {
   bio: "Anthony Buisset est né le 17 décembre 1991 au Mans. Il commence la pétanque à l'âge de trois ans. Il pratique d'abord ce sport au sein de sa famille, avec son grand-père et son père.",
   createdAt: "2023-05-10T08:46:57.965219+00:00",
   lastSeen: "2023-05-20T10:10:10.965219+00:00",
-  email: [{ contact: "anthony@foobar.org", public: true }],
-  twitter: [{ contact: "https://twitter.com/antho", public: true }],
-  telegram: [{ contact: "https://telegram.me/antho", public: true }],
-  linkedin: [{ contact: "https://linkedin.com/antho", public: true }],
-  discord: [{ contact: "ANTHO123", public: true }],
+  contactInformations: [],
+  contacts: {
+    email: { contact: "anthony@foobar.org", public: true },
+    telegram: { contact: "https://telegram.me/antho", public: true },
+    twitter: { contact: "https://twitter.com/antho", public: true },
+    discord: { contact: "ANTHO123", public: true },
+    linkedin: { contact: "https://linkedin.com/antho", public: true },
+  },
   website: "https://antho-petanque.com",
   cover: "cyan",
   languages: {
@@ -78,11 +81,14 @@ const profileNotSignedUp: UserProfileFragment = {
   bio: "Anthony Buisset est né le 17 décembre 1991 au Mans. Il commence la pétanque à l'âge de trois ans. Il pratique d'abord ce sport au sein de sa famille, avec son grand-père et son père.",
   createdAt: null,
   lastSeen: null,
-  email: [{ contact: "anthony@foobar.org", public: true }],
-  twitter: [{ contact: "https://twitter.com/antho", public: true }],
-  telegram: [],
-  linkedin: [],
-  discord: [{ contact: "ANTHO123", public: true }],
+  contactInformations: [],
+  contacts: {
+    email: { contact: "anthony@foobar.org", public: true },
+    telegram: { contact: "https://telegram.me/antho", public: false },
+    twitter: { contact: "https://twitter.com/antho", public: true },
+    discord: { contact: "ANTHO123", public: true },
+    linkedin: { contact: "https://linkedin.com/antho", public: false },
+  },
   website: null,
   cover: "blue",
   languages: {
@@ -115,11 +121,14 @@ const profileMinimalist: UserProfileFragment = {
   languages: {},
   createdAt: null,
   lastSeen: null,
-  email: [],
-  twitter: [],
-  telegram: [],
-  linkedin: [],
-  discord: [],
+  contactInformations: [],
+  contacts: {
+    email: { contact: null, public: null },
+    telegram: { contact: null, public: null },
+    twitter: { contact: null, public: null },
+    discord: { contact: null, public: null },
+    linkedin: { contact: null, public: null },
+  },
   website: null,
   cover: "yellow",
   contributionCounts: [],
@@ -181,7 +190,7 @@ export const Default = {
         return;
       }}
       userProfile={{
-        profile: profileFull,
+        profile: profileFull as UserProfileFragment & OwnUserProfileDetailsFragment,
         projects: [kakarot, wtf, checkpoint, poseidon],
         languages: ["Rust", "Go", "Typescript"],
         contributionCounts: [
@@ -207,7 +216,15 @@ export const Own = {
         return;
       }}
       userProfile={{
-        profile: profileFull,
+        profile: {
+          ...profileNotSignedUp,
+          ...({
+            cover: "magenta",
+            completionScore: 65,
+            weeklyAllocatedTime: null,
+            lookingForAJob: null,
+          } as OwnUserProfileDetailsFragment),
+        } as UserProfileFragment & OwnUserProfileDetailsFragment,
         projects: [kakarot, wtf, checkpoint, poseidon],
         languages: ["Rust", "Go", "Typescript"],
         contributionCounts: [
@@ -233,7 +250,7 @@ export const NotSignedUp = {
         return;
       }}
       userProfile={{
-        profile: profileNotSignedUp,
+        profile: profileNotSignedUp as UserProfileFragment & OwnUserProfileDetailsFragment,
         projects: [wtf],
         languages: ["Rust", "Go", "Typescript"],
         contributionCounts: [],
@@ -254,7 +271,7 @@ export const Minimalist = {
         return;
       }}
       userProfile={{
-        profile: profileMinimalist,
+        profile: profileMinimalist as UserProfileFragment & OwnUserProfileDetailsFragment,
         projects: [],
         languages: [],
         contributionCounts: [],

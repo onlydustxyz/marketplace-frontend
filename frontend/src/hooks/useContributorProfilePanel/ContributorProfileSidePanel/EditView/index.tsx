@@ -24,6 +24,7 @@ import TechnologiesSelect from "src/components/TechnologiesSelect";
 import FormSelect from "src/components/FormSelect";
 import LockFill from "src/icons/LockFill";
 import FormToggle from "src/components/FormToggle";
+import CompletionBar from "src/components/CompletionBar";
 
 type Props = {
   profile: UserProfileFragment & OwnUserProfileDetailsFragment;
@@ -170,15 +171,25 @@ export default function EditView({ profile, setEditMode }: Props) {
                 </>
               )}
             </Tag>
-            <Button
-              size={ButtonSize.Md}
-              htmlType="submit"
-              disabled={loading || !isValid}
-              data-testid="profile-form-submit-button"
-            >
-              <CheckLine />
-              {T("profile.form.done")}
-            </Button>
+            <div className="flex flex-row items-center gap-5">
+              {profile.completionScore < 95 && (
+                <div className="flex flex-col gap-2 w-48">
+                  <div className="font-medium font-walsheim text-sm text-greyscale-50 self-end">
+                    {T("profile.form.completion", { completion: profile.completionScore.toString() })}
+                  </div>
+                  <CompletionBar completionScore={profile.completionScore} />
+                </div>
+              )}
+              <Button
+                size={ButtonSize.Md}
+                htmlType="submit"
+                disabled={loading || !isValid}
+                data-testid="profile-form-submit-button"
+              >
+                <CheckLine />
+                {T("profile.form.done")}
+              </Button>
+            </div>
           </div>
         </div>
       </form>

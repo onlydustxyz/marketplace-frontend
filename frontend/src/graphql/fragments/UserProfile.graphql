@@ -20,29 +20,37 @@ fragment UserProfileDetails on UserProfiles {
   lastSeen
   website
   cover
-  email: contactInformations(where: { channel: { _eq: "email" } }, limit: 1) {
+  contactInformations {
+    channel
     contact
     public
   }
-  telegram: contactInformations(where: { channel: { _eq: "telegram" } }, limit: 1) {
-    contact
-    public
-  }
-  twitter: contactInformations(where: { channel: { _eq: "twitter" } }, limit: 1) {
-    contact
-    public
-  }
-  discord: contactInformations(where: { channel: { _eq: "discord" } }, limit: 1) {
-    contact
-    public
-  }
-  linkedin: contactInformations(where: { channel: { _eq: "linkedin" } }, limit: 1) {
-    contact
-    public
+  contacts @client {
+    email {
+      contact
+      public
+    }
+    telegram {
+      contact
+      public
+    }
+    twitter {
+      contact
+      public
+    }
+    discord {
+      contact
+      public
+    }
+    linkedin {
+      contact
+      public
+    }
   }
 }
 
 fragment OwnUserProfileDetails on UserProfiles {
   weeklyAllocatedTime
   lookingForAJob
+  completionScore @client
 }

@@ -1,0 +1,12 @@
+type Contacts {
+  email: ContactInformations
+  telegram: ContactInformations
+  twitter: ContactInformations
+  discord: ContactInformations
+  linkedin: ContactInformations
+}
+
+extend type UserProfiles {
+  completionScore: Int!
+  contacts: Contacts!
+}

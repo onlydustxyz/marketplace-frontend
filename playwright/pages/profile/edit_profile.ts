@@ -25,6 +25,7 @@ export class EditProfilePage {
   public readonly lookingForAJob: Locator;
   public readonly dirtyTag: Locator;
   public readonly closeButton: Locator;
+  public readonly completionScore: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -50,6 +51,7 @@ export class EditProfilePage {
     this.lookingForAJob = this.page.locator("div").filter({ hasText: "I'm looking for a job" }).getByRole("switch");
     this.dirtyTag = this.page.getByTestId("dirtyTag");
     this.closeButton = this.page.getByTestId("close-add-work-item-panel-btn");
+    this.completionScore = this.page.getByText("completed");
   }
 
   selectedTechnology = (technology: string) => this.page.locator(`[data-technology='${technology}']`);

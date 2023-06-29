@@ -1,6 +1,7 @@
 import { useQuery } from "@apollo/client";
 import {
   ContributionCountFragment,
+  OwnUserProfileDetailsFragment,
   OwnUserProfileDocument,
   UserProfileDocument,
   UserProfileFragment,
@@ -10,16 +11,16 @@ import {
 import { useAuth } from "src/hooks/useAuth";
 import { contextWithCacheHeaders } from "src/utils/headers";
 import { ProfileProjectFragment } from "src/__generated/graphql";
-import { Project } from "./ReadOnlyView/ProjectCard";
 import { chain, find, range, slice, sortBy, unionBy } from "lodash";
 import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 import { isProjectVisibleToUser } from "src/hooks/useProjectVisibility";
 import isDefined from "src/utils/isDefined";
 import { isLanguageValid } from "src/utils/languages";
 import { daysFromNow, weekNumber } from "src/utils/date";
+import { Project } from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/ReadOnlyView/ProjectCard";
 
 export type UserProfile = {
-  profile: UserProfileFragment;
+  profile: UserProfileFragment & OwnUserProfileDetailsFragment;
   projects: Project[];
   languages: string[];
   contributionCounts: ContributionCountFragment[];
@@ -129,7 +130,7 @@ export default function useUserProfile({
 
   return {
     data: profile && {
-      profile,
+      profile: profile as UserProfileFragment & OwnUserProfileDetailsFragment,
       projects,
       languages,
       contributionCounts,
