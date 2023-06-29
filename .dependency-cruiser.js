@@ -16,6 +16,7 @@ module.exports = {
           "(^|/)\\.[^/]+\\.(js|cjs|mjs|ts|tsx|json)$", // dot files
           "\\.d\\.ts$", // TypeScript declaration files
           "(^|/)tsconfig\\.json$", // TypeScript config
+          "src/assets/.*", // assets folder
         ],
       },
       to: {},
