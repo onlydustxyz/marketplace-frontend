@@ -8,11 +8,11 @@ import { OnboardingWizzardPage } from "./pages/profile/onboarding_wizzard";
 test.describe("As a signed-in user, I", () => {
   let viewPage: ViewProfilePage;
 
-  test.beforeEach(async ({ page, signIn, users, acceptTermsAndConditions }) => {
+  test.beforeEach(async ({ page, context, signIn, users, acceptTermsAndConditions }) => {
     restoreDB();
     await signIn(users.Olivier);
     await acceptTermsAndConditions({ skipOnboardingWizzard: true });
-    viewPage = new ViewProfilePage(page);
+    viewPage = new ViewProfilePage(page, context);
     await viewPage.goto();
   });
 
@@ -104,6 +104,25 @@ test.describe("As a signed-in user, I", () => {
     await expect(viewPage.technology("COBOL")).toBeVisible();
     await expect(viewPage.technology("C++")).not.toBeVisible();
 
+    const publicProfilePage = await viewPage.openPublicProfile();
+    await expect(publicProfilePage.location).toHaveText("Vence, France");
+    await expect(publicProfilePage.bio).toHaveText("Fullstack developer, SOLID maximalist");
+
+    // Contact informations
+    await expect(publicProfilePage.github).toBeVisible();
+    await expect(publicProfilePage.telegram).toBeVisible();
+    await expect(publicProfilePage.twitter).not.toBeVisible();
+    await expect(publicProfilePage.discord).not.toBeVisible();
+    await expect(publicProfilePage.linkedin).toBeVisible();
+    await expect(publicProfilePage.email).toBeVisible();
+
+    // Technologies
+    await expect(publicProfilePage.technology("Pascal")).toBeVisible();
+    await expect(publicProfilePage.technology("Haskell")).toBeVisible();
+    await expect(publicProfilePage.technology("Ruby")).toBeVisible();
+    await expect(publicProfilePage.technology("COBOL")).toBeVisible();
+    await expect(publicProfilePage.technology("C++")).not.toBeVisible();
+
     // ======= Check informations are pre-filled
     await viewPage.edit();
     await expect(editPage.login).toHaveText(user.github.login);
@@ -152,7 +171,7 @@ test.describe("As a new user on the platform, I", () => {
     wizzard = new OnboardingWizzardPage(page);
   });
 
-  test("can be onboarded", async ({ page, users, acceptTermsAndConditions }) => {
+  test("can be onboarded", async ({ page, context, users, acceptTermsAndConditions }) => {
     const user = users.Olivier;
 
     // ======= On boarding wizzard
@@ -198,7 +217,7 @@ test.describe("As a new user on the platform, I", () => {
     await acceptTermsAndConditions({ skipIntro: true });
 
     // ======= Check informations are visible in public profile
-    const viewPage = new ViewProfilePage(page);
+    const viewPage = new ViewProfilePage(page, context);
     await viewPage.goto();
 
     await expect(viewPage.login).toHaveText(user.github.login);

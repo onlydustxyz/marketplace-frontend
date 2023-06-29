@@ -54,13 +54,9 @@ export default function IntroSection({ isOwn, isPublic, profile, setEditMode }: 
               userLogin: profile.login || "",
             })}
             target="_blank"
+            data-testid="open-public-profile-btn"
           >
-            <Button
-              size={ButtonSize.Sm}
-              type={ButtonType.Secondary}
-              iconOnly
-              data-testid="goto-public-profile-panel-btn"
-            >
+            <Button size={ButtonSize.Sm} type={ButtonType.Secondary} iconOnly>
               <ExternalLinkLine />
             </Button>
           </Link>
