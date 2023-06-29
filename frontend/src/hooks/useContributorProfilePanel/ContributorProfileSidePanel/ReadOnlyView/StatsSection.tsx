@@ -21,7 +21,7 @@ export default function StatsSection({ profile, contributionCounts, contribution
 
   return (
     <Section title={T("profile.sections.stats.title")}>
-      <div className="grid grid-cols-3 gap-4">
+      <div className="flex flex-col md:grid grid-cols-3 gap-4">
         <StatCard
           title={T("profile.sections.stats.contributorOn")}
           counter={profile.projectsContributedAggregate.aggregate?.count + ""}

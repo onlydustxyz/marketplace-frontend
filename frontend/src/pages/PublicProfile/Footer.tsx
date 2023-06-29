@@ -13,10 +13,10 @@ export default function Footer() {
   return (
     <>
       <FullTermsAndConditionsSidePanel {...{ showFullTermsAndConditions, setShowFullTermsAndConditions }} />
-      <div className="flex w-full py-6 justify-between">
+      <div className="px-4 lg:px-0 flex w-full py-6 justify-between">
         <div className="flex items-center gap-3">
           <img className="h-10 w-10" src={onlyDustLogo} alt={T("images.onlyDustLogo")} />
-          <img className="h-6 mt-1" src={onlyDustTitle} alt={T("images.onlyDustTitle")} />
+          <img className="h-6 mt-1 hidden md:inline" src={onlyDustTitle} alt={T("images.onlyDustTitle")} />
         </div>
         <div className="flex items-center gap-3 text-spaceBlue-50">
           <div className="flex flex-row gap-1 font-walsheim text-sm font-normal">
@@ -26,10 +26,10 @@ export default function Footer() {
               {T("publicProfile.termsAndConditions")}
             </div>
           </div>
-          <a href="https://twitter.com/OnlyDust_xyz">
+          <a href="https://twitter.com/OnlyDust_xyz" className="hidden md:inline">
             <TwitterFill className="text-xl" />
           </a>
-          <a href="https://github.com/onlydustxyz">
+          <a href="https://github.com/onlydustxyz" className="hidden md:inline">
             <GithubLogo className="text-xl" />
           </a>
         </div>
