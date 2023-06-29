@@ -12,9 +12,10 @@ type Props = {
   profile: UserProfileFragment;
   editable?: boolean;
   onChange?: (value: ProfileCover) => void;
+  rounded?: boolean;
 };
 
-export default function Header({ profile, editable, onChange }: Props) {
+export default function Header({ profile, editable, onChange, rounded }: Props) {
   const { avatarUrl, cover } = profile;
   const [uploading, setUploading] = useState(false);
 
@@ -44,12 +45,18 @@ export default function Header({ profile, editable, onChange }: Props) {
   return (
     <div className="z-10">
       <div
-        className={classNames("h-24 w-full bg-cover shrink-0", {
-          "bg-profile-blue": cover === ProfileCover.Blue,
-          "bg-profile-cyan": cover === ProfileCover.Cyan,
-          "bg-profile-magenta": cover === ProfileCover.Magenta,
-          "bg-profile-yellow": cover === ProfileCover.Yellow,
-        })}
+        className={classNames(
+          "h-24 w-full bg-cover shrink-0",
+          {
+            "bg-profile-blue": cover === ProfileCover.Blue,
+            "bg-profile-cyan": cover === ProfileCover.Cyan,
+            "bg-profile-magenta": cover === ProfileCover.Magenta,
+            "bg-profile-yellow": cover === ProfileCover.Yellow,
+          },
+          {
+            "rounded-xl": rounded,
+          }
+        )}
       >
         {editable && (
           <div className="flex h-full w-full bg-black/30 items-center justify-center">

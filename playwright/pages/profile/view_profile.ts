@@ -1,8 +1,9 @@
-import { Locator, Page } from "@playwright/test";
+import { BrowserContext, Locator, Page } from "@playwright/test";
 import { EditProfilePage } from "./edit_profile";
 
 export class ViewProfilePage {
   readonly page: Page;
+  readonly context: BrowserContext;
 
   public readonly login: Locator;
   public readonly location: Locator;
@@ -14,8 +15,9 @@ export class ViewProfilePage {
   public readonly linkedin: Locator;
   public readonly email: Locator;
 
-  constructor(page: Page) {
+  constructor(page: Page, context: BrowserContext) {
     this.page = page;
+    this.context = context;
 
     this.login = this.page.getByTestId("login");
     this.location = this.page.getByTestId("location");
@@ -31,6 +33,13 @@ export class ViewProfilePage {
   goto = async () => {
     await this.page.getByTestId("profile-button").click();
     await this.page.getByText(/public profile/i).click();
+  };
+
+  openPublicProfile = async () => {
+    await this.page.getByTestId("open-public-profile-btn").click();
+    const publicProfilePage = await this.context.waitForEvent("page");
+    await publicProfilePage.waitForLoadState();
+    return new ViewProfilePage(publicProfilePage, this.context);
   };
 
   edit = async () => {

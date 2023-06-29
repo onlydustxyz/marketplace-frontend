@@ -450,6 +450,13 @@
       "title": "Payout information missing"
     }
   },
+  "publicProfile": {
+    "goToOnlydust": "Go to OnlyDust",
+    "copyUrl": "Copy URL",
+    "copyright": "© 2022 OnlyDust",
+    "separator": "·",
+    "termsAndConditions": "Terms & Conditions"
+  },
   "project": {
     "amountGranted": "Granted: __granted__ / __total__",
     "hiring": "Looking for contributors",
