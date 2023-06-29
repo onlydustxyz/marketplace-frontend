@@ -183,9 +183,14 @@ export const Default = {
       userProfile={{
         profile: profileFull,
         projects: [kakarot, wtf, checkpoint, poseidon],
-        languages: [],
-        contributionCounts: [],
-        contributionCountVariationSinceLastWeek: 0,
+        languages: ["Rust", "Go", "Typescript"],
+        contributionCounts: [
+          { year: 2023, week: 17, paidCount: 4, unpaidCount: 1 },
+          { year: 2023, week: 20, paidCount: 1, unpaidCount: 2 },
+          { year: 2023, week: 21, paidCount: 4, unpaidCount: 0 },
+          { year: 2023, week: 22, paidCount: 1, unpaidCount: 0 },
+        ],
+        contributionCountVariationSinceLastWeek: 3,
       }}
     />
   ),
@@ -204,9 +209,13 @@ export const Own = {
       userProfile={{
         profile: profileFull,
         projects: [kakarot, wtf, checkpoint, poseidon],
-        languages: [],
-        contributionCounts: [],
-        contributionCountVariationSinceLastWeek: 0,
+        languages: ["Rust", "Go", "Typescript"],
+        contributionCounts: [
+          { year: 2023, week: 17, paidCount: 4, unpaidCount: 1 },
+          { year: 2023, week: 20, paidCount: 1, unpaidCount: 2 },
+          { year: 2023, week: 22, paidCount: 1, unpaidCount: 0 },
+        ],
+        contributionCountVariationSinceLastWeek: -3,
       }}
       isOwn
     />
@@ -226,7 +235,7 @@ export const NotSignedUp = {
       userProfile={{
         profile: profileNotSignedUp,
         projects: [wtf],
-        languages: [],
+        languages: ["Rust", "Go", "Typescript"],
         contributionCounts: [],
         contributionCountVariationSinceLastWeek: 0,
       }}
