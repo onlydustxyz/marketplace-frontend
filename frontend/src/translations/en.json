@@ -128,8 +128,8 @@
   "onboarding": {
     "intro": {
       "title": "Build your contributor profile",
-      "description": "We need more information about your profile\nin order to match you with the most relevant projects.",
-      "acceptButton": "Set up profile (⏱️ 2min)",
+      "description": "We have 3 questions to ask you\nin order to match you with the most relevant projects.",
+      "acceptButton": "Set up profile (⏱️ 1:17 min)",
       "skip": "Skip for now"
     },
     "technologies": {

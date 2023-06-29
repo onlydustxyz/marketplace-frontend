@@ -4,7 +4,7 @@ import "@testing-library/jest-dom";
 
 import { GetOnboardingStateDocument } from "src/__generated/graphql";
 import { CLAIMS_KEY, GITHUB_USERID_KEY, PROJECTS_LED_KEY, TokenSet } from "src/types";
-import OnboardingWrapper from ".";
+import OnboardingProvider from ".";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
 import { RoutePaths } from "..";
@@ -94,9 +94,9 @@ describe("Terms and conditions wrapper", () => {
   it("shouldn't render its children if the terms and conditions haven't been accepted", async () => {
     window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_WITH_VALID_JWT_TEST_VALUE));
     renderWithIntl(
-      <OnboardingWrapper>
+      <OnboardingProvider>
         <div>NOT TO BE DISPLAYED</div>
-      </OnboardingWrapper>,
+      </OnboardingProvider>,
       {
         wrapper: MemoryRouterProviderFactory({
           route: `${RoutePaths.Projects}`,
@@ -112,9 +112,9 @@ describe("Terms and conditions wrapper", () => {
   it("shouldn't render its children if the terms and conditions have been accepted before the last modification date", async () => {
     window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_WITH_VALID_JWT_TEST_VALUE));
     renderWithIntl(
-      <OnboardingWrapper>
+      <OnboardingProvider>
         <div>NOT TO BE DISPLAYED</div>
-      </OnboardingWrapper>,
+      </OnboardingProvider>,
       {
         wrapper: MemoryRouterProviderFactory({
           mocks: graphQlMocksWithInvalidAcceptanceDate,
@@ -128,9 +128,9 @@ describe("Terms and conditions wrapper", () => {
   it("should render its children if the terms and conditions have been accepted after the last modification date", async () => {
     window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_WITH_VALID_JWT_TEST_VALUE));
     renderWithIntl(
-      <OnboardingWrapper>
+      <OnboardingProvider>
         <div>TO BE DISPLAYED</div>
-      </OnboardingWrapper>,
+      </OnboardingProvider>,
       {
         wrapper: MemoryRouterProviderFactory({
           mocks: graphQlMocksWithValidAcceptanceDate,

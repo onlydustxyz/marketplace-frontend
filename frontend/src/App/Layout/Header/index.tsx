@@ -4,14 +4,14 @@ import { RoutePaths } from "src/App";
 import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
 import { SessionMethod, useSessionDispatch } from "src/hooks/useSession";
-import { useGetPaymentRequestIdsQuery, useGetOnboardingStateQuery } from "src/__generated/graphql";
+import { useGetPaymentRequestIdsQuery } from "src/__generated/graphql";
 import View from "./View";
 import { useImpersonationClaims } from "src/hooks/useImpersonationClaims";
-import { TERMS_AND_CONDITIONS_LAST_REDACTION_DATE } from "src/App/OnboardingWrapper";
+import { useOnboarding } from "src/App/OnboardingProvider";
 
 export default function Header() {
   const location = useLocation();
-  const { user, isLoggedIn, githubUserId } = useAuth();
+  const { isLoggedIn, githubUserId } = useAuth();
   const { T } = useIntl();
   const dispatchSession = useSessionDispatch();
   const { impersonationSet } = useImpersonationClaims();
@@ -22,24 +22,12 @@ export default function Header() {
     skip: !githubUserId,
   });
 
-  const onboardingStateQuery = useGetOnboardingStateQuery({
-    variables: { userId: user?.id },
-    skip: !user?.id,
-  });
-
-  const hideMenuItems = !!(
-    user?.id &&
-    !onboardingStateQuery.loading &&
-    !impersonating &&
-    (!onboardingStateQuery?.data?.onboardingsByPk?.termsAndConditionsAcceptanceDate ||
-      new Date(onboardingStateQuery?.data?.onboardingsByPk?.termsAndConditionsAcceptanceDate) <
-        new Date(TERMS_AND_CONDITIONS_LAST_REDACTION_DATE))
-  );
+  const { onboardingInProgress } = useOnboarding();
 
   const hasPayments = paymentRequestIdsQueryData?.githubUsersByPk?.paymentRequests.length || 0 > 0;
 
-  const myContributionsMenuItem = hasPayments && !hideMenuItems ? T("navbar.payments") : undefined;
-  const projectsMenuItem = myContributionsMenuItem && !hideMenuItems ? T("navbar.projects") : undefined;
+  const myContributionsMenuItem = hasPayments && !onboardingInProgress ? T("navbar.payments") : undefined;
+  const projectsMenuItem = myContributionsMenuItem && !onboardingInProgress ? T("navbar.projects") : undefined;
 
   return (
     <View
