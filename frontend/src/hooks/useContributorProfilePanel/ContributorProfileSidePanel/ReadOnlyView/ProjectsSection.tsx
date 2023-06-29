@@ -3,6 +3,8 @@ import { Section } from "./Section";
 import ProjectCard, { Project } from "./ProjectCard";
 import { Link, generatePath } from "react-router-dom";
 import { RoutePaths } from "src/App";
+import { useMediaQuery } from "usehooks-ts";
+import { viewportConfig } from "src/config";
 
 type Props = {
   projects: Project[];
@@ -11,19 +13,24 @@ type Props = {
 
 export default function ProjectsSection({ projects, setOpen }: Props) {
   const { T } = useIntl();
+  const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
   return (
     <Section title={T("profile.sections.projects.title")}>
-      <div className="grid grid-cols-3 gap-3">
-        {projects.map(project => (
-          <Link
-            onClick={() => setOpen(false)}
-            key={project.id}
-            to={generatePath(RoutePaths.ProjectDetails, { projectId: project.id })}
-          >
-            <ProjectCard {...project} />
-          </Link>
-        ))}
+      <div className="flex flex-col md:grid grid-cols-2 xl:grid-cols-3 gap-3">
+        {projects.map(project =>
+          isXl ? (
+            <Link
+              onClick={() => setOpen(false)}
+              key={project.id}
+              to={generatePath(RoutePaths.ProjectDetails, { projectId: project.id })}
+            >
+              <ProjectCard {...project} />
+            </Link>
+          ) : (
+            <ProjectCard key={project.id} {...project} />
+          )
+        )}
       </div>
     </Section>
   );

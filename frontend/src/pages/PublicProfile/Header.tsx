@@ -13,23 +13,25 @@ export default function Header({ userLogin }: Props) {
   const { T } = useIntl();
 
   return (
-    <div className="flex items-center py-6">
-      <div className="flex w-full justify-between px-4 py-3 rounded-full bg-white/8 backdrop-blur-3xl">
+    <div className="flex items-center md:py-6">
+      <div className="flex w-full justify-between px-4 py-3 md:rounded-full bg-white/8 backdrop-blur-3xl">
         <div className="flex items-center gap-3">
           <img className="h-9 w-9" src={onlyDustLogoWhite} alt={T("images.onlyDustLogo")} />
           <img className="h-6 mt-1" src={onlyDustTitle} alt={T("images.onlyDustTitle")} />
         </div>
         <div className="flex gap-3">
-          <Button
-            type={ButtonType.Secondary}
-            size={ButtonSize.MdRounded}
-            onClick={() =>
-              navigator.clipboard.writeText(`${window.location.protocol}://${window.location.host}/u/${userLogin}`)
-            }
-          >
-            <Link className="text-xl" />
-            {T("publicProfile.copyUrl")}
-          </Button>
+          <div className="hidden md:block">
+            <Button
+              type={ButtonType.Secondary}
+              size={ButtonSize.MdRounded}
+              onClick={() =>
+                navigator.clipboard.writeText(`${window.location.protocol}://${window.location.host}/u/${userLogin}`)
+              }
+            >
+              <Link className="text-xl" />
+              {T("publicProfile.copyUrl")}
+            </Button>
+          </div>
           <Button
             type={ButtonType.Primary}
             size={ButtonSize.LgRounded}
