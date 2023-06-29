@@ -15,7 +15,6 @@ import { chain, find, range, slice, sortBy, unionBy } from "lodash";
 import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 import { isProjectVisibleToUser } from "src/hooks/useProjectVisibility";
 import isDefined from "src/utils/isDefined";
-import { isLanguageValid } from "src/utils/languages";
 import { daysFromNow, weekNumber } from "src/utils/date";
 import { Project } from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/ReadOnlyView/ProjectCard";
 
@@ -106,12 +105,7 @@ export default function useUserProfile({
     )
     .filter(project => project.leadSince || project.contributionCount);
 
-  const languages =
-    (profile &&
-      sortBy(Object.keys(profile.languages), l => profile.languages[l])
-        .reverse()
-        .filter(isLanguageValid)) ||
-    [];
+  const languages = (profile && sortBy(Object.keys(profile.languages), l => profile.languages[l]).reverse()) || [];
 
   const contributionCounts =
     (profile &&

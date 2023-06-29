@@ -1,13 +1,18 @@
 import { useIntl } from "src/hooks/useIntl";
 import { LanguageMap } from "src/types";
-import { languages as knownLanguages } from "src/__generated/languages";
+import { languages as knownLanguages } from "src/assets/technologies/languages";
+import { frameworks } from "src/assets/technologies/frameworks";
+import { infrastrutcures } from "src/assets/technologies/infrastructure";
+import { frameworks as blockchainFrameworks } from "src/assets/technologies/blockchains";
+import { schemes } from "src/assets/technologies/cryptography";
+import { protocols, authenticationProtocols } from "src/assets/technologies/protocols";
+import { games } from "src/assets/technologies/games";
 import { ClassAttributes, HTMLAttributes } from "react";
 import StylizedCombobox from "src/components/StylizedCombobox";
 import { SortableList, SortableItemProps, SortableItem } from "@thaddeusjiang/react-sortable-list";
 import Draggable from "src/icons/Draggable";
 import CloseLine from "src/icons/CloseLine";
 import classNames from "classnames";
-import { isLanguageValid } from "src/utils/languages";
 
 type Props = {
   technologies: LanguageMap;
@@ -17,16 +22,22 @@ type Props = {
 export default function TechnologiesSelect({ technologies = {}, setTechnologies }: Props) {
   const { T } = useIntl();
 
-  const allLanguages = Object.keys(knownLanguages)
-    .filter(isLanguageValid)
-    .map(language => ({
-      id: language,
-      value: language,
-      displayValue: language,
-    }));
+  const allLanguages = Object.keys({
+    ...knownLanguages,
+    ...frameworks,
+    ...infrastrutcures,
+    ...blockchainFrameworks,
+    ...schemes,
+    ...games,
+    ...protocols,
+    ...authenticationProtocols,
+  }).map(language => ({
+    id: language,
+    value: language,
+    displayValue: language,
+  }));
 
   const selectedLanguages: SortableItemProps[] = Object.entries(technologies)
-    .filter(([name]) => isLanguageValid(name))
     .sort((lang1, lang2) => lang2[1] - lang1[1])
     .map(([language]) => ({
       id: language,

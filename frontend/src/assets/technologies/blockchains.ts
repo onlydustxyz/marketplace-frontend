@@ -1,0 +1,15 @@
+export const frameworks = {
+  Ethereum: true,
+  Hardhat: true,
+  "Hyperledger Fabric": true,
+  Lisk: true,
+  NEM: true,
+  NEO: true,
+  Nile: true,
+  Protostar: true,
+  Quorum: true,
+  Ripple: true,
+  Stellar: true,
+  Tezos: true,
+  Truffle: true,
+};
