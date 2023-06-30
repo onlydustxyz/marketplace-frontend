@@ -1,14 +1,39 @@
-import { ComponentStory, ComponentMeta } from "@storybook/react";
-
+import { MockedResponse } from "@apollo/client/testing";
 import ProjectLeadInvitation from ".";
+import { GetProjectLeadInvitationsDocument, GetProjectLeadInvitationsQueryResult } from "src/__generated/graphql";
+import withAuthProvider from "src/test/storybook/decorators/withAuthProvider";
+import withMockedProvider from "src/test/storybook/decorators/withMockedProvider";
+
+const PROJECT_ID = "project-id";
+const GITHUB_USER_ID = 123456;
+
+const mocks: MockedResponse[] = [
+  {
+    request: {
+      query: GetProjectLeadInvitationsDocument,
+      variables: { projectId: PROJECT_ID },
+    },
+    result: {
+      data: {
+        projectsByPk: {
+          id: PROJECT_ID,
+          projectDetails: {
+            projectId: PROJECT_ID,
+            name: "Kakarot",
+          },
+          pendingInvitations: [{ id: "invitation-id", githubUserId: GITHUB_USER_ID }],
+        },
+      } as GetProjectLeadInvitationsQueryResult["data"],
+    },
+  },
+];
 
 export default {
   title: "ProjectLeadInvitation",
   component: ProjectLeadInvitation,
-} as ComponentMeta<typeof ProjectLeadInvitation>;
+  decorators: [withAuthProvider({ githubUserId: GITHUB_USER_ID }), withMockedProvider(mocks)],
+};
 
-const Template: ComponentStory<typeof ProjectLeadInvitation> = args => <ProjectLeadInvitation {...args} />;
-
-export const Default = Template.bind({});
-
-Default.args = {};
+export const Default = {
+  render: () => <ProjectLeadInvitation projectId={PROJECT_ID} />,
+};
