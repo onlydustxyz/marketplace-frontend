@@ -16,6 +16,7 @@ import { ImpersonationClaimsProvider } from "src/hooks/useImpersonationClaims";
 import { GetPaymentRequestIdsDocument, GetPaymentRequestIdsQueryResult } from "src/__generated/graphql";
 import { ContributorProfilePanelProvider } from "src/hooks/useContributorProfilePanel";
 import { SidePanelStackProvider } from "src/hooks/useSidePanelStack";
+import { SidePanelProvider } from "src/hooks/useSidePanel";
 
 expect.extend(matchers);
 
@@ -174,9 +175,11 @@ const renderTest = () => {
             <ImpersonationClaimsProvider>
               <AuthProvider>
                 <SidePanelStackProvider>
-                  <ContributorProfilePanelProvider>
-                    <Layout />
-                  </ContributorProfilePanelProvider>
+                  <SidePanelProvider>
+                    <ContributorProfilePanelProvider>
+                      <Layout />
+                    </ContributorProfilePanelProvider>
+                  </SidePanelProvider>
                 </SidePanelStackProvider>
               </AuthProvider>
             </ImpersonationClaimsProvider>

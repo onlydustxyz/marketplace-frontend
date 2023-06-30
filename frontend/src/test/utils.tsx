@@ -14,6 +14,7 @@ import { ImpersonationClaimsProvider } from "src/hooks/useImpersonationClaims";
 import { ContributorProfilePanelProvider } from "src/hooks/useContributorProfilePanel";
 import { SidePanelStackProvider } from "src/hooks/useSidePanelStack";
 import { CommandsProvider } from "src/providers/Commands";
+import { SidePanelProvider } from "src/hooks/useSidePanel";
 
 interface MemoryRouterProviderFactoryProps {
   route?: string;
@@ -45,24 +46,26 @@ export const MemoryRouterProviderFactory =
                   <MemoryRouter initialEntries={[route]}>
                     <CommandsProvider>
                       <SidePanelStackProvider>
-                        {context ? (
-                          <Routes>
-                            <Route path="/" element={<Outlet context={context} />}>
-                              <Route
-                                index
-                                element={
-                                  <AuthProvider>
-                                    <ContributorProfilePanelProvider>{children}</ContributorProfilePanelProvider>
-                                  </AuthProvider>
-                                }
-                              />
-                            </Route>
-                          </Routes>
-                        ) : (
-                          <AuthProvider>
-                            <ContributorProfilePanelProvider>{children}</ContributorProfilePanelProvider>
-                          </AuthProvider>
-                        )}
+                        <SidePanelProvider>
+                          {context ? (
+                            <Routes>
+                              <Route path="/" element={<Outlet context={context} />}>
+                                <Route
+                                  index
+                                  element={
+                                    <AuthProvider>
+                                      <ContributorProfilePanelProvider>{children}</ContributorProfilePanelProvider>
+                                    </AuthProvider>
+                                  }
+                                />
+                              </Route>
+                            </Routes>
+                          ) : (
+                            <AuthProvider>
+                              <ContributorProfilePanelProvider>{children}</ContributorProfilePanelProvider>
+                            </AuthProvider>
+                          )}
+                        </SidePanelProvider>
                       </SidePanelStackProvider>
                     </CommandsProvider>
                   </MemoryRouter>
