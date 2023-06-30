@@ -5,6 +5,8 @@ import Header from "./View";
 import { responsiveChromatic } from "src/test/utils";
 import { UserIdentityDocument } from "src/__generated/graphql";
 import withMockedProvider from "src/test/storybook/decorators/withMockedProvider";
+import withAuthProvider from "src/test/storybook/decorators/withAuthProvider";
+import withContributorProfilePanelProvider from "src/test/storybook/decorators/withContributorProfilePanelProvider";
 
 const USER_ID = "e2ee731a-2697-4306-bf4b-c807f6fda0d7";
 
@@ -35,7 +37,7 @@ export default {
   title: "Header",
   component: Header,
   parameters: responsiveChromatic,
-  decorators: [withRouter, withMockedProvider(mocks)],
+  decorators: [withRouter, withMockedProvider(mocks), withAuthProvider(), withContributorProfilePanelProvider],
 };
 
 const args = {
