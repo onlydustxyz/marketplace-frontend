@@ -1,0 +1,6 @@
+type Mutation {
+  suggestTechnology(
+    suggestion: String!
+  ): Boolean
+}
+
