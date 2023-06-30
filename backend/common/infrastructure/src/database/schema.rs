@@ -289,6 +289,12 @@ diesel::table! {
 }
 
 diesel::table! {
+    technologies (technology) {
+        technology -> Text,
+    }
+}
+
+diesel::table! {
     user_payout_info (user_id) {
         user_id -> Uuid,
         identity -> Nullable<Jsonb>,
@@ -355,6 +361,7 @@ diesel::allow_tables_to_appear_in_same_query!(
     projects_contributors,
     projects_sponsors,
     sponsors,
+    technologies,
     user_payout_info,
     user_profile_info,
     work_items,
