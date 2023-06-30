@@ -68,7 +68,7 @@ export const test = base.extend<PopulatedDataFixtures>({
   logout: async ({ page }, use) => {
     await use(async () => {
       await page.getByTestId("profile-button").click();
-      await page.getByTestId("logout-button").click();
+      await page.getByTestId("logout-button").click({ force: true });
     });
   },
 
