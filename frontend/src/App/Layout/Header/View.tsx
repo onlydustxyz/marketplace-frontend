@@ -11,6 +11,8 @@ import { useIntl } from "src/hooks/useIntl";
 import CompletionBar from "src/components/CompletionBar";
 import axeCoin from "src/assets/img/axe-coin.webp";
 import { useOnboarding } from "src/App/OnboardingProvider";
+import { useContributorProfilePanel } from "src/hooks/useContributorProfilePanel";
+import { useAuth } from "src/hooks/useAuth";
 
 interface HeaderViewProps {
   menuItems: {
@@ -34,7 +36,9 @@ export default function HeaderView({
 }: HeaderViewProps) {
   const testing = import.meta.env.NODE_ENV === "test";
   const { T } = useIntl();
+  const { githubUserId } = useAuth();
   const { onboardingInProgress } = useOnboarding();
+  const { open: openContributorProfilePanel } = useContributorProfilePanel();
 
   return (
     <div
@@ -69,15 +73,21 @@ export default function HeaderView({
           </div>
           <div className="flex flex-row gap-4 justify-end items-center">
             {isLoggedIn && !testing && <FeedbackButton />}
-            {!onboardingInProgress && profileCompletionScore !== undefined && profileCompletionScore < 95 && (
-              <div className="flex flex-col gap-2 w-48">
-                <div className="flex flex-row items-center gap-1 font-medium font-walsheim text-sm text-greyscale-50">
-                  <img src={axeCoin} className="w-4 h-4" />
-                  {T("profile.completion", { completion: profileCompletionScore.toString() })}
+            {!onboardingInProgress &&
+              profileCompletionScore !== undefined &&
+              profileCompletionScore < 95 &&
+              githubUserId && (
+                <div
+                  className="flex flex-col gap-2 w-48 cursor-pointer"
+                  onClick={() => openContributorProfilePanel(githubUserId)}
+                >
+                  <div className="flex flex-row items-center gap-1 font-medium font-walsheim text-sm text-greyscale-50">
+                    <img src={axeCoin} className="w-4 h-4" />
+                    {T("profile.completion", { completion: profileCompletionScore.toString() })}
+                  </div>
+                  <CompletionBar completionScore={profileCompletionScore} />
                 </div>
-                <CompletionBar completionScore={profileCompletionScore} />
-              </div>
-            )}
+              )}
             <div className="flex text-base text-white">
               {!isLoggedIn ? <GithubLink onClick={onLogin} /> : <ProfileButton />}
             </div>
