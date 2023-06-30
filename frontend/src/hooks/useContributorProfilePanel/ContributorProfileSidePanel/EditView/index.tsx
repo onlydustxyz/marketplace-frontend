@@ -25,6 +25,7 @@ import FormSelect from "src/components/FormSelect";
 import LockFill from "src/icons/LockFill";
 import FormToggle from "src/components/FormToggle";
 import CompletionBar from "src/components/CompletionBar";
+import { useState } from "react";
 
 type Props = {
   profile: UserProfileFragment & OwnUserProfileDetailsFragment;
@@ -38,8 +39,9 @@ export default function EditView({ profile, setEditMode }: Props) {
     defaultValues: fromFragment(profile),
     mode: "onChange",
   });
-  const { handleSubmit, formState, control } = formMethods;
+  const { handleSubmit, formState, control, getValues } = formMethods;
   const { isDirty, isValid } = formState;
+  const [completionScore, setCompletionScore] = useState(profile.completionScore);
 
   const weeklyTimeAllocations: { [key in AllocatedTime]: string } = {
     [AllocatedTime.None]: T("profile.form.weeklyAllocatedTime.none"),
@@ -56,11 +58,51 @@ export default function EditView({ profile, setEditMode }: Props) {
     },
   });
 
+  const updateCompletionScore = () => {
+    const score = (value: string | number | null, score: number) => (value && value !== "" ? score : 0);
+
+    const {
+      bio,
+      email,
+      discord,
+      githubHandle,
+      linkedin,
+      location,
+      telegram,
+      twitter,
+      languages,
+      website,
+      weeklyAllocatedTime,
+    } = getValues();
+
+    setCompletionScore(
+      score(profile.avatarUrl, 10) +
+        score(githubHandle, 10) +
+        score(location, 10) +
+        score(bio, 15) +
+        score(website, 5) +
+        score(githubHandle, 5) +
+        score(email, 5) +
+        score(telegram, 5) +
+        score(twitter, 5) +
+        score(discord, 5) +
+        score(linkedin, 5) +
+        score(Object.keys(languages).length, 10) +
+        score(weeklyAllocatedTime, 10)
+    );
+  };
+
   const onSubmit = (formData: UserProfileInfo) => updateUserProfileInfo({ variables: toVariables(formData) });
 
   return (
     <FormProvider {...formMethods}>
-      <form id="profile-info-form" className="h-full min-h-0" onSubmit={handleSubmit(onSubmit)}>
+      <form
+        id="profile-info-form"
+        className="h-full min-h-0"
+        onSubmit={handleSubmit(onSubmit)}
+        onChange={updateCompletionScore}
+        onClick={updateCompletionScore}
+      >
         <div className="flex flex-col h-full justify-between">
           <div className="flex flex-col gap-6 min-h-0">
             <Controller
@@ -172,12 +214,12 @@ export default function EditView({ profile, setEditMode }: Props) {
               )}
             </Tag>
             <div className="flex flex-row items-center gap-5">
-              {profile.completionScore < 95 && (
+              {completionScore < 95 && (
                 <div className="flex flex-col gap-2 w-48">
                   <div className="font-medium font-walsheim text-sm text-greyscale-50 self-end">
-                    {T("profile.form.completion", { completion: profile.completionScore.toString() })}
+                    {T("profile.form.completion", { completion: completionScore.toString() })}
                   </div>
-                  <CompletionBar completionScore={profile.completionScore} />
+                  <CompletionBar completionScore={completionScore} />
                 </div>
               )}
               <Button
