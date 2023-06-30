@@ -112,14 +112,22 @@ const View: React.FC<Props> = ({
                   <SectionTitle
                     title={T("payment.form.workItems.title")}
                     rightAction={
-                      <Button
-                        size={ButtonSize.Sm}
-                        type={ButtonType.Secondary}
-                        onClick={() => setSidePanelOpen(true)}
-                        iconOnly
-                      >
-                        <Add />
-                      </Button>
+                      <div className="flex flex-row items-center gap-2">
+                        {workItems.length > 0 && (
+                          <Button type={ButtonType.Ternary} size={ButtonSize.Sm} onClick={() => clearWorkItems()}>
+                            <CloseLine />
+                            {T("payment.form.workItems.clear")}
+                          </Button>
+                        )}
+                        <Button
+                          size={ButtonSize.Sm}
+                          type={ButtonType.Secondary}
+                          onClick={() => setSidePanelOpen(true)}
+                          iconOnly
+                        >
+                          <Add />
+                        </Button>
+                      </div>
                     }
                   />
                   <div className="flex flex-col gap-3 mx-4 pt-4" data-testid="added-work-items">
