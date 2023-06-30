@@ -63,7 +63,3 @@ query GetProjectApplications($projectId: uuid!) {
 mutation ApplyToProject($projectId: Uuid!) {
   applyToProject(projectId: $projectId)
 }
-
-mutation acceptProjectLeaderInvitation($invitationId: Uuid!) {
-  acceptProjectLeaderInvitation(invitationId: $invitationId)
-}

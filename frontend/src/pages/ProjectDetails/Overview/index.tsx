@@ -1,11 +1,7 @@
 import { useIntl } from "src/hooks/useIntl";
 import OverviewPanel from "./OverviewPanel";
 import { useLocation, useOutletContext } from "react-router-dom";
-import {
-  GetProjectOverviewDetailsDocument,
-  GetProjectOverviewDetailsQuery,
-  useAcceptProjectLeaderInvitationMutation,
-} from "src/__generated/graphql";
+import { GetProjectOverviewDetailsDocument, GetProjectOverviewDetailsQuery } from "src/__generated/graphql";
 import Card from "src/components/Card";
 import GithubRepoDetails from "./GithubRepoDetails";
 import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
@@ -72,12 +68,6 @@ export default function Overview() {
   const { alreadyApplied, applyToProject } = useApplications(projectId);
   const { isCurrentUserMember } = useProjectVisibility(projectId);
 
-  const [acceptInvitation] = useAcceptProjectLeaderInvitationMutation({
-    context: { graphqlErrorDisplay: "toaster" },
-    variables: { invitationId },
-    onCompleted: () => window.location.reload(),
-  });
-
   useEffect(() => {
     if (projectId && ((projectId !== lastVisitedProjectId && ledProjectIds.includes(projectId)) || !!invitationId)) {
       dispatchSession({ method: SessionMethod.SetLastVisitedProjectId, value: projectId });
@@ -87,7 +77,7 @@ export default function Overview() {
   return (
     <>
       <Title>{T("project.details.overview.title")}</Title>
-      {invitationId && <ProjectLeadInvitation projectName={projectName} onClick={acceptInvitation} />}
+      <ProjectLeadInvitation projectId={projectId} />
       <div className="flex flex-row gap-6">
         <div className="flex flex-col gap-4 w-full">
           <Card className={classNames("px-6 py-4 flex flex-col gap-4 z-10")}>

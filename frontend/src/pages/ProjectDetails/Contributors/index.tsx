@@ -8,6 +8,7 @@ import Title from "src/pages/ProjectDetails/Title";
 import useProjectContributors from "src/hooks/useProjectContributors";
 import { useGetProjectDetailsQuery } from "src/__generated/graphql";
 import { contextWithCacheHeaders } from "src/utils/headers";
+import ProjectLeadInvitation from "src/components/ProjectLeadInvitation";
 
 export default function Contributors() {
   const { T } = useIntl();
@@ -24,6 +25,7 @@ export default function Contributors() {
   return (
     <>
       <Title>{T("project.details.contributors.title")}</Title>
+      <ProjectLeadInvitation projectId={projectId} />
       {contributors?.length > 0 ? (
         <Card className="h-full">
           <ContributorsTable {...{ contributors, isProjectLeader, remainingBudget, projectId }} />
