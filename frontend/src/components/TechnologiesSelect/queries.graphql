@@ -1,0 +1,3 @@
+mutation SuggestTechnology($suggestion: String!) {
+  suggestTechnology(suggestion: $suggestion)
+}
