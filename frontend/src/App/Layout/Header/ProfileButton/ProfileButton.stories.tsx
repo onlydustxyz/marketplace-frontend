@@ -3,6 +3,7 @@ import ProfileButton from "./View";
 import withToasterProvider from "src/test/storybook/decorators/withToasterProvider";
 import withSidePanelStackProvider from "src/test/storybook/decorators/withSidePanelStackProvider";
 import withContributorProfilePanelProvider from "src/test/storybook/decorators/withContributorProfilePanelProvider";
+import withSidePanelProvider from "src/test/storybook/decorators/withSidePanelProvider";
 
 export default {
   title: "ProfileButton",
@@ -10,8 +11,9 @@ export default {
   decorators: [
     withToasterProvider,
     withMockedProvider(),
-    withSidePanelStackProvider,
     withContributorProfilePanelProvider,
+    withSidePanelProvider,
+    withSidePanelStackProvider,
   ],
   argTypes: {
     payoutSettingsInvalid: { type: "boolean" },
