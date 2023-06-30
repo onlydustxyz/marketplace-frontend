@@ -1,0 +1,17 @@
+mutation acceptProjectLeaderInvitation($invitationId: Uuid!) {
+  acceptProjectLeaderInvitation(invitationId: $invitationId)
+}
+
+query GetProjectLeadInvitations($projectId: uuid!) {
+  projectsByPk(id: $projectId) {
+    ...ProjectId
+    projectDetails {
+      projectId
+      name
+    }
+    pendingInvitations {
+      id
+      githubUserId
+    }
+  }
+}
