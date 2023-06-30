@@ -12,7 +12,7 @@ export type Props<T extends Option> = {
   placeholder: string;
   maxDisplayedOptions: number;
   testId?: string;
-  renderEmptyState?: (props: EmptyStateRenderProps) => ReactElement;
+  render?: (props: RenderProps<T>) => ReactElement;
   emptyStateHeight?: number;
 } & (
   | {
@@ -33,8 +33,8 @@ export interface Option {
   displayValue: string;
 }
 
-export interface EmptyStateRenderProps {
-  query: string;
+export interface RenderProps<T extends Option> {
+  option: T;
 }
 
 export const EMPTY_OPTION_ID = "__EMPTY_OPTION_ID__";
@@ -48,7 +48,7 @@ export default function StylizedCombobox<T extends Option>({
   multiple,
   maxDisplayedOptions,
   testId,
-  renderEmptyState = () => <div />,
+  render = ({ option }) => <div>{option.displayValue}</div>,
   emptyStateHeight = 0,
 }: Props<T>) {
   const [query, setQuery] = useState("");
@@ -96,7 +96,7 @@ export default function StylizedCombobox<T extends Option>({
             options={filteredOptions}
             lineHeight={32}
             maxDisplayedOptions={maxDisplayedOptions}
-            renderEmptyState={() => renderEmptyState({ query })}
+            render={render}
             emptyStateHeight={emptyStateHeight}
           />
         </div>
@@ -132,14 +132,14 @@ function VirtualizedOptions<T extends Option>({
   options,
   lineHeight,
   maxDisplayedOptions,
-  renderEmptyState,
+  render,
   emptyStateHeight,
 }: {
   options: T[];
   lineHeight: number;
   emptyStateHeight: number;
   maxDisplayedOptions: number;
-  renderEmptyState: () => ReactElement;
+  render: (props: RenderProps<T>) => ReactElement;
 }) {
   return (
     <Virtuoso
@@ -160,7 +160,7 @@ function VirtualizedOptions<T extends Option>({
             option={option as Option}
             last={index === options.length - 1}
           >
-            {option.id === EMPTY_OPTION_ID ? renderEmptyState() : option.displayValue}
+            {render({ option })}
           </ComboboxOption>
         );
       }}
