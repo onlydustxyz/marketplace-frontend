@@ -1,16 +1,19 @@
 import { Combobox } from "@headlessui/react";
-import { KeyboardEventHandler, useState } from "react";
+import { PropsWithChildren, useState } from "react";
 import classNames from "classnames";
 import SearchLine from "src/icons/SearchLine";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import { Virtuoso } from "react-virtuoso";
+import { ReactElement } from "react-markdown/lib/react-markdown";
 
-export type Props<T> = {
+export type Props<T extends Option> = {
   options: T[];
   optionFilter: (query: string, option: T) => boolean;
   placeholder: string;
   maxDisplayedOptions: number;
   testId?: string;
+  renderEmptyState?: (props: EmptyStateRenderProps) => ReactElement;
+  emptyStateHeight?: number;
 } & (
   | {
       selectedOptions: T[];
@@ -25,11 +28,18 @@ export type Props<T> = {
 );
 
 export interface Option {
+  id: string;
   value: string;
   displayValue: string;
 }
 
-export default function StylizedCombobox<T extends Option | { toString: () => string }>({
+export interface EmptyStateRenderProps {
+  query: string;
+}
+
+export const EMPTY_OPTION_ID = "__EMPTY_OPTION_ID__";
+
+export default function StylizedCombobox<T extends Option>({
   options,
   selectedOptions,
   setSelectedOptions,
@@ -38,16 +48,21 @@ export default function StylizedCombobox<T extends Option | { toString: () => st
   multiple,
   maxDisplayedOptions,
   testId,
+  renderEmptyState = () => <div />,
+  emptyStateHeight = 0,
 }: Props<T>) {
   const [query, setQuery] = useState("");
 
   const filteredOptions = query === "" ? options : options.filter(option => optionFilter(query, option));
 
-  const handleKeyPress: KeyboardEventHandler<HTMLInputElement> = event => {
-    if (event.key === "Enter") {
-      setQuery("");
-    }
-  };
+  if (
+    query !== "" &&
+    ![...filteredOptions, ...[selectedOptions].flat()]
+      .map(o => o.displayValue?.toLowerCase())
+      .includes(query.toLowerCase())
+  ) {
+    filteredOptions.push({ id: EMPTY_OPTION_ID, value: query } as T);
+  }
 
   const children = ({ open }: { open: boolean }) => (
     <div>
@@ -70,43 +85,61 @@ export default function StylizedCombobox<T extends Option | { toString: () => st
               placeholder={open ? "" : placeholder}
               autoComplete="off"
               value={query}
-              onKeyDown={handleKeyPress}
             />
           </div>
           <ArrowDownSLine className="text-2xl" />
         </div>
       </Combobox.Button>
       <Combobox.Options className="flex flex-col w-full mt-2">
-        {filteredOptions.length > 0 ? (
-          <div className="cursor-pointer bg-greyscale-800 border border-greyscale-50/12 backdrop-blur-lg rounded-2xl overflow-hidden">
-            <VirtualizedOptions options={filteredOptions} lineHeight={32} maxDisplayedOptions={maxDisplayedOptions} />
-          </div>
-        ) : (
-          <div />
-        )}
+        <div className="cursor-pointer bg-greyscale-800 border border-greyscale-50/12 backdrop-blur-lg rounded-2xl overflow-hidden">
+          <VirtualizedOptions
+            options={filteredOptions}
+            lineHeight={32}
+            maxDisplayedOptions={maxDisplayedOptions}
+            renderEmptyState={() => renderEmptyState({ query })}
+            emptyStateHeight={emptyStateHeight}
+          />
+        </div>
       </Combobox.Options>
     </div>
   );
 
   return multiple ? (
-    <Combobox value={selectedOptions} onChange={value => setSelectedOptions(value)} multiple>
+    <Combobox
+      value={selectedOptions}
+      onChange={value => {
+        setQuery("");
+        setSelectedOptions(value);
+      }}
+      multiple
+    >
       {children}
     </Combobox>
   ) : (
-    <Combobox value={selectedOptions} onChange={value => setSelectedOptions(value)}>
+    <Combobox
+      value={selectedOptions}
+      onChange={value => {
+        setQuery("");
+        setSelectedOptions(value);
+      }}
+    >
       {children}
     </Combobox>
   );
 }
 
-function VirtualizedOptions<T extends Option | { toString: () => string }>({
+function VirtualizedOptions<T extends Option>({
   options,
   lineHeight,
   maxDisplayedOptions,
+  renderEmptyState,
+  emptyStateHeight,
 }: {
   options: T[];
   lineHeight: number;
+  emptyStateHeight: number;
   maxDisplayedOptions: number;
+  renderEmptyState: () => ReactElement;
 }) {
   return (
     <Virtuoso
@@ -115,25 +148,41 @@ function VirtualizedOptions<T extends Option | { toString: () => string }>({
           /* N-1 lines have a height of lineHeight+1 because of the border-bottom */
           Math.min(options.length - 1, maxDisplayedOptions - 1) * (lineHeight + 1) +
           /* Last line has a height of lineHeight */
-          lineHeight,
+          lineHeight +
+          /* add extra height if custom empty state render */
+          (options.some(o => o.id === EMPTY_OPTION_ID) ? emptyStateHeight : 0),
       }}
       data={options}
       itemContent={(index, option) => {
         return (
-          <Combobox.Option
+          <ComboboxOption
             key={(option as Option).value ? (option as Option).value : option.toString()}
-            value={option}
-            className={classNames(
-              "flex px-4 py-2 font-walsheim text-sm leading-4 text-greyscale-50 bg-greyscale-800 ui-active:bg-greyscale-600",
-              {
-                "border-b border-greyscale-50/8": index < options.length - 1,
-              }
-            )}
+            option={option as Option}
+            last={index === options.length - 1}
           >
-            {(option as Option).displayValue ? (option as Option).displayValue : option.toString()}
-          </Combobox.Option>
+            {option.id === EMPTY_OPTION_ID ? renderEmptyState() : option.displayValue}
+          </ComboboxOption>
         );
       }}
     />
   );
 }
+
+type ComboboxOptionProps = {
+  option: Option;
+  last?: boolean;
+} & PropsWithChildren;
+
+const ComboboxOption = ({ option, last, children }: ComboboxOptionProps) => (
+  <Combobox.Option
+    value={option}
+    className={classNames(
+      "flex px-4 py-2 font-walsheim text-sm leading-4 text-greyscale-50 bg-greyscale-800 ui-active:bg-greyscale-600",
+      {
+        "border-b border-greyscale-50/8": !last,
+      }
+    )}
+  >
+    {children}
+  </Combobox.Option>
+);

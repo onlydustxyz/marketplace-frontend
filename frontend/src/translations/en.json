@@ -428,6 +428,13 @@
       "send": "Save payout info",
       "done": "Done",
       "success": "Changes saved",
+      "technologies": {
+        "suggestion": {
+          "suggest": "Suggest '__technology__'",
+          "disclaimer": "Oops! We do our best to maintain a list of relevant technologies, help us doing so by pointing out missing ones. Thank you",
+          "success": "Thanks for suggesting '__technology__'! We will add it to the list after review."
+        }
+      },
       "telegram": "Telegram",
       "telegramPlaceholder": "Telegram",
       "twitter": "Twitter",

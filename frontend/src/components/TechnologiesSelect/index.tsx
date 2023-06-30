@@ -8,11 +8,14 @@ import { schemes } from "src/assets/technologies/cryptography";
 import { protocols, authenticationProtocols } from "src/assets/technologies/protocols";
 import { games } from "src/assets/technologies/games";
 import { ClassAttributes, HTMLAttributes } from "react";
-import StylizedCombobox from "src/components/StylizedCombobox";
+import StylizedCombobox, { EMPTY_OPTION_ID, EmptyStateRenderProps, Option } from "src/components/StylizedCombobox";
 import { SortableList, SortableItemProps, SortableItem } from "@thaddeusjiang/react-sortable-list";
 import Draggable from "src/icons/Draggable";
 import CloseLine from "src/icons/CloseLine";
 import classNames from "classnames";
+import { useShowToaster } from "src/hooks/useToaster";
+import Add from "src/icons/Add";
+import { useSuggestTechnologyMutation } from "src/__generated/graphql";
 
 type Props = {
   technologies: LanguageMap;
@@ -37,7 +40,7 @@ export default function TechnologiesSelect({ technologies = {}, setTechnologies 
     displayValue: language,
   }));
 
-  const selectedLanguages: SortableItemProps[] = Object.entries(technologies)
+  const selectedLanguages: (SortableItemProps & Option)[] = Object.entries(technologies)
     .sort((lang1, lang2) => lang2[1] - lang1[1])
     .map(([language]) => ({
       id: language,
@@ -45,14 +48,34 @@ export default function TechnologiesSelect({ technologies = {}, setTechnologies 
       displayValue: language,
     }));
 
-  const setSelectedLanguages = (setter: SortableItemProps[] | ((prev: SortableItemProps[]) => SortableItemProps[])) => {
+  const showToaster = useShowToaster();
+
+  const [suggestTechnology] = useSuggestTechnologyMutation();
+
+  const sendSuggestion = async (suggestion: string) => {
+    suggestTechnology({
+      variables: { suggestion },
+      context: { graphqlErrorDisplay: "toaster" },
+      onCompleted: () => showToaster(T("profile.form.technologies.suggestion.success", { technology: suggestion })),
+    });
+  };
+
+  const setSelectedLanguages = async (
+    setter: SortableItemProps[] | ((prev: SortableItemProps[]) => SortableItemProps[])
+  ) => {
     const languages = typeof setter === "function" ? setter(selectedLanguages) : setter;
-    setTechnologies(
-      languages.reduce(
-        (technologies, language, index) => ({ ...technologies, [language.value]: languages.length - index }),
-        {}
-      )
-    );
+    const suggestion = languages.find(l => l.id === EMPTY_OPTION_ID);
+
+    if (suggestion) {
+      sendSuggestion(suggestion.value);
+    } else {
+      setTechnologies(
+        languages.reduce(
+          (technologies, language, index) => ({ ...technologies, [language.value]: languages.length - index }),
+          {}
+        )
+      );
+    }
   };
 
   const DragHandler = (
@@ -83,6 +106,8 @@ export default function TechnologiesSelect({ technologies = {}, setTechnologies 
         maxDisplayedOptions={5}
         multiple
         testId="technologiesCombobox"
+        renderEmptyState={props => <SuggestTechnology {...props} />}
+        emptyStateHeight={52}
       />
       {selectedLanguages.length > 0 && (
         <div className="flex flex-col gap-2">
@@ -123,5 +148,20 @@ export default function TechnologiesSelect({ technologies = {}, setTechnologies 
         </div>
       )}
     </>
+  );
+}
+
+function SuggestTechnology({ query }: EmptyStateRenderProps) {
+  const { T } = useIntl();
+
+  return (
+    <div className="flex flex-col gap-1">
+      <div className="font-medium font-walsheim text-sm text-greyscale-50 flex flex-row items-center gap-1">
+        <Add /> {T("profile.form.technologies.suggestion.suggest", { technology: query })}
+      </div>
+      <div className="font-normal font-walsheim text-sm text-greyscale-200 italic">
+        {T("profile.form.technologies.suggestion.disclaimer")}
+      </div>
+    </div>
   );
 }
