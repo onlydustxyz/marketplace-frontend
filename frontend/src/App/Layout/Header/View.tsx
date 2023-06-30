@@ -10,6 +10,7 @@ import classNames from "classnames";
 import { useIntl } from "src/hooks/useIntl";
 import CompletionBar from "src/components/CompletionBar";
 import axeCoin from "src/assets/img/axe-coin.webp";
+import { useOnboarding } from "src/App/OnboardingProvider";
 
 interface HeaderViewProps {
   menuItems: {
@@ -33,6 +34,7 @@ export default function HeaderView({
 }: HeaderViewProps) {
   const testing = import.meta.env.NODE_ENV === "test";
   const { T } = useIntl();
+  const { onboardingInProgress } = useOnboarding();
 
   return (
     <div
@@ -67,7 +69,7 @@ export default function HeaderView({
           </div>
           <div className="flex flex-row gap-4 justify-end items-center">
             {isLoggedIn && !testing && <FeedbackButton />}
-            {profileCompletionScore !== undefined && profileCompletionScore < 95 && (
+            {!onboardingInProgress && profileCompletionScore !== undefined && profileCompletionScore < 95 && (
               <div className="flex flex-col gap-2 w-48">
                 <div className="flex flex-row items-center gap-1 font-medium font-walsheim text-sm text-greyscale-50">
                   <img src={axeCoin} className="w-4 h-4" />
