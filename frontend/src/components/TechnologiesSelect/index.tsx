@@ -8,24 +8,36 @@ import { schemes } from "src/assets/technologies/cryptography";
 import { protocols, authenticationProtocols } from "src/assets/technologies/protocols";
 import { games } from "src/assets/technologies/games";
 import { ClassAttributes, HTMLAttributes } from "react";
-import StylizedCombobox, { EMPTY_OPTION_ID, Option } from "src/components/StylizedCombobox";
+import StylizedCombobox, { EMPTY_OPTION_ID, Option, RenderProps } from "src/components/StylizedCombobox";
 import { SortableList, SortableItemProps, SortableItem } from "@thaddeusjiang/react-sortable-list";
 import Draggable from "src/icons/Draggable";
 import CloseLine from "src/icons/CloseLine";
 import classNames from "classnames";
 import { useShowToaster } from "src/hooks/useToaster";
 import Add from "src/icons/Add";
-import { useSuggestTechnologyMutation } from "src/__generated/graphql";
+import { useAllTechnologiesQuery, useSuggestTechnologyMutation } from "src/__generated/graphql";
+import { contextWithCacheHeaders } from "src/utils/headers";
+import { withTooltip } from "src/components/Tooltip";
+import onlyDustLogo from "assets/img/onlydust-logo.png";
 
 type Props = {
   technologies: LanguageMap;
   setTechnologies: (languages: LanguageMap) => void;
 };
 
+type LanguageOption = { isSupported: boolean } & Option;
+
 export default function TechnologiesSelect({ technologies = {}, setTechnologies }: Props) {
   const { T } = useIntl();
 
-  const allLanguages = Object.keys({
+  const supportedTechnologiesQuery = useAllTechnologiesQuery({
+    ...contextWithCacheHeaders,
+  });
+
+  const supportedTechnologies =
+    supportedTechnologiesQuery.data?.technologies.map(({ technology }) => technology?.toLowerCase()) || [];
+
+  const allLanguages: LanguageOption[] = Object.keys({
     ...knownLanguages,
     ...frameworks,
     ...infrastrutcures,
@@ -38,14 +50,16 @@ export default function TechnologiesSelect({ technologies = {}, setTechnologies 
     id: language,
     value: language,
     displayValue: language,
+    isSupported: supportedTechnologies.includes(language.toLowerCase()),
   }));
 
-  const selectedLanguages: (SortableItemProps & Option)[] = Object.entries(technologies)
+  const selectedLanguages: LanguageOption[] = Object.entries(technologies)
     .sort((lang1, lang2) => lang2[1] - lang1[1])
     .map(([language]) => ({
       id: language,
       value: language,
       displayValue: language,
+      isSupported: supportedTechnologies.includes(language.toLowerCase()),
     }));
 
   const showToaster = useShowToaster();
@@ -106,7 +120,7 @@ export default function TechnologiesSelect({ technologies = {}, setTechnologies 
         maxDisplayedOptions={5}
         multiple
         testId="technologiesCombobox"
-        render={({ option }) => <Technology option={option} />}
+        render={({ option }) => <Technology option={option as LanguageOption} />}
         emptyStateHeight={52}
       />
       {selectedLanguages.length > 0 && (
@@ -151,8 +165,9 @@ export default function TechnologiesSelect({ technologies = {}, setTechnologies 
   );
 }
 
-function Technology({ option }: { option: Option }) {
+function Technology({ option }: RenderProps<LanguageOption>) {
   const { T } = useIntl();
+
   return option.id === EMPTY_OPTION_ID ? (
     <div className="flex flex-col gap-1">
       <div className="font-medium font-walsheim text-sm text-greyscale-50 flex flex-row items-center gap-1">
@@ -165,7 +180,13 @@ function Technology({ option }: { option: Option }) {
   ) : (
     <div className="flex flex-row items-center gap-2">
       {option.displayValue}
-      {}
+      {option.isSupported && (
+        <img
+          src={onlyDustLogo}
+          className="h-3.5"
+          {...withTooltip(T("profile.form.technologies.supportedTooltip"), { className: "w-36" })}
+        />
+      )}
     </div>
   );
 }

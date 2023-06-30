@@ -155,11 +155,7 @@ function VirtualizedOptions<T extends Option>({
       data={options}
       itemContent={(index, option) => {
         return (
-          <ComboboxOption
-            key={(option as Option).value ? (option as Option).value : option.toString()}
-            option={option as Option}
-            last={index === options.length - 1}
-          >
+          <ComboboxOption key={option.value} option={option} last={index === options.length - 1}>
             {render({ option })}
           </ComboboxOption>
         );

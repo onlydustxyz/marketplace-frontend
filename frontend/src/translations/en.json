@@ -429,6 +429,7 @@
       "done": "Done",
       "success": "Changes saved",
       "technologies": {
+        "supportedTooltip": "Increase your chance of matching a project by choosing featured technologies.",
         "suggestion": {
           "suggest": "Suggest '__technology__'",
           "disclaimer": "Oops! We do our best to maintain a list of relevant technologies, help us doing so by pointing out missing ones. Thank you",

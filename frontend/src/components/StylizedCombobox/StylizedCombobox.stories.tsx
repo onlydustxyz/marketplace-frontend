@@ -5,11 +5,13 @@ export default {
   component: StylizedCombobox,
 };
 
-const people = ["Durward Reynolds", "Kenton Towne", "Therese Wunsch", "Benedict Kessler", "Katelyn Rohan"].map(
-  p => ({ id: p, value: p, displayValue: p } as Option)
-);
-
-const selectedPeople = ["Durward Reynolds", "Katelyn Rohan"].map(p => ({ id: p, value: p, displayValue: p } as Option));
+const people: Option[] = [
+  "Durward Reynolds",
+  "Kenton Towne",
+  "Therese Wunsch",
+  "Benedict Kessler",
+  "Katelyn Rohan",
+].map(p => ({ id: p, value: p, displayValue: p }));
 
 const props: Props<Option> = {
   options: people,
@@ -32,7 +34,7 @@ export const Default = {
 
 const propsMulti: Props<Option> = {
   options: people,
-  selectedOptions: selectedPeople,
+  selectedOptions: people.slice(0, 3),
   setSelectedOptions: (value: Option[]) => {
     console.log("Selected option(s)", value);
   },
