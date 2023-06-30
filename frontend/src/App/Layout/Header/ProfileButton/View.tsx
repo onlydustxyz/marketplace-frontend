@@ -10,6 +10,8 @@ import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import PayoutInfoSidePanel from "./PayoutInfoSidePanel";
 import User3Line from "src/icons/User3Line";
 import { useContributorProfilePanel } from "src/hooks/useContributorProfilePanel";
+import Button, { ButtonSize, ButtonType } from "src/components/Button";
+import { useSidePanel } from "src/hooks/useSidePanel";
 
 type Props = {
   avatarUrl: string | null;
@@ -28,6 +30,7 @@ const View = ({ githubUserId, avatarUrl, login, logout, showMissingPayoutSetting
   const [payoutInfoSidePanelOpen, setPayoutInfoSidePanelOpen] = useState(false);
 
   const { open: openContributorProfileSidePanel } = useContributorProfilePanel();
+  const { openFullTermsAndConditions, openPrivacyPolicy } = useSidePanel();
 
   return (
     <div className="relative">
@@ -66,7 +69,7 @@ const View = ({ githubUserId, avatarUrl, login, logout, showMissingPayoutSetting
           <Menu.Items
             onFocus={() => setMenuItemsVisible(true)}
             onBlur={() => setMenuItemsVisible(false)}
-            className=" absolute right-0 mt-3 w-56 origin-top-right pt-2 pb-1
+            className=" absolute right-0 mt-3 w-56 origin-top-right pt-2
 						rounded-md bg-white/5 backdrop-blur-4xl shadow-lg ring-1 ring-greyscale-50/8
 						focus:outline-none z-20 overflow-hidden"
           >
@@ -87,9 +90,22 @@ const View = ({ githubUserId, avatarUrl, login, logout, showMissingPayoutSetting
               </div>
             )}
 
-            <MenuItem secondary onClick={logout} data-testid="logout-button">
-              <LogoutBoxRLine className="text-xl" />
-              {T("navbar.logout")}
+            <MenuItem secondary disabled>
+              <div className="flex flex-row w-full justify-between py-1 items-center">
+                <div className="flex flex-row gap-1 font-walsheim text-sm font-normal text-spaceBlue-200">
+                  <div className="cursor-pointer" onClick={() => openFullTermsAndConditions()}>
+                    {T("navbar.termsAndConditions")}
+                  </div>
+                  <div>{T("navbar.separator")}</div>
+                  <div className="cursor-pointer" onClick={() => openPrivacyPolicy()}>
+                    {T("navbar.privacyPolicy")}
+                  </div>
+                </div>
+                <Button type={ButtonType.Secondary} size={ButtonSize.Xs} onClick={logout} data-testid="logout-button">
+                  <LogoutBoxRLine className="text-sm border-greyscale-50" />
+                  {T("navbar.logout")}
+                </Button>
+              </div>
             </MenuItem>
           </Menu.Items>
         </Transition>
@@ -114,8 +130,8 @@ const MenuItem = ({ disabled = false, onClick, secondary = false, children, ...r
     {...rest}
     disabled={disabled}
     as="div"
-    className={classNames("ui-active:bg-white/4 px-4 py-2 flex flex-row gap-3 items-center text-sm font-walsheim", {
-      "cursor-pointer": !disabled,
+    className={classNames("px-4 py-2 flex flex-row gap-3 items-center text-sm font-walsheim", {
+      "cursor-pointer ui-active:bg-white/4": !disabled,
       "cursor-default": disabled,
       "text-greyscale-50": !secondary,
       "text-spaceBlue-200": secondary,

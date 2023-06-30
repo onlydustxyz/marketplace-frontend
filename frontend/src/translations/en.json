@@ -123,7 +123,10 @@
     },
     "payments": "Payments",
     "projects": "Projects",
-    "signInWithGithub": "Connect"
+    "signInWithGithub": "Connect",
+    "separator": "·",
+    "termsAndConditions": "Terms",
+    "privacyPolicy": "Privacy"
   },
   "onboarding": {
     "intro": {
