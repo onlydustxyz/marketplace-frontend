@@ -1,9 +1,12 @@
 import onlyDustLogoWhite from "assets/img/onlydust-logo-white.svg";
 import onlyDustTitle from "assets/img/onlydust-title.svg";
+import { RoutePaths } from "src/App";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { useIntl } from "src/hooks/useIntl";
-import Link from "src/icons/Link";
+import LinkIcon from "src/icons/Link";
+import { useNavigate } from "react-router-dom";
 import { linkClickHandlerFactory } from "src/utils/clickHandler";
+import Tooltip from "src/components/Tooltip";
 
 type Props = {
   userLogin: string;
@@ -11,33 +14,37 @@ type Props = {
 
 export default function Header({ userLogin }: Props) {
   const { T } = useIntl();
+  const navigate = useNavigate();
 
   return (
     <div className="flex items-center md:py-6">
       <div className="flex w-full justify-between px-4 py-3 md:rounded-full bg-white/8 backdrop-blur-3xl">
-        <div className="flex items-center gap-3">
+        <div
+          className="flex items-center gap-3 cursor-pointer"
+          onClick={linkClickHandlerFactory("https://onlydust.xyz")}
+        >
           <img className="h-9 w-9" src={onlyDustLogoWhite} alt={T("images.onlyDustLogo")} />
           <img className="h-6 mt-1" src={onlyDustTitle} alt={T("images.onlyDustTitle")} />
         </div>
         <div className="flex gap-3">
           <div className="hidden md:block">
             <Button
+              id="copy-profile-url-btn"
               type={ButtonType.Secondary}
               size={ButtonSize.MdRounded}
               onClick={() =>
                 navigator.clipboard.writeText(`${window.location.protocol}://${window.location.host}/u/${userLogin}`)
               }
             >
-              <Link className="text-xl" />
+              <LinkIcon className="text-xl" />
               {T("publicProfile.copyUrl")}
             </Button>
+            <Tooltip anchorSelect="#copy-profile-url-btn" openOnClick={true} delayHide={1000} noArrow={true}>
+              {T("publicProfile.urlCopied")}
+            </Tooltip>
           </div>
-          <Button
-            type={ButtonType.Primary}
-            size={ButtonSize.LgRounded}
-            onClick={linkClickHandlerFactory("https://onlydust.xyz")}
-          >
-            {T("publicProfile.goToOnlydust")}
+          <Button type={ButtonType.Primary} size={ButtonSize.LgRounded} onClick={() => navigate(RoutePaths.Projects)}>
+            {T("publicProfile.goToApp")}
           </Button>
         </div>
       </div>

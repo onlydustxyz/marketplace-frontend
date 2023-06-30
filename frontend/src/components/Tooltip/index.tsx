@@ -18,17 +18,17 @@ type CommonProps = {
 
 type TooltipProps = {
   id?: string;
-  clickable?: boolean;
   anchorSelect?: string;
+  [otherProp: string]: unknown;
 } & CommonProps &
   PropsWithChildren;
 
 export default function Tooltip({
   id = GLOBAL_TOOLTIP_ID,
   position = TooltipPosition.Bottom,
-  clickable,
   anchorSelect,
   children,
+  ...rest
 }: TooltipProps) {
   return createPortal(
     <ReactTooltip
@@ -48,7 +48,6 @@ export default function Tooltip({
         opacity: 100,
         zIndex: 10000,
       }}
-      clickable={clickable}
       render={({ content, activeAnchor }) =>
         content ? (
           <div className={activeAnchor?.getAttribute("data-tooltip-classname") || undefined}>{content}</div>
@@ -56,6 +55,7 @@ export default function Tooltip({
           children
         )
       }
+      {...rest}
     />,
     document.body
   );

@@ -457,11 +457,15 @@
     }
   },
   "publicProfile": {
-    "goToOnlydust": "Go to OnlyDust",
+    "goToApp": "Go to App",
     "copyUrl": "Copy URL",
+    "urlCopied": "URL copied",
     "copyright": "© 2022 OnlyDust",
     "separator": "·",
-    "termsAndConditions": "Terms & Conditions"
+    "termsAndConditions": "Terms & Conditions",
+    "privacyPolicy": "Privacy Policy",
+    "terms": "Terms",
+    "privacy": "Privacy"
   },
   "project": {
     "amountGranted": "Granted: __granted__ / __total__",
