@@ -10522,6 +10522,8 @@ export type Mutation_Root = {
   rejectInvoice: Scalars['Int'];
   removeSponsorFromProject: Scalars['Uuid'];
   requestPayment: Payment;
+  /** Suggest a new technology */
+  suggestTechnology: Scalars['Boolean'];
   unassignProjectLead: Scalars['Boolean'];
   unignoreIssue: Scalars['Boolean'];
   unlinkGithubRepo: Scalars['Uuid'];
@@ -11595,6 +11597,12 @@ export type Mutation_RootRequestPaymentArgs = {
   projectId: Scalars['Uuid'];
   reason: Reason;
   recipientId: Scalars['Int'];
+};
+
+
+/** mutation root */
+export type Mutation_RootSuggestTechnologyArgs = {
+  suggestion: Scalars['String'];
 };
 
 
@@ -16294,6 +16302,13 @@ export type GetProjectLeadInvitationsQueryVariables = Exact<{
 
 export type GetProjectLeadInvitationsQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> } | null };
 
+export type SuggestTechnologyMutationVariables = Exact<{
+  suggestion: Scalars['String'];
+}>;
+
+
+export type SuggestTechnologyMutation = { __typename?: 'mutation_root', suggestTechnology: boolean };
+
 export type ApplicationIdFragment = { __typename?: 'Applications', id: any };
 
 export type ApplicantFragment = { __typename?: 'Applications', applicantId: any, id: any };
@@ -17777,6 +17792,37 @@ export function useGetProjectLeadInvitationsLazyQuery(baseOptions?: Apollo.LazyQ
 export type GetProjectLeadInvitationsQueryHookResult = ReturnType<typeof useGetProjectLeadInvitationsQuery>;
 export type GetProjectLeadInvitationsLazyQueryHookResult = ReturnType<typeof useGetProjectLeadInvitationsLazyQuery>;
 export type GetProjectLeadInvitationsQueryResult = Apollo.QueryResult<GetProjectLeadInvitationsQuery, GetProjectLeadInvitationsQueryVariables>;
+export const SuggestTechnologyDocument = gql`
+    mutation SuggestTechnology($suggestion: String!) {
+  suggestTechnology(suggestion: $suggestion)
+}
+    `;
+export type SuggestTechnologyMutationFn = Apollo.MutationFunction<SuggestTechnologyMutation, SuggestTechnologyMutationVariables>;
+
+/**
+ * __useSuggestTechnologyMutation__
+ *
+ * To run a mutation, you first call `useSuggestTechnologyMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSuggestTechnologyMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [suggestTechnologyMutation, { data, loading, error }] = useSuggestTechnologyMutation({
+ *   variables: {
+ *      suggestion: // value for 'suggestion'
+ *   },
+ * });
+ */
+export function useSuggestTechnologyMutation(baseOptions?: Apollo.MutationHookOptions<SuggestTechnologyMutation, SuggestTechnologyMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SuggestTechnologyMutation, SuggestTechnologyMutationVariables>(SuggestTechnologyDocument, options);
+      }
+export type SuggestTechnologyMutationHookResult = ReturnType<typeof useSuggestTechnologyMutation>;
+export type SuggestTechnologyMutationResult = Apollo.MutationResult<SuggestTechnologyMutation>;
+export type SuggestTechnologyMutationOptions = Apollo.BaseMutationOptions<SuggestTechnologyMutation, SuggestTechnologyMutationVariables>;
 export const ImpersonatedUserDocument = gql`
     query ImpersonatedUser($id: uuid!) {
   user(id: $id) {
