@@ -13,12 +13,15 @@ import { LOCAL_STORAGE_SESSION_KEY } from "src/hooks/useSession";
 import { CLAIMS_KEY, GITHUB_USERID_KEY, PROJECTS_LED_KEY } from "src/types";
 import Overview from "src/pages/ProjectDetails/Overview";
 import {
+  GetProjectLeadInvitationsDocument,
+  GetProjectLeadInvitationsQueryResult,
   GetProjectOverviewDetailsDocument,
   GetProjectOverviewDetailsQueryResult,
   GetProjectsForSidebarDocument,
   GetProjectVisibilityDetailsDocument,
   GetProjectVisibilityDetailsQueryResult,
 } from "src/__generated/graphql";
+import { MockedResponse } from "@apollo/client/testing";
 
 const TEST_LED_PROJECT_ID = "test-led-project-id";
 const TEST_PROJECT_ID = "test-project-id";
@@ -207,10 +210,27 @@ const getProjectForSidebarMock = {
   },
 };
 
+const getProjectInvitationsMock: MockedResponse = {
+  request: { query: GetProjectLeadInvitationsDocument, variables: { projectId: TEST_PROJECT_ID } },
+  result: {
+    data: {
+      projectsByPk: {
+        id: TEST_PROJECT_ID,
+        projectDetails: {
+          projectId: TEST_PROJECT_ID,
+          name: TEST_PROJECT_NAME,
+        },
+        pendingInvitations: [{ id: "invitation-id", githubUserId: TEST_GITHUB_USER_ID }],
+      },
+    } as GetProjectLeadInvitationsQueryResult["data"],
+  },
+};
+
 const graphQlMocks = [
   getProjectMock,
   getLedProjectMock,
   getProjectForSidebarMock,
+  getProjectInvitationsMock,
   getProjectVisibilityMock(TEST_LED_PROJECT_ID),
   getProjectVisibilityMock(TEST_PROJECT_ID),
 ];
