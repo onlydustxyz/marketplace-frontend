@@ -6,7 +6,7 @@ use anyhow::Result;
 use async_trait::async_trait;
 use chrono::Utc;
 use derive_new::new;
-use domain::{GithubFetchRepoService, SubscriberCallbackError};
+use domain::{GithubFetchRepoService, Languages, SubscriberCallbackError};
 pub use events::Event;
 use infrastructure::database::{ImmutableRepository, Repository};
 use tracing::instrument;
@@ -14,6 +14,7 @@ use tracing::instrument;
 use super::EventListener;
 use crate::models::*;
 
+#[allow(clippy::too_many_arguments)]
 #[derive(new)]
 pub struct Projector {
 	github_fetch_service: Arc<dyn GithubFetchRepoService>,
@@ -23,12 +24,11 @@ pub struct Projector {
 	github_repos_contributors_repository: Arc<dyn ImmutableRepository<GithubReposContributor>>,
 	projects_contributors_repository: Arc<dyn ProjectsContributorRepository>,
 	project_github_repos_repository: Arc<dyn ProjectGithubRepoRepository>,
+	technologies_repository: Arc<dyn ImmutableRepository<Technology>>,
 }
 
 impl Projector {
-	async fn build_repo(&self, repo: domain::GithubRepo) -> Result<GithubRepo> {
-		let languages = self.github_fetch_service.repo_languages(repo.id()).await?;
-
+	fn build_repo(&self, repo: domain::GithubRepo, languages: Languages) -> Result<GithubRepo> {
 		Ok(GithubRepo {
 			id: *repo.id(),
 			owner: repo.owner().clone(),
@@ -49,8 +49,17 @@ impl EventListener<Event> for Projector {
 	async fn on_event(&self, event: Event) -> Result<(), SubscriberCallbackError> {
 		match event.clone() {
 			Event::Repo(repo) => {
+				let languages = self.github_fetch_service.repo_languages(repo.id()).await?;
+				languages.get_all().into_iter().try_for_each(|language| {
+					self.technologies_repository
+						.try_insert(Technology {
+							technology: language,
+						})
+						.map(|_| ())
+				})?;
+
 				self.github_repo_repository.upsert(
-					self.build_repo(repo).await.map_err(SubscriberCallbackError::Discard)?,
+					self.build_repo(repo, languages).map_err(SubscriberCallbackError::Discard)?,
 				)?;
 			},
 			Event::Issue(issue) => {

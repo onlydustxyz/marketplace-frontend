@@ -1,3 +1,9 @@
 mutation SuggestTechnology($suggestion: String!) {
   suggestTechnology(suggestion: $suggestion)
 }
+
+query AllTechnologies {
+  technologies {
+    technology
+  }
+}

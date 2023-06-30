@@ -288,6 +288,10 @@ class Sponsors {
    url: String
 }
 
+class Technologies {
+   technology: String
+}
+
 class User {
    avatarUrl: Url!
    htmlUrl: Url!

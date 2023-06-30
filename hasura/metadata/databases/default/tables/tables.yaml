@@ -3,6 +3,7 @@
 - "!include api_contribution_counts.yaml"
 - "!include api_contribution_stats.yaml"
 - "!include api_contributions.yaml"
+- "!include api_technologies.yaml"
 - "!include api_user_profiles.yaml"
 - "!include auth_provider_requests.yaml"
 - "!include auth_providers.yaml"

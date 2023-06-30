@@ -7186,6 +7186,103 @@ export type StringComparisonExp = {
   _similar: InputMaybe<Scalars['String']>;
 };
 
+/** columns and relationships of "api.technologies" */
+export type Technologies = {
+  __typename?: 'Technologies';
+  technology: Maybe<Scalars['String']>;
+};
+
+/** aggregated selection of "api.technologies" */
+export type TechnologiesAggregate = {
+  __typename?: 'TechnologiesAggregate';
+  aggregate: Maybe<TechnologiesAggregateFields>;
+  nodes: Array<Technologies>;
+};
+
+/** aggregate fields of "api.technologies" */
+export type TechnologiesAggregateFields = {
+  __typename?: 'TechnologiesAggregateFields';
+  count: Scalars['Int'];
+  max: Maybe<TechnologiesMaxFields>;
+  min: Maybe<TechnologiesMinFields>;
+};
+
+
+/** aggregate fields of "api.technologies" */
+export type TechnologiesAggregateFieldsCountArgs = {
+  columns: InputMaybe<Array<TechnologiesSelectColumn>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
+/** Boolean expression to filter rows from the table "api.technologies". All fields are combined with a logical 'AND'. */
+export type TechnologiesBoolExp = {
+  _and: InputMaybe<Array<TechnologiesBoolExp>>;
+  _not: InputMaybe<TechnologiesBoolExp>;
+  _or: InputMaybe<Array<TechnologiesBoolExp>>;
+  technology: InputMaybe<StringComparisonExp>;
+};
+
+/** input type for inserting data into table "api.technologies" */
+export type TechnologiesInsertInput = {
+  technology: InputMaybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type TechnologiesMaxFields = {
+  __typename?: 'TechnologiesMaxFields';
+  technology: Maybe<Scalars['String']>;
+};
+
+/** aggregate min on columns */
+export type TechnologiesMinFields = {
+  __typename?: 'TechnologiesMinFields';
+  technology: Maybe<Scalars['String']>;
+};
+
+/** response of any mutation on the table "api.technologies" */
+export type TechnologiesMutationResponse = {
+  __typename?: 'TechnologiesMutationResponse';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Technologies>;
+};
+
+/** Ordering options when selecting data from "api.technologies". */
+export type TechnologiesOrderBy = {
+  technology: InputMaybe<OrderBy>;
+};
+
+/** select columns of table "api.technologies" */
+export enum TechnologiesSelectColumn {
+  /** column name */
+  Technology = 'technology'
+}
+
+/** input type for updating data in table "api.technologies" */
+export type TechnologiesSetInput = {
+  technology: InputMaybe<Scalars['String']>;
+};
+
+export type TechnologiesUpdates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<TechnologiesSetInput>;
+  where: TechnologiesBoolExp;
+};
+
+/** Streaming cursor of the table "Technologies" */
+export type Technologies_StreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: Technologies_StreamCursorValueInput;
+  /** cursor ordering */
+  ordering: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Technologies_StreamCursorValueInput = {
+  technology: InputMaybe<Scalars['String']>;
+};
+
 /** Boolean expression to compare columns of type "timestamp". All fields are combined with logical 'AND'. */
 export type TimestampComparisonExp = {
   _eq: InputMaybe<Scalars['timestamp']>;
@@ -10385,6 +10482,8 @@ export type Mutation_Root = {
   deleteSponsors: Maybe<SponsorsMutationResponse>;
   /** delete single row from the table: "sponsors" */
   deleteSponsorsByPk: Maybe<Sponsors>;
+  /** delete data from the table: "api.technologies" */
+  deleteTechnologies: Maybe<TechnologiesMutationResponse>;
   /** delete single row from the table: "auth.users" */
   deleteUser: Maybe<Users>;
   /** delete data from the table: "user_payout_info" */
@@ -10502,6 +10601,10 @@ export type Mutation_Root = {
   insertSponsors: Maybe<SponsorsMutationResponse>;
   /** insert a single row into the table: "sponsors" */
   insertSponsorsOne: Maybe<Sponsors>;
+  /** insert data into the table: "api.technologies" */
+  insertTechnologies: Maybe<TechnologiesMutationResponse>;
+  /** insert a single row into the table: "api.technologies" */
+  insertTechnologiesOne: Maybe<Technologies>;
   /** insert a single row into the table: "auth.users" */
   insertUser: Maybe<Users>;
   /** insert data into the table: "user_payout_info" */
@@ -10685,6 +10788,10 @@ export type Mutation_Root = {
   updateSponsorsByPk: Maybe<Sponsors>;
   /** update multiples rows of table: "sponsors" */
   updateSponsorsMany: Maybe<Array<Maybe<SponsorsMutationResponse>>>;
+  /** update data of the table: "api.technologies" */
+  updateTechnologies: Maybe<TechnologiesMutationResponse>;
+  /** update multiples rows of table: "api.technologies" */
+  updateTechnologiesMany: Maybe<Array<Maybe<TechnologiesMutationResponse>>>;
   /** update single row of the table: "auth.users" */
   updateUser: Maybe<Users>;
   /** update data of the table: "user_payout_info" */
@@ -11100,6 +11207,12 @@ export type Mutation_RootDeleteSponsorsByPkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDeleteTechnologiesArgs = {
+  where: TechnologiesBoolExp;
+};
+
+
+/** mutation root */
 export type Mutation_RootDeleteUserArgs = {
   id: Scalars['uuid'];
 };
@@ -11504,6 +11617,18 @@ export type Mutation_RootInsertSponsorsArgs = {
 export type Mutation_RootInsertSponsorsOneArgs = {
   object: SponsorsInsertInput;
   onConflict: InputMaybe<SponsorsOnConflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsertTechnologiesArgs = {
+  objects: Array<TechnologiesInsertInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsertTechnologiesOneArgs = {
+  object: TechnologiesInsertInput;
 };
 
 
@@ -12233,6 +12358,19 @@ export type Mutation_RootUpdateSponsorsByPkArgs = {
 /** mutation root */
 export type Mutation_RootUpdateSponsorsManyArgs = {
   updates: Array<SponsorsUpdates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateTechnologiesArgs = {
+  _set: InputMaybe<TechnologiesSetInput>;
+  where: TechnologiesBoolExp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateTechnologiesManyArgs = {
+  updates: Array<TechnologiesUpdates>;
 };
 
 
@@ -13178,6 +13316,10 @@ export type Query_Root = {
   sponsorsAggregate: SponsorsAggregate;
   /** fetch data from the table: "sponsors" using primary key columns */
   sponsorsByPk: Maybe<Sponsors>;
+  /** fetch data from the table: "api.technologies" */
+  technologies: Array<Technologies>;
+  /** fetch aggregated fields from the table: "api.technologies" */
+  technologiesAggregate: TechnologiesAggregate;
   /** fetch data from the table: "auth.users" using primary key columns */
   user: Maybe<Users>;
   /** fetch data from the table: "user_payout_info" */
@@ -13956,6 +14098,24 @@ export type Query_RootSponsorsByPkArgs = {
 };
 
 
+export type Query_RootTechnologiesArgs = {
+  distinctOn: InputMaybe<Array<TechnologiesSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<TechnologiesOrderBy>>;
+  where: InputMaybe<TechnologiesBoolExp>;
+};
+
+
+export type Query_RootTechnologiesAggregateArgs = {
+  distinctOn: InputMaybe<Array<TechnologiesSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<TechnologiesOrderBy>>;
+  where: InputMaybe<TechnologiesBoolExp>;
+};
+
+
 export type Query_RootUserArgs = {
   id: Scalars['uuid'];
 };
@@ -14091,6 +14251,8 @@ export type Subscription_Root = {
   ContributionStatsStream: Array<ContributionStats>;
   /** fetch data from the table in a streaming manner: "api.contributions" */
   ContributionsStream: Array<Contributions>;
+  /** fetch data from the table in a streaming manner: "api.technologies" */
+  TechnologiesStream: Array<Technologies>;
   /** fetch data from the table in a streaming manner: "api.user_profiles" */
   UserProfilesStream: Array<UserProfiles>;
   /** An array relationship */
@@ -14331,6 +14493,10 @@ export type Subscription_Root = {
   sponsorsByPk: Maybe<Sponsors>;
   /** fetch data from the table in a streaming manner: "sponsors" */
   sponsorsStream: Array<Sponsors>;
+  /** fetch data from the table: "api.technologies" */
+  technologies: Array<Technologies>;
+  /** fetch aggregated fields from the table: "api.technologies" */
+  technologiesAggregate: TechnologiesAggregate;
   /** fetch data from the table: "auth.users" using primary key columns */
   user: Maybe<Users>;
   /** fetch data from the table: "user_payout_info" */
@@ -14394,6 +14560,13 @@ export type Subscription_RootContributionsStreamArgs = {
   batchSize: Scalars['Int'];
   cursor: Array<InputMaybe<Contributions_StreamCursorInput>>;
   where: InputMaybe<ContributionsBoolExp>;
+};
+
+
+export type Subscription_RootTechnologiesStreamArgs = {
+  batchSize: Scalars['Int'];
+  cursor: Array<InputMaybe<Technologies_StreamCursorInput>>;
+  where: InputMaybe<TechnologiesBoolExp>;
 };
 
 
@@ -15323,6 +15496,24 @@ export type Subscription_RootSponsorsStreamArgs = {
   batchSize: Scalars['Int'];
   cursor: Array<InputMaybe<Sponsors_StreamCursorInput>>;
   where: InputMaybe<SponsorsBoolExp>;
+};
+
+
+export type Subscription_RootTechnologiesArgs = {
+  distinctOn: InputMaybe<Array<TechnologiesSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<TechnologiesOrderBy>>;
+  where: InputMaybe<TechnologiesBoolExp>;
+};
+
+
+export type Subscription_RootTechnologiesAggregateArgs = {
+  distinctOn: InputMaybe<Array<TechnologiesSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<TechnologiesOrderBy>>;
+  where: InputMaybe<TechnologiesBoolExp>;
 };
 
 
@@ -16308,6 +16499,11 @@ export type SuggestTechnologyMutationVariables = Exact<{
 
 
 export type SuggestTechnologyMutation = { __typename?: 'mutation_root', suggestTechnology: boolean };
+
+export type AllTechnologiesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AllTechnologiesQuery = { __typename?: 'query_root', technologies: Array<{ __typename?: 'Technologies', technology: string | null }> };
 
 export type ApplicationIdFragment = { __typename?: 'Applications', id: any };
 
@@ -17823,6 +18019,40 @@ export function useSuggestTechnologyMutation(baseOptions?: Apollo.MutationHookOp
 export type SuggestTechnologyMutationHookResult = ReturnType<typeof useSuggestTechnologyMutation>;
 export type SuggestTechnologyMutationResult = Apollo.MutationResult<SuggestTechnologyMutation>;
 export type SuggestTechnologyMutationOptions = Apollo.BaseMutationOptions<SuggestTechnologyMutation, SuggestTechnologyMutationVariables>;
+export const AllTechnologiesDocument = gql`
+    query AllTechnologies {
+  technologies {
+    technology
+  }
+}
+    `;
+
+/**
+ * __useAllTechnologiesQuery__
+ *
+ * To run a query within a React component, call `useAllTechnologiesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAllTechnologiesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAllTechnologiesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAllTechnologiesQuery(baseOptions?: Apollo.QueryHookOptions<AllTechnologiesQuery, AllTechnologiesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AllTechnologiesQuery, AllTechnologiesQueryVariables>(AllTechnologiesDocument, options);
+      }
+export function useAllTechnologiesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AllTechnologiesQuery, AllTechnologiesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AllTechnologiesQuery, AllTechnologiesQueryVariables>(AllTechnologiesDocument, options);
+        }
+export type AllTechnologiesQueryHookResult = ReturnType<typeof useAllTechnologiesQuery>;
+export type AllTechnologiesLazyQueryHookResult = ReturnType<typeof useAllTechnologiesLazyQuery>;
+export type AllTechnologiesQueryResult = Apollo.QueryResult<AllTechnologiesQuery, AllTechnologiesQueryVariables>;
 export const ImpersonatedUserDocument = gql`
     query ImpersonatedUser($id: uuid!) {
   user(id: $id) {
