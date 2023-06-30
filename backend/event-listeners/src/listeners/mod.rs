@@ -70,6 +70,7 @@ pub async fn spawn_all(
 			database.clone(),
 			database.clone(),
 			database.clone(),
+			database.clone(),
 		)
 		.spawn(
 			event_bus::consumer_with_exchange(
