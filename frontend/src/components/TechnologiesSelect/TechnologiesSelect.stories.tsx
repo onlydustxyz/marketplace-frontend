@@ -1,9 +1,12 @@
 import { LanguageMap } from "src/types";
 import TechnologiesSelect from ".";
+import withToasterProvider from "src/test/storybook/decorators/withToasterProvider";
+import withMockedProvider from "src/test/storybook/decorators/withMockedProvider";
 
 export default {
   title: "TechnologiesSelect",
   component: TechnologiesSelect,
+  decorators: [withToasterProvider, withMockedProvider()],
 };
 
 const technologies: LanguageMap = {
