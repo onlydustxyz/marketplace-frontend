@@ -181,6 +181,7 @@
       "workItems": {
         "addWorkItem": "Add work item",
         "add": "Add",
+        "clear": "Clear selection",
         "showIgnored": "Show ignored",
         "pullRequests": {
           "addedToaster": "Pull request added",
