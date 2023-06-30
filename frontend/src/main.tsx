@@ -25,6 +25,7 @@ import Maintenance from "./Maintenance";
 import { ContributorProfilePanelProvider } from "./hooks/useContributorProfilePanel";
 import { SidePanelStackProvider } from "./hooks/useSidePanelStack";
 import { CommandsProvider } from "./providers/Commands";
+import { SidePanelProvider } from "./hooks/useSidePanel";
 
 if (config.GTM_ID) {
   TagManager.initialize({
@@ -44,15 +45,17 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
                   <CommandsProvider>
                     <AuthProvider>
                       <SidePanelStackProvider>
-                        <ContributorProfilePanelProvider>
-                          {config.MAINTENANCE ? (
-                            <Maintenance />
-                          ) : (
-                            <OnboardingProvider>
-                              <App />
-                            </OnboardingProvider>
-                          )}
-                        </ContributorProfilePanelProvider>
+                        <SidePanelProvider>
+                          <ContributorProfilePanelProvider>
+                            {config.MAINTENANCE ? (
+                              <Maintenance />
+                            ) : (
+                              <OnboardingProvider>
+                                <App />
+                              </OnboardingProvider>
+                            )}
+                          </ContributorProfilePanelProvider>
+                        </SidePanelProvider>
                       </SidePanelStackProvider>
                     </AuthProvider>
                   </CommandsProvider>

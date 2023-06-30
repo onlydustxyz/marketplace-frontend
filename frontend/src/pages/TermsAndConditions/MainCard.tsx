@@ -2,8 +2,7 @@ import { PropsWithChildren, useState } from "react";
 import Button, { Width } from "src/components/Button";
 import Card from "src/components/Card";
 import TermsAndConditionsCheckBox from "./Checkbox";
-import FullTermsAndConditionsSidePanel from "./FullTermsAndConditionsSidePanel";
-import PrivacyPolicySidePanel from "./PrivacyPolicySidePanel";
+import { useSidePanel } from "src/hooks/useSidePanel";
 
 interface TermsAndConditionsMainCardProps {
   handleAcceptTermsAndConditions: () => void;
@@ -13,12 +12,10 @@ export default function TermsAndConditionsMainCard({
   handleAcceptTermsAndConditions,
 }: TermsAndConditionsMainCardProps) {
   const [checked, setChecked] = useState(false);
-  const [showFullTermsAndConditions, setShowFullTermsAndConditions] = useState(false);
-  const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
+  const { openFullTermsAndConditions, openPrivacyPolicy } = useSidePanel();
+
   return (
     <>
-      <FullTermsAndConditionsSidePanel {...{ showFullTermsAndConditions, setShowFullTermsAndConditions }} />
-      <PrivacyPolicySidePanel {...{ showPrivacyPolicy, setShowPrivacyPolicy }} />
       <div className="pt-1.5 rounded-2xl bg-mosaic bg-contain outline outline-greyscale-50/8 mt-20">
         <Card
           className="flex flex-col justify-between gap-7 items-center pt-12 mb-5 divide-y divide-greyscale-50/12 bg-whiteFakeOpacity-2"
@@ -99,11 +96,11 @@ export default function TermsAndConditionsMainCard({
               <TermsAndConditionsCheckBox {...{ checked, setChecked }} />
               <p>
                 I agree to the{" "}
-                <span onClick={() => setShowFullTermsAndConditions(true)} className="inline underline cursor-pointer">
+                <span onClick={() => openFullTermsAndConditions()} className="inline underline cursor-pointer">
                   full terms & conditions
                 </span>{" "}
                 & the{" "}
-                <span onClick={() => setShowPrivacyPolicy(true)} className="inline underline cursor-pointer">
+                <span onClick={() => openPrivacyPolicy()} className="inline underline cursor-pointer">
                   privacy policy
                 </span>
               </p>
