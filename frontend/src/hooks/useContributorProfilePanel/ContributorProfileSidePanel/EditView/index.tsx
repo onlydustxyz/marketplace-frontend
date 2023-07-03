@@ -61,34 +61,22 @@ export default function EditView({ profile, setEditMode }: Props) {
   const updateCompletionScore = () => {
     const score = (value: string | number | null, score: number) => (value && value !== "" ? score : 0);
 
-    const {
-      bio,
-      email,
-      discord,
-      githubHandle,
-      linkedin,
-      location,
-      telegram,
-      twitter,
-      languages,
-      website,
-      weeklyAllocatedTime,
-    } = getValues();
+    const { bio, email, discord, githubHandle, linkedin, location, telegram, twitter, languages, website } =
+      getValues();
 
     setCompletionScore(
       score(profile.avatarUrl, 10) +
         score(githubHandle, 10) +
         score(location, 10) +
-        score(bio, 15) +
-        score(website, 5) +
+        score(bio, 20) +
+        score(website, 10) +
         score(githubHandle, 5) +
         score(email, 5) +
         score(telegram, 5) +
         score(twitter, 5) +
         score(discord, 5) +
         score(linkedin, 5) +
-        score(Object.keys(languages).length, 10) +
-        score(weeklyAllocatedTime, 10)
+        score(Object.keys(languages).length, 10)
     );
   };
 
