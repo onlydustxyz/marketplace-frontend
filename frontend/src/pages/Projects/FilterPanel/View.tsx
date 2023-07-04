@@ -11,9 +11,15 @@ export interface FilterPanelViewProps {
   availableTechnologies: string[];
   availableSponsors: string[];
   isProjectLeader: boolean;
+  fromSidePanel?: boolean;
 }
 
-export default function View({ availableTechnologies, availableSponsors, isProjectLeader }: FilterPanelViewProps) {
+export default function View({
+  availableTechnologies,
+  availableSponsors,
+  isProjectLeader,
+  fromSidePanel,
+}: FilterPanelViewProps) {
   const { T } = useIntl();
 
   const {
@@ -26,7 +32,7 @@ export default function View({ availableTechnologies, availableSponsors, isProje
   } = useProjectFilter();
 
   return (
-    <Card className="sticky top-4 flex h-fit flex-col gap-4 p-6">
+    <Card className="sticky top-4 flex h-fit flex-col gap-4 p-6" outline={!fromSidePanel}>
       <div className="flex items-center justify-start xl:justify-between">
         <span className="font-belwe text-2xl font-normal text-greyscale-50 xl:text-base">{T("filter.title")}</span>
         {!isProjectFilterCleared && (

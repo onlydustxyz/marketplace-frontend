@@ -26,7 +26,7 @@ export function FilterButton({ isProjectLeader }: Props) {
         <FilterIcon /> {T("filter.title")}
       </button>
       <SidePanel open={panelOpen} setOpen={setPanelOpen} placement="bottom">
-        <FilterPanel isProjectLeader={isProjectLeader} />
+        <FilterPanel isProjectLeader={isProjectLeader} fromSidePanel />
       </SidePanel>
     </>
   );
