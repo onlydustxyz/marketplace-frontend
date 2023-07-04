@@ -18,7 +18,7 @@ import {
   GetProjectsQueryResult,
 } from "src/__generated/graphql";
 import { buildQuerySorting } from "src/pages/Projects/AllProjects";
-import { Sorting } from "src/pages/Projects";
+import { Sorting } from "src/pages/Projects/sorting";
 
 const TEST_USER_ID = "test-user-id";
 const TEST_GITHUB_USER_ID = 123456789;

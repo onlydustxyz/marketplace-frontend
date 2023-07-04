@@ -13,7 +13,7 @@ import {
 } from "src/__generated/graphql";
 import { MockedProjectFilterProvider, Ownership, ProjectFilter } from "src/pages/Projects/useProjectFilter";
 import { MockedResponse } from "@apollo/client/testing";
-import { Sorting } from "..";
+import { Sorting } from "src/pages/Projects/sorting";
 
 expect.extend(matchers);
 
