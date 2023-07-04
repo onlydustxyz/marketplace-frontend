@@ -15,7 +15,7 @@ export default function Tooltip({ active, hoveredBarIndex, payload }: Props) {
   const count = payload?.at(0)?.payload;
 
   return active && hoveredBarIndex !== undefined && count && count?.paidCount + count?.unpaidCount ? (
-    <div className="flex flex-col gap-3 bg-greyscale-800 font-walsheim font-normal text-xs text-greyscale-200 rounded-lg p-3">
+    <div className="flex flex-col gap-3 rounded-lg bg-greyscale-800 p-3 font-walsheim text-xs font-normal text-greyscale-200">
       <div>
         <div className="uppercase">
           {T("contributionGraph.tooltip.date", {
@@ -23,7 +23,7 @@ export default function Tooltip({ active, hoveredBarIndex, payload }: Props) {
             to: formatDate({ ...count, week: count.week + 1 }),
           })}
         </div>
-        <div className="font-medium text-greyscale-50 text-sm">
+        <div className="text-sm font-medium text-greyscale-50">
           {T("contributionGraph.tooltip.contributionCount.total", {
             count: count.paidCount + count.unpaidCount,
           })}

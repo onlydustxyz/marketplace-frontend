@@ -98,9 +98,9 @@ export default function TechnologiesSelect({ technologies = {}, setTechnologies 
     <div
       {...props}
       className={classNames(
-        "flex gap-1 items-center justify-center pl-2 pr-1 w-fit",
-        "bg-white/2 border border-greyscale-50/8 rounded-full rounded-r-none border-r-0",
-        "cursor-grab active:cursor-grabbing text-base"
+        "flex w-fit items-center justify-center gap-1 pl-2 pr-1",
+        "rounded-full rounded-r-none border border-r-0 border-greyscale-50/8 bg-white/2",
+        "cursor-grab text-base active:cursor-grabbing"
       )}
     >
       <Draggable />
@@ -133,16 +133,16 @@ export default function TechnologiesSelect({ technologies = {}, setTechnologies 
                     key={item.id}
                     id={item.id}
                     DragHandler={DragHandler}
-                    className="flex h-7 text-greyscale-50 font-walsheim"
+                    className="flex h-7 font-walsheim text-greyscale-50"
                   >
                     <div
                       className={classNames(
-                        "flex gap-1 items-center justify-center pr-2 w-fit",
-                        "bg-white/2 border border-greyscale-50/8 rounded-full rounded-l-none border-l-0 text-sm"
+                        "flex w-fit items-center justify-center gap-1 pr-2",
+                        "rounded-full rounded-l-none border border-l-0 border-greyscale-50/8 bg-white/2 text-sm"
                       )}
                       data-technology={item.id}
                     >
-                      <div className="flex bg-white/5 rounded w-4 h-4 text-xs justify-center items-center cursor-default">
+                      <div className="flex h-4 w-4 cursor-default items-center justify-center rounded bg-white/5 text-xs">
                         {index + 1}
                       </div>
                       <div className="cursor-default">{item.displayValue}</div>
@@ -170,10 +170,10 @@ function Technology({ option }: RenderProps<LanguageOption>) {
 
   return option.id === EMPTY_OPTION_ID ? (
     <div className="flex flex-col gap-1">
-      <div className="font-medium font-walsheim text-sm text-greyscale-50 flex flex-row items-center gap-1">
+      <div className="flex flex-row items-center gap-1 font-walsheim text-sm font-medium text-greyscale-50">
         <Add /> {T("profile.form.technologies.suggestion.suggest", { technology: option.value })}
       </div>
-      <div className="font-normal font-walsheim text-sm text-greyscale-200 italic">
+      <div className="font-walsheim text-sm font-normal italic text-greyscale-200">
         {T("profile.form.technologies.suggestion.disclaimer")}
       </div>
     </div>

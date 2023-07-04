@@ -30,12 +30,12 @@ export default function View({ expandable, currentProject, allProjects, availabl
 
   return (
     <div
-      className={"flex flex-col shrink-0 w-80 gap-6 bg-noise-medium bg-white/4 p-6 font-walsheim rounded-l-2xl ml-6"}
+      className={"ml-6 flex w-80 shrink-0 flex-col gap-6 rounded-l-2xl bg-white/4 bg-noise-medium p-6 font-walsheim"}
     >
       <BackLink to={RoutePaths.Projects} className="divide-none">
         {T("project.details.sidebar.backToProjects")}
       </BackLink>
-      <div className="flex flex-col gap-6 divide-y divide-neutral-700 w-full">
+      <div className="flex w-full flex-col gap-6 divide-y divide-neutral-700">
         <div className="relative h-16">
           <Listbox
             value={currentProject}
@@ -48,17 +48,17 @@ export default function View({ expandable, currentProject, allProjects, availabl
             }
             disabled={!expandable}
           >
-            <div className="flex flex-col w-full border-2 rounded-2xl border-neutral-700 divide-y divide-neutral-700 bg-white/2 absolute backdrop-blur-4xl z-10">
+            <div className="absolute z-10 flex w-full flex-col divide-y divide-neutral-700 rounded-2xl border-2 border-neutral-700 bg-white/2 backdrop-blur-4xl">
               <Listbox.Button
-                className={`p-4 font-medium text-xl text-greyscale-50 ${expandable ? "hover:cursor-pointer" : ""}`}
+                className={`p-4 text-xl font-medium text-greyscale-50 ${expandable ? "hover:cursor-pointer" : ""}`}
               >
-                <div className="flex flex-row gap-4 items-center">
+                <div className="flex flex-row items-center gap-4">
                   <RoundedImage src={currentProject?.logoUrl || ""} alt="Project Logo" size={ImageSize.Md} />
-                  <div className="truncate grow font-walsheim text-left">{currentProject?.name}</div>
+                  <div className="grow truncate text-left font-walsheim">{currentProject?.name}</div>
                   {expandable && <UpDownChevrons className="h-5 w-5 fill-greyscale-50/50" />}
                 </div>
               </Listbox.Button>
-              <Listbox.Options className="flex flex-col divide-y max-h-116 overflow-y-auto rounded-b-2xl scrollbar-thin scrollbar-w-1.5 scrollbar-thumb-white/12 scrollbar-thumb-rounded">
+              <Listbox.Options className="flex max-h-116 flex-col divide-y overflow-y-auto rounded-b-2xl scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
                 {allProjects.map(project => (
                   <ProjectOption key={project.id} project={project} isSelected={project.id === currentProject?.id} />
                 ))}
@@ -66,13 +66,13 @@ export default function View({ expandable, currentProject, allProjects, availabl
             </div>
           </Listbox>
         </div>
-        <div className="flex flex-col align-start font-medium text-xl pt-3 pb-2 gap-2">
+        <div className="align-start flex flex-col gap-2 pb-2 pt-3 text-xl font-medium">
           {availableTabs.map(tab => (
             <NavLink
               key={tab.path}
               to={tab.path}
               className={({ isActive }) =>
-                classNames("rounded-xl hover:cursor-pointer text-base px-4 py-2.5", {
+                classNames("rounded-xl px-4 py-2.5 text-base hover:cursor-pointer", {
                   "bg-white/8 text-white": isActive,
                   "text-neutral-400": !isActive,
                 })

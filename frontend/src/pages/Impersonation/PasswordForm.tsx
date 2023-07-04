@@ -17,7 +17,7 @@ const PasswordForm: React.FC<Props> = ({ onSubmit }) => {
       <Card>
         <FormProvider {...methods}>
           <form onSubmit={methods.handleSubmit(({ password }) => onSubmit(password))} className="flex flex-col gap-4">
-            <h1 className="text-center font-bold text-orange-500 text-lg">{T("impersonation.form.title")}</h1>
+            <h1 className="text-center text-lg font-bold text-orange-500">{T("impersonation.form.title")}</h1>
             <i className="text-sm text-spaceBlue-200">{T("impersonation.form.notice")}</i>
             <FormInput
               name="password"

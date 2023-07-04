@@ -10,7 +10,7 @@ type Props = {
 
 export default function Sponsor({ name, logoUrl, externalUrl }: Props) {
   return (
-    <div className="flex flex-row gap-2 items-center text-sm font-normal">
+    <div className="flex flex-row items-center gap-2 text-sm font-normal">
       <RoundedImage alt={name} rounding={Rounding.Circle} size={ImageSize.Sm} src={logoUrl} />
       {externalUrl ? <ExternalLink url={externalUrl} text={name} /> : name}
     </div>

@@ -14,10 +14,10 @@ export default function TechnologiesSection({ languages }: Props) {
       <div className="flex flex-wrap gap-2">
         {languages.map((language, index) => (
           <Tag key={language} size={TagSize.Medium}>
-            <div className="w-4 h-4 flex items-center justify-center text-xs text-greyscale-50 bg-white/5 rounded-[4px]">
+            <div className="flex h-4 w-4 items-center justify-center rounded-[4px] bg-white/5 text-xs text-greyscale-50">
               {index + 1}
             </div>
-            <div className="text-greyscale-50 text-sm">{language}</div>
+            <div className="text-sm text-greyscale-50">{language}</div>
           </Tag>
         ))}
       </div>

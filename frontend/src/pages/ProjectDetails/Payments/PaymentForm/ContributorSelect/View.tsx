@@ -49,24 +49,24 @@ export default function ContributorSelectView({
   return (
     <Combobox value={selectedGithubHandle} onChange={setSelectedGithubHandle}>
       {({ open }) => (
-        <div className={classNames("absolute w-full top-0", { "bg-whiteFakeOpacity-5 rounded-2xl": open })}>
+        <div className={classNames("absolute top-0 w-full", { "rounded-2xl bg-whiteFakeOpacity-5": open })}>
           <div
             className={classNames("flex flex-col gap-3", {
-              "outline outline-1 outline-whiteFakeOpacity-12 rounded-2xl backdrop-blur-4xl overflow-hidden": open,
+              "overflow-hidden rounded-2xl outline outline-1 outline-whiteFakeOpacity-12 backdrop-blur-4xl": open,
             })}
           >
             <Combobox.Button className="px-3 pt-4" as="div">
               {!open && (
                 <div
                   className={classNames(
-                    "flex flex-row items-center justify-between w-full rounded-2xl px-4 h-12 border border-greyscale-50/8 cursor-pointer",
+                    "flex h-12 w-full cursor-pointer flex-row items-center justify-between rounded-2xl border border-greyscale-50/8 px-4",
                     {
                       "text-spaceBlue-200": !selectedGithubHandle,
                       "bg-white/5": selectedGithubHandle,
                     }
                   )}
                 >
-                  <div className="flex flex-row items-center w-full">
+                  <div className="flex w-full flex-row items-center">
                     <div className="pr-2 text-2xl">
                       {contributor?.avatarUrl ? (
                         <div className="pr-0.5">
@@ -89,7 +89,7 @@ export default function ContributorSelectView({
                         {selectedGithubHandle}
                       </div>
                     )}
-                    {contributor?.userId && <img src={onlyDustLogo} className="w-3.5 ml-1.5" />}
+                    {contributor?.userId && <img src={onlyDustLogo} className="ml-1.5 w-3.5" />}
                   </div>
                   <ArrowDownSLine />
                 </div>
@@ -97,21 +97,21 @@ export default function ContributorSelectView({
               {open && (
                 <div
                   className={classNames(
-                    "flex flex-row items-center justify-between w-full rounded-2xl px-4 h-12 border border-greyscale-50/8",
+                    "flex h-12 w-full flex-row items-center justify-between rounded-2xl border border-greyscale-50/8 px-4",
                     {
-                      "text-greyscale-50 bg-white/5": githubHandleSubstring,
-                      "bg-spacePurple-900 text-spacePurple-500 ring-solid ring-2 ring-spacePurple-500":
+                      "bg-white/5 text-greyscale-50": githubHandleSubstring,
+                      "ring-solid bg-spacePurple-900 text-spacePurple-500 ring-2 ring-spacePurple-500":
                         githubHandleSubstring === "",
                     }
                   )}
                 >
-                  <div className="flex flex-row items-center w-full cursor-default gap-2.5">
+                  <div className="flex w-full cursor-default flex-row items-center gap-2.5">
                     <div className="pt-1 text-2xl">
                       <User3Line />
                     </div>
                     <Combobox.Input
                       onChange={event => setGithubHandleSubstring(event.target.value)}
-                      className={classNames("border-none outline-none w-full bg-transparent font-medium text-base")}
+                      className={classNames("w-full border-none bg-transparent text-base font-medium outline-none")}
                       onFocus={() => {
                         setGithubHandleSubstring("");
                       }}
@@ -129,7 +129,7 @@ export default function ContributorSelectView({
               githubHandleSubstring &&
               githubHandleSubstring.length < 3 ? (
                 <div className="pb-6">
-                  <span className="text-greyscale-100 italic pb-6 px-4">
+                  <span className="px-4 pb-6 italic text-greyscale-100">
                     {T("payment.form.contributor.select.fallback.typeMoreCharacters")}
                   </span>
                 </div>
@@ -140,7 +140,7 @@ export default function ContributorSelectView({
                 !isSearchGithubUsersByHandleSubstringQueryLoading &&
                 debouncedGithubHandleSubstring === githubHandleSubstring ? (
                 <div className="pb-6">
-                  <span className="text-greyscale-100 italic pb-6 px-4">
+                  <span className="px-4 pb-6 italic text-greyscale-100">
                     {T("payment.form.contributor.select.fallback.noUser")}
                   </span>
                 </div>
@@ -206,7 +206,7 @@ interface ContributorSubListProps {
 }
 
 const List = forwardRef<HTMLDivElement>((props, ref) => {
-  return <div className="divide-y divide-greyscale-50/8 pt-2.5 px-4" {...props} ref={ref} />;
+  return <div className="divide-y divide-greyscale-50/8 px-4 pt-2.5" {...props} ref={ref} />;
 });
 
 List.displayName = "List";
@@ -214,7 +214,7 @@ List.displayName = "List";
 const Scroller = forwardRef<HTMLDivElement>((props, ref) => {
   return (
     <div
-      className="scrollbar-thin scrollbar-w-1.5 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded overflow-y-auto overflow-x-hidden"
+      className="overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded scrollbar-w-1.5"
       {...props}
       ref={ref}
     />
@@ -243,7 +243,7 @@ function VirtualizedContributorSubList({ lines }: ContributorSubListProps) {
             <Combobox.Option
               key={contributor.githubUserId}
               value={contributor.login}
-              className="p-2 flex items-center justify-between ui-active:bg-white/4 ui-active:cursor-pointer"
+              className="flex items-center justify-between p-2 ui-active:cursor-pointer ui-active:bg-white/4"
             >
               <Contributor contributor={contributor} />
               {contributor.unpaidMergedPullsCount > 0 && (
@@ -258,7 +258,7 @@ function VirtualizedContributorSubList({ lines }: ContributorSubListProps) {
           );
         } else if (line.type === LineType.Separator) {
           return (
-            <div className="font-medium text-md pb-1 pt-4 text-spaceBlue-200">
+            <div className="text-md pb-1 pt-4 font-medium text-spaceBlue-200">
               {T("payment.form.contributor.select.externalUsers")}
             </div>
           );

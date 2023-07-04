@@ -35,19 +35,19 @@ export default function ProjectCard({
   const { T } = useIntl();
 
   return (
-    <Card blurred selectable padded={false} className="flex flex-col bg-noise-light h-full">
-      <div className="flex flex-col p-4 gap-3 h-full">
+    <Card blurred selectable padded={false} className="flex h-full flex-col bg-noise-light">
+      <div className="flex h-full flex-col gap-3 p-4">
         <div className="relative w-fit">
           <RoundedImage src={logoUrl} alt={name} />
           {private_ && (
-            <div className="absolute -right-2.5 -bottom-2.5">
+            <div className="absolute -bottom-2.5 -right-2.5">
               <PrivateTag />
             </div>
           )}
         </div>
-        <div className="flex flex-col gap-2 h-full">
-          <div className="font-belwe font-normal text-base text-greyscale-50 h-full">{name}</div>
-          <div className="flex flex-row gap-1 items-center">
+        <div className="flex h-full flex-col gap-2">
+          <div className="h-full font-belwe text-base font-normal text-greyscale-50">{name}</div>
+          <div className="flex flex-row items-center gap-1">
             <Tag
               size={TagSize.Small}
               {...withTooltip(T("profile.sections.projects.contributorCount"), { className: "w-fit" })}
@@ -63,8 +63,8 @@ export default function ProjectCard({
           </div>
         </div>
       </div>
-      <div className="flex flex-col px-4 py-3 gap-1 h-fit bg-white/5 rounded-b-2xl border-t border-greyscale-50/8">
-        <div className="font-walsheim font-medium text-sm text-greyscale-50">
+      <div className="flex h-fit flex-col gap-1 rounded-b-2xl border-t border-greyscale-50/8 bg-white/5 px-4 py-3">
+        <div className="font-walsheim text-sm font-medium text-greyscale-50">
           {leadSince ? (
             <div className="flex flex-row items-center gap-1">
               <StarLine className="text-base" /> {T("profile.sections.projects.projectLead")}
@@ -73,7 +73,7 @@ export default function ProjectCard({
             <>{T("profile.sections.projects.contributionCount", { count: contributionCount })}</>
           )}
         </div>
-        <div className="font-walsheim font-medium text-xs text-greyscale-200">
+        <div className="font-walsheim text-xs font-medium text-greyscale-200">
           {leadSince ? (
             <>{T("profile.sections.projects.projectLeadSince", { since: displayRelativeDate(leadSince) })}</>
           ) : (

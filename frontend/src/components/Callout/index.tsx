@@ -2,7 +2,7 @@ import { PropsWithChildren } from "react";
 
 export default function Callout({ children }: PropsWithChildren) {
   return (
-    <div className="py-4 px-4 z-10 rounded-lg w-full bg-noise-heavy bg-white/8 font-walsheim font-medium text-sm text-white backdrop-blur-lg">
+    <div className="z-10 w-full rounded-lg bg-white/8 bg-noise-heavy px-4 py-4 font-walsheim text-sm font-medium text-white backdrop-blur-lg">
       {children}
     </div>
   );

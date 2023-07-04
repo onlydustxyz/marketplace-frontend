@@ -70,7 +70,8 @@
   .rounded-2xl.pseudo-outline-4::before {
     border-radius: 20px;
   }
-  .rounded-full[class^='pseudo-outline']::before, .rounded-full[class*=' pseudo-outline']::before {
+  .rounded-full[class^="pseudo-outline"]::before,
+  .rounded-full[class*=" pseudo-outline"]::before {
     border-radius: 9999px;
   }
 }

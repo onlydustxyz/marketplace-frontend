@@ -15,8 +15,8 @@ const PublicProfilePage = () => {
     <></>
   ) : userProfile && userLogin ? (
     <>
-      <div className="lg:h-screen lg:w-screen bg-public-profile">
-        <div className="h-full flex flex-col justify-between md:px-4 md:container mx-auto lg:max-5xl xl:max-6xl 2xl:max-w-7xl">
+      <div className="bg-public-profile lg:h-screen lg:w-screen">
+        <div className="lg:max-5xl xl:max-6xl mx-auto flex h-full flex-col justify-between md:container md:px-4 2xl:max-w-7xl">
           <Header userLogin={userLogin} />
           <Profile userProfile={userProfile} />
           <Footer />

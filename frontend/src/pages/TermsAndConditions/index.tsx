@@ -41,7 +41,7 @@ export default function TermsAndConditions() {
 
   return (
     <Background roundedBorders={BackgroundRoundedBorders.Full} centeredContent={!showTermsAndConditions}>
-      <div className="flex flex-col justify-center items-center text-greyscale-50">
+      <div className="flex flex-col items-center justify-center text-greyscale-50">
         <div className="w-1/2">
           {!showTermsAndConditions && !location.state?.skipIntro ? (
             <TermsAndConditionsPromptCard {...{ setShowTermsAndConditions }} />

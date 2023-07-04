@@ -11,8 +11,8 @@ export default function BackLink({ to, className = "", children }: BackLinkProps
   return (
     <div className="w-fit">
       <Link to={to} state={{ [RESTORE_SCROLL_POSITION_KEY]: true }}>
-        <div className={`flex flex-row gap-3 items-center ${className}`}>
-          <ArrowLeftSLine className="border border-neutral-100 rounded-lg p-1 w-6 h-6 flex items-center justify-center text-neutral-100" />
+        <div className={`flex flex-row items-center gap-3 ${className}`}>
+          <ArrowLeftSLine className="flex h-6 w-6 items-center justify-center rounded-lg border border-neutral-100 p-1 text-neutral-100" />
           <div className="font-belwe text-base">{children}</div>
         </div>
       </Link>

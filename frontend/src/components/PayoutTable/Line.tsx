@@ -68,8 +68,8 @@ export default function PaymentLine({
       <Cell>{displayRelativeDate(payment.requestedAt)}</Cell>
       <Cell className="flex flex-row gap-3">
         <RoundedImage src={payment?.project?.logoUrl || onlyDustLogo} alt={payment?.project?.title || ""} />
-        <div className="flex flex-col truncate justify-center">
-          <div className="font-normal text-base font-belwe">{payment?.project?.title}</div>
+        <div className="flex flex-col justify-center truncate">
+          <div className="font-belwe text-base font-normal">{payment?.project?.title}</div>
           <div className="text-spaceBlue-200">
             {T("payment.table.paymentRequest", { id: pretty(payment.id), count: payment.workItems.length })}
           </div>

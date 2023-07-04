@@ -17,14 +17,14 @@ export default function FullTermsAndConditionsSidePanel({
 }: FullTermsAndConditionsSidePanelProps) {
   return (
     <SidePanel open={showFullTermsAndConditions} setOpen={setShowFullTermsAndConditions}>
-      <div className="flex flex-col gap-7 divide-y divide-greyscale-50/12  min-h-0 h-full overflow-y-auto  scrollbar-thin scrollbar-w-2 scrollbar-thumb-greyscale-600 scrollbar-thumb-rounded pl-6 pr-5 mr-1">
-        <div className="flex flex-col text-greyscale-50 pt-9 gap-3 font-normal">
+      <div className="mr-1 flex h-full min-h-0 flex-col  gap-7 divide-y divide-greyscale-50/12  overflow-y-auto pl-6 pr-5 scrollbar-thin scrollbar-thumb-greyscale-600 scrollbar-thumb-rounded scrollbar-w-2">
+        <div className="flex flex-col gap-3 pt-9 font-normal text-greyscale-50">
           <div className="font-walsheim ">JUNE 2023</div>
           <div className="font-belwe text-2xl">Terms and conditions</div>
         </div>
         <div className="py-6 font-walsheim">
           <Card className="bg-noise-heavy">
-            <p className="text-xl font-medium mb-2">LEGAL NOTICE</p>
+            <p className="mb-2 text-xl font-medium">LEGAL NOTICE</p>
             <p className="text-md mb-3">
               The platform onlydust.xyz is edited by Wagmi SAS, a French simplified joint stock company, registered with
               the trade and companies register of Paris under number 908 233 638, with registered offices located 34 rue
@@ -36,13 +36,13 @@ export default function FullTermsAndConditionsSidePanel({
             </p>
             <p className="text-md mb-3">The platform is hosted by Gandi</p>
           </Card>
-          <div className="flex flex-col divide-greyscale-50/12 divide-y gap-4 mt-8 font-medium mb-8">
+          <div className="mb-8 mt-8 flex flex-col gap-4 divide-y divide-greyscale-50/12 font-medium">
             <p className="text-md">TABLE OF CONTENTS</p>
             <p className="pt-4">1. Definitions</p>
             <p className="pt-4">2. Purpose and scope</p>
             <p>
               <p className="pt-4">3. Acceptance and amendment</p>
-              <ol className="ml-6 mb-4 font-normal mt-2">
+              <ol className="mb-4 ml-6 mt-2 font-normal">
                 <li>3.1 Acceptance</li>
                 <li>3.2 Amendment</li>
               </ol>
@@ -50,7 +50,7 @@ export default function FullTermsAndConditionsSidePanel({
             <p className="pt-4">4. Access to the Platform</p>
             <p>
               <p className="pt-4">5. Services </p>
-              <ol className="ml-6 mb-4 font-normal mt-2">
+              <ol className="mb-4 ml-6 mt-2 font-normal">
                 <li>5.1 Platform</li>
                 <li>5.2 Projects</li>
                 <li>5.3 Grants</li>
@@ -58,10 +58,10 @@ export default function FullTermsAndConditionsSidePanel({
             </p>
             <p>
               <p className="pt-4">6. Commitments</p>
-              <ol className="ml-6 mb-4 font-normal mt-2">
+              <ol className="mb-4 ml-6 mt-2 font-normal">
                 <li>6.1 Wagmi’s commitments</li>
                 <li>6.2 User’s commitments</li>
-                <ol className="ml-6 mb-4 font-thin text-sm mt-2">
+                <ol className="mb-4 ml-6 mt-2 text-sm font-thin">
                   <li>6.2.1 Use of the Platform</li>
                   <li>6.2.2 Performance of the Projects</li>
                   <li>6.2.3 Legal and administrative formalities</li>
@@ -72,7 +72,7 @@ export default function FullTermsAndConditionsSidePanel({
             <p className="pt-4">7. Liability</p>
             <p>
               <p className="pt-4">8. Duration, suspension and termination</p>
-              <ol className="ml-6 mb-4 font-normal mt-2">
+              <ol className="mb-4 ml-6 mt-2 font-normal">
                 <li>8.1 Duration</li>
                 <li>8.2 Suspension</li>
                 <li>8.3 Termination</li>
@@ -82,14 +82,14 @@ export default function FullTermsAndConditionsSidePanel({
             <p className="pt-4">10. Intellectual property</p>
             <p>
               <p className="pt-4">11. Miscellaneous</p>
-              <ol className="ml-6 mb-4 font-normal mt-2">
+              <ol className="mb-4 ml-6 mt-2 font-normal">
                 <li>11.1 Nullity</li>
                 <li>11.2 Assignment</li>
               </ol>
             </p>
             <p>
               <p className="pt-4">12. Disputes</p>
-              <ol className="ml-6 mb-4 font-normal mt-2">
+              <ol className="mb-4 ml-6 mt-2 font-normal">
                 <li>12.1 Disputes</li>
                 <li>12.2 Governing Law and Jurisdiction</li>
               </ol>
@@ -97,7 +97,7 @@ export default function FullTermsAndConditionsSidePanel({
           </div>
           <div>
             <SectionTitle num={1} title="Definitions" />
-            <p className="italic pb-3">
+            <p className="pb-3 italic">
               Where drafted in upper case, whether written in singular or plural, the following definitions are
               applicable to the entire T&Cs.
             </p>

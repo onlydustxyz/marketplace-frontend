@@ -68,8 +68,8 @@ export default function OtherIssueInput({ projectId, type, onWorkItemAdded }: Pr
     });
 
   return (
-    <div className="p-4 flex flex-col gap-2 border border-greyscale-50/12 rounded-lg">
-      <div className="font-walsheim font-medium text-base text-greyscale-50">
+    <div className="flex flex-col gap-2 rounded-lg border border-greyscale-50/12 p-4">
+      <div className="font-walsheim text-base font-medium text-greyscale-50">
         {T(`payment.form.workItems.${tKey}.addOther.label`)}
       </div>
       <Input

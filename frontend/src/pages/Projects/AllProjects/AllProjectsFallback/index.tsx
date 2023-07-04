@@ -11,11 +11,11 @@ export default function AllProjectsFallback({ clearFilters }: Props) {
   const { T } = useIntl();
 
   return (
-    <Card padded={false} className="py-20 flex flex-col items-center gap-8">
+    <Card padded={false} className="flex flex-col items-center gap-8 py-20">
       <img src={categories} />
-      <div className="flex flex-col gap-2 items-center">
-        <span className="text-greyscale-50 font-belwe font-normal text-2xl">{T("projects.fallback.title")}</span>
-        <span className="text-spaceBlue-200 font-walsheim font-normal text-base">
+      <div className="flex flex-col items-center gap-2">
+        <span className="font-belwe text-2xl font-normal text-greyscale-50">{T("projects.fallback.title")}</span>
+        <span className="font-walsheim text-base font-normal text-spaceBlue-200">
           {T("projects.fallback.subTitle")}
         </span>
       </div>

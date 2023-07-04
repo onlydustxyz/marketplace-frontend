@@ -17,14 +17,14 @@ export default function PrivacyPolicySidePanel({
 }: PrivacyPolicySidePanelProps) {
   return (
     <SidePanel open={showPrivacyPolicy} setOpen={setShowPrivacyPolicy}>
-      <div className="flex flex-col gap-7 divide-y divide-greyscale-50/12 min-h-0 h-full overflow-y-auto  scrollbar-thin scrollbar-w-2 scrollbar-thumb-greyscale-600 scrollbar-thumb-rounded pl-6 pr-5 mr-1">
-        <div className="flex flex-col text-greyscale-50 pt-9 gap-3 font-normal">
+      <div className="mr-1 flex h-full min-h-0 flex-col gap-7 divide-y divide-greyscale-50/12  overflow-y-auto pl-6 pr-5 scrollbar-thin scrollbar-thumb-greyscale-600 scrollbar-thumb-rounded scrollbar-w-2">
+        <div className="flex flex-col gap-3 pt-9 font-normal text-greyscale-50">
           <div className="font-walsheim">JUNE 2023</div>
           <div className="font-belwe text-2xl">Privacy Policy</div>
         </div>
         <div className="py-6 font-walsheim">
           <Card className="bg-noise-heavy">
-            <p className="text-xl font-medium mb-2">LEGAL NOTICE</p>
+            <p className="mb-2 text-xl font-medium">LEGAL NOTICE</p>
             <p className="text-md mb-3">
               Onlydust.xyz is an online service edited by Wagmi SAS, a French simplified joint stock company registered
               in the trade and companies register of Paris under number 908 233 638, headquartered at 34 rue des
@@ -40,13 +40,13 @@ export default function PrivacyPolicySidePanel({
             </p>
             <p></p>
           </Card>
-          <div className="flex flex-col divide-greyscale-50/12 divide-y gap-4 mt-8 font-medium mb-8">
+          <div className="mb-8 mt-8 flex flex-col gap-4 divide-y divide-greyscale-50/12 font-medium">
             <p className="text-md">TABLE OF CONTENTS</p>
             <p className="pt-4">1. Definitions</p>
             <p className="pt-4">2. Foreword</p>
             <p>
               <p className="pt-4">3. Data We collect; purposes and legal basis</p>
-              <ol className="ml-6 mb-4 font-normal mt-2">
+              <ol className="mb-4 ml-6 mt-2 font-normal">
                 <li>3.1 Data required to use the platform</li>
                 <li>3.2 Data We collect from third-parties</li>
                 <li>3.3 Data that You chose to provide to Us</li>

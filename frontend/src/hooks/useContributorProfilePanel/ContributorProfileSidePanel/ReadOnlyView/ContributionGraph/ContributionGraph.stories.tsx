@@ -25,8 +25,8 @@ const entries: ContributionCountFragment[] = [
 
 export const Default = {
   render: () => (
-    <Card padded={false} fullWidth={false} className="w-fit m-20">
-      <div className="px-4 bg-noise-light rounded-xl" style={{ width: 526 }}>
+    <Card padded={false} fullWidth={false} className="m-20 w-fit">
+      <div className="rounded-xl bg-noise-light px-4" style={{ width: 526 }}>
         <ContributionGraph entries={entries} />
       </div>
     </Card>
@@ -54,8 +54,8 @@ const fewEntries: ContributionCountFragment[] = [
 
 export const FewData = {
   render: () => (
-    <Card padded={false} fullWidth={false} className="w-fit m-20">
-      <div className="px-4 bg-noise-light rounded-xl" style={{ width: 526 }}>
+    <Card padded={false} fullWidth={false} className="m-20 w-fit">
+      <div className="rounded-xl bg-noise-light px-4" style={{ width: 526 }}>
         <ContributionGraph entries={fewEntries} />
       </div>
     </Card>

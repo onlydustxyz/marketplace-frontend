@@ -11,16 +11,16 @@ export default function ConfirmationModal({ onClose, onConfirm }: Props) {
   const { T } = useIntl();
 
   return (
-    <Card padded={false} fullWidth={false} className="w-60 divide-solid divide-y divide-greyscale-50/8">
-      <div className="p-4 flex flex-col items-center text-center gap-2">
-        <div className="font-belwe font-normal text-greyscale-50 text-base">
+    <Card padded={false} fullWidth={false} className="w-60 divide-y divide-solid divide-greyscale-50/8">
+      <div className="flex flex-col items-center gap-2 p-4 text-center">
+        <div className="font-belwe text-base font-normal text-greyscale-50">
           {T("payment.table.detailsPanel.cancelPayment.modal.title")}
         </div>
-        <div className="font-walsheim font-normal text-spaceBlue-200 text-sm">
+        <div className="font-walsheim text-sm font-normal text-spaceBlue-200">
           {T("payment.table.detailsPanel.cancelPayment.modal.description")}
         </div>
       </div>
-      <div className="p-3 flex flex-row items-stretch gap-2">
+      <div className="flex flex-row items-stretch gap-2 p-3">
         <Button type={ButtonType.Secondary} size={ButtonSize.Xs} width={Width.Full} onClick={onClose}>
           {T("payment.table.detailsPanel.cancelPayment.modal.cancelButton")}
         </Button>
