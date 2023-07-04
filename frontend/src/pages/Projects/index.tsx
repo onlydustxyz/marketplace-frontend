@@ -28,7 +28,7 @@ export default function Projects() {
         <div className="flex flex-col gap-6 px-4 pb-8 pt-8 md:container md:mx-auto md:px-12 xl:gap-8 xl:pt-16">
           <div className="relative flex items-center justify-between">
             <div className="font-belwe text-3xl xl:text-5xl">{T("navbar.projects")}</div>
-            <div className="z-10 hidden text-red-50 xl:block">
+            <div className="z-10 hidden xl:block">
               <SortingDropdown
                 all={PROJECT_SORTINGS}
                 current={projectSorting || DEFAULT_SORTING}
