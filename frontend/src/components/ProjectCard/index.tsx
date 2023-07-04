@@ -49,7 +49,6 @@ export default function ProjectCard({
 
   const card = (
     <Card
-      selectable={isXl}
       className={classNames("relative bg-noise-light hover:bg-right", {
         "xl:bg-orange-500/8 xl:hover:bg-orange-500/12": pendingInvitations?.length > 0,
       })}
@@ -153,7 +152,7 @@ export default function ProjectCard({
       </div>
     </Card>
   );
-  return isXl ? (
+  return (
     <Link
       to={generatePath(RoutePaths.ProjectDetails, {
         projectId: id,
@@ -161,7 +160,5 @@ export default function ProjectCard({
     >
       {card}
     </Link>
-  ) : (
-    card
   );
 }

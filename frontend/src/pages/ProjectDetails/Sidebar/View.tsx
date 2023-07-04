@@ -8,6 +8,8 @@ import { ProjectDetailsTab } from ".";
 import { generatePath, NavLink, useNavigate } from "react-router-dom";
 import classNames from "classnames";
 import ProjectOption from "./ProjectOption";
+import { viewportConfig } from "src/config";
+import { useMediaQuery } from "usehooks-ts";
 
 interface Props {
   expandable: boolean;
@@ -27,16 +29,21 @@ export interface SidebarProjectDetails {
 export default function View({ expandable, currentProject, allProjects, availableTabs }: Props) {
   const { T } = useIntl();
   const navigate = useNavigate();
+  const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
   return (
     <div
-      className={"ml-6 flex w-80 shrink-0 flex-col gap-6 rounded-l-2xl bg-white/4 bg-noise-medium p-6 font-walsheim"}
+      className={
+        "flex w-full shrink-0 flex-col gap-6 rounded-l-2xl bg-white/4 bg-noise-medium p-6 font-walsheim xl:ml-6 xl:w-80"
+      }
     >
-      <BackLink to={RoutePaths.Projects} className="divide-none">
-        {T("project.details.sidebar.backToProjects")}
-      </BackLink>
-      <div className="flex w-full flex-col gap-6 divide-y divide-neutral-700">
-        <div className="relative h-16">
+      {isXl && (
+        <BackLink to={RoutePaths.Projects} className="divide-none">
+          {T("project.details.sidebar.backToProjects")}
+        </BackLink>
+      )}
+      <div className="flex w-full flex-col gap-4 divide-neutral-700 xl:gap-6 xl:divide-y">
+        <div className="relative xl:h-16">
           <Listbox
             value={currentProject}
             onChange={project =>
@@ -48,9 +55,11 @@ export default function View({ expandable, currentProject, allProjects, availabl
             }
             disabled={!expandable}
           >
-            <div className="absolute z-10 flex w-full flex-col divide-y divide-neutral-700 rounded-2xl border-2 border-neutral-700 bg-white/2 backdrop-blur-4xl">
+            <div className="z-10 flex w-full flex-col divide-y divide-neutral-700 rounded-2xl border-2 border-neutral-700 bg-white/2 backdrop-blur-4xl xl:absolute">
               <Listbox.Button
-                className={`p-4 text-xl font-medium text-greyscale-50 ${expandable ? "hover:cursor-pointer" : ""}`}
+                className={`p-2 text-xl font-medium text-greyscale-50 xl:p-4 ${
+                  expandable ? "hover:cursor-pointer" : ""
+                }`}
               >
                 <div className="flex flex-row items-center gap-4">
                   <RoundedImage src={currentProject?.logoUrl || ""} alt="Project Logo" size={ImageSize.Md} />

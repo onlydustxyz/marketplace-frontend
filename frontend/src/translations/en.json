@@ -523,6 +523,7 @@
         },
         "technologies": "Technologies",
         "title": "Project overview",
+        "titleShort": "Overview",
         "totalSpentAmountInUsd": "GRANTED",
         "amountGranted": "__granted__ / __total__ — __leftToSpend__ left to spend"
       },
@@ -613,7 +614,6 @@
     },
     "errorOccured": "An error just occurred, please try again. Contact us at contact@onlydust.xyz if the problem persists",
     "loading": "Loading...",
-    "notResponsive": "This website is only available for desktop now. Mobile version coming soon ...",
     "success": "Success !"
   },
   "tryToRefresh": "Try to refresh the page"
