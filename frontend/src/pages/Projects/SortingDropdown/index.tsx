@@ -3,7 +3,7 @@ import Arrow from "src/assets/icons/Arrow";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import CheckLine from "src/icons/CheckLine";
-import { Sorting } from "..";
+import { Sorting } from "src/pages/Projects/sorting";
 
 type Props = {
   all: Sorting[];
@@ -11,7 +11,7 @@ type Props = {
   onChange: (value: Sorting) => void;
 };
 
-export default function SortingDropdown<T>({ all, current, onChange }: Props) {
+export default function SortingDropdown({ all, current, onChange }: Props) {
   const { T } = useIntl();
 
   return (

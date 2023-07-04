@@ -50,7 +50,7 @@ export default function HeaderView({
           <OnlyDustLogo />
           <OnlyDustTitle />
         </Link>
-        <div className="hidden flex-1 items-center gap-8 xl:flex">
+        <div className="flex-1 items-center gap-8 xl:flex">
           {menuItems[RoutePaths.Projects] && (
             <MenuItem path={selectedMenuItem} link={RoutePaths.Projects} activeRegex={new RegExp("^(/|/projects.+)$")}>
               {menuItems[RoutePaths.Projects]}

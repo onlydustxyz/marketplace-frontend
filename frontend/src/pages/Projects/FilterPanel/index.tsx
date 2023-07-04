@@ -8,9 +8,10 @@ import { isProjectVisibleToUser } from "src/hooks/useProjectVisibility";
 
 type Props = {
   isProjectLeader: boolean;
+  fromSidePanel?: boolean;
 };
 
-export default function FilterPanel({ isProjectLeader }: Props) {
+export default function FilterPanel({ isProjectLeader, fromSidePanel }: Props) {
   const { user, githubUserId } = useAuth();
   const filterOptionsQuery = useGetAllFilterOptionsQuery(contextWithCacheHeaders);
 
@@ -44,6 +45,7 @@ export default function FilterPanel({ isProjectLeader }: Props) {
         availableSponsors,
         isProjectLeader,
       }}
+      fromSidePanel={fromSidePanel}
     />
   );
 }

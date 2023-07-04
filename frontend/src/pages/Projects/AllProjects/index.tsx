@@ -13,7 +13,7 @@ import {
   ProjectsBoolExp,
   ProjectsOrderBy,
 } from "src/__generated/graphql";
-import { Sorting } from "..";
+import { Sorting } from "src/pages/Projects/sorting";
 import { isProjectVisibleToUser } from "src/hooks/useProjectVisibility";
 
 type Props = {
