@@ -18,9 +18,9 @@ const ProjectLeads = ({ leads }: { leads: ProjectLeadFragment[] }) => {
   const { T } = useIntl();
 
   return (
-    <div className="text-sm flex flex-row text-spaceBlue-200 gap-1 items-center pt-0.5">
+    <div className="flex flex-row items-center gap-1 pt-0.5 text-sm text-spaceBlue-200">
       {leads.length > 0 && (
-        <div className="flex flex-row gap-1 whitespace-nowrap truncate">
+        <div className="flex flex-row gap-1 truncate whitespace-nowrap">
           {T("project.ledBy", { count: leads.length })}
           {leads.length === 1 && leads[0].login && (
             <Contributor
@@ -57,17 +57,17 @@ const ProjectLeads = ({ leads }: { leads: ProjectLeadFragment[] }) => {
 
 export default function ProjectTitle({ projectName, projectLeads, logoUrl, private: private_ }: Props) {
   return (
-    <div className="flex gap-4 items-start">
+    <div className="flex items-start gap-4">
       <div className="relative">
         <RoundedImage src={logoUrl} alt="Project Logo" size={ImageSize.Xl} className="mt-1" />
         {private_ && (
-          <div className="absolute -right-2.5 -bottom-2.5">
+          <div className="absolute -bottom-2.5 -right-2.5">
             <PrivateTag />
           </div>
         )}
       </div>
       <div className="min-w-0">
-        <div className="text-2xl font-medium font-belwe truncate">{projectName}</div>
+        <div className="truncate font-belwe text-2xl font-medium">{projectName}</div>
         <ProjectLeads leads={projectLeads} />
       </div>
     </div>

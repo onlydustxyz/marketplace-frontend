@@ -43,16 +43,15 @@ export default function useApolloCache() {
               scoreByExistence("avatarUrl", 10) +
               scoreByExistence("login", 10) +
               scoreByExistence("location", 10) +
-              scoreByExistence("bio", 15) +
-              scoreByExistence("website", 5) +
+              scoreByExistence("bio", 20) +
+              scoreByExistence("website", 10) +
               scoreByExistence("login", 5) +
               scoreContact("email", 5) +
               scoreContact("telegram", 5) +
               scoreContact("twitter", 5) +
               scoreContact("discord", 5) +
               scoreContact("linkedin", 5) +
-              scoreLanguages(10) +
-              scoreByExistence("weeklyAllocatedTime", 10)
+              scoreLanguages(10)
             );
           },
         },

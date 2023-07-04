@@ -42,7 +42,7 @@ const CompleteTag = () => {
   return (
     <Tag size={TagSize.Medium} {...withTooltip(T("payment.status.tooltip.complete"), { className: "w-36" })}>
       <CheckLine className="text-greyscale-50" />
-      <span className="text-greyscale-50 font-normal">{T("payment.status.complete")}</span>
+      <span className="font-normal text-greyscale-50">{T("payment.status.complete")}</span>
     </Tag>
   );
 };
@@ -53,7 +53,7 @@ const ProcessingTag = () => {
   return (
     <Tag size={TagSize.Medium} {...withTooltip(T("payment.status.tooltip.processing"), { className: "w-44" })}>
       <Time className="text-greyscale-50" />
-      <span className="text-greyscale-50 font-normal">{T("payment.status.processing")}</span>
+      <span className="font-normal text-greyscale-50">{T("payment.status.processing")}</span>
     </Tag>
   );
 };
@@ -71,7 +71,7 @@ const PayoutInfoMissingTag = (isProjectLeaderView: boolean) => {
       )}
     >
       <ErrorWarningLine className="text-pink-500" />
-      <span className="text-greyscale-50 whitespace-nowrap font-normal">
+      <span className="whitespace-nowrap font-normal text-greyscale-50">
         {isProjectLeaderView ? T("payment.status.pending") : T("payment.status.payoutInfoMissing")}
       </span>
     </Tag>
@@ -88,7 +88,7 @@ const InvoiceNeededTag = () => {
       {...withTooltip(T("payment.status.tooltip.invoicePending"), { className: "w-64" })}
     >
       <ErrorWarningLine className="text-pink-500" />
-      <span className="text-greyscale-50 whitespace-nowrap font-normal">{T("payment.status.invoicePending")}</span>
+      <span className="whitespace-nowrap font-normal text-greyscale-50">{T("payment.status.invoicePending")}</span>
     </Tag>
   );
 };

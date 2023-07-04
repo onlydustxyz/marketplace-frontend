@@ -19,7 +19,7 @@ const args = {
 
 export const Default = {
   render: () => (
-    <div className="w-96 h-96 flex items-center justify-center">
+    <div className="flex h-96 w-96 items-center justify-center">
       <span {...withTooltip(args.text, { position: args.position })}>Hover me!</span>
       <Tooltip />
     </div>

@@ -42,10 +42,10 @@ const Payments = () => {
 
   return (
     <Background roundedBorders={BackgroundRoundedBorders.Full}>
-      <div className="container flex flex-col mx-auto pt-16 pb-8 gap-6 h-full px-8">
-        <div className="text-5xl font-belwe">{T("navbar.payments")}</div>
+      <div className="container mx-auto flex h-full flex-col gap-6 px-8 pb-8 pt-16">
+        <div className="font-belwe text-5xl">{T("navbar.payments")}</div>
         <QueryWrapper query={getPaymentRequestsQuery}>
-          <div className="flex gap-4 mb-10">
+          <div className="mb-10 flex gap-4">
             <Card>
               {payments && (
                 <PayoutTable
@@ -56,7 +56,7 @@ const Payments = () => {
               )}
             </Card>
             <div>
-              <div className="flex flex-col gap-4 sticky top-4">
+              <div className="sticky top-4 flex flex-col gap-4">
                 {totalEarnings && <TotalEarnings amount={totalEarnings} />}
                 {invoiceSubmissionNeeded && (
                   <InvoiceSubmission

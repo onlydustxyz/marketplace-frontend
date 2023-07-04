@@ -13,10 +13,10 @@ export default function View({ projectId }: Props) {
     projectId,
   };
   return (
-    <div className="flex flex-row flex-1 w-full h-0 pb-6">
+    <div className="flex h-0 w-full flex-1 flex-row pb-6">
       <ProjectsSidebar projectId={projectId} />
       <Background roundedBorders={BackgroundRoundedBorders.Right} withSidebar={true}>
-        <div className="h-full px-8 py-6 flex flex-col flex-1 gap-6">
+        <div className="flex h-full flex-1 flex-col gap-6 px-8 py-6">
           <Suspense fallback={<Loader />}>
             <Outlet context={outletContext} />
           </Suspense>

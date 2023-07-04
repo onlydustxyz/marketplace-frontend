@@ -13,15 +13,15 @@ interface ProjectPaymentTableFallbackProps {
 const ProjectPaymentTableFallback = ({ disabled = false }: ProjectPaymentTableFallbackProps) => {
   const { T } = useT();
   return (
-    <div className="flex flex-col items-center gap-8 w-full p-2">
+    <div className="flex w-full flex-col items-center gap-8 p-2">
       <div className="w-36">
         <img src={paymentLogo} />
       </div>
       <div className="flex flex-col items-center gap-1">
-        <span className="text-2xl font-belwe text-greyscale-50 leading-8">
+        <span className="font-belwe text-2xl leading-8 text-greyscale-50">
           {T("project.details.tableFallback.noPayments")}
         </span>
-        <span className="text-base font-walsheim text-greyscale-50 leading-6">
+        <span className="font-walsheim text-base leading-6 text-greyscale-50">
           {T("project.details.tableFallback.send")}
         </span>
       </div>

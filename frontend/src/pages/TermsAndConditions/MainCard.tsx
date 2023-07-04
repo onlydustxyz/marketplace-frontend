@@ -16,20 +16,20 @@ export default function TermsAndConditionsMainCard({
 
   return (
     <>
-      <div className="pt-1.5 rounded-2xl bg-mosaic bg-contain outline outline-greyscale-50/8 mt-20">
+      <div className="mt-20 rounded-2xl bg-mosaic bg-contain pt-1.5 outline outline-greyscale-50/8">
         <Card
-          className="flex flex-col justify-between gap-7 items-center pt-12 mb-5 divide-y divide-greyscale-50/12 bg-whiteFakeOpacity-2"
+          className="mb-5 flex flex-col items-center justify-between gap-7 divide-y divide-greyscale-50/12 bg-whiteFakeOpacity-2 pt-12"
           padded={false}
           blurred={false}
         >
-          <div className="flex flex-col justify-between gap-4 items-center px-12">
+          <div className="flex flex-col items-center justify-between gap-4 px-12">
             <div className="font-belwe text-3xl">Summary of our Terms & Conditions</div>
             <div className="text-center">
               <p>To use Only Dust, you must accept and comply with our Terms and Conditions.</p>
               <p>Here’s a summary of our responsibilities and your commitments.</p>
             </div>
             <Section title="About us">
-              <div className="text-sm pt-3">
+              <div className="pt-3 text-sm">
                 Only Dust is a platform provided by Wagmi SAS (“Us”, “We”, “Our”) that allows the reward of open source
                 projects developed for blockchain ecosystems. Partners among the ecosystems give Us funds that we
                 distribute to developers (“You”, “Your”). The amount that is given to You is decided by members of the
@@ -37,14 +37,14 @@ export default function TermsAndConditionsMainCard({
               </div>
             </Section>
             <Section title="Your commitments">
-              <div className="text-sm pt-3">
+              <div className="pt-3 text-sm">
                 <p className="mb-4">
                   You can either be a contributor or a project leader. Contributors are developers and project leaders
                   are those who manage contributors and projects.
                 </p>
                 <p>
                   In both cases, You must:
-                  <ul className="list-disc ml-6 mb-4">
+                  <ul className="mb-4 ml-6 list-disc">
                     <li>Properly use our platform and refrain from all fraudulent activity; </li>
                     <li>
                       Give Us valid information about your status, including whether you act for a company or not;
@@ -60,9 +60,9 @@ export default function TermsAndConditionsMainCard({
               </div>
             </Section>
             <Section title="Our responsibilities">
-              <div className="text-sm pt-3">
+              <div className="pt-3 text-sm">
                 We undertake to:
-                <ul className="list-disc ml-6 mb-4">
+                <ul className="mb-4 ml-6 list-disc">
                   <li>Provide You with our platform and ensure its proper operation;</li>
                   <li> List projects that You can participate in; and </li>
                   <li>
@@ -72,7 +72,7 @@ export default function TermsAndConditionsMainCard({
                 </ul>
                 However, We are just an intermediary between You and the partners (the companies or foundations
                 providing the funds). Thus, by using Our platform, You understand that:
-                <ul className="list-disc ml-6 mb-4">
+                <ul className="mb-4 ml-6 list-disc">
                   <li> We are not responsible for the interruption or breakdowns of Our platform; </li>
                   <li>
                     We are not Your employer. There is no employment contract between us and the rewards that we
@@ -91,16 +91,16 @@ export default function TermsAndConditionsMainCard({
               </div>
             </Section>
           </div>
-          <div className="flex flex-col gap-7 w-full items-center justify-between bg-white/4 py-6 px-6 rounded-b-xl ring-none">
-            <div className="flex flex-row gap-3 items-center">
+          <div className="ring-none flex w-full flex-col items-center justify-between gap-7 rounded-b-xl bg-white/4 px-6 py-6">
+            <div className="flex flex-row items-center gap-3">
               <TermsAndConditionsCheckBox {...{ checked, setChecked }} />
               <p>
                 I agree to the{" "}
-                <span onClick={() => openFullTermsAndConditions()} className="inline underline cursor-pointer">
+                <span onClick={() => openFullTermsAndConditions()} className="inline cursor-pointer underline">
                   full terms & conditions
                 </span>{" "}
                 & the{" "}
-                <span onClick={() => openPrivacyPolicy()} className="inline underline cursor-pointer">
+                <span onClick={() => openPrivacyPolicy()} className="inline cursor-pointer underline">
                   privacy policy
                 </span>
               </p>
@@ -120,8 +120,8 @@ interface SectionProps extends PropsWithChildren {
 }
 
 const Section = ({ title, children }: SectionProps) => (
-  <Card className="flex flex-col justify-between items-start divide-y divide-greyscale-50/12 text-walsheim bg-whiteFakeOpacity-5">
-    <div className="text-lg pb-2 font-medium">{title}</div>
+  <Card className="text-walsheim flex flex-col items-start justify-between divide-y divide-greyscale-50/12 bg-whiteFakeOpacity-5">
+    <div className="pb-2 text-lg font-medium">{title}</div>
     {children}
   </Card>
 );

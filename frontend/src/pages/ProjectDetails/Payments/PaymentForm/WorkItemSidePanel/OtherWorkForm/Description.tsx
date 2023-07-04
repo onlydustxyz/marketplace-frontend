@@ -21,8 +21,8 @@ export default function Description({ description, setDescription }: Props) {
   });
 
   return (
-    <label htmlFor={name} className={classNames("flex flex-col flex-grow gap-2 text-greyscale-300 font-walsheim")}>
-      <div className="flex items-center justify-between font-medium text-sm">
+    <label htmlFor={name} className={classNames("flex flex-grow flex-col gap-2 font-walsheim text-greyscale-300")}>
+      <div className="flex items-center justify-between text-sm font-medium">
         <div className="tracking-tight">{T("payment.form.workItems.other.inputs.description")}</div>
         <FormToggle
           label={T("payment.form.workItems.other.toggleDescriptionPreview")}
@@ -31,7 +31,7 @@ export default function Description({ description, setDescription }: Props) {
         />
       </div>
       {displayPreview ? (
-        <div className="w-full bg-white/5 border border-greyscale-50/[0.08] rounded-xl text-base px-4 py-3">
+        <div className="w-full rounded-xl border border-greyscale-50/[0.08] bg-white/5 px-4 py-3 text-base">
           <MarkdownPreview>{description}</MarkdownPreview>
         </div>
       ) : (

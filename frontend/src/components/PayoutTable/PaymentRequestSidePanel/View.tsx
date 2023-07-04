@@ -44,7 +44,7 @@ export type Props = {
 
 const Details = ({ align = Align.Center, children }: PropsWithChildren & { align?: Align }) => (
   <div
-    className={classNames("flex flex-row gap-2 text-greyscale-300 font-walsheim font-normal text-sm", {
+    className={classNames("flex flex-row gap-2 font-walsheim text-sm font-normal text-greyscale-300", {
       "items-center": align === Align.Center,
       "items-start": align === Align.Top,
     })}
@@ -86,8 +86,8 @@ export default function View({
       }
     >
       <QueryWrapper query={{ loading, data: requestedAt }}>
-        <div className="flex flex-col gap-8 h-full">
-          <div className="font-belwe font-normal text-2xl text-greyscale-50 pt-8 px-6">
+        <div className="flex h-full flex-col gap-8">
+          <div className="px-6 pt-8 font-belwe text-2xl font-normal text-greyscale-50">
             {T("payment.table.detailsPanel.title", { id: pretty(id) })}
           </div>
           <div className="flex flex-col gap-2 px-6">
@@ -100,7 +100,7 @@ export default function View({
                 isProjectLeaderView: projectLeaderView,
               }}
             />
-            <div className="font-belwe font-normal text-5xl text-greyscale-50">
+            <div className="font-belwe text-5xl font-normal text-greyscale-50">
               {formatMoneyAmount({ amount: amountInUsd })}
             </div>
             {requestor?.login && (
@@ -194,11 +194,11 @@ export default function View({
           <div className="px-6">
             <div className="border-t border-greyscale-50/12" />
           </div>
-          <div className="flex flex-col gap-3 overflow-hidden -mr-4 h-full px-6">
-            <div className="font-belwe font-normal text-base text-greyscale-50">
+          <div className="-mr-4 flex h-full flex-col gap-3 overflow-hidden px-6">
+            <div className="font-belwe text-base font-normal text-greyscale-50">
               {T("payment.table.detailsPanel.workItems")}
             </div>
-            <div className="flex flex-col gap-3 h-full p-px pr-4 pb-6 overflow-auto scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded">
+            <div className="flex h-full flex-col gap-3 overflow-auto p-px pb-6 pr-4 scrollbar-thin scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded scrollbar-w-2">
               {workItems?.map(
                 workItem =>
                   workItem.githubIssue && (

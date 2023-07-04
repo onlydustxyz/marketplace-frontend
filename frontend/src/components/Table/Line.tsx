@@ -15,7 +15,7 @@ const Line: React.FC<Props> = ({ className, children, onClick, selected, payment
       data-testid="payment-line"
       className={classNames(
         `group/line border-b border-gray-800 ${className}`,
-        "transition duration-200 hover:bg-white/5 outline-offset-0 hover:outline-2",
+        "outline-offset-0 transition duration-200 hover:bg-white/5 hover:outline-2",
         {
           "cursor-pointer": !!onClick,
           "bg-white/5 outline-2": selected,

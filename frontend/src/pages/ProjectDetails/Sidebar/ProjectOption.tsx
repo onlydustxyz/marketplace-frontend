@@ -16,32 +16,32 @@ export default function ProjectOption({ project, isSelected }: Props) {
   return (
     <Listbox.Option
       value={project}
-      className={`hover:cursor-pointer p-4 hover:bg-white/10 border-neutral-600 duration-300 last:rounded-b-2xl ${
+      className={`border-neutral-600 p-4 duration-300 last:rounded-b-2xl hover:cursor-pointer hover:bg-white/10 ${
         project.withInvitation && "bg-orange-400/10  hover:bg-amber-700/30"
       } `}
     >
       <div className="flex flex-col gap-5">
-        <div className="flex flex-row gap-5 items-center">
+        <div className="flex flex-row items-center gap-5">
           <RoundedImage src={project.logoUrl} alt="Project Logo" />
-          <div className="flex flex-col flex-1 justify-self-start truncate">
+          <div className="flex flex-1 flex-col justify-self-start truncate">
             <div className="truncate text-base font-medium">{project.name}</div>
-            <div className="truncate text-sm font-regular text-slate-400">
+            <div className="font-regular truncate text-sm text-slate-400">
               {T("project.details.sidebar.contributors", { count: project.contributorsCount })}
             </div>
           </div>
           <>
             {project.withInvitation ? (
-              <div className="flex flex-row px-2 py-1 rounded-2xl bg-orange-400 items-center gap-1 text-xs text-black">
+              <div className="flex flex-row items-center gap-1 rounded-2xl bg-orange-400 px-2 py-1 text-xs text-black">
                 <ShootingStar />
                 <div>{T("project.details.sidebar.newInvite")}</div>
               </div>
             ) : (
-              isSelected && <CheckLine className="text-gray-200 text-lg font-normal" />
+              isSelected && <CheckLine className="text-lg font-normal text-gray-200" />
             )}
           </>
         </div>
         {project.withInvitation && (
-          <div className="bg-neutral-100 rounded-xl w-full text-black text-sm text-center p-2">View invite</div>
+          <div className="w-full rounded-xl bg-neutral-100 p-2 text-center text-sm text-black">View invite</div>
         )}
       </div>
     </Listbox.Option>

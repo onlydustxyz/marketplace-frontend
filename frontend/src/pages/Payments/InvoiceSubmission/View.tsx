@@ -43,7 +43,7 @@ export default function InvoiceSubmission({ paymentRequests, githubUserId, markI
   }, [isClosed, isSubmitted, markInvoiceAsReceived]);
 
   return (
-    <Card padded={false} className="py-5 px-6">
+    <Card padded={false} className="px-6 py-5">
       <div className="flex flex-col gap-6">
         <div className="flex flex-col gap-1 font-walsheim text-white">
           <span className="text-lg font-medium">{T("invoiceSubmission.title")}</span>

@@ -22,11 +22,11 @@ export default function Badge({ id, icon, size, value, ...rest }: Props) {
     <div
       id={id}
       className={classNames(
-        "flex items-center justify-center rounded-full bg-spacePurple-900 text-spacePurple-500 font-walsheim min-w-min font-medium",
+        "flex min-w-min items-center justify-center rounded-full bg-spacePurple-900 font-walsheim font-medium text-spacePurple-500",
         {
-          "w-5 h-5 px-1.5 gap-0.5": size === BadgeSize.Small,
-          "w-6 h-6 px-2 gap-1": size === BadgeSize.Medium,
-          "w-8 h-8 px-3 gap-1": size === BadgeSize.Large,
+          "h-5 w-5 gap-0.5 px-1.5": size === BadgeSize.Small,
+          "h-6 w-6 gap-1 px-2": size === BadgeSize.Medium,
+          "h-8 w-8 gap-1 px-3": size === BadgeSize.Large,
         }
       )}
       {...rest}

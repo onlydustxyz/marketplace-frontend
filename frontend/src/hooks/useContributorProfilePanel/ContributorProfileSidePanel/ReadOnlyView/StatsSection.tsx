@@ -21,7 +21,7 @@ export default function StatsSection({ profile, contributionCounts, contribution
 
   return (
     <Section title={T("profile.sections.stats.title")}>
-      <div className="flex flex-col md:grid grid-cols-3 gap-4">
+      <div className="flex grid-cols-3 flex-col gap-4 md:grid">
         <StatCard
           title={T("profile.sections.stats.contributorOn")}
           counter={profile.projectsContributedAggregate.aggregate?.count + ""}
@@ -41,16 +41,16 @@ export default function StatsSection({ profile, contributionCounts, contribution
             notation: "compact",
           })}
         />
-        <Card blurred padded={false} className="flex flex-col bg-noise-light px-4 py-2 col-span-3 overflow-visible">
+        <Card blurred padded={false} className="col-span-3 flex flex-col overflow-visible bg-noise-light px-4 py-2">
           <div className="flex flex-row items-center gap-3">
-            <div className="font-walsheim font-medium text-sm uppercase text-greyscale-300 w-full">
+            <div className="w-full font-walsheim text-sm font-medium uppercase text-greyscale-300">
               {T("profile.sections.stats.contributions")}
             </div>
-            <div className="font-belwe font-normal text-4xl pb-1 text-greyscale-50">
+            <div className="pb-1 font-belwe text-4xl font-normal text-greyscale-50">
               {profile.contributionStatsAggregate.aggregate?.sum?.totalCount || 0}
             </div>
             <div
-              className="flex flex-row items-center gap-0.5 rounded-full py-0.5 px-2 bg-white/5 border border-greyscale-50/12 backdrop-blur-lg shadow-heavy text-sm"
+              className="flex flex-row items-center gap-0.5 rounded-full border border-greyscale-50/12 bg-white/5 px-2 py-0.5 text-sm shadow-heavy backdrop-blur-lg"
               {...withTooltip(T("contributionGraph.progressionTooltip"))}
             >
               {contributionCountVariationSinceLastWeek < 0 ? (

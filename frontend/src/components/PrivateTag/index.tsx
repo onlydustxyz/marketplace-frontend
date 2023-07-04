@@ -7,7 +7,7 @@ export default function PrivateTag() {
 
   return (
     <div
-      className="rounded-full w-5 h-5 p-1 bg-orange-500 text-greyscale-50 text-xs leading-3 hover:outline hover:outline-2 hover:outline-orange-500/30"
+      className="h-5 w-5 rounded-full bg-orange-500 p-1 text-xs leading-3 text-greyscale-50 hover:outline hover:outline-2 hover:outline-orange-500/30"
       {...withTooltip(T("project.visibility.private.tooltip"))}
     >
       <LockFill />

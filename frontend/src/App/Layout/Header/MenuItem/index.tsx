@@ -14,9 +14,9 @@ export default function MenuItem({ path, link, children, activeRegex }: MenuItem
   return (
     <div
       className={classNames(
-        "pb-0.5 flex justify-center align-center drop-shadow-lg saturate-200 outline-4 text-base relative",
+        "align-center relative flex justify-center pb-0.5 text-base outline-4 drop-shadow-lg saturate-200",
         {
-          "text-white font-bold": active,
+          "font-bold text-white": active,
           "text-greyscale-500": !active,
         }
       )}

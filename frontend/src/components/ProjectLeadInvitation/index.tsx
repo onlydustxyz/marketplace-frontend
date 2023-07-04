@@ -31,14 +31,14 @@ export default function ProjectLeadInvitation({ projectId }: ProjectLeadInvitati
 
   return invitationId ? (
     <ImageCard backgroundImageUrl={headerElementBackground} backgroundSize={BackgroundSize.Cover} height={Height.Fit}>
-      <div className="flex flex-row justify-between items-center font-medium px-6 py-5">
+      <div className="flex flex-row items-center justify-between px-6 py-5 font-medium">
         <div className="text-lg">{T("projectLeadInvitation.prompt", { projectName })}</div>
         <div
           onClick={() => acceptInvitation()}
-          className="flex flex-row justify-between items-center gap-2 w-fit rounded-xl bg-neutral-100 shadow-inner shadow-neutral-400 px-4 py-3 text-black hover:cursor-pointer"
+          className="flex w-fit flex-row items-center justify-between gap-2 rounded-xl bg-neutral-100 px-4 py-3 text-black shadow-inner shadow-neutral-400 hover:cursor-pointer"
           data-testid="accept-invite-button"
         >
-          <CheckLine className="text-black font-normal text-xl" />
+          <CheckLine className="text-xl font-normal text-black" />
           <div>{T("projectLeadInvitation.accept")}</div>
         </div>
       </div>

@@ -14,10 +14,10 @@ export default function Footer() {
   const { openFullTermsAndConditions, openPrivacyPolicy } = useSidePanel();
 
   return (
-    <div className="px-4 lg:px-0 flex w-full py-6 justify-between">
-      <div className="flex items-center gap-3 cursor-pointer" onClick={linkClickHandlerFactory("https://onlydust.xyz")}>
+    <div className="flex w-full justify-between px-4 py-6 lg:px-0">
+      <div className="flex cursor-pointer items-center gap-3" onClick={linkClickHandlerFactory("https://onlydust.xyz")}>
         <img className="h-10 w-10" src={onlyDustLogo} alt={T("images.onlyDustLogo")} />
-        <img className="h-6 mt-1 hidden md:inline" src={onlyDustTitle} alt={T("images.onlyDustTitle")} />
+        <img className="mt-1 hidden h-6 md:inline" src={onlyDustTitle} alt={T("images.onlyDustTitle")} />
       </div>
       <div className="flex items-center gap-3 text-spaceBlue-50">
         <div className="flex flex-row gap-1 font-walsheim text-sm font-normal">

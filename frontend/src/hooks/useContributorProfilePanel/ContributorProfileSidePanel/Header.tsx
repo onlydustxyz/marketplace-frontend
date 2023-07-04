@@ -46,7 +46,7 @@ export default function Header({ profile, editable, onChange, rounded }: Props) 
     <div className="z-10">
       <div
         className={classNames(
-          "h-24 w-full bg-cover shrink-0",
+          "h-24 w-full shrink-0 bg-cover",
           {
             "bg-profile-blue": cover === ProfileCover.Blue,
             "bg-profile-cyan": cover === ProfileCover.Cyan,
@@ -59,8 +59,8 @@ export default function Header({ profile, editable, onChange, rounded }: Props) 
         )}
       >
         {editable && (
-          <div className="flex h-full w-full bg-black/30 items-center justify-center">
-            <div className="flex flex-row gap-3 px-5 h-12 w-fit items-center justify-center rounded-full bg-white/8 border border-greyscale-50/8">
+          <div className="flex h-full w-full items-center justify-center bg-black/30">
+            <div className="flex h-12 w-fit flex-row items-center justify-center gap-3 rounded-full border border-greyscale-50/8 bg-white/8 px-5">
               <HeaderCoverButton active={cover === ProfileCover.Cyan} cover={ProfileCover.Cyan} onClick={handleClick} />
               <HeaderCoverButton
                 active={cover === ProfileCover.Magenta}
@@ -84,22 +84,22 @@ export default function Header({ profile, editable, onChange, rounded }: Props) 
           onClick={() => fileInputRef.current?.click()}
         >
           {uploading && (
-            <div className="absolute flex items-center justify-center ml-8 rounded-full w-24 h-24 bg-spaceBlue-800/50">
+            <div className="absolute ml-8 flex h-24 w-24 items-center justify-center rounded-full bg-spaceBlue-800/50">
               <Loader className="animate-spin" />
             </div>
           )}
           <img
             src={avatarUrl}
-            className="rounded-full w-24 h-24 ml-8 -mt-12 outline outline-4 outline-greyscale-50/12"
+            className="-mt-12 ml-8 h-24 w-24 rounded-full outline outline-4 outline-greyscale-50/12"
             data-testid="avatarUrl"
           />
           {editable && !uploading && (
             <>
               <PencilLine
-                className="absolute right-0 bottom-0
-            w-6 h-6 p-1 rounded-full flex items-center
-            text-base text-spaceBlue-900 bg-greyscale-50
-            outline outline-2 outline-black shadow-bottom-sm"
+                className="absolute bottom-0 right-0
+            flex h-6 w-6 items-center rounded-full bg-greyscale-50
+            p-1 text-base text-spaceBlue-900
+            shadow-bottom-sm outline outline-2 outline-black"
               />
               {editable && <FileInput ref={fileInputRef} setFile={onProfilePictureChange} />}
             </>

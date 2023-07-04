@@ -18,13 +18,13 @@ export default function Header({ userLogin }: Props) {
 
   return (
     <div className="flex items-center md:py-6">
-      <div className="flex w-full justify-between px-4 py-3 md:rounded-full bg-white/8 backdrop-blur-3xl">
+      <div className="flex w-full justify-between bg-white/8 px-4 py-3 backdrop-blur-3xl md:rounded-full">
         <div
-          className="flex items-center gap-3 cursor-pointer"
+          className="flex cursor-pointer items-center gap-3"
           onClick={linkClickHandlerFactory("https://onlydust.xyz")}
         >
           <img className="h-9 w-9" src={onlyDustLogoWhite} alt={T("images.onlyDustLogo")} />
-          <img className="h-6 mt-1" src={onlyDustTitle} alt={T("images.onlyDustTitle")} />
+          <img className="mt-1 h-6" src={onlyDustTitle} alt={T("images.onlyDustTitle")} />
         </div>
         <div className="flex gap-3">
           <div className="hidden md:block">

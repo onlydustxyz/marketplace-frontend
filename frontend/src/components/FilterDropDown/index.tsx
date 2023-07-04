@@ -44,15 +44,15 @@ export default function FilterDropDown({
           <Listbox.Button
             data-testid={dataTestId}
             onClick={() => setOpen(!open)}
-            className="w-full flex items-center justify-between py-2 drop-shadow-bottom-sm border-b border-greyscale-50/12 hover:cursor-pointer"
+            className="flex w-full items-center justify-between border-b border-greyscale-50/12 py-2 drop-shadow-bottom-sm hover:cursor-pointer"
           >
-            <div className="flex gap-2 items-center">
-              <img className="w-6 h-6" src={ICONS[icon]} />
-              <span className="font-medium text-greyscale-50 text-sm font-walsheim">
+            <div className="flex items-center gap-2">
+              <img className="h-6 w-6" src={ICONS[icon]} />
+              <span className="font-walsheim text-sm font-medium text-greyscale-50">
                 {value.length > 0 ? selectedLabel : defaultLabel}
               </span>
             </div>
-            <div className="flex gap-2 items-center">
+            <div className="flex items-center gap-2">
               {value.length > 0 && <Badge size={BadgeSize.Medium} value={value.length} />}
               <div
                 className={classNames("transition duration-300", {
@@ -60,7 +60,7 @@ export default function FilterDropDown({
                   "-rotate-90": open,
                 })}
               >
-                <ArrowLeftSLine className="text-greyscale-50 font-medium" />
+                <ArrowLeftSLine className="font-medium text-greyscale-50" />
               </div>
             </div>
           </Listbox.Button>
@@ -73,14 +73,14 @@ export default function FilterDropDown({
             leaveFrom="transform translate-y-0 opacity-100"
             leaveTo="transform -translate-y-1/3 opacity-0"
           >
-            <Listbox.Options static as="div" className="py-3 flex flex-wrap gap-x-2 gap-y-3">
+            <Listbox.Options static as="div" className="flex flex-wrap gap-x-2 gap-y-3 py-3">
               {options.map(option => (
                 <Listbox.Option
                   key={option}
                   as="div"
                   value={option}
                   className={classNames(
-                    "py-1 px-2 w-fit text-neutral-100 font-walsheim font-normal text-xs bg-white/8 border border-greyscale-50/8 rounded-lg",
+                    "w-fit rounded-lg border border-greyscale-50/8 bg-white/8 px-2 py-1 font-walsheim text-xs font-normal text-neutral-100",
                     "hover:cursor-pointer",
                     "ui-selected:pseudo-outline-2",
                     "ui-selected:before:z-10",

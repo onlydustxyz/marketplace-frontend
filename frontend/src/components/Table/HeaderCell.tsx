@@ -19,14 +19,14 @@ export const HeaderCell: React.FC<Props> = ({ onClick, children, horizontalMargi
   return (
     <th
       scope="col"
-      className={classNames("text-left h-full", {
+      className={classNames("h-full text-left", {
         "px-3": horizontalMargin,
         [`${width}`]: width,
         "hover:cursor-pointer": onClick,
       })}
       onClick={onClick}
     >
-      <div className="h-4 mb-2 flex items-center gap-1 font-medium">{children}</div>
+      <div className="mb-2 flex h-4 items-center gap-1 font-medium">{children}</div>
     </th>
   );
 };
