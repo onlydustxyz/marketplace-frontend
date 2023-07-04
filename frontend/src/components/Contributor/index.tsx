@@ -18,7 +18,7 @@ export default function Contributor({ contributor, clickable }: Props) {
   return (
     <div className="flex items-center gap-1.5">
       <div
-        className="flex flex-row gap-2 items-center text-sm font-normal"
+        className="flex flex-row items-center gap-2 text-sm font-normal"
         onClick={e => {
           if (clickable) {
             e.preventDefault();
@@ -36,7 +36,7 @@ export default function Contributor({ contributor, clickable }: Props) {
         )}
         <div
           className={classNames({
-            "hover:underline truncate text-spacePurple-300 hover:cursor-pointer": clickable,
+            "truncate text-spacePurple-300 hover:cursor-pointer hover:underline": clickable,
           })}
         >
           {contributor.login}
@@ -47,7 +47,7 @@ export default function Contributor({ contributor, clickable }: Props) {
           <img
             id={`od-logo-${contributor.login}`}
             src={onlyDustLogo}
-            className="h-3.5 mt-px"
+            className="mt-px h-3.5"
             {...withTooltip(T("contributor.table.userRegisteredTooltip"), { className: "w-36" })}
           />
         </>

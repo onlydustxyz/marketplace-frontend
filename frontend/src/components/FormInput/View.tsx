@@ -80,14 +80,14 @@ const View: React.FC<PropsType> = ({
   return (
     <label
       htmlFor={register.name}
-      className={classNames("flex flex-col flex-grow gap-2 text-greyscale-300 font-walsheim", {
+      className={classNames("flex flex-grow flex-col gap-2 font-walsheim text-greyscale-300", {
         "mb-6": withMargin,
       })}
     >
       {label && (
-        <div className="font-medium text-sm tracking-tight">
+        <div className="text-sm font-medium tracking-tight">
           {label}
-          {requiredForPayment && <span className="text-orange-500 pl-0.5">{"*"}</span>}
+          {requiredForPayment && <span className="pl-0.5 text-orange-500">{"*"}</span>}
         </div>
       )}
       <div
@@ -127,11 +127,11 @@ const View: React.FC<PropsType> = ({
           })}
           {prefixComponent && <div className="absolute left-0 ml-3">{prefixComponent}</div>}
           {showError ? (
-            <div className="text-orange-400 text-xl flex absolute right-0 mr-3" {...withTooltip(error.message ?? "")}>
+            <div className="absolute right-0 mr-3 flex text-xl text-orange-400" {...withTooltip(error.message ?? "")}>
               <ErrorWarningLine />
             </div>
           ) : loading ? (
-            <LoaderIcon className="flex animate-spin place-items-center absolute right-0 mr-3" />
+            <LoaderIcon className="absolute right-0 mr-3 flex animate-spin place-items-center" />
           ) : (
             suffixComponent
           )}
@@ -146,9 +146,9 @@ const View: React.FC<PropsType> = ({
               backgroundNoise={BackgroundNoise.Light}
               backgroundBlur={BackgroundBlur.Heavy}
             >
-              <div className="flex flex-row justify-between py-5 px-6">
-                <div className="flex flex-row justify-start items-center font-medium text-white gap-4">
-                  <ErrorWarningLine className="px-3 py-2.5 text-3xl rounded-2xl bg-white/10" />
+              <div className="flex flex-row justify-between px-6 py-5">
+                <div className="flex flex-row items-center justify-start gap-4 font-medium text-white">
+                  <ErrorWarningLine className="rounded-2xl bg-white/10 px-3 py-2.5 text-3xl" />
                   <div className="flex flex-col ">
                     <div className="text-lg">{error.message.toString()}</div>
                   </div>

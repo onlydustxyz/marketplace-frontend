@@ -35,7 +35,7 @@ export default function OverviewPanel({
   return (
     <Card
       fullWidth={false}
-      className="h-fit p-0 flex flex-col shrink-0 w-80 divide-y divide-greyscale-50/8"
+      className="flex h-fit w-80 shrink-0 flex-col divide-y divide-greyscale-50/8 p-0"
       padded={false}
     >
       {projectLeads.length > 0 && (
@@ -64,7 +64,7 @@ export default function OverviewPanel({
           icon={SectionIcon.User}
           title={T("project.details.overview.contributors", { count: totalContributorsCount })}
         >
-          <div className="flex flex-row items-center text-sm text-greyscale-50 font-normal gap-2">
+          <div className="flex flex-row items-center gap-2 text-sm font-normal text-greyscale-50">
             <div className="flex flex-row -space-x-1">
               {topContributors.map(contributor => (
                 <RoundedImage
@@ -82,7 +82,7 @@ export default function OverviewPanel({
       )}
       {totalSpentAmountInUsd !== undefined && totalInitialAmountInUsd !== undefined && (
         <Section icon={SectionIcon.Funds} title={T("project.details.overview.totalSpentAmountInUsd")}>
-          <div data-testid="money-granted-amount" className="text-sm text-greyscale-50 font-normal">
+          <div data-testid="money-granted-amount" className="text-sm font-normal text-greyscale-50">
             {T("project.details.overview.amountGranted", {
               granted: formatMoneyAmount({ amount: totalSpentAmountInUsd, notation: "compact" }),
               total: formatMoneyAmount({ amount: totalInitialAmountInUsd, notation: "compact" }),
@@ -109,7 +109,7 @@ export default function OverviewPanel({
       )}
       {telegramLink && (
         <Section testId="more-info" icon={SectionIcon.Link} title={T("project.details.overview.moreInfo")}>
-          <div data-testid="more-info-link" className="flex text-spacePurple-500 font-semibold text-sm overflow-hidden">
+          <div data-testid="more-info-link" className="flex overflow-hidden text-sm font-semibold text-spacePurple-500">
             <ExternalLink text={telegramLink.replace(/^https?:\/\//i, "").replace(/\/$/, "")} url={telegramLink} />
           </div>
         </Section>

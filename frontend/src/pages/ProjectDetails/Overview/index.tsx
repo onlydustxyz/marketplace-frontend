@@ -79,16 +79,16 @@ export default function Overview() {
       <Title>{T("project.details.overview.title")}</Title>
       <ProjectLeadInvitation projectId={projectId} />
       <div className="flex flex-row gap-6">
-        <div className="flex flex-col gap-4 w-full">
-          <Card className={classNames("px-6 py-4 flex flex-col gap-4 z-10")}>
+        <div className="flex w-full flex-col gap-4">
+          <Card className={classNames("z-10 flex flex-col gap-4 px-6 py-4")}>
             <div className="flex flex-row items-center gap-4">
               <img
                 alt={data?.projectsByPk?.projectDetails?.name}
                 src={logoUrl}
-                className="w-20 h-20 flex-shrink-0 rounded-lg bg-spaceBlue-900"
+                className="h-20 w-20 flex-shrink-0 rounded-lg bg-spaceBlue-900"
               />
-              <div className="flex flex-col gap-1 w-full">
-                <div className="flex flex-row items-center justify-between font-belwe font-normal text-2xl text-greyscale-50">
+              <div className="flex w-full flex-col gap-1">
+                <div className="flex flex-row items-center justify-between font-belwe text-2xl font-normal text-greyscale-50">
                   {projectName}
                   {data?.projectsByPk?.projectDetails?.visibility === "private" && <PrivateTag />}
                 </div>
@@ -103,9 +103,9 @@ export default function Overview() {
             <MarkdownPreview className="text-sm">{description}</MarkdownPreview>
           </Card>
           <Card className="flex flex-col gap-4">
-            <div className="flex flex-row font-walsheim font-medium text-base text-greyscale-50 items-center border-b border-greyscale-50/8 pb-2 justify-between">
+            <div className="flex flex-row items-center justify-between border-b border-greyscale-50/8 pb-2 font-walsheim text-base font-medium text-greyscale-50">
               <div className="flex flex-row items-center gap-3">
-                <GitRepositoryLine className="text-white text-2xl" />
+                <GitRepositoryLine className="text-2xl text-white" />
                 {T("project.details.overview.repositories.title")}
               </div>
               <Badge value={githubRepos.length} size={BadgeSize.Small} />
@@ -122,7 +122,7 @@ export default function Overview() {
           {hiring && !isCurrentUserMember && (
             <Callout>
               <div className="flex flex-col gap-3">
-                <div className="flex flex-row gap-2 items-center text-spaceBlue-200 font-walsheim font-medium text-sm">
+                <div className="flex flex-row items-center gap-2 font-walsheim text-sm font-medium text-spaceBlue-200">
                   <RecordCircleLine />
                   {T("project.hiring").toUpperCase()}
                 </div>
@@ -188,7 +188,7 @@ function PrivateTag() {
 
   return (
     <div
-      className="flex flex-row gap-2 items-center py-1 px-2.5 text-orange-500 font-medium font-walsheim text-xs rounded-lg bg-orange-900 hover:cursor-default"
+      className="flex flex-row items-center gap-2 rounded-lg bg-orange-900 px-2.5 py-1 font-walsheim text-xs font-medium text-orange-500 hover:cursor-default"
       {...withTooltip(T("project.visibility.private.tooltip"))}
     >
       <LockFill /> {T("project.visibility.private.name")}

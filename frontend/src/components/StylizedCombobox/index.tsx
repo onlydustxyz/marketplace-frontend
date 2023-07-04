@@ -69,19 +69,19 @@ export default function StylizedCombobox<T extends Option>({
       <Combobox.Button as="div" data-testid={testId}>
         <div
           className={classNames(
-            "flex flex-row items-center justify-between w-full rounded-lg px-1.5 h-8 bg-white/5 border border-greyscale-50/8 text-greyscale-400",
+            "flex h-8 w-full flex-row items-center justify-between rounded-lg border border-greyscale-50/8 bg-white/5 px-1.5 text-greyscale-400",
             {
-              "bg-spacePurple-900 text-spacePurple-500 ring-solid ring-2 ring-spacePurple-500": open,
+              "ring-solid bg-spacePurple-900 text-spacePurple-500 ring-2 ring-spacePurple-500": open,
             }
           )}
         >
-          <div className="flex flex-row items-center w-full cursor-default gap-2.5">
+          <div className="flex w-full cursor-default flex-row items-center gap-2.5">
             <div className="pt-0.5 text-lg">
               <SearchLine />
             </div>
             <Combobox.Input
               onChange={event => setQuery(event.target.value)}
-              className={classNames("border-none outline-none w-full bg-transparent font-normal text-sm")}
+              className={classNames("w-full border-none bg-transparent text-sm font-normal outline-none")}
               placeholder={open ? "" : placeholder}
               autoComplete="off"
               value={query}
@@ -90,8 +90,8 @@ export default function StylizedCombobox<T extends Option>({
           <ArrowDownSLine className="text-2xl" />
         </div>
       </Combobox.Button>
-      <Combobox.Options className="flex flex-col w-full mt-2">
-        <div className="cursor-pointer bg-greyscale-800 border border-greyscale-50/12 backdrop-blur-lg rounded-2xl overflow-hidden">
+      <Combobox.Options className="mt-2 flex w-full flex-col">
+        <div className="cursor-pointer overflow-hidden rounded-2xl border border-greyscale-50/12 bg-greyscale-800 backdrop-blur-lg">
           <VirtualizedOptions
             options={filteredOptions}
             lineHeight={32}
@@ -173,7 +173,7 @@ const ComboboxOption = ({ option, last, children }: ComboboxOptionProps) => (
   <Combobox.Option
     value={option}
     className={classNames(
-      "flex px-4 py-2 font-walsheim text-sm leading-4 text-greyscale-50 bg-greyscale-800 ui-active:bg-greyscale-600",
+      "flex bg-greyscale-800 px-4 py-2 font-walsheim text-sm leading-4 text-greyscale-50 ui-active:bg-greyscale-600",
       {
         "border-b border-greyscale-50/8": !last,
       }

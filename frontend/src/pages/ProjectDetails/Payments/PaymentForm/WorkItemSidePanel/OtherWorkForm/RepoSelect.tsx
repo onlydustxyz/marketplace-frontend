@@ -15,8 +15,8 @@ export default function RepoSelect({ repos, repo, setRepo }: Props) {
   const { T } = useIntl();
 
   return (
-    <div className="relative flex flex-col gap-2 w-full">
-      <div className="font-walsheim font-normal text-sm text-white">
+    <div className="relative flex w-full flex-col gap-2">
+      <div className="font-walsheim text-sm font-normal text-white">
         {T("payment.form.workItems.other.footer.repository")}
       </div>
       <Listbox value={repo} onChange={setRepo} disabled={repos.length < 2}>
@@ -24,7 +24,7 @@ export default function RepoSelect({ repos, repo, setRepo }: Props) {
           data-testid="select-repo-button"
           as="div"
           className={classNames(
-            "relative flex flex-row px-2.5 py-1.5 gap-2 items-center font-medium font-walsheim text-sm text-greyscale-50 bg-white/5 border border-greyscale-50/8 rounded-lg",
+            "relative flex flex-row items-center gap-2 rounded-lg border border-greyscale-50/8 bg-white/5 px-2.5 py-1.5 font-walsheim text-sm font-medium text-greyscale-50",
             {
               "cursor-pointer": repos.length > 1,
             }
@@ -34,7 +34,7 @@ export default function RepoSelect({ repos, repo, setRepo }: Props) {
             <>
               <GitRepositoryLine />
               {value.name}
-              {repos.length > 1 && <ArrowDownSLine className="absolute right-2 text-spaceBlue-200 text-xl" />}
+              {repos.length > 1 && <ArrowDownSLine className="absolute right-2 text-xl text-spaceBlue-200" />}
             </>
           )}
         </Listbox.Button>
@@ -48,7 +48,7 @@ export default function RepoSelect({ repos, repo, setRepo }: Props) {
               key={`${repo?.owner}-${repo?.name}`}
               value={repo}
               as="div"
-              className="cursor-pointer flex flex-row items-center gap-2 hover:bg-white/5 font-medium font-walsheim text-sm text-greyscale-50 px-3 py-2"
+              className="flex cursor-pointer flex-row items-center gap-2 px-3 py-2 font-walsheim text-sm font-medium text-greyscale-50 hover:bg-white/5"
             >
               <GitRepositoryLine />
               {repo?.name}

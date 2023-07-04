@@ -41,7 +41,7 @@ const View = ({ githubUserId, avatarUrl, login, logout, showMissingPayoutSetting
             onMouseEnter={() => setTooltipVisible(true)}
             onMouseLeave={() => setTooltipVisible(false)}
             className={classNames(
-              "flex gap-2 justify-center outline outline-1 px-2 py-1.5 items-center rounded-full text-sm font-belwe hover:bg-noise-medium hover:outline-2 ui-open:bg-noise-medium ui-open:outline-2",
+              "flex items-center justify-center gap-2 rounded-full px-2 py-1.5 font-belwe text-sm outline outline-1 ui-open:bg-noise-medium ui-open:outline-2 hover:bg-noise-medium hover:outline-2",
               {
                 "outline-greyscale-50/12": !showMissingPayoutSettingsState,
                 "outline-orange-500": showMissingPayoutSettingsState,
@@ -52,7 +52,7 @@ const View = ({ githubUserId, avatarUrl, login, logout, showMissingPayoutSetting
               visible: showMissingPayoutSettingsState && tooltipVisible && !menuItemsVisible,
             })}
           >
-            {avatarUrl && <img className="w-8 h-8 rounded-full" src={avatarUrl} />}
+            {avatarUrl && <img className="h-8 w-8 rounded-full" src={avatarUrl} />}
             <div className={classNames({ "mr-1": !showMissingPayoutSettingsState })}>{login}</div>
             {showMissingPayoutSettingsState && <ErrorWarningLine className="text-xl text-orange-500" />}
           </Menu.Button>
@@ -69,12 +69,12 @@ const View = ({ githubUserId, avatarUrl, login, logout, showMissingPayoutSetting
           <Menu.Items
             onFocus={() => setMenuItemsVisible(true)}
             onBlur={() => setMenuItemsVisible(false)}
-            className=" absolute right-0 mt-3 w-56 origin-top-right pt-2
-						rounded-md bg-white/5 backdrop-blur-4xl shadow-lg ring-1 ring-greyscale-50/8
-						focus:outline-none z-20 overflow-hidden"
+            className=" absolute right-0 z-20 mt-3 w-56 origin-top-right
+						overflow-hidden rounded-md bg-white/5 pt-2 shadow-lg ring-1
+						ring-greyscale-50/8 backdrop-blur-4xl focus:outline-none"
           >
             {!hideProfileItems && (
-              <div className="pb-2 border-b border-greyscale-50/8">
+              <div className="border-b border-greyscale-50/8 pb-2">
                 <MenuItem secondary disabled>
                   {T("navbar.profile.title").toUpperCase()}
                 </MenuItem>
@@ -85,13 +85,13 @@ const View = ({ githubUserId, avatarUrl, login, logout, showMissingPayoutSetting
                 <MenuItem onClick={() => setPayoutInfoSidePanelOpen(true)}>
                   <MoneyDollarCircleLine className="text-xl" />
                   <div className="grow">{T("navbar.profile.payoutInfo")}</div>
-                  {showMissingPayoutSettingsState && <Dot className="fill-orange-500 w-1.5" />}
+                  {showMissingPayoutSettingsState && <Dot className="w-1.5 fill-orange-500" />}
                 </MenuItem>
               </div>
             )}
 
             <MenuItem secondary disabled>
-              <div className="flex flex-row w-full justify-between py-1 items-center">
+              <div className="flex w-full flex-row items-center justify-between py-1">
                 <div className="flex flex-row gap-1 font-walsheim text-sm font-normal text-spaceBlue-200">
                   <div className="cursor-pointer" onClick={() => openFullTermsAndConditions()}>
                     {T("navbar.termsAndConditions")}
@@ -102,7 +102,7 @@ const View = ({ githubUserId, avatarUrl, login, logout, showMissingPayoutSetting
                   </div>
                 </div>
                 <Button type={ButtonType.Secondary} size={ButtonSize.Xs} onClick={logout} data-testid="logout-button">
-                  <LogoutBoxRLine className="text-sm border-greyscale-50" />
+                  <LogoutBoxRLine className="border-greyscale-50 text-sm" />
                   {T("navbar.logout")}
                 </Button>
               </div>
@@ -130,7 +130,7 @@ const MenuItem = ({ disabled = false, onClick, secondary = false, children, ...r
     {...rest}
     disabled={disabled}
     as="div"
-    className={classNames("px-4 py-2 flex flex-row gap-3 items-center text-sm font-walsheim", {
+    className={classNames("flex flex-row items-center gap-3 px-4 py-2 font-walsheim text-sm", {
       "cursor-pointer ui-active:bg-white/4": !disabled,
       "cursor-default": disabled,
       "text-greyscale-50": !secondary,

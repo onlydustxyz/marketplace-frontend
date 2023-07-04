@@ -13,7 +13,7 @@ export default function MarkdownPreview({ className, testId, children }: Props) 
       <ReactMarkdown
         skipHtml={true}
         remarkPlugins={[[remarkGfm]]}
-        className={`text-greyscale-50 font-walsheim font-normal max-w-full prose prose-invert ${className}`}
+        className={`prose prose-invert max-w-full font-walsheim font-normal text-greyscale-50 ${className}`}
       >
         {children}
       </ReactMarkdown>

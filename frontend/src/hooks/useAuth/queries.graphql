@@ -26,10 +26,10 @@ query ImpersonatedUser($id: uuid!) {
 }
 
 query GetRegisteredUser($id: uuid!) {
-    registeredUsers(where: { id: { _eq: $id } }) {
-      ...UserId
-      githubUserId
-      login
-      avatarUrl
-    }
+  registeredUsers(where: { id: { _eq: $id } }) {
+    ...UserId
+    githubUserId
+    login
+    avatarUrl
+  }
 }

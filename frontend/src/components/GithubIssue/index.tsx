@@ -66,24 +66,24 @@ export default function GithubIssue({
   return (
     <Card
       padded={false}
-      className={classNames("p-4 flex flex-row gap-3 hover:bg-noise-light hover:backdrop-blur-4xl rounded-2xl ", {
+      className={classNames("flex flex-row gap-3 rounded-2xl p-4 hover:bg-noise-light hover:backdrop-blur-4xl ", {
         "mt-1": addMarginTopForVirtuosoDisplay,
       })}
     >
       {action && <ActionButton action={action} onClick={onClick} ignored={ignored} />}
-      <div className="flex flex-col gap-2 font-walsheim w-full">
-        <div className="flex font-medium text-sm text-greyscale-50">
+      <div className="flex w-full flex-col gap-2 font-walsheim">
+        <div className="flex text-sm font-medium text-greyscale-50">
           <GithubIssueLink url={workItem.htmlUrl} text={`#${workItem.number} · ${workItem.title}`} />
         </div>
-        <div className="flex flex-row gap-3 items-center text-greyscale-300 font-normal text-xs">
-          <div className="flex flex-row gap-1 items-center">
+        <div className="flex flex-row items-center gap-3 text-xs font-normal text-greyscale-300">
+          <div className="flex flex-row items-center gap-1">
             <Time />
             {displayRelativeDate(workItem.createdAt)}
           </div>
-          <div className="flex flex-row gap-1 items-center">
+          <div className="flex flex-row items-center gap-1">
             <IssueStatus issue={workItem} />
           </div>
-          <div className="flex flex-row gap-1 items-center">
+          <div className="flex flex-row items-center gap-1">
             <GitRepositoryLine />
             {repoName}
           </div>
@@ -140,7 +140,7 @@ function IssueStatus({ issue }: { issue: WorkItem }) {
         </>
       ) : issue.status === Status.Completed ? (
         <>
-          <CheckboxCircleLine className="text-github-purple text-base -my-1" />
+          <CheckboxCircleLine className="-my-1 text-base text-github-purple" />
           {T("githubIssue.status.closed", { closedAt: displayRelativeDate(issue.closedAt) })}
         </>
       ) : issue.status === Status.Open ? (
@@ -148,13 +148,13 @@ function IssueStatus({ issue }: { issue: WorkItem }) {
           {issue.type === Type.Issue ? (
             <IssueOpen className="fill-github-green p-0.5" />
           ) : (
-            <GitPullRequestLine className="text-github-green text-base -my-1" />
+            <GitPullRequestLine className="-my-1 text-base text-github-green" />
           )}
           {T("githubIssue.status.open")}
         </>
       ) : issue.status === Status.Merged ? (
         <>
-          <GitMergeLine className="text-github-purple text-base -my-1" />
+          <GitMergeLine className="-my-1 text-base text-github-purple" />
           {T("githubIssue.status.merged", { mergedAt: displayRelativeDate(issue.mergedAt) })}
         </>
       ) : (

@@ -42,13 +42,13 @@ export default function WorkEstimation({
   return (
     <Card padded={false}>
       <div
-        className={classNames("divide-y divide-greyscale-50/8", "bg-space-card bg-top bg-no-repeat rounded-2xl", {
+        className={classNames("divide-y divide-greyscale-50/8", "rounded-2xl bg-space-card bg-top bg-no-repeat", {
           "bg-cover": disabled,
           "bg-contain 2xl:bg-cover": !disabled,
         })}
       >
         <div
-          className={classNames("flex flex-col gap-5 items-stretch justify-items-center", {
+          className={classNames("flex flex-col items-stretch justify-items-center gap-5", {
             "px-8 py-6": !disabled,
             "p-6": disabled,
           })}
@@ -56,12 +56,12 @@ export default function WorkEstimation({
           {!disabled && (
             <div className="flex flex-col gap-1">
               <div className="font-semibold">{T("payment.form.estimate")}</div>
-              <div className="flex flex-row justify-between items-end">
+              <div className="flex flex-row items-end justify-between">
                 <div className="font-belwe">
-                  {stepNumber > 0 && <span className="text-5xl mr-2">{stepNumber}</span>}
+                  {stepNumber > 0 && <span className="mr-2 text-5xl">{stepNumber}</span>}
                   <span className="text-2xl">{T("payment.form.steps." + steps, { count: stepNumber })}</span>{" "}
                 </div>
-                <div className="flex flex-row gap-3 text-white items-center">
+                <div className="flex flex-row items-center gap-3 text-white">
                   <div onClick={tryDecreaseNumberOfDays}>
                     <Button size={ButtonSize.Sm} type={ButtonType.Secondary} disabled={!canDecrease}>
                       <div className="absolute top-1">
@@ -81,7 +81,7 @@ export default function WorkEstimation({
             </div>
           )}
           {disabled && (
-            <div className="font-semibold text-center mt-2 mb-5 px-2 py-px">
+            <div className="mb-5 mt-2 px-2 py-px text-center font-semibold">
               {T(missingContributor ? "payment.form.missingContributor" : "payment.form.missingWorkItem")}
             </div>
           )}
@@ -95,7 +95,7 @@ export default function WorkEstimation({
               <>
                 <div className="flex flex-row justify-between">
                   <div className="text-greyscale-300">{T("payment.form.thisPayment")}</div>
-                  <div className="text-purple-500 font-semibold">{formatMoneyAmount({ amount: amountToPay })}</div>
+                  <div className="font-semibold text-purple-500">{formatMoneyAmount({ amount: amountToPay })}</div>
                 </div>
                 <div className="flex flex-row justify-between">
                   <div className="text-greyscale-300">{T("payment.form.leftToSpend")}</div>
@@ -108,7 +108,7 @@ export default function WorkEstimation({
           </div>
         </div>
         {!disabled && (
-          <div className="p-6 pt-5 w-full">
+          <div className="w-full p-6 pt-5">
             <Button htmlType="submit" width={Width.Full} disabled={requestNewPaymentMutationLoading}>
               <span>{T("payment.form.confirm")}</span>
             </Button>

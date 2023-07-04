@@ -1,5 +1,5 @@
 import { PropsWithChildren } from "react";
 
 export default function Title({ children }: PropsWithChildren) {
-  return <div className="text-2xl font-belwe">{children}</div>;
+  return <div className="font-belwe text-2xl">{children}</div>;
 }

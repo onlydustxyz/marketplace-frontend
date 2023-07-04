@@ -103,8 +103,8 @@ export default function EditView({ profile, setEditMode }: Props) {
         onChange={updateCompletionScore}
         onClick={updateCompletionScore}
       >
-        <div className="flex flex-col h-full justify-between">
-          <div className="flex flex-col gap-6 min-h-0">
+        <div className="flex h-full flex-col justify-between">
+          <div className="flex min-h-0 flex-col gap-6">
             <Controller
               name="cover"
               control={control}
@@ -113,8 +113,8 @@ export default function EditView({ profile, setEditMode }: Props) {
               )}
             />
 
-            <div className="flex flex-col gap-6 -mt-[72px] pt-[72px] pb-12 pl-8 mr-2 pr-6 scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded">
-              <div data-testid="login" className="font-belwe font-normal text-3xl text-white">
+            <div className="-mt-[72px] mr-2 flex flex-col gap-6 pb-12 pl-8 pr-6 pt-[72px] scrollbar-thin scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded scrollbar-w-2">
+              <div data-testid="login" className="font-belwe text-3xl font-normal text-white">
                 {profile.login}
               </div>
 
@@ -176,7 +176,7 @@ export default function EditView({ profile, setEditMode }: Props) {
                     <div className="flex flex-row items-center justify-between">
                       {T("profile.form.weeklyAllocatedTime.title")}
                       <Tag size={TagSize.Small}>
-                        <div className="text-orange-500 flex flex-row items-center gap-1">
+                        <div className="flex flex-row items-center gap-1 text-orange-500">
                           <LockFill />
                           {T("profile.form.weeklyAllocatedTime.privacyNotice")}
                         </div>
@@ -199,10 +199,10 @@ export default function EditView({ profile, setEditMode }: Props) {
             </div>
           </div>
 
-          <div className="flex flex-row items-center justify-between bg-white/2 border-t border-greyscale-50/8 px-8 py-5">
+          <div className="flex flex-row items-center justify-between border-t border-greyscale-50/8 bg-white/2 px-8 py-5">
             <Tag size={TagSize.Medium} testid="dirtyTag">
               {isDirty || !isValid ? (
-                <div className="text-orange-500 flex flex-row items-center gap-1">
+                <div className="flex flex-row items-center gap-1 text-orange-500">
                   <ErrorWarningLine />
                   {isValid ? T("profile.form.saveStatus.unsaved") : T("profile.form.saveStatus.invalid")}
                 </div>
@@ -215,8 +215,8 @@ export default function EditView({ profile, setEditMode }: Props) {
             </Tag>
             <div className="flex flex-row items-center gap-5">
               {completionScore < 95 && (
-                <div className="flex flex-col gap-2 w-48">
-                  <div className="font-medium font-walsheim text-sm text-greyscale-50 self-end">
+                <div className="flex w-48 flex-col gap-2">
+                  <div className="self-end font-walsheim text-sm font-medium text-greyscale-50">
                     {T("profile.form.completion", { completion: completionScore.toString() })}
                   </div>
                   <CompletionBar completionScore={completionScore} />

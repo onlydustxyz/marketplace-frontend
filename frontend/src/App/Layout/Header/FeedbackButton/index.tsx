@@ -38,11 +38,11 @@ export default function FeedbackButton() {
         >
           <div
             className={classNames(
-              "flex flex-row justify-center items-center gap-2 rounded-xl font-walsheim",
-              "drop-shadow-bottom-sm font-medium hover:shadow-none w-fit",
-              "text-sm px-4 py-2 h-8 bg-white/8 backdrop-blur-lg border border-white/0",
+              "flex flex-row items-center justify-center gap-2 rounded-xl font-walsheim",
+              "w-fit font-medium drop-shadow-bottom-sm hover:shadow-none",
+              "h-8 border border-white/0 bg-white/8 px-4 py-2 text-sm backdrop-blur-lg",
               "text-greyscale-50",
-              "hover:text-spacePurple-400 hover:bg-spacePurple-900 hover:border-spacePurple-400"
+              "hover:border-spacePurple-400 hover:bg-spacePurple-900 hover:text-spacePurple-400"
             )}
           >
             <DiscussLine />

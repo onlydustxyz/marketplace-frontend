@@ -41,7 +41,7 @@ export default function ContactInformation({
       prefixComponent={icon}
       suffixComponent={
         value ? (
-          <div className="flex flex-row gap-2 absolute right-3">
+          <div className="absolute right-3 flex flex-row gap-2">
             <VisibilityButton name={visibilityName} disabled={visibilityDisabled} />
             <ClearFieldButton name={name} disabled={editDisabled} />
           </div>
@@ -90,7 +90,7 @@ function VisibilityButton({ name, disabled }: VisibilityButtonProps) {
     <EyeLine
       className={classNames({
         "text-spacePurple-200/50": disabled,
-        "text-spacePurple-200 cursor-pointer": !disabled,
+        "cursor-pointer text-spacePurple-200": !disabled,
       })}
       onClick={e => {
         if (!disabled) {

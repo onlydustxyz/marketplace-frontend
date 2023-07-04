@@ -104,9 +104,9 @@ export default function OtherWorkForm({ projectId, contributorHandle, onWorkItem
 
   return (
     <FormProvider {...formMethods}>
-      <form className="flex flex-col justify-between h-full gap-4 min-h-0" onSubmit={onSubmit}>
-        <div className="flex flex-col justify-start gap-4 overflow-y-auto min-h-0 px-6 scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded">
-          <div className="font-belwe font-normal text-base text-greyscale-50">
+      <form className="flex h-full min-h-0 flex-col justify-between gap-4" onSubmit={onSubmit}>
+        <div className="flex min-h-0 flex-col justify-start gap-4 overflow-y-auto px-6 scrollbar-thin scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded scrollbar-w-2">
+          <div className="font-belwe text-base font-normal text-greyscale-50">
             {T("payment.form.workItems.other.title")}
           </div>
           <FormSelect name="workKind" options={workKinds} control={control} />
@@ -114,7 +114,7 @@ export default function OtherWorkForm({ projectId, contributorHandle, onWorkItem
           <Description description={description} setDescription={setDescription} />
           <Callout>{T("payment.form.workItems.other.callout")}</Callout>
         </div>
-        <div className="flex flex-row grow-0 gap-8 bg-white/2 border-t border-greyscale-50/8 px-6 py-8">
+        <div className="flex grow-0 flex-row gap-8 border-t border-greyscale-50/8 bg-white/2 px-6 py-8">
           {selectedRepo ? (
             <RepoSelect repos={repos} repo={selectedRepo} setRepo={setSelectedRepo} />
           ) : (

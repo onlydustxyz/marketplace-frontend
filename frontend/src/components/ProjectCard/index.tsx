@@ -50,14 +50,14 @@ export default function ProjectCard({
   const card = (
     <Card
       selectable={isXl}
-      className={classNames("bg-noise-light hover:bg-right relative", {
+      className={classNames("relative bg-noise-light hover:bg-right", {
         "xl:bg-orange-500/8 xl:hover:bg-orange-500/12": pendingInvitations?.length > 0,
       })}
       border={CardBorder.Medium}
       dataTestId="project-card"
     >
       {projectDetails?.hiring && (
-        <div className="absolute right-3.5 -top-3.5">
+        <div className="absolute -top-3.5 right-3.5">
           <Tag size={TagSize.Small} opaque>
             <RecordCircleLine />
             {T("project.hiring")}
@@ -65,8 +65,8 @@ export default function ProjectCard({
         </div>
       )}
       <div className="flex flex-col gap-5">
-        <div className="flex flex-col lg:flex-row w-full lg:divide-x divide-stone-100/8 gap-4 lg:gap-6 justify-items-center font-walsheim">
-          <div className="lg:flex flex-col basis-1/3 min-w-0 gap-y-5">
+        <div className="flex w-full flex-col justify-items-center gap-4 divide-stone-100/8 font-walsheim lg:flex-row lg:gap-6 lg:divide-x">
+          <div className="min-w-0 basis-1/3 flex-col gap-y-5 lg:flex">
             <ProjectTitle
               projectId={id}
               projectName={projectDetails?.name || ""}
@@ -83,8 +83,8 @@ export default function ProjectCard({
               </div>
             )}
           </div>
-          <div className="flex flex-col basis-2/3 lg:pl-6 gap-4 lg:gap-4 justify-center">
-            <div className="line-clamp-2 ml-px">{projectDetails?.shortDescription}</div>
+          <div className="flex basis-2/3 flex-col justify-center gap-4 lg:gap-4 lg:pl-6">
+            <div className="ml-px line-clamp-2">{projectDetails?.shortDescription}</div>
             <div className="flex flex-row gap-2">
               {githubRepos && githubRepos.length > 0 && (
                 <Tag testid={`github-repo-count-${id}`} size={TagSize.Small}>
@@ -145,7 +145,7 @@ export default function ProjectCard({
           </div>
         </div>
         {pendingInvitations?.length > 0 && (
-          <div className="hidden xl:flex flex-row justify-between items-center font-medium px-6 py-4 rounded-xl bg-orange-500/8">
+          <div className="hidden flex-row items-center justify-between rounded-xl bg-orange-500/8 px-6 py-4 font-medium xl:flex">
             <div className="text-white">{T("project.projectLeadInvitation.prompt")}</div>
             <Button size={ButtonSize.Sm}>{T("project.projectLeadInvitation.view")}</Button>
           </div>

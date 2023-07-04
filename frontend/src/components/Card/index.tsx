@@ -39,7 +39,7 @@ export default function Card({
           "backdrop-blur-lg": blurred,
         },
         {
-          "transition duration-300 hover:bg-white/4 hover:cursor-pointer": selectable,
+          "transition duration-300 hover:cursor-pointer hover:bg-white/4": selectable,
           "hover:pseudo-outline-2": selectable,
         },
         {

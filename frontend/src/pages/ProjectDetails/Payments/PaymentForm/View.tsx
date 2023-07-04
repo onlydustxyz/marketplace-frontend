@@ -36,7 +36,7 @@ type TitleProps = {
 
 function SectionTitle({ title, rightAction }: TitleProps) {
   return (
-    <div className="font-normal font-belwe text-base text-greyscale-50 pb-2 mx-4 border-b border-b-greyscale-50/8 flex justify-between items-end">
+    <div className="mx-4 flex items-end justify-between border-b border-b-greyscale-50/8 pb-2 font-belwe text-base font-normal text-greyscale-50">
       {title}
       {rightAction}
     </div>
@@ -76,7 +76,7 @@ const View: React.FC<Props> = ({
   return (
     <>
       <Title>
-        <div className="flex flex-row gap-3 items-center">
+        <div className="flex flex-row items-center gap-3">
           <div onClick={() => navigate(-1)}>
             <Button type={ButtonType.Secondary} size={ButtonSize.Sm} iconOnly>
               <CloseLine className="text-base" />
@@ -85,9 +85,9 @@ const View: React.FC<Props> = ({
           {T("project.details.payments.new.title")}
         </div>
       </Title>
-      <div className="flex flex-row items-start gap-5 h-full">
+      <div className="flex h-full flex-row items-start gap-5">
         <div className="basis-3/5 self-stretch">
-          <div className="flex flex-col gap-6 w-full">
+          <div className="flex w-full flex-col gap-6">
             <Card className="px-4 py-7" padded={false}>
               <div className={displayCallout ? "h-52" : "h-24"}>
                 <SectionTitle title={T("payment.form.contributor.title")} />
@@ -130,7 +130,7 @@ const View: React.FC<Props> = ({
                       </div>
                     }
                   />
-                  <div className="flex flex-col gap-3 mx-4 pt-4" data-testid="added-work-items">
+                  <div className="mx-4 flex flex-col gap-3 pt-4" data-testid="added-work-items">
                     <div className=" text-greyscale-300">{T("payment.form.workItems.subTitle")}</div>
                     {workItems.map(workItem => (
                       <GithubIssue
@@ -163,7 +163,7 @@ const View: React.FC<Props> = ({
             )}
           </div>
         </div>
-        <div className="basis-2/5 sticky top-4">
+        <div className="sticky top-4 basis-2/5">
           <WorkEstimation
             onChange={onWorkEstimationChange}
             budget={budget}

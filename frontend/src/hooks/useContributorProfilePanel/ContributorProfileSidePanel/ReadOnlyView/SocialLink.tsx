@@ -25,7 +25,7 @@ export default function SocialLink({ link, copyableValue, copyableValueName, tes
             })
       }
     >
-      <div className="bg-noise-light w-10 h-10 text-2xl flex flex-row items-center justify-center rounded-xl hover:opacity-60  text-greyscale-200 hover:cursor-pointer">
+      <div className="flex h-10 w-10 flex-row items-center justify-center rounded-xl bg-noise-light text-2xl text-greyscale-200  hover:cursor-pointer hover:opacity-60">
         {children}
       </div>
     </div>

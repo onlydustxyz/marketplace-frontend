@@ -5,7 +5,7 @@ export default function EmptyState() {
   const { T } = useIntl();
 
   return (
-    <div className="p-12 flex flex-col gap-2 bg-white/2 rounded-2xl items-center">
+    <div className="flex flex-col items-center gap-2 rounded-2xl bg-white/2 p-12">
       <div className="mb-6">
         <img src={emptyStateLogo}></img>
       </div>

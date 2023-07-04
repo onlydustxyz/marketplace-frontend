@@ -21,10 +21,10 @@ export default function ReadOnlyView({
   setEditMode,
 }: Props) {
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex h-full flex-col">
       <Header profile={{ ...profile, cover: translateProfileCover(profile.cover) ?? ProfileCover.Blue }} />
 
-      <div className="flex flex-col gap-12 -mt-12 pt-4 pb-12 ml-8 mr-2 pr-6 scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded">
+      <div className="-mt-12 ml-8 mr-2 flex flex-col gap-12 pb-12 pr-6 pt-4 scrollbar-thin scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded scrollbar-w-2">
         <IntroSection profile={profile} isOwn={isOwn} setEditMode={setEditMode} />
 
         <div className="flex flex-col gap-8">

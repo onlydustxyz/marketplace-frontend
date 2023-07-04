@@ -49,8 +49,8 @@ export default function PaymentLine({ payment, setSortingFields, onClick, select
           <Cell height={CellHeight.Medium}>{displayRelativeDate(payment.requestedAt)}</Cell>
           <Cell height={CellHeight.Medium} className="flex flex-row gap-3">
             <RoundedImage src={recipient.avatarUrl} alt={recipient.login} rounding={Rounding.Circle} />
-            <div className="flex flex-col truncate justify-center pb-0.5">
-              <div className="font-medium text-sm text-greyscale-50 font-walsheim">{recipient.login}</div>
+            <div className="flex flex-col justify-center truncate pb-0.5">
+              <div className="font-walsheim text-sm font-medium text-greyscale-50">{recipient.login}</div>
               <div className="text-spaceBlue-200">
                 {T("payment.table.paymentRequest", {
                   id: pretty(payment.id),

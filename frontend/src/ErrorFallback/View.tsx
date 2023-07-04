@@ -15,11 +15,11 @@ export default function View({ onBackClicked, onRefreshClicked }: Props) {
   const [begin, link, end] = T("state.error.description").split("_");
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center text-center gap-12">
+    <div className="flex min-h-screen flex-col items-center justify-center gap-12 text-center">
       <OnlyDustCrashedLogo />
-      <div className="flex flex-col gap-6 w-72">
-        <div className="font-normal font-belwe text-3xl text-greyscale-50">{T("state.error.title")}</div>
-        <div className="font-normal font-walsheim text-lg text-spaceBlue-200 px-3.5">
+      <div className="flex w-72 flex-col gap-6">
+        <div className="font-belwe text-3xl font-normal text-greyscale-50">{T("state.error.title")}</div>
+        <div className="px-3.5 font-walsheim text-lg font-normal text-spaceBlue-200">
           {begin}
           <a className="underline" href={"mailto:contact@onlydust.xyz"}>
             {link}
@@ -27,7 +27,7 @@ export default function View({ onBackClicked, onRefreshClicked }: Props) {
           {end}
         </div>
       </div>
-      <div className="flex flex-row gap-4 items-center">
+      <div className="flex flex-row items-center gap-4">
         <Button type={ButtonType.Secondary} onClick={onBackClicked}>
           <ArrowLeftSLine className="text-xl" /> {T("state.error.back")}
         </Button>

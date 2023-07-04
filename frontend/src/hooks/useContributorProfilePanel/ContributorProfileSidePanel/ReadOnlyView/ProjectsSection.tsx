@@ -17,7 +17,7 @@ export default function ProjectsSection({ projects, setOpen }: Props) {
 
   return (
     <Section title={T("profile.sections.projects.title")}>
-      <div className="flex flex-col md:grid grid-cols-2 xl:grid-cols-3 gap-3">
+      <div className="flex grid-cols-2 flex-col gap-3 md:grid xl:grid-cols-3">
         {projects.map(project =>
           isXl ? (
             <Link

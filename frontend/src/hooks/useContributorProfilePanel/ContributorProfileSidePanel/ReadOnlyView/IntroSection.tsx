@@ -43,7 +43,7 @@ export default function IntroSection({ isOwn, isPublic, profile, setEditMode }: 
   return (
     <div className="flex flex-col gap-6">
       {!isPublic && (
-        <div className="self-end z-20 -mr-4 flex flex-row gap-2">
+        <div className="z-20 -mr-4 flex flex-row gap-2 self-end">
           {isOwn && (
             <Button size={ButtonSize.Sm} onClick={() => setEditMode(true)}>
               <PencilLine />
@@ -68,13 +68,13 @@ export default function IntroSection({ isOwn, isPublic, profile, setEditMode }: 
           "mt-6": isPublic,
         })}
       >
-        <div data-testid="login" className="font-belwe font-normal text-3xl text-white">
+        <div data-testid="login" className="font-belwe text-3xl font-normal text-white">
           {profile.login}
         </div>
         {profile.location && (
           <div
             data-testid="location"
-            className="flex flex-row gap-2 items-center font-walsheim font-normal text-base text-greyscale-400"
+            className="flex flex-row items-center gap-2 font-walsheim text-base font-normal text-greyscale-400"
           >
             <MapPinLine />
             {profile.location}
@@ -83,8 +83,8 @@ export default function IntroSection({ isOwn, isPublic, profile, setEditMode }: 
       </div>
 
       {profile.completionScore !== undefined && profile.completionScore < 95 && (
-        <div className="flex flex-col gap-2 w-full px-5 py-4 bg-completion-gradient rounded-2xl">
-          <div className="font-medium font-walsheim text-sm text-greyscale-50">
+        <div className="flex w-full flex-col gap-2 rounded-2xl bg-completion-gradient px-5 py-4">
+          <div className="font-walsheim text-sm font-medium text-greyscale-50">
             {T("profile.completion", { completion: profile.completionScore.toString() })}
           </div>
           <CompletionBar completionScore={profile.completionScore} />
@@ -99,14 +99,14 @@ export default function IntroSection({ isOwn, isPublic, profile, setEditMode }: 
             </MarkdownPreview>
           )}
           {website && (
-            <div data-testid="website" className="flex flex-row gap-1 items-center text-base text-greyscale-300">
+            <div data-testid="website" className="flex flex-row items-center gap-1 text-base text-greyscale-300">
               <GlobalLine />
               <ExternalLink url={website.url} text={website.hostname} />
             </div>
           )}
 
           {profile.createdAt ? (
-            <div className="flex flex-row gap-1 items-center text-base text-greyscale-300">
+            <div className="flex flex-row items-center gap-1 text-base text-greyscale-300">
               <img id={`od-logo-${profile.login}`} src={onlyDustLogo} className="h-3.5" />
               {T("profile.joinedAt", {
                 joinedAt: formatDateShort(new Date(profile.createdAt)),
@@ -125,7 +125,7 @@ export default function IntroSection({ isOwn, isPublic, profile, setEditMode }: 
           )}
         </div>
       )}
-      <div className="flex flex-row gap-2 items-center">
+      <div className="flex flex-row items-center gap-2">
         {profile.htmlUrl && (
           <SocialLink testId="github" link={profile.htmlUrl}>
             <GithubLogo />

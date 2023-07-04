@@ -74,8 +74,8 @@ export default function View({
   const filteredIssues = useFilteredWorkItems({ pattern: searchPattern, workItems: visibleIssues });
 
   return (
-    <div className="flex flex-col gap-3 overflow-hidden -mr-4 h-full px-6">
-      <div className="flex flex-col gap-3 mr-4">
+    <div className="-mr-4 flex h-full flex-col gap-3 overflow-hidden px-6">
+      <div className="mr-4 flex flex-col gap-3">
         <div className="flex flex-row items-center justify-between">
           <div className="flex flex-row gap-3">
             <Toggle
@@ -96,7 +96,7 @@ export default function View({
             )}
           </div>
           {some(issues, { ignored: true }) && (
-            <div className="flex flex-row items-center gap-2 text-greyscale-50 font-walsheim font-normal text-sm">
+            <div className="flex flex-row items-center gap-2 font-walsheim text-sm font-normal text-greyscale-50">
               <EyeOffLine />
               {T("payment.form.workItems.showIgnored")}
               <FormToggle name={showIgnoredItemsName} control={control} />
@@ -112,7 +112,7 @@ export default function View({
             inputClassName="pl-10"
             prefixComponent={
               <div className="mt-0.5">
-                <SearchLine className="text-spaceBlue-200 text-xl" />
+                <SearchLine className="text-xl text-spaceBlue-200" />
               </div>
             }
             inputProps={{ autoFocus: true }}
@@ -134,7 +134,7 @@ export default function View({
 
 const Scroller = forwardRef<HTMLDivElement>((props, ref) => (
   <div
-    className="overflow-auto scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded"
+    className="overflow-auto scrollbar-thin scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded scrollbar-w-2"
     {...props}
     ref={ref}
   />
@@ -144,7 +144,7 @@ Scroller.displayName = "Scroller";
 
 const ListBuilder = (tabName: string) => {
   const ListComponent = forwardRef<HTMLDivElement>((props, ref) => (
-    <div className="flex flex-col gap-2 h-full p-px mr-1.5" {...props} ref={ref} data-testid={`eligible-${tabName}`} />
+    <div className="mr-1.5 flex h-full flex-col gap-2 p-px" {...props} ref={ref} data-testid={`eligible-${tabName}`} />
   ));
   ListComponent.displayName = "List";
   return ListComponent;

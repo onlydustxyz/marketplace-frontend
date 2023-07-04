@@ -55,7 +55,7 @@ const filteredExternalContributors: Contributor[] = [
 
 const Template: ComponentStory<typeof ContributorSelectView> = () => {
   return (
-    <div className="w-full relative">
+    <div className="relative w-full">
       <ContributorSelectView {...args} />
     </div>
   );

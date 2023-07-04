@@ -7,7 +7,7 @@ type PropsType = {
 
 const SortingArrow: React.FC<PropsType> = ({ direction, visible }) => (
   <i
-    className={classNames(`ri-arrow-${direction}-line font-medium text-base text-spacePurple-500`, {
+    className={classNames(`ri-arrow-${direction}-line text-base font-medium text-spacePurple-500`, {
       invisible: !visible,
     })}
   />

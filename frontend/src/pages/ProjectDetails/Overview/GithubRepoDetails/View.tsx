@@ -12,19 +12,19 @@ export default function View({ id, name, htmlUrl, description, stars, forkCount 
 
   return (
     <Card dataTestId={`github-repo-${id}`} className="flex flex-row justify-between p-3" padded={false} blurred={false}>
-      <div className="flex flex-col justify-between font-walsheim text-greyscale-50 font-normal p-3 pt-5 w-5/6 gap-5">
-        <div className="flex flex-col gap-2 justify-start">
-          <span className="font-medium text-base">{name}</span>
-          <span className={`text-greyscale-200 text-sm line-clamp-2 ${!description && "italic"}`}>
+      <div className="flex w-5/6 flex-col justify-between gap-5 p-3 pt-5 font-walsheim font-normal text-greyscale-50">
+        <div className="flex flex-col justify-start gap-2">
+          <span className="text-base font-medium">{name}</span>
+          <span className={`line-clamp-2 text-sm text-greyscale-200 ${!description && "italic"}`}>
             {description || T("project.details.overview.repositories.descriptionPlaceholder")}
           </span>
         </div>
-        <div className="flex flex-row gap-5 text-greyscale-200 text-sm font-medium">
+        <div className="flex flex-row gap-5 text-sm font-medium text-greyscale-200">
           <div className="flex flex-row gap-1">
             <StarLine />
             {stars}
           </div>
-          <div className="flex flex-row gap-1 items-center">
+          <div className="flex flex-row items-center gap-1">
             <ForkLine className="fill-greyscale-200" />
             {forkCount}
           </div>

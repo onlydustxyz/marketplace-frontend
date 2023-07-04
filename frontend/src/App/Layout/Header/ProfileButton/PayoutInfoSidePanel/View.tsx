@@ -45,8 +45,8 @@ export default function View({ payoutSettingsValid, saveButtonDisabled, unsavedC
   const BICValue = watch("BIC");
 
   return (
-    <div className="flex flex-col justify-between h-full min-h-0 overflow-y-auto">
-      <div className="flex flex-col gap-6 pt-4 px-4 mb-1 mx-2 min-h-0 scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded">
+    <div className="flex h-full min-h-0 flex-col justify-between overflow-y-auto">
+      <div className="mx-2 mb-1 flex min-h-0 flex-col gap-6 px-4 pt-4 scrollbar-thin scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded scrollbar-w-2">
         <Tag size={TagSize.Medium}>
           <div
             className={classNames({
@@ -83,7 +83,7 @@ export default function View({ payoutSettingsValid, saveButtonDisabled, unsavedC
           {profileType === ProfileType.Company && (
             <div className="flex flex-col">
               <Callout>{T("profile.form.companyNeedsInvoiceCallout")}</Callout>
-              <div className="flex flex-row gap-5 w-full pt-5">
+              <div className="flex w-full flex-row gap-5 pt-5">
                 <Input
                   label={T("profile.form.companyName")}
                   name="companyName"
@@ -97,7 +97,7 @@ export default function View({ payoutSettingsValid, saveButtonDisabled, unsavedC
                   requiredForPayment={true}
                 />
               </div>
-              <div className="flex flex-row gap-5 w-full">
+              <div className="flex w-full flex-row gap-5">
                 <Input
                   label={T("profile.form.companyOwnerFirstName")}
                   name="firstname"
@@ -114,7 +114,7 @@ export default function View({ payoutSettingsValid, saveButtonDisabled, unsavedC
             </div>
           )}
           {profileType === ProfileType.Individual && (
-            <div className="flex flex-row gap-5 w-full">
+            <div className="flex w-full flex-row gap-5">
               <Input
                 label={T("profile.form.firstname")}
                 name="firstname"
@@ -158,7 +158,7 @@ export default function View({ payoutSettingsValid, saveButtonDisabled, unsavedC
             </div>
           </div>
           {profileType === ProfileType.Company && (
-            <div className="flex flex-row gap-3 font-medium text-neutral-300 w-fit mb-6">
+            <div className="mb-6 flex w-fit flex-row gap-3 font-medium text-neutral-300">
               <ProfileRadioGroup
                 name="payoutSettingsType"
                 label={T("profile.form.payoutSettingsType")}
@@ -256,17 +256,17 @@ export default function View({ payoutSettingsValid, saveButtonDisabled, unsavedC
             </div>
           )}
         </Card>
-        <div className="flex flex-col gap-4 p-4 items-center text-center text-greyscale-400 font-walsheim">
-          <div className="flex items-center justify-center bg-white/8 w-9 h-9 rounded-lg text-xl leading-5">
+        <div className="flex flex-col items-center gap-4 p-4 text-center font-walsheim text-greyscale-400">
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/8 text-xl leading-5">
             <LockFill />
           </div>
           <ReactMarkdown className="whitespace-pre-wrap text-sm">{T("profile.form.privacyNotice")}</ReactMarkdown>
         </div>
       </div>
-      <div className="flex flex-row items-center justify-between bg-white/2 border-t border-greyscale-50/8 px-8 py-5">
+      <div className="flex flex-row items-center justify-between border-t border-greyscale-50/8 bg-white/2 px-8 py-5">
         <Tag size={TagSize.Medium}>
           {unsavedChanges ? (
-            <div className="text-orange-500 flex flex-row items-center gap-1">
+            <div className="flex flex-row items-center gap-1 text-orange-500">
               <ErrorWarningLine /> {T("profile.form.saveStatus.unsaved")}
             </div>
           ) : (

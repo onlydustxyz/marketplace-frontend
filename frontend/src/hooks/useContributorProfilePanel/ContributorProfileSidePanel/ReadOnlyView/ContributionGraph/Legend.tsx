@@ -13,10 +13,10 @@ type Props = {
 
 export default function Legend({ payload = [] }: Props) {
   return (
-    <div className="flex flex-row-reverse gap-6 mb-3 items-center justify-center w-full text-xs text-greyscale-400 font-walsheim font-normal">
+    <div className="mb-3 flex w-full flex-row-reverse items-center justify-center gap-6 font-walsheim text-xs font-normal text-greyscale-400">
       {payload.map(payload => (
         <div key={payload.value}>
-          <div className="flex flex-row gap-1 items-center">
+          <div className="flex flex-row items-center gap-1">
             <Icon
               secondary={payload.payload?.dataKey === "unpaidCount"}
               color={payload.payload?.fill}

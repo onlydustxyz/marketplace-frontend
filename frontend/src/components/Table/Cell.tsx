@@ -22,7 +22,7 @@ export const Cell: React.FC<CellProps> = ({
   return (
     <td>
       <div
-        className={classNames(`flex items-center text-greyscale-50 font-normal ${className}`, {
+        className={classNames(`flex items-center font-normal text-greyscale-50 ${className}`, {
           "py-4": height === CellHeight.Tall,
           "py-3": height === CellHeight.Medium,
           "py-px": height === CellHeight.Small,
