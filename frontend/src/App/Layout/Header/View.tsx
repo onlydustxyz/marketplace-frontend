@@ -42,15 +42,15 @@ export default function HeaderView({
 
   return (
     <div
-      className={classNames("bg-black", "py-4 px-6 gap-3 xl:gap-8", "font-walsheim text-xl text-neutral-400")}
+      className={classNames("bg-black", "gap-3 px-6 py-4 xl:gap-8", "font-walsheim text-xl text-neutral-400")}
       data-testid="header"
     >
-      <div className="flex gap-8 justify-center xl:justify-start items-center">
-        <Link to={RoutePaths.Projects} className="flex items-center w-fit gap-3 ">
+      <div className="flex items-center justify-center gap-8 xl:justify-start">
+        <Link to={RoutePaths.Projects} className="flex w-fit items-center gap-3 ">
           <OnlyDustLogo />
           <OnlyDustTitle />
         </Link>
-        <div className="hidden flex-1 xl:flex gap-8 items-center">
+        <div className="flex-1 items-center gap-8 xl:flex">
           {menuItems[RoutePaths.Projects] && (
             <MenuItem path={selectedMenuItem} link={RoutePaths.Projects} activeRegex={new RegExp("^(/|/projects.+)$")}>
               {menuItems[RoutePaths.Projects]}
@@ -61,28 +61,28 @@ export default function HeaderView({
               {menuItems[RoutePaths.Payments]}
             </MenuItem>
           )}
-          <div className="flex-1 flex justify-center">
+          <div className="flex flex-1 justify-center">
             {impersonating && (
               <div
-                className="bg-orange-500 text-white text-sm uppercase font-bold px-4 py-2 rounded-xl"
+                className="rounded-xl bg-orange-500 px-4 py-2 text-sm font-bold uppercase text-white"
                 data-testid="impersonation-banner"
               >
                 {T("impersonation.banner")}
               </div>
             )}
           </div>
-          <div className="flex flex-row gap-4 justify-end items-center">
+          <div className="flex flex-row items-center justify-end gap-4">
             {isLoggedIn && !testing && <FeedbackButton />}
             {!onboardingInProgress &&
               profileCompletionScore !== undefined &&
               profileCompletionScore < 95 &&
               githubUserId && (
                 <div
-                  className="flex flex-col gap-2 w-48 cursor-pointer"
+                  className="flex w-48 cursor-pointer flex-col gap-2"
                   onClick={() => openContributorProfilePanel(githubUserId)}
                 >
-                  <div className="flex flex-row items-center gap-1 font-medium font-walsheim text-sm text-greyscale-50">
-                    <img src={axeCoin} className="w-4 h-4" />
+                  <div className="flex flex-row items-center gap-1 font-walsheim text-sm font-medium text-greyscale-50">
+                    <img src={axeCoin} className="h-4 w-4" />
                     {T("profile.completion", { completion: profileCompletionScore.toString() })}
                   </div>
                   <CompletionBar completionScore={profileCompletionScore} />

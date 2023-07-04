@@ -13,7 +13,7 @@ import {
   ProjectsBoolExp,
   ProjectsOrderBy,
 } from "src/__generated/graphql";
-import { Sorting } from "..";
+import { Sorting } from "src/pages/Projects/sorting";
 import { isProjectVisibleToUser } from "src/hooks/useProjectVisibility";
 
 type Props = {
@@ -52,7 +52,7 @@ export default function AllProjects({ sorting }: Props) {
   }, [getProjectsQuery.data?.projects, ledProjectIds, ownership, isLoggedIn, githubUserId]);
 
   return (
-    <div className="flex flex-col gap-5 grow">
+    <div className="flex grow flex-col gap-5">
       {projects && projects.length > 0 ? (
         projects.map(project => <ProjectCard key={project.id} {...project} />)
       ) : (

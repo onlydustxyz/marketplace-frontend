@@ -3,7 +3,7 @@ import Arrow from "src/assets/icons/Arrow";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import CheckLine from "src/icons/CheckLine";
-import { Sorting } from "..";
+import { Sorting } from "src/pages/Projects/sorting";
 
 type Props = {
   all: Sorting[];
@@ -11,7 +11,7 @@ type Props = {
   onChange: (value: Sorting) => void;
 };
 
-export default function SortingDropdown<T>({ all, current, onChange }: Props) {
+export default function SortingDropdown({ all, current, onChange }: Props) {
   const { T } = useIntl();
 
   return (
@@ -19,7 +19,7 @@ export default function SortingDropdown<T>({ all, current, onChange }: Props) {
       value={current}
       onChange={onChange}
       as="div"
-      className="bg-white/2 border border-greyscale-50/12 divide-y divide-greyscale-50/12 backdrop-blur-4xl rounded-md w-fit h-fit font-walsheim font-medium text-sm text-greyscale-50 shadow-heavy"
+      className="h-fit w-fit divide-y divide-greyscale-50/12 rounded-md border border-greyscale-50/12 bg-white/2 font-walsheim text-sm font-medium text-greyscale-50 shadow-heavy backdrop-blur-4xl"
     >
       <Listbox.Button className="flex flex-row items-center gap-2 py-2 pl-4 pr-2">
         <Arrow />
@@ -29,7 +29,7 @@ export default function SortingDropdown<T>({ all, current, onChange }: Props) {
         </div>
         <ArrowDownSLine className="text-xl ui-open:rotate-180" />
       </Listbox.Button>
-      <Listbox.Options className="flex flex-col divide-y divide-greyscale-50/12 cursor-pointer backdrop-blur-4xl bg-white/2">
+      <Listbox.Options className="flex cursor-pointer flex-col divide-y divide-greyscale-50/12 bg-white/2 backdrop-blur-4xl">
         {all.map(value => (
           <Listbox.Option
             key={value}
@@ -37,7 +37,7 @@ export default function SortingDropdown<T>({ all, current, onChange }: Props) {
             className="flex flex-row items-center justify-between px-4 py-3 hover:bg-white/5"
           >
             <span>{T(`projects.sorting.${value}`)}</span>
-            <CheckLine className="text-xl hidden ui-selected:block -my-1" />
+            <CheckLine className="-my-1 hidden text-xl ui-selected:block" />
           </Listbox.Option>
         ))}
       </Listbox.Options>

@@ -3,14 +3,16 @@ import { Dialog, Transition } from "@headlessui/react";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import CloseLine from "src/icons/CloseLine";
 import { useSidePanelStack } from "src/hooks/useSidePanelStack";
+import classNames from "classnames";
 
 type Props = {
   open: boolean;
   setOpen: (value: boolean) => void;
   action?: ReactElement;
+  placement?: "right" | "bottom";
 } & PropsWithChildren;
 
-export default function SidePanel({ open, setOpen, action, children }: Props) {
+export default function SidePanel({ open, setOpen, action, children, placement = "right" }: Props) {
   useEffect(() => {
     document.body.style.setProperty("overflow", "auto");
   }, [open]);
@@ -30,23 +32,41 @@ export default function SidePanel({ open, setOpen, action, children }: Props) {
     }
   }, [open]);
 
+  const transitionProps = {
+    right: {
+      enterFrom: "translate-x-full",
+      enterTo: "translate-x-0",
+      leaveFrom: "translate-x-0",
+      leaveTo: "translate-x-full",
+    },
+    bottom: {
+      enterFrom: "translate-y-full",
+      enterTo: "translate-y-0",
+      leaveFrom: "translate-y-0",
+      leaveTo: "translate-y-full",
+    },
+  }[placement];
+
   return (
     <Transition
       show={open}
       as={Fragment}
       enter="transform transition ease-in-out duration-300"
-      enterFrom="translate-x-full"
-      enterTo="translate-x-0"
       leave="transform transition ease-in-out duration-300"
-      leaveFrom="translate-x-0"
-      leaveTo="translate-x-full"
+      {...transitionProps}
     >
       <Dialog open={open} onClose={onClose} as={Fragment}>
         <Dialog.Panel
-          className={"fixed blur-0 inset-y-0 right-0 h-screen w-full lg:w-3/5 xl:w-5/12 bg-greyscale-900"}
+          className={classNames(
+            {
+              "inset-y-0 right-0 h-screen lg:w-3/5 xl:w-5/12": placement === "right",
+              "inset-x-0 bottom-0 max-h-screen min-h-min overflow-y-auto rounded-t-2xl": placement === "bottom",
+            },
+            "fixed w-full bg-greyscale-900 blur-0"
+          )}
           style={{ zIndex: 10 + panelIndex }}
         >
-          <div className="absolute top-3.5 right-3.5 flex flex-row gap-2 z-20">
+          <div className="absolute right-3.5 top-3.5 z-20 flex flex-row gap-2">
             {action}
             <Button
               size={ButtonSize.Sm}

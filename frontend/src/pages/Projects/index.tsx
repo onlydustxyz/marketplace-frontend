@@ -9,26 +9,9 @@ import { Suspense } from "react";
 import Loader from "src/components/Loader";
 import SortingDropdown from "./SortingDropdown";
 import { useLocalStorage } from "react-use";
-
-export enum Sorting {
-  Trending = "trending",
-  ProjectName = "projectName",
-  ReposCount = "reposCount",
-  ContributorsCount = "contributorsCount",
-  MoneyGranted = "moneyGranted",
-  LeftToSpend = "leftToSpend",
-  TotalBudget = "totalBudget",
-}
-
-export const PROJECT_SORTINGS = [
-  Sorting.Trending,
-  Sorting.ProjectName,
-  Sorting.ReposCount,
-  Sorting.ContributorsCount,
-  Sorting.MoneyGranted,
-  Sorting.LeftToSpend,
-  Sorting.TotalBudget,
-];
+import { PROJECT_SORTINGS, Sorting } from "./sorting";
+import { FilterButton } from "./FilterPanel/FilterButton";
+import { SortButton } from "./SortingDropdown/SortButton";
 
 const DEFAULT_SORTING = Sorting.Trending;
 
@@ -42,22 +25,30 @@ export default function Projects() {
   return (
     <ProjectFilterProvider>
       <Background ref={ref} roundedBorders={BackgroundRoundedBorders.Full}>
-        <div className="md:container md:mx-auto pt-8 xl:pt-16 pb-8 px-4 md:px-12">
-          <div className="relative hidden xl:flex text-5xl font-belwe justify-between items-end">
-            {T("navbar.projects")}
-            <div className="absolute z-10 right-0 top-0">
+        <div className="flex flex-col gap-6 px-4 pb-8 pt-8 md:container md:mx-auto md:px-12 xl:gap-8 xl:pt-16">
+          <div className="relative flex items-center justify-between">
+            <div className="font-belwe text-3xl xl:text-5xl">{T("navbar.projects")}</div>
+            <div className="z-10 hidden text-red-50 xl:block">
               <SortingDropdown
                 all={PROJECT_SORTINGS}
                 current={projectSorting || DEFAULT_SORTING}
                 onChange={setProjectSorting}
               />
             </div>
+            <div className="flex items-center gap-2 xl:hidden">
+              <SortButton
+                all={PROJECT_SORTINGS}
+                current={projectSorting || DEFAULT_SORTING}
+                onChange={setProjectSorting}
+              />
+              <FilterButton isProjectLeader={!!ledProjectIds.length} />
+            </div>
           </div>
-          <div className="flex xl:mt-8 gap-6 h-full">
-            <div className="hidden xl:block basis-80 shrink-0 sticky top-0">
+          <div className="flex h-full gap-6">
+            <div className="sticky top-0 hidden shrink-0 basis-80 xl:block">
               <FilterPanel isProjectLeader={!!ledProjectIds.length} />
             </div>
-            <div className="grow min-w-0">
+            <div className="min-w-0 grow">
               <Suspense fallback={<Loader />}>
                 <AllProjects sorting={projectSorting || DEFAULT_SORTING} />
               </Suspense>
