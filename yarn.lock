@@ -10399,7 +10399,16 @@ postcss@^8.2.14, postcss@^8.4.19, postcss@^8.4.21:
     picocolors "^1.0.0"
     source-map-js "^1.0.2"
 
-postcss@^8.4.18, postcss@^8.4.20:
+postcss@^8.4.18:
+  version "8.4.24"
+  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.4.24.tgz#f714dba9b2284be3cc07dbd2fc57ee4dc972d2df"
+  integrity sha512-M0RzbcI0sO/XJNucsGjvWU9ERWxb/ytp1w6dKtxTKgixdtQDq4rmx/g8W1hnaheq9jgwL/oyEdH5Bc4WwJKMqg==
+  dependencies:
+    nanoid "^3.3.6"
+    picocolors "^1.0.0"
+    source-map-js "^1.0.2"
+
+postcss@^8.4.20:
   version "8.4.20"
   resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.4.20.tgz#64c52f509644cecad8567e949f4081d98349dc56"
   integrity sha512-6Q04AXR1212bXr5fh03u8aAwbLxAQNGQ/Q1LNa0VfOI06ZAlhPHtQvE4OIdpj4kLThXilalPnmDSOD65DcHt+g==
@@ -10424,6 +10433,11 @@ prettier-linter-helpers@^1.0.0:
   integrity sha512-GbK2cP9nraSSUF9N2XwUwqfzlAFlMNYYl+ShE/V+H8a9uNl/oUqB1w2EL54Jh0OlyRSd8RfWYJ3coVS4TROP2w==
   dependencies:
     fast-diff "^1.1.2"
+
+prettier-plugin-tailwindcss@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/prettier-plugin-tailwindcss/-/prettier-plugin-tailwindcss-0.3.0.tgz#8299b307c7f6467f52732265579ed9375be6c818"
+  integrity sha512-009/Xqdy7UmkcTBpwlq7jsViDqXAYSOMLDrHAdTMlVZOrKfM2o9Ci7EMWTMZ7SkKBFTG04UM9F9iM2+4i6boDA==
 
 prettier@^2.7.1:
   version "2.8.1"
@@ -12854,9 +12868,9 @@ vite-plugin-istanbul@^3.0.4:
     fsevents "~2.3.2"
 
 vite@^3.2.3:
-  version "3.2.5"
-  resolved "https://registry.yarnpkg.com/vite/-/vite-3.2.5.tgz#dee5678172a8a0ab3e547ad4148c3d547f90e86a"
-  integrity sha512-4mVEpXpSOgrssFZAOmGIr85wPHKvaDAcXqxVxVRZhljkJOMZi1ibLibzjLHzJvcok8BMguLc7g1W6W/GqZbLdQ==
+  version "3.2.7"
+  resolved "https://registry.yarnpkg.com/vite/-/vite-3.2.7.tgz#35a62826bd4d6b778ae5db8766d023bcd4e7bef3"
+  integrity sha512-29pdXjk49xAP0QBr0xXqu2s5jiQIXNvE/xwd0vUizYT2Hzqe4BksNNoWllFVXJf4eLZ+UlVQmXfB4lWrc+t18g==
   dependencies:
     esbuild "^0.15.9"
     postcss "^8.4.18"
