@@ -29,7 +29,7 @@ pub trait Repository: database::Repository<GithubRepoIndex> {
 	) -> Result<()>;
 
 	fn disable_indexing(&self, repo_id: &GithubRepoId) -> Result<()>;
-	fn enable_indexing(&self, repo_id: &GithubRepoId) -> Result<()>;
+	fn start_indexing(&self, repo_id: &GithubRepoId) -> Result<()>;
 }
 
 impl Repository for database::Client {
@@ -92,13 +92,11 @@ impl Repository for database::Client {
 		Ok(())
 	}
 
-	fn enable_indexing(&self, repo_id: &GithubRepoId) -> Result<()> {
+	fn start_indexing(&self, repo_id: &GithubRepoId) -> Result<()> {
 		let mut connection = self.connection()?;
 		diesel::insert_into(dsl::github_repo_indexes)
 			.values(GithubRepoIndex::new(*repo_id))
-			.on_conflict(dsl::repo_id)
-			.do_update()
-			.set(dsl::enabled.eq(true))
+			.on_conflict_do_nothing()
 			.execute(&mut *connection)?;
 		Ok(())
 	}

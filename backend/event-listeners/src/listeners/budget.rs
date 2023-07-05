@@ -89,7 +89,7 @@ impl EventListener<Event> for Projector {
 									issue_number: *work_item.issue_number(),
 								})?;
 								self.github_repo_index_repository
-									.enable_indexing(work_item.repo_id())?;
+									.start_indexing(work_item.repo_id())?;
 								Ok(())
 							},
 						)?;
