@@ -53,10 +53,7 @@ impl EventListener<Event> for Projector {
 						project_id,
 						github_repo_id,
 					})?;
-					self.github_repo_index_repository.try_insert(GithubRepoIndex {
-						repo_id: github_repo_id,
-						..Default::default()
-					})?;
+					self.github_repo_index_repository.start_indexing(&github_repo_id)?;
 					self.github_repos_contributors_repository
 						.find_contributors_of_repo(&github_repo_id)?
 						.iter()
