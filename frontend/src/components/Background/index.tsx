@@ -19,14 +19,14 @@ const Background = forwardRef(function Background(
   return (
     <div
       ref={ref}
-      className={classNames("mb-6 h-full w-full overflow-y-auto scrollbar-none", {
+      className={classNames("mb-6 h-full w-full overflow-y-auto xl:scrollbar-none", {
         "ml-2 mr-6": withSidebar,
         "px-2 md:mx-6 md:pr-6": !withSidebar,
       })}
     >
       <div
         className={classNames(
-          "min-h-full bg-fixed bg-clip-content bg-space bg-no-repeat",
+          "min-h-full bg-space xl:bg-fixed xl:bg-clip-content xl:bg-no-repeat",
           roundedBorders,
           {
             "md:mr-6": !withSidebar,
