@@ -27,7 +27,7 @@ export default function View({ onBackClicked, onRefreshClicked }: Props) {
           {end}
         </div>
       </div>
-      <div className="flex flex-row items-center gap-4">
+      <div className="flex flex-col items-center gap-4 md:flex-row">
         <Button type={ButtonType.Secondary} onClick={onBackClicked}>
           <ArrowLeftSLine className="text-xl" /> {T("state.error.back")}
         </Button>
