@@ -65,38 +65,40 @@ export default function ViewMobile({
       </button>
       <SidePanel open={panelOpen} setOpen={setPanelOpen} placement="bottom" hasCloseButton={false}>
         <div className="flex flex-col divide-y divide-greyscale-50/8 bg-noise-medium p-3 font-walsheim text-sm">
-          {hasPayments && (
-            <div className="flex flex-col">
-              <NavLink
-                to={RoutePaths.Projects}
-                className={({ isActive }) =>
-                  classNames("flex items-center gap-3 rounded-xl p-4", { "bg-white/8": isActive })
-                }
-              >
-                <Folder3Line className="text-xl" /> {T("navbar.projects")}
-              </NavLink>
-              <NavLink
-                to={RoutePaths.Payments}
-                className={({ isActive }) =>
-                  classNames("flex items-center gap-3 rounded-xl p-4", { "bg-white/8": isActive })
-                }
-              >
-                <ExchangeDollarLine className="text-xl" /> {T("navbar.payments")}
-              </NavLink>
-            </div>
-          )}
           {!hideProfileItems && (
             <>
-              <button
-                className="flex items-center gap-3 p-4"
-                onClick={() => githubUserId && openContributorProfileSidePanel(githubUserId)}
-              >
-                <User3Line className="text-xl" /> {T("navbar.profile.publicProfile")}
-              </button>
-              <button className="flex items-center gap-3 p-4" onClick={() => setPayoutInfoSidePanelOpen(true)}>
-                <MoneyDollarCircleLine className="text-xl" /> {T("navbar.profile.payoutInfo")}
-                {showMissingPayoutSettingsState && <Dot className="w-1.5 fill-orange-500" />}
-              </button>
+              {hasPayments && (
+                <div className="flex flex-col">
+                  <NavLink
+                    to={RoutePaths.Projects}
+                    className={({ isActive }) =>
+                      classNames("flex items-center gap-3 rounded-xl p-4", { "bg-white/8": isActive })
+                    }
+                  >
+                    <Folder3Line className="text-xl" /> {T("navbar.projects")}
+                  </NavLink>
+                  <NavLink
+                    to={RoutePaths.Payments}
+                    className={({ isActive }) =>
+                      classNames("flex items-center gap-3 rounded-xl p-4", { "bg-white/8": isActive })
+                    }
+                  >
+                    <ExchangeDollarLine className="text-xl" /> {T("navbar.payments")}
+                  </NavLink>
+                </div>
+              )}
+              <>
+                <button
+                  className="flex items-center gap-3 p-4"
+                  onClick={() => githubUserId && openContributorProfileSidePanel(githubUserId)}
+                >
+                  <User3Line className="text-xl" /> {T("navbar.profile.publicProfile")}
+                </button>
+                <button className="flex items-center gap-3 p-4" onClick={() => setPayoutInfoSidePanelOpen(true)}>
+                  <MoneyDollarCircleLine className="text-xl" /> {T("navbar.profile.payoutInfo")}
+                  {showMissingPayoutSettingsState && <Dot className="w-1.5 fill-orange-500" />}
+                </button>
+              </>
             </>
           )}
           <div className="flex w-full flex-row items-center justify-between p-4">
