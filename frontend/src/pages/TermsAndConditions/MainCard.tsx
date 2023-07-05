@@ -16,14 +16,14 @@ export default function TermsAndConditionsMainCard({
 
   return (
     <>
-      <div className="mt-20 rounded-2xl bg-mosaic bg-contain pt-1.5 outline outline-greyscale-50/8">
+      <div className="mt-6 rounded-2xl bg-mosaic bg-contain pt-1.5 outline outline-greyscale-50/8 xl:mt-20">
         <Card
-          className="mb-5 flex flex-col items-center justify-between gap-7 divide-y divide-greyscale-50/12 bg-whiteFakeOpacity-2 pt-12"
+          className="mb-5 flex flex-col items-center justify-between gap-7 divide-y divide-greyscale-50/12 bg-whiteFakeOpacity-2 pb-40 pt-12 xl:pb-0"
           padded={false}
           blurred={false}
         >
-          <div className="flex flex-col items-center justify-between gap-4 px-12">
-            <div className="font-belwe text-3xl">Summary of our Terms & Conditions</div>
+          <div className="flex flex-col items-center justify-between gap-4 px-6 xl:px-12">
+            <div className="text-center font-belwe text-3xl">Summary of our Terms & Conditions</div>
             <div className="text-center">
               <p>To use Only Dust, you must accept and comply with our Terms and Conditions.</p>
               <p>Here’s a summary of our responsibilities and your commitments.</p>
@@ -91,7 +91,7 @@ export default function TermsAndConditionsMainCard({
               </div>
             </Section>
           </div>
-          <div className="ring-none flex w-full flex-col items-center justify-between gap-7 rounded-b-xl bg-white/4 px-6 py-6">
+          <div className="ring-none fixed bottom-0 flex w-full flex-col items-center justify-between gap-7 rounded-b-xl bg-whiteFakeOpacity-2 px-6 py-6 xl:relative xl:bg-white/4">
             <div className="flex flex-row items-center gap-3">
               <TermsAndConditionsCheckBox {...{ checked, setChecked }} />
               <p>
@@ -106,7 +106,7 @@ export default function TermsAndConditionsMainCard({
               </p>
             </div>
             <Button onClick={() => handleAcceptTermsAndConditions()} width={Width.Full} disabled={!checked}>
-              Accept terms and conditions
+              Confirm
             </Button>
           </div>
         </Card>
