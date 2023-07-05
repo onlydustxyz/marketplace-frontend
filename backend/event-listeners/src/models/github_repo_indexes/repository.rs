@@ -28,7 +28,6 @@ pub trait Repository: database::Repository<GithubRepoIndex> {
 		state: serde_json::Value,
 	) -> Result<()>;
 
-	fn disable_indexing(&self, repo_id: &GithubRepoId) -> Result<()>;
 	fn start_indexing(&self, repo_id: &GithubRepoId) -> Result<()>;
 }
 
@@ -78,15 +77,6 @@ impl Repository for database::Client {
 		let mut connection = self.connection()?;
 		diesel::update(dsl::github_repo_indexes)
 			.set(dsl::issues_indexer_state.eq(state))
-			.filter(dsl::repo_id.eq(repo_id))
-			.execute(&mut *connection)?;
-		Ok(())
-	}
-
-	fn disable_indexing(&self, repo_id: &GithubRepoId) -> Result<()> {
-		let mut connection = self.connection()?;
-		diesel::update(dsl::github_repo_indexes)
-			.set(dsl::enabled.eq(false))
 			.filter(dsl::repo_id.eq(repo_id))
 			.execute(&mut *connection)?;
 		Ok(())

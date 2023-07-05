@@ -1,4 +1,4 @@
-use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
+use diesel::{QueryDsl, RunQueryDsl};
 use domain::{GithubRepoId, GithubUserId};
 use event_listeners::models::GithubUserIndex;
 use infrastructure::database::{schema::github_repo_indexes, Client, Result};
@@ -12,7 +12,6 @@ impl Repository<GithubRepoId> for Client {
 		let mut connection = self.connection()?;
 		let ids = github_repo_indexes::table
 			.select(github_repo_indexes::repo_id)
-			.filter(github_repo_indexes::enabled.eq(true))
 			.load(&mut *connection)?;
 		Ok(ids)
 	}

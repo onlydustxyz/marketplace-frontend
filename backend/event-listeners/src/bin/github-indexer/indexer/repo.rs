@@ -60,11 +60,10 @@ impl super::Indexer<GithubRepoId> for Indexer {
 			},
 			Err(error) => match error {
 				GithubServiceError::NotFound(_) => {
-					olog::error!(
+					olog::warn!(
 						repo_id = repo_id.to_string(),
-						"Github repo not found. Indexing will now be disabled for this repo."
+						"Github repo not found. Skipping repo indexing."
 					);
-					self.github_repo_index_repository.disable_indexing(&repo_id)?;
 					Ok(vec![])
 				},
 				_ => Err(error.into()),

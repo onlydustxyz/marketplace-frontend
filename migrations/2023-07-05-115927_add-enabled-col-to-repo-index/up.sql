@@ -1,2 +1,0 @@
-ALTER TABLE github_repo_indexes
-ADD COLUMN "enabled" BOOLEAN NOT NULL DEFAULT TRUE;

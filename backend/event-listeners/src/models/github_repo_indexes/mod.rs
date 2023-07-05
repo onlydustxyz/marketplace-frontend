@@ -23,14 +23,12 @@ pub struct GithubRepoIndex {
 	pub repo_id: GithubRepoId,
 	pub repo_indexer_state: Option<Value>,
 	pub issues_indexer_state: Option<Value>,
-	pub enabled: bool,
 }
 
 impl GithubRepoIndex {
 	pub fn new(repo_id: GithubRepoId) -> Self {
 		Self {
 			repo_id,
-			enabled: true,
 			..Default::default()
 		}
 	}
