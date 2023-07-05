@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use async_trait::async_trait;
 use derive_new::new;
-use domain::{GithubFetchRepoService, GithubRepo, GithubRepoId};
+use domain::{GithubFetchRepoService, GithubRepo, GithubRepoId, GithubServiceError};
 use event_listeners::{listeners::github::Event as GithubEvent, models::GithubRepoIndexRepository};
 use serde::{Deserialize, Serialize};
 
@@ -49,14 +49,27 @@ impl Indexer {
 #[async_trait]
 impl super::Indexer<GithubRepoId> for Indexer {
 	async fn index(&self, repo_id: GithubRepoId) -> Result<Vec<GithubEvent>> {
-		let repo = self.github_fetch_service.repo_by_id(&repo_id).await?;
+		match self.github_fetch_service.repo_by_id(&repo_id).await {
+			Ok(repo) => {
+				let events = match self.get_state(repo_id)? {
+					Some(state) if state == State::new(&repo) => vec![],
+					_ => vec![GithubEvent::Repo(repo)],
+				};
 
-		let events = match self.get_state(repo_id)? {
-			Some(state) if state == State::new(&repo) => vec![],
-			_ => vec![GithubEvent::Repo(repo)],
-		};
-
-		Ok(events)
+				Ok(events)
+			},
+			Err(error) => match error {
+				GithubServiceError::NotFound(_) => {
+					olog::error!(
+						repo_id = repo_id.to_string(),
+						"Github repo not found. Indexing will now be disabled for this repo."
+					);
+					self.github_repo_index_repository.disable_indexing(&repo_id)?;
+					Ok(vec![])
+				},
+				_ => Err(error.into()),
+			},
+		}
 	}
 }
 
