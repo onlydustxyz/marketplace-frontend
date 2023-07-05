@@ -26,6 +26,8 @@ import LockFill from "src/icons/LockFill";
 import FormToggle from "src/components/FormToggle";
 import CompletionBar from "src/components/CompletionBar";
 import { useState } from "react";
+import { viewportConfig } from "src/config";
+import { useMediaQuery } from "usehooks-ts";
 
 type Props = {
   profile: UserProfileFragment & OwnUserProfileDetailsFragment;
@@ -34,6 +36,7 @@ type Props = {
 
 export default function EditView({ profile, setEditMode }: Props) {
   const { T } = useIntl();
+  const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
   const formMethods = useForm<UserProfileInfo>({
     defaultValues: fromFragment(profile),
@@ -202,7 +205,7 @@ export default function EditView({ profile, setEditMode }: Props) {
               )}
             </Tag>
             <div className="flex flex-row items-center gap-5">
-              {completionScore < 95 && (
+              {isXl && completionScore < 95 && (
                 <div className="flex w-48 flex-col gap-2">
                   <div className="self-end font-walsheim text-sm font-medium text-greyscale-50">
                     {T("profile.form.completion", { completion: completionScore.toString() })}
