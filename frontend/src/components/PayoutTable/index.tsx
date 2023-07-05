@@ -61,7 +61,7 @@ const PayoutTable: React.FC<PropsType> = ({ payments, payoutInfoMissing, invoice
         <MobilePayoutList
           payments={sortedPayments}
           payoutInfoMissing={payoutInfoMissing}
-          invoiceNeeded={true}
+          invoiceNeeded={invoiceNeeded}
           onPaymentClick={onPaymentClick}
         />
       )}
