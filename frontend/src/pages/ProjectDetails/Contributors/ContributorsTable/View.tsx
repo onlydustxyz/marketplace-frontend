@@ -5,6 +5,7 @@ import { sortBy } from "lodash";
 import Headers from "./Headers";
 import ContributorLine from "./Line";
 import { Contributor as ContributorBase } from "src/types";
+import Card from "src/components/Card";
 
 export type Contributor = ContributorBase & {
   totalEarned: number;
@@ -51,13 +52,15 @@ export default function View({ contributors, isProjectLeader, remainingBudget, o
   }, [sorting, contributors]);
 
   return (
-    <Table id="contributors_table" headers={<Headers {...{ sorting, applySorting, isProjectLeader }} />}>
-      {sortedContributors.map(contributor => (
-        <ContributorLine
-          key={contributor.login}
-          {...{ contributor, isProjectLeader, isSendingNewPaymentDisabled, onPaymentRequested }}
-        />
-      ))}
-    </Table>
+    <Card className="h-full">
+      <Table id="contributors_table" headers={<Headers {...{ sorting, applySorting, isProjectLeader }} />}>
+        {sortedContributors.map(contributor => (
+          <ContributorLine
+            key={contributor.login}
+            {...{ contributor, isProjectLeader, isSendingNewPaymentDisabled, onPaymentRequested }}
+          />
+        ))}
+      </Table>
+    </Card>
   );
 }

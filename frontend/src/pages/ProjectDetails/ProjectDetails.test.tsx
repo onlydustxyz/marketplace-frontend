@@ -235,6 +235,14 @@ const graphQlMocks = [
   getProjectVisibilityMock(TEST_PROJECT_ID),
 ];
 
+vi.mock("usehooks-ts", async () => {
+  const useHooksModule = await vi.importActual<typeof import("usehooks-ts")>("usehooks-ts");
+  return {
+    ...useHooksModule,
+    useMediaQuery: jest.fn().mockReturnValue(false),
+  };
+});
+
 describe('"ProjectDetails" page', () => {
   beforeAll(() => {
     window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(TEST_ACCESS_TOKEN));

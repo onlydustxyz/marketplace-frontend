@@ -12,6 +12,9 @@ import { ProjectRoutePaths } from "src/App";
 import { useIntl } from "src/hooks/useIntl";
 import { isProjectVisibleToUser } from "src/hooks/useProjectVisibility";
 import { contextWithCacheHeaders } from "src/utils/headers";
+import ViewMobile from "./ViewMobile";
+import { viewportConfig } from "src/config";
+import { useMediaQuery } from "usehooks-ts";
 
 export type ProjectDetailsTab = {
   label: string;
@@ -25,6 +28,7 @@ interface Props {
 export default function ProjectsSidebar({ projectId }: Props) {
   const { ledProjectIds, githubUserId, user } = useAuth();
   const { T } = useIntl();
+  const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
   const isProjectMine = (project?: Maybe<SidebarProjectDetails>) =>
     (project && ledProjectIds.includes(project?.id)) || project?.withInvitation;
@@ -72,16 +76,17 @@ export default function ProjectsSidebar({ projectId }: Props) {
     currentProject && ledProjectIds.includes(currentProject?.id)
       ? [AvailableTabs.overview, AvailableTabs.contributors, AvailableTabs.payments]
       : [AvailableTabs.overview, AvailableTabs.contributors];
-  return currentProject ? (
-    <View
-      availableTabs={availableTabs}
-      currentProject={currentProject}
-      allProjects={sortedProjects}
-      expandable={isProjectMine(currentProject) ? sortedProjects.length > 1 : false}
-    />
-  ) : (
-    <div />
-  );
+
+  if (!currentProject) return <div />;
+
+  const props = {
+    availableTabs,
+    currentProject,
+    allProjects: sortedProjects,
+    expandable: isProjectMine(currentProject) ? sortedProjects.length > 1 : false,
+  };
+
+  return isXl ? <View {...props} /> : <ViewMobile {...props} />;
 }
 
 const projectFromQuery = (project: SidebarProjectDetailsFragment, githubUserId?: number): SidebarProjectDetails => ({

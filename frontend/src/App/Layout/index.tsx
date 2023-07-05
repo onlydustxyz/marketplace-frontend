@@ -1,32 +1,22 @@
-import classNames from "classnames";
-import { Outlet, useLocation } from "react-router-dom";
-import ResponsivityFallback from "./ResponsivityFallback";
+import { Outlet, useMatch } from "react-router-dom";
 import { Toaster } from "src/components/Toaster";
-
 import Header from "./Header";
 import Tooltip from "src/components/Tooltip";
+import { viewportConfig } from "src/config";
+import { useMediaQuery } from "usehooks-ts";
+import { RoutePaths } from "..";
 
 export default function Layout() {
-  const location = useLocation();
-  const homepage = location.pathname === "/";
+  const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
+  const match = useMatch(`${RoutePaths.ProjectDetails}/*`);
+  const hideHeader = match && !isXl;
 
   return (
-    <div className="h-screen w-screen md:fixed">
-      {!homepage && (
-        <div className="md:invisible md:h-0">
-          <ResponsivityFallback />
-        </div>
-      )}
-      <div
-        className={classNames("flex flex-col md:h-screen", {
-          "invisible md:visible": !homepage,
-        })}
-      >
-        <Header />
-        <Outlet />
-        <Toaster />
-        <Tooltip />
-      </div>
+    <div className="flex h-screen w-screen flex-col md:fixed">
+      {!hideHeader && <Header />}
+      <Outlet />
+      <Toaster />
+      <Tooltip />
     </div>
   );
 }

@@ -10,9 +10,17 @@ type Props = {
   setOpen: (value: boolean) => void;
   action?: ReactElement;
   placement?: "right" | "bottom";
+  hasCloseButton?: boolean;
 } & PropsWithChildren;
 
-export default function SidePanel({ open, setOpen, action, children, placement = "right" }: Props) {
+export default function SidePanel({
+  open,
+  setOpen,
+  action,
+  children,
+  placement = "right",
+  hasCloseButton = true,
+}: Props) {
   useEffect(() => {
     document.body.style.setProperty("overflow", "auto");
   }, [open]);
@@ -66,18 +74,20 @@ export default function SidePanel({ open, setOpen, action, children, placement =
           )}
           style={{ zIndex: 10 + panelIndex }}
         >
-          <div className="absolute right-3.5 top-3.5 z-20 flex flex-row gap-2">
-            {action}
-            <Button
-              size={ButtonSize.Sm}
-              type={ButtonType.Secondary}
-              iconOnly
-              onClick={onClose}
-              data-testid="close-add-work-item-panel-btn"
-            >
-              <CloseLine />
-            </Button>
-          </div>
+          {hasCloseButton && (
+            <div className="absolute right-3.5 top-3.5 z-20 flex flex-row gap-2">
+              {action}
+              <Button
+                size={ButtonSize.Sm}
+                type={ButtonType.Secondary}
+                iconOnly
+                onClick={onClose}
+                data-testid="close-add-work-item-panel-btn"
+              >
+                <CloseLine />
+              </Button>
+            </div>
+          )}
           {children}
         </Dialog.Panel>
       </Dialog>
