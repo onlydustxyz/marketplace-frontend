@@ -88,10 +88,8 @@ impl EventListener<Event> for Projector {
 									repo_id: *work_item.repo_id(),
 									issue_number: *work_item.issue_number(),
 								})?;
-								self.github_repo_index_repository.try_insert(GithubRepoIndex {
-									repo_id: *work_item.repo_id(),
-									..Default::default()
-								})?;
+								self.github_repo_index_repository
+									.enable_indexing(work_item.repo_id())?;
 								Ok(())
 							},
 						)?;

@@ -27,6 +27,9 @@ pub trait Repository: database::Repository<GithubRepoIndex> {
 		repo_id: &GithubRepoId,
 		state: serde_json::Value,
 	) -> Result<()>;
+
+	fn disable_indexing(&self, repo_id: &GithubRepoId) -> Result<()>;
+	fn enable_indexing(&self, repo_id: &GithubRepoId) -> Result<()>;
 }
 
 impl Repository for database::Client {
@@ -76,6 +79,26 @@ impl Repository for database::Client {
 		diesel::update(dsl::github_repo_indexes)
 			.set(dsl::issues_indexer_state.eq(state))
 			.filter(dsl::repo_id.eq(repo_id))
+			.execute(&mut *connection)?;
+		Ok(())
+	}
+
+	fn disable_indexing(&self, repo_id: &GithubRepoId) -> Result<()> {
+		let mut connection = self.connection()?;
+		diesel::update(dsl::github_repo_indexes)
+			.set(dsl::enabled.eq(false))
+			.filter(dsl::repo_id.eq(repo_id))
+			.execute(&mut *connection)?;
+		Ok(())
+	}
+
+	fn enable_indexing(&self, repo_id: &GithubRepoId) -> Result<()> {
+		let mut connection = self.connection()?;
+		diesel::insert_into(dsl::github_repo_indexes)
+			.values(GithubRepoIndex::new(*repo_id))
+			.on_conflict(dsl::repo_id)
+			.do_update()
+			.set(dsl::enabled.eq(true))
 			.execute(&mut *connection)?;
 		Ok(())
 	}
