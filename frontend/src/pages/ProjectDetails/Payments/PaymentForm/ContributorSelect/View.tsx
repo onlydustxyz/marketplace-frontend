@@ -117,6 +117,7 @@ export default function ContributorSelectView({
                       }}
                       value={githubHandleSubstring}
                       data-testid="contributor-selection-input"
+                      autoFocus
                     />
                   </div>
                   <ArrowDownSLine />
