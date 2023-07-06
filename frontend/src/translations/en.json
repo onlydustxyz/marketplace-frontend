@@ -195,7 +195,8 @@
             "placeholder": "github.com/example/repo/pull/472",
             "label": "Add specific PR using URL"
           },
-          "tab": "Pull requests",
+          "tab": "Pull request",
+          "tabShort": "PR",
           "search": "Search",
           "searchPlaceholder": "Search by name or #"
         },
@@ -208,7 +209,7 @@
             "placeholder": "github.com/example/repo/issues/472",
             "label": "Add specific issue using URL"
           },
-          "tab": "Issues",
+          "tab": "Issue",
           "search": "Search",
           "searchPlaceholder": "Search by name or #"
         },
@@ -224,10 +225,12 @@
           },
           "footer": {
             "repository": "Create issue in",
-            "submitButton": "Create and add issue"
+            "submitButton": "Create and add issue",
+            "submitButtonShort": "Create issue"
           },
           "success": "Issue created and item added",
           "tab": "Other work",
+          "tabShort": "Other",
           "title": "Describe the work",
           "kinds": {
             "documentation": "Documentation",

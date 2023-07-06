@@ -9,6 +9,8 @@ import IssueOpen from "src/assets/icons/IssueOpen";
 import OtherWorkForm from "./OtherWorkForm";
 import DiscussLine from "src/icons/DiscussLine";
 import { Type } from "src/__generated/graphql";
+import { viewportConfig } from "src/config";
+import { useMediaQuery } from "usehooks-ts";
 
 type Props = {
   projectId: string;
@@ -35,6 +37,7 @@ export default function WorkItemSidePanel({
   ...props
 }: Props) {
   const { T } = useIntl();
+  const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
   const [selectedTab, setSelectedTab] = useState(Tabs.PullRequests);
 
@@ -51,7 +54,7 @@ export default function WorkItemSidePanel({
             onClick={() => setSelectedTab(Tabs.PullRequests)}
           >
             <GitPullRequestLine />
-            {T("payment.form.workItems.pullRequests.tab")}
+            {isXl ? T("payment.form.workItems.pullRequests.tab") : T("payment.form.workItems.pullRequests.tabShort")}
           </Tab>
           <Tab testId="tab-issues" active={selectedTab === Tabs.Issues} onClick={() => setSelectedTab(Tabs.Issues)}>
             <IssueOpen />
@@ -59,7 +62,7 @@ export default function WorkItemSidePanel({
           </Tab>
           <Tab testId="tab-other-work" active={selectedTab === Tabs.Other} onClick={() => setSelectedTab(Tabs.Other)}>
             <DiscussLine />
-            {T("payment.form.workItems.other.tab")}
+            {isXl ? T("payment.form.workItems.other.tab") : T("payment.form.workItems.other.tabShort")}
           </Tab>
         </div>
         {selectedTab === Tabs.PullRequests && (
