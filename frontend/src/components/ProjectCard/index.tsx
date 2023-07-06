@@ -5,12 +5,10 @@ import classNames from "classnames";
 import Button, { ButtonSize } from "src/components/Button";
 import Card, { CardBorder } from "src/components/Card";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
-import { viewportConfig } from "src/config";
 import { useIntl } from "src/hooks/useIntl";
 import CodeSSlashLine from "src/icons/CodeSSlashLine";
 import { buildLanguageString, getDeduplicatedAggregatedLanguages, getMostUsedLanguages } from "src/utils/languages";
 import { formatMoneyAmount } from "src/utils/money";
-import { useMediaQuery } from "usehooks-ts";
 import User3Line from "src/icons/User3Line";
 import { TooltipPosition, withTooltip } from "src/components/Tooltip";
 import ProjectTitle from "./ProjectTitle";
@@ -20,6 +18,8 @@ import Tag, { TagSize } from "src/components/Tag";
 import { ArrayElement } from "src/types";
 import { GetProjectsQuery } from "src/__generated/graphql";
 import RecordCircleLine from "src/icons/RecordCircleLine";
+import { viewportConfig } from "src/config";
+import { useMediaQuery } from "usehooks-ts";
 
 export type Project = ArrayElement<GetProjectsQuery["projects"]>;
 
@@ -82,12 +82,12 @@ export default function ProjectCard({
             )}
           </div>
           <div className="flex basis-2/3 flex-col justify-center gap-4 lg:gap-4 lg:pl-6">
-            <div className="ml-px line-clamp-2">{projectDetails?.shortDescription}</div>
-            <div className="flex flex-row gap-2">
+            <div className="ml-px line-clamp-2 text-sm xl:text-base">{projectDetails?.shortDescription}</div>
+            <div className="flex flex-row flex-wrap gap-1 xl:gap-2">
               {githubRepos && githubRepos.length > 0 && (
                 <Tag testid={`github-repo-count-${id}`} size={TagSize.Small}>
                   <GitRepositoryLine />
-                  {T("project.details.githubRepos.count", { count: githubRepos.length })}
+                  {isXl ? T("project.details.githubRepos.count", { count: githubRepos.length }) : githubRepos.length}
                 </Tag>
               )}
               {contributorsCount > 0 && (
