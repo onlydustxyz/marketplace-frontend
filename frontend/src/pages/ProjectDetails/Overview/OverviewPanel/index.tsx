@@ -3,7 +3,6 @@ import ExternalLink from "src/components/ExternalLink";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import { useIntl } from "src/hooks/useIntl";
 import isDefined from "src/utils/isDefined";
-import { formatMoneyAmount } from "src/utils/money";
 import { GithubUserFragment, ProjectLeadFragment, SponsorFragment } from "src/__generated/graphql";
 import Section, { SectionIcon } from "./Section";
 import Contributor from "src/components/Contributor";
@@ -11,8 +10,6 @@ import Sponsor from "./Sponsor";
 
 interface Props {
   leads?: ProjectLeadFragment[];
-  totalSpentAmountInUsd?: number;
-  totalInitialAmountInUsd?: number;
   sponsors: SponsorFragment[];
   telegramLink: string | null;
   topContributors: Pick<GithubUserFragment, "login" | "avatarUrl">[];
@@ -21,8 +18,6 @@ interface Props {
 
 export default function OverviewPanel({
   leads,
-  totalSpentAmountInUsd,
-  totalInitialAmountInUsd,
   sponsors,
   telegramLink,
   topContributors,
@@ -77,20 +72,6 @@ export default function OverviewPanel({
               ))}
             </div>
             <div data-testid="contributors-count">{totalContributorsCount}</div>
-          </div>
-        </Section>
-      )}
-      {totalSpentAmountInUsd !== undefined && totalInitialAmountInUsd !== undefined && (
-        <Section icon={SectionIcon.Funds} title={T("project.details.overview.totalSpentAmountInUsd")}>
-          <div data-testid="money-granted-amount" className="text-sm font-normal text-greyscale-50">
-            {T("project.details.overview.amountGranted", {
-              granted: formatMoneyAmount({ amount: totalSpentAmountInUsd, notation: "compact" }),
-              total: formatMoneyAmount({ amount: totalInitialAmountInUsd, notation: "compact" }),
-              leftToSpend: formatMoneyAmount({
-                amount: totalInitialAmountInUsd - totalSpentAmountInUsd,
-                notation: "compact",
-              }),
-            })}
           </div>
         </Section>
       )}
