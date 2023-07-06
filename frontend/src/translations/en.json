@@ -555,10 +555,11 @@
       }
     },
     "fundedBy": {
-      "zero": "__leftToSpend__ left to spend",
-      "one": "Funded by __topSponsorsString__ — __leftToSpend__ left to spend",
-      "many": "Funded by __topSponsorsString__ — __leftToSpend__ left to spend"
+      "zero": "",
+      "one": "",
+      "many": "Funded by __topSponsorsString__"
     },
+    "sponsorsCount": "__count__ sponsors",
     "ledBy": {
       "many": "__count__ project leads",
       "one": "Led by"
@@ -583,10 +584,7 @@
       "projectName": "Project name",
       "reposCount": "Number of repositories",
       "contributorsCount": "Number of contributors",
-      "moneyGranted": "Money granted",
-      "leftToSpend": "Money left to spend",
-      "trending": "Trending projects",
-      "totalBudget": "Total budget"
+      "trending": "Trending projects"
     }
   },
   "seniority": {

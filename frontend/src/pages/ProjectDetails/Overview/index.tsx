@@ -59,8 +59,6 @@ export default function Overview() {
   const topContributors = data?.projectsByPk?.contributors.map(c => c.githubUser).filter(isDefined) || [];
   const totalContributorsCount = data?.projectsByPk?.contributorsAggregate.aggregate?.count || 0;
   const leads = data?.projectsByPk?.projectLeads.map(u => u.user).filter(isDefined);
-  const totalInitialAmountInUsd = data?.projectsByPk?.budgetsAggregate.aggregate?.sum?.initialAmount;
-  const totalSpentAmountInUsd = data?.projectsByPk?.budgetsAggregate.aggregate?.sum?.spentAmount;
   const languages = getMostUsedLanguages(getDeduplicatedAggregatedLanguages(githubRepos.map(r => r.repo)));
   const hiring = data?.projectsByPk?.projectDetails?.hiring;
   const invitationId = data?.projectsByPk?.pendingInvitations.find(i => i.githubUserId === githubUserId)?.id;
@@ -164,8 +162,6 @@ export default function Overview() {
               topContributors,
               totalContributorsCount,
               leads,
-              totalInitialAmountInUsd,
-              totalSpentAmountInUsd,
             }}
           />
         </div>

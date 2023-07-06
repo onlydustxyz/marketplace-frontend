@@ -3,6 +3,7 @@ import { withRouter } from "storybook-addon-react-router-v6";
 
 import ProjectCard, { Project } from ".";
 import withContributorProfilePanelProvider from "src/test/storybook/decorators/withContributorProfilePanelProvider";
+import Tooltip from "src/components/Tooltip";
 
 export default {
   title: "ProjectCard",
@@ -12,7 +13,10 @@ export default {
 
 export const Default = {
   render: () => (
-    <ProjectCard {...props(args)} pendingInvitations={args.withInvitation ? props(args).pendingInvitations : []} />
+    <>
+      <ProjectCard {...props(args)} pendingInvitations={args.withInvitation ? props(args).pendingInvitations : []} />
+      <Tooltip />
+    </>
   ),
   parameters: {
     backgrounds: { default: "space" },
@@ -21,10 +25,13 @@ export const Default = {
 
 export const Hiring = {
   render: () => (
-    <ProjectCard
-      {...props({ ...args, hiring: true })}
-      pendingInvitations={args.withInvitation ? props(args).pendingInvitations : []}
-    />
+    <>
+      <ProjectCard
+        {...props({ ...args, hiring: true, sponsorsCount: 1 })}
+        pendingInvitations={args.withInvitation ? props(args).pendingInvitations : []}
+      />
+      <Tooltip />
+    </>
   ),
   parameters: {
     backgrounds: { default: "space" },
@@ -33,10 +40,13 @@ export const Hiring = {
 
 export const Private = {
   render: () => (
-    <ProjectCard
-      {...props({ ...args, visibility: "private" })}
-      pendingInvitations={args.withInvitation ? props(args).pendingInvitations : []}
-    />
+    <>
+      <ProjectCard
+        {...props({ ...args, visibility: "private", sponsorsCount: 0 })}
+        pendingInvitations={args.withInvitation ? props(args).pendingInvitations : []}
+      />
+      <Tooltip />
+    </>
   ),
   parameters: {
     backgrounds: { default: "space" },
@@ -49,6 +59,7 @@ const props = (args: {
   projectLeadsCount: number;
   hiring: boolean;
   visibility: string;
+  sponsorsCount: number;
 }): Project => ({
   id: 123,
   contributors: [],
@@ -179,7 +190,7 @@ const props = (args: {
         url: "https://www.theodo.fr/",
       },
     },
-  ],
+  ].slice(0, args.sponsorsCount),
 });
 
 const args = {
@@ -191,4 +202,5 @@ const args = {
   hiring: false,
   rank: 0,
   visibility: "public",
+  sponsorsCount: 3,
 };

@@ -78,7 +78,7 @@ export class BrowseProjectsPage {
   }
 
   getFilterLocator(filter: string) {
-    return this.page.getByText(filter, { exact: true });
+    return this.page.getByRole("option", { name: filter });
   }
 
   getSortByLocator() {
