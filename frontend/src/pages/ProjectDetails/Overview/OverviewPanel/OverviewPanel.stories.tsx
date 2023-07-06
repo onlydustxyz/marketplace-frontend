@@ -50,8 +50,6 @@ export const Default = {
             url: "https://ethereum.org/en/foundation/",
           },
         ],
-        totalSpentAmountInUsd: 135642,
-        totalInitialAmountInUsd: 300000,
         telegramLink: "https://keep-starknet-strange.github.io/madara/madara/index.html",
       }}
     />

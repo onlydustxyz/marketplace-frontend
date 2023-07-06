@@ -13,7 +13,6 @@ export class ProjectOverviewPage {
       .getByTestId("contributors-count")
       .textContent()
       .then(count => (count ? parseInt(count) : 0));
-  grantedAmount = () => this.page.getByTestId("money-granted-amount").textContent();
   sponsors = () => this.page.getByTestId("sponsors").allTextContents();
   moreInfo = () => this.page.getByTestId("more-info").textContent();
   repository = (id: number) => this.page.getByTestId(`github-repo-${id}`);

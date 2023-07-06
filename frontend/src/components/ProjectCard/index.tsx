@@ -12,7 +12,6 @@ import { buildLanguageString, getDeduplicatedAggregatedLanguages, getMostUsedLan
 import { formatMoneyAmount } from "src/utils/money";
 import { useMediaQuery } from "usehooks-ts";
 import User3Line from "src/icons/User3Line";
-import FundsLine from "src/icons/FundsLine";
 import { TooltipPosition, withTooltip } from "src/components/Tooltip";
 import ProjectTitle from "./ProjectTitle";
 import isDefined from "src/utils/isDefined";
@@ -97,48 +96,37 @@ export default function ProjectCard({
                   {T("project.details.contributors.count", { count: contributorsCount })}
                 </Tag>
               )}
-              {totalSpentAmountInUsd !== undefined && (
-                <>
-                  <Tag
-                    testid={`sponsor-list-${id}`}
-                    size={TagSize.Small}
-                    {...withTooltip(
-                      T("project.fundedBy", {
-                        count: topSponsors.length,
-                        topSponsorsString: topSponsors.map(sponsor => sponsor.name).join(", "),
-                        leftToSpend: formatMoneyAmount({
-                          amount: totalInitialAmountInUsd - totalSpentAmountInUsd,
-                          notation: "compact",
-                        }),
+              {topSponsors?.length > 0 && (
+                <Tag
+                  testid={`sponsor-list-${id}`}
+                  size={TagSize.Small}
+                  {...withTooltip(
+                    T("project.fundedBy", {
+                      count: topSponsors.length,
+                      topSponsorsString: topSponsors.map(sponsor => sponsor.name).join(", "),
+                      leftToSpend: formatMoneyAmount({
+                        amount: totalInitialAmountInUsd - totalSpentAmountInUsd,
+                        notation: "compact",
                       }),
-                      { position: TooltipPosition.Top, className: "w-fit" }
-                    )}
-                  >
-                    {projectSponsors?.length ? (
-                      <>
-                        <div className="flex flex-row -space-x-1">
-                          {topSponsors.map(sponsor => (
-                            <RoundedImage
-                              key={sponsor.id}
-                              src={sponsor.logoUrl}
-                              alt={sponsor.name}
-                              size={ImageSize.Xxs}
-                              rounding={Rounding.Circle}
-                            />
-                          ))}
-                        </div>
-                      </>
-                    ) : (
-                      <FundsLine />
-                    )}
-                    {isXl
-                      ? T("project.amountGranted", {
-                          granted: formatMoneyAmount({ amount: totalSpentAmountInUsd, notation: "compact" }),
-                          total: formatMoneyAmount({ amount: totalInitialAmountInUsd, notation: "compact" }),
-                        })
-                      : formatMoneyAmount({ amount: totalSpentAmountInUsd, notation: "compact" })}
-                  </Tag>
-                </>
+                    }),
+                    { position: TooltipPosition.Top, className: "w-fit" }
+                  )}
+                >
+                  <div className="flex flex-row -space-x-1">
+                    {topSponsors.map(sponsor => (
+                      <RoundedImage
+                        key={sponsor.id}
+                        src={sponsor.logoUrl}
+                        alt={sponsor.name}
+                        size={ImageSize.Xxs}
+                        rounding={Rounding.Circle}
+                      />
+                    ))}
+                  </div>
+                  {topSponsors.length === 1
+                    ? topSponsors.at(0)?.name
+                    : T("project.sponsorsCount", { count: topSponsors.length })}
+                </Tag>
               )}
             </div>
           </div>

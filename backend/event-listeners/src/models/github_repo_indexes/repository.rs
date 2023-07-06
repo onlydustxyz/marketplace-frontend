@@ -27,6 +27,8 @@ pub trait Repository: database::Repository<GithubRepoIndex> {
 		repo_id: &GithubRepoId,
 		state: serde_json::Value,
 	) -> Result<()>;
+
+	fn start_indexing(&self, repo_id: &GithubRepoId) -> Result<()>;
 }
 
 impl Repository for database::Client {
@@ -76,6 +78,15 @@ impl Repository for database::Client {
 		diesel::update(dsl::github_repo_indexes)
 			.set(dsl::issues_indexer_state.eq(state))
 			.filter(dsl::repo_id.eq(repo_id))
+			.execute(&mut *connection)?;
+		Ok(())
+	}
+
+	fn start_indexing(&self, repo_id: &GithubRepoId) -> Result<()> {
+		let mut connection = self.connection()?;
+		diesel::insert_into(dsl::github_repo_indexes)
+			.values(GithubRepoIndex::new(*repo_id))
+			.on_conflict_do_nothing()
 			.execute(&mut *connection)?;
 		Ok(())
 	}

@@ -25,6 +25,15 @@ pub struct GithubRepoIndex {
 	pub issues_indexer_state: Option<Value>,
 }
 
+impl GithubRepoIndex {
+	pub fn new(repo_id: GithubRepoId) -> Self {
+		Self {
+			repo_id,
+			..Default::default()
+		}
+	}
+}
+
 impl Identifiable for GithubRepoIndex {
 	type Id = GithubRepoId;
 

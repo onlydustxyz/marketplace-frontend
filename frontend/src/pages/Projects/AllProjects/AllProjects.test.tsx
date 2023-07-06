@@ -20,108 +20,6 @@ expect.extend(matchers);
 const TEST_PROJECT_ID = "2";
 const TEST_GITHUB_USER_ID = 123456;
 
-const ALL_PROJECTS_RESULT_NO_INVITATIONS: { data: GetProjectsQueryResult["data"] } = {
-  data: {
-    projects: [
-      {
-        __typename: "Projects",
-        id: "1",
-        projectDetails: {
-          projectId: "1",
-          name: "project1",
-          shortDescription: "short description",
-          logoUrl: null,
-          telegramLink: null,
-          hiring: false,
-          rank: 0,
-          visibility: "public",
-        },
-        contributors: [],
-        githubReposAggregate: { aggregate: { count: 1 } },
-        budgetsAggregate: {
-          aggregate: {
-            count: 1,
-            sum: {
-              spentAmount: 1000,
-              initialAmount: 1000,
-            },
-          },
-        },
-        contributorsAggregate: { aggregate: { count: 0 } },
-        pendingInvitations: [],
-        projectLeads: [
-          {
-            userId: "user-1",
-            projectId: "1",
-            user: {
-              id: "user-1",
-              login: "project lead",
-              avatarUrl: "avatar",
-              githubUserId: 12345,
-            },
-          },
-        ],
-        projectSponsors: [],
-        githubRepos: [
-          {
-            githubRepoId: 123456,
-            projectId: "1",
-            repo: {
-              id: 123456,
-              languages: [],
-            },
-          },
-        ],
-      },
-      {
-        __typename: "Projects",
-        id: "2",
-        projectDetails: {
-          projectId: "2",
-          name: "project2",
-          shortDescription: "short description",
-          logoUrl: null,
-          telegramLink: null,
-          hiring: false,
-          rank: 0,
-          visibility: "public",
-        },
-        budgetsAggregate: {
-          aggregate: {
-            count: 1,
-            sum: {
-              spentAmount: 999,
-              initialAmount: 1000,
-            },
-          },
-        },
-        contributorsAggregate: { aggregate: { count: 0 } },
-        contributors: [],
-        githubReposAggregate: { aggregate: { count: 1 } },
-        pendingInvitations: [],
-        githubRepos: [
-          {
-            projectId: "2",
-            githubRepoId: 123456,
-            repo: {
-              id: 123456,
-              languages: [],
-            },
-          },
-        ],
-        projectLeads: [
-          {
-            userId: "user-1",
-            projectId: "2",
-            user: { id: "user-1", login: "project lead", avatarUrl: "avatar", githubUserId: 12345 },
-          },
-        ],
-        projectSponsors: [],
-      },
-    ],
-  },
-};
-
 const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"] } = {
   data: {
     projects: [
@@ -149,7 +47,7 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
         },
         contributors: [],
         githubReposAggregate: { aggregate: { count: 1 } },
-        contributorsAggregate: { aggregate: { count: 0 } },
+        contributorsAggregate: { aggregate: { count: 12 } },
         pendingInvitations: [],
         githubRepos: [
           {
@@ -194,7 +92,7 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
         },
         contributors: [],
         githubReposAggregate: { aggregate: { count: 1 } },
-        contributorsAggregate: { aggregate: { count: 0 } },
+        contributorsAggregate: { aggregate: { count: 2 } },
         pendingInvitations: [],
         githubRepos: [
           {
@@ -486,7 +384,7 @@ const buildGraphQlMocks = (projectsQueryResult: { data: GetProjectsQueryResult["
       query: GetProjectsDocument,
       variables: {
         where: {},
-        orderBy: buildQuerySorting(Sorting.MoneyGranted),
+        orderBy: buildQuerySorting(Sorting.ContributorsCount),
       } as GetProjectsQueryVariables,
     },
     result: projectsQueryResult,
@@ -522,7 +420,7 @@ vi.mock("jwt-decode", () => ({
 const render = ({ projectFilter, mocks }: { projectFilter?: ProjectFilter; mocks: MockedResponse[] }) =>
   renderWithIntl(
     <MockedProjectFilterProvider projectFilter={projectFilter}>
-      <AllProjects sorting={Sorting.MoneyGranted} />
+      <AllProjects sorting={Sorting.ContributorsCount} />
     </MockedProjectFilterProvider>,
     {
       wrapper: MemoryRouterProviderFactory({
@@ -536,33 +434,14 @@ describe("All projects", () => {
     window.localStorage.clear();
   });
 
-  it("should sort by money granted desc if no pending invitations", async () => {
-    render({ mocks: buildGraphQlMocks(ALL_PROJECTS_RESULT_NO_INVITATIONS) });
-
-    const moneyGrantedElementsInOrderOfAppearance = await screen.findAllByText("granted", { exact: false });
-    expect(moneyGrantedElementsInOrderOfAppearance[0]).toHaveTextContent("$1k");
-    expect(moneyGrantedElementsInOrderOfAppearance[1]).toHaveTextContent("$999");
-  });
-
-  it("should sort by pending invitation, then money granted desc if pending invitations", async () => {
-    window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN));
-    render({ mocks: buildGraphQlMocks(ALL_PROJECTS_RESULT_WITH_INVITATION) });
-    const moneyGrantedElementsInOrderOfAppearance = await screen.findAllByText("granted", { exact: false });
-    expect(moneyGrantedElementsInOrderOfAppearance[0]).toHaveTextContent("$0");
-    expect(moneyGrantedElementsInOrderOfAppearance[1]).toHaveTextContent("$1k");
-    expect(moneyGrantedElementsInOrderOfAppearance[2]).toHaveTextContent("$999");
-  });
-
   it("should only show projects led if project ownership type is 'mine'", async () => {
     window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN));
     render({
       projectFilter: { ownership: Ownership.Mine, technologies: [], sponsors: [] },
       mocks: buildGraphQlMocks(ALL_PROJECTS_RESULT_WITH_INVITATION),
     });
-    const moneyGrantedElementsInOrderOfAppearance = await screen.findAllByText("granted", { exact: false });
-    expect(moneyGrantedElementsInOrderOfAppearance).toHaveLength(2);
-    expect(moneyGrantedElementsInOrderOfAppearance[0]).toHaveTextContent("Granted: $0 / $1k");
-    expect(moneyGrantedElementsInOrderOfAppearance[1]).toHaveTextContent("Granted: $999 / $1k");
+    await screen.findByText("project-2");
+    await screen.findByText("project-3");
   });
 
   it("should only show valid projects", async () => {
