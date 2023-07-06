@@ -19,7 +19,7 @@ const Background = forwardRef(function Background(
   return (
     <div
       ref={ref}
-      className={classNames("mb-6 h-full w-full overflow-y-auto xl:scrollbar-none", {
+      className={classNames("h-full w-full overflow-y-auto pb-2 xl:mb-6 xl:pb-0 xl:scrollbar-none", {
         "ml-2 mr-6": withSidebar,
         "px-2 md:mx-6 md:pr-6": !withSidebar,
       })}

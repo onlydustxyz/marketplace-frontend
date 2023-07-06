@@ -7,7 +7,7 @@ import CheckLine from "src/icons/CheckLine";
 
 export function ViewMobile({ contributors }: { contributors: ContributorType[] }) {
   return (
-    <Card className="divide-y divide-greyscale-50/8" padded={false}>
+    <Card className="divide-y divide-greyscale-50/8 bg-whiteFakeOpacity-5" padded={false}>
       {contributors.map(contributor => (
         <div className="flex items-center justify-between gap-4 p-3" key={contributor.login}>
           <Contributor contributor={contributor} clickable />

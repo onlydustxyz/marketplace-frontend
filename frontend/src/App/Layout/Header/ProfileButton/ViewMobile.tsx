@@ -64,7 +64,7 @@ export default function ViewMobile({
         {showMissingPayoutSettingsState && <ErrorWarningLine className="text-xl text-orange-500" />}
       </button>
       <SidePanel open={panelOpen} setOpen={setPanelOpen} placement="bottom" hasCloseButton={false}>
-        <div className="flex flex-col divide-y divide-greyscale-50/8 bg-noise-medium p-3 font-walsheim text-sm">
+        <div className="flex flex-col divide-y divide-greyscale-50/8 bg-whiteFakeOpacity-5 p-3 font-walsheim text-sm">
           {!hideProfileItems && (
             <>
               {hasPayments && (
