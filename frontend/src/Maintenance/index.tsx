@@ -6,7 +6,7 @@ export default function Maintenance() {
   const { T } = useIntl();
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-12 px-4 text-center">
+    <div className="flex min-h-[calc(100dvh)] flex-col items-center justify-center gap-12 px-4 text-center">
       <div className="-mb-20 -mt-20 w-72 stroke-white">
         <MaintenanceAnimation />
       </div>

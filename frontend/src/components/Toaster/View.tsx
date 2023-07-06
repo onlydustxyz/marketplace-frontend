@@ -25,7 +25,7 @@ export default function View({ message, visible, isError }: Props) {
       <div data-testid="toaster-message" className="overflow-hidden rounded-2xl p-0.5">
         <div
           className={classNames(
-            "relative flex items-center justify-center rounded-2xl before:absolute before:-z-10 before:h-screen before:w-screen",
+            "relative flex items-center justify-center rounded-2xl before:absolute before:-z-10 before:h-[calc(100dvh)] before:w-screen",
             {
               "bg-orange-900 before:bg-orange-500": isError,
               "bg-spaceBlue-900 before:animate-spin-invert-slow before:bg-multi-color-gradient": !isError,

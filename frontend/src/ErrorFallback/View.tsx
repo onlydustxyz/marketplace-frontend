@@ -15,7 +15,7 @@ export default function View({ onBackClicked, onRefreshClicked }: Props) {
   const [begin, link, end] = T("state.error.description").split("_");
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-12 text-center">
+    <div className="flex min-h-[calc(100dvh)] flex-col items-center justify-center gap-12 text-center">
       <OnlyDustCrashedLogo />
       <div className="flex w-72 flex-col gap-6">
         <div className="font-belwe text-3xl font-normal text-greyscale-50">{T("state.error.title")}</div>

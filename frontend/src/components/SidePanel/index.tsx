@@ -67,8 +67,8 @@ export default function SidePanel({
         <Dialog.Panel
           className={classNames(
             {
-              "inset-y-0 right-0 h-screen lg:w-3/5 xl:w-5/12": placement === "right",
-              "inset-x-0 bottom-0 max-h-screen min-h-min overflow-y-auto rounded-t-2xl": placement === "bottom",
+              "inset-y-0 right-0 h-[calc(100dvh)] lg:w-3/5 xl:w-5/12": placement === "right",
+              "inset-x-0 bottom-0 max-h-[calc(100dvh)] min-h-min overflow-y-auto rounded-t-2xl": placement === "bottom",
             },
             "fixed w-full bg-greyscale-900 blur-0"
           )}
