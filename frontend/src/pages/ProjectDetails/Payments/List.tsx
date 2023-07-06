@@ -22,8 +22,8 @@ const PaymentList: React.FC = () => {
   return (
     <>
       <Title>{T("project.details.payments.title")}</Title>
-      <div className="flex h-full flex-row items-start gap-4">
-        <div className="flex basis-2/3">
+      <div className="flex h-full flex-col-reverse items-start gap-4 xl:flex-row">
+        <div className="flex w-full basis-2/3">
           {payments.length > 0 ? (
             <Card>
               <Suspense fallback={<Loader />}>
@@ -36,7 +36,7 @@ const PaymentList: React.FC = () => {
             </Card>
           )}
         </div>
-        <div className="flex basis-1/3">
+        <div className="flex w-full basis-1/3">
           <RemainingBudget budget={budget} disabled={budget.remainingAmount === 0 || payments.length === 0} />
         </div>
       </div>

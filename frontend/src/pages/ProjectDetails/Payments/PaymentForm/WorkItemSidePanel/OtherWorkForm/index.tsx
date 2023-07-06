@@ -25,6 +25,8 @@ import MoreLine from "src/icons/MoreLine";
 import FormSelect from "src/components/FormSelect";
 import { FormProvider, useForm } from "react-hook-form";
 import { OtherWork } from "./types";
+import { viewportConfig } from "src/config";
+import { useMediaQuery } from "usehooks-ts";
 
 type Props = {
   projectId: string;
@@ -34,6 +36,7 @@ type Props = {
 
 export default function OtherWorkForm({ projectId, contributorHandle, onWorkItemAdded }: Props) {
   const { T } = useIntl();
+  const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
   const { user: leader } = useAuth();
 
   const workKinds = [
@@ -121,8 +124,10 @@ export default function OtherWorkForm({ projectId, contributorHandle, onWorkItem
             <div className="w-full" />
           )}
           <Button width={Width.Full} disabled={!workKind || !description || loading} htmlType="submit">
-            <CheckLine />
-            {T("payment.form.workItems.other.footer.submitButton")}
+            {isXl && <CheckLine />}
+            {isXl
+              ? T("payment.form.workItems.other.footer.submitButton")
+              : T("payment.form.workItems.other.footer.submitButtonShort")}
           </Button>
         </div>
       </form>

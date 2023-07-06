@@ -75,7 +75,7 @@ export default function GithubIssue({
         <div className="flex text-sm font-medium text-greyscale-50">
           <GithubIssueLink url={workItem.htmlUrl} text={`#${workItem.number} · ${workItem.title}`} />
         </div>
-        <div className="flex flex-row items-center gap-3 text-xs font-normal text-greyscale-300">
+        <div className="flex flex-row flex-wrap items-center gap-2 text-xs font-normal text-greyscale-300 xl:gap-3">
           <div className="flex flex-row items-center gap-1">
             <Time />
             {displayRelativeDate(workItem.createdAt)}
