@@ -555,10 +555,11 @@
       }
     },
     "fundedBy": {
-      "zero": "__leftToSpend__ left to spend",
-      "one": "Funded by __topSponsorsString__ — __leftToSpend__ left to spend",
-      "many": "Funded by __topSponsorsString__ — __leftToSpend__ left to spend"
+      "zero": "",
+      "one": "",
+      "many": "Funded by __topSponsorsString__"
     },
+    "sponsorsCount": "__count__ sponsors",
     "ledBy": {
       "many": "__count__ project leads",
       "one": "Led by"
