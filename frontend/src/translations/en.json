@@ -584,10 +584,7 @@
       "projectName": "Project name",
       "reposCount": "Number of repositories",
       "contributorsCount": "Number of contributors",
-      "moneyGranted": "Money granted",
-      "leftToSpend": "Money left to spend",
-      "trending": "Trending projects",
-      "totalBudget": "Total budget"
+      "trending": "Trending projects"
     }
   },
   "seniority": {

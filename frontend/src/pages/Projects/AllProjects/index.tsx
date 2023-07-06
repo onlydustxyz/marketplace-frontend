@@ -81,7 +81,10 @@ export const buildQuerySorting = (sorting: Sorting): ProjectsOrderBy[] => {
 
   switch (sorting) {
     case Sorting.Trending:
-      return [merge(orderBy, { projectDetails: { rank: OrderBy.Desc } }), ...buildQuerySorting(Sorting.LeftToSpend)];
+      return [
+        merge(orderBy, { projectDetails: { rank: OrderBy.Desc } }),
+        ...buildQuerySorting(Sorting.ContributorsCount),
+      ];
 
     case Sorting.ProjectName:
       return [merge(orderBy, { projectDetails: { name: OrderBy.Asc } })];
@@ -95,24 +98,6 @@ export const buildQuerySorting = (sorting: Sorting): ProjectsOrderBy[] => {
     case Sorting.ReposCount:
       return [
         merge(orderBy, { githubReposAggregate: { count: OrderBy.Desc } }),
-        ...buildQuerySorting(Sorting.ProjectName),
-      ];
-
-    case Sorting.LeftToSpend:
-      return [
-        merge(orderBy, { budgetsAggregate: { sum: { remainingAmount: OrderBy.Desc } } }),
-        ...buildQuerySorting(Sorting.ProjectName),
-      ];
-
-    case Sorting.MoneyGranted:
-      return [
-        merge(orderBy, { budgetsAggregate: { sum: { spentAmount: OrderBy.Desc } } }),
-        ...buildQuerySorting(Sorting.ProjectName),
-      ];
-
-    case Sorting.TotalBudget:
-      return [
-        merge(orderBy, { budgetsAggregate: { sum: { initialAmount: OrderBy.Desc } } }),
         ...buildQuerySorting(Sorting.ProjectName),
       ];
   }
