@@ -71,6 +71,7 @@ export default function ViewMobile({
                 <div className="flex flex-col">
                   <NavLink
                     to={RoutePaths.Projects}
+                    onClick={() => setPanelOpen(false)}
                     className={({ isActive }) =>
                       classNames("flex items-center gap-3 rounded-xl p-4", { "bg-white/8": isActive })
                     }
@@ -79,6 +80,7 @@ export default function ViewMobile({
                   </NavLink>
                   <NavLink
                     to={RoutePaths.Payments}
+                    onClick={() => setPanelOpen(false)}
                     className={({ isActive }) =>
                       classNames("flex items-center gap-3 rounded-xl p-4", { "bg-white/8": isActive })
                     }
