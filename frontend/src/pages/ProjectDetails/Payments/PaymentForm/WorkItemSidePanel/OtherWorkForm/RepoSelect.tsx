@@ -15,7 +15,7 @@ export default function RepoSelect({ repos, repo, setRepo }: Props) {
   const { T } = useIntl();
 
   return (
-    <div className="relative flex w-full flex-col gap-2">
+    <div className="relative flex flex-col gap-2 xl:w-full">
       <div className="font-walsheim text-sm font-normal text-white">
         {T("payment.form.workItems.other.footer.repository")}
       </div>

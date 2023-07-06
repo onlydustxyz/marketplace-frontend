@@ -107,8 +107,8 @@ export default function OtherWorkForm({ projectId, contributorHandle, onWorkItem
 
   return (
     <FormProvider {...formMethods}>
-      <form className="flex h-full min-h-0 flex-col justify-between gap-4" onSubmit={onSubmit}>
-        <div className="flex min-h-0 flex-col justify-start gap-4 overflow-y-auto px-6 scrollbar-thin scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded scrollbar-w-2">
+      <form className="flex h-full min-h-0 flex-col justify-between xl:gap-4" onSubmit={onSubmit}>
+        <div className="flex min-h-0 flex-col justify-start gap-4 overflow-y-auto px-6 pb-4 scrollbar-thin scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded scrollbar-w-2 xl:pb-0">
           <div className="font-belwe text-base font-normal text-greyscale-50">
             {T("payment.form.workItems.other.title")}
           </div>
@@ -117,13 +117,17 @@ export default function OtherWorkForm({ projectId, contributorHandle, onWorkItem
           <Description description={description} setDescription={setDescription} />
           <Callout>{T("payment.form.workItems.other.callout")}</Callout>
         </div>
-        <div className="flex grow-0 flex-row gap-8 border-t border-greyscale-50/8 bg-white/2 px-6 py-8">
+        <div className="flex flex-row justify-between gap-8 border-t border-greyscale-50/8 bg-white/2 p-4 xl:grow-0 xl:px-6 xl:py-8">
           {selectedRepo ? (
             <RepoSelect repos={repos} repo={selectedRepo} setRepo={setSelectedRepo} />
           ) : (
             <div className="w-full" />
           )}
-          <Button width={Width.Full} disabled={!workKind || !description || loading} htmlType="submit">
+          <Button
+            width={isXl ? Width.Full : Width.Fit}
+            disabled={!workKind || !description || loading}
+            htmlType="submit"
+          >
             {isXl && <CheckLine />}
             {isXl
               ? T("payment.form.workItems.other.footer.submitButton")

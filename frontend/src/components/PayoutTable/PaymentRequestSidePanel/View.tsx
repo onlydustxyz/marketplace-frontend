@@ -271,7 +271,7 @@ function CancelPaymentButton({ onPaymentCancel }: CancelPaymentButtonProps) {
         {T("payment.table.detailsPanel.cancelPayment.button")}
       </Button>
       <div
-        className={classNames("absolute -inset-x-10 top-10", {
+        className={classNames("absolute top-10 z-10 xl:-inset-x-10", {
           hidden: !modalOpened,
         })}
       >

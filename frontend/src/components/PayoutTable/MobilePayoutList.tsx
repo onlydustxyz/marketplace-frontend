@@ -95,7 +95,7 @@ export function MobilePaymentItem({
           {amount}
         </div>
 
-        <div className="flex flex-col items-start pl-4">
+        <div className="flex flex-col items-start pl-4 text-left">
           <div className="flex items-center gap-1 font-semibold uppercase text-spaceBlue-200">
             <TimeLine className="text-base font-medium" />
             {T("payment.table.date")}

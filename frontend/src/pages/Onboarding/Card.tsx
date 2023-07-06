@@ -55,7 +55,7 @@ export default function Card({
           </div>
           <div className="flex h-full flex-col gap-6">{children}</div>
         </div>
-        <div className="fixed inset-x-0 bottom-0 flex w-full flex-row items-center justify-end gap-6 rounded-b-2xl bg-whiteFakeOpacity-2 p-6 xl:relative xl:bg-white/2">
+        <div className="fixed inset-x-0 bottom-0 z-10 flex w-full flex-row items-center justify-end gap-6 bg-whiteFakeOpacity-2 p-6 xl:relative xl:rounded-b-2xl xl:bg-white/2">
           {prev && (
             <Button type={ButtonType.Secondary} onClick={prev}>
               <ArrowLeftSLine className="-ml-2 text-2xl" />

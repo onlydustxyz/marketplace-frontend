@@ -13,7 +13,7 @@ export default function View({ message, visible, isError }: Props) {
   return (
     <Transition
       as="div"
-      className="fixed bottom-8 left-8 z-10"
+      className="fixed bottom-8 left-8 z-20"
       show={visible}
       enter="transition ease-in-out duration-300 transform"
       enterFrom="translate-y-full"
