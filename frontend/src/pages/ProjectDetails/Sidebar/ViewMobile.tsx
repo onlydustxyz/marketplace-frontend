@@ -33,7 +33,7 @@ export default function ViewMobile(props: Props) {
         </button>
       </div>
       <SidePanel open={panelOpen} setOpen={setPanelOpen} placement="bottom" hasCloseButton={false}>
-        <View {...props} />
+        <View {...props} onLinkClick={() => setPanelOpen(false)} />
       </SidePanel>
     </>
   );

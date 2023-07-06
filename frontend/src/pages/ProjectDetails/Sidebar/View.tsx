@@ -16,6 +16,7 @@ interface Props {
   currentProject: SidebarProjectDetails;
   allProjects: SidebarProjectDetails[];
   availableTabs: ProjectDetailsTab[];
+  onLinkClick?: () => void;
 }
 
 export interface SidebarProjectDetails {
@@ -26,7 +27,7 @@ export interface SidebarProjectDetails {
   contributorsCount: number;
 }
 
-export default function View({ expandable, currentProject, allProjects, availableTabs }: Props) {
+export default function View({ expandable, currentProject, allProjects, availableTabs, onLinkClick }: Props) {
   const { T } = useIntl();
   const navigate = useNavigate();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
@@ -80,6 +81,7 @@ export default function View({ expandable, currentProject, allProjects, availabl
             <NavLink
               key={tab.path}
               to={tab.path}
+              onClick={onLinkClick}
               className={({ isActive }) =>
                 classNames("rounded-xl px-4 py-2.5 text-base hover:cursor-pointer", {
                   "bg-white/8 text-white": isActive,
