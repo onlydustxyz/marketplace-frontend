@@ -6,6 +6,7 @@ import SidePanel from "src/components/SidePanel";
 import { ProjectDetailsTab } from ".";
 import BackLink from "./BackLink";
 import View, { SidebarProjectDetails } from "./View";
+import CloseLine from "src/icons/CloseLine";
 
 interface Props {
   expandable: boolean;
@@ -28,9 +29,15 @@ export default function ViewMobile(props: Props) {
             <div className="line-clamp-1">{currentProject.name}</div>
           </div>
         </div>
-        <button className="rounded-lg border p-2" onClick={() => setPanelOpen(true)}>
-          <BurgerIcon />
-        </button>
+        {panelOpen ? (
+          <div className="rounded-lg border border-spacePurple-200 p-2 text-spacePurple-300">
+            <CloseLine className="flex h-3.5 w-3.5 items-center justify-center text-lg" />
+          </div>
+        ) : (
+          <button className="rounded-lg border p-2" onClick={() => setPanelOpen(true)}>
+            <BurgerIcon />
+          </button>
+        )}
       </div>
       <SidePanel open={panelOpen} setOpen={setPanelOpen} placement="bottom" hasCloseButton={false}>
         <View {...props} onLinkClick={() => setPanelOpen(false)} />
