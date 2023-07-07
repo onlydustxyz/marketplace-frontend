@@ -18,12 +18,14 @@ import { isProjectVisibleToUser } from "src/hooks/useProjectVisibility";
 
 type Props = {
   sorting: Sorting;
+  search: string;
+  clearSearch: () => void;
 };
 
-export default function AllProjects({ sorting }: Props) {
+export default function AllProjects({ sorting, search, clearSearch }: Props) {
   const { ledProjectIds, githubUserId, isLoggedIn, user } = useAuth();
   const {
-    projectFilter: { technologies, sponsors, ownership, search },
+    projectFilter: { technologies, sponsors, ownership },
     clear: clearFilters,
   } = useProjectFilter();
 
@@ -56,7 +58,12 @@ export default function AllProjects({ sorting }: Props) {
       {projects && projects.length > 0 ? (
         projects.map(project => <ProjectCard key={project.id} {...project} />)
       ) : (
-        <AllProjectsFallback clearFilters={clearFilters} />
+        <AllProjectsFallback
+          clearFilters={() => {
+            clearFilters();
+            clearSearch();
+          }}
+        />
       )}
     </div>
   );

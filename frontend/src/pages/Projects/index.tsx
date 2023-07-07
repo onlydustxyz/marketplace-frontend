@@ -5,7 +5,7 @@ import AllProjects from "./AllProjects";
 import FilterPanel from "./FilterPanel";
 import { ProjectFilterProvider } from "./useProjectFilter";
 import useScrollRestoration from "./AllProjects/useScrollRestoration";
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 import Loader from "src/components/Loader";
 import SortingDropdown from "./SortingDropdown";
 import { useLocalStorage } from "react-use";
@@ -26,6 +26,7 @@ export default function Projects() {
   const { T } = useT();
   const { ledProjectIds } = useAuth();
 
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const [projectSorting, setProjectSorting] = useLocalStorage("PROJECT_SORTING_2", DEFAULT_SORTING);
   const [ref] = useScrollRestoration();
 
@@ -44,7 +45,7 @@ export default function Projects() {
             </div>
           </div>
           <div>
-            <SearchBar />
+            <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
           </div>
           <div className="flex h-full gap-6">
             <div className="sticky top-0 hidden shrink-0 basis-80 xl:block">
@@ -52,7 +53,11 @@ export default function Projects() {
             </div>
             <div className="min-w-0 grow">
               <Suspense fallback={<Loader />}>
-                <AllProjects sorting={projectSorting || DEFAULT_SORTING} />
+                <AllProjects
+                  sorting={projectSorting || DEFAULT_SORTING}
+                  search={searchQuery}
+                  clearSearch={() => setSearchQuery("")}
+                />
               </Suspense>
             </div>
           </div>

@@ -578,8 +578,8 @@
   },
   "projects": {
     "fallback": {
-      "clearFiltersButton": "Clear filters",
-      "subTitle": "Try removing a filter",
+      "clearFiltersButton": "Clear query",
+      "subTitle": "Try changing your query",
       "title": "Nothing to show"
     },
     "sorting": {
