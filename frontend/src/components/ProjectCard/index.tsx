@@ -132,8 +132,8 @@ export default function ProjectCard({
           </div>
         </div>
         {pendingInvitations?.length > 0 && (
-          <div className="hidden flex-row items-center justify-between rounded-xl bg-orange-500/8 px-6 py-4 font-medium xl:flex">
-            <div className="text-white">{T("project.projectLeadInvitation.prompt")}</div>
+          <div className="flex flex-col flex-wrap items-center justify-between gap-2 rounded-xl bg-orange-500/8 px-4 py-4 text-center font-medium sm:flex-row xl:px-6 xl:py-4">
+            <div className="text-sm text-white md:text-base">{T("project.projectLeadInvitation.prompt")}</div>
             <Button size={ButtonSize.Sm}>{T("project.projectLeadInvitation.view")}</Button>
           </div>
         )}
