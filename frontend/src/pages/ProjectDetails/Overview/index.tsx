@@ -79,7 +79,7 @@ export default function Overview() {
     <>
       <Title>{isXl ? T("project.details.overview.title") : T("project.details.overview.titleShort")}</Title>
       <ProjectLeadInvitation projectId={projectId} />
-      <div className="flex flex-col-reverse gap-6 xl:flex-row">
+      <div className="flex flex-col-reverse gap-6 md:flex-row">
         <div className="flex w-full flex-col gap-4">
           <Card className={classNames("z-10 flex flex-col gap-4 px-6 py-4")}>
             <div className="flex flex-row items-center gap-4">
@@ -111,7 +111,7 @@ export default function Overview() {
               </div>
               <Badge value={githubRepos.length} size={BadgeSize.Small} />
             </div>
-            <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+            <div className="grid grid-cols-1 gap-3 xl:grid-cols-2">
               {githubRepos &&
                 githubRepos.map(githubRepo => (
                   <GithubRepoDetails key={githubRepo.repo?.id} githubRepoId={githubRepo.repo?.id} />

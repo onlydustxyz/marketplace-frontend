@@ -21,7 +21,7 @@ const Background = forwardRef(function Background(
       ref={ref}
       className={classNames("h-full w-full overflow-y-auto pb-2 xl:mb-6 xl:pb-0 xl:scrollbar-none", {
         "ml-2 mr-6": withSidebar,
-        "px-2 md:mx-6 md:pr-6": !withSidebar,
+        "px-2 xl:mx-6 xl:pr-6": !withSidebar,
       })}
     >
       <div
@@ -29,7 +29,7 @@ const Background = forwardRef(function Background(
           "min-h-full bg-space xl:bg-fixed xl:bg-clip-content xl:bg-no-repeat",
           roundedBorders,
           {
-            "md:mr-6": !withSidebar,
+            "xl:mr-6": !withSidebar,
           },
           { "flex flex-col justify-center": centeredContent }
         )}
