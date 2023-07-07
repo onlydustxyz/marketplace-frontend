@@ -10,6 +10,7 @@ export interface ProjectFilter {
   ownership: Ownership;
   technologies: string[];
   sponsors: string[];
+  search: string;
 }
 
 enum ActionType {
@@ -17,6 +18,7 @@ enum ActionType {
   SetOwnership = "ownership",
   SetTechnologies = "technologies",
   SetSponsors = "sponsors",
+  SetSearch = "search",
 }
 
 type Action =
@@ -30,6 +32,10 @@ type Action =
   | {
       type: ActionType.SetOwnership;
       ownership: Ownership;
+    }
+  | {
+      type: ActionType.SetSearch;
+      searchQuery: string;
     };
 
 const PROJECT_FILTER_KEY = "project_filter";
@@ -38,6 +44,7 @@ const DEFAULT_FILTER: ProjectFilter = {
   ownership: Ownership.All,
   technologies: [],
   sponsors: [],
+  search: "",
 };
 
 const reduce = (filter: ProjectFilter, action: Action): ProjectFilter => {
@@ -50,6 +57,8 @@ const reduce = (filter: ProjectFilter, action: Action): ProjectFilter => {
       return { ...filter, technologies: action.values };
     case ActionType.SetSponsors:
       return { ...filter, sponsors: action.values };
+    case ActionType.SetSearch:
+      return { ...filter, search: action.searchQuery };
   }
 };
 
@@ -60,6 +69,7 @@ type Context = {
   setOwnership: (ownership: Ownership) => void;
   setTechnologies: (technologies: string[]) => void;
   setSponsors: (sponsors: string[]) => void;
+  setSearch: (searchQuery: string) => void;
 };
 
 export const ProjectFilterContext = createContext<Context | null>(null);
@@ -84,6 +94,7 @@ export function ProjectFilterProvider({ children }: PropsWithChildren) {
     (sponsors: string[]) => dispatch({ type: ActionType.SetSponsors, values: sponsors }),
     []
   );
+  const setSearch = useCallback((searchQuery: string) => dispatch({ type: ActionType.SetSearch, searchQuery }), []);
 
   return (
     <ProjectFilterContext.Provider
@@ -94,6 +105,7 @@ export function ProjectFilterProvider({ children }: PropsWithChildren) {
         setOwnership,
         setTechnologies,
         setSponsors,
+        setSearch,
       }}
     >
       {children}
@@ -115,6 +127,7 @@ export function MockedProjectFilterProvider({
         setOwnership: Function.prototype(),
         setTechnologies: Function.prototype(),
         setSponsors: Function.prototype(),
+        setSearch: Function.prototype(),
       }}
     >
       {children}

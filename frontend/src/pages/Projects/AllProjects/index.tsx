@@ -23,13 +23,13 @@ type Props = {
 export default function AllProjects({ sorting }: Props) {
   const { ledProjectIds, githubUserId, isLoggedIn, user } = useAuth();
   const {
-    projectFilter: { technologies, sponsors, ownership },
+    projectFilter: { technologies, sponsors, ownership, search },
     clear: clearFilters,
   } = useProjectFilter();
 
   const getProjectsQuery = useSuspenseQuery<GetProjectsQuery>(GetProjectsDocument, {
     variables: {
-      where: buildQueryFilters(technologies, sponsors),
+      where: buildQueryFilters(search, technologies, sponsors),
       orderBy: buildQuerySorting(sorting),
     },
     ...contextWithCacheHeaders,
@@ -62,8 +62,23 @@ export default function AllProjects({ sorting }: Props) {
   );
 }
 
-const buildQueryFilters = (technologies: string[], sponsors: string[]): ProjectsBoolExp => {
+const buildQueryFilters = (search: string, technologies: string[], sponsors: string[]): ProjectsBoolExp => {
   let filters = {} as ProjectsBoolExp;
+
+  if (search.trim().length > 0) {
+    const words = search
+      .split(" ")
+      .map(word => word.trim())
+      .filter(word => word.length > 0)
+      .map(word => ({
+        _or: [{ name: { _ilike: `%${word}%` } }, { shortDescription: { _ilike: `%${word}%` } }],
+      }));
+    filters = merge(filters, {
+      projectDetails: {
+        _and: words,
+      },
+    });
+  }
 
   if (technologies.length) {
     filters = merge(filters, { githubRepos: { repo: { languages: { _hasKeysAny: technologies } } } });

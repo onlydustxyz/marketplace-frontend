@@ -57,6 +57,9 @@
     },
     "title": "Filter"
   },
+  "searchBar": {
+    "placeholder": "Search project title & description"
+  },
   "form": {
     "required": "Required"
   },

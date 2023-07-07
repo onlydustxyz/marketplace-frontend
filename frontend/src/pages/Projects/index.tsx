@@ -9,6 +9,7 @@ import { Suspense } from "react";
 import Loader from "src/components/Loader";
 import SortingDropdown from "./SortingDropdown";
 import { useLocalStorage } from "react-use";
+import SearchBar from "./SearchBar";
 
 export enum Sorting {
   Trending = "trending",
@@ -31,7 +32,7 @@ export default function Projects() {
   return (
     <ProjectFilterProvider>
       <Background ref={ref} roundedBorders={BackgroundRoundedBorders.Full}>
-        <div className="px-4 pb-8 pt-8 md:container md:mx-auto md:px-12 xl:pt-16">
+        <div className="flex flex-col gap-8 px-4 md:container md:mx-auto md:px-12 xl:pt-16">
           <div className="relative hidden items-end justify-between font-belwe text-5xl xl:flex">
             {T("navbar.projects")}
             <div className="absolute right-0 top-0 z-10">
@@ -42,7 +43,10 @@ export default function Projects() {
               />
             </div>
           </div>
-          <div className="flex h-full gap-6 xl:mt-8">
+          <div>
+            <SearchBar />
+          </div>
+          <div className="flex h-full gap-6">
             <div className="sticky top-0 hidden shrink-0 basis-80 xl:block">
               <FilterPanel isProjectLeader={!!ledProjectIds.length} />
             </div>
