@@ -1,9 +1,10 @@
 import classNames from "classnames";
 import { useEffect, useState } from "react";
+import { viewportConfig } from "src/config";
 import { useIntl } from "src/hooks/useIntl";
 import CloseLine from "src/icons/CloseLine";
 import SearchLine from "src/icons/SearchLine";
-import { useDebounce } from "usehooks-ts";
+import { useDebounce, useMediaQuery } from "usehooks-ts";
 
 type Props = {
   searchQuery: string;
@@ -12,6 +13,7 @@ type Props = {
 
 export default function SearchBar({ searchQuery, setSearchQuery }: Props) {
   const { T } = useIntl();
+  const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
 
   const [search, setSearch] = useState<string>(searchQuery);
   const debouncedSearchQuery = useDebounce<string>(search, 200);
@@ -33,7 +35,7 @@ export default function SearchBar({ searchQuery, setSearchQuery }: Props) {
         })}
       >
         <div
-          className={classNames("flex h-16 w-full flex-row items-center gap-5 rounded-full px-6", {
+          className={classNames("flex h-12 w-full flex-row items-center gap-5 rounded-full px-6 md:h-16", {
             "bg-spaceBlue-900": !inputFocus,
             "bg-spacePurple-900": inputFocus,
           })}
@@ -46,7 +48,7 @@ export default function SearchBar({ searchQuery, setSearchQuery }: Props) {
             )}
           />
           <input
-            placeholder={T("searchBar.placeholder")}
+            placeholder={T(isMd ? "searchBar.placeholder" : "searchBar.placeholderShort")}
             className="h-8 w-full bg-transparent font-walsheim text-lg font-medium text-greyscale-50 outline-none placeholder:text-spaceBlue-200"
             value={search}
             onChange={e => setSearch(e.target.value)}

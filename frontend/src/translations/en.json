@@ -58,7 +58,8 @@
     "title": "Filter"
   },
   "searchBar": {
-    "placeholder": "Search project title & description"
+    "placeholder": "Search project title & description",
+    "placeholderShort": "Search projects"
   },
   "form": {
     "required": "Required"
