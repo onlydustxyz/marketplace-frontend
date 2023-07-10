@@ -2,7 +2,6 @@ import classNames from "classnames";
 import { useState } from "react";
 import Dot from "src/assets/icons/Dot";
 import Button, { ButtonType, ButtonSize } from "src/components/Button";
-import SidePanel from "src/components/SidePanel";
 import { useContributorProfilePanel } from "src/hooks/useContributorProfilePanel";
 import { useIntl } from "src/hooks/useIntl";
 import { useSidePanel } from "src/hooks/useSidePanel";
@@ -16,6 +15,8 @@ import { NavLink } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import Folder3Line from "src/icons/Folder3Line";
 import ExchangeDollarLine from "src/icons/ExchangeDollarLine";
+import BurgerIcon from "src/assets/icons/BurgerIcon";
+import SidePanelWithBackdrop from "src/components/SidePanelWithBackdrop";
 
 type Props = {
   avatarUrl: string | null;
@@ -36,10 +37,10 @@ export default function ViewMobile({
   const { T } = useIntl();
 
   const [payoutInfoSidePanelOpen, setPayoutInfoSidePanelOpen] = useState(false);
+  const [panelOpen, setPanelOpen] = useState(false);
 
   const { open: openContributorProfileSidePanel } = useContributorProfilePanel();
   const { openFullTermsAndConditions, openPrivacyPolicy } = useSidePanel();
-  const [panelOpen, setPanelOpen] = useState(false);
 
   const { data: paymentRequestIdsQueryData } = useGetPaymentRequestIdsQuery({
     variables: { githubUserId },
@@ -60,10 +61,9 @@ export default function ViewMobile({
         )}
       >
         {avatarUrl && <img className="h-8 w-8 rounded-full" src={avatarUrl} />}
-        <div className={classNames({ "mr-1": !showMissingPayoutSettingsState })}>Menu</div>
         {showMissingPayoutSettingsState && <ErrorWarningLine className="text-xl text-orange-500" />}
       </button>
-      <SidePanel open={panelOpen} setOpen={setPanelOpen} placement="bottom" hasCloseButton={false}>
+      <SidePanelWithBackdrop open={panelOpen} setOpen={setPanelOpen} placement="bottom" hasCloseButton={false}>
         <div className="flex flex-col divide-y divide-greyscale-50/8 bg-whiteFakeOpacity-5 p-3 font-walsheim text-sm">
           {!hideProfileItems && (
             <>
@@ -115,7 +115,7 @@ export default function ViewMobile({
             </Button>
           </div>
         </div>
-      </SidePanel>
+      </SidePanelWithBackdrop>
       <PayoutInfoSidePanel
         githubUserId={githubUserId}
         open={payoutInfoSidePanelOpen}

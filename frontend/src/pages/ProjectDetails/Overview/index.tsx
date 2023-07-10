@@ -81,7 +81,7 @@ export default function Overview() {
       <ProjectLeadInvitation projectId={projectId} />
       <div className="flex flex-col-reverse gap-6 md:flex-row">
         <div className="flex w-full flex-col gap-4">
-          <Card className={classNames("z-10 flex flex-col gap-4 px-6 py-4")}>
+          <Card className="flex flex-col gap-4 px-6 py-4">
             <div className="flex flex-row items-center gap-4">
               <img
                 alt={data?.projectsByPk?.projectDetails?.name}
