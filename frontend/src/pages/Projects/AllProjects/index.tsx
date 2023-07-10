@@ -13,26 +13,33 @@ import {
   ProjectsBoolExp,
   ProjectsOrderBy,
 } from "src/__generated/graphql";
-import { Sorting } from "..";
 import { isProjectVisibleToUser } from "src/hooks/useProjectVisibility";
+import SortingDropdown, { PROJECT_SORTINGS, Sorting } from "src/pages/Projects/SortingDropdown";
+import { useLocalStorage } from "react-use";
+import { useIntl } from "src/hooks/useIntl";
+
+const DEFAULT_SORTING = Sorting.Trending;
 
 type Props = {
-  sorting: Sorting;
   search: string;
   clearSearch: () => void;
 };
 
-export default function AllProjects({ sorting, search, clearSearch }: Props) {
+export default function AllProjects({ search, clearSearch }: Props) {
+  const { T } = useIntl();
+
   const { ledProjectIds, githubUserId, isLoggedIn, user } = useAuth();
   const {
     projectFilter: { technologies, sponsors, ownership },
     clear: clearFilters,
   } = useProjectFilter();
 
+  const [sorting, setSorting] = useLocalStorage("PROJECT_SORTING_2", DEFAULT_SORTING);
+
   const getProjectsQuery = useSuspenseQuery<GetProjectsQuery>(GetProjectsDocument, {
     variables: {
       where: buildQueryFilters(search, technologies, sponsors),
-      orderBy: buildQuerySorting(sorting),
+      orderBy: buildQuerySorting(sorting || DEFAULT_SORTING),
     },
     ...contextWithCacheHeaders,
   });
@@ -54,17 +61,25 @@ export default function AllProjects({ sorting, search, clearSearch }: Props) {
   }, [getProjectsQuery.data?.projects, ledProjectIds, ownership, isLoggedIn, githubUserId]);
 
   return (
-    <div className="flex grow flex-col gap-5">
-      {projects && projects.length > 0 ? (
-        projects.map(project => <ProjectCard key={project.id} {...project} />)
-      ) : (
-        <AllProjectsFallback
-          clearFilters={() => {
-            clearFilters();
-            clearSearch();
-          }}
-        />
-      )}
+    <div className="flex flex-col gap-5">
+      <div className="relative hidden h-10 items-center justify-between text-base xl:flex ">
+        <div className="px-2 font-medium text-spaceBlue-200">{T("projects.count", { count: projects.length })}</div>
+        <div className="absolute right-0 top-0 z-10">
+          <SortingDropdown all={PROJECT_SORTINGS} current={sorting || DEFAULT_SORTING} onChange={setSorting} />
+        </div>
+      </div>
+      <div className="flex grow flex-col gap-5">
+        {projects && projects.length > 0 ? (
+          projects.map(project => <ProjectCard key={project.id} {...project} />)
+        ) : (
+          <AllProjectsFallback
+            clearFilters={() => {
+              clearFilters();
+              clearSearch();
+            }}
+          />
+        )}
+      </div>
     </div>
   );
 }

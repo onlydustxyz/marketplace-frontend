@@ -3,7 +3,15 @@ import Arrow from "src/assets/icons/Arrow";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import CheckLine from "src/icons/CheckLine";
-import { Sorting } from "..";
+
+export enum Sorting {
+  Trending = "trending",
+  ProjectName = "projectName",
+  ReposCount = "reposCount",
+  ContributorsCount = "contributorsCount",
+}
+
+export const PROJECT_SORTINGS = [Sorting.Trending, Sorting.ProjectName, Sorting.ReposCount, Sorting.ContributorsCount];
 
 type Props = {
   all: Sorting[];
@@ -21,7 +29,7 @@ export default function SortingDropdown<T>({ all, current, onChange }: Props) {
       as="div"
       className="h-fit w-fit divide-y divide-greyscale-50/12 rounded-md border border-greyscale-50/12 bg-white/2 font-walsheim text-sm font-medium text-greyscale-50 shadow-heavy backdrop-blur-4xl"
     >
-      <Listbox.Button className="flex flex-row items-center gap-2 py-2 pl-4 pr-2">
+      <Listbox.Button className="flex flex-row items-center gap-2 py-1.5 pl-4 pr-2">
         <Arrow />
         <div className="flex flex-row items-center gap-1">
           <span>{T("projects.sorting.label")}</span>

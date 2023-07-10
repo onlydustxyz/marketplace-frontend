@@ -1,49 +1,23 @@
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import { useAuth } from "src/hooks/useAuth";
-import { useT } from "talkr";
 import AllProjects from "./AllProjects";
 import FilterPanel from "./FilterPanel";
 import { ProjectFilterProvider } from "./useProjectFilter";
 import useScrollRestoration from "./AllProjects/useScrollRestoration";
 import { Suspense, useState } from "react";
 import Loader from "src/components/Loader";
-import SortingDropdown from "./SortingDropdown";
-import { useLocalStorage } from "react-use";
 import SearchBar from "./SearchBar";
 
-export enum Sorting {
-  Trending = "trending",
-  ProjectName = "projectName",
-  ReposCount = "reposCount",
-  ContributorsCount = "contributorsCount",
-}
-
-export const PROJECT_SORTINGS = [Sorting.Trending, Sorting.ProjectName, Sorting.ReposCount, Sorting.ContributorsCount];
-
-const DEFAULT_SORTING = Sorting.Trending;
-
 export default function Projects() {
-  const { T } = useT();
   const { ledProjectIds } = useAuth();
 
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [projectSorting, setProjectSorting] = useLocalStorage("PROJECT_SORTING_2", DEFAULT_SORTING);
   const [ref] = useScrollRestoration();
 
   return (
     <ProjectFilterProvider>
       <Background ref={ref} roundedBorders={BackgroundRoundedBorders.Full}>
-        <div className="flex flex-col gap-8 px-4 md:container md:mx-auto md:px-12 xl:pt-16">
-          <div className="relative hidden items-end justify-between font-belwe text-5xl xl:flex">
-            {T("navbar.projects")}
-            <div className="absolute right-0 top-0 z-10">
-              <SortingDropdown
-                all={PROJECT_SORTINGS}
-                current={projectSorting || DEFAULT_SORTING}
-                onChange={setProjectSorting}
-              />
-            </div>
-          </div>
+        <div className="flex flex-col gap-6 px-4 md:container md:mx-auto md:px-12 xl:pt-16">
           <div>
             <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
           </div>
@@ -53,11 +27,7 @@ export default function Projects() {
             </div>
             <div className="min-w-0 grow">
               <Suspense fallback={<Loader />}>
-                <AllProjects
-                  sorting={projectSorting || DEFAULT_SORTING}
-                  search={searchQuery}
-                  clearSearch={() => setSearchQuery("")}
-                />
+                <AllProjects search={searchQuery} clearSearch={() => setSearchQuery("")} />
               </Suspense>
             </div>
           </div>

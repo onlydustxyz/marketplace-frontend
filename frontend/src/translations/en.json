@@ -577,6 +577,11 @@
     "prompt": "You've been promoted to Project Lead on __projectName__"
   },
   "projects": {
+    "count": {
+      "many": "__count__ PROJECTS",
+      "one": "1 PROJECT",
+      "zero": "NO PROJECT"
+    },
     "fallback": {
       "clearFiltersButton": "Clear query",
       "subTitle": "Try changing your query",
