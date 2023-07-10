@@ -20,21 +20,35 @@ fn connection(config: &Config) -> PgConnection {
 #[rstest]
 #[case(
 	"
-SELECT auth.users.id, information.CompanyNum, information.CompanyName, information.firstname,
-information.lastname, information.number, information.street, information.post_code,
-information.city, information.country, information.BIC, information.IBAN, information.name,
-information.address, display_name, users.created_at, users.updated_at, last_seen, avatar_url,
-email, phone_number, provider_user_id FROM auth.users
-INNER JOIN auth.user_providers ON auth.users.id = auth.user_providers.user_id
-LEFT OUTER JOIN (
-    SELECT user_id, identity->'Company'->>'id' as CompanyNum, identity->'Company'->>'name' as
-CompanyName, identity->'Person'->>'firstname' as firstname, identity->'Person'->>'lastname' as
-lastname, location->'city' as city, location->'number' as number, location->'street' as street,
-location->'post_code' as post_code, location->'country' as country,
-payout_settings->'WireTransfer'->>'BIC' as BIC, payout_settings->'WireTransfer'->>'IBAN' as IBAN,
-payout_settings->'EthTransfer'->>'Name' as name, payout_settings->'EthTransfer'->>'Address' as
-address     FROM user_payout_info
-) information ON (auth.users.id = information.user_id);
+	SELECT auth.users.id, information.CompanyName, information.CompanyNum, information.CompanyFirstname, information.CompanyLastname, information.PersonFirstname, information.PersonLastname, information.address, information.post_code, information.city, information.country, information.telegram, information.twitter, information.discord, information.linkedin, information.BIC, information.IBAN, information.ENSdomain, information.ETHaddress, auth.users.created_at, auth.users.updated_at, auth.users.last_seen, auth.users.email, auth.users.phone_number, provider_user_id, information.login, information.GithubProfileURL, information.avatar_url, information.bio, information.location, information.website, information.looking_for_a_job, information.weekly_allocated_time, information.languages, information.TCAcceptanceDate
+	FROM auth.users
+	INNER JOIN auth.user_providers ON auth.users.id = auth.user_providers.user_id
+	LEFT OUTER JOIN (
+		SELECT up.user_id, identity->'Company'->>'name' as CompanyName, identity->'Company'->>'identification_number' as CompanyNum, identity->'Company'->'owner'->>'firstname' as CompanyFirstname, identity->'Company'->'owner'->>'lastname' as CompanyLastname, identity->'Person'->>'firstname' as PersonFirstname, identity->'Person'->>'lastname' as PersonLastname, upi.location->'address' as address, upi.location->'post_code' as post_code, upi.location->'city' as city, upi.location->'country' as country, emails.contact as email, telegram.contact as telegram, twitter.contact as twitter, discord.contact as discord, linkedin.contact as linkedin, payout_settings->'WireTransfer'->>'BIC' as BIC, payout_settings->'WireTransfer'->>'IBAN' as IBAN, payout_settings->'EthTransfer'->>'Name' as ENSdomain, payout_settings->'EthTransfer'->>'Address' as ETHaddress, up.login, up.html_url as GithubProfileURL, up.avatar_url, up.bio, up.location, up.website, up.looking_for_a_job, up.weekly_allocated_time, languages.l as languages, onboardings.terms_and_conditions_acceptance_date as TCAcceptanceDate, onboardings.profile_wizard_display_date as OnboardingCompletionDate
+		FROM user_payout_info upi
+		LEFT JOIN api.user_profiles up on up.user_id=upi.user_id
+		LEFT JOIN LATERAL (
+			SELECT
+				array_agg(KEY) as l
+			FROM (
+				SELECT
+					github_user_id,
+					jsonb_object_keys(languages) AS KEY,
+					(languages -> jsonb_object_keys(languages))::int AS value
+				FROM
+					api.user_profiles
+				WHERE
+					github_user_id = up.github_user_id
+				ORDER BY
+					value DESC) AS derived_table
+		) languages ON 1=1
+		LEFT OUTER JOIN api.contact_informations emails on emails.github_user_id=up.github_user_id and emails.channel='email'
+		LEFT OUTER JOIN api.contact_informations telegram on telegram.github_user_id=up.github_user_id and telegram.channel='telegram'
+		LEFT OUTER JOIN api.contact_informations twitter on twitter.github_user_id=up.github_user_id and twitter.channel='twitter'
+		LEFT OUTER JOIN api.contact_informations discord on discord.github_user_id=up.github_user_id and discord.channel='discord'
+		LEFT OUTER JOIN api.contact_informations linkedin on linkedin.github_user_id=up.github_user_id and linkedin.channel='linkedin'
+		LEFT OUTER JOIN public.onboardings on onboardings.user_id = upi.user_id
+		) information ON (auth.users.id = information.user_id);
 "
 )]
 #[case(
