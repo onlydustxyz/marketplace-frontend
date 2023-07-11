@@ -79,6 +79,7 @@ select_permissions:
         - visibility
         - hiring
         - rank
+        - key
         - logo_url
         - long_description
         - more_info_link
