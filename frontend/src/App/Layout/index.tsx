@@ -12,7 +12,7 @@ export default function Layout() {
   const hideHeader = match && !isXl;
 
   return (
-    <div className="flex h-[calc(100dvh)] w-screen flex-col md:fixed">
+    <div className="flex h-[calc(100dvh)] w-screen flex-col xl:fixed">
       {!hideHeader && <Header />}
       <Outlet />
       <Toaster />
