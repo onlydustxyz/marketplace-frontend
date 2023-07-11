@@ -240,6 +240,7 @@ diesel::table! {
         hiring -> Bool,
         rank -> Int4,
         visibility -> ProjectVisibility,
+        key -> Text,
     }
 }
 
