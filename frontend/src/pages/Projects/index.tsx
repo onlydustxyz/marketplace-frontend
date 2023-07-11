@@ -17,7 +17,7 @@ export default function Projects() {
   return (
     <ProjectFilterProvider>
       <Background ref={ref} roundedBorders={BackgroundRoundedBorders.Full}>
-        <div className="flex flex-col gap-6 px-4 md:container md:mx-auto md:px-12 xl:pt-16">
+        <div className="flex flex-col gap-6 px-4 pb-8 md:container md:mx-auto md:px-12 xl:pt-16">
           <div>
             <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
           </div>
