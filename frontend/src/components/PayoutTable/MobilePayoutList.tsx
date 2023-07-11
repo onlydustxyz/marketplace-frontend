@@ -61,7 +61,7 @@ export function MobilePaymentItem({
   payoutStatus,
 }: {
   image: ReactNode;
-  title: string | undefined;
+  title?: string | null;
   request: string;
   amount: string;
   date: Date;
