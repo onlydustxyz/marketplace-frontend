@@ -17,6 +17,8 @@ import { isProjectVisibleToUser } from "src/hooks/useProjectVisibility";
 import SortingDropdown, { PROJECT_SORTINGS, Sorting } from "src/pages/Projects/SortingDropdown";
 import { useLocalStorage } from "react-use";
 import { useIntl } from "src/hooks/useIntl";
+import { FilterButton } from "src/pages/Projects/FilterPanel/FilterButton";
+import { SortButton } from "src/pages/Projects/SortingDropdown/SortButton";
 
 const DEFAULT_SORTING = Sorting.Trending;
 
@@ -62,10 +64,14 @@ export default function AllProjects({ search, clearSearch }: Props) {
 
   return (
     <div className="flex flex-col gap-5">
-      <div className="relative hidden h-10 items-center justify-between text-base xl:flex ">
+      <div className="relative flex h-10 items-center justify-between">
         <div className="px-2 font-medium text-spaceBlue-200">{T("projects.count", { count: projects.length })}</div>
-        <div className="absolute right-0 top-0 z-10">
+        <div className="absolute right-0 top-0 z-10 hidden xl:block">
           <SortingDropdown all={PROJECT_SORTINGS} current={sorting || DEFAULT_SORTING} onChange={setSorting} />
+        </div>
+        <div className="flex items-center gap-2 xl:hidden">
+          <SortButton all={PROJECT_SORTINGS} current={sorting || DEFAULT_SORTING} onChange={setSorting} />
+          <FilterButton isProjectLeader={!!ledProjectIds.length} />
         </div>
       </div>
       <div className="flex grow flex-col gap-5">

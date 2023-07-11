@@ -38,7 +38,7 @@ const ImpersonationPage = () => {
 
   return (
     <>
-      <div className="flex h-screen items-center justify-center bg-space">
+      <div className="flex h-[calc(100dvh)] items-center justify-center bg-space">
         <PasswordForm onSubmit={onPasswordSubmit} />
       </div>
       <Toaster />

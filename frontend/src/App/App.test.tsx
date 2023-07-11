@@ -18,7 +18,7 @@ import {
   GetProjectsQueryResult,
 } from "src/__generated/graphql";
 import { buildQuerySorting } from "src/pages/Projects/AllProjects";
-import { Sorting } from "src/pages/Projects";
+import { Sorting } from "src/pages/Projects/sorting";
 
 const TEST_USER_ID = "test-user-id";
 const TEST_GITHUB_USER_ID = 123456789;
@@ -292,7 +292,7 @@ describe("Integration tests", () => {
     });
     userEvent.click(await screen.findByTestId(PROFILE_BUTTON_TEST_ID));
     userEvent.click(await screen.findByTestId(LOGOUT_BUTTON_TEST_ID));
-    await screen.findByText("Filter");
+    await screen.findByText("Projects");
     expect(window.location.pathname).toBe(RoutePaths.Projects);
   });
 });

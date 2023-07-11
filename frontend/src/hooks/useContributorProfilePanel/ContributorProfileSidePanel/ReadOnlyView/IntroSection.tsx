@@ -106,7 +106,7 @@ export default function IntroSection({ isOwn, isPublic, profile, setEditMode }: 
           )}
 
           {profile.createdAt ? (
-            <div className="flex flex-row items-center gap-1 text-base text-greyscale-300">
+            <div className="flex flex-row items-center gap-2 text-base text-greyscale-300">
               <img id={`od-logo-${profile.login}`} src={onlyDustLogo} className="h-3.5" />
               {T("profile.joinedAt", {
                 joinedAt: formatDateShort(new Date(profile.createdAt)),

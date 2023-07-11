@@ -5,7 +5,6 @@ import { GetProjectOverviewDetailsDocument, GetProjectOverviewDetailsQuery } fro
 import Card from "src/components/Card";
 import GithubRepoDetails from "./GithubRepoDetails";
 import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
-import classNames from "classnames";
 import Badge, { BadgeSize } from "src/components/Badge";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import Title from "src/pages/ProjectDetails/Title";
@@ -29,6 +28,8 @@ import useProjectVisibility from "src/hooks/useProjectVisibility";
 import ProjectLeadInvitation from "src/components/ProjectLeadInvitation";
 import { useSuspenseQuery_experimental } from "@apollo/client";
 import { useEffect } from "react";
+import { viewportConfig } from "src/config";
+import { useMediaQuery } from "usehooks-ts";
 
 type OutletContext = {
   projectId: string;
@@ -36,6 +37,7 @@ type OutletContext = {
 
 export default function Overview() {
   const { T } = useIntl();
+  const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
   const { projectId } = useOutletContext<OutletContext>();
   const { isLoggedIn, githubUserId } = useAuth();
   const { ledProjectIds } = useAuth();
@@ -74,16 +76,16 @@ export default function Overview() {
 
   return (
     <>
-      <Title>{T("project.details.overview.title")}</Title>
+      <Title>{isXl ? T("project.details.overview.title") : T("project.details.overview.titleShort")}</Title>
       <ProjectLeadInvitation projectId={projectId} />
-      <div className="flex flex-row gap-6">
+      <div className="flex flex-col-reverse gap-6 md:flex-row">
         <div className="flex w-full flex-col gap-4">
-          <Card className={classNames("z-10 flex flex-col gap-4 px-6 py-4")}>
+          <Card className="flex flex-col gap-4 px-6 py-4">
             <div className="flex flex-row items-center gap-4">
               <img
                 alt={data?.projectsByPk?.projectDetails?.name}
                 src={logoUrl}
-                className="h-20 w-20 flex-shrink-0 rounded-lg bg-spaceBlue-900"
+                className="h-20 w-20 flex-shrink-0 rounded-lg bg-spaceBlue-900 object-cover"
               />
               <div className="flex w-full flex-col gap-1">
                 <div className="flex flex-row items-center justify-between font-belwe text-2xl font-normal text-greyscale-50">
@@ -108,7 +110,7 @@ export default function Overview() {
               </div>
               <Badge value={githubRepos.length} size={BadgeSize.Small} />
             </div>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 gap-3 xl:grid-cols-2">
               {githubRepos &&
                 githubRepos.map(githubRepo => (
                   <GithubRepoDetails key={githubRepo.repo?.id} githubRepoId={githubRepo.repo?.id} />

@@ -1,4 +1,3 @@
-import Card from "src/components/Card";
 import ContributorsTableFallback from "src/components/ContributorsTableFallback";
 import ContributorsTable from "src/pages/ProjectDetails/Contributors/ContributorsTable";
 import { useIntl } from "src/hooks/useIntl";
@@ -27,9 +26,7 @@ export default function Contributors() {
       <Title>{T("project.details.contributors.title")}</Title>
       <ProjectLeadInvitation projectId={projectId} />
       {contributors?.length > 0 ? (
-        <Card className="h-full">
-          <ContributorsTable {...{ contributors, isProjectLeader, remainingBudget, projectId }} />
-        </Card>
+        <ContributorsTable {...{ contributors, isProjectLeader, remainingBudget, projectId }} />
       ) : (
         <ContributorsTableFallback projectName={projectDetails?.projectsByPk?.projectDetails?.name} />
       )}

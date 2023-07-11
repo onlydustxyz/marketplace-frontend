@@ -58,7 +58,7 @@ const ProjectLeads = ({ leads }: { leads: ProjectLeadFragment[] }) => {
 export default function ProjectTitle({ projectName, projectLeads, logoUrl, private: private_ }: Props) {
   return (
     <div className="flex items-start gap-4">
-      <div className="relative">
+      <div className="relative flex-shrink-0">
         <RoundedImage src={logoUrl} alt="Project Logo" size={ImageSize.Xl} className="mt-1" />
         {private_ && (
           <div className="absolute -bottom-2.5 -right-2.5">
@@ -66,7 +66,7 @@ export default function ProjectTitle({ projectName, projectLeads, logoUrl, priva
           </div>
         )}
       </div>
-      <div className="min-w-0">
+      <div className="overflow-hidden">
         <div className="truncate font-belwe text-2xl font-medium">{projectName}</div>
         <ProjectLeads leads={projectLeads} />
       </div>

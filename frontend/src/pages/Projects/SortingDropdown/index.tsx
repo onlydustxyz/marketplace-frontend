@@ -19,7 +19,7 @@ type Props = {
   onChange: (value: Sorting) => void;
 };
 
-export default function SortingDropdown<T>({ all, current, onChange }: Props) {
+export default function SortingDropdown({ all, current, onChange }: Props) {
   const { T } = useIntl();
 
   return (

@@ -12,6 +12,7 @@ interface CardProps extends React.PropsWithChildren {
   padded?: boolean;
   blurred?: boolean;
   fullWidth?: boolean;
+  outline?: boolean;
 }
 
 export default function Card({
@@ -21,6 +22,7 @@ export default function Card({
   padded = true,
   blurred = true,
   fullWidth = true,
+  outline = true,
   dataTestId,
   children,
 }: CardProps) {
@@ -28,7 +30,9 @@ export default function Card({
     <div
       className={classNames(
         "rounded-2xl font-walsheim",
-        "pseudo-outline",
+        {
+          "pseudo-outline": outline,
+        },
         {
           "w-full": fullWidth,
         },
@@ -43,8 +47,8 @@ export default function Card({
           "hover:pseudo-outline-2": selectable,
         },
         {
-          "before:border-greyscale-50/8": border === CardBorder.Light,
-          "before:border-greyscale-50/12": border === CardBorder.Medium,
+          "before:border-greyscale-50/8": outline && border === CardBorder.Light,
+          "before:border-greyscale-50/12": outline && border === CardBorder.Medium,
         },
         className
       )}

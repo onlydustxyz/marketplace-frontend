@@ -13,7 +13,7 @@ type Props = {
   hasCloseButton?: boolean;
 } & PropsWithChildren;
 
-export default function SidePanel({
+export default function SidePanelWithBackdrop({
   open,
   setOpen,
   action,
@@ -39,7 +39,7 @@ export default function SidePanel({
       setPanelIndex(openSidePanel());
     }
   }, [open]);
-
+  1;
   const transitionProps = {
     right: {
       enterFrom: "translate-x-full",
@@ -63,7 +63,8 @@ export default function SidePanel({
       leave="transform transition ease-in-out duration-300"
       {...transitionProps}
     >
-      <Dialog open={open} onClose={onClose} as={Fragment}>
+      <Dialog open={open} onClose={onClose}>
+        <div className="fixed bottom-0 h-screen w-screen bg-black/40" aria-hidden="true" />
         <Dialog.Panel
           className={classNames(
             {

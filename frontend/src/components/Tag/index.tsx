@@ -33,8 +33,8 @@ export default function Tag({
     <div data-testid={testid} id={id} className="w-fit shrink-0 overflow-hidden rounded-full p-px" {...rest}>
       <div
         className={classNames(
-          "relative flex h-7 w-fit items-center justify-center gap-1 rounded-full font-walsheim font-normal text-white",
-          "before:absolute before:-z-10 before:h-screen before:w-screen",
+          "relative flex w-fit items-center justify-center gap-1 rounded-full font-walsheim font-normal text-white xl:h-7",
+          "before:absolute before:-z-10 before:h-[calc(100dvh)] before:w-screen",
           {
             "px-2 py-1 text-xs": size === TagSize.Small,
             "px-3 py-1.5 text-sm": size === TagSize.Medium,

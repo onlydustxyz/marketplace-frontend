@@ -62,14 +62,14 @@ export default function WorkEstimation({
                   <span className="text-2xl">{T("payment.form.steps." + steps, { count: stepNumber })}</span>{" "}
                 </div>
                 <div className="flex flex-row items-center gap-3 text-white">
-                  <div onClick={tryDecreaseNumberOfDays}>
+                  <div onClick={tryDecreaseNumberOfDays} className="relative">
                     <Button size={ButtonSize.Sm} type={ButtonType.Secondary} disabled={!canDecrease}>
                       <div className="absolute top-1">
                         <Subtract />
                       </div>
                     </Button>
                   </div>
-                  <div onClick={tryIncreaseNumberOfDays}>
+                  <div onClick={tryIncreaseNumberOfDays} className="relative">
                     <Button size={ButtonSize.Sm} type={ButtonType.Secondary} disabled={!canIncrease}>
                       <div className="absolute top-1">
                         <Add />

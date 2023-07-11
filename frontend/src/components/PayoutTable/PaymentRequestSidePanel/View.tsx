@@ -23,6 +23,8 @@ import IBAN from "iban";
 import ExternalLink from "src/components/ExternalLink";
 import isDefined from "src/utils/isDefined";
 import Contributor from "src/components/Contributor";
+import { viewportConfig } from "src/config";
+import { useMediaQuery } from "usehooks-ts";
 
 enum Align {
   Top = "top",
@@ -73,22 +75,25 @@ export default function View({
   ...props
 }: Props) {
   const { T } = useIntl();
+  const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
   const formattedReceipt = formatReceipt(payments?.at(0)?.receipt);
+
+  const shouldDisplayCancelPaymentButton =
+    projectLeaderView && onPaymentCancel && status === PaymentStatus.WAITING_PAYMENT;
 
   return (
     <SidePanel
       {...props}
       action={
-        projectLeaderView && onPaymentCancel && status === PaymentStatus.WAITING_PAYMENT ? (
-          <CancelPaymentButton onPaymentCancel={onPaymentCancel} />
-        ) : undefined
+        isXl && shouldDisplayCancelPaymentButton ? <CancelPaymentButton onPaymentCancel={onPaymentCancel} /> : undefined
       }
     >
       <QueryWrapper query={{ loading, data: requestedAt }}>
         <div className="flex h-full flex-col gap-8">
-          <div className="px-6 pt-8 font-belwe text-2xl font-normal text-greyscale-50">
+          <div className="flex flex-wrap items-center gap-3 px-6 pt-8 font-belwe text-2xl font-normal text-greyscale-50">
             {T("payment.table.detailsPanel.title", { id: pretty(id) })}
+            {!isXl && shouldDisplayCancelPaymentButton && <CancelPaymentButton onPaymentCancel={onPaymentCancel} />}
           </div>
           <div className="flex flex-col gap-2 px-6">
             <PayoutStatus
@@ -266,7 +271,7 @@ function CancelPaymentButton({ onPaymentCancel }: CancelPaymentButtonProps) {
         {T("payment.table.detailsPanel.cancelPayment.button")}
       </Button>
       <div
-        className={classNames("absolute -inset-x-10 top-10", {
+        className={classNames("absolute top-10 z-10 xl:-inset-x-10", {
           hidden: !modalOpened,
         })}
       >

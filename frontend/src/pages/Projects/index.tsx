@@ -8,6 +8,15 @@ import { Suspense, useState } from "react";
 import Loader from "src/components/Loader";
 import SearchBar from "./SearchBar";
 
+export enum Sorting {
+  Trending = "trending",
+  ProjectName = "projectName",
+  ReposCount = "reposCount",
+  ContributorsCount = "contributorsCount",
+}
+
+export const PROJECT_SORTINGS = [Sorting.Trending, Sorting.ProjectName, Sorting.ReposCount, Sorting.ContributorsCount];
+
 export default function Projects() {
   const { ledProjectIds } = useAuth();
 
@@ -17,7 +26,7 @@ export default function Projects() {
   return (
     <ProjectFilterProvider>
       <Background ref={ref} roundedBorders={BackgroundRoundedBorders.Full}>
-        <div className="flex flex-col gap-6 px-4 pb-8 md:container md:mx-auto md:px-12 xl:pt-16">
+        <div className="flex flex-col gap-6 px-4 pb-8 md:container md:mx-auto md:px-12 xl:gap-8 xl:pt-16">
           <div>
             <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
           </div>
