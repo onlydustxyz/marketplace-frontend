@@ -1,4 +1,4 @@
-import { Fragment, PropsWithChildren, ReactElement, forwardRef, useEffect, useState } from "react";
+import { Fragment, PropsWithChildren, ReactElement, useEffect, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import CloseLine from "src/icons/CloseLine";

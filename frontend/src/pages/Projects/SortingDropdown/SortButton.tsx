@@ -1,6 +1,5 @@
 import classNames from "classnames";
 import { useState } from "react";
-import SidePanel from "src/components/SidePanel";
 import SidePanelWithBackdrop from "src/components/SidePanelWithBackdrop";
 import { useIntl } from "src/hooks/useIntl";
 import { Sorting } from "src/pages/Projects/sorting";

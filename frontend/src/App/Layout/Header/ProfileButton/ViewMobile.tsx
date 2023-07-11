@@ -15,7 +15,6 @@ import { NavLink } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import Folder3Line from "src/icons/Folder3Line";
 import ExchangeDollarLine from "src/icons/ExchangeDollarLine";
-import BurgerIcon from "src/assets/icons/BurgerIcon";
 import SidePanelWithBackdrop from "src/components/SidePanelWithBackdrop";
 
 type Props = {

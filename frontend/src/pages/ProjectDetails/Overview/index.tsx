@@ -5,7 +5,6 @@ import { GetProjectOverviewDetailsDocument, GetProjectOverviewDetailsQuery } fro
 import Card from "src/components/Card";
 import GithubRepoDetails from "./GithubRepoDetails";
 import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
-import classNames from "classnames";
 import Badge, { BadgeSize } from "src/components/Badge";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import Title from "src/pages/ProjectDetails/Title";

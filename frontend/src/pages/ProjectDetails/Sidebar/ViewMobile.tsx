@@ -5,7 +5,6 @@ import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import { ProjectDetailsTab } from ".";
 import BackLink from "./BackLink";
 import View, { SidebarProjectDetails } from "./View";
-import CloseLine from "src/icons/CloseLine";
 import SidePanelWithBackdrop from "src/components/SidePanelWithBackdrop";
 
 interface Props {
