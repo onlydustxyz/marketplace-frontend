@@ -1,25 +1,20 @@
 import classNames from "classnames";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { viewportConfig } from "src/config";
 import { useIntl } from "src/hooks/useIntl";
 import CloseLine from "src/icons/CloseLine";
 import SearchLine from "src/icons/SearchLine";
-import { useDebounce, useMediaQuery } from "usehooks-ts";
+import { useMediaQuery } from "usehooks-ts";
 import Hotkeys from "react-hot-keys";
 
 type Props = {
-  searchQuery: string;
-  setSearchQuery: (search: string) => void;
+  search: string;
+  setSearch: (search: string) => void;
 };
 
-export default function SearchBar({ searchQuery, setSearchQuery }: Props) {
+export default function SearchBar({ search, setSearch }: Props) {
   const { T } = useIntl();
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
-
-  const [search, setSearch] = useState<string>(searchQuery);
-  const debouncedSearchQuery = useDebounce<string>(search, 200);
-
-  useEffect(() => setSearchQuery(debouncedSearchQuery), [debouncedSearchQuery]);
 
   const [inputFocus, setInputFocus] = useState(false);
 
@@ -68,8 +63,8 @@ export default function SearchBar({ searchQuery, setSearchQuery }: Props) {
             <CloseLine
               className={classNames(
                 "text-3xl",
-                { hidden: !inputFocus && !searchQuery },
-                { "text-greyscale-50": inputFocus || searchQuery }
+                { hidden: !inputFocus && !search },
+                { "text-greyscale-50": inputFocus || search }
               )}
               onClick={e => {
                 e.preventDefault();
