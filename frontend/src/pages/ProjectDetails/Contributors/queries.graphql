@@ -1,10 +1,7 @@
 query GetProjectDetails($projectId: uuid!) {
-  projectsByPk(id: $projectId) {
+  projects(where: { id: { _eq: $projectId } }) {
     id
-    projectDetails {
-      projectId
-      name
-    }
+    name
     budgets {
       id
       remainingAmount

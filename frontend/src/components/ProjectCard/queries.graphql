@@ -14,15 +14,12 @@ fragment ProjectCardFields on Projects {
       }
     }
   }
-  projectDetails {
-    projectId
-    name
-    telegramLink
-    logoUrl
-    shortDescription
-    hiring
-    rank
-  }
+  name
+  moreInfoLink
+  logoUrl
+  shortDescription
+  hiring
+  rank
   pendingInvitations {
     id
     githubUserId
@@ -41,7 +38,7 @@ fragment ProjectCardFields on Projects {
       ...GithubRepoLanguages
     }
   }
-  projectSponsors {
+  sponsors {
     sponsor {
       ...Sponsor
     }

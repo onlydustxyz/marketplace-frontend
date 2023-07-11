@@ -117,12 +117,9 @@ gql`
       id
       project {
         id
-        projectDetails {
-          projectId
-          name
-          shortDescription
-          logoUrl
-        }
+        name
+        shortDescription
+        logoUrl
       }
     }
   }
