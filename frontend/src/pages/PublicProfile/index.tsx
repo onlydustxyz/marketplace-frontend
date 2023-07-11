@@ -6,10 +6,18 @@ import Footer from "./Footer";
 import Profile from "./Profile";
 import useUserProfile from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/useUserProfile";
 import { RoutePaths } from "src/App";
+import { useShowToaster } from "src/hooks/useToaster";
+import { useIntl } from "src/hooks/useIntl";
 
 const PublicProfilePage = () => {
   const { userLogin } = useParams();
+  const { T } = useIntl();
+  const showToaster = useShowToaster();
   const { data: userProfile, loading } = useUserProfile({ githubUserLogin: userLogin });
+
+  if (!loading && (!userProfile || !userLogin)) {
+    showToaster(T("profile.error.notFound"), { isError: true });
+  }
 
   return loading ? (
     <></>

@@ -10,6 +10,8 @@ import View from "./View";
 import { RoutePaths } from "src/App";
 import useProjectVisibility from "src/hooks/useProjectVisibility";
 import { useSuspenseQuery_experimental as useSuspenseQuery } from "@apollo/client";
+import { useIntl } from "src/hooks/useIntl";
+import { useShowToaster } from "src/hooks/useToaster";
 
 type ProjectDetailsParams = {
   projectKey: string;
@@ -30,6 +32,8 @@ export interface ProjectDetails {
 
 export default function ProjectDetails() {
   const { projectKey } = useParams<ProjectDetailsParams>();
+  const { T } = useIntl();
+  const showToaster = useShowToaster();
 
   const projectIdQuery = useSuspenseQuery<GetProjectIdFromKeyQuery>(GetProjectIdFromKeyDocument, {
     variables: { projectKey },
@@ -37,6 +41,10 @@ export default function ProjectDetails() {
   const projectId = projectIdQuery.data.projects[0]?.id;
 
   const { visibleToCurrentUser } = useProjectVisibility(projectId);
+
+  if (!projectId || visibleToCurrentUser === false) {
+    showToaster(T("project.error.notFound"), { isError: true });
+  }
 
   return projectId && visibleToCurrentUser !== false ? (
     <View projectId={projectId} />
