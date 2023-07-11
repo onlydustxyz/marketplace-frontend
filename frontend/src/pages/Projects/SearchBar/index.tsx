@@ -33,7 +33,7 @@ export default function SearchBar({ searchQuery, setSearchQuery }: Props) {
     >
       <div
         className={classNames("relative z-10 flex items-center justify-center rounded-full", {
-          "before:absolute before:-z-10 before:h-screen before:w-screen before:scale-x-[20] before:bg-multi-color-gradient":
+          "before:absolute before:-z-10 before:h-screen before:w-screen before:scale-x-[8] before:bg-multi-color-gradient before:md:scale-x-[20]":
             !inputFocus,
         })}
       >
