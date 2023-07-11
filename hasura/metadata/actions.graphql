@@ -1,5 +1,5 @@
 type Mutation {
-  createProjectRestApi(
+  createProject(
     request: CreateProjectRequest!
   ): CreateProjectResponse
 }

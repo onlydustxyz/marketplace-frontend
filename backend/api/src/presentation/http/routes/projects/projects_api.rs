@@ -1,19 +1,24 @@
-use http_api_problem::HttpApiProblem;
+use std::sync::Arc;
+
+use http_api_problem::{HttpApiProblem, StatusCode};
 use rocket::{
 	data::{ByteUnit, Data, ToByteUnit},
 	serde::json::Json,
 	State,
 };
+use rocket::response::Responder;
 use rusty_money::Money;
 use serde::{Deserialize, Serialize};
 use url::Url;
 use uuid08::Uuid;
 
-use common_domain::ProjectVisibility;
+use common_domain::{DomainError, ProjectId, ProjectVisibility};
+
+use crate::application;
 
 #[derive(Debug, Serialize)]
 pub struct Response {
-	// project_id: Uuid,
+	project_id: ProjectId,
 }
 
 #[derive(Debug, Deserialize)]
@@ -32,25 +37,38 @@ pub struct Request {
 
 #[post("/api/projects", data = "<request>", format = "application/json", )]
 pub async fn create_project(
-	request: Json<Request>
+	request: Json<Request>, create_project_usecase: &State<application::project::create::Usecase>,
 ) -> Result<Json<Response>, HttpApiProblem> {
-	println!("{}", request.name);
-	// let project_id = context
-	// 	.create_project_usecase
-	// 	.create(
-	// 		request.name.try_into()?,
-	// 		request.short_description.try_into()?,
-	// 		request.long_description.try_into()?,
-	// 		request.telegram_link,
-	// 		request.logo_url,
-	// 		request.initial_budget.map(|initial_budget| {
-	// 			Money::from_major(initial_budget as i64, rusty_money::crypto::USDC).into()
-	// 		}),
-	// 		request.hiring.unwrap_or_default(),
-	// 		request.rank.unwrap_or_default(),
-	// 		request.visibility.unwrap_or_default(),
-	// 	)
-	// 	.await?;
-	// Ok(Json(Response { project_id }))
-	Ok(Json(Response {}))
+	let project_id = create_project_usecase
+		.create(
+			request.name.clone().try_into().map_err(|e: DomainError| {
+				HttpApiProblem::new(StatusCode::BAD_REQUEST)
+					.title("Unable to read project_name")
+					.detail(e.to_string())
+			})?,
+			request.short_description.clone().try_into().map_err(|e: DomainError| {
+				HttpApiProblem::new(StatusCode::BAD_REQUEST)
+					.title("Unable to read short_description")
+					.detail(e.to_string())
+			})?,
+			request.long_description.clone().try_into().map_err(|e: DomainError| {
+				HttpApiProblem::new(StatusCode::BAD_REQUEST)
+					.title("Unable to read long_description")
+					.detail(e.to_string())
+			})?,
+			request.telegram_link.clone(),
+			request.logo_url.clone(),
+			request.initial_budget.map(|initial_budget| {
+				Money::from_major(initial_budget as i64, rusty_money::crypto::USDC).into()
+			}),
+			request.hiring.unwrap_or_default(),
+			request.rank.unwrap_or_default(),
+			request.visibility.clone().unwrap_or_default(),
+		)
+		.await.map_err(|e| {
+		HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
+			.title("Unable to process create_project request")
+			.detail(e.to_string())
+	})?;
+	Ok(Json(Response { project_id }))
 }

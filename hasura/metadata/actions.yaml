@@ -1,16 +1,16 @@
 actions:
-  - name: createProjectRestApi
+  - name: createProject
     definition:
       kind: synchronous
-      handler: '{{HASURA_SUGGESTION_WEBHOOK}}'
+      handler: '{{BACKEND_REST_API_URL}}'
       request_transform:
         body:
           action: transform
-          template: "{\n      \"projectName\": {{$body.input.request.projectName}},\n      \"shortDescription\": {{$body.input.request.shortDescription}},\n      \"longDescription\": {{$body.input.request.longDescription}},\n      \"initialBudget\": {{$body.input.request.initialBudget}},\n      \"hiring\": {{$body.input.request.hiring}},\n      \"rank\": {{$body.input.request.rank}}\n    }\n    "
+          template: "{\n      \"name\": {{$body.input.request.projectName}},\n      \"short_description\": {{$body.input.request.shortDescription}},\n      \"long_description\": {{$body.input.request.longDescription}},\n      \"initial_budget\": {{$body.input.request?.initialBudget}},\n      \"hiring\": {{$body.input.request?.hiring}},\n      \"rank\": {{$body.input.request?.rank}},\n      \"telegram_link\": {{$body.input.request?.telegramLink}},\n      \"logo_url\": {{$body.input.request?.logoUrl}},\n      \"visibility\": {{$body.input.request?.visibility}}\n    }\n    "
         method: POST
         query_params: {}
         template_engine: Kriti
-        url: '{{$base_url}}/api/projects'
+        url: '{{$base_url}}/projects'
         version: 2
     comment: createProject
   - name: suggestTechnology

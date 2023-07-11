@@ -12,7 +12,7 @@ use infrastructure::{
 };
 use presentation::http;
 
-use crate::{infrastructure::simple_storage, models::*, presentation::graphql,presentation::http::routes::projects::create_project};
+use crate::{application, infrastructure::simple_storage, models::*, presentation::graphql, presentation::http::routes::projects::create_project};
 
 pub mod dto;
 mod error;
@@ -42,6 +42,11 @@ pub async fn serve(
 	simple_storage: Arc<simple_storage::Client>,
 	bus: Arc<amqp::Bus>,
 ) -> Result<()> {
+	let create_project_usecase = application::project::create::Usecase::new(
+		bus.to_owned(),
+		project_details_repository.clone(),
+		simple_storage.clone(),
+	);
 	let _ = rocket::custom(http::config::rocket("backend/api/Rocket.toml"))
 		.manage(config)
 		.manage(schema)
@@ -61,6 +66,7 @@ pub async fn serve(
 		.manage(ens)
 		.manage(simple_storage)
 		.manage(bus)
+		.manage(create_project_usecase)
 		.attach(http::guards::Cors)
 		.mount(
 			"/",
