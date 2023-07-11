@@ -1,10 +1,11 @@
 import classNames from "classnames";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { viewportConfig } from "src/config";
 import { useIntl } from "src/hooks/useIntl";
 import CloseLine from "src/icons/CloseLine";
 import SearchLine from "src/icons/SearchLine";
 import { useDebounce, useMediaQuery } from "usehooks-ts";
+import Hotkeys from "react-hot-keys";
 
 type Props = {
   searchQuery: string;
@@ -21,6 +22,8 @@ export default function SearchBar({ searchQuery, setSearchQuery }: Props) {
   useEffect(() => setSearchQuery(debouncedSearchQuery), [debouncedSearchQuery]);
 
   const [inputFocus, setInputFocus] = useState(false);
+
+  const textInput = useRef<HTMLInputElement>(null);
 
   return (
     <div
@@ -47,14 +50,20 @@ export default function SearchBar({ searchQuery, setSearchQuery }: Props) {
               { "text-greyscale-50": inputFocus }
             )}
           />
-          <input
-            placeholder={T(isMd ? "searchBar.placeholder" : "searchBar.placeholderShort")}
-            className="h-8 w-full bg-transparent font-walsheim text-lg font-medium text-greyscale-50 outline-none placeholder:text-spaceBlue-200"
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            onFocus={() => setInputFocus(true)}
-            onBlur={() => setInputFocus(false)}
-          />
+          <Hotkeys
+            keyName={isMac() ? "command+k" : "control+k"}
+            onKeyDown={() => textInput.current && textInput.current.focus()}
+          >
+            <input
+              placeholder={T(isMd ? "searchBar.placeholder" : "searchBar.placeholderShort")}
+              className="h-8 w-full bg-transparent font-walsheim text-lg font-medium text-greyscale-50 outline-none placeholder:text-spaceBlue-200"
+              value={search}
+              ref={textInput}
+              onChange={e => setSearch(e.target.value)}
+              onFocus={() => setInputFocus(true)}
+              onBlur={() => setInputFocus(false)}
+            />
+          </Hotkeys>
           <button>
             <CloseLine
               className={classNames(
@@ -72,4 +81,8 @@ export default function SearchBar({ searchQuery, setSearchQuery }: Props) {
       </div>
     </div>
   );
+}
+
+function isMac() {
+  return navigator.userAgent.toLowerCase().includes("mac");
 }

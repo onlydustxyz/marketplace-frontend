@@ -581,7 +581,7 @@
     "count": {
       "many": "__count__ PROJECTS",
       "one": "1 PROJECT",
-      "zero": "NO PROJECT"
+      "zero": "0 PROJECTS"
     },
     "fallback": {
       "clearFiltersButton": "Clear query",
