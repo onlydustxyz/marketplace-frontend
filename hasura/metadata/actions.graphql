@@ -1,6 +1,33 @@
 type Mutation {
+  createProjectRestApi(
+    request: CreateProjectRequest!
+  ): CreateProjectResponse
+}
+
+type Mutation {
   suggestTechnology(
     suggestion: String!
   ): Boolean
+}
+
+enum Visibility {
+  PRIVATE
+  PUBLIC
+}
+
+input CreateProjectRequest {
+  projectName: String!
+  telegramLink: String!
+  logoUrl: String!
+  shortDescription: String!
+  longDescription: String!
+  initialBudget: Int
+  hiring: Boolean
+  rank: Int
+  visibility: Visibility
+}
+
+type CreateProjectResponse {
+  id: String!
 }
 

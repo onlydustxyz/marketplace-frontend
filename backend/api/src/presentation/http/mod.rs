@@ -1,7 +1,8 @@
 use std::sync::Arc;
 
-use ::domain::{AggregateRootRepository, Project};
 use anyhow::Result;
+
+use ::domain::{AggregateRootRepository, Project};
 use http::Config;
 use infrastructure::{
 	amqp::{self, CommandPublisher},
@@ -11,7 +12,7 @@ use infrastructure::{
 };
 use presentation::http;
 
-use crate::{infrastructure::simple_storage, models::*, presentation::graphql};
+use crate::{infrastructure::simple_storage, models::*, presentation::graphql,presentation::http::routes::projects::create_project};
 
 pub mod dto;
 mod error;
@@ -77,6 +78,7 @@ pub async fn serve(
 			],
 		)
 		.mount("/", routes![routes::users::profile_picture])
+		.mount("/", routes![create_project])
 		.launch()
 		.await?;
 

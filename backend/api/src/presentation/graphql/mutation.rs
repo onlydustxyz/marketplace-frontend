@@ -156,37 +156,37 @@ impl Mutation {
 		Ok(payment_references.len() as i32)
 	}
 
-	pub async fn create_project(
-		context: &Context,
-		name: String,
-		short_description: String,
-		long_description: String,
-		telegram_link: Option<Url>,
-		logo_url: Option<Url>,
-		initial_budget: Option<i32>,
-		hiring: Option<bool>,
-		rank: Option<i32>,
-		visibility: Option<ProjectVisibility>,
-	) -> Result<Uuid> {
-		let project_id = context
-			.create_project_usecase
-			.create(
-				name.try_into()?,
-				short_description.try_into()?,
-				long_description.try_into()?,
-				telegram_link,
-				logo_url,
-				initial_budget.map(|initial_budget| {
-					Money::from_major(initial_budget as i64, rusty_money::crypto::USDC).into()
-				}),
-				hiring.unwrap_or_default(),
-				rank.unwrap_or_default(),
-				visibility.unwrap_or_default(),
-			)
-			.await?;
-
-		Ok(project_id.into())
-	}
+	// pub async fn create_project(
+	// 	context: &Context,
+	// 	name: String,
+	// 	short_description: String,
+	// 	long_description: String,
+	// 	telegram_link: Option<Url>,
+	// 	logo_url: Option<Url>,
+	// 	initial_budget: Option<i32>,
+	// 	hiring: Option<bool>,
+	// 	rank: Option<i32>,
+	// 	visibility: Option<ProjectVisibility>,
+	// ) -> Result<Uuid> {
+	// 	let project_id = context
+	// 		.create_project_usecase
+	// 		.create(
+	// 			name.try_into()?,
+	// 			short_description.try_into()?,
+	// 			long_description.try_into()?,
+	// 			telegram_link,
+	// 			logo_url,
+	// 			initial_budget.map(|initial_budget| {
+	// 				Money::from_major(initial_budget as i64, rusty_money::crypto::USDC).into()
+	// 			}),
+	// 			hiring.unwrap_or_default(),
+	// 			rank.unwrap_or_default(),
+	// 			visibility.unwrap_or_default(),
+	// 		)
+	// 		.await?;
+	//
+	// 	Ok(project_id.into())
+	// }
 
 	pub async fn update_project(
 		context: &Context,

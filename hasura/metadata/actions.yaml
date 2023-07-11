@@ -1,4 +1,18 @@
 actions:
+  - name: createProjectRestApi
+    definition:
+      kind: synchronous
+      handler: '{{HASURA_SUGGESTION_WEBHOOK}}'
+      request_transform:
+        body:
+          action: transform
+          template: "{\n      \"projectName\": {{$body.input.request.projectName}},\n      \"shortDescription\": {{$body.input.request.shortDescription}},\n      \"longDescription\": {{$body.input.request.longDescription}},\n      \"initialBudget\": {{$body.input.request.initialBudget}},\n      \"hiring\": {{$body.input.request.hiring}},\n      \"rank\": {{$body.input.request.rank}}\n    }\n    "
+        method: POST
+        query_params: {}
+        template_engine: Kriti
+        url: '{{$base_url}}/api/projects'
+        version: 2
+    comment: createProject
   - name: suggestTechnology
     definition:
       kind: synchronous
@@ -22,7 +36,17 @@ actions:
       - role: registered_user_specific
     comment: Suggest a new technology
 custom_types:
-  enums: []
-  input_objects: []
-  objects: []
+  enums:
+    - name: Visibility
+      values:
+        - description: null
+          is_deprecated: null
+          value: PRIVATE
+        - description: null
+          is_deprecated: null
+          value: PUBLIC
+  input_objects:
+    - name: CreateProjectRequest
+  objects:
+    - name: CreateProjectResponse
   scalars: []
