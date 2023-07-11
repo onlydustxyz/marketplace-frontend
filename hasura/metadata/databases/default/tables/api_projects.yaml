@@ -1,16 +1,13 @@
 table:
   name: projects
-  schema: public
-object_relationships:
-  - name: projectDetails
-    using:
-      manual_configuration:
-        column_mapping:
-          id: project_id
-        insertion_order: null
-        remote_table:
-          name: project_details
-          schema: public
+  schema: api
+configuration:
+  column_config: {}
+  custom_column_names: {}
+  custom_name: Projects
+  custom_root_fields:
+    select: projects
+    select_aggregate: projectsAggregate
 array_relationships:
   - name: applications
     using:
@@ -66,16 +63,26 @@ array_relationships:
         remote_table:
           name: project_leads
           schema: public
-  - name: projectSponsors
+  - name: sponsors
     using:
-      foreign_key_constraint_on:
-        column: project_id
-        table:
+      manual_configuration:
+        column_mapping:
+          id: project_id
+        insertion_order: null
+        remote_table:
           name: projects_sponsors
           schema: public
 select_permissions:
   - role: public
     permission:
       columns:
+        - visibility
+        - hiring
+        - rank
+        - logo_url
+        - long_description
+        - more_info_link
+        - name
+        - short_description
         - id
       filter: {}
