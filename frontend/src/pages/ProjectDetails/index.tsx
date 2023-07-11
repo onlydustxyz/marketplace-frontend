@@ -53,7 +53,7 @@ export default function ProjectDetails() {
         <title>{`${name} — OnlyDust`}</title>
         <meta name="description" content={shortDescription || ""} />
       </Helmet>
-      <View projectId={projectId} />
+      <View projectId={projectId} projectKey={projectKey || ""} />
     </>
   ) : (
     <Navigate to={RoutePaths.Projects} />
