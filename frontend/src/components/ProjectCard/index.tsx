@@ -23,24 +23,27 @@ import { useMediaQuery } from "usehooks-ts";
 
 export type Project = ArrayElement<GetProjectsQuery["projects"]>;
 
-type ProjectCardProps = Project & {
-  selectable?: boolean;
+type ProjectCardProps = {
+  project: Project;
 };
 
-export default function ProjectCard({
-  id,
-  pendingInvitations,
-  githubRepos,
-  projectLeads,
-  budgetsAggregate,
-  contributorsAggregate,
-  sponsors,
-  hiring,
-  name,
-  logoUrl,
-  visibility,
-  shortDescription,
-}: ProjectCardProps) {
+export default function ProjectCard({ project }: ProjectCardProps) {
+  const {
+    id,
+    key,
+    pendingInvitations,
+    githubRepos,
+    projectLeads,
+    budgetsAggregate,
+    contributorsAggregate,
+    sponsors,
+    hiring,
+    name,
+    logoUrl,
+    visibility,
+    shortDescription,
+  } = project;
+
   const { T } = useIntl();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
   const totalSpentAmountInUsd = budgetsAggregate?.aggregate?.sum?.spentAmount;
@@ -147,7 +150,7 @@ export default function ProjectCard({
   return (
     <Link
       to={generatePath(RoutePaths.ProjectDetails, {
-        projectId: id,
+        projectKey: key || "",
       })}
     >
       {card}

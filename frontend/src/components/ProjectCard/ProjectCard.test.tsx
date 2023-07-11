@@ -26,6 +26,7 @@ const PROJECT: Project = {
   githubReposAggregate: { aggregate: { count: 2 } },
   contributorsAggregate: { aggregate: { count: 3 } },
   name: "ZeroSync",
+  key: "zerosync",
   moreInfoLink: "https://app.onlydust.xyz/projects/92f022a9-dbd8-446f-a2a5-b161ccb4541c",
   shortDescription: "A short description",
   logoUrl: "https://avatars.githubusercontent.com/u/115809607?v=4",
@@ -80,7 +81,7 @@ const PROJECT: Project = {
 
 describe("'ProjectCard' component", () => {
   it("should display the sponsors logos", () => {
-    renderWithIntl(<ProjectCard {...PROJECT} />, {
+    renderWithIntl(<ProjectCard project={PROJECT} />, {
       wrapper: MemoryRouterProviderFactory({}),
     });
 
@@ -89,7 +90,7 @@ describe("'ProjectCard' component", () => {
   });
 
   it("should display at most 3 sponsors logos", () => {
-    renderWithIntl(<ProjectCard {...PROJECT} sponsors={[...PROJECT.sponsors, ...PROJECT.sponsors]} />, {
+    renderWithIntl(<ProjectCard project={{ ...PROJECT, sponsors: [...PROJECT.sponsors, ...PROJECT.sponsors] }} />, {
       wrapper: MemoryRouterProviderFactory({}),
     });
 
@@ -98,7 +99,7 @@ describe("'ProjectCard' component", () => {
   });
 
   it("should display the repository count", () => {
-    renderWithIntl(<ProjectCard {...PROJECT} />, {
+    renderWithIntl(<ProjectCard project={PROJECT} />, {
       wrapper: MemoryRouterProviderFactory({}),
     });
 
@@ -107,7 +108,7 @@ describe("'ProjectCard' component", () => {
   });
 
   it("should display the contributor count", () => {
-    renderWithIntl(<ProjectCard {...PROJECT} />, {
+    renderWithIntl(<ProjectCard project={PROJECT} />, {
       wrapper: MemoryRouterProviderFactory({}),
     });
 
@@ -116,7 +117,7 @@ describe("'ProjectCard' component", () => {
   });
 
   it("should display the languages", () => {
-    renderWithIntl(<ProjectCard {...PROJECT} />, {
+    renderWithIntl(<ProjectCard project={PROJECT} />, {
       wrapper: MemoryRouterProviderFactory({}),
     });
 

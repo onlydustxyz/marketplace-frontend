@@ -1,5 +1,6 @@
 fragment ProjectId on Projects {
   id
+  key
 }
 
 fragment LastProjectMergedPullRequests on Projects {

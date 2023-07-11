@@ -81,6 +81,7 @@ const ALL_PROJECTS_RESULT: { data: GetProjectsQueryResult["data"] } = {
       {
         __typename: "Projects",
         id: TEST_PROJECT_ID,
+        key: TEST_PROJECT_NAME,
         contributors: [],
         contributorsAggregate: { aggregate: { count: 0 } },
         githubReposAggregate: { aggregate: { count: 1 } },
@@ -148,6 +149,7 @@ const PROJECT_OVERVIEW_DETAILS_RESULT: { data: GetProjectOverviewDetailsQueryRes
         __typename: "Projects",
         id: TEST_PROJECT_ID,
         name: TEST_PROJECT_NAME,
+        key: TEST_PROJECT_NAME,
         logoUrl: null,
         longDescription: "This is the long description",
         moreInfoLink: TEST_TELEGRAM_LINK,
@@ -211,6 +213,7 @@ const graphQlMocks = [
             __typename: "Projects",
             id: TEST_PROJECT_ID,
             name: TEST_PROJECT_NAME,
+            key: TEST_PROJECT_NAME,
             logoUrl: null,
             visibility: "public",
             pendingInvitations: [],

@@ -92,6 +92,7 @@ export default function ProjectsSidebar({ projectId }: Props) {
 const projectFromQuery = (project: SidebarProjectDetailsFragment, githubUserId?: number): SidebarProjectDetails => ({
   ...project,
   name: project.name || "",
+  key: project.key || "",
   logoUrl: project.logoUrl || onlyDustLogo,
   withInvitation: project.pendingInvitations?.some(i => i.githubUserId === githubUserId),
   contributorsCount: project.contributorsAggregate.aggregate?.count || 0,

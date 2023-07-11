@@ -24,6 +24,7 @@ const availableTabs: ProjectDetailsTab[] = [
 const currentProject: ProjectDetails & SidebarProjectDetails = {
   id: "test-project-id",
   name: "Our project",
+  key: "our-project",
   logoUrl: "https://avatars.githubusercontent.com/u/98735558?v=4",
   leads: [
     {
@@ -41,6 +42,7 @@ const currentProject: ProjectDetails & SidebarProjectDetails = {
 const otherProject: ProjectDetails & SidebarProjectDetails = {
   id: "other-project-id",
   name: "Other project",
+  key: "other-project",
   logoUrl: "https://avatars.githubusercontent.com/u/98735558?v=4",
   leads: [
     {

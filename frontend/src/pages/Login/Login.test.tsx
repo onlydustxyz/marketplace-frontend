@@ -77,7 +77,10 @@ const pendingProjectLeadInvitationMock = {
       pendingProjectLeaderInvitations: [
         {
           id: "invitation-id",
-          projectId: TEST_PROJECT_ID,
+          project: {
+            id: TEST_PROJECT_ID,
+            key: TEST_PROJECT_ID,
+          },
         },
       ],
     } as PendingProjectLeaderInvitationsQueryResult["data"],
@@ -241,7 +244,7 @@ describe("Login page", () => {
       LOCAL_STORAGE_SESSION_KEY,
       JSON.stringify({
         lastLoginTime: "132456",
-        visitedPageBeforeLogin: generatePath(RoutePaths.ProjectDetails, { projectId: TEST_PROJECT_ID }),
+        visitedPageBeforeLogin: generatePath(RoutePaths.ProjectDetails, { projectKey: TEST_PROJECT_ID }),
       })
     );
 

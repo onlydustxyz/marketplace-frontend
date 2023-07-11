@@ -93,6 +93,7 @@ export default function useUserProfile({
       project =>
         ({
           id: project.id,
+          key: project.key,
           name: project.name,
           logoUrl: project.logoUrl || onlyDustLogo,
           leadSince: project.leadSince,

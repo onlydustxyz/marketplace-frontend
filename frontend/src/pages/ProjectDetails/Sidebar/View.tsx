@@ -21,6 +21,7 @@ interface Props {
 
 export interface SidebarProjectDetails {
   id: string;
+  key: string;
   name: string;
   logoUrl: string;
   withInvitation: boolean;
@@ -50,7 +51,7 @@ export default function View({ expandable, currentProject, allProjects, availabl
             onChange={project =>
               navigate(
                 generatePath(RoutePaths.ProjectDetails, {
-                  projectId: project.id,
+                  projectKey: project.key,
                 })
               )
             }

@@ -12,6 +12,7 @@ expect.extend(matchers);
 const projects1: GetAllFilterOptionsQuery["projects"][number] = {
   __typename: "Projects",
   id: "project-1",
+  key: "project-1",
   githubRepos: [
     {
       __typename: "ProjectGithubRepos",
@@ -36,6 +37,7 @@ const projects1: GetAllFilterOptionsQuery["projects"][number] = {
 const projects2: GetAllFilterOptionsQuery["projects"][number] = {
   __typename: "Projects",
   id: "project-2",
+  key: "project-2",
   githubRepos: [
     {
       __typename: "ProjectGithubRepos",
@@ -60,6 +62,7 @@ const projects2: GetAllFilterOptionsQuery["projects"][number] = {
 const projects3: GetAllFilterOptionsQuery["projects"][number] = {
   __typename: "Projects",
   id: "project-3",
+  key: "project-3",
   githubRepos: [
     {
       __typename: "ProjectGithubRepos",
@@ -84,6 +87,7 @@ const projects3: GetAllFilterOptionsQuery["projects"][number] = {
 const projects4: GetAllFilterOptionsQuery["projects"][number] = {
   __typename: "Projects",
   id: "project-4",
+  key: "project-4",
   githubRepos: [
     {
       __typename: "ProjectGithubRepos",
@@ -109,6 +113,7 @@ const projects4: GetAllFilterOptionsQuery["projects"][number] = {
 const projects5: GetAllFilterOptionsQuery["projects"][number] = {
   __typename: "Projects",
   id: "project-5",
+  key: "project-5",
   githubRepos: [
     {
       __typename: "ProjectGithubRepos",

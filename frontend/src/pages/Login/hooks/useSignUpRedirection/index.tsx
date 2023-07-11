@@ -1,4 +1,3 @@
-import { gql } from "@apollo/client";
 import { generatePath } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import usePayoutSettings from "src/hooks/usePayoutSettings";
@@ -47,29 +46,10 @@ const getRedirectionUrl = (
     return RoutePaths.Payments;
   }
 
-  const projectId = pendingProjectLeaderInvitationsQuery?.data?.pendingProjectLeaderInvitations?.[0]?.projectId;
-  if (projectId) {
-    return generatePath(RoutePaths.ProjectDetails, { projectId });
+  const projectKey = pendingProjectLeaderInvitationsQuery?.data?.pendingProjectLeaderInvitations?.[0]?.project?.key;
+  if (projectKey) {
+    return generatePath(RoutePaths.ProjectDetails, { projectKey });
   }
 
   return RoutePaths.Projects;
 };
-
-gql`
-  query PendingProjectLeaderInvitations($githubUserId: bigint) {
-    pendingProjectLeaderInvitations(where: { githubUserId: { _eq: $githubUserId } }) {
-      id
-      projectId
-    }
-  }
-
-  query PendingUserPayments($userId: uuid!) {
-    registeredUsers(where: { id: { _eq: $userId } }) {
-      ...UserId
-      githubUserId
-      paymentRequests {
-        ...ExtendedPaymentRequest
-      }
-    }
-  }
-`;

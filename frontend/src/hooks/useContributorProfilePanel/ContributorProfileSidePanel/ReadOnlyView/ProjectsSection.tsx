@@ -23,12 +23,12 @@ export default function ProjectsSection({ projects, setOpen }: Props) {
             <Link
               onClick={() => setOpen(false)}
               key={project.id}
-              to={generatePath(RoutePaths.ProjectDetails, { projectId: project.id })}
+              to={generatePath(RoutePaths.ProjectDetails, { projectKey: project.key })}
             >
-              <ProjectCard {...project} />
+              <ProjectCard project={project} />
             </Link>
           ) : (
-            <ProjectCard key={project.id} {...project} />
+            <ProjectCard project={project} key={project.id} />
           )
         )}
       </div>

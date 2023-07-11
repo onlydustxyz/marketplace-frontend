@@ -13,6 +13,8 @@ import { LOCAL_STORAGE_SESSION_KEY } from "src/hooks/useSession";
 import { CLAIMS_KEY, GITHUB_USERID_KEY, PROJECTS_LED_KEY } from "src/types";
 import Overview from "src/pages/ProjectDetails/Overview";
 import {
+  GetProjectIdFromKeyDocument,
+  GetProjectIdFromKeyQueryResult,
   GetProjectLeadInvitationsDocument,
   GetProjectLeadInvitationsQueryResult,
   GetProjectOverviewDetailsDocument,
@@ -59,6 +61,26 @@ vi.mock("jwt-decode", () => ({
   },
 }));
 
+const getProjectIdMock: MockedResponse = {
+  request: {
+    query: GetProjectIdFromKeyDocument,
+    variables: {
+      projectKey: TEST_PROJECT_ID,
+    },
+  },
+  result: {
+    data: {
+      projects: [
+        {
+          __typename: "Projects",
+          id: TEST_PROJECT_ID,
+          key: TEST_PROJECT_ID,
+        },
+      ],
+    } as GetProjectIdFromKeyQueryResult["data"],
+  },
+};
+
 const getProjectMock = {
   request: {
     query: GetProjectOverviewDetailsDocument,
@@ -72,6 +94,7 @@ const getProjectMock = {
         {
           __typename: "Projects",
           id: TEST_PROJECT_ID,
+          key: TEST_PROJECT_ID,
           budgetsAggregate: {
             aggregate: {
               sum: {
@@ -120,6 +143,7 @@ const getProjectVisibilityMock = (projectId: string) => ({
         {
           __typename: "Projects",
           id: projectId,
+          key: projectId,
           budgetsAggregate: { aggregate: { count: 1 } },
           contributors: [],
           githubReposAggregate: { aggregate: { count: 1 } },
@@ -145,6 +169,7 @@ const getLedProjectMock = {
         {
           __typename: "Projects",
           id: TEST_LED_PROJECT_ID,
+          key: TEST_LED_PROJECT_ID,
           budgetsAggregate: {
             aggregate: {
               sum: {
@@ -219,6 +244,7 @@ const getProjectInvitationsMock: MockedResponse = {
 
 const graphQlMocks = [
   getProjectMock,
+  getProjectIdMock,
   getLedProjectMock,
   getProjectForSidebarMock,
   getProjectInvitationsMock,
@@ -247,13 +273,13 @@ describe('"ProjectDetails" page', () => {
   it("should show a pending invitation if the user has been invited", async () => {
     renderWithIntl(
       <Routes>
-        <Route path="/projects/:projectId" element={<ProjectDetails />}>
+        <Route path="/p/:projectKey" element={<ProjectDetails />}>
           <Route index element={<Overview />} />
         </Route>
       </Routes>,
       {
         wrapper: MemoryRouterProviderFactory({
-          route: generatePath(RoutePaths.ProjectDetails, { projectId: TEST_PROJECT_ID }),
+          route: generatePath(RoutePaths.ProjectDetails, { projectKey: TEST_PROJECT_ID }),
           mocks: graphQlMocks,
         }),
       }
@@ -297,7 +323,7 @@ describe('"ProjectDetails" page', () => {
       </Routes>,
       {
         wrapper: MemoryRouterProviderFactory({
-          route: generatePath(RoutePaths.ProjectDetails, { projectId: TEST_LED_PROJECT_ID }),
+          route: generatePath(RoutePaths.ProjectDetails, { projectKey: TEST_LED_PROJECT_ID }),
           mocks: graphQlMocks,
         }),
       }
@@ -315,7 +341,7 @@ describe('"ProjectDetails" page', () => {
       </Routes>,
       {
         wrapper: MemoryRouterProviderFactory({
-          route: generatePath(RoutePaths.ProjectDetails, { projectId: TEST_LED_PROJECT_ID }),
+          route: generatePath(RoutePaths.ProjectDetails, { projectKey: TEST_LED_PROJECT_ID }),
           mocks: [getProjectMock],
         }),
       }

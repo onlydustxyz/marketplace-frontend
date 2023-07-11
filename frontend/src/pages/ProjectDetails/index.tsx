@@ -1,12 +1,18 @@
 import { Navigate, useParams } from "react-router-dom";
 import { LanguageMap } from "src/types";
-import { ProjectLeadFragment, SponsorFragment } from "src/__generated/graphql";
+import {
+  GetProjectIdFromKeyDocument,
+  GetProjectIdFromKeyQuery,
+  ProjectLeadFragment,
+  SponsorFragment,
+} from "src/__generated/graphql";
 import View from "./View";
 import { RoutePaths } from "src/App";
 import useProjectVisibility from "src/hooks/useProjectVisibility";
+import { useSuspenseQuery_experimental as useSuspenseQuery } from "@apollo/client";
 
 type ProjectDetailsParams = {
-  projectId: string;
+  projectKey: string;
 };
 
 export interface ProjectDetails {
@@ -23,7 +29,13 @@ export interface ProjectDetails {
 }
 
 export default function ProjectDetails() {
-  const { projectId } = useParams<ProjectDetailsParams>();
+  const { projectKey } = useParams<ProjectDetailsParams>();
+
+  const projectIdQuery = useSuspenseQuery<GetProjectIdFromKeyQuery>(GetProjectIdFromKeyDocument, {
+    variables: { projectKey },
+  });
+  const projectId = projectIdQuery.data.projects[0]?.id;
+
   const { visibleToCurrentUser } = useProjectVisibility(projectId);
 
   return projectId && visibleToCurrentUser !== false ? (
