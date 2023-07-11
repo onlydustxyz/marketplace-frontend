@@ -54,6 +54,12 @@ query getProjectBudget($projectId: uuid!) {
   }
 }
 
+query getProjectKey($projectId: uuid!) {
+  projects(where: { id: { _eq: $projectId } }) {
+    key
+  }
+}
+
 mutation updateBudgetAllocation($projectId: Uuid!, $amount: Int!) {
   updateBudgetAllocation(projectId: $projectId, newRemainingAmountInUsd: $amount)
 }

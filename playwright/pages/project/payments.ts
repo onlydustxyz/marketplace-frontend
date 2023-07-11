@@ -11,7 +11,7 @@ export class ProjectPaymentsPage {
   constructor(page: Page, project: Project) {
     this.page = page;
     this.project = project;
-    this.url = `/projects/${project.id}/payments`;
+    this.url = `/p/${project.key}/payments`;
   }
 
   goto = () => this.page.goto(this.url);

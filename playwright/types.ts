@@ -52,6 +52,7 @@ export type ProjectFixture = {
 
 export type Project = ProjectFixture & {
   id: string;
+  key: string;
 };
 
 export type Repo = {

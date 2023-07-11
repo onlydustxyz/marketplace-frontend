@@ -16539,6 +16539,13 @@ export type GetProjectBudgetQueryVariables = Exact<{
 
 export type GetProjectBudgetQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', budgets: Array<{ __typename?: 'Budgets', id: any }> }> };
 
+export type GetProjectKeyQueryVariables = Exact<{
+  projectId: Scalars['uuid'];
+}>;
+
+
+export type GetProjectKeyQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', key: string | null }> };
+
 export type UpdateBudgetAllocationMutationVariables = Exact<{
   projectId: Scalars['Uuid'];
   amount: Scalars['Int'];
@@ -19437,6 +19444,41 @@ export function useGetProjectBudgetLazyQuery(baseOptions?: Apollo.LazyQueryHookO
 export type GetProjectBudgetQueryHookResult = ReturnType<typeof useGetProjectBudgetQuery>;
 export type GetProjectBudgetLazyQueryHookResult = ReturnType<typeof useGetProjectBudgetLazyQuery>;
 export type GetProjectBudgetQueryResult = Apollo.QueryResult<GetProjectBudgetQuery, GetProjectBudgetQueryVariables>;
+export const GetProjectKeyDocument = gql`
+    query getProjectKey($projectId: uuid!) {
+  projects(where: {id: {_eq: $projectId}}) {
+    key
+  }
+}
+    `;
+
+/**
+ * __useGetProjectKeyQuery__
+ *
+ * To run a query within a React component, call `useGetProjectKeyQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProjectKeyQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetProjectKeyQuery({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *   },
+ * });
+ */
+export function useGetProjectKeyQuery(baseOptions: Apollo.QueryHookOptions<GetProjectKeyQuery, GetProjectKeyQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetProjectKeyQuery, GetProjectKeyQueryVariables>(GetProjectKeyDocument, options);
+      }
+export function useGetProjectKeyLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProjectKeyQuery, GetProjectKeyQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetProjectKeyQuery, GetProjectKeyQueryVariables>(GetProjectKeyDocument, options);
+        }
+export type GetProjectKeyQueryHookResult = ReturnType<typeof useGetProjectKeyQuery>;
+export type GetProjectKeyLazyQueryHookResult = ReturnType<typeof useGetProjectKeyLazyQuery>;
+export type GetProjectKeyQueryResult = Apollo.QueryResult<GetProjectKeyQuery, GetProjectKeyQueryVariables>;
 export const UpdateBudgetAllocationDocument = gql`
     mutation updateBudgetAllocation($projectId: Uuid!, $amount: Int!) {
   updateBudgetAllocation(projectId: $projectId, newRemainingAmountInUsd: $amount)
