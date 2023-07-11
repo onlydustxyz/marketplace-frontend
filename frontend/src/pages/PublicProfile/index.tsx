@@ -8,6 +8,7 @@ import useUserProfile from "src/hooks/useContributorProfilePanel/ContributorProf
 import { RoutePaths } from "src/App";
 import { useShowToaster } from "src/hooks/useToaster";
 import { useIntl } from "src/hooks/useIntl";
+import { Helmet } from "react-helmet";
 
 const PublicProfilePage = () => {
   const { userLogin } = useParams();
@@ -23,6 +24,10 @@ const PublicProfilePage = () => {
     <></>
   ) : userProfile && userLogin ? (
     <>
+      <Helmet>
+        <title>{`${userProfile.profile.login} — OnlyDust`}</title>
+        {userProfile.profile.bio && <meta name="description" content={userProfile.profile.bio} />}
+      </Helmet>
       <div className="bg-public-profile lg:h-[calc(100dvh)] lg:w-screen">
         <div className="lg:max-5xl xl:max-6xl mx-auto flex h-full flex-col justify-between md:container md:px-4 2xl:max-w-7xl">
           <Header userLogin={userLogin} />
