@@ -210,21 +210,8 @@ class PendingProjectLeaderInvitations {
    user: RegisteredUsers
 }
 
-class ProjectDetails {
-   hiring: Boolean!
-   logoUrl: String
-   longDescription: String!
-   name: String!
-   projectId: uuid!
-   rank: Int!
-   shortDescription: String!
-   telegramLink: String
-   visibility: project_visibility!
-}
-
 class ProjectGithubRepos {
    githubRepoId: bigint!
-   project: Projects
    projectId: uuid!
    repo: GithubRepos
    repoContributors: [GithubReposContributors!]!
@@ -244,11 +231,19 @@ class Projects {
    budgets: [Budgets!]!
    contributors: [ProjectsContributors!]!
    githubRepos: [ProjectGithubRepos!]!
-   id: uuid!
+   hiring: Boolean
+   id: uuid
+   key: String
+   logoUrl: String
+   longDescription: String
+   moreInfoLink: String
+   name: String
    pendingInvitations: [PendingProjectLeaderInvitations!]!
-   projectDetails: ProjectDetails
    projectLeads: [ProjectLeads!]!
-   projectSponsors: [ProjectsSponsors!]!
+   rank: Int
+   shortDescription: String
+   sponsors: [ProjectsSponsors!]!
+   visibility: project_visibility
 }
 
 class ProjectsContributors {
@@ -261,7 +256,6 @@ class ProjectsContributors {
 }
 
 class ProjectsSponsors {
-   project: Projects!
    projectId: uuid!
    sponsor: Sponsors!
    sponsorId: uuid!
@@ -456,12 +450,10 @@ Payments -- PaymentRequests
 PendingProjectLeaderInvitations -- Projects
 PendingProjectLeaderInvitations -- RegisteredUsers
 ProjectGithubRepos -- GithubRepos
-ProjectGithubRepos -- Projects
 ProjectGithubRepos --* GithubIssues
 ProjectGithubRepos --* GithubReposContributors
 ProjectLeads -- Projects
 ProjectLeads -- RegisteredUsers
-Projects -- ProjectDetails
 Projects --* Applications
 Projects --* Budgets
 Projects --* PendingProjectLeaderInvitations
@@ -472,7 +464,6 @@ Projects --* ProjectsSponsors
 ProjectsContributors -- GithubUsers
 ProjectsContributors -- Projects
 ProjectsContributors -- UserProfiles
-ProjectsSponsors -- Projects
 ProjectsSponsors -- Sponsors
 RegisteredUsers -- UserPayoutInfo
 RegisteredUsers --* PaymentRequests
