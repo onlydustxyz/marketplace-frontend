@@ -1,16 +1,11 @@
-use std::sync::Arc;
-
 use http_api_problem::{HttpApiProblem, StatusCode};
 use rocket::{
-	data::{ByteUnit, Data, ToByteUnit},
 	serde::json::Json,
 	State,
 };
-use rocket::response::Responder;
 use rusty_money::Money;
 use serde::{Deserialize, Serialize};
 use url::Url;
-use uuid08::Uuid;
 
 use common_domain::{DomainError, ProjectId, ProjectVisibility};
 
