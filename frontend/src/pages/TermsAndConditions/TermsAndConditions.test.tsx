@@ -75,9 +75,9 @@ describe("Terms and Conditions page", () => {
     await userEvent.click(await screen.findByText("Let’s get reading!"));
     await screen.findByText("Summary of our Terms & Conditions");
     // this button should be disabled
-    await userEvent.click(await screen.findByText("Accept terms and conditions"));
+    await userEvent.click(await screen.findByText("Confirm"));
     await userEvent.click(await screen.findByRole("checkbox"));
-    await userEvent.click(await screen.findByText("Accept terms and conditions"));
+    await userEvent.click(await screen.findByText("Confirm"));
     expect(screen.queryByText("Accept terms and conditions")).not.toBeInTheDocument();
   });
 });
