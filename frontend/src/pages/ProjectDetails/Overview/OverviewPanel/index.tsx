@@ -11,7 +11,7 @@ import Sponsor from "./Sponsor";
 interface Props {
   leads?: ProjectLeadFragment[];
   sponsors: SponsorFragment[];
-  telegramLink: string | null;
+  moreInfoLink: string | null;
   topContributors: Pick<GithubUserFragment, "login" | "avatarUrl">[];
   totalContributorsCount: number;
 }
@@ -19,7 +19,7 @@ interface Props {
 export default function OverviewPanel({
   leads,
   sponsors,
-  telegramLink,
+  moreInfoLink,
   topContributors,
   totalContributorsCount,
 }: Props) {
@@ -88,10 +88,10 @@ export default function OverviewPanel({
           </div>
         </Section>
       )}
-      {telegramLink && (
+      {moreInfoLink && (
         <Section testId="more-info" icon={SectionIcon.Link} title={T("project.details.overview.moreInfo")}>
           <div data-testid="more-info-link" className="flex overflow-hidden text-sm font-semibold text-spacePurple-500">
-            <ExternalLink text={telegramLink.replace(/^https?:\/\//i, "").replace(/\/$/, "")} url={telegramLink} />
+            <ExternalLink text={moreInfoLink.replace(/^https?:\/\//i, "").replace(/\/$/, "")} url={moreInfoLink} />
           </div>
         </Section>
       )}

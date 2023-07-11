@@ -19,7 +19,7 @@ export default function Contributors() {
   const { contributors } = useProjectContributors(projectId);
   const { data: projectDetails } = useGetProjectDetailsQuery({ variables: { projectId }, ...contextWithCacheHeaders });
 
-  const remainingBudget = projectDetails?.projectsByPk?.budgets.at(0)?.remainingAmount;
+  const remainingBudget = projectDetails?.projects[0]?.budgets.at(0)?.remainingAmount;
 
   return (
     <>
@@ -28,7 +28,7 @@ export default function Contributors() {
       {contributors?.length > 0 ? (
         <ContributorsTable {...{ contributors, isProjectLeader, remainingBudget, projectId }} />
       ) : (
-        <ContributorsTableFallback projectName={projectDetails?.projectsByPk?.projectDetails?.name} />
+        <ContributorsTableFallback projectName={projectDetails?.projects[0]?.name} />
       )}
     </>
   );

@@ -70,7 +70,7 @@ const buildQueryFilters = (technologies: string[], sponsors: string[]): Projects
   }
 
   if (sponsors.length) {
-    filters = merge(filters, { projectSponsors: { sponsor: { name: { _in: sponsors } } } });
+    filters = merge(filters, { sponsors: { sponsor: { name: { _in: sponsors } } } });
   }
 
   return filters;

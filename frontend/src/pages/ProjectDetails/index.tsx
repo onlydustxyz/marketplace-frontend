@@ -13,7 +13,7 @@ export interface ProjectDetails {
   id: string;
   name?: string;
   logoUrl: string;
-  telegramLink?: string | null;
+  moreInfoLink?: string | null;
   leads: ({ id: string } & Partial<ProjectLeadFragment>)[];
   invitationId?: string;
   totalSpentAmountInUsd?: number;

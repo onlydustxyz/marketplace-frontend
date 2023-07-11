@@ -31,9 +31,9 @@ export default function useUnpaidIssues({ projectId, authorId, type }: Props) {
 
   const eligibleIssues: WorkItem[] | undefined | null = useMemo(
     () =>
-      searchIssuesQuery.data?.projectsByPk &&
+      searchIssuesQuery.data?.projects[0] &&
       paidItems &&
-      chain(searchIssuesQuery.data?.projectsByPk.githubRepos)
+      chain(searchIssuesQuery.data?.projects[0].githubRepos)
         .flatMap("repoIssues")
         .map(issue => issueToWorkItem(projectId, issue))
         .differenceWith(paidItems, (pr, paidItem) => {
@@ -42,7 +42,7 @@ export default function useUnpaidIssues({ projectId, authorId, type }: Props) {
         .sortBy("createdAt")
         .reverse()
         .value(),
-    [searchIssuesQuery.data?.projectsByPk, paidItems, projectId]
+    [searchIssuesQuery.data?.projects[0], paidItems, projectId]
   );
   return {
     data: eligibleIssues,

@@ -30,19 +30,23 @@ type ProjectCardProps = Project & {
 export default function ProjectCard({
   id,
   pendingInvitations,
-  projectDetails,
   githubRepos,
   projectLeads,
   budgetsAggregate,
   contributorsAggregate,
-  projectSponsors,
+  sponsors,
+  hiring,
+  name,
+  logoUrl,
+  visibility,
+  shortDescription,
 }: ProjectCardProps) {
   const { T } = useIntl();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
   const totalSpentAmountInUsd = budgetsAggregate?.aggregate?.sum?.spentAmount;
   const totalInitialAmountInUsd = budgetsAggregate?.aggregate?.sum?.initialAmount;
 
-  const topSponsors = projectSponsors?.map(projectSponsor => projectSponsor.sponsor).slice(0, 3) || [];
+  const topSponsors = sponsors?.map(projectSponsor => projectSponsor.sponsor).slice(0, 3) || [];
   const languages = getMostUsedLanguages(getDeduplicatedAggregatedLanguages(githubRepos.map(r => r.repo)));
   const contributorsCount = contributorsAggregate.aggregate?.count || 0;
 
@@ -54,7 +58,7 @@ export default function ProjectCard({
       border={CardBorder.Medium}
       dataTestId="project-card"
     >
-      {projectDetails?.hiring && (
+      {hiring && (
         <div className="absolute -top-3.5 right-3.5">
           <Tag size={TagSize.Small} opaque>
             <RecordCircleLine />
@@ -67,10 +71,10 @@ export default function ProjectCard({
           <div className="min-w-0 basis-1/3 flex-col gap-y-5 lg:flex">
             <ProjectTitle
               projectId={id}
-              projectName={projectDetails?.name || ""}
+              projectName={name || ""}
               projectLeads={projectLeads?.map(lead => lead.user).filter(isDefined) || []}
-              logoUrl={projectDetails?.logoUrl || onlyDustLogo}
-              private={projectDetails?.visibility === "private"}
+              logoUrl={logoUrl || onlyDustLogo}
+              private={visibility === "private"}
             />
             {languages.length > 0 && (
               <div className="hidden lg:block">
@@ -82,7 +86,7 @@ export default function ProjectCard({
             )}
           </div>
           <div className="flex basis-2/3 flex-col justify-center gap-4 lg:gap-4 lg:pl-6">
-            <div className="ml-px line-clamp-2 text-sm xl:text-base">{projectDetails?.shortDescription}</div>
+            <div className="ml-px line-clamp-2 text-sm xl:text-base">{shortDescription}</div>
             <div className="flex flex-row flex-wrap gap-1 xl:gap-2">
               {githubRepos && githubRepos.length > 0 && (
                 <Tag testid={`github-repo-count-${id}`} size={TagSize.Small}>

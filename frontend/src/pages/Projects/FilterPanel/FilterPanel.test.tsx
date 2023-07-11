@@ -24,13 +24,13 @@ const projects1: GetAllFilterOptionsQuery["projects"][number] = {
       },
     },
   ],
-  projectSponsors: [{ sponsor: { id: "sponsor-1", name: "Sponsor 1" } }],
+  sponsors: [{ sponsor: { id: "sponsor-1", name: "Sponsor 1" } }],
   budgetsAggregate: { aggregate: { count: 1 } },
   projectLeads: [{ __typename: "ProjectLeads", userId: "user-1" }],
   pendingInvitations: [],
   contributors: [],
   githubReposAggregate: { aggregate: { count: 1 } },
-  projectDetails: { visibility: "public", projectId: "project-1" },
+  visibility: "public",
 };
 
 const projects2: GetAllFilterOptionsQuery["projects"][number] = {
@@ -48,16 +48,13 @@ const projects2: GetAllFilterOptionsQuery["projects"][number] = {
       },
     },
   ],
-  projectSponsors: [
-    { sponsor: { id: "sponsor-1", name: "Sponsor 1" } },
-    { sponsor: { id: "sponsor-2", name: "Sponsor 2" } },
-  ],
+  sponsors: [{ sponsor: { id: "sponsor-1", name: "Sponsor 1" } }, { sponsor: { id: "sponsor-2", name: "Sponsor 2" } }],
   budgetsAggregate: { aggregate: { count: 1 } },
   projectLeads: [{ __typename: "ProjectLeads", userId: "user-1" }],
   pendingInvitations: [],
   contributors: [],
   githubReposAggregate: { aggregate: { count: 1 } },
-  projectDetails: { visibility: "public", projectId: "project-2" },
+  visibility: "public",
 };
 
 const projects3: GetAllFilterOptionsQuery["projects"][number] = {
@@ -75,13 +72,13 @@ const projects3: GetAllFilterOptionsQuery["projects"][number] = {
       },
     },
   ],
-  projectSponsors: [],
+  sponsors: [],
   budgetsAggregate: { aggregate: { count: 1 } },
   projectLeads: [{ __typename: "ProjectLeads", userId: "user-1" }],
   pendingInvitations: [],
   contributors: [],
   githubReposAggregate: { aggregate: { count: 1 } },
-  projectDetails: { visibility: "public", projectId: "project-3" },
+  visibility: "public",
 };
 
 const projects4: GetAllFilterOptionsQuery["projects"][number] = {
@@ -100,13 +97,13 @@ const projects4: GetAllFilterOptionsQuery["projects"][number] = {
       },
     },
   ],
-  projectSponsors: [],
+  sponsors: [],
   budgetsAggregate: { aggregate: { count: 1 } },
   projectLeads: [{ __typename: "ProjectLeads", userId: "user-1" }],
   pendingInvitations: [],
   contributors: [],
   githubReposAggregate: { aggregate: { count: 1 } },
-  projectDetails: { visibility: "public", projectId: "project-4" },
+  visibility: "public",
 };
 
 const projects5: GetAllFilterOptionsQuery["projects"][number] = {
@@ -125,12 +122,12 @@ const projects5: GetAllFilterOptionsQuery["projects"][number] = {
     },
   ],
   budgetsAggregate: { aggregate: { count: 0 } },
-  projectSponsors: [{ sponsor: { id: "sponsor-3", name: "Sponsor 3" } }],
+  sponsors: [{ sponsor: { id: "sponsor-3", name: "Sponsor 3" } }],
   projectLeads: [{ __typename: "ProjectLeads", userId: "user-1" }],
   pendingInvitations: [],
   contributors: [],
   githubReposAggregate: { aggregate: { count: 1 } },
-  projectDetails: { visibility: "public", projectId: "project-5" },
+  visibility: "public",
 };
 
 const graphQlMocks = [

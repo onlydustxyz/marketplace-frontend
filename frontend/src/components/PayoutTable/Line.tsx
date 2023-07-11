@@ -26,7 +26,7 @@ export type Payment = {
   recipientPayoutSettings?: PayoutSettings;
   project?: {
     id: string;
-    title: string;
+    title: string | null;
     logoUrl?: string | null;
   } | null;
 };

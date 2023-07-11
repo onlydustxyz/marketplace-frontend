@@ -87,10 +87,10 @@ const mapApiPaymentsToProps = (apiPayment: UserPaymentRequestFragment): Payment 
     amount,
     workItems: apiPayment.workItems,
     project: project &&
-      project?.projectDetails && {
+      project && {
         id: project.id,
-        title: project.projectDetails.name,
-        logoUrl: project.projectDetails.logoUrl,
+        title: project.name,
+        logoUrl: project.logoUrl,
       },
     invoiceReceived: !!apiPayment.invoiceReceivedAt,
     status:

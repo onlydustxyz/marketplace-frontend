@@ -68,46 +68,41 @@ const getProjectMock = {
   },
   result: {
     data: {
-      projectsByPk: {
-        __typename: "Projects",
-        id: TEST_PROJECT_ID,
-        budgetsAggregate: {
-          aggregate: {
-            count: 1,
-            sum: {
-              spentAmount: 1000,
-              initialAmount: 1000,
+      projects: [
+        {
+          __typename: "Projects",
+          id: TEST_PROJECT_ID,
+          budgetsAggregate: {
+            aggregate: {
+              sum: {
+                spentAmount: 1000,
+                initialAmount: 1000,
+              },
             },
           },
-        },
-        contributors: [],
-        githubReposAggregate: { aggregate: { count: 1 } },
-        projectDetails: {
-          projectId: TEST_PROJECT_ID,
+          contributors: [],
           name: TEST_PROJECT_NAME,
-          telegramLink: TEST_TELEGRAM_LINK,
-          shortDescription: TEST_DESCRIPTION,
+          moreInfoLink: TEST_TELEGRAM_LINK,
           longDescription: TEST_DESCRIPTION,
           logoUrl: null,
           hiring: false,
-          rank: 0,
           visibility: "public",
-        },
-        contributorsAggregate: { aggregate: { count: 0 } },
-        pendingInvitations: [{ id: "test-invitation-id", githubUserId: TEST_GITHUB_USER_ID }],
-        projectLeads: [
-          {
-            user: {
-              id: "test-user-id",
-              login: TEST_PROJECT_LEAD_DISPLAY_NAME,
-              avatarUrl: TEST_PROJECT_LEAD_AVATAR_URL,
-              githubUserId: 12345,
+          contributorsAggregate: { aggregate: { count: 0 } },
+          pendingInvitations: [{ id: "test-invitation-id", githubUserId: TEST_GITHUB_USER_ID }],
+          projectLeads: [
+            {
+              user: {
+                id: "test-user-id",
+                login: TEST_PROJECT_LEAD_DISPLAY_NAME,
+                avatarUrl: TEST_PROJECT_LEAD_AVATAR_URL,
+                githubUserId: 12345,
+              },
             },
-          },
-        ],
-        githubRepos: [{ repo: null }],
-        projectSponsors: [],
-      },
+          ],
+          githubRepos: [{ repo: null }],
+          sponsors: [],
+        },
+      ],
     } as GetProjectOverviewDetailsQueryResult["data"],
   },
 };
@@ -121,16 +116,18 @@ const getProjectVisibilityMock = (projectId: string) => ({
   },
   result: {
     data: {
-      projectsByPk: {
-        __typename: "Projects",
-        id: projectId,
-        budgetsAggregate: { aggregate: { count: 1 } },
-        contributors: [],
-        githubReposAggregate: { aggregate: { count: 1 } },
-        pendingInvitations: [],
-        projectLeads: [{ userId: "user-1" }],
-        projectDetails: { projectId, visibility: "public" },
-      },
+      projects: [
+        {
+          __typename: "Projects",
+          id: projectId,
+          budgetsAggregate: { aggregate: { count: 1 } },
+          contributors: [],
+          githubReposAggregate: { aggregate: { count: 1 } },
+          pendingInvitations: [],
+          projectLeads: [{ userId: "user-1" }],
+          visibility: "public",
+        },
+      ],
     } as GetProjectVisibilityDetailsQueryResult["data"],
   },
 });
@@ -144,46 +141,41 @@ const getLedProjectMock = {
   },
   result: {
     data: {
-      projectsByPk: {
-        __typename: "Projects",
-        id: TEST_LED_PROJECT_ID,
-        budgetsAggregate: {
-          aggregate: {
-            count: 1,
-            sum: {
-              spentAmount: 1000,
-              initialAmount: 1000,
+      projects: [
+        {
+          __typename: "Projects",
+          id: TEST_LED_PROJECT_ID,
+          budgetsAggregate: {
+            aggregate: {
+              sum: {
+                spentAmount: 1000,
+                initialAmount: 1000,
+              },
             },
           },
-        },
-        contributors: [],
-        githubReposAggregate: { aggregate: { count: 1 } },
-        contributorsAggregate: { aggregate: { count: 0 } },
-        projectDetails: {
-          projectId: TEST_LED_PROJECT_ID,
+          contributors: [],
+          contributorsAggregate: { aggregate: { count: 0 } },
           name: TEST_LED_PROJECT_NAME,
-          telegramLink: TEST_TELEGRAM_LINK,
-          shortDescription: TEST_DESCRIPTION,
+          moreInfoLink: TEST_TELEGRAM_LINK,
           longDescription: TEST_DESCRIPTION,
           logoUrl: null,
           hiring: false,
-          rank: 0,
           visibility: "public",
-        },
-        pendingInvitations: [],
-        projectLeads: [
-          {
-            user: {
-              id: "test-user-id",
-              login: TEST_PROJECT_LEAD_DISPLAY_NAME,
-              avatarUrl: TEST_PROJECT_LEAD_AVATAR_URL,
-              githubUserId: 12345,
+          pendingInvitations: [],
+          projectLeads: [
+            {
+              user: {
+                id: "test-user-id",
+                login: TEST_PROJECT_LEAD_DISPLAY_NAME,
+                avatarUrl: TEST_PROJECT_LEAD_AVATAR_URL,
+                githubUserId: 12345,
+              },
             },
-          },
-        ],
-        githubRepos: [{ repo: null }],
-        projectSponsors: [],
-      },
+          ],
+          githubRepos: [{ repo: null }],
+          sponsors: [],
+        },
+      ],
     } as GetProjectOverviewDetailsQueryResult["data"],
   },
 };
@@ -214,14 +206,13 @@ const getProjectInvitationsMock: MockedResponse = {
   request: { query: GetProjectLeadInvitationsDocument, variables: { projectId: TEST_PROJECT_ID } },
   result: {
     data: {
-      projectsByPk: {
-        id: TEST_PROJECT_ID,
-        projectDetails: {
-          projectId: TEST_PROJECT_ID,
+      projects: [
+        {
+          id: TEST_PROJECT_ID,
           name: TEST_PROJECT_NAME,
+          pendingInvitations: [{ id: "invitation-id", githubUserId: TEST_GITHUB_USER_ID }],
         },
-        pendingInvitations: [{ id: "invitation-id", githubUserId: TEST_GITHUB_USER_ID }],
-      },
+      ],
     } as GetProjectLeadInvitationsQueryResult["data"],
   },
 };
