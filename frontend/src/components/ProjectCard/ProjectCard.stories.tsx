@@ -166,10 +166,6 @@ const props = (args: {
   budgetsAggregate: {
     aggregate: {
       count: 1,
-      sum: {
-        spentAmount: 47550,
-        initialAmount: 100000,
-      },
     },
   },
   pendingInvitations: [{ id: "croute", githubUserId: "github-user-id" }],

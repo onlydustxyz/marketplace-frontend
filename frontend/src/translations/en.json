@@ -558,11 +558,7 @@
         "send": "Send your first one!"
       }
     },
-    "fundedBy": {
-      "zero": "",
-      "one": "",
-      "many": "Funded by __topSponsorsString__"
-    },
+    "fundedBy": "Funded by __topSponsorsString__",
     "sponsorsCount": "__count__ sponsors",
     "ledBy": {
       "many": "__count__ project leads",

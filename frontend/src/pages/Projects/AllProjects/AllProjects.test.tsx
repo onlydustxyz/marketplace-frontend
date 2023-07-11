@@ -37,10 +37,6 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
         budgetsAggregate: {
           aggregate: {
             count: 1,
-            sum: {
-              spentAmount: 1000,
-              initialAmount: 1000,
-            },
           },
         },
         contributors: [],
@@ -80,10 +76,6 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
         budgetsAggregate: {
           aggregate: {
             count: 1,
-            sum: {
-              spentAmount: 999,
-              initialAmount: 1000,
-            },
           },
         },
         contributors: [],
@@ -123,10 +115,6 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
         budgetsAggregate: {
           aggregate: {
             count: 1,
-            sum: {
-              spentAmount: 0,
-              initialAmount: 1000,
-            },
           },
         },
         contributors: [],
@@ -162,7 +150,6 @@ const projectWithNoBudget: ProjectCardFieldsFragment = {
   budgetsAggregate: {
     aggregate: {
       count: 0,
-      sum: { spentAmount: 0, initialAmount: 1000 },
     },
   },
   contributorsAggregate: { aggregate: { count: 0 } },
@@ -203,7 +190,6 @@ const projectWithNoRepo: ProjectCardFieldsFragment = {
   budgetsAggregate: {
     aggregate: {
       count: 1,
-      sum: { spentAmount: 0, initialAmount: 1000 },
     },
   },
   contributorsAggregate: { aggregate: { count: 0 } },
@@ -235,7 +221,6 @@ const projectWithNoLeader: ProjectCardFieldsFragment = {
   budgetsAggregate: {
     aggregate: {
       count: 1,
-      sum: { spentAmount: 0, initialAmount: 1000 },
     },
   },
   contributorsAggregate: { aggregate: { count: 0 } },
@@ -270,7 +255,6 @@ const projectInvalidWithInvite: ProjectCardFieldsFragment = {
   budgetsAggregate: {
     aggregate: {
       count: 0,
-      sum: { spentAmount: 0, initialAmount: 1000 },
     },
   },
   contributorsAggregate: { aggregate: { count: 0 } },
@@ -296,7 +280,6 @@ const projectWithNoLeaderAndInviteForWrongUser: ProjectCardFieldsFragment = {
   budgetsAggregate: {
     aggregate: {
       count: 1,
-      sum: { spentAmount: 0, initialAmount: 1000 },
     },
   },
   contributorsAggregate: { aggregate: { count: 0 } },
@@ -334,7 +317,6 @@ const projectWithNoLeaderAndInvite: ProjectCardFieldsFragment = {
   budgetsAggregate: {
     aggregate: {
       count: 1,
-      sum: { spentAmount: 0, initialAmount: 1000 },
     },
   },
   name: "No leader but invite",

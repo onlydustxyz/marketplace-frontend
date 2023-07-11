@@ -8,7 +8,6 @@ import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import { useIntl } from "src/hooks/useIntl";
 import CodeSSlashLine from "src/icons/CodeSSlashLine";
 import { buildLanguageString, getDeduplicatedAggregatedLanguages, getMostUsedLanguages } from "src/utils/languages";
-import { formatMoneyAmount } from "src/utils/money";
 import User3Line from "src/icons/User3Line";
 import { TooltipPosition, withTooltip } from "src/components/Tooltip";
 import ProjectTitle from "./ProjectTitle";
@@ -34,7 +33,6 @@ export default function ProjectCard({ project }: ProjectCardProps) {
     pendingInvitations,
     githubRepos,
     projectLeads,
-    budgetsAggregate,
     contributorsAggregate,
     sponsors,
     hiring,
@@ -46,8 +44,6 @@ export default function ProjectCard({ project }: ProjectCardProps) {
 
   const { T } = useIntl();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
-  const totalSpentAmountInUsd = budgetsAggregate?.aggregate?.sum?.spentAmount;
-  const totalInitialAmountInUsd = budgetsAggregate?.aggregate?.sum?.initialAmount;
 
   const topSponsors = sponsors?.map(projectSponsor => projectSponsor.sponsor).slice(0, 3) || [];
   const languages = getMostUsedLanguages(getDeduplicatedAggregatedLanguages(githubRepos.map(r => r.repo)));
@@ -108,14 +104,11 @@ export default function ProjectCard({ project }: ProjectCardProps) {
                   testid={`sponsor-list-${id}`}
                   size={TagSize.Small}
                   {...withTooltip(
-                    T("project.fundedBy", {
-                      count: topSponsors.length,
-                      topSponsorsString: topSponsors.map(sponsor => sponsor.name).join(", "),
-                      leftToSpend: formatMoneyAmount({
-                        amount: totalInitialAmountInUsd - totalSpentAmountInUsd,
-                        notation: "compact",
-                      }),
-                    }),
+                    topSponsors.length > 1
+                      ? T("project.fundedBy", {
+                          topSponsorsString: topSponsors.map(sponsor => sponsor.name).join(", "),
+                        })
+                      : "",
                     { position: TooltipPosition.Top, className: "w-fit" }
                   )}
                 >

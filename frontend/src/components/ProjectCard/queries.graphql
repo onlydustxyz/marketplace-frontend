@@ -6,14 +6,6 @@ fragment ProjectCardFields on Projects {
       count
     }
   }
-  budgetsAggregate {
-    aggregate {
-      sum {
-        spentAmount
-        initialAmount
-      }
-    }
-  }
   name
   moreInfoLink
   logoUrl

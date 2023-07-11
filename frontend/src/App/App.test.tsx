@@ -116,7 +116,7 @@ const ALL_PROJECTS_RESULT: { data: GetProjectsQueryResult["data"] } = {
           },
         ],
         sponsors: [],
-        budgetsAggregate: { aggregate: { count: 1, sum: { spentAmount: 100, initialAmount: 1000 } } },
+        budgetsAggregate: { aggregate: { count: 1 } },
       },
     ],
   },
