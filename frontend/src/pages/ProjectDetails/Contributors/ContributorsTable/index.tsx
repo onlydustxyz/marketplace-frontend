@@ -3,6 +3,9 @@ import { generatePath, useNavigate } from "react-router-dom";
 import View, { Contributor } from "./View";
 import { ProjectPaymentsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
 import { ContributorFragment } from "src/__generated/graphql";
+import { viewportConfig } from "src/config";
+import { useMediaQuery } from "usehooks-ts";
+import { ViewMobile } from "./ViewMobile";
 
 type Props = {
   contributors: ContributorFragment[];
@@ -17,6 +20,8 @@ export default function ContributorsTable({
   remainingBudget,
   projectId,
 }: Props) {
+  const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
+
   const contributors = contributorFragments.map(c => {
     return {
       githubUserId: c.githubUserId,
@@ -48,7 +53,7 @@ export default function ContributorsTable({
     }
   };
 
-  return (
+  return isXl ? (
     <View
       {...{
         contributors,
@@ -57,5 +62,7 @@ export default function ContributorsTable({
         onPaymentRequested,
       }}
     />
+  ) : (
+    <ViewMobile contributors={contributors} />
   );
 }

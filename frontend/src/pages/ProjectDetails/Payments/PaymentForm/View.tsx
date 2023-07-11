@@ -17,6 +17,8 @@ import { Status } from "src/__generated/graphql";
 import useWorkItems from "./useWorkItems";
 import { filter } from "lodash";
 import { Contributor } from "./types";
+import { viewportConfig } from "src/config";
+import { useMediaQuery } from "usehooks-ts";
 
 interface Props {
   projectId: string;
@@ -54,6 +56,7 @@ const View: React.FC<Props> = ({
   requestNewPaymentMutationLoading,
 }) => {
   const { T } = useIntl();
+  const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
   const navigate = useNavigate();
   const [sidePanelOpen, setSidePanelOpen] = useState(false);
   const [workItemsPrefilled, setWorkItemsPrefilled] = useState(false);
@@ -82,14 +85,14 @@ const View: React.FC<Props> = ({
               <CloseLine className="text-base" />
             </Button>
           </div>
-          {T("project.details.payments.new.title")}
+          <div className="text-2xl xl:text-3xl">{T("project.details.payments.new.title")}</div>
         </div>
       </Title>
-      <div className="flex h-full flex-row items-start gap-5">
+      <div className="flex h-full flex-col items-start gap-5 xl:flex-row">
         <div className="basis-3/5 self-stretch">
           <div className="flex w-full flex-col gap-6">
-            <Card className="px-4 py-7" padded={false}>
-              <div className={displayCallout ? "h-52" : "h-24"}>
+            <Card className="z-10 px-4 py-7" padded={false}>
+              <div className={displayCallout ? "xl:h-52" : "h-24"}>
                 <SectionTitle title={T("payment.form.contributor.title")} />
                 <div className="relative z-10">
                   <ContributorSelect projectId={projectId} contributor={contributor} setContributor={setContributor} />
@@ -98,7 +101,7 @@ const View: React.FC<Props> = ({
                   <div className="mx-4 pt-24">
                     <Callout>
                       <div className="flex flex-col gap-1">
-                        <span className="text-base font-medium">
+                        <span className="text-sm xl:text-base xl:font-medium">
                           {T("payment.form.contributor.needsToSignup.title", { contributor: contributor?.login })}
                         </span>
                         <span>{T("payment.form.contributor.needsToSignup.details")}</span>
@@ -108,30 +111,34 @@ const View: React.FC<Props> = ({
                 )}
               </div>
               {contributor && (
-                <div className="pt-12">
+                <div className="pt-8 xl:pt-12">
                   <SectionTitle
                     title={T("payment.form.workItems.title")}
                     rightAction={
-                      <div className="flex flex-row items-center gap-2">
-                        {workItems.length > 0 && (
-                          <Button type={ButtonType.Ternary} size={ButtonSize.Sm} onClick={() => clearWorkItems()}>
-                            <CloseLine />
-                            {T("payment.form.workItems.clear")}
+                      isXl ? (
+                        <div className="flex flex-row items-center gap-2">
+                          {workItems.length > 0 && (
+                            <Button type={ButtonType.Ternary} size={ButtonSize.Sm} onClick={() => clearWorkItems()}>
+                              <CloseLine />
+                              {T("payment.form.workItems.clear")}
+                            </Button>
+                          )}
+                          <Button
+                            size={ButtonSize.Sm}
+                            type={ButtonType.Secondary}
+                            onClick={() => setSidePanelOpen(true)}
+                            iconOnly
+                          >
+                            <Add />
                           </Button>
-                        )}
-                        <Button
-                          size={ButtonSize.Sm}
-                          type={ButtonType.Secondary}
-                          onClick={() => setSidePanelOpen(true)}
-                          iconOnly
-                        >
-                          <Add />
-                        </Button>
-                      </div>
+                        </div>
+                      ) : undefined
                     }
                   />
                   <div className="mx-4 flex flex-col gap-3 pt-4" data-testid="added-work-items">
-                    <div className=" text-greyscale-300">{T("payment.form.workItems.subTitle")}</div>
+                    <div className="text-sm text-greyscale-300 xl:text-base">
+                      {T("payment.form.workItems.subTitle")}
+                    </div>
                     {workItems.map(workItem => (
                       <GithubIssue
                         key={workItem.id}
@@ -163,7 +170,7 @@ const View: React.FC<Props> = ({
             )}
           </div>
         </div>
-        <div className="sticky top-4 basis-2/5">
+        <div className="sticky top-4 w-full basis-2/5">
           <WorkEstimation
             onChange={onWorkEstimationChange}
             budget={budget}

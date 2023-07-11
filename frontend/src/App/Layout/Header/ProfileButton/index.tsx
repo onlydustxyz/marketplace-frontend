@@ -3,8 +3,12 @@ import View from "src/App/Layout/Header/ProfileButton/View";
 import usePayoutSettings from "src/hooks/usePayoutSettings";
 import { useGetUserAvatarUrlQuery, usePendingUserPaymentsQuery } from "src/__generated/graphql";
 import { useOnboarding } from "src/App/OnboardingProvider";
+import { viewportConfig } from "src/config";
+import { useMediaQuery } from "usehooks-ts";
+import ViewMobile from "./ViewMobile";
 
 const ProfileButton = () => {
+  const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
   const { user, logout, githubUserId } = useAuth();
   const { login } = user ?? { login: "My Account" };
 
@@ -25,18 +29,16 @@ const ProfileButton = () => {
 
   const payoutSettingsInvalid = valid === false && pendingPaymentRequestsCount > 0;
 
-  return (
-    <View
-      {...{
-        githubUserId,
-        avatarUrl,
-        login,
-        logout,
-        showMissingPayoutSettingsState: payoutSettingsInvalid && !onboardingInProgress,
-        hideProfileItems: onboardingInProgress,
-      }}
-    />
-  );
+  const props = {
+    githubUserId,
+    avatarUrl,
+    login,
+    logout,
+    showMissingPayoutSettingsState: payoutSettingsInvalid && !onboardingInProgress,
+    hideProfileItems: onboardingInProgress,
+  };
+
+  return isXl ? <View {...props} /> : <ViewMobile {...props} />;
 };
 
 export default ProfileButton;

@@ -9,15 +9,9 @@ import { Suspense } from "react";
 import Loader from "src/components/Loader";
 import SortingDropdown from "./SortingDropdown";
 import { useLocalStorage } from "react-use";
-
-export enum Sorting {
-  Trending = "trending",
-  ProjectName = "projectName",
-  ReposCount = "reposCount",
-  ContributorsCount = "contributorsCount",
-}
-
-export const PROJECT_SORTINGS = [Sorting.Trending, Sorting.ProjectName, Sorting.ReposCount, Sorting.ContributorsCount];
+import { PROJECT_SORTINGS, Sorting } from "./sorting";
+import { FilterButton } from "./FilterPanel/FilterButton";
+import { SortButton } from "./SortingDropdown/SortButton";
 
 const DEFAULT_SORTING = Sorting.Trending;
 
@@ -31,18 +25,26 @@ export default function Projects() {
   return (
     <ProjectFilterProvider>
       <Background ref={ref} roundedBorders={BackgroundRoundedBorders.Full}>
-        <div className="px-4 pb-8 pt-8 md:container md:mx-auto md:px-12 xl:pt-16">
-          <div className="relative hidden items-end justify-between font-belwe text-5xl xl:flex">
-            {T("navbar.projects")}
-            <div className="absolute right-0 top-0 z-10">
+        <div className="flex flex-col gap-6 px-4 pb-8 pt-8 md:container md:mx-auto md:px-12 xl:gap-8 xl:pt-16">
+          <div className="relative flex items-center justify-between">
+            <div className="font-belwe text-3xl xl:text-5xl">{T("navbar.projects")}</div>
+            <div className="z-10 hidden xl:block">
               <SortingDropdown
                 all={PROJECT_SORTINGS}
                 current={projectSorting || DEFAULT_SORTING}
                 onChange={setProjectSorting}
               />
             </div>
+            <div className="flex items-center gap-2 xl:hidden">
+              <SortButton
+                all={PROJECT_SORTINGS}
+                current={projectSorting || DEFAULT_SORTING}
+                onChange={setProjectSorting}
+              />
+              <FilterButton isProjectLeader={!!ledProjectIds.length} />
+            </div>
           </div>
-          <div className="flex h-full gap-6 xl:mt-8">
+          <div className="flex h-full gap-6">
             <div className="sticky top-0 hidden shrink-0 basis-80 xl:block">
               <FilterPanel isProjectLeader={!!ledProjectIds.length} />
             </div>

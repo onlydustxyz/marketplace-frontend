@@ -9,10 +9,10 @@ export default function EmptyState() {
       <div className="mb-6">
         <img src={emptyStateLogo}></img>
       </div>
-      <div className="font-belwe text-2xl font-normal text-greyscale-50">
+      <div className="text-center font-belwe text-2xl font-normal text-greyscale-50">
         {T("payment.form.workItems.emptyState.title")}
       </div>
-      <div className="font-walsheim text-base font-normal text-greyscale-50">
+      <div className="text-center font-walsheim text-base font-normal text-greyscale-50">
         {T("payment.form.workItems.emptyState.subtitle")}
       </div>
     </div>

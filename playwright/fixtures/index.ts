@@ -84,7 +84,7 @@ export const test = base.extend<PopulatedDataFixtures>({
       }
 
       await page.getByRole("checkbox").click();
-      await page.getByText("Accept terms and conditions").click();
+      await page.getByText("Confirm").click();
     });
   },
 });

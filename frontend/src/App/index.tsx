@@ -141,7 +141,7 @@ function App() {
   return (
     <Suspense
       fallback={
-        <div className="h-screen">
+        <div className="h-[calc(100dvh)]">
           <LoaderFallback />
         </div>
       }

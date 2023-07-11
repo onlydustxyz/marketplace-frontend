@@ -117,6 +117,7 @@ export default function ContributorSelectView({
                       }}
                       value={githubHandleSubstring}
                       data-testid="contributor-selection-input"
+                      autoFocus
                     />
                   </div>
                   <ArrowDownSLine />
@@ -128,10 +129,8 @@ export default function ContributorSelectView({
               filteredContributors.length === 0 &&
               githubHandleSubstring &&
               githubHandleSubstring.length < 3 ? (
-                <div className="pb-6">
-                  <span className="px-4 pb-6 italic text-greyscale-100">
-                    {T("payment.form.contributor.select.fallback.typeMoreCharacters")}
-                  </span>
+                <div className="px-4 pb-6 text-sm italic text-greyscale-100 xl:text-base">
+                  {T("payment.form.contributor.select.fallback.typeMoreCharacters")}
                 </div>
               ) : filteredContributors &&
                 filteredContributors.length === 0 &&
