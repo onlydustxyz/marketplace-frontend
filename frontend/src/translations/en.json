@@ -57,6 +57,10 @@
     },
     "title": "Filter"
   },
+  "searchBar": {
+    "placeholder": "Search project title & description",
+    "placeholderShort": "Search projects"
+  },
   "form": {
     "required": "Required"
   },
@@ -580,9 +584,14 @@
     "prompt": "You've been promoted to Project Lead on __projectName__"
   },
   "projects": {
+    "count": {
+      "many": "__count__ PROJECTS",
+      "one": "1 PROJECT",
+      "zero": "0 PROJECTS"
+    },
     "fallback": {
-      "clearFiltersButton": "Clear filters",
-      "subTitle": "Try removing a filter",
+      "clearFiltersButton": "Clear query",
+      "subTitle": "Try changing your query",
       "title": "Nothing to show"
     },
     "sorting": {

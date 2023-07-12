@@ -1,48 +1,39 @@
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import { useAuth } from "src/hooks/useAuth";
-import { useT } from "talkr";
 import AllProjects from "./AllProjects";
 import FilterPanel from "./FilterPanel";
 import { ProjectFilterProvider } from "./useProjectFilter";
 import useScrollRestoration from "./AllProjects/useScrollRestoration";
-import { Suspense } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Loader from "src/components/Loader";
-import SortingDropdown from "./SortingDropdown";
-import { useLocalStorage } from "react-use";
-import { PROJECT_SORTINGS, Sorting } from "./sorting";
-import { FilterButton } from "./FilterPanel/FilterButton";
-import { SortButton } from "./SortingDropdown/SortButton";
+import SearchBar from "./SearchBar";
+import { useDebounce } from "usehooks-ts";
 
-const DEFAULT_SORTING = Sorting.Trending;
+export enum Sorting {
+  Trending = "trending",
+  ProjectName = "projectName",
+  ReposCount = "reposCount",
+  ContributorsCount = "contributorsCount",
+}
+
+export const PROJECT_SORTINGS = [Sorting.Trending, Sorting.ProjectName, Sorting.ReposCount, Sorting.ContributorsCount];
 
 export default function Projects() {
-  const { T } = useT();
   const { ledProjectIds } = useAuth();
 
-  const [projectSorting, setProjectSorting] = useLocalStorage("PROJECT_SORTING_2", DEFAULT_SORTING);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [search, setSearch] = useState<string>("");
+  const debouncedSearchQuery = useDebounce<string>(search, 200);
+  useEffect(() => setSearchQuery(debouncedSearchQuery), [debouncedSearchQuery]);
+
   const [ref] = useScrollRestoration();
 
   return (
     <ProjectFilterProvider>
       <Background ref={ref} roundedBorders={BackgroundRoundedBorders.Full}>
-        <div className="flex flex-col gap-6 px-4 pb-8 pt-8 md:container md:mx-auto md:px-12 xl:gap-8 xl:pt-16">
-          <div className="relative flex items-center justify-between">
-            <div className="font-belwe text-3xl xl:text-5xl">{T("navbar.projects")}</div>
-            <div className="z-10 hidden xl:block">
-              <SortingDropdown
-                all={PROJECT_SORTINGS}
-                current={projectSorting || DEFAULT_SORTING}
-                onChange={setProjectSorting}
-              />
-            </div>
-            <div className="flex items-center gap-2 xl:hidden">
-              <SortButton
-                all={PROJECT_SORTINGS}
-                current={projectSorting || DEFAULT_SORTING}
-                onChange={setProjectSorting}
-              />
-              <FilterButton isProjectLeader={!!ledProjectIds.length} />
-            </div>
+        <div className="flex flex-col gap-6 px-4 py-4 md:container md:mx-auto md:px-12 xl:gap-8 xl:pb-8 xl:pt-16">
+          <div>
+            <SearchBar search={search} setSearch={setSearch} />
           </div>
           <div className="flex h-full gap-6">
             <div className="sticky top-0 hidden shrink-0 basis-80 xl:block">
@@ -50,7 +41,7 @@ export default function Projects() {
             </div>
             <div className="min-w-0 grow">
               <Suspense fallback={<Loader />}>
-                <AllProjects sorting={projectSorting || DEFAULT_SORTING} />
+                <AllProjects search={searchQuery} clearSearch={() => setSearch("")} />
               </Suspense>
             </div>
           </div>
