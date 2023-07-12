@@ -36,9 +36,15 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
+    healthcheck:
+      test: bash -c ':> /dev/tcp/127.0.0.1/5672' || exit 1
+      interval: 2s
+      timeout: 1s
+      retries: 10
+      start_period: 5s
 
-  graphql-engine:
-    container_name: graphql-engine
+  hasura:
+    container_name: hasura
     image: hasura/graphql-engine:v2.15.2
     depends_on:
       db:
@@ -82,12 +88,12 @@ services:
     depends_on:
       db:
         condition: service_healthy
-      graphql-engine:
+      hasura:
         condition: service_healthy
     environment:
       HASURA_GRAPHQL_JWT_SECRET: ${HASURA_GRAPHQL_JWT_SECRET}
       HASURA_GRAPHQL_DATABASE_URL: ${HASURA_GRAPHQL_DATABASE_URL:-postgres://postgres:postgres@db/marketplace_db}
-      HASURA_GRAPHQL_GRAPHQL_URL: http://graphql-engine:8080/v1/graphql
+      HASURA_GRAPHQL_GRAPHQL_URL: http://hasura:8080/v1/graphql
       HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET:-myadminsecretkey}
       AUTH_ACCESS_TOKEN_EXPIRES_IN: 604800 # 1 week
       AUTH_JWT_CUSTOM_CLAIMS: '{"projectsLeaded":"registeredUser.projectsLeaded[].projectId","githubUserId":"registeredUser.githubUserId","githubAccessToken":"userGithubProvider.accessToken"}'
