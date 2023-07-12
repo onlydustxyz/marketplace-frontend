@@ -6,7 +6,10 @@ use diesel::{
 use diesel_migrations::EmbeddedMigrations;
 
 pub use model::{ImmutableModel, ImmutableRepository, Model, Repository};
-use olog::error;
+#[cfg(not(test))]
+use olog::{error, info};
+#[cfg(test)]
+use std::{println as info, println as warn};
 
 use crate::diesel_migrations::MigrationHarness;
 
@@ -54,6 +57,7 @@ impl Client {
 	}
 
 	pub fn run_migrations(&self) -> Result<()> {
+		info!("Running migrations");
 		let mut connection = self.connection()?;
 		connection.run_pending_migrations(MIGRATIONS).map_err(|e| {
 			error!("Failed to run migrations: {e}");

@@ -8,7 +8,7 @@ on:
       - "main"
       - "develop"
       - "hotfix/**"
-      - "test-migration-graphql-rest"
+#      - "test-migration-graphql-rest"
 
   workflow_dispatch:
     inputs:

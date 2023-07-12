@@ -94,7 +94,7 @@ pub async fn serve(
 
 
 #[allow(clippy::too_many_arguments)]
-pub async fn get_rocket_builder(
+pub fn get_rocket_builder(
 	config: Config,
 	schema: graphql::Schema,
 	command_bus: Arc<CommandPublisher<amqp::Bus>>,

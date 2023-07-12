@@ -15,6 +15,7 @@ use crate::presentation::graphql;
 use crate::presentation::http::get_rocket_builder;
 
 pub async fn bootstrap(config: Config) -> Result<Rocket<Build>> {
+	info!("Boostrapping backend api");
 	let database = Arc::new(database::Client::new(database::init_pool(
 		&config.database(),
 	)?));
@@ -48,7 +49,7 @@ pub async fn bootstrap(config: Config) -> Result<Rocket<Build>> {
 		Arc::new(ens::Client::new(config.web3())?),
 		simple_storage,
 		Arc::new(amqp::Bus::new(config.amqp()).await?),
-	).await;
+	);
 	Ok(rocket_build)
 }
 
