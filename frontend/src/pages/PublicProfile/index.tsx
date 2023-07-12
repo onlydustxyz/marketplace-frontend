@@ -1,4 +1,4 @@
-import { Navigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Toaster } from "src/components/Toaster";
 import Tooltip from "src/components/Tooltip";
 import Header from "./Header";
@@ -14,15 +14,15 @@ const PublicProfilePage = () => {
   const { userLogin } = useParams();
   const { T } = useIntl();
   const showToaster = useShowToaster();
+  const navigate = useNavigate();
   const { data: userProfile, loading } = useUserProfile({ githubUserLogin: userLogin });
 
-  if (!loading && (!userProfile || !userLogin)) {
+  if (!userProfile && !loading) {
     showToaster(T("profile.error.notFound"), { isError: true });
+    navigate(RoutePaths.Home);
   }
 
-  return loading ? (
-    <></>
-  ) : userProfile && userLogin ? (
+  return userProfile && userLogin ? (
     <>
       <Helmet>
         <title>{`${userProfile.profile.login} — OnlyDust`}</title>
@@ -39,7 +39,7 @@ const PublicProfilePage = () => {
       <Tooltip />
     </>
   ) : (
-    <Navigate to={RoutePaths.Home} />
+    <></>
   );
 };
 

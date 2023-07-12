@@ -4,6 +4,7 @@ import { RoutePaths } from "src/App";
 import { useGetProjectIdFromKeyQuery } from "src/__generated/graphql";
 import { useAuth } from "src/hooks/useAuth";
 import { CustomUserRole, HasuraUserRole, UserRole } from "src/types";
+import { contextWithCacheHeaders } from "src/utils/headers";
 
 interface ProtectedRouteProps extends PropsWithChildren {
   requiredRole: UserRole;
@@ -21,7 +22,9 @@ export default function ProtectedRoute({
   const { data } = useGetProjectIdFromKeyQuery({
     variables: { projectKey: params.projectKey || "" },
     skip: !params.projectKey,
+    ...contextWithCacheHeaders,
   });
+
   const projectId = data?.projects[0].id;
 
   const isAuthorized = () => {

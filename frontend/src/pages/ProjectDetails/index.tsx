@@ -1,4 +1,4 @@
-import { Navigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { LanguageMap } from "src/types";
 import {
   GetProjectIdFromKeyDocument,
@@ -13,6 +13,7 @@ import { useSuspenseQuery_experimental as useSuspenseQuery } from "@apollo/clien
 import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
 import { Helmet } from "react-helmet";
+import { contextWithCacheHeaders } from "src/utils/headers";
 
 type ProjectDetailsParams = {
   projectKey: string;
@@ -35,9 +36,11 @@ export default function ProjectDetails() {
   const { projectKey } = useParams<ProjectDetailsParams>();
   const { T } = useIntl();
   const showToaster = useShowToaster();
+  const navigate = useNavigate();
 
   const projectIdQuery = useSuspenseQuery<GetProjectIdFromKeyQuery>(GetProjectIdFromKeyDocument, {
     variables: { projectKey },
+    ...contextWithCacheHeaders,
   });
   const { id: projectId, name, shortDescription } = projectIdQuery.data.projects[0];
 
@@ -45,9 +48,10 @@ export default function ProjectDetails() {
 
   if (!projectId || visibleToCurrentUser === false) {
     showToaster(T("project.error.notFound"), { isError: true });
+    navigate(RoutePaths.Projects);
   }
 
-  return projectId && visibleToCurrentUser !== false ? (
+  return (
     <>
       <Helmet>
         <title>{`${name} — OnlyDust`}</title>
@@ -55,7 +59,5 @@ export default function ProjectDetails() {
       </Helmet>
       <View projectId={projectId} projectKey={projectKey || ""} />
     </>
-  ) : (
-    <Navigate to={RoutePaths.Projects} />
   );
 }
