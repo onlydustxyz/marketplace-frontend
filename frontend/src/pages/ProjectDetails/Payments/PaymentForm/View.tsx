@@ -78,16 +78,18 @@ const View: React.FC<Props> = ({
 
   return (
     <>
-      <Title>
-        <div className="flex flex-row items-center gap-3">
-          <div onClick={() => navigate(-1)}>
-            <Button type={ButtonType.Secondary} size={ButtonSize.Sm} iconOnly>
-              <CloseLine className="text-base" />
-            </Button>
+      {isXl && (
+        <Title>
+          <div className="flex flex-row items-center gap-3">
+            <div onClick={() => navigate(-1)}>
+              <Button type={ButtonType.Secondary} size={ButtonSize.Sm} iconOnly>
+                <CloseLine className="text-base" />
+              </Button>
+            </div>
+            <div className="text-2xl xl:text-3xl">{T("project.details.payments.new.title")}</div>
           </div>
-          <div className="text-2xl xl:text-3xl">{T("project.details.payments.new.title")}</div>
-        </div>
-      </Title>
+        </Title>
+      )}
       <div className="flex h-full flex-col items-start gap-5 xl:flex-row">
         <div className="basis-3/5 self-stretch">
           <div className="flex w-full flex-col gap-6">
