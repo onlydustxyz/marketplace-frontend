@@ -102,9 +102,7 @@ const buildQueryFilters = (search: string, technologies: string[], sponsors: str
         _or: [{ name: { _ilike: `%${word}%` } }, { shortDescription: { _ilike: `%${word}%` } }],
       }));
     filters = merge(filters, {
-      projectDetails: {
-        _and: words,
-      },
+      _and: words,
     });
   }
 
