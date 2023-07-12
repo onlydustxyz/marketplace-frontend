@@ -7,9 +7,10 @@ interface Props {
   message: string;
   visible: boolean;
   isError: boolean;
+  setVisible: (visible: boolean) => void;
 }
 
-export default function View({ message, visible, isError }: Props) {
+export default function View({ message, visible, isError, setVisible }: Props) {
   return (
     <Transition
       as="div"
@@ -22,7 +23,13 @@ export default function View({ message, visible, isError }: Props) {
       leaveFrom="opacity-100"
       leaveTo="opacity-0"
     >
-      <div data-testid="toaster-message" className="overflow-hidden rounded-2xl p-0.5">
+      <div
+        data-testid="toaster-message"
+        className="overflow-hidden rounded-2xl p-0.5"
+        onClick={() => {
+          setVisible(false);
+        }}
+      >
         <div
           className={classNames(
             "relative flex items-center justify-center rounded-[15px] before:absolute before:-z-10 before:h-[calc(100dvh)] before:w-screen",
