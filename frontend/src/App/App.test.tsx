@@ -292,7 +292,7 @@ describe("Integration tests", () => {
     });
     userEvent.click(await screen.findByTestId(PROFILE_BUTTON_TEST_ID));
     userEvent.click(await screen.findByTestId(LOGOUT_BUTTON_TEST_ID));
-    await screen.findByText("Projects");
+    await screen.findByText("1 PROJECT");
     expect(window.location.pathname).toBe(RoutePaths.Projects);
   });
 });

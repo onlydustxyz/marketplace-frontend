@@ -20,7 +20,7 @@ import { useIntl } from "src/hooks/useIntl";
 import { FilterButton } from "src/pages/Projects/FilterPanel/FilterButton";
 import { SortButton } from "src/pages/Projects/SortingDropdown/SortButton";
 
-const DEFAULT_SORTING = Sorting.Trending;
+export const DEFAULT_SORTING = Sorting.Trending;
 
 type Props = {
   search: string;
