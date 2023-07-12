@@ -532,8 +532,7 @@
           "one": "Sponsor"
         },
         "technologies": "Technologies",
-        "title": "Project overview",
-        "titleShort": "Overview",
+        "title": "Overview",
         "totalSpentAmountInUsd": "GRANTED",
         "amountGranted": "__granted__ / __total__ — __leftToSpend__ left to spend"
       },
@@ -569,6 +568,7 @@
       "notFound": "This project does not exist"
     },
     "fundedBy": "Funded by __topSponsorsString__",
+    "rewardContributorButton": "Reward contributor",
     "sponsorsCount": "__count__ sponsors",
     "ledBy": {
       "many": "__count__ project leads",
