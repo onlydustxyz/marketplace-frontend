@@ -7,9 +7,10 @@ interface MenuItemProps {
   path: string;
   children: ReactNode;
   link: string;
+  state?: unknown;
   activeRegex?: RegExp;
 }
-export default function MenuItem({ path, link, children, activeRegex }: MenuItemProps) {
+export default function MenuItem({ path, link, state, children, activeRegex }: MenuItemProps) {
   const active = (activeRegex || new RegExp(`^${link}.*`)).test(path);
   return (
     <div
@@ -22,7 +23,9 @@ export default function MenuItem({ path, link, children, activeRegex }: MenuItem
       )}
     >
       <div className="bg-black py-1">
-        <Link to={link}>{children}</Link>
+        <Link to={link} state={state}>
+          {children}
+        </Link>
       </div>
       {active && <img className="absolute inset-x-0 bottom-0 mt-1 h-0.5 w-full" src={underline} alt="underline" />}
     </div>

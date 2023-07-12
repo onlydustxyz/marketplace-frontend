@@ -4,8 +4,7 @@ import AllProjects from "./AllProjects";
 import FilterPanel from "./FilterPanel";
 import { ProjectFilterProvider } from "./useProjectFilter";
 import useScrollRestoration from "./AllProjects/useScrollRestoration";
-import { Suspense, useEffect, useState } from "react";
-import Loader from "src/components/Loader";
+import { useEffect, useState } from "react";
 import SearchBar from "./SearchBar";
 import { useDebounce } from "usehooks-ts";
 
@@ -26,7 +25,7 @@ export default function Projects() {
   const debouncedSearchQuery = useDebounce<string>(search, 200);
   useEffect(() => setSearchQuery(debouncedSearchQuery), [debouncedSearchQuery]);
 
-  const [ref] = useScrollRestoration();
+  const { ref } = useScrollRestoration();
 
   return (
     <ProjectFilterProvider>
@@ -40,9 +39,7 @@ export default function Projects() {
               <FilterPanel isProjectLeader={!!ledProjectIds.length} />
             </div>
             <div className="min-w-0 grow">
-              <Suspense fallback={<Loader />}>
-                <AllProjects search={searchQuery} clearSearch={() => setSearch("")} />
-              </Suspense>
+              <AllProjects search={searchQuery} clearSearch={() => setSearch("")} />
             </div>
           </div>
         </div>

@@ -61,6 +61,7 @@ export default function HeaderView({
                 <MenuItem
                   path={selectedMenuItem}
                   link={RoutePaths.Projects}
+                  state={{ skipScrollRestoration: true }}
                   activeRegex={new RegExp("^(/|/projects.+)$")}
                 >
                   {menuItems[RoutePaths.Projects]}
