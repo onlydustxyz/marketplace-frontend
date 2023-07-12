@@ -34,14 +34,14 @@ export default function OtherIssueInput({ projectId, type, onWorkItemAdded }: Pr
       } else {
         setError(inputName, {
           type: "validate",
-          message: T(`payment.form.workItems.${tKey}.addOther.invalidLink`),
+          message: T(`reward.form.workItems.${tKey}.addOther.invalidLink`),
         });
       }
     },
     onError: () =>
       setError(inputName, {
         type: "validate",
-        message: T(`payment.form.workItems.${tKey}.addOther.invalidLink`),
+        message: T(`reward.form.workItems.${tKey}.addOther.invalidLink`),
       }),
     context: {
       graphqlErrorDisplay: "none",
@@ -70,16 +70,16 @@ export default function OtherIssueInput({ projectId, type, onWorkItemAdded }: Pr
   return (
     <div className="flex flex-col gap-2 rounded-lg border border-greyscale-50/12 p-4">
       <div className="font-walsheim text-base font-medium text-greyscale-50">
-        {T(`payment.form.workItems.${tKey}.addOther.label`)}
+        {T(`reward.form.workItems.${tKey}.addOther.label`)}
       </div>
       <Input
         name={inputName}
-        placeholder={T(`payment.form.workItems.${tKey}.addOther.placeholder`)}
+        placeholder={T(`reward.form.workItems.${tKey}.addOther.placeholder`)}
         withMargin={false}
         options={{
           pattern: {
             value: type === Type.Issue ? REGEX_VALID_GITHUB_ISSUE_URL : REGEX_VALID_GITHUB_PULL_REQUEST_URL,
-            message: T(`payment.form.workItems.${tKey}.addOther.notALink`),
+            message: T(`reward.form.workItems.${tKey}.addOther.notALink`),
           },
         }}
         inputClassName="pl-10"
@@ -103,7 +103,7 @@ export default function OtherIssueInput({ projectId, type, onWorkItemAdded }: Pr
             type={ButtonType.Secondary}
             disabled={!otherIssueLink || !!otherIssueLinkError}
           >
-            {T("payment.form.workItems.add")}
+            {T("reward.form.workItems.add")}
           </Button>
         </div>
       </Input>

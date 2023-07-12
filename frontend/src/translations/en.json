@@ -161,12 +161,12 @@
     "nextButton": "Next",
     "submitButton": "Submit"
   },
-  "payment": {
+  "reward": {
     "form": {
-      "confirm": "Confirm payment",
+      "confirm": "Confirm reward",
       "contributor": {
         "needsToSignup": {
-          "details": "You can still send them a payment. They'll need to create an account and sync it with their GitHub handle to claim it.",
+          "details": "You can still reward them. They'll need to create an account and sync it with their GitHub handle to claim it.",
           "title": "__contributor__ isn't on OnlyDust"
         },
         "placeholder": "Search by Github handle",
@@ -248,7 +248,7 @@
           },
           "toggleDescriptionPreview": "Toggle preview"
         },
-        "subTitle": "Add contributions that should be part of this payment",
+        "subTitle": "Add contributions that should be part of this reward",
         "title": "Work items",
         "emptyState": {
           "title": "Nothing to show",
@@ -257,8 +257,8 @@
       },
       "leftToSpend": "Left to spend",
       "remainingBudget": "Remaining budget",
-      "cancelled": "Payment request cancelled",
-      "sent": "Payment successfully sent",
+      "cancelled": "Reward cancelled",
+      "sent": "Reward successfully sent",
       "steps": {
         "days": {
           "many": "days",
@@ -270,10 +270,10 @@
           "zero": "No budget left"
         }
       },
-      "submit": "Submit payment",
-      "thisPayment": "This payment"
+      "submit": "Submit reward",
+      "thisReward": "This reward"
     },
-    "list": "List payments",
+    "list": "List rewards",
     "status": {
       "complete": "Complete",
       "invoicePending": "Pending invoice",
@@ -294,17 +294,17 @@
       "date": "Date",
       "githubLink": "#__pullRequestNumber__ · Github",
       "paymentRequest": {
-        "many": "#__id__ · __count__ items",
-        "one": "#__id__ · 1 item",
-        "zero": "#__id__ · No item"
+        "many": "#__id__ · __count__ contributions",
+        "one": "#__id__ · 1 contribution",
+        "zero": "#__id__ · No contributions"
       },
       "detailsPanel": {
-        "cancelPayment": {
-          "button": "Cancel payment",
+        "cancelReward": {
+          "button": "Cancel reward",
           "modal": {
             "confirmButton": "Confirm",
             "cancelButton": "Go back",
-            "description": "Once cancelled, you won't be able to restore this payment",
+            "description": "Once cancelled, you won't be able to restore this reward",
             "title": "Are you sure?"
           }
         },
@@ -325,17 +325,17 @@
             "reference": "Reference: __reference__"
           }
         },
-        "title": "Payment #__id__",
+        "title": "Reward #__id__",
         "to": "to",
         "you": "(you)",
-        "workItems": "Included in payment"
+        "workItems": "Included in reward"
       },
       "status": "Status"
     },
     "tableFallback": {
       "browseProjects": "Browse projects",
       "contribute": "Contribute to get your first one!",
-      "noPayments": "No payments received yet"
+      "noRewards": "No rewards received yet"
     }
   },
   "profile": {
@@ -501,7 +501,7 @@
           "one": "1 contributor",
           "zero": "No contributor"
         },
-        "sendPayment": "Send payment",
+        "reward": "Reward contributor",
         "title": "Contributors"
       },
       "githubRepos": {
@@ -536,15 +536,15 @@
         "totalSpentAmountInUsd": "GRANTED",
         "amountGranted": "__granted__ / __total__ — __leftToSpend__ left to spend"
       },
-      "payments": {
+      "rewards": {
         "new": {
-          "title": "Send payment"
+          "title": "Reward contributor"
         },
-        "title": "Payments"
+        "title": "Rewards"
       },
       "remainingBudget": {
         "leftToSpend": "left to spend",
-        "newPayment": "New payment",
+        "newReward": "Reward contributor",
         "title": "Remaining budget"
       },
       "sidebar": {
@@ -559,9 +559,9 @@
       },
       "tableFallback": {
         "disabledButtonTooltip": "There's no more budget for this project, please contact OnlyDust to ask for a refill.",
-        "newPayment": "New payment",
-        "noPayments": "No payments so far",
-        "send": "Send your first one!"
+        "newReward": "Reward contributor",
+        "noRewards": "No rewards so far",
+        "send": "Give your first one!"
       }
     },
     "error": {

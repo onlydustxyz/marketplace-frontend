@@ -86,7 +86,7 @@ const View: React.FC<Props> = ({
                 <CloseLine className="text-base" />
               </Button>
             </div>
-            <div className="text-2xl xl:text-3xl">{T("project.details.payments.new.title")}</div>
+            <div className="text-2xl xl:text-3xl">{T("project.details.rewards.new.title")}</div>
           </div>
         </Title>
       )}
@@ -95,7 +95,7 @@ const View: React.FC<Props> = ({
           <div className="flex w-full flex-col gap-6">
             <Card className="z-10 px-4 py-7" padded={false}>
               <div className={displayCallout ? "xl:h-52" : "h-24"}>
-                <SectionTitle title={T("payment.form.contributor.title")} />
+                <SectionTitle title={T("reward.form.contributor.title")} />
                 <div className="relative z-10">
                   <ContributorSelect projectId={projectId} contributor={contributor} setContributor={setContributor} />
                 </div>
@@ -104,9 +104,9 @@ const View: React.FC<Props> = ({
                     <Callout>
                       <div className="flex flex-col gap-1">
                         <span className="text-sm xl:text-base xl:font-medium">
-                          {T("payment.form.contributor.needsToSignup.title", { contributor: contributor?.login })}
+                          {T("reward.form.contributor.needsToSignup.title", { contributor: contributor?.login })}
                         </span>
-                        <span>{T("payment.form.contributor.needsToSignup.details")}</span>
+                        <span>{T("reward.form.contributor.needsToSignup.details")}</span>
                       </div>
                     </Callout>
                   </div>
@@ -115,13 +115,13 @@ const View: React.FC<Props> = ({
               {contributor && (
                 <div className="pt-8 xl:pt-12">
                   <SectionTitle
-                    title={T("payment.form.workItems.title")}
+                    title={T("reward.form.workItems.title")}
                     rightAction={
                       <div className="flex flex-row items-center gap-2">
                         {workItems.length > 0 && (
                           <Button type={ButtonType.Ternary} size={ButtonSize.Sm} onClick={() => clearWorkItems()}>
                             <CloseLine />
-                            {T("payment.form.workItems.clear")}
+                            {T("reward.form.workItems.clear")}
                           </Button>
                         )}
                         <Button
@@ -136,9 +136,7 @@ const View: React.FC<Props> = ({
                     }
                   />
                   <div className="mx-4 flex flex-col gap-3 pt-4" data-testid="added-work-items">
-                    <div className="text-sm text-greyscale-300 xl:text-base">
-                      {T("payment.form.workItems.subTitle")}
-                    </div>
+                    <div className="text-sm text-greyscale-300 xl:text-base">{T("reward.form.workItems.subTitle")}</div>
                     {workItems.map(workItem => (
                       <GithubIssue
                         key={workItem.id}
@@ -151,7 +149,7 @@ const View: React.FC<Props> = ({
                   <div onClick={() => setSidePanelOpen(true)} data-testid="add-work-item-btn" className="mx-4 pt-8">
                     <Button size={ButtonSize.Md} type={ButtonType.Secondary} width={Width.Full}>
                       <Add />
-                      {T("payment.form.workItems.addWorkItem")}
+                      {T("reward.form.workItems.addWorkItem")}
                     </Button>
                   </div>
                 </div>

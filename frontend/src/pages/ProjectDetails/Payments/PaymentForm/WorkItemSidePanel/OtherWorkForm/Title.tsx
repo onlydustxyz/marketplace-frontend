@@ -12,7 +12,7 @@ export default function Title({ defaultTitle, title, setTitle }: Props) {
 
   return (
     <Input
-      label={T("payment.form.workItems.other.inputs.title")}
+      label={T("reward.form.workItems.other.inputs.title")}
       name="other-work-title"
       value={title}
       placeholder={defaultTitle}

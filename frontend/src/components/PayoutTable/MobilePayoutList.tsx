@@ -32,7 +32,7 @@ export default function MobilePayoutList({
           <MobilePaymentItem
             title={payment?.project?.title}
             image={<RoundedImage src={payment?.project?.logoUrl || onlyDustLogo} alt={payment?.project?.title || ""} />}
-            request={T("payment.table.paymentRequest", { id: pretty(payment.id), count: payment.workItems.length })}
+            request={T("reward.table.paymentRequest", { id: pretty(payment.id), count: payment.workItems.length })}
             amount={formatMoneyAmount({ amount: payment.amount.value, currency: payment.amount.currency })}
             date={payment.requestedAt}
             payoutStatus={
@@ -90,7 +90,7 @@ export function MobilePaymentItem({
         <div className="flex w-1/2 flex-col items-start">
           <div className="flex items-center gap-1 font-semibold uppercase text-spaceBlue-200">
             <MoneyDollarCircleLine className="text-base font-medium" />
-            {T("payment.table.amount")}
+            {T("reward.table.amount")}
           </div>
           {amount}
         </div>
@@ -98,7 +98,7 @@ export function MobilePaymentItem({
         <div className="flex flex-col items-start pl-4 text-left">
           <div className="flex items-center gap-1 font-semibold uppercase text-spaceBlue-200">
             <TimeLine className="text-base font-medium" />
-            {T("payment.table.date")}
+            {T("reward.table.date")}
           </div>
           {displayRelativeDate(date)}
         </div>

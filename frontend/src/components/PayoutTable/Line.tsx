@@ -71,7 +71,7 @@ export default function PaymentLine({
         <div className="flex flex-col justify-center truncate">
           <div className="font-belwe text-base font-normal">{payment?.project?.title}</div>
           <div className="text-spaceBlue-200">
-            {T("payment.table.paymentRequest", { id: pretty(payment.id), count: payment.workItems.length })}
+            {T("reward.table.paymentRequest", { id: pretty(payment.id), count: payment.workItems.length })}
           </div>
         </div>
       </Cell>

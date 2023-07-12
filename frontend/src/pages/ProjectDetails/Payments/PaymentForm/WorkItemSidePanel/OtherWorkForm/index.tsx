@@ -40,10 +40,10 @@ export default function OtherWorkForm({ projectId, contributorHandle, onWorkItem
   const { user: leader } = useAuth();
 
   const workKinds = [
-    { icon: <DraftLine />, label: T("payment.form.workItems.other.kinds.documentation") },
-    { icon: <TeamLine />, label: T("payment.form.workItems.other.kinds.meeting") },
-    { icon: <ExchangeDollarLine />, label: T("payment.form.workItems.other.kinds.subscription") },
-    { icon: <MoreLine />, label: T("payment.form.workItems.other.kinds.other") },
+    { icon: <DraftLine />, label: T("reward.form.workItems.other.kinds.documentation") },
+    { icon: <TeamLine />, label: T("reward.form.workItems.other.kinds.meeting") },
+    { icon: <ExchangeDollarLine />, label: T("reward.form.workItems.other.kinds.subscription") },
+    { icon: <MoreLine />, label: T("reward.form.workItems.other.kinds.other") },
   ];
   const defaultWorkKind = workKinds[0].label;
 
@@ -60,7 +60,7 @@ export default function OtherWorkForm({ projectId, contributorHandle, onWorkItem
   const { watch, setValue, control, handleSubmit } = formMethods;
   const workKind = watch("workKind");
 
-  const defaultTitle = T("payment.form.workItems.other.issue.defaultTitle", {
+  const defaultTitle = T("reward.form.workItems.other.issue.defaultTitle", {
     kind: workKind,
     author: contributorHandle,
   });
@@ -95,7 +95,7 @@ export default function OtherWorkForm({ projectId, contributorHandle, onWorkItem
     onCompleted: data => {
       clearForm();
       onWorkItemAdded(issueToWorkItem(data.createIssue, projectId));
-      showToaster(T("payment.form.workItems.other.success"));
+      showToaster(T("reward.form.workItems.other.success"));
     },
   });
 
@@ -110,12 +110,12 @@ export default function OtherWorkForm({ projectId, contributorHandle, onWorkItem
       <form className="flex h-full min-h-0 flex-col justify-between xl:gap-4" onSubmit={onSubmit}>
         <div className="flex min-h-0 flex-col justify-start gap-4 overflow-y-auto px-6 pb-4 scrollbar-thin scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded scrollbar-w-2 xl:pb-0">
           <div className="font-belwe text-base font-normal text-greyscale-50">
-            {T("payment.form.workItems.other.title")}
+            {T("reward.form.workItems.other.title")}
           </div>
           <FormSelect name="workKind" options={workKinds} control={control} />
           <Title title={title} setTitle={setTitle} defaultTitle={defaultTitle} />
           <Description description={description} setDescription={setDescription} />
-          <Callout>{T("payment.form.workItems.other.callout")}</Callout>
+          <Callout>{T("reward.form.workItems.other.callout")}</Callout>
         </div>
         <div className="flex flex-row justify-between gap-8 border-t border-greyscale-50/8 bg-white/2 p-4 xl:grow-0 xl:px-6 xl:py-8">
           {selectedRepo ? (
@@ -130,8 +130,8 @@ export default function OtherWorkForm({ projectId, contributorHandle, onWorkItem
           >
             {isXl && <CheckLine />}
             {isXl
-              ? T("payment.form.workItems.other.footer.submitButton")
-              : T("payment.form.workItems.other.footer.submitButtonShort")}
+              ? T("reward.form.workItems.other.footer.submitButton")
+              : T("reward.form.workItems.other.footer.submitButtonShort")}
           </Button>
         </div>
       </form>

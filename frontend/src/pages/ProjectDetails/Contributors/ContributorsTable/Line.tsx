@@ -43,7 +43,7 @@ export default function ContributorLine({
                 size={BadgeSize.Small}
                 icon={BadgeIcon.GitMerge}
                 value={contributor.unpaidMergedPullsCount}
-                {...withTooltip(T("payment.form.contributor.unpaidMergedPrCountTooltip"))}
+                {...withTooltip(T("reward.form.contributor.unpaidMergedPrCountTooltip"))}
               />
             ) : (
               "-"
@@ -59,7 +59,7 @@ export default function ContributorLine({
                 data-testid="send-payment-button"
               >
                 <SendPlane2Line />
-                <div>{T("project.details.contributors.sendPayment")}</div>
+                <div>{T("project.details.contributors.reward")}</div>
               </Button>
             </div>
           </Cell>

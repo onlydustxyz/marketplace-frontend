@@ -92,7 +92,7 @@ export default function View({
       <QueryWrapper query={{ loading, data: requestedAt }}>
         <div className="flex h-full flex-col gap-8">
           <div className="flex flex-wrap items-center gap-3 px-6 pt-8 font-belwe text-2xl font-normal text-greyscale-50">
-            {T("payment.table.detailsPanel.title", { id: pretty(id) })}
+            {T("reward.table.detailsPanel.title", { id: pretty(id) })}
             {!isXl && shouldDisplayCancelPaymentButton && <CancelPaymentButton onPaymentCancel={onPaymentCancel} />}
           </div>
           <div className="flex flex-col gap-2 px-6">
@@ -112,12 +112,12 @@ export default function View({
               <Details>
                 <RoundedImage alt={requestor.login || ""} src={requestor.avatarUrl || ""} size={ImageSize.Xxs} />
                 <div className="flex flex-row items-center gap-1">
-                  {T("payment.table.detailsPanel.from")}
+                  {T("reward.table.detailsPanel.from")}
                   <Contributor
                     contributor={{ login: requestor.login || "", githubUserId: requestor.id, avatarUrl: null }}
                     clickable
                   />
-                  {requestor.id === userId && T("payment.table.detailsPanel.you")}
+                  {requestor.id === userId && T("reward.table.detailsPanel.you")}
                 </div>
               </Details>
             )}
@@ -129,7 +129,7 @@ export default function View({
                   size={ImageSize.Xxs}
                 />
                 <div className="flex flex-row items-center gap-1">
-                  {T("payment.table.detailsPanel.to")}
+                  {T("reward.table.detailsPanel.to")}
                   <Contributor
                     contributor={{
                       login: liveGithubRecipient.login,
@@ -138,14 +138,14 @@ export default function View({
                     }}
                     clickable
                   />
-                  {liveGithubRecipient.id === githubUserId && T("payment.table.detailsPanel.you")}
+                  {liveGithubRecipient.id === githubUserId && T("reward.table.detailsPanel.you")}
                 </div>
               </Details>
             )}
             {requestedAt && (
               <Details>
                 <Time className="text-base" />
-                {T("payment.table.detailsPanel.requestedAt", { requestedAt: formatDateTime(new Date(requestedAt)) })}
+                {T("reward.table.detailsPanel.requestedAt", { requestedAt: formatDateTime(new Date(requestedAt)) })}
               </Details>
             )}
             {status === PaymentStatus.ACCEPTED && payments?.at(0)?.processedAt && (
@@ -156,7 +156,7 @@ export default function View({
                   {...withCustomTooltip("payment-receipt-tooltip")}
                 >
                   {[
-                    T("payment.table.detailsPanel.processedAt", {
+                    T("reward.table.detailsPanel.processedAt", {
                       processedAt: formatDateTime(new Date(payments?.at(0)?.processedAt)),
                     }),
                     formattedReceipt &&
@@ -201,7 +201,7 @@ export default function View({
           </div>
           <div className="-mr-4 flex h-full flex-col gap-3 overflow-hidden px-6">
             <div className="font-belwe text-base font-normal text-greyscale-50">
-              {T("payment.table.detailsPanel.workItems")}
+              {T("reward.table.detailsPanel.workItems")}
             </div>
             <div className="flex h-full flex-col gap-3 overflow-auto p-px pb-6 pr-4 scrollbar-thin scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded scrollbar-w-2">
               {workItems?.map(
@@ -268,7 +268,7 @@ function CancelPaymentButton({ onPaymentCancel }: CancelPaymentButtonProps) {
     <div className="relative">
       <Button size={ButtonSize.Sm} onClick={toggleModal} pressed={modalOpened} data-testid="cancel-payment-button">
         <ErrorWarningLine />
-        {T("payment.table.detailsPanel.cancelPayment.button")}
+        {T("reward.table.detailsPanel.cancelReward.button")}
       </Button>
       <div
         className={classNames("absolute top-10 z-10 xl:-inset-x-10", {

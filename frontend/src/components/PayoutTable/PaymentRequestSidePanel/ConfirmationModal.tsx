@@ -14,15 +14,15 @@ export default function ConfirmationModal({ onClose, onConfirm }: Props) {
     <Card padded={false} fullWidth={false} className="w-60 divide-y divide-solid divide-greyscale-50/8">
       <div className="flex flex-col items-center gap-2 p-4 text-center">
         <div className="font-belwe text-base font-normal text-greyscale-50">
-          {T("payment.table.detailsPanel.cancelPayment.modal.title")}
+          {T("reward.table.detailsPanel.cancelReward.modal.title")}
         </div>
         <div className="font-walsheim text-sm font-normal text-spaceBlue-200">
-          {T("payment.table.detailsPanel.cancelPayment.modal.description")}
+          {T("reward.table.detailsPanel.cancelReward.modal.description")}
         </div>
       </div>
       <div className="flex flex-row items-stretch gap-2 p-3">
         <Button type={ButtonType.Secondary} size={ButtonSize.Xs} width={Width.Full} onClick={onClose}>
-          {T("payment.table.detailsPanel.cancelPayment.modal.cancelButton")}
+          {T("reward.table.detailsPanel.cancelReward.modal.cancelButton")}
         </Button>
         <Button
           size={ButtonSize.Xs}
@@ -32,7 +32,7 @@ export default function ConfirmationModal({ onClose, onConfirm }: Props) {
             onClose();
           }}
         >
-          {T("payment.table.detailsPanel.cancelPayment.modal.confirmButton")}
+          {T("reward.table.detailsPanel.cancelReward.modal.confirmButton")}
         </Button>
       </div>
     </Card>

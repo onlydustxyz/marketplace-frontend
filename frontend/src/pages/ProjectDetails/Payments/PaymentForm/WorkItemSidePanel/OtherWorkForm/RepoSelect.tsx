@@ -17,7 +17,7 @@ export default function RepoSelect({ repos, repo, setRepo }: Props) {
   return (
     <div className="relative flex flex-col gap-2 xl:w-full">
       <div className="font-walsheim text-sm font-normal text-white">
-        {T("payment.form.workItems.other.footer.repository")}
+        {T("reward.form.workItems.other.footer.repository")}
       </div>
       <Listbox value={repo} onChange={setRepo} disabled={repos.length < 2}>
         <Listbox.Button

@@ -19,22 +19,22 @@ export default function Headers({ sorting, applySorting }: Props) {
     <HeaderLine>
       <HeaderCell width={HeaderCellWidth.Sixth} onClick={() => applySorting(Field.Date, false)} horizontalMargin>
         <TimeLine className="p-px font-normal" />
-        <span>{T("payment.table.date")}</span>
+        <span>{T("reward.table.date")}</span>
         <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.Date} />
       </HeaderCell>
       <HeaderCell width={HeaderCellWidth.Third} onClick={() => applySorting(Field.Contribution, true)} horizontalMargin>
         <FolderLine className="p-px font-normal" />
-        <span>{T("payment.table.contribution")}</span>
+        <span>{T("reward.table.contribution")}</span>
         <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.Contribution} />
       </HeaderCell>
       <HeaderCell width={HeaderCellWidth.Sixth} onClick={() => applySorting(Field.Amount, false)} horizontalMargin>
         <MoneyDollarCircleLine className="p-px font-normal" />
-        <span>{T("payment.table.amount")}</span>
+        <span>{T("reward.table.amount")}</span>
         <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.Amount} />
       </HeaderCell>
       <HeaderCell width={HeaderCellWidth.Quarter} onClick={() => applySorting(Field.Status, true)} horizontalMargin>
         <FocusLine className="p-px font-normal" />
-        <span>{T("payment.table.status")}</span>
+        <span>{T("reward.table.status")}</span>
         <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.Status} />
       </HeaderCell>
     </HeaderLine>

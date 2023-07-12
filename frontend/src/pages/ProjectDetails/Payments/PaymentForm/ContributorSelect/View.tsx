@@ -83,7 +83,7 @@ export default function ContributorSelectView({
                         </div>
                       )}
                     </div>
-                    {!selectedGithubHandle && <div>{T("payment.form.contributor.select.placeholder")}</div>}
+                    {!selectedGithubHandle && <div>{T("reward.form.contributor.select.placeholder")}</div>}
                     {selectedGithubHandle && (
                       <div className="font-medium" data-testid="contributor-selection-value">
                         {selectedGithubHandle}
@@ -130,7 +130,7 @@ export default function ContributorSelectView({
               githubHandleSubstring &&
               githubHandleSubstring.length < 3 ? (
                 <div className="px-4 pb-6 text-sm italic text-greyscale-100 xl:text-base">
-                  {T("payment.form.contributor.select.fallback.typeMoreCharacters")}
+                  {T("reward.form.contributor.select.fallback.typeMoreCharacters")}
                 </div>
               ) : filteredContributors &&
                 filteredContributors.length === 0 &&
@@ -140,7 +140,7 @@ export default function ContributorSelectView({
                 debouncedGithubHandleSubstring === githubHandleSubstring ? (
                 <div className="pb-6">
                   <span className="px-4 pb-6 italic text-greyscale-100">
-                    {T("payment.form.contributor.select.fallback.noUser")}
+                    {T("reward.form.contributor.select.fallback.noUser")}
                   </span>
                 </div>
               ) : contributorLines.length > 0 ? (
@@ -250,7 +250,7 @@ function VirtualizedContributorSubList({ lines }: ContributorSubListProps) {
                   value={contributor.unpaidMergedPullsCount}
                   icon={BadgeIcon.GitMerge}
                   size={BadgeSize.Small}
-                  {...withTooltip(T("payment.form.contributor.unpaidMergedPrCountTooltip"))}
+                  {...withTooltip(T("reward.form.contributor.unpaidMergedPrCountTooltip"))}
                 />
               )}
             </Combobox.Option>
@@ -258,7 +258,7 @@ function VirtualizedContributorSubList({ lines }: ContributorSubListProps) {
         } else if (line.type === LineType.Separator) {
           return (
             <div className="text-md pb-1 pt-4 font-medium text-spaceBlue-200">
-              {T("payment.form.contributor.select.externalUsers")}
+              {T("reward.form.contributor.select.externalUsers")}
             </div>
           );
         } else {

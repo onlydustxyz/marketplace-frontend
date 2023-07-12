@@ -55,11 +55,11 @@ export default function WorkEstimation({
         >
           {!disabled && (
             <div className="flex flex-col gap-1">
-              <div className="font-semibold">{T("payment.form.estimate")}</div>
+              <div className="font-semibold">{T("reward.form.estimate")}</div>
               <div className="flex flex-row items-end justify-between">
                 <div className="font-belwe">
                   {stepNumber > 0 && <span className="mr-2 text-5xl">{stepNumber}</span>}
-                  <span className="text-2xl">{T("payment.form.steps." + steps, { count: stepNumber })}</span>{" "}
+                  <span className="text-2xl">{T("reward.form.steps." + steps, { count: stepNumber })}</span>{" "}
                 </div>
                 <div className="flex flex-row items-center gap-3 text-white">
                   <div onClick={tryDecreaseNumberOfDays} className="relative">
@@ -82,23 +82,23 @@ export default function WorkEstimation({
           )}
           {disabled && (
             <div className="mb-5 mt-2 px-2 py-px text-center font-semibold">
-              {T(missingContributor ? "payment.form.missingContributor" : "payment.form.missingWorkItem")}
+              {T(missingContributor ? "reward.form.missingContributor" : "reward.form.missingWorkItem")}
             </div>
           )}
           <BudgetBar budget={budget} pendingSpending={amountToPay} displayPendingSpending={!disabled} />
           <div className="flex flex-col text-sm font-medium">
             <div className="flex flex-row justify-between">
-              <div className="text-greyscale-300">{T("payment.form.remainingBudget")}</div>
+              <div className="text-greyscale-300">{T("reward.form.remainingBudget")}</div>
               <div className="font-semibold">{formatMoneyAmount({ amount: budget.remainingAmount })}</div>
             </div>
             {!disabled && (
               <>
                 <div className="flex flex-row justify-between">
-                  <div className="text-greyscale-300">{T("payment.form.thisPayment")}</div>
+                  <div className="text-greyscale-300">{T("reward.form.thisReward")}</div>
                   <div className="font-semibold text-purple-500">{formatMoneyAmount({ amount: amountToPay })}</div>
                 </div>
                 <div className="flex flex-row justify-between">
-                  <div className="text-greyscale-300">{T("payment.form.leftToSpend")}</div>
+                  <div className="text-greyscale-300">{T("reward.form.leftToSpend")}</div>
                   <div className="font-semibold">
                     {formatMoneyAmount({ amount: budget.remainingAmount - amountToPay })}
                   </div>
@@ -110,7 +110,7 @@ export default function WorkEstimation({
         {!disabled && (
           <div className="w-full p-6 pt-5">
             <Button htmlType="submit" width={Width.Full} disabled={requestNewPaymentMutationLoading}>
-              <span>{T("payment.form.confirm")}</span>
+              <span>{T("reward.form.confirm")}</span>
             </Button>
           </div>
         )}

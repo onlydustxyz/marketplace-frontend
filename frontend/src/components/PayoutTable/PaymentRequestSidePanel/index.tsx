@@ -66,7 +66,7 @@ export function PaymentRequestSidePanelAsLeader({
     onCompleted: () => {
       notify(projectId);
       setOpen(false);
-      showToaster(T("payment.form.cancelled"));
+      showToaster(T("reward.form.cancelled"));
     },
   });
 

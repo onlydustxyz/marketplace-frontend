@@ -21,7 +21,7 @@ const PaymentList: React.FC = () => {
 
   return (
     <>
-      <Title>{T("project.details.payments.title")}</Title>
+      <Title>{T("project.details.rewards.title")}</Title>
       <div className="flex h-full flex-col-reverse items-start gap-4 xl:flex-row">
         <div className="flex w-full basis-2/3">
           {payments.length > 0 ? (

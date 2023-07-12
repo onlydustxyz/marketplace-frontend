@@ -45,7 +45,7 @@ export default function WorkItemSidePanel({
     <SidePanel {...props}>
       <div className="flex h-full flex-col gap-8">
         <div className="px-6 pt-8 font-belwe text-2xl font-normal text-greyscale-50">
-          {T("payment.form.workItems.addWorkItem")}
+          {T("reward.form.workItems.addWorkItem")}
         </div>
         <div className="flex flex-row items-center gap-8 border-b border-greyscale-50/8 px-6">
           <Tab
@@ -54,15 +54,15 @@ export default function WorkItemSidePanel({
             onClick={() => setSelectedTab(Tabs.PullRequests)}
           >
             <GitPullRequestLine />
-            {isXl ? T("payment.form.workItems.pullRequests.tab") : T("payment.form.workItems.pullRequests.tabShort")}
+            {isXl ? T("reward.form.workItems.pullRequests.tab") : T("reward.form.workItems.pullRequests.tabShort")}
           </Tab>
           <Tab testId="tab-issues" active={selectedTab === Tabs.Issues} onClick={() => setSelectedTab(Tabs.Issues)}>
             <IssueOpen />
-            {T("payment.form.workItems.issues.tab")}
+            {T("reward.form.workItems.issues.tab")}
           </Tab>
           <Tab testId="tab-other-work" active={selectedTab === Tabs.Other} onClick={() => setSelectedTab(Tabs.Other)}>
             <DiscussLine />
-            {isXl ? T("payment.form.workItems.other.tab") : T("payment.form.workItems.other.tabShort")}
+            {isXl ? T("reward.form.workItems.other.tab") : T("reward.form.workItems.other.tabShort")}
           </Tab>
         </div>
         {selectedTab === Tabs.PullRequests && (

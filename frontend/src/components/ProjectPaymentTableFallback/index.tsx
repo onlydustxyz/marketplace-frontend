@@ -19,7 +19,7 @@ const ProjectPaymentTableFallback = ({ disabled = false }: ProjectPaymentTableFa
       </div>
       <div className="flex flex-col items-center gap-1">
         <span className="font-belwe text-2xl leading-8 text-greyscale-50">
-          {T("project.details.tableFallback.noPayments")}
+          {T("project.details.tableFallback.noRewards")}
         </span>
         <span className="font-walsheim text-base leading-6 text-greyscale-50">
           {T("project.details.tableFallback.send")}
@@ -29,14 +29,14 @@ const ProjectPaymentTableFallback = ({ disabled = false }: ProjectPaymentTableFa
         <div {...withTooltip(T("project.details.tableFallback.disabledButtonTooltip"))}>
           <Button size={ButtonSize.Lg} disabled>
             <CurrencyLine />
-            <span>{T("project.details.tableFallback.newPayment")}</span>
+            <span>{T("project.details.tableFallback.newReward")}</span>
           </Button>
         </div>
       ) : (
         <Link to={ProjectPaymentsRoutePaths.New}>
           <Button width={Width.Full} size={ButtonSize.Lg}>
             <CurrencyLine />
-            <span>{T("project.details.tableFallback.newPayment")}</span>
+            <span>{T("project.details.tableFallback.newReward")}</span>
           </Button>
         </Link>
       )}

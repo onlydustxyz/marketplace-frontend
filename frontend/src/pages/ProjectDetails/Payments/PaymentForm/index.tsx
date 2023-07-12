@@ -30,7 +30,7 @@ const PaymentForm: React.FC = () => {
     context: { graphqlErrorDisplay: "toaster" },
     onCompleted: () => {
       notify(projectId);
-      showToaster(T("payment.form.sent"));
+      showToaster(T("reward.form.sent"));
       navigate(generatePath(RoutePaths.ProjectDetails, { projectKey }) + "/" + ProjectRoutePaths.Payments);
     },
   });

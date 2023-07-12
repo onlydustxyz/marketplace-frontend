@@ -41,7 +41,7 @@ function MobilePaymentItemContainer({ payment }: { payment: ExtendedPaymentReque
       <MobilePaymentItem
         image={<RoundedImage src={recipient.avatarUrl} alt={recipient.login} rounding={Rounding.Circle} />}
         title={recipient.login}
-        request={T("payment.table.paymentRequest", {
+        request={T("reward.table.paymentRequest", {
           id: pretty(payment.id),
           count: payment.workItemsAggregate.aggregate?.count,
         })}
