@@ -50,20 +50,20 @@ export default function Overview() {
     ...contextWithCacheHeaders,
   });
 
-  const projectName = data?.projectsByPk?.projectDetails?.name;
-  const logoUrl = data?.projectsByPk?.projectDetails?.logoUrl || onlyDustLogo;
-  const description = data?.projectsByPk?.projectDetails?.longDescription || LOREM_IPSUM;
-  const githubRepos = sortBy(data?.projectsByPk?.githubRepos, "repo.stars")
+  const projectName = data?.projects[0]?.name;
+  const logoUrl = data?.projects[0]?.logoUrl || onlyDustLogo;
+  const description = data?.projects[0]?.longDescription || LOREM_IPSUM;
+  const githubRepos = sortBy(data?.projects[0]?.githubRepos, "repo.stars")
     .reverse()
     .filter(r => r.repo);
-  const sponsors = data?.projectsByPk?.projectSponsors.map(s => s.sponsor) || [];
-  const telegramLink = data?.projectsByPk?.projectDetails?.telegramLink || null;
-  const topContributors = data?.projectsByPk?.contributors.map(c => c.githubUser).filter(isDefined) || [];
-  const totalContributorsCount = data?.projectsByPk?.contributorsAggregate.aggregate?.count || 0;
-  const leads = data?.projectsByPk?.projectLeads.map(u => u.user).filter(isDefined);
+  const sponsors = data?.projects[0]?.sponsors.map(s => s.sponsor) || [];
+  const moreInfoLink = data?.projects[0]?.moreInfoLink || null;
+  const topContributors = data?.projects[0]?.contributors.map(c => c.githubUser).filter(isDefined) || [];
+  const totalContributorsCount = data?.projects[0]?.contributorsAggregate.aggregate?.count || 0;
+  const leads = data?.projects[0]?.projectLeads.map(u => u.user).filter(isDefined);
   const languages = getMostUsedLanguages(getDeduplicatedAggregatedLanguages(githubRepos.map(r => r.repo)));
-  const hiring = data?.projectsByPk?.projectDetails?.hiring;
-  const invitationId = data?.projectsByPk?.pendingInvitations.find(i => i.githubUserId === githubUserId)?.id;
+  const hiring = data?.projects[0]?.hiring;
+  const invitationId = data?.projects[0]?.pendingInvitations.find(i => i.githubUserId === githubUserId)?.id;
 
   const { alreadyApplied, applyToProject } = useApplications(projectId);
   const { isCurrentUserMember } = useProjectVisibility(projectId);
@@ -83,14 +83,14 @@ export default function Overview() {
           <Card className="flex flex-col gap-4 px-6 py-4">
             <div className="flex flex-row items-center gap-4">
               <img
-                alt={data?.projectsByPk?.projectDetails?.name}
+                alt={data?.projects[0]?.name || ""}
                 src={logoUrl}
                 className="h-20 w-20 flex-shrink-0 rounded-lg bg-spaceBlue-900 object-cover"
               />
               <div className="flex w-full flex-col gap-1">
                 <div className="flex flex-row items-center justify-between font-belwe text-2xl font-normal text-greyscale-50">
                   {projectName}
-                  {data?.projectsByPk?.projectDetails?.visibility === "private" && <PrivateTag />}
+                  {data?.projects[0]?.visibility === "private" && <PrivateTag />}
                 </div>
                 {languages.length > 0 && (
                   <Tag size={TagSize.Small}>
@@ -160,7 +160,7 @@ export default function Overview() {
           <OverviewPanel
             {...{
               sponsors,
-              telegramLink,
+              moreInfoLink,
               topContributors,
               totalContributorsCount,
               leads,

@@ -15,8 +15,9 @@ const PaymentForm: React.FC = () => {
   const { T } = useIntl();
   const showToaster = useShowToaster();
   const navigate = useNavigate();
-  const { projectId, budget } = useOutletContext<{
+  const { projectId, projectKey, budget } = useOutletContext<{
     projectId: string;
+    projectKey: string;
     budget: {
       remainingAmount: number;
       initialAmount: number;
@@ -30,7 +31,7 @@ const PaymentForm: React.FC = () => {
     onCompleted: () => {
       notify(projectId);
       showToaster(T("payment.form.sent"));
-      navigate(generatePath(RoutePaths.ProjectDetails, { projectId }) + "/" + ProjectRoutePaths.Payments);
+      navigate(generatePath(RoutePaths.ProjectDetails, { projectKey }) + "/" + ProjectRoutePaths.Payments);
     },
   });
 

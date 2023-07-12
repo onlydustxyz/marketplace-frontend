@@ -11,14 +11,14 @@ type Props = {
   contributors: ContributorFragment[];
   isProjectLeader: boolean;
   remainingBudget: number;
-  projectId: string;
+  projectKey: string;
 };
 
 export default function ContributorsTable({
   contributors: contributorFragments,
   isProjectLeader,
   remainingBudget,
-  projectId,
+  projectKey,
 }: Props) {
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
@@ -41,7 +41,7 @@ export default function ContributorsTable({
   const onPaymentRequested = (contributor: Contributor) => {
     if (!isSendingNewPaymentDisabled) {
       navigate(
-        generatePath(RoutePaths.ProjectDetails, { projectId }) +
+        generatePath(RoutePaths.ProjectDetails, { projectKey }) +
           "/" +
           ProjectRoutePaths.Payments +
           "/" +

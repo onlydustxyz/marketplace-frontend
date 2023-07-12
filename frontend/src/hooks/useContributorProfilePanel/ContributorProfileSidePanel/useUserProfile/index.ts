@@ -93,10 +93,11 @@ export default function useUserProfile({
       project =>
         ({
           id: project.id,
-          name: project.projectDetails?.name,
-          logoUrl: project.projectDetails?.logoUrl || onlyDustLogo,
+          key: project.key,
+          name: project.name,
+          logoUrl: project.logoUrl || onlyDustLogo,
           leadSince: project.leadSince,
-          private: project.projectDetails?.visibility === "private",
+          private: project.visibility === "private",
           contributionCount: find(profile?.contributionStats, { projectId: project.id })?.totalCount,
           lastContribution: find(profile?.contributionStats, { projectId: project.id })?.maxDate,
           contributorCount: project.contributorsAggregate?.aggregate?.count || 0,

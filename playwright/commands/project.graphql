@@ -47,10 +47,16 @@ mutation updateProject(
 }
 
 query getProjectBudget($projectId: uuid!) {
-  projectsByPk(id: $projectId) {
+  projects(where: { id: { _eq: $projectId } }) {
     budgets {
       id
     }
+  }
+}
+
+query getProjectKey($projectId: uuid!) {
+  projects(where: { id: { _eq: $projectId } }) {
+    key
   }
 }
 

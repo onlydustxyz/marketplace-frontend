@@ -14,7 +14,9 @@ export default {
 export const Default = {
   render: () => (
     <>
-      <ProjectCard {...props(args)} pendingInvitations={args.withInvitation ? props(args).pendingInvitations : []} />
+      <ProjectCard
+        project={{ ...props(args), pendingInvitations: args.withInvitation ? props(args).pendingInvitations : [] }}
+      />
       <Tooltip />
     </>
   ),
@@ -27,8 +29,14 @@ export const Hiring = {
   render: () => (
     <>
       <ProjectCard
-        {...props({ ...args, hiring: true, sponsorsCount: 1 })}
-        pendingInvitations={args.withInvitation ? props(args).pendingInvitations : []}
+        project={{
+          ...props({
+            ...args,
+            hiring: true,
+            sponsorsCount: 1,
+          }),
+          pendingInvitations: args.withInvitation ? props(args).pendingInvitations : [],
+        }}
       />
       <Tooltip />
     </>
@@ -42,8 +50,10 @@ export const Private = {
   render: () => (
     <>
       <ProjectCard
-        {...props({ ...args, visibility: "private", sponsorsCount: 0 })}
-        pendingInvitations={args.withInvitation ? props(args).pendingInvitations : []}
+        project={{
+          ...props({ ...args, visibility: "private", sponsorsCount: 0 }),
+          pendingInvitations: args.withInvitation ? props(args).pendingInvitations : [],
+        }}
       />
       <Tooltip />
     </>
@@ -65,16 +75,14 @@ const props = (args: {
   contributors: [],
   githubReposAggregate: { aggregate: { count: 4 } },
   contributorsAggregate: { aggregate: { count: 4 } },
-  projectDetails: {
-    projectId: "123",
-    name: args.name,
-    telegramLink: "https://app.onlydust.xyz/projects/92f022a9-dbd8-446f-a2a5-b161ccb4541c",
-    shortDescription: args.shortDescription,
-    logoUrl: "https://avatars.githubusercontent.com/u/115809607?v=4",
-    hiring: args.hiring,
-    rank: 0,
-    visibility: args.visibility,
-  },
+  name: args.name,
+  key: args.name,
+  moreInfoLink: "https://app.onlydust.xyz/projects/92f022a9-dbd8-446f-a2a5-b161ccb4541c",
+  shortDescription: args.shortDescription,
+  logoUrl: "https://avatars.githubusercontent.com/u/115809607?v=4",
+  hiring: args.hiring,
+  rank: 0,
+  visibility: args.visibility,
   projectLeads: [
     {
       userId: "user-1",
@@ -158,14 +166,10 @@ const props = (args: {
   budgetsAggregate: {
     aggregate: {
       count: 1,
-      sum: {
-        spentAmount: 47550,
-        initialAmount: 100000,
-      },
     },
   },
   pendingInvitations: [{ id: "croute", githubUserId: "github-user-id" }],
-  projectSponsors: [
+  sponsors: [
     {
       sponsor: {
         id: 1,

@@ -10,7 +10,7 @@ object_relationships:
         insertion_order: null
         remote_table:
           name: projects
-          schema: public
+          schema: api
 array_relationships:
   - name: paymentRequests
     using:

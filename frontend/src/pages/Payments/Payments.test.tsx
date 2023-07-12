@@ -55,12 +55,9 @@ const mockContribution: UserPaymentRequestFragment = {
     id: "budget-1",
     project: {
       id: "632d5da7-e590-4815-85ea-82a5585e6049",
-      projectDetails: {
-        projectId: "632d5da7-e590-4815-85ea-82a5585e6049",
-        shortDescription: "SOOOOOO awesome",
-        logoUrl: null,
-        name: "MyAwesomeProject",
-      },
+      shortDescription: "SOOOOOO awesome",
+      logoUrl: null,
+      name: "MyAwesomeProject",
     },
   },
   invoiceReceivedAt: null,
@@ -130,7 +127,7 @@ describe('"Payments" page', () => {
     });
 
     expect(await screen.findByText("#705E6 · 1 item")).toBeInTheDocument();
-    expect(await screen.findByText(mockContribution.budget?.project?.projectDetails?.name || "")).toBeInTheDocument();
+    expect(await screen.findByText(mockContribution.budget?.project?.name || "")).toBeInTheDocument();
     expect(await screen.findAllByText("$200")).toHaveLength(2);
     expect(await screen.findAllByText(/Payout info missing/i)).toHaveLength(1);
   });

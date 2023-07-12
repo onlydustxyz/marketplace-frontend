@@ -81,20 +81,17 @@ const ALL_PROJECTS_RESULT: { data: GetProjectsQueryResult["data"] } = {
       {
         __typename: "Projects",
         id: TEST_PROJECT_ID,
+        key: TEST_PROJECT_NAME,
         contributors: [],
         contributorsAggregate: { aggregate: { count: 0 } },
         githubReposAggregate: { aggregate: { count: 1 } },
-        projectDetails: {
-          __typename: "ProjectDetails",
-          projectId: TEST_PROJECT_ID,
-          name: TEST_PROJECT_NAME,
-          telegramLink: TEST_TELEGRAM_LINK,
-          shortDescription: TEST_DESCRIPTION,
-          logoUrl: null,
-          hiring: false,
-          rank: 0,
-          visibility: "public",
-        },
+        name: TEST_PROJECT_NAME,
+        moreInfoLink: TEST_TELEGRAM_LINK,
+        shortDescription: TEST_DESCRIPTION,
+        logoUrl: null,
+        hiring: false,
+        rank: 0,
+        visibility: "public",
         projectLeads: [
           {
             __typename: "ProjectLeads",
@@ -118,8 +115,8 @@ const ALL_PROJECTS_RESULT: { data: GetProjectsQueryResult["data"] } = {
             repo: null,
           },
         ],
-        projectSponsors: [],
-        budgetsAggregate: { aggregate: { count: 1, sum: { spentAmount: 100, initialAmount: 1000 } } },
+        sponsors: [],
+        budgetsAggregate: { aggregate: { count: 1 } },
       },
     ],
   },
@@ -147,34 +144,40 @@ const GITHUB_REPO_DETAILS_RESULT: { data: GetGithubRepositoryDetailsQueryResult[
 
 const PROJECT_OVERVIEW_DETAILS_RESULT: { data: GetProjectOverviewDetailsQueryResult["data"] } = {
   data: {
-    projectsByPk: {
-      __typename: "Projects",
-      id: TEST_PROJECT_ID,
-      projectDetails: {
-        projectId: TEST_PROJECT_ID,
+    projects: [
+      {
+        __typename: "Projects",
+        id: TEST_PROJECT_ID,
         name: TEST_PROJECT_NAME,
+        key: TEST_PROJECT_NAME,
         logoUrl: null,
         longDescription: "This is the long description",
-        telegramLink: TEST_TELEGRAM_LINK,
+        moreInfoLink: TEST_TELEGRAM_LINK,
         hiring: false,
         visibility: "public",
+        pendingInvitations: [],
+        budgetsAggregate: { aggregate: { sum: { initialAmount: 0, spentAmount: 0 } } },
+        contributors: [
+          {
+            githubUser: {
+              login: TEST_GITHUB_CONTRIBUTOR_LOGIN,
+              avatarUrl: "avatarUrl",
+              htmlUrl: "",
+              id: 1,
+              user: null,
+            },
+          },
+        ],
+        contributorsAggregate: { aggregate: { count: 1 } },
+        projectLeads: [],
+        sponsors: [],
+        githubRepos: [
+          {
+            repo: { id: TEST_GITHUB_REPO_ID, stars: 1000, languages: {} },
+          },
+        ],
       },
-      pendingInvitations: [],
-      budgetsAggregate: { aggregate: { sum: { initialAmount: 0, spentAmount: 0 } } },
-      contributors: [
-        {
-          githubUser: { login: TEST_GITHUB_CONTRIBUTOR_LOGIN, avatarUrl: "avatarUrl", htmlUrl: "", id: 1, user: null },
-        },
-      ],
-      contributorsAggregate: { aggregate: { count: 1 } },
-      projectLeads: [],
-      projectSponsors: [],
-      githubRepos: [
-        {
-          repo: { id: TEST_GITHUB_REPO_ID, stars: 1000, languages: {} },
-        },
-      ],
-    },
+    ],
   },
 };
 
@@ -209,12 +212,10 @@ const graphQlMocks = [
           {
             __typename: "Projects",
             id: TEST_PROJECT_ID,
-            projectDetails: {
-              projectId: TEST_PROJECT_ID,
-              name: TEST_PROJECT_NAME,
-              logoUrl: null,
-              visibility: "public",
-            },
+            name: TEST_PROJECT_NAME,
+            key: TEST_PROJECT_NAME,
+            logoUrl: null,
+            visibility: "public",
             pendingInvitations: [],
             projectLeads: [],
             contributorsAggregate: { aggregate: { count: 0 } },

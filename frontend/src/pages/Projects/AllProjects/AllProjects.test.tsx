@@ -26,23 +26,17 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
       {
         __typename: "Projects",
         id: "1",
-        projectDetails: {
-          projectId: "1",
-          name: "project-1",
-          logoUrl: null,
-          shortDescription: "short description",
-          telegramLink: null,
-          hiring: false,
-          rank: 0,
-          visibility: "public",
-        },
+        name: "project-1",
+        key: "project-1",
+        logoUrl: null,
+        shortDescription: "short description",
+        moreInfoLink: null,
+        hiring: false,
+        rank: 0,
+        visibility: "public",
         budgetsAggregate: {
           aggregate: {
             count: 1,
-            sum: {
-              spentAmount: 1000,
-              initialAmount: 1000,
-            },
           },
         },
         contributors: [],
@@ -66,28 +60,22 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
             user: { id: "user-1", login: "project lead", avatarUrl: "avatar", githubUserId: 12345 },
           },
         ],
-        projectSponsors: [],
+        sponsors: [],
       },
       {
         __typename: "Projects",
         id: "2",
-        projectDetails: {
-          projectId: "2",
-          name: "project-2",
-          logoUrl: null,
-          shortDescription: "short description",
-          telegramLink: null,
-          hiring: false,
-          rank: 0,
-          visibility: "public",
-        },
+        name: "project-2",
+        key: "project-2",
+        logoUrl: null,
+        shortDescription: "short description",
+        moreInfoLink: null,
+        hiring: false,
+        rank: 0,
+        visibility: "public",
         budgetsAggregate: {
           aggregate: {
             count: 1,
-            sum: {
-              spentAmount: 999,
-              initialAmount: 1000,
-            },
           },
         },
         contributors: [],
@@ -111,28 +99,22 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
             user: { id: "user-1", login: "project lead", avatarUrl: "avatar", githubUserId: 12345 },
           },
         ],
-        projectSponsors: [],
+        sponsors: [],
       },
       {
         __typename: "Projects",
         id: "3",
-        projectDetails: {
-          projectId: "3",
-          name: "project-3",
-          logoUrl: null,
-          shortDescription: "short description",
-          telegramLink: null,
-          hiring: false,
-          rank: 0,
-          visibility: "public",
-        },
+        name: "project-3",
+        key: "project-3",
+        logoUrl: null,
+        shortDescription: "short description",
+        moreInfoLink: null,
+        hiring: false,
+        rank: 0,
+        visibility: "public",
         budgetsAggregate: {
           aggregate: {
             count: 1,
-            sum: {
-              spentAmount: 0,
-              initialAmount: 1000,
-            },
           },
         },
         contributors: [],
@@ -156,7 +138,7 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
             user: { id: "user-1", login: "project lead", avatarUrl: "avatar", githubUserId: 12345 },
           },
         ],
-        projectSponsors: [],
+        sponsors: [],
       },
     ],
   },
@@ -168,22 +150,19 @@ const projectWithNoBudget: ProjectCardFieldsFragment = {
   budgetsAggregate: {
     aggregate: {
       count: 0,
-      sum: { spentAmount: 0, initialAmount: 1000 },
     },
   },
   contributorsAggregate: { aggregate: { count: 0 } },
   contributors: [],
   githubReposAggregate: { aggregate: { count: 1 } },
-  projectDetails: {
-    projectId: "project-with-no-budget",
-    name: "No budget",
-    shortDescription: "This project has no budget yet",
-    telegramLink: null,
-    logoUrl: null,
-    hiring: false,
-    rank: 0,
-    visibility: "public",
-  },
+  name: "No budget",
+  key: "no-budget",
+  shortDescription: "This project has no budget yet",
+  moreInfoLink: null,
+  logoUrl: null,
+  hiring: false,
+  rank: 0,
+  visibility: "public",
   githubRepos: [
     {
       projectId: "project-with-no-budget",
@@ -202,7 +181,7 @@ const projectWithNoBudget: ProjectCardFieldsFragment = {
       user: { id: "user-1", login: "leader", avatarUrl: "avatar", githubUserId: 12345 },
     },
   ],
-  projectSponsors: [],
+  sponsors: [],
 };
 
 const projectWithNoRepo: ProjectCardFieldsFragment = {
@@ -211,22 +190,19 @@ const projectWithNoRepo: ProjectCardFieldsFragment = {
   budgetsAggregate: {
     aggregate: {
       count: 1,
-      sum: { spentAmount: 0, initialAmount: 1000 },
     },
   },
   contributorsAggregate: { aggregate: { count: 0 } },
   contributors: [],
   githubReposAggregate: { aggregate: { count: 0 } },
-  projectDetails: {
-    projectId: "project-with-no-repo",
-    name: "No budget",
-    shortDescription: "This project has no repo yet",
-    telegramLink: null,
-    logoUrl: null,
-    hiring: false,
-    rank: 0,
-    visibility: "public",
-  },
+  name: "No repo",
+  key: "no-repo",
+  shortDescription: "This project has no repo yet",
+  moreInfoLink: null,
+  logoUrl: null,
+  hiring: false,
+  rank: 0,
+  visibility: "public",
   githubRepos: [],
   pendingInvitations: [],
   projectLeads: [
@@ -236,7 +212,7 @@ const projectWithNoRepo: ProjectCardFieldsFragment = {
       user: { id: "user-1", login: "leader", avatarUrl: "avatar", githubUserId: 12345 },
     },
   ],
-  projectSponsors: [],
+  sponsors: [],
 };
 
 const projectWithNoLeader: ProjectCardFieldsFragment = {
@@ -245,22 +221,19 @@ const projectWithNoLeader: ProjectCardFieldsFragment = {
   budgetsAggregate: {
     aggregate: {
       count: 1,
-      sum: { spentAmount: 0, initialAmount: 1000 },
     },
   },
   contributorsAggregate: { aggregate: { count: 0 } },
   contributors: [],
   githubReposAggregate: { aggregate: { count: 1 } },
-  projectDetails: {
-    projectId: "project-with-no-leader",
-    name: "No budget",
-    shortDescription: "This project has no leader yet",
-    telegramLink: null,
-    logoUrl: null,
-    hiring: false,
-    rank: 0,
-    visibility: "public",
-  },
+  name: "No leader",
+  key: "no-leader",
+  shortDescription: "This project has no leader yet",
+  moreInfoLink: null,
+  logoUrl: null,
+  hiring: false,
+  rank: 0,
+  visibility: "public",
   githubRepos: [
     {
       projectId: "project-with-no-leader",
@@ -273,7 +246,7 @@ const projectWithNoLeader: ProjectCardFieldsFragment = {
   ],
   pendingInvitations: [],
   projectLeads: [],
-  projectSponsors: [],
+  sponsors: [],
 };
 
 const projectInvalidWithInvite: ProjectCardFieldsFragment = {
@@ -282,26 +255,23 @@ const projectInvalidWithInvite: ProjectCardFieldsFragment = {
   budgetsAggregate: {
     aggregate: {
       count: 0,
-      sum: { spentAmount: 0, initialAmount: 1000 },
     },
   },
   contributorsAggregate: { aggregate: { count: 0 } },
   contributors: [],
   githubReposAggregate: { aggregate: { count: 0 } },
-  projectDetails: {
-    projectId: "project-with-only-invite",
-    name: "Nothing but invited",
-    shortDescription: "This project has just been created and will only be visible to the invited leader",
-    telegramLink: null,
-    logoUrl: null,
-    hiring: false,
-    rank: 0,
-    visibility: "public",
-  },
+  name: "Nothing but invited",
+  key: "nothing-but-invited",
+  shortDescription: "This project has just been created and will only be visible to the invited leader",
+  moreInfoLink: null,
+  logoUrl: null,
+  hiring: false,
+  rank: 0,
+  visibility: "public",
   githubRepos: [],
   pendingInvitations: [{ id: "invitation-1", githubUserId: TEST_GITHUB_USER_ID }],
   projectLeads: [],
-  projectSponsors: [],
+  sponsors: [],
 };
 
 const projectWithNoLeaderAndInviteForWrongUser: ProjectCardFieldsFragment = {
@@ -310,22 +280,19 @@ const projectWithNoLeaderAndInviteForWrongUser: ProjectCardFieldsFragment = {
   budgetsAggregate: {
     aggregate: {
       count: 1,
-      sum: { spentAmount: 0, initialAmount: 1000 },
     },
   },
   contributorsAggregate: { aggregate: { count: 0 } },
   contributors: [],
   githubReposAggregate: { aggregate: { count: 1 } },
-  projectDetails: {
-    projectId: "project-with-no-leader",
-    name: "No leader but invite",
-    shortDescription: "This project has no leader yet",
-    telegramLink: null,
-    logoUrl: null,
-    hiring: false,
-    rank: 0,
-    visibility: "public",
-  },
+  name: "No leader but invite for another one",
+  key: "no-leader-but-invite-for-another-one",
+  shortDescription: "This project has no leader yet",
+  moreInfoLink: null,
+  logoUrl: null,
+  hiring: false,
+  rank: 0,
+  visibility: "public",
   githubRepos: [
     {
       projectId: "project-with-no-leader-and-invite-for-wrong-user",
@@ -338,7 +305,7 @@ const projectWithNoLeaderAndInviteForWrongUser: ProjectCardFieldsFragment = {
   ],
   pendingInvitations: [{ id: "invitation-1", githubUserId: 654321 }],
   projectLeads: [],
-  projectSponsors: [],
+  sponsors: [],
 };
 
 const projectWithNoLeaderAndInvite: ProjectCardFieldsFragment = {
@@ -350,19 +317,16 @@ const projectWithNoLeaderAndInvite: ProjectCardFieldsFragment = {
   budgetsAggregate: {
     aggregate: {
       count: 1,
-      sum: { spentAmount: 0, initialAmount: 1000 },
     },
   },
-  projectDetails: {
-    projectId: "project-with-no-leader",
-    name: "No leader but invite",
-    shortDescription: "This project has no leader yet",
-    telegramLink: null,
-    logoUrl: null,
-    hiring: false,
-    rank: 0,
-    visibility: "public",
-  },
+  name: "No leader but invite",
+  key: "no-leader-but-invite",
+  shortDescription: "This project has no leader yet",
+  moreInfoLink: null,
+  logoUrl: null,
+  hiring: false,
+  rank: 0,
+  visibility: "public",
   githubRepos: [
     {
       projectId: "project-with-no-leader-and-invite",
@@ -375,7 +339,7 @@ const projectWithNoLeaderAndInvite: ProjectCardFieldsFragment = {
   ],
   pendingInvitations: [{ id: "invitation-1", githubUserId: TEST_GITHUB_USER_ID }],
   projectLeads: [],
-  projectSponsors: [],
+  sponsors: [],
 };
 
 const buildGraphQlMocks = (projectsQueryResult: { data: GetProjectsQueryResult["data"] }) => [

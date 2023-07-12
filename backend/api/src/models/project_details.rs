@@ -1,5 +1,5 @@
 use derive_setters::Setters;
-use diesel::Identifiable;
+use diesel::{pg::Pg, Identifiable, Queryable};
 use domain::ProjectId;
 use infrastructure::database::{enums::ProjectVisibility, schema::project_details};
 use serde::{Deserialize, Serialize};
@@ -11,7 +11,6 @@ use serde::{Deserialize, Serialize};
 	Insertable,
 	Serialize,
 	Deserialize,
-	Queryable,
 	AsChangeset,
 	Identifiable,
 	PartialEq,
@@ -37,5 +36,60 @@ impl Identifiable for ProjectDetails {
 
 	fn id(self) -> Self::Id {
 		self.project_id
+	}
+}
+
+impl<ST> Queryable<ST, Pg> for ProjectDetails
+where
+	(
+		ProjectId,
+		Option<String>,
+		Option<String>,
+		String,
+		String,
+		String,
+		bool,
+		i32,
+		ProjectVisibility,
+		String,
+	): Queryable<ST, Pg>,
+{
+	type Row = <(
+		ProjectId,
+		Option<String>,
+		Option<String>,
+		String,
+		String,
+		String,
+		bool,
+		i32,
+		ProjectVisibility,
+		String,
+	) as Queryable<ST, Pg>>::Row;
+
+	fn build(row: Self::Row) -> diesel::deserialize::Result<Self> {
+		let (
+			project_id,
+			telegram_link,
+			logo_url,
+			name,
+			short_description,
+			long_description,
+			hiring,
+			rank,
+			visibility,
+			_,
+		) = Queryable::build(row)?;
+		Ok(Self {
+			project_id,
+			telegram_link,
+			logo_url,
+			name,
+			short_description,
+			long_description,
+			hiring,
+			rank,
+			visibility,
+		})
 	}
 }

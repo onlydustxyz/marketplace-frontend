@@ -45,8 +45,8 @@ export default function useApplications(projectId: string) {
   });
 
   return {
-    applications: data?.projectsByPk?.applications,
-    alreadyApplied: data?.projectsByPk?.applications.some(a => a.applicantId === user?.id),
+    applications: data?.projects[0]?.applications,
+    alreadyApplied: data?.projects[0]?.applications.some(a => a.applicantId === user?.id),
     applyToProject,
   };
 }

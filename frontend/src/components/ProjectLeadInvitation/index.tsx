@@ -20,8 +20,8 @@ export default function ProjectLeadInvitation({ projectId }: ProjectLeadInvitati
     ...contextWithCacheHeaders,
   });
 
-  const invitationId = data?.projectsByPk?.pendingInvitations.find(i => i.githubUserId === githubUserId)?.id;
-  const projectName = data?.projectsByPk?.projectDetails?.name;
+  const invitationId = data?.projects[0]?.pendingInvitations.find(i => i.githubUserId === githubUserId)?.id;
+  const projectName = data?.projects[0]?.name;
 
   const [acceptInvitation] = useAcceptProjectLeaderInvitationMutation({
     context: { graphqlErrorDisplay: "toaster" },

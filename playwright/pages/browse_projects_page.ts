@@ -74,7 +74,7 @@ export class BrowseProjectsPage {
   }
 
   getProjectLocator(project: Project) {
-    return this.page.locator(`a[href='/projects/${project.id}']`);
+    return this.page.locator(`a[href='/p/${project.key}']`);
   }
 
   getFilterLocator(filter: string) {

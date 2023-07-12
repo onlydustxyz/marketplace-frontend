@@ -54,7 +54,7 @@ export default function AllProjects({ sorting }: Props) {
   return (
     <div className="flex grow flex-col gap-5">
       {projects && projects.length > 0 ? (
-        projects.map(project => <ProjectCard key={project.id} {...project} />)
+        projects.map(project => <ProjectCard key={project.id} project={project} />)
       ) : (
         <AllProjectsFallback clearFilters={clearFilters} />
       )}
@@ -70,7 +70,7 @@ const buildQueryFilters = (technologies: string[], sponsors: string[]): Projects
   }
 
   if (sponsors.length) {
-    filters = merge(filters, { projectSponsors: { sponsor: { name: { _in: sponsors } } } });
+    filters = merge(filters, { sponsors: { sponsor: { name: { _in: sponsors } } } });
   }
 
   return filters;
@@ -81,13 +81,10 @@ export const buildQuerySorting = (sorting: Sorting): ProjectsOrderBy[] => {
 
   switch (sorting) {
     case Sorting.Trending:
-      return [
-        merge(orderBy, { projectDetails: { rank: OrderBy.Desc } }),
-        ...buildQuerySorting(Sorting.ContributorsCount),
-      ];
+      return [merge(orderBy, { rank: OrderBy.Desc }), ...buildQuerySorting(Sorting.ContributorsCount)];
 
     case Sorting.ProjectName:
-      return [merge(orderBy, { projectDetails: { name: OrderBy.Asc } })];
+      return [merge(orderBy, { name: OrderBy.Asc })];
 
     case Sorting.ContributorsCount:
       return [

@@ -1,8 +1,9 @@
 import atomLogo from "assets/img/atom.png";
+import { Maybe } from "src/__generated/graphql";
 import { useT } from "talkr";
 
 type Props = {
-  projectName?: string;
+  projectName?: Maybe<string>;
 };
 
 export default function ContributorsTableFallback({ projectName }: Props) {

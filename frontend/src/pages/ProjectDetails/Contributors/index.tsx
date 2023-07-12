@@ -12,23 +12,23 @@ import ProjectLeadInvitation from "src/components/ProjectLeadInvitation";
 export default function Contributors() {
   const { T } = useIntl();
   const { ledProjectIds } = useAuth();
-  const { projectId } = useOutletContext<{ projectId: string }>();
+  const { projectId, projectKey } = useOutletContext<{ projectId: string; projectKey: string }>();
 
   const isProjectLeader = ledProjectIds.some(element => element === projectId);
 
   const { contributors } = useProjectContributors(projectId);
   const { data: projectDetails } = useGetProjectDetailsQuery({ variables: { projectId }, ...contextWithCacheHeaders });
 
-  const remainingBudget = projectDetails?.projectsByPk?.budgets.at(0)?.remainingAmount;
+  const remainingBudget = projectDetails?.projects[0]?.budgets.at(0)?.remainingAmount;
 
   return (
     <>
       <Title>{T("project.details.contributors.title")}</Title>
       <ProjectLeadInvitation projectId={projectId} />
       {contributors?.length > 0 ? (
-        <ContributorsTable {...{ contributors, isProjectLeader, remainingBudget, projectId }} />
+        <ContributorsTable {...{ contributors, isProjectLeader, remainingBudget, projectId, projectKey }} />
       ) : (
-        <ContributorsTableFallback projectName={projectDetails?.projectsByPk?.projectDetails?.name} />
+        <ContributorsTableFallback projectName={projectDetails?.projects[0]?.name} />
       )}
     </>
   );

@@ -336,6 +336,9 @@
   },
   "profile": {
     "editButton": "Edit profile",
+    "error": {
+      "notFound": "This user does not exist"
+    },
     "joinedAt": "Joined in __joinedAt__",
     "firstContributedAt": "Contributed first on __firstContributedAt__",
     "valueCopiedToClipboard": "__valueName__ copied to clipboard",
@@ -558,11 +561,10 @@
         "send": "Send your first one!"
       }
     },
-    "fundedBy": {
-      "zero": "",
-      "one": "",
-      "many": "Funded by __topSponsorsString__"
+    "error": {
+      "notFound": "This project does not exist"
     },
+    "fundedBy": "Funded by __topSponsorsString__",
     "sponsorsCount": "__count__ sponsors",
     "ledBy": {
       "many": "__count__ project leads",

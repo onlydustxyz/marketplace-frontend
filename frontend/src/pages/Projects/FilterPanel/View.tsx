@@ -28,7 +28,7 @@ export default function View({
     clear: clearProjectFilter,
     setOwnership: setProjectOwnership,
     setTechnologies: setProjectTechnologies,
-    setSponsors: setProjectSponsors,
+    setSponsors: setsponsors,
   } = useProjectFilter();
 
   return (
@@ -77,7 +77,7 @@ export default function View({
         icon={FilterDropDownIcon.Sponsors}
         options={availableSponsors}
         value={projectFilter.sponsors}
-        setValue={setProjectSponsors}
+        setValue={setsponsors}
         dataTestId="sponsors-filter-dropdown"
       />
     </Card>

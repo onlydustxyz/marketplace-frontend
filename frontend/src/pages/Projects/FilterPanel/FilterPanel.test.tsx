@@ -12,6 +12,7 @@ expect.extend(matchers);
 const projects1: GetAllFilterOptionsQuery["projects"][number] = {
   __typename: "Projects",
   id: "project-1",
+  key: "project-1",
   githubRepos: [
     {
       __typename: "ProjectGithubRepos",
@@ -24,18 +25,19 @@ const projects1: GetAllFilterOptionsQuery["projects"][number] = {
       },
     },
   ],
-  projectSponsors: [{ sponsor: { id: "sponsor-1", name: "Sponsor 1" } }],
+  sponsors: [{ sponsor: { id: "sponsor-1", name: "Sponsor 1" } }],
   budgetsAggregate: { aggregate: { count: 1 } },
   projectLeads: [{ __typename: "ProjectLeads", userId: "user-1" }],
   pendingInvitations: [],
   contributors: [],
   githubReposAggregate: { aggregate: { count: 1 } },
-  projectDetails: { visibility: "public", projectId: "project-1" },
+  visibility: "public",
 };
 
 const projects2: GetAllFilterOptionsQuery["projects"][number] = {
   __typename: "Projects",
   id: "project-2",
+  key: "project-2",
   githubRepos: [
     {
       __typename: "ProjectGithubRepos",
@@ -48,21 +50,19 @@ const projects2: GetAllFilterOptionsQuery["projects"][number] = {
       },
     },
   ],
-  projectSponsors: [
-    { sponsor: { id: "sponsor-1", name: "Sponsor 1" } },
-    { sponsor: { id: "sponsor-2", name: "Sponsor 2" } },
-  ],
+  sponsors: [{ sponsor: { id: "sponsor-1", name: "Sponsor 1" } }, { sponsor: { id: "sponsor-2", name: "Sponsor 2" } }],
   budgetsAggregate: { aggregate: { count: 1 } },
   projectLeads: [{ __typename: "ProjectLeads", userId: "user-1" }],
   pendingInvitations: [],
   contributors: [],
   githubReposAggregate: { aggregate: { count: 1 } },
-  projectDetails: { visibility: "public", projectId: "project-2" },
+  visibility: "public",
 };
 
 const projects3: GetAllFilterOptionsQuery["projects"][number] = {
   __typename: "Projects",
   id: "project-3",
+  key: "project-3",
   githubRepos: [
     {
       __typename: "ProjectGithubRepos",
@@ -75,18 +75,19 @@ const projects3: GetAllFilterOptionsQuery["projects"][number] = {
       },
     },
   ],
-  projectSponsors: [],
+  sponsors: [],
   budgetsAggregate: { aggregate: { count: 1 } },
   projectLeads: [{ __typename: "ProjectLeads", userId: "user-1" }],
   pendingInvitations: [],
   contributors: [],
   githubReposAggregate: { aggregate: { count: 1 } },
-  projectDetails: { visibility: "public", projectId: "project-3" },
+  visibility: "public",
 };
 
 const projects4: GetAllFilterOptionsQuery["projects"][number] = {
   __typename: "Projects",
   id: "project-4",
+  key: "project-4",
   githubRepos: [
     {
       __typename: "ProjectGithubRepos",
@@ -100,18 +101,19 @@ const projects4: GetAllFilterOptionsQuery["projects"][number] = {
       },
     },
   ],
-  projectSponsors: [],
+  sponsors: [],
   budgetsAggregate: { aggregate: { count: 1 } },
   projectLeads: [{ __typename: "ProjectLeads", userId: "user-1" }],
   pendingInvitations: [],
   contributors: [],
   githubReposAggregate: { aggregate: { count: 1 } },
-  projectDetails: { visibility: "public", projectId: "project-4" },
+  visibility: "public",
 };
 
 const projects5: GetAllFilterOptionsQuery["projects"][number] = {
   __typename: "Projects",
   id: "project-5",
+  key: "project-5",
   githubRepos: [
     {
       __typename: "ProjectGithubRepos",
@@ -125,12 +127,12 @@ const projects5: GetAllFilterOptionsQuery["projects"][number] = {
     },
   ],
   budgetsAggregate: { aggregate: { count: 0 } },
-  projectSponsors: [{ sponsor: { id: "sponsor-3", name: "Sponsor 3" } }],
+  sponsors: [{ sponsor: { id: "sponsor-3", name: "Sponsor 3" } }],
   projectLeads: [{ __typename: "ProjectLeads", userId: "user-1" }],
   pendingInvitations: [],
   contributors: [],
   githubReposAggregate: { aggregate: { count: 1 } },
-  projectDetails: { visibility: "public", projectId: "project-5" },
+  visibility: "public",
 };
 
 const graphQlMocks = [
