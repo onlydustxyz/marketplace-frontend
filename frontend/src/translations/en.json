@@ -178,7 +178,7 @@
           },
           "placeholder": "Search by Github handle"
         },
-        "title": "Recipient",
+        "title": "Contributor",
         "unpaidMergedPrCountTooltip": "Unpaid merged pull requests"
       },
       "days": "days",
