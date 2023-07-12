@@ -59,7 +59,7 @@ export default function SearchBar({ search, setSearch }: Props) {
               onBlur={() => setInputFocus(false)}
             />
           </Hotkeys>
-          <button>
+          <button data-testid="clear-searchbar-button">
             <CloseLine
               className={classNames(
                 "text-3xl",

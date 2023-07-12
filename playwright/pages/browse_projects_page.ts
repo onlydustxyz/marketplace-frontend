@@ -1,11 +1,15 @@
-import { expect, Page } from "@playwright/test";
+import { expect, Locator, Page } from "@playwright/test";
 import { Project } from "../types";
 
 export class BrowseProjectsPage {
-  readonly page: Page;
+  private readonly page: Page;
+  private readonly searchBar: Locator;
+  private readonly clearSearchBarButton: Locator;
 
   constructor(page: Page) {
     this.page = page;
+    this.searchBar = this.page.getByPlaceholder("Search project");
+    this.clearSearchBarButton = this.page.getByTestId("clear-searchbar-button");
   }
 
   async goto() {
@@ -69,8 +73,23 @@ export class BrowseProjectsPage {
     await this.page.getByRole("option", { name: criterion }).click();
   }
 
+  async sortByDefault() {
+    await this.getSortByLocator().click();
+    await this.page.getByRole("option", { name: "Trending" }).click();
+  }
+
   async clearFilters() {
     await this.page.getByText("Clear all", { exact: true }).click();
+  }
+
+  async search(searchQuery: string) {
+    await this.searchBar.type(searchQuery);
+  }
+
+  async clearSearch() {
+    await this.clearSearchBarButton.click();
+    await expect(this.clearSearchBarButton).not.toBeVisible();
+    await expect(this.searchBar).toBeEmpty();
   }
 
   getProjectLocator(project: Project) {
