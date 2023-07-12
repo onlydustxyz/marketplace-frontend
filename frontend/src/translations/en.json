@@ -70,7 +70,7 @@
   },
   "githubIssue": {
     "tooltip": {
-      "add": "Add work item",
+      "add": "Add contribution",
       "ignore": "Ignore",
       "unignore": "Stop ignoring"
     },
@@ -163,7 +163,7 @@
   },
   "reward": {
     "form": {
-      "confirm": "Confirm reward",
+      "confirm": "Reward contributor",
       "contributor": {
         "needsToSignup": {
           "details": "You can still reward them. They'll need to create an account and sync it with their GitHub handle to claim it.",
@@ -183,10 +183,10 @@
       },
       "days": "days",
       "missingContributor": "Pick a contributor to get started",
-      "missingWorkItem": "Add work items to be paid",
+      "missingContribution": "Select contributions",
       "estimate": "Estimate time spent",
-      "workItems": {
-        "addWorkItem": "Add work item",
+      "contributions": {
+        "addContribution": "Add contribution",
         "add": "Add",
         "clear": "Clear selection",
         "showIgnored": "Show ignored",
@@ -232,7 +232,7 @@
             "submitButton": "Create and add issue",
             "submitButtonShort": "Create issue"
           },
-          "success": "Issue created and item added",
+          "success": "Issue created and contribution added",
           "tab": "Other work",
           "tabShort": "Other",
           "title": "Describe the work",
@@ -249,16 +249,16 @@
           "toggleDescriptionPreview": "Toggle preview"
         },
         "subTitle": "Add contributions that should be part of this reward",
-        "title": "Work items",
+        "title": "Contributions",
         "emptyState": {
           "title": "Nothing to show",
-          "subtitle": "Add work items using their links"
+          "subtitle": "Add contributions using their links"
         }
       },
       "leftToSpend": "Left to spend",
       "remainingBudget": "Remaining budget",
       "cancelled": "Reward cancelled",
-      "sent": "Reward successfully sent",
+      "sent": "Reward successfully granted",
       "steps": {
         "days": {
           "many": "days",
@@ -290,7 +290,7 @@
     },
     "table": {
       "amount": "Amount",
-      "contribution": "Contribution",
+      "contributor": "Contributor",
       "date": "Date",
       "githubLink": "#__pullRequestNumber__ · Github",
       "paymentRequest": {
@@ -328,7 +328,7 @@
         "title": "Reward #__id__",
         "to": "to",
         "you": "(you)",
-        "workItems": "Included in reward"
+        "contributions": "Included in reward"
       },
       "status": "Status"
     },

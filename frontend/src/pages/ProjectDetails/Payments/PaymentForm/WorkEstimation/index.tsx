@@ -5,7 +5,7 @@ interface Props {
   onChange: (amountToPay: number, hoursWorked: number) => void;
   budget: { initialAmount: number; remainingAmount: number };
   missingContributor: boolean;
-  missingWorkItem: boolean;
+  missingContribution: boolean;
   requestNewPaymentMutationLoading: boolean;
 }
 
@@ -13,7 +13,7 @@ export default function WorkEstimation({
   onChange,
   budget,
   missingContributor,
-  missingWorkItem,
+  missingContribution,
   requestNewPaymentMutationLoading,
 }: Props) {
   const { amountToPay, stepNumber, steps, tryDecreaseNumberOfDays, tryIncreaseNumberOfDays, canDecrease, canIncrease } =
@@ -31,7 +31,7 @@ export default function WorkEstimation({
         tryIncreaseNumberOfDays,
         budget,
         missingContributor,
-        missingWorkItem,
+        missingContribution,
         requestNewPaymentMutationLoading,
       }}
     />

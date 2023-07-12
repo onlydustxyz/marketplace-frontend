@@ -115,13 +115,13 @@ const View: React.FC<Props> = ({
               {contributor && (
                 <div className="pt-8 xl:pt-12">
                   <SectionTitle
-                    title={T("reward.form.workItems.title")}
+                    title={T("reward.form.contributions.title")}
                     rightAction={
                       <div className="flex flex-row items-center gap-2">
                         {workItems.length > 0 && (
                           <Button type={ButtonType.Ternary} size={ButtonSize.Sm} onClick={() => clearWorkItems()}>
                             <CloseLine />
-                            {T("reward.form.workItems.clear")}
+                            {T("reward.form.contributions.clear")}
                           </Button>
                         )}
                         <Button
@@ -136,7 +136,9 @@ const View: React.FC<Props> = ({
                     }
                   />
                   <div className="mx-4 flex flex-col gap-3 pt-4" data-testid="added-work-items">
-                    <div className="text-sm text-greyscale-300 xl:text-base">{T("reward.form.workItems.subTitle")}</div>
+                    <div className="text-sm text-greyscale-300 xl:text-base">
+                      {T("reward.form.contributions.subTitle")}
+                    </div>
                     {workItems.map(workItem => (
                       <GithubIssue
                         key={workItem.id}
@@ -149,7 +151,7 @@ const View: React.FC<Props> = ({
                   <div onClick={() => setSidePanelOpen(true)} data-testid="add-work-item-btn" className="mx-4 pt-8">
                     <Button size={ButtonSize.Md} type={ButtonType.Secondary} width={Width.Full}>
                       <Add />
-                      {T("reward.form.workItems.addWorkItem")}
+                      {T("reward.form.contributions.addContribution")}
                     </Button>
                   </div>
                 </div>
@@ -173,7 +175,7 @@ const View: React.FC<Props> = ({
             onChange={onWorkEstimationChange}
             budget={budget}
             missingContributor={!contributor}
-            missingWorkItem={workItems.length === 0}
+            missingContribution={workItems.length === 0}
             requestNewPaymentMutationLoading={requestNewPaymentMutationLoading}
           />
         </div>

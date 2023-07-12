@@ -54,7 +54,7 @@ export default function View({
 
   const onIssueAdded = (item: WorkItem) => {
     onWorkItemAdded(item);
-    showToaster(T(`reward.form.workItems.${tabName}.addedToaster`));
+    showToaster(T(`reward.form.contributions.${tabName}.addedToaster`));
   };
 
   useEffect(() => {
@@ -82,7 +82,7 @@ export default function View({
               enabled={addOtherIssueEnabled}
               setEnabled={setAddOtherIssueEnabled}
               icon={<Link />}
-              label={T(`reward.form.workItems.${tabName}.addOther.toggle`)}
+              label={T(`reward.form.contributions.${tabName}.addOther.toggle`)}
               testId={`add-other-${tabName}-toggle`}
             />
             {issues.length > 0 && (
@@ -90,7 +90,7 @@ export default function View({
                 enabled={searchEnabled}
                 setEnabled={setSearchEnabled}
                 icon={<SearchLine />}
-                label={T(`reward.form.workItems.${tabName}.search`)}
+                label={T(`reward.form.contributions.${tabName}.search`)}
                 testId="search-toggle"
               />
             )}
@@ -98,7 +98,7 @@ export default function View({
           {some(issues, { ignored: true }) && (
             <div className="flex flex-row items-center gap-2 font-walsheim text-sm font-normal text-greyscale-50">
               <EyeOffLine />
-              {T("reward.form.workItems.showIgnored")}
+              {T("reward.form.contributions.showIgnored")}
               <FormToggle name={showIgnoredItemsName} control={control} />
             </div>
           )}
@@ -107,7 +107,7 @@ export default function View({
         {searchEnabled && (
           <FormInput
             name={`search-${tabName}`}
-            placeholder={T(`reward.form.workItems.${tabName}.searchPlaceholder`)}
+            placeholder={T(`reward.form.contributions.${tabName}.searchPlaceholder`)}
             withMargin={false}
             inputClassName="pl-10"
             prefixComponent={

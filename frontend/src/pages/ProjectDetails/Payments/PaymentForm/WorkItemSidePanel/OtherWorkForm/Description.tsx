@@ -23,9 +23,9 @@ export default function Description({ description, setDescription }: Props) {
   return (
     <label htmlFor={name} className={classNames("flex flex-grow flex-col gap-2 font-walsheim text-greyscale-300")}>
       <div className="flex items-center justify-between text-sm font-medium">
-        <div className="tracking-tight">{T("reward.form.workItems.other.inputs.description")}</div>
+        <div className="tracking-tight">{T("reward.form.contributions.other.inputs.description")}</div>
         <FormToggle
-          label={T("reward.form.workItems.other.toggleDescriptionPreview")}
+          label={T("reward.form.contributions.other.toggleDescriptionPreview")}
           name={displayPreviewName}
           control={control}
         />
@@ -37,7 +37,7 @@ export default function Description({ description, setDescription }: Props) {
       ) : (
         <Input
           name="other-work-description"
-          placeholder={T("reward.form.workItems.other.issue.descriptionPlaceholder")}
+          placeholder={T("reward.form.contributions.other.issue.descriptionPlaceholder")}
           value={description}
           onChange={({ target }) => setDescription(target.value)}
           as="textarea"

@@ -24,7 +24,7 @@ export default function Headers({ sorting, applySorting }: Props) {
       </HeaderCell>
       <HeaderCell width={HeaderCellWidth.Third} onClick={() => applySorting(Field.Contribution, true)} horizontalMargin>
         <FolderLine className="p-px font-normal" />
-        <span>{T("reward.table.contribution")}</span>
+        <span>{T("reward.table.contributor")}</span>
         <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.Contribution} />
       </HeaderCell>
       <HeaderCell width={HeaderCellWidth.Sixth} onClick={() => applySorting(Field.Amount, false)} horizontalMargin>
