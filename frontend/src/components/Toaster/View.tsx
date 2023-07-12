@@ -25,20 +25,16 @@ export default function View({ message, visible, isError }: Props) {
       <div data-testid="toaster-message" className="overflow-hidden rounded-2xl p-0.5">
         <div
           className={classNames(
-            "relative flex items-center justify-center rounded-2xl before:absolute before:-z-10 before:h-[calc(100dvh)] before:w-screen",
+            "relative flex items-center justify-center rounded-[15px] before:absolute before:-z-10 before:h-[calc(100dvh)] before:w-screen",
             {
               "bg-orange-900 before:bg-orange-500": isError,
               "bg-spaceBlue-900 before:animate-spin-invert-slow before:bg-multi-color-gradient": !isError,
             }
           )}
         >
-          <div className="flex w-fit max-w-xl items-center gap-2 rounded-2xl bg-white/4 bg-noise-medium p-6 text-center">
-            {isError ? (
-              <ErrorWarningLine className="text-2xl font-semibold text-orange-500" />
-            ) : (
-              <CheckLine className="text-2xl font-semibold" />
-            )}
-            <span className="font-walsheim text-lg font-semibold">{message}</span>
+          <div className="flex w-fit max-w-xl items-center gap-2 rounded-[15px] bg-white/4 bg-noise-medium p-4">
+            {isError ? <ErrorWarningLine className="text-3xl text-orange-500" /> : <CheckLine className="text-3xl" />}
+            <span className="font-walsheim text-base">{message}</span>
           </div>
         </div>
       </div>
