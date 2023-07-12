@@ -1,6 +1,6 @@
 import { useIntl } from "src/hooks/useIntl";
 import OverviewPanel from "./OverviewPanel";
-import { useLocation, useOutletContext } from "react-router-dom";
+import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import { GetProjectOverviewDetailsDocument, GetProjectOverviewDetailsQuery } from "src/__generated/graphql";
 import Card from "src/components/Card";
 import GithubRepoDetails from "./GithubRepoDetails";
@@ -28,8 +28,7 @@ import useProjectVisibility from "src/hooks/useProjectVisibility";
 import ProjectLeadInvitation from "src/components/ProjectLeadInvitation";
 import { useSuspenseQuery_experimental } from "@apollo/client";
 import { useEffect } from "react";
-import { viewportConfig } from "src/config";
-import { useMediaQuery } from "usehooks-ts";
+import { ProjectPaymentsRoutePaths, ProjectRoutePaths } from "src/App";
 
 type OutletContext = {
   projectId: string;
@@ -37,11 +36,11 @@ type OutletContext = {
 
 export default function Overview() {
   const { T } = useIntl();
-  const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
   const { projectId } = useOutletContext<OutletContext>();
   const { isLoggedIn, githubUserId } = useAuth();
   const { ledProjectIds } = useAuth();
   const { lastVisitedProjectId } = useSession();
+  const navigate = useNavigate();
   const location = useLocation();
   const dispatchSession = useSessionDispatch();
 
@@ -76,7 +75,17 @@ export default function Overview() {
 
   return (
     <>
-      <Title>{isXl ? T("project.details.overview.title") : T("project.details.overview.titleShort")}</Title>
+      <Title>
+        <div className="flex flex-row items-center justify-between">
+          {T("project.details.overview.title")}
+          <Button
+            size={ButtonSize.Sm}
+            onClick={() => navigate(`${ProjectRoutePaths.Payments}/${ProjectPaymentsRoutePaths.New}`)}
+          >
+            {T("project.rewardContributorButton")}
+          </Button>
+        </div>
+      </Title>
       <ProjectLeadInvitation projectId={projectId} />
       <div className="flex flex-col-reverse gap-6 md:flex-row">
         <div className="flex w-full flex-col gap-4">
