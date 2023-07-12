@@ -68,7 +68,7 @@ export default function ProjectsSidebar({ projectId }: Props) {
     },
     payments: {
       label: T("project.details.rewards.title"),
-      path: ProjectRoutePaths.Payments,
+      path: ProjectRoutePaths.Rewards,
     },
   };
 

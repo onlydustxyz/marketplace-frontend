@@ -28,7 +28,7 @@ export enum RoutePaths {
   Projects = "/",
   Login = "/login",
   ProjectDetails = "/p/:projectKey",
-  Payments = "/payments",
+  Rewards = "/rewards",
   CatchAll = "*",
   Error = "/error",
   Impersonation = "/impersonate/:userId",
@@ -40,10 +40,10 @@ export enum RoutePaths {
 export enum ProjectRoutePaths {
   Overview = "",
   Contributors = "contributors",
-  Payments = "payments",
+  Rewards = "rewards",
 }
 
-export enum ProjectPaymentsRoutePaths {
+export enum ProjectRewardsRoutePaths {
   List = "",
   New = "new",
 }
@@ -66,7 +66,7 @@ function App() {
       element: <ProjectDetailsContributors />,
     },
     {
-      path: ProjectRoutePaths.Payments,
+      path: ProjectRoutePaths.Rewards,
       element: (
         <ProtectedRoute requiredRole={CustomUserRole.ProjectLead} redirectTo={RoutePaths.ProjectDetails}>
           <ProjectDetailsPayments />
@@ -78,7 +78,7 @@ function App() {
           element: <ProjectDetailsPaymentsList />,
         },
         {
-          path: ProjectPaymentsRoutePaths.New,
+          path: ProjectRewardsRoutePaths.New,
           element: <ProjectDetailsPaymentForm />,
         },
       ],
@@ -110,7 +110,7 @@ function App() {
           element: <Onboarding />,
         },
         {
-          path: RoutePaths.Payments,
+          path: RoutePaths.Rewards,
           element: (
             <ProtectedRoute requiredRole={HasuraUserRole.RegisteredUser}>
               <Payments />

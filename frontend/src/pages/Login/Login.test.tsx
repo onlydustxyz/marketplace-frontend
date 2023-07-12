@@ -196,7 +196,7 @@ const renderWithRoutes = (route: string, mocks?: MockedResponse[]) =>
     <Routes>
       <Route path={RoutePaths.Login} element={<Login />} />
       <Route path={RoutePaths.Projects} element={<div>Projects</div>} />
-      <Route path={RoutePaths.Payments} element={<div>Payments</div>} />
+      <Route path={RoutePaths.Rewards} element={<div>Payments</div>} />
       <Route path={RoutePaths.ProjectDetails} element={<div>ProjectDetails</div>} />
     </Routes>,
     {

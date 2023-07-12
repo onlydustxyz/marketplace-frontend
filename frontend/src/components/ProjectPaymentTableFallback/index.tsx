@@ -1,6 +1,6 @@
 import paymentLogo from "assets/img/payment.png";
 import { Link } from "react-router-dom";
-import { ProjectPaymentsRoutePaths } from "src/App";
+import { ProjectRewardsRoutePaths } from "src/App";
 import CurrencyLine from "src/icons/CurrencyLine";
 import { useT } from "talkr";
 import Button, { ButtonSize, Width } from "src/components/Button";
@@ -33,7 +33,7 @@ const ProjectPaymentTableFallback = ({ disabled = false }: ProjectPaymentTableFa
           </Button>
         </div>
       ) : (
-        <Link to={ProjectPaymentsRoutePaths.New}>
+        <Link to={ProjectRewardsRoutePaths.New}>
           <Button width={Width.Full} size={ButtonSize.Lg}>
             <CurrencyLine />
             <span>{T("project.details.tableFallback.newReward")}</span>

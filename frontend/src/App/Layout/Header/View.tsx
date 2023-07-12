@@ -19,7 +19,7 @@ import { useMediaQuery } from "usehooks-ts";
 interface HeaderViewProps {
   menuItems: {
     [RoutePaths.Projects]?: string;
-    [RoutePaths.Payments]?: string;
+    [RoutePaths.Rewards]?: string;
   };
   selectedMenuItem: string;
   isLoggedIn: boolean;
@@ -67,9 +67,9 @@ export default function HeaderView({
                   {menuItems[RoutePaths.Projects]}
                 </MenuItem>
               )}
-              {menuItems[RoutePaths.Payments] && (
-                <MenuItem path={selectedMenuItem} link={RoutePaths.Payments}>
-                  {menuItems[RoutePaths.Payments]}
+              {menuItems[RoutePaths.Rewards] && (
+                <MenuItem path={selectedMenuItem} link={RoutePaths.Rewards}>
+                  {menuItems[RoutePaths.Rewards]}
                 </MenuItem>
               )}
               <div className="flex flex-1 justify-center">

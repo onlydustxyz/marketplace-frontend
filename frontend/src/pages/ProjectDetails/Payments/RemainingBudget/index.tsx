@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ProjectPaymentsRoutePaths } from "src/App";
+import { ProjectRewardsRoutePaths } from "src/App";
 import Button, { ButtonSize, Width } from "src/components/Button";
 import Card from "src/components/Card";
 import CurrencyLine from "src/icons/CurrencyLine";
@@ -30,7 +30,7 @@ export default function RemainingBudget({ budget, disabled }: Props) {
           <span>{T("project.details.remainingBudget.leftToSpend")}</span>
         </div>
         {!disabled && (
-          <Link to={ProjectPaymentsRoutePaths.New} className="pt-6">
+          <Link to={ProjectRewardsRoutePaths.New} className="pt-6">
             <Button width={Width.Full} size={ButtonSize.LgLowHeight}>
               <CurrencyLine />
               <span>{T("project.details.remainingBudget.newReward")}</span>

@@ -31,7 +31,7 @@ const PaymentForm: React.FC = () => {
     onCompleted: () => {
       notify(projectId);
       showToaster(T("reward.form.sent"));
-      navigate(generatePath(RoutePaths.ProjectDetails, { projectKey }) + "/" + ProjectRoutePaths.Payments);
+      navigate(generatePath(RoutePaths.ProjectDetails, { projectKey }) + "/" + ProjectRoutePaths.Rewards);
     },
   });
 

@@ -78,7 +78,7 @@ export default function ViewMobile({
                     <Folder3Line className="text-xl" /> {T("navbar.projects")}
                   </NavLink>
                   <NavLink
-                    to={RoutePaths.Payments}
+                    to={RoutePaths.Rewards}
                     onClick={() => setPanelOpen(false)}
                     className={({ isActive }) =>
                       classNames("flex items-center gap-3 rounded-xl p-4", { "bg-white/8": isActive })

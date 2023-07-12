@@ -34,7 +34,7 @@ export default function Header() {
     <View
       menuItems={{
         [RoutePaths.Projects]: projectsMenuItem,
-        [RoutePaths.Payments]: myContributionsMenuItem,
+        [RoutePaths.Rewards]: myContributionsMenuItem,
       }}
       isLoggedIn={isLoggedIn}
       selectedMenuItem={location.pathname}

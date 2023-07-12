@@ -43,7 +43,7 @@ export default {
 const args = {
   menuItems: {
     [RoutePaths.Projects]: "Projects",
-    [RoutePaths.Payments]: "Payments",
+    [RoutePaths.Rewards]: "Payments",
   },
   isLoggedIn: false,
   selectedMenuItem: RoutePaths.Projects,
