@@ -27,7 +27,7 @@ export enum RoutePaths {
   Home = "/",
   Projects = "/",
   Login = "/login",
-  ProjectDetails = "/projects/:projectId",
+  ProjectDetails = "/p/:projectKey",
   Payments = "/payments",
   CatchAll = "*",
   Error = "/error",

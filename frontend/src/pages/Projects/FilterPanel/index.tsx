@@ -33,7 +33,7 @@ export default function FilterPanel({ isProjectLeader, fromSidePanel }: Props) {
     .value();
 
   const availableSponsors = visibleProjects
-    .flatMap(p => p.projectSponsors.map(s => s.sponsor.name))
+    .flatMap(p => p.sponsors.map(s => s.sponsor.name))
     .sort()
     .uniq()
     .value();

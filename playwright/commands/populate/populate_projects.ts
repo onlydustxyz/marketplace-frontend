@@ -12,8 +12,11 @@ import {
   AddSponsorToProjectDocument,
   AddSponsorToProjectMutation,
   AddSponsorToProjectMutationVariables,
+  GetProjectKeyDocument,
+  GetProjectKeyQuery,
+  GetProjectKeyQueryVariables,
 } from "../../__generated/graphql";
-import { mutateAsAdmin, waitEvents } from "../common";
+import { mutateAsAdmin, queryAsAdmin, waitEvents } from "../common";
 import { addProjectLeader, linkRepo } from "../project";
 
 export const populateProjects = async (
@@ -43,6 +46,11 @@ const populateProject = async (
   await waitEvents();
 
   const projectId = data?.createProject;
+
+  const projectKeyQuery = await queryAsAdmin<GetProjectKeyQuery, GetProjectKeyQueryVariables>({
+    query: GetProjectKeyDocument,
+    variables: { projectId },
+  });
 
   const leaderPromises =
     project.leaders?.map(leaderKey => {
@@ -90,6 +98,7 @@ const populateProject = async (
 
   return {
     id: projectId,
+    key: (await projectKeyQuery).data.projects[0].key,
     ...project,
   };
 };

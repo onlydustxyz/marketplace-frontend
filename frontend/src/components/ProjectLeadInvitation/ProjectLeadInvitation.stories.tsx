@@ -15,14 +15,13 @@ const mocks: MockedResponse[] = [
     },
     result: {
       data: {
-        projectsByPk: {
-          id: PROJECT_ID,
-          projectDetails: {
-            projectId: PROJECT_ID,
+        projects: [
+          {
+            id: PROJECT_ID,
             name: "Kakarot",
+            pendingInvitations: [{ id: "invitation-id", githubUserId: GITHUB_USER_ID }],
           },
-          pendingInvitations: [{ id: "invitation-id", githubUserId: GITHUB_USER_ID }],
-        },
+        ],
       } as GetProjectLeadInvitationsQueryResult["data"],
     },
   },

@@ -8,12 +8,14 @@ import { useMediaQuery } from "usehooks-ts";
 
 interface Props {
   projectId: string;
+  projectKey: string;
 }
 
-export default function View({ projectId }: Props) {
+export default function View({ projectId, projectKey }: Props) {
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
   const outletContext = {
     projectId,
+    projectKey,
   };
   return (
     <div className="flex w-full flex-1 flex-col gap-4 overflow-hidden pt-4 xl:h-0 xl:flex-row xl:gap-0 xl:pb-6 xl:pt-0">

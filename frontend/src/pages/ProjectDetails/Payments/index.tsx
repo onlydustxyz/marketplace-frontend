@@ -4,7 +4,7 @@ import { GetPaymentRequestsForProjectDocument } from "src/__generated/graphql";
 import { useOnProjectChange } from "src/providers/Commands";
 
 export default function Payments() {
-  const { projectId } = useOutletContext<{ projectId: string }>();
+  const { projectId, projectKey } = useOutletContext<{ projectId: string; projectKey: string }>();
   const { data, refetch } = useSuspenseQuery(GetPaymentRequestsForProjectDocument, {
     variables: { projectId },
   });
@@ -20,6 +20,7 @@ export default function Payments() {
           remainingAmount: data.budgetsAggregate.aggregate?.sum?.remainingAmount,
         },
         projectId,
+        projectKey,
       }}
     />
   );

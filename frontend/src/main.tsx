@@ -26,6 +26,7 @@ import { ContributorProfilePanelProvider } from "./hooks/useContributorProfilePa
 import { SidePanelStackProvider } from "./hooks/useSidePanelStack";
 import { CommandsProvider } from "./providers/Commands";
 import { SidePanelProvider } from "./hooks/useSidePanel";
+import { Helmet } from "react-helmet";
 
 if (config.GTM_ID) {
   TagManager.initialize({
@@ -36,6 +37,16 @@ if (config.GTM_ID) {
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <IntlProvider>
     <BrowserRouter>
+      <Helmet>
+        <title>Only Dust — Forge your developer legacy</title>
+        <meta property="og:type" content="website" />
+        <meta
+          name="description"
+          content="Contribute to innovative projects, refine your skills and create a lasting impact in the developer community. The stars are within your reach."
+        />
+        <meta property="og:image" content="src/assets/img/thumbnail.png" />
+        <meta name="twitter:card" content="summary_large_image" />
+      </Helmet>
       <ErrorBoundary FallbackComponent={ErrorFallback} onError={console.error}>
         <SessionProvider>
           <ImpersonationClaimsProvider>

@@ -77,7 +77,10 @@ const pendingProjectLeadInvitationMock = {
       pendingProjectLeaderInvitations: [
         {
           id: "invitation-id",
-          projectId: TEST_PROJECT_ID,
+          project: {
+            id: TEST_PROJECT_ID,
+            key: TEST_PROJECT_ID,
+          },
         },
       ],
     } as PendingProjectLeaderInvitationsQueryResult["data"],
@@ -152,13 +155,9 @@ const paymentRequestsMock = {
             project: {
               __typename: "Projects",
               id: "632d5da7-e590-4815-85ea-82a5585e6049",
-              projectDetails: {
-                __typename: "ProjectDetails",
-                projectId: "632d5da7-e590-4815-85ea-82a5585e6049",
-                shortDescription: "SOOOOOO awesome",
-                logoUrl: null,
-                name: "MyAwesomeProject",
-              },
+              shortDescription: "SOOOOOO awesome",
+              logoUrl: null,
+              name: "MyAwesomeProject",
             },
           },
         },
@@ -245,7 +244,7 @@ describe("Login page", () => {
       LOCAL_STORAGE_SESSION_KEY,
       JSON.stringify({
         lastLoginTime: "132456",
-        visitedPageBeforeLogin: generatePath(RoutePaths.ProjectDetails, { projectId: TEST_PROJECT_ID }),
+        visitedPageBeforeLogin: generatePath(RoutePaths.ProjectDetails, { projectKey: TEST_PROJECT_ID }),
       })
     );
 

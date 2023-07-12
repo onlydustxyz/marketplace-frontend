@@ -12,6 +12,7 @@ import PrivateTag from "src/components/PrivateTag";
 
 export type Project = {
   id: string;
+  key: string;
   logoUrl: string;
   name: string;
   contributorCount: number;
@@ -22,16 +23,18 @@ export type Project = {
   private?: boolean;
 };
 
-export default function ProjectCard({
-  logoUrl,
-  name,
-  contributorCount,
-  totalGranted,
-  leadSince,
-  contributionCount,
-  lastContribution,
-  private: private_,
-}: Project) {
+export default function ProjectCard({ project }: { project: Project }) {
+  const {
+    logoUrl,
+    name,
+    contributorCount,
+    totalGranted,
+    leadSince,
+    contributionCount,
+    lastContribution,
+    private: private_,
+  } = project;
+
   const { T } = useIntl();
 
   return (

@@ -33,6 +33,7 @@ const render = (user: User, mocks?: ReadonlyArray<MockedResponse>) =>
 const githubUserId = 123456789;
 const userId = "user-id";
 const projectId = "project-id";
+const projectKey = "project-key";
 
 const pendingProjectLeadInvitationMock = {
   request: {
@@ -44,7 +45,11 @@ const pendingProjectLeadInvitationMock = {
       pendingProjectLeaderInvitations: [
         {
           id: "invitation-id",
-          projectId,
+          project: {
+            __typename: "Projects",
+            id: projectId,
+            key: projectKey,
+          },
         },
       ],
     } as PendingProjectLeaderInvitationsQueryResult["data"],
@@ -81,7 +86,7 @@ describe("useSignupRedirection", () => {
   it("should return ProjectDetails if user is invited", async () => {
     const { result } = render({ githubUserId }, [pendingProjectLeadInvitationMock]);
     expect(result.current.loading).toBe(true);
-    await waitFor(() => expect(result.current.url).toBe(generatePath(RoutePaths.ProjectDetails, { projectId })));
+    await waitFor(() => expect(result.current.url).toBe(generatePath(RoutePaths.ProjectDetails, { projectKey })));
   });
 
   it("should return MyContributions if pending payments and no payout settings", async () => {

@@ -1,7 +1,7 @@
 query GetAllFilterOptions {
   projects {
     ...ProjectVisibilityDetails
-    projectSponsors {
+    sponsors {
       sponsor {
         id
         name

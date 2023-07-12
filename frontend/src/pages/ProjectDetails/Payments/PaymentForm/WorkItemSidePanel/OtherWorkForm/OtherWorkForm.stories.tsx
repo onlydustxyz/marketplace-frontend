@@ -37,24 +37,26 @@ const mocks: MockedResponse[] = [
     },
     result: {
       data: {
-        projectsByPk: {
-          githubRepos: [
-            {
-              repo: {
-                id: 123456,
-                owner: "owner-1",
-                name: "first-repo",
+        projects: [
+          {
+            githubRepos: [
+              {
+                repo: {
+                  id: 123456,
+                  owner: "owner-1",
+                  name: "first-repo",
+                },
               },
-            },
-            {
-              repo: {
-                id: 123456,
-                owner: "owner-1",
-                name: "second-repo",
+              {
+                repo: {
+                  id: 123456,
+                  owner: "owner-1",
+                  name: "second-repo",
+                },
               },
-            },
-          ],
-        },
+            ],
+          },
+        ],
       } as GetProjectReposQueryResult["data"],
     },
   },

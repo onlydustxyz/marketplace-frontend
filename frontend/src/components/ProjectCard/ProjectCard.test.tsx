@@ -25,16 +25,14 @@ const PROJECT: Project = {
   contributors: [],
   githubReposAggregate: { aggregate: { count: 2 } },
   contributorsAggregate: { aggregate: { count: 3 } },
-  projectDetails: {
-    projectId: "123",
-    name: "ZeroSync",
-    telegramLink: "https://app.onlydust.xyz/projects/92f022a9-dbd8-446f-a2a5-b161ccb4541c",
-    shortDescription: "A short description",
-    logoUrl: "https://avatars.githubusercontent.com/u/115809607?v=4",
-    hiring: false,
-    rank: 0,
-    visibility: "public",
-  },
+  name: "ZeroSync",
+  key: "zerosync",
+  moreInfoLink: "https://app.onlydust.xyz/projects/92f022a9-dbd8-446f-a2a5-b161ccb4541c",
+  shortDescription: "A short description",
+  logoUrl: "https://avatars.githubusercontent.com/u/115809607?v=4",
+  hiring: false,
+  rank: 0,
+  visibility: "public",
   projectLeads: [
     {
       userId: "user-1",
@@ -54,14 +52,10 @@ const PROJECT: Project = {
   budgetsAggregate: {
     aggregate: {
       count: 1,
-      sum: {
-        spentAmount: 47550,
-        initialAmount: 100000,
-      },
     },
   },
   pendingInvitations: [{ id: "croute", githubUserId: "github-user-id" }],
-  projectSponsors: [
+  sponsors: [
     {
       sponsor: {
         id: 1,
@@ -83,7 +77,7 @@ const PROJECT: Project = {
 
 describe("'ProjectCard' component", () => {
   it("should display the sponsors logos", () => {
-    renderWithIntl(<ProjectCard {...PROJECT} />, {
+    renderWithIntl(<ProjectCard project={PROJECT} />, {
       wrapper: MemoryRouterProviderFactory({}),
     });
 
@@ -92,19 +86,16 @@ describe("'ProjectCard' component", () => {
   });
 
   it("should display at most 3 sponsors logos", () => {
-    renderWithIntl(
-      <ProjectCard {...PROJECT} projectSponsors={[...PROJECT.projectSponsors, ...PROJECT.projectSponsors]} />,
-      {
-        wrapper: MemoryRouterProviderFactory({}),
-      }
-    );
+    renderWithIntl(<ProjectCard project={{ ...PROJECT, sponsors: [...PROJECT.sponsors, ...PROJECT.sponsors] }} />, {
+      wrapper: MemoryRouterProviderFactory({}),
+    });
 
     const sponsorsLogo = screen.getByTestId(`sponsor-list-${PROJECT.id}`).getElementsByTagName("img");
     expect(sponsorsLogo).toHaveLength(3);
   });
 
   it("should display the repository count", () => {
-    renderWithIntl(<ProjectCard {...PROJECT} />, {
+    renderWithIntl(<ProjectCard project={PROJECT} />, {
       wrapper: MemoryRouterProviderFactory({}),
     });
 
@@ -113,7 +104,7 @@ describe("'ProjectCard' component", () => {
   });
 
   it("should display the contributor count", () => {
-    renderWithIntl(<ProjectCard {...PROJECT} />, {
+    renderWithIntl(<ProjectCard project={PROJECT} />, {
       wrapper: MemoryRouterProviderFactory({}),
     });
 
@@ -122,7 +113,7 @@ describe("'ProjectCard' component", () => {
   });
 
   it("should display the languages", () => {
-    renderWithIntl(<ProjectCard {...PROJECT} />, {
+    renderWithIntl(<ProjectCard project={PROJECT} />, {
       wrapper: MemoryRouterProviderFactory({}),
     });
 

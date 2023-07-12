@@ -2,15 +2,6 @@ table:
   name: project_github_repos
   schema: public
 object_relationships:
-  - name: project
-    using:
-      manual_configuration:
-        column_mapping:
-          project_id: id
-        insertion_order: null
-        remote_table:
-          name: projects
-          schema: public
   - name: repo
     using:
       manual_configuration:

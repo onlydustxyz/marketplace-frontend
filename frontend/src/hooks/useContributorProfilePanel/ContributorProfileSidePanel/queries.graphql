@@ -11,13 +11,10 @@ fragment PaymentStat on PaymentStats {
 }
 
 fragment ProfileProject on Projects {
+  ...ProjectId
   ...ProjectVisibilityDetails
-  id
-  projectDetails {
-    projectId
-    logoUrl
-    name
-  }
+  logoUrl
+  name
   contributorsAggregate {
     aggregate {
       count

@@ -50,7 +50,7 @@ export const Default = {
             url: "https://ethereum.org/en/foundation/",
           },
         ],
-        telegramLink: "https://keep-starknet-strange.github.io/madara/madara/index.html",
+        moreInfoLink: "https://keep-starknet-strange.github.io/madara/madara/index.html",
       }}
     />
   ),

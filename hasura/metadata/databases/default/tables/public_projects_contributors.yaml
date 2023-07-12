@@ -19,7 +19,7 @@ object_relationships:
         insertion_order: null
         remote_table:
           name: projects
-          schema: public
+          schema: api
   - name: user
     using:
       manual_configuration:

@@ -12,7 +12,7 @@ export class ProjectPage {
   constructor(page: Page, project: Project) {
     this.page = page;
     this.project = project;
-    this.url = `/projects/${project.id}`;
+    this.url = `/p/${project.key}`;
   }
 
   goto = async () => {

@@ -1,5 +1,6 @@
 fragment ProjectId on Projects {
   id
+  key
 }
 
 fragment LastProjectMergedPullRequests on Projects {
@@ -28,10 +29,7 @@ fragment ProjectPaidWorkItems on Projects {
 
 fragment ProjectVisibilityDetails on Projects {
   ...ProjectId
-  projectDetails {
-    projectId
-    visibility
-  }
+  visibility
   githubReposAggregate {
     aggregate {
       count

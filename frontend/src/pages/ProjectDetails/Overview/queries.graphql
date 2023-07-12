@@ -1,22 +1,19 @@
 query GetProjectOverviewDetails($projectId: uuid!) {
-  projectsByPk(id: $projectId) {
+  projects(where: { id: { _eq: $projectId } }) {
     ...ProjectId
-    projectDetails {
-      projectId
-      name
-      longDescription
-      logoUrl
-      telegramLink
-      hiring
-      visibility
-    }
+    name
+    longDescription
+    logoUrl
+    moreInfoLink
+    hiring
+    visibility
     githubRepos {
       repo {
         ...GithubRepoLanguages
         stars
       }
     }
-    projectSponsors {
+    sponsors {
       sponsor {
         ...Sponsor
       }
@@ -52,7 +49,7 @@ query GetProjectOverviewDetails($projectId: uuid!) {
 }
 
 query GetProjectApplications($projectId: uuid!) {
-  projectsByPk(id: $projectId) {
+  projects(where: { id: { _eq: $projectId } }) {
     ...ProjectId
     applications {
       ...Applicant

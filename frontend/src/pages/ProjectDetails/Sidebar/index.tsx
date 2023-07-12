@@ -39,8 +39,8 @@ export default function ProjectsSidebar({ projectId }: Props) {
   });
 
   const currentProject =
-    getCurrentProjectsForSidebarQuery.data?.projectsByPk &&
-    projectFromQuery(getCurrentProjectsForSidebarQuery.data?.projectsByPk, githubUserId);
+    getCurrentProjectsForSidebarQuery.data?.projects[0] &&
+    projectFromQuery(getCurrentProjectsForSidebarQuery.data?.projects[0], githubUserId);
 
   const getProjectsForSidebarQuery = useGetProjectsForSidebarQuery({
     variables: { ledProjectIds, githubUserId },
@@ -91,8 +91,9 @@ export default function ProjectsSidebar({ projectId }: Props) {
 
 const projectFromQuery = (project: SidebarProjectDetailsFragment, githubUserId?: number): SidebarProjectDetails => ({
   ...project,
-  name: project.projectDetails?.name || "",
-  logoUrl: project.projectDetails?.logoUrl || onlyDustLogo,
+  name: project.name || "",
+  key: project.key || "",
+  logoUrl: project.logoUrl || onlyDustLogo,
   withInvitation: project.pendingInvitations?.some(i => i.githubUserId === githubUserId),
   contributorsCount: project.contributorsAggregate.aggregate?.count || 0,
 });

@@ -76,8 +76,8 @@ test.describe("As a visitor, I", () => {
   });
 
   test("cannot access restricted projects page", async ({ page, projects }) => {
-    await page.goto(`/projects/${projects.ProjectA.id}/payments`);
-    await expect(page).toHaveURL(`/projects/${projects.ProjectA.id}`);
+    await page.goto(`/p/${projects.ProjectA.key}/payments`);
+    await expect(page).toHaveURL(`/p/${projects.ProjectA.key}`);
   });
 });
 
@@ -95,8 +95,8 @@ test.describe("As a registered user, I", () => {
   }) => {
     await signIn(users.Olivier);
     await acceptTermsAndConditions({ skipOnboardingWizzard: true });
-    await page.goto(`/projects/${projects.ProjectA.id}/payments`);
-    await expect(page).toHaveURL(`/projects/${projects.ProjectA.id}`);
+    await page.goto(`/p/${projects.ProjectA.key}/payments`);
+    await expect(page).toHaveURL(`/p/${projects.ProjectA.key}`);
   });
 
   test("can see private project I am a member of", async ({
