@@ -21,7 +21,7 @@ env:
 
 jobs:
 
-  build_and_test:
+  test:
     name: Compile
     runs-on: ubuntu-latest
     steps:
@@ -30,11 +30,6 @@ jobs:
 
       - name: Setup cargo
         uses: ./.github/actions/cargo-setup
-
-      - name: Compile application
-        uses: actions-rs/cargo@v1
-        with:
-          command: build
 
       - name: Test application
         uses: actions-rs/cargo@v1
