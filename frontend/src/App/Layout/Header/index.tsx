@@ -27,7 +27,7 @@ export default function Header() {
 
   const hasPayments = paymentRequestIdsQueryData?.githubUsersByPk?.paymentRequests.length || 0 > 0;
 
-  const myContributionsMenuItem = hasPayments && !onboardingInProgress ? T("navbar.payments") : undefined;
+  const myContributionsMenuItem = hasPayments && !onboardingInProgress ? T("navbar.rewards") : undefined;
   const projectsMenuItem = myContributionsMenuItem && !onboardingInProgress ? T("navbar.projects") : undefined;
 
   return (

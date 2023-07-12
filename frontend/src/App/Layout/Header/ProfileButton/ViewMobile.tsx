@@ -84,7 +84,7 @@ export default function ViewMobile({
                       classNames("flex items-center gap-3 rounded-xl p-4", { "bg-white/8": isActive })
                     }
                   >
-                    <ExchangeDollarLine className="text-xl" /> {T("navbar.payments")}
+                    <ExchangeDollarLine className="text-xl" /> {T("navbar.rewards")}
                   </NavLink>
                 </div>
               )}
