@@ -1,6 +1,7 @@
 #[cfg(test)]
 mod tests {
     use std::collections::HashMap;
+    use std::env;
 
     use rocket::local::asynchronous::Client;
     use testcontainers::clients::Cli;
@@ -12,10 +13,8 @@ mod tests {
     use api::infrastructure::simple_storage;
     use api::presentation::bootstrap::bootstrap;
     use infrastructure::{amqp, database, github, graphql, tracing, web3};
-    use olog::info;
     use presentation::http;
 
-    // #[rocket::async_test]
     #[tokio::test]
     pub async fn should_create_project() {
         let postgres_db = "marketplace_db".to_string();
@@ -74,18 +73,22 @@ mod tests {
         };
         let rocket_builder = bootstrap(config).await.unwrap();
 
-        let _client = Client::untracked(rocket_builder).await.expect("valid rocket instance");
+        let _client = Client::tracked(rocket_builder).await.expect("valid rocket instance");
 
-        println!("3");
+        assert!(true);
     }
 
     fn build_postgres_image(postgres_db: &String, postgres_user: &String, postgres_password: &String) -> GenericImage {
+        let hasura_auth_migrations_path = format!(
+            "{}/tests/resources/hasura_auth_migrations",
+            env::current_dir().unwrap().into_os_string().into_string().unwrap()
+        );
         GenericImage::new("postgres", "14.3-alpine")
             .with_env_var("POSTGRES_DB".to_string(), &postgres_db.to_string())
             .with_env_var("POSTGRES_USER".to_string(), &postgres_user.to_string())
             .with_env_var("POSTGRES_PASSWORD".to_string(), &postgres_password.to_string())
             .with_env_var("POSTGRES_HOST_AUTH_METHOD".to_string(), "trust".to_string())
-            .with_volume("/Users/ilysse/Workspace/ONLYDUST/marketplace/backend/api/tests/resources".to_string(),
+            .with_volume(hasura_auth_migrations_path.to_string(),
                          "/docker-entrypoint-initdb.d".to_string())
             .with_wait_for(WaitFor::StdOutMessage {
                 message: "database system is ready to accept connections".to_string(),
