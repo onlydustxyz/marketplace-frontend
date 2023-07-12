@@ -3,6 +3,7 @@ mod tests {
     use std::collections::HashMap;
     use std::env;
 
+    use rocket::http::Status;
     use rocket::local::asynchronous::Client;
     use testcontainers::clients::Cli;
     use testcontainers::core::WaitFor;
@@ -17,6 +18,7 @@ mod tests {
 
     #[tokio::test]
     pub async fn should_create_project() {
+        // Given
         let postgres_db = "marketplace_db".to_string();
         let postgres_user = "postgres".to_string();
         let postgres_password = "Passw0rd".to_string();
@@ -53,7 +55,12 @@ mod tests {
         let amqp_config = amqp::Config { url: rabbit_mq_url, connection_retry_count: 100, connection_retry_interval_ms: 6000 };
         let tracer_config = tracing::Config { ansi: false, json: true, location: true };
         let web3_config = web3::Config { url: "https://test.com".parse().unwrap() };
-        let s3_config = simple_storage::Config { images_bucket_name: "".to_string(), bucket_region: "eu-west-1".to_string() };
+        let s3_config = simple_storage::Config {
+            images_bucket_name: "".to_string(),
+            bucket_region: "eu-west-1".to_string(),
+            access_key_id: "access_key_id_test".to_string(),
+            secret_access_key: "secret_access_key_test".to_string(),
+        };
         let graphql_config = graphql::Config { base_url: Url::parse(&("https://test.com".to_string())).unwrap(), headers: HashMap::new() };
         let github_config = github::Config {
             base_url: "http://github-test.com".to_string(),
@@ -73,9 +80,14 @@ mod tests {
         };
         let rocket_builder = bootstrap(config).await.unwrap();
 
-        let _client = Client::tracked(rocket_builder).await.expect("valid rocket instance");
+        let client = Client::tracked(rocket_builder).await.expect("valid rocket instance");
 
-        assert!(true);
+        // When
+        let response = client.get("/health")
+            .dispatch();
+
+        // Then
+        assert_eq!(response.await.status(), Status::Ok);
     }
 
     fn build_postgres_image(postgres_db: &String, postgres_user: &String, postgres_password: &String) -> GenericImage {

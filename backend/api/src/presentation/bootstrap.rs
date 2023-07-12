@@ -15,7 +15,7 @@ use crate::presentation::graphql;
 use crate::presentation::http::get_rocket_builder;
 
 pub async fn bootstrap(config: Config) -> Result<Rocket<Build>> {
-	info!("Boostrapping backend api");
+	info!("Bootstrapping backend api");
 	let database = Arc::new(database::Client::new(database::init_pool(
 		&config.database(),
 	)?));
