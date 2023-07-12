@@ -11,9 +11,9 @@ pub struct Tracer;
 
 #[derive(Deserialize, Clone)]
 pub struct Config {
-	ansi: bool,
-	json: bool,
-	location: bool,
+	pub ansi: bool,
+	pub json: bool,
+	pub location: bool,
 }
 
 impl Tracer {

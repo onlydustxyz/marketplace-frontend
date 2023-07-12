@@ -4,6 +4,6 @@ use serde::Deserialize;
 
 #[derive(Deserialize, Getters, Constructor)]
 pub struct Config {
-	url: String,
-	pool_max_size: u32,
+	pub url: String,
+	pub pool_max_size: u32,
 }

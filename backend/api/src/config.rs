@@ -7,12 +7,12 @@ use crate::infrastructure::simple_storage;
 
 #[derive(Deserialize, Getters)]
 pub struct Config {
-	http: http::Config,
-	database: database::Config,
-	amqp: amqp::Config,
-	tracer: tracing::Config,
-	github: github::Config,
-	web3: web3::Config,
-	s3: simple_storage::Config,
-	graphql_client: graphql::Config,
+	pub http: http::Config,
+	pub database: database::Config,
+	pub amqp: amqp::Config,
+	pub tracer: tracing::Config,
+	pub github: github::Config,
+	pub web3: web3::Config,
+	pub s3: simple_storage::Config,
+	pub graphql_client: graphql::Config,
 }

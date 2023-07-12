@@ -4,5 +4,5 @@ use serde::Deserialize;
 
 #[derive(Deserialize)]
 pub struct Config {
-	url: String,
+	pub url: String,
 }

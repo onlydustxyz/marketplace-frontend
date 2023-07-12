@@ -10,9 +10,9 @@ use url::Url;
 
 #[derive(Deserialize, Getters, Constructor)]
 pub struct Config {
-	base_url: Url,
+	pub base_url: Url,
 	#[serde(default)]
-	headers: HashMap<String, String>,
+    pub headers: HashMap<String, String>,
 }
 
 impl Config {

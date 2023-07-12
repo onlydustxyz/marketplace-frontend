@@ -1,3 +1,20 @@
+use anyhow::anyhow;
+use diesel::{
+	pg::PgConnection,
+	r2d2::{self, ConnectionManager},
+};
+use diesel_migrations::EmbeddedMigrations;
+
+pub use model::{ImmutableModel, ImmutableRepository, Model, Repository};
+use olog::error;
+
+use crate::diesel_migrations::MigrationHarness;
+
+pub use self::{
+	config::Config,
+	error::{Error as DatabaseError, Result},
+};
+
 mod config;
 pub mod enums;
 mod error;
@@ -5,24 +22,8 @@ pub mod repositories;
 pub mod schema;
 
 mod model;
-pub use model::{ImmutableModel, ImmutableRepository, Model, Repository};
-
 #[cfg(test)]
 mod tests;
-
-use anyhow::anyhow;
-use diesel::{
-	pg::PgConnection,
-	r2d2::{self, ConnectionManager},
-};
-use diesel_migrations::EmbeddedMigrations;
-use olog::error;
-
-pub use self::{
-	config::Config,
-	error::{Error as DatabaseError, Result},
-};
-use crate::diesel_migrations::MigrationHarness;
 
 type Pool = r2d2::Pool<ConnectionManager<PgConnection>>;
 type PooledConnection = r2d2::PooledConnection<ConnectionManager<PgConnection>>;
