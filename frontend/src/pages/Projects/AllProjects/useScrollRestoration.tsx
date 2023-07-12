@@ -1,15 +1,13 @@
-import { useEffectOnce, useSessionStorage } from "react-use";
+import { useSessionStorage } from "react-use";
 import { useLocation } from "react-router-dom";
-import { useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
-export const RESTORE_SCROLL_POSITION_KEY = "RESTORE_SCROLL_POSITION";
 const SCROLL_POSITION_KEY = "SCROLL_POSITION";
 
 export default function useScrollRestoration() {
   const { state } = useLocation();
 
   const [scrollPosition, setScrollPosition] = useSessionStorage(SCROLL_POSITION_KEY, 0);
-
   const ref = useRef<HTMLDivElement | null>(null);
 
   const setRef = useCallback(
@@ -29,11 +27,9 @@ export default function useScrollRestoration() {
     [setScrollPosition]
   );
 
-  useEffectOnce(() => {
-    if (state && state[RESTORE_SCROLL_POSITION_KEY]) {
-      ref.current?.scrollTo({ top: scrollPosition });
-    }
-  });
+  useEffect(() => {
+    if (!state?.skipScrollRestoration && ref.current?.scrollTo) ref.current.scrollTo({ top: scrollPosition });
+  }, [ref.current]);
 
-  return [setRef];
+  return { ref: setRef };
 }
