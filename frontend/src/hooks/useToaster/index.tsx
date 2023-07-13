@@ -4,6 +4,7 @@ type Toaster = {
   message: string;
   isError: boolean;
   visible: boolean;
+  setVisible: (visible: boolean) => void;
 };
 
 type ShowToaster = (message: string, options?: ShowToasterOptions) => void;
@@ -48,7 +49,7 @@ export const ToasterProvider = ({ children }: PropsWithChildren) => {
   }, [visible]);
 
   return (
-    <ToasterContext.Provider value={{ message, visible, isError: options.isError }}>
+    <ToasterContext.Provider value={{ message, visible, isError: options.isError, setVisible }}>
       <ShowToasterContext.Provider value={showToaster}>{children}</ShowToasterContext.Provider>
     </ToasterContext.Provider>
   );

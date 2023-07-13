@@ -78,16 +78,18 @@ const View: React.FC<Props> = ({
 
   return (
     <>
-      <Title>
-        <div className="flex flex-row items-center gap-3">
-          <div onClick={() => navigate(-1)}>
-            <Button type={ButtonType.Secondary} size={ButtonSize.Sm} iconOnly>
-              <CloseLine className="text-base" />
-            </Button>
+      {isXl && (
+        <Title>
+          <div className="flex flex-row items-center gap-3">
+            <div onClick={() => navigate(-1)}>
+              <Button type={ButtonType.Secondary} size={ButtonSize.Sm} iconOnly>
+                <CloseLine className="text-base" />
+              </Button>
+            </div>
+            <div className="text-2xl xl:text-3xl">{T("project.details.payments.new.title")}</div>
           </div>
-          <div className="text-2xl xl:text-3xl">{T("project.details.payments.new.title")}</div>
-        </div>
-      </Title>
+        </Title>
+      )}
       <div className="flex h-full flex-col items-start gap-5 xl:flex-row">
         <div className="basis-3/5 self-stretch">
           <div className="flex w-full flex-col gap-6">
@@ -115,24 +117,22 @@ const View: React.FC<Props> = ({
                   <SectionTitle
                     title={T("payment.form.workItems.title")}
                     rightAction={
-                      isXl ? (
-                        <div className="flex flex-row items-center gap-2">
-                          {workItems.length > 0 && (
-                            <Button type={ButtonType.Ternary} size={ButtonSize.Sm} onClick={() => clearWorkItems()}>
-                              <CloseLine />
-                              {T("payment.form.workItems.clear")}
-                            </Button>
-                          )}
-                          <Button
-                            size={ButtonSize.Sm}
-                            type={ButtonType.Secondary}
-                            onClick={() => setSidePanelOpen(true)}
-                            iconOnly
-                          >
-                            <Add />
+                      <div className="flex flex-row items-center gap-2">
+                        {workItems.length > 0 && (
+                          <Button type={ButtonType.Ternary} size={ButtonSize.Sm} onClick={() => clearWorkItems()}>
+                            <CloseLine />
+                            {T("payment.form.workItems.clear")}
                           </Button>
-                        </div>
-                      ) : undefined
+                        )}
+                        <Button
+                          size={ButtonSize.Sm}
+                          type={ButtonType.Secondary}
+                          onClick={() => setSidePanelOpen(true)}
+                          iconOnly
+                        >
+                          <Add />
+                        </Button>
+                      </div>
                     }
                   />
                   <div className="mx-4 flex flex-col gap-3 pt-4" data-testid="added-work-items">

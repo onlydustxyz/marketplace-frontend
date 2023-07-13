@@ -6,6 +6,10 @@ import { ProjectDetailsTab } from ".";
 import BackLink from "./BackLink";
 import View, { SidebarProjectDetails } from "./View";
 import SidePanelWithBackdrop from "src/components/SidePanelWithBackdrop";
+import { useLocation, useNavigate } from "react-router-dom";
+import Button, { ButtonSize, ButtonType } from "src/components/Button";
+import CloseLine from "src/icons/CloseLine";
+import { useIntl } from "src/hooks/useIntl";
 
 interface Props {
   expandable: boolean;
@@ -18,19 +22,39 @@ export default function ViewMobile(props: Props) {
   const { currentProject } = props;
   const [panelOpen, setPanelOpen] = useState(false);
 
+  const { T } = useIntl();
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const isSendingPayment = location.pathname.match("payments/new");
+
   return (
     <>
       <div className="flex items-center justify-between gap-2 px-6">
-        <div className="flex items-center gap-1">
-          <BackLink to={RoutePaths.Projects} className="divide-none" />
-          <div className="flex items-center gap-2 font-belwe text-2xl">
-            <RoundedImage src={currentProject?.logoUrl || ""} alt="Project Logo" size={ImageSize.Sm} />
-            <div className="line-clamp-1">{currentProject.name}</div>
+        {!isSendingPayment && (
+          <>
+            <div className="flex items-center gap-1">
+              <BackLink to={RoutePaths.Projects} className="divide-none" />
+              <div className="flex items-center gap-2 font-belwe text-2xl">
+                <RoundedImage src={currentProject?.logoUrl || ""} alt="Project Logo" size={ImageSize.Sm} />
+                <div className="line-clamp-1">{currentProject.name}</div>
+              </div>
+            </div>
+            <button className="rounded-lg border p-2" onClick={() => setPanelOpen(true)}>
+              <BurgerIcon />
+            </button>
+          </>
+        )}
+        {isSendingPayment && (
+          <div className="flex flex-row items-center gap-3">
+            <div onClick={() => navigate(-1)}>
+              <Button type={ButtonType.Secondary} size={ButtonSize.Sm} iconOnly>
+                <CloseLine className="text-base" />
+              </Button>
+            </div>
+            <div className="font-belwe text-2xl xl:text-3xl">{T("project.details.payments.new.title")}</div>
           </div>
-        </div>
-        <button className="rounded-lg border p-2" onClick={() => setPanelOpen(true)}>
-          <BurgerIcon />
-        </button>
+        )}
       </div>
       <SidePanelWithBackdrop open={panelOpen} setOpen={setPanelOpen} placement="bottom" hasCloseButton={false}>
         <View {...props} onLinkClick={() => setPanelOpen(false)} />
