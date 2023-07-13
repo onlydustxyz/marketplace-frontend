@@ -1,16 +1,16 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { Currency, PaymentStatus } from "src/types";
 
-import PayoutTable from ".";
-import { Payment } from "./Line";
+import UserRewardTable from ".";
+import { Reward } from "./Line";
 import { daysFromNow } from "src/utils/date";
 
 export default {
-  title: "PayoutTable",
-  component: PayoutTable,
-} as ComponentMeta<typeof PayoutTable>;
+  title: "UserRewardTable",
+  component: UserRewardTable,
+} as ComponentMeta<typeof UserRewardTable>;
 
-const mockPayments: Payment[] = [
+const mockPayments: Reward[] = [
   {
     amount: { value: 200, currency: Currency.ETH },
     id: "c0cfdf80-bbba-4512-b5ec-066dfa9529b1",
@@ -55,8 +55,12 @@ const mockPayments: Payment[] = [
   },
 ];
 
-const Template: ComponentStory<typeof PayoutTable> = args => (
-  <PayoutTable payments={mockPayments} payoutInfoMissing={args.payoutInfoMissing} invoiceNeeded={args.invoiceNeeded} />
+const Template: ComponentStory<typeof UserRewardTable> = args => (
+  <UserRewardTable
+    rewards={mockPayments}
+    payoutInfoMissing={args.payoutInfoMissing}
+    invoiceNeeded={args.invoiceNeeded}
+  />
 );
 
 export const Default = Template.bind({});

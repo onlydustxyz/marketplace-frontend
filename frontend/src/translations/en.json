@@ -291,9 +291,10 @@
     "table": {
       "amount": "Amount",
       "contributor": "Contributor",
+      "project": "Project",
       "date": "Date",
       "githubLink": "#__pullRequestNumber__ · Github",
-      "paymentRequest": {
+      "reward": {
         "many": "#__id__ · __count__ contributions",
         "one": "#__id__ · 1 contribution",
         "zero": "#__id__ · No contributions"

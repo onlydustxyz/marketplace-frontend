@@ -12,15 +12,15 @@ import Badge, { BadgeIcon, BadgeSize } from "src/components/Badge";
 type Props = {
   contributor: ContributorType;
   isProjectLeader: boolean;
-  isSendingNewPaymentDisabled: boolean;
-  onPaymentRequested: (contributor: ContributorType) => void;
+  isGivingRewardDisabled: boolean;
+  onRewardGranted: (contributor: ContributorType) => void;
 };
 
 export default function ContributorLine({
   contributor,
   isProjectLeader,
-  isSendingNewPaymentDisabled,
-  onPaymentRequested,
+  isGivingRewardDisabled,
+  onRewardGranted,
 }: Props) {
   const { T } = useIntl();
 
@@ -50,13 +50,13 @@ export default function ContributorLine({
             )}
           </Cell>
           <Cell height={CellHeight.Small} horizontalMargin={false} className="invisible group-hover/line:visible">
-            <div {...withTooltip(T("contributor.table.noBudgetLeft"), { visible: isSendingNewPaymentDisabled })}>
+            <div {...withTooltip(T("contributor.table.noBudgetLeft"), { visible: isGivingRewardDisabled })}>
               <Button
                 type={ButtonType.Secondary}
                 size={ButtonSize.Sm}
-                disabled={isSendingNewPaymentDisabled}
-                onClick={() => onPaymentRequested(contributor)}
-                data-testid="send-payment-button"
+                disabled={isGivingRewardDisabled}
+                onClick={() => onRewardGranted(contributor)}
+                data-testid="give-reward-button"
               >
                 <SendPlane2Line />
                 <div>{T("project.details.contributors.reward")}</div>

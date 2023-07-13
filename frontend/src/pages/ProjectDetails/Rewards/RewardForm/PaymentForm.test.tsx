@@ -3,7 +3,7 @@ import { screen } from "@testing-library/react";
 import matchers from "@testing-library/jest-dom/matchers";
 
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
-import PaymentForm from ".";
+import RewardForm from ".";
 import {
   ContributorFragment,
   GetPaymentRequestsForProjectDocument,
@@ -69,12 +69,12 @@ const ADD_WORK_ITEM_BUTTON_ID = "add-work-item-btn";
 
 const RECIPIENT_INPUT_LABEL = /Search by Github handle/i;
 
-describe('"PaymentForm" component', () => {
+describe('"RewardForm" component', () => {
   beforeEach(() => {
     renderWithIntl(
       <VirtuosoMockContext.Provider value={{ viewportHeight: 1000, itemHeight: 36 }}>
         <ContributorProfilePanelProvider>
-          <PaymentForm />
+          <RewardForm />
         </ContributorProfilePanelProvider>
       </VirtuosoMockContext.Provider>,
       {

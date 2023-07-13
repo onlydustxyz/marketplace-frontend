@@ -5,52 +5,52 @@ import { PaymentStatus } from "src/types";
 import { pretty } from "src/utils/id";
 import { formatMoneyAmount } from "src/utils/money";
 import PayoutStatus from "src/components/PayoutStatus";
-import { MobilePaymentItem } from "src/components/PayoutTable/MobilePayoutList";
+import { MobileUserRewardItem } from "src/components/UserRewardTable/MobileUserRewardList";
 import RoundedImage, { Rounding } from "src/components/RoundedImage";
 
-export default function MobilePaymentList({
-  payments,
-  onPaymentClick,
+export default function MobileRewardList({
+  rewards,
+  onRewardClick,
 }: {
-  payments: ExtendedPaymentRequestFragment[];
-  onPaymentClick: (payment: ExtendedPaymentRequestFragment) => void;
+  rewards: ExtendedPaymentRequestFragment[];
+  onRewardClick: (reward: ExtendedPaymentRequestFragment) => void;
 }) {
   return (
     <div className="flex flex-col gap-4">
-      {payments.map(payment => (
-        <button onClick={() => onPaymentClick(payment)} key={payment.id}>
-          <MobilePaymentItemContainer payment={payment} />
+      {rewards.map(reward => (
+        <button onClick={() => onRewardClick(reward)} key={reward.id}>
+          <MobileRewardItemContainer reward={reward} />
         </button>
       ))}
     </div>
   );
 }
 
-function MobilePaymentItemContainer({ payment }: { payment: ExtendedPaymentRequestFragment }) {
+function MobileRewardItemContainer({ reward }: { reward: ExtendedPaymentRequestFragment }) {
   const { T } = useIntl();
 
-  const { valid: payoutSettingsValid } = usePayoutSettings(payment.recipientId);
+  const { valid: payoutSettingsValid } = usePayoutSettings(reward.recipientId);
 
-  const recipient = payment.githubRecipient;
-  const paidAmount = payment.paymentsAggregate.aggregate?.sum?.amount;
-  const paymentStatus = paidAmount === payment.amountInUsd ? PaymentStatus.ACCEPTED : PaymentStatus.WAITING_PAYMENT;
+  const recipient = reward.githubRecipient;
+  const paidAmount = reward.paymentsAggregate.aggregate?.sum?.amount;
+  const paymentStatus = paidAmount === reward.amountInUsd ? PaymentStatus.ACCEPTED : PaymentStatus.WAITING_PAYMENT;
 
   return (
-    payment &&
+    reward &&
     recipient && (
-      <MobilePaymentItem
+      <MobileUserRewardItem
         image={<RoundedImage src={recipient.avatarUrl} alt={recipient.login} rounding={Rounding.Circle} />}
         title={recipient.login}
-        request={T("reward.table.paymentRequest", {
-          id: pretty(payment.id),
-          count: payment.workItemsAggregate.aggregate?.count,
+        request={T("reward.table.reward", {
+          id: pretty(reward.id),
+          count: reward.workItemsAggregate.aggregate?.count,
         })}
-        amount={formatMoneyAmount({ amount: payment.amountInUsd })}
-        date={payment.requestedAt}
+        amount={formatMoneyAmount({ amount: reward.amountInUsd })}
+        date={reward.requestedAt}
         payoutStatus={
           <PayoutStatus
             {...{
-              id: `payment-status-${payment.id}`,
+              id: `payment-status-${reward.id}`,
               status: paymentStatus,
               payoutInfoMissing: !payoutSettingsValid,
             }}

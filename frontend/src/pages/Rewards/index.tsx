@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 import { Navigate } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import Card from "src/components/Card";
-import PayoutTable from "src/components/PayoutTable";
+import UserRewardTable from "src/components/UserRewardTable";
 import QueryWrapper from "src/components/QueryWrapper";
 import { useAuth } from "src/hooks/useAuth";
 import { Currency, PaymentStatus } from "src/types";
@@ -11,7 +11,7 @@ import { useT } from "talkr";
 import TotalEarnings from "./TotalEarnings";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import usePayoutSettings from "src/hooks/usePayoutSettings";
-import { Payment } from "src/components/PayoutTable/Line";
+import { Reward } from "src/components/UserRewardTable/Line";
 import InvoiceSubmission from "./InvoiceSubmission";
 
 const Rewards = () => {
@@ -27,16 +27,16 @@ const Rewards = () => {
   const { valid: payoutSettingsValid, invoiceNeeded, data: userInfos } = usePayoutSettings(githubUserId);
 
   const { data: paymentRequestsQueryData } = getPaymentRequestsQuery;
-  const payments = paymentRequestsQueryData?.paymentRequests?.map(mapApiPaymentsToProps);
-  const hasPayments = payments && payments.length > 0;
+  const rewards = paymentRequestsQueryData?.paymentRequests?.map(mapApiPaymentsToProps);
+  const hasRewards = rewards && rewards.length > 0;
   const paymentRequestsNeedingInvoice =
-    payments?.filter(p => p.status === PaymentStatus.WAITING_PAYMENT && !p.invoiceReceived) || [];
+    rewards?.filter(p => p.status === PaymentStatus.WAITING_PAYMENT && !p.invoiceReceived) || [];
 
-  if (hasPayments === false) {
+  if (hasRewards === false) {
     return <Navigate to={RoutePaths.Projects} />;
   }
 
-  const totalEarnings = hasPayments && payments.reduce((acc, p) => acc + p.amount.value, 0);
+  const totalEarnings = hasRewards && rewards.reduce((acc, p) => acc + p.amount.value, 0);
   const invoiceSubmissionNeeded =
     paymentRequestsNeedingInvoice.length > 0 && invoiceNeeded && githubUserId && userInfos && payoutSettingsValid;
 
@@ -47,9 +47,9 @@ const Rewards = () => {
         <QueryWrapper query={getPaymentRequestsQuery}>
           <div className="mb-10 flex flex-col-reverse gap-4 xl:flex-row">
             <Card>
-              {payments && (
-                <PayoutTable
-                  payments={payments}
+              {rewards && (
+                <UserRewardTable
+                  rewards={rewards}
                   payoutInfoMissing={!payoutSettingsValid}
                   invoiceNeeded={invoiceNeeded}
                 />
@@ -74,7 +74,7 @@ const Rewards = () => {
   );
 };
 
-const mapApiPaymentsToProps = (apiPayment: UserPaymentRequestFragment): Payment => {
+const mapApiPaymentsToProps = (apiPayment: UserPaymentRequestFragment): Reward => {
   const amount = { value: apiPayment.amountInUsd, currency: Currency.USD };
   const project = apiPayment.budget?.project;
   const requestedAt = apiPayment.requestedAt;

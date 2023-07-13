@@ -41,7 +41,7 @@ export type Props = {
   payoutInfoMissing: boolean;
   invoiceNeeded?: boolean;
   projectLeaderView?: boolean;
-  onPaymentCancel?: () => void;
+  onRewardCancel?: () => void;
 } & Partial<PaymentRequestDetailsFragment>;
 
 const Details = ({ align = Align.Center, children }: PropsWithChildren & { align?: Align }) => (
@@ -69,31 +69,28 @@ export default function View({
   payoutInfoMissing,
   invoiceNeeded,
   invoiceReceivedAt,
-  payments,
+  rewards,
   projectLeaderView,
-  onPaymentCancel,
+  onRewardCancel,
   ...props
 }: Props) {
   const { T } = useIntl();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
-  const formattedReceipt = formatReceipt(payments?.at(0)?.receipt);
+  const formattedReceipt = formatReceipt(rewards?.at(0)?.receipt);
 
-  const shouldDisplayCancelPaymentButton =
-    projectLeaderView && onPaymentCancel && status === PaymentStatus.WAITING_PAYMENT;
+  const shouldDisplayCancelButton = projectLeaderView && onRewardCancel && status === PaymentStatus.WAITING_PAYMENT;
 
   return (
     <SidePanel
       {...props}
-      action={
-        isXl && shouldDisplayCancelPaymentButton ? <CancelPaymentButton onPaymentCancel={onPaymentCancel} /> : undefined
-      }
+      action={isXl && shouldDisplayCancelButton ? <CancelRewardButton onRewardCancel={onRewardCancel} /> : undefined}
     >
       <QueryWrapper query={{ loading, data: requestedAt }}>
         <div className="flex h-full flex-col gap-8">
           <div className="flex flex-wrap items-center gap-3 px-6 pt-8 font-belwe text-2xl font-normal text-greyscale-50">
             {T("reward.table.detailsPanel.title", { id: pretty(id) })}
-            {!isXl && shouldDisplayCancelPaymentButton && <CancelPaymentButton onPaymentCancel={onPaymentCancel} />}
+            {!isXl && shouldDisplayCancelButton && <CancelRewardButton onRewardCancel={onRewardCancel} />}
           </div>
           <div className="flex flex-col gap-2 px-6">
             <PayoutStatus
@@ -148,7 +145,7 @@ export default function View({
                 {T("reward.table.detailsPanel.requestedAt", { requestedAt: formatDateTime(new Date(requestedAt)) })}
               </Details>
             )}
-            {status === PaymentStatus.ACCEPTED && payments?.at(0)?.processedAt && (
+            {status === PaymentStatus.ACCEPTED && rewards?.at(0)?.processedAt && (
               <Details align={formattedReceipt ? Align.Top : Align.Center}>
                 <BankCardLine className="text-base" />
                 <ReactMarkdown
@@ -157,10 +154,10 @@ export default function View({
                 >
                   {[
                     T("reward.table.detailsPanel.processedAt", {
-                      processedAt: formatDateTime(new Date(payments?.at(0)?.processedAt)),
+                      processedAt: formatDateTime(new Date(rewards?.at(0)?.processedAt)),
                     }),
                     formattedReceipt &&
-                      T(`payment.table.detailsPanel.processedVia.${formattedReceipt?.type}`, {
+                      T(`reward.table.detailsPanel.processedVia.${formattedReceipt?.type}`, {
                         recipient: formattedReceipt?.shortDetails,
                       }),
                   ]
@@ -171,7 +168,7 @@ export default function View({
                   <Tooltip anchorSelect=".payment-receipt" clickable>
                     <div className="flex flex-col items-start">
                       <div>
-                        {T(`payment.table.detailsPanel.processedTooltip.${formattedReceipt?.type}.recipient`, {
+                        {T(`reward.table.detailsPanel.processedTooltip.${formattedReceipt?.type}.recipient`, {
                           recipient: formattedReceipt?.fullDetails,
                         })}
                       </div>
@@ -179,13 +176,13 @@ export default function View({
                       {formattedReceipt?.type === "crypto" ? (
                         <ExternalLink
                           url={`https://etherscan.io/tx/${formattedReceipt?.reference}`}
-                          text={T(`payment.table.detailsPanel.processedTooltip.${formattedReceipt?.type}.reference`, {
+                          text={T(`reward.table.detailsPanel.processedTooltip.${formattedReceipt?.type}.reference`, {
                             reference: formattedReceipt?.reference,
                           })}
                         />
                       ) : (
                         <div>
-                          {T(`payment.table.detailsPanel.processedTooltip.${formattedReceipt?.type}.reference`, {
+                          {T(`reward.table.detailsPanel.processedTooltip.${formattedReceipt?.type}.reference`, {
                             reference: formattedReceipt?.reference,
                           })}
                         </div>
@@ -252,11 +249,11 @@ const formatReceipt = (receipt?: Receipt): FormattedReceipt | undefined => {
   }
 };
 
-type CancelPaymentButtonProps = {
-  onPaymentCancel: () => void;
+type CancelRewardButtonProps = {
+  onRewardCancel: () => void;
 };
 
-function CancelPaymentButton({ onPaymentCancel }: CancelPaymentButtonProps) {
+function CancelRewardButton({ onRewardCancel }: CancelRewardButtonProps) {
   const { T } = useIntl();
 
   const [modalOpened, setModalOpened] = useState(false);
@@ -266,7 +263,7 @@ function CancelPaymentButton({ onPaymentCancel }: CancelPaymentButtonProps) {
 
   return (
     <div className="relative">
-      <Button size={ButtonSize.Sm} onClick={toggleModal} pressed={modalOpened} data-testid="cancel-payment-button">
+      <Button size={ButtonSize.Sm} onClick={toggleModal} pressed={modalOpened} data-testid="cancel-reward-button">
         <ErrorWarningLine />
         {T("reward.table.detailsPanel.cancelReward.button")}
       </Button>
@@ -278,7 +275,7 @@ function CancelPaymentButton({ onPaymentCancel }: CancelPaymentButtonProps) {
         <ConfirmationModal
           onClose={closeModal}
           onConfirm={() => {
-            onPaymentCancel();
+            onRewardCancel();
             closeModal();
           }}
         />

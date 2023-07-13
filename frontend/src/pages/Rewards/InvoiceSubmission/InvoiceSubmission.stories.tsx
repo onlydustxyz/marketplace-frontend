@@ -1,5 +1,5 @@
 import { range } from "lodash";
-import { Payment } from "src/components/PayoutTable/Line";
+import { Reward } from "src/components/UserRewardTable/Line";
 import { Currency, PaymentStatus } from "src/types";
 import { UserPayoutInfo } from "src/__generated/graphql";
 import InvoiceSubmission from "./View";
@@ -11,7 +11,7 @@ export default {
   decorators: [withToasterProvider],
 };
 
-const [payment1, payment2, payment3]: Payment[] = range(1, 4).map(id => ({
+const [payment1, payment2, payment3]: Reward[] = range(1, 4).map(id => ({
   id: `payment-${id}`,
   amount: {
     value: id * 100,

@@ -19,7 +19,7 @@ const statuses = {
 };
 
 export default {
-  title: "PaymentRequestSidePanel",
+  title: "RewardSidePanel",
   component: View,
   decorators: [withSidePanelStackProvider, withContributorProfilePanelProvider],
   argTypes: {
@@ -78,7 +78,7 @@ const payment: PaymentRequestDetailsFragment = {
       sum: { amount: 0 },
     },
   },
-  payments: [
+  rewards: [
     {
       processedAt: new Date("2023-05-22T16:24:00"),
       receipt: {},

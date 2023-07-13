@@ -9,39 +9,39 @@ import TimeLine from "src/icons/TimeLine";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { pretty } from "src/utils/id";
 import { formatMoneyAmount } from "src/utils/money";
-import { Payment } from "./Line";
+import { Reward as Reward } from "./Line";
 import { ReactNode } from "react";
 
-export default function MobilePayoutList({
-  payments,
+export default function MobileUserRewardList({
+  rewards,
   payoutInfoMissing,
   invoiceNeeded,
-  onPaymentClick,
+  onRewardClick,
 }: {
-  payments: Payment[];
+  rewards: Reward[];
   payoutInfoMissing: boolean;
   invoiceNeeded: boolean;
-  onPaymentClick: (payment: Payment) => void;
+  onRewardClick: (reward: Reward) => void;
 }) {
   const { T } = useIntl();
 
   return (
     <div className="flex flex-col gap-4">
-      {payments.map(payment => (
-        <button onClick={() => onPaymentClick(payment)} key={payment.id}>
-          <MobilePaymentItem
-            title={payment?.project?.title}
-            image={<RoundedImage src={payment?.project?.logoUrl || onlyDustLogo} alt={payment?.project?.title || ""} />}
-            request={T("reward.table.paymentRequest", { id: pretty(payment.id), count: payment.workItems.length })}
-            amount={formatMoneyAmount({ amount: payment.amount.value, currency: payment.amount.currency })}
-            date={payment.requestedAt}
+      {rewards.map(reward => (
+        <button onClick={() => onRewardClick(reward)} key={reward.id}>
+          <MobileUserRewardItem
+            title={reward?.project?.title}
+            image={<RoundedImage src={reward?.project?.logoUrl || onlyDustLogo} alt={reward?.project?.title || ""} />}
+            request={T("reward.table.reward", { id: pretty(reward.id), count: reward.workItems.length })}
+            amount={formatMoneyAmount({ amount: reward.amount.value, currency: reward.amount.currency })}
+            date={reward.requestedAt}
             payoutStatus={
               <PayoutStatus
                 {...{
-                  id: `payout-status-${payment.id}`,
-                  status: payment.status,
+                  id: `payout-status-${reward.id}`,
+                  status: reward.status,
                   payoutInfoMissing,
-                  invoiceNeeded: invoiceNeeded && !payment.invoiceReceived,
+                  invoiceNeeded: invoiceNeeded && !reward.invoiceReceived,
                 }}
               />
             }
@@ -52,7 +52,7 @@ export default function MobilePayoutList({
   );
 }
 
-export function MobilePaymentItem({
+export function MobileUserRewardItem({
   image,
   title,
   request,

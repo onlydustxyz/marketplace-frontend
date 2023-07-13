@@ -184,7 +184,7 @@ test.describe("As a project lead, I", () => {
     await page.reload();
 
     await payment.click();
-    expect(sidePanel.getByTestId("cancel-payment-button")).not.toBeVisible();
+    expect(sidePanel.getByTestId("cancel-reward-button")).not.toBeVisible();
 
     await sidePanel.getByTestId("close-add-work-item-panel-btn").click();
   });

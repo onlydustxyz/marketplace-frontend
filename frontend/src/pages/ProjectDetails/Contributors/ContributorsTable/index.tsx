@@ -59,7 +59,7 @@ export default function ContributorsTable({
         contributors,
         isProjectLeader,
         remainingBudget,
-        onPaymentRequested,
+        onRewardGranted: onPaymentRequested,
       }}
     />
   ) : (

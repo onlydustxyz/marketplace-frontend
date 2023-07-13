@@ -2,7 +2,7 @@ import { SliderButton } from "@typeform/embed-react";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import Button, { Width } from "src/components/Button";
 import Card from "src/components/Card";
-import { Payment } from "src/components/PayoutTable/Line";
+import { Reward } from "src/components/UserRewardTable/Line";
 import config from "src/config";
 import { useIntl } from "src/hooks/useIntl";
 import Attachment2 from "src/icons/Attachment2";
@@ -14,7 +14,7 @@ import { UserPayoutSettingsFragment } from "src/__generated/graphql";
 
 type Props = {
   githubUserId: number;
-  paymentRequests: Payment[];
+  paymentRequests: Reward[];
   markInvoiceAsReceived: () => void;
   userInfos: UserPayoutSettingsFragment;
 };
@@ -30,7 +30,7 @@ export default function InvoiceSubmission({ paymentRequests, githubUserId, markI
     setIsClosed(true);
   }, []);
   const hiddenFields = useMemo(
-    () => buildHiddenFields({ paymentRequests, githubUserId, userInfos }),
+    () => buildHiddenFields({ paymentRequests: paymentRequests, githubUserId, userInfos }),
     [paymentRequests, githubUserId, userInfos]
   );
 
@@ -89,7 +89,7 @@ const MemoizedSlider = memo(Slider);
 
 export function buildHiddenFields({
   githubUserId,
-  paymentRequests,
+  paymentRequests: paymentRequests,
   userInfos,
 }: Omit<Props, "projectId" | "markInvoiceAsReceived">): Record<string, string> {
   return {

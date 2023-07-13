@@ -91,7 +91,7 @@ const mocks = [
 ];
 
 export default {
-  title: "PaymentTable",
+  title: "RewardTable",
   component: RewardTable,
   decorators: [withMockedProvider(mocks)],
 };

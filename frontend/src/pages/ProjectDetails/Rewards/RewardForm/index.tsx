@@ -11,7 +11,7 @@ import { Type, useRequestPaymentMutation } from "src/__generated/graphql";
 import useUnpaidIssues from "./WorkItemSidePanel/Issues/useUnpaidIssues";
 import { useCommands } from "src/providers/Commands";
 
-const PaymentForm: React.FC = () => {
+const RewardForm: React.FC = () => {
   const { T } = useIntl();
   const showToaster = useShowToaster();
   const navigate = useNavigate();
@@ -114,4 +114,4 @@ const mapFormDataToVariables = (projectId: string, { workItems, amountToWire, ho
   };
 };
 
-export default PaymentForm;
+export default RewardForm;

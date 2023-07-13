@@ -66,7 +66,7 @@ export default function ProjectsSidebar({ projectId }: Props) {
       label: T("project.details.contributors.title"),
       path: ProjectRoutePaths.Contributors,
     },
-    payments: {
+    rewards: {
       label: T("project.details.rewards.title"),
       path: ProjectRoutePaths.Rewards,
     },
@@ -74,7 +74,7 @@ export default function ProjectsSidebar({ projectId }: Props) {
 
   const availableTabs =
     currentProject && ledProjectIds.includes(currentProject?.id)
-      ? [AvailableTabs.overview, AvailableTabs.contributors, AvailableTabs.payments]
+      ? [AvailableTabs.overview, AvailableTabs.contributors, AvailableTabs.rewards]
       : [AvailableTabs.overview, AvailableTabs.contributors];
 
   if (!currentProject) return <div />;

@@ -1,6 +1,6 @@
 import { withRouter } from "storybook-addon-react-router-v6";
 
-import PaymentForm from "./View";
+import RewardForm from "./View";
 import withMockedProvider from "src/test/storybook/decorators/withMockedProvider";
 import withFormProvider from "src/test/storybook/decorators/withFormProvider";
 import {
@@ -104,7 +104,7 @@ const args = {
 };
 
 export default {
-  title: "PaymentForm",
+  title: "RewardForm",
   argTypes: {
     loading: {
       table: {
@@ -129,7 +129,7 @@ export default {
 export const Default = {
   render: () => (
     <div className="flex flex-col gap-6">
-      <PaymentForm {...args} />
+      <RewardForm {...args} />
     </div>
   ),
 

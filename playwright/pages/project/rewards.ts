@@ -30,7 +30,7 @@ export class ProjectRewardsPage {
   sidePanel = () => this.page.getByRole("dialog");
 
   cancelCurrentPayment = async () => {
-    await this.sidePanel().getByTestId("cancel-payment-button").click();
+    await this.sidePanel().getByTestId("cancel-reward-button").click();
     await this.sidePanel().getByText("Confirm").click();
   };
 }

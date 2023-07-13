@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-import { Payment } from "src/components/PayoutTable/Line";
+import { Reward } from "src/components/UserRewardTable/Line";
 import { useIntl } from "src/hooks/useIntl";
 import {
   MarkInvoiceAsReceivedMutationVariables,
@@ -11,7 +11,7 @@ import View from "./View";
 
 type Props = {
   githubUserId: number;
-  paymentRequests: Payment[];
+  paymentRequests: Reward[];
   userInfos: UserPayoutSettingsFragment;
 };
 
@@ -41,7 +41,7 @@ export default function InvoiceSubmission({ paymentRequests, githubUserId, userI
     },
   });
 
-  return <View {...{ githubUserId, paymentRequests, markInvoiceAsReceived, userInfos }} />;
+  return <View {...{ githubUserId, paymentRequests: paymentRequests, markInvoiceAsReceived, userInfos }} />;
 }
 
 gql`

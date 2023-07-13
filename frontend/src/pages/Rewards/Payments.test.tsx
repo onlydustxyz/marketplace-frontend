@@ -2,7 +2,7 @@ import { describe, expect, it, Mock, vi } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
 import matchers from "@testing-library/jest-dom/matchers";
 
-import PaymentsPage from ".";
+import RewardsPage from ".";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import { useRoles } from "src/hooks/useAuth/useRoles";
 import { GetPaymentRequestsDocument, UserPaymentRequestFragment } from "src/__generated/graphql";
@@ -80,7 +80,7 @@ const buildMockPaymentsQuery = (
   },
 });
 
-describe('"Payments" page', () => {
+describe('"Rewards" page', () => {
   beforeEach(() => {
     (useRoles as Mock).mockReturnValue({ githubUserId });
   });
@@ -98,7 +98,7 @@ describe('"Payments" page', () => {
       newData: vi.fn(() => ({})),
     };
 
-    renderWithIntl(<PaymentsPage />, {
+    renderWithIntl(<RewardsPage />, {
       wrapper: MemoryRouterProviderFactory({
         mocks: [queryMock],
       }),
@@ -110,7 +110,7 @@ describe('"Payments" page', () => {
   });
 
   it("should navigate to home when no contributions returned", async () => {
-    renderWithIntl(<PaymentsPage />, {
+    renderWithIntl(<RewardsPage />, {
       wrapper: MemoryRouterProviderFactory({
         mocks: [buildMockPaymentsQuery(githubUserId, [])],
       }),
@@ -120,7 +120,7 @@ describe('"Payments" page', () => {
   });
 
   it("should render contributions table", async () => {
-    renderWithIntl(<PaymentsPage />, {
+    renderWithIntl(<RewardsPage />, {
       wrapper: MemoryRouterProviderFactory({
         mocks: [buildMockPaymentsQuery(githubUserId)],
       }),

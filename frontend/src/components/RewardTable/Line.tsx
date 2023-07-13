@@ -52,7 +52,7 @@ export default function RewardLine({ reward, setSortingFields, onClick, selected
             <div className="flex flex-col justify-center truncate pb-0.5">
               <div className="font-walsheim text-sm font-medium text-greyscale-50">{recipient.login}</div>
               <div className="text-spaceBlue-200">
-                {T("reward.table.paymentRequest", {
+                {T("reward.table.reward", {
                   id: pretty(reward.id),
                   count: reward.workItemsAggregate.aggregate?.count,
                 })}

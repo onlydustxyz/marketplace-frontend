@@ -1,10 +1,10 @@
 import { range } from "lodash";
-import { Payment } from "src/components/PayoutTable/Line";
+import { Reward } from "src/components/UserRewardTable/Line";
 import { Currency, PaymentStatus } from "src/types";
 import { UserPayoutInfo } from "src/__generated/graphql";
 import { buildHiddenFields } from "./View";
 
-const paymentRequests: Payment[] = range(1, 4).map(id => ({
+const paymentRequests: Reward[] = range(1, 4).map(id => ({
   id: `abc${id}${id}${id}${id}${id}${id}${id}`,
   amount: {
     value: 2000 + id * 100,
@@ -63,7 +63,7 @@ const githubUserId = 123456;
 
 describe("buildHiddenFields", () => {
   it("should build hidden fields", () => {
-    const hiddenFields = buildHiddenFields({ githubUserId, userInfos, paymentRequests });
+    const hiddenFields = buildHiddenFields({ githubUserId, userInfos, paymentRequests: paymentRequests });
     expect(hiddenFields.github_id).toBe("123456");
     expect(hiddenFields.request_ids).toBe("abc1111111,abc2222222,abc3333333");
     expect(hiddenFields.pretty_requests).toBe(
@@ -85,7 +85,7 @@ describe("buildHiddenFields", () => {
     const hiddenFields = buildHiddenFields({
       githubUserId,
       userInfos: { ...userInfos, ...ens },
-      paymentRequests,
+      paymentRequests: paymentRequests,
     });
     expect(hiddenFields.payout_info).toBe("ENS Domain: 007.eth");
   });
@@ -94,7 +94,7 @@ describe("buildHiddenFields", () => {
     const hiddenFields = buildHiddenFields({
       githubUserId,
       userInfos: { ...userInfos, ...ethAddress },
-      paymentRequests,
+      paymentRequests: paymentRequests,
     });
     expect(hiddenFields.payout_info).toBe("ETH Address: 0x4675c7e5baafbffbca748158becba61ef3b0a263");
   });
@@ -103,7 +103,7 @@ describe("buildHiddenFields", () => {
     const hiddenFields = buildHiddenFields({
       githubUserId,
       userInfos: { ...userInfos, ...wireTransfer },
-      paymentRequests,
+      paymentRequests: paymentRequests,
     });
     expect(hiddenFields.payout_info).toBe("IBAN: FR0614508000708483648722R33, BIC: AGFBFRCC");
   });

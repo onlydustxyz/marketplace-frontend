@@ -5,10 +5,10 @@ import Headers from "./Headers";
 import RewardLine from "./Line";
 import { ExtendedPaymentRequestFragment } from "src/__generated/graphql";
 import { useMemo, useState } from "react";
-import { PaymentRequestSidePanelAsLeader } from "src/components/PayoutTable/PaymentRequestSidePanel";
+import { RewardSidePanelAsLeader as RewardSidePanelAsLeader } from "src/components/UserRewardTable/RewardSidePanel";
 import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
-import MobilePaymentList from "./MobileRewardList";
+import MobileRewardList from "./MobileRewardList";
 
 type Props = {
   projectId: string;
@@ -51,14 +51,14 @@ export default function RewardTable({ projectId, rewards }: Props) {
           ))}
         </Table>
       ) : (
-        <MobilePaymentList payments={sortedRewards} onPaymentClick={onRewardClick} />
+        <MobileRewardList rewards={sortedRewards} onRewardClick={onRewardClick} />
       )}
       {selectedReward && (
-        <PaymentRequestSidePanelAsLeader
+        <RewardSidePanelAsLeader
           projectId={projectId}
           open={sidePanelOpen}
           setOpen={setSidePanelOpen}
-          paymentId={selectedReward.id}
+          rewardId={selectedReward.id}
         />
       )}
     </>

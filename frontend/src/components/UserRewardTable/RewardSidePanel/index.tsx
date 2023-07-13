@@ -10,19 +10,19 @@ import { useCommands } from "src/providers/Commands";
 type Props = {
   open: boolean;
   setOpen: (open: boolean) => void;
-  paymentId: string;
+  rewardId: string;
 };
 
-export default function PaymentRequestSidePanel({
-  paymentId,
+export default function RewardSidePanel({
+  rewardId,
   ...props
 }: Props & {
-  onPaymentCancel?: () => void;
+  onRewardCancel?: () => void;
   projectLeaderView?: boolean;
 }) {
   const { user, githubUserId } = useAuth();
   const { data, loading } = usePaymentRequestDetailsQuery({
-    variables: { id: paymentId },
+    variables: { id: rewardId },
     skip: !githubUserId || !user,
   });
 
@@ -40,7 +40,7 @@ export default function PaymentRequestSidePanel({
       {...props}
       loading={loading}
       {...data?.paymentRequestsByPk}
-      id={paymentId}
+      id={rewardId}
       userId={user?.id}
       githubUserId={githubUserId}
       status={status}
@@ -50,18 +50,13 @@ export default function PaymentRequestSidePanel({
   );
 }
 
-export function PaymentRequestSidePanelAsLeader({
-  projectId,
-  paymentId,
-  setOpen,
-  ...props
-}: Props & { projectId: string }) {
+export function RewardSidePanelAsLeader({ projectId, rewardId, setOpen, ...props }: Props & { projectId: string }) {
   const showToaster = useShowToaster();
   const { T } = useIntl();
   const { notify } = useCommands();
 
   const [cancelPaymentRequest] = useCancelPaymentRequestMutation({
-    variables: { projectId, paymentId },
+    variables: { projectId, paymentId: rewardId },
     context: { graphqlErrorDisplay: "toaster" },
     onCompleted: () => {
       notify(projectId);
@@ -71,12 +66,12 @@ export function PaymentRequestSidePanelAsLeader({
   });
 
   return (
-    <PaymentRequestSidePanel
+    <RewardSidePanel
       {...props}
       projectLeaderView
-      paymentId={paymentId}
+      rewardId={rewardId}
       setOpen={setOpen}
-      onPaymentCancel={cancelPaymentRequest}
+      onRewardCancel={cancelPaymentRequest}
     />
   );
 }
