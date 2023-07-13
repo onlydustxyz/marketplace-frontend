@@ -4,7 +4,7 @@ import View from "./View";
 import { contextWithCacheHeaders } from "src/utils/headers";
 
 type Props = {
-  githubRepoId: number;
+  githubRepoId?: number;
 };
 
 export default function GithubRepoDetails({ githubRepoId }: Props) {
