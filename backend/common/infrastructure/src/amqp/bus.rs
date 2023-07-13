@@ -175,6 +175,7 @@ async fn _do_connect(config: &Config) -> Result<Connection, Error> {
 
 	connection.on_error(|error| {
 		error!(error = error.to_string(), "Lost connection to RabbitMQ");
+		println!("Lost connection to RabbitMQ");
 		std::process::exit(1);
 	});
 

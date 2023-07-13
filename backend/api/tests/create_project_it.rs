@@ -4,7 +4,7 @@ mod tests {
     use std::collections::HashMap;
     use std::time::Duration;
 
-    use rocket::{get, Shutdown};
+    use rocket::{config, get, Shutdown};
     use rocket::http::Status;
     use rocket::local::asynchronous::Client;
     use rocket::routes;
@@ -14,7 +14,9 @@ mod tests {
     use testcontainers::core::{Port, WaitFor};
     use testcontainers::images::generic::GenericImage;
     use testcontainers::images::rabbitmq::RabbitMq;
+    use tokio::io::AsyncWrite;
     use url::Url;
+    use uuid::Version::Sha1;
 
     use api::Config;
     use api::infrastructure::simple_storage;
@@ -24,7 +26,7 @@ mod tests {
     use presentation::http;
     use presentation::http::config::rocket;
 
-    #[tokio::test]
+    #[rstest]
     pub async fn it() {
         // Given
         let postgres_db = "marketplace_db".to_string();
@@ -50,7 +52,7 @@ mod tests {
             &postgres_user,
             &postgres_password,
             "localhost".to_string(),
-            32812,
+            5432,
             &postgres_db
         );
         let database_config = database::Config {
@@ -72,9 +74,10 @@ mod tests {
         let rabbit_mq_container = docker_client.run(rabbit_mq_image);
         let rabbit_mq_url = format!("amqp://127.0.0.1:{}/%2f", 5672);
         let amqp_config = amqp::Config { url: rabbit_mq_url, connection_retry_count: 100, connection_retry_interval_ms: 6000 };
-        should_create_project(amqp_config, database_config);
+        should_create_project(amqp_config, database_config).await;
+        postgres_container.stop();
+        rabbit_mq_container.stop();
     }
-
 
     pub async fn should_create_project(amqp_config: amqp::Config, database_config: database::Config) {
         let tracer_config = tracing::Config { ansi: false, json: true, location: true };
@@ -103,32 +106,35 @@ mod tests {
             graphql_client: graphql_config,
         };
         let rocket_builder = bootstrap(config).await.unwrap();
-
         let client = Client::tracked(rocket_builder).await.expect("valid rocket instance");
-
         // When
         let response = client.get("/health")
             .dispatch();
-
         // Then
         assert_eq!(response.await.status(), Status::Ok);
+        client.terminate().await.shutdown().await;
+
+
     }
 
 
-    fn build_postgres_image(postgres_db: &String, postgres_user: &String, postgres_password: &String) -> GenericImage {
+    fn build_postgres_image(postgres_db: &String, postgres_user: &String, postgres_password: &String) -> RunnableImage<GenericImage> {
         let hasura_auth_migrations_path = format!(
             "{}/tests/resources/hasura_auth_migrations",
             env::current_dir().unwrap().into_os_string().into_string().unwrap()
         );
-        GenericImage::new("postgres", "14.3-alpine")
-            .with_env_var("POSTGRES_DB".to_string(), &postgres_db.to_string())
-            .with_env_var("POSTGRES_USER".to_string(), &postgres_user.to_string())
-            .with_env_var("POSTGRES_PASSWORD".to_string(), &postgres_password.to_string())
-            .with_env_var("POSTGRES_HOST_AUTH_METHOD".to_string(), "trust".to_string())
-            .with_volume(hasura_auth_migrations_path.to_string(),
-                         "/docker-entrypoint-initdb.d".to_string())
-            .with_wait_for(WaitFor::StdOutMessage {
-                message: "database system is ready to accept connections".to_string(),
-            })
+        RunnableImage::from(
+            GenericImage::new("postgres", "14.3-alpine")
+                .with_env_var("POSTGRES_DB".to_string(), &postgres_db.to_string())
+                .with_env_var("POSTGRES_USER".to_string(), &postgres_user.to_string())
+                .with_env_var("POSTGRES_PASSWORD".to_string(), &postgres_password.to_string())
+                .with_env_var("POSTGRES_HOST_AUTH_METHOD".to_string(), "trust".to_string())
+                .with_volume(hasura_auth_migrations_path.to_string(),
+                             "/docker-entrypoint-initdb.d".to_string())
+                .with_wait_for(WaitFor::StdOutMessage {
+                    message: "database system is ready to accept connections".to_string(),
+                })
+        )
+            .with_mapped_port(Port { local: 5432, internal: 5432 })
     }
 }
