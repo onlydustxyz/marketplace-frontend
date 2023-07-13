@@ -18,6 +18,8 @@ default:
   s3:
     images_bucket_name: onlydust-app-images
     bucket_region: eu-west-1
+    access_key_id: $AWS_ACCESS_KEY_ID
+    secret_access_key: $AWS_SECRET_ACCESS_KEY
   web3:
     url: https://mainnet.infura.io/v3/$INFURA_API_KEY
 
