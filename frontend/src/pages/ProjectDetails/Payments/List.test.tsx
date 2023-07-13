@@ -67,16 +67,16 @@ describe("PaymentsList page", () => {
     });
   });
 
-  it("should render the new payment buttons", async () => {
-    await screen.findByText(/new payment/i);
+  it("should render the reward buttons", async () => {
+    await screen.findByText(/reward contributor/i);
   });
 
   it("should render the remaining budget", async () => {
     await screen.findByText(/remaining budget/i);
   });
 
-  it("should render the payments table", async () => {
-    expect(await screen.findByText("#705E6 · 1 item")).toBeInTheDocument();
+  it("should render the rewards table", async () => {
+    expect(await screen.findByText("#705E6 · 1 contribution")).toBeInTheDocument();
     expect(await screen.findByText(githubUserMock.login)).toBeInTheDocument();
     expect(await screen.findByText("$200")).toBeInTheDocument();
     expect(await screen.findByText(/complete/i)).toBeInTheDocument();

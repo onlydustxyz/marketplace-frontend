@@ -126,7 +126,7 @@ describe('"Payments" page', () => {
       }),
     });
 
-    expect(await screen.findByText("#705E6 · 1 item")).toBeInTheDocument();
+    expect(await screen.findByText("#705E6 · 1 contribution")).toBeInTheDocument();
     expect(await screen.findByText(mockContribution.budget?.project?.name || "")).toBeInTheDocument();
     expect(await screen.findAllByText("$200")).toHaveLength(2);
     expect(await screen.findAllByText(/Payout info missing/i)).toHaveLength(1);

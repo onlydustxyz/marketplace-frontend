@@ -67,7 +67,7 @@ describe('"Layout" component', () => {
     window.localStorage.clear();
   });
 
-  it("should not render Payments menu item when githubUserId is undefined", async () => {
+  it("should not render Rewards menu item when githubUserId is undefined", async () => {
     (useRoles as Mock).mockReturnValue({
       isLoggedIn: true,
       roles: [HasuraUserRole.RegisteredUser],
@@ -94,10 +94,10 @@ describe('"Layout" component', () => {
     await waitFor(() => {
       expect(queryMock.newData).not.toHaveBeenCalled();
     });
-    expect(screen.queryByText("Payments")).not.toBeInTheDocument();
+    expect(screen.queryByText("Rewards")).not.toBeInTheDocument();
   });
 
-  it("should not render Payments menu item if user has no payment", async () => {
+  it("should not render Rewards menu item if user has no reward", async () => {
     (useRoles as Mock).mockReturnValue({
       isLoggedIn: true,
       roles: [HasuraUserRole.RegisteredUser],
@@ -111,10 +111,10 @@ describe('"Layout" component', () => {
       }),
     });
 
-    expect(screen.queryByText("Payments")).not.toBeInTheDocument();
+    expect(screen.queryByText("Rewards")).not.toBeInTheDocument();
   });
 
-  it("should render My Payments menu item if user has some payments", async () => {
+  it("should render My Rewards menu item if user has some rewards", async () => {
     (useRoles as Mock).mockReturnValue({
       isLoggedIn: true,
       roles: [HasuraUserRole.RegisteredUser],
@@ -128,7 +128,7 @@ describe('"Layout" component', () => {
       }),
     });
 
-    expect(await screen.findByText("Payments")).toBeInTheDocument();
+    expect(await screen.findByText("Rewards")).toBeInTheDocument();
   });
 
   it("should always display the onlydust logo", async () => {
