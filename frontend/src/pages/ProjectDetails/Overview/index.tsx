@@ -132,12 +132,14 @@ export default function Overview() {
       <Title>
         <div className="flex flex-row items-center justify-between">
           {T("project.details.overview.title")}
-          <Button
-            size={ButtonSize.Sm}
-            onClick={() => navigate(`${ProjectRoutePaths.Rewards}/${ProjectRewardsRoutePaths.New}`)}
-          >
-            {T("project.rewardContributorButton")}
-          </Button>
+          {isProjectLeader && (
+            <Button
+              size={ButtonSize.Sm}
+              onClick={() => navigate(`${ProjectRoutePaths.Rewards}/${ProjectRewardsRoutePaths.New}`)}
+            >
+              {T("project.rewardContributorButton")}
+            </Button>
+          )}
         </div>
       </Title>
       <ProjectLeadInvitation projectId={projectId} />

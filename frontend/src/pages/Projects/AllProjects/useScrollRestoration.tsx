@@ -28,7 +28,6 @@ export default function useScrollRestoration() {
   );
 
   const restoreScroll = useCallback(() => {
-    console.log("restoreScroll");
     if (!state?.skipScrollRestoration && ref.current?.scrollTo) ref.current.scrollTo({ top: scrollPosition });
   }, [ref.current]);
 
