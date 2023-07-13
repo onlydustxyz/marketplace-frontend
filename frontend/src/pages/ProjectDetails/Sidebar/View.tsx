@@ -52,7 +52,8 @@ export default function View({ expandable, currentProject, allProjects, availabl
               navigate(
                 generatePath(RoutePaths.ProjectDetails, {
                   projectKey: project.key,
-                })
+                }),
+                { state: { openMenu: true } }
               )
             }
             disabled={!expandable}
@@ -69,7 +70,7 @@ export default function View({ expandable, currentProject, allProjects, availabl
                   {expandable && <UpDownChevrons className="h-5 w-5 fill-greyscale-50/50" />}
                 </div>
               </Listbox.Button>
-              <Listbox.Options className="flex max-h-116 flex-col divide-y overflow-y-auto rounded-b-2xl scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
+              <Listbox.Options className="flex max-h-[calc(50dvh)] flex-col divide-y overflow-y-auto rounded-b-2xl scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
                 {allProjects.map(project => (
                   <ProjectOption key={project.id} project={project} isSelected={project.id === currentProject?.id} />
                 ))}
