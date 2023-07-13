@@ -10,7 +10,7 @@ import {
   AddEthPaymentReceiptMutationVariables,
   EthereumIdentityType,
 } from "./__generated/graphql";
-import { ProjectPaymentsPage } from "./pages/project/payments";
+import { ProjectRewardsPage } from "./pages/project/rewards";
 import { EditPayoutInfoPage } from "./pages/edit_payout_info_page";
 import { populateReceipt } from "./commands/populate/populate_payments";
 
@@ -20,7 +20,7 @@ test.describe("As a project lead, I", () => {
     test.slow();
   });
 
-  test("can request a payment", async ({
+  test("can give a reward", async ({
     page,
     projects,
     users,
@@ -69,45 +69,45 @@ test.describe("As a project lead, I", () => {
     expect(await contributors.byName("ofux").paidContributions()).toBe("2");
     expect(await contributors.byName("ofux").leftToPay()).toBe("-");
 
-    const newPaymentPage = await contributors.byName(recipient.github.login).pay();
-    expect(await newPaymentPage.contributorText()).toEqual(recipient.github.login);
+    const newRewardPage = await contributors.byName(recipient.github.login).pay();
+    expect(await newRewardPage.contributorText()).toEqual(recipient.github.login);
 
     // Play with ignored items
     {
       const issueNumber = "#15";
       // ignore/unignore
-      await newPaymentPage.addWorkItemButton().click();
-      await newPaymentPage.issuesTab().click();
-      await expect(newPaymentPage.showIgnoredToggle()).not.toBeVisible();
-      await expect(newPaymentPage.workItem(issueNumber)).toBeVisible();
-      await newPaymentPage.ignoreWorkItem(issueNumber);
-      await expect(newPaymentPage.workItem(issueNumber)).not.toBeVisible();
-      await newPaymentPage.showIgnoredToggle().click();
-      await expect(newPaymentPage.workItem(issueNumber)).toBeVisible();
-      await newPaymentPage.ignoreWorkItem(issueNumber); // unignore
-      await expect(newPaymentPage.showIgnoredToggle()).not.toBeVisible();
-      await expect(newPaymentPage.workItem(issueNumber)).toBeVisible();
+      await newRewardPage.addWorkItemButton().click();
+      await newRewardPage.issuesTab().click();
+      await expect(newRewardPage.showIgnoredToggle()).not.toBeVisible();
+      await expect(newRewardPage.workItem(issueNumber)).toBeVisible();
+      await newRewardPage.ignoreWorkItem(issueNumber);
+      await expect(newRewardPage.workItem(issueNumber)).not.toBeVisible();
+      await newRewardPage.showIgnoredToggle().click();
+      await expect(newRewardPage.workItem(issueNumber)).toBeVisible();
+      await newRewardPage.ignoreWorkItem(issueNumber); // unignore
+      await expect(newRewardPage.showIgnoredToggle()).not.toBeVisible();
+      await expect(newRewardPage.workItem(issueNumber)).toBeVisible();
 
       // ignore/add/auto-unignore
-      await newPaymentPage.ignoreWorkItem(issueNumber);
+      await newRewardPage.ignoreWorkItem(issueNumber);
 
       await Promise.all([
         page.waitForResponse(async resp => (await resp.json()).data.unignoreIssue && resp.status() === 200),
-        newPaymentPage.addWorkItem(issueNumber),
+        newRewardPage.addWorkItem(issueNumber),
       ]);
 
-      await newPaymentPage.closeWorkItemsPanelButton().click();
+      await newRewardPage.closeWorkItemsPanelButton().click();
       await page
         .locator("[data-testid='added-work-items'] > div", { hasText: issueNumber })
         .getByRole("button")
-        .click(); // remove from payment request
-      await newPaymentPage.addWorkItemButton().click();
-      await expect(newPaymentPage.showIgnoredToggle()).not.toBeVisible();
-      await expect(newPaymentPage.workItem(issueNumber)).toBeVisible();
-      await newPaymentPage.closeWorkItemsPanelButton().click();
+        .click(); // remove from reward
+      await newRewardPage.addWorkItemButton().click();
+      await expect(newRewardPage.showIgnoredToggle()).not.toBeVisible();
+      await expect(newRewardPage.workItem(issueNumber)).toBeVisible();
+      await newRewardPage.closeWorkItemsPanelButton().click();
     }
 
-    await newPaymentPage.requestPayment({
+    await newRewardPage.giveReward({
       otherPullRequests: [
         "https://github.com/od-mocks/cool-repo-A/pull/1",
         "https://github.com/od-mocks/cool-repo-A/pull/2",
@@ -128,21 +128,21 @@ test.describe("As a project lead, I", () => {
       ],
     });
 
-    const paymentsPage = new ProjectPaymentsPage(page, project);
+    const rewardsPage = new ProjectRewardsPage(page, project);
 
     const remainingBudget = await retry(
-      () => paymentsPage.remainingBudget(),
+      () => rewardsPage.remainingBudget(),
       remainingBudget => remainingBudget === "$85,600",
       100
     );
     expect(remainingBudget).toBe("$85,600");
 
-    const payment = paymentsPage.paymentList().nth(1);
+    const payment = rewardsPage.paymentList().nth(1);
     await payment.click();
 
-    const sidePanel = paymentsPage.sidePanel();
+    const sidePanel = rewardsPage.sidePanel();
 
-    expect(sidePanel.getByText(`Payment #${(await payment.paymentId())?.substring(0, 5).toUpperCase()}`)).toBeVisible();
+    expect(sidePanel.getByText(`Reward #${(await payment.paymentId())?.substring(0, 5).toUpperCase()}`)).toBeVisible();
     await expect(sidePanel.getByText("$1,000")).toBeVisible();
     await expect(sidePanel.getByText("from")).toBeVisible();
     await expect(sidePanel.locator("div", { hasText: "#4 · Create a-new-file.txt" }).first()).toBeVisible(); // auto added
@@ -194,23 +194,23 @@ test.describe("As a project lead, I", () => {
     const leader = users.TokioRs;
     const recipient = users.Anthony;
 
-    const projectPaymentsPage = new ProjectPaymentsPage(page, project);
+    const projectRewardsPage = new ProjectRewardsPage(page, project);
 
     await signIn(leader);
     await acceptTermsAndConditions();
-    await projectPaymentsPage.goto();
-    await projectPaymentsPage.reload();
+    await projectRewardsPage.goto();
+    await projectRewardsPage.reload();
 
-    const newPaymentPage = await projectPaymentsPage.newPayment();
-    await newPaymentPage.requestPayment({
+    const newPaymentPage = await projectRewardsPage.newPayment();
+    await newPaymentPage.giveReward({
       recipient,
       otherPullRequests: ["https://github.com/od-mocks/cool-repo-A/pull/1"],
     });
 
-    const payment = projectPaymentsPage.paymentList().nth(1);
+    const payment = projectRewardsPage.paymentList().nth(1);
     const paymentId = (await payment.paymentId()) || "";
     await payment.click();
-    await projectPaymentsPage.cancelCurrentPayment();
+    await projectRewardsPage.cancelCurrentPayment();
     expect(page.locator("div", { hasText: paymentId })).not.toBeVisible();
   });
 
@@ -226,7 +226,7 @@ test.describe("As a project lead, I", () => {
     const otherLeader = users.Olivier;
     const recipient = users.Anthony;
 
-    const projectPaymentsPage = new ProjectPaymentsPage(page, project);
+    const projectRewardsPage = new ProjectRewardsPage(page, project);
 
     const listPaymentsAs = async (
       user: User,
@@ -237,20 +237,20 @@ test.describe("As a project lead, I", () => {
       if (shouldAcceptTermsAndConditions) {
         await acceptTermsAndConditions({ skipOnboardingWizzard });
       }
-      await projectPaymentsPage.goto();
-      await projectPaymentsPage.reload();
+      await projectRewardsPage.goto();
+      await projectRewardsPage.reload();
     };
 
     await listPaymentsAs(leader, true);
 
     // 1. Request a payment, payment is "pending"
-    const newPaymentPage = await projectPaymentsPage.newPayment();
-    await newPaymentPage.requestPayment({
+    const newPaymentPage = await projectRewardsPage.newPayment();
+    await newPaymentPage.giveReward({
       recipient,
       otherPullRequests: ["https://github.com/od-mocks/cool-repo-A/pull/1"],
     });
 
-    const paymentRow = projectPaymentsPage.paymentList().nth(1);
+    const paymentRow = projectRewardsPage.paymentList().nth(1);
     const pendingStatus = await retry(
       async () => {
         await listPaymentsAs(otherLeader, true, true);
@@ -271,7 +271,7 @@ test.describe("As a project lead, I", () => {
     const processingStatus = await retry(
       async () => {
         await listPaymentsAs(otherLeader);
-        return projectPaymentsPage.paymentList().nth(1).status();
+        return projectRewardsPage.paymentList().nth(1).status();
       },
       value => value === "Processing"
     );
@@ -298,7 +298,7 @@ test.describe("As a project lead, I", () => {
       async () => {
         await page.reload();
         await listPaymentsAs(otherLeader);
-        return projectPaymentsPage.paymentList().nth(1).status();
+        return projectRewardsPage.paymentList().nth(1).status();
       },
       value => value === "Complete"
     );

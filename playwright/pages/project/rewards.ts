@@ -3,7 +3,7 @@ import { Project, User } from "../../types";
 import { sortBy } from "lodash";
 import { sleep } from "../../commands/common";
 
-export class ProjectPaymentsPage {
+export class ProjectRewardsPage {
   readonly page: Page;
   readonly project: Project;
   readonly url: string;
@@ -11,7 +11,7 @@ export class ProjectPaymentsPage {
   constructor(page: Page, project: Project) {
     this.page = page;
     this.project = project;
-    this.url = `/p/${project.key}/payments`;
+    this.url = `/p/${project.key}/rewards`;
   }
 
   goto = () => this.page.goto(this.url);
@@ -22,9 +22,9 @@ export class ProjectPaymentsPage {
   paymentList = () => new PaymentTable(this.page.locator("#payment_table"));
 
   newPayment = async () => {
-    await this.page.getByText("New payment").click();
+    await this.page.getByText("Reward contributor").click();
     await expect(this.page).toHaveURL(`${this.url}/new`);
-    return new NewPaymentPage(this.page);
+    return new NewRewardPage(this.page);
   };
 
   sidePanel = () => this.page.getByRole("dialog");
@@ -35,14 +35,14 @@ export class ProjectPaymentsPage {
   };
 }
 
-export class NewPaymentPage {
+export class NewRewardPage {
   readonly page: Page;
 
   constructor(page: Page) {
     this.page = page;
   }
 
-  requestPayment = async ({
+  giveReward = async ({
     recipient,
     pullRequestIndexes = [],
     otherPullRequests = [],
@@ -137,9 +137,9 @@ export class NewPaymentPage {
       }
     }
 
-    // Close panel and submit payment request
+    // Close panel and submit reward
     await this.closeWorkItemsPanelButton().click();
-    await this.page.getByText("Confirm payment").click();
+    await this.page.getByTestId("give-reward-button").click();
   };
 
   contributorText = () => this.page.getByTestId("contributor-selection-value").textContent();

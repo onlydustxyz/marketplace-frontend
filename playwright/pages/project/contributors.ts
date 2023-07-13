@@ -1,5 +1,5 @@
 import { Page, Locator } from "@playwright/test";
-import { NewPaymentPage } from "./payments";
+import { NewRewardPage } from "./rewards";
 
 export class ProjectContributorsPage {
   readonly page: Page;
@@ -40,6 +40,6 @@ export class ContributorLine {
   pay = async () => {
     await this.row.hover();
     await this.row.getByRole("button").click();
-    return new NewPaymentPage(this.page.page);
+    return new NewRewardPage(this.page.page);
   };
 }

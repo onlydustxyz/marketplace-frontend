@@ -109,7 +109,12 @@ export default function WorkEstimation({
         </div>
         {!disabled && (
           <div className="w-full p-6 pt-5">
-            <Button htmlType="submit" width={Width.Full} disabled={requestNewPaymentMutationLoading}>
+            <Button
+              htmlType="submit"
+              width={Width.Full}
+              disabled={requestNewPaymentMutationLoading}
+              data-testid="give-reward-button"
+            >
               <span>{T("reward.form.confirm")}</span>
             </Button>
           </div>

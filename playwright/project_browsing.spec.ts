@@ -76,7 +76,7 @@ test.describe("As a visitor, I", () => {
   });
 
   test("cannot access restricted projects page", async ({ page, projects }) => {
-    await page.goto(`/p/${projects.ProjectA.key}/payments`);
+    await page.goto(`/p/${projects.ProjectA.key}/rewards`);
     await expect(page).toHaveURL(`/p/${projects.ProjectA.key}`);
   });
 });
@@ -95,7 +95,7 @@ test.describe("As a registered user, I", () => {
   }) => {
     await signIn(users.Olivier);
     await acceptTermsAndConditions({ skipOnboardingWizzard: true });
-    await page.goto(`/p/${projects.ProjectA.key}/payments`);
+    await page.goto(`/p/${projects.ProjectA.key}/rewards`);
     await expect(page).toHaveURL(`/p/${projects.ProjectA.key}`);
   });
 
@@ -152,7 +152,7 @@ test.describe("As a registered user, I", () => {
     {
       const paymentsPage = await projectPage.payments();
       const newPaymentPage = await paymentsPage.newPayment();
-      await newPaymentPage.requestPayment({
+      await newPaymentPage.giveReward({
         recipient: applicant,
         otherPullRequests: ["https://github.com/od-mocks/cool-repo-A/pull/1"],
       });
