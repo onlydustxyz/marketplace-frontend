@@ -1,6 +1,6 @@
 import { useIntl } from "src/hooks/useIntl";
 import OverviewPanel from "./OverviewPanel";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { generatePath, useNavigate, useOutletContext } from "react-router-dom";
 import { GetProjectOverviewDetailsDocument, GetProjectOverviewDetailsQuery } from "src/__generated/graphql";
 import Card from "src/components/Card";
 import GithubRepoDetails from "./GithubRepoDetails";
@@ -28,17 +28,18 @@ import useProjectVisibility from "src/hooks/useProjectVisibility";
 import ProjectLeadInvitation from "src/components/ProjectLeadInvitation";
 import { useSuspenseQuery_experimental } from "@apollo/client";
 import { Dispatch, useEffect } from "react";
-import { ProjectRewardsRoutePaths, ProjectRoutePaths } from "src/App";
+import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
 import { useMediaQuery } from "usehooks-ts";
 import { viewportConfig } from "src/config";
 
 type OutletContext = {
   projectId: string;
+  projectKey: string;
 };
 
 export default function Overview() {
   const { T } = useIntl();
-  const { projectId } = useOutletContext<OutletContext>();
+  const { projectId, projectKey } = useOutletContext<OutletContext>();
   const { isLoggedIn, githubUserId } = useAuth();
   const { ledProjectIds } = useAuth();
   const { lastVisitedProjectId } = useSession();
@@ -64,6 +65,7 @@ export default function Overview() {
   const languages = getMostUsedLanguages(getDeduplicatedAggregatedLanguages(githubRepos.map(r => r.repo)));
   const hiring = data?.projects[0]?.hiring;
   const invitationId = data?.projects[0]?.pendingInvitations.find(i => i.githubUserId === githubUserId)?.id;
+  const isProjectLeader = ledProjectIds.includes(projectId);
 
   const { alreadyApplied, applyToProject } = useApplications(projectId);
   const { isCurrentUserMember } = useProjectVisibility(projectId);
@@ -81,12 +83,23 @@ export default function Overview() {
       <Title>
         <div className="flex flex-row items-center justify-between">
           {T("project.details.overview.title")}
-          <Button
-            size={ButtonSize.Sm}
-            onClick={() => navigate(`${ProjectRoutePaths.Rewards}/${ProjectRewardsRoutePaths.New}`)}
-          >
-            {T("project.rewardContributorButton")}
-          </Button>
+          {isProjectLeader && (
+            <Button
+              size={ButtonSize.Sm}
+              onClick={() =>
+                navigate(
+                  generatePath(
+                    `${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Rewards}/${ProjectRewardsRoutePaths.New}`,
+                    {
+                      projectKey,
+                    }
+                  )
+                )
+              }
+            >
+              {T("project.rewardContributorButton")}
+            </Button>
+          )}
         </div>
       </Title>
       <ProjectLeadInvitation projectId={projectId} />
