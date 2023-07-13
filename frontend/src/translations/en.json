@@ -582,6 +582,7 @@
   },
   "projectLeadInvitation": {
     "accept": "Accept invite",
+    "acceptShort": "Accept",
     "prompt": "You've been promoted to Project Lead on __projectName__"
   },
   "projects": {
