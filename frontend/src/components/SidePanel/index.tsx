@@ -11,6 +11,7 @@ type Props = {
   action?: ReactElement;
   placement?: "right" | "bottom";
   hasCloseButton?: boolean;
+  withBackdrop?: boolean;
 } & PropsWithChildren;
 
 export default function SidePanel({
@@ -20,6 +21,7 @@ export default function SidePanel({
   children,
   placement = "right",
   hasCloseButton = true,
+  withBackdrop,
 }: Props) {
   useEffect(() => {
     document.body.style.setProperty("overflow", "auto");
@@ -56,14 +58,15 @@ export default function SidePanel({
   }[placement];
 
   return (
-    <Transition
-      show={open}
-      as={Fragment}
-      enter="transform transition ease-in-out duration-300"
-      leave="transform transition ease-in-out duration-300"
-      {...transitionProps}
-    >
-      <Dialog open={open} onClose={onClose} as={Fragment}>
+    <Dialog open={open} onClose={onClose} as="div">
+      {withBackdrop && <div className="fixed bottom-0 h-screen w-screen bg-black/40" aria-hidden="true" />}
+      <Transition
+        show={open}
+        as={Fragment}
+        enter="transform transition ease-in-out duration-300"
+        leave="transform transition ease-in-out duration-300"
+        {...transitionProps}
+      >
         <Dialog.Panel
           className={classNames(
             {
@@ -90,7 +93,7 @@ export default function SidePanel({
           )}
           {children}
         </Dialog.Panel>
-      </Dialog>
-    </Transition>
+      </Transition>
+    </Dialog>
   );
 }

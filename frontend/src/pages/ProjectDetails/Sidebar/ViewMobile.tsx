@@ -5,7 +5,7 @@ import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import { ProjectDetailsTab } from ".";
 import BackLink from "./BackLink";
 import View, { SidebarProjectDetails } from "./View";
-import SidePanelWithBackdrop from "src/components/SidePanelWithBackdrop";
+import SidePanel from "src/components/SidePanel";
 import { useLocation, useNavigate } from "react-router-dom";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import CloseLine from "src/icons/CloseLine";
@@ -56,9 +56,9 @@ export default function ViewMobile(props: Props) {
           </div>
         )}
       </div>
-      <SidePanelWithBackdrop open={panelOpen} setOpen={setPanelOpen} placement="bottom" hasCloseButton={false}>
+      <SidePanel withBackdrop open={panelOpen} setOpen={setPanelOpen} placement="bottom" hasCloseButton={false}>
         <View {...props} onLinkClick={() => setPanelOpen(false)} />
-      </SidePanelWithBackdrop>
+      </SidePanel>
     </>
   );
 }

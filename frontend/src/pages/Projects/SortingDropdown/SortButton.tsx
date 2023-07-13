@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import { useState } from "react";
-import SidePanelWithBackdrop from "src/components/SidePanelWithBackdrop";
+import SidePanel from "src/components/SidePanel";
 import { useIntl } from "src/hooks/useIntl";
 import { Sorting } from "src/pages/Projects/sorting";
 
@@ -23,7 +23,7 @@ export function SortButton({ all, current, onChange }: Props) {
       >
         {T("projects.sorting.button")}
       </button>
-      <SidePanelWithBackdrop open={panelOpen} setOpen={setPanelOpen} placement="bottom">
+      <SidePanel withBackdrop open={panelOpen} setOpen={setPanelOpen} placement="bottom">
         <div className="flex flex-col gap-6 p-6">
           <div className="font-belwe text-2xl">{T("projects.sorting.label")}</div>
           <div className="flex flex-wrap gap-2">
@@ -41,7 +41,7 @@ export function SortButton({ all, current, onChange }: Props) {
             ))}
           </div>
         </div>
-      </SidePanelWithBackdrop>
+      </SidePanel>
     </>
   );
 }
