@@ -55,7 +55,8 @@ export default function ProjectDetails() {
     <>
       <Helmet>
         <title>{`${name} — OnlyDust`}</title>
-        <meta name="description" content={shortDescription || ""} />
+        <meta property="og:title" content={`${name} — OnlyDust`} />
+        <meta property="og:description" content={shortDescription || ""} />
       </Helmet>
       <View projectId={projectId} projectKey={projectKey || ""} />
     </>

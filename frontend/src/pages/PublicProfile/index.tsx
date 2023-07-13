@@ -26,7 +26,8 @@ const PublicProfilePage = () => {
     <>
       <Helmet>
         <title>{`${userProfile.profile.login} — OnlyDust`}</title>
-        {userProfile.profile.bio && <meta name="description" content={userProfile.profile.bio} />}
+        <meta property="og:title" content={`${userProfile.profile.login} — OnlyDust`} />
+        {userProfile.profile.bio && <meta property="og:description" content={userProfile.profile.bio} />}
       </Helmet>
       <div className="bg-public-profile lg:h-[calc(100dvh)] lg:w-screen">
         <div className="lg:max-5xl xl:max-6xl mx-auto flex h-full flex-col justify-between md:container md:px-4 2xl:max-w-7xl">
