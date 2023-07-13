@@ -1,6 +1,6 @@
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import { useAuth } from "src/hooks/useAuth";
-import AllProjects from "./AllProjects";
+import AllProjects, { DEFAULT_SORTING } from "./AllProjects";
 import FilterPanel from "./FilterPanel";
 import { ProjectFilterProvider } from "./useProjectFilter";
 import useScrollRestoration from "./AllProjects/useScrollRestoration";
@@ -9,6 +9,8 @@ import Loader from "src/components/Loader";
 import SearchBar from "./SearchBar";
 import { useDebounce } from "usehooks-ts";
 import SidePanel from "src/components/SidePanel";
+import { SortingPanel } from "./SortingDropdown/SortingPanel";
+import { useLocalStorage } from "react-use";
 
 export enum Sorting {
   Trending = "trending",
@@ -28,7 +30,10 @@ export default function Projects() {
   const debouncedSearchQuery = useDebounce<string>(search, 200);
   useEffect(() => setSearchQuery(debouncedSearchQuery), [debouncedSearchQuery]);
 
+  const [sorting, setSorting] = useLocalStorage("PROJECT_SORTING_2", DEFAULT_SORTING);
+
   const [filterPanelOpen, setFilterPanelOpen] = useState(false);
+  const [sortingPanelOpen, setSortingPanelOpen] = useState(false);
 
   const { ref, restoreScroll } = useScrollRestoration();
 
@@ -48,9 +53,13 @@ export default function Projects() {
                 <AllProjects
                   search={searchQuery}
                   clearSearch={() => setSearch("")}
+                  sorting={sorting}
+                  setSorting={setSorting}
                   restoreScroll={restoreScroll}
                   filterPanelOpen={filterPanelOpen}
                   setFilterPanelOpen={setFilterPanelOpen}
+                  sortingPanelOpen={sortingPanelOpen}
+                  setSortingPanelOpen={setSortingPanelOpen}
                 />
               </Suspense>
             </div>
@@ -59,6 +68,9 @@ export default function Projects() {
       </Background>
       <SidePanel withBackdrop open={filterPanelOpen} setOpen={setFilterPanelOpen} placement="bottom">
         <FilterPanel isProjectLeader={isProjectLeader} fromSidePanel />
+      </SidePanel>
+      <SidePanel withBackdrop open={sortingPanelOpen} setOpen={setSortingPanelOpen} placement="bottom">
+        <SortingPanel all={PROJECT_SORTINGS} current={sorting || DEFAULT_SORTING} onChange={setSorting} />
       </SidePanel>
     </ProjectFilterProvider>
   );

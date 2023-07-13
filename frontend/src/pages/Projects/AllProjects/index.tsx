@@ -14,8 +14,7 @@ import {
   ProjectsOrderBy,
 } from "src/__generated/graphql";
 import { isProjectVisibleToUser } from "src/hooks/useProjectVisibility";
-import SortingDropdown, { PROJECT_SORTINGS, Sorting } from "src/pages/Projects/SortingDropdown";
-import { useLocalStorage } from "react-use";
+import SortingDropdown, { PROJECT_SORTINGS, Sorting } from "src/pages/Projects/SortingDropdown/SortingDropdown";
 import { useIntl } from "src/hooks/useIntl";
 import { FilterButton } from "src/pages/Projects/FilterPanel/FilterButton";
 import { SortButton } from "src/pages/Projects/SortingDropdown/SortButton";
@@ -25,17 +24,25 @@ export const DEFAULT_SORTING = Sorting.Trending;
 type Props = {
   search: string;
   clearSearch: () => void;
+  sorting?: Sorting;
+  setSorting: (sorting?: Sorting) => void;
   restoreScroll: () => void;
   filterPanelOpen: boolean;
   setFilterPanelOpen: (open: boolean) => void;
+  sortingPanelOpen: boolean;
+  setSortingPanelOpen: (open: boolean) => void;
 };
 
 export default function AllProjects({
   search,
   clearSearch,
+  sorting,
+  setSorting,
   restoreScroll,
   filterPanelOpen,
   setFilterPanelOpen,
+  sortingPanelOpen,
+  setSortingPanelOpen,
 }: Props) {
   const { T } = useIntl();
 
@@ -44,8 +51,6 @@ export default function AllProjects({
     projectFilter: { technologies, sponsors, ownership },
     clear: clearFilters,
   } = useProjectFilter();
-
-  const [sorting, setSorting] = useLocalStorage("PROJECT_SORTING_2", DEFAULT_SORTING);
 
   const getProjectsQuery = useSuspenseQuery<GetProjectsQuery>(GetProjectsDocument, {
     variables: {
@@ -83,7 +88,7 @@ export default function AllProjects({
           <SortingDropdown all={PROJECT_SORTINGS} current={sorting || DEFAULT_SORTING} onChange={setSorting} />
         </div>
         <div className="flex items-center gap-2 xl:hidden">
-          <SortButton all={PROJECT_SORTINGS} current={sorting || DEFAULT_SORTING} onChange={setSorting} />
+          <SortButton panelOpen={sortingPanelOpen} setPanelOpen={setSortingPanelOpen} />
           <FilterButton panelOpen={filterPanelOpen} setPanelOpen={setFilterPanelOpen} />
         </div>
       </div>
