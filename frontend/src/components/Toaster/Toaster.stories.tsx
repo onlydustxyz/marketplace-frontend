@@ -12,6 +12,9 @@ const args = {
   message: "Payment information successfully updated",
   visible: true,
   isError: false,
+  setVisible: () => {
+    return;
+  },
 };
 
 export const Default = Template.bind({});
