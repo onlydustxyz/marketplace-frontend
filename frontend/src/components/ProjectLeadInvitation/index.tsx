@@ -7,6 +7,7 @@ import CheckLine from "src/icons/CheckLine";
 import { contextWithCacheHeaders } from "src/utils/headers";
 import { useT } from "talkr";
 import { useMediaQuery } from "usehooks-ts";
+import Button from "src/components/Button";
 
 interface ProjectLeadInvitationProps {
   projectId: string;
@@ -36,14 +37,10 @@ export default function ProjectLeadInvitation({ projectId }: ProjectLeadInvitati
     <ImageCard backgroundImageUrl={headerElementBackground} backgroundSize={BackgroundSize.Cover} height={Height.Fit}>
       <div className="flex flex-row items-center justify-between px-6 py-5 font-medium">
         <div className="text-lg">{T("projectLeadInvitation.prompt", { projectName })}</div>
-        <div
-          onClick={() => acceptInvitation()}
-          className="flex w-fit flex-row items-center justify-between gap-2 rounded-xl bg-neutral-100 px-4 py-3 text-black shadow-inner shadow-neutral-400 hover:cursor-pointer"
-          data-testid="accept-invite-button"
-        >
+        <Button onClick={() => acceptInvitation()} data-testid="accept-invite-button">
           <CheckLine className="text-xl font-normal text-black" />
           <div>{T(isMd ? "projectLeadInvitation.accept" : "projectLeadInvitation.acceptShort")}</div>
-        </div>
+        </Button>
       </div>
     </ImageCard>
   ) : (
