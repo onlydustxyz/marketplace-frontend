@@ -1,8 +1,9 @@
-import { Locator, Page, expect } from "@playwright/test";
+import { Locator, Page, expect, BrowserContext } from "@playwright/test";
 import { ViewProfilePage } from "./view_profile";
 
 export class EditProfilePage {
   readonly page: Page;
+  readonly context: BrowserContext;
 
   public readonly login: Locator;
   public readonly avatar: Locator;
@@ -27,8 +28,9 @@ export class EditProfilePage {
   public readonly closeButton: Locator;
   public readonly completionScore: Locator;
 
-  constructor(page: Page) {
+  constructor(page: Page, context: BrowserContext) {
     this.page = page;
+    this.context = context;
 
     this.login = this.page.locator("[data-testid=login]");
     this.avatar = this.page.locator("[data-testid=avatarUrl]");
@@ -72,6 +74,6 @@ export class EditProfilePage {
 
   save = async () => {
     await this.page.getByRole("button", { name: "Done" }).click();
-    return new ViewProfilePage(this.page);
+    return new ViewProfilePage(this.page, this.context);
   };
 }

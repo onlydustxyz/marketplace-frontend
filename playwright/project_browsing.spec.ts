@@ -150,9 +150,9 @@ test.describe("As a registered user, I", () => {
 
     // He request a payment for Gregoire's first contribution
     {
-      const paymentsPage = await projectPage.payments();
-      const newPaymentPage = await paymentsPage.newPayment();
-      await newPaymentPage.giveReward({
+      const rewardsPage = await projectPage.rewards();
+      const newRewardPage = await rewardsPage.giveReward();
+      await newRewardPage.giveReward({
         recipient: applicant,
         otherPullRequests: ["https://github.com/od-mocks/cool-repo-A/pull/1"],
       });

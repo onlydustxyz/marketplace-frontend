@@ -137,12 +137,12 @@ test.describe("As a project lead, I", () => {
     );
     expect(remainingBudget).toBe("$85,600");
 
-    const payment = rewardsPage.paymentList().nth(1);
-    await payment.click();
+    const reward = rewardsPage.rewardList().nth(1);
+    await reward.click();
 
     const sidePanel = rewardsPage.sidePanel();
 
-    expect(sidePanel.getByText(`Reward #${(await payment.paymentId())?.substring(0, 5).toUpperCase()}`)).toBeVisible();
+    expect(sidePanel.getByText(`Reward #${(await reward.rewardId())?.substring(0, 5).toUpperCase()}`)).toBeVisible();
     await expect(sidePanel.getByText("$1,000")).toBeVisible();
     await expect(sidePanel.getByText("from")).toBeVisible();
     await expect(sidePanel.locator("div", { hasText: "#4 · Create a-new-file.txt" }).first()).toBeVisible(); // auto added
@@ -158,8 +158,8 @@ test.describe("As a project lead, I", () => {
     await githubIssuePage.waitForLoadState();
     const githubIssueUrl = githubIssuePage.url();
 
-    const paymentId = await payment.paymentId();
-    await populateReceipt(paymentId || "not found", project, {
+    const rewardId = await reward.rewardId();
+    await populateReceipt(rewardId || "not found", project, {
       currencyCode: "USDC",
       recipientETHIdentity: {
         type: EthereumIdentityType.EthereumName,
@@ -183,13 +183,19 @@ test.describe("As a project lead, I", () => {
 
     await page.reload();
 
-    await payment.click();
+    await reward.click();
     expect(sidePanel.getByTestId("cancel-reward-button")).not.toBeVisible();
 
     await sidePanel.getByTestId("close-add-work-item-panel-btn").click();
   });
 
-  test("can cancel a pending payment request", async ({ page, projects, users, signIn, acceptTermsAndConditions }) => {
+  test("can cancel a reward with pending payment request", async ({
+    page,
+    projects,
+    users,
+    signIn,
+    acceptTermsAndConditions,
+  }) => {
     const project = projects.Kakarot;
     const leader = users.TokioRs;
     const recipient = users.Anthony;
@@ -201,20 +207,20 @@ test.describe("As a project lead, I", () => {
     await projectRewardsPage.goto();
     await projectRewardsPage.reload();
 
-    const newPaymentPage = await projectRewardsPage.newPayment();
-    await newPaymentPage.giveReward({
+    const newRewardPage = await projectRewardsPage.giveReward();
+    await newRewardPage.giveReward({
       recipient,
       otherPullRequests: ["https://github.com/od-mocks/cool-repo-A/pull/1"],
     });
 
-    const payment = projectRewardsPage.paymentList().nth(1);
-    const paymentId = (await payment.paymentId()) || "";
-    await payment.click();
-    await projectRewardsPage.cancelCurrentPayment();
-    expect(page.locator("div", { hasText: paymentId })).not.toBeVisible();
+    const reward = projectRewardsPage.rewardList().nth(1);
+    const rewardId = (await reward.rewardId()) || "";
+    await reward.click();
+    await projectRewardsPage.cancelCurrentReward();
+    expect(page.locator("div", { hasText: rewardId })).not.toBeVisible();
   });
 
-  test("can see payments made by other project leads on the same project", async ({
+  test("can see rewards made by other project leads on the same project", async ({
     page,
     projects,
     users,
@@ -228,7 +234,7 @@ test.describe("As a project lead, I", () => {
 
     const projectRewardsPage = new ProjectRewardsPage(page, project);
 
-    const listPaymentsAs = async (
+    const listRewardsAs = async (
       user: User,
       shouldAcceptTermsAndConditions?: boolean,
       skipOnboardingWizzard?: boolean
@@ -241,20 +247,20 @@ test.describe("As a project lead, I", () => {
       await projectRewardsPage.reload();
     };
 
-    await listPaymentsAs(leader, true);
+    await listRewardsAs(leader, true);
 
-    // 1. Request a payment, payment is "pending"
-    const newPaymentPage = await projectRewardsPage.newPayment();
-    await newPaymentPage.giveReward({
+    // 1. Give a reward, payment is "pending"
+    const newRewardPage = await projectRewardsPage.giveReward();
+    await newRewardPage.giveReward({
       recipient,
       otherPullRequests: ["https://github.com/od-mocks/cool-repo-A/pull/1"],
     });
 
-    const paymentRow = projectRewardsPage.paymentList().nth(1);
+    const rewardRow = projectRewardsPage.rewardList().nth(1);
     const pendingStatus = await retry(
       async () => {
-        await listPaymentsAs(otherLeader, true, true);
-        return paymentRow.status();
+        await listRewardsAs(otherLeader, true, true);
+        return rewardRow.status();
       },
       value => value === "Pending"
     );
@@ -270,8 +276,8 @@ test.describe("As a project lead, I", () => {
 
     const processingStatus = await retry(
       async () => {
-        await listPaymentsAs(otherLeader);
-        return projectRewardsPage.paymentList().nth(1).status();
+        await listRewardsAs(otherLeader);
+        return projectRewardsPage.rewardList().nth(1).status();
       },
       value => value === "Processing"
     );
@@ -282,7 +288,7 @@ test.describe("As a project lead, I", () => {
       mutation: AddEthPaymentReceiptDocument,
       variables: {
         projectId: project.id,
-        paymentId: await paymentRow.paymentId(),
+        paymentId: await rewardRow.rewardId(),
         amount: "1000",
         currencyCode: "USDC",
         recipientIdentity: {
@@ -297,8 +303,8 @@ test.describe("As a project lead, I", () => {
     const completeStatus = await retry(
       async () => {
         await page.reload();
-        await listPaymentsAs(otherLeader);
-        return projectRewardsPage.paymentList().nth(1).status();
+        await listRewardsAs(otherLeader);
+        return projectRewardsPage.rewardList().nth(1).status();
       },
       value => value === "Complete"
     );

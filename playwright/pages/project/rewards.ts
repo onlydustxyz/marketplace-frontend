@@ -19,9 +19,9 @@ export class ProjectRewardsPage {
 
   remainingBudget = () => this.page.locator("#remainingBudget").textContent();
 
-  paymentList = () => new RewardTable(this.page.locator("#reward_table"));
+  rewardList = () => new RewardTable(this.page.locator("#reward_table"));
 
-  newPayment = async () => {
+  giveReward = async () => {
     await this.page.getByText("Reward contributor").click();
     await expect(this.page).toHaveURL(`${this.url}/new`);
     return new NewRewardPage(this.page);
@@ -29,7 +29,7 @@ export class ProjectRewardsPage {
 
   sidePanel = () => this.page.getByRole("dialog");
 
-  cancelCurrentPayment = async () => {
+  cancelCurrentReward = async () => {
     await this.sidePanel().getByTestId("cancel-reward-button").click();
     await this.sidePanel().getByText("Confirm").click();
   };

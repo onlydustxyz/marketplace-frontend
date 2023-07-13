@@ -46,7 +46,7 @@ export class ViewProfilePage {
 
   edit = async () => {
     await this.page.getByRole("button", { name: "Edit profile" }).click();
-    return new EditProfilePage(this.page);
+    return new EditProfilePage(this.page, this.context);
   };
 
   technology = (language: string) => this.page.getByText(language);

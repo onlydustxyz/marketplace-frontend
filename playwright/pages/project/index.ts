@@ -32,7 +32,7 @@ export class ProjectPage {
     return new ProjectContributorsPage(this.page);
   };
 
-  payments = async () => {
+  rewards = async () => {
     await this.page.getByTestId("Rewards-tab").click();
     await expect(this.page).toHaveURL(`${this.url}/rewards`);
     return new ProjectRewardsPage(this.page, this.project);
