@@ -44,7 +44,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
           name="description"
           content="Contribute to innovative projects, refine your skills and create a lasting impact in the developer community. The stars are within your reach."
         />
-        <meta property="og:image" content="src/assets/img/thumbnail.png" />
+        <meta property="og:image" content="https://onlydust-app-images.s3.eu-west-1.amazonaws.com/thumbnail.png" />
         <meta name="twitter:card" content="summary_large_image" />
       </Helmet>
       <ErrorBoundary FallbackComponent={ErrorFallback} onError={console.error}>
