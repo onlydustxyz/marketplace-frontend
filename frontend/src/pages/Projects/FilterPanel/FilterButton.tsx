@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import { useState } from "react";
 import FilterIcon from "src/assets/icons/FilterIcon";
-import SidePanelWithBackdrop from "src/components/SidePanelWithBackdrop";
+import SidePanel from "src/components/SidePanel";
 import { useIntl } from "src/hooks/useIntl";
 import FilterPanel from ".";
 
@@ -25,9 +25,9 @@ export function FilterButton({ isProjectLeader }: Props) {
       >
         <FilterIcon /> {T("filter.title")}
       </button>
-      <SidePanelWithBackdrop open={panelOpen} setOpen={setPanelOpen} placement="bottom">
+      <SidePanel withBackdrop open={panelOpen} setOpen={setPanelOpen} placement="bottom">
         <FilterPanel isProjectLeader={isProjectLeader} fromSidePanel />
-      </SidePanelWithBackdrop>
+      </SidePanel>
     </>
   );
 }
