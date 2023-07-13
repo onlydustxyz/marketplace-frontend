@@ -1,10 +1,12 @@
 import { useAcceptProjectLeaderInvitationMutation, useGetProjectLeadInvitationsQuery } from "src/__generated/graphql";
 import headerElementBackground from "src/assets/img/header-element-background.png";
 import ImageCard, { BackgroundSize, Height } from "src/components/ImageCard";
+import { viewportConfig } from "src/config";
 import { useAuth } from "src/hooks/useAuth";
 import CheckLine from "src/icons/CheckLine";
 import { contextWithCacheHeaders } from "src/utils/headers";
 import { useT } from "talkr";
+import { useMediaQuery } from "usehooks-ts";
 
 interface ProjectLeadInvitationProps {
   projectId: string;
@@ -13,6 +15,7 @@ interface ProjectLeadInvitationProps {
 export default function ProjectLeadInvitation({ projectId }: ProjectLeadInvitationProps) {
   const { githubUserId } = useAuth();
   const { T } = useT();
+  const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
 
   const { data } = useGetProjectLeadInvitationsQuery({
     variables: { projectId },
@@ -39,7 +42,7 @@ export default function ProjectLeadInvitation({ projectId }: ProjectLeadInvitati
           data-testid="accept-invite-button"
         >
           <CheckLine className="text-xl font-normal text-black" />
-          <div>{T("projectLeadInvitation.accept")}</div>
+          <div>{T(isMd ? "projectLeadInvitation.accept" : "projectLeadInvitation.acceptShort")}</div>
         </div>
       </div>
     </ImageCard>
