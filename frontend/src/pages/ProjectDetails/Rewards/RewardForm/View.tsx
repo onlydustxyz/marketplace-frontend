@@ -57,6 +57,7 @@ const View: React.FC<Props> = ({
 }) => {
   const { T } = useIntl();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
+  const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
   const navigate = useNavigate();
   const [sidePanelOpen, setSidePanelOpen] = useState(false);
   const [workItemsPrefilled, setWorkItemsPrefilled] = useState(false);
@@ -121,7 +122,7 @@ const View: React.FC<Props> = ({
                         {workItems.length > 0 && (
                           <Button type={ButtonType.Ternary} size={ButtonSize.Sm} onClick={() => clearWorkItems()}>
                             <CloseLine />
-                            {T("reward.form.contributions.clear")}
+                            {T(isMd ? "reward.form.contributions.clear" : "reward.form.contributions.clearShort")}
                           </Button>
                         )}
                         <Button
