@@ -9,7 +9,7 @@ import Loader from "src/components/Loader";
 import SearchBar from "./SearchBar";
 import { useDebounce } from "usehooks-ts";
 import SidePanel from "src/components/SidePanel";
-import { SortingPanel } from "./SortingDropdown/SortingPanel";
+import { SortingPanel } from "./Sorting/SortingPanel";
 import { useLocalStorage } from "react-use";
 
 export enum Sorting {

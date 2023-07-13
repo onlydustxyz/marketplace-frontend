@@ -14,10 +14,10 @@ import {
   ProjectsOrderBy,
 } from "src/__generated/graphql";
 import { isProjectVisibleToUser } from "src/hooks/useProjectVisibility";
-import SortingDropdown, { PROJECT_SORTINGS, Sorting } from "src/pages/Projects/SortingDropdown/SortingDropdown";
+import SortingDropdown, { PROJECT_SORTINGS, Sorting } from "src/pages/Projects/Sorting/SortingDropdown";
 import { useIntl } from "src/hooks/useIntl";
 import { FilterButton } from "src/pages/Projects/FilterPanel/FilterButton";
-import { SortButton } from "src/pages/Projects/SortingDropdown/SortButton";
+import { SortButton } from "src/pages/Projects/Sorting/SortButton";
 
 export const DEFAULT_SORTING = Sorting.Trending;
 
