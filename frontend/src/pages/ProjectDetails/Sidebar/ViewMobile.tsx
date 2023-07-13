@@ -20,11 +20,11 @@ interface Props {
 
 export default function ViewMobile(props: Props) {
   const { currentProject } = props;
-  const [panelOpen, setPanelOpen] = useState(false);
 
   const { T } = useIntl();
   const location = useLocation();
   const navigate = useNavigate();
+  const [panelOpen, setPanelOpen] = useState(!!location.state?.openMenu);
 
   const isGrantingReward = location.pathname.match("rewards/new");
 

@@ -52,7 +52,8 @@ export default function View({ expandable, currentProject, allProjects, availabl
               navigate(
                 generatePath(RoutePaths.ProjectDetails, {
                   projectKey: project.key,
-                })
+                }),
+                { state: { openMenu: true } }
               )
             }
             disabled={!expandable}
