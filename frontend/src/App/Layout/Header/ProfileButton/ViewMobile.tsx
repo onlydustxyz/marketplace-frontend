@@ -52,10 +52,10 @@ export default function ViewMobile({
       <button
         onClick={() => setPanelOpen(true)}
         className={classNames(
-          "flex items-center justify-center gap-2 rounded-full px-2 py-1.5 font-walsheim text-sm outline outline-1 ui-open:bg-noise-medium ui-open:outline-2 hover:bg-noise-medium hover:outline-2",
+          "border-1 flex items-center justify-center gap-2 rounded-full border px-2 py-1.5 font-walsheim text-sm",
           {
-            "outline-greyscale-50/12": !showMissingPayoutSettingsState,
-            "outline-orange-500": showMissingPayoutSettingsState,
+            "border-greyscale-50/12": !showMissingPayoutSettingsState,
+            "border-orange-500": showMissingPayoutSettingsState,
           }
         )}
       >

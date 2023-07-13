@@ -7,6 +7,8 @@ import FileInput from "./EditView/FileInput";
 import useUploadProfilePicture from "./useProfilePictureUpload";
 import { useApolloClient } from "@apollo/client";
 import Loader from "src/assets/icons/Loader";
+import { useMediaQuery } from "usehooks-ts";
+import { viewportConfig } from "src/config";
 
 type Props = {
   profile: UserProfileFragment;
@@ -41,6 +43,8 @@ export default function Header({ profile, editable, onChange, rounded }: Props) 
   const handleClick = (value: ProfileCover) => {
     onChange && onChange(value);
   };
+
+  const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
   return (
     <div className="z-10">
@@ -90,7 +94,9 @@ export default function Header({ profile, editable, onChange, rounded }: Props) 
           )}
           <img
             src={avatarUrl}
-            className="-mt-12 ml-8 h-24 w-24 rounded-full outline outline-4 outline-greyscale-50/12"
+            className={classNames("-mt-12 ml-8 h-24 w-24 rounded-full", {
+              "outline outline-4 outline-greyscale-50/12": isXl,
+            })}
             data-testid="avatarUrl"
           />
           {editable && !uploading && (

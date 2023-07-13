@@ -148,6 +148,14 @@ const graphQlMocks = [
   },
 ];
 
+vi.mock("usehooks-ts", async () => {
+  const useHooksModule = await vi.importActual<typeof import("usehooks-ts")>("usehooks-ts");
+  return {
+    ...useHooksModule,
+    useMediaQuery: jest.fn().mockReturnValue(false),
+  };
+});
+
 const render = (isProjectLeader: boolean, { isCleared, mocks }: { isCleared?: boolean; mocks: MockedResponse[] }) =>
   renderWithIntl(
     <MockedProjectFilterProvider isCleared={isCleared}>
