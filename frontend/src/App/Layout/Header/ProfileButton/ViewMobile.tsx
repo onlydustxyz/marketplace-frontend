@@ -2,7 +2,6 @@ import classNames from "classnames";
 import { useState } from "react";
 import Dot from "src/assets/icons/Dot";
 import Button, { ButtonType, ButtonSize } from "src/components/Button";
-import { useContributorProfilePanel } from "src/hooks/useContributorProfilePanel";
 import { useIntl } from "src/hooks/useIntl";
 import { useSidePanel } from "src/hooks/useSidePanel";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
@@ -16,6 +15,7 @@ import { RoutePaths } from "src/App";
 import Folder3Line from "src/icons/Folder3Line";
 import ExchangeDollarLine from "src/icons/ExchangeDollarLine";
 import SidePanel from "src/components/SidePanel";
+import ContributorProfileSidePanel from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel";
 
 type Props = {
   avatarUrl: string | null;
@@ -37,8 +37,8 @@ export default function ViewMobile({
 
   const [payoutInfoSidePanelOpen, setPayoutInfoSidePanelOpen] = useState(false);
   const [panelOpen, setPanelOpen] = useState(false);
+  const [contributorPanelOpen, setContributorPanelOpen] = useState(false);
 
-  const { open: openContributorProfileSidePanel } = useContributorProfilePanel();
   const { openFullTermsAndConditions, openPrivacyPolicy } = useSidePanel();
 
   const { data: paymentRequestIdsQueryData } = useGetPaymentRequestIdsQuery({
@@ -89,10 +89,7 @@ export default function ViewMobile({
                 </div>
               )}
               <>
-                <button
-                  className="flex items-center gap-3 p-4"
-                  onClick={() => githubUserId && openContributorProfileSidePanel(githubUserId)}
-                >
+                <button className="flex items-center gap-3 p-4" onClick={() => setContributorPanelOpen(true)}>
                   <User3Line className="text-xl" /> {T("navbar.profile.publicProfile")}
                 </button>
                 <button className="flex items-center gap-3 p-4" onClick={() => setPayoutInfoSidePanelOpen(true)}>
@@ -114,12 +111,21 @@ export default function ViewMobile({
             </Button>
           </div>
         </div>
+        <PayoutInfoSidePanel
+          githubUserId={githubUserId}
+          open={payoutInfoSidePanelOpen}
+          setOpen={setPayoutInfoSidePanelOpen}
+        />
+        {githubUserId && (
+          // We cannot use the ContributorProfileSidePanelProvider here as headless-ui is unable to auto focus the panel when it opens.
+          // See https://github.com/tailwindlabs/headlessui/discussions/2578
+          <ContributorProfileSidePanel
+            githubUserId={githubUserId}
+            open={contributorPanelOpen}
+            setOpen={setContributorPanelOpen}
+          />
+        )}
       </SidePanel>
-      <PayoutInfoSidePanel
-        githubUserId={githubUserId}
-        open={payoutInfoSidePanelOpen}
-        setOpen={setPayoutInfoSidePanelOpen}
-      />
     </>
   );
 }
