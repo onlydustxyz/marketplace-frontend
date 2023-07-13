@@ -385,10 +385,21 @@ const render = ({ projectFilter, mocks }: { projectFilter?: ProjectFilter; mocks
     <MockedProjectFilterProvider projectFilter={projectFilter}>
       <AllProjects
         search=""
+        filterPanelOpen={false}
+        sortingPanelOpen={false}
         clearSearch={() => {
           return;
         }}
         restoreScroll={() => {
+          return;
+        }}
+        setFilterPanelOpen={() => {
+          return;
+        }}
+        setSorting={() => {
+          return;
+        }}
+        setSortingPanelOpen={() => {
           return;
         }}
       />

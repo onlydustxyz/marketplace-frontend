@@ -1,4 +1,4 @@
-import SortingDropdown from ".";
+import SortingDropdown from "./SortingDropdown";
 import { PROJECT_SORTINGS, Sorting } from "src/pages/Projects/sorting";
 
 export default {
