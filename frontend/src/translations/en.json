@@ -194,6 +194,7 @@
         "addContribution": "Add contribution",
         "add": "Add",
         "clear": "Clear selection",
+        "clearShort": "Clear",
         "showIgnored": "Show ignored",
         "pullRequests": {
           "addedToaster": "Pull request added",
