@@ -39,9 +39,10 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <BrowserRouter>
       <Helmet>
         <title>Only Dust — Forge your developer legacy</title>
+        <meta property="og:title" content="Only Dust — Forge your developer legacy" />
         <meta property="og:type" content="website" />
         <meta
-          name="description"
+          property="og:description"
           content="Contribute to innovative projects, refine your skills and create a lasting impact in the developer community. The stars are within your reach."
         />
         <meta property="og:image" content="https://onlydust-app-images.s3.eu-west-1.amazonaws.com/thumbnail.png" />
