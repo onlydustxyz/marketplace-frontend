@@ -36,7 +36,7 @@ export default function ProjectLeadInvitation({ projectId }: ProjectLeadInvitati
   return invitationId ? (
     <ImageCard backgroundImageUrl={headerElementBackground} backgroundSize={BackgroundSize.Cover} height={Height.Fit}>
       <div className="flex flex-row items-center justify-between px-6 py-5 font-medium">
-        <div className="text-lg">{T("projectLeadInvitation.prompt", { projectName })}</div>
+        <div className="text-base md:text-lg">{T("projectLeadInvitation.prompt", { projectName })}</div>
         <Button onClick={() => acceptInvitation()} data-testid="accept-invite-button">
           <CheckLine className="text-xl font-normal text-black" />
           <div>{T(isMd ? "projectLeadInvitation.accept" : "projectLeadInvitation.acceptShort")}</div>
