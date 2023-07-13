@@ -40,9 +40,9 @@ const CompleteTag = () => {
   const { T } = useIntl();
 
   return (
-    <Tag size={TagSize.Medium} {...withTooltip(T("payment.status.tooltip.complete"), { className: "w-36" })}>
+    <Tag size={TagSize.Medium} {...withTooltip(T("reward.status.tooltip.complete"), { className: "w-36" })}>
       <CheckLine className="text-greyscale-50" />
-      <span className="font-normal text-greyscale-50">{T("payment.status.complete")}</span>
+      <span className="font-normal text-greyscale-50">{T("reward.status.complete")}</span>
     </Tag>
   );
 };
@@ -51,9 +51,9 @@ const ProcessingTag = () => {
   const { T } = useIntl();
 
   return (
-    <Tag size={TagSize.Medium} {...withTooltip(T("payment.status.tooltip.processing"), { className: "w-44" })}>
+    <Tag size={TagSize.Medium} {...withTooltip(T("reward.status.tooltip.processing"), { className: "w-44" })}>
       <Time className="text-greyscale-50" />
-      <span className="font-normal text-greyscale-50">{T("payment.status.processing")}</span>
+      <span className="font-normal text-greyscale-50">{T("reward.status.processing")}</span>
     </Tag>
   );
 };
@@ -66,13 +66,13 @@ const PayoutInfoMissingTag = (isProjectLeaderView: boolean) => {
       size={TagSize.Medium}
       borderColor={isProjectLeaderView ? TagBorderColor.Grey : TagBorderColor.MultiColor}
       {...withTooltip(
-        isProjectLeaderView ? T("payment.status.tooltip.pending") : T("payment.status.tooltip.payoutInfoMissing"),
+        isProjectLeaderView ? T("reward.status.tooltip.pending") : T("reward.status.tooltip.payoutInfoMissing"),
         { className: "w-52" }
       )}
     >
       <ErrorWarningLine className="text-pink-500" />
       <span className="whitespace-nowrap font-normal text-greyscale-50">
-        {isProjectLeaderView ? T("payment.status.pending") : T("payment.status.payoutInfoMissing")}
+        {isProjectLeaderView ? T("reward.status.pending") : T("reward.status.payoutInfoMissing")}
       </span>
     </Tag>
   );
@@ -85,10 +85,10 @@ const InvoiceNeededTag = () => {
     <Tag
       size={TagSize.Medium}
       borderColor={TagBorderColor.MultiColor}
-      {...withTooltip(T("payment.status.tooltip.invoicePending"), { className: "w-64" })}
+      {...withTooltip(T("reward.status.tooltip.invoicePending"), { className: "w-64" })}
     >
       <ErrorWarningLine className="text-pink-500" />
-      <span className="whitespace-nowrap font-normal text-greyscale-50">{T("payment.status.invoicePending")}</span>
+      <span className="whitespace-nowrap font-normal text-greyscale-50">{T("reward.status.invoicePending")}</span>
     </Tag>
   );
 };

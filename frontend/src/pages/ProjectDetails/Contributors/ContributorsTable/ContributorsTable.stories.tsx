@@ -41,7 +41,7 @@ const Template: ComponentStory<typeof ContributorsTable> = args => (
     contributors={mockContributors}
     isProjectLeader={args.isProjectLeader}
     remainingBudget={args.remainingBudget}
-    onPaymentRequested={Function.prototype()}
+    onRewardGranted={Function.prototype()}
   />
 );
 

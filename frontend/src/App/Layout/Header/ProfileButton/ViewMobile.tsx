@@ -45,7 +45,7 @@ export default function ViewMobile({
     variables: { githubUserId },
     skip: !githubUserId,
   });
-  const hasPayments = paymentRequestIdsQueryData?.githubUsersByPk?.paymentRequests.length || 0 > 0;
+  const hasRewards = paymentRequestIdsQueryData?.githubUsersByPk?.paymentRequests.length || 0 > 0;
 
   return (
     <>
@@ -66,7 +66,7 @@ export default function ViewMobile({
         <div className="flex flex-col divide-y divide-greyscale-50/8 bg-whiteFakeOpacity-5 p-3 font-walsheim text-sm">
           {!hideProfileItems && (
             <>
-              {hasPayments && (
+              {hasRewards && (
                 <div className="flex flex-col">
                   <NavLink
                     to={RoutePaths.Projects}
@@ -78,13 +78,13 @@ export default function ViewMobile({
                     <Folder3Line className="text-xl" /> {T("navbar.projects")}
                   </NavLink>
                   <NavLink
-                    to={RoutePaths.Payments}
+                    to={RoutePaths.Rewards}
                     onClick={() => setPanelOpen(false)}
                     className={({ isActive }) =>
                       classNames("flex items-center gap-3 rounded-xl p-4", { "bg-white/8": isActive })
                     }
                   >
-                    <ExchangeDollarLine className="text-xl" /> {T("navbar.payments")}
+                    <ExchangeDollarLine className="text-xl" /> {T("navbar.rewards")}
                   </NavLink>
                 </div>
               )}

@@ -43,7 +43,7 @@ const getRedirectionUrl = (
     ?.paymentRequests.filter(r => r.amountInUsd > r.paymentsAggregate.aggregate?.sum?.amount);
 
   if (!validPayoutInfo && pendingPaymentRequests && pendingPaymentRequests.length > 0) {
-    return RoutePaths.Payments;
+    return RoutePaths.Rewards;
   }
 
   const projectKey = pendingProjectLeaderInvitationsQuery?.data?.pendingProjectLeaderInvitations?.[0]?.project?.key;

@@ -124,7 +124,7 @@ describe("useSignupRedirection", () => {
 
     await waitFor(() => {
       expect(mock).toBeCalledTimes(1);
-      expect(result.current.url).toBe(RoutePaths.Payments);
+      expect(result.current.url).toBe(RoutePaths.Rewards);
     });
   });
 
@@ -245,7 +245,7 @@ describe("useSignupRedirection", () => {
 
     await waitFor(() => {
       expect(mock).toBeCalledTimes(1);
-      expect(result.current.url).toBe(RoutePaths.Payments);
+      expect(result.current.url).toBe(RoutePaths.Rewards);
     });
   });
 });

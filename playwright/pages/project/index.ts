@@ -2,7 +2,7 @@ import { Page, expect } from "@playwright/test";
 import { Project } from "../../types";
 import { ProjectContributorsPage } from "./contributors";
 import { ProjectOverviewPage } from "./overview";
-import { ProjectPaymentsPage } from "./payments";
+import { ProjectRewardsPage } from "./rewards";
 
 export class ProjectPage {
   readonly page: Page;
@@ -32,9 +32,9 @@ export class ProjectPage {
     return new ProjectContributorsPage(this.page);
   };
 
-  payments = async () => {
-    await this.page.getByTestId("Payments-tab").click();
-    await expect(this.page).toHaveURL(`${this.url}/payments`);
-    return new ProjectPaymentsPage(this.page, this.project);
+  rewards = async () => {
+    await this.page.getByTestId("Rewards-tab").click();
+    await expect(this.page).toHaveURL(`${this.url}/rewards`);
+    return new ProjectRewardsPage(this.page, this.project);
   };
 }

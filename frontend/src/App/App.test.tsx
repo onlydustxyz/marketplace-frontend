@@ -279,7 +279,7 @@ describe("Integration tests", () => {
     screen.getByText(/project lead/i);
     screen.getByText(/granted/i);
     screen.getByText("Overview");
-    expect(screen.queryByText("Payments")).not.toBeInTheDocument();
+    expect(screen.queryByText("Rewards")).not.toBeInTheDocument();
     screen.getByText("Contributors");
   });
 

@@ -6,13 +6,13 @@ import ProtectedRoute from "src/App/ProtectedRoute";
 
 const Login = lazy(() => import("src/pages/Login"));
 const Projects = lazy(() => import("src/pages/Projects"));
-const Payments = lazy(() => import("src/pages/Payments"));
+const Rewards = lazy(() => import("src/pages/Rewards"));
 const ProjectDetails = lazy(() => import("src/pages/ProjectDetails"));
 const ProjectDetailsOverview = lazy(() => import("src/pages/ProjectDetails/Overview"));
 const ProjectDetailsContributors = lazy(() => import("src/pages/ProjectDetails/Contributors"));
-const ProjectDetailsPayments = lazy(() => import("src/pages/ProjectDetails/Payments"));
-const ProjectDetailsPaymentsList = lazy(() => import("src/pages/ProjectDetails/Payments/List"));
-const ProjectDetailsPaymentForm = lazy(() => import("src/pages/ProjectDetails/Payments/PaymentForm"));
+const ProjectDetailsRewards = lazy(() => import("src/pages/ProjectDetails/Rewards"));
+const ProjectDetailsRewardsList = lazy(() => import("src/pages/ProjectDetails/Rewards/List"));
+const ProjectDetailsRewardForm = lazy(() => import("src/pages/ProjectDetails/Rewards/RewardForm"));
 
 import { CustomUserRole, HasuraUserRole } from "src/types";
 import LoaderFallback from "src/components/Loader";
@@ -28,7 +28,7 @@ export enum RoutePaths {
   Projects = "/",
   Login = "/login",
   ProjectDetails = "/p/:projectKey",
-  Payments = "/payments",
+  Rewards = "/rewards",
   CatchAll = "*",
   Error = "/error",
   Impersonation = "/impersonate/:userId",
@@ -40,10 +40,10 @@ export enum RoutePaths {
 export enum ProjectRoutePaths {
   Overview = "",
   Contributors = "contributors",
-  Payments = "payments",
+  Rewards = "rewards",
 }
 
-export enum ProjectPaymentsRoutePaths {
+export enum ProjectRewardsRoutePaths {
   List = "",
   New = "new",
 }
@@ -66,20 +66,20 @@ function App() {
       element: <ProjectDetailsContributors />,
     },
     {
-      path: ProjectRoutePaths.Payments,
+      path: ProjectRoutePaths.Rewards,
       element: (
         <ProtectedRoute requiredRole={CustomUserRole.ProjectLead} redirectTo={RoutePaths.ProjectDetails}>
-          <ProjectDetailsPayments />
+          <ProjectDetailsRewards />
         </ProtectedRoute>
       ),
       children: [
         {
           index: true,
-          element: <ProjectDetailsPaymentsList />,
+          element: <ProjectDetailsRewardsList />,
         },
         {
-          path: ProjectPaymentsRoutePaths.New,
-          element: <ProjectDetailsPaymentForm />,
+          path: ProjectRewardsRoutePaths.New,
+          element: <ProjectDetailsRewardForm />,
         },
       ],
     },
@@ -110,10 +110,10 @@ function App() {
           element: <Onboarding />,
         },
         {
-          path: RoutePaths.Payments,
+          path: RoutePaths.Rewards,
           element: (
             <ProtectedRoute requiredRole={HasuraUserRole.RegisteredUser}>
-              <Payments />
+              <Rewards />
             </ProtectedRoute>
           ),
         },

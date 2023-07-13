@@ -1,4 +1,4 @@
-import { SortingFields } from "./hooks/usePaymentSorting";
+import { SortingFields } from "./hooks/useRewardSorting";
 
 export type Branded<T, B> = T & { __brand: B };
 

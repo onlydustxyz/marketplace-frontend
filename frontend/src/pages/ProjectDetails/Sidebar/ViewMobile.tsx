@@ -26,12 +26,12 @@ export default function ViewMobile(props: Props) {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const isSendingPayment = location.pathname.match("payments/new");
+  const isGrantingReward = location.pathname.match("rewards/new");
 
   return (
     <>
       <div className="flex items-center justify-between gap-2 px-6">
-        {!isSendingPayment && (
+        {!isGrantingReward && (
           <>
             <div className="flex items-center gap-1">
               <BackLink to={RoutePaths.Projects} className="divide-none" />
@@ -45,14 +45,14 @@ export default function ViewMobile(props: Props) {
             </button>
           </>
         )}
-        {isSendingPayment && (
+        {isGrantingReward && (
           <div className="flex flex-row items-center gap-3">
             <div onClick={() => navigate(-1)}>
               <Button type={ButtonType.Secondary} size={ButtonSize.Sm} iconOnly>
                 <CloseLine className="text-base" />
               </Button>
             </div>
-            <div className="font-belwe text-2xl xl:text-3xl">{T("project.details.payments.new.title")}</div>
+            <div className="font-belwe text-2xl xl:text-3xl">{T("project.details.rewards.new.title")}</div>
           </div>
         )}
       </div>

@@ -29,10 +29,15 @@ type Props = {
   contributors: Contributor[];
   isProjectLeader: boolean;
   remainingBudget: number;
-  onPaymentRequested: (contributor: Contributor) => void;
+  onRewardGranted: (contributor: Contributor) => void;
 };
 
-export default function View({ contributors, isProjectLeader, remainingBudget, onPaymentRequested }: Props) {
+export default function View({
+  contributors,
+  isProjectLeader,
+  remainingBudget,
+  onRewardGranted: onPaymentRequested,
+}: Props) {
   const isSendingNewPaymentDisabled = remainingBudget < rates.hours;
 
   const [sorting, setSorting] = useState({
@@ -57,7 +62,12 @@ export default function View({ contributors, isProjectLeader, remainingBudget, o
         {sortedContributors.map(contributor => (
           <ContributorLine
             key={contributor.login}
-            {...{ contributor, isProjectLeader, isSendingNewPaymentDisabled, onPaymentRequested }}
+            {...{
+              contributor,
+              isProjectLeader,
+              isGivingRewardDisabled: isSendingNewPaymentDisabled,
+              onRewardGranted: onPaymentRequested,
+            }}
           />
         ))}
       </Table>

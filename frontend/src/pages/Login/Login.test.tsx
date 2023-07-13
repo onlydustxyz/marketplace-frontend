@@ -196,7 +196,7 @@ const renderWithRoutes = (route: string, mocks?: MockedResponse[]) =>
     <Routes>
       <Route path={RoutePaths.Login} element={<Login />} />
       <Route path={RoutePaths.Projects} element={<div>Projects</div>} />
-      <Route path={RoutePaths.Payments} element={<div>Payments</div>} />
+      <Route path={RoutePaths.Rewards} element={<div>Rewards</div>} />
       <Route path={RoutePaths.ProjectDetails} element={<div>ProjectDetails</div>} />
     </Routes>,
     {
@@ -229,14 +229,14 @@ describe("Login page", () => {
     await screen.findByText("ProjectDetails");
   });
 
-  it("should redirect to payments page if pending payments and missing payout info at first sign-in", async () => {
+  it("should redirect to rewards page if pending payments and missing payout info at first sign-in", async () => {
     window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_WITH_VALID_JWT_TEST_VALUE));
     renderWithRoutes(`${RoutePaths.Login}?${AUTH_CODE_QUERY_KEY}=${AUTH_CODE_TEST_VALUE}`, [
       pendingPaymentsMock,
       paymentRequestsMock,
       payoutSettingsMock,
     ]);
-    await screen.findByText("Payments");
+    await screen.findByText("Rewards");
   });
 
   it("should redirect to last visited page if not first sign-in", async () => {

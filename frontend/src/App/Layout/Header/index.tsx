@@ -25,16 +25,16 @@ export default function Header() {
   const { onboardingInProgress } = useOnboarding();
   const profileQuery = useOwnUserProfileQuery({ variables: { githubUserId }, skip: !githubUserId });
 
-  const hasPayments = paymentRequestIdsQueryData?.githubUsersByPk?.paymentRequests.length || 0 > 0;
+  const hasRewards = paymentRequestIdsQueryData?.githubUsersByPk?.paymentRequests.length || 0 > 0;
 
-  const myContributionsMenuItem = hasPayments && !onboardingInProgress ? T("navbar.payments") : undefined;
+  const myContributionsMenuItem = hasRewards && !onboardingInProgress ? T("navbar.rewards") : undefined;
   const projectsMenuItem = myContributionsMenuItem && !onboardingInProgress ? T("navbar.projects") : undefined;
 
   return (
     <View
       menuItems={{
         [RoutePaths.Projects]: projectsMenuItem,
-        [RoutePaths.Payments]: myContributionsMenuItem,
+        [RoutePaths.Rewards]: myContributionsMenuItem,
       }}
       isLoggedIn={isLoggedIn}
       selectedMenuItem={location.pathname}
