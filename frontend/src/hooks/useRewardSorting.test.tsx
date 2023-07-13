@@ -8,7 +8,7 @@ const payments: (Sortable & { id: string })[] = [
     id: "id1",
     sortingFields: {
       [Field.Date]: new Date("2023-01-01"),
-      [Field.Contribution]: "userB23",
+      [Field.RewardId]: "userB23",
       [Field.Amount]: 3,
       [Field.Status]: 1,
     },
@@ -17,7 +17,7 @@ const payments: (Sortable & { id: string })[] = [
     id: "id2",
     sortingFields: {
       [Field.Date]: new Date("2023-01-02"),
-      [Field.Contribution]: "userA23",
+      [Field.RewardId]: "userA23",
       [Field.Amount]: 4,
       [Field.Status]: 0,
     },
@@ -55,12 +55,12 @@ describe("useWorkEstimation", () => {
 
   it("should be able to sort by contribution", () => {
     const { result } = renderHook(() => useRewardSorting());
-    act(() => result.current.applySorting(Field.Contribution, true));
-    expect(result.current.sorting.field).toEqual(Field.Contribution);
+    act(() => result.current.applySorting(Field.RewardId, true));
+    expect(result.current.sorting.field).toEqual(Field.RewardId);
     expect(result.current.sorting.ascending).toEqual(true);
     expect(result.current.sort(payments)[0].id).toEqual("id2");
-    act(() => result.current.applySorting(Field.Contribution, true));
-    expect(result.current.sorting.field).toEqual(Field.Contribution);
+    act(() => result.current.applySorting(Field.RewardId, true));
+    expect(result.current.sorting.field).toEqual(Field.RewardId);
     expect(result.current.sorting.ascending).toEqual(false);
     expect(result.current.sort(payments)[0].id).toEqual("id1");
   });

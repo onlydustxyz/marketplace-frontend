@@ -6,7 +6,7 @@ import {
   GetUserPayoutSettingsQueryResult,
 } from "src/__generated/graphql";
 
-import PaymentTable from ".";
+import RewardTable from ".";
 import { ToasterProvider } from "src/hooks/useToaster";
 import withMockedProvider from "src/test/storybook/decorators/withMockedProvider";
 
@@ -92,14 +92,14 @@ const mocks = [
 
 export default {
   title: "PaymentTable",
-  component: PaymentTable,
+  component: RewardTable,
   decorators: [withMockedProvider(mocks)],
 };
 
 export const Default = {
   render: () => (
     <ToasterProvider>
-      <PaymentTable projectId="project-1" payments={mockPayments} />
+      <RewardTable projectId="project-1" rewards={mockPayments} />
     </ToasterProvider>
   ),
 };

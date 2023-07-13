@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import { screen } from "@testing-library/react";
 import matchers from "@testing-library/jest-dom/matchers";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
-import PaymentsList from "./List";
+import RewardsList from "./List";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
 import { GithubUserFragment, ExtendedPaymentRequestFragment } from "src/__generated/graphql";
 
@@ -48,16 +48,16 @@ vi.mock("axios", () => ({
   },
 }));
 
-describe("PaymentsList page", () => {
+describe("RewardsList page", () => {
   beforeAll(() => {
     window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_BASIC_TEST_VALUE));
   });
 
   beforeEach(() => {
-    renderWithIntl(<PaymentsList />, {
+    renderWithIntl(<RewardsList />, {
       wrapper: MemoryRouterProviderFactory({
         context: {
-          payments: [paymentRequestMock],
+          rewards: [paymentRequestMock],
           budget: {
             initialAmount: 100,
             remainingAmount: 40,

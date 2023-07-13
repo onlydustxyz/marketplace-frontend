@@ -51,7 +51,7 @@ export default function PaymentLine({
   useEffect(() => {
     setSortingFields({
       [Field.Date]: payment.requestedAt,
-      [Field.Contribution]: payment.project?.title?.toLocaleLowerCase() + payment.id,
+      [Field.RewardId]: payment.project?.title?.toLocaleLowerCase() + payment.id,
       [Field.Amount]: payment.amount.value,
       [Field.Status]: getPaymentStatusOrder({
         status: payment.status,

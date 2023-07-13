@@ -4,7 +4,7 @@ import { Sortable } from "src/types";
 
 export enum Field {
   Date,
-  Contribution,
+  RewardId,
   Amount,
   Status,
 }
@@ -16,7 +16,7 @@ export type Sorting = {
 
 export type SortingFields = {
   [Field.Date]: Date;
-  [Field.Contribution]: string;
+  [Field.RewardId]: string;
   [Field.Amount]: number;
   [Field.Status]: number;
 };
@@ -35,8 +35,8 @@ export default function useRewardSorting(): {
   );
 
   const sort = useCallback(
-    <T extends Sortable>(payments: T[]) => {
-      const sorted = sortBy(payments, p => p.sortingFields?.[sorting.field]);
+    <T extends Sortable>(rewards: T[]) => {
+      const sorted = sortBy(rewards, p => p.sortingFields?.[sorting.field]);
       return sorting.ascending ? sorted : sorted.reverse();
     },
     [sorting]

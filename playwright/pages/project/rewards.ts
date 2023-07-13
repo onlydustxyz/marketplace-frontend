@@ -19,7 +19,7 @@ export class ProjectRewardsPage {
 
   remainingBudget = () => this.page.locator("#remainingBudget").textContent();
 
-  paymentList = () => new PaymentTable(this.page.locator("#payment_table"));
+  paymentList = () => new RewardTable(this.page.locator("#reward_table"));
 
   newPayment = async () => {
     await this.page.getByText("Reward contributor").click();
@@ -157,24 +157,24 @@ export class NewRewardPage {
   showIgnoredToggle = () => this.page.getByRole("switch").nth(2);
 }
 
-export class PaymentTable {
+export class RewardTable {
   readonly table: Locator;
 
   constructor(table: Locator) {
     this.table = table;
   }
 
-  nth = (index: number) => new PaymentLine(this.table.getByRole("row").nth(index));
+  nth = (index: number) => new RewardLine(this.table.getByRole("row").nth(index));
 }
 
-export class PaymentLine {
+export class RewardLine {
   readonly row: Locator;
 
   constructor(row: Locator) {
     this.row = row;
   }
 
-  paymentId = () => this.row.getAttribute("data-payment-id");
+  rewardId = () => this.row.getAttribute("data-reward-id");
   status = () => this.row.getByRole("cell").nth(3).locator("div").nth(1).textContent();
   click = () => this.row.click();
 }

@@ -13,27 +13,27 @@ import { useIntl } from "src/hooks/useIntl";
 import { pretty } from "src/utils/id";
 
 type Props = {
-  payment: ExtendedPaymentRequestFragment & Sortable;
+  reward: ExtendedPaymentRequestFragment & Sortable;
   setSortingFields: (sortingFields: SortingFields) => void;
   onClick: () => void;
   selected: boolean;
 };
 
-export default function PaymentLine({ payment, setSortingFields, onClick, selected }: Props) {
-  const { valid: payoutSettingsValid } = usePayoutSettings(payment.recipientId);
+export default function RewardLine({ reward, setSortingFields, onClick, selected }: Props) {
+  const { valid: payoutSettingsValid } = usePayoutSettings(reward.recipientId);
 
-  const recipient = payment.githubRecipient;
-  const paidAmount = payment.paymentsAggregate.aggregate?.sum?.amount;
-  const paymentStatus = paidAmount === payment.amountInUsd ? PaymentStatus.ACCEPTED : PaymentStatus.WAITING_PAYMENT;
+  const recipient = reward.githubRecipient;
+  const paidAmount = reward.paymentsAggregate.aggregate?.sum?.amount;
+  const paymentStatus = paidAmount === reward.amountInUsd ? PaymentStatus.ACCEPTED : PaymentStatus.WAITING_PAYMENT;
 
   const { T } = useIntl();
 
   useEffect(() => {
     if (recipient?.login && usePayoutSettings != undefined) {
       setSortingFields({
-        [Field.Date]: new Date(payment.requestedAt),
-        [Field.Contribution]: recipient.login.toLocaleLowerCase() + payment.id,
-        [Field.Amount]: payment.amountInUsd,
+        [Field.Date]: new Date(reward.requestedAt),
+        [Field.RewardId]: recipient.login.toLocaleLowerCase() + reward.id,
+        [Field.Amount]: reward.amountInUsd,
         [Field.Status]: getPaymentStatusOrder({
           status: paymentStatus,
           pendingPayoutInfo: !payoutSettingsValid,
@@ -44,28 +44,28 @@ export default function PaymentLine({ payment, setSortingFields, onClick, select
 
   return (
     <>
-      {payment && recipient && (
-        <Line paymentId={payment.id} onClick={onClick} selected={selected}>
-          <Cell height={CellHeight.Medium}>{displayRelativeDate(payment.requestedAt)}</Cell>
+      {reward && recipient && (
+        <Line rewardId={reward.id} onClick={onClick} selected={selected}>
+          <Cell height={CellHeight.Medium}>{displayRelativeDate(reward.requestedAt)}</Cell>
           <Cell height={CellHeight.Medium} className="flex flex-row gap-3">
             <RoundedImage src={recipient.avatarUrl} alt={recipient.login} rounding={Rounding.Circle} />
             <div className="flex flex-col justify-center truncate pb-0.5">
               <div className="font-walsheim text-sm font-medium text-greyscale-50">{recipient.login}</div>
               <div className="text-spaceBlue-200">
                 {T("reward.table.paymentRequest", {
-                  id: pretty(payment.id),
-                  count: payment.workItemsAggregate.aggregate?.count,
+                  id: pretty(reward.id),
+                  count: reward.workItemsAggregate.aggregate?.count,
                 })}
               </div>
             </div>
           </Cell>
           <Cell height={CellHeight.Medium}>
-            <span className="font-walsheim">{formatMoneyAmount({ amount: payment.amountInUsd })}</span>
+            <span className="font-walsheim">{formatMoneyAmount({ amount: reward.amountInUsd })}</span>
           </Cell>
           <Cell height={CellHeight.Medium}>
             <PayoutStatus
               {...{
-                id: `payment-status-${payment.id}`,
+                id: `payment-status-${reward.id}`,
                 status: paymentStatus,
                 payoutInfoMissing: !payoutSettingsValid,
               }}

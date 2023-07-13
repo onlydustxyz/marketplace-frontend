@@ -44,7 +44,7 @@ const PayoutTable: React.FC<PropsType> = ({ payments, payoutInfoMissing, invoice
   return (
     <>
       {isXl ? (
-        <Table id="payment_table" headers={<Headers sorting={sorting} applySorting={applySorting} />}>
+        <Table id="reward_table" headers={<Headers sorting={sorting} applySorting={applySorting} />}>
           {sortedPayments.map(p => (
             <PaymentLine
               key={p.id}

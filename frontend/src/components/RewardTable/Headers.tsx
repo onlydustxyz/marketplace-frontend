@@ -22,10 +22,10 @@ export default function Headers({ sorting, applySorting }: Props) {
         <span>{T("reward.table.date")}</span>
         <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.Date} />
       </HeaderCell>
-      <HeaderCell width={HeaderCellWidth.Third} horizontalMargin onClick={() => applySorting(Field.Contribution, true)}>
+      <HeaderCell width={HeaderCellWidth.Third} horizontalMargin onClick={() => applySorting(Field.RewardId, true)}>
         <Folder3Line className="pl-px font-normal" />
         <span>{T("reward.table.contributor")}</span>
-        <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.Contribution} />
+        <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.RewardId} />
       </HeaderCell>
       <HeaderCell width={HeaderCellWidth.Sixth} onClick={() => applySorting(Field.Amount, false)} horizontalMargin>
         <MoneyDollarCircleLine className="pl-px font-normal" />

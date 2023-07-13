@@ -7,7 +7,7 @@ export class RewardsPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.rewards = page.getByTestId("payment-line");
+    this.rewards = page.getByTestId("reward-line");
     this.sidePanel = page.getByRole("dialog");
   }
 }

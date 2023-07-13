@@ -6,11 +6,11 @@ import { useT } from "talkr";
 import Button, { ButtonSize, Width } from "src/components/Button";
 import { withTooltip } from "src/components/Tooltip";
 
-interface ProjectPaymentTableFallbackProps {
+interface Props {
   disabled?: boolean;
 }
 
-const ProjectPaymentTableFallback = ({ disabled = false }: ProjectPaymentTableFallbackProps) => {
+const ProjectRewardTableFallback = ({ disabled = false }: Props) => {
   const { T } = useT();
   return (
     <div className="flex w-full flex-col items-center gap-8 p-2">
@@ -44,4 +44,4 @@ const ProjectPaymentTableFallback = ({ disabled = false }: ProjectPaymentTableFa
   );
 };
 
-export default ProjectPaymentTableFallback;
+export default ProjectRewardTableFallback;
