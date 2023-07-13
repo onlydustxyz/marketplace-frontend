@@ -49,7 +49,7 @@ export enum SessionMethod {
   SetVisitedPageBeforeLogin = "visitedPageBeforeLogin",
 }
 
-type Action = {
+export type Action = {
   method: SessionMethod;
   value: string;
 };
