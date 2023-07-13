@@ -111,7 +111,11 @@ export default function View({
                 <div className="flex flex-row items-center gap-1">
                   {T("reward.table.detailsPanel.from")}
                   <Contributor
-                    contributor={{ login: requestor.login || "", githubUserId: requestor.id, avatarUrl: null }}
+                    contributor={{
+                      login: requestor.login || "",
+                      githubUserId: requestor.githubUserId,
+                      avatarUrl: null,
+                    }}
                     clickable
                   />
                   {requestor.id === userId && T("reward.table.detailsPanel.you")}
