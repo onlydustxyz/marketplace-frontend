@@ -41,12 +41,7 @@ export default function WorkEstimation({
 
   return (
     <Card padded={false}>
-      <div
-        className={classNames("divide-y divide-greyscale-50/8", "rounded-2xl bg-space-card bg-top bg-no-repeat", {
-          "bg-cover": disabled,
-          "bg-contain 2xl:bg-cover": !disabled,
-        })}
-      >
+      <div className="divide-y divide-greyscale-50/8 rounded-2xl bg-space-card bg-cover bg-top bg-no-repeat">
         <div
           className={classNames("flex flex-col items-stretch justify-items-center gap-5", {
             "px-8 py-6": !disabled,
