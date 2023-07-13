@@ -47,7 +47,7 @@ export default function ContactInformation({
           </div>
         ) : undefined
       }
-      inputClassName="pl-9"
+      inputClassName="pl-9 pr-14"
       disabled={editDisabled}
     />
   );
