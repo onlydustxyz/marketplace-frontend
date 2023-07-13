@@ -10,7 +10,7 @@ import { withTooltip } from "src/components/Tooltip";
 import Contributor from "src/components/Contributor";
 import { Virtuoso } from "react-virtuoso";
 import { forwardRef } from "react";
-import { Contributor as ContributorType } from "src/pages/ProjectDetails/Payments/PaymentForm/types";
+import { Contributor as ContributorType } from "src/pages/ProjectDetails/Rewards/RewardForm/types";
 
 const MAX_CONTRIBUTOR_SELECT_SCROLLER_HEIGHT_PX = 240;
 const CONTRIBUTOR_SELECT_LINE_HEIGHT_PX = 36;

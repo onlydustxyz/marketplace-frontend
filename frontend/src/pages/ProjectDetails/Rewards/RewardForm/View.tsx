@@ -2,7 +2,7 @@ import { useIntl } from "src/hooks/useIntl";
 import Card from "src/components/Card";
 import WorkEstimation from "./WorkEstimation";
 import { Budget } from "src/hooks/useWorkEstimation";
-import ContributorSelect from "src/pages/ProjectDetails/Payments/PaymentForm/ContributorSelect";
+import ContributorSelect from "src/pages/ProjectDetails/Rewards/RewardForm/ContributorSelect";
 
 import Button, { ButtonSize, ButtonType, Width } from "src/components/Button";
 import { useNavigate } from "react-router-dom";

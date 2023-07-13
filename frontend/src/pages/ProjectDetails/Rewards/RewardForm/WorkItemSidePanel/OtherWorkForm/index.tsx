@@ -17,7 +17,7 @@ import {
 import Description from "./Description";
 import RepoSelect from "./RepoSelect";
 import Title from "./Title";
-import { issueToWorkItem } from "src/pages/ProjectDetails/Payments/PaymentForm/WorkItemSidePanel/Issues";
+import { issueToWorkItem } from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/Issues";
 import DraftLine from "src/icons/DraftLine";
 import TeamLine from "src/icons/TeamLine";
 import ExchangeDollarLine from "src/icons/ExchangeDollarLine";

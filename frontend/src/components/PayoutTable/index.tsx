@@ -1,6 +1,6 @@
 import { Sortable } from "src/types";
 import Table from "src/components/Table";
-import usePaymentSorting, { SortingFields } from "src/hooks/usePaymentSorting";
+import useRewardSorting, { SortingFields } from "src/hooks/useRewardSorting";
 import PaymentLine, { Payment } from "./Line";
 import Headers from "./Headers";
 import { useCallback, useMemo, useState } from "react";
@@ -19,7 +19,7 @@ const PayoutTable: React.FC<PropsType> = ({ payments, payoutInfoMissing, invoice
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
   const [paymentSortingFields, setPaymentSortingFields] = useState<Record<string, SortingFields>>({});
-  const { sort, sorting, applySorting } = usePaymentSorting();
+  const { sort, sorting, applySorting } = useRewardSorting();
 
   const sortablePayments = useMemo(
     () => payments.map(p => ({ ...p, sortingFields: paymentSortingFields[p.id] })),

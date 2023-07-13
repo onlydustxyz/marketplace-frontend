@@ -5,7 +5,7 @@ import RoundedImage, { Rounding } from "src/components/RoundedImage";
 import PayoutStatus from "src/components/PayoutStatus";
 import { formatMoneyAmount } from "src/utils/money";
 import displayRelativeDate from "src/utils/displayRelativeDate";
-import { Field, SortingFields } from "src/hooks/usePaymentSorting";
+import { Field, SortingFields } from "src/hooks/useRewardSorting";
 import { useEffect } from "react";
 import { ExtendedPaymentRequestFragment } from "src/__generated/graphql";
 import usePayoutSettings from "src/hooks/usePayoutSettings";

@@ -3,7 +3,7 @@ import { useSearchGithubUsersByHandleSubstringQuery } from "src/__generated/grap
 import View from "./View";
 import { useLocation } from "react-router-dom";
 import useProjectContributors from "src/hooks/useProjectContributors";
-import { Contributor } from "src/pages/ProjectDetails/Payments/PaymentForm/types";
+import { Contributor } from "src/pages/ProjectDetails/Rewards/RewardForm/types";
 import { useDebounce } from "usehooks-ts";
 
 const EXTERNAL_USER_QUERY_DEBOUNCE_TIME = 500;

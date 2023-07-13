@@ -28,7 +28,7 @@ import useProjectVisibility from "src/hooks/useProjectVisibility";
 import ProjectLeadInvitation from "src/components/ProjectLeadInvitation";
 import { useSuspenseQuery_experimental } from "@apollo/client";
 import { Dispatch, useEffect } from "react";
-import { ProjectPaymentsRoutePaths, ProjectRoutePaths } from "src/App";
+import { ProjectRewardsRoutePaths, ProjectRoutePaths } from "src/App";
 import { useMediaQuery } from "usehooks-ts";
 import { viewportConfig } from "src/config";
 
@@ -83,7 +83,7 @@ export default function Overview() {
           {T("project.details.overview.title")}
           <Button
             size={ButtonSize.Sm}
-            onClick={() => navigate(`${ProjectRoutePaths.Payments}/${ProjectPaymentsRoutePaths.New}`)}
+            onClick={() => navigate(`${ProjectRoutePaths.Rewards}/${ProjectRewardsRoutePaths.New}`)}
           >
             {T("project.rewardContributorButton")}
           </Button>
@@ -121,7 +121,7 @@ export default function Overview() {
           {T("project.details.overview.title")}
           <Button
             size={ButtonSize.Sm}
-            onClick={() => navigate(`${ProjectRoutePaths.Payments}/${ProjectPaymentsRoutePaths.New}`)}
+            onClick={() => navigate(`${ProjectRoutePaths.Rewards}/${ProjectRewardsRoutePaths.New}`)}
           >
             {T("project.rewardContributorButton")}
           </Button>

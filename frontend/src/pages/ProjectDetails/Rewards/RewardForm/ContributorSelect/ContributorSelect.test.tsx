@@ -9,7 +9,7 @@ import {
   GetProjectContributorsDocument,
   GetProjectContributorsQueryResult,
 } from "src/__generated/graphql";
-import { Contributor } from "src/pages/ProjectDetails/Payments/PaymentForm/types";
+import { Contributor } from "src/pages/ProjectDetails/Rewards/RewardForm/types";
 
 const TEST_USER: ContributorFragment = {
   __typename: "UserProfiles",

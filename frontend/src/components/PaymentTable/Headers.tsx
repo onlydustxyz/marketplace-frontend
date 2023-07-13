@@ -6,7 +6,7 @@ import Folder3Line from "src/icons/Folder3Line";
 import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import FocusLine from "src/icons/FocusLine";
 import SortingArrow from "src/pages/ProjectDetails/Contributors/ContributorsTable/SortingArrow";
-import { Field, Sorting } from "src/hooks/usePaymentSorting";
+import { Field, Sorting } from "src/hooks/useRewardSorting";
 
 type Props = {
   sorting: Sorting;

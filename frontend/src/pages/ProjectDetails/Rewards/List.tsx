@@ -5,7 +5,7 @@ import Loader from "src/components/Loader";
 import PaymentTable from "src/components/PaymentTable";
 import ProjectPaymentTableFallback from "src/components/ProjectPaymentTableFallback";
 import { useIntl } from "src/hooks/useIntl";
-import RemainingBudget from "src/pages/ProjectDetails/Payments/RemainingBudget";
+import RemainingBudget from "src/pages/ProjectDetails/Rewards/RemainingBudget";
 import { Sortable } from "src/types";
 import { ExtendedPaymentRequestFragment } from "src/__generated/graphql";
 import Title from "src/pages/ProjectDetails/Title";

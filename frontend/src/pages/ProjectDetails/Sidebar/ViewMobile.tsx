@@ -52,7 +52,7 @@ export default function ViewMobile(props: Props) {
                 <CloseLine className="text-base" />
               </Button>
             </div>
-            <div className="font-belwe text-2xl xl:text-3xl">{T("project.details.payments.new.title")}</div>
+            <div className="font-belwe text-2xl xl:text-3xl">{T("project.details.rewards.new.title")}</div>
           </div>
         )}
       </div>

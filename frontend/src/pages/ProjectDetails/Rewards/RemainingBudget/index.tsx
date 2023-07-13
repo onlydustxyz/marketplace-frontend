@@ -5,7 +5,7 @@ import Card from "src/components/Card";
 import CurrencyLine from "src/icons/CurrencyLine";
 import { formatMoneyAmount } from "src/utils/money";
 import { useT } from "talkr";
-import BudgetBar from "src/pages/ProjectDetails/Payments/PaymentForm/WorkEstimation/BudgetBar";
+import BudgetBar from "src/pages/ProjectDetails/Rewards/RewardForm/WorkEstimation/BudgetBar";
 
 interface Props {
   budget: { initialAmount: number; remainingAmount: number };

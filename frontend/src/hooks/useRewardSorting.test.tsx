@@ -1,7 +1,7 @@
 import { act, renderHook } from "@testing-library/react-hooks";
 import { Sortable } from "src/types";
 import { describe, expect, it } from "vitest";
-import usePaymentSorting, { Field } from "./usePaymentSorting";
+import useRewardSorting, { Field } from "./useRewardSorting";
 
 const payments: (Sortable & { id: string })[] = [
   {
@@ -25,7 +25,7 @@ const payments: (Sortable & { id: string })[] = [
 ];
 
 describe("useWorkEstimation", () => {
-  const { result } = renderHook(() => usePaymentSorting());
+  const { result } = renderHook(() => useRewardSorting());
 
   it("should initially sort by descending date", () => {
     expect(result.current.sort(payments)[0].id).toEqual("id2");
@@ -34,7 +34,7 @@ describe("useWorkEstimation", () => {
   });
 
   it("should sort Amount in descending order by default", () => {
-    const { result } = renderHook(() => usePaymentSorting());
+    const { result } = renderHook(() => useRewardSorting());
     act(() => result.current.applySorting(Field.Amount, false));
     expect(result.current.sorting.field).toEqual(Field.Amount);
     expect(result.current.sorting.ascending).toEqual(false);
@@ -42,7 +42,7 @@ describe("useWorkEstimation", () => {
   });
 
   it("should be able to sort by date", () => {
-    const { result } = renderHook(() => usePaymentSorting());
+    const { result } = renderHook(() => useRewardSorting());
     act(() => result.current.applySorting(Field.Date, true));
     expect(result.current.sorting.field).toEqual(Field.Date);
     expect(result.current.sorting.ascending).toEqual(true);
@@ -54,7 +54,7 @@ describe("useWorkEstimation", () => {
   });
 
   it("should be able to sort by contribution", () => {
-    const { result } = renderHook(() => usePaymentSorting());
+    const { result } = renderHook(() => useRewardSorting());
     act(() => result.current.applySorting(Field.Contribution, true));
     expect(result.current.sorting.field).toEqual(Field.Contribution);
     expect(result.current.sorting.ascending).toEqual(true);
@@ -66,7 +66,7 @@ describe("useWorkEstimation", () => {
   });
 
   it("should be able to sort by amount", () => {
-    const { result } = renderHook(() => usePaymentSorting());
+    const { result } = renderHook(() => useRewardSorting());
     act(() => result.current.applySorting(Field.Amount, true));
     expect(result.current.sorting.field).toEqual(Field.Amount);
     expect(result.current.sorting.ascending).toEqual(true);
@@ -78,7 +78,7 @@ describe("useWorkEstimation", () => {
   });
 
   it("should be able to sort by status", () => {
-    const { result } = renderHook(() => usePaymentSorting());
+    const { result } = renderHook(() => useRewardSorting());
     act(() => result.current.applySorting(Field.Status, true));
     expect(result.current.sorting.field).toEqual(Field.Status);
     expect(result.current.sorting.ascending).toEqual(true);

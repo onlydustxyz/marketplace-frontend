@@ -1,6 +1,6 @@
 import { Sortable } from "src/types";
 import Table from "src/components/Table";
-import usePaymentSorting, { SortingFields } from "src/hooks/usePaymentSorting";
+import useRewardSorting, { SortingFields } from "src/hooks/useRewardSorting";
 import Headers from "./Headers";
 import PaymentLine from "./Line";
 import { ExtendedPaymentRequestFragment } from "src/__generated/graphql";
@@ -19,7 +19,7 @@ export default function PaymentTable({ projectId, payments }: Props) {
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
   const [paymentSortingFields, setPaymentSortingFields] = useState<Record<string, SortingFields>>({});
-  const { sort, sorting, applySorting } = usePaymentSorting();
+  const { sort, sorting, applySorting } = useRewardSorting();
 
   const sortablePayments = useMemo(
     () => payments.map(p => ({ ...p, sortingFields: paymentSortingFields[p.id] })),

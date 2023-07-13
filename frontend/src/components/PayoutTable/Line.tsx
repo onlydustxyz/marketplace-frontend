@@ -6,7 +6,7 @@ import PayoutStatus from "src/components/PayoutStatus";
 import { formatMoneyAmount } from "src/utils/money";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { Currency, getPaymentStatusOrder, PaymentStatus, PayoutSettings } from "src/types";
-import { Field, SortingFields } from "src/hooks/usePaymentSorting";
+import { Field, SortingFields } from "src/hooks/useRewardSorting";
 import { useEffect } from "react";
 import { WorkItemFragment } from "src/__generated/graphql";
 import { useIntl } from "src/hooks/useIntl";

@@ -14,7 +14,7 @@ import usePayoutSettings from "src/hooks/usePayoutSettings";
 import { Payment } from "src/components/PayoutTable/Line";
 import InvoiceSubmission from "./InvoiceSubmission";
 
-const Payments = () => {
+const Rewards = () => {
   const { githubUserId } = useAuth();
   const { T } = useT();
 
@@ -131,4 +131,4 @@ gql`
   }
 `;
 
-export default Payments;
+export default Rewards;

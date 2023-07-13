@@ -1,7 +1,7 @@
 import { ComponentStory } from "@storybook/react";
 
 import ContributorSelectView from "./View";
-import { Contributor } from "src/pages/ProjectDetails/Payments/PaymentForm/types";
+import { Contributor } from "src/pages/ProjectDetails/Rewards/RewardForm/types";
 
 export default {
   title: "ContributorsSelect",

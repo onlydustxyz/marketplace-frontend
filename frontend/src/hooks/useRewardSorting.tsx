@@ -21,7 +21,7 @@ export type SortingFields = {
   [Field.Status]: number;
 };
 
-export default function usePaymentSorting(): {
+export default function useRewardSorting(): {
   sort: <T extends Sortable>(sortables: T[]) => T[];
   sorting: Sorting;
   applySorting: (field: Field, ascending: boolean) => void;
