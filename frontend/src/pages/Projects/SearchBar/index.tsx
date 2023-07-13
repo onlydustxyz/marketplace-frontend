@@ -28,19 +28,19 @@ export default function SearchBar({ search, setSearch }: Props) {
     >
       <div
         className={classNames("relative z-10 flex items-center justify-center rounded-full", {
-          "before:absolute before:-z-10 before:h-screen before:w-screen before:scale-x-[8] before:bg-multi-color-gradient before:md:scale-x-[20]":
+          "before:absolute before:-z-10 before:h-screen before:w-screen before:scale-x-[8] before:bg-multi-color-gradient before:md:scale-x-[30]":
             !inputFocus,
         })}
       >
         <div
-          className={classNames("flex h-12 w-full flex-row items-center gap-5 rounded-full px-6 md:h-16", {
+          className={classNames("flex h-12 w-full flex-row items-center gap-2 rounded-full px-4", {
             "bg-spaceBlue-900": !inputFocus,
             "bg-spacePurple-900": inputFocus,
           })}
         >
           <SearchLine
             className={classNames(
-              "text-3xl",
+              "text-2xl",
               { "text-spaceBlue-200": !inputFocus },
               { "text-greyscale-50": inputFocus }
             )}
@@ -51,7 +51,7 @@ export default function SearchBar({ search, setSearch }: Props) {
           >
             <input
               placeholder={T(isMd ? "searchBar.placeholder" : "searchBar.placeholderShort")}
-              className="h-8 w-full bg-transparent font-walsheim text-lg font-medium text-greyscale-50 outline-none placeholder:text-spaceBlue-200"
+              className="h-8 w-full bg-transparent font-walsheim text-lg text-greyscale-50 outline-none placeholder:text-spaceBlue-200"
               value={search}
               ref={textInput}
               onChange={e => setSearch(e.target.value)}
@@ -62,9 +62,10 @@ export default function SearchBar({ search, setSearch }: Props) {
           <button data-testid="clear-searchbar-button">
             <CloseLine
               className={classNames(
-                "text-3xl",
+                "text-2xl",
                 { hidden: !inputFocus && !search },
-                { "text-greyscale-50": inputFocus || search }
+                { "text-greyscale-50": !inputFocus && search },
+                { "text-purple-200": inputFocus }
               )}
               onClick={e => {
                 e.preventDefault();

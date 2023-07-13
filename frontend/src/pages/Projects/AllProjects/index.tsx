@@ -1,6 +1,6 @@
 import { useSuspenseQuery_experimental as useSuspenseQuery } from "@apollo/client";
 import { merge, sortBy } from "lodash";
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import ProjectCard from "src/components/ProjectCard";
 import { useAuth } from "src/hooks/useAuth";
 import { Ownership as ProjectOwnership, useProjectFilter } from "src/pages/Projects/useProjectFilter";
@@ -25,9 +25,10 @@ export const DEFAULT_SORTING = Sorting.Trending;
 type Props = {
   search: string;
   clearSearch: () => void;
+  restoreScroll: () => void;
 };
 
-export default function AllProjects({ search, clearSearch }: Props) {
+export default function AllProjects({ search, clearSearch, restoreScroll }: Props) {
   const { T } = useIntl();
 
   const { ledProjectIds, githubUserId, isLoggedIn, user } = useAuth();
@@ -61,6 +62,10 @@ export default function AllProjects({ search, clearSearch }: Props) {
       p => !p.pendingInvitations.length
     );
   }, [getProjectsQuery.data?.projects, ledProjectIds, ownership, isLoggedIn, githubUserId]);
+
+  useEffect(() => {
+    restoreScroll();
+  }, [restoreScroll]);
 
   return (
     <div className="flex flex-col gap-5">

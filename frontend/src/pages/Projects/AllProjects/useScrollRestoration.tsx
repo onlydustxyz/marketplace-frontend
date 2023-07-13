@@ -1,6 +1,6 @@
 import { useSessionStorage } from "react-use";
 import { useLocation } from "react-router-dom";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useRef } from "react";
 
 const SCROLL_POSITION_KEY = "SCROLL_POSITION";
 
@@ -27,9 +27,13 @@ export default function useScrollRestoration() {
     [setScrollPosition]
   );
 
-  useEffect(() => {
+  const restoreScroll = useCallback(() => {
+    console.log("restoreScroll");
     if (!state?.skipScrollRestoration && ref.current?.scrollTo) ref.current.scrollTo({ top: scrollPosition });
   }, [ref.current]);
 
-  return { ref: setRef };
+  return {
+    ref: setRef,
+    restoreScroll,
+  };
 }
