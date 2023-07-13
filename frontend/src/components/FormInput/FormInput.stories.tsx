@@ -1,5 +1,6 @@
 import { Size } from ".";
-import FormInput, { InputErrorDisplay } from "./View";
+import { InputErrorDisplay } from "./types";
+import FormInput from "./View";
 
 export default {
   title: "FormInput",

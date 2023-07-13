@@ -1,7 +1,8 @@
 import { defaults } from "lodash";
 import { ChangeEventHandler, FocusEventHandler, KeyboardEventHandler, PropsWithChildren } from "react";
 import { useFormContext, useFormState, RegisterOptions } from "react-hook-form";
-import View, { InputErrorDisplay } from "./View";
+import { InputErrorDisplay } from "./types";
+import View from "./View";
 
 export enum Size {
   Sm = "sm",

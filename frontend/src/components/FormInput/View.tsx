@@ -12,6 +12,9 @@ import classNames from "classnames";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import { Size } from ".";
 import { withTooltip } from "src/components/Tooltip";
+import { useMediaQuery } from "usehooks-ts";
+import { viewportConfig } from "src/config";
+import { InputErrorDisplay } from "./types";
 
 type PropsType = {
   label?: string;
@@ -39,11 +42,6 @@ type PropsType = {
   disabled?: boolean;
   size: Size;
 } & PropsWithChildren;
-
-export enum InputErrorDisplay {
-  Normal = "normal",
-  Banner = "banner",
-}
 
 enum InputErrorType {
   Pattern = "pattern",
@@ -76,6 +74,7 @@ const View: React.FC<PropsType> = ({
 }) => {
   const isValidationError = error?.type === InputErrorType.Pattern || error?.type === InputErrorType.Validate;
   const showError = error && (!isValidationError || showValidationErrors) && errorDisplay === InputErrorDisplay.Normal;
+  const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
   return (
     <label
@@ -106,13 +105,15 @@ const View: React.FC<PropsType> = ({
               { "text-greyscale-50": !disabled, "text-greyscale-600": disabled },
               "border border-greyscale-50/[0.08]",
               "placeholder:text-spaceBlue-200",
-              "focus:placeholder:text-spacePurple-200/60 focus:outline-double focus:outline-spacePurple-500 focus:border-spacePurple-500 focus:bg-spacePurple-900",
+              "focus:placeholder:text-spacePurple-200/60 focus:border-spacePurple-500 focus:bg-spacePurple-900",
               {
                 "outline outline-1 outline-orange-500": showError,
                 "h-11": as === "input" && size === Size.Md,
                 "h-8": as === "input" && size === Size.Sm,
                 "px-4 py-3 text-base": size === Size.Md,
                 "px-3 py-2 text-sm": size === Size.Sm,
+                "focus:outline-double focus:outline-spacePurple-500": isXl,
+                "focus:outline-none focus:ring-none": !isXl,
               },
               inputClassName
             ),

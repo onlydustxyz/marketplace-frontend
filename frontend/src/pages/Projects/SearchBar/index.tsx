@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { useRef, useState } from "react";
+import { PropsWithChildren, useRef, useState } from "react";
 import { viewportConfig } from "src/config";
 import { useIntl } from "src/hooks/useIntl";
 import CloseLine from "src/icons/CloseLine";
@@ -14,7 +14,7 @@ type Props = {
 
 export default function SearchBar({ search, setSearch }: Props) {
   const { T } = useIntl();
-  const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
+  const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
   const [inputFocus, setInputFocus] = useState(false);
 
@@ -23,59 +23,70 @@ export default function SearchBar({ search, setSearch }: Props) {
   return (
     <div
       className={classNames("overflow-hidden rounded-full p-0.5", {
-        "bg-spacePurple-500 outline outline-4 outline-spacePurple-500/25": inputFocus,
+        "bg-spacePurple-500": inputFocus,
       })}
     >
       <div
         className={classNames("relative z-10 flex items-center justify-center rounded-full", {
-          "before:absolute before:-z-10 before:h-screen before:w-screen before:scale-x-[8] before:bg-multi-color-gradient before:md:scale-x-[30]":
+          "before:absolute before:-z-10 before:h-screen before:w-screen before:scale-x-[8] before:bg-multi-color-gradient before:md:scale-x-[20]":
             !inputFocus,
+          "overflow-hidden": !isXl,
         })}
       >
-        <div
-          className={classNames("flex h-12 w-full flex-row items-center gap-2 rounded-full px-4", {
-            "bg-spaceBlue-900": !inputFocus,
-            "bg-spacePurple-900": inputFocus,
-          })}
-        >
-          <SearchLine
-            className={classNames(
-              "text-2xl",
-              { "text-spaceBlue-200": !inputFocus },
-              { "text-greyscale-50": inputFocus }
-            )}
-          />
-          <Hotkeys
-            keyName={isMac() ? "command+k" : "control+k"}
-            onKeyDown={() => textInput.current && textInput.current.focus()}
+        <ResponsiveOutlineWrapper>
+          <div
+            className={classNames("flex h-12 w-full flex-row items-center gap-5 rounded-full px-6 md:h-16", {
+              "bg-spaceBlue-900": !inputFocus,
+              "bg-spacePurple-900": inputFocus,
+            })}
           >
-            <input
-              placeholder={T(isMd ? "searchBar.placeholder" : "searchBar.placeholderShort")}
-              className="h-8 w-full bg-transparent font-walsheim text-lg text-greyscale-50 outline-none placeholder:text-spaceBlue-200"
-              value={search}
-              ref={textInput}
-              onChange={e => setSearch(e.target.value)}
-              onFocus={() => setInputFocus(true)}
-              onBlur={() => setInputFocus(false)}
-            />
-          </Hotkeys>
-          <button data-testid="clear-searchbar-button">
-            <CloseLine
+            <SearchLine
               className={classNames(
-                "text-2xl",
-                { hidden: !inputFocus && !search },
-                { "text-greyscale-50": !inputFocus && search },
-                { "text-purple-200": inputFocus }
+                "text-3xl",
+                { "text-spaceBlue-200": !inputFocus },
+                { "text-greyscale-50": inputFocus }
               )}
-              onClick={e => {
-                e.preventDefault();
-                setSearch("");
-              }}
             />
-          </button>
-        </div>
+            <Hotkeys
+              keyName={isMac() ? "command+k" : "control+k"}
+              onKeyDown={() => textInput.current && textInput.current.focus()}
+            >
+              <input
+                placeholder={T("searchBar.placeholderShort")}
+                className="h-8 w-full bg-transparent font-walsheim text-lg font-medium text-greyscale-50 outline-none placeholder:text-spaceBlue-200"
+                value={search}
+                ref={textInput}
+                onChange={e => setSearch(e.target.value)}
+                onFocus={() => setInputFocus(true)}
+                onBlur={() => setInputFocus(false)}
+              />
+            </Hotkeys>
+            <button data-testid="clear-searchbar-button">
+              <CloseLine
+                className={classNames(
+                  "text-3xl",
+                  { hidden: !inputFocus && !search },
+                  { "text-greyscale-50": inputFocus || search }
+                )}
+                onClick={e => {
+                  e.preventDefault();
+                  setSearch("");
+                }}
+              />
+            </button>
+          </div>
+        </ResponsiveOutlineWrapper>
       </div>
     </div>
+  );
+}
+
+function ResponsiveOutlineWrapper({ children }: PropsWithChildren) {
+  const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
+  return isXl ? (
+    <> {children}</>
+  ) : (
+    <div className="w-full rounded-full border border-2 border-transparent">{children}</div>
   );
 }
 
