@@ -388,6 +388,9 @@ const render = ({ projectFilter, mocks }: { projectFilter?: ProjectFilter; mocks
         clearSearch={() => {
           return;
         }}
+        restoreScroll={() => {
+          return;
+        }}
       />
     </MockedProjectFilterProvider>,
     {
