@@ -26,9 +26,17 @@ type Props = {
   search: string;
   clearSearch: () => void;
   restoreScroll: () => void;
+  filterPanelOpen: boolean;
+  setFilterPanelOpen: (open: boolean) => void;
 };
 
-export default function AllProjects({ search, clearSearch, restoreScroll }: Props) {
+export default function AllProjects({
+  search,
+  clearSearch,
+  restoreScroll,
+  filterPanelOpen,
+  setFilterPanelOpen,
+}: Props) {
   const { T } = useIntl();
 
   const { ledProjectIds, githubUserId, isLoggedIn, user } = useAuth();
@@ -76,7 +84,7 @@ export default function AllProjects({ search, clearSearch, restoreScroll }: Prop
         </div>
         <div className="flex items-center gap-2 xl:hidden">
           <SortButton all={PROJECT_SORTINGS} current={sorting || DEFAULT_SORTING} onChange={setSorting} />
-          <FilterButton isProjectLeader={!!ledProjectIds.length} />
+          <FilterButton panelOpen={filterPanelOpen} setPanelOpen={setFilterPanelOpen} />
         </div>
       </div>
       <div className="flex grow flex-col gap-5">

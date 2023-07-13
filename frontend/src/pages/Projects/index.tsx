@@ -8,6 +8,7 @@ import { Suspense, useEffect, useState } from "react";
 import Loader from "src/components/Loader";
 import SearchBar from "./SearchBar";
 import { useDebounce } from "usehooks-ts";
+import SidePanel from "src/components/SidePanel";
 
 export enum Sorting {
   Trending = "trending",
@@ -20,11 +21,14 @@ export const PROJECT_SORTINGS = [Sorting.Trending, Sorting.ProjectName, Sorting.
 
 export default function Projects() {
   const { ledProjectIds } = useAuth();
+  const isProjectLeader = !!ledProjectIds.length;
 
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [search, setSearch] = useState<string>("");
   const debouncedSearchQuery = useDebounce<string>(search, 200);
   useEffect(() => setSearchQuery(debouncedSearchQuery), [debouncedSearchQuery]);
+
+  const [filterPanelOpen, setFilterPanelOpen] = useState(false);
 
   const { ref, restoreScroll } = useScrollRestoration();
 
@@ -37,16 +41,25 @@ export default function Projects() {
           </div>
           <div className="flex h-full gap-6">
             <div className="sticky top-0 hidden shrink-0 basis-80 xl:block">
-              <FilterPanel isProjectLeader={!!ledProjectIds.length} />
+              <FilterPanel isProjectLeader={isProjectLeader} />
             </div>
             <div className="min-w-0 grow">
               <Suspense fallback={<Loader />}>
-                <AllProjects search={searchQuery} clearSearch={() => setSearch("")} restoreScroll={restoreScroll} />
+                <AllProjects
+                  search={searchQuery}
+                  clearSearch={() => setSearch("")}
+                  restoreScroll={restoreScroll}
+                  filterPanelOpen={filterPanelOpen}
+                  setFilterPanelOpen={setFilterPanelOpen}
+                />
               </Suspense>
             </div>
           </div>
         </div>
       </Background>
+      <SidePanel withBackdrop open={filterPanelOpen} setOpen={setFilterPanelOpen} placement="bottom">
+        <FilterPanel isProjectLeader={isProjectLeader} fromSidePanel />
+      </SidePanel>
     </ProjectFilterProvider>
   );
 }
