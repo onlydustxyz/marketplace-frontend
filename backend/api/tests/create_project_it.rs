@@ -3,10 +3,11 @@ mod tests {
 	use std::collections::HashMap;
 	use std::env;
 
-	use rocket::http::Status;
+	use rocket::http::{ContentType, Status};
 	use rocket::local::asynchronous::Client;
+	use rocket::serde::json::json;
 	use testcontainers::clients::Cli;
-	use testcontainers::core::{Port, WaitFor};
+	use testcontainers::core::WaitFor;
 	use testcontainers::images::generic::GenericImage;
 	use testcontainers::RunnableImage;
 	use url::Url;
@@ -38,38 +39,18 @@ mod tests {
 			&postgres_port,
 			&postgres_db
 		);
-		let database_url = format!(
-			"postgres://{}:{}@{}:{}/{}",
-			&postgres_user,
-			&postgres_password,
-			"localhost".to_string(),
-			5432,
-			&postgres_db
-		);
-		let database_config = database::Config {
-			url: database_url,
-			pool_max_size: 2,
-		};
 
-		let rabbit_mq_image = RunnableImage::from(
-			GenericImage::new("rabbitmq", "3.11-management")
-				.with_wait_for(
-					WaitFor::StdOutMessage {
-						message: "Server startup complete".to_string(),
-					}
-				)
-		)
-			.with_mapped_port(Port { local: 5672, internal: 5672 })
-			.with_mapped_port(Port { local: 15672, internal: 15672 });
-
+		let rabbit_mq_image = build_rabbit_mq_image();
 		let rabbit_mq_container = docker_client.run(rabbit_mq_image);
-		let rabbit_mq_url = format!("amqp://127.0.0.1:{}/%2f", 5672);
-		let amqp_config = amqp::Config { url: rabbit_mq_url, connection_retry_count: 100, connection_retry_interval_ms: 6000 };
+		let rabbit_mq_port = rabbit_mq_container.ports().map_to_host_port_ipv4(5672).unwrap();
+		let rabbit_mq_url = format!("amqp://127.0.0.1:{}/%2f", rabbit_mq_port);
 
-		// let task = tokio::spawn();
-		//
-		// task.await.unwrap();
-		should_create_project(amqp_config, database_config).await;
+		should_create_project(build_bootstrap_config(
+			amqp::Config { url: rabbit_mq_url.to_string(), connection_retry_count: 100, connection_retry_interval_ms: 6000 },
+			database::Config {
+				url: database_url.clone(),
+				pool_max_size: 2,
+			})).await;
 
 		println!("Stopping postgres container");
 		postgres_container.stop();
@@ -78,7 +59,31 @@ mod tests {
 		println!("IT tear down");
 	}
 
-	pub async fn should_create_project(amqp_config: amqp::Config, database_config: database::Config) {
+	pub async fn should_create_project(config: Config) {
+		let rocket_builder = bootstrap(config)
+			.await.unwrap();
+		let client = Client::tracked(rocket_builder).await.expect("valid rocket instance");
+
+		let create_project_request = json!({
+						"name": "name-test",
+			"short_description": "short-description-name",
+			"long_description": "long-description-name",
+			"telegram_link": "http://telegram-link.test",
+			"logo_url": "http://logo-url.test"
+		});
+		// When
+		let response = client.post("/api/projects")
+			.header(ContentType::JSON)
+			.body(create_project_request.to_string())
+			.dispatch();
+		// Then
+		let local_response = response.await;
+		assert_eq!(local_response.status(), Status::Ok);
+		println!("{:?}", &local_response.body());
+	}
+
+
+	fn build_bootstrap_config(amqp_config: amqp::Config, database_config: database::Config) -> Config {
 		let tracer_config = infrastructure::tracing::Config { ansi: false, json: true, location: true };
 		let web3_config = web3::Config { url: "https://test.com".parse().unwrap() };
 		let s3_config = simple_storage::Config {
@@ -94,7 +99,7 @@ mod tests {
 			headers: HashMap::new(),
 			max_calls_per_request: None,
 		};
-		let config: Config = Config {
+		Config {
 			http: http::Config { api_keys: HashMap::new() },
 			database: database_config,
 			amqp: amqp_config,
@@ -103,16 +108,18 @@ mod tests {
 			web3: web3_config,
 			s3: s3_config,
 			graphql_client: graphql_config,
-		};
-		let rocket_builder = bootstrap(config)
-			.await.unwrap();
-		let client = Client::tracked(rocket_builder).await.expect("valid rocket instance");
+		}
+	}
 
-		// When
-		let response = client.get("/health")
-			.dispatch();
-		// Then
-		assert_eq!(response.await.status(), Status::Ok);
+	fn build_rabbit_mq_image() -> RunnableImage<GenericImage> {
+		RunnableImage::from(
+			GenericImage::new("rabbitmq", "3.11-management")
+				.with_wait_for(
+					WaitFor::StdOutMessage {
+						message: "Server startup complete".to_string(),
+					}
+				)
+		)
 	}
 
 
@@ -133,6 +140,5 @@ mod tests {
 					message: "database system is ready to accept connections".to_string(),
 				})
 		)
-			.with_mapped_port(Port { local: 5432, internal: 5432 })
 	}
 }

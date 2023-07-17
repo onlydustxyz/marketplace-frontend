@@ -61,9 +61,12 @@ pub async fn create_project(
 			request.visibility.clone().unwrap_or_default(),
 		)
 		.await.map_err(|e| {
-		HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
-			.title("Unable to process create_project request")
-			.detail(e.to_string())
+		{
+			println!("Http error : {:?}", e);
+			HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
+				.title("Unable to process create_project request")
+				.detail(e.to_string())
+		}
 	})?;
 	Ok(Json(Response { project_id }))
 }
