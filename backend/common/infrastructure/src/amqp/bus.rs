@@ -1,16 +1,17 @@
 use std::sync::Arc;
 
 use lapin::{
-	message::Delivery,
-	options::{ExchangeDeclareOptions, QueueDeclareOptions},
-	publisher_confirm::Confirmation,
-	BasicProperties, Channel, Connection, Consumer,
+	BasicProperties,
+	Channel,
+	Connection,
+	Consumer, message::Delivery, options::{ExchangeDeclareOptions, QueueDeclareOptions}, publisher_confirm::Confirmation,
 };
-use olog::error;
 use thiserror::Error;
 use tokio::sync::{Mutex, RwLock};
-use tokio_retry::{strategy::FixedInterval, Retry};
+use tokio_retry::{Retry, strategy::FixedInterval};
 use tokio_stream::StreamExt;
+
+use olog::{debug, error, info, warn};
 
 use super::Config;
 
@@ -79,6 +80,13 @@ impl Bus {
 	}
 }
 
+impl Drop for Bus {
+	fn drop(&mut self) {
+		debug!("Dropping Bus instance");
+		futures::executor::block_on(close_connection());
+	}
+}
+
 pub struct ConsumableBus {
 	bus: Bus,
 	queue_name: String,
@@ -140,12 +148,26 @@ impl ConsumableBus {
 	}
 }
 
+lazy_static! {
+	static ref CONNECTION: Mutex<Option<Arc<Connection>>> = Mutex::new(None);
+}
+
+async fn close_connection() {
+	let guard = CONNECTION.lock().await;
+	match guard.as_ref() {
+		Some(connection) => {
+			info!("Closing bus connection {:?}", connection);
+			println!("Closing bus connection {:?}", connection);
+			connection.close(200, "Normal shutdown").await.unwrap();
+		}
+		None => {
+			warn!("No connection found to close");
+		}
+	}
+}
+
 /// Retrives the open connection or connect if called for the first time
 async fn connect(config: &Config) -> Result<Arc<Connection>, Error> {
-	lazy_static! {
-		static ref CONNECTION: Mutex<Option<Arc<Connection>>> = Mutex::new(None);
-	}
-
 	let mut guard = CONNECTION.lock().await;
 	match guard.as_ref() {
 		Some(connection) => Ok(connection.clone()),
@@ -153,7 +175,7 @@ async fn connect(config: &Config) -> Result<Arc<Connection>, Error> {
 			let connection = Arc::new(_do_connect(config).await?);
 			*guard = Some(connection.clone());
 			Ok(connection)
-		},
+		}
 	}
 }
 
@@ -171,8 +193,7 @@ async fn _do_connect(config: &Config) -> Result<Connection, Error> {
 			error
 		})
 	})
-	.await?;
-
+		.await?;
 	connection.on_error(|error| {
 		error!(error = error.to_string(), "Lost connection to RabbitMQ");
 		println!("Lost connection to RabbitMQ");

@@ -22,17 +22,39 @@ env:
 jobs:
 
   test:
-    name: Compile
+    name: Integration Tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Setup cargo
-        uses: ./.github/actions/cargo-setup
+      - uses: actions/cache/restore@v3
+        name: Restore cache
+        if: always()
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            ./target
+          key: ${{ github.ref_name }}-cargo-${{ hashFiles('Cargo.lock') }}
 
       - name: Test application
         uses: actions-rs/cargo@v1
         with:
           command: test
+          args: --package api --test create_project_it tests::it -- --exact --nocapture
+
+      - uses: actions/cache/save@v3
+        if: always()
+        name: Save cache
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            ./target
+          key: ${{ github.ref_name }}-cargo-${{ hashFiles('Cargo.lock') }}
 
