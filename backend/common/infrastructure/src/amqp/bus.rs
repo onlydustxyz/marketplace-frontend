@@ -156,7 +156,6 @@ async fn close_connection() {
 	match guard.as_ref() {
 		Some(connection) => {
 			info!("Closing bus connection {:?}", connection);
-			println!("Closing bus connection {:?}", connection);
 			connection.close(200, "Normal shutdown").await.unwrap();
 		},
 		None => {
@@ -195,7 +194,6 @@ async fn _do_connect(config: Config) -> Result<Connection, Error> {
 	.await?;
 	connection.on_error(|error| {
 		error!(error = error.to_string(), "Lost connection to RabbitMQ");
-		println!("Lost connection to RabbitMQ");
 		std::process::exit(1);
 	});
 

@@ -69,7 +69,6 @@ pub async fn should_create_project(config: Config) {
 	// Then
 	let local_response = response.await;
 	assert_eq!(local_response.status(), Status::Ok);
-	println!("{:?}", &local_response.body());
 }
 
 fn build_bootstrap_config(amqp_config: amqp::Config, database_config: database::Config) -> Config {

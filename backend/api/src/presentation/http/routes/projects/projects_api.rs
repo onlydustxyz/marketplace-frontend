@@ -62,7 +62,6 @@ pub async fn create_project(
 		)
 		.await.map_err(|e| {
 		{
-			println!("Http error : {:?}", e);
 			HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
 				.title("Unable to process create_project request")
 				.detail(e.to_string())
