@@ -4,12 +4,11 @@ use anyhow::Result;
 use domain::AggregateRootRepository;
 use infrastructure::{
 	amqp, amqp::CommandPublisherDecorator, database, github, graphql as infrastructure_graphql,
-	web3::ens,
 };
 use rocket::{Build, Rocket};
 
 use crate::{
-	infrastructure::simple_storage,
+	infrastructure::{simple_storage, web3::ens},
 	presentation::{graphql, http},
 	Config,
 };

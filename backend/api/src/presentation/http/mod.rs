@@ -6,14 +6,13 @@ use infrastructure::{
 	amqp::{self, CommandPublisher},
 	database::{ImmutableRepository, Repository},
 	github,
-	web3::ens,
 };
 use presentation::http;
 use rocket::{Build, Rocket};
 
 use crate::{
 	application,
-	infrastructure::simple_storage,
+	infrastructure::{simple_storage, web3::ens},
 	models::*,
 	presentation::{graphql, http::routes::projects::create_project},
 };
