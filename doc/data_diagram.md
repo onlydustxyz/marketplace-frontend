@@ -85,6 +85,7 @@ class Contributions {
 }
 
 class GithubIssues {
+   assigneeIds: jsonb!
    authorId: bigint!
    closedAt: timestamp
    createdAt: timestamp!
@@ -139,6 +140,7 @@ class IgnoredGithubIssues {
 }
 
 class Issue {
+   assignees: [User!]!
    author: User!
    closedAt: DateTimeUtc
    createdAt: DateTimeUtc!
@@ -440,6 +442,7 @@ GithubUsers -- RegisteredUsers
 GithubUsers --* PaymentRequests
 Issue -- User
 Issue --* IgnoredGithubIssues
+Issue --* User
 PaymentRequests -- Budgets
 PaymentRequests -- GithubUsers
 PaymentRequests -- RegisteredUsers
