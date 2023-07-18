@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use ::domain::{AggregateRootRepository, Project};
-use http::Config;
+pub use http::Config;
 use infrastructure::{
 	amqp::{self, CommandPublisher},
 	database::{ImmutableRepository, Repository},
