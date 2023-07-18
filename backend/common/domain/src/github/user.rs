@@ -2,15 +2,12 @@ use std::str::FromStr;
 
 use derive_getters::Getters;
 use derive_more::{AsRef, Display, From, Into};
-use derive_new::new;
 use diesel_derive_newtype::DieselNewType;
 use juniper::{GraphQLObject, ParseScalarResult, ParseScalarValue, Value};
 use serde::{Deserialize, Serialize};
 use url::Url;
 
-#[derive(
-	new, Debug, Clone, Getters, GraphQLObject, Serialize, Deserialize, PartialEq, Eq, Hash,
-)]
+#[derive(Debug, Clone, GraphQLObject, Serialize, Deserialize, PartialEq, Eq, Hash)]
 pub struct User {
 	pub id: Id,
 	pub login: String,

@@ -69,7 +69,7 @@ impl EventListener<Event> for Projector {
 				self.github_users_repository.upsert(user.clone().into())?;
 				self.github_repos_contributors_repository.try_insert(GithubReposContributor {
 					repo_id,
-					user_id: *user.id(),
+					user_id: user.id,
 				})?;
 
 				self.project_github_repos_repository
@@ -77,7 +77,7 @@ impl EventListener<Event> for Projector {
 					.iter()
 					.try_for_each(|project_id| {
 						self.projects_contributors_repository
-							.link_project_with_contributor(project_id, user.id())
+							.link_project_with_contributor(project_id, &user.id)
 					})?;
 			},
 			Event::FullUser(user) => {
@@ -91,10 +91,10 @@ impl EventListener<Event> for Projector {
 impl From<domain::GithubUser> for GithubUser {
 	fn from(user: domain::GithubUser) -> Self {
 		Self {
-			id: *user.id(),
-			login: user.login().clone(),
-			avatar_url: user.avatar_url().to_string(),
-			html_url: user.html_url().to_string(),
+			id: user.id,
+			login: user.login,
+			avatar_url: user.avatar_url.to_string(),
+			html_url: user.html_url.to_string(),
 			..Default::default()
 		}
 	}

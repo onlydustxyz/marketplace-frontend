@@ -57,12 +57,12 @@ mod tests {
 			number: 17i64.into(),
 			r#type: GithubIssueType::Issue,
 			title: "Super issue".to_string(),
-			author: GithubUser::new(
-				666u64.into(),
-				"foooooo".to_string(),
-				Url::parse("https://github.com/aaa").unwrap(),
-				Url::parse("https://github.com/bbb").unwrap(),
-			),
+			author: GithubUser {
+				id: 666u64.into(),
+				login: "foooooo".to_string(),
+				avatar_url: Url::parse("https://github.com/aaa").unwrap(),
+				html_url: Url::parse("https://github.com/bbb").unwrap(),
+			},
 			html_url: Url::parse("https://github.com/onlydustxyz/marketplace/issues/17").unwrap(),
 			status: GithubIssueStatus::Open,
 			created_at: DateTime::parse_from_rfc3339("2023-04-18T13:15:05Z")
@@ -73,6 +73,7 @@ mod tests {
 				.with_timezone(&Utc),
 			merged_at: None,
 			closed_at: None,
+			assignees: vec![],
 		}
 	}
 

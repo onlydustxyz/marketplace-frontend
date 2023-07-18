@@ -63,9 +63,9 @@ impl Indexer {
 	}
 
 	fn update_state_with(&self, user: &GithubUser, repo_id: GithubRepoId) -> anyhow::Result<()> {
-		let state = self.get_state(user.id())?.unwrap_or_default().with(user, repo_id);
+		let state = self.get_state(&user.id)?.unwrap_or_default().with(user, repo_id);
 		self.github_user_index_repository
-			.upsert_contributor_indexer_state(user.id(), state.json()?)?;
+			.upsert_contributor_indexer_state(&user.id, state.json()?)?;
 		Ok(())
 	}
 }
@@ -115,7 +115,7 @@ impl stream_filter::Filter for UserHashFilter {
 	type I = GithubUser;
 
 	fn filter(&self, user: GithubUser) -> Decision<GithubUser> {
-		match State::get(self.github_user_index_repository.as_ref(), user.id())
+		match State::get(self.github_user_index_repository.as_ref(), &user.id)
 			.log_err("Failed to retreive contributors indexer state")
 		{
 			Ok(Some(state)) if state.matches(&user, &self.repo_id) => Decision::Skip,
