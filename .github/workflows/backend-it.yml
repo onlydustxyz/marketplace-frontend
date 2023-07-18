@@ -44,7 +44,7 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: test
-          args: --package api --test create_project_it tests::it -- --exact --nocapture
+          args: --package api --test create_project_it should_create_project -- --exact
 
       - uses: actions/cache/save@v3
         if: always()
