@@ -18,7 +18,8 @@ futures = {version = "0.3.21", features = ["alloc"]}
 tokio = {version = "1.18.2", features = ["full"]}
 
 # Database
-diesel = {version = "2.1.0", default-features = false, features = ["postgres","extras"]}
+diesel = {version = "2.1.0", default-features = false, features = ["postgres","extras","serde_json"]}
+diesel_json = "0.2.0"
 
 # CLI
 clap = { version = "4.1.4", features = ["derive"] }

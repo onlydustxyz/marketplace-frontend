@@ -12,10 +12,10 @@ use url::Url;
 	new, Debug, Clone, Getters, GraphQLObject, Serialize, Deserialize, PartialEq, Eq, Hash,
 )]
 pub struct User {
-	id: Id,
-	login: String,
-	avatar_url: Url,
-	html_url: Url,
+	pub id: Id,
+	pub login: String,
+	pub avatar_url: Url,
+	pub html_url: Url,
 }
 
 #[derive(Debug, Clone, Getters, GraphQLObject, Serialize, Deserialize, PartialEq, Eq, Hash)]

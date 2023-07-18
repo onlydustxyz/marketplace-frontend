@@ -123,6 +123,7 @@ diesel::table! {
         title -> Text,
         html_url -> Text,
         closed_at -> Nullable<Timestamp>,
+        assignee_ids -> Jsonb,
     }
 }
 

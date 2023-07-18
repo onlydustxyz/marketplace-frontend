@@ -53,6 +53,7 @@ impl TryFrom<create_issue::GithubIssue> for GithubIssue {
 			updated_at: issue.updated_at,
 			merged_at: issue.merged_at,
 			closed_at: issue.closed_at,
+			assignees: vec![],
 		})
 	}
 }

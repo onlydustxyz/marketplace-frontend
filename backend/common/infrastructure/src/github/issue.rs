@@ -48,6 +48,11 @@ impl IssueFromOctocrab for GithubIssue {
 			updated_at: issue.updated_at,
 			merged_at: issue.pull_request.and_then(|pr| pr.merged_at),
 			closed_at: issue.closed_at,
+			assignees: issue
+				.assignees
+				.iter()
+				.map(|user| GithubUser::from_octocrab_user(user.clone()))
+				.collect(),
 		})
 	}
 
@@ -86,6 +91,12 @@ impl IssueFromOctocrab for GithubIssue {
 			updated_at,
 			merged_at: pull_request.merged_at,
 			closed_at: pull_request.closed_at,
+			assignees: pull_request
+				.assignees
+				.unwrap_or(vec![])
+				.iter()
+				.map(|user| GithubUser::from_octocrab_user(user.clone()))
+				.collect(),
 		})
 	}
 }
