@@ -10,7 +10,7 @@ use rocket::{Build, Rocket};
 
 use crate::{
 	infrastructure::simple_storage,
-	presentation::{graphql, http::get_rocket_builder},
+	presentation::{graphql, http},
 	Config,
 };
 
@@ -22,7 +22,7 @@ pub async fn bootstrap(config: Config) -> Result<Rocket<Build>> {
 	let github: github::Client = github::RoundRobinClient::new(config.github)?.into();
 	let simple_storage = Arc::new(simple_storage::Client::new(config.s3).await?);
 
-	let rocket_build = get_rocket_builder(
+	let rocket_build = http::serve(
 		config.http,
 		graphql::create_schema(),
 		Arc::new(
