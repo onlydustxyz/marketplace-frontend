@@ -20,7 +20,7 @@ type Result<T> = std::result::Result<T, Error>;
 pub struct Client(Ens<Http>);
 
 impl Client {
-	pub fn new(config: &Config) -> Result<Self> {
+	pub fn new(config: Config) -> Result<Self> {
 		let transport =
 			Http::new(&config.url).map_err(|e| Error::InvalidProviderUrl(anyhow!(e)))?;
 		Ok(Self(Ens::new(transport)))

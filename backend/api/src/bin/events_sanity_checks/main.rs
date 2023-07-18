@@ -21,9 +21,9 @@ async fn main() {
 async fn try_run() -> Result<()> {
 	dotenv().ok();
 	let config: Config = config::load("backend/api/src/bin/events_sanity_checks/app.yaml")?;
-	let _tracer = Tracer::init(config.tracer(), "events_sanity_checks")?;
+	let _tracer = Tracer::init(config.tracer, "events_sanity_checks")?;
 
-	let database = Arc::new(DatabaseClient::new(init_pool(config.database())?));
+	let database = Arc::new(DatabaseClient::new(init_pool(config.database)?));
 
 	check_events::<Project>(database.clone())?;
 	check_events::<Payment>(database)?;

@@ -388,7 +388,7 @@ mod tests {
 		"http://plop.fr/github/"
 	)]
 	fn fix_github_host(#[case] base_url: &str, #[case] url: &str, #[case] expected_url: &str) {
-		let client: Client = RoundRobinClient::new(&Config {
+		let client: Client = RoundRobinClient::new(Config {
 			base_url: base_url.to_string(),
 			personal_access_tokens: "token".to_string(),
 			..Default::default()

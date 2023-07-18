@@ -13,7 +13,7 @@ pub struct Client {
 }
 
 impl Client {
-	pub fn new(config: &Config) -> anyhow::Result<Self> {
+	pub fn new(config: Config) -> anyhow::Result<Self> {
 		let personal_access_tokens: Vec<&str> = config
 			.personal_access_tokens
 			.split(',')
@@ -73,7 +73,7 @@ mod tests {
 	#[case("token_a,token_b".to_string(), 2)]
 	#[case("token_a, token_b, token_c,,,token_d, token_e,  ,   , token_f".to_string(), 6)]
 	fn personal_access_tokens_config(#[case] personal_access_tokens: String, #[case] count: usize) {
-		let client = Client::new(&Config {
+		let client = Client::new(Config {
 			base_url: "http://plop.fr/github/".to_string(),
 			personal_access_tokens,
 			..Default::default()
@@ -93,7 +93,7 @@ mod tests {
 	#[case(",".to_string())]
 	#[case(", ,,, ,".to_string())]
 	fn invalid_personal_access_tokens_config(#[case] personal_access_tokens: String) {
-		let result = Client::new(&Config {
+		let result = Client::new(Config {
 			base_url: "http://plop.fr/github/".to_string(),
 			personal_access_tokens,
 			..Default::default()

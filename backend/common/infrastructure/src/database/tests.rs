@@ -4,17 +4,16 @@ use rstest::*;
 use super::Config;
 
 #[fixture]
-#[once]
 fn config() -> Config {
-	Config::new(
-		"postgres://postgres:postgres@localhost/marketplace_db".to_string(),
-		20,
-	)
+	Config {
+		url: "postgres://postgres:postgres@localhost/marketplace_db".to_string(),
+		pool_max_size: 20,
+	}
 }
 
 #[fixture]
-fn connection(config: &Config) -> PgConnection {
-	PgConnection::establish(config.url()).unwrap()
+fn connection(config: Config) -> PgConnection {
+	PgConnection::establish(&config.url).unwrap()
 }
 
 #[rstest]

@@ -9,14 +9,14 @@ use crate::amqp::Config;
 pub const EXCHANGE_NAME: &str = "events";
 
 pub async fn event_consumer<Q: ToString + Display>(
-	config: &Config,
+	config: Config,
 	queue_name: Q,
 ) -> Result<ConsumableBus, BusError> {
 	consumer_with_exchange(config, EXCHANGE_NAME, queue_name).await
 }
 
 pub async fn consumer_with_exchange<Q: ToString + Display>(
-	config: &Config,
+	config: Config,
 	exchange_name: &'static str,
 	queue_name: Q,
 ) -> Result<ConsumableBus, BusError> {
@@ -24,7 +24,7 @@ pub async fn consumer_with_exchange<Q: ToString + Display>(
 }
 
 pub async fn consumer<Q: ToString + Display>(
-	config: &Config,
+	config: Config,
 	queue_name: Q,
 ) -> Result<ConsumableBus, BusError> {
 	let bus = Bus::new(config)

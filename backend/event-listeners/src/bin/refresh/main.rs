@@ -17,10 +17,8 @@ mod cli;
 async fn main() -> Result<()> {
 	dotenv().ok();
 	let config: Config = config::load("backend/event-listeners/src/bin/refresh/app.yaml")?;
-	let _tracer = Tracer::init(config.tracer(), "refresh")?;
-	let database = Arc::new(database::Client::new(database::init_pool(
-		config.database(),
-	)?));
+	let _tracer = Tracer::init(config.tracer, "refresh")?;
+	let database = Arc::new(database::Client::new(database::init_pool(config.database)?));
 
 	let mut registry = Registry::new();
 

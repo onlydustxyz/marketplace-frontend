@@ -22,7 +22,6 @@ mod test {
 	use super::Config;
 
 	#[fixture]
-	#[once]
 	pub fn config() -> Config {
 		Config {
 			url: "amqp://127.0.0.1:5672/%2f".to_string(),

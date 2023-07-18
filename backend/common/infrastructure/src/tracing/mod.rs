@@ -17,7 +17,7 @@ pub struct Config {
 }
 
 impl Tracer {
-	pub fn init(config: &Config, service_name: &str) -> Result<Self> {
+	pub fn init(config: Config, service_name: &str) -> Result<Self> {
 		// Install a new OpenTelemetry trace pipeline
 		let otel_tracer = opentelemetry_datadog::new_pipeline()
 			.with_service_name(service_name)
@@ -42,7 +42,7 @@ impl Tracer {
 	}
 
 	fn setup_pretty_subscriber(
-		config: &Config,
+		config: Config,
 		tracer: opentelemetry::sdk::trace::Tracer,
 	) -> Result<(), tracing::subscriber::SetGlobalDefaultError> {
 		let subscriber = Subscriber::builder()
@@ -58,7 +58,7 @@ impl Tracer {
 	}
 
 	fn setup_json_subscriber(
-		config: &Config,
+		config: Config,
 		tracer: opentelemetry::sdk::trace::Tracer,
 	) -> Result<(), tracing::subscriber::SetGlobalDefaultError> {
 		let subscriber = Subscriber::builder()

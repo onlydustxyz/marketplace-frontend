@@ -17,12 +17,10 @@ mod indexer;
 async fn main() -> Result<()> {
 	dotenv().ok();
 	let config: Config = config::load("backend/event-listeners/app.yaml")?;
-	let _tracer = Tracer::init(config.tracer(), "github")?;
-	let github = Arc::<github::Client>::new(github::RoundRobinClient::new(config.github())?.into());
-	let database = Arc::new(database::Client::new(database::init_pool(
-		config.database(),
-	)?));
-	let event_bus = Arc::new(amqp::Bus::new(config.amqp()).await?);
+	let _tracer = Tracer::init(config.tracer, "github")?;
+	let github = Arc::<github::Client>::new(github::RoundRobinClient::new(config.github)?.into());
+	let database = Arc::new(database::Client::new(database::init_pool(config.database)?));
+	let event_bus = Arc::new(amqp::Bus::new(config.amqp).await?);
 
 	let repo_indexer = indexer::composite::Indexer::new(vec![
 		indexer::repo::Indexer::new(github.clone(), database.clone())

@@ -11,11 +11,11 @@ use olog::info;
 async fn main() -> Result<()> {
 	dotenv().ok();
 	let config: Config = config::load("backend/dusty-bot/app.yaml")?;
-	let _tracer = Tracer::init(config.tracer(), "event-queue-worker")?;
+	let _tracer = Tracer::init(config.tracer, "event-queue-worker")?;
 
-	let github = Arc::<github::Client>::new(github::RoundRobinClient::new(config.github())?.into());
+	let github = Arc::<github::Client>::new(github::RoundRobinClient::new(config.github)?.into());
 
-	let dequeuer = consumer(config.amqp(), DUSTY_BOT_ACTION_QUEUE).await?;
+	let dequeuer = consumer(config.amqp, DUSTY_BOT_ACTION_QUEUE).await?;
 
 	dequeuer
 		.subscribe(|message: UniqueMessage<Action>| {

@@ -28,11 +28,11 @@ pub struct Config {
 async fn main() -> Result<()> {
 	dotenv().ok();
 	let config: Config = config::load("backend/event-store/app.yaml")?;
-	let _tracer = Tracer::init(&config.tracer, "event_store")?;
+	let _tracer = Tracer::init(config.tracer, "event_store")?;
 
-	let inbound_event_bus = bus::consumer(&config.amqp).await?;
-	let outbound_event_bus = Arc::new(Bus::new(&config.amqp).await?);
-	let database = Arc::new(DatabaseClient::new(init_pool(&config.database)?));
+	let inbound_event_bus = bus::consumer(config.amqp.clone()).await?;
+	let outbound_event_bus = Arc::new(Bus::new(config.amqp).await?);
+	let database = Arc::new(DatabaseClient::new(init_pool(config.database)?));
 
 	inbound_event_bus
 		.subscribe(|event| {

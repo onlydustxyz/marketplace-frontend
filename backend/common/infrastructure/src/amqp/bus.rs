@@ -1,17 +1,16 @@
 use std::sync::Arc;
 
 use lapin::{
-	BasicProperties,
-	Channel,
-	Connection,
-	Consumer, message::Delivery, options::{ExchangeDeclareOptions, QueueDeclareOptions}, publisher_confirm::Confirmation,
+	message::Delivery,
+	options::{ExchangeDeclareOptions, QueueDeclareOptions},
+	publisher_confirm::Confirmation,
+	BasicProperties, Channel, Connection, Consumer,
 };
+use olog::{debug, error, info, warn};
 use thiserror::Error;
 use tokio::sync::{Mutex, RwLock};
-use tokio_retry::{Retry, strategy::FixedInterval};
+use tokio_retry::{strategy::FixedInterval, Retry};
 use tokio_stream::StreamExt;
-
-use olog::{debug, error, info, warn};
 
 use super::Config;
 
@@ -42,7 +41,7 @@ impl Bus {
 	/// case RabbitMQ is still not reachable). Not doing the retry would potentially lead the
 	/// application to restart early again, and would make us enter the exponential backoff policy
 	/// of Heroku (the second restart can be delayed by up to 20 minutes (!!!) by Heroku).
-	pub async fn new(config: &Config) -> Result<Self, Error> {
+	pub async fn new(config: Config) -> Result<Self, Error> {
 		let connection = connect(config).await?;
 		Ok(Self {
 			channel: connection.create_channel().await?,
@@ -159,15 +158,15 @@ async fn close_connection() {
 			info!("Closing bus connection {:?}", connection);
 			println!("Closing bus connection {:?}", connection);
 			connection.close(200, "Normal shutdown").await.unwrap();
-		}
+		},
 		None => {
 			warn!("No connection found to close");
-		}
+		},
 	}
 }
 
 /// Retrives the open connection or connect if called for the first time
-async fn connect(config: &Config) -> Result<Arc<Connection>, Error> {
+async fn connect(config: Config) -> Result<Arc<Connection>, Error> {
 	let mut guard = CONNECTION.lock().await;
 	match guard.as_ref() {
 		Some(connection) => Ok(connection.clone()),
@@ -175,12 +174,12 @@ async fn connect(config: &Config) -> Result<Arc<Connection>, Error> {
 			let connection = Arc::new(_do_connect(config).await?);
 			*guard = Some(connection.clone());
 			Ok(connection)
-		}
+		},
 	}
 }
 
 /// This function actually connects to RabbitMQ and must be called only once
-async fn _do_connect(config: &Config) -> Result<Connection, Error> {
+async fn _do_connect(config: Config) -> Result<Connection, Error> {
 	let retry_strategy = FixedInterval::from_millis(config.connection_retry_interval_ms)
 		.take(config.connection_retry_count);
 
@@ -193,7 +192,7 @@ async fn _do_connect(config: &Config) -> Result<Connection, Error> {
 			error
 		})
 	})
-		.await?;
+	.await?;
 	connection.on_error(|error| {
 		error!(error = error.to_string(), "Lost connection to RabbitMQ");
 		println!("Lost connection to RabbitMQ");
