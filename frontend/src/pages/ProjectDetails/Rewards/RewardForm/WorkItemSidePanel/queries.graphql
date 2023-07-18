@@ -1,10 +1,10 @@
-query SearchIssues($projectId: uuid!, $authorId: bigint!, $type: github_issue_type!) {
+query SearchIssues($projectId: uuid!, $issuesWhereClause: GithubIssuesBoolExp!) {
   projects(where: { id: { _eq: $projectId } }) {
     id
     githubRepos {
       projectId
       githubRepoId
-      repoIssues(where: { authorId: { _eq: $authorId }, type: { _eq: $type } }) {
+      repoIssues(where: $issuesWhereClause) {
         ...GithubIssue
       }
     }

@@ -47,7 +47,7 @@ const RewardForm: React.FC = () => {
 
   const { data: unpaidPRs } = useUnpaidIssues({
     projectId,
-    authorId: contributor?.githubUserId,
+    githubUserId: contributor?.githubUserId,
     type: Type.PullRequest,
   });
 

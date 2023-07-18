@@ -1,27 +1,41 @@
 import { chain, some } from "lodash";
 import { useMemo } from "react";
-import { GithubIssueFragment, Type, useGetPaidWorkItemsQuery, useSearchIssuesQuery } from "src/__generated/graphql";
+import {
+  GithubIssueFragment,
+  GithubIssuesBoolExp,
+  Type,
+  useGetPaidWorkItemsQuery,
+  useSearchIssuesQuery,
+} from "src/__generated/graphql";
 import { WorkItem } from "src/components/GithubIssue";
 
 type Props = {
   projectId: string;
-  authorId?: number;
+  githubUserId?: number;
   type: Type;
 };
 
-export default function useUnpaidIssues({ projectId, authorId, type }: Props) {
+function buildIssuesWhereClause(githubUserId: number, type: Type): GithubIssuesBoolExp {
+  switch (type) {
+    case Type.Issue:
+      return { assigneeIds: { _contains: githubUserId }, type: { _eq: "issue" } } as GithubIssuesBoolExp;
+    case Type.PullRequest:
+      return { authorId: { _eq: githubUserId }, type: { _eq: "pull_request" } } as GithubIssuesBoolExp;
+  }
+}
+
+export default function useUnpaidIssues({ projectId, githubUserId, type }: Props) {
   const getPaidItemsQuery = useGetPaidWorkItemsQuery({
-    variables: { projectId, githubUserId: authorId },
-    skip: !authorId || !projectId,
+    variables: { projectId, githubUserId },
+    skip: !githubUserId || !projectId,
   });
 
   const searchIssuesQuery = useSearchIssuesQuery({
     variables: {
       projectId,
-      authorId,
-      type: type === Type.Issue ? "issue" : "pull_request",
+      issuesWhereClause: buildIssuesWhereClause(githubUserId || 0, type),
     },
-    skip: !authorId || !projectId,
+    skip: !githubUserId || !projectId,
   });
 
   const paidItems = useMemo(
