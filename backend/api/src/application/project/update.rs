@@ -141,6 +141,7 @@ mod tests {
 	}
 
 	#[rstest]
+	#[tokio::test]
 	async fn test_update_details(
 		project_id: ProjectId,
 		name: NonEmptyTrimmedString,
@@ -204,6 +205,7 @@ mod tests {
 	}
 
 	#[rstest]
+	#[tokio::test]
 	async fn test_partial_update_details(
 		project_id: ProjectId,
 		long_description: NonEmptyTrimmedString,

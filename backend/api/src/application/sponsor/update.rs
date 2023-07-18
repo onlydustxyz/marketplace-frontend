@@ -89,6 +89,7 @@ mod tests {
 	}
 
 	#[rstest]
+	#[tokio::test]
 	async fn test_update(
 		sponsor_id: SponsorId,
 		name: NonEmptyTrimmedString,
@@ -130,6 +131,7 @@ mod tests {
 	}
 
 	#[rstest]
+	#[tokio::test]
 	async fn test_update_with_bad_logo_url(
 		sponsor_id: SponsorId,
 		name: NonEmptyTrimmedString,

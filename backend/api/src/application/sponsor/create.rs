@@ -78,6 +78,7 @@ mod tests {
 	}
 
 	#[rstest]
+	#[tokio::test]
 	async fn test_create(name: NonEmptyTrimmedString, logo_url: Url, url: Url) {
 		let mut image_store_service = MockImageStoreService::new();
 		image_store_service
@@ -99,6 +100,7 @@ mod tests {
 	}
 
 	#[rstest]
+	#[tokio::test]
 	async fn test_create_with_bad_logo_url(name: NonEmptyTrimmedString, logo_url: Url, url: Url) {
 		let mut image_store_service = MockImageStoreService::new();
 		image_store_service
