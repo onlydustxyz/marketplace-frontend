@@ -1,18 +1,16 @@
 use std::collections::HashMap;
 
 use anyhow::Result;
-use derive_getters::Getters;
-use derive_more::Constructor;
 use domain::LogErr;
 use reqwest::header::HeaderMap;
 use serde::Deserialize;
 use url::Url;
 
-#[derive(Deserialize, Getters, Constructor)]
+#[derive(Debug, Deserialize, Clone)]
 pub struct Config {
 	pub base_url: Url,
 	#[serde(default)]
-    pub headers: HashMap<String, String>,
+	pub headers: HashMap<String, String>,
 }
 
 impl Config {
@@ -42,12 +40,12 @@ mod tests {
 
 	#[test]
 	fn build_headers_from_config() {
-		let config = Config::new(
-			"http://api.github.com".parse().unwrap(),
-			vec![("x-hasura-admin-secret".to_string(), "test".to_string())]
+		let config = Config {
+			base_url: "http://api.github.com".parse().unwrap(),
+			headers: vec![("x-hasura-admin-secret".to_string(), "test".to_string())]
 				.into_iter()
 				.collect(),
-		);
+		};
 
 		let headers = config.build_headers().expect("Unable to build headers");
 		assert_eq!(headers.get("x-hasura-admin-secret").unwrap(), "test");

@@ -9,7 +9,7 @@ use tracing_subscriber::{fmt::Subscriber, layer::SubscriberExt, EnvFilter};
 
 pub struct Tracer;
 
-#[derive(Deserialize, Clone)]
+#[derive(Debug, Deserialize, Clone)]
 pub struct Config {
 	pub ansi: bool,
 	pub json: bool,

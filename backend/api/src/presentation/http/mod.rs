@@ -20,7 +20,7 @@ use crate::{
 pub mod dto;
 mod error;
 pub mod roles;
-mod routes;
+pub mod routes;
 
 #[allow(clippy::too_many_arguments)]
 pub fn serve(

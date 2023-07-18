@@ -12,6 +12,7 @@ use testcontainers::{clients::Cli, images::generic::GenericImage};
 
 pub mod amqp;
 pub mod database;
+pub mod event_listener;
 
 use amqp::container as amqp_container;
 use database::container as database_container;
@@ -26,11 +27,11 @@ fn docker() -> Cli {
 #[derive(Debug, From)]
 pub struct Container(testcontainers::Container<'static, GenericImage>);
 
-#[derive(Debug)]
 pub struct Setup {
+	pub config: Config,
 	pub client: Client,
-	_database: Container,
-	_amqp: Container,
+	_database_container: Container,
+	_amqp_container: Container,
 }
 
 #[fixture]
@@ -77,11 +78,13 @@ pub async fn setup(database_container: Container, amqp_container: Container) -> 
 		},
 	};
 
-	let rocket_builder = bootstrap(config).await.expect("Invalid rocket build");
+	let rocket_builder = bootstrap(config.clone()).await.expect("Invalid rocket build");
+	let client = Client::tracked(rocket_builder).await.expect("Invalid rocket instance");
 
 	Setup {
-		client: Client::tracked(rocket_builder).await.expect("Invalid rocket instance"),
-		_database: database_container,
-		_amqp: amqp_container,
+		config,
+		client,
+		_database_container: database_container,
+		_amqp_container: amqp_container,
 	}
 }

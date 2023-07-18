@@ -4,7 +4,7 @@ use serde::Deserialize;
 
 use crate::infrastructure::simple_storage;
 
-#[derive(Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 pub struct Config {
 	pub http: http::Config,
 	pub database: database::Config,

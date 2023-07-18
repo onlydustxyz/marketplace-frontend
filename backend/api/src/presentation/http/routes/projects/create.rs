@@ -1,19 +1,15 @@
+use common_domain::{DomainError, ProjectId, ProjectVisibility};
 use http_api_problem::{HttpApiProblem, StatusCode};
-use rocket::{
-	serde::json::Json,
-	State,
-};
+use rocket::{serde::json::Json, State};
 use rusty_money::Money;
 use serde::{Deserialize, Serialize};
 use url::Url;
 
-use common_domain::{DomainError, ProjectId, ProjectVisibility};
-
 use crate::application;
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Response {
-	project_id: ProjectId,
+	pub project_id: ProjectId,
 }
 
 #[derive(Debug, Deserialize)]
@@ -30,9 +26,10 @@ pub struct Request {
 	visibility: Option<ProjectVisibility>,
 }
 
-#[post("/api/projects", data = "<request>", format = "application/json", )]
+#[post("/api/projects", data = "<request>", format = "application/json")]
 pub async fn create_project(
-	request: Json<Request>, create_project_usecase: &State<application::project::create::Usecase>,
+	request: Json<Request>,
+	create_project_usecase: &State<application::project::create::Usecase>,
 ) -> Result<Json<Response>, HttpApiProblem> {
 	let project_id = create_project_usecase
 		.create(
@@ -60,12 +57,13 @@ pub async fn create_project(
 			request.rank.unwrap_or_default(),
 			request.visibility.clone().unwrap_or_default(),
 		)
-		.await.map_err(|e| {
-		{
-			HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
-				.title("Unable to process create_project request")
-				.detail(e.to_string())
-		}
-	})?;
+		.await
+		.map_err(|e| {
+			{
+				HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
+					.title("Unable to process create_project request")
+					.detail(e.to_string())
+			}
+		})?;
 	Ok(Json(Response { project_id }))
 }

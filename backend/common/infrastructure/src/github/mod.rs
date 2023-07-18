@@ -24,7 +24,7 @@ pub use user::UserFromOctocrab;
 mod repo;
 pub use repo::OctocrabRepo;
 
-#[derive(Deserialize, Clone, Default)]
+#[derive(Debug, Deserialize, Clone, Default)]
 pub struct Config {
 	pub base_url: String,
 	pub personal_access_tokens: String,

@@ -39,7 +39,6 @@ fn image(db: String, user: String, password: String) -> RunnableImage<GenericIma
 				message: "database system is ready to accept connections".to_string(),
 			}),
 	)
-	.with_container_name("database")
 }
 
 #[fixture]

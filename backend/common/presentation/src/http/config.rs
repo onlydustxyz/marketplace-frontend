@@ -7,7 +7,7 @@ use rocket::figment::{
 };
 use serde::Deserialize;
 
-#[derive(Clone, Deserialize, Getters)]
+#[derive(Debug, Clone, Deserialize, Getters)]
 pub struct Config {
 	pub api_keys: HashMap<String, String>,
 }
