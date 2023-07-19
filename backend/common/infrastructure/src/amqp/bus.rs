@@ -6,7 +6,7 @@ use lapin::{
 	publisher_confirm::Confirmation,
 	BasicProperties, Channel, Connection, Consumer,
 };
-use olog::{debug, error, info, warn};
+use olog::{debug, error, warn};
 use thiserror::Error;
 use tokio::sync::{Mutex, RwLock};
 use tokio_retry::{strategy::FixedInterval, Retry};
@@ -155,7 +155,7 @@ async fn close_connection() {
 	let guard = CONNECTION.lock().await;
 	match guard.as_ref() {
 		Some(connection) => {
-			info!("Closing bus connection {:?}", connection);
+			debug!("Closing bus connection {:?}", connection);
 			connection.close(200, "Normal shutdown").await.unwrap();
 		},
 		None => {

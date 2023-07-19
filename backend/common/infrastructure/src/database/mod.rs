@@ -23,7 +23,7 @@ mod model;
 #[cfg(test)]
 mod tests;
 
-type Pool = r2d2::Pool<ConnectionManager<PgConnection>>;
+pub type Pool = r2d2::Pool<ConnectionManager<PgConnection>>;
 type PooledConnection = r2d2::PooledConnection<ConnectionManager<PgConnection>>;
 
 pub const MIGRATIONS: EmbeddedMigrations = embed_migrations!();
