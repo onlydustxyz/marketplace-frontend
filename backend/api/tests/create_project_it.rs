@@ -1,10 +1,11 @@
 mod context;
+mod models;
 
 use anyhow::Result;
 use api::presentation::http::routes::projects;
 use diesel::RunQueryDsl;
-use domain::{Event, ProjectId};
-use infrastructure::database::{enums::ProjectVisibility, schema::project_details};
+use domain::Event;
+use infrastructure::database::schema::project_details;
 use olog::info;
 use rocket::{
 	http::{ContentType, Status},
@@ -13,25 +14,13 @@ use rocket::{
 use rstest::rstest;
 use testcontainers::clients::Cli;
 
-use crate::context::{docker, Context};
+use crate::{
+	context::{docker, Context},
+	models::ProjectDetails,
+};
 
 #[macro_use]
 extern crate diesel;
-
-#[derive(Debug, Clone, Queryable)]
-#[diesel(table_name = project_details, primary_key(project_id))]
-pub struct ProjectDetails {
-	pub project_id: ProjectId,
-	pub telegram_link: Option<String>,
-	pub logo_url: Option<String>,
-	pub name: String,
-	pub short_description: String,
-	pub long_description: String,
-	pub hiring: bool,
-	pub rank: i32,
-	pub visibility: ProjectVisibility,
-	pub key: String,
-}
 
 #[rstest]
 #[tokio::test]
@@ -53,8 +42,8 @@ impl<'a> Test<'a> {
 
 		let create_project_request = json!({
 			"name": "My Awesome Project",
-			"short_description": "short-description-name",
-			"long_description": "long-description-name",
+			"short_description": "A short description",
+			"long_description": "A very looong description",
 			"telegram_link": "http://telegram-link.test",
 		});
 
@@ -87,9 +76,21 @@ impl<'a> Test<'a> {
 		assert_eq!(project_details.len(), 1);
 
 		let project_details = project_details.pop().unwrap();
-		assert_eq!(project_details.project_id, project_id);
-		assert_eq!(project_details.name, "My Awesome Project");
-		assert_eq!(project_details.key, "my-awesome-project");
+		assert_eq!(
+			project_details,
+			ProjectDetails {
+				project_id,
+				name: "My Awesome Project".to_string(),
+				key: "my-awesome-project".to_string(),
+				short_description: "A short description".to_string(),
+				long_description: "A very looong description".to_string(),
+				telegram_link: Some("http://telegram-link.test/".to_string()),
+				logo_url: None,
+				hiring: false,
+				rank: 0,
+				visibility: infrastructure::database::enums::ProjectVisibility::Public
+			}
+		);
 
 		Ok(())
 	}
