@@ -4,7 +4,7 @@ use lapin::{
 	message::Delivery,
 	options::{ExchangeDeclareOptions, QueueDeclareOptions},
 	publisher_confirm::Confirmation,
-	BasicProperties, Channel, Connection, Consumer,
+	BasicProperties, Channel, Connection, ConnectionState, Consumer,
 };
 use olog::{debug, error, warn};
 use thiserror::Error;
@@ -154,13 +154,11 @@ lazy_static! {
 async fn close_connection() {
 	let guard = CONNECTION.lock().await;
 	match guard.as_ref() {
-		Some(connection) => {
-			debug!("Closing bus connection {:?}", connection);
+		Some(connection) if connection.status().state() == ConnectionState::Connected => {
+			debug!("Closing bus connection {connection:?}");
 			connection.close(200, "Normal shutdown").await.unwrap();
 		},
-		None => {
-			warn!("No connection found to close");
-		},
+		_ => warn!("No connection found to close"),
 	}
 }
 
