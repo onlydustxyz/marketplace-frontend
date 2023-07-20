@@ -10,14 +10,14 @@ static USER: &str = "postgres";
 static PASSWORD: &str = "Passw0rd";
 static DATABASE: &str = "marketplace_db";
 
-pub struct Context<'a> {
-	_container: Container<'a, GenericImage>,
+pub struct Context<'docker> {
+	_container: Container<'docker, GenericImage>,
 	pub(super) config: database::Config,
 	pub client: database::Client,
 }
 
-impl<'a> Context<'a> {
-	pub fn new(docker: &'a Cli) -> Result<Self> {
+impl<'docker> Context<'docker> {
+	pub fn new(docker: &'docker Cli) -> Result<Self> {
 		let container = docker.run(image());
 		let port = container
 			.ports()

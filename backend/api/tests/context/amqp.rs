@@ -9,15 +9,15 @@ use tokio::{
 	task::JoinHandle,
 };
 
-pub struct Context<'a> {
+pub struct Context<'docker> {
 	pub(super) config: amqp::Config,
 	handle: JoinHandle<Result<(), SubscriberError>>,
 	pub listener: Receiver<Event>,
-	_container: Container<'a, GenericImage>,
+	_container: Container<'docker, GenericImage>,
 }
 
-impl<'a> Context<'a> {
-	pub async fn new(docker: &'a Cli) -> Result<Context<'a>> {
+impl<'docker> Context<'docker> {
+	pub async fn new(docker: &'docker Cli) -> Result<Context<'docker>> {
 		let container = docker.run(RunnableImage::from(
 			GenericImage::new("rabbitmq", "3.11").with_wait_for(WaitFor::StdOutMessage {
 				message: "Server startup complete".to_string(),
@@ -49,7 +49,7 @@ impl<'a> Context<'a> {
 	}
 }
 
-impl<'a> Drop for Context<'a> {
+impl<'docker> Drop for Context<'docker> {
 	fn drop(&mut self) {
 		self.handle.abort();
 	}
