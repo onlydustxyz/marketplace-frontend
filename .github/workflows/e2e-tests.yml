@@ -6,9 +6,7 @@ on:
   push:
     branches:
       - "main"
-      - "develop"
       - "hotfix/**"
-#      - "test-migration-graphql-rest"
 
   workflow_dispatch:
     inputs:
