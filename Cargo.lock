@@ -1492,6 +1492,7 @@ dependencies = [
  "derive-new",
  "derive_more",
  "diesel",
+ "diesel_json",
  "domain",
  "dotenv",
  "envtestkit",

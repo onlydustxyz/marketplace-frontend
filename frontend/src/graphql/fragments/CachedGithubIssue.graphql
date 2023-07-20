@@ -9,6 +9,7 @@ fragment GithubIssue on GithubIssues {
   title
   htmlUrl
   authorId
+  assigneeIds
   type
   status
   createdAt

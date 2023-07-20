@@ -43,7 +43,7 @@ impl GithubService for github::Client {
 		let issue = self.issue(repo_owner, repo_name, issue_number).await?;
 		let issue_number: u64 = (*issue_number).into();
 
-		if issue.author.id() == dusty_bot.id() && issue.status == GithubIssueStatus::Open {
+		if issue.author.id == dusty_bot.id && issue.status == GithubIssueStatus::Open {
 			self.octocrab()
 				.issues(repo_owner, repo_name)
 				.update(issue_number)

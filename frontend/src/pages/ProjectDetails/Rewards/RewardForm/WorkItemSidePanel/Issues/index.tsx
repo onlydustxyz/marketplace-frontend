@@ -24,7 +24,7 @@ export default function Issues({ type, projectId, contributorId, workItems, onWo
 
   const { data: unpaidIssues } = useUnpaidIssues({
     projectId,
-    authorId: contributorId,
+    githubUserId: contributorId,
     type,
   });
 

@@ -53,13 +53,19 @@ impl TryFrom<create_issue::GithubIssue> for GithubIssue {
 			updated_at: issue.updated_at,
 			merged_at: issue.merged_at,
 			closed_at: issue.closed_at,
+			assignees: vec![],
 		})
 	}
 }
 
 impl From<create_issue::GithubUser> for GithubUser {
 	fn from(user: create_issue::GithubUser) -> Self {
-		Self::new(user.id, user.login, user.avatar_url, user.html_url)
+		Self {
+			id: user.id,
+			login: user.login,
+			avatar_url: user.avatar_url,
+			html_url: user.html_url,
+		}
 	}
 }
 

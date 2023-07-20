@@ -16,15 +16,16 @@ select_permissions:
   - role: public
     permission:
       columns:
-        - status
-        - type
+        - assignee_ids
         - author_id
-        - id
-        - issue_number
-        - repo_id
-        - html_url
-        - title
         - closed_at
         - created_at
+        - html_url
+        - id
+        - issue_number
         - merged_at
+        - repo_id
+        - status
+        - title
+        - type
       filter: {}

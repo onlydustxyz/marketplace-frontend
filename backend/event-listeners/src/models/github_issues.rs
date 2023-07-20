@@ -1,5 +1,6 @@
 use chrono::NaiveDateTime;
 use diesel::Identifiable;
+use diesel_json::Json;
 use domain::{GithubIssueId, GithubIssueNumber, GithubRepoId, GithubUserId};
 use infrastructure::database::{
 	enums::{GithubIssueStatus, GithubIssueType},
@@ -22,6 +23,7 @@ pub struct GithubIssue {
 	pub title: String,
 	pub html_url: String,
 	pub closed_at: Option<NaiveDateTime>,
+	pub assignee_ids: Json<Vec<GithubUserId>>,
 }
 
 impl Identifiable for GithubIssue {
@@ -39,13 +41,14 @@ impl From<domain::GithubIssue> for GithubIssue {
 			repo_id: issue.repo_id,
 			issue_number: issue.number,
 			created_at: issue.created_at.naive_utc(),
-			author_id: *issue.author.id(),
+			author_id: issue.author.id,
 			merged_at: issue.merged_at.map(|date| date.naive_utc()),
 			type_: issue.r#type.into(),
 			status: issue.status.into(),
 			title: issue.title,
 			html_url: issue.html_url.to_string(),
 			closed_at: issue.closed_at.map(|date| date.naive_utc()),
+			assignee_ids: Json::new(issue.assignees.iter().map(|assignee| assignee.id).collect()),
 		}
 	}
 }

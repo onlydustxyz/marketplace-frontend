@@ -38,6 +38,7 @@ pub struct Issue {
 	pub updated_at: DateTime<Utc>,
 	pub merged_at: Option<DateTime<Utc>>,
 	pub closed_at: Option<DateTime<Utc>>,
+	pub assignees: Vec<GithubUser>,
 }
 
 #[derive(

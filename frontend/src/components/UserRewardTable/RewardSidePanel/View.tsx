@@ -69,7 +69,7 @@ export default function View({
   payoutInfoMissing,
   invoiceNeeded,
   invoiceReceivedAt,
-  rewards,
+  payments,
   projectLeaderView,
   onRewardCancel,
   ...props
@@ -77,7 +77,7 @@ export default function View({
   const { T } = useIntl();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
-  const formattedReceipt = formatReceipt(rewards?.at(0)?.receipt);
+  const formattedReceipt = formatReceipt(payments?.at(0)?.receipt);
 
   const shouldDisplayCancelButton = projectLeaderView && onRewardCancel && status === PaymentStatus.WAITING_PAYMENT;
 
@@ -149,7 +149,7 @@ export default function View({
                 {T("reward.table.detailsPanel.requestedAt", { requestedAt: formatDateTime(new Date(requestedAt)) })}
               </Details>
             )}
-            {status === PaymentStatus.ACCEPTED && rewards?.at(0)?.processedAt && (
+            {status === PaymentStatus.ACCEPTED && payments?.at(0)?.processedAt && (
               <Details align={formattedReceipt ? Align.Top : Align.Center}>
                 <BankCardLine className="text-base" />
                 <ReactMarkdown
@@ -158,7 +158,7 @@ export default function View({
                 >
                   {[
                     T("reward.table.detailsPanel.processedAt", {
-                      processedAt: formatDateTime(new Date(rewards?.at(0)?.processedAt)),
+                      processedAt: formatDateTime(new Date(payments?.at(0)?.processedAt)),
                     }),
                     formattedReceipt &&
                       T(`reward.table.detailsPanel.processedVia.${formattedReceipt?.type}`, {

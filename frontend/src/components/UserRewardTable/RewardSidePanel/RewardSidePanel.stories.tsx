@@ -78,7 +78,7 @@ const payment: PaymentRequestDetailsFragment = {
       sum: { amount: 0 },
     },
   },
-  rewards: [
+  payments: [
     {
       processedAt: new Date("2023-05-22T16:24:00"),
       receipt: {},
