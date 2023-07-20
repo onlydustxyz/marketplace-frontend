@@ -18,11 +18,7 @@ pub struct Context<'docker> {
 
 impl<'docker> Context<'docker> {
 	pub async fn new(docker: &'docker Cli) -> Result<Context<'docker>> {
-		let container = docker.run(RunnableImage::from(
-			GenericImage::new("rabbitmq", "3.11").with_wait_for(WaitFor::StdOutMessage {
-				message: "Server startup complete".to_string(),
-			}),
-		));
+		let container = docker.run(image());
 
 		let port = container
 			.ports()
@@ -62,4 +58,12 @@ async fn on_event(
 	tx.send(message.payload().clone())
 		.await
 		.map_err(|e| SubscriberCallbackError::Fatal(anyhow!(e)))
+}
+
+fn image() -> RunnableImage<GenericImage> {
+	RunnableImage::from(GenericImage::new("rabbitmq", "3.11").with_wait_for(
+		WaitFor::StdOutMessage {
+			message: "Server startup complete".to_string(),
+		},
+	))
 }
