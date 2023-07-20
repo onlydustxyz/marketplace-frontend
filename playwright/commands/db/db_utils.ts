@@ -15,13 +15,15 @@ export const dumpDB = () => {
 
 export const restoreDB = () => {
   const DATABASE_URL = getEnv("DATABASE_URL");
-  cleanupDB();
-  execSync(`if [ -f "${DUMP_PATH}" ]; then psql ${DATABASE_URL} < "${DUMP_PATH}"; fi`, { stdio: "pipe" });
+  execSync(
+    `if [ -f "${DUMP_PATH}" ]; then psql ${DATABASE_URL} --single-transaction -f "playwright/commands/db/truncate.sql" -f "${DUMP_PATH}"; fi`,
+    { stdio: "pipe" }
+  );
 };
 
 export const cleanupDB = () => {
   const DATABASE_URL = getEnv("DATABASE_URL");
-  execSync(`psql ${DATABASE_URL} -f "playwright/commands/db/truncate.sql"`, { stdio: "pipe" });
+  execSync(`psql ${DATABASE_URL} --single-transaction -f "playwright/commands/db/truncate.sql"`, { stdio: "pipe" });
 };
 
 export const indexerRunning = () => {
