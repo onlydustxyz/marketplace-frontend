@@ -11,8 +11,11 @@ pub fn impl_derive(derive_input: syn::DeriveInput) -> TokenStream {
 				self,
 				connection: &mut ::diesel::pg::PgConnection,
 			) -> ::infrastructure::database::Result<Self> {
-				use ::diesel::RunQueryDsl;
-				diesel::update(&self).set(&self).get_result(connection).map_err(Into::into)
+				use ::diesel::{associations::HasTable, RunQueryDsl, Table};
+				use infrastructure::contextualized_error::IntoContextualizedError;
+				diesel::update(&self).set(&self).get_result(connection)
+					.err_with_context(format!("update {} where id={:?}", stringify!(#name), <Self as HasTable>::table().primary_key()))
+					.map_err(Into::into)
 			}
 
 			fn upsert(
@@ -20,12 +23,14 @@ pub fn impl_derive(derive_input: syn::DeriveInput) -> TokenStream {
 				connection: &mut ::diesel::pg::PgConnection,
 			) -> ::infrastructure::database::Result<Self> {
 				use ::diesel::{associations::HasTable, RunQueryDsl, Table};
+				use infrastructure::contextualized_error::IntoContextualizedError;
 				diesel::insert_into(<Self as HasTable>::table())
 					.values(&self)
 					.on_conflict(<Self as HasTable>::table().primary_key())
 					.do_update()
 					.set(&self)
 					.get_result(connection)
+					.err_with_context(format!("delete {} where id={:?}", stringify!(#name), <Self as HasTable>::table().primary_key()))
 					.map_err(Into::into)
 			}
 		}

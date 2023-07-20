@@ -1,6 +1,9 @@
 use diesel::{ExpressionMethods, RunQueryDsl};
 use domain::PaymentId;
-use infrastructure::database::{self, schema::work_items::dsl, Client, Result};
+use infrastructure::{
+	contextualized_error::IntoContextualizedError,
+	database::{self, schema::work_items::dsl, Client, Result},
+};
 
 use super::WorkItem;
 
@@ -14,7 +17,8 @@ impl Repository for Client {
 		let mut connection = self.connection()?;
 		diesel::delete(dsl::work_items)
 			.filter(dsl::payment_id.eq(payment_id))
-			.execute(&mut *connection)?;
+			.execute(&mut *connection)
+			.err_with_context(format!("delete work_items where payment_id={payment_id}"))?;
 		Ok(())
 	}
 }

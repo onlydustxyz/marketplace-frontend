@@ -1,6 +1,9 @@
 use diesel::{ExpressionMethods, RunQueryDsl};
 use domain::UserId;
-use infrastructure::{database, database::schema::user_profile_info::dsl};
+use infrastructure::{
+	contextualized_error::IntoContextualizedError, database,
+	database::schema::user_profile_info::dsl,
+};
 
 use super::UserProfileInfo;
 
@@ -15,8 +18,11 @@ impl Repository for database::Client {
 			.values((dsl::id.eq(id), dsl::avatar_url.eq(avatar_url.clone())))
 			.on_conflict(dsl::id)
 			.do_update()
-			.set(dsl::avatar_url.eq(avatar_url))
-			.execute(&mut *connection)?;
+			.set(dsl::avatar_url.eq(avatar_url.clone()))
+			.execute(&mut *connection)
+			.err_with_context(format!(
+				"upsert user_profile_info set avatar_url={avatar_url} where id={id}"
+			))?;
 		Ok(())
 	}
 }

@@ -5,15 +5,15 @@ use thiserror::Error;
 
 #[derive(Debug, Error)]
 pub enum Error {
-	#[error("Internal Error")]
+	#[error("Internal Error (database)")]
 	Database(#[from] DatabaseError),
 	#[error(transparent)]
 	GithubService(#[from] GithubServiceError),
-	#[error("Internal Error")]
+	#[error("Internal Error (publisher)")]
 	Publisher(#[from] PublisherError),
-	#[error("Internal Error")]
+	#[error("Internal Error (serde)")]
 	Serialization(#[from] serde_json::Error),
-	#[error("Internal Error")]
+	#[error("Internal Error (other)")]
 	Other(#[from] anyhow::Error),
 }
 
