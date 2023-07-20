@@ -28,8 +28,8 @@ impl<'a> Context<'a> {
 	pub async fn new(docker: &'a Cli) -> Result<Context<'a>> {
 		tracing_subscriber::fmt::init();
 
-		let database = database::Context::new(&docker)?;
-		let amqp = amqp::Context::new(&docker).await?;
+		let database = database::Context::new(docker)?;
+		let amqp = amqp::Context::new(docker).await?;
 
 		let config = Config {
 			amqp: amqp.config.clone(),
@@ -52,7 +52,7 @@ impl<'a> Context<'a> {
 				secret_access_key: "secret_access_key_test".to_string(),
 			},
 			graphql_client: infrastructure::graphql::Config {
-				base_url: Url::parse(&("https://test.com".to_string())).unwrap(),
+				base_url: Url::parse("https://test.com").unwrap(),
 				headers: HashMap::new(),
 			},
 			github: infrastructure::github::Config {
