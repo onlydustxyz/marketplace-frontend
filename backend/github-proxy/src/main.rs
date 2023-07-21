@@ -27,9 +27,9 @@ pub struct Config {
 async fn main() -> Result<()> {
 	dotenv().ok();
 	let config: Config = config::load("backend/github-proxy/app.yaml")?;
-	let _tracer = Tracer::init(&config.tracer, "github-proxy")?;
+	let _tracer = Tracer::init(config.tracer.clone(), "github-proxy")?;
 
-	let github: github::Client = RoundRobinClient::new(&config.github)?.into();
+	let github: github::Client = RoundRobinClient::new(config.github.clone())?.into();
 
 	http::serve(config, Arc::new(github)).await?;
 

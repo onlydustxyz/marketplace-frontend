@@ -1,6 +1,29 @@
 type Mutation {
+  createProject(
+    name: String!
+    shortDescription: String!
+    longDescription: String!
+    telegramLink: Url
+    logoUrl: Url
+    initialBudget: Int
+    hiring: Boolean
+    rank: Int
+    visibility: Visibility
+  ): Uuid!
+}
+
+type Mutation {
   suggestTechnology(
     suggestion: String!
   ): Boolean
 }
+
+enum Visibility {
+  PRIVATE
+  PUBLIC
+}
+
+scalar Url
+
+scalar Uuid
 

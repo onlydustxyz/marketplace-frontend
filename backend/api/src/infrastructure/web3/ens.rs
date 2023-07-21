@@ -6,7 +6,7 @@ mod mock {
 
 	mock! {
 		pub Client {
-			pub fn new(config: &Config) -> Result<Self, ens::Error> ;
+			pub fn new(config: Config) -> Result<Self, ens::Error> ;
 			pub async fn eth_address(&self, name: &str) -> Result<EthereumAddress, ens::Error>;
 		}
 	}

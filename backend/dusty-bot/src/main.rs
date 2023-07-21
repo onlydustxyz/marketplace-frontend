@@ -10,11 +10,11 @@ use infrastructure::{github, tracing::Tracer};
 async fn main() -> Result<()> {
 	dotenv().ok();
 	let config: Config = config::load("backend/dusty-bot/app.yaml")?;
-	let _tracer = Tracer::init(config.tracer(), "dusty-bot")?;
+	let _tracer = Tracer::init(config.tracer, "dusty-bot")?;
 
-	let github = Arc::new(github::RoundRobinClient::new(config.github())?.into());
+	let github = Arc::new(github::RoundRobinClient::new(config.github)?.into());
 
-	http::serve(config.http().clone(), github).await?;
+	http::serve(config.http.clone(), github).await?;
 
 	Ok(())
 }

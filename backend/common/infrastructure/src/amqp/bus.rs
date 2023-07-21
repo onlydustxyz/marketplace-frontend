@@ -1,8 +1,8 @@
-use std::sync::Arc;
+use std::sync::{Arc, Weak};
 
 use lapin::{
 	message::Delivery,
-	options::{ExchangeDeclareOptions, QueueDeclareOptions},
+	options::{BasicCancelOptions, ExchangeDeclareOptions, QueueDeclareOptions},
 	publisher_confirm::Confirmation,
 	BasicProperties, Channel, Connection, Consumer,
 };
@@ -23,6 +23,7 @@ pub enum Error {
 }
 
 pub struct Bus {
+	_connection: Arc<Connection>,
 	channel: Channel,
 }
 
@@ -41,10 +42,11 @@ impl Bus {
 	/// case RabbitMQ is still not reachable). Not doing the retry would potentially lead the
 	/// application to restart early again, and would make us enter the exponential backoff policy
 	/// of Heroku (the second restart can be delayed by up to 20 minutes (!!!) by Heroku).
-	pub async fn new(config: &Config) -> Result<Self, Error> {
+	pub async fn new(config: Config) -> Result<Self, Error> {
 		let connection = connect(config).await?;
 		Ok(Self {
 			channel: connection.create_channel().await?,
+			_connection: connection,
 		})
 	}
 
@@ -89,7 +91,12 @@ impl ConsumableBus {
 	async fn new(bus: Bus, queue_name: String) -> Result<Self, Error> {
 		let consumer = bus
 			.channel
-			.basic_consume(&queue_name, "", Default::default(), Default::default())
+			.basic_consume(
+				&queue_name,
+				"consumer",
+				Default::default(),
+				Default::default(),
+			)
 			.await?;
 
 		Ok(Self {
@@ -101,6 +108,11 @@ impl ConsumableBus {
 
 	pub fn queue_name(&self) -> &str {
 		&self.queue_name
+	}
+
+	pub async fn cancel_consumer(&self) -> Result<(), Error> {
+		self.bus.channel.basic_cancel("consumer", BasicCancelOptions::default()).await?;
+		Ok(())
 	}
 
 	pub async fn with_exchange(self, exchange_name: &'static str) -> Result<Self, Error> {
@@ -140,25 +152,25 @@ impl ConsumableBus {
 	}
 }
 
-/// Retrives the open connection or connect if called for the first time
-async fn connect(config: &Config) -> Result<Arc<Connection>, Error> {
-	lazy_static! {
-		static ref CONNECTION: Mutex<Option<Arc<Connection>>> = Mutex::new(None);
-	}
+lazy_static! {
+	static ref CONNECTION: Mutex<Option<Weak<Connection>>> = Mutex::new(None);
+}
 
+/// Retrives the open connection or connect if called for the first time
+async fn connect(config: Config) -> Result<Arc<Connection>, Error> {
 	let mut guard = CONNECTION.lock().await;
-	match guard.as_ref() {
-		Some(connection) => Ok(connection.clone()),
+	match guard.as_ref().and_then(Weak::upgrade) {
+		Some(connection) => Ok(connection),
 		None => {
 			let connection = Arc::new(_do_connect(config).await?);
-			*guard = Some(connection.clone());
+			*guard = Some(Arc::downgrade(&connection));
 			Ok(connection)
 		},
 	}
 }
 
 /// This function actually connects to RabbitMQ and must be called only once
-async fn _do_connect(config: &Config) -> Result<Connection, Error> {
+async fn _do_connect(config: Config) -> Result<Connection, Error> {
 	let retry_strategy = FixedInterval::from_millis(config.connection_retry_interval_ms)
 		.take(config.connection_retry_count);
 
@@ -172,7 +184,6 @@ async fn _do_connect(config: &Config) -> Result<Connection, Error> {
 		})
 	})
 	.await?;
-
 	connection.on_error(|error| {
 		error!(error = error.to_string(), "Lost connection to RabbitMQ");
 		std::process::exit(1);

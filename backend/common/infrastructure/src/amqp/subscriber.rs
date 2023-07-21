@@ -203,7 +203,7 @@ mod tests {
 	}
 
 	#[fixture]
-	async fn bus(config: &Config) -> Bus {
+	async fn bus(config: Config) -> Bus {
 		Bus::new(config).await.unwrap()
 	}
 

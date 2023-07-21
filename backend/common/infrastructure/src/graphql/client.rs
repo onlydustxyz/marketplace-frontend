@@ -11,10 +11,10 @@ pub struct Client {
 }
 
 impl Client {
-	pub fn new(config: &Config) -> Result<Self> {
+	pub fn new(config: Config) -> Result<Self> {
 		Ok(Self {
 			client: reqwest::Client::builder().default_headers(config.build_headers()?).build()?,
-			url: config.base_url().clone(),
+			url: config.base_url,
 		})
 	}
 

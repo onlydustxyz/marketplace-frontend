@@ -53,6 +53,7 @@ mod tests {
 	}
 
 	#[rstest]
+	#[tokio::test]
 	async fn valid_ens(eth_name: PayoutSettings) {
 		let mut ens_client = ens::Client::default();
 		ens_client
@@ -67,6 +68,7 @@ mod tests {
 	}
 
 	#[rstest]
+	#[tokio::test]
 	async fn invalid_ens(eth_name: PayoutSettings) {
 		let mut ens_client = ens::Client::default();
 		ens_client
@@ -81,6 +83,7 @@ mod tests {
 	}
 
 	#[rstest]
+	#[tokio::test]
 	async fn ens_error(eth_name: PayoutSettings) {
 		let mut ens_client = ens::Client::default();
 		ens_client

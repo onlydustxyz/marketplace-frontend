@@ -1,0 +1,60 @@
+name: Backend CI
+
+on:
+  pull_request: ~
+
+  push:
+    branches:
+      - "main"
+      - "hotfix/**"
+
+  workflow_dispatch:
+    inputs:
+      debug_enabled:
+        type: boolean
+        description: "Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)"
+        required: false
+        default: false
+
+env:
+  CARGO_TERM_COLOR: always
+  RUST_LOG: debug
+
+jobs:
+
+  test:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - uses: actions/cache/restore@v3
+        name: Restore cache
+        if: always()
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            ./target
+          key: ${{ github.ref_name }}-cargo-${{ hashFiles('Cargo.lock') }}
+
+      - name: api integration tests
+        uses: actions-rs/cargo@v1
+        with:
+          command: test
+          args: --package api --test create_project_it
+
+      - uses: actions/cache/save@v3
+        if: always()
+        name: Save cache
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            ./target
+          key: ${{ github.ref_name }}-cargo-${{ hashFiles('Cargo.lock') }}

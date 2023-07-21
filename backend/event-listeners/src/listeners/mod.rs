@@ -27,13 +27,13 @@ pub trait EventListener<E>: Send + Sync {
 }
 
 pub async fn spawn_all(
-	config: &Config,
+	config: Config,
 	reqwest: reqwest::Client,
 	database: Arc<database::Client>,
 	github: Arc<GithubClient>,
 ) -> Result<Vec<JoinHandle<()>>> {
 	let mut handles = vec![
-		Logger.spawn(event_bus::event_consumer(config.amqp(), "logger").await?),
+		Logger.spawn(event_bus::event_consumer(config.amqp.clone(), "logger").await?),
 		project::Projector::new(
 			database.clone(),
 			database.clone(),
@@ -44,7 +44,7 @@ pub async fn spawn_all(
 			database.clone(),
 		)
 		.spawn(
-			event_bus::event_consumer(config.amqp(), "projects")
+			event_bus::event_consumer(config.amqp.clone(), "projects")
 				.await?
 				.into_command_subscriber(database.clone()),
 		),
@@ -58,7 +58,7 @@ pub async fn spawn_all(
 			database.clone(),
 		)
 		.spawn(
-			event_bus::event_consumer(config.amqp(), "budgets")
+			event_bus::event_consumer(config.amqp.clone(), "budgets")
 				.await?
 				.into_command_subscriber(database.clone()),
 		),
@@ -74,22 +74,29 @@ pub async fn spawn_all(
 		)
 		.spawn(
 			event_bus::consumer_with_exchange(
-				config.amqp(),
+				config.amqp.clone(),
 				GITHUB_EVENTS_EXCHANGE,
 				"github-events",
 			)
 			.await?,
 		),
 		Logger.spawn(
-			event_bus::consumer_with_exchange(config.amqp(), GITHUB_EVENTS_EXCHANGE, "logger")
-				.await?,
+			event_bus::consumer_with_exchange(
+				config.amqp.clone(),
+				GITHUB_EVENTS_EXCHANGE,
+				"logger",
+			)
+			.await?,
 		),
 	];
 
 	for (index, target) in webhook_targets().into_iter().enumerate() {
-		handles.push(EventWebHook::new(reqwest.clone(), target).spawn(
-			event_bus::event_consumer(config.amqp(), format!("event-webhooks-{index}")).await?,
-		))
+		handles.push(
+			EventWebHook::new(reqwest.clone(), target).spawn(
+				event_bus::event_consumer(config.amqp.clone(), format!("event-webhooks-{index}"))
+					.await?,
+			),
+		)
 	}
 
 	Ok(handles)

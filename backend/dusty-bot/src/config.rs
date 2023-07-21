@@ -1,12 +1,11 @@
-use derive_getters::Getters;
 use infrastructure::{amqp, github, tracing};
 use presentation::http;
 use serde::Deserialize;
 
-#[derive(Deserialize, Getters)]
+#[derive(Deserialize)]
 pub struct Config {
-	amqp: amqp::Config,
-	http: http::Config,
-	github: github::Config,
-	tracer: tracing::Config,
+	pub amqp: amqp::Config,
+	pub http: http::Config,
+	pub github: github::Config,
+	pub tracer: tracing::Config,
 }

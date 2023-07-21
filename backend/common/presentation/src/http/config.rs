@@ -7,9 +7,9 @@ use rocket::figment::{
 };
 use serde::Deserialize;
 
-#[derive(Clone, Deserialize, Getters)]
+#[derive(Debug, Clone, Deserialize, Getters)]
 pub struct Config {
-	api_keys: HashMap<String, String>,
+	pub api_keys: HashMap<String, String>,
 }
 
 pub fn rocket(file_path: &str) -> Figment {

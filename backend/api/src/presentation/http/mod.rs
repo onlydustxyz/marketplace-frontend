@@ -1,25 +1,29 @@
 use std::sync::Arc;
 
 use ::domain::{AggregateRootRepository, Project};
-use anyhow::Result;
-use http::Config;
+pub use http::Config;
 use infrastructure::{
 	amqp::{self, CommandPublisher},
 	database::{ImmutableRepository, Repository},
 	github,
-	web3::ens,
 };
 use presentation::http;
+use rocket::{Build, Rocket};
 
-use crate::{infrastructure::simple_storage, models::*, presentation::graphql};
+use crate::{
+	application,
+	infrastructure::{simple_storage, web3::ens},
+	models::*,
+	presentation::{graphql, http::routes::projects::create_project},
+};
 
 pub mod dto;
 mod error;
 pub mod roles;
-mod routes;
+pub mod routes;
 
 #[allow(clippy::too_many_arguments)]
-pub async fn serve(
+pub fn serve(
 	config: Config,
 	schema: graphql::Schema,
 	command_bus: Arc<CommandPublisher<amqp::Bus>>,
@@ -40,8 +44,13 @@ pub async fn serve(
 	ens: Arc<ens::Client>,
 	simple_storage: Arc<simple_storage::Client>,
 	bus: Arc<amqp::Bus>,
-) -> Result<()> {
-	let _ = rocket::custom(http::config::rocket("backend/api/Rocket.toml"))
+) -> Rocket<Build> {
+	let create_project_usecase = application::project::create::Usecase::new(
+		bus.to_owned(),
+		project_details_repository.clone(),
+		simple_storage.clone(),
+	);
+	rocket::custom(http::config::rocket("backend/api/Rocket.toml"))
 		.manage(config)
 		.manage(schema)
 		.manage(command_bus)
@@ -60,6 +69,7 @@ pub async fn serve(
 		.manage(ens)
 		.manage(simple_storage)
 		.manage(bus)
+		.manage(create_project_usecase)
 		.attach(http::guards::Cors)
 		.mount(
 			"/",
@@ -77,8 +87,5 @@ pub async fn serve(
 			],
 		)
 		.mount("/", routes![routes::users::profile_picture])
-		.launch()
-		.await?;
-
-	Ok(())
+		.mount("/", routes![create_project])
 }

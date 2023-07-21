@@ -100,6 +100,7 @@ mod tests {
 	}
 
 	#[rstest]
+	#[tokio::test]
 	async fn upsert_user_info_upon_valid_input(payout_settings: PayoutSettings) {
 		let mut user_info_repository = MockUserPayoutInfoRepository::default();
 		user_info_repository.expect_upsert().once().returning(Ok);
@@ -124,6 +125,7 @@ mod tests {
 	}
 
 	#[rstest]
+	#[tokio::test]
 	async fn reject_upon_invalid_payout_settings(payout_settings: PayoutSettings) {
 		let user_info_repository = MockUserPayoutInfoRepository::default();
 		let mut payout_settings_valid = ArePayoutSettingsValid::default();

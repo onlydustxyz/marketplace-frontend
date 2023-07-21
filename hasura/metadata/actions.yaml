@@ -1,4 +1,37 @@
 actions:
+  - name: createProject
+    definition:
+      kind: synchronous
+      handler: '{{BACKEND_REST_API_URL}}'
+      request_transform:
+        body:
+          action: transform
+          template: |
+            {
+              "name": {{$body.input.name}},
+              "short_description": {{$body.input.shortDescription}},
+              "long_description": {{$body.input.longDescription}},
+              "initial_budget": {{$body.input?.initialBudget}},
+              "hiring": {{$body.input?.hiring}},
+              "rank": {{$body.input?.rank}},
+              "telegram_link": {{$body.input?.telegramLink}},
+              "logo_url": {{$body.input?.logoUrl}},
+              "visibility": {{$body.input?.visibility}}
+            }
+        method: POST
+        query_params: {}
+        template_engine: Kriti
+        url: '{{$base_url}}/projects'
+        version: 2
+      response_transform:
+        body:
+          action: transform
+          template: |+
+            {{$body?.project_id}}
+
+        template_engine: Kriti
+        version: 2
+    comment: createProject
   - name: suggestTechnology
     definition:
       kind: synchronous
@@ -22,7 +55,17 @@ actions:
       - role: registered_user_specific
     comment: Suggest a new technology
 custom_types:
-  enums: []
+  enums:
+    - name: Visibility
+      values:
+        - description: null
+          is_deprecated: null
+          value: PRIVATE
+        - description: null
+          is_deprecated: null
+          value: PUBLIC
   input_objects: []
   objects: []
-  scalars: []
+  scalars:
+    - name: Url
+    - name: Uuid

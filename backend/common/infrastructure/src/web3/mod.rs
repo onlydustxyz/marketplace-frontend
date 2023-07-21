@@ -2,7 +2,7 @@ pub mod ens;
 
 use serde::Deserialize;
 
-#[derive(Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 pub struct Config {
-	url: String,
+	pub url: String,
 }

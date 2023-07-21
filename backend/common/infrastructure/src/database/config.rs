@@ -1,9 +1,7 @@
-use derive_getters::Getters;
-use derive_more::Constructor;
 use serde::Deserialize;
 
-#[derive(Deserialize, Getters, Constructor)]
+#[derive(Debug, Deserialize, Clone)]
 pub struct Config {
-	url: String,
-	pool_max_size: u32,
+	pub url: String,
+	pub pool_max_size: u32,
 }

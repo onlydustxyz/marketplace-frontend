@@ -1,13 +1,15 @@
 use std::{
 	collections::hash_map::DefaultHasher,
 	hash::{Hash, Hasher},
-	str::FromStr,
 	sync::Arc,
 };
 
 use anyhow::{anyhow, Result};
 use async_trait::async_trait;
-use rusoto_core::Region;
+use rusoto_core::{
+	credential::{AwsCredentials, CredentialsError, ProvideAwsCredentials},
+	HttpClient,
+};
 use rusoto_s3::{PutObjectRequest, S3Client, StreamingBody, S3};
 use serde::Deserialize;
 use tokio_retry::{strategy::FixedInterval, Retry};
@@ -15,10 +17,12 @@ use url::Url;
 
 use crate::domain::{ImageStoreService, ImageStoreServiceError};
 
-#[derive(Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 pub struct Config {
-	images_bucket_name: String,
-	bucket_region: String,
+	pub images_bucket_name: String,
+	pub bucket_region: String,
+	pub access_key_id: String,
+	pub secret_access_key: String,
 }
 
 #[derive(Clone)]
@@ -28,17 +32,42 @@ pub struct Client {
 	images_bucket_region: String,
 }
 
-impl Client {
-	pub async fn new(config: &Config) -> Result<Self> {
-		let s3_client = S3Client::new(Region::from_str(config.bucket_region.as_str())?);
+struct AwsCredentialsProviderFromConfig {
+	pub access_key_id: String,
+	pub secret_access_key: String,
+}
 
+#[async_trait]
+impl ProvideAwsCredentials for AwsCredentialsProviderFromConfig {
+	async fn credentials(&self) -> std::result::Result<AwsCredentials, CredentialsError> {
+		return Ok(AwsCredentials::new(
+			&self.access_key_id,
+			&self.secret_access_key,
+			None,
+			None,
+		));
+	}
+}
+
+impl Client {
+	pub async fn new(config: Config) -> Result<Self> {
+		let provider = AwsCredentialsProviderFromConfig {
+			access_key_id: config.access_key_id.clone(),
+			secret_access_key: config.secret_access_key.clone(),
+		};
+
+		let s3_client = S3Client::new_with(
+			HttpClient::new().expect("TLS error"),
+			provider,
+			config.bucket_region.parse()?,
+		);
 		// Check credentials as soon as the client is created
-		s3_client.list_buckets().await?;
+		// s3_client.list_buckets().await?;
 
 		Ok(Self {
 			s3_client: Arc::new(s3_client),
-			images_bucket_name: config.images_bucket_name.clone(),
-			images_bucket_region: config.bucket_region.clone(),
+			images_bucket_name: config.images_bucket_name,
+			images_bucket_region: config.bucket_region,
 		})
 	}
 }
