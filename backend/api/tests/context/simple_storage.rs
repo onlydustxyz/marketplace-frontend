@@ -33,11 +33,13 @@ impl<'docker> Context<'docker> {
 }
 
 fn image() -> RunnableImage<GenericImage> {
+	let wiremock_path = format!(
+		"{}/tests/resources/wiremock/s3",
+		env::current_dir().unwrap().display()
+	);
+
 	RunnableImage::from(
-		GenericImage::new("wiremock/wiremock", "latest"), /* .with_volume("wiremock",
-		                                                   * "/home/wiremock")
-		                                                   * .with_entrypoint(
-		                                                   * 	"--proxy-all=\"https://s3.eu-west-1.amazonaws.com\" --record-mappings --verbose",
-		                                                   * ), */
+		GenericImage::new("wiremock/wiremock", "latest")
+			.with_volume(wiremock_path, "/home/wiremock"),
 	)
 }
