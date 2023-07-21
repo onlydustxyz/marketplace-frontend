@@ -6,11 +6,30 @@ actions:
       request_transform:
         body:
           action: transform
-          template: "{\n      \"name\": {{$body.input.request.projectName}},\n      \"short_description\": {{$body.input.request.shortDescription}},\n      \"long_description\": {{$body.input.request.longDescription}},\n      \"initial_budget\": {{$body.input.request?.initialBudget}},\n      \"hiring\": {{$body.input.request?.hiring}},\n      \"rank\": {{$body.input.request?.rank}},\n      \"telegram_link\": {{$body.input.request?.telegramLink}},\n      \"logo_url\": {{$body.input.request?.logoUrl}},\n      \"visibility\": {{$body.input.request?.visibility}}\n    }\n    "
+          template: |
+            {
+              "name": {{$body.input.name}},
+              "short_description": {{$body.input.shortDescription}},
+              "long_description": {{$body.input.longDescription}},
+              "initial_budget": {{$body.input?.initialBudget}},
+              "hiring": {{$body.input?.hiring}},
+              "rank": {{$body.input?.rank}},
+              "telegram_link": {{$body.input?.telegramLink}},
+              "logo_url": {{$body.input?.logoUrl}},
+              "visibility": {{$body.input?.visibility}}
+            }
         method: POST
         query_params: {}
         template_engine: Kriti
         url: '{{$base_url}}/projects'
+        version: 2
+      response_transform:
+        body:
+          action: transform
+          template: |+
+            {{$body?.project_id}}
+
+        template_engine: Kriti
         version: 2
     comment: createProject
   - name: suggestTechnology
@@ -45,8 +64,8 @@ custom_types:
         - description: null
           is_deprecated: null
           value: PUBLIC
-  input_objects:
-    - name: CreateProjectRequest
-  objects:
-    - name: CreateProjectResponse
-  scalars: []
+  input_objects: []
+  objects: []
+  scalars:
+    - name: Url
+    - name: Uuid

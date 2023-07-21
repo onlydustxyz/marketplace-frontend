@@ -1,7 +1,15 @@
 type Mutation {
   createProject(
-    request: CreateProjectRequest!
-  ): CreateProjectResponse
+    name: String!
+    shortDescription: String!
+    longDescription: String!
+    telegramLink: Url
+    logoUrl: Url
+    initialBudget: Int
+    hiring: Boolean
+    rank: Int
+    visibility: Visibility
+  ): Uuid!
 }
 
 type Mutation {
@@ -15,19 +23,7 @@ enum Visibility {
   PUBLIC
 }
 
-input CreateProjectRequest {
-  projectName: String!
-  telegramLink: String!
-  logoUrl: String!
-  shortDescription: String!
-  longDescription: String!
-  initialBudget: Int
-  hiring: Boolean
-  rank: Int
-  visibility: Visibility
-}
+scalar Url
 
-type CreateProjectResponse {
-  id: String!
-}
+scalar Uuid
 
