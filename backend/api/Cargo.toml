@@ -91,6 +91,7 @@ presentation = {path = "../common/presentation"}
 olog = {path = "../common/olog"}
 
 [dev-dependencies]
+testing = {path = "../common/testing"}
 lazy_static = "1.4.0"
 rstest = "0.15.0"
 mockall = "0.11.2"
@@ -98,4 +99,3 @@ mockall_double = "0.3.0"
 assert_matches = "1.5"
 testcontainers = "0.14.0"
 tracing-subscriber = "0.3"
-tokio-async-drop = "0.1.0"

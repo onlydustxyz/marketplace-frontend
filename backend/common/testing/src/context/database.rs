@@ -1,5 +1,3 @@
-use std::env;
-
 use anyhow::{anyhow, Result};
 use infrastructure::database;
 use testcontainers::{
@@ -12,7 +10,7 @@ static DATABASE: &str = "marketplace_db";
 
 pub struct Context<'docker> {
 	_container: Container<'docker, GenericImage>,
-	pub(super) config: database::Config,
+	pub config: database::Config,
 	pub client: database::Client,
 }
 
@@ -39,10 +37,11 @@ impl<'docker> Context<'docker> {
 
 fn image() -> RunnableImage<GenericImage> {
 	let hasura_auth_migrations_path = format!(
-		"{}/tests/resources/hasura_auth_migrations",
-		env::current_dir().unwrap().display()
+		"{}/backend/common/testing/resources/hasura_auth_migrations",
+		project_root::get_project_root().unwrap().display()
 	);
 
+	println!("{}", hasura_auth_migrations_path);
 	RunnableImage::from(
 		GenericImage::new("postgres", "14.3-alpine")
 			.with_env_var("POSTGRES_DB", DATABASE)

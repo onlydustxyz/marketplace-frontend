@@ -6,10 +6,7 @@ use presentation::http;
 use rocket::local::asynchronous::Client;
 use rstest::fixture;
 use testcontainers::clients::Cli;
-
-pub mod amqp;
-pub mod database;
-
+use testing::context::{amqp, database};
 use url::Url;
 
 #[fixture]
@@ -29,7 +26,7 @@ impl<'a> Context<'a> {
 		tracing_subscriber::fmt::init();
 
 		let database = database::Context::new(docker)?;
-		let amqp = amqp::Context::new(docker).await?;
+		let amqp = amqp::Context::new(docker, vec![event_store::bus::QUEUE_NAME]).await?;
 
 		let config = Config {
 			amqp: amqp.config.clone(),

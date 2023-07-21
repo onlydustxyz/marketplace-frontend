@@ -1,5 +1,5 @@
 [package]
-description = "testing utils (fixtures, mocks)"
+description = "testing utils (setupd, contexts, fixtures, mocks)"
 edition = "2021"
 license-file = "LICENSE"
 name = "testing"
@@ -8,8 +8,16 @@ version = "0.1.0"
 [lib]
 
 [dependencies]
-# Database
-diesel = {version = "2.1.0", default-features = false, features = ["postgres","extras"]}
 
-# Local dependencies
+# Async
+tokio = {version = "1.18.2", features = ["full"]}
+
+anyhow = "1.0.57"
+lapin = "2.3.1"
+testcontainers = "0.14.0"
+tokio-async-drop = "0.1.0"
+project-root = "0.2.2"
+
+# Local dependecies
+domain = {path = "../domain"}
 infrastructure = {path = "../infrastructure"}
