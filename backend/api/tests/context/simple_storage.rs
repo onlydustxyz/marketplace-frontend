@@ -1,3 +1,5 @@
+use std::env;
+
 use anyhow::{anyhow, Result};
 use api::infrastructure::simple_storage;
 use testcontainers::{clients::Cli, images::generic::GenericImage, Container, RunnableImage};
@@ -10,7 +12,7 @@ pub struct Context<'docker> {
 impl<'docker> Context<'docker> {
 	pub fn new(docker: &'docker Cli) -> Result<Self> {
 		let container = docker.run(image());
-		let _port = container
+		let port = container
 			.ports()
 			.map_to_host_port_ipv4(8080)
 			.ok_or(anyhow!("Invalid wiremock port"))?;
@@ -18,6 +20,7 @@ impl<'docker> Context<'docker> {
 		let config = simple_storage::Config {
 			images_bucket_name: "onlydust-app-images".to_string(),
 			bucket_region: "eu-west-1".to_string(),
+			endpoint: Some(format!("http://localhost:{port}")),
 			access_key_id: "access_key_id".to_string(),
 			secret_access_key: "secret_access_key".to_string(),
 		};
