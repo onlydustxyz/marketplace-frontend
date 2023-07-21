@@ -29,7 +29,7 @@ export const retry = async <T>(
   callback: () => Promise<T>,
   test: (value: T) => boolean,
   delay = 1000,
-  maxRetries = 20
+  maxRetries = 60
 ) => {
   let value: T;
   do {
