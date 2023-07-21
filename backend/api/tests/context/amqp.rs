@@ -4,15 +4,11 @@ use infrastructure::amqp;
 use testcontainers::{
 	clients::Cli, core::WaitFor, images::generic::GenericImage, Container, RunnableImage,
 };
-use tokio::{
-	sync::mpsc::{self, Receiver, Sender},
-	task::JoinHandle,
-};
+use tokio::sync::mpsc::{self, UnboundedReceiver, UnboundedSender};
 
 pub struct Context<'docker> {
 	pub(super) config: amqp::Config,
-	handle: JoinHandle<Result<(), SubscriberError>>,
-	pub listener: Receiver<Event>,
+	pub listener: UnboundedReceiver<Event>,
 	_container: Container<'docker, GenericImage>,
 }
 
@@ -32,14 +28,16 @@ impl<'docker> Context<'docker> {
 		};
 
 		let bus = event_store::bus::consumer(config.clone()).await?;
-		let (tx, rx) = mpsc::channel(1024);
+		let (tx, rx) = mpsc::unbounded_channel();
+		tokio::spawn(async move {
+			bus.subscribe(|message| on_event(message, tx.clone()))
+				.await
+				.expect("Error in subscribe");
+		});
 
 		Ok(Self {
 			_container: container,
 			config,
-			handle: tokio::spawn(async move {
-				bus.subscribe(|message| on_event(message, tx.clone())).await
-			}),
 			listener: rx,
 		})
 	}
@@ -53,10 +51,9 @@ impl<'docker> Drop for Context<'docker> {
 
 async fn on_event(
 	message: amqp::UniqueMessage<Event>,
-	tx: Sender<Event>,
+	tx: UnboundedSender<Event>,
 ) -> std::result::Result<(), SubscriberCallbackError> {
 	tx.send(message.payload().clone())
-		.await
 		.map_err(|e| SubscriberCallbackError::Fatal(anyhow!(e)))
 }
 
