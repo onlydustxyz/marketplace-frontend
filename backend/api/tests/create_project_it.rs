@@ -23,7 +23,7 @@ use crate::{
 extern crate diesel;
 
 #[rstest]
-#[tokio::test]
+#[tokio::test(flavor = "multi_thread")]
 pub async fn new_project_added_on_the_platform(docker: &'static Cli) {
 	let mut test = Test {
 		context: Context::new(docker).await.expect("Unable to create test context"),

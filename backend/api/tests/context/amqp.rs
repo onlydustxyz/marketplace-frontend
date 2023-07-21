@@ -7,6 +7,7 @@ use testcontainers::{
 	clients::Cli, core::WaitFor, images::generic::GenericImage, Container, RunnableImage,
 };
 use tokio::sync::mpsc::{self, UnboundedReceiver, UnboundedSender};
+use tokio_async_drop::tokio_async_drop;
 
 pub struct Context<'docker> {
 	pub(super) config: amqp::Config,
@@ -49,6 +50,9 @@ impl<'docker> Context<'docker> {
 impl<'docker> Drop for Context<'docker> {
 	fn drop(&mut self) {
 		self.kill.send(()).expect("Unable to shutdown listener");
+		tokio_async_drop!({
+			self.listener.recv().await;
+		})
 	}
 }
 
