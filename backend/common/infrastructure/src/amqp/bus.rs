@@ -1,4 +1,4 @@
-use std::sync::Arc;
+use std::sync::{Arc, Weak};
 
 use lapin::{
 	message::Delivery,
@@ -23,6 +23,7 @@ pub enum Error {
 }
 
 pub struct Bus {
+	_connection: Arc<Connection>,
 	channel: Channel,
 }
 
@@ -45,6 +46,7 @@ impl Bus {
 		let connection = connect(config).await?;
 		Ok(Self {
 			channel: connection.create_channel().await?,
+			_connection: connection,
 		})
 	}
 
@@ -151,17 +153,17 @@ impl ConsumableBus {
 }
 
 lazy_static! {
-	static ref CONNECTION: Mutex<Option<Arc<Connection>>> = Mutex::new(None);
+	static ref CONNECTION: Mutex<Option<Weak<Connection>>> = Mutex::new(None);
 }
 
 /// Retrives the open connection or connect if called for the first time
 async fn connect(config: Config) -> Result<Arc<Connection>, Error> {
 	let mut guard = CONNECTION.lock().await;
-	match guard.as_ref() {
-		Some(connection) => Ok(connection.clone()),
+	match guard.as_ref().and_then(Weak::upgrade) {
+		Some(connection) => Ok(connection),
 		None => {
 			let connection = Arc::new(_do_connect(config).await?);
-			*guard = Some(connection.clone());
+			*guard = Some(Arc::downgrade(&connection));
 			Ok(connection)
 		},
 	}
