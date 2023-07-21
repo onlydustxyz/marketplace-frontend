@@ -1,12 +1,14 @@
 use std::collections::HashMap;
 
 use anyhow::Result;
-use api::{infrastructure::simple_storage, presentation::bootstrap::bootstrap, Config};
+use api::{presentation::bootstrap::bootstrap, Config};
 use presentation::http;
 use rocket::local::asynchronous::Client;
 use rstest::fixture;
 use testcontainers::clients::Cli;
 use testing::context::{amqp, database};
+pub mod simple_storage;
+
 use url::Url;
 
 #[fixture]
@@ -19,6 +21,7 @@ pub struct Context<'a> {
 	pub http_client: Client,
 	pub database: database::Context<'a>,
 	pub amqp: amqp::Context<'a>,
+	pub simple_storage: simple_storage::Context<'a>,
 }
 
 impl<'a> Context<'a> {
@@ -27,6 +30,7 @@ impl<'a> Context<'a> {
 
 		let database = database::Context::new(docker)?;
 		let amqp = amqp::Context::new(docker, vec![event_store::bus::QUEUE_NAME]).await?;
+		let simple_storage = simple_storage::Context::new(docker)?;
 
 		let config = Config {
 			amqp: amqp.config.clone(),
@@ -42,12 +46,7 @@ impl<'a> Context<'a> {
 			web3: infrastructure::web3::Config {
 				url: "https://test.com".parse().unwrap(),
 			},
-			s3: simple_storage::Config {
-				images_bucket_name: "".to_string(),
-				bucket_region: "eu-west-1".to_string(),
-				access_key_id: "access_key_id_test".to_string(),
-				secret_access_key: "secret_access_key_test".to_string(),
-			},
+			s3: simple_storage.config.clone(),
 			graphql_client: infrastructure::graphql::Config {
 				base_url: Url::parse("https://test.com").unwrap(),
 				headers: HashMap::new(),
@@ -64,6 +63,7 @@ impl<'a> Context<'a> {
 			http_client: Client::tracked(bootstrap(config.clone()).await?).await?,
 			database,
 			amqp,
+			simple_storage,
 		})
 	}
 }
