@@ -4,9 +4,9 @@ use lapin::{
 	message::Delivery,
 	options::{ExchangeDeclareOptions, QueueDeclareOptions},
 	publisher_confirm::Confirmation,
-	BasicProperties, Channel, Connection, ConnectionState, Consumer,
+	BasicProperties, Channel, Connection, Consumer,
 };
-use olog::{debug, error, warn};
+use olog::error;
 use thiserror::Error;
 use tokio::sync::{Mutex, RwLock};
 use tokio_retry::{strategy::FixedInterval, Retry};
@@ -79,13 +79,6 @@ impl Bus {
 	}
 }
 
-impl Drop for Bus {
-	fn drop(&mut self) {
-		debug!("Dropping Bus instance");
-		futures::executor::block_on(close_connection());
-	}
-}
-
 pub struct ConsumableBus {
 	bus: Bus,
 	queue_name: String,
@@ -149,17 +142,6 @@ impl ConsumableBus {
 
 lazy_static! {
 	static ref CONNECTION: Mutex<Option<Arc<Connection>>> = Mutex::new(None);
-}
-
-async fn close_connection() {
-	let guard = CONNECTION.lock().await;
-	match guard.as_ref() {
-		Some(connection) if connection.status().state() == ConnectionState::Connected => {
-			debug!("Closing bus connection {connection:?}");
-			connection.close(200, "Normal shutdown").await.unwrap();
-		},
-		_ => warn!("No connection found to close"),
-	}
 }
 
 /// Retrives the open connection or connect if called for the first time
