@@ -2,7 +2,8 @@ use std::collections::HashMap;
 
 use anyhow::Result;
 use domain::LogErr;
-use reqwest::header::HeaderMap;
+use olog::IntoField;
+use reqwest::header::{HeaderMap, InvalidHeaderName, InvalidHeaderValue};
 use serde::Deserialize;
 use url::Url;
 
@@ -19,9 +20,18 @@ impl Config {
 			.headers
 			.iter()
 			.filter_map(|(header, value)| {
-				let value =
-					value.parse().log_err(&format!("Invalid value for header {header}")).ok();
-				let header = header.parse().log_err(&format!("Invalid header {header}")).ok();
+				let value = value
+					.parse()
+					.log_err(|e: &InvalidHeaderValue| {
+						olog::error!(error = e.to_field(), "Invalid value for header {}", header)
+					})
+					.ok();
+				let header = header
+					.parse()
+					.log_err(|e: &InvalidHeaderName| {
+						olog::error!(error = e.to_field(), "Invalid header {}", header)
+					})
+					.ok();
 
 				match (header, value) {
 					(Some(header), Some(value)) => Some((header, value)),

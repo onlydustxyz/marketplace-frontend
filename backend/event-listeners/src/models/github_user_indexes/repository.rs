@@ -1,6 +1,7 @@
 use diesel::{ExpressionMethods, OptionalExtension, QueryDsl, RunQueryDsl};
 use domain::GithubUserId;
 use infrastructure::{
+	contextualized_error::IntoContextualizedError,
 	database,
 	database::{schema::github_user_indexes::dsl, Result},
 };
@@ -39,7 +40,10 @@ impl Repository for database::Client {
 			.select(dsl::user_indexer_state)
 			.filter(dsl::user_id.eq(user_id))
 			.first(&mut *connection)
-			.optional()?
+			.optional()
+			.err_with_context(format!(
+				"select user_indexer_state from github_user_indexes where user_id={user_id}"
+			))?
 			.flatten();
 		Ok(state)
 	}
@@ -53,7 +57,10 @@ impl Repository for database::Client {
 		diesel::update(dsl::github_user_indexes)
 			.set(dsl::user_indexer_state.eq(state))
 			.filter(dsl::user_id.eq(user_id))
-			.execute(&mut *connection)?;
+			.execute(&mut *connection)
+			.err_with_context(format!(
+				"update github_user_indexes set user_indexer_state where user_id={user_id}"
+			))?;
 		Ok(())
 	}
 
@@ -66,7 +73,10 @@ impl Repository for database::Client {
 			.select(dsl::contributor_indexer_state)
 			.filter(dsl::user_id.eq(user_id))
 			.first(&mut *connection)
-			.optional()?
+			.optional()
+			.err_with_context(format!(
+				"select contributor_indexer_state from github_user_indexes where user_id={user_id}"
+			))?
 			.flatten();
 		Ok(state)
 	}
@@ -85,7 +95,10 @@ impl Repository for database::Client {
 			.on_conflict(dsl::user_id)
 			.do_update()
 			.set(dsl::contributor_indexer_state.eq(state))
-			.execute(&mut *connection)?;
+			.execute(&mut *connection)
+			.err_with_context(format!(
+				"upsert github_user_indexes set contributor_indexer_state where user_id={user_id}"
+			))?;
 		Ok(())
 	}
 }

@@ -14,8 +14,9 @@ use infrastructure::{
 	database, event_bus,
 	github::Client as GithubClient,
 };
+use olog::IntoField;
 use tokio::task::JoinHandle;
-use url::Url;
+use url::{ParseError, Url};
 use webhook::EventWebHook;
 
 use self::logger::Logger;
@@ -136,7 +137,14 @@ fn webhook_targets() -> Vec<Url> {
 		.map(|targets| {
 			targets
 				.split(',')
-				.filter_map(|target| target.parse().log_err("Invalid webhook target URL").ok())
+				.filter_map(|target| {
+					target
+						.parse()
+						.log_err(|e: &ParseError| {
+							olog::error!(error = e.to_field(), "Invalid webhook target URL")
+						})
+						.ok()
+				})
 				.collect()
 		})
 		.unwrap_or_default()

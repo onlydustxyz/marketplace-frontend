@@ -5,6 +5,7 @@ use domain::{
 	CommandId, CommandRepository, Event, Subscriber, SubscriberCallbackError, SubscriberError,
 };
 use futures::Future;
+use olog::IntoField;
 
 use crate::amqp::UniqueMessage;
 
@@ -39,7 +40,7 @@ where
 	fn decrease_processing_count(&self, command_id: &CommandId) {
 		if let Err(error) = self.command_repository.decrease_processing_count(command_id, 1) {
 			olog::error!(
-				error = error.to_string(),
+				error = error.to_field(),
 				command_id = command_id.to_string(),
 				"Failed to decrease command processing count"
 			)

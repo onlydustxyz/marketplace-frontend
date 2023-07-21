@@ -32,8 +32,8 @@ rusty-money = {version = "0.4.1", features = ["iso", "crypto"]}
 iban_validate = {version = "4.0.1", features = ["serde"]}
 
 # Errors
-anyhow = "1.0.57"
-thiserror = "1.0.31"
+anyhow = "1.0.72"
+thiserror = "1.0.43"
 
 # Serde
 serde = {version = "1.0.137", features = ["derive"]}

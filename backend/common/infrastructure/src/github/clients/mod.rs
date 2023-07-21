@@ -21,7 +21,7 @@ use octocrab::{
 	params::{pulls::Sort, Direction},
 	FromResponse, Octocrab,
 };
-use olog::tracing::instrument;
+use olog::{tracing::instrument, IntoField};
 use reqwest::Url;
 
 use super::{service::QueryParams, AddHeaders, Config, Error, IssueFromOctocrab};
@@ -148,7 +148,7 @@ impl Client {
 			.map(|page| {
 				page.into_stream(self.octocrab())
 					.take(max_results)
-					.inspect_err(|e| error!(error = e.to_string(), "Unable to stream from github"))
+					.inspect_err(|e| error!(error = e.to_field(), "Unable to stream from github"))
 					.take_while(|res| ready(res.is_ok()))
 					.map(Result::unwrap)
 					.boxed()
@@ -269,7 +269,7 @@ impl Client {
 						Ok(issue) => Some(issue),
 						Err(e) => {
 							error!(
-								error = e.to_string(),
+								error = e.to_field(),
 								repository_id = id.to_string(),
 								issue_id = issue.id.0,
 								"Failed to process issue"

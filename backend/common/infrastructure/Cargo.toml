@@ -47,8 +47,8 @@ tracing-opentelemetry = "0.18.0"
 tracing-subscriber = {version = "0.3", features = ["env-filter", "fmt", "json"]}
 
 # Errors
-anyhow = "1.0.57"
-thiserror = "1.0.31"
+anyhow = "1.0.72"
+thiserror = "1.0.43"
 
 # Serde
 serde = {version = "1.0.137", features = ["derive"]}

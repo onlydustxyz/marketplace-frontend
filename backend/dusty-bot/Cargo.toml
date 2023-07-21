@@ -28,8 +28,8 @@ rocket = {version = "0.5.0-rc.2", features = ["json", "uuid"]}
 tracing = "0.1"
 
 # Errors
-anyhow = "1.0.57"
-thiserror = "1.0.31"
+anyhow = "1.0.72"
+thiserror = "1.0.43"
 
 # Serde
 serde = {version = "1.0.137", features = ["derive"]}

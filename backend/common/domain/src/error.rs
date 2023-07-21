@@ -37,15 +37,27 @@ impl From<GithubServiceError> for DomainError {
 	}
 }
 
-pub trait LogErr {
-	fn log_err(self, message: &str) -> Self;
+/// Replace this with Result's `inespect_err` once this becomes a stable feature
+pub trait LogErr<F, E>
+where
+	F: FnOnce(&E),
+	E: Sized,
+{
+	/// Call `f` on T if the Result is a Err(E), or do nothing if the Result is an Ok
+	fn log_err(self, f: F) -> Self;
 }
 
-impl<T, E: ToString> LogErr for Result<T, E> {
-	fn log_err(self, message: &str) -> Self {
-		if let Err(error) = &self {
-			olog::error!(error = error.to_string(), message);
+impl<F, T, E> LogErr<F, E> for Result<T, E>
+where
+	F: FnOnce(&E),
+	E: Sized,
+{
+	/// Call `f` on T if the Result is a Err(E), or do nothing if the Result is an Ok
+	fn log_err(self, f: F) -> Self {
+		if let Err(e) = self.as_ref() {
+			(f)(e);
 		}
+
 		self
 	}
 }

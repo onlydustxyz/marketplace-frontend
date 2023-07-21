@@ -3,6 +3,7 @@ extern crate diesel;
 
 pub mod amqp;
 pub mod config;
+pub mod contextualized_error;
 pub mod database;
 pub mod event_bus;
 pub mod event_store;

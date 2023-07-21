@@ -2,6 +2,8 @@ use diesel::result::Error as DieselError;
 use domain::{DomainError, SubscriberCallbackError};
 use thiserror::Error;
 
+use crate::contextualized_error::ContextualizedError;
+
 #[derive(Debug, Error)]
 pub enum Error {
 	#[error(transparent)]
@@ -9,7 +11,7 @@ pub enum Error {
 	#[error(transparent)]
 	Migration(anyhow::Error),
 	#[error(transparent)]
-	Transaction(#[from] DieselError),
+	Transaction(#[from] ContextualizedError<DieselError>),
 	#[error(transparent)]
 	Pool(anyhow::Error),
 }

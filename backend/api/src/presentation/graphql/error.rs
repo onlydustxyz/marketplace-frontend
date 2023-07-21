@@ -1,7 +1,7 @@
 use domain::{DomainError, UserId};
 use infrastructure::{database::DatabaseError, web3::ens};
 use juniper::{graphql_value, DefaultScalarValue, FieldError, IntoFieldError};
-use olog::error;
+use olog::{error, IntoField};
 use thiserror::Error;
 
 use crate::application::user::{
@@ -70,7 +70,7 @@ impl From<ens::Error> for Error {
 
 impl IntoFieldError for Error {
 	fn into_field_error(self) -> FieldError<DefaultScalarValue> {
-		error!(error = format!("{self:?}"), "Error occured");
+		error!(error = self.to_field(), "Error occured");
 
 		let (msg, reason) = match &self {
 			Self::NotAuthenticated => (self.to_string(), "Missing JWT".to_string()),

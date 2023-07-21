@@ -1,6 +1,7 @@
 use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
 use domain::GithubRepoId;
 use infrastructure::{
+	contextualized_error::IntoContextualizedError,
 	database,
 	database::{schema::github_repo_indexes::dsl, Result},
 };
@@ -40,7 +41,10 @@ impl Repository for database::Client {
 		let state = dsl::github_repo_indexes
 			.select(dsl::repo_indexer_state)
 			.filter(dsl::repo_id.eq(repo_id))
-			.first(&mut *connection)?;
+			.first(&mut *connection)
+			.err_with_context(format!(
+				"select repo_indexer_state from github_repo_indexes where id={repo_id}"
+			))?;
 		Ok(state)
 	}
 
@@ -53,7 +57,10 @@ impl Repository for database::Client {
 		diesel::update(dsl::github_repo_indexes)
 			.set(dsl::repo_indexer_state.eq(state))
 			.filter(dsl::repo_id.eq(repo_id))
-			.execute(&mut *connection)?;
+			.execute(&mut *connection)
+			.err_with_context(format!(
+				"update github_repo_indexes set github_repo_indexes where id={repo_id}"
+			))?;
 		Ok(())
 	}
 
@@ -65,7 +72,10 @@ impl Repository for database::Client {
 		let state = dsl::github_repo_indexes
 			.select(dsl::issues_indexer_state)
 			.filter(dsl::repo_id.eq(repo_id))
-			.first(&mut *connection)?;
+			.first(&mut *connection)
+			.err_with_context(format!(
+				"select issues_indexer_state from github_repo_indexes where id={repo_id}"
+			))?;
 		Ok(state)
 	}
 
@@ -78,7 +88,10 @@ impl Repository for database::Client {
 		diesel::update(dsl::github_repo_indexes)
 			.set(dsl::issues_indexer_state.eq(state))
 			.filter(dsl::repo_id.eq(repo_id))
-			.execute(&mut *connection)?;
+			.execute(&mut *connection)
+			.err_with_context(format!(
+				"update github_repo_indexes set issues_indexer_state where id={repo_id}"
+			))?;
 		Ok(())
 	}
 
@@ -87,7 +100,8 @@ impl Repository for database::Client {
 		diesel::insert_into(dsl::github_repo_indexes)
 			.values(GithubRepoIndex::new(*repo_id))
 			.on_conflict_do_nothing()
-			.execute(&mut *connection)?;
+			.execute(&mut *connection)
+			.err_with_context(format!("insert github_repo_indexes with id={repo_id}"))?;
 		Ok(())
 	}
 }

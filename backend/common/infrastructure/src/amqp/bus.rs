@@ -6,7 +6,7 @@ use lapin::{
 	publisher_confirm::Confirmation,
 	BasicProperties, Channel, Connection, Consumer,
 };
-use olog::error;
+use olog::{error, IntoField};
 use thiserror::Error;
 use tokio::sync::{Mutex, RwLock};
 use tokio_retry::{strategy::FixedInterval, Retry};
@@ -177,15 +177,17 @@ async fn _do_connect(config: Config) -> Result<Connection, Error> {
 	let connection = Retry::spawn(retry_strategy, || async {
 		Connection::connect(&config.url, Default::default()).await.map_err(|error| {
 			error!(
-				"Failed to connect to RabbitMQ: {error:?}. Retrying in {}ms for a maximum of {} attempts.",
-				config.connection_retry_interval_ms, config.connection_retry_count
+				error = error.to_field(),
+				"Failed to connect to RabbitMQ. Retrying in {}ms for a maximum of {} attempts.",
+				config.connection_retry_interval_ms,
+				config.connection_retry_count
 			);
 			error
 		})
 	})
 	.await?;
 	connection.on_error(|error| {
-		error!(error = error.to_string(), "Lost connection to RabbitMQ");
+		error!(error = error.to_field(), "Lost connection to RabbitMQ");
 		std::process::exit(1);
 	});
 

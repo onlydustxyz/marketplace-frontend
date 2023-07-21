@@ -1,6 +1,6 @@
 use diesel::prelude::*;
 use domain::{Aggregate, Budget, EventStore, EventStoreError, Payment, Project};
-use olog::error;
+use olog::{error, IntoField};
 use serde_json::Value;
 use tracing::instrument;
 
@@ -32,7 +32,7 @@ impl<A: NamedAggregate> EventStore<A> for Client {
 	#[instrument(name = "EventStore::list_by_id", skip_all, fields(aggregate_id = aggregate_id.to_string()))]
 	fn list_by_id(&self, aggregate_id: &A::Id) -> Result<Vec<A::Event>, EventStoreError> {
 		let mut connection = self.connection().map_err(|e| {
-			error!("Failed to connect to database: {e}");
+			error!(error = e.to_field(), "Failed to connect to database");
 			EventStoreError::Connection(e.into())
 		})?;
 
@@ -45,7 +45,8 @@ impl<A: NamedAggregate> EventStore<A> for Client {
 			.load::<Value>(&mut *connection)
 			.map_err(|e| {
 				error!(
-					"Failed to retrieve {} events of aggregate {aggregate_id} from database: {e}",
+					error = e.to_field(),
+					"Failed to retrieve {} events of aggregate {aggregate_id} from database",
 					A::name()
 				);
 				EventStoreError::List(e.into())
@@ -57,7 +58,7 @@ impl<A: NamedAggregate> EventStore<A> for Client {
 	#[instrument(name = "EventStore::list", skip_all)]
 	fn list(&self) -> Result<Vec<A::Event>, EventStoreError> {
 		let mut connection = self.connection().map_err(|e| {
-			error!("Failed to connect to database: {e}");
+			error!(error = e.to_field(), "Failed to connect to database");
 			EventStoreError::Connection(e.into())
 		})?;
 
@@ -68,7 +69,11 @@ impl<A: NamedAggregate> EventStore<A> for Client {
 			.then_order_by(events::index)
 			.load::<Value>(&mut *connection)
 			.map_err(|e| {
-				error!("Failed to retrieve {} events from database: {e}", A::name());
+				error!(
+					error = e.to_field(),
+					"Failed to retrieve {} events from database",
+					A::name()
+				);
 				EventStoreError::List(e.into())
 			})?;
 
@@ -83,7 +88,10 @@ fn deserialize_events<A: Aggregate>(
 		.iter()
 		.map(|event_value| {
 			serde_json::from_value::<A::Event>(event_value.clone()).map_err(|e| {
-				error!("Failed to deserialize event {event_value}: {e}");
+				error!(
+					error = e.to_field(),
+					"Failed to deserialize event {event_value}"
+				);
 				e
 			})
 		})
