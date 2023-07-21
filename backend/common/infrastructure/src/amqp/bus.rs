@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use lapin::{
 	message::Delivery,
-	options::{ExchangeDeclareOptions, QueueDeclareOptions},
+	options::{BasicCancelOptions, ExchangeDeclareOptions, QueueDeclareOptions},
 	publisher_confirm::Confirmation,
 	BasicProperties, Channel, Connection, Consumer,
 };
@@ -89,7 +89,12 @@ impl ConsumableBus {
 	async fn new(bus: Bus, queue_name: String) -> Result<Self, Error> {
 		let consumer = bus
 			.channel
-			.basic_consume(&queue_name, "", Default::default(), Default::default())
+			.basic_consume(
+				&queue_name,
+				"consumer",
+				Default::default(),
+				Default::default(),
+			)
 			.await?;
 
 		Ok(Self {
@@ -101,6 +106,11 @@ impl ConsumableBus {
 
 	pub fn queue_name(&self) -> &str {
 		&self.queue_name
+	}
+
+	pub async fn cancel_consumer(&self) -> Result<(), Error> {
+		self.bus.channel.basic_cancel("consumer", BasicCancelOptions::default()).await?;
+		Ok(())
 	}
 
 	pub async fn with_exchange(self, exchange_name: &'static str) -> Result<Self, Error> {
