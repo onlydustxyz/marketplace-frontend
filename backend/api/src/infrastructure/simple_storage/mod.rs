@@ -62,7 +62,7 @@ impl Client {
 			config.bucket_region.parse()?,
 		);
 		// Check credentials as soon as the client is created
-		// s3_client.list_buckets().await?;
+		s3_client.list_buckets().await?;
 
 		Ok(Self {
 			s3_client: Arc::new(s3_client),
