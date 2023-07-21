@@ -128,3 +128,29 @@ jobs:
           codecov_token: ${{ secrets.CODECOV_TOKEN }}
           codecov_flag: unittest
           file: cobertura.xml
+
+  api_integration_tests:
+    name: Integration tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup cargo
+        uses: ./.github/actions/cargo-setup
+
+      - name: Run tests
+        uses: ./.github/actions/coverage-checks
+        with:
+          test_flags: --packages api --test create_project_it
+
+      - name: Setup tmate session for debugging
+        uses: mxschmitt/action-tmate@v3
+        if: ${{ failure() && inputs.debug_enabled }}
+
+      - name: Upload coverage results
+        uses: ./.github/actions/coverage-upload
+        with:
+          codecov_token: ${{ secrets.CODECOV_TOKEN }}
+          codecov_flag: api
+          file: cobertura.xml

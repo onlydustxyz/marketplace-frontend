@@ -2,6 +2,11 @@ name: Code coverage
 
 description: Launch application and run all tests while measuring code coverage
 
+inputs:
+  test_flags:
+    description: "Flags to pass to the cargo tarpaulin command"
+    required: false
+
 runs:
   using: "composite"
   steps:
