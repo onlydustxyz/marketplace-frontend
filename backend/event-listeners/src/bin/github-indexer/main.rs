@@ -62,7 +62,15 @@ async fn index_all<Id: Indexable>(
 	let mut events = vec![];
 
 	for id in repository.list_items_to_index()? {
-		events.extend(indexer.index(id).await?);
+		match indexer.index(id).await {
+			Ok(item_events) => events.extend(item_events),
+			Err(error) => error!(
+				error = error.to_field(),
+				indexed_item_id = id.to_string(),
+				indexed_item_id_type = std::any::type_name::<Id>(),
+				"Error while indexing item"
+			),
+		}
 	}
 
 	Ok(events)
