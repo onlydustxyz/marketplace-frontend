@@ -15,7 +15,7 @@ use diesel::{
 	r2d2::{self, ConnectionManager},
 };
 use diesel_migrations::EmbeddedMigrations;
-use olog::error;
+use olog::{error, IntoField};
 
 pub use self::{
 	config::Config,
