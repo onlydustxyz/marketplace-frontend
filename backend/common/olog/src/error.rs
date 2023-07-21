@@ -197,7 +197,23 @@ macro_rules! error {
 
 #[cfg(test)]
 mod tests {
+	use anyhow::anyhow;
+	use thiserror::Error;
 	use tracing::Level;
+
+	use crate::IntoField;
+
+	#[derive(Debug, Error)]
+	enum InnerError {
+		#[error("b")]
+		Foo(#[from] anyhow::Error),
+	}
+
+	#[derive(Debug, Error)]
+	enum SomeError {
+		#[error("a")]
+		Internal(#[from] InnerError),
+	}
 
 	#[test]
 	fn error() {
@@ -233,6 +249,12 @@ mod tests {
 		error!(target: "foo_events", ?foo, true, "message");
 		error!(target: "foo_events", %foo, true, "message");
 		error!(target: "foo_events", foo, true, "message");
+
+		let err = SomeError::from(InnerError::from(anyhow!("c")));
+		error!(error = err.to_field(), "message");
+
+		let err = anyhow!("foo");
+		error!(error = err.to_field(), "message");
 	}
 
 	#[test]

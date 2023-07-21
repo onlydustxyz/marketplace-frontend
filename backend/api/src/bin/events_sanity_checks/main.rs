@@ -9,12 +9,12 @@ use infrastructure::{
 	database::{init_pool, Client as DatabaseClient},
 	tracing::Tracer,
 };
-use olog::error;
+use olog::{error, IntoField};
 
 #[tokio::main]
 async fn main() {
 	if let Err(error) = try_run().await {
-		error!(error = error.to_string(), "Events are corrupted");
+		error!(error = error.to_field(), "Events are corrupted");
 	}
 }
 

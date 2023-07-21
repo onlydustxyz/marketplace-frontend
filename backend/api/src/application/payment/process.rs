@@ -8,6 +8,7 @@ use domain::{
 };
 use event_store::bus::QUEUE_NAME as EVENT_STORE_QUEUE;
 use infrastructure::amqp::UniqueMessage;
+use olog::IntoField;
 use tracing::instrument;
 
 use crate::application::dusty_bot;
@@ -57,10 +58,7 @@ impl Usecase {
 			.await?;
 
 		if let Err(error) = self.close_issues_usecase.close_all_issues(payment).await {
-			olog::error!(
-				error = format!("{error:?}"),
-				"Unable to comment / close issue"
-			)
+			olog::error!(error = error.to_field(), "Unable to comment / close issue")
 		}
 
 		Ok(new_receipt_id)

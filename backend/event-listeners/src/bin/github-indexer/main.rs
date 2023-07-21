@@ -9,7 +9,7 @@ use indexer::{
 	with_state::WithState, Indexable, Indexer,
 };
 use infrastructure::{amqp, config, database, github, tracing::Tracer};
-use olog::info;
+use olog::{error, info, IntoField};
 
 mod indexer;
 
@@ -88,7 +88,12 @@ async fn check_github_rate_limit(github: Arc<github::Client>) -> bool {
 		.ratelimit()
 		.get()
 		.await
-		.log_err("Failed while checking github rate limit")
+		.log_err(|e| {
+			olog::error!(
+				error = e.to_field(),
+				"Failed while checking github rate limit"
+			)
+		})
 		.map(|rate_limit| rate_limit.rate.remaining)
 		.unwrap_or_default();
 

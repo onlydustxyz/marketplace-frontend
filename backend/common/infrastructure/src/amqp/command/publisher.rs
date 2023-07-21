@@ -4,6 +4,7 @@ use async_trait::async_trait;
 use domain::{
 	CommandAggregateId, CommandId, CommandRepository, Destination, Event, Publisher, PublisherError,
 };
+use olog::IntoField;
 
 use super::CommandMessage;
 use crate::amqp::UniqueMessage;
@@ -44,7 +45,7 @@ where
 			.decrease_processing_count(command_id, self.expected_processing_count_per_event)
 		{
 			olog::error!(
-				error = error.to_string(),
+				error = error.to_field(),
 				command_id = command_id.to_string(),
 				"Failed to reset command processing count after event publishing error"
 			)

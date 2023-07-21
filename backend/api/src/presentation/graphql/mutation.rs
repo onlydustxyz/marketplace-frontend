@@ -6,6 +6,7 @@ use domain::{
 	Languages, LogErr, PaymentReason, PaymentReceipt, ProjectId, ProjectVisibility, UserId,
 };
 use juniper::{graphql_object, DefaultScalarValue, Nullable};
+use olog::IntoField;
 use rusty_money::Money;
 use url::Url;
 use uuid08::Uuid;
@@ -119,7 +120,9 @@ impl Mutation {
 			amount: payment
 				.requested_usd_amount()
 				.try_into()
-				.log_err("Could not format payment amount")
+				.log_err(|e: &anyhow::Error| {
+					olog::error!(error = e.to_field(), "Could not format payment amount")
+				})
 				.unwrap_or_default(),
 		})
 	}
@@ -269,7 +272,9 @@ impl Mutation {
 			amount: payment
 				.requested_usd_amount()
 				.try_into()
-				.log_err("Could not format payment amount")
+				.log_err(|e: &anyhow::Error| {
+					olog::error!(error = e.to_field(), "Could not format payment amount")
+				})
 				.unwrap_or_default(),
 		})
 	}

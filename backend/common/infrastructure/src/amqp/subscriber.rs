@@ -4,7 +4,7 @@ use anyhow::anyhow;
 use async_trait::async_trait;
 use domain::{Message, Subscriber, SubscriberCallbackError, SubscriberError};
 use lapin::{message::Delivery, options::BasicNackOptions};
-use olog::error;
+use olog::{error, IntoField};
 use opentelemetry::{propagation::TextMapPropagator, sdk::propagation::TraceContextPropagator};
 use serde_json::Error;
 use tracing::{instrument, Span};
@@ -27,8 +27,8 @@ impl<M: Message + Send + Sync> Subscriber<M> for ConsumableBus {
 				Ok(message) => message,
 				Err(error) => {
 					error!(
+						error = error.to_field(),
 						content = format!("{:?}", delivery.data),
-						error = error.to_string(),
 						queue_name = self.queue_name(),
 						"Failed to deserialize message",
 					);
@@ -70,8 +70,8 @@ impl ConsumableBus {
 			Err(error) => match error {
 				SubscriberCallbackError::Discard(error) => {
 					error!(
+						error = error.to_field(),
 						event = format!("{:?}", message),
-						error = error.to_string(),
 						queue_name = self.queue_name(),
 						"Ignoring event",
 					);
@@ -79,8 +79,8 @@ impl ConsumableBus {
 				},
 				SubscriberCallbackError::Fatal(error) => {
 					error!(
+						error = error.to_field(),
 						event = format!("{:?}", message),
-						error = error.to_string(),
 						queue_name = self.queue_name(),
 						"Fatal error while processing the event",
 					);

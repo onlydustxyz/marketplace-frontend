@@ -7,6 +7,7 @@ mod warn;
 mod stdlog;
 pub use opentelemetry;
 pub use stdlog::LogTracer;
+use thiserror::__private::AsDynError;
 pub use tracing;
 pub use tracing_opentelemetry;
 
@@ -56,6 +57,22 @@ macro_rules! span_id_str {
 	() => {
 		format!("{}", $crate::span_id!())
 	};
+}
+
+pub trait IntoField {
+	fn to_field(&self) -> String;
+}
+
+impl<E: std::error::Error + ?Sized> IntoField for E {
+	fn to_field(&self) -> String {
+		let mut s = self.to_string();
+		let mut current = self.as_dyn_error();
+		while let Some(source) = current.source() {
+			current = source;
+			s.push_str(&format!(": {current}"));
+		}
+		s
+	}
 }
 
 #[cfg(test)]

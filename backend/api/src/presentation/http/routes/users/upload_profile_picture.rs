@@ -3,6 +3,7 @@ use std::{io::Cursor, sync::Arc};
 use domain::LogErr;
 use http_api_problem::HttpApiProblem;
 use image::{imageops::FilterType, GenericImageView};
+use olog::IntoField;
 use presentation::http::guards::Claims;
 use reqwest::StatusCode;
 use rocket::{
@@ -43,7 +44,7 @@ pub async fn profile_picture(
 		})?
 		.to_vec()
 		.try_to_webp()
-		.log_err("Could not decode profile picture")
+		.log_err(|e| olog::error!(error = e.to_field(), "Could not decode profile picture"))
 		.map_err(|_| {
 			HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
 				.title("Internal error")

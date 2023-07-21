@@ -5,6 +5,7 @@ use chrono::{DateTime, Utc};
 use derive_new::new;
 use domain::{stream_filter, GithubFetchService, GithubRepoId, GithubUser, GithubUserId, LogErr};
 use event_listeners::{listeners::github::Event as GithubEvent, models::GithubUserIndexRepository};
+use olog::IntoField;
 use serde::{Deserialize, Serialize};
 use stream_filter::Decision;
 
@@ -115,9 +116,12 @@ impl stream_filter::Filter for UserHashFilter {
 	type I = GithubUser;
 
 	fn filter(&self, user: GithubUser) -> Decision<GithubUser> {
-		match State::get(self.github_user_index_repository.as_ref(), &user.id)
-			.log_err("Failed to retreive contributors indexer state")
-		{
+		match State::get(self.github_user_index_repository.as_ref(), &user.id).log_err(|e| {
+			olog::error!(
+				error = e.to_field(),
+				"Failed to retreive contributors indexer state"
+			)
+		}) {
 			Ok(Some(state)) if state.matches(&user, &self.repo_id) => Decision::Skip,
 			_ => Decision::Take(user),
 		}
