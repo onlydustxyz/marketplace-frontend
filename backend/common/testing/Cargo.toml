@@ -8,8 +8,89 @@ version = "0.1.0"
 [lib]
 
 [dependencies]
-# Database
-diesel = {version = "2.1.0", default-features = false, features = ["postgres","extras"]}
 
-# Local dependencies
+# Async
+async-trait = "0.1.56"
+futures = {version = "0.3.21", features = ["alloc"]}
+tokio = {version = "1.18.2", features = ["full"]}
+
+# Database
+diesel = {version = "2.1.0", default-features = false, features = [
+  "postgres",
+  "serde_json",
+  "uuid",
+  "chrono",
+]}
+diesel-derive-newtype = "2.1.0"
+diesel_json = "0.2.0"
+uuid = {version = "1.3.3", default_features = false, features = [
+  "v4",
+  "serde",
+]}
+
+uuid08 = {package = "uuid", version = "0.8", default_features = false, features = [
+  "v4",
+  "serde",
+]}
+
+# Graphql client
+graphql_client = "0.12.0"
+
+# Http client
+http-api-problem = {version="0.56.0", features=["rocket"]}
+reqwest = {version = "0.11", default-features = false}
+url = "2.2.2"
+
+# Http Server
+juniper = "0.15.11"
+juniper_rocket = "0.8.2"
+rocket = {version = "0.5.0-rc.2", features = ["json", "uuid"]}
+
+# AWS
+rusoto_core = "0.48.0"
+rusoto_s3 = "0.48.0"
+
+# Image processing
+image = {version="0.24.6", features=["webp-encoder"]}
+
+# Tracing
+tracing = "0.1"
+
+# Errors
+anyhow = "1.0.57"
+thiserror = "1.0.31"
+
+# Serde
+serde = {version = "1.0.137", features = ["derive"]}
+serde_json = {version = "1.0.81"}
+
+# Datetime
+chrono = "0.4"
+
+# Utils
+derive-getters = "0.2.0"
+derive_more = "0.99.17"
+derive_setters = "0.1.5"
+dotenv = "0.15.0"
+email_address = "0.2.4"
+infer = "0.12.0"
+rust_decimal = "1.26.1"
+rusty-money = {version = "0.4.1", features = ["iso", "crypto"]}
+tokio-retry = "0.3"
+
+# Local dependecies
+domain = {path = "../domain"}
 infrastructure = {path = "../infrastructure"}
+derive = {path = "../derive"}
+olog = {path = "../olog"}
+
+lapin = "2.3.1"
+lazy_static = "1.4.0"
+rstest = "0.15.0"
+mockall = "0.11.2"
+mockall_double = "0.3.0"
+assert_matches = "1.5"
+testcontainers = "0.14.0"
+tracing-subscriber = "0.3"
+tokio-async-drop = "0.1.0"
+project-root = "0.2.2"

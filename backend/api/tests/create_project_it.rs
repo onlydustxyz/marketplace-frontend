@@ -64,7 +64,7 @@ impl<'a> Test<'a> {
 		let project_id = project.project_id;
 
 		assert_eq!(
-			self.context.amqp.listener.recv().await,
+			self.context.amqp.listen(event_store::bus::QUEUE_NAME).await,
 			Some(Event::Project(domain::ProjectEvent::Created {
 				id: project_id
 			}))
