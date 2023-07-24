@@ -2,6 +2,7 @@ use std::str::FromStr;
 
 use async_trait::async_trait;
 use jsonwebtoken::{decode, Algorithm, DecodingKey, Validation};
+use olog::warn;
 use rocket::{
 	http::{hyper::header, Status},
 	request::{FromRequest, Outcome},
@@ -91,7 +92,10 @@ impl<'r> FromRequest<'r> for Claims {
 				impersontation_secret_header,
 				request.headers().get_one(IMPERSONATION_CLAIMS_HEADER),
 			) {
-				Ok(claims) => Outcome::Success(claims),
+				Ok(claims) => {
+					warn!("Impersonating {:?}", claims);
+					Outcome::Success(claims)
+				},
 				Err(error) => Outcome::Failure((error.clone().into(), error)),
 			},
 
@@ -134,8 +138,8 @@ fn jwt_secret() -> Result<Secret> {
 }
 
 fn impersonation_secret() -> Result<String> {
-	let secret =
-		std::env::var("IMPERSONATION_SECRET").map_err(|e| Error::Configuration(e.to_string()))?;
+	let secret = std::env::var("HASURA_GRAPHQL_ADMIN_SECRET")
+		.map_err(|e| Error::Configuration(e.to_string()))?;
 	Ok(secret)
 }
 
@@ -207,7 +211,10 @@ mod test {
 	#[rstest]
 	fn invalid_impersonation_secret() {
 		let _lock = lock_test();
-		let _guard = set_env(OsString::from("IMPERSONATION_SECRET"), "super-secret");
+		let _guard = set_env(
+			OsString::from("HASURA_GRAPHQL_ADMIN_SECRET"),
+			"super-secret",
+		);
 		let error_str = assert_matches!(
 			impersonate("bad-secret", None),
 			Err(Error::Impersonation(s)) => s
@@ -218,7 +225,10 @@ mod test {
 	#[rstest]
 	fn missing_impersonation_claims() {
 		let _lock = lock_test();
-		let _guard = set_env(OsString::from("IMPERSONATION_SECRET"), "super-secret");
+		let _guard = set_env(
+			OsString::from("HASURA_GRAPHQL_ADMIN_SECRET"),
+			"super-secret",
+		);
 		let error_str = assert_matches!(
 			impersonate("super-secret", None),
 			Err(Error::Impersonation(s)) => s
@@ -229,7 +239,10 @@ mod test {
 	#[rstest]
 	fn invalid_impersonation_claims() {
 		let _lock = lock_test();
-		let _guard = set_env(OsString::from("IMPERSONATION_SECRET"), "super-secret");
+		let _guard = set_env(
+			OsString::from("HASURA_GRAPHQL_ADMIN_SECRET"),
+			"super-secret",
+		);
 		let error_str = assert_matches!(
 			impersonate("super-secret", Some("{\"foo\": 1}")),
 			Err(Error::Impersonation(s)) => s
@@ -243,7 +256,10 @@ mod test {
 	#[rstest]
 	fn valid_impersonation_claims() {
 		let _lock = lock_test();
-		let _guard = set_env(OsString::from("IMPERSONATION_SECRET"), "super-secret");
+		let _guard = set_env(
+			OsString::from("HASURA_GRAPHQL_ADMIN_SECRET"),
+			"super-secret",
+		);
 		let claims = impersonate("super-secret", Some("{\"x-hasura-user-id\": \"747e663f-4e68-4b42-965b-b5aebedcd4c4\", \"x-hasura-githubUserId\": \"595505\"}")).unwrap();
 		assert_eq!(
 			claims,

@@ -3514,6 +3514,7 @@ dependencies = [
  "domain",
  "envtestkit",
  "jsonwebtoken",
+ "olog",
  "rocket",
  "rstest",
  "serde",
