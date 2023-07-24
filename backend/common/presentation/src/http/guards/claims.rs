@@ -12,10 +12,15 @@ use serde_with::{serde_as, DisplayFromStr};
 use thiserror::Error;
 use uuid::Uuid;
 
+const IMPERSONATION_SECRET_HEADER: &str = "X-Impersonation-Secret";
+const IMPERSONATION_CLAIMS_HEADER: &str = "X-Impersonation-Claims";
+
 #[derive(Debug, Error, Clone, PartialEq, Eq)]
 pub enum Error {
 	#[error("Invalid JWT")]
 	Invalid(#[from] jsonwebtoken::errors::Error),
+	#[error("Invalid impersonation")]
+	Impersonation(String),
 	#[error("Missing configuration")]
 	Configuration(String),
 }
@@ -25,7 +30,7 @@ type Result<T> = std::result::Result<T, Error>;
 impl From<Error> for Status {
 	fn from(error: Error) -> Self {
 		match error {
-			Error::Invalid(_) => Status::BadRequest,
+			Error::Invalid(_) | Error::Impersonation(_) => Status::BadRequest,
 			Error::Configuration(_) => Status::InternalServerError,
 		}
 	}
@@ -42,7 +47,7 @@ struct Jwt {
 }
 
 #[serde_as]
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct Claims {
 	#[serde(rename = "x-hasura-user-id")]
 	pub user_id: Uuid,
@@ -81,13 +86,43 @@ impl<'r> FromRequest<'r> for Claims {
 	type Error = Error;
 
 	async fn from_request(request: &'r Request<'_>) -> Outcome<Self, Self::Error> {
-		match request.headers().get_one(header::AUTHORIZATION.as_str()) {
-			Some(header) => match Jwt::from_str(header.trim_start_matches("Bearer ")) {
-				Ok(jwt) => Outcome::Success(jwt.claims),
+		match request.headers().get_one(IMPERSONATION_SECRET_HEADER) {
+			Some(impersontation_secret_header) => match impersonate(
+				impersontation_secret_header,
+				request.headers().get_one(IMPERSONATION_CLAIMS_HEADER),
+			) {
+				Ok(claims) => Outcome::Success(claims),
 				Err(error) => Outcome::Failure((error.clone().into(), error)),
 			},
-			None => Outcome::Forward(()),
+
+			None => match request.headers().get_one(header::AUTHORIZATION.as_str()) {
+				Some(authorization) =>
+					match Jwt::from_str(authorization.trim_start_matches("Bearer ")) {
+						Ok(jwt) => Outcome::Success(jwt.claims),
+						Err(error) => Outcome::Failure((error.clone().into(), error)),
+					},
+				None => Outcome::Forward(()),
+			},
 		}
+	}
+}
+
+fn impersonate(
+	impersontation_secret_header: &str,
+	impersontation_claims_header: Option<&str>,
+) -> Result<Claims> {
+	let secret = impersonation_secret()?;
+	if secret != impersontation_secret_header {
+		Err(Error::Impersonation(
+			"Invalid impersonation secret".to_string(),
+		))
+	} else if impersontation_claims_header.is_none() {
+		Err(Error::Impersonation(
+			"Missing impersonation claims".to_string(),
+		))
+	} else {
+		serde_json::from_str(impersontation_claims_header.unwrap_or_default())
+			.map_err(|e| Error::Impersonation(e.to_string()))
 	}
 }
 
@@ -95,6 +130,12 @@ fn jwt_secret() -> Result<Secret> {
 	let secret = std::env::var("HASURA_GRAPHQL_JWT_SECRET")
 		.map_err(|e| Error::Configuration(e.to_string()))?;
 	let secret = serde_json::from_str(&secret).map_err(|e| Error::Configuration(e.to_string()))?;
+	Ok(secret)
+}
+
+fn impersonation_secret() -> Result<String> {
+	let secret =
+		std::env::var("IMPERSONATION_SECRET").map_err(|e| Error::Configuration(e.to_string()))?;
 	Ok(secret)
 }
 
@@ -155,5 +196,61 @@ mod test {
 			Uuid::from_str("747e663f-4e68-4b42-965b-b5aebedcd4c4").unwrap()
 		);
 		assert_eq!(jwt.claims.github_user_id, 43467246);
+	}
+
+	#[rstest]
+	fn missing_impersonation_secret() {
+		let _lock = lock_test();
+		assert_matches!(impersonate("any", None), Err(Error::Configuration(_)));
+	}
+
+	#[rstest]
+	fn invalid_impersonation_secret() {
+		let _lock = lock_test();
+		let _guard = set_env(OsString::from("IMPERSONATION_SECRET"), "super-secret");
+		let error_str = assert_matches!(
+			impersonate("bad-secret", None),
+			Err(Error::Impersonation(s)) => s
+		);
+		assert_eq!(error_str, "Invalid impersonation secret".to_string())
+	}
+
+	#[rstest]
+	fn missing_impersonation_claims() {
+		let _lock = lock_test();
+		let _guard = set_env(OsString::from("IMPERSONATION_SECRET"), "super-secret");
+		let error_str = assert_matches!(
+			impersonate("super-secret", None),
+			Err(Error::Impersonation(s)) => s
+		);
+		assert_eq!(error_str, "Missing impersonation claims".to_string())
+	}
+
+	#[rstest]
+	fn invalid_impersonation_claims() {
+		let _lock = lock_test();
+		let _guard = set_env(OsString::from("IMPERSONATION_SECRET"), "super-secret");
+		let error_str = assert_matches!(
+			impersonate("super-secret", Some("{\"foo\": 1}")),
+			Err(Error::Impersonation(s)) => s
+		);
+		assert_eq!(
+			error_str,
+			"missing field `x-hasura-user-id` at line 1 column 10".to_string()
+		)
+	}
+
+	#[rstest]
+	fn valid_impersonation_claims() {
+		let _lock = lock_test();
+		let _guard = set_env(OsString::from("IMPERSONATION_SECRET"), "super-secret");
+		let claims = impersonate("super-secret", Some("{\"x-hasura-user-id\": \"747e663f-4e68-4b42-965b-b5aebedcd4c4\", \"x-hasura-githubUserId\": \"595505\"}")).unwrap();
+		assert_eq!(
+			claims,
+			Claims {
+				github_user_id: 595505,
+				user_id: "747e663f-4e68-4b42-965b-b5aebedcd4c4".parse().unwrap()
+			}
+		)
 	}
 }
