@@ -81,6 +81,7 @@ test.describe("As an admin, I", () => {
 
     await expect(viewPage.bio).toHaveText("C1oYXN1cmEtdXNlci1pZCI6ImU0NjFjMDE5LWJh");
 
+    new BrowseProjectsPage(page).goto();
     await logout();
     await appPage.expectToBeLoggedInAs(users.Anthony);
 
@@ -90,6 +91,7 @@ test.describe("As an admin, I", () => {
     await expect(viewPage.login).toHaveText(users.Anthony.github.login);
     await expect(viewPage.bio).not.toHaveText("C1oYXN1cmEtdXNlci1pZCI6ImU0NjFjMDE5LWJh");
 
+    new BrowseProjectsPage(page).goto();
     await logout();
     await appPage.expectToBeAnonymous();
   });
