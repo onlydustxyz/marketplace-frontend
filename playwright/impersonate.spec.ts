@@ -5,13 +5,14 @@ import { BrowseProjectsPage } from "./pages/browse_projects_page";
 import { GenericPage } from "./pages/generic_page";
 import { RewardsPage } from "./pages/my_rewards_page";
 import { ImpersonationPage } from "./pages/impersonation_page";
+import { ViewProfilePage } from "./pages/profile/view_profile";
 
 test.describe("As an admin, I", () => {
   test.beforeAll(async () => {
     restoreDB();
   });
 
-  test("can impersonate a user", async ({ page, users }) => {
+  test("can impersonate a user", async ({ context, page, users }) => {
     const browseProjectsPage = new BrowseProjectsPage(page);
     await browseProjectsPage.goto();
 
@@ -32,9 +33,24 @@ test.describe("As an admin, I", () => {
     await expect(rewardsPage.sidePanel).toContainText("to");
     await expect(rewardsPage.sidePanel).toContainText(users.Olivier.github.login);
     await expect(rewardsPage.sidePanel).toContainText("(you)");
+
+    // Edit profile of impersonated user
+    new BrowseProjectsPage(page).goto();
+    const viewPage = new ViewProfilePage(page, context);
+    await viewPage.goto();
+    await expect(viewPage.login).toHaveText(users.Olivier.github.login);
+    await expect(viewPage.bio).not.toHaveText("MjMtNDY3MS05YjZjLTNhNWExODc0OGFmOSIsIng");
+
+    const editPage = await viewPage.edit();
+    await expect(editPage.login).toHaveText(users.Olivier.github.login);
+    await editPage.bio.fill("MjMtNDY3MS05YjZjLTNhNWExODc0OGFmOSIsIng");
+    await editPage.save();
+
+    await expect(viewPage.bio).toHaveText("MjMtNDY3MS05YjZjLTNhNWExODc0OGFmOSIsIng");
   });
 
   test("retain the login state when impersonating", async ({
+    context,
     page,
     users,
     signIn,
@@ -51,9 +67,31 @@ test.describe("As an admin, I", () => {
     await impersonationPage.submitForm();
     await appPage.expectToBeImpersonating(users.Olivier);
 
+    // Edit profile of impersonated user
+    new BrowseProjectsPage(page).goto();
+    const viewPage = new ViewProfilePage(page, context);
+    await viewPage.goto();
+    await expect(viewPage.login).toHaveText(users.Olivier.github.login);
+    await expect(viewPage.bio).not.toHaveText("C1oYXN1cmEtdXNlci1pZCI6ImU0NjFjMDE5LWJh");
+
+    const editPage = await viewPage.edit();
+    await expect(editPage.login).toHaveText(users.Olivier.github.login);
+    await editPage.bio.fill("C1oYXN1cmEtdXNlci1pZCI6ImU0NjFjMDE5LWJh");
+    await editPage.save();
+
+    await expect(viewPage.bio).toHaveText("C1oYXN1cmEtdXNlci1pZCI6ImU0NjFjMDE5LWJh");
+
+    new BrowseProjectsPage(page).goto();
     await logout();
     await appPage.expectToBeLoggedInAs(users.Anthony);
 
+    // Check Anthony's profile has not changed
+    new BrowseProjectsPage(page).goto();
+    await viewPage.goto();
+    await expect(viewPage.login).toHaveText(users.Anthony.github.login);
+    await expect(viewPage.bio).not.toHaveText("C1oYXN1cmEtdXNlci1pZCI6ImU0NjFjMDE5LWJh");
+
+    new BrowseProjectsPage(page).goto();
     await logout();
     await appPage.expectToBeAnonymous();
   });
