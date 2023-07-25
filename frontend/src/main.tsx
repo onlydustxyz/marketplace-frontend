@@ -41,12 +41,22 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
         <title>Only Dust — Forge your developer legacy</title>
         <meta property="og:title" content="Only Dust — Forge your developer legacy" />
         <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="OnlyDust" />
+        <meta property="og:url" content={config.ASSET_PATH} />
         <meta
           property="og:description"
           content="Contribute to innovative projects, refine your skills and create a lasting impact in the developer community. The stars are within your reach."
         />
         <meta property="og:image" content="https://onlydust-app-images.s3.eu-west-1.amazonaws.com/thumbnail.png" />
+        <meta
+          property="og:image:alt"
+          content="Contribute to innovative projects, refine your skills and create a lasting impact in the developer community. The stars are within your reach."
+        />
+        <meta property="og:image:type" content="image/png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="628" />
         <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@OnlyDust_xyz" />
       </Helmet>
       <ErrorBoundary FallbackComponent={ErrorFallback} onError={console.error}>
         <SessionProvider>

@@ -9,6 +9,7 @@ import { RoutePaths } from "src/App";
 import { useShowToaster } from "src/hooks/useToaster";
 import { useIntl } from "src/hooks/useIntl";
 import { Helmet } from "react-helmet";
+import config from "src/config";
 
 const PublicProfilePage = () => {
   const { userLogin } = useParams();
@@ -27,6 +28,7 @@ const PublicProfilePage = () => {
       <Helmet>
         <title>{`${userProfile.profile.login} — OnlyDust`}</title>
         <meta property="og:title" content={`${userProfile.profile.login} — OnlyDust`} />
+        <meta property="og:url" content={`${config.ASSET_PATH}/u/${userLogin}`} />
         {userProfile.profile.bio && <meta property="og:description" content={userProfile.profile.bio} />}
       </Helmet>
       <div className="bg-public-profile lg:h-[calc(100dvh)] lg:w-screen">

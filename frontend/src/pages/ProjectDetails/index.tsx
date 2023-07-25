@@ -14,6 +14,7 @@ import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
 import { Helmet } from "react-helmet";
 import { contextWithCacheHeaders } from "src/utils/headers";
+import config from "src/config";
 
 type ProjectDetailsParams = {
   projectKey: string;
@@ -57,6 +58,7 @@ export default function ProjectDetails() {
         <title>{`${name} — OnlyDust`}</title>
         <meta property="og:title" content={`${name} — OnlyDust`} />
         <meta property="og:description" content={shortDescription || ""} />
+        <meta property="og:url" content={`${config.ASSET_PATH}/p/${projectKey}`} />
       </Helmet>
       <View projectId={projectId} projectKey={projectKey || ""} />
     </>
