@@ -13,6 +13,7 @@ export const useImpersonation = () => {
   const impersonatedUserQuery = useImpersonatedUserQuery({
     context: {
       graphqlErrorDisplay: "none",
+      headers: { "X-Hasura-Role": "admin" },
     },
     variables: {
       id: impersonationSet?.userId,

@@ -20,6 +20,7 @@ export default function useAuthenticationLink() {
         ? {
             // Impersonation for Hasura
             "X-Hasura-Admin-Secret": impersonationSet.password,
+            "X-Hasura-Role": "registered_user",
             "X-Hasura-User-Id": impersonationClaims["x-hasura-user-id"],
             "X-Hasura-projectsLeaded": impersonationClaims["x-hasura-projectsLeaded"],
             "X-Hasura-githubUserId": impersonationClaims["x-hasura-githubUserId"],
@@ -30,9 +31,9 @@ export default function useAuthenticationLink() {
         : {};
     return {
       headers: {
-        ...headers,
         ...authorizationHeaders,
         ...impersonationHeaders,
+        ...headers,
       },
     };
   });

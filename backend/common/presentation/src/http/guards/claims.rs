@@ -1,4 +1,4 @@
-use std::str::FromStr;
+use std::{collections::HashSet, str::FromStr};
 
 use async_trait::async_trait;
 use jsonwebtoken::{decode, Algorithm, DecodingKey, Validation};
@@ -55,6 +55,12 @@ pub struct Claims {
 	#[serde(rename = "x-hasura-githubUserId")]
 	#[serde_as(as = "DisplayFromStr")]
 	pub github_user_id: u64,
+	#[serde(
+		rename = "x-hasura-projectsLeaded",
+		deserialize_with = "postgres_array_format::deserialize",
+		default = "HashSet::new"
+	)]
+	pub projects_leaded: HashSet<Uuid>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -143,6 +149,23 @@ fn impersonation_secret() -> Result<String> {
 	Ok(secret)
 }
 
+mod postgres_array_format {
+	use std::collections::HashSet;
+
+	use serde::{self, Deserialize, Deserializer};
+	use uuid::Uuid;
+
+	pub fn deserialize<'de, D>(deserializer: D) -> Result<HashSet<Uuid>, D::Error>
+	where
+		D: Deserializer<'de>,
+	{
+		let s = String::deserialize(deserializer)?;
+		let array: HashSet<Uuid> = serde_json::from_str(&s.replace('{', "[").replace('}', "]"))
+			.map_err(serde::de::Error::custom)?;
+		Ok(array)
+	}
+}
+
 #[cfg(test)]
 mod test {
 	use std::ffi::OsString;
@@ -150,6 +173,7 @@ mod test {
 	use assert_matches::assert_matches;
 	use envtestkit::{lock::lock_test, set_env};
 	use rstest::rstest;
+	use serde_json::json;
 
 	use super::*;
 
@@ -260,12 +284,57 @@ mod test {
 			OsString::from("HASURA_GRAPHQL_ADMIN_SECRET"),
 			"super-secret",
 		);
-		let claims = impersonate("super-secret", Some("{\"x-hasura-user-id\": \"747e663f-4e68-4b42-965b-b5aebedcd4c4\", \"x-hasura-githubUserId\": \"595505\"}")).unwrap();
+		let claims = impersonate(
+			"super-secret",
+			Some(
+				&json!({
+					"x-hasura-user-id": "747e663f-4e68-4b42-965b-b5aebedcd4c4",
+					"x-hasura-githubUserId":"595505"
+				})
+				.to_string(),
+			),
+		)
+		.unwrap();
 		assert_eq!(
 			claims,
 			Claims {
 				github_user_id: 595505,
-				user_id: "747e663f-4e68-4b42-965b-b5aebedcd4c4".parse().unwrap()
+				user_id: "747e663f-4e68-4b42-965b-b5aebedcd4c4".parse().unwrap(),
+				projects_leaded: HashSet::new()
+			}
+		)
+	}
+
+	#[rstest]
+	fn valid_impersonation_claims_with_projects_leaded() {
+		let _lock = lock_test();
+		let _guard = set_env(
+			OsString::from("HASURA_GRAPHQL_ADMIN_SECRET"),
+			"super-secret",
+		);
+
+		let claims = impersonate("super-secret",
+			Some(&json!({
+				"x-hasura-user-id": "747e663f-4e68-4b42-965b-b5aebedcd4c4",
+				"x-hasura-githubUserId":"595505",
+				"x-hasura-projectsLeaded":"{\"e41f44a2-464c-4c96-817f-81acb06b2523\",\"61076487-6ec5-4751-ab0d-3b876c832239\",\"c66b929a-664d-40b9-96c4-90d3efd32a3c\"}"
+			}).to_string())
+		).unwrap();
+
+		let mut expected_projects_leaded = HashSet::new();
+		expected_projects_leaded
+			.insert(Uuid::parse_str("e41f44a2-464c-4c96-817f-81acb06b2523").unwrap());
+		expected_projects_leaded
+			.insert(Uuid::parse_str("61076487-6ec5-4751-ab0d-3b876c832239").unwrap());
+		expected_projects_leaded
+			.insert(Uuid::parse_str("c66b929a-664d-40b9-96c4-90d3efd32a3c").unwrap());
+
+		assert_eq!(
+			claims,
+			Claims {
+				github_user_id: 595505,
+				user_id: "747e663f-4e68-4b42-965b-b5aebedcd4c4".parse().unwrap(),
+				projects_leaded: expected_projects_leaded
 			}
 		)
 	}
