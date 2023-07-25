@@ -4,7 +4,7 @@ use std::{
 	sync::Arc,
 };
 
-use anyhow::{anyhow, Result};
+use anyhow::{anyhow, Context, Result};
 use async_trait::async_trait;
 use rusoto_core::{
 	credential::{AwsCredentials, CredentialsError, ProvideAwsCredentials},
@@ -71,7 +71,11 @@ impl Client {
 		);
 
 		// Check credentials as soon as the client is created
-		s3_client.list_buckets().await?;
+		s3_client
+			.list_buckets()
+			.await
+			.context("Listing buckets")
+			.map_err(ImageStoreServiceError::Initialization)?;
 
 		Ok(Self {
 			s3_client: Arc::new(s3_client),
