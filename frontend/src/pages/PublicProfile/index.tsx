@@ -27,9 +27,11 @@ const PublicProfilePage = () => {
     <>
       <Helmet>
         <title>{`${userProfile.profile.login} — OnlyDust`}</title>
-        <meta property="og:title" content={`${userProfile.profile.login} — OnlyDust`} />
-        <meta property="og:url" content={`${config.ASSET_PATH}/u/${userLogin}`} />
-        {userProfile.profile.bio && <meta property="og:description" content={userProfile.profile.bio} />}
+        <meta property="og:title" content={`${userProfile.profile.login} — OnlyDust`} data-react-helmet="true" />
+        <meta property="og:url" content={`${config.ASSET_PATH}/u/${userLogin}`} data-react-helmet="true" />
+        {userProfile.profile.bio && (
+          <meta property="og:description" content={userProfile.profile.bio} data-react-helmet="true" />
+        )}
       </Helmet>
       <div className="bg-public-profile lg:h-[calc(100dvh)] lg:w-screen">
         <div className="lg:max-5xl xl:max-6xl mx-auto flex h-full flex-col justify-between md:container md:px-4 2xl:max-w-7xl">

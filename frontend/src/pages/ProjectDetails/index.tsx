@@ -56,9 +56,9 @@ export default function ProjectDetails() {
     <>
       <Helmet>
         <title>{`${name} — OnlyDust`}</title>
-        <meta property="og:title" content={`${name} — OnlyDust`} />
-        <meta property="og:description" content={shortDescription || ""} />
-        <meta property="og:url" content={`${config.ASSET_PATH}/p/${projectKey}`} />
+        <meta property="og:title" content={`${name} — OnlyDust`} data-react-helmet="true" />
+        <meta property="og:description" content={shortDescription || ""} data-react-helmet="true" />
+        <meta property="og:url" content={`${config.ASSET_PATH}/p/${projectKey}`} data-react-helmet="true" />
       </Helmet>
       <View projectId={projectId} projectKey={projectKey || ""} />
     </>
