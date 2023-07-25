@@ -40,6 +40,9 @@ fn image() -> RunnableImage<GenericImage> {
 
 	RunnableImage::from(
 		GenericImage::new("wiremock/wiremock", "latest")
-			.with_volume(wiremock_path, "/home/wiremock"),
+			.with_volume(wiremock_path, "/home/wiremock")
+			.with_wait_for(testcontainers::core::WaitFor::StdOutMessage {
+				message: String::from("verbose:"),
+			}),
 	)
 }
