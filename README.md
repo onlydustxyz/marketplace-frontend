@@ -202,6 +202,17 @@ diesel migration run
 
 - The file `schema.rs` should be then automatically updated
 
+## Security
+
+To activate the GitGuardian pre-commit, you need first to connect to GitGuardian : 
+
+* follow the GitGuardian documentation to install their CLI : https://docs.gitguardian.com/ggshield-docs/getting-started
+* authenticate to GitGuardian by running `ggshield auth login`
+
+Then, install GitGuardian pre-commit hook to check if some secrets are leaked inside the code base :
+
+run `pre-commit install`
+
 ## Monitoring
 
 We use Datadog as a monitoring solution.
