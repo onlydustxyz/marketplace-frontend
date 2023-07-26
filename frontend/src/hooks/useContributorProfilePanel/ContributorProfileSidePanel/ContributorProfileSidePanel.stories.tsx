@@ -7,11 +7,19 @@ import withToasterProvider from "src/test/storybook/decorators/withToasterProvid
 import withSidePanelStackProvider from "src/test/storybook/decorators/withSidePanelStackProvider";
 import withTokenSetProvider from "src/test/storybook/decorators/withTokenSetProvider";
 import withMockedProvider from "src/test/storybook/decorators/withMockedProvider";
+import withImpersonationClaimsProvider from "src/test/storybook/decorators/withImpersonationClaimsProvider";
 
 export default {
   title: "ContributorProfileSidePanel",
   component: ContributorProfileSidePanel,
-  decorators: [withRouter, withToasterProvider, withSidePanelStackProvider, withTokenSetProvider, withMockedProvider()],
+  decorators: [
+    withRouter,
+    withToasterProvider,
+    withSidePanelStackProvider,
+    withTokenSetProvider,
+    withImpersonationClaimsProvider,
+    withMockedProvider(),
+  ],
 };
 
 const profileFull: UserProfileFragment = {

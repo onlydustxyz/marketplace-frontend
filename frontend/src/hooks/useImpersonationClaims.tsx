@@ -4,12 +4,12 @@ import { ImpersonationSet } from "src/types";
 
 export const LOCAL_STORAGE_IMPERSONATION_SET_KEY = "impersonation_set";
 
-type ImpersonationClaimsContextType = {
+export type ImpersonationClaimsContextType = {
   impersonationSet?: ImpersonationSet;
   setImpersonationSet: (impersonationSet: ImpersonationSet) => void;
-  customClaims: CustomClaims;
   setCustomClaims: (customClaims: CustomClaims) => void;
   clearImpersonationSet: () => void;
+  getImpersonationHeaders: () => HeadersInit;
 };
 
 type CustomClaims = {
@@ -33,12 +33,36 @@ export const ImpersonationClaimsProvider = ({ children }: PropsWithChildren) => 
     doSetCustomClaims(newClaims);
   };
 
+  const getImpersonationHeaders = () => {
+    const impersonationClaims = impersonationSet
+      ? {
+          "x-hasura-user-id": impersonationSet.userId,
+          "x-hasura-projectsLeaded": `{${customClaims.projectsLeaded?.map(id => `"${id}"`).join(",") || ""}}`,
+          "x-hasura-githubUserId": `${customClaims.githubUserId || 0}`,
+        }
+      : undefined;
+
+    return impersonationSet && impersonationClaims
+      ? {
+          // Impersonation for Hasura
+          "X-Hasura-Admin-Secret": impersonationSet.password,
+          "X-Hasura-Role": "registered_user",
+          "X-Hasura-User-Id": impersonationClaims["x-hasura-user-id"],
+          "X-Hasura-projectsLeaded": impersonationClaims["x-hasura-projectsLeaded"],
+          "X-Hasura-githubUserId": impersonationClaims["x-hasura-githubUserId"],
+          // Impersonation for OnlyDust API
+          "X-Impersonation-Secret": impersonationSet.password,
+          "X-Impersonation-Claims": JSON.stringify(impersonationClaims),
+        }
+      : [];
+  };
+
   const value = {
     impersonationSet,
     setImpersonationSet,
     clearImpersonationSet,
-    customClaims,
     setCustomClaims,
+    getImpersonationHeaders,
   };
 
   return <ImpersonationClaimsContext.Provider value={value}>{children}</ImpersonationClaimsContext.Provider>;
