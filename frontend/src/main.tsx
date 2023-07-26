@@ -35,7 +35,7 @@ if (config.GTM_ID) {
 }
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <IntlProvider>
+  <IntlProvider
     <BrowserRouter>
       <Helmet>
         <title>Only Dust — Forge your developer legacy</title>
