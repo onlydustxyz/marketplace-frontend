@@ -4,7 +4,7 @@ import { ImpersonationSet } from "src/types";
 
 export const LOCAL_STORAGE_IMPERSONATION_SET_KEY = "impersonation_set";
 
-type ImpersonationClaimsContextType = {
+export type ImpersonationClaimsContextType = {
   impersonationSet?: ImpersonationSet;
   setImpersonationSet: (impersonationSet: ImpersonationSet) => void;
   setCustomClaims: (customClaims: CustomClaims) => void;
