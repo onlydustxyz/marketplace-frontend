@@ -8,6 +8,8 @@ use url::Url;
 
 #[derive(Debug, Error)]
 pub enum Error {
+	#[error("Unable to initialize image store client")]
+	Initialization(#[source] anyhow::Error),
 	#[error("Original image not found")]
 	NotFound(#[source] anyhow::Error),
 	#[error("Could not determine file extension")]
@@ -19,6 +21,7 @@ pub enum Error {
 impl From<Error> for DomainError {
 	fn from(error: Error) -> Self {
 		match error {
+			Error::Initialization(_) => DomainError::InternalError(error.into()),
 			Error::NotFound(_) => DomainError::InvalidInputs(error.into()),
 			Error::UnknownExtension(_) => DomainError::InvalidInputs(error.into()),
 			Error::Other(_) => DomainError::InternalError(error.into()),

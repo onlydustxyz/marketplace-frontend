@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListAllMyBucketsResult>
+    <Buckets>
+        <Bucket>
+            <CreationDate>2022-12-05 16:50:16</CreationDate>
+            <Name>cf-templates-17u9glxxa77qn-eu-west-1</Name>
+        </Bucket>
+        <Bucket>
+            <CreationDate>2023-03-01 15:44:55</CreationDate>
+            <Name>onlydust-app-images</Name>
+        </Bucket>
+        <Bucket>
+            <CreationDate>2023-05-04 18:17:25</CreationDate>
+            <Name>terraform-heroku-state</Name>
+        </Bucket>
+    </Buckets>
+    <Owner>
+        <DisplayName>OnlyDust</DisplayName>
+        <ID>only-dust</ID>
+    </Owner>
+</ListAllMyBucketsResult>

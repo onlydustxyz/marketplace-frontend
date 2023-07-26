@@ -4,11 +4,11 @@ use std::{
 	sync::Arc,
 };
 
-use anyhow::{anyhow, Result};
+use anyhow::{anyhow, Context, Result};
 use async_trait::async_trait;
 use rusoto_core::{
 	credential::{AwsCredentials, CredentialsError, ProvideAwsCredentials},
-	HttpClient,
+	HttpClient, Region,
 };
 use rusoto_s3::{PutObjectRequest, S3Client, StreamingBody, S3};
 use serde::Deserialize;
@@ -23,6 +23,8 @@ pub struct Config {
 	pub bucket_region: String,
 	pub access_key_id: String,
 	pub secret_access_key: String,
+	#[serde(default)]
+	pub endpoint: Option<String>,
 }
 
 #[derive(Clone)]
@@ -59,10 +61,21 @@ impl Client {
 		let s3_client = S3Client::new_with(
 			HttpClient::new().expect("TLS error"),
 			provider,
-			config.bucket_region.parse()?,
+			match config.endpoint {
+				Some(endpoint) => Region::Custom {
+					name: config.bucket_region.clone(),
+					endpoint,
+				},
+				None => config.bucket_region.parse()?,
+			},
 		);
+
 		// Check credentials as soon as the client is created
-		// s3_client.list_buckets().await?;
+		s3_client
+			.list_buckets()
+			.await
+			.context("Listing buckets")
+			.map_err(ImageStoreServiceError::Initialization)?;
 
 		Ok(Self {
 			s3_client: Arc::new(s3_client),
