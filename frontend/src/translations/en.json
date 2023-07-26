@@ -413,7 +413,8 @@
         "discord": "Discord",
         "linkedin": "LinkedIn",
         "hiddenTootlip": "Hidden on public profile",
-        "visibleTootlip": "Shown on public profile"
+        "visibleTootlip": "Shown on public profile",
+        "whatsapp": "Whatsapp"
       },
       "country": "Country",
       "cryptoWire": "Crypto wire",
@@ -468,6 +469,7 @@
         "lookingForAJob": "I'm looking for a job",
         "privacyNotice": "Private information"
       },
+      "whatsapp": "Whatsapp",
       "saveStatus": {
         "unsaved": "Unsaved changes",
         "saved": "All changes saved",

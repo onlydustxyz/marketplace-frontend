@@ -19,6 +19,8 @@ export type UserProfileInfo = {
   isEmailPublic: boolean;
   telegram: string;
   isTelegramPublic: boolean;
+  whatsapp: string;
+  isWhatsappPublic: boolean;
   twitter: string;
   isTwitterPublic: boolean;
   discord: string;
@@ -41,6 +43,8 @@ export const fromFragment = (fragment: UserProfileFragment & OwnUserProfileDetai
   isEmailPublic: fragment.contacts.email?.public ?? false,
   telegram: fragment.contacts.telegram?.contact?.split("/").at(-1) ?? "",
   isTelegramPublic: fragment.contacts.telegram?.public ?? true,
+  whatsapp: fragment.contacts.whatsapp?.contact ?? "",
+  isWhatsappPublic: fragment.contacts.whatsapp?.public ?? true,
   twitter: fragment.contacts.twitter?.contact?.split("/").at(-1) ?? "",
   isTwitterPublic: fragment.contacts.twitter?.public ?? true,
   discord: fragment.contacts.discord?.contact ?? "",
@@ -61,6 +65,11 @@ export const toVariables = (profile: UserProfileInfo): UpdateUserProfileMutation
       channel: Channel.Telegram,
       contact: profile.telegram && `https://t.me/${profile.telegram}`,
       public: profile.isTelegramPublic,
+    },
+    {
+      channel: Channel.Whatsapp,
+      contact: profile.whatsapp,
+      public: profile.isWhatsappPublic,
     },
     {
       channel: Channel.Twitter,

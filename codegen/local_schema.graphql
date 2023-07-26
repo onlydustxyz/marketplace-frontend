@@ -4,6 +4,7 @@ type Contacts {
   twitter: ContactInformations
   discord: ContactInformations
   linkedin: ContactInformations
+  whatsapp: ContactInformations
 }
 
 extend type UserProfiles {

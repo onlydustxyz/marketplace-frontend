@@ -27,6 +27,7 @@ const EMPTY_PROFILE: ProfileFragment = {
     linkedin: null,
     telegram: null,
     twitter: null,
+    whatsapp: null,
   },
   contributionCounts: [],
   contributionStats: [],
@@ -86,6 +87,7 @@ describe("useUserProfile", () => {
         { channel: "twitter", contact: "@antho", public: true },
         { channel: "discord", contact: "antho#123", public: true },
         { channel: "linkedin", contact: "antho.b", public: true },
+        { channel: "whatsapp", contact: "+33612345678", public: true },
       ],
     });
 
@@ -95,6 +97,7 @@ describe("useUserProfile", () => {
       expect(result.current.data?.userProfiles.at(0)?.contacts.twitter?.contact).toBe("@antho");
       expect(result.current.data?.userProfiles.at(0)?.contacts.discord?.contact).toBe("antho#123");
       expect(result.current.data?.userProfiles.at(0)?.contacts.linkedin?.contact).toBe("antho.b");
+      expect(result.current.data?.userProfiles.at(0)?.contacts.whatsapp?.contact).toBe("+33612345678");
     });
   });
 

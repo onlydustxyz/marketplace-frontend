@@ -21,6 +21,7 @@ export default function useApolloCache() {
               twitter: null,
               discord: null,
               linkedin: null,
+              whatsapp: null,
             };
 
             const contacts = readField<ContactInformations[]>({ fieldName: "contactInformations" })?.map(

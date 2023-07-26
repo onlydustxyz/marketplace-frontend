@@ -7,6 +7,7 @@ import DiscordFill from "src/icons/DiscordFill";
 import LinkedinBoxFill from "src/icons/LinkedinBoxFill";
 import MailLine from "src/icons/MailLine";
 import ContactInformation from "./ContactInformation";
+import WhatsappFill from "src/icons/WhatsappFill";
 
 export default function ContactInformations() {
   const { T } = useIntl();
@@ -31,6 +32,12 @@ export default function ContactInformations() {
         placeholder={T("profile.form.contactInfo.telegram")}
         icon={<Telegram size={16} />}
         visibilityName="isTelegramPublic"
+      />
+      <ContactInformation
+        name="whatsapp"
+        placeholder={T("profile.form.contactInfo.whatsapp")}
+        icon={<WhatsappFill />}
+        visibilityName="isWhatsappPublic"
       />
       <ContactInformation
         name="twitter"
