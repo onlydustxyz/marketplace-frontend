@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { generatePath, useNavigate, useParams } from "react-router-dom";
 import { LanguageMap } from "src/types";
 import {
   GetProjectIdFromKeyDocument,
@@ -12,8 +12,8 @@ import useProjectVisibility from "src/hooks/useProjectVisibility";
 import { useSuspenseQuery_experimental as useSuspenseQuery } from "@apollo/client";
 import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
-import { Helmet } from "react-helmet";
 import { contextWithCacheHeaders } from "src/utils/headers";
+import SEO from "src/components/SEO";
 
 type ProjectDetailsParams = {
   projectKey: string;
@@ -33,7 +33,7 @@ export interface ProjectDetails {
 }
 
 export default function ProjectDetails() {
-  const { projectKey } = useParams<ProjectDetailsParams>();
+  const { projectKey = "" } = useParams<ProjectDetailsParams>();
   const { T } = useIntl();
   const showToaster = useShowToaster();
   const navigate = useNavigate();
@@ -53,12 +53,12 @@ export default function ProjectDetails() {
 
   return (
     <>
-      <Helmet>
-        <title>{`${name} — OnlyDust`}</title>
-        <meta property="og:title" content={`${name} — OnlyDust`} />
-        <meta property="og:description" content={shortDescription || ""} />
-      </Helmet>
-      <View projectId={projectId} projectKey={projectKey || ""} />
+      <SEO
+        title={`${name} — OnlyDust`}
+        description={shortDescription ?? undefined}
+        route={generatePath(RoutePaths.ProjectDetails, { projectKey })}
+      />
+      <View projectId={projectId} projectKey={projectKey} />
     </>
   );
 }
