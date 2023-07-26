@@ -11,8 +11,8 @@ export default function useAuthenticationLink() {
     const impersonationClaims = impersonationSet
       ? {
           "x-hasura-user-id": impersonationSet.userId,
-          "x-hasura-projectsLeaded": `{${customClaims.projectsLeaded?.map(id => `"${id}"`).join(",")}}`,
-          "x-hasura-githubUserId": `${customClaims.githubUserId}`,
+          "x-hasura-projectsLeaded": `{${customClaims.projectsLeaded?.map(id => `"${id}"`).join(",") || ""}}`,
+          "x-hasura-githubUserId": `${customClaims.githubUserId || 0}`,
         }
       : undefined;
     const impersonationHeaders =
