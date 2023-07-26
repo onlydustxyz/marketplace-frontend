@@ -83,6 +83,7 @@
             LINKED_IN
             TELEGRAM
             TWITTER
+            WHATSAPP
           }
           enum IdentityType {
             COMPANY

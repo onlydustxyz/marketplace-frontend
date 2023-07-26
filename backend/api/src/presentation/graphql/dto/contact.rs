@@ -7,6 +7,7 @@ pub enum Channel {
 	Twitter,
 	Discord,
 	LinkedIn,
+	Whatsapp,
 }
 
 impl From<Channel> for infrastructure::database::enums::ContactChannel {
@@ -17,6 +18,7 @@ impl From<Channel> for infrastructure::database::enums::ContactChannel {
 			Channel::Twitter => Self::Twitter,
 			Channel::Discord => Self::Discord,
 			Channel::LinkedIn => Self::Linkedin,
+			Channel::Whatsapp => Self::Whatsapp,
 		}
 	}
 }
