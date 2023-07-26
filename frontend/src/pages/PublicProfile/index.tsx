@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { generatePath, useNavigate, useParams } from "react-router-dom";
 import { Toaster } from "src/components/Toaster";
 import Tooltip from "src/components/Tooltip";
 import Header from "./Header";
@@ -8,8 +8,7 @@ import useUserProfile from "src/hooks/useContributorProfilePanel/ContributorProf
 import { RoutePaths } from "src/App";
 import { useShowToaster } from "src/hooks/useToaster";
 import { useIntl } from "src/hooks/useIntl";
-import { Helmet } from "react-helmet";
-import config from "src/config";
+import SEO from "src/components/SEO";
 
 const PublicProfilePage = () => {
   const { userLogin } = useParams();
@@ -25,14 +24,11 @@ const PublicProfilePage = () => {
 
   return userProfile && userLogin ? (
     <>
-      <Helmet>
-        <title>{`${userProfile.profile.login} — OnlyDust`}</title>
-        <meta property="og:title" content={`${userProfile.profile.login} — OnlyDust`} data-react-helmet="true" />
-        <meta property="og:url" content={`${config.ASSET_PATH}/u/${userLogin}`} data-react-helmet="true" />
-        {userProfile.profile.bio && (
-          <meta property="og:description" content={userProfile.profile.bio} data-react-helmet="true" />
-        )}
-      </Helmet>
+      <SEO
+        title={`${userProfile.profile.login} — OnlyDust`}
+        description={userProfile.profile.bio ?? undefined}
+        route={generatePath(RoutePaths.PublicProfile, { userLogin })}
+      />
       <div className="bg-public-profile lg:h-[calc(100dvh)] lg:w-screen">
         <div className="lg:max-5xl xl:max-6xl mx-auto flex h-full flex-col justify-between md:container md:px-4 2xl:max-w-7xl">
           <Header userLogin={userLogin} />
