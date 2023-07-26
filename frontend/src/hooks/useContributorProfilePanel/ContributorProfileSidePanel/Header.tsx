@@ -27,17 +27,15 @@ export default function Header({ profile, editable, onChange, rounded }: Props) 
   const { cache } = useApolloClient();
 
   const onProfilePictureChange = async (picture: File) => {
-    if (uploadProfilePicture) {
-      setUploading(true);
-      const url = await uploadProfilePicture(picture);
-      setUploading(false);
-      cache.modify({
-        id: cache.identify(profile),
-        fields: {
-          avatarUrl: () => url,
-        },
-      });
-    }
+    setUploading(true);
+    const url = await uploadProfilePicture(picture);
+    setUploading(false);
+    cache.modify({
+      id: cache.identify(profile),
+      fields: {
+        avatarUrl: () => url,
+      },
+    });
   };
 
   const handleClick = (value: ProfileCover) => {
