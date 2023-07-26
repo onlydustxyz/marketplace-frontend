@@ -30,6 +30,7 @@
     "@apollo/client": "3.8.0-alpha.5",
     "@datadog/browser-rum": "^4.34.1",
     "@datadog/datadog-ci": "^2.4.0",
+    "@datadog/browser-logs": "^4.16.1",
     "@headlessui/tailwindcss": "^0.1.2",
     "@tag0/use-text-width": "^1.2.0",
     "@tailwindcss/typography": "^0.5.8",
