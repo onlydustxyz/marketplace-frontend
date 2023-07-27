@@ -11,7 +11,6 @@ use rocket::{
 use serde::{Deserialize, Serialize};
 use serde_with::{serde_as, DisplayFromStr};
 use thiserror::Error;
-use tracing::instrument;
 use uuid::Uuid;
 
 const IMPERSONATION_CLAIMS_HEADER: &str = "X-Impersonation-Claims";
@@ -104,7 +103,7 @@ impl<'r> FromRequest<'r> for Claims {
 			Some(authorization) => match Jwt::from_str(authorization.trim_start_matches("Bearer "))
 			{
 				Ok(jwt) => match request.headers().get_one(IMPERSONATION_CLAIMS_HEADER) {
-					Some(impersontation_claims) => impersonate(&jwt.claims, impersontation_claims),
+					Some(impersonation_claims) => impersonate(&jwt.claims, impersonation_claims),
 					None => Outcome::Success(jwt.claims),
 				},
 				Err(error) => Outcome::Failure((error.clone().into(), error)),
@@ -114,19 +113,20 @@ impl<'r> FromRequest<'r> for Claims {
 	}
 }
 
-#[instrument]
-fn impersonate(
-	impersonator_claims: &Claims,
-	impersontation_claims: &str,
-) -> Outcome<Claims, Error> {
+fn impersonate(impersonator_claims: &Claims, impersonation_claims: &str) -> Outcome<Claims, Error> {
 	if !impersonator_claims.admin {
+		warn!(
+			impersonator = format!("{:?}", impersonator_claims),
+			impersonated = format!("{}", impersonation_claims),
+			"Impersonation not authorized"
+		);
 		return Outcome::Failure((
 			Status::Unauthorized,
 			Error::Impersonation("You are not allowed to impersonate users".to_string()),
 		));
 	}
 
-	match serde_json::from_str(impersontation_claims)
+	match serde_json::from_str(impersonation_claims)
 		.map_err(|e| Error::Impersonation(e.to_string()))
 	{
 		Ok(claims) => {
