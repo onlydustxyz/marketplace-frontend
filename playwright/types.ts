@@ -18,6 +18,7 @@ export type UserFixture = {
   };
   payoutInfo?: UserPayoutInfo;
   onboardingWizardCompleted?: boolean;
+  admin?: boolean;
 };
 
 export type UserPayoutInfo = {

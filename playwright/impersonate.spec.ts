@@ -12,18 +12,18 @@ test.describe("As an admin, I", () => {
     restoreDB();
   });
 
-  test("can impersonate a user", async ({ context, page, users }) => {
-    const browseProjectsPage = new BrowseProjectsPage(page);
-    await browseProjectsPage.goto();
-
+  test("can impersonate a user", async ({ context, page, users, signIn, logout, acceptTermsAndConditions }) => {
+    await signIn(users.Anthony);
+    await acceptTermsAndConditions();
     const appPage = new GenericPage(page);
-    await appPage.expectToBeAnonymous();
+    await appPage.expectToBeLoggedInAs(users.Anthony);
 
     const impersonationPage = new ImpersonationPage(page);
     await impersonationPage.goto(users.Olivier);
     await impersonationPage.submitForm();
     await appPage.expectToBeImpersonating(users.Olivier);
 
+    // Look at rewards
     await appPage.clickOnMenuItem("/rewards");
     const rewardsPage = new RewardsPage(page);
 
@@ -39,39 +39,6 @@ test.describe("As an admin, I", () => {
     const viewPage = new ViewProfilePage(page, context);
     await viewPage.goto();
     await expect(viewPage.login).toHaveText(users.Olivier.github.login);
-    await expect(viewPage.bio).not.toHaveText("MjMtNDY3MS05YjZjLTNhNWExODc0OGFmOSIsIng");
-
-    const editPage = await viewPage.edit();
-    await expect(editPage.login).toHaveText(users.Olivier.github.login);
-    await editPage.bio.fill("MjMtNDY3MS05YjZjLTNhNWExODc0OGFmOSIsIng");
-    await editPage.save();
-
-    await expect(viewPage.bio).toHaveText("MjMtNDY3MS05YjZjLTNhNWExODc0OGFmOSIsIng");
-  });
-
-  test("retain the login state when impersonating", async ({
-    context,
-    page,
-    users,
-    signIn,
-    logout,
-    acceptTermsAndConditions,
-  }) => {
-    await signIn(users.Anthony);
-    await acceptTermsAndConditions();
-    const appPage = new GenericPage(page);
-    await appPage.expectToBeLoggedInAs(users.Anthony);
-
-    const impersonationPage = new ImpersonationPage(page);
-    await impersonationPage.goto(users.Olivier);
-    await impersonationPage.submitForm();
-    await appPage.expectToBeImpersonating(users.Olivier);
-
-    // Edit profile of impersonated user
-    new BrowseProjectsPage(page).goto();
-    const viewPage = new ViewProfilePage(page, context);
-    await viewPage.goto();
-    await expect(viewPage.login).toHaveText(users.Olivier.github.login);
     await expect(viewPage.bio).not.toHaveText("C1oYXN1cmEtdXNlci1pZCI6ImU0NjFjMDE5LWJh");
 
     const editPage = await viewPage.edit();
@@ -81,6 +48,7 @@ test.describe("As an admin, I", () => {
 
     await expect(viewPage.bio).toHaveText("C1oYXN1cmEtdXNlci1pZCI6ImU0NjFjMDE5LWJh");
 
+    // Terminate impersontation
     new BrowseProjectsPage(page).goto();
     await logout();
     await appPage.expectToBeLoggedInAs(users.Anthony);

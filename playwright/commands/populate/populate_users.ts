@@ -12,6 +12,7 @@ import {
 } from "../../__generated/graphql";
 import { mutateAsRegisteredUser } from "../common";
 import { createGithubUser, signinUser } from "../user";
+import { setUserAsAdmin } from "../db/db_utils";
 
 export const populateUsers = async (request: APIRequestContext): Promise<Record<string, User>> => {
   const populatedUsers = await Promise.all(Object.values(users).map(user => populateUser(request, user)));
@@ -36,6 +37,10 @@ const populateUser = async (request: APIRequestContext, user: UserFixture) => {
         mutation: MarkOnboardingAsCompletedDocument,
       }
     );
+  }
+
+  if (user.admin) {
+    setUserAsAdmin(credentials.userId);
   }
 
   return {
