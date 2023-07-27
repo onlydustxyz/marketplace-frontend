@@ -1,6 +1,7 @@
-use juniper::{GraphQLEnum, GraphQLInputObject};
+use serde::Deserialize;
 
-#[derive(Debug, GraphQLEnum)]
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum Channel {
 	Email,
 	Telegram,
@@ -23,7 +24,7 @@ impl From<Channel> for infrastructure::database::enums::ContactChannel {
 	}
 }
 
-#[derive(Debug, GraphQLInputObject)]
+#[derive(Debug, Deserialize)]
 pub struct Information {
 	pub channel: Channel,
 	pub contact: String,

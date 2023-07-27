@@ -1,9 +1,7 @@
-use std::collections::HashMap;
-
 use anyhow::anyhow;
 use domain::{
 	Amount, BlockchainNetwork, Currency, GithubIssue, GithubIssueNumber, GithubRepoId, Iban,
-	Languages, LogErr, PaymentReason, PaymentReceipt, ProjectId, ProjectVisibility, UserId,
+	LogErr, PaymentReason, PaymentReceipt, ProjectId, ProjectVisibility, UserId,
 };
 use juniper::{graphql_object, DefaultScalarValue, Nullable};
 use olog::IntoField;
@@ -14,12 +12,9 @@ use uuid08::Uuid;
 use super::{dto, Context, Error, Result};
 use crate::{
 	models::*,
-	presentation::{
-		graphql::dto::Language,
-		http::dto::{
-			EthereumIdentityInput, IdentityInput, OptionalNonEmptyTrimmedString, PaymentReference,
-			PayoutSettingsInput,
-		},
+	presentation::http::dto::{
+		EthereumIdentityInput, IdentityInput, OptionalNonEmptyTrimmedString, PaymentReference,
+		PayoutSettingsInput,
 	},
 };
 
@@ -515,49 +510,6 @@ impl Mutation {
 			.ignored_github_issues_usecase
 			.remove(project_id.into(), repo_id, issue_number)?;
 
-		Ok(true)
-	}
-
-	pub async fn update_user_profile(
-		&self,
-		context: &Context,
-		bio: Option<String>,
-		location: Option<String>,
-		website: Option<String>,
-		languages: Option<Vec<Language>>,
-		weekly_allocated_time: dto::AllocatedTime,
-		looking_for_a_job: bool,
-		contact_informations: Vec<dto::ContactInformation>,
-		cover: Option<dto::ProfileCover>,
-	) -> Result<bool> {
-		let caller_id = context.caller_info()?.user_id;
-
-		let languages: Option<HashMap<String, i32>> = languages.map(|languages| {
-			languages.into_iter().map(|language| (language.name, language.weight)).collect()
-		});
-
-		context
-			.update_user_profile_info_usecase
-			.update_user_profile_info(
-				caller_id,
-				bio,
-				location,
-				website,
-				languages.map(Languages::from),
-				weekly_allocated_time.into(),
-				looking_for_a_job,
-				contact_informations
-					.into_iter()
-					.map(|info| ContactInformation {
-						user_id: caller_id,
-						channel: info.channel.into(),
-						contact: info.contact,
-						public: info.public,
-					})
-					.collect(),
-				cover.map(dto::ProfileCover::into),
-			)
-			.await?;
 		Ok(true)
 	}
 }

@@ -46,10 +46,17 @@ pub fn serve(
 	bus: Arc<amqp::Bus>,
 ) -> Rocket<Build> {
 	let create_project_usecase = application::project::create::Usecase::new(
-		bus.to_owned(),
+		bus.clone(),
 		project_details_repository.clone(),
 		simple_storage.clone(),
 	);
+
+	let update_user_profile_info_usecase = application::user::update_profile_info::Usecase::new(
+		user_profile_info_repository.clone(),
+		contact_informations_repository.clone(),
+		simple_storage.clone(),
+	);
+
 	rocket::custom(http::config::rocket("backend/api/Rocket.toml"))
 		.manage(config)
 		.manage(schema)
@@ -70,6 +77,7 @@ pub fn serve(
 		.manage(simple_storage)
 		.manage(bus)
 		.manage(create_project_usecase)
+		.manage(update_user_profile_info_usecase)
 		.attach(http::guards::Cors)
 		.mount(
 			"/",
@@ -86,6 +94,12 @@ pub fn serve(
 				routes::graphql::post_graphql_handler
 			],
 		)
-		.mount("/", routes![routes::users::profile_picture])
+		.mount(
+			"/",
+			routes![
+				routes::users::profile_picture,
+				routes::users::update_user_profile
+			],
+		)
 		.mount("/", routes![create_project])
 }
