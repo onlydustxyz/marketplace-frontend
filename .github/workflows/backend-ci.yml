@@ -144,7 +144,7 @@ jobs:
       - name: Run tests
         uses: ./.github/actions/coverage-checks
         with:
-          test_flags: --packages api --test create_project_it
+          test_flags: --test '*'
 
       - name: Setup tmate session for debugging
         uses: mxschmitt/action-tmate@v3
@@ -154,5 +154,5 @@ jobs:
         uses: ./.github/actions/coverage-upload
         with:
           codecov_token: ${{ secrets.CODECOV_TOKEN }}
-          codecov_flag: api
+          codecov_flag: integration_tests
           file: cobertura.xml
