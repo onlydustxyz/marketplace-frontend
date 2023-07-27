@@ -63,4 +63,41 @@ test.describe("As an admin, I", () => {
     await logout();
     await appPage.expectToBeAnonymous();
   });
+
+  test("cannot impersonate a user without being signed in", async ({ page, users }) => {
+    const impersonationPage = new ImpersonationPage(page);
+    impersonationPage.goto(users.Olivier);
+    await expect(page).toHaveURL("/");
+  });
+
+  test("cannot perform actions on behalf of a user without being an admin", async ({
+    context,
+    page,
+    users,
+    signIn,
+    acceptTermsAndConditions,
+  }) => {
+    await signIn(users.Olivier);
+    await acceptTermsAndConditions({ skipOnboardingWizzard: true, skipIntro: true });
+    const appPage = new GenericPage(page);
+    await appPage.expectToBeLoggedInAs(users.Olivier);
+
+    const impersonationPage = new ImpersonationPage(page);
+    await impersonationPage.goto(users.Anthony);
+    await impersonationPage.submitForm();
+    await appPage.expectToBeImpersonating(users.Anthony);
+
+    // Edit profile of impersonated user
+    new BrowseProjectsPage(page).goto();
+    const viewPage = new ViewProfilePage(page, context);
+    await viewPage.goto();
+    await expect(viewPage.login).toHaveText(users.Anthony.github.login);
+
+    const editPage = await viewPage.edit();
+    await expect(editPage.login).toHaveText(users.Anthony.github.login);
+    await editPage.bio.fill("whatever");
+    await editPage.save();
+
+    await expect(page.locator("body")).toHaveText(/We've just crashed/);
+  });
 });
