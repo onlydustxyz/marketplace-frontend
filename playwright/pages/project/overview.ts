@@ -1,9 +1,11 @@
-import { Page } from "@playwright/test";
+import { Locator, Page } from "@playwright/test";
 export class ProjectOverviewPage {
   readonly page: Page;
+  public readonly whatsapp: Locator;
 
   constructor(page: Page) {
     this.page = page;
+    this.whatsapp = this.page.getByTestId("whatsapp");
   }
 
   description = () => this.page.getByRole("paragraph").textContent();
