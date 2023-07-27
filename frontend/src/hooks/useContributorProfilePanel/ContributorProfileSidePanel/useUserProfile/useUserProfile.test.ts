@@ -118,6 +118,7 @@ describe("useUserProfile", () => {
         { channel: "twitter", contact: "@antho", public: true },
         { channel: "discord", contact: "antho#123", public: true },
         { channel: "linkedin", contact: "antho.b", public: true },
+        { channel: "whatsapp", contact: "+33612345678", public: true },
       ],
       languages: { Rust: 123 },
       weeklyAllocatedTime: "none",
