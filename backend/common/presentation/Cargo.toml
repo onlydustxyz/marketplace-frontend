@@ -30,6 +30,9 @@ serde = {version = "1.0.137", features = ["derive"]}
 serde_json = {version = "1.0.81"}
 serde_with = "3.0.0"
 
+# Tracing
+tracing = "0.1"
+
 # Utils
 derive-getters = "0.2.0"
 
@@ -41,4 +44,4 @@ olog = {path = "../olog"}
 async-std = {version = "1.12.0", features = ["attributes"]}
 rstest = "0.15.0"
 assert_matches = "1.5"
-envtestkit = "1.1.2"
+temp-env = {version = "0.3.4", features = ["async_closure"]}
