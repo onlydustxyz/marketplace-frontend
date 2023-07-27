@@ -14,15 +14,7 @@ services:
       - db:/var/lib/postgresql/data
       - ./scripts/initdb.d:/docker-entrypoint-initdb.d:ro
     healthcheck:
-      test:
-        [
-          "CMD",
-          "pg_isready",
-          "-d",
-          "marketplace_db",
-          "-U",
-          "postgres"
-        ]
+      test: ["CMD", "pg_isready", "-d", "marketplace_db", "-U", "postgres"]
       interval: 2s
       timeout: 1s
       retries: 20
@@ -97,7 +89,7 @@ services:
       HASURA_GRAPHQL_GRAPHQL_URL: http://hasura:8080/v1/graphql
       HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET:-myadminsecretkey}
       AUTH_ACCESS_TOKEN_EXPIRES_IN: 604800 # 1 week
-      AUTH_JWT_CUSTOM_CLAIMS: '{"projectsLeaded":"registeredUser.projectsLeaded[].projectId","githubUserId":"registeredUser.githubUserId","githubAccessToken":"userGithubProvider.accessToken"}'
+      AUTH_JWT_CUSTOM_CLAIMS: '{"projectsLeaded":"registeredUser.projectsLeaded[].projectId","githubUserId":"registeredUser.githubUserId","odAdmin":"registeredUser.admin","githubAccessToken":"userGithubProvider.accessToken"}'
       AUTH_USER_DEFAULT_ALLOWED_ROLES: public,me,registered_user
       AUTH_USER_DEFAULT_ROLE: registered_user
       AUTH_LOG_LEVEL: info

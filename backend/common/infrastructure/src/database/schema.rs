@@ -51,6 +51,7 @@ diesel::table! {
         login_at_signup -> Text,
         avatar_url_at_signup -> Nullable<Text>,
         created_at -> Timestamp,
+        admin -> Bool,
     }
 }
 
