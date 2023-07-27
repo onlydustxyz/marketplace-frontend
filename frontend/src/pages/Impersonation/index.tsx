@@ -4,6 +4,7 @@ import { RoutePaths } from "src/App";
 import { Toaster } from "src/components/Toaster";
 import { useAuth } from "src/hooks/useAuth";
 import { useImpersonationClaims } from "src/hooks/useImpersonationClaims";
+import { useTokenSet } from "src/hooks/useTokenSet";
 import PasswordForm from "src/pages/Impersonation/PasswordForm";
 
 const ImpersonationPage = () => {
@@ -11,6 +12,11 @@ const ImpersonationPage = () => {
   const navigate = useNavigate();
   const { setImpersonationSet, clearImpersonationSet } = useImpersonationClaims();
   const { invalidImpersonation, impersonating } = useAuth();
+  const { tokenSet } = useTokenSet();
+
+  if (!tokenSet?.accessToken) {
+    navigate(RoutePaths.Projects);
+  }
 
   const onPasswordSubmit = (password: string) => {
     if (userId) {
