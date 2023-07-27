@@ -67,6 +67,10 @@ pub struct Claims {
 		default
 	)]
 	pub admin: bool,
+
+	// This field allows to keep track of who is impersonating in traces
+	#[serde(skip)]
+	impersonated_by: Option<Box<Claims>>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -126,7 +130,7 @@ fn impersonate(impersonator_claims: &Claims, impersonation_claims: &str) -> Outc
 		));
 	}
 
-	match serde_json::from_str(impersonation_claims)
+	match serde_json::from_str::<Claims>(impersonation_claims)
 		.map_err(|e| Error::Impersonation(e.to_string()))
 	{
 		Ok(claims) => {
@@ -135,7 +139,13 @@ fn impersonate(impersonator_claims: &Claims, impersonation_claims: &str) -> Outc
 				impersonated = format!("{:?}", claims),
 				"Impersonation in progress"
 			);
-			Outcome::Success(claims)
+			Outcome::Success(Claims {
+				user_id: claims.user_id,
+				github_user_id: claims.github_user_id,
+				projects_leaded: claims.projects_leaded,
+				admin: claims.admin,
+				impersonated_by: Some(Box::new(impersonator_claims.clone())),
+			})
 		},
 		Err(error) => Outcome::Failure((error.clone().into(), error)),
 	}
@@ -205,6 +215,7 @@ mod test {
 			github_user_id: 43467246,
 			projects_leaded,
 			admin: false,
+			impersonated_by: None,
 		}
 	}
 
@@ -217,6 +228,7 @@ mod test {
 			github_user_id: 43467246,
 			projects_leaded,
 			admin: true,
+			impersonated_by: None,
 		}
 	}
 
@@ -259,7 +271,7 @@ mod test {
 			request.add_header(Header::new(
 				IMPERSONATION_CLAIMS_HEADER,
 				json!({
-					"x-hasura-user-id": "747e663f-4e68-4b42-965b-b5aebedcd4c4",
+					"x-hasura-user-id": "837fc126-20ab-4226-bbda-cb63932f2292",
 					"x-hasura-githubUserId":"595505"
 				})
 				.to_string(),
@@ -272,14 +284,14 @@ mod test {
 	}
 
 	#[rstest]
-	async fn from_request_with_jwt_admin_and_impersonation(client: Client) {
+	async fn from_request_with_jwt_admin_and_impersonation(client: Client, claims_admin: Claims) {
 		temp_env::async_with_vars([("HASURA_GRAPHQL_JWT_SECRET", Some(SECRET))], async {
 			let mut request: LocalRequest = client.post("/v1/graphql");
 			request.add_header(Header::new("Authorization", format!("Bearer {JWT_ADMIN}")));
 			request.add_header(Header::new(
 				IMPERSONATION_CLAIMS_HEADER,
 				json!({
-					"x-hasura-user-id": "747e663f-4e68-4b42-965b-b5aebedcd4c4",
+					"x-hasura-user-id": "837fc126-20ab-4226-bbda-cb63932f2292",
 					"x-hasura-githubUserId":"595505"
 				})
 				.to_string(),
@@ -290,9 +302,10 @@ mod test {
 				result,
 				Outcome::Success(Claims {
 					github_user_id: 595505,
-					user_id: "747e663f-4e68-4b42-965b-b5aebedcd4c4".parse().unwrap(),
+					user_id: "837fc126-20ab-4226-bbda-cb63932f2292".parse().unwrap(),
 					projects_leaded: HashSet::new(),
-					admin: false
+					admin: false,
+					impersonated_by: Some(Box::new(claims_admin)),
 				})
 			);
 		})
@@ -375,7 +388,7 @@ mod test {
 		let impersonated_claims = impersonate(
 			&claims_admin,
 			&json!({
-				"x-hasura-user-id": "747e663f-4e68-4b42-965b-b5aebedcd4c4",
+				"x-hasura-user-id": "837fc126-20ab-4226-bbda-cb63932f2292",
 				"x-hasura-githubUserId":"595505"
 			})
 			.to_string(),
@@ -385,9 +398,10 @@ mod test {
 			impersonated_claims,
 			Claims {
 				github_user_id: 595505,
-				user_id: "747e663f-4e68-4b42-965b-b5aebedcd4c4".parse().unwrap(),
+				user_id: "837fc126-20ab-4226-bbda-cb63932f2292".parse().unwrap(),
 				projects_leaded: HashSet::new(),
-				admin: false
+				admin: false,
+				impersonated_by: Some(Box::new(claims_admin)),
 			}
 		)
 	}
@@ -396,7 +410,7 @@ mod test {
 	fn parse_valid_impersonation_claims_with_projects_leaded(claims_admin: Claims) {
 		let impersonated_claims = impersonate(&claims_admin,
 			&json!({
-				"x-hasura-user-id": "747e663f-4e68-4b42-965b-b5aebedcd4c4",
+				"x-hasura-user-id": "837fc126-20ab-4226-bbda-cb63932f2292",
 				"x-hasura-githubUserId":"595505",
 				"x-hasura-projectsLeaded":"{\"e41f44a2-464c-4c96-817f-81acb06b2523\",\"61076487-6ec5-4751-ab0d-3b876c832239\",\"c66b929a-664d-40b9-96c4-90d3efd32a3c\"}"
 			}).to_string()
@@ -414,9 +428,10 @@ mod test {
 			impersonated_claims,
 			Claims {
 				github_user_id: 595505,
-				user_id: "747e663f-4e68-4b42-965b-b5aebedcd4c4".parse().unwrap(),
+				user_id: "837fc126-20ab-4226-bbda-cb63932f2292".parse().unwrap(),
 				projects_leaded: expected_projects_leaded,
-				admin: false
+				admin: false,
+				impersonated_by: Some(Box::new(claims_admin)),
 			}
 		)
 	}
