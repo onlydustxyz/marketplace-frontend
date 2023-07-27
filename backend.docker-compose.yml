@@ -76,6 +76,7 @@ services:
     environment:
       DATABASE_URL: postgres://postgres:postgres@db/marketplace_db
       AMQP_URL: amqp://rabbitmq:5672/%2f
+      GRAPHQL_BASE_URL: http://hasura:8080/v1/graphql
 
   github-proxy:
     labels:
