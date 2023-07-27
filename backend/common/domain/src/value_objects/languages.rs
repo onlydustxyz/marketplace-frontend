@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use derive_more::{From, Into};
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, From, Into, Serialize, Deserialize)]
+#[derive(Debug, Clone, From, Into, Serialize, Deserialize, PartialEq, Eq)]
 pub struct Languages(HashMap<String, i32>);
 
 impl Languages {

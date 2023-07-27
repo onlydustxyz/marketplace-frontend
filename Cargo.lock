@@ -185,6 +185,7 @@ dependencies = [
  "dotenv",
  "dusty-bot",
  "email_address",
+ "envtestkit",
  "event-store",
  "futures",
  "graphql_client",
