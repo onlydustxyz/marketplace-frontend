@@ -4,7 +4,8 @@
     "appliedTooltip": "Thanks for showing your interest!",
     "applyButton": "Show interest",
     "connectToApplyButton": "Connect to show interest",
-    "confirmationToaster": "Thank you! If we need a profile like yours, you'll be contacted shortly"
+    "confirmationToaster": "Thank you! If we need a profile like yours, you'll be contacted shortly",
+    "contactNeeded": "Please share at least one way to reach you out in case it's a match."
   },
   "contributions": {
     "empty": "No contributions yet"

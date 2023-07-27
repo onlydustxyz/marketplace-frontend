@@ -9,24 +9,32 @@ import MailLine from "src/icons/MailLine";
 import ContactInformation from "./ContactInformation";
 import WhatsappFill from "src/icons/WhatsappFill";
 
-export default function ContactInformations() {
+type Props = {
+  onlyEditable?: boolean;
+};
+
+export default function ContactInformations({ onlyEditable }: Props) {
   const { T } = useIntl();
 
   return (
     <div className="flex flex-col gap-3">
-      <ContactInformation
-        name="githubHandle"
-        icon={<GithubLogo className="text-greyscale-600" />}
-        editDisabled
-        visibilityName="isGithubHandlePublic"
-        visibilityDisabled
-      />
-      <ContactInformation
-        name="email"
-        icon={<MailLine className="text-greyscale-600" />}
-        editDisabled
-        visibilityName="isEmailPublic"
-      />
+      {!onlyEditable && (
+        <>
+          <ContactInformation
+            name="githubHandle"
+            icon={<GithubLogo className="text-greyscale-600" />}
+            editDisabled
+            visibilityName="isGithubHandlePublic"
+            visibilityDisabled
+          />
+          <ContactInformation
+            name="email"
+            icon={<MailLine className="text-greyscale-600" />}
+            editDisabled
+            visibilityName="isEmailPublic"
+          />
+        </>
+      )}
       <ContactInformation
         name="telegram"
         placeholder={T("profile.form.contactInfo.telegram")}

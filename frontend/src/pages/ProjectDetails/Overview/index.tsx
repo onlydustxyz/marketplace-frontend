@@ -1,7 +1,14 @@
 import { useIntl } from "src/hooks/useIntl";
 import OverviewPanel from "./OverviewPanel";
 import { generatePath, useNavigate, useOutletContext } from "react-router-dom";
-import { GetProjectOverviewDetailsDocument, GetProjectOverviewDetailsQuery } from "src/__generated/graphql";
+import {
+  GetProjectOverviewDetailsDocument,
+  GetProjectOverviewDetailsQuery,
+  OwnUserProfileDetailsFragment,
+  OwnUserProfileDocument,
+  UserProfileFragment,
+  useUpdateUserProfileMutation,
+} from "src/__generated/graphql";
 import Card from "src/components/Card";
 import GithubRepoDetails from "./GithubRepoDetails";
 import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
@@ -27,10 +34,18 @@ import LockFill from "src/icons/LockFill";
 import useProjectVisibility from "src/hooks/useProjectVisibility";
 import ProjectLeadInvitation from "src/components/ProjectLeadInvitation";
 import { useSuspenseQuery_experimental } from "@apollo/client";
-import { Dispatch, useEffect } from "react";
+import { Dispatch, useEffect, useState } from "react";
 import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
 import { useMediaQuery } from "usehooks-ts";
 import { viewportConfig } from "src/config";
+import ContactInformations from "src/components/ContactInformations";
+import { FormProvider, useForm } from "react-hook-form";
+import {
+  UserProfileInfo,
+  fromFragment,
+  toVariables,
+} from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/EditView/types";
+import useUserProfile from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/useUserProfile";
 
 type OutletContext = {
   projectId: string;
@@ -69,6 +84,9 @@ export default function Overview() {
 
   const { alreadyApplied, applyToProject } = useApplications(projectId);
   const { isCurrentUserMember } = useProjectVisibility(projectId);
+
+  const { data: userProfileData } = useUserProfile({ githubUserId });
+  const profile = userProfileData?.profile;
 
   useEffect(() => {
     if (projectId && ((projectId !== lastVisitedProjectId && ledProjectIds.includes(projectId)) || !!invitationId)) {
@@ -112,8 +130,8 @@ export default function Overview() {
           <GithubRepositoriesCard githubRepos={githubRepos} />
         </div>
         <div className="flex flex-col gap-4">
-          {hiring && !isCurrentUserMember && (
-            <ApplyCallout {...{ isLoggedIn, alreadyApplied, applyToProject, dispatchSession }} />
+          {hiring && !isCurrentUserMember && profile && (
+            <ApplyCallout {...{ isLoggedIn, alreadyApplied, applyToProject, dispatchSession, profile }} />
           )}
           <OverviewPanel
             {...{
@@ -159,8 +177,8 @@ export default function Overview() {
         <GithubRepositoriesCard githubRepos={githubRepos} />
       </div>
       <div className="flex flex-col gap-4">
-        {hiring && !isCurrentUserMember && (
-          <ApplyCallout {...{ isLoggedIn, alreadyApplied, applyToProject, dispatchSession }} />
+        {hiring && !isCurrentUserMember && profile && (
+          <ApplyCallout {...{ isLoggedIn, alreadyApplied, applyToProject, dispatchSession, profile }} />
         )}
       </div>
     </>
@@ -263,10 +281,40 @@ interface ApplyCalloutProps {
   alreadyApplied?: boolean;
   applyToProject: () => void;
   dispatchSession: Dispatch<Action>;
+  profile: UserProfileFragment & OwnUserProfileDetailsFragment;
 }
 
-function ApplyCallout({ isLoggedIn, alreadyApplied, applyToProject, dispatchSession }: ApplyCalloutProps) {
+function ApplyCallout({ isLoggedIn, profile, alreadyApplied, applyToProject, dispatchSession }: ApplyCalloutProps) {
   const { T } = useIntl();
+
+  const contactInfoProvided =
+    profile.contacts.telegram?.contact ||
+    profile.contacts.whatsapp?.contact ||
+    profile.contacts.twitter?.contact ||
+    profile.contacts.discord?.contact ||
+    profile.contacts.linkedin?.contact;
+
+  const [contactInfoRequested, setContactInfoRequested] = useState(false);
+
+  const formMethods = useForm<UserProfileInfo>({
+    defaultValues: fromFragment(profile),
+    mode: "onChange",
+  });
+
+  const { handleSubmit, formState } = formMethods;
+  const { isDirty, isValid } = formState;
+
+  const [updateUserProfileInfo, { loading }] = useUpdateUserProfileMutation({
+    context: { graphqlErrorDisplay: "toaster" },
+    refetchQueries: [{ query: OwnUserProfileDocument, variables: { githubUserId: profile.githubUserId } }],
+    awaitRefetchQueries: true,
+    onCompleted: applyToProject,
+  });
+
+  const submitDisabled = !isDirty || !isValid || loading;
+
+  const onSubmit = (formData: UserProfileInfo) => updateUserProfileInfo({ variables: toVariables(formData) });
+
   return (
     <Callout>
       <div className="flex flex-col gap-3">
@@ -275,19 +323,49 @@ function ApplyCallout({ isLoggedIn, alreadyApplied, applyToProject, dispatchSess
           {T("project.hiring").toUpperCase()}
         </div>
         {isLoggedIn ? (
-          <div
-            {...withTooltip(T(alreadyApplied ? "applications.appliedTooltip" : "applications.notYetAppliedTooltip"))}
-          >
-            <Button
-              data-testid="apply-btn"
-              size={ButtonSize.Md}
-              width={Width.Full}
-              disabled={alreadyApplied}
-              onClick={applyToProject}
+          contactInfoRequested && !contactInfoProvided ? (
+            <FormProvider {...formMethods}>
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <div className="flex flex-col gap-4 rounded-xl border border-orange-500 p-4">
+                  <div className="font-walsheim text-sm font-medium text-orange-500">
+                    {T("applications.contactNeeded")}
+                  </div>
+                  <ContactInformations onlyEditable />
+                  <div {...withTooltip(submitDisabled ? "" : T("applications.notYetAppliedTooltip"))}>
+                    <Button
+                      data-testid="apply-btn"
+                      size={ButtonSize.Md}
+                      width={Width.Full}
+                      disabled={submitDisabled}
+                      htmlType="submit"
+                    >
+                      {T("applications.applyButton")}
+                    </Button>
+                  </div>
+                </div>
+              </form>
+            </FormProvider>
+          ) : (
+            <div
+              {...withTooltip(T(alreadyApplied ? "applications.appliedTooltip" : "applications.notYetAppliedTooltip"))}
             >
-              {T("applications.applyButton")}
-            </Button>
-          </div>
+              <Button
+                data-testid="apply-btn"
+                size={ButtonSize.Md}
+                width={Width.Full}
+                disabled={alreadyApplied}
+                onClick={() => {
+                  if (!contactInfoProvided) {
+                    setContactInfoRequested(true);
+                  } else {
+                    applyToProject();
+                  }
+                }}
+              >
+                {T("applications.applyButton")}
+              </Button>
+            </div>
+          )
         ) : (
           <a
             href={LOGIN_URL}

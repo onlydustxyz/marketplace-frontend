@@ -54,6 +54,7 @@ export default function EditView({ profile, setEditMode }: Props) {
   };
 
   const [updateUserProfileInfo, { loading }] = useUpdateUserProfileMutation({
+    context: { graphqlErrorDisplay: "toaster" },
     refetchQueries: [{ query: OwnUserProfileDocument, variables: { githubUserId: profile.githubUserId } }],
     awaitRefetchQueries: true,
     onCompleted: () => {
