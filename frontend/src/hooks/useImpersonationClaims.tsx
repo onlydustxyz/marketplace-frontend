@@ -51,7 +51,6 @@ export const ImpersonationClaimsProvider = ({ children }: PropsWithChildren) => 
           "X-Hasura-projectsLeaded": impersonationClaims["x-hasura-projectsLeaded"],
           "X-Hasura-githubUserId": impersonationClaims["x-hasura-githubUserId"],
           // Impersonation for OnlyDust API
-          "X-Impersonation-Secret": impersonationSet.password,
           "X-Impersonation-Claims": JSON.stringify(impersonationClaims),
         }
       : [];
