@@ -62,6 +62,8 @@ test.describe("As a signed-in user, I", () => {
     await expect(editPage.emailVisibility).toHaveAttribute("data-state", "on");
     await editPage.telegram.fill("fu");
     await expect(editPage.telegramVisibility).toHaveAttribute("data-state", "on");
+    await editPage.whatsapp.fill("+33612345678");
+    await expect(editPage.whatsappVisibility).toHaveAttribute("data-state", "on");
     await editPage.twitter.fill("olivier");
     await expect(editPage.twitterVisibility).toHaveAttribute("data-state", "on");
     await editPage.twitterVisibility.click();
@@ -121,6 +123,7 @@ test.describe("As a signed-in user, I", () => {
     // Contact informations
     await expect(publicProfilePage.github).toBeVisible();
     await expect(publicProfilePage.telegram).toBeVisible();
+    await expect(publicProfilePage.whatsapp).toBeVisible();
     await expect(publicProfilePage.twitter).not.toBeVisible();
     await expect(publicProfilePage.discord).not.toBeVisible();
     await expect(publicProfilePage.linkedin).toBeVisible();
@@ -149,6 +152,8 @@ test.describe("As a signed-in user, I", () => {
     await expect(editPage.emailVisibility).toHaveAttribute("data-state", "on");
     await expect(editPage.telegram).toHaveValue("fu");
     await expect(editPage.telegramVisibility).toHaveAttribute("data-state", "on");
+    await expect(editPage.whatsapp).toHaveValue("+33612345678");
+    await expect(editPage.whatsappVisibility).toHaveAttribute("data-state", "on");
     await expect(editPage.twitter).toHaveValue("olivier");
     await expect(editPage.twitterVisibility).toHaveAttribute("data-state", "off");
     await expect(editPage.discord).toHaveValue("fu#666");
@@ -214,6 +219,8 @@ test.describe("As a new user on the platform, I", () => {
     await expect(wizzard.emailVisibility).toHaveAttribute("data-state", "on");
     await wizzard.telegram.fill("fu");
     await expect(wizzard.telegramVisibility).toHaveAttribute("data-state", "on");
+    await wizzard.whatsapp.fill("+33612345678");
+    await expect(wizzard.whatsappVisibility).toHaveAttribute("data-state", "on");
     await wizzard.twitter.fill("olivier");
     await expect(wizzard.twitterVisibility).toHaveAttribute("data-state", "on");
     await wizzard.twitterVisibility.click();
@@ -238,6 +245,7 @@ test.describe("As a new user on the platform, I", () => {
     // Contact informations
     await expect(viewPage.github).toBeVisible();
     await expect(viewPage.telegram).toBeVisible();
+    await expect(viewPage.whatsapp).toBeVisible();
     await expect(viewPage.twitter).not.toBeVisible();
     await expect(viewPage.discord).not.toBeVisible();
     await expect(viewPage.linkedin).toBeVisible();
@@ -261,6 +269,8 @@ test.describe("As a new user on the platform, I", () => {
     await expect(editPage.emailVisibility).toHaveAttribute("data-state", "on");
     await expect(editPage.telegram).toHaveValue("fu");
     await expect(editPage.telegramVisibility).toHaveAttribute("data-state", "on");
+    await expect(editPage.whatsapp).toHaveValue("+33612345678");
+    await expect(editPage.whatsappVisibility).toHaveAttribute("data-state", "on");
     await expect(editPage.twitter).toHaveValue("olivier");
     await expect(editPage.twitterVisibility).toHaveAttribute("data-state", "off");
     await expect(editPage.discord).toHaveValue("fu#666");

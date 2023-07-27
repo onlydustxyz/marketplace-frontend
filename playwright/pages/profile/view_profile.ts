@@ -10,6 +10,7 @@ export class ViewProfilePage {
   public readonly bio: Locator;
   public readonly github: Locator;
   public readonly telegram: Locator;
+  public readonly whatsapp: Locator;
   public readonly twitter: Locator;
   public readonly discord: Locator;
   public readonly linkedin: Locator;
@@ -25,6 +26,7 @@ export class ViewProfilePage {
     this.bio = this.page.getByTestId("bio");
     this.github = this.page.getByTestId("github");
     this.telegram = this.page.getByTestId("telegram");
+    this.whatsapp = this.page.getByTestId("whatsapp");
     this.twitter = this.page.getByTestId("twitter");
     this.discord = this.page.getByTestId("discord");
     this.linkedin = this.page.getByTestId("linkedin");
