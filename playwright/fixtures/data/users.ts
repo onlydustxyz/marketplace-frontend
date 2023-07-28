@@ -72,6 +72,7 @@ export const users: Record<string, UserFixture> = {
   },
   Anthony: {
     email: "antho@foo-mail.org",
+    admin: true,
     github: {
       id: 43467246,
       login: "AnthonyBuisset",

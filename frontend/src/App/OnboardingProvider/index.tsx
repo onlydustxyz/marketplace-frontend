@@ -18,7 +18,7 @@ export default function OnboardingProvider({ children }: PropsWithChildren) {
 
   const { data, loading } = useGetOnboardingStateQuery({
     variables: { userId },
-    skip: !userId,
+    skip: !userId || impersonating,
   });
 
   const location = useLocation();
@@ -34,11 +34,11 @@ export default function OnboardingProvider({ children }: PropsWithChildren) {
 
   const onboardingInProgress = onboardingRoutes.includes(location.pathname);
 
-  const skipRedirection = onboardingInProgress || !userId || loading || impersonating;
+  const skipRedirection = onboardingInProgress || !userId || loading;
 
-  return !skipRedirection && !onboardingWizzardCompleted ? (
+  return !skipRedirection && !onboardingWizzardCompleted && !impersonating ? (
     <Navigate to={generatePath(RoutePaths.Onboarding)} />
-  ) : !skipRedirection && !termsAndConditionsAccepted ? (
+  ) : !skipRedirection && !termsAndConditionsAccepted && !impersonating ? (
     <Navigate
       to={generatePath(RoutePaths.TermsAndConditions)}
       state={{ skipIntro: location.state?.onboardingWizzardCompleted }}

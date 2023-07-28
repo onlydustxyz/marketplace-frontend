@@ -3512,7 +3512,6 @@ dependencies = [
  "async-trait",
  "derive-getters",
  "domain",
- "envtestkit",
  "jsonwebtoken",
  "olog",
  "rocket",
@@ -3520,7 +3519,9 @@ dependencies = [
  "serde",
  "serde_json",
  "serde_with 3.0.0",
+ "temp-env",
  "thiserror",
+ "tracing",
  "url",
  "uuid 1.3.3",
 ]
@@ -4857,6 +4858,16 @@ dependencies = [
  "p12",
  "rustls-connector",
  "rustls-pemfile",
+]
+
+[[package]]
+name = "temp-env"
+version = "0.3.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9547444bfe52cbd79515c6c8087d8ae6ca8d64d2d31a27746320f5cb81d1a15c"
+dependencies = [
+ "futures",
+ "parking_lot 0.12.1",
 ]
 
 [[package]]

@@ -52,16 +52,12 @@ async fn from_role_registered_user(request: &'_ Request<'_>) -> Outcome<Role, Er
 
 #[cfg(test)]
 mod tests {
-	use std::ffi::OsString;
 
-	use assert_matches::assert_matches;
-	use envtestkit::set_env;
 	use rocket::{
 		http::Header,
 		local::blocking::{Client, LocalRequest},
 	};
 	use rstest::{fixture, rstest};
-	use serde_json::json;
 
 	use super::*;
 
@@ -110,44 +106,25 @@ mod tests {
 	}
 
 	#[rstest]
-	async fn from_request_user_with_invalid_claims(client: Client) {
-		const SECRET: &str = "secret";
-		let _guard = set_env(OsString::from("HASURA_GRAPHQL_ADMIN_SECRET"), SECRET);
-
-		let mut request: LocalRequest = client.post("/v1/graphql");
-		request.add_header(Header::new("x-hasura-role", "registered_user"));
-		request.add_header(Header::new("x-impersonation-secret", SECRET));
-		request.add_header(Header::new(
-			"x-impersonation-claims",
-			json!({
-				"foo": "bar",
-			})
-			.to_string(),
-		));
-
-		let result = request.guard::<Role>().await;
-		assert_matches!(result, Outcome::Failure(_));
-	}
-
-	#[rstest]
 	async fn from_request_registered_user(client: Client) {
-		let _guard = set_env(OsString::from("HASURA_GRAPHQL_JWT_SECRET"), JWT_SECRET);
+		temp_env::async_with_vars([("HASURA_GRAPHQL_JWT_SECRET", Some(JWT_SECRET))], async {
+			let mut request: LocalRequest = client.post("/v1/graphql");
+			request.add_header(Header::new("x-hasura-role", "registered_user"));
+			request.add_header(Header::new("Authorization", format!("Bearer {JWT}")));
 
-		let mut request: LocalRequest = client.post("/v1/graphql");
-		request.add_header(Header::new("x-hasura-role", "registered_user"));
-		request.add_header(Header::new("Authorization", format!("Bearer {JWT}")));
+			let result = request.guard::<Role>().await;
 
-		let result = request.guard::<Role>().await;
-
-		let mut expected_projects_leaded = HashSet::new();
-		expected_projects_leaded
-			.insert(Uuid::parse_str("298a547f-ecb6-4ab2-8975-68f4e9bf7b39").unwrap());
-		assert_eq!(
-			result.succeeded().unwrap(),
-			Role::RegisteredUser {
-				github_user_id: GithubUserId::from(43467246u64),
-				lead_projects: expected_projects_leaded
-			}
-		);
+			let mut expected_projects_leaded = HashSet::new();
+			expected_projects_leaded
+				.insert(Uuid::parse_str("298a547f-ecb6-4ab2-8975-68f4e9bf7b39").unwrap());
+			assert_eq!(
+				result.succeeded().unwrap(),
+				Role::RegisteredUser {
+					github_user_id: GithubUserId::from(43467246u64),
+					lead_projects: expected_projects_leaded
+				}
+			);
+		})
+		.await;
 	}
 }

@@ -34,3 +34,8 @@ export const indexerRunning = () => {
 
   return parseInt(count.toString());
 };
+
+export const setUserAsAdmin = (userId: string) => {
+  const DATABASE_URL = getEnv("DATABASE_URL");
+  execSync(`psql ${DATABASE_URL} -c "UPDATE public.auth_users SET admin=TRUE WHERE id='${userId}'"`, { stdio: "pipe" });
+};
