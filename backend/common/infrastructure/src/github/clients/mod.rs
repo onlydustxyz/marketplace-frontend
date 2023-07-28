@@ -265,17 +265,21 @@ impl Client {
 			.await?
 			.filter_map(|issue| {
 				future::ready({
-					match GithubIssue::from_octocrab(issue.clone(), *id) {
-						Ok(issue) => Some(issue),
-						Err(e) => {
-							error!(
-								error = e.to_field(),
-								repository_id = id.to_string(),
-								issue_id = issue.id.0,
-								"Failed to process issue"
-							);
-							None
-						},
+					if issue.pull_request.is_some() {
+						None
+					} else {
+						match GithubIssue::from_octocrab(issue.clone(), *id) {
+							Ok(issue) => Some(issue),
+							Err(e) => {
+								error!(
+									error = e.to_field(),
+									repository_id = id.to_string(),
+									issue_id = issue.id.0,
+									"Failed to process issue"
+								);
+								None
+							},
+						}
 					}
 				})
 			})
