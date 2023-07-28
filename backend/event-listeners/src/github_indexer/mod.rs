@@ -2,22 +2,18 @@ use std::{sync::Arc, time::Duration};
 
 use anyhow::Result;
 use domain::{GithubRepoId, GithubUserId, LogErr};
-use dotenv::dotenv;
-use event_listeners::{listeners::github::Event as GithubEvent, Config};
 use indexer::{
 	composite::Arced, guarded::Guarded, logged::Logged, published::Published,
 	with_state::WithState, Indexable, Indexer,
 };
-use infrastructure::{amqp, config, database, github, tracing::Tracer};
+use infrastructure::{amqp, database, github};
 use olog::{error, info, IntoField};
+
+use crate::{listeners::github::Event as GithubEvent, Config};
 
 mod indexer;
 
-#[tokio::main]
-async fn main() -> Result<()> {
-	dotenv().ok();
-	let config: Config = config::load("backend/event-listeners/app.yaml")?;
-	let _tracer = Tracer::init(config.tracer, "github")?;
+pub async fn bootstrap(config: Config) -> Result<()> {
 	let github = Arc::<github::Client>::new(github::RoundRobinClient::new(config.github)?.into());
 	let database = Arc::new(database::Client::new(database::init_pool(config.database)?));
 	let event_bus = Arc::new(amqp::Bus::new(config.amqp).await?);

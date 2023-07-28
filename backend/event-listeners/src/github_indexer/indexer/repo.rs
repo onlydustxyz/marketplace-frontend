@@ -3,11 +3,13 @@ use std::sync::Arc;
 use async_trait::async_trait;
 use derive_new::new;
 use domain::{GithubFetchRepoService, GithubRepo, GithubRepoId, GithubServiceError};
-use event_listeners::{listeners::github::Event as GithubEvent, models::GithubRepoIndexRepository};
 use serde::{Deserialize, Serialize};
 
 use super::Result;
-use crate::indexer::hash;
+use crate::{
+	github_indexer::indexer::hash, listeners::github::Event as GithubEvent,
+	models::GithubRepoIndexRepository,
+};
 
 #[derive(new)]
 pub struct Indexer {

@@ -1,12 +1,13 @@
 use diesel::{QueryDsl, RunQueryDsl};
 use domain::{GithubRepoId, GithubUserId};
-use event_listeners::models::GithubUserIndex;
 use infrastructure::{
 	contextualized_error::IntoContextualizedError,
 	database::{schema::github_repo_indexes, Client, Result},
 };
 
-pub trait Repository<Id> {
+use crate::models::GithubUserIndex;
+
+pub trait Repository<Id>: Send + Sync {
 	fn list_items_to_index(&self) -> Result<Vec<Id>>;
 }
 

@@ -4,10 +4,10 @@ use async_trait::async_trait;
 use chrono::{DateTime, Utc};
 use derive_new::new;
 use domain::{GithubFetchIssueService, GithubRepoId, GithubServiceIssueFilters};
-use event_listeners::{listeners::github::Event as GithubEvent, models::GithubRepoIndexRepository};
 use serde::{Deserialize, Serialize};
 
 use super::{error::IgnoreErrors, Result};
+use crate::{listeners::github::Event as GithubEvent, models::GithubRepoIndexRepository};
 
 #[derive(new)]
 pub struct Indexer {
