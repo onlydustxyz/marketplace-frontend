@@ -5154,6 +5154,12 @@
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "WHATSAPP",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "possibleTypes": null
@@ -8287,6 +8293,18 @@
           },
           {
             "name": "twitter",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "ContactInformations",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "whatsapp",
             "description": null,
             "args": [],
             "type": {
@@ -71478,7 +71496,7 @@
           },
           {
             "name": "createProject",
-            "description": null,
+            "description": "createProject",
             "args": [
               {
                 "name": "hiring",

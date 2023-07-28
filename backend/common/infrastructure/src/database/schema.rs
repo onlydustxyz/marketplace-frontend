@@ -6,7 +6,7 @@ pub mod sql_types {
     pub struct AllocatedTime;
 
     #[derive(diesel::sql_types::SqlType)]
-    #[diesel(postgres_type(name = "citext"))]
+    #[diesel(postgres_type(name = "citext", schema = "heroku_ext"))]
     pub struct Citext;
 
     #[derive(diesel::sql_types::SqlType)]

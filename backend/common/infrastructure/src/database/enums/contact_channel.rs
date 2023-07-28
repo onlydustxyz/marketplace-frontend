@@ -10,6 +10,7 @@ pub enum ContactChannel {
 	Twitter,
 	Discord,
 	Linkedin,
+	Whatsapp,
 }
 
 impl QueryId for crate::database::schema::sql_types::ContactChannel {

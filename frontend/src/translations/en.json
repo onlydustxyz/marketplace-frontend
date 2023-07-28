@@ -4,7 +4,8 @@
     "appliedTooltip": "Thanks for showing your interest!",
     "applyButton": "Show interest",
     "connectToApplyButton": "Connect to show interest",
-    "confirmationToaster": "Thank you! If we need a profile like yours, you'll be contacted shortly"
+    "confirmationToaster": "Thank you! If we need a profile like yours, you'll be contacted shortly",
+    "contactNeeded": "Please share at least one way to reach you out in case it's a match."
   },
   "contributions": {
     "empty": "No contributions yet"
@@ -413,7 +414,8 @@
         "discord": "Discord",
         "linkedin": "LinkedIn",
         "hiddenTootlip": "Hidden on public profile",
-        "visibleTootlip": "Shown on public profile"
+        "visibleTootlip": "Shown on public profile",
+        "whatsapp": "Whatsapp"
       },
       "country": "Country",
       "cryptoWire": "Crypto wire",
@@ -468,6 +470,7 @@
         "lookingForAJob": "I'm looking for a job",
         "privacyNotice": "Private information"
       },
+      "whatsapp": "Whatsapp",
       "saveStatus": {
         "unsaved": "Unsaved changes",
         "saved": "All changes saved",

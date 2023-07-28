@@ -123,11 +123,11 @@ test.describe("As a registered user, I", () => {
   test("can express my interest to a project", async ({ page, projects, users, signIn, acceptTermsAndConditions }) => {
     const project = projects.ProjectA;
     const lead = users.TokioRs;
-    const applicant = users.Gregoire;
+    const applicant = users.EmptyContributor;
 
     const projectPage = new ProjectPage(page, project);
 
-    // Gregoire is new on the plateform, wants to apply on the project
+    // Contributor is new on the plateform, wants to apply on the project
     await signIn(applicant);
     await acceptTermsAndConditions();
     await projectPage.goto();
@@ -136,6 +136,11 @@ test.describe("As a registered user, I", () => {
       await expect(overviewPage.applyButton()).toBeVisible();
       await expect(overviewPage.applyButton()).not.toBeDisabled();
       await overviewPage.applyButton().click();
+
+      // Oopsy, we need a way to contact Contributor!
+      await overviewPage.whatsapp.fill("+33612345678");
+      await overviewPage.applyButton().click();
+
       await expect(overviewPage.applyButton()).toBeDisabled();
     }
 
@@ -148,7 +153,7 @@ test.describe("As a registered user, I", () => {
       await expect(overviewPage.applyButton()).not.toBeVisible();
     }
 
-    // He request a payment for Gregoire's first contribution
+    // He request a payment for Contributor's first contribution
     {
       const rewardsPage = await projectPage.rewards();
       const newRewardPage = await rewardsPage.giveReward();
@@ -158,7 +163,7 @@ test.describe("As a registered user, I", () => {
       });
     }
 
-    // Gregoire is now a contributor, he cannot see the apply button anymore
+    // Contributor is now a contributor, he cannot see the apply button anymore
     await signIn(applicant);
     await projectPage.goto();
     {

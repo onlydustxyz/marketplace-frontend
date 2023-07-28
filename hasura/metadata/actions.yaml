@@ -54,6 +54,39 @@ actions:
     permissions:
       - role: registered_user_specific
     comment: Suggest a new technology
+  - name: updateUserProfile
+    definition:
+      kind: synchronous
+      handler: '{{BACKEND_REST_API_URL}}'
+      forward_client_headers: true
+      request_transform:
+        body:
+          action: transform
+          template: |-
+            {
+            	"bio": {{ $body.input.bio }},
+            	"location":{{ $body.input.location }},
+            	"website": {{ $body.input.website }},
+            	"languages": {{ $body.input.languages }},
+            	"looking_for_a_job": {{ $body.input.lookingForAJob }},
+            	"contact_informations":{{ $body.input.contactInformations }},
+            	"weekly_allocated_time": {{ $body.input.weeklyAllocatedTime }},
+            	"cover": {{ $body.input.cover }}
+            }
+        method: POST
+        query_params: {}
+        template_engine: Kriti
+        url: '{{$base_url}}/users/profile'
+        version: 2
+      response_transform:
+        body:
+          action: transform
+          template: "true"
+        template_engine: Kriti
+        version: 2
+    permissions:
+      - role: registered_user
+    comment: updateUserProfile
 custom_types:
   enums:
     - name: Visibility
@@ -64,7 +97,57 @@ custom_types:
         - description: null
           is_deprecated: null
           value: PUBLIC
-  input_objects: []
+    - name: Channel
+      values:
+        - description: null
+          is_deprecated: null
+          value: DISCORD
+        - description: null
+          is_deprecated: null
+          value: EMAIL
+        - description: null
+          is_deprecated: null
+          value: LINKED_IN
+        - description: null
+          is_deprecated: null
+          value: TELEGRAM
+        - description: null
+          is_deprecated: null
+          value: TWITTER
+        - description: null
+          is_deprecated: null
+          value: WHATSAPP
+    - name: AllocatedTime
+      values:
+        - description: null
+          is_deprecated: null
+          value: LESS_THAN_ONE_DAY
+        - description: null
+          is_deprecated: null
+          value: MORE_THAN_THREE_DAYS
+        - description: null
+          is_deprecated: null
+          value: NONE
+        - description: null
+          is_deprecated: null
+          value: ONE_TO_THREE_DAYS
+    - name: ProfileCover
+      values:
+        - description: null
+          is_deprecated: null
+          value: BLUE
+        - description: null
+          is_deprecated: null
+          value: CYAN
+        - description: null
+          is_deprecated: null
+          value: MAGENTA
+        - description: null
+          is_deprecated: null
+          value: YELLOW
+  input_objects:
+    - name: Language
+    - name: Information
   objects: []
   scalars:
     - name: Url

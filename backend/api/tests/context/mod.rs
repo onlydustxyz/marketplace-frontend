@@ -7,6 +7,8 @@ use rocket::local::asynchronous::Client;
 use rstest::fixture;
 use testcontainers::clients::Cli;
 use testing::context::{amqp, database};
+
+pub mod environment;
 pub mod simple_storage;
 
 use url::Url;
@@ -22,6 +24,7 @@ pub struct Context<'a> {
 	pub database: database::Context<'a>,
 	pub amqp: amqp::Context<'a>,
 	pub simple_storage: simple_storage::Context<'a>,
+	_environment: environment::Context,
 }
 
 impl<'a> Context<'a> {
@@ -64,6 +67,7 @@ impl<'a> Context<'a> {
 			database,
 			amqp,
 			simple_storage,
+			_environment: environment::Context::new(),
 		})
 	}
 }

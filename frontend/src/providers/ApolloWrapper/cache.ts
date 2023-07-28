@@ -21,6 +21,7 @@ export default function useApolloCache() {
               twitter: null,
               discord: null,
               linkedin: null,
+              whatsapp: null,
             };
 
             const contacts = readField<ContactInformations[]>({ fieldName: "contactInformations" })?.map(
@@ -33,14 +34,16 @@ export default function useApolloCache() {
           completionScore(_, { readField }) {
             const scoreByExistence = (fieldName: string, score: number) => (readField({ fieldName }) ? score : 0);
 
-            const scoreContact = (channel: "email" | "telegram" | "twitter" | "discord" | "linkedin", score: number) =>
-              readField<Contacts>({ fieldName: "contacts" })?.[channel]?.contact ? score : 0;
+            const scoreContact = (
+              channel: "email" | "telegram" | "whatsapp" | "twitter" | "discord" | "linkedin",
+              score: number
+            ) => (readField<Contacts>({ fieldName: "contacts" })?.[channel]?.contact ? score : 0);
 
             const scoreLanguages = (score: number) =>
               Object.keys(readField<Record<string, number>>({ fieldName: "languages" }) || {}).length > 0 ? score : 0;
 
             return (
-              scoreByExistence("avatarUrl", 10) +
+              scoreByExistence("avatarUrl", 5) +
               scoreByExistence("login", 10) +
               scoreByExistence("location", 10) +
               scoreByExistence("bio", 20) +
@@ -48,6 +51,7 @@ export default function useApolloCache() {
               scoreByExistence("login", 5) +
               scoreContact("email", 5) +
               scoreContact("telegram", 5) +
+              scoreContact("whatsapp", 5) +
               scoreContact("twitter", 5) +
               scoreContact("discord", 5) +
               scoreContact("linkedin", 5) +

@@ -2,6 +2,7 @@ use juniper::GraphQLEnum;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, GraphQLEnum)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum AllocatedTime {
 	None,
 	LessThanOneDay,
@@ -21,6 +22,7 @@ impl From<AllocatedTime> for infrastructure::database::enums::AllocatedTime {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, GraphQLEnum)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum ProfileCover {
 	Cyan,
 	Magenta,

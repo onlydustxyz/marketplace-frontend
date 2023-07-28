@@ -53,7 +53,6 @@
             requestPayment(projectId: Uuid!, recipientId: Int!, amountInUsd: Int!, hoursWorked: Int!, reason: Reason!): Payment!
             unignoreIssue(projectId: Uuid!, repoId: GithubRepoId!, issueNumber: GithubIssueNumber!): Boolean!
             updatePayoutInfo(location: Location, identity: IdentityInput, payoutSettings: PayoutSettingsInput): Uuid!
-            updateUserProfile(bio: String, location: String, website: String, languages: [Language!], weeklyAllocatedTime: AllocatedTime!, lookingForAJob: Boolean!, contactInformations: [Information!]!, cover: ProfileCover): Boolean!
           }
           type Payment {
             amount: Amount!
@@ -71,19 +70,6 @@
             id: GithubUserId!
             login: String!
           }
-          enum AllocatedTime {
-            LESS_THAN_ONE_DAY
-            MORE_THAN_THREE_DAYS
-            NONE
-            ONE_TO_THREE_DAYS
-          }
-          enum Channel {
-            DISCORD
-            EMAIL
-            LINKED_IN
-            TELEGRAM
-            TWITTER
-          }
           enum IdentityType {
             COMPANY
             PERSON
@@ -92,12 +78,6 @@
             BANK_ADDRESS
             ETHEREUM_ADDRESS
             ETHEREUM_NAME
-          }
-          enum ProfileCover {
-            BLUE
-            CYAN
-            MAGENTA
-            YELLOW
           }
           enum Status {
             CANCELLED
@@ -123,15 +103,6 @@
             optCompany: CompanyIdentity
             optPerson: PersonIdentity
             type: IdentityType!
-          }
-          input Information {
-            channel: Channel!
-            contact: String!
-            public: Boolean!
-          }
-          input Language {
-            name: String!
-            weight: Int!
           }
           input Location {
             address: String

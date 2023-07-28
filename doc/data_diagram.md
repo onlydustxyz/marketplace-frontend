@@ -53,6 +53,7 @@ class Contacts {
    linkedin: ContactInformations
    telegram: ContactInformations
    twitter: ContactInformations
+   whatsapp: ContactInformations
 }
 
 class ContributionCounts {

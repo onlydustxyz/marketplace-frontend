@@ -21,6 +21,7 @@ import ExternalLinkLine from "src/icons/ExternalLinkLine";
 import { Link, generatePath } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import CompletionBar from "src/components/CompletionBar";
+import WhatsappFill from "src/icons/WhatsappFill";
 
 type Props = {
   profile: UserProfileFragment & OwnUserProfileDetailsFragment;
@@ -39,6 +40,7 @@ export default function IntroSection({ isOwn, isPublic, profile, setEditMode }: 
   const twitter = profile.contacts.twitter?.public && profile.contacts.twitter?.contact;
   const discord = profile.contacts.discord?.public && profile.contacts.discord?.contact;
   const linkedin = profile.contacts.linkedin?.public && profile.contacts.linkedin?.contact;
+  const whatsapp = profile.contacts.whatsapp?.public && profile.contacts.whatsapp?.contact;
 
   return (
     <div className="flex flex-col gap-6">
@@ -134,6 +136,11 @@ export default function IntroSection({ isOwn, isPublic, profile, setEditMode }: 
         {telegram && (
           <SocialLink testId="telegram" link={telegram}>
             <Telegram className="fill-greyscale-200" size={20} />
+          </SocialLink>
+        )}
+        {whatsapp && (
+          <SocialLink testId="whatsapp" copyableValue={whatsapp} copyableValueName={T("profile.whatsapp")}>
+            <WhatsappFill />
           </SocialLink>
         )}
         {twitter && (

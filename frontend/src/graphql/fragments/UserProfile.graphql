@@ -46,6 +46,10 @@ fragment UserProfileDetails on UserProfiles {
       contact
       public
     }
+    whatsapp {
+      contact
+      public
+    }
   }
 }
 
