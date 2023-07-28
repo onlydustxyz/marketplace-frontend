@@ -19,7 +19,7 @@ impl Query {
 		context
 			.github_service()
 			.ok()?
-			.issue(&repo_owner, &repo_name, &issue_number)
+			.issue(repo_owner, repo_name, issue_number)
 			.await
 			.map_err(Error::from)
 			.logged()

@@ -12,14 +12,14 @@ use crate::github::{self, OctocrabRepo};
 #[async_trait]
 impl GithubFetchRepoService for github::Client {
 	#[instrument(skip(self))]
-	async fn repo_by_id(&self, id: &GithubRepoId) -> GithubServiceResult<GithubRepo> {
+	async fn repo_by_id(&self, id: GithubRepoId) -> GithubServiceResult<GithubRepo> {
 		let repo = self.get_repository_by_id(id).await?;
 		let repo = OctocrabRepo::from(repo).try_into().map_err(GithubServiceError::Other)?;
 		Ok(repo)
 	}
 
 	#[instrument(skip(self))]
-	async fn repo_languages(&self, id: &GithubRepoId) -> GithubServiceResult<Languages> {
+	async fn repo_languages(&self, id: GithubRepoId) -> GithubServiceResult<Languages> {
 		let languages = self.get_languages_by_repository_id(id).await?;
 		Ok(languages)
 	}

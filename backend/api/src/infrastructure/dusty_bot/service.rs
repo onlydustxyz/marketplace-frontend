@@ -18,15 +18,15 @@ struct CreateIssue;
 impl DustyBotService for graphql::Client {
 	async fn create_issue(
 		&self,
-		repo_id: &GithubRepoId,
-		title: &str,
-		description: &str,
+		repo_id: GithubRepoId,
+		title: String,
+		description: String,
 	) -> Result<GithubIssue> {
 		let response = self
 			.query::<CreateIssue>(create_issue::Variables {
-				repo_id: *repo_id,
-				title: title.to_string(),
-				description: description.to_string(),
+				repo_id,
+				title,
+				description,
 			})
 			.await?;
 

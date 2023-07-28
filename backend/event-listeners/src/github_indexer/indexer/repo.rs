@@ -51,7 +51,7 @@ impl Indexer {
 #[async_trait]
 impl super::Indexer<GithubRepoId> for Indexer {
 	async fn index(&self, repo_id: GithubRepoId) -> Result<Vec<GithubEvent>> {
-		match self.github_fetch_service.repo_by_id(&repo_id).await {
+		match self.github_fetch_service.repo_by_id(repo_id).await {
 			Ok(repo) => {
 				let events = match self.get_state(repo_id)? {
 					Some(state) if state == State::new(&repo) => vec![],

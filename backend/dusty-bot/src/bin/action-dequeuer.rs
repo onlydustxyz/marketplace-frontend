@@ -42,7 +42,7 @@ async fn process(
 			repo_owner,
 			repo_name,
 			issue_number,
-		} => github.close_issue(&repo_owner, &repo_name, &issue_number).await?,
+		} => github.close_issue(repo_owner, repo_name, issue_number).await?,
 	}
 
 	Ok(())

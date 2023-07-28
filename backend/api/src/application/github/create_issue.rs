@@ -18,19 +18,19 @@ impl Usecase {
 	pub async fn create_issue(
 		&self,
 		project_id: &ProjectId,
-		github_repo_id: &GithubRepoId,
+		github_repo_id: GithubRepoId,
 		title: String,
 		description: String,
 	) -> Result<GithubIssue, DomainError> {
 		let project = self.project_repository.find_by_id(project_id)?;
-		if !project.github_repos().contains(github_repo_id) {
+		if !project.github_repos().contains(&github_repo_id) {
 			return Err(DomainError::InvalidInputs(anyhow!(
 				"Github repository {github_repo_id} is not linked to project {project_id}"
 			)));
 		}
 
 		self.dusty_bot_service
-			.create_issue(github_repo_id, &title, &description)
+			.create_issue(github_repo_id, title, description)
 			.await
 			.map_err(DomainError::InternalError)
 	}

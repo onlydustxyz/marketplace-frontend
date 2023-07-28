@@ -459,7 +459,7 @@ impl Mutation {
 			.create_github_issue_usecase
 			.create_issue(
 				&project_id.into(),
-				&(github_repo_id as i64).into(),
+				(github_repo_id as i64).into(),
 				title,
 				description,
 			)

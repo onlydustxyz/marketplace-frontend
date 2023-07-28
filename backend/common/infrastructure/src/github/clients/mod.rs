@@ -157,14 +157,14 @@ impl Client {
 	}
 
 	#[instrument(skip(self))]
-	pub async fn get_repository_by_id(&self, id: &GithubRepoId) -> Result<Repository, Error> {
+	pub async fn get_repository_by_id(&self, id: GithubRepoId) -> Result<Repository, Error> {
 		self.get_as(format!("{}repositories/{id}", self.octocrab().base_url)).await
 	}
 
 	#[instrument(skip(self))]
 	pub async fn get_languages_by_repository_id(
 		&self,
-		id: &GithubRepoId,
+		id: GithubRepoId,
 	) -> Result<Languages, Error> {
 		self.get_as(format!(
 			"{}repositories/{id}/languages",
@@ -209,11 +209,11 @@ impl Client {
 	#[instrument(skip(self))]
 	pub async fn get_issue(
 		&self,
-		repo_owner: &str,
-		repo_name: &str,
-		issue_number: &GithubIssueNumber,
+		repo_owner: String,
+		repo_name: String,
+		issue_number: GithubIssueNumber,
 	) -> Result<Issue, Error> {
-		let issue_number: i64 = (*issue_number).into();
+		let issue_number: i64 = issue_number.into();
 		let issue = self.octocrab().issues(repo_owner, repo_name).get(issue_number as u64).await?;
 		Ok(issue)
 	}

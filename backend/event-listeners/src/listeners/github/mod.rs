@@ -30,14 +30,14 @@ pub struct Projector {
 impl Projector {
 	fn build_repo(&self, repo: domain::GithubRepo, languages: Languages) -> Result<GithubRepo> {
 		Ok(GithubRepo {
-			id: *repo.id(),
-			owner: repo.owner().clone(),
-			name: repo.name().clone(),
+			id: repo.id,
+			owner: repo.owner,
+			name: repo.name,
 			updated_at: Some(Utc::now().naive_utc()),
-			description: repo.description().clone(),
-			stars: *repo.stars(),
-			fork_count: *repo.forks_count(),
-			html_url: repo.html_url().to_string(),
+			description: repo.description,
+			stars: repo.stars,
+			fork_count: repo.forks_count,
+			html_url: repo.html_url.to_string(),
 			languages: serde_json::to_value(languages)?,
 		})
 	}
@@ -49,7 +49,7 @@ impl EventListener<Event> for Projector {
 	async fn on_event(&self, event: Event) -> Result<(), SubscriberCallbackError> {
 		match event.clone() {
 			Event::Repo(repo) => {
-				let languages = self.github_fetch_service.repo_languages(repo.id()).await?;
+				let languages = self.github_fetch_service.repo_languages(repo.id).await?;
 				languages.get_all().into_iter().try_for_each(|language| {
 					self.technologies_repository
 						.try_insert(Technology {

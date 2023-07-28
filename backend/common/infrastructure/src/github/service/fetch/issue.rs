@@ -22,9 +22,9 @@ impl GithubFetchIssueService for github::Client {
 	#[instrument(skip(self))]
 	async fn issue(
 		&self,
-		repo_owner: &str,
-		repo_name: &str,
-		issue_number: &GithubIssueNumber,
+		repo_owner: String,
+		repo_name: String,
+		issue_number: GithubIssueNumber,
 	) -> GithubServiceResult<GithubIssue> {
 		let issue = self.get_issue(repo_owner, repo_name, issue_number).await?;
 		let repo_id = self.get_issue_repository_id(&issue).await?;
