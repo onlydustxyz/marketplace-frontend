@@ -17391,141 +17391,6 @@
         "possibleTypes": null
       },
       {
-        "kind": "INPUT_OBJECT",
-        "name": "GithubIssueTypeComparisonExp",
-        "description": "Boolean expression to compare columns of type \"github_issue_type\". All fields are combined with logical 'AND'.",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "_eq",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "github_issue_type",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "_gt",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "github_issue_type",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "_gte",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "github_issue_type",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "_in",
-            "description": null,
-            "type": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "github_issue_type",
-                  "ofType": null
-                }
-              }
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "_isNull",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "Boolean",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "_lt",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "github_issue_type",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "_lte",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "github_issue_type",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "_neq",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "github_issue_type",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "_nin",
-            "description": null,
-            "type": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "github_issue_type",
-                  "ofType": null
-                }
-              }
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
         "kind": "OBJECT",
         "name": "GithubIssues",
         "description": "columns and relationships of \"github_issues\"",
@@ -17830,7 +17695,7 @@
             "deprecationReason": null
           },
           {
-            "name": "issueNumber",
+            "name": "number",
             "description": null,
             "args": [],
             "type": {
@@ -17841,18 +17706,6 @@
                 "name": "bigint",
                 "ofType": null
               }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "mergedAt",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "timestamp",
-              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -17899,22 +17752,6 @@
               "ofType": {
                 "kind": "SCALAR",
                 "name": "String",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "type",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "github_issue_type",
                 "ofType": null
               }
             },
@@ -18397,7 +18234,7 @@
             "deprecationReason": null
           },
           {
-            "name": "issueNumber",
+            "name": "number",
             "description": null,
             "args": [],
             "type": {
@@ -18581,23 +18418,11 @@
             "deprecationReason": null
           },
           {
-            "name": "issueNumber",
+            "name": "number",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "BigintComparisonExp",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "mergedAt",
-            "description": null,
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "TimestampComparisonExp",
               "ofType": null
             },
             "defaultValue": null,
@@ -18634,18 +18459,6 @@
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "StringComparisonExp",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "type",
-            "description": null,
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "GithubIssueTypeComparisonExp",
               "ofType": null
             },
             "defaultValue": null,
@@ -18782,7 +18595,7 @@
             "deprecationReason": null
           },
           {
-            "name": "issueNumber",
+            "name": "number",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -18901,23 +18714,11 @@
             "deprecationReason": null
           },
           {
-            "name": "issueNumber",
+            "name": "number",
             "description": null,
             "type": {
               "kind": "SCALAR",
               "name": "bigint",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "mergedAt",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "timestamp",
               "ofType": null
             },
             "defaultValue": null,
@@ -18954,18 +18755,6 @@
             "type": {
               "kind": "SCALAR",
               "name": "String",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "type",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "github_issue_type",
               "ofType": null
             },
             "defaultValue": null,
@@ -19043,24 +18832,12 @@
             "deprecationReason": null
           },
           {
-            "name": "issueNumber",
+            "name": "number",
             "description": null,
             "args": [],
             "type": {
               "kind": "SCALAR",
               "name": "bigint",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "mergedAt",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "timestamp",
               "ofType": null
             },
             "isDeprecated": false,
@@ -19097,18 +18874,6 @@
             "type": {
               "kind": "SCALAR",
               "name": "String",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "type",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "github_issue_type",
               "ofType": null
             },
             "isDeprecated": false,
@@ -19186,24 +18951,12 @@
             "deprecationReason": null
           },
           {
-            "name": "issueNumber",
+            "name": "number",
             "description": null,
             "args": [],
             "type": {
               "kind": "SCALAR",
               "name": "bigint",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "mergedAt",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "timestamp",
               "ofType": null
             },
             "isDeprecated": false,
@@ -19240,18 +18993,6 @@
             "type": {
               "kind": "SCALAR",
               "name": "String",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "type",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "github_issue_type",
               "ofType": null
             },
             "isDeprecated": false,
@@ -19468,19 +19209,7 @@
             "deprecationReason": null
           },
           {
-            "name": "issueNumber",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "mergedAt",
+            "name": "number",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -19517,18 +19246,6 @@
           },
           {
             "name": "title",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "type",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -19639,13 +19356,7 @@
             "deprecationReason": null
           },
           {
-            "name": "issueNumber",
-            "description": "column name",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "mergedAt",
+            "name": "number",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
@@ -19664,12 +19375,6 @@
           },
           {
             "name": "title",
-            "description": "column name",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "type",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
@@ -19756,23 +19461,11 @@
             "deprecationReason": null
           },
           {
-            "name": "issueNumber",
+            "name": "number",
             "description": null,
             "type": {
               "kind": "SCALAR",
               "name": "bigint",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "mergedAt",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "timestamp",
               "ofType": null
             },
             "defaultValue": null,
@@ -19814,18 +19507,6 @@
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
-          },
-          {
-            "name": "type",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "github_issue_type",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
           }
         ],
         "interfaces": null,
@@ -19862,7 +19543,7 @@
             "deprecationReason": null
           },
           {
-            "name": "issueNumber",
+            "name": "number",
             "description": null,
             "args": [],
             "type": {
@@ -19921,7 +19602,7 @@
             "deprecationReason": null
           },
           {
-            "name": "issueNumber",
+            "name": "number",
             "description": null,
             "args": [],
             "type": {
@@ -19980,7 +19661,7 @@
             "deprecationReason": null
           },
           {
-            "name": "issueNumber",
+            "name": "number",
             "description": null,
             "args": [],
             "type": {
@@ -20039,7 +19720,7 @@
             "deprecationReason": null
           },
           {
-            "name": "issueNumber",
+            "name": "number",
             "description": null,
             "args": [],
             "type": {
@@ -20113,13 +19794,7 @@
             "deprecationReason": null
           },
           {
-            "name": "issueNumber",
-            "description": "column name",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "mergedAt",
+            "name": "number",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
@@ -20138,12 +19813,6 @@
           },
           {
             "name": "title",
-            "description": "column name",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "type",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
@@ -20292,7 +19961,7 @@
             "deprecationReason": null
           },
           {
-            "name": "issueNumber",
+            "name": "number",
             "description": null,
             "args": [],
             "type": {
@@ -20351,7 +20020,7 @@
             "deprecationReason": null
           },
           {
-            "name": "issueNumber",
+            "name": "number",
             "description": null,
             "args": [],
             "type": {
@@ -20410,7 +20079,7 @@
             "deprecationReason": null
           },
           {
-            "name": "issueNumber",
+            "name": "number",
             "description": null,
             "args": [],
             "type": {
@@ -28049,18 +27718,6 @@
             "deprecationReason": null
           },
           {
-            "name": "mergedAt",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "DateTimeUtc",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "number",
             "description": null,
             "args": [],
@@ -28118,22 +27775,6 @@
               "ofType": {
                 "kind": "SCALAR",
                 "name": "String",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "type",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "ENUM",
-                "name": "Type",
                 "ofType": null
               }
             },
@@ -45358,6 +44999,18 @@
         "description": "columns and relationships of \"registered_users\"",
         "fields": [
           {
+            "name": "admin",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "avatarUrl",
             "description": null,
             "args": [],
@@ -46156,6 +45809,18 @@
             "deprecationReason": null
           },
           {
+            "name": "admin",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "BooleanComparisonExp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "avatarUrl",
             "description": null,
             "type": {
@@ -46310,6 +45975,18 @@
         "description": "input type for inserting data into table \"registered_users\"",
         "fields": null,
         "inputFields": [
+          {
+            "name": "admin",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "avatarUrl",
             "description": null,
@@ -46659,6 +46336,18 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "admin",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "avatarUrl",
             "description": null,
             "type": {
@@ -46791,6 +46480,12 @@
         "inputFields": null,
         "interfaces": null,
         "enumValues": [
+          {
+            "name": "admin",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "avatarUrl",
             "description": "column name",
@@ -48174,19 +47869,7 @@
             "deprecationReason": null
           },
           {
-            "name": "CLOSED",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "COMPLETED",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "MERGED",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -49246,29 +48929,6 @@
         ],
         "interfaces": null,
         "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "ENUM",
-        "name": "Type",
-        "description": null,
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": [
-          {
-            "name": "ISSUE",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "PULL_REQUEST",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
         "possibleTypes": null
       },
       {
@@ -68537,16 +68197,6 @@
         "possibleTypes": null
       },
       {
-        "kind": "SCALAR",
-        "name": "github_issue_type",
-        "description": null,
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
         "kind": "INPUT_OBJECT",
         "name": "github_issues_aggregate_bool_exp",
         "description": null,
@@ -68671,7 +68321,7 @@
             "deprecationReason": null
           },
           {
-            "name": "issueNumber",
+            "name": "number",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -68766,19 +68416,7 @@
             "deprecationReason": null
           },
           {
-            "name": "issueNumber",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "mergedAt",
+            "name": "number",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -68815,18 +68453,6 @@
           },
           {
             "name": "title",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "type",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -68909,19 +68535,7 @@
             "deprecationReason": null
           },
           {
-            "name": "issueNumber",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "mergedAt",
+            "name": "number",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -68958,18 +68572,6 @@
           },
           {
             "name": "title",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "type",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -69016,7 +68618,7 @@
             "deprecationReason": null
           },
           {
-            "name": "issueNumber",
+            "name": "number",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -69075,7 +68677,7 @@
             "deprecationReason": null
           },
           {
-            "name": "issueNumber",
+            "name": "number",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -69134,7 +68736,7 @@
             "deprecationReason": null
           },
           {
-            "name": "issueNumber",
+            "name": "number",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -69280,23 +68882,11 @@
             "deprecationReason": null
           },
           {
-            "name": "issueNumber",
+            "name": "number",
             "description": null,
             "type": {
               "kind": "SCALAR",
               "name": "bigint",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "mergedAt",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "timestamp",
               "ofType": null
             },
             "defaultValue": null,
@@ -69333,18 +68923,6 @@
             "type": {
               "kind": "SCALAR",
               "name": "String",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "type",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "github_issue_type",
               "ofType": null
             },
             "defaultValue": null,
@@ -69387,7 +68965,7 @@
             "deprecationReason": null
           },
           {
-            "name": "issueNumber",
+            "name": "number",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -69446,7 +69024,7 @@
             "deprecationReason": null
           },
           {
-            "name": "issueNumber",
+            "name": "number",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -69505,7 +69083,7 @@
             "deprecationReason": null
           },
           {
-            "name": "issueNumber",
+            "name": "number",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -69564,7 +69142,7 @@
             "deprecationReason": null
           },
           {
-            "name": "issueNumber",
+            "name": "number",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -80961,7 +80539,7 @@
           },
           {
             "name": "updateUserProfile",
-            "description": null,
+            "description": "updateUserProfile",
             "args": [
               {
                 "name": "bio",
@@ -93783,6 +93361,18 @@
         "description": "Initial value of the column from where the streaming should start",
         "fields": null,
         "inputFields": [
+          {
+            "name": "admin",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "avatarUrl",
             "description": null,

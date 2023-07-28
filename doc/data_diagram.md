@@ -93,12 +93,10 @@ class GithubIssues {
    htmlUrl: String!
    id: bigint!
    ignoredForProjects: [IgnoredGithubIssues!]!
-   issueNumber: bigint!
-   mergedAt: timestamp
+   number: bigint!
    repoId: bigint!
    status: github_issue_status!
    title: String!
-   type: github_issue_type!
 }
 
 class GithubRepos {
@@ -148,12 +146,10 @@ class Issue {
    htmlUrl: Url!
    id: GithubIssueId!
    ignoredForProjects: [IgnoredGithubIssues!]!
-   mergedAt: DateTimeUtc
    number: GithubIssueNumber!
    repoId: GithubRepoId!
    status: Status!
    title: String!
-   type: Type!
    updatedAt: DateTimeUtc!
 }
 
@@ -265,6 +261,7 @@ class ProjectsSponsors {
 }
 
 class RegisteredUsers {
+   admin: Boolean
    avatarUrl: String
    email: citext
    githubUserId: bigint
