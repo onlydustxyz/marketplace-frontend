@@ -6,7 +6,7 @@ array_relationships:
     using:
       manual_configuration:
         column_mapping:
-          issue_number: issue_number
+          number: issue_number
           repo_id: repo_id
         insertion_order: null
         remote_table:
@@ -22,10 +22,8 @@ select_permissions:
         - created_at
         - html_url
         - id
-        - issue_number
-        - merged_at
+        - number
         - repo_id
         - status
         - title
-        - type
       filter: {}

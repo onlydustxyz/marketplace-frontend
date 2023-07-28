@@ -2,10 +2,7 @@ use chrono::NaiveDateTime;
 use diesel::Identifiable;
 use diesel_json::Json;
 use domain::{GithubIssueId, GithubIssueNumber, GithubRepoId, GithubUserId};
-use infrastructure::database::{
-	enums::{GithubIssueStatus, GithubIssueType},
-	schema::github_issues,
-};
+use infrastructure::database::{enums::GithubIssueStatus, schema::github_issues};
 use serde::{Deserialize, Serialize};
 
 #[derive(
@@ -14,11 +11,9 @@ use serde::{Deserialize, Serialize};
 pub struct GithubIssue {
 	pub id: GithubIssueId,
 	pub repo_id: GithubRepoId,
-	pub issue_number: GithubIssueNumber,
+	pub number: GithubIssueNumber,
 	pub created_at: NaiveDateTime,
 	pub author_id: GithubUserId,
-	pub merged_at: Option<NaiveDateTime>,
-	pub type_: GithubIssueType,
 	pub status: GithubIssueStatus,
 	pub title: String,
 	pub html_url: String,
@@ -39,11 +34,9 @@ impl From<domain::GithubIssue> for GithubIssue {
 		GithubIssue {
 			id: issue.id,
 			repo_id: issue.repo_id,
-			issue_number: issue.number,
+			number: issue.number,
 			created_at: issue.created_at.naive_utc(),
 			author_id: issue.author.id,
-			merged_at: issue.merged_at.map(|date| date.naive_utc()),
-			type_: issue.r#type.into(),
 			status: issue.status.into(),
 			title: issue.title,
 			html_url: issue.html_url.to_string(),

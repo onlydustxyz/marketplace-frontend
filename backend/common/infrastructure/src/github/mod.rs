@@ -13,8 +13,7 @@ pub use clients::{Client, RoundRobinClient, SingleClient};
 mod error;
 pub use error::Error;
 
-mod issue;
-pub use issue::IssueFromOctocrab;
+pub mod issue;
 
 mod service;
 

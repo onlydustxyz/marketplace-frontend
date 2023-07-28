@@ -33,12 +33,10 @@
             createdAt: DateTimeUtc!
             htmlUrl: Url!
             id: GithubIssueId!
-            mergedAt: DateTimeUtc
             number: GithubIssueNumber!
             repoId: GithubRepoId!
             status: Status!
             title: String!
-            type: Type!
             updatedAt: DateTimeUtc!
           }
           type Mutation {
@@ -81,14 +79,8 @@
           }
           enum Status {
             CANCELLED
-            CLOSED
             COMPLETED
-            MERGED
             OPEN
-          }
-          enum Type {
-            ISSUE
-            PULL_REQUEST
           }
           input BankAddress {
             BIC: String!
@@ -176,12 +168,10 @@
             createdAt: DateTimeUtc!
             htmlUrl: Url!
             id: GithubIssueId!
-            mergedAt: DateTimeUtc
             number: GithubIssueNumber!
             repoId: GithubRepoId!
             status: Status!
             title: String!
-            type: Type!
             updatedAt: DateTimeUtc!
           }
           type Query {
@@ -198,14 +188,8 @@
           }
           enum Status {
             CANCELLED
-            CLOSED
             COMPLETED
-            MERGED
             OPEN
-          }
-          enum Type {
-            ISSUE
-            PULL_REQUEST
           }
   remote_relationships:
     - relationships:

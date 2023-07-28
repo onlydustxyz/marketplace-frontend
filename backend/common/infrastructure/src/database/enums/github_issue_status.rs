@@ -5,8 +5,6 @@ use serde::{Deserialize, Serialize};
 #[ExistingTypePath = "crate::database::schema::sql_types::GithubIssueStatus"]
 pub enum GithubIssueStatus {
 	Open,
-	Closed,
-	Merged,
 	Completed,
 	Cancelled,
 }
@@ -15,8 +13,6 @@ impl From<domain::GithubIssueStatus> for GithubIssueStatus {
 	fn from(status: domain::GithubIssueStatus) -> Self {
 		match status {
 			domain::GithubIssueStatus::Open => Self::Open,
-			domain::GithubIssueStatus::Closed => Self::Closed,
-			domain::GithubIssueStatus::Merged => Self::Merged,
 			domain::GithubIssueStatus::Completed => Self::Completed,
 			domain::GithubIssueStatus::Cancelled => Self::Cancelled,
 		}

@@ -3,7 +3,7 @@ use domain::{
 	GithubFetchIssueService, GithubFetchRepoService, GithubFetchUserService, GithubIssue,
 	GithubIssueNumber, GithubIssueStatus, GithubRepoId, GithubServiceError, GithubServiceResult,
 };
-use infrastructure::github::{self, IssueFromOctocrab};
+use infrastructure::github::{self, issue::FromOctocrab};
 use octocrab::{self, models};
 use olog::tracing::instrument;
 
@@ -29,7 +29,7 @@ impl GithubService for github::Client {
 			.await
 			.map_err(github::Error::from)?;
 
-		GithubIssue::from_octocrab_issue(issue, *repo.id()).map_err(GithubServiceError::Other)
+		GithubIssue::from_octocrab(issue, *repo.id()).map_err(GithubServiceError::Other)
 	}
 
 	async fn close_issue(

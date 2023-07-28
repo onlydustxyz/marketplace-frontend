@@ -55,7 +55,6 @@ mod tests {
 			id: 1278125016u64.into(),
 			repo_id: 43214u64.into(),
 			number: 17i64.into(),
-			r#type: GithubIssueType::Issue,
 			title: "Super issue".to_string(),
 			author: GithubUser {
 				id: 666u64.into(),
@@ -71,7 +70,6 @@ mod tests {
 			updated_at: DateTime::parse_from_rfc3339("2023-04-18T13:15:05Z")
 				.unwrap()
 				.with_timezone(&Utc),
-			merged_at: None,
 			closed_at: None,
 			assignees: vec![],
 		}

@@ -9,7 +9,6 @@ fragment GithubIssue on Issue {
   id
   repoId
   number
-  type
   title
   author {
     ...GithubUser
@@ -18,7 +17,6 @@ fragment GithubIssue on Issue {
   status
   createdAt
   updatedAt
-  mergedAt
   closedAt
 }
 

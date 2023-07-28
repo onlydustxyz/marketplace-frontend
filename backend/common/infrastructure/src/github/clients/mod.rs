@@ -24,7 +24,7 @@ use octocrab::{
 use olog::{tracing::instrument, IntoField};
 use reqwest::Url;
 
-use super::{service::QueryParams, AddHeaders, Config, Error, IssueFromOctocrab};
+use super::{issue::FromOctocrab, service::QueryParams, AddHeaders, Config, Error};
 
 mod round_robin;
 pub use round_robin::Client as RoundRobinClient;
@@ -265,7 +265,7 @@ impl Client {
 			.await?
 			.filter_map(|issue| {
 				future::ready({
-					match GithubIssue::from_octocrab_issue(issue.clone(), *id) {
+					match GithubIssue::from_octocrab(issue.clone(), *id) {
 						Ok(issue) => Some(issue),
 						Err(e) => {
 							error!(

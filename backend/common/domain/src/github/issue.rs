@@ -12,16 +12,8 @@ use crate::{GithubIssueNumber, GithubRepoId, GithubUser};
 #[derive(Clone, Copy, Debug, GraphQLEnum, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Status {
 	Open,
-	Closed,
-	Merged,
 	Completed,
 	Cancelled,
-}
-
-#[derive(Clone, Copy, Debug, GraphQLEnum, Serialize, Deserialize, PartialEq, Eq)]
-pub enum Type {
-	Issue,
-	PullRequest,
 }
 
 #[derive(Clone, Debug, GraphQLObject, Serialize, Deserialize, PartialEq, Eq)]
@@ -29,14 +21,12 @@ pub struct Issue {
 	pub id: Id,
 	pub repo_id: GithubRepoId,
 	pub number: GithubIssueNumber,
-	pub r#type: Type,
 	pub title: String,
 	pub author: GithubUser,
 	pub html_url: Url,
 	pub status: Status,
 	pub created_at: DateTime<Utc>,
 	pub updated_at: DateTime<Utc>,
-	pub merged_at: Option<DateTime<Utc>>,
 	pub closed_at: Option<DateTime<Utc>>,
 	pub assignees: Vec<GithubUser>,
 }
