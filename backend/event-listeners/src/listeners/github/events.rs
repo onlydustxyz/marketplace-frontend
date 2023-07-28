@@ -1,7 +1,7 @@
 use domain::{GithubFullUser, GithubIssue, GithubRepo, GithubRepoId, GithubUser, MessagePayload};
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub enum Event {
 	Repo(GithubRepo),
 	Issue(GithubIssue),
