@@ -98,6 +98,6 @@ test.describe("As an admin, I", () => {
     await editPage.bio.fill("whatever");
     await editPage.save();
 
-    await expect(page.locator("body")).toHaveText(/We've just crashed/);
+    await expect(page.locator("body")).toHaveText(/An error just occurred/);
   });
 });
