@@ -213,7 +213,7 @@ List.displayName = "List";
 const Scroller = forwardRef<HTMLDivElement>((props, ref) => {
   return (
     <div
-      className="overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded scrollbar-w-1.5"
+      className="overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5"
       {...props}
       ref={ref}
     />

@@ -134,7 +134,7 @@ export default function View({
 
 const Scroller = forwardRef<HTMLDivElement>((props, ref) => (
   <div
-    className="overflow-auto scrollbar-thin scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded scrollbar-w-2"
+    className="overflow-auto scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5"
     {...props}
     ref={ref}
   />

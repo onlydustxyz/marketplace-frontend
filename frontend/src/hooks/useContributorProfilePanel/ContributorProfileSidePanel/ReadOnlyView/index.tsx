@@ -24,7 +24,7 @@ export default function ReadOnlyView({
     <div className="flex h-full flex-col">
       <Header profile={{ ...profile, cover: translateProfileCover(profile.cover) ?? ProfileCover.Blue }} />
 
-      <div className="-mt-12 ml-8 mr-2 flex flex-col gap-12 pb-12 pr-6 pt-4 scrollbar-thin scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded scrollbar-w-2">
+      <div className="-mt-12 ml-8 mr-2 flex flex-col gap-12 pb-12 pr-6 pt-4 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
         <IntroSection profile={profile} isOwn={isOwn} setEditMode={setEditMode} />
 
         <div className="flex flex-col gap-8">

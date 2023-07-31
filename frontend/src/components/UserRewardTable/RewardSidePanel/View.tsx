@@ -204,7 +204,7 @@ export default function View({
             <div className="font-belwe text-base font-normal text-greyscale-50">
               {T("reward.table.detailsPanel.contributions")}
             </div>
-            <div className="flex h-full flex-col gap-3 overflow-auto p-px pb-6 pr-4 scrollbar-thin scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded scrollbar-w-2">
+            <div className="flex h-full flex-col gap-3 overflow-auto p-px pb-6 pr-4 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
               {workItems?.map(
                 workItem =>
                   workItem.githubIssue && (
