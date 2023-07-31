@@ -41,18 +41,9 @@ impl<'a> Test<'a> {
 		self.context.database.client.insert(GithubRepoIndex::new(repo_id))?;
 
 		// Then
-		let events: HashSet<Event> = HashSet::from([
-			self.context.amqp.listen::<Event>(GITHUB_EVENTS_EXCHANGE).await.unwrap(),
-			self.context.amqp.listen::<Event>(GITHUB_EVENTS_EXCHANGE).await.unwrap(),
-			self.context.amqp.listen::<Event>(GITHUB_EVENTS_EXCHANGE).await.unwrap(),
-			self.context.amqp.listen::<Event>(GITHUB_EVENTS_EXCHANGE).await.unwrap(),
-			self.context.amqp.listen::<Event>(GITHUB_EVENTS_EXCHANGE).await.unwrap(),
-			self.context.amqp.listen::<Event>(GITHUB_EVENTS_EXCHANGE).await.unwrap(),
-		]);
-
-		assert_eq!(
-			events,
-			HashSet::from([
+		expect_events(
+			&mut self.context,
+			vec![
 				Event::Repo(GithubRepo {
 					id: repo_id,
 					owner: String::from("onlydustxyz"),
@@ -85,7 +76,7 @@ impl<'a> Test<'a> {
 							.unwrap(),
 						html_url: "https://github.com/AnthonyBuisset".parse().unwrap(),
 					},
-					assignees: vec![]
+					assignees: vec![],
 				}),
 				Event::Issue(GithubIssue {
 					id: 1822333508u64.into(),
@@ -107,7 +98,7 @@ impl<'a> Test<'a> {
 							.unwrap(),
 						html_url: "https://github.com/AnthonyBuisset".parse().unwrap(),
 					},
-					assignees: vec![]
+					assignees: vec![],
 				}),
 				Event::Issue(GithubIssue {
 					id: 1763108414u64.into(),
@@ -129,7 +120,7 @@ impl<'a> Test<'a> {
 							.unwrap(),
 						html_url: "https://github.com/od-develop".parse().unwrap(),
 					},
-					assignees: vec![]
+					assignees: vec![],
 				}),
 				Event::PullRequest(GithubPullRequest {
 					id: 1455874031u64.into(),
@@ -151,7 +142,7 @@ impl<'a> Test<'a> {
 							.unwrap(),
 						html_url: "https://github.com/alexbensimon".parse().unwrap(),
 					},
-					merged_at: None
+					merged_at: None,
 				}),
 				Event::PullRequest(GithubPullRequest {
 					id: 1452363285u64.into(),
@@ -173,11 +164,29 @@ impl<'a> Test<'a> {
 							.unwrap(),
 						html_url: "https://github.com/ofux".parse().unwrap(),
 					},
-					merged_at: "2023-07-28T08:34:53Z".parse().ok()
-				})
-			])
-		);
+					merged_at: "2023-07-28T08:34:53Z".parse().ok(),
+				}),
+			],
+		)
+		.await;
 
 		Ok(())
 	}
+}
+
+async fn expect_events(context: &mut Context<'_>, expected: Vec<Event>) {
+	let mut actual = HashSet::<Event>::new();
+	for _ in 0..expected.len() {
+		actual.insert(context.amqp.listen::<Event>(GITHUB_EVENTS_EXCHANGE).await.unwrap());
+	}
+
+	let expected = expected.into_iter().collect();
+
+	assert_eq!(
+		actual,
+		expected,
+		"Invalid events, expected: {}. received: {}",
+		serde_json::to_string(&expected).unwrap(),
+		serde_json::to_string(&actual).unwrap()
+	);
 }
