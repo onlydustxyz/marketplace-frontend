@@ -8,13 +8,15 @@ use std::{
 use anyhow::anyhow;
 use domain::{
 	stream_filter::{self, StreamFilterWith},
-	GithubFullUser, GithubIssue, GithubIssueNumber, GithubRepoId, GithubServiceIssueFilters,
-	GithubUser, GithubUserId, Languages, PositiveCount,
+	GithubFullUser, GithubIssue, GithubIssueNumber, GithubPullRequest, GithubPullRequestNumber,
+	GithubRepoId, GithubServiceIssueFilters, GithubServicePullRequestFilters, GithubUser,
+	GithubUserId, Languages, PositiveCount,
 };
 use futures::{stream::empty, Stream, StreamExt, TryStreamExt};
 use octocrab::{
 	models::{
 		issues::{Comment, Issue},
+		pulls::PullRequest,
 		repos::Content,
 		Repository, User,
 	},
@@ -24,7 +26,12 @@ use octocrab::{
 use olog::{tracing::instrument, IntoField};
 use reqwest::Url;
 
-use super::{issue::FromOctocrab, service::QueryParams, AddHeaders, Config, Error};
+use super::{
+	issue::FromOctocrab as FromOctocrabIssue,
+	pull_request::FromOctocrab as FromOctocrabPullRequest,
+	service::{query_params::State, QueryParams},
+	AddHeaders, Config, Error,
+};
 
 mod round_robin;
 pub use round_robin::Client as RoundRobinClient;
@@ -232,6 +239,19 @@ impl Client {
 	}
 
 	#[instrument(skip(self))]
+	pub async fn get_pull_request_by_repository_id(
+		&self,
+		repo_id: &GithubRepoId,
+		pr_number: &GithubPullRequestNumber,
+	) -> Result<PullRequest, Error> {
+		self.get_as(format!(
+			"{}repositories/{repo_id}/pulls/{pr_number}",
+			self.octocrab().base_url
+		))
+		.await
+	}
+
+	#[instrument(skip(self))]
 	pub async fn issues_by_repo_id(
 		&self,
 		id: &GithubRepoId,
@@ -244,7 +264,7 @@ impl Client {
 		};
 
 		let query_params = QueryParams::default()
-			.state(filters.state.into())
+			.state(State::All)
 			.sort(sort)
 			.direction(Direction::Descending)
 			.page(1)
@@ -287,6 +307,60 @@ impl Client {
 			.collect()
 			.await;
 		Ok(issues)
+	}
+
+	#[instrument(skip(self))]
+	pub async fn pulls_by_repo_id(
+		&self,
+		id: &GithubRepoId,
+		filters: &GithubServicePullRequestFilters,
+	) -> Result<Vec<GithubPullRequest>, Error> {
+		let sort = if filters.updated_since.is_some() {
+			Sort::Updated
+		} else {
+			Sort::Created
+		};
+
+		let query_params = QueryParams::default()
+			.state(State::All)
+			.sort(sort)
+			.direction(Direction::Descending)
+			.page(1)
+			.per_page(100);
+
+		let url = format!(
+			"{}repositories/{id}/pulls?{}",
+			self.octocrab().base_url,
+			query_params.to_query_string()?
+		)
+		.parse()?;
+
+		let pull_requests = self
+			.stream_as::<PullRequest>(
+				url,
+				100 * self.config().max_calls_per_request.map(PositiveCount::get).unwrap_or(3),
+			)
+			.await?
+			.filter_map(|pull_request| {
+				future::ready({
+					match GithubPullRequest::from_octocrab(pull_request.clone(), *id) {
+						Ok(pull_request) => Some(pull_request),
+						Err(e) => {
+							error!(
+								error = e.to_field(),
+								repository_id = id.to_string(),
+								pull_request_id = pull_request.id.0,
+								"Failed to process pull_request"
+							);
+							None
+						},
+					}
+				})
+			})
+			.filter_with(Arc::new(*filters))
+			.collect()
+			.await;
+		Ok(pull_requests)
 	}
 
 	#[instrument(skip(self))]

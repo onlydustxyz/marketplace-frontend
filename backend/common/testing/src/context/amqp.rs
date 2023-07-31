@@ -86,9 +86,7 @@ impl<'docker> Context<'docker> {
 			.unwrap()
 			.recv()
 			.await
-			.and_then(|value| {
-				Some(serde_json::from_value(value).expect("Unable to deserialize message"))
-			})
+			.map(|value| serde_json::from_value(value).expect("Unable to deserialize message"))
 	}
 }
 

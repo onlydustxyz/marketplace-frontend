@@ -14,6 +14,7 @@ mod error;
 pub use error::Error;
 
 pub mod issue;
+pub mod pull_request;
 
 mod service;
 
