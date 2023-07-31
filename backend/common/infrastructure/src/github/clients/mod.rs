@@ -231,11 +231,16 @@ impl Client {
 		repo_id: &GithubRepoId,
 		issue_number: &GithubIssueNumber,
 	) -> Result<Issue, Error> {
-		self.get_as(format!(
-			"{}repositories/{repo_id}/issues/{issue_number}",
-			self.octocrab().base_url
-		))
-		.await
+		let issue: Issue = self
+			.get_as(format!(
+				"{}repositories/{repo_id}/issues/{issue_number}",
+				self.octocrab().base_url
+			))
+			.await?;
+		match issue.pull_request {
+			Some(_) => Err(Error::NotFound(anyhow!("Issue is in fact a pull request"))),
+			None => Ok(issue),
+		}
 	}
 
 	#[instrument(skip(self))]
