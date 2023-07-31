@@ -8,9 +8,9 @@ import GitPullRequestLine from "src/icons/GitPullRequestLine";
 import IssueOpen from "src/assets/icons/IssueOpen";
 import OtherWorkForm from "./OtherWorkForm";
 import DiscussLine from "src/icons/DiscussLine";
-import { Type } from "src/__generated/graphql";
 import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
+import { GithubIssueType } from "src/types";
 
 type Props = {
   projectId: string;
@@ -73,7 +73,7 @@ export default function WorkItemSidePanel({
             contributorId={contributorId}
             workItems={workItems}
             onWorkItemAdded={onWorkItemAdded}
-            type={Type.PullRequest}
+            type={GithubIssueType.PullRequest}
           />
         )}
         {selectedTab === Tabs.Issues && (
@@ -82,7 +82,7 @@ export default function WorkItemSidePanel({
             contributorId={contributorId}
             workItems={workItems}
             onWorkItemAdded={onWorkItemAdded}
-            type={Type.Issue}
+            type={GithubIssueType.Issue}
           />
         )}
         {selectedTab === Tabs.Other && (

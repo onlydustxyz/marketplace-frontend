@@ -13,12 +13,12 @@ import { ReactElement, useEffect, useState } from "react";
 import WorkItemSidePanel from "./WorkItemSidePanel";
 import GithubIssue, { Action, WorkItem } from "src/components/GithubIssue";
 import Callout from "src/components/Callout";
-import { Status } from "src/__generated/graphql";
 import useWorkItems from "./useWorkItems";
 import { filter } from "lodash";
 import { Contributor } from "./types";
 import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
+import { GithubPullRequestStatus } from "src/types";
 
 interface Props {
   projectId: string;
@@ -68,7 +68,7 @@ const View: React.FC<Props> = ({
   useEffect(() => {
     if (!workItemsPrefilled && unpaidPRs) {
       clearWorkItems();
-      addWorkItem(filter(unpaidPRs, { status: Status.Merged, ignored: false }));
+      addWorkItem(filter(unpaidPRs, { status: GithubPullRequestStatus.Merged, ignored: false }));
       setWorkItemsPrefilled(true);
     }
   }, [unpaidPRs, contributor, addWorkItem, clearWorkItems, workItemsPrefilled, setWorkItemsPrefilled]);

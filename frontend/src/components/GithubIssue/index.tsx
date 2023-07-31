@@ -8,7 +8,6 @@ import Subtract from "src/icons/SubtractLine";
 import Time from "src/icons/TimeLine";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { parsePullRequestOrIssueLink } from "src/utils/github";
-import { Status, Type } from "src/__generated/graphql";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import Card from "src/components/Card";
 import GithubIssueLink from "./GithubIssueLink";
@@ -19,6 +18,7 @@ import EyeOffLine from "src/icons/EyeOffLine";
 import EyeLine from "src/icons/EyeLine";
 import classNames from "classnames";
 import { withTooltip } from "src/components/Tooltip";
+import { GithubIssueType, GithubIssueStatus, GithubPullRequestStatus } from "src/types";
 
 export enum Action {
   Add = "add",
@@ -31,15 +31,18 @@ export type WorkItem = {
   id: string;
   repoId: number;
   number: number;
-  type: Type;
+  type: GithubIssueType;
   title: string;
   htmlUrl: string;
   createdAt: Date;
   ignored: boolean;
 } & (
-  | { status: Status.Open }
-  | { status: Status.Merged; mergedAt: Date }
-  | { status: Status.Cancelled | Status.Closed | Status.Completed; closedAt: Date }
+  | { status: GithubIssueStatus.Open | GithubPullRequestStatus.Open }
+  | { status: GithubPullRequestStatus.Merged; mergedAt: Date }
+  | {
+      status: GithubIssueStatus.Cancelled | GithubIssueStatus.Completed | GithubPullRequestStatus.Closed;
+      closedAt: Date;
+    }
 );
 
 export type Props = {
@@ -128,31 +131,31 @@ function IssueStatus({ issue }: { issue: WorkItem }) {
 
   return (
     <>
-      {issue.status === Status.Closed ? (
+      {issue.status === GithubPullRequestStatus.Closed ? (
         <>
           <IssueClosed className="fill-github-red" />
           {T("githubIssue.status.closed", { closedAt: displayRelativeDate(issue.closedAt) })}
         </>
-      ) : issue.status === Status.Cancelled ? (
+      ) : issue.status === GithubIssueStatus.Cancelled ? (
         <>
           <IssueCancelled className="fill-github-grey p-0.5" />
           {T("githubIssue.status.closed", { closedAt: displayRelativeDate(issue.closedAt) })}
         </>
-      ) : issue.status === Status.Completed ? (
+      ) : issue.status === GithubIssueStatus.Completed ? (
         <>
           <CheckboxCircleLine className="-my-1 text-base text-github-purple" />
           {T("githubIssue.status.closed", { closedAt: displayRelativeDate(issue.closedAt) })}
         </>
-      ) : issue.status === Status.Open ? (
+      ) : issue.status === GithubPullRequestStatus.Open || issue.status === GithubIssueStatus.Open ? (
         <>
-          {issue.type === Type.Issue ? (
+          {issue.type === GithubIssueType.Issue ? (
             <IssueOpen className="fill-github-green p-0.5" />
           ) : (
             <GitPullRequestLine className="-my-1 text-base text-github-green" />
           )}
           {T("githubIssue.status.open")}
         </>
-      ) : issue.status === Status.Merged ? (
+      ) : issue.status === GithubPullRequestStatus.Merged ? (
         <>
           <GitMergeLine className="-my-1 text-base text-github-purple" />
           {T("githubIssue.status.merged", { mergedAt: displayRelativeDate(issue.mergedAt) })}

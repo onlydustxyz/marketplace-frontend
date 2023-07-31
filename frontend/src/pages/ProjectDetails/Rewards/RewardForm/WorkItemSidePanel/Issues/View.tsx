@@ -14,15 +14,15 @@ import SearchLine from "src/icons/SearchLine";
 import { useFormContext } from "react-hook-form";
 import useFilteredWorkItems from "./useFilteredWorkItems";
 import { filter, some } from "lodash";
-import { Type } from "src/__generated/graphql";
 import { Virtuoso } from "react-virtuoso";
+import { GithubIssueType } from "src/types";
 
 const THEORETICAL_MAX_SCREEN_HEIGHT = 2000;
 
 type Props = {
   projectId: string;
   issues: WorkItem[];
-  type: Type;
+  type: GithubIssueType;
   onWorkItemAdded: (workItem: WorkItem) => void;
   onWorkItemIgnored: (workItem: WorkItem) => void;
   onWorkItemUnignored: (workItem: WorkItem) => void;
@@ -38,7 +38,7 @@ export default function View({
 }: Props) {
   const { T } = useIntl();
   const { watch, resetField } = useFormContext();
-  const tabName = type === Type.Issue ? "issues" : "pullRequests";
+  const tabName = type === GithubIssueType.Issue ? "issues" : "pullRequests";
 
   const [addOtherIssueEnabled, setStateAddOtherIssueEnabled] = useState(false);
   const [searchEnabled, setStateSearchEnabled] = useState(false);

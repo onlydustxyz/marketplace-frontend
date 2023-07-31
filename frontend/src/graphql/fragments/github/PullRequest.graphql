@@ -1,0 +1,17 @@
+fragment LiveGithubPullRequestId on PullRequest {
+  id
+}
+
+fragment LiveGithubPullRequest on PullRequest {
+  ...LiveGithubPullRequestId
+  repoId
+  number
+  status
+  title
+  htmlUrl
+  createdAt
+  closedAt
+  ignoredForProjects {
+    ...IgnoredGithubIssueId
+  }
+}

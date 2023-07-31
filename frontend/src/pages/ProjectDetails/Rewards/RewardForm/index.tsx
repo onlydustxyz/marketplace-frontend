@@ -7,9 +7,10 @@ import { useShowToaster } from "src/hooks/useToaster";
 import { generatePath, useNavigate, useOutletContext } from "react-router-dom";
 import { ProjectRoutePaths, RoutePaths } from "src/App";
 import { WorkItem } from "src/components/GithubIssue";
-import { Type, useRequestPaymentMutation } from "src/__generated/graphql";
+import { useRequestPaymentMutation } from "src/__generated/graphql";
 import useUnpaidIssues from "./WorkItemSidePanel/Issues/useUnpaidIssues";
 import { useCommands } from "src/providers/Commands";
+import { GithubIssueType } from "src/types";
 
 const RewardForm: React.FC = () => {
   const { T } = useIntl();
@@ -48,7 +49,7 @@ const RewardForm: React.FC = () => {
   const { data: unpaidPRs } = useUnpaidIssues({
     projectId,
     githubUserId: contributor?.githubUserId,
-    type: Type.PullRequest,
+    type: GithubIssueType.PullRequest,
   });
 
   const { handleSubmit } = formMethods;

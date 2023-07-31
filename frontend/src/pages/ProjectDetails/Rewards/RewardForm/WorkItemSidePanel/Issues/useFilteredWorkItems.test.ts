@@ -1,12 +1,12 @@
 import useFilteredWorkItems from "./useFilteredWorkItems";
 import { WorkItem } from "src/components/GithubIssue";
-import { Type, Status } from "src/__generated/graphql";
+import { GithubIssueType, GithubPullRequestStatus } from "src/types";
 
 const workItems: WorkItem[] = [
   {
     id: "1",
-    type: Type.Issue,
-    status: Status.Merged,
+    type: GithubIssueType.PullRequest,
+    status: GithubPullRequestStatus.Merged,
     htmlUrl: "",
     repoId: 1,
     createdAt: new Date(),
@@ -17,8 +17,8 @@ const workItems: WorkItem[] = [
   },
   {
     id: "1",
-    type: Type.Issue,
-    status: Status.Merged,
+    type: GithubIssueType.PullRequest,
+    status: GithubPullRequestStatus.Merged,
     htmlUrl: "",
     repoId: 1,
     createdAt: new Date(),
@@ -29,8 +29,8 @@ const workItems: WorkItem[] = [
   },
   {
     id: "1",
-    type: Type.Issue,
-    status: Status.Merged,
+    type: GithubIssueType.PullRequest,
+    status: GithubPullRequestStatus.Merged,
     htmlUrl: "",
     repoId: 1,
     createdAt: new Date(),
