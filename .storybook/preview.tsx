@@ -48,7 +48,7 @@ export const parameters = {
 };
 
 export const decorators = [
-  Story => (
+  (Story: any) => (
     <IntlProvider>
       <Story />
     </IntlProvider>
