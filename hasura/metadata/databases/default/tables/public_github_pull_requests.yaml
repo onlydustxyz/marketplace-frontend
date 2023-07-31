@@ -1,5 +1,5 @@
 table:
-  name: github_issues
+  name: github_pull_requests
   schema: public
 object_relationships:
   - name: repo
@@ -26,14 +26,14 @@ select_permissions:
   - role: public
     permission:
       columns:
-        - assignee_ids
-        - author_id
-        - closed_at
-        - created_at
-        - html_url
         - id
-        - number
         - repo_id
+        - number
+        - created_at
+        - author_id
+        - merged_at
         - status
         - title
+        - html_url
+        - closed_at
       filter: {}

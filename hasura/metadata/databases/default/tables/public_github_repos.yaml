@@ -1,6 +1,16 @@
 table:
   name: github_repos
   schema: public
+array_relationships:
+  - name: projects
+    using:
+      manual_configuration:
+        column_mapping:
+          id: github_repo_id
+        insertion_order: null
+        remote_table:
+          name: project_github_repos
+          schema: public
 select_permissions:
   - role: public
     permission:

@@ -132,6 +132,20 @@
           type Query {
             releaseDate: String!
           }
+  remote_relationships:
+    - relationships:
+        - definition:
+            to_source:
+              field_mapping:
+                number: issue_number
+                repoId: repo_id
+              relationship_type: array
+              source: default
+              table:
+                name: ignored_github_issues
+                schema: public
+          name: ignoredForProjects
+      type_name: Issue
 - name: DustyBot
   definition:
     url_from_env: DUSTY_BOT_GRAPHQL_URL
@@ -174,9 +188,23 @@
             title: String!
             updatedAt: DateTimeUtc!
           }
+          type PullRequest {
+            author: User!
+            closedAt: DateTimeUtc
+            createdAt: DateTimeUtc!
+            htmlUrl: Url!
+            id: GithubIssueId!
+            mergedAt: DateTimeUtc
+            number: GithubIssueNumber!
+            repoId: GithubRepoId!
+            status: Status!
+            title: String!
+            updatedAt: DateTimeUtc!
+          }
           type Query {
             fetchIssue(repoOwner: String!, repoName: String!, issueNumber: Int!): Issue
             fetchIssueByRepositoryId(repositoryId: Int!, issueNumber: Int!): Issue
+            fetchPullRequestByRepositoryId(repositoryId: Int!, prNumber: Int!): PullRequest
             fetchUserDetailsById(userId: Int!): User
             searchUsers(query: String!, sort: String, order: String, perPage: Int, page: Int): [User!]
           }
@@ -227,3 +255,16 @@
                 schema: public
           name: ignoredForProjects
       type_name: Issue
+    - relationships:
+        - definition:
+            to_source:
+              field_mapping:
+                number: issue_number
+                repoId: repo_id
+              relationship_type: array
+              source: default
+              table:
+                name: ignored_github_issues
+                schema: public
+          name: ignoredForProjects
+      type_name: PullRequest
