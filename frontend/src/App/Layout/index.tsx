@@ -8,6 +8,7 @@ import { RoutePaths } from "..";
 
 export default function Layout() {
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
+  const isSm = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.sm}px)`);
   const match = useMatch(`${RoutePaths.ProjectDetails}/*`);
   const hideHeader = match && !isXl;
 
@@ -16,7 +17,8 @@ export default function Layout() {
       {!hideHeader && <Header />}
       <Outlet />
       <Toaster />
-      <Tooltip />
+      {/* Hide tooltips on mobile */}
+      {isSm && <Tooltip />}
     </div>
   );
 }
