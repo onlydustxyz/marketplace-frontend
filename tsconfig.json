@@ -20,7 +20,7 @@
       "src": ["frontend/src/*"]
     }
   },
-  "include": ["frontend/src"],
+  "include": ["frontend/src", ".storybook/**/*.tsx"],
   "references": [
     {
       "path": "./tsconfig.node.json"

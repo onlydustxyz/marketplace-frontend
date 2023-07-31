@@ -6,7 +6,6 @@ import "src/assets/fonts/GTWalsheimPro/stylesheet.css";
 import "src/assets/fonts/BelweBdBt/stylesheet.css";
 import { IntlProvider } from "src/hooks/useIntl";
 import { MINIMAL_VIEWPORTS } from "@storybook/addon-viewport";
-import React from "react";
 
 const customViewports = {
   desktop: {
