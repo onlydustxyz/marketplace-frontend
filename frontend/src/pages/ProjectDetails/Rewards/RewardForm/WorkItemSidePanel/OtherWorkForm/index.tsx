@@ -108,7 +108,7 @@ export default function OtherWorkForm({ projectId, contributorHandle, onWorkItem
   return (
     <FormProvider {...formMethods}>
       <form className="flex h-full min-h-0 flex-col justify-between xl:gap-4" onSubmit={onSubmit}>
-        <div className="flex min-h-0 flex-col justify-start gap-4 overflow-y-auto px-6 pb-4 scrollbar-thin scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded scrollbar-w-2 xl:pb-0">
+        <div className="flex min-h-0 flex-col justify-start gap-4 overflow-y-auto px-6 pb-4 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5 xl:pb-0">
           <div className="font-belwe text-base font-normal text-greyscale-50">
             {T("reward.form.contributions.other.title")}
           </div>

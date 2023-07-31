@@ -17,7 +17,7 @@ export default function FullTermsAndConditionsSidePanel({
 }: FullTermsAndConditionsSidePanelProps) {
   return (
     <SidePanel open={showFullTermsAndConditions} setOpen={setShowFullTermsAndConditions}>
-      <div className="mr-1 flex h-full min-h-0 flex-col  gap-7 divide-y divide-greyscale-50/12  overflow-y-auto pl-6 pr-5 scrollbar-thin scrollbar-thumb-greyscale-600 scrollbar-thumb-rounded scrollbar-w-2">
+      <div className="mr-1 flex h-full min-h-0 flex-col  gap-7 divide-y divide-greyscale-50/12  overflow-y-auto pl-6 pr-5 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
         <div className="flex flex-col gap-3 pt-9 font-normal text-greyscale-50">
           <div className="font-walsheim ">JUNE 2023</div>
           <div className="font-belwe text-2xl">Terms and conditions</div>

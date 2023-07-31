@@ -106,7 +106,7 @@ export default function EditView({ profile, setEditMode }: Props) {
               )}
             />
 
-            <div className="-mt-[72px] mr-2 flex flex-col gap-6 pb-12 pl-8 pr-6 pt-[72px] scrollbar-thin scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded scrollbar-w-2">
+            <div className="-mt-[72px] mr-2 flex flex-col gap-6 pb-12 pl-8 pr-6 pt-[72px] scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
               <div data-testid="login" className="font-belwe text-3xl font-normal text-white">
                 {profile.login}
               </div>

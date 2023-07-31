@@ -46,7 +46,7 @@ export default function View({ payoutSettingsValid, saveButtonDisabled, unsavedC
 
   return (
     <div className="flex h-full min-h-0 flex-col justify-between overflow-y-auto">
-      <div className="mx-2 mb-1 flex min-h-0 flex-col gap-6 px-4 pt-4 scrollbar-thin scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded scrollbar-w-2">
+      <div className="mx-2 mb-1 flex min-h-0 flex-col gap-6 px-4 pt-4 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
         <Tag size={TagSize.Medium}>
           <div
             className={classNames({
