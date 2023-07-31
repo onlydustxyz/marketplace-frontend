@@ -29,6 +29,11 @@ pub async fn bootstrap(config: Config) -> Result<()> {
 			.published(event_bus.clone())
 			.with_state()
 			.arced(),
+		indexer::pull_requests::Indexer::new(github.clone(), database.clone())
+			.logged()
+			.published(event_bus.clone())
+			.with_state()
+			.arced(),
 		indexer::contributors::Indexer::new(github.clone(), database.clone())
 			.logged()
 			.published(event_bus.clone())

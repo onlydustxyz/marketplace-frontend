@@ -147,6 +147,7 @@ diesel::table! {
         repo_id -> Int8,
         repo_indexer_state -> Nullable<Jsonb>,
         issues_indexer_state -> Nullable<Jsonb>,
+        pull_requests_indexer_state -> Nullable<Jsonb>,
     }
 }
 

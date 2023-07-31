@@ -5,6 +5,7 @@ pub mod guarded;
 pub mod issues;
 pub mod logged;
 pub mod published;
+pub mod pull_requests;
 pub mod repo;
 mod repository;
 pub mod user;

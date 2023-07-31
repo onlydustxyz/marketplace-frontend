@@ -23,6 +23,7 @@ pub struct GithubRepoIndex {
 	pub repo_id: GithubRepoId,
 	pub repo_indexer_state: Option<Value>,
 	pub issues_indexer_state: Option<Value>,
+	pub pull_requests_indexer_state: Option<Value>,
 }
 
 impl GithubRepoIndex {

@@ -9,14 +9,14 @@ use url::Url;
 
 use crate::{GithubIssueNumber, GithubRepoId, GithubUser};
 
-#[derive(Clone, Copy, Debug, GraphQLEnum, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, GraphQLEnum, PartialEq, Eq, Serialize, Deserialize, Hash)]
 pub enum Status {
 	Open,
 	Completed,
 	Cancelled,
 }
 
-#[derive(Clone, Debug, GraphQLObject, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Clone, Debug, GraphQLObject, Serialize, Deserialize, PartialEq, Eq, Hash)]
 pub struct Issue {
 	pub id: Id,
 	pub repo_id: GithubRepoId,
