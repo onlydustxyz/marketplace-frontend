@@ -18,6 +18,7 @@ pub struct Issue {
 	pub updated_at: DateTime<Utc>,
 	pub closed_at: Option<DateTime<Utc>>,
 	pub assignees: Vec<User>,
+	pub comments_count: i32,
 }
 
 #[derive(Debug, GraphQLEnum)]
@@ -42,6 +43,7 @@ impl From<domain::GithubIssue> for Issue {
 			updated_at: issue.updated_at,
 			closed_at: issue.closed_at,
 			assignees: issue.assignees.into_iter().map(Into::into).collect(),
+			comments_count: issue.comments_count as i32,
 		}
 	}
 }

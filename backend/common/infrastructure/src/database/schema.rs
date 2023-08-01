@@ -121,6 +121,7 @@ diesel::table! {
         html_url -> Text,
         closed_at -> Nullable<Timestamp>,
         assignee_ids -> Jsonb,
+        comments_count -> Int8,
     }
 }
 
