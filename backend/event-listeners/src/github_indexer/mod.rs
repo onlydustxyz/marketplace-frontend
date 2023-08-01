@@ -14,7 +14,7 @@ use crate::{listeners::github::Event as GithubEvent, Config};
 mod indexer;
 
 pub async fn bootstrap(config: Config) -> Result<()> {
-	let github = Arc::<github::Client>::new(github::RoundRobinClient::new(config.github)?.into());
+	let github: Arc<github::Client> = github::RoundRobinClient::new(config.github)?.into();
 	let database = Arc::new(database::Client::new(database::init_pool(config.database)?));
 	let event_bus = Arc::new(amqp::Bus::new(config.amqp).await?);
 

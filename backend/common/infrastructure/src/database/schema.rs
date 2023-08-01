@@ -14,6 +14,10 @@ pub mod sql_types {
     pub struct ContactChannel;
 
     #[derive(diesel::sql_types::SqlType)]
+    #[diesel(postgres_type(name = "github_ci_checks"))]
+    pub struct GithubCiChecks;
+
+    #[derive(diesel::sql_types::SqlType)]
     #[diesel(postgres_type(name = "github_issue_status"))]
     pub struct GithubIssueStatus;
 
@@ -128,6 +132,7 @@ diesel::table! {
 diesel::table! {
     use diesel::sql_types::*;
     use super::sql_types::GithubPullRequestStatus;
+    use super::sql_types::GithubCiChecks;
 
     github_pull_requests (id) {
         id -> Int8,
@@ -140,6 +145,8 @@ diesel::table! {
         title -> Text,
         html_url -> Text,
         closed_at -> Nullable<Timestamp>,
+        draft -> Bool,
+        ci_checks -> Nullable<GithubCiChecks>,
     }
 }
 

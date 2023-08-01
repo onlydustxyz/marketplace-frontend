@@ -1,7 +1,10 @@
 use chrono::NaiveDateTime;
 use diesel::Identifiable;
 use domain::{GithubPullRequestId, GithubPullRequestNumber, GithubRepoId, GithubUserId};
-use infrastructure::database::{enums::GithubPullRequestStatus, schema::github_pull_requests};
+use infrastructure::database::{
+	enums::{GithubCiChecks, GithubPullRequestStatus},
+	schema::github_pull_requests,
+};
 use serde::{Deserialize, Serialize};
 
 #[derive(
@@ -18,6 +21,8 @@ pub struct GithubPullRequest {
 	pub title: String,
 	pub html_url: String,
 	pub closed_at: Option<NaiveDateTime>,
+	pub draft: bool,
+	pub ci_checks: Option<GithubCiChecks>,
 }
 
 impl Identifiable for GithubPullRequest {
@@ -41,6 +46,8 @@ impl From<domain::GithubPullRequest> for GithubPullRequest {
 			title: pull_request.title,
 			html_url: pull_request.html_url.to_string(),
 			closed_at: pull_request.closed_at.map(|date| date.naive_utc()),
+			draft: pull_request.draft,
+			ci_checks: pull_request.ci_checks.map(Into::into),
 		}
 	}
 }
