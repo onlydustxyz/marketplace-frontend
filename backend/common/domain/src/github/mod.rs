@@ -1,8 +1,9 @@
 mod service;
 pub use service::{
-	filters as service_filters, Error as ServiceError, FetchIssueService, FetchRepoService,
-	FetchService, FetchUserService, IssueFilters as ServiceIssueFilters, Result as ServiceResult,
-	SearchService, SearchUserService, Service,
+	filters as service_filters, Error as ServiceError, FetchIssueService, FetchPullRequestService,
+	FetchRepoService, FetchService, FetchUserService, IssueFilters as ServiceIssueFilters,
+	PullRequestFilters as ServicePullRequestFilters, Result as ServiceResult, SearchService,
+	SearchUserService, Service,
 };
 
 mod repo;
@@ -12,6 +13,9 @@ mod user;
 pub use user::{FullUser, Id as UserId, SocialAccount, User};
 
 mod issue;
-pub use issue::{
-	Id as IssueId, Issue, Number as IssueNumber, Status as IssueStatus, Type as IssueType,
+pub use issue::{Id as IssueId, Issue, Number as IssueNumber, Status as IssueStatus};
+
+mod pull_request;
+pub use pull_request::{
+	Id as PullRequestId, Number as PullRequestNumber, PullRequest, Status as PullRequestStatus,
 };

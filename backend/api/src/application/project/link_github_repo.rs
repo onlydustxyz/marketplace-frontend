@@ -37,7 +37,7 @@ impl Usecase {
 	) -> Result<(), DomainError> {
 		if !self
 			.github_repo_exists
-			.is_statified_by(&github_repo_id)
+			.is_statified_by(github_repo_id)
 			.await
 			.map_err(DomainError::InternalError)?
 		{

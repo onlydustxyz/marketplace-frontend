@@ -1,0 +1,39 @@
+table:
+  name: github_pull_requests
+  schema: public
+object_relationships:
+  - name: repo
+    using:
+      manual_configuration:
+        column_mapping:
+          repo_id: id
+        insertion_order: null
+        remote_table:
+          name: github_repos
+          schema: public
+array_relationships:
+  - name: ignoredForProjects
+    using:
+      manual_configuration:
+        column_mapping:
+          number: issue_number
+          repo_id: repo_id
+        insertion_order: null
+        remote_table:
+          name: ignored_github_issues
+          schema: public
+select_permissions:
+  - role: public
+    permission:
+      columns:
+        - id
+        - repo_id
+        - number
+        - created_at
+        - author_id
+        - merged_at
+        - status
+        - title
+        - html_url
+        - closed_at
+      filter: {}

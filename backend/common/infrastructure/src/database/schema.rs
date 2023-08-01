@@ -6,7 +6,7 @@ pub mod sql_types {
     pub struct AllocatedTime;
 
     #[derive(diesel::sql_types::SqlType)]
-    #[diesel(postgres_type(name = "citext", schema = "heroku_ext"))]
+    #[diesel(postgres_type(name = "citext"))]
     pub struct Citext;
 
     #[derive(diesel::sql_types::SqlType)]
@@ -18,8 +18,8 @@ pub mod sql_types {
     pub struct GithubIssueStatus;
 
     #[derive(diesel::sql_types::SqlType)]
-    #[diesel(postgres_type(name = "github_issue_type"))]
-    pub struct GithubIssueType;
+    #[diesel(postgres_type(name = "github_pull_request_status"))]
+    pub struct GithubPullRequestStatus;
 
     #[derive(diesel::sql_types::SqlType)]
     #[diesel(postgres_type(name = "profile_cover"))]
@@ -108,18 +108,14 @@ diesel::table! {
 
 diesel::table! {
     use diesel::sql_types::*;
-    use super::sql_types::GithubIssueType;
     use super::sql_types::GithubIssueStatus;
 
     github_issues (id) {
         id -> Int8,
         repo_id -> Int8,
-        issue_number -> Int8,
+        number -> Int8,
         created_at -> Timestamp,
         author_id -> Int8,
-        merged_at -> Nullable<Timestamp>,
-        #[sql_name = "type"]
-        type_ -> GithubIssueType,
         status -> GithubIssueStatus,
         title -> Text,
         html_url -> Text,
@@ -129,10 +125,29 @@ diesel::table! {
 }
 
 diesel::table! {
+    use diesel::sql_types::*;
+    use super::sql_types::GithubPullRequestStatus;
+
+    github_pull_requests (id) {
+        id -> Int8,
+        repo_id -> Int8,
+        number -> Int8,
+        created_at -> Timestamp,
+        author_id -> Int8,
+        merged_at -> Nullable<Timestamp>,
+        status -> GithubPullRequestStatus,
+        title -> Text,
+        html_url -> Text,
+        closed_at -> Nullable<Timestamp>,
+    }
+}
+
+diesel::table! {
     github_repo_indexes (repo_id) {
         repo_id -> Int8,
         repo_indexer_state -> Nullable<Jsonb>,
         issues_indexer_state -> Nullable<Jsonb>,
+        pull_requests_indexer_state -> Nullable<Jsonb>,
     }
 }
 
@@ -347,6 +362,7 @@ diesel::allow_tables_to_appear_in_same_query!(
     event_deduplications,
     events,
     github_issues,
+    github_pull_requests,
     github_repo_indexes,
     github_repos,
     github_repos_contributors,

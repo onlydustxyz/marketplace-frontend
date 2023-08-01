@@ -5,16 +5,14 @@ fragment GithubIssueId on GithubIssues {
 fragment GithubIssue on GithubIssues {
   ...GithubIssueId
   repoId
-  issueNumber
+  number
   title
   htmlUrl
   authorId
   assigneeIds
-  type
   status
   createdAt
   closedAt
-  mergedAt
   ignoredForProjects {
     ...IgnoredGithubIssueId
   }

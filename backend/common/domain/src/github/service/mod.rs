@@ -1,7 +1,7 @@
 mod fetch;
 pub use fetch::{
-	IssueService as FetchIssueService, RepoService as FetchRepoService, Service as FetchService,
-	UserService as FetchUserService,
+	IssueService as FetchIssueService, PullRequestService as FetchPullRequestService,
+	RepoService as FetchRepoService, Service as FetchService, UserService as FetchUserService,
 };
 
 use crate::SubscriberCallbackError;
@@ -9,7 +9,7 @@ mod search;
 pub use search::{Service as SearchService, UserService as SearchUserService};
 
 pub mod filters;
-pub use filters::IssueFilters;
+pub use filters::{IssueFilters, PullRequestFilters};
 use thiserror::Error;
 
 #[derive(Debug, Error)]

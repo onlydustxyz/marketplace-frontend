@@ -7,7 +7,7 @@ use crate::domain::GithubRepoExists;
 
 #[async_trait]
 impl GithubRepoExists for github::Client {
-	async fn is_statified_by(&self, github_repo_id: &GithubRepoId) -> Result<bool> {
+	async fn is_statified_by(&self, github_repo_id: GithubRepoId) -> Result<bool> {
 		match self.get_repository_by_id(github_repo_id).await {
 			Ok(_) => Ok(true),
 			Err(error) => match error {

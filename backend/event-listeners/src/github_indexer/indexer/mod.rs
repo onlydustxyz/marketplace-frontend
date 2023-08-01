@@ -5,6 +5,7 @@ pub mod guarded;
 pub mod issues;
 pub mod logged;
 pub mod published;
+pub mod pull_requests;
 pub mod repo;
 mod repository;
 pub mod user;
@@ -18,8 +19,9 @@ use std::{
 
 use async_trait::async_trait;
 use error::Result;
-use event_listeners::listeners::github::Event as GithubEvent;
 pub use repository::Repository;
+
+use crate::listeners::github::Event as GithubEvent;
 
 pub trait Stateful<Id> {
 	fn store(&self, id: Id, events: &[GithubEvent]) -> anyhow::Result<()>;

@@ -32,7 +32,7 @@ impl<'a> Context<'a> {
 		tracing_subscriber::fmt::init();
 
 		let database = database::Context::new(docker)?;
-		let amqp = amqp::Context::new(docker, vec![event_store::bus::QUEUE_NAME]).await?;
+		let amqp = amqp::Context::new(docker, vec![event_store::bus::QUEUE_NAME], vec![]).await?;
 		let simple_storage = simple_storage::Context::new(docker)?;
 
 		let config = Config {

@@ -27,6 +27,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { OtherWork } from "./types";
 import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
+import { GithubIssueType } from "src/types";
 
 type Props = {
   projectId: string;
@@ -94,7 +95,7 @@ export default function OtherWorkForm({ projectId, contributorHandle, onWorkItem
     context: { graphqlErrorDisplay: "toaster" },
     onCompleted: data => {
       clearForm();
-      onWorkItemAdded(issueToWorkItem(data.createIssue, projectId));
+      onWorkItemAdded(issueToWorkItem(data.createIssue, GithubIssueType.Issue, projectId));
       showToaster(T("reward.form.contributions.other.success"));
     },
   });

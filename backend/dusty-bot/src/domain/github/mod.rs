@@ -5,15 +5,15 @@ use domain::{GithubIssue, GithubIssueNumber, GithubRepoId, GithubService, Github
 pub trait Service: GithubService + Send + Sync {
 	async fn create_issue(
 		&self,
-		repo_id: &GithubRepoId,
-		title: &str,
-		description: &str,
+		repo_id: GithubRepoId,
+		title: String,
+		description: String,
 	) -> GithubServiceResult<GithubIssue>;
 
 	async fn close_issue(
 		&self,
-		repo_owner: &str,
-		repo_name: &str,
-		issue_number: &GithubIssueNumber,
+		repo_owner: String,
+		repo_name: String,
+		issue_number: GithubIssueNumber,
 	) -> GithubServiceResult<()>;
 }

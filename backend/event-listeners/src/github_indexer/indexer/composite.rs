@@ -2,10 +2,10 @@ use std::sync::Arc;
 
 use async_trait::async_trait;
 use derive_new::new;
-use event_listeners::listeners::github::Event as GithubEvent;
 use futures::future::try_join_all;
 
 use super::{Indexable, Result};
+use crate::listeners::github::Event as GithubEvent;
 
 #[derive(new)]
 pub struct Indexer<Id: Indexable> {

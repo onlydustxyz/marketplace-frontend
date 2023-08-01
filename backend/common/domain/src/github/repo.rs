@@ -1,22 +1,20 @@
-use derive_getters::Getters;
 use derive_more::{AsRef, Display, From, Into};
-use derive_new::new;
 use diesel_derive_newtype::DieselNewType;
 use juniper::{GraphQLObject, ParseScalarResult, ParseScalarValue, Value};
 use serde::{Deserialize, Serialize};
 use url::Url;
 
 #[allow(clippy::too_many_arguments)]
-#[derive(new, Debug, Getters, GraphQLObject, Clone, Serialize, Deserialize, Hash)]
+#[derive(Debug, GraphQLObject, Clone, Serialize, Deserialize, Hash, PartialEq, Eq)]
 pub struct Repo {
-	id: Id,
-	owner: String,
-	name: String,
-	logo_url: Url,
-	html_url: Url,
-	description: String,
-	stars: i32,
-	forks_count: i32,
+	pub id: Id,
+	pub owner: String,
+	pub name: String,
+	pub logo_url: Url,
+	pub html_url: Url,
+	pub description: String,
+	pub stars: i32,
+	pub forks_count: i32,
 }
 
 #[derive(

@@ -14,7 +14,7 @@ impl Mutation {
 		title: String,
 		description: String,
 	) -> Result<GithubIssue> {
-		let issue = context.github_service.create_issue(&repo_id, &title, &description).await?;
+		let issue = context.github_service.create_issue(repo_id, title, description).await?;
 		Ok(issue)
 	}
 }

@@ -1,0 +1,19 @@
+fragment GithubPullRequestId on GithubPullRequests {
+  id
+}
+
+fragment GithubPullRequest on GithubPullRequests {
+  ...GithubPullRequestId
+  repoId
+  number
+  title
+  htmlUrl
+  authorId
+  status
+  createdAt
+  closedAt
+  mergedAt
+  ignoredForProjects {
+    ...IgnoredGithubIssueId
+  }
+}

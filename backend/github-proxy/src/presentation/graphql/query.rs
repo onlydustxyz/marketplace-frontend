@@ -1,4 +1,7 @@
-use domain::{GithubIssue, GithubIssueNumber, GithubRepoId, GithubUser, GithubUserId};
+use domain::{
+	GithubIssue, GithubIssueNumber, GithubPullRequest, GithubPullRequestNumber, GithubRepoId,
+	GithubUser, GithubUserId,
+};
 use juniper::{graphql_object, DefaultScalarValue};
 use olog::{error, warn};
 
@@ -19,7 +22,7 @@ impl Query {
 		context
 			.github_service()
 			.ok()?
-			.issue(&repo_owner, &repo_name, &issue_number)
+			.issue(repo_owner, repo_name, issue_number)
 			.await
 			.map_err(Error::from)
 			.logged()
@@ -38,6 +41,24 @@ impl Query {
 			.github_service()
 			.ok()?
 			.issue_by_repo_id(&repository_id, &issue_number)
+			.await
+			.map_err(Error::from)
+			.logged()
+			.ok()
+	}
+
+	pub async fn fetch_pull_request_by_repository_id(
+		&self,
+		context: &Context,
+		repository_id: i32,
+		pr_number: i32,
+	) -> Option<GithubPullRequest> {
+		let repository_id = GithubRepoId::from(repository_id as i64);
+		let pr_number = GithubPullRequestNumber::from(pr_number as i64);
+		context
+			.github_service()
+			.ok()?
+			.pull_request_by_repo_id(&repository_id, &pr_number)
 			.await
 			.map_err(Error::from)
 			.logged()

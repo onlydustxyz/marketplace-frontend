@@ -6,9 +6,9 @@ use domain::{GithubIssue, GithubIssueNumber, GithubRepoId};
 pub trait Service: Send + Sync {
 	async fn create_issue(
 		&self,
-		repo_id: &GithubRepoId,
-		title: &str,
-		description: &str,
+		repo_id: GithubRepoId,
+		title: String,
+		description: String,
 	) -> Result<GithubIssue>;
 }
 
@@ -16,8 +16,8 @@ pub trait Service: Send + Sync {
 pub trait AsyncService: Send + Sync {
 	async fn close_issue(
 		&self,
-		repo_owner: &str,
-		repo_name: &str,
-		issue_number: &GithubIssueNumber,
+		repo_owner: String,
+		repo_name: String,
+		issue_number: GithubIssueNumber,
 	) -> Result<()>;
 }
