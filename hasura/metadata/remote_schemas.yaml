@@ -7,8 +7,16 @@
       - name: api-key
         value_from_env: BACKEND_GRAPHQL_API_KEY
     forward_client_headers: true
-  comment: ""
   permissions:
+    - role: public
+      definition:
+        schema: |
+          schema {
+            query: Query
+          }
+          type Query {
+            releaseDate: String!
+          }
     - role: registered_user
       definition:
         schema: |
@@ -20,36 +28,39 @@
           scalar DateTimeUtc
           scalar EthereumAddress
           scalar EthereumName
-          scalar GithubIssueId
-          scalar GithubIssueNumber
-          scalar GithubRepoId
-          scalar GithubUserId
           scalar Iban
           scalar Url
           scalar Uuid
-          type Issue {
-            author: User!
+          type GithubIssue {
+            assignees: [GithubUser!]!
+            author: GithubUser!
             closedAt: DateTimeUtc
             createdAt: DateTimeUtc!
             htmlUrl: Url!
-            id: GithubIssueId!
-            number: GithubIssueNumber!
-            repoId: GithubRepoId!
-            status: Status!
+            id: Int!
+            number: Int!
+            repoId: Int!
+            status: GithubIssueStatus!
             title: String!
             updatedAt: DateTimeUtc!
+          }
+          type GithubUser {
+            avatarUrl: Url!
+            htmlUrl: Url!
+            id: Int!
+            login: String!
           }
           type Mutation {
             acceptProjectLeaderInvitation(invitationId: Uuid!): Boolean!
             acceptTermsAndConditions: Uuid!
             applyToProject(projectId: Uuid!): Uuid!
             cancelPaymentRequest(projectId: Uuid!, paymentId: Uuid!): Payment!
-            createIssue(projectId: Uuid!, githubRepoId: Int!, title: String!, description: String!): Issue!
-            ignoreIssue(projectId: Uuid!, repoId: GithubRepoId!, issueNumber: GithubIssueNumber!): Boolean!
+            createIssue(projectId: Uuid!, githubRepoId: Int!, title: String!, description: String!): GithubIssue!
+            ignoreIssue(projectId: Uuid!, repoId: Int!, issueNumber: Int!): Boolean!
             markInvoiceAsReceived(paymentReferences: [PaymentReference!]!): Int!
             markProfileWizardAsDisplayed: Uuid!
             requestPayment(projectId: Uuid!, recipientId: Int!, amountInUsd: Int!, hoursWorked: Int!, reason: Reason!): Payment!
-            unignoreIssue(projectId: Uuid!, repoId: GithubRepoId!, issueNumber: GithubIssueNumber!): Boolean!
+            unignoreIssue(projectId: Uuid!, repoId: Int!, issueNumber: Int!): Boolean!
             updatePayoutInfo(location: Location, identity: IdentityInput, payoutSettings: PayoutSettingsInput): Uuid!
           }
           type Payment {
@@ -62,11 +73,10 @@
           type Query {
             releaseDate: String!
           }
-          type User {
-            avatarUrl: Url!
-            htmlUrl: Url!
-            id: GithubUserId!
-            login: String!
+          enum GithubIssueStatus {
+            CANCELLED
+            COMPLETED
+            OPEN
           }
           enum IdentityType {
             COMPANY
@@ -76,11 +86,6 @@
             BANK_ADDRESS
             ETHEREUM_ADDRESS
             ETHEREUM_NAME
-          }
-          enum Status {
-            CANCELLED
-            COMPLETED
-            OPEN
           }
           input BankAddress {
             BIC: String!
@@ -120,19 +125,12 @@
             workItems: [WorkItem!]!
           }
           input WorkItem {
-            issueNumber: GithubIssueNumber!
-            repoId: GithubRepoId!
-          }
-    - role: public
-      definition:
-        schema: |
-          schema {
-            query: Query
-          }
-          type Query {
-            releaseDate: String!
+            issueNumber: Int!
+            repoId: Int!
           }
   remote_relationships:
+    - relationships: []
+      type_name: Issue
     - relationships:
         - definition:
             to_source:
@@ -145,7 +143,7 @@
                 name: ignored_github_issues
                 schema: public
           name: ignoredForProjects
-      type_name: Issue
+      type_name: GithubIssue
 - name: DustyBot
   definition:
     url_from_env: DUSTY_BOT_GRAPHQL_URL
@@ -162,7 +160,6 @@
     headers:
       - name: api-key
         value_from_env: GITHUB_PROXY_GRAPHQL_API_KEY
-  comment: ""
   permissions:
     - role: registered_user
       definition:
@@ -171,55 +168,71 @@
             query: Query
           }
           scalar DateTimeUtc
-          scalar GithubIssueId
-          scalar GithubIssueNumber
-          scalar GithubRepoId
-          scalar GithubUserId
           scalar Url
-          type Issue {
-            author: User!
+          type GithubIssue {
+            assignees: [GithubUser!]!
+            author: GithubUser!
             closedAt: DateTimeUtc
             createdAt: DateTimeUtc!
             htmlUrl: Url!
-            id: GithubIssueId!
-            number: GithubIssueNumber!
-            repoId: GithubRepoId!
-            status: Status!
+            id: Int!
+            number: Int!
+            repoId: Int!
+            status: GithubIssueStatus!
             title: String!
             updatedAt: DateTimeUtc!
           }
-          type PullRequest {
-            author: User!
+          type GithubPullRequest {
+            author: GithubUser!
             closedAt: DateTimeUtc
             createdAt: DateTimeUtc!
             htmlUrl: Url!
-            id: GithubIssueId!
+            id: Int!
             mergedAt: DateTimeUtc
-            number: GithubIssueNumber!
-            repoId: GithubRepoId!
-            status: Status!
+            number: Int!
+            repoId: Int!
+            status: GithubPullRequestStatus!
             title: String!
             updatedAt: DateTimeUtc!
           }
-          type Query {
-            fetchIssue(repoOwner: String!, repoName: String!, issueNumber: Int!): Issue
-            fetchIssueByRepositoryId(repositoryId: Int!, issueNumber: Int!): Issue
-            fetchPullRequestByRepositoryId(repositoryId: Int!, prNumber: Int!): PullRequest
-            fetchUserDetailsById(userId: Int!): User
-            searchUsers(query: String!, sort: String, order: String, perPage: Int, page: Int): [User!]
-          }
-          type User {
+          type GithubUser {
             avatarUrl: Url!
             htmlUrl: Url!
-            id: GithubUserId!
+            id: Int!
             login: String!
           }
-          enum Status {
+          type Query {
+            fetchIssue(repoOwner: String!, repoName: String!, issueNumber: Int!): GithubIssue
+            fetchIssueByRepositoryId(repositoryId: Int!, issueNumber: Int!): GithubIssue
+            fetchPullRequest(repoOwner: String!, repoName: String!, prNumber: Int!): GithubPullRequest
+            fetchPullRequestByRepositoryId(repositoryId: Int!, prNumber: Int!): GithubPullRequest
+            fetchUserDetailsById(userId: Int!): GithubUser
+            searchUsers(query: String!, sort: String, order: String, perPage: Int, page: Int): [GithubUser!]
+          }
+          enum GithubIssueStatus {
             CANCELLED
             COMPLETED
             OPEN
           }
+          enum GithubPullRequestStatus {
+            CLOSED
+            MERGED
+            OPEN
+          }
   remote_relationships:
+    - relationships:
+        - definition:
+            to_source:
+              field_mapping:
+                number: issue_number
+                repoId: repo_id
+              relationship_type: array
+              source: default
+              table:
+                name: ignored_github_issues
+                schema: public
+          name: ignoredForProjects
+      type_name: GithubIssue
     - relationships:
         - definition:
             to_source:
@@ -241,7 +254,7 @@
                 name: registered_users
                 schema: public
           name: user
-      type_name: User
+      type_name: GithubUser
     - relationships:
         - definition:
             to_source:
@@ -254,17 +267,4 @@
                 name: ignored_github_issues
                 schema: public
           name: ignoredForProjects
-      type_name: Issue
-    - relationships:
-        - definition:
-            to_source:
-              field_mapping:
-                number: issue_number
-                repoId: repo_id
-              relationship_type: array
-              source: default
-              table:
-                name: ignored_github_issues
-                schema: public
-          name: ignoredForProjects
-      type_name: PullRequest
+      type_name: GithubPullRequest
