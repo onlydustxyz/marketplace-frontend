@@ -1,9 +1,7 @@
-use domain::{
-	GithubIssue, GithubIssueNumber, GithubPullRequest, GithubPullRequestNumber, GithubRepoId,
-	GithubUser, GithubUserId,
-};
+use domain::{GithubIssueNumber, GithubPullRequestNumber, GithubRepoId, GithubUserId};
 use juniper::{graphql_object, DefaultScalarValue};
 use olog::{error, warn};
+use presentation::graphql::dto;
 
 use super::{Context, Error};
 
@@ -17,13 +15,14 @@ impl Query {
 		repo_owner: String,
 		repo_name: String,
 		issue_number: i32,
-	) -> Option<domain::GithubIssue> {
+	) -> Option<dto::github::Issue> {
 		let issue_number = GithubIssueNumber::from(issue_number as i64);
 		context
 			.github_service()
 			.ok()?
 			.issue(repo_owner, repo_name, issue_number)
 			.await
+			.map(Into::into)
 			.map_err(Error::from)
 			.logged()
 			.ok()
@@ -34,14 +33,15 @@ impl Query {
 		context: &Context,
 		repository_id: i32,
 		issue_number: i32,
-	) -> Option<GithubIssue> {
+	) -> Option<dto::github::Issue> {
 		let repository_id = GithubRepoId::from(repository_id as i64);
 		let issue_number = GithubIssueNumber::from(issue_number as i64);
 		context
 			.github_service()
 			.ok()?
-			.issue_by_repo_id(&repository_id, &issue_number)
+			.issue_by_repo_id(repository_id, issue_number)
 			.await
+			.map(Into::into)
 			.map_err(Error::from)
 			.logged()
 			.ok()
@@ -52,14 +52,15 @@ impl Query {
 		context: &Context,
 		repository_id: i32,
 		pr_number: i32,
-	) -> Option<GithubPullRequest> {
+	) -> Option<dto::github::PullRequest> {
 		let repository_id = GithubRepoId::from(repository_id as i64);
 		let pr_number = GithubPullRequestNumber::from(pr_number as i64);
 		context
 			.github_service()
 			.ok()?
-			.pull_request_by_repo_id(&repository_id, &pr_number)
+			.pull_request_by_repo_id(repository_id, pr_number)
 			.await
+			.map(Into::into)
 			.map_err(Error::from)
 			.logged()
 			.ok()
@@ -69,13 +70,14 @@ impl Query {
 		&self,
 		context: &Context,
 		user_id: i32,
-	) -> Option<GithubUser> {
+	) -> Option<dto::github::User> {
 		let user_id = GithubUserId::from(user_id as i64);
 		context
 			.github_service()
 			.ok()?
 			.user_by_id(&user_id)
 			.await
+			.map(Into::into)
 			.map_err(Error::from)
 			.logged()
 			.ok()
@@ -89,7 +91,7 @@ impl Query {
 		order: Option<String>,
 		per_page: Option<i32>,
 		page: Option<i32>,
-	) -> Option<Vec<GithubUser>> {
+	) -> Option<Vec<dto::github::User>> {
 		context
 			.github_service_with_user_pat()
 			.ok()?
@@ -101,6 +103,7 @@ impl Query {
 				page.and_then(|n| u32::try_from(n).ok()),
 			)
 			.await
+			.map(|users| users.into_iter().map(Into::into).collect())
 			.map_err(Error::from)
 			.logged()
 			.ok()

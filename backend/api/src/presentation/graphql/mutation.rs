@@ -1,7 +1,7 @@
 use anyhow::anyhow;
 use domain::{
-	Amount, BlockchainNetwork, Currency, GithubIssue, GithubIssueNumber, GithubRepoId, Iban,
-	LogErr, PaymentReason, PaymentReceipt, ProjectId, ProjectVisibility, UserId,
+	Amount, BlockchainNetwork, Currency, Iban, LogErr, PaymentReceipt, ProjectId,
+	ProjectVisibility, UserId,
 };
 use juniper::{graphql_object, DefaultScalarValue, Nullable};
 use olog::IntoField;
@@ -236,7 +236,7 @@ impl Mutation {
 		recipient_id: i32,
 		amount_in_usd: i32,
 		hours_worked: i32,
-		reason: PaymentReason,
+		reason: dto::PaymentReason,
 	) -> Result<dto::Payment> {
 		let caller_id = context.caller_info()?.user_id;
 
@@ -255,7 +255,7 @@ impl Mutation {
 				(recipient_id as i64).into(),
 				amount_in_usd as u32,
 				hours_worked as u32,
-				reason,
+				reason.into(),
 			)
 			.await?;
 
@@ -442,7 +442,7 @@ impl Mutation {
 		github_repo_id: i32,
 		title: String,
 		description: String,
-	) -> Result<GithubIssue> {
+	) -> Result<presentation::graphql::dto::github::Issue> {
 		let caller_id = context.caller_info()?.user_id;
 
 		if !context
@@ -464,15 +464,15 @@ impl Mutation {
 				description,
 			)
 			.await?;
-		Ok(issue)
+		Ok(issue.into())
 	}
 
 	pub async fn ignore_issue(
 		&self,
 		context: &Context,
 		project_id: Uuid,
-		repo_id: GithubRepoId,
-		issue_number: GithubIssueNumber,
+		repo_id: i32,
+		issue_number: i32,
 	) -> Result<bool> {
 		let caller_id = context.caller_info()?.user_id;
 
@@ -483,9 +483,11 @@ impl Mutation {
 			));
 		}
 
-		context
-			.ignored_github_issues_usecase
-			.add(project_id.into(), repo_id, issue_number)?;
+		context.ignored_github_issues_usecase.add(
+			project_id.into(),
+			(repo_id as i64).into(),
+			(issue_number as i64).into(),
+		)?;
 
 		Ok(true)
 	}
@@ -494,8 +496,8 @@ impl Mutation {
 		&self,
 		context: &Context,
 		project_id: Uuid,
-		repo_id: GithubRepoId,
-		issue_number: GithubIssueNumber,
+		repo_id: i32,
+		issue_number: i32,
 	) -> Result<bool> {
 		let caller_id = context.caller_info()?.user_id;
 
@@ -506,9 +508,11 @@ impl Mutation {
 			));
 		}
 
-		context
-			.ignored_github_issues_usecase
-			.remove(project_id.into(), repo_id, issue_number)?;
+		context.ignored_github_issues_usecase.remove(
+			project_id.into(),
+			(repo_id as i64).into(),
+			(issue_number as i64).into(),
+		)?;
 
 		Ok(true)
 	}
