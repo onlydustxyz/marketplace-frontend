@@ -1,19 +1,15 @@
-use derive_getters::Getters;
-use derive_new::new;
 use juniper::GraphQLInputObject;
 use serde::{Deserialize, Serialize};
 
 use crate::{GithubIssueNumber, GithubRepoId};
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, GraphQLInputObject, Getters, new)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, GraphQLInputObject)]
 pub struct WorkItem {
-	repo_id: GithubRepoId,
-	issue_number: GithubIssueNumber,
+	pub repo_id: GithubRepoId,
+	pub issue_number: GithubIssueNumber,
 }
 
-#[derive(
-	Debug, Default, Clone, PartialEq, Eq, Serialize, Deserialize, GraphQLInputObject, Getters,
-)]
+#[derive(Debug, Default, Clone, PartialEq, Eq, Serialize, Deserialize, GraphQLInputObject)]
 pub struct Reason {
-	work_items: Vec<WorkItem>,
+	pub work_items: Vec<WorkItem>,
 }

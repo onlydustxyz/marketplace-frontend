@@ -8,13 +8,15 @@ use std::{
 use anyhow::anyhow;
 use domain::{
 	stream_filter::{self, StreamFilterWith},
-	GithubFullUser, GithubIssue, GithubIssueNumber, GithubRepoId, GithubServiceIssueFilters,
-	GithubUser, GithubUserId, Languages, PositiveCount,
+	GithubFullUser, GithubIssue, GithubIssueNumber, GithubPullRequest, GithubPullRequestNumber,
+	GithubRepoId, GithubServiceIssueFilters, GithubServicePullRequestFilters, GithubUser,
+	GithubUserId, Languages, PositiveCount,
 };
 use futures::{stream::empty, Stream, StreamExt, TryStreamExt};
 use octocrab::{
 	models::{
 		issues::{Comment, Issue},
+		pulls::PullRequest,
 		repos::Content,
 		Repository, User,
 	},
@@ -24,7 +26,12 @@ use octocrab::{
 use olog::{tracing::instrument, IntoField};
 use reqwest::Url;
 
-use super::{service::QueryParams, AddHeaders, Config, Error, IssueFromOctocrab};
+use super::{
+	issue::FromOctocrab as FromOctocrabIssue,
+	pull_request::FromOctocrab as FromOctocrabPullRequest,
+	service::{query_params::State, QueryParams},
+	AddHeaders, Config, Error,
+};
 
 mod round_robin;
 pub use round_robin::Client as RoundRobinClient;
@@ -157,14 +164,14 @@ impl Client {
 	}
 
 	#[instrument(skip(self))]
-	pub async fn get_repository_by_id(&self, id: &GithubRepoId) -> Result<Repository, Error> {
+	pub async fn get_repository_by_id(&self, id: GithubRepoId) -> Result<Repository, Error> {
 		self.get_as(format!("{}repositories/{id}", self.octocrab().base_url)).await
 	}
 
 	#[instrument(skip(self))]
 	pub async fn get_languages_by_repository_id(
 		&self,
-		id: &GithubRepoId,
+		id: GithubRepoId,
 	) -> Result<Languages, Error> {
 		self.get_as(format!(
 			"{}repositories/{id}/languages",
@@ -209,11 +216,11 @@ impl Client {
 	#[instrument(skip(self))]
 	pub async fn get_issue(
 		&self,
-		repo_owner: &str,
-		repo_name: &str,
-		issue_number: &GithubIssueNumber,
+		repo_owner: String,
+		repo_name: String,
+		issue_number: GithubIssueNumber,
 	) -> Result<Issue, Error> {
-		let issue_number: i64 = (*issue_number).into();
+		let issue_number: i64 = issue_number.into();
 		let issue = self.octocrab().issues(repo_owner, repo_name).get(issue_number as u64).await?;
 		Ok(issue)
 	}
@@ -224,8 +231,26 @@ impl Client {
 		repo_id: &GithubRepoId,
 		issue_number: &GithubIssueNumber,
 	) -> Result<Issue, Error> {
+		let issue: Issue = self
+			.get_as(format!(
+				"{}repositories/{repo_id}/issues/{issue_number}",
+				self.octocrab().base_url
+			))
+			.await?;
+		match issue.pull_request {
+			Some(_) => Err(Error::NotFound(anyhow!("Issue is in fact a pull request"))),
+			None => Ok(issue),
+		}
+	}
+
+	#[instrument(skip(self))]
+	pub async fn get_pull_request_by_repository_id(
+		&self,
+		repo_id: &GithubRepoId,
+		pr_number: &GithubPullRequestNumber,
+	) -> Result<PullRequest, Error> {
 		self.get_as(format!(
-			"{}repositories/{repo_id}/issues/{issue_number}",
+			"{}repositories/{repo_id}/pulls/{pr_number}",
 			self.octocrab().base_url
 		))
 		.await
@@ -244,7 +269,7 @@ impl Client {
 		};
 
 		let query_params = QueryParams::default()
-			.state(filters.state.into())
+			.state(State::All)
 			.sort(sort)
 			.direction(Direction::Descending)
 			.page(1)
@@ -265,14 +290,72 @@ impl Client {
 			.await?
 			.filter_map(|issue| {
 				future::ready({
-					match GithubIssue::from_octocrab_issue(issue.clone(), *id) {
-						Ok(issue) => Some(issue),
+					if issue.pull_request.is_some() {
+						None
+					} else {
+						match GithubIssue::from_octocrab(issue.clone(), *id) {
+							Ok(issue) => Some(issue),
+							Err(e) => {
+								error!(
+									error = e.to_field(),
+									repository_id = id.to_string(),
+									issue_id = issue.id.0,
+									"Failed to process issue"
+								);
+								None
+							},
+						}
+					}
+				})
+			})
+			.filter_with(Arc::new(*filters))
+			.collect()
+			.await;
+		Ok(issues)
+	}
+
+	#[instrument(skip(self))]
+	pub async fn pulls_by_repo_id(
+		&self,
+		id: &GithubRepoId,
+		filters: &GithubServicePullRequestFilters,
+	) -> Result<Vec<GithubPullRequest>, Error> {
+		let sort = if filters.updated_since.is_some() {
+			Sort::Updated
+		} else {
+			Sort::Created
+		};
+
+		let query_params = QueryParams::default()
+			.state(State::All)
+			.sort(sort)
+			.direction(Direction::Descending)
+			.page(1)
+			.per_page(100);
+
+		let url = format!(
+			"{}repositories/{id}/pulls?{}",
+			self.octocrab().base_url,
+			query_params.to_query_string()?
+		)
+		.parse()?;
+
+		let pull_requests = self
+			.stream_as::<PullRequest>(
+				url,
+				100 * self.config().max_calls_per_request.map(PositiveCount::get).unwrap_or(3),
+			)
+			.await?
+			.filter_map(|pull_request| {
+				future::ready({
+					match GithubPullRequest::from_octocrab(pull_request.clone(), *id) {
+						Ok(pull_request) => Some(pull_request),
 						Err(e) => {
 							error!(
 								error = e.to_field(),
 								repository_id = id.to_string(),
-								issue_id = issue.id.0,
-								"Failed to process issue"
+								pull_request_id = pull_request.id.0,
+								"Failed to process pull_request"
 							);
 							None
 						},
@@ -282,7 +365,7 @@ impl Client {
 			.filter_with(Arc::new(*filters))
 			.collect()
 			.await;
-		Ok(issues)
+		Ok(pull_requests)
 	}
 
 	#[instrument(skip(self))]

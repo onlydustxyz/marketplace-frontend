@@ -115,11 +115,11 @@ impl ConsumableBus {
 		Ok(())
 	}
 
-	pub async fn with_exchange(self, exchange_name: &'static str) -> Result<Self, Error> {
+	pub async fn with_exchange<E: AsRef<str>>(self, exchange_name: E) -> Result<Self, Error> {
 		self.bus
 			.channel
 			.exchange_declare(
-				exchange_name,
+				exchange_name.as_ref(),
 				lapin::ExchangeKind::Fanout,
 				ExchangeDeclareOptions {
 					durable: true,
@@ -133,7 +133,7 @@ impl ConsumableBus {
 			.channel
 			.queue_bind(
 				&self.queue_name,
-				exchange_name,
+				exchange_name.as_ref(),
 				"",
 				Default::default(),
 				Default::default(),

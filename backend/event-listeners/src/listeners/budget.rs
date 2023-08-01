@@ -81,15 +81,15 @@ impl EventListener<Event> for Projector {
 							hours_worked: i32::try_from(duration_worked.num_hours()).unwrap_or(0),
 						})?;
 
-						reason.work_items().iter().try_for_each(
+						reason.work_items.iter().try_for_each(
 							|work_item| -> Result<(), SubscriberCallbackError> {
 								self.work_item_repository.try_insert(WorkItem {
 									payment_id,
-									repo_id: *work_item.repo_id(),
-									issue_number: *work_item.issue_number(),
+									repo_id: work_item.repo_id,
+									issue_number: work_item.issue_number,
 								})?;
 								self.github_repo_index_repository
-									.start_indexing(work_item.repo_id())?;
+									.start_indexing(work_item.repo_id)?;
 								Ok(())
 							},
 						)?;

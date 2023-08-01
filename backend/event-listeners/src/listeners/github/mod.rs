@@ -20,6 +20,7 @@ pub struct Projector {
 	github_fetch_service: Arc<dyn GithubFetchRepoService>,
 	github_repo_repository: Arc<dyn Repository<GithubRepo>>,
 	github_issues_repository: Arc<dyn Repository<GithubIssue>>,
+	github_pull_requests_repository: Arc<dyn Repository<GithubPullRequest>>,
 	github_users_repository: Arc<dyn Repository<GithubUser>>,
 	github_repos_contributors_repository: Arc<dyn ImmutableRepository<GithubReposContributor>>,
 	projects_contributors_repository: Arc<dyn ProjectsContributorRepository>,
@@ -30,14 +31,14 @@ pub struct Projector {
 impl Projector {
 	fn build_repo(&self, repo: domain::GithubRepo, languages: Languages) -> Result<GithubRepo> {
 		Ok(GithubRepo {
-			id: *repo.id(),
-			owner: repo.owner().clone(),
-			name: repo.name().clone(),
+			id: repo.id,
+			owner: repo.owner,
+			name: repo.name,
 			updated_at: Some(Utc::now().naive_utc()),
-			description: repo.description().clone(),
-			stars: *repo.stars(),
-			fork_count: *repo.forks_count(),
-			html_url: repo.html_url().to_string(),
+			description: repo.description,
+			stars: repo.stars,
+			fork_count: repo.forks_count,
+			html_url: repo.html_url.to_string(),
 			languages: serde_json::to_value(languages)?,
 		})
 	}
@@ -49,7 +50,7 @@ impl EventListener<Event> for Projector {
 	async fn on_event(&self, event: Event) -> Result<(), SubscriberCallbackError> {
 		match event.clone() {
 			Event::Repo(repo) => {
-				let languages = self.github_fetch_service.repo_languages(repo.id()).await?;
+				let languages = self.github_fetch_service.repo_languages(repo.id).await?;
 				languages.get_all().into_iter().try_for_each(|language| {
 					self.technologies_repository
 						.try_insert(Technology {
@@ -64,6 +65,9 @@ impl EventListener<Event> for Projector {
 			},
 			Event::Issue(issue) => {
 				self.github_issues_repository.upsert(issue.into())?;
+			},
+			Event::PullRequest(pull_request) => {
+				self.github_pull_requests_repository.upsert(pull_request.into())?;
 			},
 			Event::User { user, repo_id } => {
 				self.github_users_repository.upsert(user.clone().into())?;

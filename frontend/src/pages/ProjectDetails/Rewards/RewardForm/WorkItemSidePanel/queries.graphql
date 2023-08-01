@@ -1,13 +1,16 @@
-query SearchIssues($projectId: uuid!, $issuesWhereClause: GithubIssuesBoolExp!) {
-  projects(where: { id: { _eq: $projectId } }) {
-    id
-    githubRepos {
-      projectId
-      githubRepoId
-      repoIssues(where: $issuesWhereClause) {
-        ...GithubIssue
-      }
-    }
+query SearchIssues($projectId: uuid!, $githubUserId: jsonb!) {
+  githubIssues(
+    where: { repo: { projects: { projectId: { _eq: $projectId } } }, assigneeIds: { _contains: $githubUserId } }
+  ) {
+    ...GithubIssue
+  }
+}
+
+query SearchPullRequests($projectId: uuid!, $githubUserId: bigint!) {
+  githubPullRequests(
+    where: { repo: { projects: { projectId: { _eq: $projectId } } }, authorId: { _eq: $githubUserId } }
+  ) {
+    ...GithubPullRequest
   }
 }
 

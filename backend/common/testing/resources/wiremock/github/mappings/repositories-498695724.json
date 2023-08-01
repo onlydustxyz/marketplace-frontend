@@ -1,0 +1,39 @@
+{
+  "id": "e5bec8e7-f6c6-35eb-9e3b-71ebc7fab0da",
+  "request": {
+    "url": "/repositories/498695724",
+    "method": "GET"
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "body-repositories-498695724.json",
+    "headers": {
+      "Server": "GitHub.com",
+      "Date": "Fri, 28 Jul 2023 16:25:48 GMT",
+      "Content-Type": "application/json; charset=utf-8",
+      "Cache-Control": "private, max-age=60, s-maxage=60",
+      "Vary": ["Accept, Authorization, Cookie, X-GitHub-OTP", "Accept-Encoding, Accept, X-Requested-With"],
+      "ETag": "\"c342e001522b311974b714e7b1cab244bdc6b40a23821fcbe8569cff6cc829a5\"",
+      "Last-Modified": "Mon, 08 May 2023 16:27:14 GMT",
+      "X-OAuth-Scopes": "public_repo",
+      "X-Accepted-OAuth-Scopes": "repo",
+      "X-GitHub-Media-Type": "github.v3; format=json",
+      "x-github-api-version-selected": "2022-11-28",
+      "X-RateLimit-Limit": "5000",
+      "X-RateLimit-Remaining": "4998",
+      "X-RateLimit-Reset": "1690565148",
+      "X-RateLimit-Used": "2",
+      "X-RateLimit-Resource": "core",
+      "Access-Control-Expose-Headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset",
+      "Access-Control-Allow-Origin": "*",
+      "Strict-Transport-Security": "max-age=31536000; includeSubdomains; preload",
+      "X-Frame-Options": "deny",
+      "X-Content-Type-Options": "nosniff",
+      "X-XSS-Protection": "0",
+      "Referrer-Policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+      "Content-Security-Policy": "default-src 'none'",
+      "X-GitHub-Request-Id": "4EDC:B857:10ED495:1110081:64C3EC0C"
+    }
+  },
+  "uuid": "e5bec8e7-f6c6-35eb-9e3b-71ebc7fab0da"
+}

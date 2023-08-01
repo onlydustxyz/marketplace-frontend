@@ -6,7 +6,7 @@ import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import SidePanel from "src/components/SidePanel";
 import { useIntl } from "src/hooks/useIntl";
 import Time from "src/icons/TimeLine";
-import { PaymentStatus } from "src/types";
+import { GithubIssueType, PaymentStatus } from "src/types";
 import { pretty } from "src/utils/id";
 import { formatMoneyAmount } from "src/utils/money";
 import { PaymentRequestDetailsFragment } from "src/__generated/graphql";
@@ -205,11 +205,18 @@ export default function View({
               {T("reward.table.detailsPanel.contributions")}
             </div>
             <div className="flex h-full flex-col gap-3 overflow-auto p-px pb-6 pr-4 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
-              {workItems?.map(
-                workItem =>
-                  workItem.githubIssue && (
-                    <GithubIssue key={workItem.githubIssue?.id} workItem={issueToWorkItem(workItem.githubIssue)} />
-                  )
+              {workItems?.map(workItem =>
+                workItem.githubIssue ? (
+                  <GithubIssue
+                    key={workItem.githubIssue?.id}
+                    workItem={issueToWorkItem(workItem.githubIssue, GithubIssueType.Issue)}
+                  />
+                ) : workItem.githubPullRequest ? (
+                  <GithubIssue
+                    key={workItem.githubPullRequest?.id}
+                    workItem={issueToWorkItem(workItem.githubPullRequest, GithubIssueType.PullRequest)}
+                  />
+                ) : undefined
               )}
             </div>
           </div>

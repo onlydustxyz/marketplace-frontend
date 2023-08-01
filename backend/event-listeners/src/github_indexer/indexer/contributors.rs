@@ -4,12 +4,12 @@ use async_trait::async_trait;
 use chrono::{DateTime, Utc};
 use derive_new::new;
 use domain::{stream_filter, GithubFetchService, GithubRepoId, GithubUser, GithubUserId, LogErr};
-use event_listeners::{listeners::github::Event as GithubEvent, models::GithubUserIndexRepository};
 use olog::IntoField;
 use serde::{Deserialize, Serialize};
 use stream_filter::Decision;
 
 use super::{error::IgnoreErrors, hash, Result};
+use crate::{listeners::github::Event as GithubEvent, models::GithubUserIndexRepository};
 
 #[derive(Default, Clone, Serialize, Deserialize, PartialEq, Eq)]
 struct State {

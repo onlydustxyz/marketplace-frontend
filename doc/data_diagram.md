@@ -93,12 +93,26 @@ class GithubIssues {
    htmlUrl: String!
    id: bigint!
    ignoredForProjects: [IgnoredGithubIssues!]!
-   issueNumber: bigint!
-   mergedAt: timestamp
+   number: bigint!
+   repo: GithubRepos
    repoId: bigint!
    status: github_issue_status!
    title: String!
-   type: github_issue_type!
+}
+
+class GithubPullRequests {
+   authorId: bigint!
+   closedAt: timestamp
+   createdAt: timestamp!
+   htmlUrl: String!
+   id: bigint!
+   ignoredForProjects: [IgnoredGithubIssues!]!
+   mergedAt: timestamp
+   number: bigint!
+   repo: GithubRepos
+   repoId: bigint!
+   status: github_pull_request_status!
+   title: String!
 }
 
 class GithubRepos {
@@ -109,6 +123,7 @@ class GithubRepos {
    languages: jsonb!
    name: String!
    owner: String!
+   projects: [ProjectGithubRepos!]!
    stars: Int!
    updatedAt: timestamp
 }
@@ -148,12 +163,10 @@ class Issue {
    htmlUrl: Url!
    id: GithubIssueId!
    ignoredForProjects: [IgnoredGithubIssues!]!
-   mergedAt: DateTimeUtc
    number: GithubIssueNumber!
    repoId: GithubRepoId!
    status: Status!
    title: String!
-   type: Type!
    updatedAt: DateTimeUtc!
 }
 
@@ -264,7 +277,23 @@ class ProjectsSponsors {
    sponsorId: uuid!
 }
 
+class PullRequest {
+   author: User!
+   closedAt: DateTimeUtc
+   createdAt: DateTimeUtc!
+   htmlUrl: Url!
+   id: GithubIssueId!
+   ignoredForProjects: [IgnoredGithubIssues!]!
+   mergedAt: DateTimeUtc
+   number: GithubIssueNumber!
+   repoId: GithubRepoId!
+   status: Status!
+   title: String!
+   updatedAt: DateTimeUtc!
+}
+
 class RegisteredUsers {
+   admin: Boolean
    avatarUrl: String
    email: citext
    githubUserId: bigint
@@ -334,6 +363,7 @@ class UserProfiles {
 
 class WorkItems {
    githubIssue: Issue
+   githubPullRequest: PullRequest
    ignoredForProjects: [IgnoredGithubIssues!]!
    issueNumber: bigint!
    paymentId: uuid!
@@ -437,7 +467,11 @@ class users {
 Budgets -- Projects
 Budgets --* PaymentRequests
 Contacts -- ContactInformations
+GithubIssues -- GithubRepos
 GithubIssues --* IgnoredGithubIssues
+GithubPullRequests -- GithubRepos
+GithubPullRequests --* IgnoredGithubIssues
+GithubRepos --* ProjectGithubRepos
 GithubReposContributors -- GithubUsers
 GithubUsers -- RegisteredUsers
 GithubUsers --* PaymentRequests
@@ -469,6 +503,8 @@ ProjectsContributors -- GithubUsers
 ProjectsContributors -- Projects
 ProjectsContributors -- UserProfiles
 ProjectsSponsors -- Sponsors
+PullRequest -- User
+PullRequest --* IgnoredGithubIssues
 RegisteredUsers -- UserPayoutInfo
 RegisteredUsers --* PaymentRequests
 RegisteredUsers --* ProjectLeads
@@ -485,6 +521,7 @@ UserProfiles --* ProjectLeads
 UserProfiles --* ProjectsContributors
 WorkItems -- Issue
 WorkItems -- PaymentRequests
+WorkItems -- PullRequest
 WorkItems --* IgnoredGithubIssues
 authProviders --* authUserProviders
 authRefreshTokens -- users

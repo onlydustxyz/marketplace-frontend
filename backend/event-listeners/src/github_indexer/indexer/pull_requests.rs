@@ -3,15 +3,15 @@ use std::sync::Arc;
 use async_trait::async_trait;
 use chrono::{DateTime, Utc};
 use derive_new::new;
-use domain::{GithubFetchIssueService, GithubRepoId, GithubServiceIssueFilters};
-use event_listeners::{listeners::github::Event as GithubEvent, models::GithubRepoIndexRepository};
+use domain::{GithubFetchPullRequestService, GithubRepoId, GithubServicePullRequestFilters};
 use serde::{Deserialize, Serialize};
 
 use super::{error::IgnoreErrors, Result};
+use crate::{listeners::github::Event as GithubEvent, models::GithubRepoIndexRepository};
 
 #[derive(new)]
 pub struct Indexer {
-	github_fetch_service: Arc<dyn GithubFetchIssueService>,
+	github_fetch_service: Arc<dyn GithubFetchPullRequestService>,
 	github_repo_index_repository: Arc<dyn GithubRepoIndexRepository>,
 }
 
@@ -28,13 +28,14 @@ impl State {
 
 impl Indexer {
 	fn get_state(&self, repo_id: GithubRepoId) -> anyhow::Result<Option<State>> {
-		let state = match self.github_repo_index_repository.select_issues_indexer_state(&repo_id)? {
-			Some(state) => {
-				let state = serde_json::from_value(state)?;
-				Some(state)
-			},
-			_ => None,
-		};
+		let state =
+			match self.github_repo_index_repository.select_pull_requests_indexer_state(&repo_id)? {
+				Some(state) => {
+					let state = serde_json::from_value(state)?;
+					Some(state)
+				},
+				_ => None,
+			};
 
 		Ok(state)
 	}
@@ -43,20 +44,19 @@ impl Indexer {
 #[async_trait]
 impl super::Indexer<GithubRepoId> for Indexer {
 	async fn index(&self, repo_id: GithubRepoId) -> Result<Vec<GithubEvent>> {
-		let filters = GithubServiceIssueFilters {
+		let filters = GithubServicePullRequestFilters {
 			updated_since: self
 				.get_state(repo_id)?
 				.map(|state| state.last_update_time + chrono::Duration::milliseconds(1)),
-			..Default::default()
 		};
 
 		let events = self
 			.github_fetch_service
-			.issues_by_repo_id(&repo_id, &filters)
+			.pull_requests_by_repo_id(&repo_id, &filters)
 			.await
 			.ignore_non_fatal_errors()?
 			.into_iter()
-			.map(GithubEvent::Issue)
+			.map(GithubEvent::PullRequest)
 			.collect();
 
 		Ok(events)
@@ -68,7 +68,7 @@ impl super::Stateful<GithubRepoId> for Indexer {
 		let mut updated_times: Vec<_> = events
 			.iter()
 			.filter_map(|event| match event {
-				GithubEvent::Issue(issue) => Some(issue.updated_at),
+				GithubEvent::PullRequest(pull_request) => Some(pull_request.updated_at),
 				_ => None,
 			})
 			.collect();
@@ -78,7 +78,7 @@ impl super::Stateful<GithubRepoId> for Indexer {
 		if let Some(updated_at) = updated_times.pop() {
 			let state = State::new(updated_at);
 			self.github_repo_index_repository
-				.update_issues_indexer_state(&id, state.json()?)?;
+				.update_pull_requests_indexer_state(&id, state.json()?)?;
 		}
 
 		Ok(())

@@ -4,10 +4,10 @@ use async_trait::async_trait;
 use chrono::{DateTime, Utc};
 use derive_new::new;
 use domain::{GithubFetchService, GithubFullUser, GithubUserId};
-use event_listeners::{listeners::github::Event as GithubEvent, models::GithubUserIndexRepository};
 use serde::{Deserialize, Serialize};
 
 use super::{error::IgnoreErrors, hash, Result};
+use crate::{listeners::github::Event as GithubEvent, models::GithubUserIndexRepository};
 
 #[derive(Default, Clone, Serialize, Deserialize, PartialEq, Eq)]
 struct State {

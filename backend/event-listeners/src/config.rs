@@ -1,7 +1,7 @@
 use infrastructure::{amqp, database, github, tracing};
 use serde::Deserialize;
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Clone)]
 pub struct Config {
 	pub database: database::Config,
 	pub amqp: amqp::Config,

@@ -2,12 +2,13 @@ import { chain, some } from "lodash";
 import { WorkItem } from "src/components/GithubIssue";
 import View from "./View";
 import useIgnoredIssues from "./useIgnoredIssues";
-import { LiveGithubIssueFragment, Type } from "src/__generated/graphql";
+import { LiveGithubIssueFragment, LiveGithubPullRequestFragment, Status } from "src/__generated/graphql";
 import useUnpaidIssues from "./useUnpaidIssues";
 import { useMemo } from "react";
+import { GithubIssueStatus, GithubIssueType } from "src/types";
 
 type Props = {
-  type: Type;
+  type: GithubIssueType;
   projectId: string;
   contributorId: number;
   workItems: WorkItem[];
@@ -46,9 +47,17 @@ export default function Issues({ type, projectId, contributorId, workItems, onWo
 }
 
 export const issueToWorkItem = (
-  { ignoredForProjects, ...props }: LiveGithubIssueFragment,
+  { ignoredForProjects, status, ...props }: LiveGithubIssueFragment | LiveGithubPullRequestFragment,
+  type: GithubIssueType,
   projectId?: string
 ): WorkItem => ({
   ...props,
+  type,
+  status:
+    status === Status.Open
+      ? GithubIssueStatus.Open
+      : status === Status.Completed
+      ? GithubIssueStatus.Completed
+      : GithubIssueStatus.Cancelled,
   ignored: some(ignoredForProjects, { projectId }),
 });

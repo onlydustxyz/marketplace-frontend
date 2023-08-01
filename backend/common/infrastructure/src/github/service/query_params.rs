@@ -1,4 +1,3 @@
-use domain::github_service_filters;
 use octocrab::params::{pulls::Sort, Direction};
 use serde::Serialize;
 
@@ -49,18 +48,6 @@ impl QueryParams {
 	}
 }
 
-impl From<Option<github_service_filters::IssueState>> for State {
-	fn from(value: Option<github_service_filters::IssueState>) -> Self {
-		value
-			.map(|state| match state {
-				github_service_filters::IssueState::Open => State::Open,
-				github_service_filters::IssueState::Closed => State::Closed,
-				github_service_filters::IssueState::All => State::All,
-			})
-			.unwrap_or(State::All)
-	}
-}
-
 impl QueryParams {
 	pub fn to_query_string(self) -> Result<String, serde_qs::Error> {
 		serde_qs::to_string(&self)
@@ -70,8 +57,6 @@ impl QueryParams {
 #[derive(Debug, Clone, Copy, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum State {
-	Open,
-	Closed,
 	All,
 }
 
@@ -86,11 +71,11 @@ mod tests {
 			.page(2)
 			.per_page(10)
 			.sort(Sort::Updated)
-			.state(State::Closed);
+			.state(State::All);
 
 		assert_eq!(
 			serde_qs::to_string(&query_params).unwrap(),
-			"direction=asc&page=2&per_page=10&sort=updated&state=closed"
+			"direction=asc&page=2&per_page=10&sort=updated&state=all"
 		);
 	}
 

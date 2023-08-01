@@ -68,7 +68,7 @@ impl EventSourcable for Payment {
 				id: *id,
 				requested_usd_amount: *amount.amount(), // TODO: handle currencies
 				recipient_id: *recipient_id,
-				work_items: reason.work_items().clone(),
+				work_items: reason.work_items.clone(),
 				requestor_id: *requestor_id,
 				duration_worked: *duration_worked,
 				..self

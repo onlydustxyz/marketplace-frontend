@@ -21,6 +21,9 @@ fragment PaymentRequestDetails on PaymentRequests {
     githubIssue {
       ...LiveGithubIssue
     }
+    githubPullRequest {
+      ...LiveGithubPullRequest
+    }
   }
   paymentsAggregate {
     aggregate {

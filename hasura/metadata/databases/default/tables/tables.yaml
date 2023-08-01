@@ -18,6 +18,7 @@
 - "!include public_applications.yaml"
 - "!include public_budgets.yaml"
 - "!include public_github_issues.yaml"
+- "!include public_github_pull_requests.yaml"
 - "!include public_github_repos.yaml"
 - "!include public_github_repos_contributors.yaml"
 - "!include public_github_users.yaml"

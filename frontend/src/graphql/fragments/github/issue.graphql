@@ -6,13 +6,11 @@ fragment LiveGithubIssue on Issue {
   ...LiveGithubIssueId
   repoId
   number
-  type
   status
   title
   htmlUrl
   createdAt
   closedAt
-  mergedAt
   ignoredForProjects {
     ...IgnoredGithubIssueId
   }

@@ -7,9 +7,9 @@ use crate::{GithubIssue, GithubIssueNumber, GithubRepoId, GithubServiceIssueFilt
 pub trait Service: Send + Sync {
 	async fn issue(
 		&self,
-		repo_owner: &str,
-		repo_name: &str,
-		issue_number: &GithubIssueNumber,
+		repo_owner: String,
+		repo_name: String,
+		issue_number: GithubIssueNumber,
 	) -> Result<GithubIssue>;
 
 	async fn issue_by_repo_id(

@@ -35,6 +35,17 @@ remote_relationships:
               repositoryId: $repo_id
         remote_schema: GithubProxy
     name: githubIssue
+  - definition:
+      hasura_fields:
+        - issue_number
+        - repo_id
+      remote_field:
+        fetchPullRequestByRepositoryId:
+          arguments:
+            prNumber: $issue_number
+            repositoryId: $repo_id
+      remote_schema: GithubProxy
+    name: githubPullRequest
 select_permissions:
   - role: public
     permission:

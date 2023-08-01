@@ -3,11 +3,13 @@ use std::sync::Arc;
 use async_trait::async_trait;
 use derive_new::new;
 use domain::{GithubFetchRepoService, GithubRepo, GithubRepoId, GithubServiceError};
-use event_listeners::{listeners::github::Event as GithubEvent, models::GithubRepoIndexRepository};
 use serde::{Deserialize, Serialize};
 
 use super::Result;
-use crate::indexer::hash;
+use crate::{
+	github_indexer::indexer::hash, listeners::github::Event as GithubEvent,
+	models::GithubRepoIndexRepository,
+};
 
 #[derive(new)]
 pub struct Indexer {
@@ -49,7 +51,7 @@ impl Indexer {
 #[async_trait]
 impl super::Indexer<GithubRepoId> for Indexer {
 	async fn index(&self, repo_id: GithubRepoId) -> Result<Vec<GithubEvent>> {
-		match self.github_fetch_service.repo_by_id(&repo_id).await {
+		match self.github_fetch_service.repo_by_id(repo_id).await {
 			Ok(repo) => {
 				let events = match self.get_state(repo_id)? {
 					Some(state) if state == State::new(&repo) => vec![],

@@ -27,10 +27,14 @@ impl<'docker> Context<'docker> {
 			pool_max_size: 2,
 		};
 
+		let client = database::Client::new(database::init_pool(config.clone())?);
+
+		client.run_migrations()?;
+
 		Ok(Self {
 			_container: container,
-			config: config.clone(),
-			client: database::Client::new(database::init_pool(config)?),
+			config,
+			client,
 		})
 	}
 }
@@ -41,7 +45,6 @@ fn image() -> RunnableImage<GenericImage> {
 		project_root::get_project_root().unwrap().display()
 	);
 
-	println!("{}", hasura_auth_migrations_path);
 	RunnableImage::from(
 		GenericImage::new("postgres", "14.3-alpine")
 			.with_env_var("POSTGRES_DB", DATABASE)
