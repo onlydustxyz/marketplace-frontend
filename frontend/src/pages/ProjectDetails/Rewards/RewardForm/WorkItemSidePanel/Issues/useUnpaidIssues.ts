@@ -48,7 +48,7 @@ export default function useUnpaidIssues({ projectId, githubUserId, type }: Props
       searchIssuesQuery.data?.githubIssues &&
       paidItems &&
       chain(searchIssuesQuery.data?.githubIssues)
-        .map(issue => issueToWorkItem(projectId, type, issue))
+        .map(issue => issueToWorkItem(projectId, issue))
         .differenceWith(paidItems, (pr, paidItem) => {
           return pr.repoId === paidItem.repoId && pr.number === paidItem.issueNumber;
         })
@@ -63,7 +63,7 @@ export default function useUnpaidIssues({ projectId, githubUserId, type }: Props
       searchPullRequestsQuery.data?.githubPullRequests &&
       paidItems &&
       chain(searchPullRequestsQuery.data?.githubPullRequests)
-        .map(pullRequest => issueToWorkItem(projectId, type, pullRequest))
+        .map(pullRequest => pullRequestToWorkItem(projectId, pullRequest))
         .differenceWith(paidItems, (pr, paidItem) => {
           return pr.repoId === paidItem.repoId && pr.number === paidItem.issueNumber;
         })
@@ -81,12 +81,20 @@ export default function useUnpaidIssues({ projectId, githubUserId, type }: Props
 
 const issueToWorkItem = (
   projectId: string,
-  type: GithubIssueType,
-  { ignoredForProjects, number, status, ...props }: GithubIssueFragment | GithubPullRequestFragment
+  { ignoredForProjects, status, ...props }: GithubIssueFragment
 ): WorkItem => ({
   ...props,
-  number,
-  type,
+  type: GithubIssueType.Issue,
+  status: status.toUpperCase(),
+  ignored: some(ignoredForProjects, { projectId }),
+});
+
+const pullRequestToWorkItem = (
+  projectId: string,
+  { ignoredForProjects, status, ...props }: GithubPullRequestFragment
+): WorkItem => ({
+  ...props,
+  type: GithubIssueType.PullRequest,
   status: status.toUpperCase(),
   ignored: some(ignoredForProjects, { projectId }),
 });

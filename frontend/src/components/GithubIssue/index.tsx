@@ -18,7 +18,8 @@ import EyeOffLine from "src/icons/EyeOffLine";
 import EyeLine from "src/icons/EyeLine";
 import classNames from "classnames";
 import { withTooltip } from "src/components/Tooltip";
-import { GithubIssueType, GithubIssueStatus, GithubPullRequestStatus } from "src/types";
+import { GithubIssueType } from "src/types";
+import { GithubIssueStatus, GithubPullRequestStatus } from "src/__generated/graphql";
 
 export enum Action {
   Add = "add",
@@ -28,7 +29,7 @@ export enum Action {
 }
 
 export type WorkItem = {
-  id: string;
+  id: number;
   repoId: number;
   number: number;
   type: GithubIssueType;
@@ -129,40 +130,60 @@ function ActionButton({ action, ignored, onClick }: ActionButtonProps) {
 function IssueStatus({ issue }: { issue: WorkItem }) {
   const { T } = useIntl();
 
-  return (
-    <>
-      {issue.status === GithubPullRequestStatus.Closed ? (
-        <>
-          <IssueClosed className="fill-github-red" />
-          {T("githubIssue.status.closed", { closedAt: displayRelativeDate(issue.closedAt) })}
-        </>
-      ) : issue.status === GithubIssueStatus.Cancelled ? (
-        <>
-          <IssueCancelled className="fill-github-grey p-0.5" />
-          {T("githubIssue.status.closed", { closedAt: displayRelativeDate(issue.closedAt) })}
-        </>
-      ) : issue.status === GithubIssueStatus.Completed ? (
-        <>
-          <CheckboxCircleLine className="-my-1 text-base text-github-purple" />
-          {T("githubIssue.status.closed", { closedAt: displayRelativeDate(issue.closedAt) })}
-        </>
-      ) : issue.status === GithubPullRequestStatus.Open || issue.status === GithubIssueStatus.Open ? (
-        <>
-          {issue.type === GithubIssueType.Issue ? (
-            <IssueOpen className="fill-github-green p-0.5" />
-          ) : (
-            <GitPullRequestLine className="-my-1 text-base text-github-green" />
-          )}
-          {T("githubIssue.status.open")}
-        </>
-      ) : issue.status === GithubPullRequestStatus.Merged ? (
-        <>
-          <GitMergeLine className="-my-1 text-base text-github-purple" />
-          {T("githubIssue.status.merged", { mergedAt: displayRelativeDate(issue.mergedAt) })}
-        </>
-      ) : (
-        <div />
-      )}
-    </>
-  );
+  switch (issue.type) {
+    case GithubIssueType.Issue: {
+      switch (issue.status) {
+        case GithubIssueStatus.Cancelled:
+          return (
+            <>
+              <IssueCancelled className="fill-github-grey p-0.5" />
+              {T("githubIssue.status.closed", { closedAt: displayRelativeDate(issue.closedAt) })}
+            </>
+          );
+        case GithubIssueStatus.Completed:
+          return (
+            <>
+              <CheckboxCircleLine className="-my-1 text-base text-github-purple" />
+              {T("githubIssue.status.closed", { closedAt: displayRelativeDate(issue.closedAt) })}
+            </>
+          );
+        case GithubIssueStatus.Open:
+          return (
+            <>
+              <IssueOpen className="fill-github-green p-0.5" />
+              {T("githubIssue.status.open")}
+            </>
+          );
+      }
+      break;
+    }
+
+    case GithubIssueType.PullRequest: {
+      switch (issue.status) {
+        case GithubPullRequestStatus.Closed:
+          return (
+            <>
+              <IssueClosed className="fill-github-red" />
+              {T("githubIssue.status.closed", { closedAt: displayRelativeDate(issue.closedAt) })}
+            </>
+          );
+        case GithubPullRequestStatus.Merged:
+          return (
+            <>
+              <GitMergeLine className="-my-1 text-base text-github-purple" />
+              {T("githubIssue.status.merged", { mergedAt: displayRelativeDate(issue.mergedAt) })}
+            </>
+          );
+        case GithubPullRequestStatus.Open:
+          return (
+            <>
+              <GitPullRequestLine className="-my-1 text-base text-github-green" />
+              {T("githubIssue.status.open")}
+            </>
+          );
+      }
+    }
+  }
+
+  return <div />;
 }

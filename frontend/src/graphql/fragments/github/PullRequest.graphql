@@ -1,8 +1,8 @@
-fragment LiveGithubPullRequestId on PullRequest {
+fragment LiveGithubPullRequestId on GithubPullRequest {
   id
 }
 
-fragment LiveGithubPullRequest on PullRequest {
+fragment LiveGithubPullRequest on GithubPullRequest {
   ...LiveGithubPullRequestId
   repoId
   number
@@ -11,6 +11,7 @@ fragment LiveGithubPullRequest on PullRequest {
   htmlUrl
   createdAt
   closedAt
+  mergedAt
   ignoredForProjects {
     ...IgnoredGithubIssueId
   }

@@ -30,7 +30,7 @@ export default function OtherIssueInput({ projectId, type, onWorkItemAdded }: Pr
   const [fetchIssue] = useFetchIssueLazyQuery({
     onCompleted: data => {
       if (data.fetchIssue) {
-        onWorkItemAdded(issueToWorkItem(data.fetchIssue, type, projectId));
+        onWorkItemAdded(issueToWorkItem(data.fetchIssue, projectId));
         resetField(inputName);
       } else {
         setError(inputName, {

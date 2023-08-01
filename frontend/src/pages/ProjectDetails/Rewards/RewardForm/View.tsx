@@ -18,7 +18,7 @@ import { filter } from "lodash";
 import { Contributor } from "./types";
 import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
-import { GithubPullRequestStatus } from "src/types";
+import { GithubPullRequestStatus } from "src/__generated/graphql";
 
 interface Props {
   projectId: string;

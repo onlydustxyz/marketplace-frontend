@@ -1,8 +1,8 @@
-fragment LiveGithubIssueId on Issue {
+fragment LiveGithubIssueId on GithubIssue {
   id
 }
 
-fragment LiveGithubIssue on Issue {
+fragment LiveGithubIssue on GithubIssue {
   ...LiveGithubIssueId
   repoId
   number

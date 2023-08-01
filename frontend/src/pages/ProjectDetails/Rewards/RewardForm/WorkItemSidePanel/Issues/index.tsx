@@ -2,10 +2,10 @@ import { chain, some } from "lodash";
 import { WorkItem } from "src/components/GithubIssue";
 import View from "./View";
 import useIgnoredIssues from "./useIgnoredIssues";
-import { LiveGithubIssueFragment, LiveGithubPullRequestFragment, Status } from "src/__generated/graphql";
+import { LiveGithubIssueFragment, LiveGithubPullRequestFragment } from "src/__generated/graphql";
 import useUnpaidIssues from "./useUnpaidIssues";
 import { useMemo } from "react";
-import { GithubIssueStatus, GithubIssueType } from "src/types";
+import { GithubIssueType } from "src/types";
 
 type Props = {
   type: GithubIssueType;
@@ -47,17 +47,19 @@ export default function Issues({ type, projectId, contributorId, workItems, onWo
 }
 
 export const issueToWorkItem = (
-  { ignoredForProjects, status, ...props }: LiveGithubIssueFragment | LiveGithubPullRequestFragment,
-  type: GithubIssueType,
+  { ignoredForProjects, ...props }: LiveGithubIssueFragment,
   projectId?: string
 ): WorkItem => ({
   ...props,
-  type,
-  status:
-    status === Status.Open
-      ? GithubIssueStatus.Open
-      : status === Status.Completed
-      ? GithubIssueStatus.Completed
-      : GithubIssueStatus.Cancelled,
+  type: GithubIssueType.Issue,
+  ignored: some(ignoredForProjects, { projectId }),
+});
+
+export const pullRequestToWorkItem = (
+  { ignoredForProjects, ...props }: LiveGithubPullRequestFragment,
+  projectId?: string
+): WorkItem => ({
+  ...props,
+  type: GithubIssueType.PullRequest,
   ignored: some(ignoredForProjects, { projectId }),
 });
