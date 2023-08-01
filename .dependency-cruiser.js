@@ -21,20 +21,6 @@ module.exports = {
       },
       to: {},
     },
-    {
-      name: "shared-components",
-      comment: "React components living in the components folder should be at leat used twice throughout the app",
-      from: {
-        path: ["App", "pages", "components", "providers", "hooks"],
-        pathNot: ["\\.test\\.tsx?$"],
-      },
-      module: {
-        path: "src/components/[^/]+/index\\.tsx",
-        numberOfDependentsLessThan: 2,
-        pathNot: ["\\.stories\\.tsx$", "\\.test\\.tsx?$"],
-      },
-      severity: "error",
-    },
   ],
   options: {
     /* conditions specifying which files not to follow further when encountered:
