@@ -2481,6 +2481,7 @@ export type GithubIssue = {
   assignees: Array<GithubUser>;
   author: GithubUser;
   closedAt: Maybe<Scalars['DateTimeUtc']>;
+  commentsCount: Scalars['Int'];
   createdAt: Scalars['DateTimeUtc'];
   htmlUrl: Scalars['Url'];
   id: Scalars['Int'];
@@ -2538,7 +2539,7 @@ export type GithubIssues = {
   assigneeIds: Scalars['jsonb'];
   authorId: Scalars['bigint'];
   closedAt: Maybe<Scalars['timestamp']>;
-  commentsCount: Scalars['Int'];
+  commentsCount: Scalars['bigint'];
   createdAt: Scalars['timestamp'];
   htmlUrl: Scalars['String'];
   id: Scalars['bigint'];
@@ -2655,7 +2656,7 @@ export type GithubIssuesBoolExp = {
   assigneeIds: InputMaybe<JsonbComparisonExp>;
   authorId: InputMaybe<BigintComparisonExp>;
   closedAt: InputMaybe<TimestampComparisonExp>;
-  commentsCount: InputMaybe<IntComparisonExp>;
+  commentsCount: InputMaybe<BigintComparisonExp>;
   createdAt: InputMaybe<TimestampComparisonExp>;
   htmlUrl: InputMaybe<StringComparisonExp>;
   id: InputMaybe<BigintComparisonExp>;
@@ -2692,7 +2693,7 @@ export type GithubIssuesDeleteKeyInput = {
 /** input type for incrementing numeric columns in table "github_issues" */
 export type GithubIssuesIncInput = {
   authorId: InputMaybe<Scalars['bigint']>;
-  commentsCount: InputMaybe<Scalars['Int']>;
+  commentsCount: InputMaybe<Scalars['bigint']>;
   id: InputMaybe<Scalars['bigint']>;
   number: InputMaybe<Scalars['bigint']>;
   repoId: InputMaybe<Scalars['bigint']>;
@@ -2703,7 +2704,7 @@ export type GithubIssuesInsertInput = {
   assigneeIds: InputMaybe<Scalars['jsonb']>;
   authorId: InputMaybe<Scalars['bigint']>;
   closedAt: InputMaybe<Scalars['timestamp']>;
-  commentsCount: InputMaybe<Scalars['Int']>;
+  commentsCount: InputMaybe<Scalars['bigint']>;
   createdAt: InputMaybe<Scalars['timestamp']>;
   htmlUrl: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['bigint']>;
@@ -2720,7 +2721,7 @@ export type GithubIssuesMaxFields = {
   __typename?: 'GithubIssuesMaxFields';
   authorId: Maybe<Scalars['bigint']>;
   closedAt: Maybe<Scalars['timestamp']>;
-  commentsCount: Maybe<Scalars['Int']>;
+  commentsCount: Maybe<Scalars['bigint']>;
   createdAt: Maybe<Scalars['timestamp']>;
   htmlUrl: Maybe<Scalars['String']>;
   id: Maybe<Scalars['bigint']>;
@@ -2735,7 +2736,7 @@ export type GithubIssuesMinFields = {
   __typename?: 'GithubIssuesMinFields';
   authorId: Maybe<Scalars['bigint']>;
   closedAt: Maybe<Scalars['timestamp']>;
-  commentsCount: Maybe<Scalars['Int']>;
+  commentsCount: Maybe<Scalars['bigint']>;
   createdAt: Maybe<Scalars['timestamp']>;
   htmlUrl: Maybe<Scalars['String']>;
   id: Maybe<Scalars['bigint']>;
@@ -2819,7 +2820,7 @@ export type GithubIssuesSetInput = {
   assigneeIds: InputMaybe<Scalars['jsonb']>;
   authorId: InputMaybe<Scalars['bigint']>;
   closedAt: InputMaybe<Scalars['timestamp']>;
-  commentsCount: InputMaybe<Scalars['Int']>;
+  commentsCount: InputMaybe<Scalars['bigint']>;
   createdAt: InputMaybe<Scalars['timestamp']>;
   htmlUrl: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['bigint']>;
@@ -2863,7 +2864,7 @@ export type GithubIssuesStddev_SampFields = {
 export type GithubIssuesSumFields = {
   __typename?: 'GithubIssuesSumFields';
   authorId: Maybe<Scalars['bigint']>;
-  commentsCount: Maybe<Scalars['Int']>;
+  commentsCount: Maybe<Scalars['bigint']>;
   id: Maybe<Scalars['bigint']>;
   number: Maybe<Scalars['bigint']>;
   repoId: Maybe<Scalars['bigint']>;
@@ -10387,7 +10388,7 @@ export type Github_Issues_StreamCursorValueInput = {
   assigneeIds: InputMaybe<Scalars['jsonb']>;
   authorId: InputMaybe<Scalars['bigint']>;
   closedAt: InputMaybe<Scalars['timestamp']>;
-  commentsCount: InputMaybe<Scalars['Int']>;
+  commentsCount: InputMaybe<Scalars['bigint']>;
   createdAt: InputMaybe<Scalars['timestamp']>;
   htmlUrl: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['bigint']>;
