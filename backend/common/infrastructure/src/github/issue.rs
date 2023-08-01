@@ -39,6 +39,7 @@ impl FromOctocrab for GithubIssue {
 				.iter()
 				.map(|user| GithubUser::from_octocrab_user(user.clone()))
 				.collect(),
+			comments_count: issue.comments as usize,
 		})
 	}
 }

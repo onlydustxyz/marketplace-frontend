@@ -89,6 +89,7 @@ class GithubIssue {
    assignees: [GithubUser!]!
    author: GithubUser!
    closedAt: DateTimeUtc
+   commentsCount: Int!
    createdAt: DateTimeUtc!
    htmlUrl: Url!
    id: Int!
@@ -104,7 +105,7 @@ class GithubIssues {
    assigneeIds: jsonb!
    authorId: bigint!
    closedAt: timestamp
-   commentsCount: Int!
+   commentsCount: bigint!
    createdAt: timestamp!
    htmlUrl: String!
    id: bigint!

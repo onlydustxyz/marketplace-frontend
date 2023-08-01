@@ -18,6 +18,7 @@ fragment GithubIssue on GithubIssue {
   createdAt
   updatedAt
   closedAt
+  commentsCount
 }
 
 mutation CreateIssue($repoId: Int!, $title: String!, $description: String!) {

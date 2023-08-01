@@ -28,6 +28,7 @@ pub struct Issue {
 	pub updated_at: DateTime<Utc>,
 	pub closed_at: Option<DateTime<Utc>>,
 	pub assignees: Vec<GithubUser>,
+	pub comments_count: usize,
 }
 
 #[derive(

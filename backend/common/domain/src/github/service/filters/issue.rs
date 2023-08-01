@@ -53,6 +53,7 @@ mod tests {
 				.with_timezone(&Utc),
 			closed_at: None,
 			assignees: vec![],
+			comments_count: 0,
 		}
 	}
 

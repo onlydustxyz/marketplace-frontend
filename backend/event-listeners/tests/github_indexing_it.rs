@@ -77,6 +77,7 @@ impl<'a> Test<'a> {
 						html_url: "https://github.com/AnthonyBuisset".parse().unwrap(),
 					},
 					assignees: vec![],
+					comments_count: 0,
 				}),
 				Event::Issue(GithubIssue {
 					id: 1822333508u64.into(),
@@ -99,6 +100,7 @@ impl<'a> Test<'a> {
 						html_url: "https://github.com/AnthonyBuisset".parse().unwrap(),
 					},
 					assignees: vec![],
+					comments_count: 2,
 				}),
 				Event::Issue(GithubIssue {
 					id: 1763108414u64.into(),
@@ -121,6 +123,7 @@ impl<'a> Test<'a> {
 						html_url: "https://github.com/od-develop".parse().unwrap(),
 					},
 					assignees: vec![],
+					comments_count: 0,
 				}),
 				Event::PullRequest(GithubPullRequest {
 					id: 1455874031u64.into(),

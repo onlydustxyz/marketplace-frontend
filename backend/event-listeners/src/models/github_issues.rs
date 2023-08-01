@@ -19,6 +19,7 @@ pub struct GithubIssue {
 	pub html_url: String,
 	pub closed_at: Option<NaiveDateTime>,
 	pub assignee_ids: Json<Vec<GithubUserId>>,
+	pub comments_count: i64,
 }
 
 impl Identifiable for GithubIssue {
@@ -42,6 +43,7 @@ impl From<domain::GithubIssue> for GithubIssue {
 			html_url: issue.html_url.to_string(),
 			closed_at: issue.closed_at.map(|date| date.naive_utc()),
 			assignee_ids: Json::new(issue.assignees.iter().map(|assignee| assignee.id).collect()),
+			comments_count: issue.comments_count as i64,
 		}
 	}
 }
