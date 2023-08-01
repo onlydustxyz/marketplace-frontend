@@ -1,10 +1,11 @@
+import { GithubPullRequestStatus } from "src/__generated/graphql";
 import useFilteredWorkItems from "./useFilteredWorkItems";
 import { WorkItem } from "src/components/GithubIssue";
-import { GithubIssueType, GithubPullRequestStatus } from "src/types";
+import { GithubIssueType } from "src/types";
 
 const workItems: WorkItem[] = [
   {
-    id: "1",
+    id: 1,
     type: GithubIssueType.PullRequest,
     status: GithubPullRequestStatus.Merged,
     htmlUrl: "",
@@ -16,7 +17,7 @@ const workItems: WorkItem[] = [
     title: "foo bar",
   },
   {
-    id: "1",
+    id: 1,
     type: GithubIssueType.PullRequest,
     status: GithubPullRequestStatus.Merged,
     htmlUrl: "",
@@ -28,7 +29,7 @@ const workItems: WorkItem[] = [
     title: "foo plop",
   },
   {
-    id: "1",
+    id: 1,
     type: GithubIssueType.PullRequest,
     status: GithubPullRequestStatus.Merged,
     htmlUrl: "",

@@ -1,10 +1,11 @@
-import { GithubIssueStatus, GithubIssueType, GithubPullRequestStatus } from "src/types";
+import { GithubIssueType } from "src/types";
 import GithubIssue, { Action, Props, WorkItem } from "src/components/GithubIssue";
 import { daysFromNow } from "src/utils/date";
+import { GithubIssueStatus, GithubPullRequestStatus } from "src/__generated/graphql";
 
 const issues: Record<string, WorkItem> = {
   closed: {
-    id: "1268051991",
+    id: 1268051991,
     repoId: 123456,
     number: 541,
     type: GithubIssueType.PullRequest,
@@ -16,7 +17,7 @@ const issues: Record<string, WorkItem> = {
     ignored: false,
   },
   closedWithLongLink: {
-    id: "1268051991",
+    id: 1268051991,
     repoId: 123456,
     number: 541,
     type: GithubIssueType.PullRequest,
@@ -29,7 +30,7 @@ const issues: Record<string, WorkItem> = {
     ignored: false,
   },
   prOpen: {
-    id: "1268051991",
+    id: 1268051991,
     repoId: 123456,
     number: 541,
     type: GithubIssueType.PullRequest,
@@ -40,7 +41,7 @@ const issues: Record<string, WorkItem> = {
     ignored: false,
   },
   issueOpen: {
-    id: "1268051991",
+    id: 1268051991,
     repoId: 123456,
     number: 541,
     type: GithubIssueType.Issue,
@@ -51,7 +52,7 @@ const issues: Record<string, WorkItem> = {
     ignored: false,
   },
   merged: {
-    id: "1268051991",
+    id: 1268051991,
     repoId: 123456,
     number: 541,
     type: GithubIssueType.PullRequest,
@@ -63,7 +64,7 @@ const issues: Record<string, WorkItem> = {
     ignored: false,
   },
   completed: {
-    id: "1268051991",
+    id: 1268051991,
     repoId: 123456,
     number: 541,
     type: GithubIssueType.Issue,
@@ -75,7 +76,7 @@ const issues: Record<string, WorkItem> = {
     ignored: false,
   },
   cancelled: {
-    id: "1268051991",
+    id: 1268051991,
     repoId: 123456,
     number: 541,
     type: GithubIssueType.Issue,

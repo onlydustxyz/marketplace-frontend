@@ -1,6 +1,6 @@
 import { range } from "lodash";
 import { PaymentStatus } from "src/types";
-import { LiveGithubIssueFragment, PaymentRequestDetailsFragment, Status } from "src/__generated/graphql";
+import { GithubIssueStatus, LiveGithubIssueFragment, PaymentRequestDetailsFragment } from "src/__generated/graphql";
 import View, { Props } from "src/components/UserRewardTable/RewardSidePanel/View";
 import { daysFromNow } from "src/utils/date";
 import withSidePanelStackProvider from "../decorators/withSidePanelStackProvider";
@@ -46,12 +46,12 @@ export default {
 };
 
 const issues: LiveGithubIssueFragment[] = range(1, 50).map(id => ({
-  __typename: "Issue",
+  __typename: "GithubIssue",
   id: id,
   repoId: 123456,
   number: id,
   title: "Update README.md",
-  status: Status.Open,
+  status: GithubIssueStatus.Open,
   htmlUrl: "https://github.com/od-mocks/cool-repo-A/pull/1",
   createdAt: daysFromNow(id),
   closedAt: null,
