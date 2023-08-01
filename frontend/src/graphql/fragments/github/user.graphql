@@ -1,8 +1,8 @@
-fragment LiveGithubUserId on User {
+fragment LiveGithubUserId on GithubUser {
   id
 }
 
-fragment LiveGithubUser on User {
+fragment LiveGithubUser on GithubUser {
   ...LiveGithubUserId
   login
   avatarUrl

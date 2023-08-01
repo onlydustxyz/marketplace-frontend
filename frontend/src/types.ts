@@ -128,15 +128,3 @@ export enum GithubIssueType {
   Issue,
   PullRequest,
 }
-
-export enum GithubPullRequestStatus {
-  Open = "OPEN",
-  Closed = "CLOSED",
-  Merged = "MERGED",
-}
-
-export enum GithubIssueStatus {
-  Open = "OPEN",
-  Cancelled = "CANCELLED",
-  Completed = "COMPLETED",
-}

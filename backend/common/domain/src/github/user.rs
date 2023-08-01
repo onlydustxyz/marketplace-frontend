@@ -3,11 +3,10 @@ use std::str::FromStr;
 use derive_getters::Getters;
 use derive_more::{AsRef, Display, From, Into};
 use diesel_derive_newtype::DieselNewType;
-use juniper::{GraphQLObject, ParseScalarResult, ParseScalarValue, Value};
 use serde::{Deserialize, Serialize};
 use url::Url;
 
-#[derive(Debug, Clone, GraphQLObject, Serialize, Deserialize, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
 pub struct User {
 	pub id: Id,
 	pub login: String,
@@ -15,7 +14,7 @@ pub struct User {
 	pub html_url: Url,
 }
 
-#[derive(Debug, Clone, Getters, GraphQLObject, Serialize, Deserialize, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone, Getters, Serialize, Deserialize, PartialEq, Eq, Hash)]
 pub struct FullUser {
 	pub id: Id,
 	pub login: String,
@@ -37,7 +36,7 @@ impl FullUser {
 	}
 }
 
-#[derive(Debug, Clone, Getters, GraphQLObject, Serialize, Deserialize, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
 pub struct SocialAccount {
 	pub provider: String,
 	pub url: String,
@@ -72,28 +71,5 @@ impl FromStr for Id {
 impl From<u64> for Id {
 	fn from(value: u64) -> Self {
 		(value as i64).into()
-	}
-}
-
-#[juniper::graphql_scalar(
-	name = "GithubUserId",
-	description = "A GitHub user ID, represented as an integer"
-)]
-impl<S> GraphQLScalar for Id
-where
-	S: ScalarValue,
-{
-	fn resolve(&self) -> Value {
-		Value::scalar::<i32>(
-			self.0.try_into().expect("Inner user id is not a valid 32-bits integer"),
-		)
-	}
-
-	fn from_input_value(value: &InputValue) -> Option<Self> {
-		value.as_int_value().map(|x| Self(x as i64))
-	}
-
-	fn from_str<'a>(value: ScalarToken<'a>) -> ParseScalarResult<'a, S> {
-		<i32 as ParseScalarValue<S>>::from_str(value)
 	}
 }

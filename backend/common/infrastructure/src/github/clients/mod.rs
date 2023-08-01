@@ -228,8 +228,8 @@ impl Client {
 	#[instrument(skip(self))]
 	pub async fn get_issue_by_repository_id(
 		&self,
-		repo_id: &GithubRepoId,
-		issue_number: &GithubIssueNumber,
+		repo_id: GithubRepoId,
+		issue_number: GithubIssueNumber,
 	) -> Result<Issue, Error> {
 		let issue: Issue = self
 			.get_as(format!(
@@ -244,10 +244,26 @@ impl Client {
 	}
 
 	#[instrument(skip(self))]
+	pub async fn get_pull_request(
+		&self,
+		repo_owner: String,
+		repo_name: String,
+		pull_request_number: GithubPullRequestNumber,
+	) -> Result<PullRequest, Error> {
+		let pull_request_number: i64 = pull_request_number.into();
+		let pull_request = self
+			.octocrab()
+			.pulls(repo_owner, repo_name)
+			.get(pull_request_number as u64)
+			.await?;
+		Ok(pull_request)
+	}
+
+	#[instrument(skip(self))]
 	pub async fn get_pull_request_by_repository_id(
 		&self,
-		repo_id: &GithubRepoId,
-		pr_number: &GithubPullRequestNumber,
+		repo_id: GithubRepoId,
+		pr_number: GithubPullRequestNumber,
 	) -> Result<PullRequest, Error> {
 		self.get_as(format!(
 			"{}repositories/{repo_id}/pulls/{pr_number}",
@@ -259,8 +275,8 @@ impl Client {
 	#[instrument(skip(self))]
 	pub async fn issues_by_repo_id(
 		&self,
-		id: &GithubRepoId,
-		filters: &GithubServiceIssueFilters,
+		id: GithubRepoId,
+		filters: GithubServiceIssueFilters,
 	) -> Result<Vec<GithubIssue>, Error> {
 		let sort = if filters.updated_since.is_some() {
 			Sort::Updated
@@ -293,7 +309,7 @@ impl Client {
 					if issue.pull_request.is_some() {
 						None
 					} else {
-						match GithubIssue::from_octocrab(issue.clone(), *id) {
+						match GithubIssue::from_octocrab(issue.clone(), id) {
 							Ok(issue) => Some(issue),
 							Err(e) => {
 								error!(
@@ -308,7 +324,7 @@ impl Client {
 					}
 				})
 			})
-			.filter_with(Arc::new(*filters))
+			.filter_with(Arc::new(filters))
 			.collect()
 			.await;
 		Ok(issues)
@@ -317,8 +333,8 @@ impl Client {
 	#[instrument(skip(self))]
 	pub async fn pulls_by_repo_id(
 		&self,
-		id: &GithubRepoId,
-		filters: &GithubServicePullRequestFilters,
+		id: GithubRepoId,
+		filters: GithubServicePullRequestFilters,
 	) -> Result<Vec<GithubPullRequest>, Error> {
 		let sort = if filters.updated_since.is_some() {
 			Sort::Updated
@@ -348,7 +364,7 @@ impl Client {
 			.await?
 			.filter_map(|pull_request| {
 				future::ready({
-					match GithubPullRequest::from_octocrab(pull_request.clone(), *id) {
+					match GithubPullRequest::from_octocrab(pull_request.clone()) {
 						Ok(pull_request) => Some(pull_request),
 						Err(e) => {
 							error!(
@@ -362,7 +378,7 @@ impl Client {
 					}
 				})
 			})
-			.filter_with(Arc::new(*filters))
+			.filter_with(Arc::new(filters))
 			.collect()
 			.await;
 		Ok(pull_requests)

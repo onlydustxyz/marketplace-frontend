@@ -3,7 +3,7 @@ import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { useIntl } from "src/hooks/useIntl";
 import Input from "src/components/FormInput";
 import { WorkItem } from "src/components/GithubIssue";
-import { useFetchIssueLazyQuery } from "src/__generated/graphql";
+import { useFetchIssueLazyQuery, useFetchPullRequestLazyQuery } from "src/__generated/graphql";
 import { useFormContext, useFormState } from "react-hook-form";
 import {
   parseIssueLink,
@@ -13,7 +13,7 @@ import {
 } from "src/utils/github";
 import Link from "src/icons/Link";
 import classNames from "classnames";
-import { issueToWorkItem } from ".";
+import { issueToWorkItem, pullRequestToWorkItem } from ".";
 import { GithubIssueType } from "src/types";
 
 type Props = {
@@ -30,7 +30,29 @@ export default function OtherIssueInput({ projectId, type, onWorkItemAdded }: Pr
   const [fetchIssue] = useFetchIssueLazyQuery({
     onCompleted: data => {
       if (data.fetchIssue) {
-        onWorkItemAdded(issueToWorkItem(data.fetchIssue, type, projectId));
+        onWorkItemAdded(issueToWorkItem(data.fetchIssue, projectId));
+        resetField(inputName);
+      } else {
+        setError(inputName, {
+          type: "validate",
+          message: T(`reward.form.contributions.${tKey}.addOther.invalidLink`),
+        });
+      }
+    },
+    onError: () =>
+      setError(inputName, {
+        type: "validate",
+        message: T(`reward.form.contributions.${tKey}.addOther.invalidLink`),
+      }),
+    context: {
+      graphqlErrorDisplay: "none",
+    },
+  });
+
+  const [fetchPullRequest] = useFetchPullRequestLazyQuery({
+    onCompleted: data => {
+      if (data.fetchPullRequest) {
+        onWorkItemAdded(pullRequestToWorkItem(data.fetchPullRequest, projectId));
         resetField(inputName);
       } else {
         setError(inputName, {
@@ -60,13 +82,21 @@ export default function OtherIssueInput({ projectId, type, onWorkItemAdded }: Pr
   );
 
   const validateOtherIssue = () =>
-    fetchIssue({
-      variables: {
-        repoOwner,
-        repoName,
-        issueNumber,
-      },
-    });
+    type === GithubIssueType.Issue
+      ? fetchIssue({
+          variables: {
+            repoOwner,
+            repoName,
+            issueNumber,
+          },
+        })
+      : fetchPullRequest({
+          variables: {
+            repoOwner,
+            repoName,
+            prNumber: issueNumber,
+          },
+        });
 
   return (
     <div className="flex flex-col gap-2 rounded-lg border border-greyscale-50/12 p-4">

@@ -29,6 +29,12 @@ query fetchIssue($repoOwner: String!, $repoName: String!, $issueNumber: Int!) {
   }
 }
 
+query fetchPullRequest($repoOwner: String!, $repoName: String!, $prNumber: Int!) {
+  fetchPullRequest(repoOwner: $repoOwner, repoName: $repoName, prNumber: $prNumber) {
+    ...LiveGithubPullRequest
+  }
+}
+
 query GetProjectRepos($projectId: uuid!) {
   projects(where: { id: { _eq: $projectId } }) {
     id

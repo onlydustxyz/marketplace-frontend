@@ -1,5 +1,5 @@
 use anyhow::{anyhow, Result};
-use domain::{GithubPullRequest, GithubPullRequestStatus, GithubRepoId, GithubUser};
+use domain::{GithubPullRequest, GithubPullRequestStatus, GithubUser};
 
 use super::UserFromOctocrab;
 
@@ -7,17 +7,14 @@ pub trait FromOctocrab
 where
 	Self: Sized,
 {
-	fn from_octocrab(
-		pull_request: octocrab::models::pulls::PullRequest,
-		repo_id: GithubRepoId,
-	) -> Result<Self>;
+	fn from_octocrab(pull_request: octocrab::models::pulls::PullRequest) -> Result<Self>;
 }
 
 impl FromOctocrab for GithubPullRequest {
-	fn from_octocrab(
-		pull_request: octocrab::models::pulls::PullRequest,
-		repo_id: GithubRepoId,
-	) -> Result<Self> {
+	fn from_octocrab(pull_request: octocrab::models::pulls::PullRequest) -> Result<Self> {
+		let repo =
+			pull_request.base.repo.clone().ok_or_else(|| anyhow!("Missing field: 'repo'"))?;
+
 		let id = pull_request.id.0.try_into()?;
 
 		let number = pull_request.number.try_into()?;
@@ -38,7 +35,7 @@ impl FromOctocrab for GithubPullRequest {
 
 		Ok(domain::GithubPullRequest {
 			id,
-			repo_id,
+			repo_id: repo.id.0.into(),
 			number,
 			title,
 			author: GithubUser::from_octocrab_user(*user),

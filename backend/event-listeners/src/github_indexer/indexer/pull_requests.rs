@@ -52,7 +52,7 @@ impl super::Indexer<GithubRepoId> for Indexer {
 
 		let events = self
 			.github_fetch_service
-			.pull_requests_by_repo_id(&repo_id, &filters)
+			.pull_requests_by_repo_id(repo_id, filters)
 			.await
 			.ignore_non_fatal_errors()?
 			.into_iter()

@@ -1,11 +1,11 @@
-fragment GithubUser on User {
+fragment GithubUser on GithubUser {
   id
   login
   avatarUrl
   htmlUrl
 }
 
-fragment GithubIssue on Issue {
+fragment GithubIssue on GithubIssue {
   id
   repoId
   number
@@ -20,7 +20,7 @@ fragment GithubIssue on Issue {
   closedAt
 }
 
-mutation CreateIssue($repoId: GithubRepoId!, $title: String!, $description: String!) {
+mutation CreateIssue($repoId: Int!, $title: String!, $description: String!) {
   internalCreateIssue(repoId: $repoId, title: $title, description: $description) {
     ...GithubIssue
   }
