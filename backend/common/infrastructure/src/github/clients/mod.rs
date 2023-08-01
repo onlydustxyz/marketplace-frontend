@@ -244,6 +244,22 @@ impl Client {
 	}
 
 	#[instrument(skip(self))]
+	pub async fn get_pull_request(
+		&self,
+		repo_owner: String,
+		repo_name: String,
+		pull_request_number: GithubPullRequestNumber,
+	) -> Result<PullRequest, Error> {
+		let pull_request_number: i64 = pull_request_number.into();
+		let pull_request = self
+			.octocrab()
+			.pulls(repo_owner, repo_name)
+			.get(pull_request_number as u64)
+			.await?;
+		Ok(pull_request)
+	}
+
+	#[instrument(skip(self))]
 	pub async fn get_pull_request_by_repository_id(
 		&self,
 		repo_id: GithubRepoId,

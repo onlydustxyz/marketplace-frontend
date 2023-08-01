@@ -7,6 +7,13 @@ use crate::{
 
 #[async_trait]
 pub trait Service: Send + Sync {
+	async fn pull_request(
+		&self,
+		repo_owner: String,
+		repo_name: String,
+		pull_request_number: GithubPullRequestNumber,
+	) -> Result<GithubPullRequest>;
+
 	async fn pull_request_by_repo_id(
 		&self,
 		repo_id: GithubRepoId,
