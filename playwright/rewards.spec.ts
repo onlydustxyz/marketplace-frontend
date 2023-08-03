@@ -59,7 +59,7 @@ test.describe("As a project lead, I", () => {
 
     expect(await contributors.byName("AnthonyBuisset").totalEarned()).toBe("-");
     expect(await contributors.byName("AnthonyBuisset").paidContributions()).toBe("-");
-    // expect(await contributors.byName("AnthonyBuisset").leftToPay()).toContain("2");
+    expect(await contributors.byName("AnthonyBuisset").leftToPay()).toContain("2");
 
     expect(await contributors.byName("oscarwroche").totalEarned()).toBe("$200");
     expect(await contributors.byName("oscarwroche").paidContributions()).toBe("1");
