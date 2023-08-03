@@ -94,12 +94,12 @@ export default function Overview() {
     }
   }, [projectId, ledProjectIds]);
 
-  const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
+  const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
 
-  return isXl ? (
+  return (
     <>
       <Title>
-        <div className="flex flex-row items-center justify-between">
+        <div className="flex flex-row flex-wrap items-center justify-between gap-2">
           {T("project.details.overview.title")}
           {isProjectLeader && (
             <Button
@@ -121,65 +121,40 @@ export default function Overview() {
         </div>
       </Title>
       <ProjectLeadInvitation projectId={projectId} />
-      <div className="flex flex-col-reverse gap-6 md:flex-row">
+      <div className="flex flex-col gap-6 md:flex-row">
         <div className="flex w-full flex-col gap-4">
           <ProjectDescriptionCard
             {...{ projectName, logoUrl, visibility: data?.projects[0]?.visibility, languages, description }}
           />
-
+          {!isMd && (
+            <OverviewPanel
+              {...{
+                sponsors,
+                moreInfoLink,
+                topContributors,
+                totalContributorsCount,
+                leads,
+              }}
+            />
+          )}
           <GithubRepositoriesCard githubRepos={githubRepos} />
         </div>
         <div className="flex flex-col gap-4">
           {hiring && !isCurrentUserMember && profile && (
             <ApplyCallout {...{ isLoggedIn, alreadyApplied, applyToProject, dispatchSession, profile }} />
           )}
-          <OverviewPanel
-            {...{
-              sponsors,
-              moreInfoLink,
-              topContributors,
-              totalContributorsCount,
-              leads,
-            }}
-          />
-        </div>
-      </div>
-    </>
-  ) : (
-    <>
-      <Title>
-        <div className="flex flex-row items-center justify-between">
-          {T("project.details.overview.title")}
-          {isProjectLeader && (
-            <Button
-              size={ButtonSize.Sm}
-              onClick={() => navigate(`${ProjectRoutePaths.Rewards}/${ProjectRewardsRoutePaths.New}`)}
-            >
-              {T("project.rewardContributorButton")}
-            </Button>
+          {isMd && (
+            <OverviewPanel
+              {...{
+                sponsors,
+                moreInfoLink,
+                topContributors,
+                totalContributorsCount,
+                leads,
+              }}
+            />
           )}
         </div>
-      </Title>
-      <ProjectLeadInvitation projectId={projectId} />
-      <div className="flex w-full flex-col gap-4">
-        <ProjectDescriptionCard
-          {...{ projectName, logoUrl, visibility: data?.projects[0]?.visibility, languages, description }}
-        />
-        <OverviewPanel
-          {...{
-            sponsors,
-            moreInfoLink,
-            topContributors,
-            totalContributorsCount,
-            leads,
-          }}
-        />
-        <GithubRepositoriesCard githubRepos={githubRepos} />
-      </div>
-      <div className="flex flex-col gap-4">
-        {hiring && !isCurrentUserMember && profile && (
-          <ApplyCallout {...{ isLoggedIn, alreadyApplied, applyToProject, dispatchSession, profile }} />
-        )}
       </div>
     </>
   );

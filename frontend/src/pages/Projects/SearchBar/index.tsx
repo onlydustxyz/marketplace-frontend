@@ -5,7 +5,7 @@ import { useIntl } from "src/hooks/useIntl";
 import CloseLine from "src/icons/CloseLine";
 import SearchLine from "src/icons/SearchLine";
 import { useMediaQuery } from "usehooks-ts";
-import Hotkeys from "react-hot-keys";
+import { useHotkeys } from "react-hotkeys-hook";
 
 type Props = {
   search: string;
@@ -19,6 +19,17 @@ export default function SearchBar({ search, setSearch }: Props) {
   const [inputFocus, setInputFocus] = useState(false);
 
   const textInput = useRef<HTMLInputElement>(null);
+
+  useHotkeys("mod+k", () => {
+    textInput.current && textInput.current.focus();
+  });
+  useHotkeys(
+    "esc",
+    () => {
+      textInput.current && textInput.current.blur();
+    },
+    { enableOnFormTags: true }
+  );
 
   return (
     <div
@@ -47,20 +58,15 @@ export default function SearchBar({ search, setSearch }: Props) {
                 { "text-greyscale-50": inputFocus }
               )}
             />
-            <Hotkeys
-              keyName={isMac() ? "command+k" : "control+k"}
-              onKeyDown={() => textInput.current && textInput.current.focus()}
-            >
-              <input
-                placeholder={T("searchBar.placeholderShort")}
-                className="h-8 w-full bg-transparent font-walsheim text-lg text-greyscale-50 outline-none placeholder:text-spaceBlue-200"
-                value={search}
-                ref={textInput}
-                onChange={e => setSearch(e.target.value)}
-                onFocus={() => setInputFocus(true)}
-                onBlur={() => setInputFocus(false)}
-              />
-            </Hotkeys>
+            <input
+              placeholder={T("searchBar.placeholderShort")}
+              className="h-8 w-full bg-transparent font-walsheim text-lg text-greyscale-50 outline-none placeholder:text-spaceBlue-200"
+              value={search}
+              ref={textInput}
+              onChange={e => setSearch(e.target.value)}
+              onFocus={() => setInputFocus(true)}
+              onBlur={() => setInputFocus(false)}
+            />
             <button data-testid="clear-searchbar-button">
               <CloseLine
                 className={classNames(
@@ -84,13 +90,5 @@ export default function SearchBar({ search, setSearch }: Props) {
 
 function ResponsiveOutlineWrapper({ children }: PropsWithChildren) {
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
-  return isXl ? (
-    <> {children}</>
-  ) : (
-    <div className="w-full rounded-full border border-2 border-transparent">{children}</div>
-  );
-}
-
-function isMac() {
-  return navigator.userAgent.toLowerCase().includes("mac");
+  return isXl ? <>{children}</> : <div className="w-full rounded-full border-2 border-transparent">{children}</div>;
 }

@@ -20,12 +20,15 @@ const Background = forwardRef(function Background(
       ref={ref}
       className="h-full w-full overflow-y-auto px-2 pb-2 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5 sm:px-6 xl:mb-6 xl:pb-0"
     >
-      <div
-        className={classNames("min-h-full bg-space xl:bg-fixed xl:bg-clip-content xl:bg-no-repeat", roundedBorders, {
-          "flex flex-col justify-center": centeredContent,
-        })}
-      >
-        {children}
+      <div className={classNames("bg-clip-contain min-h-full bg-fixed bg-space bg-no-repeat", roundedBorders)}>
+        <div
+          // Add overlay below large screens to make the space background less shiny
+          className={classNames("bg-spaceBlue-900/50 xl:bg-transparent", {
+            "flex flex-col justify-center": centeredContent,
+          })}
+        >
+          {children}
+        </div>
       </div>
     </div>
   );

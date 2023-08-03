@@ -27,7 +27,7 @@ export default function Contributors() {
   return (
     <>
       <Title>
-        <div className="flex flex-row items-center justify-between">
+        <div className="flex flex-row flex-wrap items-center justify-between gap-2">
           {T("project.details.contributors.title")}
           {isProjectLeader && (
             <Button
