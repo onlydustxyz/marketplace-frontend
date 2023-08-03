@@ -13,6 +13,7 @@ import Background, { BackgroundRoundedBorders } from "src/components/Background"
 import usePayoutSettings from "src/hooks/usePayoutSettings";
 import { Reward } from "src/components/UserRewardTable/Line";
 import InvoiceSubmission from "./InvoiceSubmission";
+import SEO from "src/components/SEO";
 
 const Rewards = () => {
   const { githubUserId } = useAuth();
@@ -41,36 +42,39 @@ const Rewards = () => {
     paymentRequestsNeedingInvoice.length > 0 && invoiceNeeded && githubUserId && userInfos && payoutSettingsValid;
 
   return (
-    <Background roundedBorders={BackgroundRoundedBorders.Full}>
-      <div className="container mx-auto flex h-full flex-col gap-6 px-4 pb-8 pt-8 xl:px-8 xl:pt-16">
-        <div className="font-belwe text-3xl xl:text-5xl">{T("navbar.rewards")}</div>
-        <QueryWrapper query={getPaymentRequestsQuery}>
-          <div className="mb-10 flex flex-col-reverse gap-4 xl:flex-row">
-            <Card>
-              {rewards && (
-                <UserRewardTable
-                  rewards={rewards}
-                  payoutInfoMissing={!payoutSettingsValid}
-                  invoiceNeeded={invoiceNeeded}
-                />
-              )}
-            </Card>
-            <div>
-              <div className="sticky top-4 flex flex-col gap-4">
-                {totalEarnings && <TotalEarnings amount={totalEarnings} />}
-                {invoiceSubmissionNeeded && (
-                  <InvoiceSubmission
-                    paymentRequests={paymentRequestsNeedingInvoice}
-                    githubUserId={githubUserId}
-                    userInfos={userInfos}
+    <>
+      <SEO />
+      <Background roundedBorders={BackgroundRoundedBorders.Full}>
+        <div className="container mx-auto flex h-full flex-col gap-6 px-4 pb-8 pt-8 xl:px-8 xl:pt-16">
+          <div className="font-belwe text-3xl xl:text-5xl">{T("navbar.rewards")}</div>
+          <QueryWrapper query={getPaymentRequestsQuery}>
+            <div className="mb-10 flex flex-col-reverse gap-4 xl:flex-row">
+              <Card>
+                {rewards && (
+                  <UserRewardTable
+                    rewards={rewards}
+                    payoutInfoMissing={!payoutSettingsValid}
+                    invoiceNeeded={invoiceNeeded}
                   />
                 )}
+              </Card>
+              <div>
+                <div className="sticky top-4 flex flex-col gap-4">
+                  {totalEarnings && <TotalEarnings amount={totalEarnings} />}
+                  {invoiceSubmissionNeeded && (
+                    <InvoiceSubmission
+                      paymentRequests={paymentRequestsNeedingInvoice}
+                      githubUserId={githubUserId}
+                      userInfos={userInfos}
+                    />
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-        </QueryWrapper>
-      </div>
-    </Background>
+          </QueryWrapper>
+        </div>
+      </Background>
+    </>
   );
 };
 
