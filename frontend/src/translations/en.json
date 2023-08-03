@@ -639,5 +639,9 @@
     "loading": "Loading...",
     "success": "Success !"
   },
-  "tryToRefresh": "Try to refresh the page"
+  "tryToRefresh": "Try to refresh the page",
+  "notFound": {
+    "text": "The page you're looking for doesn't exist!",
+    "button": "Go back home"
+  }
 }
