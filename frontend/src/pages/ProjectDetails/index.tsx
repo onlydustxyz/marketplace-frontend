@@ -14,6 +14,7 @@ import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
 import { contextWithCacheHeaders } from "src/utils/headers";
 import SEO from "src/components/SEO";
+import { NotFound } from "src/components/NotFound";
 
 type ProjectDetailsParams = {
   projectKey: string;
@@ -34,17 +35,35 @@ export interface ProjectDetails {
 
 export default function ProjectDetails() {
   const { projectKey = "" } = useParams<ProjectDetailsParams>();
-  const { T } = useIntl();
-  const showToaster = useShowToaster();
-  const navigate = useNavigate();
 
   const projectIdQuery = useSuspenseQuery<GetProjectIdFromKeyQuery>(GetProjectIdFromKeyDocument, {
     variables: { projectKey },
     ...contextWithCacheHeaders,
   });
-  const { id: projectId, name, shortDescription } = projectIdQuery.data.projects[0];
+  const project = projectIdQuery.data.projects[0];
 
+  if (!project) {
+    return <NotFound />;
+  }
+
+  return <ProjectPresentDetails projectKey={projectKey} {...project} />;
+}
+
+function ProjectPresentDetails({
+  projectKey,
+  id: projectId,
+  name,
+  shortDescription,
+}: {
+  projectKey: string;
+  id: string;
+  name: string | null;
+  shortDescription: string | null;
+}) {
   const { visibleToCurrentUser } = useProjectVisibility(projectId);
+  const { T } = useIntl();
+  const showToaster = useShowToaster();
+  const navigate = useNavigate();
 
   if (!projectId || visibleToCurrentUser === false) {
     showToaster(T("project.error.notFound"), { isError: true });
