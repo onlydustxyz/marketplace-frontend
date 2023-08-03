@@ -24,7 +24,7 @@ const Background = forwardRef(function Background(
         <div
           // Add overlay below large screens to make the space background less shiny
           className={classNames("bg-spaceBlue-900/50 xl:bg-transparent", {
-            "flex flex-col justify-center": centeredContent,
+            "flex flex-col items-center justify-center": centeredContent,
           })}
         >
           {children}
