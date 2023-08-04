@@ -30,7 +30,7 @@ export default function OverviewPanel({
   return (
     <Card
       fullWidth={false}
-      className="flex h-fit shrink-0 flex-col divide-y divide-greyscale-50/8 p-0 md:w-72 xl:w-80"
+      className="flex h-fit shrink-0 flex-col divide-y divide-greyscale-50/8 p-0 md:w-72 xl:w-80 2xl:w-116"
       padded={false}
     >
       {projectLeads.length > 0 && (
