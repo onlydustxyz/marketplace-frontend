@@ -1,4 +1,61 @@
 actions:
+  - name: createAndCloseIssue
+    definition:
+      kind: synchronous
+      handler: '{{BACKEND_REST_API_URL}}'
+      forward_client_headers: true
+      request_transform:
+        body:
+          action: transform
+          template: |-
+            {
+              "github_repo_id": {{ $body.input.githubRepoId }},
+              "description": {{ $body.input.description }},
+              "project_id": {{ $body.input.projectId }},
+              "title": {{ $body.input.title }}
+            }
+        method: POST
+        query_params: {}
+        template_engine: Kriti
+        url: '{{$base_url}}/issues'
+        version: 2
+      response_transform:
+        body:
+          action: transform
+          template: |-
+            {
+              "id": {{$body?.input.id}},
+              "repoId": {{$body?.input.repo_id}},
+              "number": {{$body?.input.number}},
+              "title": {{$body?.input.title}},
+              "author": {
+                "id": {{$body?.input.author.id}},
+                "login": {{$body?.input.author.login}},
+                "avatarUrl": {{$body?.input.author.avatar_url}},
+                "htmlUrl": {{$body?.input.author.html_url}}
+              }
+              "htmlUrl": {{$body?.input.html_url}},
+              "status": {{$body?.input.status}},
+              "createdAt": {{$body?.input.created_at}},
+              "updatedAt": {{$body?.input.updated_at}},
+              "closedAt": {{$body?.input.close_at}},
+              "assignees": [
+                {{ range $body?.input.assignees }}
+                {
+                "id": {{$.input.author.id}},
+                "login": {{$.input.author.login}},
+                "avatarUrl": {{$.input.author.avatar_url}},
+                "htmlUrl": {{$.input.author.html_url}}
+              }
+              {{ end }}
+                ]
+              "commentsCount": {{$body?.input.comments_count}},
+            }
+        template_engine: Kriti
+        version: 2
+    permissions:
+      - role: registered_user
+    comment: createAndCloseIssue
   - name: createProject
     definition:
       kind: synchronous
@@ -145,10 +202,24 @@ custom_types:
         - description: null
           is_deprecated: null
           value: YELLOW
+    - name: GithubIssueCreatedAndClosedStatus
+      values:
+        - description: null
+          is_deprecated: null
+          value: Open
+        - description: null
+          is_deprecated: null
+          value: Completed
+        - description: null
+          is_deprecated: null
+          value: Cancelled
   input_objects:
     - name: Language
     - name: Information
-  objects: []
+  objects:
+    - name: GithubIssueCreatedAndClosed
+    - name: GithubUserLinkedToIssue
   scalars:
     - name: Url
     - name: Uuid
+    - name: DateTime

@@ -14,6 +14,7 @@ export type Scalars = {
   Int: number;
   Float: number;
   Amount: any;
+  DateTime: any;
   /** DateTime */
   DateTimeUtc: any;
   /** A `0x` prefixed hexadecimal string representing 20 bytes of data */
@@ -2528,6 +2529,28 @@ export type GithubIssueIgnoredForProjectsAggregateArgs = {
   where: InputMaybe<IgnoredGithubIssuesBoolExp>;
 };
 
+export type GithubIssueCreatedAndClosed = {
+  __typename?: 'GithubIssueCreatedAndClosed';
+  assignees: Maybe<Array<Maybe<GithubUserLinkedToIssue>>>;
+  author: GithubUserLinkedToIssue;
+  closedAt: Maybe<Scalars['DateTime']>;
+  commentsCount: Scalars['Int'];
+  createdAt: Scalars['DateTime'];
+  htmlUrl: Scalars['Url'];
+  id: Scalars['Int'];
+  number: Scalars['Int'];
+  repoId: Scalars['Int'];
+  status: GithubIssueCreatedAndClosedStatus;
+  title: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
+};
+
+export enum GithubIssueCreatedAndClosedStatus {
+  Cancelled = 'Cancelled',
+  Completed = 'Completed',
+  Open = 'Open'
+}
+
 export enum GithubIssueStatus {
   Cancelled = 'CANCELLED',
   Completed = 'COMPLETED',
@@ -3764,6 +3787,14 @@ export type GithubUserPaymentRequestsAggregateArgs = {
   offset: InputMaybe<Scalars['Int']>;
   orderBy: InputMaybe<Array<PaymentRequestsOrderBy>>;
   where: InputMaybe<PaymentRequestsBoolExp>;
+};
+
+export type GithubUserLinkedToIssue = {
+  __typename?: 'GithubUserLinkedToIssue';
+  avatarUrl: Scalars['Url'];
+  htmlUrl: Scalars['Url'];
+  id: Scalars['Int'];
+  login: Scalars['String'];
 };
 
 /** columns and relationships of "github_users" */
@@ -10405,7 +10436,8 @@ export type Mutation_Root = {
   addSponsorToProject: Scalars['Uuid'];
   applyToProject: Scalars['Uuid'];
   cancelPaymentRequest: Payment;
-  createIssue: GithubIssue;
+  /** createAndCloseIssue */
+  createAndCloseIssue: GithubIssueCreatedAndClosed;
   /** createProject */
   createProject: Scalars['Uuid'];
   createSponsor: Scalars['Uuid'];
@@ -10865,7 +10897,7 @@ export type Mutation_RootCancelPaymentRequestArgs = {
 
 
 /** mutation root */
-export type Mutation_RootCreateIssueArgs = {
+export type Mutation_RootCreateAndCloseIssueArgs = {
   description: Scalars['String'];
   githubRepoId: Scalars['Int'];
   projectId: Scalars['Uuid'];
@@ -16387,6 +16419,10 @@ export type LiveGithubIssueIdFragment = { __typename?: 'GithubIssue', id: number
 
 export type LiveGithubIssueFragment = { __typename?: 'GithubIssue', repoId: number, number: number, status: GithubIssueStatus, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, id: number, ignoredForProjects: Array<{ __typename?: 'IgnoredGithubIssues', projectId: any, repoId: any, issueNumber: any }> };
 
+export type LiveGithubIssueCreatedAndClosedIdFragment = { __typename?: 'GithubIssueCreatedAndClosed', id: number };
+
+export type LiveGithubIssueCreatedAndClosedFragment = { __typename?: 'GithubIssueCreatedAndClosed', repoId: number, number: number, status: GithubIssueCreatedAndClosedStatus, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, id: number };
+
 export type LiveGithubUserIdFragment = { __typename?: 'GithubUser', id: number };
 
 export type LiveGithubUserFragment = { __typename?: 'GithubUser', login: string, avatarUrl: any, htmlUrl: any, id: number, user: { __typename?: 'RegisteredUsers', id: any | null } | null };
@@ -16607,7 +16643,7 @@ export type GetProjectReposQueryVariables = Exact<{
 
 export type GetProjectReposQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', id: any | null, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', projectId: any, githubRepoId: any, repo: { __typename?: 'GithubRepos', owner: string, name: string, description: string, stars: number, forkCount: number, htmlUrl: string, languages: any, id: any } | null }> }> };
 
-export type CreateIssueMutationVariables = Exact<{
+export type CreateAndCloseIssueMutationVariables = Exact<{
   projectId: Scalars['Uuid'];
   githubRepoId: Scalars['Int'];
   title: Scalars['String'];
@@ -16615,7 +16651,7 @@ export type CreateIssueMutationVariables = Exact<{
 }>;
 
 
-export type CreateIssueMutation = { __typename?: 'mutation_root', createIssue: { __typename?: 'GithubIssue', repoId: number, number: number, status: GithubIssueStatus, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, id: number, ignoredForProjects: Array<{ __typename?: 'IgnoredGithubIssues', projectId: any, repoId: any, issueNumber: any }> } };
+export type CreateAndCloseIssueMutation = { __typename?: 'mutation_root', createAndCloseIssue: { __typename?: 'GithubIssueCreatedAndClosed', repoId: number, number: number, status: GithubIssueCreatedAndClosedStatus, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, id: number } };
 
 export type GetPaymentRequestsForProjectQueryVariables = Exact<{
   projectId: Scalars['uuid'];
@@ -17286,6 +17322,23 @@ export const OwnUserProfileDetailsFragmentDoc = gql`
   completionScore @client
 }
     `;
+export const LiveGithubIssueCreatedAndClosedIdFragmentDoc = gql`
+    fragment LiveGithubIssueCreatedAndClosedId on GithubIssueCreatedAndClosed {
+  id
+}
+    `;
+export const LiveGithubIssueCreatedAndClosedFragmentDoc = gql`
+    fragment LiveGithubIssueCreatedAndClosed on GithubIssueCreatedAndClosed {
+  ...LiveGithubIssueCreatedAndClosedId
+  repoId
+  number
+  status
+  title
+  htmlUrl
+  createdAt
+  closedAt
+}
+    ${LiveGithubIssueCreatedAndClosedIdFragmentDoc}`;
 export const UserProfileIdFragmentDoc = gql`
     fragment UserProfileId on UserProfiles {
   githubUserId
@@ -18979,32 +19032,32 @@ export function useGetProjectReposLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type GetProjectReposQueryHookResult = ReturnType<typeof useGetProjectReposQuery>;
 export type GetProjectReposLazyQueryHookResult = ReturnType<typeof useGetProjectReposLazyQuery>;
 export type GetProjectReposQueryResult = Apollo.QueryResult<GetProjectReposQuery, GetProjectReposQueryVariables>;
-export const CreateIssueDocument = gql`
-    mutation CreateIssue($projectId: Uuid!, $githubRepoId: Int!, $title: String!, $description: String!) {
-  createIssue(
+export const CreateAndCloseIssueDocument = gql`
+    mutation CreateAndCloseIssue($projectId: Uuid!, $githubRepoId: Int!, $title: String!, $description: String!) {
+  createAndCloseIssue(
     projectId: $projectId
     githubRepoId: $githubRepoId
     title: $title
     description: $description
   ) {
-    ...LiveGithubIssue
+    ...LiveGithubIssueCreatedAndClosed
   }
 }
-    ${LiveGithubIssueFragmentDoc}`;
-export type CreateIssueMutationFn = Apollo.MutationFunction<CreateIssueMutation, CreateIssueMutationVariables>;
+    ${LiveGithubIssueCreatedAndClosedFragmentDoc}`;
+export type CreateAndCloseIssueMutationFn = Apollo.MutationFunction<CreateAndCloseIssueMutation, CreateAndCloseIssueMutationVariables>;
 
 /**
- * __useCreateIssueMutation__
+ * __useCreateAndCloseIssueMutation__
  *
- * To run a mutation, you first call `useCreateIssueMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateIssueMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useCreateAndCloseIssueMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateAndCloseIssueMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [createIssueMutation, { data, loading, error }] = useCreateIssueMutation({
+ * const [createAndCloseIssueMutation, { data, loading, error }] = useCreateAndCloseIssueMutation({
  *   variables: {
  *      projectId: // value for 'projectId'
  *      githubRepoId: // value for 'githubRepoId'
@@ -19013,13 +19066,13 @@ export type CreateIssueMutationFn = Apollo.MutationFunction<CreateIssueMutation,
  *   },
  * });
  */
-export function useCreateIssueMutation(baseOptions?: Apollo.MutationHookOptions<CreateIssueMutation, CreateIssueMutationVariables>) {
+export function useCreateAndCloseIssueMutation(baseOptions?: Apollo.MutationHookOptions<CreateAndCloseIssueMutation, CreateAndCloseIssueMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateIssueMutation, CreateIssueMutationVariables>(CreateIssueDocument, options);
+        return Apollo.useMutation<CreateAndCloseIssueMutation, CreateAndCloseIssueMutationVariables>(CreateAndCloseIssueDocument, options);
       }
-export type CreateIssueMutationHookResult = ReturnType<typeof useCreateIssueMutation>;
-export type CreateIssueMutationResult = Apollo.MutationResult<CreateIssueMutation>;
-export type CreateIssueMutationOptions = Apollo.BaseMutationOptions<CreateIssueMutation, CreateIssueMutationVariables>;
+export type CreateAndCloseIssueMutationHookResult = ReturnType<typeof useCreateAndCloseIssueMutation>;
+export type CreateAndCloseIssueMutationResult = Apollo.MutationResult<CreateAndCloseIssueMutation>;
+export type CreateAndCloseIssueMutationOptions = Apollo.BaseMutationOptions<CreateAndCloseIssueMutation, CreateAndCloseIssueMutationVariables>;
 export const GetPaymentRequestsForProjectDocument = gql`
     query GetPaymentRequestsForProject($projectId: uuid!) {
   budgetsAggregate(where: {projectId: {_eq: $projectId}}) {

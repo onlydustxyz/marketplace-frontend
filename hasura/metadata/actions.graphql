@@ -1,4 +1,13 @@
 type Mutation {
+  createAndCloseIssue(
+    description: String!
+    githubRepoId: Int!
+    projectId: Uuid!
+    title: String!
+  ): GithubIssueCreatedAndClosed!
+}
+
+type Mutation {
   createProject(
     name: String!
     shortDescription: String!
@@ -59,6 +68,12 @@ enum ProfileCover {
   YELLOW
 }
 
+enum GithubIssueCreatedAndClosedStatus {
+  Open
+  Completed
+  Cancelled
+}
+
 input Language {
   name: String!
   weight: Int!
@@ -70,7 +85,31 @@ input Information {
   public: Boolean!
 }
 
+type GithubIssueCreatedAndClosed {
+  id: Int!
+  repoId: Int!
+  number: Int!
+  title: String!
+  author: GithubUserLinkedToIssue!
+  htmlUrl: Url!
+  status: GithubIssueCreatedAndClosedStatus!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  closedAt: DateTime
+  assignees: [GithubUserLinkedToIssue]
+  commentsCount: Int!
+}
+
+type GithubUserLinkedToIssue {
+  id: Int!
+  login: String!
+  avatarUrl: Url!
+  htmlUrl: Url!
+}
+
 scalar Url
 
 scalar Uuid
+
+scalar DateTime
 

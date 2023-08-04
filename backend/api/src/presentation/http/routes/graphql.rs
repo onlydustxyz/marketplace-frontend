@@ -4,7 +4,7 @@ use domain::{AggregateRootRepository, Project};
 use infrastructure::{
 	amqp::{self},
 	database::{ImmutableRepository, Repository},
-	github, graphql,
+	github,
 };
 use juniper_rocket::{GraphQLRequest, GraphQLResponse};
 use presentation::http::guards::{ApiKey, ApiKeyGuard, Claims, Role};
@@ -54,7 +54,6 @@ pub async fn get_graphql_handler(
 	user_profile_info_repository: &State<Arc<dyn UserProfileInfoRepository>>,
 	onboarding_repository: &State<Arc<dyn Repository<Onboarding>>>,
 	contact_informations_repository: &State<Arc<dyn ContactInformationsRepository>>,
-	graphql: &State<Arc<graphql::Client>>,
 	github: &State<Arc<github::Client>>,
 	bus: &State<Arc<amqp::Bus>>,
 	ens: &State<Arc<ens::Client>>,
@@ -74,7 +73,6 @@ pub async fn get_graphql_handler(
 		(*user_profile_info_repository).clone(),
 		(*contact_informations_repository).clone(),
 		(*onboarding_repository).clone(),
-		(*graphql).clone(),
 		(*github).clone(),
 		(*ens).clone(),
 		(*simple_storage).clone(),
@@ -105,7 +103,6 @@ pub async fn post_graphql_handler(
 	user_profile_info_repository: &State<Arc<dyn UserProfileInfoRepository>>,
 	onboarding_repository: &State<Arc<dyn Repository<Onboarding>>>,
 	contact_informations_repository: &State<Arc<dyn ContactInformationsRepository>>,
-	graphql: &State<Arc<graphql::Client>>,
 	github: &State<Arc<github::Client>>,
 	bus: &State<Arc<amqp::Bus>>,
 	ens: &State<Arc<ens::Client>>,
@@ -125,7 +122,6 @@ pub async fn post_graphql_handler(
 		(*user_profile_info_repository).clone(),
 		(*contact_informations_repository).clone(),
 		(*onboarding_repository).clone(),
-		(*graphql).clone(),
 		(*github).clone(),
 		(*ens).clone(),
 		(*simple_storage).clone(),

@@ -9,15 +9,15 @@ import { useShowToaster } from "src/hooks/useToaster";
 import CheckLine from "src/icons/CheckLine";
 import isDefined from "src/utils/isDefined";
 import {
-  CreateIssueMutationVariables,
+  CreateAndCloseIssueMutationVariables,
   GithubRepoFragment,
-  useCreateIssueMutation,
+  useCreateAndCloseIssueMutation,
   useGetProjectReposQuery,
 } from "src/__generated/graphql";
 import Description from "./Description";
 import RepoSelect from "./RepoSelect";
 import Title from "./Title";
-import { issueToWorkItem } from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/Issues";
+import { issueCreatedAndClosedToWorkItem } from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/Issues";
 import DraftLine from "src/icons/DraftLine";
 import TeamLine from "src/icons/TeamLine";
 import ExchangeDollarLine from "src/icons/ExchangeDollarLine";
@@ -83,18 +83,18 @@ export default function OtherWorkForm({ projectId, contributorHandle, onWorkItem
     setValue("workKind", defaultWorkKind);
   };
 
-  const [createIssue, { loading }] = useCreateIssueMutation({
+  const [createIssue, { loading }] = useCreateAndCloseIssueMutation({
     variables: {
       projectId: projectId,
       githubRepoId: selectedRepo?.id,
       title: title || defaultTitle,
       description,
       assignees: [leader?.login, contributorHandle],
-    } as CreateIssueMutationVariables,
+    } as CreateAndCloseIssueMutationVariables,
     context: { graphqlErrorDisplay: "toaster" },
     onCompleted: data => {
       clearForm();
-      onWorkItemAdded(issueToWorkItem(data.createIssue, projectId));
+      onWorkItemAdded(issueCreatedAndClosedToWorkItem(data.createAndCloseIssue));
       showToaster(T("reward.form.contributions.other.success"));
     },
   });

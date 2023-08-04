@@ -2,7 +2,11 @@ import { chain, some } from "lodash";
 import { WorkItem } from "src/components/GithubIssue";
 import View from "./View";
 import useIgnoredIssues from "./useIgnoredIssues";
-import { LiveGithubIssueFragment, LiveGithubPullRequestFragment } from "src/__generated/graphql";
+import {
+  LiveGithubIssueCreatedAndClosedFragment,
+  LiveGithubIssueFragment,
+  LiveGithubPullRequestFragment,
+} from "src/__generated/graphql";
 import useUnpaidIssues from "./useUnpaidIssues";
 import { useMemo } from "react";
 import { GithubIssueType } from "src/types";
@@ -53,6 +57,14 @@ export const issueToWorkItem = (
   ...props,
   type: GithubIssueType.Issue,
   ignored: some(ignoredForProjects, { projectId }),
+});
+
+export const issueCreatedAndClosedToWorkItem = (
+  issueCreatedAndClosedFragment: LiveGithubIssueCreatedAndClosedFragment
+): WorkItem => ({
+  ...issueCreatedAndClosedFragment,
+  type: GithubIssueType.Issue,
+  ignored: false,
 });
 
 export const pullRequestToWorkItem = (

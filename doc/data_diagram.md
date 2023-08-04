@@ -101,6 +101,21 @@ class GithubIssue {
    updatedAt: DateTimeUtc!
 }
 
+class GithubIssueCreatedAndClosed {
+   assignees: [GithubUserLinkedToIssue]
+   author: GithubUserLinkedToIssue!
+   closedAt: DateTime
+   commentsCount: Int!
+   createdAt: DateTime!
+   htmlUrl: Url!
+   id: Int!
+   number: Int!
+   repoId: Int!
+   status: GithubIssueCreatedAndClosedStatus!
+   title: String!
+   updatedAt: DateTime!
+}
+
 class GithubIssues {
    assigneeIds: jsonb!
    authorId: bigint!
@@ -170,6 +185,13 @@ class GithubUser {
    login: String!
    paymentRequests: [PaymentRequests!]!
    user: RegisteredUsers
+}
+
+class GithubUserLinkedToIssue {
+   avatarUrl: Url!
+   htmlUrl: Url!
+   id: Int!
+   login: String!
 }
 
 class GithubUsers {
@@ -468,6 +490,8 @@ Contacts -- ContactInformations
 GithubIssue -- GithubUser
 GithubIssue --* GithubUser
 GithubIssue --* IgnoredGithubIssues
+GithubIssueCreatedAndClosed -- GithubUserLinkedToIssue
+GithubIssueCreatedAndClosed --* GithubUserLinkedToIssue
 GithubIssues -- GithubRepos
 GithubIssues --* IgnoredGithubIssues
 GithubPullRequest -- GithubUser

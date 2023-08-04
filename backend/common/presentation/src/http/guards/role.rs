@@ -31,6 +31,7 @@ impl<'r> FromRequest<'r> for Role {
 	type Error = Error;
 
 	async fn from_request(request: &'r Request<'_>) -> Outcome<Role, Error> {
+		request.headers().clone().into_iter().for_each(|header| println!("{:?}",header));
 		match request.headers().get_one("x-hasura-role") {
 			Some("admin") => Outcome::Success(Role::Admin),
 			Some("registered_user") => from_role_registered_user(request).await,

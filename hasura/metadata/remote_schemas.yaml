@@ -25,38 +25,16 @@
             mutation: Mutation
           }
           scalar Amount
-          scalar DateTimeUtc
           scalar EthereumAddress
           scalar EthereumName
           scalar Iban
           scalar Url
           scalar Uuid
-          type GithubIssue {
-            assignees: [GithubUser!]!
-            author: GithubUser!
-            closedAt: DateTimeUtc
-            commentsCount: Int!
-            createdAt: DateTimeUtc!
-            htmlUrl: Url!
-            id: Int!
-            number: Int!
-            repoId: Int!
-            status: GithubIssueStatus!
-            title: String!
-            updatedAt: DateTimeUtc!
-          }
-          type GithubUser {
-            avatarUrl: Url!
-            htmlUrl: Url!
-            id: Int!
-            login: String!
-          }
           type Mutation {
             acceptProjectLeaderInvitation(invitationId: Uuid!): Boolean!
             acceptTermsAndConditions: Uuid!
             applyToProject(projectId: Uuid!): Uuid!
             cancelPaymentRequest(projectId: Uuid!, paymentId: Uuid!): Payment!
-            createIssue(projectId: Uuid!, githubRepoId: Int!, title: String!, description: String!): GithubIssue!
             ignoreIssue(projectId: Uuid!, repoId: Int!, issueNumber: Int!): Boolean!
             markInvoiceAsReceived(paymentReferences: [PaymentReference!]!): Int!
             markProfileWizardAsDisplayed: Uuid!
@@ -73,11 +51,6 @@
           }
           type Query {
             releaseDate: String!
-          }
-          enum GithubIssueStatus {
-            CANCELLED
-            COMPLETED
-            OPEN
           }
           enum IdentityType {
             COMPANY
@@ -129,22 +102,6 @@
             issueNumber: Int!
             repoId: Int!
           }
-  remote_relationships:
-    - relationships: []
-      type_name: Issue
-    - relationships:
-        - definition:
-            to_source:
-              field_mapping:
-                number: issue_number
-                repoId: repo_id
-              relationship_type: array
-              source: default
-              table:
-                name: ignored_github_issues
-                schema: public
-          name: ignoredForProjects
-      type_name: GithubIssue
 - name: DustyBot
   definition:
     url_from_env: DUSTY_BOT_GRAPHQL_URL

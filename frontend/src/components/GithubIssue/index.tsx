@@ -19,7 +19,7 @@ import EyeLine from "src/icons/EyeLine";
 import classNames from "classnames";
 import { withTooltip } from "src/components/Tooltip";
 import { GithubIssueType } from "src/types";
-import { GithubIssueStatus, GithubPullRequestStatus } from "src/__generated/graphql";
+import {GithubIssueCreatedAndClosedStatus, GithubIssueStatus, GithubPullRequestStatus} from "src/__generated/graphql";
 
 export enum Action {
   Add = "add",
@@ -38,10 +38,17 @@ export type WorkItem = {
   createdAt: Date;
   ignored: boolean;
 } & (
-  | { status: GithubIssueStatus.Open | GithubPullRequestStatus.Open }
+  | { status: GithubIssueStatus.Open | GithubIssueCreatedAndClosedStatus.Open | GithubPullRequestStatus.Open }
   | { status: GithubPullRequestStatus.Merged; mergedAt: Date }
   | {
       status: GithubIssueStatus.Cancelled | GithubIssueStatus.Completed | GithubPullRequestStatus.Closed;
+      closedAt: Date;
+    }
+  | {
+      status:
+        | GithubIssueCreatedAndClosedStatus.Cancelled
+        | GithubIssueCreatedAndClosedStatus.Completed
+        | GithubPullRequestStatus.Closed;
       closedAt: Date;
     }
 );
