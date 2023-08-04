@@ -23,7 +23,7 @@ const RewardList: React.FC = () => {
     <>
       <Title>{T("project.details.rewards.title")}</Title>
       <div className="flex h-full flex-col-reverse items-start gap-4 xl:flex-row">
-        <div className="flex w-full basis-2/3">
+        <div className="flex w-full basis-2/3 2xl:basis-auto">
           {rewards.length > 0 ? (
             <Card>
               <Suspense fallback={<Loader />}>
@@ -36,7 +36,7 @@ const RewardList: React.FC = () => {
             </Card>
           )}
         </div>
-        <div className="flex w-full basis-1/3">
+        <div className="flex w-full basis-1/3 2xl:w-116 2xl:basis-auto">
           <RemainingBudget budget={budget} disabled={budget.remainingAmount === 0 || rewards.length === 0} />
         </div>
       </div>
