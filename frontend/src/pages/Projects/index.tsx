@@ -11,6 +11,7 @@ import { useDebounce } from "usehooks-ts";
 import SidePanel from "src/components/SidePanel";
 import { SortingPanel } from "./Sorting/SortingPanel";
 import { useLocalStorage } from "react-use";
+import SEO from "src/components/SEO";
 
 export enum Sorting {
   Trending = "trending",
@@ -39,6 +40,7 @@ export default function Projects() {
 
   return (
     <ProjectFilterProvider>
+      <SEO />
       <Background ref={ref} roundedBorders={BackgroundRoundedBorders.Full}>
         <div className="flex flex-col gap-6 px-4 py-4 md:container md:mx-auto md:px-12 xl:pb-8 xl:pt-12">
           <div>

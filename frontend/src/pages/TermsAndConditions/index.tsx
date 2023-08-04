@@ -10,6 +10,7 @@ import {
 } from "src/__generated/graphql";
 import TermsAndConditionsMainCard from "./MainCard";
 import TermsAndConditionsPromptCard from "./PromptCard";
+import SEO from "src/components/SEO";
 
 export default function TermsAndConditions() {
   const { user } = useAuth();
@@ -40,20 +41,23 @@ export default function TermsAndConditions() {
   const navigate = useNavigate();
 
   return (
-    <Background roundedBorders={BackgroundRoundedBorders.Full} centeredContent={!showTermsAndConditions}>
-      <div className="flex flex-col items-center justify-center text-greyscale-50">
-        <div className="px-2 xl:w-1/2">
-          {!showTermsAndConditions && !location.state?.skipIntro ? (
-            <TermsAndConditionsPromptCard {...{ setShowTermsAndConditions }} />
-          ) : (
-            <>
-              {!data && (
-                <TermsAndConditionsMainCard handleAcceptTermsAndConditions={acceptTermsAndConditionsMutation} />
-              )}
-            </>
-          )}
+    <>
+      <SEO />
+      <Background roundedBorders={BackgroundRoundedBorders.Full} centeredContent={!showTermsAndConditions}>
+        <div className="flex flex-col items-center justify-center text-greyscale-50">
+          <div className="px-2 xl:w-1/2">
+            {!showTermsAndConditions && !location.state?.skipIntro ? (
+              <TermsAndConditionsPromptCard {...{ setShowTermsAndConditions }} />
+            ) : (
+              <>
+                {!data && (
+                  <TermsAndConditionsMainCard handleAcceptTermsAndConditions={acceptTermsAndConditionsMutation} />
+                )}
+              </>
+            )}
+          </div>
         </div>
-      </div>
-    </Background>
+      </Background>
+    </>
   );
 }
