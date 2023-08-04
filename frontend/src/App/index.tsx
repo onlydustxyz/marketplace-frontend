@@ -22,6 +22,7 @@ import TermsAndConditions from "src/pages/TermsAndConditions";
 import Onboarding from "src/pages/Onboarding";
 import useReloadOnNewRelease from "./useReloadOnNewRelease";
 import PublicProfilePage from "src/pages/PublicProfile";
+import { NotFound } from "src/components/NotFound";
 
 export enum RoutePaths {
   Home = "/",
@@ -128,7 +129,7 @@ function App() {
         },
         {
           path: RoutePaths.CatchAll,
-          element: <Projects />,
+          element: <NotFound />,
         },
         {
           path: RoutePaths.Error,
