@@ -1,5 +1,7 @@
 use std::sync::Arc;
 
+use rocket::{Build, Rocket};
+
 use ::domain::{AggregateRootRepository, Project};
 pub use http::Config;
 use infrastructure::{
@@ -8,13 +10,12 @@ use infrastructure::{
 	github,
 };
 use presentation::http;
-use rocket::{Build, Rocket};
 
 use crate::{
 	application,
 	infrastructure::{simple_storage, web3::ens},
 	models::*,
-	presentation::{graphql, http::routes::projects::create_project},
+	presentation::graphql,
 };
 
 pub mod dto;
@@ -57,6 +58,13 @@ pub fn serve(
 		simple_storage.clone(),
 	);
 
+	let create_github_issue_usecase = application::github::create_issue::Usecase::new(
+		project_repository.clone(),
+		graphql.clone(),
+		github.clone(),
+		bus.clone()
+	);
+
 	rocket::custom(http::config::rocket("backend/api/Rocket.toml"))
 		.manage(config)
 		.manage(schema)
@@ -78,6 +86,7 @@ pub fn serve(
 		.manage(bus)
 		.manage(create_project_usecase)
 		.manage(update_user_profile_info_usecase)
+		.manage(create_github_issue_usecase)
 		.attach(http::guards::Cors)
 		.mount(
 			"/",
@@ -98,8 +107,9 @@ pub fn serve(
 			"/",
 			routes![
 				routes::users::profile_picture,
-				routes::users::update_user_profile
+				routes::users::update_user_profile,
 			],
 		)
-		.mount("/", routes![create_project])
+		.mount("/", routes![routes::projects::create_project])
+		.mount("/",routes![routes::issues::create_and_close_issue])
 }
