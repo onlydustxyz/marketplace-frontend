@@ -435,38 +435,6 @@ impl Mutation {
 		Ok(project_id)
 	}
 
-	// pub async fn create_issue(
-	// 	&self,
-	// 	context: &Context,
-	// 	project_id: Uuid,
-	// 	github_repo_id: i32,
-	// 	title: String,
-	// 	description: String,
-	// ) -> Result<presentation::graphql::dto::github::Issue> {
-	// 	let caller_id = context.caller_info()?.user_id;
-	//
-	// 	if !context
-	// 		.caller_permissions
-	// 		.can_create_github_issue_for_project(&project_id.into())
-	// 	{
-	// 		return Err(Error::NotAuthorized(
-	// 			caller_id,
-	// 			"Project Lead role required".to_string(),
-	// 		));
-	// 	}
-	//
-	// 	let issue = context
-	// 		.create_github_issue_usecase
-	// 		.create_and_close_issue(
-	// 			&project_id.into(),
-	// 			(github_repo_id as i64).into(),
-	// 			title,
-	// 			description,
-	// 		)
-	// 		.await?;
-	// 	Ok(issue.into())
-	// }
-
 	pub async fn ignore_issue(
 		&self,
 		context: &Context,

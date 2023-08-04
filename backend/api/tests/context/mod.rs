@@ -1,17 +1,17 @@
 use std::collections::HashMap;
 
 use anyhow::Result;
-use api::{presentation::bootstrap::bootstrap, Config};
-use presentation::http;
 use rocket::local::asynchronous::Client;
 use rstest::fixture;
 use testcontainers::clients::Cli;
+
+use api::{Config, presentation::bootstrap::bootstrap};
+use presentation::http;
 use testing::context::{amqp, database};
 
 pub mod environment;
 pub mod simple_storage;
-
-use url::Url;
+mod graphql;
 
 #[fixture]
 #[once]
@@ -24,6 +24,7 @@ pub struct Context<'a> {
 	pub database: database::Context<'a>,
 	pub amqp: amqp::Context<'a>,
 	pub simple_storage: simple_storage::Context<'a>,
+	pub graphql_client: graphql::Context<'a>,
 	_environment: environment::Context,
 }
 
@@ -34,6 +35,7 @@ impl<'a> Context<'a> {
 		let database = database::Context::new(docker)?;
 		let amqp = amqp::Context::new(docker, vec![event_store::bus::QUEUE_NAME], vec![]).await?;
 		let simple_storage = simple_storage::Context::new(docker)?;
+		let graphql_client = graphql::Context::new(docker)?;
 
 		let config = Config {
 			amqp: amqp.config.clone(),
@@ -50,16 +52,19 @@ impl<'a> Context<'a> {
 				url: "https://test.com".parse().unwrap(),
 			},
 			s3: simple_storage.config.clone(),
-			graphql_client: infrastructure::graphql::Config {
-				base_url: Url::parse("https://test.com").unwrap(),
-				headers: HashMap::new(),
-			},
-			github: infrastructure::github::Config {
+			github_api_client: infrastructure::github::Config {
 				base_url: "http://github-test.com".to_string(),
 				personal_access_tokens: "test".to_string(),
 				headers: HashMap::new(),
 				max_calls_per_request: None,
 			},
+			dusty_bot_api_client: infrastructure::github::Config {
+				base_url: "http://dusty-bot-test.com".to_string(),
+				personal_access_tokens: "test".to_string(),
+				headers: HashMap::new(),
+				max_calls_per_request: None,
+			},
+
 		};
 
 		Ok(Self {
@@ -67,6 +72,7 @@ impl<'a> Context<'a> {
 			database,
 			amqp,
 			simple_storage,
+			graphql_client,
 			_environment: environment::Context::new(),
 		})
 	}

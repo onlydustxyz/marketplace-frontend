@@ -8,7 +8,6 @@ members = [
   "backend/common/presentation",
   "backend/common/testing",
   "backend/common/olog",
-  "backend/dusty-bot",
   "backend/event-listeners",
   "backend/event-store",
   "backend/github-proxy",

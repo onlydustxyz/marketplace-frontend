@@ -21,7 +21,7 @@ pub struct Request {
 	description: String,
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Response {
 	pub id: i64,
 	pub repo_id: i64,
@@ -33,11 +33,10 @@ pub struct Response {
 	pub created_at: DateTime<Utc>,
 	pub updated_at: DateTime<Utc>,
 	pub closed_at: Option<DateTime<Utc>>,
-	pub assignees: Vec<UserResponse>,
 	pub comments_count: i64,
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct UserResponse {
 	pub id: i64,
 	pub login: String,
@@ -45,7 +44,7 @@ pub struct UserResponse {
 	pub html_url: Url,
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub enum Status {
 	Open,
 	Completed,
@@ -77,7 +76,6 @@ impl From<GithubIssue> for Response {
 			updated_at: github_issue.updated_at,
 			closed_at: github_issue.closed_at,
 			comments_count: github_issue.comments_count as i64,
-			assignees: github_issue.assignees.into_iter().map(Into::into).collect(),
 		}
 	}
 }
@@ -96,14 +94,13 @@ impl From<GithubIssueStatus> for Status {
 #[post("/api/issues", data = "<request>", format = "application/json")]
 pub async fn create_and_close_issue(
 	claims: Claims,
-	role: Role,
 	request: Json<Request>,
-	create_github_issue_usecase: &State<application::github::create_issue::Usecase>,
+	create_github_issue_usecase: &State<application::dusty_bot::create_and_close_issue::Usecase>,
 	project_repository: &State<AggregateRootRepository<Project>>,
 ) -> Result<Json<Response>, HttpApiProblem> {
 	let caller_id = claims.user_id;
 
-	if !role.to_permissions((*project_repository).clone())
+	if !Role::from(claims).to_permissions((*project_repository).clone())
 		.can_create_github_issue_for_project(&request.project_id.into())
 	{
 		return Err(HttpApiProblem::new(StatusCode::UNAUTHORIZED)

@@ -49,6 +49,7 @@ impl<'a> Test<'a> {
 	async fn should_update_profile_info(&mut self) -> Result<()> {
 		info!("should_update_profile_info");
 
+		// Given
 		let request = json!({
 			"bio": "My biography",
 			"location": "France",

@@ -102,7 +102,6 @@ class GithubIssue {
 }
 
 class GithubIssueCreatedAndClosed {
-   assignees: [GithubUserLinkedToIssue]
    author: GithubUserLinkedToIssue!
    closedAt: DateTime
    commentsCount: Int!
@@ -491,7 +490,6 @@ GithubIssue -- GithubUser
 GithubIssue --* GithubUser
 GithubIssue --* IgnoredGithubIssues
 GithubIssueCreatedAndClosed -- GithubUserLinkedToIssue
-GithubIssueCreatedAndClosed --* GithubUserLinkedToIssue
 GithubIssues -- GithubRepos
 GithubIssues --* IgnoredGithubIssues
 GithubPullRequest -- GithubUser

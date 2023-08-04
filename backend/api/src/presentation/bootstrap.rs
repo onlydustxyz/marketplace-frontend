@@ -3,7 +3,7 @@ use std::sync::Arc;
 use anyhow::Result;
 use domain::AggregateRootRepository;
 use infrastructure::{
-	amqp, amqp::CommandPublisherDecorator, database, github, graphql as infrastructure_graphql,
+	amqp, amqp::CommandPublisherDecorator, database, github
 };
 use rocket::{Build, Rocket};
 
@@ -18,7 +18,8 @@ pub async fn bootstrap(config: Config) -> Result<Rocket<Build>> {
 	let database = Arc::new(database::Client::new(database::init_pool(config.database)?));
 	database.run_migrations()?;
 
-	let github: Arc<github::Client> = github::RoundRobinClient::new(config.github)?.into();
+	let github_api_client: Arc<github::Client> = github::RoundRobinClient::new(config.github_api_client)?.into();
+	let dusty_bot_api_client: Arc<github::Client> = github::RoundRobinClient::new(config.dusty_bot_api_client)?.into();
 	let simple_storage = Arc::new(simple_storage::Client::new(config.s3).await?);
 
 	let rocket_build = http::serve(
@@ -39,8 +40,8 @@ pub async fn bootstrap(config: Config) -> Result<Rocket<Build>> {
 		database.clone(),
 		database.clone(),
 		database,
-		Arc::new(infrastructure_graphql::Client::new(config.graphql_client)?),
-		github,
+		github_api_client,
+		dusty_bot_api_client,
 		Arc::new(ens::Client::new(config.web3)?),
 		simple_storage,
 		Arc::new(amqp::Bus::new(config.amqp).await?),

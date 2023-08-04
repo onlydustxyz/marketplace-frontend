@@ -10,10 +10,7 @@ pub trait Service: Send + Sync {
 		title: String,
 		description: String,
 	) -> Result<GithubIssue>;
-}
 
-#[async_trait]
-pub trait AsyncService: Send + Sync {
 	async fn close_issue(
 		&self,
 		repo_owner: String,

@@ -2531,7 +2531,6 @@ export type GithubIssueIgnoredForProjectsAggregateArgs = {
 
 export type GithubIssueCreatedAndClosed = {
   __typename?: 'GithubIssueCreatedAndClosed';
-  assignees: Maybe<Array<Maybe<GithubUserLinkedToIssue>>>;
   author: GithubUserLinkedToIssue;
   closedAt: Maybe<Scalars['DateTime']>;
   commentsCount: Scalars['Int'];

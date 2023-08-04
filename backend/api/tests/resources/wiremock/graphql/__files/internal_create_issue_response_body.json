@@ -1,0 +1,19 @@
+{
+    "id": 12345,
+    "repo_id": 1111,
+    "number": 222,
+    "title": "issue-title",
+    "author": {
+        "id": 16590657,
+        "login": "PierreOucif",
+        "avatar_url": "https://avatars.githubusercontent.com/u/16590657?v=4",
+        "html_url": "https://api.github.com/users/PierreOucif"
+    },
+    "html_url": "http://github-test.com/issue/222",
+    "status": "Open",
+    "created_at": "2023-07-26T12:30:16Z",
+    "updated_at": "2023-07-27T15:43:21Z",
+    "closed_at": null,
+    "assignees": [],
+    "comments_count": 2
+}

@@ -3,7 +3,6 @@ import { FormEventHandler, useEffect, useState } from "react";
 import Button, { Width } from "src/components/Button";
 import Callout from "src/components/Callout";
 import { WorkItem } from "src/components/GithubIssue";
-import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
 import CheckLine from "src/icons/CheckLine";
@@ -37,7 +36,6 @@ type Props = {
 export default function OtherWorkForm({ projectId, contributorHandle, onWorkItemAdded }: Props) {
   const { T } = useIntl();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
-  const { user: leader } = useAuth();
 
   const workKinds = [
     { icon: <DraftLine />, label: T("reward.form.contributions.other.kinds.documentation") },
@@ -89,7 +87,6 @@ export default function OtherWorkForm({ projectId, contributorHandle, onWorkItem
       githubRepoId: selectedRepo?.id,
       title: title || defaultTitle,
       description,
-      assignees: [leader?.login, contributorHandle],
     } as CreateAndCloseIssueMutationVariables,
     context: { graphqlErrorDisplay: "toaster" },
     onCompleted: data => {

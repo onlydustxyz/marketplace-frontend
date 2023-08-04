@@ -1,6 +1,7 @@
-use infrastructure::{amqp, database, github, graphql, tracing, web3};
-use presentation::http;
 use serde::Deserialize;
+
+use infrastructure::{amqp, database, github, tracing, web3};
+use presentation::http;
 
 use crate::infrastructure::simple_storage;
 
@@ -10,8 +11,8 @@ pub struct Config {
 	pub database: database::Config,
 	pub amqp: amqp::Config,
 	pub tracer: tracing::Config,
-	pub github: github::Config,
+	pub github_api_client: github::Config,
+	pub dusty_bot_api_client: github::Config,
 	pub web3: web3::Config,
 	pub s3: simple_storage::Config,
-	pub graphql_client: graphql::Config,
 }

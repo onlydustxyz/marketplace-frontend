@@ -7,14 +7,13 @@ use tracing::instrument;
 use common_domain::GithubFetchService;
 use domain::{AggregateRootRepository, DomainError, GithubIssue, GithubRepoId, Project, ProjectId};
 
-use crate::domain::{DustyBotAsyncService, DustyBotService};
+use crate::domain::DustyBotService;
 
 #[derive(Constructor)]
 pub struct Usecase {
 	project_repository: AggregateRootRepository<Project>,
 	dusty_bot_service_to_create_issue: Arc<dyn DustyBotService>,
 	fetch_service: Arc<dyn GithubFetchService>,
-	dusty_bot_service_to_close_issue: Arc<dyn DustyBotAsyncService>,
 }
 
 impl Usecase {
@@ -41,7 +40,7 @@ impl Usecase {
 
 		let repository = self.fetch_service.repo_by_id(github_repo_id.clone()).await?;
 
-		let issue_closed = self.dusty_bot_service_to_close_issue
+		let issue_closed = self.dusty_bot_service_to_create_issue
 			.close_issue(repository.owner.clone(), repository.name.clone(), created_issue.number.clone())
 			.await;
 

@@ -48,25 +48,26 @@ pub struct Context {
 impl Context {
     #[allow(clippy::too_many_arguments)]
     pub fn new(
-        caller_permissions: Box<dyn Permissions>,
-        caller_info: Option<Claims>,
-        command_bus: Arc<CommandPublisher<amqp::Bus>>,
-        project_repository: AggregateRootRepository<Project>,
-        project_details_repository: Arc<dyn Repository<ProjectDetails>>,
-        sponsor_repository: Arc<dyn Repository<Sponsor>>,
-        project_sponsor_repository: Arc<dyn ImmutableRepository<ProjectsSponsor>>,
-        pending_project_leader_invitations_repository: Arc<
+		caller_permissions: Box<dyn Permissions>,
+		caller_info: Option<Claims>,
+		command_bus: Arc<CommandPublisher<amqp::Bus>>,
+		project_repository: AggregateRootRepository<Project>,
+		project_details_repository: Arc<dyn Repository<ProjectDetails>>,
+		sponsor_repository: Arc<dyn Repository<Sponsor>>,
+		project_sponsor_repository: Arc<dyn ImmutableRepository<ProjectsSponsor>>,
+		pending_project_leader_invitations_repository: Arc<
             dyn ImmutableRepository<PendingProjectLeaderInvitation>,
         >,
-        ignored_github_issues_repository: Arc<dyn ImmutableRepository<IgnoredGithubIssue>>,
-        user_payout_info_repository: Arc<dyn Repository<UserPayoutInfo>>,
-        user_profile_info_repository: Arc<dyn UserProfileInfoRepository>,
-        contact_informations_repository: Arc<dyn ContactInformationsRepository>,
-        onboarding_repository: Arc<dyn Repository<Onboarding>>,
-        github: Arc<github::Client>,
-        ens: Arc<ens::Client>,
-        simple_storage: Arc<simple_storage::Client>,
-        bus: Arc<amqp::Bus>,
+		ignored_github_issues_repository: Arc<dyn ImmutableRepository<IgnoredGithubIssue>>,
+		user_payout_info_repository: Arc<dyn Repository<UserPayoutInfo>>,
+		user_profile_info_repository: Arc<dyn UserProfileInfoRepository>,
+		contact_informations_repository: Arc<dyn ContactInformationsRepository>,
+		onboarding_repository: Arc<dyn Repository<Onboarding>>,
+		github_api_client: Arc<github::Client>,
+		dusty_bot_api_client: Arc<github::Client>,
+		ens: Arc<ens::Client>,
+		simple_storage: Arc<simple_storage::Client>,
+		bus: Arc<amqp::Bus>,
     ) -> Self {
         Self {
             caller_permissions,
@@ -76,9 +77,9 @@ impl Context {
                 project_repository.clone(),
             ),
             process_payment_usecase: application::payment::process::Usecase::new(
-                bus.to_owned(),
-                project_repository.clone(),
-                application::dusty_bot::close_issues::Usecase::new(github.clone(), bus.to_owned()),
+				bus.to_owned(),
+				project_repository.clone(),
+				application::dusty_bot::close_issues::Usecase::new(github_api_client.clone(), dusty_bot_api_client),
             ),
             cancel_payment_usecase: application::payment::cancel::Usecase::new(
                 command_bus,
@@ -97,9 +98,9 @@ impl Context {
                 simple_storage.clone(),
             ),
             link_github_repo_usecase: application::project::link_github_repo::Usecase::new(
-                bus.to_owned(),
-                project_repository.clone(),
-                github.clone(),
+				bus.to_owned(),
+				project_repository.clone(),
+				github_api_client.clone(),
             ),
             unlink_github_repo_usecase: application::project::unlink_github_repo::Usecase::new(
                 bus.to_owned(),

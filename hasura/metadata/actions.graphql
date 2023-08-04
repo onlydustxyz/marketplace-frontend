@@ -96,7 +96,6 @@ type GithubIssueCreatedAndClosed {
   createdAt: DateTime!
   updatedAt: DateTime!
   closedAt: DateTime
-  assignees: [GithubUserLinkedToIssue]
   commentsCount: Int!
 }
 

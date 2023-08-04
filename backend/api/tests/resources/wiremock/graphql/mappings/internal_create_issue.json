@@ -1,0 +1,20 @@
+{
+    "request": {
+        "url": "/internal_create_issue",
+        "method": "POST",
+        "bodyPatterns": [
+            {
+                "equalToJson": {
+                    "project_id": "fa6eecb6-be2c-447f-9468-30c2defb2778",
+                    "github_repo_id": 1111,
+                    "title": "issue-title",
+                    "description": "issue-description"
+                }
+            }
+        ]
+    },
+    "response": {
+        "status": 200,
+        "bodyFileName": "internal_create_issue_response_body.json"
+    }
+}

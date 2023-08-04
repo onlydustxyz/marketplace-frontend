@@ -13,5 +13,5 @@ mod services;
 #[cfg(test)]
 pub use services::MockImageStoreService;
 pub use services::{
-	DustyBotAsyncService, DustyBotService, GithubService, ImageStoreService, ImageStoreServiceError,
+	DustyBotService, GithubService, ImageStoreService, ImageStoreServiceError,
 };

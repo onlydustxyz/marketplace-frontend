@@ -24,32 +24,22 @@ actions:
           action: transform
           template: |-
             {
-              "id": {{$body?.input.id}},
-              "repoId": {{$body?.input.repo_id}},
-              "number": {{$body?.input.number}},
-              "title": {{$body?.input.title}},
+              "id": {{$body.id}},
+              "repoId": {{$body.repo_id}},
+              "number": {{$body.number}},
+              "title": {{$body.title}},
               "author": {
-                "id": {{$body?.input.author.id}},
-                "login": {{$body?.input.author.login}},
-                "avatarUrl": {{$body?.input.author.avatar_url}},
-                "htmlUrl": {{$body?.input.author.html_url}}
-              }
-              "htmlUrl": {{$body?.input.html_url}},
-              "status": {{$body?.input.status}},
-              "createdAt": {{$body?.input.created_at}},
-              "updatedAt": {{$body?.input.updated_at}},
-              "closedAt": {{$body?.input.close_at}},
-              "assignees": [
-                {{ range $body?.input.assignees }}
-                {
-                "id": {{$.input.author.id}},
-                "login": {{$.input.author.login}},
-                "avatarUrl": {{$.input.author.avatar_url}},
-                "htmlUrl": {{$.input.author.html_url}}
-              }
-              {{ end }}
-                ]
-              "commentsCount": {{$body?.input.comments_count}},
+                "id": {{$body.author.id}},
+                "login": {{$body.author.login}},
+                "avatarUrl": {{$body.author.avatar_url}},
+                "htmlUrl": {{$body.author.html_url}}
+              },
+              "htmlUrl": {{$body.html_url}},
+              "status": {{$body.status}},
+              "createdAt": {{$body.created_at}},
+              "updatedAt": {{$body.updated_at}},
+              "closedAt": {{$body?.close_at}},
+              "commentsCount": {{$body.comments_count}}
             }
         template_engine: Kriti
         version: 2

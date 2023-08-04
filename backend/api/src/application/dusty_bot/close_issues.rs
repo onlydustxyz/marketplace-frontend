@@ -4,12 +4,12 @@ use derive_more::Constructor;
 use domain::{DomainError, GithubFetchService, Payment, PaymentWorkItem};
 use futures::future::try_join_all;
 
-use crate::domain::DustyBotAsyncService;
+use crate::domain::DustyBotService;
 
 #[derive(Constructor)]
 pub struct Usecase {
 	fetch_service: Arc<dyn GithubFetchService>,
-	dusty_bot_service: Arc<dyn DustyBotAsyncService>,
+	dusty_bot_service: Arc<dyn DustyBotService>,
 }
 
 impl Usecase {

@@ -19,7 +19,7 @@ import EyeLine from "src/icons/EyeLine";
 import classNames from "classnames";
 import { withTooltip } from "src/components/Tooltip";
 import { GithubIssueType } from "src/types";
-import {GithubIssueCreatedAndClosedStatus, GithubIssueStatus, GithubPullRequestStatus} from "src/__generated/graphql";
+import { GithubIssueCreatedAndClosedStatus, GithubIssueStatus, GithubPullRequestStatus } from "src/__generated/graphql";
 
 export enum Action {
   Add = "add",

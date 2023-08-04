@@ -1,12 +1,13 @@
 use std::collections::HashSet;
 
-use domain::GithubUserId;
 use rocket::{
 	request::{FromRequest, Outcome},
 	Request,
 };
 use thiserror::Error;
 use uuid::Uuid;
+
+use domain::GithubUserId;
 
 use super::{claims, Claims};
 
@@ -31,11 +32,19 @@ impl<'r> FromRequest<'r> for Role {
 	type Error = Error;
 
 	async fn from_request(request: &'r Request<'_>) -> Outcome<Role, Error> {
-		request.headers().clone().into_iter().for_each(|header| println!("{:?}",header));
 		match request.headers().get_one("x-hasura-role") {
 			Some("admin") => Outcome::Success(Role::Admin),
 			Some("registered_user") => from_role_registered_user(request).await,
 			_ => return Outcome::Success(Role::Public),
+		}
+	}
+}
+
+impl From<Claims> for Role {
+	fn from(claims: Claims) -> Self {
+		Role::RegisteredUser {
+			lead_projects: claims.projects_leaded.clone(),
+			github_user_id: claims.github_user_id.into(),
 		}
 	}
 }
@@ -53,7 +62,6 @@ async fn from_role_registered_user(request: &'_ Request<'_>) -> Outcome<Role, Er
 
 #[cfg(test)]
 mod tests {
-
 	use rocket::{
 		http::Header,
 		local::blocking::{Client, LocalRequest},
@@ -122,10 +130,10 @@ mod tests {
 				result.succeeded().unwrap(),
 				Role::RegisteredUser {
 					github_user_id: GithubUserId::from(43467246u64),
-					lead_projects: expected_projects_leaded
+					lead_projects: expected_projects_leaded,
 				}
 			);
 		})
-		.await;
+			.await;
 	}
 }
