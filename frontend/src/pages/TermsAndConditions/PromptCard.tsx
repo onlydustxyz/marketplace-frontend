@@ -8,7 +8,7 @@ interface TermsAndConditionsPromptCardProps {
 
 export default function TermsAndConditionsPromptCard({ setShowTermsAndConditions }: TermsAndConditionsPromptCardProps) {
   return (
-    <div className="pb-6 pt-16 xl:pt-6">
+    <div className="pb-6 pt-16">
       <Card
         className="relative mx-auto flex flex-col items-center justify-between gap-7 px-12 pb-12 pt-20 xl:px-24"
         padded={false}
