@@ -151,6 +151,9 @@ const config: Config = {
       maxWidth: {
         "8xl": "1944px",
       },
+      screens: {
+        "3xl": "2700px",
+      },
     },
   },
 
