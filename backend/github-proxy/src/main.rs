@@ -29,9 +29,9 @@ async fn main() -> Result<()> {
 	let config: Config = config::load("backend/github-proxy/app.yaml")?;
 	let _tracer = Tracer::init(config.tracer.clone(), "github-proxy")?;
 
-	let github: github::Client = RoundRobinClient::new(config.github.clone())?.into();
+	let github: Arc<github::Client> = RoundRobinClient::new(config.github.clone())?.into();
 
-	http::serve(config, Arc::new(github)).await?;
+	http::serve(config, github).await?;
 
 	info!("👋 Gracefully shut down");
 	Ok(())

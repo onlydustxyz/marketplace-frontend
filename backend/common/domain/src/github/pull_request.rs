@@ -15,6 +15,12 @@ pub enum Status {
 	Merged,
 }
 
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize, Hash)]
+pub enum CiChecks {
+	Passed,
+	Failed,
+}
+
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq, Hash)]
 pub struct PullRequest {
 	pub id: Id,
@@ -28,6 +34,8 @@ pub struct PullRequest {
 	pub updated_at: DateTime<Utc>,
 	pub merged_at: Option<DateTime<Utc>>,
 	pub closed_at: Option<DateTime<Utc>>,
+	pub draft: bool,
+	pub ci_checks: Option<CiChecks>,
 }
 
 #[derive(

@@ -2,8 +2,8 @@ use std::collections::HashSet;
 
 use anyhow::Result;
 use domain::{
-	GithubIssue, GithubIssueStatus, GithubPullRequest, GithubPullRequestStatus, GithubRepo,
-	GithubRepoId, GithubUser,
+	GithubCiChecks, GithubIssue, GithubIssueStatus, GithubPullRequest, GithubPullRequestStatus,
+	GithubRepo, GithubRepoId, GithubUser,
 };
 use event_listeners::{listeners::github::Event, models::GithubRepoIndex, GITHUB_EVENTS_EXCHANGE};
 use infrastructure::database::ImmutableRepository;
@@ -130,13 +130,13 @@ impl<'a> Test<'a> {
 					repo_id,
 					number: 1146u64.into(),
 					title: String::from("Hide tooltips on mobile"),
-					status: GithubPullRequestStatus::Open,
+					status: GithubPullRequestStatus::Merged,
 					html_url: "https://github.com/onlydustxyz/marketplace/pull/1146"
 						.parse()
 						.unwrap(),
 					created_at: "2023-07-31T09:23:37Z".parse().unwrap(),
 					updated_at: "2023-07-31T09:32:08Z".parse().unwrap(),
-					closed_at: None,
+					closed_at: "2023-07-31T09:32:08Z".parse().ok(),
 					author: GithubUser {
 						id: 10922658u64.into(),
 						login: String::from("alexbensimon"),
@@ -145,14 +145,40 @@ impl<'a> Test<'a> {
 							.unwrap(),
 						html_url: "https://github.com/alexbensimon".parse().unwrap(),
 					},
+					merged_at: "2023-07-31T09:32:08Z".parse().ok(),
+					draft: false,
+					ci_checks: Some(GithubCiChecks::Passed),
+				}),
+				Event::PullRequest(GithubPullRequest {
+					id: 1458220740u64.into(),
+					repo_id,
+					number: 1152u64.into(),
+					title: String::from("[E-642] Index extra fields in github pull requests"),
+					status: GithubPullRequestStatus::Open,
+					html_url: "https://github.com/onlydustxyz/marketplace/pull/1152"
+						.parse()
+						.unwrap(),
+					created_at: "2023-08-01T14:26:33Z".parse().unwrap(),
+					updated_at: "2023-08-01T14:26:41Z".parse().unwrap(),
+					closed_at: None,
+					author: GithubUser {
+						id: 43467246u64.into(),
+						login: String::from("AnthonyBuisset"),
+						avatar_url: "https://avatars.githubusercontent.com/u/43467246?v=4"
+							.parse()
+							.unwrap(),
+						html_url: "https://github.com/AnthonyBuisset".parse().unwrap(),
+					},
 					merged_at: None,
+					draft: true,
+					ci_checks: None,
 				}),
 				Event::PullRequest(GithubPullRequest {
 					id: 1452363285u64.into(),
 					repo_id,
 					number: 1144u64.into(),
 					title: String::from("Improve impersonation"),
-					status: GithubPullRequestStatus::Merged,
+					status: GithubPullRequestStatus::Closed,
 					html_url: "https://github.com/onlydustxyz/marketplace/pull/1144"
 						.parse()
 						.unwrap(),
@@ -167,7 +193,9 @@ impl<'a> Test<'a> {
 							.unwrap(),
 						html_url: "https://github.com/ofux".parse().unwrap(),
 					},
-					merged_at: "2023-07-28T08:34:53Z".parse().ok(),
+					merged_at: None,
+					draft: false,
+					ci_checks: Some(GithubCiChecks::Failed),
 				}),
 			],
 		)
