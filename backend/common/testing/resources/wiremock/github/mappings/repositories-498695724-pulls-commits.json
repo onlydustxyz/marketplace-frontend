@@ -1,7 +1,7 @@
 {
   "id": "cccf3b12-15b1-3f71-9cd0-c83f6f25ad53",
   "request": {
-    "urlPattern": "/repositories/(.*)/pulls/(.*)/commits",
+    "urlPattern": "/repositories/498695724/pulls/(1144|1146|1152)/commits",
     "method": "GET"
   },
   "response": {

@@ -313,7 +313,7 @@ impl Client {
 					"{}repositories/{}/pulls/{}/commits",
 					self.octocrab().base_url,
 					repo.id,
-					pull_request.id
+					pull_request.number
 				)
 				.parse()?,
 				100 * self.config().max_calls_per_request.map(PositiveCount::get).unwrap_or(3),
