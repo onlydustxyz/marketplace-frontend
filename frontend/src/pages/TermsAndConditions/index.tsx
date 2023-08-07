@@ -43,7 +43,7 @@ export default function TermsAndConditions() {
   return (
     <>
       <SEO />
-      <Background roundedBorders={BackgroundRoundedBorders.Full} centeredContent={!showTermsAndConditions}>
+      <Background roundedBorders={BackgroundRoundedBorders.Full}>
         <div className="flex flex-col items-center justify-center text-greyscale-50">
           <div className="px-2 xl:w-1/2">
             {!showTermsAndConditions && !location.state?.skipIntro ? (

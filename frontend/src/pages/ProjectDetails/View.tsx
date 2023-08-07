@@ -18,7 +18,7 @@ export default function View({ projectId, projectKey }: Props) {
     projectKey,
   };
   return (
-    <div className="flex w-full flex-1 flex-col gap-4 overflow-hidden pt-4 xl:h-0 xl:flex-row xl:gap-0 xl:pb-6 xl:pt-0">
+    <div className="flex w-full flex-1 flex-col gap-4 overflow-hidden pt-4 xl:h-0 xl:flex-row xl:gap-0 xl:pt-0">
       <ProjectsSidebar projectId={projectId} />
       <Background roundedBorders={isXl ? BackgroundRoundedBorders.Right : BackgroundRoundedBorders.Full}>
         <div className="flex h-full flex-1 flex-col gap-6 px-4 py-6 xl:px-8">

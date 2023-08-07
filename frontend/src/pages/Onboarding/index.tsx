@@ -96,9 +96,9 @@ export default function Onboarding() {
   return (
     <>
       <SEO />
-      <Background roundedBorders={BackgroundRoundedBorders.Full} centeredContent>
+      <Background roundedBorders={BackgroundRoundedBorders.Full}>
         <FormProvider {...methods}>
-          <form id="onboarding-form" className="self-center" onSubmit={handleSubmit(onSubmit)}>
+          <form id="onboarding-form" className="flex justify-center px-2 xl:pb-4" onSubmit={handleSubmit(onSubmit)}>
             {step === 0 && <Intro skip={markWizzardAsCompleted} start={next} />}
             {step === 1 && (
               <Card
