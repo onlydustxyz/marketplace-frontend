@@ -1,0 +1,4 @@
+DROP INDEX github_pull_request_commits_pull_request;
+
+
+DROP TABLE github_pull_request_commits;
