@@ -99,7 +99,7 @@ export default function Overview() {
   return (
     <>
       <Title>
-        <div className="flex flex-row flex-wrap items-center justify-between gap-2">
+        <div className="flex flex-row items-center justify-between gap-2">
           {T("project.details.overview.title")}
           {isProjectLeader && (
             <Button
@@ -115,7 +115,7 @@ export default function Overview() {
                 )
               }
             >
-              {T("project.rewardContributorButton")}
+              {T("project.rewardButton.full")}
             </Button>
           )}
         </div>

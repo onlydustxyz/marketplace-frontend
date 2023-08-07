@@ -578,7 +578,10 @@
       "notFound": "This project does not exist"
     },
     "fundedBy": "Funded by __topSponsorsString__",
-    "rewardContributorButton": "Reward contributor",
+    "rewardButton": {
+      "full": "Reward contributor",
+      "short": "Reward"
+    },
     "sponsorsCount": "__count__ sponsors",
     "ledBy": {
       "many": "__count__ project leads",
