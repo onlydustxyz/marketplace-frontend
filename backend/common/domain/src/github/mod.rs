@@ -20,3 +20,6 @@ pub use pull_request::{
 	CiChecks, Id as PullRequestId, Number as PullRequestNumber, PullRequest,
 	Status as PullRequestStatus,
 };
+
+mod commit;
+pub use commit::Commit;

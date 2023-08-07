@@ -56,6 +56,7 @@ mod tests {
 			merged_at: None,
 			draft: false,
 			ci_checks: None,
+			commits: vec![],
 		}
 	}
 

@@ -1,8 +1,9 @@
 use anyhow::{anyhow, Result};
-use domain::{GithubPullRequest, GithubPullRequestStatus, GithubUser};
+use domain::{GithubPullRequest, GithubPullRequestStatus, GithubUser, LogErr};
 use octocrab::models::{CheckRun, CheckStatus};
+use olog::{error, IntoField};
 
-use super::UserFromOctocrab;
+use super::{commits::FromOctocrab as CommitFromOctocrab, UserFromOctocrab};
 
 pub trait FromOctocrab
 where
@@ -11,6 +12,7 @@ where
 	fn from_octocrab(
 		pull_request: octocrab::models::pulls::PullRequest,
 		check_runs: octocrab::models::CheckRuns,
+		commits: Vec<octocrab::models::repos::RepoCommit>,
 	) -> Result<Self>;
 }
 
@@ -18,6 +20,7 @@ impl FromOctocrab for GithubPullRequest {
 	fn from_octocrab(
 		pull_request: octocrab::models::pulls::PullRequest,
 		check_runs: octocrab::models::CheckRuns,
+		commits: Vec<octocrab::models::repos::RepoCommit>,
 	) -> Result<Self> {
 		let repo =
 			pull_request.base.repo.clone().ok_or_else(|| anyhow!("Missing field: 'repo'"))?;
@@ -54,6 +57,14 @@ impl FromOctocrab for GithubPullRequest {
 			closed_at: pull_request.closed_at,
 			draft: pull_request.draft.unwrap_or_default(),
 			ci_checks: get_ci_checks(check_runs.check_runs),
+			commits: commits
+				.into_iter()
+				.filter_map(|commit| {
+					CommitFromOctocrab::from_octocrab(commit)
+						.log_err(|e| error!(error = e.to_field(), "Invalid commit"))
+						.ok()
+				})
+				.collect(),
 		})
 	}
 }

@@ -130,6 +130,15 @@ diesel::table! {
 }
 
 diesel::table! {
+    github_pull_request_commits (sha) {
+        sha -> Text,
+        pull_request_id -> Int8,
+        html_url -> Text,
+        author_id -> Int8,
+    }
+}
+
+diesel::table! {
     use diesel::sql_types::*;
     use super::sql_types::GithubPullRequestStatus;
     use super::sql_types::GithubCiChecks;
@@ -370,6 +379,7 @@ diesel::allow_tables_to_appear_in_same_query!(
     event_deduplications,
     events,
     github_issues,
+    github_pull_request_commits,
     github_pull_requests,
     github_repo_indexes,
     github_repos,

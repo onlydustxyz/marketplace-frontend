@@ -1,12 +1,12 @@
 {
   "id": "cccf3b12-15b1-3f71-9cd0-c83f6f25ad53",
   "request": {
-    "url": "/repositories/503692813/commits/7cf6b6e5631a6f462d17cc0ef175e23b8efa9f00/check-runs",
+    "urlPattern": "/repositories/498695724/pulls/(1144|1146|1152)/commits",
     "method": "GET"
   },
   "response": {
     "status": 200,
-    "bodyFileName": "body-check-runs-in-progress.json",
+    "bodyFileName": "body-pull-commits.json",
     "headers": {
       "Server": "GitHub.com",
       "Date": "Fri, 28 Jul 2023 16:25:49 GMT",

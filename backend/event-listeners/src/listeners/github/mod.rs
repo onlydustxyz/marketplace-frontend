@@ -20,7 +20,7 @@ pub struct Projector {
 	github_fetch_service: Arc<dyn GithubFetchRepoService>,
 	github_repo_repository: Arc<dyn Repository<GithubRepo>>,
 	github_issues_repository: Arc<dyn Repository<GithubIssue>>,
-	github_pull_requests_repository: Arc<dyn Repository<GithubPullRequest>>,
+	github_pull_requests_repository: Arc<dyn GithubPullRequestRepository>,
 	github_users_repository: Arc<dyn Repository<GithubUser>>,
 	github_repos_contributors_repository: Arc<dyn ImmutableRepository<GithubReposContributor>>,
 	projects_contributors_repository: Arc<dyn ProjectsContributorRepository>,

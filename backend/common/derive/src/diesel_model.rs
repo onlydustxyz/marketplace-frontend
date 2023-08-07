@@ -30,7 +30,7 @@ pub fn impl_derive(derive_input: syn::DeriveInput) -> TokenStream {
 					.do_update()
 					.set(&self)
 					.get_result(connection)
-					.err_with_context(format!("delete {} where id={:?}", stringify!(#name), <Self as HasTable>::table().primary_key()))
+					.err_with_context(format!("upsert {} where id={:?}", stringify!(#name), <Self as HasTable>::table().primary_key()))
 					.map_err(Into::into)
 			}
 		}

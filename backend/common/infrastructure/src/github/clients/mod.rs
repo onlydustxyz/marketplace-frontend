@@ -17,7 +17,7 @@ use octocrab::{
 	models::{
 		issues::{Comment, Issue},
 		pulls::PullRequest,
-		repos::Content,
+		repos::{Content, RepoCommit},
 		CheckRuns, Repository, User,
 	},
 	params::{pulls::Sort, Direction},
@@ -299,6 +299,33 @@ impl Client {
 	}
 
 	#[instrument(skip(self))]
+	pub async fn get_commits(&self, pull_request: &PullRequest) -> Result<Vec<RepoCommit>, Error> {
+		let repo = pull_request.base.repo.clone().ok_or_else(|| {
+			Error::Other(anyhow!(
+				"Missing head repo in pull request {}",
+				pull_request.id
+			))
+		})?;
+
+		let commits: Vec<RepoCommit> = self
+			.stream_as::<RepoCommit>(
+				format!(
+					"{}repositories/{}/pulls/{}/commits",
+					self.octocrab().base_url,
+					repo.id,
+					pull_request.number
+				)
+				.parse()?,
+				100 * self.config().max_calls_per_request.map(PositiveCount::get).unwrap_or(3),
+			)
+			.await?
+			.collect()
+			.await;
+
+		Ok(commits)
+	}
+
+	#[instrument(skip(self))]
 	pub async fn get_pull_request_by_repository_id(
 		&self,
 		repo_id: GithubRepoId,
@@ -480,7 +507,20 @@ async fn try_into_pull_request(
 		})
 		.ok()?;
 
-	GithubPullRequest::from_octocrab(pull_request.clone(), check_runs)
+	let commits = client
+		.get_commits(&pull_request)
+		.await
+		.log_err(|e| {
+			error!(
+				error = e.to_field(),
+				"Could not fetch commits for pull request {} (id: {})",
+				pull_request.number,
+				pull_request.id
+			)
+		})
+		.ok()?;
+
+	GithubPullRequest::from_octocrab(pull_request.clone(), check_runs, commits)
 		.log_err(|e| {
 			error!(
 				error = e.to_field(),
