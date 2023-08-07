@@ -300,7 +300,7 @@ impl Client {
 
 	#[instrument(skip(self))]
 	pub async fn get_commits(&self, pull_request: &PullRequest) -> Result<Vec<RepoCommit>, Error> {
-		let repo = pull_request.head.repo.clone().ok_or_else(|| {
+		let repo = pull_request.base.repo.clone().ok_or_else(|| {
 			Error::Other(anyhow!(
 				"Missing head repo in pull request {}",
 				pull_request.id
@@ -513,7 +513,9 @@ async fn try_into_pull_request(
 		.log_err(|e| {
 			error!(
 				error = e.to_field(),
-				"Could not fetch commits for pull request {}", pull_request.id
+				"Could not fetch commits for pull request {} (id: {})",
+				pull_request.number,
+				pull_request.id
 			)
 		})
 		.ok()?;
