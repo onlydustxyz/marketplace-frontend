@@ -68,10 +68,10 @@ export default function Projects() {
           </div>
         </div>
       </Background>
-      <SidePanel withBackdrop open={filterPanelOpen} setOpen={setFilterPanelOpen}>
+      <SidePanel withBackdrop open={filterPanelOpen} setOpen={setFilterPanelOpen} placement="bottom">
         <FilterPanel isProjectLeader={isProjectLeader} fromSidePanel />
       </SidePanel>
-      <SidePanel withBackdrop open={sortingPanelOpen} setOpen={setSortingPanelOpen}>
+      <SidePanel withBackdrop open={sortingPanelOpen} setOpen={setSortingPanelOpen} placement="bottom">
         <SortingPanel all={PROJECT_SORTINGS} current={sorting || DEFAULT_SORTING} onChange={setSorting} />
       </SidePanel>
     </ProjectFilterProvider>
