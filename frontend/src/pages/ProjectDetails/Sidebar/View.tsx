@@ -36,7 +36,7 @@ export default function View({ expandable, currentProject, allProjects, availabl
   return (
     <div
       className={
-        "flex w-full shrink-0 flex-col gap-6 bg-white/4 bg-noise-medium p-6 font-walsheim xl:ml-6 xl:w-80 xl:rounded-l-2xl"
+        "flex w-full shrink-0 flex-col gap-6 bg-white/4 bg-noise-medium p-6 font-walsheim xl:ml-6 xl:w-80 xl:rounded-l-2xl 3xl:w-[600px]"
       }
     >
       {isXl && (
