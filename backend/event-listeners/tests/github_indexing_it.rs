@@ -11,7 +11,7 @@ use olog::info;
 use rstest::rstest;
 use testcontainers::clients::Cli;
 
-use crate::context::{docker, Context};
+use crate::context::{docker, github_indexer::Context};
 
 mod context;
 

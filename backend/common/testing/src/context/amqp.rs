@@ -15,6 +15,7 @@ pub struct Context<'docker> {
 	pub config: amqp::Config,
 	pub listeners: HashMap<String, UnboundedReceiver<Value>>,
 	kill_channels: Vec<UnboundedSender<()>>,
+	pub publisher: Bus,
 	_container: Container<'docker, GenericImage>,
 }
 
@@ -71,8 +72,9 @@ impl<'docker> Context<'docker> {
 
 		Ok(Self {
 			_container: container,
-			config,
+			config: config.clone(),
 			listeners,
+			publisher: Bus::new(config).await?,
 			kill_channels,
 		})
 	}
