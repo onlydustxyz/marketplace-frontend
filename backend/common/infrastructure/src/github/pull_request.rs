@@ -1,5 +1,6 @@
 use anyhow::{anyhow, Result};
 use domain::{GithubPullRequest, GithubPullRequestStatus, GithubUser};
+use octocrab::models::{CheckRun, CheckStatus};
 
 use super::UserFromOctocrab;
 
@@ -7,11 +8,17 @@ pub trait FromOctocrab
 where
 	Self: Sized,
 {
-	fn from_octocrab(pull_request: octocrab::models::pulls::PullRequest) -> Result<Self>;
+	fn from_octocrab(
+		pull_request: octocrab::models::pulls::PullRequest,
+		check_runs: octocrab::models::CheckRuns,
+	) -> Result<Self>;
 }
 
 impl FromOctocrab for GithubPullRequest {
-	fn from_octocrab(pull_request: octocrab::models::pulls::PullRequest) -> Result<Self> {
+	fn from_octocrab(
+		pull_request: octocrab::models::pulls::PullRequest,
+		check_runs: octocrab::models::CheckRuns,
+	) -> Result<Self> {
 		let repo =
 			pull_request.base.repo.clone().ok_or_else(|| anyhow!("Missing field: 'repo'"))?;
 
@@ -45,6 +52,8 @@ impl FromOctocrab for GithubPullRequest {
 			updated_at,
 			merged_at: pull_request.merged_at,
 			closed_at: pull_request.closed_at,
+			draft: pull_request.draft.unwrap_or_default(),
+			ci_checks: get_ci_checks(check_runs.check_runs),
 		})
 	}
 }
@@ -61,5 +70,25 @@ fn get_status(
 			None => Ok(GithubPullRequestStatus::Closed),
 		},
 		_ => Err(anyhow!("Unknown state: '{:?}'", state)),
+	}
+}
+
+fn get_ci_checks(check_runs: Vec<CheckRun>) -> Option<domain::GithubCiChecks> {
+	if check_runs.iter().any(|run| {
+		run.status == Some(CheckStatus::Completed)
+			&& run.conclusion == Some(String::from("failure"))
+	}) {
+		// At least one check failed => Failed
+		return Some(domain::GithubCiChecks::Failed);
+	}
+
+	if check_runs.iter().any(|run| run.status != Some(CheckStatus::Completed)) {
+		// At least one check is not completed => None
+		return None;
+	}
+
+	match check_runs.len() {
+		0 => None,                                 // No check => None
+		_ => Some(domain::GithubCiChecks::Passed), // All completed, no failure => Passed
 	}
 }

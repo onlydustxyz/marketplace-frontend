@@ -67,7 +67,7 @@ export default function SidePanel({ open, setOpen, action, children, hasCloseBut
           <Dialog.Panel
             className={classNames(
               {
-                "inset-y-0 right-0 h-[calc(100dvh)] lg:w-2/5 xl:w-4/12": isLg,
+                "inset-y-0 right-0 h-[calc(100dvh)] lg:w-2/5 xl:w-4/12 3xl:w-[660px]": isLg,
                 "inset-x-0 bottom-0 max-h-[calc(100dvh)] min-h-min overflow-y-auto rounded-t-2xl": !isLg,
                 "-translate-x-10 blur-sm transition duration-300": isCoveredPanel && isLg,
               },

@@ -18,7 +18,7 @@ pub async fn bootstrap(config: Config) -> Result<Rocket<Build>> {
 	let database = Arc::new(database::Client::new(database::init_pool(config.database)?));
 	database.run_migrations()?;
 
-	let github: github::Client = github::RoundRobinClient::new(config.github)?.into();
+	let github: Arc<github::Client> = github::RoundRobinClient::new(config.github)?.into();
 	let simple_storage = Arc::new(simple_storage::Client::new(config.s3).await?);
 
 	let rocket_build = http::serve(
@@ -40,7 +40,7 @@ pub async fn bootstrap(config: Config) -> Result<Rocket<Build>> {
 		database.clone(),
 		database,
 		Arc::new(infrastructure_graphql::Client::new(config.graphql_client)?),
-		Arc::new(github),
+		github,
 		Arc::new(ens::Client::new(config.web3)?),
 		simple_storage,
 		Arc::new(amqp::Bus::new(config.amqp).await?),

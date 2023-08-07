@@ -29,16 +29,17 @@ impl Context {
 	pub fn github_service_with_user_pat(&self) -> Result<Arc<dyn GithubService>, Error> {
 		let client: Arc<dyn GithubService> = match self.github_pat.clone() {
 			Some(token) => {
-				let client: github::Client = github::SingleClient::new(&self.config.github, token)
-					.map_err(|error| {
-						error!(
-							error = format!("{error:?}"),
-							"Error while building Github client"
-						);
-						Error::InternalError(error)
-					})?
-					.into();
-				Arc::new(client)
+				let client: Arc<github::Client> =
+					github::SingleClient::new(&self.config.github, token)
+						.map_err(|error| {
+							error!(
+								error = format!("{error:?}"),
+								"Error while building Github client"
+							);
+							Error::InternalError(error)
+						})?
+						.into();
+				client
 			},
 			None => self.default_github_service.clone(),
 		};

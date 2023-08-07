@@ -30,7 +30,7 @@ const PublicProfilePage = () => {
         route={generatePath(RoutePaths.PublicProfile, { userLogin })}
       />
       <div className="bg-public-profile lg:h-[calc(100dvh)] lg:w-screen">
-        <div className="lg:max-5xl xl:max-6xl mx-auto flex h-full flex-col justify-between md:container md:px-4 2xl:max-w-7xl">
+        <div className="lg:max-5xl xl:max-6xl mx-auto flex h-full flex-col justify-between md:container md:px-4 2xl:max-w-7xl 3xl:max-w-[2300px]">
           <Header userLogin={userLogin} />
           <Profile userProfile={userProfile} />
           <Footer />

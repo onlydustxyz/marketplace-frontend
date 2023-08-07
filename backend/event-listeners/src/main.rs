@@ -16,8 +16,7 @@ async fn main() -> Result<()> {
 	let database = Arc::new(database::Client::new(database::init_pool(
 		config.database.clone(),
 	)?));
-	let github =
-		Arc::<github::Client>::new(github::RoundRobinClient::new(config.github.clone())?.into());
+	let github: Arc<github::Client> = github::RoundRobinClient::new(config.github.clone())?.into();
 
 	try_join_all(listeners::spawn_all(config, reqwest, database, github).await?).await?;
 

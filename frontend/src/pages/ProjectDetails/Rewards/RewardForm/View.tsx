@@ -92,7 +92,7 @@ const View: React.FC<Props> = ({
         </Title>
       )}
       <div className="flex h-full flex-col items-start gap-5 xl:flex-row">
-        <div className="basis-3/5 self-stretch">
+        <div className="w-full basis-3/5 2xl:basis-auto">
           <div className="flex w-full flex-col gap-6">
             <Card className="z-10 px-4 py-7" padded={false}>
               <div className={displayCallout ? "xl:h-52" : "h-24"}>
@@ -171,7 +171,7 @@ const View: React.FC<Props> = ({
             )}
           </div>
         </div>
-        <div className="sticky top-4 w-full basis-2/5">
+        <div className="sticky top-4 w-full basis-2/5 2xl:w-116 2xl:basis-auto">
           <WorkEstimation
             onChange={onWorkEstimationChange}
             budget={budget}
