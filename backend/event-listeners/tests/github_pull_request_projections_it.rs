@@ -66,6 +66,7 @@ impl<'a> Test<'a> {
 					draft: false,
 					ci_checks: Some(GithubCiChecks::Passed),
 					commits: commits(),
+					reviews: vec![],
 				})),
 			)
 			.await?;
@@ -164,6 +165,7 @@ impl<'a> Test<'a> {
 					draft: false,
 					ci_checks: Some(GithubCiChecks::Passed),
 					commits: other_commits(),
+					reviews: vec![],
 				})),
 			)
 			.await?;

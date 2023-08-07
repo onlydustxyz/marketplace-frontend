@@ -16,7 +16,7 @@ use futures::{stream::empty, Stream, StreamExt, TryStreamExt};
 use octocrab::{
 	models::{
 		issues::{Comment, Issue},
-		pulls::PullRequest,
+		pulls::{PullRequest, Review},
 		repos::{Content, RepoCommit},
 		CheckRuns, Repository, User,
 	},
@@ -308,7 +308,7 @@ impl Client {
 		})?;
 
 		let commits: Vec<RepoCommit> = self
-			.stream_as::<RepoCommit>(
+			.stream_as(
 				format!(
 					"{}repositories/{}/pulls/{}/commits",
 					self.octocrab().base_url,
@@ -323,6 +323,33 @@ impl Client {
 			.await;
 
 		Ok(commits)
+	}
+
+	#[instrument(skip(self))]
+	pub async fn get_reviews(&self, pull_request: &PullRequest) -> Result<Vec<Review>, Error> {
+		let repo = pull_request.base.repo.clone().ok_or_else(|| {
+			Error::Other(anyhow!(
+				"Missing head repo in pull request {}",
+				pull_request.id
+			))
+		})?;
+
+		let reviews: Vec<Review> = self
+			.stream_as(
+				format!(
+					"{}repositories/{}/pulls/{}/reviews",
+					self.octocrab().base_url,
+					repo.id,
+					pull_request.number
+				)
+				.parse()?,
+				100 * self.config().max_calls_per_request.map(PositiveCount::get).unwrap_or(3),
+			)
+			.await?
+			.collect()
+			.await;
+
+		Ok(reviews)
 	}
 
 	#[instrument(skip(self))]
@@ -496,36 +523,15 @@ async fn try_into_pull_request(
 	repo_id: GithubRepoId,
 	pull_request: PullRequest,
 ) -> Option<domain::GithubPullRequest> {
-	let check_runs = client
-		.get_check_runs(&pull_request)
-		.await
-		.log_err(|e| {
-			error!(
-				error = e.to_field(),
-				"Could not fetch check runs for pull request {}", pull_request.id
-			)
-		})
-		.ok()?;
+	let pull_request_id = pull_request.id;
 
-	let commits = client
-		.get_commits(&pull_request)
+	GithubPullRequest::from_octocrab(&client, pull_request)
 		.await
-		.log_err(|e| {
-			error!(
-				error = e.to_field(),
-				"Could not fetch commits for pull request {} (id: {})",
-				pull_request.number,
-				pull_request.id
-			)
-		})
-		.ok()?;
-
-	GithubPullRequest::from_octocrab(pull_request.clone(), check_runs, commits)
 		.log_err(|e| {
 			error!(
 				error = e.to_field(),
 				repository_id = repo_id.to_string(),
-				pull_request_id = pull_request.id.0,
+				pull_request_id = pull_request_id.0,
 				"Failed to process pull_request"
 			)
 		})
