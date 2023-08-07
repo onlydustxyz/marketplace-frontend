@@ -12,6 +12,7 @@ use testing::context::{amqp, database};
 pub mod environment;
 pub mod simple_storage;
 mod graphql;
+pub mod utils;
 
 #[fixture]
 #[once]

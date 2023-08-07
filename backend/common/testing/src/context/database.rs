@@ -1,3 +1,4 @@
+use std::sync::Arc;
 use anyhow::{anyhow, Result};
 use infrastructure::database;
 use testcontainers::{
@@ -11,7 +12,7 @@ static DATABASE: &str = "marketplace_db";
 pub struct Context<'docker> {
 	_container: Container<'docker, GenericImage>,
 	pub config: database::Config,
-	pub client: database::Client,
+	pub client: Arc<database::Client>,
 }
 
 impl<'docker> Context<'docker> {
@@ -27,7 +28,7 @@ impl<'docker> Context<'docker> {
 			pool_max_size: 2,
 		};
 
-		let client = database::Client::new(database::init_pool(config.clone())?);
+		let client = Arc::new(database::Client::new(database::init_pool(config.clone())?));
 
 		client.run_migrations()?;
 

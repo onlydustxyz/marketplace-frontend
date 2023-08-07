@@ -3,7 +3,6 @@ mod models;
 
 use std::{
 	collections::HashMap,
-	time::{SystemTime, UNIX_EPOCH},
 };
 
 use anyhow::Result;
@@ -14,7 +13,6 @@ use infrastructure::database::{
 	enums::{AllocatedTime, ProfileCover},
 	schema::user_profile_info,
 };
-use jsonwebtoken::EncodingKey;
 use olog::info;
 use rocket::{
 	http::{ContentType, Header, Status},
@@ -26,6 +24,7 @@ use testcontainers::clients::Cli;
 use crate::{
 	context::{docker, Context},
 	models::UserProfileInfo,
+	context::utils::jwt
 };
 
 #[macro_use]
@@ -109,34 +108,3 @@ impl<'a> Test<'a> {
 	}
 }
 
-fn jwt() -> String {
-	let now = SystemTime::now()
-		.duration_since(UNIX_EPOCH)
-		.expect("Time went backwards")
-		.as_secs();
-
-	jsonwebtoken::encode(
-		&Default::default(),
-		&json!({
-		  "https://hasura.io/jwt/claims": {
-			"x-hasura-projectsLeaded": "{}",
-			"x-hasura-githubUserId": "43467246",
-			"x-hasura-githubAccessToken": "",
-			"x-hasura-allowed-roles": [
-			  "me",
-			  "public",
-			  "registered_user"
-			],
-			"x-hasura-default-role": "registered_user",
-			"x-hasura-user-id": "9b7effeb-963f-4ac4-be74-d735501925ed",
-			"x-hasura-user-is-anonymous": "false"
-		  },
-		  "sub": "9b7effeb-963f-4ac4-be74-d735501925ed",
-		  "iat": now,
-		  "exp": now + 1000,
-		  "iss": "hasura-auth-unit-tests"
-		}),
-		&EncodingKey::from_secret("secret".as_ref()),
-	)
-	.expect("Invalid JWT")
-}
