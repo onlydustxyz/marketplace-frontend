@@ -66,9 +66,8 @@ function ClearFieldButton({ name, disabled }: CloseButtonProps) {
         "text-greyscale-600": disabled,
         "cursor-pointer": !disabled,
       })}
-      onClick={e => {
+      onClick={() => {
         if (!disabled) {
-          e.preventDefault();
           setValue(name, "", { shouldDirty: true });
         }
       }}
@@ -92,9 +91,8 @@ function VisibilityButton({ name, disabled }: VisibilityButtonProps) {
         "text-spacePurple-200/50": disabled,
         "cursor-pointer text-spacePurple-200": !disabled,
       })}
-      onClick={e => {
+      onClick={() => {
         if (!disabled) {
-          e.preventDefault();
           setValue(name, false, { shouldDirty: true });
         }
       }}
@@ -108,9 +106,8 @@ function VisibilityButton({ name, disabled }: VisibilityButtonProps) {
         "text-greyscale-600": disabled,
         "cursor-pointer": !disabled,
       })}
-      onClick={e => {
+      onClick={() => {
         if (!disabled) {
-          e.preventDefault();
           setValue(name, true, { shouldDirty: true });
         }
       }}

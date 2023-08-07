@@ -76,10 +76,9 @@ export default function SidePanel({
               {
                 "inset-y-0 right-0 h-[calc(100dvh)] lg:w-2/5 xl:w-4/12 3xl:w-[660px]": placement === "right",
                 "-translate-x-10 blur-sm transition duration-300": isCoveredPanel && placement === "right",
-                "inset-x-0 bottom-0 max-h-[calc(100dvh)] min-h-max overflow-y-auto rounded-t-2xl":
-                  placement === "bottom",
+                "inset-x-0 bottom-0 max-h-[calc(100dvh)] overflow-y-auto rounded-t-2xl": placement === "bottom",
               },
-              "fixed bg-greyscale-900 blur-0"
+              "fixed w-full bg-greyscale-900 blur-0"
             )}
             style={{ zIndex: 10 + panelIndex }}
           >

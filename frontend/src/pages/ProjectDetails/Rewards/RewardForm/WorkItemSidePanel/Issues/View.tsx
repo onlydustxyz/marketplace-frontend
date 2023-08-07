@@ -74,8 +74,8 @@ export default function View({
   const filteredIssues = useFilteredWorkItems({ pattern: searchPattern, workItems: visibleIssues });
 
   return (
-    <div className="-mr-4 flex h-full flex-col gap-3 overflow-hidden px-6">
-      <div className="mr-4 flex flex-col gap-3">
+    <div className="flex h-full flex-col gap-3 overflow-hidden px-6">
+      <div className="flex flex-col gap-3">
         <div className="flex flex-row items-center justify-between">
           <div className="flex flex-row gap-3">
             <Toggle
@@ -124,9 +124,7 @@ export default function View({
           {...{ issues: filteredIssues, onIssueAdded, onWorkItemIgnored, onWorkItemUnignored, tabName }}
         />
       ) : (
-        <div className="mr-4">
-          <EmptyState />
-        </div>
+        <EmptyState />
       )}
     </div>
   );

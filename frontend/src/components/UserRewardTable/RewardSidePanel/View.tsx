@@ -203,7 +203,7 @@ export default function View({
           <div className="px-6">
             <div className="border-t border-greyscale-50/12" />
           </div>
-          <div className="-mr-4 flex h-full flex-col gap-3 overflow-hidden px-6">
+          <div className="flex h-full flex-col gap-3 overflow-hidden px-6">
             <div className="font-belwe text-base font-normal text-greyscale-50">
               {T("reward.table.detailsPanel.contributions")}
             </div>
