@@ -11,6 +11,7 @@ pub struct Context<'a> {
 }
 
 impl<'a> Context<'a> {
+	#[allow(unused)]
 	pub async fn new(docker: &'a Cli) -> Result<Context<'a>> {
 		tracing_subscriber::fmt::init();
 

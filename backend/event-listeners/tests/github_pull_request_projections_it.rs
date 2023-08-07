@@ -75,7 +75,7 @@ impl<'a> Test<'a> {
 		{
 			let mut pull_requests: Vec<models::github_pull_requests::Inner> = retry(
 				|| github_pull_requests::table.load(&mut *connection),
-				|res| res.len() > 0,
+				|res| !res.is_empty(),
 			)
 			.await?;
 			assert_eq!(pull_requests.len(), 1, "Invalid pull requests count");
@@ -100,7 +100,7 @@ impl<'a> Test<'a> {
 				"https://github.com/onlydustxyz/marketplace/pull/1146"
 			);
 			assert_eq!(pull_request.closed_at, "2023-07-31T09:32:08".parse().ok());
-			assert_eq!(pull_request.draft, false);
+			assert!(!pull_request.draft);
 			assert_eq!(
 				pull_request.ci_checks,
 				Some(infrastructure::database::enums::GithubCiChecks::Passed)
@@ -173,7 +173,7 @@ impl<'a> Test<'a> {
 		retry(
 			|| github_pull_requests::table.load(&mut *connection),
 			|res: &[models::github_pull_requests::Inner]| {
-				res.len() > 0 && res[0].title == "updated"
+				!res.is_empty() && res[0].title == "updated"
 			},
 		)
 		.await?;
