@@ -18,6 +18,14 @@ pub mod sql_types {
     pub struct GithubCiChecks;
 
     #[derive(diesel::sql_types::SqlType)]
+    #[diesel(postgres_type(name = "github_code_review_outcome"))]
+    pub struct GithubCodeReviewOutcome;
+
+    #[derive(diesel::sql_types::SqlType)]
+    #[diesel(postgres_type(name = "github_code_review_status"))]
+    pub struct GithubCodeReviewStatus;
+
+    #[derive(diesel::sql_types::SqlType)]
     #[diesel(postgres_type(name = "github_issue_status"))]
     pub struct GithubIssueStatus;
 
@@ -135,6 +143,20 @@ diesel::table! {
         pull_request_id -> Int8,
         html_url -> Text,
         author_id -> Int8,
+    }
+}
+
+diesel::table! {
+    use diesel::sql_types::*;
+    use super::sql_types::GithubCodeReviewStatus;
+    use super::sql_types::GithubCodeReviewOutcome;
+
+    github_pull_request_reviews (pull_request_id, reviewer_id) {
+        pull_request_id -> Int8,
+        reviewer_id -> Int8,
+        status -> GithubCodeReviewStatus,
+        outcome -> Nullable<GithubCodeReviewOutcome>,
+        submitted_at -> Nullable<Timestamp>,
     }
 }
 
@@ -380,6 +402,7 @@ diesel::allow_tables_to_appear_in_same_query!(
     events,
     github_issues,
     github_pull_request_commits,
+    github_pull_request_reviews,
     github_pull_requests,
     github_repo_indexes,
     github_repos,

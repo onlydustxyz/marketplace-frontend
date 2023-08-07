@@ -3,13 +3,16 @@ use std::time::Duration;
 use anyhow::Result;
 use diesel::query_dsl::RunQueryDsl;
 use domain::{
-	Destination, GithubCiChecks, GithubCommit, GithubPullRequest, GithubPullRequestStatus,
-	GithubUser, Publisher,
+	Destination, GithubCiChecks, GithubCodeReview, GithubCodeReviewOutcome, GithubCodeReviewStatus,
+	GithubCommit, GithubPullRequest, GithubPullRequestStatus, GithubUser, Publisher,
 };
 use event_listeners::{listeners::github::Event, models, GITHUB_EVENTS_EXCHANGE};
 use infrastructure::{
 	amqp::UniqueMessage,
-	database::schema::{github_pull_request_commits, github_pull_requests},
+	database::{
+		self,
+		schema::{github_pull_request_commits, github_pull_request_reviews, github_pull_requests},
+	},
 };
 use olog::info;
 use rstest::rstest;
@@ -33,6 +36,10 @@ pub async fn pull_request_projection_it(docker: &'static Cli) {
 	test.should_override_pull_request_commits()
 		.await
 		.expect("should_override_pull_request_commits");
+
+	test.should_override_pull_request_reviews()
+		.await
+		.expect("should_override_pull_request_reviews");
 }
 
 struct Test<'a> {
@@ -66,7 +73,12 @@ impl<'a> Test<'a> {
 					draft: false,
 					ci_checks: Some(GithubCiChecks::Passed),
 					commits: commits(),
-					reviews: vec![],
+					reviews: vec![GithubCodeReview {
+						reviewer: anthony(),
+						status: GithubCodeReviewStatus::Completed,
+						outcome: Some(GithubCodeReviewOutcome::Approved),
+						submitted_at: "2023-07-31T09:32:08Z".parse().ok(),
+					}],
 				})),
 			)
 			.await?;
@@ -136,6 +148,25 @@ impl<'a> Test<'a> {
 			}
 		}
 
+		{
+			let mut reviews: Vec<models::github_pull_requests::Review> =
+				github_pull_request_reviews::table.load(&mut *connection)?;
+			assert_eq!(reviews.len(), 1, "Invalid reviews count");
+
+			let review = reviews.pop().unwrap();
+			assert_eq!(review.pull_request_id, 1455874031u64.into());
+			assert_eq!(review.reviewer_id, 43467246u64.into());
+			assert_eq!(
+				review.status,
+				database::enums::GithubCodeReviewStatus::Completed
+			);
+			assert_eq!(
+				review.outcome,
+				Some(database::enums::GithubCodeReviewOutcome::Approved)
+			);
+			assert_eq!(review.submitted_at, "2023-07-31T09:32:08".parse().ok());
+		}
+
 		Ok(())
 	}
 
@@ -193,6 +224,96 @@ impl<'a> Test<'a> {
 				commit.html_url,
 				"https://github.com/onlydustxyz/marketplace/commit/b83f75bf3d86cdf017c0f743dcf29dcffdb0ab97"
 			);
+		}
+
+		Ok(())
+	}
+
+	async fn should_override_pull_request_reviews(&mut self) -> Result<()> {
+		info!("should_override_pull_request_reviews");
+
+		// When
+		self.context
+			.amqp
+			.publisher
+			.publish(
+				Destination::exchange(GITHUB_EVENTS_EXCHANGE),
+				&UniqueMessage::new(Event::PullRequest(GithubPullRequest {
+					id: 1455874031u64.into(),
+					repo_id: 498695724u64.into(),
+					number: 1146u64.into(),
+					title: String::from("updated_again"),
+					status: GithubPullRequestStatus::Merged,
+					html_url: "https://github.com/onlydustxyz/marketplace/pull/1146"
+						.parse()
+						.unwrap(),
+					created_at: "2023-07-31T09:23:37Z".parse().unwrap(),
+					updated_at: "2023-07-31T09:32:08Z".parse().unwrap(),
+					closed_at: "2023-07-31T09:32:08Z".parse().ok(),
+					author: alex(),
+					merged_at: "2023-07-31T09:32:08Z".parse().ok(),
+					draft: false,
+					ci_checks: Some(GithubCiChecks::Passed),
+					commits: vec![],
+					reviews: vec![
+						GithubCodeReview {
+							reviewer: anthony(),
+							status: GithubCodeReviewStatus::Pending,
+							outcome: Some(GithubCodeReviewOutcome::ChangeRequested),
+							submitted_at: "2023-07-31T09:32:08Z".parse().ok(),
+						},
+						GithubCodeReview {
+							reviewer: alex(),
+							status: GithubCodeReviewStatus::Pending,
+							outcome: None,
+							submitted_at: None,
+						},
+					],
+				})),
+			)
+			.await?;
+
+		// Then
+		let mut connection = self.context.database.client.connection()?;
+		retry(
+			|| github_pull_requests::table.load(&mut *connection),
+			|res: &[models::github_pull_requests::Inner]| {
+				!res.is_empty() && res[0].title == "updated_again"
+			},
+		)
+		.await?;
+
+		{
+			let mut reviews: Vec<models::github_pull_requests::Review> =
+				github_pull_request_reviews::table.load(&mut *connection)?;
+			assert_eq!(reviews.len(), 2, "Invalid reviews count");
+
+			{
+				let review = reviews.pop().unwrap();
+				assert_eq!(review.pull_request_id, 1455874031u64.into());
+				assert_eq!(review.reviewer_id, 10922658u64.into());
+				assert_eq!(
+					review.status,
+					database::enums::GithubCodeReviewStatus::Pending
+				);
+				assert_eq!(review.outcome, None);
+				assert_eq!(review.submitted_at, None);
+			}
+
+			{
+				let review = reviews.pop().unwrap();
+				assert_eq!(review.pull_request_id, 1455874031u64.into());
+				assert_eq!(review.reviewer_id, 43467246u64.into());
+				assert_eq!(
+					review.status,
+					database::enums::GithubCodeReviewStatus::Pending
+				);
+				assert_eq!(
+					review.outcome,
+					Some(database::enums::GithubCodeReviewOutcome::ChangeRequested)
+				);
+				assert_eq!(review.submitted_at, "2023-07-31T09:32:08".parse().ok());
+			}
 		}
 
 		Ok(())
