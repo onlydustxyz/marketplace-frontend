@@ -1,23 +1,35 @@
-import { createContext, PropsWithChildren, useCallback, useContext, useState } from "react";
+import { createContext, PropsWithChildren, useContext, useState } from "react";
 
 type SidePanelStack = {
-  open: () => number;
+  open: (setOpen: SetOpen) => number;
   close: () => void;
   openPanelCount: number;
+  closeLastPanel: () => void;
 };
+
+type SetOpen = (value: boolean) => void;
 
 const SidePanelStackContext = createContext<SidePanelStack | null>(null);
 
 export const SidePanelStackProvider = ({ children }: PropsWithChildren) => {
   const [openPanelCount, setOpenPanelCount] = useState(0);
+  const [latestSetOpen, setLatestSetOpen] = useState<SetOpen>();
 
-  const open = useCallback(() => {
+  function open(setOpen: SetOpen) {
     const panelIndex = openPanelCount;
     setOpenPanelCount(c => c + 1);
+    setLatestSetOpen(() => setOpen);
     return panelIndex;
-  }, [openPanelCount, setOpenPanelCount]);
+  }
 
-  const close = useCallback(() => setOpenPanelCount(c => c - 1), [setOpenPanelCount]);
+  function close() {
+    setOpenPanelCount(c => c - 1);
+  }
+
+  function closeLastPanel() {
+    close();
+    latestSetOpen?.(false);
+  }
 
   return (
     <SidePanelStackContext.Provider
@@ -25,6 +37,7 @@ export const SidePanelStackProvider = ({ children }: PropsWithChildren) => {
         open,
         close,
         openPanelCount,
+        closeLastPanel,
       }}
     >
       {children}
