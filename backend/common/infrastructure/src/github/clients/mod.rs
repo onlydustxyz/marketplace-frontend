@@ -308,15 +308,19 @@ impl Client {
 		})?;
 
 		let commits: Vec<RepoCommit> = self
-			.get_as(format!(
-				"{}repositories/{}/pulls/{}/commits",
-				self.octocrab().base_url,
-				repo.id,
-				pull_request.id
-			))
-			.await
-			.context("Fetching pull request commits")
-			.map_err(Error::NotFound)?;
+			.stream_as::<RepoCommit>(
+				format!(
+					"{}repositories/{}/pulls/{}/commits",
+					self.octocrab().base_url,
+					repo.id,
+					pull_request.id
+				)
+				.parse()?,
+				100 * self.config().max_calls_per_request.map(PositiveCount::get).unwrap_or(3),
+			)
+			.await?
+			.collect()
+			.await;
 
 		Ok(commits)
 	}
