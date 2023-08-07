@@ -11,7 +11,7 @@ impl Context {
 		Self {
 			_guards: vec![set_env(
 				OsString::from("HASURA_GRAPHQL_JWT_SECRET"),
-				r#"{"type":"HS256","key":"some-fake-secret-for-unittest","issuer":"hasura-auth-unit-tests"}"#,
+				r#"{"type":"HS256","key":"secret","issuer":"hasura-auth-unit-tests"}"#,
 			)],
 		}
 	}
