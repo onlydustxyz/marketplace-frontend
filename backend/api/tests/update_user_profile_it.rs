@@ -1,7 +1,10 @@
 mod context;
 mod models;
 
-use std::collections::HashMap;
+use std::{
+	collections::HashMap,
+	time::{SystemTime, UNIX_EPOCH},
+};
 
 use anyhow::Result;
 use api::presentation::http::routes::users;
@@ -11,6 +14,7 @@ use infrastructure::database::{
 	enums::{AllocatedTime, ProfileCover},
 	schema::user_profile_info,
 };
+use jsonwebtoken::EncodingKey;
 use olog::info;
 use rocket::{
 	http::{ContentType, Header, Status},
@@ -45,8 +49,6 @@ impl<'a> Test<'a> {
 	async fn should_update_profile_info(&mut self) -> Result<()> {
 		info!("should_update_profile_info");
 
-		const JWT: &str = "eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLXByb2plY3RzTGVhZGVkIjoie30iLCJ4LWhhc3VyYS1naXRodWJVc2VySWQiOiI0MzQ2NzI0NiIsIngtaGFzdXJhLWdpdGh1YkFjY2Vzc1Rva2VuIjoiZ2hvX2lIYTY1dkJ6UlpTOGluY05Rd2xwa1VISUFZY0lJRTJ1N09abyIsIngtaGFzdXJhLWFsbG93ZWQtcm9sZXMiOlsibWUiLCJwdWJsaWMiLCJyZWdpc3RlcmVkX3VzZXIiXSwieC1oYXN1cmEtZGVmYXVsdC1yb2xlIjoicmVnaXN0ZXJlZF91c2VyIiwieC1oYXN1cmEtdXNlci1pZCI6IjliN2VmZmViLTk2M2YtNGFjNC1iZTc0LWQ3MzU1MDE5MjVlZCIsIngtaGFzdXJhLXVzZXItaXMtYW5vbnltb3VzIjoiZmFsc2UifSwic3ViIjoiOWI3ZWZmZWItOTYzZi00YWM0LWJlNzQtZDczNTUwMTkyNWVkIiwiaWF0IjoxNjkwNDU2NDIzLCJleHAiOjE2OTEwNjEyMjMsImlzcyI6Imhhc3VyYS1hdXRoLXVuaXQtdGVzdHMifQ.K29BlAJVzZgC3u_fjS-2mGOJsDwuYWoBfrBwPgqr5is";
-
 		let request = json!({
 			"bio": "My biography",
 			"location": "France",
@@ -70,7 +72,7 @@ impl<'a> Test<'a> {
 			.http_client
 			.post("/api/users/profile")
 			.header(ContentType::JSON)
-			.header(Header::new("Authorization", format!("Bearer {JWT}")))
+			.header(Header::new("Authorization", format!("Bearer {}", jwt())))
 			.body(request.to_string())
 			.dispatch()
 			.await;
@@ -104,4 +106,36 @@ impl<'a> Test<'a> {
 
 		Ok(())
 	}
+}
+
+fn jwt() -> String {
+	let now = SystemTime::now()
+		.duration_since(UNIX_EPOCH)
+		.expect("Time went backwards")
+		.as_secs();
+
+	jsonwebtoken::encode(
+		&Default::default(),
+		&json!({
+		  "https://hasura.io/jwt/claims": {
+			"x-hasura-projectsLeaded": "{}",
+			"x-hasura-githubUserId": "43467246",
+			"x-hasura-githubAccessToken": "",
+			"x-hasura-allowed-roles": [
+			  "me",
+			  "public",
+			  "registered_user"
+			],
+			"x-hasura-default-role": "registered_user",
+			"x-hasura-user-id": "9b7effeb-963f-4ac4-be74-d735501925ed",
+			"x-hasura-user-is-anonymous": "false"
+		  },
+		  "sub": "9b7effeb-963f-4ac4-be74-d735501925ed",
+		  "iat": now,
+		  "exp": now + 1000,
+		  "iss": "hasura-auth-unit-tests"
+		}),
+		&EncodingKey::from_secret("secret".as_ref()),
+	)
+	.expect("Invalid JWT")
 }
