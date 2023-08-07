@@ -3,7 +3,8 @@ use std::collections::HashMap;
 use anyhow::{anyhow, Result};
 use async_trait::async_trait;
 use domain::{
-	GithubCodeReview, GithubPullRequest, GithubPullRequestStatus, GithubUser, GithubUserId, LogErr,
+	GithubCodeReview, GithubCodeReviewStatus, GithubPullRequest, GithubPullRequestStatus,
+	GithubUser, GithubUserId, LogErr,
 };
 use octocrab::models::{
 	pulls::{PullRequest, Review},
@@ -92,7 +93,14 @@ fn build_pull_request(
 					.ok()
 			})
 			.collect(),
-		reviews: get_reviews(requested_reviewers, reviews),
+		reviews: get_reviews(requested_reviewers, reviews)
+			.into_iter()
+			.filter(|review| match status {
+				GithubPullRequestStatus::Open => true,
+				GithubPullRequestStatus::Closed | GithubPullRequestStatus::Merged =>
+					review.status == GithubCodeReviewStatus::Completed,
+			})
+			.collect(),
 	})
 }
 

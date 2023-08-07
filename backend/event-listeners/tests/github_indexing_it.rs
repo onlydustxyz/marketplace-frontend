@@ -111,20 +111,12 @@ impl<'a> Test<'a> {
 					draft: false,
 					ci_checks: Some(GithubCiChecks::Passed),
 					commits: commits(),
-					reviews: vec![
-						GithubCodeReview {
-							reviewer: anthony(),
-							status: GithubCodeReviewStatus::Pending,
-							outcome: None,
-							submitted_at: None,
-						},
-						GithubCodeReview {
-							reviewer: ofux(),
-							status: GithubCodeReviewStatus::Completed,
-							outcome: Some(GithubCodeReviewOutcome::Approved),
-							submitted_at: "2023-07-29T08:02:16Z".parse().ok(),
-						},
-					],
+					reviews: vec![GithubCodeReview {
+						reviewer: ofux(),
+						status: GithubCodeReviewStatus::Completed,
+						outcome: Some(GithubCodeReviewOutcome::Approved),
+						submitted_at: "2023-07-29T08:02:16Z".parse().ok(),
+					}],
 				}),
 				Event::PullRequest(GithubPullRequest {
 					id: 1458220740u64.into(),
@@ -182,20 +174,12 @@ impl<'a> Test<'a> {
 					draft: false,
 					ci_checks: Some(GithubCiChecks::Failed),
 					commits: commits(),
-					reviews: vec![
-						GithubCodeReview {
-							reviewer: anthony(),
-							status: GithubCodeReviewStatus::Pending,
-							outcome: None,
-							submitted_at: None,
-						},
-						GithubCodeReview {
-							reviewer: ofux(),
-							status: GithubCodeReviewStatus::Completed,
-							outcome: Some(GithubCodeReviewOutcome::Approved),
-							submitted_at: "2023-07-29T08:02:16Z".parse().ok(),
-						},
-					],
+					reviews: vec![GithubCodeReview {
+						reviewer: ofux(),
+						status: GithubCodeReviewStatus::Completed,
+						outcome: Some(GithubCodeReviewOutcome::Approved),
+						submitted_at: "2023-07-29T08:02:16Z".parse().ok(),
+					}],
 				}),
 			],
 		)
