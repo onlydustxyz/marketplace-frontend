@@ -1,9 +1,9 @@
-use std::sync::Arc;
 use anyhow::{anyhow, Result};
-use infrastructure::database;
 use testcontainers::{
 	clients::Cli, core::WaitFor, images::generic::GenericImage, Container, RunnableImage,
 };
+
+use infrastructure::database;
 
 static USER: &str = "postgres";
 static PASSWORD: &str = "Passw0rd";
@@ -12,7 +12,7 @@ static DATABASE: &str = "marketplace_db";
 pub struct Context<'docker> {
 	_container: Container<'docker, GenericImage>,
 	pub config: database::Config,
-	pub client: Arc<database::Client>,
+	pub client: database::Client,
 }
 
 impl<'docker> Context<'docker> {
@@ -28,7 +28,7 @@ impl<'docker> Context<'docker> {
 			pool_max_size: 2,
 		};
 
-		let client = Arc::new(database::Client::new(database::init_pool(config.clone())?));
+		let client = database::Client::new(database::init_pool(config.clone())?);
 
 		client.run_migrations()?;
 
