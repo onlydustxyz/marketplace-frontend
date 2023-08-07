@@ -13,6 +13,7 @@ pub use clients::{Client, RoundRobinClient, SingleClient};
 mod error;
 pub use error::Error;
 
+pub mod commits;
 pub mod issue;
 pub mod pull_request;
 

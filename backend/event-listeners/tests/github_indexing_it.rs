@@ -2,8 +2,8 @@ use std::collections::HashSet;
 
 use anyhow::Result;
 use domain::{
-	GithubCiChecks, GithubIssue, GithubIssueStatus, GithubPullRequest, GithubPullRequestStatus,
-	GithubRepo, GithubRepoId, GithubUser,
+	GithubCiChecks, GithubCommit, GithubIssue, GithubIssueStatus, GithubPullRequest,
+	GithubPullRequestStatus, GithubRepo, GithubRepoId, GithubUser,
 };
 use event_listeners::{listeners::github::Event, models::GithubRepoIndex, GITHUB_EVENTS_EXCHANGE};
 use infrastructure::database::ImmutableRepository;
@@ -44,18 +44,7 @@ impl<'a> Test<'a> {
 		expect_events(
 			&mut self.context,
 			vec![
-				Event::Repo(GithubRepo {
-					id: repo_id,
-					owner: String::from("onlydustxyz"),
-					name: String::from("marketplace"),
-					logo_url: "https://avatars.githubusercontent.com/u/98735558?v=4"
-						.parse()
-						.unwrap(),
-					html_url: "https://github.com/onlydustxyz/marketplace".parse().unwrap(),
-					description: String::from("Contributions marketplace backend services"),
-					stars: 13,
-					forks_count: 8,
-				}),
+				Event::Repo(marketplace()),
 				Event::Issue(GithubIssue {
 					id: 1828603947u64.into(),
 					repo_id,
@@ -68,14 +57,7 @@ impl<'a> Test<'a> {
 					created_at: "2023-07-31T07:46:18Z".parse().unwrap(),
 					updated_at: "2023-07-31T07:46:18Z".parse().unwrap(),
 					closed_at: None,
-					author: GithubUser {
-						id: 43467246u64.into(),
-						login: String::from("AnthonyBuisset"),
-						avatar_url: "https://avatars.githubusercontent.com/u/43467246?v=4"
-							.parse()
-							.unwrap(),
-						html_url: "https://github.com/AnthonyBuisset".parse().unwrap(),
-					},
+					author: anthony(),
 					assignees: vec![],
 					comments_count: 0,
 				}),
@@ -91,14 +73,7 @@ impl<'a> Test<'a> {
 					created_at: "2023-07-26T12:39:59Z".parse().unwrap(),
 					updated_at: "2023-07-31T07:48:27Z".parse().unwrap(),
 					closed_at: "2023-07-27T15:43:37Z".parse().ok(),
-					author: GithubUser {
-						id: 43467246u64.into(),
-						login: String::from("AnthonyBuisset"),
-						avatar_url: "https://avatars.githubusercontent.com/u/43467246?v=4"
-							.parse()
-							.unwrap(),
-						html_url: "https://github.com/AnthonyBuisset".parse().unwrap(),
-					},
+					author: anthony(),
 					assignees: vec![],
 					comments_count: 2,
 				}),
@@ -114,14 +89,7 @@ impl<'a> Test<'a> {
 					created_at: "2023-06-19T09:16:20Z".parse().unwrap(),
 					updated_at: "2023-07-31T07:49:25Z".parse().unwrap(),
 					closed_at: "2023-07-31T07:49:13Z".parse().ok(),
-					author: GithubUser {
-						id: 136718082u64.into(),
-						login: String::from("od-develop"),
-						avatar_url: "https://avatars.githubusercontent.com/u/136718082?v=4"
-							.parse()
-							.unwrap(),
-						html_url: "https://github.com/od-develop".parse().unwrap(),
-					},
+					author: od_develop(),
 					assignees: vec![],
 					comments_count: 0,
 				}),
@@ -137,17 +105,11 @@ impl<'a> Test<'a> {
 					created_at: "2023-07-31T09:23:37Z".parse().unwrap(),
 					updated_at: "2023-07-31T09:32:08Z".parse().unwrap(),
 					closed_at: "2023-07-31T09:32:08Z".parse().ok(),
-					author: GithubUser {
-						id: 10922658u64.into(),
-						login: String::from("alexbensimon"),
-						avatar_url: "https://avatars.githubusercontent.com/u/10922658?v=4"
-							.parse()
-							.unwrap(),
-						html_url: "https://github.com/alexbensimon".parse().unwrap(),
-					},
+					author: alex(),
 					merged_at: "2023-07-31T09:32:08Z".parse().ok(),
 					draft: false,
 					ci_checks: Some(GithubCiChecks::Passed),
+					commits: commits(),
 				}),
 				Event::PullRequest(GithubPullRequest {
 					id: 1458220740u64.into(),
@@ -172,6 +134,7 @@ impl<'a> Test<'a> {
 					merged_at: None,
 					draft: true,
 					ci_checks: None,
+					commits: commits(),
 				}),
 				Event::PullRequest(GithubPullRequest {
 					id: 1452363285u64.into(),
@@ -185,17 +148,11 @@ impl<'a> Test<'a> {
 					created_at: "2023-07-27T16:46:00Z".parse().unwrap(),
 					updated_at: "2023-07-28T08:34:54Z".parse().unwrap(),
 					closed_at: "2023-07-28T08:34:53Z".parse().ok(),
-					author: GithubUser {
-						id: 595505u64.into(),
-						login: String::from("ofux"),
-						avatar_url: "https://avatars.githubusercontent.com/u/595505?v=4"
-							.parse()
-							.unwrap(),
-						html_url: "https://github.com/ofux".parse().unwrap(),
-					},
+					author: ofux(),
 					merged_at: None,
 					draft: false,
 					ci_checks: Some(GithubCiChecks::Failed),
+					commits: commits(),
 				}),
 			],
 		)
@@ -220,4 +177,68 @@ async fn expect_events(context: &mut Context<'_>, expected: Vec<Event>) {
 		serde_json::to_string(&expected).unwrap(),
 		serde_json::to_string(&actual).unwrap()
 	);
+}
+
+fn anthony() -> GithubUser {
+	GithubUser {
+		id: 43467246u64.into(),
+		login: String::from("AnthonyBuisset"),
+		avatar_url: "https://avatars.githubusercontent.com/u/43467246?v=4".parse().unwrap(),
+		html_url: "https://github.com/AnthonyBuisset".parse().unwrap(),
+	}
+}
+
+fn od_develop() -> GithubUser {
+	GithubUser {
+		id: 136718082u64.into(),
+		login: String::from("od-develop"),
+		avatar_url: "https://avatars.githubusercontent.com/u/136718082?v=4".parse().unwrap(),
+		html_url: "https://github.com/od-develop".parse().unwrap(),
+	}
+}
+
+fn ofux() -> GithubUser {
+	GithubUser {
+		id: 595505u64.into(),
+		login: String::from("ofux"),
+		avatar_url: "https://avatars.githubusercontent.com/u/595505?v=4".parse().unwrap(),
+		html_url: "https://github.com/ofux".parse().unwrap(),
+	}
+}
+
+fn alex() -> GithubUser {
+	GithubUser {
+		id: 10922658u64.into(),
+		login: String::from("alexbensimon"),
+		avatar_url: "https://avatars.githubusercontent.com/u/10922658?v=4".parse().unwrap(),
+		html_url: "https://github.com/alexbensimon".parse().unwrap(),
+	}
+}
+
+fn commits() -> Vec<GithubCommit> {
+	vec![
+		GithubCommit {
+		sha: String::from("3e8b02526187e828f213864d16110d0982534809"),
+		html_url: "https://github.com/onlydustxyz/marketplace/commit/3e8b02526187e828f213864d16110d0982534809".parse().unwrap(),
+		author: anthony(),
+		},
+		GithubCommit {
+			sha: String::from("32a353fdfb17b0b2e5328174309ecfa01e4780e5"),
+			html_url: "https://github.com/onlydustxyz/marketplace/commit/32a353fdfb17b0b2e5328174309ecfa01e4780e5".parse().unwrap(),
+			author: anthony(),
+		}
+	]
+}
+
+fn marketplace() -> GithubRepo {
+	GithubRepo {
+		id: 498695724u64.into(),
+		owner: String::from("onlydustxyz"),
+		name: String::from("marketplace"),
+		logo_url: "https://avatars.githubusercontent.com/u/98735558?v=4".parse().unwrap(),
+		html_url: "https://github.com/onlydustxyz/marketplace".parse().unwrap(),
+		description: String::from("Contributions marketplace backend services"),
+		stars: 13,
+		forks_count: 8,
+	}
 }
