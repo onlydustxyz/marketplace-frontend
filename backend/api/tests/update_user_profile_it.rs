@@ -72,7 +72,7 @@ impl<'a> Test<'a> {
 			.http_client
 			.post("/api/users/profile")
 			.header(ContentType::JSON)
-			.header(Header::new("Authorization", format!("Bearer {}", jwt())))
+			.header(Header::new("Authorization", format!("Bearer {}", jwt(None))))
 			.body(request.to_string())
 			.dispatch()
 			.await;
@@ -107,4 +107,3 @@ impl<'a> Test<'a> {
 		Ok(())
 	}
 }
-

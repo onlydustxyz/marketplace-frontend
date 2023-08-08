@@ -1,3 +1,5 @@
+use std::env;
+
 use anyhow::Result;
 use event_listeners::Config;
 use testcontainers::clients::Cli;
@@ -19,7 +21,14 @@ impl<'a> Context<'a> {
 		let database = database::Context::new(docker)?;
 		let amqp = amqp::Context::new(docker, vec![], vec![]).await?;
 
-		let github = github::Context::new(docker)?;
+		let github = github::Context::new(
+			docker,
+			format!(
+				"{}/tests/resources/wiremock/github",
+				env::current_dir().unwrap().display(),
+			),
+			"event-listener-github-pat".to_string(),
+		)?;
 
 		let config = Config {
 			amqp: amqp.config.clone(),
