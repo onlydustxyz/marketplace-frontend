@@ -1,12 +1,12 @@
 {
   "id": "03e2ca78-2cfa-3d32-aecf-0a86db3662e2",
   "request": {
-    "urlPattern": "/repositories/676033192/(issues|pulls|contributors).*",
+    "urlPattern": "/repositories/676033192/languages",
     "method": "GET"
   },
   "response": {
     "status": 200,
-    "body": "[]",
+    "body": "{}",
     "headers": {
       "Server": "GitHub.com",
       "Date": "Fri, 28 Jul 2023 16:25:48 GMT",

@@ -27,6 +27,7 @@ pub struct Projector {
 	projects_contributors_repository: Arc<dyn ProjectsContributorRepository>,
 	project_github_repos_repository: Arc<dyn ProjectGithubRepoRepository>,
 	technologies_repository: Arc<dyn ImmutableRepository<Technology>>,
+	github_repo_index_repository: Arc<dyn GithubRepoIndexRepository>,
 }
 
 impl Projector {
@@ -51,6 +52,10 @@ impl EventListener<Event> for Projector {
 	async fn on_event(&self, event: Event) -> Result<(), SubscriberCallbackError> {
 		match event.clone() {
 			Event::Repo(repo) => {
+				if let Some(parent) = repo.parent.clone() {
+					self.github_repo_index_repository.start_indexing(parent.id)?;
+				}
+
 				let languages = self.github_fetch_service.repo_languages(repo.id).await?;
 				languages.get_all().into_iter().try_for_each(|language| {
 					self.technologies_repository

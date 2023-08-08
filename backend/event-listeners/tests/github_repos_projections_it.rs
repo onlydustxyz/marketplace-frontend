@@ -3,7 +3,10 @@ use diesel::query_dsl::RunQueryDsl;
 use domain::{Destination, Publisher};
 use event_listeners::{listeners::github::Event, models, GITHUB_EVENTS_EXCHANGE};
 use fixtures::*;
-use infrastructure::{amqp::UniqueMessage, database::schema::github_repos};
+use infrastructure::{
+	amqp::UniqueMessage,
+	database::schema::{github_repo_indexes, github_repos},
+};
 use olog::info;
 use rstest::rstest;
 use serde_json::json;
@@ -22,6 +25,7 @@ pub async fn repo_projection_it(docker: &'static Cli) {
 	};
 
 	test.should_project_repo_events().await.expect("should_project_repo_events");
+	test.should_index_fork_parents().await.expect("should_index_fork_parents");
 }
 
 struct Test<'a> {
@@ -75,6 +79,36 @@ impl<'a> Test<'a> {
 					"Nix": 120
 				})
 			);
+		}
+
+		Ok(())
+	}
+
+	async fn should_index_fork_parents(&mut self) -> Result<()> {
+		info!("should_index_fork_parents");
+
+		// When
+		self.context
+			.amqp
+			.publisher
+			.publish(
+				Destination::exchange(GITHUB_EVENTS_EXCHANGE),
+				&UniqueMessage::new(Event::Repo(repos::marketplace_fork())),
+			)
+			.await?;
+
+		// Then
+		let mut connection = self.context.database.client.connection()?;
+		{
+			let mut repo_indexes: Vec<models::GithubRepoIndex> = retry(
+				|| github_repo_indexes::table.load(&mut *connection),
+				|res| !res.is_empty(),
+			)
+			.await?;
+			assert_eq!(repo_indexes.len(), 1, "Invalid repos index count");
+
+			let repo_index = repo_indexes.pop().unwrap();
+			assert_eq!(repo_index.repo_id, repos::marketplace().id);
 		}
 
 		Ok(())
