@@ -9,9 +9,9 @@ use domain::{
 use octocrab::models::{
 	pulls::{PullRequest, Review},
 	repos::RepoCommit,
-	CheckRun, CheckRuns, CheckStatus, IssueState, User,
+	CheckRun, CheckStatus, IssueState, User,
 };
-use olog::{error, IntoField};
+use olog::{error, warn, IntoField};
 
 use super::{
 	code_review::TryIntoReview, commits::FromOctocrab as CommitFromOctocrab, Client,
@@ -29,13 +29,46 @@ where
 #[async_trait]
 impl FromOctocrab for GithubPullRequest {
 	async fn from_octocrab(client: &Client, pull_request: PullRequest) -> Result<Self> {
-		let check_runs = client.get_check_runs(&pull_request).await?;
-		let commits = client.get_commits(&pull_request).await?;
+		let (check_runs, commits, reviews) = tokio::join!(
+			client.get_check_runs(&pull_request),
+			client.get_commits(&pull_request),
+			client.get_reviews(&pull_request)
+		);
+
 		let requested_reviewers = pull_request.requested_reviewers.clone().unwrap_or_default();
-		let reviews = client.get_reviews(&pull_request).await?;
+		let check_runs = check_runs
+			.log_err(|e| {
+				warn!(
+					error = e.to_field(),
+					pull_request = serde_json::to_string(&pull_request).unwrap_or_default(),
+					"Unable to fetch check runs"
+				)
+			})
+			.map(|check| check.check_runs)
+			.unwrap_or_default();
+
+		let reviews = reviews
+			.log_err(|e| {
+				warn!(
+					error = e.to_field(),
+					pull_request = serde_json::to_string(&pull_request).unwrap_or_default(),
+					"Unable to fetch code reviews"
+				)
+			})
+			.unwrap_or_default();
+
+		let commits = commits
+			.log_err(|e| {
+				warn!(
+					error = e.to_field(),
+					pull_request = serde_json::to_string(&pull_request).unwrap_or_default(),
+					"Unable to fetch pull request commits"
+				)
+			})
+			.unwrap_or_default();
 
 		build_pull_request(
-			pull_request,
+			pull_request.clone(),
 			check_runs,
 			commits,
 			requested_reviewers,
@@ -46,7 +79,7 @@ impl FromOctocrab for GithubPullRequest {
 
 fn build_pull_request(
 	pull_request: PullRequest,
-	check_runs: CheckRuns,
+	check_runs: Vec<CheckRun>,
 	commits: Vec<RepoCommit>,
 	requested_reviewers: Vec<User>,
 	reviews: Vec<Review>,
@@ -67,9 +100,12 @@ fn build_pull_request(
 	let updated_at =
 		pull_request.updated_at.ok_or_else(|| anyhow!("Missing field: 'updated_at'"))?;
 
-	let html_url = pull_request.html_url.ok_or_else(|| anyhow!("Missing field: 'html_url'"))?;
+	let html_url = pull_request
+		.html_url
+		.clone()
+		.ok_or_else(|| anyhow!("Missing field: 'html_url'"))?;
 
-	let user = pull_request.user.ok_or_else(|| anyhow!("Missing field: 'user'"))?;
+	let user = pull_request.user.clone().ok_or_else(|| anyhow!("Missing field: 'user'"))?;
 
 	Ok(GithubPullRequest {
 		id,
@@ -84,12 +120,21 @@ fn build_pull_request(
 		merged_at: pull_request.merged_at,
 		closed_at: pull_request.closed_at,
 		draft: pull_request.draft.unwrap_or_default(),
-		ci_checks: get_ci_checks(check_runs.check_runs),
+		ci_checks: get_ci_checks(check_runs),
 		commits: commits
 			.into_iter()
 			.filter_map(|commit| {
-				CommitFromOctocrab::from_octocrab(commit)
-					.log_err(|e| error!(error = e.to_field(), "Invalid commit"))
+				CommitFromOctocrab::from_octocrab(commit.clone())
+					.log_err(|e| {
+						warn!(
+							error = e.to_field(),
+							pull_request = serde_json::to_string(&pull_request)
+								.unwrap_or_else(|_| String::from("{}")),
+							commit = serde_json::to_string(&commit)
+								.unwrap_or_else(|_| String::from("{}")),
+							"Invalid commit"
+						)
+					})
 					.ok()
 			})
 			.collect(),
