@@ -4,7 +4,6 @@ use diesel::Identifiable;
 use domain::GithubRepoId;
 use serde::{Deserialize, Serialize};
 
-#[allow(clippy::too_many_arguments)]
 #[derive(
 	Debug, Clone, Insertable, AsChangeset, Serialize, Deserialize, Queryable, Identifiable, Model,
 )]
@@ -18,6 +17,7 @@ pub struct GithubRepo {
 	pub fork_count: i32,
 	pub html_url: String,
 	pub languages: serde_json::Value,
+	pub parent_id: Option<GithubRepoId>,
 }
 
 impl Identifiable for GithubRepo {

@@ -1,5 +1,5 @@
 use anyhow::Result;
-use diesel::query_dsl::RunQueryDsl;
+use diesel::{query_dsl::RunQueryDsl, ExpressionMethods, QueryDsl};
 use domain::{Destination, Publisher};
 use event_listeners::{listeners::github::Event, models, GITHUB_EVENTS_EXCHANGE};
 use fixtures::*;
@@ -79,6 +79,7 @@ impl<'a> Test<'a> {
 					"Nix": 120
 				})
 			);
+			assert_eq!(repo.parent_id, None);
 		}
 
 		Ok(())
@@ -109,6 +110,13 @@ impl<'a> Test<'a> {
 
 			let repo_index = repo_indexes.pop().unwrap();
 			assert_eq!(repo_index.repo_id, repos::marketplace().id);
+		}
+
+		{
+			let repo: models::GithubRepo = github_repos::table
+				.filter(github_repos::id.eq(repos::marketplace_fork().id))
+				.get_result(&mut *connection)?;
+			assert_eq!(repo.parent_id, Some(repos::marketplace().id));
 		}
 
 		Ok(())

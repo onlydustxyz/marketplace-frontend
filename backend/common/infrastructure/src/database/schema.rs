@@ -218,6 +218,7 @@ diesel::table! {
         fork_count -> Int4,
         html_url -> Text,
         languages -> Jsonb,
+        parent_id -> Nullable<Int8>,
     }
 }
 
