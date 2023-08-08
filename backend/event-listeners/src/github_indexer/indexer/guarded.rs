@@ -20,6 +20,10 @@ impl<
 	F: Fn() -> Fut + Send + Sync,
 > super::Indexer<Id> for Indexer<Id, I, Fut, F>
 {
+	fn name(&self) -> String {
+		self.indexer.name()
+	}
+
 	async fn index(&self, id: Id) -> Result<Vec<GithubEvent>> {
 		if (self.guard)().await {
 			self.indexer.index(id).await

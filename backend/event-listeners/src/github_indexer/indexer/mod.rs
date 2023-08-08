@@ -38,6 +38,7 @@ pub trait Indexer<Id>: Send + Sync
 where
 	Id: Indexable,
 {
+	fn name(&self) -> String;
 	async fn index(&self, id: Id) -> Result<Vec<GithubEvent>>;
 }
 

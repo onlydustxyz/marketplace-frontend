@@ -73,6 +73,10 @@ impl Indexer {
 
 #[async_trait]
 impl super::Indexer<GithubRepoId> for Indexer {
+	fn name(&self) -> String {
+		String::from("contributors")
+	}
+
 	async fn index(&self, repo_id: GithubRepoId) -> Result<Vec<GithubEvent>> {
 		let user_hash_filter = Arc::new(UserHashFilter::new(
 			self.github_user_index_repository.clone(),

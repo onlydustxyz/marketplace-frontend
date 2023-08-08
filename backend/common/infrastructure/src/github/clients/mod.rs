@@ -329,7 +329,7 @@ impl Client {
 	pub async fn get_reviews(&self, pull_request: &PullRequest) -> Result<Vec<Review>, Error> {
 		let repo = pull_request.base.repo.clone().ok_or_else(|| {
 			Error::Other(anyhow!(
-				"Missing head repo in pull request {}",
+				"Missing base repo in pull request {}",
 				pull_request.id
 			))
 		})?;
