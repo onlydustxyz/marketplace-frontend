@@ -4,21 +4,20 @@ extern crate diesel;
 use anyhow::Result;
 use chrono::Utc;
 use diesel::RunQueryDsl;
-use rocket::http::{ContentType, Header, Status};
-use rocket::serde::json::json;
+use domain::{BudgetEvent, BudgetId, GithubRepoId, ProjectEvent, ProjectId, UserId};
+use infrastructure::{amqp::UniqueMessage, database::schema::events};
+use olog::info;
+use rocket::{
+	http::{ContentType, Header, Status},
+	serde::json::json,
+};
 use rstest::rstest;
 use rust_decimal::Decimal;
 use serde_json::to_value;
 use testcontainers::clients::Cli;
 
-use api::presentation::http::routes::issues::create_issue;
-use domain::{BudgetEvent, BudgetId, GithubRepoId, ProjectEvent, ProjectId, UserId};
-use infrastructure::{amqp::UniqueMessage, database::schema::events};
-use olog::info;
-
-use crate::context::utils::jwt;
 use crate::{
-	context::{docker, Context},
+	context::{docker, utils::jwt, Context},
 	models::Event as EventEntity,
 };
 
@@ -54,10 +53,10 @@ impl<'a> Test<'a> {
 			"description": "issue-description",
 		});
 
-		let project_created_event = ProjectEvent::Created { id: id.clone() };
+		let project_created_event = ProjectEvent::Created { id };
 
 		let project_budget_allocated_event = ProjectEvent::Budget {
-			id: id.clone(),
+			id,
 			event: BudgetEvent::Allocated {
 				id: BudgetId::new(),
 				amount: Decimal::from(10),
@@ -65,12 +64,12 @@ impl<'a> Test<'a> {
 		};
 
 		let project_github_repo_linked_event = ProjectEvent::GithubRepoLinked {
-			id: id.clone(),
-			github_repo_id: GithubRepoId::from(github_repo_id.clone()),
+			id,
+			github_repo_id: GithubRepoId::from(github_repo_id),
 		};
 
 		let project_leader_assigned_event = ProjectEvent::LeaderAssigned {
-			id: id.clone(),
+			id,
 			leader_id: UserId::new(),
 			assigned_at: Utc::now().naive_utc(),
 		};

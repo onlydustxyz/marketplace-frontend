@@ -1,13 +1,11 @@
-use std::collections::HashMap;
-use std::env;
+use std::{collections::HashMap, env};
 
 use anyhow::Result;
+use api::{presentation::bootstrap::bootstrap, Config};
+use presentation::http;
 use rocket::local::asynchronous::Client;
 use rstest::fixture;
 use testcontainers::clients::Cli;
-
-use api::{presentation::bootstrap::bootstrap, Config};
-use presentation::http;
 use testing::context::{amqp, database, github};
 
 pub mod environment;

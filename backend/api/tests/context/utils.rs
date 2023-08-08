@@ -1,16 +1,16 @@
-use std::{
-	time::{SystemTime, UNIX_EPOCH},
-};
+use std::time::{SystemTime, UNIX_EPOCH};
 
 use jsonwebtoken::EncodingKey;
 use rocket::serde::json::json;
 
+#[allow(unused)]
 pub fn jwt(project_leaded_id: Option<String>) -> String {
 	let now = SystemTime::now()
 		.duration_since(UNIX_EPOCH)
 		.expect("Time went backwards")
 		.as_secs();
-	let project_leaded = project_leaded_id.map(|id| format!("{{ \"{:}\" }}", id.to_string()))
+	let project_leaded = project_leaded_id
+		.map(|id| format!("{{ \"{:}\" }}", id))
 		.unwrap_or_else(|| "{}".to_string());
 	jsonwebtoken::encode(
 		&Default::default(),
@@ -35,5 +35,5 @@ pub fn jwt(project_leaded_id: Option<String>) -> String {
 		}),
 		&EncodingKey::from_secret("secret".as_ref()),
 	)
-		.expect("Invalid JWT")
+	.expect("Invalid JWT")
 }

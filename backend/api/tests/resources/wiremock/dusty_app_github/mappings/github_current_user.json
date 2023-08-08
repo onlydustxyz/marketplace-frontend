@@ -1,10 +1,10 @@
 {
-    "request": {
-        "url": "/user",
-        "method": "GET"
-    },
-    "response": {
-        "status": 200,
-        "bodyFileName": "github_current_user_response_body.json"
-    }
+  "request": {
+    "url": "/user",
+    "method": "GET"
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "github_current_user_response_body.json"
+  }
 }

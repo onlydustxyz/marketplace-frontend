@@ -1,9 +1,8 @@
 use std::sync::Arc;
 
 use derive_more::Constructor;
-use futures::future::try_join_all;
-
 use domain::{DomainError, GithubFetchService, Payment, PaymentWorkItem};
+use futures::future::try_join_all;
 
 use crate::domain::DustyBotService;
 

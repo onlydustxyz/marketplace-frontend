@@ -26,6 +26,4 @@ pub trait Service: Send + Sync {
 		repo_name: String,
 		issue_id: GithubIssueNumber,
 	) -> Result<()>;
-
-
 }

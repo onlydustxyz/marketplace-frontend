@@ -1,13 +1,12 @@
 use std::collections::HashSet;
 
+use domain::GithubUserId;
 use rocket::{
 	request::{FromRequest, Outcome},
 	Request,
 };
 use thiserror::Error;
 use uuid::Uuid;
-
-use domain::GithubUserId;
 
 use super::{claims, Claims};
 
@@ -134,6 +133,6 @@ mod tests {
 				}
 			);
 		})
-			.await;
+		.await;
 	}
 }

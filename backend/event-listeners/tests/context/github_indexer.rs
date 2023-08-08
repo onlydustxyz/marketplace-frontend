@@ -1,5 +1,4 @@
-use std::env;
-use std::ffi::OsString;
+use std::{env, ffi::OsString};
 
 use anyhow::Result;
 use envtestkit::{set_env, EnvironmentTestGuard};

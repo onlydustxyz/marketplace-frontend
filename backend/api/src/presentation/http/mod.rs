@@ -1,7 +1,5 @@
 use std::sync::Arc;
 
-use rocket::{Build, Rocket};
-
 use ::domain::{AggregateRootRepository, Project};
 pub use http::Config;
 use infrastructure::{
@@ -10,6 +8,7 @@ use infrastructure::{
 	github,
 };
 use presentation::http;
+use rocket::{Build, Rocket};
 
 use crate::{
 	application,
@@ -60,7 +59,7 @@ pub fn serve(
 
 	let create_github_issue_usecase = application::dusty_bot::create_and_close_issue::Usecase::new(
 		project_repository.clone(),
-		dusty_bot_api_client.clone(),
+		dusty_bot_api_client,
 		github_api_client.clone(),
 	);
 

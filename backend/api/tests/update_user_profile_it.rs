@@ -1,9 +1,7 @@
 mod context;
 mod models;
 
-use std::{
-	collections::HashMap,
-};
+use std::collections::HashMap;
 
 use anyhow::Result;
 use api::presentation::http::routes::users;
@@ -22,9 +20,8 @@ use rstest::rstest;
 use testcontainers::clients::Cli;
 
 use crate::{
-	context::{docker, Context},
+	context::{docker, utils::jwt, Context},
 	models::UserProfileInfo,
-	context::utils::jwt
 };
 
 #[macro_use]
@@ -72,7 +69,10 @@ impl<'a> Test<'a> {
 			.http_client
 			.post("/api/users/profile")
 			.header(ContentType::JSON)
-			.header(Header::new("Authorization", format!("Bearer {}", jwt(None))))
+			.header(Header::new(
+				"Authorization",
+				format!("Bearer {}", jwt(None)),
+			))
 			.body(request.to_string())
 			.dispatch()
 			.await;

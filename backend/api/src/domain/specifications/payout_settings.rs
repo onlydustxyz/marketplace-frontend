@@ -16,12 +16,13 @@ pub struct IsValid {
 impl IsValid {
 	pub async fn is_satisfied_by(&self, payout_settings: &PayoutSettings) -> Result<bool> {
 		match payout_settings {
-			PayoutSettings::EthTransfer(EthereumIdentity::Name(ens_name)) =>
+			PayoutSettings::EthTransfer(EthereumIdentity::Name(ens_name)) => {
 				match self.ens_client.eth_address(ens_name.as_str()).await {
 					Ok(_) => Ok(true),
 					Err(ens::Error::NotRegistered) => Ok(false),
 					Err(error) => Err(anyhow!(error)),
-				},
+				}
+			},
 			_ => Ok(true),
 		}
 	}

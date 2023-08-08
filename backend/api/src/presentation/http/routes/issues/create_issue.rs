@@ -1,16 +1,15 @@
 use chrono::{DateTime, Utc};
+use common_domain::{AggregateRootRepository, GithubIssue, GithubIssueStatus, GithubUser, Project};
 use http_api_problem::HttpApiProblem;
+use olog::{error, IntoField};
+use presentation::http::guards::{Claims, Role};
 use reqwest::StatusCode;
 use rocket::{serde::json::Json, State};
 use serde::{Deserialize, Serialize};
 use url::Url;
 use uuid::Uuid;
 
-use crate::application;
-use crate::domain::permissions::IntoPermission;
-use common_domain::{AggregateRootRepository, GithubIssue, GithubIssueStatus, GithubUser, Project};
-use olog::{error, IntoField};
-use presentation::http::guards::{Claims, Role};
+use crate::{application, domain::permissions::IntoPermission};
 
 #[derive(Debug, Deserialize)]
 #[serde(crate = "rocket::serde")]

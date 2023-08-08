@@ -1,8 +1,8 @@
 use chrono::NaiveDateTime;
+use domain::CommandId;
+use infrastructure::database::schema::events;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
-use infrastructure::database::schema::events;
-use domain::CommandId;
 
 #[derive(Debug, Serialize, Deserialize, Insertable)]
 pub struct Event {

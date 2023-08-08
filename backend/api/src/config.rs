@@ -1,7 +1,6 @@
-use serde::Deserialize;
-
 use infrastructure::{amqp, database, github, tracing, web3};
 use presentation::http;
+use serde::Deserialize;
 
 use crate::infrastructure::simple_storage;
 

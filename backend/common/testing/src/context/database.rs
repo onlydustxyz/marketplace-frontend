@@ -1,9 +1,8 @@
 use anyhow::{anyhow, Result};
+use infrastructure::database;
 use testcontainers::{
 	clients::Cli, core::WaitFor, images::generic::GenericImage, Container, RunnableImage,
 };
-
-use infrastructure::database;
 
 static USER: &str = "postgres";
 static PASSWORD: &str = "Passw0rd";

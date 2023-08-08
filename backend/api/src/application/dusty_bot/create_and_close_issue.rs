@@ -1,11 +1,10 @@
 use std::sync::Arc;
 
 use anyhow::anyhow;
-use derive_more::Constructor;
-use tracing::instrument;
-
 use common_domain::GithubFetchService;
+use derive_more::Constructor;
 use domain::{AggregateRootRepository, DomainError, GithubIssue, GithubRepoId, Project, ProjectId};
+use tracing::instrument;
 
 use crate::domain::DustyBotService;
 
@@ -32,7 +31,7 @@ impl Usecase {
 			)));
 		}
 
-		let repository = self.fetch_service.repo_by_id(github_repo_id.clone()).await?;
+		let repository = self.fetch_service.repo_by_id(github_repo_id).await?;
 
 		let created_issue = self
 			.dusty_bot_service_to_create_issue

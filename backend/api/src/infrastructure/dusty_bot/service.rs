@@ -1,12 +1,11 @@
 use anyhow::{Context, Result};
 use async_trait::async_trait;
-use octocrab::{self, models};
-
 use domain::{
 	GithubFetchIssueService, GithubFetchUserService, GithubIssue, GithubIssueNumber,
 	GithubIssueStatus, GithubRepoId,
 };
 use infrastructure::github::{self, issue::FromOctocrab};
+use octocrab::{self, models};
 use olog::tracing::instrument;
 
 use crate::domain::DustyBotService;
@@ -50,8 +49,8 @@ impl DustyBotService for github::Client {
 				.state(models::IssueState::Closed)
 				.send()
 				.await
-				.map_err(|e|{
-					println!("{:?}",e);
+				.map_err(|e| {
+					println!("{:?}", e);
 					e
 				})
 				.map_err(github::Error::from)?;
