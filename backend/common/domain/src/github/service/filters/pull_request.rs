@@ -57,6 +57,7 @@ mod tests {
 			draft: false,
 			ci_checks: None,
 			commits: vec![],
+			reviews: vec![],
 		}
 	}
 

@@ -1,6 +1,9 @@
 mod commit;
 pub use commit::GithubPullRequestCommit as Commit;
 
+mod review;
+pub use review::GithubPullRequestReview as Review;
+
 mod pull_request;
 pub use pull_request::GithubPullRequest as Inner;
 
@@ -11,6 +14,7 @@ pub use repository::Repository;
 pub struct PullRequest {
 	pub inner: Inner,
 	pub commits: Vec<Commit>,
+	pub reviews: Vec<Review>,
 }
 
 impl From<domain::GithubPullRequest> for PullRequest {
@@ -38,6 +42,17 @@ impl From<domain::GithubPullRequest> for PullRequest {
 					pull_request_id: pull_request.id,
 					html_url: c.html_url.to_string(),
 					author_id: c.author.id,
+				})
+				.collect(),
+			reviews: pull_request
+				.reviews
+				.into_iter()
+				.map(|review| Review {
+					pull_request_id: pull_request.id,
+					reviewer_id: review.reviewer.id,
+					outcome: review.outcome.map(Into::into),
+					status: review.status.into(),
+					submitted_at: review.submitted_at.map(|date| date.naive_utc()),
 				})
 				.collect(),
 		}

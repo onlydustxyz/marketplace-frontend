@@ -42,7 +42,9 @@ pub use budget::{Budget, Error as BudgetError, Event as BudgetEvent, Id as Budge
 
 mod github;
 pub use github::{
-	service_filters as github_service_filters, CiChecks as GithubCiChecks, Commit as GithubCommit,
+	service_filters as github_service_filters, CiChecks as GithubCiChecks,
+	CodeReview as GithubCodeReview, CodeReviewOutcome as GithubCodeReviewOutcome,
+	CodeReviewStatus as GithubCodeReviewStatus, Commit as GithubCommit,
 	FetchIssueService as GithubFetchIssueService,
 	FetchPullRequestService as GithubFetchPullRequestService,
 	FetchRepoService as GithubFetchRepoService, FetchService as GithubFetchService,

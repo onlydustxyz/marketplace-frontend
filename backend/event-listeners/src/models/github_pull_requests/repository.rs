@@ -3,7 +3,7 @@ use infrastructure::{
 	contextualized_error::IntoContextualizedError,
 	database,
 	database::{
-		schema::{github_pull_request_commits, github_pull_requests},
+		schema::{github_pull_request_commits, github_pull_request_reviews, github_pull_requests},
 		Result,
 	},
 };
@@ -26,6 +26,11 @@ impl Repository for database::Client {
 				))
 				.execute(&mut *connection)?;
 
+				diesel::delete(github_pull_request_reviews::table.filter(
+					github_pull_request_reviews::pull_request_id.eq(pull_request.inner.id),
+				))
+				.execute(&mut *connection)?;
+
 				diesel::insert_into(github_pull_requests::table)
 					.values(&pull_request.inner)
 					.on_conflict(github_pull_requests::id)
@@ -35,6 +40,10 @@ impl Repository for database::Client {
 
 				diesel::insert_into(github_pull_request_commits::table)
 					.values(pull_request.commits)
+					.execute(&mut *connection)?;
+
+				diesel::insert_into(github_pull_request_reviews::table)
+					.values(pull_request.reviews)
 					.execute(&mut *connection)?;
 
 				Ok(())

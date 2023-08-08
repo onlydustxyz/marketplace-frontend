@@ -2,8 +2,9 @@ use std::collections::HashSet;
 
 use anyhow::Result;
 use domain::{
-	GithubCiChecks, GithubCommit, GithubIssue, GithubIssueStatus, GithubPullRequest,
-	GithubPullRequestStatus, GithubRepo, GithubRepoId, GithubUser,
+	GithubCiChecks, GithubCodeReview, GithubCodeReviewOutcome, GithubCodeReviewStatus,
+	GithubCommit, GithubIssue, GithubIssueStatus, GithubPullRequest, GithubPullRequestStatus,
+	GithubRepo, GithubRepoId, GithubUser,
 };
 use event_listeners::{listeners::github::Event, models::GithubRepoIndex, GITHUB_EVENTS_EXCHANGE};
 use infrastructure::database::ImmutableRepository;
@@ -110,6 +111,12 @@ impl<'a> Test<'a> {
 					draft: false,
 					ci_checks: Some(GithubCiChecks::Passed),
 					commits: commits(),
+					reviews: vec![GithubCodeReview {
+						reviewer: ofux(),
+						status: GithubCodeReviewStatus::Completed,
+						outcome: Some(GithubCodeReviewOutcome::Approved),
+						submitted_at: "2023-07-29T08:02:16Z".parse().ok(),
+					}],
 				}),
 				Event::PullRequest(GithubPullRequest {
 					id: 1458220740u64.into(),
@@ -135,6 +142,20 @@ impl<'a> Test<'a> {
 					draft: true,
 					ci_checks: None,
 					commits: commits(),
+					reviews: vec![
+						GithubCodeReview {
+							reviewer: anthony(),
+							status: GithubCodeReviewStatus::Pending,
+							outcome: Some(GithubCodeReviewOutcome::ChangeRequested),
+							submitted_at: "2023-08-07T16:52:12Z".parse().ok(),
+						},
+						GithubCodeReview {
+							reviewer: ofux(),
+							status: GithubCodeReviewStatus::Completed,
+							outcome: Some(GithubCodeReviewOutcome::Approved),
+							submitted_at: "2023-07-29T08:02:16Z".parse().ok(),
+						},
+					],
 				}),
 				Event::PullRequest(GithubPullRequest {
 					id: 1452363285u64.into(),
@@ -153,6 +174,12 @@ impl<'a> Test<'a> {
 					draft: false,
 					ci_checks: Some(GithubCiChecks::Failed),
 					commits: commits(),
+					reviews: vec![GithubCodeReview {
+						reviewer: ofux(),
+						status: GithubCodeReviewStatus::Completed,
+						outcome: Some(GithubCodeReviewOutcome::Approved),
+						submitted_at: "2023-07-29T08:02:16Z".parse().ok(),
+					}],
 				}),
 			],
 		)

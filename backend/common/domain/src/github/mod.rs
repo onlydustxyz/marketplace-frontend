@@ -23,3 +23,6 @@ pub use pull_request::{
 
 mod commit;
 pub use commit::Commit;
+
+mod code_review;
+pub use code_review::{CodeReview, Outcome as CodeReviewOutcome, Status as CodeReviewStatus};
