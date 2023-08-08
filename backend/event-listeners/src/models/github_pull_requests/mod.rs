@@ -2,6 +2,7 @@ mod commit;
 pub use commit::GithubPullRequestCommit as Commit;
 
 mod review;
+use diesel_json::Json;
 pub use review::GithubPullRequestReview as Review;
 
 mod pull_request;
@@ -33,6 +34,7 @@ impl From<domain::GithubPullRequest> for PullRequest {
 				closed_at: pull_request.closed_at.map(|date| date.naive_utc()),
 				draft: pull_request.draft,
 				ci_checks: pull_request.ci_checks.map(Into::into),
+				closing_issue_numbers: Json::new(pull_request.closing_issue_numbers),
 			},
 			commits: pull_request
 				.commits

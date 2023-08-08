@@ -195,6 +195,7 @@ diesel::table! {
         closed_at -> Nullable<Timestamp>,
         draft -> Bool,
         ci_checks -> Nullable<GithubCiChecks>,
+        closing_issue_numbers -> Jsonb,
     }
 }
 

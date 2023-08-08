@@ -1,8 +1,8 @@
 use anyhow::Result;
 use diesel::{query_dsl::RunQueryDsl, ExpressionMethods, QueryDsl};
 use domain::{
-	Destination, GithubCiChecks, GithubPullRequest, GithubPullRequestId, GithubPullRequestStatus,
-	Publisher,
+	Destination, GithubCiChecks, GithubIssueNumber, GithubPullRequest, GithubPullRequestId,
+	GithubPullRequestStatus, Publisher,
 };
 use event_listeners::{listeners::github::Event, models, GITHUB_EVENTS_EXCHANGE};
 use fixtures::*;
@@ -78,7 +78,7 @@ impl<'a> Test<'a> {
 					ci_checks: Some(GithubCiChecks::Passed),
 					commits: vec![commits::a(), commits::b()],
 					reviews: vec![reviews::approved()],
-					closing_issue_numbers: vec![],
+					closing_issue_numbers: vec![GithubIssueNumber::from(1145u64)],
 				})),
 			)
 			.await?;
@@ -118,6 +118,10 @@ impl<'a> Test<'a> {
 				pull_request.ci_checks,
 				Some(infrastructure::database::enums::GithubCiChecks::Passed)
 			);
+			assert_eq!(
+				pull_request.closing_issue_numbers.0,
+				vec![GithubIssueNumber::from(1145u64)]
+			)
 		}
 
 		{

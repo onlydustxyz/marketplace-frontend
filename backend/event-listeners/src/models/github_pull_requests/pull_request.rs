@@ -1,6 +1,9 @@
 use chrono::NaiveDateTime;
 use diesel::Identifiable;
-use domain::{GithubPullRequestId, GithubPullRequestNumber, GithubRepoId, GithubUserId};
+use diesel_json::Json;
+use domain::{
+	GithubIssueNumber, GithubPullRequestId, GithubPullRequestNumber, GithubRepoId, GithubUserId,
+};
 use infrastructure::database::{
 	enums::{GithubCiChecks, GithubPullRequestStatus},
 	schema::github_pull_requests,
@@ -23,6 +26,7 @@ pub struct GithubPullRequest {
 	pub closed_at: Option<NaiveDateTime>,
 	pub draft: bool,
 	pub ci_checks: Option<GithubCiChecks>,
+	pub closing_issue_numbers: Json<Vec<GithubIssueNumber>>,
 }
 
 impl Identifiable for GithubPullRequest {
