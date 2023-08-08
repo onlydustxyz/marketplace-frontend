@@ -21,6 +21,7 @@ pub struct Projector {
 	github_repo_repository: Arc<dyn Repository<GithubRepo>>,
 	github_issues_repository: Arc<dyn Repository<GithubIssue>>,
 	github_pull_requests_repository: Arc<dyn GithubPullRequestRepository>,
+	contributions_repository: Arc<dyn ContributionsRepository>,
 	github_users_repository: Arc<dyn Repository<GithubUser>>,
 	github_repos_contributors_repository: Arc<dyn ImmutableRepository<GithubReposContributor>>,
 	projects_contributors_repository: Arc<dyn ProjectsContributorRepository>,
@@ -64,10 +65,14 @@ impl EventListener<Event> for Projector {
 				)?;
 			},
 			Event::Issue(issue) => {
-				self.github_issues_repository.upsert(issue.into())?;
+				let issue: GithubIssue = issue.into();
+				self.github_issues_repository.upsert(issue.clone())?;
+				self.contributions_repository.upsert_from_github_issue(issue)?;
 			},
 			Event::PullRequest(pull_request) => {
-				self.github_pull_requests_repository.upsert(pull_request.into())?;
+				let pull_request: GithubPullRequest = pull_request.into();
+				self.github_pull_requests_repository.upsert(pull_request.clone())?;
+				self.contributions_repository.upsert_from_github_pull_request(pull_request)?;
 			},
 			Event::User { user, repo_id } => {
 				self.github_users_repository.upsert(user.clone().into())?;

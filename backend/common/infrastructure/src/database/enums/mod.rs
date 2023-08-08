@@ -4,6 +4,9 @@ pub use allocated_time::AllocatedTime;
 mod contact_channel;
 pub use contact_channel::ContactChannel;
 
+mod contribution_type;
+pub use contribution_type::ContributionType;
+
 mod github_ci_checks;
 pub use github_ci_checks::GithubCiChecks;
 

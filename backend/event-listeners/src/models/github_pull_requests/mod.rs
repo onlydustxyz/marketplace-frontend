@@ -10,7 +10,7 @@ pub use pull_request::GithubPullRequest as Inner;
 mod repository;
 pub use repository::Repository;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct PullRequest {
 	pub inner: Inner,
 	pub commits: Vec<Commit>,

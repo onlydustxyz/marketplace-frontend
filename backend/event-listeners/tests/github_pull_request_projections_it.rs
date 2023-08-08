@@ -1,17 +1,20 @@
-use std::time::Duration;
-
 use anyhow::Result;
 use diesel::query_dsl::RunQueryDsl;
 use domain::{
-	Destination, GithubCiChecks, GithubCodeReview, GithubCodeReviewOutcome, GithubCodeReviewStatus,
-	GithubCommit, GithubPullRequest, GithubPullRequestStatus, GithubUser, Publisher,
+	Destination, GithubCiChecks, GithubPullRequest, GithubPullRequestId, GithubPullRequestStatus,
+	Publisher,
 };
 use event_listeners::{listeners::github::Event, models, GITHUB_EVENTS_EXCHANGE};
+use fixtures::*;
 use infrastructure::{
 	amqp::UniqueMessage,
 	database::{
 		self,
-		schema::{github_pull_request_commits, github_pull_request_reviews, github_pull_requests},
+		enums::ContributionType,
+		schema::{
+			contributions, github_pull_request_commits, github_pull_request_reviews,
+			github_pull_requests,
+		},
 	},
 };
 use olog::info;
@@ -21,6 +24,7 @@ use testcontainers::clients::Cli;
 use crate::context::{docker, event_listeners::Context};
 
 mod context;
+mod fixtures;
 
 #[rstest]
 #[tokio::test(flavor = "multi_thread")]
@@ -58,7 +62,7 @@ impl<'a> Test<'a> {
 				Destination::exchange(GITHUB_EVENTS_EXCHANGE),
 				&UniqueMessage::new(Event::PullRequest(GithubPullRequest {
 					id: 1455874031u64.into(),
-					repo_id: 498695724u64.into(),
+					repo_id: repos::marketplace().id,
 					number: 1146u64.into(),
 					title: String::from("Hide tooltips on mobile"),
 					status: GithubPullRequestStatus::Merged,
@@ -68,17 +72,12 @@ impl<'a> Test<'a> {
 					created_at: "2023-07-31T09:23:37Z".parse().unwrap(),
 					updated_at: "2023-07-31T09:32:08Z".parse().unwrap(),
 					closed_at: "2023-07-31T09:32:08Z".parse().ok(),
-					author: alex(),
+					author: users::alex(),
 					merged_at: "2023-07-31T09:32:08Z".parse().ok(),
 					draft: false,
 					ci_checks: Some(GithubCiChecks::Passed),
-					commits: commits(),
-					reviews: vec![GithubCodeReview {
-						reviewer: anthony(),
-						status: GithubCodeReviewStatus::Completed,
-						outcome: Some(GithubCodeReviewOutcome::Approved),
-						submitted_at: "2023-07-31T09:32:08Z".parse().ok(),
-					}],
+					commits: vec![commits::a(), commits::b()],
+					reviews: vec![reviews::approved()],
 				})),
 			)
 			.await?;
@@ -95,13 +94,13 @@ impl<'a> Test<'a> {
 
 			let pull_request = pull_requests.pop().unwrap();
 			assert_eq!(pull_request.id, 1455874031u64.into());
-			assert_eq!(pull_request.repo_id, 498695724u64.into());
+			assert_eq!(pull_request.repo_id, repos::marketplace().id);
 			assert_eq!(pull_request.number, 1146u64.into());
 			assert_eq!(
 				pull_request.created_at,
 				"2023-07-31T09:23:37".parse().unwrap()
 			);
-			assert_eq!(pull_request.author_id, 10922658u64.into());
+			assert_eq!(pull_request.author_id, users::alex().id);
 			assert_eq!(pull_request.merged_at, "2023-07-31T09:32:08".parse().ok());
 			assert_eq!(
 				pull_request.status,
@@ -128,23 +127,17 @@ impl<'a> Test<'a> {
 			{
 				let commit = commits.pop().unwrap();
 				assert_eq!(commit.pull_request_id, 1455874031u64.into());
-				assert_eq!(commit.sha, "32a353fdfb17b0b2e5328174309ecfa01e4780e5");
-				assert_eq!(commit.author_id, 43467246u64.into());
-				assert_eq!(
-					commit.html_url,
-					"https://github.com/onlydustxyz/marketplace/commit/32a353fdfb17b0b2e5328174309ecfa01e4780e5"
-				);
+				assert_eq!(commit.sha, commits::b().sha);
+				assert_eq!(commit.author_id, commits::b().author.id);
+				assert_eq!(commit.html_url, commits::b().html_url.to_string());
 			}
 
 			{
 				let commit = commits.pop().unwrap();
 				assert_eq!(commit.pull_request_id, 1455874031u64.into());
-				assert_eq!(commit.sha, "3e8b02526187e828f213864d16110d0982534809");
-				assert_eq!(commit.author_id, 43467246u64.into());
-				assert_eq!(
-					commit.html_url,
-					"https://github.com/onlydustxyz/marketplace/commit/3e8b02526187e828f213864d16110d0982534809"
-				);
+				assert_eq!(commit.sha, commits::a().sha);
+				assert_eq!(commit.author_id, commits::a().author.id);
+				assert_eq!(commit.html_url, commits::a().html_url.to_string());
 			}
 		}
 
@@ -155,7 +148,7 @@ impl<'a> Test<'a> {
 
 			let review = reviews.pop().unwrap();
 			assert_eq!(review.pull_request_id, 1455874031u64.into());
-			assert_eq!(review.reviewer_id, 43467246u64.into());
+			assert_eq!(review.reviewer_id, reviews::approved().reviewer.id);
 			assert_eq!(
 				review.status,
 				database::enums::GithubCodeReviewStatus::Completed
@@ -165,6 +158,34 @@ impl<'a> Test<'a> {
 				Some(database::enums::GithubCodeReviewOutcome::Approved)
 			);
 			assert_eq!(review.submitted_at, "2023-07-31T09:32:08".parse().ok());
+		}
+
+		{
+			let mut contributions: Vec<models::Contribution> =
+				contributions::table.load(&mut *connection)?;
+			assert_eq!(contributions.len(), 2, "Invalid contributions count");
+
+			{
+				let contribution = contributions.pop().unwrap();
+				assert_eq!(contribution.repo_id, repos::marketplace().id);
+				assert_eq!(contribution.type_, ContributionType::CodeReview);
+				assert_eq!(contribution.user_id, users::anthony().id);
+				assert_eq!(
+					contribution.details_id,
+					GithubPullRequestId::from(1455874031u64).into()
+				);
+			}
+
+			{
+				let contribution = contributions.pop().unwrap();
+				assert_eq!(contribution.repo_id, repos::marketplace().id);
+				assert_eq!(contribution.type_, ContributionType::PullRequest);
+				assert_eq!(contribution.user_id, users::anthony().id);
+				assert_eq!(
+					contribution.details_id,
+					GithubPullRequestId::from(1455874031u64).into()
+				);
+			}
 		}
 
 		Ok(())
@@ -181,7 +202,7 @@ impl<'a> Test<'a> {
 				Destination::exchange(GITHUB_EVENTS_EXCHANGE),
 				&UniqueMessage::new(Event::PullRequest(GithubPullRequest {
 					id: 1455874031u64.into(),
-					repo_id: 498695724u64.into(),
+					repo_id: repos::marketplace().id,
 					number: 1146u64.into(),
 					title: String::from("updated"),
 					status: GithubPullRequestStatus::Merged,
@@ -191,11 +212,11 @@ impl<'a> Test<'a> {
 					created_at: "2023-07-31T09:23:37Z".parse().unwrap(),
 					updated_at: "2023-07-31T09:32:08Z".parse().unwrap(),
 					closed_at: "2023-07-31T09:32:08Z".parse().ok(),
-					author: alex(),
+					author: users::alex(),
 					merged_at: "2023-07-31T09:32:08Z".parse().ok(),
 					draft: false,
 					ci_checks: Some(GithubCiChecks::Passed),
-					commits: other_commits(),
+					commits: vec![commits::c()],
 					reviews: vec![],
 				})),
 			)
@@ -218,11 +239,23 @@ impl<'a> Test<'a> {
 
 			let commit = commits.pop().unwrap();
 			assert_eq!(commit.pull_request_id, 1455874031u64.into());
-			assert_eq!(commit.sha, "b83f75bf3d86cdf017c0f743dcf29dcffdb0ab97");
-			assert_eq!(commit.author_id, 10922658u64.into());
+			assert_eq!(commit.sha, commits::c().sha);
+			assert_eq!(commit.author_id, commits::c().author.id);
+			assert_eq!(commit.html_url, commits::c().html_url.to_string());
+		}
+
+		{
+			let mut contributions: Vec<models::Contribution> =
+				contributions::table.load(&mut *connection)?;
+			assert_eq!(contributions.len(), 1, "Invalid contributions count");
+
+			let contribution = contributions.pop().unwrap();
+			assert_eq!(contribution.repo_id, repos::marketplace().id);
+			assert_eq!(contribution.type_, ContributionType::PullRequest);
+			assert_eq!(contribution.user_id, users::alex().id);
 			assert_eq!(
-				commit.html_url,
-				"https://github.com/onlydustxyz/marketplace/commit/b83f75bf3d86cdf017c0f743dcf29dcffdb0ab97"
+				contribution.details_id,
+				GithubPullRequestId::from(1455874031u64).into()
 			);
 		}
 
@@ -240,7 +273,7 @@ impl<'a> Test<'a> {
 				Destination::exchange(GITHUB_EVENTS_EXCHANGE),
 				&UniqueMessage::new(Event::PullRequest(GithubPullRequest {
 					id: 1455874031u64.into(),
-					repo_id: 498695724u64.into(),
+					repo_id: repos::marketplace().id,
 					number: 1146u64.into(),
 					title: String::from("updated_again"),
 					status: GithubPullRequestStatus::Merged,
@@ -250,25 +283,12 @@ impl<'a> Test<'a> {
 					created_at: "2023-07-31T09:23:37Z".parse().unwrap(),
 					updated_at: "2023-07-31T09:32:08Z".parse().unwrap(),
 					closed_at: "2023-07-31T09:32:08Z".parse().ok(),
-					author: alex(),
+					author: users::alex(),
 					merged_at: "2023-07-31T09:32:08Z".parse().ok(),
 					draft: false,
 					ci_checks: Some(GithubCiChecks::Passed),
 					commits: vec![],
-					reviews: vec![
-						GithubCodeReview {
-							reviewer: anthony(),
-							status: GithubCodeReviewStatus::Pending,
-							outcome: Some(GithubCodeReviewOutcome::ChangeRequested),
-							submitted_at: "2023-07-31T09:32:08Z".parse().ok(),
-						},
-						GithubCodeReview {
-							reviewer: alex(),
-							status: GithubCodeReviewStatus::Pending,
-							outcome: None,
-							submitted_at: None,
-						},
-					],
+					reviews: vec![reviews::change_requested(), reviews::pending()],
 				})),
 			)
 			.await?;
@@ -291,7 +311,7 @@ impl<'a> Test<'a> {
 			{
 				let review = reviews.pop().unwrap();
 				assert_eq!(review.pull_request_id, 1455874031u64.into());
-				assert_eq!(review.reviewer_id, 10922658u64.into());
+				assert_eq!(review.reviewer_id, reviews::pending().reviewer.id);
 				assert_eq!(
 					review.status,
 					database::enums::GithubCodeReviewStatus::Pending
@@ -303,7 +323,7 @@ impl<'a> Test<'a> {
 			{
 				let review = reviews.pop().unwrap();
 				assert_eq!(review.pull_request_id, 1455874031u64.into());
-				assert_eq!(review.reviewer_id, 43467246u64.into());
+				assert_eq!(review.reviewer_id, reviews::change_requested().reviewer.id);
 				assert_eq!(
 					review.status,
 					database::enums::GithubCodeReviewStatus::Pending
@@ -316,61 +336,34 @@ impl<'a> Test<'a> {
 			}
 		}
 
+		{
+			let mut contributions: Vec<models::Contribution> =
+				contributions::table.load(&mut *connection)?;
+			assert_eq!(contributions.len(), 2, "Invalid contributions count");
+
+			{
+				let contribution = contributions.pop().unwrap();
+				assert_eq!(contribution.repo_id, repos::marketplace().id);
+				assert_eq!(contribution.type_, ContributionType::CodeReview);
+				assert_eq!(contribution.user_id, users::alex().id);
+				assert_eq!(
+					contribution.details_id,
+					GithubPullRequestId::from(1455874031u64).into()
+				);
+			}
+
+			{
+				let contribution = contributions.pop().unwrap();
+				assert_eq!(contribution.repo_id, repos::marketplace().id);
+				assert_eq!(contribution.type_, ContributionType::CodeReview);
+				assert_eq!(contribution.user_id, users::anthony().id);
+				assert_eq!(
+					contribution.details_id,
+					GithubPullRequestId::from(1455874031u64).into()
+				);
+			}
+		}
+
 		Ok(())
 	}
-}
-
-async fn retry<R, E, F: FnMut() -> std::result::Result<Vec<R>, E>, C: FnMut(&[R]) -> bool>(
-	mut callback: F,
-	mut check: C,
-) -> std::result::Result<Vec<R>, E> {
-	let mut results: Vec<R> = vec![];
-	while !check(&results) {
-		tokio::time::sleep(Duration::from_secs(1)).await;
-		results = callback()?;
-	}
-	Ok(results)
-}
-
-fn anthony() -> GithubUser {
-	GithubUser {
-		id: 43467246u64.into(),
-		login: String::from("AnthonyBuisset"),
-		avatar_url: "https://avatars.githubusercontent.com/u/43467246?v=4".parse().unwrap(),
-		html_url: "https://github.com/AnthonyBuisset".parse().unwrap(),
-	}
-}
-
-fn alex() -> GithubUser {
-	GithubUser {
-		id: 10922658u64.into(),
-		login: String::from("alexbensimon"),
-		avatar_url: "https://avatars.githubusercontent.com/u/10922658?v=4".parse().unwrap(),
-		html_url: "https://github.com/alexbensimon".parse().unwrap(),
-	}
-}
-
-fn commits() -> Vec<GithubCommit> {
-	vec![
-		GithubCommit {
-		sha: String::from("3e8b02526187e828f213864d16110d0982534809"),
-		html_url: "https://github.com/onlydustxyz/marketplace/commit/3e8b02526187e828f213864d16110d0982534809".parse().unwrap(),
-		author: anthony(),
-		},
-		GithubCommit {
-			sha: String::from("32a353fdfb17b0b2e5328174309ecfa01e4780e5"),
-			html_url: "https://github.com/onlydustxyz/marketplace/commit/32a353fdfb17b0b2e5328174309ecfa01e4780e5".parse().unwrap(),
-			author: anthony(),
-		}
-	]
-}
-
-fn other_commits() -> Vec<GithubCommit> {
-	vec![
-		GithubCommit {
-		sha: String::from("b83f75bf3d86cdf017c0f743dcf29dcffdb0ab97"),
-		html_url: "https://github.com/onlydustxyz/marketplace/commit/b83f75bf3d86cdf017c0f743dcf29dcffdb0ab97".parse().unwrap(),
-		author: alex(),
-		},
-	]
 }
