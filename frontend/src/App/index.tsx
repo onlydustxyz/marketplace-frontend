@@ -32,6 +32,7 @@ export enum RoutePaths {
   Rewards = "/rewards",
   CatchAll = "*",
   Error = "/error",
+  NotFound = "/not-found",
   Impersonation = "/impersonate/:userId",
   TermsAndConditions = "/terms-and-conditions",
   Onboarding = "/onboarding",
@@ -69,7 +70,7 @@ function App() {
     {
       path: ProjectRoutePaths.Rewards,
       element: (
-        <ProtectedRoute requiredRole={CustomUserRole.ProjectLead} redirectTo={RoutePaths.ProjectDetails}>
+        <ProtectedRoute requiredRole={CustomUserRole.ProjectLead}>
           <ProjectDetailsRewards />
         </ProtectedRoute>
       ),
@@ -126,6 +127,10 @@ function App() {
           path: RoutePaths.ProjectDetails,
           element: <ProjectDetails />,
           children: projectRoutes,
+        },
+        {
+          path: RoutePaths.NotFound,
+          element: <NotFound />,
         },
         {
           path: RoutePaths.CatchAll,
