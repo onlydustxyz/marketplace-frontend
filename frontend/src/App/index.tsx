@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect } from "react";
-import { RouteObject, useLocation, useRoutes } from "react-router-dom";
+import { Navigate, RouteObject, useLocation, useRoutes } from "react-router-dom";
 
 import Layout from "src/App/Layout";
 import ProtectedRoute from "src/App/ProtectedRoute";
@@ -134,7 +134,7 @@ function App() {
         },
         {
           path: RoutePaths.CatchAll,
-          element: <NotFound />,
+          element: <Navigate to={RoutePaths.NotFound} />,
         },
         {
           path: RoutePaths.Error,

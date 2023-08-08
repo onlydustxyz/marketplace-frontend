@@ -1,4 +1,4 @@
-import { generatePath, useNavigate, useParams } from "react-router-dom";
+import { Navigate, generatePath, useNavigate, useParams } from "react-router-dom";
 import { LanguageMap } from "src/types";
 import {
   GetProjectIdFromKeyDocument,
@@ -14,7 +14,6 @@ import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
 import { contextWithCacheHeaders } from "src/utils/headers";
 import SEO from "src/components/SEO";
-import { NotFound } from "src/components/NotFound";
 
 type ProjectDetailsParams = {
   projectKey: string;
@@ -43,7 +42,7 @@ export default function ProjectDetails() {
   const project = projectIdQuery.data.projects[0];
 
   if (!project) {
-    return <NotFound />;
+    return <Navigate to={RoutePaths.NotFound} />;
   }
 
   return <ProjectPresentDetails projectKey={projectKey} {...project} />;
