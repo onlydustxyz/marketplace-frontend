@@ -23,7 +23,6 @@ pub struct Projector {
 	github_pull_requests_repository: Arc<dyn GithubPullRequestRepository>,
 	contributions_repository: Arc<dyn ContributionsRepository>,
 	github_users_repository: Arc<dyn Repository<GithubUser>>,
-	github_repos_contributors_repository: Arc<dyn ImmutableRepository<GithubReposContributor>>,
 	projects_contributors_repository: Arc<dyn ProjectsContributorRepository>,
 	project_github_repos_repository: Arc<dyn ProjectGithubRepoRepository>,
 	technologies_repository: Arc<dyn ImmutableRepository<Technology>>,
@@ -82,10 +81,6 @@ impl EventListener<Event> for Projector {
 			},
 			Event::User { user, repo_id } => {
 				self.github_users_repository.upsert(user.clone().into())?;
-				self.github_repos_contributors_repository.try_insert(GithubReposContributor {
-					repo_id,
-					user_id: user.id,
-				})?;
 
 				self.project_github_repos_repository
 					.find_projects_of_repo(&repo_id)?
