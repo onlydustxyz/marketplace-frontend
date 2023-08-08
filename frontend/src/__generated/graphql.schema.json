@@ -17973,19 +17973,19 @@
         "interfaces": null,
         "enumValues": [
           {
-            "name": "Cancelled",
+            "name": "CANCELLED",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "Completed",
+            "name": "COMPLETED",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "Open",
+            "name": "OPEN",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null

@@ -38,7 +38,7 @@ actions:
               "status": {{$body.status}},
               "createdAt": {{$body.created_at}},
               "updatedAt": {{$body.updated_at}},
-              "closedAt": {{$body?.close_at}},
+              "closedAt": {{$body?.closed_at}},
               "commentsCount": {{$body.comments_count}}
             }
         template_engine: Kriti

@@ -45,9 +45,9 @@ pub struct UserResponse {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub enum Status {
-	Open,
-	Completed,
-	Cancelled,
+	OPEN,
+	COMPLETED,
+	CANCELLED,
 }
 
 impl From<GithubUser> for UserResponse {
@@ -82,9 +82,9 @@ impl From<GithubIssue> for Response {
 impl From<GithubIssueStatus> for Status {
 	fn from(github_issue_status: GithubIssueStatus) -> Self {
 		match github_issue_status {
-			GithubIssueStatus::Cancelled => Status::Cancelled,
-			GithubIssueStatus::Open => Status::Open,
-			GithubIssueStatus::Completed => Status::Completed,
+			GithubIssueStatus::Cancelled => Status::CANCELLED,
+			GithubIssueStatus::Open => Status::OPEN,
+			GithubIssueStatus::Completed => Status::COMPLETED,
 		}
 	}
 }
@@ -126,5 +126,6 @@ pub async fn create_and_close_issue(
 				.title(error_message)
 				.detail(e.to_string())
 		})?;
+	println!("{:?}", issue);
 	Ok(Json(issue.into()))
 }

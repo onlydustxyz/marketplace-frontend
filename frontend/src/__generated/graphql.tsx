@@ -2545,9 +2545,9 @@ export type GithubIssueCreatedAndClosed = {
 };
 
 export enum GithubIssueCreatedAndClosedStatus {
-  Cancelled = 'Cancelled',
-  Completed = 'Completed',
-  Open = 'Open'
+  Cancelled = 'CANCELLED',
+  Completed = 'COMPLETED',
+  Open = 'OPEN'
 }
 
 export enum GithubIssueStatus {
