@@ -50,6 +50,10 @@ impl Indexer {
 
 #[async_trait]
 impl super::Indexer<GithubRepoId> for Indexer {
+	fn name(&self) -> String {
+		String::from("repo")
+	}
+
 	async fn index(&self, repo_id: GithubRepoId) -> Result<Vec<GithubEvent>> {
 		match self.github_fetch_service.repo_by_id(repo_id).await {
 			Ok(repo) => {

@@ -86,6 +86,10 @@ impl Indexer {
 
 #[async_trait]
 impl super::Indexer<GithubUserId> for Indexer {
+	fn name(&self) -> String {
+		String::from("user")
+	}
+
 	async fn index(&self, user_id: GithubUserId) -> Result<Vec<GithubEvent>> {
 		let user = self
 			.github_fetch_service

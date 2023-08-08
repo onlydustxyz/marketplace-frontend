@@ -18,7 +18,7 @@ pub struct Projector {
 	github_repo_index_repository: Arc<dyn GithubRepoIndexRepository>,
 	applications_repository: Arc<dyn Repository<Application>>,
 	projects_contributors_repository: Arc<dyn ProjectsContributorRepository>,
-	github_repos_contributors_repository: Arc<dyn GithubReposContributorRepository>,
+	contributions_repository: Arc<dyn ContributionsRepository>,
 }
 
 #[async_trait]
@@ -54,7 +54,7 @@ impl EventListener<Event> for Projector {
 						github_repo_id,
 					})?;
 					self.github_repo_index_repository.start_indexing(github_repo_id)?;
-					self.github_repos_contributors_repository
+					self.contributions_repository
 						.find_contributors_of_repo(&github_repo_id)?
 						.iter()
 						.try_for_each(|github_user_id| {
@@ -67,7 +67,7 @@ impl EventListener<Event> for Projector {
 					github_repo_id,
 				} => {
 					self.project_github_repos_repository.delete((project_id, github_repo_id))?;
-					self.github_repos_contributors_repository
+					self.contributions_repository
 						.find_contributors_of_repo(&github_repo_id)?
 						.iter()
 						.try_for_each(|github_user_id| {

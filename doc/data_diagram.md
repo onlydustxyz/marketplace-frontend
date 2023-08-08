@@ -134,8 +134,10 @@ class GithubPullRequest {
 
 class GithubPullRequests {
    authorId: bigint!
+   ciChecks: github_ci_checks
    closedAt: timestamp
    createdAt: timestamp!
+   draft: Boolean!
    htmlUrl: String!
    id: bigint!
    ignoredForProjects: [IgnoredGithubIssues!]!
@@ -155,15 +157,10 @@ class GithubRepos {
    languages: jsonb!
    name: String!
    owner: String!
+   parentId: bigint
    projects: [ProjectGithubRepos!]!
    stars: Int!
    updatedAt: timestamp
-}
-
-class GithubReposContributors {
-   repoId: bigint!
-   user: GithubUsers
-   userId: bigint!
 }
 
 class GithubUser {
@@ -256,7 +253,6 @@ class ProjectGithubRepos {
    githubRepoId: bigint!
    projectId: uuid!
    repo: GithubRepos
-   repoContributors: [GithubReposContributors!]!
    repoIssues: [GithubIssues!]!
 }
 
@@ -479,7 +475,6 @@ GithubPullRequest --* IgnoredGithubIssues
 GithubPullRequests -- GithubRepos
 GithubPullRequests --* IgnoredGithubIssues
 GithubRepos --* ProjectGithubRepos
-GithubReposContributors -- GithubUsers
 GithubUser -- RegisteredUsers
 GithubUser --* PaymentRequests
 GithubUsers -- RegisteredUsers
@@ -495,7 +490,6 @@ PendingProjectLeaderInvitations -- Projects
 PendingProjectLeaderInvitations -- RegisteredUsers
 ProjectGithubRepos -- GithubRepos
 ProjectGithubRepos --* GithubIssues
-ProjectGithubRepos --* GithubReposContributors
 ProjectLeads -- Projects
 ProjectLeads -- RegisteredUsers
 Projects --* Applications

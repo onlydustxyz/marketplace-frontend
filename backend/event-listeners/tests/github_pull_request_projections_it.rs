@@ -1,5 +1,5 @@
 use anyhow::Result;
-use diesel::query_dsl::RunQueryDsl;
+use diesel::{query_dsl::RunQueryDsl, ExpressionMethods, QueryDsl};
 use domain::{
 	Destination, GithubCiChecks, GithubPullRequest, GithubPullRequestId, GithubPullRequestStatus,
 	Publisher,
@@ -337,8 +337,9 @@ impl<'a> Test<'a> {
 		}
 
 		{
-			let mut contributions: Vec<models::Contribution> =
-				contributions::table.load(&mut *connection)?;
+			let mut contributions: Vec<models::Contribution> = contributions::table
+				.order(contributions::user_id.desc())
+				.load(&mut *connection)?;
 			assert_eq!(contributions.len(), 2, "Invalid contributions count");
 
 			{

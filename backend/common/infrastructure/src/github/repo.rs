@@ -1,7 +1,8 @@
 use anyhow::{anyhow, Result};
 use derive_more::*;
-use domain::GithubRepo;
+use domain::{GithubRepo, LogErr};
 use octocrab::models::Repository;
+use olog::{error, IntoField};
 
 #[derive(Clone, From, Into)]
 pub struct OctocrabRepo(Repository);
@@ -24,6 +25,15 @@ impl TryFrom<OctocrabRepo> for GithubRepo {
 			description: repo.description.unwrap_or_default(),
 			stars: repo.stargazers_count.unwrap_or_default() as i32,
 			forks_count: repo.forks_count.unwrap_or_default() as i32,
+			parent: repo.parent.map(|repo| OctocrabRepo(*repo)).and_then(|parent| {
+				parent
+					.try_into()
+					.log_err(|e: &anyhow::Error| {
+						error!(error = e.to_field(), "Invalid fork parent")
+					})
+					.map(Box::new)
+					.ok()
+			}),
 		})
 	}
 }

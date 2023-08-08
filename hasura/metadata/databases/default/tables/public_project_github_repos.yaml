@@ -12,15 +12,6 @@ object_relationships:
           name: github_repos
           schema: public
 array_relationships:
-  - name: repoContributors
-    using:
-      manual_configuration:
-        column_mapping:
-          github_repo_id: repo_id
-        insertion_order: null
-        remote_table:
-          name: github_repos_contributors
-          schema: public
   - name: repoIssues
     using:
       manual_configuration:

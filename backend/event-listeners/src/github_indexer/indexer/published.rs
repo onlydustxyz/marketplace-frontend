@@ -15,6 +15,10 @@ pub struct Indexer<Id: Indexable, I: super::Indexer<Id>> {
 
 #[async_trait]
 impl<Id: Indexable + Sync, I: super::Indexer<Id>> super::Indexer<Id> for Indexer<Id, I> {
+	fn name(&self) -> String {
+		self.indexer.name()
+	}
+
 	async fn index(&self, repo_id: Id) -> Result<Vec<GithubEvent>> {
 		let events = self.indexer.index(repo_id).await?;
 

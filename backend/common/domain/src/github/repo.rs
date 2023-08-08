@@ -13,6 +13,7 @@ pub struct Repo {
 	pub description: String,
 	pub stars: i32,
 	pub forks_count: i32,
+	pub parent: Option<Box<Repo>>,
 }
 
 #[derive(

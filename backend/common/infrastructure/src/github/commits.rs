@@ -16,7 +16,10 @@ impl FromOctocrab for GithubCommit {
 			sha: commit.sha,
 			html_url: commit.html_url.parse().context("Parsing commit html_url")?,
 			author: UserFromOctocrab::from_octocrab_user(
-				commit.author.ok_or_else(|| anyhow!("Missing commit's author"))?,
+				commit
+					.author
+					.or(commit.committer)
+					.ok_or_else(|| anyhow!("Missing commit's committer and author"))?,
 			),
 		})
 	}

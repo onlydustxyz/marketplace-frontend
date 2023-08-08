@@ -43,6 +43,10 @@ impl Indexer {
 
 #[async_trait]
 impl super::Indexer<GithubRepoId> for Indexer {
+	fn name(&self) -> String {
+		String::from("pull requests")
+	}
+
 	async fn index(&self, repo_id: GithubRepoId) -> Result<Vec<GithubEvent>> {
 		let filters = GithubServicePullRequestFilters {
 			updated_since: self

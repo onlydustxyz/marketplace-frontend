@@ -218,13 +218,7 @@ diesel::table! {
         fork_count -> Int4,
         html_url -> Text,
         languages -> Jsonb,
-    }
-}
-
-diesel::table! {
-    github_repos_contributors (repo_id, user_id) {
-        repo_id -> Int8,
-        user_id -> Int8,
+        parent_id -> Nullable<Int8>,
     }
 }
 
@@ -424,7 +418,6 @@ diesel::allow_tables_to_appear_in_same_query!(
     github_pull_requests,
     github_repo_indexes,
     github_repos,
-    github_repos_contributors,
     github_user_indexes,
     github_users,
     ignored_github_issues,

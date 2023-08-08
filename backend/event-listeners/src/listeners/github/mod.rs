@@ -6,7 +6,7 @@ use anyhow::Result;
 use async_trait::async_trait;
 use chrono::Utc;
 use derive_new::new;
-use domain::{GithubFetchRepoService, Languages, SubscriberCallbackError};
+use domain::{self, GithubFetchRepoService, Languages, SubscriberCallbackError};
 pub use events::Event;
 use infrastructure::database::{ImmutableRepository, Repository};
 use tracing::instrument;
@@ -23,7 +23,6 @@ pub struct Projector {
 	github_pull_requests_repository: Arc<dyn GithubPullRequestRepository>,
 	contributions_repository: Arc<dyn ContributionsRepository>,
 	github_users_repository: Arc<dyn Repository<GithubUser>>,
-	github_repos_contributors_repository: Arc<dyn ImmutableRepository<GithubReposContributor>>,
 	projects_contributors_repository: Arc<dyn ProjectsContributorRepository>,
 	project_github_repos_repository: Arc<dyn ProjectGithubRepoRepository>,
 	technologies_repository: Arc<dyn ImmutableRepository<Technology>>,
@@ -41,7 +40,24 @@ impl Projector {
 			fork_count: repo.forks_count,
 			html_url: repo.html_url.to_string(),
 			languages: serde_json::to_value(languages)?,
+			parent_id: repo.parent.map(|repo| repo.id),
 		})
+	}
+
+	async fn index_repo(&self, repo: domain::GithubRepo) -> Result<(), SubscriberCallbackError> {
+		let languages = self.github_fetch_service.repo_languages(repo.id).await?;
+		languages.get_all().into_iter().try_for_each(|language| {
+			self.technologies_repository
+				.try_insert(Technology {
+					technology: language,
+				})
+				.map(|_| ())
+		})?;
+
+		self.github_repo_repository
+			.upsert(self.build_repo(repo, languages).map_err(SubscriberCallbackError::Discard)?)?;
+
+		Ok(())
 	}
 }
 
@@ -51,18 +67,11 @@ impl EventListener<Event> for Projector {
 	async fn on_event(&self, event: Event) -> Result<(), SubscriberCallbackError> {
 		match event.clone() {
 			Event::Repo(repo) => {
-				let languages = self.github_fetch_service.repo_languages(repo.id).await?;
-				languages.get_all().into_iter().try_for_each(|language| {
-					self.technologies_repository
-						.try_insert(Technology {
-							technology: language,
-						})
-						.map(|_| ())
-				})?;
+				if let Some(parent) = repo.parent.clone() {
+					self.index_repo(*parent).await?;
+				}
 
-				self.github_repo_repository.upsert(
-					self.build_repo(repo, languages).map_err(SubscriberCallbackError::Discard)?,
-				)?;
+				self.index_repo(repo).await?;
 			},
 			Event::Issue(issue) => {
 				let issue: GithubIssue = issue.into();
@@ -76,10 +85,6 @@ impl EventListener<Event> for Projector {
 			},
 			Event::User { user, repo_id } => {
 				self.github_users_repository.upsert(user.clone().into())?;
-				self.github_repos_contributors_repository.try_insert(GithubReposContributor {
-					repo_id,
-					user_id: user.id,
-				})?;
 
 				self.project_github_repos_repository
 					.find_projects_of_repo(&repo_id)?

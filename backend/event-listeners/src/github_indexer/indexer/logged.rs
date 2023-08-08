@@ -1,4 +1,4 @@
-use std::marker::PhantomData;
+use std::{marker::PhantomData, time::Instant};
 
 use async_trait::async_trait;
 use olog::info;
@@ -13,10 +13,22 @@ pub struct Indexer<Id: Indexable, I: super::Indexer<Id>> {
 
 #[async_trait]
 impl<Id: Indexable + Sync, I: super::Indexer<Id>> super::Indexer<Id> for Indexer<Id, I> {
-	async fn index(&self, id: Id) -> Result<Vec<GithubEvent>> {
-		let events = self.indexer.index(id).await?;
+	fn name(&self) -> String {
+		self.indexer.name()
+	}
 
-		info!("Found {} events when indexing entity {id}", events.len(),);
+	async fn index(&self, id: Id) -> Result<Vec<GithubEvent>> {
+		let start = Instant::now();
+		let events = self.indexer.index(id).await?;
+		let duration = start.elapsed();
+
+		info!(
+			events_count = events.len(),
+			duration = duration.as_secs(),
+			"Finished indexing {} for {} {id}",
+			self.name(),
+			std::any::type_name::<Id>()
+		);
 
 		Ok(events)
 	}

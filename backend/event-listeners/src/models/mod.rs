@@ -5,7 +5,6 @@ mod github_issues;
 pub mod github_pull_requests;
 mod github_repo_indexes;
 mod github_repos;
-mod github_repos_contributors;
 mod github_user_indexes;
 mod github_users;
 mod payment_requests;
@@ -26,9 +25,6 @@ pub use github_pull_requests::{
 };
 pub use github_repo_indexes::{GithubRepoIndex, Repository as GithubRepoIndexRepository};
 pub use github_repos::GithubRepo;
-pub use github_repos_contributors::{
-	GithubReposContributor, Repository as GithubReposContributorRepository,
-};
 pub use github_user_indexes::{GithubUserIndex, Repository as GithubUserIndexRepository};
 pub use github_users::GithubUser;
 pub use payment_requests::PaymentRequest;
