@@ -6,11 +6,11 @@ use serde::{Deserialize, Serialize};
 use url::Url;
 use uuid::Uuid;
 
-use common_domain::{AggregateRootRepository, GithubIssue, GithubIssueStatus, GithubUser, Project};
-use presentation::http::guards::{Claims, Role};
-
 use crate::application;
 use crate::domain::permissions::IntoPermission;
+use common_domain::{AggregateRootRepository, GithubIssue, GithubIssueStatus, GithubUser, Project};
+use olog::{error, IntoField};
+use presentation::http::guards::{Claims, Role};
 
 #[derive(Debug, Deserialize)]
 #[serde(crate = "rocket::serde")]
@@ -85,11 +85,10 @@ impl From<GithubIssueStatus> for Status {
 		match github_issue_status {
 			GithubIssueStatus::Cancelled => Status::Cancelled,
 			GithubIssueStatus::Open => Status::Open,
-			GithubIssueStatus::Completed => Status::Completed
+			GithubIssueStatus::Completed => Status::Completed,
 		}
 	}
 }
-
 
 #[post("/api/issues", data = "<request>", format = "application/json")]
 pub async fn create_and_close_issue(
@@ -100,12 +99,17 @@ pub async fn create_and_close_issue(
 ) -> Result<Json<Response>, HttpApiProblem> {
 	let caller_id = claims.user_id;
 
-	if !Role::from(claims).to_permissions((*project_repository).clone())
+	if !Role::from(claims)
+		.to_permissions((*project_repository).clone())
 		.can_create_github_issue_for_project(&request.project_id.into())
 	{
 		return Err(HttpApiProblem::new(StatusCode::UNAUTHORIZED)
 			.title("Unauthorized operation on issue")
-			.detail(format!("User {} needs project lead role to create an issue on project {}", caller_id, &request.project_id.to_string())));
+			.detail(format!(
+				"User {} needs project lead role to create an issue on project {}",
+				caller_id,
+				&request.project_id.to_string()
+			)));
 	}
 
 	let issue = create_github_issue_usecase
@@ -117,10 +121,11 @@ pub async fn create_and_close_issue(
 		)
 		.await
 		.map_err(|e| {
+			let error_message = "Internal server error while creating and closing issue";
+			error!(error = e.to_field(), "{error_message}");
 			HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
-				.title("Internal server error while creating and closing issue")
+				.title(error_message)
 				.detail(e.to_string())
 		})?;
 	Ok(Json(issue.into()))
 }
-

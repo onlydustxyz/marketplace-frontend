@@ -1,8 +1,9 @@
 use std::sync::Arc;
 
 use derive_more::Constructor;
-use domain::{DomainError, GithubFetchService, Payment, PaymentWorkItem};
 use futures::future::try_join_all;
+
+use domain::{DomainError, GithubFetchService, Payment, PaymentWorkItem};
 
 use crate::domain::DustyBotService;
 
@@ -17,7 +18,7 @@ impl Usecase {
 		let repository = self.fetch_service.repo_by_id(work_item.repo_id).await?;
 
 		self.dusty_bot_service
-			.close_issue(repository.owner, repository.name, work_item.issue_number)
+			.close_issue_for_number(repository.owner, repository.name, work_item.issue_number)
 			.await
 			.map_err(DomainError::InternalError)?;
 

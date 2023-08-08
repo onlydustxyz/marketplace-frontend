@@ -10,8 +10,8 @@ pub struct Context<'docker> {
 }
 
 impl<'docker> Context<'docker> {
-	pub fn new(docker: &'docker Cli) -> Result<Self> {
-		let container = docker.run(image());
+	pub fn new(docker: &'docker Cli, wiremock_path: String, github_pat: String) -> Result<Self> {
+		let container = docker.run(image(wiremock_path));
 		let port = container
 			.ports()
 			.map_to_host_port_ipv4(8080)
@@ -19,7 +19,7 @@ impl<'docker> Context<'docker> {
 
 		let config = github::Config {
 			base_url: format!("http://localhost:{port}"),
-			personal_access_tokens: String::from("GITHUB_PAT"),
+			personal_access_tokens: github_pat,
 			headers: Default::default(),
 			max_calls_per_request: NonZeroUsize::new(1).map(Into::into),
 		};
@@ -31,12 +31,7 @@ impl<'docker> Context<'docker> {
 	}
 }
 
-fn image() -> RunnableImage<GenericImage> {
-	let wiremock_path = format!(
-		"{}/backend/common/testing/resources/wiremock/github",
-		project_root::get_project_root().unwrap().display()
-	);
-
+fn image(wiremock_path: String) -> RunnableImage<GenericImage> {
 	/* To record traffic, use the following command and change the port to 8080 in the config.base_url above
 	   docker run \
 	   -p 8080:8080 \

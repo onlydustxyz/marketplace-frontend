@@ -1,17 +1,17 @@
 use std::collections::HashMap;
+use std::env;
 
 use anyhow::Result;
 use rocket::local::asynchronous::Client;
 use rstest::fixture;
 use testcontainers::clients::Cli;
 
-use api::{Config, presentation::bootstrap::bootstrap};
+use api::{presentation::bootstrap::bootstrap, Config};
 use presentation::http;
-use testing::context::{amqp, database};
+use testing::context::{amqp, database, github};
 
 pub mod environment;
 pub mod simple_storage;
-mod graphql;
 pub mod utils;
 
 #[fixture]
@@ -25,7 +25,8 @@ pub struct Context<'a> {
 	pub database: database::Context<'a>,
 	pub amqp: amqp::Context<'a>,
 	pub simple_storage: simple_storage::Context<'a>,
-	pub graphql_client: graphql::Context<'a>,
+	pub dusty_app_github: github::Context<'a>,
+	pub github: github::Context<'a>,
 	_environment: environment::Context,
 }
 
@@ -36,7 +37,22 @@ impl<'a> Context<'a> {
 		let database = database::Context::new(docker)?;
 		let amqp = amqp::Context::new(docker, vec![event_store::bus::QUEUE_NAME], vec![]).await?;
 		let simple_storage = simple_storage::Context::new(docker)?;
-		let graphql_client = graphql::Context::new(docker)?;
+		let dusty_app_github = github::Context::new(
+			docker,
+			format!(
+				"{}/tests/resources/wiremock/dusty_app_github",
+				env::current_dir().unwrap().display(),
+			),
+			"dusty-app-pat".to_string(),
+		)?;
+		let github = github::Context::new(
+			docker,
+			format!(
+				"{}/tests/resources/wiremock/github",
+				env::current_dir().unwrap().display(),
+			),
+			"github-pat".to_string(),
+		)?;
 
 		let config = Config {
 			amqp: amqp.config.clone(),
@@ -53,19 +69,8 @@ impl<'a> Context<'a> {
 				url: "https://test.com".parse().unwrap(),
 			},
 			s3: simple_storage.config.clone(),
-			github_api_client: infrastructure::github::Config {
-				base_url: "http://github-test.com".to_string(),
-				personal_access_tokens: "test".to_string(),
-				headers: HashMap::new(),
-				max_calls_per_request: None,
-			},
-			dusty_bot_api_client: infrastructure::github::Config {
-				base_url: "http://dusty-bot-test.com".to_string(),
-				personal_access_tokens: "test".to_string(),
-				headers: HashMap::new(),
-				max_calls_per_request: None,
-			},
-
+			github_api_client: github.config.clone(),
+			dusty_bot_api_client: dusty_app_github.config.clone(),
 		};
 
 		Ok(Self {
@@ -73,7 +78,8 @@ impl<'a> Context<'a> {
 			database,
 			amqp,
 			simple_storage,
-			graphql_client,
+			dusty_app_github,
+			github,
 			_environment: environment::Context::new(),
 		})
 	}

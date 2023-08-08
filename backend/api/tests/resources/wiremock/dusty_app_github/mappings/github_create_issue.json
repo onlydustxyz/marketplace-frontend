@@ -1,0 +1,18 @@
+{
+    "request": {
+        "url": "/repos/create-and-close-issue-it-orga-name/create-and-close-issue-it-repo-name/issues",
+        "method": "POST",
+        "bodyPatterns": [
+            {
+                "equalToJson": {
+                    "body": "issue-description",
+                    "title": "issue-title"
+                }
+            }
+        ]
+    },
+    "response": {
+        "status": 200,
+        "bodyFileName": "github_create_issue_response_body.json"
+    }
+}

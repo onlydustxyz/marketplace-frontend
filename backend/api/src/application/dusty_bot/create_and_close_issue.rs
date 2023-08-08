@@ -32,22 +32,31 @@ impl Usecase {
 			)));
 		}
 
+		let repository = self.fetch_service.repo_by_id(github_repo_id.clone()).await?;
 
-		let created_issue = self.dusty_bot_service_to_create_issue
-			.create_issue(github_repo_id, title, description)
+		let created_issue = self
+			.dusty_bot_service_to_create_issue
+			.create_issue(
+				github_repo_id,
+				repository.owner.clone(),
+				repository.name.clone(),
+				title,
+				description,
+			)
 			.await
 			.map_err(DomainError::InternalError)?;
 
-		let repository = self.fetch_service.repo_by_id(github_repo_id.clone()).await?;
-
-		let issue_closed = self.dusty_bot_service_to_create_issue
-			.close_issue(repository.owner.clone(), repository.name.clone(), created_issue.number.clone())
+		let issue_closed = self
+			.dusty_bot_service_to_create_issue
+			.close_issue(
+				repository.owner.clone(),
+				repository.name.clone(),
+				created_issue.clone(),
+			)
 			.await;
 
 		if issue_closed.is_err() {
-			return Err(DomainError::InternalError(anyhow!(
-				"Failed to close issue"
-			)));
+			return Err(DomainError::InternalError(anyhow!("Failed to close issue")));
 		}
 
 		Ok(created_issue)
