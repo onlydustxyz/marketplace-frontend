@@ -3,7 +3,7 @@ use std::collections::HashSet;
 use anyhow::Result;
 use domain::{
 	GithubCiChecks, GithubCodeReview, GithubCodeReviewOutcome, GithubCodeReviewStatus, GithubIssue,
-	GithubIssueStatus, GithubPullRequest, GithubPullRequestStatus, GithubUser,
+	GithubIssueNumber, GithubIssueStatus, GithubPullRequest, GithubPullRequestStatus, GithubUser,
 };
 use event_listeners::{listeners::github::Event, models::GithubRepoIndex, GITHUB_EVENTS_EXCHANGE};
 use fixtures::*;
@@ -121,6 +121,7 @@ impl<'a> Test<'a> {
 						outcome: Some(GithubCodeReviewOutcome::Approved),
 						submitted_at: "2023-07-29T08:02:16Z".parse().ok(),
 					}],
+					closing_issue_numbers: vec![],
 				}),
 				Event::PullRequest(GithubPullRequest {
 					id: 1458220740u64.into(),
@@ -160,6 +161,7 @@ impl<'a> Test<'a> {
 							submitted_at: "2023-07-29T08:02:16Z".parse().ok(),
 						},
 					],
+					closing_issue_numbers: vec![GithubIssueNumber::from(1145u64)],
 				}),
 				Event::PullRequest(GithubPullRequest {
 					id: 1452363285u64.into(),
@@ -184,6 +186,7 @@ impl<'a> Test<'a> {
 						outcome: Some(GithubCodeReviewOutcome::Approved),
 						submitted_at: "2023-07-29T08:02:16Z".parse().ok(),
 					}],
+					closing_issue_numbers: vec![],
 				}),
 			],
 		)

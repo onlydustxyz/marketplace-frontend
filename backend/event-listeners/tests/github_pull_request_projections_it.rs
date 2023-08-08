@@ -78,6 +78,7 @@ impl<'a> Test<'a> {
 					ci_checks: Some(GithubCiChecks::Passed),
 					commits: vec![commits::a(), commits::b()],
 					reviews: vec![reviews::approved()],
+					closing_issue_numbers: vec![],
 				})),
 			)
 			.await?;
@@ -218,6 +219,7 @@ impl<'a> Test<'a> {
 					ci_checks: Some(GithubCiChecks::Passed),
 					commits: vec![commits::c()],
 					reviews: vec![],
+					closing_issue_numbers: vec![],
 				})),
 			)
 			.await?;
@@ -289,6 +291,7 @@ impl<'a> Test<'a> {
 					ci_checks: Some(GithubCiChecks::Passed),
 					commits: vec![],
 					reviews: vec![reviews::change_requested(), reviews::pending()],
+					closing_issue_numbers: vec![],
 				})),
 			)
 			.await?;

@@ -6,7 +6,7 @@ use diesel_derive_newtype::DieselNewType;
 use serde::{Deserialize, Serialize};
 use url::Url;
 
-use crate::{GithubCodeReview, GithubCommit, GithubRepoId, GithubUser};
+use crate::{GithubCodeReview, GithubCommit, GithubIssueNumber, GithubRepoId, GithubUser};
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize, Hash)]
 pub enum Status {
@@ -38,6 +38,7 @@ pub struct PullRequest {
 	pub ci_checks: Option<CiChecks>,
 	pub commits: Vec<GithubCommit>,
 	pub reviews: Vec<GithubCodeReview>,
+	pub closing_issue_numbers: Vec<GithubIssueNumber>,
 }
 
 #[derive(
