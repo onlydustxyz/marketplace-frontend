@@ -27,6 +27,8 @@ pub async fn new_github_repository_added(docker: &'static Cli) {
 	test.should_start_repository_indexing()
 		.await
 		.expect("should_start_repository_indexing");
+
+	test.should_index_forks().await.expect("should_index_forks");
 }
 
 struct Test<'a> {
@@ -184,6 +186,25 @@ impl<'a> Test<'a> {
 					}],
 				}),
 			],
+		)
+		.await;
+
+		Ok(())
+	}
+
+	async fn should_index_forks(&mut self) -> Result<()> {
+		info!("should_index_forks");
+
+		// When
+		self.context
+			.database
+			.client
+			.insert(GithubRepoIndex::new(repos::marketplace_fork().id))?;
+
+		// Then
+		expect_events(
+			&mut self.context,
+			vec![Event::Repo(repos::marketplace_fork())],
 		)
 		.await;
 
