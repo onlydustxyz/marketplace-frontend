@@ -31,6 +31,7 @@ export type Scalars = {
   citext: any;
   contact_channel: any;
   float8: any;
+  github_ci_checks: any;
   github_issue_status: any;
   github_pull_request_status: any;
   jsonb: any;
@@ -2476,6 +2477,19 @@ export type Float8ComparisonExp = {
   _nin: InputMaybe<Array<Scalars['float8']>>;
 };
 
+/** Boolean expression to compare columns of type "github_ci_checks". All fields are combined with logical 'AND'. */
+export type GithubCiChecksComparisonExp = {
+  _eq: InputMaybe<Scalars['github_ci_checks']>;
+  _gt: InputMaybe<Scalars['github_ci_checks']>;
+  _gte: InputMaybe<Scalars['github_ci_checks']>;
+  _in: InputMaybe<Array<Scalars['github_ci_checks']>>;
+  _isNull: InputMaybe<Scalars['Boolean']>;
+  _lt: InputMaybe<Scalars['github_ci_checks']>;
+  _lte: InputMaybe<Scalars['github_ci_checks']>;
+  _neq: InputMaybe<Scalars['github_ci_checks']>;
+  _nin: InputMaybe<Array<Scalars['github_ci_checks']>>;
+};
+
 export type GithubIssue = {
   __typename?: 'GithubIssue';
   assignees: Array<GithubUser>;
@@ -3004,8 +3018,10 @@ export type GithubPullRequestStatusComparisonExp = {
 export type GithubPullRequests = {
   __typename?: 'GithubPullRequests';
   authorId: Scalars['bigint'];
+  ciChecks: Maybe<Scalars['github_ci_checks']>;
   closedAt: Maybe<Scalars['timestamp']>;
   createdAt: Scalars['timestamp'];
+  draft: Scalars['Boolean'];
   htmlUrl: Scalars['String'];
   id: Scalars['bigint'];
   /** An array relationship */
@@ -3086,8 +3102,10 @@ export type GithubPullRequestsBoolExp = {
   _not: InputMaybe<GithubPullRequestsBoolExp>;
   _or: InputMaybe<Array<GithubPullRequestsBoolExp>>;
   authorId: InputMaybe<BigintComparisonExp>;
+  ciChecks: InputMaybe<GithubCiChecksComparisonExp>;
   closedAt: InputMaybe<TimestampComparisonExp>;
   createdAt: InputMaybe<TimestampComparisonExp>;
+  draft: InputMaybe<BooleanComparisonExp>;
   htmlUrl: InputMaybe<StringComparisonExp>;
   id: InputMaybe<BigintComparisonExp>;
   ignoredForProjects: InputMaybe<IgnoredGithubIssuesBoolExp>;
@@ -3117,8 +3135,10 @@ export type GithubPullRequestsIncInput = {
 /** input type for inserting data into table "github_pull_requests" */
 export type GithubPullRequestsInsertInput = {
   authorId: InputMaybe<Scalars['bigint']>;
+  ciChecks: InputMaybe<Scalars['github_ci_checks']>;
   closedAt: InputMaybe<Scalars['timestamp']>;
   createdAt: InputMaybe<Scalars['timestamp']>;
+  draft: InputMaybe<Scalars['Boolean']>;
   htmlUrl: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['bigint']>;
   ignoredForProjects: InputMaybe<IgnoredGithubIssuesArrRelInsertInput>;
@@ -3134,6 +3154,7 @@ export type GithubPullRequestsInsertInput = {
 export type GithubPullRequestsMaxFields = {
   __typename?: 'GithubPullRequestsMaxFields';
   authorId: Maybe<Scalars['bigint']>;
+  ciChecks: Maybe<Scalars['github_ci_checks']>;
   closedAt: Maybe<Scalars['timestamp']>;
   createdAt: Maybe<Scalars['timestamp']>;
   htmlUrl: Maybe<Scalars['String']>;
@@ -3149,6 +3170,7 @@ export type GithubPullRequestsMaxFields = {
 export type GithubPullRequestsMinFields = {
   __typename?: 'GithubPullRequestsMinFields';
   authorId: Maybe<Scalars['bigint']>;
+  ciChecks: Maybe<Scalars['github_ci_checks']>;
   closedAt: Maybe<Scalars['timestamp']>;
   createdAt: Maybe<Scalars['timestamp']>;
   htmlUrl: Maybe<Scalars['String']>;
@@ -3179,8 +3201,10 @@ export type GithubPullRequestsOnConflict = {
 /** Ordering options when selecting data from "github_pull_requests". */
 export type GithubPullRequestsOrderBy = {
   authorId: InputMaybe<OrderBy>;
+  ciChecks: InputMaybe<OrderBy>;
   closedAt: InputMaybe<OrderBy>;
   createdAt: InputMaybe<OrderBy>;
+  draft: InputMaybe<OrderBy>;
   htmlUrl: InputMaybe<OrderBy>;
   id: InputMaybe<OrderBy>;
   ignoredForProjectsAggregate: InputMaybe<IgnoredGithubIssuesAggregateOrderBy>;
@@ -3202,9 +3226,13 @@ export enum GithubPullRequestsSelectColumn {
   /** column name */
   AuthorId = 'authorId',
   /** column name */
+  CiChecks = 'ciChecks',
+  /** column name */
   ClosedAt = 'closedAt',
   /** column name */
   CreatedAt = 'createdAt',
+  /** column name */
+  Draft = 'draft',
   /** column name */
   HtmlUrl = 'htmlUrl',
   /** column name */
@@ -3224,8 +3252,10 @@ export enum GithubPullRequestsSelectColumn {
 /** input type for updating data in table "github_pull_requests" */
 export type GithubPullRequestsSetInput = {
   authorId: InputMaybe<Scalars['bigint']>;
+  ciChecks: InputMaybe<Scalars['github_ci_checks']>;
   closedAt: InputMaybe<Scalars['timestamp']>;
   createdAt: InputMaybe<Scalars['timestamp']>;
+  draft: InputMaybe<Scalars['Boolean']>;
   htmlUrl: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['bigint']>;
   mergedAt: InputMaybe<Scalars['timestamp']>;
@@ -3276,9 +3306,13 @@ export enum GithubPullRequestsUpdateColumn {
   /** column name */
   AuthorId = 'authorId',
   /** column name */
+  CiChecks = 'ciChecks',
+  /** column name */
   ClosedAt = 'closedAt',
   /** column name */
   CreatedAt = 'createdAt',
+  /** column name */
+  Draft = 'draft',
   /** column name */
   HtmlUrl = 'htmlUrl',
   /** column name */
@@ -3340,6 +3374,7 @@ export type GithubRepos = {
   languages: Scalars['jsonb'];
   name: Scalars['String'];
   owner: Scalars['String'];
+  parentId: Maybe<Scalars['bigint']>;
   /** An array relationship */
   projects: Array<ProjectGithubRepos>;
   /** An aggregate relationship */
@@ -3414,6 +3449,7 @@ export type GithubReposAvgFields = {
   __typename?: 'GithubReposAvgFields';
   forkCount: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
+  parentId: Maybe<Scalars['Float']>;
   stars: Maybe<Scalars['Float']>;
 };
 
@@ -3429,6 +3465,7 @@ export type GithubReposBoolExp = {
   languages: InputMaybe<JsonbComparisonExp>;
   name: InputMaybe<StringComparisonExp>;
   owner: InputMaybe<StringComparisonExp>;
+  parentId: InputMaybe<BigintComparisonExp>;
   projects: InputMaybe<ProjectGithubReposBoolExp>;
   projects_aggregate: InputMaybe<Project_Github_Repos_Aggregate_Bool_Exp>;
   stars: InputMaybe<IntComparisonExp>;
@@ -3440,227 +3477,6 @@ export enum GithubReposConstraint {
   /** unique or primary key constraint on columns "id" */
   CrmGithubReposPkey = 'crm_github_repos_pkey'
 }
-
-/** columns and relationships of "github_repos_contributors" */
-export type GithubReposContributors = {
-  __typename?: 'GithubReposContributors';
-  repoId: Scalars['bigint'];
-  /** An object relationship */
-  user: Maybe<GithubUsers>;
-  userId: Scalars['bigint'];
-};
-
-/** aggregated selection of "github_repos_contributors" */
-export type GithubReposContributorsAggregate = {
-  __typename?: 'GithubReposContributorsAggregate';
-  aggregate: Maybe<GithubReposContributorsAggregateFields>;
-  nodes: Array<GithubReposContributors>;
-};
-
-/** aggregate fields of "github_repos_contributors" */
-export type GithubReposContributorsAggregateFields = {
-  __typename?: 'GithubReposContributorsAggregateFields';
-  avg: Maybe<GithubReposContributorsAvgFields>;
-  count: Scalars['Int'];
-  max: Maybe<GithubReposContributorsMaxFields>;
-  min: Maybe<GithubReposContributorsMinFields>;
-  stddev: Maybe<GithubReposContributorsStddevFields>;
-  stddevPop: Maybe<GithubReposContributorsStddev_PopFields>;
-  stddevSamp: Maybe<GithubReposContributorsStddev_SampFields>;
-  sum: Maybe<GithubReposContributorsSumFields>;
-  varPop: Maybe<GithubReposContributorsVar_PopFields>;
-  varSamp: Maybe<GithubReposContributorsVar_SampFields>;
-  variance: Maybe<GithubReposContributorsVarianceFields>;
-};
-
-
-/** aggregate fields of "github_repos_contributors" */
-export type GithubReposContributorsAggregateFieldsCountArgs = {
-  columns: InputMaybe<Array<GithubReposContributorsSelectColumn>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
-};
-
-/** order by aggregate values of table "github_repos_contributors" */
-export type GithubReposContributorsAggregateOrderBy = {
-  avg: InputMaybe<Github_Repos_Contributors_Avg_Order_By>;
-  count: InputMaybe<OrderBy>;
-  max: InputMaybe<Github_Repos_Contributors_Max_Order_By>;
-  min: InputMaybe<Github_Repos_Contributors_Min_Order_By>;
-  stddev: InputMaybe<Github_Repos_Contributors_Stddev_Order_By>;
-  stddev_pop: InputMaybe<Github_Repos_Contributors_Stddev_Pop_Order_By>;
-  stddev_samp: InputMaybe<Github_Repos_Contributors_Stddev_Samp_Order_By>;
-  sum: InputMaybe<Github_Repos_Contributors_Sum_Order_By>;
-  var_pop: InputMaybe<Github_Repos_Contributors_Var_Pop_Order_By>;
-  var_samp: InputMaybe<Github_Repos_Contributors_Var_Samp_Order_By>;
-  variance: InputMaybe<Github_Repos_Contributors_Variance_Order_By>;
-};
-
-/** input type for inserting array relation for remote table "github_repos_contributors" */
-export type GithubReposContributorsArrRelInsertInput = {
-  data: Array<GithubReposContributorsInsertInput>;
-  /** upsert condition */
-  onConflict: InputMaybe<GithubReposContributorsOnConflict>;
-};
-
-/** aggregate avg on columns */
-export type GithubReposContributorsAvgFields = {
-  __typename?: 'GithubReposContributorsAvgFields';
-  repoId: Maybe<Scalars['Float']>;
-  userId: Maybe<Scalars['Float']>;
-};
-
-/** Boolean expression to filter rows from the table "github_repos_contributors". All fields are combined with a logical 'AND'. */
-export type GithubReposContributorsBoolExp = {
-  _and: InputMaybe<Array<GithubReposContributorsBoolExp>>;
-  _not: InputMaybe<GithubReposContributorsBoolExp>;
-  _or: InputMaybe<Array<GithubReposContributorsBoolExp>>;
-  repoId: InputMaybe<BigintComparisonExp>;
-  user: InputMaybe<GithubUsersBoolExp>;
-  userId: InputMaybe<BigintComparisonExp>;
-};
-
-/** unique or primary key constraints on table "github_repos_contributors" */
-export enum GithubReposContributorsConstraint {
-  /** unique or primary key constraint on columns "user_id", "repo_id" */
-  GithubReposContributorsPkey = 'github_repos_contributors_pkey',
-  /** unique or primary key constraint on columns "user_id", "repo_id" */
-  GithubReposContributorsUserIdRepoIdIdx = 'github_repos_contributors_user_id_repo_id_idx'
-}
-
-/** input type for incrementing numeric columns in table "github_repos_contributors" */
-export type GithubReposContributorsIncInput = {
-  repoId: InputMaybe<Scalars['bigint']>;
-  userId: InputMaybe<Scalars['bigint']>;
-};
-
-/** input type for inserting data into table "github_repos_contributors" */
-export type GithubReposContributorsInsertInput = {
-  repoId: InputMaybe<Scalars['bigint']>;
-  user: InputMaybe<GithubUsersObjRelInsertInput>;
-  userId: InputMaybe<Scalars['bigint']>;
-};
-
-/** aggregate max on columns */
-export type GithubReposContributorsMaxFields = {
-  __typename?: 'GithubReposContributorsMaxFields';
-  repoId: Maybe<Scalars['bigint']>;
-  userId: Maybe<Scalars['bigint']>;
-};
-
-/** aggregate min on columns */
-export type GithubReposContributorsMinFields = {
-  __typename?: 'GithubReposContributorsMinFields';
-  repoId: Maybe<Scalars['bigint']>;
-  userId: Maybe<Scalars['bigint']>;
-};
-
-/** response of any mutation on the table "github_repos_contributors" */
-export type GithubReposContributorsMutationResponse = {
-  __typename?: 'GithubReposContributorsMutationResponse';
-  /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
-  /** data from the rows affected by the mutation */
-  returning: Array<GithubReposContributors>;
-};
-
-/** on_conflict condition type for table "github_repos_contributors" */
-export type GithubReposContributorsOnConflict = {
-  constraint: GithubReposContributorsConstraint;
-  update_columns: Array<GithubReposContributorsUpdateColumn>;
-  where: InputMaybe<GithubReposContributorsBoolExp>;
-};
-
-/** Ordering options when selecting data from "github_repos_contributors". */
-export type GithubReposContributorsOrderBy = {
-  repoId: InputMaybe<OrderBy>;
-  user: InputMaybe<GithubUsersOrderBy>;
-  userId: InputMaybe<OrderBy>;
-};
-
-/** primary key columns input for table: github_repos_contributors */
-export type GithubReposContributorsPkColumnsInput = {
-  repoId: Scalars['bigint'];
-  userId: Scalars['bigint'];
-};
-
-/** select columns of table "github_repos_contributors" */
-export enum GithubReposContributorsSelectColumn {
-  /** column name */
-  RepoId = 'repoId',
-  /** column name */
-  UserId = 'userId'
-}
-
-/** input type for updating data in table "github_repos_contributors" */
-export type GithubReposContributorsSetInput = {
-  repoId: InputMaybe<Scalars['bigint']>;
-  userId: InputMaybe<Scalars['bigint']>;
-};
-
-/** aggregate stddev on columns */
-export type GithubReposContributorsStddevFields = {
-  __typename?: 'GithubReposContributorsStddevFields';
-  repoId: Maybe<Scalars['Float']>;
-  userId: Maybe<Scalars['Float']>;
-};
-
-/** aggregate stddev_pop on columns */
-export type GithubReposContributorsStddev_PopFields = {
-  __typename?: 'GithubReposContributorsStddev_popFields';
-  repoId: Maybe<Scalars['Float']>;
-  userId: Maybe<Scalars['Float']>;
-};
-
-/** aggregate stddev_samp on columns */
-export type GithubReposContributorsStddev_SampFields = {
-  __typename?: 'GithubReposContributorsStddev_sampFields';
-  repoId: Maybe<Scalars['Float']>;
-  userId: Maybe<Scalars['Float']>;
-};
-
-/** aggregate sum on columns */
-export type GithubReposContributorsSumFields = {
-  __typename?: 'GithubReposContributorsSumFields';
-  repoId: Maybe<Scalars['bigint']>;
-  userId: Maybe<Scalars['bigint']>;
-};
-
-/** update columns of table "github_repos_contributors" */
-export enum GithubReposContributorsUpdateColumn {
-  /** column name */
-  RepoId = 'repoId',
-  /** column name */
-  UserId = 'userId'
-}
-
-export type GithubReposContributorsUpdates = {
-  /** increments the numeric columns with given value of the filtered values */
-  _inc: InputMaybe<GithubReposContributorsIncInput>;
-  /** sets the columns of the filtered rows to the given values */
-  _set: InputMaybe<GithubReposContributorsSetInput>;
-  where: GithubReposContributorsBoolExp;
-};
-
-/** aggregate var_pop on columns */
-export type GithubReposContributorsVar_PopFields = {
-  __typename?: 'GithubReposContributorsVar_popFields';
-  repoId: Maybe<Scalars['Float']>;
-  userId: Maybe<Scalars['Float']>;
-};
-
-/** aggregate var_samp on columns */
-export type GithubReposContributorsVar_SampFields = {
-  __typename?: 'GithubReposContributorsVar_sampFields';
-  repoId: Maybe<Scalars['Float']>;
-  userId: Maybe<Scalars['Float']>;
-};
-
-/** aggregate variance on columns */
-export type GithubReposContributorsVarianceFields = {
-  __typename?: 'GithubReposContributorsVarianceFields';
-  repoId: Maybe<Scalars['Float']>;
-  userId: Maybe<Scalars['Float']>;
-};
 
 /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
 export type GithubReposDeleteAtPathInput = {
@@ -3681,6 +3497,7 @@ export type GithubReposDeleteKeyInput = {
 export type GithubReposIncInput = {
   forkCount: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['bigint']>;
+  parentId: InputMaybe<Scalars['bigint']>;
   stars: InputMaybe<Scalars['Int']>;
 };
 
@@ -3693,6 +3510,7 @@ export type GithubReposInsertInput = {
   languages: InputMaybe<Scalars['jsonb']>;
   name: InputMaybe<Scalars['String']>;
   owner: InputMaybe<Scalars['String']>;
+  parentId: InputMaybe<Scalars['bigint']>;
   projects: InputMaybe<ProjectGithubReposArrRelInsertInput>;
   stars: InputMaybe<Scalars['Int']>;
   updatedAt: InputMaybe<Scalars['timestamp']>;
@@ -3707,6 +3525,7 @@ export type GithubReposMaxFields = {
   id: Maybe<Scalars['bigint']>;
   name: Maybe<Scalars['String']>;
   owner: Maybe<Scalars['String']>;
+  parentId: Maybe<Scalars['bigint']>;
   stars: Maybe<Scalars['Int']>;
   updatedAt: Maybe<Scalars['timestamp']>;
 };
@@ -3720,6 +3539,7 @@ export type GithubReposMinFields = {
   id: Maybe<Scalars['bigint']>;
   name: Maybe<Scalars['String']>;
   owner: Maybe<Scalars['String']>;
+  parentId: Maybe<Scalars['bigint']>;
   stars: Maybe<Scalars['Int']>;
   updatedAt: Maybe<Scalars['timestamp']>;
 };
@@ -3756,6 +3576,7 @@ export type GithubReposOrderBy = {
   languages: InputMaybe<OrderBy>;
   name: InputMaybe<OrderBy>;
   owner: InputMaybe<OrderBy>;
+  parentId: InputMaybe<OrderBy>;
   projectsAggregate: InputMaybe<ProjectGithubReposAggregateOrderBy>;
   stars: InputMaybe<OrderBy>;
   updatedAt: InputMaybe<OrderBy>;
@@ -3788,6 +3609,8 @@ export enum GithubReposSelectColumn {
   /** column name */
   Owner = 'owner',
   /** column name */
+  ParentId = 'parentId',
+  /** column name */
   Stars = 'stars',
   /** column name */
   UpdatedAt = 'updatedAt'
@@ -3802,6 +3625,7 @@ export type GithubReposSetInput = {
   languages: InputMaybe<Scalars['jsonb']>;
   name: InputMaybe<Scalars['String']>;
   owner: InputMaybe<Scalars['String']>;
+  parentId: InputMaybe<Scalars['bigint']>;
   stars: InputMaybe<Scalars['Int']>;
   updatedAt: InputMaybe<Scalars['timestamp']>;
 };
@@ -3811,6 +3635,7 @@ export type GithubReposStddevFields = {
   __typename?: 'GithubReposStddevFields';
   forkCount: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
+  parentId: Maybe<Scalars['Float']>;
   stars: Maybe<Scalars['Float']>;
 };
 
@@ -3819,6 +3644,7 @@ export type GithubReposStddev_PopFields = {
   __typename?: 'GithubReposStddev_popFields';
   forkCount: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
+  parentId: Maybe<Scalars['Float']>;
   stars: Maybe<Scalars['Float']>;
 };
 
@@ -3827,6 +3653,7 @@ export type GithubReposStddev_SampFields = {
   __typename?: 'GithubReposStddev_sampFields';
   forkCount: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
+  parentId: Maybe<Scalars['Float']>;
   stars: Maybe<Scalars['Float']>;
 };
 
@@ -3835,6 +3662,7 @@ export type GithubReposSumFields = {
   __typename?: 'GithubReposSumFields';
   forkCount: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['bigint']>;
+  parentId: Maybe<Scalars['bigint']>;
   stars: Maybe<Scalars['Int']>;
 };
 
@@ -3854,6 +3682,8 @@ export enum GithubReposUpdateColumn {
   Name = 'name',
   /** column name */
   Owner = 'owner',
+  /** column name */
+  ParentId = 'parentId',
   /** column name */
   Stars = 'stars',
   /** column name */
@@ -3883,6 +3713,7 @@ export type GithubReposVar_PopFields = {
   __typename?: 'GithubReposVar_popFields';
   forkCount: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
+  parentId: Maybe<Scalars['Float']>;
   stars: Maybe<Scalars['Float']>;
 };
 
@@ -3891,6 +3722,7 @@ export type GithubReposVar_SampFields = {
   __typename?: 'GithubReposVar_sampFields';
   forkCount: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
+  parentId: Maybe<Scalars['Float']>;
   stars: Maybe<Scalars['Float']>;
 };
 
@@ -3899,6 +3731,7 @@ export type GithubReposVarianceFields = {
   __typename?: 'GithubReposVarianceFields';
   forkCount: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
+  parentId: Maybe<Scalars['Float']>;
   stars: Maybe<Scalars['Float']>;
 };
 
@@ -5815,33 +5648,9 @@ export type ProjectGithubRepos = {
   /** An object relationship */
   repo: Maybe<GithubRepos>;
   /** An array relationship */
-  repoContributors: Array<GithubReposContributors>;
-  /** An aggregate relationship */
-  repoContributorsAggregate: GithubReposContributorsAggregate;
-  /** An array relationship */
   repoIssues: Array<GithubIssues>;
   /** An aggregate relationship */
   repoIssuesAggregate: GithubIssuesAggregate;
-};
-
-
-/** columns and relationships of "project_github_repos" */
-export type ProjectGithubReposRepoContributorsArgs = {
-  distinctOn: InputMaybe<Array<GithubReposContributorsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<GithubReposContributorsOrderBy>>;
-  where: InputMaybe<GithubReposContributorsBoolExp>;
-};
-
-
-/** columns and relationships of "project_github_repos" */
-export type ProjectGithubReposRepoContributorsAggregateArgs = {
-  distinctOn: InputMaybe<Array<GithubReposContributorsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<GithubReposContributorsOrderBy>>;
-  where: InputMaybe<GithubReposContributorsBoolExp>;
 };
 
 
@@ -5930,8 +5739,6 @@ export type ProjectGithubReposBoolExp = {
   githubRepoId: InputMaybe<BigintComparisonExp>;
   projectId: InputMaybe<UuidComparisonExp>;
   repo: InputMaybe<GithubReposBoolExp>;
-  repoContributors: InputMaybe<GithubReposContributorsBoolExp>;
-  repoContributors_aggregate: InputMaybe<Github_Repos_Contributors_Aggregate_Bool_Exp>;
   repoIssues: InputMaybe<GithubIssuesBoolExp>;
   repoIssues_aggregate: InputMaybe<Github_Issues_Aggregate_Bool_Exp>;
 };
@@ -5954,7 +5761,6 @@ export type ProjectGithubReposInsertInput = {
   githubRepoId: InputMaybe<Scalars['bigint']>;
   projectId: InputMaybe<Scalars['uuid']>;
   repo: InputMaybe<GithubReposObjRelInsertInput>;
-  repoContributors: InputMaybe<GithubReposContributorsArrRelInsertInput>;
   repoIssues: InputMaybe<GithubIssuesArrRelInsertInput>;
 };
 
@@ -5993,7 +5799,6 @@ export type ProjectGithubReposOrderBy = {
   githubRepoId: InputMaybe<OrderBy>;
   projectId: InputMaybe<OrderBy>;
   repo: InputMaybe<GithubReposOrderBy>;
-  repoContributorsAggregate: InputMaybe<GithubReposContributorsAggregateOrderBy>;
   repoIssuesAggregate: InputMaybe<GithubIssuesAggregateOrderBy>;
 };
 
@@ -10445,8 +10250,10 @@ export type Github_Pull_Requests_StreamCursorInput = {
 /** Initial value of the column from where the streaming should start */
 export type Github_Pull_Requests_StreamCursorValueInput = {
   authorId: InputMaybe<Scalars['bigint']>;
+  ciChecks: InputMaybe<Scalars['github_ci_checks']>;
   closedAt: InputMaybe<Scalars['timestamp']>;
   createdAt: InputMaybe<Scalars['timestamp']>;
+  draft: InputMaybe<Scalars['Boolean']>;
   htmlUrl: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['bigint']>;
   mergedAt: InputMaybe<Scalars['timestamp']>;
@@ -10454,91 +10261,6 @@ export type Github_Pull_Requests_StreamCursorValueInput = {
   repoId: InputMaybe<Scalars['bigint']>;
   status: InputMaybe<Scalars['github_pull_request_status']>;
   title: InputMaybe<Scalars['String']>;
-};
-
-export type Github_Repos_Contributors_Aggregate_Bool_Exp = {
-  count: InputMaybe<Github_Repos_Contributors_Aggregate_Bool_Exp_Count>;
-};
-
-export type Github_Repos_Contributors_Aggregate_Bool_Exp_Count = {
-  arguments: InputMaybe<Array<GithubReposContributorsSelectColumn>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
-  filter: InputMaybe<GithubReposContributorsBoolExp>;
-  predicate: IntComparisonExp;
-};
-
-/** order by avg() on columns of table "github_repos_contributors" */
-export type Github_Repos_Contributors_Avg_Order_By = {
-  repoId: InputMaybe<OrderBy>;
-  userId: InputMaybe<OrderBy>;
-};
-
-/** order by max() on columns of table "github_repos_contributors" */
-export type Github_Repos_Contributors_Max_Order_By = {
-  repoId: InputMaybe<OrderBy>;
-  userId: InputMaybe<OrderBy>;
-};
-
-/** order by min() on columns of table "github_repos_contributors" */
-export type Github_Repos_Contributors_Min_Order_By = {
-  repoId: InputMaybe<OrderBy>;
-  userId: InputMaybe<OrderBy>;
-};
-
-/** order by stddev() on columns of table "github_repos_contributors" */
-export type Github_Repos_Contributors_Stddev_Order_By = {
-  repoId: InputMaybe<OrderBy>;
-  userId: InputMaybe<OrderBy>;
-};
-
-/** order by stddev_pop() on columns of table "github_repos_contributors" */
-export type Github_Repos_Contributors_Stddev_Pop_Order_By = {
-  repoId: InputMaybe<OrderBy>;
-  userId: InputMaybe<OrderBy>;
-};
-
-/** order by stddev_samp() on columns of table "github_repos_contributors" */
-export type Github_Repos_Contributors_Stddev_Samp_Order_By = {
-  repoId: InputMaybe<OrderBy>;
-  userId: InputMaybe<OrderBy>;
-};
-
-/** Streaming cursor of the table "github_repos_contributors" */
-export type Github_Repos_Contributors_StreamCursorInput = {
-  /** Stream column input with initial value */
-  initialValue: Github_Repos_Contributors_StreamCursorValueInput;
-  /** cursor ordering */
-  ordering: InputMaybe<CursorOrdering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type Github_Repos_Contributors_StreamCursorValueInput = {
-  repoId: InputMaybe<Scalars['bigint']>;
-  userId: InputMaybe<Scalars['bigint']>;
-};
-
-/** order by sum() on columns of table "github_repos_contributors" */
-export type Github_Repos_Contributors_Sum_Order_By = {
-  repoId: InputMaybe<OrderBy>;
-  userId: InputMaybe<OrderBy>;
-};
-
-/** order by var_pop() on columns of table "github_repos_contributors" */
-export type Github_Repos_Contributors_Var_Pop_Order_By = {
-  repoId: InputMaybe<OrderBy>;
-  userId: InputMaybe<OrderBy>;
-};
-
-/** order by var_samp() on columns of table "github_repos_contributors" */
-export type Github_Repos_Contributors_Var_Samp_Order_By = {
-  repoId: InputMaybe<OrderBy>;
-  userId: InputMaybe<OrderBy>;
-};
-
-/** order by variance() on columns of table "github_repos_contributors" */
-export type Github_Repos_Contributors_Variance_Order_By = {
-  repoId: InputMaybe<OrderBy>;
-  userId: InputMaybe<OrderBy>;
 };
 
 /** Streaming cursor of the table "github_repos" */
@@ -10558,6 +10280,7 @@ export type Github_Repos_StreamCursorValueInput = {
   languages: InputMaybe<Scalars['jsonb']>;
   name: InputMaybe<Scalars['String']>;
   owner: InputMaybe<Scalars['String']>;
+  parentId: InputMaybe<Scalars['bigint']>;
   stars: InputMaybe<Scalars['Int']>;
   updatedAt: InputMaybe<Scalars['timestamp']>;
 };
@@ -10736,10 +10459,6 @@ export type Mutation_Root = {
   deleteGithubRepos: Maybe<GithubReposMutationResponse>;
   /** delete single row from the table: "github_repos" */
   deleteGithubReposByPk: Maybe<GithubRepos>;
-  /** delete data from the table: "github_repos_contributors" */
-  deleteGithubReposContributors: Maybe<GithubReposContributorsMutationResponse>;
-  /** delete single row from the table: "github_repos_contributors" */
-  deleteGithubReposContributorsByPk: Maybe<GithubReposContributors>;
   /** delete data from the table: "github_users" */
   deleteGithubUsers: Maybe<GithubUsersMutationResponse>;
   /** delete single row from the table: "github_users" */
@@ -10849,10 +10568,6 @@ export type Mutation_Root = {
   insertGithubPullRequestsOne: Maybe<GithubPullRequests>;
   /** insert data into the table: "github_repos" */
   insertGithubRepos: Maybe<GithubReposMutationResponse>;
-  /** insert data into the table: "github_repos_contributors" */
-  insertGithubReposContributors: Maybe<GithubReposContributorsMutationResponse>;
-  /** insert a single row into the table: "github_repos_contributors" */
-  insertGithubReposContributorsOne: Maybe<GithubReposContributors>;
   /** insert a single row into the table: "github_repos" */
   insertGithubReposOne: Maybe<GithubRepos>;
   /** insert data into the table: "github_users" */
@@ -11003,12 +10718,6 @@ export type Mutation_Root = {
   updateGithubRepos: Maybe<GithubReposMutationResponse>;
   /** update single row of the table: "github_repos" */
   updateGithubReposByPk: Maybe<GithubRepos>;
-  /** update data of the table: "github_repos_contributors" */
-  updateGithubReposContributors: Maybe<GithubReposContributorsMutationResponse>;
-  /** update single row of the table: "github_repos_contributors" */
-  updateGithubReposContributorsByPk: Maybe<GithubReposContributors>;
-  /** update multiples rows of table: "github_repos_contributors" */
-  updateGithubReposContributorsMany: Maybe<Array<Maybe<GithubReposContributorsMutationResponse>>>;
   /** update multiples rows of table: "github_repos" */
   updateGithubReposMany: Maybe<Array<Maybe<GithubReposMutationResponse>>>;
   /** update data of the table: "github_users" */
@@ -11333,19 +11042,6 @@ export type Mutation_RootDeleteGithubReposArgs = {
 /** mutation root */
 export type Mutation_RootDeleteGithubReposByPkArgs = {
   id: Scalars['bigint'];
-};
-
-
-/** mutation root */
-export type Mutation_RootDeleteGithubReposContributorsArgs = {
-  where: GithubReposContributorsBoolExp;
-};
-
-
-/** mutation root */
-export type Mutation_RootDeleteGithubReposContributorsByPkArgs = {
-  repoId: Scalars['bigint'];
-  userId: Scalars['bigint'];
 };
 
 
@@ -11709,20 +11405,6 @@ export type Mutation_RootInsertGithubPullRequestsOneArgs = {
 export type Mutation_RootInsertGithubReposArgs = {
   objects: Array<GithubReposInsertInput>;
   onConflict: InputMaybe<GithubReposOnConflict>;
-};
-
-
-/** mutation root */
-export type Mutation_RootInsertGithubReposContributorsArgs = {
-  objects: Array<GithubReposContributorsInsertInput>;
-  onConflict: InputMaybe<GithubReposContributorsOnConflict>;
-};
-
-
-/** mutation root */
-export type Mutation_RootInsertGithubReposContributorsOneArgs = {
-  object: GithubReposContributorsInsertInput;
-  onConflict: InputMaybe<GithubReposContributorsOnConflict>;
 };
 
 
@@ -12312,28 +11994,6 @@ export type Mutation_RootUpdateGithubReposByPkArgs = {
   _prepend: InputMaybe<GithubReposPrependInput>;
   _set: InputMaybe<GithubReposSetInput>;
   pk_columns: GithubReposPkColumnsInput;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdateGithubReposContributorsArgs = {
-  _inc: InputMaybe<GithubReposContributorsIncInput>;
-  _set: InputMaybe<GithubReposContributorsSetInput>;
-  where: GithubReposContributorsBoolExp;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdateGithubReposContributorsByPkArgs = {
-  _inc: InputMaybe<GithubReposContributorsIncInput>;
-  _set: InputMaybe<GithubReposContributorsSetInput>;
-  pk_columns: GithubReposContributorsPkColumnsInput;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdateGithubReposContributorsManyArgs = {
-  updates: Array<GithubReposContributorsUpdates>;
 };
 
 
@@ -13451,12 +13111,6 @@ export type Query_Root = {
   githubReposAggregate: GithubReposAggregate;
   /** fetch data from the table: "github_repos" using primary key columns */
   githubReposByPk: Maybe<GithubRepos>;
-  /** fetch data from the table: "github_repos_contributors" */
-  githubReposContributors: Array<GithubReposContributors>;
-  /** fetch aggregated fields from the table: "github_repos_contributors" */
-  githubReposContributorsAggregate: GithubReposContributorsAggregate;
-  /** fetch data from the table: "github_repos_contributors" using primary key columns */
-  githubReposContributorsByPk: Maybe<GithubReposContributors>;
   /** fetch data from the table: "github_users" */
   githubUsers: Array<GithubUsers>;
   /** fetch aggregated fields from the table: "github_users" */
@@ -13980,30 +13634,6 @@ export type Query_RootGithubReposAggregateArgs = {
 
 export type Query_RootGithubReposByPkArgs = {
   id: Scalars['bigint'];
-};
-
-
-export type Query_RootGithubReposContributorsArgs = {
-  distinctOn: InputMaybe<Array<GithubReposContributorsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<GithubReposContributorsOrderBy>>;
-  where: InputMaybe<GithubReposContributorsBoolExp>;
-};
-
-
-export type Query_RootGithubReposContributorsAggregateArgs = {
-  distinctOn: InputMaybe<Array<GithubReposContributorsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<GithubReposContributorsOrderBy>>;
-  where: InputMaybe<GithubReposContributorsBoolExp>;
-};
-
-
-export type Query_RootGithubReposContributorsByPkArgs = {
-  repoId: Scalars['bigint'];
-  userId: Scalars['bigint'];
 };
 
 
@@ -14609,14 +14239,6 @@ export type Subscription_Root = {
   githubReposAggregate: GithubReposAggregate;
   /** fetch data from the table: "github_repos" using primary key columns */
   githubReposByPk: Maybe<GithubRepos>;
-  /** fetch data from the table: "github_repos_contributors" */
-  githubReposContributors: Array<GithubReposContributors>;
-  /** fetch aggregated fields from the table: "github_repos_contributors" */
-  githubReposContributorsAggregate: GithubReposContributorsAggregate;
-  /** fetch data from the table: "github_repos_contributors" using primary key columns */
-  githubReposContributorsByPk: Maybe<GithubReposContributors>;
-  /** fetch data from the table in a streaming manner: "github_repos_contributors" */
-  githubReposContributorsStream: Array<GithubReposContributors>;
   /** fetch data from the table in a streaming manner: "github_repos" */
   githubReposStream: Array<GithubRepos>;
   /** fetch data from the table: "github_users" */
@@ -15279,37 +14901,6 @@ export type Subscription_RootGithubReposAggregateArgs = {
 
 export type Subscription_RootGithubReposByPkArgs = {
   id: Scalars['bigint'];
-};
-
-
-export type Subscription_RootGithubReposContributorsArgs = {
-  distinctOn: InputMaybe<Array<GithubReposContributorsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<GithubReposContributorsOrderBy>>;
-  where: InputMaybe<GithubReposContributorsBoolExp>;
-};
-
-
-export type Subscription_RootGithubReposContributorsAggregateArgs = {
-  distinctOn: InputMaybe<Array<GithubReposContributorsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<GithubReposContributorsOrderBy>>;
-  where: InputMaybe<GithubReposContributorsBoolExp>;
-};
-
-
-export type Subscription_RootGithubReposContributorsByPkArgs = {
-  repoId: Scalars['bigint'];
-  userId: Scalars['bigint'];
-};
-
-
-export type Subscription_RootGithubReposContributorsStreamArgs = {
-  batchSize: Scalars['Int'];
-  cursor: Array<InputMaybe<Github_Repos_Contributors_StreamCursorInput>>;
-  where: InputMaybe<GithubReposContributorsBoolExp>;
 };
 
 
