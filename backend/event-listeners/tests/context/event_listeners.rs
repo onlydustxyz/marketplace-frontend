@@ -8,6 +8,7 @@ pub struct Context<'a> {
 	_processes: Vec<JoinHandle<()>>,
 	pub database: database::Context<'a>,
 	pub amqp: amqp::Context<'a>,
+	pub github: github::Context<'a>,
 }
 
 impl<'a> Context<'a> {
@@ -34,6 +35,7 @@ impl<'a> Context<'a> {
 		Ok(Self {
 			database,
 			amqp,
+			github,
 			_processes: event_listeners::bootstrap(config).await?,
 		})
 	}
