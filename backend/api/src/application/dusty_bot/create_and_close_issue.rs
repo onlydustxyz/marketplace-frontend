@@ -45,19 +45,13 @@ impl Usecase {
 			.await
 			.map_err(DomainError::InternalError)?;
 
-		let issue_closed = self
-			.dusty_bot_service_to_create_issue
+		self.dusty_bot_service_to_create_issue
 			.close_issue(
 				repository.owner.clone(),
 				repository.name.clone(),
 				created_issue.clone(),
 			)
-			.await;
-
-		if issue_closed.is_err() {
-			return Err(DomainError::InternalError(anyhow!("Failed to close issue")));
-		}
-
-		Ok(created_issue)
+			.await
+			.map_err(DomainError::InternalError)
 	}
 }

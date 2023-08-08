@@ -117,7 +117,7 @@ impl<'a> Test<'a> {
 		let created_issue = response.into_string().await.unwrap();
 		assert_eq!(
 			created_issue,
-			"{\"id\":1840630179,\"repo_id\":1111,\"number\":25,\"title\":\"issue-title\",\"author\":{\"id\":16590657,\"login\":\"PierreOucif\",\"avatar_url\":\"https://avatars.githubusercontent.com/u/16590657?v=4\",\"html_url\":\"https://github.com/PierreOucif\"},\"html_url\":\"https://github.com/onlydustxyz/od-rust-template/issues/25\",\"status\":\"Open\",\"created_at\":\"2023-08-08T06:11:35Z\",\"updated_at\":\"2023-08-08T06:11:35Z\",\"closed_at\":null,\"comments_count\":0}"
+			"{\"id\":1840630179,\"repo_id\":1111,\"number\":25,\"title\":\"issue-title\",\"author\":{\"id\":16590657,\"login\":\"PierreOucif\",\"avatar_url\":\"https://avatars.githubusercontent.com/u/16590657?v=4\",\"html_url\":\"https://github.com/PierreOucif\"},\"html_url\":\"https://github.com/onlydustxyz/od-rust-template/issues/25\",\"status\":\"Completed\",\"created_at\":\"2023-08-08T06:11:35Z\",\"updated_at\":\"2023-08-08T06:13:08Z\",\"closed_at\":\"2023-08-08T06:13:08Z\",\"comments_count\":0}"
 		);
 		Ok(())
 	}

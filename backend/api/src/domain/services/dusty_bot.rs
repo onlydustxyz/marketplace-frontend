@@ -18,7 +18,7 @@ pub trait Service: Send + Sync {
 		repo_owner: String,
 		repo_name: String,
 		issue: GithubIssue,
-	) -> Result<()>;
+	) -> Result<GithubIssue>;
 
 	async fn close_issue_for_number(
 		&self,

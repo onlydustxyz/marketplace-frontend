@@ -1,4 +1,4 @@
-use anyhow::{Context, Result};
+use anyhow::{anyhow, Context, Result};
 use async_trait::async_trait;
 use domain::{
 	GithubFetchIssueService, GithubFetchUserService, GithubIssue, GithubIssueNumber,
@@ -38,7 +38,7 @@ impl DustyBotService for github::Client {
 		repo_owner: String,
 		repo_name: String,
 		issue: GithubIssue,
-	) -> Result<()> {
+	) -> Result<GithubIssue> {
 		let dusty_bot = self.current_user().await?;
 		let issue_number: u64 = issue.number.into();
 
@@ -49,13 +49,16 @@ impl DustyBotService for github::Client {
 				.state(models::IssueState::Closed)
 				.send()
 				.await
-				.map_err(|e| {
-					println!("{:?}", e);
-					e
+				.context("closing issue from github")
+				.and_then(|i| {
+					GithubIssue::from_octocrab(i, issue.repo_id)
+						.context("mapping githubIssue to domain")
 				})
-				.map_err(github::Error::from)?;
+		} else {
+			Err(anyhow!(
+				"issue author is not equal to dusty-bot or issue status is not open"
+			))
 		}
-		Ok(())
 	}
 
 	async fn close_issue_for_number(
