@@ -6,7 +6,7 @@ use anyhow::Result;
 use async_trait::async_trait;
 use chrono::Utc;
 use derive_new::new;
-use domain::{GithubFetchRepoService, Languages, SubscriberCallbackError};
+use domain::{self, GithubFetchRepoService, Languages, SubscriberCallbackError};
 pub use events::Event;
 use infrastructure::database::{ImmutableRepository, Repository};
 use tracing::instrument;
@@ -26,7 +26,6 @@ pub struct Projector {
 	projects_contributors_repository: Arc<dyn ProjectsContributorRepository>,
 	project_github_repos_repository: Arc<dyn ProjectGithubRepoRepository>,
 	technologies_repository: Arc<dyn ImmutableRepository<Technology>>,
-	github_repo_index_repository: Arc<dyn GithubRepoIndexRepository>,
 }
 
 impl Projector {
@@ -44,6 +43,22 @@ impl Projector {
 			parent_id: repo.parent.map(|repo| repo.id),
 		})
 	}
+
+	async fn index_repo(&self, repo: domain::GithubRepo) -> Result<(), SubscriberCallbackError> {
+		let languages = self.github_fetch_service.repo_languages(repo.id).await?;
+		languages.get_all().into_iter().try_for_each(|language| {
+			self.technologies_repository
+				.try_insert(Technology {
+					technology: language,
+				})
+				.map(|_| ())
+		})?;
+
+		self.github_repo_repository
+			.upsert(self.build_repo(repo, languages).map_err(SubscriberCallbackError::Discard)?)?;
+
+		Ok(())
+	}
 }
 
 #[async_trait]
@@ -53,21 +68,10 @@ impl EventListener<Event> for Projector {
 		match event.clone() {
 			Event::Repo(repo) => {
 				if let Some(parent) = repo.parent.clone() {
-					self.github_repo_index_repository.start_indexing(parent.id)?;
+					self.index_repo(*parent).await?;
 				}
 
-				let languages = self.github_fetch_service.repo_languages(repo.id).await?;
-				languages.get_all().into_iter().try_for_each(|language| {
-					self.technologies_repository
-						.try_insert(Technology {
-							technology: language,
-						})
-						.map(|_| ())
-				})?;
-
-				self.github_repo_repository.upsert(
-					self.build_repo(repo, languages).map_err(SubscriberCallbackError::Discard)?,
-				)?;
+				self.index_repo(repo).await?;
 			},
 			Event::Issue(issue) => {
 				let issue: GithubIssue = issue.into();

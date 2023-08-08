@@ -3,10 +3,7 @@ use diesel::{query_dsl::RunQueryDsl, ExpressionMethods, QueryDsl};
 use domain::{Destination, Publisher};
 use event_listeners::{listeners::github::Event, models, GITHUB_EVENTS_EXCHANGE};
 use fixtures::*;
-use infrastructure::{
-	amqp::UniqueMessage,
-	database::schema::{github_repo_indexes, github_repos},
-};
+use infrastructure::{amqp::UniqueMessage, database::schema::github_repos};
 use olog::info;
 use rstest::rstest;
 use serde_json::json;
@@ -42,7 +39,7 @@ impl<'a> Test<'a> {
 			.publisher
 			.publish(
 				Destination::exchange(GITHUB_EVENTS_EXCHANGE),
-				&UniqueMessage::new(Event::Repo(repos::marketplace())),
+				&UniqueMessage::new(Event::Repo(repos::marketplace_fork())),
 			)
 			.await?;
 
@@ -50,36 +47,53 @@ impl<'a> Test<'a> {
 		let mut connection = self.context.database.client.connection()?;
 		{
 			let mut repos: Vec<models::GithubRepo> = retry(
-				|| github_repos::table.load(&mut *connection),
+				|| github_repos::table.order(github_repos::id.desc()).load(&mut *connection),
 				|res| !res.is_empty(),
 			)
 			.await?;
-			assert_eq!(repos.len(), 1, "Invalid repos count");
+			assert_eq!(repos.len(), 2, "Invalid repos count");
+			{
+				let repo = repos.pop().unwrap();
+				assert_eq!(repo.id, repos::marketplace().id);
+				assert_eq!(repo.owner, repos::marketplace().owner);
+				assert_eq!(repo.name, repos::marketplace().name);
+				assert_eq!(repo.html_url, repos::marketplace().html_url.to_string());
+				assert_eq!(repo.description, repos::marketplace().description);
+				assert_eq!(repo.fork_count, repos::marketplace().forks_count);
+				assert_eq!(repo.stars, repos::marketplace().stars);
+				assert_eq!(
+					repo.languages,
+					json!({
+						"TypeScript": 2405007,
+						"Rust": 574966,
+						"PLpgSQL": 26212,
+						"JavaScript": 23721,
+						"Shell": 12794,
+						"Makefile": 8658,
+						"CSS": 4475,
+						"HTML": 1539,
+						"Procfile": 507,
+						"Nix": 120
+					})
+				);
+				assert_eq!(repo.parent_id, None);
+			}
 
-			let repo = repos.pop().unwrap();
-			assert_eq!(repo.id, repos::marketplace().id);
-			assert_eq!(repo.owner, repos::marketplace().owner);
-			assert_eq!(repo.name, repos::marketplace().name);
-			assert_eq!(repo.html_url, repos::marketplace().html_url.to_string());
-			assert_eq!(repo.description, repos::marketplace().description);
-			assert_eq!(repo.fork_count, repos::marketplace().forks_count);
-			assert_eq!(repo.stars, repos::marketplace().stars);
-			assert_eq!(
-				repo.languages,
-				json!({
-					"TypeScript": 2405007,
-					"Rust": 574966,
-					"PLpgSQL": 26212,
-					"JavaScript": 23721,
-					"Shell": 12794,
-					"Makefile": 8658,
-					"CSS": 4475,
-					"HTML": 1539,
-					"Procfile": 507,
-					"Nix": 120
-				})
-			);
-			assert_eq!(repo.parent_id, None);
+			{
+				let repo = repos.pop().unwrap();
+				assert_eq!(repo.id, repos::marketplace_fork().id);
+				assert_eq!(repo.owner, repos::marketplace_fork().owner);
+				assert_eq!(repo.name, repos::marketplace_fork().name);
+				assert_eq!(
+					repo.html_url,
+					repos::marketplace_fork().html_url.to_string()
+				);
+				assert_eq!(repo.description, repos::marketplace_fork().description);
+				assert_eq!(repo.fork_count, repos::marketplace_fork().forks_count);
+				assert_eq!(repo.stars, repos::marketplace_fork().stars);
+				assert_eq!(repo.languages, json!({}));
+				assert_eq!(repo.parent_id, Some(repos::marketplace().id));
+			}
 		}
 
 		Ok(())
@@ -100,18 +114,6 @@ impl<'a> Test<'a> {
 
 		// Then
 		let mut connection = self.context.database.client.connection()?;
-		{
-			let mut repo_indexes: Vec<models::GithubRepoIndex> = retry(
-				|| github_repo_indexes::table.load(&mut *connection),
-				|res| !res.is_empty(),
-			)
-			.await?;
-			assert_eq!(repo_indexes.len(), 1, "Invalid repos index count");
-
-			let repo_index = repo_indexes.pop().unwrap();
-			assert_eq!(repo_index.repo_id, repos::marketplace().id);
-		}
-
 		{
 			let repo: models::GithubRepo = github_repos::table
 				.filter(github_repos::id.eq(repos::marketplace_fork().id))
