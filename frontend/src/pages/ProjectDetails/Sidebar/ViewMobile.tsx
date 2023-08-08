@@ -56,7 +56,7 @@ export default function ViewMobile(props: Props) {
           </div>
         )}
       </div>
-      <SidePanel withBackdrop open={panelOpen} setOpen={setPanelOpen} placement="bottom" hasCloseButton={false}>
+      <SidePanel withBackdrop open={panelOpen} setOpen={setPanelOpen} hasCloseButton={false}>
         <View {...props} onLinkClick={() => setPanelOpen(false)} />
       </SidePanel>
     </>

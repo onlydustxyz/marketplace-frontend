@@ -26,6 +26,7 @@ import { useAuth } from "src/hooks/useAuth";
 import BaseCard from "src/components/Card";
 import { useNavigate } from "react-router-dom";
 import { RoutePaths } from "src/App";
+import SEO from "src/components/SEO";
 
 const MAX_STEP = 3;
 
@@ -93,66 +94,69 @@ export default function Onboarding() {
   };
 
   return (
-    <Background roundedBorders={BackgroundRoundedBorders.Full} centeredContent>
-      <FormProvider {...methods}>
-        <form id="onboarding-form" className="self-center" onSubmit={handleSubmit(onSubmit)}>
-          {step === 0 && <Intro skip={markWizzardAsCompleted} start={next} />}
-          {step === 1 && (
-            <Card
-              step={step}
-              stepCount={MAX_STEP}
-              title={T("onboarding.technologies.title")}
-              description={T("onboarding.technologies.description")}
-              prev={prev}
-              next={next}
-            >
-              <Controller
-                name="languages"
-                render={({ field: { value, onChange } }) => (
-                  <TechnologiesSelect technologies={value} setTechnologies={onChange} />
-                )}
-              />
-            </Card>
-          )}
-          {step === 2 && (
-            <Card
-              step={step}
-              stepCount={MAX_STEP}
-              title={T("onboarding.timeAllocation.title")}
-              description={T("onboarding.timeAllocation.description")}
-              private
-              prev={prev}
-              next={next}
-            >
-              <FormSelect
-                name="weeklyAllocatedTime"
-                options={Object.entries(weeklyTimeAllocations).map(([value, label]) => ({ value, label }))}
-                control={control}
-                size={Size.Lg}
-              />
-              <FormToggle
-                name="lookingForAJob"
-                control={control}
-                label={T("onboarding.timeAllocation.lookingForAJob")}
-              />
-            </Card>
-          )}
-          {step === 3 && (
-            <Card
-              step={step}
-              stepCount={MAX_STEP}
-              title={T("onboarding.contact.title")}
-              description={T("onboarding.contact.description")}
-              prev={prev}
-              submit
-            >
-              <BaseCard className="bg-white/2">
-                <ContactInformations />
-              </BaseCard>
-            </Card>
-          )}
-        </form>
-      </FormProvider>
-    </Background>
+    <>
+      <SEO />
+      <Background roundedBorders={BackgroundRoundedBorders.Full} centeredContent>
+        <FormProvider {...methods}>
+          <form id="onboarding-form" className="self-center" onSubmit={handleSubmit(onSubmit)}>
+            {step === 0 && <Intro skip={markWizzardAsCompleted} start={next} />}
+            {step === 1 && (
+              <Card
+                step={step}
+                stepCount={MAX_STEP}
+                title={T("onboarding.technologies.title")}
+                description={T("onboarding.technologies.description")}
+                prev={prev}
+                next={next}
+              >
+                <Controller
+                  name="languages"
+                  render={({ field: { value, onChange } }) => (
+                    <TechnologiesSelect technologies={value} setTechnologies={onChange} />
+                  )}
+                />
+              </Card>
+            )}
+            {step === 2 && (
+              <Card
+                step={step}
+                stepCount={MAX_STEP}
+                title={T("onboarding.timeAllocation.title")}
+                description={T("onboarding.timeAllocation.description")}
+                private
+                prev={prev}
+                next={next}
+              >
+                <FormSelect
+                  name="weeklyAllocatedTime"
+                  options={Object.entries(weeklyTimeAllocations).map(([value, label]) => ({ value, label }))}
+                  control={control}
+                  size={Size.Lg}
+                />
+                <FormToggle
+                  name="lookingForAJob"
+                  control={control}
+                  label={T("onboarding.timeAllocation.lookingForAJob")}
+                />
+              </Card>
+            )}
+            {step === 3 && (
+              <Card
+                step={step}
+                stepCount={MAX_STEP}
+                title={T("onboarding.contact.title")}
+                description={T("onboarding.contact.description")}
+                prev={prev}
+                submit
+              >
+                <BaseCard className="bg-white/2">
+                  <ContactInformations />
+                </BaseCard>
+              </Card>
+            )}
+          </form>
+        </FormProvider>
+      </Background>
+    </>
   );
 }

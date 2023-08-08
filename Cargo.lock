@@ -193,6 +193,7 @@ dependencies = [
  "image",
  "infer",
  "infrastructure",
+ "jsonwebtoken",
  "juniper",
  "juniper_rocket",
  "lazy_static",

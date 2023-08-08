@@ -62,7 +62,7 @@ export default function ViewMobile({
         {avatarUrl && <img className="h-8 w-8 rounded-full" src={avatarUrl} />}
         {showMissingPayoutSettingsState && <ErrorWarningLine className="text-xl text-orange-500" />}
       </button>
-      <SidePanel withBackdrop open={panelOpen} setOpen={setPanelOpen} placement="bottom" hasCloseButton={false}>
+      <SidePanel withBackdrop open={panelOpen} setOpen={setPanelOpen} hasCloseButton={false}>
         <div className="flex flex-col divide-y divide-greyscale-50/8 bg-whiteFakeOpacity-5 p-3 font-walsheim text-sm">
           {!hideProfileItems && (
             <>

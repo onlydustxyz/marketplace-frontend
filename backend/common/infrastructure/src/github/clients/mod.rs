@@ -1,24 +1,24 @@
 use std::{
 	fmt::Debug,
-	future::{self, ready},
+	future,
 	pin::Pin,
-	sync::Arc,
+	sync::{Arc, Weak},
 };
 
-use anyhow::anyhow;
+use anyhow::{anyhow, Context};
 use domain::{
 	stream_filter::{self, StreamFilterWith},
 	GithubFullUser, GithubIssue, GithubIssueNumber, GithubPullRequest, GithubPullRequestNumber,
 	GithubRepoId, GithubServiceIssueFilters, GithubServicePullRequestFilters, GithubUser,
-	GithubUserId, Languages, PositiveCount,
+	GithubUserId, Languages, LogErr, PositiveCount,
 };
 use futures::{stream::empty, Stream, StreamExt, TryStreamExt};
 use octocrab::{
 	models::{
 		issues::{Comment, Issue},
-		pulls::PullRequest,
-		repos::Content,
-		Repository, User,
+		pulls::{PullRequest, Review},
+		repos::{Content, RepoCommit},
+		CheckRuns, Repository, User,
 	},
 	params::{pulls::Sort, Direction},
 	FromResponse, Octocrab,
@@ -40,35 +40,51 @@ mod single;
 use olog::error;
 pub use single::Client as SingleClient;
 
-pub enum Client {
+pub struct Client {
+	me: Weak<Self>, // pointer to self
+	inner: InnerClient,
+}
+
+enum InnerClient {
 	Single(SingleClient),
 	RoundRobin(RoundRobinClient),
 }
 
-impl From<SingleClient> for Client {
+impl From<SingleClient> for Arc<Client> {
 	fn from(client: SingleClient) -> Self {
-		Self::Single(client)
+		Client::new(InnerClient::Single(client))
 	}
 }
 
-impl From<RoundRobinClient> for Client {
+impl From<RoundRobinClient> for Arc<Client> {
 	fn from(client: RoundRobinClient) -> Self {
-		Self::RoundRobin(client)
+		Client::new(InnerClient::RoundRobin(client))
 	}
 }
 
 impl Client {
+	fn new(inner: InnerClient) -> Arc<Self> {
+		Arc::new_cyclic(|me| Self {
+			me: me.clone(),
+			inner,
+		})
+	}
+
+	fn me(&self) -> Arc<Self> {
+		self.me.upgrade().unwrap()
+	}
+
 	pub fn octocrab(&self) -> &Octocrab {
-		match self {
-			Client::Single(client) => client.octocrab(),
-			Client::RoundRobin(client) => client.octocrab(),
+		match &self.inner {
+			InnerClient::Single(client) => client.octocrab(),
+			InnerClient::RoundRobin(client) => client.octocrab(),
 		}
 	}
 
 	pub fn config(&self) -> &Config {
-		match self {
-			Client::Single(client) => client.config(),
-			Client::RoundRobin(client) => client.config(),
+		match &self.inner {
+			InnerClient::Single(client) => client.config(),
+			InnerClient::RoundRobin(client) => client.config(),
 		}
 	}
 
@@ -156,7 +172,7 @@ impl Client {
 				page.into_stream(self.octocrab())
 					.take(max_results)
 					.inspect_err(|e| error!(error = e.to_field(), "Unable to stream from github"))
-					.take_while(|res| ready(res.is_ok()))
+					.take_while(|res| future::ready(res.is_ok()))
 					.map(Result::unwrap)
 					.boxed()
 			})
@@ -260,6 +276,83 @@ impl Client {
 	}
 
 	#[instrument(skip(self))]
+	pub async fn get_check_runs(&self, pull_request: &PullRequest) -> Result<CheckRuns, Error> {
+		let repo = pull_request.head.repo.clone().ok_or_else(|| {
+			Error::Other(anyhow!(
+				"Missing head repo in pull request {}",
+				pull_request.id
+			))
+		})?;
+
+		let check_runs: CheckRuns = self
+			.get_as(format!(
+				"{}repositories/{}/commits/{}/check-runs",
+				self.octocrab().base_url,
+				repo.id,
+				pull_request.head.sha
+			))
+			.await
+			.context("Fetching CI check runs")
+			.map_err(Error::NotFound)?;
+
+		Ok(check_runs)
+	}
+
+	#[instrument(skip(self))]
+	pub async fn get_commits(&self, pull_request: &PullRequest) -> Result<Vec<RepoCommit>, Error> {
+		let repo = pull_request.base.repo.clone().ok_or_else(|| {
+			Error::Other(anyhow!(
+				"Missing head repo in pull request {}",
+				pull_request.id
+			))
+		})?;
+
+		let commits: Vec<RepoCommit> = self
+			.stream_as(
+				format!(
+					"{}repositories/{}/pulls/{}/commits",
+					self.octocrab().base_url,
+					repo.id,
+					pull_request.number
+				)
+				.parse()?,
+				100 * self.config().max_calls_per_request.map(PositiveCount::get).unwrap_or(3),
+			)
+			.await?
+			.collect()
+			.await;
+
+		Ok(commits)
+	}
+
+	#[instrument(skip(self))]
+	pub async fn get_reviews(&self, pull_request: &PullRequest) -> Result<Vec<Review>, Error> {
+		let repo = pull_request.base.repo.clone().ok_or_else(|| {
+			Error::Other(anyhow!(
+				"Missing head repo in pull request {}",
+				pull_request.id
+			))
+		})?;
+
+		let reviews: Vec<Review> = self
+			.stream_as(
+				format!(
+					"{}repositories/{}/pulls/{}/reviews",
+					self.octocrab().base_url,
+					repo.id,
+					pull_request.number
+				)
+				.parse()?,
+				100 * self.config().max_calls_per_request.map(PositiveCount::get).unwrap_or(3),
+			)
+			.await?
+			.collect()
+			.await;
+
+		Ok(reviews)
+	}
+
+	#[instrument(skip(self))]
 	pub async fn get_pull_request_by_repository_id(
 		&self,
 		repo_id: GithubRepoId,
@@ -304,26 +397,7 @@ impl Client {
 				100 * self.config().max_calls_per_request.map(PositiveCount::get).unwrap_or(3),
 			)
 			.await?
-			.filter_map(|issue| {
-				future::ready({
-					if issue.pull_request.is_some() {
-						None
-					} else {
-						match GithubIssue::from_octocrab(issue.clone(), id) {
-							Ok(issue) => Some(issue),
-							Err(e) => {
-								error!(
-									error = e.to_field(),
-									repository_id = id.to_string(),
-									issue_id = issue.id.0,
-									"Failed to process issue"
-								);
-								None
-							},
-						}
-					}
-				})
-			})
+			.filter_map(|issue| try_into_issue(id, issue))
 			.filter_with(Arc::new(filters))
 			.collect()
 			.await;
@@ -362,22 +436,7 @@ impl Client {
 				100 * self.config().max_calls_per_request.map(PositiveCount::get).unwrap_or(3),
 			)
 			.await?
-			.filter_map(|pull_request| {
-				future::ready({
-					match GithubPullRequest::from_octocrab(pull_request.clone()) {
-						Ok(pull_request) => Some(pull_request),
-						Err(e) => {
-							error!(
-								error = e.to_field(),
-								repository_id = id.to_string(),
-								pull_request_id = pull_request.id.0,
-								"Failed to process pull_request"
-							);
-							None
-						},
-					}
-				})
-			})
+			.filter_map(|pull_request| try_into_pull_request(self.me(), id, pull_request))
 			.filter_with(Arc::new(filters))
 			.collect()
 			.await;
@@ -459,6 +518,45 @@ impl Client {
 	}
 }
 
+async fn try_into_pull_request(
+	client: Arc<Client>,
+	repo_id: GithubRepoId,
+	pull_request: PullRequest,
+) -> Option<domain::GithubPullRequest> {
+	let pull_request_id = pull_request.id;
+
+	GithubPullRequest::from_octocrab(&client, pull_request)
+		.await
+		.log_err(|e| {
+			error!(
+				error = e.to_field(),
+				repository_id = repo_id.to_string(),
+				pull_request_id = pull_request_id.0,
+				"Failed to process pull_request"
+			)
+		})
+		.ok()
+}
+
+async fn try_into_issue(repo_id: GithubRepoId, issue: Issue) -> Option<domain::GithubIssue> {
+	if issue.pull_request.is_some() {
+		None
+	} else {
+		match GithubIssue::from_octocrab(issue.clone(), repo_id) {
+			Ok(issue) => Some(issue),
+			Err(e) => {
+				error!(
+					error = e.to_field(),
+					repository_id = repo_id.to_string(),
+					issue_id = issue.id.0,
+					"Failed to process issue"
+				);
+				None
+			},
+		}
+	}
+}
+
 #[cfg(test)]
 mod tests {
 	use rstest::rstest;
@@ -487,7 +585,7 @@ mod tests {
 		"http://plop.fr/github/"
 	)]
 	fn fix_github_host(#[case] base_url: &str, #[case] url: &str, #[case] expected_url: &str) {
-		let client: Client = RoundRobinClient::new(Config {
+		let client: Arc<Client> = RoundRobinClient::new(Config {
 			base_url: base_url.to_string(),
 			personal_access_tokens: "token".to_string(),
 			..Default::default()

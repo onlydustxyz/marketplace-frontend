@@ -17,5 +17,12 @@ pub use issue::{Id as IssueId, Issue, Number as IssueNumber, Status as IssueStat
 
 mod pull_request;
 pub use pull_request::{
-	Id as PullRequestId, Number as PullRequestNumber, PullRequest, Status as PullRequestStatus,
+	CiChecks, Id as PullRequestId, Number as PullRequestNumber, PullRequest,
+	Status as PullRequestStatus,
 };
+
+mod commit;
+pub use commit::Commit;
+
+mod code_review;
+pub use code_review::{CodeReview, Outcome as CodeReviewOutcome, Status as CodeReviewStatus};

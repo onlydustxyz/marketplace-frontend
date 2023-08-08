@@ -1,31 +1,47 @@
 // @generated automatically by Diesel CLI.
 
 pub mod sql_types {
-    #[derive(diesel::sql_types::SqlType)]
+    #[derive(diesel::query_builder::QueryId, diesel::sql_types::SqlType)]
     #[diesel(postgres_type(name = "allocated_time"))]
     pub struct AllocatedTime;
 
-    #[derive(diesel::sql_types::SqlType)]
+    #[derive(diesel::query_builder::QueryId, diesel::sql_types::SqlType)]
     #[diesel(postgres_type(name = "citext"))]
     pub struct Citext;
 
-    #[derive(diesel::sql_types::SqlType)]
+    #[derive(diesel::query_builder::QueryId, diesel::sql_types::SqlType)]
     #[diesel(postgres_type(name = "contact_channel"))]
     pub struct ContactChannel;
 
-    #[derive(diesel::sql_types::SqlType)]
+    #[derive(diesel::query_builder::QueryId, diesel::sql_types::SqlType)]
+    #[diesel(postgres_type(name = "contribution_type"))]
+    pub struct ContributionType;
+
+    #[derive(diesel::query_builder::QueryId, diesel::sql_types::SqlType)]
+    #[diesel(postgres_type(name = "github_ci_checks"))]
+    pub struct GithubCiChecks;
+
+    #[derive(diesel::query_builder::QueryId, diesel::sql_types::SqlType)]
+    #[diesel(postgres_type(name = "github_code_review_outcome"))]
+    pub struct GithubCodeReviewOutcome;
+
+    #[derive(diesel::query_builder::QueryId, diesel::sql_types::SqlType)]
+    #[diesel(postgres_type(name = "github_code_review_status"))]
+    pub struct GithubCodeReviewStatus;
+
+    #[derive(diesel::query_builder::QueryId, diesel::sql_types::SqlType)]
     #[diesel(postgres_type(name = "github_issue_status"))]
     pub struct GithubIssueStatus;
 
-    #[derive(diesel::sql_types::SqlType)]
+    #[derive(diesel::query_builder::QueryId, diesel::sql_types::SqlType)]
     #[diesel(postgres_type(name = "github_pull_request_status"))]
     pub struct GithubPullRequestStatus;
 
-    #[derive(diesel::sql_types::SqlType)]
+    #[derive(diesel::query_builder::QueryId, diesel::sql_types::SqlType)]
     #[diesel(postgres_type(name = "profile_cover"))]
     pub struct ProfileCover;
 
-    #[derive(diesel::sql_types::SqlType)]
+    #[derive(diesel::query_builder::QueryId, diesel::sql_types::SqlType)]
     #[diesel(postgres_type(name = "project_visibility"))]
     pub struct ProjectVisibility;
 }
@@ -88,6 +104,19 @@ diesel::table! {
 }
 
 diesel::table! {
+    use diesel::sql_types::*;
+    use super::sql_types::ContributionType;
+
+    contributions (type_, details_id, user_id) {
+        repo_id -> Int8,
+        user_id -> Int8,
+        #[sql_name = "type"]
+        type_ -> ContributionType,
+        details_id -> Int8,
+    }
+}
+
+diesel::table! {
     event_deduplications (deduplication_id) {
         deduplication_id -> Text,
         event_index -> Int4,
@@ -126,8 +155,32 @@ diesel::table! {
 }
 
 diesel::table! {
+    github_pull_request_commits (sha) {
+        sha -> Text,
+        pull_request_id -> Int8,
+        html_url -> Text,
+        author_id -> Int8,
+    }
+}
+
+diesel::table! {
+    use diesel::sql_types::*;
+    use super::sql_types::GithubCodeReviewStatus;
+    use super::sql_types::GithubCodeReviewOutcome;
+
+    github_pull_request_reviews (pull_request_id, reviewer_id) {
+        pull_request_id -> Int8,
+        reviewer_id -> Int8,
+        status -> GithubCodeReviewStatus,
+        outcome -> Nullable<GithubCodeReviewOutcome>,
+        submitted_at -> Nullable<Timestamp>,
+    }
+}
+
+diesel::table! {
     use diesel::sql_types::*;
     use super::sql_types::GithubPullRequestStatus;
+    use super::sql_types::GithubCiChecks;
 
     github_pull_requests (id) {
         id -> Int8,
@@ -140,6 +193,8 @@ diesel::table! {
         title -> Text,
         html_url -> Text,
         closed_at -> Nullable<Timestamp>,
+        draft -> Bool,
+        ci_checks -> Nullable<GithubCiChecks>,
     }
 }
 
@@ -360,9 +415,12 @@ diesel::allow_tables_to_appear_in_same_query!(
     budgets,
     commands,
     contact_informations,
+    contributions,
     event_deduplications,
     events,
     github_issues,
+    github_pull_request_commits,
+    github_pull_request_reviews,
     github_pull_requests,
     github_repo_indexes,
     github_repos,

@@ -17,7 +17,9 @@ impl GithubFetchPullRequestService for github::Client {
 	) -> GithubServiceResult<GithubPullRequest> {
 		let pull_request =
 			self.get_pull_request(repo_owner, repo_name, pull_request_number).await?;
-		GithubPullRequest::from_octocrab(pull_request).map_err(GithubServiceError::Other)
+		GithubPullRequest::from_octocrab(self, pull_request)
+			.await
+			.map_err(GithubServiceError::Other)
 	}
 
 	#[instrument(skip(self))]
@@ -38,6 +40,9 @@ impl GithubFetchPullRequestService for github::Client {
 	) -> GithubServiceResult<GithubPullRequest> {
 		let pull_request =
 			self.get_pull_request_by_repository_id(repo_id, pull_request_number).await?;
-		GithubPullRequest::from_octocrab(pull_request).map_err(GithubServiceError::Other)
+
+		GithubPullRequest::from_octocrab(self, pull_request)
+			.await
+			.map_err(GithubServiceError::Other)
 	}
 }
