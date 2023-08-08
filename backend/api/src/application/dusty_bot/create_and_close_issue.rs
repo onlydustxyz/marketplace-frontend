@@ -11,7 +11,7 @@ use crate::domain::DustyBotService;
 #[derive(Constructor)]
 pub struct Usecase {
 	project_repository: AggregateRootRepository<Project>,
-	dusty_bot_service_to_create_issue: Arc<dyn DustyBotService>,
+	dusty_bot_service: Arc<dyn DustyBotService>,
 	fetch_service: Arc<dyn GithubFetchService>,
 }
 
@@ -34,7 +34,7 @@ impl Usecase {
 		let repository = self.fetch_service.repo_by_id(github_repo_id).await?;
 
 		let created_issue = self
-			.dusty_bot_service_to_create_issue
+			.dusty_bot_service
 			.create_issue(
 				github_repo_id,
 				repository.owner.clone(),
@@ -45,7 +45,7 @@ impl Usecase {
 			.await
 			.map_err(DomainError::InternalError)?;
 
-		self.dusty_bot_service_to_create_issue
+		self.dusty_bot_service
 			.close_issue(
 				repository.owner.clone(),
 				repository.name.clone(),
