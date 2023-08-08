@@ -4,14 +4,19 @@ use anyhow::Result;
 use diesel::query_dsl::RunQueryDsl;
 use domain::{
 	Destination, GithubCiChecks, GithubCodeReview, GithubCodeReviewOutcome, GithubCodeReviewStatus,
-	GithubCommit, GithubPullRequest, GithubPullRequestStatus, GithubUser, Publisher,
+	GithubCommit, GithubPullRequest, GithubPullRequestId, GithubPullRequestStatus, GithubUser,
+	Publisher,
 };
 use event_listeners::{listeners::github::Event, models, GITHUB_EVENTS_EXCHANGE};
 use infrastructure::{
 	amqp::UniqueMessage,
 	database::{
 		self,
-		schema::{github_pull_request_commits, github_pull_request_reviews, github_pull_requests},
+		enums::ContributionType,
+		schema::{
+			contributions, github_pull_request_commits, github_pull_request_reviews,
+			github_pull_requests,
+		},
 	},
 };
 use olog::info;
@@ -167,6 +172,34 @@ impl<'a> Test<'a> {
 			assert_eq!(review.submitted_at, "2023-07-31T09:32:08".parse().ok());
 		}
 
+		{
+			let mut contributions: Vec<models::Contribution> =
+				contributions::table.load(&mut *connection)?;
+			assert_eq!(contributions.len(), 2, "Invalid contributions count");
+
+			{
+				let contribution = contributions.pop().unwrap();
+				assert_eq!(contribution.repo_id, 498695724u64.into());
+				assert_eq!(contribution.type_, ContributionType::CodeReview);
+				assert_eq!(contribution.user_id, 43467246u64.into());
+				assert_eq!(
+					contribution.details_id,
+					GithubPullRequestId::from(1455874031u64).into()
+				);
+			}
+
+			{
+				let contribution = contributions.pop().unwrap();
+				assert_eq!(contribution.repo_id, 498695724u64.into());
+				assert_eq!(contribution.type_, ContributionType::PullRequest);
+				assert_eq!(contribution.user_id, 43467246u64.into());
+				assert_eq!(
+					contribution.details_id,
+					GithubPullRequestId::from(1455874031u64).into()
+				);
+			}
+		}
+
 		Ok(())
 	}
 
@@ -223,6 +256,21 @@ impl<'a> Test<'a> {
 			assert_eq!(
 				commit.html_url,
 				"https://github.com/onlydustxyz/marketplace/commit/b83f75bf3d86cdf017c0f743dcf29dcffdb0ab97"
+			);
+		}
+
+		{
+			let mut contributions: Vec<models::Contribution> =
+				contributions::table.load(&mut *connection)?;
+			assert_eq!(contributions.len(), 1, "Invalid contributions count");
+
+			let contribution = contributions.pop().unwrap();
+			assert_eq!(contribution.repo_id, 498695724u64.into());
+			assert_eq!(contribution.type_, ContributionType::PullRequest);
+			assert_eq!(contribution.user_id, 10922658u64.into());
+			assert_eq!(
+				contribution.details_id,
+				GithubPullRequestId::from(1455874031u64).into()
 			);
 		}
 
@@ -313,6 +361,34 @@ impl<'a> Test<'a> {
 					Some(database::enums::GithubCodeReviewOutcome::ChangeRequested)
 				);
 				assert_eq!(review.submitted_at, "2023-07-31T09:32:08".parse().ok());
+			}
+		}
+
+		{
+			let mut contributions: Vec<models::Contribution> =
+				contributions::table.load(&mut *connection)?;
+			assert_eq!(contributions.len(), 2, "Invalid contributions count");
+
+			{
+				let contribution = contributions.pop().unwrap();
+				assert_eq!(contribution.repo_id, 498695724u64.into());
+				assert_eq!(contribution.type_, ContributionType::CodeReview);
+				assert_eq!(contribution.user_id, 10922658u64.into());
+				assert_eq!(
+					contribution.details_id,
+					GithubPullRequestId::from(1455874031u64).into()
+				);
+			}
+
+			{
+				let contribution = contributions.pop().unwrap();
+				assert_eq!(contribution.repo_id, 498695724u64.into());
+				assert_eq!(contribution.type_, ContributionType::CodeReview);
+				assert_eq!(contribution.user_id, 43467246u64.into());
+				assert_eq!(
+					contribution.details_id,
+					GithubPullRequestId::from(1455874031u64).into()
+				);
 			}
 		}
 
