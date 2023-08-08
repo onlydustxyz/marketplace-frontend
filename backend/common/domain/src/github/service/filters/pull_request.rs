@@ -58,6 +58,7 @@ mod tests {
 			ci_checks: None,
 			commits: vec![],
 			reviews: vec![],
+			closing_issue_numbers: vec![],
 		}
 	}
 

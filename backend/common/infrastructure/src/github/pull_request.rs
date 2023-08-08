@@ -3,8 +3,8 @@ use std::collections::HashMap;
 use anyhow::{anyhow, Result};
 use async_trait::async_trait;
 use domain::{
-	GithubCodeReview, GithubCodeReviewStatus, GithubPullRequest, GithubPullRequestStatus,
-	GithubUser, GithubUserId, LogErr,
+	GithubCodeReview, GithubCodeReviewStatus, GithubIssueNumber, GithubPullRequest,
+	GithubPullRequestStatus, GithubUser, GithubUserId, LogErr,
 };
 use octocrab::models::{
 	pulls::{PullRequest, Review},
@@ -29,10 +29,11 @@ where
 #[async_trait]
 impl FromOctocrab for GithubPullRequest {
 	async fn from_octocrab(client: &Client, pull_request: PullRequest) -> Result<Self> {
-		let (check_runs, commits, reviews) = tokio::join!(
+		let (check_runs, commits, reviews, closing_issue_numbers) = tokio::join!(
 			client.get_check_runs(&pull_request),
 			client.get_commits(&pull_request),
-			client.get_reviews(&pull_request)
+			client.get_reviews(&pull_request),
+			client.get_closing_issues(&pull_request)
 		);
 
 		let requested_reviewers = pull_request.requested_reviewers.clone().unwrap_or_default();
@@ -67,12 +68,23 @@ impl FromOctocrab for GithubPullRequest {
 			})
 			.unwrap_or_default();
 
+		let closing_issue_numbers = closing_issue_numbers
+			.log_err(|e| {
+				warn!(
+					error = e.to_field(),
+					pull_request = serde_json::to_string(&pull_request).unwrap_or_default(),
+					"Unable to fetch closing issue numbers"
+				)
+			})
+			.unwrap_or_default();
+
 		build_pull_request(
 			pull_request.clone(),
 			check_runs,
 			commits,
 			requested_reviewers,
 			reviews,
+			closing_issue_numbers,
 		)
 	}
 }
@@ -83,6 +95,7 @@ fn build_pull_request(
 	commits: Vec<RepoCommit>,
 	requested_reviewers: Vec<User>,
 	reviews: Vec<Review>,
+	closing_issue_numbers: Vec<GithubIssueNumber>,
 ) -> Result<GithubPullRequest> {
 	let repo = pull_request.base.repo.clone().ok_or_else(|| anyhow!("Missing field: 'repo'"))?;
 
@@ -146,6 +159,7 @@ fn build_pull_request(
 					review.status == GithubCodeReviewStatus::Completed,
 			})
 			.collect(),
+		closing_issue_numbers,
 	})
 }
 

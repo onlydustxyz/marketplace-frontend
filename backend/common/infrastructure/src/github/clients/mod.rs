@@ -25,6 +25,7 @@ use octocrab::{
 };
 use olog::{tracing::instrument, IntoField};
 use reqwest::Url;
+use serde_json::json;
 
 use super::{
 	issue::FromOctocrab as FromOctocrabIssue,
@@ -350,6 +351,68 @@ impl Client {
 			.await;
 
 		Ok(reviews)
+	}
+
+	#[instrument(skip(self))]
+	pub async fn get_closing_issues(
+		&self,
+		pull_request: &PullRequest,
+	) -> Result<Vec<GithubIssueNumber>, Error> {
+		let repo = pull_request.base.repo.clone().ok_or_else(|| {
+			Error::Other(anyhow!(
+				"Missing base repo in pull request {}",
+				pull_request.id
+			))
+		})?;
+
+		let owner = repo.owner.ok_or_else(|| {
+			Error::Other(anyhow!(
+				"Missing repo owner in pull request {}",
+				pull_request.id
+			))
+		})?;
+
+		let response: serde_json::Value = self
+			.octocrab()
+			.post(
+				"graphql",
+				Some(&json!({
+					"query": r#"query GetClosingIssues($owner: String!, $name: String!, $number: Int!) {
+						repository(owner: $owner, name: $name) {
+						 pullRequest(number: $number) {
+						   closingIssuesReferences(first: 10) {
+							 nodes {
+							   number
+							 }
+						   }
+						 }
+					   }
+					 }"#,
+					 "variables": {
+						"owner": owner.login,
+						"name": repo.name,
+						"number": pull_request.number,
+					 }
+				})),
+			)
+			.await?;
+
+		let issue_numbers = response
+			.pointer("/data/repository/pullRequest/closingIssuesReferences/nodes")
+			.and_then(|nodes| {
+				nodes.as_array().map(|nodes| {
+					nodes
+						.iter()
+						.filter_map(|node| {
+							node.pointer("/number")
+								.and_then(|number| number.as_i64().map(GithubIssueNumber::from))
+						})
+						.collect::<Vec<_>>()
+				})
+			})
+			.unwrap_or_default();
+
+		Ok(issue_numbers)
 	}
 
 	#[instrument(skip(self))]
