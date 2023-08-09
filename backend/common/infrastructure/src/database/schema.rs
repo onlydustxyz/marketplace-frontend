@@ -155,7 +155,7 @@ diesel::table! {
 }
 
 diesel::table! {
-    github_pull_request_commits (sha) {
+    github_pull_request_commits (pull_request_id, sha) {
         sha -> Text,
         pull_request_id -> Int8,
         html_url -> Text,
