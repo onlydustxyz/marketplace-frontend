@@ -122,7 +122,7 @@ export default function Overview() {
       </Title>
       <ProjectLeadInvitation projectId={projectId} />
       <div className="flex flex-col gap-6 md:flex-row">
-        <div className="flex w-full flex-col gap-4">
+        <div className="flex grow flex-col gap-4">
           <ProjectDescriptionCard
             {...{ projectName, logoUrl, visibility: data?.projects[0]?.visibility, languages, description }}
           />
@@ -139,7 +139,7 @@ export default function Overview() {
           )}
           <GithubRepositoriesCard githubRepos={githubRepos} />
         </div>
-        <div className="flex flex-col gap-4">
+        <div className="flex shrink-0 flex-col gap-4 md:w-72 xl:w-80 3xl:w-116">
           {hiring && !isCurrentUserMember && profile && (
             <ApplyCallout {...{ isLoggedIn, alreadyApplied, applyToProject, dispatchSession, profile }} />
           )}
