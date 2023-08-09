@@ -41,7 +41,9 @@ impl FromOctocrab for GithubPullRequest {
 			.log_err(|e| {
 				warn!(
 					error = e.to_field(),
-					pull_request = serde_json::to_string(&pull_request).unwrap_or_default(),
+					repo_id = pull_request.repo.as_ref().map(|repo| repo.id.0).unwrap_or_default(),
+					pull_request_id = pull_request.id.0,
+					pull_request_number = pull_request.number,
 					"Unable to fetch check runs"
 				)
 			})
@@ -52,7 +54,9 @@ impl FromOctocrab for GithubPullRequest {
 			.log_err(|e| {
 				warn!(
 					error = e.to_field(),
-					pull_request = serde_json::to_string(&pull_request).unwrap_or_default(),
+					repo_id = pull_request.repo.as_ref().map(|repo| repo.id.0).unwrap_or_default(),
+					pull_request_id = pull_request.id.0,
+					pull_request_number = pull_request.number,
 					"Unable to fetch code reviews"
 				)
 			})
@@ -62,7 +66,9 @@ impl FromOctocrab for GithubPullRequest {
 			.log_err(|e| {
 				warn!(
 					error = e.to_field(),
-					pull_request = serde_json::to_string(&pull_request).unwrap_or_default(),
+					repo_id = pull_request.repo.as_ref().map(|repo| repo.id.0).unwrap_or_default(),
+					pull_request_id = pull_request.id.0,
+					pull_request_number = pull_request.number,
 					"Unable to fetch pull request commits"
 				)
 			})
@@ -72,7 +78,9 @@ impl FromOctocrab for GithubPullRequest {
 			.log_err(|e| {
 				warn!(
 					error = e.to_field(),
-					pull_request = serde_json::to_string(&pull_request).unwrap_or_default(),
+					repo_id = pull_request.repo.as_ref().map(|repo| repo.id.0).unwrap_or_default(),
+					pull_request_id = pull_request.id.0,
+					pull_request_number = pull_request.number,
 					"Unable to fetch closing issue numbers"
 				)
 			})
@@ -141,10 +149,10 @@ fn build_pull_request(
 					.log_err(|e| {
 						warn!(
 							error = e.to_field(),
-							pull_request = serde_json::to_string(&pull_request)
-								.unwrap_or_else(|_| String::from("{}")),
-							commit = serde_json::to_string(&commit)
-								.unwrap_or_else(|_| String::from("{}")),
+							repo_id = repo.id.0,
+							pull_request_id = pull_request.id.0,
+							pull_request_number = pull_request.number,
+							commit_sha = commit.sha,
 							"Invalid commit"
 						)
 					})
