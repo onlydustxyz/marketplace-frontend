@@ -10,20 +10,20 @@ use crate::{
 	GithubCodeReview, GithubCommit, GithubIssueNumber, GithubRepo, GithubRepoId, GithubUser,
 };
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize, Hash)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize, Hash, PartialOrd, Ord)]
 pub enum Status {
 	Open,
 	Closed,
 	Merged,
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize, Hash)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize, Hash, PartialOrd, Ord)]
 pub enum CiChecks {
 	Passed,
 	Failed,
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq, Hash)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct PullRequest {
 	pub id: Id,
 	pub repo_id: GithubRepoId,
@@ -44,7 +44,7 @@ pub struct PullRequest {
 	pub requested_reviewers: Vec<GithubUser>,
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq, Hash)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct FullPullRequest {
 	pub inner: PullRequest,
 	pub ci_checks: Option<CiChecks>,
@@ -74,6 +74,8 @@ impl Display for PullRequest {
 	Into,
 	AsRef,
 	DieselNewType,
+	PartialOrd,
+	Ord,
 )]
 pub struct Number(i64);
 
@@ -112,6 +114,8 @@ impl From<u64> for Number {
 	Into,
 	AsRef,
 	DieselNewType,
+	PartialOrd,
+	Ord,
 )]
 pub struct Id(i64);
 

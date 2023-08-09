@@ -6,7 +6,7 @@ use diesel_derive_newtype::DieselNewType;
 use serde::{Deserialize, Serialize};
 use url::Url;
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct User {
 	pub id: Id,
 	pub login: String,
@@ -14,7 +14,7 @@ pub struct User {
 	pub html_url: Url,
 }
 
-#[derive(Debug, Clone, Getters, Serialize, Deserialize, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone, Getters, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct FullUser {
 	pub id: Id,
 	pub login: String,
@@ -36,7 +36,7 @@ impl FullUser {
 	}
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct SocialAccount {
 	pub provider: String,
 	pub url: String,
@@ -57,6 +57,8 @@ pub struct SocialAccount {
 	Into,
 	AsRef,
 	DieselNewType,
+	PartialOrd,
+	Ord,
 )]
 pub struct Id(i64);
 

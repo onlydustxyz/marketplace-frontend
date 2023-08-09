@@ -8,14 +8,14 @@ use url::Url;
 
 use crate::{GithubIssueNumber, GithubRepoId, GithubUser};
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize, Hash)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize, Hash, PartialOrd, Ord)]
 pub enum Status {
 	Open,
 	Completed,
 	Cancelled,
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq, Hash)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct Issue {
 	pub id: Id,
 	pub repo_id: GithubRepoId,
@@ -46,6 +46,8 @@ pub struct Issue {
 	Into,
 	AsRef,
 	DieselNewType,
+	PartialOrd,
+	Ord,
 )]
 pub struct Number(i64);
 
@@ -84,6 +86,8 @@ impl From<u64> for Number {
 	Into,
 	AsRef,
 	DieselNewType,
+	PartialOrd,
+	Ord,
 )]
 pub struct Id(i64);
 
