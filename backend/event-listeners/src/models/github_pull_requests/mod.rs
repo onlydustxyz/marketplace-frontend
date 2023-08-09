@@ -14,8 +14,8 @@ pub use repository::Repository;
 #[derive(Debug, Clone)]
 pub struct PullRequest {
 	pub inner: Inner,
-	pub commits: Vec<Commit>,
-	pub reviews: Vec<Review>,
+	pub commits: Option<Vec<Commit>>,
+	pub reviews: Option<Vec<Review>>,
 }
 
 impl From<domain::GithubPullRequest> for PullRequest {
@@ -34,29 +34,31 @@ impl From<domain::GithubPullRequest> for PullRequest {
 				closed_at: pull_request.closed_at.map(|date| date.naive_utc()),
 				draft: pull_request.draft,
 				ci_checks: pull_request.ci_checks.map(Into::into),
-				closing_issue_numbers: Json::new(pull_request.closing_issue_numbers),
+				closing_issue_numbers: pull_request.closing_issue_numbers.map(Json::new),
 			},
-			commits: pull_request
-				.commits
-				.into_iter()
-				.map(|c| Commit {
-					sha: c.sha,
-					pull_request_id: pull_request.id,
-					html_url: c.html_url.to_string(),
-					author_id: c.author.id,
-				})
-				.collect(),
-			reviews: pull_request
-				.reviews
-				.into_iter()
-				.map(|review| Review {
-					pull_request_id: pull_request.id,
-					reviewer_id: review.reviewer.id,
-					outcome: review.outcome.map(Into::into),
-					status: review.status.into(),
-					submitted_at: review.submitted_at.map(|date| date.naive_utc()),
-				})
-				.collect(),
+			commits: pull_request.commits.map(|commits| {
+				commits
+					.into_iter()
+					.map(|c| Commit {
+						sha: c.sha,
+						pull_request_id: pull_request.id,
+						html_url: c.html_url.to_string(),
+						author_id: c.author.id,
+					})
+					.collect()
+			}),
+			reviews: pull_request.reviews.map(|reviews| {
+				reviews
+					.into_iter()
+					.map(|review| Review {
+						pull_request_id: pull_request.id,
+						reviewer_id: review.reviewer.id,
+						outcome: review.outcome.map(Into::into),
+						status: review.status.into(),
+						submitted_at: review.submitted_at.map(|date| date.naive_utc()),
+					})
+					.collect()
+			}),
 		}
 	}
 }

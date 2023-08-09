@@ -1,6 +1,6 @@
 use std::collections::HashSet;
 
-use diesel::{Connection, ExpressionMethods, QueryDsl, QueryResult, RunQueryDsl};
+use diesel::{Connection, ExpressionMethods, PgConnection, QueryDsl, RunQueryDsl};
 use domain::{GithubRepoId, GithubUserId};
 use infrastructure::{
 	contextualized_error::IntoContextualizedError,
@@ -20,33 +20,31 @@ pub trait Repository: Sync + Send {
 
 impl Repository for database::Client {
 	fn upsert_from_github_issue(&self, issue: GithubIssue) -> Result<()> {
+		let contributions: Vec<_> = issue
+			.assignee_ids
+			.0
+			.into_iter()
+			.map(|assignee| Contribution {
+				repo_id: issue.repo_id,
+				user_id: assignee,
+				type_: ContributionType::Issue,
+				details_id: issue.id.into(),
+			})
+			.collect();
+
 		let mut connection = self.connection()?;
 
 		connection
 			.transaction(|connection| {
-				diesel::delete(
-					dsl::contributions.filter(dsl::details_id.eq(DetailsId::from(issue.id))),
-				)
-				.execute(&mut *connection)?;
+				delete_all_contributions_for_details(
+					connection,
+					DetailsId::from(issue.id),
+					ContributionType::Issue,
+				)?;
 
-				issue
-					.assignee_ids
-					.0
-					.into_iter()
-					.map(|assignee| Contribution {
-						repo_id: issue.repo_id,
-						user_id: assignee,
-						type_: ContributionType::Issue,
-						details_id: issue.id.into(),
-					})
-					.try_for_each(|c| -> QueryResult<()> {
-						diesel::insert_into(dsl::contributions)
-							.values(c)
-							.execute(&mut *connection)?;
-						Ok(())
-					})?;
-
-				Ok(())
+				diesel::insert_into(dsl::contributions)
+					.values(contributions)
+					.execute(&mut *connection)
 			})
 			.err_with_context(format!(
 				"delete+insert contribution where type='Issue' and details_id={}",
@@ -59,60 +57,67 @@ impl Repository for database::Client {
 	fn upsert_from_github_pull_request(&self, pull_request: GithubPullRequest) -> Result<()> {
 		let mut connection = self.connection()?;
 
-		connection
-			.transaction(|connection| {
-				diesel::delete(
-					dsl::contributions
-						.filter(dsl::details_id.eq(DetailsId::from(pull_request.inner.id))),
-				)
-				.execute(&mut *connection)?;
+		if let Some(commits) = pull_request.commits {
+			let contributions: Vec<_> = commits
+				.into_iter()
+				.map(|commit| Contribution {
+					repo_id: pull_request.inner.repo_id,
+					user_id: commit.author_id,
+					type_: ContributionType::PullRequest,
+					details_id: pull_request.inner.id.into(),
+				})
+				.collect::<HashSet<_>>()
+				.into_iter()
+				.collect();
 
-				{
-					let user_ids: HashSet<GithubUserId> =
-						pull_request.commits.into_iter().map(|commit| commit.author_id).collect();
+			connection
+				.transaction(|connection| {
+					delete_all_contributions_for_details(
+						connection,
+						DetailsId::from(pull_request.inner.id),
+						ContributionType::PullRequest,
+					)?;
 
-					user_ids
-						.into_iter()
-						.map(|user_id| Contribution {
-							repo_id: pull_request.inner.repo_id,
-							user_id,
-							type_: ContributionType::PullRequest,
-							details_id: pull_request.inner.id.into(),
-						})
-						.try_for_each(|c| -> QueryResult<()> {
-							diesel::insert_into(dsl::contributions)
-								.values(c)
-								.execute(&mut *connection)?;
-							Ok(())
-						})?;
-				}
+					diesel::insert_into(dsl::contributions)
+						.values(contributions)
+						.execute(&mut *connection)
+				})
+				.err_with_context(format!(
+					"delete+insert contribution where type='PullRequest' and details_id={}",
+					pull_request.inner.id
+				))?;
+		}
 
-				{
-					let user_ids: HashSet<GithubUserId> =
-						pull_request.reviews.into_iter().map(|review| review.reviewer_id).collect();
+		if let Some(reviews) = pull_request.reviews {
+			let contributions: Vec<_> = reviews
+				.into_iter()
+				.map(|review| Contribution {
+					repo_id: pull_request.inner.repo_id,
+					user_id: review.reviewer_id,
+					type_: ContributionType::CodeReview,
+					details_id: pull_request.inner.id.into(),
+				})
+				.collect::<HashSet<_>>()
+				.into_iter()
+				.collect();
 
-					user_ids
-						.into_iter()
-						.map(|user_id| Contribution {
-							repo_id: pull_request.inner.repo_id,
-							user_id,
-							type_: ContributionType::CodeReview,
-							details_id: pull_request.inner.id.into(),
-						})
-						.try_for_each(|c| -> QueryResult<()> {
-							diesel::insert_into(dsl::contributions)
-								.values(c)
-								.execute(&mut *connection)?;
-							Ok(())
-						})?;
-				}
+			connection
+				.transaction(|connection| {
+					delete_all_contributions_for_details(
+						connection,
+						DetailsId::from(pull_request.inner.id),
+						ContributionType::CodeReview,
+					)?;
 
-				Ok(())
-			})
-			.err_with_context(format!(
-				"delete+insert contribution where type='PullRequest|CodeReview' and details_id={}",
-				pull_request.inner.id
-			))?;
+					diesel::insert_into(dsl::contributions)
+						.values(contributions)
+						.execute(&mut *connection)
+				})
+				.err_with_context(format!(
+					"delete+insert contribution where type='CodeReview' and details_id={}",
+					pull_request.inner.id
+				))?;
+		}
 
 		Ok(())
 	}
@@ -132,4 +137,17 @@ impl Repository for database::Client {
 			))?;
 		Ok(contributors)
 	}
+}
+
+fn delete_all_contributions_for_details(
+	connection: &mut PgConnection,
+	details_id: DetailsId,
+	type_: ContributionType,
+) -> diesel::result::QueryResult<usize> {
+	diesel::delete(
+		dsl::contributions
+			.filter(dsl::details_id.eq(details_id))
+			.filter(dsl::type_.eq(type_)),
+	)
+	.execute(&mut *connection)
 }

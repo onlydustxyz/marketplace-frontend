@@ -26,7 +26,7 @@ pub struct GithubPullRequest {
 	pub closed_at: Option<NaiveDateTime>,
 	pub draft: bool,
 	pub ci_checks: Option<GithubCiChecks>,
-	pub closing_issue_numbers: Json<Vec<GithubIssueNumber>>,
+	pub closing_issue_numbers: Option<Json<Vec<GithubIssueNumber>>>,
 }
 
 impl Identifiable for GithubPullRequest {

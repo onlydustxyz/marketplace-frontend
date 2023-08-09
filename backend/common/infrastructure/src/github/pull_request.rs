@@ -1,174 +1,74 @@
-use std::collections::HashMap;
-
 use anyhow::{anyhow, Result};
-use async_trait::async_trait;
-use domain::{
-	GithubCodeReview, GithubCodeReviewStatus, GithubIssueNumber, GithubPullRequest,
-	GithubPullRequestStatus, GithubUser, GithubUserId, LogErr,
-};
-use octocrab::models::{
-	pulls::{PullRequest, Review},
-	repos::RepoCommit,
-	CheckRun, CheckStatus, IssueState, User,
-};
-use olog::{error, warn, IntoField};
+use domain::{GithubPullRequest, GithubPullRequestStatus, GithubUser};
+use octocrab::models::{pulls::PullRequest, IssueState};
 
-use super::{
-	code_review::TryIntoReview, commits::FromOctocrab as CommitFromOctocrab, Client,
-	UserFromOctocrab,
-};
+use super::{OctocrabRepo, UserFromOctocrab};
 
-#[async_trait]
 pub trait FromOctocrab
 where
 	Self: Sized,
 {
-	async fn from_octocrab(client: &Client, pull_request: PullRequest) -> Result<Self>;
+	fn from_octocrab(pull_request: PullRequest) -> Result<Self>;
 }
 
-#[async_trait]
 impl FromOctocrab for GithubPullRequest {
-	async fn from_octocrab(client: &Client, pull_request: PullRequest) -> Result<Self> {
-		let (check_runs, commits, reviews, closing_issue_numbers) = tokio::join!(
-			client.get_check_runs(&pull_request),
-			client.get_commits(&pull_request),
-			client.get_reviews(&pull_request),
-			client.get_closing_issues(&pull_request)
-		);
+	fn from_octocrab(pull_request: PullRequest) -> Result<Self> {
+		let base_repo = pull_request
+			.base
+			.repo
+			.clone()
+			.ok_or_else(|| anyhow!("Missing field: 'base_repo'"))?;
 
-		let requested_reviewers = pull_request.requested_reviewers.clone().unwrap_or_default();
-		let check_runs = check_runs
-			.log_err(|e| {
-				warn!(
-					error = e.to_field(),
-					repo_id = pull_request.repo.as_ref().map(|repo| repo.id.0).unwrap_or_default(),
-					pull_request_id = pull_request.id.0,
-					pull_request_number = pull_request.number,
-					"Unable to fetch check runs"
-				)
-			})
-			.map(|check| check.check_runs)
-			.unwrap_or_default();
+		let head_repo = pull_request
+			.head
+			.repo
+			.clone()
+			.ok_or_else(|| anyhow!("Missing field: 'head_repo'"))?;
 
-		let reviews = reviews
-			.log_err(|e| {
-				warn!(
-					error = e.to_field(),
-					repo_id = pull_request.repo.as_ref().map(|repo| repo.id.0).unwrap_or_default(),
-					pull_request_id = pull_request.id.0,
-					pull_request_number = pull_request.number,
-					"Unable to fetch code reviews"
-				)
-			})
-			.unwrap_or_default();
+		let id = pull_request.id.0.try_into()?;
 
-		let commits = commits
-			.log_err(|e| {
-				warn!(
-					error = e.to_field(),
-					repo_id = pull_request.repo.as_ref().map(|repo| repo.id.0).unwrap_or_default(),
-					pull_request_id = pull_request.id.0,
-					pull_request_number = pull_request.number,
-					"Unable to fetch pull request commits"
-				)
-			})
-			.unwrap_or_default();
+		let number = pull_request.number.try_into()?;
 
-		let closing_issue_numbers = closing_issue_numbers
-			.log_err(|e| {
-				warn!(
-					error = e.to_field(),
-					repo_id = pull_request.repo.as_ref().map(|repo| repo.id.0).unwrap_or_default(),
-					pull_request_id = pull_request.id.0,
-					pull_request_number = pull_request.number,
-					"Unable to fetch closing issue numbers"
-				)
-			})
-			.unwrap_or_default();
+		let title = pull_request.title.clone().ok_or_else(|| anyhow!("Missing field: 'title'"))?;
 
-		build_pull_request(
-			pull_request.clone(),
-			check_runs,
-			commits,
-			requested_reviewers,
-			reviews,
-			closing_issue_numbers,
-		)
+		let status = get_status(&pull_request)?;
+
+		let created_at =
+			pull_request.created_at.ok_or_else(|| anyhow!("Missing field: 'created_at'"))?;
+
+		let updated_at =
+			pull_request.updated_at.ok_or_else(|| anyhow!("Missing field: 'updated_at'"))?;
+
+		let html_url = pull_request
+			.html_url
+			.clone()
+			.ok_or_else(|| anyhow!("Missing field: 'html_url'"))?;
+
+		let user = pull_request.user.clone().ok_or_else(|| anyhow!("Missing field: 'user'"))?;
+
+		Ok(GithubPullRequest {
+			id,
+			repo_id: base_repo.id.0.into(),
+			number,
+			title,
+			author: GithubUser::from_octocrab_user(*user),
+			html_url,
+			status,
+			created_at,
+			updated_at,
+			merged_at: pull_request.merged_at,
+			closed_at: pull_request.closed_at,
+			draft: pull_request.draft.unwrap_or_default(),
+			head_sha: pull_request.head.sha,
+			head_repo: OctocrabRepo(head_repo).try_into()?,
+			base_sha: pull_request.base.sha,
+			base_repo: OctocrabRepo(base_repo).try_into()?,
+			ci_checks: None,
+			commits: None,
+			reviews: None,
+			closing_issue_numbers: None,
+		})
 	}
-}
-
-fn build_pull_request(
-	pull_request: PullRequest,
-	check_runs: Vec<CheckRun>,
-	commits: Vec<RepoCommit>,
-	requested_reviewers: Vec<User>,
-	reviews: Vec<Review>,
-	closing_issue_numbers: Vec<GithubIssueNumber>,
-) -> Result<GithubPullRequest> {
-	let repo = pull_request.base.repo.clone().ok_or_else(|| anyhow!("Missing field: 'repo'"))?;
-
-	let id = pull_request.id.0.try_into()?;
-
-	let number = pull_request.number.try_into()?;
-
-	let title = pull_request.title.clone().ok_or_else(|| anyhow!("Missing field: 'title'"))?;
-
-	let status = get_status(&pull_request)?;
-
-	let created_at =
-		pull_request.created_at.ok_or_else(|| anyhow!("Missing field: 'created_at'"))?;
-
-	let updated_at =
-		pull_request.updated_at.ok_or_else(|| anyhow!("Missing field: 'updated_at'"))?;
-
-	let html_url = pull_request
-		.html_url
-		.clone()
-		.ok_or_else(|| anyhow!("Missing field: 'html_url'"))?;
-
-	let user = pull_request.user.clone().ok_or_else(|| anyhow!("Missing field: 'user'"))?;
-
-	Ok(GithubPullRequest {
-		id,
-		repo_id: repo.id.0.into(),
-		number,
-		title,
-		author: GithubUser::from_octocrab_user(*user),
-		html_url,
-		status,
-		created_at,
-		updated_at,
-		merged_at: pull_request.merged_at,
-		closed_at: pull_request.closed_at,
-		draft: pull_request.draft.unwrap_or_default(),
-		ci_checks: get_ci_checks(check_runs),
-		commits: commits
-			.into_iter()
-			.filter_map(|commit| {
-				CommitFromOctocrab::from_octocrab(commit.clone())
-					.log_err(|e| {
-						warn!(
-							error = e.to_field(),
-							repo_id = repo.id.0,
-							pull_request_id = pull_request.id.0,
-							pull_request_number = pull_request.number,
-							commit_sha = commit.sha,
-							"Invalid commit"
-						)
-					})
-					.ok()
-			})
-			.collect(),
-		reviews: get_reviews(requested_reviewers, reviews)
-			.into_iter()
-			.filter(|review| match status {
-				GithubPullRequestStatus::Open => true,
-				GithubPullRequestStatus::Closed | GithubPullRequestStatus::Merged =>
-					review.status == GithubCodeReviewStatus::Completed,
-			})
-			.collect(),
-		closing_issue_numbers,
-	})
 }
 
 fn get_status(pull_request: &PullRequest) -> Result<GithubPullRequestStatus> {
@@ -182,50 +82,4 @@ fn get_status(pull_request: &PullRequest) -> Result<GithubPullRequestStatus> {
 		},
 		_ => Err(anyhow!("Unknown state: '{:?}'", state)),
 	}
-}
-
-fn get_ci_checks(check_runs: Vec<CheckRun>) -> Option<domain::GithubCiChecks> {
-	if check_runs.iter().any(|run| {
-		run.status == Some(CheckStatus::Completed)
-			&& run.conclusion == Some(String::from("failure"))
-	}) {
-		// At least one check failed => Failed
-		return Some(domain::GithubCiChecks::Failed);
-	}
-
-	if check_runs.iter().any(|run| run.status != Some(CheckStatus::Completed)) {
-		// At least one check is not completed => None
-		return None;
-	}
-
-	match check_runs.len() {
-		0 => None,                                 // No check => None
-		_ => Some(domain::GithubCiChecks::Passed), // All completed, no failure => Passed
-	}
-}
-
-fn get_reviews(requested_reviewers: Vec<User>, mut reviews: Vec<Review>) -> Vec<GithubCodeReview> {
-	// sort reviews by submission date asc
-	reviews.sort_by_key(|review| review.submitted_at);
-
-	let reviews: HashMap<GithubUserId, GithubCodeReview> = reviews
-		.into_iter()
-		.filter_map(|review| {
-			review
-				.try_into_code_review()
-				.log_err(|e| error!(error = e.to_field(), "Invalid review"))
-				.ok()
-		})
-		.chain(requested_reviewers.into_iter().filter_map(|user| {
-			user.try_into_code_review()
-				.log_err(|e| error!(error = e.to_field(), "Invalid user"))
-				.ok()
-		}))
-		.map(|review| (review.reviewer.id, review))
-		.collect();
-
-	let mut reviews: Vec<GithubCodeReview> = reviews.into_values().collect();
-	reviews.sort_by_key(|review| review.reviewer.login.clone());
-
-	reviews
 }

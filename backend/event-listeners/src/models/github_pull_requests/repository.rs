@@ -21,29 +21,33 @@ impl Repository for database::Client {
 
 		connection
 			.transaction(|connection| {
-				diesel::delete(github_pull_request_commits::table.filter(
-					github_pull_request_commits::pull_request_id.eq(pull_request.inner.id),
-				))
-				.execute(&mut *connection)?;
+				if let Some(commits) = pull_request.commits {
+					diesel::delete(github_pull_request_commits::table.filter(
+						github_pull_request_commits::pull_request_id.eq(pull_request.inner.id),
+					))
+					.execute(&mut *connection)?;
 
-				diesel::delete(github_pull_request_reviews::table.filter(
-					github_pull_request_reviews::pull_request_id.eq(pull_request.inner.id),
-				))
-				.execute(&mut *connection)?;
+					diesel::insert_into(github_pull_request_commits::table)
+						.values(commits)
+						.execute(&mut *connection)?;
+				}
+
+				if let Some(reviews) = pull_request.reviews {
+					diesel::delete(github_pull_request_reviews::table.filter(
+						github_pull_request_reviews::pull_request_id.eq(pull_request.inner.id),
+					))
+					.execute(&mut *connection)?;
+
+					diesel::insert_into(github_pull_request_reviews::table)
+						.values(reviews)
+						.execute(&mut *connection)?;
+				}
 
 				diesel::insert_into(github_pull_requests::table)
 					.values(&pull_request.inner)
 					.on_conflict(github_pull_requests::id)
 					.do_update()
 					.set(&pull_request.inner)
-					.execute(&mut *connection)?;
-
-				diesel::insert_into(github_pull_request_commits::table)
-					.values(pull_request.commits)
-					.execute(&mut *connection)?;
-
-				diesel::insert_into(github_pull_request_reviews::table)
-					.values(pull_request.reviews)
 					.execute(&mut *connection)?;
 
 				Ok(())
