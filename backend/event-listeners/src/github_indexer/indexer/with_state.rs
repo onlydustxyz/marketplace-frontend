@@ -19,7 +19,7 @@ impl<Id: Indexable + Sync, I: super::Indexer<Id> + super::Stateful<Id>> super::I
 	}
 
 	async fn index(&self, id: Id) -> Result<Vec<GithubEvent>> {
-		let events = self.indexer.index(id).await?;
+		let events = self.indexer.index(id.clone()).await?;
 		self.indexer.store(id, &events)?;
 		Ok(events)
 	}

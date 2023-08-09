@@ -63,7 +63,7 @@ async fn index_all<Id: Indexable>(
 	let mut events = vec![];
 
 	for id in repository.list_items_to_index()? {
-		match indexer.index(id).await {
+		match indexer.index(id.clone()).await {
 			Ok(item_events) => events.extend(item_events),
 			Err(error) => error!(
 				error = error.to_field(),

@@ -1,4 +1,4 @@
-use std::str::FromStr;
+use std::{fmt::Display, str::FromStr};
 
 use chrono::{DateTime, Utc};
 use derive_more::{AsRef, Display, From, Into};
@@ -45,6 +45,12 @@ pub struct PullRequest {
 	pub commits: Option<Vec<GithubCommit>>,
 	pub reviews: Option<Vec<GithubCodeReview>>,
 	pub closing_issue_numbers: Option<Vec<GithubIssueNumber>>,
+}
+
+impl Display for PullRequest {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(f, "[{}] {}/{}", self.id, self.repo_id, self.number)
+	}
 }
 
 #[derive(

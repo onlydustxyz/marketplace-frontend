@@ -19,7 +19,7 @@ impl<Id: Indexable + Sync, I: super::Indexer<Id>> super::Indexer<Id> for Indexer
 
 	async fn index(&self, id: Id) -> Result<Vec<GithubEvent>> {
 		let start = Instant::now();
-		let events = self.indexer.index(id).await?;
+		let events = self.indexer.index(id.clone()).await?;
 		let duration = start.elapsed();
 
 		info!(

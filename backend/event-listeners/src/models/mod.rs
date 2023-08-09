@@ -2,6 +2,7 @@ mod applications;
 mod budgets;
 mod contributions;
 mod github_issues;
+pub mod github_pull_request_indexes;
 pub mod github_pull_requests;
 mod github_repo_indexes;
 mod github_repos;
@@ -20,6 +21,9 @@ pub use applications::Application;
 pub use budgets::Budget;
 pub use contributions::{Contribution, Repository as ContributionsRepository};
 pub use github_issues::GithubIssue;
+pub use github_pull_request_indexes::{
+	GithubPullRequestIndex, Repository as GithubPullRequestIndexRepository,
+};
 pub use github_pull_requests::{
 	PullRequest as GithubPullRequest, Repository as GithubPullRequestRepository,
 };

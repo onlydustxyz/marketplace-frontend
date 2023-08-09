@@ -1,6 +1,7 @@
 pub mod composite;
 pub mod contributors;
 mod error;
+pub mod full_pull_requests;
 pub mod guarded;
 pub mod issues;
 pub mod logged;
@@ -42,6 +43,6 @@ where
 	async fn index(&self, id: Id) -> Result<Vec<GithubEvent>>;
 }
 
-pub trait Indexable: Copy + Display + Send {}
+pub trait Indexable: Clone + Display + Send {}
 
-impl<I: Copy + Display + Send> Indexable for I {}
+impl<I: Clone + Display + Send> Indexable for I {}
