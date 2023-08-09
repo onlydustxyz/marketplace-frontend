@@ -117,10 +117,6 @@ impl<'a> Test<'a> {
 					head_repo: repos::marketplace(),
 					base_sha: String::from("979a35c6fe75aa304d1ad5a4b7d222ecfd308dc3"),
 					base_repo: repos::marketplace(),
-					ci_checks: None,
-					commits: None,
-					reviews: None,
-					closing_issue_numbers: None,
 				}),
 				Event::PullRequest(GithubPullRequest {
 					id: 1458220740u64.into(),
@@ -148,10 +144,6 @@ impl<'a> Test<'a> {
 					head_repo: repos::marketplace_fork(),
 					base_sha: String::from("fad8ea5cd98b89367fdf80b09d8796b093d2dac8"),
 					base_repo: repos::marketplace(),
-					ci_checks: None,
-					commits: None,
-					reviews: None,
-					closing_issue_numbers: None,
 				}),
 				Event::PullRequest(GithubPullRequest {
 					id: 1452363285u64.into(),
@@ -172,10 +164,6 @@ impl<'a> Test<'a> {
 					head_repo: repos::marketplace(),
 					base_sha: String::from("3fb55612f69b5352997b4aeafdeea958c564074f"),
 					base_repo: repos::marketplace(),
-					ci_checks: None,
-					commits: None,
-					reviews: None,
-					closing_issue_numbers: None,
 				}),
 			],
 		)

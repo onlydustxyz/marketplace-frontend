@@ -41,6 +41,11 @@ pub struct PullRequest {
 	pub head_repo: GithubRepo,
 	pub base_sha: String,
 	pub base_repo: GithubRepo,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq, Hash)]
+pub struct FullPullRequest {
+	pub inner: PullRequest,
 	pub ci_checks: Option<CiChecks>,
 	pub commits: Option<Vec<GithubCommit>>,
 	pub reviews: Option<Vec<GithubCodeReview>>,

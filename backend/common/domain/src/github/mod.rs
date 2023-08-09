@@ -17,7 +17,7 @@ pub use issue::{Id as IssueId, Issue, Number as IssueNumber, Status as IssueStat
 
 mod pull_request;
 pub use pull_request::{
-	CiChecks, Id as PullRequestId, Number as PullRequestNumber, PullRequest,
+	CiChecks, FullPullRequest, Id as PullRequestId, Number as PullRequestNumber, PullRequest,
 	Status as PullRequestStatus,
 };
 

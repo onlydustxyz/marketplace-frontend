@@ -1,6 +1,6 @@
 use domain::{
-	GithubFullUser, GithubIssue, GithubPullRequest, GithubRepo, GithubRepoId, GithubUser,
-	MessagePayload,
+	GithubFullPullRequest, GithubFullUser, GithubIssue, GithubPullRequest, GithubRepo,
+	GithubRepoId, GithubUser, MessagePayload,
 };
 use serde::{Deserialize, Serialize};
 
@@ -9,6 +9,7 @@ pub enum Event {
 	Repo(GithubRepo),
 	Issue(GithubIssue),
 	PullRequest(GithubPullRequest),
+	FullPullRequest(GithubFullPullRequest),
 	User {
 		user: GithubUser,
 		repo_id: GithubRepoId,

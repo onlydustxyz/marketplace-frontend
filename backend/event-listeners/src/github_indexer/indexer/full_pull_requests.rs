@@ -4,8 +4,8 @@ use anyhow::anyhow;
 use async_trait::async_trait;
 use derive_new::new;
 use domain::{
-	GithubCommit, GithubFetchService, GithubPullRequest, GithubPullRequestId, GithubServiceResult,
-	LogErr, SubscriberCallbackError,
+	GithubCommit, GithubFetchService, GithubFullPullRequest, GithubPullRequest,
+	GithubPullRequestId, GithubServiceResult, LogErr, SubscriberCallbackError,
 };
 use olog::{warn, IntoField};
 use serde::{Deserialize, Serialize};
@@ -139,12 +139,12 @@ impl super::Indexer<GithubPullRequest> for Indexer {
 			})
 			.ok();
 
-		Ok(vec![GithubEvent::PullRequest(GithubPullRequest {
+		Ok(vec![GithubEvent::FullPullRequest(GithubFullPullRequest {
+			inner: pull_request,
 			commits,
 			reviews,
 			ci_checks,
 			closing_issue_numbers,
-			..pull_request
 		})])
 	}
 }

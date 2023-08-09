@@ -77,10 +77,6 @@ mod tests {
 			head_repo,
 			base_sha: Default::default(),
 			base_repo,
-			ci_checks: Default::default(),
-			commits: Default::default(),
-			reviews: Default::default(),
-			closing_issue_numbers: Default::default(),
 		}
 	}
 

@@ -1,8 +1,8 @@
 use anyhow::Result;
 use diesel::{query_dsl::RunQueryDsl, ExpressionMethods, QueryDsl};
 use domain::{
-	Destination, GithubCiChecks, GithubIssueNumber, GithubPullRequest, GithubPullRequestId,
-	GithubPullRequestStatus, Publisher,
+	Destination, GithubCiChecks, GithubFullPullRequest, GithubIssueNumber, GithubPullRequest,
+	GithubPullRequestId, GithubPullRequestStatus, Publisher,
 };
 use event_listeners::{listeners::github::Event, models, GITHUB_EVENTS_EXCHANGE};
 use fixtures::*;
@@ -60,25 +60,27 @@ impl<'a> Test<'a> {
 			.publisher
 			.publish(
 				Destination::exchange(GITHUB_EVENTS_EXCHANGE),
-				&UniqueMessage::new(Event::PullRequest(GithubPullRequest {
-					id: 1455874031u64.into(),
-					repo_id: repos::marketplace().id,
-					number: 1146u64.into(),
-					title: String::from("Hide tooltips on mobile"),
-					status: GithubPullRequestStatus::Merged,
-					html_url: "https://github.com/onlydustxyz/marketplace/pull/1146"
-						.parse()
-						.unwrap(),
-					created_at: "2023-07-31T09:23:37Z".parse().unwrap(),
-					updated_at: "2023-07-31T09:32:08Z".parse().unwrap(),
-					closed_at: "2023-07-31T09:32:08Z".parse().ok(),
-					author: users::alex(),
-					merged_at: "2023-07-31T09:32:08Z".parse().ok(),
-					draft: false,
-					head_sha: String::from("7cf6b6e5631a6f462d17cc0ef175e23b8efa9f00"),
-					head_repo: repos::marketplace(),
-					base_sha: String::from("fad8ea5cd98b89367fdf80b09d8796b093d2dac8"),
-					base_repo: repos::marketplace(),
+				&UniqueMessage::new(Event::FullPullRequest(GithubFullPullRequest {
+					inner: GithubPullRequest {
+						id: 1455874031u64.into(),
+						repo_id: repos::marketplace().id,
+						number: 1146u64.into(),
+						title: String::from("Hide tooltips on mobile"),
+						status: GithubPullRequestStatus::Merged,
+						html_url: "https://github.com/onlydustxyz/marketplace/pull/1146"
+							.parse()
+							.unwrap(),
+						created_at: "2023-07-31T09:23:37Z".parse().unwrap(),
+						updated_at: "2023-07-31T09:32:08Z".parse().unwrap(),
+						closed_at: "2023-07-31T09:32:08Z".parse().ok(),
+						author: users::alex(),
+						merged_at: "2023-07-31T09:32:08Z".parse().ok(),
+						draft: false,
+						head_sha: String::from("7cf6b6e5631a6f462d17cc0ef175e23b8efa9f00"),
+						head_repo: repos::marketplace(),
+						base_sha: String::from("fad8ea5cd98b89367fdf80b09d8796b093d2dac8"),
+						base_repo: repos::marketplace(),
+					},
 					ci_checks: Some(GithubCiChecks::Passed),
 					commits: Some(vec![commits::a(), commits::b()]),
 					reviews: Some(vec![reviews::approved()]),
@@ -209,25 +211,27 @@ impl<'a> Test<'a> {
 			.publisher
 			.publish(
 				Destination::exchange(GITHUB_EVENTS_EXCHANGE),
-				&UniqueMessage::new(Event::PullRequest(GithubPullRequest {
-					id: 1455874031u64.into(),
-					repo_id: repos::marketplace().id,
-					number: 1146u64.into(),
-					title: String::from("updated"),
-					status: GithubPullRequestStatus::Merged,
-					html_url: "https://github.com/onlydustxyz/marketplace/pull/1146"
-						.parse()
-						.unwrap(),
-					created_at: "2023-07-31T09:23:37Z".parse().unwrap(),
-					updated_at: "2023-07-31T09:32:08Z".parse().unwrap(),
-					closed_at: "2023-07-31T09:32:08Z".parse().ok(),
-					author: users::alex(),
-					merged_at: "2023-07-31T09:32:08Z".parse().ok(),
-					draft: false,
-					head_sha: String::from("7cf6b6e5631a6f462d17cc0ef175e23b8efa9f00"),
-					head_repo: repos::marketplace(),
-					base_sha: String::from("fad8ea5cd98b89367fdf80b09d8796b093d2dac8"),
-					base_repo: repos::marketplace(),
+				&UniqueMessage::new(Event::FullPullRequest(GithubFullPullRequest {
+					inner: GithubPullRequest {
+						id: 1455874031u64.into(),
+						repo_id: repos::marketplace().id,
+						number: 1146u64.into(),
+						title: String::from("updated"),
+						status: GithubPullRequestStatus::Merged,
+						html_url: "https://github.com/onlydustxyz/marketplace/pull/1146"
+							.parse()
+							.unwrap(),
+						created_at: "2023-07-31T09:23:37Z".parse().unwrap(),
+						updated_at: "2023-07-31T09:32:08Z".parse().unwrap(),
+						closed_at: "2023-07-31T09:32:08Z".parse().ok(),
+						author: users::alex(),
+						merged_at: "2023-07-31T09:32:08Z".parse().ok(),
+						draft: false,
+						head_sha: String::from("7cf6b6e5631a6f462d17cc0ef175e23b8efa9f00"),
+						head_repo: repos::marketplace(),
+						base_sha: String::from("fad8ea5cd98b89367fdf80b09d8796b093d2dac8"),
+						base_repo: repos::marketplace(),
+					},
 					ci_checks: Some(GithubCiChecks::Passed),
 					commits: Some(vec![commits::c()]),
 					reviews: Some(vec![]),
@@ -285,25 +289,27 @@ impl<'a> Test<'a> {
 			.publisher
 			.publish(
 				Destination::exchange(GITHUB_EVENTS_EXCHANGE),
-				&UniqueMessage::new(Event::PullRequest(GithubPullRequest {
-					id: 1455874031u64.into(),
-					repo_id: repos::marketplace().id,
-					number: 1146u64.into(),
-					title: String::from("updated_again"),
-					status: GithubPullRequestStatus::Merged,
-					html_url: "https://github.com/onlydustxyz/marketplace/pull/1146"
-						.parse()
-						.unwrap(),
-					created_at: "2023-07-31T09:23:37Z".parse().unwrap(),
-					updated_at: "2023-07-31T09:32:08Z".parse().unwrap(),
-					closed_at: "2023-07-31T09:32:08Z".parse().ok(),
-					author: users::alex(),
-					merged_at: "2023-07-31T09:32:08Z".parse().ok(),
-					draft: false,
-					head_sha: String::from("7cf6b6e5631a6f462d17cc0ef175e23b8efa9f00"),
-					head_repo: repos::marketplace(),
-					base_sha: String::from("fad8ea5cd98b89367fdf80b09d8796b093d2dac8"),
-					base_repo: repos::marketplace(),
+				&UniqueMessage::new(Event::FullPullRequest(GithubFullPullRequest {
+					inner: GithubPullRequest {
+						id: 1455874031u64.into(),
+						repo_id: repos::marketplace().id,
+						number: 1146u64.into(),
+						title: String::from("updated_again"),
+						status: GithubPullRequestStatus::Merged,
+						html_url: "https://github.com/onlydustxyz/marketplace/pull/1146"
+							.parse()
+							.unwrap(),
+						created_at: "2023-07-31T09:23:37Z".parse().unwrap(),
+						updated_at: "2023-07-31T09:32:08Z".parse().unwrap(),
+						closed_at: "2023-07-31T09:32:08Z".parse().ok(),
+						author: users::alex(),
+						merged_at: "2023-07-31T09:32:08Z".parse().ok(),
+						draft: false,
+						head_sha: String::from("7cf6b6e5631a6f462d17cc0ef175e23b8efa9f00"),
+						head_repo: repos::marketplace(),
+						base_sha: String::from("fad8ea5cd98b89367fdf80b09d8796b093d2dac8"),
+						base_repo: repos::marketplace(),
+					},
 					ci_checks: Some(GithubCiChecks::Passed),
 					commits: Some(vec![]),
 					reviews: Some(vec![reviews::change_requested(), reviews::pending()]),
