@@ -1,9 +1,4 @@
-use std::{
-	fmt::Debug,
-	future,
-	pin::Pin,
-	sync::{Arc, Weak},
-};
+use std::{fmt::Debug, future, pin::Pin, sync::Arc};
 
 use anyhow::{anyhow, Context};
 use domain::{
@@ -41,51 +36,35 @@ mod single;
 use olog::error;
 pub use single::Client as SingleClient;
 
-pub struct Client {
-	me: Weak<Self>, // pointer to self
-	inner: InnerClient,
-}
-
-enum InnerClient {
+pub enum Client {
 	Single(SingleClient),
 	RoundRobin(RoundRobinClient),
 }
 
 impl From<SingleClient> for Arc<Client> {
 	fn from(client: SingleClient) -> Self {
-		Client::new(InnerClient::Single(client))
+		Arc::new(Client::Single(client))
 	}
 }
 
 impl From<RoundRobinClient> for Arc<Client> {
 	fn from(client: RoundRobinClient) -> Self {
-		Client::new(InnerClient::RoundRobin(client))
+		Arc::new(Client::RoundRobin(client))
 	}
 }
 
 impl Client {
-	fn new(inner: InnerClient) -> Arc<Self> {
-		Arc::new_cyclic(|me| Self {
-			me: me.clone(),
-			inner,
-		})
-	}
-
-	fn me(&self) -> Arc<Self> {
-		self.me.upgrade().unwrap()
-	}
-
 	pub fn octocrab(&self) -> &Octocrab {
-		match &self.inner {
-			InnerClient::Single(client) => client.octocrab(),
-			InnerClient::RoundRobin(client) => client.octocrab(),
+		match &self {
+			Self::Single(client) => client.octocrab(),
+			Self::RoundRobin(client) => client.octocrab(),
 		}
 	}
 
 	pub fn config(&self) -> &Config {
-		match &self.inner {
-			InnerClient::Single(client) => client.config(),
-			InnerClient::RoundRobin(client) => client.config(),
+		match &self {
+			Self::Single(client) => client.config(),
+			Self::RoundRobin(client) => client.config(),
 		}
 	}
 
@@ -499,7 +478,7 @@ impl Client {
 				100 * self.config().max_calls_per_request.map(PositiveCount::get).unwrap_or(3),
 			)
 			.await?
-			.filter_map(|pull_request| try_into_pull_request(self.me(), id, pull_request))
+			.filter_map(|pull_request| try_into_pull_request(id, pull_request))
 			.filter_with(Arc::new(filters))
 			.collect()
 			.await;
@@ -582,14 +561,12 @@ impl Client {
 }
 
 async fn try_into_pull_request(
-	client: Arc<Client>,
 	repo_id: GithubRepoId,
 	pull_request: PullRequest,
 ) -> Option<domain::GithubPullRequest> {
 	let pull_request_id = pull_request.id;
 
-	GithubPullRequest::from_octocrab(&client, pull_request)
-		.await
+	GithubPullRequest::from_octocrab(pull_request)
 		.log_err(|e| {
 			error!(
 				error = e.to_field(),
