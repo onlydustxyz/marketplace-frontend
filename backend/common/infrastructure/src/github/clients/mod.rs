@@ -279,21 +279,16 @@ impl Client {
 	}
 
 	#[instrument(skip(self))]
-	pub async fn get_commits(&self, pull_request: &PullRequest) -> Result<Vec<RepoCommit>, Error> {
-		let repo = pull_request.base.repo.clone().ok_or_else(|| {
-			Error::Other(anyhow!(
-				"Missing head repo in pull request {}",
-				pull_request.id
-			))
-		})?;
-
+	pub async fn get_commits(
+		&self,
+		repo_id: GithubRepoId,
+		pull_request_number: GithubPullRequestNumber,
+	) -> Result<Vec<RepoCommit>, Error> {
 		let commits: Vec<RepoCommit> = self
 			.stream_as(
 				format!(
-					"{}repositories/{}/pulls/{}/commits",
+					"{}repositories/{repo_id}/pulls/{pull_request_number}/commits",
 					self.octocrab().base_url,
-					repo.id,
-					pull_request.number
 				)
 				.parse()?,
 				100 * self.config().max_calls_per_request.map(PositiveCount::get).unwrap_or(3),

@@ -1,11 +1,20 @@
+use std::collections::HashMap;
+
 use async_trait::async_trait;
 use domain::{
-	GithubFetchPullRequestService, GithubPullRequest, GithubPullRequestNumber, GithubRepoId,
-	GithubServiceError, GithubServicePullRequestFilters, GithubServiceResult,
+	GithubCodeReview, GithubCommit, GithubFetchPullRequestService, GithubIssueNumber,
+	GithubPullRequest, GithubPullRequestNumber, GithubRepoId, GithubServiceError,
+	GithubServicePullRequestFilters, GithubServiceResult, GithubUserId, LogErr,
 };
-use olog::tracing::instrument;
+use olog::{error, tracing::instrument, warn, IntoField};
 
-use crate::{github, github::pull_request::FromOctocrab};
+use crate::{
+	github,
+	github::{
+		code_review::TryIntoReview, commits::FromOctocrab as CommitFromOctocrab,
+		pull_request::FromOctocrab as PullRequestFromOctocrab,
+	},
+};
 
 #[async_trait]
 impl GithubFetchPullRequestService for github::Client {
@@ -40,5 +49,32 @@ impl GithubFetchPullRequestService for github::Client {
 			self.get_pull_request_by_repository_id(repo_id, pull_request_number).await?;
 
 		GithubPullRequest::from_octocrab(pull_request).map_err(GithubServiceError::Other)
+	}
+
+	#[instrument(skip(self))]
+	async fn pull_request_commits(
+		&self,
+		repo_id: GithubRepoId,
+		pull_request_number: GithubPullRequestNumber,
+	) -> GithubServiceResult<Vec<GithubCommit>> {
+		let commits = self
+			.get_commits(repo_id, pull_request_number)
+			.await?
+			.into_iter()
+			.filter_map(|commit| {
+				GithubCommit::from_octocrab(commit.clone())
+					.log_err(|e| {
+						warn!(
+							error = e.to_field(),
+							repo_id = repo_id.to_string(),
+							pull_request_number = pull_request_number.to_string(),
+							commit_sha = commit.sha,
+							"Invalid commit"
+						)
+					})
+					.ok()
+			})
+			.collect();
+		Ok(commits)
 	}
 }
