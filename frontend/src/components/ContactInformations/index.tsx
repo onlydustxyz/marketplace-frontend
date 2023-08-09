@@ -46,6 +46,9 @@ export default function ContactInformations({ onlyEditable }: Props) {
         placeholder={T("profile.form.contactInfo.whatsapp")}
         icon={<WhatsappFill />}
         visibilityName="isWhatsappPublic"
+        options={{
+          pattern: { value: /^\+\d{1,4}\s?\d{7,15}$/, message: T("profile.form.contactInfo.phone") },
+        }}
       />
       <ContactInformation
         name="twitter"

@@ -409,6 +409,7 @@
       "contactInfo": {
         "title": "Contact information",
         "error": "Please enter your __channel__ handle",
+        "phone": "Please enter your phone number with the country code",
         "telegram": "Telegram",
         "twitter": "Twitter",
         "discord": "Discord",
