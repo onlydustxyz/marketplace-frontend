@@ -126,6 +126,5 @@ pub async fn create_and_close_issue(
 				.title(error_message)
 				.detail(e.to_string())
 		})?;
-	println!("{:?}", issue);
 	Ok(Json(issue.into()))
 }

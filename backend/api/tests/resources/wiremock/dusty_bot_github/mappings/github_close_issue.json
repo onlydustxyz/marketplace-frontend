@@ -8,7 +8,10 @@
           "state": "closed"
         }
       }
-    ]
+    ],
+    "headers": {
+      "Authorization": { "contains": "Bearer dusty-bot-pat" }
+    }
   },
   "response": {
     "status": 200,

@@ -1,7 +1,12 @@
 {
   "request": {
     "url": "/repositories/1111",
-    "method": "GET"
+    "method": "GET",
+    "headers": {
+      "Authorization": {
+        "contains": "Bearer github-pat"
+      }
+    }
   },
   "response": {
     "status": 200,

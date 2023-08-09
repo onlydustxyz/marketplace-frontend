@@ -23,7 +23,7 @@ pub struct Context<'a> {
 	pub database: database::Context<'a>,
 	pub amqp: amqp::Context<'a>,
 	pub simple_storage: simple_storage::Context<'a>,
-	pub dusty_app_github: github::Context<'a>,
+	pub dusty_bot_github: github::Context<'a>,
 	pub github: github::Context<'a>,
 	_environment: environment::Context,
 }
@@ -35,13 +35,13 @@ impl<'a> Context<'a> {
 		let database = database::Context::new(docker)?;
 		let amqp = amqp::Context::new(docker, vec![event_store::bus::QUEUE_NAME], vec![]).await?;
 		let simple_storage = simple_storage::Context::new(docker)?;
-		let dusty_app_github = github::Context::new(
+		let dusty_bot_github = github::Context::new(
 			docker,
 			format!(
-				"{}/tests/resources/wiremock/dusty_app_github",
+				"{}/tests/resources/wiremock/dusty_bot_github",
 				env::current_dir().unwrap().display(),
 			),
-			"dusty-app-pat".to_string(),
+			"dusty-bot-pat".to_string(),
 		)?;
 		let github = github::Context::new(
 			docker,
@@ -68,7 +68,7 @@ impl<'a> Context<'a> {
 			},
 			s3: simple_storage.config.clone(),
 			github_api_client: github.config.clone(),
-			dusty_bot_api_client: dusty_app_github.config.clone(),
+			dusty_bot_api_client: dusty_bot_github.config.clone(),
 		};
 
 		Ok(Self {
@@ -76,7 +76,7 @@ impl<'a> Context<'a> {
 			database,
 			amqp,
 			simple_storage,
-			dusty_app_github,
+			dusty_bot_github,
 			github,
 			_environment: environment::Context::new(),
 		})

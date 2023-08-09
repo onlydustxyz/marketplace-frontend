@@ -9,7 +9,7 @@ default:
     personal_access_tokens: $GITHUB_PAT
     max_calls_per_request: $GITHUB_MAX_CALLS_PER_REQUEST
   dusty_bot_api_client:
-    base_url: $GITHUB_BASE_URL
+    base_url: $DUSTY_BOT_GITHUB_BASE_URL
     personal_access_tokens: $DUSTY_BOT_GITHUB_PAT
     max_calls_per_request: $DUSTY_BOT_GITHUB_MAX_CALLS_PER_REQUEST
   graphql_client:

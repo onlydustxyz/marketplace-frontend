@@ -1,7 +1,10 @@
 {
   "request": {
     "url": "/user",
-    "method": "GET"
+    "method": "GET",
+    "headers": {
+      "Authorization": { "contains": "Bearer dusty-bot-pat" }
+    }
   },
   "response": {
     "status": 200,

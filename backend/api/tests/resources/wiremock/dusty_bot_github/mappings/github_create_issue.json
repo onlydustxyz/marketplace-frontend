@@ -9,7 +9,10 @@
           "title": "issue-title"
         }
       }
-    ]
+    ],
+    "headers": {
+      "Authorization": { "contains": "Bearer dusty-bot-pat" }
+    }
   },
   "response": {
     "status": 200,
