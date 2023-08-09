@@ -75,10 +75,14 @@ impl<'a> Test<'a> {
 					author: users::alex(),
 					merged_at: "2023-07-31T09:32:08Z".parse().ok(),
 					draft: false,
+					head_sha: String::from("7cf6b6e5631a6f462d17cc0ef175e23b8efa9f00"),
+					head_repo: repos::marketplace(),
+					base_sha: String::from("fad8ea5cd98b89367fdf80b09d8796b093d2dac8"),
+					base_repo: repos::marketplace(),
 					ci_checks: Some(GithubCiChecks::Passed),
-					commits: vec![commits::a(), commits::b()],
-					reviews: vec![reviews::approved()],
-					closing_issue_numbers: vec![GithubIssueNumber::from(1145u64)],
+					commits: Some(vec![commits::a(), commits::b()]),
+					reviews: Some(vec![reviews::approved()]),
+					closing_issue_numbers: Some(vec![GithubIssueNumber::from(1145u64)]),
 				})),
 			)
 			.await?;
@@ -119,7 +123,7 @@ impl<'a> Test<'a> {
 				Some(infrastructure::database::enums::GithubCiChecks::Passed)
 			);
 			assert_eq!(
-				pull_request.closing_issue_numbers.0,
+				pull_request.closing_issue_numbers.unwrap().0,
 				vec![GithubIssueNumber::from(1145u64)]
 			)
 		}
@@ -220,10 +224,14 @@ impl<'a> Test<'a> {
 					author: users::alex(),
 					merged_at: "2023-07-31T09:32:08Z".parse().ok(),
 					draft: false,
+					head_sha: String::from("7cf6b6e5631a6f462d17cc0ef175e23b8efa9f00"),
+					head_repo: repos::marketplace(),
+					base_sha: String::from("fad8ea5cd98b89367fdf80b09d8796b093d2dac8"),
+					base_repo: repos::marketplace(),
 					ci_checks: Some(GithubCiChecks::Passed),
-					commits: vec![commits::c()],
-					reviews: vec![],
-					closing_issue_numbers: vec![],
+					commits: Some(vec![commits::c()]),
+					reviews: Some(vec![]),
+					closing_issue_numbers: Some(vec![]),
 				})),
 			)
 			.await?;
@@ -292,10 +300,14 @@ impl<'a> Test<'a> {
 					author: users::alex(),
 					merged_at: "2023-07-31T09:32:08Z".parse().ok(),
 					draft: false,
+					head_sha: String::from("7cf6b6e5631a6f462d17cc0ef175e23b8efa9f00"),
+					head_repo: repos::marketplace(),
+					base_sha: String::from("fad8ea5cd98b89367fdf80b09d8796b093d2dac8"),
+					base_repo: repos::marketplace(),
 					ci_checks: Some(GithubCiChecks::Passed),
-					commits: vec![],
-					reviews: vec![reviews::change_requested(), reviews::pending()],
-					closing_issue_numbers: vec![],
+					commits: Some(vec![]),
+					reviews: Some(vec![reviews::change_requested(), reviews::pending()]),
+					closing_issue_numbers: Some(vec![]),
 				})),
 			)
 			.await?;
