@@ -1,5 +1,5 @@
 import Input, { Size } from "src/components/FormInput";
-import { useFormContext } from "react-hook-form";
+import { RegisterOptions, useFormContext } from "react-hook-form";
 import { ReactElement } from "react";
 import CloseLine from "src/icons/CloseLine";
 import classNames from "classnames";
@@ -15,6 +15,7 @@ type Props = {
   editDisabled?: boolean;
   visibilityName: string;
   visibilityDisabled?: boolean;
+  options?: RegisterOptions;
 };
 
 export default function ContactInformation({
@@ -24,6 +25,7 @@ export default function ContactInformation({
   editDisabled,
   visibilityName,
   visibilityDisabled,
+  options,
 }: Props) {
   const { watch } = useFormContext();
   const value = watch(name);
@@ -35,9 +37,11 @@ export default function ContactInformation({
       withMargin={false}
       name={name}
       placeholder={placeholder}
-      options={{
-        pattern: { value: /^[^/]*$/, message: T("profile.form.contactInfo.error", { channel: placeholder }) },
-      }}
+      options={
+        options ?? {
+          pattern: { value: /^[^/]*$/, message: T("profile.form.contactInfo.error", { channel: placeholder }) },
+        }
+      }
       prefixComponent={icon}
       suffixComponent={
         value ? (
@@ -66,9 +70,8 @@ function ClearFieldButton({ name, disabled }: CloseButtonProps) {
         "text-greyscale-600": disabled,
         "cursor-pointer": !disabled,
       })}
-      onClick={e => {
+      onClick={() => {
         if (!disabled) {
-          e.preventDefault();
           setValue(name, "", { shouldDirty: true });
         }
       }}
@@ -92,9 +95,8 @@ function VisibilityButton({ name, disabled }: VisibilityButtonProps) {
         "text-spacePurple-200/50": disabled,
         "cursor-pointer text-spacePurple-200": !disabled,
       })}
-      onClick={e => {
+      onClick={() => {
         if (!disabled) {
-          e.preventDefault();
           setValue(name, false, { shouldDirty: true });
         }
       }}
@@ -108,9 +110,8 @@ function VisibilityButton({ name, disabled }: VisibilityButtonProps) {
         "text-greyscale-600": disabled,
         "cursor-pointer": !disabled,
       })}
-      onClick={e => {
+      onClick={() => {
         if (!disabled) {
-          e.preventDefault();
           setValue(name, true, { shouldDirty: true });
         }
       }}

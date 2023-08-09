@@ -28,11 +28,7 @@ export default function OverviewPanel({
   const projectLeads = leads?.filter(lead => isDefined(lead?.login)) || [];
 
   return (
-    <Card
-      fullWidth={false}
-      className="flex h-fit shrink-0 flex-col divide-y divide-greyscale-50/8 p-0 md:w-72 xl:w-80 3xl:w-116"
-      padded={false}
-    >
+    <Card fullWidth={false} className="flex h-fit flex-col divide-y divide-greyscale-50/8 p-0" padded={false}>
       {projectLeads.length > 0 && (
         <Section
           testId="project-leads"

@@ -43,19 +43,17 @@ export default function TermsAndConditions() {
   return (
     <>
       <SEO />
-      <Background roundedBorders={BackgroundRoundedBorders.Full} centeredContent={!showTermsAndConditions}>
-        <div className="flex flex-col items-center justify-center text-greyscale-50">
-          <div className="px-2 xl:w-1/2">
-            {!showTermsAndConditions && !location.state?.skipIntro ? (
-              <TermsAndConditionsPromptCard {...{ setShowTermsAndConditions }} />
-            ) : (
-              <>
-                {!data && (
-                  <TermsAndConditionsMainCard handleAcceptTermsAndConditions={acceptTermsAndConditionsMutation} />
-                )}
-              </>
-            )}
-          </div>
+      <Background roundedBorders={BackgroundRoundedBorders.Full}>
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-center px-2 pb-6 text-greyscale-50">
+          {!showTermsAndConditions && !location.state?.skipIntro ? (
+            <TermsAndConditionsPromptCard {...{ setShowTermsAndConditions }} />
+          ) : (
+            <>
+              {!data && (
+                <TermsAndConditionsMainCard handleAcceptTermsAndConditions={acceptTermsAndConditionsMutation} />
+              )}
+            </>
+          )}
         </div>
       </Background>
     </>

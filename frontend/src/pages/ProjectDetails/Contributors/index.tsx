@@ -10,11 +10,14 @@ import { contextWithCacheHeaders } from "src/utils/headers";
 import ProjectLeadInvitation from "src/components/ProjectLeadInvitation";
 import Button, { ButtonSize } from "src/components/Button";
 import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
+import { viewportConfig } from "src/config";
+import { useMediaQuery } from "usehooks-ts";
 
 export default function Contributors() {
   const { T } = useIntl();
   const { ledProjectIds } = useAuth();
   const navigate = useNavigate();
+  const isSm = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.sm}px)`);
   const { projectId, projectKey } = useOutletContext<{ projectId: string; projectKey: string }>();
 
   const isProjectLeader = ledProjectIds.includes(projectId);
@@ -27,7 +30,7 @@ export default function Contributors() {
   return (
     <>
       <Title>
-        <div className="flex flex-row flex-wrap items-center justify-between gap-2">
+        <div className="flex flex-row items-center justify-between gap-2">
           {T("project.details.contributors.title")}
           {isProjectLeader && (
             <Button
@@ -43,7 +46,7 @@ export default function Contributors() {
                 )
               }
             >
-              {T("project.rewardContributorButton")}
+              {isSm ? T("project.rewardButton.full") : T("project.rewardButton.short")}
             </Button>
           )}
         </div>

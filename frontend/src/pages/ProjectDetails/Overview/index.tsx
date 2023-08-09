@@ -99,7 +99,7 @@ export default function Overview() {
   return (
     <>
       <Title>
-        <div className="flex flex-row flex-wrap items-center justify-between gap-2">
+        <div className="flex flex-row items-center justify-between gap-2">
           {T("project.details.overview.title")}
           {isProjectLeader && (
             <Button
@@ -115,14 +115,14 @@ export default function Overview() {
                 )
               }
             >
-              {T("project.rewardContributorButton")}
+              {T("project.rewardButton.full")}
             </Button>
           )}
         </div>
       </Title>
       <ProjectLeadInvitation projectId={projectId} />
       <div className="flex flex-col gap-6 md:flex-row">
-        <div className="flex w-full flex-col gap-4">
+        <div className="flex grow flex-col gap-4">
           <ProjectDescriptionCard
             {...{ projectName, logoUrl, visibility: data?.projects[0]?.visibility, languages, description }}
           />
@@ -139,7 +139,7 @@ export default function Overview() {
           )}
           <GithubRepositoriesCard githubRepos={githubRepos} />
         </div>
-        <div className="flex flex-col gap-4">
+        <div className="flex shrink-0 flex-col gap-4 md:w-72 xl:w-80">
           {hiring && !isCurrentUserMember && profile && (
             <ApplyCallout {...{ isLoggedIn, alreadyApplied, applyToProject, dispatchSession, profile }} />
           )}
@@ -262,12 +262,13 @@ interface ApplyCalloutProps {
 function ApplyCallout({ isLoggedIn, profile, alreadyApplied, applyToProject, dispatchSession }: ApplyCalloutProps) {
   const { T } = useIntl();
 
-  const contactInfoProvided =
+  const contactInfoProvided = Boolean(
     profile.contacts.telegram?.contact ||
-    profile.contacts.whatsapp?.contact ||
-    profile.contacts.twitter?.contact ||
-    profile.contacts.discord?.contact ||
-    profile.contacts.linkedin?.contact;
+      profile.contacts.whatsapp?.contact ||
+      profile.contacts.twitter?.contact ||
+      profile.contacts.discord?.contact ||
+      profile.contacts.linkedin?.contact
+  );
 
   const [contactInfoRequested, setContactInfoRequested] = useState(false);
 
@@ -276,8 +277,16 @@ function ApplyCallout({ isLoggedIn, profile, alreadyApplied, applyToProject, dis
     mode: "onChange",
   });
 
-  const { handleSubmit, formState } = formMethods;
+  const { handleSubmit, formState, getValues, reset } = formMethods;
   const { isDirty, isValid } = formState;
+
+  useEffect(() => {
+    const values = getValues();
+    // If the form state is modified without this component remounting, this state will be unsynced from the "profile" value so we need to reset the state
+    if (JSON.stringify(values) !== JSON.stringify(fromFragment(profile))) {
+      reset(fromFragment(profile));
+    }
+  });
 
   const [updateUserProfileInfo, { loading }] = useUpdateUserProfileMutation({
     context: { graphqlErrorDisplay: "toaster" },

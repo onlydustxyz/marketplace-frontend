@@ -4,19 +4,25 @@ import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import CloseLine from "src/icons/CloseLine";
 import { useSidePanelStack } from "src/hooks/useSidePanelStack";
 import classNames from "classnames";
-import { viewportConfig } from "src/config";
-import { useMediaQuery } from "usehooks-ts";
 
 type Props = {
   open: boolean;
   setOpen: (value: boolean) => void;
   action?: ReactElement;
+  placement?: "right" | "bottom";
   hasCloseButton?: boolean;
   withBackdrop?: boolean;
 } & PropsWithChildren;
 
-export default function SidePanel({ open, setOpen, action, children, hasCloseButton = true, withBackdrop }: Props) {
-  const isLg = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.lg}px)`);
+export default function SidePanel({
+  open,
+  setOpen,
+  action,
+  placement = "right",
+  children,
+  hasCloseButton = true,
+  withBackdrop,
+}: Props) {
   const { open: openSidePanel, close: closeSidePanel, openPanelCount, closeLastPanel } = useSidePanelStack();
 
   const [panelIndex, setPanelIndex] = useState(0);
@@ -40,19 +46,20 @@ export default function SidePanel({ open, setOpen, action, children, hasCloseBut
     }
   }
 
-  const transitionProps = isLg
-    ? {
-        enterFrom: "translate-x-full",
-        enterTo: "translate-x-0",
-        leaveFrom: "translate-x-0",
-        leaveTo: "translate-x-full",
-      }
-    : {
-        enterFrom: "translate-y-full",
-        enterTo: "translate-y-0",
-        leaveFrom: "translate-y-0",
-        leaveTo: "translate-y-full",
-      };
+  const transitionProps = {
+    right: {
+      enterFrom: "translate-x-full",
+      enterTo: "translate-x-0",
+      leaveFrom: "translate-x-0",
+      leaveTo: "translate-x-full",
+    },
+    bottom: {
+      enterFrom: "translate-y-full",
+      enterTo: "translate-y-0",
+      leaveFrom: "translate-y-0",
+      leaveTo: "translate-y-full",
+    },
+  }[placement];
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -67,15 +74,16 @@ export default function SidePanel({ open, setOpen, action, children, hasCloseBut
           <Dialog.Panel
             className={classNames(
               {
-                "inset-y-0 right-0 h-[calc(100dvh)] lg:w-2/5 xl:w-4/12 3xl:w-[660px]": isLg,
-                "inset-x-0 bottom-0 max-h-[calc(100dvh)] min-h-min overflow-y-auto rounded-t-2xl": !isLg,
-                "-translate-x-10 blur-sm transition duration-300": isCoveredPanel && isLg,
+                "inset-y-0 right-0 h-[calc(100dvh)] lg:w-1/3 2xl:w-[500px]": placement === "right",
+                "-translate-x-10 cursor-pointer blur-sm transition duration-300":
+                  isCoveredPanel && placement === "right",
+                "inset-x-0 bottom-0 max-h-[calc(100dvh)] overflow-y-auto rounded-t-2xl": placement === "bottom",
               },
-              " fixed w-full bg-greyscale-900 blur-0"
+              "fixed w-full bg-greyscale-900 blur-0"
             )}
             style={{ zIndex: 10 + panelIndex }}
           >
-            <div onClick={handleClick} className="h-full">
+            <div onClick={handleClick} className="h-full overflow-y-auto">
               {hasCloseButton && (
                 <div className="absolute right-3.5 top-3.5 z-20 flex flex-row gap-2">
                   {action}
