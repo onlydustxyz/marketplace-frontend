@@ -42,7 +42,7 @@ export default function Projects() {
     <ProjectFilterProvider>
       <SEO />
       <Background ref={ref} roundedBorders={BackgroundRoundedBorders.Full}>
-        <div className="flex flex-col gap-6 px-4 py-4 md:container md:mx-auto md:px-12 xl:pb-8 xl:pt-12">
+        <div className="flex max-w-7xl flex-col gap-6 px-4 py-4 md:mx-auto md:px-12 xl:pb-8 xl:pt-12">
           <div>
             <SearchBar search={search} setSearch={setSearch} />
           </div>

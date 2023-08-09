@@ -139,7 +139,7 @@ export default function Overview() {
           )}
           <GithubRepositoriesCard githubRepos={githubRepos} />
         </div>
-        <div className="flex shrink-0 flex-col gap-4 md:w-72 xl:w-80 3xl:w-116">
+        <div className="flex shrink-0 flex-col gap-4 md:w-72 xl:w-80">
           {hiring && !isCurrentUserMember && profile && (
             <ApplyCallout {...{ isLoggedIn, alreadyApplied, applyToProject, dispatchSession, profile }} />
           )}

@@ -148,12 +148,6 @@ const config: Config = {
         8: "0.08",
         12: "0.12",
       },
-      maxWidth: {
-        "8xl": "1944px",
-      },
-      screens: {
-        "3xl": "2700px",
-      },
     },
   },
 
