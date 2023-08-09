@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect } from "react";
-import { RouteObject, useLocation, useRoutes } from "react-router-dom";
+import { Navigate, RouteObject, useLocation, useRoutes } from "react-router-dom";
 
 import Layout from "src/App/Layout";
 import ProtectedRoute from "src/App/ProtectedRoute";
@@ -22,6 +22,7 @@ import TermsAndConditions from "src/pages/TermsAndConditions";
 import Onboarding from "src/pages/Onboarding";
 import useReloadOnNewRelease from "./useReloadOnNewRelease";
 import PublicProfilePage from "src/pages/PublicProfile";
+import { NotFound } from "src/components/NotFound";
 
 export enum RoutePaths {
   Home = "/",
@@ -31,6 +32,7 @@ export enum RoutePaths {
   Rewards = "/rewards",
   CatchAll = "*",
   Error = "/error",
+  NotFound = "/not-found",
   Impersonation = "/impersonate/:userId",
   TermsAndConditions = "/terms-and-conditions",
   Onboarding = "/onboarding",
@@ -68,7 +70,7 @@ function App() {
     {
       path: ProjectRoutePaths.Rewards,
       element: (
-        <ProtectedRoute requiredRole={CustomUserRole.ProjectLead} redirectTo={RoutePaths.ProjectDetails}>
+        <ProtectedRoute requiredRole={CustomUserRole.ProjectLead}>
           <ProjectDetailsRewards />
         </ProtectedRoute>
       ),
@@ -127,8 +129,12 @@ function App() {
           children: projectRoutes,
         },
         {
+          path: RoutePaths.NotFound,
+          element: <NotFound />,
+        },
+        {
           path: RoutePaths.CatchAll,
-          element: <Projects />,
+          element: <Navigate to={RoutePaths.NotFound} />,
         },
         {
           path: RoutePaths.Error,

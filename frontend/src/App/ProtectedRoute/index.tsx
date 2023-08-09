@@ -13,7 +13,7 @@ interface ProtectedRouteProps extends PropsWithChildren {
 
 export default function ProtectedRoute({
   requiredRole = HasuraUserRole.RegisteredUser,
-  redirectTo = RoutePaths.Projects,
+  redirectTo = RoutePaths.NotFound,
   children,
 }: ProtectedRouteProps) {
   const { roles, ledProjectIds } = useAuth();

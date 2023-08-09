@@ -77,7 +77,7 @@ test.describe("As a visitor, I", () => {
 
   test("cannot access restricted projects page", async ({ page, projects }) => {
     await page.goto(`/p/${projects.ProjectA.key}/rewards`);
-    await expect(page).toHaveURL(`/p/${projects.ProjectA.key}`);
+    await expect(page).toHaveURL("/not-found");
   });
 });
 
@@ -96,7 +96,7 @@ test.describe("As a registered user, I", () => {
     await signIn(users.Olivier);
     await acceptTermsAndConditions({ skipOnboardingWizzard: true });
     await page.goto(`/p/${projects.ProjectA.key}/rewards`);
-    await expect(page).toHaveURL(`/p/${projects.ProjectA.key}`);
+    await expect(page).toHaveURL("/not-found");
   });
 
   test("can see private project I am a member of", async ({
