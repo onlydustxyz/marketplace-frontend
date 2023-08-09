@@ -256,20 +256,15 @@ impl Client {
 	}
 
 	#[instrument(skip(self))]
-	pub async fn get_check_runs(&self, pull_request: &PullRequest) -> Result<CheckRuns, Error> {
-		let repo = pull_request.head.repo.clone().ok_or_else(|| {
-			Error::Other(anyhow!(
-				"Missing head repo in pull request {}",
-				pull_request.id
-			))
-		})?;
-
+	pub async fn get_check_runs(
+		&self,
+		repo_id: GithubRepoId,
+		sha: String,
+	) -> Result<CheckRuns, Error> {
 		let check_runs: CheckRuns = self
 			.get_as(format!(
-				"{}repositories/{}/commits/{}/check-runs",
+				"{}repositories/{repo_id}/commits/{sha}/check-runs",
 				self.octocrab().base_url,
-				repo.id,
-				pull_request.head.sha
 			))
 			.await
 			.context("Fetching CI check runs")
