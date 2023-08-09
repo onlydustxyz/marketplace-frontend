@@ -262,12 +262,13 @@ interface ApplyCalloutProps {
 function ApplyCallout({ isLoggedIn, profile, alreadyApplied, applyToProject, dispatchSession }: ApplyCalloutProps) {
   const { T } = useIntl();
 
-  const contactInfoProvided =
+  const contactInfoProvided = Boolean(
     profile.contacts.telegram?.contact ||
-    profile.contacts.whatsapp?.contact ||
-    profile.contacts.twitter?.contact ||
-    profile.contacts.discord?.contact ||
-    profile.contacts.linkedin?.contact;
+      profile.contacts.whatsapp?.contact ||
+      profile.contacts.twitter?.contact ||
+      profile.contacts.discord?.contact ||
+      profile.contacts.linkedin?.contact
+  );
 
   const [contactInfoRequested, setContactInfoRequested] = useState(false);
 
@@ -276,8 +277,16 @@ function ApplyCallout({ isLoggedIn, profile, alreadyApplied, applyToProject, dis
     mode: "onChange",
   });
 
-  const { handleSubmit, formState } = formMethods;
+  const { handleSubmit, formState, getValues, reset } = formMethods;
   const { isDirty, isValid } = formState;
+
+  useEffect(() => {
+    const values = getValues();
+    // If the form state is modified without this component remounting, this state will be unsynced from the "profile" value so we need to reset the state
+    if (JSON.stringify(values) !== JSON.stringify(fromFragment(profile))) {
+      reset(fromFragment(profile));
+    }
+  });
 
   const [updateUserProfileInfo, { loading }] = useUpdateUserProfileMutation({
     context: { graphqlErrorDisplay: "toaster" },
