@@ -77,6 +77,7 @@ mod tests {
 			head_repo,
 			base_sha: Default::default(),
 			base_repo,
+			requested_reviewers: Default::default(),
 		}
 	}
 

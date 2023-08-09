@@ -35,8 +35,7 @@ pub trait Service: Send + Sync {
 
 	async fn pull_request_reviews(
 		&self,
-		repo_id: GithubRepoId,
-		pull_request_number: GithubPullRequestNumber,
+		pull_request: GithubPullRequest,
 	) -> Result<Vec<GithubCodeReview>>;
 
 	async fn pull_request_closing_issues(

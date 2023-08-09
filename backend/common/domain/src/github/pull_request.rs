@@ -41,6 +41,7 @@ pub struct PullRequest {
 	pub head_repo: GithubRepo,
 	pub base_sha: String,
 	pub base_repo: GithubRepo,
+	pub requested_reviewers: Vec<GithubUser>,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq, Hash)]

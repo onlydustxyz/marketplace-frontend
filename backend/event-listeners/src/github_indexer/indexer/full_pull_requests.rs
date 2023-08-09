@@ -77,8 +77,7 @@ impl super::Indexer<GithubPullRequest> for Indexer {
 	async fn index(&self, pull_request: GithubPullRequest) -> Result<Vec<GithubEvent>> {
 		let (commits, reviews, ci_checks, closing_issue_numbers) = tokio::join!(
 			self.try_get_commits(&pull_request),
-			self.github_fetch_service
-				.pull_request_reviews(pull_request.repo_id, pull_request.number),
+			self.github_fetch_service.pull_request_reviews(pull_request.clone()),
 			self.github_fetch_service
 				.ci_checks(pull_request.head_repo.id, pull_request.head_sha.clone()),
 			self.github_fetch_service.pull_request_closing_issues(

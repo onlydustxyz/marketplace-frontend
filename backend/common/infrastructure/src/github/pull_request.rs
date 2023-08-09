@@ -63,6 +63,12 @@ impl FromOctocrab for GithubPullRequest {
 			head_repo: OctocrabRepo(head_repo).try_into()?,
 			base_sha: pull_request.base.sha,
 			base_repo: OctocrabRepo(base_repo).try_into()?,
+			requested_reviewers: pull_request
+				.requested_reviewers
+				.unwrap_or_default()
+				.into_iter()
+				.map(GithubUser::from_octocrab_user)
+				.collect(),
 		})
 	}
 }
