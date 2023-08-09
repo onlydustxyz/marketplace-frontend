@@ -301,21 +301,16 @@ impl Client {
 	}
 
 	#[instrument(skip(self))]
-	pub async fn get_reviews(&self, pull_request: &PullRequest) -> Result<Vec<Review>, Error> {
-		let repo = pull_request.base.repo.clone().ok_or_else(|| {
-			Error::Other(anyhow!(
-				"Missing base repo in pull request {}",
-				pull_request.id
-			))
-		})?;
-
+	pub async fn get_reviews(
+		&self,
+		repo_id: GithubRepoId,
+		pull_request_number: GithubPullRequestNumber,
+	) -> Result<Vec<Review>, Error> {
 		let reviews: Vec<Review> = self
 			.stream_as(
 				format!(
-					"{}repositories/{}/pulls/{}/reviews",
+					"{}repositories/{repo_id}/pulls/{pull_request_number}/reviews",
 					self.octocrab().base_url,
-					repo.id,
-					pull_request.number
 				)
 				.parse()?,
 				100 * self.config().max_calls_per_request.map(PositiveCount::get).unwrap_or(3),

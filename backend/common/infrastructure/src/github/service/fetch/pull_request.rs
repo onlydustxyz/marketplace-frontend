@@ -77,4 +77,43 @@ impl GithubFetchPullRequestService for github::Client {
 			.collect();
 		Ok(commits)
 	}
+
+	#[instrument(skip(self))]
+	async fn pull_request_reviews(
+		&self,
+		repo_id: GithubRepoId,
+		pull_request_number: GithubPullRequestNumber,
+	) -> GithubServiceResult<Vec<GithubCodeReview>> {
+		let pull_request =
+			self.get_pull_request_by_repository_id(repo_id, pull_request_number).await?;
+		let mut reviews = self.get_reviews(repo_id, pull_request_number).await?;
+
+		// sort reviews by submission date asc
+		reviews.sort_by_key(|review| review.submitted_at);
+
+		let reviews: HashMap<GithubUserId, GithubCodeReview> = reviews
+			.into_iter()
+			.filter_map(|review| {
+				review
+					.try_into_code_review()
+					.log_err(|e| error!(error = e.to_field(), "Invalid review"))
+					.ok()
+			})
+			.chain(
+				pull_request.requested_reviewers.unwrap_or_default().into_iter().filter_map(
+					|user| {
+						user.try_into_code_review()
+							.log_err(|e| error!(error = e.to_field(), "Invalid user"))
+							.ok()
+					},
+				),
+			)
+			.map(|review| (review.reviewer.id, review))
+			.collect();
+
+		let mut reviews: Vec<GithubCodeReview> = reviews.into_values().collect();
+		reviews.sort_by_key(|review| review.reviewer.login.clone());
+
+		Ok(reviews)
+	}
 }
