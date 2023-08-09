@@ -104,7 +104,8 @@ pub async fn spawn_all(
 	Ok(handles)
 }
 
-trait Spawnable<E: MessagePayload + Send + Sync, S: Subscriber<UniqueMessage<E>> + Send + Sync> {
+pub trait Spawnable<E: MessagePayload + Send + Sync, S: Subscriber<UniqueMessage<E>> + Send + Sync>
+{
 	fn spawn(self, bus: S) -> JoinHandle<()>;
 }
 

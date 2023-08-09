@@ -1,16 +1,20 @@
 use std::sync::Arc;
 
+use anyhow::anyhow;
 use async_trait::async_trait;
 use derive_new::new;
 use domain::{
 	GithubCommit, GithubFetchService, GithubPullRequest, GithubPullRequestId, GithubServiceResult,
-	LogErr,
+	LogErr, SubscriberCallbackError,
 };
 use olog::{warn, IntoField};
 use serde::{Deserialize, Serialize};
 
 use super::Result;
-use crate::{listeners::github::Event as GithubEvent, models::github_pull_request_indexes};
+use crate::{
+	listeners::{github::Event as GithubEvent, EventListener},
+	models::github_pull_request_indexes,
+};
 
 #[derive(new)]
 pub struct Indexer {
@@ -160,6 +164,21 @@ impl super::Stateful<GithubPullRequest> for Indexer {
 			.json()?,
 		)?;
 
+		Ok(())
+	}
+}
+
+#[async_trait]
+impl<I: super::Indexer<GithubPullRequest>> EventListener<GithubEvent> for I {
+	async fn on_event(
+		&self,
+		event: GithubEvent,
+	) -> std::result::Result<(), SubscriberCallbackError> {
+		if let GithubEvent::PullRequest(pull_request) = event {
+			self.index(pull_request)
+				.await
+				.map_err(|e| SubscriberCallbackError::Fatal(anyhow!(e)))?;
+		}
 		Ok(())
 	}
 }
