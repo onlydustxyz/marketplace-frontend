@@ -38,4 +38,11 @@ pub trait Service: Send + Sync {
 		repo_id: GithubRepoId,
 		pull_request_number: GithubPullRequestNumber,
 	) -> Result<Vec<GithubCodeReview>>;
+
+	async fn pull_request_closing_issues(
+		&self,
+		repo_owner: String,
+		repo_name: String,
+		pull_request_number: GithubPullRequestNumber,
+	) -> Result<Vec<GithubIssueNumber>>;
 }

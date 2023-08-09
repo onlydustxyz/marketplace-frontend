@@ -116,4 +116,15 @@ impl GithubFetchPullRequestService for github::Client {
 
 		Ok(reviews)
 	}
+
+	#[instrument(skip(self))]
+	async fn pull_request_closing_issues(
+		&self,
+		repo_owner: String,
+		repo_name: String,
+		pull_request_number: GithubPullRequestNumber,
+	) -> GithubServiceResult<Vec<GithubIssueNumber>> {
+		let issues = self.get_closing_issues(repo_owner, repo_name, pull_request_number).await?;
+		Ok(issues)
+	}
 }

@@ -325,22 +325,10 @@ impl Client {
 	#[instrument(skip(self))]
 	pub async fn get_closing_issues(
 		&self,
-		pull_request: &PullRequest,
+		repo_owner: String,
+		repo_name: String,
+		pull_request_number: GithubPullRequestNumber,
 	) -> Result<Vec<GithubIssueNumber>, Error> {
-		let repo = pull_request.base.repo.clone().ok_or_else(|| {
-			Error::Other(anyhow!(
-				"Missing base repo in pull request {}",
-				pull_request.id
-			))
-		})?;
-
-		let owner = repo.owner.ok_or_else(|| {
-			Error::Other(anyhow!(
-				"Missing repo owner in pull request {}",
-				pull_request.id
-			))
-		})?;
-
 		let response: serde_json::Value = self
 			.octocrab()
 			.post(
@@ -358,9 +346,9 @@ impl Client {
 					   }
 					 }"#,
 					 "variables": {
-						"owner": owner.login,
-						"name": repo.name,
-						"number": pull_request.number,
+						"owner": repo_owner,
+						"name": repo_name,
+						"number": pull_request_number,
 					 }
 				})),
 			)
