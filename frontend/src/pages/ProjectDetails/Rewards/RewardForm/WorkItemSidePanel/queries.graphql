@@ -48,8 +48,8 @@ query GetProjectRepos($projectId: uuid!) {
   }
 }
 
-mutation CreateIssue($projectId: Uuid!, $githubRepoId: Int!, $title: String!, $description: String!) {
-  createIssue(projectId: $projectId, githubRepoId: $githubRepoId, title: $title, description: $description) {
-    ...LiveGithubIssue
-  }
+mutation CreateAndCloseIssue($projectId: Uuid!, $githubRepoId: Int!, $title: String!, $description: String!) {
+    createAndCloseIssue(projectId: $projectId, githubRepoId: $githubRepoId, title: $title, description: $description) {
+        ...LiveGithubIssueCreatedAndClosed
+    }
 }

@@ -12,6 +12,4 @@ pub use specifications::{ArePayoutSettingsValid, GithubRepoExists};
 mod services;
 #[cfg(test)]
 pub use services::MockImageStoreService;
-pub use services::{
-	DustyBotAsyncService, DustyBotService, GithubService, ImageStoreService, ImageStoreServiceError,
-};
+pub use services::{DustyBotService, GithubService, ImageStoreService, ImageStoreServiceError};

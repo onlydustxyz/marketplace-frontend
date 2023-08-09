@@ -9,7 +9,7 @@ use olog::{error, info, IntoField};
 async fn main() -> Result<()> {
 	async {
 		dotenv().ok();
-		let config: Config = config::load("backend/api/app.yaml").context("Configuragion load")?;
+		let config: Config = config::load("backend/api/app.yaml").context("Configuration load")?;
 
 		let _tracer =
 			Tracer::init(config.tracer.clone(), "api").context("Tracer initialization")?;

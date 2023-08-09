@@ -1,0 +1,13 @@
+{
+  "request": {
+    "url": "/user",
+    "method": "GET",
+    "headers": {
+      "Authorization": { "contains": "Bearer dusty-bot-pat" }
+    }
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "github_current_user_response_body.json"
+  }
+}

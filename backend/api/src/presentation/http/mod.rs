@@ -14,7 +14,7 @@ use crate::{
 	application,
 	infrastructure::{simple_storage, web3::ens},
 	models::*,
-	presentation::{graphql, http::routes::projects::create_project},
+	presentation::graphql,
 };
 
 pub mod dto;
@@ -39,8 +39,8 @@ pub fn serve(
 	user_profile_info_repository: Arc<dyn UserProfileInfoRepository>,
 	contact_informations_repository: Arc<dyn ContactInformationsRepository>,
 	onboarding_repository: Arc<dyn Repository<Onboarding>>,
-	graphql: Arc<infrastructure::graphql::Client>,
-	github: Arc<github::Client>,
+	github_api_client: Arc<github::Client>,
+	dusty_bot_api_client: Arc<github::Client>,
 	ens: Arc<ens::Client>,
 	simple_storage: Arc<simple_storage::Client>,
 	bus: Arc<amqp::Bus>,
@@ -57,6 +57,12 @@ pub fn serve(
 		simple_storage.clone(),
 	);
 
+	let create_github_issue_usecase = application::dusty_bot::create_and_close_issue::Usecase::new(
+		project_repository.clone(),
+		dusty_bot_api_client,
+		github_api_client.clone(),
+	);
+
 	rocket::custom(http::config::rocket("backend/api/Rocket.toml"))
 		.manage(config)
 		.manage(schema)
@@ -71,13 +77,13 @@ pub fn serve(
 		.manage(onboarding_repository)
 		.manage(user_profile_info_repository)
 		.manage(contact_informations_repository)
-		.manage(graphql)
-		.manage(github)
+		.manage(github_api_client)
 		.manage(ens)
 		.manage(simple_storage)
 		.manage(bus)
 		.manage(create_project_usecase)
 		.manage(update_user_profile_info_usecase)
+		.manage(create_github_issue_usecase)
 		.attach(http::guards::Cors)
 		.mount(
 			"/",
@@ -98,8 +104,9 @@ pub fn serve(
 			"/",
 			routes![
 				routes::users::profile_picture,
-				routes::users::update_user_profile
+				routes::users::update_user_profile,
 			],
 		)
-		.mount("/", routes![create_project])
+		.mount("/", routes![routes::projects::create_project])
+		.mount("/", routes![routes::issues::create_and_close_issue])
 }

@@ -1,2 +1,0 @@
-web: ROCKET_PORT=$PORT ./target/release/dusty-bot
-action-dequeuer: ./target/release/action-dequeuer

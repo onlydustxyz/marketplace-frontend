@@ -23,7 +23,6 @@ services:
     environment:
       BACKEND_GRAPHQL_URL: ${BACKEND_GRAPHQL_URL:-http://api:8000/graphql}
       GITHUB_PROXY_GRAPHQL_URL: ${GITHUB_PROXY_GRAPHQL_URL:-http://github-proxy:8001/graphql}
-      DUSTY_BOT_GRAPHQL_URL: ${DUSTY_BOT_GRAPHQL_URL:-http://dusty-bot:8002/graphql}
 
   hasura-console:
     labels:
@@ -94,43 +93,6 @@ services:
       interval: 2s
       timeout: 1s
       retries: 30
-
-  dusty-bot:
-    labels:
-      type: backend
-    container_name: dusty-bot
-    image: rust:1.66
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
-    volumes:
-      - .:/app
-      - cargo-cache:/usr/local/cargo
-    command: bash -c "cd /app && cargo run -p dusty-bot"
-    ports:
-      - 8002
-    healthcheck:
-      test: curl -f http://localhost:8002 || exit 1
-      interval: 2s
-      timeout: 1s
-      retries: 30
-    environment:
-      AMQP_URL: amqp://rabbitmq:5672/%2f
-
-  action-dequeuer:
-    labels:
-      type: backend
-    container_name: action-dequeuer
-    image: rust:1.66
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
-    volumes:
-      - .:/app
-      - cargo-cache:/usr/local/cargo
-    command: bash -c "cd /app && cargo run -p dusty-bot --bin action-dequeuer"
-    environment:
-      AMQP_URL: amqp://rabbitmq:5672/%2f
 
   event-store:
     labels:

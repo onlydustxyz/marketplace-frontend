@@ -7,4 +7,4 @@ mod github;
 pub use github::Service as GithubService;
 
 mod dusty_bot;
-pub use self::dusty_bot::{AsyncService as DustyBotAsyncService, Service as DustyBotService};
+pub use self::dusty_bot::Service as DustyBotService;

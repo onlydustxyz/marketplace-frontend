@@ -7,17 +7,23 @@ pub trait Service: Send + Sync {
 	async fn create_issue(
 		&self,
 		repo_id: GithubRepoId,
+		repo_owner: String,
+		repo_name: String,
 		title: String,
 		description: String,
 	) -> Result<GithubIssue>;
-}
 
-#[async_trait]
-pub trait AsyncService: Send + Sync {
 	async fn close_issue(
 		&self,
 		repo_owner: String,
 		repo_name: String,
-		issue_number: GithubIssueNumber,
+		issue: GithubIssue,
+	) -> Result<GithubIssue>;
+
+	async fn close_issue_for_number(
+		&self,
+		repo_owner: String,
+		repo_name: String,
+		issue_id: GithubIssueNumber,
 	) -> Result<()>;
 }

@@ -18,7 +18,6 @@ ALL_BACKENDS=(
     od-github-proxy-$ENVIRONMENT
     od-event-store-$ENVIRONMENT
     od-event-listeners-$ENVIRONMENT
-    od-dusty-bot-$ENVIRONMENT
 )
 
 manage_apps() {

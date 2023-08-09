@@ -1,10 +1,7 @@
 mod context;
 mod models;
 
-use std::{
-	collections::HashMap,
-	time::{SystemTime, UNIX_EPOCH},
-};
+use std::collections::HashMap;
 
 use anyhow::Result;
 use api::presentation::http::routes::users;
@@ -14,7 +11,6 @@ use infrastructure::database::{
 	enums::{AllocatedTime, ProfileCover},
 	schema::user_profile_info,
 };
-use jsonwebtoken::EncodingKey;
 use olog::info;
 use rocket::{
 	http::{ContentType, Header, Status},
@@ -24,7 +20,7 @@ use rstest::rstest;
 use testcontainers::clients::Cli;
 
 use crate::{
-	context::{docker, Context},
+	context::{docker, utils::jwt, Context},
 	models::UserProfileInfo,
 };
 
@@ -49,6 +45,7 @@ impl<'a> Test<'a> {
 	async fn should_update_profile_info(&mut self) -> Result<()> {
 		info!("should_update_profile_info");
 
+		// Given
 		let request = json!({
 			"bio": "My biography",
 			"location": "France",
@@ -72,7 +69,10 @@ impl<'a> Test<'a> {
 			.http_client
 			.post("/api/users/profile")
 			.header(ContentType::JSON)
-			.header(Header::new("Authorization", format!("Bearer {}", jwt())))
+			.header(Header::new(
+				"Authorization",
+				format!("Bearer {}", jwt(None)),
+			))
 			.body(request.to_string())
 			.dispatch()
 			.await;
@@ -106,36 +106,4 @@ impl<'a> Test<'a> {
 
 		Ok(())
 	}
-}
-
-fn jwt() -> String {
-	let now = SystemTime::now()
-		.duration_since(UNIX_EPOCH)
-		.expect("Time went backwards")
-		.as_secs();
-
-	jsonwebtoken::encode(
-		&Default::default(),
-		&json!({
-		  "https://hasura.io/jwt/claims": {
-			"x-hasura-projectsLeaded": "{}",
-			"x-hasura-githubUserId": "43467246",
-			"x-hasura-githubAccessToken": "",
-			"x-hasura-allowed-roles": [
-			  "me",
-			  "public",
-			  "registered_user"
-			],
-			"x-hasura-default-role": "registered_user",
-			"x-hasura-user-id": "9b7effeb-963f-4ac4-be74-d735501925ed",
-			"x-hasura-user-is-anonymous": "false"
-		  },
-		  "sub": "9b7effeb-963f-4ac4-be74-d735501925ed",
-		  "iat": now,
-		  "exp": now + 1000,
-		  "iss": "hasura-auth-unit-tests"
-		}),
-		&EncodingKey::from_secret("secret".as_ref()),
-	)
-	.expect("Invalid JWT")
 }

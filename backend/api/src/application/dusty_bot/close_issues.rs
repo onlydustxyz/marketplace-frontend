@@ -4,12 +4,12 @@ use derive_more::Constructor;
 use domain::{DomainError, GithubFetchService, Payment, PaymentWorkItem};
 use futures::future::try_join_all;
 
-use crate::domain::DustyBotAsyncService;
+use crate::domain::DustyBotService;
 
 #[derive(Constructor)]
 pub struct Usecase {
 	fetch_service: Arc<dyn GithubFetchService>,
-	dusty_bot_service: Arc<dyn DustyBotAsyncService>,
+	dusty_bot_service: Arc<dyn DustyBotService>,
 }
 
 impl Usecase {
@@ -17,7 +17,7 @@ impl Usecase {
 		let repository = self.fetch_service.repo_by_id(work_item.repo_id).await?;
 
 		self.dusty_bot_service
-			.close_issue(repository.owner, repository.name, work_item.issue_number)
+			.close_issue_for_number(repository.owner, repository.name, work_item.issue_number)
 			.await
 			.map_err(DomainError::InternalError)?;
 

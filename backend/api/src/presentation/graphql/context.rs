@@ -4,7 +4,7 @@ use domain::{AggregateRootRepository, GithubUserId, Project, UserId};
 use infrastructure::{
 	amqp::{self, CommandPublisher},
 	database::{ImmutableRepository, Repository},
-	github, graphql,
+	github,
 };
 use presentation::http::guards::Claims;
 
@@ -23,7 +23,6 @@ pub struct Context {
 	pub process_payment_usecase: application::payment::process::Usecase,
 	pub cancel_payment_usecase: application::payment::cancel::Usecase,
 	pub invoice_usecase: application::payment::invoice::Usecase,
-	pub create_project_usecase: application::project::create::Usecase,
 	pub update_budget_allocation_usecase: application::budget::allocate::Usecase,
 	pub update_project_usecase: application::project::update::Usecase,
 	pub link_github_repo_usecase: application::project::link_github_repo::Usecase,
@@ -38,7 +37,6 @@ pub struct Context {
 		application::project::accept_leader_invitation::Usecase,
 	pub project_details_repository: Arc<dyn Repository<ProjectDetails>>,
 	pub update_user_payout_info_usecase: application::user::update_payout_info::Usecase,
-	pub create_github_issue_usecase: application::github::create_issue::Usecase,
 	pub ignored_github_issues_usecase: application::project::ignored_issues::Usecase,
 	pub apply_to_project_usecase: application::project::apply::Usecase,
 	pub onboard_usecase: application::user::onboard::Usecase,
@@ -64,8 +62,8 @@ impl Context {
 		user_profile_info_repository: Arc<dyn UserProfileInfoRepository>,
 		contact_informations_repository: Arc<dyn ContactInformationsRepository>,
 		onboarding_repository: Arc<dyn Repository<Onboarding>>,
-		graphql: Arc<graphql::Client>,
-		github: Arc<github::Client>,
+		github_api_client: Arc<github::Client>,
+		dusty_bot_api_client: Arc<github::Client>,
 		ens: Arc<ens::Client>,
 		simple_storage: Arc<simple_storage::Client>,
 		bus: Arc<amqp::Bus>,
@@ -80,7 +78,10 @@ impl Context {
 			process_payment_usecase: application::payment::process::Usecase::new(
 				bus.to_owned(),
 				project_repository.clone(),
-				application::dusty_bot::close_issues::Usecase::new(github.clone(), bus.to_owned()),
+				application::dusty_bot::close_issues::Usecase::new(
+					github_api_client.clone(),
+					dusty_bot_api_client,
+				),
 			),
 			cancel_payment_usecase: application::payment::cancel::Usecase::new(
 				command_bus,
@@ -89,11 +90,6 @@ impl Context {
 			invoice_usecase: application::payment::invoice::Usecase::new(
 				bus.to_owned(),
 				project_repository.clone(),
-			),
-			create_project_usecase: application::project::create::Usecase::new(
-				bus.to_owned(),
-				project_details_repository.clone(),
-				simple_storage.clone(),
 			),
 			update_budget_allocation_usecase: application::budget::allocate::Usecase::new(
 				bus.to_owned(),
@@ -106,7 +102,7 @@ impl Context {
 			link_github_repo_usecase: application::project::link_github_repo::Usecase::new(
 				bus.to_owned(),
 				project_repository.clone(),
-				github,
+				github_api_client,
 			),
 			unlink_github_repo_usecase: application::project::unlink_github_repo::Usecase::new(
 				bus.to_owned(),
@@ -143,10 +139,6 @@ impl Context {
 			update_user_payout_info_usecase: application::user::update_payout_info::Usecase::new(
 				user_payout_info_repository,
 				ArePayoutSettingsValid::new(ens.clone()),
-			),
-			create_github_issue_usecase: application::github::create_issue::Usecase::new(
-				project_repository.clone(),
-				graphql,
 			),
 			ignored_github_issues_usecase: application::project::ignored_issues::Usecase::new(
 				ignored_github_issues_repository,

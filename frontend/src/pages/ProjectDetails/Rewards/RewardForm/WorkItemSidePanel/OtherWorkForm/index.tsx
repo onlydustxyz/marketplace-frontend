@@ -3,21 +3,20 @@ import { FormEventHandler, useEffect, useState } from "react";
 import Button, { Width } from "src/components/Button";
 import Callout from "src/components/Callout";
 import { WorkItem } from "src/components/GithubIssue";
-import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
 import CheckLine from "src/icons/CheckLine";
 import isDefined from "src/utils/isDefined";
 import {
-  CreateIssueMutationVariables,
+  CreateAndCloseIssueMutationVariables,
   GithubRepoFragment,
-  useCreateIssueMutation,
+  useCreateAndCloseIssueMutation,
   useGetProjectReposQuery,
 } from "src/__generated/graphql";
 import Description from "./Description";
 import RepoSelect from "./RepoSelect";
 import Title from "./Title";
-import { issueToWorkItem } from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/Issues";
+import { issueCreatedAndClosedToWorkItem } from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/Issues";
 import DraftLine from "src/icons/DraftLine";
 import TeamLine from "src/icons/TeamLine";
 import ExchangeDollarLine from "src/icons/ExchangeDollarLine";
@@ -37,7 +36,6 @@ type Props = {
 export default function OtherWorkForm({ projectId, contributorHandle, onWorkItemAdded }: Props) {
   const { T } = useIntl();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
-  const { user: leader } = useAuth();
 
   const workKinds = [
     { icon: <DraftLine />, label: T("reward.form.contributions.other.kinds.documentation") },
@@ -83,18 +81,17 @@ export default function OtherWorkForm({ projectId, contributorHandle, onWorkItem
     setValue("workKind", defaultWorkKind);
   };
 
-  const [createIssue, { loading }] = useCreateIssueMutation({
+  const [createIssue, { loading }] = useCreateAndCloseIssueMutation({
     variables: {
       projectId: projectId,
       githubRepoId: selectedRepo?.id,
       title: title || defaultTitle,
       description,
-      assignees: [leader?.login, contributorHandle],
-    } as CreateIssueMutationVariables,
+    } as CreateAndCloseIssueMutationVariables,
     context: { graphqlErrorDisplay: "toaster" },
     onCompleted: data => {
       clearForm();
-      onWorkItemAdded(issueToWorkItem(data.createIssue, projectId));
+      onWorkItemAdded(issueCreatedAndClosedToWorkItem(data.createAndCloseIssue));
       showToaster(T("reward.form.contributions.other.success"));
     },
   });

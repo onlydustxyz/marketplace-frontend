@@ -39,6 +39,15 @@ impl<'r> FromRequest<'r> for Role {
 	}
 }
 
+impl From<Claims> for Role {
+	fn from(claims: Claims) -> Self {
+		Role::RegisteredUser {
+			lead_projects: claims.projects_leaded.clone(),
+			github_user_id: claims.github_user_id.into(),
+		}
+	}
+}
+
 async fn from_role_registered_user(request: &'_ Request<'_>) -> Outcome<Role, Error> {
 	match request.guard::<Claims>().await {
 		Outcome::Success(claims) => Outcome::Success(Role::RegisteredUser {
@@ -52,7 +61,6 @@ async fn from_role_registered_user(request: &'_ Request<'_>) -> Outcome<Role, Er
 
 #[cfg(test)]
 mod tests {
-
 	use rocket::{
 		http::Header,
 		local::blocking::{Client, LocalRequest},
@@ -121,7 +129,7 @@ mod tests {
 				result.succeeded().unwrap(),
 				Role::RegisteredUser {
 					github_user_id: GithubUserId::from(43467246u64),
-					lead_projects: expected_projects_leaded
+					lead_projects: expected_projects_leaded,
 				}
 			);
 		})

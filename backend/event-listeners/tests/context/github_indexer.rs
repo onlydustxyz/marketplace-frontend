@@ -1,4 +1,4 @@
-use std::ffi::OsString;
+use std::{env, ffi::OsString};
 
 use anyhow::Result;
 use envtestkit::{set_env, EnvironmentTestGuard};
@@ -35,7 +35,14 @@ impl<'a> Context<'a> {
 		)
 		.await?;
 
-		let github = github::Context::new(docker)?;
+		let github = github::Context::new(
+			docker,
+			format!(
+				"{}/tests/resources/wiremock/github",
+				env::current_dir().unwrap().display(),
+			),
+			"github-indexer-github-pat".to_string(),
+		)?;
 
 		let config = Config {
 			amqp: amqp.config.clone(),

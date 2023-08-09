@@ -1,4 +1,51 @@
 actions:
+  - name: createAndCloseIssue
+    definition:
+      kind: synchronous
+      handler: '{{BACKEND_REST_API_URL}}'
+      forward_client_headers: true
+      request_transform:
+        body:
+          action: transform
+          template: |-
+            {
+              "github_repo_id": {{ $body.input.githubRepoId }},
+              "description": {{ $body.input.description }},
+              "project_id": {{ $body.input.projectId }},
+              "title": {{ $body.input.title }}
+            }
+        method: POST
+        query_params: {}
+        template_engine: Kriti
+        url: '{{$base_url}}/issues'
+        version: 2
+      response_transform:
+        body:
+          action: transform
+          template: |-
+            {
+              "id": {{$body.id}},
+              "repoId": {{$body.repo_id}},
+              "number": {{$body.number}},
+              "title": {{$body.title}},
+              "author": {
+                "id": {{$body.author.id}},
+                "login": {{$body.author.login}},
+                "avatarUrl": {{$body.author.avatar_url}},
+                "htmlUrl": {{$body.author.html_url}}
+              },
+              "htmlUrl": {{$body.html_url}},
+              "status": {{$body.status}},
+              "createdAt": {{$body.created_at}},
+              "updatedAt": {{$body.updated_at}},
+              "closedAt": {{$body?.closed_at}},
+              "commentsCount": {{$body.comments_count}}
+            }
+        template_engine: Kriti
+        version: 2
+    permissions:
+      - role: registered_user
+    comment: createAndCloseIssue
   - name: createProject
     definition:
       kind: synchronous
@@ -145,10 +192,24 @@ custom_types:
         - description: null
           is_deprecated: null
           value: YELLOW
+    - name: GithubIssueCreatedAndClosedStatus
+      values:
+        - description: null
+          is_deprecated: null
+          value: Open
+        - description: null
+          is_deprecated: null
+          value: Completed
+        - description: null
+          is_deprecated: null
+          value: Cancelled
   input_objects:
     - name: Language
     - name: Information
-  objects: []
+  objects:
+    - name: GithubIssueCreatedAndClosed
+    - name: GithubUserLinkedToIssue
   scalars:
     - name: Url
     - name: Uuid
+    - name: DateTime

@@ -100,10 +100,10 @@ db/load-fixtures: db/up
 # ----------------------------------------------------------
 
 # Starts the backend stack in background
-backend/background-start: event-store/background-start event-listeners/background-start action-dequeuer/background-start api/background-start github-indexer/background-start github-proxy/background-start dusty-bot/background-start
+backend/background-start: event-store/background-start event-listeners/background-start api/background-start github-indexer/background-start github-proxy/background-start
 
 # Stops the background backend stack, if running
-backend/background-stop: event-store/background-stop event-listeners/background-stop action-dequeuer/background-stop api/background-stop github-indexer/background-stop github-proxy/background-stop dusty-bot/background-stop
+backend/background-stop: event-store/background-stop event-listeners/background-stop api/background-stop github-indexer/background-stop github-proxy/background-stop
 
 api.pid:
 	@./scripts/cargo-run.sh api
@@ -131,17 +131,6 @@ github-proxy/background-start: github-proxy.pid
 github-proxy/background-stop:
 	@./scripts/stop-app.sh github-proxy
 
-dusty-bot.pid:
-	@./scripts/cargo-run.sh dusty-bot
-	@./scripts/wait-for-port.sh 8002
-
-# Starts the Dusty bot in background
-dusty-bot/background-start: dusty-bot.pid
-
-# Stops the background Dusty bot, if running
-dusty-bot/background-stop:
-	@./scripts/stop-app.sh dusty-bot
-
 event-listeners.pid:
 	@./scripts/cargo-run.sh event-listeners
 
@@ -161,17 +150,6 @@ event-store/background-start: event-store.pid
 # Stops the background event store, if running
 event-store/background-stop:
 	@./scripts/stop-app.sh event-store
-
-action-dequeuer.pid:
-	@cargo run --bin action-dequeuer > action-dequeuer.log 2>&1 & echo $$! > action-dequeuer.pid
-	@echo "App action-dequeuer started with PID: `cat action-dequeuer.pid`"
-
-# Starts the action dequeuer in background
-action-dequeuer/background-start: action-dequeuer.pid
-
-# Stops the background action dequeuer, if running
-action-dequeuer/background-stop:
-	@./scripts/stop-app.sh action-dequeuer
 
 github-indexer.pid:
 	@cargo run --bin github-indexer > github-indexer.log 2>&1 & echo $$! > github-indexer.pid
