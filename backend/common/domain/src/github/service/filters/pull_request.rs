@@ -74,7 +74,7 @@ mod tests {
 			merged_at: Default::default(),
 			draft: Default::default(),
 			head_sha: Default::default(),
-			head_repo,
+			head_repo: Some(head_repo),
 			base_sha: Default::default(),
 			base_repo,
 			requested_reviewers: Default::default(),

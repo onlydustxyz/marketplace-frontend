@@ -38,7 +38,7 @@ pub struct PullRequest {
 	pub closed_at: Option<DateTime<Utc>>,
 	pub draft: bool,
 	pub head_sha: String,
-	pub head_repo: GithubRepo,
+	pub head_repo: Option<GithubRepo>,
 	pub base_sha: String,
 	pub base_repo: GithubRepo,
 	pub requested_reviewers: Vec<GithubUser>,

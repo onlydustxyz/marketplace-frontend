@@ -223,7 +223,7 @@ fn pr_1144() -> GithubPullRequest {
 		merged_at: None,
 		draft: false,
 		head_sha: String::from("1c20736f7cd8ebab4d915661c57fc8a987626f9b"),
-		head_repo: repos::marketplace(),
+		head_repo: Some(repos::marketplace()),
 		base_sha: String::from("3fb55612f69b5352997b4aeafdeea958c564074f"),
 		base_repo: repos::marketplace(),
 		requested_reviewers: vec![anthony()],
@@ -245,7 +245,7 @@ fn pr_1146() -> GithubPullRequest {
 		merged_at: "2023-07-31T09:32:08Z".parse().ok(),
 		draft: false,
 		head_sha: String::from("559e878ff141f16885f2372456dffdb2cb223843"),
-		head_repo: repos::marketplace(),
+		head_repo: Some(repos::marketplace()),
 		base_sha: String::from("979a35c6fe75aa304d1ad5a4b7d222ecfd308dc3"),
 		base_repo: repos::marketplace(),
 		requested_reviewers: vec![anthony()],
@@ -272,10 +272,10 @@ fn pr_1152() -> GithubPullRequest {
 		merged_at: None,
 		draft: true,
 		head_sha: String::from("7cf6b6e5631a6f462d17cc0ef175e23b8efa9f00"),
-		head_repo: GithubRepo {
+		head_repo: Some(GithubRepo {
 			parent: None,
 			..repos::marketplace_fork()
-		},
+		}),
 		base_sha: String::from("fad8ea5cd98b89367fdf80b09d8796b093d2dac8"),
 		base_repo: repos::marketplace(),
 		requested_reviewers: vec![],
