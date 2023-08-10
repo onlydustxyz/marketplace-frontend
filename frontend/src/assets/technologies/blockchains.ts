@@ -1,4 +1,5 @@
 export const frameworks = {
+  DeFi: true,
   Ethereum: true,
   Hardhat: true,
   "Hyperledger Fabric": true,
@@ -10,6 +11,8 @@ export const frameworks = {
   Quorum: true,
   Ripple: true,
   Stellar: true,
+  Substrate: true,
   Tezos: true,
   Truffle: true,
+  "RISC Zero zkVM": true,
 };
