@@ -115,7 +115,7 @@ fn github_indexer_throttle_duration() -> Duration {
 	let ms = std::env::var("GITHUB_INDEXER_THROTTLE")
 		.unwrap_or_default()
 		.parse()
-		.unwrap_or(10);
+		.unwrap_or(100);
 
 	Duration::from_millis(ms)
 }
