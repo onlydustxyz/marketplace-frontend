@@ -1,0 +1,16 @@
+export const architecture = {
+  BDD: true,
+  "Clean Architecture": true,
+  "Contract first": true,
+  CQRS: true,
+  "Data Lake": true,
+  "Data Warehouse": true,
+  DDD: true,
+  ETL: true,
+  "Event Driven": true,
+  "Event Sourcing": true,
+  "Hexagonal Architecture": true,
+  Microservices: true,
+  Monolith: true,
+  TDD: true,
+};

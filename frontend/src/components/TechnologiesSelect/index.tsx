@@ -7,6 +7,9 @@ import { frameworks as blockchainFrameworks } from "src/assets/technologies/bloc
 import { schemes } from "src/assets/technologies/cryptography";
 import { protocols, authenticationProtocols } from "src/assets/technologies/protocols";
 import { games } from "src/assets/technologies/games";
+import { databases } from "src/assets/technologies/databases";
+import { ai } from "src/assets/technologies/ai";
+import { architecture } from "src/assets/technologies/architecture";
 import { ClassAttributes, HTMLAttributes } from "react";
 import StylizedCombobox, { EMPTY_OPTION_ID, Option, RenderProps } from "src/components/StylizedCombobox";
 import { SortableList, SortableItemProps, SortableItem } from "@thaddeusjiang/react-sortable-list";
@@ -46,6 +49,9 @@ export default function TechnologiesSelect({ technologies = {}, setTechnologies 
     ...games,
     ...protocols,
     ...authenticationProtocols,
+    ...databases,
+    ...ai,
+    ...architecture,
   }).map(language => ({
     id: language,
     value: language,

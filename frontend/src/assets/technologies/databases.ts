@@ -23,6 +23,7 @@ export const databases = {
   Neo4j: true,
   "Oracle Database": true,
   "Oracle NoSQL Database": true,
+  Orion: true,
   Presto: true,
   PostgreSQL: true,
   RavenDB: true,
