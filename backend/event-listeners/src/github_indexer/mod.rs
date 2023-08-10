@@ -79,7 +79,10 @@ async fn run_indexers(config: Config) -> Result<()> {
 			.with_state()
 			.arced(),
 	])
-	.guarded(|| check_github_rate_limit(github.clone()));
+	.guarded(
+		|| check_github_rate_limit(github.clone()),
+		indexer::guarded::Action::Stop,
+	);
 
 	let user_indexer = indexer::user::Indexer::new(github.clone(), database.clone())
 		.logged()
@@ -89,7 +92,10 @@ async fn run_indexers(config: Config) -> Result<()> {
 			github_events_throttle_duration(),
 		)
 		.with_state()
-		.guarded(|| check_github_rate_limit(github.clone()));
+		.guarded(
+			|| check_github_rate_limit(github.clone()),
+			indexer::guarded::Action::Stop,
+		);
 
 	loop {
 		info!("🎶 Still alive 🎶");
@@ -148,7 +154,10 @@ async fn spawn_listener(config: Config) -> Result<JoinHandle<()>> {
 			github_events_throttle_duration(),
 		)
 		.with_state()
-		.guarded(move || check_github_rate_limit(github.clone()))
+		.guarded(
+			move || check_github_rate_limit(github.clone()),
+			indexer::guarded::Action::Sleep,
+		)
 		.spawn(event_bus::consumer(config.amqp, GITHUB_INDEXER_QUEUE).await?);
 
 	Ok(listeners)
@@ -164,6 +173,7 @@ async fn sleep() {
 		.parse()
 		.unwrap_or(60);
 
+	info!("💤 Sleeping for {seconds} seconds 💤");
 	tokio::time::sleep(Duration::from_secs(seconds)).await;
 }
 
