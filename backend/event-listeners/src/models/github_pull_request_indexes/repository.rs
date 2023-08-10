@@ -13,13 +13,11 @@ pub trait Repository: database::Repository<GithubPullRequestIndex> {
 		&self,
 		pull_request_id: &GithubPullRequestId,
 	) -> Result<Option<serde_json::Value>>;
-	fn update_pull_request_indexer_state(
+	fn upsert_pull_request_indexer_state(
 		&self,
 		pull_request_id: &GithubPullRequestId,
 		state: serde_json::Value,
 	) -> Result<()>;
-
-	fn start_indexing(&self, pull_request_id: GithubPullRequestId) -> Result<()>;
 }
 
 impl Repository for database::Client {
@@ -38,30 +36,23 @@ impl Repository for database::Client {
 		Ok(state)
 	}
 
-	fn update_pull_request_indexer_state(
+	fn upsert_pull_request_indexer_state(
 		&self,
 		pull_request_id: &GithubPullRequestId,
 		state: serde_json::Value,
 	) -> Result<()> {
 		let mut connection = self.connection()?;
-		diesel::update(dsl::github_pull_request_indexes)
-			.set(dsl::pull_request_indexer_state.eq(state))
-			.filter(dsl::pull_request_id.eq(pull_request_id))
+		diesel::insert_into(dsl::github_pull_request_indexes)
+			.values((
+				dsl::pull_request_id.eq(pull_request_id),
+				dsl::pull_request_indexer_state.eq(&state),
+			))
+			.on_conflict(dsl::pull_request_id)
+			.do_update()
+			.set(dsl::pull_request_indexer_state.eq(&state))
 			.execute(&mut *connection)
 			.err_with_context(format!(
 				"update github_pull_request_indexes set github_pull_request_indexes where id={pull_request_id}"
-			))?;
-		Ok(())
-	}
-
-	fn start_indexing(&self, pull_request_id: GithubPullRequestId) -> Result<()> {
-		let mut connection = self.connection()?;
-		diesel::insert_into(dsl::github_pull_request_indexes)
-			.values(GithubPullRequestIndex::new(pull_request_id))
-			.on_conflict_do_nothing()
-			.execute(&mut *connection)
-			.err_with_context(format!(
-				"insert github_pull_request_indexes with id={pull_request_id}"
 			))?;
 		Ok(())
 	}
