@@ -4,7 +4,7 @@ use anyhow::anyhow;
 use async_trait::async_trait;
 use derive_new::new;
 use domain::{
-	GithubCommit, GithubFetchService, GithubFullPullRequest, GithubPullRequest,
+	GithubCiChecks, GithubCommit, GithubFetchService, GithubFullPullRequest, GithubPullRequest,
 	GithubPullRequestId, GithubServiceResult, LogErr, SubscriberCallbackError,
 };
 use olog::{warn, IntoField};
@@ -66,6 +66,19 @@ impl Indexer {
 			None
 		}
 	}
+
+	async fn try_get_ci_checks(
+		&self,
+		pull_request: &GithubPullRequest,
+	) -> GithubServiceResult<Option<GithubCiChecks>> {
+		match pull_request.head_repo.clone() {
+			Some(head_repo) =>
+				self.github_fetch_service
+					.ci_checks(head_repo.id, pull_request.head_sha.clone())
+					.await,
+			None => Ok(None),
+		}
+	}
 }
 
 #[async_trait]
@@ -78,8 +91,7 @@ impl super::Indexer<GithubPullRequest> for Indexer {
 		let (commits, reviews, ci_checks, closing_issue_numbers) = tokio::join!(
 			self.try_get_commits(&pull_request),
 			self.github_fetch_service.pull_request_reviews(pull_request.clone()),
-			self.github_fetch_service
-				.ci_checks(pull_request.head_repo.id, pull_request.head_sha.clone()),
+			self.try_get_ci_checks(&pull_request),
 			self.github_fetch_service.pull_request_closing_issues(
 				pull_request.base_repo.owner.clone(),
 				pull_request.base_repo.name.clone(),

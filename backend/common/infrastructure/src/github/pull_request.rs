@@ -19,12 +19,6 @@ impl FromOctocrab for GithubPullRequest {
 			.clone()
 			.ok_or_else(|| anyhow!("Missing field: 'base_repo'"))?;
 
-		let head_repo = pull_request
-			.head
-			.repo
-			.clone()
-			.ok_or_else(|| anyhow!("Missing field: 'head_repo'"))?;
-
 		let id = pull_request.id.0.try_into()?;
 
 		let number = pull_request.number.try_into()?;
@@ -60,7 +54,7 @@ impl FromOctocrab for GithubPullRequest {
 			closed_at: pull_request.closed_at,
 			draft: pull_request.draft.unwrap_or_default(),
 			head_sha: pull_request.head.sha,
-			head_repo: OctocrabRepo(head_repo).try_into()?,
+			head_repo: pull_request.head.repo.and_then(|repo| OctocrabRepo(repo).try_into().ok()),
 			base_sha: pull_request.base.sha,
 			base_repo: OctocrabRepo(base_repo).try_into()?,
 			requested_reviewers: pull_request
