@@ -166,7 +166,7 @@ impl super::Stateful<GithubPullRequest> for Indexer {
 		pull_request: GithubPullRequest,
 		_events: &[GithubEvent],
 	) -> anyhow::Result<()> {
-		self.github_pull_request_index_repository.update_pull_request_indexer_state(
+		self.github_pull_request_index_repository.upsert_pull_request_indexer_state(
 			&pull_request.id,
 			State {
 				base_sha: pull_request.base_sha,
