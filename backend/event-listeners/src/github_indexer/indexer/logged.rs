@@ -25,9 +25,10 @@ impl<Id: Indexable + Sync, I: super::Indexer<Id>> super::Indexer<Id> for Indexer
 		info!(
 			events_count = events.len(),
 			duration = duration.as_secs(),
-			"Finished indexing {} for {} {id}",
-			self.name(),
-			std::any::type_name::<Id>()
+			event_type = std::any::type_name::<Id>(),
+			indexer_name = self.name(),
+			item = id.to_string(),
+			"Finished indexing",
 		);
 
 		Ok(events)
