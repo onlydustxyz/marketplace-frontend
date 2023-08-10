@@ -1,9 +1,4 @@
-use std::{
-	fmt::Debug,
-	future,
-	pin::Pin,
-	sync::{Arc, Weak},
-};
+use std::{fmt::Debug, future, pin::Pin, sync::Arc};
 
 use anyhow::{anyhow, Context};
 use domain::{
@@ -41,51 +36,35 @@ mod single;
 use olog::error;
 pub use single::Client as SingleClient;
 
-pub struct Client {
-	me: Weak<Self>, // pointer to self
-	inner: InnerClient,
-}
-
-enum InnerClient {
+pub enum Client {
 	Single(SingleClient),
 	RoundRobin(RoundRobinClient),
 }
 
 impl From<SingleClient> for Arc<Client> {
 	fn from(client: SingleClient) -> Self {
-		Client::new(InnerClient::Single(client))
+		Arc::new(Client::Single(client))
 	}
 }
 
 impl From<RoundRobinClient> for Arc<Client> {
 	fn from(client: RoundRobinClient) -> Self {
-		Client::new(InnerClient::RoundRobin(client))
+		Arc::new(Client::RoundRobin(client))
 	}
 }
 
 impl Client {
-	fn new(inner: InnerClient) -> Arc<Self> {
-		Arc::new_cyclic(|me| Self {
-			me: me.clone(),
-			inner,
-		})
-	}
-
-	fn me(&self) -> Arc<Self> {
-		self.me.upgrade().unwrap()
-	}
-
 	pub fn octocrab(&self) -> &Octocrab {
-		match &self.inner {
-			InnerClient::Single(client) => client.octocrab(),
-			InnerClient::RoundRobin(client) => client.octocrab(),
+		match &self {
+			Self::Single(client) => client.octocrab(),
+			Self::RoundRobin(client) => client.octocrab(),
 		}
 	}
 
 	pub fn config(&self) -> &Config {
-		match &self.inner {
-			InnerClient::Single(client) => client.config(),
-			InnerClient::RoundRobin(client) => client.config(),
+		match &self {
+			Self::Single(client) => client.config(),
+			Self::RoundRobin(client) => client.config(),
 		}
 	}
 
@@ -277,20 +256,15 @@ impl Client {
 	}
 
 	#[instrument(skip(self))]
-	pub async fn get_check_runs(&self, pull_request: &PullRequest) -> Result<CheckRuns, Error> {
-		let repo = pull_request.head.repo.clone().ok_or_else(|| {
-			Error::Other(anyhow!(
-				"Missing head repo in pull request {}",
-				pull_request.id
-			))
-		})?;
-
+	pub async fn get_check_runs(
+		&self,
+		repo_id: GithubRepoId,
+		sha: String,
+	) -> Result<CheckRuns, Error> {
 		let check_runs: CheckRuns = self
 			.get_as(format!(
-				"{}repositories/{}/commits/{}/check-runs",
+				"{}repositories/{repo_id}/commits/{sha}/check-runs",
 				self.octocrab().base_url,
-				repo.id,
-				pull_request.head.sha
 			))
 			.await
 			.context("Fetching CI check runs")
@@ -300,21 +274,16 @@ impl Client {
 	}
 
 	#[instrument(skip(self))]
-	pub async fn get_commits(&self, pull_request: &PullRequest) -> Result<Vec<RepoCommit>, Error> {
-		let repo = pull_request.base.repo.clone().ok_or_else(|| {
-			Error::Other(anyhow!(
-				"Missing head repo in pull request {}",
-				pull_request.id
-			))
-		})?;
-
+	pub async fn get_commits(
+		&self,
+		repo_id: GithubRepoId,
+		pull_request_number: GithubPullRequestNumber,
+	) -> Result<Vec<RepoCommit>, Error> {
 		let commits: Vec<RepoCommit> = self
 			.stream_as(
 				format!(
-					"{}repositories/{}/pulls/{}/commits",
+					"{}repositories/{repo_id}/pulls/{pull_request_number}/commits",
 					self.octocrab().base_url,
-					repo.id,
-					pull_request.number
 				)
 				.parse()?,
 				100 * self.config().max_calls_per_request.map(PositiveCount::get).unwrap_or(3),
@@ -327,21 +296,16 @@ impl Client {
 	}
 
 	#[instrument(skip(self))]
-	pub async fn get_reviews(&self, pull_request: &PullRequest) -> Result<Vec<Review>, Error> {
-		let repo = pull_request.base.repo.clone().ok_or_else(|| {
-			Error::Other(anyhow!(
-				"Missing base repo in pull request {}",
-				pull_request.id
-			))
-		})?;
-
+	pub async fn get_reviews(
+		&self,
+		repo_id: GithubRepoId,
+		pull_request_number: GithubPullRequestNumber,
+	) -> Result<Vec<Review>, Error> {
 		let reviews: Vec<Review> = self
 			.stream_as(
 				format!(
-					"{}repositories/{}/pulls/{}/reviews",
+					"{}repositories/{repo_id}/pulls/{pull_request_number}/reviews",
 					self.octocrab().base_url,
-					repo.id,
-					pull_request.number
 				)
 				.parse()?,
 				100 * self.config().max_calls_per_request.map(PositiveCount::get).unwrap_or(3),
@@ -356,22 +320,10 @@ impl Client {
 	#[instrument(skip(self))]
 	pub async fn get_closing_issues(
 		&self,
-		pull_request: &PullRequest,
+		repo_owner: String,
+		repo_name: String,
+		pull_request_number: GithubPullRequestNumber,
 	) -> Result<Vec<GithubIssueNumber>, Error> {
-		let repo = pull_request.base.repo.clone().ok_or_else(|| {
-			Error::Other(anyhow!(
-				"Missing base repo in pull request {}",
-				pull_request.id
-			))
-		})?;
-
-		let owner = repo.owner.ok_or_else(|| {
-			Error::Other(anyhow!(
-				"Missing repo owner in pull request {}",
-				pull_request.id
-			))
-		})?;
-
 		let response: serde_json::Value = self
 			.octocrab()
 			.post(
@@ -389,9 +341,9 @@ impl Client {
 					   }
 					 }"#,
 					 "variables": {
-						"owner": owner.login,
-						"name": repo.name,
-						"number": pull_request.number,
+						"owner": repo_owner,
+						"name": repo_name,
+						"number": pull_request_number,
 					 }
 				})),
 			)
@@ -499,7 +451,7 @@ impl Client {
 				100 * self.config().max_calls_per_request.map(PositiveCount::get).unwrap_or(3),
 			)
 			.await?
-			.filter_map(|pull_request| try_into_pull_request(self.me(), id, pull_request))
+			.filter_map(|pull_request| try_into_pull_request(id, pull_request))
 			.filter_with(Arc::new(filters))
 			.collect()
 			.await;
@@ -582,14 +534,12 @@ impl Client {
 }
 
 async fn try_into_pull_request(
-	client: Arc<Client>,
 	repo_id: GithubRepoId,
 	pull_request: PullRequest,
 ) -> Option<domain::GithubPullRequest> {
 	let pull_request_id = pull_request.id;
 
-	GithubPullRequest::from_octocrab(&client, pull_request)
-		.await
+	GithubPullRequest::from_octocrab(pull_request)
 		.log_err(|e| {
 			error!(
 				error = e.to_field(),

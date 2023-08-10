@@ -2,11 +2,12 @@ use std::collections::HashSet;
 
 use anyhow::Result;
 use domain::{
-	GithubCiChecks, GithubCodeReview, GithubCodeReviewOutcome, GithubCodeReviewStatus, GithubIssue,
-	GithubIssueNumber, GithubIssueStatus, GithubPullRequest, GithubPullRequestStatus, GithubUser,
+	GithubCiChecks, GithubCodeReview, GithubCodeReviewOutcome, GithubCodeReviewStatus,
+	GithubFullPullRequest, GithubIssue, GithubIssueNumber, GithubIssueStatus, GithubPullRequest,
+	GithubPullRequestStatus, GithubRepo, GithubUser,
 };
 use event_listeners::{listeners::github::Event, models::GithubRepoIndex, GITHUB_EVENTS_EXCHANGE};
-use fixtures::*;
+use fixtures::{users::anthony, *};
 use infrastructure::database::ImmutableRepository;
 use olog::info;
 use rstest::rstest;
@@ -98,56 +99,55 @@ impl<'a> Test<'a> {
 					assignees: vec![],
 					comments_count: 0,
 				}),
-				Event::PullRequest(GithubPullRequest {
-					id: 1455874031u64.into(),
-					repo_id: repos::marketplace().id,
-					number: 1146u64.into(),
-					title: String::from("Hide tooltips on mobile"),
-					status: GithubPullRequestStatus::Merged,
-					html_url: "https://github.com/onlydustxyz/marketplace/pull/1146"
-						.parse()
-						.unwrap(),
-					created_at: "2023-07-31T09:23:37Z".parse().unwrap(),
-					updated_at: "2023-07-31T09:32:08Z".parse().unwrap(),
-					closed_at: "2023-07-31T09:32:08Z".parse().ok(),
-					author: users::alex(),
-					merged_at: "2023-07-31T09:32:08Z".parse().ok(),
-					draft: false,
-					ci_checks: Some(GithubCiChecks::Passed),
-					commits: vec![commits::a(), commits::b()],
-					reviews: vec![GithubCodeReview {
-						reviewer: users::ofux(),
-						status: GithubCodeReviewStatus::Completed,
-						outcome: Some(GithubCodeReviewOutcome::Approved),
-						submitted_at: "2023-07-29T08:02:16Z".parse().ok(),
-					}],
-					closing_issue_numbers: vec![],
+				Event::PullRequest(pr_1144()),
+				Event::PullRequest(pr_1146()),
+				Event::PullRequest(pr_1152()),
+				Event::FullPullRequest(GithubFullPullRequest {
+					inner: pr_1144(),
+					ci_checks: Some(GithubCiChecks::Failed),
+					closing_issue_numbers: Some(vec![]),
+					commits: Some(vec![commits::a(), commits::b()]),
+					reviews: Some(vec![
+						GithubCodeReview {
+							reviewer: users::anthony(),
+							status: GithubCodeReviewStatus::Pending,
+							outcome: None,
+							submitted_at: None,
+						},
+						GithubCodeReview {
+							reviewer: users::ofux(),
+							status: GithubCodeReviewStatus::Completed,
+							outcome: Some(GithubCodeReviewOutcome::Approved),
+							submitted_at: "2023-07-29T08:02:16Z".parse().ok(),
+						},
+					]),
 				}),
-				Event::PullRequest(GithubPullRequest {
-					id: 1458220740u64.into(),
-					repo_id: repos::marketplace().id,
-					number: 1152u64.into(),
-					title: String::from("[E-642] Index extra fields in github pull requests"),
-					status: GithubPullRequestStatus::Open,
-					html_url: "https://github.com/onlydustxyz/marketplace/pull/1152"
-						.parse()
-						.unwrap(),
-					created_at: "2023-08-01T14:26:33Z".parse().unwrap(),
-					updated_at: "2023-08-01T14:26:41Z".parse().unwrap(),
-					closed_at: None,
-					author: GithubUser {
-						id: 43467246u64.into(),
-						login: String::from("AnthonyBuisset"),
-						avatar_url: "https://avatars.githubusercontent.com/u/43467246?v=4"
-							.parse()
-							.unwrap(),
-						html_url: "https://github.com/AnthonyBuisset".parse().unwrap(),
-					},
-					merged_at: None,
-					draft: true,
+				Event::FullPullRequest(GithubFullPullRequest {
+					inner: pr_1146(),
+					ci_checks: Some(GithubCiChecks::Passed),
+					closing_issue_numbers: Some(vec![]),
+					commits: Some(vec![commits::a(), commits::b()]),
+					reviews: Some(vec![
+						GithubCodeReview {
+							reviewer: users::anthony(),
+							status: GithubCodeReviewStatus::Pending,
+							outcome: None,
+							submitted_at: None,
+						},
+						GithubCodeReview {
+							reviewer: users::ofux(),
+							status: GithubCodeReviewStatus::Completed,
+							outcome: Some(GithubCodeReviewOutcome::Approved),
+							submitted_at: "2023-07-29T08:02:16Z".parse().ok(),
+						},
+					]),
+				}),
+				Event::FullPullRequest(GithubFullPullRequest {
+					inner: pr_1152(),
 					ci_checks: None,
-					commits: vec![commits::a(), commits::b()],
-					reviews: vec![
+					closing_issue_numbers: Some(vec![GithubIssueNumber::from(1145u64)]),
+					commits: Some(vec![commits::a(), commits::b()]),
+					reviews: Some(vec![
 						GithubCodeReview {
 							reviewer: users::anthony(),
 							status: GithubCodeReviewStatus::Pending,
@@ -160,33 +160,7 @@ impl<'a> Test<'a> {
 							outcome: Some(GithubCodeReviewOutcome::Approved),
 							submitted_at: "2023-07-29T08:02:16Z".parse().ok(),
 						},
-					],
-					closing_issue_numbers: vec![GithubIssueNumber::from(1145u64)],
-				}),
-				Event::PullRequest(GithubPullRequest {
-					id: 1452363285u64.into(),
-					repo_id: repos::marketplace().id,
-					number: 1144u64.into(),
-					title: String::from("Improve impersonation"),
-					status: GithubPullRequestStatus::Closed,
-					html_url: "https://github.com/onlydustxyz/marketplace/pull/1144"
-						.parse()
-						.unwrap(),
-					created_at: "2023-07-27T16:46:00Z".parse().unwrap(),
-					updated_at: "2023-07-28T08:34:54Z".parse().unwrap(),
-					closed_at: "2023-07-28T08:34:53Z".parse().ok(),
-					author: users::ofux(),
-					merged_at: None,
-					draft: false,
-					ci_checks: Some(GithubCiChecks::Failed),
-					commits: vec![commits::a(), commits::b()],
-					reviews: vec![GithubCodeReview {
-						reviewer: users::ofux(),
-						status: GithubCodeReviewStatus::Completed,
-						outcome: Some(GithubCodeReviewOutcome::Approved),
-						submitted_at: "2023-07-29T08:02:16Z".parse().ok(),
-					}],
-					closing_issue_numbers: vec![],
+					]),
 				}),
 			],
 		)
@@ -215,13 +189,15 @@ impl<'a> Test<'a> {
 	}
 }
 
-async fn expect_events(context: &mut Context<'_>, expected: Vec<Event>) {
+async fn expect_events(context: &mut Context<'_>, mut expected: Vec<Event>) {
 	let mut actual = HashSet::<Event>::new();
 	for _ in 0..expected.len() {
 		actual.insert(context.amqp.listen::<Event>(GITHUB_EVENTS_EXCHANGE).await.unwrap());
 	}
 
-	let expected = expected.into_iter().collect();
+	let mut actual: Vec<_> = actual.into_iter().collect();
+	actual.sort();
+	expected.sort();
 
 	assert_eq!(
 		actual,
@@ -230,4 +206,78 @@ async fn expect_events(context: &mut Context<'_>, expected: Vec<Event>) {
 		serde_json::to_string(&expected).unwrap(),
 		serde_json::to_string(&actual).unwrap()
 	);
+}
+
+fn pr_1144() -> GithubPullRequest {
+	GithubPullRequest {
+		id: 1452363285u64.into(),
+		repo_id: repos::marketplace().id,
+		number: 1144u64.into(),
+		title: String::from("Improve impersonation"),
+		status: GithubPullRequestStatus::Closed,
+		html_url: "https://github.com/onlydustxyz/marketplace/pull/1144".parse().unwrap(),
+		created_at: "2023-07-27T16:46:00Z".parse().unwrap(),
+		updated_at: "2023-07-28T08:34:54Z".parse().unwrap(),
+		closed_at: "2023-07-28T08:34:53Z".parse().ok(),
+		author: users::ofux(),
+		merged_at: None,
+		draft: false,
+		head_sha: String::from("1c20736f7cd8ebab4d915661c57fc8a987626f9b"),
+		head_repo: repos::marketplace(),
+		base_sha: String::from("3fb55612f69b5352997b4aeafdeea958c564074f"),
+		base_repo: repos::marketplace(),
+		requested_reviewers: vec![anthony()],
+	}
+}
+
+fn pr_1146() -> GithubPullRequest {
+	GithubPullRequest {
+		id: 1455874031u64.into(),
+		repo_id: repos::marketplace().id,
+		number: 1146u64.into(),
+		title: String::from("Hide tooltips on mobile"),
+		status: GithubPullRequestStatus::Merged,
+		html_url: "https://github.com/onlydustxyz/marketplace/pull/1146".parse().unwrap(),
+		created_at: "2023-07-31T09:23:37Z".parse().unwrap(),
+		updated_at: "2023-07-31T09:32:08Z".parse().unwrap(),
+		closed_at: "2023-07-31T09:32:08Z".parse().ok(),
+		author: users::alex(),
+		merged_at: "2023-07-31T09:32:08Z".parse().ok(),
+		draft: false,
+		head_sha: String::from("559e878ff141f16885f2372456dffdb2cb223843"),
+		head_repo: repos::marketplace(),
+		base_sha: String::from("979a35c6fe75aa304d1ad5a4b7d222ecfd308dc3"),
+		base_repo: repos::marketplace(),
+		requested_reviewers: vec![anthony()],
+	}
+}
+
+fn pr_1152() -> GithubPullRequest {
+	GithubPullRequest {
+		id: 1458220740u64.into(),
+		repo_id: repos::marketplace().id,
+		number: 1152u64.into(),
+		title: String::from("[E-642] Index extra fields in github pull requests"),
+		status: GithubPullRequestStatus::Open,
+		html_url: "https://github.com/onlydustxyz/marketplace/pull/1152".parse().unwrap(),
+		created_at: "2023-08-01T14:26:33Z".parse().unwrap(),
+		updated_at: "2023-08-01T14:26:41Z".parse().unwrap(),
+		closed_at: None,
+		author: GithubUser {
+			id: 43467246u64.into(),
+			login: String::from("AnthonyBuisset"),
+			avatar_url: "https://avatars.githubusercontent.com/u/43467246?v=4".parse().unwrap(),
+			html_url: "https://github.com/AnthonyBuisset".parse().unwrap(),
+		},
+		merged_at: None,
+		draft: true,
+		head_sha: String::from("7cf6b6e5631a6f462d17cc0ef175e23b8efa9f00"),
+		head_repo: GithubRepo {
+			parent: None,
+			..repos::marketplace_fork()
+		},
+		base_sha: String::from("fad8ea5cd98b89367fdf80b09d8796b093d2dac8"),
+		base_repo: repos::marketplace(),
+		requested_reviewers: vec![],
+	}
 }

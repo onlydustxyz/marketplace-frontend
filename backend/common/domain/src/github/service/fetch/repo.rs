@@ -5,7 +5,7 @@ use async_trait::async_trait;
 use mockall::automock;
 
 use super::Result;
-use crate::{stream_filter, GithubRepo, GithubRepoId, GithubUser, Languages};
+use crate::{stream_filter, GithubCiChecks, GithubRepo, GithubRepoId, GithubUser, Languages};
 
 #[cfg_attr(test, automock)]
 #[async_trait]
@@ -17,4 +17,6 @@ pub trait Service: Send + Sync {
 		repo_id: &GithubRepoId,
 		filters: Arc<dyn stream_filter::Filter<I = GithubUser>>,
 	) -> Result<Vec<GithubUser>>;
+	async fn ci_checks(&self, repo_id: GithubRepoId, sha: String)
+	-> Result<Option<GithubCiChecks>>;
 }

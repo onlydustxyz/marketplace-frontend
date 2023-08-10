@@ -1,4 +1,4 @@
-use std::str::FromStr;
+use std::{fmt::Display, str::FromStr};
 
 use chrono::{DateTime, Utc};
 use derive_more::{AsRef, Display, From, Into};
@@ -6,22 +6,24 @@ use diesel_derive_newtype::DieselNewType;
 use serde::{Deserialize, Serialize};
 use url::Url;
 
-use crate::{GithubCodeReview, GithubCommit, GithubIssueNumber, GithubRepoId, GithubUser};
+use crate::{
+	GithubCodeReview, GithubCommit, GithubIssueNumber, GithubRepo, GithubRepoId, GithubUser,
+};
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize, Hash)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize, Hash, PartialOrd, Ord)]
 pub enum Status {
 	Open,
 	Closed,
 	Merged,
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize, Hash)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize, Hash, PartialOrd, Ord)]
 pub enum CiChecks {
 	Passed,
 	Failed,
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq, Hash)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct PullRequest {
 	pub id: Id,
 	pub repo_id: GithubRepoId,
@@ -35,10 +37,26 @@ pub struct PullRequest {
 	pub merged_at: Option<DateTime<Utc>>,
 	pub closed_at: Option<DateTime<Utc>>,
 	pub draft: bool,
+	pub head_sha: String,
+	pub head_repo: GithubRepo,
+	pub base_sha: String,
+	pub base_repo: GithubRepo,
+	pub requested_reviewers: Vec<GithubUser>,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
+pub struct FullPullRequest {
+	pub inner: PullRequest,
 	pub ci_checks: Option<CiChecks>,
-	pub commits: Vec<GithubCommit>,
-	pub reviews: Vec<GithubCodeReview>,
-	pub closing_issue_numbers: Vec<GithubIssueNumber>,
+	pub commits: Option<Vec<GithubCommit>>,
+	pub reviews: Option<Vec<GithubCodeReview>>,
+	pub closing_issue_numbers: Option<Vec<GithubIssueNumber>>,
+}
+
+impl Display for PullRequest {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(f, "[{}] {}/{}", self.id, self.repo_id, self.number)
+	}
 }
 
 #[derive(
@@ -56,6 +74,8 @@ pub struct PullRequest {
 	Into,
 	AsRef,
 	DieselNewType,
+	PartialOrd,
+	Ord,
 )]
 pub struct Number(i64);
 
@@ -94,6 +114,8 @@ impl From<u64> for Number {
 	Into,
 	AsRef,
 	DieselNewType,
+	PartialOrd,
+	Ord,
 )]
 pub struct Id(i64);
 

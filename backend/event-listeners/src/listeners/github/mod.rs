@@ -79,6 +79,9 @@ impl EventListener<Event> for Projector {
 				self.contributions_repository.upsert_from_github_issue(issue)?;
 			},
 			Event::PullRequest(pull_request) => {
+				self.github_pull_requests_repository.upsert(pull_request.into())?;
+			},
+			Event::FullPullRequest(pull_request) => {
 				let pull_request: GithubPullRequest = pull_request.into();
 				self.github_pull_requests_repository.upsert(pull_request.clone())?;
 				self.contributions_repository.upsert_from_github_pull_request(pull_request)?;

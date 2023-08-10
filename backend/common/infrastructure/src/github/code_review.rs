@@ -1,9 +1,6 @@
 use anyhow::{anyhow, Result};
 use domain::{GithubCodeReview, GithubCodeReviewOutcome, GithubCodeReviewStatus, GithubUser};
-use octocrab::models::{
-	pulls::{Review, ReviewState},
-	User,
-};
+use octocrab::models::pulls::{Review, ReviewState};
 
 use super::UserFromOctocrab;
 
@@ -11,10 +8,10 @@ pub trait TryIntoReview {
 	fn try_into_code_review(self) -> Result<GithubCodeReview>;
 }
 
-impl TryIntoReview for User {
+impl TryIntoReview for GithubUser {
 	fn try_into_code_review(self) -> Result<GithubCodeReview> {
 		Ok(GithubCodeReview {
-			reviewer: GithubUser::from_octocrab_user(self),
+			reviewer: self,
 			status: GithubCodeReviewStatus::Pending,
 			outcome: None,
 			submitted_at: None,

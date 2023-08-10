@@ -155,11 +155,18 @@ diesel::table! {
 }
 
 diesel::table! {
-    github_pull_request_commits (sha) {
+    github_pull_request_commits (pull_request_id, sha) {
         sha -> Text,
         pull_request_id -> Int8,
         html_url -> Text,
         author_id -> Int8,
+    }
+}
+
+diesel::table! {
+    github_pull_request_indexes (pull_request_id) {
+        pull_request_id -> Int8,
+        pull_request_indexer_state -> Nullable<Jsonb>,
     }
 }
 
@@ -195,7 +202,7 @@ diesel::table! {
         closed_at -> Nullable<Timestamp>,
         draft -> Bool,
         ci_checks -> Nullable<GithubCiChecks>,
-        closing_issue_numbers -> Jsonb,
+        closing_issue_numbers -> Nullable<Jsonb>,
     }
 }
 
@@ -415,6 +422,7 @@ diesel::allow_tables_to_appear_in_same_query!(
     events,
     github_issues,
     github_pull_request_commits,
+    github_pull_request_indexes,
     github_pull_request_reviews,
     github_pull_requests,
     github_repo_indexes,

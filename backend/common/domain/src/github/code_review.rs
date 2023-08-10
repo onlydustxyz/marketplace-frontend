@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 
 use super::User;
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq, Hash)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct CodeReview {
 	pub reviewer: User,
 	pub status: Status,
@@ -11,13 +11,13 @@ pub struct CodeReview {
 	pub submitted_at: Option<DateTime<Utc>>,
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq, Hash)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub enum Status {
 	Pending,
 	Completed,
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq, Hash)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub enum Outcome {
 	ChangeRequested,
 	Approved,

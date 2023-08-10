@@ -19,7 +19,7 @@ pub struct Context<'a> {
 	pub amqp: amqp::Context<'a>,
 	_github: github::Context<'a>,
 	_guards: Vec<EnvironmentTestGuard>,
-	_process: JoinHandle<anyhow::Result<()>>,
+	_processes: Vec<JoinHandle<()>>,
 }
 
 impl<'a> Context<'a> {
@@ -65,13 +65,13 @@ impl<'a> Context<'a> {
 			amqp,
 			_github: github,
 			_guards,
-			_process: tokio::spawn(github_indexer::bootstrap(config)),
+			_processes: github_indexer::bootstrap(config).await?,
 		})
 	}
 }
 
 impl<'a> Drop for Context<'a> {
 	fn drop(&mut self) {
-		self._process.abort();
+		self._processes.iter().for_each(JoinHandle::abort);
 	}
 }

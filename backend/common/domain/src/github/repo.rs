@@ -3,7 +3,7 @@ use diesel_derive_newtype::DieselNewType;
 use serde::{Deserialize, Serialize};
 use url::Url;
 
-#[derive(Debug, Clone, Serialize, Deserialize, Hash, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Repo {
 	pub id: Id,
 	pub owner: String,
@@ -31,6 +31,8 @@ pub struct Repo {
 	AsRef,
 	Hash,
 	DieselNewType,
+	PartialOrd,
+	Ord,
 )]
 pub struct Id(i64);
 

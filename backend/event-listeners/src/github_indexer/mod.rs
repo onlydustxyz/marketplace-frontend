@@ -6,14 +6,25 @@ use indexer::{
 	composite::Arced, guarded::Guarded, logged::Logged, published::Published,
 	with_state::WithState, Indexable, Indexer,
 };
-use infrastructure::{amqp, database, github};
+use infrastructure::{
+	amqp::{self},
+	database, event_bus, github,
+};
 use olog::{error, info, IntoField};
+use tokio::task::JoinHandle;
 
-use crate::{listeners::github::Event as GithubEvent, Config};
+use crate::{listeners::Spawnable, Config, GITHUB_EVENTS_EXCHANGE};
 
 mod indexer;
 
-pub async fn bootstrap(config: Config) -> Result<()> {
+pub async fn bootstrap(config: Config) -> Result<Vec<JoinHandle<()>>> {
+	Ok(vec![
+		spawn_listeners(config.clone()).await?,
+		spawn_indexers(config).await,
+	])
+}
+
+async fn run_indexers(config: Config) -> Result<()> {
 	let github: Arc<github::Client> = github::RoundRobinClient::new(config.github)?.into();
 	let database = Arc::new(database::Client::new(database::init_pool(config.database)?));
 	let event_bus = Arc::new(amqp::Bus::new(config.amqp).await?);
@@ -59,22 +70,48 @@ pub async fn bootstrap(config: Config) -> Result<()> {
 async fn index_all<Id: Indexable>(
 	indexer: &dyn Indexer<Id>,
 	repository: Arc<dyn indexer::Repository<Id>>,
-) -> Result<Vec<GithubEvent>> {
-	let mut events = vec![];
-
+) -> Result<()> {
 	for id in repository.list_items_to_index()? {
-		match indexer.index(id).await {
-			Ok(item_events) => events.extend(item_events),
-			Err(error) => error!(
-				error = error.to_field(),
-				indexed_item_id = id.to_string(),
-				indexed_item_id_type = std::any::type_name::<Id>(),
-				"Error while indexing item"
-			),
-		}
+		indexer
+			.index(id.clone())
+			.await
+			.log_err(|error| {
+				error!(
+					error = error.to_field(),
+					indexed_item_id = id.to_string(),
+					indexed_item_id_type = std::any::type_name::<Id>(),
+					"Error while indexing item"
+				)
+			})
+			.ok();
 	}
+	Ok(())
+}
 
-	Ok(events)
+async fn spawn_listeners(config: Config) -> Result<JoinHandle<()>> {
+	let github: Arc<github::Client> = github::RoundRobinClient::new(config.github)?.into();
+	let database = Arc::new(database::Client::new(database::init_pool(config.database)?));
+	let event_bus = Arc::new(amqp::Bus::new(config.amqp.clone()).await?);
+
+	let listeners = indexer::full_pull_requests::Indexer::new(github.clone(), database.clone())
+		.logged()
+		.published(event_bus.clone())
+		.with_state()
+		.guarded(move || check_github_rate_limit(github.clone()))
+		.spawn(
+			event_bus::consumer_with_exchange(
+				config.amqp,
+				GITHUB_EVENTS_EXCHANGE,
+				"github-indexer",
+			)
+			.await?,
+		);
+
+	Ok(listeners)
+}
+
+async fn spawn_indexers(config: Config) -> JoinHandle<()> {
+	tokio::spawn(async move { run_indexers(config.clone()).await.expect("Failed to run indexers") })
 }
 
 async fn sleep() {

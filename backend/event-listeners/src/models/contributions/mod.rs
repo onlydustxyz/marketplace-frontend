@@ -9,7 +9,19 @@ pub use details_id::DetailsId;
 mod repository;
 pub use repository::Repository;
 
-#[derive(Debug, Clone, Insertable, AsChangeset, Identifiable, Serialize, Deserialize, Model)]
+#[derive(
+	Debug,
+	Clone,
+	Insertable,
+	AsChangeset,
+	Identifiable,
+	Serialize,
+	Deserialize,
+	Model,
+	PartialEq,
+	Eq,
+	Hash,
+)]
 #[diesel(primary_key(type_, details_id, user_id))]
 pub struct Contribution {
 	pub repo_id: GithubRepoId,

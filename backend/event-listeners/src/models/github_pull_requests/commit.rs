@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 #[derive(
 	Debug, Clone, Insertable, Identifiable, AsChangeset, Queryable, Serialize, Deserialize, Model,
 )]
-#[diesel(primary_key(sha))]
+#[diesel(primary_key(pull_request_id, sha))]
 pub struct GithubPullRequestCommit {
 	pub sha: String,
 	pub pull_request_id: GithubPullRequestId,
@@ -15,9 +15,9 @@ pub struct GithubPullRequestCommit {
 }
 
 impl Identifiable for GithubPullRequestCommit {
-	type Id = String;
+	type Id = (GithubPullRequestId, String);
 
 	fn id(self) -> Self::Id {
-		self.sha
+		(self.pull_request_id, self.sha)
 	}
 }

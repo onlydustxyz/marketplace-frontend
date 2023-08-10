@@ -14,8 +14,8 @@ pub use repository::Repository;
 #[derive(Debug, Clone)]
 pub struct PullRequest {
 	pub inner: Inner,
-	pub commits: Vec<Commit>,
-	pub reviews: Vec<Review>,
+	pub commits: Option<Vec<Commit>>,
+	pub reviews: Option<Vec<Review>>,
 }
 
 impl From<domain::GithubPullRequest> for PullRequest {
@@ -33,30 +33,45 @@ impl From<domain::GithubPullRequest> for PullRequest {
 				html_url: pull_request.html_url.to_string(),
 				closed_at: pull_request.closed_at.map(|date| date.naive_utc()),
 				draft: pull_request.draft,
-				ci_checks: pull_request.ci_checks.map(Into::into),
-				closing_issue_numbers: Json::new(pull_request.closing_issue_numbers),
+				ci_checks: None,
+				closing_issue_numbers: None,
 			},
-			commits: pull_request
-				.commits
+			commits: None,
+			reviews: None,
+		}
+	}
+}
+
+impl From<domain::GithubFullPullRequest> for PullRequest {
+	fn from(from: domain::GithubFullPullRequest) -> Self {
+		let mut pull_request = Self::from(from.inner);
+		pull_request.inner.ci_checks = from.ci_checks.map(Into::into);
+		pull_request.inner.closing_issue_numbers = from.closing_issue_numbers.map(Json::new);
+		pull_request.commits = from.commits.map(|commits| {
+			commits
 				.into_iter()
 				.map(|c| Commit {
 					sha: c.sha,
-					pull_request_id: pull_request.id,
+					pull_request_id: pull_request.inner.id,
 					html_url: c.html_url.to_string(),
 					author_id: c.author.id,
 				})
-				.collect(),
-			reviews: pull_request
-				.reviews
+				.collect()
+		});
+
+		pull_request.reviews = from.reviews.map(|reviews| {
+			reviews
 				.into_iter()
 				.map(|review| Review {
-					pull_request_id: pull_request.id,
+					pull_request_id: pull_request.inner.id,
 					reviewer_id: review.reviewer.id,
 					outcome: review.outcome.map(Into::into),
 					status: review.status.into(),
 					submitted_at: review.submitted_at.map(|date| date.naive_utc()),
 				})
-				.collect(),
-		}
+				.collect()
+		});
+
+		pull_request
 	}
 }

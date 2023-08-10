@@ -5,7 +5,7 @@ use octocrab::models::Repository;
 use olog::{error, IntoField};
 
 #[derive(Clone, From, Into)]
-pub struct OctocrabRepo(Repository);
+pub struct OctocrabRepo(pub Repository);
 
 impl TryFrom<OctocrabRepo> for GithubRepo {
 	type Error = anyhow::Error;

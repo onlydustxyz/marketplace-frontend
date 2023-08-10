@@ -20,7 +20,7 @@ impl<Id: Indexable + Sync> super::Indexer<Id> for Indexer<Id> {
 	}
 
 	async fn index(&self, id: Id) -> Result<Vec<GithubEvent>> {
-		let handles = self.indexers.iter().map(|indexer| indexer.index(id));
+		let handles = self.indexers.iter().map(|indexer| indexer.index(id.clone()));
 		Ok(try_join_all(handles).await?.into_iter().flatten().collect())
 	}
 }

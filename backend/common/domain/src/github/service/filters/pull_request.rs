@@ -32,7 +32,25 @@ mod tests {
 	use crate::{stream_filter::Filter, *};
 
 	#[fixture]
-	fn pull_request() -> GithubPullRequest {
+	fn repo() -> GithubRepo {
+		GithubRepo {
+			id: 43214u64.into(),
+			owner: String::from("onlydustxyz"),
+			name: String::from("marketplace"),
+			logo_url: "https://onlydust.xyz".parse().unwrap(),
+			html_url: "https://onlydust.xyz".parse().unwrap(),
+			description: Default::default(),
+			stars: Default::default(),
+			forks_count: Default::default(),
+			parent: Default::default(),
+		}
+	}
+
+	#[fixture]
+	fn pull_request(
+		#[from(repo)] base_repo: GithubRepo,
+		#[from(repo)] head_repo: GithubRepo,
+	) -> GithubPullRequest {
 		GithubPullRequest {
 			id: 1278125016u64.into(),
 			repo_id: 43214u64.into(),
@@ -52,13 +70,14 @@ mod tests {
 			updated_at: DateTime::parse_from_rfc3339("2023-04-18T13:15:05Z")
 				.unwrap()
 				.with_timezone(&Utc),
-			closed_at: None,
-			merged_at: None,
-			draft: false,
-			ci_checks: None,
-			commits: vec![],
-			reviews: vec![],
-			closing_issue_numbers: vec![],
+			closed_at: Default::default(),
+			merged_at: Default::default(),
+			draft: Default::default(),
+			head_sha: Default::default(),
+			head_repo,
+			base_sha: Default::default(),
+			base_repo,
+			requested_reviewers: Default::default(),
 		}
 	}
 
