@@ -13,6 +13,7 @@ import {
 import { ProjectRewardsPage } from "./pages/project/rewards";
 import { EditPayoutInfoPage } from "./pages/edit_payout_info_page";
 import { populateReceipt } from "./commands/populate/populate_payments";
+import { faker } from "@faker-js/faker";
 
 test.describe("As a project lead, I", () => {
   test.beforeEach(async () => {
@@ -107,6 +108,7 @@ test.describe("As a project lead, I", () => {
       await newRewardPage.closeWorkItemsPanelButton().click();
     }
 
+    const issueTitleToCheck = faker.animal.cat() + "-" + faker.color.rgb();
     await newRewardPage.giveReward({
       otherPullRequests: [
         "https://github.com/od-mocks/cool-repo-A/pull/1",
@@ -123,6 +125,7 @@ test.describe("As a project lead, I", () => {
         },
         {
           description: "Real cool documentation",
+          title: issueTitleToCheck,
           repository: repos[project.repos?.at(0) || ""].name,
         },
       ],
@@ -150,7 +153,7 @@ test.describe("As a project lead, I", () => {
     await expect(sidePanel.locator("div", { hasText: "#1 · Update README.md" }).first()).toBeVisible();
     await expect(sidePanel.locator("div", { hasText: "#79 · " }).first()).toBeVisible();
     await expect(sidePanel.locator("div", { hasText: " · Monthly contracting subscription" }).first()).toBeVisible();
-    const otherWorkIssueLink = sidePanel.getByText(" · Documentation by").first();
+    const otherWorkIssueLink = sidePanel.getByText(` · ${issueTitleToCheck}`).first();
     await expect(otherWorkIssueLink).toBeVisible();
     await otherWorkIssueLink.click();
 
