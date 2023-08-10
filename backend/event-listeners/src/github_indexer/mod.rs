@@ -80,7 +80,7 @@ async fn run_indexers(config: Config) -> Result<()> {
 			.arced(),
 	])
 	.guarded(
-		|| check_github_rate_limit(github.clone()),
+		|| check_github_rate_limit(github.clone(), github_rate_limit_guard()),
 		indexer::guarded::Action::Stop,
 	);
 
@@ -93,7 +93,7 @@ async fn run_indexers(config: Config) -> Result<()> {
 		)
 		.with_state()
 		.guarded(
-			|| check_github_rate_limit(github.clone()),
+			|| check_github_rate_limit(github.clone(), github_rate_limit_guard()),
 			indexer::guarded::Action::Stop,
 		);
 
@@ -115,7 +115,7 @@ fn github_indexer_throttle_duration() -> Duration {
 	let ms = std::env::var("GITHUB_INDEXER_THROTTLE")
 		.unwrap_or_default()
 		.parse()
-		.unwrap_or(100);
+		.unwrap_or(300);
 
 	Duration::from_millis(ms)
 }
@@ -155,7 +155,7 @@ async fn spawn_listener(config: Config) -> Result<JoinHandle<()>> {
 		)
 		.with_state()
 		.guarded(
-			move || check_github_rate_limit(github.clone()),
+			move || check_github_rate_limit(github.clone(), 10 * indexer_count()),
 			indexer::guarded::Action::Sleep,
 		)
 		.spawn(event_bus::consumer(config.amqp, GITHUB_INDEXER_QUEUE).await?);
@@ -177,12 +177,7 @@ async fn sleep() {
 	tokio::time::sleep(Duration::from_secs(seconds)).await;
 }
 
-async fn check_github_rate_limit(github: Arc<github::Client>) -> bool {
-	let guard = std::env::var("GITHUB_RATE_LIMIT_GUARD")
-		.unwrap_or_default()
-		.parse()
-		.unwrap_or(1000);
-
+async fn check_github_rate_limit(github: Arc<github::Client>, guard: usize) -> bool {
 	let remaining = github
 		.octocrab()
 		.ratelimit()
@@ -198,6 +193,13 @@ async fn check_github_rate_limit(github: Arc<github::Client>) -> bool {
 		.unwrap_or_default();
 
 	remaining > guard
+}
+
+fn github_rate_limit_guard() -> usize {
+	std::env::var("GITHUB_RATE_LIMIT_GUARD")
+		.unwrap_or_default()
+		.parse()
+		.unwrap_or(1000)
 }
 
 fn indexer_count() -> usize {
