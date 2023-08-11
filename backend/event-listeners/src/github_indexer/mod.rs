@@ -2,7 +2,6 @@ use std::{sync::Arc, time::Duration};
 
 use anyhow::Result;
 use domain::{Destination, GithubRepoId, GithubUserId, LogErr};
-use futures::future::try_join_all;
 use indexer::{
 	composite::Arced, guarded::Guarded, logged::Logged, published::Published,
 	with_state::WithState, Indexable, Indexer,
@@ -21,13 +20,10 @@ mod indexer;
 pub const GITHUB_INDEXER_QUEUE: &str = "github-indexer";
 
 pub async fn bootstrap(config: Config) -> Result<Vec<JoinHandle<()>>> {
-	let mut handles = try_join_all(
-		std::iter::repeat_with(|| spawn_listener(config.clone())).take(indexer_count()),
-	)
-	.await?;
-
-	handles.push(spawn_indexers(config.clone()).await);
-	Ok(handles)
+	Ok(vec![
+		spawn_listener(config.clone()).await?,
+		spawn_indexers(config.clone()).await,
+	])
 }
 
 async fn run_indexers(config: Config) -> Result<()> {
