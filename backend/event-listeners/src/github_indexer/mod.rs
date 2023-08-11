@@ -27,7 +27,6 @@ pub async fn bootstrap(config: Config) -> Result<Vec<JoinHandle<()>>> {
 	.await?;
 
 	handles.push(spawn_indexers(config.clone()).await);
-
 	Ok(handles)
 }
 
@@ -42,7 +41,6 @@ async fn run_indexers(config: Config) -> Result<()> {
 			.published(
 				event_bus.clone(),
 				Destination::exchange(GITHUB_EVENTS_EXCHANGE),
-				github_events_throttle_duration(),
 			)
 			.with_state()
 			.arced(),
@@ -51,7 +49,6 @@ async fn run_indexers(config: Config) -> Result<()> {
 			.published(
 				event_bus.clone(),
 				Destination::exchange(GITHUB_EVENTS_EXCHANGE),
-				github_events_throttle_duration(),
 			)
 			.with_state()
 			.arced(),
@@ -60,13 +57,8 @@ async fn run_indexers(config: Config) -> Result<()> {
 			.published(
 				event_bus.clone(),
 				Destination::exchange(GITHUB_EVENTS_EXCHANGE),
-				github_events_throttle_duration(),
 			)
-			.published(
-				event_bus.clone(),
-				Destination::queue(GITHUB_INDEXER_QUEUE),
-				github_indexer_throttle_duration(),
-			)
+			.published(event_bus.clone(), Destination::queue(GITHUB_INDEXER_QUEUE))
 			.with_state()
 			.arced(),
 		indexer::contributors::Indexer::new(github.clone(), database.clone())
@@ -74,7 +66,6 @@ async fn run_indexers(config: Config) -> Result<()> {
 			.published(
 				event_bus.clone(),
 				Destination::exchange(GITHUB_EVENTS_EXCHANGE),
-				github_events_throttle_duration(),
 			)
 			.with_state()
 			.arced(),
@@ -89,7 +80,6 @@ async fn run_indexers(config: Config) -> Result<()> {
 		.published(
 			event_bus.clone(),
 			Destination::exchange(GITHUB_EVENTS_EXCHANGE),
-			github_events_throttle_duration(),
 		)
 		.with_state()
 		.guarded(
@@ -103,21 +93,6 @@ async fn run_indexers(config: Config) -> Result<()> {
 		index_all::<GithubUserId>(&user_indexer, database.clone()).await?;
 		sleep().await;
 	}
-}
-
-fn github_events_throttle_duration() -> Duration {
-	let ms = std::env::var("GITHUB_EVENTS_THROTTLE").unwrap_or_default().parse().unwrap_or(1);
-
-	Duration::from_millis(ms)
-}
-
-fn github_indexer_throttle_duration() -> Duration {
-	let ms = std::env::var("GITHUB_INDEXER_THROTTLE")
-		.unwrap_or_default()
-		.parse()
-		.unwrap_or(300);
-
-	Duration::from_millis(ms)
 }
 
 async fn index_all<Id: Indexable>(
@@ -151,7 +126,6 @@ async fn spawn_listener(config: Config) -> Result<JoinHandle<()>> {
 		.published(
 			event_bus.clone(),
 			Destination::exchange(GITHUB_EVENTS_EXCHANGE),
-			github_events_throttle_duration(),
 		)
 		.with_state()
 		.guarded(
