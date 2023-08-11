@@ -67,7 +67,7 @@ async fn run_indexers(config: Config) -> Result<()> {
 			.arced(),
 	])
 	.guarded(
-		|| check_github_rate_limit(github.clone(), github_rate_limit_guard()),
+		|| check_github_rate_limit(github.clone(), github_stream_rate_limit_guard()),
 		indexer::guarded::Action::Stop,
 	);
 
@@ -79,7 +79,7 @@ async fn run_indexers(config: Config) -> Result<()> {
 		)
 		.with_state()
 		.guarded(
-			|| check_github_rate_limit(github.clone(), github_rate_limit_guard()),
+			|| check_github_rate_limit(github.clone(), github_stream_rate_limit_guard()),
 			indexer::guarded::Action::Stop,
 		);
 
@@ -125,7 +125,7 @@ async fn spawn_listener(config: Config) -> Result<JoinHandle<()>> {
 		)
 		.with_state()
 		.guarded(
-			move || check_github_rate_limit(github.clone(), 10 * indexer_count()),
+			move || check_github_rate_limit(github.clone(), github_single_rate_limit_guard()),
 			indexer::guarded::Action::Sleep,
 		)
 		.spawn(event_bus::consumer(config.amqp, GITHUB_INDEXER_QUEUE).await?);
@@ -165,13 +165,16 @@ async fn check_github_rate_limit(github: Arc<github::Client>, guard: usize) -> b
 	remaining > guard
 }
 
-fn github_rate_limit_guard() -> usize {
-	std::env::var("GITHUB_RATE_LIMIT_GUARD")
+fn github_stream_rate_limit_guard() -> usize {
+	std::env::var("GITHUB_STREAM_RATE_LIMIT_GUARD")
 		.unwrap_or_default()
 		.parse()
 		.unwrap_or(1000)
 }
 
-fn indexer_count() -> usize {
-	std::env::var("GITHUB_INDEXER_COUNT").unwrap_or_default().parse().unwrap_or(1)
+fn github_single_rate_limit_guard() -> usize {
+	std::env::var("GITHUB_SINGLE_RATE_LIMIT_GUARD")
+		.unwrap_or_default()
+		.parse()
+		.unwrap_or(10)
 }
