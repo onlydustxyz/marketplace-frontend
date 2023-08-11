@@ -3,7 +3,7 @@ use std::{sync::Arc, time::Duration};
 use anyhow::Result;
 use domain::{Destination, GithubRepoId, GithubUserId, LogErr};
 use indexer::{
-	composite::Arced, guarded::Guarded, logged::Logged, published::Published,
+	composite::Arced, logged::Logged, published::Published, rate_limited::RateLimited,
 	with_state::WithState, Indexable, Indexer,
 };
 use infrastructure::{
@@ -66,10 +66,7 @@ async fn run_indexers(config: Config) -> Result<()> {
 			.with_state()
 			.arced(),
 	])
-	.guarded(
-		|| check_github_rate_limit(github.clone(), github_stream_rate_limit_guard()),
-		indexer::guarded::Action::Stop,
-	);
+	.rate_limited(github.clone(), github_stream_rate_limit_guard());
 
 	let user_indexer = indexer::user::Indexer::new(github.clone(), database.clone())
 		.logged()
@@ -78,10 +75,7 @@ async fn run_indexers(config: Config) -> Result<()> {
 			Destination::exchange(GITHUB_EVENTS_EXCHANGE),
 		)
 		.with_state()
-		.guarded(
-			|| check_github_rate_limit(github.clone(), github_stream_rate_limit_guard()),
-			indexer::guarded::Action::Stop,
-		);
+		.rate_limited(github.clone(), github_single_rate_limit_guard());
 
 	loop {
 		info!("🎶 Still alive 🎶");
@@ -124,10 +118,7 @@ async fn spawn_listener(config: Config) -> Result<JoinHandle<()>> {
 			Destination::exchange(GITHUB_EVENTS_EXCHANGE),
 		)
 		.with_state()
-		.guarded(
-			move || check_github_rate_limit(github.clone(), github_single_rate_limit_guard()),
-			indexer::guarded::Action::Sleep,
-		)
+		.rate_limited(github.clone(), github_single_rate_limit_guard())
 		.spawn(event_bus::consumer(config.amqp, GITHUB_INDEXER_QUEUE).await?);
 
 	Ok(listeners)
@@ -145,24 +136,6 @@ async fn sleep() {
 
 	info!("💤 Sleeping for {seconds} seconds 💤");
 	tokio::time::sleep(Duration::from_secs(seconds)).await;
-}
-
-async fn check_github_rate_limit(github: Arc<github::Client>, guard: usize) -> bool {
-	let remaining = github
-		.octocrab()
-		.ratelimit()
-		.get()
-		.await
-		.log_err(|e| {
-			olog::error!(
-				error = e.to_field(),
-				"Failed while checking github rate limit"
-			)
-		})
-		.map(|rate_limit| rate_limit.rate.remaining)
-		.unwrap_or_default();
-
-	remaining > guard
 }
 
 fn github_stream_rate_limit_guard() -> usize {
