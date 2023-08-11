@@ -89,6 +89,10 @@ pub struct ConsumableBus {
 
 impl ConsumableBus {
 	async fn new(bus: Bus, queue_name: String) -> Result<Self, Error> {
+		let prefetch_count =
+			std::env::var("AMQP_PREFETCH_COUNT").unwrap_or_default().parse().unwrap_or(100);
+		bus.channel.basic_qos(prefetch_count, Default::default()).await?;
+
 		let consumer = bus
 			.channel
 			.basic_consume(
