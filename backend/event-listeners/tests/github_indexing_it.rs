@@ -1,16 +1,25 @@
-use std::collections::HashSet;
+use std::{
+	collections::{hash_map::DefaultHasher, HashSet},
+	hash::{Hash, Hasher},
+};
 
 use anyhow::Result;
+use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
 use domain::{
 	GithubCiChecks, GithubCodeReview, GithubCodeReviewOutcome, GithubCodeReviewStatus,
 	GithubFullPullRequest, GithubIssue, GithubIssueNumber, GithubIssueStatus, GithubPullRequest,
 	GithubPullRequestStatus, GithubRepo, GithubUser,
 };
-use event_listeners::{listeners::github::Event, models::GithubRepoIndex, GITHUB_EVENTS_EXCHANGE};
+use event_listeners::{
+	listeners::github::Event,
+	models::{self, GithubRepoIndex},
+	GITHUB_EVENTS_EXCHANGE,
+};
 use fixtures::{users::anthony, *};
-use infrastructure::database::ImmutableRepository;
+use infrastructure::database::{schema::github_pull_request_indexes, ImmutableRepository};
 use olog::info;
 use rstest::rstest;
+use serde_json::json;
 use testcontainers::clients::Cli;
 
 use crate::context::{docker, github_indexer::Context};
@@ -166,6 +175,50 @@ impl<'a> Test<'a> {
 		)
 		.await;
 
+		let mut connection = self.context.database.client.connection()?;
+		{
+			let mut states: Vec<models::GithubPullRequestIndex> = retry(
+				|| {
+					github_pull_request_indexes::table
+						.order(github_pull_request_indexes::pull_request_id.desc())
+						.load(&mut *connection)
+				},
+				|res| res.len() == 3,
+			)
+			.await?;
+
+			{
+				let state = states.pop().unwrap();
+				assert_eq!(state.pull_request_id, pr_1144().id);
+				assert_eq!(
+					state.pull_request_indexer_state,
+					Some(
+						json!({"base_sha": pr_1144().base_sha, "head_sha": pr_1144().head_sha, "hash": hash(&pr_1144())})
+					)
+				);
+			}
+			{
+				let state = states.pop().unwrap();
+				assert_eq!(state.pull_request_id, pr_1146().id);
+				assert_eq!(
+					state.pull_request_indexer_state,
+					Some(
+						json!({"base_sha": pr_1146().base_sha, "head_sha": pr_1146().head_sha, "hash": hash(&pr_1146())})
+					)
+				);
+			}
+			{
+				let state = states.pop().unwrap();
+				assert_eq!(state.pull_request_id, pr_1152().id);
+				assert_eq!(
+					state.pull_request_indexer_state,
+					Some(
+						json!({"base_sha": pr_1152().base_sha, "head_sha": pr_1152().head_sha, "hash": hash(&pr_1152())})
+					)
+				);
+			}
+		}
+
 		Ok(())
 	}
 
@@ -280,4 +333,10 @@ fn pr_1152() -> GithubPullRequest {
 		base_repo: repos::marketplace(),
 		requested_reviewers: vec![],
 	}
+}
+
+fn hash<T: Hash>(t: &T) -> u64 {
+	let mut s = DefaultHasher::new();
+	t.hash(&mut s);
+	s.finish()
 }

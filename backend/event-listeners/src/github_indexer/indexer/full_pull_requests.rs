@@ -10,7 +10,7 @@ use domain::{
 use olog::{warn, IntoField};
 use serde::{Deserialize, Serialize};
 
-use super::Result;
+use super::{hash, Result};
 use crate::{
 	listeners::{github::Event as GithubEvent, EventListener},
 	models::github_pull_request_indexes,
@@ -26,6 +26,7 @@ pub struct Indexer {
 struct State {
 	head_sha: String,
 	base_sha: String,
+	hash: u64,
 }
 
 impl State {
@@ -53,9 +54,8 @@ impl Indexer {
 	async fn try_get_commits(
 		&self,
 		pull_request: &GithubPullRequest,
+		state: &State,
 	) -> Option<GithubServiceResult<Vec<GithubCommit>>> {
-		let state = self.get_state(pull_request.id).ok().flatten().unwrap_or_default();
-
 		if state.head_sha != pull_request.head_sha || state.base_sha != pull_request.base_sha {
 			Some(
 				self.github_fetch_service
@@ -88,8 +88,13 @@ impl super::Indexer<GithubPullRequest> for Indexer {
 	}
 
 	async fn index(&self, pull_request: GithubPullRequest) -> Result<Vec<GithubEvent>> {
+		let state = self.get_state(pull_request.id).ok().flatten().unwrap_or_default();
+		if state.hash == hash(&pull_request) {
+			return Ok(vec![]);
+		}
+
 		let (commits, reviews, ci_checks, closing_issue_numbers) = tokio::join!(
-			self.try_get_commits(&pull_request),
+			self.try_get_commits(&pull_request, &state),
 			self.github_fetch_service.pull_request_reviews(pull_request.clone()),
 			self.try_get_ci_checks(&pull_request),
 			self.github_fetch_service.pull_request_closing_issues(
@@ -169,6 +174,7 @@ impl super::Stateful<GithubPullRequest> for Indexer {
 		self.github_pull_request_index_repository.upsert_pull_request_indexer_state(
 			&pull_request.id,
 			State {
+				hash: hash(&pull_request),
 				base_sha: pull_request.base_sha,
 				head_sha: pull_request.head_sha,
 			}

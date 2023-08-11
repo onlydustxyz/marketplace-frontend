@@ -11,7 +11,6 @@ pub struct Indexer<Id: Indexable, I: super::Indexer<Id>> {
 	indexer: I,
 	event_bus: Arc<dyn Publisher<UniqueMessage<GithubEvent>>>,
 	destination: Destination,
-	throttle_duration: Duration,
 	_phantom: PhantomData<Id>,
 }
 
@@ -26,7 +25,7 @@ impl<Id: Indexable + Sync, I: super::Indexer<Id>> super::Indexer<Id> for Indexer
 
 		for event in events.clone().into_iter().map(UniqueMessage::new) {
 			self.event_bus.publish(self.destination.clone(), &event).await?;
-			tokio::time::sleep(self.throttle_duration).await;
+			tokio::time::sleep(throttle_duration()).await;
 		}
 
 		Ok(events)
@@ -38,7 +37,6 @@ pub trait Published<Id: Indexable, I: super::Indexer<Id>> {
 		self,
 		event_bus: Arc<dyn Publisher<UniqueMessage<GithubEvent>>>,
 		destination: Destination,
-		throttle: Duration,
 	) -> Indexer<Id, I>;
 }
 
@@ -47,13 +45,11 @@ impl<Id: Indexable, I: super::Indexer<Id>> Published<Id, I> for I {
 		self,
 		event_bus: Arc<dyn Publisher<UniqueMessage<GithubEvent>>>,
 		destination: Destination,
-		throttle_duration: Duration,
 	) -> Indexer<Id, I> {
 		Indexer {
 			indexer: self,
 			event_bus,
 			destination,
-			throttle_duration,
 			_phantom: Default::default(),
 		}
 	}
@@ -63,4 +59,13 @@ impl<Id: Indexable, I: super::Indexer<Id> + super::Stateful<Id>> Stateful<Id> fo
 	fn store(&self, id: Id, events: &[GithubEvent]) -> anyhow::Result<()> {
 		self.indexer.store(id, events)
 	}
+}
+
+fn throttle_duration() -> Duration {
+	let ms = std::env::var("GITHUB_EVENTS_INDEXER_THROTTLE")
+		.unwrap_or_default()
+		.parse()
+		.unwrap_or(1);
+
+	Duration::from_millis(ms)
 }

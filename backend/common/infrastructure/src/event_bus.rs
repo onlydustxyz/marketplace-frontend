@@ -46,6 +46,9 @@ pub async fn consumer<Q: ToString + Display>(
 		)
 		.await?;
 
-	info!("[{queue_name}] 🎧 Start listening to events");
+	info!(
+		queue = queue_name.to_string(),
+		"🎧 Start listening to events"
+	);
 	Ok(bus)
 }

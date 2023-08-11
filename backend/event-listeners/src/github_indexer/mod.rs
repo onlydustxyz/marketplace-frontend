@@ -2,9 +2,8 @@ use std::{sync::Arc, time::Duration};
 
 use anyhow::Result;
 use domain::{Destination, GithubRepoId, GithubUserId, LogErr};
-use futures::future::try_join_all;
 use indexer::{
-	composite::Arced, guarded::Guarded, logged::Logged, published::Published,
+	composite::Arced, logged::Logged, published::Published, rate_limited::RateLimited,
 	with_state::WithState, Indexable, Indexer,
 };
 use infrastructure::{
@@ -21,14 +20,10 @@ mod indexer;
 pub const GITHUB_INDEXER_QUEUE: &str = "github-indexer";
 
 pub async fn bootstrap(config: Config) -> Result<Vec<JoinHandle<()>>> {
-	let mut handles = try_join_all(
-		std::iter::repeat_with(|| spawn_listener(config.clone())).take(indexer_count()),
-	)
-	.await?;
-
-	handles.push(spawn_indexers(config.clone()).await);
-
-	Ok(handles)
+	Ok(vec![
+		spawn_listener(config.clone()).await?,
+		spawn_indexers(config.clone()).await,
+	])
 }
 
 async fn run_indexers(config: Config) -> Result<()> {
@@ -42,7 +37,6 @@ async fn run_indexers(config: Config) -> Result<()> {
 			.published(
 				event_bus.clone(),
 				Destination::exchange(GITHUB_EVENTS_EXCHANGE),
-				github_events_throttle_duration(),
 			)
 			.with_state()
 			.arced(),
@@ -51,7 +45,6 @@ async fn run_indexers(config: Config) -> Result<()> {
 			.published(
 				event_bus.clone(),
 				Destination::exchange(GITHUB_EVENTS_EXCHANGE),
-				github_events_throttle_duration(),
 			)
 			.with_state()
 			.arced(),
@@ -60,13 +53,8 @@ async fn run_indexers(config: Config) -> Result<()> {
 			.published(
 				event_bus.clone(),
 				Destination::exchange(GITHUB_EVENTS_EXCHANGE),
-				github_events_throttle_duration(),
 			)
-			.published(
-				event_bus.clone(),
-				Destination::queue(GITHUB_INDEXER_QUEUE),
-				github_indexer_throttle_duration(),
-			)
+			.published(event_bus.clone(), Destination::queue(GITHUB_INDEXER_QUEUE))
 			.with_state()
 			.arced(),
 		indexer::contributors::Indexer::new(github.clone(), database.clone())
@@ -74,28 +62,20 @@ async fn run_indexers(config: Config) -> Result<()> {
 			.published(
 				event_bus.clone(),
 				Destination::exchange(GITHUB_EVENTS_EXCHANGE),
-				github_events_throttle_duration(),
 			)
 			.with_state()
 			.arced(),
 	])
-	.guarded(
-		|| check_github_rate_limit(github.clone(), github_rate_limit_guard()),
-		indexer::guarded::Action::Stop,
-	);
+	.rate_limited(github.clone(), github_stream_rate_limit_guard());
 
 	let user_indexer = indexer::user::Indexer::new(github.clone(), database.clone())
 		.logged()
 		.published(
 			event_bus.clone(),
 			Destination::exchange(GITHUB_EVENTS_EXCHANGE),
-			github_events_throttle_duration(),
 		)
 		.with_state()
-		.guarded(
-			|| check_github_rate_limit(github.clone(), github_rate_limit_guard()),
-			indexer::guarded::Action::Stop,
-		);
+		.rate_limited(github.clone(), github_single_rate_limit_guard());
 
 	loop {
 		info!("🎶 Still alive 🎶");
@@ -103,21 +83,6 @@ async fn run_indexers(config: Config) -> Result<()> {
 		index_all::<GithubUserId>(&user_indexer, database.clone()).await?;
 		sleep().await;
 	}
-}
-
-fn github_events_throttle_duration() -> Duration {
-	let ms = std::env::var("GITHUB_EVENTS_THROTTLE").unwrap_or_default().parse().unwrap_or(1);
-
-	Duration::from_millis(ms)
-}
-
-fn github_indexer_throttle_duration() -> Duration {
-	let ms = std::env::var("GITHUB_INDEXER_THROTTLE")
-		.unwrap_or_default()
-		.parse()
-		.unwrap_or(300);
-
-	Duration::from_millis(ms)
 }
 
 async fn index_all<Id: Indexable>(
@@ -151,13 +116,9 @@ async fn spawn_listener(config: Config) -> Result<JoinHandle<()>> {
 		.published(
 			event_bus.clone(),
 			Destination::exchange(GITHUB_EVENTS_EXCHANGE),
-			github_events_throttle_duration(),
 		)
 		.with_state()
-		.guarded(
-			move || check_github_rate_limit(github.clone(), 10 * indexer_count()),
-			indexer::guarded::Action::Sleep,
-		)
+		.rate_limited(github.clone(), github_single_rate_limit_guard())
 		.spawn(event_bus::consumer(config.amqp, GITHUB_INDEXER_QUEUE).await?);
 
 	Ok(listeners)
@@ -177,31 +138,16 @@ async fn sleep() {
 	tokio::time::sleep(Duration::from_secs(seconds)).await;
 }
 
-async fn check_github_rate_limit(github: Arc<github::Client>, guard: usize) -> bool {
-	let remaining = github
-		.octocrab()
-		.ratelimit()
-		.get()
-		.await
-		.log_err(|e| {
-			olog::error!(
-				error = e.to_field(),
-				"Failed while checking github rate limit"
-			)
-		})
-		.map(|rate_limit| rate_limit.rate.remaining)
-		.unwrap_or_default();
-
-	remaining > guard
-}
-
-fn github_rate_limit_guard() -> usize {
-	std::env::var("GITHUB_RATE_LIMIT_GUARD")
+fn github_stream_rate_limit_guard() -> usize {
+	std::env::var("GITHUB_STREAM_RATE_LIMIT_GUARD")
 		.unwrap_or_default()
 		.parse()
 		.unwrap_or(1000)
 }
 
-fn indexer_count() -> usize {
-	std::env::var("GITHUB_INDEXER_COUNT").unwrap_or_default().parse().unwrap_or(1)
+fn github_single_rate_limit_guard() -> usize {
+	std::env::var("GITHUB_SINGLE_RATE_LIMIT_GUARD")
+		.unwrap_or_default()
+		.parse()
+		.unwrap_or(10)
 }

@@ -2,11 +2,11 @@ pub mod composite;
 pub mod contributors;
 mod error;
 pub mod full_pull_requests;
-pub mod guarded;
 pub mod issues;
 pub mod logged;
 pub mod published;
 pub mod pull_requests;
+pub mod rate_limited;
 pub mod repo;
 mod repository;
 pub mod user;
@@ -19,7 +19,7 @@ use std::{
 };
 
 use async_trait::async_trait;
-use error::Result;
+use error::{Error, Result};
 pub use repository::Repository;
 
 use crate::listeners::github::Event as GithubEvent;
