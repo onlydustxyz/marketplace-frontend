@@ -9,6 +9,7 @@ import { RewardSidePanelAsLeader as RewardSidePanelAsLeader } from "src/componen
 import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
 import MobileRewardList from "./MobileRewardList";
+import SidePanel from "src/components/SidePanel";
 
 type Props = {
   projectId: string;
@@ -53,14 +54,11 @@ export default function RewardTable({ projectId, rewards }: Props) {
       ) : (
         <MobileRewardList rewards={sortedRewards} onRewardClick={onRewardClick} />
       )}
-      {selectedReward && (
-        <RewardSidePanelAsLeader
-          projectId={projectId}
-          open={sidePanelOpen}
-          setOpen={setSidePanelOpen}
-          rewardId={selectedReward.id}
-        />
-      )}
+      <SidePanel open={sidePanelOpen} setOpen={setSidePanelOpen}>
+        {selectedReward && (
+          <RewardSidePanelAsLeader projectId={projectId} rewardId={selectedReward.id} setOpen={setSidePanelOpen} />
+        )}
+      </SidePanel>
     </>
   );
 }
