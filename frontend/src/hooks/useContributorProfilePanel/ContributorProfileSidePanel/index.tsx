@@ -4,17 +4,18 @@ import useUserProfile from "./useUserProfile";
 
 type Props = {
   githubUserId: number;
-  open: boolean;
   setOpen: (value: boolean) => void;
 };
 
-export default function ContributorProfileSidePanel({ githubUserId, ...rest }: Props) {
+export default function ContributorProfileSidePanel({ githubUserId, setOpen }: Props) {
   const { githubUserId: currentUserGithubId } = useAuth();
   const { data: userProfile } = useUserProfile({ githubUserId });
 
   return userProfile ? (
-    <View isOwn={currentUserGithubId === userProfile.profile.githubUserId} userProfile={userProfile} {...rest} />
-  ) : (
-    <div />
-  );
+    <View
+      isOwn={currentUserGithubId === userProfile.profile.githubUserId}
+      userProfile={userProfile}
+      setOpen={setOpen}
+    />
+  ) : null;
 }
