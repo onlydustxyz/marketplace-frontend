@@ -1,0 +1,15 @@
+{
+    "request": {
+        "url": "/user/7793",
+        "method": "GET",
+        "headers": {
+            "Authorization": {
+                "contains": "Bearer github-pat"
+            }
+        }
+    },
+    "response": {
+        "status": 200,
+        "bodyFileName": "github_fetch_user_details_1_response_body.json"
+    }
+}

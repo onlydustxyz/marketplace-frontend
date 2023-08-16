@@ -109,6 +109,7 @@ pub fn serve(
 			routes![
 				routes::users::profile_picture,
 				routes::users::update_user_profile,
+				routes::users::fetch_user_details_by_id,
 			],
 		)
 		.mount("/", routes![routes::projects::create_project])
