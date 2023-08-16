@@ -14,11 +14,13 @@ use crate::{
 	application,
 	infrastructure::{simple_storage, web3::ens},
 	models::*,
-	presentation::graphql,
+	presentation::{graphql, http::github_client_pat_factory::GithubClientPatFactory},
 };
 
 pub mod dto;
 mod error;
+pub mod github_client_pat_factory;
+mod option_github_pat;
 pub mod roles;
 pub mod routes;
 
@@ -44,6 +46,7 @@ pub fn serve(
 	ens: Arc<ens::Client>,
 	simple_storage: Arc<simple_storage::Client>,
 	bus: Arc<amqp::Bus>,
+	github_client_pat_factory: Arc<GithubClientPatFactory>,
 ) -> Rocket<Build> {
 	let create_project_usecase = application::project::create::Usecase::new(
 		bus.clone(),
@@ -84,6 +87,7 @@ pub fn serve(
 		.manage(create_project_usecase)
 		.manage(update_user_profile_info_usecase)
 		.manage(create_github_issue_usecase)
+		.manage(github_client_pat_factory)
 		.attach(http::guards::Cors)
 		.mount(
 			"/",
@@ -108,5 +112,12 @@ pub fn serve(
 			],
 		)
 		.mount("/", routes![routes::projects::create_project])
-		.mount("/", routes![routes::issues::create_and_close_issue])
+		.mount(
+			"/",
+			routes![
+				routes::issues::create_and_close_issue,
+				routes::issues::fetch_issue_by_repo_owner_name_issue_number,
+				routes::issues::fetch_issue_by_repository_id_issue_number,
+			],
+		)
 }
