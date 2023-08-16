@@ -77,23 +77,6 @@ services:
       AMQP_URL: amqp://rabbitmq:5672/%2f
       GRAPHQL_BASE_URL: http://hasura:8080/v1/graphql
 
-  github-proxy:
-    labels:
-      type: backend
-    container_name: github-proxy
-    image: rust:1.66
-    volumes:
-      - .:/app
-      - cargo-cache:/usr/local/cargo
-    command: bash -c "cd /app && cargo run -p github-proxy"
-    ports:
-      - 8001
-    healthcheck:
-      test: curl -f http://localhost:8001 || exit 1
-      interval: 2s
-      timeout: 1s
-      retries: 30
-
   event-store:
     labels:
       type: backend

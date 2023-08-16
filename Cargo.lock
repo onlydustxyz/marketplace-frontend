@@ -1907,27 +1907,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ad0a93d233ebf96623465aad4046a8d3aa4da22d4f4beba5388838c8a434bbb4"
 
 [[package]]
-name = "github-proxy"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "async-std",
- "async-trait",
- "domain",
- "dotenv",
- "infrastructure",
- "juniper",
- "juniper_rocket",
- "olog",
- "presentation",
- "rocket",
- "rstest",
- "serde",
- "thiserror",
- "tracing",
-]
-
-[[package]]
 name = "glob"
 version = "0.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"

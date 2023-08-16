@@ -10,5 +10,4 @@ members = [
   "backend/common/olog",
   "backend/event-listeners",
   "backend/event-store",
-  "backend/github-proxy",
 ]

@@ -100,10 +100,10 @@ db/load-fixtures: db/up
 # ----------------------------------------------------------
 
 # Starts the backend stack in background
-backend/background-start: event-store/background-start event-listeners/background-start api/background-start github-indexer/background-start github-proxy/background-start
+backend/background-start: event-store/background-start event-listeners/background-start api/background-start github-indexer/background-start
 
 # Stops the background backend stack, if running
-backend/background-stop: event-store/background-stop event-listeners/background-stop api/background-stop github-indexer/background-stop github-proxy/background-stop
+backend/background-stop: event-store/background-stop event-listeners/background-stop api/background-stop github-indexer/background-stop
 
 api.pid:
 	@./scripts/cargo-run.sh api
@@ -119,17 +119,6 @@ api/background-stop:
 # Starts the API interactively
 api/start: docker/up
 	@./scripts/cargo-run.sh api
-
-github-proxy.pid:
-	@./scripts/cargo-run.sh github-proxy
-	@./scripts/wait-for-port.sh 8001
-
-# Starts the Github proxy in background
-github-proxy/background-start: github-proxy.pid
-
-# Stops the background Github proxy, if running
-github-proxy/background-stop:
-	@./scripts/stop-app.sh github-proxy
 
 event-listeners.pid:
 	@./scripts/cargo-run.sh event-listeners

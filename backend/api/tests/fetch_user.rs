@@ -24,9 +24,13 @@ pub async fn fetch_user(docker: &'static Cli) {
 	// test.should_fetch_a_user_details_given_a_user_id()
 	// 	.await
 	// 	.expect("should_fetch_a_user_details_given_a_user_id");
-	test.should_search_users_given_a_query_without_parameters()
+	// test.should_search_users_given_a_query_without_parameters_and_pat()
+	// 	.await
+	// 	.expect("should_search_users_given_a_query_without_parameters_and_pat");
+	test.should_search_users_given_a_query_with_parameters_and_pat()
 		.await
-		.expect("should_search_users_given_a_query_without_parameters");
+		.expect("should_search_users_given_a_query_with_parameters_and_pat");
+
 }
 
 struct Test<'a> {
@@ -63,10 +67,10 @@ impl<'a> Test<'a> {
 		Ok(())
 	}
 
-	async fn should_search_users_given_a_query_without_parameters(
+	async fn should_search_users_given_a_query_without_parameters_and_pat(
 		&mut self,
 	) -> Result<()> {
-		info!("should_search_users_given_a_query_without_parameters");
+		info!("should_search_users_given_a_query_without_parameters_and_pat");
 		// Given
 		let resource = "/api/users/search?query=Pierre";
 
@@ -91,6 +95,43 @@ impl<'a> Test<'a> {
 		);
 		Ok(())
 	}
+
+	async fn should_search_users_given_a_query_with_parameters_and_pat(
+		&mut self,
+	) -> Result<()> {
+		info!("should_search_users_given_a_query_without_parameters_and_pat");
+		// Given
+		let resource = "/api/users/search?query=Anthony&per_page=2&page=0&sort=repositories&order=asc";
+
+		// When
+		let response = self
+			.context
+			.http_client
+			.get(resource.to_string())
+			.header(Header::new(
+				"Authorization",
+				format!("Bearer {}", jwt(None)),
+			))
+			.header(
+				Header::new(
+					"x-hasura-githubAccessToken",
+					"github-pat-search-user-1"
+				)
+			)
+			.dispatch()
+			.await;
+
+		// Then
+		assert_eq!(response.status(), Status::Ok);
+		let user_details = response.into_string().await.unwrap();
+		assert_eq!(
+			user_details,
+			"[{\"id\":10130,\"login\":\"anthony\",\"avatar_url\":\"https://avatars.githubusercontent.com/u/10130?v=4\",\"html_url\":\"https://github.com/anthony\"},{\"id\":3982077,\"login\":\"anthonychu\",\"avatar_url\":\"https://avatars.githubusercontent.com/u/3982077?v=4\",\"html_url\":\"https://github.com/anthonychu\"}]"
+		);
+		Ok(())
+	}
+
+
 
 
 }
