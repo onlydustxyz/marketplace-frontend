@@ -9,24 +9,6 @@ pub struct Query;
 
 #[graphql_object(context=Context, Scalar = DefaultScalarValue)]
 impl Query {
-
-	pub async fn fetch_user_details_by_id(
-		&self,
-		context: &Context,
-		user_id: i32,
-	) -> Option<dto::github::User> {
-		let user_id = GithubUserId::from(user_id as i64);
-		context
-			.github_service()
-			.ok()?
-			.user_by_id(&user_id)
-			.await
-			.map(Into::into)
-			.map_err(Error::from)
-			.logged()
-			.ok()
-	}
-
 	pub async fn search_users(
 		&self,
 		context: &Context,
