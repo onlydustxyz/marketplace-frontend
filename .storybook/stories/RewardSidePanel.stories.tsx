@@ -5,6 +5,7 @@ import View, { Props } from "src/components/UserRewardTable/RewardSidePanel/View
 import { daysFromNow } from "src/utils/date";
 import withSidePanelStackProvider from "../decorators/withSidePanelStackProvider";
 import withContributorProfilePanelProvider from "../decorators/withContributorProfilePanelProvider";
+import SidePanel from "src/components/SidePanel";
 
 const statuses = {
   payoutInfoMissingAsLeader: {
@@ -99,10 +100,6 @@ const payment: PaymentRequestDetailsFragment = {
 };
 
 const args = {
-  open: true,
-  setOpen: () => {
-    return;
-  },
   workItemsCount: 2,
   ...payment,
   ...statuses.payoutInfoMissing,
@@ -121,13 +118,20 @@ type CustomArgs = {
 
 export const Default = {
   render: (props: Props & CustomArgs) => (
-    <View
-      {...args}
-      {...props}
-      {...props.payoutStatus}
-      userId={props.requestorIsYou ? payment.requestor?.id : "other"}
-      githubUserId={(props.recipientIsYou && payment.liveGithubRecipient?.id) || 0}
-      workItems={payment.workItems.slice(0, props.workItemsCount)}
-    />
+    <SidePanel
+      open={true}
+      setOpen={() => {
+        return;
+      }}
+    >
+      <View
+        {...args}
+        {...props}
+        {...props.payoutStatus}
+        userId={props.requestorIsYou ? payment.requestor?.id : "other"}
+        githubUserId={(props.recipientIsYou && payment.liveGithubRecipient?.id) || 0}
+        workItems={payment.workItems.slice(0, props.workItemsCount)}
+      />
+    </SidePanel>
   ),
 };

@@ -8,6 +8,7 @@ import RewardSidePanel from "./RewardSidePanel";
 import { viewportConfig } from "src/config";
 import MobileUserRewardList from "./MobileUserRewardList";
 import { useMediaQuery } from "usehooks-ts";
+import SidePanel from "src/components/SidePanel";
 
 type PropsType = {
   rewards: (Reward & Sortable)[];
@@ -65,9 +66,9 @@ const UserRewardTable: React.FC<PropsType> = ({ rewards, payoutInfoMissing, invo
           onRewardClick={onRewardClick}
         />
       )}
-      {selectedReward && (
-        <RewardSidePanel open={sidePanelOpen} setOpen={setSidePanelOpen} rewardId={selectedReward.id} />
-      )}
+      <SidePanel open={sidePanelOpen} setOpen={setSidePanelOpen}>
+        {selectedReward && <RewardSidePanel rewardId={selectedReward.id} />}
+      </SidePanel>
     </>
   );
 };

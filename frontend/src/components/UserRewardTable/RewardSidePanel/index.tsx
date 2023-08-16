@@ -8,18 +8,12 @@ import { useIntl } from "src/hooks/useIntl";
 import { useCommands } from "src/providers/Commands";
 
 type Props = {
-  open: boolean;
-  setOpen: (open: boolean) => void;
   rewardId: string;
-};
-
-export default function RewardSidePanel({
-  rewardId,
-  ...props
-}: Props & {
   onRewardCancel?: () => void;
   projectLeaderView?: boolean;
-}) {
+};
+
+export default function RewardSidePanel({ rewardId, onRewardCancel, projectLeaderView }: Props) {
   const { user, githubUserId } = useAuth();
   const { data, loading } = usePaymentRequestDetailsQuery({
     variables: { id: rewardId },
@@ -37,7 +31,6 @@ export default function RewardSidePanel({
 
   return (
     <View
-      {...props}
       loading={loading}
       {...data?.paymentRequestsByPk}
       id={rewardId}
@@ -46,11 +39,21 @@ export default function RewardSidePanel({
       status={status}
       invoiceNeeded={invoiceNeeded}
       payoutInfoMissing={!payoutSettingsValid}
+      onRewardCancel={onRewardCancel}
+      projectLeaderView={projectLeaderView}
     />
   );
 }
 
-export function RewardSidePanelAsLeader({ projectId, rewardId, setOpen, ...props }: Props & { projectId: string }) {
+export function RewardSidePanelAsLeader({
+  projectId,
+  rewardId,
+  setOpen,
+}: {
+  projectId: string;
+  rewardId: string;
+  setOpen: (value: boolean) => void;
+}) {
   const showToaster = useShowToaster();
   const { T } = useIntl();
   const { notify } = useCommands();
@@ -65,13 +68,5 @@ export function RewardSidePanelAsLeader({ projectId, rewardId, setOpen, ...props
     },
   });
 
-  return (
-    <RewardSidePanel
-      {...props}
-      projectLeaderView
-      rewardId={rewardId}
-      setOpen={setOpen}
-      onRewardCancel={cancelPaymentRequest}
-    />
-  );
+  return <RewardSidePanel projectLeaderView rewardId={rewardId} onRewardCancel={cancelPaymentRequest} />;
 }

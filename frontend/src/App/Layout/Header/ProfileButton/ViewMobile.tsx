@@ -15,7 +15,7 @@ import { RoutePaths } from "src/App";
 import Folder3Line from "src/icons/Folder3Line";
 import ExchangeDollarLine from "src/icons/ExchangeDollarLine";
 import SidePanel from "src/components/SidePanel";
-import ContributorProfileSidePanel from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel";
+import { useContributorProfilePanel } from "src/hooks/useContributorProfilePanel";
 
 type Props = {
   avatarUrl: string | null;
@@ -37,7 +37,7 @@ export default function ViewMobile({
 
   const [payoutInfoSidePanelOpen, setPayoutInfoSidePanelOpen] = useState(false);
   const [panelOpen, setPanelOpen] = useState(false);
-  const [contributorPanelOpen, setContributorPanelOpen] = useState(false);
+  const { open: openContributorProfilePanel } = useContributorProfilePanel();
 
   const { openFullTermsAndConditions, openPrivacyPolicy } = useSidePanel();
 
@@ -89,9 +89,14 @@ export default function ViewMobile({
                 </div>
               )}
               <>
-                <button className="flex items-center gap-3 p-4" onClick={() => setContributorPanelOpen(true)}>
-                  <User3Line className="text-xl" /> {T("navbar.profile.publicProfile")}
-                </button>
+                {githubUserId && (
+                  <button
+                    className="flex items-center gap-3 p-4"
+                    onClick={() => openContributorProfilePanel(githubUserId)}
+                  >
+                    <User3Line className="text-xl" /> {T("navbar.profile.publicProfile")}
+                  </button>
+                )}
                 <button className="flex items-center gap-3 p-4" onClick={() => setPayoutInfoSidePanelOpen(true)}>
                   <MoneyDollarCircleLine className="text-xl" /> {T("navbar.profile.payoutInfo")}
                   {showMissingPayoutSettingsState && <Dot className="w-1.5 fill-orange-500" />}
@@ -116,15 +121,6 @@ export default function ViewMobile({
           open={payoutInfoSidePanelOpen}
           setOpen={setPayoutInfoSidePanelOpen}
         />
-        {githubUserId && (
-          // We cannot use the ContributorProfileSidePanelProvider here as headless-ui is unable to auto focus the panel when it opens.
-          // See https://github.com/tailwindlabs/headlessui/discussions/2578
-          <ContributorProfileSidePanel
-            githubUserId={githubUserId}
-            open={contributorPanelOpen}
-            setOpen={setContributorPanelOpen}
-          />
-        )}
       </SidePanel>
     </>
   );

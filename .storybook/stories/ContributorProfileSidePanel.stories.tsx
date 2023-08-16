@@ -8,6 +8,7 @@ import withSidePanelStackProvider from "../decorators/withSidePanelStackProvider
 import withTokenSetProvider from "../decorators/withTokenSetProvider";
 import withMockedProvider from "../decorators/withMockedProvider";
 import withImpersonationClaimsProvider from "../decorators/withImpersonationClaimsProvider";
+import SidePanel from "src/components/SidePanel";
 
 export default {
   title: "ContributorProfileSidePanel",
@@ -199,24 +200,30 @@ const poseidon: Project = {
 
 export const Default = {
   render: () => (
-    <ContributorProfileSidePanel
+    <SidePanel
       open={true}
       setOpen={() => {
         return;
       }}
-      userProfile={{
-        profile: profileFull as UserProfileFragment & OwnUserProfileDetailsFragment,
-        projects: [kakarot, wtf, checkpoint, poseidon],
-        languages: ["Rust", "Go", "Typescript"],
-        contributionCounts: [
-          { year: 2023, week: 17, paidCount: 4, unpaidCount: 1 },
-          { year: 2023, week: 20, paidCount: 1, unpaidCount: 2 },
-          { year: 2023, week: 21, paidCount: 4, unpaidCount: 0 },
-          { year: 2023, week: 22, paidCount: 1, unpaidCount: 0 },
-        ],
-        contributionCountVariationSinceLastWeek: 3,
-      }}
-    />
+    >
+      <ContributorProfileSidePanel
+        setOpen={() => {
+          return;
+        }}
+        userProfile={{
+          profile: profileFull as UserProfileFragment & OwnUserProfileDetailsFragment,
+          projects: [kakarot, wtf, checkpoint, poseidon],
+          languages: ["Rust", "Go", "Typescript"],
+          contributionCounts: [
+            { year: 2023, week: 17, paidCount: 4, unpaidCount: 1 },
+            { year: 2023, week: 20, paidCount: 1, unpaidCount: 2 },
+            { year: 2023, week: 21, paidCount: 4, unpaidCount: 0 },
+            { year: 2023, week: 22, paidCount: 1, unpaidCount: 0 },
+          ],
+          contributionCountVariationSinceLastWeek: 3,
+        }}
+      />
+    </SidePanel>
   ),
   parameters: {
     chromatic: { delay: 1500 },
@@ -225,32 +232,38 @@ export const Default = {
 
 export const Own = {
   render: () => (
-    <ContributorProfileSidePanel
+    <SidePanel
       open={true}
       setOpen={() => {
         return;
       }}
-      userProfile={{
-        profile: {
-          ...profileNotSignedUp,
-          ...({
-            cover: "magenta",
-            completionScore: 65,
-            weeklyAllocatedTime: null,
-            lookingForAJob: null,
-          } as OwnUserProfileDetailsFragment),
-        } as UserProfileFragment & OwnUserProfileDetailsFragment,
-        projects: [kakarot, wtf, checkpoint, poseidon],
-        languages: ["Rust", "Go", "Typescript"],
-        contributionCounts: [
-          { year: 2023, week: 17, paidCount: 4, unpaidCount: 1 },
-          { year: 2023, week: 20, paidCount: 1, unpaidCount: 2 },
-          { year: 2023, week: 22, paidCount: 1, unpaidCount: 0 },
-        ],
-        contributionCountVariationSinceLastWeek: -3,
-      }}
-      isOwn
-    />
+    >
+      <ContributorProfileSidePanel
+        setOpen={() => {
+          return;
+        }}
+        userProfile={{
+          profile: {
+            ...profileNotSignedUp,
+            ...({
+              cover: "magenta",
+              completionScore: 65,
+              weeklyAllocatedTime: null,
+              lookingForAJob: null,
+            } as OwnUserProfileDetailsFragment),
+          } as UserProfileFragment & OwnUserProfileDetailsFragment,
+          projects: [kakarot, wtf, checkpoint, poseidon],
+          languages: ["Rust", "Go", "Typescript"],
+          contributionCounts: [
+            { year: 2023, week: 17, paidCount: 4, unpaidCount: 1 },
+            { year: 2023, week: 20, paidCount: 1, unpaidCount: 2 },
+            { year: 2023, week: 22, paidCount: 1, unpaidCount: 0 },
+          ],
+          contributionCountVariationSinceLastWeek: -3,
+        }}
+        isOwn
+      />
+    </SidePanel>
   ),
   parameters: {
     chromatic: { delay: 1500 },
@@ -259,19 +272,25 @@ export const Own = {
 
 export const NotSignedUp = {
   render: () => (
-    <ContributorProfileSidePanel
+    <SidePanel
       open={true}
       setOpen={() => {
         return;
       }}
-      userProfile={{
-        profile: profileNotSignedUp as UserProfileFragment & OwnUserProfileDetailsFragment,
-        projects: [wtf],
-        languages: ["Rust", "Go", "Typescript"],
-        contributionCounts: [],
-        contributionCountVariationSinceLastWeek: 0,
-      }}
-    />
+    >
+      <ContributorProfileSidePanel
+        setOpen={() => {
+          return;
+        }}
+        userProfile={{
+          profile: profileNotSignedUp as UserProfileFragment & OwnUserProfileDetailsFragment,
+          projects: [wtf],
+          languages: ["Rust", "Go", "Typescript"],
+          contributionCounts: [],
+          contributionCountVariationSinceLastWeek: 0,
+        }}
+      />
+    </SidePanel>
   ),
   parameters: {
     chromatic: { delay: 1500 },
@@ -280,19 +299,25 @@ export const NotSignedUp = {
 
 export const Minimalist = {
   render: () => (
-    <ContributorProfileSidePanel
+    <SidePanel
       open={true}
       setOpen={() => {
         return;
       }}
-      userProfile={{
-        profile: profileMinimalist as UserProfileFragment & OwnUserProfileDetailsFragment,
-        projects: [],
-        languages: [],
-        contributionCounts: [],
-        contributionCountVariationSinceLastWeek: 0,
-      }}
-    />
+    >
+      <ContributorProfileSidePanel
+        setOpen={() => {
+          return;
+        }}
+        userProfile={{
+          profile: profileMinimalist as UserProfileFragment & OwnUserProfileDetailsFragment,
+          projects: [],
+          languages: [],
+          contributionCounts: [],
+          contributionCountVariationSinceLastWeek: 0,
+        }}
+      />
+    </SidePanel>
   ),
   parameters: {
     chromatic: { delay: 1500 },

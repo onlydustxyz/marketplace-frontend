@@ -1,5 +1,6 @@
 import { createContext, PropsWithChildren, useCallback, useContext, useState } from "react";
 import ContributorProfileSidePanel from "./ContributorProfileSidePanel";
+import SidePanel from "src/components/SidePanel";
 
 type ContributorProfilePanel = {
   open: (githubUserId: number) => void;
@@ -19,7 +20,9 @@ export const ContributorProfilePanelProvider = ({ children }: PropsWithChildren)
   return (
     <ContributorProfilePanelContext.Provider value={{ open: openSidePanel }}>
       {children}
-      {githubUserId && <ContributorProfileSidePanel githubUserId={githubUserId} open={open} setOpen={setOpen} />}
+      <SidePanel open={open} setOpen={setOpen}>
+        {githubUserId && <ContributorProfileSidePanel githubUserId={githubUserId} setOpen={setOpen} />}
+      </SidePanel>
     </ContributorProfilePanelContext.Provider>
   );
 };
