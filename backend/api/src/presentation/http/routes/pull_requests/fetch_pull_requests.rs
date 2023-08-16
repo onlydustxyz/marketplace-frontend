@@ -1,12 +1,14 @@
 use std::sync::Arc;
 
 use http_api_problem::{HttpApiProblem, StatusCode};
+use rocket::serde::json::Json;
 use rocket::State;
 
 use common_domain::{GithubPullRequestNumber, GithubRepoId};
 use olog::{error, IntoField};
 
 use crate::presentation::http::github_client_pat_factory::GithubClientPatFactory;
+use crate::presentation::http::routes::pull_requests::dto::Response;
 
 #[get("/api/pull_requests/<repo_owner>/<repo_name>/<pr_number>")]
 pub async fn fetch_pull_request(
@@ -14,11 +16,10 @@ pub async fn fetch_pull_request(
 	repo_name: String,
 	pr_number: i32,
 	github_client_factory: &State<Arc<GithubClientPatFactory>>,
-) -> Option<dto::github::PullRequest> {
+) -> Result<Json<Response>, HttpApiProblem> {
 	let pr_number = GithubPullRequestNumber::from(pr_number as i64);
 	let pr = github_client_factory
-		.github_service()
-		.ok()?
+		.github_service()?
 		.pull_request(repo_owner.clone(), repo_name.clone(), pr_number.clone())
 		.await
 		.map(Into::into)
@@ -32,6 +33,7 @@ pub async fn fetch_pull_request(
 				.title(error_message)
 				.detail(e.to_string())
 		})?;
+	Ok(Json(pr))
 }
 
 #[get("/api/pull_requests/<repository_id>/<pr_number>")]
@@ -39,12 +41,12 @@ pub async fn fetch_pull_request_by_repository_id(
 	repository_id: i32,
 	pr_number: i32,
 	github_client_factory: &State<Arc<GithubClientPatFactory>>,
-) -> Option<dto::github::PullRequest> {
+) -> Result<Json<Response>, HttpApiProblem> {
 	let repository_id = GithubRepoId::from(repository_id as i64);
 	let pr_number = GithubPullRequestNumber::from(pr_number as i64);
-	github_client_factory
-		.github_service()
-		.ok()?
+
+	let pr = github_client_factory
+		.github_service()?
 		.pull_request_by_repo_id(repository_id, pr_number)
 		.await
 		.map(Into::into)
@@ -58,4 +60,5 @@ pub async fn fetch_pull_request_by_repository_id(
 				.title(error_message)
 				.detail(e.to_string())
 		})?;
+	Ok(Json(pr))
 }

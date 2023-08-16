@@ -120,4 +120,11 @@ pub fn serve(
 				routes::issues::fetch_issue_by_repository_id_issue_number,
 			],
 		)
+		.mount(
+			"/",
+			routes![
+				routes::pull_requests::fetch_pull_requests::fetch_pull_request,
+				routes::pull_requests::fetch_pull_requests::fetch_pull_request_by_repository_id,
+			],
+		)
 }

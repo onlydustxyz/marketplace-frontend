@@ -9,45 +9,6 @@ pub struct Query;
 
 #[graphql_object(context=Context, Scalar = DefaultScalarValue)]
 impl Query {
-	
-
-	pub async fn fetch_pull_request(
-		&self,
-		context: &Context,
-		repo_owner: String,
-		repo_name: String,
-		pr_number: i32,
-	) -> Option<dto::github::PullRequest> {
-		let pr_number = GithubPullRequestNumber::from(pr_number as i64);
-		context
-			.github_service()
-			.ok()?
-			.pull_request(repo_owner, repo_name, pr_number)
-			.await
-			.map(Into::into)
-			.map_err(Error::from)
-			.logged()
-			.ok()
-	}
-
-	pub async fn fetch_pull_request_by_repository_id(
-		&self,
-		context: &Context,
-		repository_id: i32,
-		pr_number: i32,
-	) -> Option<dto::github::PullRequest> {
-		let repository_id = GithubRepoId::from(repository_id as i64);
-		let pr_number = GithubPullRequestNumber::from(pr_number as i64);
-		context
-			.github_service()
-			.ok()?
-			.pull_request_by_repo_id(repository_id, pr_number)
-			.await
-			.map(Into::into)
-			.map_err(Error::from)
-			.logged()
-			.ok()
-	}
 
 	pub async fn fetch_user_details_by_id(
 		&self,

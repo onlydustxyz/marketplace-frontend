@@ -37,7 +37,7 @@ impl<'a> Test<'a> {
 	async fn should_fetch_an_issue_given_a_repo_owner_repo_name_issue_number(
 		&mut self,
 	) -> Result<()> {
-		info!("should_fetch_an_issue_given_a_repo_owner_repo_name_issue_number_and_pat");
+		info!("should_fetch_an_issue_given_a_repo_owner_repo_name_issue_number");
 		// Given
 		let resource = "/api/issues/repo_onwer_test_1/repo_name_test_1/111";
 
