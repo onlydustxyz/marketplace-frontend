@@ -6,6 +6,7 @@ import "src/assets/fonts/GTWalsheimPro/stylesheet.css";
 import "src/assets/fonts/BelweBdBt/stylesheet.css";
 import { IntlProvider } from "src/hooks/useIntl";
 import { MINIMAL_VIEWPORTS } from "@storybook/addon-viewport";
+import { SidePanelStackProvider } from "src/hooks/useSidePanelStack";
 
 const customViewports = {
   desktop: {
@@ -50,7 +51,9 @@ export const parameters = {
 export const decorators = [
   (Story: any) => (
     <IntlProvider>
-      <Story />
+      <SidePanelStackProvider>
+        <Story />
+      </SidePanelStackProvider>
     </IntlProvider>
   ),
 ];
