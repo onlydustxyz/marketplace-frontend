@@ -266,7 +266,7 @@ export default function View({ payoutSettingsValid, saveButtonDisabled, unsavedC
       <div className="flex flex-row items-center justify-between border-t border-greyscale-50/8 bg-white/2 px-8 py-5">
         <Tag size={TagSize.Medium}>
           {unsavedChanges ? (
-            <div className="flex flex-row items-center gap-1 text-orange-500">
+            <div className="flex flex-row items-center gap-1 text-spacePurple-300">
               <ErrorWarningLine /> {T("profile.form.saveStatus.unsaved")}
             </div>
           ) : (
