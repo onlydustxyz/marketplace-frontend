@@ -6,14 +6,13 @@ use fixtures::*;
 use infrastructure::{
 	amqp::UniqueMessage,
 	database::{
-		enums::ContributionType,
+		enums::{ContributionStatus, ContributionType},
 		schema::{contributions, github_issues},
 	},
 };
 use olog::info;
 use rstest::rstest;
 use testcontainers::clients::Cli;
-use infrastructure::database::enums::ContributionStatus;
 
 use crate::context::{docker, event_listeners::Context};
 

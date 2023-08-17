@@ -1,27 +1,28 @@
 use std::collections::HashSet;
 
 use diesel::{Connection, ExpressionMethods, PgConnection, QueryDsl, RunQueryDsl};
-
 use domain::{GithubRepoId, GithubUserId};
 use infrastructure::{
 	contextualized_error::IntoContextualizedError,
 	database,
 	database::{
-		enums::ContributionStatus, enums::ContributionType, enums::GithubCodeReviewStatus,
-		enums::GithubIssueStatus, enums::GithubPullRequestStatus, schema::contributions::dsl,
+		enums::{
+			ContributionStatus, ContributionType, GithubCodeReviewStatus, GithubIssueStatus,
+			GithubPullRequestStatus,
+		},
+		schema::contributions::dsl,
 		Result,
 	},
 };
 
-use crate::models::{GithubIssue, GithubPullRequest};
-
 use super::{Contribution, DetailsId};
+use crate::models::{GithubIssue, GithubPullRequest};
 
 pub trait Repository: Sync + Send {
 	fn upsert_from_github_issue(&self, issue: GithubIssue) -> Result<()>;
 	fn upsert_from_github_pull_request(&self, pull_request: GithubPullRequest) -> Result<()>;
 	fn find_contributors_of_repo(&self, github_repo_id: &GithubRepoId)
-		-> Result<Vec<GithubUserId>>;
+	-> Result<Vec<GithubUserId>>;
 }
 
 impl Repository for database::Client {
