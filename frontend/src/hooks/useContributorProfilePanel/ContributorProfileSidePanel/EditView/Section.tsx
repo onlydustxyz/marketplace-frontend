@@ -1,9 +1,9 @@
 import classNames from "classnames";
-import { PropsWithChildren, ReactElement } from "react";
+import { PropsWithChildren, ReactElement, ReactNode } from "react";
 
 type Props = {
   title: ReactElement | string;
-  subtitle?: string;
+  subtitle?: ReactNode;
   gap?: "narrow" | "wide";
 } & PropsWithChildren;
 
@@ -17,7 +17,7 @@ export function Section({ title, subtitle, gap = "wide", children }: Props) {
     >
       <div className="flex flex-col gap-1">
         <div className="font-belwe text-base font-normal text-white">{title}</div>
-        {subtitle && <div className="font-walsheim text-sm font-normal text-greyscale-300">{subtitle}</div>}
+        {subtitle && <div className="font-walsheim text-xs font-normal text-greyscale-300">{subtitle}</div>}
       </div>
       {children}
     </div>

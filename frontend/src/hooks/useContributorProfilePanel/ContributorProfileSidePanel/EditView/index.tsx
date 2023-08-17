@@ -144,7 +144,15 @@ export default function EditView({ profile, setEditMode }: Props) {
                 </Section>
               </Card>
               <Card>
-                <Section gap="wide" title={T("profile.form.contactInfo.title")}>
+                <Section
+                  gap="wide"
+                  title={T("profile.form.contactInfo.title")}
+                  subtitle={
+                    <>
+                      <ErrorWarningLine /> {T("profile.form.contactInfo.subtitle")}
+                    </>
+                  }
+                >
                   <ContactInformations />
                 </Section>
               </Card>
