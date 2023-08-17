@@ -1,21 +1,27 @@
 use std::collections::HashSet;
 
 use diesel::{Connection, ExpressionMethods, PgConnection, QueryDsl, RunQueryDsl};
+
 use domain::{GithubRepoId, GithubUserId};
 use infrastructure::{
 	contextualized_error::IntoContextualizedError,
 	database,
-	database::{enums::ContributionType, schema::contributions::dsl, Result},
+	database::{
+		enums::ContributionStatus, enums::ContributionType, enums::GithubCodeReviewStatus,
+		enums::GithubIssueStatus, enums::GithubPullRequestStatus, schema::contributions::dsl,
+		Result,
+	},
 };
 
-use super::{Contribution, DetailsId};
 use crate::models::{GithubIssue, GithubPullRequest};
+
+use super::{Contribution, DetailsId};
 
 pub trait Repository: Sync + Send {
 	fn upsert_from_github_issue(&self, issue: GithubIssue) -> Result<()>;
 	fn upsert_from_github_pull_request(&self, pull_request: GithubPullRequest) -> Result<()>;
 	fn find_contributors_of_repo(&self, github_repo_id: &GithubRepoId)
-	-> Result<Vec<GithubUserId>>;
+		-> Result<Vec<GithubUserId>>;
 }
 
 impl Repository for database::Client {
@@ -29,6 +35,11 @@ impl Repository for database::Client {
 				user_id: assignee,
 				type_: ContributionType::Issue,
 				details_id: issue.id.into(),
+				status_: match issue.status {
+					GithubIssueStatus::Completed => ContributionStatus::Complete,
+					GithubIssueStatus::Open => ContributionStatus::InProgress,
+					GithubIssueStatus::Cancelled => ContributionStatus::Canceled,
+				},
 			})
 			.collect();
 
@@ -65,6 +76,11 @@ impl Repository for database::Client {
 					user_id: commit.author_id,
 					type_: ContributionType::PullRequest,
 					details_id: pull_request.inner.id.into(),
+					status_: match pull_request.inner.status {
+						GithubPullRequestStatus::Open => ContributionStatus::InProgress,
+						GithubPullRequestStatus::Closed => ContributionStatus::Canceled,
+						GithubPullRequestStatus::Merged => ContributionStatus::Complete,
+					},
 				})
 				.collect::<HashSet<_>>()
 				.into_iter()
@@ -96,6 +112,10 @@ impl Repository for database::Client {
 					user_id: review.reviewer_id,
 					type_: ContributionType::CodeReview,
 					details_id: pull_request.inner.id.into(),
+					status_: match review.status {
+						GithubCodeReviewStatus::Completed => ContributionStatus::Complete,
+						GithubCodeReviewStatus::Pending => ContributionStatus::InProgress,
+					},
 				})
 				.collect::<HashSet<_>>()
 				.into_iter()

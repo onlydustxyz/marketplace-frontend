@@ -13,6 +13,7 @@ use infrastructure::{
 use olog::info;
 use rstest::rstest;
 use testcontainers::clients::Cli;
+use infrastructure::database::enums::ContributionStatus;
 
 use crate::context::{docker, event_listeners::Context};
 
@@ -107,6 +108,7 @@ impl<'a> Test<'a> {
 				contribution.details_id,
 				GithubIssueId::from(1358746346u64).into()
 			);
+			assert_eq!(contribution.status_, ContributionStatus::Complete);
 		}
 
 		Ok(())

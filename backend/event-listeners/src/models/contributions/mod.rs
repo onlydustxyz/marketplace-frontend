@@ -1,6 +1,6 @@
 use diesel::{pg::Pg, Identifiable, Queryable};
 use domain::{GithubRepoId, GithubUserId};
-use infrastructure::database::{enums::ContributionType, schema::contributions};
+use infrastructure::database::{enums::ContributionType, schema::contributions, enums::ContributionStatus};
 use serde::{Deserialize, Serialize};
 
 mod details_id;
@@ -28,6 +28,7 @@ pub struct Contribution {
 	pub user_id: GithubUserId,
 	pub type_: ContributionType,
 	pub details_id: DetailsId,
+	pub status_: ContributionStatus,
 }
 
 impl Identifiable for Contribution {
@@ -40,12 +41,12 @@ impl Identifiable for Contribution {
 
 impl<ST> Queryable<ST, Pg> for Contribution
 where
-	(GithubRepoId, GithubUserId, ContributionType, i64): Queryable<ST, Pg>,
+	(GithubRepoId, GithubUserId, ContributionType, i64, ContributionStatus): Queryable<ST, Pg>,
 {
-	type Row = <(GithubRepoId, GithubUserId, ContributionType, i64) as Queryable<ST, Pg>>::Row;
+	type Row = <(GithubRepoId, GithubUserId, ContributionType, i64, ContributionStatus) as Queryable<ST, Pg>>::Row;
 
 	fn build(row: Self::Row) -> diesel::deserialize::Result<Self> {
-		let (repo_id, user_id, type_, details_id) = Queryable::build(row)?;
+		let (repo_id, user_id, type_, details_id, status_) = Queryable::build(row)?;
 
 		Ok(Self {
 			repo_id,
@@ -56,6 +57,7 @@ where
 				ContributionType::PullRequest | ContributionType::CodeReview =>
 					DetailsId::PullRequest(details_id.into()),
 			},
+			status_,
 		})
 	}
 }

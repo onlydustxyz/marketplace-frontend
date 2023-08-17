@@ -20,6 +20,7 @@ use infrastructure::{
 use olog::info;
 use rstest::rstest;
 use testcontainers::clients::Cli;
+use infrastructure::database::enums::ContributionStatus;
 
 use crate::context::{docker, event_listeners::Context};
 
@@ -263,6 +264,10 @@ impl<'a> Test<'a> {
 					contribution.details_id,
 					GithubPullRequestId::from(1455874031u64).into()
 				);
+				assert_eq!(
+					contribution.status_,
+					ContributionStatus::Complete
+				);
 			}
 
 			{
@@ -273,6 +278,10 @@ impl<'a> Test<'a> {
 				assert_eq!(
 					contribution.details_id,
 					GithubPullRequestId::from(1455874031u64).into()
+				);
+				assert_eq!(
+					contribution.status_,
+					ContributionStatus::Complete
 				);
 			}
 		}

@@ -17,6 +17,10 @@ pub mod sql_types {
     #[diesel(postgres_type(name = "contribution_type"))]
     pub struct ContributionType;
 
+	#[derive(diesel::query_builder::QueryId, diesel::sql_types::SqlType)]
+    #[diesel(postgres_type(name = "contribution_status"))]
+    pub struct ContributionStatus;
+
     #[derive(diesel::query_builder::QueryId, diesel::sql_types::SqlType)]
     #[diesel(postgres_type(name = "github_ci_checks"))]
     pub struct GithubCiChecks;
@@ -104,8 +108,16 @@ diesel::table! {
 }
 
 diesel::table! {
+    event_deduplications (deduplication_id) {
+        deduplication_id -> Text,
+        event_index -> Int4,
+    }
+}
+
+diesel::table! {
     use diesel::sql_types::*;
     use super::sql_types::ContributionType;
+    use super::sql_types::ContributionStatus;
 
     contributions (type_, details_id, user_id) {
         repo_id -> Int8,
@@ -113,13 +125,8 @@ diesel::table! {
         #[sql_name = "type"]
         type_ -> ContributionType,
         details_id -> Int8,
-    }
-}
-
-diesel::table! {
-    event_deduplications (deduplication_id) {
-        deduplication_id -> Text,
-        event_index -> Int4,
+		#[sql_name = "status"]
+        status_ -> ContributionStatus,
     }
 }
 
