@@ -214,7 +214,7 @@ export default function EditView({ profile, setEditMode }: Props) {
             </Tag>
             <div className="flex flex-row items-center gap-5">
               {isXl && completionScore < 95 && (
-                <div className="flex flex-col gap-2">
+                <div className="flex max-w-[100px] flex-col gap-2">
                   <div className="self-end font-walsheim text-sm font-medium text-greyscale-50">
                     {T("profile.form.completion", { completion: completionScore.toString() })}
                   </div>
