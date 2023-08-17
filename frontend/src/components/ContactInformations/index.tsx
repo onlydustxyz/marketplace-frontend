@@ -54,7 +54,7 @@ export default function ContactInformations({ onlyEditable }: Props) {
         visibilityName="isWhatsappPublic"
         options={{
           pattern: {
-            value: /^(?:(?:\+\d{1,4}|00\d{1,3})\s?)?\d{7,15}$/,
+            value: /^\+?(?:[0-9-(). ])+$/,
             message: T("profile.form.contactInfo.invalidePhoneNumber"),
           },
         }}
