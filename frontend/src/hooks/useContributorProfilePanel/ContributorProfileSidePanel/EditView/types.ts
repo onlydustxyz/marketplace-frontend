@@ -76,7 +76,11 @@ export const toVariables = (profile: UserProfileInfo): UpdateUserProfileMutation
       contact: profile.twitter && `https://twitter.com/${sanitizeContactHandle(profile.twitter)}`,
       public: profile.isTwitterPublic,
     },
-    { channel: Channel.Discord, contact: profile.discord, public: profile.isDiscordPublic },
+    {
+      channel: Channel.Discord,
+      contact: profile.discord && sanitizeContactHandle(profile.discord),
+      public: profile.isDiscordPublic,
+    },
     {
       channel: Channel.LinkedIn,
       contact: profile.linkedin && `https://www.linkedin.com/in/${sanitizeContactHandle(profile.linkedin)}`,
