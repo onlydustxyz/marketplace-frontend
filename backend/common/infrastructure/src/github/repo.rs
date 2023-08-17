@@ -34,6 +34,7 @@ impl TryFrom<OctocrabRepo> for GithubRepo {
 					.map(Box::new)
 					.ok()
 			}),
+			has_issues: repo.has_issues.unwrap_or_default(),
 		})
 	}
 }

@@ -18,6 +18,7 @@ pub struct GithubRepo {
 	pub html_url: String,
 	pub languages: serde_json::Value,
 	pub parent_id: Option<GithubRepoId>,
+	pub has_issues: bool,
 }
 
 impl Identifiable for GithubRepo {
