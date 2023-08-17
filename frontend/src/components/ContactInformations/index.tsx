@@ -40,6 +40,12 @@ export default function ContactInformations({ onlyEditable }: Props) {
         placeholder={T("profile.form.contactInfo.telegram")}
         icon={<Telegram size={16} />}
         visibilityName="isTelegramPublic"
+        options={{
+          pattern: {
+            value: /^(?:@|(?:(?:(?:https?:\/\/)?t(?:elegram)?)\.me\/))?(\w{4,})$/,
+            message: T("profile.form.contactInfo.invalidUsername"),
+          },
+        }}
       />
       <ContactInformation
         name="whatsapp"
@@ -47,7 +53,10 @@ export default function ContactInformations({ onlyEditable }: Props) {
         icon={<WhatsappFill />}
         visibilityName="isWhatsappPublic"
         options={{
-          pattern: { value: /^(?:\+\d{1,4}|00\d{1,3})\s?\d{7,15}$/, message: T("profile.form.contactInfo.phone") },
+          pattern: {
+            value: /^\+?(?:[0-9-(). ])+$/,
+            message: T("profile.form.contactInfo.invalidePhoneNumber"),
+          },
         }}
       />
       <ContactInformation
@@ -55,18 +64,36 @@ export default function ContactInformations({ onlyEditable }: Props) {
         placeholder={T("profile.form.contactInfo.twitter")}
         icon={<TwitterFill />}
         visibilityName="isTwitterPublic"
+        options={{
+          pattern: {
+            value: /^(?:@|(?:(?:(?:https?:\/\/)?(?:twitter)?)\.com\/))?(\w{4,})$/,
+            message: T("profile.form.contactInfo.invalidUsername"),
+          },
+        }}
       />
       <ContactInformation
         name="discord"
         placeholder={T("profile.form.contactInfo.discord")}
         icon={<DiscordFill />}
         visibilityName="isDiscordPublic"
+        options={{
+          pattern: {
+            value: /^@?[a-zA-Z0-9_.]{2,32}$/,
+            message: T("profile.form.contactInfo.invalidUsername"),
+          },
+        }}
       />
       <ContactInformation
         name="linkedin"
         placeholder={T("profile.form.contactInfo.linkedin")}
         icon={<LinkedinBoxFill />}
         visibilityName="isLinkedInPublic"
+        options={{
+          pattern: {
+            value: /^(?:@|(?:(?:(?:https?:)?\/\/)?(?:[\w]+\.)?linkedin\.com\/in\/))?([\w\-_À-ÿ%]+)\/?$/,
+            message: T("profile.form.contactInfo.invalidUsername"),
+          },
+        }}
       />
     </div>
   );

@@ -28,6 +28,7 @@ import CompletionBar from "src/components/CompletionBar";
 import { useState } from "react";
 import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
+import classNames from "classnames";
 
 type Props = {
   profile: UserProfileFragment & OwnUserProfileDetailsFragment;
@@ -143,7 +144,15 @@ export default function EditView({ profile, setEditMode }: Props) {
                 </Section>
               </Card>
               <Card>
-                <Section gap="wide" title={T("profile.form.contactInfo.title")}>
+                <Section
+                  gap="wide"
+                  title={T("profile.form.contactInfo.title")}
+                  subtitle={
+                    <>
+                      <ErrorWarningLine /> {T("profile.form.contactInfo.subtitle")}
+                    </>
+                  }
+                >
                   <ContactInformations />
                 </Section>
               </Card>
@@ -195,7 +204,12 @@ export default function EditView({ profile, setEditMode }: Props) {
           <div className="flex flex-row items-center justify-between border-t border-greyscale-50/8 bg-white/2 px-8 py-5">
             <Tag size={TagSize.Medium} testid="dirtyTag">
               {isDirty || !isValid ? (
-                <div className="flex flex-row items-center gap-1 text-orange-500">
+                <div
+                  className={classNames("flex flex-row items-center gap-1", {
+                    "text-orange-500": !isValid,
+                    "text-spacePurple-300": isValid,
+                  })}
+                >
                   <ErrorWarningLine />
                   {isValid ? T("profile.form.saveStatus.unsaved") : T("profile.form.saveStatus.invalid")}
                 </div>
@@ -208,7 +222,7 @@ export default function EditView({ profile, setEditMode }: Props) {
             </Tag>
             <div className="flex flex-row items-center gap-5">
               {isXl && completionScore < 95 && (
-                <div className="flex w-48 flex-col gap-2">
+                <div className="flex max-w-[100px] flex-col gap-2">
                   <div className="self-end font-walsheim text-sm font-medium text-greyscale-50">
                     {T("profile.form.completion", { completion: completionScore.toString() })}
                   </div>
