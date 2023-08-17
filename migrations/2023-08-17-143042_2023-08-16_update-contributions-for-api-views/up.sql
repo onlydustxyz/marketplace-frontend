@@ -10,3 +10,9 @@ WHERE status IS NULL;
 ALTER TABLE contributions
     ALTER COLUMN status SET NOT NULL;
 
+ALTER TABLE contributions
+    ADD COLUMN created_at TIMESTAMP NOT NULL;
+
+ALTER TABLE contributions
+    ADD COLUMN closed_at TIMESTAMP NOT NULL;
+

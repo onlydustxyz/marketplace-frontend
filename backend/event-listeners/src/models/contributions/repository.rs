@@ -41,6 +41,8 @@ impl Repository for database::Client {
 					GithubIssueStatus::Open => ContributionStatus::InProgress,
 					GithubIssueStatus::Cancelled => ContributionStatus::Canceled,
 				},
+				created_at: issue.created_at,
+				closed_at: issue.closed_at,
 			})
 			.collect();
 
@@ -82,6 +84,8 @@ impl Repository for database::Client {
 						GithubPullRequestStatus::Closed => ContributionStatus::Canceled,
 						GithubPullRequestStatus::Merged => ContributionStatus::Complete,
 					},
+					created_at: pull_request.inner.created_at,
+					closed_at: pull_request.inner.closed_at,
 				})
 				.collect::<HashSet<_>>()
 				.into_iter()
@@ -117,6 +121,8 @@ impl Repository for database::Client {
 						GithubCodeReviewStatus::Completed => ContributionStatus::Complete,
 						GithubCodeReviewStatus::Pending => ContributionStatus::InProgress,
 					},
+					created_at: pull_request.inner.created_at,
+					closed_at: review.submitted_at,
 				})
 				.collect::<HashSet<_>>()
 				.into_iter()

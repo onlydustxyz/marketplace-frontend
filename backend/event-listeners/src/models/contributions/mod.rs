@@ -1,3 +1,4 @@
+use chrono::NaiveDateTime;
 use diesel::{pg::Pg, Identifiable, Queryable};
 use domain::{GithubRepoId, GithubUserId};
 use infrastructure::database::{
@@ -32,6 +33,8 @@ pub struct Contribution {
 	pub type_: ContributionType,
 	pub details_id: DetailsId,
 	pub status_: ContributionStatus,
+	pub created_at: NaiveDateTime,
+	pub closed_at: Option<NaiveDateTime>,
 }
 
 impl Identifiable for Contribution {
@@ -50,6 +53,8 @@ where
 		ContributionType,
 		i64,
 		ContributionStatus,
+		NaiveDateTime,
+		Option<NaiveDateTime>,
 	): Queryable<ST, Pg>,
 {
 	type Row = <(
@@ -58,10 +63,12 @@ where
 		ContributionType,
 		i64,
 		ContributionStatus,
+		NaiveDateTime,
+		Option<NaiveDateTime>,
 	) as Queryable<ST, Pg>>::Row;
 
 	fn build(row: Self::Row) -> diesel::deserialize::Result<Self> {
-		let (repo_id, user_id, type_, details_id, status_) = Queryable::build(row)?;
+		let (repo_id, user_id, type_, details_id, status_, created_at, closed_at ) = Queryable::build(row)?;
 
 		Ok(Self {
 			repo_id,
@@ -73,6 +80,8 @@ where
 					DetailsId::PullRequest(details_id.into()),
 			},
 			status_,
+			created_at,
+			closed_at,
 		})
 	}
 }
