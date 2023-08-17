@@ -22,7 +22,6 @@ services:
       service: hasura
     environment:
       BACKEND_GRAPHQL_URL: ${BACKEND_GRAPHQL_URL:-http://api:8000/graphql}
-      GITHUB_PROXY_GRAPHQL_URL: ${GITHUB_PROXY_GRAPHQL_URL:-http://github-proxy:8001/graphql}
 
   hasura-console:
     labels:
