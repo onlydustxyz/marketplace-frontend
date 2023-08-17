@@ -119,20 +119,21 @@ jobs:
         uses: ./.github/actions/migrations-run
 
       - name: Run tests
-        uses: ./.github/actions/coverage-checks
-        with:
-          test_flags: --lib
+        run: cargo test
+#        uses: ./.github/actions/coverage-checks
+#        with:
+#          test_flags: --lib
 
-      - name: Setup tmate session for debugging
-        uses: mxschmitt/action-tmate@v3
-        if: ${{ failure() && inputs.debug_enabled }}
-
-      - name: Upload coverage results
-        uses: ./.github/actions/coverage-upload
-        with:
-          codecov_token: ${{ secrets.CODECOV_TOKEN }}
-          codecov_flag: unittest
-          file: cobertura.xml
+#      - name: Setup tmate session for debugging
+#        uses: mxschmitt/action-tmate@v3
+#        if: ${{ failure() && inputs.debug_enabled }}
+#
+#      - name: Upload coverage results
+#        uses: ./.github/actions/coverage-upload
+#        with:
+#          codecov_token: ${{ secrets.CODECOV_TOKEN }}
+#          codecov_flag: unittest
+#          file: cobertura.xml
 
   api_integration_tests:
     name: Integration tests
