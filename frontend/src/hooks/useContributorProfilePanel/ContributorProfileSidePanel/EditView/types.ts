@@ -63,7 +63,7 @@ export const toVariables = (profile: UserProfileInfo): UpdateUserProfileMutation
     { channel: Channel.Email, contact: profile.email, public: profile.isEmailPublic },
     {
       channel: Channel.Telegram,
-      contact: profile.telegram && `https://t.me/${profile.telegram}`,
+      contact: profile.telegram && `https://t.me/${sanitizeContactHandle(profile.telegram)}`,
       public: profile.isTelegramPublic,
     },
     {
@@ -73,13 +73,13 @@ export const toVariables = (profile: UserProfileInfo): UpdateUserProfileMutation
     },
     {
       channel: Channel.Twitter,
-      contact: profile.twitter && `https://twitter.com/${profile.twitter}`,
+      contact: profile.twitter && `https://twitter.com/${sanitizeContactHandle(profile.twitter)}`,
       public: profile.isTwitterPublic,
     },
     { channel: Channel.Discord, contact: profile.discord, public: profile.isDiscordPublic },
     {
       channel: Channel.LinkedIn,
-      contact: profile.linkedin && `https://www.linkedin.com/in/${profile.linkedin}`,
+      contact: profile.linkedin && `https://www.linkedin.com/in/${sanitizeContactHandle(profile.linkedin)}`,
       public: profile.isLinkedInPublic,
     },
   ],
@@ -90,6 +90,20 @@ export const toVariables = (profile: UserProfileInfo): UpdateUserProfileMutation
   weeklyAllocatedTime: profile.weeklyAllocatedTime,
   cover: profile.cover,
 });
+
+function sanitizeContactHandle(contact: string) {
+  let sanitizedContact = contact;
+  if (contact.endsWith("/")) {
+    sanitizedContact = sanitizedContact.slice(0, -1);
+  }
+  if (contact.includes("/")) {
+    sanitizedContact = sanitizedContact.split("/").at(-1) ?? "";
+  }
+  if (contact.startsWith("@")) {
+    sanitizedContact = sanitizedContact.substring(1);
+  }
+  return sanitizedContact;
+}
 
 const translateTimeAllocation = (timeAllocation: string): AllocatedTime | undefined => {
   switch (timeAllocation) {
