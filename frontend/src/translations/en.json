@@ -409,14 +409,15 @@
       "contactInfo": {
         "title": "Contact information",
         "error": "Please enter your __channel__ handle",
-        "phone": "Please enter your phone number with the country code",
         "telegram": "Telegram",
         "twitter": "Twitter",
         "discord": "Discord",
         "linkedin": "LinkedIn",
         "hiddenTootlip": "Hidden on public profile",
         "visibleTootlip": "Shown on public profile",
-        "whatsapp": "Whatsapp"
+        "whatsapp": "Whatsapp",
+        "invalidePhoneNumber": "Invalid phone number",
+        "invalidUsername": "Handle is invalid. Please enter a valid username."
       },
       "country": "Country",
       "cryptoWire": "Crypto wire",
