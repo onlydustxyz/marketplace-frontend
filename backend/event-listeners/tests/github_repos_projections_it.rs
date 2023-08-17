@@ -77,6 +77,7 @@ impl<'a> Test<'a> {
 					})
 				);
 				assert_eq!(repo.parent_id, None);
+				assert_eq!(repo.has_issues, repos::marketplace().has_issues);
 			}
 
 			{
@@ -93,6 +94,7 @@ impl<'a> Test<'a> {
 				assert_eq!(repo.stars, repos::marketplace_fork().stars);
 				assert_eq!(repo.languages, json!({}));
 				assert_eq!(repo.parent_id, Some(repos::marketplace().id));
+				assert_eq!(repo.has_issues, repos::marketplace_fork().has_issues);
 			}
 		}
 

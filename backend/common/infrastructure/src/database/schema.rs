@@ -227,6 +227,7 @@ diesel::table! {
         html_url -> Text,
         languages -> Jsonb,
         parent_id -> Nullable<Int8>,
+		has_issues -> Bool,
     }
 }
 

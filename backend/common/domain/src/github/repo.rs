@@ -14,6 +14,7 @@ pub struct Repo {
 	pub stars: i32,
 	pub forks_count: i32,
 	pub parent: Option<Box<Repo>>,
+	pub has_issues: bool,
 }
 
 #[derive(

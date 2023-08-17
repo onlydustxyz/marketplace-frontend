@@ -41,6 +41,7 @@ impl Projector {
 			html_url: repo.html_url.to_string(),
 			languages: serde_json::to_value(languages)?,
 			parent_id: repo.parent.map(|repo| repo.id),
+			has_issues: repo.has_issues,
 		})
 	}
 

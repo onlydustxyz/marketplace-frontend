@@ -12,6 +12,7 @@ pub fn marketplace() -> GithubRepo {
 		stars: 13,
 		forks_count: 8,
 		parent: None,
+		has_issues: true,
 	}
 }
 
@@ -27,5 +28,6 @@ pub fn marketplace_fork() -> GithubRepo {
 		stars: 0,
 		forks_count: 0,
 		parent: Some(Box::new(marketplace())),
+		has_issues: false,
 	}
 }

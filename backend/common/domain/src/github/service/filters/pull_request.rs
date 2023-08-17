@@ -43,6 +43,7 @@ mod tests {
 			stars: Default::default(),
 			forks_count: Default::default(),
 			parent: Default::default(),
+			has_issues: Default::default(),
 		}
 	}
 
