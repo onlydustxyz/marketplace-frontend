@@ -125,8 +125,7 @@ diesel::table! {
         #[sql_name = "type"]
         type_ -> ContributionType,
         details_id -> Int8,
-		#[sql_name = "status"]
-        status_ -> ContributionStatus,
+        status -> ContributionStatus,
 		created_at -> Timestamp,
 		closed_at -> Nullable<Timestamp>,
     }

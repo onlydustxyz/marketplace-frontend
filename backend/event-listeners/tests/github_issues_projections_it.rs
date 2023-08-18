@@ -107,7 +107,7 @@ impl<'a> Test<'a> {
 				contribution.details_id,
 				GithubIssueId::from(1358746346u64).into()
 			);
-			assert_eq!(contribution.status_, ContributionStatus::Complete);
+			assert_eq!(contribution.status, ContributionStatus::Complete);
 		}
 
 		Ok(())

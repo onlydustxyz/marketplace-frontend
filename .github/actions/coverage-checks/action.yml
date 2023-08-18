@@ -10,9 +10,9 @@ inputs:
 runs:
   using: "composite"
   steps:
-#    - uses: Swatinem/rust-cache@v2
-#      with:
-#        workspaces: ". -> tarpaulin_target"
+    - uses: Swatinem/rust-cache@v2
+      with:
+        workspaces: ". -> tarpaulin_target"
 
     - name: Run cargo-tarpaulin
       uses: actions-rs/tarpaulin@v0.1

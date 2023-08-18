@@ -263,7 +263,7 @@ impl<'a> Test<'a> {
 					contribution.details_id,
 					GithubPullRequestId::from(1455874031u64).into()
 				);
-				assert_eq!(contribution.status_, ContributionStatus::Complete);
+				assert_eq!(contribution.status, ContributionStatus::Complete);
 			}
 
 			{
@@ -275,7 +275,7 @@ impl<'a> Test<'a> {
 					contribution.details_id,
 					GithubPullRequestId::from(1455874031u64).into()
 				);
-				assert_eq!(contribution.status_, ContributionStatus::Complete);
+				assert_eq!(contribution.status, ContributionStatus::Complete);
 			}
 		}
 

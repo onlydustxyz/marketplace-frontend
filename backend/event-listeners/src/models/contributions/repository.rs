@@ -36,7 +36,7 @@ impl Repository for database::Client {
 				user_id: assignee,
 				type_: ContributionType::Issue,
 				details_id: issue.id.into(),
-				status_: match issue.status {
+				status: match issue.status {
 					GithubIssueStatus::Completed => ContributionStatus::Complete,
 					GithubIssueStatus::Open => ContributionStatus::InProgress,
 					GithubIssueStatus::Cancelled => ContributionStatus::Canceled,
@@ -79,7 +79,7 @@ impl Repository for database::Client {
 					user_id: commit.author_id,
 					type_: ContributionType::PullRequest,
 					details_id: pull_request.inner.id.into(),
-					status_: match pull_request.inner.status {
+					status: match pull_request.inner.status {
 						GithubPullRequestStatus::Open => ContributionStatus::InProgress,
 						GithubPullRequestStatus::Closed => ContributionStatus::Canceled,
 						GithubPullRequestStatus::Merged => ContributionStatus::Complete,
@@ -117,7 +117,7 @@ impl Repository for database::Client {
 					user_id: review.reviewer_id,
 					type_: ContributionType::CodeReview,
 					details_id: pull_request.inner.id.into(),
-					status_: match review.status {
+					status: match review.status {
 						GithubCodeReviewStatus::Completed => ContributionStatus::Complete,
 						GithubCodeReviewStatus::Pending => ContributionStatus::InProgress,
 					},

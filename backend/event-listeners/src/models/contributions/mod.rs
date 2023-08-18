@@ -32,7 +32,7 @@ pub struct Contribution {
 	pub user_id: GithubUserId,
 	pub type_: ContributionType,
 	pub details_id: DetailsId,
-	pub status_: ContributionStatus,
+	pub status: ContributionStatus,
 	pub created_at: NaiveDateTime,
 	pub closed_at: Option<NaiveDateTime>,
 }
@@ -68,7 +68,7 @@ where
 	) as Queryable<ST, Pg>>::Row;
 
 	fn build(row: Self::Row) -> diesel::deserialize::Result<Self> {
-		let (repo_id, user_id, type_, details_id, status_, created_at, closed_at) =
+		let (repo_id, user_id, type_, details_id, status, created_at, closed_at) =
 			Queryable::build(row)?;
 
 		Ok(Self {
@@ -80,7 +80,7 @@ where
 				ContributionType::PullRequest | ContributionType::CodeReview =>
 					DetailsId::PullRequest(details_id.into()),
 			},
-			status_,
+			status,
 			created_at,
 			closed_at,
 		})
