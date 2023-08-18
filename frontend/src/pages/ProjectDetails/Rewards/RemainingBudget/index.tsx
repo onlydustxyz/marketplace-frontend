@@ -23,7 +23,7 @@ export default function RemainingBudget({ budget, disabled }: Props) {
           {formatMoneyAmount({ amount: budget.remainingAmount })}
         </div>
         <div className="pb-2 pt-4">
-          <BudgetBar budget={budget} pendingSpending={0} displayPendingSpending={false} />
+          <BudgetBar budget={budget} pendingSpending={0} />
         </div>
         <div className="text-sm text-white">
           <span>{Math.round(budget.initialAmount ? (budget.remainingAmount / budget.initialAmount) * 100 : 0)}% </span>
