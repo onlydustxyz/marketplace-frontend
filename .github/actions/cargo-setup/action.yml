@@ -5,7 +5,7 @@ description: Install Rust toolchain and use cargo cache to speed up compilation 
 runs:
   using: "composite"
   steps:
-    - uses: Swatinem/rust-cache@v2
+#    - uses: Swatinem/rust-cache@v2
 
     - name: Install toolchain
       shell: bash
