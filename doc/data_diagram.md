@@ -150,6 +150,7 @@ class GithubPullRequests {
    authorId: bigint!
    ciChecks: github_ci_checks
    closedAt: timestamp
+   closingIssueNumbers: jsonb
    createdAt: timestamp!
    draft: Boolean!
    htmlUrl: String!
@@ -166,6 +167,7 @@ class GithubPullRequests {
 class GithubRepos {
    description: String!
    forkCount: Int!
+   hasIssues: Boolean!
    htmlUrl: String!
    id: bigint!
    languages: jsonb!

@@ -2545,9 +2545,9 @@ export type GithubIssueCreatedAndClosed = {
 };
 
 export enum GithubIssueCreatedAndClosedStatus {
-  Cancelled = 'CANCELLED',
-  Completed = 'COMPLETED',
-  Open = 'OPEN'
+  Cancelled = 'Cancelled',
+  Completed = 'Completed',
+  Open = 'Open'
 }
 
 export enum GithubIssueStatus {
@@ -3042,6 +3042,7 @@ export type GithubPullRequests = {
   authorId: Scalars['bigint'];
   ciChecks: Maybe<Scalars['github_ci_checks']>;
   closedAt: Maybe<Scalars['timestamp']>;
+  closingIssueNumbers: Maybe<Scalars['jsonb']>;
   createdAt: Scalars['timestamp'];
   draft: Scalars['Boolean'];
   htmlUrl: Scalars['String'];
@@ -3057,6 +3058,12 @@ export type GithubPullRequests = {
   repoId: Scalars['bigint'];
   status: Scalars['github_pull_request_status'];
   title: Scalars['String'];
+};
+
+
+/** columns and relationships of "github_pull_requests" */
+export type GithubPullRequestsClosingIssueNumbersArgs = {
+  path: InputMaybe<Scalars['String']>;
 };
 
 
@@ -3109,6 +3116,11 @@ export type GithubPullRequestsAggregateFieldsCountArgs = {
   distinct: InputMaybe<Scalars['Boolean']>;
 };
 
+/** append existing jsonb value of filtered columns with new jsonb value */
+export type GithubPullRequestsAppendInput = {
+  closingIssueNumbers: InputMaybe<Scalars['jsonb']>;
+};
+
 /** aggregate avg on columns */
 export type GithubPullRequestsAvgFields = {
   __typename?: 'GithubPullRequestsAvgFields';
@@ -3126,6 +3138,7 @@ export type GithubPullRequestsBoolExp = {
   authorId: InputMaybe<BigintComparisonExp>;
   ciChecks: InputMaybe<GithubCiChecksComparisonExp>;
   closedAt: InputMaybe<TimestampComparisonExp>;
+  closingIssueNumbers: InputMaybe<JsonbComparisonExp>;
   createdAt: InputMaybe<TimestampComparisonExp>;
   draft: InputMaybe<BooleanComparisonExp>;
   htmlUrl: InputMaybe<StringComparisonExp>;
@@ -3146,6 +3159,21 @@ export enum GithubPullRequestsConstraint {
   GithubPullRequestsPkey = 'github_pull_requests_pkey'
 }
 
+/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+export type GithubPullRequestsDeleteAtPathInput = {
+  closingIssueNumbers: InputMaybe<Array<Scalars['String']>>;
+};
+
+/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+export type GithubPullRequestsDeleteElemInput = {
+  closingIssueNumbers: InputMaybe<Scalars['Int']>;
+};
+
+/** delete key/value pair or string element. key/value pairs are matched based on their key value */
+export type GithubPullRequestsDeleteKeyInput = {
+  closingIssueNumbers: InputMaybe<Scalars['String']>;
+};
+
 /** input type for incrementing numeric columns in table "github_pull_requests" */
 export type GithubPullRequestsIncInput = {
   authorId: InputMaybe<Scalars['bigint']>;
@@ -3159,6 +3187,7 @@ export type GithubPullRequestsInsertInput = {
   authorId: InputMaybe<Scalars['bigint']>;
   ciChecks: InputMaybe<Scalars['github_ci_checks']>;
   closedAt: InputMaybe<Scalars['timestamp']>;
+  closingIssueNumbers: InputMaybe<Scalars['jsonb']>;
   createdAt: InputMaybe<Scalars['timestamp']>;
   draft: InputMaybe<Scalars['Boolean']>;
   htmlUrl: InputMaybe<Scalars['String']>;
@@ -3225,6 +3254,7 @@ export type GithubPullRequestsOrderBy = {
   authorId: InputMaybe<OrderBy>;
   ciChecks: InputMaybe<OrderBy>;
   closedAt: InputMaybe<OrderBy>;
+  closingIssueNumbers: InputMaybe<OrderBy>;
   createdAt: InputMaybe<OrderBy>;
   draft: InputMaybe<OrderBy>;
   htmlUrl: InputMaybe<OrderBy>;
@@ -3243,6 +3273,11 @@ export type GithubPullRequestsPkColumnsInput = {
   id: Scalars['bigint'];
 };
 
+/** prepend existing jsonb value of filtered columns with new jsonb value */
+export type GithubPullRequestsPrependInput = {
+  closingIssueNumbers: InputMaybe<Scalars['jsonb']>;
+};
+
 /** select columns of table "github_pull_requests" */
 export enum GithubPullRequestsSelectColumn {
   /** column name */
@@ -3251,6 +3286,8 @@ export enum GithubPullRequestsSelectColumn {
   CiChecks = 'ciChecks',
   /** column name */
   ClosedAt = 'closedAt',
+  /** column name */
+  ClosingIssueNumbers = 'closingIssueNumbers',
   /** column name */
   CreatedAt = 'createdAt',
   /** column name */
@@ -3276,6 +3313,7 @@ export type GithubPullRequestsSetInput = {
   authorId: InputMaybe<Scalars['bigint']>;
   ciChecks: InputMaybe<Scalars['github_ci_checks']>;
   closedAt: InputMaybe<Scalars['timestamp']>;
+  closingIssueNumbers: InputMaybe<Scalars['jsonb']>;
   createdAt: InputMaybe<Scalars['timestamp']>;
   draft: InputMaybe<Scalars['Boolean']>;
   htmlUrl: InputMaybe<Scalars['String']>;
@@ -3332,6 +3370,8 @@ export enum GithubPullRequestsUpdateColumn {
   /** column name */
   ClosedAt = 'closedAt',
   /** column name */
+  ClosingIssueNumbers = 'closingIssueNumbers',
+  /** column name */
   CreatedAt = 'createdAt',
   /** column name */
   Draft = 'draft',
@@ -3352,8 +3392,18 @@ export enum GithubPullRequestsUpdateColumn {
 }
 
 export type GithubPullRequestsUpdates = {
+  /** append existing jsonb value of filtered columns with new jsonb value */
+  _append: InputMaybe<GithubPullRequestsAppendInput>;
+  /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+  _deleteAtPath: InputMaybe<GithubPullRequestsDeleteAtPathInput>;
+  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+  _deleteElem: InputMaybe<GithubPullRequestsDeleteElemInput>;
+  /** delete key/value pair or string element. key/value pairs are matched based on their key value */
+  _deleteKey: InputMaybe<GithubPullRequestsDeleteKeyInput>;
   /** increments the numeric columns with given value of the filtered values */
   _inc: InputMaybe<GithubPullRequestsIncInput>;
+  /** prepend existing jsonb value of filtered columns with new jsonb value */
+  _prepend: InputMaybe<GithubPullRequestsPrependInput>;
   /** sets the columns of the filtered rows to the given values */
   _set: InputMaybe<GithubPullRequestsSetInput>;
   where: GithubPullRequestsBoolExp;
@@ -3391,6 +3441,7 @@ export type GithubRepos = {
   __typename?: 'GithubRepos';
   description: Scalars['String'];
   forkCount: Scalars['Int'];
+  hasIssues: Scalars['Boolean'];
   htmlUrl: Scalars['String'];
   id: Scalars['bigint'];
   languages: Scalars['jsonb'];
@@ -3482,6 +3533,7 @@ export type GithubReposBoolExp = {
   _or: InputMaybe<Array<GithubReposBoolExp>>;
   description: InputMaybe<StringComparisonExp>;
   forkCount: InputMaybe<IntComparisonExp>;
+  hasIssues: InputMaybe<BooleanComparisonExp>;
   htmlUrl: InputMaybe<StringComparisonExp>;
   id: InputMaybe<BigintComparisonExp>;
   languages: InputMaybe<JsonbComparisonExp>;
@@ -3527,6 +3579,7 @@ export type GithubReposIncInput = {
 export type GithubReposInsertInput = {
   description: InputMaybe<Scalars['String']>;
   forkCount: InputMaybe<Scalars['Int']>;
+  hasIssues: InputMaybe<Scalars['Boolean']>;
   htmlUrl: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['bigint']>;
   languages: InputMaybe<Scalars['jsonb']>;
@@ -3593,6 +3646,7 @@ export type GithubReposOnConflict = {
 export type GithubReposOrderBy = {
   description: InputMaybe<OrderBy>;
   forkCount: InputMaybe<OrderBy>;
+  hasIssues: InputMaybe<OrderBy>;
   htmlUrl: InputMaybe<OrderBy>;
   id: InputMaybe<OrderBy>;
   languages: InputMaybe<OrderBy>;
@@ -3621,6 +3675,8 @@ export enum GithubReposSelectColumn {
   /** column name */
   ForkCount = 'forkCount',
   /** column name */
+  HasIssues = 'hasIssues',
+  /** column name */
   HtmlUrl = 'htmlUrl',
   /** column name */
   Id = 'id',
@@ -3642,6 +3698,7 @@ export enum GithubReposSelectColumn {
 export type GithubReposSetInput = {
   description: InputMaybe<Scalars['String']>;
   forkCount: InputMaybe<Scalars['Int']>;
+  hasIssues: InputMaybe<Scalars['Boolean']>;
   htmlUrl: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['bigint']>;
   languages: InputMaybe<Scalars['jsonb']>;
@@ -3694,6 +3751,8 @@ export enum GithubReposUpdateColumn {
   Description = 'description',
   /** column name */
   ForkCount = 'forkCount',
+  /** column name */
+  HasIssues = 'hasIssues',
   /** column name */
   HtmlUrl = 'htmlUrl',
   /** column name */
@@ -10282,6 +10341,7 @@ export type Github_Pull_Requests_StreamCursorValueInput = {
   authorId: InputMaybe<Scalars['bigint']>;
   ciChecks: InputMaybe<Scalars['github_ci_checks']>;
   closedAt: InputMaybe<Scalars['timestamp']>;
+  closingIssueNumbers: InputMaybe<Scalars['jsonb']>;
   createdAt: InputMaybe<Scalars['timestamp']>;
   draft: InputMaybe<Scalars['Boolean']>;
   htmlUrl: InputMaybe<Scalars['String']>;
@@ -10305,6 +10365,7 @@ export type Github_Repos_StreamCursorInput = {
 export type Github_Repos_StreamCursorValueInput = {
   description: InputMaybe<Scalars['String']>;
   forkCount: InputMaybe<Scalars['Int']>;
+  hasIssues: InputMaybe<Scalars['Boolean']>;
   htmlUrl: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['bigint']>;
   languages: InputMaybe<Scalars['jsonb']>;
@@ -10661,7 +10722,6 @@ export type Mutation_Root = {
   insertWorkItems: Maybe<WorkItemsMutationResponse>;
   /** insert a single row into the table: "work_items" */
   insertWorkItemsOne: Maybe<WorkItems>;
-  internalCreateIssue: GithubIssue;
   inviteProjectLeader: Scalars['Uuid'];
   linkGithubRepo: Scalars['Uuid'];
   markInvoiceAsReceived: Scalars['Int'];
@@ -11655,14 +11715,6 @@ export type Mutation_RootInsertWorkItemsOneArgs = {
 
 
 /** mutation root */
-export type Mutation_RootInternalCreateIssueArgs = {
-  description: Scalars['String'];
-  repoId: Scalars['Int'];
-  title: Scalars['String'];
-};
-
-
-/** mutation root */
 export type Mutation_RootInviteProjectLeaderArgs = {
   githubUserId: Scalars['Int'];
   projectId: Scalars['Uuid'];
@@ -11982,7 +12034,12 @@ export type Mutation_RootUpdateGithubIssuesManyArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdateGithubPullRequestsArgs = {
+  _append: InputMaybe<GithubPullRequestsAppendInput>;
+  _deleteAtPath: InputMaybe<GithubPullRequestsDeleteAtPathInput>;
+  _deleteElem: InputMaybe<GithubPullRequestsDeleteElemInput>;
+  _deleteKey: InputMaybe<GithubPullRequestsDeleteKeyInput>;
   _inc: InputMaybe<GithubPullRequestsIncInput>;
+  _prepend: InputMaybe<GithubPullRequestsPrependInput>;
   _set: InputMaybe<GithubPullRequestsSetInput>;
   where: GithubPullRequestsBoolExp;
 };
@@ -11990,7 +12047,12 @@ export type Mutation_RootUpdateGithubPullRequestsArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdateGithubPullRequestsByPkArgs = {
+  _append: InputMaybe<GithubPullRequestsAppendInput>;
+  _deleteAtPath: InputMaybe<GithubPullRequestsDeleteAtPathInput>;
+  _deleteElem: InputMaybe<GithubPullRequestsDeleteElemInput>;
+  _deleteKey: InputMaybe<GithubPullRequestsDeleteKeyInput>;
   _inc: InputMaybe<GithubPullRequestsIncInput>;
+  _prepend: InputMaybe<GithubPullRequestsPrependInput>;
   _set: InputMaybe<GithubPullRequestsSetInput>;
   pk_columns: GithubPullRequestsPkColumnsInput;
 };
@@ -13149,7 +13211,6 @@ export type Query_Root = {
   /** fetch data from the table: "github_users" using primary key columns */
   githubUsersByPk: Maybe<GithubUsers>;
   hello: Scalars['String'];
-  helloFromDustyBot: Scalars['String'];
   /** fetch data from the table: "ignored_github_issues" */
   ignoredGithubIssues: Array<IgnoredGithubIssues>;
   /** fetch aggregated fields from the table: "ignored_github_issues" */
