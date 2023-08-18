@@ -68,7 +68,8 @@ where
 	) as Queryable<ST, Pg>>::Row;
 
 	fn build(row: Self::Row) -> diesel::deserialize::Result<Self> {
-		let (repo_id, user_id, type_, details_id, status_, created_at, closed_at ) = Queryable::build(row)?;
+		let (repo_id, user_id, type_, details_id, status_, created_at, closed_at) =
+			Queryable::build(row)?;
 
 		Ok(Self {
 			repo_id,
