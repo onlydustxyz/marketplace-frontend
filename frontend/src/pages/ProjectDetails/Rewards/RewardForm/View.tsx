@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import CloseLine from "src/icons/CloseLine";
 import Title from "src/pages/ProjectDetails/Title";
 import Add from "src/icons/Add";
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement, ReactNode, useEffect, useState } from "react";
 import WorkItemSidePanel from "./WorkItemSidePanel";
 import GithubIssue, { Action, WorkItem } from "src/components/GithubIssue";
 import Callout from "src/components/Callout";
@@ -19,6 +19,8 @@ import { Contributor } from "./types";
 import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
 import { GithubPullRequestStatus } from "src/__generated/graphql";
+import pickContributorImg from "src/assets/img/pick-contributor.png";
+import addContributionImg from "src/assets/img/add-contribution.png";
 
 interface Props {
   projectId: string;
@@ -92,7 +94,7 @@ const View: React.FC<Props> = ({
         </Title>
       )}
       <div className="flex h-full flex-col items-start gap-5 xl:flex-row">
-        <div className="w-full basis-3/5 2xl:basis-auto">
+        <div className="w-full">
           <div className="flex w-full flex-col gap-6">
             <Card className="z-10 px-4 py-7" padded={false}>
               <div className={displayCallout ? "xl:h-52" : "h-24"}>
@@ -171,14 +173,26 @@ const View: React.FC<Props> = ({
             )}
           </div>
         </div>
-        <div className="sticky top-4 w-full basis-2/5 2xl:w-116 2xl:basis-auto">
-          <WorkEstimation
-            onChange={onWorkEstimationChange}
-            budget={budget}
-            missingContributor={!contributor}
-            missingContribution={workItems.length === 0}
-            requestNewPaymentMutationLoading={requestNewPaymentMutationLoading}
-          />
+        <div className="w-full shrink-0 xl:w-[384px]">
+          {!contributor && (
+            <PlaceholderWithImage
+              text={T("reward.form.missingContributor")}
+              imageElement={<img width={267} src={pickContributorImg} className="absolute bottom-0 right-0 top-0" />}
+            />
+          )}
+          {contributor && workItems.length === 0 && (
+            <PlaceholderWithImage
+              text={T("reward.form.missingContribution")}
+              imageElement={<img width={165} src={addContributionImg} className="absolute bottom-0 right-0" />}
+            />
+          )}
+          {contributor && workItems.length > 0 && (
+            <WorkEstimation
+              onChange={onWorkEstimationChange}
+              budget={budget}
+              requestNewPaymentMutationLoading={requestNewPaymentMutationLoading}
+            />
+          )}
         </div>
       </div>
     </>
@@ -186,3 +200,12 @@ const View: React.FC<Props> = ({
 };
 
 export default View;
+
+function PlaceholderWithImage({ text, imageElement }: { text: string; imageElement: ReactNode }) {
+  return (
+    <Card padded={false} className="relative flex h-[163px] items-center bg-noise-medium pl-8">
+      <span className="max-w-[160px] font-walsheim text-greyscale-50">{text}</span>
+      {imageElement}
+    </Card>
+  );
+}

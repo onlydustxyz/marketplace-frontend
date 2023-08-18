@@ -19,11 +19,9 @@ export const NoBudget = Template.bind({});
 Default.args = {
   budget: { initialAmount: 5000, remainingAmount: 3000 },
   pendingSpending: 1000,
-  displayPendingSpending: true,
 };
 
 NoBudget.args = {
   budget: { initialAmount: 5000, remainingAmount: 0 },
   pendingSpending: 1000,
-  displayPendingSpending: true,
 };
