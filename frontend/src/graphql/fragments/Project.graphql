@@ -39,6 +39,9 @@ fragment ProjectVisibilityDetails on Projects {
   contributors {
     githubUserId
   }
+  rewardedUsers {
+    githubUserId
+  }
   projectLeads(orderBy: { user: { githubUserId: ASC } }) {
     userId
   }
