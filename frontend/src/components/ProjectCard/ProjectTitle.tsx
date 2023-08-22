@@ -5,6 +5,7 @@ import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import { TooltipPosition, withTooltip } from "src/components/Tooltip";
 import Contributor from "src/components/Contributor";
 import PrivateTag from "src/components/PrivateTag";
+import config from "src/config";
 
 type Props = {
   projectId: string;
@@ -16,7 +17,6 @@ type Props = {
 
 const ProjectLeads = ({ leads }: { leads: ProjectLeadFragment[] }) => {
   const { T } = useIntl();
-
   return (
     <div className="flex flex-row items-center gap-1 pt-0.5 text-sm text-spaceBlue-200">
       {leads.length > 0 && (
@@ -47,7 +47,7 @@ const ProjectLeads = ({ leads }: { leads: ProjectLeadFragment[] }) => {
             alt={lead.login || ""}
             size={ImageSize.Xxs}
             key={lead.id}
-            src={lead.avatarUrl || ""}
+            src={lead.avatarUrl ? config.CLOUDFLARE_RESIZE_W_100_PREFIX + lead.avatarUrl : ""}
           />
         ))}
       </div>
