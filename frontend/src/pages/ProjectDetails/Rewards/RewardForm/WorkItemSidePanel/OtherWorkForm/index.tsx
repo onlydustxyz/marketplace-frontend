@@ -114,21 +114,15 @@ export default function OtherWorkForm({ projectId, contributorHandle, onWorkItem
           <Description description={description} setDescription={setDescription} />
           <Callout>{T("reward.form.contributions.other.callout")}</Callout>
         </div>
-        <div className="flex flex-row justify-between gap-8 border-t border-greyscale-50/8 bg-white/2 p-4 xl:grow-0 xl:px-6 xl:py-8">
-          {selectedRepo ? (
-            <RepoSelect repos={repos} repo={selectedRepo} setRepo={setSelectedRepo} />
-          ) : (
-            <div className="w-full" />
-          )}
+        <div className="flex flex-row justify-between gap-8 border-t border-greyscale-50/8 bg-white/2 p-4 xl:px-6 xl:py-8">
+          {selectedRepo && <RepoSelect repos={repos} repo={selectedRepo} setRepo={setSelectedRepo} />}
           <Button
-            width={isXl ? Width.Full : Width.Fit}
-            disabled={!workKind || !description || loading}
+            width={Width.Fit}
+            disabled={!workKind || !description || loading || !selectedRepo?.hasIssues}
             htmlType="submit"
           >
             {isXl && <CheckLine />}
-            {isXl
-              ? T("reward.form.contributions.other.footer.submitButton")
-              : T("reward.form.contributions.other.footer.submitButtonShort")}
+            {T("reward.form.contributions.other.footer.submitButton")}
           </Button>
         </div>
       </form>

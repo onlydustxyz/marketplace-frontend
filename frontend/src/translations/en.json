@@ -236,8 +236,8 @@
           },
           "footer": {
             "repository": "Create issue in",
-            "submitButton": "Create and add issue",
-            "submitButtonShort": "Create issue"
+            "submitButton": "Create issue",
+            "noIssues": "This repository does not allow creating issues, please change this setting on Github to add other work."
           },
           "success": "Issue created and contribution added",
           "tab": "Other work",
