@@ -133,6 +133,7 @@ const GITHUB_REPO_DETAILS_RESULT: { data: GetGithubRepositoryDetailsQueryResult[
       htmlUrl: "url",
       stars: 0,
       forkCount: 0,
+      hasIssues: true,
       languages: {
         __typename: "GithubRepoDetails",
         id: TEST_GITHUB_REPO_ID,

@@ -11,6 +11,7 @@ fragment GithubRepo on GithubRepos {
   forkCount
   htmlUrl
   languages
+  hasIssues
 }
 
 fragment GithubRepoLanguages on GithubRepos {

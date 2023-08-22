@@ -16427,7 +16427,7 @@ export type GithubPullRequestFragment = { __typename?: 'GithubPullRequests', rep
 
 export type GithubRepoIdFragment = { __typename?: 'GithubRepos', id: any };
 
-export type GithubRepoFragment = { __typename?: 'GithubRepos', owner: string, name: string, description: string, stars: number, forkCount: number, htmlUrl: string, languages: any, id: any };
+export type GithubRepoFragment = { __typename?: 'GithubRepos', owner: string, name: string, description: string, stars: number, forkCount: number, htmlUrl: string, languages: any, hasIssues: boolean, id: any };
 
 export type GithubRepoLanguagesFragment = { __typename?: 'GithubRepos', languages: any, id: any };
 
@@ -16606,7 +16606,7 @@ export type GetGithubRepositoryDetailsQueryVariables = Exact<{
 }>;
 
 
-export type GetGithubRepositoryDetailsQuery = { __typename?: 'query_root', githubReposByPk: { __typename?: 'GithubRepos', owner: string, name: string, description: string, stars: number, forkCount: number, htmlUrl: string, languages: any, id: any } | null };
+export type GetGithubRepositoryDetailsQuery = { __typename?: 'query_root', githubReposByPk: { __typename?: 'GithubRepos', owner: string, name: string, description: string, stars: number, forkCount: number, htmlUrl: string, languages: any, hasIssues: boolean, id: any } | null };
 
 export type GetProjectOverviewDetailsQueryVariables = Exact<{
   projectId: Scalars['uuid'];
@@ -16701,7 +16701,7 @@ export type GetProjectReposQueryVariables = Exact<{
 }>;
 
 
-export type GetProjectReposQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', id: any | null, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', projectId: any, githubRepoId: any, repo: { __typename?: 'GithubRepos', owner: string, name: string, description: string, stars: number, forkCount: number, htmlUrl: string, languages: any, id: any } | null }> }> };
+export type GetProjectReposQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', id: any | null, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', projectId: any, githubRepoId: any, repo: { __typename?: 'GithubRepos', owner: string, name: string, description: string, stars: number, forkCount: number, htmlUrl: string, languages: any, hasIssues: boolean, id: any } | null }> }> };
 
 export type CreateAndCloseIssueMutationVariables = Exact<{
   projectId: Scalars['Uuid'];
@@ -17066,6 +17066,7 @@ export const GithubRepoFragmentDoc = gql`
   forkCount
   htmlUrl
   languages
+  hasIssues
 }
     ${GithubRepoIdFragmentDoc}`;
 export const PaymentRequestIdFragmentDoc = gql`
