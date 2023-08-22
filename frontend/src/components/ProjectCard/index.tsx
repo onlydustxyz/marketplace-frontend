@@ -43,9 +43,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
     shortDescription,
   } = project;
 
-  if (project.logoUrl) {
-    project.logoUrl = config.CLOUDFLARE_PROJECT_LOGO_RESIZE_PREFIX + project.logoUrl;
-  }
+  const projectUrl = logoUrl ? config.CLOUDFLARE_PROJECT_LOGO_RESIZE_PREFIX + logoUrl : logoUrl;
 
   const { T } = useIntl();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
@@ -77,7 +75,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
               projectId={id}
               projectName={name || ""}
               projectLeads={projectLeads?.map(lead => lead.user).filter(isDefined) || []}
-              logoUrl={logoUrl || onlyDustLogo}
+              logoUrl={projectUrl || onlyDustLogo}
               private={visibility === "private"}
             />
             {languages.length > 0 && (
