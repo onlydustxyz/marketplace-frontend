@@ -54,6 +54,24 @@ FROM
 
 
 CREATE OR REPLACE VIEW
+    api.completed_contributions_v2 AS
+SELECT
+    c.user_id AS github_user_id,
+    c.details_id,
+    c.type,
+    c.repo_id,
+    c.status,
+    c.closed_at,
+    c.created_at,
+    pgr.project_id
+FROM
+    public.contributions c
+    INNER JOIN public.project_github_repos pgr ON pgr.github_repo_id = c.repo_id
+WHERE
+    c.status = 'complete'::contribution_status;
+
+
+CREATE OR REPLACE VIEW
     api.contribution_count_v2 AS
 SELECT
     c.github_user_id,
@@ -72,7 +90,7 @@ SELECT
             c.type = 'pull_request'
     ) AS pull_request_count
 FROM
-    api.contributions_v2 c
+    api.completed_contributions_v2 c
 GROUP BY
     c.github_user_id,
     (DATE_PART('year'::TEXT, c.created_at)),
@@ -100,7 +118,7 @@ SELECT
     MIN(c.created_at) AS min_date,
     MAX(c.created_at) AS max_date
 FROM
-    api.contributions_v2 c
+    api.completed_contributions_v2 c
 GROUP BY
     c.github_user_id,
     c.project_id;
@@ -117,3 +135,7 @@ CREATE TABLE
         reward_count INT NOT NULL,
         PRIMARY KEY (project_id, github_user_id)
     );
+
+
+CREATE TABLE
+    projects_pending_contributors (project_id UUID NOT NULL, github_user_id BIGINT NOT NULL, PRIMARY KEY (project_id, github_user_id));

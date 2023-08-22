@@ -2,26 +2,26 @@ use diesel::{Connection, ExpressionMethods, QueryDsl, RunQueryDsl};
 use domain::{GithubRepoId, GithubUserId, ProjectId};
 use infrastructure::{
 	contextualized_error::IntoContextualizedError,
+	database,
 	database::{
-		self,
 		enums::ContributionStatus,
-		schema::{contributions, project_github_repos, projects_contributors::dsl},
+		schema::{contributions, project_github_repos, projects_pending_contributors::dsl},
 		Result,
 	},
 };
 
-use super::ProjectsContributor;
+use super::ProjectsPendingContributor;
 
-pub trait Repository: database::ImmutableRepository<ProjectsContributor> {
-	fn refresh_project_contributor_list(&self, project_id: &ProjectId) -> Result<()>;
+pub trait Repository: database::ImmutableRepository<ProjectsPendingContributor> {
+	fn refresh_project_pending_contributor_list(&self, project_id: &ProjectId) -> Result<()>;
 }
 
 impl Repository for database::Client {
-	fn refresh_project_contributor_list(&self, project_id: &ProjectId) -> Result<()> {
+	fn refresh_project_pending_contributor_list(&self, project_id: &ProjectId) -> Result<()> {
 		let mut connection = self.connection()?;
 		connection
 			.transaction::<_, diesel::result::Error, _>(|tx| {
-				diesel::delete(dsl::projects_contributors)
+				diesel::delete(dsl::projects_pending_contributors)
 					.filter(dsl::project_id.eq(project_id))
 					.execute(&mut *tx)?;
 
@@ -34,11 +34,11 @@ impl Repository for database::Client {
 					.select(contributions::dsl::user_id)
 					.distinct()
 					.filter(contributions::dsl::repo_id.eq_any(repos))
-					.filter(contributions::dsl::status.eq(ContributionStatus::Complete))
+					.filter(contributions::dsl::status.eq(ContributionStatus::InProgress))
 					.load(&mut *tx)?;
 
 				contributors.iter().try_for_each(|user_id| {
-					diesel::insert_into(dsl::projects_contributors)
+					diesel::insert_into(dsl::projects_pending_contributors)
 						.values((
 							dsl::project_id.eq(project_id),
 							dsl::github_user_id.eq(user_id),
@@ -50,7 +50,7 @@ impl Repository for database::Client {
 				Ok(())
 			})
 			.err_with_context(format!(
-				"refreshing contributors of project with id={project_id}"
+				"refreshing pending contributors of project with id={project_id}"
 			))?;
 		Ok(())
 	}

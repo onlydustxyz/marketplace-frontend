@@ -6,7 +6,7 @@ use anyhow::Result;
 use async_trait::async_trait;
 use chrono::Utc;
 use derive_new::new;
-use domain::{self, GithubFetchRepoService, Languages, SubscriberCallbackError};
+use domain::{self, GithubFetchRepoService, GithubRepoId, Languages, SubscriberCallbackError};
 pub use events::Event;
 use infrastructure::database::{ImmutableRepository, Repository};
 use tracing::instrument;
@@ -24,6 +24,7 @@ pub struct Projector {
 	contributions_repository: Arc<dyn ContributionsRepository>,
 	github_users_repository: Arc<dyn Repository<GithubUser>>,
 	projects_contributors_repository: Arc<dyn ProjectsContributorRepository>,
+	projects_pending_contributors_repository: Arc<dyn ProjectsPendingContributorRepository>,
 	project_github_repos_repository: Arc<dyn ProjectGithubRepoRepository>,
 	technologies_repository: Arc<dyn ImmutableRepository<Technology>>,
 }
@@ -60,6 +61,19 @@ impl Projector {
 
 		Ok(())
 	}
+
+	fn refresh_contributors(&self, repo_id: &GithubRepoId) -> Result<(), SubscriberCallbackError> {
+		self.project_github_repos_repository
+			.find_projects_of_repo(repo_id)?
+			.iter()
+			.try_for_each(|project_id| {
+				self.projects_contributors_repository
+					.refresh_project_contributor_list(project_id)?;
+				self.projects_pending_contributors_repository
+					.refresh_project_pending_contributor_list(project_id)
+			})?;
+		Ok(())
+	}
 }
 
 #[async_trait]
@@ -78,14 +92,7 @@ impl EventListener<Event> for Projector {
 				let issue: GithubIssue = issue.into();
 				self.github_issues_repository.upsert(issue.clone())?;
 				self.contributions_repository.upsert_from_github_issue(issue.clone())?;
-
-				self.project_github_repos_repository
-					.find_projects_of_repo(&issue.repo_id)?
-					.iter()
-					.try_for_each(|project_id| {
-						self.projects_contributors_repository
-							.refresh_project_contributor_list(project_id)
-					})?;
+				self.refresh_contributors(&issue.repo_id)?;
 			},
 			Event::PullRequest(pull_request) => {
 				self.github_pull_requests_repository.upsert(pull_request.into())?;
@@ -95,14 +102,7 @@ impl EventListener<Event> for Projector {
 				self.github_pull_requests_repository.upsert(pull_request.clone())?;
 				self.contributions_repository
 					.upsert_from_github_pull_request(pull_request.clone())?;
-
-				self.project_github_repos_repository
-					.find_projects_of_repo(&pull_request.inner.repo_id)?
-					.iter()
-					.try_for_each(|project_id| {
-						self.projects_contributors_repository
-							.refresh_project_contributor_list(project_id)
-					})?;
+				self.refresh_contributors(&pull_request.inner.repo_id)?;
 			},
 			Event::User { user, repo_id: _ } => {
 				self.github_users_repository.upsert(user.into())?;

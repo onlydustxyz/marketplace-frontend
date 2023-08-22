@@ -357,6 +357,13 @@ diesel::table! {
 }
 
 diesel::table! {
+    projects_pending_contributors (project_id, github_user_id) {
+        project_id -> Uuid,
+        github_user_id -> Int8,
+    }
+}
+
+diesel::table! {
     projects_rewarded_users (project_id, github_user_id) {
         project_id -> Uuid,
         github_user_id -> Int8,
@@ -455,6 +462,7 @@ diesel::allow_tables_to_appear_in_same_query!(
     project_leads,
     projects,
     projects_contributors,
+    projects_pending_contributors,
     projects_rewarded_users,
     projects_sponsors,
     sponsors,

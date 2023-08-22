@@ -18,6 +18,7 @@ pub struct Projector {
 	github_repo_index_repository: Arc<dyn GithubRepoIndexRepository>,
 	applications_repository: Arc<dyn Repository<Application>>,
 	projects_contributors_repository: Arc<dyn ProjectsContributorRepository>,
+	projects_pending_contributors_repository: Arc<dyn ProjectsPendingContributorRepository>,
 }
 
 #[async_trait]
@@ -55,6 +56,8 @@ impl EventListener<Event> for Projector {
 					self.github_repo_index_repository.start_indexing(github_repo_id)?;
 					self.projects_contributors_repository
 						.refresh_project_contributor_list(&project_id)?;
+					self.projects_pending_contributors_repository
+						.refresh_project_pending_contributor_list(&project_id)?;
 				},
 				ProjectEvent::GithubRepoUnlinked {
 					id: project_id,
@@ -63,6 +66,8 @@ impl EventListener<Event> for Projector {
 					self.project_github_repos_repository.delete((project_id, github_repo_id))?;
 					self.projects_contributors_repository
 						.refresh_project_contributor_list(&project_id)?;
+					self.projects_pending_contributors_repository
+						.refresh_project_pending_contributor_list(&project_id)?;
 				},
 				ProjectEvent::Application {
 					id: project_id,

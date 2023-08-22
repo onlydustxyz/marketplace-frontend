@@ -30,6 +30,7 @@
 - "!include public_project_github_repos.yaml"
 - "!include public_project_leads.yaml"
 - "!include public_projects_contributors.yaml"
+- "!include public_projects_pending_contributors.yaml"
 - "!include public_projects_rewarded_users.yaml"
 - "!include public_projects_sponsors.yaml"
 - "!include public_registered_users.yaml"
