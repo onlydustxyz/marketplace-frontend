@@ -1,0 +1,10 @@
+table:
+  name: projects_rewarded_users
+  schema: public
+select_permissions:
+  - role: public
+    permission:
+      columns:
+        - github_user_id
+        - project_id
+      filter: {}
