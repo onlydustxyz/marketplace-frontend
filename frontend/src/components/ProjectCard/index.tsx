@@ -19,6 +19,7 @@ import { GetProjectsQuery } from "src/__generated/graphql";
 import RecordCircleLine from "src/icons/RecordCircleLine";
 import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
+import config from "src/config";
 
 export type Project = ArrayElement<GetProjectsQuery["projects"]>;
 
@@ -41,6 +42,10 @@ export default function ProjectCard({ project }: ProjectCardProps) {
     visibility,
     shortDescription,
   } = project;
+
+  if (project.logoUrl) {
+    project.logoUrl = config.CLOUDFLARE_PROJECT_LOGO_RESIZE_PREFIX + project.logoUrl;
+  }
 
   const { T } = useIntl();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
