@@ -14,12 +14,12 @@ pub mod sql_types {
     pub struct ContactChannel;
 
     #[derive(diesel::query_builder::QueryId, diesel::sql_types::SqlType)]
-    #[diesel(postgres_type(name = "contribution_type"))]
-    pub struct ContributionType;
-
-	#[derive(diesel::query_builder::QueryId, diesel::sql_types::SqlType)]
     #[diesel(postgres_type(name = "contribution_status"))]
     pub struct ContributionStatus;
+
+    #[derive(diesel::query_builder::QueryId, diesel::sql_types::SqlType)]
+    #[diesel(postgres_type(name = "contribution_type"))]
+    pub struct ContributionType;
 
     #[derive(diesel::query_builder::QueryId, diesel::sql_types::SqlType)]
     #[diesel(postgres_type(name = "github_ci_checks"))]
@@ -108,13 +108,6 @@ diesel::table! {
 }
 
 diesel::table! {
-    event_deduplications (deduplication_id) {
-        deduplication_id -> Text,
-        event_index -> Int4,
-    }
-}
-
-diesel::table! {
     use diesel::sql_types::*;
     use super::sql_types::ContributionType;
     use super::sql_types::ContributionStatus;
@@ -126,8 +119,15 @@ diesel::table! {
         type_ -> ContributionType,
         details_id -> Int8,
         status -> ContributionStatus,
-		created_at -> Timestamp,
-		closed_at -> Nullable<Timestamp>,
+        created_at -> Timestamp,
+        closed_at -> Nullable<Timestamp>,
+    }
+}
+
+diesel::table! {
+    event_deduplications (deduplication_id) {
+        deduplication_id -> Text,
+        event_index -> Int4,
     }
 }
 
@@ -235,7 +235,7 @@ diesel::table! {
         html_url -> Text,
         languages -> Jsonb,
         parent_id -> Nullable<Int8>,
-		has_issues -> Bool,
+        has_issues -> Bool,
     }
 }
 
@@ -353,7 +353,14 @@ diesel::table! {
     projects_contributors (project_id, github_user_id) {
         project_id -> Uuid,
         github_user_id -> Int8,
-        link_count -> Int4,
+    }
+}
+
+diesel::table! {
+    projects_rewarded_users (project_id, github_user_id) {
+        project_id -> Uuid,
+        github_user_id -> Int8,
+        reward_count -> Int4,
     }
 }
 
@@ -448,6 +455,7 @@ diesel::allow_tables_to_appear_in_same_query!(
     project_leads,
     projects,
     projects_contributors,
+    projects_rewarded_users,
     projects_sponsors,
     sponsors,
     technologies,

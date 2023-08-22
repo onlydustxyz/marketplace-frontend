@@ -1,7 +1,6 @@
 use std::collections::HashSet;
 
 use diesel::{Connection, ExpressionMethods, PgConnection, QueryDsl, RunQueryDsl};
-use domain::{GithubRepoId, GithubUserId};
 use infrastructure::{
 	contextualized_error::IntoContextualizedError,
 	database,
@@ -21,8 +20,6 @@ use crate::models::{GithubIssue, GithubPullRequest};
 pub trait Repository: Sync + Send {
 	fn upsert_from_github_issue(&self, issue: GithubIssue) -> Result<()>;
 	fn upsert_from_github_pull_request(&self, pull_request: GithubPullRequest) -> Result<()>;
-	fn find_contributors_of_repo(&self, github_repo_id: &GithubRepoId)
-	-> Result<Vec<GithubUserId>>;
 }
 
 impl Repository for database::Client {
@@ -147,22 +144,6 @@ impl Repository for database::Client {
 		}
 
 		Ok(())
-	}
-
-	fn find_contributors_of_repo(
-		&self,
-		github_repo_id: &GithubRepoId,
-	) -> Result<Vec<GithubUserId>> {
-		let mut connection = self.connection()?;
-		let contributors = dsl::contributions
-			.select(dsl::user_id)
-			.distinct()
-			.filter(dsl::repo_id.eq(github_repo_id))
-			.load(&mut *connection)
-			.err_with_context(format!(
-				"select user_id from contributions where repo_id={github_repo_id}"
-			))?;
-		Ok(contributors)
 	}
 }
 

@@ -77,7 +77,15 @@ impl EventListener<Event> for Projector {
 			Event::Issue(issue) => {
 				let issue: GithubIssue = issue.into();
 				self.github_issues_repository.upsert(issue.clone())?;
-				self.contributions_repository.upsert_from_github_issue(issue)?;
+				self.contributions_repository.upsert_from_github_issue(issue.clone())?;
+
+				self.project_github_repos_repository
+					.find_projects_of_repo(&issue.repo_id)?
+					.iter()
+					.try_for_each(|project_id| {
+						self.projects_contributors_repository
+							.refresh_project_contributor_list(project_id)
+					})?;
 			},
 			Event::PullRequest(pull_request) => {
 				self.github_pull_requests_repository.upsert(pull_request.into())?;
@@ -85,18 +93,19 @@ impl EventListener<Event> for Projector {
 			Event::FullPullRequest(pull_request) => {
 				let pull_request: GithubPullRequest = pull_request.into();
 				self.github_pull_requests_repository.upsert(pull_request.clone())?;
-				self.contributions_repository.upsert_from_github_pull_request(pull_request)?;
-			},
-			Event::User { user, repo_id } => {
-				self.github_users_repository.upsert(user.clone().into())?;
+				self.contributions_repository
+					.upsert_from_github_pull_request(pull_request.clone())?;
 
 				self.project_github_repos_repository
-					.find_projects_of_repo(&repo_id)?
+					.find_projects_of_repo(&pull_request.inner.repo_id)?
 					.iter()
 					.try_for_each(|project_id| {
 						self.projects_contributors_repository
-							.link_project_with_contributor(project_id, &user.id)
+							.refresh_project_contributor_list(project_id)
 					})?;
+			},
+			Event::User { user, repo_id: _ } => {
+				self.github_users_repository.upsert(user.into())?;
 			},
 			Event::FullUser(user) => {
 				self.github_users_repository.upsert(user.into())?;

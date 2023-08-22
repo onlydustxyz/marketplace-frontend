@@ -1,74 +1,54 @@
-use diesel::{Connection, ExpressionMethods, RunQueryDsl};
-use domain::{GithubUserId, ProjectId};
+use diesel::{Connection, ExpressionMethods, QueryDsl, RunQueryDsl};
+use domain::{GithubRepoId, GithubUserId, ProjectId};
 use infrastructure::{
 	contextualized_error::IntoContextualizedError,
 	database,
-	database::{schema::projects_contributors::dsl, Result},
+	database::{
+		schema::{contributions, project_github_repos, projects_contributors::dsl},
+		Result,
+	},
 };
 
 use super::ProjectsContributor;
 
-pub trait Repository: database::Repository<ProjectsContributor> {
-	fn link_project_with_contributor(
-		&self,
-		project_id: &ProjectId,
-		user_id: &GithubUserId,
-	) -> Result<()>;
-
-	fn unlink_project_with_contributor(
-		&self,
-		project_id: &ProjectId,
-		user_id: &GithubUserId,
-	) -> Result<()>;
+pub trait Repository: database::ImmutableRepository<ProjectsContributor> {
+	fn refresh_project_contributor_list(&self, project_id: &ProjectId) -> Result<()>;
 }
 
 impl Repository for database::Client {
-	fn link_project_with_contributor(
-		&self,
-		project_id: &ProjectId,
-		user_id: &GithubUserId,
-	) -> Result<()> {
-		let mut connection = self.connection()?;
-		diesel::insert_into(dsl::projects_contributors)
-			.values((
-				dsl::project_id.eq(project_id),
-				dsl::github_user_id.eq(user_id),
-				dsl::link_count.eq(1),
-			))
-			.on_conflict((dsl::project_id, dsl::github_user_id))
-			.do_update()
-			.set(dsl::link_count.eq(dsl::link_count + 1))
-			.execute(&mut *connection)
-			.err_with_context(format!(
-				"link_project_with_contributor with project_id={project_id} and user_id={user_id}"
-			))?;
-		Ok(())
-	}
-
-	fn unlink_project_with_contributor(
-		&self,
-		project_id: &ProjectId,
-		user_id: &GithubUserId,
-	) -> Result<()> {
+	fn refresh_project_contributor_list(&self, project_id: &ProjectId) -> Result<()> {
 		let mut connection = self.connection()?;
 		connection
 			.transaction::<_, diesel::result::Error, _>(|tx| {
-				diesel::update(dsl::projects_contributors)
-					.set(dsl::link_count.eq(dsl::link_count - 1))
-					.filter(dsl::project_id.eq(project_id))
-					.filter(dsl::github_user_id.eq(user_id))
-					.execute(&mut *tx)?;
-
 				diesel::delete(dsl::projects_contributors)
 					.filter(dsl::project_id.eq(project_id))
-					.filter(dsl::github_user_id.eq(user_id))
-					.filter(dsl::link_count.eq(0))
 					.execute(&mut *tx)?;
+
+				let repos: Vec<GithubRepoId> = project_github_repos::dsl::project_github_repos
+					.select(project_github_repos::dsl::github_repo_id)
+					.filter(project_github_repos::dsl::project_id.eq(project_id))
+					.load(&mut *tx)?;
+
+				let contributors: Vec<GithubUserId> = contributions::dsl::contributions
+					.select(contributions::dsl::user_id)
+					.distinct()
+					.filter(contributions::dsl::repo_id.eq_any(repos))
+					.load(&mut *tx)?;
+
+				contributors.iter().try_for_each(|user_id| {
+					diesel::insert_into(dsl::projects_contributors)
+						.values((
+							dsl::project_id.eq(project_id),
+							dsl::github_user_id.eq(user_id),
+						))
+						.execute(&mut *tx)?;
+					Ok::<(), diesel::result::Error>(())
+				})?;
 
 				Ok(())
 			})
 			.err_with_context(format!(
-				"unlink_project_with_contributor with project_id={project_id} and user_id={user_id}"
+				"refreshing contributors of project with id={project_id}"
 			))?;
 		Ok(())
 	}
