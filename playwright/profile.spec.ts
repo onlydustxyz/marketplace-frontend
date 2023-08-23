@@ -60,7 +60,7 @@ test.describe("As a signed-in user, I", () => {
     await expect(editPage.emailVisibility).toHaveAttribute("data-state", "off");
     await editPage.emailVisibility.click({ force: true });
     await expect(editPage.emailVisibility).toHaveAttribute("data-state", "on");
-    await editPage.telegram.fill("fu");
+    await editPage.telegram.fill("olifu");
     await expect(editPage.telegramVisibility).toHaveAttribute("data-state", "on");
     await editPage.whatsapp.fill("+33612345678");
     await expect(editPage.whatsappVisibility).toHaveAttribute("data-state", "on");
@@ -68,11 +68,11 @@ test.describe("As a signed-in user, I", () => {
     await expect(editPage.twitterVisibility).toHaveAttribute("data-state", "on");
     await editPage.twitterVisibility.click();
     await expect(editPage.twitterVisibility).toHaveAttribute("data-state", "off");
-    await editPage.discord.fill("fu#666");
+    await editPage.discord.fill("olifu");
     await expect(editPage.discordVisibility).toHaveAttribute("data-state", "on");
     await editPage.discordVisibility.click();
     await expect(editPage.discordVisibility).toHaveAttribute("data-state", "off");
-    await editPage.linkedin.fill("olivier.fu");
+    await editPage.linkedin.fill("olivierfu");
     await expect(editPage.linkedinVisibility).toHaveAttribute("data-state", "on");
 
     // Technologies
@@ -150,15 +150,15 @@ test.describe("As a signed-in user, I", () => {
     await expect(editPage.email).toHaveValue(user.email);
     await expect(editPage.email).toBeDisabled();
     await expect(editPage.emailVisibility).toHaveAttribute("data-state", "on");
-    await expect(editPage.telegram).toHaveValue("fu");
+    await expect(editPage.telegram).toHaveValue("olifu");
     await expect(editPage.telegramVisibility).toHaveAttribute("data-state", "on");
     await expect(editPage.whatsapp).toHaveValue("+33612345678");
     await expect(editPage.whatsappVisibility).toHaveAttribute("data-state", "on");
     await expect(editPage.twitter).toHaveValue("olivier");
     await expect(editPage.twitterVisibility).toHaveAttribute("data-state", "off");
-    await expect(editPage.discord).toHaveValue("fu#666");
+    await expect(editPage.discord).toHaveValue("olifu");
     await expect(editPage.discordVisibility).toHaveAttribute("data-state", "off");
-    await expect(editPage.linkedin).toHaveValue("olivier.fu");
+    await expect(editPage.linkedin).toHaveValue("olivierfu");
     await expect(editPage.linkedinVisibility).toHaveAttribute("data-state", "on");
 
     // Technologies
@@ -217,7 +217,7 @@ test.describe("As a new user on the platform, I", () => {
     await expect(wizzard.emailVisibility).toHaveAttribute("data-state", "off");
     await wizzard.emailVisibility.click({ force: true });
     await expect(wizzard.emailVisibility).toHaveAttribute("data-state", "on");
-    await wizzard.telegram.fill("fu");
+    await wizzard.telegram.fill("olifu");
     await expect(wizzard.telegramVisibility).toHaveAttribute("data-state", "on");
     await wizzard.whatsapp.fill("+33612345678");
     await expect(wizzard.whatsappVisibility).toHaveAttribute("data-state", "on");
@@ -225,11 +225,11 @@ test.describe("As a new user on the platform, I", () => {
     await expect(wizzard.twitterVisibility).toHaveAttribute("data-state", "on");
     await wizzard.twitterVisibility.click();
     await expect(wizzard.twitterVisibility).toHaveAttribute("data-state", "off");
-    await wizzard.discord.fill("fu#666");
+    await wizzard.discord.fill("olifu");
     await expect(wizzard.discordVisibility).toHaveAttribute("data-state", "on");
     await wizzard.discordVisibility.click();
     await expect(wizzard.discordVisibility).toHaveAttribute("data-state", "off");
-    await wizzard.linkedin.fill("olivier.fu");
+    await wizzard.linkedin.fill("olivierfu");
     await expect(wizzard.linkedinVisibility).toHaveAttribute("data-state", "on");
     await wizzard.submit.click();
 
@@ -267,15 +267,15 @@ test.describe("As a new user on the platform, I", () => {
     await expect(editPage.email).toHaveValue(user.email);
     await expect(editPage.email).toBeDisabled();
     await expect(editPage.emailVisibility).toHaveAttribute("data-state", "on");
-    await expect(editPage.telegram).toHaveValue("fu");
+    await expect(editPage.telegram).toHaveValue("olifu");
     await expect(editPage.telegramVisibility).toHaveAttribute("data-state", "on");
     await expect(editPage.whatsapp).toHaveValue("+33612345678");
     await expect(editPage.whatsappVisibility).toHaveAttribute("data-state", "on");
     await expect(editPage.twitter).toHaveValue("olivier");
     await expect(editPage.twitterVisibility).toHaveAttribute("data-state", "off");
-    await expect(editPage.discord).toHaveValue("fu#666");
+    await expect(editPage.discord).toHaveValue("olifu");
     await expect(editPage.discordVisibility).toHaveAttribute("data-state", "off");
-    await expect(editPage.linkedin).toHaveValue("olivier.fu");
+    await expect(editPage.linkedin).toHaveValue("olivierfu");
     await expect(editPage.linkedinVisibility).toHaveAttribute("data-state", "on");
 
     // Technologies
