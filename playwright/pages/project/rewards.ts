@@ -130,7 +130,7 @@ export class NewRewardPage {
           await this.page.getByTestId("select-repo-button").click();
           await this.page.getByTestId("select-repo-options").locator("div", { hasText: otherWork.repository }).click();
         }
-        await this.page.getByRole("button", { name: "create and add issue" }).click();
+        await this.page.getByRole("button", { name: "create issue" }).click();
 
         await expect(this.page.locator("[data-testid=added-work-items] > div")).toHaveCount(addedWorkItemsCount + 1);
         await sleep(1000);
