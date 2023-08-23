@@ -42,7 +42,7 @@ export default function ContactInformations({ onlyEditable }: Props) {
         visibilityName="isTelegramPublic"
         options={{
           pattern: {
-            value: /^(?:@|(?:(?:(?:https?:\/\/)?t(?:elegram)?)\.me\/))?(\w{4,})$/,
+            value: /^(?:@|(?:(?:(?:https?:\/\/)?t(?:elegram)?)\.me\/))?(\w+)$/,
             message: T("profile.form.contactInfo.invalidUsername"),
           },
         }}
@@ -66,7 +66,7 @@ export default function ContactInformations({ onlyEditable }: Props) {
         visibilityName="isTwitterPublic"
         options={{
           pattern: {
-            value: /^(?:@|(?:(?:(?:https?:\/\/)?(?:twitter)?)\.com\/))?(\w{4,})$/,
+            value: /^(?:@|(?:(?:(?:https?:\/\/)?(?:twitter)?)\.com\/))?(\w+)$/,
             message: T("profile.form.contactInfo.invalidUsername"),
           },
         }}
@@ -78,7 +78,7 @@ export default function ContactInformations({ onlyEditable }: Props) {
         visibilityName="isDiscordPublic"
         options={{
           pattern: {
-            value: /^@?[a-zA-Z0-9_.]{2,32}$/,
+            value: /^@?[a-zA-Z0-9_.]+$/,
             message: T("profile.form.contactInfo.invalidUsername"),
           },
         }}
