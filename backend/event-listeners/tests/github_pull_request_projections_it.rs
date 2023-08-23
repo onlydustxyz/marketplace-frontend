@@ -189,7 +189,7 @@ impl<'a> Test<'a> {
 		{
 			let pull_requests: Vec<models::github_pull_requests::Inner> = retry(
 				|| github_pull_requests::table.load(&mut *connection),
-				|res| !res.is_empty(),
+				|res| res.len() >= 2,
 			)
 			.await?;
 			assert_eq!(pull_requests.len(), 2, "Invalid pull requests count");
@@ -264,7 +264,7 @@ impl<'a> Test<'a> {
 		{
 			let pull_requests: Vec<models::github_pull_requests::Inner> = retry(
 				|| github_pull_requests::table.load(&mut *connection),
-				|res| !res.is_empty(),
+				|res| res.len() >= 2,
 			)
 			.await?;
 			assert_eq!(pull_requests.len(), 2, "Invalid pull requests count");
@@ -476,7 +476,7 @@ impl<'a> Test<'a> {
 		{
 			let pull_requests: Vec<models::github_pull_requests::Inner> = retry(
 				|| github_pull_requests::table.load(&mut *connection),
-				|res| !res.is_empty(),
+				|res| res.len() >= 2,
 			)
 			.await?;
 			assert_eq!(pull_requests.len(), 2, "Invalid pull requests count");
@@ -682,7 +682,7 @@ impl<'a> Test<'a> {
 		retry(
 			|| github_pull_requests::table.load(&mut *connection),
 			|res: &[models::github_pull_requests::Inner]| {
-				!res.is_empty() && res[0].title == "updated"
+				res.len() >= 2 && res[1].title == "updated"
 			},
 		)
 		.await?;
@@ -762,7 +762,7 @@ impl<'a> Test<'a> {
 		retry(
 			|| github_pull_requests::table.load(&mut *connection),
 			|res: &[models::github_pull_requests::Inner]| {
-				!res.is_empty() && res[0].title == "updated_again"
+				res.len() >= 2 && res[1].title == "updated_again"
 			},
 		)
 		.await?;
@@ -884,7 +884,7 @@ impl<'a> Test<'a> {
 			let pull_requests: Vec<models::github_pull_requests::Inner> = retry(
 				|| github_pull_requests::table.load(&mut *connection),
 				|res: &[models::github_pull_requests::Inner]| {
-					!res.is_empty() && res[0].title == "Another brick in the wall"
+					res.len() >= 2 && res[1].title == "Another brick in the wall"
 				},
 			)
 			.await?;
