@@ -16,7 +16,9 @@ test.describe("As a visitor, I", () => {
 
     // Projects
     await browseProjectsPage.expectProjectToBeVisible(projects.ProjectA, {
-      logoSrc: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/14623987721662397761.png",
+      logoSrc:
+        process.env.VITE_CLOUDFLARE_RESIZE_W_100_PREFIX +
+        "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/14623987721662397761.png",
       contributors: "3 contributors",
       repositories: "2 repositories",
     });
