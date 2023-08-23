@@ -5,10 +5,7 @@ use infrastructure::{
 	contextualized_error::IntoContextualizedError,
 	database,
 	database::{
-		enums::{
-			ContributionStatus, ContributionType, GithubCodeReviewStatus, GithubIssueStatus,
-			GithubPullRequestStatus,
-		},
+		enums::{ContributionStatus, ContributionType, GithubCodeReviewStatus, GithubIssueStatus},
 		schema::contributions::dsl,
 		Result,
 	},
@@ -76,11 +73,7 @@ impl Repository for database::Client {
 					user_id: commit.author_id,
 					type_: ContributionType::PullRequest,
 					details_id: pull_request.inner.id.into(),
-					status: match pull_request.inner.status {
-						GithubPullRequestStatus::Open => ContributionStatus::InProgress,
-						GithubPullRequestStatus::Closed => ContributionStatus::Canceled,
-						GithubPullRequestStatus::Merged => ContributionStatus::Complete,
-					},
+					status: pull_request.inner.status.into(),
 					created_at: pull_request.inner.created_at,
 					closed_at: pull_request.inner.closed_at,
 				})
@@ -102,6 +95,19 @@ impl Repository for database::Client {
 				})
 				.err_with_context(format!(
 					"delete+insert contribution where type='PullRequest' and details_id={}",
+					pull_request.inner.id
+				))?;
+		} else {
+			diesel::update(dsl::contributions)
+				.filter(dsl::details_id.eq(DetailsId::from(pull_request.inner.id)))
+				.filter(dsl::type_.eq(ContributionType::PullRequest))
+				.set((
+					dsl::status.eq::<ContributionStatus>(pull_request.inner.status.into()),
+					dsl::closed_at.eq(pull_request.inner.closed_at),
+				))
+				.execute(&mut *connection)
+				.err_with_context(format!(
+					"update contribution where type='PullRequest' and details_id={}",
 					pull_request.inner.id
 				))?;
 		}
