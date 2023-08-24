@@ -42,7 +42,7 @@ export default function ContactInformations({ onlyEditable }: Props) {
         visibilityName="isTelegramPublic"
         options={{
           pattern: {
-            value: /^(?:@|(?:(?:(?:https?:\/\/)?t(?:elegram)?)\.me\/))?(\w+)$/,
+            value: /^(?:@|(?:(?:(?:https?:\/\/)?t(?:elegram)?)\.me\/))?(\w*)$/,
             message: T("profile.form.contactInfo.invalidUsername"),
           },
         }}
@@ -54,7 +54,7 @@ export default function ContactInformations({ onlyEditable }: Props) {
         visibilityName="isWhatsappPublic"
         options={{
           pattern: {
-            value: /^\+?(?:[0-9-(). ])+$/,
+            value: /^\+?(?:[0-9-(). ])*$/,
             message: T("profile.form.contactInfo.invalidePhoneNumber"),
           },
         }}
@@ -66,7 +66,7 @@ export default function ContactInformations({ onlyEditable }: Props) {
         visibilityName="isTwitterPublic"
         options={{
           pattern: {
-            value: /^(?:@|(?:(?:(?:https?:\/\/)?(?:twitter)?)\.com\/))?(\w+)$/,
+            value: /^(?:@|(?:(?:(?:https?:\/\/)?(?:twitter)?)\.com\/))?(\w*)$/,
             message: T("profile.form.contactInfo.invalidUsername"),
           },
         }}
@@ -78,7 +78,7 @@ export default function ContactInformations({ onlyEditable }: Props) {
         visibilityName="isDiscordPublic"
         options={{
           pattern: {
-            value: /^@?[a-zA-Z0-9_.]+$/,
+            value: /^@?[a-zA-Z0-9_.]*$/,
             message: T("profile.form.contactInfo.invalidUsername"),
           },
         }}
@@ -90,7 +90,7 @@ export default function ContactInformations({ onlyEditable }: Props) {
         visibilityName="isLinkedInPublic"
         options={{
           pattern: {
-            value: /^(?:@|(?:(?:(?:https?:)?\/\/)?(?:[\w]+\.)?linkedin\.com\/in\/))?([\w\-_À-ÿ%]+)\/?$/,
+            value: /^(?:@|(?:(?:(?:https?:)?\/\/)?(?:[\w]+\.)?linkedin\.com\/in\/))?([\w\-_À-ÿ%]*)\/?$/,
             message: T("profile.form.contactInfo.invalidUsername"),
           },
         }}
