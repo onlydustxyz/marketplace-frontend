@@ -110,6 +110,14 @@ export const users: Record<string, UserFixture> = {
     },
     onboardingWizardCompleted: true,
   },
+  Pierre: {
+    email: "pierre@super-mail.org",
+    github: {
+      id: 16590657,
+      login: "PierreOucif",
+    },
+    onboardingWizardCompleted: true,
+  },
   EmptyContributor: {
     email: "empty@super-mail.org",
     github: {
