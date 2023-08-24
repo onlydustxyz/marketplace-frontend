@@ -23,6 +23,8 @@ const githubRepo2 = {
 const PROJECT: Project = {
   id: 123,
   contributors: [],
+  pendingContributors: [],
+  rewardedUsers: [],
   githubReposAggregate: { aggregate: { count: 2 } },
   contributorsAggregate: { aggregate: { count: 3 } },
   name: "ZeroSync",
