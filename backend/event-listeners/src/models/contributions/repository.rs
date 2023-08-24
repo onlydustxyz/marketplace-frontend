@@ -1,21 +1,28 @@
 use std::collections::HashSet;
 
-use diesel::{Connection, ExpressionMethods, PgConnection, QueryDsl, RunQueryDsl};
-use domain::{GithubRepoId, GithubUserId};
+use diesel::{
+	r2d2::{ConnectionManager, PooledConnection},
+	Connection, ExpressionMethods, PgConnection, QueryDsl, RunQueryDsl,
+};
 use infrastructure::{
 	contextualized_error::IntoContextualizedError,
 	database,
-	database::{enums::ContributionType, schema::contributions::dsl, Result},
+	database::{
+		enums::{ContributionStatus, ContributionType, GithubCodeReviewStatus, GithubIssueStatus},
+		schema::contributions::dsl,
+		Result,
+	},
 };
 
 use super::{Contribution, DetailsId};
-use crate::models::{GithubIssue, GithubPullRequest};
+use crate::models::{
+	github_pull_requests::{Commit, Review},
+	GithubIssue, GithubPullRequest,
+};
 
 pub trait Repository: Sync + Send {
 	fn upsert_from_github_issue(&self, issue: GithubIssue) -> Result<()>;
 	fn upsert_from_github_pull_request(&self, pull_request: GithubPullRequest) -> Result<()>;
-	fn find_contributors_of_repo(&self, github_repo_id: &GithubRepoId)
-	-> Result<Vec<GithubUserId>>;
 }
 
 impl Repository for database::Client {
@@ -29,6 +36,13 @@ impl Repository for database::Client {
 				user_id: assignee,
 				type_: ContributionType::Issue,
 				details_id: issue.id.into(),
+				status: match issue.status {
+					GithubIssueStatus::Completed => ContributionStatus::Complete,
+					GithubIssueStatus::Open => ContributionStatus::InProgress,
+					GithubIssueStatus::Cancelled => ContributionStatus::Canceled,
+				},
+				created_at: issue.created_at,
+				closed_at: issue.closed_at,
 			})
 			.collect();
 
@@ -57,86 +71,118 @@ impl Repository for database::Client {
 	fn upsert_from_github_pull_request(&self, pull_request: GithubPullRequest) -> Result<()> {
 		let mut connection = self.connection()?;
 
-		if let Some(commits) = pull_request.commits {
-			let contributions: Vec<_> = commits
-				.into_iter()
-				.map(|commit| Contribution {
-					repo_id: pull_request.inner.repo_id,
-					user_id: commit.author_id,
-					type_: ContributionType::PullRequest,
-					details_id: pull_request.inner.id.into(),
-				})
-				.collect::<HashSet<_>>()
-				.into_iter()
-				.collect();
-
-			connection
-				.transaction(|connection| {
-					delete_all_contributions_for_details(
-						connection,
-						DetailsId::from(pull_request.inner.id),
-						ContributionType::PullRequest,
-					)?;
-
-					diesel::insert_into(dsl::contributions)
-						.values(contributions)
-						.execute(&mut *connection)
-				})
-				.err_with_context(format!(
-					"delete+insert contribution where type='PullRequest' and details_id={}",
-					pull_request.inner.id
-				))?;
+		if let Some(commits) = pull_request.clone().commits {
+			refresh_contributions_from_commits(&mut connection, &pull_request, &commits)?;
+		} else {
+			update_contributions_status(&mut connection, &pull_request)?;
 		}
 
-		if let Some(reviews) = pull_request.reviews {
-			let contributions: Vec<_> = reviews
-				.into_iter()
-				.map(|review| Contribution {
-					repo_id: pull_request.inner.repo_id,
-					user_id: review.reviewer_id,
-					type_: ContributionType::CodeReview,
-					details_id: pull_request.inner.id.into(),
-				})
-				.collect::<HashSet<_>>()
-				.into_iter()
-				.collect();
-
-			connection
-				.transaction(|connection| {
-					delete_all_contributions_for_details(
-						connection,
-						DetailsId::from(pull_request.inner.id),
-						ContributionType::CodeReview,
-					)?;
-
-					diesel::insert_into(dsl::contributions)
-						.values(contributions)
-						.execute(&mut *connection)
-				})
-				.err_with_context(format!(
-					"delete+insert contribution where type='CodeReview' and details_id={}",
-					pull_request.inner.id
-				))?;
+		if let Some(reviews) = pull_request.clone().reviews {
+			refresh_contributions_from_reviews(&mut connection, &pull_request, &reviews)?;
 		}
 
 		Ok(())
 	}
+}
 
-	fn find_contributors_of_repo(
-		&self,
-		github_repo_id: &GithubRepoId,
-	) -> Result<Vec<GithubUserId>> {
-		let mut connection = self.connection()?;
-		let contributors = dsl::contributions
-			.select(dsl::user_id)
-			.distinct()
-			.filter(dsl::repo_id.eq(github_repo_id))
-			.load(&mut *connection)
-			.err_with_context(format!(
-				"select user_id from contributions where repo_id={github_repo_id}"
-			))?;
-		Ok(contributors)
-	}
+fn refresh_contributions_from_commits(
+	connection: &mut PooledConnection<ConnectionManager<PgConnection>>,
+	pull_request: &GithubPullRequest,
+	commits: &[Commit],
+) -> Result<()> {
+	let contributions: Vec<_> = commits
+		.iter()
+		.map(|commit| Contribution {
+			repo_id: pull_request.inner.repo_id,
+			user_id: commit.author_id,
+			type_: ContributionType::PullRequest,
+			details_id: pull_request.inner.id.into(),
+			status: pull_request.inner.status.into(),
+			created_at: pull_request.inner.created_at,
+			closed_at: pull_request.inner.closed_at,
+		})
+		.collect::<HashSet<_>>()
+		.into_iter()
+		.collect();
+
+	connection
+		.transaction(|connection| {
+			delete_all_contributions_for_details(
+				connection,
+				DetailsId::from(pull_request.inner.id),
+				ContributionType::PullRequest,
+			)?;
+
+			diesel::insert_into(dsl::contributions)
+				.values(contributions)
+				.execute(&mut *connection)
+		})
+		.err_with_context(format!(
+			"delete+insert contribution where type='PullRequest' and details_id={}",
+			pull_request.inner.id
+		))?;
+	Ok(())
+}
+
+fn update_contributions_status(
+	connection: &mut PooledConnection<ConnectionManager<PgConnection>>,
+	pull_request: &GithubPullRequest,
+) -> Result<()> {
+	diesel::update(dsl::contributions)
+		.filter(dsl::details_id.eq(DetailsId::from(pull_request.inner.id)))
+		.filter(dsl::type_.eq(ContributionType::PullRequest))
+		.set((
+			dsl::status.eq::<ContributionStatus>(pull_request.inner.status.into()),
+			dsl::closed_at.eq(pull_request.inner.closed_at),
+		))
+		.execute(&mut *connection)
+		.err_with_context(format!(
+			"update contribution where type='PullRequest' and details_id={}",
+			pull_request.inner.id
+		))?;
+	Ok(())
+}
+
+fn refresh_contributions_from_reviews(
+	connection: &mut PooledConnection<ConnectionManager<PgConnection>>,
+	pull_request: &GithubPullRequest,
+	reviews: &[Review],
+) -> Result<()> {
+	let contributions: Vec<_> = reviews
+		.iter()
+		.map(|review| Contribution {
+			repo_id: pull_request.inner.repo_id,
+			user_id: review.reviewer_id,
+			type_: ContributionType::CodeReview,
+			details_id: pull_request.inner.id.into(),
+			status: match review.status {
+				GithubCodeReviewStatus::Completed => ContributionStatus::Complete,
+				GithubCodeReviewStatus::Pending => ContributionStatus::InProgress,
+			},
+			created_at: pull_request.inner.created_at,
+			closed_at: review.submitted_at,
+		})
+		.collect::<HashSet<_>>()
+		.into_iter()
+		.collect();
+
+	connection
+		.transaction(|connection| {
+			delete_all_contributions_for_details(
+				connection,
+				DetailsId::from(pull_request.inner.id),
+				ContributionType::CodeReview,
+			)?;
+
+			diesel::insert_into(dsl::contributions)
+				.values(contributions)
+				.execute(&mut *connection)
+		})
+		.err_with_context(format!(
+			"delete+insert contribution where type='CodeReview' and details_id={}",
+			pull_request.inner.id
+		))?;
+	Ok(())
 }
 
 fn delete_all_contributions_for_details(

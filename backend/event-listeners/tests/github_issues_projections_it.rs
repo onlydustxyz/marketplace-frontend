@@ -6,7 +6,7 @@ use fixtures::*;
 use infrastructure::{
 	amqp::UniqueMessage,
 	database::{
-		enums::ContributionType,
+		enums::{ContributionStatus, ContributionType},
 		schema::{contributions, github_issues},
 	},
 };
@@ -107,6 +107,7 @@ impl<'a> Test<'a> {
 				contribution.details_id,
 				GithubIssueId::from(1358746346u64).into()
 			);
+			assert_eq!(contribution.status, ContributionStatus::Complete);
 		}
 
 		Ok(())

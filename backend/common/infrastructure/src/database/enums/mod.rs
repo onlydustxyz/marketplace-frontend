@@ -7,6 +7,9 @@ pub use contact_channel::ContactChannel;
 mod contribution_type;
 pub use contribution_type::ContributionType;
 
+mod contribution_status;
+pub use contribution_status::ContributionStatus;
+
 mod github_ci_checks;
 pub use github_ci_checks::GithubCiChecks;
 

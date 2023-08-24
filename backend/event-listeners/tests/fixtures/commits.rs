@@ -28,3 +28,12 @@ pub fn c() -> GithubCommit {
 		author: users::alex(),
 	}
 }
+
+#[allow(unused)]
+pub fn d() -> GithubCommit {
+	GithubCommit {
+		sha: String::from("378b516df2af853ed73b44f983f05c2ddc521170"),
+		html_url: "https://github.com/onlydustxyz/marketplace/commit/378b516df2af853ed73b44f983f05c2ddc521170".parse().unwrap(),
+		author: users::ofux(),
+	}
+}

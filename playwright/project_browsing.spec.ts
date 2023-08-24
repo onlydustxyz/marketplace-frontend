@@ -19,11 +19,11 @@ test.describe("As a visitor, I", () => {
       logoSrc:
         process.env.VITE_CLOUDFLARE_RESIZE_W_100_PREFIX +
         "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/14623987721662397761.png",
-      contributors: "3 contributors",
+      contributors: "4 contributors",
       repositories: "2 repositories",
     });
     await browseProjectsPage.expectProjectToBeVisible(projects.ProjectB, {
-      contributors: "2 contributors",
+      contributors: "1 contributor",
       repositories: "1 repository",
     });
     await browseProjectsPage.expectProjectsNotToBeVisible(projects.Private);
@@ -61,13 +61,15 @@ test.describe("As a visitor, I", () => {
       browseProjectsPage.projects().first().getByText(projects.ProjectB.name, { exact: true })
     ).toBeVisible();
     await browseProjectsPage.sortBy("contributors");
-    await expect(browseProjectsPage.projects().first().getByText(projects.Kakarot.name, { exact: true })).toBeVisible();
-    await browseProjectsPage.sortBy("repositories");
     await expect(
       browseProjectsPage.projects().first().getByText(projects.ProjectA.name, { exact: true })
     ).toBeVisible();
     await browseProjectsPage.sortBy("name");
     await expect(browseProjectsPage.projects().first().getByText(projects.Empty.name, { exact: true })).toBeVisible();
+    await browseProjectsPage.sortBy("repositories");
+    await expect(
+      browseProjectsPage.projects().first().getByText(projects.ProjectA.name, { exact: true })
+    ).toBeVisible();
 
     // Test search
     await browseProjectsPage.search("evm");
@@ -101,7 +103,7 @@ test.describe("As a registered user, I", () => {
     await expect(page).toHaveURL("/not-found");
   });
 
-  test("can see private project I am a member of", async ({
+  test("can see private project I am a leader of", async ({
     page,
     projects,
     users,
@@ -115,8 +117,50 @@ test.describe("As a registered user, I", () => {
     await browseProjectsPage.expectProjectsToBeVisible(projects.Private);
   });
 
-  test("cannot see private project I am not a member of", async ({ page, projects, users, signIn }) => {
+  test("can see private project I am a pending leader of", async ({
+    page,
+    projects,
+    users,
+    signIn,
+    acceptTermsAndConditions,
+  }) => {
+    await signIn(users.Anthony);
+    await acceptTermsAndConditions();
+    const browseProjectsPage = new BrowseProjectsPage(page);
+    await browseProjectsPage.goto();
+    await browseProjectsPage.expectProjectsToBeVisible(projects.Private);
+  });
+
+  test("can see private project I am a contributor of", async ({
+    page,
+    projects,
+    users,
+    signIn,
+    acceptTermsAndConditions,
+  }) => {
     await signIn(users.Olivier);
+    await acceptTermsAndConditions();
+    const browseProjectsPage = new BrowseProjectsPage(page);
+    await browseProjectsPage.goto();
+    await browseProjectsPage.expectProjectsToBeVisible(projects.Private);
+  });
+
+  test("can see private project on which I have a reward", async ({
+    page,
+    projects,
+    users,
+    signIn,
+    acceptTermsAndConditions,
+  }) => {
+    await signIn(users.Pierre);
+    await acceptTermsAndConditions();
+    const browseProjectsPage = new BrowseProjectsPage(page);
+    await browseProjectsPage.goto();
+    await browseProjectsPage.expectProjectsToBeVisible(projects.Private);
+  });
+
+  test("cannot see private project I am not a member of", async ({ page, projects, users, signIn }) => {
+    await signIn(users.TokioRs);
     const browseProjectsPage = new BrowseProjectsPage(page);
     await browseProjectsPage.goto();
     await browseProjectsPage.expectProjectsNotToBeVisible(projects.Private);
