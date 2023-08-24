@@ -43,8 +43,8 @@ export default function WorkItemSidePanel({
 
   return (
     <SidePanel {...props}>
-      <div className="flex h-full flex-col gap-8">
-        <div className="px-6 pt-8 font-belwe text-2xl font-normal text-greyscale-50">
+      <div className="flex h-full flex-col">
+        <div className="px-6 py-8 font-belwe text-2xl font-normal text-greyscale-50">
           {T("reward.form.contributions.addContribution")}
         </div>
         <div className="flex flex-row items-center gap-8 border-b border-greyscale-50/8 px-6">

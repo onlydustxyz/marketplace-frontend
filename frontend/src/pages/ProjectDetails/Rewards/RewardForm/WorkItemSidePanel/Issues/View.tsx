@@ -75,7 +75,7 @@ export default function View({
 
   return (
     <div className="flex h-full flex-col gap-3 overflow-hidden px-6">
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-3 pt-8">
         <div className="flex flex-row items-center justify-between">
           <div className="flex flex-row gap-3">
             <Toggle
