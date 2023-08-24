@@ -75,4 +75,17 @@ export const payments: PaymentFixture[] = [
       },
     ],
   },
+  {
+    project: "Private",
+    recipientGithubId: 16590657,
+    requestor: "Oscar",
+    items: [
+      {
+        amount: 3000,
+        reason: {
+          workItems: [{ repoId: coolRepoAId, issueNumber: 3 }],
+        },
+      },
+    ],
+  },
 ];

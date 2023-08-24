@@ -19,7 +19,7 @@ pub struct Projector {
 	work_item_repository: Arc<dyn WorkItemRepository>,
 	github_repo_index_repository: Arc<dyn GithubRepoIndexRepository>,
 	github_user_index_repository: Arc<dyn GithubUserIndexRepository>,
-	projects_contributors_repository: Arc<dyn ProjectsContributorRepository>,
+	projects_rewarded_users_repository: Arc<dyn ProjectsRewardedUserRepository>,
 }
 
 #[async_trait]
@@ -98,8 +98,8 @@ impl EventListener<Event> for Projector {
 							user_id: recipient_id,
 						})?;
 
-						self.projects_contributors_repository
-							.link_project_with_contributor(&project_id, &recipient_id)?;
+						self.projects_rewarded_users_repository
+							.increase_user_reward_count_for_project(&project_id, &recipient_id)?;
 					},
 					PaymentEvent::Cancelled { id: payment_id } => {
 						let payment_request =
@@ -110,10 +110,11 @@ impl EventListener<Event> for Projector {
 						self.payment_request_repository.delete(payment_id)?;
 						self.work_item_repository.delete_by_payment_id(payment_id)?;
 
-						self.projects_contributors_repository.unlink_project_with_contributor(
-							&project_id,
-							&payment_request.recipient_id,
-						)?;
+						self.projects_rewarded_users_repository
+							.decrease_user_reward_count_for_project(
+								&project_id,
+								&payment_request.recipient_id,
+							)?;
 					},
 					PaymentEvent::Processed {
 						id: payment_id,

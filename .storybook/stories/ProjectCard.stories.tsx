@@ -73,6 +73,8 @@ const props = (args: {
 }): Project => ({
   id: 123,
   contributors: [],
+  pendingContributors: [],
+  rewardedUsers: [],
   githubReposAggregate: { aggregate: { count: 4 } },
   contributorsAggregate: { aggregate: { count: 4 } },
   name: args.name,

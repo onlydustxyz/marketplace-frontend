@@ -14,6 +14,10 @@ pub mod sql_types {
     pub struct ContactChannel;
 
     #[derive(diesel::query_builder::QueryId, diesel::sql_types::SqlType)]
+    #[diesel(postgres_type(name = "contribution_status"))]
+    pub struct ContributionStatus;
+
+    #[derive(diesel::query_builder::QueryId, diesel::sql_types::SqlType)]
     #[diesel(postgres_type(name = "contribution_type"))]
     pub struct ContributionType;
 
@@ -106,6 +110,7 @@ diesel::table! {
 diesel::table! {
     use diesel::sql_types::*;
     use super::sql_types::ContributionType;
+    use super::sql_types::ContributionStatus;
 
     contributions (type_, details_id, user_id) {
         repo_id -> Int8,
@@ -113,6 +118,9 @@ diesel::table! {
         #[sql_name = "type"]
         type_ -> ContributionType,
         details_id -> Int8,
+        status -> ContributionStatus,
+        created_at -> Timestamp,
+        closed_at -> Nullable<Timestamp>,
     }
 }
 
@@ -227,7 +235,7 @@ diesel::table! {
         html_url -> Text,
         languages -> Jsonb,
         parent_id -> Nullable<Int8>,
-		has_issues -> Bool,
+        has_issues -> Bool,
     }
 }
 
@@ -345,7 +353,21 @@ diesel::table! {
     projects_contributors (project_id, github_user_id) {
         project_id -> Uuid,
         github_user_id -> Int8,
-        link_count -> Int4,
+    }
+}
+
+diesel::table! {
+    projects_pending_contributors (project_id, github_user_id) {
+        project_id -> Uuid,
+        github_user_id -> Int8,
+    }
+}
+
+diesel::table! {
+    projects_rewarded_users (project_id, github_user_id) {
+        project_id -> Uuid,
+        github_user_id -> Int8,
+        reward_count -> Int4,
     }
 }
 
@@ -440,6 +462,8 @@ diesel::allow_tables_to_appear_in_same_query!(
     project_leads,
     projects,
     projects_contributors,
+    projects_pending_contributors,
+    projects_rewarded_users,
     projects_sponsors,
     sponsors,
     technologies,
