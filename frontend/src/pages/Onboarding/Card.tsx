@@ -37,7 +37,6 @@ export default function Card({
       <BaseCard
         className="flex flex-1 flex-col justify-between gap-12 divide-y divide-greyscale-50/8 bg-whiteFakeOpacity-2"
         padded={false}
-        blurred={false}
       >
         <div className="flex flex-col gap-8 px-8 pb-28 pt-16 xl:px-12 xl:pb-0">
           <div className="flex flex-col gap-4 xl:w-[600px]">

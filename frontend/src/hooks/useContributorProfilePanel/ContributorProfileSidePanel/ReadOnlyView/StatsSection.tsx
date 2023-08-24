@@ -41,7 +41,7 @@ export default function StatsSection({ profile, contributionCounts, contribution
             notation: "compact",
           })}
         />
-        <Card blurred padded={false} className="col-span-3 flex flex-col overflow-visible bg-noise-light px-4 py-2">
+        <Card padded={false} className="col-span-3 flex flex-col overflow-visible bg-noise-light px-4 py-2">
           <div className="flex flex-row items-center gap-3">
             <div className="w-full font-walsheim text-sm font-medium uppercase text-greyscale-300">
               {T("profile.sections.stats.contributions")}

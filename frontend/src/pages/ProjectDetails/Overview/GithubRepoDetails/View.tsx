@@ -11,7 +11,7 @@ export default function View({ id, name, htmlUrl, description, stars, forkCount 
   const { T } = useIntl();
 
   return (
-    <Card dataTestId={`github-repo-${id}`} className="flex flex-row justify-between p-3" padded={false} blurred={false}>
+    <Card dataTestId={`github-repo-${id}`} className="flex flex-row justify-between p-3" padded={false}>
       <div className="flex w-5/6 flex-col justify-between gap-5 p-3 pt-5 font-walsheim font-normal text-greyscale-50">
         <div className="flex flex-col justify-start gap-2">
           <span className="text-base font-medium">{name}</span>
