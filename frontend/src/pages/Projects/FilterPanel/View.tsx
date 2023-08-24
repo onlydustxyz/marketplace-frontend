@@ -32,7 +32,7 @@ export default function View({
   } = useProjectFilter();
 
   return (
-    <Card className="sticky top-4 flex h-fit flex-col gap-4 p-6" outline={!fromSidePanel}>
+    <Card className="sticky top-4 flex h-fit flex-col gap-4 p-6" withBg={!fromSidePanel}>
       <div className="flex items-center justify-start xl:justify-between">
         <span className="font-belwe text-2xl font-normal text-greyscale-50 xl:text-base">{T("filter.title")}</span>
         {!isProjectFilterCleared && (

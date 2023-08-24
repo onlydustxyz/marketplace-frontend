@@ -10,9 +10,8 @@ interface CardProps extends React.PropsWithChildren {
   dataTestId?: string;
   border?: CardBorder;
   padded?: boolean;
-  blurred?: boolean;
   fullWidth?: boolean;
-  outline?: boolean;
+  withBg?: boolean;
 }
 
 export default function Card({
@@ -20,32 +19,24 @@ export default function Card({
   className = "",
   border = CardBorder.Light,
   padded = true,
-  blurred = true,
   fullWidth = true,
-  outline = true,
+  withBg = true,
   dataTestId,
   children,
 }: CardProps) {
   return (
     <div
       className={classNames(
-        "rounded-2xl font-walsheim",
+        "rounded-2xl border font-walsheim",
         {
-          "pseudo-outline": outline,
-        },
-        {
+          "bg-whiteFakeOpacity-2": withBg,
           "w-full": fullWidth,
-        },
-        {
           "p-4 lg:p-6": padded,
+          "cursor-pointer": selectable,
         },
         {
-          "transition duration-300 hover:cursor-pointer hover:bg-white/4": selectable,
-          "hover:pseudo-outline-2": selectable,
-        },
-        {
-          "before:border-greyscale-50/8": outline && border === CardBorder.Light,
-          "before:border-greyscale-50/12": outline && border === CardBorder.Medium,
+          "border-greyscale-50/8": border === CardBorder.Light,
+          "border-greyscale-50/12": border === CardBorder.Medium,
         },
         className
       )}

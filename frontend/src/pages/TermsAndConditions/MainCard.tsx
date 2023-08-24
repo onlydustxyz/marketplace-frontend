@@ -20,7 +20,6 @@ export default function TermsAndConditionsMainCard({
         <Card
           className="mb-5 flex flex-col items-center justify-between gap-7 divide-y divide-greyscale-50/12 bg-whiteFakeOpacity-2 pb-40 pt-12 xl:pb-0"
           padded={false}
-          blurred={false}
         >
           <div className="flex flex-col items-center justify-between gap-4 px-6 xl:px-12">
             <div className="text-center font-belwe text-3xl">Summary of our Terms & Conditions</div>
