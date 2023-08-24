@@ -104,15 +104,17 @@ export default function OtherWorkForm({ projectId, contributorHandle, onWorkItem
 
   return (
     <FormProvider {...formMethods}>
-      <form className="flex h-full min-h-0 flex-col justify-between xl:gap-4" onSubmit={onSubmit}>
-        <div className="flex min-h-0 flex-col justify-start gap-4 overflow-y-auto px-6 pb-4 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5 xl:pb-0">
+      <form className="flex h-full min-h-0 flex-col justify-between overflow-y-auto" onSubmit={onSubmit}>
+        <div className="flex min-h-0 flex-col justify-start gap-4 px-6 pt-8 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5 xl:pb-0">
           <div className="font-belwe text-base font-normal text-greyscale-50">
             {T("reward.form.contributions.other.title")}
           </div>
           <FormSelect name="workKind" options={workKinds} control={control} />
           <Title title={title} setTitle={setTitle} defaultTitle={defaultTitle} />
           <Description description={description} setDescription={setDescription} />
-          <Callout>{T("reward.form.contributions.other.callout")}</Callout>
+          <div className="mb-8">
+            <Callout>{T("reward.form.contributions.other.callout")}</Callout>
+          </div>
         </div>
         <div className="flex flex-row justify-between gap-8 border-t border-greyscale-50/8 bg-white/2 p-4 xl:px-6 xl:py-8">
           {selectedRepo && <RepoSelect repos={repos} repo={selectedRepo} setRepo={setSelectedRepo} />}
