@@ -49,7 +49,7 @@ export default function ProjectCard({ project }: { project: Project }) {
           )}
         </div>
         <div className="flex h-full flex-col gap-2">
-          <div className="h-full font-belwe text-base font-normal text-greyscale-50">{name}</div>
+          <div className="h-full truncate font-belwe text-base font-normal text-greyscale-50">{name}</div>
           <div className="flex flex-row items-center gap-1">
             <Tag
               size={TagSize.Small}
