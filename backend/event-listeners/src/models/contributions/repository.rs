@@ -88,10 +88,10 @@ impl Repository for database::Client {
 fn refresh_contributions_from_commits(
 	connection: &mut PooledConnection<ConnectionManager<PgConnection>>,
 	pull_request: &GithubPullRequest,
-	commits: &Vec<Commit>,
+	commits: &[Commit],
 ) -> Result<()> {
 	let contributions: Vec<_> = commits
-		.into_iter()
+		.iter()
 		.map(|commit| Contribution {
 			repo_id: pull_request.inner.repo_id,
 			user_id: commit.author_id,
@@ -146,10 +146,10 @@ fn update_contributions_status(
 fn refresh_contributions_from_reviews(
 	connection: &mut PooledConnection<ConnectionManager<PgConnection>>,
 	pull_request: &GithubPullRequest,
-	reviews: &Vec<Review>,
+	reviews: &[Review],
 ) -> Result<()> {
 	let contributions: Vec<_> = reviews
-		.into_iter()
+		.iter()
 		.map(|review| Contribution {
 			repo_id: pull_request.inner.repo_id,
 			user_id: review.reviewer_id,
