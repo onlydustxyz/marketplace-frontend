@@ -299,9 +299,11 @@ class Projects {
    longDescription: String
    moreInfoLink: String
    name: String
+   pendingContributors: [ProjectsPendingContributors!]!
    pendingInvitations: [PendingProjectLeaderInvitations!]!
    projectLeads: [ProjectLeads!]!
    rank: Int
+   rewardedUsers: [ProjectsRewardedUsers!]!
    shortDescription: String
    sponsors: [ProjectsSponsors!]!
    visibility: project_visibility
@@ -310,10 +312,20 @@ class Projects {
 class ProjectsContributors {
    githubUser: GithubUsers
    githubUserId: bigint!
-   linkCount: Int!
    project: Projects
    projectId: uuid!
    user: UserProfiles
+}
+
+class ProjectsPendingContributors {
+   githubUserId: bigint!
+   projectId: uuid!
+}
+
+class ProjectsRewardedUsers {
+   githubUserId: bigint!
+   projectId: uuid!
+   rewardCount: Int!
 }
 
 class ProjectsSponsors {
@@ -522,6 +534,8 @@ Projects --* PendingProjectLeaderInvitations
 Projects --* ProjectGithubRepos
 Projects --* ProjectLeads
 Projects --* ProjectsContributors
+Projects --* ProjectsPendingContributors
+Projects --* ProjectsRewardedUsers
 Projects --* ProjectsSponsors
 ProjectsContributors -- GithubUsers
 ProjectsContributors -- Projects
