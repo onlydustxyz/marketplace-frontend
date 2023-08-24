@@ -40,9 +40,6 @@ export default function Card({
           "p-4 lg:p-6": padded,
         },
         {
-          "backdrop-blur-lg": blurred,
-        },
-        {
           "transition duration-300 hover:cursor-pointer hover:bg-white/4": selectable,
           "hover:pseudo-outline-2": selectable,
         },
