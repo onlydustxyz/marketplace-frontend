@@ -2,6 +2,7 @@ pub mod error;
 pub mod issues;
 pub mod pull_request;
 pub mod pull_requests;
+pub mod rate_limited;
 pub mod repo;
 pub mod user;
 
@@ -22,6 +23,23 @@ where
 	Id: Indexable,
 {
 	async fn index(&self, id: &Id) -> Result<()>;
+}
+
+#[async_trait]
+pub trait Crawler<Id, T>: Send + Sync
+where
+	Id: Indexable,
+{
+	async fn fetch_modified_data(&self, id: &Id) -> Result<T>;
+	fn ack(&self, id: &Id, data: T) -> Result<()>;
+}
+
+#[async_trait]
+pub trait Projector<Id, T>: Send + Sync
+where
+	Id: Indexable,
+{
+	async fn perform_projections(&self, id: &Id, data: T) -> Result<()>;
 }
 
 #[derive(new)]
@@ -46,23 +64,6 @@ where
 		self.crawler.ack(id, data)?;
 		Ok(())
 	}
-}
-
-#[async_trait]
-pub trait Crawler<Id, T>: Send + Sync
-where
-	Id: Indexable,
-{
-	async fn fetch_modified_data(&self, id: &Id) -> Result<T>;
-	fn ack(&self, id: &Id, data: T) -> Result<()>;
-}
-
-#[async_trait]
-pub trait Projector<Id, T>: Send + Sync
-where
-	Id: Indexable,
-{
-	async fn perform_projections(&self, id: &Id, data: T) -> Result<()>;
 }
 
 pub trait Indexable: Clone + Display + Send + Sync {}
