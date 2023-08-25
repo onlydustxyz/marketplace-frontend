@@ -8,6 +8,9 @@ on:
       - "main"
       - "hotfix/**"
 
+env:
+  VITE_CLOUDFLARE_RESIZE_W_100_PREFIX: https://onlydust.xyz/cdn-cgi/image/width=100/
+
 jobs:
   chromatic-deployment:
     runs-on: ubuntu-latest-4-cores
