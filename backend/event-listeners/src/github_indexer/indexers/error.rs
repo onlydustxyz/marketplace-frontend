@@ -1,4 +1,4 @@
-use domain::{GithubServiceError, PublisherError};
+use domain::GithubServiceError;
 use infrastructure::database::DatabaseError;
 use olog::warn;
 use thiserror::Error;
@@ -9,8 +9,6 @@ pub enum Error {
 	Database(#[from] DatabaseError),
 	#[error(transparent)]
 	GithubService(#[from] GithubServiceError),
-	#[error("Internal Error (publisher)")]
-	Publisher(#[from] PublisherError),
 	#[error("Internal Error (serde)")]
 	Serialization(#[from] serde_json::Error),
 	#[error("Internal Error (other)")]
