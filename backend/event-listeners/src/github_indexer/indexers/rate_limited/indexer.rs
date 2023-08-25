@@ -1,4 +1,4 @@
-use std::{marker::PhantomData, sync::Arc, time::Duration};
+use std::{fmt, marker::PhantomData, sync::Arc, time::Duration};
 
 use async_trait::async_trait;
 use derive_new::new;
@@ -62,5 +62,15 @@ where
 			},
 			_ => (),
 		}
+	}
+}
+
+impl<Id, I> fmt::Display for RateLimitedIndexer<Id, I>
+where
+	Id: Indexable,
+	I: Indexer<Id>,
+{
+	fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+		write!(f, "RateLimitedIndexer")
 	}
 }

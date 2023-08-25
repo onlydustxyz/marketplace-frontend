@@ -8,7 +8,7 @@ pub mod user;
 
 use std::{
 	collections::hash_map::DefaultHasher,
-	fmt::Display,
+	fmt::{self, Display},
 	hash::{Hash, Hasher},
 	sync::Arc,
 };
@@ -18,7 +18,7 @@ use derive_new::new;
 use error::Result;
 
 #[async_trait]
-pub trait Indexer<Id>: Send + Sync
+pub trait Indexer<Id>: Send + Sync + fmt::Display
 where
 	Id: Indexable,
 {
@@ -66,9 +66,44 @@ where
 	}
 }
 
+impl<Id, T> fmt::Display for IndexerImpl<Id, T>
+where
+	Id: Indexable,
+	T: Clone + Send + Sync,
+{
+	fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+		write!(
+			f,
+			"Indexer<{},{}>",
+			self.crawler.get_name(),
+			self.projector.get_name()
+		)
+	}
+}
+
 pub trait Indexable: Clone + Display + Send + Sync {}
 
 impl<I: Clone + Display + Send + Sync> Indexable for I {}
+
+trait Named {
+	fn get_name(&self) -> &'static str {
+		return std::any::type_name::<Self>();
+	}
+}
+
+impl<Id, T> Named for dyn Crawler<Id, T>
+where
+	Id: Indexable,
+	T: Clone + Send + Sync,
+{
+}
+
+impl<Id, T> Named for dyn Projector<Id, T>
+where
+	Id: Indexable,
+	T: Clone + Send + Sync,
+{
+}
 
 pub fn hash<T: Hash>(t: &T) -> u64 {
 	let mut s = DefaultHasher::new();
