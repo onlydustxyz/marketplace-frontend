@@ -38,7 +38,7 @@ export default function ProjectCard({ project }: { project: Project }) {
   const { T } = useIntl();
 
   return (
-    <Card selectable padded={false} className="flex h-full flex-col bg-noise-light">
+    <Card selectable padded={false} withBg={false} className="flex h-full flex-col bg-noise-light">
       <div className="flex h-full flex-col gap-3 p-4">
         <div className="relative w-fit">
           <RoundedImage src={logoUrl} alt={name} />

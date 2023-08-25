@@ -79,7 +79,7 @@ export default function View({ payoutSettingsValid, saveButtonDisabled, unsavedC
             },
           ]}
         />
-        <Card padded={false} className="p-6">
+        <Card padded={false} className="p-6" withBg={false}>
           {profileType === ProfileType.Company && (
             <div className="flex flex-col">
               <Callout>{T("profile.form.companyNeedsInvoiceCallout")}</Callout>

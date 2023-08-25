@@ -23,7 +23,7 @@ export default function PrivacyPolicySidePanel({
           <div className="font-belwe text-2xl">Privacy Policy</div>
         </div>
         <div className="py-6 font-walsheim">
-          <Card className="bg-noise-heavy">
+          <Card className="bg-noise-heavy" withBg={false}>
             <p className="mb-2 text-xl font-medium">LEGAL NOTICE</p>
             <p className="text-md mb-3">
               Onlydust.xyz is an online service edited by Wagmi SAS, a French simplified joint stock company registered
