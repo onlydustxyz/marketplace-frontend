@@ -1,8 +1,9 @@
 pub mod error;
-mod issues;
-mod pull_request;
-mod pull_requests;
-mod repo;
+pub mod issues;
+pub mod pull_request;
+pub mod pull_requests;
+pub mod repo;
+pub mod user;
 
 use std::{
 	collections::hash_map::DefaultHasher,

@@ -10,7 +10,7 @@ use olog::{warn, IntoField};
 use serde::{Deserialize, Serialize};
 
 use super::{super::error::Result, Crawler};
-use crate::{github_indexer::indexer::hash, models::github_pull_request_indexes};
+use crate::{github_indexer::indexers::hash, models::github_pull_request_indexes};
 
 #[derive(new)]
 pub struct PullRequestCrawler {

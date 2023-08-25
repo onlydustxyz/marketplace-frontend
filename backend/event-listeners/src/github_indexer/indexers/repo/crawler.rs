@@ -7,7 +7,7 @@ use serde::{Deserialize, Serialize};
 
 use super::{super::error::Result, IndexedRepo};
 use crate::{
-	github_indexer::{indexer::hash, indexers::Crawler},
+	github_indexer::indexers::{hash, Crawler},
 	models::GithubRepoIndexRepository,
 };
 
