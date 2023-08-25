@@ -80,6 +80,7 @@ export default function GithubIssue({
       className={classNames("flex flex-row gap-3 rounded-2xl p-4 hover:bg-noise-light hover:backdrop-blur-4xl ", {
         "mt-1": addMarginTopForVirtuosoDisplay,
       })}
+      withBg={false}
     >
       {action && <ActionButton action={action} onClick={onClick} ignored={ignored} />}
       <div className="flex w-full flex-col gap-2 font-walsheim">
