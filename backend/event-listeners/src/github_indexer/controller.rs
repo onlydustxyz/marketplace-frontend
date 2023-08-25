@@ -36,7 +36,7 @@ impl<Id: Indexable> Controller<Id> {
 						indexed_item_id = id.to_string(),
 						indexed_item_id_type = std::any::type_name::<Id>(),
 						indexer_type = indexer.as_ref().to_string(),
-						"Error while indexing item"
+						"An error occurred while indexing item. Continuing indexation..."
 					)
 				})
 				.ok();

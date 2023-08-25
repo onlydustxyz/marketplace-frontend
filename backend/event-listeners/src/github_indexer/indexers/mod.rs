@@ -1,5 +1,6 @@
 pub mod error;
 pub mod issues;
+pub mod logged;
 pub mod pull_request;
 pub mod pull_requests;
 pub mod rate_limited;

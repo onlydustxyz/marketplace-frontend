@@ -7,7 +7,10 @@ use olog::info;
 
 use self::{
 	controller::Controller,
-	indexers::rate_limited::{self, RateLimited},
+	indexers::{
+		logged::Logged,
+		rate_limited::{self, RateLimited},
+	},
 };
 use crate::Config;
 
@@ -47,6 +50,7 @@ impl Scheduler {
 							database.clone(),
 							database.clone(),
 						)
+						.logged()
 						.rate_limited(&single_rate_limit_conf),
 					),
 					Arc::new(
@@ -59,6 +63,7 @@ impl Scheduler {
 							database.clone(),
 							database.clone(),
 						)
+						.logged()
 						.rate_limited(&stream_rate_limit_conf),
 					),
 					Arc::new(
@@ -75,9 +80,11 @@ impl Scheduler {
 									database.clone(),
 									database.clone(),
 								)
+								.logged()
 								.rate_limited(&single_rate_limit_conf),
 							),
 						)
+						.logged()
 						.rate_limited(&stream_rate_limit_conf),
 					),
 				],
@@ -86,6 +93,7 @@ impl Scheduler {
 				database.clone(),
 				vec![Arc::new(
 					indexers::user::new(github.clone(), database.clone(), database.clone())
+						.logged()
 						.rate_limited(&single_rate_limit_conf),
 				)],
 			),
