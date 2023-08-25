@@ -9,26 +9,13 @@ use domain::{
 use olog::{warn, IntoField};
 use serde::{Deserialize, Serialize};
 
-use super::{error::Result, Crawler, Projector};
-use crate::{
-	github_indexer::indexer::hash,
-	models::{
-		github_pull_request_indexes, ContributionsRepository, GithubPullRequestRepository,
-		ProjectGithubRepoRepository, ProjectsContributorRepository,
-		ProjectsPendingContributorRepository,
-	},
-};
+use super::{super::error::Result, Crawler};
+use crate::{github_indexer::indexer::hash, models::github_pull_request_indexes};
 
 #[derive(new)]
-pub struct Indexer {
+pub struct PullRequestCrawler {
 	github_fetch_service: Arc<dyn GithubFetchService>,
-
 	github_pull_request_index_repository: Arc<dyn github_pull_request_indexes::Repository>,
-	github_pull_requests_repository: Arc<dyn GithubPullRequestRepository>,
-	contributions_repository: Arc<dyn ContributionsRepository>,
-	projects_contributors_repository: Arc<dyn ProjectsContributorRepository>,
-	projects_pending_contributors_repository: Arc<dyn ProjectsPendingContributorRepository>,
-	project_github_repos_repository: Arc<dyn ProjectGithubRepoRepository>,
 }
 
 #[derive(Default, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -44,7 +31,7 @@ impl State {
 	}
 }
 
-impl Indexer {
+impl PullRequestCrawler {
 	fn get_state(&self, pull_request_id: GithubPullRequestId) -> anyhow::Result<Option<State>> {
 		let state = match self
 			.github_pull_request_index_repository
@@ -91,7 +78,7 @@ impl Indexer {
 }
 
 #[async_trait]
-impl Crawler<GithubPullRequest, Option<GithubFullPullRequest>> for Indexer {
+impl Crawler<GithubPullRequest, Option<GithubFullPullRequest>> for PullRequestCrawler {
 	async fn fetch_modified_data(
 		&self,
 		pull_request: &GithubPullRequest,
@@ -187,36 +174,6 @@ impl Crawler<GithubPullRequest, Option<GithubFullPullRequest>> for Indexer {
 			.json()?,
 		)?;
 
-		Ok(())
-	}
-}
-
-#[async_trait]
-impl Projector<GithubPullRequest, Option<GithubFullPullRequest>> for Indexer {
-	async fn perform_projections(
-		&self,
-		_pull_request: &GithubPullRequest,
-		data: Option<GithubFullPullRequest>,
-	) -> Result<()> {
-		if let Some(pull_request) = data {
-			let pull_request: crate::models::GithubPullRequest = pull_request.into();
-
-			self.github_pull_requests_repository.upsert(pull_request.clone())?;
-
-			self.contributions_repository
-				.upsert_from_github_pull_request(pull_request.clone())?;
-
-			self.project_github_repos_repository
-				.find_projects_of_repo(&pull_request.inner.repo_id)?
-				.iter()
-				.try_for_each(|project_id| {
-					self.projects_contributors_repository
-						.refresh_project_contributor_list(project_id)?;
-					self.projects_pending_contributors_repository
-						.refresh_project_pending_contributor_list(project_id)
-					//TODO: insert non-yet-indexed contributors to user-indexes
-				})?;
-		}
 		Ok(())
 	}
 }

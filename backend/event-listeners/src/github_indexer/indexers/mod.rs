@@ -8,34 +8,43 @@ use std::{
 	collections::hash_map::DefaultHasher,
 	fmt::Display,
 	hash::{Hash, Hasher},
+	sync::Arc,
 };
 
 use async_trait::async_trait;
+use derive_new::new;
 use error::Result;
-pub use issues::IssuesIndexer;
-pub use pull_requests::PullRequestsIndexer;
-pub use repo::RepoIndexer;
 
 #[async_trait]
-pub trait Indexer<Id, T>: Crawler<Id, T> + Projector<Id, T> + Send + Sync
+pub trait Indexer<Id>: Send + Sync
+where
+	Id: Indexable,
+{
+	async fn index(&self, id: &Id) -> Result<()>;
+}
+
+#[derive(new)]
+pub struct IndexerImpl<Id, T>
+where
+	Id: Indexable,
+	T: Clone + Send + Sync,
+{
+	crawler: Arc<dyn Crawler<Id, T>>,
+	projector: Arc<dyn Projector<Id, T>>,
+}
+
+#[async_trait]
+impl<Id, T> Indexer<Id> for IndexerImpl<Id, T>
 where
 	Id: Indexable,
 	T: Clone + Send + Sync,
 {
 	async fn index(&self, id: &Id) -> Result<()> {
-		let data = self.fetch_modified_data(id).await?;
-		self.perform_projections(id, data.clone()).await?;
-		self.ack(id, data)?;
+		let data = self.crawler.fetch_modified_data(id).await?;
+		self.projector.perform_projections(id, data.clone()).await?;
+		self.crawler.ack(id, data)?;
 		Ok(())
 	}
-}
-
-impl<Id, T, I> Indexer<Id, T> for I
-where
-	Id: Indexable,
-	T: Clone + Send + Sync,
-	I: Crawler<Id, T> + Projector<Id, T> + Send + Sync,
-{
 }
 
 #[async_trait]

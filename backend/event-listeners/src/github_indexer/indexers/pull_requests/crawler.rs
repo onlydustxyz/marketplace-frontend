@@ -3,26 +3,19 @@ use std::sync::Arc;
 use async_trait::async_trait;
 use chrono::{DateTime, Utc};
 use derive_new::new;
-use domain::{
-	GithubFetchPullRequestService, GithubFullPullRequest, GithubPullRequest, GithubRepoId,
-	GithubServicePullRequestFilters,
-};
+use domain::{GithubFetchPullRequestService, GithubRepoId, GithubServicePullRequestFilters};
 use serde::{Deserialize, Serialize};
 
 use super::{
-	error::{IgnoreErrors, Result},
-	Crawler, Projector,
+	super::error::{IgnoreErrors, Result},
+	Crawler,
 };
 use crate::models::GithubRepoIndexRepository;
 
-pub type PullRequestsIndexer = dyn super::Indexer<GithubRepoId, Vec<domain::GithubPullRequest>>;
-
 #[derive(new)]
-pub struct Indexer {
+pub struct PullRequestsCrawler {
 	github_fetch_service: Arc<dyn GithubFetchPullRequestService>,
 	github_repo_index_repository: Arc<dyn GithubRepoIndexRepository>,
-
-	pull_request_indexer: Arc<dyn super::Indexer<GithubPullRequest, Option<GithubFullPullRequest>>>,
 }
 
 #[derive(new, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -36,7 +29,7 @@ impl State {
 	}
 }
 
-impl Indexer {
+impl PullRequestsCrawler {
 	fn get_state(&self, repo_id: GithubRepoId) -> anyhow::Result<Option<State>> {
 		let state =
 			match self.github_repo_index_repository.select_pull_requests_indexer_state(&repo_id)? {
@@ -52,7 +45,7 @@ impl Indexer {
 }
 
 #[async_trait]
-impl Crawler<GithubRepoId, Vec<domain::GithubPullRequest>> for Indexer {
+impl Crawler<GithubRepoId, Vec<domain::GithubPullRequest>> for PullRequestsCrawler {
 	async fn fetch_modified_data(
 		&self,
 		repo_id: &GithubRepoId,
@@ -84,20 +77,6 @@ impl Crawler<GithubRepoId, Vec<domain::GithubPullRequest>> for Indexer {
 				.update_pull_requests_indexer_state(&id, state.json()?)?;
 		}
 
-		Ok(())
-	}
-}
-
-#[async_trait]
-impl Projector<GithubRepoId, Vec<domain::GithubPullRequest>> for Indexer {
-	async fn perform_projections(
-		&self,
-		_id: &GithubRepoId,
-		data: Vec<domain::GithubPullRequest>,
-	) -> Result<()> {
-		for pull_request in data {
-			self.pull_request_indexer.index(&pull_request).await?;
-		}
 		Ok(())
 	}
 }
