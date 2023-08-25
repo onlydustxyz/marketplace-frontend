@@ -1,4 +1,5 @@
 pub mod error;
+mod issues;
 mod pull_request;
 mod pull_requests;
 mod repo;
@@ -11,6 +12,7 @@ use std::{
 
 use async_trait::async_trait;
 use error::Result;
+pub use issues::IssuesIndexer;
 pub use pull_requests::PullRequestsIndexer;
 pub use repo::RepoIndexer;
 
