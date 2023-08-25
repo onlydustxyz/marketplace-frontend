@@ -16,6 +16,8 @@ use tokio::task::JoinHandle;
 use crate::{listeners::Spawnable, Config, GITHUB_EVENTS_EXCHANGE};
 
 mod indexer;
+pub mod indexers;
+mod scheduler;
 
 pub const GITHUB_INDEXER_QUEUE: &str = "github-indexer";
 
