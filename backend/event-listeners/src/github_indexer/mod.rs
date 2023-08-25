@@ -1,4 +1,4 @@
-use std::sync::Arc;
+use std::{sync::Arc, time::Duration};
 
 use anyhow::Result;
 use domain::{GithubRepoId, GithubUserId};
@@ -105,8 +105,19 @@ impl Scheduler {
 			info!("🎶 Still alive 🎶");
 			self.repo_indexing.index_all().await?;
 			self.user_indexing.index_all().await?;
+			sleep().await;
 		}
 	}
+}
+
+async fn sleep() {
+	let seconds = std::env::var("GITHUB_EVENTS_INDEXER_SLEEP_DURATION")
+		.unwrap_or_default()
+		.parse()
+		.unwrap_or(60);
+
+	info!("💤 Sleeping for {seconds} seconds 💤");
+	tokio::time::sleep(Duration::from_secs(seconds)).await;
 }
 
 fn github_stream_rate_limit_guard() -> usize {
