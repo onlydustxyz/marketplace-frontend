@@ -119,7 +119,9 @@ export default function ProjectCard({ project }: ProjectCardProps) {
                     {topSponsors.map(sponsor => (
                       <RoundedImage
                         key={sponsor.id}
-                        src={sponsor.logoUrl}
+                        src={
+                          sponsor.logoUrl ? config.CLOUDFLARE_RESIZE_W_100_PREFIX + sponsor.logoUrl : sponsor.logoUrl
+                        }
                         alt={sponsor.name}
                         size={ImageSize.Xxs}
                         rounding={Rounding.Circle}
