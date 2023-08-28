@@ -1,7 +1,7 @@
 import http from "k6/http";
 import { check } from "k6";
 
-const GRAPHQL_URL = "https://staging.gateway.onlydust.xyz/api/v1/graphql";
+const GRAPHQL_URL = "https://staging-gateway.onlydust.xyz/api/v1/graphql";
 
 function checkGraphQLResponse(res) {
   check(res, {
