@@ -1,3 +1,4 @@
+pub mod contributors_projector;
 pub mod error;
 pub mod issues;
 pub mod logged;

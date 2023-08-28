@@ -4,11 +4,8 @@ use domain::{GithubFetchIssueService, GithubIssue, GithubRepoId};
 use infrastructure::database::Repository;
 
 use self::{crawler::IssuesCrawler, projector::IssuesProjector};
-use super::{Crawler, IndexerImpl, Projector};
-use crate::models::{
-	ContributionsRepository, GithubRepoIndexRepository, ProjectGithubRepoRepository,
-	ProjectsContributorRepository, ProjectsPendingContributorRepository,
-};
+use super::{contributors_projector::ContributorsProjector, Crawler, IndexerImpl, Projector};
+use crate::models::{ContributionsRepository, GithubRepoIndexRepository};
 
 mod crawler;
 mod projector;
@@ -18,9 +15,7 @@ pub fn new(
 	github_repo_index_repository: Arc<dyn GithubRepoIndexRepository>,
 	github_issues_repository: Arc<dyn Repository<crate::models::GithubIssue>>,
 	contributions_repository: Arc<dyn ContributionsRepository>,
-	projects_contributors_repository: Arc<dyn ProjectsContributorRepository>,
-	projects_pending_contributors_repository: Arc<dyn ProjectsPendingContributorRepository>,
-	project_github_repos_repository: Arc<dyn ProjectGithubRepoRepository>,
+	contributors_projector: ContributorsProjector,
 ) -> IndexerImpl<GithubRepoId, Vec<GithubIssue>> {
 	IndexerImpl {
 		crawler: Arc::new(IssuesCrawler::new(
@@ -30,9 +25,7 @@ pub fn new(
 		projector: Arc::new(IssuesProjector::new(
 			github_issues_repository,
 			contributions_repository,
-			projects_contributors_repository,
-			projects_pending_contributors_repository,
-			project_github_repos_repository,
+			contributors_projector,
 		)),
 	}
 }

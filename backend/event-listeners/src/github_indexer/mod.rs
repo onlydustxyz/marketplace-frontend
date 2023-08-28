@@ -8,6 +8,7 @@ use olog::info;
 use self::{
 	controller::Controller,
 	indexers::{
+		contributors_projector::ContributorsProjector,
 		logged::Logged,
 		rate_limited::{self, RateLimited},
 	},
@@ -59,9 +60,12 @@ impl Scheduler {
 							database.clone(),
 							database.clone(),
 							database.clone(),
-							database.clone(),
-							database.clone(),
-							database.clone(),
+							ContributorsProjector::new(
+								database.clone(),
+								database.clone(),
+								database.clone(),
+								database.clone(),
+							),
 						)
 						.logged()
 						.rate_limited(&stream_rate_limit_conf),
@@ -76,9 +80,12 @@ impl Scheduler {
 									database.clone(),
 									database.clone(),
 									database.clone(),
-									database.clone(),
-									database.clone(),
-									database.clone(),
+									ContributorsProjector::new(
+										database.clone(),
+										database.clone(),
+										database.clone(),
+										database.clone(),
+									),
 								)
 								.logged()
 								.rate_limited(&single_rate_limit_conf),

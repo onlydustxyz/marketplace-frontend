@@ -1,8 +1,10 @@
-use diesel::{Identifiable, PgConnection};
+use diesel::{Connection, Identifiable, PgConnection};
 
 use super::{ImmutableModel, Model, Result};
-use crate::database;
-
+use crate::{
+	contextualized_error::ContextualizedError,
+	database::{self},
+};
 pub trait ImmutableRepository<M>: Send + Sync
 where
 	M: ImmutableModel<PgConnection>,
@@ -14,6 +16,9 @@ where
 	fn try_insert(&self, model: M) -> Result<Option<M>>;
 	fn delete(&self, id: <M as Identifiable>::Id) -> Result<M>;
 	fn clear(&self) -> Result<()>;
+
+	fn insert_all(&self, models: Vec<M>) -> Result<()>;
+	fn try_insert_all(&self, models: Vec<M>) -> Result<()>;
 }
 
 impl<M> ImmutableRepository<M> for database::Client
@@ -54,6 +59,28 @@ where
 		let mut connection = self.connection()?;
 		M::clear(&mut *connection)
 	}
+
+	fn insert_all(&self, models: Vec<M>) -> Result<()> {
+		let mut connection = self.connection()?;
+		connection.transaction::<(), database::error::Error, _>(|tx| {
+			for model in models {
+				model.insert(&mut *tx)?;
+			}
+			Ok(())
+		})?;
+		Ok(())
+	}
+
+	fn try_insert_all(&self, models: Vec<M>) -> Result<()> {
+		let mut connection = self.connection()?;
+		connection.transaction::<(), database::error::Error, _>(|tx| {
+			for model in models {
+				model.try_insert(&mut *tx)?;
+			}
+			Ok(())
+		})?;
+		Ok(())
+	}
 }
 
 pub trait Repository<M>: ImmutableRepository<M>
@@ -76,5 +103,15 @@ where
 	fn upsert(&self, model: M) -> Result<M> {
 		let mut connection = self.connection()?;
 		model.upsert(&mut *connection)
+	}
+}
+
+// Useful to make transaction::<(), database::error::Error, _> transactions
+impl From<diesel::result::Error> for database::error::Error {
+	fn from(error: diesel::result::Error) -> Self {
+		database::error::Error::Transaction(ContextualizedError::new(
+			"Error in transaction".to_string(),
+			error,
+		))
 	}
 }
