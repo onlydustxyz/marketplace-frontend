@@ -13,10 +13,10 @@ select_permissions:
     permission:
       columns:
         - github_user_id
-        - paid_count
         - total_count
-        - unpaid_count
-        - unpaid_unignored_count
+        - issue_count
+        - code_review_count
+        - pull_request_count
         - max_date
         - min_date
         - project_id
