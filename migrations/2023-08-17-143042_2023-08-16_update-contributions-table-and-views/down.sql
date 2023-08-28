@@ -1,13 +1,13 @@
-DROP VIEW api.contribution_stats_v2;
+DROP VIEW api.contribution_stats;
 
 
-DROP VIEW api.contribution_count_v2;
+DROP VIEW api.contribution_counts;
 
 
-DROP VIEW api.completed_contributions_v2;
+DROP VIEW api.completed_contributions;
 
 
-DROP VIEW api.contributions_v2;
+DROP VIEW api.contributions;
 
 
 ALTER TABLE contributions

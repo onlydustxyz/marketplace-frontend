@@ -37,8 +37,20 @@ ALTER TABLE contributions
 ADD COLUMN closed_at TIMESTAMP;
 
 
-CREATE OR REPLACE VIEW
-    api.contributions_v2 AS
+DROP VIEW IF EXISTS api.contribution_counts;
+
+
+DROP VIEW IF EXISTS api.contribution_stats;
+
+
+DROP VIEW IF EXISTS api.contributions;
+
+
+DROP VIEW IF EXISTS api.completed_contributions;
+
+
+CREATE VIEW
+    api.contributions AS
 SELECT
     c.user_id AS github_user_id,
     c.details_id,
@@ -53,8 +65,8 @@ FROM
     INNER JOIN public.project_github_repos pgr ON pgr.github_repo_id = c.repo_id;
 
 
-CREATE OR REPLACE VIEW
-    api.completed_contributions_v2 AS
+CREATE VIEW
+    api.completed_contributions AS
 SELECT
     c.user_id AS github_user_id,
     c.details_id,
@@ -71,8 +83,8 @@ WHERE
     c.status = 'complete'::contribution_status;
 
 
-CREATE OR REPLACE VIEW
-    api.contribution_count_v2 AS
+CREATE VIEW
+    api.contribution_counts AS
 SELECT
     c.github_user_id,
     DATE_PART('year'::TEXT, c.created_at) AS YEAR,
@@ -90,7 +102,7 @@ SELECT
             c.type = 'pull_request'
     ) AS pull_request_count
 FROM
-    api.completed_contributions_v2 c
+    api.completed_contributions c
 GROUP BY
     c.github_user_id,
     (DATE_PART('year'::TEXT, c.created_at)),
@@ -98,7 +110,7 @@ GROUP BY
 
 
 CREATE VIEW
-    api.contribution_stats_v2 AS
+    api.contribution_stats AS
 SELECT
     c.github_user_id,
     c.project_id,
@@ -118,7 +130,7 @@ SELECT
     MIN(c.created_at) AS min_date,
     MAX(c.created_at) AS max_date
 FROM
-    api.completed_contributions_v2 c
+    api.completed_contributions c
 GROUP BY
     c.github_user_id,
     c.project_id;

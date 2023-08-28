@@ -13,8 +13,9 @@ select_permissions:
     permission:
       columns:
         - github_user_id
-        - paid_count
-        - unpaid_count
+        - issue_count
+        - code_review_count
+        - pull_request_count
         - week
         - year
       filter: {}
