@@ -20,6 +20,7 @@ const config = {
   GTM_ID: import.meta.env.VITE_GTM_ID,
   LANGUAGES_FILTER: import.meta.env.VITE_LANGUAGES_FILTER,
   CLOUDFLARE_RESIZE_W_100_PREFIX: import.meta.env.VITE_CLOUDFLARE_RESIZE_W_100_PREFIX,
+  GENERIC_METADATA_URL: import.meta.env.VITE_GENERIC_METADATA_URL,
 };
 
 export default config;
