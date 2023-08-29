@@ -71,11 +71,7 @@ function ProjectPresentDetails({
 
   return (
     <>
-      <SEO
-        title={`${name} — OnlyDust`}
-        description={shortDescription ?? undefined}
-        route={generatePath(RoutePaths.ProjectDetails, { projectKey })}
-      />
+      <SEO title={`${name} — OnlyDust`} />
       <View projectId={projectId} projectKey={projectKey} />
     </>
   );
