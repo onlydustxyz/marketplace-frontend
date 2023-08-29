@@ -107,11 +107,16 @@ impl Scheduler {
 		})
 	}
 
+	pub async fn run_once(&self) -> Result<()> {
+		self.repo_indexing.index_all().await?;
+		self.user_indexing.index_all().await?;
+		Ok(())
+	}
+
 	pub async fn run(&self) -> Result<()> {
 		loop {
 			info!("🎶 Still alive 🎶");
-			self.repo_indexing.index_all().await?;
-			self.user_indexing.index_all().await?;
+			self.run_once().await?;
 			sleep().await;
 		}
 	}

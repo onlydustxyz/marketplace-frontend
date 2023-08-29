@@ -2,7 +2,7 @@ use std::{env, ffi::OsString};
 
 use anyhow::Result;
 use envtestkit::{set_env, EnvironmentTestGuard};
-use event_listeners::{github_indexer, Config};
+use event_listeners::{github_indexer::Scheduler, Config};
 use rstest::fixture;
 use testcontainers::clients::Cli;
 use testing::context::{amqp, database, github};
@@ -17,6 +17,7 @@ pub fn docker() -> Cli {
 pub struct Context<'a> {
 	pub database: database::Context<'a>,
 	pub amqp: amqp::Context<'a>,
+	pub indexing_scheduler: Scheduler,
 	_github: github::Context<'a>,
 	_guards: Vec<EnvironmentTestGuard>,
 	_processes: Vec<JoinHandle<()>>,
@@ -63,9 +64,10 @@ impl<'a> Context<'a> {
 		Ok(Self {
 			database,
 			amqp,
+			indexing_scheduler: Scheduler::new(config).expect("Failed to init indexing scheduler"),
 			_github: github,
 			_guards,
-			_processes: github_indexer::bootstrap(config).await?,
+			_processes: vec![],
 		})
 	}
 }
