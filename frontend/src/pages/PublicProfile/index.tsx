@@ -24,11 +24,7 @@ const PublicProfilePage = () => {
 
   return userProfile && userLogin ? (
     <>
-      <SEO
-        title={`${userProfile.profile.login} — OnlyDust`}
-        description={userProfile.profile.bio ?? undefined}
-        route={generatePath(RoutePaths.PublicProfile, { userLogin })}
-      />
+      <SEO title={`${userProfile.profile.login} — OnlyDust`} />
       <div className="bg-public-profile lg:h-[calc(100dvh)] lg:w-screen">
         <div className="mx-auto flex h-full max-w-7xl flex-col justify-between md:px-4">
           <Header userLogin={userLogin} />
