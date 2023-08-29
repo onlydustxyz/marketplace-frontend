@@ -20,7 +20,7 @@ export default function SEO({ title = DEFAULT_TITLE, description = DEFAULT_DESCR
       <meta property="og:site_name" content="OnlyDust" />
       <meta property="og:url" content={`${config.ASSET_PATH}/${route}`} />
       <meta property="og:description" content={description} />
-      <meta property="og:image" content="https://onlydust-app-images.s3.eu-west-1.amazonaws.com/thumbnail.png" />
+      <meta property="og:image" content={config.GENERIC_METADATA_URL} />
       <meta property="og:image:alt" content={DEFAULT_DESCRIPTION} />
       <meta property="og:image:type" content="image/png" />
       <meta property="og:image:width" content="1200" />
