@@ -6,16 +6,17 @@ use std::{
 use anyhow::Result;
 use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
 use domain::{
-	GithubCodeReview, GithubCodeReviewStatus, GithubCommit, GithubPullRequest, GithubPullRequestId,
-	GithubPullRequestStatus, GithubRepo, GithubUser,
+	GithubCodeReview, GithubCodeReviewStatus, GithubCommit, GithubIssueId, GithubPullRequest,
+	GithubPullRequestId, GithubPullRequestStatus, GithubRepo, GithubUser,
 };
-use event_listeners::models::{self, GithubRepoIndex};
+use event_listeners::models::{self, GithubRepoIndex, ProjectGithubRepo};
 use fixtures::{users::anthony, *};
 use infrastructure::database::{
-	enums,
+	enums::{self, ContributionStatus, ContributionType},
 	schema::{
-		github_issues, github_pull_request_commits, github_pull_request_indexes,
-		github_pull_request_reviews, github_pull_requests, github_repos,
+		contributions, github_issues, github_pull_request_commits, github_pull_request_indexes,
+		github_pull_request_reviews, github_pull_requests, github_repos, projects_contributors,
+		projects_pending_contributors,
 	},
 	ImmutableRepository,
 };
@@ -126,7 +127,7 @@ impl<'a> Test<'a> {
 				assert_eq!(issue.created_at, "2023-06-19T09:16:20".parse().unwrap());
 				assert_eq!(issue.closed_at, "2023-07-31T07:49:13".parse().ok());
 				assert_eq!(issue.author_id, users::od_develop().id);
-				assert_eq!(issue.assignee_ids.0, vec![]);
+				assert_eq!(issue.assignee_ids.0, vec![users::ofux().id]);
 				assert_eq!(issue.comments_count, 0);
 			}
 
@@ -291,18 +292,186 @@ impl<'a> Test<'a> {
 
 	async fn assert_marketplace_contributions_are_up_to_date(&mut self) -> Result<()> {
 		let mut connection = self.context.database.client.connection()?;
-		//TODO
+		{
+			let mut contributions: Vec<models::Contribution> = contributions::table
+				.order((
+					contributions::dsl::type_.desc(),
+					contributions::dsl::user_id.desc(),
+					contributions::dsl::details_id.asc(),
+					contributions::dsl::created_at.asc(),
+				))
+				.load(&mut *connection)?;
+			assert_eq!(contributions.len(), 9, "Invalid contribution count");
+
+			{
+				let contribution = contributions.pop().unwrap();
+				assert_eq!(contribution.repo_id, repos::marketplace().id);
+				assert_eq!(contribution.type_, ContributionType::Issue);
+				assert_eq!(contribution.user_id, users::ofux().id);
+				assert_eq!(
+					contribution.details_id,
+					GithubIssueId::from(1763108414u64).into()
+				);
+				assert_eq!(contribution.status, ContributionStatus::Complete);
+			}
+
+			{
+				let contribution = contributions.pop().unwrap();
+				assert_eq!(contribution.repo_id, repos::marketplace().id);
+				assert_eq!(contribution.type_, ContributionType::PullRequest);
+				assert_eq!(contribution.user_id, users::anthony().id);
+				assert_eq!(
+					contribution.details_id,
+					GithubPullRequestId::from(1458220740u64).into()
+				);
+				assert_eq!(contribution.status, ContributionStatus::InProgress);
+			}
+
+			{
+				let contribution = contributions.pop().unwrap();
+				assert_eq!(contribution.repo_id, repos::marketplace().id);
+				assert_eq!(contribution.type_, ContributionType::PullRequest);
+				assert_eq!(contribution.user_id, users::anthony().id);
+				assert_eq!(
+					contribution.details_id,
+					GithubPullRequestId::from(1455874031u64).into()
+				);
+				assert_eq!(contribution.status, ContributionStatus::Complete);
+			}
+
+			{
+				let contribution = contributions.pop().unwrap();
+				assert_eq!(contribution.repo_id, repos::marketplace().id);
+				assert_eq!(contribution.type_, ContributionType::PullRequest);
+				assert_eq!(contribution.user_id, users::anthony().id);
+				assert_eq!(
+					contribution.details_id,
+					GithubPullRequestId::from(1452363285u64).into()
+				);
+				assert_eq!(contribution.status, ContributionStatus::Canceled);
+			}
+
+			{
+				let contribution = contributions.pop().unwrap();
+				assert_eq!(contribution.repo_id, repos::marketplace().id);
+				assert_eq!(contribution.type_, ContributionType::CodeReview);
+				assert_eq!(contribution.user_id, users::ofux().id);
+				assert_eq!(
+					contribution.details_id,
+					GithubPullRequestId::from(1458220740u64).into()
+				);
+				assert_eq!(contribution.status, ContributionStatus::InProgress);
+			}
+
+			{
+				let contribution = contributions.pop().unwrap();
+				assert_eq!(contribution.repo_id, repos::marketplace().id);
+				assert_eq!(contribution.type_, ContributionType::CodeReview);
+				assert_eq!(contribution.user_id, users::alex().id);
+				assert_eq!(
+					contribution.details_id,
+					GithubPullRequestId::from(1458220740u64).into()
+				);
+				assert_eq!(contribution.status, ContributionStatus::InProgress);
+			}
+
+			{
+				let contribution = contributions.pop().unwrap();
+				assert_eq!(contribution.repo_id, repos::marketplace().id);
+				assert_eq!(contribution.type_, ContributionType::CodeReview);
+				assert_eq!(contribution.user_id, users::anthony().id);
+				assert_eq!(
+					contribution.details_id,
+					GithubPullRequestId::from(1458220740u64).into()
+				);
+				assert_eq!(contribution.status, ContributionStatus::Complete);
+			}
+
+			{
+				let contribution = contributions.pop().unwrap();
+				assert_eq!(contribution.repo_id, repos::marketplace().id);
+				assert_eq!(contribution.type_, ContributionType::CodeReview);
+				assert_eq!(contribution.user_id, users::anthony().id);
+				assert_eq!(
+					contribution.details_id,
+					GithubPullRequestId::from(1455874031u64).into()
+				);
+				assert_eq!(contribution.status, ContributionStatus::InProgress);
+			}
+
+			{
+				let contribution = contributions.pop().unwrap();
+				assert_eq!(contribution.repo_id, repos::marketplace().id);
+				assert_eq!(contribution.type_, ContributionType::CodeReview);
+				assert_eq!(contribution.user_id, users::anthony().id);
+				assert_eq!(
+					contribution.details_id,
+					GithubPullRequestId::from(1452363285u64).into()
+				);
+				assert_eq!(contribution.status, ContributionStatus::InProgress);
+			}
+		}
 		Ok(())
 	}
 
 	async fn assert_marketplace_contributors_are_up_to_date_and_indexed(&mut self) -> Result<()> {
 		let mut connection = self.context.database.client.connection()?;
-		//TODO
+
+		{
+			let mut pending_contributors: Vec<models::ProjectsPendingContributor> =
+				projects_pending_contributors::table.load(&mut *connection)?;
+			assert_eq!(
+				pending_contributors.len(),
+				3,
+				"Invalid pending contributors count"
+			);
+
+			{
+				let pending_contributor = pending_contributors.pop().unwrap();
+				assert_eq!(pending_contributor.project_id, projects::project_id());
+				assert_eq!(pending_contributor.github_user_id, users::anthony().id);
+			}
+
+			{
+				let pending_contributor = pending_contributors.pop().unwrap();
+				assert_eq!(pending_contributor.project_id, projects::project_id());
+				assert_eq!(pending_contributor.github_user_id, users::alex().id);
+			}
+
+			{
+				let pending_contributor = pending_contributors.pop().unwrap();
+				assert_eq!(pending_contributor.project_id, projects::project_id());
+				assert_eq!(pending_contributor.github_user_id, users::ofux().id);
+			}
+		}
+
+		{
+			let mut contributors: Vec<models::ProjectsContributor> =
+				projects_contributors::table.load(&mut *connection)?;
+			assert_eq!(contributors.len(), 2, "Invalid contributors count");
+
+			{
+				let contributor = contributors.pop().unwrap();
+				assert_eq!(contributor.project_id, projects::project_id());
+				assert_eq!(contributor.github_user_id, users::anthony().id);
+			}
+
+			{
+				let contributor = contributors.pop().unwrap();
+				assert_eq!(contributor.project_id, projects::project_id());
+				assert_eq!(contributor.github_user_id, users::ofux().id);
+			}
+		}
 		Ok(())
 	}
 
 	async fn should_index_repo(&mut self) -> Result<()> {
 		info!("should_index_repo");
+
+		self.context.database.client.insert(ProjectGithubRepo {
+			project_id: projects::project_id(),
+			github_repo_id: repos::marketplace().id,
+		})?;
 
 		// When
 		self.context
