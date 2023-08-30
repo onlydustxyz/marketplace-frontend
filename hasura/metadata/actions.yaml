@@ -79,6 +79,120 @@ actions:
         template_engine: Kriti
         version: 2
     comment: createProject
+  - name: fetchIssue
+    definition:
+      kind: ""
+      handler: '{{BACKEND_REST_API_URL}}'
+      request_transform:
+        method: GET
+        query_params: {}
+        request_headers:
+          add_headers: {}
+          remove_headers:
+            - content-type
+        template_engine: Kriti
+        url: '{{$base_url}}/issues/{{$body.input.repoOwner}}/{{$body.input.repoName}}/{{$body.input.issueNumber}}'
+        version: 2
+      response_transform:
+        body:
+          action: transform
+          template: |
+            {
+
+              "author": {
+                "avatarUrl": {{$body.author.avatar_url}},
+                "htmlUrl": {{$body.author.html_url}},
+                "id": {{$body.author.id}},
+                "login": {{$body.author.login}}
+              },
+              "closedAt": {{$body.closed_at}},
+              "commentsCount": {{$body.comments_count}},
+              "createdAt": {{$body.created_at}},
+              "htmlUrl": {{$body.html_url}},
+              "id": {{$body.id}},
+              "number": {{$body.number}},
+              "repoId": {{$body.repo_id}},
+              "status": {{$body.status}},
+              "title":{{$body.title}},
+              "updatedAt": {{$body.updated_at}}
+            }
+        template_engine: Kriti
+        version: 2
+  - name: fetchPullRequest
+    definition:
+      kind: ""
+      handler: '{{BACKEND_REST_API_URL}}'
+      request_transform:
+        method: GET
+        query_params: {}
+        request_headers:
+          add_headers: {}
+          remove_headers:
+            - content-type
+        template_engine: Kriti
+        url: '{{$base_url}}/pull_requests/{{$body.input.repoOwner}}/{{$body.input.repoName}}/{{$body.input.prNumber}}'
+        version: 2
+      response_transform:
+        body:
+          action: transform
+          template: |
+            {
+              "author": {
+                "avatarUrl": {{$body.author.avatar_url}},
+                "htmlUrl": {{$body.author.html_url}},
+                "id": {{$body.author.id}},
+                "login": {{$body.author.login}}
+              },
+              "closedAt": {{$body.closed_at}},
+              "createdAt": {{$body.created_at}},
+              "htmlUrl": {{$body.html_url}},
+              "id": {{$body.id}},
+              "mergedAt": {{$body.merged_at}},
+              "number": {{$body.number}},
+              "repoId": {{$body.repo_id}},
+              "status": {{$body.status}},
+              "title":{{$body.title}},
+              "updatedAt": {{$body.updated_at}}
+            }
+        template_engine: Kriti
+        version: 2
+    permissions:
+      - role: registered_user
+  - name: searchUsers
+    definition:
+      kind: ""
+      handler: '{{BACKEND_REST_API_URL}}'
+      request_transform:
+        method: GET
+        query_params:
+          order: '{{$body.input.order}}'
+          page: '{{$body.input.page}}'
+          per_page: '{{$body.input.perPage}}'
+          query: '{{$body.input.query}}'
+          sort: '{{$body.input.sort}}'
+        request_headers:
+          add_headers: {}
+          remove_headers:
+            - content-type
+        template_engine: Kriti
+        url: '{{$base_url}}/users/search'
+        version: 2
+      response_transform:
+        body:
+          action: transform
+          template: |
+            {{ range _, user := $body }}
+              {
+                "avatarUrl": {{user.avatar_url}},
+                "htmlUrl": {{user.html_url}},
+                "id": {{user.id}},
+                "login": {{user.login}}
+              }
+            {{ end }}
+        template_engine: Kriti
+        version: 2
+    permissions:
+      - role: registered_user
   - name: suggestTechnology
     definition:
       kind: synchronous
@@ -203,13 +317,48 @@ custom_types:
         - description: null
           is_deprecated: null
           value: Cancelled
+    - name: GithubPullRequestStatus
+      values:
+        - description: null
+          is_deprecated: null
+          value: CLOSED
+        - description: null
+          is_deprecated: null
+          value: MERGED
+        - description: null
+          is_deprecated: null
+          value: OPEN
+    - name: GithubIssueStatus
+      values:
+        - description: null
+          is_deprecated: null
+          value: CANCELLED
+        - description: null
+          is_deprecated: null
+          value: COMPLETED
+        - description: null
+          is_deprecated: null
+          value: OPEN
   input_objects:
     - name: Language
     - name: Information
   objects:
     - name: GithubIssueCreatedAndClosed
     - name: GithubUserLinkedToIssue
+    - name: GithubUser
+      relationships:
+        - field_mapping:
+            id: github_user_id
+          name: user
+          remote_table:
+            name: registered_users
+            schema: public
+          source: default
+          type: object
+    - name: GithubPullRequest
+    - name: GithubIssue
   scalars:
     - name: Url
     - name: Uuid
     - name: DateTime
+    - name: DateTimeUtc
