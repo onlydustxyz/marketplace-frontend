@@ -57,32 +57,34 @@ class Contacts {
 }
 
 class ContributionCounts {
+   codeReviewCount: bigint
    githubUserId: bigint
-   paidCount: bigint
-   unpaidCount: bigint
+   issueCount: bigint
+   pullRequestCount: bigint
    week: float8
    year: float8
 }
 
 class ContributionStats {
+   codeReviewCount: bigint
    githubUserId: bigint
+   issueCount: bigint
    maxDate: timestamp
    minDate: timestamp
-   paidCount: bigint
    projectId: uuid
+   pullRequestCount: bigint
    totalCount: bigint
-   unpaidCount: bigint
-   unpaidUnignoredCount: bigint
 }
 
 class Contributions {
+   closedAt: timestamp
    createdAt: timestamp
-   githubIssueId: bigint
+   detailsId: bigint
    githubUserId: bigint
-   ignored: Boolean
-   issueNumber: bigint
    projectId: uuid
    repoId: bigint
+   status: contribution_status
+   type: contribution_type
 }
 
 class GithubIssue {

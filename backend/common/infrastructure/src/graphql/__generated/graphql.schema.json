@@ -8327,6 +8327,18 @@
         "description": "columns and relationships of \"api.contribution_counts\"",
         "fields": [
           {
+            "name": "codeReviewCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "args": [],
@@ -8339,7 +8351,7 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
+            "name": "issueCount",
             "description": null,
             "args": [],
             "type": {
@@ -8351,7 +8363,7 @@
             "deprecationReason": null
           },
           {
-            "name": "unpaidCount",
+            "name": "pullRequestCount",
             "description": null,
             "args": [],
             "type": {
@@ -8803,6 +8815,18 @@
         "description": "aggregate avg on columns",
         "fields": [
           {
+            "name": "codeReviewCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "args": [],
@@ -8815,7 +8839,7 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
+            "name": "issueCount",
             "description": null,
             "args": [],
             "type": {
@@ -8827,7 +8851,7 @@
             "deprecationReason": null
           },
           {
-            "name": "unpaidCount",
+            "name": "pullRequestCount",
             "description": null,
             "args": [],
             "type": {
@@ -8927,6 +8951,18 @@
             "deprecationReason": null
           },
           {
+            "name": "codeReviewCount",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "BigintComparisonExp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "type": {
@@ -8939,7 +8975,7 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
+            "name": "issueCount",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
@@ -8951,7 +8987,7 @@
             "deprecationReason": null
           },
           {
-            "name": "unpaidCount",
+            "name": "pullRequestCount",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
@@ -8998,6 +9034,18 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "codeReviewCount",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "type": {
@@ -9010,7 +9058,7 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
+            "name": "issueCount",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -9022,7 +9070,7 @@
             "deprecationReason": null
           },
           {
-            "name": "unpaidCount",
+            "name": "pullRequestCount",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -9068,6 +9116,18 @@
         "description": "aggregate max on columns",
         "fields": [
           {
+            "name": "codeReviewCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "args": [],
@@ -9080,7 +9140,7 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
+            "name": "issueCount",
             "description": null,
             "args": [],
             "type": {
@@ -9092,7 +9152,7 @@
             "deprecationReason": null
           },
           {
-            "name": "unpaidCount",
+            "name": "pullRequestCount",
             "description": null,
             "args": [],
             "type": {
@@ -9139,6 +9199,18 @@
         "description": "aggregate min on columns",
         "fields": [
           {
+            "name": "codeReviewCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "args": [],
@@ -9151,7 +9223,7 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
+            "name": "issueCount",
             "description": null,
             "args": [],
             "type": {
@@ -9163,7 +9235,7 @@
             "deprecationReason": null
           },
           {
-            "name": "unpaidCount",
+            "name": "pullRequestCount",
             "description": null,
             "args": [],
             "type": {
@@ -9211,6 +9283,18 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "codeReviewCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "type": {
@@ -9223,7 +9307,7 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
+            "name": "issueCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -9235,7 +9319,7 @@
             "deprecationReason": null
           },
           {
-            "name": "unpaidCount",
+            "name": "pullRequestCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -9284,19 +9368,25 @@
         "interfaces": null,
         "enumValues": [
           {
+            "name": "codeReviewCount",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
+            "name": "issueCount",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "unpaidCount",
+            "name": "pullRequestCount",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
@@ -9322,6 +9412,18 @@
         "description": "aggregate stddev on columns",
         "fields": [
           {
+            "name": "codeReviewCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "args": [],
@@ -9334,7 +9436,7 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
+            "name": "issueCount",
             "description": null,
             "args": [],
             "type": {
@@ -9346,7 +9448,7 @@
             "deprecationReason": null
           },
           {
-            "name": "unpaidCount",
+            "name": "pullRequestCount",
             "description": null,
             "args": [],
             "type": {
@@ -9393,6 +9495,18 @@
         "description": "aggregate stddev_pop on columns",
         "fields": [
           {
+            "name": "codeReviewCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "args": [],
@@ -9405,7 +9519,7 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
+            "name": "issueCount",
             "description": null,
             "args": [],
             "type": {
@@ -9417,7 +9531,7 @@
             "deprecationReason": null
           },
           {
-            "name": "unpaidCount",
+            "name": "pullRequestCount",
             "description": null,
             "args": [],
             "type": {
@@ -9464,6 +9578,18 @@
         "description": "aggregate stddev_samp on columns",
         "fields": [
           {
+            "name": "codeReviewCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "args": [],
@@ -9476,7 +9602,7 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
+            "name": "issueCount",
             "description": null,
             "args": [],
             "type": {
@@ -9488,7 +9614,7 @@
             "deprecationReason": null
           },
           {
-            "name": "unpaidCount",
+            "name": "pullRequestCount",
             "description": null,
             "args": [],
             "type": {
@@ -9535,6 +9661,18 @@
         "description": "aggregate sum on columns",
         "fields": [
           {
+            "name": "codeReviewCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "args": [],
@@ -9547,7 +9685,7 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
+            "name": "issueCount",
             "description": null,
             "args": [],
             "type": {
@@ -9559,7 +9697,7 @@
             "deprecationReason": null
           },
           {
-            "name": "unpaidCount",
+            "name": "pullRequestCount",
             "description": null,
             "args": [],
             "type": {
@@ -9606,6 +9744,18 @@
         "description": "aggregate var_pop on columns",
         "fields": [
           {
+            "name": "codeReviewCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "args": [],
@@ -9618,7 +9768,7 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
+            "name": "issueCount",
             "description": null,
             "args": [],
             "type": {
@@ -9630,7 +9780,7 @@
             "deprecationReason": null
           },
           {
-            "name": "unpaidCount",
+            "name": "pullRequestCount",
             "description": null,
             "args": [],
             "type": {
@@ -9677,6 +9827,18 @@
         "description": "aggregate var_samp on columns",
         "fields": [
           {
+            "name": "codeReviewCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "args": [],
@@ -9689,7 +9851,7 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
+            "name": "issueCount",
             "description": null,
             "args": [],
             "type": {
@@ -9701,7 +9863,7 @@
             "deprecationReason": null
           },
           {
-            "name": "unpaidCount",
+            "name": "pullRequestCount",
             "description": null,
             "args": [],
             "type": {
@@ -9748,6 +9910,18 @@
         "description": "aggregate variance on columns",
         "fields": [
           {
+            "name": "codeReviewCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "args": [],
@@ -9760,7 +9934,7 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
+            "name": "issueCount",
             "description": null,
             "args": [],
             "type": {
@@ -9772,7 +9946,7 @@
             "deprecationReason": null
           },
           {
-            "name": "unpaidCount",
+            "name": "pullRequestCount",
             "description": null,
             "args": [],
             "type": {
@@ -10632,6 +10806,18 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "codeReviewCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "type": {
@@ -10644,7 +10830,7 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
+            "name": "issueCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -10656,7 +10842,7 @@
             "deprecationReason": null
           },
           {
-            "name": "unpaidCount",
+            "name": "pullRequestCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -10703,6 +10889,18 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "codeReviewCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "type": {
@@ -10715,7 +10913,7 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
+            "name": "issueCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -10727,7 +10925,7 @@
             "deprecationReason": null
           },
           {
-            "name": "unpaidCount",
+            "name": "pullRequestCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -10774,6 +10972,18 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "codeReviewCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "type": {
@@ -10786,7 +10996,7 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
+            "name": "issueCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -10798,7 +11008,7 @@
             "deprecationReason": null
           },
           {
-            "name": "unpaidCount",
+            "name": "pullRequestCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -11029,6 +11239,18 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "codeReviewCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "type": {
@@ -11041,7 +11263,7 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
+            "name": "issueCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -11053,7 +11275,7 @@
             "deprecationReason": null
           },
           {
-            "name": "unpaidCount",
+            "name": "pullRequestCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -11100,6 +11322,18 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "codeReviewCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "type": {
@@ -11112,7 +11346,7 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
+            "name": "issueCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -11124,7 +11358,7 @@
             "deprecationReason": null
           },
           {
-            "name": "unpaidCount",
+            "name": "pullRequestCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -11171,6 +11405,18 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "codeReviewCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "type": {
@@ -11183,7 +11429,7 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
+            "name": "issueCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -11195,7 +11441,7 @@
             "deprecationReason": null
           },
           {
-            "name": "unpaidCount",
+            "name": "pullRequestCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -11281,6 +11527,18 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "codeReviewCount",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "type": {
@@ -11293,7 +11551,7 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
+            "name": "issueCount",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -11305,7 +11563,7 @@
             "deprecationReason": null
           },
           {
-            "name": "unpaidCount",
+            "name": "pullRequestCount",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -11352,6 +11610,18 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "codeReviewCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "type": {
@@ -11364,7 +11634,7 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
+            "name": "issueCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -11376,7 +11646,7 @@
             "deprecationReason": null
           },
           {
-            "name": "unpaidCount",
+            "name": "pullRequestCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -11423,6 +11693,18 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "codeReviewCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "type": {
@@ -11435,7 +11717,7 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
+            "name": "issueCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -11447,7 +11729,7 @@
             "deprecationReason": null
           },
           {
-            "name": "unpaidCount",
+            "name": "pullRequestCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -11494,6 +11776,18 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "codeReviewCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "type": {
@@ -11506,7 +11800,7 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
+            "name": "issueCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -11518,7 +11812,7 @@
             "deprecationReason": null
           },
           {
-            "name": "unpaidCount",
+            "name": "pullRequestCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -11565,6 +11859,18 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "codeReviewCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "type": {
@@ -11577,7 +11883,7 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
+            "name": "issueCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -11589,7 +11895,7 @@
             "deprecationReason": null
           },
           {
-            "name": "unpaidCount",
+            "name": "pullRequestCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -11635,7 +11941,31 @@
         "description": "columns and relationships of \"api.contribution_stats\"",
         "fields": [
           {
+            "name": "codeReviewCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "issueCount",
             "description": null,
             "args": [],
             "type": {
@@ -11671,18 +12001,6 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "projectId",
             "description": null,
             "args": [],
@@ -11695,31 +12013,19 @@
             "deprecationReason": null
           },
           {
+            "name": "pullRequestCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "totalCount",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unpaidCount",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unpaidUnignoredCount",
             "description": null,
             "args": [],
             "type": {
@@ -12147,6 +12453,18 @@
         "description": "aggregate avg on columns",
         "fields": [
           {
+            "name": "codeReviewCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "args": [],
@@ -12159,7 +12477,19 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
+            "name": "issueCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "pullRequestCount",
             "description": null,
             "args": [],
             "type": {
@@ -12172,30 +12502,6 @@
           },
           {
             "name": "totalCount",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unpaidCount",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unpaidUnignoredCount",
             "description": null,
             "args": [],
             "type": {
@@ -12271,7 +12577,31 @@
             "deprecationReason": null
           },
           {
+            "name": "codeReviewCount",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "BigintComparisonExp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "BigintComparisonExp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "issueCount",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
@@ -12307,18 +12637,6 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
-            "description": null,
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "BigintComparisonExp",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "projectId",
             "description": null,
             "type": {
@@ -12331,31 +12649,19 @@
             "deprecationReason": null
           },
           {
+            "name": "pullRequestCount",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "BigintComparisonExp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "totalCount",
-            "description": null,
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "BigintComparisonExp",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unpaidCount",
-            "description": null,
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "BigintComparisonExp",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unpaidUnignoredCount",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
@@ -12378,7 +12684,31 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "codeReviewCount",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "issueCount",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -12414,18 +12744,6 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "projectId",
             "description": null,
             "type": {
@@ -12438,31 +12756,19 @@
             "deprecationReason": null
           },
           {
+            "name": "pullRequestCount",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "totalCount",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unpaidCount",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unpaidUnignoredCount",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -12484,7 +12790,31 @@
         "description": "aggregate max on columns",
         "fields": [
           {
+            "name": "codeReviewCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "issueCount",
             "description": null,
             "args": [],
             "type": {
@@ -12520,18 +12850,6 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "projectId",
             "description": null,
             "args": [],
@@ -12544,31 +12862,19 @@
             "deprecationReason": null
           },
           {
+            "name": "pullRequestCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "totalCount",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unpaidCount",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unpaidUnignoredCount",
             "description": null,
             "args": [],
             "type": {
@@ -12591,7 +12897,31 @@
         "description": "aggregate min on columns",
         "fields": [
           {
+            "name": "codeReviewCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "issueCount",
             "description": null,
             "args": [],
             "type": {
@@ -12627,18 +12957,6 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "projectId",
             "description": null,
             "args": [],
@@ -12651,31 +12969,19 @@
             "deprecationReason": null
           },
           {
+            "name": "pullRequestCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "totalCount",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unpaidCount",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unpaidUnignoredCount",
             "description": null,
             "args": [],
             "type": {
@@ -12699,7 +13005,31 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "codeReviewCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "issueCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -12735,18 +13065,6 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "projectId",
             "description": null,
             "type": {
@@ -12759,31 +13077,19 @@
             "deprecationReason": null
           },
           {
+            "name": "pullRequestCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "totalCount",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unpaidCount",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unpaidUnignoredCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -12808,7 +13114,19 @@
         "interfaces": null,
         "enumValues": [
           {
+            "name": "codeReviewCount",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "issueCount",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
@@ -12826,31 +13144,19 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
-            "description": "column name",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "projectId",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
+            "name": "pullRequestCount",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "totalCount",
-            "description": "column name",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unpaidCount",
-            "description": "column name",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unpaidUnignoredCount",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
@@ -12864,6 +13170,18 @@
         "description": "aggregate stddev on columns",
         "fields": [
           {
+            "name": "codeReviewCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "args": [],
@@ -12876,7 +13194,19 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
+            "name": "issueCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "pullRequestCount",
             "description": null,
             "args": [],
             "type": {
@@ -12889,30 +13219,6 @@
           },
           {
             "name": "totalCount",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unpaidCount",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unpaidUnignoredCount",
             "description": null,
             "args": [],
             "type": {
@@ -12935,6 +13241,18 @@
         "description": "aggregate stddev_pop on columns",
         "fields": [
           {
+            "name": "codeReviewCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "args": [],
@@ -12947,7 +13265,19 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
+            "name": "issueCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "pullRequestCount",
             "description": null,
             "args": [],
             "type": {
@@ -12960,30 +13290,6 @@
           },
           {
             "name": "totalCount",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unpaidCount",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unpaidUnignoredCount",
             "description": null,
             "args": [],
             "type": {
@@ -13006,6 +13312,18 @@
         "description": "aggregate stddev_samp on columns",
         "fields": [
           {
+            "name": "codeReviewCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "args": [],
@@ -13018,7 +13336,19 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
+            "name": "issueCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "pullRequestCount",
             "description": null,
             "args": [],
             "type": {
@@ -13031,30 +13361,6 @@
           },
           {
             "name": "totalCount",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unpaidCount",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unpaidUnignoredCount",
             "description": null,
             "args": [],
             "type": {
@@ -13077,6 +13383,18 @@
         "description": "aggregate sum on columns",
         "fields": [
           {
+            "name": "codeReviewCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "args": [],
@@ -13089,7 +13407,19 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
+            "name": "issueCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "pullRequestCount",
             "description": null,
             "args": [],
             "type": {
@@ -13102,30 +13432,6 @@
           },
           {
             "name": "totalCount",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unpaidCount",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unpaidUnignoredCount",
             "description": null,
             "args": [],
             "type": {
@@ -13148,6 +13454,18 @@
         "description": "aggregate var_pop on columns",
         "fields": [
           {
+            "name": "codeReviewCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "args": [],
@@ -13160,7 +13478,19 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
+            "name": "issueCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "pullRequestCount",
             "description": null,
             "args": [],
             "type": {
@@ -13173,30 +13503,6 @@
           },
           {
             "name": "totalCount",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unpaidCount",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unpaidUnignoredCount",
             "description": null,
             "args": [],
             "type": {
@@ -13219,6 +13525,18 @@
         "description": "aggregate var_samp on columns",
         "fields": [
           {
+            "name": "codeReviewCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "args": [],
@@ -13231,7 +13549,19 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
+            "name": "issueCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "pullRequestCount",
             "description": null,
             "args": [],
             "type": {
@@ -13244,30 +13574,6 @@
           },
           {
             "name": "totalCount",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unpaidCount",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unpaidUnignoredCount",
             "description": null,
             "args": [],
             "type": {
@@ -13290,6 +13596,18 @@
         "description": "aggregate variance on columns",
         "fields": [
           {
+            "name": "codeReviewCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "args": [],
@@ -13302,7 +13620,19 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
+            "name": "issueCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "pullRequestCount",
             "description": null,
             "args": [],
             "type": {
@@ -13315,30 +13645,6 @@
           },
           {
             "name": "totalCount",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unpaidCount",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unpaidUnignoredCount",
             "description": null,
             "args": [],
             "type": {
@@ -13456,6 +13762,18 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "codeReviewCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "type": {
@@ -13468,7 +13786,19 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
+            "name": "issueCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "pullRequestCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -13481,30 +13811,6 @@
           },
           {
             "name": "totalCount",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unpaidCount",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unpaidUnignoredCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -13527,7 +13833,31 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "codeReviewCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "issueCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -13563,18 +13893,6 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "projectId",
             "description": null,
             "type": {
@@ -13587,31 +13905,19 @@
             "deprecationReason": null
           },
           {
+            "name": "pullRequestCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "totalCount",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unpaidCount",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unpaidUnignoredCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -13634,7 +13940,31 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "codeReviewCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "issueCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -13670,18 +14000,6 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "projectId",
             "description": null,
             "type": {
@@ -13694,31 +14012,19 @@
             "deprecationReason": null
           },
           {
+            "name": "pullRequestCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "totalCount",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unpaidCount",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unpaidUnignoredCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -13741,6 +14047,18 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "codeReviewCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "type": {
@@ -13753,7 +14071,19 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
+            "name": "issueCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "pullRequestCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -13766,30 +14096,6 @@
           },
           {
             "name": "totalCount",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unpaidCount",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unpaidUnignoredCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -13812,6 +14118,18 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "codeReviewCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "type": {
@@ -13824,7 +14142,19 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
+            "name": "issueCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "pullRequestCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -13837,30 +14167,6 @@
           },
           {
             "name": "totalCount",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unpaidCount",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unpaidUnignoredCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -13883,6 +14189,18 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "codeReviewCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "type": {
@@ -13895,7 +14213,19 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
+            "name": "issueCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "pullRequestCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -13908,30 +14238,6 @@
           },
           {
             "name": "totalCount",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unpaidCount",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unpaidUnignoredCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -13993,7 +14299,31 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "codeReviewCount",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "issueCount",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -14029,18 +14359,6 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "projectId",
             "description": null,
             "type": {
@@ -14053,31 +14371,19 @@
             "deprecationReason": null
           },
           {
+            "name": "pullRequestCount",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "totalCount",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unpaidCount",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unpaidUnignoredCount",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -14100,6 +14406,18 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "codeReviewCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "type": {
@@ -14112,7 +14430,19 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
+            "name": "issueCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "pullRequestCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -14125,30 +14455,6 @@
           },
           {
             "name": "totalCount",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unpaidCount",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unpaidUnignoredCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -14171,6 +14477,18 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "codeReviewCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "type": {
@@ -14183,7 +14501,19 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
+            "name": "issueCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "pullRequestCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -14196,30 +14526,6 @@
           },
           {
             "name": "totalCount",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unpaidCount",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unpaidUnignoredCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -14242,6 +14548,18 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "codeReviewCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "type": {
@@ -14254,7 +14572,19 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
+            "name": "issueCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "pullRequestCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -14267,30 +14597,6 @@
           },
           {
             "name": "totalCount",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unpaidCount",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "unpaidUnignoredCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -14313,6 +14619,18 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "codeReviewCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "type": {
@@ -14325,7 +14643,19 @@
             "deprecationReason": null
           },
           {
-            "name": "paidCount",
+            "name": "issueCount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "pullRequestCount",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -14347,13 +14677,24 @@
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
-          },
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "ContributionStatusComparisonExp",
+        "description": "Boolean expression to compare columns of type \"contribution_status\". All fields are combined with logical 'AND'.",
+        "fields": null,
+        "inputFields": [
           {
-            "name": "unpaidCount",
+            "name": "_eq",
             "description": null,
             "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
+              "kind": "SCALAR",
+              "name": "contribution_status",
               "ofType": null
             },
             "defaultValue": null,
@@ -14361,12 +14702,247 @@
             "deprecationReason": null
           },
           {
-            "name": "unpaidUnignoredCount",
+            "name": "_gt",
             "description": null,
             "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
+              "kind": "SCALAR",
+              "name": "contribution_status",
               "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "_gte",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "contribution_status",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "_in",
+            "description": null,
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "contribution_status",
+                  "ofType": null
+                }
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "_isNull",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "_lt",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "contribution_status",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "_lte",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "contribution_status",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "_neq",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "contribution_status",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "_nin",
+            "description": null,
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "contribution_status",
+                  "ofType": null
+                }
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "ContributionTypeComparisonExp",
+        "description": "Boolean expression to compare columns of type \"contribution_type\". All fields are combined with logical 'AND'.",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "_eq",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "contribution_type",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "_gt",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "contribution_type",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "_gte",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "contribution_type",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "_in",
+            "description": null,
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "contribution_type",
+                  "ofType": null
+                }
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "_isNull",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "_lt",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "contribution_type",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "_lte",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "contribution_type",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "_neq",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "contribution_type",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "_nin",
+            "description": null,
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "contribution_type",
+                  "ofType": null
+                }
+              }
             },
             "defaultValue": null,
             "isDeprecated": false,
@@ -14383,6 +14959,18 @@
         "description": "columns and relationships of \"api.contributions\"",
         "fields": [
           {
+            "name": "closedAt",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "timestamp",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "createdAt",
             "description": null,
             "args": [],
@@ -14395,7 +14983,7 @@
             "deprecationReason": null
           },
           {
-            "name": "githubIssueId",
+            "name": "detailsId",
             "description": null,
             "args": [],
             "type": {
@@ -14408,30 +14996,6 @@
           },
           {
             "name": "githubUserId",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "ignored",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Boolean",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "issueNumber",
             "description": null,
             "args": [],
             "type": {
@@ -14461,6 +15025,30 @@
             "type": {
               "kind": "SCALAR",
               "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "status",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "contribution_status",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "type",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "contribution_type",
               "ofType": null
             },
             "isDeprecated": false,
@@ -14883,7 +15471,7 @@
         "description": "aggregate avg on columns",
         "fields": [
           {
-            "name": "githubIssueId",
+            "name": "detailsId",
             "description": null,
             "args": [],
             "type": {
@@ -14896,18 +15484,6 @@
           },
           {
             "name": "githubUserId",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "issueNumber",
             "description": null,
             "args": [],
             "type": {
@@ -14995,6 +15571,18 @@
             "deprecationReason": null
           },
           {
+            "name": "closedAt",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "TimestampComparisonExp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "createdAt",
             "description": null,
             "type": {
@@ -15007,7 +15595,7 @@
             "deprecationReason": null
           },
           {
-            "name": "githubIssueId",
+            "name": "detailsId",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
@@ -15020,30 +15608,6 @@
           },
           {
             "name": "githubUserId",
-            "description": null,
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "BigintComparisonExp",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "ignored",
-            "description": null,
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "BooleanComparisonExp",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "issueNumber",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
@@ -15077,6 +15641,30 @@
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "status",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "ContributionStatusComparisonExp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "type",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "ContributionTypeComparisonExp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "interfaces": null,
@@ -15090,6 +15678,18 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "closedAt",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "timestamp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "createdAt",
             "description": null,
             "type": {
@@ -15102,7 +15702,7 @@
             "deprecationReason": null
           },
           {
-            "name": "githubIssueId",
+            "name": "detailsId",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -15115,30 +15715,6 @@
           },
           {
             "name": "githubUserId",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "ignored",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "Boolean",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "issueNumber",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -15167,6 +15743,30 @@
             "type": {
               "kind": "SCALAR",
               "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "status",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "contribution_status",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "type",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "contribution_type",
               "ofType": null
             },
             "defaultValue": null,
@@ -15184,6 +15784,18 @@
         "description": "aggregate max on columns",
         "fields": [
           {
+            "name": "closedAt",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "timestamp",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "createdAt",
             "description": null,
             "args": [],
@@ -15196,7 +15808,7 @@
             "deprecationReason": null
           },
           {
-            "name": "githubIssueId",
+            "name": "detailsId",
             "description": null,
             "args": [],
             "type": {
@@ -15209,18 +15821,6 @@
           },
           {
             "name": "githubUserId",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "issueNumber",
             "description": null,
             "args": [],
             "type": {
@@ -15250,6 +15850,30 @@
             "type": {
               "kind": "SCALAR",
               "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "status",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "contribution_status",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "type",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "contribution_type",
               "ofType": null
             },
             "isDeprecated": false,
@@ -15267,6 +15891,18 @@
         "description": "aggregate min on columns",
         "fields": [
           {
+            "name": "closedAt",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "timestamp",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "createdAt",
             "description": null,
             "args": [],
@@ -15279,7 +15915,7 @@
             "deprecationReason": null
           },
           {
-            "name": "githubIssueId",
+            "name": "detailsId",
             "description": null,
             "args": [],
             "type": {
@@ -15292,18 +15928,6 @@
           },
           {
             "name": "githubUserId",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "issueNumber",
             "description": null,
             "args": [],
             "type": {
@@ -15333,6 +15957,30 @@
             "type": {
               "kind": "SCALAR",
               "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "status",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "contribution_status",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "type",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "contribution_type",
               "ofType": null
             },
             "isDeprecated": false,
@@ -15351,6 +15999,18 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "closedAt",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "createdAt",
             "description": null,
             "type": {
@@ -15363,7 +16023,7 @@
             "deprecationReason": null
           },
           {
-            "name": "githubIssueId",
+            "name": "detailsId",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -15376,30 +16036,6 @@
           },
           {
             "name": "githubUserId",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "ignored",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "issueNumber",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -15424,6 +16060,30 @@
           },
           {
             "name": "repoId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "status",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "type",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -15448,31 +16108,25 @@
         "interfaces": null,
         "enumValues": [
           {
+            "name": "closedAt",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "createdAt",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "githubIssueId",
+            "name": "detailsId",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
             "name": "githubUserId",
-            "description": "column name",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "ignored",
-            "description": "column name",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "issueNumber",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
@@ -15488,6 +16142,18 @@
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "status",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "type",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "possibleTypes": null
@@ -15498,7 +16164,7 @@
         "description": "aggregate stddev on columns",
         "fields": [
           {
-            "name": "githubIssueId",
+            "name": "detailsId",
             "description": null,
             "args": [],
             "type": {
@@ -15511,18 +16177,6 @@
           },
           {
             "name": "githubUserId",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "issueNumber",
             "description": null,
             "args": [],
             "type": {
@@ -15557,7 +16211,7 @@
         "description": "aggregate stddev_pop on columns",
         "fields": [
           {
-            "name": "githubIssueId",
+            "name": "detailsId",
             "description": null,
             "args": [],
             "type": {
@@ -15570,18 +16224,6 @@
           },
           {
             "name": "githubUserId",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "issueNumber",
             "description": null,
             "args": [],
             "type": {
@@ -15616,7 +16258,7 @@
         "description": "aggregate stddev_samp on columns",
         "fields": [
           {
-            "name": "githubIssueId",
+            "name": "detailsId",
             "description": null,
             "args": [],
             "type": {
@@ -15629,18 +16271,6 @@
           },
           {
             "name": "githubUserId",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "issueNumber",
             "description": null,
             "args": [],
             "type": {
@@ -15675,7 +16305,7 @@
         "description": "aggregate sum on columns",
         "fields": [
           {
-            "name": "githubIssueId",
+            "name": "detailsId",
             "description": null,
             "args": [],
             "type": {
@@ -15688,18 +16318,6 @@
           },
           {
             "name": "githubUserId",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "issueNumber",
             "description": null,
             "args": [],
             "type": {
@@ -15734,7 +16352,7 @@
         "description": "aggregate var_pop on columns",
         "fields": [
           {
-            "name": "githubIssueId",
+            "name": "detailsId",
             "description": null,
             "args": [],
             "type": {
@@ -15747,18 +16365,6 @@
           },
           {
             "name": "githubUserId",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "issueNumber",
             "description": null,
             "args": [],
             "type": {
@@ -15793,7 +16399,7 @@
         "description": "aggregate var_samp on columns",
         "fields": [
           {
-            "name": "githubIssueId",
+            "name": "detailsId",
             "description": null,
             "args": [],
             "type": {
@@ -15806,18 +16412,6 @@
           },
           {
             "name": "githubUserId",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "issueNumber",
             "description": null,
             "args": [],
             "type": {
@@ -15852,7 +16446,7 @@
         "description": "aggregate variance on columns",
         "fields": [
           {
-            "name": "githubIssueId",
+            "name": "detailsId",
             "description": null,
             "args": [],
             "type": {
@@ -15865,18 +16459,6 @@
           },
           {
             "name": "githubUserId",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "issueNumber",
             "description": null,
             "args": [],
             "type": {
@@ -15912,170 +16494,12 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "bool_and",
-            "description": null,
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "Contributions_aggregate_bool_exp_bool_and",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "bool_or",
-            "description": null,
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "Contributions_aggregate_bool_exp_bool_or",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "count",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "Contributions_aggregate_bool_exp_count",
               "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "Contributions_aggregate_bool_exp_bool_and",
-        "description": null,
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "arguments",
-            "description": null,
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "ENUM",
-                "name": "Contributions_select_column_Contributions_aggregate_bool_exp_bool_and_arguments_columns",
-                "ofType": null
-              }
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "distinct",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "Boolean",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "filter",
-            "description": null,
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "ContributionsBoolExp",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "predicate",
-            "description": null,
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "INPUT_OBJECT",
-                "name": "BooleanComparisonExp",
-                "ofType": null
-              }
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "Contributions_aggregate_bool_exp_bool_or",
-        "description": null,
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "arguments",
-            "description": null,
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "ENUM",
-                "name": "Contributions_select_column_Contributions_aggregate_bool_exp_bool_or_arguments_columns",
-                "ofType": null
-              }
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "distinct",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "Boolean",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "filter",
-            "description": null,
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "ContributionsBoolExp",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "predicate",
-            "description": null,
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "INPUT_OBJECT",
-                "name": "BooleanComparisonExp",
-                "ofType": null
-              }
             },
             "defaultValue": null,
             "isDeprecated": false,
@@ -16164,7 +16588,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "githubIssueId",
+            "name": "detailsId",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -16177,18 +16601,6 @@
           },
           {
             "name": "githubUserId",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "issueNumber",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -16223,6 +16635,18 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "closedAt",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "createdAt",
             "description": null,
             "type": {
@@ -16235,7 +16659,7 @@
             "deprecationReason": null
           },
           {
-            "name": "githubIssueId",
+            "name": "detailsId",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -16248,18 +16672,6 @@
           },
           {
             "name": "githubUserId",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "issueNumber",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -16284,6 +16696,30 @@
           },
           {
             "name": "repoId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "status",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "type",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -16306,6 +16742,18 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "closedAt",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "createdAt",
             "description": null,
             "type": {
@@ -16318,7 +16766,7 @@
             "deprecationReason": null
           },
           {
-            "name": "githubIssueId",
+            "name": "detailsId",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -16331,18 +16779,6 @@
           },
           {
             "name": "githubUserId",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "issueNumber",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -16376,44 +16812,34 @@
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "status",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "type",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "interfaces": null,
         "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "ENUM",
-        "name": "Contributions_select_column_Contributions_aggregate_bool_exp_bool_and_arguments_columns",
-        "description": "select \"Contributions_aggregate_bool_exp_bool_and_arguments_columns\" columns of table \"api.contributions\"",
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": [
-          {
-            "name": "ignored",
-            "description": "column name",
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "possibleTypes": null
-      },
-      {
-        "kind": "ENUM",
-        "name": "Contributions_select_column_Contributions_aggregate_bool_exp_bool_or_arguments_columns",
-        "description": "select \"Contributions_aggregate_bool_exp_bool_or_arguments_columns\" columns of table \"api.contributions\"",
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": [
-          {
-            "name": "ignored",
-            "description": "column name",
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
         "possibleTypes": null
       },
       {
@@ -16423,7 +16849,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "githubIssueId",
+            "name": "detailsId",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -16436,18 +16862,6 @@
           },
           {
             "name": "githubUserId",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "issueNumber",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -16482,7 +16896,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "githubIssueId",
+            "name": "detailsId",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -16495,18 +16909,6 @@
           },
           {
             "name": "githubUserId",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "issueNumber",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -16541,7 +16943,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "githubIssueId",
+            "name": "detailsId",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -16554,18 +16956,6 @@
           },
           {
             "name": "githubUserId",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "issueNumber",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -16639,6 +17029,18 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "closedAt",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "timestamp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "createdAt",
             "description": null,
             "type": {
@@ -16651,7 +17053,7 @@
             "deprecationReason": null
           },
           {
-            "name": "githubIssueId",
+            "name": "detailsId",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -16664,30 +17066,6 @@
           },
           {
             "name": "githubUserId",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "ignored",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "Boolean",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "issueNumber",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -16721,6 +17099,30 @@
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "status",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "contribution_status",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "type",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "contribution_type",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "interfaces": null,
@@ -16734,7 +17136,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "githubIssueId",
+            "name": "detailsId",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -16747,18 +17149,6 @@
           },
           {
             "name": "githubUserId",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "issueNumber",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -16793,7 +17183,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "githubIssueId",
+            "name": "detailsId",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -16806,18 +17196,6 @@
           },
           {
             "name": "githubUserId",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "issueNumber",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -16852,7 +17230,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "githubIssueId",
+            "name": "detailsId",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -16865,18 +17243,6 @@
           },
           {
             "name": "githubUserId",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "issueNumber",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -16911,7 +17277,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "githubIssueId",
+            "name": "detailsId",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -16924,18 +17290,6 @@
           },
           {
             "name": "githubUserId",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "issueNumber",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -74024,6 +74378,26 @@
       {
         "kind": "SCALAR",
         "name": "contact_channel",
+        "description": null,
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "SCALAR",
+        "name": "contribution_status",
+        "description": null,
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "SCALAR",
+        "name": "contribution_type",
         "description": null,
         "fields": null,
         "inputFields": null,

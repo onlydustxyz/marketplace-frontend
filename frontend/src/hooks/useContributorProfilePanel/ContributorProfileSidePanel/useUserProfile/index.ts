@@ -37,8 +37,9 @@ const EMPTY_DATA: ContributionCountFragment[] = range(0, MAX_CONTRIBUTION_COUNTS
   .map(date => ({
     year: date.getFullYear(),
     week: weekNumber(date),
-    paidCount: 0,
-    unpaidCount: 0,
+    codeReviewCount: 0,
+    issueCount: 0,
+    pullRequestCount: 0,
   }));
 
 export default function useUserProfile({
@@ -121,7 +122,12 @@ export default function useUserProfile({
 
   const [lastWeek, thisWeek] = slice(contributionCounts, -2);
   const variationSinceLastWeek =
-    lastWeek && thisWeek ? thisWeek.paidCount + thisWeek.unpaidCount - (lastWeek.paidCount + lastWeek.unpaidCount) : 0;
+    lastWeek && thisWeek
+      ? thisWeek.pullRequestCount +
+        thisWeek.codeReviewCount +
+        thisWeek.issueCount -
+        (lastWeek.pullRequestCount + lastWeek.codeReviewCount + lastWeek.issueCount)
+      : 0;
 
   return {
     data: profile && {
