@@ -15,7 +15,6 @@ ALL_DB_CONNECTED_APPS=(
 
 ALL_BACKENDS=(
     od-api-$ENVIRONMENT
-    od-github-proxy-$ENVIRONMENT
     od-event-store-$ENVIRONMENT
     od-event-listeners-$ENVIRONMENT
 )

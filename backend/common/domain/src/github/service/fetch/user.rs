@@ -5,7 +5,6 @@ use crate::{GithubFullUser, GithubUser, GithubUserId};
 
 #[async_trait]
 pub trait Service: Send + Sync {
-	async fn user_by_id(&self, id: &GithubUserId) -> Result<GithubUser>;
 	async fn current_user(&self) -> Result<GithubUser>;
 	async fn full_user_by_id(&self, id: &GithubUserId) -> Result<GithubFullUser>;
 }
