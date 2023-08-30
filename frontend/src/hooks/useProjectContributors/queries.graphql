@@ -17,6 +17,13 @@ fragment Contributor on UserProfiles {
       }
     }
   }
+  projectsRewardedAggregate(where: { projectId: { _eq: $projectId } }) {
+    aggregate {
+      sum {
+        rewardCount
+      }
+    }
+  }
 }
 
 query GetProjectContributors($projectId: uuid!) {

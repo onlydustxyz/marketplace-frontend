@@ -9,15 +9,15 @@ import Card from "src/components/Card";
 
 export type Contributor = ContributorBase & {
   totalEarned: number;
-  paidContributionsCount: number;
-  unpaidMergedPullsCount?: number;
+  contributionCount: number;
+  rewardCount: number;
 };
 
 export enum Field {
   Login = "login",
   TotalEarned = "totalEarned",
-  PaidContributions = "paidContributionsCount",
-  LeftToPay = "unpaidMergedPullsCount",
+  ContributionCount = "contributionCount",
+  RewardCount = "rewardCount",
 }
 
 export type Sorting = {
@@ -41,7 +41,7 @@ export default function View({
   const isSendingNewPaymentDisabled = remainingBudget < rates.hours;
 
   const [sorting, setSorting] = useState({
-    field: isProjectLeader ? Field.LeftToPay : Field.PaidContributions,
+    field: Field.ContributionCount,
     ascending: false,
   });
 
@@ -58,7 +58,7 @@ export default function View({
 
   return (
     <Card className="h-full">
-      <Table id="contributors_table" headers={<Headers {...{ sorting, applySorting, isProjectLeader }} />}>
+      <Table id="contributors_table" headers={<Headers sorting={sorting} applySorting={applySorting} />}>
         {sortedContributors.map(contributor => (
           <ContributorLine
             key={contributor.login}

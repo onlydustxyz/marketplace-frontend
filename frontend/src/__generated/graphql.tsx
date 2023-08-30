@@ -8259,6 +8259,10 @@ export type UserProfiles = {
   projectsLeaded: Array<ProjectLeads>;
   /** An aggregate relationship */
   projectsLeadedAggregate: ProjectLeadsAggregate;
+  /** An array relationship */
+  projectsRewarded: Array<ProjectsRewardedUsers>;
+  /** An aggregate relationship */
+  projectsRewardedAggregate: ProjectsRewardedUsersAggregate;
   userId: Maybe<Scalars['uuid']>;
   website: Maybe<Scalars['String']>;
   weeklyAllocatedTime: Maybe<Scalars['allocated_time']>;
@@ -8410,6 +8414,26 @@ export type UserProfilesProjectsLeadedAggregateArgs = {
   where: InputMaybe<ProjectLeadsBoolExp>;
 };
 
+
+/** columns and relationships of "api.user_profiles" */
+export type UserProfilesProjectsRewardedArgs = {
+  distinctOn: InputMaybe<Array<ProjectsRewardedUsersSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ProjectsRewardedUsersOrderBy>>;
+  where: InputMaybe<ProjectsRewardedUsersBoolExp>;
+};
+
+
+/** columns and relationships of "api.user_profiles" */
+export type UserProfilesProjectsRewardedAggregateArgs = {
+  distinctOn: InputMaybe<Array<ProjectsRewardedUsersSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ProjectsRewardedUsersOrderBy>>;
+  where: InputMaybe<ProjectsRewardedUsersBoolExp>;
+};
+
 /** aggregated selection of "api.user_profiles" */
 export type UserProfilesAggregate = {
   __typename?: 'UserProfilesAggregate';
@@ -8476,6 +8500,8 @@ export type UserProfilesBoolExp = {
   projectsContributed_aggregate: InputMaybe<Projects_Contributors_Aggregate_Bool_Exp>;
   projectsLeaded: InputMaybe<ProjectLeadsBoolExp>;
   projectsLeaded_aggregate: InputMaybe<Project_Leads_Aggregate_Bool_Exp>;
+  projectsRewarded: InputMaybe<ProjectsRewardedUsersBoolExp>;
+  projectsRewarded_aggregate: InputMaybe<Projects_Rewarded_Users_Aggregate_Bool_Exp>;
   userId: InputMaybe<UuidComparisonExp>;
   website: InputMaybe<StringComparisonExp>;
   weeklyAllocatedTime: InputMaybe<AllocatedTimeComparisonExp>;
@@ -8501,6 +8527,7 @@ export type UserProfilesInsertInput = {
   paymentStats: InputMaybe<PaymentStatsArrRelInsertInput>;
   projectsContributed: InputMaybe<ProjectsContributorsArrRelInsertInput>;
   projectsLeaded: InputMaybe<ProjectLeadsArrRelInsertInput>;
+  projectsRewarded: InputMaybe<ProjectsRewardedUsersArrRelInsertInput>;
   userId: InputMaybe<Scalars['uuid']>;
   website: InputMaybe<Scalars['String']>;
   weeklyAllocatedTime: InputMaybe<Scalars['allocated_time']>;
@@ -8565,6 +8592,7 @@ export type UserProfilesOrderBy = {
   paymentStatsAggregate: InputMaybe<PaymentStatsAggregateOrderBy>;
   projectsContributedAggregate: InputMaybe<ProjectsContributorsAggregateOrderBy>;
   projectsLeadedAggregate: InputMaybe<ProjectLeadsAggregateOrderBy>;
+  projectsRewardedAggregate: InputMaybe<ProjectsRewardedUsersAggregateOrderBy>;
   userId: InputMaybe<OrderBy>;
   website: InputMaybe<OrderBy>;
   weeklyAllocatedTime: InputMaybe<OrderBy>;
@@ -17474,14 +17502,14 @@ export type UpdatePayoutSettingsMutationVariables = Exact<{
 
 export type UpdatePayoutSettingsMutation = { __typename?: 'mutation_root', updatePayoutInfo: any };
 
-export type ContributorFragment = { __typename?: 'UserProfiles', login: string | null, avatarUrl: string | null, userId: any | null, githubUserId: any | null, contributionStatsAggregate: { __typename?: 'ContributionStatsAggregate', aggregate: { __typename?: 'ContributionStatsAggregateFields', sum: { __typename?: 'ContributionStatsSumFields', codeReviewCount: any | null, issueCount: any | null, pullRequestCount: any | null, totalCount: any | null } | null } | null }, paymentStatsAggregate: { __typename?: 'PaymentStatsAggregate', aggregate: { __typename?: 'PaymentStatsAggregateFields', sum: { __typename?: 'PaymentStatsSumFields', moneyGranted: any | null } | null } | null } };
+export type ContributorFragment = { __typename?: 'UserProfiles', login: string | null, avatarUrl: string | null, userId: any | null, githubUserId: any | null, contributionStatsAggregate: { __typename?: 'ContributionStatsAggregate', aggregate: { __typename?: 'ContributionStatsAggregateFields', sum: { __typename?: 'ContributionStatsSumFields', codeReviewCount: any | null, issueCount: any | null, pullRequestCount: any | null, totalCount: any | null } | null } | null }, paymentStatsAggregate: { __typename?: 'PaymentStatsAggregate', aggregate: { __typename?: 'PaymentStatsAggregateFields', sum: { __typename?: 'PaymentStatsSumFields', moneyGranted: any | null } | null } | null }, projectsRewardedAggregate: { __typename?: 'ProjectsRewardedUsersAggregate', aggregate: { __typename?: 'ProjectsRewardedUsersAggregateFields', sum: { __typename?: 'ProjectsRewardedUsersSumFields', rewardCount: number | null } | null } | null } };
 
 export type GetProjectContributorsQueryVariables = Exact<{
   projectId: Scalars['uuid'];
 }>;
 
 
-export type GetProjectContributorsQuery = { __typename?: 'query_root', projectsContributors: Array<{ __typename?: 'ProjectsContributors', user: { __typename?: 'UserProfiles', login: string | null, avatarUrl: string | null, userId: any | null, githubUserId: any | null, contributionStatsAggregate: { __typename?: 'ContributionStatsAggregate', aggregate: { __typename?: 'ContributionStatsAggregateFields', sum: { __typename?: 'ContributionStatsSumFields', codeReviewCount: any | null, issueCount: any | null, pullRequestCount: any | null, totalCount: any | null } | null } | null }, paymentStatsAggregate: { __typename?: 'PaymentStatsAggregate', aggregate: { __typename?: 'PaymentStatsAggregateFields', sum: { __typename?: 'PaymentStatsSumFields', moneyGranted: any | null } | null } | null } } | null }> };
+export type GetProjectContributorsQuery = { __typename?: 'query_root', projectsContributors: Array<{ __typename?: 'ProjectsContributors', user: { __typename?: 'UserProfiles', login: string | null, avatarUrl: string | null, userId: any | null, githubUserId: any | null, contributionStatsAggregate: { __typename?: 'ContributionStatsAggregate', aggregate: { __typename?: 'ContributionStatsAggregateFields', sum: { __typename?: 'ContributionStatsSumFields', codeReviewCount: any | null, issueCount: any | null, pullRequestCount: any | null, totalCount: any | null } | null } | null }, paymentStatsAggregate: { __typename?: 'PaymentStatsAggregate', aggregate: { __typename?: 'PaymentStatsAggregateFields', sum: { __typename?: 'PaymentStatsSumFields', moneyGranted: any | null } | null } | null }, projectsRewardedAggregate: { __typename?: 'ProjectsRewardedUsersAggregate', aggregate: { __typename?: 'ProjectsRewardedUsersAggregateFields', sum: { __typename?: 'ProjectsRewardedUsersSumFields', rewardCount: number | null } | null } | null } } | null }> };
 
 export type GetProjectVisibilityDetailsQueryVariables = Exact<{
   projectId: Scalars['uuid'];
@@ -18292,6 +18320,13 @@ export const ContributorFragmentDoc = gql`
     aggregate {
       sum {
         moneyGranted
+      }
+    }
+  }
+  projectsRewardedAggregate {
+    aggregate {
+      sum {
+        rewardCount
       }
     }
   }
