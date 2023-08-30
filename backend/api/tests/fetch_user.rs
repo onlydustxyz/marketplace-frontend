@@ -19,9 +19,9 @@ pub async fn fetch_user(docker: &'static Cli) {
 		context: Context::new(docker).await.expect("Unable to create test context"),
 	};
 
-	// test.should_search_users_given_a_query_without_parameters_and_pat()
-	// 	.await
-	// 	.expect("should_search_users_given_a_query_without_parameters_and_pat");
+	test.should_search_users_given_a_query_without_parameters_and_pat()
+		.await
+		.expect("should_search_users_given_a_query_without_parameters_and_pat");
 	test.should_search_users_given_a_query_with_parameters_and_pat()
 		.await
 		.expect("should_search_users_given_a_query_with_parameters_and_pat");
