@@ -121,14 +121,14 @@ api/start: docker/up
 	@./scripts/cargo-run.sh api
 
 event-listeners.pid:
-	@./scripts/cargo-run.sh event-listeners
+	@./scripts/cargo-run.sh event-listeners --bin listeners
 
 # Starts the event listeners in background
 event-listeners/background-start: event-listeners.pid
 
 # Stops the background event listeners, if running
 event-listeners/background-stop:
-	@./scripts/stop-app.sh event-listeners
+	@./scripts/stop-app.sh listeners
 
 event-store.pid:
 	@./scripts/cargo-run.sh event-store

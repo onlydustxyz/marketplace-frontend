@@ -20,6 +20,15 @@ use webhook::EventWebHook;
 use self::logger::Logger;
 use crate::{Config, GITHUB_EVENTS_EXCHANGE};
 
+pub async fn bootstrap(config: Config) -> Result<Vec<JoinHandle<()>>> {
+	let reqwest = reqwest::Client::new();
+	let database = Arc::new(database::Client::new(database::init_pool(
+		config.database.clone(),
+	)?));
+
+	spawn_all(config, reqwest, database).await
+}
+
 #[async_trait]
 pub trait EventListener<E>: Send + Sync {
 	async fn on_event(&self, event: E) -> Result<(), SubscriberCallbackError>;
