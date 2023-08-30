@@ -8,19 +8,19 @@ export default {
 };
 
 const entries: ContributionCountFragment[] = [
-  { year: 2023, week: 10, paidCount: 16, unpaidCount: 6 },
-  { year: 2023, week: 11, paidCount: 21, unpaidCount: 0 },
-  { year: 2023, week: 12, paidCount: 18, unpaidCount: 4 },
-  { year: 2023, week: 13, paidCount: 22, unpaidCount: 0 },
-  { year: 2023, week: 14, paidCount: 21, unpaidCount: 9 },
-  { year: 2023, week: 15, paidCount: 2, unpaidCount: 1 },
-  { year: 2023, week: 16, paidCount: 32, unpaidCount: 14 },
-  { year: 2023, week: 17, paidCount: 12, unpaidCount: 0 },
-  { year: 2023, week: 18, paidCount: 22, unpaidCount: 3 },
-  { year: 2023, week: 19, paidCount: 22, unpaidCount: 6 },
-  { year: 2023, week: 20, paidCount: 22, unpaidCount: 18 },
-  { year: 2023, week: 21, paidCount: 7, unpaidCount: 37 },
-  { year: 2023, week: 22, paidCount: 0, unpaidCount: 37 },
+  { year: 2023, week: 10, pullRequestCount: 16, issueCount: 6, codeReviewCount: 3 },
+  { year: 2023, week: 11, pullRequestCount: 21, issueCount: 0, codeReviewCount: 3 },
+  { year: 2023, week: 12, pullRequestCount: 18, issueCount: 4, codeReviewCount: 3 },
+  { year: 2023, week: 13, pullRequestCount: 22, issueCount: 0, codeReviewCount: 3 },
+  { year: 2023, week: 14, pullRequestCount: 21, issueCount: 9, codeReviewCount: 3 },
+  { year: 2023, week: 15, pullRequestCount: 2, issueCount: 1, codeReviewCount: 3 },
+  { year: 2023, week: 16, pullRequestCount: 32, issueCount: 1, codeReviewCount: 34 },
+  { year: 2023, week: 17, pullRequestCount: 12, issueCount: 0, codeReviewCount: 3 },
+  { year: 2023, week: 18, pullRequestCount: 22, issueCount: 3, codeReviewCount: 3 },
+  { year: 2023, week: 19, pullRequestCount: 22, issueCount: 6, codeReviewCount: 3 },
+  { year: 2023, week: 20, pullRequestCount: 22, issueCount: 1, codeReviewCount: 38 },
+  { year: 2023, week: 21, pullRequestCount: 7, issueCount: 3, codeReviewCount: 37 },
+  { year: 2023, week: 22, pullRequestCount: 0, issueCount: 3, codeReviewCount: 37 },
 ];
 
 export const Default = {
@@ -37,19 +37,19 @@ export const Default = {
 };
 
 const fewEntries: ContributionCountFragment[] = [
-  { year: 2023, week: 10, paidCount: 16, unpaidCount: 6 },
-  { year: 2023, week: 11, paidCount: 0, unpaidCount: 0 },
-  { year: 2023, week: 12, paidCount: 0, unpaidCount: 0 },
-  { year: 2023, week: 13, paidCount: 0, unpaidCount: 0 },
-  { year: 2023, week: 14, paidCount: 0, unpaidCount: 0 },
-  { year: 2023, week: 15, paidCount: 2, unpaidCount: 1 },
-  { year: 2023, week: 16, paidCount: 0, unpaidCount: 0 },
-  { year: 2023, week: 17, paidCount: 0, unpaidCount: 0 },
-  { year: 2023, week: 18, paidCount: 0, unpaidCount: 3 },
-  { year: 2023, week: 19, paidCount: 2, unpaidCount: 0 },
-  { year: 2023, week: 20, paidCount: 0, unpaidCount: 0 },
-  { year: 2023, week: 21, paidCount: 0, unpaidCount: 5 },
-  { year: 2023, week: 22, paidCount: 0, unpaidCount: 0 },
+  { year: 2023, week: 10, pullRequestCount: 16, issueCount: 6, codeReviewCount: 3 },
+  { year: 2023, week: 11, pullRequestCount: 0, issueCount: 0, codeReviewCount: 3 },
+  { year: 2023, week: 12, pullRequestCount: 0, issueCount: 0, codeReviewCount: 3 },
+  { year: 2023, week: 13, pullRequestCount: 0, issueCount: 0, codeReviewCount: 3 },
+  { year: 2023, week: 14, pullRequestCount: 0, issueCount: 0, codeReviewCount: 3 },
+  { year: 2023, week: 15, pullRequestCount: 2, issueCount: 1, codeReviewCount: 3 },
+  { year: 2023, week: 16, pullRequestCount: 0, issueCount: 0, codeReviewCount: 3 },
+  { year: 2023, week: 17, pullRequestCount: 0, issueCount: 0, codeReviewCount: 3 },
+  { year: 2023, week: 18, pullRequestCount: 0, issueCount: 3, codeReviewCount: 3 },
+  { year: 2023, week: 19, pullRequestCount: 2, issueCount: 0, codeReviewCount: 3 },
+  { year: 2023, week: 20, pullRequestCount: 0, issueCount: 0, codeReviewCount: 3 },
+  { year: 2023, week: 21, pullRequestCount: 0, issueCount: 5, codeReviewCount: 3 },
+  { year: 2023, week: 22, pullRequestCount: 0, issueCount: 0, codeReviewCount: 3 },
 ];
 
 export const FewData = {

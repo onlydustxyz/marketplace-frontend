@@ -1,10 +1,12 @@
 fragment Contributor on UserProfiles {
   ...MinimalUserProfile
-  contributionStatsAggregate(where: { projectId: { _eq: $projectId } }) {
+  contributionStatsAggregate {
     aggregate {
       sum {
-        paidCount
-        unpaidUnignoredCount
+        codeReviewCount
+        issueCount
+        pullRequestCount
+        totalCount
       }
     }
   }

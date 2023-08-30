@@ -11,20 +11,34 @@
     "empty": "No contributions yet"
   },
   "contributionGraph": {
-    "paid": "Paid",
+    "pullRequests": "Pull requests",
+    "issues": "Issues",
+    "codeReviews": "Code reviews",
     "tooltip": {
       "contributionCount": {
         "total": {
           "zero": "No contribution",
           "one": "1 contribution",
           "many": "__count__ contributions"
-        },
-        "paid": "__count__ paid",
-        "unpaid": "__count__ not paid"
+        }
+      },
+      "pullRequests": {
+        "zero": "0 Pull requests",
+        "one": "1 Pull request",
+        "many": "__count__ Pull requests"
+      },
+      "issues": {
+        "zero": "0 Issues",
+        "one": "1 Issue",
+        "many": "__count__ Issues"
+      },
+      "codeReviews": {
+        "zero": "0 Code reviews",
+        "one": "1 Code review",
+        "many": "__count__ Code reviews"
       },
       "date": "__from__ → __to__"
     },
-    "unpaid": "Not paid",
     "progressionTooltip": "Variation since last week"
   },
   "contributor": {
@@ -367,7 +381,7 @@
         "contributions": "Contributions",
         "contributorOn": "Contributor on",
         "leadOn": "Lead on",
-        "granted": "Granted money",
+        "earned": "Total earned",
         "title": "Stats",
         "projects": {
           "zero": "project",
