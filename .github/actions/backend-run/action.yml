@@ -57,15 +57,3 @@ runs:
         cargo run -p event-store &> event-store.out.log &
         echo "event_store_pid=$!" >> $GITHUB_ENV
 
-    - name: Run the github-proxy
-      shell: bash
-      run: |
-        cargo run -p github-proxy &> github-proxy.out.log &
-        echo "github_proxy_pid=$!" >> $GITHUB_ENV
-
-    - name: Wait for github-proxy to be up
-      uses: onlydustxyz/wait-on-action@v1
-      with:
-        resource: http://localhost:8001
-        timeout: 300000
-

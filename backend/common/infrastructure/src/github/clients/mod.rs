@@ -222,24 +222,6 @@ impl Client {
 	}
 
 	#[instrument(skip(self))]
-	pub async fn get_issue_by_repository_id(
-		&self,
-		repo_id: GithubRepoId,
-		issue_number: GithubIssueNumber,
-	) -> Result<Issue, Error> {
-		let issue: Issue = self
-			.get_as(format!(
-				"{}repositories/{repo_id}/issues/{issue_number}",
-				self.octocrab().base_url
-			))
-			.await?;
-		match issue.pull_request {
-			Some(_) => Err(Error::NotFound(anyhow!("Issue is in fact a pull request"))),
-			None => Ok(issue),
-		}
-	}
-
-	#[instrument(skip(self))]
 	pub async fn get_pull_request(
 		&self,
 		repo_owner: String,
@@ -368,19 +350,6 @@ impl Client {
 	}
 
 	#[instrument(skip(self))]
-	pub async fn get_pull_request_by_repository_id(
-		&self,
-		repo_id: GithubRepoId,
-		pr_number: GithubPullRequestNumber,
-	) -> Result<PullRequest, Error> {
-		self.get_as(format!(
-			"{}repositories/{repo_id}/pulls/{pr_number}",
-			self.octocrab().base_url
-		))
-		.await
-	}
-
-	#[instrument(skip(self))]
 	pub async fn issues_by_repo_id(
 		&self,
 		id: GithubRepoId,
@@ -456,11 +425,6 @@ impl Client {
 			.collect()
 			.await;
 		Ok(pull_requests)
-	}
-
-	#[instrument(skip(self))]
-	pub async fn get_user_by_id(&self, id: &GithubUserId) -> Result<User, Error> {
-		self.get_as(format!("{}user/{id}", self.octocrab().base_url)).await
 	}
 
 	#[instrument(skip(self))]

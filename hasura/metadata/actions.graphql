@@ -21,6 +21,32 @@ type Mutation {
   ): Uuid!
 }
 
+type Query {
+  fetchIssue(
+    repoOwner: String!
+    repoName: String!
+    issueNumber: Int!
+  ): GithubIssue
+}
+
+type Query {
+  fetchPullRequest(
+    repoOwner: String!
+    repoName: String!
+    prNumber: Int!
+  ): GithubPullRequest
+}
+
+type Query {
+  searchUsers(
+    query: String!
+    sort: String
+    order: String
+    perPage: Int
+    page: Int
+  ): [GithubUser!]
+}
+
 type Mutation {
   suggestTechnology(
     suggestion: String!
@@ -74,6 +100,18 @@ enum GithubIssueCreatedAndClosedStatus {
   Cancelled
 }
 
+enum GithubPullRequestStatus {
+  CLOSED
+  MERGED
+  OPEN
+}
+
+enum GithubIssueStatus {
+  CANCELLED
+  COMPLETED
+  OPEN
+}
+
 input Language {
   name: String!
   weight: Int!
@@ -106,9 +144,46 @@ type GithubUserLinkedToIssue {
   htmlUrl: Url!
 }
 
+type GithubUser {
+  avatarUrl: Url!
+  htmlUrl: Url!
+  id: Int!
+  login: String!
+}
+
+type GithubPullRequest {
+  author: GithubUser!
+  closedAt: DateTimeUtc
+  createdAt: DateTimeUtc!
+  htmlUrl: Url!
+  id: Int!
+  mergedAt: DateTimeUtc
+  number: Int!
+  repoId: Int!
+  status: GithubPullRequestStatus!
+  title: String!
+  updatedAt: DateTimeUtc!
+}
+
+type GithubIssue {
+  author: GithubUser!
+  closedAt: DateTimeUtc
+  commentsCount: Int!
+  createdAt: DateTimeUtc!
+  htmlUrl: Url!
+  id: Int!
+  number: Int!
+  repoId: Int!
+  status: GithubIssueStatus!
+  title: String!
+  updatedAt: DateTimeUtc!
+}
+
 scalar Url
 
 scalar Uuid
 
 scalar DateTime
+
+scalar DateTimeUtc
 

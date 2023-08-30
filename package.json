@@ -17,7 +17,6 @@
     "backend:api": "cargo run -p api",
     "backend:event-store": "cargo run -p event-store",
     "backend:event-listeners": "cargo run -p event-listeners",
-    "backend:github-proxy": "cargo run -p github-proxy",
     "backend:github-indexer": "cargo run --bin github-indexer",
     "hasura:refresh": "make hasura/refresh",
     "hasura:console": "make hasura/start",
