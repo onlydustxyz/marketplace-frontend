@@ -6,8 +6,17 @@ use derive_new::new;
 use domain::{GithubFetchService, GithubFullUser, GithubUserId};
 use serde::{Deserialize, Serialize};
 
-use super::{error::IgnoreErrors, hash, Result};
-use crate::{listeners::github::Event as GithubEvent, models::GithubUserIndexRepository};
+use super::{super::error::Result, Crawler};
+use crate::{
+	github_indexer::indexers::{error::IgnoreErrors, hash},
+	models::GithubUserIndexRepository,
+};
+
+#[derive(new)]
+pub struct UserCrawler {
+	github_fetch_service: Arc<dyn GithubFetchService>,
+	github_user_index_repository: Arc<dyn GithubUserIndexRepository>,
+}
 
 #[derive(Default, Clone, Serialize, Deserialize, PartialEq, Eq)]
 struct State {
@@ -57,13 +66,7 @@ impl State {
 	}
 }
 
-#[derive(new)]
-pub struct Indexer {
-	github_fetch_service: Arc<dyn GithubFetchService>,
-	github_user_index_repository: Arc<dyn GithubUserIndexRepository>,
-}
-
-impl Indexer {
+impl UserCrawler {
 	fn get_state(&self, user_id: &GithubUserId) -> anyhow::Result<Option<State>> {
 		State::get(self.github_user_index_repository.as_ref(), user_id)
 	}
@@ -85,38 +88,26 @@ impl Indexer {
 }
 
 #[async_trait]
-impl super::Indexer<GithubUserId> for Indexer {
-	fn name(&self) -> String {
-		String::from("user")
-	}
+impl Crawler<GithubUserId, Option<GithubFullUser>> for UserCrawler {
+	async fn fetch_modified_data(&self, user_id: &GithubUserId) -> Result<Option<GithubFullUser>> {
+		let state = self.get_state(user_id)?;
 
-	async fn index(&self, user_id: GithubUserId) -> Result<Vec<GithubEvent>> {
 		let user = self
 			.github_fetch_service
-			.full_user_by_id(&user_id)
+			.full_user_by_id(user_id)
 			.await
 			.map(Some)
-			.ignore_non_fatal_errors()?;
+			.ignore_non_fatal_errors()?
+			.filter(|user| !matches!(state, Some(state) if state.matches(user)));
 
-		let events = if let Some(user) = user {
-			match self.get_state(&user_id)? {
-				Some(state) if state.matches(&user) => vec![],
-				_ => vec![GithubEvent::FullUser(user)],
-			}
-		} else {
-			vec![]
-		};
-
-		Ok(events)
+		Ok(user)
 	}
-}
 
-impl super::Stateful<GithubUserId> for Indexer {
-	fn store(&self, user_id: GithubUserId, events: &[GithubEvent]) -> anyhow::Result<()> {
-		if let Some(GithubEvent::FullUser(user)) = events.last() {
-			self.update_state_with(user)?;
+	fn ack(&self, user_id: &GithubUserId, data: Option<GithubFullUser>) -> Result<()> {
+		if let Some(user) = data {
+			self.update_state_with(&user)?;
 		} else {
-			self.touch_state(&user_id)?;
+			self.touch_state(user_id)?;
 		}
 		Ok(())
 	}

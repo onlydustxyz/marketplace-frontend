@@ -7,6 +7,7 @@ use infrastructure::{
 };
 
 use super::GithubRepoIndex;
+use crate::diesel::OptionalExtension;
 
 pub trait Repository: database::Repository<GithubRepoIndex> {
 	fn select_repo_indexer_state(
@@ -52,9 +53,11 @@ impl Repository for database::Client {
 			.select(dsl::repo_indexer_state)
 			.filter(dsl::repo_id.eq(repo_id))
 			.first(&mut *connection)
+			.optional()
 			.err_with_context(format!(
 				"select repo_indexer_state from github_repo_indexes where id={repo_id}"
-			))?;
+			))?
+			.flatten();
 		Ok(state)
 	}
 

@@ -1,8 +1,9 @@
 use std::fmt::Display;
 
+use derive_new::new;
 use thiserror::Error;
 
-#[derive(Error, Debug)]
+#[derive(Error, Debug, new)]
 pub struct ContextualizedError<E: std::error::Error> {
 	context: String,
 	#[source] // optional if field name is `source`

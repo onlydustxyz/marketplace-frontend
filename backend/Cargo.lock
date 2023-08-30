@@ -2386,6 +2386,7 @@ dependencies = [
  "chrono",
  "ctor 0.1.26",
  "derive-getters",
+ "derive-new",
  "derive_more",
  "diesel",
  "diesel-derive-enum",
