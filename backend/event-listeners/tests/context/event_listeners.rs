@@ -45,7 +45,7 @@ impl<'a> Context<'a> {
 			database,
 			amqp,
 			github,
-			_processes: event_listeners::bootstrap(config).await?,
+			_processes: event_listeners::listeners::bootstrap(config).await?,
 		})
 	}
 }
