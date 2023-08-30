@@ -1,7 +1,8 @@
-use std::env;
+use std::{collections::HashMap, env};
 
 use anyhow::Result;
 use event_listeners::Config;
+use presentation::http;
 use testcontainers::clients::Cli;
 use testing::context::{amqp, database, github};
 use tokio::task::JoinHandle;
@@ -32,6 +33,9 @@ impl<'a> Context<'a> {
 
 		let config = Config {
 			amqp: amqp.config.clone(),
+			http: http::Config {
+				api_keys: HashMap::default(),
+			},
 			database: database.config.clone(),
 			tracer: infrastructure::tracing::Config {
 				ansi: false,

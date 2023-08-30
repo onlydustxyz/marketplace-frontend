@@ -1,7 +1,8 @@
-use std::env;
+use std::collections::HashMap, env;
 
 use anyhow::Result;
 use event_listeners::{github_indexer::Scheduler, Config};
+use presentation::http;
 use rstest::fixture;
 use testcontainers::clients::Cli;
 use testing::context::{database, github};
@@ -36,6 +37,9 @@ impl<'a> Context<'a> {
 
 		let config = Config {
 			amqp: Default::default(),
+			http: http::Config {
+				api_keys: HashMap::default(),
+			},
 			database: database.config.clone(),
 			tracer: infrastructure::tracing::Config {
 				ansi: false,
