@@ -171,7 +171,7 @@ impl<'a> Test<'a> {
 		Ok(())
 	}
 
-	fn assert_marketplace_pull_is_indexed(
+	fn assert_pull_request(
 		&self,
 		pull_request: models::github_pull_requests::Inner,
 		expected: GithubPullRequest,
@@ -235,20 +235,23 @@ impl<'a> Test<'a> {
 		assert_eq!(pull_requests.len(), 3, "Invalid pull requests count");
 
 		{
-			self.assert_marketplace_pull_is_indexed(pull_requests.pop().unwrap(), pr_1144())?;
-			self.assert_marketplace_pull_is_indexed(pull_requests.pop().unwrap(), pr_1146())?;
-			self.assert_marketplace_pull_is_indexed(pull_requests.pop().unwrap(), pr_1152())?;
+			self.assert_pull_request(pull_requests.pop().unwrap(), pr_1144())?;
+			self.assert_pull_request(pull_requests.pop().unwrap(), pr_1146())?;
+			self.assert_pull_request(pull_requests.pop().unwrap(), pr_1152())?;
 		}
 
 		{
 			let mut commits: Vec<models::github_pull_requests::Commit> =
 				github_pull_request_commits::table.load(&mut *connection)?;
-			assert_eq!(commits.len(), 6, "Invalid commits count");
+			assert_eq!(commits.len(), 7, "Invalid commits count");
 
-			self.assert_commit(commits.pop().unwrap(), commits::b(), &pr_1144().id);
-			self.assert_commit(commits.pop().unwrap(), commits::a(), &pr_1144().id);
-			self.assert_commit(commits.pop().unwrap(), commits::b(), &pr_1146().id);
-			self.assert_commit(commits.pop().unwrap(), commits::a(), &pr_1146().id);
+			self.assert_commit(commits.pop().unwrap(), commits::g(), &pr_1144().id);
+			self.assert_commit(commits.pop().unwrap(), commits::f(), &pr_1144().id);
+
+			self.assert_commit(commits.pop().unwrap(), commits::e(), &pr_1146().id);
+			self.assert_commit(commits.pop().unwrap(), commits::d(), &pr_1146().id);
+			self.assert_commit(commits.pop().unwrap(), commits::c(), &pr_1146().id);
+
 			self.assert_commit(commits.pop().unwrap(), commits::b(), &pr_1152().id);
 			self.assert_commit(commits.pop().unwrap(), commits::a(), &pr_1152().id);
 		}
@@ -258,18 +261,19 @@ impl<'a> Test<'a> {
 				github_pull_request_reviews::table.load(&mut *connection)?;
 			assert_eq!(reviews.len(), 5, "Invalid reviews count");
 
+			// Reviews requested
 			self.assert_review(
 				reviews.pop().unwrap(),
 				reviews::requested(GithubCodeReviewStatus::Pending),
 				&pr_1144().id,
 			);
-
 			self.assert_review(
 				reviews.pop().unwrap(),
 				reviews::requested(GithubCodeReviewStatus::Pending),
 				&pr_1146().id,
 			);
 
+			// Actual reviews
 			self.assert_review(
 				reviews.pop().unwrap(),
 				reviews::change_requested(GithubCodeReviewStatus::Pending),
@@ -296,13 +300,14 @@ impl<'a> Test<'a> {
 			let mut contributions: Vec<models::Contribution> = contributions::table
 				.order((
 					contributions::dsl::type_.desc(),
+					contributions::dsl::details_id.desc(),
 					contributions::dsl::user_id.desc(),
-					contributions::dsl::details_id.asc(),
 					contributions::dsl::created_at.asc(),
 				))
 				.load(&mut *connection)?;
-			assert_eq!(contributions.len(), 9, "Invalid contribution count");
+			assert_eq!(contributions.len(), 10, "Invalid contribution count");
 
+			// Issue assigned to ofux
 			{
 				let contribution = contributions.pop().unwrap();
 				assert_eq!(contribution.repo_id, repos::marketplace().id);
@@ -315,30 +320,18 @@ impl<'a> Test<'a> {
 				assert_eq!(contribution.status, ContributionStatus::Complete);
 			}
 
+			// PR 1144
 			{
 				let contribution = contributions.pop().unwrap();
 				assert_eq!(contribution.repo_id, repos::marketplace().id);
 				assert_eq!(contribution.type_, ContributionType::PullRequest);
-				assert_eq!(contribution.user_id, users::anthony().id);
+				assert_eq!(contribution.user_id, users::ofux().id);
 				assert_eq!(
 					contribution.details_id,
-					GithubPullRequestId::from(1458220740u64).into()
+					GithubPullRequestId::from(1452363285u64).into()
 				);
-				assert_eq!(contribution.status, ContributionStatus::InProgress);
+				assert_eq!(contribution.status, ContributionStatus::Canceled);
 			}
-
-			{
-				let contribution = contributions.pop().unwrap();
-				assert_eq!(contribution.repo_id, repos::marketplace().id);
-				assert_eq!(contribution.type_, ContributionType::PullRequest);
-				assert_eq!(contribution.user_id, users::anthony().id);
-				assert_eq!(
-					contribution.details_id,
-					GithubPullRequestId::from(1455874031u64).into()
-				);
-				assert_eq!(contribution.status, ContributionStatus::Complete);
-			}
-
 			{
 				let contribution = contributions.pop().unwrap();
 				assert_eq!(contribution.repo_id, repos::marketplace().id);
@@ -351,23 +344,25 @@ impl<'a> Test<'a> {
 				assert_eq!(contribution.status, ContributionStatus::Canceled);
 			}
 
+			// PR 1146
 			{
 				let contribution = contributions.pop().unwrap();
 				assert_eq!(contribution.repo_id, repos::marketplace().id);
-				assert_eq!(contribution.type_, ContributionType::CodeReview);
+				assert_eq!(contribution.type_, ContributionType::PullRequest);
 				assert_eq!(contribution.user_id, users::ofux().id);
 				assert_eq!(
 					contribution.details_id,
-					GithubPullRequestId::from(1458220740u64).into()
+					GithubPullRequestId::from(1455874031u64).into()
 				);
-				assert_eq!(contribution.status, ContributionStatus::InProgress);
+				assert_eq!(contribution.status, ContributionStatus::Complete);
 			}
 
+			// PR 1152
 			{
 				let contribution = contributions.pop().unwrap();
 				assert_eq!(contribution.repo_id, repos::marketplace().id);
-				assert_eq!(contribution.type_, ContributionType::CodeReview);
-				assert_eq!(contribution.user_id, users::alex().id);
+				assert_eq!(contribution.type_, ContributionType::PullRequest);
+				assert_eq!(contribution.user_id, users::anthony().id);
 				assert_eq!(
 					contribution.details_id,
 					GithubPullRequestId::from(1458220740u64).into()
@@ -375,6 +370,7 @@ impl<'a> Test<'a> {
 				assert_eq!(contribution.status, ContributionStatus::InProgress);
 			}
 
+			// Code review by anthony (not approved)
 			{
 				let contribution = contributions.pop().unwrap();
 				assert_eq!(contribution.repo_id, repos::marketplace().id);
@@ -382,11 +378,12 @@ impl<'a> Test<'a> {
 				assert_eq!(contribution.user_id, users::anthony().id);
 				assert_eq!(
 					contribution.details_id,
-					GithubPullRequestId::from(1458220740u64).into()
+					GithubPullRequestId::from(1452363285u64).into()
 				);
-				assert_eq!(contribution.status, ContributionStatus::Complete);
+				assert_eq!(contribution.status, ContributionStatus::InProgress);
 			}
 
+			// Code review by anthony (not approved)
 			{
 				let contribution = contributions.pop().unwrap();
 				assert_eq!(contribution.repo_id, repos::marketplace().id);
@@ -399,6 +396,33 @@ impl<'a> Test<'a> {
 				assert_eq!(contribution.status, ContributionStatus::InProgress);
 			}
 
+			// Code review by ofux (not approved)
+			{
+				let contribution = contributions.pop().unwrap();
+				assert_eq!(contribution.repo_id, repos::marketplace().id);
+				assert_eq!(contribution.type_, ContributionType::CodeReview);
+				assert_eq!(contribution.user_id, users::ofux().id);
+				assert_eq!(
+					contribution.details_id,
+					GithubPullRequestId::from(1458220740u64).into()
+				);
+				assert_eq!(contribution.status, ContributionStatus::InProgress);
+			}
+
+			// Code review by alex (not approved)
+			{
+				let contribution = contributions.pop().unwrap();
+				assert_eq!(contribution.repo_id, repos::marketplace().id);
+				assert_eq!(contribution.type_, ContributionType::CodeReview);
+				assert_eq!(contribution.user_id, users::alex().id);
+				assert_eq!(
+					contribution.details_id,
+					GithubPullRequestId::from(1458220740u64).into()
+				);
+				assert_eq!(contribution.status, ContributionStatus::InProgress);
+			}
+
+			// Code review by anthony (approved)
 			{
 				let contribution = contributions.pop().unwrap();
 				assert_eq!(contribution.repo_id, repos::marketplace().id);
@@ -406,9 +430,9 @@ impl<'a> Test<'a> {
 				assert_eq!(contribution.user_id, users::anthony().id);
 				assert_eq!(
 					contribution.details_id,
-					GithubPullRequestId::from(1452363285u64).into()
+					GithubPullRequestId::from(1458220740u64).into()
 				);
-				assert_eq!(contribution.status, ContributionStatus::InProgress);
+				assert_eq!(contribution.status, ContributionStatus::Complete);
 			}
 		}
 		Ok(())

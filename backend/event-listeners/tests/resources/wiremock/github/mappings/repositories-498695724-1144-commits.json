@@ -1,12 +1,12 @@
 {
   "id": "cccf3b12-15b1-3f71-9cd0-c83f6f25ad53",
   "request": {
-    "urlPattern": "/repositories/498695724/pulls/(1144|1146|1152)/commits",
+    "url": "/repositories/498695724/pulls/1144/commits",
     "method": "GET"
   },
   "response": {
     "status": 200,
-    "bodyFileName": "body-pull-commits.json",
+    "bodyFileName": "body-repositories-498695724-1144-commits.json",
     "headers": {
       "Server": "GitHub.com",
       "Date": "Fri, 28 Jul 2023 16:25:49 GMT",
