@@ -31,7 +31,7 @@ impl State {
 
 impl IssuesCrawler {
 	fn get_state(&self, repo_id: &GithubRepoId) -> anyhow::Result<Option<State>> {
-		let state = match self.github_repo_index_repository.select_issues_indexer_state(&repo_id)? {
+		let state = match self.github_repo_index_repository.select_issues_indexer_state(repo_id)? {
 			Some(state) => {
 				let state = serde_json::from_value(state)?;
 				Some(state)
@@ -72,7 +72,7 @@ impl Crawler<GithubRepoId, Vec<domain::GithubIssue>> for IssuesCrawler {
 		if let Some(updated_at) = updated_times.pop() {
 			let state = State::new(updated_at);
 			self.github_repo_index_repository
-				.update_issues_indexer_state(&id, state.json()?)?;
+				.update_issues_indexer_state(id, state.json()?)?;
 		}
 
 		Ok(())

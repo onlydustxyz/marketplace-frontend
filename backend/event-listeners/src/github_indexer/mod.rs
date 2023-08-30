@@ -99,7 +99,7 @@ impl Scheduler {
 			user_indexing: Controller::new(
 				database.clone(),
 				vec![Arc::new(
-					indexers::user::new(github.clone(), database.clone(), database.clone())
+					indexers::user::new(github, database.clone(), database)
 						.logged()
 						.rate_limited(&single_rate_limit_conf),
 				)],

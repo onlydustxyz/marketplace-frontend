@@ -42,10 +42,7 @@ impl Projector<GithubRepoId, ()> for ContributorsProjector {
 
 				let all_contributors: Vec<GithubUserIndex> = contributors
 					.union(&pending_contributors)
-					.map(|user_id| GithubUserIndex {
-						user_id: *user_id,
-						..Default::default()
-					})
+					.map(|user_id| GithubUserIndex { user_id: *user_id })
 					.collect();
 
 				self.github_user_index_repository.try_insert_all(all_contributors)?;

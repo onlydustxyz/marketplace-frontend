@@ -90,18 +90,15 @@ impl UserCrawler {
 #[async_trait]
 impl Crawler<GithubUserId, Option<GithubFullUser>> for UserCrawler {
 	async fn fetch_modified_data(&self, user_id: &GithubUserId) -> Result<Option<GithubFullUser>> {
-		let state = self.get_state(&user_id)?;
+		let state = self.get_state(user_id)?;
 
 		let user = self
 			.github_fetch_service
-			.full_user_by_id(&user_id)
+			.full_user_by_id(user_id)
 			.await
 			.map(Some)
 			.ignore_non_fatal_errors()?
-			.filter(|user| match state {
-				Some(state) if state.matches(&user) => false,
-				_ => true,
-			});
+			.filter(|user| !matches!(state, Some(state) if state.matches(user)));
 
 		Ok(user)
 	}
@@ -110,7 +107,7 @@ impl Crawler<GithubUserId, Option<GithubFullUser>> for UserCrawler {
 		if let Some(user) = data {
 			self.update_state_with(&user)?;
 		} else {
-			self.touch_state(&user_id)?;
+			self.touch_state(user_id)?;
 		}
 		Ok(())
 	}

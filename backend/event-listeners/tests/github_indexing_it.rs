@@ -176,9 +176,9 @@ impl<'a> Test<'a> {
 		pull_request: models::github_pull_requests::Inner,
 		expected: GithubPullRequest,
 	) -> Result<()> {
-		assert_eq!(pull_request.id, expected.id.into());
+		assert_eq!(pull_request.id, expected.id);
 		assert_eq!(pull_request.repo_id, repos::marketplace().id);
-		assert_eq!(pull_request.number, expected.number.into());
+		assert_eq!(pull_request.number, expected.number);
 		assert_eq!(pull_request.created_at, expected.created_at.naive_utc());
 		assert_eq!(pull_request.author_id, expected.author.id);
 		assert_eq!(

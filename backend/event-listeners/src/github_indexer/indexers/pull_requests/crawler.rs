@@ -74,7 +74,7 @@ impl Crawler<GithubRepoId, Vec<domain::GithubPullRequest>> for PullRequestsCrawl
 		if let Some(updated_at) = updated_times.pop() {
 			let state = State::new(updated_at);
 			self.github_repo_index_repository
-				.update_pull_requests_indexer_state(&id, state.json()?)?;
+				.update_pull_requests_indexer_state(id, state.json()?)?;
 		}
 
 		Ok(())

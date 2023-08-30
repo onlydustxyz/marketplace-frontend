@@ -52,7 +52,7 @@ impl RepoCrawler {
 impl Crawler<GithubRepoId, Option<IndexedRepo>> for RepoCrawler {
 	async fn fetch_modified_data(&self, repo_id: &GithubRepoId) -> Result<Option<IndexedRepo>> {
 		match self.github_fetch_service.repo_by_id(*repo_id).await {
-			Ok(repo) => match self.get_state(&repo_id)? {
+			Ok(repo) => match self.get_state(repo_id)? {
 				Some(state) if state == State::new(&repo) => Ok(None),
 				_ => {
 					let languages = self.github_fetch_service.repo_languages(repo.id).await?;
@@ -84,8 +84,7 @@ impl Crawler<GithubRepoId, Option<IndexedRepo>> for RepoCrawler {
 	fn ack(&self, id: &GithubRepoId, data: Option<IndexedRepo>) -> Result<()> {
 		if let Some(indexed_repo) = data {
 			let state = State::new(&indexed_repo.repo);
-			self.github_repo_index_repository
-				.update_repo_indexer_state(&id, state.json()?)?;
+			self.github_repo_index_repository.update_repo_indexer_state(id, state.json()?)?;
 		}
 		Ok(())
 	}
