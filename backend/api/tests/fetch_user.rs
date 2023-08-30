@@ -2,12 +2,10 @@
 extern crate diesel;
 
 use anyhow::Result;
-use diesel::RunQueryDsl;
+use olog::info;
 use rocket::http::{Header, Status};
 use rstest::rstest;
 use testcontainers::clients::Cli;
-
-use olog::info;
 
 use crate::context::{docker, utils::jwt, Context};
 
@@ -30,7 +28,6 @@ pub async fn fetch_user(docker: &'static Cli) {
 	test.should_search_users_given_a_query_with_parameters_and_pat()
 		.await
 		.expect("should_search_users_given_a_query_with_parameters_and_pat");
-
 }
 
 struct Test<'a> {
@@ -38,9 +35,7 @@ struct Test<'a> {
 }
 
 impl<'a> Test<'a> {
-	async fn should_fetch_a_user_details_given_a_user_id(
-		&mut self,
-	) -> Result<()> {
+	async fn should_fetch_a_user_details_given_a_user_id(&mut self) -> Result<()> {
 		info!("should_fetch_a_user_details_given_a_user_id");
 		// Given
 		let resource = "/api/users/7793";
@@ -67,9 +62,7 @@ impl<'a> Test<'a> {
 		Ok(())
 	}
 
-	async fn should_search_users_given_a_query_without_parameters_and_pat(
-		&mut self,
-	) -> Result<()> {
+	async fn should_search_users_given_a_query_without_parameters_and_pat(&mut self) -> Result<()> {
 		info!("should_search_users_given_a_query_without_parameters_and_pat");
 		// Given
 		let resource = "/api/users/search?query=Pierre";
@@ -96,12 +89,11 @@ impl<'a> Test<'a> {
 		Ok(())
 	}
 
-	async fn should_search_users_given_a_query_with_parameters_and_pat(
-		&mut self,
-	) -> Result<()> {
+	async fn should_search_users_given_a_query_with_parameters_and_pat(&mut self) -> Result<()> {
 		info!("should_search_users_given_a_query_without_parameters_and_pat");
 		// Given
-		let resource = "/api/users/search?query=Anthony&per_page=2&page=0&sort=repositories&order=asc";
+		let resource =
+			"/api/users/search?query=Anthony&per_page=2&page=0&sort=repositories&order=asc";
 
 		// When
 		let response = self
@@ -112,12 +104,10 @@ impl<'a> Test<'a> {
 				"Authorization",
 				format!("Bearer {}", jwt(None)),
 			))
-			.header(
-				Header::new(
-					"x-hasura-githubAccessToken",
-					"github-pat-search-user-1"
-				)
-			)
+			.header(Header::new(
+				"x-hasura-githubAccessToken",
+				"github-pat-search-user-1",
+			))
 			.dispatch()
 			.await;
 
@@ -130,8 +120,4 @@ impl<'a> Test<'a> {
 		);
 		Ok(())
 	}
-
-
-
-
 }

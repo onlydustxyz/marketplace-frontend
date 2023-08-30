@@ -2,12 +2,10 @@
 extern crate diesel;
 
 use anyhow::Result;
-use diesel::RunQueryDsl;
+use olog::info;
 use rocket::http::{Header, Status};
 use rstest::rstest;
 use testcontainers::clients::Cli;
-
-use olog::info;
 
 use crate::context::{docker, utils::jwt, Context};
 

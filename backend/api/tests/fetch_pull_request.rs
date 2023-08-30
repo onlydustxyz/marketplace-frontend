@@ -2,12 +2,10 @@
 extern crate diesel;
 
 use anyhow::Result;
-use diesel::RunQueryDsl;
+use olog::info;
 use rocket::http::{Header, Status};
 use rstest::rstest;
 use testcontainers::clients::Cli;
-
-use olog::info;
 
 use crate::context::{docker, utils::jwt, Context};
 
@@ -34,9 +32,7 @@ struct Test<'a> {
 }
 
 impl<'a> Test<'a> {
-	async fn should_fetch_a_pr_given_a_repo_owner_repo_name_pr_number(
-		&mut self,
-	) -> Result<()> {
+	async fn should_fetch_a_pr_given_a_repo_owner_repo_name_pr_number(&mut self) -> Result<()> {
 		info!("should_fetch_a_pr_given_a_repo_owner_repo_name_pr_number");
 		// Given
 		let resource = "/api/pull_requests/repo_onwer_test_2/repo_name_test_2/222";

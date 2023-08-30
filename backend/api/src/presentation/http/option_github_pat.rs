@@ -41,20 +41,22 @@ impl<'r> FromRequest<'r> for OptionGithubPat {
 mod tests {
 	use rocket::{
 		http::Header,
-		local::blocking::{Client, LocalRequest},
+		local::asynchronous::{Client, LocalRequest},
 	};
 	use rstest::{fixture, rstest};
 
 	use super::*;
 
 	#[fixture]
-	fn client() -> Client {
+	async fn client() -> Client {
 		let rocket = rocket::build();
-		Client::untracked(rocket).expect("valid rocket")
+		Client::untracked(rocket).await.expect("valid rocket")
 	}
 
 	#[rstest]
-	async fn from_request_with_github_pat_header(client: Client) {
+	#[tokio::test]
+	async fn from_request_with_github_pat_header(#[future] client: Client) {
+		let client = client.await;
 		let mut request: LocalRequest = client.post("/v1/graphql");
 		request.add_header(Header::new(
 			GITHUB_ACCESS_TOKEN_HEADER,
@@ -71,7 +73,9 @@ mod tests {
 	}
 
 	#[rstest]
-	async fn from_request_without_github_pat_header(client: Client) {
+	#[tokio::test]
+	async fn from_request_without_github_pat_header(#[future] client: Client) {
+		let client = client.await;
 		let request: LocalRequest = client.post("/v1/graphql");
 
 		let result = OptionGithubPat::from_request(&request).await;

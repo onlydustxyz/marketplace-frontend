@@ -59,7 +59,7 @@ impl<'a> Test<'a> {
 
 		// Then
 		assert_eq!(response.status(), Status::Ok);
-		let project: projects::create_project::Response = response.into_json().await.unwrap();
+		let project: projects::create::Response = response.into_json().await.unwrap();
 
 		let project_id = project.project_id;
 
