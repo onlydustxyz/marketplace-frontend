@@ -18306,7 +18306,7 @@ export const MinimalUserProfileFragmentDoc = gql`
 export const ContributorFragmentDoc = gql`
     fragment Contributor on UserProfiles {
   ...MinimalUserProfile
-  contributionStatsAggregate {
+  contributionStatsAggregate(where: {projectId: {_eq: $projectId}}) {
     aggregate {
       sum {
         codeReviewCount
@@ -18323,7 +18323,7 @@ export const ContributorFragmentDoc = gql`
       }
     }
   }
-  projectsRewardedAggregate {
+  projectsRewardedAggregate(where: {projectId: {_eq: $projectId}}) {
     aggregate {
       sum {
         rewardCount

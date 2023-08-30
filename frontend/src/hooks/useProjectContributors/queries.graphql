@@ -1,6 +1,6 @@
 fragment Contributor on UserProfiles {
   ...MinimalUserProfile
-  contributionStatsAggregate {
+  contributionStatsAggregate(where: { projectId: { _eq: $projectId } }) {
     aggregate {
       sum {
         codeReviewCount
