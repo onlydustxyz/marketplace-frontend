@@ -109,7 +109,6 @@ pub fn serve(
 			routes![
 				routes::users::profile_picture,
 				routes::users::update_user_profile,
-				routes::users::fetch_user_details_by_id,
 				routes::users::search_users,
 			],
 		)
@@ -119,14 +118,10 @@ pub fn serve(
 			routes![
 				routes::issues::create_and_close_issue,
 				routes::issues::fetch_issue_by_repo_owner_name_issue_number,
-				routes::issues::fetch_issue_by_repository_id_issue_number,
 			],
 		)
 		.mount(
 			"/",
-			routes![
-				routes::pull_requests::fetch_pull_requests::fetch_pull_request,
-				routes::pull_requests::fetch_pull_requests::fetch_pull_request_by_repository_id,
-			],
+			routes![routes::pull_requests::fetch_pull_requests::fetch_pull_request,],
 		)
 }

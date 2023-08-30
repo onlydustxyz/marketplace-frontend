@@ -22,9 +22,6 @@ pub async fn fetch_pull_requests(docker: &'static Cli) {
 	test.should_fetch_a_pr_given_a_repo_owner_repo_name_pr_number()
 		.await
 		.expect("should_fetch_a_pr_given_a_repo_owner_repo_name_pr_number");
-	test.should_fetch_a_pr_given_a_repo_id_pr_number()
-		.await
-		.expect("should_fetch_a_pr_given_a_repo_id_pr_number");
 }
 
 struct Test<'a> {
@@ -55,33 +52,6 @@ impl<'a> Test<'a> {
 		assert_eq!(
 			pr,
 			"{\"id\":1471540266,\"repo_id\":498695724,\"number\":222,\"title\":\"Improve indexer\",\"author\":{\"id\":43467246,\"login\":\"AnthonyBuisset\",\"avatar_url\":\"https://avatars.githubusercontent.com/u/43467246?v=4\",\"html_url\":\"https://github.com/AnthonyBuisset\"},\"html_url\":\"https://github.com/repo_owner_test_2/repo_name_test_2/pull/222\",\"status\":\"MERGED\",\"created_at\":\"2023-08-11T09:49:15Z\",\"updated_at\":\"2023-08-11T10:10:37Z\",\"merged_at\":\"2023-08-11T10:10:36Z\",\"closed_at\":\"2023-08-11T10:10:36Z\"}"
-		);
-		Ok(())
-	}
-
-	async fn should_fetch_a_pr_given_a_repo_id_pr_number(&mut self) -> Result<()> {
-		info!("should_fetch_a_pr_given_a_repo_id_pr_number");
-		// Given
-		let resource = "/api/pull_requests/424446/211";
-
-		// When
-		let response = self
-			.context
-			.http_client
-			.get(resource.to_string())
-			.header(Header::new(
-				"Authorization",
-				format!("Bearer {}", jwt(None)),
-			))
-			.dispatch()
-			.await;
-
-		// Then
-		assert_eq!(response.status(), Status::Ok);
-		let pr = response.into_string().await.unwrap();
-		assert_eq!(
-			pr,
-			"{\"id\":1471540265,\"repo_id\":424446,\"number\":211,\"title\":\"Improve indexer\",\"author\":{\"id\":43467246,\"login\":\"AnthonyBuisset\",\"avatar_url\":\"https://avatars.githubusercontent.com/u/43467246?v=4\",\"html_url\":\"https://github.com/AnthonyBuisset\"},\"html_url\":\"https://github.com/repo_owner_test_2/repo_name_test_2/pull/211\",\"status\":\"MERGED\",\"created_at\":\"2023-08-11T09:49:15Z\",\"updated_at\":\"2023-08-11T10:10:37Z\",\"merged_at\":\"2023-08-11T10:10:36Z\",\"closed_at\":\"2023-08-11T10:10:36Z\"}"
 		);
 		Ok(())
 	}
