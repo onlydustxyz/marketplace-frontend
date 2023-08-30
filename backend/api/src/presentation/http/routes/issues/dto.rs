@@ -27,10 +27,11 @@ pub struct UserResponse {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum Status {
-	OPEN,
-	COMPLETED,
-	CANCELLED,
+	Open,
+	Completed,
+	Cancelled,
 }
 
 impl From<GithubUser> for UserResponse {
@@ -65,9 +66,9 @@ impl From<GithubIssue> for Response {
 impl From<GithubIssueStatus> for Status {
 	fn from(github_issue_status: GithubIssueStatus) -> Self {
 		match github_issue_status {
-			GithubIssueStatus::Cancelled => Status::CANCELLED,
-			GithubIssueStatus::Open => Status::OPEN,
-			GithubIssueStatus::Completed => Status::COMPLETED,
+			GithubIssueStatus::Cancelled => Status::Cancelled,
+			GithubIssueStatus::Open => Status::Open,
+			GithubIssueStatus::Completed => Status::Completed,
 		}
 	}
 }

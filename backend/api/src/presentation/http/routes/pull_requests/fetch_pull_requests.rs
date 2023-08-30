@@ -19,7 +19,7 @@ pub async fn fetch_pull_request(
 	let pr_number = GithubPullRequestNumber::from(pr_number as i64);
 	let pr = github_client_factory
 		.github_service()?
-		.pull_request(repo_owner.clone(), repo_name.clone(), pr_number.clone())
+		.pull_request(repo_owner.clone(), repo_name.clone(), pr_number)
 		.await
 		.map(Into::into)
 		.map_err(|e| {

@@ -20,7 +20,7 @@ pub async fn fetch_issue_by_repo_owner_name_issue_number(
 
 	let issue = github_client_factory
 		.github_service()?
-		.issue(repo_owner.clone(), repo_name.clone(), issue_number.clone())
+		.issue(repo_owner.clone(), repo_name.clone(), issue_number)
 		.await
 		.map(Into::into)
 		.map_err(|e| {

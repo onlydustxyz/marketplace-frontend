@@ -51,7 +51,7 @@ pub async fn search_users(
 		.await
 		.map(|users| users.into_iter().map(Into::into).collect())
 		.map_err(|e| {
-			let error_message = format!("Failed to search users");
+			let error_message = String::from("Failed to search users");
 			error!(error = e.to_field(), "{error_message}");
 			HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
 				.title(error_message)

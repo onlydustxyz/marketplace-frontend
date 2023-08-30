@@ -20,12 +20,13 @@ impl GithubClientPatFactory {
 		}
 	}
 
+	#[allow(clippy::result_large_err)]
 	pub fn github_service_with_user_pat(
 		&self,
 		github_pat: OptionGithubPat,
 	) -> Result<Arc<dyn GithubService>, HttpApiProblem> {
 		let github_pat_str: Option<String> = github_pat.into();
-		let client: Arc<dyn GithubService> = match github_pat_str.clone() {
+		let client: Arc<dyn GithubService> = match github_pat_str {
 			Some(token) => {
 				let client: Arc<github::Client> =
 					github::SingleClient::new(&self.github_config, token)
@@ -45,6 +46,7 @@ impl GithubClientPatFactory {
 		Ok(client)
 	}
 
+	#[allow(clippy::result_large_err)]
 	pub fn github_service(&self) -> Result<Arc<dyn GithubService>, HttpApiProblem> {
 		Ok(self.default_github_service.clone())
 	}
