@@ -13,12 +13,18 @@ use infrastructure::{
 use super::ProjectsContributor;
 
 pub trait Repository: database::ImmutableRepository<ProjectsContributor> {
-	fn refresh_project_contributor_list(&self, project_id: &ProjectId) -> Result<()>;
+	fn refresh_project_contributor_list(&self, project_id: &ProjectId)
+	-> Result<Vec<GithubUserId>>;
 }
 
 impl Repository for database::Client {
-	fn refresh_project_contributor_list(&self, project_id: &ProjectId) -> Result<()> {
+	fn refresh_project_contributor_list(
+		&self,
+		project_id: &ProjectId,
+	) -> Result<Vec<GithubUserId>> {
 		let mut connection = self.connection()?;
+
+		let mut contributors: Vec<GithubUserId> = vec![];
 		connection
 			.transaction::<_, diesel::result::Error, _>(|tx| {
 				diesel::delete(dsl::projects_contributors)
@@ -30,7 +36,7 @@ impl Repository for database::Client {
 					.filter(project_github_repos::dsl::project_id.eq(project_id))
 					.load(&mut *tx)?;
 
-				let contributors: Vec<GithubUserId> = contributions::dsl::contributions
+				contributors = contributions::dsl::contributions
 					.select(contributions::dsl::user_id)
 					.distinct()
 					.filter(contributions::dsl::repo_id.eq_any(repos))
@@ -52,6 +58,6 @@ impl Repository for database::Client {
 			.err_with_context(format!(
 				"refreshing contributors of project with id={project_id}"
 			))?;
-		Ok(())
+		Ok(contributors)
 	}
 }

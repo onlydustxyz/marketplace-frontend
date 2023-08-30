@@ -53,7 +53,7 @@ test.describe("As a project lead, I", () => {
       project.sponsors?.map(async sponsor => expect(await overviewPage.sponsors()).toContain(sponsor)) || []
     );
 
-    expect(await overviewPage.contributorsCount()).toBe(3);
+    expect(await overviewPage.contributorsCount()).toBe(4);
 
     const contributorsPage = await projectPage.contributors();
     const contributors = await contributorsPage.contributorsTable();
@@ -69,6 +69,10 @@ test.describe("As a project lead, I", () => {
     expect(await contributors.byName("ofux").totalEarned()).toBe("$13,200");
     expect(await contributors.byName("ofux").paidContributions()).toBe("2");
     expect(await contributors.byName("ofux").leftToPay()).toBe("-");
+
+    expect(await contributors.byName("Bernardstanislas").totalEarned()).toBe("-");
+    expect(await contributors.byName("Bernardstanislas").paidContributions()).toBe("-");
+    expect(await contributors.byName("Bernardstanislas").leftToPay()).toContain("1");
 
     const newRewardPage = await contributors.byName(recipient.github.login).pay();
     expect(await newRewardPage.contributorText()).toEqual(recipient.github.login);

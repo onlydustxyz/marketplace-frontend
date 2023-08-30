@@ -6,11 +6,14 @@ use derive_new::new;
 use domain::{GithubFetchIssueService, GithubRepoId, GithubServiceIssueFilters};
 use serde::{Deserialize, Serialize};
 
-use super::{error::IgnoreErrors, Result};
-use crate::{listeners::github::Event as GithubEvent, models::GithubRepoIndexRepository};
+use super::{
+	super::error::{IgnoreErrors, Result},
+	Crawler,
+};
+use crate::models::GithubRepoIndexRepository;
 
 #[derive(new)]
-pub struct Indexer {
+pub struct IssuesCrawler {
 	github_fetch_service: Arc<dyn GithubFetchIssueService>,
 	github_repo_index_repository: Arc<dyn GithubRepoIndexRepository>,
 }
@@ -26,9 +29,9 @@ impl State {
 	}
 }
 
-impl Indexer {
-	fn get_state(&self, repo_id: GithubRepoId) -> anyhow::Result<Option<State>> {
-		let state = match self.github_repo_index_repository.select_issues_indexer_state(&repo_id)? {
+impl IssuesCrawler {
+	fn get_state(&self, repo_id: &GithubRepoId) -> anyhow::Result<Option<State>> {
+		let state = match self.github_repo_index_repository.select_issues_indexer_state(repo_id)? {
 			Some(state) => {
 				let state = serde_json::from_value(state)?;
 				Some(state)
@@ -41,47 +44,35 @@ impl Indexer {
 }
 
 #[async_trait]
-impl super::Indexer<GithubRepoId> for Indexer {
-	fn name(&self) -> String {
-		String::from("issues")
-	}
-
-	async fn index(&self, repo_id: GithubRepoId) -> Result<Vec<GithubEvent>> {
+impl Crawler<GithubRepoId, Vec<domain::GithubIssue>> for IssuesCrawler {
+	async fn fetch_modified_data(
+		&self,
+		repo_id: &GithubRepoId,
+	) -> Result<Vec<domain::GithubIssue>> {
 		let filters = GithubServiceIssueFilters {
 			updated_since: self
 				.get_state(repo_id)?
 				.map(|state| state.last_update_time + chrono::Duration::milliseconds(1)),
 		};
 
-		let events = self
+		let issues = self
 			.github_fetch_service
-			.issues_by_repo_id(repo_id, filters)
+			.issues_by_repo_id(*repo_id, filters)
 			.await
-			.ignore_non_fatal_errors()?
-			.into_iter()
-			.map(GithubEvent::Issue)
-			.collect();
+			.ignore_non_fatal_errors()?;
 
-		Ok(events)
+		Ok(issues)
 	}
-}
 
-impl super::Stateful<GithubRepoId> for Indexer {
-	fn store(&self, id: GithubRepoId, events: &[GithubEvent]) -> anyhow::Result<()> {
-		let mut updated_times: Vec<_> = events
-			.iter()
-			.filter_map(|event| match event {
-				GithubEvent::Issue(issue) => Some(issue.updated_at),
-				_ => None,
-			})
-			.collect();
+	fn ack(&self, id: &GithubRepoId, data: Vec<domain::GithubIssue>) -> Result<()> {
+		let mut updated_times: Vec<_> = data.iter().map(|issue| issue.updated_at).collect();
 
 		updated_times.sort();
 
 		if let Some(updated_at) = updated_times.pop() {
 			let state = State::new(updated_at);
 			self.github_repo_index_repository
-				.update_issues_indexer_state(&id, state.json()?)?;
+				.update_issues_indexer_state(id, state.json()?)?;
 		}
 
 		Ok(())

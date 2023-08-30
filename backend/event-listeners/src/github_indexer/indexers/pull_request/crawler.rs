@@ -1,23 +1,19 @@
 use std::sync::Arc;
 
-use anyhow::anyhow;
 use async_trait::async_trait;
 use derive_new::new;
 use domain::{
 	GithubCiChecks, GithubCommit, GithubFetchService, GithubFullPullRequest, GithubPullRequest,
-	GithubPullRequestId, GithubServiceResult, LogErr, SubscriberCallbackError,
+	GithubPullRequestId, GithubServiceResult, LogErr,
 };
 use olog::{warn, IntoField};
 use serde::{Deserialize, Serialize};
 
-use super::{hash, Result};
-use crate::{
-	listeners::{github::Event as GithubEvent, EventListener},
-	models::github_pull_request_indexes,
-};
+use super::{super::error::Result, Crawler};
+use crate::{github_indexer::indexers::hash, models::github_pull_request_indexes};
 
 #[derive(new)]
-pub struct Indexer {
+pub struct PullRequestCrawler {
 	github_fetch_service: Arc<dyn GithubFetchService>,
 	github_pull_request_index_repository: Arc<dyn github_pull_request_indexes::Repository>,
 }
@@ -35,7 +31,7 @@ impl State {
 	}
 }
 
-impl Indexer {
+impl PullRequestCrawler {
 	fn get_state(&self, pull_request_id: GithubPullRequestId) -> anyhow::Result<Option<State>> {
 		let state = match self
 			.github_pull_request_index_repository
@@ -82,21 +78,20 @@ impl Indexer {
 }
 
 #[async_trait]
-impl super::Indexer<GithubPullRequest> for Indexer {
-	fn name(&self) -> String {
-		String::from("full_pull_request")
-	}
-
-	async fn index(&self, pull_request: GithubPullRequest) -> Result<Vec<GithubEvent>> {
+impl Crawler<GithubPullRequest, Option<GithubFullPullRequest>> for PullRequestCrawler {
+	async fn fetch_modified_data(
+		&self,
+		pull_request: &GithubPullRequest,
+	) -> Result<Option<GithubFullPullRequest>> {
 		let state = self.get_state(pull_request.id).ok().flatten().unwrap_or_default();
 		if state.hash == hash(&pull_request) {
-			return Ok(vec![]);
+			return Ok(None);
 		}
 
 		let (commits, reviews, ci_checks, closing_issue_numbers) = tokio::join!(
-			self.try_get_commits(&pull_request, &state),
+			self.try_get_commits(pull_request, &state),
 			self.github_fetch_service.pull_request_reviews(pull_request.clone()),
-			self.try_get_ci_checks(&pull_request),
+			self.try_get_ci_checks(pull_request),
 			self.github_fetch_service.pull_request_closing_issues(
 				pull_request.base_repo.owner.clone(),
 				pull_request.base_repo.name.clone(),
@@ -155,47 +150,30 @@ impl super::Indexer<GithubPullRequest> for Indexer {
 			})
 			.ok();
 
-		Ok(vec![GithubEvent::FullPullRequest(GithubFullPullRequest {
-			inner: pull_request,
+		Ok(Some(GithubFullPullRequest {
+			inner: pull_request.clone(),
 			commits,
 			reviews,
 			ci_checks,
 			closing_issue_numbers,
-		})])
+		}))
 	}
-}
 
-impl super::Stateful<GithubPullRequest> for Indexer {
-	fn store(
+	fn ack(
 		&self,
-		pull_request: GithubPullRequest,
-		_events: &[GithubEvent],
-	) -> anyhow::Result<()> {
+		pull_request: &GithubPullRequest,
+		_data: Option<GithubFullPullRequest>,
+	) -> Result<()> {
 		self.github_pull_request_index_repository.upsert_pull_request_indexer_state(
 			&pull_request.id,
 			State {
 				hash: hash(&pull_request),
-				base_sha: pull_request.base_sha,
-				head_sha: pull_request.head_sha,
+				base_sha: pull_request.base_sha.clone(),
+				head_sha: pull_request.head_sha.clone(),
 			}
 			.json()?,
 		)?;
 
-		Ok(())
-	}
-}
-
-#[async_trait]
-impl<I: super::Indexer<GithubPullRequest>> EventListener<GithubEvent> for I {
-	async fn on_event(
-		&self,
-		event: GithubEvent,
-	) -> std::result::Result<(), SubscriberCallbackError> {
-		if let GithubEvent::PullRequest(pull_request) = event {
-			self.index(pull_request)
-				.await
-				.map_err(|e| SubscriberCallbackError::Fatal(anyhow!(e)))?;
-		}
 		Ok(())
 	}
 }
