@@ -1,5 +1,4 @@
 import { Helmet } from "react-helmet";
-import config from "src/config";
 
 type Props = {
   title?: string;
