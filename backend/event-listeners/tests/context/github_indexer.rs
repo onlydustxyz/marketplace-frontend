@@ -1,12 +1,10 @@
-use std::{env, ffi::OsString};
+use std::env;
 
 use anyhow::Result;
-use envtestkit::{set_env, EnvironmentTestGuard};
 use event_listeners::{github_indexer::Scheduler, Config};
 use rstest::fixture;
 use testcontainers::clients::Cli;
-use testing::context::{amqp, database, github};
-use tokio::task::JoinHandle;
+use testing::context::{database, github};
 
 #[fixture]
 #[once]
@@ -16,11 +14,8 @@ pub fn docker() -> Cli {
 
 pub struct Context<'a> {
 	pub database: database::Context<'a>,
-	pub amqp: amqp::Context<'a>,
 	pub indexing_scheduler: Scheduler,
 	_github: github::Context<'a>,
-	_guards: Vec<EnvironmentTestGuard>,
-	_processes: Vec<JoinHandle<()>>,
 }
 
 impl<'a> Context<'a> {
@@ -29,12 +24,6 @@ impl<'a> Context<'a> {
 		tracing_subscriber::fmt::init();
 
 		let database = database::Context::new(docker)?;
-		let amqp = amqp::Context::new(
-			docker,
-			vec![],
-			vec![event_listeners::GITHUB_EVENTS_EXCHANGE],
-		)
-		.await?;
 
 		let github = github::Context::new(
 			docker,
@@ -46,7 +35,7 @@ impl<'a> Context<'a> {
 		)?;
 
 		let config = Config {
-			amqp: amqp.config.clone(),
+			amqp: Default::default(),
 			database: database.config.clone(),
 			tracer: infrastructure::tracing::Config {
 				ansi: false,
@@ -56,24 +45,10 @@ impl<'a> Context<'a> {
 			github: github.config.clone(),
 		};
 
-		let _guards = vec![set_env(
-			OsString::from("GITHUB_EVENTS_INDEXER_SLEEP_DURATION"),
-			"1",
-		)];
-
 		Ok(Self {
 			database,
-			amqp,
 			indexing_scheduler: Scheduler::new(config).expect("Failed to init indexing scheduler"),
 			_github: github,
-			_guards,
-			_processes: vec![],
 		})
-	}
-}
-
-impl<'a> Drop for Context<'a> {
-	fn drop(&mut self) {
-		self._processes.iter().for_each(JoinHandle::abort);
 	}
 }
