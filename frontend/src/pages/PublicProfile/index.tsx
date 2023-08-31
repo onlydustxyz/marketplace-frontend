@@ -1,4 +1,4 @@
-import { generatePath, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Toaster } from "src/components/Toaster";
 import Tooltip from "src/components/Tooltip";
 import Header from "./Header";
