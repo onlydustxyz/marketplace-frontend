@@ -4902,6 +4902,7 @@ dependencies = [
  "infrastructure",
  "lapin",
  "project-root",
+ "reqwest",
  "serde",
  "serde_json",
  "testcontainers",

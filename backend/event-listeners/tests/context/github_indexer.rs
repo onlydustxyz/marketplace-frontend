@@ -15,7 +15,7 @@ pub fn docker() -> Cli {
 pub struct Context<'a> {
 	pub database: database::Context<'a>,
 	pub indexing_scheduler: Scheduler,
-	_github: github::Context<'a>,
+	pub github: github::Context<'a>,
 }
 
 impl<'a> Context<'a> {
@@ -48,7 +48,7 @@ impl<'a> Context<'a> {
 		Ok(Self {
 			database,
 			indexing_scheduler: Scheduler::new(config).expect("Failed to init indexing scheduler"),
-			_github: github,
+			github,
 		})
 	}
 }
