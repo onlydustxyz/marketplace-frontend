@@ -1,4 +1,4 @@
-import { Navigate, generatePath, useNavigate, useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { LanguageMap } from "src/types";
 import {
   GetProjectIdFromKeyDocument,
@@ -52,7 +52,6 @@ function ProjectPresentDetails({
   projectKey,
   id: projectId,
   name,
-  shortDescription,
 }: {
   projectKey: string;
   id: string;

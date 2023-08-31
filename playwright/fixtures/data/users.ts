@@ -45,6 +45,8 @@ export const users: Record<string, UserFixture> = {
     github: {
       id: 595505,
       login: "ofux",
+      bio: "Web3, Cloud, Unity3D",
+      avatarUrl: "https://avatars.githubusercontent.com/u/595505?v=4",
     },
     payoutInfo: {
       populate: false,
