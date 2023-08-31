@@ -19,6 +19,10 @@ pub fn serve(
 		.attach(http::guards::Cors)
 		.mount(
 			"/indexer",
-			routes![routes::repo::index, routes::issue::index],
+			routes![
+				routes::repo::index,
+				routes::issue::index,
+				routes::pull_request::index
+			],
 		)
 }

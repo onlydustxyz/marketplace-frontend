@@ -9,7 +9,10 @@ use crate::models::{
 };
 
 mod crawler;
+mod from_id;
 mod projector;
+
+pub use from_id::FromId;
 
 pub fn new(
 	github_fetch_service: Arc<dyn GithubFetchService>,
