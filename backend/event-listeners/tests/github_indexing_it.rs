@@ -833,7 +833,7 @@ fn pr_1152_updated() -> GithubPullRequest {
 		id: 1458220740u64.into(),
 		repo_id: repos::marketplace().id,
 		number: 1152u64.into(),
-		title: String::from("[E-642] Index extra fields in github pull requests"),
+		title: String::from("[E-642] Index extra fields in github pull requests 2"),
 		status: GithubPullRequestStatus::Open,
 		html_url: "https://github.com/onlydustxyz/marketplace/pull/1152".parse().unwrap(),
 		created_at: "2023-08-01T14:26:33Z".parse().unwrap(),
