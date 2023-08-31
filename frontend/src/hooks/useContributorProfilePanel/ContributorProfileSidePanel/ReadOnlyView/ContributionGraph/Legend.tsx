@@ -1,8 +1,8 @@
 import { LegendProps } from "recharts";
 import { Payload } from "recharts/types/component/DefaultLegendContent";
 import CodeReviewIcon from "src/assets/icons/CodeReviewIcon";
-import IssueIcon from "src/assets/icons/IssueIcon";
-import PullRequestIcon from "src/assets/icons/PullRequestIcon";
+import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
+import GitMergeLine from "src/icons/GitMergeLine";
 
 type Props = {
   payload?: ({
@@ -23,8 +23,8 @@ export default function Legend({ payload = [] }: Props) {
             <Icon color={payload.payload?.fill} opacity={payload.payload?.opacity} size={8} />
             {payload.value}
             {payload.payload?.dataKey === "codeReviewCount" && <CodeReviewIcon />}
-            {payload.payload?.dataKey === "issueCount" && <IssueIcon />}
-            {payload.payload?.dataKey === "pullRequestCount" && <PullRequestIcon />}
+            {payload.payload?.dataKey === "issueCount" && <CheckboxCircleLine />}
+            {payload.payload?.dataKey === "pullRequestCount" && <GitMergeLine />}
           </div>
         </div>
       ))}

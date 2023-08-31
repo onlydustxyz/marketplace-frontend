@@ -72,6 +72,15 @@ array_relationships:
         remote_table:
           name: project_leads
           schema: public
+  - name: projectsRewarded
+    using:
+      manual_configuration:
+        column_mapping:
+          github_user_id: github_user_id
+        insertion_order: null
+        remote_table:
+          name: projects_rewarded_users
+          schema: public
 select_permissions:
   - role: public
     permission:

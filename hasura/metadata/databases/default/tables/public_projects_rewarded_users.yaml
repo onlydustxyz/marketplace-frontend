@@ -7,4 +7,6 @@ select_permissions:
       columns:
         - github_user_id
         - project_id
+        - reward_count
       filter: {}
+      allow_aggregations: true

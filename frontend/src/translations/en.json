@@ -46,8 +46,9 @@
       "contributor": "Contributor",
       "leftToPay": "Left to Pay",
       "noBudgetLeft": "There's no more budget for this project, please contact OnlyDust to ask for a refill.",
-      "paidContributions": "Paid contributions",
-      "totalEarned": "Total earned",
+      "contributions": "Contributions",
+      "totalEarned": "Earned",
+      "rewards": "Rewards",
       "userRegisteredTooltip": "User has linked their OnlyDust profile"
     },
     "tableFallback": {
