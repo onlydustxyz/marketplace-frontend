@@ -15,6 +15,8 @@ export type UserFixture = {
   github: {
     id: number;
     login: string;
+    bio?: string;
+    avatarUrl?: string;
   };
   payoutInfo?: UserPayoutInfo;
   onboardingWizardCompleted?: boolean;
