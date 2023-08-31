@@ -27,7 +27,7 @@ pub struct Request {
 	cover: Option<dto::ProfileCover>,
 }
 
-#[post("/api/users/profile", data = "<request>", format = "application/json")]
+#[post("/users/profile", data = "<request>", format = "application/json")]
 pub async fn update_user_profile(
 	claims: Claims,
 	request: Json<Request>,

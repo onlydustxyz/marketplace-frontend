@@ -9,7 +9,7 @@ use crate::presentation::http::{
 	github_client_pat_factory::GithubClientPatFactory, routes::pull_requests::dto::Response,
 };
 
-#[get("/api/pull_requests/<repo_owner>/<repo_name>/<pr_number>")]
+#[get("/pull_requests/<repo_owner>/<repo_name>/<pr_number>")]
 pub async fn fetch_pull_request(
 	repo_owner: String,
 	repo_name: String,

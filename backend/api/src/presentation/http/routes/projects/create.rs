@@ -26,7 +26,7 @@ pub struct Request {
 	visibility: Option<ProjectVisibility>,
 }
 
-#[post("/api/projects", data = "<request>", format = "application/json")]
+#[post("/projects", data = "<request>", format = "application/json")]
 pub async fn create_project(
 	request: Json<Request>,
 	create_project_usecase: &State<application::project::create::Usecase>,

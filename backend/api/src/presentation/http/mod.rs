@@ -93,35 +93,22 @@ pub fn serve(
 			"/",
 			routes![
 				http::routes::health_check,
-				http::routes::options_preflight_handler
-			],
-		)
-		.mount(
-			"/",
-			routes![
+				http::routes::options_preflight_handler,
 				routes::graphql::graphiql,
 				routes::graphql::get_graphql_handler,
 				routes::graphql::post_graphql_handler
 			],
 		)
 		.mount(
-			"/",
+			"/api",
 			routes![
 				routes::users::profile_picture,
 				routes::users::update_user_profile,
 				routes::users::search_users,
-			],
-		)
-		.mount("/", routes![routes::projects::create_project])
-		.mount(
-			"/",
-			routes![
+				routes::projects::create_project,
 				routes::issues::create_and_close_issue,
 				routes::issues::fetch_issue_by_repo_owner_name_issue_number,
+				routes::pull_requests::fetch_pull_request,
 			],
-		)
-		.mount(
-			"/",
-			routes![routes::pull_requests::fetch_pull_requests::fetch_pull_request,],
 		)
 }

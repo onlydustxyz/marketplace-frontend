@@ -21,7 +21,7 @@ pub struct Request {
 	description: String,
 }
 
-#[post("/api/issues", data = "<request>", format = "application/json")]
+#[post("/issues", data = "<request>", format = "application/json")]
 pub async fn create_and_close_issue(
 	claims: Claims,
 	request: Json<Request>,

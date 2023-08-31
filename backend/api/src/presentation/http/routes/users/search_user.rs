@@ -29,7 +29,7 @@ impl From<domain::GithubUser> for Response {
 	}
 }
 
-#[get("/api/users/search?<query>&<sort>&<order>&<per_page>&<page>")]
+#[get("/users/search?<query>&<sort>&<order>&<per_page>&<page>")]
 pub async fn search_users(
 	option_github_pat: OptionGithubPat,
 	query: String,

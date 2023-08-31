@@ -9,7 +9,7 @@ use crate::presentation::http::{
 	github_client_pat_factory::GithubClientPatFactory, routes::issues::dto::Response,
 };
 
-#[get("/api/issues/<repo_owner>/<repo_name>/<issue_number>")]
+#[get("/issues/<repo_owner>/<repo_name>/<issue_number>")]
 pub async fn fetch_issue_by_repo_owner_name_issue_number(
 	repo_owner: String,
 	repo_name: String,
