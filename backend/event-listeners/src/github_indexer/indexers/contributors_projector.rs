@@ -22,13 +22,13 @@ pub struct ContributorsProjector {
 }
 
 #[async_trait]
-impl Projector<GithubRepoId, ()> for ContributorsProjector {
+impl Projector<GithubRepoId> for ContributorsProjector {
 	// This projector refreshes the list of contributors of repo's projects, based on the
 	// contributions belonging to each project.
 	// It also ensures every new contributor is indexed.
-	async fn perform_projections(&self, repo_id: &GithubRepoId, _data: ()) -> Result<()> {
+	async fn perform_projections(&self, repo_id: GithubRepoId) -> Result<()> {
 		self.project_github_repos_repository
-			.find_projects_of_repo(repo_id)?
+			.find_projects_of_repo(&repo_id)?
 			.iter()
 			.try_for_each(|project_id| {
 				let contributors: HashSet<GithubUserId> = HashSet::from_iter(

@@ -3,7 +3,6 @@ use std::sync::Arc;
 use async_trait::async_trait;
 use chrono::Utc;
 use derive_new::new;
-use domain::GithubRepoId;
 use infrastructure::database::{ImmutableRepository, Repository};
 
 use super::{super::error::Result, IndexedRepo};
@@ -19,12 +18,8 @@ pub struct RepoProjector {
 }
 
 #[async_trait]
-impl Projector<GithubRepoId, Option<IndexedRepo>> for RepoProjector {
-	async fn perform_projections(
-		&self,
-		_id: &GithubRepoId,
-		data: Option<IndexedRepo>,
-	) -> Result<()> {
+impl Projector<Option<IndexedRepo>> for RepoProjector {
+	async fn perform_projections(&self, data: Option<IndexedRepo>) -> Result<()> {
 		if let Some(indexed_repo) = data {
 			indexed_repo.languages.get_all().into_iter().try_for_each(|language| {
 				self.technologies_repository
@@ -50,7 +45,7 @@ impl Projector<GithubRepoId, Option<IndexedRepo>> for RepoProjector {
 			})?;
 
 			if let Some(parent) = indexed_repo.parent {
-				self.perform_projections(&parent.repo.id.clone(), Some(*parent)).await?;
+				self.perform_projections(Some(*parent)).await?;
 			}
 		}
 		Ok(())

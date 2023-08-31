@@ -5,7 +5,7 @@ use derive_new::new;
 use domain::GithubIssue;
 use infrastructure::database::Repository;
 
-use super::{super::error::Result, IssueId, Projector};
+use super::{super::error::Result, Projector};
 
 #[derive(new)]
 pub struct IssueProjector {
@@ -13,8 +13,8 @@ pub struct IssueProjector {
 }
 
 #[async_trait]
-impl Projector<IssueId, GithubIssue> for IssueProjector {
-	async fn perform_projections(&self, _id: &IssueId, issue: GithubIssue) -> Result<()> {
+impl Projector<GithubIssue> for IssueProjector {
+	async fn perform_projections(&self, issue: GithubIssue) -> Result<()> {
 		self.github_issues_repository.upsert(issue.into())?;
 		Ok(())
 	}

@@ -38,11 +38,8 @@ where
 }
 
 #[async_trait]
-pub trait Projector<Id, T>: Send + Sync
-where
-	Id: Indexable,
-{
-	async fn perform_projections(&self, id: &Id, data: T) -> Result<()>;
+pub trait Projector<T>: Send + Sync {
+	async fn perform_projections(&self, data: T) -> Result<()>;
 }
 
 #[derive(new)]
@@ -52,7 +49,7 @@ where
 	T: Clone + Send + Sync,
 {
 	crawler: Arc<dyn Crawler<Id, T>>,
-	projector: Arc<dyn Projector<Id, T>>,
+	projector: Arc<dyn Projector<T>>,
 }
 
 #[async_trait]
@@ -63,7 +60,7 @@ where
 {
 	async fn index(&self, id: &Id) -> Result<()> {
 		let data = self.crawler.fetch_modified_data(id).await?;
-		self.projector.perform_projections(id, data.clone()).await?;
+		self.projector.perform_projections(data.clone()).await?;
 		self.crawler.ack(id, data)?;
 		Ok(())
 	}
@@ -94,19 +91,8 @@ trait Named {
 	}
 }
 
-impl<Id, T> Named for dyn Crawler<Id, T>
-where
-	Id: Indexable,
-	T: Clone + Send + Sync,
-{
-}
-
-impl<Id, T> Named for dyn Projector<Id, T>
-where
-	Id: Indexable,
-	T: Clone + Send + Sync,
-{
-}
+impl<Id, T> Named for dyn Crawler<Id, T> {}
+impl<T> Named for dyn Projector<T> {}
 
 pub fn hash<T: Hash>(t: &T) -> u64 {
 	let mut s = DefaultHasher::new();
