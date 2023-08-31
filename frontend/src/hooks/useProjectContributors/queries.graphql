@@ -1,6 +1,6 @@
 fragment Contributor on UserProfiles {
   ...MinimalUserProfile
-  contributionStatsAggregate {
+  contributionStatsAggregate(where: { projectId: { _eq: $projectId } }) {
     aggregate {
       sum {
         codeReviewCount
@@ -14,6 +14,13 @@ fragment Contributor on UserProfiles {
     aggregate {
       sum {
         moneyGranted
+      }
+    }
+  }
+  projectsRewardedAggregate(where: { projectId: { _eq: $projectId } }) {
+    aggregate {
+      sum {
+        rewardCount
       }
     }
   }

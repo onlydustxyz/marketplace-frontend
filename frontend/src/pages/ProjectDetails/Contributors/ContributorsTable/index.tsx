@@ -29,8 +29,8 @@ export default function ContributorsTable({
       avatarUrl: c.avatarUrl || "",
       userId: c.userId,
       totalEarned: c.paymentStatsAggregate.aggregate?.sum?.moneyGranted || 0,
-      paidContributionsCount: c.contributionStatsAggregate.aggregate?.sum?.paidCount || 0,
-      unpaidMergedPullsCount: c.contributionStatsAggregate.aggregate?.sum?.unpaidUnignoredCount || 0,
+      contributionCount: c.contributionStatsAggregate.aggregate?.sum?.totalCount || 0,
+      rewardCount: c.projectsRewardedAggregate.aggregate?.sum?.rewardCount || 0,
     } as Contributor;
   });
 

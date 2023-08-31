@@ -391,6 +391,7 @@ class UserProfiles {
    paymentStats: [PaymentStats!]!
    projectsContributed: [ProjectsContributors!]!
    projectsLeaded: [ProjectLeads!]!
+   projectsRewarded: [ProjectsRewardedUsers!]!
    userId: uuid
    website: String
    weeklyAllocatedTime: allocated_time
@@ -555,6 +556,7 @@ UserProfiles --* Contributions
 UserProfiles --* PaymentStats
 UserProfiles --* ProjectLeads
 UserProfiles --* ProjectsContributors
+UserProfiles --* ProjectsRewardedUsers
 WorkItems -- GithubIssue
 WorkItems -- GithubPullRequest
 WorkItems -- PaymentRequests
