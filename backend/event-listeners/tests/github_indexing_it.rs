@@ -361,7 +361,11 @@ impl<'a> Test<'a> {
 		let mut connection = self.context.database.client.connection()?;
 
 		let mut pull_requests: Vec<models::github_pull_requests::Inner> = retry(
-			|| github_pull_requests::table.load(&mut *connection),
+			|| {
+				github_pull_requests::table
+					.order(github_pull_requests::dsl::number.desc())
+					.load(&mut *connection)
+			},
 			|res| !res.is_empty(),
 		)
 		.await?;
@@ -375,8 +379,12 @@ impl<'a> Test<'a> {
 
 		{
 			let mut commits: Vec<models::github_pull_requests::Commit> =
-				github_pull_request_commits::table.load(&mut *connection)?;
-			println!("{commits:?}");
+				github_pull_request_commits::table
+					.order((
+						github_pull_request_commits::dsl::pull_request_id.desc(),
+						github_pull_request_commits::dsl::sha.asc(),
+					))
+					.load(&mut *connection)?;
 			assert_eq!(commits.len(), 7, "Invalid commits count");
 
 			{
@@ -387,14 +395,20 @@ impl<'a> Test<'a> {
 				self.assert_commit(commits.pop().unwrap(), commits::d(), &pr_1146().id);
 				self.assert_commit(commits.pop().unwrap(), commits::c(), &pr_1146().id);
 
-				self.assert_commit(commits.pop().unwrap(), commits::b(), &pr_1152().id);
 				self.assert_commit(commits.pop().unwrap(), commits::a(), &pr_1152().id);
+				self.assert_commit(commits.pop().unwrap(), commits::b(), &pr_1152().id);
 			}
 		}
 
 		{
 			let mut reviews: Vec<models::github_pull_requests::Review> =
-				github_pull_request_reviews::table.load(&mut *connection)?;
+				github_pull_request_reviews::table
+					.order((
+						github_pull_request_reviews::dsl::pull_request_id.desc(),
+						github_pull_request_reviews::dsl::status.desc(),
+						github_pull_request_reviews::dsl::reviewer_id.desc(),
+					))
+					.load(&mut *connection)?;
 			assert_eq!(reviews.len(), 5, "Invalid reviews count");
 
 			// Reviews requested
@@ -434,43 +448,68 @@ impl<'a> Test<'a> {
 		let mut connection = self.context.database.client.connection()?;
 
 		let mut pull_requests: Vec<models::github_pull_requests::Inner> = retry(
-			|| github_pull_requests::table.load(&mut *connection),
+			|| {
+				github_pull_requests::table
+					.order(github_pull_requests::dsl::number.desc())
+					.load(&mut *connection)
+			},
 			|res| !res.is_empty(),
 		)
 		.await?;
 		assert_eq!(pull_requests.len(), 3, "Invalid pull requests count");
 
 		{
-			self.assert_pull_request(pull_requests.pop().unwrap(), pr_1152_updated());
 			self.assert_pull_request(pull_requests.pop().unwrap(), pr_1144());
 			self.assert_pull_request(pull_requests.pop().unwrap(), pr_1146());
+			self.assert_pull_request(pull_requests.pop().unwrap(), pr_1152_updated());
 		}
 
 		{
 			let mut commits: Vec<models::github_pull_requests::Commit> =
-				github_pull_request_commits::table.load(&mut *connection)?;
-			println!("{commits:?}");
+				github_pull_request_commits::table
+					.order((
+						github_pull_request_commits::dsl::pull_request_id.desc(),
+						github_pull_request_commits::dsl::sha.asc(),
+					))
+					.load(&mut *connection)?;
 			assert_eq!(commits.len(), 8, "Invalid commits count");
 
 			{
-				self.assert_commit(commits.pop().unwrap(), commits::h(), &pr_1152().id);
-				self.assert_commit(commits.pop().unwrap(), commits::b(), &pr_1152().id);
-				self.assert_commit(commits.pop().unwrap(), commits::a(), &pr_1152().id);
-
 				self.assert_commit(commits.pop().unwrap(), commits::g(), &pr_1144().id);
 				self.assert_commit(commits.pop().unwrap(), commits::f(), &pr_1144().id);
 
 				self.assert_commit(commits.pop().unwrap(), commits::e(), &pr_1146().id);
 				self.assert_commit(commits.pop().unwrap(), commits::d(), &pr_1146().id);
 				self.assert_commit(commits.pop().unwrap(), commits::c(), &pr_1146().id);
+
+				self.assert_commit(commits.pop().unwrap(), commits::a(), &pr_1152().id);
+				self.assert_commit(commits.pop().unwrap(), commits::b(), &pr_1152().id);
+				self.assert_commit(commits.pop().unwrap(), commits::h(), &pr_1152().id);
 			}
 		}
 
 		{
 			let mut reviews: Vec<models::github_pull_requests::Review> =
-				github_pull_request_reviews::table.load(&mut *connection)?;
+				github_pull_request_reviews::table
+					.order((
+						github_pull_request_reviews::dsl::pull_request_id.desc(),
+						github_pull_request_reviews::dsl::status.desc(),
+						github_pull_request_reviews::dsl::reviewer_id.desc(),
+					))
+					.load(&mut *connection)?;
 			assert_eq!(reviews.len(), 5, "Invalid reviews count");
 
+			// Reviews requested
+			self.assert_review(
+				reviews.pop().unwrap(),
+				reviews::requested(GithubCodeReviewStatus::Pending),
+				&pr_1144().id,
+			);
+			self.assert_review(
+				reviews.pop().unwrap(),
+				reviews::requested(GithubCodeReviewStatus::Pending),
+				&pr_1146().id,
+			);
 			// Actual reviews
 			self.assert_review(
 				reviews.pop().unwrap(),
@@ -486,18 +525,6 @@ impl<'a> Test<'a> {
 				reviews.pop().unwrap(),
 				reviews::approved(GithubCodeReviewStatus::Completed),
 				&pr_1152().id,
-			);
-
-			// Reviews requested
-			self.assert_review(
-				reviews.pop().unwrap(),
-				reviews::requested(GithubCodeReviewStatus::Pending),
-				&pr_1144().id,
-			);
-			self.assert_review(
-				reviews.pop().unwrap(),
-				reviews::requested(GithubCodeReviewStatus::Pending),
-				&pr_1146().id,
 			);
 		}
 
