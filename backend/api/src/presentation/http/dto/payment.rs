@@ -1,24 +1,6 @@
-use juniper::{GraphQLInputObject, GraphQLObject};
-use uuid08::Uuid;
+use serde::Deserialize;
 
-use super::Amount;
-
-#[derive(Debug, GraphQLObject)]
-pub struct Payment {
-	pub project_id: Uuid,
-	pub budget_id: Uuid,
-	pub payment_id: Uuid,
-	pub command_id: Uuid,
-	pub amount: Amount,
-}
-
-#[derive(Debug, GraphQLInputObject)]
-pub struct WorkItem {
-	pub repo_id: i32,
-	pub issue_number: i32,
-}
-
-#[derive(Debug, GraphQLInputObject)]
+#[derive(Debug, Deserialize)]
 pub struct Reason {
 	pub work_items: Vec<WorkItem>,
 }
@@ -29,6 +11,12 @@ impl From<Reason> for domain::PaymentReason {
 			work_items: reason.work_items.into_iter().map(Into::into).collect(),
 		}
 	}
+}
+
+#[derive(Debug, Deserialize)]
+pub struct WorkItem {
+	pub repo_id: i32,
+	pub issue_number: i32,
 }
 
 impl From<WorkItem> for domain::PaymentWorkItem {

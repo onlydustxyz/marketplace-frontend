@@ -1,4 +1,37 @@
 actions:
+  - name: cancelPayment
+    definition:
+      kind: synchronous
+      handler: '{{BACKEND_REST_API_URL}}'
+      forward_client_headers: true
+      request_transform:
+        body:
+          action: transform
+          template: |-
+            {
+              "project_id": {{$body.input.projectId}},
+              "payment_id": {{$body.input.paymentId}}
+            }
+        method: DELETE
+        query_params: {}
+        template_engine: Kriti
+        url: '{{$base_url}}/payments'
+        version: 2
+      response_transform:
+        body:
+          action: transform
+          template: |-
+            {
+              "projectId": {{$body.project_id}},
+              "budgetId": {{$body.budget_id}},
+              "paymentId": {{$body.payment_id}},
+              "commandId": {{$body.command_id}},
+              "amount": {{$body.amount}}
+            }
+        template_engine: Kriti
+        version: 2
+    permissions:
+      - role: registered_user
   - name: createAndCloseIssue
     definition:
       kind: synchronous
@@ -153,6 +186,35 @@ actions:
               "status": {{$body.status}},
               "title":{{$body.title}},
               "updatedAt": {{$body.updated_at}}
+            }
+        template_engine: Kriti
+        version: 2
+    permissions:
+      - role: registered_user
+  - name: requestPayment
+    definition:
+      kind: synchronous
+      handler: '{{BACKEND_REST_API_URL}}'
+      forward_client_headers: true
+      request_transform:
+        body:
+          action: transform
+          template: "{\n    \"project_id\": {{ $body.input.projectId }},\n    \"recipient_id\": {{ $body.input.recipientId }},\n    \"amount_in_usd\": {{ $body.input.amountInUsd }},\n    \"hours_worked\": {{ $body.input.hoursWorked }},\n    \"reason\": {\n      \"work_items\": \n        {{ range _, w := $body.input.reason.workItems }}\n        {\n          \"repo_id\": {{ w.repoId }},\n          \"issue_number\": {{ w.issueNumber }}\n        }\n        {{ end }}\n      \n    }\n}\n"
+        method: POST
+        query_params: {}
+        template_engine: Kriti
+        url: '{{$base_url}}/payments'
+        version: 2
+      response_transform:
+        body:
+          action: transform
+          template: |-
+            {
+              "projectId": {{$body.project_id}},
+              "budgetId": {{$body.budget_id}},
+              "paymentId": {{$body.payment_id}},
+              "commandId": {{$body.command_id}},
+              "amount": {{$body.amount}}
             }
         template_engine: Kriti
         version: 2
@@ -342,6 +404,8 @@ custom_types:
   input_objects:
     - name: Language
     - name: Information
+    - name: WorkItem
+    - name: Reason
   objects:
     - name: GithubIssueCreatedAndClosed
     - name: GithubUserLinkedToIssue
@@ -357,8 +421,10 @@ custom_types:
           type: object
     - name: GithubPullRequest
     - name: GithubIssue
+    - name: Payment
   scalars:
     - name: Url
     - name: Uuid
     - name: DateTime
     - name: DateTimeUtc
+    - name: Amount
