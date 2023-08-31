@@ -1,5 +1,6 @@
 pub mod contributors_projector;
 pub mod error;
+pub mod issue;
 pub mod issues;
 pub mod logged;
 pub mod pull_request;

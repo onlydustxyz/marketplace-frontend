@@ -17,5 +17,8 @@ pub fn serve(
 		.manage(database)
 		.manage(github)
 		.attach(http::guards::Cors)
-		.mount("/indexer", routes![routes::repo::index])
+		.mount(
+			"/indexer",
+			routes![routes::repo::index, routes::issue::index],
+		)
 }
