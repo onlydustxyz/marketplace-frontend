@@ -10,15 +10,15 @@ export default defineConfig({
   plugins: [
     react(),
     istanbul({
-      include: "frontend/src/*",
+      include: "src/*",
       exclude: ["node_modules", "test/", "__generated"],
       extension: [".js", ".ts", ".tsx"],
     }),
   ],
   resolve: {
     alias: {
-      src: path.resolve(__dirname, "./frontend/src"),
-      assets: path.resolve(__dirname, "./frontend/src/assets"),
+      src: path.resolve(__dirname, "./src"),
+      assets: path.resolve(__dirname, "./src/assets"),
     },
   },
   define: {
@@ -28,7 +28,7 @@ export default defineConfig({
     sourcemap: true,
   },
   test: {
-    setupFiles: ["frontend/src/test/setup.ts"],
+    setupFiles: ["src/test/setup.ts"],
     globals: true,
     environment: "jsdom",
     deps: {

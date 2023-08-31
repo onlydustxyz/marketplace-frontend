@@ -8,7 +8,7 @@ import path from "path";
 const config: Config = {
   content: [
     "./index.html",
-    "./frontend/src/**/*.{js,ts,jsx,tsx}",
+    "./src/**/*.{js,ts,jsx,tsx}",
     path.join(require.resolve("@thaddeusjiang/react-sortable-list"), "../**/*.{js,ts,jsx,tsx}"),
   ],
   theme: {
