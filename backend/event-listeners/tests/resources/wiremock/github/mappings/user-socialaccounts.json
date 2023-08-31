@@ -1,5 +1,5 @@
 {
-  "id": "aeeec8e7-f6c6-35eb-9e3b-71ebc7fab0da",
+  "id": "aeeec8e7-aabb-35eb-aabb-71ebc7fab0da",
   "request": {
     "urlPattern": "/user/([0-9]*)/social_accounts",
     "method": "GET"
