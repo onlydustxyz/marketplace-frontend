@@ -41,7 +41,6 @@ pub async fn get_graphql_handler(
 	claims: Option<Claims>,
 	request: GraphQLRequest,
 	schema: &State<Schema>,
-	command_bus: &State<Arc<amqp::CommandPublisher<amqp::Bus>>>,
 	project_repository: &State<AggregateRootRepository<Project>>,
 	project_details_repository: &State<Arc<dyn Repository<ProjectDetails>>>,
 	sponsor_repository: &State<Arc<dyn Repository<Sponsor>>>,
@@ -63,7 +62,6 @@ pub async fn get_graphql_handler(
 	let context = Context::new(
 		role.to_permissions((*project_repository).clone()),
 		claims,
-		(*command_bus).clone(),
 		(*project_repository).clone(),
 		(*project_details_repository).clone(),
 		(*sponsor_repository).clone(),
@@ -92,7 +90,6 @@ pub async fn post_graphql_handler(
 	claims: Option<Claims>,
 	request: GraphQLRequest,
 	schema: &State<Schema>,
-	command_bus: &State<Arc<amqp::CommandPublisher<amqp::Bus>>>,
 	project_repository: &State<AggregateRootRepository<Project>>,
 	project_details_repository: &State<Arc<dyn Repository<ProjectDetails>>>,
 	sponsor_repository: &State<Arc<dyn Repository<Sponsor>>>,
@@ -114,7 +111,6 @@ pub async fn post_graphql_handler(
 	let context = Context::new(
 		role.to_permissions((*project_repository).clone()),
 		claims,
-		(*command_bus).clone(),
 		(*project_repository).clone(),
 		(*project_details_repository).clone(),
 		(*sponsor_repository).clone(),

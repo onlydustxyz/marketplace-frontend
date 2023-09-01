@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use domain::{AggregateRootRepository, GithubUserId, Project, UserId};
 use infrastructure::{
-	amqp::{self, CommandPublisher},
+	amqp,
 	database::{ImmutableRepository, Repository},
 	github,
 };
@@ -19,9 +19,7 @@ use crate::{
 pub struct Context {
 	pub caller_permissions: Box<dyn Permissions>,
 	caller_info: Option<Claims>,
-	pub request_payment_usecase: application::payment::request::Usecase,
 	pub process_payment_usecase: application::payment::process::Usecase,
-	pub cancel_payment_usecase: application::payment::cancel::Usecase,
 	pub invoice_usecase: application::payment::invoice::Usecase,
 	pub update_budget_allocation_usecase: application::budget::allocate::Usecase,
 	pub update_project_usecase: application::project::update::Usecase,
@@ -49,7 +47,6 @@ impl Context {
 	pub fn new(
 		caller_permissions: Box<dyn Permissions>,
 		caller_info: Option<Claims>,
-		command_bus: Arc<CommandPublisher<amqp::Bus>>,
 		project_repository: AggregateRootRepository<Project>,
 		project_details_repository: Arc<dyn Repository<ProjectDetails>>,
 		sponsor_repository: Arc<dyn Repository<Sponsor>>,
@@ -71,10 +68,6 @@ impl Context {
 		Self {
 			caller_permissions,
 			caller_info,
-			request_payment_usecase: application::payment::request::Usecase::new(
-				command_bus.to_owned(),
-				project_repository.clone(),
-			),
 			process_payment_usecase: application::payment::process::Usecase::new(
 				bus.to_owned(),
 				project_repository.clone(),
@@ -82,10 +75,6 @@ impl Context {
 					github_api_client.clone(),
 					dusty_bot_api_client,
 				),
-			),
-			cancel_payment_usecase: application::payment::cancel::Usecase::new(
-				command_bus,
-				project_repository.clone(),
 			),
 			invoice_usecase: application::payment::invoice::Usecase::new(
 				bus.to_owned(),
