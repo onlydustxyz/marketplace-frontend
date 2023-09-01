@@ -18,7 +18,7 @@ pub fn jwt(project_leaded_id: Option<String>) -> String {
 		  "https://hasura.io/jwt/claims": {
 			"x-hasura-projectsLeaded": project_leaded,
 			"x-hasura-githubUserId": "43467246",
-			"x-hasura-githubAccessToken": "",
+			"x-hasura-githubAccessToken": "CALLER_GITHUB_PAT",
 			"x-hasura-allowed-roles": [
 			  "me",
 			  "public",

@@ -2,13 +2,12 @@ use std::sync::Arc;
 
 use http_api_problem::{HttpApiProblem, StatusCode};
 use olog::{error, IntoField};
+use presentation::http::guards::Claims;
 use rocket::{serde::json::Json, State};
 use serde::{Deserialize, Serialize};
 use url::Url;
 
-use crate::presentation::http::{
-	github_client_pat_factory::GithubClientPatFactory, option_github_pat::OptionGithubPat,
-};
+use crate::presentation::http::github_client_pat_factory::GithubClientPatFactory;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Response {
@@ -31,7 +30,7 @@ impl From<domain::GithubUser> for Response {
 
 #[get("/users/search?<query>&<sort>&<order>&<per_page>&<page>")]
 pub async fn search_users(
-	option_github_pat: OptionGithubPat,
+	claims: Claims,
 	query: String,
 	sort: Option<String>,
 	order: Option<String>,
@@ -40,7 +39,7 @@ pub async fn search_users(
 	github_client_factory: &State<Arc<GithubClientPatFactory>>,
 ) -> Result<Json<Vec<Response>>, HttpApiProblem> {
 	let users = github_client_factory
-		.github_service_with_user_pat(option_github_pat)?
+		.github_service(claims.github_access_token)?
 		.users(
 			&query,
 			sort,

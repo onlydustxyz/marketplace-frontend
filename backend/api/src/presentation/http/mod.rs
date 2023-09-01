@@ -20,7 +20,6 @@ use crate::{
 pub mod dto;
 mod error;
 pub mod github_client_pat_factory;
-mod option_github_pat;
 pub mod roles;
 pub mod routes;
 
