@@ -1,12 +1,12 @@
 {
-  "id": "cccf3b12-15b1-3f71-9cd0-c83f6f25ad53",
+  "id": "cb2dc889-441b-44ee-8e1f-bd8a2c8da07a",
   "request": {
-    "url": "/repositories/498695724/pulls?direction=desc&page=1&per_page=100&sort=created&state=all",
+    "url": "/repositories/498695724/pulls/1146/commits",
     "method": "GET"
   },
   "response": {
     "status": 200,
-    "bodyFileName": "body-repositories-498695724-pulls.json",
+    "bodyFileName": "body-repositories-498695724-1146-commits.json",
     "headers": {
       "Server": "GitHub.com",
       "Date": "Fri, 28 Jul 2023 16:25:49 GMT",
@@ -34,5 +34,5 @@
       "X-GitHub-Request-Id": "4EEE:1102F:294CAB1:299AFDF:64C3EC0C"
     }
   },
-  "uuid": "cccf3b12-15b1-3f71-9cd0-c83f6f25ad53"
+  "uuid": "cb2dc889-441b-44ee-8e1f-bd8a2c8da07a"
 }

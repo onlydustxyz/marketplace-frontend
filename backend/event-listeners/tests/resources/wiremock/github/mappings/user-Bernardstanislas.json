@@ -1,12 +1,12 @@
 {
-  "id": "aeeec8e7-aabb-35eb-aabb-71ebc7fab0da",
+  "id": "feeec8e7-f6c6-35eb-9e3b-71ebc7fab0da",
   "request": {
-    "urlPattern": "/user/([0-9]*)/social_accounts",
+    "url": "/user/4435377",
     "method": "GET"
   },
   "response": {
     "status": 200,
-    "bodyFileName": "body-empty.json",
+    "bodyFileName": "body-user-Bernardstanislas.json",
     "headers": {
       "Server": "GitHub.com",
       "Date": "Fri, 28 Jul 2023 16:25:48 GMT",
@@ -23,5 +23,5 @@
       "X-RateLimit-Resource": "core"
     }
   },
-  "uuid": "aeeec8e7-f6c6-35eb-9e3b-71ebc7fab0da"
+  "uuid": "feeec8e7-f6c6-35eb-9e3b-71ebc7fab0da"
 }
