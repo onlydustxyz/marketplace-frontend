@@ -1,12 +1,19 @@
-use domain::{AggregateRootRepository, Project};
+use std::sync::Arc;
+
+use domain::{AggregateRootRepository, Event, Project, Publisher};
 use http_api_problem::{HttpApiProblem, StatusCode};
+use infrastructure::amqp::CommandMessage;
 use presentation::http::guards::{Claims, Role};
 use rocket::{serde::json::Json, State};
 use rust_decimal::prelude::ToPrimitive;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use crate::{application, domain::permissions::IntoPermission, presentation::http::dto};
+use crate::{
+	application,
+	domain::permissions::IntoPermission,
+	presentation::http::{dto, IndexerService},
+};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Response {
@@ -32,8 +39,9 @@ pub async fn request_payment(
 	request: Json<Request>,
 	claims: Claims,
 	role: Role,
-	request_payment_usecase: &State<application::payment::request::Usecase>,
 	project_repository: &State<AggregateRootRepository<Project>>,
+	event_publisher: &State<Arc<dyn Publisher<CommandMessage<Event>>>>,
+	github_indexer_service: IndexerService,
 ) -> Result<Json<Response>, HttpApiProblem> {
 	let Request {
 		project_id,
@@ -58,31 +66,35 @@ pub async fn request_payment(
 			)));
 	}
 
-	let (project, budget, payment, command_id) = request_payment_usecase
-		.request(
-			project_id.into(),
-			caller_id.into(),
-			recipient_id.into(),
-			amount_in_usd,
-			hours_worked,
-			reason.into(),
-		)
-		.await
-		.map_err(|e| {
-			{
-				HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
-					.title("Unable to process create_project request")
-					.detail(e.to_string())
-			}
-		})?;
+	let (project, budget, payment, command_id) = application::payment::request::Usecase::new(
+		(*event_publisher).clone(),
+		(*project_repository).clone(),
+		github_indexer_service.0,
+	)
+	.request(
+		project_id.into(),
+		caller_id.into(),
+		recipient_id.into(),
+		amount_in_usd,
+		hours_worked,
+		reason.into(),
+	)
+	.await
+	.map_err(|e| {
+		{
+			HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
+				.title("Unable to process create_project request")
+				.detail(e.to_string())
+		}
+	})?;
 
 	Ok(Json(Response {
 		project_id: (*project.id()).into(),
 		budget_id: (*budget.id()).into(),
-		payment_id: (*payment.id()).into(),
+		payment_id: payment.id.into(),
 		command_id: command_id.into(),
 		amount: payment
-			.requested_usd_amount()
+			.requested_usd_amount
 			.to_f64()
 			.ok_or_else(|| olog::error!("Could not format payment amount"))
 			.unwrap_or_default(),

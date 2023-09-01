@@ -68,9 +68,6 @@ pub fn serve(
 		github_api_client.clone(),
 	);
 
-	let request_payment_usecase =
-		application::payment::request::Usecase::new(bus.clone(), project_repository.clone());
-
 	let cancel_payment_usecase =
 		application::payment::cancel::Usecase::new(bus.clone(), project_repository.clone());
 
@@ -96,7 +93,6 @@ pub fn serve(
 		.manage(update_user_profile_info_usecase)
 		.manage(create_github_issue_usecase)
 		.manage(github_client_pat_factory)
-		.manage(request_payment_usecase)
 		.manage(cancel_payment_usecase)
 		.attach(http::guards::Cors)
 		.mount(
