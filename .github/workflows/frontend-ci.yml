@@ -31,7 +31,7 @@ jobs:
           node-version: 18
       - name: Install yarn
         run: npm install -g yarn
-      - run: yarn install --frozen-lockfile
+      - run: yarn frontend:install --frozen-lockfile
       - name: Build project
         run: yarn frontend:build
 
