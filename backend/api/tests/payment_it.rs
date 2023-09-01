@@ -34,6 +34,9 @@ pub async fn payment_processing(docker: &'static Cli) {
 	};
 
 	test.should_request_payment().await.expect("should_request_payment");
+	test.should_prevent_anyone_from_requesting_payment()
+		.await
+		.expect("should_prevent_anyone_from_requesting_payment");
 }
 
 struct Test<'a> {
@@ -158,6 +161,72 @@ impl<'a> Test<'a> {
 					)
 				});
 			}
+		);
+
+		Ok(())
+	}
+
+	async fn should_prevent_anyone_from_requesting_payment(&mut self) -> Result<()> {
+		info!("should_prevent_anyone_from_requesting_payment");
+
+		// Given
+		let project_id = ProjectId::new();
+		let budget_id = BudgetId::new();
+
+		models::events::store(
+			&self.context,
+			vec![
+				ProjectEvent::Created { id: project_id },
+				ProjectEvent::Budget {
+					id: project_id,
+					event: BudgetEvent::Created {
+						id: budget_id,
+						currency: Currency::Crypto("USDC".to_string()),
+					},
+				},
+				ProjectEvent::Budget {
+					id: project_id,
+					event: BudgetEvent::Allocated {
+						id: budget_id,
+						amount: Decimal::from(1_000),
+					},
+				},
+			],
+		)?;
+
+		let request = json!({
+			"project_id": project_id,
+			"recipient_id": 595505,
+			"amount_in_usd": 10,
+			"hours_worked": 1,
+			"reason": {
+				"work_items": [{
+					"repo_id": 498695724,
+					"issue_number": 111
+				}
+			]}
+		});
+
+		// When
+		let response = self
+			.context
+			.http_client
+			.post("/api/payments")
+			.header(ContentType::JSON)
+			.header(Header::new(
+				"Authorization",
+				format!("Bearer {}", jwt(None)),
+			))
+			.body(request.to_string())
+			.dispatch()
+			.await;
+
+		// Then
+		assert_eq!(
+			response.status(),
+			Status::Unauthorized,
+			"{}",
+			response.into_string().await.unwrap_or_default()
 		);
 
 		Ok(())
