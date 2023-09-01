@@ -2,6 +2,7 @@ use anyhow::Result;
 
 mod config;
 pub use config::Config;
+use reqwest::header::HeaderMap;
 use url::Url;
 
 pub struct Client {
@@ -10,11 +11,11 @@ pub struct Client {
 }
 
 impl Client {
-	pub fn new(config: Config) -> Self {
-		Self {
-			client: reqwest::Client::new(),
+	pub fn new(config: Config, default_headers: HeaderMap) -> Result<Self> {
+		Ok(Self {
+			client: reqwest::ClientBuilder::new().default_headers(default_headers).build()?,
 			base_url: config.base_url,
-		}
+		})
 	}
 
 	fn url(&self, path: String) -> Result<Url> {
