@@ -6,7 +6,7 @@ use tracing::instrument;
 
 use crate::database::{schema::events, Client};
 
-trait NamedAggregate: Aggregate {
+pub trait NamedAggregate: Aggregate {
 	fn name() -> String;
 }
 
