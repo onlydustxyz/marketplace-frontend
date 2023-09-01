@@ -9,7 +9,7 @@ use assert_matches::assert_matches;
 use chrono::{Duration, Utc};
 use domain::{
 	Amount, BudgetEvent, BudgetId, Currency, Event, GithubIssueNumber, GithubRepoId, GithubUserId,
-	PaymentEvent, PaymentId, PaymentReason, PaymentWorkItem, ProjectEvent, ProjectId,
+	PaymentEvent, PaymentId, PaymentReason, PaymentWorkItem, ProjectEvent, ProjectId, UserId,
 };
 use olog::info;
 use rocket::{
@@ -37,6 +37,10 @@ pub async fn payment_processing(docker: &'static Cli) {
 	test.should_prevent_anyone_from_requesting_payment()
 		.await
 		.expect("should_prevent_anyone_from_requesting_payment");
+	test.should_cancel_payment().await.expect("should_cancel_payment");
+	test.should_prevent_anyone_from_cancelling_payment()
+		.await
+		.expect("should_prevent_anyone_from_cancelling_payment");
 }
 
 struct Test<'a> {
@@ -212,6 +216,166 @@ impl<'a> Test<'a> {
 			.context
 			.http_client
 			.post("/api/payments")
+			.header(ContentType::JSON)
+			.header(Header::new(
+				"Authorization",
+				format!("Bearer {}", jwt(None)),
+			))
+			.body(request.to_string())
+			.dispatch()
+			.await;
+
+		// Then
+		assert_eq!(
+			response.status(),
+			Status::Unauthorized,
+			"{}",
+			response.into_string().await.unwrap_or_default()
+		);
+
+		Ok(())
+	}
+
+	async fn should_cancel_payment(&mut self) -> Result<()> {
+		info!("should_cancel_payment");
+
+		// Given
+		let project_id = ProjectId::new();
+		let budget_id = BudgetId::new();
+		let payment_id = PaymentId::new();
+
+		models::events::store(
+			&self.context,
+			vec![
+				ProjectEvent::Created { id: project_id },
+				ProjectEvent::Budget {
+					id: project_id,
+					event: BudgetEvent::Created {
+						id: budget_id,
+						currency: Currency::Crypto("USDC".to_string()),
+					},
+				},
+				ProjectEvent::Budget {
+					id: project_id,
+					event: BudgetEvent::Allocated {
+						id: budget_id,
+						amount: Decimal::from(1_000),
+					},
+				},
+				ProjectEvent::Budget {
+					id: project_id,
+					event: BudgetEvent::Payment {
+						id: budget_id,
+						event: PaymentEvent::Requested {
+							id: payment_id,
+							requestor_id: UserId::new(),
+							recipient_id: GithubUserId::from(595505u64),
+							amount: Amount::new(
+								Decimal::from(100),
+								Currency::Crypto("USDC".to_string()),
+							),
+							duration_worked: Duration::hours(2),
+							reason: PaymentReason { work_items: vec![] },
+							requested_at: Utc::now().naive_utc(),
+						},
+					},
+				},
+			],
+		)?;
+
+		let request = json!({
+			"project_id": project_id,
+			"payment_id": payment_id,
+		});
+
+		// When
+		let response = self
+			.context
+			.http_client
+			.delete("/api/payments")
+			.header(ContentType::JSON)
+			.header(Header::new(
+				"Authorization",
+				format!("Bearer {}", jwt(Some(project_id.to_string()))),
+			))
+			.body(request.to_string())
+			.dispatch()
+			.await;
+
+		// Then
+		assert_eq!(
+			response.status(),
+			Status::Ok,
+			"{}",
+			response.into_string().await.unwrap_or_default()
+		);
+		let response: payment::request::Response = response.into_json().await.unwrap();
+
+		assert_eq!(response.project_id, project_id.into());
+		assert_eq!(response.budget_id, budget_id.into());
+		assert_eq!(response.payment_id, payment_id.into());
+		assert_eq!(response.amount, 100f64);
+
+		Ok(())
+	}
+
+	async fn should_prevent_anyone_from_cancelling_payment(&mut self) -> Result<()> {
+		info!("should_prevent_anyone_from_cancelling_payment");
+
+		// Given
+		let project_id = ProjectId::new();
+		let budget_id = BudgetId::new();
+		let payment_id = PaymentId::new();
+
+		models::events::store(
+			&self.context,
+			vec![
+				ProjectEvent::Created { id: project_id },
+				ProjectEvent::Budget {
+					id: project_id,
+					event: BudgetEvent::Created {
+						id: budget_id,
+						currency: Currency::Crypto("USDC".to_string()),
+					},
+				},
+				ProjectEvent::Budget {
+					id: project_id,
+					event: BudgetEvent::Allocated {
+						id: budget_id,
+						amount: Decimal::from(1_000),
+					},
+				},
+				ProjectEvent::Budget {
+					id: project_id,
+					event: BudgetEvent::Payment {
+						id: budget_id,
+						event: PaymentEvent::Requested {
+							id: payment_id,
+							requestor_id: UserId::new(),
+							recipient_id: GithubUserId::from(595505u64),
+							amount: Amount::new(
+								Decimal::from(100),
+								Currency::Crypto("USDC".to_string()),
+							),
+							duration_worked: Duration::hours(2),
+							reason: PaymentReason { work_items: vec![] },
+							requested_at: Utc::now().naive_utc(),
+						},
+					},
+				},
+			],
+		)?;
+
+		let request = json!({
+			"project_id": project_id,
+			"payment_id": payment_id,
+		});
+
+		// When
+		let response = self
+			.context
+			.http_client
+			.delete("/api/payments")
 			.header(ContentType::JSON)
 			.header(Header::new(
 				"Authorization",
