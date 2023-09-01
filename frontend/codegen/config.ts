@@ -12,20 +12,17 @@ const config: CodegenConfig = {
     },
     "./codegen/local_schema.graphql",
   ],
-  documents: ["./frontend/src/**/*.tsx", "./frontend/src/**/*.ts", "./frontend/src/**/*.graphql"],
+  documents: ["./src/**/*.tsx", "./src/**/*.ts", "./src/**/*.graphql"],
   overwrite: true,
   generates: {
-    "./frontend/src/__generated/graphql.tsx": {
+    "./src/__generated/graphql.tsx": {
       plugins: ["typescript", "typescript-operations", "typescript-react-apollo"],
       config: {
         avoidOptionals: true,
         skipTypename: false,
       },
     },
-    "./frontend/src/__generated/graphql.schema.json": {
-      plugins: ["introspection"],
-    },
-    "./backend/common/infrastructure/src/graphql/__generated/graphql.schema.json": {
+    "./src/__generated/graphql.schema.json": {
       plugins: ["introspection"],
     },
     "./playwright/__generated/graphql.tsx": {

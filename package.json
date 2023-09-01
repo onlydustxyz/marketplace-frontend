@@ -1,0 +1,9 @@
+{
+    "name": "marketplace",
+    "version": "2.0.0",
+    "scripts": {
+        "dev": "yarn --cwd ./frontend dev",
+        "build": "yarn --cwd ./frontend build",
+        "install": "yarn --cwd ./frontend install"
+    }
+}

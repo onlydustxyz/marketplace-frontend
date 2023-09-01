@@ -54,9 +54,9 @@ lerna-debug.log*
 *~
 /test-results/
 /playwright-report/
-/playwright/.cache/
-/playwright/fixtures/__generated
-/playwright/marketplace_db_dump
+/e2e/playwright/.cache/
+/e2e/playwright/fixtures/__generated
+/e2e/playwright/marketplace_db_dump
 
 # Db dumps
 **/*.dump
