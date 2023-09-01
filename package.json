@@ -16,6 +16,8 @@
         "backend:check": "cargo check --manifest-path backend/Cargo.toml",
         "backend:build": "cargo build --manifest-path backend/Cargo.toml",
         "backend:clippy": "cargo clippy --manifest-path backend/Cargo.toml --bins --tests --examples -- -D warnings",
-        "backend:fmt": "cargo +nightly fmt --manifest-path backend/Cargo.toml --all -- --check"
+        "backend:fmt": "cargo +nightly fmt --manifest-path backend/Cargo.toml --all -- --check",
+        "backend:unit-tests": "cargo tarpaulin --manifest-path backend/Cargo.toml  --workspace --skip-clean --target-dir tarpaulin_target --lib",
+        "backend:integration-tests": "cargo tarpaulin --manifest-path backend/Cargo.toml  --workspace --skip-clean --target-dir tarpaulin_target --test '*'"
     }
 }

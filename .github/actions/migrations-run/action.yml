@@ -11,6 +11,6 @@ runs:
 
     - name: Run migrations
       shell: bash
-      run: diesel migration run
+      run: cd backend && diesel migration run
       env:
         DATABASE_URL: postgres://postgres:postgres@localhost/marketplace_db

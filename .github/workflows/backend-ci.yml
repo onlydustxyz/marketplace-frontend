@@ -62,9 +62,6 @@ jobs:
 
       - name: Check application
         run: yarn backend:check
-#        uses: actions-rs/cargo@v1
-#        with:
-#          command: check
 
   build:
     name: Compile
@@ -78,9 +75,6 @@ jobs:
 
       - name: Compile application
         run: yarn backend:build
-#        uses: actions-rs/cargo@v1
-#        with:
-#          command: build
 
   lint:
     name: Clippy checks
@@ -95,11 +89,8 @@ jobs:
       - name: Setup clippy
         run: rustup component add clippy
 
-      - name: Annotate commit with clippy warnings
-        uses: actions-rs/clippy-check@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          args: --manifest-path backend/Cargo.toml --bins --tests --examples -- -D warnings
+      - name: Run clippy
+        run: yarn backend:clippy
 
   unit_tests:
     name: Unit tests
@@ -118,9 +109,7 @@ jobs:
         uses: ./.github/actions/migrations-run
 
       - name: Run tests
-        uses: ./.github/actions/coverage-checks
-        with:
-          test_flags: --lib
+        run: yarn backend:unit-tests
 
       - name: Setup tmate session for debugging
         uses: mxschmitt/action-tmate@v3
@@ -144,9 +133,7 @@ jobs:
         uses: ./.github/actions/cargo-setup
 
       - name: Run tests
-        uses: ./.github/actions/coverage-checks
-        with:
-          test_flags: --test '*'
+        run: yarn backend:integration-tests
 
       - name: Setup tmate session for debugging
         uses: mxschmitt/action-tmate@v3
