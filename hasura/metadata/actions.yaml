@@ -199,7 +199,7 @@ actions:
       request_transform:
         body:
           action: transform
-          template: "{\n    \"project_id\": {{ $body.input.projectId }},\n    \"recipient_id\": {{ $body.input.recipientId }},\n    \"amount_in_usd\": {{ $body.input.amountInUsd }},\n    \"hours_worked\": {{ $body.input.hoursWorked }},\n    \"reason\": {\n      \"work_items\": \n        {{ range _, w := $body.input.reason.workItems }}\n        {\n          \"repo_id\": {{ w.repoId }},\n          \"issue_number\": {{ w.issueNumber }}\n        }\n        {{ end }}\n      \n    }\n}\n"
+          template: "{\n    \"project_id\": {{ $body.input.projectId }},\n    \"recipient_id\": {{ $body.input.recipientId }},\n    \"amount_in_usd\": {{ $body.input.amountInUsd }},\n    \"hours_worked\": {{ $body.input.hoursWorked }},\n    \"reason\": {\n      \"work_items\": \n        {{ range _, w := $body.input.reason.workItems }}\n        {\n          \"type\": {{ w.type }},\n          \"repo_id\": {{ w.repoId }},\n          \"issue_number\": {{ w.issueNumber }}\n        }\n        {{ end }}\n      \n    }\n}\n"
         method: POST
         query_params: {}
         template_engine: Kriti
@@ -401,6 +401,17 @@ custom_types:
         - description: null
           is_deprecated: null
           value: OPEN
+    - name: WorkItemType
+      values:
+        - description: null
+          is_deprecated: null
+          value: ISSUE
+        - description: null
+          is_deprecated: null
+          value: PULL_REQUEST
+        - description: null
+          is_deprecated: null
+          value: CODE_REVIEW
   input_objects:
     - name: Language
     - name: Information

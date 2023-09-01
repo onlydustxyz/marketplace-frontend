@@ -13,13 +13,15 @@ pub struct Usecase {
 }
 
 impl Usecase {
-		let repository = self.fetch_service.repo_by_id(work_item.repo_id).await?;
-
-		self.dusty_bot_service
-			.close_issue_for_number(repository.owner, repository.name, work_item.issue_number)
-			.await
-			.map_err(DomainError::InternalError)?;
 	async fn close_issue(&self, work_item: PaymentWorkItem) -> Result<(), DomainError> {
+		if let PaymentWorkItem::Issue { repo_id, number } = work_item {
+			let repository = self.fetch_service.repo_by_id(repo_id).await?;
+
+			self.dusty_bot_service
+				.close_issue_for_number(repository.owner, repository.name, number)
+				.await
+				.map_err(DomainError::InternalError)?;
+		}
 
 		Ok(())
 	}

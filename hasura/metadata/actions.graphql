@@ -129,6 +129,12 @@ enum GithubIssueStatus {
   OPEN
 }
 
+enum WorkItemType {
+  ISSUE
+  PULL_REQUEST
+  CODE_REVIEW
+}
+
 input Language {
   name: String!
   weight: Int!
@@ -141,6 +147,7 @@ input Information {
 }
 
 input WorkItem {
+  type: WorkItemType!
   issueNumber: Int!
   repoId: Int!
 }

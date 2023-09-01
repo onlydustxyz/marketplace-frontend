@@ -14,16 +14,35 @@ impl From<Reason> for domain::PaymentReason {
 }
 
 #[derive(Debug, Deserialize)]
+pub enum WorkItemType {
+	Issue,
+	PullRequest,
+	CodeReview,
+}
+
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub struct WorkItem {
-	pub repo_id: i32,
-	pub issue_number: i32,
+	pub r#type: WorkItemType,
+	pub repo_id: u64,
+	pub number: u64,
 }
 
 impl From<WorkItem> for domain::PaymentWorkItem {
 	fn from(work_item: WorkItem) -> Self {
-		Self {
-			repo_id: (work_item.repo_id as i64).into(),
-			issue_number: (work_item.issue_number as i64).into(),
+		match work_item.r#type {
+			WorkItemType::Issue => domain::PaymentWorkItem::Issue {
+				repo_id: work_item.repo_id.into(),
+				number: work_item.number.into(),
+			},
+			WorkItemType::PullRequest => domain::PaymentWorkItem::PullRequest {
+				repo_id: work_item.repo_id.into(),
+				number: work_item.number.into(),
+			},
+			WorkItemType::CodeReview => domain::PaymentWorkItem::CodeReview {
+				repo_id: work_item.repo_id.into(),
+				number: work_item.number.into(),
+			},
 		}
 	}
 }
