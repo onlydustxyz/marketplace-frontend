@@ -53,10 +53,7 @@ impl<'a> Test<'a> {
 						amount: Decimal::from(10),
 					},
 				},
-				ProjectEvent::GithubRepoLinked {
-					id,
-					github_repo_id: GithubRepoId::from(github_repo_id),
-				},
+				ProjectEvent::GithubRepoLinked { id, github_repo_id },
 				ProjectEvent::LeaderAssigned {
 					id,
 					leader_id: UserId::new(),
@@ -78,6 +75,7 @@ impl<'a> Test<'a> {
 			.http_client
 			.post("/api/issues")
 			.header(ContentType::JSON)
+			.header(Header::new("x-hasura-role", "registered_user"))
 			.header(Header::new(
 				"Authorization",
 				format!("Bearer {}", jwt(Some(id.to_string()))),

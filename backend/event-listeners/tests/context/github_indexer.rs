@@ -1,4 +1,4 @@
-use std::collections::HashMap, env;
+use std::{collections::HashMap, env};
 
 use anyhow::Result;
 use event_listeners::{github_indexer::Scheduler, Config};

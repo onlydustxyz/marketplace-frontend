@@ -46,7 +46,7 @@ pub async fn cancel_payment(
 			.detail(format!(
 				"User {} needs project lead role to cancel a payment request on project {}",
 				claims.map(|c| c.user_id).unwrap_or_default(),
-				project_id.to_string()
+				project_id
 			)));
 	}
 

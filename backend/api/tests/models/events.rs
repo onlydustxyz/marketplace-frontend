@@ -29,7 +29,7 @@ pub fn store<E: Serialize + Clone + AggregateEvent<A>, A: NamedAggregate>(
 			timestamp: *m.timestamp(),
 			aggregate_name: A::name(),
 			aggregate_id: m.payload().aggregate_id().to_string(),
-			payload: serde_json::to_value(&m.payload()).expect("Invalid payload"),
+			payload: serde_json::to_value(m.payload()).expect("Invalid payload"),
 			metadata: m.metadata().clone(),
 			command_id: m.command_id().map(Into::into),
 		})

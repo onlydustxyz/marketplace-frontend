@@ -61,8 +61,7 @@ pub async fn request_payment(
 			.title("Unauthorized operation on project")
 			.detail(format!(
 				"User {} needs project lead role to create a payment request on project {}",
-				caller_id,
-				project_id.to_string()
+				caller_id, project_id
 			)));
 	}
 
