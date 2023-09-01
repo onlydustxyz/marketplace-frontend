@@ -55,14 +55,8 @@ jobs:
       - name: Setup llvm tools
         run: rustup component add llvm-tools-preview
 
-      - name: Install the stack
-        run: make install/all
-
       - name: Start the docker stack
-        run: make docker/up
-
-      - name: Start the full stack
-        run: make app/background-start
+        run: yarn e2e:docker-compose:up
 
       - name: Prepare Hasura
         run: make hasura/refresh
