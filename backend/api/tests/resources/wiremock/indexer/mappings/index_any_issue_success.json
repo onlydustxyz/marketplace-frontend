@@ -1,0 +1,9 @@
+{
+  "request": {
+    "urlPattern": "/indexer/repo/.*/issue/.*",
+    "method": "POST"
+  },
+  "response": {
+    "status": 200
+  }
+}

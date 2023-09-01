@@ -14,6 +14,7 @@ impl From<Reason> for domain::PaymentReason {
 }
 
 #[derive(Debug, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum WorkItemType {
 	Issue,
 	PullRequest,
@@ -21,7 +22,6 @@ pub enum WorkItemType {
 }
 
 #[derive(Debug, Deserialize)]
-#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub struct WorkItem {
 	pub r#type: WorkItemType,
 	pub repo_id: u64,

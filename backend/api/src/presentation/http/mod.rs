@@ -1,9 +1,10 @@
 use std::sync::Arc;
 
 use ::domain::{AggregateRootRepository, Project};
+use domain::{Event, Publisher};
 pub use http::Config;
 use infrastructure::{
-	amqp::{self, CommandPublisher},
+	amqp::{self, CommandMessage},
 	database::{ImmutableRepository, Repository},
 	github,
 };
@@ -28,9 +29,9 @@ pub mod routes;
 
 #[allow(clippy::too_many_arguments)]
 pub fn serve(
-	config: Config,
+	config: crate::Config,
 	schema: graphql::Schema,
-	command_bus: Arc<CommandPublisher<amqp::Bus>>,
+	command_bus: Arc<dyn Publisher<CommandMessage<Event>>>,
 	project_repository: AggregateRootRepository<Project>,
 	project_details_repository: Arc<dyn Repository<ProjectDetails>>,
 	sponsor_repository: Arc<dyn Repository<Sponsor>>,
@@ -72,6 +73,7 @@ pub fn serve(
 		application::payment::cancel::Usecase::new(bus.clone(), project_repository.clone());
 
 	rocket::custom(http::config::rocket("backend/api/Rocket.toml"))
+		.manage(config.http.clone())
 		.manage(config)
 		.manage(schema)
 		.manage(command_bus)

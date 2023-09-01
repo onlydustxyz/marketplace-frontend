@@ -24,7 +24,7 @@ impl Client {
 	}
 
 	pub async fn post(&self, path: String) -> Result<()> {
-		self.client.post(self.url(path)?).send().await?;
+		self.client.post(self.url(path)?).send().await?.error_for_status()?;
 		Ok(())
 	}
 }

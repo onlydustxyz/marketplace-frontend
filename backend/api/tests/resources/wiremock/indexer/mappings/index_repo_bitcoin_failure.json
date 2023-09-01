@@ -1,0 +1,10 @@
+{
+  "priority": 1,
+  "request": {
+    "url": "/indexer/repo/1181927",
+    "method": "POST"
+  },
+  "response": {
+    "status": 500
+  }
+}

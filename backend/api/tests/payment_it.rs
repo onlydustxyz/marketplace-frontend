@@ -8,8 +8,9 @@ use api::presentation::http::routes::payment;
 use assert_matches::assert_matches;
 use chrono::{Duration, Utc};
 use domain::{
-	Amount, BudgetEvent, BudgetId, Currency, Event, GithubIssueNumber, GithubRepoId, GithubUserId,
-	PaymentEvent, PaymentId, PaymentReason, PaymentWorkItem, ProjectEvent, ProjectId, UserId,
+	Amount, BudgetEvent, BudgetId, Currency, Event, GithubPullRequestNumber, GithubRepoId,
+	GithubUserId, PaymentEvent, PaymentId, PaymentReason, PaymentWorkItem, ProjectEvent, ProjectId,
+	UserId,
 };
 use olog::info;
 use rocket::{
@@ -36,6 +37,7 @@ pub async fn payment_processing(docker: &'static Cli) {
 	test.project_lead_can_request_payments()
 		.await
 		.expect("project_lead_can_request_payments");
+	test.indexing_can_block_payment().await.expect("indexing_can_block_payment");
 	test.anyone_cannot_request_payments()
 		.await
 		.expect("anyone_cannot_request_payments");
@@ -89,8 +91,9 @@ impl<'a> Test<'a> {
 			"hours_worked": 1,
 			"reason": {
 				"work_items": [{
+					"type": "PULL_REQUEST",
 					"repo_id": 498695724,
-					"issue_number": 111
+					"number": 111
 				}
 			]}
 		});
@@ -158,9 +161,9 @@ impl<'a> Test<'a> {
 							));
 							assert_eq!(duration_worked, Duration::hours(1));
 							assert_eq!(reason, PaymentReason {
-								work_items: vec![PaymentWorkItem {
+								work_items: vec![PaymentWorkItem::PullRequest {
 									repo_id: GithubRepoId::from(498695724u64),
-									issue_number: GithubIssueNumber::from(111u64)
+									number: GithubPullRequestNumber::from(111u64)
 								}]
 							});
 
@@ -171,6 +174,78 @@ impl<'a> Test<'a> {
 					)
 				});
 			}
+		);
+
+		Ok(())
+	}
+
+	async fn indexing_can_block_payment(&mut self) -> Result<()> {
+		info!("indexing_can_block_payment");
+
+		// Given
+		let project_id = ProjectId::new();
+		let budget_id = BudgetId::new();
+
+		models::events::store(
+			&self.context,
+			vec![
+				ProjectEvent::Created { id: project_id },
+				ProjectEvent::Budget {
+					id: project_id,
+					event: BudgetEvent::Created {
+						id: budget_id,
+						currency: Currency::Crypto("USDC".to_string()),
+					},
+				},
+				ProjectEvent::Budget {
+					id: project_id,
+					event: BudgetEvent::Allocated {
+						id: budget_id,
+						amount: Decimal::from(1_000),
+					},
+				},
+			],
+		)?;
+
+		let request = json!({
+			"project_id": project_id,
+			"recipient_id": 595505,
+			"amount_in_usd": 10,
+			"hours_worked": 1,
+			"reason": {
+				"work_items": [{
+					"type": "PULL_REQUEST",
+					"repo_id": 498695724,
+					"number": 111
+				},{
+					"type": "PULL_REQUEST",
+					"repo_id": 1181927,
+					"number": 111
+				}]
+			}
+		});
+
+		// When
+		let response = self
+			.context
+			.http_client
+			.post("/api/payments")
+			.header(ContentType::JSON)
+			.header(Header::new("x-hasura-role", "registered_user"))
+			.header(Header::new(
+				"Authorization",
+				format!("Bearer {}", jwt(Some(project_id.to_string()))),
+			))
+			.body(request.to_string())
+			.dispatch()
+			.await;
+
+		// Then
+		assert_eq!(
+			response.status(),
+			Status::InternalServerError,
+			"{}",
+			response.into_string().await.unwrap_or_default()
 		);
 
 		Ok(())
@@ -211,8 +286,9 @@ impl<'a> Test<'a> {
 			"hours_worked": 1,
 			"reason": {
 				"work_items": [{
+					"type": "PULL_REQUEST",
 					"repo_id": 498695724,
-					"issue_number": 111
+					"number": 111
 				}
 			]}
 		});

@@ -13,18 +13,20 @@ use crate::{
 
 pub async fn bootstrap(config: Config) -> Result<Rocket<Build>> {
 	info!("Bootstrapping backend api");
-	let database = Arc::new(database::Client::new(database::init_pool(config.database)?));
+	let database = Arc::new(database::Client::new(database::init_pool(
+		config.database.clone(),
+	)?));
 	database.run_migrations()?;
 
 	let github_api_client: Arc<github::Client> =
 		github::RoundRobinClient::new(config.github_api_client.clone())?.into();
 	let dusty_bot_api_client: Arc<github::Client> =
-		github::RoundRobinClient::new(config.dusty_bot_api_client)?.into();
-	let simple_storage = Arc::new(simple_storage::Client::new(config.s3).await?);
+		github::RoundRobinClient::new(config.dusty_bot_api_client.clone())?.into();
+	let simple_storage = Arc::new(simple_storage::Client::new(config.s3.clone()).await?);
 	let github_client_pat_factory = GithubClientPatFactory::new(config.github_api_client.clone());
 
 	let rocket_build = http::serve(
-		config.http,
+		config.clone(),
 		graphql::create_schema(),
 		Arc::new(
 			amqp::Bus::new(config.amqp.clone())
