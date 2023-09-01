@@ -113,8 +113,6 @@ jobs:
 
       - name: Run tests
         run: yarn backend:unit-tests
-        with:
-          workspaces: ". -> tarpaulin_target"
 
       - name: Setup tmate session for debugging
         uses: mxschmitt/action-tmate@v3
@@ -139,9 +137,6 @@ jobs:
 
       - name: Install Tarpaulin
         run: cargo install cargo-tarpaulin
-        with:
-          workspaces: ". -> tarpaulin_target"
-
 
       - name: Run tests
         run: yarn backend:integration-tests
