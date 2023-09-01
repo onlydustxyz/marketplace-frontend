@@ -45,10 +45,10 @@ jobs:
           override: true
 
       - name: Check code formatting
-        run: cargo +nightly fmt -- --check
+        run: yarn backend:fmt
 
       - name: Check codecov.yml file format
-        run: curl --data-binary @- https://codecov.io/validate < codecov.yml
+        run: curl --data-binary @- https://codecov.io/validate < backend/codecov.yml
 
   check:
     name: Check
@@ -61,9 +61,10 @@ jobs:
         uses: ./.github/actions/cargo-setup
 
       - name: Check application
-        uses: actions-rs/cargo@v1
-        with:
-          command: check
+        run: yarn backend:check
+#        uses: actions-rs/cargo@v1
+#        with:
+#          command: check
 
   build:
     name: Compile
@@ -76,9 +77,10 @@ jobs:
         uses: ./.github/actions/cargo-setup
 
       - name: Compile application
-        uses: actions-rs/cargo@v1
-        with:
-          command: build
+        run: yarn backend:build
+#        uses: actions-rs/cargo@v1
+#        with:
+#          command: build
 
   lint:
     name: Clippy checks
@@ -97,7 +99,7 @@ jobs:
         uses: actions-rs/clippy-check@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          args: --bins --tests --examples -- -D warnings
+          args: --manifest-path backend/Cargo.toml --bins --tests --examples -- -D warnings
 
   unit_tests:
     name: Unit tests
