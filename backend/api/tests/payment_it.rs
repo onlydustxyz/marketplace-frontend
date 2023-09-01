@@ -33,14 +33,18 @@ pub async fn payment_processing(docker: &'static Cli) {
 		context: Context::new(docker).await.expect("Unable to create test context"),
 	};
 
-	test.should_request_payment().await.expect("should_request_payment");
-	test.should_prevent_anyone_from_requesting_payment()
+	test.project_lead_can_request_payments()
 		.await
-		.expect("should_prevent_anyone_from_requesting_payment");
-	test.should_cancel_payment().await.expect("should_cancel_payment");
-	test.should_prevent_anyone_from_cancelling_payment()
+		.expect("project_lead_can_request_payments");
+	test.anyone_cannot_request_payments()
 		.await
-		.expect("should_prevent_anyone_from_cancelling_payment");
+		.expect("anyone_cannot_request_payments");
+	test.project_lead_can_cancel_payments()
+		.await
+		.expect("project_lead_can_cancel_payments");
+	test.anyone_cannot_cancel_payments()
+		.await
+		.expect("anyone_cannot_cancel_payments");
 }
 
 struct Test<'a> {
@@ -48,8 +52,8 @@ struct Test<'a> {
 }
 
 impl<'a> Test<'a> {
-	async fn should_request_payment(&mut self) -> Result<()> {
-		info!("should_request_payment");
+	async fn project_lead_can_request_payments(&mut self) -> Result<()> {
+		info!("project_lead_can_request_payments");
 
 		// Given
 		let project_id = ProjectId::new();
@@ -170,8 +174,8 @@ impl<'a> Test<'a> {
 		Ok(())
 	}
 
-	async fn should_prevent_anyone_from_requesting_payment(&mut self) -> Result<()> {
-		info!("should_prevent_anyone_from_requesting_payment");
+	async fn anyone_cannot_request_payments(&mut self) -> Result<()> {
+		info!("anyone_cannot_request_payments");
 
 		// Given
 		let project_id = ProjectId::new();
@@ -236,8 +240,8 @@ impl<'a> Test<'a> {
 		Ok(())
 	}
 
-	async fn should_cancel_payment(&mut self) -> Result<()> {
-		info!("should_cancel_payment");
+	async fn project_lead_can_cancel_payments(&mut self) -> Result<()> {
+		info!("project_lead_can_cancel_payments");
 
 		// Given
 		let project_id = ProjectId::new();
@@ -319,8 +323,8 @@ impl<'a> Test<'a> {
 		Ok(())
 	}
 
-	async fn should_prevent_anyone_from_cancelling_payment(&mut self) -> Result<()> {
-		info!("should_prevent_anyone_from_cancelling_payment");
+	async fn anyone_cannot_cancel_payments(&mut self) -> Result<()> {
+		info!("anyone_cannot_cancel_payments");
 
 		// Given
 		let project_id = ProjectId::new();
