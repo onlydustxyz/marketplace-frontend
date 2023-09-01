@@ -84,10 +84,11 @@ domain = { path = "../domain" }
 olog = { path = "../olog" }
 
 [dev-dependencies]
+testcontainers = "0.14.0"
 async-std = { version = "1.12.0", features = ["attributes"] }
 rand = "0.8.5"
 rstest = "0.15.0"
-tracing-test = "0.2.3"
+tracing-test = { version = "0.2.3", features = ["no-env-filter"] }
 dotenv = "0.15.0"
 mockall = "0.11.2"
 figment = { version = "0.10.8", features = ["test"] }
