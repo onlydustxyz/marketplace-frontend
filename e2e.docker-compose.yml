@@ -69,7 +69,7 @@ services:
       - 8000:8000
     healthcheck:
       test: curl -f http://localhost:8000 || exit 1
-      interval: 2s
+      interval: 15s
       timeout: 1s
       retries: 30
     environment:
@@ -93,7 +93,7 @@ services:
         condition: service_healthy
     healthcheck:
       test: curl -f http://localhost:8001 || exit 1
-      interval: 2s
+      interval: 15s
       timeout: 1s
       retries: 30
 
