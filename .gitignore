@@ -18,6 +18,7 @@
 # Python
 .env
 .env.*
+!e2e/.env.e2e
 !.env.develop
 !.env.example
 !.env.test

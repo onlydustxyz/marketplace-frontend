@@ -76,6 +76,18 @@ services:
       DATABASE_URL: postgres://postgres:postgres@db/marketplace_db
       AMQP_URL: amqp://rabbitmq:5672/%2f
       GRAPHQL_BASE_URL: http://hasura:8080/v1/graphql
+      PROFILE: $PROFILE
+      AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+      AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+      BACKEND_GRAPHQL_API_KEY: $BACKEND_GRAPHQL_API_KEY
+      DUSTY_BOT_GITHUB_MAX_CALLS_PER_REQUEST: $DUSTY_BOT_GITHUB_MAX_CALLS_PER_REQUEST
+      DUSTY_BOT_GITHUB_PAT: $GITHUB_PAT
+      GITHUB_PAT: $GITHUB_PAT
+      GITHUB_MAX_CALLS_PER_REQUEST: $GITHUB_MAX_CALLS_PER_REQUEST
+      HASURA_GRAPHQL_ADMIN_SECRET: $HASURA_GRAPHQL_ADMIN_SECRET
+      DUSTY_BOT_GITHUB_BASE_URL: $DUSTY_BOT_GITHUB_BASE_URL
+      GITHUB_BASE_URL: $GITHUB_BASE_URL
+      INFURA_API_KEY: $INFURA_API_KEY
 
   github-proxy:
     labels:
@@ -91,11 +103,18 @@ services:
     depends_on:
       api:
         condition: service_healthy
+      hasura-auth:
+        condition: service_healthy
     healthcheck:
       test: curl -f http://localhost:8001 || exit 1
       interval: 15s
       timeout: 1s
       retries: 30
+    environment:
+      GITHUB_PROXY_GRAPHQL_API_KEY: $GITHUB_PROXY_GRAPHQL_API_KEY
+      GITHUB_BASE_URL: $GITHUB_BASE_URL
+      GITHUB_PAT: $GITHUB_PAT
+      GITHUB_MAX_CALLS_PER_REQUEST: $GITHUB_MAX_CALLS_PER_REQUEST
 
   event-store:
     labels:
@@ -116,6 +135,7 @@ services:
     environment:
       DATABASE_URL: postgres://postgres:postgres@db/marketplace_db
       AMQP_URL: amqp://rabbitmq:5672/%2f
+      PROFILE: local
 
   event-listeners:
     labels:
@@ -136,6 +156,10 @@ services:
     environment:
       DATABASE_URL: postgres://postgres:postgres@db/marketplace_db
       AMQP_URL: amqp://rabbitmq:5672/%2f
+      PROFILE: local
+      GITHUB_BASE_URL: $GITHUB_BASE_URL
+      GITHUB_PAT: $GITHUB_PAT
+      GITHUB_MAX_CALLS_PER_REQUEST: $GITHUB_MAX_CALLS_PER_REQUEST
 
   github-indexer:
     labels:
@@ -156,6 +180,10 @@ services:
     environment:
       DATABASE_URL: postgres://postgres:postgres@db/marketplace_db
       AMQP_URL: amqp://rabbitmq:5672/%2f
+      PROFILE: local
+      GITHUB_BASE_URL: $GITHUB_BASE_URL
+      GITHUB_PAT: $GITHUB_PAT
+      GITHUB_MAX_CALLS_PER_REQUEST: $GITHUB_MAX_CALLS_PER_REQUEST
 
   frontend:
     labels:
@@ -171,23 +199,20 @@ services:
       test: curl -f http://localhost:5173 || exit 1
       interval: 2s
       timeout: 1s
-      retries: 30
-
-  storybook:
-    labels:
-      type: frontend
-    container_name: storybook
-    image: node:18-bullseye
-    volumes:
-      - .:/app
-    command: bash -c "cd /app && yarn && yarn storybook"
-    ports:
-      - 6006:6006
-    healthcheck:
-      test: curl -f http://localhost:6006 || exit 1
-      interval: 2s
-      timeout: 1s
-      retries: 30
+      retries: 3
+    environment:
+      VITE_HASURA_AUTH_BASE_URL: http://hasura:4000
+      VITE_API_BASE_URL: http://hasura:8000
+      VITE_HASURA_BASE_URL: http://hasura:8080
+      VITE_HASURA_BASE_WS_URL: ws://hasura:8080
+      VITE_LOGIN_URL: http://hasura:4000/signin/provider/github
+      VITE_ENV: local
+      VITE_MAINTENANCE:
+      VITE_GTM_ID:
+      VITE_LANGUAGES_FILTER: "CSS,Dockerfile,Handlebars,HCL,HTML,Jupyter Notebook,Makefile,Nix,Procfile,SCSS,Shell"
+      VITE_ENABLE_DATADOG_LOG: true
+      VITE_CLOUDFLARE_RESIZE_W_100_PREFIX: https://onlydust.xyz/cdn-cgi/image/width:=100/
+      VITE_GENERIC_METADATA_URL: https://develop-app-metadata.onlydust.xyz/api/generic
 
 volumes:
   cargo-cache:

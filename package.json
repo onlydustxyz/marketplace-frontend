@@ -23,7 +23,7 @@
         "hasura:console:start": "yarn --cwd ./hasura start",
         "hasura:metadata:apply": "yarn --cwd ./hasura hasura --skip-update-check md apply",
         "hasura:metadata:drop-inconsistencies": "yarn --cwd ./hasura hasura --skip-update-check md ic drop",
-        "hasura:metadata:log-inconsistencies": "yarn hasura md ic list",
+        "hasura:metadata:log-inconsistencies": "yarn --cwd ./hasura hasura hasura md ic list",
         "hasura:metadata:export": "yarn --cwd ./hasura hasura --skip-update-check md export",
         "hasura:metadata:check-consistency": "yarn --cwd ./hasura hasura md ic status",
         "docker-compose:up": "docker compose up -d --wait",

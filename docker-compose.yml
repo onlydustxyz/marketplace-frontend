@@ -11,7 +11,7 @@ services:
     ports:
       - 5432:5432
     volumes:
-#      - db:/var/lib/postgresql/data
+      - db:/var/lib/postgresql/data
       - ./scripts/initdb.d:/docker-entrypoint-initdb.d:ro
     healthcheck:
       test: ["CMD", "pg_isready", "-d", "marketplace_db", "-U", "postgres"]
@@ -83,7 +83,7 @@ services:
         condition: service_healthy
     environment:
       HASURA_GRAPHQL_JWT_SECRET: ${HASURA_GRAPHQL_JWT_SECRET}
-      HASURA_GRAPHQL_DATABASE_URL: ${HASURA_GRAPHQL_DATABASE_URL:-postgres://postgres:postgres@db/marketplace_db}
+      HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:postgres@db/marketplace_db
       HASURA_GRAPHQL_GRAPHQL_URL: http://hasura:8080/v1/graphql
       HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET:-myadminsecretkey}
       AUTH_ACCESS_TOKEN_EXPIRES_IN: 604800 # 1 week
