@@ -1,19 +1,12 @@
-use std::sync::Arc;
-
-use domain::{AggregateRootRepository, Event, Project, Publisher};
+use domain::{AggregateRootRepository, Project};
 use http_api_problem::{HttpApiProblem, StatusCode};
-use infrastructure::amqp::CommandMessage;
 use presentation::http::guards::{Claims, Role};
 use rocket::{serde::json::Json, State};
 use rust_decimal::prelude::ToPrimitive;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use crate::{
-	application,
-	domain::permissions::IntoPermission,
-	presentation::http::{dto, IndexerService},
-};
+use crate::{application, domain::permissions::IntoPermission, presentation::http::dto};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Response {
@@ -40,8 +33,7 @@ pub async fn request_payment(
 	claims: Claims,
 	role: Role,
 	project_repository: &State<AggregateRootRepository<Project>>,
-	event_publisher: &State<Arc<dyn Publisher<CommandMessage<Event>>>>,
-	github_indexer_service: IndexerService,
+	request_payment_usecase: application::payment::request::Usecase,
 ) -> Result<Json<Response>, HttpApiProblem> {
 	let Request {
 		project_id,
@@ -65,27 +57,23 @@ pub async fn request_payment(
 			)));
 	}
 
-	let (project, budget, payment, command_id) = application::payment::request::Usecase::new(
-		(*event_publisher).clone(),
-		(*project_repository).clone(),
-		github_indexer_service.0,
-	)
-	.request(
-		project_id.into(),
-		caller_id.into(),
-		recipient_id.into(),
-		amount_in_usd,
-		hours_worked,
-		reason.into(),
-	)
-	.await
-	.map_err(|e| {
-		{
-			HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
-				.title("Unable to process create_project request")
-				.detail(e.to_string())
-		}
-	})?;
+	let (project, budget, payment, command_id) = request_payment_usecase
+		.request(
+			project_id.into(),
+			caller_id.into(),
+			recipient_id.into(),
+			amount_in_usd,
+			hours_worked,
+			reason.into(),
+		)
+		.await
+		.map_err(|e| {
+			{
+				HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
+					.title("Unable to process create_project request")
+					.detail(e.to_string())
+			}
+		})?;
 
 	Ok(Json(Response {
 		project_id: (*project.id()).into(),

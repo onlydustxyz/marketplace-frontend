@@ -18,8 +18,7 @@ use crate::{
 	presentation::{graphql, http::github_client_pat_factory::GithubClientPatFactory},
 };
 
-mod indexer_service;
-use indexer_service::IndexerService;
+mod usecases;
 
 pub mod dto;
 mod error;
