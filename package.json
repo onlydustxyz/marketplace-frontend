@@ -2,8 +2,16 @@
     "name": "marketplace",
     "version": "2.0.0",
     "scripts": {
-        "dev": "yarn --cwd ./frontend dev",
-        "build": "yarn --cwd ./frontend build",
-        "install": "yarn --cwd ./frontend install"
+        "frontend:ev": "yarn --cwd ./frontend dev",
+        "frontend:build": "yarn --cwd ./frontend build",
+        "frontend:install": "yarn --cwd ./frontend install",
+        "frontend:lint": "yarn --cwd ./frontend lint",
+        "frontend:dependency-cruiser": "yarn --cwd ./frontend dependency-cruiser",
+        "frontend:test": "yarn --cwd ./frontend test",
+        "backend:api": "cargo run --manifest-path backend/Cargo.toml -p api",
+        "backend:event-store": "cargo run --manifest-path backend/Cargo.toml -p event-store",
+        "backend:event-listeners": "cargo run --manifest-path backend/Cargo.toml -p event-listeners",
+        "backend:github-proxy": "cargo run --manifest-path backend/Cargo.toml -p github-proxy",
+        "backend:github-indexer": "cargo run --manifest-path backend/Cargo.toml --bin github-indexer"
     }
 }

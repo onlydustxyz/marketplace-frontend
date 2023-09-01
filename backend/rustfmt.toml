@@ -29,5 +29,5 @@ use_field_init_shorthand = true
 
 # Ignore generated files
 ignore = [
-  "backend/common/infrastructure/src/database/schema.rs",
+  "common/infrastructure/src/database/schema.rs",
 ]

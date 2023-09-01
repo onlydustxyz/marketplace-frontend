@@ -33,7 +33,7 @@ jobs:
         run: npm install -g yarn
       - run: yarn install --frozen-lockfile
       - name: Build project
-        run: yarn build
+        run: yarn frontend:build
 
   lint:
     runs-on: ubuntu-latest
@@ -43,8 +43,8 @@ jobs:
         with:
           node-version: 18
           cache: "yarn"
-      - run: yarn install --frozen-lockfile
-      - run: yarn lint
+      - run: yarn frontend:install --frozen-lockfile
+      - run: yarn frontend:lint
 
   dependencies:
     runs-on: ubuntu-latest
@@ -54,8 +54,8 @@ jobs:
         with:
           node-version: 18
           cache: "yarn"
-      - run: yarn install --frozen-lockfile
-      - run: yarn dependency-cruiser
+      - run: yarn frontend:install --frozen-lockfile
+      - run: yarn frontend:dependency-cruiser
 
   test:
     runs-on: ubuntu-latest
@@ -64,9 +64,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-      - run: yarn install --frozen-lockfile
+      - run: yarn frontend:install --frozen-lockfile
       - name: Run unit/integration test
-        run: yarn test --coverage
+        run: yarn frontend:test --coverage
       - name: Setup tmate session for debugging
         uses: mxschmitt/action-tmate@v3
         if: ${{ failure() && inputs.debug_enabled }}
