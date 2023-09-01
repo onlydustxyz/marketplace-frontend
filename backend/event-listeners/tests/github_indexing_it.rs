@@ -37,9 +37,7 @@ pub async fn new_github_repository_added(docker: &'static Cli) {
 		context: Context::new(docker).await.expect("Unable to create test context"),
 	};
 
-	test.context.github.print_wiremock_scenarios().await;
 	test.should_index_repo().await.expect("should_index_repo");
-	test.context.github.print_wiremock_scenarios().await;
 	test.should_update_index_repo().await.expect("should_update_index_repo");
 }
 

@@ -30,15 +30,13 @@ impl<'docker> Context<'docker> {
 		})
 	}
 
-	pub async fn print_wiremock_scenarios(&self) {
-		let body = reqwest::get(format!("{}/__admin/scenarios", self.config.base_url))
+	pub async fn get_wiremock_scenarios_state(&self) -> String {
+		reqwest::get(format!("{}/__admin/scenarios", self.config.base_url))
 			.await
 			.expect("Failed to get wiremock scenarios")
 			.text()
 			.await
-			.expect("Failed to read wiremock scenarios");
-
-		println!("Wiremock scenarios = {body}");
+			.expect("Failed to read wiremock scenarios")
 	}
 }
 
