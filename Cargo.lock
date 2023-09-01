@@ -2390,6 +2390,7 @@ dependencies = [
  "serde",
  "serde_json",
  "serde_qs",
+ "testcontainers",
  "thiserror",
  "tokio",
  "tokio-retry",

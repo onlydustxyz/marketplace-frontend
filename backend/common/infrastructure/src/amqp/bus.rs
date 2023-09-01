@@ -59,7 +59,7 @@ impl Bus {
 		ConsumableBus::new(self, queue_name).await
 	}
 
-	pub(super) async fn publish(
+	pub async fn publish(
 		&self,
 		exchange_name: &str,
 		routing_key: &str,
