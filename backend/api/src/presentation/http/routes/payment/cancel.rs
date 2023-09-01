@@ -27,7 +27,8 @@ pub struct Request {
 #[delete("/payments", data = "<request>", format = "application/json")]
 pub async fn cancel_payment(
 	request: Json<Request>,
-	claims: Claims,
+	claims: Option<Claims>,
+	role: Role,
 	cancel_payment_usecase: &State<application::payment::cancel::Usecase>,
 	project_repository: &State<AggregateRootRepository<Project>>,
 ) -> Result<Json<Response>, HttpApiProblem> {
@@ -36,17 +37,15 @@ pub async fn cancel_payment(
 		payment_id,
 	} = request.into_inner();
 
-	let caller_id = claims.user_id;
-
-	if !Role::from(claims)
+	if !role
 		.to_permissions((*project_repository).clone())
-		.can_spend_budget_of_project(&project_id.into())
+		.can_cancel_payments_of_project(&project_id.into())
 	{
 		return Err(HttpApiProblem::new(StatusCode::UNAUTHORIZED)
 			.title("Unauthorized operation on project")
 			.detail(format!(
-				"User {} needs project lead role to create a payment request on project {}",
-				caller_id,
+				"User {} needs project lead role to cancel a payment request on project {}",
+				claims.map(|c| c.user_id).unwrap_or_default(),
 				project_id.to_string()
 			)));
 	}

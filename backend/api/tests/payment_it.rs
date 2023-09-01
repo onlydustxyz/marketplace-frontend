@@ -42,6 +42,7 @@ pub async fn payment_processing(docker: &'static Cli) {
 	test.project_lead_can_cancel_payments()
 		.await
 		.expect("project_lead_can_cancel_payments");
+	test.admin_can_cancel_payments().await.expect("admin_can_cancel_payments");
 	test.anyone_cannot_cancel_payments()
 		.await
 		.expect("anyone_cannot_cancel_payments");
@@ -100,6 +101,7 @@ impl<'a> Test<'a> {
 			.http_client
 			.post("/api/payments")
 			.header(ContentType::JSON)
+			.header(Header::new("x-hasura-role", "registered_user"))
 			.header(Header::new(
 				"Authorization",
 				format!("Bearer {}", jwt(Some(project_id.to_string()))),
@@ -221,6 +223,7 @@ impl<'a> Test<'a> {
 			.http_client
 			.post("/api/payments")
 			.header(ContentType::JSON)
+			.header(Header::new("x-hasura-role", "registered_user"))
 			.header(Header::new(
 				"Authorization",
 				format!("Bearer {}", jwt(None)),
@@ -298,10 +301,91 @@ impl<'a> Test<'a> {
 			.http_client
 			.delete("/api/payments")
 			.header(ContentType::JSON)
+			.header(Header::new("x-hasura-role", "registered_user"))
 			.header(Header::new(
 				"Authorization",
 				format!("Bearer {}", jwt(Some(project_id.to_string()))),
 			))
+			.body(request.to_string())
+			.dispatch()
+			.await;
+
+		// Then
+		assert_eq!(
+			response.status(),
+			Status::Ok,
+			"{}",
+			response.into_string().await.unwrap_or_default()
+		);
+		let response: payment::request::Response = response.into_json().await.unwrap();
+
+		assert_eq!(response.project_id, project_id.into());
+		assert_eq!(response.budget_id, budget_id.into());
+		assert_eq!(response.payment_id, payment_id.into());
+		assert_eq!(response.amount, 100f64);
+
+		Ok(())
+	}
+
+	async fn admin_can_cancel_payments(&mut self) -> Result<()> {
+		info!("admin_can_cancel_payments");
+
+		// Given
+		let project_id = ProjectId::new();
+		let budget_id = BudgetId::new();
+		let payment_id = PaymentId::new();
+
+		models::events::store(
+			&self.context,
+			vec![
+				ProjectEvent::Created { id: project_id },
+				ProjectEvent::Budget {
+					id: project_id,
+					event: BudgetEvent::Created {
+						id: budget_id,
+						currency: Currency::Crypto("USDC".to_string()),
+					},
+				},
+				ProjectEvent::Budget {
+					id: project_id,
+					event: BudgetEvent::Allocated {
+						id: budget_id,
+						amount: Decimal::from(1_000),
+					},
+				},
+				ProjectEvent::Budget {
+					id: project_id,
+					event: BudgetEvent::Payment {
+						id: budget_id,
+						event: PaymentEvent::Requested {
+							id: payment_id,
+							requestor_id: UserId::new(),
+							recipient_id: GithubUserId::from(595505u64),
+							amount: Amount::new(
+								Decimal::from(100),
+								Currency::Crypto("USDC".to_string()),
+							),
+							duration_worked: Duration::hours(2),
+							reason: PaymentReason { work_items: vec![] },
+							requested_at: Utc::now().naive_utc(),
+						},
+					},
+				},
+			],
+		)?;
+
+		let request = json!({
+			"project_id": project_id,
+			"payment_id": payment_id,
+		});
+
+		// When
+		let response = self
+			.context
+			.http_client
+			.delete("/api/payments")
+			.header(ContentType::JSON)
+			.header(Header::new("x-hasura-role", "admin"))
 			.body(request.to_string())
 			.dispatch()
 			.await;
@@ -381,6 +465,7 @@ impl<'a> Test<'a> {
 			.http_client
 			.delete("/api/payments")
 			.header(ContentType::JSON)
+			.header(Header::new("x-hasura-role", "registered_user"))
 			.header(Header::new(
 				"Authorization",
 				format!("Bearer {}", jwt(None)),

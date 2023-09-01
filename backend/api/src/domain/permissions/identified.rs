@@ -18,6 +18,10 @@ impl Permissions for IdentifiedUser {
 		self.projects.contains(project_id)
 	}
 
+	fn can_cancel_payments_of_project(&self, project_id: &ProjectId) -> bool {
+		self.projects.contains(project_id)
+	}
+
 	fn can_create_github_issue_for_project(&self, project_id: &ProjectId) -> bool {
 		self.projects.contains(project_id)
 	}

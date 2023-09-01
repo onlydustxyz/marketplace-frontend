@@ -31,6 +31,7 @@ pub struct Request {
 pub async fn request_payment(
 	request: Json<Request>,
 	claims: Claims,
+	role: Role,
 	request_payment_usecase: &State<application::payment::request::Usecase>,
 	project_repository: &State<AggregateRootRepository<Project>>,
 ) -> Result<Json<Response>, HttpApiProblem> {
@@ -44,7 +45,7 @@ pub async fn request_payment(
 
 	let caller_id = claims.user_id;
 
-	if !Role::from(claims)
+	if !role
 		.to_permissions((*project_repository).clone())
 		.can_spend_budget_of_project(&project_id.into())
 	{
