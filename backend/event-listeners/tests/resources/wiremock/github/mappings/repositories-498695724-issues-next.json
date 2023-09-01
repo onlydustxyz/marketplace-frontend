@@ -1,7 +1,7 @@
 {
   "id": "60b3dcb3-7e0e-4d46-98d8-d8e34ad6fada",
   "request": {
-    "urlPattern": "/repositories/498695724/(issues|pulls)\\?direction=desc&page=1&per_page=100&sort=updated&state=all",
+    "urlPattern": "/repositories/498695724/issues\\?direction=desc&page=1&per_page=100&sort=(created|updated)&state=all",
     "method": "GET"
   },
   "response": {
