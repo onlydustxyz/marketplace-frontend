@@ -2,7 +2,7 @@
     "name": "marketplace",
     "version": "2.0.0",
     "scripts": {
-        "frontend:ev": "yarn --cwd ./frontend dev",
+        "frontend:dev": "yarn --cwd ./frontend dev",
         "frontend:build": "yarn --cwd ./frontend build",
         "frontend:install": "yarn --cwd ./frontend install",
         "frontend:lint": "yarn --cwd ./frontend lint",
@@ -19,7 +19,16 @@
         "backend:fmt": "cargo +nightly fmt --manifest-path backend/Cargo.toml --all -- --check",
         "backend:unit-tests": "cargo tarpaulin --manifest-path backend/Cargo.toml  --workspace --skip-clean --target-dir tarpaulin_target --lib",
         "backend:integration-tests": "cargo tarpaulin --manifest-path backend/Cargo.toml  --workspace --skip-clean --target-dir tarpaulin_target --test '*'",
+        "hasura:console:install": "yarn --cwd ./hasura install",
+        "hasura:console:start": "yarn --cwd ./hasura start",
+        "hasura:metadata:apply": "yarn --cwd ./hasura hasura --skip-update-check md apply",
+        "hasura:metadata:drop-inconsistencies": "yarn --cwd ./hasura hasura --skip-update-check md ic drop",
+        "hasura:metadata:log-inconsistencies": "yarn hasura md ic list",
+        "hasura:metadata:export": "yarn --cwd ./hasura hasura --skip-update-check md export",
+        "hasura:metadata:check-consistency": "yarn --cwd ./hasura hasura md ic status",
         "docker-compose:up": "docker compose up -d --wait",
-        "e2e:docker-compose:up": "docker compose -f e2e.docker-compose.yml up -d --wait"
+        "e2e:docker-compose:up": "docker compose -f e2e.docker-compose.yml up -d --wait",
+        "e2e:docker-compose:down": "docker compose -f e2e.docker-compose.yml down",
+        "e2e:hasura:delete-metadata": "docker compose exec -u postgres db psql marketplace_db -c \"DELETE FROM hdb_catalog.hdb_metadata\""
     }
 }

@@ -59,16 +59,18 @@ jobs:
         run: yarn e2e:docker-compose:up
 
       - name: Prepare Hasura
-        run: make hasura/refresh
+        run: |
+          yarn e2e:hasura:delete-metadata
+          yarn hasura:metadata:apply
+          yarn hasura:metadata:drop-inconsistencies
+          yarn hasura:export
 
       - name: Check database and GraphQL schema consistency
-        run: yarn hasura md ic status
-        working-directory: ./hasura
+        run: yarn hasura:metadata:check-consistency
 
       - name: Log inconsistencies list on failure
         if: ${{ failure() }}
-        run: yarn hasura md ic list
-        working-directory: ./hasura
+        run: hasura:metadata:log-inconsistencies
 
       - name: Run the end-to-end tests
         run: make playwright/test
@@ -82,7 +84,7 @@ jobs:
         if: ${{ failure() }}
 
       - name: Stop the fullstack
-        run: make app/background-stop
+        run: yarn e2e:docker-compose:down
 
       - name: Upload screenshots in case of failure
         uses: actions/upload-artifact@v3
