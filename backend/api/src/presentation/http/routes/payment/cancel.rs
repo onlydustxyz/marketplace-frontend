@@ -64,10 +64,10 @@ pub async fn cancel_payment(
 	Ok(Json(Response {
 		project_id: (*project.id()).into(),
 		budget_id: (*budget.id()).into(),
-		payment_id: (*payment.id()).into(),
+		payment_id: payment.id.into(),
 		command_id: command_id.into(),
 		amount: payment
-			.requested_usd_amount()
+			.requested_usd_amount
 			.to_f64()
 			.ok_or_else(|| olog::error!("Could not format payment amount"))
 			.unwrap_or_default(),

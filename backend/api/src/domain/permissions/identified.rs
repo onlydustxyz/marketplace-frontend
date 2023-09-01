@@ -62,7 +62,6 @@ impl IdentifiedUser {
 			anyhow!("No payment with ID {payment_id} belongs to project {project_id}")
 		})?;
 
-		Ok(*payment.status() == PaymentStatus::Active
-			&& *payment.recipient_id() == self.github_user_id)
+		Ok(payment.status == PaymentStatus::Active && payment.recipient_id == self.github_user_id)
 	}
 }
