@@ -109,12 +109,6 @@ jobs:
       - name: Setup cargo
         uses: ./.github/actions/cargo-setup
 
-      - name: Setup environment
-        uses: ./.github/actions/env-setup
-
-      - name: Run migrations
-        uses: ./.github/actions/migrations-run
-
       - name: Run tests
         uses: ./.github/actions/coverage-checks
         with:
@@ -156,4 +150,3 @@ jobs:
           codecov_token: ${{ secrets.CODECOV_TOKEN }}
           codecov_flag: integration_tests
           file: cobertura.xml
-
