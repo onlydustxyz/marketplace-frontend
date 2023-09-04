@@ -1,7 +1,7 @@
 import { execSync } from "child_process";
 import { getEnv } from "../common";
 
-export const DUMP_PATH = "playwright/marketplace_db_dump";
+export const DUMP_PATH = "./marketplace_db_dump";
 
 export const dumpDB = () => {
   const DATABASE_URL = getEnv("DATABASE_URL");
@@ -16,19 +16,19 @@ export const dumpDB = () => {
 export const restoreDB = () => {
   const DATABASE_URL = getEnv("DATABASE_URL");
   execSync(
-    `if [ -f "${DUMP_PATH}" ]; then psql ${DATABASE_URL} --single-transaction -f "playwright/commands/db/truncate.sql" -f "${DUMP_PATH}"; fi`,
+    `if [ -f "${DUMP_PATH}" ]; then psql ${DATABASE_URL} --single-transaction -f "./commands/db/truncate.sql" -f "${DUMP_PATH}"; fi`,
     { stdio: "pipe" }
   );
 };
 
 export const cleanupDB = () => {
   const DATABASE_URL = getEnv("DATABASE_URL");
-  execSync(`psql ${DATABASE_URL} --single-transaction -f "playwright/commands/db/truncate.sql"`, { stdio: "pipe" });
+  execSync(`psql ${DATABASE_URL} --single-transaction -f "./commands/db/truncate.sql"`, { stdio: "pipe" });
 };
 
 export const indexerRunning = () => {
   const DATABASE_URL = getEnv("DATABASE_URL");
-  const count = execSync(`xargs -0 psql ${DATABASE_URL} -AXqtc < ./playwright/commands/db/indexer_running.sql`, {
+  const count = execSync(`xargs -0 psql ${DATABASE_URL} -AXqtc < ./commands/db/indexer_running.sql`, {
     stdio: "pipe",
   });
 
