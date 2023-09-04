@@ -27,7 +27,7 @@ impl From<domain::GithubUser> for Response {
 		}
 	}
 }
-
+#[allow(clippy::too_many_arguments)]
 #[get("/users/search?<query>&<sort>&<order>&<per_page>&<page>")]
 pub async fn search_users(
 	_api_key: ApiKey,
