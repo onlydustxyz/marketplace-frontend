@@ -63,23 +63,18 @@ impl<'a> Test<'a> {
 		self.context.indexing_scheduler.run_once().await?;
 
 		// Then
-		self.assert_marketplace_repo_is_indexed().await?;
-		self.assert_marketplace_issues_are_indexed().await?;
-		self.assert_marketplace_pulls_are_indexed_cycle_1().await?;
-		self.assert_marketplace_contributions_are_up_to_date(1).await?;
-		self.assert_marketplace_contributors_are_up_to_date_and_indexed(1).await?;
+		self.assert_marketplace_repo_is_indexed()?;
+		self.assert_marketplace_issues_are_indexed()?;
+		self.assert_marketplace_pulls_are_indexed_cycle_1()?;
+		self.assert_marketplace_contributions_are_up_to_date(1)?;
+		self.assert_marketplace_contributors_are_up_to_date_and_indexed(1)?;
 
 		let mut connection = self.context.database.client.connection()?;
 		{
-			let mut states: Vec<models::GithubPullRequestIndex> = retry(
-				|| {
-					github_pull_request_indexes::table
-						.order(github_pull_request_indexes::pull_request_id.desc())
-						.load(&mut *connection)
-				},
-				|res| res.len() == 3,
-			)
-			.await?;
+			let mut states: Vec<models::GithubPullRequestIndex> =
+				github_pull_request_indexes::table
+					.order(github_pull_request_indexes::pull_request_id.desc())
+					.load(&mut *connection)?;
 
 			{
 				let state = states.pop().unwrap();
@@ -123,23 +118,18 @@ impl<'a> Test<'a> {
 		self.context.indexing_scheduler.run_once().await?;
 
 		// Then
-		self.assert_marketplace_repo_is_indexed().await?;
-		self.assert_marketplace_issues_are_indexed().await?;
-		self.assert_marketplace_pulls_are_indexed_cycle_2().await?;
-		self.assert_marketplace_contributions_are_up_to_date(2).await?;
-		self.assert_marketplace_contributors_are_up_to_date_and_indexed(2).await?;
+		self.assert_marketplace_repo_is_indexed()?;
+		self.assert_marketplace_issues_are_indexed()?;
+		self.assert_marketplace_pulls_are_indexed_cycle_2()?;
+		self.assert_marketplace_contributions_are_up_to_date(2)?;
+		self.assert_marketplace_contributors_are_up_to_date_and_indexed(2)?;
 
 		let mut connection = self.context.database.client.connection()?;
 		{
-			let mut states: Vec<models::GithubPullRequestIndex> = retry(
-				|| {
-					github_pull_request_indexes::table
-						.order(github_pull_request_indexes::pull_request_id.desc())
-						.load(&mut *connection)
-				},
-				|res| res.len() == 3,
-			)
-			.await?;
+			let mut states: Vec<models::GithubPullRequestIndex> =
+				github_pull_request_indexes::table
+					.order(github_pull_request_indexes::pull_request_id.desc())
+					.load(&mut *connection)?;
 
 			{
 				let state = states.pop().unwrap();
@@ -176,14 +166,11 @@ impl<'a> Test<'a> {
 		Ok(())
 	}
 
-	async fn assert_marketplace_repo_is_indexed(&mut self) -> Result<()> {
+	fn assert_marketplace_repo_is_indexed(&mut self) -> Result<()> {
 		let mut connection = self.context.database.client.connection()?;
 
-		let mut repos: Vec<models::GithubRepo> = retry(
-			|| github_repos::table.order(github_repos::id.desc()).load(&mut *connection),
-			|res| !res.is_empty(),
-		)
-		.await?;
+		let mut repos: Vec<models::GithubRepo> =
+			github_repos::table.order(github_repos::id.desc()).load(&mut *connection)?;
 		assert_eq!(repos.len(), 1, "Invalid repo count");
 		{
 			let repo = repos.pop().unwrap();
@@ -234,14 +221,11 @@ impl<'a> Test<'a> {
 		Ok(())
 	}
 
-	async fn assert_marketplace_issues_are_indexed(&mut self) -> Result<()> {
+	fn assert_marketplace_issues_are_indexed(&mut self) -> Result<()> {
 		let mut connection = self.context.database.client.connection()?;
 		{
-			let mut issues: Vec<models::GithubIssue> = retry(
-				|| github_issues::table.load(&mut *connection),
-				|res| !res.is_empty(),
-			)
-			.await?;
+			let mut issues: Vec<models::GithubIssue> =
+				github_issues::table.load(&mut *connection)?;
 			assert_eq!(issues.len(), 3, "Invalid issue count");
 
 			{
@@ -357,18 +341,13 @@ impl<'a> Test<'a> {
 		assert_eq!(commit.html_url, expected.html_url.to_string());
 	}
 
-	async fn assert_marketplace_pulls_are_indexed_cycle_1(&mut self) -> Result<()> {
+	fn assert_marketplace_pulls_are_indexed_cycle_1(&mut self) -> Result<()> {
 		let mut connection = self.context.database.client.connection()?;
 
-		let mut pull_requests: Vec<models::github_pull_requests::Inner> = retry(
-			|| {
-				github_pull_requests::table
-					.order(github_pull_requests::dsl::number.desc())
-					.load(&mut *connection)
-			},
-			|res| !res.is_empty(),
-		)
-		.await?;
+		let mut pull_requests: Vec<models::github_pull_requests::Inner> =
+			github_pull_requests::table
+				.order(github_pull_requests::dsl::number.desc())
+				.load(&mut *connection)?;
 		assert_eq!(pull_requests.len(), 3, "Invalid pull requests count");
 
 		{
@@ -444,18 +423,13 @@ impl<'a> Test<'a> {
 		Ok(())
 	}
 
-	async fn assert_marketplace_pulls_are_indexed_cycle_2(&mut self) -> Result<()> {
+	fn assert_marketplace_pulls_are_indexed_cycle_2(&mut self) -> Result<()> {
 		let mut connection = self.context.database.client.connection()?;
 
-		let mut pull_requests: Vec<models::github_pull_requests::Inner> = retry(
-			|| {
-				github_pull_requests::table
-					.order(github_pull_requests::dsl::number.desc())
-					.load(&mut *connection)
-			},
-			|res| !res.is_empty(),
-		)
-		.await?;
+		let mut pull_requests: Vec<models::github_pull_requests::Inner> =
+			github_pull_requests::table
+				.order(github_pull_requests::dsl::number.desc())
+				.load(&mut *connection)?;
 		assert_eq!(pull_requests.len(), 3, "Invalid pull requests count");
 
 		{
@@ -531,7 +505,7 @@ impl<'a> Test<'a> {
 		Ok(())
 	}
 
-	async fn assert_marketplace_contributions_are_up_to_date(&mut self, cycle: i32) -> Result<()> {
+	fn assert_marketplace_contributions_are_up_to_date(&mut self, cycle: i32) -> Result<()> {
 		let mut connection = self.context.database.client.connection()?;
 		{
 			let mut contributions: Vec<models::Contribution> = contributions::table
@@ -693,7 +667,7 @@ impl<'a> Test<'a> {
 		Ok(())
 	}
 
-	async fn assert_marketplace_contributors_are_up_to_date_and_indexed(
+	fn assert_marketplace_contributors_are_up_to_date_and_indexed(
 		&mut self,
 		cycle: i32,
 	) -> Result<()> {
