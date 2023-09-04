@@ -1,8 +1,3 @@
-use std::{
-	collections::hash_map::DefaultHasher,
-	hash::{Hash, Hasher},
-};
-
 use anyhow::Result;
 use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
 use domain::{GithubCodeReviewStatus, GithubIssueId, GithubPullRequestId};
@@ -10,15 +5,11 @@ use event_listeners::models::{self, GithubRepoIndex, ProjectGithubRepo};
 use fixtures::*;
 use infrastructure::database::{
 	enums::{ContributionStatus, ContributionType},
-	schema::{
-		contributions, github_pull_request_indexes, projects_contributors,
-		projects_pending_contributors,
-	},
+	schema::{contributions, projects_contributors, projects_pending_contributors},
 	ImmutableRepository,
 };
 use olog::info;
 use rstest::rstest;
-use serde_json::json;
 use testcontainers::clients::Cli;
 
 use crate::context::{docker, github_indexer::Context};
@@ -68,45 +59,6 @@ impl<'a> Test<'a> {
 		self.assert_marketplace_contributions_are_up_to_date(1)?;
 		self.assert_marketplace_contributors_are_up_to_date_and_indexed(1)?;
 
-		let mut connection = self.context.database.client.connection()?;
-		{
-			let mut states: Vec<models::GithubPullRequestIndex> =
-				github_pull_request_indexes::table
-					.order(github_pull_request_indexes::pull_request_id.desc())
-					.load(&mut *connection)?;
-
-			{
-				let state = states.pop().unwrap();
-				assert_eq!(state.pull_request_id, pull_requests::x1144().id);
-				assert_eq!(
-					state.pull_request_indexer_state,
-					Some(
-						json!({"base_sha": pull_requests::x1144().base_sha, "head_sha": pull_requests::x1144().head_sha, "hash": hash(&pull_requests::x1144())})
-					)
-				);
-			}
-			{
-				let state = states.pop().unwrap();
-				assert_eq!(state.pull_request_id, pull_requests::x1146().id);
-				assert_eq!(
-					state.pull_request_indexer_state,
-					Some(
-						json!({"base_sha": pull_requests::x1146().base_sha, "head_sha": pull_requests::x1146().head_sha, "hash": hash(&pull_requests::x1146())})
-					)
-				);
-			}
-			{
-				let state = states.pop().unwrap();
-				assert_eq!(state.pull_request_id, pull_requests::x1152().id);
-				assert_eq!(
-					state.pull_request_indexer_state,
-					Some(
-						json!({"base_sha": pull_requests::x1152().base_sha, "head_sha": pull_requests::x1152().head_sha, "hash": hash(&pull_requests::x1152())})
-					)
-				);
-			}
-		}
-
 		Ok(())
 	}
 
@@ -125,45 +77,6 @@ impl<'a> Test<'a> {
 		self.assert_marketplace_pulls_are_indexed_cycle_2()?;
 		self.assert_marketplace_contributions_are_up_to_date(2)?;
 		self.assert_marketplace_contributors_are_up_to_date_and_indexed(2)?;
-
-		let mut connection = self.context.database.client.connection()?;
-		{
-			let mut states: Vec<models::GithubPullRequestIndex> =
-				github_pull_request_indexes::table
-					.order(github_pull_request_indexes::pull_request_id.desc())
-					.load(&mut *connection)?;
-
-			{
-				let state = states.pop().unwrap();
-				assert_eq!(state.pull_request_id, pull_requests::x1144().id);
-				assert_eq!(
-					state.pull_request_indexer_state,
-					Some(
-						json!({"base_sha": pull_requests::x1144().base_sha, "head_sha": pull_requests::x1144().head_sha, "hash": hash(&pull_requests::x1144())})
-					)
-				);
-			}
-			{
-				let state = states.pop().unwrap();
-				assert_eq!(state.pull_request_id, pull_requests::x1146().id);
-				assert_eq!(
-					state.pull_request_indexer_state,
-					Some(
-						json!({"base_sha": pull_requests::x1146().base_sha, "head_sha": pull_requests::x1146().head_sha, "hash": hash(&pull_requests::x1146())})
-					)
-				);
-			}
-			{
-				let state = states.pop().unwrap();
-				assert_eq!(state.pull_request_id, pull_requests::x1152_updated().id);
-				assert_eq!(
-					state.pull_request_indexer_state,
-					Some(
-						json!({"base_sha": pull_requests::x1152_updated().base_sha, "head_sha": pull_requests::x1152_updated().head_sha, "hash": hash(&pull_requests::x1152_updated())})
-					)
-				);
-			}
-		}
 
 		Ok(())
 	}
@@ -498,10 +411,4 @@ impl<'a> Test<'a> {
 		}
 		Ok(())
 	}
-}
-
-fn hash<T: Hash>(t: &T) -> u64 {
-	let mut s = DefaultHasher::new();
-	t.hash(&mut s);
-	s.finish()
 }

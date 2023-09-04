@@ -1,9 +1,15 @@
 #![allow(unused)]
+use std::{
+	collections::hash_map::DefaultHasher,
+	hash::{Hash, Hasher},
+};
+
 use anyhow::Result;
 use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
 use domain::{GithubPullRequest, GithubPullRequestStatus, GithubRepo, GithubUser};
 use event_listeners::models;
-use infrastructure::database::schema::github_pull_requests;
+use infrastructure::database::schema::{github_pull_request_indexes, github_pull_requests};
+use serde_json::json;
 
 use super::*;
 use crate::context::github_indexer::Context;
@@ -138,8 +144,25 @@ pub fn assert_indexed(context: &mut Context, expected: Vec<GithubPullRequest>) -
 	);
 
 	for (pull_request, expected) in pull_requests.into_iter().zip(expected) {
-		assert_eq(pull_request, expected);
+		assert_eq(pull_request, expected.clone());
+
+		let mut state: models::GithubPullRequestIndex = github_pull_request_indexes::table
+			.filter(github_pull_request_indexes::pull_request_id.eq(expected.id))
+			.get_result(&mut *connection)?;
+
+		assert_eq!(
+			state.pull_request_indexer_state,
+			Some(
+				json!({"base_sha": expected.base_sha, "head_sha": expected.head_sha, "hash": hash(&expected)})
+			)
+		);
 	}
 
 	Ok(())
+}
+
+fn hash<T: Hash>(t: &T) -> u64 {
+	let mut s = DefaultHasher::new();
+	t.hash(&mut s);
+	s.finish()
 }
