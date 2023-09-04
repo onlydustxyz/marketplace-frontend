@@ -1,3 +1,5 @@
+#![allow(unused)]
+
 use anyhow::Result;
 use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
 use domain::GithubUser;
@@ -6,7 +8,6 @@ use infrastructure::database::schema::github_users;
 
 use crate::context::github_indexer::Context;
 
-#[allow(unused)]
 pub fn anthony() -> GithubUser {
 	GithubUser {
 		id: 43467246u64.into(),
@@ -16,7 +17,6 @@ pub fn anthony() -> GithubUser {
 	}
 }
 
-#[allow(unused)]
 pub fn stan() -> GithubUser {
 	GithubUser {
 		id: 4435377u64.into(),
@@ -26,7 +26,6 @@ pub fn stan() -> GithubUser {
 	}
 }
 
-#[allow(unused)]
 pub fn alex() -> GithubUser {
 	GithubUser {
 		id: 10922658u64.into(),
@@ -36,7 +35,6 @@ pub fn alex() -> GithubUser {
 	}
 }
 
-#[allow(unused)]
 pub fn od_develop() -> GithubUser {
 	GithubUser {
 		id: 136718082u64.into(),
@@ -46,7 +44,6 @@ pub fn od_develop() -> GithubUser {
 	}
 }
 
-#[allow(unused)]
 pub fn ofux() -> GithubUser {
 	GithubUser {
 		id: 595505u64.into(),
@@ -56,19 +53,25 @@ pub fn ofux() -> GithubUser {
 	}
 }
 
-#[allow(unused)]
-pub fn assert_is_indexed(context: &mut Context, expected_user: GithubUser) -> Result<()> {
+#[track_caller]
+pub fn assert_eq(user: models::GithubUser, expected: GithubUser) {
+	assert_eq!(user.id, expected.id);
+	assert_eq!(user.login, expected.login);
+	assert_eq!(user.avatar_url, expected.avatar_url.to_string());
+	assert_eq!(user.html_url, expected.html_url.to_string());
+}
+
+#[track_caller]
+pub fn assert_indexed(context: &mut Context, expected: Vec<GithubUser>) -> Result<()> {
 	let mut connection = context.database.client.connection()?;
 
 	let mut users: Vec<models::GithubUser> =
-		github_users::table.order(github_users::id.desc()).load(&mut *connection)?;
-	assert_eq!(users.len(), 1, "Invalid user count");
-	{
-		let user = users.pop().unwrap();
-		assert_eq!(user.id, expected_user.id);
-		assert_eq!(user.login, expected_user.login);
-		assert_eq!(user.avatar_url, expected_user.avatar_url.to_string());
-		assert_eq!(user.html_url, expected_user.html_url.to_string());
+		github_users::table.order(github_users::login.asc()).load(&mut *connection)?;
+
+	assert_eq!(users.len(), expected.len(), "Invalid user count");
+
+	for (user, expected) in users.into_iter().zip(expected) {
+		assert_eq(user, expected);
 	}
 
 	Ok(())

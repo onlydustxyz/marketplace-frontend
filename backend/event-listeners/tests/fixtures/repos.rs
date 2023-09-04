@@ -1,3 +1,5 @@
+#![allow(unused)]
+
 use anyhow::Result;
 use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
 use domain::GithubRepo;
@@ -7,7 +9,6 @@ use serde_json::json;
 
 use crate::context::github_indexer::Context;
 
-#[allow(unused)]
 pub fn marketplace() -> GithubRepo {
 	GithubRepo {
 		id: 498695724u64.into(),
@@ -23,7 +24,6 @@ pub fn marketplace() -> GithubRepo {
 	}
 }
 
-#[allow(unused)]
 pub fn marketplace_fork() -> GithubRepo {
 	GithubRepo {
 		id: 676033192u64.into(),
@@ -39,40 +39,32 @@ pub fn marketplace_fork() -> GithubRepo {
 	}
 }
 
-#[allow(unused)]
-pub fn assert_is_indexed(context: &mut Context, expected_repo: GithubRepo) -> Result<()> {
-	let mut connection = context.database.client.connection()?;
-
-	let mut repos: Vec<models::GithubRepo> =
-		github_repos::table.order(github_repos::id.desc()).load(&mut *connection)?;
-	assert_eq!(repos.len(), 1, "Invalid repo count");
-	{
-		let repo = repos.pop().unwrap();
-		assert_eq!(repo.id, expected_repo.id);
-		assert_eq!(repo.owner, expected_repo.owner);
-		assert_eq!(repo.name, expected_repo.name);
-		assert_eq!(repo.html_url, expected_repo.html_url.to_string());
-		assert_eq!(repo.description, expected_repo.description);
-		assert_eq!(repo.fork_count, expected_repo.forks_count);
-		assert_eq!(repo.stars, expected_repo.stars);
-		assert_eq!(
-			repo.languages,
-			json!({
-				"TypeScript": 2405007,
-				"Rust": 574966,
-				"PLpgSQL": 26212,
-				"JavaScript": 23721,
-				"Shell": 12794,
-				"Makefile": 8658,
-				"CSS": 4475,
-				"HTML": 1539,
-				"Procfile": 507,
-				"Nix": 120
-			})
-		);
-		assert_eq!(repo.parent_id, expected_repo.parent.map(|p| p.id));
-		assert_eq!(repo.has_issues, expected_repo.has_issues);
-	}
+#[track_caller]
+pub fn assert_eq(repo: models::GithubRepo, expected: GithubRepo) -> Result<()> {
+	assert_eq!(repo.id, expected.id);
+	assert_eq!(repo.owner, expected.owner);
+	assert_eq!(repo.name, expected.name);
+	assert_eq!(repo.html_url, expected.html_url.to_string());
+	assert_eq!(repo.description, expected.description);
+	assert_eq!(repo.fork_count, expected.forks_count);
+	assert_eq!(repo.stars, expected.stars);
+	assert_eq!(
+		repo.languages,
+		json!({
+			"TypeScript": 2405007,
+			"Rust": 574966,
+			"PLpgSQL": 26212,
+			"JavaScript": 23721,
+			"Shell": 12794,
+			"Makefile": 8658,
+			"CSS": 4475,
+			"HTML": 1539,
+			"Procfile": 507,
+			"Nix": 120
+		})
+	);
+	assert_eq!(repo.parent_id, expected.parent.map(|p| p.id));
+	assert_eq!(repo.has_issues, expected.has_issues);
 
 	//TODO: test fork
 	// {
@@ -91,6 +83,22 @@ pub fn assert_is_indexed(context: &mut Context, expected_repo: GithubRepo) -> Re
 	// 	assert_eq!(repo.parent_id, Some(expected_repo.id));
 	// 	assert_eq!(repo.has_issues, repos::marketplace_fork().has_issues);
 	// }
+
+	Ok(())
+}
+
+#[track_caller]
+pub fn assert_indexed(context: &mut Context, expected: Vec<GithubRepo>) -> Result<()> {
+	let mut connection = context.database.client.connection()?;
+
+	let mut repos: Vec<models::GithubRepo> =
+		github_repos::table.order(github_repos::id.asc()).load(&mut *connection)?;
+
+	assert_eq!(repos.len(), expected.len(), "Invalid repo count");
+
+	for (repo, expected) in repos.into_iter().zip(expected) {
+		assert_eq(repo, expected);
+	}
 
 	Ok(())
 }

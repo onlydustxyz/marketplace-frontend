@@ -11,7 +11,7 @@ use fixtures::*;
 use infrastructure::database::{
 	enums::{ContributionStatus, ContributionType},
 	schema::{
-		contributions, github_pull_request_indexes, github_pull_requests, projects_contributors,
+		contributions, github_pull_request_indexes, projects_contributors,
 		projects_pending_contributors,
 	},
 	ImmutableRepository,
@@ -59,7 +59,7 @@ impl<'a> Test<'a> {
 		self.context.indexing_scheduler.run_once().await?;
 
 		// Then
-		repos::assert_is_indexed(&mut self.context, repos::marketplace())?;
+		repos::assert_indexed(&mut self.context, vec![repos::marketplace()])?;
 		issues::assert_indexed(
 			&mut self.context,
 			vec![issues::x1061(), issues::x1141(), issues::x1145()],
@@ -117,7 +117,7 @@ impl<'a> Test<'a> {
 		self.context.indexing_scheduler.run_once().await?;
 
 		// Then
-		repos::assert_is_indexed(&mut self.context, repos::marketplace())?;
+		repos::assert_indexed(&mut self.context, vec![repos::marketplace()])?;
 		issues::assert_indexed(
 			&mut self.context,
 			vec![issues::x1061(), issues::x1141(), issues::x1145()],
@@ -169,19 +169,14 @@ impl<'a> Test<'a> {
 	}
 
 	fn assert_marketplace_pulls_are_indexed_cycle_1(&mut self) -> Result<()> {
-		let mut connection = self.context.database.client.connection()?;
-
-		let mut pull_requests: Vec<models::github_pull_requests::Inner> =
-			github_pull_requests::table
-				.order(github_pull_requests::dsl::number.desc())
-				.load(&mut *connection)?;
-		assert_eq!(pull_requests.len(), 3, "Invalid pull requests count");
-
-		{
-			pull_requests::assert_eq(pull_requests.pop().unwrap(), pull_requests::x1144());
-			pull_requests::assert_eq(pull_requests.pop().unwrap(), pull_requests::x1146());
-			pull_requests::assert_eq(pull_requests.pop().unwrap(), pull_requests::x1152());
-		}
+		pull_requests::assert_indexed(
+			&mut self.context,
+			vec![
+				pull_requests::x1144(),
+				pull_requests::x1146(),
+				pull_requests::x1152(),
+			],
+		)?;
 
 		commits::assert_indexed(
 			&mut self.context,
@@ -228,19 +223,14 @@ impl<'a> Test<'a> {
 	}
 
 	fn assert_marketplace_pulls_are_indexed_cycle_2(&mut self) -> Result<()> {
-		let mut connection = self.context.database.client.connection()?;
-
-		let mut pull_requests: Vec<models::github_pull_requests::Inner> =
-			github_pull_requests::table
-				.order(github_pull_requests::dsl::number.desc())
-				.load(&mut *connection)?;
-		assert_eq!(pull_requests.len(), 3, "Invalid pull requests count");
-
-		{
-			pull_requests::assert_eq(pull_requests.pop().unwrap(), pull_requests::x1144());
-			pull_requests::assert_eq(pull_requests.pop().unwrap(), pull_requests::x1146());
-			pull_requests::assert_eq(pull_requests.pop().unwrap(), pull_requests::x1152_updated());
-		}
+		pull_requests::assert_indexed(
+			&mut self.context,
+			vec![
+				pull_requests::x1144(),
+				pull_requests::x1146(),
+				pull_requests::x1152_updated(),
+			],
+		)?;
 
 		commits::assert_indexed(
 			&mut self.context,

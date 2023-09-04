@@ -47,7 +47,7 @@ impl<'a> Test<'a> {
 			assert_eq!(response.status(), Status::Ok);
 		}
 
-		repos::assert_is_indexed(&mut self.context, repos::marketplace())?;
+		repos::assert_indexed(&mut self.context, vec![repos::marketplace()])?;
 
 		Ok(())
 	}
@@ -68,7 +68,7 @@ impl<'a> Test<'a> {
 			assert_eq!(response.status(), Status::Ok);
 		}
 
-		users::assert_is_indexed(&mut self.context, users::anthony())?;
+		users::assert_indexed(&mut self.context, vec![users::anthony()])?;
 
 		Ok(())
 	}
@@ -92,7 +92,7 @@ impl<'a> Test<'a> {
 			assert_eq!(response.status(), Status::Ok);
 		}
 
-		pull_requests::assert_is_indexed(&mut self.context, pull_requests::x1146())?;
+		pull_requests::assert_indexed(&mut self.context, vec![pull_requests::x1146()])?;
 
 		commits::assert_indexed(
 			&mut self.context,

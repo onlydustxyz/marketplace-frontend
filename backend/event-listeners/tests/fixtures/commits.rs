@@ -73,7 +73,7 @@ pub fn h() -> GithubCommit {
 }
 
 #[track_caller]
-pub fn assert(
+pub fn assert_eq(
 	commit: models::github_pull_requests::Commit,
 	expected: GithubCommit,
 	expected_pull_request_id: GithubPullRequestId,
@@ -84,6 +84,7 @@ pub fn assert(
 	assert_eq!(commit.html_url, expected.html_url.to_string());
 }
 
+#[track_caller]
 pub fn assert_indexed(
 	context: &mut Context,
 	expected: Vec<(GithubCommit, GithubPullRequestId)>,
@@ -96,12 +97,11 @@ pub fn assert_indexed(
 		))
 		.load(&mut *connection)?;
 
-	assert_eq!(commits.len(), expected.len(), "Invalid commits count");
+	assert_eq!(commits.len(), expected.len(), "Invalid commit count");
 
-	commits
-		.into_iter()
-		.zip(expected)
-		.for_each(|(commit, (expected, pr_id))| assert(commit, expected, pr_id));
+	for (commit, (expected, pr_id)) in commits.into_iter().zip(expected) {
+		assert_eq(commit, expected, pr_id);
+	}
 
 	Ok(())
 }

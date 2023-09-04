@@ -102,17 +102,6 @@ pub fn x1152_updated() -> GithubPullRequest {
 	}
 }
 
-pub fn assert_is_indexed(context: &mut Context, expected_pr: GithubPullRequest) -> Result<()> {
-	let mut connection = context.database.client.connection()?;
-
-	let mut pull_requests: Vec<models::github_pull_requests::Inner> = github_pull_requests::table
-		.order(github_pull_requests::id.desc())
-		.load(&mut *connection)?;
-	assert_eq!(pull_requests.len(), 1, "Invalid pull request count");
-	assert_eq(pull_requests.pop().unwrap(), expected_pr);
-	Ok(())
-}
-
 #[track_caller]
 pub fn assert_eq(pull_request: models::github_pull_requests::Inner, expected: GithubPullRequest) {
 	assert_eq!(pull_request.id, expected.id);
@@ -132,4 +121,25 @@ pub fn assert_eq(pull_request: models::github_pull_requests::Inner, expected: Gi
 		expected.closed_at.map(|d| d.naive_utc())
 	);
 	assert_eq!(pull_request.draft, expected.draft);
+}
+
+#[track_caller]
+pub fn assert_indexed(context: &mut Context, expected: Vec<GithubPullRequest>) -> Result<()> {
+	let mut connection = context.database.client.connection()?;
+
+	let mut pull_requests: Vec<models::github_pull_requests::Inner> = github_pull_requests::table
+		.order(github_pull_requests::number.asc())
+		.load(&mut *connection)?;
+
+	assert_eq!(
+		pull_requests.len(),
+		expected.len(),
+		"Invalid pull request count"
+	);
+
+	for (pull_request, expected) in pull_requests.into_iter().zip(expected) {
+		assert_eq(pull_request, expected);
+	}
+
+	Ok(())
 }

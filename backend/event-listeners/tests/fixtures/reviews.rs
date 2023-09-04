@@ -47,7 +47,7 @@ pub fn requested(status: GithubCodeReviewStatus) -> GithubCodeReview {
 }
 
 #[track_caller]
-pub fn assert(
+pub fn assert_eq(
 	review: models::github_pull_requests::Review,
 	expected: GithubCodeReview,
 	expected_pull_request_id: GithubPullRequestId,
@@ -62,6 +62,7 @@ pub fn assert(
 	);
 }
 
+#[track_caller]
 pub fn assert_indexed(
 	context: &mut Context,
 	expected: Vec<(GithubCodeReview, GithubPullRequestId)>,
@@ -75,12 +76,11 @@ pub fn assert_indexed(
 		))
 		.load(&mut *connection)?;
 
-	assert_eq!(reviews.len(), expected.len(), "Invalid reviews count");
+	assert_eq!(reviews.len(), expected.len(), "Invalid review count");
 
-	reviews
-		.into_iter()
-		.zip(expected)
-		.for_each(|(review, (expected, pr_id))| assert(review, expected, pr_id));
+	for (review, (expected, pr_id)) in reviews.into_iter().zip(expected) {
+		assert_eq(review, expected, pr_id);
+	}
 
 	Ok(())
 }
