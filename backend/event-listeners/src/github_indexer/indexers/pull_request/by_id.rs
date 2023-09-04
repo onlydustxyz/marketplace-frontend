@@ -48,12 +48,12 @@ impl fmt::Display for Indexer {
 	}
 }
 
-pub trait FromId {
-	fn from_id(self, github_fetch_service: Arc<dyn GithubFetchService>) -> Indexer;
+pub trait ById {
+	fn by_id(self, github_fetch_service: Arc<dyn GithubFetchService>) -> Indexer;
 }
 
-impl FromId for IndexerImpl<GithubPullRequest, Option<GithubFullPullRequest>> {
-	fn from_id(self, github_fetch_service: Arc<dyn GithubFetchService>) -> Indexer {
+impl ById for IndexerImpl<GithubPullRequest, Option<GithubFullPullRequest>> {
+	fn by_id(self, github_fetch_service: Arc<dyn GithubFetchService>) -> Indexer {
 		Indexer {
 			github_fetch_service,
 			indexer: self,

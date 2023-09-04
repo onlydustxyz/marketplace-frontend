@@ -8,11 +8,11 @@ use crate::models::{
 	github_pull_request_indexes, ContributionsRepository, GithubPullRequestRepository,
 };
 
+mod by_id;
 mod crawler;
-mod from_id;
 mod projector;
 
-pub use from_id::FromId;
+pub use by_id::ById;
 
 pub fn new(
 	github_fetch_service: Arc<dyn GithubFetchService>,

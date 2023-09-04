@@ -6,7 +6,7 @@ use olog::{error, IntoField};
 use rocket::State;
 
 use crate::github_indexer::indexers::{
-	self, contributors_projector::ContributorsProjector, pull_request::FromId, Indexer,
+	self, contributors_projector::ContributorsProjector, pull_request::ById, Indexer,
 };
 
 #[post("/repo/<repo_id>/pull_request/<pr_number>")]
@@ -31,7 +31,7 @@ pub async fn index(
 			database,
 		),
 	)
-	.from_id(github);
+	.by_id(github);
 
 	indexer.index(&(repo_id.into(), pr_number.into()).into()).await.map_err(|e| {
 		let error_message = "Error while indexing Github pull request";
