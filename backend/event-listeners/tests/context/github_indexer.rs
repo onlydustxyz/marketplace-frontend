@@ -1,8 +1,9 @@
 use std::env;
 
 use anyhow::Result;
-use event_listeners::{github_indexer::Scheduler, Config};
+use event_listeners::{github_indexer::Scheduler, presentation::bootstrap, Config};
 use presentation::http;
+use rocket::local::asynchronous::Client;
 use rstest::fixture;
 use testcontainers::clients::Cli;
 use testing::context::{database, github};
@@ -14,6 +15,7 @@ pub fn docker() -> Cli {
 }
 
 pub struct Context<'a> {
+	pub http_client: Client,
 	pub database: database::Context<'a>,
 	pub indexing_scheduler: Scheduler,
 	pub github: github::Context<'a>,
@@ -48,6 +50,7 @@ impl<'a> Context<'a> {
 		};
 
 		Ok(Self {
+			http_client: Client::tracked(bootstrap(config.clone()).await?).await?,
 			database,
 			indexing_scheduler: Scheduler::new(config).expect("Failed to init indexing scheduler"),
 			github,

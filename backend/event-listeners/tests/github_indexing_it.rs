@@ -15,7 +15,7 @@ use infrastructure::database::{
 	enums::{self, ContributionStatus, ContributionType},
 	schema::{
 		contributions, github_issues, github_pull_request_commits, github_pull_request_indexes,
-		github_pull_request_reviews, github_pull_requests, github_repos, projects_contributors,
+		github_pull_request_reviews, github_pull_requests, projects_contributors,
 		projects_pending_contributors,
 	},
 	ImmutableRepository,
@@ -25,7 +25,10 @@ use rstest::rstest;
 use serde_json::json;
 use testcontainers::clients::Cli;
 
-use crate::context::{docker, github_indexer::Context};
+use crate::{
+	context::{docker, github_indexer::Context},
+	fixtures::repos::marketplace,
+};
 
 mod context;
 mod fixtures;
@@ -63,7 +66,7 @@ impl<'a> Test<'a> {
 		self.context.indexing_scheduler.run_once().await?;
 
 		// Then
-		self.assert_marketplace_repo_is_indexed()?;
+		repos::assert_is_indexed(&mut self.context, repos::marketplace())?;
 		self.assert_marketplace_issues_are_indexed()?;
 		self.assert_marketplace_pulls_are_indexed_cycle_1()?;
 		self.assert_marketplace_contributions_are_up_to_date(1)?;
@@ -118,7 +121,7 @@ impl<'a> Test<'a> {
 		self.context.indexing_scheduler.run_once().await?;
 
 		// Then
-		self.assert_marketplace_repo_is_indexed()?;
+		repos::assert_is_indexed(&mut self.context, marketplace())?;
 		self.assert_marketplace_issues_are_indexed()?;
 		self.assert_marketplace_pulls_are_indexed_cycle_2()?;
 		self.assert_marketplace_contributions_are_up_to_date(2)?;
@@ -162,61 +165,6 @@ impl<'a> Test<'a> {
 				);
 			}
 		}
-
-		Ok(())
-	}
-
-	fn assert_marketplace_repo_is_indexed(&mut self) -> Result<()> {
-		let mut connection = self.context.database.client.connection()?;
-
-		let mut repos: Vec<models::GithubRepo> =
-			github_repos::table.order(github_repos::id.desc()).load(&mut *connection)?;
-		assert_eq!(repos.len(), 1, "Invalid repo count");
-		{
-			let repo = repos.pop().unwrap();
-			assert_eq!(repo.id, repos::marketplace().id);
-			assert_eq!(repo.owner, repos::marketplace().owner);
-			assert_eq!(repo.name, repos::marketplace().name);
-			assert_eq!(repo.html_url, repos::marketplace().html_url.to_string());
-			assert_eq!(repo.description, repos::marketplace().description);
-			assert_eq!(repo.fork_count, repos::marketplace().forks_count);
-			assert_eq!(repo.stars, repos::marketplace().stars);
-			assert_eq!(
-				repo.languages,
-				json!({
-					"TypeScript": 2405007,
-					"Rust": 574966,
-					"PLpgSQL": 26212,
-					"JavaScript": 23721,
-					"Shell": 12794,
-					"Makefile": 8658,
-					"CSS": 4475,
-					"HTML": 1539,
-					"Procfile": 507,
-					"Nix": 120
-				})
-			);
-			assert_eq!(repo.parent_id, None);
-			assert_eq!(repo.has_issues, repos::marketplace().has_issues);
-		}
-
-		//TODO: test fork
-		// {
-		// 	let repo = repos.pop().unwrap();
-		// 	assert_eq!(repo.id, repos::marketplace_fork().id);
-		// 	assert_eq!(repo.owner, repos::marketplace_fork().owner);
-		// 	assert_eq!(repo.name, repos::marketplace_fork().name);
-		// 	assert_eq!(
-		// 		repo.html_url,
-		// 		repos::marketplace_fork().html_url.to_string()
-		// 	);
-		// 	assert_eq!(repo.description, repos::marketplace_fork().description);
-		// 	assert_eq!(repo.fork_count, repos::marketplace_fork().forks_count);
-		// 	assert_eq!(repo.stars, repos::marketplace_fork().stars);
-		// 	assert_eq!(repo.languages, json!({}));
-		// 	assert_eq!(repo.parent_id, Some(repos::marketplace().id));
-		// 	assert_eq!(repo.has_issues, repos::marketplace_fork().has_issues);
-		// }
 
 		Ok(())
 	}
