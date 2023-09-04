@@ -1,8 +1,15 @@
-use domain::{GithubCodeReview, GithubCodeReviewOutcome, GithubCodeReviewStatus};
+#![allow(unused)]
+use anyhow::Result;
+use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
+use domain::{
+	GithubCodeReview, GithubCodeReviewOutcome, GithubCodeReviewStatus, GithubPullRequestId,
+};
+use event_listeners::models;
+use infrastructure::database::schema::github_pull_request_reviews;
 
 use super::*;
+use crate::context::github_indexer::Context;
 
-#[allow(unused)]
 pub fn approved(status: GithubCodeReviewStatus) -> GithubCodeReview {
 	GithubCodeReview {
 		reviewer: users::anthony(),
@@ -12,7 +19,6 @@ pub fn approved(status: GithubCodeReviewStatus) -> GithubCodeReview {
 	}
 }
 
-#[allow(unused)]
 pub fn change_requested(status: GithubCodeReviewStatus) -> GithubCodeReview {
 	GithubCodeReview {
 		reviewer: users::ofux(),
@@ -22,7 +28,6 @@ pub fn change_requested(status: GithubCodeReviewStatus) -> GithubCodeReview {
 	}
 }
 
-#[allow(unused)]
 pub fn commented(status: GithubCodeReviewStatus) -> GithubCodeReview {
 	GithubCodeReview {
 		reviewer: users::alex(),
@@ -32,7 +37,6 @@ pub fn commented(status: GithubCodeReviewStatus) -> GithubCodeReview {
 	}
 }
 
-#[allow(unused)]
 pub fn requested(status: GithubCodeReviewStatus) -> GithubCodeReview {
 	GithubCodeReview {
 		reviewer: users::anthony(),
@@ -40,4 +44,43 @@ pub fn requested(status: GithubCodeReviewStatus) -> GithubCodeReview {
 		outcome: None,
 		submitted_at: None,
 	}
+}
+
+#[track_caller]
+pub fn assert_eq(
+	review: models::github_pull_requests::Review,
+	expected: GithubCodeReview,
+	expected_pull_request_id: GithubPullRequestId,
+) {
+	assert_eq!(review.pull_request_id, expected_pull_request_id);
+	assert_eq!(review.reviewer_id, expected.reviewer.id);
+	assert_eq!(review.status, expected.status.into());
+	assert_eq!(review.outcome, expected.outcome.map(|o| o.into()));
+	assert_eq!(
+		review.submitted_at,
+		expected.submitted_at.map(|d| d.naive_utc())
+	);
+}
+
+#[track_caller]
+pub fn assert_indexed(
+	context: &mut Context,
+	expected: Vec<(GithubCodeReview, GithubPullRequestId)>,
+) -> Result<()> {
+	let mut connection = context.database.client.connection()?;
+	let mut reviews: Vec<models::github_pull_requests::Review> = github_pull_request_reviews::table
+		.order((
+			github_pull_request_reviews::dsl::pull_request_id.asc(),
+			github_pull_request_reviews::dsl::status.asc(),
+			github_pull_request_reviews::dsl::reviewer_id.asc(),
+		))
+		.load(&mut *connection)?;
+
+	assert_eq!(reviews.len(), expected.len(), "Invalid review count");
+
+	for (review, (expected, pr_id)) in reviews.into_iter().zip(expected) {
+		assert_eq(review, expected, pr_id);
+	}
+
+	Ok(())
 }

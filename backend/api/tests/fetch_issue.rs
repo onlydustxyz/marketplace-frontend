@@ -7,7 +7,11 @@ use rocket::http::{Header, Status};
 use rstest::rstest;
 use testcontainers::clients::Cli;
 
-use crate::context::{docker, utils::jwt, Context};
+use crate::context::{
+	docker,
+	utils::{api_key_header, jwt},
+	Context,
+};
 
 mod context;
 mod models;
@@ -41,6 +45,7 @@ impl<'a> Test<'a> {
 			.context
 			.http_client
 			.get(resource.to_string())
+			.header(api_key_header())
 			.header(Header::new(
 				"Authorization",
 				format!("Bearer {}", jwt(None)),

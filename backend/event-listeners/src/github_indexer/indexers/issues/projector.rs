@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use async_trait::async_trait;
 use derive_new::new;
-use domain::{GithubIssue, GithubRepoId};
+use domain::GithubIssue;
 use infrastructure::database::Repository;
 
 use super::{super::error::Result, Projector};
@@ -19,15 +19,17 @@ pub struct IssuesProjector {
 }
 
 #[async_trait]
-impl Projector<GithubRepoId, Vec<GithubIssue>> for IssuesProjector {
-	async fn perform_projections(&self, id: &GithubRepoId, data: Vec<GithubIssue>) -> Result<()> {
+impl Projector<Vec<GithubIssue>> for IssuesProjector {
+	async fn perform_projections(&self, data: Vec<GithubIssue>) -> Result<()> {
+		let repo_id = data.first().map(|issue| issue.repo_id);
+
 		for issue in &data {
 			let issue: crate::models::GithubIssue = issue.clone().into();
 			self.github_issues_repository.upsert(issue.clone())?;
 			self.contributions_repository.upsert_from_github_issue(issue.clone())?;
 		}
-		if !data.is_empty() {
-			self.contributors_projector.perform_projections(id, ()).await?;
+		if let Some(repo_id) = repo_id {
+			self.contributors_projector.perform_projections(repo_id).await?;
 		}
 		Ok(())
 	}

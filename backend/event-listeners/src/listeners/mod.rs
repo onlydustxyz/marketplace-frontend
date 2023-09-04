@@ -18,7 +18,9 @@ use url::{ParseError, Url};
 use webhook::EventWebHook;
 
 use self::logger::Logger;
-use crate::{Config, GITHUB_EVENTS_EXCHANGE};
+use crate::Config;
+
+pub const GITHUB_EVENTS_EXCHANGE: &str = "github-events";
 
 pub async fn bootstrap(config: Config) -> Result<Vec<JoinHandle<()>>> {
 	let reqwest = reqwest::Client::new();

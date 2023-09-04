@@ -24,7 +24,6 @@
             query: Query
             mutation: Mutation
           }
-          scalar Amount
           scalar EthereumAddress
           scalar EthereumName
           scalar Iban
@@ -34,20 +33,11 @@
             acceptProjectLeaderInvitation(invitationId: Uuid!): Boolean!
             acceptTermsAndConditions: Uuid!
             applyToProject(projectId: Uuid!): Uuid!
-            cancelPaymentRequest(projectId: Uuid!, paymentId: Uuid!): Payment!
             ignoreIssue(projectId: Uuid!, repoId: Int!, issueNumber: Int!): Boolean!
             markInvoiceAsReceived(paymentReferences: [PaymentReference!]!): Int!
             markProfileWizardAsDisplayed: Uuid!
-            requestPayment(projectId: Uuid!, recipientId: Int!, amountInUsd: Int!, hoursWorked: Int!, reason: Reason!): Payment!
             unignoreIssue(projectId: Uuid!, repoId: Int!, issueNumber: Int!): Boolean!
             updatePayoutInfo(location: Location, identity: IdentityInput, payoutSettings: PayoutSettingsInput): Uuid!
-          }
-          type Payment {
-            amount: Amount!
-            budgetId: Uuid!
-            commandId: Uuid!
-            paymentId: Uuid!
-            projectId: Uuid!
           }
           type Query {
             releaseDate: String!
@@ -94,11 +84,4 @@
           input PersonIdentity {
             firstname: String
             lastname: String
-          }
-          input Reason {
-            workItems: [WorkItem!]!
-          }
-          input WorkItem {
-            issueNumber: Int!
-            repoId: Int!
           }

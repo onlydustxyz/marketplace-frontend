@@ -1,7 +1,7 @@
 default:
   http:
     api_keys:
-      graphql: $BACKEND_GRAPHQL_API_KEY
+      - $BACKEND_GRAPHQL_API_KEY
   github:
     base_url: $GITHUB_BASE_URL
     personal_access_tokens: $GITHUB_PAT

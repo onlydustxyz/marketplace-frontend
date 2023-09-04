@@ -1,7 +1,7 @@
 mod repository;
 
 use diesel::Identifiable;
-use domain::{GithubIssueNumber, GithubRepoId, PaymentId};
+use domain::{GithubRepoId, PaymentId};
 use infrastructure::database::schema::work_items;
 
 pub use self::repository::Repository;
@@ -11,11 +11,11 @@ pub use self::repository::Repository;
 pub struct WorkItem {
 	pub payment_id: PaymentId,
 	pub repo_id: GithubRepoId,
-	pub issue_number: GithubIssueNumber,
+	pub issue_number: i64,
 }
 
 impl Identifiable for WorkItem {
-	type Id = (PaymentId, GithubRepoId, GithubIssueNumber);
+	type Id = (PaymentId, GithubRepoId, i64);
 
 	fn id(self) -> Self::Id {
 		(self.payment_id, self.repo_id, self.issue_number)

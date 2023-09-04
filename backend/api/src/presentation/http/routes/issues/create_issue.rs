@@ -1,7 +1,7 @@
 use common_domain::{AggregateRootRepository, Project};
 use http_api_problem::HttpApiProblem;
 use olog::{error, IntoField};
-use presentation::http::guards::{Claims, Role};
+use presentation::http::guards::{ApiKey, Claims, Role};
 use reqwest::StatusCode;
 use rocket::{serde::json::Json, State};
 use serde::Deserialize;
@@ -21,16 +21,18 @@ pub struct Request {
 	description: String,
 }
 
-#[post("/api/issues", data = "<request>", format = "application/json")]
+#[post("/issues", data = "<request>", format = "application/json")]
 pub async fn create_and_close_issue(
+	_api_key: ApiKey,
 	claims: Claims,
+	role: Role,
 	request: Json<Request>,
 	create_github_issue_usecase: &State<application::dusty_bot::create_and_close_issue::Usecase>,
 	project_repository: &State<AggregateRootRepository<Project>>,
 ) -> Result<Json<Response>, HttpApiProblem> {
 	let caller_id = claims.user_id;
 
-	if !Role::from(claims)
+	if !role
 		.to_permissions((*project_repository).clone())
 		.can_create_github_issue_for_project(&request.project_id.into())
 	{

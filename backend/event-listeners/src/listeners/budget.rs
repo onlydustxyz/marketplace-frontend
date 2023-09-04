@@ -3,7 +3,9 @@ use std::{convert::TryFrom, sync::Arc};
 use anyhow::{anyhow, Result};
 use async_trait::async_trait;
 use derive_more::Constructor;
-use domain::{BudgetEvent, Event, PaymentEvent, ProjectEvent, SubscriberCallbackError};
+use domain::{
+	BudgetEvent, Event, PaymentEvent, PaymentWorkItem, ProjectEvent, SubscriberCallbackError,
+};
 use infrastructure::database::Repository;
 use rust_decimal::{prelude::ToPrimitive, Decimal};
 use tracing::instrument;
@@ -81,15 +83,22 @@ impl EventListener<Event> for Projector {
 							hours_worked: i32::try_from(duration_worked.num_hours()).unwrap_or(0),
 						})?;
 
-						reason.work_items.iter().try_for_each(
+						reason.work_items.into_iter().try_for_each(
 							|work_item| -> Result<(), SubscriberCallbackError> {
+								let (repo_id, number) = match work_item {
+									PaymentWorkItem::Issue { repo_id, number } =>
+										(repo_id, number.into()),
+									PaymentWorkItem::CodeReview { repo_id, number }
+									| PaymentWorkItem::PullRequest { repo_id, number } => (repo_id, number.into()),
+								};
+
 								self.work_item_repository.try_insert(WorkItem {
 									payment_id,
-									repo_id: work_item.repo_id,
-									issue_number: work_item.issue_number,
+									repo_id,
+									issue_number: number,
 								})?;
-								self.github_repo_index_repository
-									.start_indexing(work_item.repo_id)?;
+
+								self.github_repo_index_repository.start_indexing(repo_id)?;
 								Ok(())
 							},
 						)?;

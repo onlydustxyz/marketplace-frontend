@@ -54,6 +54,8 @@ pub struct Claims {
 	#[serde(rename = "x-hasura-githubUserId")]
 	#[serde_as(as = "DisplayFromStr")]
 	pub github_user_id: u64,
+	#[serde(rename = "x-hasura-githubAccessToken")]
+	pub github_access_token: String,
 	#[serde(
 		rename = "x-hasura-projectsLeaded",
 		deserialize_with = "deserializer::postgres_array",
@@ -140,11 +142,8 @@ fn impersonate(impersonator_claims: &Claims, impersonation_claims: &str) -> Outc
 				"Impersonation in progress"
 			);
 			Outcome::Success(Claims {
-				user_id: claims.user_id,
-				github_user_id: claims.github_user_id,
-				projects_leaded: claims.projects_leaded,
-				admin: claims.admin,
 				impersonated_by: Some(Box::new(impersonator_claims.clone())),
+				..claims
 			})
 		},
 		Err(error) => Outcome::Failure((error.clone().into(), error)),
@@ -196,8 +195,8 @@ mod test {
 
 	use super::*;
 
-	static JWT: &str = "eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLXByb2plY3RzTGVhZGVkIjoie1wiMjk4YTU0N2YtZWNiNi00YWIyLTg5NzUtNjhmNGU5YmY3YjM5XCJ9IiwieC1oYXN1cmEtZ2l0aHViVXNlcklkIjoiNDM0NjcyNDYiLCJ4LWhhc3VyYS1naXRodWJBY2Nlc3NUb2tlbiI6Imdob19ERjYxVGhveDhKcm5LeDlMMndWNGxMWDl2QWtJYmIyajBiTHQiLCJ4LWhhc3VyYS1hbGxvd2VkLXJvbGVzIjpbIm1lIiwicHVibGljIiwicmVnaXN0ZXJlZF91c2VyIl0sIngtaGFzdXJhLWRlZmF1bHQtcm9sZSI6InJlZ2lzdGVyZWRfdXNlciIsIngtaGFzdXJhLXVzZXItaWQiOiI3NDdlNjYzZi00ZTY4LTRiNDItOTY1Yi1iNWFlYmVkY2Q0YzQiLCJ4LWhhc3VyYS11c2VyLWlzLWFub255bW91cyI6ImZhbHNlIn0sInN1YiI6Ijc0N2U2NjNmLTRlNjgtNGI0Mi05NjViLWI1YWViZWRjZDRjNCIsImlhdCI6MTY4NzUyODkzMSwiZXhwIjozNjg3NTI5ODMxLCJpc3MiOiJoYXN1cmEtYXV0aC11bml0LXRlc3RzIn0._WFzxJyqWdrByTw82xFV4nOvf6ZOIuowPLCcc1VcZAw";
-	static JWT_ADMIN: &str = "eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLXByb2plY3RzTGVhZGVkIjoie1wiMjk4YTU0N2YtZWNiNi00YWIyLTg5NzUtNjhmNGU5YmY3YjM5XCJ9IiwieC1oYXN1cmEtZ2l0aHViVXNlcklkIjoiNDM0NjcyNDYiLCJ4LWhhc3VyYS1naXRodWJBY2Nlc3NUb2tlbiI6Imdob19ERjYxVGhveDhKcm5LeDlMMndWNGxMWDl2QWtJYmIyajBiTHQiLCJ4LWhhc3VyYS1hbGxvd2VkLXJvbGVzIjpbIm1lIiwicHVibGljIiwicmVnaXN0ZXJlZF91c2VyIl0sIngtaGFzdXJhLWRlZmF1bHQtcm9sZSI6InJlZ2lzdGVyZWRfdXNlciIsIngtaGFzdXJhLXVzZXItaWQiOiI3NDdlNjYzZi00ZTY4LTRiNDItOTY1Yi1iNWFlYmVkY2Q0YzQiLCJ4LWhhc3VyYS11c2VyLWlzLWFub255bW91cyI6ImZhbHNlIiwieC1oYXN1cmEtb2RBZG1pbiI6InRydWUifSwic3ViIjoiNzQ3ZTY2M2YtNGU2OC00YjQyLTk2NWItYjVhZWJlZGNkNGM0IiwiaWF0IjoxNjg3NTI4OTMxLCJleHAiOjM2ODc1Mjk4MzEsImlzcyI6Imhhc3VyYS1hdXRoLXVuaXQtdGVzdHMifQ.KVg_1WKaJOZApmK92KZ11t2tYw7PKUEKY9ZSU5Lf3XE";
+	static JWT: &str = "eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLXByb2plY3RzTGVhZGVkIjoie1wiMjk4YTU0N2YtZWNiNi00YWIyLTg5NzUtNjhmNGU5YmY3YjM5XCJ9IiwieC1oYXN1cmEtZ2l0aHViVXNlcklkIjoiNDM0NjcyNDYiLCJ4LWhhc3VyYS1naXRodWJBY2Nlc3NUb2tlbiI6IkdJVEhVQl9QQVQiLCJ4LWhhc3VyYS1hbGxvd2VkLXJvbGVzIjpbIm1lIiwicHVibGljIiwicmVnaXN0ZXJlZF91c2VyIl0sIngtaGFzdXJhLWRlZmF1bHQtcm9sZSI6InJlZ2lzdGVyZWRfdXNlciIsIngtaGFzdXJhLXVzZXItaWQiOiI3NDdlNjYzZi00ZTY4LTRiNDItOTY1Yi1iNWFlYmVkY2Q0YzQiLCJ4LWhhc3VyYS11c2VyLWlzLWFub255bW91cyI6ImZhbHNlIn0sInN1YiI6Ijc0N2U2NjNmLTRlNjgtNGI0Mi05NjViLWI1YWViZWRjZDRjNCIsImlhdCI6MTY4NzUyODkzMSwiZXhwIjozNjg3NTI5ODMxLCJpc3MiOiJoYXN1cmEtYXV0aC11bml0LXRlc3RzIn0.ogsrHjSCuqTS5P1fo4Z3Qe4aMnZeRJ2hWDpDKoK6Fmo";
+	static JWT_ADMIN: &str = "eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLXByb2plY3RzTGVhZGVkIjoie1wiMjk4YTU0N2YtZWNiNi00YWIyLTg5NzUtNjhmNGU5YmY3YjM5XCJ9IiwieC1oYXN1cmEtZ2l0aHViVXNlcklkIjoiNDM0NjcyNDYiLCJ4LWhhc3VyYS1naXRodWJBY2Nlc3NUb2tlbiI6IiIsIngtaGFzdXJhLWFsbG93ZWQtcm9sZXMiOlsibWUiLCJwdWJsaWMiLCJyZWdpc3RlcmVkX3VzZXIiXSwieC1oYXN1cmEtZGVmYXVsdC1yb2xlIjoicmVnaXN0ZXJlZF91c2VyIiwieC1oYXN1cmEtdXNlci1pZCI6Ijc0N2U2NjNmLTRlNjgtNGI0Mi05NjViLWI1YWViZWRjZDRjNCIsIngtaGFzdXJhLXVzZXItaXMtYW5vbnltb3VzIjoiZmFsc2UiLCJ4LWhhc3VyYS1vZEFkbWluIjoidHJ1ZSJ9LCJzdWIiOiI3NDdlNjYzZi00ZTY4LTRiNDItOTY1Yi1iNWFlYmVkY2Q0YzQiLCJpYXQiOjE2ODc1Mjg5MzEsImV4cCI6MzY4NzUyOTgzMSwiaXNzIjoiaGFzdXJhLWF1dGgtdW5pdC10ZXN0cyJ9.fEUyBC6-tCQO1NclKwaseonDqKRIboTFsWzju370nBs";
 	static SECRET: &str = r#"{"type":"HS256","key":"some-fake-secret-for-unit-tests-some-fake-secret-for-unit-tests","issuer":"hasura-auth-unit-tests"}"#;
 
 	#[fixture]
@@ -216,6 +215,7 @@ mod test {
 			projects_leaded,
 			admin: false,
 			impersonated_by: None,
+			github_access_token: String::from("GITHUB_PAT"),
 		}
 	}
 
@@ -229,6 +229,7 @@ mod test {
 			projects_leaded,
 			admin: true,
 			impersonated_by: None,
+			github_access_token: Default::default(),
 		}
 	}
 
@@ -246,7 +247,7 @@ mod test {
 			request.add_header(Header::new("Authorization", format!("Bearer {JWT}")));
 
 			let result = request.guard::<Claims>().await;
-			assert_eq!(result, Outcome::Success(claims));
+			assert_eq!(result, Outcome::Success(claims),);
 		})
 		.await;
 	}
@@ -292,7 +293,8 @@ mod test {
 				IMPERSONATION_CLAIMS_HEADER,
 				json!({
 					"x-hasura-user-id": "837fc126-20ab-4226-bbda-cb63932f2292",
-					"x-hasura-githubUserId":"595505"
+					"x-hasura-githubUserId": "595505",
+					"x-hasura-githubAccessToken": "IMPERSONATED_GITHUB_PAT"
 				})
 				.to_string(),
 			));
@@ -306,6 +308,7 @@ mod test {
 					projects_leaded: HashSet::new(),
 					admin: false,
 					impersonated_by: Some(Box::new(claims_admin)),
+					github_access_token: String::from("IMPERSONATED_GITHUB_PAT"),
 				})
 			);
 		})
@@ -368,6 +371,7 @@ mod test {
 				Uuid::from_str("747e663f-4e68-4b42-965b-b5aebedcd4c4").unwrap()
 			);
 			assert_eq!(jwt.claims.github_user_id, 43467246);
+			assert_eq!(jwt.claims.github_access_token, String::from("GITHUB_PAT"));
 		});
 	}
 
@@ -389,7 +393,8 @@ mod test {
 			&claims_admin,
 			&json!({
 				"x-hasura-user-id": "837fc126-20ab-4226-bbda-cb63932f2292",
-				"x-hasura-githubUserId":"595505"
+				"x-hasura-githubUserId": "595505",
+				"x-hasura-githubAccessToken": "IMPERSONATED_GITHUB_PAT"
 			})
 			.to_string(),
 		)
@@ -402,6 +407,7 @@ mod test {
 				projects_leaded: HashSet::new(),
 				admin: false,
 				impersonated_by: Some(Box::new(claims_admin)),
+				github_access_token: String::from("IMPERSONATED_GITHUB_PAT"),
 			}
 		)
 	}
@@ -411,9 +417,10 @@ mod test {
 		let impersonated_claims = impersonate(&claims_admin,
 			&json!({
 				"x-hasura-user-id": "837fc126-20ab-4226-bbda-cb63932f2292",
-				"x-hasura-githubUserId":"595505",
-				"x-hasura-projectsLeaded":"{\"e41f44a2-464c-4c96-817f-81acb06b2523\",\"61076487-6ec5-4751-ab0d-3b876c832239\",\"c66b929a-664d-40b9-96c4-90d3efd32a3c\"}"
-			}).to_string()
+				"x-hasura-githubUserId": "595505",
+				"x-hasura-projectsLeaded": "{\"e41f44a2-464c-4c96-817f-81acb06b2523\",\"61076487-6ec5-4751-ab0d-3b876c832239\",\"c66b929a-664d-40b9-96c4-90d3efd32a3c\"}",
+				"x-hasura-githubAccessToken": "IMPERSONATED_GITHUB_PAT"
+				}).to_string()
 		).unwrap();
 
 		let mut expected_projects_leaded = HashSet::new();
@@ -432,6 +439,7 @@ mod test {
 				projects_leaded: expected_projects_leaded,
 				admin: false,
 				impersonated_by: Some(Box::new(claims_admin)),
+				github_access_token: String::from("IMPERSONATED_GITHUB_PAT"),
 			}
 		)
 	}
