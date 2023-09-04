@@ -4,9 +4,9 @@ use web3::types::H160;
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(transparent)]
-pub struct EthereumAddress(String);
+pub struct Address(String);
 
-impl Default for EthereumAddress {
+impl Default for Address {
 	fn default() -> Self {
 		Self("0x00".to_string())
 	}
@@ -24,7 +24,7 @@ pub enum EthereumAddressFromStrError {
 	InvalidCharacter,
 }
 
-impl TryFrom<&str> for EthereumAddress {
+impl TryFrom<&str> for Address {
 	type Error = EthereumAddressFromStrError;
 
 	fn try_from(str: &str) -> Result<Self, Self::Error> {
@@ -60,7 +60,7 @@ impl TryFrom<&str> for EthereumAddress {
 #[juniper::graphql_scalar(
 	description = "A `0x` prefixed hexadecimal string representing 20 bytes of data"
 )]
-impl<S> GraphQLScalar for EthereumAddress
+impl<S> GraphQLScalar for Address
 where
 	S: juniper::ScalarValue,
 {
@@ -69,7 +69,7 @@ where
 	}
 
 	fn from_input_value(value: &juniper::InputValue) -> Option<Self> {
-		EthereumAddress::try_from(value.as_string_value()?).ok()
+		Address::try_from(value.as_string_value()?).ok()
 	}
 
 	fn from_str<'a>(value: juniper::ScalarToken<'a>) -> juniper::ParseScalarResult<'a, S> {
@@ -77,7 +77,7 @@ where
 	}
 }
 
-impl From<H160> for EthereumAddress {
+impl From<H160> for Address {
 	fn from(address: H160) -> Self {
 		Self(format!("{address:#x}"))
 	}
@@ -109,14 +109,14 @@ mod test {
 	#[case(InputValue::list(vec![InputValue::Scalar(DefaultScalarValue::String("0x0".to_string()))]), false)]
 	#[case(InputValue::<DefaultScalarValue>::Object(Default::default()), false)]
 	fn is_valid_ethereum_address(#[case] input: juniper::InputValue, #[case] expect: bool) {
-		assert_eq!(EthereumAddress::from_input_value(&input).is_some(), expect)
+		assert_eq!(Address::from_input_value(&input).is_some(), expect)
 	}
 
 	#[rstest]
 	fn from_h160() {
 		const RAW_ADDR: &str = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045";
 		let address_as_h160: H160 = RAW_ADDR.parse().unwrap();
-		let address_as_eth: EthereumAddress = RAW_ADDR.try_into().unwrap();
-		assert_eq!(EthereumAddress::from(address_as_h160), address_as_eth);
+		let address_as_eth: Address = RAW_ADDR.try_into().unwrap();
+		assert_eq!(Address::from(address_as_h160), address_as_eth);
 	}
 }

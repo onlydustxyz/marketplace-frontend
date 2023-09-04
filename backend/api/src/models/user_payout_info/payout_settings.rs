@@ -7,7 +7,7 @@ use diesel::{
 	serialize::{Output, ToSql},
 	sql_types::Jsonb,
 };
-use domain::{EthereumIdentity, Iban};
+use domain::{blockchain::ethereum, Iban};
 use juniper::GraphQLInputObject;
 use serde::{Deserialize, Serialize};
 
@@ -15,7 +15,7 @@ use serde::{Deserialize, Serialize};
 #[diesel(sql_type = diesel::sql_types::Jsonb)]
 pub enum PayoutSettings {
 	WireTransfer(BankAddress),
-	EthTransfer(EthereumIdentity),
+	EthTransfer(ethereum::Identity),
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, GraphQLInputObject, PartialEq, Eq)]

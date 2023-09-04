@@ -6,3 +6,5 @@ pub enum Network {
 }
 
 pub type TransactionHash = String;
+
+pub mod ethereum;

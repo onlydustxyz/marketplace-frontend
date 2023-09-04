@@ -66,7 +66,7 @@ impl Usecase {
 
 #[cfg(test)]
 mod tests {
-	use domain::{EthereumIdentity, EthereumName};
+	use domain::blockchain::ethereum;
 	use infrastructure::database::{ImmutableRepository, Result};
 	use mockall::{mock, predicate::eq};
 	use rstest::{fixture, rstest};
@@ -96,9 +96,9 @@ mod tests {
 
 	#[fixture]
 	fn payout_settings() -> PayoutSettings {
-		PayoutSettings::EthTransfer(EthereumIdentity::Name(
-			EthereumName::new(Default::default()),
-		))
+		PayoutSettings::EthTransfer(ethereum::Identity::Name(ethereum::Name::new(
+			Default::default(),
+		)))
 	}
 
 	#[rstest]

@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use anyhow::{anyhow, Result};
 use derive_more::Constructor;
-use domain::EthereumIdentity;
+use domain::blockchain::ethereum;
 #[cfg(test)]
 use mockall::mock;
 
@@ -16,7 +16,7 @@ pub struct IsValid {
 impl IsValid {
 	pub async fn is_satisfied_by(&self, payout_settings: &PayoutSettings) -> Result<bool> {
 		match payout_settings {
-			PayoutSettings::EthTransfer(EthereumIdentity::Name(ens_name)) => {
+			PayoutSettings::EthTransfer(ethereum::Identity::Name(ens_name)) => {
 				match self.ens_client.eth_address(ens_name.as_str()).await {
 					Ok(_) => Ok(true),
 					Err(ens::Error::NotRegistered) => Ok(false),
@@ -38,7 +38,6 @@ mock! {
 
 #[cfg(test)]
 mod tests {
-	use domain::EthereumName;
 	use mockall::predicate::eq;
 	use rstest::{fixture, rstest};
 
@@ -48,7 +47,7 @@ mod tests {
 
 	#[fixture]
 	fn eth_name() -> PayoutSettings {
-		PayoutSettings::EthTransfer(EthereumIdentity::Name(EthereumName::new(String::from(
+		PayoutSettings::EthTransfer(ethereum::Identity::Name(ethereum::Name::new(String::from(
 			ENS_NAME,
 		))))
 	}

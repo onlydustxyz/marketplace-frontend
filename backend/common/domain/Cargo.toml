@@ -13,7 +13,7 @@ version = "0.0.1"
 
 # Async
 async-trait = "0.1.56"
-futures = { version = "0.3.21", features = ["alloc"] }
+futures = { version = "0.3.24", features = ["alloc"] }
 pin-project-lite = "0.2.9"
 
 # Core types
@@ -30,6 +30,7 @@ uuid08 = { package = "uuid", version = "0.8", default_features = false, features
 rust_decimal = "1.26.1"
 rusty-money = { version = "0.4.1", features = ["iso", "crypto"] }
 iban_validate = { version = "4.0.1", features = ["serde"] }
+hex = "0.4.3"
 
 # Crypto
 sha2 = "0.10.7"
@@ -51,7 +52,6 @@ derive-getters = "0.2.0"
 derive_more = "0.99.17"
 derive-new = "0.5.9"
 generic-array = "0.14.7"
-hex = "0.4.3"
 
 # Database
 diesel = { version = "2.1.0", default-features = false, features = [

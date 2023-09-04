@@ -1,15 +1,19 @@
 use derive_more::From;
 use serde::{Deserialize, Serialize};
 
-use super::{EthereumAddress, EthereumName};
+mod address;
+pub use address::Address;
+
+mod name;
+pub use name::Name;
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, From)]
-pub enum EthereumIdentity {
-	Address(EthereumAddress),
-	Name(EthereumName),
+pub enum Wallet {
+	Address(Address),
+	Name(Name),
 }
 
-impl Default for EthereumIdentity {
+impl Default for Wallet {
 	fn default() -> Self {
 		Self::Address(Default::default())
 	}

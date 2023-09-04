@@ -1,6 +1,6 @@
 use anyhow::anyhow;
 use domain::{
-	Amount, BlockchainNetwork, Currency, Iban, PaymentReceipt, ProjectId, ProjectVisibility, UserId,
+	blockchain::*, Amount, Currency, Iban, PaymentReceipt, ProjectId, ProjectVisibility, UserId,
 };
 use juniper::{graphql_object, DefaultScalarValue, Nullable};
 use rusty_money::Money;
@@ -38,8 +38,8 @@ impl Mutation {
 
 		let eth_identity = recipient_identity.try_into().map_err(Error::InvalidRequest)?;
 		let ethereum_address = match &eth_identity {
-			domain::EthereumIdentity::Address(addr) => addr.clone(),
-			domain::EthereumIdentity::Name(name) => context.ens.eth_address(name.as_str()).await?,
+			ethereum::Wallet::Address(addr) => addr.clone(),
+			ethereum::Wallet::Name(name) => context.ens.eth_address(name.as_str()).await?,
 		};
 
 		let receipt_id = context
@@ -49,10 +49,10 @@ impl Mutation {
 				&payment_id.into(),
 				Amount::new(*amount.amount(), Currency::Crypto(currency_code)),
 				PaymentReceipt::OnChainPayment {
-					network: BlockchainNetwork::Ethereum,
+					network: Network::Ethereum,
 					recipient_address: ethereum_address,
 					recipient_ens: match eth_identity {
-						domain::EthereumIdentity::Name(name) => Some(name),
+						ethereum::Wallet::Name(name) => Some(name),
 						_ => None,
 					},
 					transaction_hash,
