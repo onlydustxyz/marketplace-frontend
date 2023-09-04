@@ -1,3 +1,4 @@
 event-listeners: ./target/release/listeners
 refresh: RUST_LOG=info ./target/release/refresh
 github-indexer: ./target/release/github-indexer
+web: ROCKET_PORT=$PORT ./target/release/event-listeners
