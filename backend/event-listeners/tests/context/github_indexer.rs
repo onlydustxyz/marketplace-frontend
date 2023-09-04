@@ -4,15 +4,10 @@ use anyhow::Result;
 use event_listeners::{github_indexer::Scheduler, presentation::bootstrap, Config};
 use presentation::http;
 use rocket::local::asynchronous::Client;
-use rstest::fixture;
 use testcontainers::clients::Cli;
 use testing::context::{database, github};
 
-#[fixture]
-#[once]
-pub fn docker() -> Cli {
-	Cli::docker()
-}
+use super::API_KEY;
 
 pub struct Context<'a> {
 	pub http_client: Client,
@@ -39,7 +34,9 @@ impl<'a> Context<'a> {
 
 		let config = Config {
 			amqp: Default::default(),
-			http: http::Config { api_keys: vec![] },
+			http: http::Config {
+				api_keys: vec![API_KEY.to_string()],
+			},
 			database: database.config.clone(),
 			tracer: infrastructure::tracing::Config {
 				ansi: false,

@@ -3,6 +3,7 @@ use std::sync::Arc;
 use http_api_problem::{HttpApiProblem, StatusCode};
 use infrastructure::{database, github};
 use olog::{error, IntoField};
+use presentation::http::guards::ApiKey;
 use rocket::State;
 
 use crate::github_indexer::indexers::{
@@ -11,6 +12,7 @@ use crate::github_indexer::indexers::{
 
 #[post("/repo/<repo_id>/pull_request/<pr_number>")]
 pub async fn index(
+	_api_key: ApiKey,
 	repo_id: i64,
 	pr_number: i64,
 	database: &State<Arc<database::Client>>,

@@ -4,12 +4,14 @@ use domain::GithubRepoId;
 use http_api_problem::{HttpApiProblem, StatusCode};
 use infrastructure::{database, github};
 use olog::{error, IntoField};
+use presentation::http::guards::ApiKey;
 use rocket::State;
 
 use crate::github_indexer::indexers::{self, Indexer};
 
 #[post("/repo/<id>")]
 pub async fn index(
+	_api_key: ApiKey,
 	id: i64,
 	database: &State<Arc<database::Client>>,
 	github: &State<Arc<github::Client>>,

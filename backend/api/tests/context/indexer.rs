@@ -2,6 +2,8 @@ use anyhow::{anyhow, Result};
 use infrastructure::http;
 use testcontainers::{clients::Cli, images::generic::GenericImage, Container, RunnableImage};
 
+use super::API_KEY;
+
 pub struct Context<'docker> {
 	_container: Container<'docker, GenericImage>,
 	pub config: http::Config,
@@ -17,6 +19,7 @@ impl<'docker> Context<'docker> {
 
 		let config = http::Config {
 			base_url: format!("http://localhost:{port}/indexer"),
+			headers: std::iter::once(("Api-Key".to_string(), API_KEY.to_string())).collect(),
 		};
 
 		Ok(Self {

@@ -5,6 +5,9 @@
     "headers": {
       "Authorization": {
         "contains": "Bearer "
+      },
+      "Api-Key": {
+        "contains": "test-api-key"
       }
     }
   },

@@ -3,12 +3,14 @@ use std::sync::Arc;
 use http_api_problem::{HttpApiProblem, StatusCode};
 use infrastructure::{database, github};
 use olog::{error, IntoField};
+use presentation::http::guards::ApiKey;
 use rocket::State;
 
 use crate::github_indexer::indexers::{self, Indexer};
 
 #[post("/user/<user_id>")]
 pub async fn index(
+	_api_key: ApiKey,
 	user_id: i64,
 	database: &State<Arc<database::Client>>,
 	github: &State<Arc<github::Client>>,

@@ -24,6 +24,9 @@ pub async fn on_demand_indexing_it(docker: &'static Cli) {
 	test.should_index_user().await.expect("should_index_user");
 	test.should_index_pr().await.expect("should_index_pr");
 	test.should_index_issue().await.expect("should_index_issue");
+	test.should_reject_unauthorized_requests()
+		.await
+		.expect("should_reject_unauthorized_requests");
 }
 
 struct Test<'a> {
@@ -40,6 +43,7 @@ impl<'a> Test<'a> {
 				.context
 				.http_client
 				.post(format!("/indexer/repo/{}", repos::marketplace().id))
+				.header(api_key_header())
 				.dispatch()
 				.await;
 
@@ -61,6 +65,7 @@ impl<'a> Test<'a> {
 				.context
 				.http_client
 				.post(format!("/indexer/user/{}", users::anthony().id))
+				.header(api_key_header())
 				.dispatch()
 				.await;
 
@@ -85,6 +90,7 @@ impl<'a> Test<'a> {
 					"/indexer/repo/{}/pull_request/1146",
 					repos::marketplace().id
 				))
+				.header(api_key_header())
 				.dispatch()
 				.await;
 
@@ -126,6 +132,7 @@ impl<'a> Test<'a> {
 					"/indexer/repo/{}/issue/1141",
 					repos::marketplace().id
 				))
+				.header(api_key_header())
 				.dispatch()
 				.await;
 
@@ -134,6 +141,70 @@ impl<'a> Test<'a> {
 		}
 
 		issues::assert_indexed(&mut self.context, vec![issues::x1141()])?;
+
+		Ok(())
+	}
+
+	async fn should_reject_unauthorized_requests(&mut self) -> Result<()> {
+		info!("should_reject_unauthorized_requests");
+
+		{
+			// When
+			let response = self
+				.context
+				.http_client
+				.post(format!("/indexer/repo/{}", repos::marketplace().id))
+				.dispatch()
+				.await;
+
+			// Then
+			assert_eq!(response.status(), Status::Unauthorized);
+		}
+
+		{
+			// When
+			let response = self
+				.context
+				.http_client
+				.post(format!("/indexer/user/{}", users::anthony().id))
+				.dispatch()
+				.await;
+
+			// Then
+			assert_eq!(response.status(), Status::Unauthorized);
+		}
+
+		{
+			// When
+			let response = self
+				.context
+				.http_client
+				.post(format!(
+					"/indexer/repo/{}/pull_request/1146",
+					repos::marketplace().id
+				))
+				.dispatch()
+				.await;
+
+			// Then
+			assert_eq!(response.status(), Status::Unauthorized);
+		}
+
+		{
+			// When
+			let response = self
+				.context
+				.http_client
+				.post(format!(
+					"/indexer/repo/{}/issue/1141",
+					repos::marketplace().id
+				))
+				.dispatch()
+				.await;
+
+			// Then
+			assert_eq!(response.status(), Status::Unauthorized);
+		}
 
 		Ok(())
 	}
