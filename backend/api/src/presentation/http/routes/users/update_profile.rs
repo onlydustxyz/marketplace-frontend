@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use domain::Languages;
 use http_api_problem::{HttpApiProblem, StatusCode};
-use presentation::http::guards::Claims;
+use presentation::http::guards::{ApiKey, Claims};
 use rocket::{serde::json::Json, State};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
@@ -27,8 +27,9 @@ pub struct Request {
 	cover: Option<dto::ProfileCover>,
 }
 
-#[post("/api/users/profile", data = "<request>", format = "application/json")]
+#[post("/users/profile", data = "<request>", format = "application/json")]
 pub async fn update_user_profile(
+	_api_key: ApiKey,
 	claims: Claims,
 	request: Json<Request>,
 	update_user_profile_info_usecase: &State<application::user::update_profile_info::Usecase>,

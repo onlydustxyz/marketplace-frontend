@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use async_trait::async_trait;
 use derive_new::new;
-use domain::{GithubFullPullRequest, GithubPullRequest};
+use domain::GithubFullPullRequest;
 
 use super::{super::error::Result, Projector};
 use crate::{
@@ -18,12 +18,8 @@ pub struct PullRequestProjector {
 }
 
 #[async_trait]
-impl Projector<GithubPullRequest, Option<GithubFullPullRequest>> for PullRequestProjector {
-	async fn perform_projections(
-		&self,
-		_pull_request: &GithubPullRequest,
-		data: Option<GithubFullPullRequest>,
-	) -> Result<()> {
+impl Projector<Option<GithubFullPullRequest>> for PullRequestProjector {
+	async fn perform_projections(&self, data: Option<GithubFullPullRequest>) -> Result<()> {
 		if let Some(pull_request) = data {
 			let pull_request: crate::models::GithubPullRequest = pull_request.into();
 
@@ -33,7 +29,7 @@ impl Projector<GithubPullRequest, Option<GithubFullPullRequest>> for PullRequest
 				.upsert_from_github_pull_request(pull_request.clone())?;
 
 			self.contributors_projector
-				.perform_projections(&pull_request.inner.repo_id, ())
+				.perform_projections(pull_request.inner.repo_id)
 				.await?;
 		}
 		Ok(())

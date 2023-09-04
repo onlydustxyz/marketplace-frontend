@@ -1,4 +1,4 @@
-use std::{collections::HashMap, env};
+use std::env;
 
 use anyhow::Result;
 use api::{presentation::bootstrap::bootstrap, Config};
@@ -9,8 +9,11 @@ use testcontainers::clients::Cli;
 use testing::context::{amqp, database, github};
 
 pub mod environment;
+pub mod indexer;
 pub mod simple_storage;
 pub mod utils;
+
+pub const API_KEY: &str = "test-api-key";
 
 #[fixture]
 #[once]
@@ -25,6 +28,7 @@ pub struct Context<'a> {
 	pub simple_storage: simple_storage::Context<'a>,
 	pub dusty_bot_github: github::Context<'a>,
 	pub github: github::Context<'a>,
+	pub indexer: indexer::Context<'a>,
 	_environment: environment::Context,
 }
 
@@ -52,10 +56,18 @@ impl<'a> Context<'a> {
 			"github-pat".to_string(),
 		)?;
 
+		let indexer = indexer::Context::new(
+			docker,
+			format!(
+				"{}/tests/resources/wiremock/indexer",
+				env::current_dir().unwrap().display(),
+			),
+		)?;
+
 		let config = Config {
 			amqp: amqp.config.clone(),
 			http: http::Config {
-				api_keys: HashMap::default(),
+				api_keys: vec![API_KEY.to_string()],
 			},
 			database: database.config.clone(),
 			tracer: infrastructure::tracing::Config {
@@ -69,6 +81,7 @@ impl<'a> Context<'a> {
 			s3: simple_storage.config.clone(),
 			github_api_client: github.config.clone(),
 			dusty_bot_api_client: dusty_bot_github.config.clone(),
+			indexer_client: indexer.config.clone(),
 		};
 
 		Ok(Self {
@@ -78,6 +91,7 @@ impl<'a> Context<'a> {
 			simple_storage,
 			dusty_bot_github,
 			github,
+			indexer,
 			_environment: environment::Context::new(),
 		})
 	}

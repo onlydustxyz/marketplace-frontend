@@ -20,7 +20,11 @@ use rstest::rstest;
 use testcontainers::clients::Cli;
 
 use crate::{
-	context::{docker, utils::jwt, Context},
+	context::{
+		docker,
+		utils::{api_key_header, jwt},
+		Context,
+	},
 	models::UserProfileInfo,
 };
 
@@ -69,6 +73,7 @@ impl<'a> Test<'a> {
 			.http_client
 			.post("/api/users/profile")
 			.header(ContentType::JSON)
+			.header(api_key_header())
 			.header(Header::new(
 				"Authorization",
 				format!("Bearer {}", jwt(None)),

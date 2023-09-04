@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use async_trait::async_trait;
 use derive_new::new;
-use domain::{GithubFullUser, GithubUserId};
+use domain::GithubFullUser;
 use infrastructure::database::Repository;
 
 use super::{super::error::Result, Projector};
@@ -14,12 +14,8 @@ pub struct UserProjector {
 }
 
 #[async_trait]
-impl Projector<GithubUserId, Option<GithubFullUser>> for UserProjector {
-	async fn perform_projections(
-		&self,
-		_user_id: &GithubUserId,
-		data: Option<GithubFullUser>,
-	) -> Result<()> {
+impl Projector<Option<GithubFullUser>> for UserProjector {
+	async fn perform_projections(&self, data: Option<GithubFullUser>) -> Result<()> {
 		if let Some(user) = data {
 			self.github_users_repository.upsert(user.into())?;
 		}

@@ -57,7 +57,7 @@ impl Usecase {
 			.publish_many(Destination::queue(EVENT_STORE_QUEUE), &events)
 			.await?;
 
-		if let Err(error) = self.close_issues_usecase.close_all_issues(payment).await {
+		if let Err(error) = self.close_issues_usecase.close_all_issues(payment.clone()).await {
 			olog::error!(error = error.to_field(), "Unable to comment / close issue")
 		}
 

@@ -39,6 +39,10 @@ rust_decimal = { version = "1.29.1", features = ["db-diesel2-postgres"] }
 reqwest = { version = "0.11", default-features = false }
 url = "2.2.2"
 
+# Http Server
+http-api-problem = { version = "0.56.0", features = ["rocket"] }
+rocket = { version = "0.5.0-rc.2", features = ["json", "uuid"] }
+
 # Tracing
 tracing = "0.1"
 
@@ -56,13 +60,14 @@ derive_more = "0.99.17"
 derive-new = "0.5.9"
 dotenv = "0.15.0"
 chrono = { version = "0.4", features = ["serde"] }
+itertools = "0.10.5"
 
 # Local dependecies
 domain = { path = "../common/domain" }
 infrastructure = { path = "../common/infrastructure" }
 derive = { path = "../common/derive" }
 olog = { path = "../common/olog" }
-itertools = "0.10.5"
+presentation = { path = "../common/presentation" }
 
 [dev-dependencies]
 async-std = { version = "1.12.0", features = ["attributes"] }

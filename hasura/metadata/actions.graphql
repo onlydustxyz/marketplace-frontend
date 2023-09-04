@@ -1,4 +1,11 @@
 type Mutation {
+  cancelPayment(
+    projectId: Uuid!
+    paymentId: Uuid!
+  ): Payment!
+}
+
+type Mutation {
   createAndCloseIssue(
     description: String!
     githubRepoId: Int!
@@ -35,6 +42,16 @@ type Query {
     repoName: String!
     prNumber: Int!
   ): GithubPullRequest
+}
+
+type Mutation {
+  requestPayment(
+    projectId: Uuid!
+    recipientId: Int!
+    amountInUsd: Int!
+    hoursWorked: Int!
+    reason: Reason!
+  ): Payment!
 }
 
 type Query {
@@ -112,6 +129,12 @@ enum GithubIssueStatus {
   OPEN
 }
 
+enum WorkItemType {
+  ISSUE
+  PULL_REQUEST
+  CODE_REVIEW
+}
+
 input Language {
   name: String!
   weight: Int!
@@ -121,6 +144,16 @@ input Information {
   channel: Channel!
   contact: String!
   public: Boolean!
+}
+
+input WorkItem {
+  type: WorkItemType!
+  issueNumber: Int!
+  repoId: Int!
+}
+
+input Reason {
+  workItems: [WorkItem!]!
 }
 
 type GithubIssueCreatedAndClosed {
@@ -179,6 +212,14 @@ type GithubIssue {
   updatedAt: DateTimeUtc!
 }
 
+type Payment {
+  amount: Amount!
+  budgetId: Uuid!
+  commandId: Uuid!
+  paymentId: Uuid!
+  projectId: Uuid!
+}
+
 scalar Url
 
 scalar Uuid
@@ -186,4 +227,6 @@ scalar Uuid
 scalar DateTime
 
 scalar DateTimeUtc
+
+scalar Amount
 

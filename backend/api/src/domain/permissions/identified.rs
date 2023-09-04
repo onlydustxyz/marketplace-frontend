@@ -18,6 +18,10 @@ impl Permissions for IdentifiedUser {
 		self.projects.contains(project_id)
 	}
 
+	fn can_cancel_payments_of_project(&self, project_id: &ProjectId) -> bool {
+		self.projects.contains(project_id)
+	}
+
 	fn can_create_github_issue_for_project(&self, project_id: &ProjectId) -> bool {
 		self.projects.contains(project_id)
 	}
@@ -58,7 +62,6 @@ impl IdentifiedUser {
 			anyhow!("No payment with ID {payment_id} belongs to project {project_id}")
 		})?;
 
-		Ok(*payment.status() == PaymentStatus::Active
-			&& *payment.recipient_id() == self.github_user_id)
+		Ok(payment.status == PaymentStatus::Active && payment.recipient_id == self.github_user_id)
 	}
 }

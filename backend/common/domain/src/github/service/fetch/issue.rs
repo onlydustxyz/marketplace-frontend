@@ -12,6 +12,12 @@ pub trait Service: Send + Sync {
 		issue_number: GithubIssueNumber,
 	) -> Result<GithubIssue>;
 
+	async fn issue_by_repo_id(
+		&self,
+		repo_id: GithubRepoId,
+		issue_number: GithubIssueNumber,
+	) -> Result<GithubIssue>;
+
 	async fn issues_by_repo_id(
 		&self,
 		repo_id: GithubRepoId,
