@@ -20,6 +20,7 @@ pub async fn on_demand_indexing_it(docker: &'static Cli) {
 	};
 
 	test.should_index_repo().await.expect("should_index_repo");
+	test.should_index_user().await.expect("should_index_user");
 }
 
 struct Test<'a> {
@@ -44,6 +45,27 @@ impl<'a> Test<'a> {
 		}
 
 		repos::assert_is_indexed(&mut self.context, repos::marketplace())?;
+
+		Ok(())
+	}
+
+	async fn should_index_user(&mut self) -> Result<()> {
+		info!("should_index_user");
+
+		{
+			// When
+			let response = self
+				.context
+				.http_client
+				.post(format!("/indexer/user/{}", users::anthony().id))
+				.dispatch()
+				.await;
+
+			// Then
+			assert_eq!(response.status(), Status::Ok);
+		}
+
+		users::assert_is_indexed(&mut self.context, users::anthony())?;
 
 		Ok(())
 	}
