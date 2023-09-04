@@ -3,7 +3,6 @@ use std::sync::Arc;
 use anyhow::{anyhow, Error};
 use domain::{AggregateRootRepository, Event, Project, Publisher};
 use infrastructure::{amqp::CommandMessage, http};
-use reqwest::header::{HeaderMap, HeaderValue};
 use rocket::{
 	http::Status,
 	request::{FromRequest, Outcome},
@@ -26,15 +25,10 @@ impl<'r> FromRequest<'r> for Usecase {
 				)),
 		};
 
-		let headers: HeaderMap = request
+		let headers = request
 			.headers()
 			.get(reqwest::header::AUTHORIZATION.as_str())
-			.map(|value| {
-				(
-					reqwest::header::AUTHORIZATION,
-					HeaderValue::from_str(value).unwrap(),
-				)
-			})
+			.map(|value| (reqwest::header::AUTHORIZATION, value.parse().unwrap()))
 			.collect();
 
 		let http_client = match http::Client::new(config.indexer_client.clone(), headers) {

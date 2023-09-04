@@ -2,7 +2,12 @@
   "priority": 1,
   "request": {
     "url": "/indexer/repo/1181927",
-    "method": "POST"
+    "method": "POST",
+    "headers": {
+      "Authorization": {
+        "contains": "Bearer "
+      }
+    }
   },
   "response": {
     "status": 500
