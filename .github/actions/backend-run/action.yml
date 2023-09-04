@@ -7,7 +7,7 @@ runs:
   steps:
     - name: Copy the .env file
       shell: bash
-      run: cp .env.example .env
+      run: cp .env.e2e .env
 
     - name: Set up cargo cache
       uses: actions/cache@v3
@@ -68,4 +68,3 @@ runs:
       with:
         resource: http://localhost:8001
         timeout: 300000
-

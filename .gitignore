@@ -20,7 +20,7 @@
 .env.*
 !e2e/.env.e2e
 !.env.develop
-!.env.example
+!.env.e2e
 !.env.test
 
 # MacOS

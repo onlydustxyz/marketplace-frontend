@@ -46,92 +46,47 @@
 - [yarn](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable)
 - [docker](https://docs.docker.com/get-docker/)
 
-## 📦 Installation
+## Usage
 
-```
-cp .env.example .env
-```
+First, prepare your local environment by configuring your `.env`. Copy the `.env.e2e` file and replace the values tagged with `REPLACE_AT_INSTALLATION` according to your personal accounts.
 
-Then modify the values tagged with `REPLACE_AT_INSTALLATION` according to your personal accounts.
-
-You can now run the project installation script:
-
-```
-make install
+```sh
+cp .env.e2e .env
 ```
 
-## 🔬 Usage
+To run the whole stack:
 
-List all available commands:
-
-```
-make
+```sh
+yarn e2e:env:up
 ```
 
-Below are some examples of usage.
+To execute e2e tests:
 
-### Load latest staging dump
-
-Start by cleaning your local env:
-
-```
-make docker/clean
+```sh
+yarn e2e:run
 ```
 
-Then, load the dump:
+To reset the whole stack (including clearing DB data):
 
-```
-make db/load-fixtures
-```
-
-If the dump is out of date, you can update it with:
-
-```
-make db/update-staging-dump
+```sh
+yarn e2e:env:reset
 ```
 
-### Using Hasura
+To run / shutdown the backend (including infra):
 
-See [Hasura documentation](./hasura).
-
-For convenience, some commands are available from the root of the repo:
-
-```
-make hasura/start # Apply metadata and start the console
+```sh
+yarn backend:up
+yarn backend:down
 ```
 
-### 🔬 Frontend
-
-To run in development mode
-
-```bash
-yarn dev
-```
-
-To run in development mode with the develop backend
-
-```bash
-yarn dev --mode backend
-```
-
-#### 🛠 Build
-
-```bash
-yarn build
-```
-
-To run build locally :
-
-```bash
-yarn preview
-```
+Many other commands are available in the [package.json](./package.json) file. Please check it.
 
 ### 📚 Storybook
 
 To view components in isolation using [Storybook](https://storybook.js.org/)
 
 ```bash
-yarn storybook
+yarn --cwd ./frontend storybook
 ```
 
 ### 🕸 GraphQL codegen
@@ -139,10 +94,8 @@ yarn storybook
 To generate types from the Hasura GraphQL schema during development
 
 ```bash
-yarn generate --watch
+yarn --cwd ./frontend generate
 ```
-
-Use the `HASURA_URL` and `HASURA_SECRET_KEY` environment variables to connect to a custom Hasura environment
 
 ### 📚 Update list of supported languages
 
@@ -156,31 +109,7 @@ To update the list of supported languages (taken from Github) used to autocomple
 in the profile edit form
 
 ```bash
-yarn update-languages
-```
-
-## 🌡️ Testing
-
-### Backend
-
-Make sure the docker is up and running.
-Then run the following command:
-
-```
-cargo test
-```
-
-### Frontend unit/integration
-
-```bash
-yarn test
-```
-
-### End-to-end testing
-
-```
-make app/background-start
-make playwright/test
+yarn --cwd ./frontend update-languages
 ```
 
 ## Migrate database
@@ -221,7 +150,3 @@ Datadog agents and drains are configured using Terraform.
 # 📄 License
 
 **marketplace** is released under [MIT](LICENSE).
-
-# Acknowledgements
-
-This project is tested with BrowserStack.
