@@ -1,7 +1,9 @@
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use jsonwebtoken::EncodingKey;
-use rocket::serde::json::json;
+use rocket::{http::Header, serde::json::json};
+
+use super::API_KEY;
 
 #[allow(unused)]
 pub fn jwt(project_leaded_id: Option<String>) -> String {
@@ -36,4 +38,8 @@ pub fn jwt(project_leaded_id: Option<String>) -> String {
 		&EncodingKey::from_secret("secret".as_ref()),
 	)
 	.expect("Invalid JWT")
+}
+
+pub fn api_key_header() -> Header<'static> {
+	Header::new("Api-Key", API_KEY)
 }

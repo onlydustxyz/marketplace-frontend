@@ -1,6 +1,6 @@
 use domain::{AggregateRootRepository, Project};
 use http_api_problem::{HttpApiProblem, StatusCode};
-use presentation::http::guards::{Claims, Role};
+use presentation::http::guards::{ApiKey, Claims, Role};
 use rocket::{serde::json::Json, State};
 use rust_decimal::prelude::ToPrimitive;
 use serde::{Deserialize, Serialize};
@@ -26,6 +26,7 @@ pub struct Request {
 
 #[delete("/payments", data = "<request>", format = "application/json")]
 pub async fn cancel_payment(
+	_api_key: ApiKey,
 	request: Json<Request>,
 	claims: Option<Claims>,
 	role: Role,

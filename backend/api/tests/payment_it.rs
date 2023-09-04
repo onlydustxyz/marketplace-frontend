@@ -22,7 +22,11 @@ use rust_decimal::Decimal;
 use testcontainers::clients::Cli;
 use uuid::Uuid;
 
-use crate::context::{docker, utils::jwt, Context};
+use crate::context::{
+	docker,
+	utils::{api_key_header, jwt},
+	Context,
+};
 
 #[macro_use]
 extern crate diesel;
@@ -104,6 +108,7 @@ impl<'a> Test<'a> {
 			.http_client
 			.post("/api/payments")
 			.header(ContentType::JSON)
+			.header(api_key_header())
 			.header(Header::new("x-hasura-role", "registered_user"))
 			.header(Header::new(
 				"Authorization",
@@ -231,6 +236,7 @@ impl<'a> Test<'a> {
 			.http_client
 			.post("/api/payments")
 			.header(ContentType::JSON)
+			.header(api_key_header())
 			.header(Header::new("x-hasura-role", "registered_user"))
 			.header(Header::new(
 				"Authorization",
@@ -299,6 +305,7 @@ impl<'a> Test<'a> {
 			.http_client
 			.post("/api/payments")
 			.header(ContentType::JSON)
+			.header(api_key_header())
 			.header(Header::new("x-hasura-role", "registered_user"))
 			.header(Header::new(
 				"Authorization",
@@ -377,6 +384,7 @@ impl<'a> Test<'a> {
 			.http_client
 			.delete("/api/payments")
 			.header(ContentType::JSON)
+			.header(api_key_header())
 			.header(Header::new("x-hasura-role", "registered_user"))
 			.header(Header::new(
 				"Authorization",
@@ -461,6 +469,7 @@ impl<'a> Test<'a> {
 			.http_client
 			.delete("/api/payments")
 			.header(ContentType::JSON)
+			.header(api_key_header())
 			.header(Header::new("x-hasura-role", "admin"))
 			.body(request.to_string())
 			.dispatch()
@@ -541,6 +550,7 @@ impl<'a> Test<'a> {
 			.http_client
 			.delete("/api/payments")
 			.header(ContentType::JSON)
+			.header(api_key_header())
 			.header(Header::new("x-hasura-role", "registered_user"))
 			.header(Header::new(
 				"Authorization",

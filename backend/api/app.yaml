@@ -18,7 +18,7 @@ default:
       x-hasura-admin-secret: $HASURA_GRAPHQL_ADMIN_SECRET
   http:
     api_keys:
-      graphql: $BACKEND_GRAPHQL_API_KEY
+      - $BACKEND_GRAPHQL_API_KEY
   indexer_client:
     base_url: $GITHUB_INDEXER_BASE_URL
   s3:

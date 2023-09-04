@@ -15,7 +15,7 @@ use rstest::rstest;
 use testcontainers::clients::Cli;
 
 use crate::{
-	context::{docker, Context},
+	context::{docker, utils::api_key_header, Context},
 	models::ProjectDetails,
 };
 
@@ -53,6 +53,7 @@ impl<'a> Test<'a> {
 			.http_client
 			.post("/api/projects")
 			.header(ContentType::JSON)
+			.header(api_key_header())
 			.body(create_project_request.to_string())
 			.dispatch()
 			.await;

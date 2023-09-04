@@ -1,7 +1,7 @@
 use common_domain::{AggregateRootRepository, Project};
 use http_api_problem::HttpApiProblem;
 use olog::{error, IntoField};
-use presentation::http::guards::{Claims, Role};
+use presentation::http::guards::{ApiKey, Claims, Role};
 use reqwest::StatusCode;
 use rocket::{serde::json::Json, State};
 use serde::Deserialize;
@@ -23,6 +23,7 @@ pub struct Request {
 
 #[post("/issues", data = "<request>", format = "application/json")]
 pub async fn create_and_close_issue(
+	_api_key: ApiKey,
 	claims: Claims,
 	role: Role,
 	request: Json<Request>,

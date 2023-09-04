@@ -10,7 +10,7 @@ default:
     max_calls_per_request: $GITHUB_MAX_CALLS_PER_REQUEST
   http:
     api_keys:
-      github-indexer: $GITHUB_INDEXER_API_KEY
+      - $GITHUB_INDEXER_API_KEY
 
 local:
   amqp:

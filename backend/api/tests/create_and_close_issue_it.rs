@@ -13,7 +13,11 @@ use rstest::rstest;
 use rust_decimal::Decimal;
 use testcontainers::clients::Cli;
 
-use crate::context::{docker, utils::jwt, Context};
+use crate::context::{
+	docker,
+	utils::{api_key_header, jwt},
+	Context,
+};
 
 mod context;
 mod models;
@@ -75,6 +79,7 @@ impl<'a> Test<'a> {
 			.http_client
 			.post("/api/issues")
 			.header(ContentType::JSON)
+			.header(api_key_header())
 			.header(Header::new("x-hasura-role", "registered_user"))
 			.header(Header::new(
 				"Authorization",

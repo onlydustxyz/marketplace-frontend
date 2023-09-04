@@ -7,7 +7,7 @@ use infrastructure::{
 	github,
 };
 use juniper_rocket::{GraphQLRequest, GraphQLResponse};
-use presentation::http::guards::{ApiKey, ApiKeyGuard, Claims, Role};
+use presentation::http::guards::{ApiKey, Claims, Role};
 use rocket::{response::content, State};
 use tracing::instrument;
 
@@ -18,15 +18,6 @@ use crate::{
 	presentation::graphql::{Context, Schema},
 };
 
-#[derive(Default)]
-pub struct GraphqlApiKey;
-
-impl ApiKey for GraphqlApiKey {
-	fn name() -> &'static str {
-		"graphql"
-	}
-}
-
 #[get("/")]
 pub fn graphiql() -> content::RawHtml<String> {
 	juniper_rocket::graphiql_source("/graphql", None)
@@ -36,7 +27,7 @@ pub fn graphiql() -> content::RawHtml<String> {
 #[get("/graphql?<request>")]
 #[instrument(skip_all, fields(user.ids = debug(&claims), user.role = debug(&role), graphql_request = debug(&request)))]
 pub async fn get_graphql_handler(
-	_api_key: ApiKeyGuard<GraphqlApiKey>,
+	_api_key: ApiKey,
 	role: Role,
 	claims: Option<Claims>,
 	request: GraphQLRequest,
@@ -85,7 +76,7 @@ pub async fn get_graphql_handler(
 #[post("/graphql", data = "<request>")]
 #[instrument(skip_all, fields(user.ids = debug(&claims), user.role = debug(&role), graphql_request = debug(&request)))]
 pub async fn post_graphql_handler(
-	_api_key: ApiKeyGuard<GraphqlApiKey>,
+	_api_key: ApiKey,
 	role: Role,
 	claims: Option<Claims>,
 	request: GraphQLRequest,

@@ -1,4 +1,4 @@
-use std::{collections::HashMap, env};
+use std::env;
 
 use anyhow::Result;
 use api::{presentation::bootstrap::bootstrap, Config};
@@ -12,6 +12,8 @@ pub mod environment;
 pub mod indexer;
 pub mod simple_storage;
 pub mod utils;
+
+pub const API_KEY: &str = "test-api-key";
 
 #[fixture]
 #[once]
@@ -65,7 +67,7 @@ impl<'a> Context<'a> {
 		let config = Config {
 			amqp: amqp.config.clone(),
 			http: http::Config {
-				api_keys: HashMap::default(),
+				api_keys: vec![API_KEY.to_string()],
 			},
 			database: database.config.clone(),
 			tracer: infrastructure::tracing::Config {

@@ -1,4 +1,4 @@
-use std::{collections::HashMap, env};
+use std::env;
 
 use anyhow::Result;
 use event_listeners::{github_indexer::Scheduler, Config};
@@ -37,9 +37,7 @@ impl<'a> Context<'a> {
 
 		let config = Config {
 			amqp: Default::default(),
-			http: http::Config {
-				api_keys: HashMap::default(),
-			},
+			http: http::Config { api_keys: vec![] },
 			database: database.config.clone(),
 			tracer: infrastructure::tracing::Config {
 				ansi: false,

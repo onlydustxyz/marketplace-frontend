@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use http_api_problem::{HttpApiProblem, StatusCode};
 use olog::{error, IntoField};
-use presentation::http::guards::Claims;
+use presentation::http::guards::{ApiKey, Claims};
 use rocket::{serde::json::Json, State};
 use serde::{Deserialize, Serialize};
 use url::Url;
@@ -30,6 +30,7 @@ impl From<domain::GithubUser> for Response {
 
 #[get("/users/search?<query>&<sort>&<order>&<per_page>&<page>")]
 pub async fn search_users(
+	_api_key: ApiKey,
 	claims: Claims,
 	query: String,
 	sort: Option<String>,

@@ -4,7 +4,7 @@ use domain::LogErr;
 use http_api_problem::HttpApiProblem;
 use image::{imageops::FilterType, GenericImageView};
 use olog::IntoField;
-use presentation::http::guards::Claims;
+use presentation::http::guards::{ApiKey, Claims};
 use reqwest::StatusCode;
 use rocket::{
 	data::{ByteUnit, Data, ToByteUnit},
@@ -25,6 +25,7 @@ pub struct Response {
 
 #[post("/users/profile_picture", data = "<profile_picture>")]
 pub async fn profile_picture(
+	_api_key: ApiKey,
 	claims: Claims,
 	user_profile_info_repository: &State<Arc<dyn UserProfileInfoRepository>>,
 	contact_informations_repository: &State<Arc<dyn ContactInformationsRepository>>,

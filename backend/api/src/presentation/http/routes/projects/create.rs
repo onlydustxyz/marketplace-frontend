@@ -1,5 +1,6 @@
 use common_domain::{DomainError, ProjectId, ProjectVisibility};
 use http_api_problem::{HttpApiProblem, StatusCode};
+use presentation::http::guards::ApiKey;
 use rocket::{serde::json::Json, State};
 use rusty_money::Money;
 use serde::{Deserialize, Serialize};
@@ -28,6 +29,7 @@ pub struct Request {
 
 #[post("/projects", data = "<request>", format = "application/json")]
 pub async fn create_project(
+	_api_key: ApiKey,
 	request: Json<Request>,
 	create_project_usecase: &State<application::project::create::Usecase>,
 ) -> Result<Json<Response>, HttpApiProblem> {

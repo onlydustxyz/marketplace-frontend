@@ -3,7 +3,7 @@ use std::sync::Arc;
 use common_domain::GithubIssueNumber;
 use http_api_problem::{HttpApiProblem, StatusCode};
 use olog::{error, IntoField};
-use presentation::http::guards::Claims;
+use presentation::http::guards::{ApiKey, Claims};
 use rocket::{serde::json::Json, State};
 
 use crate::presentation::http::{
@@ -12,6 +12,7 @@ use crate::presentation::http::{
 
 #[get("/issues/<repo_owner>/<repo_name>/<issue_number>")]
 pub async fn fetch_issue_by_repo_owner_name_issue_number(
+	_api_key: ApiKey,
 	repo_owner: String,
 	repo_name: String,
 	issue_number: i32,
