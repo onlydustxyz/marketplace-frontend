@@ -23,6 +23,7 @@ pub async fn on_demand_indexing_it(docker: &'static Cli) {
 	test.should_index_repo().await.expect("should_index_repo");
 	test.should_index_user().await.expect("should_index_user");
 	test.should_index_pr().await.expect("should_index_pr");
+	test.should_index_issue().await.expect("should_index_issue");
 }
 
 struct Test<'a> {
@@ -109,6 +110,30 @@ impl<'a> Test<'a> {
 				pull_requests::x1146().id,
 			)],
 		)?;
+
+		Ok(())
+	}
+
+	async fn should_index_issue(&mut self) -> Result<()> {
+		info!("should_index_issue");
+
+		{
+			// When
+			let response = self
+				.context
+				.http_client
+				.post(format!(
+					"/indexer/repo/{}/issue/1141",
+					repos::marketplace().id
+				))
+				.dispatch()
+				.await;
+
+			// Then
+			assert_eq!(response.status(), Status::Ok);
+		}
+
+		issues::assert_indexed(&mut self.context, vec![issues::x1141()])?;
 
 		Ok(())
 	}

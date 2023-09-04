@@ -9,10 +9,10 @@ use domain::{GithubCodeReviewStatus, GithubIssueId, GithubPullRequestId};
 use event_listeners::models::{self, GithubRepoIndex, ProjectGithubRepo};
 use fixtures::*;
 use infrastructure::database::{
-	enums::{self, ContributionStatus, ContributionType},
+	enums::{ContributionStatus, ContributionType},
 	schema::{
-		contributions, github_issues, github_pull_request_indexes, github_pull_requests,
-		projects_contributors, projects_pending_contributors,
+		contributions, github_pull_request_indexes, github_pull_requests, projects_contributors,
+		projects_pending_contributors,
 	},
 	ImmutableRepository,
 };
@@ -60,7 +60,10 @@ impl<'a> Test<'a> {
 
 		// Then
 		repos::assert_is_indexed(&mut self.context, repos::marketplace())?;
-		self.assert_marketplace_issues_are_indexed()?;
+		issues::assert_indexed(
+			&mut self.context,
+			vec![issues::x1061(), issues::x1141(), issues::x1145()],
+		)?;
 		self.assert_marketplace_pulls_are_indexed_cycle_1()?;
 		self.assert_marketplace_contributions_are_up_to_date(1)?;
 		self.assert_marketplace_contributors_are_up_to_date_and_indexed(1)?;
@@ -115,7 +118,10 @@ impl<'a> Test<'a> {
 
 		// Then
 		repos::assert_is_indexed(&mut self.context, repos::marketplace())?;
-		self.assert_marketplace_issues_are_indexed()?;
+		issues::assert_indexed(
+			&mut self.context,
+			vec![issues::x1061(), issues::x1141(), issues::x1145()],
+		)?;
 		self.assert_marketplace_pulls_are_indexed_cycle_2()?;
 		self.assert_marketplace_contributions_are_up_to_date(2)?;
 		self.assert_marketplace_contributors_are_up_to_date_and_indexed(2)?;
@@ -156,71 +162,6 @@ impl<'a> Test<'a> {
 						json!({"base_sha": pull_requests::x1152_updated().base_sha, "head_sha": pull_requests::x1152_updated().head_sha, "hash": hash(&pull_requests::x1152_updated())})
 					)
 				);
-			}
-		}
-
-		Ok(())
-	}
-
-	fn assert_marketplace_issues_are_indexed(&mut self) -> Result<()> {
-		let mut connection = self.context.database.client.connection()?;
-		{
-			let mut issues: Vec<models::GithubIssue> =
-				github_issues::table.load(&mut *connection)?;
-			assert_eq!(issues.len(), 3, "Invalid issue count");
-
-			{
-				let issue = issues.pop().unwrap();
-				assert_eq!(issue.id, 1763108414u64.into());
-				assert_eq!(issue.repo_id, repos::marketplace().id);
-				assert_eq!(issue.number, 1061u64.into());
-				assert_eq!(issue.title, "A completed issue");
-				assert_eq!(issue.status, enums::GithubIssueStatus::Completed);
-				assert_eq!(
-					issue.html_url,
-					"https://github.com/onlydustxyz/marketplace/issues/1061"
-				);
-				assert_eq!(issue.created_at, "2023-06-19T09:16:20".parse().unwrap());
-				assert_eq!(issue.closed_at, "2023-07-31T07:49:13".parse().ok());
-				assert_eq!(issue.author_id, users::od_develop().id);
-				assert_eq!(issue.assignee_ids.0, vec![users::ofux().id]);
-				assert_eq!(issue.comments_count, 0);
-			}
-
-			{
-				let issue = issues.pop().unwrap();
-				assert_eq!(issue.id, 1822333508u64.into());
-				assert_eq!(issue.repo_id, repos::marketplace().id);
-				assert_eq!(issue.number, 1141u64.into());
-				assert_eq!(issue.title, "A cancelled issue");
-				assert_eq!(issue.status, enums::GithubIssueStatus::Cancelled);
-				assert_eq!(
-					issue.html_url,
-					"https://github.com/onlydustxyz/marketplace/issues/1141"
-				);
-				assert_eq!(issue.created_at, "2023-07-26T12:39:59".parse().unwrap());
-				assert_eq!(issue.closed_at, "2023-07-27T15:43:37".parse().ok());
-				assert_eq!(issue.author_id, users::anthony().id);
-				assert_eq!(issue.assignee_ids.0, vec![]);
-				assert_eq!(issue.comments_count, 2);
-			}
-
-			{
-				let issue = issues.pop().unwrap();
-				assert_eq!(issue.id, 1828603947u64.into());
-				assert_eq!(issue.repo_id, repos::marketplace().id);
-				assert_eq!(issue.number, 1145u64.into());
-				assert_eq!(issue.title, "Some issue to be resolved");
-				assert_eq!(issue.status, enums::GithubIssueStatus::Open);
-				assert_eq!(
-					issue.html_url,
-					"https://github.com/onlydustxyz/marketplace/issues/1145"
-				);
-				assert_eq!(issue.created_at, "2023-07-31T07:46:18".parse().unwrap());
-				assert_eq!(issue.closed_at, None);
-				assert_eq!(issue.author_id, users::anthony().id);
-				assert_eq!(issue.assignee_ids.0, vec![]);
-				assert_eq!(issue.comments_count, 0);
 			}
 		}
 
