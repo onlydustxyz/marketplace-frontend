@@ -1,0 +1,10 @@
+{
+  "request": {
+    "url": "/repositories/498695724/pulls/1146",
+    "method": "GET"
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "body-repositories-498695724-pulls-1146.json"
+  }
+}

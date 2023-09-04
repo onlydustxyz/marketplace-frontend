@@ -1,4 +1,5 @@
 use anyhow::Result;
+use domain::GithubCodeReviewStatus;
 use olog::info;
 use rocket::http::Status;
 use rstest::rstest;
@@ -21,6 +22,7 @@ pub async fn on_demand_indexing_it(docker: &'static Cli) {
 
 	test.should_index_repo().await.expect("should_index_repo");
 	test.should_index_user().await.expect("should_index_user");
+	test.should_index_pr().await.expect("should_index_pr");
 }
 
 struct Test<'a> {
@@ -66,6 +68,47 @@ impl<'a> Test<'a> {
 		}
 
 		users::assert_is_indexed(&mut self.context, users::anthony())?;
+
+		Ok(())
+	}
+
+	async fn should_index_pr(&mut self) -> Result<()> {
+		info!("should_index_pr");
+
+		{
+			// When
+			let response = self
+				.context
+				.http_client
+				.post(format!(
+					"/indexer/repo/{}/pull_request/1146",
+					repos::marketplace().id
+				))
+				.dispatch()
+				.await;
+
+			// Then
+			assert_eq!(response.status(), Status::Ok);
+		}
+
+		pull_requests::assert_is_indexed(&mut self.context, pull_requests::x1146())?;
+
+		commits::assert_indexed(
+			&mut self.context,
+			vec![
+				(commits::c(), pull_requests::x1146().id),
+				(commits::d(), pull_requests::x1146().id),
+				(commits::e(), pull_requests::x1146().id),
+			],
+		)?;
+
+		reviews::assert_indexed(
+			&mut self.context,
+			vec![(
+				reviews::requested(GithubCodeReviewStatus::Pending),
+				pull_requests::x1146().id,
+			)],
+		)?;
 
 		Ok(())
 	}
