@@ -7,7 +7,7 @@ import { signinUsers } from "./signin_users";
 import { repos } from "../../fixtures/data/repos";
 import fs from "fs";
 
-const GENERATED_FIXTURES_BASE_PATH = "playwright/fixtures/__generated";
+const GENERATED_FIXTURES_BASE_PATH = "./fixtures/__generated";
 export const GENERATED_REPOS_FIXTURE_BASE_PATH = `${GENERATED_FIXTURES_BASE_PATH}/repos.json`;
 export const GENERATED_USERS_FIXTURE_BASE_PATH = `${GENERATED_FIXTURES_BASE_PATH}/users.json`;
 export const GENERATED_SPONSORS_FIXTURE_BASE_PATH = `${GENERATED_FIXTURES_BASE_PATH}/sponsors.json`;

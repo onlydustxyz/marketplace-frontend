@@ -112,7 +112,7 @@ jobs:
         run: cargo install cargo-tarpaulin
 
       - name: Run tests
-        run: yarn backend:unit-tests
+        run: yarn backend:unit-tests-with-coverage
 
       - name: Setup tmate session for debugging
         uses: mxschmitt/action-tmate@v3
@@ -139,7 +139,7 @@ jobs:
         run: cargo install cargo-tarpaulin
 
       - name: Run tests
-        run: yarn backend:integration-tests
+        run: yarn backend:integration-tests-with-coverage
 
       - name: Setup tmate session for debugging
         uses: mxschmitt/action-tmate@v3
@@ -151,4 +151,3 @@ jobs:
           codecov_token: ${{ secrets.CODECOV_TOKEN }}
           codecov_flag: integration_tests
           file: backend/cobertura.xml
-

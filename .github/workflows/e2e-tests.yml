@@ -85,7 +85,7 @@ jobs:
         if: ${{ failure() }}
         with:
           name: playwright-report
-          path: playwright-report/
+          path: e2e/playwright/playwright-report/
           retention-days: 7
 
       - name: Upload DB dump in case of failure
@@ -93,5 +93,5 @@ jobs:
         if: ${{ failure() }}
         with:
           name: playwright-db-dump
-          path: playwright/marketplace_db_dump
+          path: e2e/playwright/marketplace_db_dump
           retention-days: 7

@@ -1,54 +1,5 @@
 version: "3.8"
 services:
-  db:
-    labels:
-      type: infrastructure
-    extends:
-      file: docker-compose.yml
-      service: db
-
-  rabbitmq:
-    labels:
-      type: infrastructure
-    extends:
-      file: docker-compose.yml
-      service: rabbitmq
-
-  hasura:
-    labels:
-      type: infrastructure
-    extends:
-      file: docker-compose.yml
-      service: hasura
-    environment:
-      BACKEND_GRAPHQL_URL: ${BACKEND_GRAPHQL_URL:-http://api:8000/graphql}
-      GITHUB_PROXY_GRAPHQL_URL: ${GITHUB_PROXY_GRAPHQL_URL:-http://github-proxy:8001/graphql}
-
-  hasura-console:
-    labels:
-      type: infrastructure
-    container_name: hasura-console
-    image: node:18-bullseye
-    volumes:
-      - .:/app
-    command: bash -c "cd /app && yarn hasura:console:install && yarn hasura:console:start"
-    ports:
-      - 9695:9695
-    healthcheck:
-      test: curl -f http://localhost:9695 || exit 1
-      interval: 2s
-      timeout: 1s
-      retries: 30
-    environment:
-      HASURA_GRAPHQL_ENDPOINT: http://hasura:8080
-
-  hasura-auth:
-    labels:
-      type: infrastructure
-    extends:
-      file: docker-compose.yml
-      service: hasura-auth
-
   api:
     labels:
       type: backend
@@ -63,15 +14,15 @@ services:
         condition: service_healthy
     volumes:
       - .:/app
-      - cargo-cache:/tmp
+      - cargo-cache:/usr/local/cargo
     command: bash -c "cd /app/backend && cargo run -p api"
     ports:
       - 8000:8000
     healthcheck:
       test: curl -f http://localhost:8000 || exit 1
-      interval: 15s
+      interval: 6s
       timeout: 1s
-      retries: 30
+      retries: 50
     environment:
       DATABASE_URL: postgres://postgres:postgres@db/marketplace_db
       AMQP_URL: amqp://rabbitmq:5672/%2f
@@ -96,7 +47,7 @@ services:
     image: rust:1.66
     volumes:
       - .:/app
-      - cargo-cache:/tmp
+      - cargo-cache:/usr/local/cargo
     command: bash -c "cd /app/backend && cargo run -p github-proxy"
     ports:
       - 8001
@@ -107,9 +58,9 @@ services:
         condition: service_healthy
     healthcheck:
       test: curl -f http://localhost:8001 || exit 1
-      interval: 15s
+      interval: 6s
       timeout: 1s
-      retries: 30
+      retries: 50
     environment:
       GITHUB_PROXY_GRAPHQL_API_KEY: $GITHUB_PROXY_GRAPHQL_API_KEY
       GITHUB_BASE_URL: $GITHUB_BASE_URL
@@ -130,7 +81,7 @@ services:
         condition: service_healthy
     volumes:
       - .:/app
-      - cargo-cache:/tmp
+      - cargo-cache:/usr/local/cargo
     command: bash -c "cd /app/backend && cargo run -p event-store"
     environment:
       DATABASE_URL: postgres://postgres:postgres@db/marketplace_db
@@ -151,7 +102,7 @@ services:
         condition: service_healthy
     volumes:
       - .:/app
-      - cargo-cache:/tmp
+      - cargo-cache:/usr/local/cargo
     command: bash -c "cd /app/backend && cargo run -p event-listeners"
     environment:
       DATABASE_URL: postgres://postgres:postgres@db/marketplace_db
@@ -175,7 +126,7 @@ services:
         condition: service_healthy
     volumes:
       - .:/app
-      - cargo-cache:/tmp
+      - cargo-cache:/usr/local/cargo
     command: bash -c "cd /app/backend && cargo run -p event-listeners --bin github-indexer"
     environment:
       DATABASE_URL: postgres://postgres:postgres@db/marketplace_db
@@ -185,37 +136,32 @@ services:
       GITHUB_PAT: $GITHUB_PAT
       GITHUB_MAX_CALLS_PER_REQUEST: $GITHUB_MAX_CALLS_PER_REQUEST
 
-  frontend:
+  hasura-console:
     labels:
-      type: frontend
-    container_name: frontend
+      type: infrastructure
+    container_name: hasura-console
     image: node:18-bullseye
+    depends_on:
+      db:
+        condition: service_healthy
+      hasura-auth:
+        condition: service_healthy
+      api:
+        condition: service_healthy
+      github-proxy:
+        condition: service_healthy
     volumes:
       - .:/app
-    command: bash -c "cd /app && yarn frontend:install && yarn frontend:dev --host"
+    command: bash -c "cd /app && yarn hasura:console:install && yarn hasura:console:start"
     ports:
-      - 5173:5173
+      - 9695:9695
     healthcheck:
-      test: curl -f http://localhost:5173 || exit 1
+      test: curl -f http://localhost:9695 || exit 1
       interval: 2s
       timeout: 1s
-      retries: 3
+      retries: 30
     environment:
-      VITE_HASURA_AUTH_BASE_URL: http://hasura:4000
-      VITE_API_BASE_URL: http://hasura:8000
-      VITE_HASURA_BASE_URL: http://hasura:8080
-      VITE_HASURA_BASE_WS_URL: ws://hasura:8080
-      VITE_LOGIN_URL: http://hasura:4000/signin/provider/github
-      VITE_ENV: local
-      VITE_MAINTENANCE:
-      VITE_GTM_ID:
-      VITE_LANGUAGES_FILTER: "CSS,Dockerfile,Handlebars,HCL,HTML,Jupyter Notebook,Makefile,Nix,Procfile,SCSS,Shell"
-      VITE_ENABLE_DATADOG_LOG: true
-      VITE_CLOUDFLARE_RESIZE_W_100_PREFIX: https://onlydust.xyz/cdn-cgi/image/width:=100/
-      VITE_GENERIC_METADATA_URL: https://develop-app-metadata.onlydust.xyz/api/generic
+      HASURA_GRAPHQL_ENDPOINT: http://hasura:8080
 
 volumes:
   cargo-cache:
-  rabbitmq:
-  db:
-    driver: local

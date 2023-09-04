@@ -31,5 +31,5 @@ runs:
       if: ${{ failure() }}
       with:
         name: playwright-report
-        path: playwright-report/
+        path: e2e/playwright/playwright-report/
         retention-days: 30

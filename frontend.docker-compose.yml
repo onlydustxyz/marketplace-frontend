@@ -1,0 +1,30 @@
+version: "3.8"
+services:
+  frontend:
+    labels:
+      type: frontend
+    container_name: frontend
+    image: node:18-bullseye
+    volumes:
+      - .:/app
+    command: bash -c "cd /app && yarn frontend:install && yarn frontend:dev --host"
+    ports:
+      - 5173:5173
+    healthcheck:
+      test: curl -f http://localhost:5173 || exit 1
+      interval: 2s
+      timeout: 1s
+      retries: 20
+    environment:
+      VITE_HASURA_AUTH_BASE_URL: http://hasura:4000
+      VITE_API_BASE_URL: http://hasura:8000
+      VITE_HASURA_BASE_URL: http://hasura:8080
+      VITE_HASURA_BASE_WS_URL: ws://hasura:8080
+      VITE_LOGIN_URL: http://hasura:4000/signin/provider/github
+      VITE_ENV: local
+      VITE_MAINTENANCE:
+      VITE_GTM_ID:
+      VITE_LANGUAGES_FILTER: "CSS,Dockerfile,Handlebars,HCL,HTML,Jupyter Notebook,Makefile,Nix,Procfile,SCSS,Shell"
+      VITE_ENABLE_DATADOG_LOG: true
+      VITE_CLOUDFLARE_RESIZE_W_100_PREFIX: https://onlydust.xyz/cdn-cgi/image/width:=100/
+      VITE_GENERIC_METADATA_URL: https://develop-app-metadata.onlydust.xyz/api/generic
