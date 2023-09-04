@@ -235,11 +235,11 @@ impl<'a> Test<'a> {
 		commits::assert_indexed(
 			&mut self.context,
 			vec![
-				(commits::e(), pull_requests::x1146().id),
 				(commits::f(), pull_requests::x1144().id),
 				(commits::g(), pull_requests::x1144().id),
 				(commits::c(), pull_requests::x1146().id),
 				(commits::d(), pull_requests::x1146().id),
+				(commits::e(), pull_requests::x1146().id),
 				(commits::h(), pull_requests::x1152().id),
 				(commits::b(), pull_requests::x1152().id),
 				(commits::a(), pull_requests::x1152().id),

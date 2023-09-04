@@ -161,16 +161,16 @@ impl Crawler<GithubPullRequest, Option<GithubFullPullRequest>> for PullRequestCr
 
 	fn ack(
 		&self,
-		_pull_request: &GithubPullRequest,
+		pull_request: &GithubPullRequest,
 		data: Option<GithubFullPullRequest>,
 	) -> Result<()> {
-		if let Some(pull_request) = data {
+		if data.is_some() {
 			self.github_pull_request_index_repository.upsert_pull_request_indexer_state(
-				&pull_request.inner.id,
+				&pull_request.id,
 				State {
 					hash: hash(&pull_request),
-					base_sha: pull_request.inner.base_sha.clone(),
-					head_sha: pull_request.inner.head_sha.clone(),
+					base_sha: pull_request.base_sha.clone(),
+					head_sha: pull_request.head_sha.clone(),
 				}
 				.json()?,
 			)?;

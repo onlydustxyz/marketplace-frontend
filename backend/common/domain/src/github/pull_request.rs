@@ -17,7 +17,7 @@ pub enum Status {
 	Merged,
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize, Hash, PartialOrd, Ord)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize, PartialOrd, Ord)]
 pub enum CiChecks {
 	Passed,
 	Failed,
@@ -44,7 +44,7 @@ pub struct PullRequest {
 	pub requested_reviewers: Vec<GithubUser>,
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
 pub struct FullPullRequest {
 	pub inner: PullRequest,
 	pub ci_checks: Option<CiChecks>,
