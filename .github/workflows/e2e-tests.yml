@@ -57,6 +57,7 @@ jobs:
 
       - name: Prepare Hasura
         run: |
+          yarn hasura:console:install
           yarn e2e:hasura:delete-metadata
           yarn hasura:metadata:apply
           yarn hasura:metadata:drop-inconsistencies
@@ -64,6 +65,10 @@ jobs:
 
       - name: Check database and GraphQL schema consistency
         run: yarn hasura:metadata:check-consistency
+
+      - name: Dump docker logs on failure
+        if: ${{ failure() }}
+        uses: jwalton/gh-docker-logs@v2
 
       - name: Display log files in case of failure
         run: docker logs hasura-auth; docker logs frontend

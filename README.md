@@ -46,6 +46,12 @@
 - [yarn](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable)
 - [docker](https://docs.docker.com/get-docker/)
 
+Make sure Rust 1.70 is used:
+
+```sh
+rustup default 1.70
+```
+
 ## Usage
 
 First, prepare your local environment by configuring your `.env`. Copy the `.env.e2e` file and replace the values tagged with `REPLACE_AT_INSTALLATION` according to your personal accounts.
