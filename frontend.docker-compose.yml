@@ -12,9 +12,9 @@ services:
       - 5173:5173
     healthcheck:
       test: curl -f http://localhost:5173 || exit 1
-      interval: 2s
+      interval: 6s
       timeout: 1s
-      retries: 20
+      retries: 50
     environment:
       VITE_HASURA_AUTH_BASE_URL: http://localhost:4000
       VITE_API_BASE_URL: http://localhost:8000

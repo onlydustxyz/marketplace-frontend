@@ -28,7 +28,7 @@
         "hasura:console:install": "yarn --cwd ./hasura install",
         "hasura:console:start": "yarn --cwd ./hasura start",
         "hasura:metadata:apply": "yarn --cwd ./hasura hasura --skip-update-check md apply",
-        "hasura:metadata:reload": "yarn --cwd ./hasura hasura md reload",
+        "hasura:metadata:reload": "yarn --cwd ./hasura hasura --skip-update-check md reload",
         "hasura:metadata:drop-inconsistencies": "yarn --cwd ./hasura hasura --skip-update-check md ic drop",
         "hasura:metadata:log-inconsistencies": "yarn --cwd ./hasura hasura hasura md ic list",
         "hasura:metadata:export": "yarn --cwd ./hasura hasura --skip-update-check md export",
