@@ -25,7 +25,7 @@ export default defineConfig({
     },
   },
   define: {
-    APP_COMMIT_HASH: JSON.stringify(child.execSync("git rev-parse --short HEAD").toString()),
+    APP_COMMIT_HASH: getCommitHash(),
   },
   build: {
     sourcemap: true,
@@ -40,3 +40,13 @@ export default defineConfig({
     exclude: [...configDefaults.exclude],
   },
 });
+
+function getCommitHash() {
+  try {
+    // In the CI, this git command will fail because the .git folder is deleted, which is why we need to catch it
+    return JSON.stringify(child.execSync("git rev-parse --short HEAD").toString());
+  } catch (error) {
+    console.error(error);
+    return "unknown";
+  }
+}
