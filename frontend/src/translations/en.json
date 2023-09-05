@@ -259,7 +259,7 @@
         "title": "Contributions",
         "emptyState": {
           "title": "Nothing to show",
-          "subtitle": "Add contributions using their links"
+          "subtitle": "We constantly look at updates on Github but it can take some time before refresh"
         }
       },
       "leftToSpend": "Left to spend",
