@@ -1,0 +1,20 @@
+@font-face{
+  font-family:"Belwe";
+  src:url("belwe-bold.woff2") format("woff2"),url("belwe-bold.woff") format("woff");
+}
+@font-face{
+  font-family:"Belwe Light";
+  src:url("belwe-light.woff2") format("woff2"),url("belwe-light.woff") format("woff");
+}
+@font-face{
+  font-family:"Belwe Light Italic";
+  src:url("belwe-light-italic.woff2") format("woff2"),url("belwe-light-italic.woff") format("woff");
+}
+@font-face{
+  font-family:"Belwe Medium";
+  src:url("belwe-medium.woff2") format("woff2"),url("belwe-medium.woff") format("woff");
+}
+@font-face{
+font-family:"Belwe Condensed";
+src:url("belwe-condensed.woff2") format("woff2"),url("belwe-condensed.woff") format("woff");
+}
