@@ -1227,10 +1227,10 @@ has-flag@^4.0.0:
   resolved "https://registry.yarnpkg.com/has-flag/-/has-flag-4.0.0.tgz#944771fd9c81c81265c4d6941860da06bb59479b"
   integrity sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==
 
-hasura-cli@2.15.2:
-  version "2.15.2"
-  resolved "https://registry.yarnpkg.com/hasura-cli/-/hasura-cli-2.15.2.tgz#12c8e6df56c9a8e69c0ce8ad9a661e15a4436afc"
-  integrity sha512-sdNZkRsc4MXh/IPv6nVi/sJ7PwJVgeiPqPetGD0zEjhwKtKJAtT+cqqZqK8HI1XCshBbalXMjUcSCvtYMY8VyQ==
+hasura-cli@2.33.1:
+  version "2.33.1"
+  resolved "https://registry.yarnpkg.com/hasura-cli/-/hasura-cli-2.33.1.tgz#277dc1a0a01a49640f6419185024498e382ba5d7"
+  integrity sha512-tGhO7ITVYdsvhAlVdBGbp71tltgQhmQ0BFR38LbISisyro+fN7SiRkJMf05qWSTS1IrwUajyzbvQ/Mz4q/NifQ==
   dependencies:
     axios "^0.21.1"
     chalk "^2.4.2"
