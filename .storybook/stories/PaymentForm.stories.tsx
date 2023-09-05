@@ -23,6 +23,7 @@ const BERNARDSTANISLAS: ContributorFragment = {
     aggregate: { sum: { pullRequestCount: 0, issueCount: 0, codeReviewCount: 0, totalCount: 0 } },
   },
   paymentStatsAggregate: { aggregate: { sum: { moneyGranted: 0 } } },
+  projectsRewardedAggregate: { aggregate: { sum: { rewardCount: 0 } } },
 };
 const OSCARWROCHE: ContributorFragment = {
   login: "oscarwroche",
@@ -34,6 +35,7 @@ const OSCARWROCHE: ContributorFragment = {
     aggregate: { sum: { pullRequestCount: 0, issueCount: 0, codeReviewCount: 0, totalCount: 0 } },
   },
   paymentStatsAggregate: { aggregate: { sum: { moneyGranted: 0 } } },
+  projectsRewardedAggregate: { aggregate: { sum: { rewardCount: 0 } } },
 };
 const OFUX: ContributorFragment = {
   login: "ofux",
@@ -45,6 +47,7 @@ const OFUX: ContributorFragment = {
     aggregate: { sum: { pullRequestCount: 0, issueCount: 0, codeReviewCount: 0, totalCount: 0 } },
   },
   paymentStatsAggregate: { aggregate: { sum: { moneyGranted: 0 } } },
+  projectsRewardedAggregate: { aggregate: { sum: { rewardCount: 0 } } },
 };
 const ANTHONYBUISSET: ContributorFragment = {
   login: "anthonybuisset",
@@ -56,6 +59,7 @@ const ANTHONYBUISSET: ContributorFragment = {
     aggregate: { sum: { pullRequestCount: 0, issueCount: 0, codeReviewCount: 0, totalCount: 0 } },
   },
   paymentStatsAggregate: { aggregate: { sum: { moneyGranted: 0 } } },
+  projectsRewardedAggregate: { aggregate: { sum: { rewardCount: 0 } } },
 };
 const TDELABRO: ContributorFragment = {
   __typename: "UserProfiles",
@@ -67,6 +71,7 @@ const TDELABRO: ContributorFragment = {
     aggregate: { sum: { pullRequestCount: 0, issueCount: 0, codeReviewCount: 0, totalCount: 0 } },
   },
   paymentStatsAggregate: { aggregate: { sum: { moneyGranted: 0 } } },
+  projectsRewardedAggregate: { aggregate: { sum: { rewardCount: 0 } } },
 };
 
 const mocks = [
