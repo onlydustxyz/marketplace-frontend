@@ -136,32 +136,5 @@ services:
       GITHUB_PAT: $GITHUB_PAT
       GITHUB_MAX_CALLS_PER_REQUEST: $GITHUB_MAX_CALLS_PER_REQUEST
 
-  hasura-console:
-    labels:
-      type: infrastructure
-    container_name: hasura-console
-    image: node:18-bullseye
-    depends_on:
-      db:
-        condition: service_healthy
-      hasura-auth:
-        condition: service_healthy
-      api:
-        condition: service_healthy
-      github-proxy:
-        condition: service_healthy
-    volumes:
-      - .:/app
-    command: bash -c "cd /app && yarn hasura:console:install && yarn hasura:console:start"
-    ports:
-      - 9695:9695
-    healthcheck:
-      test: curl -f http://localhost:9695 || exit 1
-      interval: 6s
-      timeout: 1s
-      retries: 50
-    environment:
-      HASURA_GRAPHQL_ENDPOINT: http://hasura:8080
-
 volumes:
   cargo-cache:
