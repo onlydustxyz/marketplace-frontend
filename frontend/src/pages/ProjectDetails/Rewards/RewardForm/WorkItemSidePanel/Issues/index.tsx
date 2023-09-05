@@ -3,9 +3,9 @@ import { WorkItem } from "src/components/GithubIssue";
 import View from "./View";
 import useIgnoredIssues from "./useIgnoredIssues";
 import {
+  GithubIssueFragment,
+  GithubPullRequestFragment,
   LiveGithubIssueCreatedAndClosedFragment,
-  LiveGithubIssueFragment,
-  LiveGithubPullRequestFragment,
 } from "src/__generated/graphql";
 import useUnpaidIssues from "./useUnpaidIssues";
 import { useMemo } from "react";
@@ -51,7 +51,7 @@ export default function Issues({ type, projectId, contributorId, workItems, onWo
 }
 
 export const issueToWorkItem = (
-  { ignoredForProjects, ...props }: LiveGithubIssueFragment,
+  { ignoredForProjects, ...props }: GithubIssueFragment,
   projectId?: string
 ): WorkItem => ({
   ...props,
@@ -68,7 +68,7 @@ export const issueCreatedAndClosedToWorkItem = (
 });
 
 export const pullRequestToWorkItem = (
-  { ignoredForProjects, ...props }: LiveGithubPullRequestFragment,
+  { ignoredForProjects, ...props }: GithubPullRequestFragment,
   projectId?: string
 ): WorkItem => ({
   ...props,

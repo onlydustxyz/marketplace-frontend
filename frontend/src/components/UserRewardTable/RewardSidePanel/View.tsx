@@ -49,7 +49,7 @@ export default function View({
   githubUserId,
   status,
   amountInUsd,
-  liveGithubRecipient,
+  githubRecipient,
   requestor,
   requestedAt,
   workItems,
@@ -103,20 +103,20 @@ export default function View({
               </div>
             </Details>
           )}
-          {liveGithubRecipient && (
+          {githubRecipient && (
             <Details>
-              <RoundedImage alt={liveGithubRecipient.login} src={liveGithubRecipient.avatarUrl} size={ImageSize.Xxs} />
+              <RoundedImage alt={githubRecipient.login} src={githubRecipient.avatarUrl} size={ImageSize.Xxs} />
               <div className="flex flex-row items-center gap-1">
                 {T("reward.table.detailsPanel.to")}
                 <Contributor
                   contributor={{
-                    login: liveGithubRecipient.login,
-                    githubUserId: liveGithubRecipient.id,
+                    login: githubRecipient.login,
+                    githubUserId: githubRecipient.id,
                     avatarUrl: null,
                   }}
                   clickable
                 />
-                {liveGithubRecipient.id === githubUserId && T("reward.table.detailsPanel.you")}
+                {githubRecipient.id === githubUserId && T("reward.table.detailsPanel.you")}
               </div>
             </Details>
           )}

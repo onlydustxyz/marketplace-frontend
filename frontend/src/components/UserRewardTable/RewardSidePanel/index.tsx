@@ -26,7 +26,7 @@ export default function RewardSidePanel({ rewardId, onRewardCancel, projectLeade
       : PaymentStatus.WAITING_PAYMENT;
 
   const { invoiceNeeded, valid: payoutSettingsValid } = usePayoutSettings(
-    data?.paymentRequestsByPk?.liveGithubRecipient?.id
+    data?.paymentRequestsByPk?.githubRecipient?.id
   );
 
   return (
