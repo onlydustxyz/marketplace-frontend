@@ -88,14 +88,12 @@ class Contributions {
 }
 
 class GithubIssue {
-   assignees: [GithubUser!]!
    author: GithubUser!
    closedAt: DateTimeUtc
    commentsCount: Int!
    createdAt: DateTimeUtc!
    htmlUrl: Url!
    id: Int!
-   ignoredForProjects: [IgnoredGithubIssues!]!
    number: Int!
    repoId: Int!
    status: GithubIssueStatus!
@@ -139,7 +137,6 @@ class GithubPullRequest {
    createdAt: DateTimeUtc!
    htmlUrl: Url!
    id: Int!
-   ignoredForProjects: [IgnoredGithubIssues!]!
    mergedAt: DateTimeUtc
    number: Int!
    repoId: Int!
@@ -186,7 +183,6 @@ class GithubUser {
    htmlUrl: Url!
    id: Int!
    login: String!
-   paymentRequests: [PaymentRequests!]!
    user: RegisteredUsers
 }
 
@@ -240,7 +236,6 @@ class PaymentRequests {
    hoursWorked: Int!
    id: uuid!
    invoiceReceivedAt: timestamp
-   liveGithubRecipient: GithubUser
    payments: [Payments!]!
    recipient: RegisteredUsers
    recipientId: bigint!
@@ -398,8 +393,8 @@ class UserProfiles {
 }
 
 class WorkItems {
-   githubIssue: GithubIssue
-   githubPullRequest: GithubPullRequest
+   githubIssue: GithubIssues
+   githubPullRequest: GithubPullRequests
    ignoredForProjects: [IgnoredGithubIssues!]!
    issueNumber: bigint!
    paymentId: uuid!
@@ -504,22 +499,17 @@ Budgets -- Projects
 Budgets --* PaymentRequests
 Contacts -- ContactInformations
 GithubIssue -- GithubUser
-GithubIssue --* GithubUser
-GithubIssue --* IgnoredGithubIssues
 GithubIssueCreatedAndClosed -- GithubUserLinkedToIssue
 GithubIssues -- GithubRepos
 GithubIssues --* IgnoredGithubIssues
 GithubPullRequest -- GithubUser
-GithubPullRequest --* IgnoredGithubIssues
 GithubPullRequests -- GithubRepos
 GithubPullRequests --* IgnoredGithubIssues
 GithubRepos --* ProjectGithubRepos
 GithubUser -- RegisteredUsers
-GithubUser --* PaymentRequests
 GithubUsers -- RegisteredUsers
 GithubUsers --* PaymentRequests
 PaymentRequests -- Budgets
-PaymentRequests -- GithubUser
 PaymentRequests -- GithubUsers
 PaymentRequests -- RegisteredUsers
 PaymentRequests --* Payments
@@ -557,8 +547,8 @@ UserProfiles --* PaymentStats
 UserProfiles --* ProjectLeads
 UserProfiles --* ProjectsContributors
 UserProfiles --* ProjectsRewardedUsers
-WorkItems -- GithubIssue
-WorkItems -- GithubPullRequest
+WorkItems -- GithubIssues
+WorkItems -- GithubPullRequests
 WorkItems -- PaymentRequests
 WorkItems --* IgnoredGithubIssues
 authProviders --* authUserProviders
