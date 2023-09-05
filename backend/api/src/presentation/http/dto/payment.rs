@@ -30,6 +30,7 @@ pub enum WorkItemType {
 
 #[derive(Debug, Deserialize)]
 pub struct WorkItem {
+	pub id: u64,
 	pub r#type: WorkItemType,
 	pub repo_id: u64,
 	pub number: u64,
@@ -42,14 +43,17 @@ impl TryFrom<WorkItem> for domain::PaymentWorkItem {
 	fn try_from(work_item: WorkItem) -> Result<Self, HttpApiProblem> {
 		Ok(match work_item.r#type {
 			WorkItemType::Issue => domain::PaymentWorkItem::Issue {
+				id: work_item.id.into(),
 				repo_id: work_item.repo_id.into(),
 				number: work_item.number.into(),
 			},
 			WorkItemType::PullRequest => domain::PaymentWorkItem::PullRequest {
+				id: work_item.id.into(),
 				repo_id: work_item.repo_id.into(),
 				number: work_item.number.into(),
 			},
 			WorkItemType::CodeReview => domain::PaymentWorkItem::CodeReview {
+				id: work_item.id.into(),
 				repo_id: work_item.repo_id.into(),
 				number: work_item.number.into(),
 				reviewer_id: work_item

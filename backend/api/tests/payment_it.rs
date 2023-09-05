@@ -8,9 +8,9 @@ use api::presentation::http::routes::payment;
 use assert_matches::assert_matches;
 use chrono::{Duration, Utc};
 use domain::{
-	Amount, BudgetEvent, BudgetId, Currency, Event, GithubPullRequestNumber, GithubRepoId,
-	GithubUserId, PaymentEvent, PaymentId, PaymentReason, PaymentWorkItem, ProjectEvent, ProjectId,
-	UserId,
+	Amount, BudgetEvent, BudgetId, Currency, Event, GithubPullRequestId, GithubPullRequestNumber,
+	GithubRepoId, GithubUserId, PaymentEvent, PaymentId, PaymentReason, PaymentWorkItem,
+	ProjectEvent, ProjectId, UserId,
 };
 use olog::info;
 use rocket::{
@@ -96,6 +96,7 @@ impl<'a> Test<'a> {
 			"reason": {
 				"work_items": [{
 					"type": "PULL_REQUEST",
+					"id": 1012167246,
 					"repo_id": 498695724,
 					"number": 111
 				}
@@ -167,6 +168,7 @@ impl<'a> Test<'a> {
 							assert_eq!(duration_worked, Duration::hours(1));
 							assert_eq!(reason, PaymentReason {
 								work_items: vec![PaymentWorkItem::PullRequest {
+									id: GithubPullRequestId::from(1012167246u64),
 									repo_id: GithubRepoId::from(498695724u64),
 									number: GithubPullRequestNumber::from(111u64)
 								}]
@@ -220,10 +222,12 @@ impl<'a> Test<'a> {
 			"reason": {
 				"work_items": [{
 					"type": "PULL_REQUEST",
+					"id": 123456,
 					"repo_id": 498695724,
 					"number": 111
 				},{
 					"type": "PULL_REQUEST",
+					"id": 123456,
 					"repo_id": 1181927,
 					"number": 111
 				}]
@@ -293,6 +297,7 @@ impl<'a> Test<'a> {
 			"reason": {
 				"work_items": [{
 					"type": "PULL_REQUEST",
+					"id": 1012167246,
 					"repo_id": 498695724,
 					"number": 111
 				}

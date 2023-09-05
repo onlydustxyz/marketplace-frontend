@@ -53,7 +53,9 @@ impl Usecase {
 
 		for work_item in reason.work_items {
 			match work_item {
-				PaymentWorkItem::Issue { repo_id, number } => {
+				PaymentWorkItem::Issue {
+					repo_id, number, ..
+				} => {
 					self.github_indexer_service
 						.index_repo(repo_id)
 						.await
@@ -64,7 +66,9 @@ impl Usecase {
 						.await
 						.map_err(DomainError::InternalError)?;
 				},
-				PaymentWorkItem::PullRequest { repo_id, number }
+				PaymentWorkItem::PullRequest {
+					repo_id, number, ..
+				}
 				| PaymentWorkItem::CodeReview {
 					repo_id, number, ..
 				} => {

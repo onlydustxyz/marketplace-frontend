@@ -14,7 +14,10 @@ pub struct Usecase {
 
 impl Usecase {
 	async fn close_issue(&self, work_item: PaymentWorkItem) -> Result<(), DomainError> {
-		if let PaymentWorkItem::Issue { repo_id, number } = work_item {
+		if let PaymentWorkItem::Issue {
+			repo_id, number, ..
+		} = work_item
+		{
 			let repository = self.fetch_service.repo_by_id(repo_id).await?;
 
 			self.dusty_bot_service
