@@ -70,11 +70,6 @@ jobs:
         if: ${{ failure() }}
         uses: jwalton/gh-docker-logs@v2
 
-      - name: Display log files in case of failure
-        run: docker logs hasura-auth; docker logs frontend
-        if: ${{ failure() }}
-#        run: for container_id in $(docker ps -a -q);do docker ps -a |grep $container_id; docker logs $container_id;done
-
       - name: Log inconsistencies list on failure
         if: ${{ failure() }}
         run: yarn hasura:metadata:log-inconsistencies
