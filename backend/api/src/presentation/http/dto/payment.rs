@@ -1,3 +1,5 @@
+use http_api_problem::HttpApiProblem;
+use reqwest::StatusCode;
 use serde::Deserialize;
 
 #[derive(Debug, Deserialize)]
@@ -5,11 +7,16 @@ pub struct Reason {
 	pub work_items: Vec<WorkItem>,
 }
 
-impl From<Reason> for domain::PaymentReason {
-	fn from(reason: Reason) -> Self {
-		Self {
-			work_items: reason.work_items.into_iter().map(Into::into).collect(),
+impl TryFrom<Reason> for domain::PaymentReason {
+	type Error = HttpApiProblem;
+
+	fn try_from(reason: Reason) -> Result<Self, HttpApiProblem> {
+		let mut work_items = Vec::with_capacity(reason.work_items.len());
+		for work_item in reason.work_items {
+			work_items.push(work_item.try_into()?);
 		}
+
+		Ok(Self { work_items })
 	}
 }
 
@@ -26,11 +33,14 @@ pub struct WorkItem {
 	pub r#type: WorkItemType,
 	pub repo_id: u64,
 	pub number: u64,
+	pub reviewer_id: Option<i64>,
 }
 
-impl From<WorkItem> for domain::PaymentWorkItem {
-	fn from(work_item: WorkItem) -> Self {
-		match work_item.r#type {
+impl TryFrom<WorkItem> for domain::PaymentWorkItem {
+	type Error = HttpApiProblem;
+
+	fn try_from(work_item: WorkItem) -> Result<Self, HttpApiProblem> {
+		Ok(match work_item.r#type {
 			WorkItemType::Issue => domain::PaymentWorkItem::Issue {
 				repo_id: work_item.repo_id.into(),
 				number: work_item.number.into(),
@@ -42,7 +52,14 @@ impl From<WorkItem> for domain::PaymentWorkItem {
 			WorkItemType::CodeReview => domain::PaymentWorkItem::CodeReview {
 				repo_id: work_item.repo_id.into(),
 				number: work_item.number.into(),
+				reviewer_id: work_item
+					.reviewer_id
+					.ok_or_else(|| {
+						HttpApiProblem::new(StatusCode::BAD_REQUEST)
+							.detail("Reviewer ID is mandatory when work item is a code review")
+					})?
+					.into(),
 			},
-		}
+		})
 	}
 }

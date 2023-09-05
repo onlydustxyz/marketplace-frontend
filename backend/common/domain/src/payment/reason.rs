@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::{GithubIssueNumber, GithubPullRequestNumber, GithubRepoId};
+use crate::{GithubIssueNumber, GithubPullRequestNumber, GithubRepoId, GithubUserId};
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum WorkItem {
@@ -15,6 +15,7 @@ pub enum WorkItem {
 	CodeReview {
 		repo_id: GithubRepoId,
 		number: GithubPullRequestNumber,
+		reviewer_id: GithubUserId,
 	},
 }
 
