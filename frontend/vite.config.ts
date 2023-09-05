@@ -46,7 +46,7 @@ function getCommitHash() {
     // In the CI, this git command will fail because the .git folder is deleted, which is why we need to catch it
     return JSON.stringify(child.execSync("git rev-parse --short HEAD").toString());
   } catch (error) {
-    console.error(error);
+    console.error("Ignore this error within the e2e tests CI", error);
     return "unknown";
   }
 }

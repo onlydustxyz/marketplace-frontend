@@ -52,16 +52,12 @@ jobs:
         shell: bash
         run: cp .env.e2e .env
 
-      - name: Start the docker stack
-        run: yarn e2e:env:up
-
       - name: Prepare Hasura
         run: |
-          yarn hasura:console:install
-          yarn e2e:hasura:delete-metadata
-          yarn hasura:metadata:apply
-          yarn hasura:metadata:drop-inconsistencies
-          yarn hasura:export
+          yarn hasura:install
+
+      - name: Start the docker stack
+        run: yarn e2e:env:up
 
       - name: Check database and GraphQL schema consistency
         run: yarn hasura:metadata:check-consistency
