@@ -108,4 +108,3 @@ volumes:
   rabbitmq:
   db:
     driver: local
-
