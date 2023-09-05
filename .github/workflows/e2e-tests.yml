@@ -45,8 +45,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Prepare env
-        run: git config --global --add safe.directory /app
+      - name: Fix 'dubious ownership in repository' error in Docker containers
+        run: rm -rf .git
 
       - name: Copy the .env file
         shell: bash
