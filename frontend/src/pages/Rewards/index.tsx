@@ -48,7 +48,7 @@ const Rewards = () => {
         <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-4 xl:p-8">
           <div className="font-belwe text-3xl xl:text-5xl">{T("navbar.rewards")}</div>
           <QueryWrapper query={getPaymentRequestsQuery}>
-            <div className="mb-10 flex flex-col-reverse gap-4 xl:flex-row items-start">
+            <div className="mb-10 flex flex-col-reverse items-start gap-4 xl:flex-row">
               <Card>
                 {rewards && (
                   <UserRewardTable
