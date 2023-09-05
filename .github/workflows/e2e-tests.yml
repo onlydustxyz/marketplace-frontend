@@ -62,10 +62,6 @@ jobs:
       - name: Check database and GraphQL schema consistency
         run: yarn hasura:metadata:check-consistency
 
-      - name: Dump docker logs on failure
-        if: ${{ failure() }}
-        uses: jwalton/gh-docker-logs@v2
-
       - name: Log inconsistencies list on failure
         if: ${{ failure() }}
         run: yarn hasura:metadata:log-inconsistencies
@@ -79,6 +75,10 @@ jobs:
       - name: Setup tmate session for debugging
         uses: mxschmitt/action-tmate@v3
         if: ${{ failure() && inputs.debug_enabled }}
+
+      - name: Dump docker logs on failure
+        if: ${{ failure() }}
+        uses: jwalton/gh-docker-logs@v2
 
       - name: Upload screenshots in case of failure
         uses: actions/upload-artifact@v3
