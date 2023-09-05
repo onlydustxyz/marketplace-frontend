@@ -112,7 +112,7 @@ diesel::table! {
     use super::sql_types::ContributionType;
     use super::sql_types::ContributionStatus;
 
-    contributions (type_, details_id, user_id) {
+    contributions (id) {
         repo_id -> Int8,
         user_id -> Int8,
         #[sql_name = "type"]
@@ -121,6 +121,7 @@ diesel::table! {
         status -> ContributionStatus,
         created_at -> Timestamp,
         closed_at -> Nullable<Timestamp>,
+        id -> Text,
     }
 }
 

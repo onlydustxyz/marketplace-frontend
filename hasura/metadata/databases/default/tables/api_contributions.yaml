@@ -12,13 +12,14 @@ select_permissions:
   - role: public
     permission:
       columns:
-        - github_user_id
-        - details_id
-        - type
-        - repo_id
         - status
-        - created_at
+        - type
+        - details_id
+        - github_user_id
+        - id
+        - repo_id
         - closed_at
+        - created_at
         - project_id
       filter: {}
       allow_aggregations: true

@@ -1,3 +1,5 @@
+use std::hash::Hash;
+
 use chrono::NaiveDateTime;
 use diesel::{pg::Pg, Identifiable, Queryable};
 use domain::{GithubRepoId, GithubUserId};
@@ -6,6 +8,7 @@ use infrastructure::database::{
 	schema::contributions,
 };
 use serde::{Deserialize, Serialize};
+use sha2::{Digest, Sha256};
 
 mod details_id;
 pub use details_id::DetailsId;
@@ -17,8 +20,8 @@ pub use repository::Repository;
 	Debug,
 	Clone,
 	Insertable,
-	AsChangeset,
 	Identifiable,
+	AsChangeset,
 	Serialize,
 	Deserialize,
 	Model,
@@ -26,7 +29,6 @@ pub use repository::Repository;
 	Eq,
 	Hash,
 )]
-#[diesel(primary_key(type_, details_id, user_id))]
 pub struct Contribution {
 	pub repo_id: GithubRepoId,
 	pub user_id: GithubUserId,
@@ -35,13 +37,40 @@ pub struct Contribution {
 	pub status: ContributionStatus,
 	pub created_at: NaiveDateTime,
 	pub closed_at: Option<NaiveDateTime>,
+	pub id: String,
+}
+
+impl Contribution {
+	pub fn new(
+		repo_id: GithubRepoId,
+		user_id: GithubUserId,
+		type_: ContributionType,
+		details_id: DetailsId,
+		status: ContributionStatus,
+		created_at: NaiveDateTime,
+		closed_at: Option<NaiveDateTime>,
+	) -> Self {
+		Self {
+			repo_id,
+			user_id,
+			type_,
+			details_id,
+			status,
+			created_at,
+			closed_at,
+			id: format!(
+				"{:#x}",
+				Sha256::digest(format!("({},{},{})", type_, details_id, user_id))
+			),
+		}
+	}
 }
 
 impl Identifiable for Contribution {
-	type Id = (ContributionType, DetailsId, GithubUserId);
+	type Id = String;
 
 	fn id(self) -> Self::Id {
-		(self.type_, self.details_id, self.user_id)
+		self.id
 	}
 }
 
@@ -55,6 +84,7 @@ where
 		ContributionStatus,
 		NaiveDateTime,
 		Option<NaiveDateTime>,
+		String,
 	): Queryable<ST, Pg>,
 {
 	type Row = <(
@@ -65,10 +95,11 @@ where
 		ContributionStatus,
 		NaiveDateTime,
 		Option<NaiveDateTime>,
+		String,
 	) as Queryable<ST, Pg>>::Row;
 
 	fn build(row: Self::Row) -> diesel::deserialize::Result<Self> {
-		let (repo_id, user_id, type_, details_id, status, created_at, closed_at) =
+		let (repo_id, user_id, type_, details_id, status, created_at, closed_at, id) =
 			Queryable::build(row)?;
 
 		Ok(Self {
@@ -84,6 +115,32 @@ where
 			status,
 			created_at,
 			closed_at,
+			id,
 		})
+	}
+}
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+
+	#[test]
+	fn test_id_generation() {
+		//! WARNING: Modifying this test means that all existing ids in database must be updated
+
+		let contribution = Contribution::new(
+			GithubRepoId::from(485838614_u64),
+			GithubUserId::from(99273364_u64),
+			ContributionType::PullRequest,
+			DetailsId::PullRequest(1111346398_u64.into()),
+			ContributionStatus::InProgress,
+			"2023-09-06T00:00:00".parse().unwrap(),
+			None,
+		);
+
+		assert_eq!(
+			contribution.id.to_string(),
+			"2cb196cc21932e69bcdeb18907cbd123e229508aa6ccc3bb6272330a39f7ae93"
+		);
 	}
 }
