@@ -4,7 +4,7 @@ services:
     labels:
       type: backend
     container_name: api
-    image: rust:1.66
+    image: rust:1.70
     depends_on:
       db:
         condition: service_healthy
@@ -44,7 +44,7 @@ services:
     labels:
       type: backend
     container_name: github-proxy
-    image: rust:1.66
+    image: rust:1.70
     volumes:
       - .:/app
       - cargo-cache:/usr/local/cargo
@@ -71,7 +71,7 @@ services:
     labels:
       type: backend
     container_name: event-store
-    image: rust:1.66
+    image: rust:1.70
     depends_on:
       db:
         condition: service_healthy
@@ -92,7 +92,7 @@ services:
     labels:
       type: backend
     container_name: event-listeners
-    image: rust:1.66
+    image: rust:1.70
     depends_on:
       db:
         condition: service_healthy
@@ -116,7 +116,7 @@ services:
     labels:
       type: backend
     container_name: github-indexer
-    image: rust:1.66
+    image: rust:1.70
     depends_on:
       db:
         condition: service_healthy
@@ -157,9 +157,9 @@ services:
       - 9695:9695
     healthcheck:
       test: curl -f http://localhost:9695 || exit 1
-      interval: 2s
+      interval: 6s
       timeout: 1s
-      retries: 30
+      retries: 50
     environment:
       HASURA_GRAPHQL_ENDPOINT: http://hasura:8080
 
