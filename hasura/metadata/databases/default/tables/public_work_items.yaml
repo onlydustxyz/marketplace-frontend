@@ -2,11 +2,21 @@ table:
   name: work_items
   schema: public
 object_relationships:
+  - name: githubCodeReview
+    using:
+      manual_configuration:
+        column_mapping:
+          id: pull_request_id
+          reviewer_id: reviewer_id
+        insertion_order: null
+        remote_table:
+          name: github_pull_request_reviews
+          schema: public
   - name: githubIssue
     using:
       manual_configuration:
         column_mapping:
-          issue_number: number
+          number: number
           repo_id: repo_id
         insertion_order: null
         remote_table:
@@ -16,7 +26,7 @@ object_relationships:
     using:
       manual_configuration:
         column_mapping:
-          issue_number: number
+          number: number
           repo_id: repo_id
         insertion_order: null
         remote_table:
@@ -36,7 +46,7 @@ array_relationships:
     using:
       manual_configuration:
         column_mapping:
-          issue_number: issue_number
+          number: issue_number
           repo_id: repo_id
         insertion_order: null
         remote_table:
@@ -46,8 +56,11 @@ select_permissions:
   - role: public
     permission:
       columns:
-        - payment_id
+        - type
+        - id
+        - number
         - repo_id
-        - issue_number
+        - reviewer_id
+        - payment_id
       filter: {}
       allow_aggregations: true
