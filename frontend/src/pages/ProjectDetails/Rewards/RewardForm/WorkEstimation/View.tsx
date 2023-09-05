@@ -34,7 +34,6 @@ export default function WorkEstimation({
 
   return (
     <Card padded={false}>
-      coucou
       <div className="divide-y divide-greyscale-50/8 rounded-2xl bg-space-card bg-cover bg-top bg-no-repeat">
         <div className="flex flex-col items-stretch justify-items-center gap-5 px-8 py-6">
           <div className="flex flex-col gap-1">
