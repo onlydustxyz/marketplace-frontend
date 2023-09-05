@@ -5,9 +5,10 @@ select_permissions:
   - role: public
     permission:
       columns:
+        - id
+        - outcome
         - pull_request_id
         - reviewer_id
         - status
-        - outcome
         - submitted_at
       filter: {}

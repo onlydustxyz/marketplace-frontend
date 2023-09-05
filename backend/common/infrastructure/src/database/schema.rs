@@ -117,7 +117,7 @@ diesel::table! {
         user_id -> Int8,
         #[sql_name = "type"]
         type_ -> ContributionType,
-        details_id -> Int8,
+        details_id -> Text,
         status -> ContributionStatus,
         created_at -> Timestamp,
         closed_at -> Nullable<Timestamp>,
@@ -183,12 +183,13 @@ diesel::table! {
     use super::sql_types::GithubCodeReviewStatus;
     use super::sql_types::GithubCodeReviewOutcome;
 
-    github_pull_request_reviews (pull_request_id, reviewer_id) {
+    github_pull_request_reviews (id) {
         pull_request_id -> Int8,
         reviewer_id -> Int8,
         status -> GithubCodeReviewStatus,
         outcome -> Nullable<GithubCodeReviewOutcome>,
         submitted_at -> Nullable<Timestamp>,
+        id -> Text,
     }
 }
 
@@ -429,7 +430,7 @@ diesel::table! {
         payment_id -> Uuid,
         number -> Int8,
         repo_id -> Int8,
-        id -> Int8,
+        id -> Text,
         #[sql_name = "type"]
         type_ -> ContributionType,
         reviewer_id -> Nullable<Int8>,

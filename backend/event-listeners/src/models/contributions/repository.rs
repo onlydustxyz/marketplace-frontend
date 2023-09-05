@@ -4,12 +4,13 @@ use diesel::{
 	r2d2::{ConnectionManager, PooledConnection},
 	Connection, ExpressionMethods, PgConnection, QueryDsl, RunQueryDsl,
 };
+use domain::GithubCodeReviewId;
 use infrastructure::{
 	contextualized_error::IntoContextualizedError,
 	database,
 	database::{
 		enums::{ContributionStatus, ContributionType, GithubCodeReviewStatus, GithubIssueStatus},
-		schema::contributions::dsl,
+		schema::{contributions, github_pull_request_reviews},
 		Result,
 	},
 };
@@ -56,7 +57,7 @@ impl Repository for database::Client {
 					ContributionType::Issue,
 				)?;
 
-				diesel::insert_into(dsl::contributions)
+				diesel::insert_into(contributions::table)
 					.values(contributions)
 					.execute(&mut *connection)
 			})
@@ -113,7 +114,7 @@ fn refresh_contributions_from_commits(
 				ContributionType::PullRequest,
 			)?;
 
-			diesel::insert_into(dsl::contributions)
+			diesel::insert_into(contributions::table)
 				.values(contributions)
 				.execute(&mut *connection)
 		})
@@ -128,12 +129,12 @@ fn update_contributions_status(
 	connection: &mut PooledConnection<ConnectionManager<PgConnection>>,
 	pull_request: &GithubPullRequest,
 ) -> Result<()> {
-	diesel::update(dsl::contributions)
-		.filter(dsl::details_id.eq(DetailsId::from(pull_request.inner.id)))
-		.filter(dsl::type_.eq(ContributionType::PullRequest))
+	diesel::update(contributions::table)
+		.filter(contributions::details_id.eq(DetailsId::from(pull_request.inner.id)))
+		.filter(contributions::type_.eq(ContributionType::PullRequest))
 		.set((
-			dsl::status.eq::<ContributionStatus>(pull_request.inner.status.into()),
-			dsl::closed_at.eq(pull_request.inner.closed_at),
+			contributions::status.eq::<ContributionStatus>(pull_request.inner.status.into()),
+			contributions::closed_at.eq(pull_request.inner.closed_at),
 		))
 		.execute(&mut *connection)
 		.err_with_context(format!(
@@ -154,7 +155,7 @@ fn refresh_contributions_from_reviews(
 			repo_id: pull_request.inner.repo_id,
 			user_id: review.reviewer_id,
 			type_: ContributionType::CodeReview,
-			details_id: pull_request.inner.id.into(),
+			details_id: review.id.into(),
 			status: match review.status {
 				GithubCodeReviewStatus::Completed => ContributionStatus::Complete,
 				GithubCodeReviewStatus::Pending => ContributionStatus::InProgress,
@@ -168,18 +169,22 @@ fn refresh_contributions_from_reviews(
 
 	connection
 		.transaction(|connection| {
-			delete_all_contributions_for_details(
-				connection,
-				DetailsId::from(pull_request.inner.id),
-				ContributionType::CodeReview,
-			)?;
+			let code_review_ids: Vec<GithubCodeReviewId> = github_pull_request_reviews::table
+				.select(github_pull_request_reviews::id)
+				.filter(github_pull_request_reviews::pull_request_id.eq(pull_request.inner.id))
+				.load(&mut *connection)?;
 
-			diesel::insert_into(dsl::contributions)
+			diesel::delete(
+				contributions::table.filter(contributions::details_id.eq_any(code_review_ids)),
+			)
+			.execute(&mut *connection)?;
+
+			diesel::insert_into(contributions::table)
 				.values(contributions)
 				.execute(&mut *connection)
 		})
 		.err_with_context(format!(
-			"delete+insert contribution where type='CodeReview' and details_id={}",
+			"delete+insert contribution where type='CodeReview' and pull_request_id={}",
 			pull_request.inner.id
 		))?;
 	Ok(())
@@ -191,9 +196,9 @@ fn delete_all_contributions_for_details(
 	type_: ContributionType,
 ) -> diesel::result::QueryResult<usize> {
 	diesel::delete(
-		dsl::contributions
-			.filter(dsl::details_id.eq(details_id))
-			.filter(dsl::type_.eq(type_)),
+		contributions::table
+			.filter(contributions::details_id.eq(details_id))
+			.filter(contributions::type_.eq(type_)),
 	)
 	.execute(&mut *connection)
 }

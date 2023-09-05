@@ -1,7 +1,7 @@
 mod repository;
 
 use diesel::Identifiable;
-use domain::{GithubRepoId, GithubUserId, PaymentId, PaymentWorkItem};
+use domain::{GithubRepoId, PaymentId, PaymentWorkItem};
 use infrastructure::database::{enums::ContributionType, schema::work_items};
 
 pub use self::repository::Repository;
@@ -12,9 +12,8 @@ pub struct WorkItem {
 	pub payment_id: PaymentId,
 	pub repo_id: GithubRepoId,
 	pub number: i64,
-	pub id: i64,
+	pub id: String,
 	pub type_: ContributionType,
-	pub reviewer_id: Option<GithubUserId>,
 }
 
 impl Identifiable for WorkItem {
@@ -36,22 +35,19 @@ impl From<(PaymentId, PaymentWorkItem)> for WorkItem {
 				payment_id,
 				repo_id,
 				number: number.into(),
-				id: id.into(),
+				id: id.to_string(),
 				type_: ContributionType::Issue,
-				reviewer_id: None,
 			},
 			PaymentWorkItem::CodeReview {
 				id,
 				repo_id,
 				number,
-				reviewer_id,
 			} => Self {
 				payment_id,
 				repo_id,
 				number: number.into(),
-				id: id.into(),
+				id: id.to_string(),
 				type_: ContributionType::CodeReview,
-				reviewer_id: Some(reviewer_id),
 			},
 			PaymentWorkItem::PullRequest {
 				id,
@@ -61,9 +57,8 @@ impl From<(PaymentId, PaymentWorkItem)> for WorkItem {
 				payment_id,
 				repo_id,
 				number: number.into(),
-				id: id.into(),
+				id: id.to_string(),
 				type_: ContributionType::PullRequest,
-				reviewer_id: None,
 			},
 		}
 	}

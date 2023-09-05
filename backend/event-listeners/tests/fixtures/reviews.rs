@@ -10,8 +10,12 @@ use infrastructure::database::schema::github_pull_request_reviews;
 use super::*;
 use crate::context::github_indexer::Context;
 
-pub fn approved(status: GithubCodeReviewStatus) -> GithubCodeReview {
+pub fn approved(
+	pull_request_id: GithubPullRequestId,
+	status: GithubCodeReviewStatus,
+) -> GithubCodeReview {
 	GithubCodeReview {
+		pull_request_id,
 		reviewer: users::anthony(),
 		status,
 		outcome: Some(GithubCodeReviewOutcome::Approved),
@@ -19,8 +23,12 @@ pub fn approved(status: GithubCodeReviewStatus) -> GithubCodeReview {
 	}
 }
 
-pub fn change_requested(status: GithubCodeReviewStatus) -> GithubCodeReview {
+pub fn change_requested(
+	pull_request_id: GithubPullRequestId,
+	status: GithubCodeReviewStatus,
+) -> GithubCodeReview {
 	GithubCodeReview {
+		pull_request_id,
 		reviewer: users::ofux(),
 		status,
 		outcome: Some(GithubCodeReviewOutcome::ChangeRequested),
@@ -28,8 +36,12 @@ pub fn change_requested(status: GithubCodeReviewStatus) -> GithubCodeReview {
 	}
 }
 
-pub fn commented(status: GithubCodeReviewStatus) -> GithubCodeReview {
+pub fn commented(
+	pull_request_id: GithubPullRequestId,
+	status: GithubCodeReviewStatus,
+) -> GithubCodeReview {
 	GithubCodeReview {
+		pull_request_id,
 		reviewer: users::alex(),
 		status,
 		outcome: None,
@@ -37,8 +49,12 @@ pub fn commented(status: GithubCodeReviewStatus) -> GithubCodeReview {
 	}
 }
 
-pub fn requested(status: GithubCodeReviewStatus) -> GithubCodeReview {
+pub fn requested(
+	pull_request_id: GithubPullRequestId,
+	status: GithubCodeReviewStatus,
+) -> GithubCodeReview {
 	GithubCodeReview {
+		pull_request_id,
 		reviewer: users::anthony(),
 		status,
 		outcome: None,
@@ -47,12 +63,8 @@ pub fn requested(status: GithubCodeReviewStatus) -> GithubCodeReview {
 }
 
 #[track_caller]
-pub fn assert_eq(
-	review: models::github_pull_requests::Review,
-	expected: GithubCodeReview,
-	expected_pull_request_id: GithubPullRequestId,
-) {
-	assert_eq!(review.pull_request_id, expected_pull_request_id);
+pub fn assert_eq(review: models::github_pull_requests::Review, expected: GithubCodeReview) {
+	assert_eq!(review.pull_request_id, expected.pull_request_id);
 	assert_eq!(review.reviewer_id, expected.reviewer.id);
 	assert_eq!(review.status, expected.status.into());
 	assert_eq!(review.outcome, expected.outcome.map(|o| o.into()));
@@ -63,10 +75,7 @@ pub fn assert_eq(
 }
 
 #[track_caller]
-pub fn assert_indexed(
-	context: &mut Context,
-	expected: Vec<(GithubCodeReview, GithubPullRequestId)>,
-) -> Result<()> {
+pub fn assert_indexed(context: &mut Context, expected: Vec<GithubCodeReview>) -> Result<()> {
 	let mut connection = context.database.client.connection()?;
 	let mut reviews: Vec<models::github_pull_requests::Review> = github_pull_request_reviews::table
 		.order((
@@ -78,8 +87,8 @@ pub fn assert_indexed(
 
 	assert_eq!(reviews.len(), expected.len(), "Invalid review count");
 
-	for (review, (expected, pr_id)) in reviews.into_iter().zip(expected) {
-		assert_eq(review, expected, pr_id);
+	for (review, expected) in reviews.into_iter().zip(expected) {
+		assert_eq(review, expected);
 	}
 
 	Ok(())

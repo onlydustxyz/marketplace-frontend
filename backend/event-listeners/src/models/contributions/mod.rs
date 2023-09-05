@@ -51,7 +51,7 @@ where
 		GithubRepoId,
 		GithubUserId,
 		ContributionType,
-		i64,
+		String,
 		ContributionStatus,
 		NaiveDateTime,
 		Option<NaiveDateTime>,
@@ -61,7 +61,7 @@ where
 		GithubRepoId,
 		GithubUserId,
 		ContributionType,
-		i64,
+		String,
 		ContributionStatus,
 		NaiveDateTime,
 		Option<NaiveDateTime>,
@@ -76,9 +76,10 @@ where
 			user_id,
 			type_,
 			details_id: match type_ {
-				ContributionType::Issue => DetailsId::Issue(details_id.into()),
-				ContributionType::PullRequest | ContributionType::CodeReview =>
-					DetailsId::PullRequest(details_id.into()),
+				ContributionType::Issue => DetailsId::Issue(details_id.parse::<u64>()?.into()),
+				ContributionType::PullRequest =>
+					DetailsId::PullRequest(details_id.parse::<u64>()?.into()),
+				ContributionType::CodeReview => DetailsId::CodeReview(details_id.parse()?),
 			},
 			status,
 			created_at,

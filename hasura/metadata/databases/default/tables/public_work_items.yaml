@@ -6,8 +6,7 @@ object_relationships:
     using:
       manual_configuration:
         column_mapping:
-          id: pull_request_id
-          reviewer_id: reviewer_id
+          id: id
         insertion_order: null
         remote_table:
           name: github_pull_request_reviews
@@ -16,8 +15,7 @@ object_relationships:
     using:
       manual_configuration:
         column_mapping:
-          number: number
-          repo_id: repo_id
+          id: id
         insertion_order: null
         remote_table:
           name: github_issues
@@ -26,8 +24,7 @@ object_relationships:
     using:
       manual_configuration:
         column_mapping:
-          number: number
-          repo_id: repo_id
+          id: id
         insertion_order: null
         remote_table:
           name: github_pull_requests
@@ -60,7 +57,6 @@ select_permissions:
         - id
         - number
         - repo_id
-        - reviewer_id
         - payment_id
       filter: {}
       allow_aggregations: true
