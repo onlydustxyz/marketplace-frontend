@@ -5,6 +5,9 @@ import * as path from "path";
 import istanbul from "vite-plugin-istanbul";
 import * as child from "child_process";
 import { configDefaults } from "vitest/config";
+import * as dotenv from "dotenv"; // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
+
+dotenv.config({ path: "../.env" });
 
 export default defineConfig({
   plugins: [
@@ -34,6 +37,6 @@ export default defineConfig({
     deps: {
       inline: ["vitest-canvas-mock"],
     },
-    exclude: [...configDefaults.exclude, "playwright/*"],
+    exclude: [...configDefaults.exclude],
   },
 });

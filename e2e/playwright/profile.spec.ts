@@ -26,7 +26,7 @@ test.describe("As a signed-in user, I", () => {
     const editPage = await viewPage.edit();
     await expect(editPage.login).toHaveText(user.github.login);
     await expect(editPage.avatar).toHaveAttribute("src", "https://avatars.githubusercontent.com/u/595505?v=4");
-    await editPage.avatarFileInput.setInputFiles("playwright/fixtures/fox.png");
+    await editPage.avatarFileInput.setInputFiles("./fixtures/fox.png");
     await expect(editPage.avatar).toHaveAttribute(
       "src",
       "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/781526099633208489.webp",

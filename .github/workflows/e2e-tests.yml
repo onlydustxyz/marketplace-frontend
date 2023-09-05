@@ -53,7 +53,7 @@ jobs:
         run: cp .env.e2e .env
 
       - name: Start the docker stack
-        run: yarn e2e:docker-compose:up
+        run: yarn e2e:env:up
 
       - name: Prepare Hasura
         run: |
@@ -83,9 +83,6 @@ jobs:
       - name: Setup tmate session for debugging
         uses: mxschmitt/action-tmate@v3
         if: ${{ failure() && inputs.debug_enabled }}
-
-      - name: Stop the fullstack
-        run: yarn e2e:docker-compose:down
 
       - name: Upload screenshots in case of failure
         uses: actions/upload-artifact@v3
