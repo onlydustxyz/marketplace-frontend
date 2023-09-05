@@ -92,7 +92,7 @@ impl EventListener<Event> for Projector {
 								};
 
 								self.work_item_repository
-									.try_insert((payment_id, work_item).into())?;
+									.try_insert((project_id, payment_id, work_item).into())?;
 
 								self.github_repo_index_repository.start_indexing(repo_id)?;
 								Ok(())

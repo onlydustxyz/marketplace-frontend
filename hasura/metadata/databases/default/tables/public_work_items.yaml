@@ -53,10 +53,11 @@ select_permissions:
   - role: public
     permission:
       columns:
-        - type
         - id
         - number
-        - repo_id
         - payment_id
+        - project_id
+        - repo_id
+        - type
       filter: {}
       allow_aggregations: true

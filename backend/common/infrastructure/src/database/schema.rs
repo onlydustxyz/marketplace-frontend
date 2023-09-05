@@ -434,7 +434,7 @@ diesel::table! {
         id -> Text,
         #[sql_name = "type"]
         type_ -> ContributionType,
-        reviewer_id -> Nullable<Int8>,
+        project_id -> Uuid,
     }
 }
 
