@@ -3,6 +3,7 @@ import { useIntl } from "src/hooks/useIntl";
 import GithubLogo, { Size } from "src/icons/GithubLogo";
 
 export const LOGIN_URL = `${config.LOGIN_URL}?redirect_url=${encodeURI(window.location.origin)}`;
+console.warn("LOGIN_URL=", LOGIN_URL);
 
 type Props = {
   onClick?: () => void;

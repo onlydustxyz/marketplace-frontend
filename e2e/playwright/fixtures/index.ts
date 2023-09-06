@@ -18,6 +18,7 @@ type PopulatedDataFixtures = {
   signIn: (user: User) => Promise<void>;
   logout: () => Promise<void>;
   acceptTermsAndConditions: (props?: { skipOnboardingWizzard?: boolean; skipIntro?: boolean }) => Promise<void>;
+  printBrowserLogs: () => Promise<void>;
 };
 
 export const test = base.extend<PopulatedDataFixtures>({
@@ -56,9 +57,11 @@ export const test = base.extend<PopulatedDataFixtures>({
     await use(payments);
   },
 
-  signIn: async ({ page }, use) => {
+  signIn: async ({ page, printBrowserLogs }, use) => {
     await use(async (user: User) => {
+      await printBrowserLogs();
       await page.goto("/");
+
       await setLocalStorageTest("hasura_token", user.session, page);
       await page.reload();
       await expect(page.locator("#profile-button").getByText(user.github.login, { exact: true })).toBeVisible();
@@ -85,6 +88,22 @@ export const test = base.extend<PopulatedDataFixtures>({
 
       await page.getByRole("checkbox").click();
       await page.getByText("Confirm").click();
+    });
+  },
+
+  printBrowserLogs: async ({ page }, use) => {
+    await use(async () => {
+        page.on('console', (msg) => {
+            if (msg && msg.text) {
+                if (typeof msg.text === 'function') {
+                    console.log('BROWSER LOG:', page.url(), msg.text());
+                } else {
+                    console.log('BROWSER LOG:', page.url(), msg.text);
+                }
+            } else {
+                console.log('BROWSER LOG:', page.url(), msg);
+            }
+        });
     });
   },
 });
