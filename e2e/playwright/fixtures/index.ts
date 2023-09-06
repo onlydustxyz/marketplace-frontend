@@ -27,6 +27,7 @@ export const test = base.extend<PopulatedDataFixtures>({
   signIn: async ({ page }, use) => {
     await use(async (user: User) => {
       const rnd = (Math.random() + 1).toString(36).substring(7);
+      console.log(await page.content());
       await page.screenshot({ path: `playwright-report/${rnd}-before-goto.png` });
       await page.goto("/");
       await expect(page.locator("#root")).toBeVisible();
