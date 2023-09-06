@@ -18,8 +18,9 @@
 # Python
 .env
 .env.*
+!e2e/.env.e2e
 !.env.develop
-!.env.example
+!.env.e2e
 !.env.test
 
 # MacOS
@@ -52,11 +53,13 @@ lerna-debug.log*
 
 # Emacs
 *~
+
+# Tests
 /test-results/
-/playwright-report/
-/playwright/.cache/
-/playwright/fixtures/__generated
-/playwright/marketplace_db_dump
+/e2e/playwright/playwright-report/
+/e2e/playwright/.cache/
+/e2e/playwright/fixtures/__generated
+/e2e/playwright/marketplace_db_dump
 
 # Db dumps
 **/*.dump
@@ -66,3 +69,6 @@ lerna-debug.log*
 
 # Logs
 *.logs
+
+# Rust
+tarpaulin_target
