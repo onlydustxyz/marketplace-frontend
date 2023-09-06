@@ -11,17 +11,6 @@ object_relationships:
         remote_table:
           name: github_repos
           schema: public
-array_relationships:
-  - name: ignoredForProjects
-    using:
-      manual_configuration:
-        column_mapping:
-          number: issue_number
-          repo_id: repo_id
-        insertion_order: null
-        remote_table:
-          name: ignored_github_issues
-          schema: public
 select_permissions:
   - role: public
     permission:

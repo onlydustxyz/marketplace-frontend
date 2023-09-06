@@ -38,7 +38,7 @@ pub fn serve(
 	pending_project_leader_invitations_repository: Arc<
 		dyn ImmutableRepository<PendingProjectLeaderInvitation>,
 	>,
-	ignored_github_issues_repository: Arc<dyn ImmutableRepository<IgnoredGithubIssue>>,
+	ignored_contributions_repository: Arc<dyn ImmutableRepository<IgnoredContribution>>,
 	user_info_repository: Arc<dyn Repository<UserPayoutInfo>>,
 	user_profile_info_repository: Arc<dyn UserProfileInfoRepository>,
 	contact_informations_repository: Arc<dyn ContactInformationsRepository>,
@@ -81,7 +81,7 @@ pub fn serve(
 		.manage(sponsor_repository)
 		.manage(project_sponsor_repository)
 		.manage(pending_project_leader_invitations_repository)
-		.manage(ignored_github_issues_repository)
+		.manage(ignored_contributions_repository)
 		.manage(user_info_repository)
 		.manage(onboarding_repository)
 		.manage(user_profile_info_repository)
@@ -113,6 +113,8 @@ pub fn serve(
 				routes::users::update_user_profile,
 				routes::users::search_users,
 				routes::projects::create_project,
+				routes::projects::contributions::ignore,
+				routes::projects::contributions::unignore,
 				routes::issues::create_and_close_issue,
 				routes::issues::fetch_issue_by_repo_owner_name_issue_number,
 				routes::pull_requests::fetch_pull_request,
