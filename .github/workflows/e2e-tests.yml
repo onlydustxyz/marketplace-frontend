@@ -33,8 +33,8 @@ env:
   DUSTY_BOT_GITHUB_MAX_CALLS_PER_REQUEST: 100
   BACKEND_GRAPHQL_API_KEY: myapikey
   GITHUB_PROXY_GRAPHQL_API_KEY: mygithubproxyapikey
-  DUSTY_BOT_GITHUB_BASE_URL: https://api.github.com/
-  GITHUB_BASE_URL: https://api.github.com/
+  DUSTY_BOT_GITHUB_BASE_URL: https://develop-github-cache.onlydust.xyz/
+  GITHUB_BASE_URL: https://develop-github-cache.onlydust.xyz/
 
 jobs:
   e2e_tests:

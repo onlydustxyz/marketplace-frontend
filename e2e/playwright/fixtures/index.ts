@@ -10,25 +10,13 @@ import {
 } from "../commands/populate";
 
 type PopulatedDataFixtures = {
-  repos: Record<string, Repo>;
   users: Record<string, User>;
-  sponsors: Record<string, Sponsor>;
-  projects: Record<string, Project>;
-  payments: Record<string, Record<number, Payment[]>>;
   signIn: (user: User) => Promise<void>;
   logout: () => Promise<void>;
   acceptTermsAndConditions: (props?: { skipOnboardingWizzard?: boolean; skipIntro?: boolean }) => Promise<void>;
-  printBrowserLogs: () => Promise<void>;
 };
 
 export const test = base.extend<PopulatedDataFixtures>({
-  // eslint-disable-next-line no-empty-pattern
-  repos: async ({}, use) => {
-    const content = fs.readFileSync(GENERATED_REPOS_FIXTURE_BASE_PATH);
-    const repos = JSON.parse(content.toString());
-    await use(repos);
-  },
-
   // eslint-disable-next-line no-empty-pattern
   users: async ({}, use) => {
     const content = fs.readFileSync(GENERATED_USERS_FIXTURE_BASE_PATH);
@@ -36,30 +24,8 @@ export const test = base.extend<PopulatedDataFixtures>({
     await use(users);
   },
 
-  // eslint-disable-next-line no-empty-pattern
-  sponsors: async ({}, use) => {
-    const content = fs.readFileSync(GENERATED_SPONSORS_FIXTURE_BASE_PATH);
-    const sponsors = JSON.parse(content.toString());
-    await use(sponsors);
-  },
-
-  // eslint-disable-next-line no-empty-pattern
-  projects: async ({}, use) => {
-    const content = fs.readFileSync(GENERATED_PROJECTS_FIXTURE_BASE_PATH);
-    const projects = JSON.parse(content.toString());
-    await use(projects);
-  },
-
-  // eslint-disable-next-line no-empty-pattern
-  payments: async ({}, use) => {
-    const content = fs.readFileSync(GENERATED_PAYMENTS_FIXTURE_BASE_PATH);
-    const payments = JSON.parse(content.toString());
-    await use(payments);
-  },
-
-  signIn: async ({ page, printBrowserLogs }, use) => {
+  signIn: async ({ page }, use) => {
     await use(async (user: User) => {
-      await printBrowserLogs();
       const rnd = (Math.random() + 1).toString(36).substring(7);
       await page.screenshot({ path: `playwright-report/${rnd}-before-goto.png` });
       await page.goto("/");
@@ -92,22 +58,6 @@ export const test = base.extend<PopulatedDataFixtures>({
 
       await page.getByRole("checkbox").click();
       await page.getByText("Confirm").click();
-    });
-  },
-
-  printBrowserLogs: async ({ page }, use) => {
-    await use(async () => {
-        page.on('console', (msg) => {
-            if (msg && msg.text) {
-                if (typeof msg.text === 'function') {
-                    console.log('BROWSER LOG:', page.url(), msg.text());
-                } else {
-                    console.log('BROWSER LOG:', page.url(), msg.text);
-                }
-            } else {
-                console.log('BROWSER LOG:', page.url(), msg);
-            }
-        });
     });
   },
 });
