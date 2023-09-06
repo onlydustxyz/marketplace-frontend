@@ -14,4 +14,4 @@ jobs:
             https://app.onlydust.xyz/
           uploadArtifacts: true
           temporaryPublicStorage: true
-          configPath: ./lighthouse/config.json
+          configPath: ./frontend/lighthouse/config.json

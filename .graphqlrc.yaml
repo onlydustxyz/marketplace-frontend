@@ -1,2 +1,0 @@
-schema: "frontend/src/__generated/graphql.schema.json"
-documents: "**/*.{graphql,js,ts,jsx,tsx}"

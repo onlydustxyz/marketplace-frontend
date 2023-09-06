@@ -1,3 +1,0 @@
-[print_schema]
-file = "backend/common/infrastructure/src/database/schema.rs"
-custom_type_derives = ["diesel::query_builder::QueryId"]

@@ -28,7 +28,7 @@ coverage
 
 .env
 .env.*
-!.env.example
+!.env.e2e
 !.env.test
 
 .nyc_output
