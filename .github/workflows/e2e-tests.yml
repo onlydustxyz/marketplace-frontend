@@ -48,6 +48,8 @@ jobs:
       - name: Setup tmate session for debugging
         uses: mxschmitt/action-tmate@v3
         if: ${{ inputs.debug_enabled }}
+        with:
+          limit-access-to-actor: false
 
       - name: Fix 'dubious ownership in repository' error in Docker containers
         run: rm -rf .git
