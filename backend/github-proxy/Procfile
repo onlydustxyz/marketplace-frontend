@@ -1,1 +1,1 @@
-web: ROCKET_PORT=$PORT ./target/release/github-proxy
+web: ROCKET_PORT=$PORT ./backend/target/release/github-proxy
