@@ -18,6 +18,7 @@ impl Permissions for Anonymous {
 	}
 
 	fn can_ignore_issue_for_project(&self, _project_id: &ProjectId) -> bool {
+		println!("anonymous");
 		false
 	}
 

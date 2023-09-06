@@ -112,15 +112,16 @@ diesel::table! {
     use super::sql_types::ContributionType;
     use super::sql_types::ContributionStatus;
 
-    contributions (type_, details_id, user_id) {
+    contributions (id) {
         repo_id -> Int8,
         user_id -> Int8,
         #[sql_name = "type"]
         type_ -> ContributionType,
-        details_id -> Int8,
+        details_id -> Text,
         status -> ContributionStatus,
         created_at -> Timestamp,
         closed_at -> Nullable<Timestamp>,
+        id -> Text,
     }
 }
 
@@ -183,12 +184,13 @@ diesel::table! {
     use super::sql_types::GithubCodeReviewStatus;
     use super::sql_types::GithubCodeReviewOutcome;
 
-    github_pull_request_reviews (pull_request_id, reviewer_id) {
+    github_pull_request_reviews (id) {
         pull_request_id -> Int8,
         reviewer_id -> Int8,
         status -> GithubCodeReviewStatus,
         outcome -> Nullable<GithubCodeReviewOutcome>,
         submitted_at -> Nullable<Timestamp>,
+        id -> Text,
     }
 }
 
@@ -263,10 +265,9 @@ diesel::table! {
 }
 
 diesel::table! {
-    ignored_github_issues (project_id, repo_id, issue_number) {
+    ignored_contributions (project_id, contribution_id) {
         project_id -> Uuid,
-        repo_id -> Int8,
-        issue_number -> Int8,
+        contribution_id -> Text,
     }
 }
 
@@ -422,14 +423,20 @@ diesel::table! {
 }
 
 diesel::table! {
-    work_items (payment_id, repo_id, issue_number) {
+    use diesel::sql_types::*;
+    use super::sql_types::ContributionType;
+
+    work_items (payment_id, repo_id, number) {
         payment_id -> Uuid,
-        issue_number -> Int8,
+        number -> Int8,
         repo_id -> Int8,
+        id -> Text,
+        #[sql_name = "type"]
+        type_ -> ContributionType,
+        project_id -> Uuid,
     }
 }
 
-diesel::joinable!(ignored_github_issues -> projects (project_id));
 diesel::joinable!(pending_project_leader_invitations -> projects (project_id));
 diesel::joinable!(projects_sponsors -> projects (project_id));
 diesel::joinable!(projects_sponsors -> sponsors (sponsor_id));
@@ -452,7 +459,7 @@ diesel::allow_tables_to_appear_in_same_query!(
     github_repos,
     github_user_indexes,
     github_users,
-    ignored_github_issues,
+    ignored_contributions,
     onboardings,
     payment_requests,
     payments,

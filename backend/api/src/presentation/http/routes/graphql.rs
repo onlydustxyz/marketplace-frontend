@@ -39,7 +39,6 @@ pub async fn get_graphql_handler(
 	pending_project_leader_invitations_repository: &State<
 		Arc<dyn ImmutableRepository<PendingProjectLeaderInvitation>>,
 	>,
-	ignored_github_issues_repository: &State<Arc<dyn ImmutableRepository<IgnoredGithubIssue>>>,
 	user_payout_info_repository: &State<Arc<dyn Repository<UserPayoutInfo>>>,
 	user_profile_info_repository: &State<Arc<dyn UserProfileInfoRepository>>,
 	onboarding_repository: &State<Arc<dyn Repository<Onboarding>>>,
@@ -58,7 +57,6 @@ pub async fn get_graphql_handler(
 		(*sponsor_repository).clone(),
 		(*project_sponsor_repository).clone(),
 		(*pending_project_leader_invitations_repository).clone(),
-		(*ignored_github_issues_repository).clone(),
 		(*user_payout_info_repository).clone(),
 		(*user_profile_info_repository).clone(),
 		(*contact_informations_repository).clone(),
@@ -88,7 +86,6 @@ pub async fn post_graphql_handler(
 	pending_project_leader_invitations_repository: &State<
 		Arc<dyn ImmutableRepository<PendingProjectLeaderInvitation>>,
 	>,
-	ignored_github_issues_repository: &State<Arc<dyn ImmutableRepository<IgnoredGithubIssue>>>,
 	user_payout_info_repository: &State<Arc<dyn Repository<UserPayoutInfo>>>,
 	user_profile_info_repository: &State<Arc<dyn UserProfileInfoRepository>>,
 	onboarding_repository: &State<Arc<dyn Repository<Onboarding>>>,
@@ -107,7 +104,6 @@ pub async fn post_graphql_handler(
 		(*sponsor_repository).clone(),
 		(*project_sponsor_repository).clone(),
 		(*pending_project_leader_invitations_repository).clone(),
-		(*ignored_github_issues_repository).clone(),
 		(*user_payout_info_repository).clone(),
 		(*user_profile_info_repository).clone(),
 		(*contact_informations_repository).clone(),

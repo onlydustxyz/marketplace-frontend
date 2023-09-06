@@ -65,7 +65,7 @@ pub async fn request_payment(
 			recipient_id.into(),
 			amount_in_usd,
 			hours_worked,
-			reason.into(),
+			reason.try_into()?,
 		)
 		.await
 		.map_err(|e| {

@@ -8,17 +8,30 @@ configuration:
   custom_root_fields:
     select: contributions
     select_aggregate: contributionsAggregate
+array_relationships:
+  - name: rewardItems
+    using:
+      manual_configuration:
+        column_mapping:
+          details_id: id
+          project_id: project_id
+        insertion_order: null
+        remote_table:
+          name: work_items
+          schema: public
 select_permissions:
   - role: public
     permission:
       columns:
-        - github_user_id
-        - details_id
-        - type
-        - repo_id
         - status
-        - created_at
+        - type
+        - github_user_id
+        - repo_id
+        - ignored
+        - details_id
+        - id
         - closed_at
+        - created_at
         - project_id
       filter: {}
       allow_aggregations: true

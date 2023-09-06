@@ -111,9 +111,9 @@ impl<'a> Test<'a> {
 
 		reviews::assert_indexed(
 			&mut self.context,
-			vec![(
-				reviews::requested(GithubCodeReviewStatus::Pending),
+			vec![reviews::requested(
 				pull_requests::x1146().id,
+				GithubCodeReviewStatus::Pending,
 			)],
 		)?;
 

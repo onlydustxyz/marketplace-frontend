@@ -10,6 +10,8 @@ default:
   amqp:
     connection_retry_interval_ms: 6000
     connection_retry_count: 1
+  http:
+    api_keys: []
 
 local:
   database:

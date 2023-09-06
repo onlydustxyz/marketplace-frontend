@@ -45,6 +45,13 @@ type Query {
 }
 
 type Mutation {
+  ignoreContribution(
+    projectId: Uuid!
+    contributionId: String!
+  ): Boolean!
+}
+
+type Mutation {
   requestPayment(
     projectId: Uuid!
     recipientId: Int!
@@ -68,6 +75,13 @@ type Mutation {
   suggestTechnology(
     suggestion: String!
   ): Boolean
+}
+
+type Mutation {
+  unignoreContribution(
+    projectId: Uuid!
+    contributionId: String!
+  ): Boolean!
 }
 
 type Mutation {

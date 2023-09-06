@@ -24,6 +24,7 @@ diesel = { version = "2.1.0", default-features = false, features = [
 	"serde_json",
 ] }
 diesel_json = "0.2.0"
+diesel-derive-newtype = "2.1.0"
 
 # CLI
 clap = { version = "4.1.4", features = ["derive"] }
@@ -34,6 +35,9 @@ uuid = { version = "1.3.3", default_features = false, features = [
 	"serde",
 ] }
 rust_decimal = { version = "1.29.1", features = ["db-diesel2-postgres"] }
+
+# Crypto
+sha2 = "0.10.7"
 
 # Http client
 reqwest = { version = "0.11", default-features = false }

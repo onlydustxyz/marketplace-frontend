@@ -4,6 +4,9 @@ actions:
       kind: synchronous
       handler: '{{BACKEND_REST_API_URL}}'
       forward_client_headers: true
+      headers:
+        - name: Api-Key
+          value_from_env: BACKEND_GRAPHQL_API_KEY
       request_transform:
         body:
           action: transform
@@ -37,6 +40,9 @@ actions:
       kind: synchronous
       handler: '{{BACKEND_REST_API_URL}}'
       forward_client_headers: true
+      headers:
+        - name: Api-Key
+          value_from_env: BACKEND_GRAPHQL_API_KEY
       request_transform:
         body:
           action: transform
@@ -191,11 +197,37 @@ actions:
         version: 2
     permissions:
       - role: registered_user
+  - name: ignoreContribution
+    definition:
+      kind: synchronous
+      handler: '{{BACKEND_REST_API_URL}}'
+      forward_client_headers: true
+      headers:
+        - name: Api-Key
+          value_from_env: BACKEND_GRAPHQL_API_KEY
+      request_transform:
+        method: POST
+        query_params: {}
+        template_engine: Kriti
+        url: '{{$base_url}}/projects/{{$body.input.projectId}}/contributions/{{$body.input.contributionId}}/ignore'
+        version: 2
+      response_transform:
+        body:
+          action: transform
+          template: "true"
+        template_engine: Kriti
+        version: 2
+    permissions:
+      - role: registered_user
+    comment: ignoreContribution
   - name: requestPayment
     definition:
       kind: synchronous
       handler: '{{BACKEND_REST_API_URL}}'
       forward_client_headers: true
+      headers:
+        - name: Api-Key
+          value_from_env: BACKEND_GRAPHQL_API_KEY
       request_transform:
         body:
           action: transform
@@ -277,11 +309,37 @@ actions:
     permissions:
       - role: registered_user_specific
     comment: Suggest a new technology
+  - name: unignoreContribution
+    definition:
+      kind: synchronous
+      handler: '{{BACKEND_REST_API_URL}}'
+      forward_client_headers: true
+      headers:
+        - name: Api-Key
+          value_from_env: BACKEND_GRAPHQL_API_KEY
+      request_transform:
+        method: DELETE
+        query_params: {}
+        template_engine: Kriti
+        url: '{{$base_url}}/projects/{{$body.input.projectId}}/contributions/{{$body.input.contributionId}}/ignore'
+        version: 2
+      response_transform:
+        body:
+          action: transform
+          template: "true"
+        template_engine: Kriti
+        version: 2
+    permissions:
+      - role: registered_user
+    comment: unignoreContribution
   - name: updateUserProfile
     definition:
       kind: synchronous
       handler: '{{BACKEND_REST_API_URL}}'
       forward_client_headers: true
+      headers:
+        - name: Api-Key
+          value_from_env: BACKEND_GRAPHQL_API_KEY
       request_transform:
         body:
           action: transform

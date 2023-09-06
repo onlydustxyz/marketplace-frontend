@@ -35,7 +35,6 @@ pub struct Context {
 		application::project::accept_leader_invitation::Usecase,
 	pub project_details_repository: Arc<dyn Repository<ProjectDetails>>,
 	pub update_user_payout_info_usecase: application::user::update_payout_info::Usecase,
-	pub ignored_github_issues_usecase: application::project::ignored_issues::Usecase,
 	pub apply_to_project_usecase: application::project::apply::Usecase,
 	pub onboard_usecase: application::user::onboard::Usecase,
 	pub update_user_profile_info_usecase: application::user::update_profile_info::Usecase,
@@ -54,7 +53,6 @@ impl Context {
 		pending_project_leader_invitations_repository: Arc<
 			dyn ImmutableRepository<PendingProjectLeaderInvitation>,
 		>,
-		ignored_github_issues_repository: Arc<dyn ImmutableRepository<IgnoredGithubIssue>>,
 		user_payout_info_repository: Arc<dyn Repository<UserPayoutInfo>>,
 		user_profile_info_repository: Arc<dyn UserProfileInfoRepository>,
 		contact_informations_repository: Arc<dyn ContactInformationsRepository>,
@@ -128,9 +126,6 @@ impl Context {
 			update_user_payout_info_usecase: application::user::update_payout_info::Usecase::new(
 				user_payout_info_repository,
 				ArePayoutSettingsValid::new(ens.clone()),
-			),
-			ignored_github_issues_usecase: application::project::ignored_issues::Usecase::new(
-				ignored_github_issues_repository,
 			),
 			apply_to_project_usecase: application::project::apply::Usecase::new(
 				project_repository,

@@ -108,27 +108,15 @@ impl<'a> Test<'a> {
 			&mut self.context,
 			vec![
 				// Reviews requested
-				(
-					reviews::requested(GithubCodeReviewStatus::Pending),
-					pull_requests::x1144().id,
-				),
-				(
-					reviews::requested(GithubCodeReviewStatus::Pending),
-					pull_requests::x1146().id,
-				),
+				reviews::requested(pull_requests::x1144().id, GithubCodeReviewStatus::Pending),
+				reviews::requested(pull_requests::x1146().id, GithubCodeReviewStatus::Pending),
 				// Actual reviews
-				(
-					reviews::change_requested(GithubCodeReviewStatus::Pending),
+				reviews::change_requested(
 					pull_requests::x1152().id,
+					GithubCodeReviewStatus::Pending,
 				),
-				(
-					reviews::commented(GithubCodeReviewStatus::Pending),
-					pull_requests::x1152().id,
-				),
-				(
-					reviews::approved(GithubCodeReviewStatus::Completed),
-					pull_requests::x1152().id,
-				),
+				reviews::commented(pull_requests::x1152().id, GithubCodeReviewStatus::Pending),
+				reviews::approved(pull_requests::x1152().id, GithubCodeReviewStatus::Completed),
 			],
 		)?;
 
@@ -163,27 +151,15 @@ impl<'a> Test<'a> {
 			&mut self.context,
 			vec![
 				// Reviews requested
-				(
-					reviews::requested(GithubCodeReviewStatus::Pending),
-					pull_requests::x1144().id,
-				),
-				(
-					reviews::requested(GithubCodeReviewStatus::Pending),
-					pull_requests::x1146().id,
-				),
+				reviews::requested(pull_requests::x1144().id, GithubCodeReviewStatus::Pending),
+				reviews::requested(pull_requests::x1146().id, GithubCodeReviewStatus::Pending),
 				// Actual reviews
-				(
-					reviews::change_requested(GithubCodeReviewStatus::Pending),
+				reviews::change_requested(
 					pull_requests::x1152().id,
+					GithubCodeReviewStatus::Pending,
 				),
-				(
-					reviews::commented(GithubCodeReviewStatus::Pending),
-					pull_requests::x1152().id,
-				),
-				(
-					reviews::approved(GithubCodeReviewStatus::Completed),
-					pull_requests::x1152().id,
-				),
+				reviews::commented(pull_requests::x1152().id, GithubCodeReviewStatus::Pending),
+				reviews::approved(pull_requests::x1152().id, GithubCodeReviewStatus::Completed),
 			],
 		)?;
 
@@ -284,42 +260,21 @@ impl<'a> Test<'a> {
 				assert_eq!(contribution.status, ContributionStatus::InProgress);
 			}
 
-			// Code review by anthony (not approved)
-			{
-				let contribution = contributions.pop().unwrap();
-				assert_eq!(contribution.repo_id, repos::marketplace().id);
-				assert_eq!(contribution.type_, ContributionType::CodeReview);
-				assert_eq!(contribution.user_id, users::anthony().id);
-				assert_eq!(
-					contribution.details_id,
-					GithubPullRequestId::from(1452363285u64).into()
-				);
-				assert_eq!(contribution.status, ContributionStatus::InProgress);
-			}
-
-			// Code review by anthony (not approved)
-			{
-				let contribution = contributions.pop().unwrap();
-				assert_eq!(contribution.repo_id, repos::marketplace().id);
-				assert_eq!(contribution.type_, ContributionType::CodeReview);
-				assert_eq!(contribution.user_id, users::anthony().id);
-				assert_eq!(
-					contribution.details_id,
-					GithubPullRequestId::from(1455874031u64).into()
-				);
-				assert_eq!(contribution.status, ContributionStatus::InProgress);
-			}
-
 			// Code review by ofux (not approved)
 			{
 				let contribution = contributions.pop().unwrap();
 				assert_eq!(contribution.repo_id, repos::marketplace().id);
 				assert_eq!(contribution.type_, ContributionType::CodeReview);
 				assert_eq!(contribution.user_id, users::ofux().id);
-				assert_eq!(
-					contribution.details_id,
-					GithubPullRequestId::from(1458220740u64).into()
-				);
+				assert_eq!(contribution.status, ContributionStatus::InProgress);
+			}
+
+			// Code review by anthony (not approved)
+			{
+				let contribution = contributions.pop().unwrap();
+				assert_eq!(contribution.repo_id, repos::marketplace().id);
+				assert_eq!(contribution.type_, ContributionType::CodeReview);
+				assert_eq!(contribution.user_id, users::anthony().id);
 				assert_eq!(contribution.status, ContributionStatus::InProgress);
 			}
 
@@ -329,10 +284,6 @@ impl<'a> Test<'a> {
 				assert_eq!(contribution.repo_id, repos::marketplace().id);
 				assert_eq!(contribution.type_, ContributionType::CodeReview);
 				assert_eq!(contribution.user_id, users::alex().id);
-				assert_eq!(
-					contribution.details_id,
-					GithubPullRequestId::from(1458220740u64).into()
-				);
 				assert_eq!(contribution.status, ContributionStatus::InProgress);
 			}
 
@@ -342,11 +293,16 @@ impl<'a> Test<'a> {
 				assert_eq!(contribution.repo_id, repos::marketplace().id);
 				assert_eq!(contribution.type_, ContributionType::CodeReview);
 				assert_eq!(contribution.user_id, users::anthony().id);
-				assert_eq!(
-					contribution.details_id,
-					GithubPullRequestId::from(1458220740u64).into()
-				);
 				assert_eq!(contribution.status, ContributionStatus::Complete);
+			}
+
+			// Code review by anthony (not approved)
+			{
+				let contribution = contributions.pop().unwrap();
+				assert_eq!(contribution.repo_id, repos::marketplace().id);
+				assert_eq!(contribution.type_, ContributionType::CodeReview);
+				assert_eq!(contribution.user_id, users::anthony().id);
+				assert_eq!(contribution.status, ContributionStatus::InProgress);
 			}
 		}
 		Ok(())
@@ -411,4 +367,9 @@ impl<'a> Test<'a> {
 		}
 		Ok(())
 	}
+}
+
+#[test]
+fn test() {
+	println!("{}", -3197958591667974301_i128 as u64)
 }

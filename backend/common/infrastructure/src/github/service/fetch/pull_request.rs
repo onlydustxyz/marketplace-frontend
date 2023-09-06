@@ -91,14 +91,15 @@ impl GithubFetchPullRequestService for github::Client {
 		let reviews: HashMap<GithubUserId, GithubCodeReview> = reviews
 			.into_iter()
 			.filter_map(|review| {
-				review
+				(pull_request.id, review)
 					.try_into_code_review()
 					.log_err(|e| error!(error = e.to_field(), "Invalid review"))
 					.ok()
 			})
 			.chain(
 				pull_request.requested_reviewers.into_iter().filter_map(|user| {
-					user.try_into_code_review()
+					(pull_request.id, user)
+						.try_into_code_review()
 						.log_err(|e| error!(error = e.to_field(), "Invalid user"))
 						.ok()
 				}),
