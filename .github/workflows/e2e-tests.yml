@@ -45,6 +45,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Setup node env
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
       - name: Setup tmate session for debugging
         uses: mxschmitt/action-tmate@v3
         if: ${{ inputs.debug_enabled }}
