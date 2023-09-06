@@ -434,6 +434,7 @@ diesel::table! {
         #[sql_name = "type"]
         type_ -> ContributionType,
         project_id -> Uuid,
+        recipient_id -> Int8,
     }
 }
 
