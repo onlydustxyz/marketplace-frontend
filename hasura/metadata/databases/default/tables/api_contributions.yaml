@@ -25,10 +25,11 @@ select_permissions:
       columns:
         - status
         - type
-        - details_id
         - github_user_id
-        - id
         - repo_id
+        - ignored
+        - details_id
+        - id
         - closed_at
         - created_at
         - project_id
