@@ -1,7 +1,7 @@
 mod repository;
 
 use diesel::Identifiable;
-use domain::{GithubRepoId, PaymentId, PaymentWorkItem, ProjectId};
+use domain::{GithubRepoId, GithubUserId, PaymentId, PaymentWorkItem, ProjectId};
 use infrastructure::database::{enums::ContributionType, schema::work_items};
 
 pub use self::repository::Repository;
@@ -15,6 +15,7 @@ pub struct WorkItem {
 	pub id: String,
 	pub type_: ContributionType,
 	pub project_id: ProjectId,
+	pub recipient_id: GithubUserId,
 }
 
 impl Identifiable for WorkItem {
@@ -25,8 +26,15 @@ impl Identifiable for WorkItem {
 	}
 }
 
-impl From<(ProjectId, PaymentId, PaymentWorkItem)> for WorkItem {
-	fn from((project_id, payment_id, work_item): (ProjectId, PaymentId, PaymentWorkItem)) -> Self {
+impl From<(ProjectId, PaymentId, GithubUserId, PaymentWorkItem)> for WorkItem {
+	fn from(
+		(project_id, payment_id, recipient_id, work_item): (
+			ProjectId,
+			PaymentId,
+			GithubUserId,
+			PaymentWorkItem,
+		),
+	) -> Self {
 		match work_item {
 			PaymentWorkItem::Issue {
 				id,
@@ -39,6 +47,7 @@ impl From<(ProjectId, PaymentId, PaymentWorkItem)> for WorkItem {
 				id: id.to_string(),
 				type_: ContributionType::Issue,
 				project_id,
+				recipient_id,
 			},
 			PaymentWorkItem::CodeReview {
 				id,
@@ -51,6 +60,7 @@ impl From<(ProjectId, PaymentId, PaymentWorkItem)> for WorkItem {
 				id: id.to_string(),
 				type_: ContributionType::CodeReview,
 				project_id,
+				recipient_id,
 			},
 			PaymentWorkItem::PullRequest {
 				id,
@@ -63,6 +73,7 @@ impl From<(ProjectId, PaymentId, PaymentWorkItem)> for WorkItem {
 				id: id.to_string(),
 				type_: ContributionType::PullRequest,
 				project_id,
+				recipient_id,
 			},
 		}
 	}
