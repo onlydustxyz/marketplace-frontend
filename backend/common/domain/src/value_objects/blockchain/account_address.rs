@@ -1,10 +1,12 @@
 use std::{convert::TryFrom, fmt, str::FromStr};
 
 use hex::FromHex;
-use serde::{de::Error as _, Deserialize, Deserializer, Serialize, Serializer};
+use serde_with::{DeserializeFromStr, SerializeDisplay};
 
 /// A struct that represents an account address.
-#[derive(Ord, PartialOrd, Eq, PartialEq, Hash, Clone, Copy)]
+#[derive(
+	Ord, PartialOrd, Eq, PartialEq, Hash, Clone, Copy, SerializeDisplay, DeserializeFromStr,
+)]
 pub struct AccountAddress<const LENGTH: usize>([u8; LENGTH]);
 
 impl<const LENGTH: usize> AccountAddress<LENGTH> {
@@ -87,13 +89,13 @@ impl<const LENGTH: usize> std::ops::Deref for AccountAddress<LENGTH> {
 
 impl<const LENGTH: usize> fmt::Display for AccountAddress<LENGTH> {
 	fn fmt(&self, f: &mut fmt::Formatter) -> std::fmt::Result {
-		write!(f, "{:X}", self)
+		write!(f, "{:#x}", self)
 	}
 }
 
 impl<const LENGTH: usize> fmt::Debug for AccountAddress<LENGTH> {
 	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-		write!(f, "{:X}", self)
+		write!(f, "{:#x}", self)
 	}
 }
 
@@ -134,7 +136,6 @@ impl<const LENGTH: usize> From<[u8; LENGTH]> for AccountAddress<LENGTH> {
 impl<const LENGTH: usize> TryFrom<&[u8]> for AccountAddress<LENGTH> {
 	type Error = AccountAddressParseError;
 
-	/// Tries to convert the provided byte array into Address.
 	fn try_from(bytes: &[u8]) -> Result<AccountAddress<LENGTH>, AccountAddressParseError> {
 		Self::from_bytes(bytes)
 	}
@@ -143,7 +144,6 @@ impl<const LENGTH: usize> TryFrom<&[u8]> for AccountAddress<LENGTH> {
 impl<const LENGTH: usize> TryFrom<Vec<u8>> for AccountAddress<LENGTH> {
 	type Error = AccountAddressParseError;
 
-	/// Tries to convert the provided byte buffer into Address.
 	fn try_from(bytes: Vec<u8>) -> Result<AccountAddress<LENGTH>, AccountAddressParseError> {
 		Self::from_bytes(bytes)
 	}
@@ -175,7 +175,7 @@ impl<const LENGTH: usize> From<&AccountAddress<LENGTH>> for [u8; LENGTH] {
 
 impl<const LENGTH: usize> From<&AccountAddress<LENGTH>> for String {
 	fn from(addr: &AccountAddress<LENGTH>) -> String {
-		hex::encode(addr.as_ref())
+		format!("{addr}")
 	}
 }
 
@@ -183,7 +183,7 @@ impl<const LENGTH: usize> TryFrom<String> for AccountAddress<LENGTH> {
 	type Error = AccountAddressParseError;
 
 	fn try_from(s: String) -> Result<AccountAddress<LENGTH>, AccountAddressParseError> {
-		Self::from_hex(s)
+		Self::from_hex_literal(&s)
 	}
 }
 
@@ -191,26 +191,7 @@ impl<const LENGTH: usize> FromStr for AccountAddress<LENGTH> {
 	type Err = AccountAddressParseError;
 
 	fn from_str(s: &str) -> Result<Self, AccountAddressParseError> {
-		Self::from_hex(s)
-	}
-}
-
-impl<'de, const LENGTH: usize> Deserialize<'de> for AccountAddress<LENGTH> {
-	fn deserialize<D>(deserializer: D) -> std::result::Result<Self, D::Error>
-	where
-		D: Deserializer<'de>,
-	{
-		let s = <String>::deserialize(deserializer)?;
-		AccountAddress::from_hex(s).map_err(D::Error::custom)
-	}
-}
-
-impl<const LENGTH: usize> Serialize for AccountAddress<LENGTH> {
-	fn serialize<S>(&self, serializer: S) -> std::result::Result<S::Ok, S::Error>
-	where
-		S: Serializer,
-	{
-		self.to_hex().serialize(serializer)
+		Self::from_hex_literal(s)
 	}
 }
 
@@ -243,8 +224,8 @@ mod tests {
 
 		let address = AccountAddress::<16>::from_hex(hex).unwrap();
 
-		assert_eq!(format!("{}", address), upper_hex);
-		assert_eq!(format!("{:?}", address), upper_hex);
+		assert_eq!(format!("{}", address), format!("0x{}", hex));
+		assert_eq!(format!("{:?}", address), format!("0x{}", hex));
 		assert_eq!(format!("{:X}", address), upper_hex);
 		assert_eq!(format!("{:x}", address), hex);
 
@@ -325,7 +306,7 @@ mod tests {
 	#[test]
 	fn test_serde_json() {
 		let hex = "ca843279e3427144cead5e4d5999a3d0";
-		let json_hex = "\"ca843279e3427144cead5e4d5999a3d0\"";
+		let json_hex = "\"0xca843279e3427144cead5e4d5999a3d0\"";
 
 		let address = AccountAddress::from_hex(hex).unwrap();
 
