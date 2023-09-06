@@ -4,6 +4,9 @@ actions:
       kind: synchronous
       handler: '{{BACKEND_REST_API_URL}}'
       forward_client_headers: true
+      headers:
+        - name: Api-Key
+          value_from_env: BACKEND_GRAPHQL_API_KEY
       request_transform:
         body:
           action: transform
@@ -37,6 +40,9 @@ actions:
       kind: synchronous
       handler: '{{BACKEND_REST_API_URL}}'
       forward_client_headers: true
+      headers:
+        - name: Api-Key
+          value_from_env: BACKEND_GRAPHQL_API_KEY
       request_transform:
         body:
           action: transform
@@ -219,6 +225,9 @@ actions:
       kind: synchronous
       handler: '{{BACKEND_REST_API_URL}}'
       forward_client_headers: true
+      headers:
+        - name: Api-Key
+          value_from_env: BACKEND_GRAPHQL_API_KEY
       request_transform:
         body:
           action: transform
@@ -328,6 +337,9 @@ actions:
       kind: synchronous
       handler: '{{BACKEND_REST_API_URL}}'
       forward_client_headers: true
+      headers:
+        - name: Api-Key
+          value_from_env: BACKEND_GRAPHQL_API_KEY
       request_transform:
         body:
           action: transform
