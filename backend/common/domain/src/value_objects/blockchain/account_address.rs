@@ -36,7 +36,7 @@ impl<const LENGTH: usize> AccountAddress<LENGTH> {
 	}
 
 	pub fn from_hex_literal(literal: &str) -> Result<Self, ParseError<LENGTH>> {
-		if !literal.starts_with("0x") {
+		if !(literal.starts_with("0x") || literal.starts_with("0X")) {
 			return Err(ParseError::NoPrefix);
 		}
 

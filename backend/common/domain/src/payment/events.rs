@@ -113,7 +113,7 @@ mod tests {
 			),
 			receipt: PaymentReceipt::OnChainPayment {
 				network: Network::Ethereum,
-				recipient_address: recipient_address.try_into().unwrap(),
+				recipient_address: recipient_address.parse().unwrap(),
 				recipient_ens: None,
 				transaction_hash: transaction_hash.clone(),
 			},

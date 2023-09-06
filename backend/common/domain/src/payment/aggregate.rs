@@ -261,7 +261,7 @@ mod tests {
 	fn receipt() -> PaymentReceipt {
 		PaymentReceipt::OnChainPayment {
 			network: Network::Ethereum,
-			recipient_address: ethereum::Address::try_from(CONTRACT_ADDRESSES[0]).unwrap(),
+			recipient_address: CONTRACT_ADDRESSES[0].parse().unwrap(),
 			recipient_ens: None,
 			transaction_hash: TRANSACTION_HASHES[0].parse().unwrap(),
 		}
