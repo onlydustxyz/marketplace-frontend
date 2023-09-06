@@ -27,6 +27,7 @@ impl Permissions for IdentifiedUser {
 	}
 
 	fn can_ignore_issue_for_project(&self, project_id: &ProjectId) -> bool {
+		println!("registered {:?}", self.projects);
 		self.projects.contains(project_id)
 	}
 

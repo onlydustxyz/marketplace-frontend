@@ -85,18 +85,14 @@ impl EventListener<Event> for Projector {
 
 						reason.work_items.into_iter().try_for_each(
 							|work_item| -> Result<(), SubscriberCallbackError> {
-								let (repo_id, number) = match work_item {
-									PaymentWorkItem::Issue { repo_id, number } =>
-										(repo_id, number.into()),
-									PaymentWorkItem::CodeReview { repo_id, number }
-									| PaymentWorkItem::PullRequest { repo_id, number } => (repo_id, number.into()),
+								let repo_id = match work_item {
+									PaymentWorkItem::Issue { repo_id, .. }
+									| PaymentWorkItem::CodeReview { repo_id, .. }
+									| PaymentWorkItem::PullRequest { repo_id, .. } => repo_id,
 								};
 
-								self.work_item_repository.try_insert(WorkItem {
-									payment_id,
-									repo_id,
-									issue_number: number,
-								})?;
+								self.work_item_repository
+									.try_insert((project_id, payment_id, work_item).into())?;
 
 								self.github_repo_index_repository.start_indexing(repo_id)?;
 								Ok(())

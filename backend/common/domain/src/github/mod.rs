@@ -25,4 +25,6 @@ mod commit;
 pub use commit::Commit;
 
 mod code_review;
-pub use code_review::{CodeReview, Outcome as CodeReviewOutcome, Status as CodeReviewStatus};
+pub use code_review::{
+	CodeReview, Id as CodeReviewId, Outcome as CodeReviewOutcome, Status as CodeReviewStatus,
+};

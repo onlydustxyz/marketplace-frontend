@@ -63,7 +63,8 @@ impl From<domain::GithubFullPullRequest> for PullRequest {
 			reviews
 				.into_iter()
 				.map(|review| Review {
-					pull_request_id: pull_request.inner.id,
+					id: review.id().to_string(),
+					pull_request_id: review.pull_request_id,
 					reviewer_id: review.reviewer.id,
 					outcome: review.outcome.map(Into::into),
 					status: review.status.into(),
