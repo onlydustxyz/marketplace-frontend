@@ -260,30 +260,30 @@ impl<'a> Test<'a> {
 				assert_eq!(contribution.status, ContributionStatus::InProgress);
 			}
 
-			// Code review by anthony (not approved)
-			{
-				let contribution = contributions.pop().unwrap();
-				assert_eq!(contribution.repo_id, repos::marketplace().id);
-				assert_eq!(contribution.type_, ContributionType::CodeReview);
-				assert_eq!(contribution.user_id, users::anthony().id);
-				assert_eq!(contribution.status, ContributionStatus::InProgress);
-			}
-
-			// Code review by anthony (not approved)
-			{
-				let contribution = contributions.pop().unwrap();
-				assert_eq!(contribution.repo_id, repos::marketplace().id);
-				assert_eq!(contribution.type_, ContributionType::CodeReview);
-				assert_eq!(contribution.user_id, users::anthony().id);
-				assert_eq!(contribution.status, ContributionStatus::InProgress);
-			}
-
 			// Code review by ofux (not approved)
 			{
 				let contribution = contributions.pop().unwrap();
 				assert_eq!(contribution.repo_id, repos::marketplace().id);
 				assert_eq!(contribution.type_, ContributionType::CodeReview);
 				assert_eq!(contribution.user_id, users::ofux().id);
+				assert_eq!(contribution.status, ContributionStatus::InProgress);
+			}
+
+			// Code review by anthony (not approved)
+			{
+				let contribution = contributions.pop().unwrap();
+				assert_eq!(contribution.repo_id, repos::marketplace().id);
+				assert_eq!(contribution.type_, ContributionType::CodeReview);
+				assert_eq!(contribution.user_id, users::anthony().id);
+				assert_eq!(contribution.status, ContributionStatus::InProgress);
+			}
+
+			// Code review by alex (not approved)
+			{
+				let contribution = contributions.pop().unwrap();
+				assert_eq!(contribution.repo_id, repos::marketplace().id);
+				assert_eq!(contribution.type_, ContributionType::CodeReview);
+				assert_eq!(contribution.user_id, users::alex().id);
 				assert_eq!(contribution.status, ContributionStatus::InProgress);
 			}
 
@@ -296,12 +296,12 @@ impl<'a> Test<'a> {
 				assert_eq!(contribution.status, ContributionStatus::Complete);
 			}
 
-			// Code review by alex (not approved)
+			// Code review by anthony (not approved)
 			{
 				let contribution = contributions.pop().unwrap();
 				assert_eq!(contribution.repo_id, repos::marketplace().id);
 				assert_eq!(contribution.type_, ContributionType::CodeReview);
-				assert_eq!(contribution.user_id, users::alex().id);
+				assert_eq!(contribution.user_id, users::anthony().id);
 				assert_eq!(contribution.status, ContributionStatus::InProgress);
 			}
 		}

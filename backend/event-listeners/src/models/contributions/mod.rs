@@ -139,7 +139,7 @@ mod tests {
 		);
 
 		assert_eq!(
-			contribution.id.to_string(),
+			contribution.id,
 			"2cb196cc21932e69bcdeb18907cbd123e229508aa6ccc3bb6272330a39f7ae93"
 		);
 	}

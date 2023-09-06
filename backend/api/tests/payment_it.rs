@@ -96,7 +96,7 @@ impl<'a> Test<'a> {
 			"reason": {
 				"work_items": [{
 					"type": "PULL_REQUEST",
-					"id": 1012167246,
+					"id": "1012167246",
 					"repo_id": 498695724,
 					"number": 111
 				}
@@ -222,12 +222,12 @@ impl<'a> Test<'a> {
 			"reason": {
 				"work_items": [{
 					"type": "PULL_REQUEST",
-					"id": 123456,
+					"id": "123456",
 					"repo_id": 498695724,
 					"number": 111
 				},{
 					"type": "PULL_REQUEST",
-					"id": 123456,
+					"id": "123456",
 					"repo_id": 1181927,
 					"number": 111
 				}]
@@ -297,7 +297,7 @@ impl<'a> Test<'a> {
 			"reason": {
 				"work_items": [{
 					"type": "PULL_REQUEST",
-					"id": 1012167246,
+					"id": "1012167246",
 					"repo_id": 498695724,
 					"number": 111
 				}

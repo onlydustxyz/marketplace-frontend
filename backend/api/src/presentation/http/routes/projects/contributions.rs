@@ -6,6 +6,7 @@ use uuid::Uuid;
 
 use crate::{application, domain::permissions::IntoPermission};
 
+#[allow(clippy::result_large_err)]
 #[post("/projects/<project_id>/contributions/<contribution_id>/ignore")]
 pub fn ignore(
 	_api_key: ApiKey,
@@ -32,19 +33,18 @@ pub fn ignore(
 			)));
 	}
 
-	ignored_contributions_usecase
-		.add(project_id.into(), contribution_id)
-		.map_err(|e| {
-			{
-				HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
-					.title("Unable to ignore contribution")
-					.detail(e.to_string())
-			}
-		})?;
+	ignored_contributions_usecase.add(project_id, contribution_id).map_err(|e| {
+		{
+			HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
+				.title("Unable to ignore contribution")
+				.detail(e.to_string())
+		}
+	})?;
 
 	Ok(())
 }
 
+#[allow(clippy::result_large_err)]
 #[delete("/projects/<project_id>/contributions/<contribution_id>/ignore")]
 pub fn unignore(
 	_api_key: ApiKey,
@@ -69,15 +69,13 @@ pub fn unignore(
 			)));
 	}
 
-	ignored_contributions_usecase
-		.remove(project_id.into(), contribution_id)
-		.map_err(|e| {
-			{
-				HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
-					.title("Unable to unignore contribution")
-					.detail(e.to_string())
-			}
-		})?;
+	ignored_contributions_usecase.remove(project_id, contribution_id).map_err(|e| {
+		{
+			HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
+				.title("Unable to unignore contribution")
+				.detail(e.to_string())
+		}
+	})?;
 
 	Ok(())
 }
