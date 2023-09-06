@@ -2,6 +2,7 @@ use std::{convert::TryFrom, fmt, str::FromStr};
 
 use hex::FromHex;
 use serde_with::{DeserializeFromStr, SerializeDisplay};
+use thiserror::Error;
 
 /// A struct that represents an account address.
 #[derive(
@@ -34,9 +35,9 @@ impl<const LENGTH: usize> AccountAddress<LENGTH> {
 		self.0
 	}
 
-	pub fn from_hex_literal(literal: &str) -> Result<Self, AccountAddressParseError> {
+	pub fn from_hex_literal(literal: &str) -> Result<Self, ParseError<LENGTH>> {
 		if !literal.starts_with("0x") {
-			return Err(AccountAddressParseError);
+			return Err(ParseError::NoPrefix);
 		}
 
 		let hex_len = literal.len() - 2;
@@ -54,23 +55,32 @@ impl<const LENGTH: usize> AccountAddress<LENGTH> {
 		}
 	}
 
-	pub fn from_hex<T: AsRef<[u8]>>(hex: T) -> Result<Self, AccountAddressParseError> {
+	pub fn from_hex<T: AsRef<[u8]>>(hex: T) -> Result<Self, ParseError<LENGTH>> {
 		<Vec<u8>>::from_hex(hex)
-			.map_err(|_| AccountAddressParseError)
-			.and_then(|vec| vec.try_into().map_err(|_| AccountAddressParseError))
+			.map_err(|_| ParseError::InvalidCharacter)
+			.and_then(|vec| vec.try_into().map_err(|_| ParseError::InvalidLength))
 			.map(Self)
-			.map_err(|_| AccountAddressParseError)
 	}
 
 	pub fn to_hex(&self) -> String {
 		format!("{:x}", self)
 	}
 
-	pub fn from_bytes<T: AsRef<[u8]>>(bytes: T) -> Result<Self, AccountAddressParseError> {
+	pub fn from_bytes<T: AsRef<[u8]>>(bytes: T) -> Result<Self, ParseError<LENGTH>> {
 		<[u8; LENGTH]>::try_from(bytes.as_ref())
-			.map_err(|_| AccountAddressParseError)
+			.map_err(|_| ParseError::InvalidLength)
 			.map(Self)
 	}
+}
+
+#[derive(Debug, Error)]
+pub enum ParseError<const LENGTH: usize> {
+	#[error("Input should be {LENGTH} bytes")]
+	InvalidLength,
+	#[error("Input should start with '0x'")]
+	NoPrefix,
+	#[error("Input should only contains it's prefix and valid hexadecimal numbers")]
+	InvalidCharacter,
 }
 
 impl<const LENGTH: usize> AsRef<[u8]> for AccountAddress<LENGTH> {
@@ -134,17 +144,17 @@ impl<const LENGTH: usize> From<[u8; LENGTH]> for AccountAddress<LENGTH> {
 }
 
 impl<const LENGTH: usize> TryFrom<&[u8]> for AccountAddress<LENGTH> {
-	type Error = AccountAddressParseError;
+	type Error = ParseError<LENGTH>;
 
-	fn try_from(bytes: &[u8]) -> Result<AccountAddress<LENGTH>, AccountAddressParseError> {
+	fn try_from(bytes: &[u8]) -> Result<AccountAddress<LENGTH>, ParseError<LENGTH>> {
 		Self::from_bytes(bytes)
 	}
 }
 
 impl<const LENGTH: usize> TryFrom<Vec<u8>> for AccountAddress<LENGTH> {
-	type Error = AccountAddressParseError;
+	type Error = ParseError<LENGTH>;
 
-	fn try_from(bytes: Vec<u8>) -> Result<AccountAddress<LENGTH>, AccountAddressParseError> {
+	fn try_from(bytes: Vec<u8>) -> Result<AccountAddress<LENGTH>, ParseError<LENGTH>> {
 		Self::from_bytes(bytes)
 	}
 }
@@ -180,31 +190,20 @@ impl<const LENGTH: usize> From<&AccountAddress<LENGTH>> for String {
 }
 
 impl<const LENGTH: usize> TryFrom<String> for AccountAddress<LENGTH> {
-	type Error = AccountAddressParseError;
+	type Error = ParseError<LENGTH>;
 
-	fn try_from(s: String) -> Result<AccountAddress<LENGTH>, AccountAddressParseError> {
+	fn try_from(s: String) -> Result<AccountAddress<LENGTH>, ParseError<LENGTH>> {
 		Self::from_hex_literal(&s)
 	}
 }
 
 impl<const LENGTH: usize> FromStr for AccountAddress<LENGTH> {
-	type Err = AccountAddressParseError;
+	type Err = ParseError<LENGTH>;
 
-	fn from_str(s: &str) -> Result<Self, AccountAddressParseError> {
+	fn from_str(s: &str) -> Result<Self, ParseError<LENGTH>> {
 		Self::from_hex_literal(s)
 	}
 }
-
-#[derive(Clone, Copy, Debug)]
-pub struct AccountAddressParseError;
-
-impl fmt::Display for AccountAddressParseError {
-	fn fmt(&self, f: &mut fmt::Formatter) -> std::fmt::Result {
-		write!(f, "unable to parse AccoutAddress")
-	}
-}
-
-impl std::error::Error for AccountAddressParseError {}
 
 #[cfg(test)]
 mod tests {
