@@ -74,7 +74,6 @@ assert-json-diff = "2.0.2"
 assert_matches = "1.5"
 async-std = { version = "1.12.0", features = ["attributes"] }
 rstest = "0.15.0"
-testing = { path = "../testing" }
 rust_decimal_macros = "1.26"
 regex = "1.7.0"
 mockall = "0.11.2"

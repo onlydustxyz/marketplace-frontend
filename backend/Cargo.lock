@@ -1374,7 +1374,6 @@ dependencies = [
  "serde_json",
  "serde_with 2.3.3",
  "sha2 0.10.7",
- "testing",
  "thiserror",
  "url",
  "uuid 0.8.2",
