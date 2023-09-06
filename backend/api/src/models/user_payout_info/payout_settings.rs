@@ -21,8 +21,8 @@ pub enum PayoutSettings {
 #[derive(Debug, Clone, Serialize, Deserialize, GraphQLInputObject, PartialEq, Eq)]
 #[allow(non_snake_case)]
 pub struct BankAddress {
-	BIC: String,
-	IBAN: Iban,
+	pub BIC: String,
+	pub IBAN: Iban,
 }
 
 impl ToSql<Jsonb, Pg> for PayoutSettings

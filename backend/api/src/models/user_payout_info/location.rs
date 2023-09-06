@@ -7,18 +7,17 @@ use diesel::{
 	serialize::{Output, ToSql},
 	sql_types::Jsonb,
 };
-use juniper::GraphQLInputObject;
 use serde::{Deserialize, Serialize};
 
 #[derive(
-	Default, Debug, Clone, Serialize, Deserialize, GraphQLInputObject, AsExpression, FromSqlRow,
+	Default, Debug, Clone, Serialize, Deserialize, AsExpression, FromSqlRow, PartialEq, Eq,
 )]
 #[diesel(sql_type = diesel::sql_types::Jsonb)]
 pub struct Location {
-	address: Option<String>,
-	post_code: Option<String>,
-	city: Option<String>,
-	country: Option<String>,
+	pub address: Option<String>,
+	pub post_code: Option<String>,
+	pub city: Option<String>,
+	pub country: Option<String>,
 }
 
 impl ToSql<Jsonb, Pg> for Location

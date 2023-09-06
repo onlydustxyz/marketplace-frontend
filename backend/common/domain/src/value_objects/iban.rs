@@ -1,8 +1,8 @@
-use derive_more::{Display, From, Into};
+use derive_more::{Display, From, FromStr, Into};
 use iban::IbanLike;
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Display, Clone, Deserialize, PartialEq, Eq, From, Into)]
+#[derive(Debug, Display, Clone, Deserialize, PartialEq, Eq, From, Into, FromStr)]
 pub struct Iban(iban::Iban);
 
 // Implement Serialize to use electronic format instead of human-readable format

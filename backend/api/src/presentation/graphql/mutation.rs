@@ -8,12 +8,8 @@ use url::Url;
 use uuid08::Uuid;
 
 use super::{Context, Error, Result};
-use crate::{
-	models::*,
-	presentation::http::dto::{
-		EthereumIdentityInput, IdentityInput, OptionalNonEmptyTrimmedString, PaymentReference,
-		PayoutSettingsInput,
-	},
+use crate::presentation::http::dto::{
+	EthereumIdentityInput, OptionalNonEmptyTrimmedString, PaymentReference,
 };
 
 pub struct Mutation;
@@ -201,35 +197,6 @@ impl Mutation {
 			.await?;
 
 		Ok(project_id)
-	}
-
-	pub async fn update_payout_info(
-		context: &Context,
-		location: Option<Location>,
-		identity: Option<IdentityInput>,
-		payout_settings: Option<PayoutSettingsInput>,
-	) -> Result<Uuid> {
-		let caller_id = context.caller_info()?.user_id;
-
-		let identity = match identity {
-			Some(identity_value) =>
-				Some(Identity::try_from(identity_value).map_err(Error::InvalidRequest)?),
-			None => None,
-		};
-
-		let payout_settings = match payout_settings {
-			Some(payout_settings_value) => Some(
-				PayoutSettings::try_from(payout_settings_value).map_err(Error::InvalidRequest)?,
-			),
-			None => None,
-		};
-
-		context
-			.update_user_payout_info_usecase
-			.update_user_payout_info(caller_id, identity, location, payout_settings)
-			.await?;
-
-		Ok(caller_id.into())
 	}
 
 	pub async fn accept_terms_and_conditions(context: &Context) -> Result<Uuid> {

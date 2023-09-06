@@ -18,13 +18,12 @@ use crate::{
 	presentation::{graphql, http::github_client_pat_factory::GithubClientPatFactory},
 };
 
-mod usecases;
-
 pub mod dto;
 mod error;
 pub mod github_client_pat_factory;
 pub mod roles;
 pub mod routes;
+mod usecases;
 
 #[allow(clippy::too_many_arguments)]
 pub fn serve(
@@ -111,6 +110,7 @@ pub fn serve(
 			routes![
 				routes::users::profile_picture,
 				routes::users::update_user_profile,
+				routes::users::update_user_payout_info,
 				routes::users::search_users,
 				routes::projects::create_project,
 				routes::projects::contributions::ignore,

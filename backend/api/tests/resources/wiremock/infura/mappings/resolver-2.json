@@ -1,0 +1,17 @@
+{
+    "request": {
+        "url": "/",
+        "method": "POST",
+        "bodyPatterns": [
+            {
+                "equalToJson": "{\"jsonrpc\":\"2.0\",\"method\":\"eth_call\",\"params\":[{\"to\":\"0x00000000000c2e074ec69a0dfb2997ba6c7d2e1e\",\"data\":\"0x0178b8bf4f69a3d39e1c49095f2508e4e7e01a7d3388538a7edf09bc99a9c838d0d2faf5\"},\"latest\"],\"id\":3}",
+                "ignoreArrayOrder": true,
+                "ignoreExtraElements": true
+            }
+        ]
+    },
+    "response": {
+        "status": 200,
+        "bodyFileName": "body-resolver-2.json"
+    }
+}

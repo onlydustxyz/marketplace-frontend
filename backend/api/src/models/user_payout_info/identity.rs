@@ -7,10 +7,9 @@ use diesel::{
 	serialize::{Output, ToSql},
 	sql_types::Jsonb,
 };
-use juniper::GraphQLInputObject;
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, Serialize, Deserialize, AsExpression, FromSqlRow)]
+#[derive(Debug, Clone, Serialize, Deserialize, AsExpression, FromSqlRow, PartialEq, Eq)]
 #[diesel(sql_type = diesel::sql_types::Jsonb)]
 pub enum Identity {
 	Company(CompanyIdentity),
@@ -48,20 +47,20 @@ where
 }
 
 #[derive(
-	Default, Debug, Clone, Serialize, Deserialize, AsExpression, FromSqlRow, GraphQLInputObject,
+	Default, Debug, Clone, Serialize, Deserialize, AsExpression, FromSqlRow, PartialEq, Eq,
 )]
 #[diesel(sql_type = diesel::sql_types::Jsonb)]
 pub struct CompanyIdentity {
-	owner: Option<PersonIdentity>,
-	name: Option<String>,
-	identification_number: Option<String>,
+	pub owner: Option<PersonIdentity>,
+	pub name: Option<String>,
+	pub identification_number: Option<String>,
 }
 
 #[derive(
-	Default, Debug, Clone, Serialize, Deserialize, AsExpression, FromSqlRow, GraphQLInputObject,
+	Default, Debug, Clone, Serialize, Deserialize, AsExpression, FromSqlRow, PartialEq, Eq,
 )]
 #[diesel(sql_type = diesel::sql_types::Jsonb)]
 pub struct PersonIdentity {
-	firstname: Option<String>,
-	lastname: Option<String>,
+	pub firstname: Option<String>,
+	pub lastname: Option<String>,
 }
