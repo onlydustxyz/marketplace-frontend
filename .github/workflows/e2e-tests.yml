@@ -45,6 +45,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Setup node env
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Setup tmate session for debugging
+        uses: mxschmitt/action-tmate@v3
+        if: ${{ inputs.debug_enabled }}
+        with:
+          limit-access-to-actor: false
+
       - name: Fix 'dubious ownership in repository' error in Docker containers
         run: rm -rf .git
 
@@ -75,6 +86,8 @@ jobs:
       - name: Setup tmate session for debugging
         uses: mxschmitt/action-tmate@v3
         if: ${{ failure() && inputs.debug_enabled }}
+        with:
+          limit-access-to-actor: false
 
       - name: Dump docker logs on failure
         if: ${{ failure() }}
