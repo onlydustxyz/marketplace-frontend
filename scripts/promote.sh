@@ -42,7 +42,7 @@ check_commits() {
 
 check_env_vars_diff() {
     log_info "Checking diff in environment variables"
-    GIT_DIFF_CMD="git diff $to_commit..$from_commit -- docker-compose.yml .env.example"
+    GIT_DIFF_CMD="git diff $to_commit..$from_commit -- infra.docker-compose.yml backend.docker-compose.yml frontend.docker-compose.yml .env.e2e"
     DIFF=`eval $GIT_DIFF_CMD`
     if [ -n "$DIFF" ]; then
         execute $GIT_DIFF_CMD
@@ -112,7 +112,7 @@ deploy() {
     ask "OK to continue"
 
     log_info "Checking diff in environment variables"
-    GIT_DIFF_CMD="git diff $to_commit..$from_commit -- .env.example docker-compose.yml **/Procfile **/app.yaml"
+    GIT_DIFF_CMD="git diff $to_commit..$from_commit -- .env.e2e infra.docker-compose.yml backend.docker-compose.yml frontend.docker-compose.yml **/Procfile **/app.yaml"
     DIFF=`eval $GIT_DIFF_CMD`
     if [ -n "$DIFF" ]; then
         execute $GIT_DIFF_CMD

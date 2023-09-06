@@ -1,10 +1,10 @@
 name: Setup environment
 
-description: Run docker-compose and run database migrations
+description: Run DB, RabbitMQ, Hasura, etc. and run database migrations
 
 runs:
   using: "composite"
   steps:
     - name: Run docker-compose
       shell: bash
-      run: docker compose up -d --wait
+      run: yarn infra:up

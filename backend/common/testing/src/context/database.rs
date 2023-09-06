@@ -41,7 +41,7 @@ impl<'docker> Context<'docker> {
 
 fn image() -> RunnableImage<GenericImage> {
 	let hasura_auth_migrations_path = format!(
-		"{}/backend/common/testing/resources/hasura_auth_migrations",
+		"{}/common/testing/resources/hasura_auth_migrations",
 		project_root::get_project_root().unwrap().display()
 	);
 

@@ -1,7 +1,7 @@
 name: Backend CI
 
 on:
-  pull_request: ~
+#  pull_request: ~
 
   push:
     branches:
@@ -45,10 +45,10 @@ jobs:
           override: true
 
       - name: Check code formatting
-        run: cargo +nightly fmt -- --check
+        run: yarn backend:fmt
 
       - name: Check codecov.yml file format
-        run: curl --data-binary @- https://codecov.io/validate < codecov.yml
+        run: curl --data-binary @- https://codecov.io/validate < backend/codecov.yml
 
   check:
     name: Check
@@ -61,9 +61,7 @@ jobs:
         uses: ./.github/actions/cargo-setup
 
       - name: Check application
-        uses: actions-rs/cargo@v1
-        with:
-          command: check
+        run: yarn backend:check
 
   build:
     name: Compile
@@ -76,9 +74,7 @@ jobs:
         uses: ./.github/actions/cargo-setup
 
       - name: Compile application
-        uses: actions-rs/cargo@v1
-        with:
-          command: build
+        run: yarn backend:build
 
   lint:
     name: Clippy checks
@@ -93,11 +89,8 @@ jobs:
       - name: Setup clippy
         run: rustup component add clippy
 
-      - name: Annotate commit with clippy warnings
-        uses: actions-rs/clippy-check@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          args: --bins --tests --examples -- -D warnings
+      - name: Run clippy
+        run: yarn backend:clippy
 
   unit_tests:
     name: Unit tests
@@ -115,10 +108,11 @@ jobs:
       - name: Run migrations
         uses: ./.github/actions/migrations-run
 
+      - name: Install Tarpaulin
+        run: cargo install cargo-tarpaulin
+
       - name: Run tests
-        uses: ./.github/actions/coverage-checks
-        with:
-          test_flags: --lib
+        run: yarn backend:unit-tests-with-coverage
 
       - name: Setup tmate session for debugging
         uses: mxschmitt/action-tmate@v3
@@ -129,7 +123,7 @@ jobs:
         with:
           codecov_token: ${{ secrets.CODECOV_TOKEN }}
           codecov_flag: unittest
-          file: cobertura.xml
+          file: backend/cobertura.xml
 
   api_integration_tests:
     name: Integration tests
@@ -141,10 +135,11 @@ jobs:
       - name: Setup cargo
         uses: ./.github/actions/cargo-setup
 
+      - name: Install Tarpaulin
+        run: cargo install cargo-tarpaulin
+
       - name: Run tests
-        uses: ./.github/actions/coverage-checks
-        with:
-          test_flags: --test '*'
+        run: yarn backend:integration-tests-with-coverage
 
       - name: Setup tmate session for debugging
         uses: mxschmitt/action-tmate@v3
@@ -155,5 +150,4 @@ jobs:
         with:
           codecov_token: ${{ secrets.CODECOV_TOKEN }}
           codecov_flag: integration_tests
-          file: cobertura.xml
-
+          file: backend/cobertura.xml

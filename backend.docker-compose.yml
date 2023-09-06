@@ -1,59 +1,10 @@
 version: "3.8"
 services:
-  db:
-    labels:
-      type: infrastructure
-    extends:
-      file: docker-compose.yml
-      service: db
-
-  rabbitmq:
-    labels:
-      type: infrastructure
-    extends:
-      file: docker-compose.yml
-      service: rabbitmq
-
-  hasura:
-    labels:
-      type: infrastructure
-    extends:
-      file: docker-compose.yml
-      service: hasura
-    environment:
-      BACKEND_GRAPHQL_URL: ${BACKEND_GRAPHQL_URL:-http://api:8000/graphql}
-      GITHUB_PROXY_GRAPHQL_URL: ${GITHUB_PROXY_GRAPHQL_URL:-http://github-proxy:8001/graphql}
-
-  hasura-console:
-    labels:
-      type: infrastructure
-    container_name: hasura-console
-    image: node:18-bullseye
-    volumes:
-      - .:/app
-    command: bash -c "cd /app/hasura && yarn && yarn start"
-    ports:
-      - 9695:9695
-    healthcheck:
-      test: curl -f http://localhost:9695 || exit 1
-      interval: 2s
-      timeout: 1s
-      retries: 30
-    environment:
-      HASURA_GRAPHQL_ENDPOINT: http://hasura:8080
-
-  hasura-auth:
-    labels:
-      type: infrastructure
-    extends:
-      file: docker-compose.yml
-      service: hasura-auth
-
   api:
     labels:
       type: backend
     container_name: api
-    image: rust:1.66
+    image: rust:1.70
     depends_on:
       db:
         condition: service_healthy
@@ -64,78 +15,66 @@ services:
     volumes:
       - .:/app
       - cargo-cache:/usr/local/cargo
-    command: bash -c "cd /app && cargo run -p api"
+    command: bash -c "cd /app/backend && cargo run -p api"
     ports:
       - 8000:8000
     healthcheck:
       test: curl -f http://localhost:8000 || exit 1
-      interval: 2s
+      interval: 6s
       timeout: 1s
-      retries: 30
+      retries: 50
     environment:
       DATABASE_URL: postgres://postgres:postgres@db/marketplace_db
       AMQP_URL: amqp://rabbitmq:5672/%2f
       GRAPHQL_BASE_URL: http://hasura:8080/v1/graphql
+      PROFILE: $PROFILE
+      AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+      AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+      BACKEND_GRAPHQL_API_KEY: $BACKEND_GRAPHQL_API_KEY
+      DUSTY_BOT_GITHUB_MAX_CALLS_PER_REQUEST: $DUSTY_BOT_GITHUB_MAX_CALLS_PER_REQUEST
+      DUSTY_BOT_GITHUB_PAT: $GITHUB_PAT
+      GITHUB_PAT: $GITHUB_PAT
+      GITHUB_MAX_CALLS_PER_REQUEST: $GITHUB_MAX_CALLS_PER_REQUEST
+      HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET:-myadminsecretkey}
+      DUSTY_BOT_GITHUB_BASE_URL: $DUSTY_BOT_GITHUB_BASE_URL
+      GITHUB_BASE_URL: $GITHUB_BASE_URL
+      INFURA_API_KEY: $INFURA_API_KEY
 
   github-proxy:
     labels:
       type: backend
     container_name: github-proxy
-    image: rust:1.66
+    image: rust:1.70
     volumes:
       - .:/app
       - cargo-cache:/usr/local/cargo
-    command: bash -c "cd /app && cargo run -p github-proxy"
+    command: bash -c "cd /app/backend && cargo run -p github-proxy"
     ports:
-      - 8001
+      - 8001:8001
+    depends_on:
+      api:
+        condition: service_healthy
+      hasura-auth:
+        condition: service_healthy
     healthcheck:
       test: curl -f http://localhost:8001 || exit 1
-      interval: 2s
+      interval: 6s
       timeout: 1s
-      retries: 30
+      retries: 50
+    environment:
+      GITHUB_PROXY_GRAPHQL_API_KEY: $GITHUB_PROXY_GRAPHQL_API_KEY
+      GITHUB_BASE_URL: $GITHUB_BASE_URL
+      GITHUB_PAT: $GITHUB_PAT
+      GITHUB_MAX_CALLS_PER_REQUEST: $GITHUB_MAX_CALLS_PER_REQUEST
 
   event-store:
     labels:
       type: backend
     container_name: event-store
-    image: rust:1.66
+    image: rust:1.70
     depends_on:
       db:
         condition: service_healthy
-      rabbitmq:
-        condition: service_healthy
-    volumes:
-      - .:/app
-      - cargo-cache:/usr/local/cargo
-    command: bash -c "cd /app && cargo run -p event-store"
-    environment:
-      DATABASE_URL: postgres://postgres:postgres@db/marketplace_db
-      AMQP_URL: amqp://rabbitmq:5672/%2f
-
-  event-listeners:
-    labels:
-      type: backend
-    container_name: event-listeners
-    image: rust:1.66
-    depends_on:
-      db:
-        condition: service_healthy
-      rabbitmq:
-        condition: service_healthy
-    volumes:
-      - .:/app
-      - cargo-cache:/usr/local/cargo
-    command: bash -c "cd /app && cargo run -p event-listeners"
-    environment:
-      DATABASE_URL: postgres://postgres:postgres@db/marketplace_db
-      AMQP_URL: amqp://rabbitmq:5672/%2f
-
-  github-indexer:
-    labels:
-      type: backend
-    container_name: github-indexer
-    image: rust:1.66
-    depends_on:
       rabbitmq:
         condition: service_healthy
       api:
@@ -143,45 +82,59 @@ services:
     volumes:
       - .:/app
       - cargo-cache:/usr/local/cargo
-    command: bash -c "cd /app && cargo run -p event-listeners --bin github-indexer"
+    command: bash -c "cd /app/backend && cargo run -p event-store"
     environment:
       DATABASE_URL: postgres://postgres:postgres@db/marketplace_db
       AMQP_URL: amqp://rabbitmq:5672/%2f
+      PROFILE: local
 
-  frontend:
+  event-listeners:
     labels:
-      type: frontend
-    container_name: frontend
-    image: node:18-bullseye
+      type: backend
+    container_name: event-listeners
+    image: rust:1.70
+    depends_on:
+      db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      api:
+        condition: service_healthy
     volumes:
       - .:/app
-    command: bash -c "cd /app && yarn && yarn dev --host"
-    ports:
-      - 5173:5173
-    healthcheck:
-      test: curl -f http://localhost:5173 || exit 1
-      interval: 2s
-      timeout: 1s
-      retries: 30
+      - cargo-cache:/usr/local/cargo
+    command: bash -c "cd /app/backend && cargo run -p event-listeners"
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@db/marketplace_db
+      AMQP_URL: amqp://rabbitmq:5672/%2f
+      PROFILE: local
+      GITHUB_BASE_URL: $GITHUB_BASE_URL
+      GITHUB_PAT: $GITHUB_PAT
+      GITHUB_MAX_CALLS_PER_REQUEST: $GITHUB_MAX_CALLS_PER_REQUEST
 
-  storybook:
+  github-indexer:
     labels:
-      type: frontend
-    container_name: storybook
-    image: node:18-bullseye
+      type: backend
+    container_name: github-indexer
+    image: rust:1.70
+    depends_on:
+      db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      api:
+        condition: service_healthy
     volumes:
       - .:/app
-    command: bash -c "cd /app && yarn && yarn storybook"
-    ports:
-      - 6006:6006
-    healthcheck:
-      test: curl -f http://localhost:6006 || exit 1
-      interval: 2s
-      timeout: 1s
-      retries: 30
+      - cargo-cache:/usr/local/cargo
+    command: bash -c "cd /app/backend && cargo run -p event-listeners --bin github-indexer"
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@db/marketplace_db
+      AMQP_URL: amqp://rabbitmq:5672/%2f
+      PROFILE: local
+      GITHUB_BASE_URL: $GITHUB_BASE_URL
+      GITHUB_PAT: $GITHUB_PAT
+      GITHUB_MAX_CALLS_PER_REQUEST: $GITHUB_MAX_CALLS_PER_REQUEST
 
 volumes:
   cargo-cache:
-  rabbitmq:
-  db:
-    driver: local
