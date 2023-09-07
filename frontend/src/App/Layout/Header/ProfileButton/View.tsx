@@ -69,8 +69,8 @@ const View = ({ githubUserId, avatarUrl, login, logout, showMissingPayoutSetting
           <Menu.Items
             onFocus={() => setMenuItemsVisible(true)}
             onBlur={() => setMenuItemsVisible(false)}
-            className=" absolute right-0 z-20 mt-3 w-56 origin-top-right
-						overflow-hidden rounded-md bg-white/5 pt-2 shadow-lg ring-1
+            className="absolute right-0 z-20 mt-3 w-56 origin-top-right
+						overflow-hidden rounded-md bg-white/5 bg-whiteFakeOpacity-5 pt-2 shadow-lg ring-1
 						ring-greyscale-50/8 focus:outline-none"
           >
             {!hideProfileItems && (
