@@ -23,6 +23,9 @@ export default function ContributorsTable({
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
   const contributors = contributorFragments.map(c => {
+    const unpaidPullRequestCount = c.completedUnpaidPullRequestsAggregate.aggregate?.count || 0;
+    const unpaidIssueCount = c.completedUnpaidIssuesAggregate.aggregate?.count || 0;
+    const unpaidCodeReviewCount = c.completedUnpaidCodeReviewsAggregate.aggregate?.count || 0;
     return {
       githubUserId: c.githubUserId,
       login: c.login || "",
@@ -31,6 +34,10 @@ export default function ContributorsTable({
       totalEarned: c.paymentStatsAggregate.aggregate?.sum?.moneyGranted || 0,
       contributionCount: c.contributionStatsAggregate.aggregate?.sum?.totalCount || 0,
       rewardCount: c.projectsRewardedAggregate.aggregate?.sum?.rewardCount || 0,
+      unpaidPullRequestCount,
+      unpaidIssueCount,
+      unpaidCodeReviewCount,
+      toRewardCount: unpaidPullRequestCount + unpaidIssueCount + unpaidCodeReviewCount,
     } as Contributor;
   });
 

@@ -12,7 +12,7 @@ export function ViewMobile({ contributors }: { contributors: ContributorType[] }
       {contributors
         .sort((contributorA, contributorB) => contributorB.contributionCount - contributorA.contributionCount)
         .map(contributor => (
-          <div className="flex items-center justify-between gap-4 p-3" key={contributor.login}>
+          <div className="flex items-center justify-between gap-1 p-3" key={contributor.login}>
             <Contributor contributor={contributor} clickable />
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-1 text-sm">
@@ -26,6 +26,10 @@ export function ViewMobile({ contributors }: { contributors: ContributorType[] }
               <div className="flex items-center gap-1 text-sm">
                 <MoneyDollarCircleLine className="text-base font-medium text-spaceBlue-200" />
                 {`${contributor?.totalEarned ? formatMoneyAmount({ amount: contributor.totalEarned }) : "-"}`}
+              </div>
+              <div className="flex items-center gap-1 rounded-full bg-spacePurple-900 px-1.5 py-0.5 text-sm font-medium text-spacePurple-400">
+                <StackLine className="text-base" />
+                {contributor.toRewardCount}
               </div>
             </div>
           </div>

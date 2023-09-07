@@ -6,11 +6,21 @@ import Headers from "./Headers";
 import ContributorLine from "./Line";
 import { Contributor as ContributorBase } from "src/types";
 import Card from "src/components/Card";
+import { useIntl } from "src/hooks/useIntl";
+import { Tooltip as ReactTooltip } from "react-tooltip";
+import CodeReviewIcon from "src/assets/icons/CodeReviewIcon";
+import Tag, { TagSize } from "src/components/Tag";
+import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
+import GitMergeLine from "src/icons/GitMergeLine";
 
 export type Contributor = ContributorBase & {
   totalEarned: number;
   contributionCount: number;
   rewardCount: number;
+  unpaidPullRequestCount: number;
+  unpaidIssueCount: number;
+  unpaidCodeReviewCount: number;
+  toRewardCount: number;
 };
 
 export enum Field {
@@ -18,6 +28,7 @@ export enum Field {
   TotalEarned = "totalEarned",
   ContributionCount = "contributionCount",
   RewardCount = "rewardCount",
+  ToRewardCount = "toRewardCount",
 }
 
 export type Sorting = {
@@ -41,7 +52,7 @@ export default function View({
   const isSendingNewPaymentDisabled = remainingBudget < rates.hours;
 
   const [sorting, setSorting] = useState({
-    field: Field.ContributionCount,
+    field: isProjectLeader ? Field.ToRewardCount : Field.ContributionCount,
     ascending: false,
   });
 
@@ -58,7 +69,10 @@ export default function View({
 
   return (
     <Card className="h-full">
-      <Table id="contributors_table" headers={<Headers sorting={sorting} applySorting={applySorting} />}>
+      <Table
+        id="contributors_table"
+        headers={<Headers sorting={sorting} applySorting={applySorting} isProjectLeader={isProjectLeader} />}
+      >
         {sortedContributors.map(contributor => (
           <ContributorLine
             key={contributor.login}
@@ -71,6 +85,48 @@ export default function View({
           />
         ))}
       </Table>
+      <ToRewardDetailsTooltip />
     </Card>
+  );
+}
+
+function ToRewardDetailsTooltip() {
+  const { T } = useIntl();
+
+  return (
+    <ReactTooltip
+      id="to-reward-details"
+      style={{
+        backgroundColor: "#27243A",
+        opacity: 1,
+        borderRadius: 8,
+        padding: "8 12",
+      }}
+      render={({ content }) => {
+        const { unpaidPullRequestCount, unpaidIssueCount, unpaidCodeReviewCount } = JSON.parse(content || "{}");
+        return (
+          <div className="flex items-center gap-1">
+            {unpaidPullRequestCount > 0 && (
+              <Tag size={TagSize.Small}>
+                <GitMergeLine />
+                {T("contributor.table.tooltip.pullRequests", { count: unpaidPullRequestCount })}
+              </Tag>
+            )}
+            {unpaidIssueCount > 0 && (
+              <Tag size={TagSize.Small}>
+                <CheckboxCircleLine />
+                {T("contributor.table.tooltip.issues", { count: unpaidIssueCount })}
+              </Tag>
+            )}
+            {unpaidCodeReviewCount > 0 && (
+              <Tag size={TagSize.Small}>
+                <CodeReviewIcon />
+                {T("contributor.table.tooltip.codeReviews", { count: unpaidCodeReviewCount })}
+              </Tag>
+            )}
+          </div>
+        );
+      }}
+    />
   );
 }
