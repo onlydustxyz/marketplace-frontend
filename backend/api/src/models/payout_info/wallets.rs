@@ -1,5 +1,5 @@
 use diesel::Identifiable;
-use domain::UserId;
+use domain::{blockchain::ethereum, UserId};
 use infrastructure::database::{
 	enums::{Network, WalletType},
 	schema::wallets,
@@ -32,5 +32,20 @@ impl Identifiable for Wallet {
 
 	fn id(self) -> Self::Id {
 		(self.user_id, self.network)
+	}
+}
+
+impl From<(UserId, ethereum::Wallet)> for Wallet {
+	fn from((user_id, wallet): (UserId, ethereum::Wallet)) -> Self {
+		let (type_, address) = match wallet {
+			ethereum::Wallet::Name(name) => (WalletType::Name, name.to_string()),
+			ethereum::Wallet::Address(address) => (WalletType::Address, address.to_string()),
+		};
+		Self {
+			user_id,
+			network: Network::Ethereum,
+			type_,
+			address,
+		}
 	}
 }
