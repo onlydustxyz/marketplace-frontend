@@ -72,7 +72,7 @@ pub async fn request_payment(
 		.map_err(|e| {
 			{
 				HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
-					.title("Unable to process create_project request")
+					.title("Unable to process request_payment request")
 					.detail(e.to_string())
 			}
 		})?;

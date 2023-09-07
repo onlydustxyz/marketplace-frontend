@@ -11,7 +11,7 @@ type Mutation {
     githubRepoId: Int!
     projectId: Uuid!
     title: String!
-  ): GithubIssueCreatedAndClosed!
+  ): GithubIssue!
 }
 
 type Mutation {
@@ -64,10 +64,10 @@ type Mutation {
 type Query {
   searchUsers(
     query: String!
-    sort: String
-    order: String
-    perPage: Int
-    page: Int
+    sort: String!
+    order: String!
+    perPage: Int!
+    page: Int!
   ): [GithubUser!]
 }
 
@@ -82,6 +82,14 @@ type Mutation {
     projectId: Uuid!
     contributionId: String!
   ): Boolean!
+}
+
+type Mutation {
+  updatePayoutInfo(
+    location: Location
+    identity: IdentityInput
+    payoutSettings: PayoutSettingsInput
+  ): Uuid!
 }
 
 type Mutation {
@@ -149,6 +157,17 @@ enum WorkItemType {
   CODE_REVIEW
 }
 
+enum IdentityType {
+  COMPANY
+  PERSON
+}
+
+enum PayoutSettingsType {
+  BANK_ADDRESS
+  ETHEREUM_ADDRESS
+  ETHEREUM_NAME
+}
+
 input Language {
   name: String!
   weight: Int!
@@ -169,6 +188,42 @@ input WorkItem {
 
 input Reason {
   workItems: [WorkItem!]!
+}
+
+input BankAddress {
+  BIC: String!
+  IBAN: Iban!
+}
+
+input CompanyIdentity {
+  identificationNumber: String
+  name: String
+  owner: PersonIdentity
+}
+
+input IdentityInput {
+  company: CompanyIdentity
+  person: PersonIdentity
+  type: IdentityType!
+}
+
+input Location {
+  address: String
+  city: String
+  country: String
+  postCode: String
+}
+
+input PayoutSettingsInput {
+  bankAddress: BankAddress
+  ethAddress: EthereumAddress
+  ethName: EthereumName
+  type: PayoutSettingsType!
+}
+
+input PersonIdentity {
+  firstname: String
+  lastname: String
 }
 
 type GithubIssueCreatedAndClosed {
@@ -244,4 +299,10 @@ scalar DateTime
 scalar DateTimeUtc
 
 scalar Amount
+
+scalar EthereumAddress
+
+scalar EthereumName
+
+scalar Iban
 

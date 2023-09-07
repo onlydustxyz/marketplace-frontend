@@ -10,28 +10,11 @@ actions:
       request_transform:
         body:
           action: transform
-          template: |-
-            {
-              "project_id": {{$body.input.projectId}},
-              "payment_id": {{$body.input.paymentId}}
-            }
+          template: '{{$body.input}}'
         method: DELETE
         query_params: {}
         template_engine: Kriti
         url: '{{$base_url}}/payments'
-        version: 2
-      response_transform:
-        body:
-          action: transform
-          template: |-
-            {
-              "projectId": {{$body.project_id}},
-              "budgetId": {{$body.budget_id}},
-              "paymentId": {{$body.payment_id}},
-              "commandId": {{$body.command_id}},
-              "amount": {{$body.amount}}
-            }
-        template_engine: Kriti
         version: 2
     permissions:
       - role: registered_user
@@ -46,41 +29,11 @@ actions:
       request_transform:
         body:
           action: transform
-          template: |-
-            {
-              "github_repo_id": {{ $body.input.githubRepoId }},
-              "description": {{ $body.input.description }},
-              "project_id": {{ $body.input.projectId }},
-              "title": {{ $body.input.title }}
-            }
+          template: '{{$body.input}}'
         method: POST
         query_params: {}
         template_engine: Kriti
         url: '{{$base_url}}/issues'
-        version: 2
-      response_transform:
-        body:
-          action: transform
-          template: |-
-            {
-              "id": {{$body.id}},
-              "repoId": {{$body.repo_id}},
-              "number": {{$body.number}},
-              "title": {{$body.title}},
-              "author": {
-                "id": {{$body.author.id}},
-                "login": {{$body.author.login}},
-                "avatarUrl": {{$body.author.avatar_url}},
-                "htmlUrl": {{$body.author.html_url}}
-              },
-              "htmlUrl": {{$body.html_url}},
-              "status": {{$body.status}},
-              "createdAt": {{$body.created_at}},
-              "updatedAt": {{$body.updated_at}},
-              "closedAt": {{$body?.closed_at}},
-              "commentsCount": {{$body.comments_count}}
-            }
-        template_engine: Kriti
         version: 2
     permissions:
       - role: registered_user
@@ -96,18 +49,7 @@ actions:
       request_transform:
         body:
           action: transform
-          template: |
-            {
-              "name": {{$body.input.name}},
-              "short_description": {{$body.input.shortDescription}},
-              "long_description": {{$body.input.longDescription}},
-              "initial_budget": {{$body.input?.initialBudget}},
-              "hiring": {{$body.input?.hiring}},
-              "rank": {{$body.input?.rank}},
-              "telegram_link": {{$body.input?.telegramLink}},
-              "logo_url": {{$body.input?.logoUrl}},
-              "visibility": {{$body.input?.visibility}}
-            }
+          template: '{{$body.input}}'
         method: POST
         query_params: {}
         template_engine: Kriti
@@ -140,31 +82,8 @@ actions:
         template_engine: Kriti
         url: '{{$base_url}}/issues/{{$body.input.repoOwner}}/{{$body.input.repoName}}/{{$body.input.issueNumber}}'
         version: 2
-      response_transform:
-        body:
-          action: transform
-          template: |
-            {
-
-              "author": {
-                "avatarUrl": {{$body.author.avatar_url}},
-                "htmlUrl": {{$body.author.html_url}},
-                "id": {{$body.author.id}},
-                "login": {{$body.author.login}}
-              },
-              "closedAt": {{$body.closed_at}},
-              "commentsCount": {{$body.comments_count}},
-              "createdAt": {{$body.created_at}},
-              "htmlUrl": {{$body.html_url}},
-              "id": {{$body.id}},
-              "number": {{$body.number}},
-              "repoId": {{$body.repo_id}},
-              "status": {{$body.status}},
-              "title":{{$body.title}},
-              "updatedAt": {{$body.updated_at}}
-            }
-        template_engine: Kriti
-        version: 2
+    permissions:
+      - role: registered_user
   - name: fetchPullRequest
     definition:
       kind: ""
@@ -182,30 +101,6 @@ actions:
             - content-type
         template_engine: Kriti
         url: '{{$base_url}}/pull_requests/{{$body.input.repoOwner}}/{{$body.input.repoName}}/{{$body.input.prNumber}}'
-        version: 2
-      response_transform:
-        body:
-          action: transform
-          template: |
-            {
-              "author": {
-                "avatarUrl": {{$body.author.avatar_url}},
-                "htmlUrl": {{$body.author.html_url}},
-                "id": {{$body.author.id}},
-                "login": {{$body.author.login}}
-              },
-              "closedAt": {{$body.closed_at}},
-              "createdAt": {{$body.created_at}},
-              "htmlUrl": {{$body.html_url}},
-              "id": {{$body.id}},
-              "mergedAt": {{$body.merged_at}},
-              "number": {{$body.number}},
-              "repoId": {{$body.repo_id}},
-              "status": {{$body.status}},
-              "title":{{$body.title}},
-              "updatedAt": {{$body.updated_at}}
-            }
-        template_engine: Kriti
         version: 2
     permissions:
       - role: registered_user
@@ -243,24 +138,11 @@ actions:
       request_transform:
         body:
           action: transform
-          template: "{\n    \"project_id\": {{ $body.input.projectId }},\n    \"recipient_id\": {{ $body.input.recipientId }},\n    \"amount_in_usd\": {{ $body.input.amountInUsd }},\n    \"hours_worked\": {{ $body.input.hoursWorked }},\n    \"reason\": {\n      \"work_items\": \n        {{ range _, w := $body.input.reason.workItems }}\n        {\n          \"id\": {{ w.id }},\n          \"type\": {{ w.type }},\n          \"repo_id\": {{ w.repoId }},\n          \"number\": {{ w.number }}\n        }\n        {{ end }}\n      \n    }\n}\n"
+          template: '{{$body.input}}'
         method: POST
         query_params: {}
         template_engine: Kriti
         url: '{{$base_url}}/payments'
-        version: 2
-      response_transform:
-        body:
-          action: transform
-          template: |-
-            {
-              "projectId": {{$body.project_id}},
-              "budgetId": {{$body.budget_id}},
-              "paymentId": {{$body.payment_id}},
-              "commandId": {{$body.command_id}},
-              "amount": {{$body.amount}}
-            }
-        template_engine: Kriti
         version: 2
     permissions:
       - role: registered_user
@@ -275,31 +157,17 @@ actions:
       request_transform:
         method: GET
         query_params:
-          order: '{{$body.input.order}}'
-          page: '{{$body.input.page}}'
-          per_page: '{{$body.input.perPage}}'
-          query: '{{$body.input.query}}'
-          sort: '{{$body.input.sort}}'
+          order: '{{$body.input.order }}'
+          page: '{{$body.input.page }}'
+          per_page: '{{$body.input.perPage }}'
+          query: '{{$body.input.query }}'
+          sort: '{{$body.input.sort }}'
         request_headers:
           add_headers: {}
           remove_headers:
             - content-type
         template_engine: Kriti
         url: '{{$base_url}}/users/search'
-        version: 2
-      response_transform:
-        body:
-          action: transform
-          template: |
-            {{ range _, user := $body }}
-              {
-                "avatarUrl": {{user.avatar_url}},
-                "htmlUrl": {{user.html_url}},
-                "id": {{user.id}},
-                "login": {{user.login}}
-              }
-            {{ end }}
-        template_engine: Kriti
         version: 2
     permissions:
       - role: registered_user
@@ -352,6 +220,25 @@ actions:
     permissions:
       - role: registered_user
     comment: unignoreContribution
+  - name: updatePayoutInfo
+    definition:
+      kind: synchronous
+      handler: '{{BACKEND_REST_API_URL}}'
+      forward_client_headers: true
+      headers:
+        - name: Api-Key
+          value_from_env: BACKEND_GRAPHQL_API_KEY
+      request_transform:
+        body:
+          action: transform
+          template: '{{$body.input}}'
+        method: POST
+        query_params: {}
+        template_engine: Kriti
+        url: '{{$base_url}}/users/profile/payout_info'
+        version: 2
+    permissions:
+      - role: registered_user
   - name: updateUserProfile
     definition:
       kind: synchronous
@@ -363,17 +250,7 @@ actions:
       request_transform:
         body:
           action: transform
-          template: |-
-            {
-            	"bio": {{ $body.input.bio }},
-            	"location":{{ $body.input.location }},
-            	"website": {{ $body.input.website }},
-            	"languages": {{ $body.input.languages }},
-            	"looking_for_a_job": {{ $body.input.lookingForAJob }},
-            	"contact_informations":{{ $body.input.contactInformations }},
-            	"weekly_allocated_time": {{ $body.input.weeklyAllocatedTime }},
-            	"cover": {{ $body.input.cover }}
-            }
+          template: '{{$body.input}}'
         method: POST
         query_params: {}
         template_engine: Kriti
@@ -490,11 +367,36 @@ custom_types:
         - description: null
           is_deprecated: null
           value: CODE_REVIEW
+    - name: IdentityType
+      values:
+        - description: null
+          is_deprecated: null
+          value: COMPANY
+        - description: null
+          is_deprecated: null
+          value: PERSON
+    - name: PayoutSettingsType
+      values:
+        - description: null
+          is_deprecated: null
+          value: BANK_ADDRESS
+        - description: null
+          is_deprecated: null
+          value: ETHEREUM_ADDRESS
+        - description: null
+          is_deprecated: null
+          value: ETHEREUM_NAME
   input_objects:
     - name: Language
     - name: Information
     - name: WorkItem
     - name: Reason
+    - name: BankAddress
+    - name: CompanyIdentity
+    - name: IdentityInput
+    - name: Location
+    - name: PayoutSettingsInput
+    - name: PersonIdentity
   objects:
     - name: GithubIssueCreatedAndClosed
     - name: GithubUserLinkedToIssue
@@ -517,3 +419,6 @@ custom_types:
     - name: DateTime
     - name: DateTimeUtc
     - name: Amount
+    - name: EthereumAddress
+    - name: EthereumName
+    - name: Iban
