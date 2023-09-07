@@ -10,7 +10,7 @@ object_relationships:
         insertion_order: null
         remote_table:
           name: github_repos
-          schema: public
+          schema: api
 select_permissions:
   - role: public
     permission:
