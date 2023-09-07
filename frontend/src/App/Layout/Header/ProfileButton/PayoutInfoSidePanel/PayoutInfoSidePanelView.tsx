@@ -18,6 +18,15 @@ import LockFill from "src/icons/LockFill";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import ProfileRadioGroup from "./ProfileRadioGroup";
+import GithubLogo from "src/icons/GithubLogo";
+import StarknetIcon from "src/assets/icons/Starknet";
+import EthereumIcon from "src/assets/icons/Ethereum";
+import OptimismIcon from "src/assets/icons/Optimism";
+import DollarIcon from "src/assets/icons/Dollar";
+import AptosIcon from "src/assets/icons/Aptos";
+import Chip from "src/components/Chip/Chip";
+import Flex from "src/components/Utils/Flex";
+import Box from "src/components/Utils/Box";
 
 const ETHEREUM_ADDRESS_OR_ENV_DOMAIN_REGEXP =
   /(^0x[a-fA-F0-9]{40}$)|(^[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?$)/gi;
@@ -29,7 +38,7 @@ type Props = {
   unsavedChanges: boolean;
 };
 
-export default function View({ payoutSettingsValid, saveButtonDisabled, unsavedChanges }: Props) {
+export default function PayoutInfoSidePanel({ payoutSettingsValid, saveButtonDisabled, unsavedChanges }: Props) {
   const { T } = useIntl();
   const {
     watch,
@@ -47,21 +56,6 @@ export default function View({ payoutSettingsValid, saveButtonDisabled, unsavedC
   return (
     <div className="flex h-full min-h-0 flex-col justify-between overflow-y-auto">
       <div className="mx-2 mb-1 flex min-h-0 flex-col gap-6 px-4 pt-4 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
-        <Tag size={TagSize.Medium}>
-          <div
-            className={classNames({
-              "text-orange-500": !payoutSettingsValid,
-            })}
-          >
-            {payoutSettingsValid ? (
-              <div className="flex flex-row items-center gap-1">
-                <CheckLine /> {T("profile.form.payoutSettingsValidTag")}
-              </div>
-            ) : (
-              T("profile.form.payoutSettingsRequiredTag")
-            )}
-          </div>
-        </Tag>
         <ProfileRadioGroup
           name="profileType"
           label={T("profile.form.profileType")}
@@ -80,6 +74,27 @@ export default function View({ payoutSettingsValid, saveButtonDisabled, unsavedC
           ]}
         />
         <Card padded={false} className="p-6" withBg={false}>
+          <Box className="pb-6">
+            <Tag size={TagSize.Medium}>
+              <div
+                className={classNames({
+                  "text-orange-500": !payoutSettingsValid,
+                })}
+              >
+                {payoutSettingsValid ? (
+                  <div className="flex flex-row items-center gap-1">
+                    <CheckLine /> {T("profile.form.contactSettingsValidTag")}
+                  </div>
+                ) : (
+                  <>
+                    <ErrorWarningLine className="mr-1 text-orange-500" />
+                    {T("profile.missing.contact")}
+                  </>
+                )}
+              </div>
+            </Tag>
+          </Box>
+
           {profileType === ProfileType.Company && (
             <div className="flex flex-col">
               <Callout>{T("profile.form.companyNeedsInvoiceCallout")}</Callout>
@@ -256,6 +271,100 @@ export default function View({ payoutSettingsValid, saveButtonDisabled, unsavedC
             </div>
           )}
         </Card>
+
+        <Card padded={false} className="p-6" withBg={false}>
+          <Box className="pb-6">
+            <Tag size={TagSize.Medium}>
+              <div
+                className={classNames({
+                  "text-orange-500": !payoutSettingsValid,
+                })}
+              >
+                {payoutSettingsValid ? (
+                  <div className="flex flex-row items-center gap-1">
+                    <CheckLine /> {T("profile.form.payoutSettingsValidTag")}
+                  </div>
+                ) : (
+                  <>
+                    <ErrorWarningLine className="mr-1 text-orange-500" />
+                    {T("profile.missing.payment")}
+                  </>
+                )}
+              </div>
+            </Tag>
+          </Box>
+
+          <Input
+            label={
+              <Flex className="items-center gap-1">
+                <Chip content={<EthereumIcon className="h-3" />} />
+                {T("profile.form.ethIdentity")}
+              </Flex>
+            }
+            name="ethIdentity"
+            placeholder={T("profile.form.ethIdentityPlaceholder")}
+            options={{
+              pattern: {
+                value: ETHEREUM_ADDRESS_OR_ENV_DOMAIN_REGEXP,
+                message: T("profile.form.invalidCryptoSettings"),
+              },
+            }}
+            requiredForPayment={true}
+            inputProps={{ autoFocus: true }}
+          />
+          <Input
+            label={
+              <Flex className="items-center gap-1">
+                <Chip content={<StarknetIcon className="h-4" />} />
+                {T("profile.form.starkIdentity")}
+              </Flex>
+            }
+            name="starkIdentity"
+            placeholder={T("profile.form.starkIdentityPlaceholder")}
+            options={{
+              pattern: {
+                value: ETHEREUM_ADDRESS_OR_ENV_DOMAIN_REGEXP,
+                message: T("profile.form.invalidCryptoSettings"),
+              },
+            }}
+            requiredForPayment={true}
+          />
+          <Input
+            label={
+              <Flex className="items-center gap-1">
+                <Chip content={<OptimismIcon className="h-4" />} />
+                {T("profile.form.optimismIdentity")}
+              </Flex>
+            }
+            name="optimismIdentity"
+            placeholder={T("profile.form.optimismIdentityPlaceholder")}
+            options={{
+              pattern: {
+                value: ETHEREUM_ADDRESS_OR_ENV_DOMAIN_REGEXP,
+                message: T("profile.form.invalidCryptoSettings"),
+              },
+            }}
+            requiredForPayment={true}
+          />
+          <Input
+            label={
+              <Flex className="items-center gap-1">
+                <Chip content={<AptosIcon className="h-4 bg-white" />} />
+                {T("profile.form.aptosIdentity")}
+              </Flex>
+            }
+            name="aptosIdentity"
+            placeholder={T("profile.form.aptosIdentityPlaceholder")}
+            options={{
+              pattern: {
+                value: ETHEREUM_ADDRESS_OR_ENV_DOMAIN_REGEXP,
+                message: T("profile.form.invalidCryptoSettings"),
+              },
+            }}
+            requiredForPayment={true}
+          />
+        </Card>
+
         <div className="flex flex-col items-center gap-4 p-4 text-center font-walsheim text-greyscale-400">
           <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/8 text-xl leading-5">
             <LockFill />

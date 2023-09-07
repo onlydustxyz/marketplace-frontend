@@ -8,7 +8,7 @@ import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import LogoutBoxRLine from "src/icons/LogoutBoxRLine";
 import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import User3Line from "src/icons/User3Line";
-import PayoutInfoSidePanel from "./PayoutInfoSidePanel";
+import PayoutInfoSidePanel from "./PayoutInfoSidePanel/PayoutInfoSidePanel";
 import { useGetPaymentRequestIdsQuery } from "src/__generated/graphql";
 import { NavLink } from "react-router-dom";
 import { RoutePaths } from "src/App";

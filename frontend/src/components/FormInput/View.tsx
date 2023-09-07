@@ -1,4 +1,4 @@
-import React, { FocusEventHandler, KeyboardEventHandler, memo, PropsWithChildren } from "react";
+import React, { FocusEventHandler, KeyboardEventHandler, memo, PropsWithChildren, ReactNode } from "react";
 import { UseFormRegisterReturn } from "react-hook-form";
 import LoaderIcon from "src/assets/icons/Loader";
 import ImageCard, {
@@ -15,9 +15,10 @@ import { withTooltip } from "src/components/Tooltip";
 import { useMediaQuery } from "usehooks-ts";
 import { viewportConfig } from "src/config";
 import { InputErrorDisplay } from "./types";
+import GithubLogo from "src/icons/GithubLogo";
 
 type PropsType = {
-  label?: string;
+  label?: ReactNode;
   type: string;
   placeholder?: string;
   value?: string | number;
@@ -84,7 +85,7 @@ const View: React.FC<PropsType> = ({
       })}
     >
       {label && (
-        <div className="text-sm font-medium tracking-tight">
+        <div className="flex justify-between text-sm font-medium tracking-tight">
           {label}
           {requiredForPayment && <span className="pl-0.5 text-orange-500">{"*"}</span>}
         </div>

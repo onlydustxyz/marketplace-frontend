@@ -34,6 +34,7 @@
 }
 
 @layer components {
+  /* Boder-radius */
   .rounded-lg.pseudo-outline::before {
     border-radius: 9px;
   }

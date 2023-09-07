@@ -10,7 +10,7 @@ import {
   UserPayoutSettingsFragment,
 } from "src/__generated/graphql";
 import { useEffect } from "react";
-import View from "./View";
+import PayoutInfoSidePanelView from "./PayoutInfoSidePanelView";
 import usePayoutSettings from "src/hooks/usePayoutSettings";
 import { PayoutSettingsDisplayType, ProfileType, UserPayoutInfo } from "./types";
 import SidePanel from "src/components/SidePanel";
@@ -67,7 +67,7 @@ export default function PayoutInfoSidePanel({ githubUserId, open, setOpen }: Pro
 
         <FormProvider {...formMethods}>
           <form id="payout-info-form" className="h-full min-h-0" onSubmit={handleSubmit(onSubmit)}>
-            <View
+            <PayoutInfoSidePanelView
               payoutSettingsValid={payoutSettingsValid}
               saveButtonDisabled={updatePayoutSettingsLoading || !isDirty}
               unsavedChanges={isDirty}

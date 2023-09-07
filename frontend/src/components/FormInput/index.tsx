@@ -1,5 +1,5 @@
 import { defaults } from "lodash";
-import { ChangeEventHandler, FocusEventHandler, KeyboardEventHandler, PropsWithChildren } from "react";
+import { ChangeEventHandler, FocusEventHandler, KeyboardEventHandler, PropsWithChildren, ReactNode } from "react";
 import { useFormContext, useFormState, RegisterOptions } from "react-hook-form";
 import { InputErrorDisplay } from "./types";
 import View from "./View";
@@ -10,7 +10,7 @@ export enum Size {
 }
 
 type PropsType = {
-  label?: string;
+  label?: ReactNode;
   type?: string;
   placeholder?: string;
   name: string;
