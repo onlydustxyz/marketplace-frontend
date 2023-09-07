@@ -1,6 +1,6 @@
 table:
   name: github_repos
-  schema: public
+  schema: api
 array_relationships:
   - name: projects
     using:
@@ -25,4 +25,5 @@ select_permissions:
         - owner
         - stars
         - updated_at
+        - indexed_at
       filter: {}

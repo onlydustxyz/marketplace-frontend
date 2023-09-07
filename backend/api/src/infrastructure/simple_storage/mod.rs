@@ -42,12 +42,12 @@ struct AwsCredentialsProviderFromConfig {
 #[async_trait]
 impl ProvideAwsCredentials for AwsCredentialsProviderFromConfig {
 	async fn credentials(&self) -> std::result::Result<AwsCredentials, CredentialsError> {
-		return Ok(AwsCredentials::new(
+		Ok(AwsCredentials::new(
 			&self.access_key_id,
 			&self.secret_access_key,
 			None,
 			None,
-		));
+		))
 	}
 }
 
