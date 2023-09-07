@@ -54,7 +54,7 @@ export default function StatsSection({ profile, contributionCounts, contribution
               {profile.contributionStatsAggregate.aggregate?.sum?.totalCount || 0}
             </div>
             <div
-              className="flex flex-row items-center gap-0.5 rounded-full border border-greyscale-50/12 bg-white/5 px-2 py-0.5 text-sm shadow-heavy backdrop-blur-lg"
+              className="flex flex-row items-center gap-0.5 rounded-full border border-greyscale-50/12 bg-white/5 px-2 py-0.5 text-sm shadow-heavy"
               {...withTooltip(T("contributionGraph.progressionTooltip"))}
             >
               {contributionCountVariationSinceLastWeek < 0 ? (
