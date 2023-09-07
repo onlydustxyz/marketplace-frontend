@@ -522,6 +522,8 @@
     },
     "form": {
       "address": "Street address",
+      "aptosIdentity": "Aptos wallet address",
+      "aptosIdentityPlaceholder": "Aptos wallet address",
       "bankWire": "Bank wire",
       "bio": "Bio",
       "bic": "BIC",
@@ -554,8 +556,9 @@
       "discordPlaceholder": "Discord",
       "email": "Email address",
       "emailPlaceholder": "example@onlydust.co",
-      "ethIdentity": "ETH address or ENS name",
-      "ethIdentityPlaceholder": "ETH address or ENS name",
+      "ethIdentity": "Ethereum wallet address or ENS name",
+      "ethIdentityPlaceholder": "Ethereum wallet address or ENS name",
+
       "firstname": "First name",
       "iban": "IBAN",
       "ibanInvalid": "Please enter a valid IBAN",
@@ -565,11 +568,14 @@
       "lastname": "Last name",
       "location": "Location",
       "number": "N.",
+      "optimismIdentity": "Optimism wallet address",
+      "optimismIdentityPlaceholder": "Optimism wallet address",
       "payoutInformation": "Payout information",
       "payoutSettings": "Payout information",
       "payoutSettingsRequiredTag": "* required to receive payments",
       "payoutSettingsType": "Preferred payment method",
-      "payoutSettingsValidTag": "You're able to receive payments",
+      "contactSettingsValidTag": "You're able to receive payments",
+      "payoutSettingsValidTag": "You're able to receive payments on all networks",
       "pictureUploadError": "We were not able to upload your profile picture, please try again.",
       "postCode": "Zip code",
       "profileType": "Account type",
@@ -607,12 +613,16 @@
         "saved": "All changes saved",
         "invalid": "The form has errors"
       },
+      "starkIdentity": "Starknet wallet address",
+      "starkIdentityPlaceholder": "Starknet adress",
       "website": "Website"
     },
     "missing": {
       "button": "Complete payout information",
       "subtitle": "We won't be able to issue any payment until your payout information is completed",
-      "title": "Payout information missing"
+      "title": "Payout information missing",
+      "contact": "Missing information to receive payments",
+      "payment": "Missing information to receive payments on all networks"
     }
   },
   "publicProfile": {
