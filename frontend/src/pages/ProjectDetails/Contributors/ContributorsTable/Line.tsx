@@ -7,6 +7,7 @@ import SendPlane2Line from "src/icons/SendPlane2Line";
 import { Contributor as ContributorType } from "./View";
 import { formatMoneyAmount } from "src/utils/money";
 import Contributor from "src/components/Contributor";
+import StackLine from "src/icons/StackLine";
 
 type Props = {
   contributor: ContributorType;
@@ -37,6 +38,27 @@ export default function ContributorLine({
       <Cell height={CellHeight.Small} horizontalMargin={false}>{`${
         contributor?.totalEarned ? formatMoneyAmount({ amount: contributor.totalEarned }) : "-"
       }`}</Cell>
+      {isProjectLeader && (
+        <Cell height={CellHeight.Small} horizontalMargin={false}>
+          {contributor.toRewardCount ? (
+            <div
+              id="to-reward-count"
+              className="flex cursor-default items-center gap-1 rounded-full bg-spacePurple-900 px-1.5 py-1 text-spacePurple-400"
+              data-tooltip-id="to-reward-details"
+              data-tooltip-content={JSON.stringify({
+                unpaidPullRequestCount: contributor.unpaidPullRequestCount,
+                unpaidIssueCount: contributor.unpaidIssueCount,
+                unpaidCodeReviewCount: contributor.unpaidCodeReviewCount,
+              })}
+            >
+              <StackLine />
+              <span className="font-walsheim font-medium">{contributor.toRewardCount}</span>
+            </div>
+          ) : (
+            "-"
+          )}
+        </Cell>
+      )}
       {isProjectLeader ? (
         <Cell height={CellHeight.Small} horizontalMargin={false} className="invisible group-hover/line:visible">
           <div {...withTooltip(T("contributor.table.noBudgetLeft"), { visible: isGivingRewardDisabled })}>

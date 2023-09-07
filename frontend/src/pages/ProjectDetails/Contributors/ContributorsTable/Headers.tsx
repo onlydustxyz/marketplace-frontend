@@ -7,13 +7,15 @@ import User3Line from "src/icons/User3Line";
 import { Field, Sorting } from "./View";
 import StackLine from "src/icons/StackLine";
 import Medal2Fill from "src/icons/Medal2Fill";
+import HandCoinLine from "src/icons/HandCoinLine";
 
 type Props = {
   sorting: Sorting;
   applySorting: (field: Field, ascending: boolean) => void;
+  isProjectLeader: boolean;
 };
 
-export default function Headers({ sorting, applySorting }: Props) {
+export default function Headers({ sorting, applySorting, isProjectLeader }: Props) {
   const { T } = useIntl();
 
   return (
@@ -41,6 +43,13 @@ export default function Headers({ sorting, applySorting }: Props) {
         {T("contributor.table.totalEarned")}
         <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.TotalEarned} />
       </HeaderCell>
+      {isProjectLeader && (
+        <HeaderCell onClick={() => applySorting(Field.ToRewardCount, false)}>
+          <HandCoinLine className="text-base" />
+          {T("contributor.table.toReward")}
+          <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.ToRewardCount} />
+        </HeaderCell>
+      )}
     </HeaderLine>
   );
 }
