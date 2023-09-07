@@ -18,7 +18,7 @@ export default function Header({ userLogin }: Props) {
 
   return (
     <div className="flex items-center md:py-6">
-      <div className="flex w-full justify-between bg-white/8 px-4 py-3 backdrop-blur-3xl md:rounded-full">
+      <div className="flex w-full justify-between bg-white/8 px-4 py-3 md:rounded-full">
         <div
           className="flex cursor-pointer items-center gap-3"
           onClick={linkClickHandlerFactory("https://onlydust.xyz")}

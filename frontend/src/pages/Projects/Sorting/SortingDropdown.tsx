@@ -27,7 +27,7 @@ export default function SortingDropdown({ all, current, onChange }: Props) {
       value={current}
       onChange={onChange}
       as="div"
-      className="h-fit w-fit divide-y divide-greyscale-50/12 rounded-md border border-greyscale-50/12 bg-white/2 font-walsheim text-sm font-medium text-greyscale-50 shadow-heavy backdrop-blur-4xl"
+      className="h-fit w-fit divide-y divide-greyscale-50/12 rounded-md border border-greyscale-50/12 bg-white/2 font-walsheim text-sm font-medium text-greyscale-50 shadow-heavy"
     >
       <Listbox.Button className="flex flex-row items-center gap-2 py-1.5 pl-4 pr-2">
         <Arrow />
@@ -37,7 +37,7 @@ export default function SortingDropdown({ all, current, onChange }: Props) {
         </div>
         <ArrowDownSLine className="text-xl ui-open:rotate-180" />
       </Listbox.Button>
-      <Listbox.Options className="flex cursor-pointer flex-col divide-y divide-greyscale-50/12 bg-white/2 backdrop-blur-4xl">
+      <Listbox.Options className="flex cursor-pointer flex-col divide-y divide-greyscale-50/12 bg-white/2">
         {all.map(value => (
           <Listbox.Option
             key={value}
