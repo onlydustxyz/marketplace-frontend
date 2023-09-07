@@ -2,58 +2,30 @@ use derive_more::From;
 use domain::blockchain::ethereum;
 use serde::{Deserialize, Serialize};
 
-use crate::models;
+mod bank_account;
+pub use bank_account::BankAccount;
 
-mod bank_address;
-pub use bank_address::BankAddress;
-
-#[derive(Debug, Clone, Serialize, Deserialize, From)]
+#[derive(Debug, Clone, Serialize, Deserialize, From, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct PayoutSettings {
-	r#type: Type,
-	bank_address: Option<BankAddress>,
-	eth_address: Option<ethereum::Address>,
-	eth_name: Option<ethereum::Name>,
-}
-
-impl TryFrom<PayoutSettings> for models::PayoutSettings {
-	type Error = anyhow::Error;
-
-	fn try_from(input: PayoutSettings) -> Result<Self, Self::Error> {
-		let typ = input.r#type;
-		match typ {
-			Type::EthereumAddress => input
-				.eth_address
-				.ok_or_else(|| {
-					anyhow::anyhow!(
-						"type was set to `ETHEREUM_ADDRESS` without the matching `optEthAddress` field being provided"
-					)
-				})
-				.map(|address| Self::EthTransfer(ethereum::Identity::Address(address))),
-			Type::BankAddress => input
-				.bank_address
-				.ok_or_else(|| {
-					anyhow::anyhow!(
-						"type was set to `BANK_ADDRESS` without the matching `optBankAddress` field being provided"
-					)
-				})
-				.map(|bank_address| Self::WireTransfer(bank_address.into())),
-			Type::EthereumName => input
-				.eth_name
-				.ok_or_else(|| {
-					anyhow::anyhow!(
-						"type was set to `ETHEREUM_NAME` without the matching `optEthName` field being provided"
-					)
-				})
-				.map(|name| Self::EthTransfer(ethereum::Identity::Name(name))),
-		}
-	}
+	pub usd_preferred_method: Option<PreferredMethod>,
+	pub bank_account: Option<BankAccount>,
+	pub eth_address: Option<ethereum::Address>,
+	pub eth_name: Option<ethereum::Name>,
 }
 
 #[derive(Debug, Copy, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
-pub enum Type {
-	EthereumAddress,
-	EthereumName,
-	BankAddress,
+pub enum PreferredMethod {
+	Crypto,
+	Fiat,
+}
+
+impl From<PreferredMethod> for infrastructure::database::enums::PreferredMethod {
+	fn from(method: PreferredMethod) -> Self {
+		match method {
+			PreferredMethod::Crypto => Self::Crypto,
+			PreferredMethod::Fiat => Self::Fiat,
+		}
+	}
 }

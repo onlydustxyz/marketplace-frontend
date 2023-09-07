@@ -16,7 +16,7 @@ pub enum EthereumIdentityType {
 	EthereumName,
 }
 
-impl TryFrom<EthereumIdentityInput> for Identity {
+impl TryFrom<EthereumIdentityInput> for Wallet {
 	type Error = anyhow::Error;
 
 	fn try_from(value: EthereumIdentityInput) -> Result<Self, Self::Error> {
@@ -28,7 +28,7 @@ impl TryFrom<EthereumIdentityInput> for Identity {
 						"type was set to `ETHEREUM_ADDRESS` without the matching `optEthAddress` field being provided"
 					)
 				})
-				.map(Identity::Address),
+				.map(Wallet::Address),
 			EthereumIdentityType::EthereumName => value
 				.opt_eth_name
 				.ok_or_else(|| {
@@ -36,7 +36,7 @@ impl TryFrom<EthereumIdentityInput> for Identity {
 						"type was set to `ETHEREUM_NAME` without the matching `optEthName` field being provided"
 					)
 				})
-				.map(Identity::Name),
+				.map(Wallet::Name),
 		}
 	}
 }
