@@ -21,7 +21,7 @@ const Toggle: React.FC<Props> = ({ testId, label, icon, enabled, setEnabled }) =
         "font-walsheim font-medium text-greyscale-50 drop-shadow-bottom-sm",
         "drop-shadow-bottom-sm",
         "h-8 gap-2 rounded-large px-4 py-2 text-sm",
-        "border backdrop-blur-lg",
+        "border",
         "cursor-pointer select-none",
         "hover:border-spacePurple-200 hover:text-spacePurple-100",
         {

@@ -48,7 +48,7 @@ export default function RepoSelect({ repos, repo, setRepo }: Props) {
         <Listbox.Options
           data-testid="select-repo-options"
           as="div"
-          className="absolute bottom-10 w-full divide-y divide-greyscale-50/8 rounded-lg border border-greyscale-50/8 backdrop-blur-4xl"
+          className="absolute bottom-10 w-full divide-y divide-greyscale-50/8 rounded-lg border border-greyscale-50/8"
         >
           {repos.map(repo => (
             <Listbox.Option
