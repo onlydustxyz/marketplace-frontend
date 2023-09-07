@@ -21,6 +21,7 @@ impl<Id: Indexable> Controller<Id> {
 		let ids = self.repository.list_items_to_index()?;
 		for id in ids {
 			self.index(&id).await;
+			self.repository.update_indexed_at(&id)?;
 		}
 		Ok(())
 	}
