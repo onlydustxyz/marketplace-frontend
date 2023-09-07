@@ -1,5 +1,5 @@
 use http_api_problem::HttpApiProblem;
-use presentation::http::guards::Claims;
+use presentation::http::guards::{ApiKey, Claims};
 use reqwest::StatusCode;
 use rocket::serde::json::Json;
 use serde::{Deserialize, Serialize};
@@ -8,12 +8,13 @@ use uuid::Uuid;
 use crate::{application::user::update_payout_info::*, models::*, presentation::http::dto};
 
 #[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Response {
 	pub user_id: Uuid,
 }
 
 #[derive(Debug, Deserialize)]
-#[serde(crate = "rocket::serde")]
+#[serde(rename_all = "camelCase")]
 pub struct Request {
 	location: Option<dto::identity::Location>,
 	identity: Option<dto::Identity>,
@@ -21,11 +22,12 @@ pub struct Request {
 }
 
 #[post(
-	"/api/users/profile/payout_info",
+	"/users/profile/payout_info",
 	data = "<request>",
 	format = "application/json"
 )]
 pub async fn update_user_payout_info(
+	_api_key: ApiKey,
 	claims: Claims,
 	request: Json<Request>,
 	usecase: Usecase,

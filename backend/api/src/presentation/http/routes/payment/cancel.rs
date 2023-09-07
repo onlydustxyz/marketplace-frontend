@@ -9,6 +9,7 @@ use uuid::Uuid;
 use crate::{application, domain::permissions::IntoPermission};
 
 #[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Response {
 	pub project_id: Uuid,
 	pub budget_id: Uuid,
@@ -18,7 +19,7 @@ pub struct Response {
 }
 
 #[derive(Debug, Deserialize)]
-#[serde(crate = "rocket::serde")]
+#[serde(rename_all = "camelCase")]
 pub struct Request {
 	pub project_id: Uuid,
 	pub payment_id: Uuid,

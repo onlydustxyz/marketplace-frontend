@@ -58,12 +58,12 @@ impl<'a> Test<'a> {
 				{ "name": "Rust", "weight": 1 },
 				{ "name": "Typescript", "weight": 0 }
 			],
-			"looking_for_a_job": true,
-			"contact_informations": [
+			"lookingForAJob": true,
+			"contactInformations": [
 				{ "channel": "DISCORD", "contact": "Antho#1234", "public": true },
 				{ "channel": "WHATSAPP", "contact": "+33612345678", "public": false }
 			],
-			"weekly_allocated_time": "LESS_THAN_ONE_DAY",
+			"weeklyAllocatedTime": "LESS_THAN_ONE_DAY",
 			"cover": "CYAN"
 		});
 

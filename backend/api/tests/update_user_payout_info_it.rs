@@ -14,7 +14,11 @@ use rocket::{
 use rstest::rstest;
 use testcontainers::clients::Cli;
 
-use crate::context::{docker, utils::jwt, Context};
+use crate::context::{
+	docker,
+	utils::{api_key_header, jwt},
+	Context,
+};
 
 #[macro_use]
 extern crate diesel;
@@ -76,6 +80,7 @@ impl<'a> Test<'a> {
 			.http_client
 			.post("/api/users/profile/payout_info")
 			.header(ContentType::JSON)
+			.header(api_key_header())
 			.header(Header::new(
 				"Authorization",
 				format!("Bearer {}", jwt(None)),
@@ -117,6 +122,7 @@ impl<'a> Test<'a> {
 			.http_client
 			.post("/api/users/profile/payout_info")
 			.header(ContentType::JSON)
+			.header(api_key_header())
 			.header(Header::new(
 				"Authorization",
 				format!("Bearer {}", jwt(None)),
@@ -162,7 +168,7 @@ impl<'a> Test<'a> {
 						"firstname": "Anthony"
 					},
 					"name": "OnlyDust",
-					"identification_number": "123456"
+					"identificationNumber": "123456"
 				}
 			}
 		});
@@ -173,6 +179,7 @@ impl<'a> Test<'a> {
 			.http_client
 			.post("/api/users/profile/payout_info")
 			.header(ContentType::JSON)
+			.header(api_key_header())
 			.header(Header::new(
 				"Authorization",
 				format!("Bearer {}", jwt(None)),
@@ -218,7 +225,7 @@ impl<'a> Test<'a> {
 		let request = json!({
 			"location": {
 				"address": "34 rue des Bourdonnais",
-				"post_code": "75001",
+				"postCode": "75001",
 				"city": "Paris",
 				"country": "France",
 			}
@@ -230,6 +237,7 @@ impl<'a> Test<'a> {
 			.http_client
 			.post("/api/users/profile/payout_info")
 			.header(ContentType::JSON)
+			.header(api_key_header())
 			.header(Header::new(
 				"Authorization",
 				format!("Bearer {}", jwt(None)),
@@ -269,9 +277,9 @@ impl<'a> Test<'a> {
 
 		// Given
 		let request = json!({
-			"payout_settings": {
+			"payoutSettings": {
 				"type": "BANK_ADDRESS",
-				"bank_address": {
+				"bankAddress": {
 					"BIC": "DEUTDEFF500",
 					"IBAN": "NL80RABO9639906824"
 				},
@@ -284,6 +292,7 @@ impl<'a> Test<'a> {
 			.http_client
 			.post("/api/users/profile/payout_info")
 			.header(ContentType::JSON)
+			.header(api_key_header())
 			.header(Header::new(
 				"Authorization",
 				format!("Bearer {}", jwt(None)),
@@ -323,9 +332,9 @@ impl<'a> Test<'a> {
 
 		// Given
 		let request = json!({
-			"payout_settings": {
+			"payoutSettings": {
 				"type": "ETHEREUM_ADDRESS",
-				"eth_address": "0x690b9a9e9aa1c9db991c7721a92d351db4fac990",
+				"ethAddress": "0x690b9a9e9aa1c9db991c7721a92d351db4fac990",
 			}
 		});
 
@@ -335,6 +344,7 @@ impl<'a> Test<'a> {
 			.http_client
 			.post("/api/users/profile/payout_info")
 			.header(ContentType::JSON)
+			.header(api_key_header())
 			.header(Header::new(
 				"Authorization",
 				format!("Bearer {}", jwt(None)),
@@ -373,9 +383,9 @@ impl<'a> Test<'a> {
 
 		// Given
 		let request = json!({
-			"payout_settings": {
+			"payoutSettings": {
 				"type": "ETHEREUM_NAME",
-				"eth_name": "vitalik.eth",
+				"ethName": "vitalik.eth",
 			}
 		});
 
@@ -385,6 +395,7 @@ impl<'a> Test<'a> {
 			.http_client
 			.post("/api/users/profile/payout_info")
 			.header(ContentType::JSON)
+			.header(api_key_header())
 			.header(Header::new(
 				"Authorization",
 				format!("Bearer {}", jwt(None)),
@@ -441,6 +452,7 @@ impl<'a> Test<'a> {
 			.http_client
 			.post("/api/users/profile/payout_info")
 			.header(ContentType::JSON)
+			.header(api_key_header())
 			.header(Header::new(
 				"Authorization",
 				format!("Bearer {}", jwt(None)),
@@ -460,9 +472,9 @@ impl<'a> Test<'a> {
 
 		// Given
 		let request = json!({
-			"payout_settings": {
+			"payoutSettings": {
 				"type": "BANK_ADDRESS",
-				"bank_address": {
+				"bankAddress": {
 					"BIC": "DEUTDEFF500",
 					"IBAN": "NL80RABO9639906"
 				},
@@ -475,6 +487,7 @@ impl<'a> Test<'a> {
 			.http_client
 			.post("/api/users/profile/payout_info")
 			.header(ContentType::JSON)
+			.header(api_key_header())
 			.header(Header::new(
 				"Authorization",
 				format!("Bearer {}", jwt(None)),
@@ -494,9 +507,9 @@ impl<'a> Test<'a> {
 
 		// Given
 		let request = json!({
-			"payout_settings": {
+			"payoutSettings": {
 				"type": "ETHEREUM_ADDRESS",
-				"eth_address": "0x690b9a9e9aa1c9db991c7721a92d351db4fac0344556",
+				"ethAddress": "0x690b9a9e9aa1c9db991c7721a92d351db4fac0344556",
 			}
 		});
 
@@ -506,6 +519,7 @@ impl<'a> Test<'a> {
 			.http_client
 			.post("/api/users/profile/payout_info")
 			.header(ContentType::JSON)
+			.header(api_key_header())
 			.header(Header::new(
 				"Authorization",
 				format!("Bearer {}", jwt(None)),
@@ -525,9 +539,9 @@ impl<'a> Test<'a> {
 
 		// Given
 		let request = json!({
-			"payout_settings": {
+			"payoutSettings": {
 				"type": "ETHEREUM_NAME",
-				"eth_name": "nonexisting.eth",
+				"ethName": "nonexisting.eth",
 			}
 		});
 
@@ -537,6 +551,7 @@ impl<'a> Test<'a> {
 			.http_client
 			.post("/api/users/profile/payout_info")
 			.header(ContentType::JSON)
+			.header(api_key_header())
 			.header(Header::new(
 				"Authorization",
 				format!("Bearer {}", jwt(None)),

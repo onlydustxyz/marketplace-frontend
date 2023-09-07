@@ -8,6 +8,7 @@ mod bank_address;
 pub use bank_address::BankAddress;
 
 #[derive(Debug, Clone, Serialize, Deserialize, From)]
+#[serde(rename_all = "camelCase")]
 pub struct PayoutSettings {
 	r#type: Type,
 	bank_address: Option<BankAddress>,

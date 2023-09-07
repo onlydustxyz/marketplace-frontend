@@ -4,6 +4,7 @@ use super::Person;
 use crate::models;
 
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Company {
 	owner: Option<Person>,
 	name: Option<String>,

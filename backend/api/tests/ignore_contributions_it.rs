@@ -68,7 +68,12 @@ impl<'a> Test<'a> {
 			.await;
 
 		// Then
-		assert_eq!(response.status(), Status::Ok);
+		assert_eq!(
+			response.status(),
+			Status::Ok,
+			"{:?}",
+			response.into_string().await
+		);
 
 		let mut ignored_contributions: Vec<IgnoredContribution> =
 			ignored_contributions::table.load(&mut *self.context.database.client.connection()?)?;
@@ -101,7 +106,12 @@ impl<'a> Test<'a> {
 			.await;
 
 		// Then
-		assert_eq!(response.status(), Status::Ok);
+		assert_eq!(
+			response.status(),
+			Status::Ok,
+			"{:?}",
+			response.into_string().await
+		);
 
 		let ignored_contributions: Vec<IgnoredContribution> =
 			ignored_contributions::table.load(&mut *self.context.database.client.connection()?)?;

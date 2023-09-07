@@ -13,6 +13,7 @@ mod location;
 pub use location::Location;
 
 #[derive(Debug, Clone, Serialize, Deserialize, From)]
+#[serde(rename_all = "camelCase")]
 pub struct Identity {
 	r#type: Type,
 	person: Option<Person>,

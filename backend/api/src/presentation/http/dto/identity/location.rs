@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 use crate::models;
 
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Location {
 	pub address: Option<String>,
 	pub post_code: Option<String>,
