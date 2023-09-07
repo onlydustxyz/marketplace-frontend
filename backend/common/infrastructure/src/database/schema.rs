@@ -222,6 +222,7 @@ diesel::table! {
         repo_indexer_state -> Nullable<Jsonb>,
         issues_indexer_state -> Nullable<Jsonb>,
         pull_requests_indexer_state -> Nullable<Jsonb>,
+        indexed_at -> Nullable<Timestamp>,
     }
 }
 
@@ -246,6 +247,7 @@ diesel::table! {
         user_id -> Int8,
         user_indexer_state -> Nullable<Jsonb>,
         contributor_indexer_state -> Nullable<Jsonb>,
+        indexed_at -> Nullable<Timestamp>,
     }
 }
 
