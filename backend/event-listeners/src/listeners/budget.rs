@@ -102,6 +102,7 @@ impl EventListener<Event> for Projector {
 
 						self.github_user_index_repository.try_insert(GithubUserIndex {
 							user_id: recipient_id,
+							..Default::default()
 						})?;
 
 						self.projects_rewarded_users_repository
