@@ -76,7 +76,7 @@ services:
     volumes:
       - .:/app
       - cargo-cache:/usr/local/cargo
-    command: bash -c "cd /app && cargo run -p event-listeners --bin listeners"
+    command: bash -c "cd /app/backend && cargo run -p event-listeners --bin listeners"
     environment:
       DATABASE_URL: postgres://postgres:postgres@db/marketplace_db
       AMQP_URL: amqp://rabbitmq:5672/%2f
