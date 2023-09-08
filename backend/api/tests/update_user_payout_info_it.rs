@@ -2,10 +2,15 @@ mod context;
 mod models;
 
 use anyhow::Result;
-use api::{models::UserPayoutInfo, presentation::http::routes::users};
+use api::{
+	models::{BankAccount, UserPayoutInfo, Wallet},
+	presentation::http::routes::users,
+};
 use diesel::RunQueryDsl;
-use domain::blockchain::*;
-use infrastructure::database::schema::user_payout_info;
+use infrastructure::database::{
+	enums::{Network, PreferredMethod, WalletType},
+	schema::{bank_accounts, user_payout_info, wallets},
+};
 use olog::info;
 use rocket::{
 	http::{ContentType, Header, Status},
@@ -44,6 +49,10 @@ pub async fn user_profile_updated(docker: &'static Cli) {
 
 	test.should_update_location().await.expect("should_update_location");
 
+	test.should_update_usd_preferred_method()
+		.await
+		.expect("should_update_usd_preferred_method");
+
 	test.should_update_bank_address().await.expect("should_update_bank_address");
 
 	test.should_update_eth_address().await.expect("should_update_eth_address");
@@ -61,6 +70,10 @@ pub async fn user_profile_updated(docker: &'static Cli) {
 		.expect("should_reject_invalid_eth_address");
 
 	test.should_reject_invalid_ens().await.expect("should_reject_invalid_ens");
+
+	test.should_reject_if_both_eth_name_and_ens_are_provided()
+		.await
+		.expect("should_reject_if_both_eth_name_and_ens_are_provided");
 }
 
 struct Test<'a> {
@@ -143,14 +156,14 @@ impl<'a> Test<'a> {
 		let payout_info = payout_info.pop().unwrap();
 		assert_eq!(payout_info.user_id, response.user_id.into());
 		assert_eq!(
-			payout_info.identity,
-			Some(api::models::Identity::Person(api::models::PersonIdentity {
+			payout_info.identity.unwrap().0,
+			api::models::Identity::Person(api::models::PersonIdentity {
 				firstname: Some("Anthony".to_string()),
 				lastname: Some("BUISSET".to_string())
-			}))
+			})
 		);
 		assert_eq!(payout_info.location, None);
-		assert_eq!(payout_info.payout_settings, None);
+		assert_eq!(payout_info.usd_preferred_method, None);
 
 		Ok(())
 	}
@@ -200,20 +213,18 @@ impl<'a> Test<'a> {
 		let payout_info = payout_info.pop().unwrap();
 		assert_eq!(payout_info.user_id, response.user_id.into());
 		assert_eq!(
-			payout_info.identity,
-			Some(api::models::Identity::Company(
-				api::models::CompanyIdentity {
-					owner: Some(api::models::PersonIdentity {
-						firstname: Some("Anthony".to_string()),
-						lastname: Some("BUISSET".to_string())
-					}),
-					name: Some("OnlyDust".to_string()),
-					identification_number: Some("123456".to_string())
-				}
-			))
+			payout_info.identity.unwrap().0,
+			api::models::Identity::Company(api::models::CompanyIdentity {
+				owner: Some(api::models::PersonIdentity {
+					firstname: Some("Anthony".to_string()),
+					lastname: Some("BUISSET".to_string())
+				}),
+				name: Some("OnlyDust".to_string()),
+				identification_number: Some("123456".to_string())
+			})
 		);
 		assert_eq!(payout_info.location, None);
-		assert_eq!(payout_info.payout_settings, None);
+		assert_eq!(payout_info.usd_preferred_method, None);
 
 		Ok(())
 	}
@@ -259,15 +270,61 @@ impl<'a> Test<'a> {
 		assert_eq!(payout_info.user_id, response.user_id.into());
 		assert_eq!(payout_info.identity, None);
 		assert_eq!(
-			payout_info.location,
-			Some(api::models::Location {
+			payout_info.location.unwrap().0,
+			api::models::Location {
 				address: Some("34 rue des Bourdonnais".to_string()),
 				post_code: Some("75001".to_string()),
 				city: Some("Paris".to_string()),
 				country: Some("France".to_string())
-			})
+			}
 		);
-		assert_eq!(payout_info.payout_settings, None);
+		assert_eq!(payout_info.usd_preferred_method, None);
+
+		Ok(())
+	}
+
+	async fn should_update_usd_preferred_method(&mut self) -> Result<()> {
+		info!("should_update_usd_preferred_method");
+
+		// Given
+		let request = json!({
+			"payoutSettings": {
+				"usdPreferredMethod": "CRYPTO"
+			}
+		});
+
+		// When
+		let response = self
+			.context
+			.http_client
+			.post("/api/users/profile/payout_info")
+			.header(ContentType::JSON)
+			.header(api_key_header())
+			.header(Header::new(
+				"Authorization",
+				format!("Bearer {}", jwt(None)),
+			))
+			.body(request.to_string())
+			.dispatch()
+			.await;
+
+		// Then
+		assert_eq!(response.status(), Status::Ok);
+		let response: users::update_profile::Response = response.into_json().await.unwrap();
+
+		let mut payout_info: Vec<UserPayoutInfo> =
+			user_payout_info::table.load(&mut *self.context.database.client.connection()?)?;
+
+		assert_eq!(payout_info.len(), 1);
+
+		let payout_info = payout_info.pop().unwrap();
+		assert_eq!(payout_info.user_id, response.user_id.into());
+		assert_eq!(payout_info.identity, None);
+		assert_eq!(payout_info.location, None);
+		assert_eq!(
+			payout_info.usd_preferred_method,
+			Some(PreferredMethod::Crypto)
+		);
 
 		Ok(())
 	}
@@ -278,8 +335,7 @@ impl<'a> Test<'a> {
 		// Given
 		let request = json!({
 			"payoutSettings": {
-				"type": "BANK_ADDRESS",
-				"bankAddress": {
+				"bankAccount": {
 					"BIC": "DEUTDEFF500",
 					"IBAN": "NL80RABO9639906824"
 				},
@@ -305,24 +361,15 @@ impl<'a> Test<'a> {
 		assert_eq!(response.status(), Status::Ok);
 		let response: users::update_profile::Response = response.into_json().await.unwrap();
 
-		let mut payout_info: Vec<UserPayoutInfo> =
-			user_payout_info::table.load(&mut *self.context.database.client.connection()?)?;
+		let mut bank_accounts: Vec<BankAccount> =
+			bank_accounts::table.load(&mut *self.context.database.client.connection()?)?;
 
-		assert_eq!(payout_info.len(), 1);
+		assert_eq!(bank_accounts.len(), 1);
 
-		let payout_info = payout_info.pop().unwrap();
-		assert_eq!(payout_info.user_id, response.user_id.into());
-		assert_eq!(payout_info.identity, None);
-		assert_eq!(payout_info.location, None);
-		assert_eq!(
-			payout_info.payout_settings,
-			Some(api::models::PayoutSettings::WireTransfer(
-				api::models::BankAddress {
-					BIC: "DEUTDEFF500".to_string(),
-					IBAN: "NL80RABO9639906824".parse().unwrap()
-				}
-			))
-		);
+		let bank_account = bank_accounts.pop().unwrap();
+		assert_eq!(bank_account.user_id, response.user_id.into());
+		assert_eq!(bank_account.bic, "DEUTDEFF500");
+		assert_eq!(bank_account.iban, "NL80RABO9639906824");
 
 		Ok(())
 	}
@@ -333,7 +380,6 @@ impl<'a> Test<'a> {
 		// Given
 		let request = json!({
 			"payoutSettings": {
-				"type": "ETHEREUM_ADDRESS",
 				"ethAddress": "0x690b9a9e9aa1c9db991c7721a92d351db4fac990",
 			}
 		});
@@ -357,23 +403,16 @@ impl<'a> Test<'a> {
 		assert_eq!(response.status(), Status::Ok);
 		let response: users::update_profile::Response = response.into_json().await.unwrap();
 
-		let mut payout_info: Vec<UserPayoutInfo> =
-			user_payout_info::table.load(&mut *self.context.database.client.connection()?)?;
+		let mut wallets: Vec<Wallet> =
+			wallets::table.load(&mut *self.context.database.client.connection()?)?;
 
-		assert_eq!(payout_info.len(), 1);
+		assert_eq!(wallets.len(), 1);
 
-		let payout_info = payout_info.pop().unwrap();
-		assert_eq!(payout_info.user_id, response.user_id.into());
-		assert_eq!(payout_info.identity, None);
-		assert_eq!(payout_info.location, None);
-		assert_eq!(
-			payout_info.payout_settings,
-			Some(api::models::PayoutSettings::EthTransfer(
-				ethereum::Wallet::Address(
-					"0x690b9a9e9aa1c9db991c7721a92d351db4fac990".parse().unwrap()
-				)
-			))
-		);
+		let wallet = wallets.pop().unwrap();
+		assert_eq!(wallet.user_id, response.user_id.into());
+		assert_eq!(wallet.network, Network::Ethereum);
+		assert_eq!(wallet.type_, WalletType::Address);
+		assert_eq!(wallet.address, "0x690b9a9e9aa1c9db991c7721a92d351db4fac990");
 
 		Ok(())
 	}
@@ -384,7 +423,6 @@ impl<'a> Test<'a> {
 		// Given
 		let request = json!({
 			"payoutSettings": {
-				"type": "ETHEREUM_NAME",
 				"ethName": "vitalik.eth",
 			}
 		});
@@ -405,29 +443,19 @@ impl<'a> Test<'a> {
 			.await;
 
 		// Then
-		assert_eq!(
-			response.status(),
-			Status::Ok,
-			"{:?}",
-			response.into_string().await
-		);
+		assert_eq!(response.status(), Status::Ok);
 		let response: users::update_profile::Response = response.into_json().await.unwrap();
 
-		let mut payout_info: Vec<UserPayoutInfo> =
-			user_payout_info::table.load(&mut *self.context.database.client.connection()?)?;
+		let mut wallets: Vec<Wallet> =
+			wallets::table.load(&mut *self.context.database.client.connection()?)?;
 
-		assert_eq!(payout_info.len(), 1);
+		assert_eq!(wallets.len(), 1);
 
-		let payout_info = payout_info.pop().unwrap();
-		assert_eq!(payout_info.user_id, response.user_id.into());
-		assert_eq!(payout_info.identity, None);
-		assert_eq!(payout_info.location, None);
-		assert_eq!(
-			payout_info.payout_settings,
-			Some(api::models::PayoutSettings::EthTransfer(
-				ethereum::Wallet::Name(ethereum::Name::new("vitalik.eth".to_string()))
-			))
-		);
+		let wallet = wallets.pop().unwrap();
+		assert_eq!(wallet.user_id, response.user_id.into());
+		assert_eq!(wallet.network, Network::Ethereum);
+		assert_eq!(wallet.type_, WalletType::Name);
+		assert_eq!(wallet.address, "vitalik.eth");
 
 		Ok(())
 	}
@@ -473,8 +501,7 @@ impl<'a> Test<'a> {
 		// Given
 		let request = json!({
 			"payoutSettings": {
-				"type": "BANK_ADDRESS",
-				"bankAddress": {
+				"bankAccount": {
 					"BIC": "DEUTDEFF500",
 					"IBAN": "NL80RABO9639906"
 				},
@@ -508,7 +535,6 @@ impl<'a> Test<'a> {
 		// Given
 		let request = json!({
 			"payoutSettings": {
-				"type": "ETHEREUM_ADDRESS",
 				"ethAddress": "0x690b9a9e9aa1c9db991c7721a92d351db4fac0344556",
 			}
 		});
@@ -540,8 +566,39 @@ impl<'a> Test<'a> {
 		// Given
 		let request = json!({
 			"payoutSettings": {
-				"type": "ETHEREUM_NAME",
 				"ethName": "nonexisting.eth",
+			}
+		});
+
+		// When
+		let response = self
+			.context
+			.http_client
+			.post("/api/users/profile/payout_info")
+			.header(ContentType::JSON)
+			.header(api_key_header())
+			.header(Header::new(
+				"Authorization",
+				format!("Bearer {}", jwt(None)),
+			))
+			.body(request.to_string())
+			.dispatch()
+			.await;
+
+		// Then
+		assert_eq!(response.status(), Status::BadRequest);
+
+		Ok(())
+	}
+
+	async fn should_reject_if_both_eth_name_and_ens_are_provided(&mut self) -> Result<()> {
+		info!("should_reject_if_both_eth_name_and_ens_are_provided");
+
+		// Given
+		let request = json!({
+			"payoutSettings": {
+				"ethAddress": "0x690b9a9e9aa1c9db991c7721a92d351db4fac990",
+				"ethName": "vitalik.eth",
 			}
 		});
 
