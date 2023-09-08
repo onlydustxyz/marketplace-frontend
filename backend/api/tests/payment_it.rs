@@ -89,15 +89,15 @@ impl<'a> Test<'a> {
 		)?;
 
 		let request = json!({
-			"project_id": project_id,
-			"recipient_id": 595505,
-			"amount_in_usd": 10,
-			"hours_worked": 1,
+			"projectId": project_id,
+			"recipientId": 595505,
+			"amountInUsd": 10,
+			"hoursWorked": 1,
 			"reason": {
-				"work_items": [{
+				"workItems": [{
 					"type": "PULL_REQUEST",
 					"id": "1012167246",
-					"repo_id": 498695724,
+					"repoId": 498695724,
 					"number": 111
 				}
 			]}
@@ -215,20 +215,20 @@ impl<'a> Test<'a> {
 		)?;
 
 		let request = json!({
-			"project_id": project_id,
-			"recipient_id": 595505,
-			"amount_in_usd": 10,
-			"hours_worked": 1,
+			"projectId": project_id,
+			"recipientId": 595505,
+			"amountInUsd": 10,
+			"hoursWorked": 1,
 			"reason": {
-				"work_items": [{
+				"workItems": [{
 					"type": "PULL_REQUEST",
 					"id": "123456",
-					"repo_id": 498695724,
+					"repoId": 498695724,
 					"number": 111
 				},{
 					"type": "PULL_REQUEST",
 					"id": "123456",
-					"repo_id": 1181927,
+					"repoId": 1181927,
 					"number": 111
 				}]
 			}
@@ -290,15 +290,15 @@ impl<'a> Test<'a> {
 		)?;
 
 		let request = json!({
-			"project_id": project_id,
-			"recipient_id": 595505,
-			"amount_in_usd": 10,
-			"hours_worked": 1,
+			"projectId": project_id,
+			"recipientId": 595505,
+			"amountInUsd": 10,
+			"hoursWorked": 1,
 			"reason": {
-				"work_items": [{
+				"workItems": [{
 					"type": "PULL_REQUEST",
 					"id": "1012167246",
-					"repo_id": 498695724,
+					"repoId": 498695724,
 					"number": 111
 				}
 			]}
@@ -379,8 +379,8 @@ impl<'a> Test<'a> {
 		)?;
 
 		let request = json!({
-			"project_id": project_id,
-			"payment_id": payment_id,
+			"projectId": project_id,
+			"paymentId": payment_id,
 		});
 
 		// When
@@ -464,8 +464,8 @@ impl<'a> Test<'a> {
 		)?;
 
 		let request = json!({
-			"project_id": project_id,
-			"payment_id": payment_id,
+			"projectId": project_id,
+			"paymentId": payment_id,
 		});
 
 		// When
@@ -545,8 +545,8 @@ impl<'a> Test<'a> {
 		)?;
 
 		let request = json!({
-			"project_id": project_id,
-			"payment_id": payment_id,
+			"projectId": project_id,
+			"paymentId": payment_id,
 		});
 
 		// When

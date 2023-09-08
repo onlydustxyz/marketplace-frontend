@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 use url::Url;
 
 #[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Response {
 	pub id: i64,
 	pub repo_id: i64,
@@ -18,10 +19,11 @@ pub struct Response {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum PullRequestStatus {
-	OPEN,
-	CLOSED,
-	MERGED,
+	Open,
+	Closed,
+	Merged,
 }
 
 impl From<domain::GithubPullRequest> for Response {
@@ -45,14 +47,15 @@ impl From<domain::GithubPullRequest> for Response {
 impl From<domain::GithubPullRequestStatus> for PullRequestStatus {
 	fn from(status: domain::GithubPullRequestStatus) -> Self {
 		match status {
-			domain::GithubPullRequestStatus::Open => Self::OPEN,
-			domain::GithubPullRequestStatus::Closed => Self::CLOSED,
-			domain::GithubPullRequestStatus::Merged => Self::MERGED,
+			domain::GithubPullRequestStatus::Open => Self::Open,
+			domain::GithubPullRequestStatus::Closed => Self::Closed,
+			domain::GithubPullRequestStatus::Merged => Self::Merged,
 		}
 	}
 }
 
 #[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct UserResponse {
 	pub id: i64,
 	pub login: String,

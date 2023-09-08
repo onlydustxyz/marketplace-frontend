@@ -1,6 +1,6 @@
 import { expect, Locator, Page } from "@playwright/test";
-import { UserProfile } from "../types";
-import { IdentityType, PayoutSettingsType, PersonIdentity } from "../__generated/graphql";
+import { UserPayoutInfo } from "../types";
+import { Identity, PayoutSettings, PersonIdentity } from "../__generated/graphql";
 
 export class EditPayoutInfoPage {
   readonly page: Page;
@@ -67,19 +67,19 @@ export class EditPayoutInfoPage {
     await expect(this.page.getByTestId("toaster-message")).toHaveText("Changes saved");
   }
 
-  async fillForm(profile: UserProfile) {
+  async fillForm(profile: UserPayoutInfo) {
     let personIdentity: PersonIdentity | null | undefined;
 
-    if (profile.identity?.type === IdentityType.Company) {
+    if (profile.identity?.company) {
       await this.accountTypeCompanyButton.click();
       await this.companyName.clear();
-      await this.companyName.type(profile.identity?.optCompany?.name || "");
+      await this.companyName.type(profile.identity?.company?.name || "");
       await this.identificationNumber.clear();
-      await this.identificationNumber.type(profile.identity?.optCompany?.identificationNumber || "");
-      personIdentity = profile.identity?.optCompany?.owner;
+      await this.identificationNumber.type(profile.identity?.company?.identificationNumber || "");
+      personIdentity = profile.identity?.company?.owner;
     } else {
       await this.accountTypeIndividualButton.click();
-      personIdentity = profile.identity?.optPerson;
+      personIdentity = profile.identity?.person;
     }
 
     await this.firstname.clear();
@@ -96,32 +96,30 @@ export class EditPayoutInfoPage {
     await this.country.clear();
     await this.country.type(profile.location?.country || "");
 
-    if (profile.payoutSettings?.type === PayoutSettingsType.BankAddress) {
+    if (profile.payoutSettings?.bankAccount) {
       await this.bankWireButton.click();
       await this.IBAN.clear();
-      await this.IBAN.type(profile.payoutSettings?.optBankAddress?.IBAN || "");
+      await this.IBAN.type(profile.payoutSettings?.bankAccount?.IBAN || "");
       await this.BIC.clear();
-      await this.BIC.type(profile.payoutSettings?.optBankAddress?.BIC || "");
+      await this.BIC.type(profile.payoutSettings?.bankAccount?.BIC || "");
     } else {
-      if (profile.identity?.type === IdentityType.Company) {
+      if (profile.identity?.company) {
         await this.cryptoWireButton.click();
       }
       await this.ethAddressOrENS.clear();
-      await this.ethAddressOrENS.type(
-        profile.payoutSettings?.optEthAddress || profile.payoutSettings?.optEthName || ""
-      );
+      await this.ethAddressOrENS.type(profile.payoutSettings?.ethAddress || profile.payoutSettings?.ethName || "");
     }
   }
 
-  async expectForm(profile: UserProfile) {
+  async expectForm(profile: UserPayoutInfo) {
     let personIdentity: PersonIdentity | null | undefined;
 
-    if (profile.identity?.type === IdentityType.Company) {
-      await expect(this.companyName).toHaveValue(profile.identity?.optCompany?.name || "");
-      await expect(this.identificationNumber).toHaveValue(profile.identity?.optCompany?.identificationNumber || "");
-      personIdentity = profile.identity?.optCompany?.owner;
+    if (profile.identity?.company) {
+      await expect(this.companyName).toHaveValue(profile.identity?.company?.name || "");
+      await expect(this.identificationNumber).toHaveValue(profile.identity?.company?.identificationNumber || "");
+      personIdentity = profile.identity?.company?.owner;
     } else {
-      personIdentity = profile.identity?.optPerson;
+      personIdentity = profile.identity?.person;
     }
 
     await expect(this.firstname).toHaveValue(personIdentity?.firstname || "");
@@ -132,12 +130,12 @@ export class EditPayoutInfoPage {
     await expect(this.city).toHaveValue(profile.location?.city || "");
     await expect(this.country).toHaveValue(profile.location?.country || "");
 
-    if (profile.payoutSettings?.type === PayoutSettingsType.BankAddress) {
-      expect((await this.IBAN.inputValue()).replace(/ /g, "")).toBe(profile.payoutSettings?.optBankAddress?.IBAN || "");
-      await expect(this.BIC).toHaveValue(profile.payoutSettings?.optBankAddress?.BIC || "");
+    if (profile.payoutSettings?.bankAccount) {
+      expect((await this.IBAN.inputValue()).replace(/ /g, "")).toBe(profile.payoutSettings?.bankAccount?.IBAN || "");
+      await expect(this.BIC).toHaveValue(profile.payoutSettings?.bankAccount?.BIC || "");
     } else {
       await expect(this.ethAddressOrENS).toHaveValue(
-        profile.payoutSettings?.optEthAddress || profile.payoutSettings?.optEthName || ""
+        profile.payoutSettings?.ethAddress || profile.payoutSettings?.ethName || ""
       );
     }
   }

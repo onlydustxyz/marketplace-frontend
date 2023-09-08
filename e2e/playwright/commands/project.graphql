@@ -1,5 +1,5 @@
 mutation createProject(
-  $projectName: String!
+  $name: String!
   $telegramLink: Url!
   $logoUrl: Url!
   $shortDescription: String!
@@ -10,7 +10,7 @@ mutation createProject(
   $visibility: Visibility
 ) {
   createProject(
-    name: $projectName
+    name: $name
     telegramLink: $telegramLink
     logoUrl: $logoUrl
     shortDescription: $shortDescription

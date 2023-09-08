@@ -21,10 +21,10 @@ pub use sponsors::{Id as SponsorId, Sponsor};
 mod onboarding;
 pub use onboarding::Onboarding;
 
-mod user_payout_info;
-pub use user_payout_info::{
-	BankAddress, CompanyIdentity, Identity, Location, PayoutSettings, PersonIdentity,
-	UserPayoutInfo,
+mod payout_info;
+pub use payout_info::{
+	BankAccount, CompanyIdentity, Identity, Location, PersonIdentity,
+	Repository as PayoutInfoRepository, UserPayoutInfo, Wallet,
 };
 
 mod user_profile_info;

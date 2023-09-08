@@ -17,7 +17,7 @@ mod test {
 			fn list(&self) -> Result<Vec<Sponsor>>;
 			fn insert(&self, model: Sponsor) -> Result<Sponsor>;
 			fn try_insert(&self, model: Sponsor) -> Result<Option<Sponsor>>;
-			fn delete(&self, id: SponsorId) -> Result<Sponsor>;
+			fn delete(&self, id: SponsorId) -> Result<Option<Sponsor>>;
 			fn clear(&self) -> Result<()>;
 			fn insert_all(&self, models: Vec<Sponsor>) -> Result<()>;
 			fn try_insert_all(&self, models: Vec<Sponsor>) -> Result<()>;

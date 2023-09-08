@@ -4,6 +4,7 @@ import {
   UserPayoutSettingsFragment,
   GithubUserFragment,
   GetUserPayoutSettingsQueryResult,
+  PreferredMethod,
 } from "src/__generated/graphql";
 
 import RewardTable from "src/components/RewardTable";
@@ -77,11 +78,21 @@ const mocks = [
             id: "user-1",
             userPayoutInfo: {
               __typename: "UserPayoutInfo",
-              payoutSettings: { EthTransfer: { Name: "vitalik.eth" } },
-              arePayoutSettingsValid: true,
+              address: "avenue de la gare",
+              city: "Paris",
+              postCode: "75000",
+              country: "France",
+              firstname: "James",
+              lastname: "Bond",
+              isCompany: false,
+              companyIdentificationNumber: null,
+              companyName: null,
+              bic: null,
+              ethWallet: "007.eth",
+              iban: null,
+              usdPreferredMethod: PreferredMethod.Crypto,
               userId: "user-1",
-              identity: null,
-              location: null,
+              arePayoutSettingsValid: true,
             } as UserPayoutSettingsFragment,
           },
         ],

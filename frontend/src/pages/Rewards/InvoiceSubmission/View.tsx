@@ -104,22 +104,19 @@ export function buildHiddenFields({
           })})`
       )
     ),
-    company_name: userInfos.identity.Company.name,
-    company_number: userInfos.identity.Company.identification_number,
-    first_name: userInfos.identity.Company.owner.firstname,
-    last_name: userInfos.identity.Company.owner.lastname,
-    street_address: userInfos.location.address,
-    zip_code: userInfos.location.post_code,
-    city: userInfos.location.city,
-    country: userInfos.location.country,
-    payout_info: userInfos.payoutSettings.EthTransfer?.Address
-      ? `ETH Address: ${userInfos.payoutSettings.EthTransfer?.Address}`
-      : userInfos.payoutSettings.EthTransfer?.Name
-      ? `ENS Domain: ${userInfos.payoutSettings.EthTransfer?.Name}`
-      : formatList([
-          `IBAN: ${userInfos.payoutSettings.WireTransfer?.IBAN}`,
-          `BIC: ${userInfos.payoutSettings.WireTransfer?.BIC}`,
-        ]),
+    company_name: userInfos.companyName || "",
+    company_number: userInfos.companyIdentificationNumber || "",
+    first_name: userInfos.firstname || "",
+    last_name: userInfos.lastname || "",
+    street_address: userInfos.address || "",
+    zip_code: userInfos.postCode || "",
+    city: userInfos.city || "",
+    country: userInfos.country || "",
+    payout_info: userInfos.ethWallet?.startsWith("0x")
+      ? `ETH Address: ${userInfos.ethWallet}`
+      : userInfos.ethWallet
+      ? `ENS Domain: ${userInfos.ethWallet}`
+      : formatList([`IBAN: ${userInfos.iban}`, `BIC: ${userInfos.bic}`]),
     total_amount: formatMoneyAmount({
       amount: paymentRequests.map(p => p.amount.value).reduce((acc, amount) => acc + amount, 0),
       currency: paymentRequests.at(0)?.amount.currency,

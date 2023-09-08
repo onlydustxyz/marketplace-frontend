@@ -13,7 +13,7 @@ use crate::{
 };
 
 #[derive(Debug, Deserialize)]
-#[serde(crate = "rocket::serde")]
+#[serde(rename_all = "camelCase")]
 pub struct Request {
 	project_id: Uuid,
 	github_repo_id: i32,
