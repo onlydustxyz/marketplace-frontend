@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use anyhow::{anyhow, Result};
 use derive_more::Constructor;
-use domain::blockchain::ethereum;
+use domain::blockchain::evm;
 #[cfg(test)]
 use mockall::mock;
 
@@ -14,7 +14,7 @@ pub struct IsValid {
 }
 
 impl IsValid {
-	pub async fn is_satisfied_by(&self, ens_name: ethereum::Name) -> Result<bool> {
+	pub async fn is_satisfied_by(&self, ens_name: evm::Name) -> Result<bool> {
 		match self.ens_client.eth_address(ens_name.as_str()).await {
 			Ok(_) => Ok(true),
 			Err(ens::Error::NotRegistered) => Ok(false),
@@ -27,7 +27,7 @@ impl IsValid {
 mock! {
 	pub IsValid {
 		pub fn new(ens_client: Arc<ens::Client>) -> Self;
-		pub async fn is_satisfied_by(&self, ens_name: ethereum::Name) -> Result<bool> ;
+		pub async fn is_satisfied_by(&self, ens_name: evm::Name) -> Result<bool> ;
 	}
 }
 
@@ -41,13 +41,13 @@ mod tests {
 	const ENS_NAME: &str = "vitalik.eth";
 
 	#[fixture]
-	fn ens_name() -> ethereum::Name {
-		ethereum::Name::new(ENS_NAME.to_string())
+	fn ens_name() -> evm::Name {
+		evm::Name::new(ENS_NAME.to_string())
 	}
 
 	#[rstest]
 	#[tokio::test]
-	async fn valid_ens(ens_name: ethereum::Name) {
+	async fn valid_ens(ens_name: evm::Name) {
 		let mut ens_client = ens::Client::default();
 		ens_client
 			.expect_eth_address()
@@ -62,7 +62,7 @@ mod tests {
 
 	#[rstest]
 	#[tokio::test]
-	async fn invalid_ens(ens_name: ethereum::Name) {
+	async fn invalid_ens(ens_name: evm::Name) {
 		let mut ens_client = ens::Client::default();
 		ens_client
 			.expect_eth_address()
@@ -77,7 +77,7 @@ mod tests {
 
 	#[rstest]
 	#[tokio::test]
-	async fn ens_error(ens_name: ethereum::Name) {
+	async fn ens_error(ens_name: evm::Name) {
 		let mut ens_client = ens::Client::default();
 		ens_client
 			.expect_eth_address()

@@ -34,8 +34,8 @@ impl Mutation {
 
 		let eth_identity = recipient_identity.try_into().map_err(Error::InvalidRequest)?;
 		let ethereum_address = match &eth_identity {
-			ethereum::Wallet::Address(addr) => addr.clone(),
-			ethereum::Wallet::Name(name) => context.ens.eth_address(name.as_str()).await?,
+			evm::Wallet::Address(addr) => *addr,
+			evm::Wallet::Name(name) => context.ens.eth_address(name.as_str()).await?,
 		};
 
 		let receipt_id = context
@@ -48,7 +48,7 @@ impl Mutation {
 					network: Network::Ethereum,
 					recipient_address: ethereum_address,
 					recipient_ens: match eth_identity {
-						ethereum::Wallet::Name(name) => Some(name),
+						evm::Wallet::Name(name) => Some(name),
 						_ => None,
 					},
 					transaction_hash,
