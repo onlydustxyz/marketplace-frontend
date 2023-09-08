@@ -60,6 +60,7 @@ pub async fn update_user_payout_info(
 		eth_address,
 		aptos_address,
 		usd_preferred_method,
+		starknet_address,
 	} = request.payout_settings.unwrap_or_default();
 
 	let user_payout_info = UserPayoutInfo {
@@ -83,6 +84,7 @@ pub async fn update_user_payout_info(
 				.map(ethereum::Wallet::Name)
 				.or(eth_address.map(ethereum::Wallet::Address)),
 			aptos_address,
+			starknet_address,
 		)
 		.await
 		.map_err(|e| {

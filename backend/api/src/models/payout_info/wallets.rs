@@ -1,6 +1,6 @@
 use diesel::Identifiable;
 use domain::{
-	blockchain::{aptos, ethereum},
+	blockchain::{aptos, ethereum, starknet},
 	UserId,
 };
 use infrastructure::database::{
@@ -58,6 +58,17 @@ impl From<(UserId, aptos::Address)> for Wallet {
 		Self {
 			user_id,
 			network: Network::Aptos,
+			type_: WalletType::Address,
+			address: address.to_string(),
+		}
+	}
+}
+
+impl From<(UserId, starknet::Address)> for Wallet {
+	fn from((user_id, address): (UserId, starknet::Address)) -> Self {
+		Self {
+			user_id,
+			network: Network::Starknet,
 			type_: WalletType::Address,
 			address: address.to_string(),
 		}

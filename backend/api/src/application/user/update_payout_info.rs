@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use anyhow::anyhow;
 use derive_more::Constructor;
-use domain::blockchain::{aptos, ethereum};
+use domain::blockchain::{aptos, ethereum, starknet};
 use infrastructure::database::DatabaseError;
 use thiserror::Error;
 
@@ -33,6 +33,7 @@ impl Usecase {
 		bank_account: Option<BankAccount>,
 		eth_wallet: Option<ethereum::Wallet>,
 		aptos_address: Option<aptos::Address>,
+		starknet_address: Option<starknet::Address>,
 	) -> Result<()> {
 		if let Some(ethereum::Wallet::Name(eth_name)) = eth_wallet.clone() {
 			if !self
@@ -51,6 +52,9 @@ impl Usecase {
 		}
 		if let Some(aptos_address) = aptos_address {
 			wallets.push((user_payout_info.user_id, aptos_address).into());
+		}
+		if let Some(starknet_address) = starknet_address {
+			wallets.push((user_payout_info.user_id, starknet_address).into());
 		}
 
 		self.payout_info_repository.upsert(user_payout_info, bank_account, wallets)?;
@@ -111,6 +115,7 @@ mod tests {
 				Default::default(),
 				Some(ethereum::Wallet::Name(ens)),
 				Default::default(),
+				Default::default(),
 			)
 			.await;
 		assert!(result.is_ok(), "{}", result.err().unwrap());
@@ -138,6 +143,7 @@ mod tests {
 				},
 				Default::default(),
 				Some(ethereum::Wallet::Name(ens)),
+				Default::default(),
 				Default::default(),
 			)
 			.await;

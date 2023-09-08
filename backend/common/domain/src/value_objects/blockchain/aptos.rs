@@ -3,6 +3,8 @@ use serde::{Deserialize, Serialize};
 
 use crate::blockchain::account_address::AccountAddress;
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, From, Into, FromStr, Display)]
+#[derive(
+	Debug, Copy, Clone, PartialEq, Eq, Serialize, Deserialize, From, Into, FromStr, Display,
+)]
 #[serde(transparent)]
 pub struct Address(AccountAddress<32>);

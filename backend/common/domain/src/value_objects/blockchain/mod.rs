@@ -11,3 +11,4 @@ mod account_address;
 pub mod ethereum;
 
 pub mod aptos;
+pub mod starknet;

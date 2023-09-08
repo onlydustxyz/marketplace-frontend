@@ -4,7 +4,9 @@ use web3::types::H160;
 
 use crate::blockchain::account_address::AccountAddress;
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, From, Into, FromStr, Display)]
+#[derive(
+	Debug, Copy, Clone, PartialEq, Eq, Serialize, Deserialize, From, Into, FromStr, Display,
+)]
 #[serde(transparent)]
 pub struct Address(AccountAddress<20>);
 
