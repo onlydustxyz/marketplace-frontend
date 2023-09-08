@@ -465,8 +465,14 @@
       "iban": "IBAN",
       "ibanInvalid": "Please enter a valid IBAN",
       "ibanRequired": "Your IBAN is required",
+      "invalidZipcode": "Please enter a valid international Zip Code",
+      "payoutFieldRequired": "This field is required to receive payments",
+      "alphabeticallyInvalid": "Please enter alphabetic only characters",
       "identificationNumber": "Identification number",
-      "invalidCryptoSettings": "Please enter a valid ETH address or ENS domain",
+      "invalidEthWallet": "Please enter a valid ETH address or ENS domain",
+      "invalidStarknetWallet": "Please enter a valid Starknet wallet address",
+      "invalidAptosWallet": "Please enter a valid Aptos wallet address",
+      "invalidOptimismWallet": "Please enter a valid Optimism wallet address",
       "lastname": "Last name",
       "location": "Location",
       "number": "N.",
@@ -476,6 +482,7 @@
       "payoutSettings": "Payout information",
       "payoutSettingsRequiredTag": "* required to receive payments",
       "payoutSettingsType": "Preferred payment method",
+      "payoutCurrenciesType": "Other currencies",
       "contactSettingsValidTag": "You're able to receive payments",
       "payoutSettingsValidTag": "You're able to receive payments on all networks",
       "pictureUploadError": "We were not able to upload your profile picture, please try again.",
@@ -524,7 +531,7 @@
       "subtitle": "We won't be able to issue any payment until your payout information is completed",
       "title": "Payout information missing",
       "contact": "Missing information to receive payments",
-      "payment": "Missing information to receive payments on all networks"
+      "payment": "Missing addresses to receive payments on any network"
     }
   },
   "publicProfile": {

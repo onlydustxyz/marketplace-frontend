@@ -9,7 +9,10 @@ export type UserPayoutInfo = {
   city: string;
   country: string;
   payoutSettingsType: PayoutSettingsDisplayType;
-  ethIdentity?: string;
+  ethWallet?: string;
+  starknetWallet?: string;
+  optimismWallet?: string;
+  aptosWallet?: string;
   IBAN?: string;
   BIC?: string;
 };

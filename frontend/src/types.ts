@@ -133,3 +133,15 @@ export enum GithubIssueType {
 export type ContributionType = "issue" | "pull_request" | "code_review";
 
 export type Contribution = UnrewardedContributionsQuery["contributions"][0];
+
+export type UserPayout =
+  | {
+      __typename?: "UserPayoutInfo" | undefined;
+      userId: string;
+      identity: string;
+      location: string;
+      payoutSettings: string;
+      arePayoutSettingsValid: boolean;
+    }
+  | undefined
+  | null;
