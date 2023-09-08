@@ -39,6 +39,7 @@
         "e2e:populate": "yarn --cwd ./e2e/playwright playwright test __populate",
         "e2e:populate:clean": "rm -f \"./e2e/playwright/marketplace_db_dump\" && rm -rf \"./e2e/playwright/fixtures/__generated\"",
         "e2e:run": "yarn --cwd ./e2e/playwright playwright test",
+        "e2e:run:headed": "yarn --cwd ./e2e/playwright playwright test --headed",
         "e2e:install": "yarn --cwd ./e2e/playwright install && yarn --cwd ./e2e/playwright playwright install --with-deps chromium",
         "e2e:update-snapshots": "yarn --cwd ./e2e/playwright playwright test --update-snapshots responsive"
     }
