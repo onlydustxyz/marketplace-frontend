@@ -59,6 +59,10 @@ pub async fn user_profile_updated(docker: &'static Cli) {
 
 	test.should_update_eth_name().await.expect("should_update_eth_name");
 
+	test.should_update_optimism_address()
+		.await
+		.expect("should_update_optimism_address");
+
 	test.should_update_aptos_address().await.expect("should_update_aptos_address");
 
 	test.should_update_starknet_address()
@@ -74,6 +78,10 @@ pub async fn user_profile_updated(docker: &'static Cli) {
 	test.should_reject_invalid_eth_address()
 		.await
 		.expect("should_reject_invalid_eth_address");
+
+	test.should_reject_invalid_optimism_address()
+		.await
+		.expect("should_reject_invalid_optimism_address");
 
 	test.should_reject_invalid_aptos_address()
 		.await
@@ -474,6 +482,49 @@ impl<'a> Test<'a> {
 		Ok(())
 	}
 
+	async fn should_update_optimism_address(&mut self) -> Result<()> {
+		info!("should_update_optimism_address");
+
+		// Given
+		let request = json!({
+			"payoutSettings": {
+				"optimismAddress": "0x690b9a9e9aa1c9db991c7721a92d351db4fac990",
+			}
+		});
+
+		// When
+		let response = self
+			.context
+			.http_client
+			.post("/api/users/profile/payout_info")
+			.header(ContentType::JSON)
+			.header(api_key_header())
+			.header(Header::new(
+				"Authorization",
+				format!("Bearer {}", jwt(None)),
+			))
+			.body(request.to_string())
+			.dispatch()
+			.await;
+
+		// Then
+		assert_eq!(response.status(), Status::Ok);
+		let response: users::update_profile::Response = response.into_json().await.unwrap();
+
+		let mut wallets: Vec<Wallet> =
+			wallets::table.load(&mut *self.context.database.client.connection()?)?;
+
+		assert_eq!(wallets.len(), 1);
+
+		let wallet = wallets.pop().unwrap();
+		assert_eq!(wallet.user_id, response.user_id.into());
+		assert_eq!(wallet.network, Network::Optimism);
+		assert_eq!(wallet.type_, WalletType::Address);
+		assert_eq!(wallet.address, "0x690b9a9e9aa1c9db991c7721a92d351db4fac990");
+
+		Ok(())
+	}
+
 	async fn should_update_aptos_address(&mut self) -> Result<()> {
 		info!("should_update_aptos_address");
 
@@ -693,6 +744,37 @@ impl<'a> Test<'a> {
 
 		// Then
 		assert_eq!(response.status(), Status::BadRequest);
+
+		Ok(())
+	}
+
+	async fn should_reject_invalid_optimism_address(&mut self) -> Result<()> {
+		info!("should_reject_invalid_optimism_address");
+
+		// Given
+		let request = json!({
+			"payoutSettings": {
+				"optimismAddress": "0x690b9a9e9aa1c9db991c7721a92d351db4fac0344556",
+			}
+		});
+
+		// When
+		let response = self
+			.context
+			.http_client
+			.post("/api/users/profile/payout_info")
+			.header(ContentType::JSON)
+			.header(api_key_header())
+			.header(Header::new(
+				"Authorization",
+				format!("Bearer {}", jwt(None)),
+			))
+			.body(request.to_string())
+			.dispatch()
+			.await;
+
+		// Then
+		assert_eq!(response.status(), Status::UnprocessableEntity);
 
 		Ok(())
 	}

@@ -1,13 +1,13 @@
 #[cfg(test)]
 mod mock {
-	use domain::blockchain::ethereum;
+	use domain::blockchain::evm;
 	use infrastructure::web3::{ens, Config};
 	use mockall::mock;
 
 	mock! {
 		pub Client {
 			pub fn new(config: Config) -> Result<Self, ens::Error> ;
-			pub async fn eth_address(&self, name: &str) -> Result<ethereum::Address, ens::Error>;
+			pub async fn eth_address(&self, name: &str) -> Result<evm::Address, ens::Error>;
 		}
 	}
 }
