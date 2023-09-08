@@ -23,6 +23,7 @@
 .env.*
 !e2e/.env.e2e
 !.env.develop
+!.env.e2e
 !.env.example
 !.env.test
 
