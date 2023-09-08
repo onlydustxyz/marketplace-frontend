@@ -13,7 +13,4 @@ fragment GithubPullRequest on GithubPullRequests {
   createdAt
   closedAt
   mergedAt
-  ignoredForProjects {
-    ...IgnoredGithubIssueId
-  }
 }

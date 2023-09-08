@@ -245,9 +245,9 @@ function VirtualizedContributorSubList({ lines }: ContributorSubListProps) {
               className="flex items-center justify-between p-2 ui-active:cursor-pointer ui-active:bg-white/4"
             >
               <Contributor contributor={contributor} />
-              {contributor.unpaidMergedPullsCount > 0 && (
+              {contributor.unpaidCompletedContributions > 0 && (
                 <Badge
-                  value={contributor.unpaidMergedPullsCount}
+                  value={contributor.unpaidCompletedContributions}
                   icon={BadgeIcon.GitMerge}
                   size={BadgeSize.Small}
                   {...withTooltip(T("reward.form.contributor.unpaidMergedPrCountTooltip"))}

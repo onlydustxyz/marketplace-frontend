@@ -1,13 +1,6 @@
 table:
-  name: contributions
+  name: completed_contributions
   schema: api
-configuration:
-  column_config: {}
-  custom_column_names: {}
-  custom_name: Contributions
-  custom_root_fields:
-    select: contributions
-    select_aggregate: contributionsAggregate
 array_relationships:
   - name: rewardItems
     using:
@@ -28,7 +21,6 @@ select_permissions:
         - type
         - github_user_id
         - repo_id
-        - ignored
         - details_id
         - id
         - closed_at

@@ -2,7 +2,7 @@ import { WorkItem } from "src/__generated/graphql";
 import { Contributor as ContributorBase } from "src/types";
 
 export type Contributor = ContributorBase & {
-  unpaidMergedPullsCount: number;
+  unpaidCompletedContributions: number;
 };
 
 export type Inputs = {

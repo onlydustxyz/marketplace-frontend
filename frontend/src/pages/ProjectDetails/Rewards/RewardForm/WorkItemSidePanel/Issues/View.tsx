@@ -1,28 +1,27 @@
+import { filter, some } from "lodash";
 import { forwardRef, useEffect, useState } from "react";
+import { useForm, useFormContext, useWatch } from "react-hook-form";
+import { Virtuoso } from "react-virtuoso";
+import { WorkItemType } from "src/__generated/graphql";
+import FormInput from "src/components/FormInput";
+import FormToggle from "src/components/FormToggle";
 import GithubIssue, { Action, WorkItem } from "src/components/GithubIssue";
 import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
+import EyeOffLine from "src/icons/EyeOffLine";
 import Link from "src/icons/Link";
+import SearchLine from "src/icons/SearchLine";
 import EmptyState from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/EmptyState";
 import Toggle from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/Toggle";
 import OtherIssueInput from "./OtherIssueInput";
-import FormToggle from "src/components/FormToggle";
-import { useForm, useWatch } from "react-hook-form";
-import EyeOffLine from "src/icons/EyeOffLine";
-import FormInput from "src/components/FormInput";
-import SearchLine from "src/icons/SearchLine";
-import { useFormContext } from "react-hook-form";
 import useFilteredWorkItems from "./useFilteredWorkItems";
-import { filter, some } from "lodash";
-import { Virtuoso } from "react-virtuoso";
-import { GithubIssueType } from "src/types";
 
 const THEORETICAL_MAX_SCREEN_HEIGHT = 2000;
 
 type Props = {
   projectId: string;
   issues: WorkItem[];
-  type: GithubIssueType;
+  type: WorkItemType;
   onWorkItemAdded: (workItem: WorkItem) => void;
   onWorkItemIgnored: (workItem: WorkItem) => void;
   onWorkItemUnignored: (workItem: WorkItem) => void;
@@ -38,7 +37,7 @@ export default function View({
 }: Props) {
   const { T } = useIntl();
   const { watch, resetField } = useFormContext();
-  const tabName = type === GithubIssueType.Issue ? "issues" : "pullRequests";
+  const tabName = type === WorkItemType.Issue ? "issues" : "pullRequests";
 
   const [addOtherIssueEnabled, setStateAddOtherIssueEnabled] = useState(false);
   const [searchEnabled, setStateSearchEnabled] = useState(false);

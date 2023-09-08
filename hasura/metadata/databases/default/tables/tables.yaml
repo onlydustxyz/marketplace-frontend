@@ -1,4 +1,5 @@
 - "!include api_commands.yaml"
+- "!include api_completed_contributions.yaml"
 - "!include api_contact_informations.yaml"
 - "!include api_contribution_counts.yaml"
 - "!include api_contribution_stats.yaml"

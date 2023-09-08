@@ -49,7 +49,22 @@
       "contributions": "Contributions",
       "totalEarned": "Earned",
       "rewards": "Rewards",
-      "userRegisteredTooltip": "User has linked their OnlyDust profile"
+      "toReward": "To Reward",
+      "userRegisteredTooltip": "User has linked their OnlyDust profile",
+      "tooltip": {
+        "pullRequests": {
+          "one": "1 PR",
+          "many": "__count__ PRs"
+        },
+        "issues": {
+          "one": "1 issue",
+          "many": "__count__ issues"
+        },
+        "codeReviews": {
+          "one": "1 code review",
+          "many": "__count__ code reviews"
+        }
+      }
     },
     "tableFallback": {
       "noContributor": "No one has contributed to __projectName__ yet",

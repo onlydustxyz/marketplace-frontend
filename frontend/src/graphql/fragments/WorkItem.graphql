@@ -1,7 +1,7 @@
 fragment WorkItemId on WorkItems {
   paymentId
   repoId
-  issueNumber
+  number
 }
 
 fragment WorkItem on WorkItems {

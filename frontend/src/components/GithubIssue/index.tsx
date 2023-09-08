@@ -18,8 +18,12 @@ import EyeOffLine from "src/icons/EyeOffLine";
 import EyeLine from "src/icons/EyeLine";
 import classNames from "classnames";
 import { withTooltip } from "src/components/Tooltip";
-import { GithubIssueType } from "src/types";
-import { GithubIssueCreatedAndClosedStatus, GithubIssueStatus, GithubPullRequestStatus } from "src/__generated/graphql";
+import {
+  GithubIssueCreatedAndClosedStatus,
+  GithubIssueStatus,
+  GithubPullRequestStatus,
+  WorkItemType,
+} from "src/__generated/graphql";
 
 export enum Action {
   Add = "add",
@@ -32,7 +36,7 @@ export type WorkItem = {
   id: number;
   repoId: number;
   number: number;
-  type: GithubIssueType;
+  type: WorkItemType;
   title: string;
   htmlUrl: string;
   createdAt: Date;
@@ -139,7 +143,7 @@ function IssueStatus({ issue }: { issue: WorkItem }) {
   const { T } = useIntl();
 
   switch (issue.type) {
-    case GithubIssueType.Issue: {
+    case WorkItemType.Issue: {
       switch (issue.status) {
         case GithubIssueStatus.Cancelled:
           return (
@@ -166,7 +170,7 @@ function IssueStatus({ issue }: { issue: WorkItem }) {
       break;
     }
 
-    case GithubIssueType.PullRequest: {
+    case WorkItemType.PullRequest: {
       switch (issue.status) {
         case GithubPullRequestStatus.Closed:
           return (

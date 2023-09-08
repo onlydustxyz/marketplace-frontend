@@ -10,7 +10,7 @@ import OtherWorkForm from "./OtherWorkForm";
 import DiscussLine from "src/icons/DiscussLine";
 import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
-import { GithubIssueType } from "src/types";
+import { WorkItemType } from "src/__generated/graphql";
 
 type Props = {
   projectId: string;
@@ -73,7 +73,7 @@ export default function WorkItemSidePanel({
             contributorId={contributorId}
             workItems={workItems}
             onWorkItemAdded={onWorkItemAdded}
-            type={GithubIssueType.PullRequest}
+            type={WorkItemType.PullRequest}
           />
         )}
         {selectedTab === Tabs.Issues && (
@@ -82,7 +82,7 @@ export default function WorkItemSidePanel({
             contributorId={contributorId}
             workItems={workItems}
             onWorkItemAdded={onWorkItemAdded}
-            type={GithubIssueType.Issue}
+            type={WorkItemType.Issue}
           />
         )}
         {selectedTab === Tabs.Other && (

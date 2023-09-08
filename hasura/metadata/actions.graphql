@@ -1,5 +1,5 @@
 type Mutation {
-  cancelPayment(
+  cancelPaymentRequest(
     projectId: Uuid!
     paymentId: Uuid!
   ): Payment!

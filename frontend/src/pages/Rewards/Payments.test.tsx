@@ -48,7 +48,7 @@ const mockContribution: UserPaymentRequestFragment = {
       __typename: "WorkItems",
       paymentId: "705e6b37-d0ee-4e87-b681-7009dd691965",
       repoId: 123456,
-      issueNumber: 123,
+      number: 123,
     },
   ],
   budget: {
