@@ -18,13 +18,12 @@ use crate::{
 	presentation::{graphql, http::github_client_pat_factory::GithubClientPatFactory},
 };
 
-mod usecases;
-
 pub mod dto;
 mod error;
 pub mod github_client_pat_factory;
 pub mod roles;
 pub mod routes;
+mod usecases;
 
 #[allow(clippy::too_many_arguments)]
 pub fn serve(
@@ -43,6 +42,7 @@ pub fn serve(
 	user_profile_info_repository: Arc<dyn UserProfileInfoRepository>,
 	contact_informations_repository: Arc<dyn ContactInformationsRepository>,
 	onboarding_repository: Arc<dyn Repository<Onboarding>>,
+	payout_info_repository: Arc<dyn PayoutInfoRepository>,
 	github_api_client: Arc<github::Client>,
 	dusty_bot_api_client: Arc<github::Client>,
 	ens: Arc<ens::Client>,
@@ -95,6 +95,7 @@ pub fn serve(
 		.manage(create_github_issue_usecase)
 		.manage(github_client_pat_factory)
 		.manage(cancel_payment_usecase)
+		.manage(payout_info_repository)
 		.attach(http::guards::Cors)
 		.mount(
 			"/",
@@ -111,6 +112,7 @@ pub fn serve(
 			routes![
 				routes::users::profile_picture,
 				routes::users::update_user_profile,
+				routes::users::update_user_payout_info,
 				routes::users::search_users,
 				routes::projects::create_project,
 				routes::projects::contributions::ignore,

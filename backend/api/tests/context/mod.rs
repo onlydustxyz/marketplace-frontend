@@ -12,6 +12,7 @@ pub mod environment;
 pub mod indexer;
 pub mod simple_storage;
 pub mod utils;
+pub mod web3;
 
 pub const API_KEY: &str = "test-api-key";
 
@@ -29,6 +30,7 @@ pub struct Context<'a> {
 	pub dusty_bot_github: github::Context<'a>,
 	pub github: github::Context<'a>,
 	pub indexer: indexer::Context<'a>,
+	pub web3: web3::Context<'a>,
 	_environment: environment::Context,
 }
 
@@ -55,6 +57,13 @@ impl<'a> Context<'a> {
 			),
 			"github-pat".to_string(),
 		)?;
+		let web3 = web3::Context::new(
+			docker,
+			format!(
+				"{}/tests/resources/wiremock/infura",
+				env::current_dir().unwrap().display(),
+			),
+		)?;
 
 		let indexer = indexer::Context::new(
 			docker,
@@ -75,9 +84,7 @@ impl<'a> Context<'a> {
 				json: true,
 				location: true,
 			},
-			web3: infrastructure::web3::Config {
-				url: "https://test.com".parse().unwrap(),
-			},
+			web3: web3.config.clone(),
 			s3: simple_storage.config.clone(),
 			github_api_client: github.config.clone(),
 			dusty_bot_api_client: dusty_bot_github.config.clone(),
@@ -92,6 +99,7 @@ impl<'a> Context<'a> {
 			dusty_bot_github,
 			github,
 			indexer,
+			web3,
 			_environment: environment::Context::new(),
 		})
 	}

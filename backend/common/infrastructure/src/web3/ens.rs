@@ -1,5 +1,5 @@
 use anyhow::anyhow;
-use domain::EthereumAddress;
+use domain::blockchain::ethereum;
 use thiserror::Error;
 use web3::{api::Namespace, contract::ens::Ens, transports::Http};
 
@@ -26,7 +26,7 @@ impl Client {
 		Ok(Self(Ens::new(transport)))
 	}
 
-	pub async fn eth_address(&self, name: &str) -> Result<EthereumAddress> {
+	pub async fn eth_address(&self, name: &str) -> Result<ethereum::Address> {
 		match self.0.eth_address(name).await {
 			Ok(address) if address.is_zero() => Err(Error::NotRegistered),
 			Ok(address) => Ok(address.into()),

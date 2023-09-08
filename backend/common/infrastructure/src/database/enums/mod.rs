@@ -25,8 +25,17 @@ pub use github_code_review_outcome::GithubCodeReviewOutcome;
 mod github_code_review_status;
 pub use github_code_review_status::GithubCodeReviewStatus;
 
+mod network;
+pub use network::Network;
+
+mod preferred_method;
+pub use preferred_method::PreferredMethod;
+
 mod project_visibility;
 pub use project_visibility::ProjectVisibility;
 
 mod profile_cover;
 pub use profile_cover::ProfileCover;
+
+mod wallet_type;
+pub use wallet_type::WalletType;

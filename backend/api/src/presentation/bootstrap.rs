@@ -42,6 +42,7 @@ pub async fn bootstrap(config: Config) -> Result<Rocket<Build>> {
 		database.clone(),
 		database.clone(),
 		database.clone(),
+		database.clone(),
 		database,
 		github_api_client,
 		dusty_bot_api_client,

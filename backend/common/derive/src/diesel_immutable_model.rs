@@ -53,6 +53,19 @@ pub fn impl_derive(derive_input: syn::DeriveInput) -> TokenStream {
 					.map_err(Into::into)
 			}
 
+			fn insert_all(
+				connection: &mut ::diesel::pg::PgConnection,
+				values: Vec<Self>,
+			) -> ::infrastructure::database::Result<usize> {
+				use ::diesel::{associations::HasTable, RunQueryDsl};
+				use infrastructure::contextualized_error::IntoContextualizedError;
+				::diesel::insert_into(<Self as HasTable>::table())
+					.values(values)
+					.execute(connection)
+					.err_with_context(format!("insert_all {}", stringify!(#name)))
+					.map_err(Into::into)
+			}
+
 			fn try_insert(
 				self,
 				connection: &mut ::diesel::pg::PgConnection,
@@ -71,13 +84,33 @@ pub fn impl_derive(derive_input: syn::DeriveInput) -> TokenStream {
 			fn delete(
 				connection: &mut ::diesel::pg::PgConnection,
 				id: <Self as ::diesel::associations::Identifiable>::Id,
-			) -> ::infrastructure::database::Result<Self> {
-				use ::diesel::{associations::HasTable, EqAll, RunQueryDsl, Table};
+			) -> ::infrastructure::database::Result<Option<Self>> {
+				use ::diesel::{associations::HasTable, OptionalExtension, EqAll, RunQueryDsl, Table};
 				use infrastructure::contextualized_error::IntoContextualizedError;
 				diesel::delete(<Self as HasTable>::table())
 					.filter(<Self as HasTable>::table().primary_key().eq_all(id.clone()))
 					.get_result(connection)
+					.optional()
 					.err_with_context(format!("delete {} where id={id:?}", stringify!(#name)))
+					.map_err(Into::into)
+			}
+
+			fn delete_all<P>(
+				connection: &mut ::diesel::pg::PgConnection,
+				predicate: P,
+			) -> ::infrastructure::database::Result<usize>
+			where
+				::diesel::query_builder::DeleteStatement<Self::Table, Self::WhereClause>:
+					::diesel::query_dsl::methods::FilterDsl<P>,
+				<P as ::diesel::Expression>::SqlType: ::diesel::sql_types::BoolOrNullableBool,
+				P: ::diesel::AppearsOnTable<Self::Table> + ::diesel::query_builder::QueryFragment<::diesel::pg::Pg> + ::diesel::query_builder::QueryId,
+			{
+				use ::diesel::{associations::HasTable, RunQueryDsl};
+				use infrastructure::contextualized_error::IntoContextualizedError;
+				diesel::delete(<Self as HasTable>::table())
+					.filter(predicate)
+					.execute(connection)
+					.err_with_context(format!("delete_all {}", stringify!(#name)))
 					.map_err(Into::into)
 			}
 
