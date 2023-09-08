@@ -42,6 +42,7 @@ pub fn serve(
 	user_profile_info_repository: Arc<dyn UserProfileInfoRepository>,
 	contact_informations_repository: Arc<dyn ContactInformationsRepository>,
 	onboarding_repository: Arc<dyn Repository<Onboarding>>,
+	payout_info_repository: Arc<dyn PayoutInfoRepository>,
 	github_api_client: Arc<github::Client>,
 	dusty_bot_api_client: Arc<github::Client>,
 	ens: Arc<ens::Client>,
@@ -94,6 +95,7 @@ pub fn serve(
 		.manage(create_github_issue_usecase)
 		.manage(github_client_pat_factory)
 		.manage(cancel_payment_usecase)
+		.manage(payout_info_repository)
 		.attach(http::guards::Cors)
 		.mount(
 			"/",

@@ -1,11 +1,18 @@
+use diesel_json::Json as DbJson;
+use domain::blockchain::ethereum;
 use http_api_problem::HttpApiProblem;
+use olog::IntoField;
 use presentation::http::guards::{ApiKey, Claims};
 use reqwest::StatusCode;
 use rocket::serde::json::Json;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use crate::{application::user::update_payout_info::*, models::*, presentation::http::dto};
+use crate::{
+	application::user::update_payout_info::*,
+	models::*,
+	presentation::http::dto::{self, PayoutSettings},
+};
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -13,7 +20,7 @@ pub struct Response {
 	pub user_id: Uuid,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct Request {
 	location: Option<dto::identity::Location>,
@@ -32,35 +39,52 @@ pub async fn update_user_payout_info(
 	request: Json<Request>,
 	usecase: Usecase,
 ) -> Result<Json<Response>, HttpApiProblem> {
-	let caller_id = claims.user_id;
+	let request = request.into_inner();
+	let caller_id = claims.user_id.into();
 
 	let identity = match request.identity.clone() {
-		Some(identity_value) => Some(Identity::try_from(identity_value).map_err(|e| {
-			HttpApiProblem::new(StatusCode::BAD_REQUEST)
-				.title("Invalid identity")
-				.detail(e.to_string())
-		})?),
+		Some(identity) => {
+			let identity = Identity::try_from(identity).map_err(|e| {
+				HttpApiProblem::new(StatusCode::BAD_REQUEST)
+					.title("Invalid identity")
+					.detail(e.to_string())
+			})?;
+			Some(DbJson(identity))
+		},
 		None => None,
 	};
 
-	let payout_settings = match request.payout_settings.clone() {
-		Some(payout_settings) => Some(PayoutSettings::try_from(payout_settings).map_err(|e| {
-			HttpApiProblem::new(StatusCode::BAD_REQUEST)
-				.title("Invalid payout settings")
-				.detail(e.to_string())
-		})?),
-		None => None,
+	let PayoutSettings {
+		bank_account,
+		eth_name,
+		eth_address,
+		usd_preferred_method,
+	} = request.payout_settings.unwrap_or_default();
+
+	let user_payout_info = UserPayoutInfo {
+		user_id: caller_id,
+		identity,
+		location: request.location.map(|location| DbJson(location.into())),
+		usd_preferred_method: usd_preferred_method.map(Into::into),
 	};
+
+	if eth_name.is_some() && eth_address.is_some() {
+		return Err(HttpApiProblem::new(StatusCode::BAD_REQUEST)
+			.title("Bad request")
+			.detail("ethereum address and ens are exclusive"));
+	}
 
 	usecase
 		.update_user_payout_info(
-			caller_id.into(),
-			identity,
-			request.location.clone().map(Into::into),
-			payout_settings,
+			user_payout_info,
+			bank_account.map(|a| (caller_id, a).into()),
+			eth_name
+				.map(ethereum::Wallet::Name)
+				.or(eth_address.map(ethereum::Wallet::Address)),
 		)
 		.await
 		.map_err(|e| {
+			olog::error!(error = e.to_field(), "Unable to update user payout info");
 			HttpApiProblem::new(match e {
 				Error::InvalidInput(_) => StatusCode::BAD_REQUEST,
 				Error::Repository(_) | Error::Internal(_) => StatusCode::INTERNAL_SERVER_ERROR,
@@ -69,5 +93,7 @@ pub async fn update_user_payout_info(
 			.detail(e.to_string())
 		})?;
 
-	Ok(Json(Response { user_id: caller_id }))
+	Ok(Json(Response {
+		user_id: caller_id.into(),
+	}))
 }
