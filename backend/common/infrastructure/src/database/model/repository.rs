@@ -14,7 +14,7 @@ where
 	fn list(&self) -> Result<Vec<M>>;
 	fn insert(&self, model: M) -> Result<M>;
 	fn try_insert(&self, model: M) -> Result<Option<M>>;
-	fn delete(&self, id: <M as Identifiable>::Id) -> Result<M>;
+	fn delete(&self, id: <M as Identifiable>::Id) -> Result<Option<M>>;
 	fn clear(&self) -> Result<()>;
 
 	fn insert_all(&self, models: Vec<M>) -> Result<()>;
@@ -50,7 +50,7 @@ where
 		model.try_insert(&mut *connection)
 	}
 
-	fn delete(&self, id: <M as Identifiable>::Id) -> Result<M> {
+	fn delete(&self, id: <M as Identifiable>::Id) -> Result<Option<M>> {
 		let mut connection = self.connection()?;
 		M::delete(&mut *connection, id)
 	}
@@ -62,12 +62,7 @@ where
 
 	fn insert_all(&self, models: Vec<M>) -> Result<()> {
 		let mut connection = self.connection()?;
-		connection.transaction::<(), database::error::Error, _>(|tx| {
-			for model in models {
-				model.insert(&mut *tx)?;
-			}
-			Ok(())
-		})?;
+		M::insert_all(&mut connection, models)?;
 		Ok(())
 	}
 

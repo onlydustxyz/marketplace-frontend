@@ -9,6 +9,7 @@ use uuid::Uuid;
 use crate::{application, domain::permissions::IntoPermission, presentation::http::dto};
 
 #[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Response {
 	pub project_id: Uuid,
 	pub budget_id: Uuid,
@@ -18,7 +19,7 @@ pub struct Response {
 }
 
 #[derive(Debug, Deserialize)]
-#[serde(crate = "rocket::serde")]
+#[serde(rename_all = "camelCase")]
 pub struct Request {
 	project_id: Uuid,
 	recipient_id: u64,
@@ -71,7 +72,7 @@ pub async fn request_payment(
 		.map_err(|e| {
 			{
 				HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
-					.title("Unable to process create_project request")
+					.title("Unable to process request_payment request")
 					.detail(e.to_string())
 			}
 		})?;

@@ -19,6 +19,7 @@ use crate::{
 };
 
 #[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Response {
 	picture_url: Url,
 }

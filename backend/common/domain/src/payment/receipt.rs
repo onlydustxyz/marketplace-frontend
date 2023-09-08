@@ -1,17 +1,15 @@
 use serde::{Deserialize, Serialize};
 
-use crate::{
-	create_new_id, BlockchainNetwork, EthereumAddress, EthereumName, Iban, TransactionHash,
-};
+use crate::{blockchain::*, create_new_id, Iban};
 
 create_new_id!(Id);
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Receipt {
 	OnChainPayment {
-		network: BlockchainNetwork,
-		recipient_address: EthereumAddress,
-		recipient_ens: Option<EthereumName>,
+		network: Network,
+		recipient_address: ethereum::Address,
+		recipient_ens: Option<ethereum::Name>,
 		transaction_hash: TransactionHash,
 	},
 	FiatPayment {

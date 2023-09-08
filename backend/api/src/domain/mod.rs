@@ -7,7 +7,7 @@ pub use permissions::Permissions;
 mod specifications;
 #[cfg(test)]
 pub use specifications::MockGithubRepoExists;
-pub use specifications::{ArePayoutSettingsValid, GithubRepoExists};
+pub use specifications::{GithubRepoExists, IsEnsValid};
 
 pub mod services;
 #[cfg(test)]

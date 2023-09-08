@@ -1,17 +1,17 @@
-use derive_more::{Display, From, Into};
-use iban::IbanLike;
-use serde::{Deserialize, Serialize};
+use std::fmt::Display;
 
-#[derive(Debug, Display, Clone, Deserialize, PartialEq, Eq, From, Into)]
+use derive_more::{From, FromStr, Into};
+use iban::IbanLike;
+use serde_with::{DeserializeFromStr, SerializeDisplay};
+
+#[derive(
+	Debug, Clone, PartialEq, Eq, From, Into, FromStr, SerializeDisplay, DeserializeFromStr,
+)]
 pub struct Iban(iban::Iban);
 
-// Implement Serialize to use electronic format instead of human-readable format
-impl Serialize for Iban {
-	fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-	where
-		S: serde::Serializer,
-	{
-		serializer.serialize_str(self.0.electronic_str())
+impl Display for Iban {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(f, "{}", self.0.electronic_str())
 	}
 }
 
