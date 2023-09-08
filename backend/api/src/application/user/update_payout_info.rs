@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use anyhow::anyhow;
 use derive_more::Constructor;
-use domain::blockchain::{aptos, ethereum, starknet};
+use domain::blockchain::{aptos, ethereum, starknet, Network};
 use infrastructure::database::DatabaseError;
 use thiserror::Error;
 
@@ -32,6 +32,7 @@ impl Usecase {
 		user_payout_info: UserPayoutInfo,
 		bank_account: Option<BankAccount>,
 		eth_wallet: Option<ethereum::Wallet>,
+		optimism_address: Option<ethereum::Address>,
 		aptos_address: Option<aptos::Address>,
 		starknet_address: Option<starknet::Address>,
 	) -> Result<()> {
@@ -46,15 +47,20 @@ impl Usecase {
 			}
 		}
 
+		let user_id = user_payout_info.user_id;
+
 		let mut wallets = Vec::new();
 		if let Some(eth_wallet) = eth_wallet {
-			wallets.push((user_payout_info.user_id, eth_wallet).into());
+			wallets.push((user_id, Network::Ethereum, eth_wallet).into());
+		}
+		if let Some(optimism_address) = optimism_address {
+			wallets.push((user_id, Network::Optimism, optimism_address).into());
 		}
 		if let Some(aptos_address) = aptos_address {
-			wallets.push((user_payout_info.user_id, aptos_address).into());
+			wallets.push((user_id, aptos_address).into());
 		}
 		if let Some(starknet_address) = starknet_address {
-			wallets.push((user_payout_info.user_id, starknet_address).into());
+			wallets.push((user_id, starknet_address).into());
 		}
 
 		self.payout_info_repository.upsert(user_payout_info, bank_account, wallets)?;
@@ -116,6 +122,7 @@ mod tests {
 				Some(ethereum::Wallet::Name(ens)),
 				Default::default(),
 				Default::default(),
+				Default::default(),
 			)
 			.await;
 		assert!(result.is_ok(), "{}", result.err().unwrap());
@@ -143,6 +150,7 @@ mod tests {
 				},
 				Default::default(),
 				Some(ethereum::Wallet::Name(ens)),
+				Default::default(),
 				Default::default(),
 				Default::default(),
 			)

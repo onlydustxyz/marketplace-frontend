@@ -3,6 +3,9 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Network {
 	Ethereum,
+	Optimism,
+	Aptos,
+	Starknet,
 }
 
 pub type TransactionHash = String;

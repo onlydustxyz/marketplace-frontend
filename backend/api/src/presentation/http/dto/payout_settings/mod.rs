@@ -12,6 +12,7 @@ pub struct PayoutSettings {
 	pub bank_account: Option<BankAccount>,
 	pub eth_address: Option<ethereum::Address>,
 	pub eth_name: Option<ethereum::Name>,
+	pub optimism_address: Option<ethereum::Address>,
 	pub aptos_address: Option<aptos::Address>,
 	pub starknet_address: Option<starknet::Address>,
 }
