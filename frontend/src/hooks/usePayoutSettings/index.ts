@@ -1,4 +1,3 @@
-import isDefined from "src/utils/isDefined";
 import {
   GetUserPayoutSettingsDocument,
   useGetUserPayoutSettingsQuery,
@@ -21,7 +20,7 @@ export default function usePayoutSettings(githubUserId?: number) {
   const valid = query.data
     ? query.data.registeredUsers.at(0)?.userPayoutInfo?.arePayoutSettingsValid || false
     : undefined;
-  const invoiceNeeded = isDefined(query.data?.registeredUsers.at(0)?.userPayoutInfo?.identity?.Company);
+  const invoiceNeeded = !!query.data?.registeredUsers.at(0)?.userPayoutInfo?.isCompany;
 
   const [updatePayoutSettings, { loading: updatePayoutSettingsLoading }] = useUpdatePayoutSettingsMutation({
     context: { graphqlErrorDisplay: "toaster" },

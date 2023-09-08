@@ -10,6 +10,7 @@ use url::Url;
 use crate::presentation::http::github_client_pat_factory::GithubClientPatFactory;
 
 #[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Response {
 	pub id: i64,
 	pub login: String,

@@ -1,8 +1,8 @@
-mod identity;
-pub use identity::IdentityInput;
+pub mod identity;
+pub use identity::Identity;
 
 mod payout_settings;
-pub use payout_settings::PayoutSettingsInput;
+pub use payout_settings::PayoutSettings;
 
 mod ethereum;
 pub use ethereum::EthereumIdentityInput;

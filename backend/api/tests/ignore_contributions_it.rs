@@ -22,7 +22,7 @@ mod models;
 
 #[rstest]
 #[tokio::test(flavor = "multi_thread")]
-pub async fn create_and_close_issue(docker: &'static Cli) {
+pub async fn ignore_contributions(docker: &'static Cli) {
 	let mut test = Test {
 		context: Context::new(docker).await.expect("Unable to create test context"),
 	};
@@ -101,7 +101,12 @@ impl<'a> Test<'a> {
 			.await;
 
 		// Then
-		assert_eq!(response.status(), Status::Ok);
+		assert_eq!(
+			response.status(),
+			Status::Ok,
+			"{:?}",
+			response.into_string().await
+		);
 
 		let ignored_contributions: Vec<IgnoredContribution> =
 			ignored_contributions::table.load(&mut *self.context.database.client.connection()?)?;

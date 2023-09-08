@@ -75,7 +75,7 @@ mod tests {
 	use uuid::Uuid;
 
 	use super::*;
-	use crate::{BlockchainNetwork, Currency, EthereumName, TransactionHash};
+	use crate::{blockchain::*, Currency};
 
 	pub const CONTRACT_ADDRESSES: [&str; 1] = ["0xd8da6bf26964af9d7eed9e03e53415d37aa96045"];
 
@@ -112,8 +112,8 @@ mod tests {
 				Currency::Crypto("USDC".to_string()),
 			),
 			receipt: PaymentReceipt::OnChainPayment {
-				network: BlockchainNetwork::Ethereum,
-				recipient_address: recipient_address.try_into().unwrap(),
+				network: Network::Ethereum,
+				recipient_address: recipient_address.parse().unwrap(),
 				recipient_ens: None,
 				transaction_hash: transaction_hash.clone(),
 			},
@@ -139,7 +139,7 @@ mod tests {
 						"OnChainPayment":{
 							"network":"Ethereum",
 							"recipient_address": recipient_address,
-							"recipient_ens": None::<EthereumName>,
+							"recipient_ens": None::<evm::Name>,
 							"transaction_hash": transaction_hash,
 						}
 					},
