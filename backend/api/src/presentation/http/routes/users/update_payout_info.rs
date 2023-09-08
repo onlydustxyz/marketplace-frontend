@@ -39,20 +39,20 @@ pub async fn update_user_payout_info(
 	request: Json<Request>,
 	usecase: Usecase,
 ) -> Result<Json<Response>, HttpApiProblem> {
-	let request = request.into_inner();
 	let caller_id = claims.user_id.into();
+	let Request {
+		location,
+		identity,
+		payout_settings,
+	} = request.into_inner();
 
-	let identity = match request.identity.clone() {
-		Some(identity) => {
-			let identity = Identity::try_from(identity).map_err(|e| {
-				HttpApiProblem::new(StatusCode::BAD_REQUEST)
-					.title("Invalid identity")
-					.detail(e.to_string())
-			})?;
-			Some(DbJson(identity))
-		},
-		None => None,
-	};
+	let dto::Identity { person, company } = identity.unwrap_or_default();
+
+	if person.is_some() && company.is_some() {
+		return Err(HttpApiProblem::new(StatusCode::BAD_REQUEST)
+			.title("Invalid identity")
+			.detail("person and company identities are exclusive"));
+	}
 
 	let PayoutSettings {
 		bank_account,
@@ -62,12 +62,12 @@ pub async fn update_user_payout_info(
 		aptos_address,
 		usd_preferred_method,
 		starknet_address,
-	} = request.payout_settings.unwrap_or_default();
+	} = payout_settings.unwrap_or_default();
 
 	let user_payout_info = UserPayoutInfo {
 		user_id: caller_id,
-		identity,
-		location: request.location.map(|location| DbJson(location.into())),
+		identity: person.map(|p| DbJson(p.into())).or(company.map(|c| DbJson(c.into()))),
+		location: location.map(|location| DbJson(location.into())),
 		usd_preferred_method: usd_preferred_method.map(Into::into),
 	};
 
