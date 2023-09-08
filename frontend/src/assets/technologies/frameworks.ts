@@ -1,4 +1,5 @@
 export const frameworks = {
+  AdonisJS: true,
   Angular: true,
   "ASP.NET": true,
   "ASP.NET Core": true,
