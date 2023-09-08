@@ -221,7 +221,6 @@ input PersonIdentity {
 input Identity {
   company: CompanyIdentity
   person: PersonIdentity
-  type: IdentityType!
 }
 
 input PayoutSettings {
