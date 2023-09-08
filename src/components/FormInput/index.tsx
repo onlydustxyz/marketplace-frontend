@@ -1,8 +1,16 @@
 import { defaults } from "lodash";
-import { ChangeEventHandler, FocusEventHandler, KeyboardEventHandler, PropsWithChildren, ReactNode } from "react";
+import {
+  ChangeEventHandler,
+  FocusEventHandler,
+  ForwardedRef,
+  KeyboardEventHandler,
+  PropsWithChildren,
+  ReactNode,
+} from "react";
 import { useFormContext, useFormState, RegisterOptions } from "react-hook-form";
 import { InputErrorDisplay } from "./types";
 import View from "./View";
+import { forwardRef } from "react";
 
 export enum Size {
   Sm = "sm",
@@ -34,35 +42,39 @@ type PropsType = {
   disabled?: boolean;
 } & PropsWithChildren;
 
-export default function Input({
-  label,
-  type = "text",
-  placeholder,
-  name,
-  value,
-  errorDisplay = InputErrorDisplay.Normal,
-  loading,
-  options,
-  onChange,
-  onBlur,
-  onFocus,
-  onKeyDown,
-  prefixComponent,
-  suffixComponent,
-  inputClassName,
-  showValidationErrors = true,
-  requiredForPayment = false,
-  withMargin = true,
-  children,
-  as,
-  inputProps,
-  disabled,
-  size = Size.Md,
-}: PropsType) {
+const Input = forwardRef(function Input(
+  {
+    label,
+    type = "text",
+    placeholder,
+    name,
+    value,
+    errorDisplay = InputErrorDisplay.Normal,
+    loading,
+    options,
+    onChange,
+    onBlur,
+    onFocus,
+    onKeyDown,
+    prefixComponent,
+    suffixComponent,
+    inputClassName,
+    showValidationErrors = true,
+    requiredForPayment = false,
+    withMargin = true,
+    children,
+    as,
+    inputProps,
+    disabled,
+    size = Size.Md,
+  }: PropsType,
+  ref: ForwardedRef<ReactNode>
+) {
   const { register } = useFormContext();
   const { errors } = useFormState({ name });
   const overridenRegister = defaults(
     {
+      ref,
       onChange,
       onBlur,
       name,
@@ -97,4 +109,6 @@ export default function Input({
       }}
     />
   );
-}
+});
+
+export default Input;

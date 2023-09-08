@@ -13,14 +13,19 @@ type Option = {
 type PropsType = {
   label?: string;
   options: Option[];
+  withMargin: boolean;
   register?: UseFormRegisterReturn;
   requiredForPayment: boolean;
 };
 
-export default function View({ label, options, register, requiredForPayment }: PropsType) {
+export default function View({ label, options, withMargin, register, requiredForPayment }: PropsType) {
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
   return (
-    <label className="flex flex-col gap-2">
+    <label
+      className={classNames("flex flex-col", {
+        "gap-2": withMargin,
+      })}
+    >
       <div className="text-sm font-medium tracking-tight text-greyscale-300">
         {label}
         {requiredForPayment && <span className="pl-0.5 text-orange-500">{"*"}</span>}

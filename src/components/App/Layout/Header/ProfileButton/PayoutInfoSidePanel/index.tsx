@@ -4,6 +4,7 @@ import IBANParser from "iban";
 import { useIntl } from "src/hooks/useIntl";
 import {
   Maybe,
+  PayoutSettings,
   PreferredMethod,
   UpdatePayoutSettingsMutationVariables,
   UserPayoutSettingsFragment,
@@ -170,7 +171,7 @@ const decodeQuery = (user?: Maybe<UserPayoutSettingsFragment>): UserPayoutInfo =
     user?.usdPreferredMethod === PreferredMethod.Fiat
       ? PayoutSettingsDisplayType.BankAddress
       : PayoutSettingsDisplayType.EthereumIdentity,
-  ethIdentity: user?.ethWallet || "",
+  ethWallet: user?.ethWallet || "",
   IBAN: user?.iban ? IBANParser.printFormat(user?.iban) : "",
   BIC: user?.bic || "",
 });

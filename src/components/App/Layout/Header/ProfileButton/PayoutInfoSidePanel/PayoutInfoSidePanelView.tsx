@@ -18,34 +18,46 @@ import LockFill from "src/icons/LockFill";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import ProfileRadioGroup from "./ProfileRadioGroup";
-import GithubLogo from "src/icons/GithubLogo";
 import StarknetIcon from "src/assets/icons/Starknet";
 import EthereumIcon from "src/assets/icons/Ethereum";
 import OptimismIcon from "src/assets/icons/Optimism";
-import DollarIcon from "src/assets/icons/Dollar";
 import AptosIcon from "src/assets/icons/Aptos";
 import Chip from "src/components/Chip/Chip";
 import Flex from "src/components/Utils/Flex";
 import Box from "src/components/Utils/Box";
-
-const ETHEREUM_ADDRESS_OR_ENV_DOMAIN_REGEXP =
-  /(^0x[a-fA-F0-9]{40}$)|(^[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?$)/gi;
-const BIC_REGEXP = /^[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?$/i;
+import {
+  APTOS_WALLET,
+  BIC_REGEXP,
+  ETH_WALLET_OR_ENS_ADDRESS,
+  OPTIMISM_WALLET,
+  STARKNET_WALLET,
+  ALPHABETICAL_VALIDATOR,
+  ZIPCODE_VALIDATOR,
+} from "src/utils/regex";
+import ProfileContent from "./ProfileContent";
 
 type Props = {
+  isContactInfoValid?: boolean;
+  isPaymentInfoValid?: boolean;
   payoutSettingsValid?: boolean;
   saveButtonDisabled: boolean;
   unsavedChanges: boolean;
 };
 
-export default function PayoutInfoSidePanel({ payoutSettingsValid, saveButtonDisabled, unsavedChanges }: Props) {
+export default function PayoutInfoSidePanel({
+  isContactInfoValid,
+  isPaymentInfoValid,
+  saveButtonDisabled,
+  unsavedChanges,
+}: Props) {
   const { T } = useIntl();
   const {
     watch,
     control,
-    formState: { touchedFields },
+    formState: { touchedFields, isValid },
     clearErrors,
     trigger,
+    register,
   } = useFormContext();
 
   const profileType = watch("profileType");
@@ -74,7 +86,6 @@ export default function PayoutInfoSidePanel({ payoutSettingsValid, saveButtonDis
         <ProfileRadioGroup
           name="profileType"
           label={T("profile.form.profileType")}
-          requiredForPayment={true}
           options={[
             {
               value: ProfileType.Individual,
@@ -93,10 +104,10 @@ export default function PayoutInfoSidePanel({ payoutSettingsValid, saveButtonDis
             <Tag size={TagSize.Medium}>
               <div
                 className={cn({
-                  "text-orange-500": !payoutSettingsValid,
+                  "text-orange-500": !isContactInfoValid,
                 })}
               >
-                {payoutSettingsValid ? (
+                {isContactInfoValid ? (
                   <div className="flex flex-row items-center gap-1">
                     <CheckLine /> {T("profile.form.contactSettingsValidTag")}
                   </div>
@@ -116,29 +127,35 @@ export default function PayoutInfoSidePanel({ payoutSettingsValid, saveButtonDis
               <div className="flex w-full flex-row gap-5 pt-5">
                 <Input
                   label={T("profile.form.companyName")}
-                  name="companyName"
                   placeholder={T("profile.form.companyName")}
-                  requiredForPayment={true}
+                  {...register("companyName", {
+                    required: { value: true, message: T("profile.form.payoutFieldRequired") },
+                  })}
                 />
                 <Input
                   label={T("profile.form.identificationNumber")}
-                  name="identificationNumber"
                   placeholder={T("profile.form.identificationNumber")}
-                  requiredForPayment={true}
+                  {...register("identificationNumber", {
+                    required: { value: true, message: T("profile.form.payoutFieldRequired") },
+                  })}
                 />
               </div>
               <div className="flex w-full flex-row gap-5">
                 <Input
                   label={T("profile.form.companyOwnerFirstName")}
-                  name="firstname"
                   placeholder={T("profile.form.companyOwnerFirstName")}
-                  requiredForPayment={true}
+                  {...register("firstname", {
+                    required: { value: true, message: T("profile.form.payoutFieldRequired") },
+                    pattern: { value: ALPHABETICAL_VALIDATOR, message: T("profile.form.alphabeticallyInvalid") },
+                  })}
                 />
                 <Input
                   label={T("profile.form.companyOwnerLastName")}
-                  name="lastname"
                   placeholder={T("profile.form.companyOwnerLastName")}
-                  requiredForPayment={true}
+                  {...register("lastname", {
+                    required: { value: true, message: T("profile.form.payoutFieldRequired") },
+                    pattern: { value: ALPHABETICAL_VALIDATOR, message: T("profile.form.alphabeticallyInvalid") },
+                  })}
                 />
               </div>
             </div>
@@ -147,144 +164,61 @@ export default function PayoutInfoSidePanel({ payoutSettingsValid, saveButtonDis
             <div className="flex w-full flex-row gap-5">
               <Input
                 label={T("profile.form.firstname")}
-                name="firstname"
                 placeholder={T("profile.form.firstname")}
-                requiredForPayment={true}
+                {...register("firstname", {
+                  pattern: { value: ALPHABETICAL_VALIDATOR, message: T("profile.form.alphabeticallyInvalid") },
+                  required: { value: true, message: T("profile.form.payoutFieldRequired") },
+                })}
               />
               <Input
                 label={T("profile.form.lastname")}
-                name="lastname"
                 placeholder={T("profile.form.lastname")}
-                requiredForPayment={true}
+                {...register("lastname", {
+                  pattern: { value: ALPHABETICAL_VALIDATOR, message: T("profile.form.alphabeticallyInvalid") },
+                  required: { value: true, message: T("profile.form.payoutFieldRequired") },
+                })}
               />
             </div>
           )}
           <div>
             <Input
               label={T("profile.form.address")}
-              name="address"
               placeholder={T("profile.form.address")}
               requiredForPayment={true}
+              {...register("address", {
+                required: { value: true, message: T("profile.form.payoutFieldRequired") },
+              })}
             />
             <div className="flex flex-row gap-5">
               <Input
+                withMargin={false}
                 label={T("profile.form.postCode")}
-                name="postCode"
                 placeholder={T("profile.form.postCode")}
-                requiredForPayment={true}
+                {...register("postCode", {
+                  required: { value: true, message: T("profile.form.payoutFieldRequired") },
+                  pattern: { value: ZIPCODE_VALIDATOR, message: T("profile.form.invalidZipcode") },
+                })}
               />
               <Input
+                withMargin={false}
                 label={T("profile.form.city")}
-                name="city"
                 placeholder={T("profile.form.city")}
-                requiredForPayment={true}
+                {...register("city", {
+                  required: true,
+                  pattern: { value: ALPHABETICAL_VALIDATOR, message: T("profile.form.alphabeticallyInvalid") },
+                })}
               />
               <Input
+                withMargin={false}
                 label={T("profile.form.country")}
-                name="country"
                 placeholder={T("profile.form.country")}
-                requiredForPayment={true}
+                {...register("country", {
+                  required: true,
+                  pattern: { value: ALPHABETICAL_VALIDATOR, message: T("profile.form.alphabeticallyInvalid") },
+                })}
               />
             </div>
           </div>
-          {profileType === ProfileType.Company && (
-            <div className="mb-6 flex w-fit flex-row gap-3 font-medium text-neutral-300">
-              <ProfileRadioGroup
-                name="payoutSettingsType"
-                label={T("profile.form.payoutSettingsType")}
-                requiredForPayment={true}
-                options={[
-                  {
-                    value: PayoutSettingsDisplayType.BankAddress,
-                    label: T("profile.form.bankWire"),
-                    icon: <BankLine className="text-xl" />,
-                  },
-                  {
-                    value: PayoutSettingsDisplayType.EthereumIdentity,
-                    label: T("profile.form.cryptoWire"),
-                    icon: <BitcoinLine className="text-xl" />,
-                  },
-                ]}
-              />
-            </div>
-          )}
-          {payoutSettingsType === PayoutSettingsDisplayType.EthereumIdentity && (
-            <Input
-              label={T("profile.form.ethIdentity")}
-              name="ethIdentity"
-              placeholder={T("profile.form.ethIdentityPlaceholder")}
-              options={{
-                pattern: {
-                  value: ETHEREUM_ADDRESS_OR_ENV_DOMAIN_REGEXP,
-                  message: T("profile.form.invalidCryptoSettings"),
-                },
-              }}
-              requiredForPayment={true}
-            />
-          )}
-          {payoutSettingsType === PayoutSettingsDisplayType.BankAddress && (
-            <div className="flex flex-row gap-5">
-              <Controller
-                control={control}
-                name="IBAN"
-                render={({ field: { onChange, value, onBlur } }) => {
-                  return (
-                    <Input
-                      label={T("profile.form.iban")}
-                      name="IBAN"
-                      placeholder={T("profile.form.iban")}
-                      options={{
-                        required: { value: !!BICValue, message: T("profile.form.ibanRequired") },
-                        validate: value => {
-                          return !value?.trim() || IBANParser.isValid(value) || T("profile.form.ibanInvalid");
-                        },
-                      }}
-                      requiredForPayment={true}
-                      value={value && IBANParser.printFormat(value)}
-                      onChange={onChange}
-                      onBlur={() => {
-                        if (touchedFields.BIC) {
-                          trigger("BIC");
-                        }
-                        onBlur();
-                      }}
-                      onFocus={() => clearErrors("IBAN")}
-                    />
-                  );
-                }}
-              />
-              <Controller
-                control={control}
-                name="BIC"
-                render={({ field: { onChange, value, onBlur } }) => {
-                  return (
-                    <Input
-                      label={T("profile.form.bic")}
-                      name="BIC"
-                      placeholder={T("profile.form.bic")}
-                      options={{
-                        pattern: { value: BIC_REGEXP, message: T("profile.form.bicInvalid") },
-                        required: {
-                          value: !!IBANValue?.trim(),
-                          message: T("profile.form.bicRequired"),
-                        },
-                      }}
-                      requiredForPayment={true}
-                      value={value}
-                      onChange={onChange}
-                      onBlur={() => {
-                        if (touchedFields.IBAN) {
-                          trigger("IBAN");
-                        }
-                        onBlur();
-                      }}
-                      onFocus={() => clearErrors("BIC")}
-                    />
-                  );
-                }}
-              />
-            </div>
-          )}
         </Card>
 
         <Card padded={false} className="p-6" withBg={false}>
@@ -292,10 +226,10 @@ export default function PayoutInfoSidePanel({ payoutSettingsValid, saveButtonDis
             <Tag size={TagSize.Medium}>
               <div
                 className={cn({
-                  "text-orange-500": !payoutSettingsValid,
+                  "text-orange-500": !isPaymentInfoValid,
                 })}
               >
-                {payoutSettingsValid ? (
+                {isPaymentInfoValid ? (
                   <div className="flex flex-row items-center gap-1">
                     <CheckLine /> {T("profile.form.payoutSettingsValidTag")}
                   </div>
@@ -309,75 +243,162 @@ export default function PayoutInfoSidePanel({ payoutSettingsValid, saveButtonDis
             </Tag>
           </Box>
 
-          <Input
-            label={
-              <Flex className="items-center gap-1">
-                <Chip content={<EthereumIcon className="h-3" />} />
-                {T("profile.form.ethIdentity")}
-              </Flex>
-            }
-            name="ethIdentity"
-            placeholder={T("profile.form.ethIdentityPlaceholder")}
-            options={{
-              pattern: {
-                value: ETHEREUM_ADDRESS_OR_ENV_DOMAIN_REGEXP,
-                message: T("profile.form.invalidCryptoSettings"),
-              },
-            }}
-            requiredForPayment={true}
-            inputProps={{ autoFocus: true }}
-          />
-          <Input
-            label={
-              <Flex className="items-center gap-1">
-                <Chip content={<StarknetIcon className="h-4" />} />
-                {T("profile.form.starkIdentity")}
-              </Flex>
-            }
-            name="starkIdentity"
-            placeholder={T("profile.form.starkIdentityPlaceholder")}
-            options={{
-              pattern: {
-                value: ETHEREUM_ADDRESS_OR_ENV_DOMAIN_REGEXP,
-                message: T("profile.form.invalidCryptoSettings"),
-              },
-            }}
-            requiredForPayment={true}
-          />
-          <Input
-            label={
-              <Flex className="items-center gap-1">
-                <Chip content={<OptimismIcon className="h-4" />} />
-                {T("profile.form.optimismIdentity")}
-              </Flex>
-            }
-            name="optimismIdentity"
-            placeholder={T("profile.form.optimismIdentityPlaceholder")}
-            options={{
-              pattern: {
-                value: ETHEREUM_ADDRESS_OR_ENV_DOMAIN_REGEXP,
-                message: T("profile.form.invalidCryptoSettings"),
-              },
-            }}
-            requiredForPayment={true}
-          />
-          <Input
-            label={
-              <Flex className="items-center gap-1">
-                <Chip content={<AptosIcon className="h-4 bg-white" />} />
-                {T("profile.form.aptosIdentity")}
-              </Flex>
-            }
-            name="aptosIdentity"
-            placeholder={T("profile.form.aptosIdentityPlaceholder")}
-            options={{
-              pattern: {
-                value: ETHEREUM_ADDRESS_OR_ENV_DOMAIN_REGEXP,
-                message: T("profile.form.invalidCryptoSettings"),
-              },
-            }}
-            requiredForPayment={true}
-          />
+          <ProfileContent title={T("profile.form.payoutSettingsType")} isCard={profileType === ProfileType.Company}>
+            {profileType === ProfileType.Company && (
+              <div className="mb-6 flex w-fit flex-row gap-3 font-medium text-neutral-300">
+                <ProfileRadioGroup
+                  name="payoutSettingsType"
+                  withMargin={false}
+                  options={[
+                    {
+                      value: PayoutSettingsDisplayType.BankAddress,
+                      label: T("profile.form.bankWire"),
+                      icon: <BankLine className="text-xl" />,
+                    },
+                    {
+                      value: PayoutSettingsDisplayType.EthereumIdentity,
+                      label: T("profile.form.cryptoWire"),
+                      icon: <BitcoinLine className="text-xl" />,
+                    },
+                  ]}
+                />
+              </div>
+            )}
+
+            {payoutSettingsType === PayoutSettingsDisplayType.BankAddress && (
+              <div className="flex flex-row gap-5">
+                <Controller
+                  control={control}
+                  name="IBAN"
+                  render={({ field: { onChange, value, onBlur } }) => {
+                    return (
+                      <Input
+                        withMargin={false}
+                        label={T("profile.form.iban")}
+                        name="IBAN"
+                        placeholder={T("profile.form.iban")}
+                        options={{
+                          required: { value: !!BICValue, message: T("profile.form.ibanRequired") },
+                          validate: value => {
+                            return !value?.trim() || IBANParser.isValid(value) || T("profile.form.ibanInvalid");
+                          },
+                        }}
+                        requiredForPayment={true}
+                        value={value && IBANParser.printFormat(value)}
+                        onChange={onChange}
+                        onBlur={() => {
+                          if (touchedFields.BIC) {
+                            trigger("BIC");
+                          }
+                          onBlur();
+                        }}
+                        onFocus={() => clearErrors("IBAN")}
+                      />
+                    );
+                  }}
+                />
+
+                <Controller
+                  control={control}
+                  name="BIC"
+                  render={({ field: { onChange, value, onBlur } }) => {
+                    return (
+                      <Input
+                        withMargin={false}
+                        label={T("profile.form.bic")}
+                        name="BIC"
+                        placeholder={T("profile.form.bic")}
+                        options={{
+                          pattern: { value: BIC_REGEXP, message: T("profile.form.bicInvalid") },
+                          required: {
+                            value: !!IBANValue?.trim(),
+                            message: T("profile.form.bicRequired"),
+                          },
+                        }}
+                        requiredForPayment={true}
+                        value={value}
+                        onChange={onChange}
+                        onBlur={() => {
+                          if (touchedFields.IBAN) {
+                            trigger("IBAN");
+                          }
+                          onBlur();
+                        }}
+                        onFocus={() => clearErrors("BIC")}
+                      />
+                    );
+                  }}
+                />
+              </div>
+            )}
+
+            {payoutSettingsType === PayoutSettingsDisplayType.EthereumIdentity && (
+              <Input
+                withMargin={profileType === ProfileType.Individual}
+                label={
+                  <Flex className="items-center gap-1">
+                    <Chip content={<EthereumIcon className="h-3" />} />
+                    {T("profile.form.ethIdentity")}
+                  </Flex>
+                }
+                placeholder={T("profile.form.ethIdentityPlaceholder")}
+                {...register("ethWallet", {
+                  pattern: {
+                    value: ETH_WALLET_OR_ENS_ADDRESS,
+                    message: T("profile.form.invalidEthWallet"),
+                  },
+                })}
+              />
+            )}
+          </ProfileContent>
+
+          <ProfileContent title={T("profile.form.payoutCurrenciesType")} isCard={profileType === ProfileType.Company}>
+            <Input
+              label={
+                <Flex className="items-center gap-1">
+                  <Chip content={<StarknetIcon className="h-4" />} />
+                  {T("profile.form.starkIdentity")}
+                </Flex>
+              }
+              placeholder={T("profile.form.starkIdentityPlaceholder")}
+              {...register("starknetWallet", {
+                pattern: {
+                  value: STARKNET_WALLET,
+                  message: T("profile.form.invalidStarknetWallet"),
+                },
+              })}
+            />
+            <Input
+              label={
+                <Flex className="items-center gap-1">
+                  <Chip content={<OptimismIcon className="h-4" />} />
+                  {T("profile.form.optimismIdentity")}
+                </Flex>
+              }
+              placeholder={T("profile.form.optimismIdentityPlaceholder")}
+              {...register("optimismWallet", {
+                pattern: {
+                  value: OPTIMISM_WALLET,
+                  message: T("profile.form.invalidOptimismWallet"),
+                },
+              })}
+            />
+            <Input
+              label={
+                <Flex className="items-center gap-1">
+                  <Chip content={<AptosIcon className="h-4 bg-white" />} />
+                  {T("profile.form.aptosIdentity")}
+                </Flex>
+              }
+              placeholder={T("profile.form.aptosIdentityPlaceholder")}
+              {...register("aptosWallet", {
+                pattern: {
+                  value: APTOS_WALLET,
+                  message: T("profile.form.invalidAptosWallet"),
+                },
+              })}
+            />
+          </ProfileContent>
         </Card>
 
         <div className="flex flex-col items-center gap-4 p-4 text-center font-walsheim text-greyscale-400">
@@ -404,7 +425,7 @@ export default function PayoutInfoSidePanel({ payoutSettingsValid, saveButtonDis
           size={ButtonSize.Md}
           htmlType="submit"
           data-testid="profile-form-submit-button"
-          disabled={saveButtonDisabled}
+          disabled={!isValid || saveButtonDisabled}
         >
           {T("profile.form.send")}
         </Button>

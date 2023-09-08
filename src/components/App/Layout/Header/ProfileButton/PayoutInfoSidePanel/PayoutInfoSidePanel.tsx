@@ -13,8 +13,8 @@ import PayoutInfoSidePanelView from "./PayoutInfoSidePanelView";
 import usePayoutSettings from "src/hooks/usePayoutSettings";
 import { PayoutSettingsDisplayType, ProfileType, UserPayoutInfo } from "./types";
 import SidePanel from "src/components/SidePanel";
-
-const ENS_DOMAIN_REGEXP = /^[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?$/gi;
+import { usePayoutInfoValidation } from "./usePayoutInfoValidation";
+import { ENS_DOMAIN_REGEXP } from "src/utils/regex";
 
 type Props = {
   githubUserId?: number;
@@ -25,12 +25,8 @@ type Props = {
 export default function PayoutInfoSidePanel({ githubUserId, open, setOpen }: Props) {
   const { T } = useIntl();
 
-  const {
-    data: user,
-    valid: payoutSettingsValid,
-    updatePayoutSettings,
-    updatePayoutSettingsLoading,
-  } = usePayoutSettings(githubUserId);
+  const { data: user, updatePayoutSettings, updatePayoutSettingsLoading } = usePayoutSettings(githubUserId);
+  const { isContactInfoValid, isPaymentInfoValid } = usePayoutInfoValidation(user);
 
   const formMethods = useForm<UserPayoutInfo>({
     mode: "onBlur",
@@ -44,6 +40,7 @@ export default function PayoutInfoSidePanel({ githubUserId, open, setOpen }: Pro
   useEffect(() => reset(decodeQuery(user)), [user]);
 
   const onSubmit: SubmitHandler<UserPayoutInfo> = formData => {
+    console.log(formData);
     updatePayoutSettings(mapFormDataToSchema(formData));
     // optimisticly set form's defaultValues to submitted form data to avoid flickering related to isDirty
     reset(formData);
@@ -67,7 +64,8 @@ export default function PayoutInfoSidePanel({ githubUserId, open, setOpen }: Pro
         <FormProvider {...formMethods}>
           <form id="payout-info-form" className="h-full min-h-0" onSubmit={handleSubmit(onSubmit)}>
             <PayoutInfoSidePanelView
-              payoutSettingsValid={payoutSettingsValid}
+              isContactInfoValid={isContactInfoValid}
+              isPaymentInfoValid={isPaymentInfoValid}
               saveButtonDisabled={updatePayoutSettingsLoading || !isDirty}
               unsavedChanges={isDirty}
             />
@@ -88,7 +86,10 @@ const mapFormDataToSchema = ({
   country,
   postCode,
   payoutSettingsType,
-  ethIdentity,
+  ethWallet,
+  // starknetWallet,
+  // optimismWallet,
+  // aptosWallet,
   IBAN,
   BIC,
   identificationNumber,
@@ -131,46 +132,68 @@ const mapFormDataToSchema = ({
     };
   }
 
-  variables.payoutSettings = {
-    usdPreferredMethod:
-      payoutSettingsType === PayoutSettingsDisplayType.BankAddress ? PreferredMethod.Fiat : PreferredMethod.Crypto,
-    bankAccount:
-      payoutSettingsType === PayoutSettingsDisplayType.BankAddress && BIC && IBAN
-        ? { IBAN: IBANParser.electronicFormat(IBAN), BIC }
-        : null,
-    ethAddress:
-      (payoutSettingsType === PayoutSettingsDisplayType.EthereumIdentity &&
-        !ethIdentity?.match(ENS_DOMAIN_REGEXP) &&
-        ethIdentity) ||
-      null,
-    ethName:
-      payoutSettingsType === PayoutSettingsDisplayType.EthereumIdentity && ethIdentity?.match(ENS_DOMAIN_REGEXP)
-        ? ethIdentity
-        : null,
-    aptosAddress: null,
-    optimismAddress: null,
-    starknetAddress: null,
-  };
+  const payoutType =
+    payoutSettingsType === PayoutSettingsDisplayType.BankAddress
+      ? PayoutSettingsType.BankAddress
+      : ethWallet?.match(ENS_DOMAIN_REGEXP)
+      ? PayoutSettingsType.EthereumName
+      : PayoutSettingsType.EthereumAddress;
+
+  if (payoutType === PayoutSettingsType.EthereumAddress && ethWallet) {
+    variables.payoutSettings = {
+      optEthAddress: ethWallet,
+      optBankAddress: null,
+      optEthName: null,
+      type: PayoutSettingsType.EthereumAddress,
+    };
+  }
+  if (payoutType === PayoutSettingsType.EthereumName && ethWallet) {
+    variables.payoutSettings = {
+      optEthAddress: null,
+      optBankAddress: null,
+      optEthName: ethWallet,
+      type: PayoutSettingsType.EthereumName,
+    };
+  }
+
+  if (payoutType === PayoutSettingsType.BankAddress && IBAN && BIC) {
+    variables.payoutSettings = {
+      optEthAddress: null,
+      optBankAddress: { IBAN: IBANParser.electronicFormat(IBAN), BIC },
+      optEthName: null,
+      type: PayoutSettingsType.BankAddress,
+    };
+  }
 
   return { variables };
 };
 
 // Setting empty strings instead of undefined is required to make isDirty work properly
 const decodeQuery = (user?: Maybe<UserPayoutSettingsFragment>): UserPayoutInfo => ({
-  profileType: user?.isCompany ? ProfileType.Company : ProfileType.Individual,
-  firstname: user?.firstname || "",
-  lastname: user?.lastname || "",
-  companyName: user?.companyName || "",
-  identificationNumber: user?.companyIdentificationNumber || "",
-  address: user?.address || "",
-  postCode: user?.postCode || "",
-  city: user?.city || "",
-  country: user?.country || "",
-  payoutSettingsType:
-    user?.usdPreferredMethod === PreferredMethod.Fiat
-      ? PayoutSettingsDisplayType.BankAddress
-      : PayoutSettingsDisplayType.EthereumIdentity,
-  ethIdentity: user?.ethWallet || "",
-  IBAN: user?.iban ? IBANParser.printFormat(user?.iban) : "",
-  BIC: user?.bic || "",
+  profileType: user?.identity?.Company ? ProfileType.Company : ProfileType.Individual,
+  firstname:
+    (user?.identity?.Company ? user?.identity?.Company?.owner?.firstname : user?.identity?.Person?.firstname) || "",
+  lastname:
+    (user?.identity?.Company ? user?.identity?.Company?.owner?.lastname : user?.identity?.Person?.lastname) || "",
+  companyName: user?.identity?.Company?.name || "",
+  identificationNumber: user?.identity?.Company?.identification_number || "",
+  address: user?.location?.address || "",
+  postCode: user?.location?.post_code || "",
+  city: user?.location?.city || "",
+  country: user?.location?.country || "",
+  payoutSettingsType: user?.payoutSettings?.EthTransfer?.Address
+    ? PayoutSettingsDisplayType.EthereumIdentity
+    : user?.payoutSettings?.EthTransfer?.Domain
+    ? PayoutSettingsDisplayType.EthereumIdentity
+    : user?.payoutSettings?.WireTransfer
+    ? PayoutSettingsDisplayType.BankAddress
+    : PayoutSettingsDisplayType.EthereumIdentity,
+  ethWallet: user?.payoutSettings?.EthTransfer?.Address || user?.payoutSettings?.EthTransfer?.Name || "",
+  starknetWallet: user?.payoutSettings.starknetWallet,
+  optimismWallet: user?.payoutSettings.optimismWallet,
+  aptosWallet: user?.payoutSettings.aptosWallet,
+  IBAN: user?.payoutSettings?.WireTransfer?.IBAN
+    ? IBANParser.printFormat(user?.payoutSettings?.WireTransfer?.IBAN)
+    : "",
+  BIC: user?.payoutSettings?.WireTransfer?.BIC || "",
 });

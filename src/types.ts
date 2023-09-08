@@ -1,4 +1,4 @@
-import { GetAllContributionsQuery, GithubIssueStatus } from "src/__generated/graphql";
+import { GetAllContributionsQuery, GithubIssueStatus, UnrewardedContributionsQuery } from "src/__generated/graphql";
 import { SortingFields } from "./hooks/useRewardSorting";
 
 export type Branded<T, B> = T & { __brand: B };
@@ -195,3 +195,15 @@ export type GithubTypeStatusDict<T> = GithubPullRequestTypeStatusDict<T> &
   GithubCodeReviewTypeStatusDict<T>;
 
 export type QueryContribution = GetAllContributionsQuery["contributions"][number];
+
+export type UserPayout =
+  | {
+      __typename?: "UserPayoutInfo" | undefined;
+      userId: string;
+      identity: string;
+      location: string;
+      payoutSettings: string;
+      arePayoutSettingsValid: boolean;
+    }
+  | undefined
+  | null;
