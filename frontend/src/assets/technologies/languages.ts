@@ -396,6 +396,7 @@ export const languages = {
   Ninja: true,
   Nit: true,
   Nix: true,
+  Noir: true,
   Nu: true,
   NumPy: true,
   Nunjucks: true,
