@@ -1,5 +1,5 @@
 use derive_more::From;
-use domain::blockchain::ethereum::*;
+use domain::blockchain::evm::*;
 use juniper::{GraphQLEnum, GraphQLInputObject};
 use serde::{Deserialize, Serialize};
 
