@@ -49,6 +49,7 @@ impl Repository for database::Client {
 							dsl::project_id.eq(project_id),
 							dsl::github_user_id.eq(user_id),
 						))
+						.on_conflict_do_nothing()
 						.execute(&mut *tx)?;
 					Ok::<(), diesel::result::Error>(())
 				})?;

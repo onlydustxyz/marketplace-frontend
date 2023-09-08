@@ -61,6 +61,7 @@ impl Repository for database::Client {
 
 				diesel::insert_into(contributions::table)
 					.values(contributions)
+					.on_conflict_do_nothing()
 					.execute(&mut *connection)
 			})
 			.err_with_context(format!(
@@ -120,6 +121,7 @@ fn refresh_contributions_from_commits(
 
 			diesel::insert_into(contributions::table)
 				.values(contributions)
+				.on_conflict_do_nothing()
 				.execute(&mut *connection)
 		})
 		.err_with_context(format!(
@@ -192,6 +194,7 @@ fn refresh_contributions_from_reviews(
 
 			diesel::insert_into(contributions::table)
 				.values(contributions)
+				.on_conflict_do_nothing()
 				.execute(&mut *connection)
 		})
 		.err_with_context(format!(
