@@ -19,7 +19,7 @@ type Props = {
   contributorId: number;
   contributorHandle: string;
   workItems: WorkItem[];
-  onWorkItemAdded: (workItem: WorkItem) => void;
+  addWorkItem: (workItem: WorkItem) => void;
 };
 
 enum Tabs {
@@ -33,7 +33,7 @@ export default function WorkItemSidePanel({
   contributorId,
   contributorHandle,
   workItems,
-  onWorkItemAdded,
+  addWorkItem,
   ...props
 }: Props) {
   const { T } = useIntl();
@@ -72,7 +72,7 @@ export default function WorkItemSidePanel({
             projectId={projectId}
             contributorId={contributorId}
             workItems={workItems}
-            onWorkItemAdded={onWorkItemAdded}
+            addWorkItem={addWorkItem}
             type={WorkItemType.PullRequest}
           />
         )}
@@ -81,16 +81,12 @@ export default function WorkItemSidePanel({
             projectId={projectId}
             contributorId={contributorId}
             workItems={workItems}
-            onWorkItemAdded={onWorkItemAdded}
+            addWorkItem={addWorkItem}
             type={WorkItemType.Issue}
           />
         )}
         {selectedTab === Tabs.Other && (
-          <OtherWorkForm
-            projectId={projectId}
-            contributorHandle={contributorHandle}
-            onWorkItemAdded={onWorkItemAdded}
-          />
+          <OtherWorkForm projectId={projectId} contributorHandle={contributorHandle} addWorkItem={addWorkItem} />
         )}
       </div>
     </SidePanel>

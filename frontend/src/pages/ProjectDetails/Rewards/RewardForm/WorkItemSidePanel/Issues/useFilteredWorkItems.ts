@@ -1,20 +1,21 @@
 import { escapeRegExp, filter } from "lodash";
-import { WorkItem } from "src/components/GithubIssue";
+import { ContributionFragment } from "src/__generated/graphql";
 
 type Props = {
   pattern?: string;
-  workItems: WorkItem[];
+  contributions: ContributionFragment[];
 };
 
-export default function useFilteredWorkItems({ pattern = "", workItems }: Props) {
+export default function useFilteredContributions({ pattern = "", contributions }: Props) {
   const searchRegExps = pattern
     .split(" ")
     .map(str => str.trim())
     .filter(str => str.length > 0)
     .map(str => new RegExp(escapeRegExp(str), "i"));
 
-  return filter(workItems, (workItem: WorkItem) => {
-    const workItemFullText = workItem.number.toString() + " " + workItem.title;
-    return searchRegExps.filter(regexp => !regexp.test(workItemFullText)).length === 0;
+  return filter(contributions, (contribution: ContributionFragment) => {
+    // const contributionFullText = contribution.number.toString() + " " + contribution.title;
+    const contributionFullText = contribution.id!;
+    return searchRegExps.filter(regexp => !regexp.test(contributionFullText)).length === 0;
   });
 }

@@ -30,10 +30,10 @@ import { useMediaQuery } from "usehooks-ts";
 type Props = {
   projectId: string;
   contributorHandle: string;
-  onWorkItemAdded: (workItem: WorkItem) => void;
+  addWorkItem: (workItem: WorkItem) => void;
 };
 
-export default function OtherWorkForm({ projectId, contributorHandle, onWorkItemAdded }: Props) {
+export default function OtherWorkForm({ projectId, contributorHandle, addWorkItem }: Props) {
   const { T } = useIntl();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
@@ -91,7 +91,7 @@ export default function OtherWorkForm({ projectId, contributorHandle, onWorkItem
     context: { graphqlErrorDisplay: "toaster" },
     onCompleted: data => {
       clearForm();
-      onWorkItemAdded(issueCreatedAndClosedToWorkItem(data.createAndCloseIssue));
+      addWorkItem(issueCreatedAndClosedToWorkItem(data.createAndCloseIssue));
       showToaster(T("reward.form.contributions.other.success"));
     },
   });

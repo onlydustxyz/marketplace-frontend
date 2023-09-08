@@ -1,27 +1,27 @@
+import classNames from "classnames";
 import { useMemo } from "react";
+import { useFormContext, useFormState } from "react-hook-form";
+import { WorkItemType, useFetchIssueLazyQuery, useFetchPullRequestLazyQuery } from "src/__generated/graphql";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
-import { useIntl } from "src/hooks/useIntl";
 import Input from "src/components/FormInput";
 import { WorkItem } from "src/components/GithubIssue";
-import { WorkItemType, useFetchIssueLazyQuery, useFetchPullRequestLazyQuery } from "src/__generated/graphql";
-import { useFormContext, useFormState } from "react-hook-form";
-import {
-  parseIssueLink,
-  REGEX_VALID_GITHUB_ISSUE_URL,
-  parsePullRequestLink,
-  REGEX_VALID_GITHUB_PULL_REQUEST_URL,
-} from "src/utils/github";
+import { useIntl } from "src/hooks/useIntl";
 import Link from "src/icons/Link";
-import classNames from "classnames";
+import {
+  REGEX_VALID_GITHUB_ISSUE_URL,
+  REGEX_VALID_GITHUB_PULL_REQUEST_URL,
+  parseIssueLink,
+  parsePullRequestLink,
+} from "src/utils/github";
 import { issueToWorkItem, pullRequestToWorkItem } from ".";
 
 type Props = {
   projectId: string;
   type: WorkItemType;
-  onWorkItemAdded: (workItem: WorkItem) => void;
+  addWorkItem: (workItem: WorkItem) => void;
 };
 
-export default function OtherIssueInput({ projectId, type, onWorkItemAdded }: Props) {
+export default function OtherIssueInput({ projectId, type, addWorkItem }: Props) {
   const { T } = useIntl();
   const inputName = type === WorkItemType.Issue ? "otherIssueLink" : "otherPullRequestLink";
   const tKey = type === WorkItemType.Issue ? "issues" : "pullRequests";
@@ -29,7 +29,7 @@ export default function OtherIssueInput({ projectId, type, onWorkItemAdded }: Pr
   const [fetchIssue] = useFetchIssueLazyQuery({
     onCompleted: data => {
       if (data.fetchIssue) {
-        onWorkItemAdded(issueToWorkItem(data.fetchIssue));
+        addWorkItem(issueToWorkItem(data.fetchIssue));
         resetField(inputName);
       } else {
         setError(inputName, {
@@ -51,7 +51,7 @@ export default function OtherIssueInput({ projectId, type, onWorkItemAdded }: Pr
   const [fetchPullRequest] = useFetchPullRequestLazyQuery({
     onCompleted: data => {
       if (data.fetchPullRequest) {
-        onWorkItemAdded(pullRequestToWorkItem(data.fetchPullRequest));
+        addWorkItem(pullRequestToWorkItem(data.fetchPullRequest));
         resetField(inputName);
       } else {
         setError(inputName, {

@@ -129,7 +129,3 @@ export enum GithubIssueType {
   Issue,
   PullRequest,
 }
-
-export type ContributionType = "issue" | "pull_request" | "code_review";
-
-export type Contribution = UnrewardedContributionsQuery["contributions"][0];

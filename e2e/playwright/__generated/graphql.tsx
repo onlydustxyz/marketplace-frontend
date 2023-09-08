@@ -17999,6 +17999,8 @@ export type UnrewardedContributionsQueryVariables = Exact<{
 
 export type UnrewardedContributionsQuery = { __typename?: 'query_root', contributions: Array<{ __typename?: 'Contributions', type: any | null, status: any | null, repoId: any | null, projectId: any | null, id: string | null, detailsId: string | null, githubUserId: any | null, ignored: boolean | null }> };
 
+export type ContributionFragment = { __typename?: 'Contributions', type: any | null, status: any | null, repoId: any | null, projectId: any | null, id: string | null, detailsId: string | null, githubUserId: any | null, ignored: boolean | null };
+
 export type SearchIssuesQueryVariables = Exact<{
   projectId: Scalars['uuid'];
   githubUserId: Scalars['jsonb'];
@@ -18730,6 +18732,18 @@ export const ContributorFragmentDoc = gql`
   }
 }
     ${MinimalUserProfileFragmentDoc}`;
+export const ContributionFragmentDoc = gql`
+    fragment Contribution on Contributions {
+  type
+  status
+  repoId
+  projectId
+  id
+  detailsId
+  githubUserId
+  ignored
+}
+    `;
 export const SidebarProjectDetailsFragmentDoc = gql`
     fragment SidebarProjectDetails on Projects {
   ...ProjectId
@@ -20903,17 +20917,10 @@ export const UnrewardedContributionsDocument = gql`
   contributions(
     where: {githubUserId: {_eq: $githubUserId}, projectId: {_eq: $projectId}, type: {_eq: $type}, rewardItems_aggregate: {count: {predicate: {_eq: 0}}}}
   ) {
-    type
-    status
-    repoId
-    projectId
-    id
-    detailsId
-    githubUserId
-    ignored
+    ...Contribution
   }
 }
-    `;
+    ${ContributionFragmentDoc}`;
 
 /**
  * __useUnrewardedContributionsQuery__

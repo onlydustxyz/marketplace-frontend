@@ -18,7 +18,13 @@ import { filter } from "lodash";
 import { Contributor } from "./types";
 import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
-import { GithubPullRequestStatus, UnrewardedContributionsQuery } from "src/__generated/graphql";
+import {
+  ContributionCounts,
+  ContributionFragment,
+  Contributions,
+  GithubPullRequestStatus,
+  UnrewardedContributionsQuery,
+} from "src/__generated/graphql";
 import pickContributorImg from "src/assets/img/pick-contributor.png";
 import addContributionImg from "src/assets/img/add-contribution.png";
 
@@ -29,7 +35,7 @@ interface Props {
   onWorkItemsChange: (workItems: WorkItem[]) => void;
   contributor: Contributor | null | undefined;
   setContributor: (contributor: Contributor | null | undefined) => void;
-  unpaidPRs: UnrewardedContributionsQuery["contributions"] | null | undefined;
+  unpaidPRs: ContributionFragment | null | undefined;
   requestNewPaymentMutationLoading: boolean;
 }
 
@@ -166,7 +172,7 @@ const View: React.FC<Props> = ({
                 open={sidePanelOpen}
                 setOpen={setSidePanelOpen}
                 workItems={workItems}
-                onWorkItemAdded={addWorkItem}
+                addWorkItem={addWorkItem}
                 contributorHandle={contributor.login}
                 contributorId={contributor.githubUserId}
               />

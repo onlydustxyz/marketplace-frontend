@@ -19,6 +19,7 @@ import EyeLine from "src/icons/EyeLine";
 import classNames from "classnames";
 import { withTooltip } from "src/components/Tooltip";
 import {
+  ContributionFragment,
   GithubIssueCreatedAndClosedStatus,
   GithubIssueStatus,
   GithubPullRequestStatus,
@@ -33,7 +34,7 @@ export enum Action {
 }
 
 export type WorkItem = {
-  id: number;
+  id: string;
   repoId: number;
   number: number;
   type: WorkItemType;
@@ -62,7 +63,7 @@ export type Props = {
   secondaryAction?: Action;
   onClick?: () => void;
   onSecondaryClick?: () => void;
-  workItem: WorkItem;
+  contribution: ContributionFragment;
   ignored?: boolean;
   addMarginTopForVirtuosoDisplay?: boolean;
 };
@@ -70,7 +71,7 @@ export type Props = {
 export default function GithubIssue({
   action,
   secondaryAction,
-  workItem,
+  contribution,
   onClick,
   onSecondaryClick,
   ignored = false,
