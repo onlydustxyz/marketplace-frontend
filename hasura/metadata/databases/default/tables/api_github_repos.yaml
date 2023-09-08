@@ -1,6 +1,13 @@
 table:
   name: github_repos
   schema: api
+configuration:
+  column_config: {}
+  custom_column_names: {}
+  custom_name: GithubRepos
+  custom_root_fields:
+    select: githubRepos
+    select_aggregate: githubReposAggregate
 array_relationships:
   - name: projects
     using:

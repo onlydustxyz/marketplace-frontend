@@ -126,22 +126,24 @@ const ALL_PROJECTS_RESULT: { data: GetProjectsQueryResult["data"] } = {
 
 const GITHUB_REPO_DETAILS_RESULT: { data: GetGithubRepositoryDetailsQueryResult["data"] } = {
   data: {
-    githubReposByPk: {
-      __typename: "GithubRepos",
-      id: TEST_GITHUB_REPO_ID,
-      owner: TEST_GITHUB_REPO_OWNER,
-      name: TEST_GITHUB_REPO_NAME,
-      description: TEST_GITHUB_REPO_CONTENT,
-      htmlUrl: "url",
-      stars: 0,
-      forkCount: 0,
-      hasIssues: true,
-      languages: {
-        __typename: "GithubRepoDetails",
+    githubRepos: [
+      {
+        __typename: "GithubRepos",
         id: TEST_GITHUB_REPO_ID,
-        languages: {},
+        owner: TEST_GITHUB_REPO_OWNER,
+        name: TEST_GITHUB_REPO_NAME,
+        description: TEST_GITHUB_REPO_CONTENT,
+        htmlUrl: "url",
+        stars: 0,
+        forkCount: 0,
+        hasIssues: true,
+        languages: {
+          __typename: "GithubRepoDetails",
+          id: TEST_GITHUB_REPO_ID,
+          languages: {},
+        },
       },
-    },
+    ],
   },
 };
 

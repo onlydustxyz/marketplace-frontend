@@ -161,8 +161,9 @@ input Information {
 }
 
 input WorkItem {
+  id: String!
   type: WorkItemType!
-  issueNumber: Int!
+  number: Int!
   repoId: Int!
 }
 

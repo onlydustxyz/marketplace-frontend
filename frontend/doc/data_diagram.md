@@ -187,17 +187,18 @@ class GithubPullRequests {
 }
 
 class GithubRepos {
-   description: String!
-   forkCount: Int!
-   hasIssues: Boolean!
-   htmlUrl: String!
-   id: bigint!
-   languages: jsonb!
-   name: String!
-   owner: String!
+   description: String
+   forkCount: Int
+   hasIssues: Boolean
+   htmlUrl: String
+   id: bigint
+   indexedAt: timestamp
+   languages: jsonb
+   name: String
+   owner: String
    parentId: bigint
    projects: [ProjectGithubRepos!]!
-   stars: Int!
+   stars: Int
    updatedAt: timestamp
 }
 

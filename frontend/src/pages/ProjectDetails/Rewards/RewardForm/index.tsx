@@ -77,7 +77,12 @@ const RewardForm: React.FC = () => {
     (workItems: WorkItem[]) =>
       formMethods.setValue(
         "workItems",
-        workItems.map(workItem => ({ repoId: workItem.repoId, issueNumber: workItem.number, type: workItem.type }))
+        workItems.map(workItem => ({
+          id: workItem.id.toString(),
+          repoId: workItem.repoId,
+          number: workItem.number,
+          type: workItem.type,
+        }))
       ),
     [formMethods]
   );

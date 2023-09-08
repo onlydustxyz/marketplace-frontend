@@ -2,6 +2,7 @@
     "name": "marketplace",
     "version": "2.0.0",
     "scripts": {
+        "frontend:generate": "yarn --cwd ./frontend generate",
         "frontend:dev": "yarn --cwd ./frontend dev",
         "frontend:build": "yarn --cwd ./frontend build",
         "frontend:install": "yarn --cwd ./frontend install",
