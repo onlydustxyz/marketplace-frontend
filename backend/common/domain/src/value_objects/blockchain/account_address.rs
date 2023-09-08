@@ -19,7 +19,7 @@ impl<const LENGTH: usize> AccountAddress<LENGTH> {
 	}
 
 	pub fn short_str_lossless(&self) -> String {
-		let hex_str = hex::encode(&self.0).trim_start_matches('0').to_string();
+		let hex_str = hex::encode(self.0).trim_start_matches('0').to_string();
 		if hex_str.is_empty() {
 			"0".to_string()
 		} else {
@@ -27,7 +27,7 @@ impl<const LENGTH: usize> AccountAddress<LENGTH> {
 		}
 	}
 
-	pub fn to_vec(&self) -> Vec<u8> {
+	pub fn to_vec(self) -> Vec<u8> {
 		self.0.to_vec()
 	}
 
@@ -62,7 +62,7 @@ impl<const LENGTH: usize> AccountAddress<LENGTH> {
 			.map(Self)
 	}
 
-	pub fn to_hex(&self) -> String {
+	pub fn to_hex(self) -> String {
 		format!("{:x}", self)
 	}
 
@@ -334,7 +334,7 @@ mod tests {
 	fn test_address_protobuf_roundtrip() {
 		let addr = AccountAddress::new([1u8; 16]);
 		let bytes = addr.to_vec();
-		assert_eq!(bytes.clone(), addr.as_ref());
+		assert_eq!(bytes, addr.as_ref());
 		let addr2 = AccountAddress::<16>::try_from(&bytes[..]).unwrap();
 		assert_eq!(addr, addr2);
 	}
