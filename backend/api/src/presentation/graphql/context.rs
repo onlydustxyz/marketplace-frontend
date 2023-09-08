@@ -11,7 +11,7 @@ use presentation::http::guards::Claims;
 use super::{Error, Result};
 use crate::{
 	application,
-	domain::{ArePayoutSettingsValid, Permissions},
+	domain::Permissions,
 	infrastructure::{simple_storage, web3::ens},
 	models::*,
 };
@@ -34,7 +34,6 @@ pub struct Context {
 	pub accept_project_leader_invitation_usecase:
 		application::project::accept_leader_invitation::Usecase,
 	pub project_details_repository: Arc<dyn Repository<ProjectDetails>>,
-	pub update_user_payout_info_usecase: application::user::update_payout_info::Usecase,
 	pub apply_to_project_usecase: application::project::apply::Usecase,
 	pub onboard_usecase: application::user::onboard::Usecase,
 	pub update_user_profile_info_usecase: application::user::update_profile_info::Usecase,
@@ -53,7 +52,6 @@ impl Context {
 		pending_project_leader_invitations_repository: Arc<
 			dyn ImmutableRepository<PendingProjectLeaderInvitation>,
 		>,
-		user_payout_info_repository: Arc<dyn Repository<UserPayoutInfo>>,
 		user_profile_info_repository: Arc<dyn UserProfileInfoRepository>,
 		contact_informations_repository: Arc<dyn ContactInformationsRepository>,
 		onboarding_repository: Arc<dyn Repository<Onboarding>>,
@@ -123,10 +121,6 @@ impl Context {
 					project_repository.clone(),
 				),
 			project_details_repository,
-			update_user_payout_info_usecase: application::user::update_payout_info::Usecase::new(
-				user_payout_info_repository,
-				ArePayoutSettingsValid::new(ens.clone()),
-			),
 			apply_to_project_usecase: application::project::apply::Usecase::new(
 				project_repository,
 				bus,

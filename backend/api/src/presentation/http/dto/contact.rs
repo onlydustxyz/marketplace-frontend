@@ -25,6 +25,7 @@ impl From<Channel> for infrastructure::database::enums::ContactChannel {
 }
 
 #[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Information {
 	pub channel: Channel,
 	pub contact: String,

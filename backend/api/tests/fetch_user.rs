@@ -5,6 +5,7 @@ use anyhow::Result;
 use olog::info;
 use rocket::http::{Header, Status};
 use rstest::rstest;
+use serde_json::json;
 use testcontainers::clients::Cli;
 
 use crate::context::{
@@ -56,10 +57,23 @@ impl<'a> Test<'a> {
 
 		// Then
 		assert_eq!(response.status(), Status::Ok);
-		let user_details = response.into_string().await.unwrap();
+		let user_details: serde_json::Value = response.into_json().await.unwrap();
 		assert_eq!(
 			user_details,
-			"[{\"id\":51940,\"login\":\"pierre\",\"avatar_url\":\"https://avatars.githubusercontent.com/u/51940?v=4\",\"html_url\":\"https://github.com/pierre\"},{\"id\":8023543,\"login\":\"turbo\",\"avatar_url\":\"https://avatars.githubusercontent.com/u/8023543?v=4\",\"html_url\":\"https://github.com/turbo\"}]"
+			json!([
+				{
+				  "id": 51940,
+				  "login": "pierre",
+				  "avatarUrl": "https://avatars.githubusercontent.com/u/51940?v=4",
+				  "htmlUrl": "https://github.com/pierre"
+				},
+				{
+				  "id": 8023543,
+				  "login": "turbo",
+				  "avatarUrl": "https://avatars.githubusercontent.com/u/8023543?v=4",
+				  "htmlUrl": "https://github.com/turbo"
+				}
+			])
 		);
 		Ok(())
 	}
@@ -85,10 +99,23 @@ impl<'a> Test<'a> {
 
 		// Then
 		assert_eq!(response.status(), Status::Ok);
-		let user_details = response.into_string().await.unwrap();
+		let user_details: serde_json::Value = response.into_json().await.unwrap();
 		assert_eq!(
 			user_details,
-			"[{\"id\":10130,\"login\":\"anthony\",\"avatar_url\":\"https://avatars.githubusercontent.com/u/10130?v=4\",\"html_url\":\"https://github.com/anthony\"},{\"id\":3982077,\"login\":\"anthonychu\",\"avatar_url\":\"https://avatars.githubusercontent.com/u/3982077?v=4\",\"html_url\":\"https://github.com/anthonychu\"}]"
+			json!([
+				{
+				  "id": 10130,
+				  "login": "anthony",
+				  "avatarUrl": "https://avatars.githubusercontent.com/u/10130?v=4",
+				  "htmlUrl": "https://github.com/anthony"
+				},
+				{
+				  "id": 3982077,
+				  "login": "anthonychu",
+				  "avatarUrl": "https://avatars.githubusercontent.com/u/3982077?v=4",
+				  "htmlUrl": "https://github.com/anthonychu"
+				}
+			])
 		);
 		Ok(())
 	}

@@ -1,5 +1,6 @@
 use domain::{AggregateRootRepository, Project};
 use http_api_problem::{HttpApiProblem, StatusCode};
+use olog::IntoField;
 use presentation::http::guards::{ApiKey, Claims, Role};
 use rocket::State;
 use uuid::Uuid;
@@ -34,11 +35,10 @@ pub fn ignore(
 	}
 
 	ignored_contributions_usecase.add(project_id, contribution_id).map_err(|e| {
-		{
-			HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
-				.title("Unable to ignore contribution")
-				.detail(e.to_string())
-		}
+		olog::error!(error = e.to_field(), "Unable to ignore contribution");
+		HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
+			.title("Unable to ignore contribution")
+			.detail(e.to_string())
 	})?;
 
 	Ok(())
@@ -70,11 +70,10 @@ pub fn unignore(
 	}
 
 	ignored_contributions_usecase.remove(project_id, contribution_id).map_err(|e| {
-		{
-			HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
-				.title("Unable to unignore contribution")
-				.detail(e.to_string())
-		}
+		olog::error!(error = e.to_field(), "Unable to ignore contribution");
+		HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
+			.title("Unable to unignore contribution")
+			.detail(e.to_string())
 	})?;
 
 	Ok(())

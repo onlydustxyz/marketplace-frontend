@@ -42,12 +42,24 @@ pub mod sql_types {
     pub struct GithubPullRequestStatus;
 
     #[derive(diesel::query_builder::QueryId, diesel::sql_types::SqlType)]
+    #[diesel(postgres_type(name = "network"))]
+    pub struct Network;
+
+    #[derive(diesel::query_builder::QueryId, diesel::sql_types::SqlType)]
+    #[diesel(postgres_type(name = "preferred_method"))]
+    pub struct PreferredMethod;
+
+    #[derive(diesel::query_builder::QueryId, diesel::sql_types::SqlType)]
     #[diesel(postgres_type(name = "profile_cover"))]
     pub struct ProfileCover;
 
     #[derive(diesel::query_builder::QueryId, diesel::sql_types::SqlType)]
     #[diesel(postgres_type(name = "project_visibility"))]
     pub struct ProjectVisibility;
+
+    #[derive(diesel::query_builder::QueryId, diesel::sql_types::SqlType)]
+    #[diesel(postgres_type(name = "wallet_type"))]
+    pub struct WalletType;
 }
 
 diesel::table! {
@@ -72,6 +84,14 @@ diesel::table! {
         avatar_url_at_signup -> Nullable<Text>,
         created_at -> Timestamp,
         admin -> Bool,
+    }
+}
+
+diesel::table! {
+    bank_accounts (user_id) {
+        user_id -> Uuid,
+        bic -> Text,
+        iban -> Text,
     }
 }
 
@@ -403,12 +423,14 @@ diesel::table! {
 }
 
 diesel::table! {
+    use diesel::sql_types::*;
+    use super::sql_types::PreferredMethod;
+
     user_payout_info (user_id) {
         user_id -> Uuid,
         identity -> Nullable<Jsonb>,
         location -> Nullable<Jsonb>,
-        payout_settings -> Nullable<Jsonb>,
-        are_payout_settings_valid -> Bool,
+        usd_preferred_method -> Nullable<PreferredMethod>,
     }
 }
 
@@ -427,6 +449,20 @@ diesel::table! {
         looking_for_a_job -> Bool,
         avatar_url -> Nullable<Text>,
         cover -> Nullable<ProfileCover>,
+    }
+}
+
+diesel::table! {
+    use diesel::sql_types::*;
+    use super::sql_types::Network;
+    use super::sql_types::WalletType;
+
+    wallets (user_id, network) {
+        user_id -> Uuid,
+        network -> Network,
+        #[sql_name = "type"]
+        type_ -> WalletType,
+        address -> Text,
     }
 }
 
@@ -453,6 +489,7 @@ diesel::joinable!(projects_sponsors -> sponsors (sponsor_id));
 diesel::allow_tables_to_appear_in_same_query!(
     applications,
     auth_users,
+    bank_accounts,
     budgets,
     closing_issues,
     commands,
@@ -486,5 +523,6 @@ diesel::allow_tables_to_appear_in_same_query!(
     technologies,
     user_payout_info,
     user_profile_info,
+    wallets,
     work_items,
 );

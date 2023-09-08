@@ -5,12 +5,10 @@ use anyhow::Result;
 use chrono::Utc;
 use domain::{BudgetEvent, BudgetId, GithubRepoId, ProjectEvent, ProjectId, UserId};
 use olog::info;
-use rocket::{
-	http::{ContentType, Header, Status},
-	serde::json::json,
-};
+use rocket::http::{ContentType, Header, Status};
 use rstest::rstest;
 use rust_decimal::Decimal;
+use serde_json::json;
 use testcontainers::clients::Cli;
 
 use crate::context::{
@@ -67,8 +65,8 @@ impl<'a> Test<'a> {
 		)?;
 
 		let request = json!({
-			"project_id": id.to_string(),
-			"github_repo_id": github_repo_id,
+			"projectId": id.to_string(),
+			"githubRepoId": github_repo_id,
 			"title": "issue-title",
 			"description": "issue-description",
 		});
@@ -91,10 +89,27 @@ impl<'a> Test<'a> {
 
 		// Then
 		assert_eq!(response.status(), Status::Ok);
-		let created_issue = response.into_string().await.unwrap();
+		let created_issue = response.into_json::<serde_json::Value>().await.unwrap();
 		assert_eq!(
 			created_issue,
-			"{\"id\":1840630179,\"repo_id\":1111,\"number\":25,\"title\":\"issue-title\",\"author\":{\"id\":16590657,\"login\":\"PierreOucif\",\"avatar_url\":\"https://avatars.githubusercontent.com/u/16590657?v=4\",\"html_url\":\"https://github.com/PierreOucif\"},\"html_url\":\"https://github.com/onlydustxyz/od-rust-template/issues/25\",\"status\":\"COMPLETED\",\"created_at\":\"2023-08-08T06:11:35Z\",\"updated_at\":\"2023-08-08T06:13:08Z\",\"closed_at\":\"2023-08-08T06:13:08Z\",\"comments_count\":0}"
+			json!({
+				"id": 1840630179,
+				"repoId": 1111,
+				"number": 25,
+				"title": "issue-title",
+				"author": {
+				  "id": 16590657,
+				  "login": "PierreOucif",
+				  "avatarUrl": "https://avatars.githubusercontent.com/u/16590657?v=4",
+				  "htmlUrl": "https://github.com/PierreOucif"
+				},
+				"htmlUrl": "https://github.com/onlydustxyz/od-rust-template/issues/25",
+				"status": "COMPLETED",
+				"createdAt": "2023-08-08T06:11:35Z",
+				"updatedAt": "2023-08-08T06:13:08Z",
+				"closedAt": "2023-08-08T06:13:08Z",
+				"commentsCount": 0
+			})
 		);
 		Ok(())
 	}
