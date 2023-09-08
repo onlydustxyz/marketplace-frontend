@@ -7,6 +7,7 @@
 - "!include api_github_repos.yaml"
 - "!include api_projects.yaml"
 - "!include api_technologies.yaml"
+- "!include api_user_payout_info.yaml"
 - "!include api_user_profiles.yaml"
 - "!include auth_provider_requests.yaml"
 - "!include auth_providers.yaml"
@@ -36,5 +37,4 @@
 - "!include public_projects_sponsors.yaml"
 - "!include public_registered_users.yaml"
 - "!include public_sponsors.yaml"
-- "!include public_user_payout_info.yaml"
 - "!include public_work_items.yaml"
