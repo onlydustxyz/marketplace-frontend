@@ -139,7 +139,7 @@ mod tests {
 						"OnChainPayment":{
 							"network":"Ethereum",
 							"recipient_address": recipient_address,
-							"recipient_ens": None::<ethereum::Name>,
+							"recipient_ens": None::<evm::Name>,
 							"transaction_hash": transaction_hash,
 						}
 					},

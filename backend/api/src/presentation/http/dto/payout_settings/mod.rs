@@ -1,5 +1,5 @@
 use derive_more::From;
-use domain::blockchain::{aptos, ethereum, starknet};
+use domain::blockchain::{aptos, evm, starknet};
 use serde::{Deserialize, Serialize};
 
 mod bank_account;
@@ -10,8 +10,9 @@ pub use bank_account::BankAccount;
 pub struct PayoutSettings {
 	pub usd_preferred_method: Option<PreferredMethod>,
 	pub bank_account: Option<BankAccount>,
-	pub eth_address: Option<ethereum::Address>,
-	pub eth_name: Option<ethereum::Name>,
+	pub eth_address: Option<evm::Address>,
+	pub eth_name: Option<evm::Name>,
+	pub optimism_address: Option<evm::Address>,
 	pub aptos_address: Option<aptos::Address>,
 	pub starknet_address: Option<starknet::Address>,
 }
