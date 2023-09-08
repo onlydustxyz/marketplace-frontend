@@ -5,6 +5,7 @@ use anyhow::Result;
 use olog::info;
 use rocket::http::{Header, Status};
 use rstest::rstest;
+use serde_json::json;
 use testcontainers::clients::Cli;
 
 use crate::context::{
@@ -55,10 +56,27 @@ impl<'a> Test<'a> {
 
 		// Then
 		assert_eq!(response.status(), Status::Ok);
-		let issue = response.into_string().await.unwrap();
+		let issue: serde_json::Value = response.into_json().await.unwrap();
 		assert_eq!(
 			issue,
-			"{\"id\":1840630180,\"repo_id\":663102799,\"number\":111,\"title\":\"issue-title\",\"author\":{\"id\":16590657,\"login\":\"PierreOucif\",\"avatar_url\":\"https://avatars.githubusercontent.com/u/16590657?v=4\",\"html_url\":\"https://github.com/PierreOucif\"},\"html_url\":\"https://github.com/repo_onwer_test_1/repo_name_test_1/issues/111\",\"status\":\"OPEN\",\"created_at\":\"2023-08-08T06:11:35Z\",\"updated_at\":\"2023-08-08T06:11:35Z\",\"closed_at\":null,\"comments_count\":0}"
+			json!({
+				"id": 1840630180,
+				"repoId": 663102799,
+				"number": 111,
+				"title": "issue-title",
+				"author": {
+				  "id": 16590657,
+				  "login": "PierreOucif",
+				  "avatarUrl": "https://avatars.githubusercontent.com/u/16590657?v=4",
+				  "htmlUrl": "https://github.com/PierreOucif"
+				},
+				"htmlUrl": "https://github.com/repo_onwer_test_1/repo_name_test_1/issues/111",
+				"status": "OPEN",
+				"createdAt": "2023-08-08T06:11:35Z",
+				"updatedAt": "2023-08-08T06:11:35Z",
+				"closedAt": null,
+				"commentsCount": 0
+			})
 		);
 		Ok(())
 	}

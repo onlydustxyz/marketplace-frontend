@@ -1,238 +1,294 @@
 type Mutation {
-  cancelPaymentRequest(
-    projectId: Uuid!
-    paymentId: Uuid!
-  ): Payment!
+    cancelPaymentRequest(projectId: Uuid!, paymentId: Uuid!): Payment!
 }
 
 type Mutation {
-  createAndCloseIssue(
-    description: String!
-    githubRepoId: Int!
-    projectId: Uuid!
-    title: String!
-  ): GithubIssueCreatedAndClosed!
+    createAndCloseIssue(
+        description: String!
+        githubRepoId: Int!
+        projectId: Uuid!
+        title: String!
+    ): GithubIssue!
 }
 
 type Mutation {
-  createProject(
-    name: String!
-    shortDescription: String!
-    longDescription: String!
-    telegramLink: Url
-    logoUrl: Url
-    initialBudget: Int
-    hiring: Boolean
-    rank: Int
-    visibility: Visibility
-  ): Uuid!
+    createProject(
+        name: String!
+        shortDescription: String!
+        longDescription: String!
+        telegramLink: Url
+        logoUrl: Url
+        initialBudget: Int
+        hiring: Boolean
+        rank: Int
+        visibility: Visibility
+    ): Uuid!
 }
 
 type Query {
-  fetchIssue(
-    repoOwner: String!
-    repoName: String!
-    issueNumber: Int!
-  ): GithubIssue
+    fetchIssue(
+        repoOwner: String!
+        repoName: String!
+        issueNumber: Int!
+    ): GithubIssue
 }
 
 type Query {
-  fetchPullRequest(
-    repoOwner: String!
-    repoName: String!
-    prNumber: Int!
-  ): GithubPullRequest
+    fetchPullRequest(
+        repoOwner: String!
+        repoName: String!
+        prNumber: Int!
+    ): GithubPullRequest
 }
 
 type Mutation {
-  ignoreContribution(
-    projectId: Uuid!
-    contributionId: String!
-  ): Boolean!
+    ignoreContribution(projectId: Uuid!, contributionId: String!): Boolean!
 }
 
 type Mutation {
-  requestPayment(
-    projectId: Uuid!
-    recipientId: Int!
-    amountInUsd: Int!
-    hoursWorked: Int!
-    reason: Reason!
-  ): Payment!
+    requestPayment(
+        projectId: Uuid!
+        recipientId: Int!
+        amountInUsd: Int!
+        hoursWorked: Int!
+        reason: Reason!
+    ): Payment!
 }
 
 type Query {
-  searchUsers(
-    query: String!
-    sort: String
-    order: String
-    perPage: Int
-    page: Int
-  ): [GithubUser!]
+    searchUsers(
+        query: String!
+        sort: String!
+        order: String!
+        perPage: Int!
+        page: Int!
+    ): [GithubUser!]
 }
 
 type Mutation {
-  suggestTechnology(
-    suggestion: String!
-  ): Boolean
+    suggestTechnology(suggestion: String!): Boolean
 }
 
 type Mutation {
-  unignoreContribution(
-    projectId: Uuid!
-    contributionId: String!
-  ): Boolean!
+    unignoreContribution(projectId: Uuid!, contributionId: String!): Boolean!
 }
 
 type Mutation {
-  updateUserProfile(
-    bio: String
-    location: String
-    website: String
-    languages: [Language!]
-    weeklyAllocatedTime: AllocatedTime!
-    lookingForAJob: Boolean!
-    contactInformations: [Information!]!
-    cover: ProfileCover
-  ): Boolean!
+    updatePayoutInfo(
+        location: Location
+        identity: Identity
+        payoutSettings: PayoutSettings
+    ): Uuid!
+}
+
+type Mutation {
+    updateUserProfile(
+        bio: String
+        location: String
+        website: String
+        languages: [Language!]
+        weeklyAllocatedTime: AllocatedTime!
+        lookingForAJob: Boolean!
+        contactInformations: [Information!]!
+        cover: ProfileCover
+    ): Boolean!
 }
 
 enum Visibility {
-  PRIVATE
-  PUBLIC
+    PRIVATE
+    PUBLIC
 }
 
 enum Channel {
-  DISCORD
-  EMAIL
-  LINKED_IN
-  TELEGRAM
-  TWITTER
-  WHATSAPP
+    DISCORD
+    EMAIL
+    LINKED_IN
+    TELEGRAM
+    TWITTER
+    WHATSAPP
 }
 
 enum AllocatedTime {
-  LESS_THAN_ONE_DAY
-  MORE_THAN_THREE_DAYS
-  NONE
-  ONE_TO_THREE_DAYS
+    LESS_THAN_ONE_DAY
+    MORE_THAN_THREE_DAYS
+    NONE
+    ONE_TO_THREE_DAYS
 }
 
 enum ProfileCover {
-  BLUE
-  CYAN
-  MAGENTA
-  YELLOW
+    BLUE
+    CYAN
+    MAGENTA
+    YELLOW
 }
 
 enum GithubIssueCreatedAndClosedStatus {
-  Open
-  Completed
-  Cancelled
+    Open
+    Completed
+    Cancelled
 }
 
 enum GithubPullRequestStatus {
-  CLOSED
-  MERGED
-  OPEN
+    CLOSED
+    MERGED
+    OPEN
 }
 
 enum GithubIssueStatus {
-  CANCELLED
-  COMPLETED
-  OPEN
+    CANCELLED
+    COMPLETED
+    OPEN
 }
 
 enum WorkItemType {
-  ISSUE
-  PULL_REQUEST
-  CODE_REVIEW
+    ISSUE
+    PULL_REQUEST
+    CODE_REVIEW
+}
+
+enum IdentityType {
+    COMPANY
+    PERSON
+}
+
+enum PayoutSettingsType {
+    BANK_ADDRESS
+    ETHEREUM_ADDRESS
+    ETHEREUM_NAME
+}
+
+enum PreferredMethod {
+    FIAT
+    CRYPTO
 }
 
 input Language {
-  name: String!
-  weight: Int!
+    name: String!
+    weight: Int!
 }
 
 input Information {
-  channel: Channel!
-  contact: String!
-  public: Boolean!
+    channel: Channel!
+    contact: String!
+    public: Boolean!
 }
 
 input WorkItem {
-  id: String!
-  type: WorkItemType!
-  number: Int!
-  repoId: Int!
+    id: String!
+    type: WorkItemType!
+    number: Int!
+    repoId: Int!
 }
 
 input Reason {
-  workItems: [WorkItem!]!
+    workItems: [WorkItem!]!
+}
+
+input BankAddress {
+    BIC: String!
+    IBAN: Iban!
+}
+
+input CompanyIdentity {
+    identificationNumber: String
+    name: String
+    owner: PersonIdentity
+}
+
+input Location {
+    address: String
+    city: String
+    country: String
+    postCode: String
+}
+
+input PersonIdentity {
+    firstname: String
+    lastname: String
+}
+
+input Identity {
+    company: CompanyIdentity
+    person: PersonIdentity
+    type: IdentityType!
+}
+
+input PayoutSettings {
+    usdPreferredMethod: PreferredMethod!
+    bankAccount: BankAccount
+    ethAddress: String
+    ethName: String
+    aptosAddress: String
+    starknetAddress: String
+}
+
+input BankAccount {
+    BIC: String!
+    IBAN: String!
 }
 
 type GithubIssueCreatedAndClosed {
-  id: Int!
-  repoId: Int!
-  number: Int!
-  title: String!
-  author: GithubUserLinkedToIssue!
-  htmlUrl: Url!
-  status: GithubIssueCreatedAndClosedStatus!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  closedAt: DateTime
-  commentsCount: Int!
+    id: Int!
+    repoId: Int!
+    number: Int!
+    title: String!
+    author: GithubUserLinkedToIssue!
+    htmlUrl: Url!
+    status: GithubIssueCreatedAndClosedStatus!
+    createdAt: DateTime!
+    updatedAt: DateTime!
+    closedAt: DateTime
+    commentsCount: Int!
 }
 
 type GithubUserLinkedToIssue {
-  id: Int!
-  login: String!
-  avatarUrl: Url!
-  htmlUrl: Url!
+    id: Int!
+    login: String!
+    avatarUrl: Url!
+    htmlUrl: Url!
 }
 
 type GithubUser {
-  avatarUrl: Url!
-  htmlUrl: Url!
-  id: Int!
-  login: String!
+    avatarUrl: Url!
+    htmlUrl: Url!
+    id: Int!
+    login: String!
 }
 
 type GithubPullRequest {
-  author: GithubUser!
-  closedAt: DateTimeUtc
-  createdAt: DateTimeUtc!
-  htmlUrl: Url!
-  id: Int!
-  mergedAt: DateTimeUtc
-  number: Int!
-  repoId: Int!
-  status: GithubPullRequestStatus!
-  title: String!
-  updatedAt: DateTimeUtc!
+    author: GithubUser!
+    closedAt: DateTimeUtc
+    createdAt: DateTimeUtc!
+    htmlUrl: Url!
+    id: Int!
+    mergedAt: DateTimeUtc
+    number: Int!
+    repoId: Int!
+    status: GithubPullRequestStatus!
+    title: String!
+    updatedAt: DateTimeUtc!
 }
 
 type GithubIssue {
-  author: GithubUser!
-  closedAt: DateTimeUtc
-  commentsCount: Int!
-  createdAt: DateTimeUtc!
-  htmlUrl: Url!
-  id: Int!
-  number: Int!
-  repoId: Int!
-  status: GithubIssueStatus!
-  title: String!
-  updatedAt: DateTimeUtc!
+    author: GithubUser!
+    closedAt: DateTimeUtc
+    commentsCount: Int!
+    createdAt: DateTimeUtc!
+    htmlUrl: Url!
+    id: Int!
+    number: Int!
+    repoId: Int!
+    status: GithubIssueStatus!
+    title: String!
+    updatedAt: DateTimeUtc!
 }
 
 type Payment {
-  amount: Amount!
-  budgetId: Uuid!
-  commandId: Uuid!
-  paymentId: Uuid!
-  projectId: Uuid!
+    amount: Amount!
+    budgetId: Uuid!
+    commandId: Uuid!
+    paymentId: Uuid!
+    projectId: Uuid!
 }
 
 scalar Url
@@ -245,3 +301,8 @@ scalar DateTimeUtc
 
 scalar Amount
 
+scalar EthereumAddress
+
+scalar EthereumName
+
+scalar Iban

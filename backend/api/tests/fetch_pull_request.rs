@@ -5,6 +5,7 @@ use anyhow::Result;
 use olog::info;
 use rocket::http::{Header, Status};
 use rstest::rstest;
+use serde_json::json;
 use testcontainers::clients::Cli;
 
 use crate::context::{
@@ -53,10 +54,27 @@ impl<'a> Test<'a> {
 
 		// Then
 		assert_eq!(response.status(), Status::Ok);
-		let pr = response.into_string().await.unwrap();
+		let pr: serde_json::Value = response.into_json().await.unwrap();
 		assert_eq!(
 			pr,
-			"{\"id\":1471540266,\"repo_id\":498695724,\"number\":222,\"title\":\"Improve indexer\",\"author\":{\"id\":43467246,\"login\":\"AnthonyBuisset\",\"avatar_url\":\"https://avatars.githubusercontent.com/u/43467246?v=4\",\"html_url\":\"https://github.com/AnthonyBuisset\"},\"html_url\":\"https://github.com/repo_owner_test_2/repo_name_test_2/pull/222\",\"status\":\"MERGED\",\"created_at\":\"2023-08-11T09:49:15Z\",\"updated_at\":\"2023-08-11T10:10:37Z\",\"merged_at\":\"2023-08-11T10:10:36Z\",\"closed_at\":\"2023-08-11T10:10:36Z\"}"
+			json!({
+				"id": 1471540266,
+				"repoId": 498695724,
+				"number": 222,
+				"title": "Improve indexer",
+				"author": {
+				  "id": 43467246,
+				  "login": "AnthonyBuisset",
+				  "avatarUrl": "https://avatars.githubusercontent.com/u/43467246?v=4",
+				  "htmlUrl": "https://github.com/AnthonyBuisset"
+				},
+				"htmlUrl": "https://github.com/repo_owner_test_2/repo_name_test_2/pull/222",
+				"status": "MERGED",
+				"createdAt": "2023-08-11T09:49:15Z",
+				"updatedAt": "2023-08-11T10:10:37Z",
+				"mergedAt": "2023-08-11T10:10:36Z",
+				"closedAt": "2023-08-11T10:10:36Z"
+			})
 		);
 		Ok(())
 	}

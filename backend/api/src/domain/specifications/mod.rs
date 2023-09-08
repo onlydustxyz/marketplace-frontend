@@ -1,6 +1,6 @@
-mod payout_settings;
+mod ens;
 #[cfg_attr(test, mockall_double::double)]
-pub use payout_settings::IsValid as ArePayoutSettingsValid;
+pub use ens::IsValid as IsEnsValid;
 
 mod github_repo_exists;
 #[cfg(test)]

@@ -9,12 +9,13 @@ use url::Url;
 use crate::application;
 
 #[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Response {
 	pub project_id: ProjectId,
 }
 
 #[derive(Debug, Deserialize)]
-#[serde(crate = "rocket::serde")]
+#[serde(rename_all = "camelCase")]
 pub struct Request {
 	name: String,
 	short_description: String,

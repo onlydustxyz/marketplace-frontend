@@ -1,0 +1,17 @@
+{
+    "request": {
+        "url": "/",
+        "method": "POST",
+        "bodyPatterns": [
+            {
+                "equalToJson": "{\"jsonrpc\":\"2.0\",\"method\":\"eth_call\",\"params\":[{\"to\":\"0x4976fb03c32e5b8cfe2b6ccb31c09ba78ebaba41\",\"data\":\"0x01ffc9a73b3b57de00000000000000000000000000000000000000000000000000000000\"},\"latest\"],\"id\":4}",
+                "ignoreArrayOrder": true,
+                "ignoreExtraElements": true
+            }
+        ]
+    },
+    "response": {
+        "status": 200,
+        "bodyFileName": "body-support_interface-2.json"
+    }
+}

@@ -3,16 +3,22 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Constructor)]
 #[serde(transparent)]
-pub struct EthereumName(String);
+pub struct Name(String);
 
-impl EthereumName {
+impl Name {
 	pub fn as_str(&self) -> &str {
 		self.0.as_str()
 	}
 }
 
+impl ToString for Name {
+	fn to_string(&self) -> String {
+		self.0.to_string()
+	}
+}
+
 #[juniper::graphql_scalar(description = "A ENS backed domain name")]
-impl<S> GraphQLScalar for EthereumName
+impl<S> GraphQLScalar for Name
 where
 	S: juniper::ScalarValue,
 {
@@ -27,7 +33,7 @@ where
 			return None;
 		}
 
-		Some(EthereumName(str_value.to_string()))
+		Some(Name(str_value.to_string()))
 	}
 
 	fn from_str<'a>(value: juniper::ScalarToken<'a>) -> juniper::ParseScalarResult<'a, S> {
