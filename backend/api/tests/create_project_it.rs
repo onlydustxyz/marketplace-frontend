@@ -42,9 +42,9 @@ impl<'a> Test<'a> {
 
 		let create_project_request = json!({
 			"name": "My Awesome Project",
-			"short_description": "A short description",
-			"long_description": "A very looong description",
-			"telegram_link": "http://telegram-link.test",
+			"shortDescription": "A short description",
+			"longDescription": "A very looong description",
+			"telegramLink": "http://telegram-link.test",
 		});
 
 		// When

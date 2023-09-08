@@ -3,9 +3,8 @@ import IBANParser from "iban";
 
 import { useIntl } from "src/hooks/useIntl";
 import {
-  IdentityType,
   Maybe,
-  PayoutSettingsType,
+  PreferredMethod,
   UpdatePayoutSettingsMutationVariables,
   UserPayoutSettingsFragment,
 } from "src/__generated/graphql";
@@ -102,18 +101,16 @@ const mapFormDataToSchema = ({
 
   if (profileType === ProfileType.Individual && (firstname || lastname)) {
     variables.identity = {
-      type: IdentityType.Person,
-      optPerson: {
+      person: {
         firstname: firstname || null,
         lastname: lastname || null,
       },
-      optCompany: null,
+      company: null,
     };
   }
   if (profileType === ProfileType.Company && (firstname || lastname || companyName || identificationNumber)) {
     variables.identity = {
-      type: IdentityType.Company,
-      optCompany: {
+      company: {
         name: companyName || null,
         identificationNumber: identificationNumber || null,
         owner: {
@@ -121,7 +118,7 @@ const mapFormDataToSchema = ({
           lastname: lastname || null,
         },
       },
-      optPerson: null,
+      person: null,
     };
   }
 
@@ -134,64 +131,46 @@ const mapFormDataToSchema = ({
     };
   }
 
-  const payoutType =
-    payoutSettingsType === PayoutSettingsDisplayType.BankAddress
-      ? PayoutSettingsType.BankAddress
-      : ethIdentity?.match(ENS_DOMAIN_REGEXP)
-      ? PayoutSettingsType.EthereumName
-      : PayoutSettingsType.EthereumAddress;
-
-  if (payoutType === PayoutSettingsType.EthereumAddress && ethIdentity) {
-    variables.payoutSettings = {
-      optEthAddress: ethIdentity,
-      optBankAddress: null,
-      optEthName: null,
-      type: PayoutSettingsType.EthereumAddress,
-    };
-  }
-  if (payoutType === PayoutSettingsType.EthereumName && ethIdentity) {
-    variables.payoutSettings = {
-      optEthAddress: null,
-      optBankAddress: null,
-      optEthName: ethIdentity,
-      type: PayoutSettingsType.EthereumName,
-    };
-  }
-  if (payoutType === PayoutSettingsType.BankAddress && IBAN && BIC) {
-    variables.payoutSettings = {
-      optEthAddress: null,
-      optBankAddress: { IBAN: IBANParser.electronicFormat(IBAN), BIC },
-      optEthName: null,
-      type: PayoutSettingsType.BankAddress,
-    };
-  }
+  variables.payoutSettings = {
+    usdPreferredMethod:
+      payoutSettingsType === PayoutSettingsDisplayType.BankAddress ? PreferredMethod.Fiat : PreferredMethod.Crypto,
+    bankAccount:
+      payoutSettingsType === PayoutSettingsDisplayType.BankAddress && BIC && IBAN
+        ? { IBAN: IBANParser.electronicFormat(IBAN), BIC }
+        : null,
+    ethAddress:
+      (payoutSettingsType === PayoutSettingsDisplayType.EthereumIdentity &&
+        !ethIdentity?.match(ENS_DOMAIN_REGEXP) &&
+        ethIdentity) ||
+      null,
+    ethName:
+      payoutSettingsType === PayoutSettingsDisplayType.EthereumIdentity && ethIdentity?.match(ENS_DOMAIN_REGEXP)
+        ? ethIdentity
+        : null,
+    aptosAddress: null,
+    optimismAddress: null,
+    starknetAddress: null,
+  };
 
   return { variables };
 };
 
 // Setting empty strings instead of undefined is required to make isDirty work properly
 const decodeQuery = (user?: Maybe<UserPayoutSettingsFragment>): UserPayoutInfo => ({
-  profileType: user?.identity?.Company ? ProfileType.Company : ProfileType.Individual,
-  firstname:
-    (user?.identity?.Company ? user?.identity?.Company?.owner?.firstname : user?.identity?.Person?.firstname) || "",
-  lastname:
-    (user?.identity?.Company ? user?.identity?.Company?.owner?.lastname : user?.identity?.Person?.lastname) || "",
-  companyName: user?.identity?.Company?.name || "",
-  identificationNumber: user?.identity?.Company?.identification_number || "",
-  address: user?.location?.address || "",
-  postCode: user?.location?.post_code || "",
-  city: user?.location?.city || "",
-  country: user?.location?.country || "",
-  payoutSettingsType: user?.payoutSettings?.EthTransfer?.Address
-    ? PayoutSettingsDisplayType.EthereumIdentity
-    : user?.payoutSettings?.EthTransfer?.Domain
-    ? PayoutSettingsDisplayType.EthereumIdentity
-    : user?.payoutSettings?.WireTransfer
-    ? PayoutSettingsDisplayType.BankAddress
-    : PayoutSettingsDisplayType.EthereumIdentity,
-  ethIdentity: user?.payoutSettings?.EthTransfer?.Address || user?.payoutSettings?.EthTransfer?.Name || "",
-  IBAN: user?.payoutSettings?.WireTransfer?.IBAN
-    ? IBANParser.printFormat(user?.payoutSettings?.WireTransfer?.IBAN)
-    : "",
-  BIC: user?.payoutSettings?.WireTransfer?.BIC || "",
+  profileType: user?.isCompany ? ProfileType.Company : ProfileType.Individual,
+  firstname: user?.firstname || "",
+  lastname: user?.lastname || "",
+  companyName: user?.companyName || "",
+  identificationNumber: user?.companyIdentificationNumber || "",
+  address: user?.address || "",
+  postCode: user?.postCode || "",
+  city: user?.city || "",
+  country: user?.country || "",
+  payoutSettingsType:
+    user?.usdPreferredMethod === PreferredMethod.Fiat
+      ? PayoutSettingsDisplayType.BankAddress
+      : PayoutSettingsDisplayType.EthereumIdentity,
+  ethIdentity: user?.ethWallet || "",
+  IBAN: user?.iban ? IBANParser.printFormat(user?.iban) : "",
+  BIC: user?.bic || "",
 });

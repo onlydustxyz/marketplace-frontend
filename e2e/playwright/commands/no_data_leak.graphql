@@ -3,9 +3,7 @@ query getUserDetails($userId: uuid!) {
     email
     lastSeen
     userPayoutInfo {
-      location
-      identity
-      payoutSettings
+      ...UserPayoutSettings
     }
     paymentRequests {
       payments {

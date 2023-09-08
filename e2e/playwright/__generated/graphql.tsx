@@ -13,13 +13,13 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  /** A `0x` prefixed hexadecimal string representing 20 bytes of data */
+  Address: any;
   Amount: any;
   DateTimeUtc: any;
-  /** A `0x` prefixed hexadecimal string representing 20 bytes of data */
-  EthereumAddress: any;
-  /** A ENS backed domain name */
-  EthereumName: any;
   Iban: any;
+  /** A ENS backed domain name */
+  Name: any;
   Url: any;
   /** Uuid */
   Uuid: any;
@@ -1061,9 +1061,9 @@ export type AuthUserGithubProviderVarianceFields = {
   githubUserId: Maybe<Scalars['Float']>;
 };
 
-export type BankAddress = {
+export type BankAccount = {
   BIC: Scalars['String'];
-  IBAN: Scalars['Iban'];
+  IBAN: Scalars['String'];
 };
 
 /** Boolean expression to compare columns of type "bigint". All fields are combined with logical 'AND'. */
@@ -3245,8 +3245,8 @@ export enum CursorOrdering {
 }
 
 export type EthereumIdentityInput = {
-  optEthAddress: InputMaybe<Scalars['EthereumAddress']>;
-  optEthName: InputMaybe<Scalars['EthereumName']>;
+  optEthAddress: InputMaybe<Scalars['Address']>;
+  optEthName: InputMaybe<Scalars['Name']>;
   type: EthereumIdentityType;
 };
 
@@ -5061,16 +5061,10 @@ export type GithubUsersVarianceFields = {
   id: Maybe<Scalars['Float']>;
 };
 
-export type IdentityInput = {
-  optCompany: InputMaybe<CompanyIdentity>;
-  optPerson: InputMaybe<PersonIdentity>;
-  type: IdentityType;
+export type Identity = {
+  company: InputMaybe<CompanyIdentity>;
+  person: InputMaybe<PersonIdentity>;
 };
-
-export enum IdentityType {
-  Company = 'COMPANY',
-  Person = 'PERSON'
-}
 
 export type Information = {
   channel: Channel;
@@ -6131,18 +6125,15 @@ export type PaymentsVarianceFields = {
   amount: Maybe<Scalars['Float']>;
 };
 
-export type PayoutSettingsInput = {
-  optBankAddress: InputMaybe<BankAddress>;
-  optEthAddress: InputMaybe<Scalars['EthereumAddress']>;
-  optEthName: InputMaybe<Scalars['EthereumName']>;
-  type: PayoutSettingsType;
+export type PayoutSettings = {
+  aptosAddress: InputMaybe<Scalars['String']>;
+  bankAccount: InputMaybe<BankAccount>;
+  ethAddress: InputMaybe<Scalars['String']>;
+  ethName: InputMaybe<Scalars['String']>;
+  optimismAddress: InputMaybe<Scalars['String']>;
+  starknetAddress: InputMaybe<Scalars['String']>;
+  usdPreferredMethod: PreferredMethod;
 };
-
-export enum PayoutSettingsType {
-  BankAddress = 'BANK_ADDRESS',
-  EthereumAddress = 'ETHEREUM_ADDRESS',
-  EthereumName = 'ETHEREUM_NAME'
-}
 
 /** columns and relationships of "pending_project_leader_invitations" */
 export type PendingProjectLeaderInvitations = {
@@ -6377,6 +6368,11 @@ export type PersonIdentity = {
   firstname: InputMaybe<Scalars['String']>;
   lastname: InputMaybe<Scalars['String']>;
 };
+
+export enum PreferredMethod {
+  Crypto = 'CRYPTO',
+  Fiat = 'FIAT'
+}
 
 export enum ProfileCover {
   Blue = 'BLUE',
@@ -8663,42 +8659,37 @@ export type TimestamptzComparisonExp = {
   _nin: InputMaybe<Array<Scalars['timestamptz']>>;
 };
 
-/** columns and relationships of "user_payout_info" */
+/** columns and relationships of "api.user_payout_info" */
 export type UserPayoutInfo = {
   __typename?: 'UserPayoutInfo';
-  arePayoutSettingsValid: Scalars['Boolean'];
-  identity: Maybe<Scalars['jsonb']>;
-  location: Maybe<Scalars['jsonb']>;
-  payoutSettings: Maybe<Scalars['jsonb']>;
-  userId: Scalars['uuid'];
+  address: Maybe<Scalars['String']>;
+  aptosWallet: Maybe<Scalars['String']>;
+  arePayoutSettingsValid: Maybe<Scalars['Boolean']>;
+  bic: Maybe<Scalars['String']>;
+  city: Maybe<Scalars['String']>;
+  companyIdentificationNumber: Maybe<Scalars['String']>;
+  companyName: Maybe<Scalars['String']>;
+  country: Maybe<Scalars['String']>;
+  ethWallet: Maybe<Scalars['String']>;
+  firstname: Maybe<Scalars['String']>;
+  iban: Maybe<Scalars['String']>;
+  isCompany: Maybe<Scalars['Boolean']>;
+  lastname: Maybe<Scalars['String']>;
+  optimismWallet: Maybe<Scalars['String']>;
+  postCode: Maybe<Scalars['String']>;
+  starknetWallet: Maybe<Scalars['String']>;
+  usdPreferredMethod: Maybe<Scalars['String']>;
+  userId: Maybe<Scalars['uuid']>;
 };
 
-
-/** columns and relationships of "user_payout_info" */
-export type UserPayoutInfoIdentityArgs = {
-  path: InputMaybe<Scalars['String']>;
-};
-
-
-/** columns and relationships of "user_payout_info" */
-export type UserPayoutInfoLocationArgs = {
-  path: InputMaybe<Scalars['String']>;
-};
-
-
-/** columns and relationships of "user_payout_info" */
-export type UserPayoutInfoPayoutSettingsArgs = {
-  path: InputMaybe<Scalars['String']>;
-};
-
-/** aggregated selection of "user_payout_info" */
+/** aggregated selection of "api.user_payout_info" */
 export type UserPayoutInfoAggregate = {
   __typename?: 'UserPayoutInfoAggregate';
   aggregate: Maybe<UserPayoutInfoAggregateFields>;
   nodes: Array<UserPayoutInfo>;
 };
 
-/** aggregate fields of "user_payout_info" */
+/** aggregate fields of "api.user_payout_info" */
 export type UserPayoutInfoAggregateFields = {
   __typename?: 'UserPayoutInfoAggregateFields';
   count: Scalars['Int'];
@@ -8707,170 +8698,196 @@ export type UserPayoutInfoAggregateFields = {
 };
 
 
-/** aggregate fields of "user_payout_info" */
+/** aggregate fields of "api.user_payout_info" */
 export type UserPayoutInfoAggregateFieldsCountArgs = {
   columns: InputMaybe<Array<UserPayoutInfoSelectColumn>>;
   distinct: InputMaybe<Scalars['Boolean']>;
 };
 
-/** append existing jsonb value of filtered columns with new jsonb value */
-export type UserPayoutInfoAppendInput = {
-  identity: InputMaybe<Scalars['jsonb']>;
-  location: InputMaybe<Scalars['jsonb']>;
-  payoutSettings: InputMaybe<Scalars['jsonb']>;
-};
-
-/** Boolean expression to filter rows from the table "user_payout_info". All fields are combined with a logical 'AND'. */
+/** Boolean expression to filter rows from the table "api.user_payout_info". All fields are combined with a logical 'AND'. */
 export type UserPayoutInfoBoolExp = {
   _and: InputMaybe<Array<UserPayoutInfoBoolExp>>;
   _not: InputMaybe<UserPayoutInfoBoolExp>;
   _or: InputMaybe<Array<UserPayoutInfoBoolExp>>;
+  address: InputMaybe<StringComparisonExp>;
+  aptosWallet: InputMaybe<StringComparisonExp>;
   arePayoutSettingsValid: InputMaybe<BooleanComparisonExp>;
-  identity: InputMaybe<JsonbComparisonExp>;
-  location: InputMaybe<JsonbComparisonExp>;
-  payoutSettings: InputMaybe<JsonbComparisonExp>;
+  bic: InputMaybe<StringComparisonExp>;
+  city: InputMaybe<StringComparisonExp>;
+  companyIdentificationNumber: InputMaybe<StringComparisonExp>;
+  companyName: InputMaybe<StringComparisonExp>;
+  country: InputMaybe<StringComparisonExp>;
+  ethWallet: InputMaybe<StringComparisonExp>;
+  firstname: InputMaybe<StringComparisonExp>;
+  iban: InputMaybe<StringComparisonExp>;
+  isCompany: InputMaybe<BooleanComparisonExp>;
+  lastname: InputMaybe<StringComparisonExp>;
+  optimismWallet: InputMaybe<StringComparisonExp>;
+  postCode: InputMaybe<StringComparisonExp>;
+  starknetWallet: InputMaybe<StringComparisonExp>;
+  usdPreferredMethod: InputMaybe<StringComparisonExp>;
   userId: InputMaybe<UuidComparisonExp>;
 };
 
-/** unique or primary key constraints on table "user_payout_info" */
-export enum UserPayoutInfoConstraint {
-  /** unique or primary key constraint on columns "user_id" */
-  UserInfoPkey = 'user_info_pkey'
-}
-
-/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
-export type UserPayoutInfoDeleteAtPathInput = {
-  identity: InputMaybe<Array<Scalars['String']>>;
-  location: InputMaybe<Array<Scalars['String']>>;
-  payoutSettings: InputMaybe<Array<Scalars['String']>>;
-};
-
-/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
-export type UserPayoutInfoDeleteElemInput = {
-  identity: InputMaybe<Scalars['Int']>;
-  location: InputMaybe<Scalars['Int']>;
-  payoutSettings: InputMaybe<Scalars['Int']>;
-};
-
-/** delete key/value pair or string element. key/value pairs are matched based on their key value */
-export type UserPayoutInfoDeleteKeyInput = {
-  identity: InputMaybe<Scalars['String']>;
-  location: InputMaybe<Scalars['String']>;
-  payoutSettings: InputMaybe<Scalars['String']>;
-};
-
-/** input type for inserting data into table "user_payout_info" */
+/** input type for inserting data into table "api.user_payout_info" */
 export type UserPayoutInfoInsertInput = {
-  identity: InputMaybe<Scalars['jsonb']>;
-  location: InputMaybe<Scalars['jsonb']>;
-  payoutSettings: InputMaybe<Scalars['jsonb']>;
+  address: InputMaybe<Scalars['String']>;
+  aptosWallet: InputMaybe<Scalars['String']>;
+  arePayoutSettingsValid: InputMaybe<Scalars['Boolean']>;
+  bic: InputMaybe<Scalars['String']>;
+  city: InputMaybe<Scalars['String']>;
+  companyIdentificationNumber: InputMaybe<Scalars['String']>;
+  companyName: InputMaybe<Scalars['String']>;
+  country: InputMaybe<Scalars['String']>;
+  ethWallet: InputMaybe<Scalars['String']>;
+  firstname: InputMaybe<Scalars['String']>;
+  iban: InputMaybe<Scalars['String']>;
+  isCompany: InputMaybe<Scalars['Boolean']>;
+  lastname: InputMaybe<Scalars['String']>;
+  optimismWallet: InputMaybe<Scalars['String']>;
+  postCode: InputMaybe<Scalars['String']>;
+  starknetWallet: InputMaybe<Scalars['String']>;
+  usdPreferredMethod: InputMaybe<Scalars['String']>;
   userId: InputMaybe<Scalars['uuid']>;
 };
 
 /** aggregate max on columns */
 export type UserPayoutInfoMaxFields = {
   __typename?: 'UserPayoutInfoMaxFields';
+  address: Maybe<Scalars['String']>;
+  aptosWallet: Maybe<Scalars['String']>;
+  bic: Maybe<Scalars['String']>;
+  city: Maybe<Scalars['String']>;
+  companyIdentificationNumber: Maybe<Scalars['String']>;
+  companyName: Maybe<Scalars['String']>;
+  country: Maybe<Scalars['String']>;
+  ethWallet: Maybe<Scalars['String']>;
+  firstname: Maybe<Scalars['String']>;
+  iban: Maybe<Scalars['String']>;
+  lastname: Maybe<Scalars['String']>;
+  optimismWallet: Maybe<Scalars['String']>;
+  postCode: Maybe<Scalars['String']>;
+  starknetWallet: Maybe<Scalars['String']>;
+  usdPreferredMethod: Maybe<Scalars['String']>;
   userId: Maybe<Scalars['uuid']>;
 };
 
 /** aggregate min on columns */
 export type UserPayoutInfoMinFields = {
   __typename?: 'UserPayoutInfoMinFields';
+  address: Maybe<Scalars['String']>;
+  aptosWallet: Maybe<Scalars['String']>;
+  bic: Maybe<Scalars['String']>;
+  city: Maybe<Scalars['String']>;
+  companyIdentificationNumber: Maybe<Scalars['String']>;
+  companyName: Maybe<Scalars['String']>;
+  country: Maybe<Scalars['String']>;
+  ethWallet: Maybe<Scalars['String']>;
+  firstname: Maybe<Scalars['String']>;
+  iban: Maybe<Scalars['String']>;
+  lastname: Maybe<Scalars['String']>;
+  optimismWallet: Maybe<Scalars['String']>;
+  postCode: Maybe<Scalars['String']>;
+  starknetWallet: Maybe<Scalars['String']>;
+  usdPreferredMethod: Maybe<Scalars['String']>;
   userId: Maybe<Scalars['uuid']>;
 };
 
-/** response of any mutation on the table "user_payout_info" */
-export type UserPayoutInfoMutationResponse = {
-  __typename?: 'UserPayoutInfoMutationResponse';
-  /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
-  /** data from the rows affected by the mutation */
-  returning: Array<UserPayoutInfo>;
-};
-
-/** input type for inserting object relation for remote table "user_payout_info" */
+/** input type for inserting object relation for remote table "api.user_payout_info" */
 export type UserPayoutInfoObjRelInsertInput = {
   data: UserPayoutInfoInsertInput;
-  /** upsert condition */
-  onConflict: InputMaybe<UserPayoutInfoOnConflict>;
 };
 
-/** on_conflict condition type for table "user_payout_info" */
-export type UserPayoutInfoOnConflict = {
-  constraint: UserPayoutInfoConstraint;
-  update_columns: Array<UserPayoutInfoUpdateColumn>;
-  where: InputMaybe<UserPayoutInfoBoolExp>;
-};
-
-/** Ordering options when selecting data from "user_payout_info". */
+/** Ordering options when selecting data from "api.user_payout_info". */
 export type UserPayoutInfoOrderBy = {
+  address: InputMaybe<OrderBy>;
+  aptosWallet: InputMaybe<OrderBy>;
   arePayoutSettingsValid: InputMaybe<OrderBy>;
-  identity: InputMaybe<OrderBy>;
-  location: InputMaybe<OrderBy>;
-  payoutSettings: InputMaybe<OrderBy>;
+  bic: InputMaybe<OrderBy>;
+  city: InputMaybe<OrderBy>;
+  companyIdentificationNumber: InputMaybe<OrderBy>;
+  companyName: InputMaybe<OrderBy>;
+  country: InputMaybe<OrderBy>;
+  ethWallet: InputMaybe<OrderBy>;
+  firstname: InputMaybe<OrderBy>;
+  iban: InputMaybe<OrderBy>;
+  isCompany: InputMaybe<OrderBy>;
+  lastname: InputMaybe<OrderBy>;
+  optimismWallet: InputMaybe<OrderBy>;
+  postCode: InputMaybe<OrderBy>;
+  starknetWallet: InputMaybe<OrderBy>;
+  usdPreferredMethod: InputMaybe<OrderBy>;
   userId: InputMaybe<OrderBy>;
 };
 
-/** primary key columns input for table: user_payout_info */
-export type UserPayoutInfoPkColumnsInput = {
-  userId: Scalars['uuid'];
-};
-
-/** prepend existing jsonb value of filtered columns with new jsonb value */
-export type UserPayoutInfoPrependInput = {
-  identity: InputMaybe<Scalars['jsonb']>;
-  location: InputMaybe<Scalars['jsonb']>;
-  payoutSettings: InputMaybe<Scalars['jsonb']>;
-};
-
-/** select columns of table "user_payout_info" */
+/** select columns of table "api.user_payout_info" */
 export enum UserPayoutInfoSelectColumn {
+  /** column name */
+  Address = 'address',
+  /** column name */
+  AptosWallet = 'aptosWallet',
   /** column name */
   ArePayoutSettingsValid = 'arePayoutSettingsValid',
   /** column name */
-  Identity = 'identity',
+  Bic = 'bic',
   /** column name */
-  Location = 'location',
+  City = 'city',
   /** column name */
-  PayoutSettings = 'payoutSettings',
+  CompanyIdentificationNumber = 'companyIdentificationNumber',
+  /** column name */
+  CompanyName = 'companyName',
+  /** column name */
+  Country = 'country',
+  /** column name */
+  EthWallet = 'ethWallet',
+  /** column name */
+  Firstname = 'firstname',
+  /** column name */
+  Iban = 'iban',
+  /** column name */
+  IsCompany = 'isCompany',
+  /** column name */
+  Lastname = 'lastname',
+  /** column name */
+  OptimismWallet = 'optimismWallet',
+  /** column name */
+  PostCode = 'postCode',
+  /** column name */
+  StarknetWallet = 'starknetWallet',
+  /** column name */
+  UsdPreferredMethod = 'usdPreferredMethod',
   /** column name */
   UserId = 'userId'
 }
 
-/** input type for updating data in table "user_payout_info" */
-export type UserPayoutInfoSetInput = {
-  identity: InputMaybe<Scalars['jsonb']>;
-  location: InputMaybe<Scalars['jsonb']>;
-  payoutSettings: InputMaybe<Scalars['jsonb']>;
-  userId: InputMaybe<Scalars['uuid']>;
+/** Streaming cursor of the table "UserPayoutInfo" */
+export type UserPayoutInfo_StreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: UserPayoutInfo_StreamCursorValueInput;
+  /** cursor ordering */
+  ordering: InputMaybe<CursorOrdering>;
 };
 
-/** update columns of table "user_payout_info" */
-export enum UserPayoutInfoUpdateColumn {
-  /** column name */
-  Identity = 'identity',
-  /** column name */
-  Location = 'location',
-  /** column name */
-  PayoutSettings = 'payoutSettings',
-  /** column name */
-  UserId = 'userId'
-}
-
-export type UserPayoutInfoUpdates = {
-  /** append existing jsonb value of filtered columns with new jsonb value */
-  _append: InputMaybe<UserPayoutInfoAppendInput>;
-  /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
-  _deleteAtPath: InputMaybe<UserPayoutInfoDeleteAtPathInput>;
-  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
-  _deleteElem: InputMaybe<UserPayoutInfoDeleteElemInput>;
-  /** delete key/value pair or string element. key/value pairs are matched based on their key value */
-  _deleteKey: InputMaybe<UserPayoutInfoDeleteKeyInput>;
-  /** prepend existing jsonb value of filtered columns with new jsonb value */
-  _prepend: InputMaybe<UserPayoutInfoPrependInput>;
-  /** sets the columns of the filtered rows to the given values */
-  _set: InputMaybe<UserPayoutInfoSetInput>;
-  where: UserPayoutInfoBoolExp;
+/** Initial value of the column from where the streaming should start */
+export type UserPayoutInfo_StreamCursorValueInput = {
+  address: InputMaybe<Scalars['String']>;
+  aptosWallet: InputMaybe<Scalars['String']>;
+  arePayoutSettingsValid: InputMaybe<Scalars['Boolean']>;
+  bic: InputMaybe<Scalars['String']>;
+  city: InputMaybe<Scalars['String']>;
+  companyIdentificationNumber: InputMaybe<Scalars['String']>;
+  companyName: InputMaybe<Scalars['String']>;
+  country: InputMaybe<Scalars['String']>;
+  ethWallet: InputMaybe<Scalars['String']>;
+  firstname: InputMaybe<Scalars['String']>;
+  iban: InputMaybe<Scalars['String']>;
+  isCompany: InputMaybe<Scalars['Boolean']>;
+  lastname: InputMaybe<Scalars['String']>;
+  optimismWallet: InputMaybe<Scalars['String']>;
+  postCode: InputMaybe<Scalars['String']>;
+  starknetWallet: InputMaybe<Scalars['String']>;
+  usdPreferredMethod: InputMaybe<Scalars['String']>;
+  userId: InputMaybe<Scalars['uuid']>;
 };
 
 /** columns and relationships of "api.user_profiles" */
@@ -11997,10 +12014,6 @@ export type Mutation_Root = {
   deleteTechnologies: Maybe<TechnologiesMutationResponse>;
   /** delete single row from the table: "auth.users" */
   deleteUser: Maybe<Users>;
-  /** delete data from the table: "user_payout_info" */
-  deleteUserPayoutInfo: Maybe<UserPayoutInfoMutationResponse>;
-  /** delete single row from the table: "user_payout_info" */
-  deleteUserPayoutInfoByPk: Maybe<UserPayoutInfo>;
   /** delete data from the table: "auth.users" */
   deleteUsers: Maybe<UsersMutationResponse>;
   /** delete data from the table: "api.work_items" */
@@ -12121,10 +12134,6 @@ export type Mutation_Root = {
   insertTechnologiesOne: Maybe<Technologies>;
   /** insert a single row into the table: "auth.users" */
   insertUser: Maybe<Users>;
-  /** insert data into the table: "user_payout_info" */
-  insertUserPayoutInfo: Maybe<UserPayoutInfoMutationResponse>;
-  /** insert a single row into the table: "user_payout_info" */
-  insertUserPayoutInfoOne: Maybe<UserPayoutInfo>;
   /** insert data into the table: "auth.users" */
   insertUsers: Maybe<UsersMutationResponse>;
   /** insert data into the table: "api.work_items" */
@@ -12304,12 +12313,6 @@ export type Mutation_Root = {
   updateTechnologiesMany: Maybe<Array<Maybe<TechnologiesMutationResponse>>>;
   /** update single row of the table: "auth.users" */
   updateUser: Maybe<Users>;
-  /** update data of the table: "user_payout_info" */
-  updateUserPayoutInfo: Maybe<UserPayoutInfoMutationResponse>;
-  /** update single row of the table: "user_payout_info" */
-  updateUserPayoutInfoByPk: Maybe<UserPayoutInfo>;
-  /** update multiples rows of table: "user_payout_info" */
-  updateUserPayoutInfoMany: Maybe<Array<Maybe<UserPayoutInfoMutationResponse>>>;
   /** updateUserProfile */
   updateUserProfile: Scalars['Boolean'];
   /** update data of the table: "auth.users" */
@@ -12705,18 +12708,6 @@ export type Mutation_RootDeleteTechnologiesArgs = {
 /** mutation root */
 export type Mutation_RootDeleteUserArgs = {
   id: Scalars['uuid'];
-};
-
-
-/** mutation root */
-export type Mutation_RootDeleteUserPayoutInfoArgs = {
-  where: UserPayoutInfoBoolExp;
-};
-
-
-/** mutation root */
-export type Mutation_RootDeleteUserPayoutInfoByPkArgs = {
-  userId: Scalars['uuid'];
 };
 
 
@@ -13121,20 +13112,6 @@ export type Mutation_RootInsertTechnologiesOneArgs = {
 export type Mutation_RootInsertUserArgs = {
   object: UsersInsertInput;
   onConflict: InputMaybe<UsersOnConflict>;
-};
-
-
-/** mutation root */
-export type Mutation_RootInsertUserPayoutInfoArgs = {
-  objects: Array<UserPayoutInfoInsertInput>;
-  onConflict: InputMaybe<UserPayoutInfoOnConflict>;
-};
-
-
-/** mutation root */
-export type Mutation_RootInsertUserPayoutInfoOneArgs = {
-  object: UserPayoutInfoInsertInput;
-  onConflict: InputMaybe<UserPayoutInfoOnConflict>;
 };
 
 
@@ -13620,9 +13597,9 @@ export type Mutation_RootUpdatePaymentsManyArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdatePayoutInfoArgs = {
-  identity: InputMaybe<IdentityInput>;
+  identity: InputMaybe<Identity>;
   location: InputMaybe<Location>;
-  payoutSettings: InputMaybe<PayoutSettingsInput>;
+  payoutSettings: InputMaybe<PayoutSettings>;
 };
 
 
@@ -13841,36 +13818,6 @@ export type Mutation_RootUpdateUserArgs = {
   _prepend: InputMaybe<UsersPrependInput>;
   _set: InputMaybe<UsersSetInput>;
   pk_columns: UsersPkColumnsInput;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdateUserPayoutInfoArgs = {
-  _append: InputMaybe<UserPayoutInfoAppendInput>;
-  _deleteAtPath: InputMaybe<UserPayoutInfoDeleteAtPathInput>;
-  _deleteElem: InputMaybe<UserPayoutInfoDeleteElemInput>;
-  _deleteKey: InputMaybe<UserPayoutInfoDeleteKeyInput>;
-  _prepend: InputMaybe<UserPayoutInfoPrependInput>;
-  _set: InputMaybe<UserPayoutInfoSetInput>;
-  where: UserPayoutInfoBoolExp;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdateUserPayoutInfoByPkArgs = {
-  _append: InputMaybe<UserPayoutInfoAppendInput>;
-  _deleteAtPath: InputMaybe<UserPayoutInfoDeleteAtPathInput>;
-  _deleteElem: InputMaybe<UserPayoutInfoDeleteElemInput>;
-  _deleteKey: InputMaybe<UserPayoutInfoDeleteKeyInput>;
-  _prepend: InputMaybe<UserPayoutInfoPrependInput>;
-  _set: InputMaybe<UserPayoutInfoSetInput>;
-  pk_columns: UserPayoutInfoPkColumnsInput;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdateUserPayoutInfoManyArgs = {
-  updates: Array<UserPayoutInfoUpdates>;
 };
 
 
@@ -14898,12 +14845,10 @@ export type Query_Root = {
   technologiesAggregate: TechnologiesAggregate;
   /** fetch data from the table: "auth.users" using primary key columns */
   user: Maybe<Users>;
-  /** fetch data from the table: "user_payout_info" */
+  /** fetch data from the table: "api.user_payout_info" */
   userPayoutInfo: Array<UserPayoutInfo>;
-  /** fetch aggregated fields from the table: "user_payout_info" */
+  /** fetch aggregated fields from the table: "api.user_payout_info" */
   userPayoutInfoAggregate: UserPayoutInfoAggregate;
-  /** fetch data from the table: "user_payout_info" using primary key columns */
-  userPayoutInfoByPk: Maybe<UserPayoutInfo>;
   /** fetch data from the table: "api.user_profiles" */
   userProfiles: Array<UserProfiles>;
   /** fetch aggregated fields from the table: "api.user_profiles" */
@@ -15688,11 +15633,11 @@ export type Query_RootRegisteredUsersAggregateArgs = {
 
 
 export type Query_RootSearchUsersArgs = {
-  order: InputMaybe<Scalars['String']>;
-  page: InputMaybe<Scalars['Int']>;
-  perPage: InputMaybe<Scalars['Int']>;
+  order: Scalars['String'];
+  page: Scalars['Int'];
+  perPage: Scalars['Int'];
   query: Scalars['String'];
-  sort: InputMaybe<Scalars['String']>;
+  sort: Scalars['String'];
 };
 
 
@@ -15757,11 +15702,6 @@ export type Query_RootUserPayoutInfoAggregateArgs = {
   offset: InputMaybe<Scalars['Int']>;
   orderBy: InputMaybe<Array<UserPayoutInfoOrderBy>>;
   where: InputMaybe<UserPayoutInfoBoolExp>;
-};
-
-
-export type Query_RootUserPayoutInfoByPkArgs = {
-  userId: Scalars['uuid'];
 };
 
 
@@ -15878,6 +15818,8 @@ export type Subscription_Root = {
   ProjectsStream: Array<Projects>;
   /** fetch data from the table in a streaming manner: "api.technologies" */
   TechnologiesStream: Array<Technologies>;
+  /** fetch data from the table in a streaming manner: "api.user_payout_info" */
+  UserPayoutInfoStream: Array<UserPayoutInfo>;
   /** fetch data from the table in a streaming manner: "api.user_profiles" */
   UserProfilesStream: Array<UserProfiles>;
   /** fetch data from the table in a streaming manner: "api.work_items" */
@@ -16132,14 +16074,10 @@ export type Subscription_Root = {
   technologiesAggregate: TechnologiesAggregate;
   /** fetch data from the table: "auth.users" using primary key columns */
   user: Maybe<Users>;
-  /** fetch data from the table: "user_payout_info" */
+  /** fetch data from the table: "api.user_payout_info" */
   userPayoutInfo: Array<UserPayoutInfo>;
-  /** fetch aggregated fields from the table: "user_payout_info" */
+  /** fetch aggregated fields from the table: "api.user_payout_info" */
   userPayoutInfoAggregate: UserPayoutInfoAggregate;
-  /** fetch data from the table: "user_payout_info" using primary key columns */
-  userPayoutInfoByPk: Maybe<UserPayoutInfo>;
-  /** fetch data from the table in a streaming manner: "user_payout_info" */
-  userPayoutInfoStream: Array<UserPayoutInfo>;
   /** fetch data from the table: "api.user_profiles" */
   userProfiles: Array<UserProfiles>;
   /** fetch aggregated fields from the table: "api.user_profiles" */
@@ -16231,6 +16169,13 @@ export type Subscription_RootTechnologiesStreamArgs = {
   batchSize: Scalars['Int'];
   cursor: Array<InputMaybe<Technologies_StreamCursorInput>>;
   where: InputMaybe<TechnologiesBoolExp>;
+};
+
+
+export type Subscription_RootUserPayoutInfoStreamArgs = {
+  batchSize: Scalars['Int'];
+  cursor: Array<InputMaybe<UserPayoutInfo_StreamCursorInput>>;
+  where: InputMaybe<UserPayoutInfoBoolExp>;
 };
 
 
@@ -17255,18 +17200,6 @@ export type Subscription_RootUserPayoutInfoAggregateArgs = {
 };
 
 
-export type Subscription_RootUserPayoutInfoByPkArgs = {
-  userId: Scalars['uuid'];
-};
-
-
-export type Subscription_RootUserPayoutInfoStreamArgs = {
-  batchSize: Scalars['Int'];
-  cursor: Array<InputMaybe<User_Payout_Info_StreamCursorInput>>;
-  where: InputMaybe<UserPayoutInfoBoolExp>;
-};
-
-
 export type Subscription_RootUserProfilesArgs = {
   distinctOn: InputMaybe<Array<UserProfilesSelectColumn>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -17325,23 +17258,6 @@ export type Subscription_RootWorkItemsAggregateArgs = {
   offset: InputMaybe<Scalars['Int']>;
   orderBy: InputMaybe<Array<WorkItemsOrderBy>>;
   where: InputMaybe<WorkItemsBoolExp>;
-};
-
-/** Streaming cursor of the table "user_payout_info" */
-export type User_Payout_Info_StreamCursorInput = {
-  /** Stream column input with initial value */
-  initialValue: User_Payout_Info_StreamCursorValueInput;
-  /** cursor ordering */
-  ordering: InputMaybe<CursorOrdering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type User_Payout_Info_StreamCursorValueInput = {
-  arePayoutSettingsValid: InputMaybe<Scalars['Boolean']>;
-  identity: InputMaybe<Scalars['jsonb']>;
-  location: InputMaybe<Scalars['jsonb']>;
-  payoutSettings: InputMaybe<Scalars['jsonb']>;
-  userId: InputMaybe<Scalars['uuid']>;
 };
 
 /** User account information. Don't modify its structure as Hasura Auth relies on it to function properly. */
@@ -18040,7 +17956,7 @@ export type GetUserDetailsQueryVariables = Exact<{
 }>;
 
 
-export type GetUserDetailsQuery = { __typename?: 'query_root', registeredUsers: Array<{ __typename?: 'RegisteredUsers', email: any | null, lastSeen: any | null, userPayoutInfo: { __typename?: 'UserPayoutInfo', location: any | null, identity: any | null, payoutSettings: any | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', payments: Array<{ __typename?: 'Payments', receipt: any }> }> }> };
+export type GetUserDetailsQuery = { __typename?: 'query_root', registeredUsers: Array<{ __typename?: 'RegisteredUsers', email: any | null, lastSeen: any | null, userPayoutInfo: { __typename?: 'UserPayoutInfo', userId: any | null, firstname: string | null, lastname: string | null, address: string | null, city: string | null, postCode: string | null, country: string | null, isCompany: boolean | null, companyName: string | null, companyIdentificationNumber: string | null, usdPreferredMethod: string | null, ethWallet: string | null, bic: string | null, iban: string | null, arePayoutSettingsValid: boolean | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', payments: Array<{ __typename?: 'Payments', receipt: any }> }> }> };
 
 export type GetPaymentsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -18093,7 +18009,7 @@ export type PaymentRequestsByPkQueryVariables = Exact<{
 export type PaymentRequestsByPkQuery = { __typename?: 'query_root', paymentRequestsByPk: { __typename?: 'PaymentRequests', id: any } | null };
 
 export type CreateProjectMutationVariables = Exact<{
-  projectName: Scalars['String'];
+  name: Scalars['String'];
   telegramLink: Scalars['Url'];
   logoUrl: Scalars['Url'];
   shortDescription: Scalars['String'];
@@ -18242,9 +18158,9 @@ export type CreateGithubAuthUserMutationVariables = Exact<{
 export type CreateGithubAuthUserMutation = { __typename?: 'mutation_root', insertAuthUserProvider: { __typename?: 'authUserProviders', id: any } | null };
 
 export type UpdatePayoutInfoMutationVariables = Exact<{
-  identity: InputMaybe<IdentityInput>;
+  identity: InputMaybe<Identity>;
   location: InputMaybe<Location>;
-  payoutSettings: InputMaybe<PayoutSettingsInput>;
+  payoutSettings: InputMaybe<PayoutSettings>;
 }>;
 
 
@@ -18260,7 +18176,7 @@ export type UserIdentityQueryVariables = Exact<{
 }>;
 
 
-export type UserIdentityQuery = { __typename?: 'query_root', userPayoutInfo: Array<{ __typename?: 'UserPayoutInfo', userId: any, identity: any | null }> };
+export type UserIdentityQuery = { __typename?: 'query_root', userPayoutInfo: Array<{ __typename?: 'UserPayoutInfo', userId: any | null, firstname: string | null, lastname: string | null }> };
 
 export type GetUserAvatarUrlQueryVariables = Exact<{
   githubUserId: Scalars['bigint'];
@@ -18373,6 +18289,8 @@ export type UserIdFragment = { __typename?: 'RegisteredUsers', id: any | null };
 
 export type ProjectLeadFragment = { __typename?: 'RegisteredUsers', login: string | null, avatarUrl: string | null, githubUserId: any | null, id: any | null };
 
+export type UserPayoutSettingsFragment = { __typename?: 'UserPayoutInfo', userId: any | null, firstname: string | null, lastname: string | null, address: string | null, city: string | null, postCode: string | null, country: string | null, isCompany: boolean | null, companyName: string | null, companyIdentificationNumber: string | null, usdPreferredMethod: string | null, ethWallet: string | null, bic: string | null, iban: string | null, arePayoutSettingsValid: boolean | null };
+
 export type UserProfileIdFragment = { __typename?: 'UserProfiles', githubUserId: any | null };
 
 export type MinimalUserProfileFragment = { __typename?: 'UserProfiles', login: string | null, avatarUrl: string | null, userId: any | null, githubUserId: any | null };
@@ -18456,19 +18374,17 @@ export type UpdateUserProfileMutationVariables = Exact<{
 
 export type UpdateUserProfileMutation = { __typename?: 'mutation_root', updateUserProfile: boolean };
 
-export type UserPayoutSettingsFragment = { __typename?: 'UserPayoutInfo', userId: any, identity: any | null, location: any | null, payoutSettings: any | null, arePayoutSettingsValid: boolean };
-
 export type GetUserPayoutSettingsQueryVariables = Exact<{
   githubUserId: Scalars['bigint'];
 }>;
 
 
-export type GetUserPayoutSettingsQuery = { __typename?: 'query_root', registeredUsers: Array<{ __typename?: 'RegisteredUsers', githubUserId: any | null, id: any | null, userPayoutInfo: { __typename?: 'UserPayoutInfo', userId: any, identity: any | null, location: any | null, payoutSettings: any | null, arePayoutSettingsValid: boolean } | null }> };
+export type GetUserPayoutSettingsQuery = { __typename?: 'query_root', registeredUsers: Array<{ __typename?: 'RegisteredUsers', githubUserId: any | null, id: any | null, userPayoutInfo: { __typename?: 'UserPayoutInfo', userId: any | null, firstname: string | null, lastname: string | null, address: string | null, city: string | null, postCode: string | null, country: string | null, isCompany: boolean | null, companyName: string | null, companyIdentificationNumber: string | null, usdPreferredMethod: string | null, ethWallet: string | null, bic: string | null, iban: string | null, arePayoutSettingsValid: boolean | null } | null }> };
 
 export type UpdatePayoutSettingsMutationVariables = Exact<{
-  identity: InputMaybe<IdentityInput>;
+  identity: InputMaybe<Identity>;
   location: InputMaybe<Location>;
-  payoutSettings: InputMaybe<PayoutSettingsInput>;
+  payoutSettings: InputMaybe<PayoutSettings>;
 }>;
 
 
@@ -18998,6 +18914,25 @@ export const LastProjectMergedPullRequestsFragmentDoc = gql`
   }
 }
     ${GithubIssueFragmentDoc}`;
+export const UserPayoutSettingsFragmentDoc = gql`
+    fragment UserPayoutSettings on UserPayoutInfo {
+  userId
+  firstname
+  lastname
+  address
+  city
+  postCode
+  country
+  isCompany
+  companyName
+  companyIdentificationNumber
+  usdPreferredMethod
+  ethWallet
+  bic
+  iban
+  arePayoutSettingsValid
+}
+    `;
 export const OwnUserProfileDetailsFragmentDoc = gql`
     fragment OwnUserProfileDetails on UserProfiles {
   weeklyAllocatedTime
@@ -19210,15 +19145,6 @@ ${ContributionStatFragmentDoc}
 ${PaymentStatFragmentDoc}
 ${ProfileProjectFragmentDoc}
 ${ContributionCountFragmentDoc}`;
-export const UserPayoutSettingsFragmentDoc = gql`
-    fragment UserPayoutSettings on UserPayoutInfo {
-  userId
-  identity
-  location
-  payoutSettings
-  arePayoutSettingsValid
-}
-    `;
 export const MinimalUserProfileFragmentDoc = gql`
     fragment MinimalUserProfile on UserProfiles {
   ...UserProfileId
@@ -19342,9 +19268,7 @@ export const GetUserDetailsDocument = gql`
     email
     lastSeen
     userPayoutInfo {
-      location
-      identity
-      payoutSettings
+      ...UserPayoutSettings
     }
     paymentRequests {
       payments {
@@ -19353,7 +19277,7 @@ export const GetUserDetailsDocument = gql`
     }
   }
 }
-    `;
+    ${UserPayoutSettingsFragmentDoc}`;
 
 /**
  * __useGetUserDetailsQuery__
@@ -19606,9 +19530,9 @@ export type PaymentRequestsByPkQueryHookResult = ReturnType<typeof usePaymentReq
 export type PaymentRequestsByPkLazyQueryHookResult = ReturnType<typeof usePaymentRequestsByPkLazyQuery>;
 export type PaymentRequestsByPkQueryResult = Apollo.QueryResult<PaymentRequestsByPkQuery, PaymentRequestsByPkQueryVariables>;
 export const CreateProjectDocument = gql`
-    mutation createProject($projectName: String!, $telegramLink: Url!, $logoUrl: Url!, $shortDescription: String!, $longDescription: String!, $initialBudget: Int, $hiring: Boolean, $rank: Int, $visibility: Visibility) {
+    mutation createProject($name: String!, $telegramLink: Url!, $logoUrl: Url!, $shortDescription: String!, $longDescription: String!, $initialBudget: Int, $hiring: Boolean, $rank: Int, $visibility: Visibility) {
   createProject(
-    name: $projectName
+    name: $name
     telegramLink: $telegramLink
     logoUrl: $logoUrl
     shortDescription: $shortDescription
@@ -19635,7 +19559,7 @@ export type CreateProjectMutationFn = Apollo.MutationFunction<CreateProjectMutat
  * @example
  * const [createProjectMutation, { data, loading, error }] = useCreateProjectMutation({
  *   variables: {
- *      projectName: // value for 'projectName'
+ *      name: // value for 'name'
  *      telegramLink: // value for 'telegramLink'
  *      logoUrl: // value for 'logoUrl'
  *      shortDescription: // value for 'shortDescription'
@@ -20204,7 +20128,7 @@ export type CreateGithubAuthUserMutationHookResult = ReturnType<typeof useCreate
 export type CreateGithubAuthUserMutationResult = Apollo.MutationResult<CreateGithubAuthUserMutation>;
 export type CreateGithubAuthUserMutationOptions = Apollo.BaseMutationOptions<CreateGithubAuthUserMutation, CreateGithubAuthUserMutationVariables>;
 export const UpdatePayoutInfoDocument = gql`
-    mutation updatePayoutInfo($identity: IdentityInput, $location: Location, $payoutSettings: PayoutSettingsInput) {
+    mutation updatePayoutInfo($identity: Identity, $location: Location, $payoutSettings: PayoutSettings) {
   updatePayoutInfo(
     identity: $identity
     location: $location
@@ -20274,7 +20198,8 @@ export const UserIdentityDocument = gql`
     query UserIdentity($userId: uuid!) {
   userPayoutInfo(where: {userId: {_eq: $userId}}) {
     userId
-    identity
+    firstname
+    lastname
   }
 }
     `;
@@ -20949,7 +20874,7 @@ export type GetUserPayoutSettingsQueryHookResult = ReturnType<typeof useGetUserP
 export type GetUserPayoutSettingsLazyQueryHookResult = ReturnType<typeof useGetUserPayoutSettingsLazyQuery>;
 export type GetUserPayoutSettingsQueryResult = Apollo.QueryResult<GetUserPayoutSettingsQuery, GetUserPayoutSettingsQueryVariables>;
 export const UpdatePayoutSettingsDocument = gql`
-    mutation updatePayoutSettings($identity: IdentityInput, $location: Location, $payoutSettings: PayoutSettingsInput) {
+    mutation updatePayoutSettings($identity: Identity, $location: Location, $payoutSettings: PayoutSettings) {
   updatePayoutInfo(
     identity: $identity
     location: $location

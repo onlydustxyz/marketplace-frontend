@@ -31,7 +31,7 @@
         "hasura:metadata:apply": "yarn --cwd ./hasura metadata:apply",
         "hasura:metadata:reload": "yarn --cwd ./hasura metadata:reload",
         "hasura:metadata:drop-inconsistencies": "yarn --cwd ./hasura hasura --skip-update-check md ic drop",
-        "hasura:metadata:log-inconsistencies": "yarn --cwd ./hasura hasura hasura md ic list",
+        "hasura:metadata:log-inconsistencies": "yarn --cwd ./hasura hasura md ic list",
         "hasura:metadata:export": "yarn --cwd ./hasura hasura --skip-update-check md export",
         "hasura:metadata:check-consistency": "yarn --cwd ./hasura hasura md ic status",
         "e2e:env:up": "docker compose -f infra.docker-compose.yml -f backend.docker-compose.yml -f frontend.docker-compose.yml up -d --wait && yarn hasura:metadata:apply && yarn hasura:metadata:reload",

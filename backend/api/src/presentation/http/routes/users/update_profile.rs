@@ -10,12 +10,13 @@ use uuid::Uuid;
 use crate::{application, models::ContactInformation, presentation::http::dto};
 
 #[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Response {
 	pub user_id: Uuid,
 }
 
 #[derive(Debug, Deserialize)]
-#[serde(crate = "rocket::serde")]
+#[serde(rename_all = "camelCase")]
 pub struct Request {
 	bio: Option<String>,
 	location: Option<String>,

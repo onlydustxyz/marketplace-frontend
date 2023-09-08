@@ -39,7 +39,6 @@ pub async fn get_graphql_handler(
 	pending_project_leader_invitations_repository: &State<
 		Arc<dyn ImmutableRepository<PendingProjectLeaderInvitation>>,
 	>,
-	user_payout_info_repository: &State<Arc<dyn Repository<UserPayoutInfo>>>,
 	user_profile_info_repository: &State<Arc<dyn UserProfileInfoRepository>>,
 	onboarding_repository: &State<Arc<dyn Repository<Onboarding>>>,
 	contact_informations_repository: &State<Arc<dyn ContactInformationsRepository>>,
@@ -57,7 +56,6 @@ pub async fn get_graphql_handler(
 		(*sponsor_repository).clone(),
 		(*project_sponsor_repository).clone(),
 		(*pending_project_leader_invitations_repository).clone(),
-		(*user_payout_info_repository).clone(),
 		(*user_profile_info_repository).clone(),
 		(*contact_informations_repository).clone(),
 		(*onboarding_repository).clone(),
@@ -86,7 +84,6 @@ pub async fn post_graphql_handler(
 	pending_project_leader_invitations_repository: &State<
 		Arc<dyn ImmutableRepository<PendingProjectLeaderInvitation>>,
 	>,
-	user_payout_info_repository: &State<Arc<dyn Repository<UserPayoutInfo>>>,
 	user_profile_info_repository: &State<Arc<dyn UserProfileInfoRepository>>,
 	onboarding_repository: &State<Arc<dyn Repository<Onboarding>>>,
 	contact_informations_repository: &State<Arc<dyn ContactInformationsRepository>>,
@@ -104,7 +101,6 @@ pub async fn post_graphql_handler(
 		(*sponsor_repository).clone(),
 		(*project_sponsor_repository).clone(),
 		(*pending_project_leader_invitations_repository).clone(),
-		(*user_payout_info_repository).clone(),
 		(*user_profile_info_repository).clone(),
 		(*contact_informations_repository).clone(),
 		(*onboarding_repository).clone(),

@@ -1,4 +1,3 @@
-import { gql } from "@apollo/client";
 import { SliderButton } from "@typeform/embed-react";
 import classNames from "classnames";
 import { useAuth } from "src/hooks/useAuth";
@@ -16,7 +15,7 @@ export default function FeedbackButton() {
     variables: { userId: user?.id },
   });
 
-  const identity = getIdentity(getUserIdentityQuery.data?.userPayoutInfo);
+  const { lastname, firstname } = getUserIdentityQuery.data?.userPayoutInfo[0] || {};
 
   return (
     <>
@@ -28,8 +27,8 @@ export default function FeedbackButton() {
           position="right"
           autoClose={true}
           hidden={{
-            firstname: identity?.firstname || "",
-            lastname: identity?.lastname || "",
+            firstname: firstname || "",
+            lastname: lastname || "",
             email: user.email,
             github: user.login,
           }}
@@ -52,28 +51,3 @@ export default function FeedbackButton() {
     </>
   );
 }
-
-function getIdentity(
-  userPayoutInfo:
-    | {
-        __typename?: "UserPayoutInfo" | undefined;
-        userId: unknown;
-        identity: {
-          Person?: { firstname: string; lastname: string };
-          Company?: { owner: { firstname: string; lastname: string } };
-        };
-      }[]
-    | undefined
-): { firstname: string; lastname: string } | undefined {
-  const payoutInfo = userPayoutInfo && userPayoutInfo.length > 0 ? userPayoutInfo[0] : undefined;
-  return payoutInfo?.identity?.Person || payoutInfo?.identity?.Company?.owner;
-}
-
-gql`
-  query UserIdentity($userId: uuid!) {
-    userPayoutInfo(where: { userId: { _eq: $userId } }) {
-      userId
-      identity
-    }
-  }
-`;

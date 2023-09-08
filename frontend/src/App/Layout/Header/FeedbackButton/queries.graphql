@@ -1,0 +1,7 @@
+query UserIdentity($userId: uuid!) {
+  userPayoutInfo(where: { userId: { _eq: $userId } }) {
+    userId
+    firstname
+    lastname
+  }
+}

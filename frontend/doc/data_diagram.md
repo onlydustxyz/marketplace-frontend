@@ -381,11 +381,24 @@ class Technologies {
 }
 
 class UserPayoutInfo {
-   arePayoutSettingsValid: Boolean!
-   identity: jsonb
-   location: jsonb
-   payoutSettings: jsonb
-   userId: uuid!
+   address: String
+   aptosWallet: String
+   arePayoutSettingsValid: Boolean
+   bic: String
+   city: String
+   companyIdentificationNumber: String
+   companyName: String
+   country: String
+   ethWallet: String
+   firstname: String
+   iban: String
+   isCompany: Boolean
+   lastname: String
+   optimismWallet: String
+   postCode: String
+   starknetWallet: String
+   usdPreferredMethod: String
+   userId: uuid
 }
 
 class UserProfiles {
