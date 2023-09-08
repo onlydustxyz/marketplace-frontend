@@ -1,5 +1,5 @@
 use diesel_json::Json as DbJson;
-use domain::blockchain::ethereum;
+use domain::blockchain::evm;
 use http_api_problem::HttpApiProblem;
 use olog::IntoField;
 use presentation::http::guards::{ApiKey, Claims};
@@ -81,9 +81,7 @@ pub async fn update_user_payout_info(
 		.update_user_payout_info(
 			user_payout_info,
 			bank_account.map(|a| (caller_id, a).into()),
-			eth_name
-				.map(ethereum::Wallet::Name)
-				.or(eth_address.map(ethereum::Wallet::Address)),
+			eth_name.map(evm::Wallet::Name).or(eth_address.map(evm::Wallet::Address)),
 			optimism_address,
 			aptos_address,
 			starknet_address,

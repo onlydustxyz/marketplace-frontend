@@ -1,6 +1,6 @@
 use diesel::Identifiable;
 use domain::{
-	blockchain::{self, aptos, ethereum, starknet},
+	blockchain::{self, aptos, evm, starknet},
 	UserId,
 };
 use infrastructure::database::{
@@ -38,17 +38,17 @@ impl Identifiable for Wallet {
 	}
 }
 
-impl From<(UserId, blockchain::Network, ethereum::Wallet)> for Wallet {
-	fn from((user_id, network, wallet): (UserId, blockchain::Network, ethereum::Wallet)) -> Self {
+impl From<(UserId, blockchain::Network, evm::Wallet)> for Wallet {
+	fn from((user_id, network, wallet): (UserId, blockchain::Network, evm::Wallet)) -> Self {
 		match wallet {
-			ethereum::Wallet::Name(name) => (user_id, network, name).into(),
-			ethereum::Wallet::Address(address) => (user_id, network, address).into(),
+			evm::Wallet::Name(name) => (user_id, network, name).into(),
+			evm::Wallet::Address(address) => (user_id, network, address).into(),
 		}
 	}
 }
 
-impl From<(UserId, blockchain::Network, ethereum::Address)> for Wallet {
-	fn from((user_id, network, address): (UserId, blockchain::Network, ethereum::Address)) -> Self {
+impl From<(UserId, blockchain::Network, evm::Address)> for Wallet {
+	fn from((user_id, network, address): (UserId, blockchain::Network, evm::Address)) -> Self {
 		Self {
 			user_id,
 			network: network.into(),
@@ -58,8 +58,8 @@ impl From<(UserId, blockchain::Network, ethereum::Address)> for Wallet {
 	}
 }
 
-impl From<(UserId, blockchain::Network, ethereum::Name)> for Wallet {
-	fn from((user_id, network, address): (UserId, blockchain::Network, ethereum::Name)) -> Self {
+impl From<(UserId, blockchain::Network, evm::Name)> for Wallet {
+	fn from((user_id, network, address): (UserId, blockchain::Network, evm::Name)) -> Self {
 		Self {
 			user_id,
 			network: network.into(),
