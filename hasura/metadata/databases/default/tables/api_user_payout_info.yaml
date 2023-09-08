@@ -1,0 +1,51 @@
+table:
+  name: user_payout_info
+  schema: api
+configuration:
+  column_config: {}
+  custom_column_names: {}
+  custom_name: UserPayoutInfo
+  custom_root_fields:
+    select: userPayoutInfo
+    select_aggregate: userPayoutInfoAggregate
+select_permissions:
+  - role: public
+    permission:
+      columns:
+        - has_aptos_wallet
+        - has_bic
+        - has_eth_wallet
+        - has_iban
+        - has_optimism_wallet
+        - has_starknet_wallet
+        - user_id
+      filter: {}
+  - role: registered_user_specific
+    permission:
+      columns:
+        - has_aptos_wallet
+        - has_bic
+        - has_eth_wallet
+        - has_iban
+        - has_optimism_wallet
+        - has_starknet_wallet
+        - is_company
+        - address
+        - aptos_wallet
+        - bic
+        - city
+        - company_identification_number
+        - company_name
+        - country
+        - eth_wallet
+        - firstname
+        - iban
+        - lastname
+        - optimism_wallet
+        - post_code
+        - starknet_wallet
+        - usd_preferred_method
+        - user_id
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
