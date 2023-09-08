@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use anyhow::anyhow;
 use derive_more::Constructor;
-use domain::blockchain::ethereum;
+use domain::blockchain::{aptos, ethereum};
 use infrastructure::database::DatabaseError;
 use thiserror::Error;
 
@@ -32,6 +32,7 @@ impl Usecase {
 		user_payout_info: UserPayoutInfo,
 		bank_account: Option<BankAccount>,
 		eth_wallet: Option<ethereum::Wallet>,
+		aptos_address: Option<aptos::Address>,
 	) -> Result<()> {
 		if let Some(ethereum::Wallet::Name(eth_name)) = eth_wallet.clone() {
 			if !self
@@ -47,6 +48,9 @@ impl Usecase {
 		let mut wallets = Vec::new();
 		if let Some(eth_wallet) = eth_wallet {
 			wallets.push((user_payout_info.user_id, eth_wallet).into());
+		}
+		if let Some(aptos_address) = aptos_address {
+			wallets.push((user_payout_info.user_id, aptos_address).into());
 		}
 
 		self.payout_info_repository.upsert(user_payout_info, bank_account, wallets)?;
@@ -106,6 +110,7 @@ mod tests {
 				},
 				Default::default(),
 				Some(ethereum::Wallet::Name(ens)),
+				Default::default(),
 			)
 			.await;
 		assert!(result.is_ok(), "{}", result.err().unwrap());
@@ -133,6 +138,7 @@ mod tests {
 				},
 				Default::default(),
 				Some(ethereum::Wallet::Name(ens)),
+				Default::default(),
 			)
 			.await;
 		assert!(result.is_err());

@@ -9,3 +9,5 @@ pub type TransactionHash = String;
 
 mod account_address;
 pub mod ethereum;
+
+pub mod aptos;

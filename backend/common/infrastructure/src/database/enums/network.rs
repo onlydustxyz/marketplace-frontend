@@ -5,4 +5,5 @@ use serde::{Deserialize, Serialize};
 #[ExistingTypePath = "crate::database::schema::sql_types::Network"]
 pub enum Network {
 	Ethereum,
+	Aptos,
 }

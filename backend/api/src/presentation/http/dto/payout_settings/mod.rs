@@ -1,5 +1,5 @@
 use derive_more::From;
-use domain::blockchain::ethereum;
+use domain::blockchain::{aptos, ethereum};
 use serde::{Deserialize, Serialize};
 
 mod bank_account;
@@ -12,6 +12,7 @@ pub struct PayoutSettings {
 	pub bank_account: Option<BankAccount>,
 	pub eth_address: Option<ethereum::Address>,
 	pub eth_name: Option<ethereum::Name>,
+	pub aptos_address: Option<aptos::Address>,
 }
 
 #[derive(Debug, Copy, Clone, Serialize, Deserialize)]

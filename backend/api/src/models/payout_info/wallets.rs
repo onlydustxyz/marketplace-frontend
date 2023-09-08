@@ -1,5 +1,8 @@
 use diesel::Identifiable;
-use domain::{blockchain::ethereum, UserId};
+use domain::{
+	blockchain::{aptos, ethereum},
+	UserId,
+};
 use infrastructure::database::{
 	enums::{Network, WalletType},
 	schema::wallets,
@@ -46,6 +49,17 @@ impl From<(UserId, ethereum::Wallet)> for Wallet {
 			network: Network::Ethereum,
 			type_,
 			address,
+		}
+	}
+}
+
+impl From<(UserId, aptos::Address)> for Wallet {
+	fn from((user_id, address): (UserId, aptos::Address)) -> Self {
+		Self {
+			user_id,
+			network: Network::Aptos,
+			type_: WalletType::Address,
+			address: address.to_string(),
 		}
 	}
 }

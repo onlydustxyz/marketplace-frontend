@@ -58,6 +58,7 @@ pub async fn update_user_payout_info(
 		bank_account,
 		eth_name,
 		eth_address,
+		aptos_address,
 		usd_preferred_method,
 	} = request.payout_settings.unwrap_or_default();
 
@@ -81,6 +82,7 @@ pub async fn update_user_payout_info(
 			eth_name
 				.map(ethereum::Wallet::Name)
 				.or(eth_address.map(ethereum::Wallet::Address)),
+			aptos_address,
 		)
 		.await
 		.map_err(|e| {
