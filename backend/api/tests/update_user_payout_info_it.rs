@@ -143,7 +143,6 @@ impl<'a> Test<'a> {
 		// Given
 		let request = json!({
 			"identity": {
-				"type": "PERSON",
 				"person": {
 					"lastname": "BUISSET",
 					"firstname": "Anthony"
@@ -196,7 +195,6 @@ impl<'a> Test<'a> {
 		// Given
 		let request = json!({
 			"identity": {
-				"type": "COMPANY",
 				"company": {
 					"owner": {
 						"lastname": "BUISSET",
@@ -623,8 +621,11 @@ impl<'a> Test<'a> {
 		// Given
 		let request = json!({
 			"identity": {
-				"type": "PERSON",
 				"company": {
+					"lastname": "BUISSET",
+					"firstname": "Anthony"
+				},
+				"person": {
 					"lastname": "BUISSET",
 					"firstname": "Anthony"
 				}
