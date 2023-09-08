@@ -2,8 +2,7 @@ actions:
   - name: cancelPaymentRequest
     definition:
       kind: synchronous
-      handler: "{{BACKEND_REST_API_URL}}"
-      handler: "{{BACKEND_REST_API_URL}}"
+      handler: '{{BACKEND_REST_API_URL}}'
       forward_client_headers: true
       headers:
         - name: Api-Key
@@ -11,18 +10,18 @@ actions:
       request_transform:
         body:
           action: transform
-          template: "{{$body.input}}"
+          template: '{{$body.input}}'
         method: DELETE
         query_params: {}
         template_engine: Kriti
-        url: "{{$base_url}}/payments"
+        url: '{{$base_url}}/payments'
         version: 2
     permissions:
       - role: registered_user
   - name: createAndCloseIssue
     definition:
       kind: synchronous
-      handler: "{{BACKEND_REST_API_URL}}"
+      handler: '{{BACKEND_REST_API_URL}}'
       forward_client_headers: true
       headers:
         - name: Api-Key
@@ -30,11 +29,11 @@ actions:
       request_transform:
         body:
           action: transform
-          template: "{{$body.input}}"
+          template: '{{$body.input}}'
         method: POST
         query_params: {}
         template_engine: Kriti
-        url: "{{$base_url}}/issues"
+        url: '{{$base_url}}/issues'
         version: 2
     permissions:
       - role: registered_user
@@ -42,7 +41,7 @@ actions:
   - name: createProject
     definition:
       kind: synchronous
-      handler: "{{BACKEND_REST_API_URL}}"
+      handler: '{{BACKEND_REST_API_URL}}'
       forward_client_headers: true
       headers:
         - name: Api-Key
@@ -50,11 +49,11 @@ actions:
       request_transform:
         body:
           action: transform
-          template: "{{$body.input}}"
+          template: '{{$body.input}}'
         method: POST
         query_params: {}
         template_engine: Kriti
-        url: "{{$base_url}}/projects"
+        url: '{{$base_url}}/projects'
         version: 2
       response_transform:
         body:
@@ -68,7 +67,7 @@ actions:
   - name: fetchIssue
     definition:
       kind: ""
-      handler: "{{BACKEND_REST_API_URL}}"
+      handler: '{{BACKEND_REST_API_URL}}'
       forward_client_headers: true
       headers:
         - name: Api-Key
@@ -81,7 +80,7 @@ actions:
           remove_headers:
             - content-type
         template_engine: Kriti
-        url: "{{$base_url}}/issues/{{$body.input.repoOwner}}/{{$body.input.repoName}}/{{$body.input.issueNumber}}"
+        url: '{{$base_url}}/issues/{{$body.input.repoOwner}}/{{$body.input.repoName}}/{{$body.input.issueNumber}}'
         version: 2
     permissions:
       - role: registered_user
@@ -90,7 +89,7 @@ actions:
   - name: fetchPullRequest
     definition:
       kind: ""
-      handler: "{{BACKEND_REST_API_URL}}"
+      handler: '{{BACKEND_REST_API_URL}}'
       forward_client_headers: true
       headers:
         - name: Api-Key
@@ -103,14 +102,14 @@ actions:
           remove_headers:
             - content-type
         template_engine: Kriti
-        url: "{{$base_url}}/pull_requests/{{$body.input.repoOwner}}/{{$body.input.repoName}}/{{$body.input.prNumber}}"
+        url: '{{$base_url}}/pull_requests/{{$body.input.repoOwner}}/{{$body.input.repoName}}/{{$body.input.prNumber}}'
         version: 2
     permissions:
       - role: registered_user
   - name: ignoreContribution
     definition:
       kind: synchronous
-      handler: "{{BACKEND_REST_API_URL}}"
+      handler: '{{BACKEND_REST_API_URL}}'
       forward_client_headers: true
       headers:
         - name: Api-Key
@@ -119,7 +118,7 @@ actions:
         method: POST
         query_params: {}
         template_engine: Kriti
-        url: "{{$base_url}}/projects/{{$body.input.projectId}}/contributions/{{$body.input.contributionId}}/ignore"
+        url: '{{$base_url}}/projects/{{$body.input.projectId}}/contributions/{{$body.input.contributionId}}/ignore'
         version: 2
       response_transform:
         body:
@@ -133,7 +132,7 @@ actions:
   - name: requestPayment
     definition:
       kind: synchronous
-      handler: "{{BACKEND_REST_API_URL}}"
+      handler: '{{BACKEND_REST_API_URL}}'
       forward_client_headers: true
       headers:
         - name: Api-Key
@@ -141,18 +140,18 @@ actions:
       request_transform:
         body:
           action: transform
-          template: "{{$body.input}}"
+          template: '{{$body.input}}'
         method: POST
         query_params: {}
         template_engine: Kriti
-        url: "{{$base_url}}/payments"
+        url: '{{$base_url}}/payments'
         version: 2
     permissions:
       - role: registered_user
   - name: searchUsers
     definition:
       kind: ""
-      handler: "{{BACKEND_REST_API_URL}}"
+      handler: '{{BACKEND_REST_API_URL}}'
       forward_client_headers: true
       headers:
         - name: Api-Key
@@ -160,24 +159,24 @@ actions:
       request_transform:
         method: GET
         query_params:
-          order: "{{$body.input.order }}"
-          page: "{{$body.input.page }}"
-          per_page: "{{$body.input.perPage }}"
-          query: "{{$body.input.query }}"
-          sort: "{{$body.input.sort }}"
+          order: '{{$body.input.order }}'
+          page: '{{$body.input.page }}'
+          per_page: '{{$body.input.perPage }}'
+          query: '{{$body.input.query }}'
+          sort: '{{$body.input.sort }}'
         request_headers:
           add_headers: {}
           remove_headers:
             - content-type
         template_engine: Kriti
-        url: "{{$base_url}}/users/search"
+        url: '{{$base_url}}/users/search'
         version: 2
     permissions:
       - role: registered_user
   - name: suggestTechnology
     definition:
       kind: synchronous
-      handler: "{{HASURA_SUGGESTION_WEBHOOK}}"
+      handler: '{{HASURA_SUGGESTION_WEBHOOK}}'
       forward_client_headers: true
       headers:
         - name: Api-Key
@@ -203,7 +202,7 @@ actions:
   - name: unignoreContribution
     definition:
       kind: synchronous
-      handler: "{{BACKEND_REST_API_URL}}"
+      handler: '{{BACKEND_REST_API_URL}}'
       forward_client_headers: true
       headers:
         - name: Api-Key
@@ -212,7 +211,7 @@ actions:
         method: DELETE
         query_params: {}
         template_engine: Kriti
-        url: "{{$base_url}}/projects/{{$body.input.projectId}}/contributions/{{$body.input.contributionId}}/ignore"
+        url: '{{$base_url}}/projects/{{$body.input.projectId}}/contributions/{{$body.input.contributionId}}/ignore'
         version: 2
       response_transform:
         body:
@@ -226,7 +225,7 @@ actions:
   - name: updatePayoutInfo
     definition:
       kind: synchronous
-      handler: "{{BACKEND_REST_API_URL}}"
+      handler: '{{BACKEND_REST_API_URL}}'
       forward_client_headers: true
       headers:
         - name: Api-Key
@@ -234,18 +233,18 @@ actions:
       request_transform:
         body:
           action: transform
-          template: "{{$body.input}}"
+          template: '{{$body.input}}'
         method: POST
         query_params: {}
         template_engine: Kriti
-        url: "{{$base_url}}/users/profile/payout_info"
+        url: '{{$base_url}}/users/profile/payout_info'
         version: 2
     permissions:
       - role: registered_user
   - name: updateUserProfile
     definition:
       kind: synchronous
-      handler: "{{BACKEND_REST_API_URL}}"
+      handler: '{{BACKEND_REST_API_URL}}'
       forward_client_headers: true
       headers:
         - name: Api-Key
@@ -253,11 +252,11 @@ actions:
       request_transform:
         body:
           action: transform
-          template: "{{$body.input}}"
+          template: '{{$body.input}}'
         method: POST
         query_params: {}
         template_engine: Kriti
-        url: "{{$base_url}}/users/profile"
+        url: '{{$base_url}}/users/profile'
         version: 2
       response_transform:
         body:

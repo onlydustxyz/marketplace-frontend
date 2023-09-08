@@ -88,10 +88,12 @@ pub async fn update_user_payout_info(
 		)
 		.await
 		.map_err(|e| {
-			olog::error!(error = e.to_field(), "Unable to update user payout info");
 			HttpApiProblem::new(match e {
 				Error::InvalidInput(_) => StatusCode::BAD_REQUEST,
-				Error::Repository(_) | Error::Internal(_) => StatusCode::INTERNAL_SERVER_ERROR,
+				Error::Repository(_) | Error::Internal(_) => {
+					olog::error!(error = e.to_field(), "Unable to update user payout info");
+					StatusCode::INTERNAL_SERVER_ERROR
+				},
 			})
 			.title("Unable to update user payout info")
 			.detail(e.to_string())
