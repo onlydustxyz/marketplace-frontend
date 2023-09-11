@@ -149,6 +149,7 @@ services:
       DATABASE_URL: postgres://postgres:postgres@db/marketplace_db
       PROFILE: local
       GITHUB_BASE_URL: $GITHUB_BASE_URL
+      GITHUB_PAT: $GITHUB_PAT
       GITHUB_INDEXER_API_KEY: $GITHUB_INDEXER_API_KEY
 
 volumes:
