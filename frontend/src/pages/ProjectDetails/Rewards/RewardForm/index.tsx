@@ -56,6 +56,7 @@ const RewardForm: React.FC = () => {
       githubUserId: contributor?.githubUserId,
       type: "pull_request",
     },
+    skip: !contributor?.githubUserId,
   });
 
   const { handleSubmit } = formMethods;

@@ -489,7 +489,7 @@ This examples works for a local setup but also work in stagin or development by 
 Laucnh the hasura console by running:
 
 ```
-yarn hasura/console
+yarn hasura:console:start
 ```
 
 Access the GraphiQL interface (test tube icon tab) of the [local Hasura console](http://localhost:9695).
@@ -666,13 +666,3 @@ Be careful to include the `__typename` in the result queries or fragments, other
 Custom queries - those not provided out of the box by the code generation plugin with Hasura - should be created in a `queries.graphql` file colocated with the component.
 
 The codegen will then automatically create hooks for these custom queries.
-
-
-
-
-
-
-
-
-
-
