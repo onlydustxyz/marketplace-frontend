@@ -60,6 +60,7 @@ export default function useApolloCache() {
           },
         },
       },
+
       WorkItems: {
         keyFields: ["paymentId", "repoId", "issueNumber"],
       },

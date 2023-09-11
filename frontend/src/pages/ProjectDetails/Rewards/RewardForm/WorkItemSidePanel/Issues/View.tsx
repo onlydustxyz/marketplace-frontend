@@ -15,6 +15,7 @@ import EmptyState from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSide
 import Toggle from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/Toggle";
 import OtherIssueInput from "./OtherIssueInput";
 import useFilteredContributions from "./useFilteredWorkItems";
+import { contributionToWorkItem } from "./index";
 
 const THEORETICAL_MAX_SCREEN_HEIGHT = 2000;
 
@@ -175,20 +176,25 @@ const VirtualizedIssueList = ({
       data={contributions}
       components={{ Scroller, List: ListBuilder(tabName) }}
       style={{ height: THEORETICAL_MAX_SCREEN_HEIGHT }}
-      itemContent={(_, contribution) => (
-        <GithubIssue
-          key={contribution.id}
-          contribution={contribution}
-          action={Action.Add}
-          onClick={() => addContribution(contribution)}
-          secondaryAction={contribution.ignored ? Action.UnIgnore : Action.Ignore}
-          onSecondaryClick={() =>
-            contribution.ignored ? unignoreContribution(contribution) : ignoreContribution(contribution)
-          }
-          ignored={!!contribution.ignored}
-          addMarginTopForVirtuosoDisplay={true}
-        />
-      )}
+      itemContent={(_, contribution) => {
+        const workItem = contributionToWorkItem(contribution);
+        if (!workItem) return;
+
+        return (
+          <GithubIssue
+            key={contribution.id}
+            workItem={workItem}
+            action={Action.Add}
+            onClick={() => addContribution(contribution)}
+            secondaryAction={contribution.ignored ? Action.UnIgnore : Action.Ignore}
+            onSecondaryClick={() =>
+              contribution.ignored ? unignoreContribution(contribution) : ignoreContribution(contribution)
+            }
+            ignored={!!contribution.ignored}
+            addMarginTopForVirtuosoDisplay={true}
+          />
+        );
+      }}
     />
   );
 };

@@ -93,6 +93,8 @@ class Contributions {
    closedAt: timestamp
    createdAt: timestamp
    detailsId: String
+   githubIssue: GithubIssues
+   githubPullRequest: GithubPullRequests
    githubUserId: bigint
    id: String
    ignored: Boolean
@@ -522,6 +524,8 @@ ApiCompletedContributions --* WorkItems
 Budgets -- Projects
 Budgets --* PaymentRequests
 Contacts -- ContactInformations
+Contributions -- GithubIssues
+Contributions -- GithubPullRequests
 Contributions --* WorkItems
 GithubIssue -- GithubUser
 GithubIssueCreatedAndClosed -- GithubUserLinkedToIssue

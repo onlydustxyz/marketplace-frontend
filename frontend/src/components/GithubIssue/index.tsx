@@ -63,7 +63,7 @@ export type Props = {
   secondaryAction?: Action;
   onClick?: () => void;
   onSecondaryClick?: () => void;
-  contribution: ContributionFragment;
+  workItem: WorkItem;
   ignored?: boolean;
   addMarginTopForVirtuosoDisplay?: boolean;
 };
@@ -71,7 +71,7 @@ export type Props = {
 export default function GithubIssue({
   action,
   secondaryAction,
-  contribution,
+  workItem,
   onClick,
   onSecondaryClick,
   ignored = false,

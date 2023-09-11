@@ -2395,6 +2395,10 @@ export type Contributions = {
   closedAt: Maybe<Scalars['timestamp']>;
   createdAt: Maybe<Scalars['timestamp']>;
   detailsId: Maybe<Scalars['String']>;
+  /** An object relationship */
+  githubIssue: Maybe<GithubIssues>;
+  /** An object relationship */
+  githubPullRequest: Maybe<GithubPullRequests>;
   githubUserId: Maybe<Scalars['bigint']>;
   id: Maybe<Scalars['String']>;
   ignored: Maybe<Scalars['Boolean']>;
@@ -2493,6 +2497,8 @@ export type ContributionsBoolExp = {
   closedAt: InputMaybe<TimestampComparisonExp>;
   createdAt: InputMaybe<TimestampComparisonExp>;
   detailsId: InputMaybe<StringComparisonExp>;
+  githubIssue: InputMaybe<GithubIssuesBoolExp>;
+  githubPullRequest: InputMaybe<GithubPullRequestsBoolExp>;
   githubUserId: InputMaybe<BigintComparisonExp>;
   id: InputMaybe<StringComparisonExp>;
   ignored: InputMaybe<BooleanComparisonExp>;
@@ -2509,6 +2515,8 @@ export type ContributionsInsertInput = {
   closedAt: InputMaybe<Scalars['timestamp']>;
   createdAt: InputMaybe<Scalars['timestamp']>;
   detailsId: InputMaybe<Scalars['String']>;
+  githubIssue: InputMaybe<GithubIssuesObjRelInsertInput>;
+  githubPullRequest: InputMaybe<GithubPullRequestsObjRelInsertInput>;
   githubUserId: InputMaybe<Scalars['bigint']>;
   id: InputMaybe<Scalars['String']>;
   ignored: InputMaybe<Scalars['Boolean']>;
@@ -2552,6 +2560,8 @@ export type ContributionsOrderBy = {
   closedAt: InputMaybe<OrderBy>;
   createdAt: InputMaybe<OrderBy>;
   detailsId: InputMaybe<OrderBy>;
+  githubIssue: InputMaybe<GithubIssuesOrderBy>;
+  githubPullRequest: InputMaybe<GithubPullRequestsOrderBy>;
   githubUserId: InputMaybe<OrderBy>;
   id: InputMaybe<OrderBy>;
   ignored: InputMaybe<OrderBy>;
@@ -17997,9 +18007,9 @@ export type UnrewardedContributionsQueryVariables = Exact<{
 }>;
 
 
-export type UnrewardedContributionsQuery = { __typename?: 'query_root', contributions: Array<{ __typename?: 'Contributions', type: any | null, status: any | null, repoId: any | null, projectId: any | null, id: string | null, detailsId: string | null, githubUserId: any | null, ignored: boolean | null }> };
+export type UnrewardedContributionsQuery = { __typename?: 'query_root', contributions: Array<{ __typename?: 'Contributions', type: any | null, status: any | null, repoId: any | null, projectId: any | null, id: string | null, detailsId: string | null, githubUserId: any | null, ignored: boolean | null, githubIssue: { __typename?: 'GithubIssues', repoId: any, number: any, title: string, htmlUrl: string, authorId: any, assigneeIds: any, status: any, createdAt: any, closedAt: any | null, id: any } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any, number: any, title: string, htmlUrl: string, authorId: any, status: any, createdAt: any, closedAt: any | null, mergedAt: any | null, id: any } | null }> };
 
-export type ContributionFragment = { __typename?: 'Contributions', type: any | null, status: any | null, repoId: any | null, projectId: any | null, id: string | null, detailsId: string | null, githubUserId: any | null, ignored: boolean | null };
+export type ContributionFragment = { __typename?: 'Contributions', type: any | null, status: any | null, repoId: any | null, projectId: any | null, id: string | null, detailsId: string | null, githubUserId: any | null, ignored: boolean | null, githubIssue: { __typename?: 'GithubIssues', repoId: any, number: any, title: string, htmlUrl: string, authorId: any, assigneeIds: any, status: any, createdAt: any, closedAt: any | null, id: any } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any, number: any, title: string, htmlUrl: string, authorId: any, status: any, createdAt: any, closedAt: any | null, mergedAt: any | null, id: any } | null };
 
 export type SearchIssuesQueryVariables = Exact<{
   projectId: Scalars['uuid'];
@@ -18742,8 +18752,15 @@ export const ContributionFragmentDoc = gql`
   detailsId
   githubUserId
   ignored
+  githubIssue {
+    ...GithubIssue
+  }
+  githubPullRequest {
+    ...GithubPullRequest
+  }
 }
-    `;
+    ${GithubIssueFragmentDoc}
+${GithubPullRequestFragmentDoc}`;
 export const SidebarProjectDetailsFragmentDoc = gql`
     fragment SidebarProjectDetails on Projects {
   ...ProjectId

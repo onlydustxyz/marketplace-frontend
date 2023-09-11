@@ -8,6 +8,25 @@ configuration:
   custom_root_fields:
     select: contributions
     select_aggregate: contributionsAggregate
+object_relationships:
+  - name: githubIssue
+    using:
+      manual_configuration:
+        column_mapping:
+          details_id: id
+        insertion_order: null
+        remote_table:
+          name: github_issues
+          schema: public
+  - name: githubPullRequest
+    using:
+      manual_configuration:
+        column_mapping:
+          details_id: id
+        insertion_order: null
+        remote_table:
+          name: github_pull_requests
+          schema: public
 array_relationships:
   - name: rewardItems
     using:

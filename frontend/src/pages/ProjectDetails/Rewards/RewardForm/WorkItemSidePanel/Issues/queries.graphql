@@ -28,4 +28,10 @@ fragment Contribution on Contributions {
   detailsId
   githubUserId
   ignored
+  githubIssue {
+    ...GithubIssue
+  }
+  githubPullRequest {
+    ...GithubPullRequest
+  }
 }

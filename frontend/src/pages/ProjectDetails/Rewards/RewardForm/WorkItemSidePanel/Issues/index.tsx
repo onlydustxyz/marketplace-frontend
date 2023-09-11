@@ -2,6 +2,8 @@ import { chain } from "lodash";
 import { useMemo } from "react";
 import {
   ContributionFragment,
+  GithubIssueFragment,
+  GithubPullRequestFragment,
   LiveGithubIssueCreatedAndClosedFragment,
   LiveGithubIssueFragment,
   LiveGithubPullRequestFragment,
@@ -25,8 +27,8 @@ export default function Issues({ type, projectId, contributorId, workItems, addW
 
   const addAndUnignoreContribution = (contribution: ContributionFragment) => {
     const workItem = contributionToWorkItem(contribution);
-    if (workItem.ignored) unignoreContribution(projectId, contribution.id!);
-    addWorkItem(workItem);
+    if (workItem?.ignored) unignoreContribution(projectId, contribution.id!);
+    workItem && addWorkItem(workItem);
   };
 
   const { data } = useUnrewardedContributionsQuery({
@@ -55,21 +57,13 @@ export default function Issues({ type, projectId, contributorId, workItems, addW
   );
 }
 
-// contribution details ID = work item ID
-// + use type
+export const contributionToWorkItem = ({
+  githubIssue,
+  githubPullRequest,
+}: ContributionFragment): WorkItem | undefined =>
+  githubIssue ? issueToWorkItem(githubIssue) : githubPullRequest ? pullRequestToWorkItem(githubPullRequest) : undefined;
 
-const contributionToWorkItem = (props: ContributionFragment): WorkItem => ({
-  // FIXME: this is a hack to make the types work
-  ...props,
-  id: props.detailsId || "",
-  number: 0,
-  title: "",
-  htmlUrl: "",
-  ignored: props.ignored || false,
-  createdAt: new Date(),
-});
-
-export const issueToWorkItem = (props: LiveGithubIssueFragment): WorkItem => ({
+export const issueToWorkItem = (props: GithubIssueFragment | LiveGithubIssueFragment): WorkItem => ({
   ...props,
   type: WorkItemType.Issue,
   // ignored: some(ignoredForProjects, { projectId }),
@@ -86,7 +80,7 @@ export const issueCreatedAndClosedToWorkItem = (
   id: issueCreatedAndClosedFragment.id.toString(),
 });
 
-export const pullRequestToWorkItem = (props: LiveGithubPullRequestFragment): WorkItem => ({
+export const pullRequestToWorkItem = (props: GithubPullRequestFragment | LiveGithubPullRequestFragment): WorkItem => ({
   ...props,
   type: WorkItemType.PullRequest,
   // ignored: some(ignoredForProjects, { projectId }),

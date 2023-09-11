@@ -30,7 +30,7 @@ export default function View({ id, name, htmlUrl, description, stars, forkCount 
           </div>
         </div>
       </div>
-      <GithubLink link={htmlUrl} />
+      {htmlUrl ? <GithubLink link={htmlUrl} /> : null}
     </Card>
   );
 }
