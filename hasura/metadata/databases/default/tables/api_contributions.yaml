@@ -13,7 +13,7 @@ object_relationships:
     using:
       manual_configuration:
         column_mapping:
-          details_id: id
+          github_issue_id: id
         insertion_order: null
         remote_table:
           name: github_issues
@@ -22,7 +22,7 @@ object_relationships:
     using:
       manual_configuration:
         column_mapping:
-          details_id: id
+          github_pull_request_id: id
         insertion_order: null
         remote_table:
           name: github_pull_requests
@@ -38,7 +38,7 @@ array_relationships:
         insertion_order: null
         remote_table:
           name: work_items
-          schema: public
+          schema: api
 select_permissions:
   - role: public
     permission:
