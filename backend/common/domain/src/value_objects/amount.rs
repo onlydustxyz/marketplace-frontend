@@ -1,4 +1,4 @@
-use std::ops::{Add, Deref, Mul, Sub};
+use std::ops::{Add, Mul, Sub};
 
 use derive_getters::Getters;
 use derive_more::{Constructor, Display};
@@ -41,10 +41,10 @@ impl Add<&Decimal> for Amount {
 	}
 }
 
-impl Sub<&Self> for Amount {
+impl Sub<Self> for Amount {
 	type Output = Self;
 
-	fn sub(self, rhs: &Self) -> Self::Output {
+	fn sub(self, rhs: Self) -> Self::Output {
 		assert_eq!(
 			self.currency, rhs.currency,
 			"Cannot substract with different currencies"
@@ -56,8 +56,8 @@ impl Sub<&Self> for Amount {
 	}
 }
 
-impl Sub<Decimal> for &Amount {
-	type Output = <Self as Deref>::Target;
+impl Sub<Decimal> for Amount {
+	type Output = Self;
 
 	fn sub(self, rhs: Decimal) -> Self::Output {
 		Amount {
@@ -128,7 +128,7 @@ mod tests {
 		let amount2 = Amount::new(dec!(5), Currency::Crypto("USDC".to_string()));
 		assert_eq!(
 			Amount::new(dec!(120), Currency::Crypto("USDC".to_string())),
-			amount1 - &amount2
+			amount1 - amount2
 		);
 	}
 
@@ -137,7 +137,7 @@ mod tests {
 		let amount1 = Amount::new(dec!(125), Currency::Crypto("USDC".to_string()));
 		assert_eq!(
 			Amount::new(dec!(120), Currency::Crypto("USDC".to_string())),
-			&amount1 - dec!(5)
+			amount1 - dec!(5)
 		);
 	}
 
@@ -146,6 +146,6 @@ mod tests {
 	fn substract_different_currencies() {
 		let amount1 = Amount::new(dec!(125), Currency::Crypto("USDC".to_string()));
 		let amount2 = Amount::new(dec!(5), Currency::Crypto("USDT".to_string()));
-		let _ = amount1 - &amount2;
+		let _ = amount1 - amount2;
 	}
 }

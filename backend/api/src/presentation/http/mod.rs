@@ -4,7 +4,7 @@ use ::domain::{AggregateRootRepository, Project};
 use domain::{Event, Publisher};
 pub use http::Config;
 use infrastructure::{
-	amqp::{self, CommandMessage},
+	amqp::{self, CommandMessage, UniqueMessage},
 	database::{ImmutableRepository, Repository},
 	github,
 };
@@ -30,6 +30,7 @@ pub fn serve(
 	config: crate::Config,
 	schema: graphql::Schema,
 	command_bus: Arc<dyn Publisher<CommandMessage<Event>>>,
+	event_bus: Arc<dyn Publisher<UniqueMessage<Event>>>,
 	project_repository: AggregateRootRepository<Project>,
 	project_details_repository: Arc<dyn Repository<ProjectDetails>>,
 	sponsor_repository: Arc<dyn Repository<Sponsor>>,
@@ -76,6 +77,7 @@ pub fn serve(
 		.manage(config)
 		.manage(schema)
 		.manage(command_bus)
+		.manage(event_bus)
 		.manage(project_repository)
 		.manage(project_details_repository)
 		.manage(sponsor_repository)
@@ -117,6 +119,7 @@ pub fn serve(
 				routes::projects::create_project,
 				routes::projects::contributions::ignore,
 				routes::projects::contributions::unignore,
+				routes::projects::budgets::update_allocation,
 				routes::issues::create_and_close_issue,
 				routes::issues::fetch_issue_by_repo_owner_name_issue_number,
 				routes::pull_requests::fetch_pull_request,

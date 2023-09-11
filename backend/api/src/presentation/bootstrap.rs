@@ -33,6 +33,7 @@ pub async fn bootstrap(config: Config) -> Result<Rocket<Build>> {
 				.await?
 				.into_command_publisher(database.clone(), expected_processing_count_per_event()),
 		),
+		Arc::new(amqp::Bus::new(config.amqp.clone()).await?),
 		AggregateRootRepository::new(database.clone()),
 		database.clone(),
 		database.clone(),

@@ -30,10 +30,10 @@ impl Usecase {
 	#[instrument(skip(self))]
 	pub async fn update_allocation(
 		&self,
-		project_id: &ProjectId,
-		new_remaining_amount: &Amount,
+		project_id: ProjectId,
+		new_remaining_amount: Amount,
 	) -> Result<BudgetId, DomainError> {
-		let project = self.project_repository.find_by_id(project_id)?;
+		let project = self.project_repository.find_by_id(&project_id)?;
 
 		let current_remaining_amount = project.budget().as_ref().map_or(Decimal::ZERO, |b| {
 			b.allocated_amount().amount() - b.spent_amount()
