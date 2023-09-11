@@ -1,9 +1,5 @@
-use anyhow::anyhow;
-use domain::{
-	blockchain::*, Amount, Currency, Iban, PaymentReceipt, ProjectId, ProjectVisibility, UserId,
-};
+use domain::{blockchain::*, Amount, Iban, PaymentReceipt, ProjectId, ProjectVisibility, UserId};
 use juniper::{graphql_object, DefaultScalarValue, Nullable};
-use rusty_money::Money;
 use url::Url;
 use uuid08::Uuid;
 
@@ -25,11 +21,7 @@ impl Mutation {
 		recipient_identity: EthereumIdentityInput,
 		transaction_hash: String,
 	) -> Result<Uuid> {
-		let currency = rusty_money::crypto::find(&currency_code).ok_or_else(|| {
-			Error::InvalidRequest(anyhow!("Unknown currency code: {currency_code}"))
-		})?;
-
-		let amount = Money::from_str(&amount, currency)
+		let amount = Amount::from_str(&amount, currency_code.parse()?)
 			.map_err(|e| Error::InvalidRequest(anyhow::Error::msg(e)))?;
 
 		let eth_identity = recipient_identity.try_into().map_err(Error::InvalidRequest)?;
@@ -43,7 +35,7 @@ impl Mutation {
 			.add_payment_receipt(
 				&project_id.into(),
 				&payment_id.into(),
-				Amount::new(*amount.amount(), Currency::Crypto(currency_code)),
+				Amount::from_decimal(*amount.amount(), currency_code.parse()?),
 				PaymentReceipt::OnChainPayment {
 					network: Network::Ethereum,
 					recipient_address: ethereum_address,
@@ -68,11 +60,8 @@ impl Mutation {
 		recipient_iban: Iban,
 		transaction_reference: String,
 	) -> Result<Uuid> {
-		let currency = rusty_money::iso::find(&currency_code).ok_or_else(|| {
-			Error::InvalidRequest(anyhow!("Unknown currency code: {currency_code}"))
-		})?;
-
-		let amount = Money::from_str(&amount, currency)
+		let currency = currency_code.parse()?;
+		let amount = Amount::from_str(&amount, currency)
 			.map_err(|e| Error::InvalidRequest(anyhow::Error::msg(e)))?;
 
 		let receipt_id = context
@@ -80,7 +69,7 @@ impl Mutation {
 			.add_payment_receipt(
 				&project_id.into(),
 				&payment_id.into(),
-				Amount::new(*amount.amount(), Currency::Crypto(currency_code)),
+				Amount::from_decimal(*amount.amount(), currency),
 				PaymentReceipt::FiatPayment {
 					recipient_iban,
 					transaction_reference,

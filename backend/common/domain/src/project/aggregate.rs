@@ -98,7 +98,7 @@ impl Project {
 		let events = match self.budget.as_ref() {
 			Some(budget) => budget.allocate(*amount.amount())?,
 			None => {
-				let events = Budget::create(BudgetId::new(), amount.currency().clone());
+				let events = Budget::create(BudgetId::new(), amount.currency());
 				let budget = Budget::from_events(&events);
 				events.into_iter().chain(budget.allocate(*amount.amount())?).collect()
 			},
@@ -300,7 +300,7 @@ mod tests {
 
 	#[fixture]
 	fn initial_budget() -> Amount {
-		Amount::new(dec!(1000), Currency::Crypto("USDC".to_string()))
+		Amount::from_decimal(dec!(1000), currencies::USD)
 	}
 
 	#[fixture]
@@ -318,7 +318,7 @@ mod tests {
 			id: project_id,
 			event: BudgetEvent::Created {
 				id: budget_id,
-				currency: initial_budget.currency().clone(),
+				currency: initial_budget.currency(),
 			},
 		}
 	}

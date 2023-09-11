@@ -1,151 +1,47 @@
-use std::ops::{Add, Mul, Sub};
+use rusty_money::Money;
 
-use derive_getters::Getters;
-use derive_more::{Constructor, Display};
-use rust_decimal::Decimal;
-use rusty_money::{FormattableCurrency, Money};
-use serde::{Deserialize, Serialize};
+use crate::Currency;
 
-#[derive(
-	Debug,
-	Default,
-	Clone,
-	PartialEq,
-	Eq,
-	PartialOrd,
-	Ord,
-	Serialize,
-	Deserialize,
-	Getters,
-	Constructor,
-)]
-pub struct Amount {
-	amount: Decimal,
-	currency: Currency,
-}
+pub type Amount = Money<'static, Currency>;
 
-impl std::fmt::Display for Amount {
-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		write!(f, "{} {}", self.amount, self.currency)
-	}
-}
-
-impl Add<&Decimal> for Amount {
-	type Output = Self;
-
-	fn add(self, rhs: &Decimal) -> Self::Output {
-		Self {
-			amount: self.amount + rhs,
-			..self
-		}
-	}
-}
-
-impl Sub<Self> for Amount {
-	type Output = Self;
-
-	fn sub(self, rhs: Self) -> Self::Output {
-		assert_eq!(
-			self.currency, rhs.currency,
-			"Cannot substract with different currencies"
-		);
-		Self {
-			amount: self.amount - rhs.amount,
-			..self
-		}
-	}
-}
-
-impl Sub<Decimal> for Amount {
-	type Output = Self;
-
-	fn sub(self, rhs: Decimal) -> Self::Output {
-		Amount {
-			amount: self.amount - rhs,
-			currency: self.currency.clone(),
-		}
-	}
-}
-
-impl Mul<i64> for Amount {
-	type Output = Self;
-
-	fn mul(self, rhs: i64) -> Self::Output {
-		Self {
-			amount: self.amount * Decimal::new(rhs, 0),
-			..self
-		}
-	}
-}
-
-#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize, Display)]
-pub enum Currency {
-	Crypto(String),
-}
-
-impl Default for Currency {
-	fn default() -> Self {
-		Self::Crypto(Default::default())
-	}
-}
-
-impl<'a, T: FormattableCurrency> From<Money<'a, T>> for Amount {
-	fn from(amount: Money<'a, T>) -> Self {
-		Self::new(
-			*amount.amount(),
-			Currency::Crypto(amount.currency().to_string()),
-		)
-	}
-}
-
-#[cfg(test)]
-mod tests {
-	use rust_decimal_macros::dec;
-	use rusty_money::crypto;
+pub mod serde {
+	use ::serde::{Deserialize, Deserializer, Serialize, Serializer};
+	use rust_decimal::Decimal;
 
 	use super::*;
 
-	#[test]
-	fn convert_from_money() {
-		assert_eq!(
-			Amount::new(dec!(125), Currency::Crypto("USDC".to_string())),
-			Money::from_major(125, crypto::USDC).into()
-		);
+	#[derive(Debug, Serialize, Deserialize)]
+	struct Serializable {
+		amount: Decimal,
+		currency: &'static Currency,
 	}
 
-	#[test]
-	fn add() {
-		let amount1 = Amount::new(dec!(125), Currency::Crypto("USDC".to_string()));
-		assert_eq!(
-			Amount::new(dec!(130), Currency::Crypto("USDC".to_string())),
-			amount1 + &dec!(5)
-		);
+	impl From<&Amount> for Serializable {
+		fn from(value: &Amount) -> Self {
+			Self {
+				amount: *value.amount(),
+				currency: value.currency(),
+			}
+		}
 	}
 
-	#[test]
-	fn substract() {
-		let amount1 = Amount::new(dec!(125), Currency::Crypto("USDC".to_string()));
-		let amount2 = Amount::new(dec!(5), Currency::Crypto("USDC".to_string()));
-		assert_eq!(
-			Amount::new(dec!(120), Currency::Crypto("USDC".to_string())),
-			amount1 - amount2
-		);
+	impl From<Serializable> for Amount {
+		fn from(value: Serializable) -> Self {
+			Self::from_decimal(value.amount, value.currency)
+		}
 	}
 
-	#[test]
-	fn substract_decimal() {
-		let amount1 = Amount::new(dec!(125), Currency::Crypto("USDC".to_string()));
-		assert_eq!(
-			Amount::new(dec!(120), Currency::Crypto("USDC".to_string())),
-			amount1 - dec!(5)
-		);
+	pub fn serialize<S>(value: &Amount, serializer: S) -> Result<S::Ok, S::Error>
+	where
+		S: Serializer,
+	{
+		Serializable::from(value).serialize(serializer)
 	}
 
-	#[test]
-	#[should_panic = "Cannot substract with different currencies"]
-	fn substract_different_currencies() {
-		let amount1 = Amount::new(dec!(125), Currency::Crypto("USDC".to_string()));
-		let amount2 = Amount::new(dec!(5), Currency::Crypto("USDT".to_string()));
-		let _ = amount1 - amount2;
+	pub fn deserialize<'de, D>(deserializer: D) -> Result<Amount, D::Error>
+	where
+		D: Deserializer<'de>,
+	{
+		Ok(Serializable::deserialize(deserializer)?.into())
 	}
 }

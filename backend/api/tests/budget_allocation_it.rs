@@ -3,7 +3,7 @@ mod models;
 
 use anyhow::Result;
 use assert_matches::assert_matches;
-use domain::{BudgetEvent, BudgetId, Currency, Event, ProjectEvent, ProjectId};
+use domain::{currencies, BudgetEvent, BudgetId, Event, ProjectEvent, ProjectId};
 use olog::info;
 use rocket::{
 	http::{ContentType, Status},
@@ -87,7 +87,7 @@ impl<'a> Test<'a> {
 						currency
 					} => {
 						budget_id = id;
-						assert_eq!(currency, Currency::Crypto("USDC".to_string()));
+						assert_eq!(currency, currencies::USD);
 				});
 			});
 		});
@@ -127,7 +127,7 @@ impl<'a> Test<'a> {
 					id: project_id,
 					event: BudgetEvent::Created {
 						id: budget_id,
-						currency: Currency::Crypto("USDC".to_string()),
+						currency: currencies::USD,
 					},
 				},
 				ProjectEvent::Budget {

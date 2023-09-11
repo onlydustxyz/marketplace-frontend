@@ -1,8 +1,8 @@
 use common_domain::{DomainError, ProjectId, ProjectVisibility};
+use domain::{currencies, Amount};
 use http_api_problem::{HttpApiProblem, StatusCode};
 use presentation::http::guards::ApiKey;
 use rocket::{serde::json::Json, State};
-use rusty_money::Money;
 use serde::{Deserialize, Serialize};
 use url::Url;
 
@@ -53,9 +53,9 @@ pub async fn create_project(
 			})?,
 			request.telegram_link.clone(),
 			request.logo_url.clone(),
-			request.initial_budget.map(|initial_budget| {
-				Money::from_major(initial_budget as i64, rusty_money::crypto::USDC).into()
-			}),
+			request
+				.initial_budget
+				.map(|initial_budget| Amount::from_major(initial_budget as i64, currencies::USD)),
 			request.hiring.unwrap_or_default(),
 			request.rank.unwrap_or_default(),
 			request.visibility.clone().unwrap_or_default(),

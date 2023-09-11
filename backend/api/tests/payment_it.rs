@@ -8,7 +8,7 @@ use api::presentation::http::routes::payment;
 use assert_matches::assert_matches;
 use chrono::{Duration, Utc};
 use domain::{
-	Amount, BudgetEvent, BudgetId, Currency, Event, GithubPullRequestId, GithubPullRequestNumber,
+	currencies, Amount, BudgetEvent, BudgetId, Event, GithubPullRequestId, GithubPullRequestNumber,
 	GithubRepoId, GithubUserId, PaymentEvent, PaymentId, PaymentReason, PaymentWorkItem,
 	ProjectEvent, ProjectId, UserId,
 };
@@ -75,7 +75,7 @@ impl<'a> Test<'a> {
 					id: project_id,
 					event: BudgetEvent::Created {
 						id: budget_id,
-						currency: Currency::Crypto("USDC".to_string()),
+						currency: currencies::USD,
 					},
 				},
 				ProjectEvent::Budget {
@@ -161,9 +161,9 @@ impl<'a> Test<'a> {
 							assert_eq!(id, payment_id);
 							assert_eq!(requestor_id, Uuid::from_str("9b7effeb-963f-4ac4-be74-d735501925ed").unwrap().into());
 							assert_eq!(recipient_id,  GithubUserId::from(595505u64));
-							assert_eq!(amount, Amount::new(
+							assert_eq!(amount, Amount::from_decimal(
 								Decimal::from(10),
-								Currency::Crypto(String::from("USDC"))
+								currencies::USD
 							));
 							assert_eq!(duration_worked, Duration::hours(1));
 							assert_eq!(reason, PaymentReason {
@@ -201,7 +201,7 @@ impl<'a> Test<'a> {
 					id: project_id,
 					event: BudgetEvent::Created {
 						id: budget_id,
-						currency: Currency::Crypto("USDC".to_string()),
+						currency: currencies::USD,
 					},
 				},
 				ProjectEvent::Budget {
@@ -276,7 +276,7 @@ impl<'a> Test<'a> {
 					id: project_id,
 					event: BudgetEvent::Created {
 						id: budget_id,
-						currency: Currency::Crypto("USDC".to_string()),
+						currency: currencies::USD,
 					},
 				},
 				ProjectEvent::Budget {
@@ -347,7 +347,7 @@ impl<'a> Test<'a> {
 					id: project_id,
 					event: BudgetEvent::Created {
 						id: budget_id,
-						currency: Currency::Crypto("USDC".to_string()),
+						currency: currencies::USD,
 					},
 				},
 				ProjectEvent::Budget {
@@ -365,10 +365,7 @@ impl<'a> Test<'a> {
 							id: payment_id,
 							requestor_id: UserId::new(),
 							recipient_id: GithubUserId::from(595505u64),
-							amount: Amount::new(
-								Decimal::from(100),
-								Currency::Crypto("USDC".to_string()),
-							),
+							amount: Amount::from_decimal(Decimal::from(100), currencies::USD),
 							duration_worked: Duration::hours(2),
 							reason: PaymentReason { work_items: vec![] },
 							requested_at: Utc::now().naive_utc(),
@@ -432,7 +429,7 @@ impl<'a> Test<'a> {
 					id: project_id,
 					event: BudgetEvent::Created {
 						id: budget_id,
-						currency: Currency::Crypto("USDC".to_string()),
+						currency: currencies::USD,
 					},
 				},
 				ProjectEvent::Budget {
@@ -450,10 +447,7 @@ impl<'a> Test<'a> {
 							id: payment_id,
 							requestor_id: UserId::new(),
 							recipient_id: GithubUserId::from(595505u64),
-							amount: Amount::new(
-								Decimal::from(100),
-								Currency::Crypto("USDC".to_string()),
-							),
+							amount: Amount::from_decimal(Decimal::from(100), currencies::USD),
 							duration_worked: Duration::hours(2),
 							reason: PaymentReason { work_items: vec![] },
 							requested_at: Utc::now().naive_utc(),
@@ -513,7 +507,7 @@ impl<'a> Test<'a> {
 					id: project_id,
 					event: BudgetEvent::Created {
 						id: budget_id,
-						currency: Currency::Crypto("USDC".to_string()),
+						currency: currencies::USD,
 					},
 				},
 				ProjectEvent::Budget {
@@ -531,10 +525,7 @@ impl<'a> Test<'a> {
 							id: payment_id,
 							requestor_id: UserId::new(),
 							recipient_id: GithubUserId::from(595505u64),
-							amount: Amount::new(
-								Decimal::from(100),
-								Currency::Crypto("USDC".to_string()),
-							),
+							amount: Amount::from_decimal(Decimal::from(100), currencies::USD),
 							duration_worked: Duration::hours(2),
 							reason: PaymentReason { work_items: vec![] },
 							requested_at: Utc::now().naive_utc(),

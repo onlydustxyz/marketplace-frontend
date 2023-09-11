@@ -4,11 +4,11 @@ use anyhow::Result;
 use chrono::Duration;
 use derive_more::Constructor;
 use domain::{
-	AggregateRootRepository, Budget, CommandId, DomainError, Event, EventSourcable, GithubUserId,
-	Payment, PaymentId, PaymentReason, PaymentWorkItem, Project, ProjectId, Publisher, UserId,
+	currencies, AggregateRootRepository, Amount, Budget, CommandId, DomainError, Event,
+	EventSourcable, GithubUserId, Payment, PaymentId, PaymentReason, PaymentWorkItem, Project,
+	ProjectId, Publisher, UserId,
 };
 use infrastructure::amqp::CommandMessage;
-use rusty_money::{crypto, Money};
 use tracing::instrument;
 
 use crate::domain::{services::indexer, Publishable};
@@ -39,7 +39,7 @@ impl Usecase {
 				new_payment_id,
 				requestor_id,
 				recipient_id,
-				Money::from_major(amount_in_usd as i64, crypto::USDC).into(),
+				Amount::from_major(amount_in_usd as i64, currencies::USD).into(),
 				Duration::hours(hours_worked as i64),
 				reason.clone(),
 			)

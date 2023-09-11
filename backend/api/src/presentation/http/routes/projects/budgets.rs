@@ -1,8 +1,8 @@
 use common_domain::ProjectId;
+use domain::{currencies, Amount};
 use http_api_problem::HttpApiProblem;
 use presentation::http::guards::ApiKey;
 use rocket::serde::json::Json;
-use rusty_money::Money;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
@@ -36,7 +36,7 @@ pub async fn allocate(
 	usecase
 		.allocate(
 			project_id.into(),
-			Money::from_major(amount, rusty_money::crypto::USDC).into(),
+			Amount::from_major(amount, currencies::USD),
 		)
 		.await
 		.map_err(Into::<Error>::into)?;

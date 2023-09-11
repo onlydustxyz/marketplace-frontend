@@ -28,17 +28,18 @@ type Result<T> = std::result::Result<T, Error>;
 #[derive(Default, Debug, Clone, PartialEq, Eq, Getters)]
 pub struct Budget {
 	id: BudgetId,
-	allocated_amount: Amount,
+	allocated_amount: Decimal,
+	currency: &'static Currency,
 	payments: HashMap<PaymentId, Payment>,
 }
 
 impl Budget {
-	pub fn create(id: BudgetId, currency: Currency) -> Vec<BudgetEvent> {
+	pub fn create(id: BudgetId, currency: &'static Currency) -> Vec<BudgetEvent> {
 		vec![BudgetEvent::Created { id, currency }]
 	}
 
 	pub fn allocate(&self, amount: Decimal) -> Result<Vec<BudgetEvent>> {
-		if *self.allocated_amount.amount() + amount < self.spent_amount() {
+		if self.allocated_amount + amount < self.spent_amount() {
 			return Err(Error::Overspent);
 		}
 
@@ -57,11 +58,11 @@ impl Budget {
 		duration_worked: Duration,
 		reason: Reason,
 	) -> Result<Vec<BudgetEvent>> {
-		if self.allocated_amount.currency() != amount.currency() {
+		if self.currency != amount.currency() {
 			return Err(Error::InvalidCurrency);
 		}
 
-		if self.spent_amount() + amount.amount() > *self.allocated_amount.amount() {
+		if self.spent_amount() + amount.amount() > self.allocated_amount {
 			return Err(Error::Overspent);
 		}
 
@@ -141,7 +142,8 @@ impl EventSourcable for Budget {
 		match event {
 			BudgetEvent::Created { id, currency } => Self {
 				id: *id,
-				allocated_amount: Amount::new(Decimal::ZERO, currency.clone()),
+				allocated_amount: Decimal::ZERO,
+				currency: *currency,
 				..self
 			},
 			BudgetEvent::Allocated { id, amount, .. } => Self {
@@ -201,12 +203,12 @@ mod tests {
 	}
 
 	#[fixture]
-	fn currency() -> Currency {
-		Currency::Crypto("USDC".to_string())
+	fn currency() -> &'static Currency {
+		currencies::USD
 	}
 
 	#[fixture]
-	fn budget_created_event(budget_id: &BudgetId, currency: Currency) -> BudgetEvent {
+	fn budget_created_event(budget_id: &BudgetId, currency: &'static Currency) -> BudgetEvent {
 		BudgetEvent::Created {
 			id: *budget_id,
 			currency,
@@ -222,7 +224,11 @@ mod tests {
 	}
 
 	#[rstest]
-	fn create_budget(budget_id: &BudgetId, currency: Currency, budget_created_event: BudgetEvent) {
+	fn create_budget(
+		budget_id: &BudgetId,
+		currency: &'static Currency,
+		budget_created_event: BudgetEvent,
+	) {
 		assert_eq!(
 			Budget::create(*budget_id, currency),
 			vec![budget_created_event]
@@ -245,7 +251,7 @@ mod tests {
 	fn spend_budget(
 		amount: Decimal,
 		duration_worked: Duration,
-		currency: Currency,
+		currency: &'static Currency,
 		budget_created_event: BudgetEvent,
 		budget_allocated_event: BudgetEvent,
 	) {
@@ -254,7 +260,7 @@ mod tests {
 			Default::default(),
 			Default::default(),
 			Default::default(),
-			Amount::new(amount, currency),
+			Amount::from_decimal(amount, currency),
 			duration_worked,
 			Default::default(),
 		);
@@ -273,7 +279,7 @@ mod tests {
 	fn spend_and_cancel_budget(
 		amount: Decimal,
 		duration_worked: Duration,
-		currency: Currency,
+		currency: &'static Currency,
 		payment_id: &PaymentId,
 		budget_created_event: BudgetEvent,
 		budget_allocated_event: BudgetEvent,
@@ -283,7 +289,7 @@ mod tests {
 			*payment_id,
 			Default::default(),
 			Default::default(),
-			Amount::new(amount, currency.clone()),
+			Amount::from_decimal(amount, currency),
 			duration_worked,
 			Default::default(),
 		);
@@ -298,7 +304,7 @@ mod tests {
 			*payment_id,
 			Default::default(),
 			Default::default(),
-			Amount::new(amount, currency),
+			Amount::from_decimal(amount, currency),
 			duration_worked,
 			Default::default(),
 		);
@@ -309,7 +315,7 @@ mod tests {
 	fn overspend_budget(
 		amount: Decimal,
 		duration_worked: Duration,
-		currency: Currency,
+		currency: &'static Currency,
 		budget_created_event: BudgetEvent,
 		budget_allocated_event: BudgetEvent,
 	) {
@@ -318,7 +324,7 @@ mod tests {
 			Default::default(),
 			Default::default(),
 			Default::default(),
-			Amount::new(amount * dec!(2), currency),
+			Amount::from_decimal(amount * dec!(2), currency),
 			duration_worked,
 			Default::default(),
 		);
@@ -336,7 +342,7 @@ mod tests {
 			Default::default(),
 			Default::default(),
 			Default::default(),
-			Amount::new(dec!(10), crate::Currency::Crypto("USDT".to_string())),
+			Amount::from_decimal(dec!(10), currencies::APTOS),
 			duration_worked,
 			Default::default(),
 		);
@@ -348,7 +354,7 @@ mod tests {
 	fn refill_budget(
 		amount: Decimal,
 		duration_worked: Duration,
-		currency: Currency,
+		currency: &'static Currency,
 		budget_created_event: BudgetEvent,
 		budget_allocated_event: BudgetEvent,
 	) {
@@ -359,7 +365,7 @@ mod tests {
 				PaymentId::new(),
 				Default::default(),
 				Default::default(),
-				Amount::new(amount, currency.clone()),
+				Amount::from_decimal(amount, currency),
 				duration_worked,
 				Default::default(),
 			)
@@ -377,7 +383,7 @@ mod tests {
 				PaymentId::new(),
 				Default::default(),
 				Default::default(),
-				Amount::new(amount, currency),
+				Amount::from_decimal(amount, currency),
 				duration_worked,
 				Default::default(),
 			)
@@ -385,14 +391,14 @@ mod tests {
 		let budget = budget.apply_events(&events);
 
 		// no more budget !
-		assert_eq!(&budget.spent_amount(), budget.allocated_amount.amount());
+		assert_eq!(budget.spent_amount(), budget.allocated_amount);
 	}
 
 	#[rstest]
 	fn cut_budget(
 		amount: Decimal,
 		duration_worked: Duration,
-		currency: Currency,
+		currency: &'static Currency,
 		budget_created_event: BudgetEvent,
 		budget_allocated_event: BudgetEvent,
 	) {
@@ -407,7 +413,7 @@ mod tests {
 				PaymentId::new(),
 				Default::default(),
 				Default::default(),
-				Amount::new(amount, currency),
+				Amount::from_decimal(amount, currency),
 				duration_worked,
 				Default::default(),
 			)
@@ -420,14 +426,14 @@ mod tests {
 		let budget = budget.apply_events(&result.unwrap());
 
 		// no more budget !
-		assert_eq!(&budget.spent_amount(), budget.allocated_amount.amount());
+		assert_eq!(budget.spent_amount(), budget.allocated_amount);
 	}
 
 	#[rstest]
 	fn cannot_cut_budget_below_spent(
 		amount: Decimal,
 		duration_worked: Duration,
-		currency: Currency,
+		currency: &'static Currency,
 		budget_created_event: BudgetEvent,
 		budget_allocated_event: BudgetEvent,
 	) {
@@ -438,7 +444,7 @@ mod tests {
 				PaymentId::new(),
 				Default::default(),
 				Default::default(),
-				Amount::new(amount, currency),
+				Amount::from_decimal(amount, currency),
 				duration_worked,
 				Default::default(),
 			)

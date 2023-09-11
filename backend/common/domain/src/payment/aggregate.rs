@@ -202,7 +202,7 @@ mod tests {
 	use uuid::Uuid;
 
 	use super::*;
-	use crate::{blockchain::*, Currency, PaymentReceiptId, UserId};
+	use crate::{blockchain::*, currencies, PaymentReceiptId, UserId};
 
 	pub const CONTRACT_ADDRESSES: [&str; 1] = ["0xd8da6bf26964af9d7eed9e03e53415d37aa96045"];
 
@@ -246,10 +246,7 @@ mod tests {
 
 	#[fixture]
 	fn amount(amount_in_usd: u32) -> Amount {
-		Amount::new(
-			Decimal::new(amount_in_usd as i64, 0),
-			Currency::Crypto("USDC".to_string()),
-		)
+		Amount::from_decimal(Decimal::new(amount_in_usd as i64, 0), currencies::USD)
 	}
 
 	#[fixture]
@@ -353,7 +350,7 @@ mod tests {
 	) {
 		let result = requested_payment.await.add_receipt(
 			payment_receipt_id,
-			Amount::new(amount.amount() + amount.amount(), amount.currency().clone()),
+			Amount::from_decimal(amount.amount() + amount.amount(), amount.currency()),
 			receipt,
 		);
 
@@ -463,7 +460,7 @@ mod tests {
 			id: payment_id,
 			requestor_id: Default::default(),
 			recipient_id: Default::default(),
-			amount: Default::default(),
+			amount: Amount::from_decimal(Decimal::ZERO, Default::default()),
 			duration_worked: Duration::hours(0),
 			reason: Default::default(),
 			requested_at: Default::default(),

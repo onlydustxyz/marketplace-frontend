@@ -7,9 +7,18 @@ use crate::{AggregateEvent, Budget, BudgetId, Currency, PaymentEvent};
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Event {
-	Created { id: BudgetId, currency: Currency },
-	Allocated { id: BudgetId, amount: Decimal },
-	Payment { id: BudgetId, event: PaymentEvent },
+	Created {
+		id: BudgetId,
+		currency: &'static Currency,
+	},
+	Allocated {
+		id: BudgetId,
+		amount: Decimal,
+	},
+	Payment {
+		id: BudgetId,
+		event: PaymentEvent,
+	},
 }
 
 impl AggregateEvent<Budget> for Event {
