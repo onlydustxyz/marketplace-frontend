@@ -1102,7 +1102,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "work_items_aggregate_bool_exp",
+              "name": "WorkItems_aggregate_bool_exp",
               "ofType": null
             },
             "defaultValue": null,
@@ -16753,6 +16753,18 @@
             "deprecationReason": null
           },
           {
+            "name": "githubCodeReviewId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubIssue",
             "description": "An object relationship",
             "args": [],
@@ -16765,12 +16777,36 @@
             "deprecationReason": null
           },
           {
+            "name": "githubIssueId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubPullRequest",
             "description": "An object relationship",
             "args": [],
             "type": {
               "kind": "OBJECT",
               "name": "GithubPullRequests",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
               "ofType": null
             },
             "isDeprecated": false,
@@ -17471,6 +17507,30 @@
         "description": "aggregate avg on columns",
         "fields": [
           {
+            "name": "githubIssueId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "args": [],
@@ -17595,6 +17655,18 @@
             "deprecationReason": null
           },
           {
+            "name": "githubCodeReviewId",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "StringComparisonExp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubIssue",
             "description": null,
             "type": {
@@ -17607,11 +17679,35 @@
             "deprecationReason": null
           },
           {
+            "name": "githubIssueId",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "BigintComparisonExp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubPullRequest",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "GithubPullRequestsBoolExp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "BigintComparisonExp",
               "ofType": null
             },
             "defaultValue": null,
@@ -17695,7 +17791,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "work_items_aggregate_bool_exp",
+              "name": "WorkItems_aggregate_bool_exp",
               "ofType": null
             },
             "defaultValue": null,
@@ -17774,6 +17870,18 @@
             "deprecationReason": null
           },
           {
+            "name": "githubCodeReviewId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubIssue",
             "description": null,
             "type": {
@@ -17786,11 +17894,35 @@
             "deprecationReason": null
           },
           {
+            "name": "githubIssueId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubPullRequest",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "GithubPullRequestsObjRelInsertInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
               "ofType": null
             },
             "defaultValue": null,
@@ -17940,6 +18072,42 @@
             "deprecationReason": null
           },
           {
+            "name": "githubCodeReviewId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubIssueId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "args": [],
@@ -18053,6 +18221,42 @@
             "type": {
               "kind": "SCALAR",
               "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubCodeReviewId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubIssueId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
               "ofType": null
             },
             "isDeprecated": false,
@@ -18179,6 +18383,18 @@
             "deprecationReason": null
           },
           {
+            "name": "githubCodeReviewId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubIssue",
             "description": null,
             "type": {
@@ -18191,11 +18407,35 @@
             "deprecationReason": null
           },
           {
+            "name": "githubIssueId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubPullRequest",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "GithubPullRequestsOrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
               "ofType": null
             },
             "defaultValue": null,
@@ -18330,6 +18570,24 @@
             "deprecationReason": null
           },
           {
+            "name": "githubCodeReviewId",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubIssueId",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": "column name",
             "isDeprecated": false,
@@ -18380,6 +18638,30 @@
         "description": "aggregate stddev on columns",
         "fields": [
           {
+            "name": "githubIssueId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "args": [],
@@ -18414,6 +18696,30 @@
         "name": "ContributionsStddev_popFields",
         "description": "aggregate stddev_pop on columns",
         "fields": [
+          {
+            "name": "githubIssueId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "githubUserId",
             "description": null,
@@ -18450,6 +18756,30 @@
         "description": "aggregate stddev_samp on columns",
         "fields": [
           {
+            "name": "githubIssueId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "args": [],
@@ -18484,6 +18814,30 @@
         "name": "ContributionsSumFields",
         "description": "aggregate sum on columns",
         "fields": [
+          {
+            "name": "githubIssueId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "githubUserId",
             "description": null,
@@ -18520,6 +18874,30 @@
         "description": "aggregate var_pop on columns",
         "fields": [
           {
+            "name": "githubIssueId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "args": [],
@@ -18555,6 +18933,30 @@
         "description": "aggregate var_samp on columns",
         "fields": [
           {
+            "name": "githubIssueId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "args": [],
@@ -18589,6 +18991,30 @@
         "name": "ContributionsVarianceFields",
         "description": "aggregate variance on columns",
         "fields": [
+          {
+            "name": "githubIssueId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "githubUserId",
             "description": null,
@@ -18878,6 +19304,30 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "githubIssueId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "type": {
@@ -18938,6 +19388,42 @@
           },
           {
             "name": "detailsId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubCodeReviewId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubIssueId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -19068,6 +19554,42 @@
             "deprecationReason": null
           },
           {
+            "name": "githubCodeReviewId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubIssueId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "type": {
@@ -19185,6 +19707,30 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "githubIssueId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "type": {
@@ -19220,6 +19766,30 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "githubIssueId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "type": {
@@ -19254,6 +19824,30 @@
         "description": "order by stddev_samp() on columns of table \"api.contributions\"",
         "fields": null,
         "inputFields": [
+          {
+            "name": "githubIssueId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "githubUserId",
             "description": null,
@@ -19365,6 +19959,42 @@
             "deprecationReason": null
           },
           {
+            "name": "githubCodeReviewId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubIssueId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "type": {
@@ -19460,6 +20090,30 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "githubIssueId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "type": {
@@ -19494,6 +20148,30 @@
         "description": "order by var_pop() on columns of table \"api.contributions\"",
         "fields": null,
         "inputFields": [
+          {
+            "name": "githubIssueId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "githubUserId",
             "description": null,
@@ -19530,6 +20208,30 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "githubIssueId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "type": {
@@ -19564,6 +20266,30 @@
         "description": "order by variance() on columns of table \"api.contributions\"",
         "fields": null,
         "inputFields": [
+          {
+            "name": "githubIssueId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "githubUserId",
             "description": null,
@@ -35577,7 +36303,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "work_items_aggregate_bool_exp",
+              "name": "WorkItems_aggregate_bool_exp",
               "ofType": null
             },
             "defaultValue": null,
@@ -62168,7 +62894,7 @@
       {
         "kind": "OBJECT",
         "name": "WorkItems",
-        "description": "columns and relationships of \"work_items\"",
+        "description": "columns and relationships of \"api.work_items\"",
         "fields": [
           {
             "name": "githubCodeReview",
@@ -62177,6 +62903,18 @@
             "type": {
               "kind": "OBJECT",
               "name": "GithubPullRequestReviews",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubCodeReviewId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
               "ofType": null
             },
             "isDeprecated": false,
@@ -62195,6 +62933,18 @@
             "deprecationReason": null
           },
           {
+            "name": "githubIssueId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubPullRequest",
             "description": "An object relationship",
             "args": [],
@@ -62207,17 +62957,25 @@
             "deprecationReason": null
           },
           {
+            "name": "githubPullRequestId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "id",
             "description": null,
             "args": [],
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -62227,13 +62985,9 @@
             "description": null,
             "args": [],
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "bigint",
-                "ofType": null
-              }
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -62243,13 +62997,9 @@
             "description": null,
             "args": [],
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "uuid",
-                "ofType": null
-              }
+              "kind": "SCALAR",
+              "name": "uuid",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -62271,13 +63021,9 @@
             "description": null,
             "args": [],
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "uuid",
-                "ofType": null
-              }
+              "kind": "SCALAR",
+              "name": "uuid",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -62287,13 +63033,9 @@
             "description": null,
             "args": [],
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "bigint",
-                "ofType": null
-              }
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -62303,13 +63045,9 @@
             "description": null,
             "args": [],
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "bigint",
-                "ofType": null
-              }
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -62319,13 +63057,9 @@
             "description": null,
             "args": [],
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "contribution_type",
-                "ofType": null
-              }
+              "kind": "SCALAR",
+              "name": "contribution_type",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -62339,7 +63073,7 @@
       {
         "kind": "OBJECT",
         "name": "WorkItemsAggregate",
-        "description": "aggregated selection of \"work_items\"",
+        "description": "aggregated selection of \"api.work_items\"",
         "fields": [
           {
             "name": "aggregate",
@@ -62386,7 +63120,7 @@
       {
         "kind": "OBJECT",
         "name": "WorkItemsAggregateFields",
-        "description": "aggregate fields of \"work_items\"",
+        "description": "aggregate fields of \"api.work_items\"",
         "fields": [
           {
             "name": "avg",
@@ -62566,7 +63300,7 @@
       {
         "kind": "INPUT_OBJECT",
         "name": "WorkItemsAggregateOrderBy",
-        "description": "order by aggregate values of table \"work_items\"",
+        "description": "order by aggregate values of table \"api.work_items\"",
         "fields": null,
         "inputFields": [
           {
@@ -62574,7 +63308,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "work_items_avg_order_by",
+              "name": "WorkItems_avg_order_by",
               "ofType": null
             },
             "defaultValue": null,
@@ -62598,7 +63332,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "work_items_max_order_by",
+              "name": "WorkItems_max_order_by",
               "ofType": null
             },
             "defaultValue": null,
@@ -62610,7 +63344,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "work_items_min_order_by",
+              "name": "WorkItems_min_order_by",
               "ofType": null
             },
             "defaultValue": null,
@@ -62622,7 +63356,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "work_items_stddev_order_by",
+              "name": "WorkItems_stddev_order_by",
               "ofType": null
             },
             "defaultValue": null,
@@ -62634,7 +63368,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "work_items_stddev_pop_order_by",
+              "name": "WorkItems_stddev_pop_order_by",
               "ofType": null
             },
             "defaultValue": null,
@@ -62646,7 +63380,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "work_items_stddev_samp_order_by",
+              "name": "WorkItems_stddev_samp_order_by",
               "ofType": null
             },
             "defaultValue": null,
@@ -62658,7 +63392,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "work_items_sum_order_by",
+              "name": "WorkItems_sum_order_by",
               "ofType": null
             },
             "defaultValue": null,
@@ -62670,7 +63404,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "work_items_var_pop_order_by",
+              "name": "WorkItems_var_pop_order_by",
               "ofType": null
             },
             "defaultValue": null,
@@ -62682,7 +63416,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "work_items_var_samp_order_by",
+              "name": "WorkItems_var_samp_order_by",
               "ofType": null
             },
             "defaultValue": null,
@@ -62694,7 +63428,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "work_items_variance_order_by",
+              "name": "WorkItems_variance_order_by",
               "ofType": null
             },
             "defaultValue": null,
@@ -62709,7 +63443,7 @@
       {
         "kind": "INPUT_OBJECT",
         "name": "WorkItemsArrRelInsertInput",
-        "description": "input type for inserting array relation for remote table \"work_items\"",
+        "description": "input type for inserting array relation for remote table \"api.work_items\"",
         "fields": null,
         "inputFields": [
           {
@@ -62735,18 +63469,6 @@
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
-          },
-          {
-            "name": "onConflict",
-            "description": "upsert condition",
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "WorkItemsOnConflict",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
           }
         ],
         "interfaces": null,
@@ -62758,6 +63480,30 @@
         "name": "WorkItemsAvgFields",
         "description": "aggregate avg on columns",
         "fields": [
+          {
+            "name": "githubIssueId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "number",
             "description": null,
@@ -62803,7 +63549,7 @@
       {
         "kind": "INPUT_OBJECT",
         "name": "WorkItemsBoolExp",
-        "description": "Boolean expression to filter rows from the table \"work_items\". All fields are combined with a logical 'AND'.",
+        "description": "Boolean expression to filter rows from the table \"api.work_items\". All fields are combined with a logical 'AND'.",
         "fields": null,
         "inputFields": [
           {
@@ -62871,6 +63617,18 @@
             "deprecationReason": null
           },
           {
+            "name": "githubCodeReviewId",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "StringComparisonExp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubIssue",
             "description": null,
             "type": {
@@ -62883,11 +63641,35 @@
             "deprecationReason": null
           },
           {
+            "name": "githubIssueId",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "BigintComparisonExp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubPullRequest",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "GithubPullRequestsBoolExp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "BigintComparisonExp",
               "ofType": null
             },
             "defaultValue": null,
@@ -62996,28 +63778,35 @@
         "possibleTypes": null
       },
       {
-        "kind": "ENUM",
-        "name": "WorkItemsConstraint",
-        "description": "unique or primary key constraints on table \"work_items\"",
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": [
-          {
-            "name": "work_items_pkey",
-            "description": "unique or primary key constraint on columns \"number\", \"payment_id\", \"repo_id\"",
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "possibleTypes": null
-      },
-      {
         "kind": "INPUT_OBJECT",
         "name": "WorkItemsIncInput",
-        "description": "input type for incrementing numeric columns in table \"work_items\"",
+        "description": "input type for incrementing numeric columns in table \"api.work_items\"",
         "fields": null,
         "inputFields": [
+          {
+            "name": "githubIssueId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "number",
             "description": null,
@@ -63062,7 +63851,7 @@
       {
         "kind": "INPUT_OBJECT",
         "name": "WorkItemsInsertInput",
-        "description": "input type for inserting data into table \"work_items\"",
+        "description": "input type for inserting data into table \"api.work_items\"",
         "fields": null,
         "inputFields": [
           {
@@ -63071,6 +63860,18 @@
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "GithubPullRequestReviewsObjRelInsertInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubCodeReviewId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
               "ofType": null
             },
             "defaultValue": null,
@@ -63090,11 +63891,35 @@
             "deprecationReason": null
           },
           {
+            "name": "githubIssueId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubPullRequest",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "GithubPullRequestsObjRelInsertInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
               "ofType": null
             },
             "defaultValue": null,
@@ -63208,6 +64033,42 @@
         "description": "aggregate max on columns",
         "fields": [
           {
+            "name": "githubCodeReviewId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubIssueId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "id",
             "description": null,
             "args": [],
@@ -63303,6 +64164,42 @@
         "description": "aggregate min on columns",
         "fields": [
           {
+            "name": "githubCodeReviewId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubIssueId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "id",
             "description": null,
             "args": [],
@@ -63395,7 +64292,7 @@
       {
         "kind": "OBJECT",
         "name": "WorkItemsMutationResponse",
-        "description": "response of any mutation on the table \"work_items\"",
+        "description": "response of any mutation on the table \"api.work_items\"",
         "fields": [
           {
             "name": "affected_rows",
@@ -63445,71 +64342,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "WorkItemsOnConflict",
-        "description": "on_conflict condition type for table \"work_items\"",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "constraint",
-            "description": null,
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "ENUM",
-                "name": "WorkItemsConstraint",
-                "ofType": null
-              }
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "update_columns",
-            "description": null,
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "ENUM",
-                    "name": "WorkItemsUpdateColumn",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "defaultValue": "[]",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "where",
-            "description": null,
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "WorkItemsBoolExp",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
         "name": "WorkItemsOrderBy",
-        "description": "Ordering options when selecting data from \"work_items\".",
+        "description": "Ordering options when selecting data from \"api.work_items\".",
         "fields": null,
         "inputFields": [
           {
@@ -63518,6 +64352,18 @@
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "GithubPullRequestReviewsOrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubCodeReviewId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
               "ofType": null
             },
             "defaultValue": null,
@@ -63537,11 +64383,35 @@
             "deprecationReason": null
           },
           {
+            "name": "githubIssueId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubPullRequest",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "GithubPullRequestsOrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
               "ofType": null
             },
             "defaultValue": null,
@@ -63650,72 +64520,31 @@
         "possibleTypes": null
       },
       {
-        "kind": "INPUT_OBJECT",
-        "name": "WorkItemsPkColumnsInput",
-        "description": "primary key columns input for table: work_items",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "number",
-            "description": null,
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "bigint",
-                "ofType": null
-              }
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "paymentId",
-            "description": null,
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "uuid",
-                "ofType": null
-              }
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "repoId",
-            "description": null,
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "bigint",
-                "ofType": null
-              }
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
         "kind": "ENUM",
         "name": "WorkItemsSelectColumn",
-        "description": "select columns of table \"work_items\"",
+        "description": "select columns of table \"api.work_items\"",
         "fields": null,
         "inputFields": null,
         "interfaces": null,
         "enumValues": [
+          {
+            "name": "githubCodeReviewId",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubIssueId",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "id",
             "description": "column name",
@@ -63764,9 +64593,45 @@
       {
         "kind": "INPUT_OBJECT",
         "name": "WorkItemsSetInput",
-        "description": "input type for updating data in table \"work_items\"",
+        "description": "input type for updating data in table \"api.work_items\"",
         "fields": null,
         "inputFields": [
+          {
+            "name": "githubCodeReviewId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubIssueId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "id",
             "description": null,
@@ -63862,6 +64727,30 @@
         "description": "aggregate stddev on columns",
         "fields": [
           {
+            "name": "githubIssueId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "number",
             "description": null,
             "args": [],
@@ -63908,6 +64797,30 @@
         "name": "WorkItemsStddev_popFields",
         "description": "aggregate stddev_pop on columns",
         "fields": [
+          {
+            "name": "githubIssueId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "number",
             "description": null,
@@ -63956,6 +64869,30 @@
         "description": "aggregate stddev_samp on columns",
         "fields": [
           {
+            "name": "githubIssueId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "number",
             "description": null,
             "args": [],
@@ -64003,6 +64940,30 @@
         "description": "aggregate sum on columns",
         "fields": [
           {
+            "name": "githubIssueId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "number",
             "description": null,
             "args": [],
@@ -64042,59 +65003,6 @@
         "inputFields": null,
         "interfaces": [],
         "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "ENUM",
-        "name": "WorkItemsUpdateColumn",
-        "description": "update columns of table \"work_items\"",
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": [
-          {
-            "name": "id",
-            "description": "column name",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "number",
-            "description": "column name",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "paymentId",
-            "description": "column name",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "projectId",
-            "description": "column name",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "recipientId",
-            "description": "column name",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "repoId",
-            "description": "column name",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "type",
-            "description": "column name",
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
         "possibleTypes": null
       },
       {
@@ -64154,6 +65062,30 @@
         "description": "aggregate var_pop on columns",
         "fields": [
           {
+            "name": "githubIssueId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "number",
             "description": null,
             "args": [],
@@ -64200,6 +65132,30 @@
         "name": "WorkItemsVar_sampFields",
         "description": "aggregate var_samp on columns",
         "fields": [
+          {
+            "name": "githubIssueId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "number",
             "description": null,
@@ -64248,6 +65204,30 @@
         "description": "aggregate variance on columns",
         "fields": [
           {
+            "name": "githubIssueId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "number",
             "description": null,
             "args": [],
@@ -64286,6 +65266,1100 @@
         ],
         "inputFields": null,
         "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "WorkItems_aggregate_bool_exp",
+        "description": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "count",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "WorkItems_aggregate_bool_exp_count",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "WorkItems_aggregate_bool_exp_count",
+        "description": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "arguments",
+            "description": null,
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "ENUM",
+                  "name": "WorkItemsSelectColumn",
+                  "ofType": null
+                }
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "distinct",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "filter",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "WorkItemsBoolExp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "predicate",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "INPUT_OBJECT",
+                "name": "IntComparisonExp",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "WorkItems_avg_order_by",
+        "description": "order by avg() on columns of table \"api.work_items\"",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "githubIssueId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "number",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "recipientId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "repoId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "WorkItems_max_order_by",
+        "description": "order by max() on columns of table \"api.work_items\"",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "githubCodeReviewId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubIssueId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "id",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "number",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "paymentId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "projectId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "recipientId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "repoId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "type",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "WorkItems_min_order_by",
+        "description": "order by min() on columns of table \"api.work_items\"",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "githubCodeReviewId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubIssueId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "id",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "number",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "paymentId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "projectId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "recipientId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "repoId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "type",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "WorkItems_stddev_order_by",
+        "description": "order by stddev() on columns of table \"api.work_items\"",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "githubIssueId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "number",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "recipientId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "repoId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "WorkItems_stddev_pop_order_by",
+        "description": "order by stddev_pop() on columns of table \"api.work_items\"",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "githubIssueId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "number",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "recipientId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "repoId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "WorkItems_stddev_samp_order_by",
+        "description": "order by stddev_samp() on columns of table \"api.work_items\"",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "githubIssueId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "number",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "recipientId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "repoId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "WorkItems_streamCursorInput",
+        "description": "Streaming cursor of the table \"WorkItems\"",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "initialValue",
+            "description": "Stream column input with initial value",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "INPUT_OBJECT",
+                "name": "WorkItems_streamCursorValueInput",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "ordering",
+            "description": "cursor ordering",
+            "type": {
+              "kind": "ENUM",
+              "name": "CursorOrdering",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "WorkItems_streamCursorValueInput",
+        "description": "Initial value of the column from where the streaming should start",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "githubCodeReviewId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubIssueId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "id",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "number",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "paymentId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "uuid",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "projectId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "uuid",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "recipientId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "repoId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "type",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "contribution_type",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "WorkItems_sum_order_by",
+        "description": "order by sum() on columns of table \"api.work_items\"",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "githubIssueId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "number",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "recipientId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "repoId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "WorkItems_var_pop_order_by",
+        "description": "order by var_pop() on columns of table \"api.work_items\"",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "githubIssueId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "number",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "recipientId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "repoId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "WorkItems_var_samp_order_by",
+        "description": "order by var_samp() on columns of table \"api.work_items\"",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "githubIssueId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "number",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "recipientId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "repoId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "WorkItems_variance_order_by",
+        "description": "order by variance() on columns of table \"api.work_items\"",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "githubIssueId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "githubPullRequestId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "number",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "recipientId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "repoId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
         "enumValues": null,
         "possibleTypes": null
       },
@@ -81318,7 +83392,7 @@
           },
           {
             "name": "deleteWorkItems",
-            "description": "delete data from the table: \"work_items\"",
+            "description": "delete data from the table: \"api.work_items\"",
             "args": [
               {
                 "name": "where",
@@ -81340,67 +83414,6 @@
             "type": {
               "kind": "OBJECT",
               "name": "WorkItemsMutationResponse",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "deleteWorkItemsByPk",
-            "description": "delete single row from the table: \"work_items\"",
-            "args": [
-              {
-                "name": "number",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "bigint",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "paymentId",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "uuid",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "repoId",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "bigint",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              }
-            ],
-            "type": {
-              "kind": "OBJECT",
-              "name": "WorkItems",
               "ofType": null
             },
             "isDeprecated": false,
@@ -83929,7 +85942,7 @@
           },
           {
             "name": "insertWorkItems",
-            "description": "insert data into the table: \"work_items\"",
+            "description": "insert data into the table: \"api.work_items\"",
             "args": [
               {
                 "name": "objects",
@@ -83954,18 +85967,6 @@
                 "defaultValue": null,
                 "isDeprecated": false,
                 "deprecationReason": null
-              },
-              {
-                "name": "onConflict",
-                "description": "upsert condition",
-                "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "WorkItemsOnConflict",
-                  "ofType": null
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
               }
             ],
             "type": {
@@ -83978,7 +85979,7 @@
           },
           {
             "name": "insertWorkItemsOne",
-            "description": "insert a single row into the table: \"work_items\"",
+            "description": "insert a single row into the table: \"api.work_items\"",
             "args": [
               {
                 "name": "object",
@@ -83991,18 +85992,6 @@
                     "name": "WorkItemsInsertInput",
                     "ofType": null
                   }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "onConflict",
-                "description": "upsert condition",
-                "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "WorkItemsOnConflict",
-                  "ofType": null
                 },
                 "defaultValue": null,
                 "isDeprecated": false,
@@ -89388,7 +91377,7 @@
           },
           {
             "name": "updateWorkItems",
-            "description": "update data of the table: \"work_items\"",
+            "description": "update data of the table: \"api.work_items\"",
             "args": [
               {
                 "name": "_inc",
@@ -89440,61 +91429,8 @@
             "deprecationReason": null
           },
           {
-            "name": "updateWorkItemsByPk",
-            "description": "update single row of the table: \"work_items\"",
-            "args": [
-              {
-                "name": "_inc",
-                "description": "increments the numeric columns with given value of the filtered values",
-                "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "WorkItemsIncInput",
-                  "ofType": null
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "_set",
-                "description": "sets the columns of the filtered rows to the given values",
-                "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "WorkItemsSetInput",
-                  "ofType": null
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "pk_columns",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "INPUT_OBJECT",
-                    "name": "WorkItemsPkColumnsInput",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              }
-            ],
-            "type": {
-              "kind": "OBJECT",
-              "name": "WorkItems",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "updateWorkItemsMany",
-            "description": "update multiples rows of table: \"work_items\"",
+            "description": "update multiples rows of table: \"api.work_items\"",
             "args": [
               {
                 "name": "updates",
@@ -103224,67 +105160,6 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
-          },
-          {
-            "name": "workItemsByPk",
-            "description": "fetch data from the table: \"work_items\" using primary key columns",
-            "args": [
-              {
-                "name": "number",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "bigint",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "paymentId",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "uuid",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "repoId",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "bigint",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              }
-            ],
-            "type": {
-              "kind": "OBJECT",
-              "name": "WorkItems",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -104190,6 +106065,79 @@
                   "ofType": {
                     "kind": "OBJECT",
                     "name": "UserProfiles",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "WorkItemsStream",
+            "description": "fetch data from the table in a streaming manner: \"api.work_items\"",
+            "args": [
+              {
+                "name": "batchSize",
+                "description": "maximum number of rows returned in a single batch",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "cursor",
+                "description": "cursor to stream the results returned by the query",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "INPUT_OBJECT",
+                      "name": "WorkItems_streamCursorInput",
+                      "ofType": null
+                    }
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "where",
+                "description": "filter the rows returned",
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "WorkItemsBoolExp",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "WorkItems",
                     "ofType": null
                   }
                 }
@@ -114997,140 +116945,6 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
-          },
-          {
-            "name": "workItemsByPk",
-            "description": "fetch data from the table: \"work_items\" using primary key columns",
-            "args": [
-              {
-                "name": "number",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "bigint",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "paymentId",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "uuid",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "repoId",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "bigint",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              }
-            ],
-            "type": {
-              "kind": "OBJECT",
-              "name": "WorkItems",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "workItemsStream",
-            "description": "fetch data from the table in a streaming manner: \"work_items\"",
-            "args": [
-              {
-                "name": "batchSize",
-                "description": "maximum number of rows returned in a single batch",
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Int",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "cursor",
-                "description": "cursor to stream the results returned by the query",
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "LIST",
-                    "name": null,
-                    "ofType": {
-                      "kind": "INPUT_OBJECT",
-                      "name": "work_items_streamCursorInput",
-                      "ofType": null
-                    }
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "where",
-                "description": "filter the rows returned",
-                "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "WorkItemsBoolExp",
-                  "ofType": null
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              }
-            ],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "WorkItems",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -120716,800 +122530,6 @@
         "description": null,
         "fields": null,
         "inputFields": null,
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "work_items_aggregate_bool_exp",
-        "description": null,
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "count",
-            "description": null,
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "work_items_aggregate_bool_exp_count",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "work_items_aggregate_bool_exp_count",
-        "description": null,
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "arguments",
-            "description": null,
-            "type": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "ENUM",
-                  "name": "WorkItemsSelectColumn",
-                  "ofType": null
-                }
-              }
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "distinct",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "Boolean",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "filter",
-            "description": null,
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "WorkItemsBoolExp",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "predicate",
-            "description": null,
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "INPUT_OBJECT",
-                "name": "IntComparisonExp",
-                "ofType": null
-              }
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "work_items_avg_order_by",
-        "description": "order by avg() on columns of table \"work_items\"",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "number",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "recipientId",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "repoId",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "work_items_max_order_by",
-        "description": "order by max() on columns of table \"work_items\"",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "id",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "number",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "paymentId",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "projectId",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "recipientId",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "repoId",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "type",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "work_items_min_order_by",
-        "description": "order by min() on columns of table \"work_items\"",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "id",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "number",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "paymentId",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "projectId",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "recipientId",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "repoId",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "type",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "work_items_stddev_order_by",
-        "description": "order by stddev() on columns of table \"work_items\"",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "number",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "recipientId",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "repoId",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "work_items_stddev_pop_order_by",
-        "description": "order by stddev_pop() on columns of table \"work_items\"",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "number",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "recipientId",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "repoId",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "work_items_stddev_samp_order_by",
-        "description": "order by stddev_samp() on columns of table \"work_items\"",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "number",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "recipientId",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "repoId",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "work_items_streamCursorInput",
-        "description": "Streaming cursor of the table \"work_items\"",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "initialValue",
-            "description": "Stream column input with initial value",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "INPUT_OBJECT",
-                "name": "work_items_streamCursorValueInput",
-                "ofType": null
-              }
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "ordering",
-            "description": "cursor ordering",
-            "type": {
-              "kind": "ENUM",
-              "name": "CursorOrdering",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "work_items_streamCursorValueInput",
-        "description": "Initial value of the column from where the streaming should start",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "id",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "number",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "paymentId",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "uuid",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "projectId",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "uuid",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "recipientId",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "repoId",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "type",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "contribution_type",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "work_items_sum_order_by",
-        "description": "order by sum() on columns of table \"work_items\"",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "number",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "recipientId",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "repoId",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "work_items_var_pop_order_by",
-        "description": "order by var_pop() on columns of table \"work_items\"",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "number",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "recipientId",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "repoId",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "work_items_var_samp_order_by",
-        "description": "order by var_samp() on columns of table \"work_items\"",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "number",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "recipientId",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "repoId",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "work_items_variance_order_by",
-        "description": "order by variance() on columns of table \"work_items\"",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "number",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "recipientId",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "repoId",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
         "interfaces": null,
         "enumValues": null,
         "possibleTypes": null

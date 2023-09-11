@@ -93,8 +93,11 @@ class Contributions {
    closedAt: timestamp
    createdAt: timestamp
    detailsId: String
+   githubCodeReviewId: String
    githubIssue: GithubIssues
+   githubIssueId: bigint
    githubPullRequest: GithubPullRequests
+   githubPullRequestId: bigint
    githubUserId: bigint
    id: String
    ignored: Boolean
@@ -415,16 +418,19 @@ class UserProfiles {
 
 class WorkItems {
    githubCodeReview: GithubPullRequestReviews
+   githubCodeReviewId: String
    githubIssue: GithubIssues
+   githubIssueId: bigint
    githubPullRequest: GithubPullRequests
-   id: String!
-   number: bigint!
-   paymentId: uuid!
+   githubPullRequestId: bigint
+   id: String
+   number: bigint
+   paymentId: uuid
    paymentRequest: PaymentRequests
-   projectId: uuid!
-   recipientId: bigint!
-   repoId: bigint!
-   type: contribution_type!
+   projectId: uuid
+   recipientId: bigint
+   repoId: bigint
+   type: contribution_type
 }
 
 class authProviderRequests {
