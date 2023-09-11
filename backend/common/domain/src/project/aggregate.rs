@@ -94,13 +94,13 @@ impl Project {
 		vec![ProjectEvent::Created { id }]
 	}
 
-	pub fn allocate_budget(&self, diff: &Amount) -> Result<Vec<<Self as Aggregate>::Event>> {
+	pub fn allocate_budget(&self, amount: Amount) -> Result<Vec<<Self as Aggregate>::Event>> {
 		let events = match self.budget.as_ref() {
-			Some(budget) => budget.allocate(*diff.amount())?,
+			Some(budget) => budget.allocate(*amount.amount())?,
 			None => {
-				let events = Budget::create(BudgetId::new(), diff.currency().clone());
+				let events = Budget::create(BudgetId::new(), amount.currency().clone());
 				let budget = Budget::from_events(&events);
-				events.into_iter().chain(budget.allocate(*diff.amount())?).collect()
+				events.into_iter().chain(budget.allocate(*amount.amount())?).collect()
 			},
 		};
 
@@ -381,9 +381,8 @@ mod tests {
 	#[rstest]
 	fn allocate_budget(project_created: ProjectEvent, initial_budget: Amount) {
 		let project = Project::from_events(&[project_created]);
-		let events = project
-			.allocate_budget(&initial_budget)
-			.expect("Failed while allocating budget");
+		let events =
+			project.allocate_budget(initial_budget).expect("Failed while allocating budget");
 
 		assert_eq!(events.len(), 2);
 		assert_matches!(

@@ -51,7 +51,7 @@ impl<'a> Test<'a> {
 		)?;
 
 		let request = json!({
-			"newRemainingAmountInUsd": 1523,
+			"amount": 1523,
 		});
 
 		// When
@@ -141,7 +141,7 @@ impl<'a> Test<'a> {
 		)?;
 
 		let request = json!({
-			"newRemainingAmountInUsd": 1523,
+			"amount": 523,
 		});
 
 		// When

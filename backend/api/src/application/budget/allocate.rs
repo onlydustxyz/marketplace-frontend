@@ -6,7 +6,6 @@ use domain::{
 	ProjectId, Publisher,
 };
 use infrastructure::amqp::UniqueMessage;
-use rust_decimal::Decimal;
 use tracing::instrument;
 
 use crate::domain::Publishable;
@@ -28,21 +27,15 @@ impl Usecase {
 	}
 
 	#[instrument(skip(self))]
-	pub async fn update_allocation(
+	pub async fn allocate(
 		&self,
 		project_id: ProjectId,
-		new_remaining_amount: Amount,
+		amount: Amount,
 	) -> Result<BudgetId, DomainError> {
 		let project = self.project_repository.find_by_id(&project_id)?;
 
-		let current_remaining_amount = project.budget().as_ref().map_or(Decimal::ZERO, |b| {
-			b.allocated_amount().amount() - b.spent_amount()
-		});
-
-		let diff_amount = new_remaining_amount - current_remaining_amount;
-
 		let events = project
-			.allocate_budget(&diff_amount)
+			.allocate_budget(amount)
 			.map_err(|error| DomainError::InvalidInputs(error.into()))?;
 
 		let project = project.apply_events(&events);

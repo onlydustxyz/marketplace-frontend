@@ -17,7 +17,7 @@ pub struct Response {
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Request {
-	new_remaining_amount_in_usd: u64,
+	amount: i64,
 }
 
 #[put(
@@ -25,24 +25,18 @@ pub struct Request {
 	data = "<request>",
 	format = "application/json"
 )]
-pub async fn update_allocation(
+pub async fn allocate(
 	_api_key: ApiKey,
 	project_id: Uuid,
 	request: Json<Request>,
 	usecase: application::budget::allocate::Usecase,
 ) -> Result<(), HttpApiProblem> {
-	let Request {
-		new_remaining_amount_in_usd,
-	} = request.into_inner();
+	let Request { amount } = request.into_inner();
 
 	usecase
-		.update_allocation(
+		.allocate(
 			project_id.into(),
-			Money::from_major(
-				new_remaining_amount_in_usd as i64,
-				rusty_money::crypto::USDC,
-			)
-			.into(),
+			Money::from_major(amount, rusty_money::crypto::USDC).into(),
 		)
 		.await
 		.map_err(Into::<Error>::into)?;

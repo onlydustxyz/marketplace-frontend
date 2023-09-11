@@ -37,14 +37,14 @@ impl Budget {
 		vec![BudgetEvent::Created { id, currency }]
 	}
 
-	pub fn allocate(&self, diff: Decimal) -> Result<Vec<BudgetEvent>> {
-		if *self.allocated_amount.amount() + diff < self.spent_amount() {
+	pub fn allocate(&self, amount: Decimal) -> Result<Vec<BudgetEvent>> {
+		if *self.allocated_amount.amount() + amount < self.spent_amount() {
 			return Err(Error::Overspent);
 		}
 
 		Ok(vec![BudgetEvent::Allocated {
 			id: self.id,
-			amount: diff,
+			amount,
 		}])
 	}
 

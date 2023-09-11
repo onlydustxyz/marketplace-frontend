@@ -53,7 +53,7 @@ impl Usecase {
 
 		let budget_events = match initial_budget {
 			Some(initial_budget) => Project::from_events(&events)
-				.allocate_budget(&initial_budget)
+				.allocate_budget(initial_budget)
 				.map_err(|error| DomainError::InvalidInputs(error.into()))?,
 			_ => vec![],
 		};
