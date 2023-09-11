@@ -19706,7 +19706,13 @@ export type ApplyToProjectMutationResult = Apollo.MutationResult<ApplyToProjectM
 export type ApplyToProjectMutationOptions = Apollo.BaseMutationOptions<ApplyToProjectMutation, ApplyToProjectMutationVariables>;
 export const SearchGithubUsersByHandleSubstringDocument = gql`
     query SearchGithubUsersByHandleSubstring($handleSubstringQuery: String!) {
-  searchUsers(query: $handleSubstringQuery, sort: "followers", order: "desc") {
+  searchUsers(
+    query: $handleSubstringQuery
+    sort: "followers"
+    order: "desc"
+    page: 1
+    perPage: 100
+  ) {
     ...LiveGithubUser
   }
 }

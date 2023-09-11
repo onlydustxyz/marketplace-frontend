@@ -1,5 +1,5 @@
 query SearchGithubUsersByHandleSubstring($handleSubstringQuery: String!) {
-  searchUsers(query: $handleSubstringQuery, sort: "followers", order: "desc") {
+  searchUsers(query: $handleSubstringQuery, sort: "followers", order: "desc", page: 1, perPage: 100) {
     ...LiveGithubUser
   }
 }
