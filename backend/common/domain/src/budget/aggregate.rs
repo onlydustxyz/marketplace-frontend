@@ -1,7 +1,6 @@
 use std::collections::HashMap;
 
 use chrono::Duration;
-use derive_getters::Getters;
 use rust_decimal::Decimal;
 use thiserror::Error;
 
@@ -25,12 +24,12 @@ pub enum Error {
 
 type Result<T> = std::result::Result<T, Error>;
 
-#[derive(Default, Debug, Clone, PartialEq, Eq, Getters)]
+#[derive(Default, Debug, Clone, PartialEq, Eq)]
 pub struct Budget {
-	id: BudgetId,
-	allocated_amount: Decimal,
-	currency: &'static Currency,
-	payments: HashMap<PaymentId, Payment>,
+	pub id: BudgetId,
+	pub allocated_amount: Decimal,
+	pub currency: &'static Currency,
+	pub payments: HashMap<PaymentId, Payment>,
 }
 
 impl Budget {

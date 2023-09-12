@@ -55,11 +55,8 @@ impl IdentifiedUser {
 		payment_id: &PaymentId,
 	) -> Result<bool> {
 		let project = self.project_repository.find_by_id(project_id)?;
-		let budget = project
-			.budget()
-			.clone()
-			.ok_or_else(|| anyhow!("Project {project_id} has no budget"))?;
-		let payment = budget.payments().get(payment_id).ok_or_else(|| {
+		let budget = project.budget.ok_or_else(|| anyhow!("Project {project_id} has no budget"))?;
+		let payment = budget.payments.get(payment_id).ok_or_else(|| {
 			anyhow!("No payment with ID {payment_id} belongs to project {project_id}")
 		})?;
 

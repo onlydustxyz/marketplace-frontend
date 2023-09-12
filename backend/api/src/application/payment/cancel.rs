@@ -32,8 +32,8 @@ impl Usecase {
 			.map_err(|e| DomainError::InvalidInputs(e.into()))?;
 
 		let project = project.apply_events(&events);
-		let budget = project.budget().clone().unwrap();
-		let payment = budget.payments().get(payment_id).cloned().unwrap();
+		let budget = project.budget.clone().unwrap();
+		let payment = budget.payments.get(payment_id).cloned().unwrap();
 		let command_id = CommandId::new();
 
 		events

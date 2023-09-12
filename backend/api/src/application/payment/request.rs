@@ -39,7 +39,7 @@ impl Usecase {
 				new_payment_id,
 				requestor_id,
 				recipient_id,
-				Amount::from_major(amount_in_usd as i64, currencies::USD).into(),
+				Amount::from_major(amount_in_usd as i64, currencies::USD),
 				Duration::hours(hours_worked as i64),
 				reason.clone(),
 			)
@@ -86,8 +86,8 @@ impl Usecase {
 		}
 
 		let project = project.apply_events(&events);
-		let budget = project.budget().clone().unwrap();
-		let payment = budget.payments().get(&new_payment_id).cloned().unwrap();
+		let budget = project.budget.clone().unwrap();
+		let payment = budget.payments.get(&new_payment_id).cloned().unwrap();
 		let command_id = CommandId::new();
 
 		events

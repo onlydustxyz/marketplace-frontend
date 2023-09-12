@@ -25,7 +25,7 @@ impl Usecase {
 		description: String,
 	) -> Result<GithubIssue, DomainError> {
 		let project = self.project_repository.find_by_id(project_id)?;
-		if !project.github_repos().contains(&github_repo_id) {
+		if !project.github_repos.contains(&github_repo_id) {
 			return Err(DomainError::InvalidInputs(anyhow!(
 				"Github repository {github_repo_id} is not linked to project {project_id}"
 			)));

@@ -1,8 +1,6 @@
 use std::collections::{HashMap, HashSet};
 
 use chrono::{Duration, Utc};
-use derive_getters::{Dissolve, Getters};
-use derive_more::Constructor;
 use thiserror::Error;
 
 use crate::{payment::Reason, *};
@@ -29,13 +27,13 @@ pub enum Error {
 
 type Result<T> = std::result::Result<T, Error>;
 
-#[derive(Default, Debug, Clone, PartialEq, Eq, Getters, Dissolve, Constructor)]
+#[derive(Default, Debug, Clone, PartialEq, Eq)]
 pub struct Project {
-	id: ProjectId,
-	leaders: HashSet<UserId>,
-	budget: Option<Budget>,
-	github_repos: HashSet<GithubRepoId>,
-	applications: HashMap<ApplicationId, Application>,
+	pub id: ProjectId,
+	pub leaders: HashSet<UserId>,
+	pub budget: Option<Budget>,
+	pub github_repos: HashSet<GithubRepoId>,
+	pub applications: HashMap<ApplicationId, Application>,
 }
 
 impl Aggregate for Project {
@@ -253,7 +251,7 @@ impl Project {
 		application_id: ApplicationId,
 	) -> Result<Vec<<Self as Aggregate>::Event>> {
 		if self
-			.applications()
+			.applications
 			.iter()
 			.any(|(_, application)| application.applicant_id() == &applicant_id)
 		{

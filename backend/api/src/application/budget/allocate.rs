@@ -40,7 +40,7 @@ impl Usecase {
 
 		let project = project.apply_events(&events);
 
-		let budget = project.budget().as_ref().ok_or(DomainError::InternalError(anyhow!(
+		let budget = project.budget.as_ref().ok_or(DomainError::InternalError(anyhow!(
 			"Failed while allocating budget"
 		)))?;
 
@@ -52,6 +52,6 @@ impl Usecase {
 			.publish(self.event_publisher.clone())
 			.await?;
 
-		Ok(*budget.id())
+		Ok(budget.id)
 	}
 }

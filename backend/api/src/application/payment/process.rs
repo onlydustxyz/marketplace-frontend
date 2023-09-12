@@ -33,12 +33,12 @@ impl Usecase {
 		let project = self.project_repository.find_by_id(project_id)?;
 
 		let payment = project
-			.budget()
+			.budget
 			.as_ref()
 			.ok_or(DomainError::InternalError(anyhow!(
 				"Failed while allocating budget"
 			)))?
-			.payments()
+			.payments
 			.get(payment_id)
 			.ok_or(DomainError::InternalError(anyhow!(
 				"Failed while finding payment"
