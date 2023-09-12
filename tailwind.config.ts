@@ -85,10 +85,12 @@ const config: Config = {
           900: "#230033",
         },
         whiteFakeOpacity: {
+          1: "#232323",
           2: "#0C0C23",
           5: "#111127",
           12: "#4C4B58",
         },
+        spaceGrey: "#141414",
       },
       animation: {
         "spin-invert-slow": "spin-invert 4s linear infinite",
