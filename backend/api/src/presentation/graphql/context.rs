@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use domain::{AggregateRepository, GithubUserId, Payment, Project, UserId};
+use domain::{AggregateRepository, Budget, GithubUserId, Payment, Project, UserId};
 use infrastructure::{
 	amqp,
 	database::{ImmutableRepository, Repository},
@@ -46,6 +46,7 @@ impl Context {
 		caller_permissions: Box<dyn Permissions>,
 		caller_info: Option<Claims>,
 		project_repository: AggregateRepository<Project>,
+		budget_repository: AggregateRepository<Budget>,
 		payment_repository: AggregateRepository<Payment>,
 		project_details_repository: Arc<dyn Repository<ProjectDetails>>,
 		sponsor_repository: Arc<dyn Repository<Sponsor>>,
@@ -80,6 +81,7 @@ impl Context {
 			update_budget_allocation_usecase: application::budget::allocate::Usecase::new(
 				bus.to_owned(),
 				project_repository.clone(),
+				budget_repository,
 			),
 			update_project_usecase: application::project::update::Usecase::new(
 				project_details_repository.clone(),

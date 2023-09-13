@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use domain::{AggregateRepository, Payment, Project};
+use domain::{AggregateRepository, Budget, Payment, Project};
 use infrastructure::{
 	amqp::{self},
 	database::{ImmutableRepository, Repository},
@@ -33,6 +33,7 @@ pub async fn get_graphql_handler(
 	request: GraphQLRequest,
 	schema: &State<Schema>,
 	project_repository: &State<AggregateRepository<Project>>,
+	budget_repository: &State<AggregateRepository<Budget>>,
 	payment_repository: &State<AggregateRepository<Payment>>,
 	project_details_repository: &State<Arc<dyn Repository<ProjectDetails>>>,
 	sponsor_repository: &State<Arc<dyn Repository<Sponsor>>>,
@@ -53,6 +54,7 @@ pub async fn get_graphql_handler(
 		role.to_permissions((*payment_repository).clone()),
 		claims,
 		(*project_repository).clone(),
+		(*budget_repository).clone(),
 		(*payment_repository).clone(),
 		(*project_details_repository).clone(),
 		(*sponsor_repository).clone(),
@@ -80,6 +82,7 @@ pub async fn post_graphql_handler(
 	request: GraphQLRequest,
 	schema: &State<Schema>,
 	project_repository: &State<AggregateRepository<Project>>,
+	budget_repository: &State<AggregateRepository<Budget>>,
 	payment_repository: &State<AggregateRepository<Payment>>,
 	project_details_repository: &State<Arc<dyn Repository<ProjectDetails>>>,
 	sponsor_repository: &State<Arc<dyn Repository<Sponsor>>>,
@@ -100,6 +103,7 @@ pub async fn post_graphql_handler(
 		role.to_permissions((*payment_repository).clone()),
 		claims,
 		(*project_repository).clone(),
+		(*budget_repository).clone(),
 		(*payment_repository).clone(),
 		(*project_details_repository).clone(),
 		(*sponsor_repository).clone(),

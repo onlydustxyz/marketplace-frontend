@@ -3,7 +3,7 @@ use std::sync::Arc;
 use anyhow::Result;
 use async_trait::async_trait;
 use derive_more::Constructor;
-use domain::{BudgetEvent, Event, ProjectEvent, SubscriberCallbackError};
+use domain::{BudgetEvent, Event, SubscriberCallbackError};
 use infrastructure::database::Repository;
 use rust_decimal::Decimal;
 use tracing::instrument;
@@ -20,16 +20,11 @@ pub struct Projector {
 impl EventListener<Event> for Projector {
 	#[instrument(name = "budget_projection", skip(self))]
 	async fn on_event(&self, event: Event) -> Result<(), SubscriberCallbackError> {
-		if let Event::Project(ProjectEvent::Budget {
-			id: project_id,
-			event,
-		}) = event
-		{
+		if let Event::Budget(event) = event {
 			match event {
 				BudgetEvent::Created { id: budget_id, .. } => {
 					self.budget_repository.upsert(Budget {
 						id: budget_id,
-						project_id: Some(project_id),
 						initial_amount: Decimal::ZERO,
 						remaining_amount: Decimal::ZERO,
 					})?;

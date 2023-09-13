@@ -71,19 +71,23 @@ impl<'a> Test<'a> {
 			&self.context,
 			vec![
 				ProjectEvent::Created { id: project_id },
-				ProjectEvent::Budget {
+				ProjectEvent::BudgetLinked {
 					id: project_id,
-					event: BudgetEvent::Created {
-						id: budget_id,
-						currency: currencies::USD,
-					},
+					budget_id,
 				},
-				ProjectEvent::Budget {
-					id: project_id,
-					event: BudgetEvent::Allocated {
-						id: budget_id,
-						amount: Decimal::from(1_000),
-					},
+			],
+		)?;
+
+		models::events::store(
+			&self.context,
+			vec![
+				BudgetEvent::Created {
+					id: budget_id,
+					currency: currencies::USD,
+				},
+				BudgetEvent::Allocated {
+					id: budget_id,
+					amount: Decimal::from(1_000),
 				},
 			],
 		)?;
@@ -182,19 +186,23 @@ impl<'a> Test<'a> {
 			&self.context,
 			vec![
 				ProjectEvent::Created { id: project_id },
-				ProjectEvent::Budget {
+				ProjectEvent::BudgetLinked {
 					id: project_id,
-					event: BudgetEvent::Created {
-						id: budget_id,
-						currency: currencies::USD,
-					},
+					budget_id,
 				},
-				ProjectEvent::Budget {
-					id: project_id,
-					event: BudgetEvent::Allocated {
-						id: budget_id,
-						amount: Decimal::from(1_000),
-					},
+			],
+		)?;
+
+		models::events::store(
+			&self.context,
+			vec![
+				BudgetEvent::Created {
+					id: budget_id,
+					currency: currencies::USD,
+				},
+				BudgetEvent::Allocated {
+					id: budget_id,
+					amount: Decimal::from(1_000),
 				},
 			],
 		)?;
@@ -257,19 +265,23 @@ impl<'a> Test<'a> {
 			&self.context,
 			vec![
 				ProjectEvent::Created { id: project_id },
-				ProjectEvent::Budget {
+				ProjectEvent::BudgetLinked {
 					id: project_id,
-					event: BudgetEvent::Created {
-						id: budget_id,
-						currency: currencies::USD,
-					},
+					budget_id,
 				},
-				ProjectEvent::Budget {
-					id: project_id,
-					event: BudgetEvent::Allocated {
-						id: budget_id,
-						amount: Decimal::from(1_000),
-					},
+			],
+		)?;
+
+		models::events::store(
+			&self.context,
+			vec![
+				BudgetEvent::Created {
+					id: budget_id,
+					currency: currencies::USD,
+				},
+				BudgetEvent::Allocated {
+					id: budget_id,
+					amount: Decimal::from(1_000),
 				},
 			],
 		)?;
@@ -328,19 +340,23 @@ impl<'a> Test<'a> {
 			&self.context,
 			vec![
 				ProjectEvent::Created { id: project_id },
-				ProjectEvent::Budget {
+				ProjectEvent::BudgetLinked {
 					id: project_id,
-					event: BudgetEvent::Created {
-						id: budget_id,
-						currency: currencies::USD,
-					},
+					budget_id,
 				},
-				ProjectEvent::Budget {
-					id: project_id,
-					event: BudgetEvent::Allocated {
-						id: budget_id,
-						amount: Decimal::from(1_000),
-					},
+			],
+		)?;
+
+		models::events::store(
+			&self.context,
+			vec![
+				BudgetEvent::Created {
+					id: budget_id,
+					currency: currencies::USD,
+				},
+				BudgetEvent::Allocated {
+					id: budget_id,
+					amount: Decimal::from(1_000),
 				},
 			],
 		)?;
@@ -400,19 +416,23 @@ impl<'a> Test<'a> {
 			&self.context,
 			vec![
 				ProjectEvent::Created { id: project_id },
-				ProjectEvent::Budget {
+				ProjectEvent::BudgetLinked {
 					id: project_id,
-					event: BudgetEvent::Created {
-						id: budget_id,
-						currency: currencies::USD,
-					},
+					budget_id,
 				},
-				ProjectEvent::Budget {
-					id: project_id,
-					event: BudgetEvent::Allocated {
-						id: budget_id,
-						amount: Decimal::from(1_000),
-					},
+			],
+		)?;
+
+		models::events::store(
+			&self.context,
+			vec![
+				BudgetEvent::Created {
+					id: budget_id,
+					currency: currencies::USD,
+				},
+				BudgetEvent::Allocated {
+					id: budget_id,
+					amount: Decimal::from(1_000),
 				},
 			],
 		)?;
@@ -470,19 +490,23 @@ impl<'a> Test<'a> {
 			&self.context,
 			vec![
 				ProjectEvent::Created { id: project_id },
-				ProjectEvent::Budget {
+				ProjectEvent::BudgetLinked {
 					id: project_id,
-					event: BudgetEvent::Created {
-						id: budget_id,
-						currency: currencies::USD,
-					},
+					budget_id,
 				},
-				ProjectEvent::Budget {
-					id: project_id,
-					event: BudgetEvent::Allocated {
-						id: budget_id,
-						amount: Decimal::from(1_000),
-					},
+			],
+		)?;
+
+		models::events::store(
+			&self.context,
+			vec![
+				BudgetEvent::Created {
+					id: budget_id,
+					currency: currencies::USD,
+				},
+				BudgetEvent::Allocated {
+					id: budget_id,
+					amount: Decimal::from(1_000),
 				},
 			],
 		)?;

@@ -7,6 +7,8 @@ use crate::*;
 
 #[derive(Debug, Error)]
 pub enum Error {
+	#[error("Budget already exists for the given currency")]
+	BudgetAlreadyExists,
 	#[error("Project lead already assigned to this project")]
 	LeaderAlreadyAssigned,
 	#[error("User is not a project leader")]
@@ -19,8 +21,6 @@ pub enum Error {
 	NoBudget,
 	#[error(transparent)]
 	Infrastructure(anyhow::Error),
-	#[error(transparent)]
-	Budget(#[from] BudgetError),
 	#[error("User already applied to this project")]
 	UserAlreadyApplied,
 }
@@ -31,7 +31,7 @@ type Result<T> = std::result::Result<T, Error>;
 pub struct Project {
 	pub id: ProjectId,
 	pub leaders: HashSet<UserId>,
-	pub budget: Option<Budget>,
+	pub budget_id: Option<BudgetId>,
 	pub github_repos: HashSet<GithubRepoId>,
 	pub applicants: HashSet<UserId>,
 }
@@ -62,8 +62,8 @@ impl EventSourcable for Project {
 				self.leaders.remove(leader_id);
 				self
 			},
-			ProjectEvent::Budget { event, .. } => Self {
-				budget: Some(self.budget.unwrap_or_default().apply_event(event)),
+			ProjectEvent::BudgetLinked { budget_id, .. } => Self {
+				budget_id: Some(*budget_id),
 				..self
 			},
 			ProjectEvent::GithubRepoLinked { github_repo_id, .. } => {
@@ -87,20 +87,15 @@ impl Project {
 		vec![ProjectEvent::Created { id }]
 	}
 
-	pub fn allocate_budget(&self, amount: Amount) -> Result<Vec<<Self as Aggregate>::Event>> {
-		let events = match self.budget.as_ref() {
-			Some(budget) => budget.allocate(*amount.amount())?,
-			None => {
-				let events = Budget::create(BudgetId::new(), amount.currency());
-				let budget = Budget::from_events(&events);
-				events.into_iter().chain(budget.allocate(*amount.amount())?).collect()
-			},
-		};
+	pub fn link_budget(&self, budget_id: BudgetId) -> Result<Vec<<Self as Aggregate>::Event>> {
+		if self.budget_id.is_some() {
+			return Err(Error::BudgetAlreadyExists);
+		}
 
-		Ok(events
-			.into_iter()
-			.map(|event| ProjectEvent::Budget { id: self.id, event })
-			.collect())
+		Ok(vec![ProjectEvent::BudgetLinked {
+			id: self.id,
+			budget_id,
+		}])
 	}
 
 	pub fn assign_leader(&self, leader_id: UserId) -> Result<Vec<<Self as Aggregate>::Event>> {
@@ -204,32 +199,10 @@ mod tests {
 	}
 
 	#[fixture]
-	fn budget_created(
-		project_id: ProjectId,
-		budget_id: BudgetId,
-		initial_budget: Amount,
-	) -> ProjectEvent {
-		ProjectEvent::Budget {
+	fn budget_linked(project_id: ProjectId, budget_id: BudgetId) -> ProjectEvent {
+		ProjectEvent::BudgetLinked {
 			id: project_id,
-			event: BudgetEvent::Created {
-				id: budget_id,
-				currency: initial_budget.currency(),
-			},
-		}
-	}
-
-	#[fixture]
-	fn budget_allocated(
-		project_id: ProjectId,
-		budget_id: BudgetId,
-		initial_budget: Amount,
-	) -> ProjectEvent {
-		ProjectEvent::Budget {
-			id: project_id,
-			event: BudgetEvent::Allocated {
-				id: budget_id,
-				amount: *initial_budget.amount(),
-			},
+			budget_id,
 		}
 	}
 
@@ -271,29 +244,6 @@ mod tests {
 
 		assert!(result.is_err());
 		assert_matches!(result.unwrap_err(), Error::LeaderAlreadyAssigned);
-	}
-
-	#[rstest]
-	fn allocate_budget(project_created: ProjectEvent, initial_budget: Amount) {
-		let project = Project::from_events(&[project_created]);
-		let events =
-			project.allocate_budget(initial_budget).expect("Failed while allocating budget");
-
-		assert_eq!(events.len(), 2);
-		assert_matches!(
-			events[0],
-			ProjectEvent::Budget {
-				id: _,
-				event: BudgetEvent::Created { .. }
-			}
-		);
-		assert_matches!(
-			events[1],
-			ProjectEvent::Budget {
-				id: _,
-				event: BudgetEvent::Allocated { .. }
-			}
-		);
 	}
 
 	#[rstest]

@@ -98,7 +98,6 @@ diesel::table! {
 diesel::table! {
     budgets (id) {
         id -> Uuid,
-        project_id -> Nullable<Uuid>,
         initial_amount -> Numeric,
         remaining_amount -> Numeric,
         spent_amount -> Numeric,
@@ -373,6 +372,13 @@ diesel::table! {
 }
 
 diesel::table! {
+    projects_budgets (project_id, budget_id) {
+        project_id -> Uuid,
+        budget_id -> Uuid,
+    }
+}
+
+diesel::table! {
     projects_contributors (project_id, github_user_id) {
         project_id -> Uuid,
         github_user_id -> Int8,
@@ -508,6 +514,7 @@ diesel::allow_tables_to_appear_in_same_query!(
     project_github_repos,
     project_leads,
     projects,
+    projects_budgets,
     projects_contributors,
     projects_pending_contributors,
     projects_rewarded_users,

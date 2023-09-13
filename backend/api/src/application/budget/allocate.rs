@@ -1,31 +1,23 @@
 use std::sync::Arc;
 
-use anyhow::anyhow;
+use derive_more::Constructor;
 use domain::{
-	AggregateRepository, Amount, BudgetId, DomainError, Event, EventSourcable, Project, ProjectId,
-	Publisher,
+	AggregateRepository, Amount, Budget, BudgetId, DomainError, Event, EventSourcable, Project,
+	ProjectId, Publisher,
 };
 use infrastructure::amqp::UniqueMessage;
 use tracing::instrument;
 
 use crate::domain::Publishable;
 
+#[derive(Constructor)]
 pub struct Usecase {
 	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 	project_repository: AggregateRepository<Project>,
+	budget_repository: AggregateRepository<Budget>,
 }
 
 impl Usecase {
-	pub fn new(
-		event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
-		project_repository: AggregateRepository<Project>,
-	) -> Self {
-		Self {
-			event_publisher,
-			project_repository,
-		}
-	}
-
 	#[instrument(skip(self))]
 	pub async fn allocate(
 		&self,
@@ -34,18 +26,20 @@ impl Usecase {
 	) -> Result<BudgetId, DomainError> {
 		let project = self.project_repository.find_by_id(&project_id)?;
 
-		let events = project
-			.allocate_budget(amount)
-			.map_err(|error| DomainError::InvalidInputs(error.into()))?;
+		let mut events = Vec::new();
 
-		let project = project.apply_events(&events);
-
-		let budget = project.budget.as_ref().ok_or(DomainError::InternalError(anyhow!(
-			"Failed while allocating budget"
-		)))?;
+		let budget = match project.budget_id {
+			Some(budget_id) => self.budget_repository.find_by_id(&budget_id)?,
+			None => {
+				let budget_id = BudgetId::new();
+				events.append(&mut Budget::create(budget_id, amount.currency()));
+				Budget::from_events(&events)
+			},
+		};
 
 		events
 			.into_iter()
+			.chain(budget.allocate(*amount.amount())?)
 			.map(Event::from)
 			.map(UniqueMessage::new)
 			.collect::<Vec<_>>()

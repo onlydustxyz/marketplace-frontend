@@ -43,7 +43,7 @@ impl EventListener<Event> for Projector {
 				ProjectEvent::LeaderUnassigned { id, leader_id } => {
 					self.project_lead_repository.delete((id, leader_id))?;
 				},
-				ProjectEvent::Budget { .. } => (),
+				ProjectEvent::BudgetLinked { .. } => todo!(),
 				ProjectEvent::GithubRepoLinked {
 					id: project_id,
 					github_repo_id,

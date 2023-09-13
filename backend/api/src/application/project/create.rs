@@ -2,7 +2,8 @@ use std::sync::Arc;
 
 use anyhow::Result;
 use domain::{
-	Amount, DomainError, Event, EventSourcable, Project, ProjectId, ProjectVisibility, Publisher,
+	Amount, Budget, BudgetId, DomainError, Event, EventSourcable, Project, ProjectId,
+	ProjectVisibility, Publisher,
 };
 use infrastructure::{amqp::UniqueMessage, database::Repository};
 use reqwest::Url;
@@ -49,13 +50,17 @@ impl Usecase {
 	) -> Result<ProjectId, DomainError> {
 		let project_id = ProjectId::new();
 
-		let events = Project::create(project_id);
+		let mut project_events = Project::create(project_id);
+		let mut budget_events = Vec::new();
 
-		let budget_events = match initial_budget {
-			Some(initial_budget) => Project::from_events(&events)
-				.allocate_budget(initial_budget)
-				.map_err(|error| DomainError::InvalidInputs(error.into()))?,
-			_ => vec![],
+		if let Some(initial_budget) = initial_budget {
+			let budget_id = BudgetId::new();
+			let mut events = Budget::create(budget_id, initial_budget.currency());
+			events.append(&mut Budget::from_events(&events).allocate(*initial_budget.amount())?);
+
+			budget_events.append(&mut events.into_iter().map(Into::into).collect());
+			project_events
+				.append(&mut Project::from_events(&project_events).link_budget(budget_id)?)
 		};
 
 		let stored_logo_url = match logo_url {
@@ -75,8 +80,9 @@ impl Usecase {
 			visibility: visibility.into(),
 		})?;
 
-		events
+		project_events
 			.into_iter()
+			.map(Event::from)
 			.chain(budget_events)
 			.map(Event::from)
 			.map(UniqueMessage::new)

@@ -76,38 +76,23 @@ impl<'a> Test<'a> {
 		let budget_id: BudgetId;
 
 		assert_matches!(self.context.amqp.listen(event_store::bus::QUEUE_NAME).await.unwrap(),
-			Event::Project(event) => {
-				assert_matches!(event, ProjectEvent::Budget {
+			Event::Budget(event) => {
+				assert_matches!(event, BudgetEvent::Created {
 					id,
-					event
+					currency
 				} => {
-					assert_eq!(id, project_id);
-					assert_matches!(event, BudgetEvent::Created {
-						id,
-						currency
-					} => {
-						budget_id = id;
-						assert_eq!(currency, currencies::USD);
-				});
+					budget_id = id;
+					assert_eq!(currency, currencies::USD);
 			});
 		});
 
-		assert_matches!(self.context.amqp.listen(event_store::bus::QUEUE_NAME).await.unwrap(),
-			Event::Project(event) => {
-				assert_matches!(event, ProjectEvent::Budget {
-					id,
-					event
-				} => {
-					assert_eq!(id, project_id);
-					assert_matches!(event, BudgetEvent::Allocated {
-						id,
-						amount
-					} => {
-						assert_eq!(budget_id,id);
-						assert_eq!(amount, dec!(1523));
-				});
-			});
-		});
+		assert_eq!(
+			Event::Budget(BudgetEvent::Allocated {
+				id: budget_id,
+				amount: dec!(1523)
+			}),
+			self.context.amqp.listen(event_store::bus::QUEUE_NAME).await.unwrap(),
+		);
 
 		Ok(())
 	}
@@ -123,19 +108,23 @@ impl<'a> Test<'a> {
 			&self.context,
 			vec![
 				ProjectEvent::Created { id: project_id },
-				ProjectEvent::Budget {
+				ProjectEvent::BudgetLinked {
 					id: project_id,
-					event: BudgetEvent::Created {
-						id: budget_id,
-						currency: currencies::USD,
-					},
+					budget_id,
 				},
-				ProjectEvent::Budget {
-					id: project_id,
-					event: BudgetEvent::Allocated {
-						id: budget_id,
-						amount: dec!(1_000),
-					},
+			],
+		)?;
+
+		models::events::store(
+			&self.context,
+			vec![
+				BudgetEvent::Created {
+					id: budget_id,
+					currency: currencies::USD,
+				},
+				BudgetEvent::Allocated {
+					id: budget_id,
+					amount: dec!(1_000),
 				},
 			],
 		)?;
@@ -163,22 +152,13 @@ impl<'a> Test<'a> {
 			response.into_string().await.unwrap()
 		);
 
-		assert_matches!(self.context.amqp.listen(event_store::bus::QUEUE_NAME).await.unwrap(),
-			Event::Project(event) => {
-				assert_matches!(event, ProjectEvent::Budget {
-					id,
-					event
-				} => {
-					assert_eq!(id, project_id);
-					assert_matches!(event, BudgetEvent::Allocated {
-						id,
-						amount
-					} => {
-						assert_eq!(budget_id,id);
-						assert_eq!(amount, dec!(523));
-				});
-			});
-		});
+		assert_eq!(
+			Event::Budget(BudgetEvent::Allocated {
+				id: budget_id,
+				amount: dec!(523)
+			}),
+			self.context.amqp.listen(event_store::bus::QUEUE_NAME).await.unwrap(),
+		);
 
 		Ok(())
 	}

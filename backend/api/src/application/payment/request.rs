@@ -4,8 +4,8 @@ use anyhow::{anyhow, Result};
 use chrono::Duration;
 use derive_more::Constructor;
 use domain::{
-	currencies, AggregateRepository, Amount, CommandId, DomainError, Event, GithubUserId, Payment,
-	PaymentId, PaymentReason, PaymentWorkItem, Project, ProjectId, Publisher, UserId,
+	currencies, AggregateRepository, Amount, Budget, CommandId, DomainError, Event, GithubUserId,
+	Payment, PaymentId, PaymentReason, PaymentWorkItem, Project, ProjectId, Publisher, UserId,
 };
 use infrastructure::amqp::CommandMessage;
 use rust_decimal::Decimal;
@@ -17,6 +17,7 @@ use crate::domain::{services::indexer, Publishable};
 pub struct Usecase {
 	event_publisher: Arc<dyn Publisher<CommandMessage<Event>>>,
 	project_repository: AggregateRepository<Project>,
+	budget_repository: AggregateRepository<Budget>,
 	github_indexer_service: Arc<dyn indexer::Service>,
 }
 
@@ -34,9 +35,10 @@ impl Usecase {
 		let payment_id = PaymentId::new();
 
 		let project = self.project_repository.find_by_id(&project_id)?;
-		let budget = project.budget.ok_or_else(|| {
+		let budget_id = project.budget_id.ok_or_else(|| {
 			DomainError::InvalidInputs(anyhow!("Project has no budget to spend from"))
 		})?;
+		let budget = self.budget_repository.find_by_id(&budget_id)?;
 
 		let budget_events = budget
 			.spend(Decimal::from(amount_in_usd))
