@@ -23,6 +23,7 @@ async fn main() -> Result<()> {
 	let mut registry = Registry::new();
 
 	refresher::project::create(database.clone()).register(&mut registry, "Project")?;
+	refresher::application::create(database.clone()).register(&mut registry, "Application")?;
 
 	let (aggregate_name, aggregate_ids, all_ids) = cli::Args::parse().dissolve();
 

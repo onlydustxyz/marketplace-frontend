@@ -11,6 +11,7 @@ use itertools::Itertools;
 use olog::info;
 pub use registry::{Registrable, Registry};
 
+pub mod application;
 pub mod project;
 
 #[derive(Constructor)]
