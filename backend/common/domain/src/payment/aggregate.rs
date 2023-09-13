@@ -8,7 +8,7 @@ use thiserror::Error;
 use super::Reason;
 use crate::{
 	Aggregate, Amount, EventSourcable, GithubUserId, PaymentEvent, PaymentId, PaymentReceipt,
-	PaymentReceiptId, PaymentWorkItem, UserId,
+	PaymentReceiptId, PaymentWorkItem, ProjectId, UserId,
 };
 
 #[derive(Debug, Default, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -99,6 +99,7 @@ impl Payment {
 	#[cfg_attr(feature = "cargo-clippy", allow(clippy::too_many_arguments))]
 	pub fn request(
 		id: PaymentId,
+		project_id: ProjectId,
 		requestor_id: UserId,
 		recipient_id: GithubUserId,
 		amount: Amount,
@@ -107,6 +108,7 @@ impl Payment {
 	) -> Vec<<Self as Aggregate>::Event> {
 		vec![PaymentEvent::Requested {
 			id,
+			project_id,
 			requestor_id,
 			recipient_id,
 			amount,
@@ -220,6 +222,11 @@ mod tests {
 	}
 
 	#[fixture]
+	fn project_id() -> ProjectId {
+		Uuid::from_str("33333333-aaaa-495e-9f4c-038ec0ebecb1").unwrap().into()
+	}
+
+	#[fixture]
 	fn wrong_requestor_id() -> UserId {
 		Uuid::from_str("22222222-bbbb-495e-9f4c-038ec0ebecb1").unwrap().into()
 	}
@@ -272,6 +279,7 @@ mod tests {
 	#[fixture]
 	async fn requested_payment(
 		payment_id: PaymentId,
+		project_id: ProjectId,
 		requestor_id: UserId,
 		recipient_id: GithubUserId,
 		amount: Amount,
@@ -280,6 +288,7 @@ mod tests {
 	) -> Payment {
 		let events = Payment::request(
 			payment_id,
+			project_id,
 			requestor_id,
 			recipient_id,
 			amount,
@@ -414,6 +423,7 @@ mod tests {
 	#[rstest]
 	async fn test_request(
 		payment_id: PaymentId,
+		project_id: ProjectId,
 		requestor_id: UserId,
 		recipient_id: GithubUserId,
 		amount: Amount,
@@ -423,6 +433,7 @@ mod tests {
 		let before = Utc::now();
 		let events = Payment::request(
 			payment_id,
+			project_id,
 			requestor_id,
 			recipient_id,
 			amount.clone(),
@@ -444,6 +455,7 @@ mod tests {
 			events[0],
 			PaymentEvent::Requested {
 				id: payment_id,
+				project_id,
 				requestor_id,
 				recipient_id,
 				amount,
@@ -455,9 +467,10 @@ mod tests {
 	}
 
 	#[rstest]
-	fn test_event_sourced(payment_id: PaymentId) {
+	fn test_event_sourced(payment_id: PaymentId, project_id: ProjectId) {
 		let event = PaymentEvent::Requested {
 			id: payment_id,
+			project_id,
 			requestor_id: Default::default(),
 			recipient_id: Default::default(),
 			amount: Amount::from_decimal(Decimal::ZERO, Default::default()),

@@ -1,8 +1,7 @@
-use domain::{AggregateRepository, Project};
+use domain::{AggregateRepository, Payment};
 use http_api_problem::{HttpApiProblem, StatusCode};
 use presentation::http::guards::{ApiKey, Claims, Role};
 use rocket::{serde::json::Json, State};
-use rust_decimal::prelude::ToPrimitive;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
@@ -11,11 +10,7 @@ use crate::{application, domain::permissions::IntoPermission};
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Response {
-	pub project_id: Uuid,
-	pub budget_id: Uuid,
-	pub payment_id: Uuid,
 	pub command_id: Uuid,
-	pub amount: f64,
 }
 
 #[derive(Debug, Deserialize)]
@@ -32,7 +27,7 @@ pub async fn cancel_payment(
 	claims: Option<Claims>,
 	role: Role,
 	cancel_payment_usecase: &State<application::payment::cancel::Usecase>,
-	project_repository: &State<AggregateRepository<Project>>,
+	payment_repository: &State<AggregateRepository<Payment>>,
 ) -> Result<Json<Response>, HttpApiProblem> {
 	let Request {
 		project_id,
@@ -40,7 +35,7 @@ pub async fn cancel_payment(
 	} = request.into_inner();
 
 	if !role
-		.to_permissions((*project_repository).clone())
+		.to_permissions((*payment_repository).clone())
 		.can_cancel_payments_of_project(&project_id.into())
 	{
 		return Err(HttpApiProblem::new(StatusCode::UNAUTHORIZED)
@@ -52,7 +47,7 @@ pub async fn cancel_payment(
 			)));
 	}
 
-	let (project, budget, payment, command_id) = cancel_payment_usecase
+	let command_id = cancel_payment_usecase
 		.cancel(&project_id.into(), &payment_id.into())
 		.await
 		.map_err(|e| {
@@ -64,14 +59,6 @@ pub async fn cancel_payment(
 		})?;
 
 	Ok(Json(Response {
-		project_id: project.id.into(),
-		budget_id: budget.id.into(),
-		payment_id: payment.id.into(),
 		command_id: command_id.into(),
-		amount: payment
-			.requested_usd_amount
-			.to_f64()
-			.ok_or_else(|| olog::error!("Could not format payment amount"))
-			.unwrap_or_default(),
 	}))
 }

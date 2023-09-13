@@ -7,7 +7,7 @@ use serde_with::{serde_as, DurationSeconds};
 use super::Reason;
 use crate::{
 	AggregateEvent, Amount, GithubUserId, Payment, PaymentId, PaymentReceipt, PaymentReceiptId,
-	UserId,
+	ProjectId, UserId,
 };
 
 #[serde_as]
@@ -15,6 +15,7 @@ use crate::{
 pub enum Event {
 	Requested {
 		id: PaymentId,
+		project_id: ProjectId,
 		requestor_id: UserId,
 		recipient_id: GithubUserId,
 		#[serde(with = "crate::amount::serde")]
@@ -63,6 +64,12 @@ impl Display for Event {
 			"{}",
 			serde_json::to_string(&self).map_err(|_| std::fmt::Error)?
 		)
+	}
+}
+
+impl From<Event> for crate::Event {
+	fn from(event: Event) -> Self {
+		Self::Payment(event)
 	}
 }
 

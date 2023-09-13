@@ -2,11 +2,13 @@ use std::fmt::Display;
 
 use serde::{Deserialize, Serialize};
 
-use crate::{ApplicationEvent, MessagePayload, ProjectEvent};
+use crate::{ApplicationEvent, BudgetEvent, MessagePayload, PaymentEvent, ProjectEvent};
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Event {
 	Application(ApplicationEvent),
+	Budget(BudgetEvent),
+	Payment(PaymentEvent),
 	Project(ProjectEvent),
 }
 

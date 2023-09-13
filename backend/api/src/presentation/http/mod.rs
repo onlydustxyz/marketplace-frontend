@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use ::domain::{AggregateRepository, Project};
-use domain::{Event, Publisher};
+use domain::{Event, Payment, Publisher};
 pub use http::Config;
 use infrastructure::{
 	amqp::{self, CommandMessage, UniqueMessage},
@@ -32,6 +32,7 @@ pub fn serve(
 	command_bus: Arc<dyn Publisher<CommandMessage<Event>>>,
 	event_bus: Arc<dyn Publisher<UniqueMessage<Event>>>,
 	project_repository: AggregateRepository<Project>,
+	payment_repository: AggregateRepository<Payment>,
 	project_details_repository: Arc<dyn Repository<ProjectDetails>>,
 	sponsor_repository: Arc<dyn Repository<Sponsor>>,
 	project_sponsor_repository: Arc<dyn ImmutableRepository<ProjectsSponsor>>,
@@ -70,7 +71,7 @@ pub fn serve(
 	);
 
 	let cancel_payment_usecase =
-		application::payment::cancel::Usecase::new(bus.clone(), project_repository.clone());
+		application::payment::cancel::Usecase::new(bus.clone(), payment_repository);
 
 	rocket::custom(http::config::rocket("backend/api/Rocket.toml"))
 		.manage(config.http.clone())

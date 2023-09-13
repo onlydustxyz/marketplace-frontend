@@ -39,6 +39,8 @@ impl Metadata {
 pub enum AggregateId {
 	Project(ProjectId),
 	Application(ApplicationId),
+	Budget(BudgetId),
+	Payment(PaymentId),
 }
 
 impl From<Event> for AggregateId {
@@ -46,6 +48,8 @@ impl From<Event> for AggregateId {
 		match event {
 			Event::Project(e) => Self::Project(*e.aggregate_id()),
 			Event::Application(e) => Self::Application(*e.aggregate_id()),
+			Event::Budget(e) => Self::Budget(*e.aggregate_id()),
+			Event::Payment(e) => Self::Payment(*e.aggregate_id()),
 		}
 	}
 }

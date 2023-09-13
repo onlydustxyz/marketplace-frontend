@@ -304,13 +304,13 @@ diesel::table! {
 diesel::table! {
     payment_requests (id) {
         id -> Uuid,
-        budget_id -> Uuid,
         requestor_id -> Uuid,
         recipient_id -> Int8,
         amount_in_usd -> Int8,
         requested_at -> Timestamp,
         invoice_received_at -> Nullable<Timestamp>,
         hours_worked -> Int4,
+        project_id -> Uuid,
     }
 }
 

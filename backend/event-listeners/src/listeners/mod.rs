@@ -1,6 +1,7 @@
 pub mod application;
 pub mod budget;
 pub mod logger;
+pub mod payment;
 pub mod project;
 pub mod webhook;
 
@@ -57,16 +58,7 @@ pub async fn spawn_all(
 				.await?
 				.into_command_subscriber(database.clone()),
 		),
-		budget::Projector::new(
-			database.clone(),
-			database.clone(),
-			database.clone(),
-			database.clone(),
-			database.clone(),
-			database.clone(),
-			database.clone(),
-		)
-		.spawn(
+		budget::Projector::new(database.clone()).spawn(
 			event_bus::event_consumer(config.amqp.clone(), "budgets")
 				.await?
 				.into_command_subscriber(database.clone()),

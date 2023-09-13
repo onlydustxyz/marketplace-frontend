@@ -22,8 +22,10 @@ trait NamedAggregate {
 impl NamedAggregate for Event {
 	fn aggregate_name(&self) -> &str {
 		match self {
-			Event::Project(_) => "PROJECT",
 			Event::Application(_) => "APPLICATION",
+			Event::Budget(_) => "BUDGET",
+			Event::Payment(_) => "PAYMENT",
+			Event::Project(_) => "PROJECT",
 		}
 	}
 }
@@ -92,8 +94,10 @@ impl EventStore for Client {
 
 fn serialize_event(event: &Event) -> Result<Json> {
 	match event {
-		Event::Project(event) => to_json(event),
 		Event::Application(event) => to_json(event),
+		Event::Budget(event) => to_json(event),
+		Event::Payment(event) => to_json(event),
+		Event::Project(event) => to_json(event),
 	}
 	.map_err(|e| {
 		error!("Failed to serialize event {event:?}: {e}");

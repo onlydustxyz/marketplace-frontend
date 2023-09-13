@@ -4,9 +4,7 @@ use url::Url;
 use uuid08::Uuid;
 
 use super::{Context, Error, Result};
-use crate::presentation::http::dto::{
-	EthereumIdentityInput, OptionalNonEmptyTrimmedString, PaymentReference,
-};
+use crate::presentation::http::dto::{EthereumIdentityInput, OptionalNonEmptyTrimmedString};
 
 pub struct Mutation;
 
@@ -34,7 +32,7 @@ impl Mutation {
 			.process_payment_usecase
 			.add_payment_receipt(
 				&project_id.into(),
-				&payment_id.into(),
+				payment_id.into(),
 				Amount::from_decimal(*amount.amount(), currency_code.parse()?),
 				PaymentReceipt::OnChainPayment {
 					network: Network::Ethereum,
@@ -68,7 +66,7 @@ impl Mutation {
 			.process_payment_usecase
 			.add_payment_receipt(
 				&project_id.into(),
-				&payment_id.into(),
+				payment_id.into(),
 				Amount::from_decimal(*amount.amount(), currency),
 				PaymentReceipt::FiatPayment {
 					recipient_iban,
@@ -80,36 +78,27 @@ impl Mutation {
 		Ok(receipt_id.into())
 	}
 
-	pub async fn mark_invoice_as_received(
-		context: &Context,
-		payment_references: Vec<PaymentReference>,
-	) -> Result<i32> {
-		for payment_reference in &payment_references {
-			let caller_id = context.caller_info()?.user_id;
+	pub async fn mark_invoice_as_received(context: &Context, payments: Vec<Uuid>) -> Result<bool> {
+		let caller_id = context.caller_info()?.user_id;
+		let payments: Vec<_> = payments.into_iter().map(Into::into).collect();
 
-			if !context.caller_permissions.can_mark_invoice_as_received_for_payment(
-				&(*payment_reference.project_id()).into(),
-				&(*payment_reference.payment_id()).into(),
-			) {
-				return Err(Error::NotAuthorized(
-					caller_id,
-					format!(
-						"Only recipient can mark invoice {} as received",
-						payment_reference.payment_id()
-					),
-				));
-			}
+		if payments.iter().any(|payment_id| {
+			!context.caller_permissions.can_mark_invoice_as_received_for_payment(payment_id)
+		}) {
+			return Err(Error::NotAuthorized(
+				caller_id,
+				"Only recipient can mark invoice as received".to_string(),
+			));
 		}
-		context.invoice_usecase.mark_invoice_as_received(&payment_references).await?;
-		Ok(payment_references.len() as i32)
+
+		context.invoice_usecase.mark_invoice_as_received(payments).await?;
+		Ok(true)
 	}
 
-	pub async fn reject_invoice(
-		context: &Context,
-		payment_references: Vec<PaymentReference>,
-	) -> Result<i32> {
-		context.invoice_usecase.reject_invoice(&payment_references).await?;
-		Ok(payment_references.len() as i32)
+	pub async fn reject_invoice(context: &Context, payments: Vec<Uuid>) -> Result<bool> {
+		let payments: Vec<_> = payments.into_iter().map(Into::into).collect();
+		context.invoice_usecase.reject_invoice(payments).await?;
+		Ok(true)
 	}
 
 	pub async fn update_project(

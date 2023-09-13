@@ -12,6 +12,8 @@ use olog::info;
 pub use registry::{Registrable, Registry};
 
 pub mod application;
+pub mod budget;
+pub mod payment;
 pub mod project;
 
 #[derive(Constructor)]

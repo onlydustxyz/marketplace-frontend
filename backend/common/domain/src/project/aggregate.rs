@@ -1,9 +1,9 @@
 use std::collections::HashSet;
 
-use chrono::{Duration, Utc};
+use chrono::Utc;
 use thiserror::Error;
 
-use crate::{payment::Reason, *};
+use crate::*;
 
 #[derive(Debug, Error)]
 pub enum Error {
@@ -152,92 +152,6 @@ impl Project {
 			id: self.id,
 			github_repo_id,
 		}])
-	}
-
-	pub async fn request_payment(
-		&self,
-		payment_id: PaymentId,
-		requestor_id: UserId,
-		recipient_id: GithubUserId,
-		amount: Amount,
-		duration_worked: Duration,
-		reason: Reason,
-	) -> Result<Vec<<Self as Aggregate>::Event>> {
-		Ok(self
-			.budget
-			.as_ref()
-			.ok_or(Error::NoBudget)?
-			.request_payment(
-				payment_id,
-				requestor_id,
-				recipient_id,
-				amount,
-				duration_worked,
-				reason,
-			)?
-			.into_iter()
-			.map(|event| ProjectEvent::Budget { id: self.id, event })
-			.collect())
-	}
-
-	pub async fn cancel_payment_request(
-		&self,
-		payment_id: &PaymentId,
-	) -> Result<Vec<<Self as Aggregate>::Event>> {
-		Ok(self
-			.budget
-			.as_ref()
-			.ok_or(Error::NoBudget)?
-			.cancel_payment_request(payment_id)?
-			.into_iter()
-			.map(|event| ProjectEvent::Budget { id: self.id, event })
-			.collect())
-	}
-
-	pub async fn add_payment_receipt(
-		&self,
-		payment_id: &PaymentId,
-		receipt_id: PaymentReceiptId,
-		amount: Amount,
-		receipt: PaymentReceipt,
-	) -> Result<Vec<<Self as Aggregate>::Event>> {
-		Ok(self
-			.budget
-			.as_ref()
-			.ok_or(Error::NoBudget)?
-			.add_payment_receipt(payment_id, receipt_id, amount, receipt)
-			.await?
-			.into_iter()
-			.map(|event| ProjectEvent::Budget { id: self.id, event })
-			.collect())
-	}
-
-	pub async fn mark_invoice_as_received(
-		&self,
-		payment_id: &PaymentId,
-	) -> Result<Vec<<Self as Aggregate>::Event>> {
-		Ok(self
-			.budget
-			.as_ref()
-			.ok_or(Error::NoBudget)?
-			.mark_invoice_as_received(payment_id)?
-			.into_iter()
-			.map(|event| ProjectEvent::Budget { id: self.id, event })
-			.collect())
-	}
-
-	pub async fn reject_invoice(
-		&self,
-		payment_id: &PaymentId,
-	) -> Result<Vec<<Self as Aggregate>::Event>> {
-		Ok(self
-			.budget
-			.as_ref()
-			.ok_or(Error::NoBudget)?
-			.reject_invoice(payment_id)?
-			.into_iter()
-			.map(|event| ProjectEvent::Budget { id: self.id, event })
-			.collect())
 	}
 
 	pub fn apply(&self, applicant_id: UserId) -> Result<Vec<<Self as Aggregate>::Event>> {

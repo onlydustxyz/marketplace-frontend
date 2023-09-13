@@ -175,7 +175,7 @@ impl<'a> Test<'a> {
 		assert_eq!(payout_info.len(), 1);
 
 		let payout_info = payout_info.pop().unwrap();
-		assert_eq!(payout_info.user_id, response.user_id.into());
+		assert_eq!(payout_info.user_id, response.user_id);
 		assert_eq!(
 			payout_info.identity.unwrap().0,
 			api::models::Identity::Person(api::models::PersonIdentity {
@@ -231,7 +231,7 @@ impl<'a> Test<'a> {
 		assert_eq!(payout_info.len(), 1);
 
 		let payout_info = payout_info.pop().unwrap();
-		assert_eq!(payout_info.user_id, response.user_id.into());
+		assert_eq!(payout_info.user_id, response.user_id);
 		assert_eq!(
 			payout_info.identity.unwrap().0,
 			api::models::Identity::Company(api::models::CompanyIdentity {
@@ -287,7 +287,7 @@ impl<'a> Test<'a> {
 		assert_eq!(payout_info.len(), 1);
 
 		let payout_info = payout_info.pop().unwrap();
-		assert_eq!(payout_info.user_id, response.user_id.into());
+		assert_eq!(payout_info.user_id, response.user_id);
 		assert_eq!(payout_info.identity, None);
 		assert_eq!(
 			payout_info.location.unwrap().0,
@@ -338,7 +338,7 @@ impl<'a> Test<'a> {
 		assert_eq!(payout_info.len(), 1);
 
 		let payout_info = payout_info.pop().unwrap();
-		assert_eq!(payout_info.user_id, response.user_id.into());
+		assert_eq!(payout_info.user_id, response.user_id);
 		assert_eq!(payout_info.identity, None);
 		assert_eq!(payout_info.location, None);
 		assert_eq!(
@@ -387,7 +387,7 @@ impl<'a> Test<'a> {
 		assert_eq!(bank_accounts.len(), 1);
 
 		let bank_account = bank_accounts.pop().unwrap();
-		assert_eq!(bank_account.user_id, response.user_id.into());
+		assert_eq!(bank_account.user_id, response.user_id);
 		assert_eq!(bank_account.bic, "DEUTDEFF500");
 		assert_eq!(bank_account.iban, "NL80RABO9639906824");
 
@@ -429,7 +429,7 @@ impl<'a> Test<'a> {
 		assert_eq!(wallets.len(), 1);
 
 		let wallet = wallets.pop().unwrap();
-		assert_eq!(wallet.user_id, response.user_id.into());
+		assert_eq!(wallet.user_id, response.user_id);
 		assert_eq!(wallet.network, Network::Ethereum);
 		assert_eq!(wallet.type_, WalletType::Address);
 		assert_eq!(wallet.address, "0x690b9a9e9aa1c9db991c7721a92d351db4fac990");
@@ -472,7 +472,7 @@ impl<'a> Test<'a> {
 		assert_eq!(wallets.len(), 1);
 
 		let wallet = wallets.pop().unwrap();
-		assert_eq!(wallet.user_id, response.user_id.into());
+		assert_eq!(wallet.user_id, response.user_id);
 		assert_eq!(wallet.network, Network::Ethereum);
 		assert_eq!(wallet.type_, WalletType::Name);
 		assert_eq!(wallet.address, "vitalik.eth");
@@ -515,7 +515,7 @@ impl<'a> Test<'a> {
 		assert_eq!(wallets.len(), 1);
 
 		let wallet = wallets.pop().unwrap();
-		assert_eq!(wallet.user_id, response.user_id.into());
+		assert_eq!(wallet.user_id, response.user_id);
 		assert_eq!(wallet.network, Network::Optimism);
 		assert_eq!(wallet.type_, WalletType::Address);
 		assert_eq!(wallet.address, "0x690b9a9e9aa1c9db991c7721a92d351db4fac990");
@@ -558,7 +558,7 @@ impl<'a> Test<'a> {
 		assert_eq!(wallets.len(), 1);
 
 		let wallet = wallets.pop().unwrap();
-		assert_eq!(wallet.user_id, response.user_id.into());
+		assert_eq!(wallet.user_id, response.user_id);
 		assert_eq!(wallet.network, Network::Aptos);
 		assert_eq!(wallet.type_, WalletType::Address);
 		assert_eq!(
@@ -604,7 +604,7 @@ impl<'a> Test<'a> {
 		assert_eq!(wallets.len(), 1);
 
 		let wallet = wallets.pop().unwrap();
-		assert_eq!(wallet.user_id, response.user_id.into());
+		assert_eq!(wallet.user_id, response.user_id);
 		assert_eq!(wallet.network, Network::Starknet);
 		assert_eq!(wallet.type_, WalletType::Address);
 		assert_eq!(

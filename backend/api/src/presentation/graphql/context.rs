@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use domain::{AggregateRepository, GithubUserId, Project, UserId};
+use domain::{AggregateRepository, GithubUserId, Payment, Project, UserId};
 use infrastructure::{
 	amqp,
 	database::{ImmutableRepository, Repository},
@@ -46,6 +46,7 @@ impl Context {
 		caller_permissions: Box<dyn Permissions>,
 		caller_info: Option<Claims>,
 		project_repository: AggregateRepository<Project>,
+		payment_repository: AggregateRepository<Payment>,
 		project_details_repository: Arc<dyn Repository<ProjectDetails>>,
 		sponsor_repository: Arc<dyn Repository<Sponsor>>,
 		project_sponsor_repository: Arc<dyn ImmutableRepository<ProjectsSponsor>>,
@@ -66,7 +67,7 @@ impl Context {
 			caller_info,
 			process_payment_usecase: application::payment::process::Usecase::new(
 				bus.to_owned(),
-				project_repository.clone(),
+				payment_repository.clone(),
 				application::dusty_bot::close_issues::Usecase::new(
 					github_api_client.clone(),
 					dusty_bot_api_client,
@@ -74,7 +75,7 @@ impl Context {
 			),
 			invoice_usecase: application::payment::invoice::Usecase::new(
 				bus.to_owned(),
-				project_repository.clone(),
+				payment_repository,
 			),
 			update_budget_allocation_usecase: application::budget::allocate::Usecase::new(
 				bus.to_owned(),
@@ -139,8 +140,8 @@ impl Context {
 		let caller_info = self.caller_info.clone().ok_or(Error::NotAuthenticated)?;
 
 		Ok(CallerInfo {
-			user_id: caller_info.user_id.into(),
-			github_user_id: caller_info.github_user_id.into(),
+			user_id: caller_info.user_id,
+			github_user_id: caller_info.github_user_id,
 		})
 	}
 }
