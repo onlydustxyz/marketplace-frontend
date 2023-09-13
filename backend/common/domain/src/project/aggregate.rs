@@ -1,4 +1,4 @@
-use std::collections::{HashMap, HashSet};
+use std::collections::HashSet;
 
 use chrono::{Duration, Utc};
 use thiserror::Error;
@@ -33,7 +33,7 @@ pub struct Project {
 	pub leaders: HashSet<UserId>,
 	pub budget: Option<Budget>,
 	pub github_repos: HashSet<GithubRepoId>,
-	pub applications: HashMap<ApplicationId, Application>,
+	pub applicants: HashSet<UserId>,
 }
 
 impl Aggregate for Project {
@@ -76,11 +76,8 @@ impl EventSourcable for Project {
 				self.github_repos.remove(github_repo_id);
 				self
 			},
-			ProjectEvent::Application { event, .. } => {
-				self.applications.insert(
-					*event.aggregate_id(),
-					Application::from_events(&[event.clone()]),
-				);
+			ProjectEvent::Applied { applicant_id, .. } => {
+				self.applicants.insert(*applicant_id);
 				self
 			},
 		}
@@ -245,26 +242,14 @@ impl Project {
 			.collect())
 	}
 
-	pub fn apply(
-		&self,
-		applicant_id: UserId,
-		application_id: ApplicationId,
-	) -> Result<Vec<<Self as Aggregate>::Event>> {
-		if self
-			.applications
-			.iter()
-			.any(|(_, application)| application.applicant_id() == &applicant_id)
-		{
+	pub fn apply(&self, applicant_id: UserId) -> Result<Vec<<Self as Aggregate>::Event>> {
+		if self.applicants.contains(&applicant_id) {
 			return Err(Error::UserAlreadyApplied);
 		}
 
-		Ok(vec![ProjectEvent::Application {
+		Ok(vec![ProjectEvent::Applied {
 			id: self.id,
-			event: ApplicationEvent::Received {
-				id: application_id,
-				applicant_id,
-				received_at: Utc::now().naive_utc(),
-			},
+			applicant_id,
 		}])
 	}
 }
@@ -402,10 +387,10 @@ mod tests {
 	#[rstest]
 	fn user_cannot_apply_twice(project_created: ProjectEvent, user_id: UserId) {
 		let project = Project::from_events(&[project_created]);
-		let events = project.apply(user_id, Uuid::new_v4().into()).unwrap();
+		let events = project.apply(user_id).unwrap();
 		let project = project.apply_events(&events);
 
-		let result = project.apply(user_id, Uuid::new_v4().into());
+		let result = project.apply(user_id);
 
 		assert!(result.is_err());
 		assert_matches!(result.unwrap_err(), Error::UserAlreadyApplied);

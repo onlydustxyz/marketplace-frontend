@@ -38,12 +38,14 @@ impl Metadata {
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum AggregateId {
 	Project(ProjectId),
+	Application(ApplicationId),
 }
 
 impl From<Event> for AggregateId {
 	fn from(event: Event) -> Self {
 		match event {
 			Event::Project(e) => Self::Project(*e.aggregate_id()),
+			Event::Application(e) => Self::Application(*e.aggregate_id()),
 		}
 	}
 }

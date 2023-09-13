@@ -3,8 +3,8 @@ use std::sync::Arc;
 use anyhow::Result;
 use async_trait::async_trait;
 use derive_new::new;
-use domain::{ApplicationEvent, Event, ProjectEvent, SubscriberCallbackError};
-use infrastructure::database::{ImmutableRepository, Repository};
+use domain::{Event, ProjectEvent, SubscriberCallbackError};
+use infrastructure::database::ImmutableRepository;
 use tracing::instrument;
 
 use super::EventListener;
@@ -16,7 +16,6 @@ pub struct Projector {
 	project_lead_repository: Arc<dyn ImmutableRepository<ProjectLead>>,
 	project_github_repos_repository: Arc<dyn ImmutableRepository<ProjectGithubRepo>>,
 	github_repo_index_repository: Arc<dyn GithubRepoIndexRepository>,
-	applications_repository: Arc<dyn Repository<Application>>,
 	projects_contributors_repository: Arc<dyn ProjectsContributorRepository>,
 	projects_pending_contributors_repository: Arc<dyn ProjectsPendingContributorRepository>,
 }
@@ -25,8 +24,8 @@ pub struct Projector {
 impl EventListener<Event> for Projector {
 	#[instrument(name = "project_projection", skip(self))]
 	async fn on_event(&self, event: Event) -> Result<(), SubscriberCallbackError> {
-		match event {
-			Event::Project(event) => match event {
+		if let Event::Project(event) = event {
+			match event {
 				ProjectEvent::Created { id } => {
 					self.project_repository.try_insert(Project { id })?;
 				},
@@ -69,23 +68,8 @@ impl EventListener<Event> for Projector {
 					self.projects_pending_contributors_repository
 						.refresh_project_pending_contributor_list(&project_id)?;
 				},
-				ProjectEvent::Application {
-					id: project_id,
-					event,
-				} => {
-					let ApplicationEvent::Received {
-						id,
-						applicant_id,
-						received_at,
-					} = event;
-					self.applications_repository.upsert(Application {
-						id,
-						project_id,
-						applicant_id,
-						received_at,
-					})?;
-				},
-			},
+				ProjectEvent::Applied { .. } => (),
+			}
 		}
 
 		Ok(())

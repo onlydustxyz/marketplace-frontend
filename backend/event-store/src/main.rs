@@ -78,6 +78,7 @@ impl IdentifiableAggregate for Event {
 	fn aggregate_id(&self) -> String {
 		match &self {
 			Event::Project(event) => event.aggregate_id().to_string(),
+			Event::Application(event) => event.aggregate_id().to_string(),
 		}
 	}
 }

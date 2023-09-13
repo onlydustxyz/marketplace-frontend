@@ -15,7 +15,6 @@ use crate::{domain::*, infrastructure::database::models};
 
 type Result<T> = std::result::Result<T, EventStoreError>;
 
-// TODO: factorize with the one in infrastructure
 trait NamedAggregate {
 	fn aggregate_name(&self) -> &str;
 }
@@ -24,6 +23,7 @@ impl NamedAggregate for Event {
 	fn aggregate_name(&self) -> &str {
 		match self {
 			Event::Project(_) => "PROJECT",
+			Event::Application(_) => "APPLICATION",
 		}
 	}
 }
@@ -93,6 +93,7 @@ impl EventStore for Client {
 fn serialize_event(event: &Event) -> Result<Json> {
 	match event {
 		Event::Project(event) => to_json(event),
+		Event::Application(event) => to_json(event),
 	}
 	.map_err(|e| {
 		error!("Failed to serialize event {event:?}: {e}");

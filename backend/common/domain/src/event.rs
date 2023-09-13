@@ -2,10 +2,11 @@ use std::fmt::Display;
 
 use serde::{Deserialize, Serialize};
 
-use crate::{MessagePayload, ProjectEvent};
+use crate::{ApplicationEvent, MessagePayload, ProjectEvent};
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Event {
+	Application(ApplicationEvent),
 	Project(ProjectEvent),
 }
 

@@ -1,8 +1,9 @@
+use chrono::Utc;
 use derive_getters::Getters;
 use serde::{Deserialize, Serialize};
 use serde_with::serde_as;
 
-use crate::{Aggregate, ApplicationEvent, ApplicationId, EventSourcable, UserId};
+use crate::{Aggregate, ApplicationEvent, ApplicationId, EventSourcable, ProjectId, UserId};
 
 #[derive(Debug, Default, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Status {
@@ -16,6 +17,21 @@ pub enum Status {
 pub struct Application {
 	id: ApplicationId,
 	applicant_id: UserId,
+}
+
+impl Application {
+	pub fn create(
+		id: ApplicationId,
+		project_id: ProjectId,
+		applicant_id: UserId,
+	) -> Vec<ApplicationEvent> {
+		vec![ApplicationEvent::Received {
+			id,
+			project_id,
+			applicant_id,
+			received_at: Utc::now().naive_utc(),
+		}]
+	}
 }
 
 impl Aggregate for Application {

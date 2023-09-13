@@ -1,3 +1,4 @@
+pub mod application;
 pub mod budget;
 pub mod logger;
 pub mod project;
@@ -50,7 +51,6 @@ pub async fn spawn_all(
 			database.clone(),
 			database.clone(),
 			database.clone(),
-			database.clone(),
 		)
 		.spawn(
 			event_bus::event_consumer(config.amqp.clone(), "projects")
@@ -68,6 +68,11 @@ pub async fn spawn_all(
 		)
 		.spawn(
 			event_bus::event_consumer(config.amqp.clone(), "budgets")
+				.await?
+				.into_command_subscriber(database.clone()),
+		),
+		application::Projector::new(database.clone()).spawn(
+			event_bus::event_consumer(config.amqp.clone(), "projects")
 				.await?
 				.into_command_subscriber(database.clone()),
 		),
