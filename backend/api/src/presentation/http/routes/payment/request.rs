@@ -1,4 +1,4 @@
-use domain::{AggregateRootRepository, Project};
+use domain::{AggregateRepository, Project};
 use http_api_problem::{HttpApiProblem, StatusCode};
 use presentation::http::guards::{ApiKey, Claims, Role};
 use rocket::{serde::json::Json, State};
@@ -34,7 +34,7 @@ pub async fn request_payment(
 	request: Json<Request>,
 	claims: Claims,
 	role: Role,
-	project_repository: &State<AggregateRootRepository<Project>>,
+	project_repository: &State<AggregateRepository<Project>>,
 	request_payment_usecase: application::payment::request::Usecase,
 ) -> Result<Json<Response>, HttpApiProblem> {
 	let Request {

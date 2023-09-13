@@ -1,4 +1,4 @@
-use domain::{AggregateRootRepository, Project};
+use domain::{AggregateRepository, Project};
 use http_api_problem::{HttpApiProblem, StatusCode};
 use olog::IntoField;
 use presentation::http::guards::{ApiKey, Claims, Role};
@@ -16,7 +16,7 @@ pub fn ignore(
 	claims: Claims,
 	role: Role,
 	ignored_contributions_usecase: application::project::ignored_contributions::Usecase,
-	project_repository: &State<AggregateRootRepository<Project>>,
+	project_repository: &State<AggregateRepository<Project>>,
 ) -> Result<(), HttpApiProblem> {
 	let project_id = project_id.into();
 	let caller_id = claims.user_id;
@@ -53,7 +53,7 @@ pub fn unignore(
 	claims: Claims,
 	role: Role,
 	ignored_contributions_usecase: application::project::ignored_contributions::Usecase,
-	project_repository: &State<AggregateRootRepository<Project>>,
+	project_repository: &State<AggregateRepository<Project>>,
 ) -> Result<(), HttpApiProblem> {
 	let project_id = project_id.into();
 	let caller_id = claims.user_id;

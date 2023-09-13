@@ -2,7 +2,7 @@ use std::collections::HashSet;
 
 use anyhow::{anyhow, Result};
 use derive_more::Constructor;
-use domain::{AggregateRootRepository, GithubUserId, PaymentId, PaymentStatus, Project, ProjectId};
+use domain::{AggregateRepository, GithubUserId, PaymentId, PaymentStatus, Project, ProjectId};
 
 use super::Permissions;
 
@@ -10,7 +10,7 @@ use super::Permissions;
 pub(super) struct IdentifiedUser {
 	projects: HashSet<ProjectId>,
 	github_user_id: GithubUserId,
-	project_repository: AggregateRootRepository<Project>,
+	project_repository: AggregateRepository<Project>,
 }
 
 impl Permissions for IdentifiedUser {

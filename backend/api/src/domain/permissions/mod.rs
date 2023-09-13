@@ -1,6 +1,6 @@
 use std::collections::HashSet;
 
-use domain::{AggregateRootRepository, GithubUserId, PaymentId, Project, ProjectId, UserId};
+use domain::{AggregateRepository, GithubUserId, PaymentId, Project, ProjectId, UserId};
 
 mod admin;
 mod anonymous;
@@ -22,7 +22,7 @@ pub trait Permissions: Send + Sync {
 pub trait IntoPermission {
 	fn to_permissions(
 		&self,
-		project_repository: AggregateRootRepository<Project>,
+		project_repository: AggregateRepository<Project>,
 	) -> Box<dyn Permissions>;
 }
 
@@ -33,7 +33,7 @@ pub fn of_admin() -> Box<dyn Permissions> {
 pub fn of_identified_user(
 	projects: HashSet<ProjectId>,
 	github_user_id: GithubUserId,
-	project_repository: AggregateRootRepository<Project>,
+	project_repository: AggregateRepository<Project>,
 ) -> Box<dyn Permissions> {
 	Box::new(identified::IdentifiedUser::new(
 		projects,

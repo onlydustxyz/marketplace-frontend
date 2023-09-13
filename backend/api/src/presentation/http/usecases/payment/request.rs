@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use anyhow::{anyhow, Error};
-use domain::{AggregateRootRepository, Event, Project, Publisher};
+use domain::{AggregateRepository, Event, Project, Publisher};
 use infrastructure::{amqp::CommandMessage, http};
 use rocket::{
 	http::Status,
@@ -46,8 +46,7 @@ impl<'r> FromRequest<'r> for Usecase {
 					)),
 			};
 
-		let project_repository = match request.rocket().state::<AggregateRootRepository<Project>>()
-		{
+		let project_repository = match request.rocket().state::<AggregateRepository<Project>>() {
 			Some(repository) => repository,
 			None =>
 				return Outcome::Failure((

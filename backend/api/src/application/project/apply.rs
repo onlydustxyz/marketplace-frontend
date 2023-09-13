@@ -3,7 +3,7 @@ use std::sync::Arc;
 use anyhow::Result;
 use derive_more::Constructor;
 use domain::{
-	AggregateRootRepository, Application, ApplicationId, DomainError, Event, Project, ProjectId,
+	AggregateRepository, Application, ApplicationId, DomainError, Event, Project, ProjectId,
 	Publisher, UserId,
 };
 use infrastructure::amqp::UniqueMessage;
@@ -14,7 +14,7 @@ use crate::domain::Publishable;
 
 #[derive(Constructor)]
 pub struct Usecase {
-	project_repository: AggregateRootRepository<Project>,
+	project_repository: AggregateRepository<Project>,
 	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 }
 

@@ -1,4 +1,4 @@
-use domain::{AggregateRootRepository, Project};
+use domain::{AggregateRepository, Project};
 use presentation::http::guards::Role;
 
 use crate::domain::{
@@ -9,7 +9,7 @@ use crate::domain::{
 impl IntoPermission for Role {
 	fn to_permissions(
 		&self,
-		project_repository: AggregateRootRepository<Project>,
+		project_repository: AggregateRepository<Project>,
 	) -> Box<dyn Permissions> {
 		match self {
 			Role::Admin => permissions::of_admin(),

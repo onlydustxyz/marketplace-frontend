@@ -1,4 +1,4 @@
-use domain::{AggregateRootRepository, Project};
+use domain::{AggregateRepository, Project};
 use http_api_problem::{HttpApiProblem, StatusCode};
 use presentation::http::guards::{ApiKey, Claims, Role};
 use rocket::{serde::json::Json, State};
@@ -32,7 +32,7 @@ pub async fn cancel_payment(
 	claims: Option<Claims>,
 	role: Role,
 	cancel_payment_usecase: &State<application::payment::cancel::Usecase>,
-	project_repository: &State<AggregateRootRepository<Project>>,
+	project_repository: &State<AggregateRepository<Project>>,
 ) -> Result<Json<Response>, HttpApiProblem> {
 	let Request {
 		project_id,

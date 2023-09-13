@@ -1,6 +1,6 @@
 use thiserror::Error;
 
-use crate::{AggregateRootRepositoryError, GithubServiceError, PublisherError};
+use crate::{AggregateRepositoryError, GithubServiceError, PublisherError};
 
 #[derive(Debug, Error)]
 pub enum DomainError {
@@ -10,12 +10,12 @@ pub enum DomainError {
 	InvalidInputs(anyhow::Error),
 }
 
-impl From<AggregateRootRepositoryError> for DomainError {
-	fn from(aggregate_root_repository_error: AggregateRootRepositoryError) -> Self {
+impl From<AggregateRepositoryError> for DomainError {
+	fn from(aggregate_root_repository_error: AggregateRepositoryError) -> Self {
 		match aggregate_root_repository_error {
-			AggregateRootRepositoryError::NotFound =>
+			AggregateRepositoryError::NotFound =>
 				Self::InvalidInputs(aggregate_root_repository_error.into()),
-			AggregateRootRepositoryError::EventStoreError(e) => Self::InternalError(e.into()),
+			AggregateRepositoryError::EventStoreError(e) => Self::InternalError(e.into()),
 		}
 	}
 }

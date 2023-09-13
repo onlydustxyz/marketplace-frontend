@@ -4,9 +4,9 @@ use anyhow::Result;
 use chrono::Duration;
 use derive_more::Constructor;
 use domain::{
-	currencies, AggregateRootRepository, Amount, Budget, CommandId, DomainError, Event,
-	EventSourcable, GithubUserId, Payment, PaymentId, PaymentReason, PaymentWorkItem, Project,
-	ProjectId, Publisher, UserId,
+	currencies, AggregateRepository, Amount, Budget, CommandId, DomainError, Event, EventSourcable,
+	GithubUserId, Payment, PaymentId, PaymentReason, PaymentWorkItem, Project, ProjectId,
+	Publisher, UserId,
 };
 use infrastructure::amqp::CommandMessage;
 use tracing::instrument;
@@ -16,7 +16,7 @@ use crate::domain::{services::indexer, Publishable};
 #[derive(Constructor)]
 pub struct Usecase {
 	event_publisher: Arc<dyn Publisher<CommandMessage<Event>>>,
-	project_repository: AggregateRootRepository<Project>,
+	project_repository: AggregateRepository<Project>,
 	github_indexer_service: Arc<dyn indexer::Service>,
 }
 

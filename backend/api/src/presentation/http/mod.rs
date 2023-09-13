@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use ::domain::{AggregateRootRepository, Project};
+use ::domain::{AggregateRepository, Project};
 use domain::{Event, Publisher};
 pub use http::Config;
 use infrastructure::{
@@ -31,7 +31,7 @@ pub fn serve(
 	schema: graphql::Schema,
 	command_bus: Arc<dyn Publisher<CommandMessage<Event>>>,
 	event_bus: Arc<dyn Publisher<UniqueMessage<Event>>>,
-	project_repository: AggregateRootRepository<Project>,
+	project_repository: AggregateRepository<Project>,
 	project_details_repository: Arc<dyn Repository<ProjectDetails>>,
 	sponsor_repository: Arc<dyn Repository<Sponsor>>,
 	project_sponsor_repository: Arc<dyn ImmutableRepository<ProjectsSponsor>>,

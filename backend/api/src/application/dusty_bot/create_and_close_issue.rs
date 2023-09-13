@@ -3,14 +3,14 @@ use std::sync::Arc;
 use anyhow::anyhow;
 use common_domain::GithubFetchService;
 use derive_more::Constructor;
-use domain::{AggregateRootRepository, DomainError, GithubIssue, GithubRepoId, Project, ProjectId};
+use domain::{AggregateRepository, DomainError, GithubIssue, GithubRepoId, Project, ProjectId};
 use tracing::instrument;
 
 use crate::domain::DustyBotService;
 
 #[derive(Constructor)]
 pub struct Usecase {
-	project_repository: AggregateRootRepository<Project>,
+	project_repository: AggregateRepository<Project>,
 	dusty_bot_service: Arc<dyn DustyBotService>,
 	fetch_service: Arc<dyn GithubFetchService>,
 }

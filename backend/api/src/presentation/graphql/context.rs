@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use domain::{AggregateRootRepository, GithubUserId, Project, UserId};
+use domain::{AggregateRepository, GithubUserId, Project, UserId};
 use infrastructure::{
 	amqp,
 	database::{ImmutableRepository, Repository},
@@ -45,7 +45,7 @@ impl Context {
 	pub fn new(
 		caller_permissions: Box<dyn Permissions>,
 		caller_info: Option<Claims>,
-		project_repository: AggregateRootRepository<Project>,
+		project_repository: AggregateRepository<Project>,
 		project_details_repository: Arc<dyn Repository<ProjectDetails>>,
 		sponsor_repository: Arc<dyn Repository<Sponsor>>,
 		project_sponsor_repository: Arc<dyn ImmutableRepository<ProjectsSponsor>>,

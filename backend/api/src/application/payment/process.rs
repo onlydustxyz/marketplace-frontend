@@ -3,7 +3,7 @@ use std::sync::Arc;
 use anyhow::{anyhow, Result};
 use derive_more::Constructor;
 use domain::{
-	AggregateRootRepository, Amount, Destination, DomainError, Event, PaymentId, PaymentReceipt,
+	AggregateRepository, Amount, Destination, DomainError, Event, PaymentId, PaymentReceipt,
 	PaymentReceiptId, Project, ProjectId, Publisher,
 };
 use event_store::bus::QUEUE_NAME as EVENT_STORE_QUEUE;
@@ -16,7 +16,7 @@ use crate::application::dusty_bot;
 #[derive(Constructor)]
 pub struct Usecase {
 	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
-	project_repository: AggregateRootRepository<Project>,
+	project_repository: AggregateRepository<Project>,
 	close_issues_usecase: dusty_bot::close_issues::Usecase,
 }
 

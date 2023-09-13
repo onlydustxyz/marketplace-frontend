@@ -41,8 +41,6 @@ impl Aggregate for Project {
 	type Id = ProjectId;
 }
 
-impl AggregateRoot for Project {}
-
 impl From<ProjectEvent> for Event {
 	fn from(event: ProjectEvent) -> Self {
 		Event::Project(event)
