@@ -58,21 +58,25 @@ test.describe("As a project lead, I", () => {
     const contributorsPage = await projectPage.contributors();
     const contributors = await contributorsPage.contributorsTable();
 
+    expect(await contributors.byName("AnthonyBuisset").contributionCount()).toBe("6");
+    expect(await contributors.byName("AnthonyBuisset").rewardCount()).toBe("-");
     expect(await contributors.byName("AnthonyBuisset").totalEarned()).toBe("-");
-    expect(await contributors.byName("AnthonyBuisset").paidContributions()).toBe("-");
-    expect(await contributors.byName("AnthonyBuisset").leftToPay()).toContain("2");
+    expect(await contributors.byName("AnthonyBuisset").toRewardCount()).toContain("6");
 
-    expect(await contributors.byName("oscarwroche").totalEarned()).toBe("$200");
-    expect(await contributors.byName("oscarwroche").paidContributions()).toBe("1");
-    expect(await contributors.byName("oscarwroche").leftToPay()).toContain("1");
-
+    expect(await contributors.byName("ofux").contributionCount()).toBe("2");
+    expect(await contributors.byName("ofux").rewardCount()).toBe("6");
     expect(await contributors.byName("ofux").totalEarned()).toBe("$13,200");
-    expect(await contributors.byName("ofux").paidContributions()).toBe("2");
-    expect(await contributors.byName("ofux").leftToPay()).toBe("-");
+    expect(await contributors.byName("ofux").toRewardCount()).toBe("0");
 
+    expect(await contributors.byName("oscarwroche").contributionCount()).toBe("1");
+    expect(await contributors.byName("oscarwroche").rewardCount()).toBe("1");
+    expect(await contributors.byName("oscarwroche").totalEarned()).toBe("$200");
+    expect(await contributors.byName("oscarwroche").toRewardCount()).toContain("1");
+
+    expect(await contributors.byName("Bernardstanislas").contributionCount()).toBe("1");
     expect(await contributors.byName("Bernardstanislas").totalEarned()).toBe("-");
-    expect(await contributors.byName("Bernardstanislas").paidContributions()).toBe("-");
-    expect(await contributors.byName("Bernardstanislas").leftToPay()).toContain("1");
+    expect(await contributors.byName("Bernardstanislas").rewardCount()).toBe("-");
+    expect(await contributors.byName("Bernardstanislas").toRewardCount()).toContain("0");
 
     const newRewardPage = await contributors.byName(recipient.github.login).pay();
     expect(await newRewardPage.contributorText()).toEqual(recipient.github.login);
@@ -97,7 +101,7 @@ test.describe("As a project lead, I", () => {
       await newRewardPage.ignoreWorkItem(issueNumber);
 
       await Promise.all([
-        page.waitForResponse(async resp => (await resp.json()).data.unignoreIssue && resp.status() === 200),
+        page.waitForResponse(async resp => (await resp.json()).data.unignoreContribution && resp.status() === 200),
         newRewardPage.addWorkItem(issueNumber),
       ]);
 

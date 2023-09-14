@@ -28,7 +28,12 @@ export function useIgnoredContributions() {
         variables: { projectId, contributionId },
         context: { graphqlErrorDisplay: "toaster" },
         update: cache => {
-          cache.evict({ id: `Contributions:${contributionId}` });
+          cache.modify({
+            id: `Contributions:${contributionId}`,
+            fields: {
+              ignored: () => false,
+            },
+          });
         },
       }),
     [unignoreContribution]

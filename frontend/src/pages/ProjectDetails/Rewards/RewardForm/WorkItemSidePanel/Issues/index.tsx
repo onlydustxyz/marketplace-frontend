@@ -64,16 +64,20 @@ export default function Issues({ type, projectId, contributorId, workItems, addW
   );
 }
 
-export const contributionToWorkItem = ({
-  githubIssue,
-  githubPullRequest,
-}: ContributionFragment): GithubIssueType | GithubPullRequestType | undefined =>
-  githubIssue ? issueToWorkItem(githubIssue) : githubPullRequest ? pullRequestToWorkItem(githubPullRequest) : undefined;
+export const contributionToWorkItem = (contribution: ContributionFragment): WorkItem | undefined => {
+  const workItem = contribution.githubIssue
+    ? issueToWorkItem(contribution.githubIssue)
+    : contribution.githubPullRequest
+    ? pullRequestToWorkItem(contribution.githubPullRequest)
+    : undefined;
+
+  if (workItem) workItem.ignored = contribution.ignored || false;
+  return workItem;
+};
 
 export const issueToWorkItem = (props: GithubIssueFragment | LiveGithubIssueFragment): GithubIssueType => ({
   ...props,
   type: WorkItemType.Issue,
-  // ignored: some(ignoredForProjects, { projectId }),
   ignored: false,
   id: props.id.toString(),
 });
@@ -105,7 +109,6 @@ const githubIssueCreatedAndClosedStatusToGithubIssueStatus = (
 export const pullRequestToWorkItem = (props: GithubPullRequestFragment | LiveGithubPullRequestFragment): WorkItem => ({
   ...props,
   type: WorkItemType.PullRequest,
-  // ignored: some(ignoredForProjects, { projectId }),
   ignored: false,
   id: props.id.toString(),
 });
