@@ -9,7 +9,7 @@ impl Permissions for Anonymous {
 		false
 	}
 
-	fn can_cancel_payments_of_project(&self, _project_id: &ProjectId) -> bool {
+	fn can_cancel_payment(&self, _payment_id: &PaymentId) -> bool {
 		false
 	}
 

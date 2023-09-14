@@ -22,6 +22,7 @@ pub enum Status {
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Payment {
 	pub id: PaymentId,
+	pub project_id: ProjectId,
 	pub requested_usd_amount: Decimal,
 	pub paid_usd_amount: Decimal,
 	pub status: Status,
@@ -37,6 +38,7 @@ impl Default for Payment {
 		Self {
 			duration_worked: Duration::seconds(0),
 			id: Default::default(),
+			project_id: Default::default(),
 			requested_usd_amount: Default::default(),
 			paid_usd_amount: Default::default(),
 			status: Default::default(),
@@ -62,9 +64,11 @@ impl EventSourcable for Payment {
 				reason,
 				requestor_id,
 				duration_worked,
+				project_id,
 				..
 			} => Self {
 				id: *id,
+				project_id: *project_id,
 				requested_usd_amount: *amount.amount(), // TODO: handle currencies
 				recipient_id: *recipient_id,
 				work_items: reason.work_items.clone(),

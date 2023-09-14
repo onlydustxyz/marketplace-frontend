@@ -2,9 +2,7 @@ use std::sync::Arc;
 
 use anyhow::Result;
 use derive_more::Constructor;
-use domain::{
-	AggregateRepository, CommandId, DomainError, Event, Payment, PaymentId, ProjectId, Publisher,
-};
+use domain::{AggregateRepository, CommandId, DomainError, Event, Payment, PaymentId, Publisher};
 use infrastructure::amqp::CommandMessage;
 use tracing::instrument;
 
@@ -18,11 +16,7 @@ pub struct Usecase {
 
 impl Usecase {
 	#[instrument(skip(self))]
-	pub async fn cancel(
-		&self,
-		project_id: &ProjectId,
-		payment_id: &PaymentId,
-	) -> Result<CommandId, DomainError> {
+	pub async fn cancel(&self, payment_id: &PaymentId) -> Result<CommandId, DomainError> {
 		let payment = self.payment_repository.find_by_id(payment_id)?;
 
 		let command_id = CommandId::new();

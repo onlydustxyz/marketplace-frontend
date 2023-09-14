@@ -384,16 +384,11 @@ impl<'a> Test<'a> {
 			}],
 		)?;
 
-		let request = json!({
-			"projectId": project_id,
-			"paymentId": payment_id,
-		});
-
 		// When
 		let response = self
 			.context
 			.http_client
-			.delete("/api/payments")
+			.delete(format!("/api/payments/{payment_id}"))
 			.header(ContentType::JSON)
 			.header(api_key_header())
 			.header(Header::new("x-hasura-role", "registered_user"))
@@ -401,7 +396,6 @@ impl<'a> Test<'a> {
 				"Authorization",
 				format!("Bearer {}", jwt(Some(project_id.to_string()))),
 			))
-			.body(request.to_string())
 			.dispatch()
 			.await;
 
@@ -463,20 +457,14 @@ impl<'a> Test<'a> {
 			}],
 		)?;
 
-		let request = json!({
-			"projectId": project_id,
-			"paymentId": payment_id,
-		});
-
 		// When
 		let response = self
 			.context
 			.http_client
-			.delete("/api/payments")
+			.delete(format!("/api/payments/{payment_id}"))
 			.header(ContentType::JSON)
 			.header(api_key_header())
 			.header(Header::new("x-hasura-role", "admin"))
-			.body(request.to_string())
 			.dispatch()
 			.await;
 
@@ -538,16 +526,11 @@ impl<'a> Test<'a> {
 			}],
 		)?;
 
-		let request = json!({
-			"projectId": project_id,
-			"paymentId": payment_id,
-		});
-
 		// When
 		let response = self
 			.context
 			.http_client
-			.delete("/api/payments")
+			.delete(format!("/api/payments/{payment_id}"))
 			.header(ContentType::JSON)
 			.header(api_key_header())
 			.header(Header::new("x-hasura-role", "registered_user"))
@@ -555,7 +538,6 @@ impl<'a> Test<'a> {
 				"Authorization",
 				format!("Bearer {}", jwt(None)),
 			))
-			.body(request.to_string())
 			.dispatch()
 			.await;
 
