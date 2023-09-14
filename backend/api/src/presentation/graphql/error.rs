@@ -1,4 +1,4 @@
-use domain::{DomainError, UserId};
+use domain::{DomainError, ParseCurrencyError, UserId};
 use infrastructure::{database::DatabaseError, web3::ens};
 use juniper::{graphql_value, DefaultScalarValue, FieldError, IntoFieldError};
 use olog::{error, IntoField};
@@ -37,6 +37,14 @@ impl From<DomainError> for Error {
 		match usecase_error {
 			DomainError::InternalError(e) => Self::InternalError(e),
 			DomainError::InvalidInputs(e) => Self::InvalidRequest(e),
+		}
+	}
+}
+
+impl From<ParseCurrencyError> for Error {
+	fn from(error: ParseCurrencyError) -> Self {
+		match error {
+			ParseCurrencyError::NotSupported => Error::InvalidRequest(error.into()),
 		}
 	}
 }

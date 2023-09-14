@@ -1,4 +1,4 @@
-use domain::{AggregateRootRepository, Project};
+use domain::{AggregateRepository, Payment};
 use http_api_problem::{HttpApiProblem, StatusCode};
 use olog::IntoField;
 use presentation::http::guards::{ApiKey, Claims, Role};
@@ -16,7 +16,7 @@ pub fn ignore(
 	claims: Claims,
 	role: Role,
 	ignored_contributions_usecase: application::project::ignored_contributions::Usecase,
-	project_repository: &State<AggregateRootRepository<Project>>,
+	payment_repository: &State<AggregateRepository<Payment>>,
 ) -> Result<(), HttpApiProblem> {
 	let project_id = project_id.into();
 	let caller_id = claims.user_id;
@@ -24,7 +24,7 @@ pub fn ignore(
 	println!("{}", serde_json::to_string_pretty(&claims).unwrap());
 
 	if !role
-		.to_permissions((*project_repository).clone())
+		.to_permissions((*payment_repository).clone())
 		.can_ignore_issue_for_project(&project_id)
 	{
 		return Err(HttpApiProblem::new(StatusCode::UNAUTHORIZED)
@@ -53,13 +53,13 @@ pub fn unignore(
 	claims: Claims,
 	role: Role,
 	ignored_contributions_usecase: application::project::ignored_contributions::Usecase,
-	project_repository: &State<AggregateRootRepository<Project>>,
+	payment_repository: &State<AggregateRepository<Payment>>,
 ) -> Result<(), HttpApiProblem> {
 	let project_id = project_id.into();
 	let caller_id = claims.user_id;
 
 	if !role
-		.to_permissions((*project_repository).clone())
+		.to_permissions((*payment_repository).clone())
 		.can_ignore_issue_for_project(&project_id)
 	{
 		return Err(HttpApiProblem::new(StatusCode::UNAUTHORIZED)

@@ -5,6 +5,11 @@ use std::{
 
 use serde::{de::DeserializeOwned, Serialize};
 
+mod repository;
+#[cfg(test)]
+pub use repository::MockRepository;
+pub use repository::{Error as RepositoryError, Repository};
+
 pub trait Aggregate: Send + Sync + Default + Sized {
 	type Id: Display + PartialEq + Eq + Hash + Clone + Send;
 	type Event: Serialize + DeserializeOwned + Debug + Display + Clone + Event<Self> + Send;

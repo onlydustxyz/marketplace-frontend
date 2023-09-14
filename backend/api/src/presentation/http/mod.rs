@@ -1,10 +1,10 @@
 use std::sync::Arc;
 
-use ::domain::{AggregateRootRepository, Project};
-use domain::{Event, Publisher};
+use ::domain::{AggregateRepository, Project};
+use domain::{Budget, Event, Payment, Publisher};
 pub use http::Config;
 use infrastructure::{
-	amqp::{self, CommandMessage},
+	amqp::{self, CommandMessage, UniqueMessage},
 	database::{ImmutableRepository, Repository},
 	github,
 };
@@ -30,7 +30,10 @@ pub fn serve(
 	config: crate::Config,
 	schema: graphql::Schema,
 	command_bus: Arc<dyn Publisher<CommandMessage<Event>>>,
-	project_repository: AggregateRootRepository<Project>,
+	event_bus: Arc<dyn Publisher<UniqueMessage<Event>>>,
+	project_repository: AggregateRepository<Project>,
+	budget_repository: AggregateRepository<Budget>,
+	payment_repository: AggregateRepository<Payment>,
 	project_details_repository: Arc<dyn Repository<ProjectDetails>>,
 	sponsor_repository: Arc<dyn Repository<Sponsor>>,
 	project_sponsor_repository: Arc<dyn ImmutableRepository<ProjectsSponsor>>,
@@ -69,14 +72,17 @@ pub fn serve(
 	);
 
 	let cancel_payment_usecase =
-		application::payment::cancel::Usecase::new(bus.clone(), project_repository.clone());
+		application::payment::cancel::Usecase::new(bus.clone(), payment_repository.clone());
 
 	rocket::custom(http::config::rocket("backend/api/Rocket.toml"))
 		.manage(config.http.clone())
 		.manage(config)
 		.manage(schema)
 		.manage(command_bus)
+		.manage(event_bus)
 		.manage(project_repository)
+		.manage(budget_repository)
+		.manage(payment_repository)
 		.manage(project_details_repository)
 		.manage(sponsor_repository)
 		.manage(project_sponsor_repository)
@@ -117,6 +123,7 @@ pub fn serve(
 				routes::projects::create_project,
 				routes::projects::contributions::ignore,
 				routes::projects::contributions::unignore,
+				routes::projects::budgets::allocate,
 				routes::issues::create_and_close_issue,
 				routes::issues::fetch_issue_by_repo_owner_name_issue_number,
 				routes::pull_requests::fetch_pull_request,

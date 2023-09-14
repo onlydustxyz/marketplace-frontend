@@ -1,6 +1,9 @@
 use thiserror::Error;
 
-use crate::{AggregateRootRepositoryError, GithubServiceError, PublisherError};
+use crate::{
+	AggregateRepositoryError, BudgetError, GithubServiceError, PaymentError, ProjectError,
+	PublisherError,
+};
 
 #[derive(Debug, Error)]
 pub enum DomainError {
@@ -10,12 +13,12 @@ pub enum DomainError {
 	InvalidInputs(anyhow::Error),
 }
 
-impl From<AggregateRootRepositoryError> for DomainError {
-	fn from(aggregate_root_repository_error: AggregateRootRepositoryError) -> Self {
+impl From<AggregateRepositoryError> for DomainError {
+	fn from(aggregate_root_repository_error: AggregateRepositoryError) -> Self {
 		match aggregate_root_repository_error {
-			AggregateRootRepositoryError::NotFound =>
+			AggregateRepositoryError::NotFound =>
 				Self::InvalidInputs(aggregate_root_repository_error.into()),
-			AggregateRootRepositoryError::EventStoreError(e) => Self::InternalError(e.into()),
+			AggregateRepositoryError::EventStoreError(e) => Self::InternalError(e.into()),
 		}
 	}
 }
@@ -33,6 +36,36 @@ impl From<GithubServiceError> for DomainError {
 				Self::InvalidInputs(error.into()),
 			GithubServiceError::MissingField(_) | GithubServiceError::Other(_) =>
 				Self::InternalError(error.into()),
+		}
+	}
+}
+
+impl From<BudgetError> for DomainError {
+	fn from(error: BudgetError) -> Self {
+		match error {
+			BudgetError::Overspent => Self::InvalidInputs(error.into()),
+		}
+	}
+}
+
+impl From<ProjectError> for DomainError {
+	fn from(error: ProjectError) -> Self {
+		match error {
+			ProjectError::BudgetAlreadyExists
+			| ProjectError::LeaderAlreadyAssigned
+			| ProjectError::NotLeader
+			| ProjectError::GithubRepoAlreadyLinked
+			| ProjectError::GithubRepoNotLinked
+			| ProjectError::UserAlreadyApplied => Self::InvalidInputs(error.into()),
+		}
+	}
+}
+
+impl From<PaymentError> for DomainError {
+	fn from(error: PaymentError) -> Self {
+		match error {
+			PaymentError::Overspent | PaymentError::NotCancellable | PaymentError::Cancelled =>
+				Self::InvalidInputs(error.into()),
 		}
 	}
 }

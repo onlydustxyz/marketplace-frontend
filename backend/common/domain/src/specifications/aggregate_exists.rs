@@ -4,16 +4,16 @@ use mockall::automock;
 use mockall_double::double;
 
 #[cfg_attr(test, double)]
-use crate::AggregateRootRepository;
-use crate::{specifications::Error, AggregateRoot, AggregateRootRepositoryError, Project};
+use crate::AggregateRepository;
+use crate::{specifications::Error, AggregateRepositoryError, EventSourcable, Project};
 
-pub struct Specification<A: AggregateRoot + 'static> {
-	aggregate_repository: AggregateRootRepository<A>,
+pub struct Specification<A: EventSourcable + 'static> {
+	aggregate_repository: AggregateRepository<A>,
 }
 
 #[cfg_attr(test, automock)]
-impl<A: AggregateRoot + 'static> Specification<A> {
-	pub fn new(aggregate_repository: AggregateRootRepository<A>) -> Self {
+impl<A: EventSourcable + 'static> Specification<A> {
+	pub fn new(aggregate_repository: AggregateRepository<A>) -> Self {
 		Self {
 			aggregate_repository,
 		}
@@ -23,8 +23,8 @@ impl<A: AggregateRoot + 'static> Specification<A> {
 		match self.aggregate_repository.find_by_id(aggregate_id) {
 			Ok(_) => Ok(true),
 			Err(e) => match e {
-				AggregateRootRepositoryError::NotFound => Ok(false),
-				AggregateRootRepositoryError::EventStoreError(_) => Err(Error::EventStore(e)),
+				AggregateRepositoryError::NotFound => Ok(false),
+				AggregateRepositoryError::EventStoreError(_) => Err(Error::EventStore(e)),
 			},
 		}
 	}
@@ -44,12 +44,12 @@ mod tests {
 
 	use super::*;
 	#[double]
-	use crate::AggregateRootRepository;
+	use crate::AggregateRepository;
 	use crate::{EventStoreError, ProjectId};
 
 	#[fixture]
-	fn aggregate_root_repository() -> AggregateRootRepository<Project> {
-		AggregateRootRepository::default()
+	fn aggregate_root_repository() -> AggregateRepository<Project> {
+		AggregateRepository::default()
 	}
 
 	#[fixture]
@@ -60,7 +60,7 @@ mod tests {
 
 	#[rstest]
 	fn aggregate_exists(
-		mut aggregate_root_repository: AggregateRootRepository<Project>,
+		mut aggregate_root_repository: AggregateRepository<Project>,
 		project_id: &ProjectId,
 	) {
 		aggregate_root_repository
@@ -76,14 +76,14 @@ mod tests {
 
 	#[rstest]
 	fn aggregate_does_not_exists(
-		mut aggregate_root_repository: AggregateRootRepository<Project>,
+		mut aggregate_root_repository: AggregateRepository<Project>,
 		project_id: &ProjectId,
 	) {
 		aggregate_root_repository
 			.expect_find_by_id()
 			.with(eq(*project_id))
 			.once()
-			.returning(|_| Err(AggregateRootRepositoryError::NotFound));
+			.returning(|_| Err(AggregateRepositoryError::NotFound));
 
 		let result = Specification::new(aggregate_root_repository).is_satisfied_by(project_id);
 		assert!(result.is_ok(), "{}", result.err().unwrap());
@@ -92,7 +92,7 @@ mod tests {
 
 	#[rstest]
 	fn aggregate_repository_error(
-		mut aggregate_root_repository: AggregateRootRepository<Project>,
+		mut aggregate_root_repository: AggregateRepository<Project>,
 		project_id: &ProjectId,
 	) {
 		aggregate_root_repository
@@ -100,7 +100,7 @@ mod tests {
 			.with(eq(*project_id))
 			.once()
 			.returning(|_| {
-				Err(AggregateRootRepositoryError::EventStoreError(
+				Err(AggregateRepositoryError::EventStoreError(
 					EventStoreError::Connection(anyhow!("oops")),
 				))
 			});

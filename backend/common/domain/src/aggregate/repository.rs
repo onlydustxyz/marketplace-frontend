@@ -14,15 +14,13 @@ pub enum Error {
 	EventStoreError(#[from] EventStoreError),
 }
 
-pub trait AggregateRoot: EventSourcable {}
-
 #[derive(Clone)]
-pub struct Repository<A: AggregateRoot> {
+pub struct Repository<A: EventSourcable> {
 	event_store: Arc<dyn EventStore<A>>,
 }
 
 #[cfg_attr(test, automock)]
-impl<A: AggregateRoot + 'static> Repository<A> {
+impl<A: EventSourcable + 'static> Repository<A> {
 	pub fn new(event_store: Arc<dyn EventStore<A>>) -> Self {
 		Self { event_store }
 	}

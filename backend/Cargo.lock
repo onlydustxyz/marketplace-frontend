@@ -207,6 +207,7 @@ dependencies = [
  "rusoto_core",
  "rusoto_s3",
  "rust_decimal",
+ "rust_decimal_macros",
  "rusty-money",
  "serde",
  "serde_json",

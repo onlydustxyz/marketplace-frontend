@@ -77,6 +77,9 @@ trait IdentifiableAggregate {
 impl IdentifiableAggregate for Event {
 	fn aggregate_id(&self) -> String {
 		match &self {
+			Event::Application(event) => event.aggregate_id().to_string(),
+			Event::Budget(event) => event.aggregate_id().to_string(),
+			Event::Payment(event) => event.aggregate_id().to_string(),
 			Event::Project(event) => event.aggregate_id().to_string(),
 		}
 	}
