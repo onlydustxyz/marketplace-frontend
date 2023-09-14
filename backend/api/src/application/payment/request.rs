@@ -1,14 +1,14 @@
 use std::sync::Arc;
 
-use anyhow::Result;
+use anyhow::{anyhow, Result};
 use chrono::Duration;
 use derive_more::Constructor;
 use domain::{
-	AggregateRootRepository, Budget, CommandId, DomainError, Event, EventSourcable, GithubUserId,
+	currencies, AggregateRepository, Amount, Budget, CommandId, DomainError, Event, GithubUserId,
 	Payment, PaymentId, PaymentReason, PaymentWorkItem, Project, ProjectId, Publisher, UserId,
 };
 use infrastructure::amqp::CommandMessage;
-use rusty_money::{crypto, Money};
+use rust_decimal::Decimal;
 use tracing::instrument;
 
 use crate::domain::{services::indexer, Publishable};
@@ -16,7 +16,8 @@ use crate::domain::{services::indexer, Publishable};
 #[derive(Constructor)]
 pub struct Usecase {
 	event_publisher: Arc<dyn Publisher<CommandMessage<Event>>>,
-	project_repository: AggregateRootRepository<Project>,
+	project_repository: AggregateRepository<Project>,
+	budget_repository: AggregateRepository<Budget>,
 	github_indexer_service: Arc<dyn indexer::Service>,
 }
 
@@ -30,21 +31,28 @@ impl Usecase {
 		amount_in_usd: u32,
 		hours_worked: u32,
 		reason: PaymentReason,
-	) -> Result<(Project, Budget, Payment, CommandId), DomainError> {
-		let project = self.project_repository.find_by_id(&project_id)?;
-		let new_payment_id = PaymentId::new();
+	) -> Result<(PaymentId, CommandId), DomainError> {
+		let payment_id = PaymentId::new();
 
-		let events = project
-			.request_payment(
-				new_payment_id,
-				requestor_id,
-				recipient_id,
-				Money::from_major(amount_in_usd as i64, crypto::USDC).into(),
-				Duration::hours(hours_worked as i64),
-				reason.clone(),
-			)
-			.await
+		let project = self.project_repository.find_by_id(&project_id)?;
+		let budget_id = project.budgets_by_currency.get(currencies::USD.code).ok_or_else(|| {
+			DomainError::InvalidInputs(anyhow!("Project has no budget to spend from"))
+		})?;
+		let budget = self.budget_repository.find_by_id(budget_id)?;
+
+		let budget_events = budget
+			.spend(Decimal::from(amount_in_usd))
 			.map_err(|e| DomainError::InvalidInputs(e.into()))?;
+
+		let payment_events = Payment::request(
+			payment_id,
+			project_id,
+			requestor_id,
+			recipient_id,
+			Amount::from_major(amount_in_usd as i64, currencies::USD),
+			Duration::hours(hours_worked as i64),
+			reason.clone(),
+		);
 
 		self.github_indexer_service
 			.index_user(recipient_id)
@@ -85,19 +93,17 @@ impl Usecase {
 			}
 		}
 
-		let project = project.apply_events(&events);
-		let budget = project.budget().clone().unwrap();
-		let payment = budget.payments().get(&new_payment_id).cloned().unwrap();
 		let command_id = CommandId::new();
 
-		events
+		budget_events
 			.into_iter()
 			.map(Event::from)
+			.chain(payment_events.into_iter().map(Event::from))
 			.map(|payload| CommandMessage::new(command_id, payload))
 			.collect::<Vec<_>>()
 			.publish(self.event_publisher.clone())
 			.await?;
 
-		Ok((project, budget, payment, command_id))
+		Ok((payment_id, command_id))
 	}
 }

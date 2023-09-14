@@ -7,7 +7,12 @@ mod event;
 pub use event::Event;
 
 mod aggregate;
-pub use aggregate::{Aggregate, Event as AggregateEvent, EventSourcable};
+#[cfg(test)]
+pub use aggregate::MockRepository as MockAggregateRepository;
+pub use aggregate::{
+	Aggregate, Event as AggregateEvent, EventSourcable, Repository as AggregateRepository,
+	RepositoryError as AggregateRepositoryError,
+};
 
 mod error;
 pub use error::*;
@@ -65,13 +70,6 @@ mod command;
 pub use command::{
 	repository::Repository as CommandRepository, AggregateId as CommandAggregateId,
 	Entity as Command, Id as CommandId,
-};
-
-pub mod aggregate_root;
-#[cfg(test)]
-pub use aggregate_root::MockRepository as MockAggregateRootRepository;
-pub use aggregate_root::{
-	AggregateRoot, Error as AggregateRootRepositoryError, Repository as AggregateRootRepository,
 };
 
 pub mod event_store;

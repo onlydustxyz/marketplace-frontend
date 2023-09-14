@@ -17,7 +17,7 @@ futures = { version = "0.3.24", features = ["alloc"] }
 pin-project-lite = "0.2.9"
 
 # Core types
-url = "2.2.2"
+url = { version = "2.2.2", features = ["serde"] }
 uuid = { version = "1.3.3", default_features = false, features = [
 	"v4",
 	"serde",

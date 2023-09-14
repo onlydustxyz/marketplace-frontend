@@ -94,7 +94,7 @@ impl<'a> Test<'a> {
 		assert_eq!(user_profiles.len(), 1);
 
 		let user_profile = user_profiles.pop().unwrap();
-		assert_eq!(user_profile.id, user_id);
+		assert_eq!(user_profile.id, user_id.into());
 		assert_eq!(user_profile.bio.unwrap(), "My biography");
 		assert_eq!(user_profile.location.unwrap(), "France");
 		assert_eq!(user_profile.website.unwrap(), "https://onlydust.xyz");

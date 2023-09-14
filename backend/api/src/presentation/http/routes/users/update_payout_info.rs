@@ -39,7 +39,7 @@ pub async fn update_user_payout_info(
 	request: Json<Request>,
 	usecase: Usecase,
 ) -> Result<Json<Response>, HttpApiProblem> {
-	let caller_id = claims.user_id.into();
+	let caller_id = claims.user_id;
 	let Request {
 		location,
 		identity,

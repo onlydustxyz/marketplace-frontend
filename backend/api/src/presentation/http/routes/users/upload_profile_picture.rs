@@ -60,7 +60,7 @@ pub async fn profile_picture(
 	);
 
 	let picture_url = usecase
-		.update_user_avatar(user_id.into(), profile_picture)
+		.update_user_avatar(user_id, profile_picture)
 		.await
 		.map_err(Error::from)?;
 

@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use domain::{
-	AggregateRootRepository, Destination, DomainError, Event, Project, ProjectId, Publisher, UserId,
+	AggregateRepository, Destination, DomainError, Event, Project, ProjectId, Publisher, UserId,
 };
 use event_store::bus::QUEUE_NAME as EVENT_STORE_QUEUE;
 use infrastructure::amqp::UniqueMessage;
@@ -9,13 +9,13 @@ use tracing::instrument;
 
 pub struct Usecase {
 	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
-	project_repository: AggregateRootRepository<Project>,
+	project_repository: AggregateRepository<Project>,
 }
 
 impl Usecase {
 	pub fn new(
 		event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
-		project_repository: AggregateRootRepository<Project>,
+		project_repository: AggregateRepository<Project>,
 	) -> Self {
 		Self {
 			event_publisher,

@@ -40,12 +40,14 @@ uuid08 = { package = "uuid", version = "0.8", default_features = false, features
 graphql_client = "0.12.0"
 
 # Github
-octocrab = { git = "https://github.com/onlydustxyz/octocrab.git", features=["stream"] }
+octocrab = { git = "https://github.com/onlydustxyz/octocrab.git", features = [
+	"stream",
+] }
 
 # Http client
 http-api-problem = { version = "0.56.0", features = ["rocket"] }
 reqwest = { version = "0.11", default-features = false }
-url = "2.2.2"
+url = { version = "2.2.2", features = ["serde"] }
 
 # Http Server
 juniper = "0.15.11"
@@ -81,7 +83,8 @@ dotenv = "0.15.0"
 email_address = "0.2.4"
 infer = "0.12.0"
 rust_decimal = "1.26.1"
-rusty-money = { version = "0.4.1", features = ["iso", "crypto"] }
+rust_decimal_macros = "1.26"
+rusty-money = "0.4.1"
 tokio-retry = "0.3"
 
 # Local dependecies

@@ -3,14 +3,14 @@ use std::sync::Arc;
 use anyhow::anyhow;
 use common_domain::GithubFetchService;
 use derive_more::Constructor;
-use domain::{AggregateRootRepository, DomainError, GithubIssue, GithubRepoId, Project, ProjectId};
+use domain::{AggregateRepository, DomainError, GithubIssue, GithubRepoId, Project, ProjectId};
 use tracing::instrument;
 
 use crate::domain::DustyBotService;
 
 #[derive(Constructor)]
 pub struct Usecase {
-	project_repository: AggregateRootRepository<Project>,
+	project_repository: AggregateRepository<Project>,
 	dusty_bot_service: Arc<dyn DustyBotService>,
 	fetch_service: Arc<dyn GithubFetchService>,
 }
@@ -25,7 +25,7 @@ impl Usecase {
 		description: String,
 	) -> Result<GithubIssue, DomainError> {
 		let project = self.project_repository.find_by_id(project_id)?;
-		if !project.github_repos().contains(&github_repo_id) {
+		if !project.github_repos.contains(&github_repo_id) {
 			return Err(DomainError::InvalidInputs(anyhow!(
 				"Github repository {github_repo_id} is not linked to project {project_id}"
 			)));

@@ -1,6 +1,6 @@
 table:
   name: payment_stats
-  schema: public
+  schema: api
 select_permissions:
   - role: public
     permission:

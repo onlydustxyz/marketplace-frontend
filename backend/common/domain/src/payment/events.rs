@@ -7,7 +7,7 @@ use serde_with::{serde_as, DurationSeconds};
 use super::Reason;
 use crate::{
 	AggregateEvent, Amount, GithubUserId, Payment, PaymentId, PaymentReceipt, PaymentReceiptId,
-	UserId,
+	ProjectId, UserId,
 };
 
 #[serde_as]
@@ -15,8 +15,10 @@ use crate::{
 pub enum Event {
 	Requested {
 		id: PaymentId,
+		project_id: ProjectId,
 		requestor_id: UserId,
 		recipient_id: GithubUserId,
+		#[serde(with = "crate::amount::serde")]
 		amount: Amount,
 		#[serde_as(as = "DurationSeconds<i64>")]
 		duration_worked: Duration,
@@ -29,6 +31,7 @@ pub enum Event {
 	Processed {
 		id: PaymentId,
 		receipt_id: PaymentReceiptId,
+		#[serde(with = "crate::amount::serde")]
 		amount: Amount,
 		receipt: PaymentReceipt,
 		processed_at: NaiveDateTime,
@@ -64,6 +67,12 @@ impl Display for Event {
 	}
 }
 
+impl From<Event> for crate::Event {
+	fn from(event: Event) -> Self {
+		Self::Payment(event)
+	}
+}
+
 #[cfg(test)]
 mod tests {
 	use std::str::FromStr;
@@ -71,11 +80,12 @@ mod tests {
 	use assert_json_diff::assert_json_eq;
 	use chrono::{NaiveDate, NaiveTime};
 	use rstest::*;
+	use rust_decimal_macros::dec;
 	use serde_json::{json, Value};
 	use uuid::Uuid;
 
 	use super::*;
-	use crate::{blockchain::*, Currency};
+	use crate::{blockchain::*, currencies};
 
 	pub const CONTRACT_ADDRESSES: [&str; 1] = ["0xd8da6bf26964af9d7eed9e03e53415d37aa96045"];
 
@@ -107,10 +117,7 @@ mod tests {
 		let event = Event::Processed {
 			id: payment_id(),
 			receipt_id: payment_receipt_id(),
-			amount: Amount::new(
-				"500.45".parse().unwrap(),
-				Currency::Crypto("USDC".to_string()),
-			),
+			amount: Amount::from_decimal(dec!(500.45), currencies::USD),
 			receipt: PaymentReceipt::OnChainPayment {
 				network: Network::Ethereum,
 				recipient_address: recipient_address.parse().unwrap(),
@@ -131,9 +138,7 @@ mod tests {
 					"receipt_id":"b5db0b56-ab3e-4bd1-b9a2-6a3d41f35b8f",
 					"amount":{
 						"amount":"500.45",
-						"currency":{
-							"Crypto":"USDC"
-						}
+						"currency":"USD"
 					},
 					"receipt":{
 						"OnChainPayment":{
