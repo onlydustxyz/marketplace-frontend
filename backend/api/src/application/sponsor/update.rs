@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use anyhow::Result;
-use domain::DomainError;
+use domain::{sponsor, DomainError};
 use infrastructure::database::Repository;
 use juniper::Nullable;
 use reqwest::Url;
@@ -29,11 +29,11 @@ impl Usecase {
 	#[instrument(skip(self))]
 	pub async fn update(
 		&self,
-		sponsor_id: SponsorId,
+		sponsor_id: sponsor::Id,
 		name: Option<NonEmptyTrimmedString>,
 		logo_url: Option<Url>,
 		url: Nullable<Url>,
-	) -> Result<SponsorId, DomainError> {
+	) -> Result<sponsor::Id, DomainError> {
 		let mut sponsor = self.sponsor_repository.find_by_id(sponsor_id)?;
 
 		if let Some(name) = name {
@@ -69,7 +69,7 @@ mod tests {
 	};
 
 	#[fixture]
-	fn sponsor_id() -> SponsorId {
+	fn sponsor_id() -> sponsor::Id {
 		uuid::Uuid::new_v4().into()
 	}
 
@@ -91,7 +91,7 @@ mod tests {
 	#[rstest]
 	#[tokio::test]
 	async fn test_update(
-		sponsor_id: SponsorId,
+		sponsor_id: sponsor::Id,
 		name: NonEmptyTrimmedString,
 		logo_url: Url,
 		url: Url,
@@ -133,7 +133,7 @@ mod tests {
 	#[rstest]
 	#[tokio::test]
 	async fn test_update_with_bad_logo_url(
-		sponsor_id: SponsorId,
+		sponsor_id: sponsor::Id,
 		name: NonEmptyTrimmedString,
 		logo_url: Url,
 		url: Url,

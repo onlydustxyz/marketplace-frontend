@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use anyhow::Result;
-use domain::DomainError;
+use domain::{sponsor, DomainError};
 use infrastructure::database::Repository;
 use reqwest::Url;
 use tracing::instrument;
@@ -31,8 +31,8 @@ impl Usecase {
 		name: NonEmptyTrimmedString,
 		logo_url: Url,
 		url: Option<Url>,
-	) -> Result<SponsorId, DomainError> {
-		let sponsor_id = SponsorId::new();
+	) -> Result<sponsor::Id, DomainError> {
+		let sponsor_id = sponsor::Id::new();
 
 		let stored_logo_url = self.image_store.store_image_from_url(&logo_url).await?.to_string();
 

@@ -16,7 +16,7 @@ mod projects_sponsors;
 pub use projects_sponsors::ProjectsSponsor;
 
 mod sponsors;
-pub use sponsors::{Id as SponsorId, Sponsor};
+pub use sponsors::Sponsor;
 
 mod onboarding;
 pub use onboarding::Onboarding;
