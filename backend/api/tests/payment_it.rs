@@ -75,6 +75,7 @@ impl<'a> Test<'a> {
 				ProjectEvent::BudgetLinked {
 					id: project_id,
 					budget_id,
+					currency: currencies::USD,
 				},
 			],
 		)?;
@@ -198,6 +199,7 @@ impl<'a> Test<'a> {
 				ProjectEvent::BudgetLinked {
 					id: project_id,
 					budget_id,
+					currency: currencies::USD,
 				},
 			],
 		)?;
@@ -277,6 +279,7 @@ impl<'a> Test<'a> {
 				ProjectEvent::BudgetLinked {
 					id: project_id,
 					budget_id,
+					currency: currencies::USD,
 				},
 			],
 		)?;
@@ -352,6 +355,7 @@ impl<'a> Test<'a> {
 				ProjectEvent::BudgetLinked {
 					id: project_id,
 					budget_id,
+					currency: currencies::USD,
 				},
 			],
 		)?;
@@ -425,6 +429,7 @@ impl<'a> Test<'a> {
 				ProjectEvent::BudgetLinked {
 					id: project_id,
 					budget_id,
+					currency: currencies::USD,
 				},
 			],
 		)?;
@@ -494,6 +499,7 @@ impl<'a> Test<'a> {
 				ProjectEvent::BudgetLinked {
 					id: project_id,
 					budget_id,
+					currency: currencies::USD,
 				},
 			],
 		)?;

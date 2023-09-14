@@ -35,7 +35,7 @@ impl Usecase {
 		let payment_id = PaymentId::new();
 
 		let project = self.project_repository.find_by_id(&project_id)?;
-		let budget_id = project.budget_id.ok_or_else(|| {
+		let budget_id = project.budgets_by_currency.get(currencies::USD.code).ok_or_else(|| {
 			DomainError::InvalidInputs(anyhow!("Project has no budget to spend from"))
 		})?;
 		let budget = self.budget_repository.find_by_id(&budget_id)?;

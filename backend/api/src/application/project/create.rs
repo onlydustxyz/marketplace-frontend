@@ -59,8 +59,10 @@ impl Usecase {
 			events.append(&mut Budget::from_events(&events).allocate(*initial_budget.amount())?);
 
 			budget_events.append(&mut events.into_iter().map(Into::into).collect());
-			project_events
-				.append(&mut Project::from_events(&project_events).link_budget(budget_id)?)
+			project_events.append(
+				&mut Project::from_events(&project_events)
+					.link_budget(budget_id, initial_budget.currency())?,
+			)
 		};
 
 		let stored_logo_url = match logo_url {

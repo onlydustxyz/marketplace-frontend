@@ -35,32 +35,6 @@ actions:
     permissions:
       - role: registered_user
     comment: createAndCloseIssue
-  - name: createProject
-    definition:
-      kind: synchronous
-      handler: '{{BACKEND_REST_API_URL}}'
-      forward_client_headers: true
-      headers:
-        - name: Api-Key
-          value_from_env: BACKEND_GRAPHQL_API_KEY
-      request_transform:
-        body:
-          action: transform
-          template: '{{$body.input}}'
-        method: POST
-        query_params: {}
-        template_engine: Kriti
-        url: '{{$base_url}}/projects'
-        version: 2
-      response_transform:
-        body:
-          action: transform
-          template: |+
-            {{$body?.project_id}}
-
-        template_engine: Kriti
-        version: 2
-    comment: createProject
   - name: fetchIssue
     definition:
       kind: ""

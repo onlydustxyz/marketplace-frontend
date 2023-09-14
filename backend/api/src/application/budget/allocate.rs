@@ -28,19 +28,28 @@ impl Usecase {
 
 		let mut events = Vec::new();
 
-		let budget = match project.budget_id {
+		let budget = match project.budgets_by_currency.get(amount.currency().code) {
 			Some(budget_id) => self.budget_repository.find_by_id(&budget_id)?,
 			None => {
 				let budget_id = BudgetId::new();
-				events.append(&mut Budget::create(budget_id, amount.currency()));
-				Budget::from_events(&events)
+				let budget_events = Budget::create(budget_id, amount.currency());
+				let budget = Budget::from_events(&budget_events);
+				events.append(&mut budget_events.into_iter().map(Event::from).collect());
+				events.append(
+					&mut project
+						.link_budget(budget_id, amount.currency())?
+						.into_iter()
+						.map(Event::from)
+						.collect(),
+				);
+
+				budget
 			},
 		};
 
 		events
 			.into_iter()
-			.chain(budget.allocate(*amount.amount())?)
-			.map(Event::from)
+			.chain(budget.allocate(*amount.amount())?.into_iter().map(Event::from))
 			.map(UniqueMessage::new)
 			.collect::<Vec<_>>()
 			.publish(self.event_publisher.clone())

@@ -44,7 +44,7 @@ impl EventListener<Event> for Projector {
 				ProjectEvent::LeaderUnassigned { id, leader_id } => {
 					self.project_lead_repository.delete((id, leader_id))?;
 				},
-				ProjectEvent::BudgetLinked { id, budget_id } => {
+				ProjectEvent::BudgetLinked { id, budget_id, .. } => {
 					self.project_budgets_repository.try_insert(ProjectsBudget {
 						project_id: id,
 						budget_id,

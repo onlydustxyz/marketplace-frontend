@@ -32,6 +32,10 @@ pub async fn budget_allocation(docker: &'static Cli) {
 	test.should_not_recreate_the_budget_upon_reallocation()
 		.await
 		.expect("should_not_recreate_the_budget_upon_reallocation");
+
+	test.should_allow_multiple_currencies()
+		.await
+		.expect("should_allow_multiple_currencies");
 }
 
 struct Test<'a> {
@@ -52,6 +56,7 @@ impl<'a> Test<'a> {
 
 		let request = json!({
 			"amount": 1523,
+			"currency": "USD"
 		});
 
 		// When
@@ -87,6 +92,15 @@ impl<'a> Test<'a> {
 		});
 
 		assert_eq!(
+			Event::Project(ProjectEvent::BudgetLinked {
+				id: project_id,
+				budget_id,
+				currency: currencies::USD
+			}),
+			self.context.amqp.listen(event_store::bus::QUEUE_NAME).await.unwrap(),
+		);
+
+		assert_eq!(
 			Event::Budget(BudgetEvent::Allocated {
 				id: budget_id,
 				amount: dec!(1523)
@@ -111,6 +125,7 @@ impl<'a> Test<'a> {
 				ProjectEvent::BudgetLinked {
 					id: project_id,
 					budget_id,
+					currency: currencies::USD,
 				},
 			],
 		)?;
@@ -130,7 +145,8 @@ impl<'a> Test<'a> {
 		)?;
 
 		let request = json!({
-			"amount": 523,
+			"amount":523,
+			"currency": "USD"
 		});
 
 		// When
@@ -156,6 +172,96 @@ impl<'a> Test<'a> {
 			Event::Budget(BudgetEvent::Allocated {
 				id: budget_id,
 				amount: dec!(523)
+			}),
+			self.context.amqp.listen(event_store::bus::QUEUE_NAME).await.unwrap(),
+		);
+
+		Ok(())
+	}
+
+	async fn should_allow_multiple_currencies(&mut self) -> Result<()> {
+		info!("should_allow_multiple_currencies");
+
+		// Given
+		let project_id = ProjectId::new();
+		let usd_budget_id = BudgetId::new();
+
+		models::events::store(
+			&self.context,
+			vec![
+				ProjectEvent::Created { id: project_id },
+				ProjectEvent::BudgetLinked {
+					id: project_id,
+					budget_id: usd_budget_id,
+					currency: currencies::USD,
+				},
+			],
+		)?;
+
+		models::events::store(
+			&self.context,
+			vec![
+				BudgetEvent::Created {
+					id: usd_budget_id,
+					currency: currencies::USD,
+				},
+				BudgetEvent::Allocated {
+					id: usd_budget_id,
+					amount: dec!(1_000),
+				},
+			],
+		)?;
+
+		let request = json!({
+			"amount": 1,
+			"currency": "ETH"
+		});
+
+		// When
+		let response = self
+			.context
+			.http_client
+			.put(format!("/api/projects/{project_id}/budgets"))
+			.header(ContentType::JSON)
+			.header(api_key_header())
+			.body(request.to_string())
+			.dispatch()
+			.await;
+
+		// Then
+		assert_eq!(
+			response.status(),
+			Status::Ok,
+			"{}",
+			response.into_string().await.unwrap()
+		);
+
+		let eth_budget_id: BudgetId;
+
+		assert_matches!(self.context.amqp.listen(event_store::bus::QUEUE_NAME).await.unwrap(),
+			Event::Budget(event) => {
+				assert_matches!(event, BudgetEvent::Created {
+					id,
+					currency
+				} => {
+					eth_budget_id = id;
+					assert_eq!(currency, currencies::ETH);
+			});
+		});
+
+		assert_eq!(
+			Event::Project(ProjectEvent::BudgetLinked {
+				id: project_id,
+				budget_id: eth_budget_id,
+				currency: currencies::ETH
+			}),
+			self.context.amqp.listen(event_store::bus::QUEUE_NAME).await.unwrap(),
+		);
+
+		assert_eq!(
+			Event::Budget(BudgetEvent::Allocated {
+				id: eth_budget_id,
+				amount: dec!(1)
 			}),
 			self.context.amqp.listen(event_store::bus::QUEUE_NAME).await.unwrap(),
 		);

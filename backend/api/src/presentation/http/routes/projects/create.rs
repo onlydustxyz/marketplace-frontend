@@ -1,12 +1,12 @@
 use common_domain::{DomainError, ProjectId, ProjectVisibility};
-use domain::{currencies, Amount};
 use http_api_problem::{HttpApiProblem, StatusCode};
+use olog::IntoField;
 use presentation::http::guards::ApiKey;
 use rocket::{serde::json::Json, State};
 use serde::{Deserialize, Serialize};
 use url::Url;
 
-use crate::application;
+use crate::{application, presentation::http::dto};
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -22,7 +22,7 @@ pub struct Request {
 	long_description: String,
 	telegram_link: Option<Url>,
 	logo_url: Option<Url>,
-	initial_budget: Option<i32>,
+	initial_budget: Option<dto::Amount>,
 	hiring: Option<bool>,
 	rank: Option<i32>,
 	visibility: Option<ProjectVisibility>,
@@ -34,39 +34,56 @@ pub async fn create_project(
 	request: Json<Request>,
 	create_project_usecase: &State<application::project::create::Usecase>,
 ) -> Result<Json<Response>, HttpApiProblem> {
+	let Request {
+		name,
+		short_description,
+		long_description,
+		telegram_link,
+		logo_url,
+		initial_budget,
+		hiring,
+		rank,
+		visibility,
+	} = request.into_inner();
+
+	let initial_budget = match initial_budget {
+		Some(initial_budget) => Some(initial_budget.try_into()?),
+		None => None,
+	};
+
 	let project_id = create_project_usecase
 		.create(
-			request.name.clone().try_into().map_err(|e: DomainError| {
+			name.try_into().map_err(|e: DomainError| {
 				HttpApiProblem::new(StatusCode::BAD_REQUEST)
 					.title("Unable to read project_name")
 					.detail(e.to_string())
 			})?,
-			request.short_description.clone().try_into().map_err(|e: DomainError| {
+			short_description.try_into().map_err(|e: DomainError| {
 				HttpApiProblem::new(StatusCode::BAD_REQUEST)
 					.title("Unable to read short_description")
 					.detail(e.to_string())
 			})?,
-			request.long_description.clone().try_into().map_err(|e: DomainError| {
+			long_description.try_into().map_err(|e: DomainError| {
 				HttpApiProblem::new(StatusCode::BAD_REQUEST)
 					.title("Unable to read long_description")
 					.detail(e.to_string())
 			})?,
-			request.telegram_link.clone(),
-			request.logo_url.clone(),
-			request
-				.initial_budget
-				.map(|initial_budget| Amount::from_major(initial_budget as i64, currencies::USD)),
-			request.hiring.unwrap_or_default(),
-			request.rank.unwrap_or_default(),
-			request.visibility.clone().unwrap_or_default(),
+			telegram_link,
+			logo_url,
+			initial_budget,
+			hiring.unwrap_or_default(),
+			rank.unwrap_or_default(),
+			visibility.unwrap_or_default(),
 		)
 		.await
 		.map_err(|e| {
-			{
-				HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
-					.title("Unable to process create_project request")
-					.detail(e.to_string())
-			}
+			olog::error!(
+				error = e.to_field(),
+				"Unable to process create_project request"
+			);
+			HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
+				.title("Unable to process create_project request")
+				.detail(e.to_string())
 		})?;
 	Ok(Json(Response { project_id }))
 }

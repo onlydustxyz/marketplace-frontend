@@ -13,20 +13,6 @@ type Mutation {
   ): GithubIssue!
 }
 
-type Mutation {
-  createProject(
-    name: String!
-    shortDescription: String!
-    longDescription: String!
-    telegramLink: Url
-    logoUrl: Url
-    initialBudget: Int
-    hiring: Boolean
-    rank: Int
-    visibility: Visibility
-  ): Uuid!
-}
-
 type Query {
   fetchIssue(
     repoOwner: String!

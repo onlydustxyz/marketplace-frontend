@@ -1,4 +1,4 @@
-use std::collections::HashSet;
+use std::collections::{HashMap, HashSet};
 
 use chrono::Utc;
 use thiserror::Error;
@@ -27,7 +27,7 @@ type Result<T> = std::result::Result<T, Error>;
 pub struct Project {
 	pub id: ProjectId,
 	pub leaders: HashSet<UserId>,
-	pub budget_id: Option<BudgetId>,
+	pub budgets_by_currency: HashMap<String, BudgetId>,
 	pub github_repos: HashSet<GithubRepoId>,
 	pub applicants: HashSet<UserId>,
 }
@@ -58,9 +58,13 @@ impl EventSourcable for Project {
 				self.leaders.remove(leader_id);
 				self
 			},
-			ProjectEvent::BudgetLinked { budget_id, .. } => Self {
-				budget_id: Some(*budget_id),
-				..self
+			ProjectEvent::BudgetLinked {
+				budget_id,
+				currency,
+				..
+			} => {
+				self.budgets_by_currency.insert(currency.code.to_owned(), *budget_id);
+				self
 			},
 			ProjectEvent::GithubRepoLinked { github_repo_id, .. } => {
 				self.github_repos.insert(*github_repo_id);
@@ -83,14 +87,19 @@ impl Project {
 		vec![ProjectEvent::Created { id }]
 	}
 
-	pub fn link_budget(&self, budget_id: BudgetId) -> Result<Vec<<Self as Aggregate>::Event>> {
-		if self.budget_id.is_some() {
+	pub fn link_budget(
+		&self,
+		budget_id: BudgetId,
+		currency: &'static Currency,
+	) -> Result<Vec<<Self as Aggregate>::Event>> {
+		if self.budgets_by_currency.contains_key(currency.code) {
 			return Err(Error::BudgetAlreadyExists);
 		}
 
 		Ok(vec![ProjectEvent::BudgetLinked {
 			id: self.id,
 			budget_id,
+			currency,
 		}])
 	}
 
@@ -194,10 +203,20 @@ mod tests {
 	}
 
 	#[fixture]
-	fn budget_linked(project_id: ProjectId, budget_id: BudgetId) -> ProjectEvent {
+	fn currency() -> &'static Currency {
+		currencies::USD
+	}
+
+	#[fixture]
+	fn budget_linked(
+		project_id: ProjectId,
+		budget_id: BudgetId,
+		currency: &'static Currency,
+	) -> ProjectEvent {
 		ProjectEvent::BudgetLinked {
 			id: project_id,
 			budget_id,
+			currency,
 		}
 	}
 
@@ -252,16 +271,30 @@ mod tests {
 		project_created: ProjectEvent,
 		budget_linked: ProjectEvent,
 		budget_id: BudgetId,
+		currency: &'static Currency,
 	) {
 		let project = Project::from_events(&[project_created]);
-		assert_eq!(project.link_budget(budget_id), Ok(vec![budget_linked]));
+		assert_eq!(
+			project.link_budget(budget_id, currency),
+			Ok(vec![budget_linked])
+		);
 	}
 
 	#[rstest]
-	fn cannot_link_2_budgets(project_created: ProjectEvent, budget_linked: ProjectEvent) {
+	fn link_multiple_budgets(project_created: ProjectEvent, budget_linked: ProjectEvent) {
+		let project = Project::from_events(&[project_created, budget_linked]);
+		assert!(project.link_budget(BudgetId::new(), currencies::ETH).is_ok());
+	}
+
+	#[rstest]
+	fn cannot_link_2_budgets_on_same_currency(
+		project_created: ProjectEvent,
+		budget_linked: ProjectEvent,
+		currency: &'static Currency,
+	) {
 		let project = Project::from_events(&[project_created, budget_linked]);
 		assert_eq!(
-			project.link_budget(BudgetId::new()),
+			project.link_budget(BudgetId::new(), currency),
 			Err(Error::BudgetAlreadyExists)
 		);
 	}

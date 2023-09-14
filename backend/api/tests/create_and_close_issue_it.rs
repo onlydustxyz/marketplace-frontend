@@ -49,7 +49,11 @@ impl<'a> Test<'a> {
 			&self.context,
 			vec![
 				ProjectEvent::Created { id },
-				ProjectEvent::BudgetLinked { id, budget_id },
+				ProjectEvent::BudgetLinked {
+					id,
+					budget_id,
+					currency: currencies::USD,
+				},
 				ProjectEvent::GithubRepoLinked { id, github_repo_id },
 				ProjectEvent::LeaderAssigned {
 					id,

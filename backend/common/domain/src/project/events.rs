@@ -3,7 +3,7 @@ use std::fmt::Display;
 use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
 
-use crate::{AggregateEvent, BudgetId, GithubRepoId, Project, ProjectId, UserId};
+use crate::{AggregateEvent, BudgetId, Currency, GithubRepoId, Project, ProjectId, UserId};
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Event {
@@ -22,6 +22,7 @@ pub enum Event {
 	BudgetLinked {
 		id: ProjectId,
 		budget_id: BudgetId,
+		currency: &'static Currency,
 	},
 	GithubRepoLinked {
 		id: ProjectId,
