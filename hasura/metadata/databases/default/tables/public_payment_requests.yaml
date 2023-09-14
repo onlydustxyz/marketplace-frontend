@@ -2,15 +2,6 @@ table:
   name: payment_requests
   schema: public
 object_relationships:
-  - name: budget
-    using:
-      manual_configuration:
-        column_mapping:
-          budget_id: id
-        insertion_order: null
-        remote_table:
-          name: budgets
-          schema: public
   - name: githubRecipient
     using:
       manual_configuration:
@@ -20,6 +11,15 @@ object_relationships:
         remote_table:
           name: github_users
           schema: public
+  - name: project
+    using:
+      manual_configuration:
+        column_mapping:
+          project_id: id
+        insertion_order: null
+        remote_table:
+          name: projects
+          schema: api
   - name: recipient
     using:
       manual_configuration:
@@ -62,7 +62,7 @@ select_permissions:
     permission:
       columns:
         - amount_in_usd
-        - budget_id
+        - project_id
         - id
         - invoice_received_at
         - recipient_id

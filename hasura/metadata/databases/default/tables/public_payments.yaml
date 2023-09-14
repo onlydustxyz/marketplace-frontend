@@ -22,12 +22,11 @@ select_permissions:
         - request_id
       filter:
         paymentRequest:
-          budget:
-            project:
-              projectLeads:
-                user:
-                  id:
-                    _eq: X-Hasura-User-Id
+          project:
+            projectLeads:
+              user:
+                id:
+                  _eq: X-Hasura-User-Id
   - role: registered_user_specific
     permission:
       columns:

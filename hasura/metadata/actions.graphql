@@ -1,8 +1,7 @@
 type Mutation {
   cancelPaymentRequest(
-    projectId: Uuid!
     paymentId: Uuid!
-  ): Payment!
+  ): Command!
 }
 
 type Mutation {
@@ -58,7 +57,7 @@ type Mutation {
     amountInUsd: Int!
     hoursWorked: Int!
     reason: Reason!
-  ): Payment!
+  ): Command!
 }
 
 type Query {
@@ -300,6 +299,10 @@ type Payment {
   commandId: Uuid!
   paymentId: Uuid!
   projectId: Uuid!
+}
+
+type Command {
+  commandId: Uuid!
 }
 
 scalar Url
