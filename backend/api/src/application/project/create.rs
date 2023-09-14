@@ -1,6 +1,7 @@
 use std::sync::Arc;
 
-use anyhow::Result;
+use anyhow::{anyhow, Result};
+use derive_more::Constructor;
 use domain::{
 	sponsor, Amount, Budget, BudgetId, DomainError, Event, EventSourcable, Project, ProjectId,
 	ProjectVisibility, Publisher,
@@ -15,25 +16,15 @@ use crate::{
 	presentation::http::dto::NonEmptyTrimmedString,
 };
 
+#[derive(Constructor)]
 pub struct Usecase {
 	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 	project_details_repository: Arc<dyn Repository<ProjectDetails>>,
 	image_store: Arc<dyn ImageStoreService>,
+	sponsor_repository: Arc<dyn Repository<Sponsor>>,
 }
 
 impl Usecase {
-	pub fn new(
-		event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
-		project_details_repository: Arc<dyn Repository<ProjectDetails>>,
-		image_store: Arc<dyn ImageStoreService>,
-	) -> Self {
-		Self {
-			event_publisher,
-			project_details_repository,
-			image_store,
-		}
-	}
-
 	#[allow(clippy::too_many_arguments)]
 	#[instrument(skip(self))]
 	pub async fn create(
@@ -50,6 +41,14 @@ impl Usecase {
 		visibility: ProjectVisibility,
 	) -> Result<ProjectId, DomainError> {
 		let project_id = ProjectId::new();
+
+		if let Some(sponsor_id) = sponsor_id {
+			if !self.sponsor_repository.exists(sponsor_id)? {
+				return Err(DomainError::InvalidInputs(anyhow!(
+					"Sponsor does not exist"
+				)));
+			}
+		}
 
 		let mut project_events = Project::create(project_id);
 		let mut budget_events = Vec::new();

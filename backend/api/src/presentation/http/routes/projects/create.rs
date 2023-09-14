@@ -2,7 +2,7 @@ use common_domain::{DomainError, ProjectId, ProjectVisibility};
 use http_api_problem::{HttpApiProblem, StatusCode};
 use olog::IntoField;
 use presentation::http::guards::ApiKey;
-use rocket::{serde::json::Json, State};
+use rocket::serde::json::Json;
 use serde::{Deserialize, Serialize};
 use url::Url;
 
@@ -32,7 +32,7 @@ pub struct Request {
 pub async fn create_project(
 	_api_key: ApiKey,
 	request: Json<Request>,
-	create_project_usecase: &State<application::project::create::Usecase>,
+	usecase: application::project::create::Usecase,
 ) -> Result<Json<Response>, HttpApiProblem> {
 	let Request {
 		name,
@@ -54,7 +54,7 @@ pub async fn create_project(
 		None => (None, None),
 	};
 
-	let project_id = create_project_usecase
+	let project_id = usecase
 		.create(
 			name.try_into().map_err(|e: DomainError| {
 				HttpApiProblem::new(StatusCode::BAD_REQUEST)

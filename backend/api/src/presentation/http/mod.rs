@@ -54,12 +54,6 @@ pub fn serve(
 	bus: Arc<amqp::Bus>,
 	github_client_pat_factory: Arc<GithubClientPatFactory>,
 ) -> Rocket<Build> {
-	let create_project_usecase = application::project::create::Usecase::new(
-		bus.clone(),
-		project_details_repository.clone(),
-		simple_storage.clone(),
-	);
-
 	let update_user_profile_info_usecase = application::user::update_profile_info::Usecase::new(
 		user_profile_info_repository.clone(),
 		contact_informations_repository.clone(),
@@ -97,7 +91,6 @@ pub fn serve(
 		.manage(ens)
 		.manage(simple_storage)
 		.manage(bus)
-		.manage(create_project_usecase)
 		.manage(update_user_profile_info_usecase)
 		.manage(create_github_issue_usecase)
 		.manage(github_client_pat_factory)

@@ -1,20 +1,22 @@
 use std::sync::Arc;
 
+use anyhow::anyhow;
 use derive_more::Constructor;
 use domain::{
 	sponsor, AggregateRepository, Amount, Budget, BudgetId, DomainError, Event, EventSourcable,
 	Project, ProjectId, Publisher,
 };
-use infrastructure::amqp::UniqueMessage;
+use infrastructure::{amqp::UniqueMessage, database::Repository};
 use tracing::instrument;
 
-use crate::domain::Publishable;
+use crate::{domain::Publishable, models::Sponsor};
 
 #[derive(Constructor)]
 pub struct Usecase {
 	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 	project_repository: AggregateRepository<Project>,
 	budget_repository: AggregateRepository<Budget>,
+	sponsor_repository: Arc<dyn Repository<Sponsor>>,
 }
 
 impl Usecase {
@@ -26,6 +28,14 @@ impl Usecase {
 		sponsor_id: Option<sponsor::Id>,
 	) -> Result<BudgetId, DomainError> {
 		let project = self.project_repository.find_by_id(&project_id)?;
+
+		if let Some(sponsor_id) = sponsor_id {
+			if !self.sponsor_repository.exists(sponsor_id)? {
+				return Err(DomainError::InvalidInputs(anyhow!(
+					"Sponsor does not exist"
+				)));
+			}
+		}
 
 		let mut events = Vec::new();
 

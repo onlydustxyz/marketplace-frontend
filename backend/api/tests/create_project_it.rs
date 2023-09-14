@@ -2,11 +2,11 @@ mod context;
 mod models;
 
 use anyhow::Result;
-use api::presentation::http::routes::projects;
+use api::{models::Sponsor, presentation::http::routes::projects};
 use assert_matches::assert_matches;
 use diesel::RunQueryDsl;
 use domain::{currencies, sponsor, BudgetEvent, BudgetId, Event, ProjectEvent};
-use infrastructure::database::schema::project_details;
+use infrastructure::database::{schema::project_details, ImmutableRepository};
 use olog::info;
 use rocket::{
 	http::{ContentType, Status},
@@ -106,6 +106,11 @@ impl<'a> Test<'a> {
 		info!("should_create_a_project_with_initial_budget");
 
 		let sponsor_id = sponsor::Id::new();
+
+		self.context.database.client.insert(Sponsor {
+			id: sponsor_id,
+			..Default::default()
+		})?;
 
 		let create_project_request = json!({
 			"name": "Another Awesome Project",

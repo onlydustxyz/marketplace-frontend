@@ -2,8 +2,10 @@ mod context;
 mod models;
 
 use anyhow::Result;
+use api::models::Sponsor;
 use assert_matches::assert_matches;
 use domain::{currencies, sponsor, BudgetEvent, BudgetId, Event, ProjectEvent, ProjectId};
+use infrastructure::database::ImmutableRepository;
 use olog::info;
 use rocket::{
 	http::{ContentType, Status},
@@ -36,6 +38,10 @@ pub async fn budget_allocation(docker: &'static Cli) {
 	test.should_allow_multiple_currencies()
 		.await
 		.expect("should_allow_multiple_currencies");
+
+	test.should_prevent_allocating_with_non_existing_sponsor()
+		.await
+		.expect("should_prevent_allocating_with_non_existing_sponsor");
 }
 
 struct Test<'a> {
@@ -54,6 +60,11 @@ impl<'a> Test<'a> {
 			&self.context,
 			vec![ProjectEvent::Created { id: project_id }],
 		)?;
+
+		self.context.database.client.insert(Sponsor {
+			id: sponsor_id,
+			..Default::default()
+		})?;
 
 		let request = json!({
 			"amount": 1523,
@@ -271,6 +282,46 @@ impl<'a> Test<'a> {
 				sponsor_id: None
 			}),
 			self.context.amqp.listen(event_store::bus::QUEUE_NAME).await.unwrap(),
+		);
+
+		Ok(())
+	}
+
+	async fn should_prevent_allocating_with_non_existing_sponsor(&mut self) -> Result<()> {
+		info!("should_prevent_allocating_with_non_existing_sponsor");
+
+		// Given
+		let project_id = ProjectId::new();
+		let sponsor_id = sponsor::Id::new();
+
+		models::events::store(
+			&self.context,
+			vec![ProjectEvent::Created { id: project_id }],
+		)?;
+
+		let request = json!({
+			"amount": 1523,
+			"currency": "USD",
+			"sponsor": sponsor_id
+		});
+
+		// When
+		let response = self
+			.context
+			.http_client
+			.put(format!("/api/projects/{project_id}/budgets"))
+			.header(ContentType::JSON)
+			.header(api_key_header())
+			.body(request.to_string())
+			.dispatch()
+			.await;
+
+		// Then
+		assert_eq!(
+			response.status(),
+			Status::BadRequest,
+			"{}",
+			response.into_string().await.unwrap()
 		);
 
 		Ok(())
