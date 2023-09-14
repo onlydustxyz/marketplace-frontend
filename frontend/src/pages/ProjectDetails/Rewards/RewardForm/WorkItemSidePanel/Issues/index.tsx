@@ -2,7 +2,9 @@ import { chain } from "lodash";
 import { useMemo } from "react";
 import {
   ContributionFragment,
+  GithubIssueCreatedAndClosedStatus,
   GithubIssueFragment,
+  GithubIssueStatus,
   GithubPullRequestFragment,
   LiveGithubIssueCreatedAndClosedFragment,
   LiveGithubIssueFragment,
@@ -14,13 +16,14 @@ import View from "./View";
 import { useIgnoredContributions } from "./useIgnoredContributions";
 import { GithubIssue as GithubIssueType } from "src/components/GithubIssue";
 import { GithubPullRequest as GithubPullRequestType } from "src/components/GithubPullRequest";
+import { WorkItem } from "../..";
 
 type Props = {
   type: WorkItemType;
   projectId: string;
   contributorId: number;
-  workItems: (GithubIssueType | GithubPullRequestType)[];
-  addWorkItem: (workItem: GithubIssueType | GithubPullRequestType) => void;
+  workItems: WorkItem[];
+  addWorkItem: (workItem: WorkItem) => void;
 };
 
 export default function Issues({ type, projectId, contributorId, workItems, addWorkItem }: Props) {
@@ -82,7 +85,22 @@ export const issueCreatedAndClosedToWorkItem = (
   type: WorkItemType.Issue,
   ignored: false,
   id: issueCreatedAndClosedFragment.id.toString(),
+  mergedAt: undefined,
+  status: githubIssueCreatedAndClosedStatusToGithubIssueStatus(issueCreatedAndClosedFragment.status),
 });
+
+const githubIssueCreatedAndClosedStatusToGithubIssueStatus = (
+  status: GithubIssueCreatedAndClosedStatus
+): GithubIssueStatus => {
+  switch (status) {
+    case GithubIssueCreatedAndClosedStatus.Open:
+      return GithubIssueStatus.Open;
+    case GithubIssueCreatedAndClosedStatus.Completed:
+      return GithubIssueStatus.Completed;
+    case GithubIssueCreatedAndClosedStatus.Cancelled:
+      return GithubIssueStatus.Cancelled;
+  }
+};
 
 export const pullRequestToWorkItem = (props: GithubPullRequestFragment | LiveGithubPullRequestFragment): WorkItem => ({
   ...props,
