@@ -15,6 +15,7 @@
         "backend:event-store": "cargo run --manifest-path backend/Cargo.toml -p event-store",
         "backend:event-listeners": "cargo run --manifest-path backend/Cargo.toml -p event-listeners --bin listeners",
         "backend:github-indexer": "cargo run --manifest-path backend/Cargo.toml -p event-listeners --bin github-indexer",
+        "backend:github-indexer-api": "cargo run --manifest-path backend/Cargo.toml -p event-listeners",
         "backend:check": "cargo check --manifest-path backend/Cargo.toml",
         "backend:build": "cargo build --manifest-path backend/Cargo.toml",
         "backend:clippy": "cargo clippy --manifest-path backend/Cargo.toml --bins --tests --examples -- -D warnings",
