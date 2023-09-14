@@ -12,8 +12,8 @@ use rocket::{response::content, State};
 use tracing::instrument;
 
 use crate::{
-	domain::permissions::IntoPermission,
-	infrastructure::{simple_storage, web3::ens},
+	domain::{permissions::IntoPermission, ImageStoreService},
+	infrastructure::web3::ens,
 	models::*,
 	presentation::graphql::{Context, Schema},
 };
@@ -48,7 +48,7 @@ pub async fn get_graphql_handler(
 	dusty_bot_api_client: &State<Arc<github::Client>>,
 	bus: &State<Arc<amqp::Bus>>,
 	ens: &State<Arc<ens::Client>>,
-	simple_storage: &State<Arc<simple_storage::Client>>,
+	simple_storage: &State<Arc<dyn ImageStoreService>>,
 ) -> GraphQLResponse {
 	let context = Context::new(
 		role.to_permissions((*payment_repository).clone()),
@@ -97,7 +97,7 @@ pub async fn post_graphql_handler(
 	dusty_bot_api_client: &State<Arc<github::Client>>,
 	bus: &State<Arc<amqp::Bus>>,
 	ens: &State<Arc<ens::Client>>,
-	simple_storage: &State<Arc<simple_storage::Client>>,
+	simple_storage: &State<Arc<dyn ImageStoreService>>,
 ) -> GraphQLResponse {
 	let context = Context::new(
 		role.to_permissions((*payment_repository).clone()),

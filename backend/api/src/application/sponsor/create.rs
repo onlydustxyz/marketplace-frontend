@@ -1,12 +1,25 @@
 use std::sync::Arc;
 
 use anyhow::Result;
-use domain::{sponsor, DomainError};
-use infrastructure::database::Repository;
+use domain::sponsor;
+use infrastructure::database::{DatabaseError, Repository};
 use reqwest::Url;
+use thiserror::Error;
 use tracing::instrument;
 
-use crate::{domain::ImageStoreService, models::*, presentation::http::dto::NonEmptyTrimmedString};
+use crate::{
+	domain::{ImageStoreService, ImageStoreServiceError},
+	models::*,
+	presentation::http::dto::NonEmptyTrimmedString,
+};
+
+#[derive(Debug, Error)]
+pub enum Error {
+	#[error(transparent)]
+	ImageStore(#[from] ImageStoreServiceError),
+	#[error("Unable to store sponsor")]
+	Database(#[from] DatabaseError),
+}
 
 pub struct Usecase {
 	sponsor_repository: Arc<dyn Repository<Sponsor>>,
@@ -31,7 +44,7 @@ impl Usecase {
 		name: NonEmptyTrimmedString,
 		logo_url: Url,
 		url: Option<Url>,
-	) -> Result<sponsor::Id, DomainError> {
+	) -> Result<sponsor::Id, Error> {
 		let sponsor_id = sponsor::Id::new();
 
 		let stored_logo_url = self.image_store.store_image_from_url(&logo_url).await?.to_string();
@@ -115,6 +128,6 @@ mod tests {
 		let usecase = Usecase::new(Arc::new(sponsor_repository), Arc::new(image_store_service));
 
 		let result = usecase.create(name, logo_url, Some(url)).await;
-		assert_matches!(result, Err(DomainError::InvalidInputs(_)));
+		assert_matches!(result, Err(Error::ImageStore(_)));
 	}
 }

@@ -11,8 +11,8 @@ use presentation::http::guards::Claims;
 use super::{Error, Result};
 use crate::{
 	application,
-	domain::Permissions,
-	infrastructure::{simple_storage, web3::ens},
+	domain::{ImageStoreService, Permissions},
+	infrastructure::web3::ens,
 	models::*,
 };
 
@@ -60,7 +60,7 @@ impl Context {
 		github_api_client: Arc<github::Client>,
 		dusty_bot_api_client: Arc<github::Client>,
 		ens: Arc<ens::Client>,
-		simple_storage: Arc<simple_storage::Client>,
+		simple_storage: Arc<dyn ImageStoreService>,
 		bus: Arc<amqp::Bus>,
 	) -> Self {
 		Self {

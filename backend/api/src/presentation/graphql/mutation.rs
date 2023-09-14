@@ -235,18 +235,6 @@ impl Mutation {
 		Ok(application_id.into())
 	}
 
-	pub async fn create_sponsor(
-		context: &Context,
-		name: String,
-		logo_url: Url,
-		url: Option<Url>,
-	) -> Result<Uuid> {
-		let sponsor_id =
-			context.create_sponsor_usecase.create(name.try_into()?, logo_url, url).await?;
-
-		Ok(sponsor_id.into())
-	}
-
 	pub async fn update_sponsor(
 		context: &Context,
 		sponsor_id: Uuid,

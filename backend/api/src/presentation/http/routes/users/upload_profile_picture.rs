@@ -14,9 +14,7 @@ use rocket::{
 use serde::Serialize;
 use url::Url;
 
-use crate::{
-	application, infrastructure::simple_storage, models::*, presentation::http::error::Error,
-};
+use crate::{application, domain::ImageStoreService, models::*, presentation::http::error::Error};
 
 #[derive(Debug, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -30,7 +28,7 @@ pub async fn profile_picture(
 	claims: Claims,
 	user_profile_info_repository: &State<Arc<dyn UserProfileInfoRepository>>,
 	contact_informations_repository: &State<Arc<dyn ContactInformationsRepository>>,
-	simple_storage: &State<Arc<simple_storage::Client>>,
+	simple_storage: &State<Arc<dyn ImageStoreService>>,
 	profile_picture: Data<'_>,
 ) -> Result<Json<Response>, HttpApiProblem> {
 	let user_id = claims.user_id;

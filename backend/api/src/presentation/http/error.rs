@@ -4,6 +4,8 @@ use olog::IntoField;
 use reqwest::StatusCode;
 use thiserror::Error;
 
+use crate::{application, domain::ImageStoreServiceError};
+
 #[derive(Debug, Error)]
 pub enum Error {
 	#[error(transparent)]
@@ -24,6 +26,38 @@ impl From<Error> for HttpApiProblem {
 				HttpApiProblem::new(StatusCode::BAD_REQUEST)
 					.title("Bad request")
 					.detail(e.to_string()),
+		}
+	}
+}
+
+impl From<application::sponsor::create::Error> for HttpApiProblem {
+	fn from(error: application::sponsor::create::Error) -> Self {
+		match error {
+			application::sponsor::create::Error::ImageStore(e) => e.into(),
+			application::sponsor::create::Error::Database(_) => {
+				olog::error!(error = error.to_field(), "Database error");
+				HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
+					.title("Internal error")
+					.detail(error.to_string())
+			},
+		}
+	}
+}
+
+impl From<ImageStoreServiceError> for HttpApiProblem {
+	fn from(error: ImageStoreServiceError) -> Self {
+		match &error {
+			ImageStoreServiceError::Initialization(_) | ImageStoreServiceError::Other(_) => {
+				olog::error!(error = error.to_field(), "Failed while storing image");
+				HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
+					.title("Internal error")
+					.detail(error.to_string())
+			},
+			ImageStoreServiceError::NotFound(details)
+			| ImageStoreServiceError::UnknownExtension(details) =>
+				HttpApiProblem::new(StatusCode::BAD_REQUEST)
+					.title(error.to_string())
+					.detail(details.to_string()),
 		}
 	}
 }

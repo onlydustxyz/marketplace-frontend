@@ -13,7 +13,8 @@ use rocket::{Build, Rocket};
 
 use crate::{
 	application,
-	infrastructure::{simple_storage, web3::ens},
+	domain::ImageStoreService,
+	infrastructure::web3::ens,
 	models::*,
 	presentation::{graphql, http::github_client_pat_factory::GithubClientPatFactory},
 };
@@ -49,7 +50,7 @@ pub fn serve(
 	github_api_client: Arc<github::Client>,
 	dusty_bot_api_client: Arc<github::Client>,
 	ens: Arc<ens::Client>,
-	simple_storage: Arc<simple_storage::Client>,
+	simple_storage: Arc<dyn ImageStoreService>,
 	bus: Arc<amqp::Bus>,
 	github_client_pat_factory: Arc<GithubClientPatFactory>,
 ) -> Rocket<Build> {
@@ -129,6 +130,7 @@ pub fn serve(
 				routes::pull_requests::fetch_pull_request,
 				routes::payment::request_payment,
 				routes::payment::cancel_payment,
+				routes::sponsors::create_sponsor
 			],
 		)
 }
