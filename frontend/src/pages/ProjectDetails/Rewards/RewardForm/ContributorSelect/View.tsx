@@ -52,7 +52,7 @@ export default function ContributorSelectView({
         <div className={classNames("absolute top-0 w-full", { "rounded-2xl bg-whiteFakeOpacity-5": open })}>
           <div
             className={classNames("flex flex-col gap-3", {
-              "overflow-hidden rounded-2xl outline outline-1 outline-whiteFakeOpacity-12 backdrop-blur-4xl": open,
+              "overflow-hidden rounded-2xl outline outline-1 outline-whiteFakeOpacity-12": open,
             })}
           >
             <Combobox.Button className="px-3 pt-4" as="div">

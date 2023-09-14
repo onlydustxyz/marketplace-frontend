@@ -66,7 +66,7 @@ export default function GithubPullRequest({
   return (
     <Card
       padded={false}
-      className={classNames("flex flex-row gap-3 rounded-2xl p-4 hover:bg-noise-light hover:backdrop-blur-4xl ", {
+      className={classNames("flex flex-row gap-3 rounded-2xl p-4 hover:bg-noise-light", {
         "mt-1": addMarginTopForVirtuosoDisplay,
       })}
       withBg={false}

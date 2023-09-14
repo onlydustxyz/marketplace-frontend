@@ -72,7 +72,7 @@ export default function Button({
         {
           "border drop-shadow-bottom-sm": type === ButtonType.Secondary,
 
-          "bg-white/5 text-greyscale-50 backdrop-blur-lg": type === ButtonType.Secondary && !disabled && !pressed,
+          "bg-white/5 text-greyscale-50": type === ButtonType.Secondary && !disabled && !pressed,
 
           "border-greyscale-50/8 bg-white/2 text-greyscale-50/8": type === ButtonType.Secondary && disabled && !pressed,
 

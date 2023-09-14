@@ -91,7 +91,7 @@ export default function StylizedCombobox<T extends Option>({
         </div>
       </Combobox.Button>
       <Combobox.Options className="mt-2 flex w-full flex-col">
-        <div className="cursor-pointer overflow-hidden rounded-2xl border border-greyscale-50/12 bg-greyscale-800 backdrop-blur-lg">
+        <div className="cursor-pointer overflow-hidden rounded-2xl border border-greyscale-50/12 bg-greyscale-800">
           <VirtualizedOptions
             options={filteredOptions}
             lineHeight={32}

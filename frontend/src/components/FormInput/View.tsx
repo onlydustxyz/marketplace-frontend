@@ -1,12 +1,7 @@
 import React, { FocusEventHandler, KeyboardEventHandler, memo, PropsWithChildren } from "react";
 import { UseFormRegisterReturn } from "react-hook-form";
 import LoaderIcon from "src/assets/icons/Loader";
-import ImageCard, {
-  BackgroundBlur,
-  BackgroundNoise,
-  BackgroundPosition,
-  BackgroundSize,
-} from "src/components/ImageCard";
+import ImageCard, { BackgroundNoise, BackgroundPosition, BackgroundSize } from "src/components/ImageCard";
 import headerElementBackground from "src/assets/img/alert-bg.png";
 import classNames from "classnames";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
@@ -145,7 +140,6 @@ const View: React.FC<PropsType> = ({
               backgroundPosition={BackgroundPosition.TopLeft}
               backgroundSize={BackgroundSize.Zoomed}
               backgroundNoise={BackgroundNoise.Light}
-              backgroundBlur={BackgroundBlur.Heavy}
             >
               <div className="flex flex-row justify-between px-6 py-5">
                 <div className="flex flex-row items-center justify-start gap-4 font-medium text-white">

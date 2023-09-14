@@ -1,6 +1,7 @@
 export const frameworks = {
   DeFi: true,
   Ethereum: true,
+  Foundry: true,
   Hardhat: true,
   "Hyperledger Fabric": true,
   Lisk: true,

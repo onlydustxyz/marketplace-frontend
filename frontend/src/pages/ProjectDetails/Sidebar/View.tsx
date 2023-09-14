@@ -58,7 +58,7 @@ export default function View({ expandable, currentProject, allProjects, availabl
             }
             disabled={!expandable}
           >
-            <div className="z-10 flex w-full flex-col divide-y divide-neutral-700 rounded-2xl border-2 border-neutral-700 bg-white/2 backdrop-blur-4xl xl:absolute">
+            <div className="z-10 flex w-full flex-col divide-y divide-neutral-700 rounded-2xl border-2 border-neutral-700 bg-white/2 bg-whiteFakeOpacity-1 xl:absolute">
               <Listbox.Button
                 className={`p-2 text-xl font-medium text-greyscale-50 xl:p-4 ${
                   expandable ? "hover:cursor-pointer" : ""

@@ -11,7 +11,12 @@ export default function ConfirmationModal({ onClose, onConfirm }: Props) {
   const { T } = useIntl();
 
   return (
-    <Card padded={false} fullWidth={false} withBg={false} className="w-60 divide-y divide-solid divide-greyscale-50/8">
+    <Card
+      padded={false}
+      fullWidth={false}
+      withBg={false}
+      className="w-60 divide-y divide-solid divide-greyscale-50/8 bg-greyscale-900"
+    >
       <div className="flex flex-col items-center gap-2 p-4 text-center">
         <div className="font-belwe text-base font-normal text-greyscale-50">
           {T("reward.table.detailsPanel.cancelReward.modal.title")}

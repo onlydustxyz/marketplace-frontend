@@ -15,7 +15,7 @@ export default function SocialLink({ link, copyableValue, copyableValueName, tes
 
   return (
     <div
-      className="rounded-xl bg-white/4 backdrop-blur-lg"
+      className="rounded-xl bg-white/4"
       data-testid={testId}
       onClick={
         link
