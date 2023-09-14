@@ -79,3 +79,5 @@ pub mod specifications;
 pub use specifications::Error as SpecificationError;
 
 pub mod stream_filter;
+
+pub mod sponsor;

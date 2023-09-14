@@ -3,7 +3,7 @@ mod models;
 
 use anyhow::Result;
 use assert_matches::assert_matches;
-use domain::{currencies, BudgetEvent, BudgetId, Event, ProjectEvent, ProjectId};
+use domain::{currencies, sponsor, BudgetEvent, BudgetId, Event, ProjectEvent, ProjectId};
 use olog::info;
 use rocket::{
 	http::{ContentType, Status},
@@ -48,6 +48,7 @@ impl<'a> Test<'a> {
 
 		// Given
 		let project_id = ProjectId::new();
+		let sponsor_id = sponsor::Id::new();
 
 		models::events::store(
 			&self.context,
@@ -56,7 +57,8 @@ impl<'a> Test<'a> {
 
 		let request = json!({
 			"amount": 1523,
-			"currency": "USD"
+			"currency": "USD",
+			"sponsor": sponsor_id
 		});
 
 		// When
@@ -103,7 +105,8 @@ impl<'a> Test<'a> {
 		assert_eq!(
 			Event::Budget(BudgetEvent::Allocated {
 				id: budget_id,
-				amount: dec!(1523)
+				amount: dec!(1523),
+				sponsor_id: Some(sponsor_id)
 			}),
 			self.context.amqp.listen(event_store::bus::QUEUE_NAME).await.unwrap(),
 		);
@@ -140,6 +143,7 @@ impl<'a> Test<'a> {
 				BudgetEvent::Allocated {
 					id: budget_id,
 					amount: dec!(1_000),
+					sponsor_id: None,
 				},
 			],
 		)?;
@@ -171,7 +175,8 @@ impl<'a> Test<'a> {
 		assert_eq!(
 			Event::Budget(BudgetEvent::Allocated {
 				id: budget_id,
-				amount: dec!(523)
+				amount: dec!(523),
+				sponsor_id: None
 			}),
 			self.context.amqp.listen(event_store::bus::QUEUE_NAME).await.unwrap(),
 		);
@@ -208,6 +213,7 @@ impl<'a> Test<'a> {
 				BudgetEvent::Allocated {
 					id: usd_budget_id,
 					amount: dec!(1_000),
+					sponsor_id: None,
 				},
 			],
 		)?;
@@ -261,7 +267,8 @@ impl<'a> Test<'a> {
 		assert_eq!(
 			Event::Budget(BudgetEvent::Allocated {
 				id: eth_budget_id,
-				amount: dec!(1)
+				amount: dec!(1),
+				sponsor_id: None
 			}),
 			self.context.amqp.listen(event_store::bus::QUEUE_NAME).await.unwrap(),
 		);

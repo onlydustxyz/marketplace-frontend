@@ -46,9 +46,12 @@ pub async fn create_project(
 		visibility,
 	} = request.into_inner();
 
-	let initial_budget = match initial_budget {
-		Some(initial_budget) => Some(initial_budget.try_into()?),
-		None => None,
+	let (initial_budget, sponsor_id) = match initial_budget {
+		Some(initial_budget) => {
+			let (budget, sponsor_id) = initial_budget.try_into()?;
+			(Some(budget), sponsor_id)
+		},
+		None => (None, None),
 	};
 
 	let project_id = create_project_usecase
@@ -71,6 +74,7 @@ pub async fn create_project(
 			telegram_link,
 			logo_url,
 			initial_budget,
+			sponsor_id,
 			hiring.unwrap_or_default(),
 			rank.unwrap_or_default(),
 			visibility.unwrap_or_default(),

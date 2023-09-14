@@ -73,6 +73,7 @@ impl<'a> Test<'a> {
 				BudgetEvent::Allocated {
 					id: budget_id,
 					amount: Decimal::from(10),
+					sponsor_id: None,
 				},
 			],
 		)?;

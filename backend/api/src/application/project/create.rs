@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use anyhow::Result;
 use domain::{
-	Amount, Budget, BudgetId, DomainError, Event, EventSourcable, Project, ProjectId,
+	sponsor, Amount, Budget, BudgetId, DomainError, Event, EventSourcable, Project, ProjectId,
 	ProjectVisibility, Publisher,
 };
 use infrastructure::{amqp::UniqueMessage, database::Repository};
@@ -44,6 +44,7 @@ impl Usecase {
 		telegram_link: Option<Url>,
 		logo_url: Option<Url>,
 		initial_budget: Option<Amount>,
+		sponsor_id: Option<sponsor::Id>,
 		hiring: bool,
 		rank: i32,
 		visibility: ProjectVisibility,
@@ -56,7 +57,9 @@ impl Usecase {
 		if let Some(initial_budget) = initial_budget {
 			let budget_id = BudgetId::new();
 			let mut events = Budget::create(budget_id, initial_budget.currency());
-			events.append(&mut Budget::from_events(&events).allocate(*initial_budget.amount())?);
+			events.append(
+				&mut Budget::from_events(&events).allocate(*initial_budget.amount(), sponsor_id)?,
+			);
 
 			budget_events.append(&mut events.into_iter().map(Into::into).collect());
 			project_events.append(

@@ -5,7 +5,7 @@ use anyhow::Result;
 use api::presentation::http::routes::projects;
 use assert_matches::assert_matches;
 use diesel::RunQueryDsl;
-use domain::{currencies, BudgetEvent, BudgetId, Event, ProjectEvent};
+use domain::{currencies, sponsor, BudgetEvent, BudgetId, Event, ProjectEvent};
 use infrastructure::database::schema::project_details;
 use olog::info;
 use rocket::{
@@ -105,6 +105,8 @@ impl<'a> Test<'a> {
 	async fn should_create_a_project_with_initial_budget(&mut self) -> Result<()> {
 		info!("should_create_a_project_with_initial_budget");
 
+		let sponsor_id = sponsor::Id::new();
+
 		let create_project_request = json!({
 			"name": "Another Awesome Project",
 			"shortDescription": "A short description",
@@ -112,7 +114,8 @@ impl<'a> Test<'a> {
 			"telegramLink": "http://telegram-link.test",
 			"initialBudget": {
 				"amount": "1000",
-				"currency": "USD"
+				"currency": "USD",
+				"sponsor": sponsor_id
 			}
 		});
 
@@ -161,7 +164,8 @@ impl<'a> Test<'a> {
 		assert_eq!(
 			Event::Budget(BudgetEvent::Allocated {
 				id: budget_id,
-				amount: dec!(1000)
+				amount: dec!(1000),
+				sponsor_id: Some(sponsor_id)
 			}),
 			self.context.amqp.listen(event_store::bus::QUEUE_NAME).await.unwrap(),
 		);
