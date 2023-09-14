@@ -24,7 +24,7 @@ pub struct Response {
 pub async fn allocate(
 	_api_key: ApiKey,
 	project_id: Uuid,
-	request: Json<dto::Amount>,
+	request: Json<dto::Allocation>,
 	usecase: application::budget::allocate::Usecase,
 ) -> Result<(), HttpApiProblem> {
 	let (amount, sponsor_id) = request.into_inner().try_into()?;

@@ -22,7 +22,7 @@ pub struct Request {
 	long_description: String,
 	telegram_link: Option<Url>,
 	logo_url: Option<Url>,
-	initial_budget: Option<dto::Amount>,
+	initial_budget: Option<dto::Allocation>,
 	hiring: Option<bool>,
 	rank: Option<i32>,
 	visibility: Option<ProjectVisibility>,

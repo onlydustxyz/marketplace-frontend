@@ -6,21 +6,21 @@ use serde::Deserialize;
 
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct Amount {
+pub struct Allocation {
 	amount: Decimal,
 	currency: String,
 	sponsor: Option<sponsor::Id>,
 }
 
-impl TryFrom<Amount> for (domain::Amount, Option<sponsor::Id>) {
+impl TryFrom<Allocation> for (domain::Amount, Option<sponsor::Id>) {
 	type Error = HttpApiProblem;
 
 	fn try_from(
-		Amount {
+		Allocation {
 			amount,
 			currency,
 			sponsor,
-		}: Amount,
+		}: Allocation,
 	) -> Result<Self, Self::Error> {
 		let currency = currencies::find(&currency).ok_or_else(|| {
 			HttpApiProblem::new(StatusCode::UNPROCESSABLE_ENTITY).title("Invalid currency")
