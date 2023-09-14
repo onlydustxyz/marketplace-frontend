@@ -42,7 +42,7 @@ async fn from_claims(request: &'_ Request<'_>) -> Outcome<Role, Error> {
 	match request.guard::<Claims>().await {
 		Outcome::Success(claims) => Outcome::Success(Role::RegisteredUser {
 			lead_projects: claims.projects_leaded.clone(),
-			github_user_id: claims.github_user_id.into(),
+			github_user_id: claims.github_user_id,
 		}),
 		Outcome::Failure((status, error)) => Outcome::Failure((status, error.into())),
 		Outcome::Forward(_) => Outcome::Success(Role::Public),

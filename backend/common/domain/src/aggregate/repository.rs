@@ -1,5 +1,6 @@
 use std::sync::Arc;
 
+use derive_new::new;
 #[cfg(test)]
 use mockall::automock;
 use thiserror::Error;
@@ -14,19 +15,16 @@ pub enum Error {
 	EventStoreError(#[from] EventStoreError),
 }
 
-pub trait AggregateRoot: EventSourcable {}
-
-#[derive(Clone)]
-pub struct Repository<A: AggregateRoot> {
+/// Aggregate repository.
+/// Builds an aggregate from its events by fetching all events from the event store
+#[derive(Clone, new)]
+pub struct Repository<A: EventSourcable> {
 	event_store: Arc<dyn EventStore<A>>,
 }
 
 #[cfg_attr(test, automock)]
-impl<A: AggregateRoot + 'static> Repository<A> {
-	pub fn new(event_store: Arc<dyn EventStore<A>>) -> Self {
-		Self { event_store }
-	}
-
+impl<A: EventSourcable + 'static> Repository<A> {
+	/// Event source an aggregate from its events
 	pub fn find_by_id(&self, id: &A::Id) -> Result<A, Error> {
 		let events = self.event_store.list_by_id(id)?;
 		match events {

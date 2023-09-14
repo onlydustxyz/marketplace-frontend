@@ -1,64 +1,75 @@
 use std::sync::Arc;
 
 use anyhow::anyhow;
+use derive_more::Constructor;
 use domain::{
-	AggregateRootRepository, Amount, BudgetId, DomainError, Event, EventSourcable, Project,
-	ProjectId, Publisher,
+	sponsor, AggregateRepository, Amount, Budget, BudgetId, DomainError, Event, Project, ProjectId,
+	Publisher,
 };
-use infrastructure::amqp::UniqueMessage;
-use rust_decimal::Decimal;
+use infrastructure::{amqp::UniqueMessage, database::Repository};
 use tracing::instrument;
 
-use crate::domain::Publishable;
+use crate::{domain::Publishable, models::Sponsor};
 
+#[derive(Constructor)]
 pub struct Usecase {
 	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
-	project_repository: AggregateRootRepository<Project>,
+	project_repository: AggregateRepository<Project>,
+	budget_repository: AggregateRepository<Budget>,
+	sponsor_repository: Arc<dyn Repository<Sponsor>>,
 }
 
 impl Usecase {
-	pub fn new(
-		event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
-		project_repository: AggregateRootRepository<Project>,
-	) -> Self {
-		Self {
-			event_publisher,
-			project_repository,
+	#[instrument(skip(self))]
+	pub fn build_allocation(
+		&self,
+		mut project: Project,
+		amount: Amount,
+		sponsor_id: Option<sponsor::Id>,
+	) -> Result<(Project, Budget), DomainError> {
+		if let Some(sponsor_id) = sponsor_id {
+			if !self.sponsor_repository.exists(sponsor_id)? {
+				return Err(DomainError::InvalidInputs(anyhow!(
+					"Sponsor does not exist"
+				)));
+			}
 		}
+
+		let mut budget = match project.budgets_by_currency.get(amount.currency().code) {
+			Some(budget_id) => self.budget_repository.find_by_id(budget_id)?,
+			None => {
+				let budget = Budget::create(BudgetId::new(), amount.currency());
+				project = project.link_budget(budget.id, amount.currency())?;
+				budget
+			},
+		};
+
+		budget = budget.allocate(*amount.amount(), sponsor_id)?;
+
+		Ok((project, budget))
 	}
 
 	#[instrument(skip(self))]
-	pub async fn update_allocation(
+	pub async fn allocate(
 		&self,
-		project_id: &ProjectId,
-		new_remaining_amount: &Amount,
+		project_id: ProjectId,
+		amount: Amount,
+		sponsor_id: Option<sponsor::Id>,
 	) -> Result<BudgetId, DomainError> {
-		let project = self.project_repository.find_by_id(project_id)?;
+		let project = self.project_repository.find_by_id(&project_id)?;
 
-		let current_remaining_amount = project.budget().as_ref().map_or(Decimal::ZERO, |b| {
-			b.allocated_amount().amount() - b.spent_amount()
-		});
+		let (project, budget) = self.build_allocation(project, amount, sponsor_id)?;
 
-		let diff_amount = new_remaining_amount - current_remaining_amount;
+		let budget_id = budget.id;
 
-		let events = project
-			.allocate_budget(&diff_amount)
-			.map_err(|error| DomainError::InvalidInputs(error.into()))?;
-
-		let project = project.apply_events(&events);
-
-		let budget = project.budget().as_ref().ok_or(DomainError::InternalError(anyhow!(
-			"Failed while allocating budget"
-		)))?;
-
-		events
-			.into_iter()
+		project
 			.map(Event::from)
+			.chain(budget.map(Event::from))
 			.map(UniqueMessage::new)
 			.collect::<Vec<_>>()
 			.publish(self.event_publisher.clone())
 			.await?;
 
-		Ok(*budget.id())
+		Ok(budget_id)
 	}
 }

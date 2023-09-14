@@ -9,7 +9,7 @@ impl Permissions for Anonymous {
 		false
 	}
 
-	fn can_cancel_payments_of_project(&self, _project_id: &ProjectId) -> bool {
+	fn can_cancel_payment(&self, _payment_id: &PaymentId) -> bool {
 		false
 	}
 
@@ -30,11 +30,7 @@ impl Permissions for Anonymous {
 		false
 	}
 
-	fn can_mark_invoice_as_received_for_payment(
-		&self,
-		_project_id: &ProjectId,
-		_payment_id: &PaymentId,
-	) -> bool {
+	fn can_mark_invoice_as_received_for_payment(&self, _payment_id: &PaymentId) -> bool {
 		false
 	}
 }

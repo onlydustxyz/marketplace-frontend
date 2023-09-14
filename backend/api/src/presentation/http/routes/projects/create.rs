@@ -1,17 +1,18 @@
-use common_domain::{DomainError, ProjectId, ProjectVisibility};
+use common_domain::{BudgetId, DomainError, ProjectId, ProjectVisibility};
 use http_api_problem::{HttpApiProblem, StatusCode};
+use olog::IntoField;
 use presentation::http::guards::ApiKey;
-use rocket::{serde::json::Json, State};
-use rusty_money::Money;
+use rocket::serde::json::Json;
 use serde::{Deserialize, Serialize};
 use url::Url;
 
-use crate::application;
+use crate::{application, presentation::http::dto};
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Response {
 	pub project_id: ProjectId,
+	pub budget_id: Option<BudgetId>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -22,7 +23,7 @@ pub struct Request {
 	long_description: String,
 	telegram_link: Option<Url>,
 	logo_url: Option<Url>,
-	initial_budget: Option<i32>,
+	initial_budget: Option<dto::Allocation>,
 	hiring: Option<bool>,
 	rank: Option<i32>,
 	visibility: Option<ProjectVisibility>,
@@ -32,41 +33,65 @@ pub struct Request {
 pub async fn create_project(
 	_api_key: ApiKey,
 	request: Json<Request>,
-	create_project_usecase: &State<application::project::create::Usecase>,
+	usecase: application::project::create::Usecase,
 ) -> Result<Json<Response>, HttpApiProblem> {
-	let project_id = create_project_usecase
+	let Request {
+		name,
+		short_description,
+		long_description,
+		telegram_link,
+		logo_url,
+		initial_budget,
+		hiring,
+		rank,
+		visibility,
+	} = request.into_inner();
+
+	let (initial_budget, sponsor_id) = match initial_budget {
+		Some(initial_budget) => {
+			let (budget, sponsor_id) = initial_budget.try_into()?;
+			(Some(budget), sponsor_id)
+		},
+		None => (None, None),
+	};
+
+	let (project_id, budget_id) = usecase
 		.create(
-			request.name.clone().try_into().map_err(|e: DomainError| {
+			name.try_into().map_err(|e: DomainError| {
 				HttpApiProblem::new(StatusCode::BAD_REQUEST)
 					.title("Unable to read project_name")
 					.detail(e.to_string())
 			})?,
-			request.short_description.clone().try_into().map_err(|e: DomainError| {
+			short_description.try_into().map_err(|e: DomainError| {
 				HttpApiProblem::new(StatusCode::BAD_REQUEST)
 					.title("Unable to read short_description")
 					.detail(e.to_string())
 			})?,
-			request.long_description.clone().try_into().map_err(|e: DomainError| {
+			long_description.try_into().map_err(|e: DomainError| {
 				HttpApiProblem::new(StatusCode::BAD_REQUEST)
 					.title("Unable to read long_description")
 					.detail(e.to_string())
 			})?,
-			request.telegram_link.clone(),
-			request.logo_url.clone(),
-			request.initial_budget.map(|initial_budget| {
-				Money::from_major(initial_budget as i64, rusty_money::crypto::USDC).into()
-			}),
-			request.hiring.unwrap_or_default(),
-			request.rank.unwrap_or_default(),
-			request.visibility.clone().unwrap_or_default(),
+			telegram_link,
+			logo_url,
+			initial_budget,
+			sponsor_id,
+			hiring.unwrap_or_default(),
+			rank.unwrap_or_default(),
+			visibility.unwrap_or_default(),
 		)
 		.await
 		.map_err(|e| {
-			{
-				HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
-					.title("Unable to process create_project request")
-					.detail(e.to_string())
-			}
+			olog::error!(
+				error = e.to_field(),
+				"Unable to process create_project request"
+			);
+			HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
+				.title("Unable to process create_project request")
+				.detail(e.to_string())
 		})?;
-	Ok(Json(Response { project_id }))
+	Ok(Json(Response {
+		project_id,
+		budget_id,
+	}))
 }

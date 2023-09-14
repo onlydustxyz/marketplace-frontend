@@ -1,4 +1,4 @@
-use common_domain::{AggregateRootRepository, Project};
+use domain::{AggregateRepository, Payment};
 use http_api_problem::HttpApiProblem;
 use olog::{error, IntoField};
 use presentation::http::guards::{ApiKey, Claims, Role};
@@ -28,12 +28,12 @@ pub async fn create_and_close_issue(
 	role: Role,
 	request: Json<Request>,
 	create_github_issue_usecase: &State<application::dusty_bot::create_and_close_issue::Usecase>,
-	project_repository: &State<AggregateRootRepository<Project>>,
+	payment_repository: &State<AggregateRepository<Payment>>,
 ) -> Result<Json<Response>, HttpApiProblem> {
 	let caller_id = claims.user_id;
 
 	if !role
-		.to_permissions((*project_repository).clone())
+		.to_permissions((*payment_repository).clone())
 		.can_create_github_issue_for_project(&request.project_id.into())
 	{
 		return Err(HttpApiProblem::new(StatusCode::UNAUTHORIZED)

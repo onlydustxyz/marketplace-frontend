@@ -2,7 +2,15 @@ default:
   amqp:
     connection_retry_interval_ms: 6000
     connection_retry_count: 100
+  coinmarketcap:
+    api_key: $COINMARKETCAP_API_KEY
+    currencies:
+      USD: "2781"
+      ETH: "1027"
+      OP: "11840"
+      APT: "21794"
   database:
+    pool_max_size: 3
     url: $DATABASE_URL
   github:
     base_url: $GITHUB_BASE_URL
@@ -15,8 +23,6 @@ default:
 local:
   amqp:
     url: $AMQP_URL
-  database:
-    pool_max_size: 3
   tracer:
     json: false
     ansi: true
@@ -25,8 +31,6 @@ local:
 production:
   amqp:
     url: $CLOUDAMQP_URL
-  database:
-    pool_max_size: 3
   tracer:
     json: true
     ansi: false

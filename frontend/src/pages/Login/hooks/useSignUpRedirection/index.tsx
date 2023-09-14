@@ -40,7 +40,7 @@ const getRedirectionUrl = (
 ) => {
   const pendingPaymentRequests = pendingUserPaymentsAndPayoutSettingsQuery.data?.registeredUsers
     ?.at(0)
-    ?.paymentRequests.filter(r => r.amountInUsd > r.paymentsAggregate.aggregate?.sum?.amount);
+    ?.paymentRequests.filter(r => r.amount > r.paymentsAggregate.aggregate?.sum?.amount);
 
   if (!validPayoutInfo && pendingPaymentRequests && pendingPaymentRequests.length > 0) {
     return RoutePaths.Rewards;

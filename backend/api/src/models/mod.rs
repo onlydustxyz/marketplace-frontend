@@ -1,3 +1,6 @@
+mod crypto_usd_quotes;
+pub use crypto_usd_quotes::CryptoUsdQuote;
+
 mod contact_informations;
 pub use contact_informations::{ContactInformation, Repository as ContactInformationsRepository};
 
@@ -16,7 +19,7 @@ mod projects_sponsors;
 pub use projects_sponsors::ProjectsSponsor;
 
 mod sponsors;
-pub use sponsors::{Id as SponsorId, Sponsor};
+pub use sponsors::Sponsor;
 
 mod onboarding;
 pub use onboarding::Onboarding;

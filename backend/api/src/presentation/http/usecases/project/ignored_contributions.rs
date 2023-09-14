@@ -1,30 +1,22 @@
-use std::sync::Arc;
-
-use anyhow::{anyhow, Error};
-use infrastructure::database::ImmutableRepository;
+use anyhow::Error;
 use rocket::{
-	http::Status,
+	outcome::try_outcome,
 	request::{FromRequest, Outcome},
 	Request,
 };
 
-use crate::{application::project::ignored_contributions::Usecase, models::IgnoredContribution};
+use crate::{
+	application::project::ignored_contributions::Usecase,
+	presentation::http::usecases::FromRocketState,
+};
 
 #[async_trait]
 impl<'r> FromRequest<'r> for Usecase {
 	type Error = Error;
 
 	async fn from_request(request: &'r Request<'_>) -> Outcome<Usecase, Self::Error> {
-		let ignored_contributions_repository =
-			match request.rocket().state::<Arc<dyn ImmutableRepository<IgnoredContribution>>>() {
-				Some(database) => database,
-				None =>
-					return Outcome::Failure((
-						Status::InternalServerError,
-						anyhow!("Missing ignored_contributions repository"),
-					)),
-			};
-
-		Outcome::Success(Self::new(ignored_contributions_repository.clone()))
+		Outcome::Success(Self::new(try_outcome!(FromRocketState::from_state(
+			request.rocket()
+		))))
 	}
 }

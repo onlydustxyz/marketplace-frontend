@@ -1,6 +1,7 @@
 use std::{collections::HashSet, str::FromStr};
 
 use async_trait::async_trait;
+use domain::{GithubUserId, UserId};
 use jsonwebtoken::{decode, Algorithm, DecodingKey, Validation};
 use olog::warn;
 use rocket::{
@@ -50,10 +51,10 @@ struct Jwt {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct Claims {
 	#[serde(rename = "x-hasura-user-id")]
-	pub user_id: Uuid,
+	pub user_id: UserId,
 	#[serde(rename = "x-hasura-githubUserId")]
 	#[serde_as(as = "DisplayFromStr")]
-	pub github_user_id: u64,
+	pub github_user_id: GithubUserId,
 	#[serde(rename = "x-hasura-githubAccessToken")]
 	pub github_access_token: String,
 	#[serde(
@@ -210,8 +211,8 @@ mod test {
 		let mut projects_leaded = HashSet::new();
 		projects_leaded.insert(Uuid::parse_str("298a547f-ecb6-4ab2-8975-68f4e9bf7b39").unwrap());
 		Claims {
-			user_id: Uuid::parse_str("747e663f-4e68-4b42-965b-b5aebedcd4c4").unwrap(),
-			github_user_id: 43467246,
+			user_id: Uuid::parse_str("747e663f-4e68-4b42-965b-b5aebedcd4c4").unwrap().into(),
+			github_user_id: 43467246_u64.into(),
 			projects_leaded,
 			admin: false,
 			impersonated_by: None,
@@ -224,8 +225,8 @@ mod test {
 		let mut projects_leaded = HashSet::new();
 		projects_leaded.insert(Uuid::parse_str("298a547f-ecb6-4ab2-8975-68f4e9bf7b39").unwrap());
 		Claims {
-			user_id: Uuid::parse_str("747e663f-4e68-4b42-965b-b5aebedcd4c4").unwrap(),
-			github_user_id: 43467246,
+			user_id: Uuid::parse_str("747e663f-4e68-4b42-965b-b5aebedcd4c4").unwrap().into(),
+			github_user_id: 43467246_u64.into(),
 			projects_leaded,
 			admin: true,
 			impersonated_by: None,
@@ -303,7 +304,7 @@ mod test {
 			assert_eq!(
 				result,
 				Outcome::Success(Claims {
-					github_user_id: 595505,
+					github_user_id: 595505_u64.into(),
 					user_id: "837fc126-20ab-4226-bbda-cb63932f2292".parse().unwrap(),
 					projects_leaded: HashSet::new(),
 					admin: false,
@@ -368,9 +369,9 @@ mod test {
 			assert_eq!(jwt.iss, "hasura-auth-unit-tests");
 			assert_eq!(
 				jwt.claims.user_id,
-				Uuid::from_str("747e663f-4e68-4b42-965b-b5aebedcd4c4").unwrap()
+				Uuid::from_str("747e663f-4e68-4b42-965b-b5aebedcd4c4").unwrap().into()
 			);
-			assert_eq!(jwt.claims.github_user_id, 43467246);
+			assert_eq!(jwt.claims.github_user_id, 43467246_u64.into());
 			assert_eq!(jwt.claims.github_access_token, String::from("GITHUB_PAT"));
 		});
 	}
@@ -402,7 +403,7 @@ mod test {
 		assert_eq!(
 			impersonated_claims,
 			Claims {
-				github_user_id: 595505,
+				github_user_id: 595505_u64.into(),
 				user_id: "837fc126-20ab-4226-bbda-cb63932f2292".parse().unwrap(),
 				projects_leaded: HashSet::new(),
 				admin: false,
@@ -434,7 +435,7 @@ mod test {
 		assert_eq!(
 			impersonated_claims,
 			Claims {
-				github_user_id: 595505,
+				github_user_id: 595505_u64.into(),
 				user_id: "837fc126-20ab-4226-bbda-cb63932f2292".parse().unwrap(),
 				projects_leaded: expected_projects_leaded,
 				admin: false,

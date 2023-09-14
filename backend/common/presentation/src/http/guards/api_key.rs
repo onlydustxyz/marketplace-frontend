@@ -24,7 +24,7 @@ impl<'r> FromRequest<'r> for ApiKey {
 		let keys: Vec<_> = request.headers().get("Api-Key").collect();
 
 		if let Some(allowed_keys) =
-			request.rocket().state::<Config>().map(|config| config.api_keys().clone())
+			request.rocket().state::<Config>().map(|config| config.api_keys.clone())
 		{
 			match keys.len() {
 				0 => Outcome::Failure((Status::Unauthorized, ApiKeyError::Missing)),

@@ -3,9 +3,7 @@ use std::fmt::Display;
 use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
 
-use crate::{
-	AggregateEvent, ApplicationEvent, BudgetEvent, GithubRepoId, Project, ProjectId, UserId,
-};
+use crate::{aggregate::Identified, BudgetId, Currency, GithubRepoId, ProjectId, UserId};
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Event {
@@ -21,9 +19,10 @@ pub enum Event {
 		id: ProjectId,
 		leader_id: UserId,
 	},
-	Budget {
+	BudgetLinked {
 		id: ProjectId,
-		event: BudgetEvent,
+		budget_id: BudgetId,
+		currency: &'static Currency,
 	},
 	GithubRepoLinked {
 		id: ProjectId,
@@ -33,22 +32,22 @@ pub enum Event {
 		id: ProjectId,
 		github_repo_id: GithubRepoId,
 	},
-	Application {
+	Applied {
 		id: ProjectId,
-		event: ApplicationEvent,
+		applicant_id: UserId,
 	},
 }
 
-impl AggregateEvent<Project> for Event {
-	fn aggregate_id(&self) -> &ProjectId {
+impl Identified<ProjectId> for Event {
+	fn id(&self) -> &ProjectId {
 		match self {
 			Self::Created { id, .. }
 			| Self::LeaderAssigned { id, .. }
 			| Self::LeaderUnassigned { id, .. }
-			| Self::Budget { id, .. }
+			| Self::BudgetLinked { id, .. }
 			| Self::GithubRepoLinked { id, .. }
 			| Self::GithubRepoUnlinked { id, .. }
-			| Self::Application { id, .. } => id,
+			| Self::Applied { id, .. } => id,
 		}
 	}
 }
@@ -60,5 +59,11 @@ impl Display for Event {
 			"{}",
 			serde_json::to_string(&self).map_err(|_| std::fmt::Error)?
 		)
+	}
+}
+
+impl From<Event> for crate::Event {
+	fn from(event: Event) -> Self {
+		crate::Event::Project(event)
 	}
 }

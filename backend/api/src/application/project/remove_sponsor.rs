@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use anyhow::Result;
-use domain::{DomainError, ProjectId};
+use domain::{sponsor, DomainError, ProjectId};
 use infrastructure::database::ImmutableRepository;
 use tracing::instrument;
 
@@ -22,7 +22,7 @@ impl Usecase {
 	pub fn remove_sponsor(
 		&self,
 		project_id: ProjectId,
-		sponsor_id: SponsorId,
+		sponsor_id: sponsor::Id,
 	) -> Result<(), DomainError> {
 		self.project_sponsor_repository.delete((project_id, sponsor_id))?;
 		Ok(())

@@ -33,13 +33,9 @@ query GetProjectOverviewDetails($projectId: uuid!) {
         ...ProjectLead
       }
     }
-    budgetsAggregate {
-      aggregate {
-        sum {
-          initialAmount
-          spentAmount
-        }
-      }
+    usdBudget {
+      initialAmount
+      spentAmount
     }
     pendingInvitations {
       id

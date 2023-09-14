@@ -6,7 +6,7 @@ pub mod sql_types {
     pub struct AllocatedTime;
 
     #[derive(diesel::query_builder::QueryId, diesel::sql_types::SqlType)]
-    #[diesel(postgres_type(name = "citext"))]
+    #[diesel(postgres_type(name = "citext", schema = "heroku_ext"))]
     pub struct Citext;
 
     #[derive(diesel::query_builder::QueryId, diesel::sql_types::SqlType)]
@@ -20,6 +20,10 @@ pub mod sql_types {
     #[derive(diesel::query_builder::QueryId, diesel::sql_types::SqlType)]
     #[diesel(postgres_type(name = "contribution_type"))]
     pub struct ContributionType;
+
+    #[derive(diesel::query_builder::QueryId, diesel::sql_types::SqlType)]
+    #[diesel(postgres_type(name = "currency"))]
+    pub struct Currency;
 
     #[derive(diesel::query_builder::QueryId, diesel::sql_types::SqlType)]
     #[diesel(postgres_type(name = "github_ci_checks"))]
@@ -96,12 +100,14 @@ diesel::table! {
 }
 
 diesel::table! {
+    use diesel::sql_types::*;
+    use super::sql_types::Currency;
+
     budgets (id) {
         id -> Uuid,
-        project_id -> Nullable<Uuid>,
         initial_amount -> Numeric,
         remaining_amount -> Numeric,
-        spent_amount -> Numeric,
+        currency -> Currency,
     }
 }
 
@@ -149,6 +155,17 @@ diesel::table! {
         created_at -> Timestamp,
         closed_at -> Nullable<Timestamp>,
         id -> Text,
+    }
+}
+
+diesel::table! {
+    use diesel::sql_types::*;
+    use super::sql_types::Currency;
+
+    crypto_usd_quotes (currency) {
+        currency -> Currency,
+        price -> Numeric,
+        updated_at -> Timestamp,
     }
 }
 
@@ -308,15 +325,19 @@ diesel::table! {
 }
 
 diesel::table! {
+    use diesel::sql_types::*;
+    use super::sql_types::Currency;
+
     payment_requests (id) {
         id -> Uuid,
-        budget_id -> Uuid,
         requestor_id -> Uuid,
         recipient_id -> Int8,
-        amount_in_usd -> Int8,
+        amount -> Numeric,
         requested_at -> Timestamp,
         invoice_received_at -> Nullable<Timestamp>,
         hours_worked -> Int4,
+        project_id -> Uuid,
+        currency -> Currency,
     }
 }
 
@@ -375,6 +396,13 @@ diesel::table! {
 diesel::table! {
     projects (id) {
         id -> Uuid,
+    }
+}
+
+diesel::table! {
+    projects_budgets (project_id, budget_id) {
+        project_id -> Uuid,
+        budget_id -> Uuid,
     }
 }
 
@@ -495,6 +523,7 @@ diesel::allow_tables_to_appear_in_same_query!(
     commands,
     contact_informations,
     contributions,
+    crypto_usd_quotes,
     event_deduplications,
     events,
     github_issues,
@@ -515,6 +544,7 @@ diesel::allow_tables_to_appear_in_same_query!(
     project_github_repos,
     project_leads,
     projects,
+    projects_budgets,
     projects_contributors,
     projects_pending_contributors,
     projects_rewarded_users,

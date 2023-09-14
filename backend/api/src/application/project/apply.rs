@@ -3,8 +3,8 @@ use std::sync::Arc;
 use anyhow::Result;
 use derive_more::Constructor;
 use domain::{
-	AggregateRootRepository, ApplicationId, DomainError, Event, Project, ProjectId, Publisher,
-	UserId,
+	AggregateRepository, Application, ApplicationId, DomainError, Event, Project, ProjectId,
+	Publisher, UserId,
 };
 use infrastructure::amqp::UniqueMessage;
 use tracing::instrument;
@@ -14,7 +14,7 @@ use crate::domain::Publishable;
 
 #[derive(Constructor)]
 pub struct Usecase {
-	project_repository: AggregateRootRepository<Project>,
+	project_repository: AggregateRepository<Project>,
 	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 }
 
@@ -29,10 +29,10 @@ impl Usecase {
 		let project = self.project_repository.find_by_id(&project_id)?;
 
 		project
-			.apply(applicant_id, application_id)
+			.apply(applicant_id)
 			.map_err(|e| DomainError::InternalError(e.into()))?
-			.into_iter()
 			.map(Event::from)
+			.chain(Application::create(application_id, project_id, applicant_id).map(Event::from))
 			.map(UniqueMessage::new)
 			.collect::<Vec<_>>()
 			.publish(self.event_publisher.clone())
