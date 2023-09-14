@@ -36,8 +36,12 @@ const contributor1: ContributorFragment = {
   avatarUrl: "avatar_url",
   login: "ofux",
   userId: null,
-  contributionStatsAggregate: { aggregate: { sum: { paidCount: 4, unpaidUnignoredCount: 0 } } },
+  contributionStatsAggregate: { aggregate: { sum: { codeReviewCount: 0, issueCount: 1, pullRequestCount: 3, totalCount: 4 } } },
   paymentStatsAggregate: { aggregate: { sum: { moneyGranted: 2000 } } },
+  projectsRewardedAggregate: { aggregate: { sum: { rewardCount: 3 } } },
+  completedUnpaidPullRequestsAggregate: { aggregate: { count: 0 } },
+  completedUnpaidIssuesAggregate: { aggregate: { count: 0 } },
+  completedUnpaidCodeReviewsAggregate: { aggregate: { count: 0 } },
 };
 
 const contributor2: ContributorFragment = {
@@ -46,8 +50,12 @@ const contributor2: ContributorFragment = {
   avatarUrl: "avatar_url",
   login: "AnthonyBuisset",
   userId: null,
-  contributionStatsAggregate: { aggregate: { sum: { paidCount: 1, unpaidUnignoredCount: 0 } } },
+  contributionStatsAggregate: { aggregate: { sum: { codeReviewCount: 0, issueCount: 1, pullRequestCount: 3, totalCount: 1 } } },
   paymentStatsAggregate: { aggregate: { sum: { moneyGranted: 500 } } },
+  projectsRewardedAggregate: { aggregate: { sum: { rewardCount: 3 } } },
+  completedUnpaidPullRequestsAggregate: { aggregate: { count: 3 } },
+  completedUnpaidIssuesAggregate: { aggregate: { count: 0 } },
+  completedUnpaidCodeReviewsAggregate: { aggregate: { count: 0 } },
 };
 
 const contributor3: ContributorFragment = {
@@ -56,8 +64,12 @@ const contributor3: ContributorFragment = {
   avatarUrl: "avatar_url",
   login: "oscarwroche",
   userId: null,
-  contributionStatsAggregate: { aggregate: { sum: { paidCount: 0, unpaidUnignoredCount: 0 } } },
+  contributionStatsAggregate: { aggregate: { sum: { codeReviewCount: 0, issueCount: 0, pullRequestCount: 0, totalCount: 0 } } },
   paymentStatsAggregate: { aggregate: { sum: { moneyGranted: 0 } } },
+  projectsRewardedAggregate: { aggregate: { sum: { rewardCount: 0 } } },
+  completedUnpaidPullRequestsAggregate: { aggregate: { count: 0 } },
+  completedUnpaidIssuesAggregate: { aggregate: { count: 0 } },
+  completedUnpaidCodeReviewsAggregate: { aggregate: { count: 0 } },
 };
 
 const graphQlMocks = [

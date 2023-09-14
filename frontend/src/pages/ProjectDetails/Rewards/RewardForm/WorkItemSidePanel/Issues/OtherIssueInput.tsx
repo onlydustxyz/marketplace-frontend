@@ -4,7 +4,6 @@ import { useFormContext, useFormState } from "react-hook-form";
 import { WorkItemType, useFetchIssueLazyQuery, useFetchPullRequestLazyQuery } from "src/__generated/graphql";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import Input from "src/components/FormInput";
-import { GithubIssue as GithubIssueType } from "src/components/GithubIssue";
 import { useIntl } from "src/hooks/useIntl";
 import Link from "src/icons/Link";
 import {
@@ -17,11 +16,13 @@ import {
   issueToWorkItem,
   pullRequestToWorkItem,
 } from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/Issues";
+import { GithubIssue as GithubIssueType } from "src/components/GithubIssue";
+import { GithubPullRequest as GithubPullRequestType } from "src/components/GithubPullRequest";
 
 type Props = {
   projectId: string;
   type: WorkItemType;
-  addWorkItem: (workItem: GithubIssueType) => void;
+  addWorkItem: (workItem: GithubIssueType | GithubPullRequestType) => void;
 };
 
 export default function OtherIssueInput({ projectId, type, addWorkItem }: Props) {
@@ -86,19 +87,19 @@ export default function OtherIssueInput({ projectId, type, addWorkItem }: Props)
   const validateOtherIssue = () =>
     type === WorkItemType.Issue
       ? fetchIssue({
-          variables: {
-            repoOwner,
-            repoName,
-            issueNumber,
-          },
-        })
+        variables: {
+          repoOwner,
+          repoName,
+          issueNumber,
+        },
+      })
       : fetchPullRequest({
-          variables: {
-            repoOwner,
-            repoName,
-            prNumber: issueNumber,
-          },
-        });
+        variables: {
+          repoOwner,
+          repoName,
+          prNumber: issueNumber,
+        },
+      });
 
   return (
     <div className="flex flex-col gap-2 rounded-lg border border-greyscale-50/12 p-4">

@@ -106,7 +106,7 @@ const githubIssueCreatedAndClosedStatusToGithubIssueStatus = (
   }
 };
 
-export const pullRequestToWorkItem = (props: GithubPullRequestFragment | LiveGithubPullRequestFragment): WorkItem => ({
+export const pullRequestToWorkItem = (props: GithubPullRequestFragment | LiveGithubPullRequestFragment): GithubPullRequestType => ({
   ...props,
   type: WorkItemType.PullRequest,
   ignored: false,

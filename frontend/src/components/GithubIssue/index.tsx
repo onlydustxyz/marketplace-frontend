@@ -35,7 +35,7 @@ export type GithubIssue = {
   createdAt: Date;
   ignored: boolean;
   status: GithubIssueStatus;
-  closedAt: Date;
+  closedAt?: Date;
   mergedAt?: Date;
 };
 
@@ -59,6 +59,9 @@ export default function GithubPullRequest({
   addMarginTopForVirtuosoDisplay = false,
 }: Props) {
   const { repoName } = parseIssueLink(workItem.htmlUrl);
+
+
+  console.log('TEST', { url: workItem.htmlUrl, repoName })
 
   return (
     <Card
@@ -126,19 +129,19 @@ function IssueStatus({ contribution }: { contribution: GithubIssue }) {
 
   switch (contribution.status.toUpperCase()) {
     case GithubIssueStatus.Cancelled:
-      return (
+      return contribution.closedAt ? (
         <>
           <IssueCancelled className="fill-github-grey p-0.5" />
           {T("githubIssue.status.closed", { closedAt: displayRelativeDate(contribution.closedAt) })}
         </>
-      );
+      ) : null;
     case GithubIssueStatus.Completed:
-      return (
+      return contribution.closedAt ? (
         <>
           <CheckboxCircleLine className="-my-1 text-base text-github-purple" />
           {T("githubIssue.status.closed", { closedAt: displayRelativeDate(contribution.closedAt) })}
         </>
-      );
+      ) : null;
     case GithubIssueStatus.Open:
       return (
         <>

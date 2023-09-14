@@ -98,6 +98,7 @@ const payment: PaymentRequestDetailsFragment = {
     issueNumber: githubIssue.number,
     githubIssue,
     githubPullRequest: null,
+    number: 3,
   })),
 };
 

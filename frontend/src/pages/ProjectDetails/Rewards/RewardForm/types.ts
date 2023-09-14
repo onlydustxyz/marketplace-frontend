@@ -3,6 +3,7 @@ import { Contributor as ContributorBase } from "src/types";
 
 export type Contributor = ContributorBase & {
   unpaidCompletedContributions: number;
+  unpaidMergedPullsCount?: number
 };
 
 export type Inputs = {

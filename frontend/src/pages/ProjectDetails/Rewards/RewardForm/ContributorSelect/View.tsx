@@ -126,9 +126,9 @@ export default function ContributorSelectView({
             </Combobox.Button>
             <Combobox.Options>
               {filteredContributors &&
-              filteredContributors.length === 0 &&
-              githubHandleSubstring &&
-              githubHandleSubstring.length < 3 ? (
+                filteredContributors.length === 0 &&
+                githubHandleSubstring &&
+                githubHandleSubstring.length < 3 ? (
                 <div className="px-4 pb-6 text-sm italic text-greyscale-100 xl:text-base">
                   {T("reward.form.contributor.select.fallback.typeMoreCharacters")}
                 </div>

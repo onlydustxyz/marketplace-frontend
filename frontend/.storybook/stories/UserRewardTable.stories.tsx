@@ -25,12 +25,13 @@ const mockPayments: Reward[] = [
       {
         paymentId: "c0cfdf80-bbba-4512-b5ec-066dfa9529b1",
         repoId: 123456,
-        issueNumber: 110,
+        number: 1,
       },
       {
         paymentId: "c0cfdf80-bbba-4512-b5ec-066dfa9529b1",
         repoId: 123456,
-        issueNumber: 111,
+        number: 1,
+
       },
     ],
     invoiceReceived: false,
@@ -47,7 +48,7 @@ const mockPayments: Reward[] = [
       {
         paymentId: "6397226d-0461-4451-962c-a61e36fd324b",
         repoId: 123456,
-        issueNumber: 110,
+        number: 1,
       },
     ],
     status: PaymentStatus.WAITING_PAYMENT,

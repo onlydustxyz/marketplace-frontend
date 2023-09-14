@@ -20,7 +20,9 @@ export type Contributor = ContributorBase & {
   unpaidPullRequestCount: number;
   unpaidIssueCount: number;
   unpaidCodeReviewCount: number;
+  paidContributionsCount: number;
   toRewardCount: number;
+  unpaidMergedPullsCount: number;
 };
 
 export enum Field {

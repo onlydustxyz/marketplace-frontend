@@ -2,7 +2,6 @@ import { sortBy } from "lodash";
 import { FormEventHandler, useEffect, useState } from "react";
 import Button, { Width } from "src/components/Button";
 import Callout from "src/components/Callout";
-import { WorkItem } from "src/components/GithubIssue";
 import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
 import CheckLine from "src/icons/CheckLine";
@@ -26,6 +25,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { OtherWork } from "./types";
 import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
+import { WorkItem } from "../..";
 
 type Props = {
   projectId: string;

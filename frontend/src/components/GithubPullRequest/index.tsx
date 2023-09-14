@@ -34,8 +34,8 @@ export type GithubPullRequest = {
   createdAt: Date;
   ignored: boolean;
   status: GithubPullRequestStatus;
-  closedAt: Date;
-  mergedAt: Date;
+  closedAt?: Date;
+  mergedAt?: Date;
 };
 
 export type Props = {
@@ -125,19 +125,19 @@ function PullRequestStatus({ contribution }: { contribution: GithubPullRequest }
 
   switch (contribution.status.toUpperCase()) {
     case GithubPullRequestStatus.Closed:
-      return (
+      return contribution.closedAt ? (
         <>
           <IssueClosed className="fill-github-red" />
           {T("githubIssue.status.closed", { closedAt: displayRelativeDate(contribution.closedAt) })}
         </>
-      );
+      ) : null;
     case GithubPullRequestStatus.Merged:
-      return (
+      return contribution.mergedAt ? (
         <>
           <GitMergeLine className="-my-1 text-base text-github-purple" />
           {T("githubIssue.status.merged", { mergedAt: displayRelativeDate(contribution.mergedAt) })}
         </>
-      );
+      ) : null;
     case GithubPullRequestStatus.Open:
       return (
         <>
