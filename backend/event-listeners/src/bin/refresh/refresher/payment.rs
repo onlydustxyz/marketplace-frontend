@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use domain::Project;
+use domain::Payment;
 use event_listeners::listeners::*;
 use infrastructure::database;
 
@@ -16,5 +16,5 @@ pub fn create(database: Arc<database::Client>) -> impl Refreshable {
 		database.clone(),
 	);
 
-	Refresher::<Project>::new(database, vec![Arc::new(payment_projector)])
+	Refresher::<Payment>::new(database, vec![Arc::new(payment_projector)])
 }
