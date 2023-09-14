@@ -30,7 +30,8 @@ export default function ContributorLine({
         <Contributor contributor={contributor} clickable />
       </Cell>
       <Cell height={CellHeight.Small} horizontalMargin={false}>
-        {contributor.contributionCount || "-"}
+        {/*  TODO: Remove unpaid Code Reviews count when Code Review availables */}
+        {contributor.contributionCount - contributor.unpaidCodeReviewCount || "-"}
       </Cell>
       <Cell height={CellHeight.Small} horizontalMargin={false}>
         {contributor.rewardCount || "-"}
