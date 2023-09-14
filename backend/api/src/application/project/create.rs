@@ -1,38 +1,30 @@
 use std::sync::Arc;
 
 use anyhow::Result;
+use derive_more::Constructor;
 use domain::{
-	Amount, DomainError, Event, EventSourcable, Project, ProjectId, ProjectVisibility, Publisher,
+	sponsor, Amount, BudgetId, DomainError, Event, Project, ProjectId, ProjectVisibility, Publisher,
 };
 use infrastructure::{amqp::UniqueMessage, database::Repository};
 use reqwest::Url;
 use tracing::instrument;
 
 use crate::{
+	application,
 	domain::{ImageStoreService, Publishable},
 	models::*,
 	presentation::http::dto::NonEmptyTrimmedString,
 };
 
+#[derive(Constructor)]
 pub struct Usecase {
 	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 	project_details_repository: Arc<dyn Repository<ProjectDetails>>,
 	image_store: Arc<dyn ImageStoreService>,
+	budget_allocation_usecase: application::budget::allocate::Usecase,
 }
 
 impl Usecase {
-	pub fn new(
-		event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
-		project_details_repository: Arc<dyn Repository<ProjectDetails>>,
-		image_store: Arc<dyn ImageStoreService>,
-	) -> Self {
-		Self {
-			event_publisher,
-			project_details_repository,
-			image_store,
-		}
-	}
-
 	#[allow(clippy::too_many_arguments)]
 	#[instrument(skip(self))]
 	pub async fn create(
@@ -43,19 +35,24 @@ impl Usecase {
 		telegram_link: Option<Url>,
 		logo_url: Option<Url>,
 		initial_budget: Option<Amount>,
+		sponsor_id: Option<sponsor::Id>,
 		hiring: bool,
 		rank: i32,
 		visibility: ProjectVisibility,
-	) -> Result<ProjectId, DomainError> {
+	) -> Result<(ProjectId, Option<BudgetId>), DomainError> {
 		let project_id = ProjectId::new();
 
-		let events = Project::create(project_id);
+		let mut project = Project::create(project_id);
+		let mut budget = None;
 
-		let budget_events = match initial_budget {
-			Some(initial_budget) => Project::from_events(&events)
-				.allocate_budget(&initial_budget)
-				.map_err(|error| DomainError::InvalidInputs(error.into()))?,
-			_ => vec![],
+		if let Some(initial_budget) = initial_budget {
+			let result = self.budget_allocation_usecase.build_allocation(
+				project,
+				initial_budget,
+				sponsor_id,
+			)?;
+			project = result.0;
+			budget = Some(result.1);
 		};
 
 		let stored_logo_url = match logo_url {
@@ -75,15 +72,16 @@ impl Usecase {
 			visibility: visibility.into(),
 		})?;
 
-		events
-			.into_iter()
-			.chain(budget_events)
+		let budget_id = budget.as_ref().map(|b| b.id);
+
+		project
 			.map(Event::from)
+			.chain(budget.unwrap_or_default().map(Event::from))
 			.map(UniqueMessage::new)
 			.collect::<Vec<_>>()
 			.publish(self.event_publisher.clone())
 			.await?;
 
-		Ok(project_id)
+		Ok((project_id, budget_id))
 	}
 }

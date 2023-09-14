@@ -1,11 +1,11 @@
 import { useSuspenseQuery_experimental as useSuspenseQuery } from "@apollo/client";
 import { Outlet, useOutletContext } from "react-router-dom";
-import { GetPaymentRequestsForProjectDocument } from "src/__generated/graphql";
+import { GetPaymentRequestsForProjectDocument, GetPaymentRequestsForProjectQuery } from "src/__generated/graphql";
 import { useOnProjectChange } from "src/providers/Commands";
 
 export default function Rewards() {
   const { projectId, projectKey } = useOutletContext<{ projectId: string; projectKey: string }>();
-  const { data, refetch } = useSuspenseQuery(GetPaymentRequestsForProjectDocument, {
+  const { data, refetch } = useSuspenseQuery<GetPaymentRequestsForProjectQuery>(GetPaymentRequestsForProjectDocument, {
     variables: { projectId },
   });
 
@@ -16,8 +16,8 @@ export default function Rewards() {
       context={{
         rewards: data.paymentRequests || [],
         budget: {
-          initialAmount: data.budgetsAggregate.aggregate?.sum?.initialAmount,
-          remainingAmount: data.budgetsAggregate.aggregate?.sum?.remainingAmount,
+          initialAmount: data.projects.at(0)?.usdBudget?.initialAmount,
+          remainingAmount: data.projects.at(0)?.usdBudget?.remainingAmount,
         },
         projectId,
         projectKey,

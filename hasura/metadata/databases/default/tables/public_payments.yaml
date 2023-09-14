@@ -10,7 +10,7 @@ object_relationships:
         insertion_order: null
         remote_table:
           name: payment_requests
-          schema: public
+          schema: api
 select_permissions:
   - role: project_lead_specific
     permission:
@@ -22,12 +22,11 @@ select_permissions:
         - request_id
       filter:
         paymentRequest:
-          budget:
-            project:
-              projectLeads:
-                user:
-                  id:
-                    _eq: X-Hasura-User-Id
+          project:
+            projectLeads:
+              user:
+                id:
+                  _eq: X-Hasura-User-Id
   - role: registered_user_specific
     permission:
       columns:

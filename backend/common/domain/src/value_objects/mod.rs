@@ -1,7 +1,10 @@
+pub mod amount;
+pub use amount::Amount;
+
 pub mod blockchain;
 
-mod amount;
-pub use amount::{Amount, Currency};
+pub mod currencies;
+pub use currencies::{Currency, ParseError as ParseCurrencyError};
 
 mod positive_count;
 pub use positive_count::Count as PositiveCount;

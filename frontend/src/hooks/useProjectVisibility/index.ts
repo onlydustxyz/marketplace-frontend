@@ -35,7 +35,7 @@ export const isProjectVisibleToUser = ({ project, user }: Props) => {
   const isInvited = project?.pendingInvitations.some(i => i.githubUserId === user.githubUserId);
   const hasLeaders = (project?.projectLeads.length || 0) > 0;
   const hasRepos = (project?.githubReposAggregate.aggregate?.count || 0) > 0;
-  const hasBudget = (project?.budgetsAggregate.aggregate?.count || 0) > 0;
+  const hasBudget = !!project?.usdBudgetId;
 
   return project?.visibility === "public"
     ? hasRepos && hasBudget && (hasLeaders || isInvited)

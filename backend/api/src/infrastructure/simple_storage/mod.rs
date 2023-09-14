@@ -17,7 +17,7 @@ use url::Url;
 
 use crate::domain::{ImageStoreService, ImageStoreServiceError};
 
-#[derive(Debug, Deserialize, Clone)]
+#[derive(Debug, Deserialize, Default, Clone)]
 pub struct Config {
 	pub images_bucket_name: String,
 	pub bucket_region: String,

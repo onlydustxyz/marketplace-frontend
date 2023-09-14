@@ -33,11 +33,7 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
         hiring: false,
         rank: 0,
         visibility: "public",
-        budgetsAggregate: {
-          aggregate: {
-            count: 1,
-          },
-        },
+        usdBudgetId: "budget-id",
         contributors: [],
         pendingContributors: [],
         rewardedUsers: [],
@@ -74,11 +70,7 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
         hiring: false,
         rank: 0,
         visibility: "public",
-        budgetsAggregate: {
-          aggregate: {
-            count: 1,
-          },
-        },
+        usdBudgetId: "budget-id",
         contributors: [],
         pendingContributors: [],
         rewardedUsers: [],
@@ -115,11 +107,7 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
         hiring: false,
         rank: 0,
         visibility: "public",
-        budgetsAggregate: {
-          aggregate: {
-            count: 1,
-          },
-        },
+        usdBudgetId: "budget-id",
         contributors: [],
         pendingContributors: [],
         rewardedUsers: [],
@@ -152,11 +140,7 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
 const projectWithNoBudget: ProjectCardFieldsFragment = {
   __typename: "Projects",
   id: "project-with-no-budget",
-  budgetsAggregate: {
-    aggregate: {
-      count: 0,
-    },
-  },
+  usdBudgetId: null,
   contributorsAggregate: { aggregate: { count: 0 } },
   contributors: [],
   pendingContributors: [],
@@ -194,11 +178,7 @@ const projectWithNoBudget: ProjectCardFieldsFragment = {
 const projectWithNoRepo: ProjectCardFieldsFragment = {
   __typename: "Projects",
   id: "project-with-no-repo",
-  budgetsAggregate: {
-    aggregate: {
-      count: 1,
-    },
-  },
+  usdBudgetId: "budget-id",
   contributorsAggregate: { aggregate: { count: 0 } },
   contributors: [],
   pendingContributors: [],
@@ -227,11 +207,7 @@ const projectWithNoRepo: ProjectCardFieldsFragment = {
 const projectWithNoLeader: ProjectCardFieldsFragment = {
   __typename: "Projects",
   id: "project-with-no-leader",
-  budgetsAggregate: {
-    aggregate: {
-      count: 1,
-    },
-  },
+  usdBudgetId: "budget-id",
   contributorsAggregate: { aggregate: { count: 0 } },
   contributors: [],
   pendingContributors: [],
@@ -263,11 +239,7 @@ const projectWithNoLeader: ProjectCardFieldsFragment = {
 const projectInvalidWithInvite: ProjectCardFieldsFragment = {
   __typename: "Projects",
   id: "project-with-only-invite",
-  budgetsAggregate: {
-    aggregate: {
-      count: 0,
-    },
-  },
+  usdBudgetId: null,
   contributorsAggregate: { aggregate: { count: 0 } },
   contributors: [],
   pendingContributors: [],
@@ -290,11 +262,7 @@ const projectInvalidWithInvite: ProjectCardFieldsFragment = {
 const projectWithNoLeaderAndInviteForWrongUser: ProjectCardFieldsFragment = {
   __typename: "Projects",
   id: "project-with-no-leader-and-invite-for-wrong-user",
-  budgetsAggregate: {
-    aggregate: {
-      count: 1,
-    },
-  },
+  usdBudgetId: "budget-id",
   contributorsAggregate: { aggregate: { count: 0 } },
   contributors: [],
   pendingContributors: [],
@@ -331,11 +299,7 @@ const projectWithNoLeaderAndInvite: ProjectCardFieldsFragment = {
   pendingContributors: [],
   rewardedUsers: [],
   githubReposAggregate: { aggregate: { count: 1 } },
-  budgetsAggregate: {
-    aggregate: {
-      count: 1,
-    },
-  },
+  usdBudgetId: "budget-id",
   name: "No leader but invite",
   key: "no-leader-but-invite",
   shortDescription: "This project has no leader yet",

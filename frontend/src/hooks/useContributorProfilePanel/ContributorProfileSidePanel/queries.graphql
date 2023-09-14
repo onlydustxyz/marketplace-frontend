@@ -20,12 +20,8 @@ fragment ProfileProject on Projects {
       count
     }
   }
-  budgetsAggregate {
-    aggregate {
-      sum {
-        spentAmount
-      }
-    }
+  usdBudget {
+    spentAmount
   }
 }
 

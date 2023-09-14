@@ -29,13 +29,9 @@
             acceptProjectLeaderInvitation(invitationId: Uuid!): Boolean!
             acceptTermsAndConditions: Uuid!
             applyToProject(projectId: Uuid!): Uuid!
-            markInvoiceAsReceived(paymentReferences: [PaymentReference!]!): Int!
+            markInvoiceAsReceived(payments: [Uuid!]!): Boolean!
             markProfileWizardAsDisplayed: Uuid!
           }
           type Query {
             releaseDate: String!
-          }
-          input PaymentReference {
-            paymentId: Uuid!
-            projectId: Uuid!
           }

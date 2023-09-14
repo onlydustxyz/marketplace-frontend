@@ -41,7 +41,7 @@ sha2 = "0.10.7"
 
 # Http client
 reqwest = { version = "0.11", default-features = false }
-url = "2.2.2"
+url = { version = "2.2.2", features = ["serde"] }
 
 # Http Server
 http-api-problem = { version = "0.56.0", features = ["rocket"] }

@@ -25,7 +25,7 @@ export default function Contributors() {
   const { contributors } = useProjectContributors(projectId);
   const { data: projectDetails } = useGetProjectDetailsQuery({ variables: { projectId }, ...contextWithCacheHeaders });
 
-  const remainingBudget = projectDetails?.projects[0]?.budgets.at(0)?.remainingAmount;
+  const remainingBudget = projectDetails?.projects[0]?.usdBudget?.remainingAmount;
 
   return (
     <>

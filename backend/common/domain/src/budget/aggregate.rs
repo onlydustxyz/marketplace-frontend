@@ -1,192 +1,63 @@
-use std::collections::HashMap;
-
-use chrono::Duration;
-use derive_getters::Getters;
 use rust_decimal::Decimal;
 use thiserror::Error;
 
-use crate::{
-	payment::Reason, Aggregate, AggregateEvent, Amount, BudgetEvent, BudgetId, Currency,
-	EventSourcable, GithubUserId, Payment, PaymentError, PaymentId, PaymentReceipt,
-	PaymentReceiptId, PaymentStatus, UserId,
-};
+use crate::{sponsor, Aggregate, BudgetEvent, BudgetId, Currency};
 
-#[derive(Debug, Error)]
+pub type Budget = Aggregate<super::state::State>;
+
+#[derive(Debug, Error, PartialEq, Eq)]
 pub enum Error {
 	#[error("Not enough budget left")]
 	Overspent,
-	#[error("Invalid currency")]
-	InvalidCurrency,
-	#[error("Payment not found {0}")]
-	PaymentNotFound(PaymentId),
-	#[error(transparent)]
-	Payment(#[from] PaymentError),
 }
 
 type Result<T> = std::result::Result<T, Error>;
 
-#[derive(Default, Debug, Clone, PartialEq, Eq, Getters)]
-pub struct Budget {
-	id: BudgetId,
-	allocated_amount: Amount,
-	payments: HashMap<PaymentId, Payment>,
-}
-
 impl Budget {
-	pub fn create(id: BudgetId, currency: Currency) -> Vec<BudgetEvent> {
-		vec![BudgetEvent::Created { id, currency }]
+	pub fn create(id: BudgetId, currency: &'static Currency) -> Self {
+		Self::from_pending_events(vec![BudgetEvent::Created { id, currency }])
 	}
 
-	pub fn allocate(&self, diff: Decimal) -> Result<Vec<BudgetEvent>> {
-		if *self.allocated_amount.amount() + diff < self.spent_amount() {
+	pub fn allocate(self, amount: Decimal, sponsor_id: Option<sponsor::Id>) -> Result<Self> {
+		if self.allocated_amount + amount < self.spent_amount {
 			return Err(Error::Overspent);
 		}
 
-		Ok(vec![BudgetEvent::Allocated {
+		let event = BudgetEvent::Allocated {
 			id: self.id,
-			amount: diff,
-		}])
+			amount,
+			sponsor_id,
+		};
+
+		Ok(self.with_pending_events(vec![event]))
 	}
 
-	pub fn request_payment(
-		&self,
-		payment_id: PaymentId,
-		requestor_id: UserId,
-		recipient_id: GithubUserId,
-		amount: Amount,
-		duration_worked: Duration,
-		reason: Reason,
-	) -> Result<Vec<BudgetEvent>> {
-		if self.allocated_amount.currency() != amount.currency() {
-			return Err(Error::InvalidCurrency);
-		}
-
-		if self.spent_amount() + amount.amount() > *self.allocated_amount.amount() {
+	pub fn spend(self, amount: Decimal) -> Result<Self> {
+		if self.spent_amount + amount > self.allocated_amount {
 			return Err(Error::Overspent);
 		}
 
-		Ok(Payment::request(
-			payment_id,
-			requestor_id,
-			recipient_id,
+		let event = BudgetEvent::Spent {
+			id: self.id,
 			amount,
-			duration_worked,
-			reason,
-		)
-		.into_iter()
-		.map(|event| BudgetEvent::Payment { id: self.id, event })
-		.collect())
-	}
+		};
 
-	pub fn cancel_payment_request(&self, payment_id: &PaymentId) -> Result<Vec<BudgetEvent>> {
-		let payment = self.payments.get(payment_id).ok_or(Error::PaymentNotFound(*payment_id))?;
-		Ok(payment
-			.cancel()?
-			.into_iter()
-			.map(|event| BudgetEvent::Payment { id: self.id, event })
-			.collect())
-	}
-
-	pub async fn add_payment_receipt(
-		&self,
-		payment_id: &PaymentId,
-		receipt_id: PaymentReceiptId,
-		amount: Amount,
-		receipt: PaymentReceipt,
-	) -> Result<Vec<<Self as Aggregate>::Event>> {
-		let payment = self.payments.get(payment_id).ok_or(Error::PaymentNotFound(*payment_id))?;
-
-		Ok(payment
-			.add_receipt(receipt_id, amount, receipt)?
-			.into_iter()
-			.map(|event| BudgetEvent::Payment { id: self.id, event })
-			.collect())
-	}
-
-	pub fn spent_amount(&self) -> Decimal {
-		self.payments
-			.values()
-			.filter(|payment| payment.status != PaymentStatus::Cancelled)
-			.fold(Decimal::ZERO, |amount, payment| {
-				amount + payment.requested_usd_amount
-			})
-	}
-
-	pub fn mark_invoice_as_received(&self, payment_id: &PaymentId) -> Result<Vec<BudgetEvent>> {
-		let payment = self.payments.get(payment_id).ok_or(Error::PaymentNotFound(*payment_id))?;
-		Ok(payment
-			.mark_invoice_as_received()?
-			.into_iter()
-			.map(|event| BudgetEvent::Payment { id: self.id, event })
-			.collect())
-	}
-
-	pub fn reject_invoice(&self, payment_id: &PaymentId) -> Result<Vec<BudgetEvent>> {
-		let payment = self.payments.get(payment_id).ok_or(Error::PaymentNotFound(*payment_id))?;
-		Ok(payment
-			.reject_invoice()?
-			.into_iter()
-			.map(|event| BudgetEvent::Payment { id: self.id, event })
-			.collect())
-	}
-}
-
-impl Aggregate for Budget {
-	type Event = BudgetEvent;
-	type Id = BudgetId;
-}
-
-impl EventSourcable for Budget {
-	fn apply_event(mut self, event: &Self::Event) -> Self {
-		match event {
-			BudgetEvent::Created { id, currency } => Self {
-				id: *id,
-				allocated_amount: Amount::new(Decimal::ZERO, currency.clone()),
-				..self
-			},
-			BudgetEvent::Allocated { id, amount, .. } => Self {
-				id: *id,
-				allocated_amount: self.allocated_amount + amount,
-				..self
-			},
-			BudgetEvent::Payment { event, .. } => {
-				let payment_id = event.aggregate_id();
-
-				self.payments
-					.entry(*payment_id)
-					.and_modify(|payment| *payment = payment.clone().apply_event(event))
-					.or_insert_with(|| Payment::default().apply_event(event));
-				self
-			},
-		}
+		Ok(self.with_pending_events(vec![event]))
 	}
 }
 
 #[cfg(test)]
 mod tests {
-	use assert_matches::assert_matches;
 	use rstest::*;
 	use rust_decimal_macros::dec;
 	use uuid::Uuid;
 
 	use super::*;
-	use crate::*;
+	use crate::{currencies, EventSourcable};
 
 	#[fixture]
 	#[once]
 	fn budget_id() -> BudgetId {
-		Uuid::new_v4().into()
-	}
-
-	#[fixture]
-	#[once]
-	fn project_id() -> ProjectId {
-		Uuid::new_v4().into()
-	}
-
-	#[fixture]
-	#[once]
-	fn payment_id() -> PaymentId {
 		Uuid::new_v4().into()
 	}
 
@@ -196,17 +67,12 @@ mod tests {
 	}
 
 	#[fixture]
-	fn duration_worked() -> Duration {
-		Duration::hours(7)
+	fn currency() -> &'static Currency {
+		currencies::USD
 	}
 
 	#[fixture]
-	fn currency() -> Currency {
-		Currency::Crypto("USDC".to_string())
-	}
-
-	#[fixture]
-	fn budget_created_event(budget_id: &BudgetId, currency: Currency) -> BudgetEvent {
+	fn budget_created_event(budget_id: &BudgetId, currency: &'static Currency) -> BudgetEvent {
 		BudgetEvent::Created {
 			id: *budget_id,
 			currency,
@@ -218,14 +84,35 @@ mod tests {
 		BudgetEvent::Allocated {
 			id: *budget_id,
 			amount,
+			sponsor_id: None,
+		}
+	}
+
+	#[fixture]
+	fn budget_spent_event(budget_id: &BudgetId, amount: Decimal) -> BudgetEvent {
+		BudgetEvent::Spent {
+			id: *budget_id,
+			amount,
+		}
+	}
+
+	#[fixture]
+	fn budget_refund_event(budget_id: &BudgetId, amount: Decimal) -> BudgetEvent {
+		BudgetEvent::Spent {
+			id: *budget_id,
+			amount: -amount,
 		}
 	}
 
 	#[rstest]
-	fn create_budget(budget_id: &BudgetId, currency: Currency, budget_created_event: BudgetEvent) {
+	fn create_budget(
+		budget_id: &BudgetId,
+		currency: &'static Currency,
+		budget_created_event: BudgetEvent,
+	) {
 		assert_eq!(
-			Budget::create(*budget_id, currency),
-			vec![budget_created_event]
+			Budget::create(*budget_id, currency).collect::<Vec<_>>(),
+			&[budget_created_event]
 		);
 	}
 
@@ -236,217 +123,110 @@ mod tests {
 		budget_allocated_event: BudgetEvent,
 	) {
 		let budget = Budget::from_events(&[budget_created_event]);
-		let result = budget.allocate(amount);
-		assert!(result.is_ok(), "{}", result.err().unwrap());
-		assert_eq!(result.unwrap(), vec![budget_allocated_event]);
+		assert_eq!(
+			budget.allocate(amount, None).unwrap().collect::<Vec<_>>(),
+			&[budget_allocated_event]
+		);
 	}
 
 	#[rstest]
 	fn spend_budget(
 		amount: Decimal,
-		duration_worked: Duration,
-		currency: Currency,
 		budget_created_event: BudgetEvent,
 		budget_allocated_event: BudgetEvent,
+		budget_spent_event: BudgetEvent,
 	) {
 		let budget = Budget::from_events(&[budget_created_event, budget_allocated_event]);
-		let result = budget.request_payment(
-			Default::default(),
-			Default::default(),
-			Default::default(),
-			Amount::new(amount, currency),
-			duration_worked,
-			Default::default(),
-		);
-		assert!(result.is_ok(), "{}", result.err().unwrap());
-		let events = result.unwrap();
-		assert_matches!(
-			events[0],
-			BudgetEvent::Payment {
-				id: _,
-				event: PaymentEvent::Requested { .. }
-			}
+		assert_eq!(
+			budget.spend(amount).unwrap().collect::<Vec<_>>(),
+			&[budget_spent_event]
 		);
 	}
 
 	#[rstest]
-	fn spend_and_cancel_budget(
+	fn refund_budget(
 		amount: Decimal,
-		duration_worked: Duration,
-		currency: Currency,
-		payment_id: &PaymentId,
 		budget_created_event: BudgetEvent,
 		budget_allocated_event: BudgetEvent,
+		budget_spent_event: BudgetEvent,
+		budget_refund_event: BudgetEvent,
 	) {
-		let budget = Budget::from_events(&[budget_created_event, budget_allocated_event]);
-		let result = budget.request_payment(
-			*payment_id,
-			Default::default(),
-			Default::default(),
-			Amount::new(amount, currency.clone()),
-			duration_worked,
-			Default::default(),
+		let budget = Budget::from_events(&[
+			budget_created_event,
+			budget_allocated_event,
+			budget_spent_event,
+		]);
+		assert_eq!(
+			budget.spend(-amount).unwrap().collect::<Vec<_>>(),
+			&[budget_refund_event]
 		);
-		assert!(result.is_ok(), "{}", result.err().unwrap());
-
-		let budget = budget.apply_events(&result.unwrap());
-		let result = budget.cancel_payment_request(payment_id);
-		assert!(result.is_ok(), "{}", result.err().unwrap());
-
-		let budget = budget.apply_events(&result.unwrap());
-		let result = budget.request_payment(
-			*payment_id,
-			Default::default(),
-			Default::default(),
-			Amount::new(amount, currency),
-			duration_worked,
-			Default::default(),
-		);
-		assert!(result.is_ok(), "{}", result.err().unwrap());
 	}
 
 	#[rstest]
 	fn overspend_budget(
 		amount: Decimal,
-		duration_worked: Duration,
-		currency: Currency,
 		budget_created_event: BudgetEvent,
 		budget_allocated_event: BudgetEvent,
 	) {
 		let budget = Budget::from_events(&[budget_created_event, budget_allocated_event]);
-		let result = budget.request_payment(
-			Default::default(),
-			Default::default(),
-			Default::default(),
-			Amount::new(amount * dec!(2), currency),
-			duration_worked,
-			Default::default(),
-		);
-		assert_matches!(result, Err(Error::Overspent));
-	}
-
-	#[rstest]
-	fn spend_in_different_currency(
-		duration_worked: Duration,
-		budget_created_event: BudgetEvent,
-		budget_allocated_event: BudgetEvent,
-	) {
-		let budget = Budget::from_events(&[budget_created_event, budget_allocated_event]);
-		let result = budget.request_payment(
-			Default::default(),
-			Default::default(),
-			Default::default(),
-			Amount::new(dec!(10), crate::Currency::Crypto("USDT".to_string())),
-			duration_worked,
-			Default::default(),
-		);
-
-		assert_matches!(result, Err(Error::InvalidCurrency));
+		assert_eq!(budget.spend(amount * dec!(2)), Err(Error::Overspent));
 	}
 
 	#[rstest]
 	fn refill_budget(
 		amount: Decimal,
-		duration_worked: Duration,
-		currency: Currency,
 		budget_created_event: BudgetEvent,
 		budget_allocated_event: BudgetEvent,
+		budget_spent_event: BudgetEvent,
 	) {
-		let budget = Budget::from_events(&[budget_created_event, budget_allocated_event]);
+		let budget = Budget::from_events(&[
+			budget_created_event,
+			budget_allocated_event,
+			budget_spent_event,
+		]);
 
-		let events = budget
-			.request_payment(
-				PaymentId::new(),
-				Default::default(),
-				Default::default(),
-				Amount::new(amount, currency.clone()),
-				duration_worked,
-				Default::default(),
-			)
-			.unwrap();
-		let budget = budget.apply_events(&events);
-
-		// refill
-		let result = budget.allocate(amount);
-		assert!(result.is_ok(), "{}", result.err().unwrap());
-		let budget = budget.apply_events(&result.unwrap());
-
-		// start spending again !
-		let events = budget
-			.request_payment(
-				PaymentId::new(),
-				Default::default(),
-				Default::default(),
-				Amount::new(amount, currency),
-				duration_worked,
-				Default::default(),
-			)
-			.unwrap();
-		let budget = budget.apply_events(&events);
+		// refill and start spending again !
+		let budget = budget.allocate(amount, None).unwrap().spend(amount).unwrap();
 
 		// no more budget !
-		assert_eq!(&budget.spent_amount(), budget.allocated_amount.amount());
+		assert_eq!(budget.spent_amount, budget.allocated_amount);
 	}
 
 	#[rstest]
 	fn cut_budget(
 		amount: Decimal,
-		duration_worked: Duration,
-		currency: Currency,
 		budget_created_event: BudgetEvent,
 		budget_allocated_event: BudgetEvent,
+		budget_spent_event: BudgetEvent,
 	) {
 		let budget = Budget::from_events(&[
 			budget_created_event,
 			budget_allocated_event.clone(),
 			budget_allocated_event,
+			budget_spent_event,
 		]);
 
-		let events = budget
-			.request_payment(
-				PaymentId::new(),
-				Default::default(),
-				Default::default(),
-				Amount::new(amount, currency),
-				duration_worked,
-				Default::default(),
-			)
-			.unwrap();
-		let budget = budget.apply_events(&events);
-
 		// cut budget
-		let result = budget.allocate(-amount);
-		assert!(result.is_ok(), "{}", result.err().unwrap());
-		let budget = budget.apply_events(&result.unwrap());
+		let budget = budget.allocate(-amount, None).unwrap();
 
 		// no more budget !
-		assert_eq!(&budget.spent_amount(), budget.allocated_amount.amount());
+		assert_eq!(budget.spent_amount, budget.allocated_amount);
 	}
 
 	#[rstest]
 	fn cannot_cut_budget_below_spent(
 		amount: Decimal,
-		duration_worked: Duration,
-		currency: Currency,
 		budget_created_event: BudgetEvent,
 		budget_allocated_event: BudgetEvent,
+		budget_spent_event: BudgetEvent,
 	) {
-		let budget = Budget::from_events(&[budget_created_event, budget_allocated_event]);
-
-		let events = budget
-			.request_payment(
-				PaymentId::new(),
-				Default::default(),
-				Default::default(),
-				Amount::new(amount, currency),
-				duration_worked,
-				Default::default(),
-			)
-			.unwrap();
-		let budget = budget.apply_events(&events);
+		let budget = Budget::from_events(&[
+			budget_created_event,
+			budget_allocated_event,
+			budget_spent_event,
+		]);
 
 		// cut budget fails
-		let result = budget.allocate(-amount);
-		assert_matches!(result, Err(Error::Overspent));
+		assert_eq!(budget.allocate(-amount, None), Err(Error::Overspent));
 	}
 }

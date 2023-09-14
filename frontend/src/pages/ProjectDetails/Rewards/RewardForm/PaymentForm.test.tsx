@@ -45,7 +45,7 @@ const graphQlMocks = [
     result: {
       data: {
         paymentRequests: [],
-        budgetsAggregate: { aggregate: null },
+        projects: [],
       } as GetPaymentRequestsForProjectQueryResult["data"],
     },
   },
