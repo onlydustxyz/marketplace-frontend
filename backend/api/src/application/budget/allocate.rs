@@ -29,7 +29,7 @@ impl Usecase {
 		let mut events = Vec::new();
 
 		let budget = match project.budgets_by_currency.get(amount.currency().code) {
-			Some(budget_id) => self.budget_repository.find_by_id(&budget_id)?,
+			Some(budget_id) => self.budget_repository.find_by_id(budget_id)?,
 			None => {
 				let budget_id = BudgetId::new();
 				let budget_events = Budget::create(budget_id, amount.currency());

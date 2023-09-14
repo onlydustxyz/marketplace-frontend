@@ -38,7 +38,7 @@ impl Usecase {
 		let budget_id = project.budgets_by_currency.get(currencies::USD.code).ok_or_else(|| {
 			DomainError::InvalidInputs(anyhow!("Project has no budget to spend from"))
 		})?;
-		let budget = self.budget_repository.find_by_id(&budget_id)?;
+		let budget = self.budget_repository.find_by_id(budget_id)?;
 
 		let budget_events = budget
 			.spend(Decimal::from(amount_in_usd))

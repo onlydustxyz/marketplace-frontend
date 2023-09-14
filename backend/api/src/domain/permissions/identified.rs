@@ -21,7 +21,7 @@ impl Permissions for IdentifiedUser {
 	fn can_cancel_payment(&self, payment_id: &PaymentId) -> bool {
 		self.payment_repository
 			.find_by_id(payment_id)
-			.and_then(|payment| Ok(self.projects.contains(&payment.project_id)))
+			.map(|payment| self.projects.contains(&payment.project_id))
 			.unwrap_or(false)
 	}
 

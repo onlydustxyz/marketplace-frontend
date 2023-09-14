@@ -50,7 +50,7 @@ where
 	async fn refresh(&self, id: &str) -> Result<()> {
 		info!(
 			"Refreshing {} {id}",
-			std::any::type_name::<A>().split(":").last().unwrap_or_default()
+			std::any::type_name::<A>().split(':').last().unwrap_or_default()
 		);
 		let id = A::Id::from_str(id).map_err(|_| anyhow!("Unable to parse aggregate id"))?;
 		let events = self.event_store.list_by_id(&id)?;
