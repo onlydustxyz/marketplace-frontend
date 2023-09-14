@@ -107,7 +107,6 @@ diesel::table! {
         id -> Uuid,
         initial_amount -> Numeric,
         remaining_amount -> Numeric,
-        spent_amount -> Numeric,
         currency -> Currency,
     }
 }
