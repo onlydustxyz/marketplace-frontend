@@ -165,6 +165,8 @@ actions:
             }
         template_engine: Kriti
         version: 2
+    permissions:
+      - role: registered_user
   - name: fetchPullRequest
     definition:
       kind: ""

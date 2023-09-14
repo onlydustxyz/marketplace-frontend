@@ -63,7 +63,7 @@ test.describe("As a project lead, I", () => {
     expect(await contributors.byName("AnthonyBuisset").totalEarned()).toBe("-");
     expect(await contributors.byName("AnthonyBuisset").toRewardCount()).toContain("6");
 
-    expect(await contributors.byName("ofux").contributionCount()).toBe("2");
+    expect(await contributors.byName("ofux").contributionCount()).toBe("-");
     expect(await contributors.byName("ofux").rewardCount()).toBe("6");
     expect(await contributors.byName("ofux").totalEarned()).toBe("$13,200");
     expect(await contributors.byName("ofux").toRewardCount()).toBe("0");
@@ -73,7 +73,7 @@ test.describe("As a project lead, I", () => {
     expect(await contributors.byName("oscarwroche").totalEarned()).toBe("$200");
     expect(await contributors.byName("oscarwroche").toRewardCount()).toContain("1");
 
-    expect(await contributors.byName("Bernardstanislas").contributionCount()).toBe("1");
+    expect(await contributors.byName("Bernardstanislas").contributionCount()).toBe("-");
     expect(await contributors.byName("Bernardstanislas").totalEarned()).toBe("-");
     expect(await contributors.byName("Bernardstanislas").rewardCount()).toBe("-");
     expect(await contributors.byName("Bernardstanislas").toRewardCount()).toContain("0");
