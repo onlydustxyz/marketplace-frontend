@@ -1,64 +1,60 @@
 use std::sync::Arc;
 
-use anyhow::anyhow;
+use derive_more::Constructor;
 use domain::{
-	AggregateRootRepository, Amount, BudgetId, DomainError, Event, EventSourcable, Project,
+	AggregateRepository, Amount, Budget, BudgetId, DomainError, Event, EventSourcable, Project,
 	ProjectId, Publisher,
 };
 use infrastructure::amqp::UniqueMessage;
-use rust_decimal::Decimal;
 use tracing::instrument;
 
 use crate::domain::Publishable;
 
+#[derive(Constructor)]
 pub struct Usecase {
 	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
-	project_repository: AggregateRootRepository<Project>,
+	project_repository: AggregateRepository<Project>,
+	budget_repository: AggregateRepository<Budget>,
 }
 
 impl Usecase {
-	pub fn new(
-		event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
-		project_repository: AggregateRootRepository<Project>,
-	) -> Self {
-		Self {
-			event_publisher,
-			project_repository,
-		}
-	}
-
 	#[instrument(skip(self))]
-	pub async fn update_allocation(
+	pub async fn allocate(
 		&self,
-		project_id: &ProjectId,
-		new_remaining_amount: &Amount,
+		project_id: ProjectId,
+		amount: Amount,
 	) -> Result<BudgetId, DomainError> {
-		let project = self.project_repository.find_by_id(project_id)?;
+		let project = self.project_repository.find_by_id(&project_id)?;
 
-		let current_remaining_amount = project.budget().as_ref().map_or(Decimal::ZERO, |b| {
-			b.allocated_amount().amount() - b.spent_amount()
-		});
+		let mut events = Vec::new();
 
-		let diff_amount = new_remaining_amount - current_remaining_amount;
+		let budget = match project.budgets_by_currency.get(amount.currency().code) {
+			Some(budget_id) => self.budget_repository.find_by_id(budget_id)?,
+			None => {
+				let budget_id = BudgetId::new();
+				let budget_events = Budget::create(budget_id, amount.currency());
+				let budget = Budget::from_events(&budget_events);
+				events.append(&mut budget_events.into_iter().map(Event::from).collect());
+				events.append(
+					&mut project
+						.link_budget(budget_id, amount.currency())?
+						.into_iter()
+						.map(Event::from)
+						.collect(),
+				);
 
-		let events = project
-			.allocate_budget(&diff_amount)
-			.map_err(|error| DomainError::InvalidInputs(error.into()))?;
-
-		let project = project.apply_events(&events);
-
-		let budget = project.budget().as_ref().ok_or(DomainError::InternalError(anyhow!(
-			"Failed while allocating budget"
-		)))?;
+				budget
+			},
+		};
 
 		events
 			.into_iter()
-			.map(Event::from)
+			.chain(budget.allocate(*amount.amount())?.into_iter().map(Event::from))
 			.map(UniqueMessage::new)
 			.collect::<Vec<_>>()
 			.publish(self.event_publisher.clone())
 			.await?;
 
-		Ok(*budget.id())
+		Ok(budget.id)
 	}
 }

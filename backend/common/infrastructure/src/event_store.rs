@@ -1,5 +1,5 @@
 use diesel::prelude::*;
-use domain::{Aggregate, Budget, EventStore, EventStoreError, Payment, Project};
+use domain::{Aggregate, Application, Budget, EventStore, EventStoreError, Payment, Project};
 use olog::{error, IntoField};
 use serde_json::Value;
 use tracing::instrument;
@@ -8,6 +8,12 @@ use crate::database::{schema::events, Client};
 
 pub trait NamedAggregate: Aggregate {
 	fn name() -> String;
+}
+
+impl NamedAggregate for Application {
+	fn name() -> String {
+		String::from("APPLICATION")
+	}
 }
 
 impl NamedAggregate for Project {

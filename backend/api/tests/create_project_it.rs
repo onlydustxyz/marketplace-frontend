@@ -3,8 +3,9 @@ mod models;
 
 use anyhow::Result;
 use api::presentation::http::routes::projects;
+use assert_matches::assert_matches;
 use diesel::RunQueryDsl;
-use domain::Event;
+use domain::{currencies, BudgetEvent, BudgetId, Event, ProjectEvent};
 use infrastructure::database::schema::project_details;
 use olog::info;
 use rocket::{
@@ -12,6 +13,7 @@ use rocket::{
 	serde::json::json,
 };
 use rstest::rstest;
+use rust_decimal_macros::dec;
 use testcontainers::clients::Cli;
 
 use crate::{
@@ -30,6 +32,10 @@ pub async fn new_project_added_on_the_platform(docker: &'static Cli) {
 	};
 
 	test.should_create_the_project().await.expect("should_create_the_project");
+
+	test.should_create_a_project_with_initial_budget()
+		.await
+		.expect("should_create_a_project_with_initial_budget");
 }
 
 struct Test<'a> {
@@ -91,6 +97,73 @@ impl<'a> Test<'a> {
 				rank: 0,
 				visibility: infrastructure::database::enums::ProjectVisibility::Public
 			}
+		);
+
+		Ok(())
+	}
+
+	async fn should_create_a_project_with_initial_budget(&mut self) -> Result<()> {
+		info!("should_create_a_project_with_initial_budget");
+
+		let create_project_request = json!({
+			"name": "Another Awesome Project",
+			"shortDescription": "A short description",
+			"longDescription": "A very looong description",
+			"telegramLink": "http://telegram-link.test",
+			"initialBudget": {
+				"amount": "1000",
+				"currency": "USD"
+			}
+		});
+
+		// When
+		let response = self
+			.context
+			.http_client
+			.post("/api/projects")
+			.header(ContentType::JSON)
+			.header(api_key_header())
+			.body(create_project_request.to_string())
+			.dispatch()
+			.await;
+
+		// Then
+		assert_eq!(response.status(), Status::Ok);
+		let project: projects::create::Response = response.into_json().await.unwrap();
+
+		let project_id = project.project_id;
+
+		assert_eq!(
+			self.context.amqp.listen(event_store::bus::QUEUE_NAME).await,
+			Some(Event::Project(ProjectEvent::Created { id: project_id }))
+		);
+
+		let budget_id: BudgetId;
+
+		assert_matches!(
+		self.context.amqp.listen(event_store::bus::QUEUE_NAME).await.unwrap(),
+		Event::Project(event) => {
+			assert_matches!(event, ProjectEvent::BudgetLinked { budget_id: budget_id_, id, currency} => {
+				budget_id = budget_id_;
+				assert_eq!(id, project_id);
+				assert_eq!(currency, currencies::USD);
+			});
+		});
+
+		assert_eq!(
+			Event::Budget(BudgetEvent::Created {
+				id: budget_id,
+				currency: currencies::USD
+			}),
+			self.context.amqp.listen(event_store::bus::QUEUE_NAME).await.unwrap(),
+		);
+
+		assert_eq!(
+			Event::Budget(BudgetEvent::Allocated {
+				id: budget_id,
+				amount: dec!(1000)
+			}),
+			self.context.amqp.listen(event_store::bus::QUEUE_NAME).await.unwrap(),
 		);
 
 		Ok(())

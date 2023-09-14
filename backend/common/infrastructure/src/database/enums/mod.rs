@@ -10,6 +10,9 @@ pub use contribution_type::ContributionType;
 mod contribution_status;
 pub use contribution_status::ContributionStatus;
 
+mod currency;
+pub use currency::Currency;
+
 mod github_ci_checks;
 pub use github_ci_checks::GithubCiChecks;
 

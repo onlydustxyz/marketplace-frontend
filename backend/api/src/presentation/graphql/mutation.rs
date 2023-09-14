@@ -1,16 +1,10 @@
-use anyhow::anyhow;
-use domain::{
-	blockchain::*, Amount, Currency, Iban, PaymentReceipt, ProjectId, ProjectVisibility, UserId,
-};
+use domain::{blockchain::*, Amount, Iban, PaymentReceipt, ProjectId, ProjectVisibility, UserId};
 use juniper::{graphql_object, DefaultScalarValue, Nullable};
-use rusty_money::Money;
 use url::Url;
 use uuid08::Uuid;
 
 use super::{Context, Error, Result};
-use crate::presentation::http::dto::{
-	EthereumIdentityInput, OptionalNonEmptyTrimmedString, PaymentReference,
-};
+use crate::presentation::http::dto::{EthereumIdentityInput, OptionalNonEmptyTrimmedString};
 
 pub struct Mutation;
 
@@ -25,11 +19,7 @@ impl Mutation {
 		recipient_identity: EthereumIdentityInput,
 		transaction_hash: String,
 	) -> Result<Uuid> {
-		let currency = rusty_money::crypto::find(&currency_code).ok_or_else(|| {
-			Error::InvalidRequest(anyhow!("Unknown currency code: {currency_code}"))
-		})?;
-
-		let amount = Money::from_str(&amount, currency)
+		let amount = Amount::from_str(&amount, currency_code.parse()?)
 			.map_err(|e| Error::InvalidRequest(anyhow::Error::msg(e)))?;
 
 		let eth_identity = recipient_identity.try_into().map_err(Error::InvalidRequest)?;
@@ -42,8 +32,8 @@ impl Mutation {
 			.process_payment_usecase
 			.add_payment_receipt(
 				&project_id.into(),
-				&payment_id.into(),
-				Amount::new(*amount.amount(), Currency::Crypto(currency_code)),
+				payment_id.into(),
+				Amount::from_decimal(*amount.amount(), currency_code.parse()?),
 				PaymentReceipt::OnChainPayment {
 					network: Network::Ethereum,
 					recipient_address: ethereum_address,
@@ -68,19 +58,16 @@ impl Mutation {
 		recipient_iban: Iban,
 		transaction_reference: String,
 	) -> Result<Uuid> {
-		let currency = rusty_money::iso::find(&currency_code).ok_or_else(|| {
-			Error::InvalidRequest(anyhow!("Unknown currency code: {currency_code}"))
-		})?;
-
-		let amount = Money::from_str(&amount, currency)
+		let currency = currency_code.parse()?;
+		let amount = Amount::from_str(&amount, currency)
 			.map_err(|e| Error::InvalidRequest(anyhow::Error::msg(e)))?;
 
 		let receipt_id = context
 			.process_payment_usecase
 			.add_payment_receipt(
 				&project_id.into(),
-				&payment_id.into(),
-				Amount::new(*amount.amount(), Currency::Crypto(currency_code)),
+				payment_id.into(),
+				Amount::from_decimal(*amount.amount(), currency),
 				PaymentReceipt::FiatPayment {
 					recipient_iban,
 					transaction_reference,
@@ -91,36 +78,27 @@ impl Mutation {
 		Ok(receipt_id.into())
 	}
 
-	pub async fn mark_invoice_as_received(
-		context: &Context,
-		payment_references: Vec<PaymentReference>,
-	) -> Result<i32> {
-		for payment_reference in &payment_references {
-			let caller_id = context.caller_info()?.user_id;
+	pub async fn mark_invoice_as_received(context: &Context, payments: Vec<Uuid>) -> Result<bool> {
+		let caller_id = context.caller_info()?.user_id;
+		let payments: Vec<_> = payments.into_iter().map(Into::into).collect();
 
-			if !context.caller_permissions.can_mark_invoice_as_received_for_payment(
-				&(*payment_reference.project_id()).into(),
-				&(*payment_reference.payment_id()).into(),
-			) {
-				return Err(Error::NotAuthorized(
-					caller_id,
-					format!(
-						"Only recipient can mark invoice {} as received",
-						payment_reference.payment_id()
-					),
-				));
-			}
+		if payments.iter().any(|payment_id| {
+			!context.caller_permissions.can_mark_invoice_as_received_for_payment(payment_id)
+		}) {
+			return Err(Error::NotAuthorized(
+				caller_id,
+				"Only recipient can mark invoice as received".to_string(),
+			));
 		}
-		context.invoice_usecase.mark_invoice_as_received(&payment_references).await?;
-		Ok(payment_references.len() as i32)
+
+		context.invoice_usecase.mark_invoice_as_received(payments).await?;
+		Ok(true)
 	}
 
-	pub async fn reject_invoice(
-		context: &Context,
-		payment_references: Vec<PaymentReference>,
-	) -> Result<i32> {
-		context.invoice_usecase.reject_invoice(&payment_references).await?;
-		Ok(payment_references.len() as i32)
+	pub async fn reject_invoice(context: &Context, payments: Vec<Uuid>) -> Result<bool> {
+		let payments: Vec<_> = payments.into_iter().map(Into::into).collect();
+		context.invoice_usecase.reject_invoice(payments).await?;
+		Ok(true)
 	}
 
 	pub async fn update_project(
@@ -151,26 +129,6 @@ impl Mutation {
 			.await?;
 
 		Ok(id)
-	}
-
-	pub async fn update_budget_allocation(
-		context: &Context,
-		project_id: Uuid,
-		new_remaining_amount_in_usd: i32,
-	) -> Result<Uuid> {
-		let budget_id = context
-			.update_budget_allocation_usecase
-			.update_allocation(
-				&project_id.into(),
-				&Money::from_major(
-					new_remaining_amount_in_usd as i64,
-					rusty_money::crypto::USDC,
-				)
-				.into(),
-			)
-			.await?;
-
-		Ok(budget_id.into())
 	}
 
 	pub async fn link_github_repo(

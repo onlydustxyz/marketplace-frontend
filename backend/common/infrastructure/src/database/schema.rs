@@ -22,6 +22,10 @@ pub mod sql_types {
     pub struct ContributionType;
 
     #[derive(diesel::query_builder::QueryId, diesel::sql_types::SqlType)]
+    #[diesel(postgres_type(name = "currency"))]
+    pub struct Currency;
+
+    #[derive(diesel::query_builder::QueryId, diesel::sql_types::SqlType)]
     #[diesel(postgres_type(name = "github_ci_checks"))]
     pub struct GithubCiChecks;
 
@@ -96,12 +100,14 @@ diesel::table! {
 }
 
 diesel::table! {
+    use diesel::sql_types::*;
+    use super::sql_types::Currency;
+
     budgets (id) {
         id -> Uuid,
-        project_id -> Nullable<Uuid>,
         initial_amount -> Numeric,
         remaining_amount -> Numeric,
-        spent_amount -> Numeric,
+        currency -> Currency,
     }
 }
 
@@ -310,13 +316,13 @@ diesel::table! {
 diesel::table! {
     payment_requests (id) {
         id -> Uuid,
-        budget_id -> Uuid,
         requestor_id -> Uuid,
         recipient_id -> Int8,
         amount_in_usd -> Int8,
         requested_at -> Timestamp,
         invoice_received_at -> Nullable<Timestamp>,
         hours_worked -> Int4,
+        project_id -> Uuid,
     }
 }
 
@@ -375,6 +381,13 @@ diesel::table! {
 diesel::table! {
     projects (id) {
         id -> Uuid,
+    }
+}
+
+diesel::table! {
+    projects_budgets (project_id, budget_id) {
+        project_id -> Uuid,
+        budget_id -> Uuid,
     }
 }
 
@@ -515,6 +528,7 @@ diesel::allow_tables_to_appear_in_same_query!(
     project_github_repos,
     project_leads,
     projects,
+    projects_budgets,
     projects_contributors,
     projects_pending_contributors,
     projects_rewarded_users,
