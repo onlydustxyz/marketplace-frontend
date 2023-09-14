@@ -47,7 +47,10 @@ describe("Work items", () => {
   });
 
   it("should be filtered by number", () => {
-    const filteredWorkItems = useFilteredWorkItems({ pattern: "123", contributions: workItems });
+    const filteredWorkItems = useFilteredWorkItems({
+      pattern: "123",
+      contributions: workItems,
+    }) as ContributionFragment[];
     expect(filteredWorkItems).toHaveLength(1);
     expect(filteredWorkItems[0].id).toEqual("123");
   });

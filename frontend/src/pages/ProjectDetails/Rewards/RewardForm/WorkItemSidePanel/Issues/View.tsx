@@ -77,8 +77,6 @@ export default function View({
   const searchPattern = watch(`search-${tabName}`);
   const filteredContributions = useFilteredContributions({ pattern: searchPattern, contributions: visibleIssues });
 
-  console.log(filteredContributions);
-
   return (
     <div className="flex h-full flex-col gap-3 overflow-hidden px-6">
       <div className="flex flex-col gap-3 pt-8">
@@ -130,7 +128,7 @@ export default function View({
         <VirtualizedIssueList
           {...{
             as: tabName === "issues" ? GithubIssue : GithubPullRequest,
-            contributions: filteredContributions,
+            contributions: filteredContributions as ContributionFragment[],
             addContribution: addContributionWithToast,
             ignoreContribution,
             unignoreContribution,

@@ -25,7 +25,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { OtherWork } from "./types";
 import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
-import { WorkItem } from "pages/ProjectDetails/Rewards/RewardForm";
+import { WorkItem } from "src/pages/ProjectDetails/Rewards/RewardForm";
 
 type Props = {
   projectId: string;
