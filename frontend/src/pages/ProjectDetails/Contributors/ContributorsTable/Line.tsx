@@ -35,11 +35,11 @@ export default function ContributorLine({
       <Cell height={CellHeight.Small} horizontalMargin={false}>
         {contributor.rewardCount || "-"}
       </Cell>
-      <Cell height={CellHeight.Small} horizontalMargin={false}>{`${
-        contributor?.totalEarned ? formatMoneyAmount({ amount: contributor.totalEarned }) : "-"
-      }`}</Cell>
+      <Cell height={CellHeight.Small} horizontalMargin={false}>{`${contributor?.totalEarned ? formatMoneyAmount({ amount: contributor.totalEarned }) : "-"
+        }`}</Cell>
       {isProjectLeader && (
         <Cell height={CellHeight.Small} horizontalMargin={false}>
+          {/*  TODO: Uncomment when Code Review availables */}
           {contributor.toRewardCount ? (
             <div
               id="to-reward-count"
@@ -48,11 +48,13 @@ export default function ContributorLine({
               data-tooltip-content={JSON.stringify({
                 unpaidPullRequestCount: contributor.unpaidPullRequestCount,
                 unpaidIssueCount: contributor.unpaidIssueCount,
-                unpaidCodeReviewCount: contributor.unpaidCodeReviewCount,
+                // unpaidCodeReviewCount: contributor.unpaidCodeReviewCount,
               })}
             >
               <StackLine />
-              <span className="font-walsheim font-medium">{contributor.toRewardCount}</span>
+
+              {/* <span className="font-walsheim font-medium">{contributor.toRewardCount}</span>  */}
+              <span className="font-walsheim font-medium">{contributor.toRewardCount - contributor.unpaidCodeReviewCount}</span>
             </div>
           ) : (
             "-"
