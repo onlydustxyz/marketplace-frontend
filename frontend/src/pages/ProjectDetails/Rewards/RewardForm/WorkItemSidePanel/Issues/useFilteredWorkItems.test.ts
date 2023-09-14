@@ -1,7 +1,5 @@
 import { ContributionFragment, GithubPullRequestStatus, WorkItemType } from "src/__generated/graphql";
 import useFilteredWorkItems from "./useFilteredWorkItems";
-import { GithubIssueType } from "src/types";
-import { WorkItem } from "../..";
 
 const workItems: ContributionFragment[] = [
   {
@@ -11,10 +9,10 @@ const workItems: ContributionFragment[] = [
     repoId: 1,
     ignored: false,
     projectId: 123,
-    detailsId: '00000',
-    githubUserId: '123456',
+    detailsId: "00000",
+    githubUserId: "123456",
     githubIssue: null,
-    githubPullRequest: null
+    githubPullRequest: null,
   },
   {
     id: "456",
@@ -23,10 +21,10 @@ const workItems: ContributionFragment[] = [
     repoId: 1,
     ignored: false,
     projectId: 456,
-    detailsId: '00000',
-    githubUserId: '123456',
+    detailsId: "00000",
+    githubUserId: "123456",
     githubIssue: null,
-    githubPullRequest: null
+    githubPullRequest: null,
   },
   {
     id: "789",
@@ -35,10 +33,10 @@ const workItems: ContributionFragment[] = [
     repoId: 1,
     ignored: false,
     projectId: 789,
-    detailsId: '00000',
-    githubUserId: '123456',
+    detailsId: "00000",
+    githubUserId: "123456",
     githubIssue: null,
-    githubPullRequest: null
+    githubPullRequest: null,
   },
 ];
 

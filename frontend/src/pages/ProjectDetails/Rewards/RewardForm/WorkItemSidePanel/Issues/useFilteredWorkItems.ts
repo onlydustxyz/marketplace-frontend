@@ -14,8 +14,9 @@ export default function useFilteredContributions({ pattern = "", contributions }
     .map(str => new RegExp(escapeRegExp(str), "i"));
 
   return filter(contributions, (contribution: ContributionFragment) => {
+    if (!contribution.id) return;
     // const contributionFullText = contribution.number.toString() + " " + contribution.title;
-    const contributionFullText = contribution.id!;
+    const contributionFullText = contribution.id;
     return searchRegExps.filter(regexp => !regexp.test(contributionFullText)).length === 0;
   });
 }

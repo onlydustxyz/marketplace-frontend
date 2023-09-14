@@ -139,9 +139,9 @@ export default function View({
                     processedAt: formatDateTime(new Date(payments?.at(0)?.processedAt)),
                   }),
                   formattedReceipt &&
-                  T(`reward.table.detailsPanel.processedVia.${formattedReceipt?.type}`, {
-                    recipient: formattedReceipt?.shortDetails,
-                  }),
+                    T(`reward.table.detailsPanel.processedVia.${formattedReceipt?.type}`, {
+                      recipient: formattedReceipt?.shortDetails,
+                    }),
                 ]
                   .filter(isDefined)
                   .join("\n")}

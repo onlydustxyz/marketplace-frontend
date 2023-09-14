@@ -16,7 +16,7 @@ import View from "./View";
 import { useIgnoredContributions } from "./useIgnoredContributions";
 import { GithubIssue as GithubIssueType } from "src/components/GithubIssue";
 import { GithubPullRequest as GithubPullRequestType } from "src/components/GithubPullRequest";
-import { WorkItem } from "../..";
+import { WorkItem } from "src/pages/ProjectDetails/Rewards/RewardForm";
 
 type Props = {
   type: WorkItemType;
@@ -31,7 +31,7 @@ export default function Issues({ type, projectId, contributorId, workItems, addW
 
   const addAndUnignoreContribution = (contribution: ContributionFragment) => {
     const workItem = contributionToWorkItem(contribution);
-    if (workItem?.ignored) unignoreContribution(projectId, contribution.id!);
+    if (workItem?.ignored && contribution.id) unignoreContribution(projectId, contribution.id);
     workItem && addWorkItem(workItem);
   };
 
@@ -58,8 +58,12 @@ export default function Issues({ type, projectId, contributorId, workItems, addW
       type={type}
       addWorkItem={addWorkItem}
       addContribution={addAndUnignoreContribution}
-      ignoreContribution={(contribution: ContributionFragment) => ignoreContribution(projectId, contribution.id!)}
-      unignoreContribution={(contribution: ContributionFragment) => unignoreContribution(projectId, contribution.id!)}
+      ignoreContribution={(contribution: ContributionFragment) =>
+        contribution.id && ignoreContribution(projectId, contribution.id)
+      }
+      unignoreContribution={(contribution: ContributionFragment) =>
+        contribution.id && unignoreContribution(projectId, contribution.id)
+      }
     />
   );
 }
@@ -106,7 +110,9 @@ const githubIssueCreatedAndClosedStatusToGithubIssueStatus = (
   }
 };
 
-export const pullRequestToWorkItem = (props: GithubPullRequestFragment | LiveGithubPullRequestFragment): GithubPullRequestType => ({
+export const pullRequestToWorkItem = (
+  props: GithubPullRequestFragment | LiveGithubPullRequestFragment
+): GithubPullRequestType => ({
   ...props,
   type: WorkItemType.PullRequest,
   ignored: false,

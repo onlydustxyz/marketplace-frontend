@@ -1,4 +1,3 @@
-import IssueClosed from "src/assets/icons/IssueClosed";
 import { useIntl } from "src/hooks/useIntl";
 import Add from "src/icons/Add";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
@@ -59,9 +58,6 @@ export default function GithubPullRequest({
   addMarginTopForVirtuosoDisplay = false,
 }: Props) {
   const { repoName } = parseIssueLink(workItem.htmlUrl);
-
-
-  console.log('TEST', { url: workItem.htmlUrl, repoName })
 
   return (
     <Card

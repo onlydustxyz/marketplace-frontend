@@ -36,8 +36,9 @@ export default function ContributorLine({
       <Cell height={CellHeight.Small} horizontalMargin={false}>
         {contributor.rewardCount || "-"}
       </Cell>
-      <Cell height={CellHeight.Small} horizontalMargin={false}>{`${contributor?.totalEarned ? formatMoneyAmount({ amount: contributor.totalEarned }) : "-"
-        }`}</Cell>
+      <Cell height={CellHeight.Small} horizontalMargin={false}>{`${
+        contributor?.totalEarned ? formatMoneyAmount({ amount: contributor.totalEarned }) : "-"
+      }`}</Cell>
       {isProjectLeader && (
         <Cell height={CellHeight.Small} horizontalMargin={false}>
           {/*  TODO: Uncomment when Code Review availables */}
@@ -54,8 +55,11 @@ export default function ContributorLine({
             >
               <StackLine />
 
+              {/*  TODO: Uncomment when Code Review availables */}
               {/* <span className="font-walsheim font-medium">{contributor.toRewardCount}</span>  */}
-              <span className="font-walsheim font-medium">{contributor.toRewardCount - contributor.unpaidCodeReviewCount}</span>
+              <span className="font-walsheim font-medium">
+                {contributor.toRewardCount - contributor.unpaidCodeReviewCount}
+              </span>
             </div>
           ) : (
             "-"

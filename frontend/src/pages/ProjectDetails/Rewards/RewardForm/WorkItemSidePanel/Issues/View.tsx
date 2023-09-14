@@ -17,7 +17,7 @@ import Toggle from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePane
 import OtherIssueInput from "./OtherIssueInput";
 import useFilteredContributions from "./useFilteredWorkItems";
 import { contributionToWorkItem } from "./index";
-import { WorkItem } from "../..";
+import { WorkItem } from "src/pages/ProjectDetails/Rewards/RewardForm";
 
 const THEORETICAL_MAX_SCREEN_HEIGHT = 2000;
 
@@ -131,7 +131,7 @@ export default function View({
           {...{
             as: tabName === "issues" ? GithubIssue : GithubPullRequest,
             contributions: filteredContributions,
-            addContribution,
+            addContribution: addContributionWithToast,
             ignoreContribution,
             unignoreContribution,
             tabName,

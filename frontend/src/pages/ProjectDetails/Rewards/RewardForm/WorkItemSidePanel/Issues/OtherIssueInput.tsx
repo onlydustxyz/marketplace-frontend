@@ -25,7 +25,7 @@ type Props = {
   addWorkItem: (workItem: GithubIssueType | GithubPullRequestType) => void;
 };
 
-export default function OtherIssueInput({ projectId, type, addWorkItem }: Props) {
+export default function OtherIssueInput({ type, addWorkItem }: Props) {
   const { T } = useIntl();
   const inputName = type === WorkItemType.Issue ? "otherIssueLink" : "otherPullRequestLink";
   const tKey = type === WorkItemType.Issue ? "issues" : "pullRequests";
@@ -87,19 +87,19 @@ export default function OtherIssueInput({ projectId, type, addWorkItem }: Props)
   const validateOtherIssue = () =>
     type === WorkItemType.Issue
       ? fetchIssue({
-        variables: {
-          repoOwner,
-          repoName,
-          issueNumber,
-        },
-      })
+          variables: {
+            repoOwner,
+            repoName,
+            issueNumber,
+          },
+        })
       : fetchPullRequest({
-        variables: {
-          repoOwner,
-          repoName,
-          prNumber: issueNumber,
-        },
-      });
+          variables: {
+            repoOwner,
+            repoName,
+            prNumber: issueNumber,
+          },
+        });
 
   return (
     <div className="flex flex-col gap-2 rounded-lg border border-greyscale-50/12 p-4">
