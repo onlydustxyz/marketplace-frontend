@@ -18,6 +18,7 @@ pub struct Projector {
 	github_repo_index_repository: Arc<dyn GithubRepoIndexRepository>,
 	projects_contributors_repository: Arc<dyn ProjectsContributorRepository>,
 	projects_pending_contributors_repository: Arc<dyn ProjectsPendingContributorRepository>,
+	project_budgets_repository: Arc<dyn ImmutableRepository<ProjectsBudget>>,
 }
 
 #[async_trait]
@@ -43,7 +44,12 @@ impl EventListener<Event> for Projector {
 				ProjectEvent::LeaderUnassigned { id, leader_id } => {
 					self.project_lead_repository.delete((id, leader_id))?;
 				},
-				ProjectEvent::BudgetLinked { .. } => todo!(),
+				ProjectEvent::BudgetLinked { id, budget_id } => {
+					self.project_budgets_repository.try_insert(ProjectsBudget {
+						project_id: id,
+						budget_id,
+					})?;
+				},
 				ProjectEvent::GithubRepoLinked {
 					id: project_id,
 					github_repo_id,

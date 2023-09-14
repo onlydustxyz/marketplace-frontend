@@ -13,6 +13,7 @@ mod payments;
 mod project_github_repos;
 mod project_leads;
 mod projects;
+mod projects_budgets;
 mod projects_contributors;
 mod projects_pending_contributors;
 mod projects_rewarded_users;
@@ -38,6 +39,7 @@ pub use payments::Payment;
 pub use project_github_repos::{ProjectGithubRepo, Repository as ProjectGithubRepoRepository};
 pub use project_leads::ProjectLead;
 pub use projects::Project;
+pub use projects_budgets::ProjectsBudget;
 pub use projects_contributors::{ProjectsContributor, Repository as ProjectsContributorRepository};
 pub use projects_pending_contributors::{
 	ProjectsPendingContributor, Repository as ProjectsPendingContributorRepository,

@@ -14,6 +14,7 @@ pub fn create(database: Arc<database::Client>) -> impl Refreshable {
 		database.clone(),
 		database.clone(),
 		database.clone(),
+		database.clone(),
 	);
 
 	Refresher::<Project>::new(database, vec![Arc::new(project_projector)])
