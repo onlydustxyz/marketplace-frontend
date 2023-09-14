@@ -36,6 +36,7 @@ pub async fn bootstrap(config: Config) -> Result<Rocket<Build>> {
 		Arc::new(amqp::Bus::new(config.amqp.clone()).await?),
 		AggregateRepository::new(database.clone()),
 		AggregateRepository::new(database.clone()),
+		AggregateRepository::new(database.clone()),
 		database.clone(),
 		database.clone(),
 		database.clone(),

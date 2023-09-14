@@ -19,6 +19,7 @@ use rocket::{
 };
 use rstest::rstest;
 use rust_decimal::Decimal;
+use rust_decimal_macros::dec;
 use testcontainers::clients::Cli;
 use uuid::Uuid;
 
@@ -135,6 +136,14 @@ impl<'a> Test<'a> {
 		let payment_id: PaymentId = response.payment_id;
 
 		let after = Utc::now().naive_utc();
+
+		assert_eq!(
+			Event::Budget(BudgetEvent::Spent {
+				id: budget_id,
+				amount: dec!(10)
+			}),
+			self.context.amqp.listen(event_store::bus::QUEUE_NAME).await.unwrap(),
+		);
 
 		assert_matches!(
 			self.context.amqp.listen(event_store::bus::QUEUE_NAME).await.unwrap(),
@@ -375,7 +384,10 @@ impl<'a> Test<'a> {
 			}],
 		)?;
 
-		let request = json!({});
+		let request = json!({
+			"projectId": project_id,
+			"paymentId": payment_id,
+		});
 
 		// When
 		let response = self
@@ -452,6 +464,7 @@ impl<'a> Test<'a> {
 		)?;
 
 		let request = json!({
+			"projectId": project_id,
 			"paymentId": payment_id,
 		});
 
@@ -526,6 +539,7 @@ impl<'a> Test<'a> {
 		)?;
 
 		let request = json!({
+			"projectId": project_id,
 			"paymentId": payment_id,
 		});
 
