@@ -95,10 +95,10 @@ test.describe("As a registered user, I", () => {
     projects,
     users,
     signIn,
-    acceptTermsAndConditions,
+    skipTermsAndConditions,
   }) => {
     await signIn(users.Olivier);
-    await acceptTermsAndConditions({ skipOnboardingWizzard: true });
+    await skipTermsAndConditions();
     await page.goto(`/p/${projects.ProjectA.key}/rewards`);
     await expect(page).toHaveURL("/not-found");
   });
@@ -108,10 +108,10 @@ test.describe("As a registered user, I", () => {
     projects,
     users,
     signIn,
-    acceptTermsAndConditions,
+    skipTermsAndConditions,
   }) => {
     await signIn(users.Oscar);
-    await acceptTermsAndConditions();
+    await skipTermsAndConditions();
     const browseProjectsPage = new BrowseProjectsPage(page);
     await browseProjectsPage.goto();
     await browseProjectsPage.expectProjectsToBeVisible(projects.Private);
@@ -122,10 +122,10 @@ test.describe("As a registered user, I", () => {
     projects,
     users,
     signIn,
-    acceptTermsAndConditions,
+    skipTermsAndConditions,
   }) => {
     await signIn(users.Anthony);
-    await acceptTermsAndConditions();
+    await skipTermsAndConditions();
     const browseProjectsPage = new BrowseProjectsPage(page);
     await browseProjectsPage.goto();
     await browseProjectsPage.expectProjectsToBeVisible(projects.Private);
@@ -136,10 +136,10 @@ test.describe("As a registered user, I", () => {
     projects,
     users,
     signIn,
-    acceptTermsAndConditions,
+    skipTermsAndConditions,
   }) => {
     await signIn(users.Olivier);
-    await acceptTermsAndConditions();
+    await skipTermsAndConditions();
     const browseProjectsPage = new BrowseProjectsPage(page);
     await browseProjectsPage.goto();
     await browseProjectsPage.expectProjectsToBeVisible(projects.Private);
@@ -150,10 +150,10 @@ test.describe("As a registered user, I", () => {
     projects,
     users,
     signIn,
-    acceptTermsAndConditions,
+    skipTermsAndConditions,
   }) => {
     await signIn(users.Pierre);
-    await acceptTermsAndConditions();
+    await skipTermsAndConditions();
     const browseProjectsPage = new BrowseProjectsPage(page);
     await browseProjectsPage.goto();
     await browseProjectsPage.expectProjectsToBeVisible(projects.Private);
@@ -166,7 +166,7 @@ test.describe("As a registered user, I", () => {
     await browseProjectsPage.expectProjectsNotToBeVisible(projects.Private);
   });
 
-  test("can express my interest to a project", async ({ page, projects, users, signIn, acceptTermsAndConditions }) => {
+  test("can express my interest to a project", async ({ page, projects, users, signIn, skipTermsAndConditions }) => {
     const project = projects.ProjectA;
     const lead = users.TokioRs;
     const applicant = users.EmptyContributor;
@@ -175,7 +175,7 @@ test.describe("As a registered user, I", () => {
 
     // Contributor is new on the plateform, wants to apply on the project
     await signIn(applicant);
-    await acceptTermsAndConditions();
+    await skipTermsAndConditions();
     await projectPage.goto();
     {
       const overviewPage = await projectPage.overview();
@@ -192,7 +192,7 @@ test.describe("As a registered user, I", () => {
 
     // Project lead cannot see the apply button
     await signIn(lead);
-    await acceptTermsAndConditions();
+    await skipTermsAndConditions();
     await projectPage.goto();
     {
       const overviewPage = await projectPage.overview();
