@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use domain::{AggregateRepository, Budget, GithubUserId, Payment, Project, UserId};
+use domain::{AggregateRepository, GithubUserId, Payment, Project, UserId};
 use infrastructure::{
 	amqp,
 	database::{ImmutableRepository, Repository},
@@ -21,12 +21,9 @@ pub struct Context {
 	caller_info: Option<Claims>,
 	pub process_payment_usecase: application::payment::process::Usecase,
 	pub invoice_usecase: application::payment::invoice::Usecase,
-	pub update_budget_allocation_usecase: application::budget::allocate::Usecase,
 	pub update_project_usecase: application::project::update::Usecase,
 	pub link_github_repo_usecase: application::project::link_github_repo::Usecase,
 	pub unlink_github_repo_usecase: application::project::unlink_github_repo::Usecase,
-	pub create_sponsor_usecase: application::sponsor::create::Usecase,
-	pub update_sponsor_usecase: application::sponsor::update::Usecase,
 	pub add_sponsor_usecase: application::project::add_sponsor::Usecase,
 	pub remove_sponsor_usecase: application::project::remove_sponsor::Usecase,
 	pub remove_project_leader_usecase: application::project::remove_leader::Usecase,
@@ -46,10 +43,8 @@ impl Context {
 		caller_permissions: Box<dyn Permissions>,
 		caller_info: Option<Claims>,
 		project_repository: AggregateRepository<Project>,
-		budget_repository: AggregateRepository<Budget>,
 		payment_repository: AggregateRepository<Payment>,
 		project_details_repository: Arc<dyn Repository<ProjectDetails>>,
-		sponsor_repository: Arc<dyn Repository<Sponsor>>,
 		project_sponsor_repository: Arc<dyn ImmutableRepository<ProjectsSponsor>>,
 		pending_project_leader_invitations_repository: Arc<
 			dyn ImmutableRepository<PendingProjectLeaderInvitation>,
@@ -78,11 +73,6 @@ impl Context {
 				bus.to_owned(),
 				payment_repository,
 			),
-			update_budget_allocation_usecase: application::budget::allocate::Usecase::new(
-				bus.to_owned(),
-				project_repository.clone(),
-				budget_repository,
-			),
 			update_project_usecase: application::project::update::Usecase::new(
 				project_details_repository.clone(),
 				simple_storage.clone(),
@@ -95,14 +85,6 @@ impl Context {
 			unlink_github_repo_usecase: application::project::unlink_github_repo::Usecase::new(
 				bus.to_owned(),
 				project_repository.clone(),
-			),
-			create_sponsor_usecase: application::sponsor::create::Usecase::new(
-				sponsor_repository.clone(),
-				simple_storage.clone(),
-			),
-			update_sponsor_usecase: application::sponsor::update::Usecase::new(
-				sponsor_repository,
-				simple_storage.clone(),
 			),
 			add_sponsor_usecase: application::project::add_sponsor::Usecase::new(
 				project_sponsor_repository.clone(),

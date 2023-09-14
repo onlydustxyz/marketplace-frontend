@@ -1,6 +1,7 @@
 use std::sync::Arc;
 
 use anyhow::Result;
+use derive_more::Constructor;
 use domain::sponsor;
 use infrastructure::database::Repository;
 use reqwest::Url;
@@ -9,23 +10,13 @@ use tracing::instrument;
 use super::Error;
 use crate::{domain::ImageStoreService, models::*, presentation::http::dto::NonEmptyTrimmedString};
 
+#[derive(Constructor)]
 pub struct Usecase {
 	sponsor_repository: Arc<dyn Repository<Sponsor>>,
 	image_store: Arc<dyn ImageStoreService>,
 }
 
 impl Usecase {
-	pub fn new(
-		sponsor_repository: Arc<dyn Repository<Sponsor>>,
-		image_store: Arc<dyn ImageStoreService>,
-	) -> Self {
-		Self {
-			sponsor_repository,
-			image_store,
-		}
-	}
-
-	#[allow(clippy::too_many_arguments)]
 	#[instrument(skip(self))]
 	pub async fn update(
 		&self,
