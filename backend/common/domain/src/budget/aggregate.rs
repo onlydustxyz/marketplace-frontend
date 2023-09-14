@@ -3,7 +3,7 @@ use thiserror::Error;
 
 use crate::{Aggregate, BudgetEvent, BudgetId, Currency, EventSourcable};
 
-#[derive(Debug, Error)]
+#[derive(Debug, Error, PartialEq, Eq)]
 pub enum Error {
 	#[error("Not enough budget left")]
 	Overspent,
@@ -74,7 +74,6 @@ impl EventSourcable for Budget {
 
 #[cfg(test)]
 mod tests {
-	use assert_matches::assert_matches;
 	use rstest::*;
 	use rust_decimal_macros::dec;
 	use uuid::Uuid;
@@ -85,18 +84,6 @@ mod tests {
 	#[fixture]
 	#[once]
 	fn budget_id() -> BudgetId {
-		Uuid::new_v4().into()
-	}
-
-	#[fixture]
-	#[once]
-	fn project_id() -> ProjectId {
-		Uuid::new_v4().into()
-	}
-
-	#[fixture]
-	#[once]
-	fn payment_id() -> PaymentId {
 		Uuid::new_v4().into()
 	}
 
@@ -134,6 +121,14 @@ mod tests {
 		}
 	}
 
+	#[fixture]
+	fn budget_refund_event(budget_id: &BudgetId, amount: Decimal) -> BudgetEvent {
+		BudgetEvent::Spent {
+			id: *budget_id,
+			amount: -amount,
+		}
+	}
+
 	#[rstest]
 	fn create_budget(
 		budget_id: &BudgetId,
@@ -153,9 +148,7 @@ mod tests {
 		budget_allocated_event: BudgetEvent,
 	) {
 		let budget = Budget::from_events(&[budget_created_event]);
-		let result = budget.allocate(amount);
-		assert!(result.is_ok(), "{}", result.err().unwrap());
-		assert_eq!(result.unwrap(), vec![budget_allocated_event]);
+		assert_eq!(budget.allocate(amount), Ok(vec![budget_allocated_event]));
 	}
 
 	#[rstest]
@@ -166,10 +159,7 @@ mod tests {
 		budget_spent_event: BudgetEvent,
 	) {
 		let budget = Budget::from_events(&[budget_created_event, budget_allocated_event]);
-		let result = budget.spend(amount);
-		assert!(result.is_ok(), "{}", result.err().unwrap());
-		let events = result.unwrap();
-		assert_eq!(events[0], budget_spent_event);
+		assert_eq!(budget.spend(amount), Ok(vec![budget_spent_event]));
 	}
 
 	#[rstest]
@@ -178,14 +168,14 @@ mod tests {
 		budget_created_event: BudgetEvent,
 		budget_allocated_event: BudgetEvent,
 		budget_spent_event: BudgetEvent,
+		budget_refund_event: BudgetEvent,
 	) {
 		let budget = Budget::from_events(&[
 			budget_created_event,
 			budget_allocated_event,
 			budget_spent_event,
 		]);
-		let result = budget.spend(-amount);
-		assert!(result.is_ok(), "{}", result.err().unwrap());
+		assert_eq!(budget.spend(-amount), Ok(vec![budget_refund_event]));
 	}
 
 	#[rstest]
@@ -195,8 +185,7 @@ mod tests {
 		budget_allocated_event: BudgetEvent,
 	) {
 		let budget = Budget::from_events(&[budget_created_event, budget_allocated_event]);
-		let result = budget.spend(amount * dec!(2));
-		assert_matches!(result, Err(Error::Overspent));
+		assert_eq!(budget.spend(amount * dec!(2)), Err(Error::Overspent));
 	}
 
 	#[rstest]
@@ -213,9 +202,8 @@ mod tests {
 		]);
 
 		// refill
-		let result = budget.allocate(amount);
-		assert!(result.is_ok(), "{}", result.err().unwrap());
-		let budget = budget.apply_events(&result.unwrap());
+		let events = budget.allocate(amount).unwrap();
+		let budget = budget.apply_events(&events);
 
 		// start spending again !
 		let events = budget.spend(amount).unwrap();
@@ -241,7 +229,6 @@ mod tests {
 
 		// cut budget
 		let result = budget.allocate(-amount);
-		assert!(result.is_ok(), "{}", result.err().unwrap());
 		let budget = budget.apply_events(&result.unwrap());
 
 		// no more budget !
@@ -262,7 +249,6 @@ mod tests {
 		]);
 
 		// cut budget fails
-		let result = budget.allocate(-amount);
-		assert_matches!(result, Err(Error::Overspent));
+		assert_eq!(budget.allocate(-amount), Err(Error::Overspent));
 	}
 }

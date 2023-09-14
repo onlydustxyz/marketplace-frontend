@@ -55,9 +55,7 @@ impl From<ProjectError> for DomainError {
 			| ProjectError::LeaderAlreadyAssigned
 			| ProjectError::NotLeader
 			| ProjectError::GithubRepoAlreadyLinked
-			| ProjectError::NotLinked
-			| ProjectError::NoBudget
-			| ProjectError::Infrastructure(_)
+			| ProjectError::GithubRepoNotLinked
 			| ProjectError::UserAlreadyApplied => Self::InvalidInputs(error.into()),
 		}
 	}

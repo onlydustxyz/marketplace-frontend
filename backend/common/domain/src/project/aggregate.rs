@@ -5,7 +5,7 @@ use thiserror::Error;
 
 use crate::*;
 
-#[derive(Debug, Error)]
+#[derive(Debug, Error, PartialEq, Eq)]
 pub enum Error {
 	#[error("Budget already exists for the given currency")]
 	BudgetAlreadyExists,
@@ -16,11 +16,7 @@ pub enum Error {
 	#[error("Github repository already linked to this project")]
 	GithubRepoAlreadyLinked,
 	#[error("Github repository is not linked to this project")]
-	NotLinked,
-	#[error("Budget must be created first")]
-	NoBudget,
-	#[error(transparent)]
-	Infrastructure(anyhow::Error),
+	GithubRepoNotLinked,
 	#[error("User already applied to this project")]
 	UserAlreadyApplied,
 }
@@ -140,7 +136,7 @@ impl Project {
 		github_repo_id: GithubRepoId,
 	) -> Result<Vec<<Self as Aggregate>::Event>> {
 		if !self.github_repos.contains(&github_repo_id) {
-			return Err(Error::NotLinked);
+			return Err(Error::GithubRepoNotLinked);
 		}
 
 		Ok(vec![ProjectEvent::GithubRepoUnlinked {
@@ -167,7 +163,6 @@ mod tests {
 
 	use assert_matches::assert_matches;
 	use rstest::{fixture, rstest};
-	use rust_decimal_macros::dec;
 	use uuid::Uuid;
 
 	use super::*;
@@ -189,8 +184,8 @@ mod tests {
 	}
 
 	#[fixture]
-	fn initial_budget() -> Amount {
-		Amount::from_decimal(dec!(1000), currencies::USD)
+	fn marketplace_id() -> GithubRepoId {
+		498695724_u64.into()
 	}
 
 	#[fixture]
@@ -206,55 +201,204 @@ mod tests {
 		}
 	}
 
-	#[rstest]
-	async fn test_create(project_id: ProjectId) {
-		let events = Project::create(project_id);
+	#[fixture]
+	fn leader_assigned(project_id: ProjectId, user_id: UserId) -> ProjectEvent {
+		ProjectEvent::LeaderAssigned {
+			id: project_id,
+			leader_id: user_id,
+			assigned_at: Utc::now().naive_utc(),
+		}
+	}
 
-		assert_eq!(events.len(), 1);
-		assert_eq!(events[0], ProjectEvent::Created { id: project_id });
+	#[fixture]
+	fn leader_unassigned(project_id: ProjectId, user_id: UserId) -> ProjectEvent {
+		ProjectEvent::LeaderUnassigned {
+			id: project_id,
+			leader_id: user_id,
+		}
+	}
+
+	#[fixture]
+	fn marketplace_linked(project_id: ProjectId, marketplace_id: GithubRepoId) -> ProjectEvent {
+		ProjectEvent::GithubRepoLinked {
+			id: project_id,
+			github_repo_id: marketplace_id,
+		}
+	}
+
+	#[fixture]
+	fn marketplace_unlinked(project_id: ProjectId, marketplace_id: GithubRepoId) -> ProjectEvent {
+		ProjectEvent::GithubRepoUnlinked {
+			id: project_id,
+			github_repo_id: marketplace_id,
+		}
+	}
+
+	#[fixture]
+	fn user_applied(project_id: ProjectId, user_id: UserId) -> ProjectEvent {
+		ProjectEvent::Applied {
+			id: project_id,
+			applicant_id: user_id,
+		}
 	}
 
 	#[rstest]
-	fn test_assign_leader(project_created: ProjectEvent, user_id: UserId, project_id: ProjectId) {
+	fn create_project(project_id: ProjectId, project_created: ProjectEvent) {
+		assert_eq!(Project::create(project_id), vec![project_created]);
+	}
+
+	#[rstest]
+	fn link_budget(
+		project_created: ProjectEvent,
+		budget_linked: ProjectEvent,
+		budget_id: BudgetId,
+	) {
+		let project = Project::from_events(&[project_created]);
+		assert_eq!(project.link_budget(budget_id), Ok(vec![budget_linked]));
+	}
+
+	#[rstest]
+	fn cannot_link_2_budgets(project_created: ProjectEvent, budget_linked: ProjectEvent) {
+		let project = Project::from_events(&[project_created, budget_linked]);
+		assert_eq!(
+			project.link_budget(BudgetId::new()),
+			Err(Error::BudgetAlreadyExists)
+		);
+	}
+
+	#[rstest]
+	fn assign_leader_to_project(
+		project_created: ProjectEvent,
+		user_id: UserId,
+		project_id: ProjectId,
+	) {
 		let project = Project::from_events(&[project_created]);
 
+		let before = Utc::now().naive_utc();
 		let events = project.assign_leader(user_id.to_owned()).unwrap();
+		let after = Utc::now().naive_utc();
 
 		assert_eq!(events.len(), 1);
+
 		assert_matches!(
 			events[0],
 			ProjectEvent::LeaderAssigned {
 				id,
 				leader_id,
-				..
+				assigned_at
 			} => {
 				assert_eq!(id, project_id);
 				assert_eq!(leader_id, user_id);
+				assert!(before <= assigned_at);
+				assert!(after >= assigned_at);
 			}
 		);
 	}
 
 	#[rstest]
-	fn test_assign_twice_the_same_leader(project_created: ProjectEvent, user_id: UserId) {
-		let project = Project::from_events(&[project_created]);
-		let events = project.assign_leader(user_id.to_owned()).unwrap();
-		let project = project.apply_events(&events);
+	fn unassign_leader_from_project(
+		project_created: ProjectEvent,
+		leader_assigned: ProjectEvent,
+		leader_unassigned: ProjectEvent,
+		user_id: UserId,
+	) {
+		let project = Project::from_events(&[project_created, leader_assigned]);
 
-		let result = project.assign_leader(user_id.to_owned());
-
-		assert!(result.is_err());
-		assert_matches!(result.unwrap_err(), Error::LeaderAlreadyAssigned);
+		assert_eq!(
+			project.unassign_leader(user_id.to_owned()),
+			Ok(vec![leader_unassigned])
+		);
 	}
 
 	#[rstest]
-	fn user_cannot_apply_twice(project_created: ProjectEvent, user_id: UserId) {
+	fn cannot_assign_twice_the_same_leader(
+		project_created: ProjectEvent,
+		leader_assigned: ProjectEvent,
+		user_id: UserId,
+	) {
+		let project = Project::from_events(&[project_created, leader_assigned]);
+
+		assert_eq!(
+			project.assign_leader(user_id.to_owned()),
+			Err(Error::LeaderAlreadyAssigned)
+		);
+	}
+
+	#[rstest]
+	fn cannot_unassign_non_leader(project_created: ProjectEvent, user_id: UserId) {
 		let project = Project::from_events(&[project_created]);
-		let events = project.apply(user_id).unwrap();
-		let project = project.apply_events(&events);
+		assert_eq!(
+			project.unassign_leader(user_id.to_owned()),
+			Err(Error::NotLeader)
+		);
+	}
 
-		let result = project.apply(user_id);
+	#[rstest]
+	fn user_apply_to_project(
+		project_created: ProjectEvent,
+		user_applied: ProjectEvent,
+		user_id: UserId,
+	) {
+		let project = Project::from_events(&[project_created]);
+		assert_eq!(project.apply(user_id), Ok(vec![user_applied]));
+	}
 
-		assert!(result.is_err());
-		assert_matches!(result.unwrap_err(), Error::UserAlreadyApplied);
+	#[rstest]
+	fn user_cannot_apply_twice(
+		project_created: ProjectEvent,
+		user_applied: ProjectEvent,
+		user_id: UserId,
+	) {
+		let project = Project::from_events(&[project_created, user_applied]);
+		assert_eq!(project.apply(user_id), Err(Error::UserAlreadyApplied));
+	}
+
+	#[rstest]
+	fn link_github_repo(
+		project_created: ProjectEvent,
+		marketplace_linked: ProjectEvent,
+		marketplace_id: GithubRepoId,
+	) {
+		let project = Project::from_events(&[project_created]);
+		assert_eq!(
+			project.link_github_repo(marketplace_id),
+			Ok(vec![marketplace_linked])
+		);
+	}
+
+	#[rstest]
+	fn unlink_github_repo(
+		project_created: ProjectEvent,
+		marketplace_linked: ProjectEvent,
+		marketplace_unlinked: ProjectEvent,
+		marketplace_id: GithubRepoId,
+	) {
+		let project = Project::from_events(&[project_created, marketplace_linked]);
+		assert_eq!(
+			project.unlink_github_repo(marketplace_id),
+			Ok(vec![marketplace_unlinked])
+		);
+	}
+
+	#[rstest]
+	fn cannot_link_twice_same_repo(
+		project_created: ProjectEvent,
+		marketplace_linked: ProjectEvent,
+		marketplace_id: GithubRepoId,
+	) {
+		let project = Project::from_events(&[project_created, marketplace_linked]);
+		assert_eq!(
+			project.link_github_repo(marketplace_id),
+			Err(Error::GithubRepoAlreadyLinked)
+		);
+	}
+
+	#[rstest]
+	fn cannot_unlink_unexisting_repo(project_created: ProjectEvent, marketplace_id: GithubRepoId) {
+		let project = Project::from_events(&[project_created]);
+		assert_eq!(
+			project.unlink_github_repo(marketplace_id),
+			Err(Error::GithubRepoNotLinked)
+		);
 	}
 }

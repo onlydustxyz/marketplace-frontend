@@ -85,7 +85,7 @@ impl EventSourcable for Payment {
 	}
 }
 
-#[derive(Debug, Error)]
+#[derive(Debug, Error, PartialEq, Eq)]
 pub enum Error {
 	#[error("Receipt amount exceeds requested amount")]
 	Overspent,
@@ -201,6 +201,7 @@ mod tests {
 
 	use assert_matches::assert_matches;
 	use rstest::{fixture, rstest};
+	use rust_decimal_macros::dec;
 	use uuid::Uuid;
 
 	use super::*;
@@ -227,18 +228,8 @@ mod tests {
 	}
 
 	#[fixture]
-	fn wrong_requestor_id() -> UserId {
-		Uuid::from_str("22222222-bbbb-495e-9f4c-038ec0ebecb1").unwrap().into()
-	}
-
-	#[fixture]
 	fn recipient_id() -> GithubUserId {
 		42u64.into()
-	}
-
-	#[fixture]
-	fn amount_in_usd() -> u32 {
-		420
 	}
 
 	#[fixture]
@@ -252,8 +243,8 @@ mod tests {
 	}
 
 	#[fixture]
-	fn amount(amount_in_usd: u32) -> Amount {
-		Amount::from_decimal(Decimal::new(amount_in_usd as i64, 0), currencies::USD)
+	fn amount() -> Amount {
+		Amount::from_decimal(dec!(420), currencies::USD)
 	}
 
 	#[fixture]
@@ -272,12 +263,12 @@ mod tests {
 	}
 
 	#[fixture]
-	fn payment_cancelled_event(payment_id: PaymentId) -> PaymentEvent {
+	fn cancelled_payment_event(payment_id: PaymentId) -> PaymentEvent {
 		PaymentEvent::Cancelled { id: payment_id }
 	}
 
 	#[fixture]
-	async fn requested_payment(
+	fn requested_payment(
 		payment_id: PaymentId,
 		project_id: ProjectId,
 		requestor_id: UserId,
@@ -299,37 +290,35 @@ mod tests {
 	}
 
 	#[fixture]
-	async fn cancelled_payment(#[future] requested_payment: Payment) -> Payment {
-		let events = requested_payment.await.cancel().unwrap();
+	fn cancelled_payment(requested_payment: Payment) -> Payment {
+		let events = requested_payment.cancel().unwrap();
 		Payment::from_events(&events)
 	}
 
 	#[fixture]
-	async fn processed_payment(
-		#[future] requested_payment: Payment,
+	fn processed_payment(
+		requested_payment: Payment,
 		payment_receipt_id: PaymentReceiptId,
 		amount: Amount,
 		receipt: PaymentReceipt,
 	) -> Payment {
-		let events = requested_payment
-			.await
-			.add_receipt(payment_receipt_id, amount, receipt)
-			.unwrap();
+		let events = requested_payment.add_receipt(payment_receipt_id, amount, receipt).unwrap();
 		Payment::from_events(&events)
 	}
 
 	#[rstest]
-	async fn test_add_receipt(
+	fn test_add_receipt(
 		payment_id: PaymentId,
 		payment_receipt_id: PaymentReceiptId,
 		amount: Amount,
 		receipt: PaymentReceipt,
-		#[future] requested_payment: Payment,
+		requested_payment: Payment,
 	) {
+		let before = Utc::now().naive_utc();
 		let events = requested_payment
-			.await
 			.add_receipt(payment_receipt_id, amount.clone(), receipt.clone())
 			.expect("Problem when adding receipt");
+		let after = Utc::now().naive_utc();
 
 		assert_eq!(events.len(), 1);
 
@@ -340,88 +329,87 @@ mod tests {
 				receipt_id,
 				amount: event_amount,
 				receipt: event_receipt,
-				processed_at: _
+				processed_at
 			} => {
 				assert_eq!(id, &payment_id);
 				assert_eq!(receipt_id, &payment_receipt_id);
 				assert_eq!(event_amount, &amount);
 				assert_eq!(event_receipt, &receipt);
+				assert!(before <= *processed_at);
+				assert!(after >= *processed_at);
 			}
 		);
 	}
 
 	#[rstest]
-	async fn test_add_receipt_fails_if_overspent(
+	fn test_add_receipt_fails_if_overspent(
 		payment_receipt_id: PaymentReceiptId,
 		amount: Amount,
 		receipt: PaymentReceipt,
-		#[future] requested_payment: Payment,
+		requested_payment: Payment,
 	) {
-		let result = requested_payment.await.add_receipt(
+		let result = requested_payment.add_receipt(
 			payment_receipt_id,
 			Amount::from_decimal(amount.amount() + amount.amount(), amount.currency()),
 			receipt,
 		);
 
-		assert_matches!(result, Err(Error::Overspent));
+		assert_eq!(result, Err(Error::Overspent));
 	}
 
 	#[rstest]
-	async fn test_add_receipt_fails_if_double_spent(
+	fn test_add_receipt_fails_if_double_spent(
 		payment_receipt_id: PaymentReceiptId,
 		amount: Amount,
 		receipt: PaymentReceipt,
-		#[future] requested_payment: Payment,
+		requested_payment: Payment,
 	) {
-		let payment = requested_payment.await;
+		let payment = requested_payment;
 		let events = payment
 			.add_receipt(payment_receipt_id, amount.clone(), receipt.clone())
 			.expect("Problem when adding receipt");
 
 		let payment = payment.apply_events(&events);
 
-		let result = payment.add_receipt(payment_receipt_id, amount, receipt);
-		assert_matches!(result, Err(Error::Overspent));
+		assert_eq!(
+			payment.add_receipt(payment_receipt_id, amount, receipt),
+			Err(Error::Overspent)
+		);
 	}
 
 	#[rstest]
-	async fn test_add_receipt_fails_if_cancelled(
+	fn test_add_receipt_fails_if_cancelled(
 		payment_receipt_id: PaymentReceiptId,
 		amount: Amount,
 		receipt: PaymentReceipt,
-		#[future] cancelled_payment: Payment,
+		cancelled_payment: Payment,
 	) {
-		let result = cancelled_payment.await.add_receipt(payment_receipt_id, amount, receipt);
-
-		assert_matches!(result, Err(Error::Cancelled));
+		assert_eq!(
+			cancelled_payment.add_receipt(payment_receipt_id, amount, receipt),
+			Err(Error::Cancelled)
+		);
 	}
 
 	#[rstest]
-	async fn test_cancel(
-		#[future] requested_payment: Payment,
-		payment_cancelled_event: PaymentEvent,
-	) {
-		let events = requested_payment.await.cancel().expect("Problem when cancelling payment");
-
-		assert_eq!(events, vec![payment_cancelled_event]);
+	fn test_cancel(requested_payment: Payment, cancelled_payment_event: PaymentEvent) {
+		assert_eq!(
+			requested_payment.cancel().expect("Problem when cancelling payment"),
+			vec![cancelled_payment_event]
+		);
 	}
 
 	#[rstest]
-	async fn test_cancel_fails_if_cancelled(#[future] cancelled_payment: Payment) {
-		let result = cancelled_payment.await.cancel();
-
-		assert_matches!(result, Err(Error::Cancelled));
+	fn test_cancel_fails_if_cancelled(cancelled_payment: Payment) {
+		assert_eq!(cancelled_payment.cancel(), Err(Error::Cancelled));
 	}
 
 	#[rstest]
-	async fn test_cancel_fails_if_processed(#[future] processed_payment: Payment) {
-		let result = processed_payment.await.cancel();
-
-		assert_matches!(result, Err(Error::NotCancellable));
+	fn test_cancel_fails_if_processed(processed_payment: Payment) {
+		assert_eq!(processed_payment.cancel(), Err(Error::NotCancellable));
 	}
 
 	#[rstest]
-	async fn test_request(
+	fn test_request(
 		payment_id: PaymentId,
 		project_id: ProjectId,
 		requestor_id: UserId,
