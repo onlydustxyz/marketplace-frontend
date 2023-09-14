@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use anyhow::Result;
 use domain::{
-	AggregateRootRepository, DomainError, Event, GithubRepoId, Project, ProjectId, Publisher,
+	AggregateRepository, DomainError, Event, GithubRepoId, Project, ProjectId, Publisher,
 };
 use infrastructure::amqp::UniqueMessage;
 use tracing::instrument;
@@ -11,13 +11,13 @@ use crate::domain::Publishable;
 
 pub struct Usecase {
 	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
-	project_repository: AggregateRootRepository<Project>,
+	project_repository: AggregateRepository<Project>,
 }
 
 impl Usecase {
 	pub fn new(
 		event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
-		project_repository: AggregateRootRepository<Project>,
+		project_repository: AggregateRepository<Project>,
 	) -> Self {
 		Self {
 			event_publisher,
@@ -37,7 +37,6 @@ impl Usecase {
 		project
 			.unlink_github_repo(github_repo_id)
 			.map_err(|e| DomainError::InvalidInputs(e.into()))?
-			.into_iter()
 			.map(Event::from)
 			.map(UniqueMessage::new)
 			.collect::<Vec<_>>()

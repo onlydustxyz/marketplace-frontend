@@ -1,39 +1,30 @@
 use std::sync::Arc;
 
 use anyhow::Result;
-use domain::DomainError;
+use derive_more::Constructor;
+use domain::sponsor;
 use infrastructure::database::Repository;
-use juniper::Nullable;
 use reqwest::Url;
 use tracing::instrument;
 
+use super::Error;
 use crate::{domain::ImageStoreService, models::*, presentation::http::dto::NonEmptyTrimmedString};
 
+#[derive(Constructor)]
 pub struct Usecase {
 	sponsor_repository: Arc<dyn Repository<Sponsor>>,
 	image_store: Arc<dyn ImageStoreService>,
 }
 
 impl Usecase {
-	pub fn new(
-		sponsor_repository: Arc<dyn Repository<Sponsor>>,
-		image_store: Arc<dyn ImageStoreService>,
-	) -> Self {
-		Self {
-			sponsor_repository,
-			image_store,
-		}
-	}
-
-	#[allow(clippy::too_many_arguments)]
 	#[instrument(skip(self))]
 	pub async fn update(
 		&self,
-		sponsor_id: SponsorId,
+		sponsor_id: sponsor::Id,
 		name: Option<NonEmptyTrimmedString>,
 		logo_url: Option<Url>,
-		url: Nullable<Url>,
-	) -> Result<SponsorId, DomainError> {
+		url: Option<Option<Url>>,
+	) -> Result<sponsor::Id, Error> {
 		let mut sponsor = self.sponsor_repository.find_by_id(sponsor_id)?;
 
 		if let Some(name) = name {
@@ -44,7 +35,7 @@ impl Usecase {
 				self.image_store.store_image_from_url(&logo_url).await?.to_string();
 			sponsor = sponsor.with_logo_url(stored_logo_url);
 		}
-		if let Some(url) = url.explicit() {
+		if let Some(url) = url {
 			sponsor = sponsor.with_url(url.map(|url| url.to_string()))
 		}
 
@@ -69,7 +60,7 @@ mod tests {
 	};
 
 	#[fixture]
-	fn sponsor_id() -> SponsorId {
+	fn sponsor_id() -> sponsor::Id {
 		uuid::Uuid::new_v4().into()
 	}
 
@@ -91,7 +82,7 @@ mod tests {
 	#[rstest]
 	#[tokio::test]
 	async fn test_update(
-		sponsor_id: SponsorId,
+		sponsor_id: sponsor::Id,
 		name: NonEmptyTrimmedString,
 		logo_url: Url,
 		url: Url,
@@ -125,7 +116,7 @@ mod tests {
 		let usecase = Usecase::new(Arc::new(sponsor_repository), Arc::new(image_store_service));
 
 		usecase
-			.update(sponsor_id, Some(name), Some(logo_url), Nullable::Some(url))
+			.update(sponsor_id, Some(name), Some(logo_url), Some(Some(url)))
 			.await
 			.unwrap();
 	}
@@ -133,7 +124,7 @@ mod tests {
 	#[rstest]
 	#[tokio::test]
 	async fn test_update_with_bad_logo_url(
-		sponsor_id: SponsorId,
+		sponsor_id: sponsor::Id,
 		name: NonEmptyTrimmedString,
 		logo_url: Url,
 		url: Url,
@@ -161,9 +152,7 @@ mod tests {
 
 		let usecase = Usecase::new(Arc::new(sponsor_repository), Arc::new(image_store_service));
 
-		let result = usecase
-			.update(sponsor_id, Some(name), Some(logo_url), Nullable::Some(url))
-			.await;
-		assert_matches!(result, Err(DomainError::InvalidInputs(_)));
+		let result = usecase.update(sponsor_id, Some(name), Some(logo_url), Some(Some(url))).await;
+		assert_matches!(result, Err(Error::ImageStore(_)));
 	}
 }

@@ -1,6 +1,7 @@
 mod applications;
 mod budgets;
 mod contributions;
+mod crypto_usd_quotes;
 mod github_issues;
 pub mod github_pull_request_indexes;
 pub mod github_pull_requests;
@@ -13,6 +14,7 @@ mod payments;
 mod project_github_repos;
 mod project_leads;
 mod projects;
+mod projects_budgets;
 mod projects_contributors;
 mod projects_pending_contributors;
 mod projects_rewarded_users;
@@ -23,6 +25,7 @@ pub use applications::Application;
 pub use budgets::Budget;
 pub use contributions::{Contribution, Repository as ContributionsRepository};
 use diesel::PgConnection;
+pub use crypto_usd_quotes::CryptoUsdQuote;
 pub use github_issues::GithubIssue;
 pub use github_pull_request_indexes::{
 	GithubPullRequestIndex, Repository as GithubPullRequestIndexRepository,
@@ -40,6 +43,7 @@ pub use payments::Payment;
 pub use project_github_repos::{ProjectGithubRepo, Repository as ProjectGithubRepoRepository};
 pub use project_leads::ProjectLead;
 pub use projects::Project;
+pub use projects_budgets::ProjectsBudget;
 pub use projects_contributors::{ProjectsContributor, Repository as ProjectsContributorRepository};
 pub use projects_pending_contributors::{
 	ProjectsPendingContributor, Repository as ProjectsPendingContributorRepository,

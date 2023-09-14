@@ -62,7 +62,7 @@ array_relationships:
         insertion_order: null
         remote_table:
           name: payment_stats
-          schema: public
+          schema: api
   - name: projectsContributed
     using:
       manual_configuration:

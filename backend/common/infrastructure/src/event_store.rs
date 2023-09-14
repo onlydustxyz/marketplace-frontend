@@ -1,34 +1,40 @@
 use diesel::prelude::*;
-use domain::{Aggregate, Budget, EventStore, EventStoreError, Payment, Project};
+use domain::{Application, Budget, EventSourcable, EventStore, EventStoreError, Payment, Project};
 use olog::{error, IntoField};
 use serde_json::Value;
 use tracing::instrument;
 
 use crate::database::{schema::events, Client};
 
-pub trait NamedAggregate: Aggregate {
+pub trait Named {
 	fn name() -> String;
 }
 
-impl NamedAggregate for Project {
+impl Named for Application {
+	fn name() -> String {
+		String::from("APPLICATION")
+	}
+}
+
+impl Named for Project {
 	fn name() -> String {
 		String::from("PROJECT")
 	}
 }
 
-impl NamedAggregate for Payment {
+impl Named for Payment {
 	fn name() -> String {
 		String::from("PAYMENT")
 	}
 }
 
-impl NamedAggregate for Budget {
+impl Named for Budget {
 	fn name() -> String {
 		String::from("BUDGET")
 	}
 }
 
-impl<A: NamedAggregate> EventStore<A> for Client {
+impl<A: Named + EventSourcable> EventStore<A> for Client {
 	#[instrument(name = "EventStore::list_by_id", skip_all, fields(aggregate_id = aggregate_id.to_string()))]
 	fn list_by_id(&self, aggregate_id: &A::Id) -> Result<Vec<A::Event>, EventStoreError> {
 		let mut connection = self.connection().map_err(|e| {
@@ -81,7 +87,7 @@ impl<A: NamedAggregate> EventStore<A> for Client {
 	}
 }
 
-fn deserialize_events<A: Aggregate>(
+fn deserialize_events<A: EventSourcable>(
 	serialized_events: Vec<Value>,
 ) -> Result<Vec<A::Event>, EventStoreError> {
 	serialized_events

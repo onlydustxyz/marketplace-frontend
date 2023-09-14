@@ -33,7 +33,7 @@ function MobileRewardItemContainer({ reward }: { reward: ExtendedPaymentRequestF
 
   const recipient = reward.githubRecipient;
   const paidAmount = reward.paymentsAggregate.aggregate?.sum?.amount;
-  const paymentStatus = paidAmount === reward.amountInUsd ? PaymentStatus.ACCEPTED : PaymentStatus.WAITING_PAYMENT;
+  const paymentStatus = paidAmount === reward.amount ? PaymentStatus.ACCEPTED : PaymentStatus.WAITING_PAYMENT;
 
   return (
     reward &&
@@ -45,7 +45,7 @@ function MobileRewardItemContainer({ reward }: { reward: ExtendedPaymentRequestF
           id: pretty(reward.id),
           count: reward.workItemsAggregate.aggregate?.count,
         })}
-        amount={formatMoneyAmount({ amount: reward.amountInUsd })}
+        amount={formatMoneyAmount({ amount: reward.amount })}
         date={reward.requestedAt}
         payoutStatus={
           <PayoutStatus

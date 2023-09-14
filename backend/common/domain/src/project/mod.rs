@@ -1,10 +1,10 @@
 mod aggregate;
-pub use aggregate::{Error, Project};
-
 mod events;
-pub use events::Event;
-
+mod state;
 mod visibility;
+
+pub use aggregate::{Error, Project};
+pub use events::Event;
 pub use visibility::Visibility;
 
 crate::create_new_id!(Id);

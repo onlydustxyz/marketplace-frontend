@@ -4,7 +4,7 @@ use anyhow::Result;
 use event_listeners::Config;
 use presentation::http;
 use testcontainers::clients::Cli;
-use testing::context::{amqp, database, github};
+use testing::context::{amqp, coinmarketcap, database, github};
 use tokio::task::JoinHandle;
 
 pub struct Context<'a> {
@@ -12,6 +12,7 @@ pub struct Context<'a> {
 	pub database: database::Context<'a>,
 	pub amqp: amqp::Context<'a>,
 	pub github: github::Context<'a>,
+	_coinmarketcap: coinmarketcap::Context<'a>,
 }
 
 impl<'a> Context<'a> {
@@ -31,6 +32,14 @@ impl<'a> Context<'a> {
 			"event-listener-github-pat".to_string(),
 		)?;
 
+		let coinmarketcap = coinmarketcap::Context::new(
+			docker,
+			format!(
+				"{}/tests/resources/wiremock/coinmarketcap",
+				env::current_dir().unwrap().display(),
+			),
+		)?;
+
 		let config = Config {
 			amqp: amqp.config.clone(),
 			http: http::Config { api_keys: vec![] },
@@ -41,6 +50,7 @@ impl<'a> Context<'a> {
 				location: true,
 			},
 			github: github.config.clone(),
+			coinmarketcap: coinmarketcap.config.clone(),
 		};
 
 		Ok(Self {
@@ -48,6 +58,7 @@ impl<'a> Context<'a> {
 			amqp,
 			github,
 			_processes: event_listeners::listeners::bootstrap(config).await?,
+			_coinmarketcap: coinmarketcap,
 		})
 	}
 }

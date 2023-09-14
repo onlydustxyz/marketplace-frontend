@@ -195,3 +195,16 @@ const queryAs = async <T = any, TVariables = OperationVariables>(
     throw e;
   }
 };
+
+export const fetchAsAdmin = async <T>(path: string, method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE", args: T) =>
+  fetch(`http://127.0.0.1:8000/api/${path}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "User-Agent": "playwright",
+      "Api-Key": getEnv("BACKEND_GRAPHQL_API_KEY"),
+    },
+    body: JSON.stringify(args),
+  })
+    .then(response => response.json())
+    .catch(err => console.error(err));

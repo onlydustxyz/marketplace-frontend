@@ -1,13 +1,13 @@
-mod receipt;
-pub use receipt::{Id as ReceiptId, Receipt};
-
-mod events;
-pub use events::Event;
-
 mod aggregate;
-pub use aggregate::{Error, Payment, Status};
-
+mod events;
 mod reason;
+mod receipt;
+mod state;
+
+pub use aggregate::{Error, Payment};
+pub use events::Event;
 pub use reason::{Reason, WorkItem};
+pub use receipt::{Id as ReceiptId, Receipt};
+pub use state::Status;
 
 crate::create_new_id!(Id);

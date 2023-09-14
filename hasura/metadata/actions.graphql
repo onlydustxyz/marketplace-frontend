@@ -1,8 +1,7 @@
 type Mutation {
   cancelPaymentRequest(
-    projectId: Uuid!
     paymentId: Uuid!
-  ): Payment!
+  ): Command!
 }
 
 type Mutation {
@@ -12,20 +11,6 @@ type Mutation {
     projectId: Uuid!
     title: String!
   ): GithubIssue!
-}
-
-type Mutation {
-  createProject(
-    name: String!
-    shortDescription: String!
-    longDescription: String!
-    telegramLink: Url
-    logoUrl: Url
-    initialBudget: Int
-    hiring: Boolean
-    rank: Int
-    visibility: Visibility
-  ): Uuid!
 }
 
 type Query {
@@ -55,10 +40,11 @@ type Mutation {
   requestPayment(
     projectId: Uuid!
     recipientId: Int!
-    amountInUsd: Int!
+    amount: String!
+    currency: String!
     hoursWorked: Int!
     reason: Reason!
-  ): Payment!
+  ): PaymentRequestResponse!
 }
 
 type Query {
@@ -300,6 +286,15 @@ type Payment {
   commandId: Uuid!
   paymentId: Uuid!
   projectId: Uuid!
+}
+
+type Command {
+  commandId: Uuid!
+}
+
+type PaymentRequestResponse {
+  paymentId: Uuid!
+  commandId: Uuid!
 }
 
 scalar Url

@@ -1,9 +1,7 @@
 use std::sync::Arc;
 
 use anyhow::{anyhow, Result};
-use domain::{
-	AggregateRootRepository, DomainError, Event, GithubUserId, Project, Publisher, UserId,
-};
+use domain::{AggregateRepository, DomainError, Event, GithubUserId, Project, Publisher, UserId};
 use infrastructure::{amqp::UniqueMessage, database::ImmutableRepository};
 use tracing::instrument;
 
@@ -12,14 +10,14 @@ use crate::{domain::Publishable, models::*};
 pub struct Usecase {
 	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 	invitations_repository: Arc<dyn ImmutableRepository<PendingProjectLeaderInvitation>>,
-	project_repository: AggregateRootRepository<Project>,
+	project_repository: AggregateRepository<Project>,
 }
 
 impl Usecase {
 	pub fn new(
 		event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 		invitations_repository: Arc<dyn ImmutableRepository<PendingProjectLeaderInvitation>>,
-		project_repository: AggregateRootRepository<Project>,
+		project_repository: AggregateRepository<Project>,
 	) -> Self {
 		Self {
 			event_publisher,
@@ -47,7 +45,6 @@ impl Usecase {
 		project
 			.assign_leader(user_id)
 			.map_err(|e| DomainError::InvalidInputs(e.into()))?
-			.into_iter()
 			.map(Event::from)
 			.map(UniqueMessage::new)
 			.collect::<Vec<_>>()

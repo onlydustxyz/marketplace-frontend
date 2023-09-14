@@ -180,7 +180,7 @@ test.describe("As a project lead, I", () => {
 
     const rewardId = await reward.rewardId();
     await populateReceipt(rewardId || "not found", project, {
-      currencyCode: "USDC",
+      currencyCode: "USD",
       recipientETHIdentity: {
         type: EthereumIdentityType.EthereumName,
         optEthAddress: null,
@@ -310,7 +310,7 @@ test.describe("As a project lead, I", () => {
         projectId: project.id,
         paymentId: await rewardRow.rewardId(),
         amount: "1000",
-        currencyCode: "USDC",
+        currencyCode: "USD",
         recipientIdentity: {
           type: EthereumIdentityType.EthereumName,
           optEthName: "vitalik.eth",

@@ -1,9 +1,8 @@
 use derive_setters::Setters;
 use diesel::Identifiable;
+use domain::sponsor;
 use infrastructure::database::schema::sponsors;
 use serde::{Deserialize, Serialize};
-
-create_new_id!(Id);
 
 #[derive(
 	Default,
@@ -23,14 +22,14 @@ create_new_id!(Id);
 #[diesel(table_name = sponsors, treat_none_as_null = true)]
 #[setters(prefix = "with_")]
 pub struct Sponsor {
-	pub id: Id,
+	pub id: sponsor::Id,
 	pub name: String,
 	pub logo_url: String,
 	pub url: Option<String>,
 }
 
 impl Identifiable for Sponsor {
-	type Id = Id;
+	type Id = sponsor::Id;
 
 	fn id(self) -> Self::Id {
 		self.id

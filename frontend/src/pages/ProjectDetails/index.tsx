@@ -26,8 +26,8 @@ export interface ProjectDetails {
   moreInfoLink?: string | null;
   leads: ({ id: string } & Partial<ProjectLeadFragment>)[];
   invitationId?: string;
-  totalSpentAmountInUsd?: number;
-  totalInitialAmountInUsd?: number;
+  totalSpentamount?: number;
+  totalInitialamount?: number;
   languages: LanguageMap;
   sponsors: SponsorFragment[];
 }

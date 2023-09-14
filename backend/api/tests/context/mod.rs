@@ -1,12 +1,12 @@
 use std::env;
 
 use anyhow::Result;
-use api::{presentation::bootstrap::bootstrap, Config};
+use api::{application::quotes, presentation::bootstrap::bootstrap, Config};
 use presentation::http;
 use rocket::local::asynchronous::Client;
 use rstest::fixture;
 use testcontainers::clients::Cli;
-use testing::context::{amqp, database, github};
+use testing::context::{amqp, coinmarketcap, database, github};
 
 pub mod environment;
 pub mod indexer;
@@ -31,6 +31,8 @@ pub struct Context<'a> {
 	pub github: github::Context<'a>,
 	pub indexer: indexer::Context<'a>,
 	pub web3: web3::Context<'a>,
+	pub coinmarketcap: coinmarketcap::Context<'a>,
+	pub quotes_syncer: quotes::sync::Usecase,
 	_environment: environment::Context,
 }
 
@@ -73,6 +75,14 @@ impl<'a> Context<'a> {
 			),
 		)?;
 
+		let coinmarketcap = coinmarketcap::Context::new(
+			docker,
+			format!(
+				"{}/tests/resources/wiremock/coinmarketcap",
+				env::current_dir().unwrap().display(),
+			),
+		)?;
+
 		let config = Config {
 			amqp: amqp.config.clone(),
 			http: http::Config {
@@ -89,6 +99,7 @@ impl<'a> Context<'a> {
 			github_api_client: github.config.clone(),
 			dusty_bot_api_client: dusty_bot_github.config.clone(),
 			indexer_client: indexer.config.clone(),
+			coinmarketcap: coinmarketcap.config.clone(),
 		};
 
 		Ok(Self {
@@ -100,6 +111,8 @@ impl<'a> Context<'a> {
 			github,
 			indexer,
 			web3,
+			coinmarketcap,
+			quotes_syncer: quotes::sync::Usecase::bootstrap(config.clone())?,
 			_environment: environment::Context::new(),
 		})
 	}

@@ -1,15 +1,13 @@
-use std::sync::Arc;
-
-use anyhow::{anyhow, Error};
+use anyhow::Error;
 use rocket::{
-	http::Status,
+	outcome::try_outcome,
 	request::{FromRequest, Outcome},
 	Request,
 };
 
 use crate::{
-	application::user::update_payout_info::Usecase, domain::IsEnsValid, infrastructure::web3::ens,
-	models::PayoutInfoRepository,
+	application::user::update_payout_info::Usecase, domain::IsEnsValid,
+	presentation::http::usecases::FromRocketState,
 };
 
 #[async_trait]
@@ -17,28 +15,10 @@ impl<'r> FromRequest<'r> for Usecase {
 	type Error = Error;
 
 	async fn from_request(request: &'r Request<'_>) -> Outcome<Usecase, Self::Error> {
-		let payout_info_repository = match request.rocket().state::<Arc<dyn PayoutInfoRepository>>()
-		{
-			Some(repository) => repository,
-			None =>
-				return Outcome::Failure((
-					Status::InternalServerError,
-					anyhow!("Missing user_payout_info repository"),
-				)),
-		};
-
-		let ens = match request.rocket().state::<Arc<ens::Client>>() {
-			Some(ens) => ens,
-			None =>
-				return Outcome::Failure((
-					Status::InternalServerError,
-					anyhow!("Missing ens client"),
-				)),
-		};
-
+		let ens = try_outcome!(FromRocketState::from_state(request.rocket()));
 		Outcome::Success(Self::new(
-			payout_info_repository.clone(),
-			IsEnsValid::new(ens.clone()),
+			try_outcome!(FromRocketState::from_state(request.rocket())),
+			IsEnsValid::new(ens),
 		))
 	}
 }

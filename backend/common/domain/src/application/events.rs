@@ -4,20 +4,21 @@ use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
 use serde_with::serde_as;
 
-use crate::{AggregateEvent, Application, ApplicationId, UserId};
+use crate::{aggregate::Identified, ApplicationId, ProjectId, UserId};
 
 #[serde_as]
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Event {
 	Received {
 		id: ApplicationId,
+		project_id: ProjectId,
 		applicant_id: UserId,
 		received_at: NaiveDateTime,
 	},
 }
 
-impl AggregateEvent<Application> for Event {
-	fn aggregate_id(&self) -> &ApplicationId {
+impl Identified<ApplicationId> for Event {
+	fn id(&self) -> &ApplicationId {
 		match self {
 			Self::Received { id, .. } => id,
 		}
@@ -31,5 +32,11 @@ impl Display for Event {
 			"{}",
 			serde_json::to_string(&self).map_err(|_| std::fmt::Error)?
 		)
+	}
+}
+
+impl From<Event> for crate::Event {
+	fn from(event: Event) -> Self {
+		crate::Event::Application(event)
 	}
 }

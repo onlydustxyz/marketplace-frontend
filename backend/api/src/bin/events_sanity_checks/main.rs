@@ -2,7 +2,7 @@ use std::{collections::HashSet, sync::Arc};
 
 use anyhow::Result;
 use api::Config;
-use domain::{AggregateEvent, EventSourcable, EventStore, Payment, Project};
+use domain::{EventSourcable, EventStore, Identified, Payment, Project};
 use dotenv::dotenv;
 use infrastructure::{
 	config,
@@ -33,7 +33,7 @@ async fn try_run() -> Result<()> {
 
 fn check_events<A: EventSourcable>(event_store: Arc<dyn EventStore<A>>) -> Result<()> {
 	let event_ids: HashSet<A::Id> =
-		event_store.list()?.iter().map(|event| event.aggregate_id().clone()).collect();
+		event_store.list()?.iter().map(|event| event.id().clone()).collect();
 
 	event_ids.iter().try_for_each(|id| -> Result<()> {
 		let events = event_store.list_by_id(id)?;

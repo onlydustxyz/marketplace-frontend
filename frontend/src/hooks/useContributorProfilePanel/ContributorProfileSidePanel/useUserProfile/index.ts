@@ -102,7 +102,7 @@ export default function useUserProfile({
           contributionCount: find(profile?.contributionStats, { projectId: project.id })?.totalCount,
           lastContribution: find(profile?.contributionStats, { projectId: project.id })?.maxDate,
           contributorCount: project.contributorsAggregate?.aggregate?.count || 0,
-          totalGranted: project.budgetsAggregate?.aggregate?.sum?.spentAmount || 0,
+          totalGranted: project.usdBudget?.spentAmount,
         } as Project)
     )
     .filter(project => project.leadSince || project.contributionCount);

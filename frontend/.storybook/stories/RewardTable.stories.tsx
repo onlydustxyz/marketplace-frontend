@@ -36,7 +36,7 @@ const githubRecipient2: GithubUserFragment = {
 
 const mockPayments: ExtendedPaymentRequestFragment[] = [
   {
-    amountInUsd: 200,
+    amount: 200,
     id: "c0cfdf80-bbba-4512-b5ec-066dfa9529b1",
     recipientId: githubRecipient1.id,
     githubRecipient: githubRecipient1,
@@ -45,7 +45,7 @@ const mockPayments: ExtendedPaymentRequestFragment[] = [
     paymentsAggregate: { aggregate: { sum: { amount: 200 } } },
   },
   {
-    amountInUsd: 100,
+    amount: 100,
     id: "6397226d-0461-4451-962c-a61e36fd324b",
     recipientId: githubRecipient1.id,
     githubRecipient: githubRecipient1,
@@ -54,7 +54,7 @@ const mockPayments: ExtendedPaymentRequestFragment[] = [
     paymentsAggregate: { aggregate: { sum: { amount: 0 } } },
   },
   {
-    amountInUsd: 100,
+    amount: 100,
     id: "6397226d-0461-4451-962c-a61e36fd3sju",
     recipientId: githubRecipient2.id,
     githubRecipient: githubRecipient2,

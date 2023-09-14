@@ -165,11 +165,7 @@ const props = (args: {
       },
     },
   ],
-  budgetsAggregate: {
-    aggregate: {
-      count: 1,
-    },
-  },
+  usdBudgetId: "budget-id",
   pendingInvitations: [{ id: "croute", githubUserId: "github-user-id" }],
   sponsors: [
     {

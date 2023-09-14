@@ -1,0 +1,23 @@
+table:
+  name: budgets
+  schema: api
+configuration:
+  column_config: {}
+  custom_column_names: {}
+  custom_name: Budgets
+  custom_root_fields:
+    select: budgets
+    select_aggregate: budgetsAggregate
+select_permissions:
+  - role: public
+    permission:
+      columns:
+        - initial_amount
+        - initial_amount_usd
+        - remaining_amount
+        - remaining_amount_usd
+        - spent_amount
+        - spent_amount_usd
+        - currency
+        - id
+      filter: {}

@@ -8,6 +8,52 @@ configuration:
   custom_root_fields:
     select: projects
     select_aggregate: projectsAggregate
+object_relationships:
+  - name: aptosBudget
+    using:
+      manual_configuration:
+        column_mapping:
+          apt_budget_id: id
+        insertion_order: null
+        remote_table:
+          name: budgets
+          schema: api
+  - name: ethBudget
+    using:
+      manual_configuration:
+        column_mapping:
+          eth_budget_id: id
+        insertion_order: null
+        remote_table:
+          name: budgets
+          schema: api
+  - name: optimismBudget
+    using:
+      manual_configuration:
+        column_mapping:
+          op_budget_id: id
+        insertion_order: null
+        remote_table:
+          name: budgets
+          schema: api
+  - name: starkBudget
+    using:
+      manual_configuration:
+        column_mapping:
+          stark_budget_id: id
+        insertion_order: null
+        remote_table:
+          name: budgets
+          schema: api
+  - name: usdBudget
+    using:
+      manual_configuration:
+        column_mapping:
+          usd_budget_id: id
+        insertion_order: null
+        remote_table:
+          name: budgets
+          schema: api
 array_relationships:
   - name: applications
     using:
@@ -17,15 +63,6 @@ array_relationships:
         insertion_order: null
         remote_table:
           name: applications
-          schema: public
-  - name: budgets
-    using:
-      manual_configuration:
-        column_mapping:
-          id: project_id
-        insertion_order: null
-        remote_table:
-          name: budgets
           schema: public
   - name: contributors
     using:
@@ -45,6 +82,15 @@ array_relationships:
         remote_table:
           name: project_github_repos
           schema: public
+  - name: payments
+    using:
+      manual_configuration:
+        column_mapping:
+          id: project_id
+        insertion_order: null
+        remote_table:
+          name: payment_requests
+          schema: api
   - name: pendingContributors
     using:
       manual_configuration:
@@ -103,5 +149,10 @@ select_permissions:
         - more_info_link
         - name
         - short_description
+        - apt_budget_id
+        - eth_budget_id
         - id
+        - op_budget_id
+        - stark_budget_id
+        - usd_budget_id
       filter: {}
