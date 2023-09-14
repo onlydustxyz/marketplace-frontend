@@ -4,10 +4,18 @@ pub use custom::{Currency, APTOS, ETH, OPTIMISM, STARK, USD};
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use thiserror::Error;
 
+use crate::SubscriberCallbackError;
+
 #[derive(Debug, Error, PartialEq, Eq)]
 pub enum ParseError {
 	#[error("Provided currency is not supported")]
 	NotSupported,
+}
+
+impl From<ParseError> for SubscriberCallbackError {
+	fn from(error: ParseError) -> Self {
+		Self::Discard(error.into())
+	}
 }
 
 impl FromStr for &'static Currency {

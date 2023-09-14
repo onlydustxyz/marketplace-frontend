@@ -22,6 +22,10 @@ pub mod sql_types {
     pub struct ContributionType;
 
     #[derive(diesel::query_builder::QueryId, diesel::sql_types::SqlType)]
+    #[diesel(postgres_type(name = "currency"))]
+    pub struct Currency;
+
+    #[derive(diesel::query_builder::QueryId, diesel::sql_types::SqlType)]
     #[diesel(postgres_type(name = "github_ci_checks"))]
     pub struct GithubCiChecks;
 
@@ -96,11 +100,15 @@ diesel::table! {
 }
 
 diesel::table! {
+    use diesel::sql_types::*;
+    use super::sql_types::Currency;
+
     budgets (id) {
         id -> Uuid,
         initial_amount -> Numeric,
         remaining_amount -> Numeric,
         spent_amount -> Numeric,
+        currency -> Currency,
     }
 }
 

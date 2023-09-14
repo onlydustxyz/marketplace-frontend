@@ -22,11 +22,15 @@ impl EventListener<Event> for Projector {
 	async fn on_event(&self, event: Event) -> Result<(), SubscriberCallbackError> {
 		if let Event::Budget(event) = event {
 			match event {
-				BudgetEvent::Created { id: budget_id, .. } => {
+				BudgetEvent::Created {
+					id: budget_id,
+					currency,
+				} => {
 					self.budget_repository.upsert(Budget {
 						id: budget_id,
 						initial_amount: Decimal::ZERO,
 						remaining_amount: Decimal::ZERO,
+						currency: currency.try_into()?,
 					})?;
 				},
 				BudgetEvent::Allocated {
