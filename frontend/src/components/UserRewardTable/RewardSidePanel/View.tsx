@@ -1,5 +1,6 @@
 import { PropsWithChildren, useState } from "react";
 import GithubIssue from "src/components/GithubIssue";
+import GithubPullRequest from "src/components/GithubPullRequest";
 import PayoutStatus from "src/components/PayoutStatus";
 import QueryWrapper from "src/components/QueryWrapper";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
@@ -186,7 +187,7 @@ export default function View({
               workItem.githubIssue ? (
                 <GithubIssue key={workItem.githubIssue?.id} workItem={issueToWorkItem(workItem.githubIssue)} />
               ) : workItem.githubPullRequest ? (
-                <GithubIssue
+                <GithubPullRequest
                   key={workItem.githubPullRequest?.id}
                   workItem={pullRequestToWorkItem(workItem.githubPullRequest)}
                 />

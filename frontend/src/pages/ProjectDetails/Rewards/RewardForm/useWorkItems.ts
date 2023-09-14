@@ -1,6 +1,6 @@
 import { sortBy, uniqBy } from "lodash";
 import { useCallback, useReducer } from "react";
-import { WorkItem } from "src/components/GithubIssue";
+import { WorkItem } from "./index";
 
 type WorkItemAction =
   | {

@@ -10,16 +10,17 @@ import {
   WorkItemType,
   useUnrewardedContributionsQuery,
 } from "src/__generated/graphql";
-import { WorkItem } from "src/components/GithubIssue";
 import View from "./View";
 import { useIgnoredContributions } from "./useIgnoredContributions";
+import { GithubIssue as GithubIssueType } from "src/components/GithubIssue";
+import { GithubPullRequest as GithubPullRequestType } from "src/components/GithubPullRequest";
 
 type Props = {
   type: WorkItemType;
   projectId: string;
   contributorId: number;
-  workItems: WorkItem[];
-  addWorkItem: (workItem: WorkItem) => void;
+  workItems: (GithubIssueType | GithubPullRequestType)[];
+  addWorkItem: (workItem: GithubIssueType | GithubPullRequestType) => void;
 };
 
 export default function Issues({ type, projectId, contributorId, workItems, addWorkItem }: Props) {
@@ -40,7 +41,10 @@ export default function Issues({ type, projectId, contributorId, workItems, addW
   });
 
   const contributionsNotAdded = useMemo(
-    () => chain(data?.contributions).differenceBy(workItems, "id").value(),
+    () =>
+      chain(data?.contributions)
+        .differenceWith(workItems, (contribution, workItem) => contribution.detailsId === workItem.id)
+        .value(),
     [data?.contributions, workItems]
   );
 
@@ -60,10 +64,10 @@ export default function Issues({ type, projectId, contributorId, workItems, addW
 export const contributionToWorkItem = ({
   githubIssue,
   githubPullRequest,
-}: ContributionFragment): WorkItem | undefined =>
+}: ContributionFragment): GithubIssueType | GithubPullRequestType | undefined =>
   githubIssue ? issueToWorkItem(githubIssue) : githubPullRequest ? pullRequestToWorkItem(githubPullRequest) : undefined;
 
-export const issueToWorkItem = (props: GithubIssueFragment | LiveGithubIssueFragment): WorkItem => ({
+export const issueToWorkItem = (props: GithubIssueFragment | LiveGithubIssueFragment): GithubIssueType => ({
   ...props,
   type: WorkItemType.Issue,
   // ignored: some(ignoredForProjects, { projectId }),

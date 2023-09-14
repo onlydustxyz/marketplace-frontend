@@ -4,7 +4,7 @@ import { useFormContext, useFormState } from "react-hook-form";
 import { WorkItemType, useFetchIssueLazyQuery, useFetchPullRequestLazyQuery } from "src/__generated/graphql";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import Input from "src/components/FormInput";
-import { WorkItem } from "src/components/GithubIssue";
+import { GithubIssue as GithubIssueType } from "src/components/GithubIssue";
 import { useIntl } from "src/hooks/useIntl";
 import Link from "src/icons/Link";
 import {
@@ -13,12 +13,15 @@ import {
   parseIssueLink,
   parsePullRequestLink,
 } from "src/utils/github";
-import { issueToWorkItem, pullRequestToWorkItem } from ".";
+import {
+  issueToWorkItem,
+  pullRequestToWorkItem,
+} from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/Issues";
 
 type Props = {
   projectId: string;
   type: WorkItemType;
-  addWorkItem: (workItem: WorkItem) => void;
+  addWorkItem: (workItem: GithubIssueType) => void;
 };
 
 export default function OtherIssueInput({ projectId, type, addWorkItem }: Props) {

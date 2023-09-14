@@ -1,5 +1,5 @@
 import { GithubIssueType } from "src/types";
-import GithubIssue, { Action, Props, WorkItem } from "src/components/GithubIssue";
+import GithubIssue, { Action, Props } from "src/components/GithubIssue";
 import { daysFromNow } from "src/utils/date";
 import { GithubIssueStatus, GithubPullRequestStatus } from "src/__generated/graphql";
 

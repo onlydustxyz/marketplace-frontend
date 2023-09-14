@@ -129,3 +129,8 @@ export enum GithubIssueType {
   Issue,
   PullRequest,
 }
+
+export enum GithubContributionType {
+  Issue,
+  PullRequest,
+}

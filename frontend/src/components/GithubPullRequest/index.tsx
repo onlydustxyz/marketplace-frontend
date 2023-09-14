@@ -1,22 +1,21 @@
 import IssueClosed from "src/assets/icons/IssueClosed";
 import { useIntl } from "src/hooks/useIntl";
 import Add from "src/icons/Add";
+import GitMergeLine from "src/icons/GitMergeLine";
+import GitPullRequestLine from "src/icons/GitPullRequestLine";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import Subtract from "src/icons/SubtractLine";
 import Time from "src/icons/TimeLine";
 import displayRelativeDate from "src/utils/displayRelativeDate";
-import { parseIssueLink } from "src/utils/github";
+import { parsePullRequestLink } from "src/utils/github";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import Card from "src/components/Card";
-import GithubIssueLink from "./GithubIssueLink";
-import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
-import IssueCancelled from "src/assets/icons/IssueCancelled";
-import IssueOpen from "src/assets/icons/IssueOpen";
+import GithubIssueLink from "./GithubPullRequestLink";
 import EyeOffLine from "src/icons/EyeOffLine";
 import EyeLine from "src/icons/EyeLine";
 import classNames from "classnames";
 import { withTooltip } from "src/components/Tooltip";
-import { GithubIssueStatus, WorkItemType } from "src/__generated/graphql";
+import { GithubPullRequestStatus, WorkItemType } from "src/__generated/graphql";
 
 export enum Action {
   Add = "add",
@@ -25,7 +24,7 @@ export enum Action {
   UnIgnore = "unignore",
 }
 
-export type GithubIssue = {
+export type GithubPullRequest = {
   id: string;
   repoId: number;
   number: number;
@@ -34,9 +33,9 @@ export type GithubIssue = {
   htmlUrl: string;
   createdAt: Date;
   ignored: boolean;
-  status: GithubIssueStatus;
+  status: GithubPullRequestStatus;
   closedAt: Date;
-  mergedAt?: Date;
+  mergedAt: Date;
 };
 
 export type Props = {
@@ -44,7 +43,7 @@ export type Props = {
   secondaryAction?: Action;
   onClick?: () => void;
   onSecondaryClick?: () => void;
-  workItem: GithubIssue;
+  workItem: GithubPullRequest;
   ignored?: boolean;
   addMarginTopForVirtuosoDisplay?: boolean;
 };
@@ -58,7 +57,7 @@ export default function GithubPullRequest({
   ignored = false,
   addMarginTopForVirtuosoDisplay = false,
 }: Props) {
-  const { repoName } = parseIssueLink(workItem.htmlUrl);
+  const { repoName } = parsePullRequestLink(workItem.htmlUrl);
 
   return (
     <Card
@@ -79,7 +78,7 @@ export default function GithubPullRequest({
             {displayRelativeDate(workItem.createdAt)}
           </div>
           <div className="flex flex-row items-center gap-1">
-            <IssueStatus contribution={workItem} />
+            <PullRequestStatus contribution={workItem} />
           </div>
           <div className="flex flex-row items-center gap-1">
             <GitRepositoryLine />
@@ -121,28 +120,28 @@ function ActionButton({ action, ignored, onClick }: ActionButtonProps) {
   );
 }
 
-function IssueStatus({ contribution }: { contribution: GithubIssue }) {
+function PullRequestStatus({ contribution }: { contribution: GithubPullRequest }) {
   const { T } = useIntl();
 
   switch (contribution.status.toUpperCase()) {
-    case GithubIssueStatus.Cancelled:
+    case GithubPullRequestStatus.Closed:
       return (
         <>
-          <IssueCancelled className="fill-github-grey p-0.5" />
+          <IssueClosed className="fill-github-red" />
           {T("githubIssue.status.closed", { closedAt: displayRelativeDate(contribution.closedAt) })}
         </>
       );
-    case GithubIssueStatus.Completed:
+    case GithubPullRequestStatus.Merged:
       return (
         <>
-          <CheckboxCircleLine className="-my-1 text-base text-github-purple" />
-          {T("githubIssue.status.closed", { closedAt: displayRelativeDate(contribution.closedAt) })}
+          <GitMergeLine className="-my-1 text-base text-github-purple" />
+          {T("githubIssue.status.merged", { mergedAt: displayRelativeDate(contribution.mergedAt) })}
         </>
       );
-    case GithubIssueStatus.Open:
+    case GithubPullRequestStatus.Open:
       return (
         <>
-          <IssueOpen className="fill-github-green p-0.5" />
+          <GitPullRequestLine className="-my-1 text-base text-github-green" />
           {T("githubIssue.status.open")}
         </>
       );

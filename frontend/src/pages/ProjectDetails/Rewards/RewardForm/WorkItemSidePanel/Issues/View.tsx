@@ -1,11 +1,12 @@
 import { filter, some } from "lodash";
-import { forwardRef, useEffect, useState } from "react";
+import { ElementType, forwardRef, useEffect, useState } from "react";
 import { useForm, useFormContext, useWatch } from "react-hook-form";
 import { Virtuoso } from "react-virtuoso";
-import { ContributionFragment, WorkItemType } from "src/__generated/graphql";
+import { ContributionFragment, WorkItem, WorkItemType } from "src/__generated/graphql";
 import FormInput from "src/components/FormInput";
 import FormToggle from "src/components/FormToggle";
-import GithubIssue, { Action, WorkItem } from "src/components/GithubIssue";
+import GithubIssue, { Action } from "src/components/GithubIssue";
+import GithubPullRequest from "src/components/GithubPullRequest";
 import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
 import EyeOffLine from "src/icons/EyeOffLine";
@@ -75,6 +76,8 @@ export default function View({
   const searchPattern = watch(`search-${tabName}`);
   const filteredContributions = useFilteredContributions({ pattern: searchPattern, contributions: visibleIssues });
 
+  console.log(filteredContributions);
+
   return (
     <div className="flex h-full flex-col gap-3 overflow-hidden px-6">
       <div className="flex flex-col gap-3 pt-8">
@@ -121,9 +124,11 @@ export default function View({
           />
         )}
       </div>
+
       {filteredContributions.length > 0 ? (
         <VirtualizedIssueList
           {...{
+            as: tabName === "issues" ? GithubIssue : GithubPullRequest,
             contributions: filteredContributions,
             addContribution,
             ignoreContribution,
@@ -157,6 +162,7 @@ const ListBuilder = (tabName: string) => {
 };
 
 interface VirtualizedIssueListProps {
+  as: ElementType;
   contributions: ContributionFragment[];
   addContribution: (contribution: ContributionFragment) => void;
   ignoreContribution: (contribution: ContributionFragment) => void;
@@ -165,12 +171,15 @@ interface VirtualizedIssueListProps {
 }
 
 const VirtualizedIssueList = ({
+  as,
   contributions,
   addContribution,
   ignoreContribution,
   unignoreContribution,
   tabName,
 }: VirtualizedIssueListProps) => {
+  const As = as;
+
   return (
     <Virtuoso
       data={contributions}
@@ -181,7 +190,7 @@ const VirtualizedIssueList = ({
         if (!workItem) return;
 
         return (
-          <GithubIssue
+          <As
             key={contribution.id}
             workItem={workItem}
             action={Action.Add}

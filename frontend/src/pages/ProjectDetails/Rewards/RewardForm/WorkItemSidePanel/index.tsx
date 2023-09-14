@@ -1,5 +1,6 @@
 import { useIntl } from "src/hooks/useIntl";
-import { WorkItem } from "src/components/GithubIssue";
+import { GithubIssue as GithubIssueType } from "src/components/GithubIssue";
+import { GithubPullRequest as GithubPullRequestType } from "src/components/GithubPullRequest";
 import Issues from "./Issues";
 import SidePanel from "src/components/SidePanel";
 import { useState } from "react";
@@ -18,8 +19,8 @@ type Props = {
   setOpen: (value: boolean) => void;
   contributorId: number;
   contributorHandle: string;
-  workItems: WorkItem[];
-  addWorkItem: (workItem: WorkItem) => void;
+  workItems: (GithubIssueType | GithubPullRequestType)[];
+  addWorkItem: (workItem: GithubIssueType | GithubPullRequestType) => void;
 };
 
 enum Tabs {

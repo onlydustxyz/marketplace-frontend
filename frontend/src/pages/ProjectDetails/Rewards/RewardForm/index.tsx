@@ -6,15 +6,16 @@ import View from "./View";
 import { useShowToaster } from "src/hooks/useToaster";
 import { generatePath, useNavigate, useOutletContext } from "react-router-dom";
 import { ProjectRoutePaths, RoutePaths } from "src/App";
-import { WorkItem } from "src/components/GithubIssue";
+import { GithubIssue as GithubIssueType } from "src/components/GithubIssue";
+import { GithubPullRequest as GithubPullRequestType } from "src/components/GithubPullRequest";
 import {
   ContributionFragment,
-  WorkItemType,
   useRequestPaymentMutation,
   useUnrewardedContributionsQuery,
 } from "src/__generated/graphql";
 import { useCommands } from "src/providers/Commands";
-import { GithubIssueType } from "src/types";
+
+export type WorkItem = GithubIssueType | GithubPullRequestType;
 
 const RewardForm: React.FC = () => {
   const { T } = useIntl();
@@ -108,7 +109,7 @@ const RewardForm: React.FC = () => {
             onWorkItemsChange={onWorkItemsChange}
             contributor={contributor}
             setContributor={setContributor}
-            unpaidPRs={data?.contributions as ContributionFragment | null | undefined}
+            unpaidContributions={data?.contributions as ContributionFragment | null | undefined}
             requestNewPaymentMutationLoading={requestNewPaymentMutationLoading}
           />
         </form>
