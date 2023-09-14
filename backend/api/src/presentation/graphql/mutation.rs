@@ -235,26 +235,6 @@ impl Mutation {
 		Ok(application_id.into())
 	}
 
-	pub async fn update_sponsor(
-		context: &Context,
-		sponsor_id: Uuid,
-		name: Option<String>,
-		logo_url: Option<Url>,
-		url: Nullable<Url>,
-	) -> Result<Uuid> {
-		let sponsor_id = context
-			.update_sponsor_usecase
-			.update(
-				sponsor_id.into(),
-				OptionalNonEmptyTrimmedString::try_from(name)?.into(),
-				logo_url,
-				url,
-			)
-			.await?;
-
-		Ok(sponsor_id.into())
-	}
-
 	pub fn add_sponsor_to_project(
 		context: &Context,
 		project_id: Uuid,

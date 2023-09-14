@@ -30,11 +30,11 @@ impl From<Error> for HttpApiProblem {
 	}
 }
 
-impl From<application::sponsor::create::Error> for HttpApiProblem {
-	fn from(error: application::sponsor::create::Error) -> Self {
+impl From<application::sponsor::Error> for HttpApiProblem {
+	fn from(error: application::sponsor::Error) -> Self {
 		match error {
-			application::sponsor::create::Error::ImageStore(e) => e.into(),
-			application::sponsor::create::Error::Database(_) => {
+			application::sponsor::Error::ImageStore(e) => e.into(),
+			application::sponsor::Error::Database(_) => {
 				olog::error!(error = error.to_field(), "Database error");
 				HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
 					.title("Internal error")

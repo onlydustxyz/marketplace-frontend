@@ -130,7 +130,8 @@ pub fn serve(
 				routes::pull_requests::fetch_pull_request,
 				routes::payment::request_payment,
 				routes::payment::cancel_payment,
-				routes::sponsors::create_sponsor
+				routes::sponsors::create_sponsor,
+				routes::sponsors::update_sponsor
 			],
 		)
 }

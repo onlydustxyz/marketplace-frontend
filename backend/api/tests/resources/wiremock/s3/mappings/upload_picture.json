@@ -1,6 +1,6 @@
 {
     "request": {
-        "url": "/onlydust-app-images/13925002259599074250.png",
+        "urlPattern": "/onlydust-app-images/([0-9]+).png",
         "method": "PUT"
     },
     "response": {

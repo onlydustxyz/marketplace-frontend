@@ -1,5 +1,18 @@
+use infrastructure::database::DatabaseError;
+use thiserror::Error;
+
+use crate::domain::ImageStoreServiceError;
+
 pub mod create;
 pub mod update;
+
+#[derive(Debug, Error)]
+pub enum Error {
+	#[error(transparent)]
+	ImageStore(#[from] ImageStoreServiceError),
+	#[error("Unable to store sponsor")]
+	Database(#[from] DatabaseError),
+}
 
 #[cfg(test)]
 mod test {

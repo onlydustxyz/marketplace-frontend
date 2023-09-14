@@ -1,12 +1,12 @@
 use std::sync::Arc;
 
 use anyhow::Result;
-use domain::{sponsor, DomainError};
+use domain::sponsor;
 use infrastructure::database::Repository;
-use juniper::Nullable;
 use reqwest::Url;
 use tracing::instrument;
 
+use super::Error;
 use crate::{domain::ImageStoreService, models::*, presentation::http::dto::NonEmptyTrimmedString};
 
 pub struct Usecase {
@@ -32,8 +32,8 @@ impl Usecase {
 		sponsor_id: sponsor::Id,
 		name: Option<NonEmptyTrimmedString>,
 		logo_url: Option<Url>,
-		url: Nullable<Url>,
-	) -> Result<sponsor::Id, DomainError> {
+		url: Option<Option<Url>>,
+	) -> Result<sponsor::Id, Error> {
 		let mut sponsor = self.sponsor_repository.find_by_id(sponsor_id)?;
 
 		if let Some(name) = name {
@@ -44,7 +44,7 @@ impl Usecase {
 				self.image_store.store_image_from_url(&logo_url).await?.to_string();
 			sponsor = sponsor.with_logo_url(stored_logo_url);
 		}
-		if let Some(url) = url.explicit() {
+		if let Some(url) = url {
 			sponsor = sponsor.with_url(url.map(|url| url.to_string()))
 		}
 
@@ -125,7 +125,7 @@ mod tests {
 		let usecase = Usecase::new(Arc::new(sponsor_repository), Arc::new(image_store_service));
 
 		usecase
-			.update(sponsor_id, Some(name), Some(logo_url), Nullable::Some(url))
+			.update(sponsor_id, Some(name), Some(logo_url), Some(Some(url)))
 			.await
 			.unwrap();
 	}
@@ -161,9 +161,7 @@ mod tests {
 
 		let usecase = Usecase::new(Arc::new(sponsor_repository), Arc::new(image_store_service));
 
-		let result = usecase
-			.update(sponsor_id, Some(name), Some(logo_url), Nullable::Some(url))
-			.await;
-		assert_matches!(result, Err(DomainError::InvalidInputs(_)));
+		let result = usecase.update(sponsor_id, Some(name), Some(logo_url), Some(Some(url))).await;
+		assert_matches!(result, Err(Error::ImageStore(_)));
 	}
 }

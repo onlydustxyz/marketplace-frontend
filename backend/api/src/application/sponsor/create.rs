@@ -2,24 +2,12 @@ use std::sync::Arc;
 
 use anyhow::Result;
 use domain::sponsor;
-use infrastructure::database::{DatabaseError, Repository};
+use infrastructure::database::Repository;
 use reqwest::Url;
-use thiserror::Error;
 use tracing::instrument;
 
-use crate::{
-	domain::{ImageStoreService, ImageStoreServiceError},
-	models::*,
-	presentation::http::dto::NonEmptyTrimmedString,
-};
-
-#[derive(Debug, Error)]
-pub enum Error {
-	#[error(transparent)]
-	ImageStore(#[from] ImageStoreServiceError),
-	#[error("Unable to store sponsor")]
-	Database(#[from] DatabaseError),
-}
+use super::Error;
+use crate::{domain::ImageStoreService, models::*, presentation::http::dto::NonEmptyTrimmedString};
 
 pub struct Usecase {
 	sponsor_repository: Arc<dyn Repository<Sponsor>>,
