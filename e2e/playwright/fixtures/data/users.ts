@@ -1,5 +1,5 @@
 import { UserFixture } from "../../types";
-import { IdentityType, PayoutSettingsType } from "../../__generated/graphql";
+import { PreferredMethod } from "../../__generated/graphql";
 
 export const users: Record<string, UserFixture> = {
   TokioRs: {
@@ -11,8 +11,7 @@ export const users: Record<string, UserFixture> = {
     payoutInfo: {
       populate: false,
       identity: {
-        type: IdentityType.Company,
-        optCompany: {
+        company: {
           name: "TokioRs",
           identificationNumber: "TRS12345",
           owner: {
@@ -20,7 +19,7 @@ export const users: Record<string, UserFixture> = {
             lastname: "Tok",
           },
         },
-        optPerson: null,
+        person: null,
       },
       location: {
         address: "4564 30th St",
@@ -29,13 +28,16 @@ export const users: Record<string, UserFixture> = {
         postCode: "92116",
       },
       payoutSettings: {
-        type: PayoutSettingsType.BankAddress,
-        optBankAddress: {
+        bankAccount: {
           BIC: "BNPCFR21",
           IBAN: "FR7610107001011234567890129",
         },
-        optEthAddress: null,
-        optEthName: null,
+        ethAddress: null,
+        ethName: null,
+        aptosAddress: null,
+        optimismAddress: null,
+        starknetAddress: null,
+        usdPreferredMethod: PreferredMethod.Crypto,
       },
     },
     onboardingWizardCompleted: true,
@@ -51,9 +53,8 @@ export const users: Record<string, UserFixture> = {
     payoutInfo: {
       populate: false,
       identity: {
-        type: IdentityType.Person,
-        optCompany: null,
-        optPerson: {
+        company: null,
+        person: {
           firstname: "Olivier",
           lastname: "Fufifo",
         },
@@ -65,10 +66,13 @@ export const users: Record<string, UserFixture> = {
         postCode: "75005",
       },
       payoutSettings: {
-        type: PayoutSettingsType.EthereumName,
-        optBankAddress: null,
-        optEthAddress: null,
-        optEthName: "vitalik.eth",
+        bankAccount: null,
+        ethAddress: null,
+        ethName: "vitalik.eth",
+        aptosAddress: null,
+        optimismAddress: null,
+        starknetAddress: null,
+        usdPreferredMethod: PreferredMethod.Crypto,
       },
     },
   },
@@ -82,9 +86,8 @@ export const users: Record<string, UserFixture> = {
     payoutInfo: {
       populate: false,
       identity: {
-        type: IdentityType.Person,
-        optCompany: null,
-        optPerson: {
+        company: null,
+        person: {
           firstname: "Anthony",
           lastname: "Bubibo",
         },
@@ -96,10 +99,13 @@ export const users: Record<string, UserFixture> = {
         postCode: "06100",
       },
       payoutSettings: {
-        type: PayoutSettingsType.EthereumAddress,
-        optEthAddress: "0xb0E28d8e010d10a78e8ffB5BCDd607A3bEe366b7",
-        optEthName: null,
-        optBankAddress: null,
+        ethAddress: "0xb0E28d8e010d10a78e8ffB5BCDd607A3bEe366b7",
+        ethName: null,
+        bankAccount: null,
+        aptosAddress: null,
+        optimismAddress: null,
+        starknetAddress: null,
+        usdPreferredMethod: PreferredMethod.Crypto,
       },
     },
     onboardingWizardCompleted: true,

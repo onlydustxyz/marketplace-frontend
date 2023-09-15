@@ -17178,7 +17178,7 @@ export type PaymentRequestsByPkQueryVariables = Exact<{
 export type PaymentRequestsByPkQuery = { __typename?: 'query_root', paymentRequestsByPk: { __typename?: 'PaymentRequests', id: any } | null };
 
 export type CreateProjectMutationVariables = Exact<{
-  projectName: Scalars['String'];
+  name: Scalars['String'];
   telegramLink: Scalars['Url'];
   logoUrl: Scalars['Url'];
   shortDescription: Scalars['String'];
@@ -18692,9 +18692,9 @@ export type PaymentRequestsByPkQueryHookResult = ReturnType<typeof usePaymentReq
 export type PaymentRequestsByPkLazyQueryHookResult = ReturnType<typeof usePaymentRequestsByPkLazyQuery>;
 export type PaymentRequestsByPkQueryResult = Apollo.QueryResult<PaymentRequestsByPkQuery, PaymentRequestsByPkQueryVariables>;
 export const CreateProjectDocument = gql`
-    mutation createProject($projectName: String!, $telegramLink: Url!, $logoUrl: Url!, $shortDescription: String!, $longDescription: String!, $initialBudget: Int, $hiring: Boolean, $rank: Int, $visibility: Visibility) {
+    mutation createProject($name: String!, $telegramLink: Url!, $logoUrl: Url!, $shortDescription: String!, $longDescription: String!, $initialBudget: Int, $hiring: Boolean, $rank: Int, $visibility: Visibility) {
   createProject(
-    name: $projectName
+    name: $name
     telegramLink: $telegramLink
     logoUrl: $logoUrl
     shortDescription: $shortDescription
@@ -18721,7 +18721,7 @@ export type CreateProjectMutationFn = Apollo.MutationFunction<CreateProjectMutat
  * @example
  * const [createProjectMutation, { data, loading, error }] = useCreateProjectMutation({
  *   variables: {
- *      projectName: // value for 'projectName'
+ *      name: // value for 'name'
  *      telegramLink: // value for 'telegramLink'
  *      logoUrl: // value for 'logoUrl'
  *      shortDescription: // value for 'shortDescription'
