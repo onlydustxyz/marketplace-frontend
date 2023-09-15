@@ -21,8 +21,7 @@ const [payment1, payment2, payment3]: Reward[] = range(1, 4).map(id => ({
     {
       paymentId: `payment-${id}`,
       repoId: 123456,
-      issueNumber: 123,
-      number: 3
+      number: 123,
     },
   ],
   requestedAt: new Date(),

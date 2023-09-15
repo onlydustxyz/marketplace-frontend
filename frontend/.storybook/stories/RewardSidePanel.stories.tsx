@@ -95,10 +95,9 @@ const payment: PaymentRequestDetailsFragment = {
   workItems: issues.map(githubIssue => ({
     paymentId: "880819f1-2ab9-406d-9bf1-3012b6f565bc",
     repoId: githubIssue.repoId,
-    issueNumber: githubIssue.number,
+    number: githubIssue.number,
     githubIssue,
     githubPullRequest: null,
-    number: 3,
   })),
 };
 

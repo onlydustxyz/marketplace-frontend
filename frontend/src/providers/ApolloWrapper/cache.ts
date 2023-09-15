@@ -60,13 +60,6 @@ export default function useApolloCache() {
           },
         },
       },
-
-      WorkItems: {
-        keyFields: ["paymentId", "repoId", "issueNumber"],
-      },
-      IgnoredGithubIssues: {
-        keyFields: ["projectId", "repoId", "issueNumber"],
-      },
       GithubUsers: {
         fields: {
           paymentRequests: {

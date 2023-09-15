@@ -14,8 +14,7 @@ const paymentRequests: Reward[] = range(1, 4).map(id => ({
     {
       paymentId: `abc${id}${id}${id}${id}${id}${id}${id}`,
       repoId: 123456,
-      issueNumber: 123,
-      number: 3,
+      number: 123,
     },
   ],
   requestedAt: new Date(`December ${id + 10}, 2022`),
