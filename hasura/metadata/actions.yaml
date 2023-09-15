@@ -59,7 +59,7 @@ actions:
         body:
           action: transform
           template: |+
-            {{$body?.project_id}}
+            {{$body?.projectId}}
 
         template_engine: Kriti
         version: 2
