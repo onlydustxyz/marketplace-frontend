@@ -1,63 +1,24 @@
-use std::sync::Arc;
-
-use anyhow::{anyhow, Error};
-use domain::{AggregateRepository, Budget, Event, Project, Publisher};
-use infrastructure::{amqp::UniqueMessage, database::Repository};
+use anyhow::Error;
 use rocket::{
-	http::Status,
+	outcome::try_outcome,
 	request::{FromRequest, Outcome},
 	Request,
 };
 
-use crate::{application::budget::allocate::Usecase, models::Sponsor};
+use crate::{
+	application::budget::allocate::Usecase, presentation::http::usecases::FromRocketState,
+};
 
 #[async_trait]
 impl<'r> FromRequest<'r> for Usecase {
 	type Error = Error;
 
 	async fn from_request(request: &'r Request<'_>) -> Outcome<Usecase, Self::Error> {
-		let event_publisher =
-			match request.rocket().state::<Arc<dyn Publisher<UniqueMessage<Event>>>>() {
-				Some(publisher) => publisher,
-				None =>
-					return Outcome::Failure((
-						Status::InternalServerError,
-						anyhow!("Missing event publisher"),
-					)),
-			};
-
-		let project_repository = match request.rocket().state::<AggregateRepository<Project>>() {
-			Some(repository) => repository,
-			None =>
-				return Outcome::Failure((
-					Status::InternalServerError,
-					anyhow!("Missing project repository"),
-				)),
-		};
-
-		let sponsor_repository = match request.rocket().state::<Arc<dyn Repository<Sponsor>>>() {
-			Some(repository) => repository,
-			None =>
-				return Outcome::Failure((
-					Status::InternalServerError,
-					anyhow!("Missing sponsor repository"),
-				)),
-		};
-
-		let budget_repository = match request.rocket().state::<AggregateRepository<Budget>>() {
-			Some(repository) => repository,
-			None =>
-				return Outcome::Failure((
-					Status::InternalServerError,
-					anyhow!("Missing budget repository"),
-				)),
-		};
-
 		Outcome::Success(Self::new(
-			event_publisher.clone(),
-			project_repository.clone(),
-			budget_repository.clone(),
-			sponsor_repository.clone(),
+			try_outcome!(FromRocketState::from_state(request.rocket())),
+			try_outcome!(FromRocketState::from_state(request.rocket())),
+			try_outcome!(FromRocketState::from_state(request.rocket())),
+			try_outcome!(FromRocketState::from_state(request.rocket())),
 		))
 	}
 }
