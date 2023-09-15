@@ -122,20 +122,6 @@ class GithubIssue {
    updatedAt: DateTimeUtc!
 }
 
-class GithubIssueCreatedAndClosed {
-   author: GithubUserLinkedToIssue!
-   closedAt: DateTime
-   commentsCount: Int!
-   createdAt: DateTime!
-   htmlUrl: Url!
-   id: Int!
-   number: Int!
-   repoId: Int!
-   status: GithubIssueCreatedAndClosedStatus!
-   title: String!
-   updatedAt: DateTime!
-}
-
 class GithubIssues {
    assigneeIds: jsonb!
    authorId: bigint!
@@ -213,13 +199,6 @@ class GithubUser {
    id: Int!
    login: String!
    user: RegisteredUsers
-}
-
-class GithubUserLinkedToIssue {
-   avatarUrl: Url!
-   htmlUrl: Url!
-   id: Int!
-   login: String!
 }
 
 class GithubUsers {
@@ -534,7 +513,6 @@ Contributions -- GithubIssues
 Contributions -- GithubPullRequests
 Contributions --* WorkItems
 GithubIssue -- GithubUser
-GithubIssueCreatedAndClosed -- GithubUserLinkedToIssue
 GithubIssues -- GithubRepos
 GithubPullRequest -- GithubUser
 GithubPullRequests -- GithubRepos

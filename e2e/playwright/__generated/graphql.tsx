@@ -14,7 +14,6 @@ export type Scalars = {
   Int: number;
   Float: number;
   Amount: any;
-  DateTime: any;
   DateTimeUtc: any;
   /** A `0x` prefixed hexadecimal string representing 20 bytes of data */
   EthereumAddress: any;
@@ -2931,27 +2930,6 @@ export type GithubIssue = {
   updatedAt: Scalars['DateTimeUtc'];
 };
 
-export type GithubIssueCreatedAndClosed = {
-  __typename?: 'GithubIssueCreatedAndClosed';
-  author: GithubUserLinkedToIssue;
-  closedAt: Maybe<Scalars['DateTime']>;
-  commentsCount: Scalars['Int'];
-  createdAt: Scalars['DateTime'];
-  htmlUrl: Scalars['Url'];
-  id: Scalars['Int'];
-  number: Scalars['Int'];
-  repoId: Scalars['Int'];
-  status: GithubIssueCreatedAndClosedStatus;
-  title: Scalars['String'];
-  updatedAt: Scalars['DateTime'];
-};
-
-export enum GithubIssueCreatedAndClosedStatus {
-  Cancelled = 'Cancelled',
-  Completed = 'Completed',
-  Open = 'Open'
-}
-
 export enum GithubIssueStatus {
   Cancelled = 'CANCELLED',
   Completed = 'COMPLETED',
@@ -4314,14 +4292,6 @@ export type GithubUser = {
   id: Scalars['Int'];
   login: Scalars['String'];
   user: Maybe<RegisteredUsers>;
-};
-
-export type GithubUserLinkedToIssue = {
-  __typename?: 'GithubUserLinkedToIssue';
-  avatarUrl: Scalars['Url'];
-  htmlUrl: Scalars['Url'];
-  id: Scalars['Int'];
-  login: Scalars['String'];
 };
 
 /** columns and relationships of "github_users" */
@@ -11458,7 +11428,7 @@ export type Mutation_Root = {
   applyToProject: Scalars['Uuid'];
   cancelPaymentRequest: Payment;
   /** createAndCloseIssue */
-  createAndCloseIssue: GithubIssueCreatedAndClosed;
+  createAndCloseIssue: GithubIssue;
   /** createProject */
   createProject: Scalars['Uuid'];
   createSponsor: Scalars['Uuid'];
@@ -17882,10 +17852,6 @@ export type LiveGithubIssueIdFragment = { __typename?: 'GithubIssue', id: number
 
 export type LiveGithubIssueFragment = { __typename?: 'GithubIssue', repoId: number, number: number, status: GithubIssueStatus, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, id: number };
 
-export type LiveGithubIssueCreatedAndClosedIdFragment = { __typename?: 'GithubIssueCreatedAndClosed', id: number };
-
-export type LiveGithubIssueCreatedAndClosedFragment = { __typename?: 'GithubIssueCreatedAndClosed', repoId: number, number: number, status: GithubIssueCreatedAndClosedStatus, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, id: number };
-
 export type LiveGithubUserIdFragment = { __typename?: 'GithubUser', id: number };
 
 export type LiveGithubUserFragment = { __typename?: 'GithubUser', login: string, avatarUrl: any, htmlUrl: any, id: number, user: { __typename?: 'RegisteredUsers', id: any | null } | null };
@@ -18123,7 +18089,7 @@ export type CreateAndCloseIssueMutationVariables = Exact<{
 }>;
 
 
-export type CreateAndCloseIssueMutation = { __typename?: 'mutation_root', createAndCloseIssue: { __typename?: 'GithubIssueCreatedAndClosed', repoId: number, number: number, status: GithubIssueCreatedAndClosedStatus, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, id: number } };
+export type CreateAndCloseIssueMutation = { __typename?: 'mutation_root', createAndCloseIssue: { __typename?: 'GithubIssue', repoId: number, number: number, status: GithubIssueStatus, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, id: number } };
 
 export type GetPaymentRequestsForProjectQueryVariables = Exact<{
   projectId: Scalars['uuid'];
@@ -18549,23 +18515,6 @@ export const LiveGithubIssueFragmentDoc = gql`
   closedAt
 }
     ${LiveGithubIssueIdFragmentDoc}`;
-export const LiveGithubIssueCreatedAndClosedIdFragmentDoc = gql`
-    fragment LiveGithubIssueCreatedAndClosedId on GithubIssueCreatedAndClosed {
-  id
-}
-    `;
-export const LiveGithubIssueCreatedAndClosedFragmentDoc = gql`
-    fragment LiveGithubIssueCreatedAndClosed on GithubIssueCreatedAndClosed {
-  ...LiveGithubIssueCreatedAndClosedId
-  repoId
-  number
-  status
-  title
-  htmlUrl
-  createdAt
-  closedAt
-}
-    ${LiveGithubIssueCreatedAndClosedIdFragmentDoc}`;
 export const LiveGithubUserIdFragmentDoc = gql`
     fragment LiveGithubUserId on GithubUser {
   id
@@ -21279,10 +21228,10 @@ export const CreateAndCloseIssueDocument = gql`
     title: $title
     description: $description
   ) {
-    ...LiveGithubIssueCreatedAndClosed
+    ...LiveGithubIssue
   }
 }
-    ${LiveGithubIssueCreatedAndClosedFragmentDoc}`;
+    ${LiveGithubIssueFragmentDoc}`;
 export type CreateAndCloseIssueMutationFn = Apollo.MutationFunction<CreateAndCloseIssueMutation, CreateAndCloseIssueMutationVariables>;
 
 /**

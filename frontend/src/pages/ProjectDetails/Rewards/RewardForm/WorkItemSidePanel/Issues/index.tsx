@@ -2,11 +2,8 @@ import { chain } from "lodash";
 import { useMemo } from "react";
 import {
   ContributionFragment,
-  GithubIssueCreatedAndClosedStatus,
   GithubIssueFragment,
-  GithubIssueStatus,
   GithubPullRequestFragment,
-  LiveGithubIssueCreatedAndClosedFragment,
   LiveGithubIssueFragment,
   LiveGithubPullRequestFragment,
   WorkItemType,
@@ -86,29 +83,13 @@ export const issueToWorkItem = (props: GithubIssueFragment | LiveGithubIssueFrag
   id: props.id.toString(),
 });
 
-export const issueCreatedAndClosedToWorkItem = (
-  issueCreatedAndClosedFragment: LiveGithubIssueCreatedAndClosedFragment
-): WorkItem => ({
+export const issueCreatedAndClosedToWorkItem = (issueCreatedAndClosedFragment: LiveGithubIssueFragment): WorkItem => ({
   ...issueCreatedAndClosedFragment,
   type: WorkItemType.Issue,
   ignored: false,
   id: issueCreatedAndClosedFragment.id.toString(),
   mergedAt: undefined,
-  status: githubIssueCreatedAndClosedStatusToGithubIssueStatus(issueCreatedAndClosedFragment.status),
 });
-
-const githubIssueCreatedAndClosedStatusToGithubIssueStatus = (
-  status: GithubIssueCreatedAndClosedStatus
-): GithubIssueStatus => {
-  switch (status) {
-    case GithubIssueCreatedAndClosedStatus.Open:
-      return GithubIssueStatus.Open;
-    case GithubIssueCreatedAndClosedStatus.Completed:
-      return GithubIssueStatus.Completed;
-    case GithubIssueCreatedAndClosedStatus.Cancelled:
-      return GithubIssueStatus.Cancelled;
-  }
-};
 
 export const pullRequestToWorkItem = (
   props: GithubPullRequestFragment | LiveGithubPullRequestFragment
