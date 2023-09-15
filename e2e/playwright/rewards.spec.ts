@@ -101,7 +101,13 @@ test.describe("As a project lead, I", () => {
       await newRewardPage.ignoreWorkItem(issueNumber);
 
       await Promise.all([
-        page.waitForResponse(async resp => (await resp.json()).data.unignoreContribution && resp.status() === 200),
+        page.waitForResponse(async resp => {
+            try {
+                return (await resp.json()).data.unignoreContribution && resp.status() === 200;
+            } catch (e) {
+                return false;
+            }
+        }),
         newRewardPage.addWorkItem(issueNumber),
       ]);
 
@@ -156,10 +162,13 @@ test.describe("As a project lead, I", () => {
     expect(sidePanel.getByText(`Reward #${(await reward.rewardId())?.substring(0, 5).toUpperCase()}`)).toBeVisible();
     await expect(sidePanel.getByText("$1,000")).toBeVisible();
     await expect(sidePanel.getByText("from")).toBeVisible();
-    await expect(sidePanel.locator("div", { hasText: "#4 · Create a-new-file.txt" }).first()).toBeVisible(); // auto added
-    await expect(sidePanel.locator("div", { hasText: "#2 · Another update README.md" }).first()).toBeVisible();
+    await expect(sidePanel.locator("div", { hasText: "#79 · change PAT" }).first()).toBeVisible(); // auto added
     await expect(sidePanel.locator("div", { hasText: "#1 · Update README.md" }).first()).toBeVisible();
-    await expect(sidePanel.locator("div", { hasText: "#79 · " }).first()).toBeVisible();
+    await expect(sidePanel.locator("div", { hasText: "#2 · Another update README.md" }).first()).toBeVisible();
+    await expect(sidePanel.locator("div", { hasText: "#6 · " }).first()).toBeVisible();
+    await expect(sidePanel.locator("div", { hasText: "#8 · " }).first()).toBeVisible();
+    await expect(sidePanel.locator("div", { hasText: "#14 · " }).first()).toBeVisible();
+    await expect(sidePanel.locator("div", { hasText: "#15 · " }).first()).toBeVisible();
     await expect(sidePanel.locator("div", { hasText: " · Monthly contracting subscription" }).first()).toBeVisible();
     const otherWorkIssueLink = sidePanel.getByText(` · ${issueTitleToCheck}`).first();
     await expect(otherWorkIssueLink).toBeVisible();
