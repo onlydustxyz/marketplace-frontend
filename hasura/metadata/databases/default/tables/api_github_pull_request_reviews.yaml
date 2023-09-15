@@ -1,6 +1,13 @@
 table:
   name: github_pull_request_reviews
-  schema: public
+  schema: api
+configuration:
+  column_config: {}
+  custom_column_names: {}
+  custom_name: GithubPullRequestReviews
+  custom_root_fields:
+    select: githubPullRequestReviews
+    select_aggregate: githubPullRequestReviewsAggregate
 select_permissions:
   - role: public
     permission:

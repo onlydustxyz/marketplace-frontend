@@ -123,18 +123,18 @@ class GithubIssue {
 }
 
 class GithubIssues {
-   assigneeIds: jsonb!
-   authorId: bigint!
+   assigneeIds: jsonb
+   authorId: bigint
    closedAt: timestamp
-   commentsCount: bigint!
-   createdAt: timestamp!
-   htmlUrl: String!
-   id: bigint!
-   number: bigint!
+   commentsCount: bigint
+   createdAt: timestamp
+   htmlUrl: String
+   id: bigint
+   number: bigint
    repo: GithubRepos
-   repoId: bigint!
-   status: github_issue_status!
-   title: String!
+   repoId: bigint
+   status: String
+   title: String
 }
 
 class GithubPullRequest {
@@ -152,29 +152,29 @@ class GithubPullRequest {
 }
 
 class GithubPullRequestReviews {
-   id: String!
+   id: String
    outcome: github_code_review_outcome
-   pullRequestId: bigint!
-   reviewerId: bigint!
-   status: github_code_review_status!
+   pullRequestId: bigint
+   reviewerId: bigint
+   status: String
    submittedAt: timestamp
 }
 
 class GithubPullRequests {
-   authorId: bigint!
+   authorId: bigint
    ciChecks: github_ci_checks
    closedAt: timestamp
    closingIssueNumbers: jsonb
-   createdAt: timestamp!
-   draft: Boolean!
-   htmlUrl: String!
-   id: bigint!
+   createdAt: timestamp
+   draft: Boolean
+   htmlUrl: String
+   id: bigint
    mergedAt: timestamp
-   number: bigint!
+   number: bigint
    repo: GithubRepos
-   repoId: bigint!
-   status: github_pull_request_status!
-   title: String!
+   repoId: bigint
+   status: String
+   title: String
 }
 
 class GithubRepos {

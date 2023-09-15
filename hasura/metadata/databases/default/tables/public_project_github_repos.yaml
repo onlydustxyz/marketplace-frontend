@@ -20,7 +20,7 @@ array_relationships:
         insertion_order: null
         remote_table:
           name: github_issues
-          schema: public
+          schema: api
 select_permissions:
   - role: public
     permission:

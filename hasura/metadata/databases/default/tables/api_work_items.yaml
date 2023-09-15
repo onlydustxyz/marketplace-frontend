@@ -17,7 +17,7 @@ object_relationships:
         insertion_order: null
         remote_table:
           name: github_pull_request_reviews
-          schema: public
+          schema: api
   - name: githubIssue
     using:
       manual_configuration:
@@ -26,7 +26,7 @@ object_relationships:
         insertion_order: null
         remote_table:
           name: github_issues
-          schema: public
+          schema: api
   - name: githubPullRequest
     using:
       manual_configuration:
@@ -35,7 +35,7 @@ object_relationships:
         insertion_order: null
         remote_table:
           name: github_pull_requests
-          schema: public
+          schema: api
   - name: paymentRequest
     using:
       manual_configuration:
