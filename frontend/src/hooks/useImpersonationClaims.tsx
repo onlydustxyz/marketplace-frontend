@@ -15,6 +15,7 @@ export type ImpersonationClaimsContextType = {
 type CustomClaims = {
   projectsLeaded?: string[];
   githubUserId?: number;
+  githubAccessToken?: string;
 };
 
 export const ImpersonationClaimsContext = createContext<ImpersonationClaimsContextType | null>(null);
@@ -39,6 +40,7 @@ export const ImpersonationClaimsProvider = ({ children }: PropsWithChildren) => 
           "x-hasura-user-id": impersonationSet.userId,
           "x-hasura-projectsLeaded": `{${customClaims.projectsLeaded?.map(id => `"${id}"`).join(",") || ""}}`,
           "x-hasura-githubUserId": `${customClaims.githubUserId || 0}`,
+          "x-hasura-githubAccessToken": customClaims.githubAccessToken || "",
         }
       : undefined;
 

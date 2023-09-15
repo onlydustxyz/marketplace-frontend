@@ -17573,7 +17573,7 @@ export type ImpersonatedUserQueryVariables = Exact<{
 }>;
 
 
-export type ImpersonatedUserQuery = { __typename?: 'query_root', user: { __typename?: 'users', id: any, createdAt: any, email: any | null, locale: string, isAnonymous: boolean, defaultRole: string, emailVerified: boolean, phoneNumber: string | null, phoneNumberVerified: boolean, activeMfaType: string | null, roles: Array<{ __typename?: 'authUserRoles', role: string }>, registeredUser: { __typename?: 'RegisteredUsers', id: any | null, githubUserId: any | null, login: string | null, avatarUrl: string | null, projectsLeaded: Array<{ __typename?: 'ProjectLeads', projectId: any }> } | null } | null };
+export type ImpersonatedUserQuery = { __typename?: 'query_root', user: { __typename?: 'users', id: any, createdAt: any, email: any | null, locale: string, isAnonymous: boolean, defaultRole: string, emailVerified: boolean, phoneNumber: string | null, phoneNumberVerified: boolean, activeMfaType: string | null, roles: Array<{ __typename?: 'authUserRoles', role: string }>, registeredUser: { __typename?: 'RegisteredUsers', id: any | null, githubUserId: any | null, login: string | null, avatarUrl: string | null, projectsLeaded: Array<{ __typename?: 'ProjectLeads', projectId: any }> } | null, userGithubProvider: { __typename?: 'AuthUserGithubProvider', accessToken: string | null } | null } | null };
 
 export type GetRegisteredUserQueryVariables = Exact<{
   id: Scalars['uuid'];
@@ -19867,6 +19867,9 @@ export const ImpersonatedUserDocument = gql`
       projectsLeaded {
         projectId
       }
+    }
+    userGithubProvider {
+      accessToken
     }
   }
 }
