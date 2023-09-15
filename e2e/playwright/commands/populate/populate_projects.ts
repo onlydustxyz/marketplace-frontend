@@ -36,11 +36,10 @@ const populateProject = async (
   const { data } = await mutateAsAdmin<CreateProjectMutation, CreateProjectMutationVariables>({
     mutation: CreateProjectDocument,
     variables: {
-      projectName: project.name,
+      ...project,
       hiring: project.hiring ?? null,
       rank: project.rank ?? null,
       visibility: project.visibility ?? null,
-      ...project,
     },
   });
   await waitEvents();
