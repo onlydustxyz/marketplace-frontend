@@ -237,7 +237,7 @@ test.describe("As a project lead, I", () => {
     const rewardId = (await reward.rewardId()) || "";
     await reward.click();
     await projectRewardsPage.cancelCurrentReward();
-    expect(page.locator("div", { hasText: rewardId })).not.toBeVisible();
+    expect(page.getByText("No rewards so far")).toBeVisible();
   });
 
   test("can see rewards made by other project leads on the same project", async ({
