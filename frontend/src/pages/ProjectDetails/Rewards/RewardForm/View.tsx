@@ -76,9 +76,8 @@ const View: React.FC<Props> = ({
 
   const { workItems, add: addWorkItem, remove: removeWorkItem, clear: clearWorkItems } = useWorkItems();
 
-  //TODO: Hasura should lower following case status
-  const githubPullRequestFilter = { githubPullRequest: { status: GithubPullRequestStatus.Merged.toLowerCase() } };
-  const githubIssueFilter = { githubIssue: { status: GithubIssueStatus.Completed.toLowerCase() } };
+  const githubPullRequestFilter = { githubPullRequest: { status: GithubPullRequestStatus.Merged } };
+  const githubIssueFilter = { githubIssue: { status: GithubIssueStatus.Completed } };
 
   useEffect(() => {
     onWorkItemsChange(workItems);

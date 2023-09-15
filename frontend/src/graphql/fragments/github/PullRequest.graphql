@@ -12,4 +12,7 @@ fragment LiveGithubPullRequest on GithubPullRequest {
   createdAt
   closedAt
   mergedAt
+  author {
+    id
+  }
 }

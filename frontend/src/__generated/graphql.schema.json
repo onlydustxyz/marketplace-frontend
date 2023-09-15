@@ -17084,7 +17084,7 @@
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "contribution_type",
+              "name": "String",
               "ofType": null
             },
             "isDeprecated": false,
@@ -17815,7 +17815,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "ContributionTypeComparisonExp",
+              "name": "StringComparisonExp",
               "ofType": null
             },
             "defaultValue": null,
@@ -18018,7 +18018,7 @@
             "description": null,
             "type": {
               "kind": "SCALAR",
-              "name": "contribution_type",
+              "name": "String",
               "ofType": null
             },
             "defaultValue": null,
@@ -18173,7 +18173,7 @@
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "contribution_type",
+              "name": "String",
               "ofType": null
             },
             "isDeprecated": false,
@@ -18328,7 +18328,7 @@
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "contribution_type",
+              "name": "String",
               "ofType": null
             },
             "isDeprecated": false,
@@ -20071,7 +20071,7 @@
             "description": null,
             "type": {
               "kind": "SCALAR",
-              "name": "contribution_type",
+              "name": "String",
               "ofType": null
             },
             "defaultValue": null,

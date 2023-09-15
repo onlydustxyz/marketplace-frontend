@@ -102,11 +102,11 @@ test.describe("As a project lead, I", () => {
 
       await Promise.all([
         page.waitForResponse(async resp => {
-            try {
-                return (await resp.json()).data.unignoreContribution && resp.status() === 200;
-            } catch (e) {
-                return false;
-            }
+          try {
+            return (await resp.json()).data.unignoreContribution && resp.status() === 200;
+          } catch (e) {
+            return false;
+          }
         }),
         newRewardPage.addWorkItem(issueNumber),
       ]);
@@ -150,7 +150,7 @@ test.describe("As a project lead, I", () => {
     const remainingBudget = await retry(
       () => rewardsPage.remainingBudget(),
       remainingBudget => remainingBudget === "$85,600",
-      100
+      1000
     );
     expect(remainingBudget).toBe("$85,600");
 
@@ -237,7 +237,7 @@ test.describe("As a project lead, I", () => {
     const rewardId = (await reward.rewardId()) || "";
     await reward.click();
     await projectRewardsPage.cancelCurrentReward();
-    expect(page.getByText("No rewards so far")).toBeVisible();
+    await expect(page.getByText("No rewards so far")).toBeVisible();
   });
 
   test("can see rewards made by other project leads on the same project", async ({

@@ -2408,7 +2408,7 @@ export type Contributions = {
   /** An aggregate relationship */
   rewardItemsAggregate: WorkItemsAggregate;
   status: Maybe<Scalars['contribution_status']>;
-  type: Maybe<Scalars['contribution_type']>;
+  type: Maybe<Scalars['String']>;
 };
 
 
@@ -2511,7 +2511,7 @@ export type ContributionsBoolExp = {
   rewardItems: InputMaybe<WorkItemsBoolExp>;
   rewardItems_aggregate: InputMaybe<WorkItems_Aggregate_Bool_Exp>;
   status: InputMaybe<ContributionStatusComparisonExp>;
-  type: InputMaybe<ContributionTypeComparisonExp>;
+  type: InputMaybe<StringComparisonExp>;
 };
 
 /** input type for inserting data into table "api.contributions" */
@@ -2531,7 +2531,7 @@ export type ContributionsInsertInput = {
   repoId: InputMaybe<Scalars['bigint']>;
   rewardItems: InputMaybe<WorkItemsArrRelInsertInput>;
   status: InputMaybe<Scalars['contribution_status']>;
-  type: InputMaybe<Scalars['contribution_type']>;
+  type: InputMaybe<Scalars['String']>;
 };
 
 /** aggregate max on columns */
@@ -2548,7 +2548,7 @@ export type ContributionsMaxFields = {
   projectId: Maybe<Scalars['uuid']>;
   repoId: Maybe<Scalars['bigint']>;
   status: Maybe<Scalars['contribution_status']>;
-  type: Maybe<Scalars['contribution_type']>;
+  type: Maybe<Scalars['String']>;
 };
 
 /** aggregate min on columns */
@@ -2565,7 +2565,7 @@ export type ContributionsMinFields = {
   projectId: Maybe<Scalars['uuid']>;
   repoId: Maybe<Scalars['bigint']>;
   status: Maybe<Scalars['contribution_status']>;
-  type: Maybe<Scalars['contribution_type']>;
+  type: Maybe<Scalars['String']>;
 };
 
 /** Ordering options when selecting data from "api.contributions". */
@@ -2806,7 +2806,7 @@ export type Contributions_StreamCursorValueInput = {
   projectId: InputMaybe<Scalars['uuid']>;
   repoId: InputMaybe<Scalars['bigint']>;
   status: InputMaybe<Scalars['contribution_status']>;
-  type: InputMaybe<Scalars['contribution_type']>;
+  type: InputMaybe<Scalars['String']>;
 };
 
 /** order by sum() on columns of table "api.contributions" */
@@ -17343,7 +17343,7 @@ export type WorkItemFragment = { __typename?: 'WorkItems', type: any | null, id:
 
 export type LiveGithubPullRequestIdFragment = { __typename?: 'GithubPullRequest', id: number };
 
-export type LiveGithubPullRequestFragment = { __typename?: 'GithubPullRequest', repoId: number, number: number, status: GithubPullRequestStatus, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null, id: number };
+export type LiveGithubPullRequestFragment = { __typename?: 'GithubPullRequest', repoId: number, number: number, status: GithubPullRequestStatus, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null, id: number, author: { __typename?: 'GithubUser', id: number } };
 
 export type LiveGithubIssueIdFragment = { __typename?: 'GithubIssue', id: number };
 
@@ -17521,13 +17521,13 @@ export type UnignoreContributionMutation = { __typename?: 'mutation_root', unign
 export type UnrewardedContributionsQueryVariables = Exact<{
   githubUserId: Scalars['bigint'];
   projectId: Scalars['uuid'];
-  type: Scalars['contribution_type'];
+  type: Scalars['String'];
 }>;
 
 
-export type UnrewardedContributionsQuery = { __typename?: 'query_root', contributions: Array<{ __typename?: 'Contributions', type: any | null, status: any | null, repoId: any | null, projectId: any | null, id: string | null, detailsId: string | null, githubUserId: any | null, ignored: boolean | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null } | null }> };
+export type UnrewardedContributionsQuery = { __typename?: 'query_root', contributions: Array<{ __typename?: 'Contributions', type: string | null, status: any | null, repoId: any | null, projectId: any | null, id: string | null, detailsId: string | null, githubUserId: any | null, ignored: boolean | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null } | null }> };
 
-export type ContributionFragment = { __typename?: 'Contributions', type: any | null, status: any | null, repoId: any | null, projectId: any | null, id: string | null, detailsId: string | null, githubUserId: any | null, ignored: boolean | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null } | null };
+export type ContributionFragment = { __typename?: 'Contributions', type: string | null, status: any | null, repoId: any | null, projectId: any | null, id: string | null, detailsId: string | null, githubUserId: any | null, ignored: boolean | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null } | null };
 
 export type SearchIssuesQueryVariables = Exact<{
   projectId: Scalars['uuid'];
@@ -17561,7 +17561,7 @@ export type FetchPullRequestQueryVariables = Exact<{
 }>;
 
 
-export type FetchPullRequestQuery = { __typename?: 'query_root', fetchPullRequest: { __typename?: 'GithubPullRequest', repoId: number, number: number, status: GithubPullRequestStatus, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null, id: number } | null };
+export type FetchPullRequestQuery = { __typename?: 'query_root', fetchPullRequest: { __typename?: 'GithubPullRequest', repoId: number, number: number, status: GithubPullRequestStatus, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null, id: number, author: { __typename?: 'GithubUser', id: number } } | null };
 
 export type GetProjectReposQueryVariables = Exact<{
   projectId: Scalars['uuid'];
@@ -17977,6 +17977,9 @@ export const LiveGithubPullRequestFragmentDoc = gql`
   createdAt
   closedAt
   mergedAt
+  author {
+    id
+  }
 }
     ${LiveGithubPullRequestIdFragmentDoc}`;
 export const LiveGithubIssueIdFragmentDoc = gql`
@@ -19519,7 +19522,7 @@ export type UnignoreContributionMutationHookResult = ReturnType<typeof useUnigno
 export type UnignoreContributionMutationResult = Apollo.MutationResult<UnignoreContributionMutation>;
 export type UnignoreContributionMutationOptions = Apollo.BaseMutationOptions<UnignoreContributionMutation, UnignoreContributionMutationVariables>;
 export const UnrewardedContributionsDocument = gql`
-    query UnrewardedContributions($githubUserId: bigint!, $projectId: uuid!, $type: contribution_type!) {
+    query UnrewardedContributions($githubUserId: bigint!, $projectId: uuid!, $type: String!) {
   contributions(
     where: {githubUserId: {_eq: $githubUserId}, projectId: {_eq: $projectId}, type: {_eq: $type}, rewardItems_aggregate: {count: {predicate: {_eq: 0}}}}
   ) {

@@ -108,7 +108,7 @@ function ActionButton({ action, ignored, onClick }: ActionButtonProps) {
 function IssueStatus({ issue }: { issue: GithubIssueFragment }) {
   const { T } = useIntl();
 
-  switch (issue?.status?.toUpperCase()) {
+  switch (issue.status) {
     case GithubIssueStatus.Cancelled:
       return issue.closedAt ? (
         <>

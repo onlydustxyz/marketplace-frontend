@@ -1,5 +1,5 @@
 import { filter, some } from "lodash";
-import { ElementType, forwardRef, useEffect, useState } from "react";
+import { forwardRef, useEffect, useState } from "react";
 import { useForm, useFormContext, useWatch } from "react-hook-form";
 import { Virtuoso } from "react-virtuoso";
 import { ContributionFragment, WorkItemFragment, WorkItemType } from "src/__generated/graphql";
@@ -126,7 +126,6 @@ export default function View({
       {filteredContributions.length > 0 ? (
         <VirtualizedIssueList
           {...{
-            as: tabName === "issues" ? GithubIssue : GithubPullRequest,
             contributions: filteredContributions as ContributionFragment[],
             addContribution: addContributionWithToast,
             ignoreContribution,
@@ -160,7 +159,6 @@ const ListBuilder = (tabName: string) => {
 };
 
 interface VirtualizedIssueListProps {
-  as: ElementType;
   contributions: ContributionFragment[];
   addContribution: (contribution: ContributionFragment) => void;
   ignoreContribution: (contribution: ContributionFragment) => void;
@@ -169,15 +167,12 @@ interface VirtualizedIssueListProps {
 }
 
 const VirtualizedIssueList = ({
-  as,
   contributions,
   addContribution,
   ignoreContribution,
   unignoreContribution,
   tabName,
 }: VirtualizedIssueListProps) => {
-  const As = as;
-
   return (
     <Virtuoso
       data={contributions}
@@ -187,10 +182,10 @@ const VirtualizedIssueList = ({
         const workItem = contributionToWorkItem(contribution);
         if (!workItem) return;
 
-        return (
-          <As
+        return workItem.githubIssue ? (
+          <GithubIssue
             key={contribution.id}
-            workItem={workItem}
+            issue={workItem.githubIssue}
             action={Action.Add}
             onClick={() => addContribution(contribution)}
             secondaryAction={contribution.ignored ? Action.UnIgnore : Action.Ignore}
@@ -200,7 +195,20 @@ const VirtualizedIssueList = ({
             ignored={!!contribution.ignored}
             addMarginTopForVirtuosoDisplay={true}
           />
-        );
+        ) : workItem.githubPullRequest ? (
+          <GithubPullRequest
+            key={contribution.id}
+            pullRequest={workItem.githubPullRequest}
+            action={Action.Add}
+            onClick={() => addContribution(contribution)}
+            secondaryAction={contribution.ignored ? Action.UnIgnore : Action.Ignore}
+            onSecondaryClick={() =>
+              contribution.ignored ? unignoreContribution(contribution) : ignoreContribution(contribution)
+            }
+            ignored={!!contribution.ignored}
+            addMarginTopForVirtuosoDisplay={true}
+          />
+        ) : null;
       }}
     />
   );

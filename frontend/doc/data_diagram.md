@@ -105,7 +105,7 @@ class Contributions {
    repoId: bigint
    rewardItems: [WorkItems!]!
    status: contribution_status
-   type: contribution_type
+   type: String
 }
 
 class GithubIssue {

@@ -109,7 +109,7 @@ function ActionButton({ action, ignored, onClick }: ActionButtonProps) {
 function PullRequestStatus({ pullrequest }: { pullrequest: GithubPullRequestFragment }) {
   const { T } = useIntl();
 
-  switch (pullrequest?.status?.toUpperCase()) {
+  switch (pullrequest.status) {
     case GithubPullRequestStatus.Closed:
       return pullrequest.closedAt ? (
         <>

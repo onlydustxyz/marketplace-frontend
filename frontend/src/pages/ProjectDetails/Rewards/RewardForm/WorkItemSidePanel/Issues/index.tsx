@@ -32,7 +32,7 @@ export default function Issues({ type, projectId, contributorId, workItems, addW
     variables: {
       projectId,
       githubUserId: contributorId,
-      type: type.toLowerCase(),
+      type,
     },
   });
 
