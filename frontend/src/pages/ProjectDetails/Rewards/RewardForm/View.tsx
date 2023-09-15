@@ -11,11 +11,8 @@ import Title from "src/pages/ProjectDetails/Title";
 import Add from "src/icons/Add";
 import { ReactElement, ReactNode, useEffect, useState } from "react";
 import WorkItemSidePanel from "./WorkItemSidePanel";
-import GithubIssue, { GithubIssue as GithubIssueType, Action as GithubIssueAction } from "src/components/GithubIssue";
-import GithubPullRequest, {
-  GithubPullRequest as GithubPullRequestType,
-  Action as GithubPRAction,
-} from "src/components/GithubPullRequest";
+import GithubIssue, { Action as GithubIssueAction } from "src/components/GithubIssue";
+import GithubPullRequest, { Action as GithubPRAction } from "src/components/GithubPullRequest";
 import Callout from "src/components/Callout";
 import useWorkItems from "./useWorkItems";
 import { filter } from "lodash";
@@ -26,6 +23,7 @@ import {
   ContributionFragment,
   GithubIssueStatus,
   GithubPullRequestStatus,
+  WorkItem,
   WorkItemType,
 } from "src/__generated/graphql";
 import pickContributorImg from "src/assets/img/pick-contributor.png";
@@ -39,7 +37,7 @@ interface Props {
   projectId: string;
   budget: Budget;
   onWorkEstimationChange: (amountToPay: number, hoursWorked: number) => void;
-  onWorkItemsChange: (workItems: (GithubIssueType | GithubPullRequestType)[]) => void;
+  onWorkItemsChange: (workItems: WorkItem[]) => void;
   contributor: Contributor | null | undefined;
   setContributor: (contributor: Contributor | null | undefined) => void;
   unpaidContributions: ContributionFragment | null | undefined;
@@ -175,7 +173,7 @@ const View: React.FC<Props> = ({
                       workItem.type === WorkItemType.PullRequest ? (
                         <GithubPullRequest
                           key={workItem.id}
-                          workItem={workItem as GithubPullRequestType}
+                          pullRequest={workItem as GithubPullRequestType}
                           action={GithubPRAction.Remove}
                           onClick={() => removeWorkItem(workItem)}
                         />

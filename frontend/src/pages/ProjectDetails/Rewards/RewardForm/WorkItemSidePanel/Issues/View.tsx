@@ -2,7 +2,7 @@ import { filter, some } from "lodash";
 import { ElementType, forwardRef, useEffect, useState } from "react";
 import { useForm, useFormContext, useWatch } from "react-hook-form";
 import { Virtuoso } from "react-virtuoso";
-import { ContributionFragment, WorkItemType } from "src/__generated/graphql";
+import { ContributionFragment, WorkItem, WorkItemType } from "src/__generated/graphql";
 import FormInput from "src/components/FormInput";
 import FormToggle from "src/components/FormToggle";
 import GithubIssue, { Action } from "src/components/GithubIssue";
@@ -17,7 +17,6 @@ import Toggle from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePane
 import OtherIssueInput from "./OtherIssueInput";
 import useFilteredContributions from "./useFilteredWorkItems";
 import { contributionToWorkItem } from "./index";
-import { WorkItem } from "src/pages/ProjectDetails/Rewards/RewardForm";
 
 const THEORETICAL_MAX_SCREEN_HEIGHT = 2000;
 

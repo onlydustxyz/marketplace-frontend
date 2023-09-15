@@ -14,15 +14,6 @@ query SearchPullRequests($projectId: uuid!, $githubUserId: bigint!) {
   }
 }
 
-query getPaidWorkItems($projectId: uuid!, $githubUserId: bigint!) {
-  paymentRequests(where: { budget: { projectId: { _eq: $projectId } }, recipientId: { _eq: $githubUserId } }) {
-    ...PaymentRequestId
-    workItems {
-      ...WorkItemId
-    }
-  }
-}
-
 query fetchIssue($repoOwner: String!, $repoName: String!, $issueNumber: Int!) {
   fetchIssue(repoOwner: $repoOwner, repoName: $repoName, issueNumber: $issueNumber) {
     ...LiveGithubIssue
@@ -49,7 +40,7 @@ query GetProjectRepos($projectId: uuid!) {
 }
 
 mutation CreateAndCloseIssue($projectId: Uuid!, $githubRepoId: Int!, $title: String!, $description: String!) {
-    createAndCloseIssue(projectId: $projectId, githubRepoId: $githubRepoId, title: $title, description: $description) {
-        ...LiveGithubIssue
-    }
+  createAndCloseIssue(projectId: $projectId, githubRepoId: $githubRepoId, title: $title, description: $description) {
+    ...LiveGithubIssue
+  }
 }

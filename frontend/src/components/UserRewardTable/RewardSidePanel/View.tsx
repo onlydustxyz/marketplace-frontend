@@ -14,10 +14,6 @@ import Button, { ButtonSize } from "src/components/Button";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import ConfirmationModal from "./ConfirmationModal";
 import classNames from "classnames";
-import {
-  issueToWorkItem,
-  pullRequestToWorkItem,
-} from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/Issues";
 import { formatDateTime } from "src/utils/date";
 import BankCardLine from "src/icons/BankCardLine";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
@@ -185,12 +181,9 @@ export default function View({
           <div className="flex h-full flex-col gap-3 overflow-auto p-px pb-6 pr-4 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
             {workItems?.map(workItem =>
               workItem.githubIssue ? (
-                <GithubIssue key={workItem.githubIssue?.id} workItem={issueToWorkItem(workItem.githubIssue)} />
+                <GithubIssue key={workItem.githubIssue?.id} issue={workItem.githubIssue} />
               ) : workItem.githubPullRequest ? (
-                <GithubPullRequest
-                  key={workItem.githubPullRequest?.id}
-                  workItem={pullRequestToWorkItem(workItem.githubPullRequest)}
-                />
+                <GithubPullRequest key={workItem.githubPullRequest?.id} pullRequest={workItem.githubPullRequest} />
               ) : undefined
             )}
           </div>

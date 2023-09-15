@@ -15,7 +15,7 @@ import {
 import Description from "./Description";
 import RepoSelect from "./RepoSelect";
 import Title from "./Title";
-import { issueCreatedAndClosedToWorkItem } from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/Issues";
+import { issueToWorkItem } from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/Issues";
 import DraftLine from "src/icons/DraftLine";
 import TeamLine from "src/icons/TeamLine";
 import ExchangeDollarLine from "src/icons/ExchangeDollarLine";
@@ -91,7 +91,7 @@ export default function OtherWorkForm({ projectId, contributorHandle, addWorkIte
     context: { graphqlErrorDisplay: "toaster" },
     onCompleted: data => {
       clearForm();
-      addWorkItem(issueCreatedAndClosedToWorkItem(data.createAndCloseIssue));
+      addWorkItem(issueToWorkItem(data.createAndCloseIssue));
       showToaster(T("reward.form.contributions.other.success"));
     },
   });

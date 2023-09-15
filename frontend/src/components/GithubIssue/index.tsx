@@ -15,7 +15,7 @@ import EyeOffLine from "src/icons/EyeOffLine";
 import EyeLine from "src/icons/EyeLine";
 import classNames from "classnames";
 import { withTooltip } from "src/components/Tooltip";
-import { GithubIssueStatus, WorkItemType } from "src/__generated/graphql";
+import { GithubIssueFragment, GithubIssueStatus } from "src/__generated/graphql";
 
 export enum Action {
   Add = "add",
@@ -23,27 +23,12 @@ export enum Action {
   Ignore = "ignore",
   UnIgnore = "unignore",
 }
-
-export type GithubIssue = {
-  id: string;
-  repoId: number;
-  number: number;
-  type: WorkItemType;
-  title: string;
-  htmlUrl: string;
-  createdAt: Date;
-  ignored: boolean;
-  status: GithubIssueStatus;
-  closedAt?: Date;
-  mergedAt?: Date;
-};
-
 export type Props = {
   action?: Action;
   secondaryAction?: Action;
   onClick?: () => void;
   onSecondaryClick?: () => void;
-  workItem: GithubIssue;
+  issue: GithubIssueFragment;
   ignored?: boolean;
   addMarginTopForVirtuosoDisplay?: boolean;
 };
@@ -51,13 +36,13 @@ export type Props = {
 export default function GithubPullRequest({
   action,
   secondaryAction,
-  workItem,
+  issue,
   onClick,
   onSecondaryClick,
   ignored = false,
   addMarginTopForVirtuosoDisplay = false,
 }: Props) {
-  const { repoName } = parseIssueLink(workItem.htmlUrl);
+  const { repoName } = parseIssueLink(issue.htmlUrl || "");
 
   return (
     <Card
@@ -70,15 +55,15 @@ export default function GithubPullRequest({
       {action && <ActionButton action={action} onClick={onClick} ignored={ignored} />}
       <div className="flex w-full flex-col gap-2 font-walsheim">
         <div className="flex text-sm font-medium text-greyscale-50">
-          <GithubIssueLink url={workItem.htmlUrl} text={`#${workItem.number} · ${workItem.title}`} />
+          <GithubIssueLink url={issue.htmlUrl || ""} text={`#${issue.number} · ${issue.title}`} />
         </div>
         <div className="flex flex-row flex-wrap items-center gap-2 text-xs font-normal text-greyscale-300 xl:gap-3">
           <div className="flex flex-row items-center gap-1">
             <Time />
-            {displayRelativeDate(workItem.createdAt)}
+            {displayRelativeDate(issue.createdAt)}
           </div>
           <div className="flex flex-row items-center gap-1">
-            <IssueStatus contribution={workItem} />
+            <IssueStatus issue={issue} />
           </div>
           <div className="flex flex-row items-center gap-1">
             <GitRepositoryLine />
@@ -120,22 +105,22 @@ function ActionButton({ action, ignored, onClick }: ActionButtonProps) {
   );
 }
 
-function IssueStatus({ contribution }: { contribution: GithubIssue }) {
+function IssueStatus({ issue }: { issue: GithubIssueFragment }) {
   const { T } = useIntl();
 
-  switch (contribution.status.toUpperCase()) {
+  switch (issue?.status?.toUpperCase()) {
     case GithubIssueStatus.Cancelled:
-      return contribution.closedAt ? (
+      return issue.closedAt ? (
         <>
           <IssueCancelled className="fill-github-grey p-0.5" />
-          {T("githubIssue.status.closed", { closedAt: displayRelativeDate(contribution.closedAt) })}
+          {T("githubIssue.status.closed", { closedAt: displayRelativeDate(issue.closedAt) })}
         </>
       ) : null;
     case GithubIssueStatus.Completed:
-      return contribution.closedAt ? (
+      return issue.closedAt ? (
         <>
           <CheckboxCircleLine className="-my-1 text-base text-github-purple" />
-          {T("githubIssue.status.closed", { closedAt: displayRelativeDate(contribution.closedAt) })}
+          {T("githubIssue.status.closed", { closedAt: displayRelativeDate(issue.closedAt) })}
         </>
       ) : null;
     case GithubIssueStatus.Open:

@@ -17,13 +17,7 @@ fragment PaymentRequestDetails on PaymentRequests {
     ...GithubUser
   }
   workItems {
-    ...WorkItemId
-    githubIssue {
-      ...GithubIssue
-    }
-    githubPullRequest {
-      ...GithubPullRequest
-    }
+    ...WorkItem
   }
   paymentsAggregate {
     aggregate {

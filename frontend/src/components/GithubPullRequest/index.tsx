@@ -15,7 +15,7 @@ import EyeOffLine from "src/icons/EyeOffLine";
 import EyeLine from "src/icons/EyeLine";
 import classNames from "classnames";
 import { withTooltip } from "src/components/Tooltip";
-import { GithubPullRequestStatus, WorkItemType } from "src/__generated/graphql";
+import { GithubPullRequestFragment, GithubPullRequestStatus } from "src/__generated/graphql";
 
 export enum Action {
   Add = "add",
@@ -24,26 +24,12 @@ export enum Action {
   UnIgnore = "unignore",
 }
 
-export type GithubPullRequest = {
-  id: string;
-  repoId: number;
-  number: number;
-  type: WorkItemType;
-  title: string;
-  htmlUrl: string;
-  createdAt: Date;
-  ignored: boolean;
-  status: GithubPullRequestStatus;
-  closedAt?: Date;
-  mergedAt?: Date;
-};
-
 export type Props = {
   action?: Action;
   secondaryAction?: Action;
   onClick?: () => void;
   onSecondaryClick?: () => void;
-  workItem: GithubPullRequest;
+  pullRequest: GithubPullRequestFragment;
   ignored?: boolean;
   addMarginTopForVirtuosoDisplay?: boolean;
 };
@@ -51,13 +37,13 @@ export type Props = {
 export default function GithubPullRequest({
   action,
   secondaryAction,
-  workItem,
+  pullRequest,
   onClick,
   onSecondaryClick,
   ignored = false,
   addMarginTopForVirtuosoDisplay = false,
 }: Props) {
-  const { repoName } = parsePullRequestLink(workItem.htmlUrl);
+  const { repoName } = parsePullRequestLink(pullRequest.htmlUrl || "");
 
   return (
     <Card
@@ -70,15 +56,15 @@ export default function GithubPullRequest({
       {action && <ActionButton action={action} onClick={onClick} ignored={ignored} />}
       <div className="flex w-full flex-col gap-2 font-walsheim">
         <div className="flex text-sm font-medium text-greyscale-50">
-          <GithubIssueLink url={workItem.htmlUrl} text={`#${workItem.number} · ${workItem.title}`} />
+          <GithubIssueLink url={pullRequest.htmlUrl || ""} text={`#${pullRequest.number} · ${pullRequest.title}`} />
         </div>
         <div className="flex flex-row flex-wrap items-center gap-2 text-xs font-normal text-greyscale-300 xl:gap-3">
           <div className="flex flex-row items-center gap-1">
             <Time />
-            {displayRelativeDate(workItem.createdAt)}
+            {displayRelativeDate(pullRequest.createdAt)}
           </div>
           <div className="flex flex-row items-center gap-1">
-            <PullRequestStatus contribution={workItem} />
+            <PullRequestStatus pullrequest={pullRequest} />
           </div>
           <div className="flex flex-row items-center gap-1">
             <GitRepositoryLine />
@@ -120,22 +106,22 @@ function ActionButton({ action, ignored, onClick }: ActionButtonProps) {
   );
 }
 
-function PullRequestStatus({ contribution }: { contribution: GithubPullRequest }) {
+function PullRequestStatus({ pullrequest }: { pullrequest: GithubPullRequestFragment }) {
   const { T } = useIntl();
 
-  switch (contribution.status.toUpperCase()) {
+  switch (pullrequest?.status?.toUpperCase()) {
     case GithubPullRequestStatus.Closed:
-      return contribution.closedAt ? (
+      return pullrequest.closedAt ? (
         <>
           <IssueClosed className="fill-github-red" />
-          {T("githubIssue.status.closed", { closedAt: displayRelativeDate(contribution.closedAt) })}
+          {T("githubIssue.status.closed", { closedAt: displayRelativeDate(pullrequest.closedAt) })}
         </>
       ) : null;
     case GithubPullRequestStatus.Merged:
-      return contribution.mergedAt ? (
+      return pullrequest.mergedAt ? (
         <>
           <GitMergeLine className="-my-1 text-base text-github-purple" />
-          {T("githubIssue.status.merged", { mergedAt: displayRelativeDate(contribution.mergedAt) })}
+          {T("githubIssue.status.merged", { mergedAt: displayRelativeDate(pullrequest.mergedAt) })}
         </>
       ) : null;
     case GithubPullRequestStatus.Open:

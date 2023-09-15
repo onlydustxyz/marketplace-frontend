@@ -6,14 +6,12 @@ import {
   GithubPullRequestFragment,
   LiveGithubIssueFragment,
   LiveGithubPullRequestFragment,
+  WorkItem,
   WorkItemType,
   useUnrewardedContributionsQuery,
 } from "src/__generated/graphql";
 import View from "./View";
 import { useIgnoredContributions } from "./useIgnoredContributions";
-import { GithubIssue as GithubIssueType } from "src/components/GithubIssue";
-import { GithubPullRequest as GithubPullRequestType } from "src/components/GithubPullRequest";
-import { WorkItem } from "src/pages/ProjectDetails/Rewards/RewardForm";
 
 type Props = {
   type: WorkItemType;
@@ -27,8 +25,8 @@ export default function Issues({ type, projectId, contributorId, workItems, addW
   const { ignore: ignoreContribution, unignore: unignoreContribution } = useIgnoredContributions();
 
   const addAndUnignoreContribution = (contribution: ContributionFragment) => {
+    if (contribution.ignored && contribution.id) unignoreContribution(projectId, contribution.id);
     const workItem = contributionToWorkItem(contribution);
-    if (workItem?.ignored && contribution.id) unignoreContribution(projectId, contribution.id);
     workItem && addWorkItem(workItem);
   };
 
@@ -72,30 +70,17 @@ export const contributionToWorkItem = (contribution: ContributionFragment): Work
     ? pullRequestToWorkItem(contribution.githubPullRequest)
     : undefined;
 
-  if (workItem) workItem.ignored = contribution.ignored || false;
   return workItem;
 };
 
-export const issueToWorkItem = (props: GithubIssueFragment | LiveGithubIssueFragment): GithubIssueType => ({
+export const issueToWorkItem = (props: GithubIssueFragment | LiveGithubIssueFragment): WorkItem => ({
   ...props,
   type: WorkItemType.Issue,
-  ignored: false,
   id: props.id.toString(),
 });
 
-export const issueCreatedAndClosedToWorkItem = (issueCreatedAndClosedFragment: LiveGithubIssueFragment): WorkItem => ({
-  ...issueCreatedAndClosedFragment,
-  type: WorkItemType.Issue,
-  ignored: false,
-  id: issueCreatedAndClosedFragment.id.toString(),
-  mergedAt: undefined,
-});
-
-export const pullRequestToWorkItem = (
-  props: GithubPullRequestFragment | LiveGithubPullRequestFragment
-): GithubPullRequestType => ({
+export const pullRequestToWorkItem = (props: GithubPullRequestFragment | LiveGithubPullRequestFragment): WorkItem => ({
   ...props,
   type: WorkItemType.PullRequest,
-  ignored: false,
   id: props.id.toString(),
 });

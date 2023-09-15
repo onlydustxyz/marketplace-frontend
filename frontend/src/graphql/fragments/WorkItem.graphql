@@ -1,9 +1,17 @@
 fragment WorkItemId on WorkItems {
-  paymentId
-  repoId
-  number
+  id
 }
 
 fragment WorkItem on WorkItems {
   ...WorkItemId
+  paymentId
+  repoId
+  number
+  type
+  githubIssue {
+    ...GithubIssue
+  }
+  githubPullRequest {
+    ...GithubPullRequest
+  }
 }

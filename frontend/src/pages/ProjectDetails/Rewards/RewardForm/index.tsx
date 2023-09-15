@@ -6,16 +6,13 @@ import View from "./View";
 import { useShowToaster } from "src/hooks/useToaster";
 import { generatePath, useNavigate, useOutletContext } from "react-router-dom";
 import { ProjectRoutePaths, RoutePaths } from "src/App";
-import { GithubIssue as GithubIssueType } from "src/components/GithubIssue";
-import { GithubPullRequest as GithubPullRequestType } from "src/components/GithubPullRequest";
 import {
   ContributionFragment,
+  WorkItem,
   useRequestPaymentMutation,
   useUnrewardedContributionsQuery,
 } from "src/__generated/graphql";
 import { useCommands } from "src/providers/Commands";
-
-export type WorkItem = GithubIssueType | GithubPullRequestType;
 
 const RewardForm: React.FC = () => {
   const { T } = useIntl();

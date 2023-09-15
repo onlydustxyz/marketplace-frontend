@@ -1,6 +1,6 @@
 import { sortBy, uniqBy } from "lodash";
 import { useCallback, useReducer } from "react";
-import { WorkItem } from "./index";
+import { WorkItem } from "src/__generated/graphql";
 
 type WorkItemAction =
   | {
