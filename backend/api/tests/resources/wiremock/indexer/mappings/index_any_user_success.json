@@ -1,0 +1,17 @@
+{
+  "request": {
+    "urlPattern": "/indexer/user/[0-9]*",
+    "method": "POST",
+    "headers": {
+      "Authorization": {
+        "contains": "Bearer "
+      },
+      "Api-Key": {
+        "contains": "test-api-key"
+      }
+    }
+  },
+  "response": {
+    "status": 200
+  }
+}

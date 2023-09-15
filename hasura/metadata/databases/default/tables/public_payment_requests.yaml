@@ -56,18 +56,7 @@ array_relationships:
         insertion_order: null
         remote_table:
           name: work_items
-          schema: public
-remote_relationships:
-  - definition:
-      to_remote_schema:
-        lhs_fields:
-          - recipient_id
-        remote_field:
-          fetchUserDetailsById:
-            arguments:
-              userId: $recipient_id
-        remote_schema: GithubProxy
-    name: liveGithubRecipient
+          schema: api
 select_permissions:
   - role: public
     permission:

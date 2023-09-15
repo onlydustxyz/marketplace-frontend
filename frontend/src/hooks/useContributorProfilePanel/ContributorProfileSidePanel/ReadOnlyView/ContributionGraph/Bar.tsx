@@ -11,6 +11,7 @@ type Props = {
   fill?: string;
   opacity?: number;
   index?: number;
+  type: "PullRequests" | "Issues" | "CodeReviews";
 };
 
 export default function Bar({
@@ -24,9 +25,22 @@ export default function Bar({
   payload,
   opacity,
   index,
+  type,
 }: Props) {
   const stripes = secondary;
-  const rounded = !secondary || !payload?.paidCount;
+
+  const { codeReviewCount, issueCount, pullRequestCount } = payload ?? {};
+
+  // The pull request bar is at the bottom so it's only rounded when it's the only one
+  const pullRequestsRounded =
+    type === "PullRequests" && pullRequestCount > 0 && issueCount === 0 && codeReviewCount === 0;
+
+  const issuesRounded = type === "Issues" && issueCount > 0 && codeReviewCount === 0;
+
+  // The code review bar is on top so it's always rounded
+  const codeReviewsRounded = type === "CodeReviews";
+
+  const rounded = pullRequestsRounded || issuesRounded || codeReviewsRounded;
 
   return (
     <>

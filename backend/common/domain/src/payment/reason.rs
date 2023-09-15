@@ -1,11 +1,27 @@
 use serde::{Deserialize, Serialize};
 
-use crate::{GithubIssueNumber, GithubRepoId};
+use crate::{
+	GithubCodeReviewId, GithubIssueId, GithubIssueNumber, GithubPullRequestId,
+	GithubPullRequestNumber, GithubRepoId,
+};
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-pub struct WorkItem {
-	pub repo_id: GithubRepoId,
-	pub issue_number: GithubIssueNumber,
+pub enum WorkItem {
+	Issue {
+		id: GithubIssueId,
+		repo_id: GithubRepoId,
+		number: GithubIssueNumber,
+	},
+	PullRequest {
+		id: GithubPullRequestId,
+		repo_id: GithubRepoId,
+		number: GithubPullRequestNumber,
+	},
+	CodeReview {
+		id: GithubCodeReviewId,
+		repo_id: GithubRepoId,
+		number: GithubPullRequestNumber,
+	},
 }
 
 #[derive(Debug, Default, Clone, PartialEq, Eq, Serialize, Deserialize)]

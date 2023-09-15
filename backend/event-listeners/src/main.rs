@@ -1,8 +1,8 @@
-use anyhow::Result;
+use anyhow::{Context, Result};
 use dotenv::dotenv;
-use event_listeners::{bootstrap, Config};
-use futures::future::try_join_all;
+use event_listeners::{presentation::bootstrap, Config};
 use infrastructure::{config, tracing::Tracer};
+use olog::info;
 
 #[tokio::main]
 async fn main() -> Result<()> {
@@ -10,7 +10,14 @@ async fn main() -> Result<()> {
 	let config: Config = config::load("backend/event-listeners/app.yaml")?;
 	let _tracer = Tracer::init(config.tracer.clone(), "event-queue-worker")?;
 
-	try_join_all(bootstrap(config).await?).await?;
+	let _ = bootstrap(config)
+		.await
+		.context("App bootstrap")?
+		.launch()
+		.await
+		.context("App run")?;
+
+	info!("👋 Gracefully shut down");
 
 	Ok(())
 }

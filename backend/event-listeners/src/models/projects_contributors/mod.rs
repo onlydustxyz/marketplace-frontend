@@ -4,12 +4,11 @@ use domain::{GithubUserId, ProjectId};
 use infrastructure::database::schema::projects_contributors;
 pub use repository::Repository;
 
-#[derive(Debug, Insertable, Identifiable, Queryable, AsChangeset, Model)]
+#[derive(Debug, Insertable, Identifiable, Queryable, ImmutableModel)]
 #[diesel(primary_key(project_id, github_user_id))]
 pub struct ProjectsContributor {
 	pub project_id: ProjectId,
 	pub github_user_id: GithubUserId,
-	pub link_count: i32,
 }
 
 impl Identifiable for ProjectsContributor {

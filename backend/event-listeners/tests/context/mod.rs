@@ -9,3 +9,5 @@ pub mod github_indexer;
 pub fn docker() -> Cli {
 	Cli::docker()
 }
+
+pub const API_KEY: &str = "test-api-key";

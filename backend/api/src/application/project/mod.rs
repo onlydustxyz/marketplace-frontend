@@ -2,7 +2,7 @@ pub mod accept_leader_invitation;
 pub mod add_sponsor;
 pub mod apply;
 pub mod create;
-pub mod ignored_issues;
+pub mod ignored_contributions;
 pub mod invite_leader;
 pub mod link_github_repo;
 pub mod remove_leader;

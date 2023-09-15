@@ -2,7 +2,6 @@ import { sortBy } from "lodash";
 import { FormEventHandler, useEffect, useState } from "react";
 import Button, { Width } from "src/components/Button";
 import Callout from "src/components/Callout";
-import { WorkItem } from "src/components/GithubIssue";
 import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
 import CheckLine from "src/icons/CheckLine";
@@ -10,13 +9,14 @@ import isDefined from "src/utils/isDefined";
 import {
   CreateAndCloseIssueMutationVariables,
   GithubRepoFragment,
+  WorkItemFragment,
   useCreateAndCloseIssueMutation,
   useGetProjectReposQuery,
 } from "src/__generated/graphql";
 import Description from "./Description";
 import RepoSelect from "./RepoSelect";
 import Title from "./Title";
-import { issueCreatedAndClosedToWorkItem } from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/Issues";
+import { issueToWorkItem } from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/Issues";
 import DraftLine from "src/icons/DraftLine";
 import TeamLine from "src/icons/TeamLine";
 import ExchangeDollarLine from "src/icons/ExchangeDollarLine";
@@ -26,14 +26,15 @@ import { FormProvider, useForm } from "react-hook-form";
 import { OtherWork } from "./types";
 import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
+import { liveIssueToCached } from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/Issues/OtherIssueInput";
 
 type Props = {
   projectId: string;
   contributorHandle: string;
-  onWorkItemAdded: (workItem: WorkItem) => void;
+  addWorkItem: (workItem: WorkItemFragment) => void;
 };
 
-export default function OtherWorkForm({ projectId, contributorHandle, onWorkItemAdded }: Props) {
+export default function OtherWorkForm({ projectId, contributorHandle, addWorkItem }: Props) {
   const { T } = useIntl();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
@@ -91,7 +92,7 @@ export default function OtherWorkForm({ projectId, contributorHandle, onWorkItem
     context: { graphqlErrorDisplay: "toaster" },
     onCompleted: data => {
       clearForm();
-      onWorkItemAdded(issueCreatedAndClosedToWorkItem(data.createAndCloseIssue));
+      addWorkItem(issueToWorkItem(liveIssueToCached(data.createAndCloseIssue)));
       showToaster(T("reward.form.contributions.other.success"));
     },
   });

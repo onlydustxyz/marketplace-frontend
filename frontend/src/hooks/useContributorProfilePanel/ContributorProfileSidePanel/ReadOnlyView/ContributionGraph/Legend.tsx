@@ -1,5 +1,8 @@
 import { LegendProps } from "recharts";
 import { Payload } from "recharts/types/component/DefaultLegendContent";
+import CodeReviewIcon from "src/assets/icons/CodeReviewIcon";
+import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
+import GitMergeLine from "src/icons/GitMergeLine";
 
 type Props = {
   payload?: ({
@@ -13,17 +16,15 @@ type Props = {
 
 export default function Legend({ payload = [] }: Props) {
   return (
-    <div className="mb-3 flex w-full flex-row-reverse items-center justify-center gap-6 font-walsheim text-xs font-normal text-greyscale-400">
+    <div className="mb-3 flex w-full items-center justify-center gap-6 font-walsheim text-xs font-normal text-greyscale-400">
       {payload.map(payload => (
         <div key={payload.value}>
           <div className="flex flex-row items-center gap-1">
-            <Icon
-              secondary={payload.payload?.dataKey === "unpaidCount"}
-              color={payload.payload?.fill}
-              opacity={payload.payload?.opacity}
-              size={8}
-            />
+            <Icon color={payload.payload?.fill} opacity={payload.payload?.opacity} size={8} />
             {payload.value}
+            {payload.payload?.dataKey === "codeReviewCount" && <CodeReviewIcon />}
+            {payload.payload?.dataKey === "issueCount" && <CheckboxCircleLine />}
+            {payload.payload?.dataKey === "pullRequestCount" && <GitMergeLine />}
           </div>
         </div>
       ))}

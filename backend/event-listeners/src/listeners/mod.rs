@@ -1,5 +1,4 @@
 pub mod budget;
-pub mod github;
 pub mod logger;
 pub mod project;
 pub mod webhook;
@@ -12,7 +11,6 @@ use domain::{LogErr, MessagePayload, Subscriber, SubscriberCallbackError};
 use infrastructure::{
 	amqp::{CommandSubscriberDecorator, UniqueMessage},
 	database, event_bus,
-	github::Client as GithubClient,
 };
 use olog::IntoField;
 use tokio::task::JoinHandle;
@@ -20,7 +18,18 @@ use url::{ParseError, Url};
 use webhook::EventWebHook;
 
 use self::logger::Logger;
-use crate::{Config, GITHUB_EVENTS_EXCHANGE};
+use crate::Config;
+
+pub const GITHUB_EVENTS_EXCHANGE: &str = "github-events";
+
+pub async fn bootstrap(config: Config) -> Result<Vec<JoinHandle<()>>> {
+	let reqwest = reqwest::Client::new();
+	let database = Arc::new(database::Client::new(database::init_pool(
+		config.database.clone(),
+	)?));
+
+	spawn_all(config, reqwest, database).await
+}
 
 #[async_trait]
 pub trait EventListener<E>: Send + Sync {
@@ -31,7 +40,6 @@ pub async fn spawn_all(
 	config: Config,
 	reqwest: reqwest::Client,
 	database: Arc<database::Client>,
-	github: Arc<GithubClient>,
 ) -> Result<Vec<JoinHandle<()>>> {
 	let mut handles = vec![
 		Logger.spawn(event_bus::event_consumer(config.amqp.clone(), "logger").await?),
@@ -62,25 +70,6 @@ pub async fn spawn_all(
 			event_bus::event_consumer(config.amqp.clone(), "budgets")
 				.await?
 				.into_command_subscriber(database.clone()),
-		),
-		github::Projector::new(
-			github,
-			database.clone(),
-			database.clone(),
-			database.clone(),
-			database.clone(),
-			database.clone(),
-			database.clone(),
-			database.clone(),
-			database.clone(),
-		)
-		.spawn(
-			event_bus::consumer_with_exchange(
-				config.amqp.clone(),
-				GITHUB_EVENTS_EXCHANGE,
-				"github-events",
-			)
-			.await?,
 		),
 		Logger.spawn(
 			event_bus::consumer_with_exchange(

@@ -13,32 +13,35 @@ version = "0.0.1"
 
 # Async
 async-trait = "0.1.56"
-futures = {version = "0.3.21", features = ["alloc"]}
+futures = { version = "0.3.21", features = ["alloc"] }
 pin-project-lite = "0.2.9"
 
 # Core types
 url = "2.2.2"
-uuid = {version = "1.3.3", default_features = false, features = [
-  "v4",
-  "serde",
-]}
-uuid08 = {package="uuid", version = "0.8", default_features = false, features = [
-  "v4",
-  "serde",
-]}
+uuid = { version = "1.3.3", default_features = false, features = [
+	"v4",
+	"serde",
+] }
+uuid08 = { package = "uuid", version = "0.8", default_features = false, features = [
+	"v4",
+	"serde",
+] }
 
 rust_decimal = "1.26.1"
-rusty-money = {version = "0.4.1", features = ["iso", "crypto"]}
-iban_validate = {version = "4.0.1", features = ["serde"]}
+rusty-money = { version = "0.4.1", features = ["iso", "crypto"] }
+iban_validate = { version = "4.0.1", features = ["serde"] }
+
+# Crypto
+sha2 = "0.10.7"
 
 # Errors
 anyhow = "1.0.72"
 thiserror = "1.0.43"
 
 # Serde
-serde = {version = "1.0.137", features = ["derive"]}
-serde_json = {version = "1.0.81"}
-serde_with = {version = "2.3.1", features = ["chrono_0_4"]}
+serde = { version = "1.0.137", features = ["derive"] }
+serde_json = { version = "1.0.81" }
+serde_with = { version = "2.3.1", features = ["chrono_0_4"] }
 
 # Datetime
 chrono = { version = "0.4", features = ["serde"] }
@@ -47,16 +50,21 @@ chrono = { version = "0.4", features = ["serde"] }
 derive-getters = "0.2.0"
 derive_more = "0.99.17"
 derive-new = "0.5.9"
+generic-array = "0.14.7"
+hex = "0.4.3"
 
 # Database
-diesel = {version = "2.1.0", default-features = false, features = ["postgres","extras"]}
+diesel = { version = "2.1.0", default-features = false, features = [
+	"postgres",
+	"extras",
+] }
 diesel-derive-newtype = "2.1.0"
 
 # Web3
 web3 = "0.18.0"
 
 # Local dependecies
-olog = {path = "../olog"}
+olog = { path = "../olog" }
 
 # Graphql
 juniper = "0.15.11"
@@ -64,9 +72,8 @@ juniper = "0.15.11"
 [dev-dependencies]
 assert-json-diff = "2.0.2"
 assert_matches = "1.5"
-async-std = {version = "1.12.0", features = ["attributes"]}
+async-std = { version = "1.12.0", features = ["attributes"] }
 rstest = "0.15.0"
-testing = {path = "../testing"}
 rust_decimal_macros = "1.26"
 regex = "1.7.0"
 mockall = "0.11.2"

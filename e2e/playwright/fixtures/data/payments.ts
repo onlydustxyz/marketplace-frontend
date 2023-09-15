@@ -1,5 +1,5 @@
 import { PaymentFixture } from "../../types";
-import { EthereumIdentityType } from "../../__generated/graphql";
+import { EthereumIdentityType, WorkItemType } from "../../__generated/graphql";
 
 const coolRepoAId = 602953043;
 
@@ -13,8 +13,8 @@ export const payments: PaymentFixture[] = [
         amount: 100,
         reason: {
           workItems: [
-            { repoId: coolRepoAId, issueNumber: 1 },
-            { repoId: coolRepoAId, issueNumber: 2 },
+            { id: "1248891095", repoId: coolRepoAId, number: 1, type: WorkItemType.PullRequest },
+            { id: "1248919253", repoId: coolRepoAId, number: 2, type: WorkItemType.PullRequest },
           ],
         },
         receipts: [
@@ -33,31 +33,31 @@ export const payments: PaymentFixture[] = [
       {
         amount: 100,
         reason: {
-          workItems: [{ repoId: coolRepoAId, issueNumber: 1 }],
+          workItems: [{ id: "1248891095", repoId: coolRepoAId, number: 1, type: WorkItemType.PullRequest }],
         },
       },
       {
         amount: 500,
         reason: {
-          workItems: [{ repoId: coolRepoAId, issueNumber: 1 }],
+          workItems: [{ id: "1248891095", repoId: coolRepoAId, number: 1, type: WorkItemType.PullRequest }],
         },
       },
       {
         amount: 500,
         reason: {
-          workItems: [{ repoId: coolRepoAId, issueNumber: 1 }],
+          workItems: [{ id: "1248891095", repoId: coolRepoAId, number: 1, type: WorkItemType.PullRequest }],
         },
       },
       {
         amount: 2000,
         reason: {
-          workItems: [{ repoId: coolRepoAId, issueNumber: 1 }],
+          workItems: [{ id: "1248891095", repoId: coolRepoAId, number: 1, type: WorkItemType.PullRequest }],
         },
       },
       {
         amount: 10000,
         reason: {
-          workItems: [{ repoId: coolRepoAId, issueNumber: 1 }],
+          workItems: [{ id: "1248891095", repoId: coolRepoAId, number: 1, type: WorkItemType.PullRequest }],
         },
       },
     ],
@@ -70,7 +70,20 @@ export const payments: PaymentFixture[] = [
       {
         amount: 200,
         reason: {
-          workItems: [{ repoId: coolRepoAId, issueNumber: 3 }],
+          workItems: [{ id: "1248923746", repoId: coolRepoAId, number: 3, type: WorkItemType.PullRequest }],
+        },
+      },
+    ],
+  },
+  {
+    project: "Private",
+    recipientGithubId: 16590657,
+    requestor: "Oscar",
+    items: [
+      {
+        amount: 3000,
+        reason: {
+          workItems: [{ id: "1248923746", repoId: coolRepoAId, number: 3, type: WorkItemType.PullRequest }],
         },
       },
     ],

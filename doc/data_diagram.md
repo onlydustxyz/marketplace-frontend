@@ -3,6 +3,19 @@
 ```mermaid
 classDiagram
 
+class ApiCompletedContributions {
+   closedAt: timestamp
+   createdAt: timestamp
+   detailsId: String
+   githubUserId: bigint
+   id: String
+   projectId: uuid
+   repoId: bigint
+   rewardItems: [WorkItems!]!
+   status: contribution_status
+   type: contribution_type
+}
+
 class Applications {
    applicantId: uuid!
    id: uuid!
@@ -57,43 +70,46 @@ class Contacts {
 }
 
 class ContributionCounts {
+   codeReviewCount: bigint
    githubUserId: bigint
-   paidCount: bigint
-   unpaidCount: bigint
+   issueCount: bigint
+   pullRequestCount: bigint
    week: float8
    year: float8
 }
 
 class ContributionStats {
+   codeReviewCount: bigint
    githubUserId: bigint
+   issueCount: bigint
    maxDate: timestamp
    minDate: timestamp
-   paidCount: bigint
    projectId: uuid
+   pullRequestCount: bigint
    totalCount: bigint
-   unpaidCount: bigint
-   unpaidUnignoredCount: bigint
 }
 
 class Contributions {
+   closedAt: timestamp
    createdAt: timestamp
-   githubIssueId: bigint
+   detailsId: String
    githubUserId: bigint
+   id: String
    ignored: Boolean
-   issueNumber: bigint
    projectId: uuid
    repoId: bigint
+   rewardItems: [WorkItems!]!
+   status: contribution_status
+   type: contribution_type
 }
 
 class GithubIssue {
-   assignees: [GithubUser!]!
    author: GithubUser!
    closedAt: DateTimeUtc
    commentsCount: Int!
    createdAt: DateTimeUtc!
    htmlUrl: Url!
    id: Int!
-   ignoredForProjects: [IgnoredGithubIssues!]!
    number: Int!
    repoId: Int!
    status: GithubIssueStatus!
@@ -123,7 +139,6 @@ class GithubIssues {
    createdAt: timestamp!
    htmlUrl: String!
    id: bigint!
-   ignoredForProjects: [IgnoredGithubIssues!]!
    number: bigint!
    repo: GithubRepos
    repoId: bigint!
@@ -137,13 +152,21 @@ class GithubPullRequest {
    createdAt: DateTimeUtc!
    htmlUrl: Url!
    id: Int!
-   ignoredForProjects: [IgnoredGithubIssues!]!
    mergedAt: DateTimeUtc
    number: Int!
    repoId: Int!
    status: GithubPullRequestStatus!
    title: String!
    updatedAt: DateTimeUtc!
+}
+
+class GithubPullRequestReviews {
+   id: String!
+   outcome: github_code_review_outcome
+   pullRequestId: bigint!
+   reviewerId: bigint!
+   status: github_code_review_status!
+   submittedAt: timestamp
 }
 
 class GithubPullRequests {
@@ -155,7 +178,6 @@ class GithubPullRequests {
    draft: Boolean!
    htmlUrl: String!
    id: bigint!
-   ignoredForProjects: [IgnoredGithubIssues!]!
    mergedAt: timestamp
    number: bigint!
    repo: GithubRepos
@@ -184,7 +206,6 @@ class GithubUser {
    htmlUrl: Url!
    id: Int!
    login: String!
-   paymentRequests: [PaymentRequests!]!
    user: RegisteredUsers
 }
 
@@ -210,12 +231,6 @@ class GithubUsers {
    website: String
 }
 
-class IgnoredGithubIssues {
-   issueNumber: bigint!
-   projectId: uuid!
-   repoId: bigint!
-}
-
 class Onboardings {
    profileWizardDisplayDate: timestamp
    termsAndConditionsAcceptanceDate: timestamp
@@ -238,7 +253,6 @@ class PaymentRequests {
    hoursWorked: Int!
    id: uuid!
    invoiceReceivedAt: timestamp
-   liveGithubRecipient: GithubUser
    payments: [Payments!]!
    recipient: RegisteredUsers
    recipientId: bigint!
@@ -299,9 +313,11 @@ class Projects {
    longDescription: String
    moreInfoLink: String
    name: String
+   pendingContributors: [ProjectsPendingContributors!]!
    pendingInvitations: [PendingProjectLeaderInvitations!]!
    projectLeads: [ProjectLeads!]!
    rank: Int
+   rewardedUsers: [ProjectsRewardedUsers!]!
    shortDescription: String
    sponsors: [ProjectsSponsors!]!
    visibility: project_visibility
@@ -310,10 +326,20 @@ class Projects {
 class ProjectsContributors {
    githubUser: GithubUsers
    githubUserId: bigint!
-   linkCount: Int!
    project: Projects
    projectId: uuid!
    user: UserProfiles
+}
+
+class ProjectsPendingContributors {
+   githubUserId: bigint!
+   projectId: uuid!
+}
+
+class ProjectsRewardedUsers {
+   githubUserId: bigint!
+   projectId: uuid!
+   rewardCount: Int!
 }
 
 class ProjectsSponsors {
@@ -359,6 +385,7 @@ class UserPayoutInfo {
 class UserProfiles {
    avatarUrl: String
    bio: String
+   completedContributions: [ApiCompletedContributions!]!
    completionScore: Int!
    contactInformations: [ContactInformations!]!
    contacts: Contacts!
@@ -377,19 +404,24 @@ class UserProfiles {
    paymentStats: [PaymentStats!]!
    projectsContributed: [ProjectsContributors!]!
    projectsLeaded: [ProjectLeads!]!
+   projectsRewarded: [ProjectsRewardedUsers!]!
    userId: uuid
    website: String
    weeklyAllocatedTime: allocated_time
 }
 
 class WorkItems {
-   githubIssue: GithubIssue
-   githubPullRequest: GithubPullRequest
-   ignoredForProjects: [IgnoredGithubIssues!]!
-   issueNumber: bigint!
+   githubCodeReview: GithubPullRequestReviews
+   githubIssue: GithubIssues
+   githubPullRequest: GithubPullRequests
+   id: String!
+   number: bigint!
    paymentId: uuid!
    paymentRequest: PaymentRequests
+   projectId: uuid!
+   recipientId: bigint!
    repoId: bigint!
+   type: contribution_type!
 }
 
 class authProviderRequests {
@@ -485,26 +517,21 @@ class users {
    userProviders: [authUserProviders!]!
 }
 
+ApiCompletedContributions --* WorkItems
 Budgets -- Projects
 Budgets --* PaymentRequests
 Contacts -- ContactInformations
+Contributions --* WorkItems
 GithubIssue -- GithubUser
-GithubIssue --* GithubUser
-GithubIssue --* IgnoredGithubIssues
 GithubIssueCreatedAndClosed -- GithubUserLinkedToIssue
 GithubIssues -- GithubRepos
-GithubIssues --* IgnoredGithubIssues
 GithubPullRequest -- GithubUser
-GithubPullRequest --* IgnoredGithubIssues
 GithubPullRequests -- GithubRepos
-GithubPullRequests --* IgnoredGithubIssues
 GithubRepos --* ProjectGithubRepos
 GithubUser -- RegisteredUsers
-GithubUser --* PaymentRequests
 GithubUsers -- RegisteredUsers
 GithubUsers --* PaymentRequests
 PaymentRequests -- Budgets
-PaymentRequests -- GithubUser
 PaymentRequests -- GithubUsers
 PaymentRequests -- RegisteredUsers
 PaymentRequests --* Payments
@@ -522,6 +549,8 @@ Projects --* PendingProjectLeaderInvitations
 Projects --* ProjectGithubRepos
 Projects --* ProjectLeads
 Projects --* ProjectsContributors
+Projects --* ProjectsPendingContributors
+Projects --* ProjectsRewardedUsers
 Projects --* ProjectsSponsors
 ProjectsContributors -- GithubUsers
 ProjectsContributors -- Projects
@@ -532,6 +561,7 @@ RegisteredUsers --* PaymentRequests
 RegisteredUsers --* ProjectLeads
 Sponsors --* ProjectsSponsors
 UserProfiles -- Contacts
+UserProfiles --* ApiCompletedContributions
 UserProfiles --* ContactInformations
 UserProfiles --* ContributionCounts
 UserProfiles --* ContributionStats
@@ -539,10 +569,11 @@ UserProfiles --* Contributions
 UserProfiles --* PaymentStats
 UserProfiles --* ProjectLeads
 UserProfiles --* ProjectsContributors
-WorkItems -- GithubIssue
-WorkItems -- GithubPullRequest
+UserProfiles --* ProjectsRewardedUsers
+WorkItems -- GithubIssues
+WorkItems -- GithubPullRequestReviews
+WorkItems -- GithubPullRequests
 WorkItems -- PaymentRequests
-WorkItems --* IgnoredGithubIssues
 authProviders --* authUserProviders
 authRefreshTokens -- users
 authRoles --* authUserRoles

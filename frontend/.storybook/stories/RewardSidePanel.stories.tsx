@@ -1,6 +1,11 @@
 import { range } from "lodash";
 import { PaymentStatus } from "src/types";
-import { GithubIssueStatus, LiveGithubIssueFragment, PaymentRequestDetailsFragment } from "src/__generated/graphql";
+import {
+  GithubIssueFragment,
+  GithubIssueStatus,
+  PaymentRequestDetailsFragment,
+  WorkItemType,
+} from "src/__generated/graphql";
 import View, { Props } from "src/components/UserRewardTable/RewardSidePanel/View";
 import { daysFromNow } from "src/utils/date";
 import withSidePanelStackProvider from "../decorators/withSidePanelStackProvider";
@@ -46,25 +51,27 @@ export default {
   },
 };
 
-const issues: LiveGithubIssueFragment[] = range(1, 50).map(id => ({
-  __typename: "GithubIssue",
+const issues: GithubIssueFragment[] = range(1, 50).map(id => ({
+  __typename: "GithubIssues",
   id: id,
   repoId: 123456,
   number: id,
   title: "Update README.md",
   status: GithubIssueStatus.Open,
-  htmlUrl: "https://github.com/od-mocks/cool-repo-A/pull/1",
+  htmlUrl: "https://github.com/od-mocks/cool-repo-A/issues/1",
   createdAt: daysFromNow(id),
   closedAt: null,
   mergedAt: null,
   ignoredForProjects: [],
+  authorId: 595505,
+  assigneeIds: [],
 }));
 
 const payment: PaymentRequestDetailsFragment = {
   __typename: "PaymentRequests",
   id: "880819f1-2ab9-406d-9bf1-3012b6f565bc",
   amountInUsd: 2500,
-  liveGithubRecipient: {
+  githubRecipient: {
     id: 595505,
     login: "ofux",
     avatarUrl: "https://avatars.githubusercontent.com/u/595505?v=4",
@@ -91,9 +98,11 @@ const payment: PaymentRequestDetailsFragment = {
     githubUserId: 43467246,
   },
   workItems: issues.map(githubIssue => ({
+    id: githubIssue.id,
+    type: WorkItemType.Issue,
     paymentId: "880819f1-2ab9-406d-9bf1-3012b6f565bc",
     repoId: githubIssue.repoId,
-    issueNumber: githubIssue.number,
+    number: githubIssue.number,
     githubIssue,
     githubPullRequest: null,
   })),
@@ -129,7 +138,7 @@ export const Default = {
         {...props}
         {...props.payoutStatus}
         userId={props.requestorIsYou ? payment.requestor?.id : "other"}
-        githubUserId={(props.recipientIsYou && payment.liveGithubRecipient?.id) || 0}
+        githubUserId={(props.recipientIsYou && payment.githubRecipient?.id) || 0}
         workItems={payment.workItems.slice(0, props.workItemsCount)}
       />
     </SidePanel>

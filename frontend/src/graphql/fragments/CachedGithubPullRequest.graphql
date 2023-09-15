@@ -8,12 +8,8 @@ fragment GithubPullRequest on GithubPullRequests {
   number
   title
   htmlUrl
-  authorId
   status
   createdAt
   closedAt
   mergedAt
-  ignoredForProjects {
-    ...IgnoredGithubIssueId
-  }
 }

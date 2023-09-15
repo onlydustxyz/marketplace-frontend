@@ -16,7 +16,7 @@ type Props = {
 export default function ContributionGraph({ entries }: Props) {
   const { T } = useIntl();
 
-  const maxCount = max(entries.map(e => e.paidCount + e.unpaidCount)) || 0;
+  const maxCount = max(entries.map(e => e.codeReviewCount + e.issueCount + e.pullRequestCount)) || 0;
   const tickStep = maxCount <= 5 ? 1 : maxCount <= 10 ? 2 : maxCount <= 20 ? 5 : 10;
   const ticks = range(0, round(maxCount / tickStep) + 1).map(t => t * tickStep);
   const [hoveredBarIndex, setHoveredBarIndex] = useState<number>();
@@ -25,22 +25,32 @@ export default function ContributionGraph({ entries }: Props) {
     <ResponsiveContainer minWidth={200} height={200}>
       <BarChart data={entries} margin={{ top: 30, right: 5, left: 5 }} barSize={16}>
         <Bar
-          name={T("contributionGraph.unpaid")}
-          dataKey="unpaidCount"
+          name={T("contributionGraph.pullRequests")}
+          dataKey="pullRequestCount"
           fill="#CE66FF"
           opacity={0.7}
           stackId={1}
-          shape={<CustomBar hoveredBarIndex={hoveredBarIndex} secondary />}
+          shape={<CustomBar hoveredBarIndex={hoveredBarIndex} type="PullRequests" />}
           onMouseEnter={(_, index) => setHoveredBarIndex(index)}
           onMouseLeave={() => setHoveredBarIndex(undefined)}
         />
         <Bar
-          name={T("contributionGraph.paid")}
-          dataKey="paidCount"
-          fill="#CE66FF"
+          name={T("contributionGraph.issues")}
+          dataKey="issueCount"
+          fill="#FFBC66"
           opacity={0.7}
           stackId={1}
-          shape={<CustomBar hoveredBarIndex={hoveredBarIndex} />}
+          shape={<CustomBar hoveredBarIndex={hoveredBarIndex} type="Issues" />}
+          onMouseEnter={(_, index) => setHoveredBarIndex(index)}
+          onMouseLeave={() => setHoveredBarIndex(undefined)}
+        />
+        <Bar
+          name={T("contributionGraph.codeReviews")}
+          dataKey="codeReviewCount"
+          fill="#666BD7"
+          opacity={0.7}
+          stackId={1}
+          shape={<CustomBar hoveredBarIndex={hoveredBarIndex} type="CodeReviews" />}
           onMouseEnter={(_, index) => setHoveredBarIndex(index)}
           onMouseLeave={() => setHoveredBarIndex(undefined)}
         />

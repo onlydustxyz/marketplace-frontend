@@ -9,7 +9,7 @@ mod specifications;
 pub use specifications::MockGithubRepoExists;
 pub use specifications::{ArePayoutSettingsValid, GithubRepoExists};
 
-mod services;
+pub mod services;
 #[cfg(test)]
 pub use services::MockImageStoreService;
 pub use services::{DustyBotService, GithubService, ImageStoreService, ImageStoreServiceError};

@@ -33,9 +33,10 @@ export class ContributorLine {
     this.row = row;
   }
 
-  totalEarned = () => this.row.getByRole("cell").nth(1).textContent();
-  paidContributions = () => this.row.getByRole("cell").nth(2).textContent();
-  leftToPay = () => this.row.getByRole("cell").nth(3).textContent();
+  contributionCount = () => this.row.getByRole("cell").nth(1).textContent();
+  rewardCount = () => this.row.getByRole("cell").nth(2).textContent();
+  totalEarned = () => this.row.getByRole("cell").nth(3).textContent();
+  toRewardCount = () => this.row.getByRole("cell").nth(4).textContent();
 
   pay = async () => {
     await this.row.hover();

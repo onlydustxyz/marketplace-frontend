@@ -9,6 +9,10 @@ impl Permissions for Admin {
 		false
 	}
 
+	fn can_cancel_payments_of_project(&self, _project_id: &ProjectId) -> bool {
+		true
+	}
+
 	fn can_create_github_issue_for_project(&self, _project_id: &ProjectId) -> bool {
 		true
 	}

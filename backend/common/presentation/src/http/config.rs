@@ -1,5 +1,3 @@
-use std::collections::HashMap;
-
 use derive_getters::Getters;
 use rocket::figment::{
 	providers::{Env, Format, Toml},
@@ -9,7 +7,7 @@ use serde::Deserialize;
 
 #[derive(Debug, Clone, Deserialize, Getters)]
 pub struct Config {
-	pub api_keys: HashMap<String, String>,
+	pub api_keys: Vec<String>,
 }
 
 pub fn rocket(file_path: &str) -> Figment {

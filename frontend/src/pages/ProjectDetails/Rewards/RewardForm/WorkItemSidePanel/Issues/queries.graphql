@@ -1,7 +1,37 @@
-mutation IgnoreIssue($issueNumber: Int!, $projectId: Uuid!, $repoId: Int!) {
-  ignoreIssue(issueNumber: $issueNumber, projectId: $projectId, repoId: $repoId)
+mutation IgnoreContribution($contributionId: String!, $projectId: Uuid!) {
+  ignoreContribution(contributionId: $contributionId, projectId: $projectId)
 }
 
-mutation UnignoreIssue($issueNumber: Int!, $projectId: Uuid!, $repoId: Int!) {
-  unignoreIssue(issueNumber: $issueNumber, projectId: $projectId, repoId: $repoId)
+mutation UnignoreContribution($contributionId: String!, $projectId: Uuid!) {
+  unignoreContribution(contributionId: $contributionId, projectId: $projectId)
+}
+
+query UnrewardedContributions($githubUserId: bigint!, $projectId: uuid!, $type: String!) {
+  contributions(
+    where: {
+      githubUserId: { _eq: $githubUserId }
+      projectId: { _eq: $projectId }
+      type: { _eq: $type }
+      rewardItems_aggregate: { count: { predicate: { _eq: 0 } } }
+    }
+  ) {
+    ...Contribution
+  }
+}
+
+fragment Contribution on Contributions {
+  type
+  status
+  repoId
+  projectId
+  id
+  detailsId
+  githubUserId
+  ignored
+  githubIssue {
+    ...GithubIssue
+  }
+  githubPullRequest {
+    ...GithubPullRequest
+  }
 }

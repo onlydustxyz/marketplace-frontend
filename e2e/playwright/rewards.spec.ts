@@ -53,22 +53,30 @@ test.describe("As a project lead, I", () => {
       project.sponsors?.map(async sponsor => expect(await overviewPage.sponsors()).toContain(sponsor)) || []
     );
 
-    expect(await overviewPage.contributorsCount()).toBe(3);
+    expect(await overviewPage.contributorsCount()).toBe(4);
 
     const contributorsPage = await projectPage.contributors();
     const contributors = await contributorsPage.contributorsTable();
 
+    expect(await contributors.byName("AnthonyBuisset").contributionCount()).toBe("6");
+    expect(await contributors.byName("AnthonyBuisset").rewardCount()).toBe("-");
     expect(await contributors.byName("AnthonyBuisset").totalEarned()).toBe("-");
-    expect(await contributors.byName("AnthonyBuisset").paidContributions()).toBe("-");
-    expect(await contributors.byName("AnthonyBuisset").leftToPay()).toContain("2");
+    expect(await contributors.byName("AnthonyBuisset").toRewardCount()).toContain("6");
 
-    expect(await contributors.byName("oscarwroche").totalEarned()).toBe("$200");
-    expect(await contributors.byName("oscarwroche").paidContributions()).toBe("1");
-    expect(await contributors.byName("oscarwroche").leftToPay()).toContain("1");
-
+    expect(await contributors.byName("ofux").contributionCount()).toBe("-");
+    expect(await contributors.byName("ofux").rewardCount()).toBe("6");
     expect(await contributors.byName("ofux").totalEarned()).toBe("$13,200");
-    expect(await contributors.byName("ofux").paidContributions()).toBe("2");
-    expect(await contributors.byName("ofux").leftToPay()).toBe("-");
+    expect(await contributors.byName("ofux").toRewardCount()).toBe("0");
+
+    expect(await contributors.byName("oscarwroche").contributionCount()).toBe("1");
+    expect(await contributors.byName("oscarwroche").rewardCount()).toBe("1");
+    expect(await contributors.byName("oscarwroche").totalEarned()).toBe("$200");
+    expect(await contributors.byName("oscarwroche").toRewardCount()).toContain("1");
+
+    expect(await contributors.byName("Bernardstanislas").contributionCount()).toBe("-");
+    expect(await contributors.byName("Bernardstanislas").totalEarned()).toBe("-");
+    expect(await contributors.byName("Bernardstanislas").rewardCount()).toBe("-");
+    expect(await contributors.byName("Bernardstanislas").toRewardCount()).toContain("0");
 
     const newRewardPage = await contributors.byName(recipient.github.login).pay();
     expect(await newRewardPage.contributorText()).toEqual(recipient.github.login);
@@ -93,7 +101,13 @@ test.describe("As a project lead, I", () => {
       await newRewardPage.ignoreWorkItem(issueNumber);
 
       await Promise.all([
-        page.waitForResponse(async resp => (await resp.json()).data.unignoreIssue && resp.status() === 200),
+        page.waitForResponse(async resp => {
+          try {
+            return (await resp.json()).data.unignoreContribution && resp.status() === 200;
+          } catch (e) {
+            return false;
+          }
+        }),
         newRewardPage.addWorkItem(issueNumber),
       ]);
 
@@ -136,7 +150,7 @@ test.describe("As a project lead, I", () => {
     const remainingBudget = await retry(
       () => rewardsPage.remainingBudget(),
       remainingBudget => remainingBudget === "$85,600",
-      100
+      1000
     );
     expect(remainingBudget).toBe("$85,600");
 
@@ -148,10 +162,13 @@ test.describe("As a project lead, I", () => {
     expect(sidePanel.getByText(`Reward #${(await reward.rewardId())?.substring(0, 5).toUpperCase()}`)).toBeVisible();
     await expect(sidePanel.getByText("$1,000")).toBeVisible();
     await expect(sidePanel.getByText("from")).toBeVisible();
-    await expect(sidePanel.locator("div", { hasText: "#4 · Create a-new-file.txt" }).first()).toBeVisible(); // auto added
-    await expect(sidePanel.locator("div", { hasText: "#2 · Another update README.md" }).first()).toBeVisible();
+    await expect(sidePanel.locator("div", { hasText: "#79 · change PAT" }).first()).toBeVisible(); // auto added
     await expect(sidePanel.locator("div", { hasText: "#1 · Update README.md" }).first()).toBeVisible();
-    await expect(sidePanel.locator("div", { hasText: "#79 · " }).first()).toBeVisible();
+    await expect(sidePanel.locator("div", { hasText: "#2 · Another update README.md" }).first()).toBeVisible();
+    await expect(sidePanel.locator("div", { hasText: "#6 · " }).first()).toBeVisible();
+    await expect(sidePanel.locator("div", { hasText: "#8 · " }).first()).toBeVisible();
+    await expect(sidePanel.locator("div", { hasText: "#14 · " }).first()).toBeVisible();
+    await expect(sidePanel.locator("div", { hasText: "#15 · " }).first()).toBeVisible();
     await expect(sidePanel.locator("div", { hasText: " · Monthly contracting subscription" }).first()).toBeVisible();
     const otherWorkIssueLink = sidePanel.getByText(` · ${issueTitleToCheck}`).first();
     await expect(otherWorkIssueLink).toBeVisible();
@@ -220,7 +237,7 @@ test.describe("As a project lead, I", () => {
     const rewardId = (await reward.rewardId()) || "";
     await reward.click();
     await projectRewardsPage.cancelCurrentReward();
-    expect(page.locator("div", { hasText: rewardId })).not.toBeVisible();
+    await expect(page.getByText("No rewards so far")).toBeVisible();
   });
 
   test("can see rewards made by other project leads on the same project", async ({

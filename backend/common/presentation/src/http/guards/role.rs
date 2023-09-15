@@ -33,22 +33,12 @@ impl<'r> FromRequest<'r> for Role {
 	async fn from_request(request: &'r Request<'_>) -> Outcome<Role, Error> {
 		match request.headers().get_one("x-hasura-role") {
 			Some("admin") => Outcome::Success(Role::Admin),
-			Some("registered_user") => from_role_registered_user(request).await,
-			_ => return Outcome::Success(Role::Public),
+			_ => from_claims(request).await,
 		}
 	}
 }
 
-impl From<Claims> for Role {
-	fn from(claims: Claims) -> Self {
-		Role::RegisteredUser {
-			lead_projects: claims.projects_leaded.clone(),
-			github_user_id: claims.github_user_id.into(),
-		}
-	}
-}
-
-async fn from_role_registered_user(request: &'_ Request<'_>) -> Outcome<Role, Error> {
+async fn from_claims(request: &'_ Request<'_>) -> Outcome<Role, Error> {
 	match request.guard::<Claims>().await {
 		Outcome::Success(claims) => Outcome::Success(Role::RegisteredUser {
 			lead_projects: claims.projects_leaded.clone(),

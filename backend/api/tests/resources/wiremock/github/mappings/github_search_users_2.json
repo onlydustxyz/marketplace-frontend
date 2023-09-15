@@ -1,0 +1,15 @@
+{
+  "request": {
+    "url": "/search/users?q=Anthony&per_page=2&page=0&sort=repositories&order=asc",
+    "method": "GET",
+    "headers": {
+      "Authorization": {
+        "contains": "Bearer CALLER_GITHUB_PAT"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "github_search_users_2_response_body.json"
+  }
+}

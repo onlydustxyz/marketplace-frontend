@@ -32,7 +32,12 @@ export default function Intro({ start, skip }: Props) {
             <Button size={ButtonSize.Lg} onClick={start}>
               {T("onboarding.intro.acceptButton")}
             </Button>
-            <div onClick={skip} className="cursor-pointer font-walsheim text-sm font-medium text-greyscale-400">
+            <div
+              id="onboarding-skip"
+              data-testid="onboarding-skip"
+              onClick={skip}
+              className="cursor-pointer font-walsheim text-sm font-medium text-greyscale-400"
+            >
               {T("onboarding.intro.skip")}
             </div>
           </div>

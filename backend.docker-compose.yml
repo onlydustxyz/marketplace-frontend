@@ -20,9 +20,9 @@ services:
       - 8000:8000
     healthcheck:
       test: curl -f http://localhost:8000 || exit 1
-      interval: 6s
+      interval: 1s
       timeout: 1s
-      retries: 50
+      retries: 600
     environment:
       DATABASE_URL: postgres://postgres:postgres@db/marketplace_db
       AMQP_URL: amqp://rabbitmq:5672/%2f
@@ -39,33 +39,8 @@ services:
       DUSTY_BOT_GITHUB_BASE_URL: $DUSTY_BOT_GITHUB_BASE_URL
       GITHUB_BASE_URL: $GITHUB_BASE_URL
       INFURA_API_KEY: $INFURA_API_KEY
-
-  github-proxy:
-    labels:
-      type: backend
-    container_name: github-proxy
-    image: rust:1.70
-    volumes:
-      - .:/app
-      - cargo-cache:/usr/local/cargo
-    command: bash -c "cd /app/backend && cargo run -p github-proxy"
-    ports:
-      - 8001:8001
-    depends_on:
-      api:
-        condition: service_healthy
-      hasura-auth:
-        condition: service_healthy
-    healthcheck:
-      test: curl -f http://localhost:8001 || exit 1
-      interval: 6s
-      timeout: 1s
-      retries: 50
-    environment:
-      GITHUB_PROXY_GRAPHQL_API_KEY: $GITHUB_PROXY_GRAPHQL_API_KEY
-      GITHUB_BASE_URL: $GITHUB_BASE_URL
-      GITHUB_PAT: $GITHUB_PAT
-      GITHUB_MAX_CALLS_PER_REQUEST: $GITHUB_MAX_CALLS_PER_REQUEST
+      GITHUB_INDEXER_API_KEY: $GITHUB_INDEXER_API_KEY
+      GITHUB_INDEXER_BASE_URL: http://github-indexer-api:8001/indexer
 
   event-store:
     labels:
@@ -82,7 +57,12 @@ services:
     volumes:
       - .:/app
       - cargo-cache:/usr/local/cargo
-    command: bash -c "cd /app/backend && cargo run -p event-store"
+    command: bash -c "cd /app/backend && cargo run -p event-store | tee -a out.log"
+    healthcheck:
+      test: grep -qc "Start listening to events" /app/backend/out.log || exit 1
+      interval: 1s
+      timeout: 1s
+      retries: 600
     environment:
       DATABASE_URL: postgres://postgres:postgres@db/marketplace_db
       AMQP_URL: amqp://rabbitmq:5672/%2f
@@ -103,7 +83,12 @@ services:
     volumes:
       - .:/app
       - cargo-cache:/usr/local/cargo
-    command: bash -c "cd /app/backend && cargo run -p event-listeners"
+    command: bash -c "cd /app/backend && cargo run -p event-listeners --bin listeners | tee -a out.log"
+    healthcheck:
+      test: grep -qc "Start listening to events" /app/backend/out.log || exit 1
+      interval: 1s
+      timeout: 1s
+      retries: 600
     environment:
       DATABASE_URL: postgres://postgres:postgres@db/marketplace_db
       AMQP_URL: amqp://rabbitmq:5672/%2f
@@ -127,7 +112,12 @@ services:
     volumes:
       - .:/app
       - cargo-cache:/usr/local/cargo
-    command: bash -c "cd /app/backend && cargo run -p event-listeners --bin github-indexer"
+    command: bash -c "cd /app/backend && cargo run -p event-listeners --bin github-indexer | tee -a out.log"
+    healthcheck:
+      test: grep -qc "Github API client setup" /app/backend/out.log || exit 1
+      interval: 1s
+      timeout: 1s
+      retries: 600
     environment:
       DATABASE_URL: postgres://postgres:postgres@db/marketplace_db
       AMQP_URL: amqp://rabbitmq:5672/%2f
@@ -135,6 +125,32 @@ services:
       GITHUB_BASE_URL: $GITHUB_BASE_URL
       GITHUB_PAT: $GITHUB_PAT
       GITHUB_MAX_CALLS_PER_REQUEST: $GITHUB_MAX_CALLS_PER_REQUEST
+
+  github-indexer-api:
+    labels:
+      type: backend
+    container_name: github-indexer-api
+    image: rust:1.70
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - .:/app
+      - cargo-cache:/usr/local/cargo
+    command: bash -c "cd /app/backend && cargo run -p event-listeners | tee -a out.log"
+    healthcheck:
+      test: grep -qc "Rocket has launched" /app/backend/out.log || exit 1
+      interval: 1s
+      timeout: 1s
+      retries: 600
+    ports:
+      - 8001:8001
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@db/marketplace_db
+      PROFILE: local
+      GITHUB_BASE_URL: $GITHUB_BASE_URL
+      GITHUB_PAT: $GITHUB_PAT
+      GITHUB_INDEXER_API_KEY: $GITHUB_INDEXER_API_KEY
 
 volumes:
   cargo-cache:

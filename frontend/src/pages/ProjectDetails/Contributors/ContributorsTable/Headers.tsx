@@ -1,12 +1,13 @@
 import { useIntl } from "src/hooks/useIntl";
 import HeaderLine from "src/components/Table/HeaderLine";
-import HeaderCell, { HeaderCellWidth } from "src/components/Table/HeaderCell";
+import HeaderCell from "src/components/Table/HeaderCell";
 import SortingArrow from "./SortingArrow";
 import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import User3Line from "src/icons/User3Line";
-import CheckLine from "src/icons/CheckLine";
 import { Field, Sorting } from "./View";
-import GitMergeLine from "src/icons/GitMergeLine";
+import StackLine from "src/icons/StackLine";
+import Medal2Fill from "src/icons/Medal2Fill";
+import HandCoinLine from "src/icons/HandCoinLine";
 
 type Props = {
   sorting: Sorting;
@@ -24,28 +25,30 @@ export default function Headers({ sorting, applySorting, isProjectLeader }: Prop
         {T("contributor.table.contributor")}
         <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.Login} />
       </HeaderCell>
+      <HeaderCell onClick={() => applySorting(Field.ContributionCount, false)}>
+        <StackLine className="text-base" />
+        {T("contributor.table.contributions")}
+        <SortingArrow
+          direction={sorting.ascending ? "up" : "down"}
+          visible={sorting.field === Field.ContributionCount}
+        />
+      </HeaderCell>
+      <HeaderCell onClick={() => applySorting(Field.RewardCount, false)}>
+        <Medal2Fill className="text-base" />
+        {T("contributor.table.rewards")}
+        <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.RewardCount} />
+      </HeaderCell>
       <HeaderCell onClick={() => applySorting(Field.TotalEarned, false)}>
-        <MoneyDollarCircleLine />
+        <MoneyDollarCircleLine className="text-base" />
         {T("contributor.table.totalEarned")}
         <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.TotalEarned} />
       </HeaderCell>
-      <HeaderCell onClick={() => applySorting(Field.PaidContributions, false)}>
-        <CheckLine />
-        {T("contributor.table.paidContributions")}
-        <SortingArrow
-          direction={sorting.ascending ? "up" : "down"}
-          visible={sorting.field === Field.PaidContributions}
-        />
-      </HeaderCell>
       {isProjectLeader && (
-        <>
-          <HeaderCell onClick={() => applySorting(Field.LeftToPay, false)}>
-            <GitMergeLine />
-            {T("contributor.table.leftToPay")}
-            <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.LeftToPay} />
-          </HeaderCell>
-          <HeaderCell width={HeaderCellWidth.Fifth} />
-        </>
+        <HeaderCell onClick={() => applySorting(Field.ToRewardCount, false)}>
+          <HandCoinLine className="text-base" />
+          {T("contributor.table.toReward")}
+          <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.ToRewardCount} />
+        </HeaderCell>
       )}
     </HeaderLine>
   );

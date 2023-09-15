@@ -1,5 +1,6 @@
 import { PropsWithChildren, useState } from "react";
 import GithubIssue from "src/components/GithubIssue";
+import GithubPullRequest from "src/components/GithubPullRequest";
 import PayoutStatus from "src/components/PayoutStatus";
 import QueryWrapper from "src/components/QueryWrapper";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
@@ -13,10 +14,6 @@ import Button, { ButtonSize } from "src/components/Button";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import ConfirmationModal from "./ConfirmationModal";
 import classNames from "classnames";
-import {
-  issueToWorkItem,
-  pullRequestToWorkItem,
-} from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/Issues";
 import { formatDateTime } from "src/utils/date";
 import BankCardLine from "src/icons/BankCardLine";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
@@ -49,7 +46,7 @@ export default function View({
   githubUserId,
   status,
   amountInUsd,
-  liveGithubRecipient,
+  githubRecipient,
   requestor,
   requestedAt,
   workItems,
@@ -103,20 +100,20 @@ export default function View({
               </div>
             </Details>
           )}
-          {liveGithubRecipient && (
+          {githubRecipient && (
             <Details>
-              <RoundedImage alt={liveGithubRecipient.login} src={liveGithubRecipient.avatarUrl} size={ImageSize.Xxs} />
+              <RoundedImage alt={githubRecipient.login} src={githubRecipient.avatarUrl} size={ImageSize.Xxs} />
               <div className="flex flex-row items-center gap-1">
                 {T("reward.table.detailsPanel.to")}
                 <Contributor
                   contributor={{
-                    login: liveGithubRecipient.login,
-                    githubUserId: liveGithubRecipient.id,
+                    login: githubRecipient.login,
+                    githubUserId: githubRecipient.id,
                     avatarUrl: null,
                   }}
                   clickable
                 />
-                {liveGithubRecipient.id === githubUserId && T("reward.table.detailsPanel.you")}
+                {githubRecipient.id === githubUserId && T("reward.table.detailsPanel.you")}
               </div>
             </Details>
           )}
@@ -184,12 +181,9 @@ export default function View({
           <div className="flex h-full flex-col gap-3 overflow-auto p-px pb-6 pr-4 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
             {workItems?.map(workItem =>
               workItem.githubIssue ? (
-                <GithubIssue key={workItem.githubIssue?.id} workItem={issueToWorkItem(workItem.githubIssue)} />
+                <GithubIssue key={workItem.githubIssue?.id} issue={workItem.githubIssue} />
               ) : workItem.githubPullRequest ? (
-                <GithubIssue
-                  key={workItem.githubPullRequest?.id}
-                  workItem={pullRequestToWorkItem(workItem.githubPullRequest)}
-                />
+                <GithubPullRequest key={workItem.githubPullRequest?.id} pullRequest={workItem.githubPullRequest} />
               ) : undefined
             )}
           </div>

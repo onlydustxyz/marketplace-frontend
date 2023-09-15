@@ -17,8 +17,14 @@ const TEST_USER: ContributorFragment = {
   login: "test-user-name",
   avatarUrl: "test-avatar-url",
   userId: "test-user-id",
-  contributionStatsAggregate: { aggregate: { sum: { paidCount: 0, unpaidUnignoredCount: 0 } } },
+  contributionStatsAggregate: {
+    aggregate: { sum: { pullRequestCount: 0, issueCount: 0, codeReviewCount: 0, totalCount: 0 } },
+  },
   paymentStatsAggregate: { aggregate: { sum: { moneyGranted: 0 } } },
+  projectsRewardedAggregate: { aggregate: { sum: { rewardCount: 0 } } },
+  completedUnpaidPullRequestsAggregate: { aggregate: { count: 0 } },
+  completedUnpaidIssuesAggregate: { aggregate: { count: 0 } },
+  completedUnpaidCodeReviewsAggregate: { aggregate: { count: 0 } },
 };
 
 const TEST_OTHER_USER: ContributorFragment = {
@@ -27,8 +33,14 @@ const TEST_OTHER_USER: ContributorFragment = {
   login: "test-other-user-name",
   avatarUrl: "test-avatar-url",
   userId: "test-other-user-id",
-  contributionStatsAggregate: { aggregate: { sum: { paidCount: 0, unpaidUnignoredCount: 0 } } },
+  contributionStatsAggregate: {
+    aggregate: { sum: { pullRequestCount: 0, issueCount: 0, codeReviewCount: 0, totalCount: 0 } },
+  },
   paymentStatsAggregate: { aggregate: { sum: { moneyGranted: 0 } } },
+  projectsRewardedAggregate: { aggregate: { sum: { rewardCount: 0 } } },
+  completedUnpaidPullRequestsAggregate: { aggregate: { count: 0 } },
+  completedUnpaidIssuesAggregate: { aggregate: { count: 0 } },
+  completedUnpaidCodeReviewsAggregate: { aggregate: { count: 0 } },
 };
 
 const TEST_PROJECT_ID = "test-project-id";

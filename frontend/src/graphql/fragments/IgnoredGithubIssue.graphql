@@ -1,5 +1,0 @@
-fragment IgnoredGithubIssueId on IgnoredGithubIssues {
-  projectId
-  repoId
-  issueNumber
-}

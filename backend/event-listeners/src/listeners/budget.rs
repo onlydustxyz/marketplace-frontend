@@ -3,7 +3,9 @@ use std::{convert::TryFrom, sync::Arc};
 use anyhow::{anyhow, Result};
 use async_trait::async_trait;
 use derive_more::Constructor;
-use domain::{BudgetEvent, Event, PaymentEvent, ProjectEvent, SubscriberCallbackError};
+use domain::{
+	BudgetEvent, Event, PaymentEvent, PaymentWorkItem, ProjectEvent, SubscriberCallbackError,
+};
 use infrastructure::database::Repository;
 use rust_decimal::{prelude::ToPrimitive, Decimal};
 use tracing::instrument;
@@ -19,7 +21,7 @@ pub struct Projector {
 	work_item_repository: Arc<dyn WorkItemRepository>,
 	github_repo_index_repository: Arc<dyn GithubRepoIndexRepository>,
 	github_user_index_repository: Arc<dyn GithubUserIndexRepository>,
-	projects_contributors_repository: Arc<dyn ProjectsContributorRepository>,
+	projects_rewarded_users_repository: Arc<dyn ProjectsRewardedUserRepository>,
 }
 
 #[async_trait]
@@ -81,25 +83,30 @@ impl EventListener<Event> for Projector {
 							hours_worked: i32::try_from(duration_worked.num_hours()).unwrap_or(0),
 						})?;
 
-						reason.work_items.iter().try_for_each(
+						reason.work_items.into_iter().try_for_each(
 							|work_item| -> Result<(), SubscriberCallbackError> {
-								self.work_item_repository.try_insert(WorkItem {
-									payment_id,
-									repo_id: work_item.repo_id,
-									issue_number: work_item.issue_number,
-								})?;
-								self.github_repo_index_repository
-									.start_indexing(work_item.repo_id)?;
+								let repo_id = match work_item {
+									PaymentWorkItem::Issue { repo_id, .. }
+									| PaymentWorkItem::CodeReview { repo_id, .. }
+									| PaymentWorkItem::PullRequest { repo_id, .. } => repo_id,
+								};
+
+								self.work_item_repository.try_insert(
+									(project_id, payment_id, recipient_id, work_item).into(),
+								)?;
+
+								self.github_repo_index_repository.start_indexing(repo_id)?;
 								Ok(())
 							},
 						)?;
 
 						self.github_user_index_repository.try_insert(GithubUserIndex {
 							user_id: recipient_id,
+							..Default::default()
 						})?;
 
-						self.projects_contributors_repository
-							.link_project_with_contributor(&project_id, &recipient_id)?;
+						self.projects_rewarded_users_repository
+							.increase_user_reward_count_for_project(&project_id, &recipient_id)?;
 					},
 					PaymentEvent::Cancelled { id: payment_id } => {
 						let payment_request =
@@ -110,10 +117,11 @@ impl EventListener<Event> for Projector {
 						self.payment_request_repository.delete(payment_id)?;
 						self.work_item_repository.delete_by_payment_id(payment_id)?;
 
-						self.projects_contributors_repository.unlink_project_with_contributor(
-							&project_id,
-							&payment_request.recipient_id,
-						)?;
+						self.projects_rewarded_users_repository
+							.decrease_user_reward_count_for_project(
+								&project_id,
+								&payment_request.recipient_id,
+							)?;
 					},
 					PaymentEvent::Processed {
 						id: payment_id,

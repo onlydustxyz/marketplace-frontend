@@ -11,25 +11,35 @@ import Title from "src/pages/ProjectDetails/Title";
 import Add from "src/icons/Add";
 import { ReactElement, ReactNode, useEffect, useState } from "react";
 import WorkItemSidePanel from "./WorkItemSidePanel";
-import GithubIssue, { Action, WorkItem } from "src/components/GithubIssue";
+import GithubIssue, { Action as GithubIssueAction } from "src/components/GithubIssue";
+import GithubPullRequest, { Action as GithubPRAction } from "src/components/GithubPullRequest";
 import Callout from "src/components/Callout";
 import useWorkItems from "./useWorkItems";
 import { filter } from "lodash";
 import { Contributor } from "./types";
 import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
-import { GithubPullRequestStatus } from "src/__generated/graphql";
+import {
+  ContributionFragment,
+  GithubIssueStatus,
+  GithubPullRequestStatus,
+  WorkItemFragment,
+} from "src/__generated/graphql";
 import pickContributorImg from "src/assets/img/pick-contributor.png";
 import addContributionImg from "src/assets/img/add-contribution.png";
+import {
+  issueToWorkItem,
+  pullRequestToWorkItem,
+} from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/Issues";
 
 interface Props {
   projectId: string;
   budget: Budget;
   onWorkEstimationChange: (amountToPay: number, hoursWorked: number) => void;
-  onWorkItemsChange: (workItems: WorkItem[]) => void;
+  onWorkItemsChange: (workItems: WorkItemFragment[]) => void;
   contributor: Contributor | null | undefined;
   setContributor: (contributor: Contributor | null | undefined) => void;
-  unpaidPRs: WorkItem[] | null | undefined;
+  unpaidContributions: ContributionFragment | null | undefined;
   requestNewPaymentMutationLoading: boolean;
 }
 
@@ -54,7 +64,7 @@ const View: React.FC<Props> = ({
   projectId,
   contributor,
   setContributor,
-  unpaidPRs,
+  unpaidContributions,
   requestNewPaymentMutationLoading,
 }) => {
   const { T } = useIntl();
@@ -66,14 +76,28 @@ const View: React.FC<Props> = ({
 
   const { workItems, add: addWorkItem, remove: removeWorkItem, clear: clearWorkItems } = useWorkItems();
 
-  useEffect(() => onWorkItemsChange(workItems), [workItems, onWorkItemsChange]);
+  const githubPullRequestFilter = { githubPullRequest: { status: GithubPullRequestStatus.Merged } };
+  const githubIssueFilter = { githubIssue: { status: GithubIssueStatus.Completed } };
+
   useEffect(() => {
-    if (!workItemsPrefilled && unpaidPRs) {
-      clearWorkItems();
-      addWorkItem(filter(unpaidPRs, { status: GithubPullRequestStatus.Merged, ignored: false }));
+    onWorkItemsChange(workItems);
+  }, [workItems, onWorkItemsChange]);
+
+  useEffect(() => {
+    if (!workItemsPrefilled && unpaidContributions) {
+      const filteredContributions = filter(unpaidContributions, {
+        ...(githubPullRequestFilter || githubIssueFilter),
+        ignored: false,
+      });
+
+      const workItems = filteredContributions.map(item =>
+        item.githubIssue ? issueToWorkItem(item.githubIssue) : pullRequestToWorkItem(item.githubPullRequest)
+      );
+
+      addWorkItem(workItems);
       setWorkItemsPrefilled(true);
     }
-  }, [unpaidPRs, contributor, addWorkItem, clearWorkItems, workItemsPrefilled, setWorkItemsPrefilled]);
+  }, [unpaidContributions, contributor, addWorkItem, clearWorkItems, workItemsPrefilled, setWorkItemsPrefilled]);
 
   useEffect(() => setWorkItemsPrefilled(false), [contributor]);
 
@@ -142,14 +166,24 @@ const View: React.FC<Props> = ({
                     <div className="text-sm text-greyscale-300 xl:text-base">
                       {T("reward.form.contributions.subTitle")}
                     </div>
-                    {workItems.map(workItem => (
-                      <GithubIssue
-                        key={workItem.id}
-                        workItem={workItem}
-                        action={Action.Remove}
-                        onClick={() => removeWorkItem(workItem)}
-                      />
-                    ))}
+
+                    {workItems.map(workItem =>
+                      workItem.githubPullRequest ? (
+                        <GithubPullRequest
+                          key={workItem.id}
+                          pullRequest={workItem.githubPullRequest}
+                          action={GithubPRAction.Remove}
+                          onClick={() => removeWorkItem(workItem)}
+                        />
+                      ) : workItem.githubIssue ? (
+                        <GithubIssue
+                          key={workItem.id}
+                          issue={workItem.githubIssue}
+                          action={GithubIssueAction.Remove}
+                          onClick={() => removeWorkItem(workItem)}
+                        />
+                      ) : undefined
+                    )}
                   </div>
                   <div onClick={() => setSidePanelOpen(true)} data-testid="add-work-item-btn" className="mx-4 pt-8">
                     <Button size={ButtonSize.Md} type={ButtonType.Secondary} width={Width.Full}>
@@ -166,7 +200,7 @@ const View: React.FC<Props> = ({
                 open={sidePanelOpen}
                 setOpen={setSidePanelOpen}
                 workItems={workItems}
-                onWorkItemAdded={addWorkItem}
+                addWorkItem={addWorkItem}
                 contributorHandle={contributor.login}
                 contributorId={contributor.githubUserId}
               />

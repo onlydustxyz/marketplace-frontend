@@ -1,5 +1,4 @@
 use chrono::{Duration, Utc};
-use derive_getters::Getters;
 use olog::info;
 use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
@@ -20,17 +19,17 @@ pub enum Status {
 }
 
 #[serde_as]
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Getters)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Payment {
-	id: PaymentId,
-	requested_usd_amount: Decimal,
-	paid_usd_amount: Decimal,
-	status: Status,
-	recipient_id: GithubUserId,
-	requestor_id: UserId,
-	work_items: Vec<PaymentWorkItem>,
+	pub id: PaymentId,
+	pub requested_usd_amount: Decimal,
+	pub paid_usd_amount: Decimal,
+	pub status: Status,
+	pub recipient_id: GithubUserId,
+	pub requestor_id: UserId,
+	pub work_items: Vec<PaymentWorkItem>,
 	#[serde_as(as = "DurationSeconds<i64>")]
-	duration_worked: Duration,
+	pub duration_worked: Duration,
 }
 
 impl Default for Payment {
