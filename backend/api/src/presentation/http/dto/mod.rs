@@ -21,3 +21,5 @@ pub use user_profile::{AllocatedTime, ProfileCover};
 
 mod contact;
 pub use contact::{Channel as ContactChannel, Information as ContactInformation};
+
+pub mod payment;

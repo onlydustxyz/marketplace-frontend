@@ -13,17 +13,11 @@ fragment PaymentRequestDetails on PaymentRequests {
     avatarUrl
     githubUserId
   }
-  liveGithubRecipient {
-    ...LiveGithubUser
+  githubRecipient {
+    ...GithubUser
   }
   workItems {
-    ...WorkItemId
-    githubIssue {
-      ...LiveGithubIssue
-    }
-    githubPullRequest {
-      ...LiveGithubPullRequest
-    }
+    ...WorkItem
   }
   paymentsAggregate {
     aggregate {

@@ -3,8 +3,10 @@ fragment Contributor on UserProfiles {
   contributionStatsAggregate(where: { projectId: { _eq: $projectId } }) {
     aggregate {
       sum {
-        paidCount
-        unpaidUnignoredCount
+        codeReviewCount
+        issueCount
+        pullRequestCount
+        totalCount
       }
     }
   }
@@ -13,6 +15,46 @@ fragment Contributor on UserProfiles {
       sum {
         moneyGranted
       }
+    }
+  }
+  projectsRewardedAggregate(where: { projectId: { _eq: $projectId } }) {
+    aggregate {
+      sum {
+        rewardCount
+      }
+    }
+  }
+  completedUnpaidPullRequestsAggregate: completedContributionsAggregate(
+    where: {
+      projectId: { _eq: $projectId }
+      type: { _eq: "pull_request" }
+      rewardItems_aggregate: { count: { predicate: { _eq: 0 } } }
+    }
+  ) {
+    aggregate {
+      count
+    }
+  }
+  completedUnpaidIssuesAggregate: completedContributionsAggregate(
+    where: {
+      projectId: { _eq: $projectId }
+      type: { _eq: "issue" }
+      rewardItems_aggregate: { count: { predicate: { _eq: 0 } } }
+    }
+  ) {
+    aggregate {
+      count
+    }
+  }
+  completedUnpaidCodeReviewsAggregate: completedContributionsAggregate(
+    where: {
+      projectId: { _eq: $projectId }
+      type: { _eq: "code_review" }
+      rewardItems_aggregate: { count: { predicate: { _eq: 0 } } }
+    }
+  ) {
+    aggregate {
+      count
     }
   }
 }

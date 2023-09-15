@@ -1,36 +1,46 @@
+import classNames from "classnames";
 import { useMemo } from "react";
-import Button, { ButtonSize, ButtonType } from "src/components/Button";
-import { useIntl } from "src/hooks/useIntl";
-import Input from "src/components/FormInput";
-import { WorkItem } from "src/components/GithubIssue";
-import { useFetchIssueLazyQuery, useFetchPullRequestLazyQuery } from "src/__generated/graphql";
 import { useFormContext, useFormState } from "react-hook-form";
 import {
-  parseIssueLink,
-  REGEX_VALID_GITHUB_ISSUE_URL,
-  parsePullRequestLink,
-  REGEX_VALID_GITHUB_PULL_REQUEST_URL,
-} from "src/utils/github";
+  GithubIssueFragment,
+  GithubPullRequestFragment,
+  LiveGithubIssueFragment,
+  LiveGithubPullRequestFragment,
+  WorkItemFragment,
+  WorkItemType,
+  useFetchIssueLazyQuery,
+  useFetchPullRequestLazyQuery,
+} from "src/__generated/graphql";
+import Button, { ButtonSize, ButtonType } from "src/components/Button";
+import Input from "src/components/FormInput";
+import { useIntl } from "src/hooks/useIntl";
 import Link from "src/icons/Link";
-import classNames from "classnames";
-import { issueToWorkItem, pullRequestToWorkItem } from ".";
-import { GithubIssueType } from "src/types";
+import {
+  REGEX_VALID_GITHUB_ISSUE_URL,
+  REGEX_VALID_GITHUB_PULL_REQUEST_URL,
+  parseIssueLink,
+  parsePullRequestLink,
+} from "src/utils/github";
+import {
+  issueToWorkItem,
+  pullRequestToWorkItem,
+} from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/Issues";
 
 type Props = {
   projectId: string;
-  type: GithubIssueType;
-  onWorkItemAdded: (workItem: WorkItem) => void;
+  type: WorkItemType;
+  addWorkItem: (workItem: WorkItemFragment) => void;
 };
 
-export default function OtherIssueInput({ projectId, type, onWorkItemAdded }: Props) {
+export default function OtherIssueInput({ type, addWorkItem }: Props) {
   const { T } = useIntl();
-  const inputName = type === GithubIssueType.Issue ? "otherIssueLink" : "otherPullRequestLink";
-  const tKey = type === GithubIssueType.Issue ? "issues" : "pullRequests";
+  const inputName = type === WorkItemType.Issue ? "otherIssueLink" : "otherPullRequestLink";
+  const tKey = type === WorkItemType.Issue ? "issues" : "pullRequests";
 
   const [fetchIssue] = useFetchIssueLazyQuery({
     onCompleted: data => {
       if (data.fetchIssue) {
-        onWorkItemAdded(issueToWorkItem(data.fetchIssue, projectId));
+        addWorkItem(issueToWorkItem(liveIssueToCached(data.fetchIssue)));
         resetField(inputName);
       } else {
         setError(inputName, {
@@ -52,7 +62,7 @@ export default function OtherIssueInput({ projectId, type, onWorkItemAdded }: Pr
   const [fetchPullRequest] = useFetchPullRequestLazyQuery({
     onCompleted: data => {
       if (data.fetchPullRequest) {
-        onWorkItemAdded(pullRequestToWorkItem(data.fetchPullRequest, projectId));
+        addWorkItem(pullRequestToWorkItem(livePullRequestToCached(data.fetchPullRequest)));
         resetField(inputName);
       } else {
         setError(inputName, {
@@ -77,12 +87,12 @@ export default function OtherIssueInput({ projectId, type, onWorkItemAdded }: Pr
   const otherIssueLinkError = errors[inputName];
 
   const { repoOwner, repoName, issueNumber } = useMemo(
-    () => (type === GithubIssueType.Issue ? parseIssueLink(otherIssueLink) : parsePullRequestLink(otherIssueLink)),
+    () => (type === WorkItemType.Issue ? parseIssueLink(otherIssueLink) : parsePullRequestLink(otherIssueLink)),
     [otherIssueLink]
   );
 
   const validateOtherIssue = () =>
-    type === GithubIssueType.Issue
+    type === WorkItemType.Issue
       ? fetchIssue({
           variables: {
             repoOwner,
@@ -109,7 +119,7 @@ export default function OtherIssueInput({ projectId, type, onWorkItemAdded }: Pr
         withMargin={false}
         options={{
           pattern: {
-            value: type === GithubIssueType.Issue ? REGEX_VALID_GITHUB_ISSUE_URL : REGEX_VALID_GITHUB_PULL_REQUEST_URL,
+            value: type === WorkItemType.Issue ? REGEX_VALID_GITHUB_ISSUE_URL : REGEX_VALID_GITHUB_PULL_REQUEST_URL,
             message: T(`reward.form.contributions.${tKey}.addOther.notALink`),
           },
         }}
@@ -141,3 +151,14 @@ export default function OtherIssueInput({ projectId, type, onWorkItemAdded }: Pr
     </div>
   );
 }
+
+export const liveIssueToCached = (issue: LiveGithubIssueFragment): GithubIssueFragment => ({
+  ...issue,
+  __typename: "GithubIssues",
+  assigneeIds: [],
+});
+
+export const livePullRequestToCached = (issue: LiveGithubPullRequestFragment): GithubPullRequestFragment => ({
+  ...issue,
+  __typename: "GithubPullRequests",
+});

@@ -18,6 +18,7 @@ type PopulatedDataFixtures = {
   signIn: (user: User) => Promise<void>;
   logout: () => Promise<void>;
   acceptTermsAndConditions: (props?: { skipOnboardingWizzard?: boolean; skipIntro?: boolean }) => Promise<void>;
+  skipTermsAndConditions: () => Promise<void>;
 };
 
 export const test = base.extend<PopulatedDataFixtures>({
@@ -76,15 +77,30 @@ export const test = base.extend<PopulatedDataFixtures>({
     await use(async (props = {}) => {
       const { skipOnboardingWizzard, skipIntro } = props;
       if (skipOnboardingWizzard) {
-        await page.getByText("skip").click();
+        await page.getByTestId("onboarding-skip").click();
       }
 
       if (!skipOnboardingWizzard && !skipIntro) {
         await page.getByText("Let’s get reading!").click();
       }
 
-      await page.getByRole("checkbox").click();
-      await page.getByText("Confirm").click();
+      await page.getByTestId("accept-tac-checkbox").click();
+      await page.getByTestId("accept-tac-btn").click();
+    });
+  },
+
+  skipTermsAndConditions: async ({ page }, use) => {
+    await use(async () => {
+      try {
+        await page.getByTestId("onboarding-skip").click();
+      } catch {}
+      try {
+        await page.getByText("Let’s get reading!").click();
+      } catch {}
+      try {
+        await page.getByTestId("accept-tac-checkbox").click();
+        await page.getByTestId("accept-tac-btn").click();
+      } catch {}
     });
   },
 });

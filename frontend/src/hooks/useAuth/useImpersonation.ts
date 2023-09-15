@@ -45,6 +45,7 @@ export const useImpersonation = () => {
   const impersonatedGithubUserId = impersonatedUserQuery.data?.user?.registeredUser?.githubUserId as number | undefined;
   const impersonatedLedProjectIds: string[] =
     impersonatedUserQuery.data?.user?.registeredUser?.projectsLeaded.map(l => l.projectId) || [];
+  const impersonatedGithubAccessToken = impersonatedUserQuery.data?.user?.userGithubProvider?.accessToken || undefined;
 
   const impersonatedRoles =
     impersonatedLedProjectIds.length > 0
@@ -58,6 +59,7 @@ export const useImpersonation = () => {
     setCustomClaims({
       githubUserId: impersonatedGithubUserId,
       projectsLeaded: impersonatedLedProjectIds,
+      githubAccessToken: impersonatedGithubAccessToken,
     });
   }, [impersonatedLedProjectIds, impersonatedGithubUserId]);
 

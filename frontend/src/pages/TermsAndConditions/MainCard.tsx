@@ -104,7 +104,13 @@ export default function TermsAndConditionsMainCard({
                 </span>
               </p>
             </div>
-            <Button onClick={() => handleAcceptTermsAndConditions()} width={Width.Full} disabled={!checked}>
+            <Button
+              id="accept-tac-btn"
+              data-testid="accept-tac-btn"
+              onClick={() => handleAcceptTermsAndConditions()}
+              width={Width.Full}
+              disabled={!checked}
+            >
               Confirm
             </Button>
           </div>

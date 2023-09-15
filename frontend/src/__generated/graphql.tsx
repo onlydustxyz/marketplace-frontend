@@ -14,15 +14,12 @@ export type Scalars = {
   Int: number;
   Float: number;
   Amount: any;
-  DateTime: any;
-  /** DateTime */
   DateTimeUtc: any;
   /** A `0x` prefixed hexadecimal string representing 20 bytes of data */
   EthereumAddress: any;
   /** A ENS backed domain name */
   EthereumName: any;
   Iban: any;
-  /** Url */
   Url: any;
   /** Uuid */
   Uuid: any;
@@ -31,10 +28,11 @@ export type Scalars = {
   bytea: any;
   citext: any;
   contact_channel: any;
+  contribution_status: any;
+  contribution_type: any;
   float8: any;
   github_ci_checks: any;
-  github_issue_status: any;
-  github_pull_request_status: any;
+  github_code_review_outcome: any;
   jsonb: any;
   numeric: any;
   profile_cover: any;
@@ -62,6 +60,246 @@ export type AllocatedTimeComparisonExp = {
   _lte: InputMaybe<Scalars['allocated_time']>;
   _neq: InputMaybe<Scalars['allocated_time']>;
   _nin: InputMaybe<Array<Scalars['allocated_time']>>;
+};
+
+/** columns and relationships of "api.completed_contributions" */
+export type ApiCompletedContributions = {
+  __typename?: 'ApiCompletedContributions';
+  closedAt: Maybe<Scalars['timestamp']>;
+  createdAt: Maybe<Scalars['timestamp']>;
+  detailsId: Maybe<Scalars['String']>;
+  githubUserId: Maybe<Scalars['bigint']>;
+  id: Maybe<Scalars['String']>;
+  projectId: Maybe<Scalars['uuid']>;
+  repoId: Maybe<Scalars['bigint']>;
+  /** An array relationship */
+  rewardItems: Array<WorkItems>;
+  /** An aggregate relationship */
+  rewardItemsAggregate: WorkItemsAggregate;
+  status: Maybe<Scalars['contribution_status']>;
+  type: Maybe<Scalars['contribution_type']>;
+};
+
+
+/** columns and relationships of "api.completed_contributions" */
+export type ApiCompletedContributionsRewardItemsArgs = {
+  distinctOn: InputMaybe<Array<WorkItemsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<WorkItemsOrderBy>>;
+  where: InputMaybe<WorkItemsBoolExp>;
+};
+
+
+/** columns and relationships of "api.completed_contributions" */
+export type ApiCompletedContributionsRewardItemsAggregateArgs = {
+  distinctOn: InputMaybe<Array<WorkItemsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<WorkItemsOrderBy>>;
+  where: InputMaybe<WorkItemsBoolExp>;
+};
+
+/** aggregated selection of "api.completed_contributions" */
+export type ApiCompletedContributionsAggregate = {
+  __typename?: 'ApiCompletedContributionsAggregate';
+  aggregate: Maybe<ApiCompletedContributionsAggregateFields>;
+  nodes: Array<ApiCompletedContributions>;
+};
+
+/** aggregate fields of "api.completed_contributions" */
+export type ApiCompletedContributionsAggregateFields = {
+  __typename?: 'ApiCompletedContributionsAggregateFields';
+  avg: Maybe<ApiCompletedContributionsAvgFields>;
+  count: Scalars['Int'];
+  max: Maybe<ApiCompletedContributionsMaxFields>;
+  min: Maybe<ApiCompletedContributionsMinFields>;
+  stddev: Maybe<ApiCompletedContributionsStddevFields>;
+  stddevPop: Maybe<ApiCompletedContributionsStddev_PopFields>;
+  stddevSamp: Maybe<ApiCompletedContributionsStddev_SampFields>;
+  sum: Maybe<ApiCompletedContributionsSumFields>;
+  varPop: Maybe<ApiCompletedContributionsVar_PopFields>;
+  varSamp: Maybe<ApiCompletedContributionsVar_SampFields>;
+  variance: Maybe<ApiCompletedContributionsVarianceFields>;
+};
+
+
+/** aggregate fields of "api.completed_contributions" */
+export type ApiCompletedContributionsAggregateFieldsCountArgs = {
+  columns: InputMaybe<Array<ApiCompletedContributionsSelectColumn>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "api.completed_contributions" */
+export type ApiCompletedContributionsAggregateOrderBy = {
+  avg: InputMaybe<Api_Completed_Contributions_Avg_Order_By>;
+  count: InputMaybe<OrderBy>;
+  max: InputMaybe<Api_Completed_Contributions_Max_Order_By>;
+  min: InputMaybe<Api_Completed_Contributions_Min_Order_By>;
+  stddev: InputMaybe<Api_Completed_Contributions_Stddev_Order_By>;
+  stddev_pop: InputMaybe<Api_Completed_Contributions_Stddev_Pop_Order_By>;
+  stddev_samp: InputMaybe<Api_Completed_Contributions_Stddev_Samp_Order_By>;
+  sum: InputMaybe<Api_Completed_Contributions_Sum_Order_By>;
+  var_pop: InputMaybe<Api_Completed_Contributions_Var_Pop_Order_By>;
+  var_samp: InputMaybe<Api_Completed_Contributions_Var_Samp_Order_By>;
+  variance: InputMaybe<Api_Completed_Contributions_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "api.completed_contributions" */
+export type ApiCompletedContributionsArrRelInsertInput = {
+  data: Array<ApiCompletedContributionsInsertInput>;
+};
+
+/** aggregate avg on columns */
+export type ApiCompletedContributionsAvgFields = {
+  __typename?: 'ApiCompletedContributionsAvgFields';
+  githubUserId: Maybe<Scalars['Float']>;
+  repoId: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "api.completed_contributions". All fields are combined with a logical 'AND'. */
+export type ApiCompletedContributionsBoolExp = {
+  _and: InputMaybe<Array<ApiCompletedContributionsBoolExp>>;
+  _not: InputMaybe<ApiCompletedContributionsBoolExp>;
+  _or: InputMaybe<Array<ApiCompletedContributionsBoolExp>>;
+  closedAt: InputMaybe<TimestampComparisonExp>;
+  createdAt: InputMaybe<TimestampComparisonExp>;
+  detailsId: InputMaybe<StringComparisonExp>;
+  githubUserId: InputMaybe<BigintComparisonExp>;
+  id: InputMaybe<StringComparisonExp>;
+  projectId: InputMaybe<UuidComparisonExp>;
+  repoId: InputMaybe<BigintComparisonExp>;
+  rewardItems: InputMaybe<WorkItemsBoolExp>;
+  rewardItems_aggregate: InputMaybe<WorkItems_Aggregate_Bool_Exp>;
+  status: InputMaybe<ContributionStatusComparisonExp>;
+  type: InputMaybe<ContributionTypeComparisonExp>;
+};
+
+/** input type for inserting data into table "api.completed_contributions" */
+export type ApiCompletedContributionsInsertInput = {
+  closedAt: InputMaybe<Scalars['timestamp']>;
+  createdAt: InputMaybe<Scalars['timestamp']>;
+  detailsId: InputMaybe<Scalars['String']>;
+  githubUserId: InputMaybe<Scalars['bigint']>;
+  id: InputMaybe<Scalars['String']>;
+  projectId: InputMaybe<Scalars['uuid']>;
+  repoId: InputMaybe<Scalars['bigint']>;
+  rewardItems: InputMaybe<WorkItemsArrRelInsertInput>;
+  status: InputMaybe<Scalars['contribution_status']>;
+  type: InputMaybe<Scalars['contribution_type']>;
+};
+
+/** aggregate max on columns */
+export type ApiCompletedContributionsMaxFields = {
+  __typename?: 'ApiCompletedContributionsMaxFields';
+  closedAt: Maybe<Scalars['timestamp']>;
+  createdAt: Maybe<Scalars['timestamp']>;
+  detailsId: Maybe<Scalars['String']>;
+  githubUserId: Maybe<Scalars['bigint']>;
+  id: Maybe<Scalars['String']>;
+  projectId: Maybe<Scalars['uuid']>;
+  repoId: Maybe<Scalars['bigint']>;
+  status: Maybe<Scalars['contribution_status']>;
+  type: Maybe<Scalars['contribution_type']>;
+};
+
+/** aggregate min on columns */
+export type ApiCompletedContributionsMinFields = {
+  __typename?: 'ApiCompletedContributionsMinFields';
+  closedAt: Maybe<Scalars['timestamp']>;
+  createdAt: Maybe<Scalars['timestamp']>;
+  detailsId: Maybe<Scalars['String']>;
+  githubUserId: Maybe<Scalars['bigint']>;
+  id: Maybe<Scalars['String']>;
+  projectId: Maybe<Scalars['uuid']>;
+  repoId: Maybe<Scalars['bigint']>;
+  status: Maybe<Scalars['contribution_status']>;
+  type: Maybe<Scalars['contribution_type']>;
+};
+
+/** Ordering options when selecting data from "api.completed_contributions". */
+export type ApiCompletedContributionsOrderBy = {
+  closedAt: InputMaybe<OrderBy>;
+  createdAt: InputMaybe<OrderBy>;
+  detailsId: InputMaybe<OrderBy>;
+  githubUserId: InputMaybe<OrderBy>;
+  id: InputMaybe<OrderBy>;
+  projectId: InputMaybe<OrderBy>;
+  repoId: InputMaybe<OrderBy>;
+  rewardItemsAggregate: InputMaybe<WorkItemsAggregateOrderBy>;
+  status: InputMaybe<OrderBy>;
+  type: InputMaybe<OrderBy>;
+};
+
+/** select columns of table "api.completed_contributions" */
+export enum ApiCompletedContributionsSelectColumn {
+  /** column name */
+  ClosedAt = 'closedAt',
+  /** column name */
+  CreatedAt = 'createdAt',
+  /** column name */
+  DetailsId = 'detailsId',
+  /** column name */
+  GithubUserId = 'githubUserId',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  ProjectId = 'projectId',
+  /** column name */
+  RepoId = 'repoId',
+  /** column name */
+  Status = 'status',
+  /** column name */
+  Type = 'type'
+}
+
+/** aggregate stddev on columns */
+export type ApiCompletedContributionsStddevFields = {
+  __typename?: 'ApiCompletedContributionsStddevFields';
+  githubUserId: Maybe<Scalars['Float']>;
+  repoId: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type ApiCompletedContributionsStddev_PopFields = {
+  __typename?: 'ApiCompletedContributionsStddev_popFields';
+  githubUserId: Maybe<Scalars['Float']>;
+  repoId: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type ApiCompletedContributionsStddev_SampFields = {
+  __typename?: 'ApiCompletedContributionsStddev_sampFields';
+  githubUserId: Maybe<Scalars['Float']>;
+  repoId: Maybe<Scalars['Float']>;
+};
+
+/** aggregate sum on columns */
+export type ApiCompletedContributionsSumFields = {
+  __typename?: 'ApiCompletedContributionsSumFields';
+  githubUserId: Maybe<Scalars['bigint']>;
+  repoId: Maybe<Scalars['bigint']>;
+};
+
+/** aggregate var_pop on columns */
+export type ApiCompletedContributionsVar_PopFields = {
+  __typename?: 'ApiCompletedContributionsVar_popFields';
+  githubUserId: Maybe<Scalars['Float']>;
+  repoId: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type ApiCompletedContributionsVar_SampFields = {
+  __typename?: 'ApiCompletedContributionsVar_sampFields';
+  githubUserId: Maybe<Scalars['Float']>;
+  repoId: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type ApiCompletedContributionsVarianceFields = {
+  __typename?: 'ApiCompletedContributionsVarianceFields';
+  githubUserId: Maybe<Scalars['Float']>;
+  repoId: Maybe<Scalars['Float']>;
 };
 
 /** columns and relationships of "applications" */
@@ -1282,9 +1520,10 @@ export type Contacts = {
 /** columns and relationships of "api.contribution_counts" */
 export type ContributionCounts = {
   __typename?: 'ContributionCounts';
+  codeReviewCount: Maybe<Scalars['bigint']>;
   githubUserId: Maybe<Scalars['bigint']>;
-  paidCount: Maybe<Scalars['bigint']>;
-  unpaidCount: Maybe<Scalars['bigint']>;
+  issueCount: Maybe<Scalars['bigint']>;
+  pullRequestCount: Maybe<Scalars['bigint']>;
   week: Maybe<Scalars['float8']>;
   year: Maybe<Scalars['float8']>;
 };
@@ -1342,9 +1581,10 @@ export type ContributionCountsArrRelInsertInput = {
 /** aggregate avg on columns */
 export type ContributionCountsAvgFields = {
   __typename?: 'ContributionCountsAvgFields';
+  codeReviewCount: Maybe<Scalars['Float']>;
   githubUserId: Maybe<Scalars['Float']>;
-  paidCount: Maybe<Scalars['Float']>;
-  unpaidCount: Maybe<Scalars['Float']>;
+  issueCount: Maybe<Scalars['Float']>;
+  pullRequestCount: Maybe<Scalars['Float']>;
   week: Maybe<Scalars['Float']>;
   year: Maybe<Scalars['Float']>;
 };
@@ -1354,18 +1594,20 @@ export type ContributionCountsBoolExp = {
   _and: InputMaybe<Array<ContributionCountsBoolExp>>;
   _not: InputMaybe<ContributionCountsBoolExp>;
   _or: InputMaybe<Array<ContributionCountsBoolExp>>;
+  codeReviewCount: InputMaybe<BigintComparisonExp>;
   githubUserId: InputMaybe<BigintComparisonExp>;
-  paidCount: InputMaybe<BigintComparisonExp>;
-  unpaidCount: InputMaybe<BigintComparisonExp>;
+  issueCount: InputMaybe<BigintComparisonExp>;
+  pullRequestCount: InputMaybe<BigintComparisonExp>;
   week: InputMaybe<Float8ComparisonExp>;
   year: InputMaybe<Float8ComparisonExp>;
 };
 
 /** input type for inserting data into table "api.contribution_counts" */
 export type ContributionCountsInsertInput = {
+  codeReviewCount: InputMaybe<Scalars['bigint']>;
   githubUserId: InputMaybe<Scalars['bigint']>;
-  paidCount: InputMaybe<Scalars['bigint']>;
-  unpaidCount: InputMaybe<Scalars['bigint']>;
+  issueCount: InputMaybe<Scalars['bigint']>;
+  pullRequestCount: InputMaybe<Scalars['bigint']>;
   week: InputMaybe<Scalars['float8']>;
   year: InputMaybe<Scalars['float8']>;
 };
@@ -1373,9 +1615,10 @@ export type ContributionCountsInsertInput = {
 /** aggregate max on columns */
 export type ContributionCountsMaxFields = {
   __typename?: 'ContributionCountsMaxFields';
+  codeReviewCount: Maybe<Scalars['bigint']>;
   githubUserId: Maybe<Scalars['bigint']>;
-  paidCount: Maybe<Scalars['bigint']>;
-  unpaidCount: Maybe<Scalars['bigint']>;
+  issueCount: Maybe<Scalars['bigint']>;
+  pullRequestCount: Maybe<Scalars['bigint']>;
   week: Maybe<Scalars['float8']>;
   year: Maybe<Scalars['float8']>;
 };
@@ -1383,18 +1626,20 @@ export type ContributionCountsMaxFields = {
 /** aggregate min on columns */
 export type ContributionCountsMinFields = {
   __typename?: 'ContributionCountsMinFields';
+  codeReviewCount: Maybe<Scalars['bigint']>;
   githubUserId: Maybe<Scalars['bigint']>;
-  paidCount: Maybe<Scalars['bigint']>;
-  unpaidCount: Maybe<Scalars['bigint']>;
+  issueCount: Maybe<Scalars['bigint']>;
+  pullRequestCount: Maybe<Scalars['bigint']>;
   week: Maybe<Scalars['float8']>;
   year: Maybe<Scalars['float8']>;
 };
 
 /** Ordering options when selecting data from "api.contribution_counts". */
 export type ContributionCountsOrderBy = {
+  codeReviewCount: InputMaybe<OrderBy>;
   githubUserId: InputMaybe<OrderBy>;
-  paidCount: InputMaybe<OrderBy>;
-  unpaidCount: InputMaybe<OrderBy>;
+  issueCount: InputMaybe<OrderBy>;
+  pullRequestCount: InputMaybe<OrderBy>;
   week: InputMaybe<OrderBy>;
   year: InputMaybe<OrderBy>;
 };
@@ -1402,11 +1647,13 @@ export type ContributionCountsOrderBy = {
 /** select columns of table "api.contribution_counts" */
 export enum ContributionCountsSelectColumn {
   /** column name */
+  CodeReviewCount = 'codeReviewCount',
+  /** column name */
   GithubUserId = 'githubUserId',
   /** column name */
-  PaidCount = 'paidCount',
+  IssueCount = 'issueCount',
   /** column name */
-  UnpaidCount = 'unpaidCount',
+  PullRequestCount = 'pullRequestCount',
   /** column name */
   Week = 'week',
   /** column name */
@@ -1416,9 +1663,10 @@ export enum ContributionCountsSelectColumn {
 /** aggregate stddev on columns */
 export type ContributionCountsStddevFields = {
   __typename?: 'ContributionCountsStddevFields';
+  codeReviewCount: Maybe<Scalars['Float']>;
   githubUserId: Maybe<Scalars['Float']>;
-  paidCount: Maybe<Scalars['Float']>;
-  unpaidCount: Maybe<Scalars['Float']>;
+  issueCount: Maybe<Scalars['Float']>;
+  pullRequestCount: Maybe<Scalars['Float']>;
   week: Maybe<Scalars['Float']>;
   year: Maybe<Scalars['Float']>;
 };
@@ -1426,9 +1674,10 @@ export type ContributionCountsStddevFields = {
 /** aggregate stddev_pop on columns */
 export type ContributionCountsStddev_PopFields = {
   __typename?: 'ContributionCountsStddev_popFields';
+  codeReviewCount: Maybe<Scalars['Float']>;
   githubUserId: Maybe<Scalars['Float']>;
-  paidCount: Maybe<Scalars['Float']>;
-  unpaidCount: Maybe<Scalars['Float']>;
+  issueCount: Maybe<Scalars['Float']>;
+  pullRequestCount: Maybe<Scalars['Float']>;
   week: Maybe<Scalars['Float']>;
   year: Maybe<Scalars['Float']>;
 };
@@ -1436,9 +1685,10 @@ export type ContributionCountsStddev_PopFields = {
 /** aggregate stddev_samp on columns */
 export type ContributionCountsStddev_SampFields = {
   __typename?: 'ContributionCountsStddev_sampFields';
+  codeReviewCount: Maybe<Scalars['Float']>;
   githubUserId: Maybe<Scalars['Float']>;
-  paidCount: Maybe<Scalars['Float']>;
-  unpaidCount: Maybe<Scalars['Float']>;
+  issueCount: Maybe<Scalars['Float']>;
+  pullRequestCount: Maybe<Scalars['Float']>;
   week: Maybe<Scalars['Float']>;
   year: Maybe<Scalars['Float']>;
 };
@@ -1446,9 +1696,10 @@ export type ContributionCountsStddev_SampFields = {
 /** aggregate sum on columns */
 export type ContributionCountsSumFields = {
   __typename?: 'ContributionCountsSumFields';
+  codeReviewCount: Maybe<Scalars['bigint']>;
   githubUserId: Maybe<Scalars['bigint']>;
-  paidCount: Maybe<Scalars['bigint']>;
-  unpaidCount: Maybe<Scalars['bigint']>;
+  issueCount: Maybe<Scalars['bigint']>;
+  pullRequestCount: Maybe<Scalars['bigint']>;
   week: Maybe<Scalars['float8']>;
   year: Maybe<Scalars['float8']>;
 };
@@ -1456,9 +1707,10 @@ export type ContributionCountsSumFields = {
 /** aggregate var_pop on columns */
 export type ContributionCountsVar_PopFields = {
   __typename?: 'ContributionCountsVar_popFields';
+  codeReviewCount: Maybe<Scalars['Float']>;
   githubUserId: Maybe<Scalars['Float']>;
-  paidCount: Maybe<Scalars['Float']>;
-  unpaidCount: Maybe<Scalars['Float']>;
+  issueCount: Maybe<Scalars['Float']>;
+  pullRequestCount: Maybe<Scalars['Float']>;
   week: Maybe<Scalars['Float']>;
   year: Maybe<Scalars['Float']>;
 };
@@ -1466,9 +1718,10 @@ export type ContributionCountsVar_PopFields = {
 /** aggregate var_samp on columns */
 export type ContributionCountsVar_SampFields = {
   __typename?: 'ContributionCountsVar_sampFields';
+  codeReviewCount: Maybe<Scalars['Float']>;
   githubUserId: Maybe<Scalars['Float']>;
-  paidCount: Maybe<Scalars['Float']>;
-  unpaidCount: Maybe<Scalars['Float']>;
+  issueCount: Maybe<Scalars['Float']>;
+  pullRequestCount: Maybe<Scalars['Float']>;
   week: Maybe<Scalars['Float']>;
   year: Maybe<Scalars['Float']>;
 };
@@ -1476,9 +1729,10 @@ export type ContributionCountsVar_SampFields = {
 /** aggregate variance on columns */
 export type ContributionCountsVarianceFields = {
   __typename?: 'ContributionCountsVarianceFields';
+  codeReviewCount: Maybe<Scalars['Float']>;
   githubUserId: Maybe<Scalars['Float']>;
-  paidCount: Maybe<Scalars['Float']>;
-  unpaidCount: Maybe<Scalars['Float']>;
+  issueCount: Maybe<Scalars['Float']>;
+  pullRequestCount: Maybe<Scalars['Float']>;
   week: Maybe<Scalars['Float']>;
   year: Maybe<Scalars['Float']>;
 };
@@ -1570,27 +1824,30 @@ export type ContributionCounts_Aggregate_Bool_Exp_Var_Samp = {
 
 /** order by avg() on columns of table "api.contribution_counts" */
 export type ContributionCounts_Avg_Order_By = {
+  codeReviewCount: InputMaybe<OrderBy>;
   githubUserId: InputMaybe<OrderBy>;
-  paidCount: InputMaybe<OrderBy>;
-  unpaidCount: InputMaybe<OrderBy>;
+  issueCount: InputMaybe<OrderBy>;
+  pullRequestCount: InputMaybe<OrderBy>;
   week: InputMaybe<OrderBy>;
   year: InputMaybe<OrderBy>;
 };
 
 /** order by max() on columns of table "api.contribution_counts" */
 export type ContributionCounts_Max_Order_By = {
+  codeReviewCount: InputMaybe<OrderBy>;
   githubUserId: InputMaybe<OrderBy>;
-  paidCount: InputMaybe<OrderBy>;
-  unpaidCount: InputMaybe<OrderBy>;
+  issueCount: InputMaybe<OrderBy>;
+  pullRequestCount: InputMaybe<OrderBy>;
   week: InputMaybe<OrderBy>;
   year: InputMaybe<OrderBy>;
 };
 
 /** order by min() on columns of table "api.contribution_counts" */
 export type ContributionCounts_Min_Order_By = {
+  codeReviewCount: InputMaybe<OrderBy>;
   githubUserId: InputMaybe<OrderBy>;
-  paidCount: InputMaybe<OrderBy>;
-  unpaidCount: InputMaybe<OrderBy>;
+  issueCount: InputMaybe<OrderBy>;
+  pullRequestCount: InputMaybe<OrderBy>;
   week: InputMaybe<OrderBy>;
   year: InputMaybe<OrderBy>;
 };
@@ -1661,27 +1918,30 @@ export enum ContributionCounts_Select_Column_ContributionCounts_Aggregate_Bool_E
 
 /** order by stddev() on columns of table "api.contribution_counts" */
 export type ContributionCounts_Stddev_Order_By = {
+  codeReviewCount: InputMaybe<OrderBy>;
   githubUserId: InputMaybe<OrderBy>;
-  paidCount: InputMaybe<OrderBy>;
-  unpaidCount: InputMaybe<OrderBy>;
+  issueCount: InputMaybe<OrderBy>;
+  pullRequestCount: InputMaybe<OrderBy>;
   week: InputMaybe<OrderBy>;
   year: InputMaybe<OrderBy>;
 };
 
 /** order by stddev_pop() on columns of table "api.contribution_counts" */
 export type ContributionCounts_Stddev_Pop_Order_By = {
+  codeReviewCount: InputMaybe<OrderBy>;
   githubUserId: InputMaybe<OrderBy>;
-  paidCount: InputMaybe<OrderBy>;
-  unpaidCount: InputMaybe<OrderBy>;
+  issueCount: InputMaybe<OrderBy>;
+  pullRequestCount: InputMaybe<OrderBy>;
   week: InputMaybe<OrderBy>;
   year: InputMaybe<OrderBy>;
 };
 
 /** order by stddev_samp() on columns of table "api.contribution_counts" */
 export type ContributionCounts_Stddev_Samp_Order_By = {
+  codeReviewCount: InputMaybe<OrderBy>;
   githubUserId: InputMaybe<OrderBy>;
-  paidCount: InputMaybe<OrderBy>;
-  unpaidCount: InputMaybe<OrderBy>;
+  issueCount: InputMaybe<OrderBy>;
+  pullRequestCount: InputMaybe<OrderBy>;
   week: InputMaybe<OrderBy>;
   year: InputMaybe<OrderBy>;
 };
@@ -1696,45 +1956,50 @@ export type ContributionCounts_StreamCursorInput = {
 
 /** Initial value of the column from where the streaming should start */
 export type ContributionCounts_StreamCursorValueInput = {
+  codeReviewCount: InputMaybe<Scalars['bigint']>;
   githubUserId: InputMaybe<Scalars['bigint']>;
-  paidCount: InputMaybe<Scalars['bigint']>;
-  unpaidCount: InputMaybe<Scalars['bigint']>;
+  issueCount: InputMaybe<Scalars['bigint']>;
+  pullRequestCount: InputMaybe<Scalars['bigint']>;
   week: InputMaybe<Scalars['float8']>;
   year: InputMaybe<Scalars['float8']>;
 };
 
 /** order by sum() on columns of table "api.contribution_counts" */
 export type ContributionCounts_Sum_Order_By = {
+  codeReviewCount: InputMaybe<OrderBy>;
   githubUserId: InputMaybe<OrderBy>;
-  paidCount: InputMaybe<OrderBy>;
-  unpaidCount: InputMaybe<OrderBy>;
+  issueCount: InputMaybe<OrderBy>;
+  pullRequestCount: InputMaybe<OrderBy>;
   week: InputMaybe<OrderBy>;
   year: InputMaybe<OrderBy>;
 };
 
 /** order by var_pop() on columns of table "api.contribution_counts" */
 export type ContributionCounts_Var_Pop_Order_By = {
+  codeReviewCount: InputMaybe<OrderBy>;
   githubUserId: InputMaybe<OrderBy>;
-  paidCount: InputMaybe<OrderBy>;
-  unpaidCount: InputMaybe<OrderBy>;
+  issueCount: InputMaybe<OrderBy>;
+  pullRequestCount: InputMaybe<OrderBy>;
   week: InputMaybe<OrderBy>;
   year: InputMaybe<OrderBy>;
 };
 
 /** order by var_samp() on columns of table "api.contribution_counts" */
 export type ContributionCounts_Var_Samp_Order_By = {
+  codeReviewCount: InputMaybe<OrderBy>;
   githubUserId: InputMaybe<OrderBy>;
-  paidCount: InputMaybe<OrderBy>;
-  unpaidCount: InputMaybe<OrderBy>;
+  issueCount: InputMaybe<OrderBy>;
+  pullRequestCount: InputMaybe<OrderBy>;
   week: InputMaybe<OrderBy>;
   year: InputMaybe<OrderBy>;
 };
 
 /** order by variance() on columns of table "api.contribution_counts" */
 export type ContributionCounts_Variance_Order_By = {
+  codeReviewCount: InputMaybe<OrderBy>;
   githubUserId: InputMaybe<OrderBy>;
-  paidCount: InputMaybe<OrderBy>;
-  unpaidCount: InputMaybe<OrderBy>;
+  issueCount: InputMaybe<OrderBy>;
+  pullRequestCount: InputMaybe<OrderBy>;
   week: InputMaybe<OrderBy>;
   year: InputMaybe<OrderBy>;
 };
@@ -1742,14 +2007,14 @@ export type ContributionCounts_Variance_Order_By = {
 /** columns and relationships of "api.contribution_stats" */
 export type ContributionStats = {
   __typename?: 'ContributionStats';
+  codeReviewCount: Maybe<Scalars['bigint']>;
   githubUserId: Maybe<Scalars['bigint']>;
+  issueCount: Maybe<Scalars['bigint']>;
   maxDate: Maybe<Scalars['timestamp']>;
   minDate: Maybe<Scalars['timestamp']>;
-  paidCount: Maybe<Scalars['bigint']>;
   projectId: Maybe<Scalars['uuid']>;
+  pullRequestCount: Maybe<Scalars['bigint']>;
   totalCount: Maybe<Scalars['bigint']>;
-  unpaidCount: Maybe<Scalars['bigint']>;
-  unpaidUnignoredCount: Maybe<Scalars['bigint']>;
 };
 
 /** aggregated selection of "api.contribution_stats" */
@@ -1805,11 +2070,11 @@ export type ContributionStatsArrRelInsertInput = {
 /** aggregate avg on columns */
 export type ContributionStatsAvgFields = {
   __typename?: 'ContributionStatsAvgFields';
+  codeReviewCount: Maybe<Scalars['Float']>;
   githubUserId: Maybe<Scalars['Float']>;
-  paidCount: Maybe<Scalars['Float']>;
+  issueCount: Maybe<Scalars['Float']>;
+  pullRequestCount: Maybe<Scalars['Float']>;
   totalCount: Maybe<Scalars['Float']>;
-  unpaidCount: Maybe<Scalars['Float']>;
-  unpaidUnignoredCount: Maybe<Scalars['Float']>;
 };
 
 /** Boolean expression to filter rows from the table "api.contribution_stats". All fields are combined with a logical 'AND'. */
@@ -1817,154 +2082,154 @@ export type ContributionStatsBoolExp = {
   _and: InputMaybe<Array<ContributionStatsBoolExp>>;
   _not: InputMaybe<ContributionStatsBoolExp>;
   _or: InputMaybe<Array<ContributionStatsBoolExp>>;
+  codeReviewCount: InputMaybe<BigintComparisonExp>;
   githubUserId: InputMaybe<BigintComparisonExp>;
+  issueCount: InputMaybe<BigintComparisonExp>;
   maxDate: InputMaybe<TimestampComparisonExp>;
   minDate: InputMaybe<TimestampComparisonExp>;
-  paidCount: InputMaybe<BigintComparisonExp>;
   projectId: InputMaybe<UuidComparisonExp>;
+  pullRequestCount: InputMaybe<BigintComparisonExp>;
   totalCount: InputMaybe<BigintComparisonExp>;
-  unpaidCount: InputMaybe<BigintComparisonExp>;
-  unpaidUnignoredCount: InputMaybe<BigintComparisonExp>;
 };
 
 /** input type for inserting data into table "api.contribution_stats" */
 export type ContributionStatsInsertInput = {
+  codeReviewCount: InputMaybe<Scalars['bigint']>;
   githubUserId: InputMaybe<Scalars['bigint']>;
+  issueCount: InputMaybe<Scalars['bigint']>;
   maxDate: InputMaybe<Scalars['timestamp']>;
   minDate: InputMaybe<Scalars['timestamp']>;
-  paidCount: InputMaybe<Scalars['bigint']>;
   projectId: InputMaybe<Scalars['uuid']>;
+  pullRequestCount: InputMaybe<Scalars['bigint']>;
   totalCount: InputMaybe<Scalars['bigint']>;
-  unpaidCount: InputMaybe<Scalars['bigint']>;
-  unpaidUnignoredCount: InputMaybe<Scalars['bigint']>;
 };
 
 /** aggregate max on columns */
 export type ContributionStatsMaxFields = {
   __typename?: 'ContributionStatsMaxFields';
+  codeReviewCount: Maybe<Scalars['bigint']>;
   githubUserId: Maybe<Scalars['bigint']>;
+  issueCount: Maybe<Scalars['bigint']>;
   maxDate: Maybe<Scalars['timestamp']>;
   minDate: Maybe<Scalars['timestamp']>;
-  paidCount: Maybe<Scalars['bigint']>;
   projectId: Maybe<Scalars['uuid']>;
+  pullRequestCount: Maybe<Scalars['bigint']>;
   totalCount: Maybe<Scalars['bigint']>;
-  unpaidCount: Maybe<Scalars['bigint']>;
-  unpaidUnignoredCount: Maybe<Scalars['bigint']>;
 };
 
 /** aggregate min on columns */
 export type ContributionStatsMinFields = {
   __typename?: 'ContributionStatsMinFields';
+  codeReviewCount: Maybe<Scalars['bigint']>;
   githubUserId: Maybe<Scalars['bigint']>;
+  issueCount: Maybe<Scalars['bigint']>;
   maxDate: Maybe<Scalars['timestamp']>;
   minDate: Maybe<Scalars['timestamp']>;
-  paidCount: Maybe<Scalars['bigint']>;
   projectId: Maybe<Scalars['uuid']>;
+  pullRequestCount: Maybe<Scalars['bigint']>;
   totalCount: Maybe<Scalars['bigint']>;
-  unpaidCount: Maybe<Scalars['bigint']>;
-  unpaidUnignoredCount: Maybe<Scalars['bigint']>;
 };
 
 /** Ordering options when selecting data from "api.contribution_stats". */
 export type ContributionStatsOrderBy = {
+  codeReviewCount: InputMaybe<OrderBy>;
   githubUserId: InputMaybe<OrderBy>;
+  issueCount: InputMaybe<OrderBy>;
   maxDate: InputMaybe<OrderBy>;
   minDate: InputMaybe<OrderBy>;
-  paidCount: InputMaybe<OrderBy>;
   projectId: InputMaybe<OrderBy>;
+  pullRequestCount: InputMaybe<OrderBy>;
   totalCount: InputMaybe<OrderBy>;
-  unpaidCount: InputMaybe<OrderBy>;
-  unpaidUnignoredCount: InputMaybe<OrderBy>;
 };
 
 /** select columns of table "api.contribution_stats" */
 export enum ContributionStatsSelectColumn {
   /** column name */
+  CodeReviewCount = 'codeReviewCount',
+  /** column name */
   GithubUserId = 'githubUserId',
+  /** column name */
+  IssueCount = 'issueCount',
   /** column name */
   MaxDate = 'maxDate',
   /** column name */
   MinDate = 'minDate',
   /** column name */
-  PaidCount = 'paidCount',
-  /** column name */
   ProjectId = 'projectId',
   /** column name */
-  TotalCount = 'totalCount',
+  PullRequestCount = 'pullRequestCount',
   /** column name */
-  UnpaidCount = 'unpaidCount',
-  /** column name */
-  UnpaidUnignoredCount = 'unpaidUnignoredCount'
+  TotalCount = 'totalCount'
 }
 
 /** aggregate stddev on columns */
 export type ContributionStatsStddevFields = {
   __typename?: 'ContributionStatsStddevFields';
+  codeReviewCount: Maybe<Scalars['Float']>;
   githubUserId: Maybe<Scalars['Float']>;
-  paidCount: Maybe<Scalars['Float']>;
+  issueCount: Maybe<Scalars['Float']>;
+  pullRequestCount: Maybe<Scalars['Float']>;
   totalCount: Maybe<Scalars['Float']>;
-  unpaidCount: Maybe<Scalars['Float']>;
-  unpaidUnignoredCount: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_pop on columns */
 export type ContributionStatsStddev_PopFields = {
   __typename?: 'ContributionStatsStddev_popFields';
+  codeReviewCount: Maybe<Scalars['Float']>;
   githubUserId: Maybe<Scalars['Float']>;
-  paidCount: Maybe<Scalars['Float']>;
+  issueCount: Maybe<Scalars['Float']>;
+  pullRequestCount: Maybe<Scalars['Float']>;
   totalCount: Maybe<Scalars['Float']>;
-  unpaidCount: Maybe<Scalars['Float']>;
-  unpaidUnignoredCount: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_samp on columns */
 export type ContributionStatsStddev_SampFields = {
   __typename?: 'ContributionStatsStddev_sampFields';
+  codeReviewCount: Maybe<Scalars['Float']>;
   githubUserId: Maybe<Scalars['Float']>;
-  paidCount: Maybe<Scalars['Float']>;
+  issueCount: Maybe<Scalars['Float']>;
+  pullRequestCount: Maybe<Scalars['Float']>;
   totalCount: Maybe<Scalars['Float']>;
-  unpaidCount: Maybe<Scalars['Float']>;
-  unpaidUnignoredCount: Maybe<Scalars['Float']>;
 };
 
 /** aggregate sum on columns */
 export type ContributionStatsSumFields = {
   __typename?: 'ContributionStatsSumFields';
+  codeReviewCount: Maybe<Scalars['bigint']>;
   githubUserId: Maybe<Scalars['bigint']>;
-  paidCount: Maybe<Scalars['bigint']>;
+  issueCount: Maybe<Scalars['bigint']>;
+  pullRequestCount: Maybe<Scalars['bigint']>;
   totalCount: Maybe<Scalars['bigint']>;
-  unpaidCount: Maybe<Scalars['bigint']>;
-  unpaidUnignoredCount: Maybe<Scalars['bigint']>;
 };
 
 /** aggregate var_pop on columns */
 export type ContributionStatsVar_PopFields = {
   __typename?: 'ContributionStatsVar_popFields';
+  codeReviewCount: Maybe<Scalars['Float']>;
   githubUserId: Maybe<Scalars['Float']>;
-  paidCount: Maybe<Scalars['Float']>;
+  issueCount: Maybe<Scalars['Float']>;
+  pullRequestCount: Maybe<Scalars['Float']>;
   totalCount: Maybe<Scalars['Float']>;
-  unpaidCount: Maybe<Scalars['Float']>;
-  unpaidUnignoredCount: Maybe<Scalars['Float']>;
 };
 
 /** aggregate var_samp on columns */
 export type ContributionStatsVar_SampFields = {
   __typename?: 'ContributionStatsVar_sampFields';
+  codeReviewCount: Maybe<Scalars['Float']>;
   githubUserId: Maybe<Scalars['Float']>;
-  paidCount: Maybe<Scalars['Float']>;
+  issueCount: Maybe<Scalars['Float']>;
+  pullRequestCount: Maybe<Scalars['Float']>;
   totalCount: Maybe<Scalars['Float']>;
-  unpaidCount: Maybe<Scalars['Float']>;
-  unpaidUnignoredCount: Maybe<Scalars['Float']>;
 };
 
 /** aggregate variance on columns */
 export type ContributionStatsVarianceFields = {
   __typename?: 'ContributionStatsVarianceFields';
+  codeReviewCount: Maybe<Scalars['Float']>;
   githubUserId: Maybe<Scalars['Float']>;
-  paidCount: Maybe<Scalars['Float']>;
+  issueCount: Maybe<Scalars['Float']>;
+  pullRequestCount: Maybe<Scalars['Float']>;
   totalCount: Maybe<Scalars['Float']>;
-  unpaidCount: Maybe<Scalars['Float']>;
-  unpaidUnignoredCount: Maybe<Scalars['Float']>;
 };
 
 export type ContributionStats_Aggregate_Bool_Exp = {
@@ -1980,62 +2245,62 @@ export type ContributionStats_Aggregate_Bool_Exp_Count = {
 
 /** order by avg() on columns of table "api.contribution_stats" */
 export type ContributionStats_Avg_Order_By = {
+  codeReviewCount: InputMaybe<OrderBy>;
   githubUserId: InputMaybe<OrderBy>;
-  paidCount: InputMaybe<OrderBy>;
+  issueCount: InputMaybe<OrderBy>;
+  pullRequestCount: InputMaybe<OrderBy>;
   totalCount: InputMaybe<OrderBy>;
-  unpaidCount: InputMaybe<OrderBy>;
-  unpaidUnignoredCount: InputMaybe<OrderBy>;
 };
 
 /** order by max() on columns of table "api.contribution_stats" */
 export type ContributionStats_Max_Order_By = {
+  codeReviewCount: InputMaybe<OrderBy>;
   githubUserId: InputMaybe<OrderBy>;
+  issueCount: InputMaybe<OrderBy>;
   maxDate: InputMaybe<OrderBy>;
   minDate: InputMaybe<OrderBy>;
-  paidCount: InputMaybe<OrderBy>;
   projectId: InputMaybe<OrderBy>;
+  pullRequestCount: InputMaybe<OrderBy>;
   totalCount: InputMaybe<OrderBy>;
-  unpaidCount: InputMaybe<OrderBy>;
-  unpaidUnignoredCount: InputMaybe<OrderBy>;
 };
 
 /** order by min() on columns of table "api.contribution_stats" */
 export type ContributionStats_Min_Order_By = {
+  codeReviewCount: InputMaybe<OrderBy>;
   githubUserId: InputMaybe<OrderBy>;
+  issueCount: InputMaybe<OrderBy>;
   maxDate: InputMaybe<OrderBy>;
   minDate: InputMaybe<OrderBy>;
-  paidCount: InputMaybe<OrderBy>;
   projectId: InputMaybe<OrderBy>;
+  pullRequestCount: InputMaybe<OrderBy>;
   totalCount: InputMaybe<OrderBy>;
-  unpaidCount: InputMaybe<OrderBy>;
-  unpaidUnignoredCount: InputMaybe<OrderBy>;
 };
 
 /** order by stddev() on columns of table "api.contribution_stats" */
 export type ContributionStats_Stddev_Order_By = {
+  codeReviewCount: InputMaybe<OrderBy>;
   githubUserId: InputMaybe<OrderBy>;
-  paidCount: InputMaybe<OrderBy>;
+  issueCount: InputMaybe<OrderBy>;
+  pullRequestCount: InputMaybe<OrderBy>;
   totalCount: InputMaybe<OrderBy>;
-  unpaidCount: InputMaybe<OrderBy>;
-  unpaidUnignoredCount: InputMaybe<OrderBy>;
 };
 
 /** order by stddev_pop() on columns of table "api.contribution_stats" */
 export type ContributionStats_Stddev_Pop_Order_By = {
+  codeReviewCount: InputMaybe<OrderBy>;
   githubUserId: InputMaybe<OrderBy>;
-  paidCount: InputMaybe<OrderBy>;
+  issueCount: InputMaybe<OrderBy>;
+  pullRequestCount: InputMaybe<OrderBy>;
   totalCount: InputMaybe<OrderBy>;
-  unpaidCount: InputMaybe<OrderBy>;
-  unpaidUnignoredCount: InputMaybe<OrderBy>;
 };
 
 /** order by stddev_samp() on columns of table "api.contribution_stats" */
 export type ContributionStats_Stddev_Samp_Order_By = {
+  codeReviewCount: InputMaybe<OrderBy>;
   githubUserId: InputMaybe<OrderBy>;
-  paidCount: InputMaybe<OrderBy>;
+  issueCount: InputMaybe<OrderBy>;
+  pullRequestCount: InputMaybe<OrderBy>;
   totalCount: InputMaybe<OrderBy>;
-  unpaidCount: InputMaybe<OrderBy>;
-  unpaidUnignoredCount: InputMaybe<OrderBy>;
 };
 
 /** Streaming cursor of the table "ContributionStats" */
@@ -2048,62 +2313,122 @@ export type ContributionStats_StreamCursorInput = {
 
 /** Initial value of the column from where the streaming should start */
 export type ContributionStats_StreamCursorValueInput = {
+  codeReviewCount: InputMaybe<Scalars['bigint']>;
   githubUserId: InputMaybe<Scalars['bigint']>;
+  issueCount: InputMaybe<Scalars['bigint']>;
   maxDate: InputMaybe<Scalars['timestamp']>;
   minDate: InputMaybe<Scalars['timestamp']>;
-  paidCount: InputMaybe<Scalars['bigint']>;
   projectId: InputMaybe<Scalars['uuid']>;
+  pullRequestCount: InputMaybe<Scalars['bigint']>;
   totalCount: InputMaybe<Scalars['bigint']>;
-  unpaidCount: InputMaybe<Scalars['bigint']>;
-  unpaidUnignoredCount: InputMaybe<Scalars['bigint']>;
 };
 
 /** order by sum() on columns of table "api.contribution_stats" */
 export type ContributionStats_Sum_Order_By = {
+  codeReviewCount: InputMaybe<OrderBy>;
   githubUserId: InputMaybe<OrderBy>;
-  paidCount: InputMaybe<OrderBy>;
+  issueCount: InputMaybe<OrderBy>;
+  pullRequestCount: InputMaybe<OrderBy>;
   totalCount: InputMaybe<OrderBy>;
-  unpaidCount: InputMaybe<OrderBy>;
-  unpaidUnignoredCount: InputMaybe<OrderBy>;
 };
 
 /** order by var_pop() on columns of table "api.contribution_stats" */
 export type ContributionStats_Var_Pop_Order_By = {
+  codeReviewCount: InputMaybe<OrderBy>;
   githubUserId: InputMaybe<OrderBy>;
-  paidCount: InputMaybe<OrderBy>;
+  issueCount: InputMaybe<OrderBy>;
+  pullRequestCount: InputMaybe<OrderBy>;
   totalCount: InputMaybe<OrderBy>;
-  unpaidCount: InputMaybe<OrderBy>;
-  unpaidUnignoredCount: InputMaybe<OrderBy>;
 };
 
 /** order by var_samp() on columns of table "api.contribution_stats" */
 export type ContributionStats_Var_Samp_Order_By = {
+  codeReviewCount: InputMaybe<OrderBy>;
   githubUserId: InputMaybe<OrderBy>;
-  paidCount: InputMaybe<OrderBy>;
+  issueCount: InputMaybe<OrderBy>;
+  pullRequestCount: InputMaybe<OrderBy>;
   totalCount: InputMaybe<OrderBy>;
-  unpaidCount: InputMaybe<OrderBy>;
-  unpaidUnignoredCount: InputMaybe<OrderBy>;
 };
 
 /** order by variance() on columns of table "api.contribution_stats" */
 export type ContributionStats_Variance_Order_By = {
+  codeReviewCount: InputMaybe<OrderBy>;
   githubUserId: InputMaybe<OrderBy>;
-  paidCount: InputMaybe<OrderBy>;
+  issueCount: InputMaybe<OrderBy>;
+  pullRequestCount: InputMaybe<OrderBy>;
   totalCount: InputMaybe<OrderBy>;
-  unpaidCount: InputMaybe<OrderBy>;
-  unpaidUnignoredCount: InputMaybe<OrderBy>;
+};
+
+/** Boolean expression to compare columns of type "contribution_status". All fields are combined with logical 'AND'. */
+export type ContributionStatusComparisonExp = {
+  _eq: InputMaybe<Scalars['contribution_status']>;
+  _gt: InputMaybe<Scalars['contribution_status']>;
+  _gte: InputMaybe<Scalars['contribution_status']>;
+  _in: InputMaybe<Array<Scalars['contribution_status']>>;
+  _isNull: InputMaybe<Scalars['Boolean']>;
+  _lt: InputMaybe<Scalars['contribution_status']>;
+  _lte: InputMaybe<Scalars['contribution_status']>;
+  _neq: InputMaybe<Scalars['contribution_status']>;
+  _nin: InputMaybe<Array<Scalars['contribution_status']>>;
+};
+
+/** Boolean expression to compare columns of type "contribution_type". All fields are combined with logical 'AND'. */
+export type ContributionTypeComparisonExp = {
+  _eq: InputMaybe<Scalars['contribution_type']>;
+  _gt: InputMaybe<Scalars['contribution_type']>;
+  _gte: InputMaybe<Scalars['contribution_type']>;
+  _in: InputMaybe<Array<Scalars['contribution_type']>>;
+  _isNull: InputMaybe<Scalars['Boolean']>;
+  _lt: InputMaybe<Scalars['contribution_type']>;
+  _lte: InputMaybe<Scalars['contribution_type']>;
+  _neq: InputMaybe<Scalars['contribution_type']>;
+  _nin: InputMaybe<Array<Scalars['contribution_type']>>;
 };
 
 /** columns and relationships of "api.contributions" */
 export type Contributions = {
   __typename?: 'Contributions';
+  closedAt: Maybe<Scalars['timestamp']>;
   createdAt: Maybe<Scalars['timestamp']>;
+  detailsId: Maybe<Scalars['String']>;
+  githubCodeReviewId: Maybe<Scalars['String']>;
+  /** An object relationship */
+  githubIssue: Maybe<GithubIssues>;
   githubIssueId: Maybe<Scalars['bigint']>;
+  /** An object relationship */
+  githubPullRequest: Maybe<GithubPullRequests>;
+  githubPullRequestId: Maybe<Scalars['bigint']>;
   githubUserId: Maybe<Scalars['bigint']>;
+  id: Maybe<Scalars['String']>;
   ignored: Maybe<Scalars['Boolean']>;
-  issueNumber: Maybe<Scalars['bigint']>;
   projectId: Maybe<Scalars['uuid']>;
   repoId: Maybe<Scalars['bigint']>;
+  /** An array relationship */
+  rewardItems: Array<WorkItems>;
+  /** An aggregate relationship */
+  rewardItemsAggregate: WorkItemsAggregate;
+  status: Maybe<Scalars['contribution_status']>;
+  type: Maybe<Scalars['String']>;
+};
+
+
+/** columns and relationships of "api.contributions" */
+export type ContributionsRewardItemsArgs = {
+  distinctOn: InputMaybe<Array<WorkItemsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<WorkItemsOrderBy>>;
+  where: InputMaybe<WorkItemsBoolExp>;
+};
+
+
+/** columns and relationships of "api.contributions" */
+export type ContributionsRewardItemsAggregateArgs = {
+  distinctOn: InputMaybe<Array<WorkItemsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<WorkItemsOrderBy>>;
+  where: InputMaybe<WorkItemsBoolExp>;
 };
 
 /** aggregated selection of "api.contributions" */
@@ -2160,8 +2485,8 @@ export type ContributionsArrRelInsertInput = {
 export type ContributionsAvgFields = {
   __typename?: 'ContributionsAvgFields';
   githubIssueId: Maybe<Scalars['Float']>;
+  githubPullRequestId: Maybe<Scalars['Float']>;
   githubUserId: Maybe<Scalars['Float']>;
-  issueNumber: Maybe<Scalars['Float']>;
   repoId: Maybe<Scalars['Float']>;
 };
 
@@ -2170,83 +2495,135 @@ export type ContributionsBoolExp = {
   _and: InputMaybe<Array<ContributionsBoolExp>>;
   _not: InputMaybe<ContributionsBoolExp>;
   _or: InputMaybe<Array<ContributionsBoolExp>>;
+  closedAt: InputMaybe<TimestampComparisonExp>;
   createdAt: InputMaybe<TimestampComparisonExp>;
+  detailsId: InputMaybe<StringComparisonExp>;
+  githubCodeReviewId: InputMaybe<StringComparisonExp>;
+  githubIssue: InputMaybe<GithubIssuesBoolExp>;
   githubIssueId: InputMaybe<BigintComparisonExp>;
+  githubPullRequest: InputMaybe<GithubPullRequestsBoolExp>;
+  githubPullRequestId: InputMaybe<BigintComparisonExp>;
   githubUserId: InputMaybe<BigintComparisonExp>;
+  id: InputMaybe<StringComparisonExp>;
   ignored: InputMaybe<BooleanComparisonExp>;
-  issueNumber: InputMaybe<BigintComparisonExp>;
   projectId: InputMaybe<UuidComparisonExp>;
   repoId: InputMaybe<BigintComparisonExp>;
+  rewardItems: InputMaybe<WorkItemsBoolExp>;
+  rewardItems_aggregate: InputMaybe<WorkItems_Aggregate_Bool_Exp>;
+  status: InputMaybe<ContributionStatusComparisonExp>;
+  type: InputMaybe<StringComparisonExp>;
 };
 
 /** input type for inserting data into table "api.contributions" */
 export type ContributionsInsertInput = {
+  closedAt: InputMaybe<Scalars['timestamp']>;
   createdAt: InputMaybe<Scalars['timestamp']>;
+  detailsId: InputMaybe<Scalars['String']>;
+  githubCodeReviewId: InputMaybe<Scalars['String']>;
+  githubIssue: InputMaybe<GithubIssuesObjRelInsertInput>;
   githubIssueId: InputMaybe<Scalars['bigint']>;
+  githubPullRequest: InputMaybe<GithubPullRequestsObjRelInsertInput>;
+  githubPullRequestId: InputMaybe<Scalars['bigint']>;
   githubUserId: InputMaybe<Scalars['bigint']>;
+  id: InputMaybe<Scalars['String']>;
   ignored: InputMaybe<Scalars['Boolean']>;
-  issueNumber: InputMaybe<Scalars['bigint']>;
   projectId: InputMaybe<Scalars['uuid']>;
   repoId: InputMaybe<Scalars['bigint']>;
+  rewardItems: InputMaybe<WorkItemsArrRelInsertInput>;
+  status: InputMaybe<Scalars['contribution_status']>;
+  type: InputMaybe<Scalars['String']>;
 };
 
 /** aggregate max on columns */
 export type ContributionsMaxFields = {
   __typename?: 'ContributionsMaxFields';
+  closedAt: Maybe<Scalars['timestamp']>;
   createdAt: Maybe<Scalars['timestamp']>;
+  detailsId: Maybe<Scalars['String']>;
+  githubCodeReviewId: Maybe<Scalars['String']>;
   githubIssueId: Maybe<Scalars['bigint']>;
+  githubPullRequestId: Maybe<Scalars['bigint']>;
   githubUserId: Maybe<Scalars['bigint']>;
-  issueNumber: Maybe<Scalars['bigint']>;
+  id: Maybe<Scalars['String']>;
   projectId: Maybe<Scalars['uuid']>;
   repoId: Maybe<Scalars['bigint']>;
+  status: Maybe<Scalars['contribution_status']>;
+  type: Maybe<Scalars['String']>;
 };
 
 /** aggregate min on columns */
 export type ContributionsMinFields = {
   __typename?: 'ContributionsMinFields';
+  closedAt: Maybe<Scalars['timestamp']>;
   createdAt: Maybe<Scalars['timestamp']>;
+  detailsId: Maybe<Scalars['String']>;
+  githubCodeReviewId: Maybe<Scalars['String']>;
   githubIssueId: Maybe<Scalars['bigint']>;
+  githubPullRequestId: Maybe<Scalars['bigint']>;
   githubUserId: Maybe<Scalars['bigint']>;
-  issueNumber: Maybe<Scalars['bigint']>;
+  id: Maybe<Scalars['String']>;
   projectId: Maybe<Scalars['uuid']>;
   repoId: Maybe<Scalars['bigint']>;
+  status: Maybe<Scalars['contribution_status']>;
+  type: Maybe<Scalars['String']>;
 };
 
 /** Ordering options when selecting data from "api.contributions". */
 export type ContributionsOrderBy = {
+  closedAt: InputMaybe<OrderBy>;
   createdAt: InputMaybe<OrderBy>;
+  detailsId: InputMaybe<OrderBy>;
+  githubCodeReviewId: InputMaybe<OrderBy>;
+  githubIssue: InputMaybe<GithubIssuesOrderBy>;
   githubIssueId: InputMaybe<OrderBy>;
+  githubPullRequest: InputMaybe<GithubPullRequestsOrderBy>;
+  githubPullRequestId: InputMaybe<OrderBy>;
   githubUserId: InputMaybe<OrderBy>;
+  id: InputMaybe<OrderBy>;
   ignored: InputMaybe<OrderBy>;
-  issueNumber: InputMaybe<OrderBy>;
   projectId: InputMaybe<OrderBy>;
   repoId: InputMaybe<OrderBy>;
+  rewardItemsAggregate: InputMaybe<WorkItemsAggregateOrderBy>;
+  status: InputMaybe<OrderBy>;
+  type: InputMaybe<OrderBy>;
 };
 
 /** select columns of table "api.contributions" */
 export enum ContributionsSelectColumn {
   /** column name */
+  ClosedAt = 'closedAt',
+  /** column name */
   CreatedAt = 'createdAt',
+  /** column name */
+  DetailsId = 'detailsId',
+  /** column name */
+  GithubCodeReviewId = 'githubCodeReviewId',
   /** column name */
   GithubIssueId = 'githubIssueId',
   /** column name */
+  GithubPullRequestId = 'githubPullRequestId',
+  /** column name */
   GithubUserId = 'githubUserId',
+  /** column name */
+  Id = 'id',
   /** column name */
   Ignored = 'ignored',
   /** column name */
-  IssueNumber = 'issueNumber',
-  /** column name */
   ProjectId = 'projectId',
   /** column name */
-  RepoId = 'repoId'
+  RepoId = 'repoId',
+  /** column name */
+  Status = 'status',
+  /** column name */
+  Type = 'type'
 }
 
 /** aggregate stddev on columns */
 export type ContributionsStddevFields = {
   __typename?: 'ContributionsStddevFields';
   githubIssueId: Maybe<Scalars['Float']>;
+  githubPullRequestId: Maybe<Scalars['Float']>;
   githubUserId: Maybe<Scalars['Float']>;
-  issueNumber: Maybe<Scalars['Float']>;
   repoId: Maybe<Scalars['Float']>;
 };
 
@@ -2254,8 +2631,8 @@ export type ContributionsStddevFields = {
 export type ContributionsStddev_PopFields = {
   __typename?: 'ContributionsStddev_popFields';
   githubIssueId: Maybe<Scalars['Float']>;
+  githubPullRequestId: Maybe<Scalars['Float']>;
   githubUserId: Maybe<Scalars['Float']>;
-  issueNumber: Maybe<Scalars['Float']>;
   repoId: Maybe<Scalars['Float']>;
 };
 
@@ -2263,8 +2640,8 @@ export type ContributionsStddev_PopFields = {
 export type ContributionsStddev_SampFields = {
   __typename?: 'ContributionsStddev_sampFields';
   githubIssueId: Maybe<Scalars['Float']>;
+  githubPullRequestId: Maybe<Scalars['Float']>;
   githubUserId: Maybe<Scalars['Float']>;
-  issueNumber: Maybe<Scalars['Float']>;
   repoId: Maybe<Scalars['Float']>;
 };
 
@@ -2272,8 +2649,8 @@ export type ContributionsStddev_SampFields = {
 export type ContributionsSumFields = {
   __typename?: 'ContributionsSumFields';
   githubIssueId: Maybe<Scalars['bigint']>;
+  githubPullRequestId: Maybe<Scalars['bigint']>;
   githubUserId: Maybe<Scalars['bigint']>;
-  issueNumber: Maybe<Scalars['bigint']>;
   repoId: Maybe<Scalars['bigint']>;
 };
 
@@ -2281,8 +2658,8 @@ export type ContributionsSumFields = {
 export type ContributionsVar_PopFields = {
   __typename?: 'ContributionsVar_popFields';
   githubIssueId: Maybe<Scalars['Float']>;
+  githubPullRequestId: Maybe<Scalars['Float']>;
   githubUserId: Maybe<Scalars['Float']>;
-  issueNumber: Maybe<Scalars['Float']>;
   repoId: Maybe<Scalars['Float']>;
 };
 
@@ -2290,8 +2667,8 @@ export type ContributionsVar_PopFields = {
 export type ContributionsVar_SampFields = {
   __typename?: 'ContributionsVar_sampFields';
   githubIssueId: Maybe<Scalars['Float']>;
+  githubPullRequestId: Maybe<Scalars['Float']>;
   githubUserId: Maybe<Scalars['Float']>;
-  issueNumber: Maybe<Scalars['Float']>;
   repoId: Maybe<Scalars['Float']>;
 };
 
@@ -2299,8 +2676,8 @@ export type ContributionsVar_SampFields = {
 export type ContributionsVarianceFields = {
   __typename?: 'ContributionsVarianceFields';
   githubIssueId: Maybe<Scalars['Float']>;
+  githubPullRequestId: Maybe<Scalars['Float']>;
   githubUserId: Maybe<Scalars['Float']>;
-  issueNumber: Maybe<Scalars['Float']>;
   repoId: Maybe<Scalars['Float']>;
 };
 
@@ -2334,29 +2711,41 @@ export type Contributions_Aggregate_Bool_Exp_Count = {
 /** order by avg() on columns of table "api.contributions" */
 export type Contributions_Avg_Order_By = {
   githubIssueId: InputMaybe<OrderBy>;
+  githubPullRequestId: InputMaybe<OrderBy>;
   githubUserId: InputMaybe<OrderBy>;
-  issueNumber: InputMaybe<OrderBy>;
   repoId: InputMaybe<OrderBy>;
 };
 
 /** order by max() on columns of table "api.contributions" */
 export type Contributions_Max_Order_By = {
+  closedAt: InputMaybe<OrderBy>;
   createdAt: InputMaybe<OrderBy>;
+  detailsId: InputMaybe<OrderBy>;
+  githubCodeReviewId: InputMaybe<OrderBy>;
   githubIssueId: InputMaybe<OrderBy>;
+  githubPullRequestId: InputMaybe<OrderBy>;
   githubUserId: InputMaybe<OrderBy>;
-  issueNumber: InputMaybe<OrderBy>;
+  id: InputMaybe<OrderBy>;
   projectId: InputMaybe<OrderBy>;
   repoId: InputMaybe<OrderBy>;
+  status: InputMaybe<OrderBy>;
+  type: InputMaybe<OrderBy>;
 };
 
 /** order by min() on columns of table "api.contributions" */
 export type Contributions_Min_Order_By = {
+  closedAt: InputMaybe<OrderBy>;
   createdAt: InputMaybe<OrderBy>;
+  detailsId: InputMaybe<OrderBy>;
+  githubCodeReviewId: InputMaybe<OrderBy>;
   githubIssueId: InputMaybe<OrderBy>;
+  githubPullRequestId: InputMaybe<OrderBy>;
   githubUserId: InputMaybe<OrderBy>;
-  issueNumber: InputMaybe<OrderBy>;
+  id: InputMaybe<OrderBy>;
   projectId: InputMaybe<OrderBy>;
   repoId: InputMaybe<OrderBy>;
+  status: InputMaybe<OrderBy>;
+  type: InputMaybe<OrderBy>;
 };
 
 /** select "Contributions_aggregate_bool_exp_bool_and_arguments_columns" columns of table "api.contributions" */
@@ -2374,24 +2763,24 @@ export enum Contributions_Select_Column_Contributions_Aggregate_Bool_Exp_Bool_Or
 /** order by stddev() on columns of table "api.contributions" */
 export type Contributions_Stddev_Order_By = {
   githubIssueId: InputMaybe<OrderBy>;
+  githubPullRequestId: InputMaybe<OrderBy>;
   githubUserId: InputMaybe<OrderBy>;
-  issueNumber: InputMaybe<OrderBy>;
   repoId: InputMaybe<OrderBy>;
 };
 
 /** order by stddev_pop() on columns of table "api.contributions" */
 export type Contributions_Stddev_Pop_Order_By = {
   githubIssueId: InputMaybe<OrderBy>;
+  githubPullRequestId: InputMaybe<OrderBy>;
   githubUserId: InputMaybe<OrderBy>;
-  issueNumber: InputMaybe<OrderBy>;
   repoId: InputMaybe<OrderBy>;
 };
 
 /** order by stddev_samp() on columns of table "api.contributions" */
 export type Contributions_Stddev_Samp_Order_By = {
   githubIssueId: InputMaybe<OrderBy>;
+  githubPullRequestId: InputMaybe<OrderBy>;
   githubUserId: InputMaybe<OrderBy>;
-  issueNumber: InputMaybe<OrderBy>;
   repoId: InputMaybe<OrderBy>;
 };
 
@@ -2405,44 +2794,50 @@ export type Contributions_StreamCursorInput = {
 
 /** Initial value of the column from where the streaming should start */
 export type Contributions_StreamCursorValueInput = {
+  closedAt: InputMaybe<Scalars['timestamp']>;
   createdAt: InputMaybe<Scalars['timestamp']>;
+  detailsId: InputMaybe<Scalars['String']>;
+  githubCodeReviewId: InputMaybe<Scalars['String']>;
   githubIssueId: InputMaybe<Scalars['bigint']>;
+  githubPullRequestId: InputMaybe<Scalars['bigint']>;
   githubUserId: InputMaybe<Scalars['bigint']>;
+  id: InputMaybe<Scalars['String']>;
   ignored: InputMaybe<Scalars['Boolean']>;
-  issueNumber: InputMaybe<Scalars['bigint']>;
   projectId: InputMaybe<Scalars['uuid']>;
   repoId: InputMaybe<Scalars['bigint']>;
+  status: InputMaybe<Scalars['contribution_status']>;
+  type: InputMaybe<Scalars['String']>;
 };
 
 /** order by sum() on columns of table "api.contributions" */
 export type Contributions_Sum_Order_By = {
   githubIssueId: InputMaybe<OrderBy>;
+  githubPullRequestId: InputMaybe<OrderBy>;
   githubUserId: InputMaybe<OrderBy>;
-  issueNumber: InputMaybe<OrderBy>;
   repoId: InputMaybe<OrderBy>;
 };
 
 /** order by var_pop() on columns of table "api.contributions" */
 export type Contributions_Var_Pop_Order_By = {
   githubIssueId: InputMaybe<OrderBy>;
+  githubPullRequestId: InputMaybe<OrderBy>;
   githubUserId: InputMaybe<OrderBy>;
-  issueNumber: InputMaybe<OrderBy>;
   repoId: InputMaybe<OrderBy>;
 };
 
 /** order by var_samp() on columns of table "api.contributions" */
 export type Contributions_Var_Samp_Order_By = {
   githubIssueId: InputMaybe<OrderBy>;
+  githubPullRequestId: InputMaybe<OrderBy>;
   githubUserId: InputMaybe<OrderBy>;
-  issueNumber: InputMaybe<OrderBy>;
   repoId: InputMaybe<OrderBy>;
 };
 
 /** order by variance() on columns of table "api.contributions" */
 export type Contributions_Variance_Order_By = {
   githubIssueId: InputMaybe<OrderBy>;
+  githubPullRequestId: InputMaybe<OrderBy>;
   githubUserId: InputMaybe<OrderBy>;
-  issueNumber: InputMaybe<OrderBy>;
   repoId: InputMaybe<OrderBy>;
 };
 
@@ -2491,19 +2886,27 @@ export type GithubCiChecksComparisonExp = {
   _nin: InputMaybe<Array<Scalars['github_ci_checks']>>;
 };
 
+/** Boolean expression to compare columns of type "github_code_review_outcome". All fields are combined with logical 'AND'. */
+export type GithubCodeReviewOutcomeComparisonExp = {
+  _eq: InputMaybe<Scalars['github_code_review_outcome']>;
+  _gt: InputMaybe<Scalars['github_code_review_outcome']>;
+  _gte: InputMaybe<Scalars['github_code_review_outcome']>;
+  _in: InputMaybe<Array<Scalars['github_code_review_outcome']>>;
+  _isNull: InputMaybe<Scalars['Boolean']>;
+  _lt: InputMaybe<Scalars['github_code_review_outcome']>;
+  _lte: InputMaybe<Scalars['github_code_review_outcome']>;
+  _neq: InputMaybe<Scalars['github_code_review_outcome']>;
+  _nin: InputMaybe<Array<Scalars['github_code_review_outcome']>>;
+};
+
 export type GithubIssue = {
   __typename?: 'GithubIssue';
-  assignees: Array<GithubUser>;
   author: GithubUser;
   closedAt: Maybe<Scalars['DateTimeUtc']>;
   commentsCount: Scalars['Int'];
   createdAt: Scalars['DateTimeUtc'];
   htmlUrl: Scalars['Url'];
   id: Scalars['Int'];
-  /** An array relationship */
-  ignoredForProjects: Array<IgnoredGithubIssues>;
-  /** An aggregate relationship */
-  ignoredForProjectsAggregate: IgnoredGithubIssuesAggregate;
   number: Scalars['Int'];
   repoId: Scalars['Int'];
   status: GithubIssueStatus;
@@ -2511,120 +2914,44 @@ export type GithubIssue = {
   updatedAt: Scalars['DateTimeUtc'];
 };
 
-
-export type GithubIssueIgnoredForProjectsArgs = {
-  distinctOn: InputMaybe<Array<IgnoredGithubIssuesSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<IgnoredGithubIssuesOrderBy>>;
-  where: InputMaybe<IgnoredGithubIssuesBoolExp>;
-};
-
-
-export type GithubIssueIgnoredForProjectsAggregateArgs = {
-  distinctOn: InputMaybe<Array<IgnoredGithubIssuesSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<IgnoredGithubIssuesOrderBy>>;
-  where: InputMaybe<IgnoredGithubIssuesBoolExp>;
-};
-
-export type GithubIssueCreatedAndClosed = {
-  __typename?: 'GithubIssueCreatedAndClosed';
-  author: GithubUserLinkedToIssue;
-  closedAt: Maybe<Scalars['DateTime']>;
-  commentsCount: Scalars['Int'];
-  createdAt: Scalars['DateTime'];
-  htmlUrl: Scalars['Url'];
-  id: Scalars['Int'];
-  number: Scalars['Int'];
-  repoId: Scalars['Int'];
-  status: GithubIssueCreatedAndClosedStatus;
-  title: Scalars['String'];
-  updatedAt: Scalars['DateTime'];
-};
-
-export enum GithubIssueCreatedAndClosedStatus {
-  Cancelled = 'Cancelled',
-  Completed = 'Completed',
-  Open = 'Open'
-}
-
 export enum GithubIssueStatus {
   Cancelled = 'CANCELLED',
   Completed = 'COMPLETED',
   Open = 'OPEN'
 }
 
-/** Boolean expression to compare columns of type "github_issue_status". All fields are combined with logical 'AND'. */
-export type GithubIssueStatusComparisonExp = {
-  _eq: InputMaybe<Scalars['github_issue_status']>;
-  _gt: InputMaybe<Scalars['github_issue_status']>;
-  _gte: InputMaybe<Scalars['github_issue_status']>;
-  _in: InputMaybe<Array<Scalars['github_issue_status']>>;
-  _isNull: InputMaybe<Scalars['Boolean']>;
-  _lt: InputMaybe<Scalars['github_issue_status']>;
-  _lte: InputMaybe<Scalars['github_issue_status']>;
-  _neq: InputMaybe<Scalars['github_issue_status']>;
-  _nin: InputMaybe<Array<Scalars['github_issue_status']>>;
-};
-
-/** columns and relationships of "github_issues" */
+/** columns and relationships of "api.github_issues" */
 export type GithubIssues = {
   __typename?: 'GithubIssues';
-  assigneeIds: Scalars['jsonb'];
-  authorId: Scalars['bigint'];
+  assigneeIds: Maybe<Scalars['jsonb']>;
+  authorId: Maybe<Scalars['bigint']>;
   closedAt: Maybe<Scalars['timestamp']>;
-  commentsCount: Scalars['bigint'];
-  createdAt: Scalars['timestamp'];
-  htmlUrl: Scalars['String'];
-  id: Scalars['bigint'];
-  /** An array relationship */
-  ignoredForProjects: Array<IgnoredGithubIssues>;
-  /** An aggregate relationship */
-  ignoredForProjectsAggregate: IgnoredGithubIssuesAggregate;
-  number: Scalars['bigint'];
+  commentsCount: Maybe<Scalars['bigint']>;
+  createdAt: Maybe<Scalars['timestamp']>;
+  htmlUrl: Maybe<Scalars['String']>;
+  id: Maybe<Scalars['bigint']>;
+  number: Maybe<Scalars['bigint']>;
   /** An object relationship */
   repo: Maybe<GithubRepos>;
-  repoId: Scalars['bigint'];
-  status: Scalars['github_issue_status'];
-  title: Scalars['String'];
+  repoId: Maybe<Scalars['bigint']>;
+  status: Maybe<Scalars['String']>;
+  title: Maybe<Scalars['String']>;
 };
 
 
-/** columns and relationships of "github_issues" */
+/** columns and relationships of "api.github_issues" */
 export type GithubIssuesAssigneeIdsArgs = {
   path: InputMaybe<Scalars['String']>;
 };
 
-
-/** columns and relationships of "github_issues" */
-export type GithubIssuesIgnoredForProjectsArgs = {
-  distinctOn: InputMaybe<Array<IgnoredGithubIssuesSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<IgnoredGithubIssuesOrderBy>>;
-  where: InputMaybe<IgnoredGithubIssuesBoolExp>;
-};
-
-
-/** columns and relationships of "github_issues" */
-export type GithubIssuesIgnoredForProjectsAggregateArgs = {
-  distinctOn: InputMaybe<Array<IgnoredGithubIssuesSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<IgnoredGithubIssuesOrderBy>>;
-  where: InputMaybe<IgnoredGithubIssuesBoolExp>;
-};
-
-/** aggregated selection of "github_issues" */
+/** aggregated selection of "api.github_issues" */
 export type GithubIssuesAggregate = {
   __typename?: 'GithubIssuesAggregate';
   aggregate: Maybe<GithubIssuesAggregateFields>;
   nodes: Array<GithubIssues>;
 };
 
-/** aggregate fields of "github_issues" */
+/** aggregate fields of "api.github_issues" */
 export type GithubIssuesAggregateFields = {
   __typename?: 'GithubIssuesAggregateFields';
   avg: Maybe<GithubIssuesAvgFields>;
@@ -2641,25 +2968,25 @@ export type GithubIssuesAggregateFields = {
 };
 
 
-/** aggregate fields of "github_issues" */
+/** aggregate fields of "api.github_issues" */
 export type GithubIssuesAggregateFieldsCountArgs = {
   columns: InputMaybe<Array<GithubIssuesSelectColumn>>;
   distinct: InputMaybe<Scalars['Boolean']>;
 };
 
-/** order by aggregate values of table "github_issues" */
+/** order by aggregate values of table "api.github_issues" */
 export type GithubIssuesAggregateOrderBy = {
-  avg: InputMaybe<Github_Issues_Avg_Order_By>;
+  avg: InputMaybe<GithubIssues_Avg_Order_By>;
   count: InputMaybe<OrderBy>;
-  max: InputMaybe<Github_Issues_Max_Order_By>;
-  min: InputMaybe<Github_Issues_Min_Order_By>;
-  stddev: InputMaybe<Github_Issues_Stddev_Order_By>;
-  stddev_pop: InputMaybe<Github_Issues_Stddev_Pop_Order_By>;
-  stddev_samp: InputMaybe<Github_Issues_Stddev_Samp_Order_By>;
-  sum: InputMaybe<Github_Issues_Sum_Order_By>;
-  var_pop: InputMaybe<Github_Issues_Var_Pop_Order_By>;
-  var_samp: InputMaybe<Github_Issues_Var_Samp_Order_By>;
-  variance: InputMaybe<Github_Issues_Variance_Order_By>;
+  max: InputMaybe<GithubIssues_Max_Order_By>;
+  min: InputMaybe<GithubIssues_Min_Order_By>;
+  stddev: InputMaybe<GithubIssues_Stddev_Order_By>;
+  stddev_pop: InputMaybe<GithubIssues_Stddev_Pop_Order_By>;
+  stddev_samp: InputMaybe<GithubIssues_Stddev_Samp_Order_By>;
+  sum: InputMaybe<GithubIssues_Sum_Order_By>;
+  var_pop: InputMaybe<GithubIssues_Var_Pop_Order_By>;
+  var_samp: InputMaybe<GithubIssues_Var_Samp_Order_By>;
+  variance: InputMaybe<GithubIssues_Variance_Order_By>;
 };
 
 /** append existing jsonb value of filtered columns with new jsonb value */
@@ -2667,11 +2994,9 @@ export type GithubIssuesAppendInput = {
   assigneeIds: InputMaybe<Scalars['jsonb']>;
 };
 
-/** input type for inserting array relation for remote table "github_issues" */
+/** input type for inserting array relation for remote table "api.github_issues" */
 export type GithubIssuesArrRelInsertInput = {
   data: Array<GithubIssuesInsertInput>;
-  /** upsert condition */
-  onConflict: InputMaybe<GithubIssuesOnConflict>;
 };
 
 /** aggregate avg on columns */
@@ -2684,7 +3009,7 @@ export type GithubIssuesAvgFields = {
   repoId: Maybe<Scalars['Float']>;
 };
 
-/** Boolean expression to filter rows from the table "github_issues". All fields are combined with a logical 'AND'. */
+/** Boolean expression to filter rows from the table "api.github_issues". All fields are combined with a logical 'AND'. */
 export type GithubIssuesBoolExp = {
   _and: InputMaybe<Array<GithubIssuesBoolExp>>;
   _not: InputMaybe<GithubIssuesBoolExp>;
@@ -2696,20 +3021,12 @@ export type GithubIssuesBoolExp = {
   createdAt: InputMaybe<TimestampComparisonExp>;
   htmlUrl: InputMaybe<StringComparisonExp>;
   id: InputMaybe<BigintComparisonExp>;
-  ignoredForProjects: InputMaybe<IgnoredGithubIssuesBoolExp>;
-  ignoredForProjects_aggregate: InputMaybe<Ignored_Github_Issues_Aggregate_Bool_Exp>;
   number: InputMaybe<BigintComparisonExp>;
   repo: InputMaybe<GithubReposBoolExp>;
   repoId: InputMaybe<BigintComparisonExp>;
-  status: InputMaybe<GithubIssueStatusComparisonExp>;
+  status: InputMaybe<StringComparisonExp>;
   title: InputMaybe<StringComparisonExp>;
 };
-
-/** unique or primary key constraints on table "github_issues" */
-export enum GithubIssuesConstraint {
-  /** unique or primary key constraint on columns "id" */
-  GithubPullsPkey = 'github_pulls_pkey'
-}
 
 /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
 export type GithubIssuesDeleteAtPathInput = {
@@ -2726,7 +3043,7 @@ export type GithubIssuesDeleteKeyInput = {
   assigneeIds: InputMaybe<Scalars['String']>;
 };
 
-/** input type for incrementing numeric columns in table "github_issues" */
+/** input type for incrementing numeric columns in table "api.github_issues" */
 export type GithubIssuesIncInput = {
   authorId: InputMaybe<Scalars['bigint']>;
   commentsCount: InputMaybe<Scalars['bigint']>;
@@ -2735,7 +3052,7 @@ export type GithubIssuesIncInput = {
   repoId: InputMaybe<Scalars['bigint']>;
 };
 
-/** input type for inserting data into table "github_issues" */
+/** input type for inserting data into table "api.github_issues" */
 export type GithubIssuesInsertInput = {
   assigneeIds: InputMaybe<Scalars['jsonb']>;
   authorId: InputMaybe<Scalars['bigint']>;
@@ -2744,11 +3061,10 @@ export type GithubIssuesInsertInput = {
   createdAt: InputMaybe<Scalars['timestamp']>;
   htmlUrl: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['bigint']>;
-  ignoredForProjects: InputMaybe<IgnoredGithubIssuesArrRelInsertInput>;
   number: InputMaybe<Scalars['bigint']>;
   repo: InputMaybe<GithubReposObjRelInsertInput>;
   repoId: InputMaybe<Scalars['bigint']>;
-  status: InputMaybe<Scalars['github_issue_status']>;
+  status: InputMaybe<Scalars['String']>;
   title: InputMaybe<Scalars['String']>;
 };
 
@@ -2763,7 +3079,7 @@ export type GithubIssuesMaxFields = {
   id: Maybe<Scalars['bigint']>;
   number: Maybe<Scalars['bigint']>;
   repoId: Maybe<Scalars['bigint']>;
-  status: Maybe<Scalars['github_issue_status']>;
+  status: Maybe<Scalars['String']>;
   title: Maybe<Scalars['String']>;
 };
 
@@ -2778,11 +3094,11 @@ export type GithubIssuesMinFields = {
   id: Maybe<Scalars['bigint']>;
   number: Maybe<Scalars['bigint']>;
   repoId: Maybe<Scalars['bigint']>;
-  status: Maybe<Scalars['github_issue_status']>;
+  status: Maybe<Scalars['String']>;
   title: Maybe<Scalars['String']>;
 };
 
-/** response of any mutation on the table "github_issues" */
+/** response of any mutation on the table "api.github_issues" */
 export type GithubIssuesMutationResponse = {
   __typename?: 'GithubIssuesMutationResponse';
   /** number of rows affected by the mutation */
@@ -2791,14 +3107,12 @@ export type GithubIssuesMutationResponse = {
   returning: Array<GithubIssues>;
 };
 
-/** on_conflict condition type for table "github_issues" */
-export type GithubIssuesOnConflict = {
-  constraint: GithubIssuesConstraint;
-  update_columns: Array<GithubIssuesUpdateColumn>;
-  where: InputMaybe<GithubIssuesBoolExp>;
+/** input type for inserting object relation for remote table "api.github_issues" */
+export type GithubIssuesObjRelInsertInput = {
+  data: GithubIssuesInsertInput;
 };
 
-/** Ordering options when selecting data from "github_issues". */
+/** Ordering options when selecting data from "api.github_issues". */
 export type GithubIssuesOrderBy = {
   assigneeIds: InputMaybe<OrderBy>;
   authorId: InputMaybe<OrderBy>;
@@ -2807,7 +3121,6 @@ export type GithubIssuesOrderBy = {
   createdAt: InputMaybe<OrderBy>;
   htmlUrl: InputMaybe<OrderBy>;
   id: InputMaybe<OrderBy>;
-  ignoredForProjectsAggregate: InputMaybe<IgnoredGithubIssuesAggregateOrderBy>;
   number: InputMaybe<OrderBy>;
   repo: InputMaybe<GithubReposOrderBy>;
   repoId: InputMaybe<OrderBy>;
@@ -2815,17 +3128,12 @@ export type GithubIssuesOrderBy = {
   title: InputMaybe<OrderBy>;
 };
 
-/** primary key columns input for table: github_issues */
-export type GithubIssuesPkColumnsInput = {
-  id: Scalars['bigint'];
-};
-
 /** prepend existing jsonb value of filtered columns with new jsonb value */
 export type GithubIssuesPrependInput = {
   assigneeIds: InputMaybe<Scalars['jsonb']>;
 };
 
-/** select columns of table "github_issues" */
+/** select columns of table "api.github_issues" */
 export enum GithubIssuesSelectColumn {
   /** column name */
   AssigneeIds = 'assigneeIds',
@@ -2851,7 +3159,7 @@ export enum GithubIssuesSelectColumn {
   Title = 'title'
 }
 
-/** input type for updating data in table "github_issues" */
+/** input type for updating data in table "api.github_issues" */
 export type GithubIssuesSetInput = {
   assigneeIds: InputMaybe<Scalars['jsonb']>;
   authorId: InputMaybe<Scalars['bigint']>;
@@ -2862,7 +3170,7 @@ export type GithubIssuesSetInput = {
   id: InputMaybe<Scalars['bigint']>;
   number: InputMaybe<Scalars['bigint']>;
   repoId: InputMaybe<Scalars['bigint']>;
-  status: InputMaybe<Scalars['github_issue_status']>;
+  status: InputMaybe<Scalars['String']>;
   title: InputMaybe<Scalars['String']>;
 };
 
@@ -2905,32 +3213,6 @@ export type GithubIssuesSumFields = {
   number: Maybe<Scalars['bigint']>;
   repoId: Maybe<Scalars['bigint']>;
 };
-
-/** update columns of table "github_issues" */
-export enum GithubIssuesUpdateColumn {
-  /** column name */
-  AssigneeIds = 'assigneeIds',
-  /** column name */
-  AuthorId = 'authorId',
-  /** column name */
-  ClosedAt = 'closedAt',
-  /** column name */
-  CommentsCount = 'commentsCount',
-  /** column name */
-  CreatedAt = 'createdAt',
-  /** column name */
-  HtmlUrl = 'htmlUrl',
-  /** column name */
-  Id = 'id',
-  /** column name */
-  Number = 'number',
-  /** column name */
-  RepoId = 'repoId',
-  /** column name */
-  Status = 'status',
-  /** column name */
-  Title = 'title'
-}
 
 export type GithubIssuesUpdates = {
   /** append existing jsonb value of filtered columns with new jsonb value */
@@ -2980,6 +3262,140 @@ export type GithubIssuesVarianceFields = {
   repoId: Maybe<Scalars['Float']>;
 };
 
+export type GithubIssues_Aggregate_Bool_Exp = {
+  count: InputMaybe<GithubIssues_Aggregate_Bool_Exp_Count>;
+};
+
+export type GithubIssues_Aggregate_Bool_Exp_Count = {
+  arguments: InputMaybe<Array<GithubIssuesSelectColumn>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+  filter: InputMaybe<GithubIssuesBoolExp>;
+  predicate: IntComparisonExp;
+};
+
+/** order by avg() on columns of table "api.github_issues" */
+export type GithubIssues_Avg_Order_By = {
+  authorId: InputMaybe<OrderBy>;
+  commentsCount: InputMaybe<OrderBy>;
+  id: InputMaybe<OrderBy>;
+  number: InputMaybe<OrderBy>;
+  repoId: InputMaybe<OrderBy>;
+};
+
+/** order by max() on columns of table "api.github_issues" */
+export type GithubIssues_Max_Order_By = {
+  authorId: InputMaybe<OrderBy>;
+  closedAt: InputMaybe<OrderBy>;
+  commentsCount: InputMaybe<OrderBy>;
+  createdAt: InputMaybe<OrderBy>;
+  htmlUrl: InputMaybe<OrderBy>;
+  id: InputMaybe<OrderBy>;
+  number: InputMaybe<OrderBy>;
+  repoId: InputMaybe<OrderBy>;
+  status: InputMaybe<OrderBy>;
+  title: InputMaybe<OrderBy>;
+};
+
+/** order by min() on columns of table "api.github_issues" */
+export type GithubIssues_Min_Order_By = {
+  authorId: InputMaybe<OrderBy>;
+  closedAt: InputMaybe<OrderBy>;
+  commentsCount: InputMaybe<OrderBy>;
+  createdAt: InputMaybe<OrderBy>;
+  htmlUrl: InputMaybe<OrderBy>;
+  id: InputMaybe<OrderBy>;
+  number: InputMaybe<OrderBy>;
+  repoId: InputMaybe<OrderBy>;
+  status: InputMaybe<OrderBy>;
+  title: InputMaybe<OrderBy>;
+};
+
+/** order by stddev() on columns of table "api.github_issues" */
+export type GithubIssues_Stddev_Order_By = {
+  authorId: InputMaybe<OrderBy>;
+  commentsCount: InputMaybe<OrderBy>;
+  id: InputMaybe<OrderBy>;
+  number: InputMaybe<OrderBy>;
+  repoId: InputMaybe<OrderBy>;
+};
+
+/** order by stddev_pop() on columns of table "api.github_issues" */
+export type GithubIssues_Stddev_Pop_Order_By = {
+  authorId: InputMaybe<OrderBy>;
+  commentsCount: InputMaybe<OrderBy>;
+  id: InputMaybe<OrderBy>;
+  number: InputMaybe<OrderBy>;
+  repoId: InputMaybe<OrderBy>;
+};
+
+/** order by stddev_samp() on columns of table "api.github_issues" */
+export type GithubIssues_Stddev_Samp_Order_By = {
+  authorId: InputMaybe<OrderBy>;
+  commentsCount: InputMaybe<OrderBy>;
+  id: InputMaybe<OrderBy>;
+  number: InputMaybe<OrderBy>;
+  repoId: InputMaybe<OrderBy>;
+};
+
+/** Streaming cursor of the table "GithubIssues" */
+export type GithubIssues_StreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: GithubIssues_StreamCursorValueInput;
+  /** cursor ordering */
+  ordering: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type GithubIssues_StreamCursorValueInput = {
+  assigneeIds: InputMaybe<Scalars['jsonb']>;
+  authorId: InputMaybe<Scalars['bigint']>;
+  closedAt: InputMaybe<Scalars['timestamp']>;
+  commentsCount: InputMaybe<Scalars['bigint']>;
+  createdAt: InputMaybe<Scalars['timestamp']>;
+  htmlUrl: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['bigint']>;
+  number: InputMaybe<Scalars['bigint']>;
+  repoId: InputMaybe<Scalars['bigint']>;
+  status: InputMaybe<Scalars['String']>;
+  title: InputMaybe<Scalars['String']>;
+};
+
+/** order by sum() on columns of table "api.github_issues" */
+export type GithubIssues_Sum_Order_By = {
+  authorId: InputMaybe<OrderBy>;
+  commentsCount: InputMaybe<OrderBy>;
+  id: InputMaybe<OrderBy>;
+  number: InputMaybe<OrderBy>;
+  repoId: InputMaybe<OrderBy>;
+};
+
+/** order by var_pop() on columns of table "api.github_issues" */
+export type GithubIssues_Var_Pop_Order_By = {
+  authorId: InputMaybe<OrderBy>;
+  commentsCount: InputMaybe<OrderBy>;
+  id: InputMaybe<OrderBy>;
+  number: InputMaybe<OrderBy>;
+  repoId: InputMaybe<OrderBy>;
+};
+
+/** order by var_samp() on columns of table "api.github_issues" */
+export type GithubIssues_Var_Samp_Order_By = {
+  authorId: InputMaybe<OrderBy>;
+  commentsCount: InputMaybe<OrderBy>;
+  id: InputMaybe<OrderBy>;
+  number: InputMaybe<OrderBy>;
+  repoId: InputMaybe<OrderBy>;
+};
+
+/** order by variance() on columns of table "api.github_issues" */
+export type GithubIssues_Variance_Order_By = {
+  authorId: InputMaybe<OrderBy>;
+  commentsCount: InputMaybe<OrderBy>;
+  id: InputMaybe<OrderBy>;
+  number: InputMaybe<OrderBy>;
+  repoId: InputMaybe<OrderBy>;
+};
+
 export type GithubPullRequest = {
   __typename?: 'GithubPullRequest';
   author: GithubUser;
@@ -2987,10 +3403,6 @@ export type GithubPullRequest = {
   createdAt: Scalars['DateTimeUtc'];
   htmlUrl: Scalars['Url'];
   id: Scalars['Int'];
-  /** An array relationship */
-  ignoredForProjects: Array<IgnoredGithubIssues>;
-  /** An aggregate relationship */
-  ignoredForProjectsAggregate: IgnoredGithubIssuesAggregate;
   mergedAt: Maybe<Scalars['DateTimeUtc']>;
   number: Scalars['Int'];
   repoId: Scalars['Int'];
@@ -2999,22 +3411,228 @@ export type GithubPullRequest = {
   updatedAt: Scalars['DateTimeUtc'];
 };
 
+/** columns and relationships of "api.github_pull_request_reviews" */
+export type GithubPullRequestReviews = {
+  __typename?: 'GithubPullRequestReviews';
+  id: Maybe<Scalars['String']>;
+  outcome: Maybe<Scalars['github_code_review_outcome']>;
+  pullRequestId: Maybe<Scalars['bigint']>;
+  reviewerId: Maybe<Scalars['bigint']>;
+  status: Maybe<Scalars['String']>;
+  submittedAt: Maybe<Scalars['timestamp']>;
+};
 
-export type GithubPullRequestIgnoredForProjectsArgs = {
-  distinctOn: InputMaybe<Array<IgnoredGithubIssuesSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<IgnoredGithubIssuesOrderBy>>;
-  where: InputMaybe<IgnoredGithubIssuesBoolExp>;
+/** aggregated selection of "api.github_pull_request_reviews" */
+export type GithubPullRequestReviewsAggregate = {
+  __typename?: 'GithubPullRequestReviewsAggregate';
+  aggregate: Maybe<GithubPullRequestReviewsAggregateFields>;
+  nodes: Array<GithubPullRequestReviews>;
+};
+
+/** aggregate fields of "api.github_pull_request_reviews" */
+export type GithubPullRequestReviewsAggregateFields = {
+  __typename?: 'GithubPullRequestReviewsAggregateFields';
+  avg: Maybe<GithubPullRequestReviewsAvgFields>;
+  count: Scalars['Int'];
+  max: Maybe<GithubPullRequestReviewsMaxFields>;
+  min: Maybe<GithubPullRequestReviewsMinFields>;
+  stddev: Maybe<GithubPullRequestReviewsStddevFields>;
+  stddevPop: Maybe<GithubPullRequestReviewsStddev_PopFields>;
+  stddevSamp: Maybe<GithubPullRequestReviewsStddev_SampFields>;
+  sum: Maybe<GithubPullRequestReviewsSumFields>;
+  varPop: Maybe<GithubPullRequestReviewsVar_PopFields>;
+  varSamp: Maybe<GithubPullRequestReviewsVar_SampFields>;
+  variance: Maybe<GithubPullRequestReviewsVarianceFields>;
 };
 
 
-export type GithubPullRequestIgnoredForProjectsAggregateArgs = {
-  distinctOn: InputMaybe<Array<IgnoredGithubIssuesSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<IgnoredGithubIssuesOrderBy>>;
-  where: InputMaybe<IgnoredGithubIssuesBoolExp>;
+/** aggregate fields of "api.github_pull_request_reviews" */
+export type GithubPullRequestReviewsAggregateFieldsCountArgs = {
+  columns: InputMaybe<Array<GithubPullRequestReviewsSelectColumn>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
+/** aggregate avg on columns */
+export type GithubPullRequestReviewsAvgFields = {
+  __typename?: 'GithubPullRequestReviewsAvgFields';
+  pullRequestId: Maybe<Scalars['Float']>;
+  reviewerId: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "api.github_pull_request_reviews". All fields are combined with a logical 'AND'. */
+export type GithubPullRequestReviewsBoolExp = {
+  _and: InputMaybe<Array<GithubPullRequestReviewsBoolExp>>;
+  _not: InputMaybe<GithubPullRequestReviewsBoolExp>;
+  _or: InputMaybe<Array<GithubPullRequestReviewsBoolExp>>;
+  id: InputMaybe<StringComparisonExp>;
+  outcome: InputMaybe<GithubCodeReviewOutcomeComparisonExp>;
+  pullRequestId: InputMaybe<BigintComparisonExp>;
+  reviewerId: InputMaybe<BigintComparisonExp>;
+  status: InputMaybe<StringComparisonExp>;
+  submittedAt: InputMaybe<TimestampComparisonExp>;
+};
+
+/** input type for incrementing numeric columns in table "api.github_pull_request_reviews" */
+export type GithubPullRequestReviewsIncInput = {
+  pullRequestId: InputMaybe<Scalars['bigint']>;
+  reviewerId: InputMaybe<Scalars['bigint']>;
+};
+
+/** input type for inserting data into table "api.github_pull_request_reviews" */
+export type GithubPullRequestReviewsInsertInput = {
+  id: InputMaybe<Scalars['String']>;
+  outcome: InputMaybe<Scalars['github_code_review_outcome']>;
+  pullRequestId: InputMaybe<Scalars['bigint']>;
+  reviewerId: InputMaybe<Scalars['bigint']>;
+  status: InputMaybe<Scalars['String']>;
+  submittedAt: InputMaybe<Scalars['timestamp']>;
+};
+
+/** aggregate max on columns */
+export type GithubPullRequestReviewsMaxFields = {
+  __typename?: 'GithubPullRequestReviewsMaxFields';
+  id: Maybe<Scalars['String']>;
+  outcome: Maybe<Scalars['github_code_review_outcome']>;
+  pullRequestId: Maybe<Scalars['bigint']>;
+  reviewerId: Maybe<Scalars['bigint']>;
+  status: Maybe<Scalars['String']>;
+  submittedAt: Maybe<Scalars['timestamp']>;
+};
+
+/** aggregate min on columns */
+export type GithubPullRequestReviewsMinFields = {
+  __typename?: 'GithubPullRequestReviewsMinFields';
+  id: Maybe<Scalars['String']>;
+  outcome: Maybe<Scalars['github_code_review_outcome']>;
+  pullRequestId: Maybe<Scalars['bigint']>;
+  reviewerId: Maybe<Scalars['bigint']>;
+  status: Maybe<Scalars['String']>;
+  submittedAt: Maybe<Scalars['timestamp']>;
+};
+
+/** response of any mutation on the table "api.github_pull_request_reviews" */
+export type GithubPullRequestReviewsMutationResponse = {
+  __typename?: 'GithubPullRequestReviewsMutationResponse';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<GithubPullRequestReviews>;
+};
+
+/** input type for inserting object relation for remote table "api.github_pull_request_reviews" */
+export type GithubPullRequestReviewsObjRelInsertInput = {
+  data: GithubPullRequestReviewsInsertInput;
+};
+
+/** Ordering options when selecting data from "api.github_pull_request_reviews". */
+export type GithubPullRequestReviewsOrderBy = {
+  id: InputMaybe<OrderBy>;
+  outcome: InputMaybe<OrderBy>;
+  pullRequestId: InputMaybe<OrderBy>;
+  reviewerId: InputMaybe<OrderBy>;
+  status: InputMaybe<OrderBy>;
+  submittedAt: InputMaybe<OrderBy>;
+};
+
+/** select columns of table "api.github_pull_request_reviews" */
+export enum GithubPullRequestReviewsSelectColumn {
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Outcome = 'outcome',
+  /** column name */
+  PullRequestId = 'pullRequestId',
+  /** column name */
+  ReviewerId = 'reviewerId',
+  /** column name */
+  Status = 'status',
+  /** column name */
+  SubmittedAt = 'submittedAt'
+}
+
+/** input type for updating data in table "api.github_pull_request_reviews" */
+export type GithubPullRequestReviewsSetInput = {
+  id: InputMaybe<Scalars['String']>;
+  outcome: InputMaybe<Scalars['github_code_review_outcome']>;
+  pullRequestId: InputMaybe<Scalars['bigint']>;
+  reviewerId: InputMaybe<Scalars['bigint']>;
+  status: InputMaybe<Scalars['String']>;
+  submittedAt: InputMaybe<Scalars['timestamp']>;
+};
+
+/** aggregate stddev on columns */
+export type GithubPullRequestReviewsStddevFields = {
+  __typename?: 'GithubPullRequestReviewsStddevFields';
+  pullRequestId: Maybe<Scalars['Float']>;
+  reviewerId: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type GithubPullRequestReviewsStddev_PopFields = {
+  __typename?: 'GithubPullRequestReviewsStddev_popFields';
+  pullRequestId: Maybe<Scalars['Float']>;
+  reviewerId: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type GithubPullRequestReviewsStddev_SampFields = {
+  __typename?: 'GithubPullRequestReviewsStddev_sampFields';
+  pullRequestId: Maybe<Scalars['Float']>;
+  reviewerId: Maybe<Scalars['Float']>;
+};
+
+/** aggregate sum on columns */
+export type GithubPullRequestReviewsSumFields = {
+  __typename?: 'GithubPullRequestReviewsSumFields';
+  pullRequestId: Maybe<Scalars['bigint']>;
+  reviewerId: Maybe<Scalars['bigint']>;
+};
+
+export type GithubPullRequestReviewsUpdates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<GithubPullRequestReviewsIncInput>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<GithubPullRequestReviewsSetInput>;
+  where: GithubPullRequestReviewsBoolExp;
+};
+
+/** aggregate var_pop on columns */
+export type GithubPullRequestReviewsVar_PopFields = {
+  __typename?: 'GithubPullRequestReviewsVar_popFields';
+  pullRequestId: Maybe<Scalars['Float']>;
+  reviewerId: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type GithubPullRequestReviewsVar_SampFields = {
+  __typename?: 'GithubPullRequestReviewsVar_sampFields';
+  pullRequestId: Maybe<Scalars['Float']>;
+  reviewerId: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type GithubPullRequestReviewsVarianceFields = {
+  __typename?: 'GithubPullRequestReviewsVarianceFields';
+  pullRequestId: Maybe<Scalars['Float']>;
+  reviewerId: Maybe<Scalars['Float']>;
+};
+
+/** Streaming cursor of the table "GithubPullRequestReviews" */
+export type GithubPullRequestReviews_StreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: GithubPullRequestReviews_StreamCursorValueInput;
+  /** cursor ordering */
+  ordering: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type GithubPullRequestReviews_StreamCursorValueInput = {
+  id: InputMaybe<Scalars['String']>;
+  outcome: InputMaybe<Scalars['github_code_review_outcome']>;
+  pullRequestId: InputMaybe<Scalars['bigint']>;
+  reviewerId: InputMaybe<Scalars['bigint']>;
+  status: InputMaybe<Scalars['String']>;
+  submittedAt: InputMaybe<Scalars['timestamp']>;
 };
 
 export enum GithubPullRequestStatus {
@@ -3023,77 +3641,40 @@ export enum GithubPullRequestStatus {
   Open = 'OPEN'
 }
 
-/** Boolean expression to compare columns of type "github_pull_request_status". All fields are combined with logical 'AND'. */
-export type GithubPullRequestStatusComparisonExp = {
-  _eq: InputMaybe<Scalars['github_pull_request_status']>;
-  _gt: InputMaybe<Scalars['github_pull_request_status']>;
-  _gte: InputMaybe<Scalars['github_pull_request_status']>;
-  _in: InputMaybe<Array<Scalars['github_pull_request_status']>>;
-  _isNull: InputMaybe<Scalars['Boolean']>;
-  _lt: InputMaybe<Scalars['github_pull_request_status']>;
-  _lte: InputMaybe<Scalars['github_pull_request_status']>;
-  _neq: InputMaybe<Scalars['github_pull_request_status']>;
-  _nin: InputMaybe<Array<Scalars['github_pull_request_status']>>;
-};
-
-/** columns and relationships of "github_pull_requests" */
+/** columns and relationships of "api.github_pull_requests" */
 export type GithubPullRequests = {
   __typename?: 'GithubPullRequests';
-  authorId: Scalars['bigint'];
+  authorId: Maybe<Scalars['bigint']>;
   ciChecks: Maybe<Scalars['github_ci_checks']>;
   closedAt: Maybe<Scalars['timestamp']>;
   closingIssueNumbers: Maybe<Scalars['jsonb']>;
-  createdAt: Scalars['timestamp'];
-  draft: Scalars['Boolean'];
-  htmlUrl: Scalars['String'];
-  id: Scalars['bigint'];
-  /** An array relationship */
-  ignoredForProjects: Array<IgnoredGithubIssues>;
-  /** An aggregate relationship */
-  ignoredForProjectsAggregate: IgnoredGithubIssuesAggregate;
+  createdAt: Maybe<Scalars['timestamp']>;
+  draft: Maybe<Scalars['Boolean']>;
+  htmlUrl: Maybe<Scalars['String']>;
+  id: Maybe<Scalars['bigint']>;
   mergedAt: Maybe<Scalars['timestamp']>;
-  number: Scalars['bigint'];
+  number: Maybe<Scalars['bigint']>;
   /** An object relationship */
   repo: Maybe<GithubRepos>;
-  repoId: Scalars['bigint'];
-  status: Scalars['github_pull_request_status'];
-  title: Scalars['String'];
+  repoId: Maybe<Scalars['bigint']>;
+  status: Maybe<Scalars['String']>;
+  title: Maybe<Scalars['String']>;
 };
 
 
-/** columns and relationships of "github_pull_requests" */
+/** columns and relationships of "api.github_pull_requests" */
 export type GithubPullRequestsClosingIssueNumbersArgs = {
   path: InputMaybe<Scalars['String']>;
 };
 
-
-/** columns and relationships of "github_pull_requests" */
-export type GithubPullRequestsIgnoredForProjectsArgs = {
-  distinctOn: InputMaybe<Array<IgnoredGithubIssuesSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<IgnoredGithubIssuesOrderBy>>;
-  where: InputMaybe<IgnoredGithubIssuesBoolExp>;
-};
-
-
-/** columns and relationships of "github_pull_requests" */
-export type GithubPullRequestsIgnoredForProjectsAggregateArgs = {
-  distinctOn: InputMaybe<Array<IgnoredGithubIssuesSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<IgnoredGithubIssuesOrderBy>>;
-  where: InputMaybe<IgnoredGithubIssuesBoolExp>;
-};
-
-/** aggregated selection of "github_pull_requests" */
+/** aggregated selection of "api.github_pull_requests" */
 export type GithubPullRequestsAggregate = {
   __typename?: 'GithubPullRequestsAggregate';
   aggregate: Maybe<GithubPullRequestsAggregateFields>;
   nodes: Array<GithubPullRequests>;
 };
 
-/** aggregate fields of "github_pull_requests" */
+/** aggregate fields of "api.github_pull_requests" */
 export type GithubPullRequestsAggregateFields = {
   __typename?: 'GithubPullRequestsAggregateFields';
   avg: Maybe<GithubPullRequestsAvgFields>;
@@ -3110,7 +3691,7 @@ export type GithubPullRequestsAggregateFields = {
 };
 
 
-/** aggregate fields of "github_pull_requests" */
+/** aggregate fields of "api.github_pull_requests" */
 export type GithubPullRequestsAggregateFieldsCountArgs = {
   columns: InputMaybe<Array<GithubPullRequestsSelectColumn>>;
   distinct: InputMaybe<Scalars['Boolean']>;
@@ -3130,7 +3711,7 @@ export type GithubPullRequestsAvgFields = {
   repoId: Maybe<Scalars['Float']>;
 };
 
-/** Boolean expression to filter rows from the table "github_pull_requests". All fields are combined with a logical 'AND'. */
+/** Boolean expression to filter rows from the table "api.github_pull_requests". All fields are combined with a logical 'AND'. */
 export type GithubPullRequestsBoolExp = {
   _and: InputMaybe<Array<GithubPullRequestsBoolExp>>;
   _not: InputMaybe<GithubPullRequestsBoolExp>;
@@ -3143,21 +3724,13 @@ export type GithubPullRequestsBoolExp = {
   draft: InputMaybe<BooleanComparisonExp>;
   htmlUrl: InputMaybe<StringComparisonExp>;
   id: InputMaybe<BigintComparisonExp>;
-  ignoredForProjects: InputMaybe<IgnoredGithubIssuesBoolExp>;
-  ignoredForProjects_aggregate: InputMaybe<Ignored_Github_Issues_Aggregate_Bool_Exp>;
   mergedAt: InputMaybe<TimestampComparisonExp>;
   number: InputMaybe<BigintComparisonExp>;
   repo: InputMaybe<GithubReposBoolExp>;
   repoId: InputMaybe<BigintComparisonExp>;
-  status: InputMaybe<GithubPullRequestStatusComparisonExp>;
+  status: InputMaybe<StringComparisonExp>;
   title: InputMaybe<StringComparisonExp>;
 };
-
-/** unique or primary key constraints on table "github_pull_requests" */
-export enum GithubPullRequestsConstraint {
-  /** unique or primary key constraint on columns "id" */
-  GithubPullRequestsPkey = 'github_pull_requests_pkey'
-}
 
 /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
 export type GithubPullRequestsDeleteAtPathInput = {
@@ -3174,7 +3747,7 @@ export type GithubPullRequestsDeleteKeyInput = {
   closingIssueNumbers: InputMaybe<Scalars['String']>;
 };
 
-/** input type for incrementing numeric columns in table "github_pull_requests" */
+/** input type for incrementing numeric columns in table "api.github_pull_requests" */
 export type GithubPullRequestsIncInput = {
   authorId: InputMaybe<Scalars['bigint']>;
   id: InputMaybe<Scalars['bigint']>;
@@ -3182,7 +3755,7 @@ export type GithubPullRequestsIncInput = {
   repoId: InputMaybe<Scalars['bigint']>;
 };
 
-/** input type for inserting data into table "github_pull_requests" */
+/** input type for inserting data into table "api.github_pull_requests" */
 export type GithubPullRequestsInsertInput = {
   authorId: InputMaybe<Scalars['bigint']>;
   ciChecks: InputMaybe<Scalars['github_ci_checks']>;
@@ -3192,12 +3765,11 @@ export type GithubPullRequestsInsertInput = {
   draft: InputMaybe<Scalars['Boolean']>;
   htmlUrl: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['bigint']>;
-  ignoredForProjects: InputMaybe<IgnoredGithubIssuesArrRelInsertInput>;
   mergedAt: InputMaybe<Scalars['timestamp']>;
   number: InputMaybe<Scalars['bigint']>;
   repo: InputMaybe<GithubReposObjRelInsertInput>;
   repoId: InputMaybe<Scalars['bigint']>;
-  status: InputMaybe<Scalars['github_pull_request_status']>;
+  status: InputMaybe<Scalars['String']>;
   title: InputMaybe<Scalars['String']>;
 };
 
@@ -3213,7 +3785,7 @@ export type GithubPullRequestsMaxFields = {
   mergedAt: Maybe<Scalars['timestamp']>;
   number: Maybe<Scalars['bigint']>;
   repoId: Maybe<Scalars['bigint']>;
-  status: Maybe<Scalars['github_pull_request_status']>;
+  status: Maybe<Scalars['String']>;
   title: Maybe<Scalars['String']>;
 };
 
@@ -3229,11 +3801,11 @@ export type GithubPullRequestsMinFields = {
   mergedAt: Maybe<Scalars['timestamp']>;
   number: Maybe<Scalars['bigint']>;
   repoId: Maybe<Scalars['bigint']>;
-  status: Maybe<Scalars['github_pull_request_status']>;
+  status: Maybe<Scalars['String']>;
   title: Maybe<Scalars['String']>;
 };
 
-/** response of any mutation on the table "github_pull_requests" */
+/** response of any mutation on the table "api.github_pull_requests" */
 export type GithubPullRequestsMutationResponse = {
   __typename?: 'GithubPullRequestsMutationResponse';
   /** number of rows affected by the mutation */
@@ -3242,14 +3814,12 @@ export type GithubPullRequestsMutationResponse = {
   returning: Array<GithubPullRequests>;
 };
 
-/** on_conflict condition type for table "github_pull_requests" */
-export type GithubPullRequestsOnConflict = {
-  constraint: GithubPullRequestsConstraint;
-  update_columns: Array<GithubPullRequestsUpdateColumn>;
-  where: InputMaybe<GithubPullRequestsBoolExp>;
+/** input type for inserting object relation for remote table "api.github_pull_requests" */
+export type GithubPullRequestsObjRelInsertInput = {
+  data: GithubPullRequestsInsertInput;
 };
 
-/** Ordering options when selecting data from "github_pull_requests". */
+/** Ordering options when selecting data from "api.github_pull_requests". */
 export type GithubPullRequestsOrderBy = {
   authorId: InputMaybe<OrderBy>;
   ciChecks: InputMaybe<OrderBy>;
@@ -3259,7 +3829,6 @@ export type GithubPullRequestsOrderBy = {
   draft: InputMaybe<OrderBy>;
   htmlUrl: InputMaybe<OrderBy>;
   id: InputMaybe<OrderBy>;
-  ignoredForProjectsAggregate: InputMaybe<IgnoredGithubIssuesAggregateOrderBy>;
   mergedAt: InputMaybe<OrderBy>;
   number: InputMaybe<OrderBy>;
   repo: InputMaybe<GithubReposOrderBy>;
@@ -3268,17 +3837,12 @@ export type GithubPullRequestsOrderBy = {
   title: InputMaybe<OrderBy>;
 };
 
-/** primary key columns input for table: github_pull_requests */
-export type GithubPullRequestsPkColumnsInput = {
-  id: Scalars['bigint'];
-};
-
 /** prepend existing jsonb value of filtered columns with new jsonb value */
 export type GithubPullRequestsPrependInput = {
   closingIssueNumbers: InputMaybe<Scalars['jsonb']>;
 };
 
-/** select columns of table "github_pull_requests" */
+/** select columns of table "api.github_pull_requests" */
 export enum GithubPullRequestsSelectColumn {
   /** column name */
   AuthorId = 'authorId',
@@ -3308,7 +3872,7 @@ export enum GithubPullRequestsSelectColumn {
   Title = 'title'
 }
 
-/** input type for updating data in table "github_pull_requests" */
+/** input type for updating data in table "api.github_pull_requests" */
 export type GithubPullRequestsSetInput = {
   authorId: InputMaybe<Scalars['bigint']>;
   ciChecks: InputMaybe<Scalars['github_ci_checks']>;
@@ -3321,7 +3885,7 @@ export type GithubPullRequestsSetInput = {
   mergedAt: InputMaybe<Scalars['timestamp']>;
   number: InputMaybe<Scalars['bigint']>;
   repoId: InputMaybe<Scalars['bigint']>;
-  status: InputMaybe<Scalars['github_pull_request_status']>;
+  status: InputMaybe<Scalars['String']>;
   title: InputMaybe<Scalars['String']>;
 };
 
@@ -3360,36 +3924,6 @@ export type GithubPullRequestsSumFields = {
   number: Maybe<Scalars['bigint']>;
   repoId: Maybe<Scalars['bigint']>;
 };
-
-/** update columns of table "github_pull_requests" */
-export enum GithubPullRequestsUpdateColumn {
-  /** column name */
-  AuthorId = 'authorId',
-  /** column name */
-  CiChecks = 'ciChecks',
-  /** column name */
-  ClosedAt = 'closedAt',
-  /** column name */
-  ClosingIssueNumbers = 'closingIssueNumbers',
-  /** column name */
-  CreatedAt = 'createdAt',
-  /** column name */
-  Draft = 'draft',
-  /** column name */
-  HtmlUrl = 'htmlUrl',
-  /** column name */
-  Id = 'id',
-  /** column name */
-  MergedAt = 'mergedAt',
-  /** column name */
-  Number = 'number',
-  /** column name */
-  RepoId = 'repoId',
-  /** column name */
-  Status = 'status',
-  /** column name */
-  Title = 'title'
-}
 
 export type GithubPullRequestsUpdates = {
   /** append existing jsonb value of filtered columns with new jsonb value */
@@ -3436,34 +3970,60 @@ export type GithubPullRequestsVarianceFields = {
   repoId: Maybe<Scalars['Float']>;
 };
 
-/** columns and relationships of "github_repos" */
+/** Streaming cursor of the table "GithubPullRequests" */
+export type GithubPullRequests_StreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: GithubPullRequests_StreamCursorValueInput;
+  /** cursor ordering */
+  ordering: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type GithubPullRequests_StreamCursorValueInput = {
+  authorId: InputMaybe<Scalars['bigint']>;
+  ciChecks: InputMaybe<Scalars['github_ci_checks']>;
+  closedAt: InputMaybe<Scalars['timestamp']>;
+  closingIssueNumbers: InputMaybe<Scalars['jsonb']>;
+  createdAt: InputMaybe<Scalars['timestamp']>;
+  draft: InputMaybe<Scalars['Boolean']>;
+  htmlUrl: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['bigint']>;
+  mergedAt: InputMaybe<Scalars['timestamp']>;
+  number: InputMaybe<Scalars['bigint']>;
+  repoId: InputMaybe<Scalars['bigint']>;
+  status: InputMaybe<Scalars['String']>;
+  title: InputMaybe<Scalars['String']>;
+};
+
+/** columns and relationships of "api.github_repos" */
 export type GithubRepos = {
   __typename?: 'GithubRepos';
-  description: Scalars['String'];
-  forkCount: Scalars['Int'];
-  hasIssues: Scalars['Boolean'];
-  htmlUrl: Scalars['String'];
-  id: Scalars['bigint'];
-  languages: Scalars['jsonb'];
-  name: Scalars['String'];
-  owner: Scalars['String'];
+  description: Maybe<Scalars['String']>;
+  forkCount: Maybe<Scalars['Int']>;
+  hasIssues: Maybe<Scalars['Boolean']>;
+  htmlUrl: Maybe<Scalars['String']>;
+  id: Maybe<Scalars['bigint']>;
+  indexedAt: Maybe<Scalars['timestamp']>;
+  languages: Maybe<Scalars['jsonb']>;
+  name: Maybe<Scalars['String']>;
+  owner: Maybe<Scalars['String']>;
   parentId: Maybe<Scalars['bigint']>;
   /** An array relationship */
   projects: Array<ProjectGithubRepos>;
   /** An aggregate relationship */
   projectsAggregate: ProjectGithubReposAggregate;
-  stars: Scalars['Int'];
+  stars: Maybe<Scalars['Int']>;
   updatedAt: Maybe<Scalars['timestamp']>;
 };
 
 
-/** columns and relationships of "github_repos" */
+/** columns and relationships of "api.github_repos" */
 export type GithubReposLanguagesArgs = {
   path: InputMaybe<Scalars['String']>;
 };
 
 
-/** columns and relationships of "github_repos" */
+/** columns and relationships of "api.github_repos" */
 export type GithubReposProjectsArgs = {
   distinctOn: InputMaybe<Array<ProjectGithubReposSelectColumn>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -3473,7 +4033,7 @@ export type GithubReposProjectsArgs = {
 };
 
 
-/** columns and relationships of "github_repos" */
+/** columns and relationships of "api.github_repos" */
 export type GithubReposProjectsAggregateArgs = {
   distinctOn: InputMaybe<Array<ProjectGithubReposSelectColumn>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -3482,14 +4042,14 @@ export type GithubReposProjectsAggregateArgs = {
   where: InputMaybe<ProjectGithubReposBoolExp>;
 };
 
-/** aggregated selection of "github_repos" */
+/** aggregated selection of "api.github_repos" */
 export type GithubReposAggregate = {
   __typename?: 'GithubReposAggregate';
   aggregate: Maybe<GithubReposAggregateFields>;
   nodes: Array<GithubRepos>;
 };
 
-/** aggregate fields of "github_repos" */
+/** aggregate fields of "api.github_repos" */
 export type GithubReposAggregateFields = {
   __typename?: 'GithubReposAggregateFields';
   avg: Maybe<GithubReposAvgFields>;
@@ -3506,15 +4066,10 @@ export type GithubReposAggregateFields = {
 };
 
 
-/** aggregate fields of "github_repos" */
+/** aggregate fields of "api.github_repos" */
 export type GithubReposAggregateFieldsCountArgs = {
   columns: InputMaybe<Array<GithubReposSelectColumn>>;
   distinct: InputMaybe<Scalars['Boolean']>;
-};
-
-/** append existing jsonb value of filtered columns with new jsonb value */
-export type GithubReposAppendInput = {
-  languages: InputMaybe<Scalars['jsonb']>;
 };
 
 /** aggregate avg on columns */
@@ -3526,7 +4081,7 @@ export type GithubReposAvgFields = {
   stars: Maybe<Scalars['Float']>;
 };
 
-/** Boolean expression to filter rows from the table "github_repos". All fields are combined with a logical 'AND'. */
+/** Boolean expression to filter rows from the table "api.github_repos". All fields are combined with a logical 'AND'. */
 export type GithubReposBoolExp = {
   _and: InputMaybe<Array<GithubReposBoolExp>>;
   _not: InputMaybe<GithubReposBoolExp>;
@@ -3536,6 +4091,7 @@ export type GithubReposBoolExp = {
   hasIssues: InputMaybe<BooleanComparisonExp>;
   htmlUrl: InputMaybe<StringComparisonExp>;
   id: InputMaybe<BigintComparisonExp>;
+  indexedAt: InputMaybe<TimestampComparisonExp>;
   languages: InputMaybe<JsonbComparisonExp>;
   name: InputMaybe<StringComparisonExp>;
   owner: InputMaybe<StringComparisonExp>;
@@ -3546,42 +4102,14 @@ export type GithubReposBoolExp = {
   updatedAt: InputMaybe<TimestampComparisonExp>;
 };
 
-/** unique or primary key constraints on table "github_repos" */
-export enum GithubReposConstraint {
-  /** unique or primary key constraint on columns "id" */
-  CrmGithubReposPkey = 'crm_github_repos_pkey'
-}
-
-/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
-export type GithubReposDeleteAtPathInput = {
-  languages: InputMaybe<Array<Scalars['String']>>;
-};
-
-/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
-export type GithubReposDeleteElemInput = {
-  languages: InputMaybe<Scalars['Int']>;
-};
-
-/** delete key/value pair or string element. key/value pairs are matched based on their key value */
-export type GithubReposDeleteKeyInput = {
-  languages: InputMaybe<Scalars['String']>;
-};
-
-/** input type for incrementing numeric columns in table "github_repos" */
-export type GithubReposIncInput = {
-  forkCount: InputMaybe<Scalars['Int']>;
-  id: InputMaybe<Scalars['bigint']>;
-  parentId: InputMaybe<Scalars['bigint']>;
-  stars: InputMaybe<Scalars['Int']>;
-};
-
-/** input type for inserting data into table "github_repos" */
+/** input type for inserting data into table "api.github_repos" */
 export type GithubReposInsertInput = {
   description: InputMaybe<Scalars['String']>;
   forkCount: InputMaybe<Scalars['Int']>;
   hasIssues: InputMaybe<Scalars['Boolean']>;
   htmlUrl: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['bigint']>;
+  indexedAt: InputMaybe<Scalars['timestamp']>;
   languages: InputMaybe<Scalars['jsonb']>;
   name: InputMaybe<Scalars['String']>;
   owner: InputMaybe<Scalars['String']>;
@@ -3598,6 +4126,7 @@ export type GithubReposMaxFields = {
   forkCount: Maybe<Scalars['Int']>;
   htmlUrl: Maybe<Scalars['String']>;
   id: Maybe<Scalars['bigint']>;
+  indexedAt: Maybe<Scalars['timestamp']>;
   name: Maybe<Scalars['String']>;
   owner: Maybe<Scalars['String']>;
   parentId: Maybe<Scalars['bigint']>;
@@ -3612,6 +4141,7 @@ export type GithubReposMinFields = {
   forkCount: Maybe<Scalars['Int']>;
   htmlUrl: Maybe<Scalars['String']>;
   id: Maybe<Scalars['bigint']>;
+  indexedAt: Maybe<Scalars['timestamp']>;
   name: Maybe<Scalars['String']>;
   owner: Maybe<Scalars['String']>;
   parentId: Maybe<Scalars['bigint']>;
@@ -3619,36 +4149,19 @@ export type GithubReposMinFields = {
   updatedAt: Maybe<Scalars['timestamp']>;
 };
 
-/** response of any mutation on the table "github_repos" */
-export type GithubReposMutationResponse = {
-  __typename?: 'GithubReposMutationResponse';
-  /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
-  /** data from the rows affected by the mutation */
-  returning: Array<GithubRepos>;
-};
-
-/** input type for inserting object relation for remote table "github_repos" */
+/** input type for inserting object relation for remote table "api.github_repos" */
 export type GithubReposObjRelInsertInput = {
   data: GithubReposInsertInput;
-  /** upsert condition */
-  onConflict: InputMaybe<GithubReposOnConflict>;
 };
 
-/** on_conflict condition type for table "github_repos" */
-export type GithubReposOnConflict = {
-  constraint: GithubReposConstraint;
-  update_columns: Array<GithubReposUpdateColumn>;
-  where: InputMaybe<GithubReposBoolExp>;
-};
-
-/** Ordering options when selecting data from "github_repos". */
+/** Ordering options when selecting data from "api.github_repos". */
 export type GithubReposOrderBy = {
   description: InputMaybe<OrderBy>;
   forkCount: InputMaybe<OrderBy>;
   hasIssues: InputMaybe<OrderBy>;
   htmlUrl: InputMaybe<OrderBy>;
   id: InputMaybe<OrderBy>;
+  indexedAt: InputMaybe<OrderBy>;
   languages: InputMaybe<OrderBy>;
   name: InputMaybe<OrderBy>;
   owner: InputMaybe<OrderBy>;
@@ -3658,17 +4171,7 @@ export type GithubReposOrderBy = {
   updatedAt: InputMaybe<OrderBy>;
 };
 
-/** primary key columns input for table: github_repos */
-export type GithubReposPkColumnsInput = {
-  id: Scalars['bigint'];
-};
-
-/** prepend existing jsonb value of filtered columns with new jsonb value */
-export type GithubReposPrependInput = {
-  languages: InputMaybe<Scalars['jsonb']>;
-};
-
-/** select columns of table "github_repos" */
+/** select columns of table "api.github_repos" */
 export enum GithubReposSelectColumn {
   /** column name */
   Description = 'description',
@@ -3680,6 +4183,8 @@ export enum GithubReposSelectColumn {
   HtmlUrl = 'htmlUrl',
   /** column name */
   Id = 'id',
+  /** column name */
+  IndexedAt = 'indexedAt',
   /** column name */
   Languages = 'languages',
   /** column name */
@@ -3693,21 +4198,6 @@ export enum GithubReposSelectColumn {
   /** column name */
   UpdatedAt = 'updatedAt'
 }
-
-/** input type for updating data in table "github_repos" */
-export type GithubReposSetInput = {
-  description: InputMaybe<Scalars['String']>;
-  forkCount: InputMaybe<Scalars['Int']>;
-  hasIssues: InputMaybe<Scalars['Boolean']>;
-  htmlUrl: InputMaybe<Scalars['String']>;
-  id: InputMaybe<Scalars['bigint']>;
-  languages: InputMaybe<Scalars['jsonb']>;
-  name: InputMaybe<Scalars['String']>;
-  owner: InputMaybe<Scalars['String']>;
-  parentId: InputMaybe<Scalars['bigint']>;
-  stars: InputMaybe<Scalars['Int']>;
-  updatedAt: InputMaybe<Scalars['timestamp']>;
-};
 
 /** aggregate stddev on columns */
 export type GithubReposStddevFields = {
@@ -3745,50 +4235,6 @@ export type GithubReposSumFields = {
   stars: Maybe<Scalars['Int']>;
 };
 
-/** update columns of table "github_repos" */
-export enum GithubReposUpdateColumn {
-  /** column name */
-  Description = 'description',
-  /** column name */
-  ForkCount = 'forkCount',
-  /** column name */
-  HasIssues = 'hasIssues',
-  /** column name */
-  HtmlUrl = 'htmlUrl',
-  /** column name */
-  Id = 'id',
-  /** column name */
-  Languages = 'languages',
-  /** column name */
-  Name = 'name',
-  /** column name */
-  Owner = 'owner',
-  /** column name */
-  ParentId = 'parentId',
-  /** column name */
-  Stars = 'stars',
-  /** column name */
-  UpdatedAt = 'updatedAt'
-}
-
-export type GithubReposUpdates = {
-  /** append existing jsonb value of filtered columns with new jsonb value */
-  _append: InputMaybe<GithubReposAppendInput>;
-  /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
-  _deleteAtPath: InputMaybe<GithubReposDeleteAtPathInput>;
-  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
-  _deleteElem: InputMaybe<GithubReposDeleteElemInput>;
-  /** delete key/value pair or string element. key/value pairs are matched based on their key value */
-  _deleteKey: InputMaybe<GithubReposDeleteKeyInput>;
-  /** increments the numeric columns with given value of the filtered values */
-  _inc: InputMaybe<GithubReposIncInput>;
-  /** prepend existing jsonb value of filtered columns with new jsonb value */
-  _prepend: InputMaybe<GithubReposPrependInput>;
-  /** sets the columns of the filtered rows to the given values */
-  _set: InputMaybe<GithubReposSetInput>;
-  where: GithubReposBoolExp;
-};
-
 /** aggregate var_pop on columns */
 export type GithubReposVar_PopFields = {
   __typename?: 'GithubReposVar_popFields';
@@ -3816,43 +4262,37 @@ export type GithubReposVarianceFields = {
   stars: Maybe<Scalars['Float']>;
 };
 
+/** Streaming cursor of the table "GithubRepos" */
+export type GithubRepos_StreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: GithubRepos_StreamCursorValueInput;
+  /** cursor ordering */
+  ordering: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type GithubRepos_StreamCursorValueInput = {
+  description: InputMaybe<Scalars['String']>;
+  forkCount: InputMaybe<Scalars['Int']>;
+  hasIssues: InputMaybe<Scalars['Boolean']>;
+  htmlUrl: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['bigint']>;
+  indexedAt: InputMaybe<Scalars['timestamp']>;
+  languages: InputMaybe<Scalars['jsonb']>;
+  name: InputMaybe<Scalars['String']>;
+  owner: InputMaybe<Scalars['String']>;
+  parentId: InputMaybe<Scalars['bigint']>;
+  stars: InputMaybe<Scalars['Int']>;
+  updatedAt: InputMaybe<Scalars['timestamp']>;
+};
+
 export type GithubUser = {
   __typename?: 'GithubUser';
   avatarUrl: Scalars['Url'];
   htmlUrl: Scalars['Url'];
   id: Scalars['Int'];
   login: Scalars['String'];
-  /** An array relationship */
-  paymentRequests: Array<PaymentRequests>;
-  /** An aggregate relationship */
-  paymentRequestsAggregate: PaymentRequestsAggregate;
   user: Maybe<RegisteredUsers>;
-};
-
-
-export type GithubUserPaymentRequestsArgs = {
-  distinctOn: InputMaybe<Array<PaymentRequestsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<PaymentRequestsOrderBy>>;
-  where: InputMaybe<PaymentRequestsBoolExp>;
-};
-
-
-export type GithubUserPaymentRequestsAggregateArgs = {
-  distinctOn: InputMaybe<Array<PaymentRequestsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<PaymentRequestsOrderBy>>;
-  where: InputMaybe<PaymentRequestsBoolExp>;
-};
-
-export type GithubUserLinkedToIssue = {
-  __typename?: 'GithubUserLinkedToIssue';
-  avatarUrl: Scalars['Url'];
-  htmlUrl: Scalars['Url'];
-  id: Scalars['Int'];
-  login: Scalars['String'];
 };
 
 /** columns and relationships of "github_users" */
@@ -4176,232 +4616,6 @@ export enum IdentityType {
   Person = 'PERSON'
 }
 
-/** columns and relationships of "ignored_github_issues" */
-export type IgnoredGithubIssues = {
-  __typename?: 'IgnoredGithubIssues';
-  issueNumber: Scalars['bigint'];
-  projectId: Scalars['uuid'];
-  repoId: Scalars['bigint'];
-};
-
-/** aggregated selection of "ignored_github_issues" */
-export type IgnoredGithubIssuesAggregate = {
-  __typename?: 'IgnoredGithubIssuesAggregate';
-  aggregate: Maybe<IgnoredGithubIssuesAggregateFields>;
-  nodes: Array<IgnoredGithubIssues>;
-};
-
-/** aggregate fields of "ignored_github_issues" */
-export type IgnoredGithubIssuesAggregateFields = {
-  __typename?: 'IgnoredGithubIssuesAggregateFields';
-  avg: Maybe<IgnoredGithubIssuesAvgFields>;
-  count: Scalars['Int'];
-  max: Maybe<IgnoredGithubIssuesMaxFields>;
-  min: Maybe<IgnoredGithubIssuesMinFields>;
-  stddev: Maybe<IgnoredGithubIssuesStddevFields>;
-  stddevPop: Maybe<IgnoredGithubIssuesStddev_PopFields>;
-  stddevSamp: Maybe<IgnoredGithubIssuesStddev_SampFields>;
-  sum: Maybe<IgnoredGithubIssuesSumFields>;
-  varPop: Maybe<IgnoredGithubIssuesVar_PopFields>;
-  varSamp: Maybe<IgnoredGithubIssuesVar_SampFields>;
-  variance: Maybe<IgnoredGithubIssuesVarianceFields>;
-};
-
-
-/** aggregate fields of "ignored_github_issues" */
-export type IgnoredGithubIssuesAggregateFieldsCountArgs = {
-  columns: InputMaybe<Array<IgnoredGithubIssuesSelectColumn>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
-};
-
-/** order by aggregate values of table "ignored_github_issues" */
-export type IgnoredGithubIssuesAggregateOrderBy = {
-  avg: InputMaybe<Ignored_Github_Issues_Avg_Order_By>;
-  count: InputMaybe<OrderBy>;
-  max: InputMaybe<Ignored_Github_Issues_Max_Order_By>;
-  min: InputMaybe<Ignored_Github_Issues_Min_Order_By>;
-  stddev: InputMaybe<Ignored_Github_Issues_Stddev_Order_By>;
-  stddev_pop: InputMaybe<Ignored_Github_Issues_Stddev_Pop_Order_By>;
-  stddev_samp: InputMaybe<Ignored_Github_Issues_Stddev_Samp_Order_By>;
-  sum: InputMaybe<Ignored_Github_Issues_Sum_Order_By>;
-  var_pop: InputMaybe<Ignored_Github_Issues_Var_Pop_Order_By>;
-  var_samp: InputMaybe<Ignored_Github_Issues_Var_Samp_Order_By>;
-  variance: InputMaybe<Ignored_Github_Issues_Variance_Order_By>;
-};
-
-/** input type for inserting array relation for remote table "ignored_github_issues" */
-export type IgnoredGithubIssuesArrRelInsertInput = {
-  data: Array<IgnoredGithubIssuesInsertInput>;
-  /** upsert condition */
-  onConflict: InputMaybe<IgnoredGithubIssuesOnConflict>;
-};
-
-/** aggregate avg on columns */
-export type IgnoredGithubIssuesAvgFields = {
-  __typename?: 'IgnoredGithubIssuesAvgFields';
-  issueNumber: Maybe<Scalars['Float']>;
-  repoId: Maybe<Scalars['Float']>;
-};
-
-/** Boolean expression to filter rows from the table "ignored_github_issues". All fields are combined with a logical 'AND'. */
-export type IgnoredGithubIssuesBoolExp = {
-  _and: InputMaybe<Array<IgnoredGithubIssuesBoolExp>>;
-  _not: InputMaybe<IgnoredGithubIssuesBoolExp>;
-  _or: InputMaybe<Array<IgnoredGithubIssuesBoolExp>>;
-  issueNumber: InputMaybe<BigintComparisonExp>;
-  projectId: InputMaybe<UuidComparisonExp>;
-  repoId: InputMaybe<BigintComparisonExp>;
-};
-
-/** unique or primary key constraints on table "ignored_github_issues" */
-export enum IgnoredGithubIssuesConstraint {
-  /** unique or primary key constraint on columns "issue_number", "project_id", "repo_id" */
-  IgnoredGithubIssuesPkey = 'ignored_github_issues_pkey'
-}
-
-/** input type for incrementing numeric columns in table "ignored_github_issues" */
-export type IgnoredGithubIssuesIncInput = {
-  issueNumber: InputMaybe<Scalars['bigint']>;
-  repoId: InputMaybe<Scalars['bigint']>;
-};
-
-/** input type for inserting data into table "ignored_github_issues" */
-export type IgnoredGithubIssuesInsertInput = {
-  issueNumber: InputMaybe<Scalars['bigint']>;
-  projectId: InputMaybe<Scalars['uuid']>;
-  repoId: InputMaybe<Scalars['bigint']>;
-};
-
-/** aggregate max on columns */
-export type IgnoredGithubIssuesMaxFields = {
-  __typename?: 'IgnoredGithubIssuesMaxFields';
-  issueNumber: Maybe<Scalars['bigint']>;
-  projectId: Maybe<Scalars['uuid']>;
-  repoId: Maybe<Scalars['bigint']>;
-};
-
-/** aggregate min on columns */
-export type IgnoredGithubIssuesMinFields = {
-  __typename?: 'IgnoredGithubIssuesMinFields';
-  issueNumber: Maybe<Scalars['bigint']>;
-  projectId: Maybe<Scalars['uuid']>;
-  repoId: Maybe<Scalars['bigint']>;
-};
-
-/** response of any mutation on the table "ignored_github_issues" */
-export type IgnoredGithubIssuesMutationResponse = {
-  __typename?: 'IgnoredGithubIssuesMutationResponse';
-  /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
-  /** data from the rows affected by the mutation */
-  returning: Array<IgnoredGithubIssues>;
-};
-
-/** on_conflict condition type for table "ignored_github_issues" */
-export type IgnoredGithubIssuesOnConflict = {
-  constraint: IgnoredGithubIssuesConstraint;
-  update_columns: Array<IgnoredGithubIssuesUpdateColumn>;
-  where: InputMaybe<IgnoredGithubIssuesBoolExp>;
-};
-
-/** Ordering options when selecting data from "ignored_github_issues". */
-export type IgnoredGithubIssuesOrderBy = {
-  issueNumber: InputMaybe<OrderBy>;
-  projectId: InputMaybe<OrderBy>;
-  repoId: InputMaybe<OrderBy>;
-};
-
-/** primary key columns input for table: ignored_github_issues */
-export type IgnoredGithubIssuesPkColumnsInput = {
-  issueNumber: Scalars['bigint'];
-  projectId: Scalars['uuid'];
-  repoId: Scalars['bigint'];
-};
-
-/** select columns of table "ignored_github_issues" */
-export enum IgnoredGithubIssuesSelectColumn {
-  /** column name */
-  IssueNumber = 'issueNumber',
-  /** column name */
-  ProjectId = 'projectId',
-  /** column name */
-  RepoId = 'repoId'
-}
-
-/** input type for updating data in table "ignored_github_issues" */
-export type IgnoredGithubIssuesSetInput = {
-  issueNumber: InputMaybe<Scalars['bigint']>;
-  projectId: InputMaybe<Scalars['uuid']>;
-  repoId: InputMaybe<Scalars['bigint']>;
-};
-
-/** aggregate stddev on columns */
-export type IgnoredGithubIssuesStddevFields = {
-  __typename?: 'IgnoredGithubIssuesStddevFields';
-  issueNumber: Maybe<Scalars['Float']>;
-  repoId: Maybe<Scalars['Float']>;
-};
-
-/** aggregate stddev_pop on columns */
-export type IgnoredGithubIssuesStddev_PopFields = {
-  __typename?: 'IgnoredGithubIssuesStddev_popFields';
-  issueNumber: Maybe<Scalars['Float']>;
-  repoId: Maybe<Scalars['Float']>;
-};
-
-/** aggregate stddev_samp on columns */
-export type IgnoredGithubIssuesStddev_SampFields = {
-  __typename?: 'IgnoredGithubIssuesStddev_sampFields';
-  issueNumber: Maybe<Scalars['Float']>;
-  repoId: Maybe<Scalars['Float']>;
-};
-
-/** aggregate sum on columns */
-export type IgnoredGithubIssuesSumFields = {
-  __typename?: 'IgnoredGithubIssuesSumFields';
-  issueNumber: Maybe<Scalars['bigint']>;
-  repoId: Maybe<Scalars['bigint']>;
-};
-
-/** update columns of table "ignored_github_issues" */
-export enum IgnoredGithubIssuesUpdateColumn {
-  /** column name */
-  IssueNumber = 'issueNumber',
-  /** column name */
-  ProjectId = 'projectId',
-  /** column name */
-  RepoId = 'repoId'
-}
-
-export type IgnoredGithubIssuesUpdates = {
-  /** increments the numeric columns with given value of the filtered values */
-  _inc: InputMaybe<IgnoredGithubIssuesIncInput>;
-  /** sets the columns of the filtered rows to the given values */
-  _set: InputMaybe<IgnoredGithubIssuesSetInput>;
-  where: IgnoredGithubIssuesBoolExp;
-};
-
-/** aggregate var_pop on columns */
-export type IgnoredGithubIssuesVar_PopFields = {
-  __typename?: 'IgnoredGithubIssuesVar_popFields';
-  issueNumber: Maybe<Scalars['Float']>;
-  repoId: Maybe<Scalars['Float']>;
-};
-
-/** aggregate var_samp on columns */
-export type IgnoredGithubIssuesVar_SampFields = {
-  __typename?: 'IgnoredGithubIssuesVar_sampFields';
-  issueNumber: Maybe<Scalars['Float']>;
-  repoId: Maybe<Scalars['Float']>;
-};
-
-/** aggregate variance on columns */
-export type IgnoredGithubIssuesVarianceFields = {
-  __typename?: 'IgnoredGithubIssuesVarianceFields';
-  issueNumber: Maybe<Scalars['Float']>;
-  repoId: Maybe<Scalars['Float']>;
-};
-
 export type Information = {
   channel: Channel;
   contact: Scalars['String'];
@@ -4646,7 +4860,6 @@ export type PaymentRequests = {
   hoursWorked: Scalars['Int'];
   id: Scalars['uuid'];
   invoiceReceivedAt: Maybe<Scalars['timestamp']>;
-  liveGithubRecipient: Maybe<GithubUser>;
   /** An array relationship */
   payments: Array<Payments>;
   /** An aggregate relationship */
@@ -4784,7 +4997,7 @@ export type PaymentRequestsBoolExp = {
   requestor: InputMaybe<RegisteredUsersBoolExp>;
   requestorId: InputMaybe<UuidComparisonExp>;
   workItems: InputMaybe<WorkItemsBoolExp>;
-  workItems_aggregate: InputMaybe<Work_Items_Aggregate_Bool_Exp>;
+  workItems_aggregate: InputMaybe<WorkItems_Aggregate_Bool_Exp>;
 };
 
 /** unique or primary key constraints on table "payment_requests" */
@@ -5829,7 +6042,7 @@ export type ProjectGithubReposBoolExp = {
   projectId: InputMaybe<UuidComparisonExp>;
   repo: InputMaybe<GithubReposBoolExp>;
   repoIssues: InputMaybe<GithubIssuesBoolExp>;
-  repoIssues_aggregate: InputMaybe<Github_Issues_Aggregate_Bool_Exp>;
+  repoIssues_aggregate: InputMaybe<GithubIssues_Aggregate_Bool_Exp>;
 };
 
 /** unique or primary key constraints on table "project_github_repos" */
@@ -6166,6 +6379,10 @@ export type Projects = {
   moreInfoLink: Maybe<Scalars['String']>;
   name: Maybe<Scalars['String']>;
   /** An array relationship */
+  pendingContributors: Array<ProjectsPendingContributors>;
+  /** An aggregate relationship */
+  pendingContributorsAggregate: ProjectsPendingContributorsAggregate;
+  /** An array relationship */
   pendingInvitations: Array<PendingProjectLeaderInvitations>;
   /** An aggregate relationship */
   pendingInvitationsAggregate: PendingProjectLeaderInvitationsAggregate;
@@ -6174,6 +6391,10 @@ export type Projects = {
   /** An aggregate relationship */
   projectLeadsAggregate: ProjectLeadsAggregate;
   rank: Maybe<Scalars['Int']>;
+  /** An array relationship */
+  rewardedUsers: Array<ProjectsRewardedUsers>;
+  /** An aggregate relationship */
+  rewardedUsersAggregate: ProjectsRewardedUsersAggregate;
   shortDescription: Maybe<Scalars['String']>;
   /** An array relationship */
   sponsors: Array<ProjectsSponsors>;
@@ -6264,6 +6485,26 @@ export type ProjectsGithubReposAggregateArgs = {
 
 
 /** columns and relationships of "api.projects" */
+export type ProjectsPendingContributorsArgs = {
+  distinctOn: InputMaybe<Array<ProjectsPendingContributorsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ProjectsPendingContributorsOrderBy>>;
+  where: InputMaybe<ProjectsPendingContributorsBoolExp>;
+};
+
+
+/** columns and relationships of "api.projects" */
+export type ProjectsPendingContributorsAggregateArgs = {
+  distinctOn: InputMaybe<Array<ProjectsPendingContributorsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ProjectsPendingContributorsOrderBy>>;
+  where: InputMaybe<ProjectsPendingContributorsBoolExp>;
+};
+
+
+/** columns and relationships of "api.projects" */
 export type ProjectsPendingInvitationsArgs = {
   distinctOn: InputMaybe<Array<PendingProjectLeaderInvitationsSelectColumn>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -6300,6 +6541,26 @@ export type ProjectsProjectLeadsAggregateArgs = {
   offset: InputMaybe<Scalars['Int']>;
   orderBy: InputMaybe<Array<ProjectLeadsOrderBy>>;
   where: InputMaybe<ProjectLeadsBoolExp>;
+};
+
+
+/** columns and relationships of "api.projects" */
+export type ProjectsRewardedUsersArgs = {
+  distinctOn: InputMaybe<Array<ProjectsRewardedUsersSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ProjectsRewardedUsersOrderBy>>;
+  where: InputMaybe<ProjectsRewardedUsersBoolExp>;
+};
+
+
+/** columns and relationships of "api.projects" */
+export type ProjectsRewardedUsersAggregateArgs = {
+  distinctOn: InputMaybe<Array<ProjectsRewardedUsersSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ProjectsRewardedUsersOrderBy>>;
+  where: InputMaybe<ProjectsRewardedUsersBoolExp>;
 };
 
 
@@ -6378,11 +6639,15 @@ export type ProjectsBoolExp = {
   longDescription: InputMaybe<StringComparisonExp>;
   moreInfoLink: InputMaybe<StringComparisonExp>;
   name: InputMaybe<StringComparisonExp>;
+  pendingContributors: InputMaybe<ProjectsPendingContributorsBoolExp>;
+  pendingContributors_aggregate: InputMaybe<Projects_Pending_Contributors_Aggregate_Bool_Exp>;
   pendingInvitations: InputMaybe<PendingProjectLeaderInvitationsBoolExp>;
   pendingInvitations_aggregate: InputMaybe<Pending_Project_Leader_Invitations_Aggregate_Bool_Exp>;
   projectLeads: InputMaybe<ProjectLeadsBoolExp>;
   projectLeads_aggregate: InputMaybe<Project_Leads_Aggregate_Bool_Exp>;
   rank: InputMaybe<IntComparisonExp>;
+  rewardedUsers: InputMaybe<ProjectsRewardedUsersBoolExp>;
+  rewardedUsers_aggregate: InputMaybe<Projects_Rewarded_Users_Aggregate_Bool_Exp>;
   shortDescription: InputMaybe<StringComparisonExp>;
   sponsors: InputMaybe<ProjectsSponsorsBoolExp>;
   sponsors_aggregate: InputMaybe<Projects_Sponsors_Aggregate_Bool_Exp>;
@@ -6395,7 +6660,6 @@ export type ProjectsContributors = {
   /** An object relationship */
   githubUser: Maybe<GithubUsers>;
   githubUserId: Scalars['bigint'];
-  linkCount: Scalars['Int'];
   /** An object relationship */
   project: Maybe<Projects>;
   projectId: Scalars['uuid'];
@@ -6459,7 +6723,6 @@ export type ProjectsContributorsArrRelInsertInput = {
 export type ProjectsContributorsAvgFields = {
   __typename?: 'ProjectsContributorsAvgFields';
   githubUserId: Maybe<Scalars['Float']>;
-  linkCount: Maybe<Scalars['Float']>;
 };
 
 /** Boolean expression to filter rows from the table "projects_contributors". All fields are combined with a logical 'AND'. */
@@ -6469,7 +6732,6 @@ export type ProjectsContributorsBoolExp = {
   _or: InputMaybe<Array<ProjectsContributorsBoolExp>>;
   githubUser: InputMaybe<GithubUsersBoolExp>;
   githubUserId: InputMaybe<BigintComparisonExp>;
-  linkCount: InputMaybe<IntComparisonExp>;
   project: InputMaybe<ProjectsBoolExp>;
   projectId: InputMaybe<UuidComparisonExp>;
   user: InputMaybe<UserProfilesBoolExp>;
@@ -6486,14 +6748,12 @@ export enum ProjectsContributorsConstraint {
 /** input type for incrementing numeric columns in table "projects_contributors" */
 export type ProjectsContributorsIncInput = {
   githubUserId: InputMaybe<Scalars['bigint']>;
-  linkCount: InputMaybe<Scalars['Int']>;
 };
 
 /** input type for inserting data into table "projects_contributors" */
 export type ProjectsContributorsInsertInput = {
   githubUser: InputMaybe<GithubUsersObjRelInsertInput>;
   githubUserId: InputMaybe<Scalars['bigint']>;
-  linkCount: InputMaybe<Scalars['Int']>;
   project: InputMaybe<ProjectsObjRelInsertInput>;
   projectId: InputMaybe<Scalars['uuid']>;
   user: InputMaybe<UserProfilesObjRelInsertInput>;
@@ -6503,7 +6763,6 @@ export type ProjectsContributorsInsertInput = {
 export type ProjectsContributorsMaxFields = {
   __typename?: 'ProjectsContributorsMaxFields';
   githubUserId: Maybe<Scalars['bigint']>;
-  linkCount: Maybe<Scalars['Int']>;
   projectId: Maybe<Scalars['uuid']>;
 };
 
@@ -6511,7 +6770,6 @@ export type ProjectsContributorsMaxFields = {
 export type ProjectsContributorsMinFields = {
   __typename?: 'ProjectsContributorsMinFields';
   githubUserId: Maybe<Scalars['bigint']>;
-  linkCount: Maybe<Scalars['Int']>;
   projectId: Maybe<Scalars['uuid']>;
 };
 
@@ -6535,7 +6793,6 @@ export type ProjectsContributorsOnConflict = {
 export type ProjectsContributorsOrderBy = {
   githubUser: InputMaybe<GithubUsersOrderBy>;
   githubUserId: InputMaybe<OrderBy>;
-  linkCount: InputMaybe<OrderBy>;
   project: InputMaybe<ProjectsOrderBy>;
   projectId: InputMaybe<OrderBy>;
   user: InputMaybe<UserProfilesOrderBy>;
@@ -6552,15 +6809,12 @@ export enum ProjectsContributorsSelectColumn {
   /** column name */
   GithubUserId = 'githubUserId',
   /** column name */
-  LinkCount = 'linkCount',
-  /** column name */
   ProjectId = 'projectId'
 }
 
 /** input type for updating data in table "projects_contributors" */
 export type ProjectsContributorsSetInput = {
   githubUserId: InputMaybe<Scalars['bigint']>;
-  linkCount: InputMaybe<Scalars['Int']>;
   projectId: InputMaybe<Scalars['uuid']>;
 };
 
@@ -6568,36 +6822,30 @@ export type ProjectsContributorsSetInput = {
 export type ProjectsContributorsStddevFields = {
   __typename?: 'ProjectsContributorsStddevFields';
   githubUserId: Maybe<Scalars['Float']>;
-  linkCount: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_pop on columns */
 export type ProjectsContributorsStddev_PopFields = {
   __typename?: 'ProjectsContributorsStddev_popFields';
   githubUserId: Maybe<Scalars['Float']>;
-  linkCount: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_samp on columns */
 export type ProjectsContributorsStddev_SampFields = {
   __typename?: 'ProjectsContributorsStddev_sampFields';
   githubUserId: Maybe<Scalars['Float']>;
-  linkCount: Maybe<Scalars['Float']>;
 };
 
 /** aggregate sum on columns */
 export type ProjectsContributorsSumFields = {
   __typename?: 'ProjectsContributorsSumFields';
   githubUserId: Maybe<Scalars['bigint']>;
-  linkCount: Maybe<Scalars['Int']>;
 };
 
 /** update columns of table "projects_contributors" */
 export enum ProjectsContributorsUpdateColumn {
   /** column name */
   GithubUserId = 'githubUserId',
-  /** column name */
-  LinkCount = 'linkCount',
   /** column name */
   ProjectId = 'projectId'
 }
@@ -6614,21 +6862,18 @@ export type ProjectsContributorsUpdates = {
 export type ProjectsContributorsVar_PopFields = {
   __typename?: 'ProjectsContributorsVar_popFields';
   githubUserId: Maybe<Scalars['Float']>;
-  linkCount: Maybe<Scalars['Float']>;
 };
 
 /** aggregate var_samp on columns */
 export type ProjectsContributorsVar_SampFields = {
   __typename?: 'ProjectsContributorsVar_sampFields';
   githubUserId: Maybe<Scalars['Float']>;
-  linkCount: Maybe<Scalars['Float']>;
 };
 
 /** aggregate variance on columns */
 export type ProjectsContributorsVarianceFields = {
   __typename?: 'ProjectsContributorsVarianceFields';
   githubUserId: Maybe<Scalars['Float']>;
-  linkCount: Maybe<Scalars['Float']>;
 };
 
 /** input type for inserting data into table "api.projects" */
@@ -6644,9 +6889,11 @@ export type ProjectsInsertInput = {
   longDescription: InputMaybe<Scalars['String']>;
   moreInfoLink: InputMaybe<Scalars['String']>;
   name: InputMaybe<Scalars['String']>;
+  pendingContributors: InputMaybe<ProjectsPendingContributorsArrRelInsertInput>;
   pendingInvitations: InputMaybe<PendingProjectLeaderInvitationsArrRelInsertInput>;
   projectLeads: InputMaybe<ProjectLeadsArrRelInsertInput>;
   rank: InputMaybe<Scalars['Int']>;
+  rewardedUsers: InputMaybe<ProjectsRewardedUsersArrRelInsertInput>;
   shortDescription: InputMaybe<Scalars['String']>;
   sponsors: InputMaybe<ProjectsSponsorsArrRelInsertInput>;
   visibility: InputMaybe<Scalars['project_visibility']>;
@@ -6698,12 +6945,444 @@ export type ProjectsOrderBy = {
   longDescription: InputMaybe<OrderBy>;
   moreInfoLink: InputMaybe<OrderBy>;
   name: InputMaybe<OrderBy>;
+  pendingContributorsAggregate: InputMaybe<ProjectsPendingContributorsAggregateOrderBy>;
   pendingInvitationsAggregate: InputMaybe<PendingProjectLeaderInvitationsAggregateOrderBy>;
   projectLeadsAggregate: InputMaybe<ProjectLeadsAggregateOrderBy>;
   rank: InputMaybe<OrderBy>;
+  rewardedUsersAggregate: InputMaybe<ProjectsRewardedUsersAggregateOrderBy>;
   shortDescription: InputMaybe<OrderBy>;
   sponsorsAggregate: InputMaybe<ProjectsSponsorsAggregateOrderBy>;
   visibility: InputMaybe<OrderBy>;
+};
+
+/** columns and relationships of "projects_pending_contributors" */
+export type ProjectsPendingContributors = {
+  __typename?: 'ProjectsPendingContributors';
+  githubUserId: Scalars['bigint'];
+  projectId: Scalars['uuid'];
+};
+
+/** aggregated selection of "projects_pending_contributors" */
+export type ProjectsPendingContributorsAggregate = {
+  __typename?: 'ProjectsPendingContributorsAggregate';
+  aggregate: Maybe<ProjectsPendingContributorsAggregateFields>;
+  nodes: Array<ProjectsPendingContributors>;
+};
+
+/** aggregate fields of "projects_pending_contributors" */
+export type ProjectsPendingContributorsAggregateFields = {
+  __typename?: 'ProjectsPendingContributorsAggregateFields';
+  avg: Maybe<ProjectsPendingContributorsAvgFields>;
+  count: Scalars['Int'];
+  max: Maybe<ProjectsPendingContributorsMaxFields>;
+  min: Maybe<ProjectsPendingContributorsMinFields>;
+  stddev: Maybe<ProjectsPendingContributorsStddevFields>;
+  stddevPop: Maybe<ProjectsPendingContributorsStddev_PopFields>;
+  stddevSamp: Maybe<ProjectsPendingContributorsStddev_SampFields>;
+  sum: Maybe<ProjectsPendingContributorsSumFields>;
+  varPop: Maybe<ProjectsPendingContributorsVar_PopFields>;
+  varSamp: Maybe<ProjectsPendingContributorsVar_SampFields>;
+  variance: Maybe<ProjectsPendingContributorsVarianceFields>;
+};
+
+
+/** aggregate fields of "projects_pending_contributors" */
+export type ProjectsPendingContributorsAggregateFieldsCountArgs = {
+  columns: InputMaybe<Array<ProjectsPendingContributorsSelectColumn>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "projects_pending_contributors" */
+export type ProjectsPendingContributorsAggregateOrderBy = {
+  avg: InputMaybe<Projects_Pending_Contributors_Avg_Order_By>;
+  count: InputMaybe<OrderBy>;
+  max: InputMaybe<Projects_Pending_Contributors_Max_Order_By>;
+  min: InputMaybe<Projects_Pending_Contributors_Min_Order_By>;
+  stddev: InputMaybe<Projects_Pending_Contributors_Stddev_Order_By>;
+  stddev_pop: InputMaybe<Projects_Pending_Contributors_Stddev_Pop_Order_By>;
+  stddev_samp: InputMaybe<Projects_Pending_Contributors_Stddev_Samp_Order_By>;
+  sum: InputMaybe<Projects_Pending_Contributors_Sum_Order_By>;
+  var_pop: InputMaybe<Projects_Pending_Contributors_Var_Pop_Order_By>;
+  var_samp: InputMaybe<Projects_Pending_Contributors_Var_Samp_Order_By>;
+  variance: InputMaybe<Projects_Pending_Contributors_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "projects_pending_contributors" */
+export type ProjectsPendingContributorsArrRelInsertInput = {
+  data: Array<ProjectsPendingContributorsInsertInput>;
+  /** upsert condition */
+  onConflict: InputMaybe<ProjectsPendingContributorsOnConflict>;
+};
+
+/** aggregate avg on columns */
+export type ProjectsPendingContributorsAvgFields = {
+  __typename?: 'ProjectsPendingContributorsAvgFields';
+  githubUserId: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "projects_pending_contributors". All fields are combined with a logical 'AND'. */
+export type ProjectsPendingContributorsBoolExp = {
+  _and: InputMaybe<Array<ProjectsPendingContributorsBoolExp>>;
+  _not: InputMaybe<ProjectsPendingContributorsBoolExp>;
+  _or: InputMaybe<Array<ProjectsPendingContributorsBoolExp>>;
+  githubUserId: InputMaybe<BigintComparisonExp>;
+  projectId: InputMaybe<UuidComparisonExp>;
+};
+
+/** unique or primary key constraints on table "projects_pending_contributors" */
+export enum ProjectsPendingContributorsConstraint {
+  /** unique or primary key constraint on columns "project_id", "github_user_id" */
+  ProjectsPendingContributorsPkey = 'projects_pending_contributors_pkey'
+}
+
+/** input type for incrementing numeric columns in table "projects_pending_contributors" */
+export type ProjectsPendingContributorsIncInput = {
+  githubUserId: InputMaybe<Scalars['bigint']>;
+};
+
+/** input type for inserting data into table "projects_pending_contributors" */
+export type ProjectsPendingContributorsInsertInput = {
+  githubUserId: InputMaybe<Scalars['bigint']>;
+  projectId: InputMaybe<Scalars['uuid']>;
+};
+
+/** aggregate max on columns */
+export type ProjectsPendingContributorsMaxFields = {
+  __typename?: 'ProjectsPendingContributorsMaxFields';
+  githubUserId: Maybe<Scalars['bigint']>;
+  projectId: Maybe<Scalars['uuid']>;
+};
+
+/** aggregate min on columns */
+export type ProjectsPendingContributorsMinFields = {
+  __typename?: 'ProjectsPendingContributorsMinFields';
+  githubUserId: Maybe<Scalars['bigint']>;
+  projectId: Maybe<Scalars['uuid']>;
+};
+
+/** response of any mutation on the table "projects_pending_contributors" */
+export type ProjectsPendingContributorsMutationResponse = {
+  __typename?: 'ProjectsPendingContributorsMutationResponse';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<ProjectsPendingContributors>;
+};
+
+/** on_conflict condition type for table "projects_pending_contributors" */
+export type ProjectsPendingContributorsOnConflict = {
+  constraint: ProjectsPendingContributorsConstraint;
+  update_columns: Array<ProjectsPendingContributorsUpdateColumn>;
+  where: InputMaybe<ProjectsPendingContributorsBoolExp>;
+};
+
+/** Ordering options when selecting data from "projects_pending_contributors". */
+export type ProjectsPendingContributorsOrderBy = {
+  githubUserId: InputMaybe<OrderBy>;
+  projectId: InputMaybe<OrderBy>;
+};
+
+/** primary key columns input for table: projects_pending_contributors */
+export type ProjectsPendingContributorsPkColumnsInput = {
+  githubUserId: Scalars['bigint'];
+  projectId: Scalars['uuid'];
+};
+
+/** select columns of table "projects_pending_contributors" */
+export enum ProjectsPendingContributorsSelectColumn {
+  /** column name */
+  GithubUserId = 'githubUserId',
+  /** column name */
+  ProjectId = 'projectId'
+}
+
+/** input type for updating data in table "projects_pending_contributors" */
+export type ProjectsPendingContributorsSetInput = {
+  githubUserId: InputMaybe<Scalars['bigint']>;
+  projectId: InputMaybe<Scalars['uuid']>;
+};
+
+/** aggregate stddev on columns */
+export type ProjectsPendingContributorsStddevFields = {
+  __typename?: 'ProjectsPendingContributorsStddevFields';
+  githubUserId: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type ProjectsPendingContributorsStddev_PopFields = {
+  __typename?: 'ProjectsPendingContributorsStddev_popFields';
+  githubUserId: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type ProjectsPendingContributorsStddev_SampFields = {
+  __typename?: 'ProjectsPendingContributorsStddev_sampFields';
+  githubUserId: Maybe<Scalars['Float']>;
+};
+
+/** aggregate sum on columns */
+export type ProjectsPendingContributorsSumFields = {
+  __typename?: 'ProjectsPendingContributorsSumFields';
+  githubUserId: Maybe<Scalars['bigint']>;
+};
+
+/** update columns of table "projects_pending_contributors" */
+export enum ProjectsPendingContributorsUpdateColumn {
+  /** column name */
+  GithubUserId = 'githubUserId',
+  /** column name */
+  ProjectId = 'projectId'
+}
+
+export type ProjectsPendingContributorsUpdates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<ProjectsPendingContributorsIncInput>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<ProjectsPendingContributorsSetInput>;
+  where: ProjectsPendingContributorsBoolExp;
+};
+
+/** aggregate var_pop on columns */
+export type ProjectsPendingContributorsVar_PopFields = {
+  __typename?: 'ProjectsPendingContributorsVar_popFields';
+  githubUserId: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type ProjectsPendingContributorsVar_SampFields = {
+  __typename?: 'ProjectsPendingContributorsVar_sampFields';
+  githubUserId: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type ProjectsPendingContributorsVarianceFields = {
+  __typename?: 'ProjectsPendingContributorsVarianceFields';
+  githubUserId: Maybe<Scalars['Float']>;
+};
+
+/** columns and relationships of "projects_rewarded_users" */
+export type ProjectsRewardedUsers = {
+  __typename?: 'ProjectsRewardedUsers';
+  githubUserId: Scalars['bigint'];
+  projectId: Scalars['uuid'];
+  rewardCount: Scalars['Int'];
+};
+
+/** aggregated selection of "projects_rewarded_users" */
+export type ProjectsRewardedUsersAggregate = {
+  __typename?: 'ProjectsRewardedUsersAggregate';
+  aggregate: Maybe<ProjectsRewardedUsersAggregateFields>;
+  nodes: Array<ProjectsRewardedUsers>;
+};
+
+/** aggregate fields of "projects_rewarded_users" */
+export type ProjectsRewardedUsersAggregateFields = {
+  __typename?: 'ProjectsRewardedUsersAggregateFields';
+  avg: Maybe<ProjectsRewardedUsersAvgFields>;
+  count: Scalars['Int'];
+  max: Maybe<ProjectsRewardedUsersMaxFields>;
+  min: Maybe<ProjectsRewardedUsersMinFields>;
+  stddev: Maybe<ProjectsRewardedUsersStddevFields>;
+  stddevPop: Maybe<ProjectsRewardedUsersStddev_PopFields>;
+  stddevSamp: Maybe<ProjectsRewardedUsersStddev_SampFields>;
+  sum: Maybe<ProjectsRewardedUsersSumFields>;
+  varPop: Maybe<ProjectsRewardedUsersVar_PopFields>;
+  varSamp: Maybe<ProjectsRewardedUsersVar_SampFields>;
+  variance: Maybe<ProjectsRewardedUsersVarianceFields>;
+};
+
+
+/** aggregate fields of "projects_rewarded_users" */
+export type ProjectsRewardedUsersAggregateFieldsCountArgs = {
+  columns: InputMaybe<Array<ProjectsRewardedUsersSelectColumn>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "projects_rewarded_users" */
+export type ProjectsRewardedUsersAggregateOrderBy = {
+  avg: InputMaybe<Projects_Rewarded_Users_Avg_Order_By>;
+  count: InputMaybe<OrderBy>;
+  max: InputMaybe<Projects_Rewarded_Users_Max_Order_By>;
+  min: InputMaybe<Projects_Rewarded_Users_Min_Order_By>;
+  stddev: InputMaybe<Projects_Rewarded_Users_Stddev_Order_By>;
+  stddev_pop: InputMaybe<Projects_Rewarded_Users_Stddev_Pop_Order_By>;
+  stddev_samp: InputMaybe<Projects_Rewarded_Users_Stddev_Samp_Order_By>;
+  sum: InputMaybe<Projects_Rewarded_Users_Sum_Order_By>;
+  var_pop: InputMaybe<Projects_Rewarded_Users_Var_Pop_Order_By>;
+  var_samp: InputMaybe<Projects_Rewarded_Users_Var_Samp_Order_By>;
+  variance: InputMaybe<Projects_Rewarded_Users_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "projects_rewarded_users" */
+export type ProjectsRewardedUsersArrRelInsertInput = {
+  data: Array<ProjectsRewardedUsersInsertInput>;
+  /** upsert condition */
+  onConflict: InputMaybe<ProjectsRewardedUsersOnConflict>;
+};
+
+/** aggregate avg on columns */
+export type ProjectsRewardedUsersAvgFields = {
+  __typename?: 'ProjectsRewardedUsersAvgFields';
+  githubUserId: Maybe<Scalars['Float']>;
+  rewardCount: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "projects_rewarded_users". All fields are combined with a logical 'AND'. */
+export type ProjectsRewardedUsersBoolExp = {
+  _and: InputMaybe<Array<ProjectsRewardedUsersBoolExp>>;
+  _not: InputMaybe<ProjectsRewardedUsersBoolExp>;
+  _or: InputMaybe<Array<ProjectsRewardedUsersBoolExp>>;
+  githubUserId: InputMaybe<BigintComparisonExp>;
+  projectId: InputMaybe<UuidComparisonExp>;
+  rewardCount: InputMaybe<IntComparisonExp>;
+};
+
+/** unique or primary key constraints on table "projects_rewarded_users" */
+export enum ProjectsRewardedUsersConstraint {
+  /** unique or primary key constraint on columns "project_id", "github_user_id" */
+  ProjectsRewardedUsersPkey = 'projects_rewarded_users_pkey'
+}
+
+/** input type for incrementing numeric columns in table "projects_rewarded_users" */
+export type ProjectsRewardedUsersIncInput = {
+  githubUserId: InputMaybe<Scalars['bigint']>;
+  rewardCount: InputMaybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "projects_rewarded_users" */
+export type ProjectsRewardedUsersInsertInput = {
+  githubUserId: InputMaybe<Scalars['bigint']>;
+  projectId: InputMaybe<Scalars['uuid']>;
+  rewardCount: InputMaybe<Scalars['Int']>;
+};
+
+/** aggregate max on columns */
+export type ProjectsRewardedUsersMaxFields = {
+  __typename?: 'ProjectsRewardedUsersMaxFields';
+  githubUserId: Maybe<Scalars['bigint']>;
+  projectId: Maybe<Scalars['uuid']>;
+  rewardCount: Maybe<Scalars['Int']>;
+};
+
+/** aggregate min on columns */
+export type ProjectsRewardedUsersMinFields = {
+  __typename?: 'ProjectsRewardedUsersMinFields';
+  githubUserId: Maybe<Scalars['bigint']>;
+  projectId: Maybe<Scalars['uuid']>;
+  rewardCount: Maybe<Scalars['Int']>;
+};
+
+/** response of any mutation on the table "projects_rewarded_users" */
+export type ProjectsRewardedUsersMutationResponse = {
+  __typename?: 'ProjectsRewardedUsersMutationResponse';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<ProjectsRewardedUsers>;
+};
+
+/** on_conflict condition type for table "projects_rewarded_users" */
+export type ProjectsRewardedUsersOnConflict = {
+  constraint: ProjectsRewardedUsersConstraint;
+  update_columns: Array<ProjectsRewardedUsersUpdateColumn>;
+  where: InputMaybe<ProjectsRewardedUsersBoolExp>;
+};
+
+/** Ordering options when selecting data from "projects_rewarded_users". */
+export type ProjectsRewardedUsersOrderBy = {
+  githubUserId: InputMaybe<OrderBy>;
+  projectId: InputMaybe<OrderBy>;
+  rewardCount: InputMaybe<OrderBy>;
+};
+
+/** primary key columns input for table: projects_rewarded_users */
+export type ProjectsRewardedUsersPkColumnsInput = {
+  githubUserId: Scalars['bigint'];
+  projectId: Scalars['uuid'];
+};
+
+/** select columns of table "projects_rewarded_users" */
+export enum ProjectsRewardedUsersSelectColumn {
+  /** column name */
+  GithubUserId = 'githubUserId',
+  /** column name */
+  ProjectId = 'projectId',
+  /** column name */
+  RewardCount = 'rewardCount'
+}
+
+/** input type for updating data in table "projects_rewarded_users" */
+export type ProjectsRewardedUsersSetInput = {
+  githubUserId: InputMaybe<Scalars['bigint']>;
+  projectId: InputMaybe<Scalars['uuid']>;
+  rewardCount: InputMaybe<Scalars['Int']>;
+};
+
+/** aggregate stddev on columns */
+export type ProjectsRewardedUsersStddevFields = {
+  __typename?: 'ProjectsRewardedUsersStddevFields';
+  githubUserId: Maybe<Scalars['Float']>;
+  rewardCount: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type ProjectsRewardedUsersStddev_PopFields = {
+  __typename?: 'ProjectsRewardedUsersStddev_popFields';
+  githubUserId: Maybe<Scalars['Float']>;
+  rewardCount: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type ProjectsRewardedUsersStddev_SampFields = {
+  __typename?: 'ProjectsRewardedUsersStddev_sampFields';
+  githubUserId: Maybe<Scalars['Float']>;
+  rewardCount: Maybe<Scalars['Float']>;
+};
+
+/** aggregate sum on columns */
+export type ProjectsRewardedUsersSumFields = {
+  __typename?: 'ProjectsRewardedUsersSumFields';
+  githubUserId: Maybe<Scalars['bigint']>;
+  rewardCount: Maybe<Scalars['Int']>;
+};
+
+/** update columns of table "projects_rewarded_users" */
+export enum ProjectsRewardedUsersUpdateColumn {
+  /** column name */
+  GithubUserId = 'githubUserId',
+  /** column name */
+  ProjectId = 'projectId',
+  /** column name */
+  RewardCount = 'rewardCount'
+}
+
+export type ProjectsRewardedUsersUpdates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<ProjectsRewardedUsersIncInput>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<ProjectsRewardedUsersSetInput>;
+  where: ProjectsRewardedUsersBoolExp;
+};
+
+/** aggregate var_pop on columns */
+export type ProjectsRewardedUsersVar_PopFields = {
+  __typename?: 'ProjectsRewardedUsersVar_popFields';
+  githubUserId: Maybe<Scalars['Float']>;
+  rewardCount: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type ProjectsRewardedUsersVar_SampFields = {
+  __typename?: 'ProjectsRewardedUsersVar_sampFields';
+  githubUserId: Maybe<Scalars['Float']>;
+  rewardCount: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type ProjectsRewardedUsersVarianceFields = {
+  __typename?: 'ProjectsRewardedUsersVarianceFields';
+  githubUserId: Maybe<Scalars['Float']>;
+  rewardCount: Maybe<Scalars['Float']>;
 };
 
 /** select columns of table "api.projects" */
@@ -7728,6 +8407,10 @@ export type UserProfiles = {
   __typename?: 'UserProfiles';
   avatarUrl: Maybe<Scalars['String']>;
   bio: Maybe<Scalars['String']>;
+  /** An array relationship */
+  completedContributions: Array<ApiCompletedContributions>;
+  /** An aggregate relationship */
+  completedContributionsAggregate: ApiCompletedContributionsAggregate;
   completionScore: Scalars['Int'];
   /** An array relationship */
   contactInformations: Array<ContactInformations>;
@@ -7767,9 +8450,33 @@ export type UserProfiles = {
   projectsLeaded: Array<ProjectLeads>;
   /** An aggregate relationship */
   projectsLeadedAggregate: ProjectLeadsAggregate;
+  /** An array relationship */
+  projectsRewarded: Array<ProjectsRewardedUsers>;
+  /** An aggregate relationship */
+  projectsRewardedAggregate: ProjectsRewardedUsersAggregate;
   userId: Maybe<Scalars['uuid']>;
   website: Maybe<Scalars['String']>;
   weeklyAllocatedTime: Maybe<Scalars['allocated_time']>;
+};
+
+
+/** columns and relationships of "api.user_profiles" */
+export type UserProfilesCompletedContributionsArgs = {
+  distinctOn: InputMaybe<Array<ApiCompletedContributionsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ApiCompletedContributionsOrderBy>>;
+  where: InputMaybe<ApiCompletedContributionsBoolExp>;
+};
+
+
+/** columns and relationships of "api.user_profiles" */
+export type UserProfilesCompletedContributionsAggregateArgs = {
+  distinctOn: InputMaybe<Array<ApiCompletedContributionsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ApiCompletedContributionsOrderBy>>;
+  where: InputMaybe<ApiCompletedContributionsBoolExp>;
 };
 
 
@@ -7918,6 +8625,26 @@ export type UserProfilesProjectsLeadedAggregateArgs = {
   where: InputMaybe<ProjectLeadsBoolExp>;
 };
 
+
+/** columns and relationships of "api.user_profiles" */
+export type UserProfilesProjectsRewardedArgs = {
+  distinctOn: InputMaybe<Array<ProjectsRewardedUsersSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ProjectsRewardedUsersOrderBy>>;
+  where: InputMaybe<ProjectsRewardedUsersBoolExp>;
+};
+
+
+/** columns and relationships of "api.user_profiles" */
+export type UserProfilesProjectsRewardedAggregateArgs = {
+  distinctOn: InputMaybe<Array<ProjectsRewardedUsersSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ProjectsRewardedUsersOrderBy>>;
+  where: InputMaybe<ProjectsRewardedUsersBoolExp>;
+};
+
 /** aggregated selection of "api.user_profiles" */
 export type UserProfilesAggregate = {
   __typename?: 'UserProfilesAggregate';
@@ -7961,6 +8688,8 @@ export type UserProfilesBoolExp = {
   _or: InputMaybe<Array<UserProfilesBoolExp>>;
   avatarUrl: InputMaybe<StringComparisonExp>;
   bio: InputMaybe<StringComparisonExp>;
+  completedContributions: InputMaybe<ApiCompletedContributionsBoolExp>;
+  completedContributions_aggregate: InputMaybe<Api_Completed_Contributions_Aggregate_Bool_Exp>;
   contactInformations: InputMaybe<ContactInformationsBoolExp>;
   contactInformations_aggregate: InputMaybe<ContactInformations_Aggregate_Bool_Exp>;
   contributionCounts: InputMaybe<ContributionCountsBoolExp>;
@@ -7984,6 +8713,8 @@ export type UserProfilesBoolExp = {
   projectsContributed_aggregate: InputMaybe<Projects_Contributors_Aggregate_Bool_Exp>;
   projectsLeaded: InputMaybe<ProjectLeadsBoolExp>;
   projectsLeaded_aggregate: InputMaybe<Project_Leads_Aggregate_Bool_Exp>;
+  projectsRewarded: InputMaybe<ProjectsRewardedUsersBoolExp>;
+  projectsRewarded_aggregate: InputMaybe<Projects_Rewarded_Users_Aggregate_Bool_Exp>;
   userId: InputMaybe<UuidComparisonExp>;
   website: InputMaybe<StringComparisonExp>;
   weeklyAllocatedTime: InputMaybe<AllocatedTimeComparisonExp>;
@@ -7993,6 +8724,7 @@ export type UserProfilesBoolExp = {
 export type UserProfilesInsertInput = {
   avatarUrl: InputMaybe<Scalars['String']>;
   bio: InputMaybe<Scalars['String']>;
+  completedContributions: InputMaybe<ApiCompletedContributionsArrRelInsertInput>;
   contactInformations: InputMaybe<ContactInformationsArrRelInsertInput>;
   contributionCounts: InputMaybe<ContributionCountsArrRelInsertInput>;
   contributionStats: InputMaybe<ContributionStatsArrRelInsertInput>;
@@ -8009,6 +8741,7 @@ export type UserProfilesInsertInput = {
   paymentStats: InputMaybe<PaymentStatsArrRelInsertInput>;
   projectsContributed: InputMaybe<ProjectsContributorsArrRelInsertInput>;
   projectsLeaded: InputMaybe<ProjectLeadsArrRelInsertInput>;
+  projectsRewarded: InputMaybe<ProjectsRewardedUsersArrRelInsertInput>;
   userId: InputMaybe<Scalars['uuid']>;
   website: InputMaybe<Scalars['String']>;
   weeklyAllocatedTime: InputMaybe<Scalars['allocated_time']>;
@@ -8057,6 +8790,7 @@ export type UserProfilesObjRelInsertInput = {
 export type UserProfilesOrderBy = {
   avatarUrl: InputMaybe<OrderBy>;
   bio: InputMaybe<OrderBy>;
+  completedContributionsAggregate: InputMaybe<ApiCompletedContributionsAggregateOrderBy>;
   contactInformationsAggregate: InputMaybe<ContactInformationsAggregateOrderBy>;
   contributionCountsAggregate: InputMaybe<ContributionCountsAggregateOrderBy>;
   contributionStatsAggregate: InputMaybe<ContributionStatsAggregateOrderBy>;
@@ -8073,6 +8807,7 @@ export type UserProfilesOrderBy = {
   paymentStatsAggregate: InputMaybe<PaymentStatsAggregateOrderBy>;
   projectsContributedAggregate: InputMaybe<ProjectsContributorsAggregateOrderBy>;
   projectsLeadedAggregate: InputMaybe<ProjectLeadsAggregateOrderBy>;
+  projectsRewardedAggregate: InputMaybe<ProjectsRewardedUsersAggregateOrderBy>;
   userId: InputMaybe<OrderBy>;
   website: InputMaybe<OrderBy>;
   weeklyAllocatedTime: InputMaybe<OrderBy>;
@@ -8197,54 +8932,49 @@ export enum Visibility {
 }
 
 export type WorkItem = {
-  issueNumber: Scalars['Int'];
+  id: Scalars['String'];
+  number: Scalars['Int'];
   repoId: Scalars['Int'];
+  type: WorkItemType;
 };
 
-/** columns and relationships of "work_items" */
+export enum WorkItemType {
+  CodeReview = 'CODE_REVIEW',
+  Issue = 'ISSUE',
+  PullRequest = 'PULL_REQUEST'
+}
+
+/** columns and relationships of "api.work_items" */
 export type WorkItems = {
   __typename?: 'WorkItems';
-  githubIssue: Maybe<GithubIssue>;
-  githubPullRequest: Maybe<GithubPullRequest>;
-  /** An array relationship */
-  ignoredForProjects: Array<IgnoredGithubIssues>;
-  /** An aggregate relationship */
-  ignoredForProjectsAggregate: IgnoredGithubIssuesAggregate;
-  issueNumber: Scalars['bigint'];
-  paymentId: Scalars['uuid'];
+  /** An object relationship */
+  githubCodeReview: Maybe<GithubPullRequestReviews>;
+  githubCodeReviewId: Maybe<Scalars['String']>;
+  /** An object relationship */
+  githubIssue: Maybe<GithubIssues>;
+  githubIssueId: Maybe<Scalars['bigint']>;
+  /** An object relationship */
+  githubPullRequest: Maybe<GithubPullRequests>;
+  githubPullRequestId: Maybe<Scalars['bigint']>;
+  id: Maybe<Scalars['String']>;
+  number: Maybe<Scalars['bigint']>;
+  paymentId: Maybe<Scalars['uuid']>;
   /** An object relationship */
   paymentRequest: Maybe<PaymentRequests>;
-  repoId: Scalars['bigint'];
+  projectId: Maybe<Scalars['uuid']>;
+  recipientId: Maybe<Scalars['bigint']>;
+  repoId: Maybe<Scalars['bigint']>;
+  type: Maybe<Scalars['contribution_type']>;
 };
 
-
-/** columns and relationships of "work_items" */
-export type WorkItemsIgnoredForProjectsArgs = {
-  distinctOn: InputMaybe<Array<IgnoredGithubIssuesSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<IgnoredGithubIssuesOrderBy>>;
-  where: InputMaybe<IgnoredGithubIssuesBoolExp>;
-};
-
-
-/** columns and relationships of "work_items" */
-export type WorkItemsIgnoredForProjectsAggregateArgs = {
-  distinctOn: InputMaybe<Array<IgnoredGithubIssuesSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<IgnoredGithubIssuesOrderBy>>;
-  where: InputMaybe<IgnoredGithubIssuesBoolExp>;
-};
-
-/** aggregated selection of "work_items" */
+/** aggregated selection of "api.work_items" */
 export type WorkItemsAggregate = {
   __typename?: 'WorkItemsAggregate';
   aggregate: Maybe<WorkItemsAggregateFields>;
   nodes: Array<WorkItems>;
 };
 
-/** aggregate fields of "work_items" */
+/** aggregate fields of "api.work_items" */
 export type WorkItemsAggregateFields = {
   __typename?: 'WorkItemsAggregateFields';
   avg: Maybe<WorkItemsAvgFields>;
@@ -8261,92 +8991,121 @@ export type WorkItemsAggregateFields = {
 };
 
 
-/** aggregate fields of "work_items" */
+/** aggregate fields of "api.work_items" */
 export type WorkItemsAggregateFieldsCountArgs = {
   columns: InputMaybe<Array<WorkItemsSelectColumn>>;
   distinct: InputMaybe<Scalars['Boolean']>;
 };
 
-/** order by aggregate values of table "work_items" */
+/** order by aggregate values of table "api.work_items" */
 export type WorkItemsAggregateOrderBy = {
-  avg: InputMaybe<Work_Items_Avg_Order_By>;
+  avg: InputMaybe<WorkItems_Avg_Order_By>;
   count: InputMaybe<OrderBy>;
-  max: InputMaybe<Work_Items_Max_Order_By>;
-  min: InputMaybe<Work_Items_Min_Order_By>;
-  stddev: InputMaybe<Work_Items_Stddev_Order_By>;
-  stddev_pop: InputMaybe<Work_Items_Stddev_Pop_Order_By>;
-  stddev_samp: InputMaybe<Work_Items_Stddev_Samp_Order_By>;
-  sum: InputMaybe<Work_Items_Sum_Order_By>;
-  var_pop: InputMaybe<Work_Items_Var_Pop_Order_By>;
-  var_samp: InputMaybe<Work_Items_Var_Samp_Order_By>;
-  variance: InputMaybe<Work_Items_Variance_Order_By>;
+  max: InputMaybe<WorkItems_Max_Order_By>;
+  min: InputMaybe<WorkItems_Min_Order_By>;
+  stddev: InputMaybe<WorkItems_Stddev_Order_By>;
+  stddev_pop: InputMaybe<WorkItems_Stddev_Pop_Order_By>;
+  stddev_samp: InputMaybe<WorkItems_Stddev_Samp_Order_By>;
+  sum: InputMaybe<WorkItems_Sum_Order_By>;
+  var_pop: InputMaybe<WorkItems_Var_Pop_Order_By>;
+  var_samp: InputMaybe<WorkItems_Var_Samp_Order_By>;
+  variance: InputMaybe<WorkItems_Variance_Order_By>;
 };
 
-/** input type for inserting array relation for remote table "work_items" */
+/** input type for inserting array relation for remote table "api.work_items" */
 export type WorkItemsArrRelInsertInput = {
   data: Array<WorkItemsInsertInput>;
-  /** upsert condition */
-  onConflict: InputMaybe<WorkItemsOnConflict>;
 };
 
 /** aggregate avg on columns */
 export type WorkItemsAvgFields = {
   __typename?: 'WorkItemsAvgFields';
-  issueNumber: Maybe<Scalars['Float']>;
+  githubIssueId: Maybe<Scalars['Float']>;
+  githubPullRequestId: Maybe<Scalars['Float']>;
+  number: Maybe<Scalars['Float']>;
+  recipientId: Maybe<Scalars['Float']>;
   repoId: Maybe<Scalars['Float']>;
 };
 
-/** Boolean expression to filter rows from the table "work_items". All fields are combined with a logical 'AND'. */
+/** Boolean expression to filter rows from the table "api.work_items". All fields are combined with a logical 'AND'. */
 export type WorkItemsBoolExp = {
   _and: InputMaybe<Array<WorkItemsBoolExp>>;
   _not: InputMaybe<WorkItemsBoolExp>;
   _or: InputMaybe<Array<WorkItemsBoolExp>>;
-  ignoredForProjects: InputMaybe<IgnoredGithubIssuesBoolExp>;
-  ignoredForProjects_aggregate: InputMaybe<Ignored_Github_Issues_Aggregate_Bool_Exp>;
-  issueNumber: InputMaybe<BigintComparisonExp>;
+  githubCodeReview: InputMaybe<GithubPullRequestReviewsBoolExp>;
+  githubCodeReviewId: InputMaybe<StringComparisonExp>;
+  githubIssue: InputMaybe<GithubIssuesBoolExp>;
+  githubIssueId: InputMaybe<BigintComparisonExp>;
+  githubPullRequest: InputMaybe<GithubPullRequestsBoolExp>;
+  githubPullRequestId: InputMaybe<BigintComparisonExp>;
+  id: InputMaybe<StringComparisonExp>;
+  number: InputMaybe<BigintComparisonExp>;
   paymentId: InputMaybe<UuidComparisonExp>;
   paymentRequest: InputMaybe<PaymentRequestsBoolExp>;
+  projectId: InputMaybe<UuidComparisonExp>;
+  recipientId: InputMaybe<BigintComparisonExp>;
   repoId: InputMaybe<BigintComparisonExp>;
+  type: InputMaybe<ContributionTypeComparisonExp>;
 };
 
-/** unique or primary key constraints on table "work_items" */
-export enum WorkItemsConstraint {
-  /** unique or primary key constraint on columns "issue_number", "payment_id", "repo_id" */
-  WorkItemsPkey = 'work_items_pkey'
-}
-
-/** input type for incrementing numeric columns in table "work_items" */
+/** input type for incrementing numeric columns in table "api.work_items" */
 export type WorkItemsIncInput = {
-  issueNumber: InputMaybe<Scalars['bigint']>;
+  githubIssueId: InputMaybe<Scalars['bigint']>;
+  githubPullRequestId: InputMaybe<Scalars['bigint']>;
+  number: InputMaybe<Scalars['bigint']>;
+  recipientId: InputMaybe<Scalars['bigint']>;
   repoId: InputMaybe<Scalars['bigint']>;
 };
 
-/** input type for inserting data into table "work_items" */
+/** input type for inserting data into table "api.work_items" */
 export type WorkItemsInsertInput = {
-  ignoredForProjects: InputMaybe<IgnoredGithubIssuesArrRelInsertInput>;
-  issueNumber: InputMaybe<Scalars['bigint']>;
+  githubCodeReview: InputMaybe<GithubPullRequestReviewsObjRelInsertInput>;
+  githubCodeReviewId: InputMaybe<Scalars['String']>;
+  githubIssue: InputMaybe<GithubIssuesObjRelInsertInput>;
+  githubIssueId: InputMaybe<Scalars['bigint']>;
+  githubPullRequest: InputMaybe<GithubPullRequestsObjRelInsertInput>;
+  githubPullRequestId: InputMaybe<Scalars['bigint']>;
+  id: InputMaybe<Scalars['String']>;
+  number: InputMaybe<Scalars['bigint']>;
   paymentId: InputMaybe<Scalars['uuid']>;
   paymentRequest: InputMaybe<PaymentRequestsObjRelInsertInput>;
+  projectId: InputMaybe<Scalars['uuid']>;
+  recipientId: InputMaybe<Scalars['bigint']>;
   repoId: InputMaybe<Scalars['bigint']>;
+  type: InputMaybe<Scalars['contribution_type']>;
 };
 
 /** aggregate max on columns */
 export type WorkItemsMaxFields = {
   __typename?: 'WorkItemsMaxFields';
-  issueNumber: Maybe<Scalars['bigint']>;
+  githubCodeReviewId: Maybe<Scalars['String']>;
+  githubIssueId: Maybe<Scalars['bigint']>;
+  githubPullRequestId: Maybe<Scalars['bigint']>;
+  id: Maybe<Scalars['String']>;
+  number: Maybe<Scalars['bigint']>;
   paymentId: Maybe<Scalars['uuid']>;
+  projectId: Maybe<Scalars['uuid']>;
+  recipientId: Maybe<Scalars['bigint']>;
   repoId: Maybe<Scalars['bigint']>;
+  type: Maybe<Scalars['contribution_type']>;
 };
 
 /** aggregate min on columns */
 export type WorkItemsMinFields = {
   __typename?: 'WorkItemsMinFields';
-  issueNumber: Maybe<Scalars['bigint']>;
+  githubCodeReviewId: Maybe<Scalars['String']>;
+  githubIssueId: Maybe<Scalars['bigint']>;
+  githubPullRequestId: Maybe<Scalars['bigint']>;
+  id: Maybe<Scalars['String']>;
+  number: Maybe<Scalars['bigint']>;
   paymentId: Maybe<Scalars['uuid']>;
+  projectId: Maybe<Scalars['uuid']>;
+  recipientId: Maybe<Scalars['bigint']>;
   repoId: Maybe<Scalars['bigint']>;
+  type: Maybe<Scalars['contribution_type']>;
 };
 
-/** response of any mutation on the table "work_items" */
+/** response of any mutation on the table "api.work_items" */
 export type WorkItemsMutationResponse = {
   __typename?: 'WorkItemsMutationResponse';
   /** number of rows affected by the mutation */
@@ -8355,83 +9114,101 @@ export type WorkItemsMutationResponse = {
   returning: Array<WorkItems>;
 };
 
-/** on_conflict condition type for table "work_items" */
-export type WorkItemsOnConflict = {
-  constraint: WorkItemsConstraint;
-  update_columns: Array<WorkItemsUpdateColumn>;
-  where: InputMaybe<WorkItemsBoolExp>;
-};
-
-/** Ordering options when selecting data from "work_items". */
+/** Ordering options when selecting data from "api.work_items". */
 export type WorkItemsOrderBy = {
-  ignoredForProjectsAggregate: InputMaybe<IgnoredGithubIssuesAggregateOrderBy>;
-  issueNumber: InputMaybe<OrderBy>;
+  githubCodeReview: InputMaybe<GithubPullRequestReviewsOrderBy>;
+  githubCodeReviewId: InputMaybe<OrderBy>;
+  githubIssue: InputMaybe<GithubIssuesOrderBy>;
+  githubIssueId: InputMaybe<OrderBy>;
+  githubPullRequest: InputMaybe<GithubPullRequestsOrderBy>;
+  githubPullRequestId: InputMaybe<OrderBy>;
+  id: InputMaybe<OrderBy>;
+  number: InputMaybe<OrderBy>;
   paymentId: InputMaybe<OrderBy>;
   paymentRequest: InputMaybe<PaymentRequestsOrderBy>;
+  projectId: InputMaybe<OrderBy>;
+  recipientId: InputMaybe<OrderBy>;
   repoId: InputMaybe<OrderBy>;
+  type: InputMaybe<OrderBy>;
 };
 
-/** primary key columns input for table: work_items */
-export type WorkItemsPkColumnsInput = {
-  issueNumber: Scalars['bigint'];
-  paymentId: Scalars['uuid'];
-  repoId: Scalars['bigint'];
-};
-
-/** select columns of table "work_items" */
+/** select columns of table "api.work_items" */
 export enum WorkItemsSelectColumn {
   /** column name */
-  IssueNumber = 'issueNumber',
+  GithubCodeReviewId = 'githubCodeReviewId',
+  /** column name */
+  GithubIssueId = 'githubIssueId',
+  /** column name */
+  GithubPullRequestId = 'githubPullRequestId',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Number = 'number',
   /** column name */
   PaymentId = 'paymentId',
   /** column name */
-  RepoId = 'repoId'
+  ProjectId = 'projectId',
+  /** column name */
+  RecipientId = 'recipientId',
+  /** column name */
+  RepoId = 'repoId',
+  /** column name */
+  Type = 'type'
 }
 
-/** input type for updating data in table "work_items" */
+/** input type for updating data in table "api.work_items" */
 export type WorkItemsSetInput = {
-  issueNumber: InputMaybe<Scalars['bigint']>;
+  githubCodeReviewId: InputMaybe<Scalars['String']>;
+  githubIssueId: InputMaybe<Scalars['bigint']>;
+  githubPullRequestId: InputMaybe<Scalars['bigint']>;
+  id: InputMaybe<Scalars['String']>;
+  number: InputMaybe<Scalars['bigint']>;
   paymentId: InputMaybe<Scalars['uuid']>;
+  projectId: InputMaybe<Scalars['uuid']>;
+  recipientId: InputMaybe<Scalars['bigint']>;
   repoId: InputMaybe<Scalars['bigint']>;
+  type: InputMaybe<Scalars['contribution_type']>;
 };
 
 /** aggregate stddev on columns */
 export type WorkItemsStddevFields = {
   __typename?: 'WorkItemsStddevFields';
-  issueNumber: Maybe<Scalars['Float']>;
+  githubIssueId: Maybe<Scalars['Float']>;
+  githubPullRequestId: Maybe<Scalars['Float']>;
+  number: Maybe<Scalars['Float']>;
+  recipientId: Maybe<Scalars['Float']>;
   repoId: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_pop on columns */
 export type WorkItemsStddev_PopFields = {
   __typename?: 'WorkItemsStddev_popFields';
-  issueNumber: Maybe<Scalars['Float']>;
+  githubIssueId: Maybe<Scalars['Float']>;
+  githubPullRequestId: Maybe<Scalars['Float']>;
+  number: Maybe<Scalars['Float']>;
+  recipientId: Maybe<Scalars['Float']>;
   repoId: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_samp on columns */
 export type WorkItemsStddev_SampFields = {
   __typename?: 'WorkItemsStddev_sampFields';
-  issueNumber: Maybe<Scalars['Float']>;
+  githubIssueId: Maybe<Scalars['Float']>;
+  githubPullRequestId: Maybe<Scalars['Float']>;
+  number: Maybe<Scalars['Float']>;
+  recipientId: Maybe<Scalars['Float']>;
   repoId: Maybe<Scalars['Float']>;
 };
 
 /** aggregate sum on columns */
 export type WorkItemsSumFields = {
   __typename?: 'WorkItemsSumFields';
-  issueNumber: Maybe<Scalars['bigint']>;
+  githubIssueId: Maybe<Scalars['bigint']>;
+  githubPullRequestId: Maybe<Scalars['bigint']>;
+  number: Maybe<Scalars['bigint']>;
+  recipientId: Maybe<Scalars['bigint']>;
   repoId: Maybe<Scalars['bigint']>;
 };
-
-/** update columns of table "work_items" */
-export enum WorkItemsUpdateColumn {
-  /** column name */
-  IssueNumber = 'issueNumber',
-  /** column name */
-  PaymentId = 'paymentId',
-  /** column name */
-  RepoId = 'repoId'
-}
 
 export type WorkItemsUpdates = {
   /** increments the numeric columns with given value of the filtered values */
@@ -8444,22 +9221,270 @@ export type WorkItemsUpdates = {
 /** aggregate var_pop on columns */
 export type WorkItemsVar_PopFields = {
   __typename?: 'WorkItemsVar_popFields';
-  issueNumber: Maybe<Scalars['Float']>;
+  githubIssueId: Maybe<Scalars['Float']>;
+  githubPullRequestId: Maybe<Scalars['Float']>;
+  number: Maybe<Scalars['Float']>;
+  recipientId: Maybe<Scalars['Float']>;
   repoId: Maybe<Scalars['Float']>;
 };
 
 /** aggregate var_samp on columns */
 export type WorkItemsVar_SampFields = {
   __typename?: 'WorkItemsVar_sampFields';
-  issueNumber: Maybe<Scalars['Float']>;
+  githubIssueId: Maybe<Scalars['Float']>;
+  githubPullRequestId: Maybe<Scalars['Float']>;
+  number: Maybe<Scalars['Float']>;
+  recipientId: Maybe<Scalars['Float']>;
   repoId: Maybe<Scalars['Float']>;
 };
 
 /** aggregate variance on columns */
 export type WorkItemsVarianceFields = {
   __typename?: 'WorkItemsVarianceFields';
-  issueNumber: Maybe<Scalars['Float']>;
+  githubIssueId: Maybe<Scalars['Float']>;
+  githubPullRequestId: Maybe<Scalars['Float']>;
+  number: Maybe<Scalars['Float']>;
+  recipientId: Maybe<Scalars['Float']>;
   repoId: Maybe<Scalars['Float']>;
+};
+
+export type WorkItems_Aggregate_Bool_Exp = {
+  count: InputMaybe<WorkItems_Aggregate_Bool_Exp_Count>;
+};
+
+export type WorkItems_Aggregate_Bool_Exp_Count = {
+  arguments: InputMaybe<Array<WorkItemsSelectColumn>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+  filter: InputMaybe<WorkItemsBoolExp>;
+  predicate: IntComparisonExp;
+};
+
+/** order by avg() on columns of table "api.work_items" */
+export type WorkItems_Avg_Order_By = {
+  githubIssueId: InputMaybe<OrderBy>;
+  githubPullRequestId: InputMaybe<OrderBy>;
+  number: InputMaybe<OrderBy>;
+  recipientId: InputMaybe<OrderBy>;
+  repoId: InputMaybe<OrderBy>;
+};
+
+/** order by max() on columns of table "api.work_items" */
+export type WorkItems_Max_Order_By = {
+  githubCodeReviewId: InputMaybe<OrderBy>;
+  githubIssueId: InputMaybe<OrderBy>;
+  githubPullRequestId: InputMaybe<OrderBy>;
+  id: InputMaybe<OrderBy>;
+  number: InputMaybe<OrderBy>;
+  paymentId: InputMaybe<OrderBy>;
+  projectId: InputMaybe<OrderBy>;
+  recipientId: InputMaybe<OrderBy>;
+  repoId: InputMaybe<OrderBy>;
+  type: InputMaybe<OrderBy>;
+};
+
+/** order by min() on columns of table "api.work_items" */
+export type WorkItems_Min_Order_By = {
+  githubCodeReviewId: InputMaybe<OrderBy>;
+  githubIssueId: InputMaybe<OrderBy>;
+  githubPullRequestId: InputMaybe<OrderBy>;
+  id: InputMaybe<OrderBy>;
+  number: InputMaybe<OrderBy>;
+  paymentId: InputMaybe<OrderBy>;
+  projectId: InputMaybe<OrderBy>;
+  recipientId: InputMaybe<OrderBy>;
+  repoId: InputMaybe<OrderBy>;
+  type: InputMaybe<OrderBy>;
+};
+
+/** order by stddev() on columns of table "api.work_items" */
+export type WorkItems_Stddev_Order_By = {
+  githubIssueId: InputMaybe<OrderBy>;
+  githubPullRequestId: InputMaybe<OrderBy>;
+  number: InputMaybe<OrderBy>;
+  recipientId: InputMaybe<OrderBy>;
+  repoId: InputMaybe<OrderBy>;
+};
+
+/** order by stddev_pop() on columns of table "api.work_items" */
+export type WorkItems_Stddev_Pop_Order_By = {
+  githubIssueId: InputMaybe<OrderBy>;
+  githubPullRequestId: InputMaybe<OrderBy>;
+  number: InputMaybe<OrderBy>;
+  recipientId: InputMaybe<OrderBy>;
+  repoId: InputMaybe<OrderBy>;
+};
+
+/** order by stddev_samp() on columns of table "api.work_items" */
+export type WorkItems_Stddev_Samp_Order_By = {
+  githubIssueId: InputMaybe<OrderBy>;
+  githubPullRequestId: InputMaybe<OrderBy>;
+  number: InputMaybe<OrderBy>;
+  recipientId: InputMaybe<OrderBy>;
+  repoId: InputMaybe<OrderBy>;
+};
+
+/** Streaming cursor of the table "WorkItems" */
+export type WorkItems_StreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: WorkItems_StreamCursorValueInput;
+  /** cursor ordering */
+  ordering: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type WorkItems_StreamCursorValueInput = {
+  githubCodeReviewId: InputMaybe<Scalars['String']>;
+  githubIssueId: InputMaybe<Scalars['bigint']>;
+  githubPullRequestId: InputMaybe<Scalars['bigint']>;
+  id: InputMaybe<Scalars['String']>;
+  number: InputMaybe<Scalars['bigint']>;
+  paymentId: InputMaybe<Scalars['uuid']>;
+  projectId: InputMaybe<Scalars['uuid']>;
+  recipientId: InputMaybe<Scalars['bigint']>;
+  repoId: InputMaybe<Scalars['bigint']>;
+  type: InputMaybe<Scalars['contribution_type']>;
+};
+
+/** order by sum() on columns of table "api.work_items" */
+export type WorkItems_Sum_Order_By = {
+  githubIssueId: InputMaybe<OrderBy>;
+  githubPullRequestId: InputMaybe<OrderBy>;
+  number: InputMaybe<OrderBy>;
+  recipientId: InputMaybe<OrderBy>;
+  repoId: InputMaybe<OrderBy>;
+};
+
+/** order by var_pop() on columns of table "api.work_items" */
+export type WorkItems_Var_Pop_Order_By = {
+  githubIssueId: InputMaybe<OrderBy>;
+  githubPullRequestId: InputMaybe<OrderBy>;
+  number: InputMaybe<OrderBy>;
+  recipientId: InputMaybe<OrderBy>;
+  repoId: InputMaybe<OrderBy>;
+};
+
+/** order by var_samp() on columns of table "api.work_items" */
+export type WorkItems_Var_Samp_Order_By = {
+  githubIssueId: InputMaybe<OrderBy>;
+  githubPullRequestId: InputMaybe<OrderBy>;
+  number: InputMaybe<OrderBy>;
+  recipientId: InputMaybe<OrderBy>;
+  repoId: InputMaybe<OrderBy>;
+};
+
+/** order by variance() on columns of table "api.work_items" */
+export type WorkItems_Variance_Order_By = {
+  githubIssueId: InputMaybe<OrderBy>;
+  githubPullRequestId: InputMaybe<OrderBy>;
+  number: InputMaybe<OrderBy>;
+  recipientId: InputMaybe<OrderBy>;
+  repoId: InputMaybe<OrderBy>;
+};
+
+export type Api_Completed_Contributions_Aggregate_Bool_Exp = {
+  count: InputMaybe<Api_Completed_Contributions_Aggregate_Bool_Exp_Count>;
+};
+
+export type Api_Completed_Contributions_Aggregate_Bool_Exp_Count = {
+  arguments: InputMaybe<Array<ApiCompletedContributionsSelectColumn>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+  filter: InputMaybe<ApiCompletedContributionsBoolExp>;
+  predicate: IntComparisonExp;
+};
+
+/** order by avg() on columns of table "api.completed_contributions" */
+export type Api_Completed_Contributions_Avg_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+  repoId: InputMaybe<OrderBy>;
+};
+
+/** order by max() on columns of table "api.completed_contributions" */
+export type Api_Completed_Contributions_Max_Order_By = {
+  closedAt: InputMaybe<OrderBy>;
+  createdAt: InputMaybe<OrderBy>;
+  detailsId: InputMaybe<OrderBy>;
+  githubUserId: InputMaybe<OrderBy>;
+  id: InputMaybe<OrderBy>;
+  projectId: InputMaybe<OrderBy>;
+  repoId: InputMaybe<OrderBy>;
+  status: InputMaybe<OrderBy>;
+  type: InputMaybe<OrderBy>;
+};
+
+/** order by min() on columns of table "api.completed_contributions" */
+export type Api_Completed_Contributions_Min_Order_By = {
+  closedAt: InputMaybe<OrderBy>;
+  createdAt: InputMaybe<OrderBy>;
+  detailsId: InputMaybe<OrderBy>;
+  githubUserId: InputMaybe<OrderBy>;
+  id: InputMaybe<OrderBy>;
+  projectId: InputMaybe<OrderBy>;
+  repoId: InputMaybe<OrderBy>;
+  status: InputMaybe<OrderBy>;
+  type: InputMaybe<OrderBy>;
+};
+
+/** order by stddev() on columns of table "api.completed_contributions" */
+export type Api_Completed_Contributions_Stddev_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+  repoId: InputMaybe<OrderBy>;
+};
+
+/** order by stddev_pop() on columns of table "api.completed_contributions" */
+export type Api_Completed_Contributions_Stddev_Pop_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+  repoId: InputMaybe<OrderBy>;
+};
+
+/** order by stddev_samp() on columns of table "api.completed_contributions" */
+export type Api_Completed_Contributions_Stddev_Samp_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+  repoId: InputMaybe<OrderBy>;
+};
+
+/** Streaming cursor of the table "api_completed_contributions" */
+export type Api_Completed_Contributions_StreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: Api_Completed_Contributions_StreamCursorValueInput;
+  /** cursor ordering */
+  ordering: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Api_Completed_Contributions_StreamCursorValueInput = {
+  closedAt: InputMaybe<Scalars['timestamp']>;
+  createdAt: InputMaybe<Scalars['timestamp']>;
+  detailsId: InputMaybe<Scalars['String']>;
+  githubUserId: InputMaybe<Scalars['bigint']>;
+  id: InputMaybe<Scalars['String']>;
+  projectId: InputMaybe<Scalars['uuid']>;
+  repoId: InputMaybe<Scalars['bigint']>;
+  status: InputMaybe<Scalars['contribution_status']>;
+  type: InputMaybe<Scalars['contribution_type']>;
+};
+
+/** order by sum() on columns of table "api.completed_contributions" */
+export type Api_Completed_Contributions_Sum_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+  repoId: InputMaybe<OrderBy>;
+};
+
+/** order by var_pop() on columns of table "api.completed_contributions" */
+export type Api_Completed_Contributions_Var_Pop_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+  repoId: InputMaybe<OrderBy>;
+};
+
+/** order by var_samp() on columns of table "api.completed_contributions" */
+export type Api_Completed_Contributions_Var_Samp_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+  repoId: InputMaybe<OrderBy>;
+};
+
+/** order by variance() on columns of table "api.completed_contributions" */
+export type Api_Completed_Contributions_Variance_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+  repoId: InputMaybe<OrderBy>;
 };
 
 export type Applications_Aggregate_Bool_Exp = {
@@ -10194,188 +11219,6 @@ export type Budgets_Variance_Order_By = {
   spentAmount: InputMaybe<OrderBy>;
 };
 
-export type Github_Issues_Aggregate_Bool_Exp = {
-  count: InputMaybe<Github_Issues_Aggregate_Bool_Exp_Count>;
-};
-
-export type Github_Issues_Aggregate_Bool_Exp_Count = {
-  arguments: InputMaybe<Array<GithubIssuesSelectColumn>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
-  filter: InputMaybe<GithubIssuesBoolExp>;
-  predicate: IntComparisonExp;
-};
-
-/** order by avg() on columns of table "github_issues" */
-export type Github_Issues_Avg_Order_By = {
-  authorId: InputMaybe<OrderBy>;
-  commentsCount: InputMaybe<OrderBy>;
-  id: InputMaybe<OrderBy>;
-  number: InputMaybe<OrderBy>;
-  repoId: InputMaybe<OrderBy>;
-};
-
-/** order by max() on columns of table "github_issues" */
-export type Github_Issues_Max_Order_By = {
-  authorId: InputMaybe<OrderBy>;
-  closedAt: InputMaybe<OrderBy>;
-  commentsCount: InputMaybe<OrderBy>;
-  createdAt: InputMaybe<OrderBy>;
-  htmlUrl: InputMaybe<OrderBy>;
-  id: InputMaybe<OrderBy>;
-  number: InputMaybe<OrderBy>;
-  repoId: InputMaybe<OrderBy>;
-  status: InputMaybe<OrderBy>;
-  title: InputMaybe<OrderBy>;
-};
-
-/** order by min() on columns of table "github_issues" */
-export type Github_Issues_Min_Order_By = {
-  authorId: InputMaybe<OrderBy>;
-  closedAt: InputMaybe<OrderBy>;
-  commentsCount: InputMaybe<OrderBy>;
-  createdAt: InputMaybe<OrderBy>;
-  htmlUrl: InputMaybe<OrderBy>;
-  id: InputMaybe<OrderBy>;
-  number: InputMaybe<OrderBy>;
-  repoId: InputMaybe<OrderBy>;
-  status: InputMaybe<OrderBy>;
-  title: InputMaybe<OrderBy>;
-};
-
-/** order by stddev() on columns of table "github_issues" */
-export type Github_Issues_Stddev_Order_By = {
-  authorId: InputMaybe<OrderBy>;
-  commentsCount: InputMaybe<OrderBy>;
-  id: InputMaybe<OrderBy>;
-  number: InputMaybe<OrderBy>;
-  repoId: InputMaybe<OrderBy>;
-};
-
-/** order by stddev_pop() on columns of table "github_issues" */
-export type Github_Issues_Stddev_Pop_Order_By = {
-  authorId: InputMaybe<OrderBy>;
-  commentsCount: InputMaybe<OrderBy>;
-  id: InputMaybe<OrderBy>;
-  number: InputMaybe<OrderBy>;
-  repoId: InputMaybe<OrderBy>;
-};
-
-/** order by stddev_samp() on columns of table "github_issues" */
-export type Github_Issues_Stddev_Samp_Order_By = {
-  authorId: InputMaybe<OrderBy>;
-  commentsCount: InputMaybe<OrderBy>;
-  id: InputMaybe<OrderBy>;
-  number: InputMaybe<OrderBy>;
-  repoId: InputMaybe<OrderBy>;
-};
-
-/** Streaming cursor of the table "github_issues" */
-export type Github_Issues_StreamCursorInput = {
-  /** Stream column input with initial value */
-  initialValue: Github_Issues_StreamCursorValueInput;
-  /** cursor ordering */
-  ordering: InputMaybe<CursorOrdering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type Github_Issues_StreamCursorValueInput = {
-  assigneeIds: InputMaybe<Scalars['jsonb']>;
-  authorId: InputMaybe<Scalars['bigint']>;
-  closedAt: InputMaybe<Scalars['timestamp']>;
-  commentsCount: InputMaybe<Scalars['bigint']>;
-  createdAt: InputMaybe<Scalars['timestamp']>;
-  htmlUrl: InputMaybe<Scalars['String']>;
-  id: InputMaybe<Scalars['bigint']>;
-  number: InputMaybe<Scalars['bigint']>;
-  repoId: InputMaybe<Scalars['bigint']>;
-  status: InputMaybe<Scalars['github_issue_status']>;
-  title: InputMaybe<Scalars['String']>;
-};
-
-/** order by sum() on columns of table "github_issues" */
-export type Github_Issues_Sum_Order_By = {
-  authorId: InputMaybe<OrderBy>;
-  commentsCount: InputMaybe<OrderBy>;
-  id: InputMaybe<OrderBy>;
-  number: InputMaybe<OrderBy>;
-  repoId: InputMaybe<OrderBy>;
-};
-
-/** order by var_pop() on columns of table "github_issues" */
-export type Github_Issues_Var_Pop_Order_By = {
-  authorId: InputMaybe<OrderBy>;
-  commentsCount: InputMaybe<OrderBy>;
-  id: InputMaybe<OrderBy>;
-  number: InputMaybe<OrderBy>;
-  repoId: InputMaybe<OrderBy>;
-};
-
-/** order by var_samp() on columns of table "github_issues" */
-export type Github_Issues_Var_Samp_Order_By = {
-  authorId: InputMaybe<OrderBy>;
-  commentsCount: InputMaybe<OrderBy>;
-  id: InputMaybe<OrderBy>;
-  number: InputMaybe<OrderBy>;
-  repoId: InputMaybe<OrderBy>;
-};
-
-/** order by variance() on columns of table "github_issues" */
-export type Github_Issues_Variance_Order_By = {
-  authorId: InputMaybe<OrderBy>;
-  commentsCount: InputMaybe<OrderBy>;
-  id: InputMaybe<OrderBy>;
-  number: InputMaybe<OrderBy>;
-  repoId: InputMaybe<OrderBy>;
-};
-
-/** Streaming cursor of the table "github_pull_requests" */
-export type Github_Pull_Requests_StreamCursorInput = {
-  /** Stream column input with initial value */
-  initialValue: Github_Pull_Requests_StreamCursorValueInput;
-  /** cursor ordering */
-  ordering: InputMaybe<CursorOrdering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type Github_Pull_Requests_StreamCursorValueInput = {
-  authorId: InputMaybe<Scalars['bigint']>;
-  ciChecks: InputMaybe<Scalars['github_ci_checks']>;
-  closedAt: InputMaybe<Scalars['timestamp']>;
-  closingIssueNumbers: InputMaybe<Scalars['jsonb']>;
-  createdAt: InputMaybe<Scalars['timestamp']>;
-  draft: InputMaybe<Scalars['Boolean']>;
-  htmlUrl: InputMaybe<Scalars['String']>;
-  id: InputMaybe<Scalars['bigint']>;
-  mergedAt: InputMaybe<Scalars['timestamp']>;
-  number: InputMaybe<Scalars['bigint']>;
-  repoId: InputMaybe<Scalars['bigint']>;
-  status: InputMaybe<Scalars['github_pull_request_status']>;
-  title: InputMaybe<Scalars['String']>;
-};
-
-/** Streaming cursor of the table "github_repos" */
-export type Github_Repos_StreamCursorInput = {
-  /** Stream column input with initial value */
-  initialValue: Github_Repos_StreamCursorValueInput;
-  /** cursor ordering */
-  ordering: InputMaybe<CursorOrdering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type Github_Repos_StreamCursorValueInput = {
-  description: InputMaybe<Scalars['String']>;
-  forkCount: InputMaybe<Scalars['Int']>;
-  hasIssues: InputMaybe<Scalars['Boolean']>;
-  htmlUrl: InputMaybe<Scalars['String']>;
-  id: InputMaybe<Scalars['bigint']>;
-  languages: InputMaybe<Scalars['jsonb']>;
-  name: InputMaybe<Scalars['String']>;
-  owner: InputMaybe<Scalars['String']>;
-  parentId: InputMaybe<Scalars['bigint']>;
-  stars: InputMaybe<Scalars['Int']>;
-  updatedAt: InputMaybe<Scalars['timestamp']>;
-};
-
 /** Streaming cursor of the table "github_users" */
 export type Github_Users_StreamCursorInput = {
   /** Stream column input with initial value */
@@ -10398,94 +11241,6 @@ export type Github_Users_StreamCursorValueInput = {
   website: InputMaybe<Scalars['String']>;
 };
 
-export type Ignored_Github_Issues_Aggregate_Bool_Exp = {
-  count: InputMaybe<Ignored_Github_Issues_Aggregate_Bool_Exp_Count>;
-};
-
-export type Ignored_Github_Issues_Aggregate_Bool_Exp_Count = {
-  arguments: InputMaybe<Array<IgnoredGithubIssuesSelectColumn>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
-  filter: InputMaybe<IgnoredGithubIssuesBoolExp>;
-  predicate: IntComparisonExp;
-};
-
-/** order by avg() on columns of table "ignored_github_issues" */
-export type Ignored_Github_Issues_Avg_Order_By = {
-  issueNumber: InputMaybe<OrderBy>;
-  repoId: InputMaybe<OrderBy>;
-};
-
-/** order by max() on columns of table "ignored_github_issues" */
-export type Ignored_Github_Issues_Max_Order_By = {
-  issueNumber: InputMaybe<OrderBy>;
-  projectId: InputMaybe<OrderBy>;
-  repoId: InputMaybe<OrderBy>;
-};
-
-/** order by min() on columns of table "ignored_github_issues" */
-export type Ignored_Github_Issues_Min_Order_By = {
-  issueNumber: InputMaybe<OrderBy>;
-  projectId: InputMaybe<OrderBy>;
-  repoId: InputMaybe<OrderBy>;
-};
-
-/** order by stddev() on columns of table "ignored_github_issues" */
-export type Ignored_Github_Issues_Stddev_Order_By = {
-  issueNumber: InputMaybe<OrderBy>;
-  repoId: InputMaybe<OrderBy>;
-};
-
-/** order by stddev_pop() on columns of table "ignored_github_issues" */
-export type Ignored_Github_Issues_Stddev_Pop_Order_By = {
-  issueNumber: InputMaybe<OrderBy>;
-  repoId: InputMaybe<OrderBy>;
-};
-
-/** order by stddev_samp() on columns of table "ignored_github_issues" */
-export type Ignored_Github_Issues_Stddev_Samp_Order_By = {
-  issueNumber: InputMaybe<OrderBy>;
-  repoId: InputMaybe<OrderBy>;
-};
-
-/** Streaming cursor of the table "ignored_github_issues" */
-export type Ignored_Github_Issues_StreamCursorInput = {
-  /** Stream column input with initial value */
-  initialValue: Ignored_Github_Issues_StreamCursorValueInput;
-  /** cursor ordering */
-  ordering: InputMaybe<CursorOrdering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type Ignored_Github_Issues_StreamCursorValueInput = {
-  issueNumber: InputMaybe<Scalars['bigint']>;
-  projectId: InputMaybe<Scalars['uuid']>;
-  repoId: InputMaybe<Scalars['bigint']>;
-};
-
-/** order by sum() on columns of table "ignored_github_issues" */
-export type Ignored_Github_Issues_Sum_Order_By = {
-  issueNumber: InputMaybe<OrderBy>;
-  repoId: InputMaybe<OrderBy>;
-};
-
-/** order by var_pop() on columns of table "ignored_github_issues" */
-export type Ignored_Github_Issues_Var_Pop_Order_By = {
-  issueNumber: InputMaybe<OrderBy>;
-  repoId: InputMaybe<OrderBy>;
-};
-
-/** order by var_samp() on columns of table "ignored_github_issues" */
-export type Ignored_Github_Issues_Var_Samp_Order_By = {
-  issueNumber: InputMaybe<OrderBy>;
-  repoId: InputMaybe<OrderBy>;
-};
-
-/** order by variance() on columns of table "ignored_github_issues" */
-export type Ignored_Github_Issues_Variance_Order_By = {
-  issueNumber: InputMaybe<OrderBy>;
-  repoId: InputMaybe<OrderBy>;
-};
-
 /** mutation root */
 export type Mutation_Root = {
   __typename?: 'mutation_root';
@@ -10497,7 +11252,7 @@ export type Mutation_Root = {
   applyToProject: Scalars['Uuid'];
   cancelPaymentRequest: Payment;
   /** createAndCloseIssue */
-  createAndCloseIssue: GithubIssueCreatedAndClosed;
+  createAndCloseIssue: GithubIssue;
   /** createProject */
   createProject: Scalars['Uuid'];
   createSponsor: Scalars['Uuid'];
@@ -10539,26 +11294,16 @@ export type Mutation_Root = {
   deleteBudgets: Maybe<BudgetsMutationResponse>;
   /** delete single row from the table: "budgets" */
   deleteBudgetsByPk: Maybe<Budgets>;
-  /** delete data from the table: "github_issues" */
+  /** delete data from the table: "api.github_issues" */
   deleteGithubIssues: Maybe<GithubIssuesMutationResponse>;
-  /** delete single row from the table: "github_issues" */
-  deleteGithubIssuesByPk: Maybe<GithubIssues>;
-  /** delete data from the table: "github_pull_requests" */
+  /** delete data from the table: "api.github_pull_request_reviews" */
+  deleteGithubPullRequestReviews: Maybe<GithubPullRequestReviewsMutationResponse>;
+  /** delete data from the table: "api.github_pull_requests" */
   deleteGithubPullRequests: Maybe<GithubPullRequestsMutationResponse>;
-  /** delete single row from the table: "github_pull_requests" */
-  deleteGithubPullRequestsByPk: Maybe<GithubPullRequests>;
-  /** delete data from the table: "github_repos" */
-  deleteGithubRepos: Maybe<GithubReposMutationResponse>;
-  /** delete single row from the table: "github_repos" */
-  deleteGithubReposByPk: Maybe<GithubRepos>;
   /** delete data from the table: "github_users" */
   deleteGithubUsers: Maybe<GithubUsersMutationResponse>;
   /** delete single row from the table: "github_users" */
   deleteGithubUsersByPk: Maybe<GithubUsers>;
-  /** delete data from the table: "ignored_github_issues" */
-  deleteIgnoredGithubIssues: Maybe<IgnoredGithubIssuesMutationResponse>;
-  /** delete single row from the table: "ignored_github_issues" */
-  deleteIgnoredGithubIssuesByPk: Maybe<IgnoredGithubIssues>;
   /** delete data from the table: "onboardings" */
   deleteOnboardings: Maybe<OnboardingsMutationResponse>;
   /** delete single row from the table: "onboardings" */
@@ -10587,6 +11332,14 @@ export type Mutation_Root = {
   deleteProjectsContributors: Maybe<ProjectsContributorsMutationResponse>;
   /** delete single row from the table: "projects_contributors" */
   deleteProjectsContributorsByPk: Maybe<ProjectsContributors>;
+  /** delete data from the table: "projects_pending_contributors" */
+  deleteProjectsPendingContributors: Maybe<ProjectsPendingContributorsMutationResponse>;
+  /** delete single row from the table: "projects_pending_contributors" */
+  deleteProjectsPendingContributorsByPk: Maybe<ProjectsPendingContributors>;
+  /** delete data from the table: "projects_rewarded_users" */
+  deleteProjectsRewardedUsers: Maybe<ProjectsRewardedUsersMutationResponse>;
+  /** delete single row from the table: "projects_rewarded_users" */
+  deleteProjectsRewardedUsersByPk: Maybe<ProjectsRewardedUsers>;
   /** delete data from the table: "projects_sponsors" */
   deleteProjectsSponsors: Maybe<ProjectsSponsorsMutationResponse>;
   /** delete single row from the table: "projects_sponsors" */
@@ -10605,11 +11358,10 @@ export type Mutation_Root = {
   deleteUserPayoutInfoByPk: Maybe<UserPayoutInfo>;
   /** delete data from the table: "auth.users" */
   deleteUsers: Maybe<UsersMutationResponse>;
-  /** delete data from the table: "work_items" */
+  /** delete data from the table: "api.work_items" */
   deleteWorkItems: Maybe<WorkItemsMutationResponse>;
-  /** delete single row from the table: "work_items" */
-  deleteWorkItemsByPk: Maybe<WorkItems>;
-  ignoreIssue: Scalars['Boolean'];
+  /** ignoreContribution */
+  ignoreContribution: Scalars['Boolean'];
   /** insert data into the table: "applications" */
   insertApplications: Maybe<ApplicationsMutationResponse>;
   /** insert a single row into the table: "applications" */
@@ -10650,26 +11402,22 @@ export type Mutation_Root = {
   insertBudgets: Maybe<BudgetsMutationResponse>;
   /** insert a single row into the table: "budgets" */
   insertBudgetsOne: Maybe<Budgets>;
-  /** insert data into the table: "github_issues" */
+  /** insert data into the table: "api.github_issues" */
   insertGithubIssues: Maybe<GithubIssuesMutationResponse>;
-  /** insert a single row into the table: "github_issues" */
+  /** insert a single row into the table: "api.github_issues" */
   insertGithubIssuesOne: Maybe<GithubIssues>;
-  /** insert data into the table: "github_pull_requests" */
+  /** insert data into the table: "api.github_pull_request_reviews" */
+  insertGithubPullRequestReviews: Maybe<GithubPullRequestReviewsMutationResponse>;
+  /** insert a single row into the table: "api.github_pull_request_reviews" */
+  insertGithubPullRequestReviewsOne: Maybe<GithubPullRequestReviews>;
+  /** insert data into the table: "api.github_pull_requests" */
   insertGithubPullRequests: Maybe<GithubPullRequestsMutationResponse>;
-  /** insert a single row into the table: "github_pull_requests" */
+  /** insert a single row into the table: "api.github_pull_requests" */
   insertGithubPullRequestsOne: Maybe<GithubPullRequests>;
-  /** insert data into the table: "github_repos" */
-  insertGithubRepos: Maybe<GithubReposMutationResponse>;
-  /** insert a single row into the table: "github_repos" */
-  insertGithubReposOne: Maybe<GithubRepos>;
   /** insert data into the table: "github_users" */
   insertGithubUsers: Maybe<GithubUsersMutationResponse>;
   /** insert a single row into the table: "github_users" */
   insertGithubUsersOne: Maybe<GithubUsers>;
-  /** insert data into the table: "ignored_github_issues" */
-  insertIgnoredGithubIssues: Maybe<IgnoredGithubIssuesMutationResponse>;
-  /** insert a single row into the table: "ignored_github_issues" */
-  insertIgnoredGithubIssuesOne: Maybe<IgnoredGithubIssues>;
   /** insert data into the table: "onboardings" */
   insertOnboardings: Maybe<OnboardingsMutationResponse>;
   /** insert a single row into the table: "onboardings" */
@@ -10698,6 +11446,14 @@ export type Mutation_Root = {
   insertProjectsContributors: Maybe<ProjectsContributorsMutationResponse>;
   /** insert a single row into the table: "projects_contributors" */
   insertProjectsContributorsOne: Maybe<ProjectsContributors>;
+  /** insert data into the table: "projects_pending_contributors" */
+  insertProjectsPendingContributors: Maybe<ProjectsPendingContributorsMutationResponse>;
+  /** insert a single row into the table: "projects_pending_contributors" */
+  insertProjectsPendingContributorsOne: Maybe<ProjectsPendingContributors>;
+  /** insert data into the table: "projects_rewarded_users" */
+  insertProjectsRewardedUsers: Maybe<ProjectsRewardedUsersMutationResponse>;
+  /** insert a single row into the table: "projects_rewarded_users" */
+  insertProjectsRewardedUsersOne: Maybe<ProjectsRewardedUsers>;
   /** insert data into the table: "projects_sponsors" */
   insertProjectsSponsors: Maybe<ProjectsSponsorsMutationResponse>;
   /** insert a single row into the table: "projects_sponsors" */
@@ -10718,9 +11474,9 @@ export type Mutation_Root = {
   insertUserPayoutInfoOne: Maybe<UserPayoutInfo>;
   /** insert data into the table: "auth.users" */
   insertUsers: Maybe<UsersMutationResponse>;
-  /** insert data into the table: "work_items" */
+  /** insert data into the table: "api.work_items" */
   insertWorkItems: Maybe<WorkItemsMutationResponse>;
-  /** insert a single row into the table: "work_items" */
+  /** insert a single row into the table: "api.work_items" */
   insertWorkItemsOne: Maybe<WorkItems>;
   inviteProjectLeader: Scalars['Uuid'];
   linkGithubRepo: Scalars['Uuid'];
@@ -10732,7 +11488,8 @@ export type Mutation_Root = {
   /** Suggest a new technology */
   suggestTechnology: Scalars['Boolean'];
   unassignProjectLead: Scalars['Boolean'];
-  unignoreIssue: Scalars['Boolean'];
+  /** unignoreContribution */
+  unignoreContribution: Scalars['Boolean'];
   unlinkGithubRepo: Scalars['Uuid'];
   /** update data of the table: "applications" */
   updateApplications: Maybe<ApplicationsMutationResponse>;
@@ -10793,36 +11550,24 @@ export type Mutation_Root = {
   updateBudgetsByPk: Maybe<Budgets>;
   /** update multiples rows of table: "budgets" */
   updateBudgetsMany: Maybe<Array<Maybe<BudgetsMutationResponse>>>;
-  /** update data of the table: "github_issues" */
+  /** update data of the table: "api.github_issues" */
   updateGithubIssues: Maybe<GithubIssuesMutationResponse>;
-  /** update single row of the table: "github_issues" */
-  updateGithubIssuesByPk: Maybe<GithubIssues>;
-  /** update multiples rows of table: "github_issues" */
+  /** update multiples rows of table: "api.github_issues" */
   updateGithubIssuesMany: Maybe<Array<Maybe<GithubIssuesMutationResponse>>>;
-  /** update data of the table: "github_pull_requests" */
+  /** update data of the table: "api.github_pull_request_reviews" */
+  updateGithubPullRequestReviews: Maybe<GithubPullRequestReviewsMutationResponse>;
+  /** update multiples rows of table: "api.github_pull_request_reviews" */
+  updateGithubPullRequestReviewsMany: Maybe<Array<Maybe<GithubPullRequestReviewsMutationResponse>>>;
+  /** update data of the table: "api.github_pull_requests" */
   updateGithubPullRequests: Maybe<GithubPullRequestsMutationResponse>;
-  /** update single row of the table: "github_pull_requests" */
-  updateGithubPullRequestsByPk: Maybe<GithubPullRequests>;
-  /** update multiples rows of table: "github_pull_requests" */
+  /** update multiples rows of table: "api.github_pull_requests" */
   updateGithubPullRequestsMany: Maybe<Array<Maybe<GithubPullRequestsMutationResponse>>>;
-  /** update data of the table: "github_repos" */
-  updateGithubRepos: Maybe<GithubReposMutationResponse>;
-  /** update single row of the table: "github_repos" */
-  updateGithubReposByPk: Maybe<GithubRepos>;
-  /** update multiples rows of table: "github_repos" */
-  updateGithubReposMany: Maybe<Array<Maybe<GithubReposMutationResponse>>>;
   /** update data of the table: "github_users" */
   updateGithubUsers: Maybe<GithubUsersMutationResponse>;
   /** update single row of the table: "github_users" */
   updateGithubUsersByPk: Maybe<GithubUsers>;
   /** update multiples rows of table: "github_users" */
   updateGithubUsersMany: Maybe<Array<Maybe<GithubUsersMutationResponse>>>;
-  /** update data of the table: "ignored_github_issues" */
-  updateIgnoredGithubIssues: Maybe<IgnoredGithubIssuesMutationResponse>;
-  /** update single row of the table: "ignored_github_issues" */
-  updateIgnoredGithubIssuesByPk: Maybe<IgnoredGithubIssues>;
-  /** update multiples rows of table: "ignored_github_issues" */
-  updateIgnoredGithubIssuesMany: Maybe<Array<Maybe<IgnoredGithubIssuesMutationResponse>>>;
   /** update data of the table: "onboardings" */
   updateOnboardings: Maybe<OnboardingsMutationResponse>;
   /** update single row of the table: "onboardings" */
@@ -10867,6 +11612,18 @@ export type Mutation_Root = {
   updateProjectsContributorsByPk: Maybe<ProjectsContributors>;
   /** update multiples rows of table: "projects_contributors" */
   updateProjectsContributorsMany: Maybe<Array<Maybe<ProjectsContributorsMutationResponse>>>;
+  /** update data of the table: "projects_pending_contributors" */
+  updateProjectsPendingContributors: Maybe<ProjectsPendingContributorsMutationResponse>;
+  /** update single row of the table: "projects_pending_contributors" */
+  updateProjectsPendingContributorsByPk: Maybe<ProjectsPendingContributors>;
+  /** update multiples rows of table: "projects_pending_contributors" */
+  updateProjectsPendingContributorsMany: Maybe<Array<Maybe<ProjectsPendingContributorsMutationResponse>>>;
+  /** update data of the table: "projects_rewarded_users" */
+  updateProjectsRewardedUsers: Maybe<ProjectsRewardedUsersMutationResponse>;
+  /** update single row of the table: "projects_rewarded_users" */
+  updateProjectsRewardedUsersByPk: Maybe<ProjectsRewardedUsers>;
+  /** update multiples rows of table: "projects_rewarded_users" */
+  updateProjectsRewardedUsersMany: Maybe<Array<Maybe<ProjectsRewardedUsersMutationResponse>>>;
   /** update data of the table: "projects_sponsors" */
   updateProjectsSponsors: Maybe<ProjectsSponsorsMutationResponse>;
   /** update single row of the table: "projects_sponsors" */
@@ -10898,11 +11655,9 @@ export type Mutation_Root = {
   updateUsers: Maybe<UsersMutationResponse>;
   /** update multiples rows of table: "auth.users" */
   updateUsersMany: Maybe<Array<Maybe<UsersMutationResponse>>>;
-  /** update data of the table: "work_items" */
+  /** update data of the table: "api.work_items" */
   updateWorkItems: Maybe<WorkItemsMutationResponse>;
-  /** update single row of the table: "work_items" */
-  updateWorkItemsByPk: Maybe<WorkItems>;
-  /** update multiples rows of table: "work_items" */
+  /** update multiples rows of table: "api.work_items" */
   updateWorkItemsMany: Maybe<Array<Maybe<WorkItemsMutationResponse>>>;
 };
 
@@ -11107,32 +11862,14 @@ export type Mutation_RootDeleteGithubIssuesArgs = {
 
 
 /** mutation root */
-export type Mutation_RootDeleteGithubIssuesByPkArgs = {
-  id: Scalars['bigint'];
+export type Mutation_RootDeleteGithubPullRequestReviewsArgs = {
+  where: GithubPullRequestReviewsBoolExp;
 };
 
 
 /** mutation root */
 export type Mutation_RootDeleteGithubPullRequestsArgs = {
   where: GithubPullRequestsBoolExp;
-};
-
-
-/** mutation root */
-export type Mutation_RootDeleteGithubPullRequestsByPkArgs = {
-  id: Scalars['bigint'];
-};
-
-
-/** mutation root */
-export type Mutation_RootDeleteGithubReposArgs = {
-  where: GithubReposBoolExp;
-};
-
-
-/** mutation root */
-export type Mutation_RootDeleteGithubReposByPkArgs = {
-  id: Scalars['bigint'];
 };
 
 
@@ -11145,20 +11882,6 @@ export type Mutation_RootDeleteGithubUsersArgs = {
 /** mutation root */
 export type Mutation_RootDeleteGithubUsersByPkArgs = {
   id: Scalars['bigint'];
-};
-
-
-/** mutation root */
-export type Mutation_RootDeleteIgnoredGithubIssuesArgs = {
-  where: IgnoredGithubIssuesBoolExp;
-};
-
-
-/** mutation root */
-export type Mutation_RootDeleteIgnoredGithubIssuesByPkArgs = {
-  issueNumber: Scalars['bigint'];
-  projectId: Scalars['uuid'];
-  repoId: Scalars['bigint'];
 };
 
 
@@ -11250,6 +11973,32 @@ export type Mutation_RootDeleteProjectsContributorsByPkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDeleteProjectsPendingContributorsArgs = {
+  where: ProjectsPendingContributorsBoolExp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteProjectsPendingContributorsByPkArgs = {
+  githubUserId: Scalars['bigint'];
+  projectId: Scalars['uuid'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteProjectsRewardedUsersArgs = {
+  where: ProjectsRewardedUsersBoolExp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteProjectsRewardedUsersByPkArgs = {
+  githubUserId: Scalars['bigint'];
+  projectId: Scalars['uuid'];
+};
+
+
+/** mutation root */
 export type Mutation_RootDeleteProjectsSponsorsArgs = {
   where: ProjectsSponsorsBoolExp;
 };
@@ -11311,18 +12060,9 @@ export type Mutation_RootDeleteWorkItemsArgs = {
 
 
 /** mutation root */
-export type Mutation_RootDeleteWorkItemsByPkArgs = {
-  issueNumber: Scalars['bigint'];
-  paymentId: Scalars['uuid'];
-  repoId: Scalars['bigint'];
-};
-
-
-/** mutation root */
-export type Mutation_RootIgnoreIssueArgs = {
-  issueNumber: Scalars['Int'];
+export type Mutation_RootIgnoreContributionArgs = {
+  contributionId: Scalars['String'];
   projectId: Scalars['Uuid'];
-  repoId: Scalars['Int'];
 };
 
 
@@ -11467,42 +12207,36 @@ export type Mutation_RootInsertBudgetsOneArgs = {
 /** mutation root */
 export type Mutation_RootInsertGithubIssuesArgs = {
   objects: Array<GithubIssuesInsertInput>;
-  onConflict: InputMaybe<GithubIssuesOnConflict>;
 };
 
 
 /** mutation root */
 export type Mutation_RootInsertGithubIssuesOneArgs = {
   object: GithubIssuesInsertInput;
-  onConflict: InputMaybe<GithubIssuesOnConflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsertGithubPullRequestReviewsArgs = {
+  objects: Array<GithubPullRequestReviewsInsertInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsertGithubPullRequestReviewsOneArgs = {
+  object: GithubPullRequestReviewsInsertInput;
 };
 
 
 /** mutation root */
 export type Mutation_RootInsertGithubPullRequestsArgs = {
   objects: Array<GithubPullRequestsInsertInput>;
-  onConflict: InputMaybe<GithubPullRequestsOnConflict>;
 };
 
 
 /** mutation root */
 export type Mutation_RootInsertGithubPullRequestsOneArgs = {
   object: GithubPullRequestsInsertInput;
-  onConflict: InputMaybe<GithubPullRequestsOnConflict>;
-};
-
-
-/** mutation root */
-export type Mutation_RootInsertGithubReposArgs = {
-  objects: Array<GithubReposInsertInput>;
-  onConflict: InputMaybe<GithubReposOnConflict>;
-};
-
-
-/** mutation root */
-export type Mutation_RootInsertGithubReposOneArgs = {
-  object: GithubReposInsertInput;
-  onConflict: InputMaybe<GithubReposOnConflict>;
 };
 
 
@@ -11517,20 +12251,6 @@ export type Mutation_RootInsertGithubUsersArgs = {
 export type Mutation_RootInsertGithubUsersOneArgs = {
   object: GithubUsersInsertInput;
   onConflict: InputMaybe<GithubUsersOnConflict>;
-};
-
-
-/** mutation root */
-export type Mutation_RootInsertIgnoredGithubIssuesArgs = {
-  objects: Array<IgnoredGithubIssuesInsertInput>;
-  onConflict: InputMaybe<IgnoredGithubIssuesOnConflict>;
-};
-
-
-/** mutation root */
-export type Mutation_RootInsertIgnoredGithubIssuesOneArgs = {
-  object: IgnoredGithubIssuesInsertInput;
-  onConflict: InputMaybe<IgnoredGithubIssuesOnConflict>;
 };
 
 
@@ -11633,6 +12353,34 @@ export type Mutation_RootInsertProjectsContributorsOneArgs = {
 
 
 /** mutation root */
+export type Mutation_RootInsertProjectsPendingContributorsArgs = {
+  objects: Array<ProjectsPendingContributorsInsertInput>;
+  onConflict: InputMaybe<ProjectsPendingContributorsOnConflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsertProjectsPendingContributorsOneArgs = {
+  object: ProjectsPendingContributorsInsertInput;
+  onConflict: InputMaybe<ProjectsPendingContributorsOnConflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsertProjectsRewardedUsersArgs = {
+  objects: Array<ProjectsRewardedUsersInsertInput>;
+  onConflict: InputMaybe<ProjectsRewardedUsersOnConflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsertProjectsRewardedUsersOneArgs = {
+  object: ProjectsRewardedUsersInsertInput;
+  onConflict: InputMaybe<ProjectsRewardedUsersOnConflict>;
+};
+
+
+/** mutation root */
 export type Mutation_RootInsertProjectsSponsorsArgs = {
   objects: Array<ProjectsSponsorsInsertInput>;
   onConflict: InputMaybe<ProjectsSponsorsOnConflict>;
@@ -11703,14 +12451,12 @@ export type Mutation_RootInsertUsersArgs = {
 /** mutation root */
 export type Mutation_RootInsertWorkItemsArgs = {
   objects: Array<WorkItemsInsertInput>;
-  onConflict: InputMaybe<WorkItemsOnConflict>;
 };
 
 
 /** mutation root */
 export type Mutation_RootInsertWorkItemsOneArgs = {
   object: WorkItemsInsertInput;
-  onConflict: InputMaybe<WorkItemsOnConflict>;
 };
 
 
@@ -11771,10 +12517,9 @@ export type Mutation_RootUnassignProjectLeadArgs = {
 
 
 /** mutation root */
-export type Mutation_RootUnignoreIssueArgs = {
-  issueNumber: Scalars['Int'];
+export type Mutation_RootUnignoreContributionArgs = {
+  contributionId: Scalars['String'];
   projectId: Scalars['Uuid'];
-  repoId: Scalars['Int'];
 };
 
 
@@ -12014,21 +12759,22 @@ export type Mutation_RootUpdateGithubIssuesArgs = {
 
 
 /** mutation root */
-export type Mutation_RootUpdateGithubIssuesByPkArgs = {
-  _append: InputMaybe<GithubIssuesAppendInput>;
-  _deleteAtPath: InputMaybe<GithubIssuesDeleteAtPathInput>;
-  _deleteElem: InputMaybe<GithubIssuesDeleteElemInput>;
-  _deleteKey: InputMaybe<GithubIssuesDeleteKeyInput>;
-  _inc: InputMaybe<GithubIssuesIncInput>;
-  _prepend: InputMaybe<GithubIssuesPrependInput>;
-  _set: InputMaybe<GithubIssuesSetInput>;
-  pk_columns: GithubIssuesPkColumnsInput;
+export type Mutation_RootUpdateGithubIssuesManyArgs = {
+  updates: Array<GithubIssuesUpdates>;
 };
 
 
 /** mutation root */
-export type Mutation_RootUpdateGithubIssuesManyArgs = {
-  updates: Array<GithubIssuesUpdates>;
+export type Mutation_RootUpdateGithubPullRequestReviewsArgs = {
+  _inc: InputMaybe<GithubPullRequestReviewsIncInput>;
+  _set: InputMaybe<GithubPullRequestReviewsSetInput>;
+  where: GithubPullRequestReviewsBoolExp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateGithubPullRequestReviewsManyArgs = {
+  updates: Array<GithubPullRequestReviewsUpdates>;
 };
 
 
@@ -12046,53 +12792,8 @@ export type Mutation_RootUpdateGithubPullRequestsArgs = {
 
 
 /** mutation root */
-export type Mutation_RootUpdateGithubPullRequestsByPkArgs = {
-  _append: InputMaybe<GithubPullRequestsAppendInput>;
-  _deleteAtPath: InputMaybe<GithubPullRequestsDeleteAtPathInput>;
-  _deleteElem: InputMaybe<GithubPullRequestsDeleteElemInput>;
-  _deleteKey: InputMaybe<GithubPullRequestsDeleteKeyInput>;
-  _inc: InputMaybe<GithubPullRequestsIncInput>;
-  _prepend: InputMaybe<GithubPullRequestsPrependInput>;
-  _set: InputMaybe<GithubPullRequestsSetInput>;
-  pk_columns: GithubPullRequestsPkColumnsInput;
-};
-
-
-/** mutation root */
 export type Mutation_RootUpdateGithubPullRequestsManyArgs = {
   updates: Array<GithubPullRequestsUpdates>;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdateGithubReposArgs = {
-  _append: InputMaybe<GithubReposAppendInput>;
-  _deleteAtPath: InputMaybe<GithubReposDeleteAtPathInput>;
-  _deleteElem: InputMaybe<GithubReposDeleteElemInput>;
-  _deleteKey: InputMaybe<GithubReposDeleteKeyInput>;
-  _inc: InputMaybe<GithubReposIncInput>;
-  _prepend: InputMaybe<GithubReposPrependInput>;
-  _set: InputMaybe<GithubReposSetInput>;
-  where: GithubReposBoolExp;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdateGithubReposByPkArgs = {
-  _append: InputMaybe<GithubReposAppendInput>;
-  _deleteAtPath: InputMaybe<GithubReposDeleteAtPathInput>;
-  _deleteElem: InputMaybe<GithubReposDeleteElemInput>;
-  _deleteKey: InputMaybe<GithubReposDeleteKeyInput>;
-  _inc: InputMaybe<GithubReposIncInput>;
-  _prepend: InputMaybe<GithubReposPrependInput>;
-  _set: InputMaybe<GithubReposSetInput>;
-  pk_columns: GithubReposPkColumnsInput;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdateGithubReposManyArgs = {
-  updates: Array<GithubReposUpdates>;
 };
 
 
@@ -12115,28 +12816,6 @@ export type Mutation_RootUpdateGithubUsersByPkArgs = {
 /** mutation root */
 export type Mutation_RootUpdateGithubUsersManyArgs = {
   updates: Array<GithubUsersUpdates>;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdateIgnoredGithubIssuesArgs = {
-  _inc: InputMaybe<IgnoredGithubIssuesIncInput>;
-  _set: InputMaybe<IgnoredGithubIssuesSetInput>;
-  where: IgnoredGithubIssuesBoolExp;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdateIgnoredGithubIssuesByPkArgs = {
-  _inc: InputMaybe<IgnoredGithubIssuesIncInput>;
-  _set: InputMaybe<IgnoredGithubIssuesSetInput>;
-  pk_columns: IgnoredGithubIssuesPkColumnsInput;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdateIgnoredGithubIssuesManyArgs = {
-  updates: Array<IgnoredGithubIssuesUpdates>;
 };
 
 
@@ -12323,6 +13002,50 @@ export type Mutation_RootUpdateProjectsContributorsManyArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdateProjectsPendingContributorsArgs = {
+  _inc: InputMaybe<ProjectsPendingContributorsIncInput>;
+  _set: InputMaybe<ProjectsPendingContributorsSetInput>;
+  where: ProjectsPendingContributorsBoolExp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateProjectsPendingContributorsByPkArgs = {
+  _inc: InputMaybe<ProjectsPendingContributorsIncInput>;
+  _set: InputMaybe<ProjectsPendingContributorsSetInput>;
+  pk_columns: ProjectsPendingContributorsPkColumnsInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateProjectsPendingContributorsManyArgs = {
+  updates: Array<ProjectsPendingContributorsUpdates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateProjectsRewardedUsersArgs = {
+  _inc: InputMaybe<ProjectsRewardedUsersIncInput>;
+  _set: InputMaybe<ProjectsRewardedUsersSetInput>;
+  where: ProjectsRewardedUsersBoolExp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateProjectsRewardedUsersByPkArgs = {
+  _inc: InputMaybe<ProjectsRewardedUsersIncInput>;
+  _set: InputMaybe<ProjectsRewardedUsersSetInput>;
+  pk_columns: ProjectsRewardedUsersPkColumnsInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateProjectsRewardedUsersManyArgs = {
+  updates: Array<ProjectsRewardedUsersUpdates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdateProjectsSponsorsArgs = {
   _set: InputMaybe<ProjectsSponsorsSetInput>;
   where: ProjectsSponsorsBoolExp;
@@ -12462,14 +13185,6 @@ export type Mutation_RootUpdateWorkItemsArgs = {
   _inc: InputMaybe<WorkItemsIncInput>;
   _set: InputMaybe<WorkItemsSetInput>;
   where: WorkItemsBoolExp;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdateWorkItemsByPkArgs = {
-  _inc: InputMaybe<WorkItemsIncInput>;
-  _set: InputMaybe<WorkItemsSetInput>;
-  pk_columns: WorkItemsPkColumnsInput;
 };
 
 
@@ -12990,39 +13705,33 @@ export type Projects_Contributors_Aggregate_Bool_Exp_Count = {
 /** order by avg() on columns of table "projects_contributors" */
 export type Projects_Contributors_Avg_Order_By = {
   githubUserId: InputMaybe<OrderBy>;
-  linkCount: InputMaybe<OrderBy>;
 };
 
 /** order by max() on columns of table "projects_contributors" */
 export type Projects_Contributors_Max_Order_By = {
   githubUserId: InputMaybe<OrderBy>;
-  linkCount: InputMaybe<OrderBy>;
   projectId: InputMaybe<OrderBy>;
 };
 
 /** order by min() on columns of table "projects_contributors" */
 export type Projects_Contributors_Min_Order_By = {
   githubUserId: InputMaybe<OrderBy>;
-  linkCount: InputMaybe<OrderBy>;
   projectId: InputMaybe<OrderBy>;
 };
 
 /** order by stddev() on columns of table "projects_contributors" */
 export type Projects_Contributors_Stddev_Order_By = {
   githubUserId: InputMaybe<OrderBy>;
-  linkCount: InputMaybe<OrderBy>;
 };
 
 /** order by stddev_pop() on columns of table "projects_contributors" */
 export type Projects_Contributors_Stddev_Pop_Order_By = {
   githubUserId: InputMaybe<OrderBy>;
-  linkCount: InputMaybe<OrderBy>;
 };
 
 /** order by stddev_samp() on columns of table "projects_contributors" */
 export type Projects_Contributors_Stddev_Samp_Order_By = {
   githubUserId: InputMaybe<OrderBy>;
-  linkCount: InputMaybe<OrderBy>;
 };
 
 /** Streaming cursor of the table "projects_contributors" */
@@ -13036,32 +13745,192 @@ export type Projects_Contributors_StreamCursorInput = {
 /** Initial value of the column from where the streaming should start */
 export type Projects_Contributors_StreamCursorValueInput = {
   githubUserId: InputMaybe<Scalars['bigint']>;
-  linkCount: InputMaybe<Scalars['Int']>;
   projectId: InputMaybe<Scalars['uuid']>;
 };
 
 /** order by sum() on columns of table "projects_contributors" */
 export type Projects_Contributors_Sum_Order_By = {
   githubUserId: InputMaybe<OrderBy>;
-  linkCount: InputMaybe<OrderBy>;
 };
 
 /** order by var_pop() on columns of table "projects_contributors" */
 export type Projects_Contributors_Var_Pop_Order_By = {
   githubUserId: InputMaybe<OrderBy>;
-  linkCount: InputMaybe<OrderBy>;
 };
 
 /** order by var_samp() on columns of table "projects_contributors" */
 export type Projects_Contributors_Var_Samp_Order_By = {
   githubUserId: InputMaybe<OrderBy>;
-  linkCount: InputMaybe<OrderBy>;
 };
 
 /** order by variance() on columns of table "projects_contributors" */
 export type Projects_Contributors_Variance_Order_By = {
   githubUserId: InputMaybe<OrderBy>;
-  linkCount: InputMaybe<OrderBy>;
+};
+
+export type Projects_Pending_Contributors_Aggregate_Bool_Exp = {
+  count: InputMaybe<Projects_Pending_Contributors_Aggregate_Bool_Exp_Count>;
+};
+
+export type Projects_Pending_Contributors_Aggregate_Bool_Exp_Count = {
+  arguments: InputMaybe<Array<ProjectsPendingContributorsSelectColumn>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+  filter: InputMaybe<ProjectsPendingContributorsBoolExp>;
+  predicate: IntComparisonExp;
+};
+
+/** order by avg() on columns of table "projects_pending_contributors" */
+export type Projects_Pending_Contributors_Avg_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+};
+
+/** order by max() on columns of table "projects_pending_contributors" */
+export type Projects_Pending_Contributors_Max_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+  projectId: InputMaybe<OrderBy>;
+};
+
+/** order by min() on columns of table "projects_pending_contributors" */
+export type Projects_Pending_Contributors_Min_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+  projectId: InputMaybe<OrderBy>;
+};
+
+/** order by stddev() on columns of table "projects_pending_contributors" */
+export type Projects_Pending_Contributors_Stddev_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+};
+
+/** order by stddev_pop() on columns of table "projects_pending_contributors" */
+export type Projects_Pending_Contributors_Stddev_Pop_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+};
+
+/** order by stddev_samp() on columns of table "projects_pending_contributors" */
+export type Projects_Pending_Contributors_Stddev_Samp_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+};
+
+/** Streaming cursor of the table "projects_pending_contributors" */
+export type Projects_Pending_Contributors_StreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: Projects_Pending_Contributors_StreamCursorValueInput;
+  /** cursor ordering */
+  ordering: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Projects_Pending_Contributors_StreamCursorValueInput = {
+  githubUserId: InputMaybe<Scalars['bigint']>;
+  projectId: InputMaybe<Scalars['uuid']>;
+};
+
+/** order by sum() on columns of table "projects_pending_contributors" */
+export type Projects_Pending_Contributors_Sum_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+};
+
+/** order by var_pop() on columns of table "projects_pending_contributors" */
+export type Projects_Pending_Contributors_Var_Pop_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+};
+
+/** order by var_samp() on columns of table "projects_pending_contributors" */
+export type Projects_Pending_Contributors_Var_Samp_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+};
+
+/** order by variance() on columns of table "projects_pending_contributors" */
+export type Projects_Pending_Contributors_Variance_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+};
+
+export type Projects_Rewarded_Users_Aggregate_Bool_Exp = {
+  count: InputMaybe<Projects_Rewarded_Users_Aggregate_Bool_Exp_Count>;
+};
+
+export type Projects_Rewarded_Users_Aggregate_Bool_Exp_Count = {
+  arguments: InputMaybe<Array<ProjectsRewardedUsersSelectColumn>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+  filter: InputMaybe<ProjectsRewardedUsersBoolExp>;
+  predicate: IntComparisonExp;
+};
+
+/** order by avg() on columns of table "projects_rewarded_users" */
+export type Projects_Rewarded_Users_Avg_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+  rewardCount: InputMaybe<OrderBy>;
+};
+
+/** order by max() on columns of table "projects_rewarded_users" */
+export type Projects_Rewarded_Users_Max_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+  projectId: InputMaybe<OrderBy>;
+  rewardCount: InputMaybe<OrderBy>;
+};
+
+/** order by min() on columns of table "projects_rewarded_users" */
+export type Projects_Rewarded_Users_Min_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+  projectId: InputMaybe<OrderBy>;
+  rewardCount: InputMaybe<OrderBy>;
+};
+
+/** order by stddev() on columns of table "projects_rewarded_users" */
+export type Projects_Rewarded_Users_Stddev_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+  rewardCount: InputMaybe<OrderBy>;
+};
+
+/** order by stddev_pop() on columns of table "projects_rewarded_users" */
+export type Projects_Rewarded_Users_Stddev_Pop_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+  rewardCount: InputMaybe<OrderBy>;
+};
+
+/** order by stddev_samp() on columns of table "projects_rewarded_users" */
+export type Projects_Rewarded_Users_Stddev_Samp_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+  rewardCount: InputMaybe<OrderBy>;
+};
+
+/** Streaming cursor of the table "projects_rewarded_users" */
+export type Projects_Rewarded_Users_StreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: Projects_Rewarded_Users_StreamCursorValueInput;
+  /** cursor ordering */
+  ordering: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Projects_Rewarded_Users_StreamCursorValueInput = {
+  githubUserId: InputMaybe<Scalars['bigint']>;
+  projectId: InputMaybe<Scalars['uuid']>;
+  rewardCount: InputMaybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "projects_rewarded_users" */
+export type Projects_Rewarded_Users_Sum_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+  rewardCount: InputMaybe<OrderBy>;
+};
+
+/** order by var_pop() on columns of table "projects_rewarded_users" */
+export type Projects_Rewarded_Users_Var_Pop_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+  rewardCount: InputMaybe<OrderBy>;
+};
+
+/** order by var_samp() on columns of table "projects_rewarded_users" */
+export type Projects_Rewarded_Users_Var_Samp_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+  rewardCount: InputMaybe<OrderBy>;
+};
+
+/** order by variance() on columns of table "projects_rewarded_users" */
+export type Projects_Rewarded_Users_Variance_Order_By = {
+  githubUserId: InputMaybe<OrderBy>;
+  rewardCount: InputMaybe<OrderBy>;
 };
 
 export type Projects_Sponsors_Aggregate_Bool_Exp = {
@@ -13103,6 +13972,10 @@ export type Projects_Sponsors_StreamCursorValueInput = {
 
 export type Query_Root = {
   __typename?: 'query_root';
+  /** fetch data from the table: "api.completed_contributions" */
+  apiCompletedContributions: Array<ApiCompletedContributions>;
+  /** fetch aggregated fields from the table: "api.completed_contributions" */
+  apiCompletedContributionsAggregate: ApiCompletedContributionsAggregate;
   /** An array relationship */
   applications: Array<Applications>;
   /** An aggregate relationship */
@@ -13182,28 +14055,23 @@ export type Query_Root = {
   /** An aggregate relationship */
   contributionsAggregate: ContributionsAggregate;
   fetchIssue: Maybe<GithubIssue>;
-  fetchIssueByRepositoryId: Maybe<GithubIssue>;
   fetchPullRequest: Maybe<GithubPullRequest>;
-  fetchPullRequestByRepositoryId: Maybe<GithubPullRequest>;
-  fetchUserDetailsById: Maybe<GithubUser>;
-  /** fetch data from the table: "github_issues" */
+  /** fetch data from the table: "api.github_issues" */
   githubIssues: Array<GithubIssues>;
-  /** fetch aggregated fields from the table: "github_issues" */
+  /** fetch aggregated fields from the table: "api.github_issues" */
   githubIssuesAggregate: GithubIssuesAggregate;
-  /** fetch data from the table: "github_issues" using primary key columns */
-  githubIssuesByPk: Maybe<GithubIssues>;
-  /** fetch data from the table: "github_pull_requests" */
+  /** fetch data from the table: "api.github_pull_request_reviews" */
+  githubPullRequestReviews: Array<GithubPullRequestReviews>;
+  /** fetch aggregated fields from the table: "api.github_pull_request_reviews" */
+  githubPullRequestReviewsAggregate: GithubPullRequestReviewsAggregate;
+  /** fetch data from the table: "api.github_pull_requests" */
   githubPullRequests: Array<GithubPullRequests>;
-  /** fetch aggregated fields from the table: "github_pull_requests" */
+  /** fetch aggregated fields from the table: "api.github_pull_requests" */
   githubPullRequestsAggregate: GithubPullRequestsAggregate;
-  /** fetch data from the table: "github_pull_requests" using primary key columns */
-  githubPullRequestsByPk: Maybe<GithubPullRequests>;
-  /** fetch data from the table: "github_repos" */
+  /** fetch data from the table: "api.github_repos" */
   githubRepos: Array<GithubRepos>;
-  /** fetch aggregated fields from the table: "github_repos" */
+  /** fetch aggregated fields from the table: "api.github_repos" */
   githubReposAggregate: GithubReposAggregate;
-  /** fetch data from the table: "github_repos" using primary key columns */
-  githubReposByPk: Maybe<GithubRepos>;
   /** fetch data from the table: "github_users" */
   githubUsers: Array<GithubUsers>;
   /** fetch aggregated fields from the table: "github_users" */
@@ -13211,12 +14079,6 @@ export type Query_Root = {
   /** fetch data from the table: "github_users" using primary key columns */
   githubUsersByPk: Maybe<GithubUsers>;
   hello: Scalars['String'];
-  /** fetch data from the table: "ignored_github_issues" */
-  ignoredGithubIssues: Array<IgnoredGithubIssues>;
-  /** fetch aggregated fields from the table: "ignored_github_issues" */
-  ignoredGithubIssuesAggregate: IgnoredGithubIssuesAggregate;
-  /** fetch data from the table: "ignored_github_issues" using primary key columns */
-  ignoredGithubIssuesByPk: Maybe<IgnoredGithubIssues>;
   /** fetch data from the table: "onboardings" */
   onboardings: Array<Onboardings>;
   /** fetch aggregated fields from the table: "onboardings" */
@@ -13267,6 +14129,18 @@ export type Query_Root = {
   projectsContributorsAggregate: ProjectsContributorsAggregate;
   /** fetch data from the table: "projects_contributors" using primary key columns */
   projectsContributorsByPk: Maybe<ProjectsContributors>;
+  /** fetch data from the table: "projects_pending_contributors" */
+  projectsPendingContributors: Array<ProjectsPendingContributors>;
+  /** fetch aggregated fields from the table: "projects_pending_contributors" */
+  projectsPendingContributorsAggregate: ProjectsPendingContributorsAggregate;
+  /** fetch data from the table: "projects_pending_contributors" using primary key columns */
+  projectsPendingContributorsByPk: Maybe<ProjectsPendingContributors>;
+  /** fetch data from the table: "projects_rewarded_users" */
+  projectsRewardedUsers: Array<ProjectsRewardedUsers>;
+  /** fetch aggregated fields from the table: "projects_rewarded_users" */
+  projectsRewardedUsersAggregate: ProjectsRewardedUsersAggregate;
+  /** fetch data from the table: "projects_rewarded_users" using primary key columns */
+  projectsRewardedUsersByPk: Maybe<ProjectsRewardedUsers>;
   /** fetch data from the table: "projects_sponsors" */
   projectsSponsors: Array<ProjectsSponsors>;
   /** fetch aggregated fields from the table: "projects_sponsors" */
@@ -13309,8 +14183,24 @@ export type Query_Root = {
   workItems: Array<WorkItems>;
   /** An aggregate relationship */
   workItemsAggregate: WorkItemsAggregate;
-  /** fetch data from the table: "work_items" using primary key columns */
-  workItemsByPk: Maybe<WorkItems>;
+};
+
+
+export type Query_RootApiCompletedContributionsArgs = {
+  distinctOn: InputMaybe<Array<ApiCompletedContributionsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ApiCompletedContributionsOrderBy>>;
+  where: InputMaybe<ApiCompletedContributionsBoolExp>;
+};
+
+
+export type Query_RootApiCompletedContributionsAggregateArgs = {
+  distinctOn: InputMaybe<Array<ApiCompletedContributionsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ApiCompletedContributionsOrderBy>>;
+  where: InputMaybe<ApiCompletedContributionsBoolExp>;
 };
 
 
@@ -13636,27 +14526,10 @@ export type Query_RootFetchIssueArgs = {
 };
 
 
-export type Query_RootFetchIssueByRepositoryIdArgs = {
-  issueNumber: Scalars['Int'];
-  repositoryId: Scalars['Int'];
-};
-
-
 export type Query_RootFetchPullRequestArgs = {
   prNumber: Scalars['Int'];
   repoName: Scalars['String'];
   repoOwner: Scalars['String'];
-};
-
-
-export type Query_RootFetchPullRequestByRepositoryIdArgs = {
-  prNumber: Scalars['Int'];
-  repositoryId: Scalars['Int'];
-};
-
-
-export type Query_RootFetchUserDetailsByIdArgs = {
-  userId: Scalars['Int'];
 };
 
 
@@ -13678,8 +14551,21 @@ export type Query_RootGithubIssuesAggregateArgs = {
 };
 
 
-export type Query_RootGithubIssuesByPkArgs = {
-  id: Scalars['bigint'];
+export type Query_RootGithubPullRequestReviewsArgs = {
+  distinctOn: InputMaybe<Array<GithubPullRequestReviewsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<GithubPullRequestReviewsOrderBy>>;
+  where: InputMaybe<GithubPullRequestReviewsBoolExp>;
+};
+
+
+export type Query_RootGithubPullRequestReviewsAggregateArgs = {
+  distinctOn: InputMaybe<Array<GithubPullRequestReviewsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<GithubPullRequestReviewsOrderBy>>;
+  where: InputMaybe<GithubPullRequestReviewsBoolExp>;
 };
 
 
@@ -13701,11 +14587,6 @@ export type Query_RootGithubPullRequestsAggregateArgs = {
 };
 
 
-export type Query_RootGithubPullRequestsByPkArgs = {
-  id: Scalars['bigint'];
-};
-
-
 export type Query_RootGithubReposArgs = {
   distinctOn: InputMaybe<Array<GithubReposSelectColumn>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -13721,11 +14602,6 @@ export type Query_RootGithubReposAggregateArgs = {
   offset: InputMaybe<Scalars['Int']>;
   orderBy: InputMaybe<Array<GithubReposOrderBy>>;
   where: InputMaybe<GithubReposBoolExp>;
-};
-
-
-export type Query_RootGithubReposByPkArgs = {
-  id: Scalars['bigint'];
 };
 
 
@@ -13749,31 +14625,6 @@ export type Query_RootGithubUsersAggregateArgs = {
 
 export type Query_RootGithubUsersByPkArgs = {
   id: Scalars['bigint'];
-};
-
-
-export type Query_RootIgnoredGithubIssuesArgs = {
-  distinctOn: InputMaybe<Array<IgnoredGithubIssuesSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<IgnoredGithubIssuesOrderBy>>;
-  where: InputMaybe<IgnoredGithubIssuesBoolExp>;
-};
-
-
-export type Query_RootIgnoredGithubIssuesAggregateArgs = {
-  distinctOn: InputMaybe<Array<IgnoredGithubIssuesSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<IgnoredGithubIssuesOrderBy>>;
-  where: InputMaybe<IgnoredGithubIssuesBoolExp>;
-};
-
-
-export type Query_RootIgnoredGithubIssuesByPkArgs = {
-  issueNumber: Scalars['bigint'];
-  projectId: Scalars['uuid'];
-  repoId: Scalars['bigint'];
 };
 
 
@@ -13977,6 +14828,54 @@ export type Query_RootProjectsContributorsByPkArgs = {
 };
 
 
+export type Query_RootProjectsPendingContributorsArgs = {
+  distinctOn: InputMaybe<Array<ProjectsPendingContributorsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ProjectsPendingContributorsOrderBy>>;
+  where: InputMaybe<ProjectsPendingContributorsBoolExp>;
+};
+
+
+export type Query_RootProjectsPendingContributorsAggregateArgs = {
+  distinctOn: InputMaybe<Array<ProjectsPendingContributorsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ProjectsPendingContributorsOrderBy>>;
+  where: InputMaybe<ProjectsPendingContributorsBoolExp>;
+};
+
+
+export type Query_RootProjectsPendingContributorsByPkArgs = {
+  githubUserId: Scalars['bigint'];
+  projectId: Scalars['uuid'];
+};
+
+
+export type Query_RootProjectsRewardedUsersArgs = {
+  distinctOn: InputMaybe<Array<ProjectsRewardedUsersSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ProjectsRewardedUsersOrderBy>>;
+  where: InputMaybe<ProjectsRewardedUsersBoolExp>;
+};
+
+
+export type Query_RootProjectsRewardedUsersAggregateArgs = {
+  distinctOn: InputMaybe<Array<ProjectsRewardedUsersSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ProjectsRewardedUsersOrderBy>>;
+  where: InputMaybe<ProjectsRewardedUsersBoolExp>;
+};
+
+
+export type Query_RootProjectsRewardedUsersByPkArgs = {
+  githubUserId: Scalars['bigint'];
+  projectId: Scalars['uuid'];
+};
+
+
 export type Query_RootProjectsSponsorsArgs = {
   distinctOn: InputMaybe<Array<ProjectsSponsorsSelectColumn>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -14150,13 +15049,6 @@ export type Query_RootWorkItemsAggregateArgs = {
   where: InputMaybe<WorkItemsBoolExp>;
 };
 
-
-export type Query_RootWorkItemsByPkArgs = {
-  issueNumber: Scalars['bigint'];
-  paymentId: Scalars['uuid'];
-  repoId: Scalars['bigint'];
-};
-
 /** Streaming cursor of the table "registered_users" */
 export type Registered_Users_StreamCursorInput = {
   /** Stream column input with initial value */
@@ -14205,12 +15097,28 @@ export type Subscription_Root = {
   ContributionStatsStream: Array<ContributionStats>;
   /** fetch data from the table in a streaming manner: "api.contributions" */
   ContributionsStream: Array<Contributions>;
+  /** fetch data from the table in a streaming manner: "api.github_issues" */
+  GithubIssuesStream: Array<GithubIssues>;
+  /** fetch data from the table in a streaming manner: "api.github_pull_request_reviews" */
+  GithubPullRequestReviewsStream: Array<GithubPullRequestReviews>;
+  /** fetch data from the table in a streaming manner: "api.github_pull_requests" */
+  GithubPullRequestsStream: Array<GithubPullRequests>;
+  /** fetch data from the table in a streaming manner: "api.github_repos" */
+  GithubReposStream: Array<GithubRepos>;
   /** fetch data from the table in a streaming manner: "api.projects" */
   ProjectsStream: Array<Projects>;
   /** fetch data from the table in a streaming manner: "api.technologies" */
   TechnologiesStream: Array<Technologies>;
   /** fetch data from the table in a streaming manner: "api.user_profiles" */
   UserProfilesStream: Array<UserProfiles>;
+  /** fetch data from the table in a streaming manner: "api.work_items" */
+  WorkItemsStream: Array<WorkItems>;
+  /** fetch data from the table: "api.completed_contributions" */
+  apiCompletedContributions: Array<ApiCompletedContributions>;
+  /** fetch aggregated fields from the table: "api.completed_contributions" */
+  apiCompletedContributionsAggregate: ApiCompletedContributionsAggregate;
+  /** fetch data from the table in a streaming manner: "api.completed_contributions" */
+  apiCompletedContributionsStream: Array<ApiCompletedContributions>;
   /** An array relationship */
   applications: Array<Applications>;
   /** An aggregate relationship */
@@ -14309,30 +15217,22 @@ export type Subscription_Root = {
   contributions: Array<Contributions>;
   /** An aggregate relationship */
   contributionsAggregate: ContributionsAggregate;
-  /** fetch data from the table: "github_issues" */
+  /** fetch data from the table: "api.github_issues" */
   githubIssues: Array<GithubIssues>;
-  /** fetch aggregated fields from the table: "github_issues" */
+  /** fetch aggregated fields from the table: "api.github_issues" */
   githubIssuesAggregate: GithubIssuesAggregate;
-  /** fetch data from the table: "github_issues" using primary key columns */
-  githubIssuesByPk: Maybe<GithubIssues>;
-  /** fetch data from the table in a streaming manner: "github_issues" */
-  githubIssuesStream: Array<GithubIssues>;
-  /** fetch data from the table: "github_pull_requests" */
+  /** fetch data from the table: "api.github_pull_request_reviews" */
+  githubPullRequestReviews: Array<GithubPullRequestReviews>;
+  /** fetch aggregated fields from the table: "api.github_pull_request_reviews" */
+  githubPullRequestReviewsAggregate: GithubPullRequestReviewsAggregate;
+  /** fetch data from the table: "api.github_pull_requests" */
   githubPullRequests: Array<GithubPullRequests>;
-  /** fetch aggregated fields from the table: "github_pull_requests" */
+  /** fetch aggregated fields from the table: "api.github_pull_requests" */
   githubPullRequestsAggregate: GithubPullRequestsAggregate;
-  /** fetch data from the table: "github_pull_requests" using primary key columns */
-  githubPullRequestsByPk: Maybe<GithubPullRequests>;
-  /** fetch data from the table in a streaming manner: "github_pull_requests" */
-  githubPullRequestsStream: Array<GithubPullRequests>;
-  /** fetch data from the table: "github_repos" */
+  /** fetch data from the table: "api.github_repos" */
   githubRepos: Array<GithubRepos>;
-  /** fetch aggregated fields from the table: "github_repos" */
+  /** fetch aggregated fields from the table: "api.github_repos" */
   githubReposAggregate: GithubReposAggregate;
-  /** fetch data from the table: "github_repos" using primary key columns */
-  githubReposByPk: Maybe<GithubRepos>;
-  /** fetch data from the table in a streaming manner: "github_repos" */
-  githubReposStream: Array<GithubRepos>;
   /** fetch data from the table: "github_users" */
   githubUsers: Array<GithubUsers>;
   /** fetch aggregated fields from the table: "github_users" */
@@ -14341,14 +15241,6 @@ export type Subscription_Root = {
   githubUsersByPk: Maybe<GithubUsers>;
   /** fetch data from the table in a streaming manner: "github_users" */
   githubUsersStream: Array<GithubUsers>;
-  /** fetch data from the table: "ignored_github_issues" */
-  ignoredGithubIssues: Array<IgnoredGithubIssues>;
-  /** fetch aggregated fields from the table: "ignored_github_issues" */
-  ignoredGithubIssuesAggregate: IgnoredGithubIssuesAggregate;
-  /** fetch data from the table: "ignored_github_issues" using primary key columns */
-  ignoredGithubIssuesByPk: Maybe<IgnoredGithubIssues>;
-  /** fetch data from the table in a streaming manner: "ignored_github_issues" */
-  ignoredGithubIssuesStream: Array<IgnoredGithubIssues>;
   /** fetch data from the table: "onboardings" */
   onboardings: Array<Onboardings>;
   /** fetch aggregated fields from the table: "onboardings" */
@@ -14415,6 +15307,22 @@ export type Subscription_Root = {
   projectsContributorsByPk: Maybe<ProjectsContributors>;
   /** fetch data from the table in a streaming manner: "projects_contributors" */
   projectsContributorsStream: Array<ProjectsContributors>;
+  /** fetch data from the table: "projects_pending_contributors" */
+  projectsPendingContributors: Array<ProjectsPendingContributors>;
+  /** fetch aggregated fields from the table: "projects_pending_contributors" */
+  projectsPendingContributorsAggregate: ProjectsPendingContributorsAggregate;
+  /** fetch data from the table: "projects_pending_contributors" using primary key columns */
+  projectsPendingContributorsByPk: Maybe<ProjectsPendingContributors>;
+  /** fetch data from the table in a streaming manner: "projects_pending_contributors" */
+  projectsPendingContributorsStream: Array<ProjectsPendingContributors>;
+  /** fetch data from the table: "projects_rewarded_users" */
+  projectsRewardedUsers: Array<ProjectsRewardedUsers>;
+  /** fetch aggregated fields from the table: "projects_rewarded_users" */
+  projectsRewardedUsersAggregate: ProjectsRewardedUsersAggregate;
+  /** fetch data from the table: "projects_rewarded_users" using primary key columns */
+  projectsRewardedUsersByPk: Maybe<ProjectsRewardedUsers>;
+  /** fetch data from the table in a streaming manner: "projects_rewarded_users" */
+  projectsRewardedUsersStream: Array<ProjectsRewardedUsers>;
   /** fetch data from the table: "projects_sponsors" */
   projectsSponsors: Array<ProjectsSponsors>;
   /** fetch aggregated fields from the table: "projects_sponsors" */
@@ -14465,10 +15373,6 @@ export type Subscription_Root = {
   workItems: Array<WorkItems>;
   /** An aggregate relationship */
   workItemsAggregate: WorkItemsAggregate;
-  /** fetch data from the table: "work_items" using primary key columns */
-  workItemsByPk: Maybe<WorkItems>;
-  /** fetch data from the table in a streaming manner: "work_items" */
-  workItemsStream: Array<WorkItems>;
 };
 
 
@@ -14507,6 +15411,34 @@ export type Subscription_RootContributionsStreamArgs = {
 };
 
 
+export type Subscription_RootGithubIssuesStreamArgs = {
+  batchSize: Scalars['Int'];
+  cursor: Array<InputMaybe<GithubIssues_StreamCursorInput>>;
+  where: InputMaybe<GithubIssuesBoolExp>;
+};
+
+
+export type Subscription_RootGithubPullRequestReviewsStreamArgs = {
+  batchSize: Scalars['Int'];
+  cursor: Array<InputMaybe<GithubPullRequestReviews_StreamCursorInput>>;
+  where: InputMaybe<GithubPullRequestReviewsBoolExp>;
+};
+
+
+export type Subscription_RootGithubPullRequestsStreamArgs = {
+  batchSize: Scalars['Int'];
+  cursor: Array<InputMaybe<GithubPullRequests_StreamCursorInput>>;
+  where: InputMaybe<GithubPullRequestsBoolExp>;
+};
+
+
+export type Subscription_RootGithubReposStreamArgs = {
+  batchSize: Scalars['Int'];
+  cursor: Array<InputMaybe<GithubRepos_StreamCursorInput>>;
+  where: InputMaybe<GithubReposBoolExp>;
+};
+
+
 export type Subscription_RootProjectsStreamArgs = {
   batchSize: Scalars['Int'];
   cursor: Array<InputMaybe<Projects_StreamCursorInput>>;
@@ -14525,6 +15457,38 @@ export type Subscription_RootUserProfilesStreamArgs = {
   batchSize: Scalars['Int'];
   cursor: Array<InputMaybe<UserProfiles_StreamCursorInput>>;
   where: InputMaybe<UserProfilesBoolExp>;
+};
+
+
+export type Subscription_RootWorkItemsStreamArgs = {
+  batchSize: Scalars['Int'];
+  cursor: Array<InputMaybe<WorkItems_StreamCursorInput>>;
+  where: InputMaybe<WorkItemsBoolExp>;
+};
+
+
+export type Subscription_RootApiCompletedContributionsArgs = {
+  distinctOn: InputMaybe<Array<ApiCompletedContributionsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ApiCompletedContributionsOrderBy>>;
+  where: InputMaybe<ApiCompletedContributionsBoolExp>;
+};
+
+
+export type Subscription_RootApiCompletedContributionsAggregateArgs = {
+  distinctOn: InputMaybe<Array<ApiCompletedContributionsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ApiCompletedContributionsOrderBy>>;
+  where: InputMaybe<ApiCompletedContributionsBoolExp>;
+};
+
+
+export type Subscription_RootApiCompletedContributionsStreamArgs = {
+  batchSize: Scalars['Int'];
+  cursor: Array<InputMaybe<Api_Completed_Contributions_StreamCursorInput>>;
+  where: InputMaybe<ApiCompletedContributionsBoolExp>;
 };
 
 
@@ -14931,15 +15895,21 @@ export type Subscription_RootGithubIssuesAggregateArgs = {
 };
 
 
-export type Subscription_RootGithubIssuesByPkArgs = {
-  id: Scalars['bigint'];
+export type Subscription_RootGithubPullRequestReviewsArgs = {
+  distinctOn: InputMaybe<Array<GithubPullRequestReviewsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<GithubPullRequestReviewsOrderBy>>;
+  where: InputMaybe<GithubPullRequestReviewsBoolExp>;
 };
 
 
-export type Subscription_RootGithubIssuesStreamArgs = {
-  batchSize: Scalars['Int'];
-  cursor: Array<InputMaybe<Github_Issues_StreamCursorInput>>;
-  where: InputMaybe<GithubIssuesBoolExp>;
+export type Subscription_RootGithubPullRequestReviewsAggregateArgs = {
+  distinctOn: InputMaybe<Array<GithubPullRequestReviewsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<GithubPullRequestReviewsOrderBy>>;
+  where: InputMaybe<GithubPullRequestReviewsBoolExp>;
 };
 
 
@@ -14961,18 +15931,6 @@ export type Subscription_RootGithubPullRequestsAggregateArgs = {
 };
 
 
-export type Subscription_RootGithubPullRequestsByPkArgs = {
-  id: Scalars['bigint'];
-};
-
-
-export type Subscription_RootGithubPullRequestsStreamArgs = {
-  batchSize: Scalars['Int'];
-  cursor: Array<InputMaybe<Github_Pull_Requests_StreamCursorInput>>;
-  where: InputMaybe<GithubPullRequestsBoolExp>;
-};
-
-
 export type Subscription_RootGithubReposArgs = {
   distinctOn: InputMaybe<Array<GithubReposSelectColumn>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -14987,18 +15945,6 @@ export type Subscription_RootGithubReposAggregateArgs = {
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
   orderBy: InputMaybe<Array<GithubReposOrderBy>>;
-  where: InputMaybe<GithubReposBoolExp>;
-};
-
-
-export type Subscription_RootGithubReposByPkArgs = {
-  id: Scalars['bigint'];
-};
-
-
-export type Subscription_RootGithubReposStreamArgs = {
-  batchSize: Scalars['Int'];
-  cursor: Array<InputMaybe<Github_Repos_StreamCursorInput>>;
   where: InputMaybe<GithubReposBoolExp>;
 };
 
@@ -15030,38 +15976,6 @@ export type Subscription_RootGithubUsersStreamArgs = {
   batchSize: Scalars['Int'];
   cursor: Array<InputMaybe<Github_Users_StreamCursorInput>>;
   where: InputMaybe<GithubUsersBoolExp>;
-};
-
-
-export type Subscription_RootIgnoredGithubIssuesArgs = {
-  distinctOn: InputMaybe<Array<IgnoredGithubIssuesSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<IgnoredGithubIssuesOrderBy>>;
-  where: InputMaybe<IgnoredGithubIssuesBoolExp>;
-};
-
-
-export type Subscription_RootIgnoredGithubIssuesAggregateArgs = {
-  distinctOn: InputMaybe<Array<IgnoredGithubIssuesSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<IgnoredGithubIssuesOrderBy>>;
-  where: InputMaybe<IgnoredGithubIssuesBoolExp>;
-};
-
-
-export type Subscription_RootIgnoredGithubIssuesByPkArgs = {
-  issueNumber: Scalars['bigint'];
-  projectId: Scalars['uuid'];
-  repoId: Scalars['bigint'];
-};
-
-
-export type Subscription_RootIgnoredGithubIssuesStreamArgs = {
-  batchSize: Scalars['Int'];
-  cursor: Array<InputMaybe<Ignored_Github_Issues_StreamCursorInput>>;
-  where: InputMaybe<IgnoredGithubIssuesBoolExp>;
 };
 
 
@@ -15321,6 +16235,68 @@ export type Subscription_RootProjectsContributorsStreamArgs = {
 };
 
 
+export type Subscription_RootProjectsPendingContributorsArgs = {
+  distinctOn: InputMaybe<Array<ProjectsPendingContributorsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ProjectsPendingContributorsOrderBy>>;
+  where: InputMaybe<ProjectsPendingContributorsBoolExp>;
+};
+
+
+export type Subscription_RootProjectsPendingContributorsAggregateArgs = {
+  distinctOn: InputMaybe<Array<ProjectsPendingContributorsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ProjectsPendingContributorsOrderBy>>;
+  where: InputMaybe<ProjectsPendingContributorsBoolExp>;
+};
+
+
+export type Subscription_RootProjectsPendingContributorsByPkArgs = {
+  githubUserId: Scalars['bigint'];
+  projectId: Scalars['uuid'];
+};
+
+
+export type Subscription_RootProjectsPendingContributorsStreamArgs = {
+  batchSize: Scalars['Int'];
+  cursor: Array<InputMaybe<Projects_Pending_Contributors_StreamCursorInput>>;
+  where: InputMaybe<ProjectsPendingContributorsBoolExp>;
+};
+
+
+export type Subscription_RootProjectsRewardedUsersArgs = {
+  distinctOn: InputMaybe<Array<ProjectsRewardedUsersSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ProjectsRewardedUsersOrderBy>>;
+  where: InputMaybe<ProjectsRewardedUsersBoolExp>;
+};
+
+
+export type Subscription_RootProjectsRewardedUsersAggregateArgs = {
+  distinctOn: InputMaybe<Array<ProjectsRewardedUsersSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ProjectsRewardedUsersOrderBy>>;
+  where: InputMaybe<ProjectsRewardedUsersBoolExp>;
+};
+
+
+export type Subscription_RootProjectsRewardedUsersByPkArgs = {
+  githubUserId: Scalars['bigint'];
+  projectId: Scalars['uuid'];
+};
+
+
+export type Subscription_RootProjectsRewardedUsersStreamArgs = {
+  batchSize: Scalars['Int'];
+  cursor: Array<InputMaybe<Projects_Rewarded_Users_StreamCursorInput>>;
+  where: InputMaybe<ProjectsRewardedUsersBoolExp>;
+};
+
+
 export type Subscription_RootProjectsSponsorsArgs = {
   distinctOn: InputMaybe<Array<ProjectsSponsorsSelectColumn>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -15517,20 +16493,6 @@ export type Subscription_RootWorkItemsAggregateArgs = {
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
   orderBy: InputMaybe<Array<WorkItemsOrderBy>>;
-  where: InputMaybe<WorkItemsBoolExp>;
-};
-
-
-export type Subscription_RootWorkItemsByPkArgs = {
-  issueNumber: Scalars['bigint'];
-  paymentId: Scalars['uuid'];
-  repoId: Scalars['bigint'];
-};
-
-
-export type Subscription_RootWorkItemsStreamArgs = {
-  batchSize: Scalars['Int'];
-  cursor: Array<InputMaybe<Work_Items_StreamCursorInput>>;
   where: InputMaybe<WorkItemsBoolExp>;
 };
 
@@ -16242,94 +17204,6 @@ export type Users_StreamCursorValueInput = {
   updatedAt: InputMaybe<Scalars['timestamptz']>;
 };
 
-export type Work_Items_Aggregate_Bool_Exp = {
-  count: InputMaybe<Work_Items_Aggregate_Bool_Exp_Count>;
-};
-
-export type Work_Items_Aggregate_Bool_Exp_Count = {
-  arguments: InputMaybe<Array<WorkItemsSelectColumn>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
-  filter: InputMaybe<WorkItemsBoolExp>;
-  predicate: IntComparisonExp;
-};
-
-/** order by avg() on columns of table "work_items" */
-export type Work_Items_Avg_Order_By = {
-  issueNumber: InputMaybe<OrderBy>;
-  repoId: InputMaybe<OrderBy>;
-};
-
-/** order by max() on columns of table "work_items" */
-export type Work_Items_Max_Order_By = {
-  issueNumber: InputMaybe<OrderBy>;
-  paymentId: InputMaybe<OrderBy>;
-  repoId: InputMaybe<OrderBy>;
-};
-
-/** order by min() on columns of table "work_items" */
-export type Work_Items_Min_Order_By = {
-  issueNumber: InputMaybe<OrderBy>;
-  paymentId: InputMaybe<OrderBy>;
-  repoId: InputMaybe<OrderBy>;
-};
-
-/** order by stddev() on columns of table "work_items" */
-export type Work_Items_Stddev_Order_By = {
-  issueNumber: InputMaybe<OrderBy>;
-  repoId: InputMaybe<OrderBy>;
-};
-
-/** order by stddev_pop() on columns of table "work_items" */
-export type Work_Items_Stddev_Pop_Order_By = {
-  issueNumber: InputMaybe<OrderBy>;
-  repoId: InputMaybe<OrderBy>;
-};
-
-/** order by stddev_samp() on columns of table "work_items" */
-export type Work_Items_Stddev_Samp_Order_By = {
-  issueNumber: InputMaybe<OrderBy>;
-  repoId: InputMaybe<OrderBy>;
-};
-
-/** Streaming cursor of the table "work_items" */
-export type Work_Items_StreamCursorInput = {
-  /** Stream column input with initial value */
-  initialValue: Work_Items_StreamCursorValueInput;
-  /** cursor ordering */
-  ordering: InputMaybe<CursorOrdering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type Work_Items_StreamCursorValueInput = {
-  issueNumber: InputMaybe<Scalars['bigint']>;
-  paymentId: InputMaybe<Scalars['uuid']>;
-  repoId: InputMaybe<Scalars['bigint']>;
-};
-
-/** order by sum() on columns of table "work_items" */
-export type Work_Items_Sum_Order_By = {
-  issueNumber: InputMaybe<OrderBy>;
-  repoId: InputMaybe<OrderBy>;
-};
-
-/** order by var_pop() on columns of table "work_items" */
-export type Work_Items_Var_Pop_Order_By = {
-  issueNumber: InputMaybe<OrderBy>;
-  repoId: InputMaybe<OrderBy>;
-};
-
-/** order by var_samp() on columns of table "work_items" */
-export type Work_Items_Var_Samp_Order_By = {
-  issueNumber: InputMaybe<OrderBy>;
-  repoId: InputMaybe<OrderBy>;
-};
-
-/** order by variance() on columns of table "work_items" */
-export type Work_Items_Variance_Order_By = {
-  issueNumber: InputMaybe<OrderBy>;
-  repoId: InputMaybe<OrderBy>;
-};
-
 export type UserIdentityQueryVariables = Exact<{
   userId: Scalars['uuid'];
 }>;
@@ -16368,7 +17242,7 @@ export type GetReleaseDateQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetReleaseDateQuery = { __typename?: 'query_root', releaseDate: string };
 
-export type ProjectCardFieldsFragment = { __typename?: 'Projects', name: string | null, moreInfoLink: string | null, logoUrl: string | null, shortDescription: string | null, hiring: boolean | null, rank: number | null, id: any | null, key: string | null, visibility: any | null, contributorsAggregate: { __typename?: 'ProjectsContributorsAggregate', aggregate: { __typename?: 'ProjectsContributorsAggregateFields', count: number } | null }, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any, projectId: any, user: { __typename?: 'RegisteredUsers', login: string | null, avatarUrl: string | null, githubUserId: any | null, id: any | null } | null }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', projectId: any, githubRepoId: any, repo: { __typename?: 'GithubRepos', languages: any, id: any } | null }>, sponsors: Array<{ __typename?: 'ProjectsSponsors', sponsor: { __typename?: 'Sponsors', name: string, logoUrl: string, url: string | null, id: any } }>, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributors', githubUserId: any }>, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number } | null } };
+export type ProjectCardFieldsFragment = { __typename?: 'Projects', name: string | null, moreInfoLink: string | null, logoUrl: string | null, shortDescription: string | null, hiring: boolean | null, rank: number | null, id: any | null, key: string | null, visibility: any | null, contributorsAggregate: { __typename?: 'ProjectsContributorsAggregate', aggregate: { __typename?: 'ProjectsContributorsAggregateFields', count: number } | null }, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any, projectId: any, user: { __typename?: 'RegisteredUsers', login: string | null, avatarUrl: string | null, githubUserId: any | null, id: any | null } | null }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', projectId: any, githubRepoId: any, repo: { __typename?: 'GithubRepos', languages: any | null, id: any | null } | null }>, sponsors: Array<{ __typename?: 'ProjectsSponsors', sponsor: { __typename?: 'Sponsors', name: string, logoUrl: string, url: string | null, id: any } }>, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributors', githubUserId: any }>, pendingContributors: Array<{ __typename?: 'ProjectsPendingContributors', githubUserId: any }>, rewardedUsers: Array<{ __typename?: 'ProjectsRewardedUsers', githubUserId: any }>, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number } | null } };
 
 export type AcceptProjectLeaderInvitationMutationVariables = Exact<{
   invitationId: Scalars['Uuid'];
@@ -16396,14 +17270,14 @@ export type AllTechnologiesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type AllTechnologiesQuery = { __typename?: 'query_root', technologies: Array<{ __typename?: 'Technologies', technology: string | null }> };
 
-export type PaymentRequestDetailsFragment = { __typename?: 'PaymentRequests', id: any, amountInUsd: any, requestedAt: any, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', processedAt: any, receipt: any }>, requestor: { __typename?: 'RegisteredUsers', id: any | null, login: string | null, avatarUrl: string | null, githubUserId: any | null } | null, liveGithubRecipient: { __typename?: 'GithubUser', login: string, avatarUrl: any, htmlUrl: any, id: number, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, workItems: Array<{ __typename?: 'WorkItems', paymentId: any, repoId: any, issueNumber: any, githubIssue: { __typename?: 'GithubIssue', repoId: number, number: number, status: GithubIssueStatus, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, id: number, ignoredForProjects: Array<{ __typename?: 'IgnoredGithubIssues', projectId: any, repoId: any, issueNumber: any }> } | null, githubPullRequest: { __typename?: 'GithubPullRequest', repoId: number, number: number, status: GithubPullRequestStatus, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null, id: number, ignoredForProjects: Array<{ __typename?: 'IgnoredGithubIssues', projectId: any, repoId: any, issueNumber: any }> } | null }>, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null } };
+export type PaymentRequestDetailsFragment = { __typename?: 'PaymentRequests', id: any, amountInUsd: any, requestedAt: any, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', processedAt: any, receipt: any }>, requestor: { __typename?: 'RegisteredUsers', id: any | null, login: string | null, avatarUrl: string | null, githubUserId: any | null } | null, githubRecipient: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, workItems: Array<{ __typename?: 'WorkItems', type: any | null, id: string | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null } | null }>, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null } };
 
 export type PaymentRequestDetailsQueryVariables = Exact<{
   id: Scalars['uuid'];
 }>;
 
 
-export type PaymentRequestDetailsQuery = { __typename?: 'query_root', paymentRequestsByPk: { __typename?: 'PaymentRequests', id: any, amountInUsd: any, requestedAt: any, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', processedAt: any, receipt: any }>, requestor: { __typename?: 'RegisteredUsers', id: any | null, login: string | null, avatarUrl: string | null, githubUserId: any | null } | null, liveGithubRecipient: { __typename?: 'GithubUser', login: string, avatarUrl: any, htmlUrl: any, id: number, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, workItems: Array<{ __typename?: 'WorkItems', paymentId: any, repoId: any, issueNumber: any, githubIssue: { __typename?: 'GithubIssue', repoId: number, number: number, status: GithubIssueStatus, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, id: number, ignoredForProjects: Array<{ __typename?: 'IgnoredGithubIssues', projectId: any, repoId: any, issueNumber: any }> } | null, githubPullRequest: { __typename?: 'GithubPullRequest', repoId: number, number: number, status: GithubPullRequestStatus, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null, id: number, ignoredForProjects: Array<{ __typename?: 'IgnoredGithubIssues', projectId: any, repoId: any, issueNumber: any }> } | null }>, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null } } | null };
+export type PaymentRequestDetailsQuery = { __typename?: 'query_root', paymentRequestsByPk: { __typename?: 'PaymentRequests', id: any, amountInUsd: any, requestedAt: any, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', processedAt: any, receipt: any }>, requestor: { __typename?: 'RegisteredUsers', id: any | null, login: string | null, avatarUrl: string | null, githubUserId: any | null } | null, githubRecipient: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, workItems: Array<{ __typename?: 'WorkItems', type: any | null, id: string | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null } | null }>, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null } } | null };
 
 export type CancelPaymentRequestMutationVariables = Exact<{
   projectId: Scalars['Uuid'];
@@ -16417,25 +17291,23 @@ export type ApplicationIdFragment = { __typename?: 'Applications', id: any };
 
 export type ApplicantFragment = { __typename?: 'Applications', applicantId: any, id: any };
 
-export type GithubIssueIdFragment = { __typename?: 'GithubIssues', id: any };
+export type GithubIssueIdFragment = { __typename?: 'GithubIssues', id: any | null };
 
-export type GithubIssueFragment = { __typename?: 'GithubIssues', repoId: any, number: any, title: string, htmlUrl: string, authorId: any, assigneeIds: any, status: any, createdAt: any, closedAt: any | null, id: any, ignoredForProjects: Array<{ __typename?: 'IgnoredGithubIssues', projectId: any, repoId: any, issueNumber: any }> };
+export type GithubIssueFragment = { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, id: any | null };
 
-export type GithubPullRequestIdFragment = { __typename?: 'GithubPullRequests', id: any };
+export type GithubPullRequestIdFragment = { __typename?: 'GithubPullRequests', id: any | null };
 
-export type GithubPullRequestFragment = { __typename?: 'GithubPullRequests', repoId: any, number: any, title: string, htmlUrl: string, authorId: any, status: any, createdAt: any, closedAt: any | null, mergedAt: any | null, id: any, ignoredForProjects: Array<{ __typename?: 'IgnoredGithubIssues', projectId: any, repoId: any, issueNumber: any }> };
+export type GithubPullRequestFragment = { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null };
 
-export type GithubRepoIdFragment = { __typename?: 'GithubRepos', id: any };
+export type GithubRepoIdFragment = { __typename?: 'GithubRepos', id: any | null };
 
-export type GithubRepoFragment = { __typename?: 'GithubRepos', owner: string, name: string, description: string, stars: number, forkCount: number, htmlUrl: string, languages: any, hasIssues: boolean, id: any };
+export type GithubRepoFragment = { __typename?: 'GithubRepos', owner: string | null, name: string | null, description: string | null, stars: number | null, forkCount: number | null, htmlUrl: string | null, languages: any | null, hasIssues: boolean | null, id: any | null };
 
-export type GithubRepoLanguagesFragment = { __typename?: 'GithubRepos', languages: any, id: any };
+export type GithubRepoLanguagesFragment = { __typename?: 'GithubRepos', languages: any | null, id: any | null };
 
 export type GithubUserIdFragment = { __typename?: 'GithubUsers', id: any };
 
 export type GithubUserFragment = { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null };
-
-export type IgnoredGithubIssueIdFragment = { __typename?: 'IgnoredGithubIssues', projectId: any, repoId: any, issueNumber: any };
 
 export type PaymentRequestIdFragment = { __typename?: 'PaymentRequests', id: any };
 
@@ -16445,11 +17317,9 @@ export type ExtendedPaymentRequestFragment = { __typename?: 'PaymentRequests', r
 
 export type ProjectIdFragment = { __typename?: 'Projects', id: any | null, key: string | null };
 
-export type LastProjectMergedPullRequestsFragment = { __typename?: 'Projects', githubRepos: Array<{ __typename?: 'ProjectGithubRepos', projectId: any, githubRepoId: any, repoIssues: Array<{ __typename?: 'GithubIssues', repoId: any, number: any, title: string, htmlUrl: string, authorId: any, assigneeIds: any, status: any, createdAt: any, closedAt: any | null, id: any, ignoredForProjects: Array<{ __typename?: 'IgnoredGithubIssues', projectId: any, repoId: any, issueNumber: any }> }> }> };
+export type LastProjectMergedPullRequestsFragment = { __typename?: 'Projects', githubRepos: Array<{ __typename?: 'ProjectGithubRepos', projectId: any, githubRepoId: any, repoIssues: Array<{ __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, id: any | null }> }> };
 
-export type ProjectPaidWorkItemsFragment = { __typename?: 'Projects', id: any | null, key: string | null, budgets: Array<{ __typename?: 'Budgets', id: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', recipientId: any, id: any, workItems: Array<{ __typename?: 'WorkItems', paymentId: any, repoId: any, issueNumber: any }> }> }> };
-
-export type ProjectVisibilityDetailsFragment = { __typename?: 'Projects', visibility: any | null, id: any | null, key: string | null, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributors', githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number } | null }, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> };
+export type ProjectVisibilityDetailsFragment = { __typename?: 'Projects', visibility: any | null, id: any | null, key: string | null, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributors', githubUserId: any }>, pendingContributors: Array<{ __typename?: 'ProjectsPendingContributors', githubUserId: any }>, rewardedUsers: Array<{ __typename?: 'ProjectsRewardedUsers', githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number } | null }, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> };
 
 export type SponsorIdFragment = { __typename?: 'Sponsors', id: any };
 
@@ -16467,21 +17337,17 @@ export type UserProfileDetailsFragment = { __typename?: 'UserProfiles', login: s
 
 export type OwnUserProfileDetailsFragment = { __typename?: 'UserProfiles', weeklyAllocatedTime: any | null, lookingForAJob: boolean | null, completionScore: number };
 
-export type WorkItemIdFragment = { __typename?: 'WorkItems', paymentId: any, repoId: any, issueNumber: any };
+export type WorkItemIdFragment = { __typename?: 'WorkItems', id: string | null };
 
-export type WorkItemFragment = { __typename?: 'WorkItems', paymentId: any, repoId: any, issueNumber: any };
+export type WorkItemFragment = { __typename?: 'WorkItems', type: any | null, id: string | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null } | null };
 
 export type LiveGithubPullRequestIdFragment = { __typename?: 'GithubPullRequest', id: number };
 
-export type LiveGithubPullRequestFragment = { __typename?: 'GithubPullRequest', repoId: number, number: number, status: GithubPullRequestStatus, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null, id: number, ignoredForProjects: Array<{ __typename?: 'IgnoredGithubIssues', projectId: any, repoId: any, issueNumber: any }> };
+export type LiveGithubPullRequestFragment = { __typename?: 'GithubPullRequest', repoId: number, number: number, status: GithubPullRequestStatus, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null, id: number, author: { __typename?: 'GithubUser', id: number } };
 
 export type LiveGithubIssueIdFragment = { __typename?: 'GithubIssue', id: number };
 
-export type LiveGithubIssueFragment = { __typename?: 'GithubIssue', repoId: number, number: number, status: GithubIssueStatus, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, id: number, ignoredForProjects: Array<{ __typename?: 'IgnoredGithubIssues', projectId: any, repoId: any, issueNumber: any }> };
-
-export type LiveGithubIssueCreatedAndClosedIdFragment = { __typename?: 'GithubIssueCreatedAndClosed', id: number };
-
-export type LiveGithubIssueCreatedAndClosedFragment = { __typename?: 'GithubIssueCreatedAndClosed', repoId: number, number: number, status: GithubIssueCreatedAndClosedStatus, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, id: number };
+export type LiveGithubIssueFragment = { __typename?: 'GithubIssue', repoId: number, number: number, status: GithubIssueStatus, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, id: number, author: { __typename?: 'GithubUser', id: number } };
 
 export type LiveGithubUserIdFragment = { __typename?: 'GithubUser', id: number };
 
@@ -16492,7 +17358,7 @@ export type ImpersonatedUserQueryVariables = Exact<{
 }>;
 
 
-export type ImpersonatedUserQuery = { __typename?: 'query_root', user: { __typename?: 'users', id: any, createdAt: any, email: any | null, locale: string, isAnonymous: boolean, defaultRole: string, emailVerified: boolean, phoneNumber: string | null, phoneNumberVerified: boolean, activeMfaType: string | null, roles: Array<{ __typename?: 'authUserRoles', role: string }>, registeredUser: { __typename?: 'RegisteredUsers', id: any | null, githubUserId: any | null, login: string | null, avatarUrl: string | null, projectsLeaded: Array<{ __typename?: 'ProjectLeads', projectId: any }> } | null } | null };
+export type ImpersonatedUserQuery = { __typename?: 'query_root', user: { __typename?: 'users', id: any, createdAt: any, email: any | null, locale: string, isAnonymous: boolean, defaultRole: string, emailVerified: boolean, phoneNumber: string | null, phoneNumberVerified: boolean, activeMfaType: string | null, roles: Array<{ __typename?: 'authUserRoles', role: string }>, registeredUser: { __typename?: 'RegisteredUsers', id: any | null, githubUserId: any | null, login: string | null, avatarUrl: string | null, projectsLeaded: Array<{ __typename?: 'ProjectLeads', projectId: any }> } | null, userGithubProvider: { __typename?: 'AuthUserGithubProvider', accessToken: string | null } | null } | null };
 
 export type GetRegisteredUserQueryVariables = Exact<{
   id: Scalars['uuid'];
@@ -16505,32 +17371,32 @@ export type ContributionStatFragment = { __typename?: 'ContributionStats', proje
 
 export type PaymentStatFragment = { __typename?: 'PaymentStats', projectId: any | null, moneyGranted: any | null };
 
-export type ProfileProjectFragment = { __typename?: 'Projects', logoUrl: string | null, name: string | null, id: any | null, key: string | null, visibility: any | null, contributorsAggregate: { __typename?: 'ProjectsContributorsAggregate', aggregate: { __typename?: 'ProjectsContributorsAggregateFields', count: number } | null }, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number, sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributors', githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> };
+export type ProfileProjectFragment = { __typename?: 'Projects', logoUrl: string | null, name: string | null, id: any | null, key: string | null, visibility: any | null, contributorsAggregate: { __typename?: 'ProjectsContributorsAggregate', aggregate: { __typename?: 'ProjectsContributorsAggregateFields', count: number } | null }, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number, sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributors', githubUserId: any }>, pendingContributors: Array<{ __typename?: 'ProjectsPendingContributors', githubUserId: any }>, rewardedUsers: Array<{ __typename?: 'ProjectsRewardedUsers', githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> };
 
-export type ContributionCountFragment = { __typename?: 'ContributionCounts', year: any | null, week: any | null, paidCount: any | null, unpaidCount: any | null };
+export type ContributionCountFragment = { __typename?: 'ContributionCounts', year: any | null, week: any | null, codeReviewCount: any | null, issueCount: any | null, pullRequestCount: any | null };
 
-export type UserProfileFragment = { __typename?: 'UserProfiles', githubUserId: any | null, login: string | null, avatarUrl: string | null, htmlUrl: string | null, location: string | null, bio: string | null, languages: any | null, createdAt: any | null, lastSeen: any | null, website: string | null, cover: any | null, contributionStats: Array<{ __typename?: 'ContributionStats', projectId: any | null, maxDate: any | null, minDate: any | null, totalCount: any | null }>, contributionStatsAggregate: { __typename?: 'ContributionStatsAggregate', aggregate: { __typename?: 'ContributionStatsAggregateFields', sum: { __typename?: 'ContributionStatsSumFields', totalCount: any | null } | null, min: { __typename?: 'ContributionStatsMinFields', minDate: any | null } | null } | null }, paymentStats: Array<{ __typename?: 'PaymentStats', projectId: any | null, moneyGranted: any | null }>, paymentStatsAggregate: { __typename?: 'PaymentStatsAggregate', aggregate: { __typename?: 'PaymentStatsAggregateFields', sum: { __typename?: 'PaymentStatsSumFields', moneyGranted: any | null } | null } | null }, projectsContributed: Array<{ __typename?: 'ProjectsContributors', project: { __typename?: 'Projects', logoUrl: string | null, name: string | null, id: any | null, key: string | null, visibility: any | null, contributorsAggregate: { __typename?: 'ProjectsContributorsAggregate', aggregate: { __typename?: 'ProjectsContributorsAggregateFields', count: number } | null }, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number, sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributors', githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> } | null }>, projectsContributedAggregate: { __typename?: 'ProjectsContributorsAggregate', aggregate: { __typename?: 'ProjectsContributorsAggregateFields', count: number } | null }, projectsLeaded: Array<{ __typename?: 'ProjectLeads', projectId: any, assignedAt: any, project: { __typename?: 'Projects', logoUrl: string | null, name: string | null, id: any | null, key: string | null, visibility: any | null, contributorsAggregate: { __typename?: 'ProjectsContributorsAggregate', aggregate: { __typename?: 'ProjectsContributorsAggregateFields', count: number } | null }, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number, sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributors', githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> } | null }>, contributionCounts: Array<{ __typename?: 'ContributionCounts', year: any | null, week: any | null, paidCount: any | null, unpaidCount: any | null }>, contactInformations: Array<{ __typename?: 'ContactInformations', channel: any | null, contact: string | null, public: boolean | null }>, contacts: { __typename?: 'Contacts', email: { __typename?: 'ContactInformations', contact: string | null, public: boolean | null } | null, telegram: { __typename?: 'ContactInformations', contact: string | null, public: boolean | null } | null, twitter: { __typename?: 'ContactInformations', contact: string | null, public: boolean | null } | null, discord: { __typename?: 'ContactInformations', contact: string | null, public: boolean | null } | null, linkedin: { __typename?: 'ContactInformations', contact: string | null, public: boolean | null } | null, whatsapp: { __typename?: 'ContactInformations', contact: string | null, public: boolean | null } | null } };
+export type UserProfileFragment = { __typename?: 'UserProfiles', githubUserId: any | null, login: string | null, avatarUrl: string | null, htmlUrl: string | null, location: string | null, bio: string | null, languages: any | null, createdAt: any | null, lastSeen: any | null, website: string | null, cover: any | null, contributionStats: Array<{ __typename?: 'ContributionStats', projectId: any | null, maxDate: any | null, minDate: any | null, totalCount: any | null }>, contributionStatsAggregate: { __typename?: 'ContributionStatsAggregate', aggregate: { __typename?: 'ContributionStatsAggregateFields', sum: { __typename?: 'ContributionStatsSumFields', totalCount: any | null } | null, min: { __typename?: 'ContributionStatsMinFields', minDate: any | null } | null } | null }, paymentStats: Array<{ __typename?: 'PaymentStats', projectId: any | null, moneyGranted: any | null }>, paymentStatsAggregate: { __typename?: 'PaymentStatsAggregate', aggregate: { __typename?: 'PaymentStatsAggregateFields', sum: { __typename?: 'PaymentStatsSumFields', moneyGranted: any | null } | null } | null }, projectsContributed: Array<{ __typename?: 'ProjectsContributors', project: { __typename?: 'Projects', logoUrl: string | null, name: string | null, id: any | null, key: string | null, visibility: any | null, contributorsAggregate: { __typename?: 'ProjectsContributorsAggregate', aggregate: { __typename?: 'ProjectsContributorsAggregateFields', count: number } | null }, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number, sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributors', githubUserId: any }>, pendingContributors: Array<{ __typename?: 'ProjectsPendingContributors', githubUserId: any }>, rewardedUsers: Array<{ __typename?: 'ProjectsRewardedUsers', githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> } | null }>, projectsContributedAggregate: { __typename?: 'ProjectsContributorsAggregate', aggregate: { __typename?: 'ProjectsContributorsAggregateFields', count: number } | null }, projectsLeaded: Array<{ __typename?: 'ProjectLeads', projectId: any, assignedAt: any, project: { __typename?: 'Projects', logoUrl: string | null, name: string | null, id: any | null, key: string | null, visibility: any | null, contributorsAggregate: { __typename?: 'ProjectsContributorsAggregate', aggregate: { __typename?: 'ProjectsContributorsAggregateFields', count: number } | null }, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number, sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributors', githubUserId: any }>, pendingContributors: Array<{ __typename?: 'ProjectsPendingContributors', githubUserId: any }>, rewardedUsers: Array<{ __typename?: 'ProjectsRewardedUsers', githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> } | null }>, contributionCounts: Array<{ __typename?: 'ContributionCounts', year: any | null, week: any | null, codeReviewCount: any | null, issueCount: any | null, pullRequestCount: any | null }>, contactInformations: Array<{ __typename?: 'ContactInformations', channel: any | null, contact: string | null, public: boolean | null }>, contacts: { __typename?: 'Contacts', email: { __typename?: 'ContactInformations', contact: string | null, public: boolean | null } | null, telegram: { __typename?: 'ContactInformations', contact: string | null, public: boolean | null } | null, twitter: { __typename?: 'ContactInformations', contact: string | null, public: boolean | null } | null, discord: { __typename?: 'ContactInformations', contact: string | null, public: boolean | null } | null, linkedin: { __typename?: 'ContactInformations', contact: string | null, public: boolean | null } | null, whatsapp: { __typename?: 'ContactInformations', contact: string | null, public: boolean | null } | null } };
 
 export type UserProfileQueryVariables = Exact<{
   githubUserId: Scalars['bigint'];
 }>;
 
 
-export type UserProfileQuery = { __typename?: 'query_root', userProfiles: Array<{ __typename?: 'UserProfiles', githubUserId: any | null, login: string | null, avatarUrl: string | null, htmlUrl: string | null, location: string | null, bio: string | null, languages: any | null, createdAt: any | null, lastSeen: any | null, website: string | null, cover: any | null, contributionStats: Array<{ __typename?: 'ContributionStats', projectId: any | null, maxDate: any | null, minDate: any | null, totalCount: any | null }>, contributionStatsAggregate: { __typename?: 'ContributionStatsAggregate', aggregate: { __typename?: 'ContributionStatsAggregateFields', sum: { __typename?: 'ContributionStatsSumFields', totalCount: any | null } | null, min: { __typename?: 'ContributionStatsMinFields', minDate: any | null } | null } | null }, paymentStats: Array<{ __typename?: 'PaymentStats', projectId: any | null, moneyGranted: any | null }>, paymentStatsAggregate: { __typename?: 'PaymentStatsAggregate', aggregate: { __typename?: 'PaymentStatsAggregateFields', sum: { __typename?: 'PaymentStatsSumFields', moneyGranted: any | null } | null } | null }, projectsContributed: Array<{ __typename?: 'ProjectsContributors', project: { __typename?: 'Projects', logoUrl: string | null, name: string | null, id: any | null, key: string | null, visibility: any | null, contributorsAggregate: { __typename?: 'ProjectsContributorsAggregate', aggregate: { __typename?: 'ProjectsContributorsAggregateFields', count: number } | null }, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number, sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributors', githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> } | null }>, projectsContributedAggregate: { __typename?: 'ProjectsContributorsAggregate', aggregate: { __typename?: 'ProjectsContributorsAggregateFields', count: number } | null }, projectsLeaded: Array<{ __typename?: 'ProjectLeads', projectId: any, assignedAt: any, project: { __typename?: 'Projects', logoUrl: string | null, name: string | null, id: any | null, key: string | null, visibility: any | null, contributorsAggregate: { __typename?: 'ProjectsContributorsAggregate', aggregate: { __typename?: 'ProjectsContributorsAggregateFields', count: number } | null }, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number, sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributors', githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> } | null }>, contributionCounts: Array<{ __typename?: 'ContributionCounts', year: any | null, week: any | null, paidCount: any | null, unpaidCount: any | null }>, contactInformations: Array<{ __typename?: 'ContactInformations', channel: any | null, contact: string | null, public: boolean | null }>, contacts: { __typename?: 'Contacts', email: { __typename?: 'ContactInformations', contact: string | null, public: boolean | null } | null, telegram: { __typename?: 'ContactInformations', contact: string | null, public: boolean | null } | null, twitter: { __typename?: 'ContactInformations', contact: string | null, public: boolean | null } | null, discord: { __typename?: 'ContactInformations', contact: string | null, public: boolean | null } | null, linkedin: { __typename?: 'ContactInformations', contact: string | null, public: boolean | null } | null, whatsapp: { __typename?: 'ContactInformations', contact: string | null, public: boolean | null } | null } }> };
+export type UserProfileQuery = { __typename?: 'query_root', userProfiles: Array<{ __typename?: 'UserProfiles', githubUserId: any | null, login: string | null, avatarUrl: string | null, htmlUrl: string | null, location: string | null, bio: string | null, languages: any | null, createdAt: any | null, lastSeen: any | null, website: string | null, cover: any | null, contributionStats: Array<{ __typename?: 'ContributionStats', projectId: any | null, maxDate: any | null, minDate: any | null, totalCount: any | null }>, contributionStatsAggregate: { __typename?: 'ContributionStatsAggregate', aggregate: { __typename?: 'ContributionStatsAggregateFields', sum: { __typename?: 'ContributionStatsSumFields', totalCount: any | null } | null, min: { __typename?: 'ContributionStatsMinFields', minDate: any | null } | null } | null }, paymentStats: Array<{ __typename?: 'PaymentStats', projectId: any | null, moneyGranted: any | null }>, paymentStatsAggregate: { __typename?: 'PaymentStatsAggregate', aggregate: { __typename?: 'PaymentStatsAggregateFields', sum: { __typename?: 'PaymentStatsSumFields', moneyGranted: any | null } | null } | null }, projectsContributed: Array<{ __typename?: 'ProjectsContributors', project: { __typename?: 'Projects', logoUrl: string | null, name: string | null, id: any | null, key: string | null, visibility: any | null, contributorsAggregate: { __typename?: 'ProjectsContributorsAggregate', aggregate: { __typename?: 'ProjectsContributorsAggregateFields', count: number } | null }, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number, sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributors', githubUserId: any }>, pendingContributors: Array<{ __typename?: 'ProjectsPendingContributors', githubUserId: any }>, rewardedUsers: Array<{ __typename?: 'ProjectsRewardedUsers', githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> } | null }>, projectsContributedAggregate: { __typename?: 'ProjectsContributorsAggregate', aggregate: { __typename?: 'ProjectsContributorsAggregateFields', count: number } | null }, projectsLeaded: Array<{ __typename?: 'ProjectLeads', projectId: any, assignedAt: any, project: { __typename?: 'Projects', logoUrl: string | null, name: string | null, id: any | null, key: string | null, visibility: any | null, contributorsAggregate: { __typename?: 'ProjectsContributorsAggregate', aggregate: { __typename?: 'ProjectsContributorsAggregateFields', count: number } | null }, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number, sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributors', githubUserId: any }>, pendingContributors: Array<{ __typename?: 'ProjectsPendingContributors', githubUserId: any }>, rewardedUsers: Array<{ __typename?: 'ProjectsRewardedUsers', githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> } | null }>, contributionCounts: Array<{ __typename?: 'ContributionCounts', year: any | null, week: any | null, codeReviewCount: any | null, issueCount: any | null, pullRequestCount: any | null }>, contactInformations: Array<{ __typename?: 'ContactInformations', channel: any | null, contact: string | null, public: boolean | null }>, contacts: { __typename?: 'Contacts', email: { __typename?: 'ContactInformations', contact: string | null, public: boolean | null } | null, telegram: { __typename?: 'ContactInformations', contact: string | null, public: boolean | null } | null, twitter: { __typename?: 'ContactInformations', contact: string | null, public: boolean | null } | null, discord: { __typename?: 'ContactInformations', contact: string | null, public: boolean | null } | null, linkedin: { __typename?: 'ContactInformations', contact: string | null, public: boolean | null } | null, whatsapp: { __typename?: 'ContactInformations', contact: string | null, public: boolean | null } | null } }> };
 
 export type UserProfileByLoginQueryVariables = Exact<{
   githubUserLogin: Scalars['String'];
 }>;
 
 
-export type UserProfileByLoginQuery = { __typename?: 'query_root', userProfiles: Array<{ __typename?: 'UserProfiles', githubUserId: any | null, login: string | null, avatarUrl: string | null, htmlUrl: string | null, location: string | null, bio: string | null, languages: any | null, createdAt: any | null, lastSeen: any | null, website: string | null, cover: any | null, contributionStats: Array<{ __typename?: 'ContributionStats', projectId: any | null, maxDate: any | null, minDate: any | null, totalCount: any | null }>, contributionStatsAggregate: { __typename?: 'ContributionStatsAggregate', aggregate: { __typename?: 'ContributionStatsAggregateFields', sum: { __typename?: 'ContributionStatsSumFields', totalCount: any | null } | null, min: { __typename?: 'ContributionStatsMinFields', minDate: any | null } | null } | null }, paymentStats: Array<{ __typename?: 'PaymentStats', projectId: any | null, moneyGranted: any | null }>, paymentStatsAggregate: { __typename?: 'PaymentStatsAggregate', aggregate: { __typename?: 'PaymentStatsAggregateFields', sum: { __typename?: 'PaymentStatsSumFields', moneyGranted: any | null } | null } | null }, projectsContributed: Array<{ __typename?: 'ProjectsContributors', project: { __typename?: 'Projects', logoUrl: string | null, name: string | null, id: any | null, key: string | null, visibility: any | null, contributorsAggregate: { __typename?: 'ProjectsContributorsAggregate', aggregate: { __typename?: 'ProjectsContributorsAggregateFields', count: number } | null }, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number, sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributors', githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> } | null }>, projectsContributedAggregate: { __typename?: 'ProjectsContributorsAggregate', aggregate: { __typename?: 'ProjectsContributorsAggregateFields', count: number } | null }, projectsLeaded: Array<{ __typename?: 'ProjectLeads', projectId: any, assignedAt: any, project: { __typename?: 'Projects', logoUrl: string | null, name: string | null, id: any | null, key: string | null, visibility: any | null, contributorsAggregate: { __typename?: 'ProjectsContributorsAggregate', aggregate: { __typename?: 'ProjectsContributorsAggregateFields', count: number } | null }, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number, sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributors', githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> } | null }>, contributionCounts: Array<{ __typename?: 'ContributionCounts', year: any | null, week: any | null, paidCount: any | null, unpaidCount: any | null }>, contactInformations: Array<{ __typename?: 'ContactInformations', channel: any | null, contact: string | null, public: boolean | null }>, contacts: { __typename?: 'Contacts', email: { __typename?: 'ContactInformations', contact: string | null, public: boolean | null } | null, telegram: { __typename?: 'ContactInformations', contact: string | null, public: boolean | null } | null, twitter: { __typename?: 'ContactInformations', contact: string | null, public: boolean | null } | null, discord: { __typename?: 'ContactInformations', contact: string | null, public: boolean | null } | null, linkedin: { __typename?: 'ContactInformations', contact: string | null, public: boolean | null } | null, whatsapp: { __typename?: 'ContactInformations', contact: string | null, public: boolean | null } | null } }> };
+export type UserProfileByLoginQuery = { __typename?: 'query_root', userProfiles: Array<{ __typename?: 'UserProfiles', githubUserId: any | null, login: string | null, avatarUrl: string | null, htmlUrl: string | null, location: string | null, bio: string | null, languages: any | null, createdAt: any | null, lastSeen: any | null, website: string | null, cover: any | null, contributionStats: Array<{ __typename?: 'ContributionStats', projectId: any | null, maxDate: any | null, minDate: any | null, totalCount: any | null }>, contributionStatsAggregate: { __typename?: 'ContributionStatsAggregate', aggregate: { __typename?: 'ContributionStatsAggregateFields', sum: { __typename?: 'ContributionStatsSumFields', totalCount: any | null } | null, min: { __typename?: 'ContributionStatsMinFields', minDate: any | null } | null } | null }, paymentStats: Array<{ __typename?: 'PaymentStats', projectId: any | null, moneyGranted: any | null }>, paymentStatsAggregate: { __typename?: 'PaymentStatsAggregate', aggregate: { __typename?: 'PaymentStatsAggregateFields', sum: { __typename?: 'PaymentStatsSumFields', moneyGranted: any | null } | null } | null }, projectsContributed: Array<{ __typename?: 'ProjectsContributors', project: { __typename?: 'Projects', logoUrl: string | null, name: string | null, id: any | null, key: string | null, visibility: any | null, contributorsAggregate: { __typename?: 'ProjectsContributorsAggregate', aggregate: { __typename?: 'ProjectsContributorsAggregateFields', count: number } | null }, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number, sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributors', githubUserId: any }>, pendingContributors: Array<{ __typename?: 'ProjectsPendingContributors', githubUserId: any }>, rewardedUsers: Array<{ __typename?: 'ProjectsRewardedUsers', githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> } | null }>, projectsContributedAggregate: { __typename?: 'ProjectsContributorsAggregate', aggregate: { __typename?: 'ProjectsContributorsAggregateFields', count: number } | null }, projectsLeaded: Array<{ __typename?: 'ProjectLeads', projectId: any, assignedAt: any, project: { __typename?: 'Projects', logoUrl: string | null, name: string | null, id: any | null, key: string | null, visibility: any | null, contributorsAggregate: { __typename?: 'ProjectsContributorsAggregate', aggregate: { __typename?: 'ProjectsContributorsAggregateFields', count: number } | null }, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number, sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributors', githubUserId: any }>, pendingContributors: Array<{ __typename?: 'ProjectsPendingContributors', githubUserId: any }>, rewardedUsers: Array<{ __typename?: 'ProjectsRewardedUsers', githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> } | null }>, contributionCounts: Array<{ __typename?: 'ContributionCounts', year: any | null, week: any | null, codeReviewCount: any | null, issueCount: any | null, pullRequestCount: any | null }>, contactInformations: Array<{ __typename?: 'ContactInformations', channel: any | null, contact: string | null, public: boolean | null }>, contacts: { __typename?: 'Contacts', email: { __typename?: 'ContactInformations', contact: string | null, public: boolean | null } | null, telegram: { __typename?: 'ContactInformations', contact: string | null, public: boolean | null } | null, twitter: { __typename?: 'ContactInformations', contact: string | null, public: boolean | null } | null, discord: { __typename?: 'ContactInformations', contact: string | null, public: boolean | null } | null, linkedin: { __typename?: 'ContactInformations', contact: string | null, public: boolean | null } | null, whatsapp: { __typename?: 'ContactInformations', contact: string | null, public: boolean | null } | null } }> };
 
 export type OwnUserProfileQueryVariables = Exact<{
   githubUserId: Scalars['bigint'];
 }>;
 
 
-export type OwnUserProfileQuery = { __typename?: 'query_root', userProfiles: Array<{ __typename?: 'UserProfiles', weeklyAllocatedTime: any | null, lookingForAJob: boolean | null, completionScore: number, githubUserId: any | null, login: string | null, avatarUrl: string | null, htmlUrl: string | null, location: string | null, bio: string | null, languages: any | null, createdAt: any | null, lastSeen: any | null, website: string | null, cover: any | null, contributionStats: Array<{ __typename?: 'ContributionStats', projectId: any | null, maxDate: any | null, minDate: any | null, totalCount: any | null }>, contributionStatsAggregate: { __typename?: 'ContributionStatsAggregate', aggregate: { __typename?: 'ContributionStatsAggregateFields', sum: { __typename?: 'ContributionStatsSumFields', totalCount: any | null } | null, min: { __typename?: 'ContributionStatsMinFields', minDate: any | null } | null } | null }, paymentStats: Array<{ __typename?: 'PaymentStats', projectId: any | null, moneyGranted: any | null }>, paymentStatsAggregate: { __typename?: 'PaymentStatsAggregate', aggregate: { __typename?: 'PaymentStatsAggregateFields', sum: { __typename?: 'PaymentStatsSumFields', moneyGranted: any | null } | null } | null }, projectsContributed: Array<{ __typename?: 'ProjectsContributors', project: { __typename?: 'Projects', logoUrl: string | null, name: string | null, id: any | null, key: string | null, visibility: any | null, contributorsAggregate: { __typename?: 'ProjectsContributorsAggregate', aggregate: { __typename?: 'ProjectsContributorsAggregateFields', count: number } | null }, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number, sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributors', githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> } | null }>, projectsContributedAggregate: { __typename?: 'ProjectsContributorsAggregate', aggregate: { __typename?: 'ProjectsContributorsAggregateFields', count: number } | null }, projectsLeaded: Array<{ __typename?: 'ProjectLeads', projectId: any, assignedAt: any, project: { __typename?: 'Projects', logoUrl: string | null, name: string | null, id: any | null, key: string | null, visibility: any | null, contributorsAggregate: { __typename?: 'ProjectsContributorsAggregate', aggregate: { __typename?: 'ProjectsContributorsAggregateFields', count: number } | null }, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number, sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributors', githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> } | null }>, contributionCounts: Array<{ __typename?: 'ContributionCounts', year: any | null, week: any | null, paidCount: any | null, unpaidCount: any | null }>, contactInformations: Array<{ __typename?: 'ContactInformations', channel: any | null, contact: string | null, public: boolean | null }>, contacts: { __typename?: 'Contacts', email: { __typename?: 'ContactInformations', contact: string | null, public: boolean | null } | null, telegram: { __typename?: 'ContactInformations', contact: string | null, public: boolean | null } | null, twitter: { __typename?: 'ContactInformations', contact: string | null, public: boolean | null } | null, discord: { __typename?: 'ContactInformations', contact: string | null, public: boolean | null } | null, linkedin: { __typename?: 'ContactInformations', contact: string | null, public: boolean | null } | null, whatsapp: { __typename?: 'ContactInformations', contact: string | null, public: boolean | null } | null } }> };
+export type OwnUserProfileQuery = { __typename?: 'query_root', userProfiles: Array<{ __typename?: 'UserProfiles', weeklyAllocatedTime: any | null, lookingForAJob: boolean | null, completionScore: number, githubUserId: any | null, login: string | null, avatarUrl: string | null, htmlUrl: string | null, location: string | null, bio: string | null, languages: any | null, createdAt: any | null, lastSeen: any | null, website: string | null, cover: any | null, contributionStats: Array<{ __typename?: 'ContributionStats', projectId: any | null, maxDate: any | null, minDate: any | null, totalCount: any | null }>, contributionStatsAggregate: { __typename?: 'ContributionStatsAggregate', aggregate: { __typename?: 'ContributionStatsAggregateFields', sum: { __typename?: 'ContributionStatsSumFields', totalCount: any | null } | null, min: { __typename?: 'ContributionStatsMinFields', minDate: any | null } | null } | null }, paymentStats: Array<{ __typename?: 'PaymentStats', projectId: any | null, moneyGranted: any | null }>, paymentStatsAggregate: { __typename?: 'PaymentStatsAggregate', aggregate: { __typename?: 'PaymentStatsAggregateFields', sum: { __typename?: 'PaymentStatsSumFields', moneyGranted: any | null } | null } | null }, projectsContributed: Array<{ __typename?: 'ProjectsContributors', project: { __typename?: 'Projects', logoUrl: string | null, name: string | null, id: any | null, key: string | null, visibility: any | null, contributorsAggregate: { __typename?: 'ProjectsContributorsAggregate', aggregate: { __typename?: 'ProjectsContributorsAggregateFields', count: number } | null }, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number, sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributors', githubUserId: any }>, pendingContributors: Array<{ __typename?: 'ProjectsPendingContributors', githubUserId: any }>, rewardedUsers: Array<{ __typename?: 'ProjectsRewardedUsers', githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> } | null }>, projectsContributedAggregate: { __typename?: 'ProjectsContributorsAggregate', aggregate: { __typename?: 'ProjectsContributorsAggregateFields', count: number } | null }, projectsLeaded: Array<{ __typename?: 'ProjectLeads', projectId: any, assignedAt: any, project: { __typename?: 'Projects', logoUrl: string | null, name: string | null, id: any | null, key: string | null, visibility: any | null, contributorsAggregate: { __typename?: 'ProjectsContributorsAggregate', aggregate: { __typename?: 'ProjectsContributorsAggregateFields', count: number } | null }, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number, sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributors', githubUserId: any }>, pendingContributors: Array<{ __typename?: 'ProjectsPendingContributors', githubUserId: any }>, rewardedUsers: Array<{ __typename?: 'ProjectsRewardedUsers', githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> } | null }>, contributionCounts: Array<{ __typename?: 'ContributionCounts', year: any | null, week: any | null, codeReviewCount: any | null, issueCount: any | null, pullRequestCount: any | null }>, contactInformations: Array<{ __typename?: 'ContactInformations', channel: any | null, contact: string | null, public: boolean | null }>, contacts: { __typename?: 'Contacts', email: { __typename?: 'ContactInformations', contact: string | null, public: boolean | null } | null, telegram: { __typename?: 'ContactInformations', contact: string | null, public: boolean | null } | null, twitter: { __typename?: 'ContactInformations', contact: string | null, public: boolean | null } | null, discord: { __typename?: 'ContactInformations', contact: string | null, public: boolean | null } | null, linkedin: { __typename?: 'ContactInformations', contact: string | null, public: boolean | null } | null, whatsapp: { __typename?: 'ContactInformations', contact: string | null, public: boolean | null } | null } }> };
 
 export type UpdateUserProfileMutationVariables = Exact<{
   bio: Scalars['String'];
@@ -16564,21 +17430,21 @@ export type UpdatePayoutSettingsMutationVariables = Exact<{
 
 export type UpdatePayoutSettingsMutation = { __typename?: 'mutation_root', updatePayoutInfo: any };
 
-export type ContributorFragment = { __typename?: 'UserProfiles', login: string | null, avatarUrl: string | null, userId: any | null, githubUserId: any | null, contributionStatsAggregate: { __typename?: 'ContributionStatsAggregate', aggregate: { __typename?: 'ContributionStatsAggregateFields', sum: { __typename?: 'ContributionStatsSumFields', paidCount: any | null, unpaidUnignoredCount: any | null } | null } | null }, paymentStatsAggregate: { __typename?: 'PaymentStatsAggregate', aggregate: { __typename?: 'PaymentStatsAggregateFields', sum: { __typename?: 'PaymentStatsSumFields', moneyGranted: any | null } | null } | null } };
+export type ContributorFragment = { __typename?: 'UserProfiles', login: string | null, avatarUrl: string | null, userId: any | null, githubUserId: any | null, contributionStatsAggregate: { __typename?: 'ContributionStatsAggregate', aggregate: { __typename?: 'ContributionStatsAggregateFields', sum: { __typename?: 'ContributionStatsSumFields', codeReviewCount: any | null, issueCount: any | null, pullRequestCount: any | null, totalCount: any | null } | null } | null }, paymentStatsAggregate: { __typename?: 'PaymentStatsAggregate', aggregate: { __typename?: 'PaymentStatsAggregateFields', sum: { __typename?: 'PaymentStatsSumFields', moneyGranted: any | null } | null } | null }, projectsRewardedAggregate: { __typename?: 'ProjectsRewardedUsersAggregate', aggregate: { __typename?: 'ProjectsRewardedUsersAggregateFields', sum: { __typename?: 'ProjectsRewardedUsersSumFields', rewardCount: number | null } | null } | null }, completedUnpaidPullRequestsAggregate: { __typename?: 'ApiCompletedContributionsAggregate', aggregate: { __typename?: 'ApiCompletedContributionsAggregateFields', count: number } | null }, completedUnpaidIssuesAggregate: { __typename?: 'ApiCompletedContributionsAggregate', aggregate: { __typename?: 'ApiCompletedContributionsAggregateFields', count: number } | null }, completedUnpaidCodeReviewsAggregate: { __typename?: 'ApiCompletedContributionsAggregate', aggregate: { __typename?: 'ApiCompletedContributionsAggregateFields', count: number } | null } };
 
 export type GetProjectContributorsQueryVariables = Exact<{
   projectId: Scalars['uuid'];
 }>;
 
 
-export type GetProjectContributorsQuery = { __typename?: 'query_root', projectsContributors: Array<{ __typename?: 'ProjectsContributors', user: { __typename?: 'UserProfiles', login: string | null, avatarUrl: string | null, userId: any | null, githubUserId: any | null, contributionStatsAggregate: { __typename?: 'ContributionStatsAggregate', aggregate: { __typename?: 'ContributionStatsAggregateFields', sum: { __typename?: 'ContributionStatsSumFields', paidCount: any | null, unpaidUnignoredCount: any | null } | null } | null }, paymentStatsAggregate: { __typename?: 'PaymentStatsAggregate', aggregate: { __typename?: 'PaymentStatsAggregateFields', sum: { __typename?: 'PaymentStatsSumFields', moneyGranted: any | null } | null } | null } } | null }> };
+export type GetProjectContributorsQuery = { __typename?: 'query_root', projectsContributors: Array<{ __typename?: 'ProjectsContributors', user: { __typename?: 'UserProfiles', login: string | null, avatarUrl: string | null, userId: any | null, githubUserId: any | null, contributionStatsAggregate: { __typename?: 'ContributionStatsAggregate', aggregate: { __typename?: 'ContributionStatsAggregateFields', sum: { __typename?: 'ContributionStatsSumFields', codeReviewCount: any | null, issueCount: any | null, pullRequestCount: any | null, totalCount: any | null } | null } | null }, paymentStatsAggregate: { __typename?: 'PaymentStatsAggregate', aggregate: { __typename?: 'PaymentStatsAggregateFields', sum: { __typename?: 'PaymentStatsSumFields', moneyGranted: any | null } | null } | null }, projectsRewardedAggregate: { __typename?: 'ProjectsRewardedUsersAggregate', aggregate: { __typename?: 'ProjectsRewardedUsersAggregateFields', sum: { __typename?: 'ProjectsRewardedUsersSumFields', rewardCount: number | null } | null } | null }, completedUnpaidPullRequestsAggregate: { __typename?: 'ApiCompletedContributionsAggregate', aggregate: { __typename?: 'ApiCompletedContributionsAggregateFields', count: number } | null }, completedUnpaidIssuesAggregate: { __typename?: 'ApiCompletedContributionsAggregate', aggregate: { __typename?: 'ApiCompletedContributionsAggregateFields', count: number } | null }, completedUnpaidCodeReviewsAggregate: { __typename?: 'ApiCompletedContributionsAggregate', aggregate: { __typename?: 'ApiCompletedContributionsAggregateFields', count: number } | null } } | null }> };
 
 export type GetProjectVisibilityDetailsQueryVariables = Exact<{
   projectId: Scalars['uuid'];
 }>;
 
 
-export type GetProjectVisibilityDetailsQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', visibility: any | null, id: any | null, key: string | null, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributors', githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number } | null }, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> }> };
+export type GetProjectVisibilityDetailsQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', visibility: any | null, id: any | null, key: string | null, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributors', githubUserId: any }>, pendingContributors: Array<{ __typename?: 'ProjectsPendingContributors', githubUserId: any }>, rewardedUsers: Array<{ __typename?: 'ProjectsRewardedUsers', githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number } | null }, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> }> };
 
 export type PendingProjectLeaderInvitationsQueryVariables = Exact<{
   githubUserId: InputMaybe<Scalars['bigint']>;
@@ -16606,14 +17472,14 @@ export type GetGithubRepositoryDetailsQueryVariables = Exact<{
 }>;
 
 
-export type GetGithubRepositoryDetailsQuery = { __typename?: 'query_root', githubReposByPk: { __typename?: 'GithubRepos', owner: string, name: string, description: string, stars: number, forkCount: number, htmlUrl: string, languages: any, hasIssues: boolean, id: any } | null };
+export type GetGithubRepositoryDetailsQuery = { __typename?: 'query_root', githubRepos: Array<{ __typename?: 'GithubRepos', owner: string | null, name: string | null, description: string | null, stars: number | null, forkCount: number | null, htmlUrl: string | null, languages: any | null, hasIssues: boolean | null, id: any | null }> };
 
 export type GetProjectOverviewDetailsQueryVariables = Exact<{
   projectId: Scalars['uuid'];
 }>;
 
 
-export type GetProjectOverviewDetailsQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', name: string | null, longDescription: string | null, logoUrl: string | null, moreInfoLink: string | null, hiring: boolean | null, visibility: any | null, id: any | null, key: string | null, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', repo: { __typename?: 'GithubRepos', stars: number, languages: any, id: any } | null }>, sponsors: Array<{ __typename?: 'ProjectsSponsors', sponsor: { __typename?: 'Sponsors', name: string, logoUrl: string, url: string | null, id: any } }>, contributors: Array<{ __typename?: 'ProjectsContributors', githubUser: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null }>, contributorsAggregate: { __typename?: 'ProjectsContributorsAggregate', aggregate: { __typename?: 'ProjectsContributorsAggregateFields', count: number } | null }, projectLeads: Array<{ __typename?: 'ProjectLeads', user: { __typename?: 'RegisteredUsers', login: string | null, avatarUrl: string | null, githubUserId: any | null, id: any | null } | null }>, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', initialAmount: any | null, spentAmount: any | null } | null } | null }, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> }> };
+export type GetProjectOverviewDetailsQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', name: string | null, longDescription: string | null, logoUrl: string | null, moreInfoLink: string | null, hiring: boolean | null, visibility: any | null, id: any | null, key: string | null, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', repo: { __typename?: 'GithubRepos', stars: number | null, languages: any | null, id: any | null } | null }>, sponsors: Array<{ __typename?: 'ProjectsSponsors', sponsor: { __typename?: 'Sponsors', name: string, logoUrl: string, url: string | null, id: any } }>, contributors: Array<{ __typename?: 'ProjectsContributors', githubUser: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null }>, contributorsAggregate: { __typename?: 'ProjectsContributorsAggregate', aggregate: { __typename?: 'ProjectsContributorsAggregateFields', count: number } | null }, projectLeads: Array<{ __typename?: 'ProjectLeads', user: { __typename?: 'RegisteredUsers', login: string | null, avatarUrl: string | null, githubUserId: any | null, id: any | null } | null }>, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', initialAmount: any | null, spentAmount: any | null } | null } | null }, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> }> };
 
 export type GetProjectApplicationsQueryVariables = Exact<{
   projectId: Scalars['uuid'];
@@ -16636,23 +17502,32 @@ export type SearchGithubUsersByHandleSubstringQueryVariables = Exact<{
 
 export type SearchGithubUsersByHandleSubstringQuery = { __typename?: 'query_root', searchUsers: Array<{ __typename?: 'GithubUser', login: string, avatarUrl: any, htmlUrl: any, id: number, user: { __typename?: 'RegisteredUsers', id: any | null } | null }> | null };
 
-export type IgnoreIssueMutationVariables = Exact<{
-  issueNumber: Scalars['Int'];
+export type IgnoreContributionMutationVariables = Exact<{
+  contributionId: Scalars['String'];
   projectId: Scalars['Uuid'];
-  repoId: Scalars['Int'];
 }>;
 
 
-export type IgnoreIssueMutation = { __typename?: 'mutation_root', ignoreIssue: boolean };
+export type IgnoreContributionMutation = { __typename?: 'mutation_root', ignoreContribution: boolean };
 
-export type UnignoreIssueMutationVariables = Exact<{
-  issueNumber: Scalars['Int'];
+export type UnignoreContributionMutationVariables = Exact<{
+  contributionId: Scalars['String'];
   projectId: Scalars['Uuid'];
-  repoId: Scalars['Int'];
 }>;
 
 
-export type UnignoreIssueMutation = { __typename?: 'mutation_root', unignoreIssue: boolean };
+export type UnignoreContributionMutation = { __typename?: 'mutation_root', unignoreContribution: boolean };
+
+export type UnrewardedContributionsQueryVariables = Exact<{
+  githubUserId: Scalars['bigint'];
+  projectId: Scalars['uuid'];
+  type: Scalars['String'];
+}>;
+
+
+export type UnrewardedContributionsQuery = { __typename?: 'query_root', contributions: Array<{ __typename?: 'Contributions', type: string | null, status: any | null, repoId: any | null, projectId: any | null, id: string | null, detailsId: string | null, githubUserId: any | null, ignored: boolean | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null } | null }> };
+
+export type ContributionFragment = { __typename?: 'Contributions', type: string | null, status: any | null, repoId: any | null, projectId: any | null, id: string | null, detailsId: string | null, githubUserId: any | null, ignored: boolean | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null } | null };
 
 export type SearchIssuesQueryVariables = Exact<{
   projectId: Scalars['uuid'];
@@ -16660,7 +17535,7 @@ export type SearchIssuesQueryVariables = Exact<{
 }>;
 
 
-export type SearchIssuesQuery = { __typename?: 'query_root', githubIssues: Array<{ __typename?: 'GithubIssues', repoId: any, number: any, title: string, htmlUrl: string, authorId: any, assigneeIds: any, status: any, createdAt: any, closedAt: any | null, id: any, ignoredForProjects: Array<{ __typename?: 'IgnoredGithubIssues', projectId: any, repoId: any, issueNumber: any }> }> };
+export type SearchIssuesQuery = { __typename?: 'query_root', githubIssues: Array<{ __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, id: any | null }> };
 
 export type SearchPullRequestsQueryVariables = Exact<{
   projectId: Scalars['uuid'];
@@ -16668,15 +17543,7 @@ export type SearchPullRequestsQueryVariables = Exact<{
 }>;
 
 
-export type SearchPullRequestsQuery = { __typename?: 'query_root', githubPullRequests: Array<{ __typename?: 'GithubPullRequests', repoId: any, number: any, title: string, htmlUrl: string, authorId: any, status: any, createdAt: any, closedAt: any | null, mergedAt: any | null, id: any, ignoredForProjects: Array<{ __typename?: 'IgnoredGithubIssues', projectId: any, repoId: any, issueNumber: any }> }> };
-
-export type GetPaidWorkItemsQueryVariables = Exact<{
-  projectId: Scalars['uuid'];
-  githubUserId: Scalars['bigint'];
-}>;
-
-
-export type GetPaidWorkItemsQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, workItems: Array<{ __typename?: 'WorkItems', paymentId: any, repoId: any, issueNumber: any }> }> };
+export type SearchPullRequestsQuery = { __typename?: 'query_root', githubPullRequests: Array<{ __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null }> };
 
 export type FetchIssueQueryVariables = Exact<{
   repoOwner: Scalars['String'];
@@ -16685,7 +17552,7 @@ export type FetchIssueQueryVariables = Exact<{
 }>;
 
 
-export type FetchIssueQuery = { __typename?: 'query_root', fetchIssue: { __typename?: 'GithubIssue', repoId: number, number: number, status: GithubIssueStatus, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, id: number, ignoredForProjects: Array<{ __typename?: 'IgnoredGithubIssues', projectId: any, repoId: any, issueNumber: any }> } | null };
+export type FetchIssueQuery = { __typename?: 'query_root', fetchIssue: { __typename?: 'GithubIssue', repoId: number, number: number, status: GithubIssueStatus, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, id: number, author: { __typename?: 'GithubUser', id: number } } | null };
 
 export type FetchPullRequestQueryVariables = Exact<{
   repoOwner: Scalars['String'];
@@ -16694,14 +17561,14 @@ export type FetchPullRequestQueryVariables = Exact<{
 }>;
 
 
-export type FetchPullRequestQuery = { __typename?: 'query_root', fetchPullRequest: { __typename?: 'GithubPullRequest', repoId: number, number: number, status: GithubPullRequestStatus, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null, id: number, ignoredForProjects: Array<{ __typename?: 'IgnoredGithubIssues', projectId: any, repoId: any, issueNumber: any }> } | null };
+export type FetchPullRequestQuery = { __typename?: 'query_root', fetchPullRequest: { __typename?: 'GithubPullRequest', repoId: number, number: number, status: GithubPullRequestStatus, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null, id: number, author: { __typename?: 'GithubUser', id: number } } | null };
 
 export type GetProjectReposQueryVariables = Exact<{
   projectId: Scalars['uuid'];
 }>;
 
 
-export type GetProjectReposQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', id: any | null, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', projectId: any, githubRepoId: any, repo: { __typename?: 'GithubRepos', owner: string, name: string, description: string, stars: number, forkCount: number, htmlUrl: string, languages: any, hasIssues: boolean, id: any } | null }> }> };
+export type GetProjectReposQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', id: any | null, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', projectId: any, githubRepoId: any, repo: { __typename?: 'GithubRepos', owner: string | null, name: string | null, description: string | null, stars: number | null, forkCount: number | null, htmlUrl: string | null, languages: any | null, hasIssues: boolean | null, id: any | null } | null }> }> };
 
 export type CreateAndCloseIssueMutationVariables = Exact<{
   projectId: Scalars['Uuid'];
@@ -16711,7 +17578,7 @@ export type CreateAndCloseIssueMutationVariables = Exact<{
 }>;
 
 
-export type CreateAndCloseIssueMutation = { __typename?: 'mutation_root', createAndCloseIssue: { __typename?: 'GithubIssueCreatedAndClosed', repoId: number, number: number, status: GithubIssueCreatedAndClosedStatus, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, id: number } };
+export type CreateAndCloseIssueMutation = { __typename?: 'mutation_root', createAndCloseIssue: { __typename?: 'GithubIssue', repoId: number, number: number, status: GithubIssueStatus, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, id: number, author: { __typename?: 'GithubUser', id: number } } };
 
 export type GetPaymentRequestsForProjectQueryVariables = Exact<{
   projectId: Scalars['uuid'];
@@ -16739,14 +17606,14 @@ export type GetProjectsForSidebarQueryVariables = Exact<{
 }>;
 
 
-export type GetProjectsForSidebarQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', name: string | null, logoUrl: string | null, visibility: any | null, id: any | null, key: string | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }>, contributorsAggregate: { __typename?: 'ProjectsContributorsAggregate', aggregate: { __typename?: 'ProjectsContributorsAggregateFields', count: number } | null }, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributors', githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number } | null } }> };
+export type GetProjectsForSidebarQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', name: string | null, logoUrl: string | null, visibility: any | null, id: any | null, key: string | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }>, contributorsAggregate: { __typename?: 'ProjectsContributorsAggregate', aggregate: { __typename?: 'ProjectsContributorsAggregateFields', count: number } | null }, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributors', githubUserId: any }>, pendingContributors: Array<{ __typename?: 'ProjectsPendingContributors', githubUserId: any }>, rewardedUsers: Array<{ __typename?: 'ProjectsRewardedUsers', githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number } | null } }> };
 
 export type GetCurrentProjectForSidebarQueryVariables = Exact<{
   projectId: Scalars['uuid'];
 }>;
 
 
-export type GetCurrentProjectForSidebarQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', name: string | null, logoUrl: string | null, visibility: any | null, id: any | null, key: string | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }>, contributorsAggregate: { __typename?: 'ProjectsContributorsAggregate', aggregate: { __typename?: 'ProjectsContributorsAggregateFields', count: number } | null }, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributors', githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number } | null } }> };
+export type GetCurrentProjectForSidebarQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', name: string | null, logoUrl: string | null, visibility: any | null, id: any | null, key: string | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }>, contributorsAggregate: { __typename?: 'ProjectsContributorsAggregate', aggregate: { __typename?: 'ProjectsContributorsAggregateFields', count: number } | null }, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributors', githubUserId: any }>, pendingContributors: Array<{ __typename?: 'ProjectsPendingContributors', githubUserId: any }>, rewardedUsers: Array<{ __typename?: 'ProjectsRewardedUsers', githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number } | null } }> };
 
 export type GetProjectIdFromKeyQueryVariables = Exact<{
   projectKey: Scalars['String'];
@@ -16761,12 +17628,12 @@ export type GetProjectsQueryVariables = Exact<{
 }>;
 
 
-export type GetProjectsQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', name: string | null, moreInfoLink: string | null, logoUrl: string | null, shortDescription: string | null, hiring: boolean | null, rank: number | null, id: any | null, key: string | null, visibility: any | null, contributorsAggregate: { __typename?: 'ProjectsContributorsAggregate', aggregate: { __typename?: 'ProjectsContributorsAggregateFields', count: number } | null }, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any, projectId: any, user: { __typename?: 'RegisteredUsers', login: string | null, avatarUrl: string | null, githubUserId: any | null, id: any | null } | null }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', projectId: any, githubRepoId: any, repo: { __typename?: 'GithubRepos', languages: any, id: any } | null }>, sponsors: Array<{ __typename?: 'ProjectsSponsors', sponsor: { __typename?: 'Sponsors', name: string, logoUrl: string, url: string | null, id: any } }>, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributors', githubUserId: any }>, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number } | null } }> };
+export type GetProjectsQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', name: string | null, moreInfoLink: string | null, logoUrl: string | null, shortDescription: string | null, hiring: boolean | null, rank: number | null, id: any | null, key: string | null, visibility: any | null, contributorsAggregate: { __typename?: 'ProjectsContributorsAggregate', aggregate: { __typename?: 'ProjectsContributorsAggregateFields', count: number } | null }, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any, projectId: any, user: { __typename?: 'RegisteredUsers', login: string | null, avatarUrl: string | null, githubUserId: any | null, id: any | null } | null }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', projectId: any, githubRepoId: any, repo: { __typename?: 'GithubRepos', languages: any | null, id: any | null } | null }>, sponsors: Array<{ __typename?: 'ProjectsSponsors', sponsor: { __typename?: 'Sponsors', name: string, logoUrl: string, url: string | null, id: any } }>, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributors', githubUserId: any }>, pendingContributors: Array<{ __typename?: 'ProjectsPendingContributors', githubUserId: any }>, rewardedUsers: Array<{ __typename?: 'ProjectsRewardedUsers', githubUserId: any }>, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number } | null } }> };
 
 export type GetAllFilterOptionsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllFilterOptionsQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', visibility: any | null, id: any | null, key: string | null, sponsors: Array<{ __typename?: 'ProjectsSponsors', sponsor: { __typename?: 'Sponsors', id: any, name: string } }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', projectId: any, githubRepoId: any, repo: { __typename?: 'GithubRepos', languages: any, id: any } | null }>, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributors', githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number } | null }, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> }> };
+export type GetAllFilterOptionsQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', visibility: any | null, id: any | null, key: string | null, sponsors: Array<{ __typename?: 'ProjectsSponsors', sponsor: { __typename?: 'Sponsors', id: any, name: string } }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', projectId: any, githubRepoId: any, repo: { __typename?: 'GithubRepos', languages: any | null, id: any | null } | null }>, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributors', githubUserId: any }>, pendingContributors: Array<{ __typename?: 'ProjectsPendingContributors', githubUserId: any }>, rewardedUsers: Array<{ __typename?: 'ProjectsRewardedUsers', githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number } | null }, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> }> };
 
 export type MarkInvoiceAsReceivedMutationVariables = Exact<{
   paymentReferences: Array<PaymentReference> | PaymentReference;
@@ -16775,14 +17642,14 @@ export type MarkInvoiceAsReceivedMutationVariables = Exact<{
 
 export type MarkInvoiceAsReceivedMutation = { __typename?: 'mutation_root', markInvoiceAsReceived: number };
 
-export type UserPaymentRequestFragment = { __typename?: 'PaymentRequests', id: any, requestedAt: any, amountInUsd: any, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, workItems: Array<{ __typename?: 'WorkItems', paymentId: any, repoId: any, issueNumber: any }>, budget: { __typename?: 'Budgets', id: any, project: { __typename?: 'Projects', id: any | null, name: string | null, shortDescription: string | null, logoUrl: string | null } | null } | null };
+export type UserPaymentRequestFragment = { __typename?: 'PaymentRequests', id: any, requestedAt: any, amountInUsd: any, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, workItems: Array<{ __typename?: 'WorkItems', type: any | null, id: string | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null } | null }>, budget: { __typename?: 'Budgets', id: any, project: { __typename?: 'Projects', id: any | null, name: string | null, shortDescription: string | null, logoUrl: string | null } | null } | null };
 
 export type GetPaymentRequestsQueryVariables = Exact<{
   githubUserId: Scalars['bigint'];
 }>;
 
 
-export type GetPaymentRequestsQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, requestedAt: any, amountInUsd: any, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, workItems: Array<{ __typename?: 'WorkItems', paymentId: any, repoId: any, issueNumber: any }>, budget: { __typename?: 'Budgets', id: any, project: { __typename?: 'Projects', id: any | null, name: string | null, shortDescription: string | null, logoUrl: string | null } | null } | null }> };
+export type GetPaymentRequestsQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, requestedAt: any, amountInUsd: any, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, workItems: Array<{ __typename?: 'WorkItems', type: any | null, id: string | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null } | null }>, budget: { __typename?: 'Budgets', id: any, project: { __typename?: 'Projects', id: any | null, name: string | null, shortDescription: string | null, logoUrl: string | null } | null } | null }> };
 
 export type AcceptTermsAndConditionsMutationVariables = Exact<{ [key: string]: never; }>;
 
@@ -16812,6 +17679,12 @@ export const ProjectVisibilityDetailsFragmentDoc = gql`
     }
   }
   contributors {
+    githubUserId
+  }
+  pendingContributors {
+    githubUserId
+  }
+  rewardedUsers {
     githubUserId
   }
   projectLeads(orderBy: {user: {githubUserId: ASC}}) {
@@ -16909,14 +17782,14 @@ ${ProjectVisibilityDetailsFragmentDoc}
 ${ProjectLeadFragmentDoc}
 ${GithubRepoLanguagesFragmentDoc}
 ${SponsorFragmentDoc}`;
-export const LiveGithubUserIdFragmentDoc = gql`
-    fragment LiveGithubUserId on GithubUser {
+export const GithubUserIdFragmentDoc = gql`
+    fragment GithubUserId on GithubUsers {
   id
 }
     `;
-export const LiveGithubUserFragmentDoc = gql`
-    fragment LiveGithubUser on GithubUser {
-  ...LiveGithubUserId
+export const GithubUserFragmentDoc = gql`
+    fragment GithubUser on GithubUsers {
+  ...GithubUserId
   login
   avatarUrl
   htmlUrl
@@ -16924,64 +17797,62 @@ export const LiveGithubUserFragmentDoc = gql`
     id
   }
 }
-    ${LiveGithubUserIdFragmentDoc}`;
+    ${GithubUserIdFragmentDoc}`;
 export const WorkItemIdFragmentDoc = gql`
     fragment WorkItemId on WorkItems {
-  paymentId
-  repoId
-  issueNumber
-}
-    `;
-export const LiveGithubIssueIdFragmentDoc = gql`
-    fragment LiveGithubIssueId on GithubIssue {
   id
 }
     `;
-export const IgnoredGithubIssueIdFragmentDoc = gql`
-    fragment IgnoredGithubIssueId on IgnoredGithubIssues {
-  projectId
-  repoId
-  issueNumber
+export const GithubIssueIdFragmentDoc = gql`
+    fragment GithubIssueId on GithubIssues {
+  id
 }
     `;
-export const LiveGithubIssueFragmentDoc = gql`
-    fragment LiveGithubIssue on GithubIssue {
-  ...LiveGithubIssueId
+export const GithubIssueFragmentDoc = gql`
+    fragment GithubIssue on GithubIssues {
+  ...GithubIssueId
   repoId
   number
-  status
   title
   htmlUrl
+  assigneeIds
+  status
   createdAt
   closedAt
-  ignoredForProjects {
-    ...IgnoredGithubIssueId
-  }
 }
-    ${LiveGithubIssueIdFragmentDoc}
-${IgnoredGithubIssueIdFragmentDoc}`;
-export const LiveGithubPullRequestIdFragmentDoc = gql`
-    fragment LiveGithubPullRequestId on GithubPullRequest {
+    ${GithubIssueIdFragmentDoc}`;
+export const GithubPullRequestIdFragmentDoc = gql`
+    fragment GithubPullRequestId on GithubPullRequests {
   id
 }
     `;
-export const LiveGithubPullRequestFragmentDoc = gql`
-    fragment LiveGithubPullRequest on GithubPullRequest {
-  ...LiveGithubPullRequestId
+export const GithubPullRequestFragmentDoc = gql`
+    fragment GithubPullRequest on GithubPullRequests {
+  ...GithubPullRequestId
   repoId
   number
-  status
   title
   htmlUrl
+  status
   createdAt
   closedAt
   mergedAt
-  ignoredForProjects {
-    ...IgnoredGithubIssueId
+}
+    ${GithubPullRequestIdFragmentDoc}`;
+export const WorkItemFragmentDoc = gql`
+    fragment WorkItem on WorkItems {
+  ...WorkItemId
+  type
+  githubIssue {
+    ...GithubIssue
+  }
+  githubPullRequest {
+    ...GithubPullRequest
   }
 }
-    ${LiveGithubPullRequestIdFragmentDoc}
-${IgnoredGithubIssueIdFragmentDoc}`;
+    ${WorkItemIdFragmentDoc}
+${GithubIssueFragmentDoc}
+${GithubPullRequestFragmentDoc}`;
 export const PaymentRequestDetailsFragmentDoc = gql`
     fragment PaymentRequestDetails on PaymentRequests {
   id
@@ -16998,17 +17869,11 @@ export const PaymentRequestDetailsFragmentDoc = gql`
     avatarUrl
     githubUserId
   }
-  liveGithubRecipient {
-    ...LiveGithubUser
+  githubRecipient {
+    ...GithubUser
   }
   workItems {
-    ...WorkItemId
-    githubIssue {
-      ...LiveGithubIssue
-    }
-    githubPullRequest {
-      ...LiveGithubPullRequest
-    }
+    ...WorkItem
   }
   paymentsAggregate {
     aggregate {
@@ -17018,10 +17883,8 @@ export const PaymentRequestDetailsFragmentDoc = gql`
     }
   }
 }
-    ${LiveGithubUserFragmentDoc}
-${WorkItemIdFragmentDoc}
-${LiveGithubIssueFragmentDoc}
-${LiveGithubPullRequestFragmentDoc}`;
+    ${GithubUserFragmentDoc}
+${WorkItemFragmentDoc}`;
 export const ApplicationIdFragmentDoc = gql`
     fragment ApplicationId on Applications {
   id
@@ -17033,29 +17896,6 @@ export const ApplicantFragmentDoc = gql`
   applicantId
 }
     ${ApplicationIdFragmentDoc}`;
-export const GithubPullRequestIdFragmentDoc = gql`
-    fragment GithubPullRequestId on GithubPullRequests {
-  id
-}
-    `;
-export const GithubPullRequestFragmentDoc = gql`
-    fragment GithubPullRequest on GithubPullRequests {
-  ...GithubPullRequestId
-  repoId
-  number
-  title
-  htmlUrl
-  authorId
-  status
-  createdAt
-  closedAt
-  mergedAt
-  ignoredForProjects {
-    ...IgnoredGithubIssueId
-  }
-}
-    ${GithubPullRequestIdFragmentDoc}
-${IgnoredGithubIssueIdFragmentDoc}`;
 export const GithubRepoFragmentDoc = gql`
     fragment GithubRepo on GithubRepos {
   ...GithubRepoId
@@ -17087,22 +17927,6 @@ export const PaymentRequestFragmentDoc = gql`
   requestedAt
 }
     ${PaymentRequestIdFragmentDoc}`;
-export const GithubUserIdFragmentDoc = gql`
-    fragment GithubUserId on GithubUsers {
-  id
-}
-    `;
-export const GithubUserFragmentDoc = gql`
-    fragment GithubUser on GithubUsers {
-  ...GithubUserId
-  login
-  avatarUrl
-  htmlUrl
-  user {
-    id
-  }
-}
-    ${GithubUserIdFragmentDoc}`;
 export const ExtendedPaymentRequestFragmentDoc = gql`
     fragment ExtendedPaymentRequest on PaymentRequests {
   ...PaymentRequest
@@ -17119,29 +17943,6 @@ export const ExtendedPaymentRequestFragmentDoc = gql`
 }
     ${PaymentRequestFragmentDoc}
 ${GithubUserFragmentDoc}`;
-export const GithubIssueIdFragmentDoc = gql`
-    fragment GithubIssueId on GithubIssues {
-  id
-}
-    `;
-export const GithubIssueFragmentDoc = gql`
-    fragment GithubIssue on GithubIssues {
-  ...GithubIssueId
-  repoId
-  number
-  title
-  htmlUrl
-  authorId
-  assigneeIds
-  status
-  createdAt
-  closedAt
-  ignoredForProjects {
-    ...IgnoredGithubIssueId
-  }
-}
-    ${GithubIssueIdFragmentDoc}
-${IgnoredGithubIssueIdFragmentDoc}`;
 export const LastProjectMergedPullRequestsFragmentDoc = gql`
     fragment LastProjectMergedPullRequests on Projects {
   githubRepos {
@@ -17153,23 +17954,6 @@ export const LastProjectMergedPullRequestsFragmentDoc = gql`
   }
 }
     ${GithubIssueFragmentDoc}`;
-export const ProjectPaidWorkItemsFragmentDoc = gql`
-    fragment ProjectPaidWorkItems on Projects {
-  ...ProjectId
-  budgets {
-    id
-    paymentRequests {
-      ...PaymentRequestId
-      recipientId
-      workItems {
-        ...WorkItemId
-      }
-    }
-  }
-}
-    ${ProjectIdFragmentDoc}
-${PaymentRequestIdFragmentDoc}
-${WorkItemIdFragmentDoc}`;
 export const OwnUserProfileDetailsFragmentDoc = gql`
     fragment OwnUserProfileDetails on UserProfiles {
   weeklyAllocatedTime
@@ -17177,14 +17961,14 @@ export const OwnUserProfileDetailsFragmentDoc = gql`
   completionScore @client
 }
     `;
-export const LiveGithubIssueCreatedAndClosedIdFragmentDoc = gql`
-    fragment LiveGithubIssueCreatedAndClosedId on GithubIssueCreatedAndClosed {
+export const LiveGithubPullRequestIdFragmentDoc = gql`
+    fragment LiveGithubPullRequestId on GithubPullRequest {
   id
 }
     `;
-export const LiveGithubIssueCreatedAndClosedFragmentDoc = gql`
-    fragment LiveGithubIssueCreatedAndClosed on GithubIssueCreatedAndClosed {
-  ...LiveGithubIssueCreatedAndClosedId
+export const LiveGithubPullRequestFragmentDoc = gql`
+    fragment LiveGithubPullRequest on GithubPullRequest {
+  ...LiveGithubPullRequestId
   repoId
   number
   status
@@ -17192,8 +17976,48 @@ export const LiveGithubIssueCreatedAndClosedFragmentDoc = gql`
   htmlUrl
   createdAt
   closedAt
+  mergedAt
+  author {
+    id
+  }
 }
-    ${LiveGithubIssueCreatedAndClosedIdFragmentDoc}`;
+    ${LiveGithubPullRequestIdFragmentDoc}`;
+export const LiveGithubIssueIdFragmentDoc = gql`
+    fragment LiveGithubIssueId on GithubIssue {
+  id
+}
+    `;
+export const LiveGithubIssueFragmentDoc = gql`
+    fragment LiveGithubIssue on GithubIssue {
+  ...LiveGithubIssueId
+  repoId
+  number
+  status
+  title
+  htmlUrl
+  createdAt
+  closedAt
+  author {
+    id
+  }
+}
+    ${LiveGithubIssueIdFragmentDoc}`;
+export const LiveGithubUserIdFragmentDoc = gql`
+    fragment LiveGithubUserId on GithubUser {
+  id
+}
+    `;
+export const LiveGithubUserFragmentDoc = gql`
+    fragment LiveGithubUser on GithubUser {
+  ...LiveGithubUserId
+  login
+  avatarUrl
+  htmlUrl
+  user {
+    id
+  }
+}
+    ${LiveGithubUserIdFragmentDoc}`;
 export const UserProfileIdFragmentDoc = gql`
     fragment UserProfileId on UserProfiles {
   githubUserId
@@ -17283,8 +18107,9 @@ export const ContributionCountFragmentDoc = gql`
     fragment ContributionCount on ContributionCounts {
   year
   week
-  paidCount
-  unpaidCount
+  codeReviewCount
+  issueCount
+  pullRequestCount
 }
     `;
 export const UserProfileFragmentDoc = gql`
@@ -17364,8 +18189,10 @@ export const ContributorFragmentDoc = gql`
   contributionStatsAggregate(where: {projectId: {_eq: $projectId}}) {
     aggregate {
       sum {
-        paidCount
-        unpaidUnignoredCount
+        codeReviewCount
+        issueCount
+        pullRequestCount
+        totalCount
       }
     }
   }
@@ -17376,8 +18203,55 @@ export const ContributorFragmentDoc = gql`
       }
     }
   }
+  projectsRewardedAggregate(where: {projectId: {_eq: $projectId}}) {
+    aggregate {
+      sum {
+        rewardCount
+      }
+    }
+  }
+  completedUnpaidPullRequestsAggregate: completedContributionsAggregate(
+    where: {projectId: {_eq: $projectId}, type: {_eq: "pull_request"}, rewardItems_aggregate: {count: {predicate: {_eq: 0}}}}
+  ) {
+    aggregate {
+      count
+    }
+  }
+  completedUnpaidIssuesAggregate: completedContributionsAggregate(
+    where: {projectId: {_eq: $projectId}, type: {_eq: "issue"}, rewardItems_aggregate: {count: {predicate: {_eq: 0}}}}
+  ) {
+    aggregate {
+      count
+    }
+  }
+  completedUnpaidCodeReviewsAggregate: completedContributionsAggregate(
+    where: {projectId: {_eq: $projectId}, type: {_eq: "code_review"}, rewardItems_aggregate: {count: {predicate: {_eq: 0}}}}
+  ) {
+    aggregate {
+      count
+    }
+  }
 }
     ${MinimalUserProfileFragmentDoc}`;
+export const ContributionFragmentDoc = gql`
+    fragment Contribution on Contributions {
+  type
+  status
+  repoId
+  projectId
+  id
+  detailsId
+  githubUserId
+  ignored
+  githubIssue {
+    ...GithubIssue
+  }
+  githubPullRequest {
+    ...GithubPullRequest
+  }
+}
+    ${GithubIssueFragmentDoc}
+${GithubPullRequestFragmentDoc}`;
 export const SidebarProjectDetailsFragmentDoc = gql`
     fragment SidebarProjectDetails on Projects {
   ...ProjectId
@@ -17394,11 +18268,6 @@ export const SidebarProjectDetailsFragmentDoc = gql`
   }
 }
     ${ProjectIdFragmentDoc}`;
-export const WorkItemFragmentDoc = gql`
-    fragment WorkItem on WorkItems {
-  ...WorkItemId
-}
-    ${WorkItemIdFragmentDoc}`;
 export const UserPaymentRequestFragmentDoc = gql`
     fragment UserPaymentRequest on PaymentRequests {
   id
@@ -17865,6 +18734,9 @@ export const ImpersonatedUserDocument = gql`
       projectsLeaded {
         projectId
       }
+    }
+    userGithubProvider {
+      accessToken
     }
   }
 }
@@ -18358,7 +19230,7 @@ export type GetProjectDetailsLazyQueryHookResult = ReturnType<typeof useGetProje
 export type GetProjectDetailsQueryResult = Apollo.QueryResult<GetProjectDetailsQuery, GetProjectDetailsQueryVariables>;
 export const GetGithubRepositoryDetailsDocument = gql`
     query GetGithubRepositoryDetails($githubRepoId: bigint!) {
-  githubReposByPk(id: $githubRepoId) {
+  githubRepos(where: {id: {_eq: $githubRepoId}}) {
     ...GithubRepo
   }
 }
@@ -18546,7 +19418,13 @@ export type ApplyToProjectMutationResult = Apollo.MutationResult<ApplyToProjectM
 export type ApplyToProjectMutationOptions = Apollo.BaseMutationOptions<ApplyToProjectMutation, ApplyToProjectMutationVariables>;
 export const SearchGithubUsersByHandleSubstringDocument = gql`
     query SearchGithubUsersByHandleSubstring($handleSubstringQuery: String!) {
-  searchUsers(query: $handleSubstringQuery, sort: "followers", order: "desc") {
+  searchUsers(
+    query: $handleSubstringQuery
+    sort: "followers"
+    order: "desc"
+    page: 1
+    perPage: 100
+  ) {
     ...LiveGithubUser
   }
 }
@@ -18579,72 +19457,109 @@ export function useSearchGithubUsersByHandleSubstringLazyQuery(baseOptions?: Apo
 export type SearchGithubUsersByHandleSubstringQueryHookResult = ReturnType<typeof useSearchGithubUsersByHandleSubstringQuery>;
 export type SearchGithubUsersByHandleSubstringLazyQueryHookResult = ReturnType<typeof useSearchGithubUsersByHandleSubstringLazyQuery>;
 export type SearchGithubUsersByHandleSubstringQueryResult = Apollo.QueryResult<SearchGithubUsersByHandleSubstringQuery, SearchGithubUsersByHandleSubstringQueryVariables>;
-export const IgnoreIssueDocument = gql`
-    mutation IgnoreIssue($issueNumber: Int!, $projectId: Uuid!, $repoId: Int!) {
-  ignoreIssue(issueNumber: $issueNumber, projectId: $projectId, repoId: $repoId)
+export const IgnoreContributionDocument = gql`
+    mutation IgnoreContribution($contributionId: String!, $projectId: Uuid!) {
+  ignoreContribution(contributionId: $contributionId, projectId: $projectId)
 }
     `;
-export type IgnoreIssueMutationFn = Apollo.MutationFunction<IgnoreIssueMutation, IgnoreIssueMutationVariables>;
+export type IgnoreContributionMutationFn = Apollo.MutationFunction<IgnoreContributionMutation, IgnoreContributionMutationVariables>;
 
 /**
- * __useIgnoreIssueMutation__
+ * __useIgnoreContributionMutation__
  *
- * To run a mutation, you first call `useIgnoreIssueMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useIgnoreIssueMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useIgnoreContributionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useIgnoreContributionMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [ignoreIssueMutation, { data, loading, error }] = useIgnoreIssueMutation({
+ * const [ignoreContributionMutation, { data, loading, error }] = useIgnoreContributionMutation({
  *   variables: {
- *      issueNumber: // value for 'issueNumber'
+ *      contributionId: // value for 'contributionId'
  *      projectId: // value for 'projectId'
- *      repoId: // value for 'repoId'
  *   },
  * });
  */
-export function useIgnoreIssueMutation(baseOptions?: Apollo.MutationHookOptions<IgnoreIssueMutation, IgnoreIssueMutationVariables>) {
+export function useIgnoreContributionMutation(baseOptions?: Apollo.MutationHookOptions<IgnoreContributionMutation, IgnoreContributionMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<IgnoreIssueMutation, IgnoreIssueMutationVariables>(IgnoreIssueDocument, options);
+        return Apollo.useMutation<IgnoreContributionMutation, IgnoreContributionMutationVariables>(IgnoreContributionDocument, options);
       }
-export type IgnoreIssueMutationHookResult = ReturnType<typeof useIgnoreIssueMutation>;
-export type IgnoreIssueMutationResult = Apollo.MutationResult<IgnoreIssueMutation>;
-export type IgnoreIssueMutationOptions = Apollo.BaseMutationOptions<IgnoreIssueMutation, IgnoreIssueMutationVariables>;
-export const UnignoreIssueDocument = gql`
-    mutation UnignoreIssue($issueNumber: Int!, $projectId: Uuid!, $repoId: Int!) {
-  unignoreIssue(issueNumber: $issueNumber, projectId: $projectId, repoId: $repoId)
+export type IgnoreContributionMutationHookResult = ReturnType<typeof useIgnoreContributionMutation>;
+export type IgnoreContributionMutationResult = Apollo.MutationResult<IgnoreContributionMutation>;
+export type IgnoreContributionMutationOptions = Apollo.BaseMutationOptions<IgnoreContributionMutation, IgnoreContributionMutationVariables>;
+export const UnignoreContributionDocument = gql`
+    mutation UnignoreContribution($contributionId: String!, $projectId: Uuid!) {
+  unignoreContribution(contributionId: $contributionId, projectId: $projectId)
 }
     `;
-export type UnignoreIssueMutationFn = Apollo.MutationFunction<UnignoreIssueMutation, UnignoreIssueMutationVariables>;
+export type UnignoreContributionMutationFn = Apollo.MutationFunction<UnignoreContributionMutation, UnignoreContributionMutationVariables>;
 
 /**
- * __useUnignoreIssueMutation__
+ * __useUnignoreContributionMutation__
  *
- * To run a mutation, you first call `useUnignoreIssueMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUnignoreIssueMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useUnignoreContributionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUnignoreContributionMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [unignoreIssueMutation, { data, loading, error }] = useUnignoreIssueMutation({
+ * const [unignoreContributionMutation, { data, loading, error }] = useUnignoreContributionMutation({
  *   variables: {
- *      issueNumber: // value for 'issueNumber'
+ *      contributionId: // value for 'contributionId'
  *      projectId: // value for 'projectId'
- *      repoId: // value for 'repoId'
  *   },
  * });
  */
-export function useUnignoreIssueMutation(baseOptions?: Apollo.MutationHookOptions<UnignoreIssueMutation, UnignoreIssueMutationVariables>) {
+export function useUnignoreContributionMutation(baseOptions?: Apollo.MutationHookOptions<UnignoreContributionMutation, UnignoreContributionMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UnignoreIssueMutation, UnignoreIssueMutationVariables>(UnignoreIssueDocument, options);
+        return Apollo.useMutation<UnignoreContributionMutation, UnignoreContributionMutationVariables>(UnignoreContributionDocument, options);
       }
-export type UnignoreIssueMutationHookResult = ReturnType<typeof useUnignoreIssueMutation>;
-export type UnignoreIssueMutationResult = Apollo.MutationResult<UnignoreIssueMutation>;
-export type UnignoreIssueMutationOptions = Apollo.BaseMutationOptions<UnignoreIssueMutation, UnignoreIssueMutationVariables>;
+export type UnignoreContributionMutationHookResult = ReturnType<typeof useUnignoreContributionMutation>;
+export type UnignoreContributionMutationResult = Apollo.MutationResult<UnignoreContributionMutation>;
+export type UnignoreContributionMutationOptions = Apollo.BaseMutationOptions<UnignoreContributionMutation, UnignoreContributionMutationVariables>;
+export const UnrewardedContributionsDocument = gql`
+    query UnrewardedContributions($githubUserId: bigint!, $projectId: uuid!, $type: String!) {
+  contributions(
+    where: {githubUserId: {_eq: $githubUserId}, projectId: {_eq: $projectId}, type: {_eq: $type}, rewardItems_aggregate: {count: {predicate: {_eq: 0}}}}
+  ) {
+    ...Contribution
+  }
+}
+    ${ContributionFragmentDoc}`;
+
+/**
+ * __useUnrewardedContributionsQuery__
+ *
+ * To run a query within a React component, call `useUnrewardedContributionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUnrewardedContributionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUnrewardedContributionsQuery({
+ *   variables: {
+ *      githubUserId: // value for 'githubUserId'
+ *      projectId: // value for 'projectId'
+ *      type: // value for 'type'
+ *   },
+ * });
+ */
+export function useUnrewardedContributionsQuery(baseOptions: Apollo.QueryHookOptions<UnrewardedContributionsQuery, UnrewardedContributionsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UnrewardedContributionsQuery, UnrewardedContributionsQueryVariables>(UnrewardedContributionsDocument, options);
+      }
+export function useUnrewardedContributionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UnrewardedContributionsQuery, UnrewardedContributionsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UnrewardedContributionsQuery, UnrewardedContributionsQueryVariables>(UnrewardedContributionsDocument, options);
+        }
+export type UnrewardedContributionsQueryHookResult = ReturnType<typeof useUnrewardedContributionsQuery>;
+export type UnrewardedContributionsLazyQueryHookResult = ReturnType<typeof useUnrewardedContributionsLazyQuery>;
+export type UnrewardedContributionsQueryResult = Apollo.QueryResult<UnrewardedContributionsQuery, UnrewardedContributionsQueryVariables>;
 export const SearchIssuesDocument = gql`
     query SearchIssues($projectId: uuid!, $githubUserId: jsonb!) {
   githubIssues(
@@ -18721,48 +19636,6 @@ export function useSearchPullRequestsLazyQuery(baseOptions?: Apollo.LazyQueryHoo
 export type SearchPullRequestsQueryHookResult = ReturnType<typeof useSearchPullRequestsQuery>;
 export type SearchPullRequestsLazyQueryHookResult = ReturnType<typeof useSearchPullRequestsLazyQuery>;
 export type SearchPullRequestsQueryResult = Apollo.QueryResult<SearchPullRequestsQuery, SearchPullRequestsQueryVariables>;
-export const GetPaidWorkItemsDocument = gql`
-    query getPaidWorkItems($projectId: uuid!, $githubUserId: bigint!) {
-  paymentRequests(
-    where: {budget: {projectId: {_eq: $projectId}}, recipientId: {_eq: $githubUserId}}
-  ) {
-    ...PaymentRequestId
-    workItems {
-      ...WorkItemId
-    }
-  }
-}
-    ${PaymentRequestIdFragmentDoc}
-${WorkItemIdFragmentDoc}`;
-
-/**
- * __useGetPaidWorkItemsQuery__
- *
- * To run a query within a React component, call `useGetPaidWorkItemsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetPaidWorkItemsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetPaidWorkItemsQuery({
- *   variables: {
- *      projectId: // value for 'projectId'
- *      githubUserId: // value for 'githubUserId'
- *   },
- * });
- */
-export function useGetPaidWorkItemsQuery(baseOptions: Apollo.QueryHookOptions<GetPaidWorkItemsQuery, GetPaidWorkItemsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetPaidWorkItemsQuery, GetPaidWorkItemsQueryVariables>(GetPaidWorkItemsDocument, options);
-      }
-export function useGetPaidWorkItemsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPaidWorkItemsQuery, GetPaidWorkItemsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetPaidWorkItemsQuery, GetPaidWorkItemsQueryVariables>(GetPaidWorkItemsDocument, options);
-        }
-export type GetPaidWorkItemsQueryHookResult = ReturnType<typeof useGetPaidWorkItemsQuery>;
-export type GetPaidWorkItemsLazyQueryHookResult = ReturnType<typeof useGetPaidWorkItemsLazyQuery>;
-export type GetPaidWorkItemsQueryResult = Apollo.QueryResult<GetPaidWorkItemsQuery, GetPaidWorkItemsQueryVariables>;
 export const FetchIssueDocument = gql`
     query fetchIssue($repoOwner: String!, $repoName: String!, $issueNumber: Int!) {
   fetchIssue(
@@ -18895,10 +19768,10 @@ export const CreateAndCloseIssueDocument = gql`
     title: $title
     description: $description
   ) {
-    ...LiveGithubIssueCreatedAndClosed
+    ...LiveGithubIssue
   }
 }
-    ${LiveGithubIssueCreatedAndClosedFragmentDoc}`;
+    ${LiveGithubIssueFragmentDoc}`;
 export type CreateAndCloseIssueMutationFn = Apollo.MutationFunction<CreateAndCloseIssueMutation, CreateAndCloseIssueMutationVariables>;
 
 /**

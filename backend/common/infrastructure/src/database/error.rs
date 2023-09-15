@@ -13,6 +13,8 @@ pub enum Error {
 	#[error(transparent)]
 	Transaction(#[from] ContextualizedError<DieselError>),
 	#[error(transparent)]
+	InvalidData(#[from] anyhow::Error),
+	#[error(transparent)]
 	Pool(anyhow::Error),
 }
 
@@ -25,6 +27,7 @@ impl From<Error> for SubscriberCallbackError {
 			Error::Migration(e) => Self::Fatal(e),
 			Error::Transaction(e) => Self::Discard(e.into()),
 			Error::Pool(e) => Self::Fatal(e),
+			Error::InvalidData(e) => Self::Discard(e),
 		}
 	}
 }
@@ -36,6 +39,7 @@ impl From<Error> for DomainError {
 			Error::Migration(e) => Self::InternalError(e),
 			Error::Transaction(e) => Self::InvalidInputs(e.into()),
 			Error::Pool(e) => Self::InternalError(e),
+			Error::InvalidData(e) => Self::InternalError(e),
 		}
 	}
 }

@@ -1,32 +1,17 @@
 fragment LiveGithubIssueId on GithubIssue {
-    id
+  id
 }
 
 fragment LiveGithubIssue on GithubIssue {
-    ...LiveGithubIssueId
-    repoId
-    number
-    status
-    title
-    htmlUrl
-    createdAt
-    closedAt
-    ignoredForProjects {
-        ...IgnoredGithubIssueId
-    }
-}
-
-fragment LiveGithubIssueCreatedAndClosedId on GithubIssueCreatedAndClosed {
+  ...LiveGithubIssueId
+  repoId
+  number
+  status
+  title
+  htmlUrl
+  createdAt
+  closedAt
+  author {
     id
-}
-
-fragment LiveGithubIssueCreatedAndClosed on GithubIssueCreatedAndClosed {
-    ...LiveGithubIssueCreatedAndClosedId
-    repoId
-    number
-    status
-    title
-    htmlUrl
-    createdAt
-    closedAt
+  }
 }

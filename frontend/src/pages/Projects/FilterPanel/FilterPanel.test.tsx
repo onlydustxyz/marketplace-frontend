@@ -30,6 +30,8 @@ const projects1: GetAllFilterOptionsQuery["projects"][number] = {
   projectLeads: [{ __typename: "ProjectLeads", userId: "user-1" }],
   pendingInvitations: [],
   contributors: [],
+  pendingContributors: [],
+  rewardedUsers: [],
   githubReposAggregate: { aggregate: { count: 1 } },
   visibility: "public",
 };
@@ -55,6 +57,8 @@ const projects2: GetAllFilterOptionsQuery["projects"][number] = {
   projectLeads: [{ __typename: "ProjectLeads", userId: "user-1" }],
   pendingInvitations: [],
   contributors: [],
+  pendingContributors: [],
+  rewardedUsers: [],
   githubReposAggregate: { aggregate: { count: 1 } },
   visibility: "public",
 };
@@ -80,6 +84,8 @@ const projects3: GetAllFilterOptionsQuery["projects"][number] = {
   projectLeads: [{ __typename: "ProjectLeads", userId: "user-1" }],
   pendingInvitations: [],
   contributors: [],
+  pendingContributors: [],
+  rewardedUsers: [],
   githubReposAggregate: { aggregate: { count: 1 } },
   visibility: "public",
 };
@@ -106,6 +112,8 @@ const projects4: GetAllFilterOptionsQuery["projects"][number] = {
   projectLeads: [{ __typename: "ProjectLeads", userId: "user-1" }],
   pendingInvitations: [],
   contributors: [],
+  pendingContributors: [],
+  rewardedUsers: [],
   githubReposAggregate: { aggregate: { count: 1 } },
   visibility: "public",
 };
@@ -131,6 +139,8 @@ const projects5: GetAllFilterOptionsQuery["projects"][number] = {
   projectLeads: [{ __typename: "ProjectLeads", userId: "user-1" }],
   pendingInvitations: [],
   contributors: [],
+  pendingContributors: [],
+  rewardedUsers: [],
   githubReposAggregate: { aggregate: { count: 1 } },
   visibility: "public",
 };

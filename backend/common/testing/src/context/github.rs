@@ -29,6 +29,15 @@ impl<'docker> Context<'docker> {
 			config,
 		})
 	}
+
+	pub async fn get_wiremock_scenarios_state(&self) -> String {
+		reqwest::get(format!("{}/__admin/scenarios", self.config.base_url))
+			.await
+			.expect("Failed to get wiremock scenarios")
+			.text()
+			.await
+			.expect("Failed to read wiremock scenarios")
+	}
 }
 
 fn image(wiremock_path: String) -> RunnableImage<GenericImage> {
@@ -42,7 +51,7 @@ fn image(wiremock_path: String) -> RunnableImage<GenericImage> {
 	*/
 
 	RunnableImage::from(
-		GenericImage::new("wiremock/wiremock", "latest")
+		GenericImage::new("wiremock/wiremock", "3.0.0-1")
 			.with_volume(wiremock_path, "/home/wiremock")
 			.with_wait_for(testcontainers::core::WaitFor::StdOutMessage {
 				message: String::from("verbose:"),

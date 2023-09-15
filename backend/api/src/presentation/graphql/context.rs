@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use domain::{AggregateRootRepository, GithubUserId, Project, UserId};
 use infrastructure::{
-	amqp::{self, CommandPublisher},
+	amqp,
 	database::{ImmutableRepository, Repository},
 	github,
 };
@@ -19,9 +19,7 @@ use crate::{
 pub struct Context {
 	pub caller_permissions: Box<dyn Permissions>,
 	caller_info: Option<Claims>,
-	pub request_payment_usecase: application::payment::request::Usecase,
 	pub process_payment_usecase: application::payment::process::Usecase,
-	pub cancel_payment_usecase: application::payment::cancel::Usecase,
 	pub invoice_usecase: application::payment::invoice::Usecase,
 	pub update_budget_allocation_usecase: application::budget::allocate::Usecase,
 	pub update_project_usecase: application::project::update::Usecase,
@@ -37,7 +35,6 @@ pub struct Context {
 		application::project::accept_leader_invitation::Usecase,
 	pub project_details_repository: Arc<dyn Repository<ProjectDetails>>,
 	pub update_user_payout_info_usecase: application::user::update_payout_info::Usecase,
-	pub ignored_github_issues_usecase: application::project::ignored_issues::Usecase,
 	pub apply_to_project_usecase: application::project::apply::Usecase,
 	pub onboard_usecase: application::user::onboard::Usecase,
 	pub update_user_profile_info_usecase: application::user::update_profile_info::Usecase,
@@ -49,7 +46,6 @@ impl Context {
 	pub fn new(
 		caller_permissions: Box<dyn Permissions>,
 		caller_info: Option<Claims>,
-		command_bus: Arc<CommandPublisher<amqp::Bus>>,
 		project_repository: AggregateRootRepository<Project>,
 		project_details_repository: Arc<dyn Repository<ProjectDetails>>,
 		sponsor_repository: Arc<dyn Repository<Sponsor>>,
@@ -57,7 +53,6 @@ impl Context {
 		pending_project_leader_invitations_repository: Arc<
 			dyn ImmutableRepository<PendingProjectLeaderInvitation>,
 		>,
-		ignored_github_issues_repository: Arc<dyn ImmutableRepository<IgnoredGithubIssue>>,
 		user_payout_info_repository: Arc<dyn Repository<UserPayoutInfo>>,
 		user_profile_info_repository: Arc<dyn UserProfileInfoRepository>,
 		contact_informations_repository: Arc<dyn ContactInformationsRepository>,
@@ -71,10 +66,6 @@ impl Context {
 		Self {
 			caller_permissions,
 			caller_info,
-			request_payment_usecase: application::payment::request::Usecase::new(
-				command_bus.to_owned(),
-				project_repository.clone(),
-			),
 			process_payment_usecase: application::payment::process::Usecase::new(
 				bus.to_owned(),
 				project_repository.clone(),
@@ -82,10 +73,6 @@ impl Context {
 					github_api_client.clone(),
 					dusty_bot_api_client,
 				),
-			),
-			cancel_payment_usecase: application::payment::cancel::Usecase::new(
-				command_bus,
-				project_repository.clone(),
 			),
 			invoice_usecase: application::payment::invoice::Usecase::new(
 				bus.to_owned(),
@@ -139,9 +126,6 @@ impl Context {
 			update_user_payout_info_usecase: application::user::update_payout_info::Usecase::new(
 				user_payout_info_repository,
 				ArePayoutSettingsValid::new(ens.clone()),
-			),
-			ignored_github_issues_usecase: application::project::ignored_issues::Usecase::new(
-				ignored_github_issues_repository,
 			),
 			apply_to_project_usecase: application::project::apply::Usecase::new(
 				project_repository,

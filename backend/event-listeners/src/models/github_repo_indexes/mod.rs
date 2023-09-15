@@ -1,4 +1,5 @@
 mod repository;
+use chrono::NaiveDateTime;
 use diesel::Identifiable;
 use domain::GithubRepoId;
 use infrastructure::database::schema::github_repo_indexes;
@@ -24,6 +25,7 @@ pub struct GithubRepoIndex {
 	pub repo_indexer_state: Option<Value>,
 	pub issues_indexer_state: Option<Value>,
 	pub pull_requests_indexer_state: Option<Value>,
+	pub indexed_at: Option<NaiveDateTime>,
 }
 
 impl GithubRepoIndex {

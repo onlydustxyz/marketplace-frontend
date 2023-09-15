@@ -13,19 +13,24 @@ pub struct Usecase {
 }
 
 impl Usecase {
-	async fn close_issue(&self, work_item: &PaymentWorkItem) -> Result<(), DomainError> {
-		let repository = self.fetch_service.repo_by_id(work_item.repo_id).await?;
+	async fn close_issue(&self, work_item: PaymentWorkItem) -> Result<(), DomainError> {
+		if let PaymentWorkItem::Issue {
+			repo_id, number, ..
+		} = work_item
+		{
+			let repository = self.fetch_service.repo_by_id(repo_id).await?;
 
-		self.dusty_bot_service
-			.close_issue_for_number(repository.owner, repository.name, work_item.issue_number)
-			.await
-			.map_err(DomainError::InternalError)?;
+			self.dusty_bot_service
+				.close_issue_for_number(repository.owner, repository.name, number)
+				.await
+				.map_err(DomainError::InternalError)?;
+		}
 
 		Ok(())
 	}
 
-	pub async fn close_all_issues(&self, payment: &Payment) -> Result<(), DomainError> {
-		let handles = payment.work_items().iter().map(|work_item| self.close_issue(work_item));
+	pub async fn close_all_issues(&self, payment: Payment) -> Result<(), DomainError> {
+		let handles = payment.work_items.into_iter().map(|work_item| self.close_issue(work_item));
 
 		try_join_all(handles).await?;
 		Ok(())

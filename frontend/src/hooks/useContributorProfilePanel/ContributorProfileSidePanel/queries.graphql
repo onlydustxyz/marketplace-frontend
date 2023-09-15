@@ -32,8 +32,9 @@ fragment ProfileProject on Projects {
 fragment ContributionCount on ContributionCounts {
   year
   week
-  paidCount
-  unpaidCount
+  codeReviewCount
+  issueCount
+  pullRequestCount
 }
 
 fragment UserProfile on UserProfiles {

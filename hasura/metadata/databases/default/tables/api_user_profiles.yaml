@@ -9,6 +9,15 @@ configuration:
     select: userProfiles
     select_aggregate: userProfilesAggregate
 array_relationships:
+  - name: completedContributions
+    using:
+      manual_configuration:
+        column_mapping:
+          github_user_id: github_user_id
+        insertion_order: null
+        remote_table:
+          name: completed_contributions
+          schema: api
   - name: contactInformations
     using:
       manual_configuration:
@@ -71,6 +80,15 @@ array_relationships:
         insertion_order: null
         remote_table:
           name: project_leads
+          schema: public
+  - name: projectsRewarded
+    using:
+      manual_configuration:
+        column_mapping:
+          github_user_id: github_user_id
+        insertion_order: null
+        remote_table:
+          name: projects_rewarded_users
           schema: public
 select_permissions:
   - role: public

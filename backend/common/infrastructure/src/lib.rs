@@ -9,6 +9,7 @@ pub mod event_bus;
 pub mod event_store;
 pub mod github;
 pub mod graphql;
+pub mod http;
 pub mod tracing;
 pub mod web3;
 

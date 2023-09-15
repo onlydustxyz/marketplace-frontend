@@ -12,7 +12,7 @@ fragment LiveGithubPullRequest on GithubPullRequest {
   createdAt
   closedAt
   mergedAt
-  ignoredForProjects {
-    ...IgnoredGithubIssueId
+  author {
+    id
   }
 }

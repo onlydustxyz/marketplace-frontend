@@ -8,6 +8,9 @@ default:
     base_url: $GITHUB_BASE_URL
     personal_access_tokens: $GITHUB_PAT
     max_calls_per_request: $GITHUB_MAX_CALLS_PER_REQUEST
+  http:
+    api_keys:
+      - $GITHUB_INDEXER_API_KEY
 
 local:
   amqp:

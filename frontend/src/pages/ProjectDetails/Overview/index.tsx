@@ -225,8 +225,8 @@ function ProjectDescriptionCard({
 
 interface GithubRepositoriesCardProps {
   githubRepos: {
-    __typename?: "ProjectGithubRepos";
-    repo: { __typename?: "GithubRepos"; stars: number; id: number } | null;
+    __typename?: "ProjectGithubRepos" | undefined;
+    repo: { __typename?: "GithubRepos"; stars: number | null; id: number | null } | null;
   }[];
 }
 
@@ -242,10 +242,11 @@ function GithubRepositoriesCard({ githubRepos }: GithubRepositoriesCardProps) {
         <Badge value={githubRepos.length} size={BadgeSize.Small} />
       </div>
       <div className="grid grid-cols-1 gap-3 xl:grid-cols-2">
-        {githubRepos &&
-          githubRepos.map(githubRepo => (
+        {githubRepos?.map(githubRepo =>
+          githubRepo.repo?.id ? (
             <GithubRepoDetails key={githubRepo.repo?.id} githubRepoId={githubRepo.repo?.id} />
-          ))}
+          ) : null
+        )}
       </div>
     </Card>
   );

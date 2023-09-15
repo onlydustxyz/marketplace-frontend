@@ -19,8 +19,22 @@ const BERNARDSTANISLAS: ContributorFragment = {
   login: "bernardstanislas",
   avatarUrl: "https://avatars.githubusercontent.com/u/4435377?v=4",
   userId: null,
-  contributionStatsAggregate: { aggregate: { sum: { paidCount: 0, unpaidUnignoredCount: 0 } } },
+  contributionStatsAggregate: {
+    aggregate: {
+      sum: {
+        pullRequestCount: 0,
+        issueCount: 0,
+        codeReviewCount: 0,
+        totalCount: 0,
+      }
+    },
+  },
   paymentStatsAggregate: { aggregate: { sum: { moneyGranted: 0 } } },
+  projectsRewardedAggregate: { aggregate: { sum: { rewardCount: 0 } } },
+  completedUnpaidPullRequestsAggregate: { aggregate: { count: 0 } },
+  completedUnpaidIssuesAggregate: { aggregate: { count: 0 } },
+  completedUnpaidCodeReviewsAggregate: { aggregate: { count: 0 } },
+
 };
 const OSCARWROCHE: ContributorFragment = {
   login: "oscarwroche",
@@ -28,8 +42,14 @@ const OSCARWROCHE: ContributorFragment = {
   githubUserId: 21149076,
   userId: null,
   __typename: "UserProfiles",
-  contributionStatsAggregate: { aggregate: { sum: { paidCount: 0, unpaidUnignoredCount: 0 } } },
+  contributionStatsAggregate: {
+    aggregate: { sum: { pullRequestCount: 0, issueCount: 0, codeReviewCount: 0, totalCount: 0 } },
+  },
   paymentStatsAggregate: { aggregate: { sum: { moneyGranted: 0 } } },
+  projectsRewardedAggregate: { aggregate: { sum: { rewardCount: 0 } } },
+  completedUnpaidPullRequestsAggregate: { aggregate: { count: 0 } },
+  completedUnpaidIssuesAggregate: { aggregate: { count: 0 } },
+  completedUnpaidCodeReviewsAggregate: { aggregate: { count: 0 } },
 };
 const OFUX: ContributorFragment = {
   login: "ofux",
@@ -37,8 +57,14 @@ const OFUX: ContributorFragment = {
   githubUserId: 595505,
   userId: "yolo",
   __typename: "UserProfiles",
-  contributionStatsAggregate: { aggregate: { sum: { paidCount: 0, unpaidUnignoredCount: 0 } } },
+  contributionStatsAggregate: {
+    aggregate: { sum: { pullRequestCount: 0, issueCount: 0, codeReviewCount: 0, totalCount: 0 } },
+  },
   paymentStatsAggregate: { aggregate: { sum: { moneyGranted: 0 } } },
+  projectsRewardedAggregate: { aggregate: { sum: { rewardCount: 0 } } },
+  completedUnpaidPullRequestsAggregate: { aggregate: { count: 0 } },
+  completedUnpaidIssuesAggregate: { aggregate: { count: 0 } },
+  completedUnpaidCodeReviewsAggregate: { aggregate: { count: 0 } },
 };
 const ANTHONYBUISSET: ContributorFragment = {
   login: "anthonybuisset",
@@ -46,8 +72,14 @@ const ANTHONYBUISSET: ContributorFragment = {
   githubUserId: 43467246,
   userId: null,
   __typename: "UserProfiles",
-  contributionStatsAggregate: { aggregate: { sum: { paidCount: 0, unpaidUnignoredCount: 0 } } },
+  contributionStatsAggregate: {
+    aggregate: { sum: { pullRequestCount: 0, issueCount: 0, codeReviewCount: 0, totalCount: 0 } },
+  },
   paymentStatsAggregate: { aggregate: { sum: { moneyGranted: 0 } } },
+  projectsRewardedAggregate: { aggregate: { sum: { rewardCount: 0 } } },
+  completedUnpaidPullRequestsAggregate: { aggregate: { count: 0 } },
+  completedUnpaidIssuesAggregate: { aggregate: { count: 0 } },
+  completedUnpaidCodeReviewsAggregate: { aggregate: { count: 0 } },
 };
 const TDELABRO: ContributorFragment = {
   __typename: "UserProfiles",
@@ -55,8 +87,14 @@ const TDELABRO: ContributorFragment = {
   login: "tdelabro",
   avatarUrl: "https://avatars.githubusercontent.com/u/34384633?v=4",
   userId: null,
-  contributionStatsAggregate: { aggregate: { sum: { paidCount: 0, unpaidUnignoredCount: 0 } } },
+  contributionStatsAggregate: {
+    aggregate: { sum: { pullRequestCount: 0, issueCount: 0, codeReviewCount: 0, totalCount: 0 } },
+  },
   paymentStatsAggregate: { aggregate: { sum: { moneyGranted: 0 } } },
+  projectsRewardedAggregate: { aggregate: { sum: { rewardCount: 0 } } },
+  completedUnpaidPullRequestsAggregate: { aggregate: { count: 0 } },
+  completedUnpaidIssuesAggregate: { aggregate: { count: 0 } },
+  completedUnpaidCodeReviewsAggregate: { aggregate: { count: 0 } },
 };
 
 const mocks = [
@@ -101,6 +139,7 @@ const args = {
   },
   unpaidPRs: [],
   requestNewPaymentMutationLoading: false,
+  unpaidContributions: null
 };
 
 export default {

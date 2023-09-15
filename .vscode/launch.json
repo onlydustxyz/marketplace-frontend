@@ -9,7 +9,12 @@
             "request": "launch",
             "name": "Debug unit tests in library 'api'",
             "cargo": {
-                "args": ["test", "--no-run", "--lib", "--package=api"],
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--lib",
+                    "--package=api"
+                ],
                 "filter": {
                     "name": "api",
                     "kind": "lib"
@@ -23,7 +28,11 @@
             "request": "launch",
             "name": "Debug executable 'api'",
             "cargo": {
-                "args": ["build", "--bin=api", "--package=api"],
+                "args": [
+                    "build",
+                    "--bin=api",
+                    "--package=api"
+                ],
                 "filter": {
                     "name": "api",
                     "kind": "bin"
@@ -37,7 +46,12 @@
             "request": "launch",
             "name": "Debug unit tests in executable 'api'",
             "cargo": {
-                "args": ["test", "--no-run", "--bin=api", "--package=api"],
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=api",
+                    "--package=api"
+                ],
                 "filter": {
                     "name": "api",
                     "kind": "bin"
@@ -51,7 +65,11 @@
             "request": "launch",
             "name": "Debug executable 'event_listeners'",
             "cargo": {
-                "args": ["build", "--bin=event_listeners", "--package=api"],
+                "args": [
+                    "build",
+                    "--bin=event_listeners",
+                    "--package=api"
+                ],
                 "filter": {
                     "name": "event_listeners",
                     "kind": "bin"
@@ -84,7 +102,12 @@
             "request": "launch",
             "name": "Debug unit tests in library 'domain'",
             "cargo": {
-                "args": ["test", "--no-run", "--lib", "--package=domain"],
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--lib",
+                    "--package=domain"
+                ],
                 "filter": {
                     "name": "domain",
                     "kind": "lib"
@@ -117,7 +140,12 @@
             "request": "launch",
             "name": "Debug unit tests in library 'testing'",
             "cargo": {
-                "args": ["test", "--no-run", "--lib", "--package=testing"],
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--lib",
+                    "--package=testing"
+                ],
                 "filter": {
                     "name": "testing",
                     "kind": "lib"
@@ -131,7 +159,12 @@
             "request": "launch",
             "name": "Debug unit tests in library 'event-store'",
             "cargo": {
-                "args": ["test", "--no-run", "--lib", "--package=event-store"],
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--lib",
+                    "--package=event-store"
+                ],
                 "filter": {
                     "name": "event-store",
                     "kind": "lib"
@@ -145,23 +178,13 @@
             "request": "launch",
             "name": "Debug executable 'event-store'",
             "cargo": {
-                "args": ["build", "--bin=event-store", "--package=event-store"],
+                "args": [
+                    "build",
+                    "--bin=event-store",
+                    "--package=event-store"
+                ],
                 "filter": {
                     "name": "event-store",
-                    "kind": "bin"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug executable 'github-proxy'",
-            "cargo": {
-                "args": ["build", "--bin=github-proxy", "--package=github-proxy"],
-                "filter": {
-                    "name": "github-proxy",
                     "kind": "bin"
                 }
             },

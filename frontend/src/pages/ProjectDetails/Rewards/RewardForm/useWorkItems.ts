@@ -1,21 +1,21 @@
 import { sortBy, uniqBy } from "lodash";
 import { useCallback, useReducer } from "react";
-import { WorkItem } from "src/components/GithubIssue";
+import { WorkItemFragment } from "src/__generated/graphql";
 
 type WorkItemAction =
   | {
       action: "add";
-      workItem: WorkItem | WorkItem[];
+      workItem: WorkItemFragment | WorkItemFragment[];
     }
   | {
       action: "remove";
-      workItem: WorkItem;
+      workItem: WorkItemFragment;
     }
   | {
       action: "clear";
     };
 
-function workItemsReducer(workItems: WorkItem[], action: WorkItemAction) {
+function workItemsReducer(workItems: WorkItemFragment[], action: WorkItemAction) {
   switch (action.action) {
     case "add":
       return sortBy(uniqBy([...workItems, ...[action.workItem].flat()], "id"), "createdAt").reverse();
@@ -29,8 +29,11 @@ function workItemsReducer(workItems: WorkItem[], action: WorkItemAction) {
 export default function useWorkItems() {
   const [workItems, dispatchWorkItems] = useReducer(workItemsReducer, []);
 
-  const add = useCallback((workItem: WorkItem | WorkItem[]) => dispatchWorkItems({ action: "add", workItem }), []);
-  const remove = useCallback((workItem: WorkItem) => dispatchWorkItems({ action: "remove", workItem }), []);
+  const add = useCallback(
+    (workItem: WorkItemFragment | WorkItemFragment[]) => dispatchWorkItems({ action: "add", workItem }),
+    []
+  );
+  const remove = useCallback((workItem: WorkItemFragment) => dispatchWorkItems({ action: "remove", workItem }), []);
   const clear = useCallback(() => dispatchWorkItems({ action: "clear" }), []);
 
   return { workItems, add, remove, clear };

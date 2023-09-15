@@ -20,8 +20,14 @@ const TEST_CONTRIBUTOR: ContributorFragment = {
   login: "test-login",
   avatarUrl: "test-avatar-url",
   userId: "test-user-id",
-  contributionStatsAggregate: { aggregate: { sum: { paidCount: 0, unpaidUnignoredCount: 0 } } },
+  contributionStatsAggregate: {
+    aggregate: { sum: { totalCount: 0, codeReviewCount: 0, issueCount: 0, pullRequestCount: 0 } },
+  },
   paymentStatsAggregate: { aggregate: { sum: { moneyGranted: 0 } } },
+  projectsRewardedAggregate: { aggregate: { sum: { rewardCount: 0 } } },
+  completedUnpaidPullRequestsAggregate: { aggregate: { count: 0 } },
+  completedUnpaidIssuesAggregate: { aggregate: { count: 0 } },
+  completedUnpaidCodeReviewsAggregate: { aggregate: { count: 0 } },
 };
 
 expect.extend(matchers);

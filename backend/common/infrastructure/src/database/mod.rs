@@ -5,16 +5,13 @@ pub mod repositories;
 pub mod schema;
 
 mod model;
-pub use model::{ImmutableModel, ImmutableRepository, Model, Repository};
-
-#[cfg(test)]
-mod tests;
 use anyhow::anyhow;
 use diesel::{
 	pg::PgConnection,
 	r2d2::{self, ConnectionManager},
 };
 use diesel_migrations::EmbeddedMigrations;
+pub use model::{ImmutableModel, ImmutableRepository, Model, Repository};
 use olog::{error, IntoField};
 
 pub use self::{

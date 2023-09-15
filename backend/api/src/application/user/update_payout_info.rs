@@ -84,6 +84,8 @@ mod tests {
 			fn try_insert(&self, model: UserPayoutInfo) -> Result<Option<UserPayoutInfo>>;
 			fn delete(&self, id: UserId) -> Result<UserPayoutInfo>;
 			fn clear(&self) -> Result<()>;
+			fn insert_all(&self, models: Vec<UserPayoutInfo>) -> Result<()>;
+			fn try_insert_all(&self, models: Vec<UserPayoutInfo>) -> Result<()>;
 		}
 
 		impl Repository<UserPayoutInfo> for UserPayoutInfoRepository {

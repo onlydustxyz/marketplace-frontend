@@ -35,7 +35,7 @@ export default function StatsSection({ profile, contributionCounts, contribution
           description={T("profile.sections.stats.projects", { count: profile.projectsLeaded.length })}
         />
         <StatCard
-          title={T("profile.sections.stats.granted")}
+          title={T("profile.sections.stats.earned")}
           counter={formatMoneyAmount({
             amount: profile.paymentStatsAggregate.aggregate?.sum?.moneyGranted || 0,
             notation: "compact",

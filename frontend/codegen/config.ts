@@ -25,13 +25,13 @@ const config: CodegenConfig = {
     "./src/__generated/graphql.schema.json": {
       plugins: ["introspection"],
     },
-    "./playwright/__generated/graphql.tsx": {
+    "../e2e/playwright/__generated/graphql.tsx": {
       plugins: ["typescript", "typescript-operations", "typescript-react-apollo"],
       config: {
         avoidOptionals: true,
         skipTypename: false,
       },
-      documents: ["./playwright/**/*.ts", "./playwright/**/*.graphql"],
+      documents: ["../e2e/playwright/**/*.ts", "../e2e/playwright/**/*.graphql"],
     },
     "./doc/data_diagram.md": {
       plugins: [

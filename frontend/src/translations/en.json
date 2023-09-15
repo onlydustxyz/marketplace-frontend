@@ -11,20 +11,34 @@
     "empty": "No contributions yet"
   },
   "contributionGraph": {
-    "paid": "Paid",
+    "pullRequests": "Pull requests",
+    "issues": "Issues",
+    "codeReviews": "Code reviews",
     "tooltip": {
       "contributionCount": {
         "total": {
           "zero": "No contribution",
           "one": "1 contribution",
           "many": "__count__ contributions"
-        },
-        "paid": "__count__ paid",
-        "unpaid": "__count__ not paid"
+        }
+      },
+      "pullRequests": {
+        "zero": "0 Pull requests",
+        "one": "1 Pull request",
+        "many": "__count__ Pull requests"
+      },
+      "issues": {
+        "zero": "0 Issues",
+        "one": "1 Issue",
+        "many": "__count__ Issues"
+      },
+      "codeReviews": {
+        "zero": "0 Code reviews",
+        "one": "1 Code review",
+        "many": "__count__ Code reviews"
       },
       "date": "__from__ → __to__"
     },
-    "unpaid": "Not paid",
     "progressionTooltip": "Variation since last week"
   },
   "contributor": {
@@ -32,9 +46,25 @@
       "contributor": "Contributor",
       "leftToPay": "Left to Pay",
       "noBudgetLeft": "There's no more budget for this project, please contact OnlyDust to ask for a refill.",
-      "paidContributions": "Paid contributions",
-      "totalEarned": "Total earned",
-      "userRegisteredTooltip": "User has linked their OnlyDust profile"
+      "contributions": "Contributions",
+      "totalEarned": "Earned",
+      "rewards": "Rewards",
+      "toReward": "To Reward",
+      "userRegisteredTooltip": "User has linked their OnlyDust profile",
+      "tooltip": {
+        "pullRequests": {
+          "one": "1 PR",
+          "many": "__count__ PRs"
+        },
+        "issues": {
+          "one": "1 issue",
+          "many": "__count__ issues"
+        },
+        "codeReviews": {
+          "one": "1 code review",
+          "many": "__count__ code reviews"
+        }
+      }
     },
     "tableFallback": {
       "noContributor": "No one has contributed to __projectName__ yet",
@@ -367,7 +397,7 @@
         "contributions": "Contributions",
         "contributorOn": "Contributor on",
         "leadOn": "Lead on",
-        "granted": "Granted money",
+        "earned": "Total earned",
         "title": "Stats",
         "projects": {
           "zero": "project",

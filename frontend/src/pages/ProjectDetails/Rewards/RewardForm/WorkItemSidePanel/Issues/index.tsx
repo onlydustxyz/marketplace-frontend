@@ -1,77 +1,84 @@
-import { chain, some } from "lodash";
-import { WorkItem } from "src/components/GithubIssue";
-import View from "./View";
-import useIgnoredIssues from "./useIgnoredIssues";
-import {
-  LiveGithubIssueCreatedAndClosedFragment,
-  LiveGithubIssueFragment,
-  LiveGithubPullRequestFragment,
-} from "src/__generated/graphql";
-import useUnpaidIssues from "./useUnpaidIssues";
+import { chain } from "lodash";
 import { useMemo } from "react";
-import { GithubIssueType } from "src/types";
+import {
+  ContributionFragment,
+  GithubIssueFragment,
+  GithubPullRequestFragment,
+  WorkItemFragment,
+  WorkItemType,
+  useUnrewardedContributionsQuery,
+} from "src/__generated/graphql";
+import View from "./View";
+import { useIgnoredContributions } from "./useIgnoredContributions";
 
 type Props = {
-  type: GithubIssueType;
+  type: WorkItemType;
   projectId: string;
   contributorId: number;
-  workItems: WorkItem[];
-  onWorkItemAdded: (workItem: WorkItem) => void;
+  workItems: WorkItemFragment[];
+  addWorkItem: (workItem: WorkItemFragment) => void;
 };
 
-export default function Issues({ type, projectId, contributorId, workItems, onWorkItemAdded }: Props) {
-  const { ignore: ignoreIssue, unignore: unignoreIssue } = useIgnoredIssues();
+export default function Issues({ type, projectId, contributorId, workItems, addWorkItem }: Props) {
+  const { ignore: ignoreContribution, unignore: unignoreContribution } = useIgnoredContributions();
 
-  const addAndUnignoreItem = (workItem: WorkItem) => {
-    if (workItem.ignored) unignoreIssue(projectId, workItem);
-    onWorkItemAdded(workItem);
+  const addAndUnignoreContribution = (contribution: ContributionFragment) => {
+    if (contribution.ignored && contribution.id) unignoreContribution(projectId, contribution.id);
+    const workItem = contributionToWorkItem(contribution);
+    workItem && addWorkItem(workItem);
   };
 
-  const { data: unpaidIssues } = useUnpaidIssues({
-    projectId,
-    githubUserId: contributorId,
-    type,
+  const { data } = useUnrewardedContributionsQuery({
+    variables: {
+      projectId,
+      githubUserId: contributorId,
+      type,
+    },
   });
 
-  const issues: WorkItem[] = useMemo(
-    () => chain(unpaidIssues).differenceBy(workItems, "id").value(),
-    [unpaidIssues, workItems]
+  const contributionsNotAdded = useMemo(
+    () =>
+      chain(data?.contributions)
+        .differenceWith(workItems, (contribution, workItem) => contribution.detailsId === workItem.id)
+        .value(),
+    [data?.contributions, workItems]
   );
 
   return (
     <View
       projectId={projectId}
-      issues={issues}
+      contributions={contributionsNotAdded}
       type={type}
-      onWorkItemAdded={addAndUnignoreItem}
-      onWorkItemIgnored={workItem => ignoreIssue(projectId, workItem)}
-      onWorkItemUnignored={workItem => unignoreIssue(projectId, workItem)}
+      addWorkItem={addWorkItem}
+      addContribution={addAndUnignoreContribution}
+      ignoreContribution={(contribution: ContributionFragment) =>
+        contribution.id && ignoreContribution(projectId, contribution.id)
+      }
+      unignoreContribution={(contribution: ContributionFragment) =>
+        contribution.id && unignoreContribution(projectId, contribution.id)
+      }
     />
   );
 }
 
-export const issueToWorkItem = (
-  { ignoredForProjects, ...props }: LiveGithubIssueFragment,
-  projectId?: string
-): WorkItem => ({
-  ...props,
-  type: GithubIssueType.Issue,
-  ignored: some(ignoredForProjects, { projectId }),
+export const contributionToWorkItem = (contribution: ContributionFragment): WorkItemFragment | undefined => {
+  return contribution.githubIssue
+    ? issueToWorkItem(contribution.githubIssue)
+    : contribution.githubPullRequest
+    ? pullRequestToWorkItem(contribution.githubPullRequest)
+    : undefined;
+};
+
+export const issueToWorkItem = (issue: GithubIssueFragment): WorkItemFragment => ({
+  type: WorkItemType.Issue,
+  id: issue.id.toString(),
+  githubIssue: issue,
+  githubPullRequest: null,
 });
 
-export const issueCreatedAndClosedToWorkItem = (
-  issueCreatedAndClosedFragment: LiveGithubIssueCreatedAndClosedFragment
-): WorkItem => ({
-  ...issueCreatedAndClosedFragment,
-  type: GithubIssueType.Issue,
-  ignored: false,
-});
-
-export const pullRequestToWorkItem = (
-  { ignoredForProjects, ...props }: LiveGithubPullRequestFragment,
-  projectId?: string
-): WorkItem => ({
-  ...props,
-  type: GithubIssueType.PullRequest,
-  ignored: some(ignoredForProjects, { projectId }),
+export const pullRequestToWorkItem = (pullRequest: GithubPullRequestFragment): WorkItemFragment => ({
+  type: WorkItemType.PullRequest,
+  id: pullRequest.id.toString(),
+  githubIssue: null,
+  githubPullRequest: pullRequest,
 });

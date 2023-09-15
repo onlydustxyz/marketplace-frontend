@@ -7,7 +7,8 @@ export default function TermsAndConditionsCheckBox({ checked, setChecked }: Term
   return (
     <>
       <input
-        id="checkbox"
+        id="accept-tac-checkbox"
+        data-testid="accept-tac-checkbox"
         type="checkbox"
         checked={checked}
         onChange={() => setChecked(!checked)}
