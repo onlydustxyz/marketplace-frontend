@@ -2,7 +2,9 @@ use std::sync::Arc;
 
 use anyhow::Result;
 use derive_more::Constructor;
-use domain::{AggregateRepository, CommandId, DomainError, Event, Payment, PaymentId, Publisher};
+use domain::{
+	Aggregate, AggregateRepository, CommandId, DomainError, Event, Payment, PaymentId, Publisher,
+};
 use infrastructure::amqp::CommandMessage;
 use tracing::instrument;
 
@@ -24,6 +26,8 @@ impl Usecase {
 		payment
 			.cancel()
 			.map_err(|e| DomainError::InvalidInputs(e.into()))?
+			.pending_events()
+			.clone()
 			.into_iter()
 			.map(Event::from)
 			.map(|payload| CommandMessage::new(command_id, payload))

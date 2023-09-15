@@ -1,7 +1,9 @@
 use std::sync::Arc;
 
 use anyhow::{anyhow, Result};
-use domain::{AggregateRepository, DomainError, Event, GithubUserId, Project, Publisher, UserId};
+use domain::{
+	Aggregate, AggregateRepository, DomainError, Event, GithubUserId, Project, Publisher, UserId,
+};
 use infrastructure::{amqp::UniqueMessage, database::ImmutableRepository};
 use tracing::instrument;
 
@@ -45,6 +47,8 @@ impl Usecase {
 		project
 			.assign_leader(user_id)
 			.map_err(|e| DomainError::InvalidInputs(e.into()))?
+			.pending_events()
+			.clone()
 			.into_iter()
 			.map(Event::from)
 			.map(UniqueMessage::new)

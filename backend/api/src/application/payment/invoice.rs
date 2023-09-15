@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use anyhow::Result;
 use derive_more::Constructor;
-use domain::{AggregateRepository, DomainError, Event, Payment, PaymentId, Publisher};
+use domain::{Aggregate, AggregateRepository, DomainError, Event, Payment, PaymentId, Publisher};
 use infrastructure::amqp::UniqueMessage;
 use tracing::instrument;
 
@@ -24,11 +24,11 @@ impl Usecase {
 
 		for payment_id in payments {
 			events.append(
-				&mut self
-					.payment_repository
+				self.payment_repository
 					.find_by_id(&payment_id)?
 					.mark_invoice_as_received()
-					.map_err(|e| DomainError::InvalidInputs(e.into()))?,
+					.map_err(|e| DomainError::InvalidInputs(e.into()))?
+					.pending_events(),
 			);
 		}
 
@@ -49,11 +49,11 @@ impl Usecase {
 
 		for payment_id in payments {
 			events.append(
-				&mut self
-					.payment_repository
+				self.payment_repository
 					.find_by_id(&payment_id)?
 					.reject_invoice()
-					.map_err(|e| DomainError::InvalidInputs(e.into()))?,
+					.map_err(|e| DomainError::InvalidInputs(e.into()))?
+					.pending_events(),
 			);
 		}
 

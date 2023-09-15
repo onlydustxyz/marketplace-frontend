@@ -3,7 +3,7 @@ use std::sync::Arc;
 use anyhow::Result;
 use derive_more::Constructor;
 use domain::{
-	sponsor, Amount, BudgetId, DomainError, Event, EventSourcable, Project, ProjectId,
+	sponsor, Aggregate, Amount, BudgetId, DomainError, Event, Project, ProjectId,
 	ProjectVisibility, Publisher,
 };
 use infrastructure::{amqp::UniqueMessage, database::Repository};
@@ -43,22 +43,17 @@ impl Usecase {
 	) -> Result<(ProjectId, Option<BudgetId>), DomainError> {
 		let project_id = ProjectId::new();
 
-		let project_events = Project::create(project_id);
-		let project = Project::from_events(&project_events);
-
-		let mut events: Vec<_> = project_events.into_iter().map(Event::from).collect();
-
-		let mut budget_id = None;
+		let mut project = Project::create(project_id);
+		let mut budget = None;
 
 		if let Some(initial_budget) = initial_budget {
-			let (budget, allocation_events) = self.budget_allocation_usecase.build_allocation(
+			let result = self.budget_allocation_usecase.build_allocation(
 				project,
 				initial_budget,
 				sponsor_id,
 			)?;
-
-			budget_id = Some(budget.id);
-			events.append(&mut allocation_events.collect());
+			project = result.0;
+			budget = Some(result.1);
 		};
 
 		let stored_logo_url = match logo_url {
@@ -78,8 +73,20 @@ impl Usecase {
 			visibility: visibility.into(),
 		})?;
 
-		events
+		let budget_id = budget.as_ref().map(|b| b.id);
+
+		project
+			.pending_events()
+			.clone()
 			.into_iter()
+			.map(Event::from)
+			.chain(
+				budget
+					.map(|mut b| b.pending_events().clone())
+					.unwrap_or_default()
+					.into_iter()
+					.map(Event::from),
+			)
 			.map(UniqueMessage::new)
 			.collect::<Vec<_>>()
 			.publish(self.event_publisher.clone())

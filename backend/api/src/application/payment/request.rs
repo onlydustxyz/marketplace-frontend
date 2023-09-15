@@ -4,8 +4,9 @@ use anyhow::{anyhow, Result};
 use chrono::Duration;
 use derive_more::Constructor;
 use domain::{
-	currencies, AggregateRepository, Amount, Budget, CommandId, DomainError, Event, GithubUserId,
-	Payment, PaymentId, PaymentReason, PaymentWorkItem, Project, ProjectId, Publisher, UserId,
+	currencies, Aggregate, AggregateRepository, Amount, Budget, CommandId, DomainError, Event,
+	GithubUserId, Payment, PaymentId, PaymentReason, PaymentWorkItem, Project, ProjectId,
+	Publisher, UserId,
 };
 use infrastructure::amqp::CommandMessage;
 use rust_decimal::Decimal;
@@ -38,13 +39,14 @@ impl Usecase {
 		let budget_id = project.budgets_by_currency.get(currencies::USD.code).ok_or_else(|| {
 			DomainError::InvalidInputs(anyhow!("Project has no budget to spend from"))
 		})?;
-		let budget = self.budget_repository.find_by_id(budget_id)?;
 
-		let budget_events = budget
+		let mut budget = self
+			.budget_repository
+			.find_by_id(budget_id)?
 			.spend(Decimal::from(amount_in_usd))
 			.map_err(|e| DomainError::InvalidInputs(e.into()))?;
 
-		let payment_events = Payment::request(
+		let mut payment = Payment::request(
 			payment_id,
 			project_id,
 			requestor_id,
@@ -95,10 +97,12 @@ impl Usecase {
 
 		let command_id = CommandId::new();
 
-		budget_events
+		budget
+			.pending_events()
+			.clone()
 			.into_iter()
 			.map(Event::from)
-			.chain(payment_events.into_iter().map(Event::from))
+			.chain(payment.pending_events().clone().into_iter().map(Event::from))
 			.map(|payload| CommandMessage::new(command_id, payload))
 			.collect::<Vec<_>>()
 			.publish(self.event_publisher.clone())

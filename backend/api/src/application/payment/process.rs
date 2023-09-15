@@ -3,7 +3,7 @@ use std::sync::Arc;
 use anyhow::Result;
 use derive_more::Constructor;
 use domain::{
-	AggregateRepository, Amount, DomainError, Event, Payment, PaymentId, PaymentReceipt,
+	Aggregate, AggregateRepository, Amount, DomainError, Event, Payment, PaymentId, PaymentReceipt,
 	PaymentReceiptId, ProjectId, Publisher,
 };
 use infrastructure::amqp::UniqueMessage;
@@ -36,6 +36,8 @@ impl Usecase {
 			.find_by_id(&payment_id)?
 			.add_receipt(new_receipt_id, amount, receipt)
 			.map_err(|e| DomainError::InvalidInputs(e.into()))?
+			.pending_events()
+			.clone()
 			.into_iter()
 			.map(Event::from)
 			.map(UniqueMessage::new)

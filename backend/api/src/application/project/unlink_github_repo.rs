@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use anyhow::Result;
 use domain::{
-	AggregateRepository, DomainError, Event, GithubRepoId, Project, ProjectId, Publisher,
+	Aggregate, AggregateRepository, DomainError, Event, GithubRepoId, Project, ProjectId, Publisher,
 };
 use infrastructure::amqp::UniqueMessage;
 use tracing::instrument;
@@ -37,6 +37,8 @@ impl Usecase {
 		project
 			.unlink_github_repo(github_repo_id)
 			.map_err(|e| DomainError::InvalidInputs(e.into()))?
+			.pending_events()
+			.clone()
 			.into_iter()
 			.map(Event::from)
 			.map(UniqueMessage::new)

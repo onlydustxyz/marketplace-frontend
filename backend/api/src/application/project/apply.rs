@@ -3,8 +3,8 @@ use std::sync::Arc;
 use anyhow::Result;
 use derive_more::Constructor;
 use domain::{
-	AggregateRepository, Application, ApplicationId, DomainError, Event, Project, ProjectId,
-	Publisher, UserId,
+	Aggregate, AggregateRepository, Application, ApplicationId, DomainError, Event, Project,
+	ProjectId, Publisher, UserId,
 };
 use infrastructure::amqp::UniqueMessage;
 use tracing::instrument;
@@ -31,6 +31,8 @@ impl Usecase {
 		project
 			.apply(applicant_id)
 			.map_err(|e| DomainError::InternalError(e.into()))?
+			.pending_events()
+			.clone()
 			.into_iter()
 			.map(Event::from)
 			.chain(

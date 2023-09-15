@@ -1,7 +1,8 @@
 use std::sync::Arc;
 
 use domain::{
-	AggregateRepository, Destination, DomainError, Event, Project, ProjectId, Publisher, UserId,
+	Aggregate, AggregateRepository, Destination, DomainError, Event, Project, ProjectId, Publisher,
+	UserId,
 };
 use event_store::bus::QUEUE_NAME as EVENT_STORE_QUEUE;
 use infrastructure::amqp::UniqueMessage;
@@ -34,6 +35,8 @@ impl Usecase {
 		let events = project
 			.unassign_leader(*user_id)
 			.map_err(|e| DomainError::InvalidInputs(e.into()))?
+			.pending_events()
+			.clone()
 			.into_iter()
 			.map(Event::from)
 			.map(UniqueMessage::new)

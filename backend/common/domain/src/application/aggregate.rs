@@ -17,6 +17,7 @@ pub enum Status {
 pub struct Application {
 	id: ApplicationId,
 	applicant_id: UserId,
+	pending_events: Vec<ApplicationEvent>,
 }
 
 impl Application {
@@ -37,6 +38,10 @@ impl Application {
 impl Aggregate for Application {
 	type Event = ApplicationEvent;
 	type Id = ApplicationId;
+
+	fn pending_events(&mut self) -> &mut Vec<Self::Event> {
+		&mut self.pending_events
+	}
 }
 
 impl EventSourcable for Application {
@@ -47,6 +52,7 @@ impl EventSourcable for Application {
 			} => Self {
 				id: *id,
 				applicant_id: *applicant_id,
+				..Default::default()
 			},
 		}
 	}

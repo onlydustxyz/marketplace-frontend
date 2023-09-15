@@ -31,6 +31,7 @@ pub struct Payment {
 	pub work_items: Vec<PaymentWorkItem>,
 	#[serde_as(as = "DurationSeconds<i64>")]
 	pub duration_worked: Duration,
+	pending_events: Vec<PaymentEvent>,
 }
 
 impl Default for Payment {
@@ -45,6 +46,7 @@ impl Default for Payment {
 			recipient_id: Default::default(),
 			requestor_id: Default::default(),
 			work_items: Default::default(),
+			pending_events: Default::default(),
 		}
 	}
 }
@@ -52,6 +54,10 @@ impl Default for Payment {
 impl Aggregate for Payment {
 	type Event = PaymentEvent;
 	type Id = PaymentId;
+
+	fn pending_events(&mut self) -> &mut Vec<Self::Event> {
+		&mut self.pending_events
+	}
 }
 
 impl EventSourcable for Payment {
@@ -109,8 +115,8 @@ impl Payment {
 		amount: Amount,
 		duration_worked: Duration,
 		reason: Reason,
-	) -> Vec<<Self as Aggregate>::Event> {
-		vec![PaymentEvent::Requested {
+	) -> Self {
+		Self::default().with_pending_events(&[PaymentEvent::Requested {
 			id,
 			project_id,
 			requestor_id,
@@ -119,15 +125,15 @@ impl Payment {
 			duration_worked,
 			reason,
 			requested_at: Utc::now().naive_utc(),
-		}]
+		}])
 	}
 
 	pub fn add_receipt(
-		&self,
+		self,
 		receipt_id: PaymentReceiptId,
 		amount: Amount,
 		receipt: PaymentReceipt,
-	) -> Result<Vec<<Self as Aggregate>::Event>, Error> {
+	) -> Result<Self, Error> {
 		self.only_active()?;
 
 		// TODO: Handle currency conversion when needed
@@ -142,45 +148,49 @@ impl Payment {
 			"New payment receipt added",
 		);
 
-		let events = vec![PaymentEvent::Processed {
+		let event = PaymentEvent::Processed {
 			id: self.id,
 			amount,
 			receipt_id,
 			receipt,
 			processed_at: Utc::now().naive_utc(),
-		}];
+		};
 
-		Ok(events)
+		Ok(self.with_pending_events(&[event]))
 	}
 
-	pub fn cancel(&self) -> Result<Vec<<Self as Aggregate>::Event>, Error> {
+	pub fn cancel(self) -> Result<Self, Error> {
 		self.only_active()?;
 		self.only_cancellable()?;
 
 		info!(id = self.id.to_string(), "Payment request cancelled",);
 
-		let events = vec![PaymentEvent::Cancelled { id: self.id }];
+		let event = PaymentEvent::Cancelled { id: self.id };
 
-		Ok(events)
+		Ok(self.with_pending_events(&[event]))
 	}
 
-	pub fn mark_invoice_as_received(&self) -> Result<Vec<<Self as Aggregate>::Event>, Error> {
+	pub fn mark_invoice_as_received(self) -> Result<Self, Error> {
 		self.only_active()?;
 
 		info!(id = self.id.to_string(), "Invoice received",);
 
-		Ok(vec![PaymentEvent::InvoiceReceived {
+		let event = PaymentEvent::InvoiceReceived {
 			id: self.id,
 			received_at: Utc::now().naive_utc(),
-		}])
+		};
+
+		Ok(self.with_pending_events(&[event]))
 	}
 
-	pub fn reject_invoice(&self) -> Result<Vec<<Self as Aggregate>::Event>, Error> {
+	pub fn reject_invoice(self) -> Result<Self, Error> {
 		self.only_active()?;
 
 		info!(id = self.id.to_string(), "Invoice rejected",);
 
-		Ok(vec![PaymentEvent::InvoiceRejected { id: self.id }])
+		let event = PaymentEvent::InvoiceRejected { id: self.id };
+
+		Ok(self.with_pending_events(&[event]))
 	}
 
 	fn only_active(&self) -> Result<(), Error> {
@@ -281,7 +291,7 @@ mod tests {
 		duration_worked: Duration,
 		reason: Reason,
 	) -> Payment {
-		let events = Payment::request(
+		Payment::request(
 			payment_id,
 			project_id,
 			requestor_id,
@@ -289,14 +299,12 @@ mod tests {
 			amount,
 			duration_worked,
 			reason,
-		);
-		Payment::from_events(&events)
+		)
 	}
 
 	#[fixture]
 	fn cancelled_payment(requested_payment: Payment) -> Payment {
-		let events = requested_payment.cancel().unwrap();
-		Payment::from_events(&events)
+		requested_payment.cancel().unwrap()
 	}
 
 	#[fixture]
@@ -306,8 +314,7 @@ mod tests {
 		amount: Amount,
 		receipt: PaymentReceipt,
 	) -> Payment {
-		let events = requested_payment.add_receipt(payment_receipt_id, amount, receipt).unwrap();
-		Payment::from_events(&events)
+		requested_payment.add_receipt(payment_receipt_id, amount, receipt).unwrap()
 	}
 
 	#[rstest]
@@ -321,7 +328,8 @@ mod tests {
 		let before = Utc::now().naive_utc();
 		let events = requested_payment
 			.add_receipt(payment_receipt_id, amount.clone(), receipt.clone())
-			.expect("Problem when adding receipt");
+			.expect("Problem when adding receipt")
+			.pending_events;
 		let after = Utc::now().naive_utc();
 
 		assert_eq!(events.len(), 1);
@@ -369,11 +377,9 @@ mod tests {
 		requested_payment: Payment,
 	) {
 		let payment = requested_payment;
-		let events = payment
+		let payment = payment
 			.add_receipt(payment_receipt_id, amount.clone(), receipt.clone())
 			.expect("Problem when adding receipt");
-
-		let payment = payment.apply_events(&events);
 
 		assert_eq!(
 			payment.add_receipt(payment_receipt_id, amount, receipt),
@@ -397,7 +403,10 @@ mod tests {
 	#[rstest]
 	fn test_cancel(requested_payment: Payment, cancelled_payment_event: PaymentEvent) {
 		assert_eq!(
-			requested_payment.cancel().expect("Problem when cancelling payment"),
+			requested_payment
+				.cancel()
+				.expect("Problem when cancelling payment")
+				.pending_events,
 			vec![cancelled_payment_event]
 		);
 	}
@@ -431,7 +440,8 @@ mod tests {
 			amount.clone(),
 			duration_worked,
 			reason.clone(),
-		);
+		)
+		.pending_events;
 		let after = Utc::now();
 
 		assert_eq!(events.len(), 1);

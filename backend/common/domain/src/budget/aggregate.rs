@@ -16,44 +16,49 @@ pub struct Budget {
 	pub id: BudgetId,
 	pub allocated_amount: Decimal,
 	pub spent_amount: Decimal,
+	pending_events: Vec<BudgetEvent>,
 }
 
 impl Budget {
-	pub fn create(id: BudgetId, currency: &'static Currency) -> Vec<BudgetEvent> {
-		vec![BudgetEvent::Created { id, currency }]
+	pub fn create(id: BudgetId, currency: &'static Currency) -> Self {
+		Self::default().with_pending_events(&[BudgetEvent::Created { id, currency }])
 	}
 
-	pub fn allocate(
-		&self,
-		amount: Decimal,
-		sponsor_id: Option<sponsor::Id>,
-	) -> Result<Vec<BudgetEvent>> {
+	pub fn allocate(self, amount: Decimal, sponsor_id: Option<sponsor::Id>) -> Result<Self> {
 		if self.allocated_amount + amount < self.spent_amount {
 			return Err(Error::Overspent);
 		}
 
-		Ok(vec![BudgetEvent::Allocated {
+		let event = BudgetEvent::Allocated {
 			id: self.id,
 			amount,
 			sponsor_id,
-		}])
+		};
+
+		Ok(self.with_pending_events(&[event]))
 	}
 
-	pub fn spend(&self, amount: Decimal) -> Result<Vec<BudgetEvent>> {
+	pub fn spend(self, amount: Decimal) -> Result<Self> {
 		if self.spent_amount + amount > self.allocated_amount {
 			return Err(Error::Overspent);
 		}
 
-		Ok(vec![BudgetEvent::Spent {
+		let event = BudgetEvent::Spent {
 			id: self.id,
 			amount,
-		}])
+		};
+
+		Ok(self.with_pending_events(&[event]))
 	}
 }
 
 impl Aggregate for Budget {
 	type Event = BudgetEvent;
 	type Id = BudgetId;
+
+	fn pending_events(&mut self) -> &mut Vec<Self::Event> {
+		&mut self.pending_events
+	}
 }
 
 impl EventSourcable for Budget {
@@ -63,6 +68,7 @@ impl EventSourcable for Budget {
 				id: *id,
 				allocated_amount: Decimal::ZERO,
 				spent_amount: Decimal::ZERO,
+				..Default::default()
 			},
 			BudgetEvent::Allocated { id, amount, .. } => Self {
 				id: *id,
@@ -142,8 +148,8 @@ mod tests {
 		budget_created_event: BudgetEvent,
 	) {
 		assert_eq!(
-			Budget::create(*budget_id, currency),
-			vec![budget_created_event]
+			Budget::create(*budget_id, currency).pending_events,
+			&[budget_created_event]
 		);
 	}
 
@@ -155,8 +161,8 @@ mod tests {
 	) {
 		let budget = Budget::from_events(&[budget_created_event]);
 		assert_eq!(
-			budget.allocate(amount, None),
-			Ok(vec![budget_allocated_event])
+			budget.allocate(amount, None).unwrap().pending_events,
+			&[budget_allocated_event]
 		);
 	}
 
@@ -168,7 +174,10 @@ mod tests {
 		budget_spent_event: BudgetEvent,
 	) {
 		let budget = Budget::from_events(&[budget_created_event, budget_allocated_event]);
-		assert_eq!(budget.spend(amount), Ok(vec![budget_spent_event]));
+		assert_eq!(
+			budget.spend(amount).unwrap().pending_events,
+			&[budget_spent_event]
+		);
 	}
 
 	#[rstest]
@@ -184,7 +193,10 @@ mod tests {
 			budget_allocated_event,
 			budget_spent_event,
 		]);
-		assert_eq!(budget.spend(-amount), Ok(vec![budget_refund_event]));
+		assert_eq!(
+			budget.spend(-amount).unwrap().pending_events,
+			&[budget_refund_event]
+		);
 	}
 
 	#[rstest]
@@ -210,13 +222,8 @@ mod tests {
 			budget_spent_event,
 		]);
 
-		// refill
-		let events = budget.allocate(amount, None).unwrap();
-		let budget = budget.apply_events(&events);
-
-		// start spending again !
-		let events = budget.spend(amount).unwrap();
-		let budget = budget.apply_events(&events);
+		// refill and start spending again !
+		let budget = budget.allocate(amount, None).unwrap().spend(amount).unwrap();
 
 		// no more budget !
 		assert_eq!(budget.spent_amount, budget.allocated_amount);
@@ -237,8 +244,7 @@ mod tests {
 		]);
 
 		// cut budget
-		let result = budget.allocate(-amount, None);
-		let budget = budget.apply_events(&result.unwrap());
+		let budget = budget.allocate(-amount, None).unwrap();
 
 		// no more budget !
 		assert_eq!(budget.spent_amount, budget.allocated_amount);
