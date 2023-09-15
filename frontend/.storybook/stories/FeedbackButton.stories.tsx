@@ -15,14 +15,11 @@ const mocks = [
     },
     result: {
       data: {
-        userInfo: [
+        userPayoutInfo: [
           {
-            identity: {
-              Person: {
-                lastname: "Bar",
-                firstname: "Foo",
-              },
-            },
+            userId: USER_ID,
+            lastname: "Bar",
+            firstname: "Foo",
           },
         ],
       },
