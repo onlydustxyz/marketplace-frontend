@@ -182,10 +182,6 @@ const payoutSettingsMock = {
           userPayoutInfo: {
             __typename: "UserPayoutInfo",
             userId: TEST_USER_ID,
-            identity: null,
-            location: null,
-            payoutSettings: null,
-            arePayoutSettingsValid: false,
           } as UserPayoutSettingsFragment,
         },
       ],
