@@ -16,7 +16,7 @@ impl<'r> FromRequest<'r> for Usecase {
 			try_outcome!(FromRocketState::from_state(request.rocket())),
 			try_outcome!(FromRocketState::from_state(request.rocket())),
 			try_outcome!(FromRocketState::from_state(request.rocket())),
-			try_outcome!(FromRocketState::from_state(request.rocket())),
+			try_outcome!(FromRequest::from_request(request).await),
 		))
 	}
 }

@@ -21,14 +21,12 @@ pub struct Usecase {
 
 impl Usecase {
 	#[instrument(skip(self))]
-	pub async fn allocate(
+	pub fn build_allocation(
 		&self,
-		project_id: ProjectId,
+		project: Project,
 		amount: Amount,
 		sponsor_id: Option<sponsor::Id>,
-	) -> Result<BudgetId, DomainError> {
-		let project = self.project_repository.find_by_id(&project_id)?;
-
+	) -> Result<(Budget, impl Iterator<Item = Event>), DomainError> {
 		if let Some(sponsor_id) = sponsor_id {
 			if !self.sponsor_repository.exists(sponsor_id)? {
 				return Err(DomainError::InvalidInputs(anyhow!(
@@ -58,9 +56,25 @@ impl Usecase {
 			},
 		};
 
-		events
+		let events = events
 			.into_iter()
-			.chain(budget.allocate(*amount.amount(), sponsor_id)?.into_iter().map(Event::from))
+			.chain(budget.allocate(*amount.amount(), sponsor_id)?.into_iter().map(Event::from));
+
+		Ok((budget, events))
+	}
+
+	#[instrument(skip(self))]
+	pub async fn allocate(
+		&self,
+		project_id: ProjectId,
+		amount: Amount,
+		sponsor_id: Option<sponsor::Id>,
+	) -> Result<BudgetId, DomainError> {
+		let project = self.project_repository.find_by_id(&project_id)?;
+
+		let (budget, events) = self.build_allocation(project, amount, sponsor_id)?;
+
+		events
 			.map(UniqueMessage::new)
 			.collect::<Vec<_>>()
 			.publish(self.event_publisher.clone())

@@ -1,9 +1,9 @@
 use std::sync::Arc;
 
-use anyhow::{anyhow, Result};
+use anyhow::Result;
 use derive_more::Constructor;
 use domain::{
-	sponsor, Amount, Budget, BudgetId, DomainError, Event, EventSourcable, Project, ProjectId,
+	sponsor, Amount, BudgetId, DomainError, Event, EventSourcable, Project, ProjectId,
 	ProjectVisibility, Publisher,
 };
 use infrastructure::{amqp::UniqueMessage, database::Repository};
@@ -11,6 +11,7 @@ use reqwest::Url;
 use tracing::instrument;
 
 use crate::{
+	application,
 	domain::{ImageStoreService, Publishable},
 	models::*,
 	presentation::http::dto::NonEmptyTrimmedString,
@@ -21,7 +22,7 @@ pub struct Usecase {
 	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 	project_details_repository: Arc<dyn Repository<ProjectDetails>>,
 	image_store: Arc<dyn ImageStoreService>,
-	sponsor_repository: Arc<dyn Repository<Sponsor>>,
+	budget_allocation_usecase: application::budget::allocate::Usecase,
 }
 
 impl Usecase {
@@ -39,32 +40,25 @@ impl Usecase {
 		hiring: bool,
 		rank: i32,
 		visibility: ProjectVisibility,
-	) -> Result<ProjectId, DomainError> {
+	) -> Result<(ProjectId, Option<BudgetId>), DomainError> {
 		let project_id = ProjectId::new();
 
-		if let Some(sponsor_id) = sponsor_id {
-			if !self.sponsor_repository.exists(sponsor_id)? {
-				return Err(DomainError::InvalidInputs(anyhow!(
-					"Sponsor does not exist"
-				)));
-			}
-		}
+		let project_events = Project::create(project_id);
+		let project = Project::from_events(&project_events);
 
-		let mut project_events = Project::create(project_id);
-		let mut budget_events = Vec::new();
+		let mut events: Vec<_> = project_events.into_iter().map(Event::from).collect();
+
+		let mut budget_id = None;
 
 		if let Some(initial_budget) = initial_budget {
-			let budget_id = BudgetId::new();
-			let mut events = Budget::create(budget_id, initial_budget.currency());
-			events.append(
-				&mut Budget::from_events(&events).allocate(*initial_budget.amount(), sponsor_id)?,
-			);
+			let (budget, allocation_events) = self.budget_allocation_usecase.build_allocation(
+				project,
+				initial_budget,
+				sponsor_id,
+			)?;
 
-			budget_events.append(&mut events.into_iter().map(Into::into).collect());
-			project_events.append(
-				&mut Project::from_events(&project_events)
-					.link_budget(budget_id, initial_budget.currency())?,
-			)
+			budget_id = Some(budget.id);
+			events.append(&mut allocation_events.collect());
 		};
 
 		let stored_logo_url = match logo_url {
@@ -84,16 +78,13 @@ impl Usecase {
 			visibility: visibility.into(),
 		})?;
 
-		project_events
+		events
 			.into_iter()
-			.map(Event::from)
-			.chain(budget_events)
-			.map(Event::from)
 			.map(UniqueMessage::new)
 			.collect::<Vec<_>>()
 			.publish(self.event_publisher.clone())
 			.await?;
 
-		Ok(project_id)
+		Ok((project_id, budget_id))
 	}
 }

@@ -26,7 +26,7 @@ impl<'r> FromRequest<'r> for Usecase {
 			.map(|value| (reqwest::header::AUTHORIZATION, value.parse().unwrap()))
 			.collect();
 
-		let http_client = match http::Client::new(config.indexer_client.clone(), headers) {
+		let http_client = match http::Client::new(config.indexer_client, headers) {
 			Ok(client) => client,
 			Err(e) => return Outcome::Failure((Status::InternalServerError, e)),
 		};
