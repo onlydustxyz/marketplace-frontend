@@ -92,6 +92,7 @@ const mocks = [
               iban: null,
               usdPreferredMethod: PreferredMethod.Crypto,
               userId: "user-1",
+              arePayoutSettingsValid: true,
             } as UserPayoutSettingsFragment,
           },
         ],
