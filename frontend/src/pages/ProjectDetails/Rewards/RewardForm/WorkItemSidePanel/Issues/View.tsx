@@ -1,44 +1,47 @@
+import { filter, some } from "lodash";
 import { forwardRef, useEffect, useState } from "react";
-import GithubIssue, { Action, WorkItem } from "src/components/GithubIssue";
+import { useForm, useFormContext, useWatch } from "react-hook-form";
+import { Virtuoso } from "react-virtuoso";
+import { ContributionFragment, WorkItemFragment, WorkItemType } from "src/__generated/graphql";
+import FormInput from "src/components/FormInput";
+import FormToggle from "src/components/FormToggle";
+import GithubIssue, { Action } from "src/components/GithubIssue";
+import GithubPullRequest from "src/components/GithubPullRequest";
 import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
+import EyeOffLine from "src/icons/EyeOffLine";
 import Link from "src/icons/Link";
+import SearchLine from "src/icons/SearchLine";
 import EmptyState from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/EmptyState";
 import Toggle from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/Toggle";
 import OtherIssueInput from "./OtherIssueInput";
-import FormToggle from "src/components/FormToggle";
-import { useForm, useWatch } from "react-hook-form";
-import EyeOffLine from "src/icons/EyeOffLine";
-import FormInput from "src/components/FormInput";
-import SearchLine from "src/icons/SearchLine";
-import { useFormContext } from "react-hook-form";
-import useFilteredWorkItems from "./useFilteredWorkItems";
-import { filter, some } from "lodash";
-import { Virtuoso } from "react-virtuoso";
-import { GithubIssueType } from "src/types";
+import useFilteredContributions from "./useFilteredWorkItems";
+import { contributionToWorkItem } from "./index";
 
 const THEORETICAL_MAX_SCREEN_HEIGHT = 2000;
 
 type Props = {
   projectId: string;
-  issues: WorkItem[];
-  type: GithubIssueType;
-  onWorkItemAdded: (workItem: WorkItem) => void;
-  onWorkItemIgnored: (workItem: WorkItem) => void;
-  onWorkItemUnignored: (workItem: WorkItem) => void;
+  contributions: ContributionFragment[];
+  type: WorkItemType;
+  addWorkItem: (workItem: WorkItemFragment) => void;
+  addContribution: (contribution: ContributionFragment) => void;
+  ignoreContribution: (contribution: ContributionFragment) => void;
+  unignoreContribution: (contribution: ContributionFragment) => void;
 };
 
 export default function View({
   projectId,
-  issues,
+  contributions,
   type,
-  onWorkItemAdded,
-  onWorkItemIgnored,
-  onWorkItemUnignored,
+  addWorkItem,
+  addContribution,
+  ignoreContribution,
+  unignoreContribution,
 }: Props) {
   const { T } = useIntl();
   const { watch, resetField } = useFormContext();
-  const tabName = type === GithubIssueType.Issue ? "issues" : "pullRequests";
+  const tabName = type === WorkItemType.Issue ? "issues" : "pullRequests";
 
   const [addOtherIssueEnabled, setStateAddOtherIssueEnabled] = useState(false);
   const [searchEnabled, setStateSearchEnabled] = useState(false);
@@ -52,8 +55,8 @@ export default function View({
   };
   const showToaster = useShowToaster();
 
-  const onIssueAdded = (item: WorkItem) => {
-    onWorkItemAdded(item);
+  const addContributionWithToast = (item: ContributionFragment) => {
+    addContribution(item);
     showToaster(T(`reward.form.contributions.${tabName}.addedToaster`));
   };
 
@@ -68,10 +71,10 @@ export default function View({
     name: showIgnoredItemsName,
   });
 
-  const visibleIssues = showIgnoredItems ? issues : filter(issues, { ignored: false });
+  const visibleIssues = showIgnoredItems ? contributions : filter(contributions, { ignored: false });
 
   const searchPattern = watch(`search-${tabName}`);
-  const filteredIssues = useFilteredWorkItems({ pattern: searchPattern, workItems: visibleIssues });
+  const filteredContributions = useFilteredContributions({ pattern: searchPattern, contributions: visibleIssues });
 
   return (
     <div className="flex h-full flex-col gap-3 overflow-hidden px-6">
@@ -85,7 +88,7 @@ export default function View({
               label={T(`reward.form.contributions.${tabName}.addOther.toggle`)}
               testId={`add-other-${tabName}-toggle`}
             />
-            {issues.length > 0 && (
+            {contributions.length > 0 && (
               <Toggle
                 enabled={searchEnabled}
                 setEnabled={setSearchEnabled}
@@ -95,7 +98,7 @@ export default function View({
               />
             )}
           </div>
-          {some(issues, { ignored: true }) && (
+          {some(contributions, { ignored: true }) && (
             <div className="flex flex-row items-center gap-2 font-walsheim text-sm font-normal text-greyscale-50">
               <EyeOffLine />
               {T("reward.form.contributions.showIgnored")}
@@ -103,7 +106,7 @@ export default function View({
             </div>
           )}
         </div>
-        {addOtherIssueEnabled && <OtherIssueInput projectId={projectId} type={type} onWorkItemAdded={onIssueAdded} />}
+        {addOtherIssueEnabled && <OtherIssueInput projectId={projectId} type={type} addWorkItem={addWorkItem} />}
         {searchEnabled && (
           <FormInput
             name={`search-${tabName}`}
@@ -119,9 +122,16 @@ export default function View({
           />
         )}
       </div>
-      {filteredIssues.length > 0 ? (
+
+      {filteredContributions.length > 0 ? (
         <VirtualizedIssueList
-          {...{ issues: filteredIssues, onIssueAdded, onWorkItemIgnored, onWorkItemUnignored, tabName }}
+          {...{
+            contributions: filteredContributions as ContributionFragment[],
+            addContribution: addContributionWithToast,
+            ignoreContribution,
+            unignoreContribution,
+            tabName,
+          }}
         />
       ) : (
         <EmptyState />
@@ -149,37 +159,57 @@ const ListBuilder = (tabName: string) => {
 };
 
 interface VirtualizedIssueListProps {
-  issues: WorkItem[];
-  onIssueAdded: (workItem: WorkItem) => void;
-  onWorkItemIgnored: (workItem: WorkItem) => void;
-  onWorkItemUnignored: (workItem: WorkItem) => void;
+  contributions: ContributionFragment[];
+  addContribution: (contribution: ContributionFragment) => void;
+  ignoreContribution: (contribution: ContributionFragment) => void;
+  unignoreContribution: (contribution: ContributionFragment) => void;
   tabName: string;
 }
 
 const VirtualizedIssueList = ({
-  issues,
-  onIssueAdded,
-  onWorkItemIgnored,
-  onWorkItemUnignored,
+  contributions,
+  addContribution,
+  ignoreContribution,
+  unignoreContribution,
   tabName,
 }: VirtualizedIssueListProps) => {
   return (
     <Virtuoso
-      data={issues}
+      data={contributions}
       components={{ Scroller, List: ListBuilder(tabName) }}
       style={{ height: THEORETICAL_MAX_SCREEN_HEIGHT }}
-      itemContent={(_, issue) => (
-        <GithubIssue
-          key={issue.id}
-          workItem={issue}
-          action={Action.Add}
-          onClick={() => onIssueAdded(issue)}
-          secondaryAction={issue.ignored ? Action.UnIgnore : Action.Ignore}
-          onSecondaryClick={() => (issue.ignored ? onWorkItemUnignored(issue) : onWorkItemIgnored(issue))}
-          ignored={issue.ignored}
-          addMarginTopForVirtuosoDisplay={true}
-        />
-      )}
+      itemContent={(_, contribution) => {
+        const workItem = contributionToWorkItem(contribution);
+        if (!workItem) return;
+
+        return workItem.githubIssue ? (
+          <GithubIssue
+            key={contribution.id}
+            issue={workItem.githubIssue}
+            action={Action.Add}
+            onClick={() => addContribution(contribution)}
+            secondaryAction={contribution.ignored ? Action.UnIgnore : Action.Ignore}
+            onSecondaryClick={() =>
+              contribution.ignored ? unignoreContribution(contribution) : ignoreContribution(contribution)
+            }
+            ignored={!!contribution.ignored}
+            addMarginTopForVirtuosoDisplay={true}
+          />
+        ) : workItem.githubPullRequest ? (
+          <GithubPullRequest
+            key={contribution.id}
+            pullRequest={workItem.githubPullRequest}
+            action={Action.Add}
+            onClick={() => addContribution(contribution)}
+            secondaryAction={contribution.ignored ? Action.UnIgnore : Action.Ignore}
+            onSecondaryClick={() =>
+              contribution.ignored ? unignoreContribution(contribution) : ignoreContribution(contribution)
+            }
+            ignored={!!contribution.ignored}
+            addMarginTopForVirtuosoDisplay={true}
+          />
+        ) : null;
+      }}
     />
   );
 };

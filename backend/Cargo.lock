@@ -1357,6 +1357,8 @@ dependencies = [
  "diesel",
  "diesel-derive-newtype",
  "futures",
+ "generic-array",
+ "hex",
  "iban_validate",
  "juniper",
  "mockall",
@@ -1371,7 +1373,7 @@ dependencies = [
  "serde",
  "serde_json",
  "serde_with 2.3.3",
- "testing",
+ "sha2 0.10.7",
  "thiserror",
  "url",
  "uuid 0.8.2",
@@ -1522,23 +1524,28 @@ dependencies = [
  "derive-new",
  "derive_more",
  "diesel",
+ "diesel-derive-newtype",
  "diesel_json",
  "domain",
  "dotenv",
  "envtestkit",
  "futures",
+ "http-api-problem",
  "infrastructure",
  "itertools",
  "mockall",
  "mockall_double",
  "mockito",
  "olog",
+ "presentation",
  "reqwest",
+ "rocket",
  "rstest",
  "rust_decimal",
  "rust_decimal_macros",
  "serde",
  "serde_json",
+ "sha2 0.10.7",
  "testcontainers",
  "testing",
  "thiserror",
@@ -1905,27 +1912,6 @@ name = "gimli"
 version = "0.27.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ad0a93d233ebf96623465aad4046a8d3aa4da22d4f4beba5388838c8a434bbb4"
-
-[[package]]
-name = "github-proxy"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "async-std",
- "async-trait",
- "domain",
- "dotenv",
- "infrastructure",
- "juniper",
- "juniper_rocket",
- "olog",
- "presentation",
- "rocket",
- "rstest",
- "serde",
- "thiserror",
- "tracing",
-]
 
 [[package]]
 name = "glob"
@@ -2386,6 +2372,7 @@ dependencies = [
  "chrono",
  "ctor 0.1.26",
  "derive-getters",
+ "derive-new",
  "derive_more",
  "diesel",
  "diesel-derive-enum",
@@ -2410,6 +2397,7 @@ dependencies = [
  "serde",
  "serde_json",
  "serde_qs",
+ "testcontainers",
  "thiserror",
  "tokio",
  "tokio-retry",
@@ -4901,6 +4889,7 @@ dependencies = [
  "infrastructure",
  "lapin",
  "project-root",
+ "reqwest",
  "serde",
  "serde_json",
  "testcontainers",

@@ -106,9 +106,9 @@ impl Budget {
 	pub fn spent_amount(&self) -> Decimal {
 		self.payments
 			.values()
-			.filter(|payment| *payment.status() != PaymentStatus::Cancelled)
+			.filter(|payment| payment.status != PaymentStatus::Cancelled)
 			.fold(Decimal::ZERO, |amount, payment| {
-				amount + payment.requested_usd_amount()
+				amount + payment.requested_usd_amount
 			})
 	}
 

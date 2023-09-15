@@ -1,0 +1,15 @@
+{
+  "request": {
+    "url": "/repos/repo_onwer_test_1/repo_name_test_1/issues/111",
+    "method": "GET",
+    "headers": {
+      "Authorization": {
+        "contains": "Bearer CALLER_GITHUB_PAT"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "github_fetch_issue_1_response_body.json"
+  }
+}

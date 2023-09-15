@@ -35,8 +35,8 @@ export class ViewProfilePage {
   }
 
   goto = async () => {
-    await this.page.getByTestId("profile-button").click();
-    await this.page.getByText(/public profile/i).click();
+    await this.page.getByTestId("profile-button").click({ force: true });
+    await this.page.getByText(/public profile/i).click({ force: true });
   };
 
   openPublicProfile = async () => {

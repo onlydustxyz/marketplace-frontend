@@ -16,9 +16,9 @@ export default function Contributor({ contributor, clickable }: Props) {
   const { open } = useContributorProfilePanel();
 
   return (
-    <div className="flex items-center gap-1.5">
+    <div className="flex items-center gap-1.5 truncate">
       <div
-        className="flex flex-row items-center gap-2 text-sm font-normal"
+        className="flex flex-row items-center gap-2 truncate text-sm font-normal"
         onClick={e => {
           if (clickable) {
             e.preventDefault();

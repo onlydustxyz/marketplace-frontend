@@ -31,13 +31,19 @@ export default function ContributorSelect({ projectId, contributor, setContribut
     skip: (githubHandleSubstring?.length || 0) < 2 || githubHandleSubstring !== debouncedGithubHandleSubstring,
   });
 
-  const internalContributors: Contributor[] = contributors.map(c => ({
-    githubUserId: c.githubUserId,
-    login: c.login || "",
-    avatarUrl: c.avatarUrl || "",
-    unpaidMergedPullsCount: c.contributionStatsAggregate.aggregate?.sum?.unpaidUnignoredCount || 0,
-    userId: c.userId,
-  }));
+  const internalContributors: Contributor[] = contributors.map(c => {
+    const completedUnpaidPullRequestCount = c.completedUnpaidPullRequestsAggregate.aggregate?.count || 0;
+    const completedUnpaidIssueCount = c.completedUnpaidIssuesAggregate.aggregate?.count || 0;
+    const completedUnpaidCodeReviewCount = c.completedUnpaidCodeReviewsAggregate.aggregate?.count || 0;
+    return {
+      githubUserId: c.githubUserId,
+      login: c.login || "",
+      avatarUrl: c.avatarUrl || "",
+      unpaidCompletedContributions:
+        completedUnpaidPullRequestCount + completedUnpaidIssueCount + completedUnpaidCodeReviewCount,
+      userId: c.userId,
+    };
+  });
 
   const filteredContributors = sortListByLogin(
     internalContributors.filter(
@@ -61,7 +67,7 @@ export default function ContributorSelect({ projectId, contributor, setContribut
       githubUserId: c.id,
       login: c.login,
       avatarUrl: c.avatarUrl,
-      unpaidMergedPullsCount: 0,
+      unpaidCompletedContributions: 0,
       userId: c.user?.id,
     }));
 

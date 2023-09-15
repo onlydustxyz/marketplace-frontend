@@ -2,6 +2,7 @@ use std::env;
 
 use anyhow::Result;
 use event_listeners::Config;
+use presentation::http;
 use testcontainers::clients::Cli;
 use testing::context::{amqp, database, github};
 use tokio::task::JoinHandle;
@@ -32,6 +33,7 @@ impl<'a> Context<'a> {
 
 		let config = Config {
 			amqp: amqp.config.clone(),
+			http: http::Config { api_keys: vec![] },
 			database: database.config.clone(),
 			tracer: infrastructure::tracing::Config {
 				ansi: false,
@@ -45,7 +47,7 @@ impl<'a> Context<'a> {
 			database,
 			amqp,
 			github,
-			_processes: event_listeners::bootstrap(config).await?,
+			_processes: event_listeners::listeners::bootstrap(config).await?,
 		})
 	}
 }

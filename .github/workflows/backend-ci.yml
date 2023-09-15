@@ -1,7 +1,7 @@
 name: Backend CI
 
 on:
-#  pull_request: ~
+  pull_request: ~
 
   push:
     branches:
@@ -104,9 +104,6 @@ jobs:
 
       - name: Setup environment
         uses: ./.github/actions/env-setup
-
-      - name: Run migrations
-        uses: ./.github/actions/migrations-run
 
       - name: Install Tarpaulin
         run: cargo install cargo-tarpaulin

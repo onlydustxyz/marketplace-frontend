@@ -14,20 +14,6 @@ fragment LastProjectMergedPullRequests on Projects {
   }
 }
 
-fragment ProjectPaidWorkItems on Projects {
-  ...ProjectId
-  budgets {
-    id
-    paymentRequests {
-      ...PaymentRequestId
-      recipientId
-      workItems {
-        ...WorkItemId
-      }
-    }
-  }
-}
-
 fragment ProjectVisibilityDetails on Projects {
   ...ProjectId
   visibility
@@ -37,6 +23,12 @@ fragment ProjectVisibilityDetails on Projects {
     }
   }
   contributors {
+    githubUserId
+  }
+  pendingContributors {
+    githubUserId
+  }
+  rewardedUsers {
     githubUserId
   }
   projectLeads(orderBy: { user: { githubUserId: ASC } }) {

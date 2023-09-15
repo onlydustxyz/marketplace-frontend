@@ -8,12 +8,8 @@ fragment GithubIssue on GithubIssues {
   number
   title
   htmlUrl
-  authorId
   assigneeIds
   status
   createdAt
   closedAt
-  ignoredForProjects {
-    ...IgnoredGithubIssueId
-  }
 }

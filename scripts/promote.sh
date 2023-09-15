@@ -75,11 +75,10 @@ backup_database() {
 
 promote_heroku() {
     # The order of the apps matters:
-    # 1. github-proxy: must be done first to expose the new API for hasura
-    # 3. api: to apply DB migrations and hasura metadata
-    # 4. event-listeners: to start any new consumer
-    # 5. event-store: to handle new events
-    for app in github-proxy api event-listeners event-store
+    # 1. api: to apply DB migrations and hasura metadata
+    # 2. event-listeners: to start any new consumer
+    # 3. event-store: to handle new events
+    for app in api event-listeners event-store
     do
         execute heroku pipelines:promote --app od-$app-$FROM_ENV --to od-$app-$TO_ENV
     done

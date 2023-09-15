@@ -1,15 +1,13 @@
 use anyhow::anyhow;
 use domain::{
-	Amount, BlockchainNetwork, Currency, Iban, LogErr, PaymentReceipt, ProjectId,
-	ProjectVisibility, UserId,
+	Amount, BlockchainNetwork, Currency, Iban, PaymentReceipt, ProjectId, ProjectVisibility, UserId,
 };
 use juniper::{graphql_object, DefaultScalarValue, Nullable};
-use olog::IntoField;
 use rusty_money::Money;
 use url::Url;
 use uuid08::Uuid;
 
-use super::{dto, Context, Error, Result};
+use super::{Context, Error, Result};
 use crate::{
 	models::*,
 	presentation::http::dto::{
@@ -95,31 +93,6 @@ impl Mutation {
 			.await?;
 
 		Ok(receipt_id.into())
-	}
-
-	pub async fn cancel_payment_request(
-		context: &Context,
-		project_id: Uuid,
-		payment_id: Uuid,
-	) -> Result<dto::Payment> {
-		let (project, budget, payment, command_id) = context
-			.cancel_payment_usecase
-			.cancel(&project_id.into(), &payment_id.into())
-			.await?;
-
-		Ok(dto::Payment {
-			project_id: (*project.id()).into(),
-			budget_id: (*budget.id()).into(),
-			payment_id: (*payment.id()).into(),
-			command_id: command_id.into(),
-			amount: payment
-				.requested_usd_amount()
-				.try_into()
-				.log_err(|e: &anyhow::Error| {
-					olog::error!(error = e.to_field(), "Could not format payment amount")
-				})
-				.unwrap_or_default(),
-		})
 	}
 
 	pub async fn mark_invoice_as_received(
@@ -228,50 +201,6 @@ impl Mutation {
 			.await?;
 
 		Ok(project_id)
-	}
-
-	pub async fn request_payment(
-		context: &Context,
-		project_id: Uuid,
-		recipient_id: i32,
-		amount_in_usd: i32,
-		hours_worked: i32,
-		reason: dto::PaymentReason,
-	) -> Result<dto::Payment> {
-		let caller_id = context.caller_info()?.user_id;
-
-		if !context.caller_permissions.can_spend_budget_of_project(&project_id.into()) {
-			return Err(Error::NotAuthorized(
-				caller_id,
-				"Project Lead role required".to_string(),
-			));
-		}
-
-		let (project, budget, payment, command_id) = context
-			.request_payment_usecase
-			.request(
-				project_id.into(),
-				caller_id,
-				(recipient_id as i64).into(),
-				amount_in_usd as u32,
-				hours_worked as u32,
-				reason.into(),
-			)
-			.await?;
-
-		Ok(dto::Payment {
-			project_id: (*project.id()).into(),
-			budget_id: (*budget.id()).into(),
-			payment_id: (*payment.id()).into(),
-			command_id: command_id.into(),
-			amount: payment
-				.requested_usd_amount()
-				.try_into()
-				.log_err(|e: &anyhow::Error| {
-					olog::error!(error = e.to_field(), "Could not format payment amount")
-				})
-				.unwrap_or_default(),
-		})
 	}
 
 	pub async fn update_payout_info(
@@ -433,55 +362,5 @@ impl Mutation {
 			.remove_sponsor(project_id.into(), sponsor_id.into())?;
 
 		Ok(project_id)
-	}
-
-	pub async fn ignore_issue(
-		&self,
-		context: &Context,
-		project_id: Uuid,
-		repo_id: i32,
-		issue_number: i32,
-	) -> Result<bool> {
-		let caller_id = context.caller_info()?.user_id;
-
-		if !context.caller_permissions.can_ignore_issue_for_project(&project_id.into()) {
-			return Err(Error::NotAuthorized(
-				caller_id,
-				"Project Lead role required".to_string(),
-			));
-		}
-
-		context.ignored_github_issues_usecase.add(
-			project_id.into(),
-			(repo_id as i64).into(),
-			(issue_number as i64).into(),
-		)?;
-
-		Ok(true)
-	}
-
-	pub async fn unignore_issue(
-		&self,
-		context: &Context,
-		project_id: Uuid,
-		repo_id: i32,
-		issue_number: i32,
-	) -> Result<bool> {
-		let caller_id = context.caller_info()?.user_id;
-
-		if !context.caller_permissions.can_ignore_issue_for_project(&project_id.into()) {
-			return Err(Error::NotAuthorized(
-				caller_id,
-				"Project Lead role required".to_string(),
-			));
-		}
-
-		context.ignored_github_issues_usecase.remove(
-			project_id.into(),
-			(repo_id as i64).into(),
-			(issue_number as i64).into(),
-		)?;
-
-		Ok(true)
 	}
 }

@@ -12,9 +12,9 @@ test.describe("As an admin, I", () => {
     restoreDB();
   });
 
-  test("can impersonate a user", async ({ context, page, users, signIn, logout, acceptTermsAndConditions }) => {
+  test("can impersonate a user", async ({ context, page, users, signIn, logout, skipTermsAndConditions }) => {
     await signIn(users.Anthony);
-    await acceptTermsAndConditions();
+    await skipTermsAndConditions();
     const appPage = new GenericPage(page);
     await appPage.expectToBeLoggedInAs(users.Anthony);
 
@@ -75,10 +75,10 @@ test.describe("As an admin, I", () => {
     page,
     users,
     signIn,
-    acceptTermsAndConditions,
+    skipTermsAndConditions,
   }) => {
     await signIn(users.Olivier);
-    await acceptTermsAndConditions({ skipOnboardingWizzard: true, skipIntro: true });
+    await skipTermsAndConditions();
     const appPage = new GenericPage(page);
     await appPage.expectToBeLoggedInAs(users.Olivier);
 

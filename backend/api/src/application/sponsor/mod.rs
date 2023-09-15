@@ -19,6 +19,8 @@ mod test {
 			fn try_insert(&self, model: Sponsor) -> Result<Option<Sponsor>>;
 			fn delete(&self, id: SponsorId) -> Result<Sponsor>;
 			fn clear(&self) -> Result<()>;
+			fn insert_all(&self, models: Vec<Sponsor>) -> Result<()>;
+			fn try_insert_all(&self, models: Vec<Sponsor>) -> Result<()>;
 		}
 
 		impl Repository<Sponsor> for SponsorRepository {

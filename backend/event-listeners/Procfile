@@ -1,3 +1,4 @@
-event-listeners: WEBSERVER_PORT=$PORT ./backend/target/release/event-listeners
+event-listeners: ./backend/target/release/listeners
 refresh: RUST_LOG=info ./backend/target/release/refresh
 github-indexer: ./backend/target/release/github-indexer
+web: ROCKET_PORT=$PORT ./backend/target/release/event-listeners

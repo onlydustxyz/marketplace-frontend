@@ -16,8 +16,7 @@ export default function FeedbackButton() {
     variables: { userId: user?.id },
   });
 
-  const userPayoutInfo = getUserIdentityQuery.data?.userPayoutInfo;
-  const identity = userPayoutInfo && userPayoutInfo.length > 0 ? userPayoutInfo[0].identity?.Person : undefined;
+  const identity = getIdentity(getUserIdentityQuery.data?.userPayoutInfo);
 
   return (
     <>
@@ -52,6 +51,22 @@ export default function FeedbackButton() {
       )}
     </>
   );
+}
+
+function getIdentity(
+  userPayoutInfo:
+    | {
+        __typename?: "UserPayoutInfo" | undefined;
+        userId: unknown;
+        identity: {
+          Person?: { firstname: string; lastname: string };
+          Company?: { owner: { firstname: string; lastname: string } };
+        };
+      }[]
+    | undefined
+): { firstname: string; lastname: string } | undefined {
+  const payoutInfo = userPayoutInfo && userPayoutInfo.length > 0 ? userPayoutInfo[0] : undefined;
+  return payoutInfo?.identity?.Person || payoutInfo?.identity?.Company?.owner;
 }
 
 gql`

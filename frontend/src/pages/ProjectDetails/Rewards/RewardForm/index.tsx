@@ -6,11 +6,14 @@ import View from "./View";
 import { useShowToaster } from "src/hooks/useToaster";
 import { generatePath, useNavigate, useOutletContext } from "react-router-dom";
 import { ProjectRoutePaths, RoutePaths } from "src/App";
-import { WorkItem } from "src/components/GithubIssue";
-import { useRequestPaymentMutation } from "src/__generated/graphql";
-import useUnpaidIssues from "./WorkItemSidePanel/Issues/useUnpaidIssues";
+import {
+  ContributionFragment,
+  WorkItemFragment,
+  WorkItemType,
+  useRequestPaymentMutation,
+  useUnrewardedContributionsQuery,
+} from "src/__generated/graphql";
 import { useCommands } from "src/providers/Commands";
-import { GithubIssueType } from "src/types";
 
 const RewardForm: React.FC = () => {
   const { T } = useIntl();
@@ -46,10 +49,13 @@ const RewardForm: React.FC = () => {
 
   const [contributor, setContributor] = useState<Contributor | null | undefined>(null);
 
-  const { data: unpaidPRs } = useUnpaidIssues({
-    projectId,
-    githubUserId: contributor?.githubUserId,
-    type: GithubIssueType.PullRequest,
+  const { data } = useUnrewardedContributionsQuery({
+    variables: {
+      projectId,
+      githubUserId: contributor?.githubUserId,
+      type: WorkItemType.PullRequest,
+    },
+    skip: !contributor?.githubUserId,
   });
 
   const { handleSubmit } = formMethods;
@@ -73,10 +79,15 @@ const RewardForm: React.FC = () => {
   );
 
   const onWorkItemsChange = useCallback(
-    (workItems: WorkItem[]) =>
+    (workItems: WorkItemFragment[]) =>
       formMethods.setValue(
         "workItems",
-        workItems.map(workItem => ({ repoId: workItem.repoId, issueNumber: workItem.number }))
+        workItems.map(workItem => ({
+          id: workItem.id?.toString() || "",
+          repoId: workItem.githubIssue?.repoId || workItem.githubPullRequest?.repoId,
+          number: workItem.githubIssue?.number || workItem.githubPullRequest?.number,
+          type: workItem.type,
+        }))
       ),
     [formMethods]
   );
@@ -96,7 +107,7 @@ const RewardForm: React.FC = () => {
             onWorkItemsChange={onWorkItemsChange}
             contributor={contributor}
             setContributor={setContributor}
-            unpaidPRs={unpaidPRs}
+            unpaidContributions={data?.contributions as ContributionFragment | null | undefined}
             requestNewPaymentMutationLoading={requestNewPaymentMutationLoading}
           />
         </form>

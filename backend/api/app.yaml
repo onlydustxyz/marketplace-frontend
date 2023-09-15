@@ -18,7 +18,11 @@ default:
       x-hasura-admin-secret: $HASURA_GRAPHQL_ADMIN_SECRET
   http:
     api_keys:
-      graphql: $BACKEND_GRAPHQL_API_KEY
+      - $BACKEND_GRAPHQL_API_KEY
+  indexer_client:
+    base_url: $GITHUB_INDEXER_BASE_URL
+    headers:
+      api-key: $GITHUB_INDEXER_API_KEY
   s3:
     images_bucket_name: onlydust-app-images
     bucket_region: eu-west-1

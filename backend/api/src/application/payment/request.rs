@@ -5,18 +5,19 @@ use chrono::Duration;
 use derive_more::Constructor;
 use domain::{
 	AggregateRootRepository, Budget, CommandId, DomainError, Event, EventSourcable, GithubUserId,
-	Payment, PaymentId, PaymentReason, Project, ProjectId, Publisher, UserId,
+	Payment, PaymentId, PaymentReason, PaymentWorkItem, Project, ProjectId, Publisher, UserId,
 };
 use infrastructure::amqp::CommandMessage;
 use rusty_money::{crypto, Money};
 use tracing::instrument;
 
-use crate::domain::Publishable;
+use crate::domain::{services::indexer, Publishable};
 
 #[derive(Constructor)]
 pub struct Usecase {
 	event_publisher: Arc<dyn Publisher<CommandMessage<Event>>>,
 	project_repository: AggregateRootRepository<Project>,
+	github_indexer_service: Arc<dyn indexer::Service>,
 }
 
 impl Usecase {
@@ -44,6 +45,45 @@ impl Usecase {
 			)
 			.await
 			.map_err(|e| DomainError::InvalidInputs(e.into()))?;
+
+		self.github_indexer_service
+			.index_user(recipient_id)
+			.await
+			.map_err(DomainError::InternalError)?;
+
+		for work_item in reason.work_items {
+			match work_item {
+				PaymentWorkItem::Issue {
+					repo_id, number, ..
+				} => {
+					self.github_indexer_service
+						.index_repo(repo_id)
+						.await
+						.map_err(DomainError::InternalError)?;
+
+					self.github_indexer_service
+						.index_issue(repo_id, number)
+						.await
+						.map_err(DomainError::InternalError)?;
+				},
+				PaymentWorkItem::PullRequest {
+					repo_id, number, ..
+				}
+				| PaymentWorkItem::CodeReview {
+					repo_id, number, ..
+				} => {
+					self.github_indexer_service
+						.index_repo(repo_id)
+						.await
+						.map_err(DomainError::InternalError)?;
+
+					self.github_indexer_service
+						.index_pull_request(repo_id, number)
+						.await
+						.map_err(DomainError::InternalError)?;
+				},
+			}
+		}
 
 		let project = project.apply_events(&events);
 		let budget = project.budget().clone().unwrap();

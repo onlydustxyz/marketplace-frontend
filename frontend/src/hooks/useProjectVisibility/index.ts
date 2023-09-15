@@ -44,8 +44,10 @@ export const isProjectVisibleToUser = ({ project, user }: Props) => {
 
 export const isUserMemberOfProject = ({ project, user }: Props) => {
   const isContributor = project?.contributors.some(c => c.githubUserId === user.githubUserId);
+  const isPendingContributor = project?.pendingContributors.some(c => c.githubUserId === user.githubUserId);
+  const isRewarded = project?.rewardedUsers.some(u => u.githubUserId === user.githubUserId);
   const isProjectLead = project?.projectLeads.some(l => l.userId === user?.userId);
   const isInvited = project?.pendingInvitations.some(i => i.githubUserId === user.githubUserId);
 
-  return isContributor || isProjectLead || isInvited;
+  return isContributor || isPendingContributor || isRewarded || isProjectLead || isInvited;
 };

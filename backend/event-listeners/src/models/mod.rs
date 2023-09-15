@@ -14,6 +14,8 @@ mod project_github_repos;
 mod project_leads;
 mod projects;
 mod projects_contributors;
+mod projects_pending_contributors;
+mod projects_rewarded_users;
 mod technologies;
 mod work_items;
 
@@ -37,5 +39,11 @@ pub use project_github_repos::{ProjectGithubRepo, Repository as ProjectGithubRep
 pub use project_leads::ProjectLead;
 pub use projects::Project;
 pub use projects_contributors::{ProjectsContributor, Repository as ProjectsContributorRepository};
+pub use projects_pending_contributors::{
+	ProjectsPendingContributor, Repository as ProjectsPendingContributorRepository,
+};
+pub use projects_rewarded_users::{
+	ProjectsRewardedUser, Repository as ProjectsRewardedUserRepository,
+};
 pub use technologies::Technology;
 pub use work_items::{Repository as WorkItemRepository, WorkItem};

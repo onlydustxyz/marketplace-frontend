@@ -2,6 +2,7 @@
     "name": "marketplace",
     "version": "2.0.0",
     "scripts": {
+        "frontend:generate": "yarn --cwd ./frontend generate",
         "frontend:dev": "yarn --cwd ./frontend dev",
         "frontend:build": "yarn --cwd ./frontend build",
         "frontend:install": "yarn --cwd ./frontend install",
@@ -12,9 +13,9 @@
         "backend:down": "docker compose -f infra.docker-compose.yml -f backend.docker-compose.yml down",
         "backend:api": "cargo run --manifest-path backend/Cargo.toml -p api",
         "backend:event-store": "cargo run --manifest-path backend/Cargo.toml -p event-store",
-        "backend:event-listeners": "cargo run --manifest-path backend/Cargo.toml -p event-listeners",
-        "backend:github-proxy": "cargo run --manifest-path backend/Cargo.toml -p github-proxy",
-        "backend:github-indexer": "cargo run --manifest-path backend/Cargo.toml --bin github-indexer",
+        "backend:event-listeners": "cargo run --manifest-path backend/Cargo.toml -p event-listeners --bin listeners",
+        "backend:github-indexer": "cargo run --manifest-path backend/Cargo.toml -p event-listeners --bin github-indexer",
+        "backend:github-indexer-api": "cargo run --manifest-path backend/Cargo.toml -p event-listeners",
         "backend:check": "cargo check --manifest-path backend/Cargo.toml",
         "backend:build": "cargo build --manifest-path backend/Cargo.toml",
         "backend:clippy": "cargo clippy --manifest-path backend/Cargo.toml --bins --tests --examples -- -D warnings",
@@ -40,6 +41,7 @@
         "e2e:populate": "yarn --cwd ./e2e/playwright playwright test __populate",
         "e2e:populate:clean": "rm -f \"./e2e/playwright/marketplace_db_dump\" && rm -rf \"./e2e/playwright/fixtures/__generated\"",
         "e2e:run": "yarn --cwd ./e2e/playwright playwright test",
+        "e2e:run:headed": "yarn --cwd ./e2e/playwright playwright test --headed",
         "e2e:install": "yarn --cwd ./e2e/playwright install && yarn --cwd ./e2e/playwright playwright install --with-deps chromium",
         "e2e:update-snapshots": "yarn --cwd ./e2e/playwright playwright test --update-snapshots responsive"
     }

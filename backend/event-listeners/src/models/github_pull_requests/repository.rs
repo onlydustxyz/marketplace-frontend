@@ -29,17 +29,19 @@ impl Repository for database::Client {
 
 					diesel::insert_into(github_pull_request_commits::table)
 						.values(commits)
+						.on_conflict_do_nothing()
 						.execute(&mut *connection)?;
 				}
 
 				if let Some(reviews) = pull_request.reviews {
-					diesel::delete(github_pull_request_reviews::table.filter(
+										diesel::delete(github_pull_request_reviews::table.filter(
 						github_pull_request_reviews::pull_request_id.eq(pull_request.inner.id),
 					))
 					.execute(&mut *connection)?;
 
 					diesel::insert_into(github_pull_request_reviews::table)
 						.values(reviews)
+						.on_conflict_do_nothing()
 						.execute(&mut *connection)?;
 				}
 
@@ -53,7 +55,7 @@ impl Repository for database::Client {
 				Ok(())
 			})
 			.err_with_context(format!(
-				"delete+insert github_pull_requests/github_pull_request_commits where pull_request_id={}",
+				"delete+insert github_pull_requests/github_pull_request_commits/github_pull_request_reviews where pull_request_id={}",
 				pull_request.inner.id
 			))?;
 

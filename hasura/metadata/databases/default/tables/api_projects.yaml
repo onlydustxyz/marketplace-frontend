@@ -45,6 +45,15 @@ array_relationships:
         remote_table:
           name: project_github_repos
           schema: public
+  - name: pendingContributors
+    using:
+      manual_configuration:
+        column_mapping:
+          id: project_id
+        insertion_order: null
+        remote_table:
+          name: projects_pending_contributors
+          schema: public
   - name: pendingInvitations
     using:
       manual_configuration:
@@ -62,6 +71,15 @@ array_relationships:
         insertion_order: null
         remote_table:
           name: project_leads
+          schema: public
+  - name: rewardedUsers
+    using:
+      manual_configuration:
+        column_mapping:
+          id: project_id
+        insertion_order: null
+        remote_table:
+          name: projects_rewarded_users
           schema: public
   - name: sponsors
     using:

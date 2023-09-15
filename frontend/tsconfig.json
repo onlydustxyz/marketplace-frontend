@@ -15,10 +15,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "baseUrl": "./",
-    "paths": {
-      "src": ["src/*"]
-    }
+    "baseUrl": "./"
   },
   "include": ["src", ".storybook/**/*.tsx"],
   "references": [

@@ -11,48 +11,57 @@ version = "0.0.1"
 
 [dependencies]
 # Config
-figment = {version ="0.10.8", features = ["yaml"]}
+figment = { version = "0.10.8", features = ["yaml"] }
 
 # Async
 async-trait = "0.1.56"
-futures = {version = "0.3.21", features = ["alloc"]}
-tokio = {version = "1.18.2", features = ["full"]}
+futures = { version = "0.3.21", features = ["alloc"] }
+tokio = { version = "1.18.2", features = ["full"] }
 tokio-stream = "0.1.10"
 
 # RabbitMQ
 lapin = "2.3.1"
 
 # Database
-diesel = {version = "2.1.0", default-features = false, features = ["postgres","extras"]}
+diesel = { version = "2.1.0", default-features = false, features = [
+	"postgres",
+	"extras",
+] }
 diesel_migrations = "2.1.0"
-diesel-derive-enum ={version =  "2.1.0",  features = ["postgres"] }
+diesel-derive-enum = { version = "2.1.0", features = ["postgres"] }
 diesel_json = "0.2.0"
-uuid = {version = "1.3.3", default_features = false, features = [
-  "v4",
-  "serde",
-]}
+uuid = { version = "1.3.3", default_features = false, features = [
+	"v4",
+	"serde",
+] }
 
 # Github
-octocrab = { git = "https://github.com/onlydustxyz/octocrab.git", features=["stream"] }
+octocrab = { git = "https://github.com/onlydustxyz/octocrab.git", features = [
+	"stream",
+] }
 reqwest = "0.11.13"
 
 # Graphql client
 graphql_client = "0.12.0"
 
 # Tracing
-opentelemetry = {version = "0.18.0", features = ["rt-tokio"]}
-opentelemetry-datadog = {version = "0.6.0", features = ["reqwest-client"]}
+opentelemetry = { version = "0.18.0", features = ["rt-tokio"] }
+opentelemetry-datadog = { version = "0.6.0", features = ["reqwest-client"] }
 tracing = "0.1"
 tracing-opentelemetry = "0.18.0"
-tracing-subscriber = {version = "0.3", features = ["env-filter", "fmt", "json"]}
+tracing-subscriber = { version = "0.3", features = [
+	"env-filter",
+	"fmt",
+	"json",
+] }
 
 # Errors
 anyhow = "1.0.72"
 thiserror = "1.0.43"
 
 # Serde
-serde = {version = "1.0.137", features = ["derive"]}
-serde_json = {version = "1.0.81"}
+serde = { version = "1.0.137", features = ["derive"] }
+serde_json = { version = "1.0.81" }
 serde_qs = "0.12.0"
 
 # Datetime
@@ -61,6 +70,7 @@ chrono = "0.4"
 # Utils
 derive-getters = "0.2.0"
 derive_more = "0.99.17"
+derive-new = "0.5.9"
 regex = "1.7.0"
 url = "2.2.2"
 lazy_static = "1.4.0"
@@ -70,15 +80,16 @@ tokio-retry = "0.3"
 web3 = "0.18.0"
 
 # Local dependecies
-domain = {path = "../domain"}
-olog = {path = "../olog"}
+domain = { path = "../domain" }
+olog = { path = "../olog" }
 
 [dev-dependencies]
-async-std = {version = "1.12.0", features = ["attributes"]}
+testcontainers = "0.14.0"
+async-std = { version = "1.12.0", features = ["attributes"] }
 rand = "0.8.5"
 rstest = "0.15.0"
-tracing-test = "0.2.3"
+tracing-test = { version = "0.2.3", features = ["no-env-filter"] }
 dotenv = "0.15.0"
 mockall = "0.11.2"
-figment = {version ="0.10.8", features = ["test"]}
+figment = { version = "0.10.8", features = ["test"] }
 ctor = "0.1.26"

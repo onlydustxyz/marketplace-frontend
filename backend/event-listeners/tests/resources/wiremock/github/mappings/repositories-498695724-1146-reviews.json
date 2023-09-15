@@ -1,12 +1,12 @@
 {
-  "id": "cccf3b12-15b1-3f71-9cd0-c83f6f25ad53",
+  "id": "54892a52-ada8-4074-bf71-2d7dd2cb2089",
   "request": {
     "url": "/repositories/498695724/pulls/1146/reviews",
     "method": "GET"
   },
   "response": {
     "status": 200,
-    "bodyFileName": "body-reviews.json",
+    "bodyFileName": "body-empty.json",
     "headers": {
       "Server": "GitHub.com",
       "Date": "Fri, 28 Jul 2023 16:25:49 GMT",
@@ -34,5 +34,5 @@
       "X-GitHub-Request-Id": "4EEE:1102F:294CAB1:299AFDF:64C3EC0C"
     }
   },
-  "uuid": "cccf3b12-15b1-3f71-9cd0-c83f6f25ad53"
+  "uuid": "54892a52-ada8-4074-bf71-2d7dd2cb2089"
 }

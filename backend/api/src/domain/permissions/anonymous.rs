@@ -9,11 +9,16 @@ impl Permissions for Anonymous {
 		false
 	}
 
+	fn can_cancel_payments_of_project(&self, _project_id: &ProjectId) -> bool {
+		false
+	}
+
 	fn can_create_github_issue_for_project(&self, _project_id: &ProjectId) -> bool {
 		false
 	}
 
 	fn can_ignore_issue_for_project(&self, _project_id: &ProjectId) -> bool {
+		println!("anonymous");
 		false
 	}
 
