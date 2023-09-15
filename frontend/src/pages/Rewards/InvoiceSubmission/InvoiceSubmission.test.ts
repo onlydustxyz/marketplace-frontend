@@ -1,7 +1,7 @@
 import { range } from "lodash";
 import { Reward } from "src/components/UserRewardTable/Line";
 import { Currency, PaymentStatus } from "src/types";
-import { UserPayoutInfo, WorkItemType } from "src/__generated/graphql";
+import { UserPayoutSettingsFragment, WorkItemType } from "src/__generated/graphql";
 import { buildHiddenFields } from "./View";
 
 const paymentRequests: Reward[] = range(1, 4).map(id => ({
@@ -23,41 +23,35 @@ const paymentRequests: Reward[] = range(1, 4).map(id => ({
   invoiceReceived: id % 2 === 0,
 }));
 
-const userInfos: UserPayoutInfo = {
+const userInfos: UserPayoutSettingsFragment = {
   userId: "user-1",
-  identity: {
-    Company: {
-      name: "My Company",
-      identification_number: "1234567890",
-      owner: { firstname: "James", lastname: "Bond" },
-    },
-  },
-  location: {
-    address: "007 Big Ben Street",
-    post_code: "007GB",
-    city: "London",
-    country: "England",
-  },
-  payoutSettings: {},
+  companyName: "My Company",
+  companyIdentificationNumber: "1234567890",
+  firstname: "James",
+  lastname: "Bond",
+  address: "007 Big Ben Street",
+  postCode: "007GB",
+  city: "London",
+  country: "England",
+  bic: null,
+  ethWallet: null,
+  iban: null,
+  isCompany: null,
+  usdPreferredMethod: null,
   arePayoutSettingsValid: true,
 };
 
 const ens = {
-  payoutSettings: {
-    EthTransfer: { Name: "007.eth" },
-  },
+  ethWallet: "007.eth",
 };
 
 const ethAddress = {
-  payoutSettings: {
-    EthTransfer: { Address: "0x4675c7e5baafbffbca748158becba61ef3b0a263" },
-  },
+  ethWallet: "0x4675c7e5baafbffbca748158becba61ef3b0a263",
 };
 
 const wireTransfer = {
-  payoutSettings: {
-    WireTransfer: { IBAN: "FR0614508000708483648722R33", BIC: "AGFBFRCC" },
-  },
+  iban: "FR0614508000708483648722R33",
+  bic: "AGFBFRCC",
 };
 
 const githubUserId = 123456;

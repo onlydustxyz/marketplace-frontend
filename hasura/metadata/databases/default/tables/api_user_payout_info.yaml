@@ -9,29 +9,18 @@ configuration:
     select: userPayoutInfo
     select_aggregate: userPayoutInfoAggregate
 select_permissions:
-  - role: public
+  - role: project_lead_specific
     permission:
       columns:
-        - has_aptos_wallet
-        - has_bic
-        - has_eth_wallet
-        - has_iban
-        - has_optimism_wallet
-        - has_starknet_wallet
+        - are_payout_settings_valid
         - user_id
       filter: {}
   - role: registered_user_specific
     permission:
       columns:
-        - has_aptos_wallet
-        - has_bic
-        - has_eth_wallet
-        - has_iban
-        - has_optimism_wallet
-        - has_starknet_wallet
-        - is_company
         - address
         - aptos_wallet
+        - are_payout_settings_valid
         - bic
         - city
         - company_identification_number
@@ -40,6 +29,7 @@ select_permissions:
         - eth_wallet
         - firstname
         - iban
+        - is_company
         - lastname
         - optimism_wallet
         - post_code
