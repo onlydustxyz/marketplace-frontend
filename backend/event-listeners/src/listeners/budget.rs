@@ -30,7 +30,7 @@ impl EventListener<Event> for Projector {
 						currency: currency.try_into()?,
 					})?;
 				},
-				BudgetEvent::Allocated { id, amount } => {
+				BudgetEvent::Allocated { id, amount, .. } => {
 					let mut budget = self.budget_repository.find_by_id(id)?;
 					budget.remaining_amount += amount;
 					budget.initial_amount += amount;

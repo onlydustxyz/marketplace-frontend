@@ -90,6 +90,7 @@ impl<'a> Test<'a> {
 				BudgetEvent::Allocated {
 					id: budget_id,
 					amount: Decimal::from(1_000),
+					sponsor_id: None,
 				},
 			],
 		)?;
@@ -214,6 +215,7 @@ impl<'a> Test<'a> {
 				BudgetEvent::Allocated {
 					id: budget_id,
 					amount: Decimal::from(1_000),
+					sponsor_id: None,
 				},
 			],
 		)?;
@@ -294,6 +296,7 @@ impl<'a> Test<'a> {
 				BudgetEvent::Allocated {
 					id: budget_id,
 					amount: Decimal::from(1_000),
+					sponsor_id: None,
 				},
 			],
 		)?;
@@ -370,6 +373,7 @@ impl<'a> Test<'a> {
 				BudgetEvent::Allocated {
 					id: budget_id,
 					amount: Decimal::from(1_000),
+					sponsor_id: None,
 				},
 			],
 		)?;
@@ -444,6 +448,7 @@ impl<'a> Test<'a> {
 				BudgetEvent::Allocated {
 					id: budget_id,
 					amount: Decimal::from(1_000),
+					sponsor_id: None,
 				},
 			],
 		)?;
@@ -514,6 +519,7 @@ impl<'a> Test<'a> {
 				BudgetEvent::Allocated {
 					id: budget_id,
 					amount: Decimal::from(1_000),
+					sponsor_id: None,
 				},
 			],
 		)?;

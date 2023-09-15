@@ -2,7 +2,7 @@ use common_domain::{DomainError, ProjectId, ProjectVisibility};
 use http_api_problem::{HttpApiProblem, StatusCode};
 use olog::IntoField;
 use presentation::http::guards::ApiKey;
-use rocket::{serde::json::Json, State};
+use rocket::serde::json::Json;
 use serde::{Deserialize, Serialize};
 use url::Url;
 
@@ -22,7 +22,7 @@ pub struct Request {
 	long_description: String,
 	telegram_link: Option<Url>,
 	logo_url: Option<Url>,
-	initial_budget: Option<dto::Amount>,
+	initial_budget: Option<dto::Allocation>,
 	hiring: Option<bool>,
 	rank: Option<i32>,
 	visibility: Option<ProjectVisibility>,
@@ -32,7 +32,7 @@ pub struct Request {
 pub async fn create_project(
 	_api_key: ApiKey,
 	request: Json<Request>,
-	create_project_usecase: &State<application::project::create::Usecase>,
+	usecase: application::project::create::Usecase,
 ) -> Result<Json<Response>, HttpApiProblem> {
 	let Request {
 		name,
@@ -46,12 +46,15 @@ pub async fn create_project(
 		visibility,
 	} = request.into_inner();
 
-	let initial_budget = match initial_budget {
-		Some(initial_budget) => Some(initial_budget.try_into()?),
-		None => None,
+	let (initial_budget, sponsor_id) = match initial_budget {
+		Some(initial_budget) => {
+			let (budget, sponsor_id) = initial_budget.try_into()?;
+			(Some(budget), sponsor_id)
+		},
+		None => (None, None),
 	};
 
-	let project_id = create_project_usecase
+	let project_id = usecase
 		.create(
 			name.try_into().map_err(|e: DomainError| {
 				HttpApiProblem::new(StatusCode::BAD_REQUEST)
@@ -71,6 +74,7 @@ pub async fn create_project(
 			telegram_link,
 			logo_url,
 			initial_budget,
+			sponsor_id,
 			hiring.unwrap_or_default(),
 			rank.unwrap_or_default(),
 			visibility.unwrap_or_default(),

@@ -1,8 +1,9 @@
 use std::sync::Arc;
 
-use anyhow::Result;
+use anyhow::{anyhow, Result};
+use derive_more::Constructor;
 use domain::{
-	Amount, Budget, BudgetId, DomainError, Event, EventSourcable, Project, ProjectId,
+	sponsor, Amount, Budget, BudgetId, DomainError, Event, EventSourcable, Project, ProjectId,
 	ProjectVisibility, Publisher,
 };
 use infrastructure::{amqp::UniqueMessage, database::Repository};
@@ -15,25 +16,15 @@ use crate::{
 	presentation::http::dto::NonEmptyTrimmedString,
 };
 
+#[derive(Constructor)]
 pub struct Usecase {
 	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 	project_details_repository: Arc<dyn Repository<ProjectDetails>>,
 	image_store: Arc<dyn ImageStoreService>,
+	sponsor_repository: Arc<dyn Repository<Sponsor>>,
 }
 
 impl Usecase {
-	pub fn new(
-		event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
-		project_details_repository: Arc<dyn Repository<ProjectDetails>>,
-		image_store: Arc<dyn ImageStoreService>,
-	) -> Self {
-		Self {
-			event_publisher,
-			project_details_repository,
-			image_store,
-		}
-	}
-
 	#[allow(clippy::too_many_arguments)]
 	#[instrument(skip(self))]
 	pub async fn create(
@@ -44,11 +35,20 @@ impl Usecase {
 		telegram_link: Option<Url>,
 		logo_url: Option<Url>,
 		initial_budget: Option<Amount>,
+		sponsor_id: Option<sponsor::Id>,
 		hiring: bool,
 		rank: i32,
 		visibility: ProjectVisibility,
 	) -> Result<ProjectId, DomainError> {
 		let project_id = ProjectId::new();
+
+		if let Some(sponsor_id) = sponsor_id {
+			if !self.sponsor_repository.exists(sponsor_id)? {
+				return Err(DomainError::InvalidInputs(anyhow!(
+					"Sponsor does not exist"
+				)));
+			}
+		}
 
 		let mut project_events = Project::create(project_id);
 		let mut budget_events = Vec::new();
@@ -56,7 +56,9 @@ impl Usecase {
 		if let Some(initial_budget) = initial_budget {
 			let budget_id = BudgetId::new();
 			let mut events = Budget::create(budget_id, initial_budget.currency());
-			events.append(&mut Budget::from_events(&events).allocate(*initial_budget.amount())?);
+			events.append(
+				&mut Budget::from_events(&events).allocate(*initial_budget.amount(), sponsor_id)?,
+			);
 
 			budget_events.append(&mut events.into_iter().map(Into::into).collect());
 			project_events.append(

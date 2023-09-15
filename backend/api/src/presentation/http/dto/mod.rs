@@ -5,7 +5,7 @@ mod payout_settings;
 pub use payout_settings::PayoutSettings;
 
 mod amount;
-pub use amount::Amount;
+pub use amount::Allocation;
 
 mod ethereum;
 pub use ethereum::EthereumIdentityInput;
