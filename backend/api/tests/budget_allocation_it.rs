@@ -2,8 +2,7 @@ mod context;
 mod models;
 
 use anyhow::Result;
-use api::models::Sponsor;
-use assert_matches::assert_matches;
+use api::{models::Sponsor, presentation::http::routes::projects::budgets::Response};
 use domain::{currencies, sponsor, BudgetEvent, BudgetId, Event, ProjectEvent, ProjectId};
 use infrastructure::database::ImmutableRepository;
 use olog::info;
@@ -91,23 +90,22 @@ impl<'a> Test<'a> {
 			response.into_string().await.unwrap()
 		);
 
-		let budget_id: BudgetId;
+		let response: Response = response.into_json().await.unwrap();
 
-		assert_matches!(self.context.amqp.listen(event_store::bus::QUEUE_NAME).await.unwrap(),
-			Event::Budget(event) => {
-				assert_matches!(event, BudgetEvent::Created {
-					id,
-					currency
-				} => {
-					budget_id = id;
-					assert_eq!(currency, currencies::USD);
-			});
-		});
+		let budget_id = response.budget_id;
 
 		assert_eq!(
 			Event::Project(ProjectEvent::BudgetLinked {
 				id: project_id,
 				budget_id,
+				currency: currencies::USD
+			}),
+			self.context.amqp.listen(event_store::bus::QUEUE_NAME).await.unwrap(),
+		);
+
+		assert_eq!(
+			Event::Budget(BudgetEvent::Created {
+				id: budget_id,
 				currency: currencies::USD
 			}),
 			self.context.amqp.listen(event_store::bus::QUEUE_NAME).await.unwrap(),
@@ -253,23 +251,21 @@ impl<'a> Test<'a> {
 			response.into_string().await.unwrap()
 		);
 
-		let eth_budget_id: BudgetId;
-
-		assert_matches!(self.context.amqp.listen(event_store::bus::QUEUE_NAME).await.unwrap(),
-			Event::Budget(event) => {
-				assert_matches!(event, BudgetEvent::Created {
-					id,
-					currency
-				} => {
-					eth_budget_id = id;
-					assert_eq!(currency, currencies::ETH);
-			});
-		});
+		let response: Response = response.into_json().await.unwrap();
+		let eth_budget_id = response.budget_id;
 
 		assert_eq!(
 			Event::Project(ProjectEvent::BudgetLinked {
 				id: project_id,
 				budget_id: eth_budget_id,
+				currency: currencies::ETH
+			}),
+			self.context.amqp.listen(event_store::bus::QUEUE_NAME).await.unwrap(),
+		);
+
+		assert_eq!(
+			Event::Budget(BudgetEvent::Created {
+				id: eth_budget_id,
 				currency: currencies::ETH
 			}),
 			self.context.amqp.listen(event_store::bus::QUEUE_NAME).await.unwrap(),

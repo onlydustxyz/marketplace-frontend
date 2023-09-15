@@ -51,10 +51,7 @@ impl From<ProjectEvent> for Event {
 impl EventSourcable for Project {
 	fn apply_event(mut self, event: &Self::Event) -> Self {
 		match event {
-			ProjectEvent::Created { id } => Project {
-				id: *id,
-				..Default::default()
-			},
+			ProjectEvent::Created { id } => Project { id: *id, ..self },
 			ProjectEvent::LeaderAssigned { leader_id, .. } => {
 				self.leaders.insert(*leader_id);
 				self

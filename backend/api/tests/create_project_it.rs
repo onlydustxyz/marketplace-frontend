@@ -147,17 +147,17 @@ impl<'a> Test<'a> {
 		);
 
 		assert_eq!(
-			Event::Budget(BudgetEvent::Created {
-				id: budget_id,
+			Event::Project(ProjectEvent::BudgetLinked {
+				budget_id,
+				id: project_id,
 				currency: currencies::USD
 			}),
 			self.context.amqp.listen(event_store::bus::QUEUE_NAME).await.unwrap(),
 		);
 
 		assert_eq!(
-			Event::Project(ProjectEvent::BudgetLinked {
-				budget_id,
-				id: project_id,
+			Event::Budget(BudgetEvent::Created {
+				id: budget_id,
 				currency: currencies::USD
 			}),
 			self.context.amqp.listen(event_store::bus::QUEUE_NAME).await.unwrap(),

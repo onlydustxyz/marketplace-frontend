@@ -52,7 +52,7 @@ impl EventSourcable for Application {
 			} => Self {
 				id: *id,
 				applicant_id: *applicant_id,
-				..Default::default()
+				..self
 			},
 		}
 	}

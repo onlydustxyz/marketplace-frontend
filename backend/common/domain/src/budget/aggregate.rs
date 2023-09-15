@@ -68,7 +68,7 @@ impl EventSourcable for Budget {
 				id: *id,
 				allocated_amount: Decimal::ZERO,
 				spent_amount: Decimal::ZERO,
-				..Default::default()
+				..self
 			},
 			BudgetEvent::Allocated { id, amount, .. } => Self {
 				id: *id,
