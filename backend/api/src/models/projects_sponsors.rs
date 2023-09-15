@@ -1,9 +1,7 @@
 use diesel::Identifiable;
-use domain::ProjectId;
+use domain::{sponsor, ProjectId};
 use infrastructure::database::schema::projects_sponsors;
 use serde::{Deserialize, Serialize};
-
-use crate::models::SponsorId;
 
 #[derive(
 	Debug, Clone, Insertable, Serialize, Deserialize, Queryable, Identifiable, ImmutableModel,
@@ -11,11 +9,11 @@ use crate::models::SponsorId;
 #[diesel(primary_key(project_id, sponsor_id))]
 pub struct ProjectsSponsor {
 	pub project_id: ProjectId,
-	pub sponsor_id: SponsorId,
+	pub sponsor_id: sponsor::Id,
 }
 
 impl Identifiable for ProjectsSponsor {
-	type Id = (ProjectId, SponsorId);
+	type Id = (ProjectId, sponsor::Id);
 
 	fn id(self) -> Self::Id {
 		(self.project_id, self.sponsor_id)

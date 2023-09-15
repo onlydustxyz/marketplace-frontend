@@ -1,9 +1,10 @@
 use anyhow::anyhow;
 use domain::DomainError;
+use serde::Deserialize;
 
 /// A simple String wrapper type.
 /// Guarantees that the trimmed String contained inside is not of length 0.
-#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Deserialize)]
 #[repr(transparent)]
 pub struct NonEmptyTrimmedString(String);
 

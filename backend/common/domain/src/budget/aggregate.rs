@@ -1,7 +1,7 @@
 use rust_decimal::Decimal;
 use thiserror::Error;
 
-use crate::{Aggregate, BudgetEvent, BudgetId, Currency, EventSourcable};
+use crate::{sponsor, Aggregate, BudgetEvent, BudgetId, Currency, EventSourcable};
 
 #[derive(Debug, Error, PartialEq, Eq)]
 pub enum Error {
@@ -23,7 +23,11 @@ impl Budget {
 		vec![BudgetEvent::Created { id, currency }]
 	}
 
-	pub fn allocate(&self, amount: Decimal) -> Result<Vec<BudgetEvent>> {
+	pub fn allocate(
+		&self,
+		amount: Decimal,
+		sponsor_id: Option<sponsor::Id>,
+	) -> Result<Vec<BudgetEvent>> {
 		if self.allocated_amount + amount < self.spent_amount {
 			return Err(Error::Overspent);
 		}
@@ -31,6 +35,7 @@ impl Budget {
 		Ok(vec![BudgetEvent::Allocated {
 			id: self.id,
 			amount,
+			sponsor_id,
 		}])
 	}
 
@@ -110,6 +115,7 @@ mod tests {
 		BudgetEvent::Allocated {
 			id: *budget_id,
 			amount,
+			sponsor_id: None,
 		}
 	}
 
@@ -148,7 +154,10 @@ mod tests {
 		budget_allocated_event: BudgetEvent,
 	) {
 		let budget = Budget::from_events(&[budget_created_event]);
-		assert_eq!(budget.allocate(amount), Ok(vec![budget_allocated_event]));
+		assert_eq!(
+			budget.allocate(amount, None),
+			Ok(vec![budget_allocated_event])
+		);
 	}
 
 	#[rstest]
@@ -202,7 +211,7 @@ mod tests {
 		]);
 
 		// refill
-		let events = budget.allocate(amount).unwrap();
+		let events = budget.allocate(amount, None).unwrap();
 		let budget = budget.apply_events(&events);
 
 		// start spending again !
@@ -228,7 +237,7 @@ mod tests {
 		]);
 
 		// cut budget
-		let result = budget.allocate(-amount);
+		let result = budget.allocate(-amount, None);
 		let budget = budget.apply_events(&result.unwrap());
 
 		// no more budget !
@@ -249,6 +258,6 @@ mod tests {
 		]);
 
 		// cut budget fails
-		assert_eq!(budget.allocate(-amount), Err(Error::Overspent));
+		assert_eq!(budget.allocate(-amount, None), Err(Error::Overspent));
 	}
 }

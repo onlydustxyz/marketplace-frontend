@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use anyhow::{anyhow, Error};
-use domain::{AggregateRepository, Budget, Event, Project, Publisher};
+use domain::{Event, Publisher};
 use infrastructure::{amqp::UniqueMessage, database::Repository};
 use rocket::{
 	http::Status,
@@ -9,7 +9,11 @@ use rocket::{
 	Request,
 };
 
-use crate::{application::budget::allocate::Usecase, models::Sponsor};
+use crate::{
+	application::project::create::Usecase,
+	domain::ImageStoreService,
+	models::{ProjectDetails, Sponsor},
+};
 
 #[async_trait]
 impl<'r> FromRequest<'r> for Usecase {
@@ -26,12 +30,22 @@ impl<'r> FromRequest<'r> for Usecase {
 					)),
 			};
 
-		let project_repository = match request.rocket().state::<AggregateRepository<Project>>() {
-			Some(repository) => repository,
+		let project_details_repository =
+			match request.rocket().state::<Arc<dyn Repository<ProjectDetails>>>() {
+				Some(repository) => repository,
+				None =>
+					return Outcome::Failure((
+						Status::InternalServerError,
+						anyhow!("Missing project details repository"),
+					)),
+			};
+
+		let image_store = match request.rocket().state::<Arc<dyn ImageStoreService>>() {
+			Some(service) => service,
 			None =>
 				return Outcome::Failure((
 					Status::InternalServerError,
-					anyhow!("Missing project repository"),
+					anyhow!("Missing image store service"),
 				)),
 		};
 
@@ -44,19 +58,10 @@ impl<'r> FromRequest<'r> for Usecase {
 				)),
 		};
 
-		let budget_repository = match request.rocket().state::<AggregateRepository<Budget>>() {
-			Some(repository) => repository,
-			None =>
-				return Outcome::Failure((
-					Status::InternalServerError,
-					anyhow!("Missing budget repository"),
-				)),
-		};
-
 		Outcome::Success(Self::new(
 			event_publisher.clone(),
-			project_repository.clone(),
-			budget_repository.clone(),
+			project_details_repository.clone(),
+			image_store.clone(),
 			sponsor_repository.clone(),
 		))
 	}

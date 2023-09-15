@@ -13,7 +13,8 @@ use rocket::{Build, Rocket};
 
 use crate::{
 	application,
-	infrastructure::{simple_storage, web3::ens},
+	domain::ImageStoreService,
+	infrastructure::web3::ens,
 	models::*,
 	presentation::{graphql, http::github_client_pat_factory::GithubClientPatFactory},
 };
@@ -49,16 +50,10 @@ pub fn serve(
 	github_api_client: Arc<github::Client>,
 	dusty_bot_api_client: Arc<github::Client>,
 	ens: Arc<ens::Client>,
-	simple_storage: Arc<simple_storage::Client>,
+	simple_storage: Arc<dyn ImageStoreService>,
 	bus: Arc<amqp::Bus>,
 	github_client_pat_factory: Arc<GithubClientPatFactory>,
 ) -> Rocket<Build> {
-	let create_project_usecase = application::project::create::Usecase::new(
-		bus.clone(),
-		project_details_repository.clone(),
-		simple_storage.clone(),
-	);
-
 	let update_user_profile_info_usecase = application::user::update_profile_info::Usecase::new(
 		user_profile_info_repository.clone(),
 		contact_informations_repository.clone(),
@@ -96,7 +91,6 @@ pub fn serve(
 		.manage(ens)
 		.manage(simple_storage)
 		.manage(bus)
-		.manage(create_project_usecase)
 		.manage(update_user_profile_info_usecase)
 		.manage(create_github_issue_usecase)
 		.manage(github_client_pat_factory)
@@ -129,6 +123,8 @@ pub fn serve(
 				routes::pull_requests::fetch_pull_request,
 				routes::payment::request_payment,
 				routes::payment::cancel_payment,
+				routes::sponsors::create_sponsor,
+				routes::sponsors::update_sponsor
 			],
 		)
 }
