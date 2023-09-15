@@ -1,6 +1,11 @@
 import { range } from "lodash";
 import { PaymentStatus } from "src/types";
-import { GithubIssueFragment, GithubIssueStatus, PaymentRequestDetailsFragment } from "src/__generated/graphql";
+import {
+  GithubIssueFragment,
+  GithubIssueStatus,
+  PaymentRequestDetailsFragment,
+  WorkItemType,
+} from "src/__generated/graphql";
 import View, { Props } from "src/components/UserRewardTable/RewardSidePanel/View";
 import { daysFromNow } from "src/utils/date";
 import withSidePanelStackProvider from "../decorators/withSidePanelStackProvider";
@@ -93,6 +98,8 @@ const payment: PaymentRequestDetailsFragment = {
     githubUserId: 43467246,
   },
   workItems: issues.map(githubIssue => ({
+    id: githubIssue.id,
+    type: WorkItemType.Issue,
     paymentId: "880819f1-2ab9-406d-9bf1-3012b6f565bc",
     repoId: githubIssue.repoId,
     number: githubIssue.number,

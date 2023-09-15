@@ -4,9 +4,7 @@ import {
   ContributionFragment,
   GithubIssueFragment,
   GithubPullRequestFragment,
-  LiveGithubIssueFragment,
-  LiveGithubPullRequestFragment,
-  WorkItem,
+  WorkItemFragment,
   WorkItemType,
   useUnrewardedContributionsQuery,
 } from "src/__generated/graphql";
@@ -17,8 +15,8 @@ type Props = {
   type: WorkItemType;
   projectId: string;
   contributorId: number;
-  workItems: WorkItem[];
-  addWorkItem: (workItem: WorkItem) => void;
+  workItems: WorkItemFragment[];
+  addWorkItem: (workItem: WorkItemFragment) => void;
 };
 
 export default function Issues({ type, projectId, contributorId, workItems, addWorkItem }: Props) {
@@ -63,24 +61,24 @@ export default function Issues({ type, projectId, contributorId, workItems, addW
   );
 }
 
-export const contributionToWorkItem = (contribution: ContributionFragment): WorkItem | undefined => {
-  const workItem = contribution.githubIssue
+export const contributionToWorkItem = (contribution: ContributionFragment): WorkItemFragment | undefined => {
+  return contribution.githubIssue
     ? issueToWorkItem(contribution.githubIssue)
     : contribution.githubPullRequest
     ? pullRequestToWorkItem(contribution.githubPullRequest)
     : undefined;
-
-  return workItem;
 };
 
-export const issueToWorkItem = (props: GithubIssueFragment | LiveGithubIssueFragment): WorkItem => ({
-  ...props,
+export const issueToWorkItem = (issue: GithubIssueFragment): WorkItemFragment => ({
   type: WorkItemType.Issue,
-  id: props.id.toString(),
+  id: issue.id.toString(),
+  githubIssue: issue,
+  githubPullRequest: null,
 });
 
-export const pullRequestToWorkItem = (props: GithubPullRequestFragment | LiveGithubPullRequestFragment): WorkItem => ({
-  ...props,
+export const pullRequestToWorkItem = (pullRequest: GithubPullRequestFragment): WorkItemFragment => ({
   type: WorkItemType.PullRequest,
-  id: props.id.toString(),
+  id: pullRequest.id.toString(),
+  githubIssue: null,
+  githubPullRequest: pullRequest,
 });

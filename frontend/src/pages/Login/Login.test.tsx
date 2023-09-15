@@ -18,6 +18,7 @@ import {
   PendingUserPaymentsDocument,
   PendingUserPaymentsQueryResult,
   UserPayoutSettingsFragment,
+  WorkItemType,
 } from "src/__generated/graphql";
 import { RoutePaths } from "src/App";
 import { MockedResponse } from "@apollo/client/testing";
@@ -143,9 +144,10 @@ const paymentRequestsMock = {
           workItems: [
             {
               __typename: "WorkItems",
-              paymentId: "705e6b37-d0ee-4e87-b681-7009dd691965",
-              repoId: 123456,
-              number: 1,
+              id: "705e6b37-d0ee-4e87-b681-7009dd691965",
+              type: WorkItemType.Issue,
+              githubIssue: null,
+              githubPullRequest: null,
             },
           ],
           invoiceReceivedAt: null,

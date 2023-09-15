@@ -4,9 +4,6 @@ fragment WorkItemId on WorkItems {
 
 fragment WorkItem on WorkItems {
   ...WorkItemId
-  paymentId
-  repoId
-  number
   type
   githubIssue {
     ...GithubIssue

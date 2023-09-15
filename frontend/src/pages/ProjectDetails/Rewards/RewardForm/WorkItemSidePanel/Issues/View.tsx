@@ -2,7 +2,7 @@ import { filter, some } from "lodash";
 import { ElementType, forwardRef, useEffect, useState } from "react";
 import { useForm, useFormContext, useWatch } from "react-hook-form";
 import { Virtuoso } from "react-virtuoso";
-import { ContributionFragment, WorkItem, WorkItemType } from "src/__generated/graphql";
+import { ContributionFragment, WorkItemFragment, WorkItemType } from "src/__generated/graphql";
 import FormInput from "src/components/FormInput";
 import FormToggle from "src/components/FormToggle";
 import GithubIssue, { Action } from "src/components/GithubIssue";
@@ -24,7 +24,7 @@ type Props = {
   projectId: string;
   contributions: ContributionFragment[];
   type: WorkItemType;
-  addWorkItem: (workItem: WorkItem) => void;
+  addWorkItem: (workItem: WorkItemFragment) => void;
   addContribution: (contribution: ContributionFragment) => void;
   ignoreContribution: (contribution: ContributionFragment) => void;
   unignoreContribution: (contribution: ContributionFragment) => void;

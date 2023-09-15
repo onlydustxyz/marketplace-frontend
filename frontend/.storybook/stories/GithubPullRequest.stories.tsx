@@ -1,27 +1,23 @@
 import { daysFromNow } from "src/utils/date";
-import { GithubPullRequestStatus, WorkItemType } from "src/__generated/graphql";
-import GithubPullRequest, { GithubPullRequest as GithubPullRequestType, Action, Props } from "src/components/GithubPullRequest";
+import { GithubPullRequestFragment, GithubPullRequestStatus, WorkItemType } from "src/__generated/graphql";
+import GithubPullRequest, { Action, Props } from "src/components/GithubPullRequest";
 
-
-const pullRequests: Record<string, GithubPullRequestType> = {
+const pullRequests: Record<string, GithubPullRequestFragment> = {
   closed: {
     id: "1268051991",
     repoId: 123456,
     number: 541,
-    type: WorkItemType.PullRequest,
     status: GithubPullRequestStatus.Closed,
     htmlUrl: "https://github.com/sayajin-labs/kakarot/pull/541",
     title: "Disable RPC json validation in devnet",
     createdAt: daysFromNow(6),
     closedAt: daysFromNow(6),
     mergedAt: undefined,
-    ignored: false,
   },
   closedWithLongLink: {
     id: "1268051991",
     repoId: 123456,
     number: 541,
-    type: WorkItemType.PullRequest,
     status: GithubPullRequestStatus.Closed,
     htmlUrl: "https://github.com/sayajin-labs/kakarot/pull/541",
     title:
@@ -29,30 +25,28 @@ const pullRequests: Record<string, GithubPullRequestType> = {
     createdAt: daysFromNow(6),
     closedAt: daysFromNow(6),
     mergedAt: undefined,
-    ignored: false,
   },
   open: {
     id: "1268051991",
     repoId: 123456,
     number: 541,
-    type: WorkItemType.PullRequest,
     status: GithubPullRequestStatus.Open,
     htmlUrl: "https://github.com/sayajin-labs/kakarot/pull/541",
     title: "Disable RPC json validation in devnet",
     createdAt: daysFromNow(6),
-    ignored: false,
+    closedAt: null,
+    mergedAt: null,
   },
   merged: {
     id: "1268051991",
     repoId: 123456,
     number: 541,
-    type: WorkItemType.PullRequest,
     status: GithubPullRequestStatus.Merged,
     htmlUrl: "https://github.com/sayajin-labs/kakarot/pull/541",
     title: "Disable RPC json validation in devnet",
     createdAt: daysFromNow(6),
     mergedAt: daysFromNow(5),
-    ignored: false,
+    closedAt: daysFromNow(5),
   },
 };
 
@@ -76,11 +70,10 @@ export default {
   },
 };
 
-const defaultProps: Props = { workItem: pullRequests.closed };
-const longLinkProps: Props = { workItem: pullRequests.closedWithLongLink };
-const openProps: Props = { workItem: pullRequests.open };
-const mergedProps: Props = { workItem: pullRequests.merged };
-
+const defaultProps: Props = { pullRequest: pullRequests.closed };
+const longLinkProps: Props = { pullRequest: pullRequests.closedWithLongLink };
+const openProps: Props = { pullRequest: pullRequests.open };
+const mergedProps: Props = { pullRequest: pullRequests.merged };
 
 export const Default = {
   render: (args: Props) => <GithubPullRequest {...defaultProps} {...args} />,

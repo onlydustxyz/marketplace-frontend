@@ -11,4 +11,7 @@ fragment LiveGithubIssue on GithubIssue {
   htmlUrl
   createdAt
   closedAt
+  author {
+    id
+  }
 }

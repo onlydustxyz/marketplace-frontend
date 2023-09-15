@@ -4,6 +4,7 @@ import { Currency, PaymentStatus } from "src/types";
 import UserRewardTable from "src/components/UserRewardTable";
 import { Reward } from "src/components/UserRewardTable/Line";
 import { daysFromNow } from "src/utils/date";
+import { WorkItemType } from "src/__generated/graphql";
 
 export default {
   title: "UserRewardTable",
@@ -23,15 +24,16 @@ const mockPayments: Reward[] = [
     status: PaymentStatus.ACCEPTED,
     workItems: [
       {
-        paymentId: "c0cfdf80-bbba-4512-b5ec-066dfa9529b1",
-        repoId: 123456,
-        number: 1,
+        id: "1",
+        type: WorkItemType.Issue,
+        githubIssue: null,
+        githubPullRequest: null,
       },
       {
-        paymentId: "c0cfdf80-bbba-4512-b5ec-066dfa9529b1",
-        repoId: 123456,
-        number: 1,
-
+        id: "2",
+        type: WorkItemType.Issue,
+        githubIssue: null,
+        githubPullRequest: null,
       },
     ],
     invoiceReceived: false,
@@ -46,9 +48,10 @@ const mockPayments: Reward[] = [
     },
     workItems: [
       {
-        paymentId: "6397226d-0461-4451-962c-a61e36fd324b",
-        repoId: 123456,
-        number: 1,
+        id: "1",
+        type: WorkItemType.Issue,
+        githubIssue: null,
+        githubPullRequest: null,
       },
     ],
     status: PaymentStatus.WAITING_PAYMENT,

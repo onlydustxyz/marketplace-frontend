@@ -8,7 +8,7 @@ import { generatePath, useNavigate, useOutletContext } from "react-router-dom";
 import { ProjectRoutePaths, RoutePaths } from "src/App";
 import {
   ContributionFragment,
-  WorkItem,
+  WorkItemFragment,
   useRequestPaymentMutation,
   useUnrewardedContributionsQuery,
 } from "src/__generated/graphql";
@@ -78,13 +78,13 @@ const RewardForm: React.FC = () => {
   );
 
   const onWorkItemsChange = useCallback(
-    (workItems: WorkItem[]) =>
+    (workItems: WorkItemFragment[]) =>
       formMethods.setValue(
         "workItems",
         workItems.map(workItem => ({
-          id: workItem.id.toString(),
-          repoId: workItem.repoId,
-          number: workItem.number,
+          id: workItem.id?.toString() || "",
+          repoId: workItem.githubIssue?.repoId || workItem.githubPullRequest?.repoId,
+          number: workItem.githubIssue?.number || workItem.githubPullRequest?.number,
           type: workItem.type,
         }))
       ),

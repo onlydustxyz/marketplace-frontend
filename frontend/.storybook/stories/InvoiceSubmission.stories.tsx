@@ -1,7 +1,7 @@
 import { range } from "lodash";
 import { Reward } from "src/components/UserRewardTable/Line";
 import { Currency, PaymentStatus } from "src/types";
-import { UserPayoutInfo } from "src/__generated/graphql";
+import { UserPayoutInfo, WorkItemType } from "src/__generated/graphql";
 import InvoiceSubmission from "src/pages/Rewards/InvoiceSubmission/View";
 import withToasterProvider from "../decorators/withToasterProvider";
 
@@ -20,8 +20,12 @@ const [payment1, payment2, payment3]: Reward[] = range(1, 4).map(id => ({
   workItems: [
     {
       paymentId: `payment-${id}`,
+      id: id.toString(),
       repoId: 123456,
       number: 123,
+      githubIssue: null,
+      githubPullRequest: null,
+      type: WorkItemType.Issue,
     },
   ],
   requestedAt: new Date(),

@@ -9,6 +9,7 @@ import isDefined from "src/utils/isDefined";
 import {
   CreateAndCloseIssueMutationVariables,
   GithubRepoFragment,
+  WorkItemFragment,
   useCreateAndCloseIssueMutation,
   useGetProjectReposQuery,
 } from "src/__generated/graphql";
@@ -25,12 +26,12 @@ import { FormProvider, useForm } from "react-hook-form";
 import { OtherWork } from "./types";
 import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
-import { WorkItem } from "src/pages/ProjectDetails/Rewards/RewardForm";
+import { liveIssueToCached } from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/Issues/OtherIssueInput";
 
 type Props = {
   projectId: string;
   contributorHandle: string;
-  addWorkItem: (workItem: WorkItem) => void;
+  addWorkItem: (workItem: WorkItemFragment) => void;
 };
 
 export default function OtherWorkForm({ projectId, contributorHandle, addWorkItem }: Props) {
@@ -91,7 +92,7 @@ export default function OtherWorkForm({ projectId, contributorHandle, addWorkIte
     context: { graphqlErrorDisplay: "toaster" },
     onCompleted: data => {
       clearForm();
-      addWorkItem(issueToWorkItem(data.createAndCloseIssue));
+      addWorkItem(issueToWorkItem(liveIssueToCached(data.createAndCloseIssue)));
       showToaster(T("reward.form.contributions.other.success"));
     },
   });

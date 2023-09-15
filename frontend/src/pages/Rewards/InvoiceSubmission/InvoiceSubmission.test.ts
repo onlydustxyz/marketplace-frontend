@@ -1,7 +1,7 @@
 import { range } from "lodash";
 import { Reward } from "src/components/UserRewardTable/Line";
 import { Currency, PaymentStatus } from "src/types";
-import { UserPayoutInfo } from "src/__generated/graphql";
+import { UserPayoutInfo, WorkItemType } from "src/__generated/graphql";
 import { buildHiddenFields } from "./View";
 
 const paymentRequests: Reward[] = range(1, 4).map(id => ({
@@ -12,9 +12,10 @@ const paymentRequests: Reward[] = range(1, 4).map(id => ({
   },
   workItems: [
     {
-      paymentId: `abc${id}${id}${id}${id}${id}${id}${id}`,
-      repoId: 123456,
-      number: 123,
+      id: `abc${id}${id}${id}${id}${id}${id}${id}`,
+      type: WorkItemType.Issue,
+      githubIssue: null,
+      githubPullRequest: null,
     },
   ],
   requestedAt: new Date(`December ${id + 10}, 2022`),

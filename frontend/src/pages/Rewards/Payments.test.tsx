@@ -5,7 +5,7 @@ import matchers from "@testing-library/jest-dom/matchers";
 import RewardsPage from ".";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import { useRoles } from "src/hooks/useAuth/useRoles";
-import { GetPaymentRequestsDocument, UserPaymentRequestFragment } from "src/__generated/graphql";
+import { GetPaymentRequestsDocument, UserPaymentRequestFragment, WorkItemType } from "src/__generated/graphql";
 
 expect.extend(matchers);
 
@@ -46,9 +46,10 @@ const mockContribution: UserPaymentRequestFragment = {
   workItems: [
     {
       __typename: "WorkItems",
-      paymentId: "705e6b37-d0ee-4e87-b681-7009dd691965",
-      repoId: 123456,
-      number: 123,
+      id: "705e6b37-d0ee-4e87-b681-7009dd691965",
+      type: WorkItemType.Issue,
+      githubIssue: null,
+      githubPullRequest: null,
     },
   ],
   budget: {

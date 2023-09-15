@@ -1,7 +1,16 @@
 import classNames from "classnames";
 import { useMemo } from "react";
 import { useFormContext, useFormState } from "react-hook-form";
-import { WorkItemType, useFetchIssueLazyQuery, useFetchPullRequestLazyQuery } from "src/__generated/graphql";
+import {
+  GithubIssueFragment,
+  GithubPullRequestFragment,
+  LiveGithubIssueFragment,
+  LiveGithubPullRequestFragment,
+  WorkItemFragment,
+  WorkItemType,
+  useFetchIssueLazyQuery,
+  useFetchPullRequestLazyQuery,
+} from "src/__generated/graphql";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import Input from "src/components/FormInput";
 import { useIntl } from "src/hooks/useIntl";
@@ -16,13 +25,11 @@ import {
   issueToWorkItem,
   pullRequestToWorkItem,
 } from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/Issues";
-import { GithubIssue as GithubIssueType } from "src/components/GithubIssue";
-import { GithubPullRequest as GithubPullRequestType } from "src/components/GithubPullRequest";
 
 type Props = {
   projectId: string;
   type: WorkItemType;
-  addWorkItem: (workItem: GithubIssueType | GithubPullRequestType) => void;
+  addWorkItem: (workItem: WorkItemFragment) => void;
 };
 
 export default function OtherIssueInput({ type, addWorkItem }: Props) {
@@ -33,7 +40,7 @@ export default function OtherIssueInput({ type, addWorkItem }: Props) {
   const [fetchIssue] = useFetchIssueLazyQuery({
     onCompleted: data => {
       if (data.fetchIssue) {
-        addWorkItem(issueToWorkItem(data.fetchIssue));
+        addWorkItem(issueToWorkItem(liveIssueToCached(data.fetchIssue)));
         resetField(inputName);
       } else {
         setError(inputName, {
@@ -55,7 +62,7 @@ export default function OtherIssueInput({ type, addWorkItem }: Props) {
   const [fetchPullRequest] = useFetchPullRequestLazyQuery({
     onCompleted: data => {
       if (data.fetchPullRequest) {
-        addWorkItem(pullRequestToWorkItem(data.fetchPullRequest));
+        addWorkItem(pullRequestToWorkItem(livePullRequestToCached(data.fetchPullRequest)));
         resetField(inputName);
       } else {
         setError(inputName, {
@@ -144,3 +151,14 @@ export default function OtherIssueInput({ type, addWorkItem }: Props) {
     </div>
   );
 }
+
+export const liveIssueToCached = (issue: LiveGithubIssueFragment): GithubIssueFragment => ({
+  ...issue,
+  __typename: "GithubIssues",
+  assigneeIds: [],
+});
+
+export const livePullRequestToCached = (issue: LiveGithubPullRequestFragment): GithubPullRequestFragment => ({
+  ...issue,
+  __typename: "GithubPullRequests",
+});

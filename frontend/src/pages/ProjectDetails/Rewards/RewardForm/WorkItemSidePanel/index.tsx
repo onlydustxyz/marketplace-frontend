@@ -1,6 +1,4 @@
 import { useIntl } from "src/hooks/useIntl";
-import { GithubIssue as GithubIssueType } from "src/components/GithubIssue";
-import { GithubPullRequest as GithubPullRequestType } from "src/components/GithubPullRequest";
 import Issues from "./Issues";
 import SidePanel from "src/components/SidePanel";
 import { useState } from "react";
@@ -11,7 +9,7 @@ import OtherWorkForm from "./OtherWorkForm";
 import DiscussLine from "src/icons/DiscussLine";
 import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
-import { WorkItemType } from "src/__generated/graphql";
+import { WorkItemFragment, WorkItemType } from "src/__generated/graphql";
 
 type Props = {
   projectId: string;
@@ -19,8 +17,8 @@ type Props = {
   setOpen: (value: boolean) => void;
   contributorId: number;
   contributorHandle: string;
-  workItems: (GithubIssueType | GithubPullRequestType)[];
-  addWorkItem: (workItem: GithubIssueType | GithubPullRequestType) => void;
+  workItems: WorkItemFragment[];
+  addWorkItem: (workItem: WorkItemFragment) => void;
 };
 
 enum Tabs {

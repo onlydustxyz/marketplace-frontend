@@ -23,8 +23,7 @@ import {
   ContributionFragment,
   GithubIssueStatus,
   GithubPullRequestStatus,
-  WorkItem,
-  WorkItemType,
+  WorkItemFragment,
 } from "src/__generated/graphql";
 import pickContributorImg from "src/assets/img/pick-contributor.png";
 import addContributionImg from "src/assets/img/add-contribution.png";
@@ -37,7 +36,7 @@ interface Props {
   projectId: string;
   budget: Budget;
   onWorkEstimationChange: (amountToPay: number, hoursWorked: number) => void;
-  onWorkItemsChange: (workItems: WorkItem[]) => void;
+  onWorkItemsChange: (workItems: WorkItemFragment[]) => void;
   contributor: Contributor | null | undefined;
   setContributor: (contributor: Contributor | null | undefined) => void;
   unpaidContributions: ContributionFragment | null | undefined;
@@ -170,21 +169,21 @@ const View: React.FC<Props> = ({
                     </div>
 
                     {workItems.map(workItem =>
-                      workItem.type === WorkItemType.PullRequest ? (
+                      workItem.githubPullRequest ? (
                         <GithubPullRequest
                           key={workItem.id}
-                          pullRequest={workItem as GithubPullRequestType}
+                          pullRequest={workItem.githubPullRequest}
                           action={GithubPRAction.Remove}
                           onClick={() => removeWorkItem(workItem)}
                         />
-                      ) : (
+                      ) : workItem.githubIssue ? (
                         <GithubIssue
                           key={workItem.id}
-                          workItem={workItem as GithubIssueType}
+                          issue={workItem.githubIssue}
                           action={GithubIssueAction.Remove}
                           onClick={() => removeWorkItem(workItem)}
                         />
-                      )
+                      ) : undefined
                     )}
                   </div>
                   <div onClick={() => setSidePanelOpen(true)} data-testid="add-work-item-btn" className="mx-4 pt-8">
