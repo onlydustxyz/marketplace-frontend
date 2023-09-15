@@ -58,7 +58,7 @@ const issues: GithubIssueFragment[] = range(1, 50).map(id => ({
   number: id,
   title: "Update README.md",
   status: GithubIssueStatus.Open,
-  htmlUrl: "https://github.com/od-mocks/cool-repo-A/pull/1",
+  htmlUrl: "https://github.com/od-mocks/cool-repo-A/issues/1",
   createdAt: daysFromNow(id),
   closedAt: null,
   mergedAt: null,
