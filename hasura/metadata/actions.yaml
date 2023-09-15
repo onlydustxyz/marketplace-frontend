@@ -84,8 +84,6 @@ actions:
         version: 2
     permissions:
       - role: registered_user
-    permissions:
-      - role: registered_user
   - name: fetchPullRequest
     definition:
       kind: ""

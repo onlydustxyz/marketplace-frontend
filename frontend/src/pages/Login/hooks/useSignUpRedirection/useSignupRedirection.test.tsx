@@ -111,8 +111,6 @@ describe("useSignupRedirection", () => {
           {
             userPayoutInfo: {
               __typename: "UserPayoutInfo",
-              payoutSettings: null,
-              arePayoutSettingsValid: false,
             } as UserPayoutSettingsFragment,
           },
         ],
@@ -150,8 +148,6 @@ describe("useSignupRedirection", () => {
           {
             userPayoutInfo: {
               __typename: "UserPayoutInfo",
-              payoutSettings: null,
-              arePayoutSettingsValid: true,
             } as UserPayoutSettingsFragment,
           },
         ],
@@ -189,8 +185,6 @@ describe("useSignupRedirection", () => {
           {
             userPayoutInfo: {
               __typename: "UserPayoutInfo",
-              payoutSettings: null,
-              arePayoutSettingsValid: false,
             } as UserPayoutSettingsFragment,
           },
         ],
@@ -228,8 +222,6 @@ describe("useSignupRedirection", () => {
           {
             userPayoutInfo: {
               __typename: "UserPayoutInfo",
-              payoutSettings: null,
-              arePayoutSettingsValid: false,
             } as UserPayoutSettingsFragment,
           },
         ],
