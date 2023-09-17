@@ -122,7 +122,7 @@ mod tests {
 		budget_created_event: BudgetEvent,
 		budget_allocated_event: BudgetEvent,
 	) {
-		let budget = Budget::from_pending_events(vec![budget_created_event]);
+		let budget = Budget::from_events(&[budget_created_event]);
 		assert_eq!(
 			budget.allocate(amount, None).unwrap().collect::<Vec<_>>(),
 			&[budget_allocated_event]

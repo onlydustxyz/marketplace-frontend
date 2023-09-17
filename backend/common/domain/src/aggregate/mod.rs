@@ -31,7 +31,7 @@ impl<A: super::EventSourcable> Aggregate<A> {
 	/// and save the events in the process
 	pub fn with_pending_events(mut self, events: Vec<A::Event>) -> Self {
 		let aggregate = self.state.apply_events(&events);
-		self.pending_events.extend(events.into_iter());
+		self.pending_events.extend(events);
 		Self {
 			state: aggregate,
 			..self

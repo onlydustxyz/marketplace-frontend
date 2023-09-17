@@ -207,15 +207,16 @@ mod tests {
 		duration_worked: Duration,
 		reason: Reason,
 	) -> Payment {
-		Payment::request(
-			payment_id,
+		Payment::from_events(&[PaymentEvent::Requested {
+			id: payment_id,
 			project_id,
 			requestor_id,
 			recipient_id,
 			amount,
 			duration_worked,
 			reason,
-		)
+			requested_at: Utc::now().naive_utc(),
+		}])
 	}
 
 	#[fixture]
