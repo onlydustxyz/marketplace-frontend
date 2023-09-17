@@ -3,7 +3,7 @@ use std::fmt::Display;
 use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
 
-use crate::{AggregateEvent, BudgetId, Currency, GithubRepoId, Project, ProjectId, UserId};
+use crate::{AggregateEvent, BudgetId, Currency, GithubRepoId, ProjectId, UserId};
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Event {
@@ -38,7 +38,7 @@ pub enum Event {
 	},
 }
 
-impl AggregateEvent<Project> for Event {
+impl AggregateEvent<ProjectId> for Event {
 	fn aggregate_id(&self) -> &ProjectId {
 		match self {
 			Self::Created { id, .. }

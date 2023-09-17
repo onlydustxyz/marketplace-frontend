@@ -3,7 +3,9 @@ mod models;
 
 use anyhow::Result;
 use api::{models::Sponsor, presentation::http::routes::projects::budgets::Response};
-use domain::{currencies, sponsor, BudgetEvent, BudgetId, Event, ProjectEvent, ProjectId};
+use domain::{
+	currencies, sponsor, Budget, BudgetEvent, BudgetId, Event, Project, ProjectEvent, ProjectId,
+};
 use infrastructure::database::ImmutableRepository;
 use olog::info;
 use rocket::{
@@ -55,7 +57,7 @@ impl<'a> Test<'a> {
 		let project_id = ProjectId::new();
 		let sponsor_id = sponsor::Id::new();
 
-		models::events::store(
+		models::events::store::<Project>(
 			&self.context,
 			vec![ProjectEvent::Created { id: project_id }],
 		)?;
@@ -130,7 +132,7 @@ impl<'a> Test<'a> {
 		let project_id = ProjectId::new();
 		let budget_id = BudgetId::new();
 
-		models::events::store(
+		models::events::store::<Project>(
 			&self.context,
 			vec![
 				ProjectEvent::Created { id: project_id },
@@ -142,7 +144,7 @@ impl<'a> Test<'a> {
 			],
 		)?;
 
-		models::events::store(
+		models::events::store::<Budget>(
 			&self.context,
 			vec![
 				BudgetEvent::Created {
@@ -200,7 +202,7 @@ impl<'a> Test<'a> {
 		let project_id = ProjectId::new();
 		let usd_budget_id = BudgetId::new();
 
-		models::events::store(
+		models::events::store::<Project>(
 			&self.context,
 			vec![
 				ProjectEvent::Created { id: project_id },
@@ -212,7 +214,7 @@ impl<'a> Test<'a> {
 			],
 		)?;
 
-		models::events::store(
+		models::events::store::<Budget>(
 			&self.context,
 			vec![
 				BudgetEvent::Created {
@@ -290,7 +292,7 @@ impl<'a> Test<'a> {
 		let project_id = ProjectId::new();
 		let sponsor_id = sponsor::Id::new();
 
-		models::events::store(
+		models::events::store::<Project>(
 			&self.context,
 			vec![ProjectEvent::Created { id: project_id }],
 		)?;

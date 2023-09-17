@@ -1,7 +1,9 @@
 use rust_decimal::Decimal;
 use thiserror::Error;
 
-use crate::{sponsor, Aggregate, BudgetEvent, BudgetId, Currency, EventSourcable};
+use crate::{
+	sponsor, Aggregate, BudgetEvent, BudgetId, Currency, EventSourcable, PendingAggregate,
+};
 
 #[derive(Debug, Error, PartialEq, Eq)]
 pub enum Error {
@@ -16,12 +18,11 @@ pub struct Budget {
 	pub id: BudgetId,
 	pub allocated_amount: Decimal,
 	pub spent_amount: Decimal,
-	pending_events: Vec<BudgetEvent>,
 }
 
-impl Budget {
+impl PendingAggregate<Budget> {
 	pub fn create(id: BudgetId, currency: &'static Currency) -> Self {
-		Self::default().with_pending_events(&[BudgetEvent::Created { id, currency }])
+		Self::from_pending_events(vec![BudgetEvent::Created { id, currency }])
 	}
 
 	pub fn allocate(self, amount: Decimal, sponsor_id: Option<sponsor::Id>) -> Result<Self> {
@@ -35,7 +36,7 @@ impl Budget {
 			sponsor_id,
 		};
 
-		Ok(self.with_pending_events(&[event]))
+		Ok(self.with_pending_events(vec![event]))
 	}
 
 	pub fn spend(self, amount: Decimal) -> Result<Self> {
@@ -48,17 +49,13 @@ impl Budget {
 			amount,
 		};
 
-		Ok(self.with_pending_events(&[event]))
+		Ok(self.with_pending_events(vec![event]))
 	}
 }
 
 impl Aggregate for Budget {
 	type Event = BudgetEvent;
 	type Id = BudgetId;
-
-	fn pending_events(&mut self) -> &mut Vec<Self::Event> {
-		&mut self.pending_events
-	}
 }
 
 impl EventSourcable for Budget {
@@ -68,7 +65,6 @@ impl EventSourcable for Budget {
 				id: *id,
 				allocated_amount: Decimal::ZERO,
 				spent_amount: Decimal::ZERO,
-				..self
 			},
 			BudgetEvent::Allocated { id, amount, .. } => Self {
 				id: *id,
@@ -91,6 +87,8 @@ mod tests {
 
 	use super::*;
 	use crate::*;
+
+	type Budget = PendingAggregate<super::Budget>;
 
 	#[fixture]
 	#[once]
@@ -148,7 +146,7 @@ mod tests {
 		budget_created_event: BudgetEvent,
 	) {
 		assert_eq!(
-			Budget::create(*budget_id, currency).pending_events,
+			Budget::create(*budget_id, currency).collect::<Vec<_>>(),
 			&[budget_created_event]
 		);
 	}
@@ -159,9 +157,9 @@ mod tests {
 		budget_created_event: BudgetEvent,
 		budget_allocated_event: BudgetEvent,
 	) {
-		let budget = Budget::from_events(&[budget_created_event]);
+		let budget = Budget::from_pending_events(vec![budget_created_event]);
 		assert_eq!(
-			budget.allocate(amount, None).unwrap().pending_events,
+			budget.allocate(amount, None).unwrap().collect::<Vec<_>>(),
 			&[budget_allocated_event]
 		);
 	}
@@ -175,7 +173,7 @@ mod tests {
 	) {
 		let budget = Budget::from_events(&[budget_created_event, budget_allocated_event]);
 		assert_eq!(
-			budget.spend(amount).unwrap().pending_events,
+			budget.spend(amount).unwrap().collect::<Vec<_>>(),
 			&[budget_spent_event]
 		);
 	}
@@ -194,7 +192,7 @@ mod tests {
 			budget_spent_event,
 		]);
 		assert_eq!(
-			budget.spend(-amount).unwrap().pending_events,
+			budget.spend(-amount).unwrap().collect::<Vec<_>>(),
 			&[budget_refund_event]
 		);
 	}

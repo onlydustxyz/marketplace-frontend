@@ -3,8 +3,7 @@ use std::sync::Arc;
 use anyhow::Result;
 use derive_more::Constructor;
 use domain::{
-	sponsor, Aggregate, Amount, BudgetId, DomainError, Event, Project, ProjectId,
-	ProjectVisibility, Publisher,
+	sponsor, Amount, BudgetId, DomainError, Event, Project, ProjectId, ProjectVisibility, Publisher,
 };
 use infrastructure::{amqp::UniqueMessage, database::Repository};
 use reqwest::Url;
@@ -76,17 +75,8 @@ impl Usecase {
 		let budget_id = budget.as_ref().map(|b| b.id);
 
 		project
-			.pending_events()
-			.clone()
-			.into_iter()
 			.map(Event::from)
-			.chain(
-				budget
-					.map(|mut b| b.pending_events().clone())
-					.unwrap_or_default()
-					.into_iter()
-					.map(Event::from),
-			)
+			.chain(budget.unwrap_or_default().map(Event::from))
 			.map(UniqueMessage::new)
 			.collect::<Vec<_>>()
 			.publish(self.event_publisher.clone())

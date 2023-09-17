@@ -3,7 +3,7 @@ use std::fmt::Display;
 use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
 
-use crate::{sponsor, AggregateEvent, Budget, BudgetId, Currency};
+use crate::{sponsor, AggregateEvent, BudgetId, Currency};
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Event {
@@ -22,7 +22,7 @@ pub enum Event {
 	},
 }
 
-impl AggregateEvent<Budget> for Event {
+impl AggregateEvent<BudgetId> for Event {
 	fn aggregate_id(&self) -> &BudgetId {
 		match self {
 			Self::Created { id, .. } | Self::Allocated { id, .. } | Self::Spent { id, .. } => id,

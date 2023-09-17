@@ -8,7 +8,7 @@ use thiserror::Error;
 use super::Reason;
 use crate::{
 	Aggregate, Amount, EventSourcable, GithubUserId, PaymentEvent, PaymentId, PaymentReceipt,
-	PaymentReceiptId, PaymentWorkItem, ProjectId, UserId,
+	PaymentReceiptId, PaymentWorkItem, PendingAggregate, ProjectId, UserId,
 };
 
 #[derive(Debug, Default, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -31,7 +31,6 @@ pub struct Payment {
 	pub work_items: Vec<PaymentWorkItem>,
 	#[serde_as(as = "DurationSeconds<i64>")]
 	pub duration_worked: Duration,
-	pending_events: Vec<PaymentEvent>,
 }
 
 impl Default for Payment {
@@ -46,7 +45,6 @@ impl Default for Payment {
 			recipient_id: Default::default(),
 			requestor_id: Default::default(),
 			work_items: Default::default(),
-			pending_events: Default::default(),
 		}
 	}
 }
@@ -54,10 +52,6 @@ impl Default for Payment {
 impl Aggregate for Payment {
 	type Event = PaymentEvent;
 	type Id = PaymentId;
-
-	fn pending_events(&mut self) -> &mut Vec<Self::Event> {
-		&mut self.pending_events
-	}
 }
 
 impl EventSourcable for Payment {
@@ -105,7 +99,7 @@ pub enum Error {
 	Cancelled,
 }
 
-impl Payment {
+impl PendingAggregate<Payment> {
 	#[cfg_attr(feature = "cargo-clippy", allow(clippy::too_many_arguments))]
 	pub fn request(
 		id: PaymentId,
@@ -116,7 +110,7 @@ impl Payment {
 		duration_worked: Duration,
 		reason: Reason,
 	) -> Self {
-		Self::default().with_pending_events(&[PaymentEvent::Requested {
+		Self::default().with_pending_events(vec![PaymentEvent::Requested {
 			id,
 			project_id,
 			requestor_id,
@@ -156,7 +150,7 @@ impl Payment {
 			processed_at: Utc::now().naive_utc(),
 		};
 
-		Ok(self.with_pending_events(&[event]))
+		Ok(self.with_pending_events(vec![event]))
 	}
 
 	pub fn cancel(self) -> Result<Self, Error> {
@@ -167,7 +161,7 @@ impl Payment {
 
 		let event = PaymentEvent::Cancelled { id: self.id };
 
-		Ok(self.with_pending_events(&[event]))
+		Ok(self.with_pending_events(vec![event]))
 	}
 
 	pub fn mark_invoice_as_received(self) -> Result<Self, Error> {
@@ -180,7 +174,7 @@ impl Payment {
 			received_at: Utc::now().naive_utc(),
 		};
 
-		Ok(self.with_pending_events(&[event]))
+		Ok(self.with_pending_events(vec![event]))
 	}
 
 	pub fn reject_invoice(self) -> Result<Self, Error> {
@@ -190,7 +184,7 @@ impl Payment {
 
 		let event = PaymentEvent::InvoiceRejected { id: self.id };
 
-		Ok(self.with_pending_events(&[event]))
+		Ok(self.with_pending_events(vec![event]))
 	}
 
 	fn only_active(&self) -> Result<(), Error> {
@@ -220,6 +214,8 @@ mod tests {
 
 	use super::*;
 	use crate::{blockchain::*, currencies, PaymentReceiptId, UserId};
+
+	type Payment = PendingAggregate<super::Payment>;
 
 	pub const CONTRACT_ADDRESSES: [&str; 1] = ["0xd8da6bf26964af9d7eed9e03e53415d37aa96045"];
 
@@ -329,7 +325,7 @@ mod tests {
 		let events = requested_payment
 			.add_receipt(payment_receipt_id, amount.clone(), receipt.clone())
 			.expect("Problem when adding receipt")
-			.pending_events;
+			.collect::<Vec<_>>();
 		let after = Utc::now().naive_utc();
 
 		assert_eq!(events.len(), 1);
@@ -406,7 +402,7 @@ mod tests {
 			requested_payment
 				.cancel()
 				.expect("Problem when cancelling payment")
-				.pending_events,
+				.collect::<Vec<_>>(),
 			vec![cancelled_payment_event]
 		);
 	}
@@ -441,7 +437,7 @@ mod tests {
 			duration_worked,
 			reason.clone(),
 		)
-		.pending_events;
+		.collect::<Vec<_>>();
 		let after = Utc::now();
 
 		assert_eq!(events.len(), 1);

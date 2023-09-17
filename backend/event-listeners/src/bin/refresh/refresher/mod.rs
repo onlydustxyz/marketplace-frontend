@@ -32,6 +32,7 @@ pub trait Refreshable {
 impl<A: Aggregate> Refreshable for Refresher<A>
 where
 	Event: From<<A as Aggregate>::Event>,
+	<A as Aggregate>::Event: AggregateEvent<A::Id>,
 	A::Id: FromStr,
 {
 	fn all_ids(&self) -> Result<Vec<String>> {

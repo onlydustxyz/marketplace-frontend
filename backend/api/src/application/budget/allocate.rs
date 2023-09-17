@@ -3,8 +3,8 @@ use std::sync::Arc;
 use anyhow::anyhow;
 use derive_more::Constructor;
 use domain::{
-	sponsor, Aggregate, AggregateRepository, Amount, Budget, BudgetId, DomainError, Event, Project,
-	ProjectId, Publisher,
+	sponsor, AggregateRepository, Amount, Budget, BudgetId, DomainError, Event, Project, ProjectId,
+	Publisher,
 };
 use infrastructure::{amqp::UniqueMessage, database::Repository};
 use tracing::instrument;
@@ -58,19 +58,18 @@ impl Usecase {
 	) -> Result<BudgetId, DomainError> {
 		let project = self.project_repository.find_by_id(&project_id)?;
 
-		let (mut project, mut budget) = self.build_allocation(project, amount, sponsor_id)?;
+		let (project, budget) = self.build_allocation(project, amount, sponsor_id)?;
+
+		let budget_id = budget.id;
 
 		project
-			.pending_events()
-			.clone()
-			.into_iter()
 			.map(Event::from)
-			.chain(budget.pending_events().clone().into_iter().map(Event::from))
+			.chain(budget.map(Event::from))
 			.map(UniqueMessage::new)
 			.collect::<Vec<_>>()
 			.publish(self.event_publisher.clone())
 			.await?;
 
-		Ok(budget.id)
+		Ok(budget_id)
 	}
 }

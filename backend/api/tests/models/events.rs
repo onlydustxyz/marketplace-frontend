@@ -18,10 +18,7 @@ pub struct Event {
 }
 
 #[allow(unused)]
-pub fn store<E: Serialize + Clone + AggregateEvent<A>, A: NamedAggregate>(
-	context: &Context,
-	events: Vec<E>,
-) -> anyhow::Result<()> {
+pub fn store<A: NamedAggregate>(context: &Context, events: Vec<A::Event>) -> anyhow::Result<()> {
 	let events: Vec<_> = events
 		.into_iter()
 		.map(UniqueMessage::new)

@@ -10,15 +10,23 @@ mod repository;
 pub use repository::MockRepository;
 pub use repository::{Error as RepositoryError, Repository};
 
+mod pending;
+pub use pending::Aggregate as PendingAggregate;
+
 pub trait Aggregate: Send + Sync + Default + Sized {
 	type Id: Display + PartialEq + Eq + Hash + Clone + Send;
-	type Event: Serialize + DeserializeOwned + Debug + Display + Clone + Event<Self> + Send;
-
-	fn pending_events(&mut self) -> &mut Vec<Self::Event>;
+	type Event: Serialize
+		+ DeserializeOwned
+		+ Debug
+		+ Display
+		+ Clone
+		+ Event<Self::Id>
+		+ Send
+		+ Sync;
 }
 
-pub trait Event<A: Aggregate> {
-	fn aggregate_id(&self) -> &A::Id;
+pub trait Event<Id> {
+	fn aggregate_id(&self) -> &Id;
 }
 
 pub trait EventSourcable: Aggregate {
@@ -30,10 +38,5 @@ pub trait EventSourcable: Aggregate {
 
 	fn from_events(events: &[Self::Event]) -> Self {
 		Self::apply_events(Default::default(), events)
-	}
-
-	fn with_pending_events(mut self, events: &[Self::Event]) -> Self {
-		self.pending_events().extend_from_slice(events);
-		self.apply_events(events)
 	}
 }

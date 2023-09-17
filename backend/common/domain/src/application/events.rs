@@ -4,7 +4,7 @@ use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
 use serde_with::serde_as;
 
-use crate::{AggregateEvent, Application, ApplicationId, ProjectId, UserId};
+use crate::{AggregateEvent, ApplicationId, ProjectId, UserId};
 
 #[serde_as]
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -17,7 +17,7 @@ pub enum Event {
 	},
 }
 
-impl AggregateEvent<Application> for Event {
+impl AggregateEvent<ApplicationId> for Event {
 	fn aggregate_id(&self) -> &ApplicationId {
 		match self {
 			Self::Received { id, .. } => id,

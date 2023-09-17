@@ -30,16 +30,11 @@ pub struct Project {
 	pub budgets_by_currency: HashMap<String, BudgetId>,
 	pub github_repos: HashSet<GithubRepoId>,
 	pub applicants: HashSet<UserId>,
-	pending_events: Vec<ProjectEvent>,
 }
 
 impl Aggregate for Project {
 	type Event = ProjectEvent;
 	type Id = ProjectId;
-
-	fn pending_events(&mut self) -> &mut Vec<Self::Event> {
-		&mut self.pending_events
-	}
 }
 
 impl From<ProjectEvent> for Event {
@@ -84,9 +79,9 @@ impl EventSourcable for Project {
 	}
 }
 
-impl Project {
+impl PendingAggregate<Project> {
 	pub fn create(id: ProjectId) -> Self {
-		Self::default().with_pending_events(&[ProjectEvent::Created { id }])
+		Self::default().with_pending_events(vec![ProjectEvent::Created { id }])
 	}
 
 	pub fn link_budget(self, budget_id: BudgetId, currency: &'static Currency) -> Result<Self> {
@@ -100,7 +95,7 @@ impl Project {
 			currency,
 		};
 
-		Ok(self.with_pending_events(&[event]))
+		Ok(self.with_pending_events(vec![event]))
 	}
 
 	pub fn assign_leader(self, leader_id: UserId) -> Result<Self> {
@@ -114,7 +109,7 @@ impl Project {
 			assigned_at: Utc::now().naive_utc(),
 		};
 
-		Ok(self.with_pending_events(&[event]))
+		Ok(self.with_pending_events(vec![event]))
 	}
 
 	pub fn unassign_leader(self, leader_id: UserId) -> Result<Self> {
@@ -127,7 +122,7 @@ impl Project {
 			leader_id,
 		};
 
-		Ok(self.with_pending_events(&[event]))
+		Ok(self.with_pending_events(vec![event]))
 	}
 
 	pub fn link_github_repo(self, github_repo_id: GithubRepoId) -> Result<Self> {
@@ -140,7 +135,7 @@ impl Project {
 			github_repo_id,
 		};
 
-		Ok(self.with_pending_events(&[event]))
+		Ok(self.with_pending_events(vec![event]))
 	}
 
 	pub fn unlink_github_repo(self, github_repo_id: GithubRepoId) -> Result<Self> {
@@ -153,7 +148,7 @@ impl Project {
 			github_repo_id,
 		};
 
-		Ok(self.with_pending_events(&[event]))
+		Ok(self.with_pending_events(vec![event]))
 	}
 
 	pub fn apply(self, applicant_id: UserId) -> Result<Self> {
@@ -166,7 +161,7 @@ impl Project {
 			applicant_id,
 		};
 
-		Ok(self.with_pending_events(&[event]))
+		Ok(self.with_pending_events(vec![event]))
 	}
 }
 
@@ -180,6 +175,8 @@ mod tests {
 
 	use super::*;
 	use crate::ProjectId;
+
+	type Project = PendingAggregate<super::Project>;
 
 	#[fixture]
 	fn project_id() -> ProjectId {
@@ -268,7 +265,7 @@ mod tests {
 	#[rstest]
 	fn create_project(project_id: ProjectId, project_created: ProjectEvent) {
 		assert_eq!(
-			Project::create(project_id).pending_events,
+			Project::create(project_id).collect::<Vec<_>>(),
 			[project_created]
 		);
 	}
@@ -282,7 +279,7 @@ mod tests {
 	) {
 		let project = Project::from_events(&[project_created]);
 		assert_eq!(
-			project.link_budget(budget_id, currency).unwrap().pending_events,
+			project.link_budget(budget_id, currency).unwrap().collect::<Vec<_>>(),
 			[budget_linked]
 		);
 	}
@@ -315,7 +312,7 @@ mod tests {
 		let project = Project::from_events(&[project_created]);
 
 		let before = Utc::now().naive_utc();
-		let events = project.assign_leader(user_id.to_owned()).unwrap().pending_events;
+		let events = project.assign_leader(user_id.to_owned()).unwrap().collect::<Vec<_>>();
 		let after = Utc::now().naive_utc();
 
 		assert_eq!(events.len(), 1);
@@ -345,7 +342,7 @@ mod tests {
 		let project = Project::from_events(&[project_created, leader_assigned]);
 
 		assert_eq!(
-			project.unassign_leader(user_id.to_owned()).unwrap().pending_events,
+			project.unassign_leader(user_id.to_owned()).unwrap().collect::<Vec<_>>(),
 			[leader_unassigned]
 		);
 	}
@@ -381,7 +378,7 @@ mod tests {
 	) {
 		let project = Project::from_events(&[project_created]);
 		assert_eq!(
-			project.apply(user_id).unwrap().pending_events,
+			project.apply(user_id).unwrap().collect::<Vec<_>>(),
 			[user_applied]
 		);
 	}
@@ -404,7 +401,7 @@ mod tests {
 	) {
 		let project = Project::from_events(&[project_created]);
 		assert_eq!(
-			project.link_github_repo(marketplace_id).unwrap().pending_events,
+			project.link_github_repo(marketplace_id).unwrap().collect::<Vec<_>>(),
 			[marketplace_linked]
 		);
 	}
@@ -418,7 +415,7 @@ mod tests {
 	) {
 		let project = Project::from_events(&[project_created, marketplace_linked]);
 		assert_eq!(
-			project.unlink_github_repo(marketplace_id).unwrap().pending_events,
+			project.unlink_github_repo(marketplace_id).unwrap().collect::<Vec<_>>(),
 			[marketplace_unlinked]
 		);
 	}

@@ -50,7 +50,10 @@ async fn store(
 ) -> Result<UniqueMessage<Event>, SubscriberCallbackError> {
 	info!(message_content = message.to_string(), "📨 Received event");
 	store
-		.append(&message.payload().aggregate_id(), message.clone())
+		.append(
+			&IdentifiableAggregate::aggregate_id(message.payload()),
+			message.clone(),
+		)
 		.map_err(|e| SubscriberCallbackError::Fatal(e.into()))?;
 
 	Ok(message)
