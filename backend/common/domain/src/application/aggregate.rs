@@ -1,52 +1,17 @@
 use chrono::Utc;
-use derive_getters::Getters;
-use serde::{Deserialize, Serialize};
-use serde_with::serde_as;
 
-use crate::{
-	Aggregate, ApplicationEvent, ApplicationId, EventSourcable, PendingAggregate, ProjectId, UserId,
-};
+use crate::{Aggregate, ApplicationEvent, ApplicationId, ProjectId, UserId};
 
-#[derive(Debug, Default, Clone, PartialEq, Eq, Serialize, Deserialize)]
-pub enum Status {
-	#[default]
-	Active,
-	Cancelled,
-}
+pub type Application = Aggregate<super::state::State>;
 
-#[serde_as]
-#[derive(Debug, Default, Clone, PartialEq, Eq, Serialize, Deserialize, Getters)]
-pub struct Application {
-	id: ApplicationId,
-	applicant_id: UserId,
-}
-
-impl PendingAggregate<Application> {
+impl Application {
 	pub fn create(id: ApplicationId, project_id: ProjectId, applicant_id: UserId) -> Self {
-		Self::default().with_pending_events(vec![ApplicationEvent::Received {
+		Self::from_pending_events(vec![ApplicationEvent::Received {
 			id,
 			project_id,
 			applicant_id,
 			received_at: Utc::now().naive_utc(),
 		}])
-	}
-}
-
-impl Aggregate for Application {
-	type Event = ApplicationEvent;
-	type Id = ApplicationId;
-}
-
-impl EventSourcable for Application {
-	fn apply_event(self, event: &Self::Event) -> Self {
-		match event {
-			ApplicationEvent::Received {
-				id, applicant_id, ..
-			} => Self {
-				id: *id,
-				applicant_id: *applicant_id,
-			},
-		}
 	}
 }
 
@@ -56,6 +21,7 @@ mod tests {
 	use rstest::*;
 
 	use super::*;
+	use crate::Application;
 
 	#[fixture]
 	#[once]
@@ -83,8 +49,7 @@ mod tests {
 	) {
 		let before = Utc::now().naive_utc();
 		let events =
-			PendingAggregate::<Application>::create(*application_id, *project_id, *user_id)
-				.collect::<Vec<_>>();
+			Application::create(*application_id, *project_id, *user_id).collect::<Vec<_>>();
 		let after = Utc::now().naive_utc();
 
 		assert_eq!(events.len(), 1);

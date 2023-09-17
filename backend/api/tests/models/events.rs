@@ -1,7 +1,7 @@
 use chrono::NaiveDateTime;
 use diesel::RunQueryDsl;
-use domain::{AggregateEvent, CommandId};
-use infrastructure::{amqp::UniqueMessage, database::schema::events, event_store::NamedAggregate};
+use domain::{CommandId, EventSourcable, Identified};
+use infrastructure::{amqp::UniqueMessage, database::schema::events, event_store::Named};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
@@ -18,14 +18,17 @@ pub struct Event {
 }
 
 #[allow(unused)]
-pub fn store<A: NamedAggregate>(context: &Context, events: Vec<A::Event>) -> anyhow::Result<()> {
+pub fn store<A: Named + EventSourcable>(
+	context: &Context,
+	events: Vec<A::Event>,
+) -> anyhow::Result<()> {
 	let events: Vec<_> = events
 		.into_iter()
 		.map(UniqueMessage::new)
 		.map(|m| Event {
 			timestamp: *m.timestamp(),
 			aggregate_name: A::name(),
-			aggregate_id: m.payload().aggregate_id().to_string(),
+			aggregate_id: m.payload().id().to_string(),
 			payload: serde_json::to_value(m.payload()).expect("Invalid payload"),
 			metadata: m.metadata().clone(),
 			command_id: m.command_id().map(Into::into),

@@ -1,9 +1,9 @@
-use std::collections::{HashMap, HashSet};
-
 use chrono::Utc;
 use thiserror::Error;
 
 use crate::*;
+
+pub type Project = Aggregate<super::state::State>;
 
 #[derive(Debug, Error, PartialEq, Eq)]
 pub enum Error {
@@ -23,63 +23,7 @@ pub enum Error {
 
 type Result<T> = std::result::Result<T, Error>;
 
-#[derive(Default, Debug, Clone, PartialEq, Eq)]
-pub struct Project {
-	pub id: ProjectId,
-	pub leaders: HashSet<UserId>,
-	pub budgets_by_currency: HashMap<String, BudgetId>,
-	pub github_repos: HashSet<GithubRepoId>,
-	pub applicants: HashSet<UserId>,
-}
-
-impl Aggregate for Project {
-	type Event = ProjectEvent;
-	type Id = ProjectId;
-}
-
-impl From<ProjectEvent> for Event {
-	fn from(event: ProjectEvent) -> Self {
-		Event::Project(event)
-	}
-}
-
-impl EventSourcable for Project {
-	fn apply_event(mut self, event: &Self::Event) -> Self {
-		match event {
-			ProjectEvent::Created { id } => Project { id: *id, ..self },
-			ProjectEvent::LeaderAssigned { leader_id, .. } => {
-				self.leaders.insert(*leader_id);
-				self
-			},
-			ProjectEvent::LeaderUnassigned { leader_id, .. } => {
-				self.leaders.remove(leader_id);
-				self
-			},
-			ProjectEvent::BudgetLinked {
-				budget_id,
-				currency,
-				..
-			} => {
-				self.budgets_by_currency.insert(currency.code.to_owned(), *budget_id);
-				self
-			},
-			ProjectEvent::GithubRepoLinked { github_repo_id, .. } => {
-				self.github_repos.insert(*github_repo_id);
-				self
-			},
-			ProjectEvent::GithubRepoUnlinked { github_repo_id, .. } => {
-				self.github_repos.remove(github_repo_id);
-				self
-			},
-			ProjectEvent::Applied { applicant_id, .. } => {
-				self.applicants.insert(*applicant_id);
-				self
-			},
-		}
-	}
-}
-
-impl PendingAggregate<Project> {
+impl Project {
 	pub fn create(id: ProjectId) -> Self {
 		Self::default().with_pending_events(vec![ProjectEvent::Created { id }])
 	}
@@ -175,8 +119,6 @@ mod tests {
 
 	use super::*;
 	use crate::ProjectId;
-
-	type Project = PendingAggregate<super::Project>;
 
 	#[fixture]
 	fn project_id() -> ProjectId {

@@ -6,8 +6,8 @@ use serde_with::{serde_as, DurationSeconds};
 
 use super::Reason;
 use crate::{
-	AggregateEvent, Amount, GithubUserId, PaymentId, PaymentReceipt, PaymentReceiptId, ProjectId,
-	UserId,
+	aggregate::Identified, Amount, GithubUserId, PaymentId, PaymentReceipt, PaymentReceiptId,
+	ProjectId, UserId,
 };
 
 #[serde_as]
@@ -45,8 +45,8 @@ pub enum Event {
 	},
 }
 
-impl AggregateEvent<PaymentId> for Event {
-	fn aggregate_id(&self) -> &PaymentId {
+impl Identified<PaymentId> for Event {
+	fn id(&self) -> &PaymentId {
 		match self {
 			Self::Requested { id, .. }
 			| Self::Processed { id, .. }

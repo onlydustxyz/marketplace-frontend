@@ -1,42 +1,81 @@
+mod event_sourcable;
+mod repository;
+
 use std::{
-	fmt::{Debug, Display},
-	hash::Hash,
+	collections::VecDeque,
+	fmt::Debug,
+	ops::{Deref, DerefMut},
 };
 
-use serde::{de::DeserializeOwned, Serialize};
+use derive_new::new;
 
-mod repository;
 #[cfg(test)]
-pub use repository::MockRepository;
-pub use repository::{Error as RepositoryError, Repository};
+pub use self::repository::MockRepository;
+pub use self::{
+	event_sourcable::{EventSourcable, Identified},
+	repository::{Error as RepositoryError, Repository},
+};
 
-mod pending;
-pub use pending::Aggregate as PendingAggregate;
-
-pub trait Aggregate: Send + Sync + Default + Sized {
-	type Id: Display + PartialEq + Eq + Hash + Clone + Send;
-	type Event: Serialize
-		+ DeserializeOwned
-		+ Debug
-		+ Display
-		+ Clone
-		+ Event<Self::Id>
-		+ Send
-		+ Sync;
+#[derive(Debug, new, PartialEq, Eq, Clone)]
+pub struct Aggregate<State: EventSourcable> {
+	state: State,
+	pending_events: VecDeque<State::Event>,
 }
 
-pub trait Event<Id> {
-	fn aggregate_id(&self) -> &Id;
+impl<State: EventSourcable> Default for Aggregate<State> {
+	fn default() -> Self {
+		Self {
+			state: Default::default(),
+			pending_events: Default::default(),
+		}
+	}
 }
 
-pub trait EventSourcable: Aggregate {
-	fn apply_event(self, event: &Self::Event) -> Self;
+impl<State: EventSourcable> Iterator for Aggregate<State> {
+	type Item = State::Event;
 
-	fn apply_events(self, events: &[Self::Event]) -> Self {
-		events.iter().fold(self, Self::apply_event)
+	fn next(&mut self) -> Option<Self::Item> {
+		self.pending_events.pop_front()
+	}
+}
+
+impl<State: EventSourcable> Deref for Aggregate<State> {
+	type Target = State;
+
+	fn deref(&self) -> &Self::Target {
+		&self.state
+	}
+}
+
+impl<State: EventSourcable> DerefMut for Aggregate<State> {
+	fn deref_mut(&mut self) -> &mut Self::Target {
+		&mut self.state
+	}
+}
+
+impl<A: super::EventSourcable> Aggregate<A> {
+	pub fn with_pending_events(mut self, events: Vec<A::Event>) -> Self {
+		let aggregate = self.state.apply_events(&events);
+		self.pending_events.extend(events.into_iter());
+		Self {
+			state: aggregate,
+			..self
+		}
 	}
 
-	fn from_events(events: &[Self::Event]) -> Self {
-		Self::apply_events(Default::default(), events)
+	pub fn from_pending_events(events: Vec<A::Event>) -> Self {
+		Self::new(A::from_events(&events), events.into())
+	}
+}
+
+impl<State: EventSourcable> EventSourcable for Aggregate<State> {
+	type Event = State::Event;
+	type Id = State::Id;
+
+	fn apply_event(self, event: &Self::Event) -> Self {
+		Self {
+			state: self.state.apply_event(event),
+			..self
+		}
 	}
 }

@@ -1,93 +1,14 @@
 use chrono::{Duration, Utc};
 use olog::info;
-use rust_decimal::Decimal;
-use serde::{Deserialize, Serialize};
-use serde_with::{serde_as, DurationSeconds};
 use thiserror::Error;
 
-use super::Reason;
+use super::{state::Status, Reason};
 use crate::{
-	Aggregate, Amount, EventSourcable, GithubUserId, PaymentEvent, PaymentId, PaymentReceipt,
-	PaymentReceiptId, PaymentWorkItem, PendingAggregate, ProjectId, UserId,
+	Aggregate, Amount, GithubUserId, PaymentEvent, PaymentId, PaymentReceipt, PaymentReceiptId,
+	ProjectId, UserId,
 };
 
-#[derive(Debug, Default, Clone, PartialEq, Eq, Serialize, Deserialize)]
-pub enum Status {
-	#[default]
-	Active,
-	Cancelled,
-}
-
-#[serde_as]
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-pub struct Payment {
-	pub id: PaymentId,
-	pub project_id: ProjectId,
-	pub requested_usd_amount: Decimal,
-	pub paid_usd_amount: Decimal,
-	pub status: Status,
-	pub recipient_id: GithubUserId,
-	pub requestor_id: UserId,
-	pub work_items: Vec<PaymentWorkItem>,
-	#[serde_as(as = "DurationSeconds<i64>")]
-	pub duration_worked: Duration,
-}
-
-impl Default for Payment {
-	fn default() -> Self {
-		Self {
-			duration_worked: Duration::seconds(0),
-			id: Default::default(),
-			project_id: Default::default(),
-			requested_usd_amount: Default::default(),
-			paid_usd_amount: Default::default(),
-			status: Default::default(),
-			recipient_id: Default::default(),
-			requestor_id: Default::default(),
-			work_items: Default::default(),
-		}
-	}
-}
-
-impl Aggregate for Payment {
-	type Event = PaymentEvent;
-	type Id = PaymentId;
-}
-
-impl EventSourcable for Payment {
-	fn apply_event(self, event: &Self::Event) -> Self {
-		match event {
-			PaymentEvent::Requested {
-				id,
-				amount,
-				recipient_id,
-				reason,
-				requestor_id,
-				duration_worked,
-				project_id,
-				..
-			} => Self {
-				id: *id,
-				project_id: *project_id,
-				requested_usd_amount: *amount.amount(), // TODO: handle currencies
-				recipient_id: *recipient_id,
-				work_items: reason.work_items.clone(),
-				requestor_id: *requestor_id,
-				duration_worked: *duration_worked,
-				..self
-			},
-			PaymentEvent::Cancelled { id: _ } => Self {
-				status: Status::Cancelled,
-				..self
-			},
-			PaymentEvent::Processed { amount, .. } => Self {
-				paid_usd_amount: self.paid_usd_amount + amount.amount(), // TODO: handle currencies
-				..self
-			},
-			PaymentEvent::InvoiceReceived { .. } | PaymentEvent::InvoiceRejected { .. } => self,
-		}
-	}
-}
+pub type Payment = Aggregate<super::state::State>;
 
 #[derive(Debug, Error, PartialEq, Eq)]
 pub enum Error {
@@ -99,7 +20,7 @@ pub enum Error {
 	Cancelled,
 }
 
-impl PendingAggregate<Payment> {
+impl Payment {
 	#[cfg_attr(feature = "cargo-clippy", allow(clippy::too_many_arguments))]
 	pub fn request(
 		id: PaymentId,
@@ -209,13 +130,12 @@ mod tests {
 
 	use assert_matches::assert_matches;
 	use rstest::{fixture, rstest};
+	use rust_decimal::Decimal;
 	use rust_decimal_macros::dec;
 	use uuid::Uuid;
 
 	use super::*;
-	use crate::{blockchain::*, currencies, PaymentReceiptId, UserId};
-
-	type Payment = PendingAggregate<super::Payment>;
+	use crate::{blockchain::*, currencies, EventSourcable, PaymentReceiptId, UserId};
 
 	pub const CONTRACT_ADDRESSES: [&str; 1] = ["0xd8da6bf26964af9d7eed9e03e53415d37aa96045"];
 

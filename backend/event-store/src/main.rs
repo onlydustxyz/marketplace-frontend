@@ -3,7 +3,7 @@ use std::sync::Arc;
 use ::olog::info;
 use anyhow::Result;
 use backend_domain::{
-	AggregateEvent, Destination, Event, Publisher, Subscriber, SubscriberCallbackError,
+	Destination, Event, Identified, Publisher, Subscriber, SubscriberCallbackError,
 };
 use backend_infrastructure::{
 	amqp::{self, Bus, UniqueMessage},
@@ -80,10 +80,10 @@ trait IdentifiableAggregate {
 impl IdentifiableAggregate for Event {
 	fn aggregate_id(&self) -> String {
 		match &self {
-			Event::Application(event) => event.aggregate_id().to_string(),
-			Event::Budget(event) => event.aggregate_id().to_string(),
-			Event::Payment(event) => event.aggregate_id().to_string(),
-			Event::Project(event) => event.aggregate_id().to_string(),
+			Event::Application(event) => event.id().to_string(),
+			Event::Budget(event) => event.id().to_string(),
+			Event::Payment(event) => event.id().to_string(),
+			Event::Project(event) => event.id().to_string(),
 		}
 	}
 }

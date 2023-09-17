@@ -10,8 +10,8 @@ mod aggregate;
 #[cfg(test)]
 pub use aggregate::MockRepository as MockAggregateRepository;
 pub use aggregate::{
-	Aggregate, Event as AggregateEvent, EventSourcable, PendingAggregate,
-	Repository as AggregateRepository, RepositoryError as AggregateRepositoryError,
+	Aggregate, EventSourcable, Identified, Repository as AggregateRepository,
+	RepositoryError as AggregateRepositoryError,
 };
 
 mod error;
@@ -25,29 +25,25 @@ pub use messaging::{
 
 mod project;
 pub use project::{
-	Error as ProjectError, Event as ProjectEvent, Id as ProjectId, Visibility as ProjectVisibility,
+	Error as ProjectError, Event as ProjectEvent, Id as ProjectId, Project,
+	Visibility as ProjectVisibility,
 };
 
 mod payment;
 pub use payment::{
-	Error as PaymentError, Event as PaymentEvent, Id as PaymentId, Reason as PaymentReason,
-	Receipt as PaymentReceipt, ReceiptId as PaymentReceiptId, Status as PaymentStatus,
-	WorkItem as PaymentWorkItem,
+	Error as PaymentError, Event as PaymentEvent, Id as PaymentId, Payment,
+	Reason as PaymentReason, Receipt as PaymentReceipt, ReceiptId as PaymentReceiptId,
+	Status as PaymentStatus, WorkItem as PaymentWorkItem,
 };
 
 mod application;
-pub use application::{Event as ApplicationEvent, Id as ApplicationId};
+pub use application::{Application, Event as ApplicationEvent, Id as ApplicationId};
 
 mod user;
 pub use user::Id as UserId;
 
 pub mod budget;
-pub use budget::{Error as BudgetError, Event as BudgetEvent, Id as BudgetId};
-
-pub type Application = PendingAggregate<application::Application>;
-pub type Budget = PendingAggregate<budget::Budget>;
-pub type Payment = PendingAggregate<payment::Payment>;
-pub type Project = PendingAggregate<project::Project>;
+pub use budget::{Budget, Error as BudgetError, Event as BudgetEvent, Id as BudgetId};
 
 mod github;
 pub use github::{

@@ -1,9 +1,9 @@
 use rust_decimal::Decimal;
 use thiserror::Error;
 
-use crate::{
-	sponsor, Aggregate, BudgetEvent, BudgetId, Currency, EventSourcable, PendingAggregate,
-};
+use crate::{sponsor, Aggregate, BudgetEvent, BudgetId, Currency};
+
+pub type Budget = Aggregate<super::state::State>;
 
 #[derive(Debug, Error, PartialEq, Eq)]
 pub enum Error {
@@ -13,14 +13,7 @@ pub enum Error {
 
 type Result<T> = std::result::Result<T, Error>;
 
-#[derive(Default, Debug, Clone, PartialEq, Eq)]
-pub struct Budget {
-	pub id: BudgetId,
-	pub allocated_amount: Decimal,
-	pub spent_amount: Decimal,
-}
-
-impl PendingAggregate<Budget> {
+impl Budget {
 	pub fn create(id: BudgetId, currency: &'static Currency) -> Self {
 		Self::from_pending_events(vec![BudgetEvent::Created { id, currency }])
 	}
@@ -53,32 +46,6 @@ impl PendingAggregate<Budget> {
 	}
 }
 
-impl Aggregate for Budget {
-	type Event = BudgetEvent;
-	type Id = BudgetId;
-}
-
-impl EventSourcable for Budget {
-	fn apply_event(self, event: &Self::Event) -> Self {
-		match event {
-			BudgetEvent::Created { id, .. } => Self {
-				id: *id,
-				allocated_amount: Decimal::ZERO,
-				spent_amount: Decimal::ZERO,
-			},
-			BudgetEvent::Allocated { id, amount, .. } => Self {
-				id: *id,
-				allocated_amount: self.allocated_amount + amount,
-				..self
-			},
-			BudgetEvent::Spent { amount, .. } => Self {
-				spent_amount: self.spent_amount + amount,
-				..self
-			},
-		}
-	}
-}
-
 #[cfg(test)]
 mod tests {
 	use rstest::*;
@@ -86,9 +53,7 @@ mod tests {
 	use uuid::Uuid;
 
 	use super::*;
-	use crate::*;
-
-	type Budget = PendingAggregate<super::Budget>;
+	use crate::{currencies, EventSourcable};
 
 	#[fixture]
 	#[once]

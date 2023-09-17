@@ -3,7 +3,7 @@ use std::collections::HashSet;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
-use crate::*;
+use crate::{aggregate::Identified, *};
 
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct Entity {
@@ -46,10 +46,10 @@ pub enum AggregateId {
 impl From<Event> for AggregateId {
 	fn from(event: Event) -> Self {
 		match event {
-			Event::Project(e) => Self::Project(*e.aggregate_id()),
-			Event::Application(e) => Self::Application(*e.aggregate_id()),
-			Event::Budget(e) => Self::Budget(*e.aggregate_id()),
-			Event::Payment(e) => Self::Payment(*e.aggregate_id()),
+			Event::Project(e) => Self::Project(*e.id()),
+			Event::Application(e) => Self::Application(*e.id()),
+			Event::Budget(e) => Self::Budget(*e.id()),
+			Event::Payment(e) => Self::Payment(*e.id()),
 		}
 	}
 }
