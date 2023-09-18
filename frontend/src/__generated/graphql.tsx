@@ -12419,7 +12419,8 @@ export type Mutation_RootRemoveSponsorFromProjectArgs = {
 
 /** mutation root */
 export type Mutation_RootRequestPaymentArgs = {
-  amountInUsd: Scalars['Int'];
+  amount: Scalars['String'];
+  currency: Scalars['String'];
   hoursWorked: Scalars['Int'];
   projectId: Scalars['Uuid'];
   reason: Reason;
@@ -17324,7 +17325,8 @@ export type GetPaymentRequestsForProjectQueryVariables = Exact<{
 export type GetPaymentRequestsForProjectQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', usdBudget: { __typename?: 'Budgets', initialAmount: any | null, remainingAmount: any | null } | null }>, paymentRequests: Array<{ __typename?: 'PaymentRequests', recipientId: any, amountInUsd: any, requestedAt: any, id: any, githubRecipient: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null }, workItemsAggregate: { __typename?: 'WorkItemsAggregate', aggregate: { __typename?: 'WorkItemsAggregateFields', count: number } | null } }> };
 
 export type RequestPaymentMutationVariables = Exact<{
-  amount: Scalars['Int'];
+  amount: Scalars['String'];
+  currency: Scalars['String'];
   contributorId: Scalars['Int'];
   hoursWorked: Scalars['Int'];
   projectId: Scalars['Uuid'];
@@ -19570,9 +19572,10 @@ export type GetPaymentRequestsForProjectQueryHookResult = ReturnType<typeof useG
 export type GetPaymentRequestsForProjectLazyQueryHookResult = ReturnType<typeof useGetPaymentRequestsForProjectLazyQuery>;
 export type GetPaymentRequestsForProjectQueryResult = Apollo.QueryResult<GetPaymentRequestsForProjectQuery, GetPaymentRequestsForProjectQueryVariables>;
 export const RequestPaymentDocument = gql`
-    mutation RequestPayment($amount: Int!, $contributorId: Int!, $hoursWorked: Int!, $projectId: Uuid!, $reason: Reason!) {
+    mutation RequestPayment($amount: String!, $currency: String!, $contributorId: Int!, $hoursWorked: Int!, $projectId: Uuid!, $reason: Reason!) {
   requestPayment(
-    amountInUsd: $amount
+    amount: $amount
+    currency: $currency
     hoursWorked: $hoursWorked
     projectId: $projectId
     reason: $reason
@@ -19599,6 +19602,7 @@ export type RequestPaymentMutationFn = Apollo.MutationFunction<RequestPaymentMut
  * const [requestPaymentMutation, { data, loading, error }] = useRequestPaymentMutation({
  *   variables: {
  *      amount: // value for 'amount'
+ *      currency: // value for 'currency'
  *      contributorId: // value for 'contributorId'
  *      hoursWorked: // value for 'hoursWorked'
  *      projectId: // value for 'projectId'
