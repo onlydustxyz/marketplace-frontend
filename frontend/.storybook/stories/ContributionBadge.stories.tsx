@@ -24,18 +24,21 @@ export default {
   },
 };
 
+const defaultProps: React.ComponentProps<typeof ContributionBadge> = {
+  id: "123",
+  status: ContributionBadgeStatus.Open,
+  type: ContributionBadgeType.PR,
+};
+
 export const Default = {
-  render: (args: typeof ContributionBadge) => <ContributionBadge id="123" {...args} />,
+  render: (args: typeof ContributionBadge) => <ContributionBadge {...defaultProps} {...args} />,
+};
+
+const externalProps: React.ComponentProps<typeof ContributionBadge> = {
+  ...defaultProps,
+  external: true,
 };
 
 export const AsExternal = {
-  render: (args: typeof ContributionBadge) => <ContributionBadge id="123" external {...args} />,
+  render: (args: typeof ContributionBadge) => <ContributionBadge {...externalProps} {...args} />,
 };
-
-// export const IconOnly = {
-//   render: (args: typeof Button) => (
-//     <Button iconOnly {...args}>
-//       <i className="ri-send-plane-2-line" />
-//     </Button>
-//   ),
-// };
