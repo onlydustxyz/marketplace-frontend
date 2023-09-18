@@ -30,13 +30,19 @@ export type User = UserFixture & {
   session: string;
 };
 
+export type Allocation = {
+  amount: number;
+  currency: string;
+  sponsor?: string;
+};
+
 export type ProjectFixture = {
   name: string;
   shortDescription: string;
   longDescription: string;
   telegramLink: Url | null;
   logoUrl: Url | null;
-  initialBudget: number | null;
+  initialBudget: Allocation | null;
   leaders?: string[];
   pendingLeaderInvitations?: string[];
   repos?: string[];

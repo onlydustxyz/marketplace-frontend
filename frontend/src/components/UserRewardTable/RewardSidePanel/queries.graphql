@@ -34,11 +34,8 @@ query PaymentRequestDetails($id: uuid!) {
   }
 }
 
-mutation CancelPaymentRequest($projectId: Uuid!, $paymentId: Uuid!) {
-  cancelPaymentRequest(projectId: $projectId, paymentId: $paymentId) {
-    projectId
-    budgetId
-    paymentId
-    amount
+mutation CancelPaymentRequest($paymentId: Uuid!) {
+  cancelPaymentRequest(paymentId: $paymentId) {
+    commandId
   }
 }

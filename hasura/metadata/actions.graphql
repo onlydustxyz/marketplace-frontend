@@ -43,7 +43,7 @@ type Mutation {
     amountInUsd: Int!
     hoursWorked: Int!
     reason: Reason!
-  ): Command!
+  ): PaymentRequestResponse!
 }
 
 type Query {
@@ -288,6 +288,11 @@ type Payment {
 }
 
 type Command {
+  commandId: Uuid!
+}
+
+type PaymentRequestResponse {
+  paymentId: Uuid!
   commandId: Uuid!
 }
 

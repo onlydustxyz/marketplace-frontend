@@ -59,7 +59,7 @@ export function RewardSidePanelAsLeader({
   const { notify } = useCommands();
 
   const [cancelPaymentRequest] = useCancelPaymentRequestMutation({
-    variables: { projectId, paymentId: rewardId },
+    variables: { paymentId: rewardId },
     context: { graphqlErrorDisplay: "toaster" },
     onCompleted: () => {
       notify(projectId);

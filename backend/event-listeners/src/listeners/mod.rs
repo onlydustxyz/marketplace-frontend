@@ -65,7 +65,7 @@ pub async fn spawn_all(
 				.into_command_subscriber(database.clone()),
 		),
 		application::Projector::new(database.clone()).spawn(
-			event_bus::event_consumer(config.amqp.clone(), "projects")
+			event_bus::event_consumer(config.amqp.clone(), "applications")
 				.await?
 				.into_command_subscriber(database.clone()),
 		),
@@ -78,7 +78,7 @@ pub async fn spawn_all(
 			database.clone(),
 		)
 		.spawn(
-			event_bus::event_consumer(config.amqp.clone(), "projects")
+			event_bus::event_consumer(config.amqp.clone(), "payments")
 				.await?
 				.into_command_subscriber(database.clone()),
 		),

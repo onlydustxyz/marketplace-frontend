@@ -151,16 +151,12 @@ const paymentRequestsMock = {
             },
           ],
           invoiceReceivedAt: null,
-          budget: {
-            __typename: "Budgets",
-            id: "budget-1",
-            project: {
-              __typename: "Projects",
-              id: "632d5da7-e590-4815-85ea-82a5585e6049",
-              shortDescription: "SOOOOOO awesome",
-              logoUrl: null,
-              name: "MyAwesomeProject",
-            },
+          project: {
+            __typename: "Projects",
+            id: "632d5da7-e590-4815-85ea-82a5585e6049",
+            shortDescription: "SOOOOOO awesome",
+            logoUrl: null,
+            name: "MyAwesomeProject",
           },
         },
       ],

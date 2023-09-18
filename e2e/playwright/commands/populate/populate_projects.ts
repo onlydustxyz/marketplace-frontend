@@ -1,11 +1,9 @@
-import { projects as projectFixtures } from "../../fixtures/data/projects";
+import { projects as projectFixtures, projects } from "../../fixtures/data/projects";
+import { create as createProject } from "../project";
 import { repos } from "../../fixtures/data/repos";
 import { zip } from "lodash";
 import { User, ProjectFixture, Sponsor, Project } from "../../types";
 import {
-  CreateProjectMutation,
-  CreateProjectDocument,
-  CreateProjectMutationVariables,
   InviteProjectLeaderDocument,
   InviteProjectLeaderMutation,
   InviteProjectLeaderMutationVariables,
@@ -33,18 +31,13 @@ const populateProject = async (
   users: Record<string, User>,
   sponsors: Record<string, Sponsor>
 ) => {
-  const { data } = await mutateAsAdmin<CreateProjectMutation, CreateProjectMutationVariables>({
-    mutation: CreateProjectDocument,
-    variables: {
-      ...project,
-      hiring: project.hiring ?? null,
-      rank: project.rank ?? null,
-      visibility: project.visibility ?? null,
-    },
+  const { projectId } = await createProject({
+    ...project,
+    hiring: project.hiring ?? null,
+    rank: project.rank ?? null,
+    visibility: project.visibility ?? null,
   });
   await waitEvents();
-
-  const projectId = data?.createProject;
 
   const projectKeyQuery = await queryAsAdmin<GetProjectKeyQuery, GetProjectKeyQueryVariables>({
     query: GetProjectKeyDocument,
