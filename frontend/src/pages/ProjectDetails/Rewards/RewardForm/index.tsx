@@ -120,7 +120,8 @@ const mapFormDataToVariables = (projectId: string, { workItems, amountToWire, ho
   return {
     projectId,
     contributorId: contributor.githubUserId,
-    amount: amountToWire,
+    amount: amountToWire.toFixed(2),
+    currency: "USD",
     hoursWorked,
     reason: { workItems },
   };
