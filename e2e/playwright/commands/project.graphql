@@ -1,27 +1,3 @@
-mutation createProject(
-  $name: String!
-  $telegramLink: Url!
-  $logoUrl: Url!
-  $shortDescription: String!
-  $longDescription: String!
-  $initialBudget: Int
-  $hiring: Boolean
-  $rank: Int
-  $visibility: Visibility
-) {
-  createProject(
-    name: $name
-    telegramLink: $telegramLink
-    logoUrl: $logoUrl
-    shortDescription: $shortDescription
-    longDescription: $longDescription
-    initialBudget: $initialBudget
-    hiring: $hiring
-    rank: $rank
-    visibility: $visibility
-  )
-}
-
 mutation updateProject(
   $projectId: Uuid!
   $name: String
@@ -46,22 +22,10 @@ mutation updateProject(
   )
 }
 
-query getProjectBudget($projectId: uuid!) {
-  projects(where: { id: { _eq: $projectId } }) {
-    budgets {
-      id
-    }
-  }
-}
-
 query getProjectKey($projectId: uuid!) {
   projects(where: { id: { _eq: $projectId } }) {
     key
   }
-}
-
-mutation updateBudgetAllocation($projectId: Uuid!, $amount: Int!) {
-  updateBudgetAllocation(projectId: $projectId, newRemainingAmountInUsd: $amount)
 }
 
 mutation linkGithubRepo($projectId: Uuid!, $githubRepoId: Int!) {

@@ -52,14 +52,11 @@ const mockContribution: UserPaymentRequestFragment = {
       githubPullRequest: null,
     },
   ],
-  budget: {
-    id: "budget-1",
-    project: {
-      id: "632d5da7-e590-4815-85ea-82a5585e6049",
-      shortDescription: "SOOOOOO awesome",
-      logoUrl: null,
-      name: "MyAwesomeProject",
-    },
+  project: {
+    id: "632d5da7-e590-4815-85ea-82a5585e6049",
+    shortDescription: "SOOOOOO awesome",
+    logoUrl: null,
+    name: "MyAwesomeProject",
   },
   invoiceReceivedAt: null,
 };
@@ -128,7 +125,7 @@ describe('"Rewards" page', () => {
     });
 
     expect(await screen.findByText("#705E6 · 1 contribution")).toBeInTheDocument();
-    expect(await screen.findByText(mockContribution.budget?.project?.name || "")).toBeInTheDocument();
+    expect(await screen.findByText(mockContribution.project?.name || "")).toBeInTheDocument();
     expect(await screen.findAllByText("$200")).toHaveLength(2);
     expect(await screen.findAllByText(/Payout info missing/i)).toHaveLength(1);
   });

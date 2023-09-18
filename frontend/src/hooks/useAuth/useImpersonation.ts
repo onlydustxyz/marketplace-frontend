@@ -34,7 +34,7 @@ export const useImpersonation = () => {
       clearImpersonationSet();
     },
   });
-  const impersonating = !!impersonatedUserQuery.data;
+  const impersonating = !!(impersonatedUserQuery.data || impersonatedUserQuery.loading);
 
   const invalidImpersonation = !!impersonatedUserQuery.error;
 
