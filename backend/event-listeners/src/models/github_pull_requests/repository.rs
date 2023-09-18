@@ -3,7 +3,10 @@ use infrastructure::{
 	contextualized_error::IntoContextualizedError,
 	database,
 	database::{
-		schema::{github_pull_request_commits, github_pull_request_reviews, github_pull_requests},
+		schema::{
+			closing_issues, github_pull_request_commits, github_pull_request_reviews,
+			github_pull_requests,
+		},
 		Result,
 	},
 };
@@ -41,6 +44,18 @@ impl Repository for database::Client {
 
 					diesel::insert_into(github_pull_request_reviews::table)
 						.values(reviews)
+						.on_conflict_do_nothing()
+						.execute(&mut *connection)?;
+				}
+
+				if let Some(closing_issues) = pull_request.closing_issues {
+					diesel::delete(closing_issues::table.filter(
+						closing_issues::github_pull_request_id.eq(pull_request.inner.id),
+					))
+					.execute(&mut *connection)?;
+
+					diesel::insert_into(closing_issues::table)
+						.values(closing_issues)
 						.on_conflict_do_nothing()
 						.execute(&mut *connection)?;
 				}

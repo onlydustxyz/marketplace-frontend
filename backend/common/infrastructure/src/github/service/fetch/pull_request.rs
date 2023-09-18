@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use async_trait::async_trait;
 use domain::{
-	GithubCodeReview, GithubCommit, GithubFetchPullRequestService, GithubIssueNumber,
+	GithubCodeReview, GithubCommit, GithubFetchPullRequestService, GithubIssueId,
 	GithubPullRequest, GithubPullRequestNumber, GithubRepoId, GithubServiceError,
 	GithubServicePullRequestFilters, GithubServiceResult, GithubUserId, LogErr,
 };
@@ -119,8 +119,8 @@ impl GithubFetchPullRequestService for github::Client {
 		repo_owner: String,
 		repo_name: String,
 		pull_request_number: GithubPullRequestNumber,
-	) -> GithubServiceResult<Vec<GithubIssueNumber>> {
-		let issues = self.get_closing_issues(repo_owner, repo_name, pull_request_number).await?;
-		Ok(issues)
+	) -> GithubServiceResult<Vec<GithubIssueId>> {
+		let issue_ids = self.get_closing_issues(repo_owner, repo_name, pull_request_number).await?;
+		Ok(issue_ids)
 	}
 }

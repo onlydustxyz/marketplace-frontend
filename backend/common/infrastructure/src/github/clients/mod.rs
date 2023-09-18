@@ -3,9 +3,9 @@ use std::{fmt::Debug, future, pin::Pin, sync::Arc};
 use anyhow::{anyhow, Context};
 use domain::{
 	stream_filter::{self, StreamFilterWith},
-	GithubFullUser, GithubIssue, GithubIssueNumber, GithubPullRequest, GithubPullRequestNumber,
-	GithubRepoId, GithubServiceIssueFilters, GithubServicePullRequestFilters, GithubUser,
-	GithubUserId, Languages, LogErr, PositiveCount,
+	GithubFullUser, GithubIssue, GithubIssueId, GithubIssueNumber, GithubPullRequest,
+	GithubPullRequestNumber, GithubRepoId, GithubServiceIssueFilters,
+	GithubServicePullRequestFilters, GithubUser, GithubUserId, Languages, LogErr, PositiveCount,
 };
 use futures::{stream::empty, Stream, StreamExt, TryStreamExt};
 use octocrab::{
@@ -323,7 +323,7 @@ impl Client {
 		repo_owner: String,
 		repo_name: String,
 		pull_request_number: GithubPullRequestNumber,
-	) -> Result<Vec<GithubIssueNumber>, Error> {
+	) -> Result<Vec<GithubIssueId>, Error> {
 		let response: serde_json::Value = self
 			.octocrab()
 			.post(
@@ -334,7 +334,7 @@ impl Client {
 						 pullRequest(number: $number) {
 						   closingIssuesReferences(first: 10) {
 							 nodes {
-							   number
+							   databaseId
 							 }
 						   }
 						 }
@@ -349,22 +349,22 @@ impl Client {
 			)
 			.await?;
 
-		let issue_numbers = response
+		let issue_ids = response
 			.pointer("/data/repository/pullRequest/closingIssuesReferences/nodes")
 			.and_then(|nodes| {
 				nodes.as_array().map(|nodes| {
 					nodes
 						.iter()
 						.filter_map(|node| {
-							node.pointer("/number")
-								.and_then(|number| number.as_i64().map(GithubIssueNumber::from))
+							node.pointer("/databaseId")
+								.and_then(|id| id.as_i64().map(GithubIssueId::from))
 						})
 						.collect::<Vec<_>>()
 				})
 			})
 			.unwrap_or_default();
 
-		Ok(issue_numbers)
+		Ok(issue_ids)
 	}
 
 	#[instrument(skip(self))]
