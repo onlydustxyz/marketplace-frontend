@@ -76,9 +76,11 @@ export type PaymentFixture = {
 };
 
 export type PaymentItem = {
-  amount: number;
+  amount: string;
+  currency: string;
   reason: Reason;
   receipts?: PaymentReceipt[];
+  hoursWorked: number;
 };
 
 export type PaymentReceipt = {
