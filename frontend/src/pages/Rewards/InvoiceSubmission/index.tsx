@@ -21,14 +21,12 @@ export default function InvoiceSubmission({ paymentRequests, githubUserId, userI
   const showToaster = useShowToaster();
 
   const [markInvoiceAsReceived] = useMarkInvoiceAsReceivedMutation({
-    variables: { paymentReferences: paymentRequests.map(p => ({ projectId: p.project?.id || "", paymentId: p.id })) },
+    variables: { payments: paymentRequests.map(p => p.id) },
     context: { graphqlErrorDisplay: "toaster" },
     onCompleted: () => showToaster(T("invoiceSubmission.toaster.success")),
     update: (cache, _, { variables }) => {
-      const { paymentReferences } = variables as MarkInvoiceAsReceivedMutationVariables;
-      const paymentIds = Array.isArray(paymentReferences)
-        ? paymentReferences.map(p => p.paymentId)
-        : [paymentReferences.paymentId];
+      const { payments } = variables as MarkInvoiceAsReceivedMutationVariables;
+      const paymentIds = [payments].flat();
 
       paymentIds.map(id => {
         cache.modify({

@@ -51,11 +51,7 @@ const PROJECT: Project = {
     { __typename: "ProjectGithubRepos", ...githubRepo1 },
     { __typename: "ProjectGithubRepos", ...githubRepo2 },
   ],
-  budgetsAggregate: {
-    aggregate: {
-      count: 1,
-    },
-  },
+  usdBudgetId: "budget-id",
   pendingInvitations: [{ id: "croute", githubUserId: "github-user-id" }],
   sponsors: [
     {

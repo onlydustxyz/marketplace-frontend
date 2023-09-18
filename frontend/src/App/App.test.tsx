@@ -118,7 +118,7 @@ const ALL_PROJECTS_RESULT: { data: GetProjectsQueryResult["data"] } = {
           },
         ],
         sponsors: [],
-        budgetsAggregate: { aggregate: { count: 1 } },
+        usdBudgetId: "budget-id",
       },
     ],
   },
@@ -161,7 +161,7 @@ const PROJECT_OVERVIEW_DETAILS_RESULT: { data: GetProjectOverviewDetailsQueryRes
         hiring: false,
         visibility: "public",
         pendingInvitations: [],
-        budgetsAggregate: { aggregate: { sum: { initialAmount: 0, spentAmount: 0 } } },
+        usdBudget: { initialAmount: 0, spentAmount: 0 },
         contributors: [
           {
             githubUser: {
@@ -225,7 +225,7 @@ const graphQlMocks = [
             projectLeads: [],
             contributorsAggregate: { aggregate: { count: 0 } },
             githubReposAggregate: { aggregate: { count: 1 } },
-            budgetsAggregate: { aggregate: { count: 1 } },
+            usdBudgetId: "budget-id",
             contributors: [],
             pendingContributors: [],
             rewardedUsers: [],

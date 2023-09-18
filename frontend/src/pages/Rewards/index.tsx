@@ -80,7 +80,7 @@ const Rewards = () => {
 
 const mapApiPaymentsToProps = (apiPayment: UserPaymentRequestFragment): Reward => {
   const amount = { value: apiPayment.amountInUsd, currency: Currency.USD };
-  const project = apiPayment.budget?.project;
+  const project = apiPayment.project;
   const requestedAt = apiPayment.requestedAt;
   const getPaidAmount = (payments: { amount: number }[]) =>
     payments?.reduce((total: number, payment: { amount: number }) => total + payment.amount, 0);
