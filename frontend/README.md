@@ -8,13 +8,11 @@ Install [Vite](https://vitejs.dev/) - with Homebrew:
 brew install vite
 ```
 
-
 Install packages with:
 
 ```
 yarn
 ```
-
 
 You can then start the frontend with:
 
@@ -28,7 +26,6 @@ If you plan on running end-to-end tests, use:
 yarn dev ---host
 ```
 
-
 ### Codegen
 
 A code generation plugin is used to automatically generate Typescript types for the frontend,
@@ -38,6 +35,13 @@ It can be launched in watch mode with the following command :
 
 ```
 yarn generate --watch
+```
+
+### Install LibPQ (MacOS w/ ARM64)
+
+```
+brew install libpq
+brew link --force libpq
 ```
 
 ### LazyNPM (experimental)
@@ -83,14 +87,13 @@ yarn storybook
 
 This will open an interface (accessible by default [locally on the 6006 port](http://localhost:6006)).
 
-For each component, a *Docs* section displays the generated documentation for the component :
+For each component, a _Docs_ section displays the generated documentation for the component :
 
 ![Storybook docs](./pictures/storybook-docs.png)
 
 Then, there is a section for each story, with the relevant parameters that can be modified to see the variants of a component.
 
 ![Storybook story](./pictures/storybook-story.png)
-
 
 #### Creating a story
 
@@ -104,12 +107,12 @@ Complex logic for a use case - particularly with complex `useEffect` calls - sho
 
 See the React documentation about [when to use custom hooks](https://react.dev/learn/reusing-logic-with-custom-hooks#when-to-use-custom-hooks).
 
-*Beware that custom hooks don't share state between components in which they are used* - in order to achieve this, you need to use a `Context`.
+_Beware that custom hooks don't share state between components in which they are used_ - in order to achieve this, you need to use a `Context`.
 See this [article by Kent C. Dodds](https://kentcdodds.com/blog/how-to-use-react-context-effectively) on the subject.
 
 ### Rule of three
 
->Two instances of similar code do not require refactoring, but when similar code is used three times, it should be extracted into a new procedure.
+> Two instances of similar code do not require refactoring, but when similar code is used three times, it should be extracted into a new procedure.
 
 ### Container and Presentational Components
 
@@ -132,13 +135,12 @@ Components that have complex logic, queries, etc ... should be split in two file
 
 Example:
 
-
 `index.tsx`
 
 ```tsx
 export default function Component() {
-  const {data} = useQuery<T>(MY_QUERY);
-  return <View items={data} />
+  const { data } = useQuery<T>(MY_QUERY);
+  return <View items={data} />;
 }
 ```
 
@@ -146,13 +148,11 @@ export default function Component() {
 
 ```tsx
 interface ComponentViewProps {
-  data: T
+  data: T;
 }
 
-export default function ComponentView({data} : ComponentViewProps) {
-  return <div className="flex flex-row px-6 align-center">
-           // ...
-		 </div>
+export default function ComponentView({ data }: ComponentViewProps) {
+  return <div className="align-center flex flex-row px-6">// ...</div>;
 }
 ```
 
@@ -205,7 +205,7 @@ The `gql` template literal is imported from the `@apollo/client` package. It is 
 Here's an example of how the `gql` template literal is used to define the query:
 
 ```typescript
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 const GetGithubRepositoryDetails = gql`
   query GetGithubRepositoryDetails($githubRepoId: bigint) {
@@ -226,7 +226,7 @@ The `GetGithubRepositoryDetails` query fetches the details of a GitHub repositor
 
 The `gql` template literal allows for writing GraphQL queries in a readable and type-safe manner within JavaScript or TypeScript code. It also enables tools like Apollo Client to parse and validate the queries at build time.
 
-In the above example, the query is written inside the component, but *ideally the query should be written in a `queries.graphql` or `mutations.graphql` file, colocated with the relevant component*, just writing what is in the `gql` tag with the relevant fragments defined before being used, i.e.:
+In the above example, the query is written inside the component, but _ideally the query should be written in a `queries.graphql` or `mutations.graphql` file, colocated with the relevant component_, just writing what is in the `gql` tag with the relevant fragments defined before being used, i.e.:
 
 ```graphql
 fragment GithubRepo on GithubRepo {
@@ -251,7 +251,7 @@ To use the hook, the `githubRepoId` prop is passed as a variable to the query. T
 Here's an example of how the `useGetGithubRepositoryDetailsQuery` hook is used in the `GithubRepoDetails` component:
 
 ```tsx
-import { useGetGithubRepositoryDetailsQuery } from 'src/__generated/graphql';
+import { useGetGithubRepositoryDetailsQuery } from "src/__generated/graphql";
 
 const GithubRepoDetails: React.FC<{ githubRepoId: number }> = ({ githubRepoId }) => {
   const { data } = useGetGithubRepositoryDetailsQuery({
@@ -325,9 +325,7 @@ There is another example of this with the `useRoles` hook:
 
 ```typescript
 it("should update the loggedIn flag when a token is given", () => {
-  const { result, rerender } = renderHook(
-    (accessToken?: AccessToken) => useRoles(accessToken)
-  );
+  const { result, rerender } = renderHook((accessToken?: AccessToken) => useRoles(accessToken));
   expect(result.current.isLoggedIn).toBeFalsy();
 
   const jwtString = "some-token" as AccessToken;
@@ -375,7 +373,7 @@ yarn run playwright test --grep TEST_NAME_SUBSTRING
 
 ### Debug mode
 
-Tests can be run in *debug mode*, i.e. line-per-line with a debugger, using the following command:
+Tests can be run in _debug mode_, i.e. line-per-line with a debugger, using the following command:
 
 ```
 yarn run playwright test --grep TEST_NAME_SUBSTRING --debug --reporter line
@@ -408,7 +406,6 @@ For the platform:
 
 `https://develop.app.onlydust.xyz/`
 
-
 For Hasura:
 
 `http://develop.hasura.onlydust.xyz`
@@ -423,7 +420,7 @@ Staging deployment can be done using the following command:
 
 This will run a script with several prompts.
 
-At one point, environment variables that have changed compared to the last deployment will be listed. If they haven't been updated yet on Heroku or Vercel ([see here](./getting-started#websites)), now is the time to do it. You should also update the variables for the *production* environment.
+At one point, environment variables that have changed compared to the last deployment will be listed. If they haven't been updated yet on Heroku or Vercel ([see here](./getting-started#websites)), now is the time to do it. You should also update the variables for the _production_ environment.
 
 ### Launching the QA session
 
@@ -447,22 +444,22 @@ At one point, environment variables that have changed compared to the last deplo
 
 ### Bugs
 
-*Bugs* should be taken in priority when possible.
-They can be found in the *Backlog* column of the *Engineering* board.
+_Bugs_ should be taken in priority when possible.
+They can be found in the _Backlog_ column of the _Engineering_ board.
 
 ### Features
 
-*Features* can also be found in the *Backlog* column of the *Engineering* board, and are sorted in descending priority order.
+_Features_ can also be found in the _Backlog_ column of the _Engineering_ board, and are sorted in descending priority order.
 
 #### Feature specification
 
 It can be useful to write a breakdown of the necessary steps to complete a task.
 
-This can either be done in the Engineering ticket itself or by creating subtasks in the *Build* board.
+This can either be done in the Engineering ticket itself or by creating subtasks in the _Build_ board.
 
-Creating subtasks can be achieved by clicking the *Add sub-issues* button on the ticket.
+Creating subtasks can be achieved by clicking the _Add sub-issues_ button on the ticket.
 
-Don't forget to choose the *Build* board as shown below:
+Don't forget to choose the _Build_ board as shown below:
 
 ![adding a task to the Build board](./pictures/add-task-build-board.png)
 
@@ -494,7 +491,7 @@ yarn hasura:console:start
 
 Access the GraphiQL interface (test tube icon tab) of the [local Hasura console](http://localhost:9695).
 
-Add a *mutation* in the lower left corner, and choose the `createProject` mutation - with as parameters (for example):
+Add a _mutation_ in the lower left corner, and choose the `createProject` mutation - with as parameters (for example):
 
 ```typescript
 mutation MyMutation {
@@ -524,7 +521,7 @@ Then, save the project ID that is displayed by the interface, e.g.:
 }
 ```
 
-Finally, you need to invite yourself as a project leader. To achieve this, you will need the project ID shown above as well as you GitHub user ID, which can be found using the *GitHub users API*, for example: https://api.github.com/users/oscarwroche .
+Finally, you need to invite yourself as a project leader. To achieve this, you will need the project ID shown above as well as you GitHub user ID, which can be found using the _GitHub users API_, for example: https://api.github.com/users/oscarwroche .
 
 ```typescript
 mutation MyMutation {
@@ -539,11 +536,11 @@ Then, go to the marketplace's home page, logged in as the aforementioned GitHub 
 
 #### Linking a GitHub repo
 
-*It is important to follow these instructions, otherwise multiple issues will be created on public repositories when sending a payment request*
+_It is important to follow these instructions, otherwise multiple issues will be created on public repositories when sending a payment request_
 
-*Fork* an existing repo with the *onlydustxyz* oragnization.
+_Fork_ an existing repo with the _onlydustxyz_ oragnization.
 
-Then, call the `linkGithubRepo` mutation using the project ID shown above, and the ID of this repo, which can be found thanks to the *Github Repos API*, for example: https://api.github.com/repos/facebook/react .
+Then, call the `linkGithubRepo` mutation using the project ID shown above, and the ID of this repo, which can be found thanks to the _Github Repos API_, for example: https://api.github.com/repos/facebook/react .
 
 ```typescript
 mutation MyMutation {
@@ -613,7 +610,7 @@ import App, { RoutePaths } from "src/App";
 
 render(<App />, {
   wrapper: MemoryRouterProviderFactory({
-	route: `${RoutePaths.Projects}`,
+    route: `${RoutePaths.Projects}`,
   }),
 });
 ```
@@ -632,7 +629,7 @@ const ALL_PROJECTS_RESULT: { data: GetProjectsQueryResult["data"] } = {
       {
         __typename: "Projects",
         id: TEST_PROJECT_ID,
-		// add other fields
+        // add other fields
       },
     ],
   },
@@ -652,7 +649,7 @@ const graphQlMocks = [
 
 render(<App />, {
   wrapper: MemoryRouterProviderFactory({
-	mocks: graphQlMocks,
+    mocks: graphQlMocks,
   }),
 });
 ```
