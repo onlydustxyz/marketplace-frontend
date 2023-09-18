@@ -40,7 +40,8 @@ type Mutation {
   requestPayment(
     projectId: Uuid!
     recipientId: Int!
-    amountInUsd: Int!
+    amount: String!
+    currency: String!
     hoursWorked: Int!
     reason: Reason!
   ): PaymentRequestResponse!
