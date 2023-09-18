@@ -9,11 +9,8 @@ import {
   LinkGithubRepoMutation,
   LinkGithubRepoDocument,
   LinkGithubRepoMutationVariables,
-  UpdateBudgetAllocationMutation,
-  UpdateBudgetAllocationDocument,
-  UpdateBudgetAllocationMutationVariables,
 } from "../__generated/graphql";
-import { mutateAsAdmin, mutateAsRegisteredUser } from "./common";
+import { fetchAsAdmin, getEnv, mutateAsAdmin, mutateAsRegisteredUser } from "./common";
 
 export const addProjectLeader = async (projectId: Uuid, githubUserId: number, userToken: string) => {
   const response = await mutateAsAdmin<InviteProjectLeaderMutation, InviteProjectLeaderMutationVariables>({
@@ -44,11 +41,16 @@ export const linkRepo = async (projectId: Uuid, githubRepoId: number) =>
     },
   });
 
-export const setBudgetAllocation = async (projectId: Uuid, amount: number) =>
-  await mutateAsAdmin<UpdateBudgetAllocationMutation, UpdateBudgetAllocationMutationVariables>({
-    mutation: UpdateBudgetAllocationDocument,
-    variables: {
-      projectId,
+export const setBudgetAllocation = async (projectId: Uuid, amount: number) => {
+  const response = await fetch(`${getEnv("VITE_API_BASE_URL")}/projects/${projectId}/budget`, {
+    method: "PUT",
+    body: JSON.stringify({
       amount,
-    },
+      currency: "USD",
+    }),
   });
+
+  return await response.json();
+};
+
+export const create = async <T>(args: T) => fetchAsAdmin("projects", "POST", args);
