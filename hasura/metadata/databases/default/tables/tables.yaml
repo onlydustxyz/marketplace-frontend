@@ -25,6 +25,7 @@
 - "!include auth_users.yaml"
 - "!include public_applications.yaml"
 - "!include public_budgets.yaml"
+- "!include public_github_pull_request_commits.yaml"
 - "!include public_github_users.yaml"
 - "!include public_onboardings.yaml"
 - "!include public_payment_requests.yaml"

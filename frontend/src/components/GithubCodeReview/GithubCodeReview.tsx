@@ -4,18 +4,17 @@ import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import Subtract from "src/icons/SubtractLine";
 import Time from "src/icons/TimeLine";
 import displayRelativeDate from "src/utils/displayRelativeDate";
-import { parseIssueLink } from "src/utils/github";
+import { parsePullRequestLink } from "src/utils/github";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import Card from "src/components/Card";
-import GithubIssueLink from "./GithubIssueLink";
-import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
-import IssueCancelled from "src/assets/icons/IssueCancelled";
-import IssueOpen from "src/assets/icons/IssueOpen";
 import EyeOffLine from "src/icons/EyeOffLine";
 import EyeLine from "src/icons/EyeLine";
 import classNames from "classnames";
 import { withTooltip } from "src/components/Tooltip";
-import { GithubIssueFragment, GithubIssueStatus } from "src/__generated/graphql";
+import { GithubCodeReviewFragment } from "src/__generated/graphql";
+import { GithubLink } from "../GithubLink/GithubLink";
+import CodeReviewCheckIcon from "src/assets/icons/CodeReviewCheckIcon";
+import CodeReviewIcon from "src/assets/icons/CodeReviewIcon";
 
 export enum Action {
   Add = "add",
@@ -23,26 +22,38 @@ export enum Action {
   Ignore = "ignore",
   UnIgnore = "unignore",
 }
-export type Props = {
+
+export enum GithubCodeReviewStatus {
+  Pending = "PENDING",
+  Completed = "COMPLETED",
+}
+
+export enum GithubCodeReviewOutcome {
+  Approved = "APPROVED",
+  ChangeRequested = "CHANGE_REQUESTED",
+}
+
+export type GithubCodeReviewProps = {
   action?: Action;
   secondaryAction?: Action;
   onClick?: () => void;
   onSecondaryClick?: () => void;
-  issue: GithubIssueFragment;
+  codeReview: GithubCodeReviewFragment;
   ignored?: boolean;
   addMarginTopForVirtuosoDisplay?: boolean;
 };
 
-export default function GithubPullRequest({
+export default function GithubCodeReview({
   action,
   secondaryAction,
-  issue,
+  codeReview,
   onClick,
   onSecondaryClick,
   ignored = false,
   addMarginTopForVirtuosoDisplay = false,
-}: Props) {
-  const { repoName } = parseIssueLink(issue.htmlUrl || "");
+}: GithubCodeReviewProps) {
+  const { title, number, htmlUrl, createdAt } = codeReview?.pullRequest || {};
+  const { repoName } = parsePullRequestLink(htmlUrl || "");
 
   return (
     <Card
@@ -55,16 +66,14 @@ export default function GithubPullRequest({
       {action && <ActionButton action={action} onClick={onClick} ignored={ignored} />}
       <div className="flex w-full flex-col gap-2 font-walsheim">
         <div className="flex text-sm font-medium text-greyscale-50">
-          <GithubIssueLink url={issue.htmlUrl || ""} text={`#${issue.number} · ${issue.title}`} />
+          <GithubLink url={htmlUrl || ""} text={`#${number} · ${title}`} />
         </div>
         <div className="flex flex-row flex-wrap items-center gap-2 text-xs font-normal text-greyscale-300 xl:gap-3">
           <div className="flex flex-row items-center gap-1">
             <Time />
-            {displayRelativeDate(issue.createdAt)}
+            {displayRelativeDate(createdAt)}
           </div>
-          <div className="flex flex-row items-center gap-1">
-            <IssueStatus issue={issue} />
-          </div>
+          <div className="flex flex-row items-center gap-1">{<CodeReviewStatus codeReview={codeReview} />}</div>
           <div className="flex flex-row items-center gap-1">
             <GitRepositoryLine />
             {repoName}
@@ -105,29 +114,29 @@ function ActionButton({ action, ignored, onClick }: ActionButtonProps) {
   );
 }
 
-function IssueStatus({ issue }: { issue: GithubIssueFragment }) {
+function CodeReviewStatus({ codeReview }: { codeReview: GithubCodeReviewFragment }) {
   const { T } = useIntl();
 
-  switch (issue.status) {
-    case GithubIssueStatus.Cancelled:
-      return issue.closedAt ? (
+  const status = codeReview?.status?.toUpperCase();
+
+  switch (status) {
+    case GithubCodeReviewStatus.Completed:
+      return codeReview.outcome.toUpperCase() === GithubCodeReviewOutcome.ChangeRequested ? (
         <>
-          <IssueCancelled className="fill-github-grey p-0.5" />
-          {T("githubIssue.status.closed", { closedAt: displayRelativeDate(issue.closedAt) })}
+          <CodeReviewCheckIcon size={12} className="-my-1 text-base text-github-purple" />
+          {T("githubCodeReview.status.changeRequested", { submittedAt: displayRelativeDate(codeReview.submittedAt) })}
         </>
-      ) : null;
-    case GithubIssueStatus.Completed:
-      return issue.closedAt ? (
+      ) : (
         <>
-          <CheckboxCircleLine className="-my-1 text-base text-github-purple" />
-          {T("githubIssue.status.closed", { closedAt: displayRelativeDate(issue.closedAt) })}
+          <CodeReviewCheckIcon size={12} className="-my-1 text-base text-github-purple" />
+          {T("githubCodeReview.status.approved", { submittedAt: displayRelativeDate(codeReview.submittedAt) })}
         </>
-      ) : null;
-    case GithubIssueStatus.Open:
+      );
+    case GithubCodeReviewStatus.Pending:
       return (
         <>
-          <IssueOpen className="fill-github-green p-0.5" />
-          {T("githubIssue.status.open")}
+          <CodeReviewIcon size={12} className="-my-1 text-base text-github-green" />
+          {T("githubCodeReview.status.pending")}
         </>
       );
     default:

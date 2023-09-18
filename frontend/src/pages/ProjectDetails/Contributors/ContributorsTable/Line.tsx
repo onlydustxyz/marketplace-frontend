@@ -8,6 +8,8 @@ import { Contributor as ContributorType } from "./View";
 import { formatMoneyAmount } from "src/utils/money";
 import Contributor from "src/components/Contributor";
 import StackLine from "src/icons/StackLine";
+import { useMediaQuery } from "usehooks-ts";
+import { viewportConfig } from "src/config";
 
 type Props = {
   contributor: ContributorType;
@@ -22,6 +24,7 @@ export default function ContributorLine({
   isGivingRewardDisabled,
   onRewardGranted,
 }: Props) {
+  const is2Xl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints["2xl"]}px)`);
   const { T } = useIntl();
 
   return (
@@ -30,8 +33,7 @@ export default function ContributorLine({
         <Contributor contributor={contributor} clickable />
       </Cell>
       <Cell height={CellHeight.Small} horizontalMargin={false}>
-        {/*  TODO: Remove unpaid Code Reviews count when Code Review availables */}
-        {contributor.contributionCount - contributor.unpaidCodeReviewCount || "-"}
+        {contributor.contributionCount || "-"}
       </Cell>
       <Cell height={CellHeight.Small} horizontalMargin={false}>
         {contributor.rewardCount || "-"}
@@ -41,7 +43,6 @@ export default function ContributorLine({
       }`}</Cell>
       {isProjectLeader && (
         <Cell height={CellHeight.Small} horizontalMargin={false}>
-          {/*  TODO: Uncomment when Code Review availables */}
           {contributor.toRewardCount ? (
             <div
               id="to-reward-count"
@@ -50,16 +51,12 @@ export default function ContributorLine({
               data-tooltip-content={JSON.stringify({
                 unpaidPullRequestCount: contributor.unpaidPullRequestCount,
                 unpaidIssueCount: contributor.unpaidIssueCount,
-                // unpaidCodeReviewCount: contributor.unpaidCodeReviewCount,
+                unpaidCodeReviewCount: contributor.unpaidCodeReviewCount,
               })}
             >
               <StackLine />
 
-              {/*  TODO: Uncomment when Code Review availables */}
-              {/* <span className="font-walsheim font-medium">{contributor.toRewardCount}</span>  */}
-              <span className="font-walsheim font-medium">
-                {contributor.toRewardCount - contributor.unpaidCodeReviewCount}
-              </span>
+              <span className="font-walsheim font-medium">{contributor.toRewardCount}</span>
             </div>
           ) : (
             "-"
@@ -77,7 +74,9 @@ export default function ContributorLine({
               data-testid="give-reward-button"
             >
               <SendPlane2Line />
-              <div>{T("project.details.contributors.reward")}</div>
+              <div>
+                {is2Xl ? T("project.details.contributors.reward.full") : T("project.details.contributors.reward.short")}
+              </div>
             </Button>
           </div>
         </Cell>

@@ -12,4 +12,7 @@ fragment GithubPullRequest on GithubPullRequests {
   createdAt
   closedAt
   mergedAt
+  author {
+    ...GithubUser
+  }
 }

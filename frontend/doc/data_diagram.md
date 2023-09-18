@@ -93,6 +93,7 @@ class Contributions {
    closedAt: timestamp
    createdAt: timestamp
    detailsId: String
+   githubCodeReview: GithubPullRequestReviews
    githubCodeReviewId: String
    githubIssue: GithubIssues
    githubIssueId: bigint
@@ -151,20 +152,32 @@ class GithubPullRequest {
    updatedAt: DateTimeUtc!
 }
 
+class GithubPullRequestCommits {
+   author: GithubUsers
+   authorId: bigint!
+   htmlUrl: String!
+   pullRequestId: bigint!
+   sha: String!
+}
+
 class GithubPullRequestReviews {
    id: String
    outcome: github_code_review_outcome
+   pullRequest: GithubPullRequests
    pullRequestId: bigint
+   reviewer: GithubUsers
    reviewerId: bigint
    status: String
    submittedAt: timestamp
 }
 
 class GithubPullRequests {
+   author: GithubUsers
    authorId: bigint
    ciChecks: github_ci_checks
    closedAt: timestamp
    closingIssueNumbers: jsonb
+   commits: [GithubPullRequestCommits!]!
    createdAt: timestamp
    draft: Boolean
    htmlUrl: String
@@ -510,12 +523,18 @@ Budgets -- Projects
 Budgets --* PaymentRequests
 Contacts -- ContactInformations
 Contributions -- GithubIssues
+Contributions -- GithubPullRequestReviews
 Contributions -- GithubPullRequests
 Contributions --* WorkItems
 GithubIssue -- GithubUser
 GithubIssues -- GithubRepos
 GithubPullRequest -- GithubUser
+GithubPullRequestCommits -- GithubUsers
+GithubPullRequestReviews -- GithubPullRequests
+GithubPullRequestReviews -- GithubUsers
 GithubPullRequests -- GithubRepos
+GithubPullRequests -- GithubUsers
+GithubPullRequests --* GithubPullRequestCommits
 GithubRepos --* ProjectGithubRepos
 GithubUser -- RegisteredUsers
 GithubUsers -- RegisteredUsers

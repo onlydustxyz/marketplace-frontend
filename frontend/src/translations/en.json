@@ -114,6 +114,13 @@
       "closed": "Closed __closedAt__",
       "merged": "Merged __mergedAt__",
       "open": "Open"
+    } 
+  },
+  "githubCodeReview": {
+    "status": {
+      "pending": "Pending review",
+      "approved": "Approved __submittedAt__",
+      "changeRequested": "Change requested __submittedAt__"
     }
   },
   "images": {
@@ -236,7 +243,7 @@
             "placeholder": "github.com/example/repo/pull/472",
             "label": "Add specific PR using URL"
           },
-          "tab": "Pull request",
+          "tab": "Pull requests",
           "tabShort": "PR",
           "search": "Search",
           "searchPlaceholder": "Search by name or #"
@@ -250,7 +257,20 @@
             "placeholder": "github.com/example/repo/issues/472",
             "label": "Add specific issue using URL"
           },
-          "tab": "Issue",
+          "tab": "Issues",
+          "search": "Search",
+          "searchPlaceholder": "Search by name or #"
+        },
+        "codeReviews": {
+          "addedToaster": "Code review added",
+          "tab": "Code reviews",
+          "addOther": {
+            "toggle": "Add other Code Review",
+            "notALink": "Oops, this doesn't look like a code review",
+            "invalidLink": "Hmm... we can't find this Code Review. Check the link and try again",
+            "placeholder": "github.com/example/repo/pull/472",
+            "label": "Add specific Code Review using URL"
+          },
           "search": "Search",
           "searchPlaceholder": "Search by name or #"
         },
@@ -544,7 +564,11 @@
           "one": "1 contributor",
           "zero": "No contributor"
         },
-        "reward": "Reward contributor",
+
+        "reward": {
+          "full": "Reward contributor",
+          "short": "Reward"
+        },
         "title": "Contributors"
       },
       "githubRepos": {

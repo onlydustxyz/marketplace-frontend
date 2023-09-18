@@ -1,6 +1,6 @@
 import { PropsWithChildren, useState } from "react";
-import GithubIssue from "src/components/GithubIssue";
-import GithubPullRequest from "src/components/GithubPullRequest";
+import GithubIssue from "src/components/GithubIssue/GithubIssue";
+import GithubPullRequest from "src/components/GithubPullRequest/GithubPullRequest";
 import PayoutStatus from "src/components/PayoutStatus";
 import QueryWrapper from "src/components/QueryWrapper";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
@@ -22,6 +22,7 @@ import IBAN from "iban";
 import ExternalLink from "src/components/ExternalLink";
 import isDefined from "src/utils/isDefined";
 import Contributor from "src/components/Contributor";
+import GithubCodeReview from "src/components/GithubCodeReview/GithubCodeReview";
 
 enum Align {
   Top = "top",
@@ -184,6 +185,8 @@ export default function View({
                 <GithubIssue key={workItem.githubIssue?.id} issue={workItem.githubIssue} />
               ) : workItem.githubPullRequest ? (
                 <GithubPullRequest key={workItem.githubPullRequest?.id} pullRequest={workItem.githubPullRequest} />
+              ) : workItem.githubCodeReview ? (
+                <GithubCodeReview key={workItem.githubCodeReview?.id} codeReview={workItem.githubCodeReview} />
               ) : undefined
             )}
           </div>

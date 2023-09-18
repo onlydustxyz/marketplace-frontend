@@ -2,6 +2,7 @@ import { chain } from "lodash";
 import { useMemo } from "react";
 import {
   ContributionFragment,
+  GithubCodeReviewFragment,
   GithubIssueFragment,
   GithubPullRequestFragment,
   WorkItemFragment,
@@ -19,7 +20,7 @@ type Props = {
   addWorkItem: (workItem: WorkItemFragment) => void;
 };
 
-export default function Issues({ type, projectId, contributorId, workItems, addWorkItem }: Props) {
+export function WorkItems({ type, projectId, contributorId, workItems, addWorkItem }: Props) {
   const { ignore: ignoreContribution, unignore: unignoreContribution } = useIgnoredContributions();
 
   const addAndUnignoreContribution = (contribution: ContributionFragment) => {
@@ -61,12 +62,21 @@ export default function Issues({ type, projectId, contributorId, workItems, addW
   );
 }
 
-export const contributionToWorkItem = (contribution: ContributionFragment): WorkItemFragment | undefined => {
-  return contribution.githubIssue
-    ? issueToWorkItem(contribution.githubIssue)
-    : contribution.githubPullRequest
-    ? pullRequestToWorkItem(contribution.githubPullRequest)
-    : undefined;
+export const contributionToWorkItem = ({
+  githubIssue,
+  githubPullRequest,
+  githubCodeReview,
+}: ContributionFragment): WorkItemFragment | null => {
+  switch (true) {
+    case !!githubIssue:
+      return githubIssue && issueToWorkItem(githubIssue);
+    case !!githubPullRequest:
+      return githubPullRequest && pullRequestToWorkItem(githubPullRequest);
+    case !!githubCodeReview:
+      return githubCodeReview && codeReviewToWorkItem(githubCodeReview);
+    default:
+      return null;
+  }
 };
 
 export const issueToWorkItem = (issue: GithubIssueFragment): WorkItemFragment => ({
@@ -74,6 +84,7 @@ export const issueToWorkItem = (issue: GithubIssueFragment): WorkItemFragment =>
   id: issue.id.toString(),
   githubIssue: issue,
   githubPullRequest: null,
+  githubCodeReview: null,
 });
 
 export const pullRequestToWorkItem = (pullRequest: GithubPullRequestFragment): WorkItemFragment => ({
@@ -81,4 +92,13 @@ export const pullRequestToWorkItem = (pullRequest: GithubPullRequestFragment): W
   id: pullRequest.id.toString(),
   githubIssue: null,
   githubPullRequest: pullRequest,
+  githubCodeReview: null,
+});
+
+export const codeReviewToWorkItem = (codeReview: GithubCodeReviewFragment): WorkItemFragment => ({
+  type: WorkItemType.CodeReview,
+  id: codeReview.id,
+  githubIssue: null,
+  githubPullRequest: null,
+  githubCodeReview: codeReview,
 });

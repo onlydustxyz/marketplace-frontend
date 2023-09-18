@@ -24,7 +24,7 @@ import {
 import {
   issueToWorkItem,
   pullRequestToWorkItem,
-} from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/Issues";
+} from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/WorkItems/WorkItems";
 
 type Props = {
   projectId: string;

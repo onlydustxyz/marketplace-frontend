@@ -1,12 +1,12 @@
 import { filter, some } from "lodash";
-import { forwardRef, useEffect, useState } from "react";
+import { ReactElement, forwardRef, useEffect, useState } from "react";
 import { useForm, useFormContext, useWatch } from "react-hook-form";
 import { Virtuoso } from "react-virtuoso";
 import { ContributionFragment, WorkItemFragment, WorkItemType } from "src/__generated/graphql";
 import FormInput from "src/components/FormInput";
 import FormToggle from "src/components/FormToggle";
-import GithubIssue, { Action } from "src/components/GithubIssue";
-import GithubPullRequest from "src/components/GithubPullRequest";
+import GithubIssue, { Action, GithubIssueProps } from "src/components/GithubIssue/GithubIssue";
+import GithubPullRequest, { GithubPullRequestProps } from "src/components/GithubPullRequest/GithubPullRequest";
 import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
 import EyeOffLine from "src/icons/EyeOffLine";
@@ -16,9 +16,19 @@ import EmptyState from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSide
 import Toggle from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/Toggle";
 import OtherIssueInput from "./OtherIssueInput";
 import useFilteredContributions from "./useFilteredWorkItems";
-import { contributionToWorkItem } from "./index";
+import { contributionToWorkItem } from "./WorkItems";
+import GithubCodeReview, { GithubCodeReviewProps } from "src/components/GithubCodeReview/GithubCodeReview";
 
 const THEORETICAL_MAX_SCREEN_HEIGHT = 2000;
+
+function getTabname(type: WorkItemType) {
+  const types = {
+    [WorkItemType.Issue]: "issues",
+    [WorkItemType.PullRequest]: "pullRequests",
+    [WorkItemType.CodeReview]: "codeReviews",
+  };
+  return types[type];
+}
 
 type Props = {
   projectId: string;
@@ -41,7 +51,7 @@ export default function View({
 }: Props) {
   const { T } = useIntl();
   const { watch, resetField } = useFormContext();
-  const tabName = type === WorkItemType.Issue ? "issues" : "pullRequests";
+  const tabName = getTabname(type);
 
   const [addOtherIssueEnabled, setStateAddOtherIssueEnabled] = useState(false);
   const [searchEnabled, setStateSearchEnabled] = useState(false);
@@ -81,13 +91,15 @@ export default function View({
       <div className="flex flex-col gap-3 pt-8">
         <div className="flex flex-row items-center justify-between">
           <div className="flex flex-row gap-3">
-            <Toggle
-              enabled={addOtherIssueEnabled}
-              setEnabled={setAddOtherIssueEnabled}
-              icon={<Link />}
-              label={T(`reward.form.contributions.${tabName}.addOther.toggle`)}
-              testId={`add-other-${tabName}-toggle`}
-            />
+            {tabName !== "codeReviews" ? (
+              <Toggle
+                enabled={addOtherIssueEnabled}
+                setEnabled={setAddOtherIssueEnabled}
+                icon={<Link />}
+                label={T(`reward.form.contributions.${tabName}.addOther.toggle`)}
+                testId={`add-other-${tabName}-toggle`}
+              />
+            ) : null}
             {contributions.length > 0 && (
               <Toggle
                 enabled={searchEnabled}
@@ -101,7 +113,8 @@ export default function View({
           {some(contributions, { ignored: true }) && (
             <div className="flex flex-row items-center gap-2 font-walsheim text-sm font-normal text-greyscale-50">
               <EyeOffLine />
-              {T("reward.form.contributions.showIgnored")}
+
+              <div className="sm:inline lg:hidden xl:flex">{T("reward.form.contributions.showIgnored")}</div>
               <FormToggle name={showIgnoredItemsName} control={control} />
             </div>
           )}
@@ -158,6 +171,21 @@ const ListBuilder = (tabName: string) => {
   return ListComponent;
 };
 
+type RewardItemType = GithubIssueProps | GithubPullRequestProps | GithubCodeReviewProps;
+
+function getWorkItem(type: WorkItemType, props: RewardItemType): ReactElement | null {
+  switch (type) {
+    case WorkItemType.Issue:
+      return <GithubIssue {...(props as GithubIssueProps)} />;
+    case WorkItemType.PullRequest:
+      return <GithubPullRequest {...(props as GithubPullRequestProps)} />;
+    case WorkItemType.CodeReview:
+      return <GithubCodeReview {...(props as GithubCodeReviewProps)} />;
+    default:
+      return null;
+  }
+}
+
 interface VirtualizedIssueListProps {
   contributions: ContributionFragment[];
   addContribution: (contribution: ContributionFragment) => void;
@@ -182,33 +210,21 @@ const VirtualizedIssueList = ({
         const workItem = contributionToWorkItem(contribution);
         if (!workItem) return;
 
-        return workItem.githubIssue ? (
-          <GithubIssue
-            key={contribution.id}
-            issue={workItem.githubIssue}
-            action={Action.Add}
-            onClick={() => addContribution(contribution)}
-            secondaryAction={contribution.ignored ? Action.UnIgnore : Action.Ignore}
-            onSecondaryClick={() =>
-              contribution.ignored ? unignoreContribution(contribution) : ignoreContribution(contribution)
-            }
-            ignored={!!contribution.ignored}
-            addMarginTopForVirtuosoDisplay={true}
-          />
-        ) : workItem.githubPullRequest ? (
-          <GithubPullRequest
-            key={contribution.id}
-            pullRequest={workItem.githubPullRequest}
-            action={Action.Add}
-            onClick={() => addContribution(contribution)}
-            secondaryAction={contribution.ignored ? Action.UnIgnore : Action.Ignore}
-            onSecondaryClick={() =>
-              contribution.ignored ? unignoreContribution(contribution) : ignoreContribution(contribution)
-            }
-            ignored={!!contribution.ignored}
-            addMarginTopForVirtuosoDisplay={true}
-          />
-        ) : null;
+        const sharedProps = {
+          key: contribution.id,
+          issue: workItem.githubIssue,
+          pullRequest: workItem.githubPullRequest,
+          codeReview: workItem.githubCodeReview,
+          action: Action.Add,
+          onClick: () => addContribution(contribution),
+          secondaryAction: contribution.ignored ? Action.UnIgnore : Action.Ignore,
+          onSecondaryClick: () =>
+            contribution.ignored ? unignoreContribution(contribution) : ignoreContribution(contribution),
+          ignored: !!contribution.ignored,
+          addMarginTopForVirtuosoDisplay: true,
+        };
+
+        return getWorkItem(workItem.type, sharedProps as RewardItemType);
       }}
     />
   );

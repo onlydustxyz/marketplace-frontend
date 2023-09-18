@@ -1,6 +1,6 @@
 import { daysFromNow } from "src/utils/date";
 import { GithubPullRequestFragment, GithubPullRequestStatus, WorkItemType } from "src/__generated/graphql";
-import GithubPullRequest, { Action, Props } from "src/components/GithubPullRequest";
+import GithubPullRequest, { Action, Props } from "src/components/GithubPullRequest/GithubPullRequest";
 
 const pullRequests: Record<string, GithubPullRequestFragment> = {
   closed: {
@@ -13,6 +13,13 @@ const pullRequests: Record<string, GithubPullRequestFragment> = {
     createdAt: daysFromNow(6),
     closedAt: daysFromNow(6),
     mergedAt: undefined,
+    author: {
+      login: "stannislas",
+      avatarUrl: "https://gravatar.com/avatar/1f82b0492a0a938288c2d5b70534a1fb?s=400&d=robohash&r=x",
+      htmlUrl: "https://github.com/stanislas",
+      id: 123,
+      user: { id: 233 },
+    },
   },
   closedWithLongLink: {
     id: "1268051991",
@@ -25,6 +32,13 @@ const pullRequests: Record<string, GithubPullRequestFragment> = {
     createdAt: daysFromNow(6),
     closedAt: daysFromNow(6),
     mergedAt: undefined,
+    author: {
+      login: "stannislas",
+      avatarUrl: "https://gravatar.com/avatar/1f82b0492a0a938288c2d5b70534a1fb?s=400&d=robohash&r=x",
+      htmlUrl: "https://github.com/stanislas",
+      id: 123,
+      user: { id: 233 },
+    },
   },
   open: {
     id: "1268051991",
@@ -36,6 +50,13 @@ const pullRequests: Record<string, GithubPullRequestFragment> = {
     createdAt: daysFromNow(6),
     closedAt: null,
     mergedAt: null,
+    author: {
+      login: "stannislas",
+      avatarUrl: "https://gravatar.com/avatar/1f82b0492a0a938288c2d5b70534a1fb?s=400&d=robohash&r=x",
+      htmlUrl: "https://github.com/stanislas",
+      id: 123,
+      user: { id: 233 },
+    },
   },
   merged: {
     id: "1268051991",
@@ -47,6 +68,13 @@ const pullRequests: Record<string, GithubPullRequestFragment> = {
     createdAt: daysFromNow(6),
     mergedAt: daysFromNow(5),
     closedAt: daysFromNow(5),
+    author: {
+      login: "stannislas",
+      avatarUrl: "https://gravatar.com/avatar/1f82b0492a0a938288c2d5b70534a1fb?s=400&d=robohash&r=x",
+      htmlUrl: "https://github.com/stanislas",
+      id: 123,
+      user: { id: 233 },
+    },
   },
 };
 

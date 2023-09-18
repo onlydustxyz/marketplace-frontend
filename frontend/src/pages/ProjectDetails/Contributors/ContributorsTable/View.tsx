@@ -8,7 +8,7 @@ import { Contributor as ContributorBase } from "src/types";
 import Card from "src/components/Card";
 import { useIntl } from "src/hooks/useIntl";
 import { Tooltip as ReactTooltip } from "react-tooltip";
-import CodeReviewIcon from "src/assets/icons/CodeReviewIcon";
+import CodeReviewIcon from "src/assets/icons/CodeReviewCheckIcon";
 import Tag, { TagSize } from "src/components/Tag";
 import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
 import GitMergeLine from "src/icons/GitMergeLine";

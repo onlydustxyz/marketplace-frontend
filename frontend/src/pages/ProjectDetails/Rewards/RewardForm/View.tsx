@@ -11,8 +11,8 @@ import Title from "src/pages/ProjectDetails/Title";
 import Add from "src/icons/Add";
 import { ReactElement, ReactNode, useEffect, useState } from "react";
 import WorkItemSidePanel from "./WorkItemSidePanel";
-import GithubIssue, { Action as GithubIssueAction } from "src/components/GithubIssue";
-import GithubPullRequest, { Action as GithubPRAction } from "src/components/GithubPullRequest";
+import GithubIssue, { Action as GithubIssueAction } from "src/components/GithubIssue/GithubIssue";
+import GithubPullRequest, { Action as GithubPRAction } from "src/components/GithubPullRequest/GithubPullRequest";
 import Callout from "src/components/Callout";
 import useWorkItems from "./useWorkItems";
 import { filter } from "lodash";
@@ -30,7 +30,8 @@ import addContributionImg from "src/assets/img/add-contribution.png";
 import {
   issueToWorkItem,
   pullRequestToWorkItem,
-} from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/Issues";
+} from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/WorkItems/WorkItems";
+import GithubCodeReview from "src/components/GithubCodeReview/GithubCodeReview";
 
 interface Props {
   projectId: string;
@@ -168,17 +169,24 @@ const View: React.FC<Props> = ({
                     </div>
 
                     {workItems.map(workItem =>
-                      workItem.githubPullRequest ? (
+                      workItem.githubIssue ? (
+                        <GithubIssue
+                          key={workItem.id}
+                          issue={workItem.githubIssue}
+                          action={GithubIssueAction.Remove}
+                          onClick={() => removeWorkItem(workItem)}
+                        />
+                      ) : workItem.githubPullRequest ? (
                         <GithubPullRequest
                           key={workItem.id}
                           pullRequest={workItem.githubPullRequest}
                           action={GithubPRAction.Remove}
                           onClick={() => removeWorkItem(workItem)}
                         />
-                      ) : workItem.githubIssue ? (
-                        <GithubIssue
+                      ) : workItem.githubCodeReview ? (
+                        <GithubCodeReview
                           key={workItem.id}
-                          issue={workItem.githubIssue}
+                          codeReview={workItem.githubCodeReview}
                           action={GithubIssueAction.Remove}
                           onClick={() => removeWorkItem(workItem)}
                         />

@@ -32,6 +32,23 @@ fragment Contribution on Contributions {
     ...GithubIssue
   }
   githubPullRequest {
-    ...GithubPullRequest
+    ...GithubPullRequestWithCommits
+  }
+  githubCodeReview {
+    ...GithubCodeReview
+  }
+}
+
+fragment GithubPullRequestWithCommits on GithubPullRequests {
+  ...GithubPullRequest
+  commitsCount: commitsAggregate {
+    aggregate {
+      count
+    }
+  }
+  userCommitsCount: commitsAggregate(where: { authorId: { _eq: $githubUserId } }) {
+    aggregate {
+      count
+    }
   }
 }

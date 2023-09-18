@@ -1,4 +1,4 @@
-import GithubIssue, { Action, Props } from "src/components/GithubIssue";
+import GithubIssue, { Action, Props } from "src/components/GithubIssue/GithubIssue";
 import { daysFromNow } from "src/utils/date";
 import { GithubIssueFragment, GithubIssueStatus, WorkItemType } from "src/__generated/graphql";
 
@@ -13,6 +13,7 @@ const issues: Record<string, GithubIssueFragment> = {
     createdAt: daysFromNow(6),
     closedAt: daysFromNow(5),
     assigneeIds: [],
+    commentsCount: null,
   },
   closedWithLongLink: {
     id: "1268051991",
@@ -25,6 +26,7 @@ const issues: Record<string, GithubIssueFragment> = {
     createdAt: daysFromNow(6),
     closedAt: daysFromNow(5),
     assigneeIds: [],
+    commentsCount: null,
   },
   open: {
     id: "1268051991",
@@ -36,6 +38,7 @@ const issues: Record<string, GithubIssueFragment> = {
     createdAt: daysFromNow(6),
     closedAt: daysFromNow(6),
     assigneeIds: [],
+    commentsCount: null,
   },
   completed: {
     id: "1268051991",
@@ -47,6 +50,7 @@ const issues: Record<string, GithubIssueFragment> = {
     createdAt: daysFromNow(6),
     closedAt: daysFromNow(5),
     assigneeIds: [],
+    commentsCount: null,
   },
 };
 
