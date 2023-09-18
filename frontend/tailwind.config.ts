@@ -25,9 +25,13 @@ const config: Config = {
         chineseBlack: "#110C1F",
         github: {
           grey: "#828893",
+          "grey-light": "#92908F",
           red: "#C03837",
+          "red-light": "#C64C4B",
           green: "#3C8343",
+          "green-light": "#639C69",
           purple: "#684ABB",
+          "purple-light": "#866EC9",
         },
         greyscale: {
           50: "#F3F0EE",
