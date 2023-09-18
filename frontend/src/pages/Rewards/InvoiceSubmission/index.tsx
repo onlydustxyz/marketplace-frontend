@@ -45,7 +45,7 @@ export default function InvoiceSubmission({ paymentRequests, githubUserId, userI
 }
 
 gql`
-  mutation markInvoiceAsReceived($paymentReferences: [PaymentReference!]!) {
-    markInvoiceAsReceived(paymentReferences: $paymentReferences)
+  mutation markInvoiceAsReceived($payments: [Uuid!]!) {
+    markInvoiceAsReceived(payments: $payments)
   }
 `;

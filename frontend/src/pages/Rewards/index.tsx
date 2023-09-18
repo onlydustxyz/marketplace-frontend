@@ -117,14 +117,11 @@ gql`
       ...WorkItem
     }
     invoiceReceivedAt
-    budget {
+    project {
       id
-      project {
-        id
-        name
-        shortDescription
-        logoUrl
-      }
+      name
+      shortDescription
+      logoUrl
     }
   }
 
