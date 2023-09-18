@@ -1,4 +1,4 @@
-use std::{fmt, marker::PhantomData};
+use std::{fmt, marker::PhantomData, time::Instant};
 
 use async_trait::async_trait;
 use olog::{error, info, IntoField};
@@ -21,12 +21,14 @@ where
 	I: Indexer<Id>,
 {
 	async fn index(&self, id: &Id) -> Result<()> {
+		let start = Instant::now();
 		match self.decorated.index(id).await {
 			Ok(_) => {
 				info!(
 					indexed_item_id = id.to_string(),
 					indexed_item_id_type = std::any::type_name::<Id>(),
 					indexer_type = self.decorated.to_string(),
+					duration = start.elapsed().as_secs(),
 					"Successfully indexed item"
 				);
 				Ok(())
