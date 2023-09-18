@@ -1,4 +1,4 @@
-use common_domain::ProjectId;
+use domain::BudgetId;
 use http_api_problem::HttpApiProblem;
 use presentation::http::guards::ApiKey;
 use rocket::serde::json::Json;
@@ -13,7 +13,7 @@ use crate::{
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Response {
-	pub project_id: ProjectId,
+	pub budget_id: BudgetId,
 }
 
 #[put(
@@ -26,12 +26,13 @@ pub async fn allocate(
 	project_id: Uuid,
 	request: Json<dto::Allocation>,
 	usecase: application::budget::allocate::Usecase,
-) -> Result<(), HttpApiProblem> {
+) -> Result<Json<Response>, HttpApiProblem> {
 	let (amount, sponsor_id) = request.into_inner().try_into()?;
-	usecase
+
+	let budget_id = usecase
 		.allocate(project_id.into(), amount, sponsor_id)
 		.await
 		.map_err(Into::<Error>::into)?;
 
-	Ok(())
+	Ok(Json(Response { budget_id }))
 }

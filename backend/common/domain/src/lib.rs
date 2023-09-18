@@ -10,7 +10,7 @@ mod aggregate;
 #[cfg(test)]
 pub use aggregate::MockRepository as MockAggregateRepository;
 pub use aggregate::{
-	Aggregate, Event as AggregateEvent, EventSourcable, Repository as AggregateRepository,
+	Aggregate, EventSourcable, Identified, Repository as AggregateRepository,
 	RepositoryError as AggregateRepositoryError,
 };
 
@@ -42,7 +42,7 @@ pub use application::{Application, Event as ApplicationEvent, Id as ApplicationI
 mod user;
 pub use user::Id as UserId;
 
-mod budget;
+pub mod budget;
 pub use budget::{Budget, Error as BudgetError, Event as BudgetEvent, Id as BudgetId};
 
 mod github;

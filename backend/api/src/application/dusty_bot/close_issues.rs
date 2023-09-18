@@ -30,7 +30,11 @@ impl Usecase {
 	}
 
 	pub async fn close_all_issues(&self, payment: Payment) -> Result<(), DomainError> {
-		let handles = payment.work_items.into_iter().map(|work_item| self.close_issue(work_item));
+		let handles = payment
+			.work_items
+			.clone()
+			.into_iter()
+			.map(|work_item| self.close_issue(work_item));
 
 		try_join_all(handles).await?;
 		Ok(())

@@ -1,38 +1,20 @@
-use std::sync::Arc;
-
-use anyhow::{anyhow, Error};
-use infrastructure::database::Repository;
+use anyhow::Error;
 use rocket::{
-	http::Status,
+	outcome::try_outcome,
 	request::{FromRequest, Outcome},
 	Request,
 };
 
-use crate::{application::sponsor::create::Usecase, domain::ImageStoreService, models::Sponsor};
+use crate::{application::sponsor::create::Usecase, presentation::http::usecases::FromRocketState};
 
 #[async_trait]
 impl<'r> FromRequest<'r> for Usecase {
 	type Error = Error;
 
 	async fn from_request(request: &'r Request<'_>) -> Outcome<Usecase, Self::Error> {
-		let image_store = match request.rocket().state::<Arc<dyn ImageStoreService>>() {
-			Some(service) => service,
-			None =>
-				return Outcome::Failure((
-					Status::InternalServerError,
-					anyhow!("Missing image store service"),
-				)),
-		};
-
-		let sponsor_repository = match request.rocket().state::<Arc<dyn Repository<Sponsor>>>() {
-			Some(repository) => repository,
-			None =>
-				return Outcome::Failure((
-					Status::InternalServerError,
-					anyhow!("Missing sponsor repository"),
-				)),
-		};
-
-		Outcome::Success(Self::new(sponsor_repository.clone(), image_store.clone()))
+		Outcome::Success(Self::new(
+			try_outcome!(FromRocketState::from_state(request.rocket())),
+			try_outcome!(FromRocketState::from_state(request.rocket())),
+		))
 	}
 }

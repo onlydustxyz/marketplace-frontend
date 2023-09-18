@@ -1,6 +1,6 @@
 use thiserror::Error;
 
-use crate::Aggregate;
+use crate::EventSourcable;
 
 #[derive(Debug, Error)]
 pub enum Error {
@@ -10,7 +10,7 @@ pub enum Error {
 	List(#[source] anyhow::Error),
 }
 
-pub trait Store<A: Aggregate>: Send + Sync {
+pub trait Store<A: EventSourcable>: Send + Sync {
 	fn list_by_id(&self, aggregate_id: &A::Id) -> Result<Vec<A::Event>, Error>;
 	fn list(&self) -> Result<Vec<A::Event>, Error>;
 }

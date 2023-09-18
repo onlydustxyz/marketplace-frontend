@@ -24,7 +24,6 @@ impl Usecase {
 		payment
 			.cancel()
 			.map_err(|e| DomainError::InvalidInputs(e.into()))?
-			.into_iter()
 			.map(Event::from)
 			.map(|payload| CommandMessage::new(command_id, payload))
 			.collect::<Vec<_>>()

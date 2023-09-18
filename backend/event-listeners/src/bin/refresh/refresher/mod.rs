@@ -3,7 +3,7 @@ use std::{str::FromStr, sync::Arc};
 use anyhow::{anyhow, Result};
 use async_trait::async_trait;
 use derive_more::Constructor;
-use domain::{Aggregate, AggregateEvent, Event, EventStore};
+use domain::{Event, EventSourcable, EventStore, Identified};
 
 mod registry;
 use event_listeners::listeners::EventListener;
@@ -17,7 +17,7 @@ pub mod payment;
 pub mod project;
 
 #[derive(Constructor)]
-pub struct Refresher<A: Aggregate> {
+pub struct Refresher<A: EventSourcable> {
 	event_store: Arc<dyn EventStore<A>>,
 	projectors: Vec<Arc<dyn EventListener<Event>>>,
 }
@@ -29,9 +29,9 @@ pub trait Refreshable {
 }
 
 #[async_trait]
-impl<A: Aggregate> Refreshable for Refresher<A>
+impl<A: EventSourcable> Refreshable for Refresher<A>
 where
-	Event: From<<A as Aggregate>::Event>,
+	Event: From<A::Event>,
 	A::Id: FromStr,
 {
 	fn all_ids(&self) -> Result<Vec<String>> {
@@ -40,7 +40,7 @@ where
 			.list()
 			.map_err(|_| anyhow!("Could not list event ids from store"))?
 			.into_iter()
-			.map(|e| e.aggregate_id().to_string())
+			.map(|e| e.id().to_string())
 			.unique()
 			.collect();
 

@@ -51,7 +51,6 @@ impl Usecase {
 		project
 			.link_github_repo(github_repo_id)
 			.map_err(|e| DomainError::InvalidInputs(e.into()))?
-			.into_iter()
 			.map(Event::from)
 			.map(UniqueMessage::new)
 			.collect::<Vec<_>>()

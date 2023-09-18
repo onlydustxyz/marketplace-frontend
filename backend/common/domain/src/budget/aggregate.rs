@@ -1,7 +1,9 @@
 use rust_decimal::Decimal;
 use thiserror::Error;
 
-use crate::{sponsor, Aggregate, BudgetEvent, BudgetId, Currency, EventSourcable};
+use crate::{sponsor, Aggregate, BudgetEvent, BudgetId, Currency};
+
+pub type Budget = Aggregate<super::state::State>;
 
 #[derive(Debug, Error, PartialEq, Eq)]
 pub enum Error {
@@ -11,69 +13,36 @@ pub enum Error {
 
 type Result<T> = std::result::Result<T, Error>;
 
-#[derive(Default, Debug, Clone, PartialEq, Eq)]
-pub struct Budget {
-	pub id: BudgetId,
-	pub allocated_amount: Decimal,
-	pub spent_amount: Decimal,
-}
-
 impl Budget {
-	pub fn create(id: BudgetId, currency: &'static Currency) -> Vec<BudgetEvent> {
-		vec![BudgetEvent::Created { id, currency }]
+	pub fn create(id: BudgetId, currency: &'static Currency) -> Self {
+		Self::from_pending_events(vec![BudgetEvent::Created { id, currency }])
 	}
 
-	pub fn allocate(
-		&self,
-		amount: Decimal,
-		sponsor_id: Option<sponsor::Id>,
-	) -> Result<Vec<BudgetEvent>> {
+	pub fn allocate(self, amount: Decimal, sponsor_id: Option<sponsor::Id>) -> Result<Self> {
 		if self.allocated_amount + amount < self.spent_amount {
 			return Err(Error::Overspent);
 		}
 
-		Ok(vec![BudgetEvent::Allocated {
+		let event = BudgetEvent::Allocated {
 			id: self.id,
 			amount,
 			sponsor_id,
-		}])
+		};
+
+		Ok(self.with_pending_events(vec![event]))
 	}
 
-	pub fn spend(&self, amount: Decimal) -> Result<Vec<BudgetEvent>> {
+	pub fn spend(self, amount: Decimal) -> Result<Self> {
 		if self.spent_amount + amount > self.allocated_amount {
 			return Err(Error::Overspent);
 		}
 
-		Ok(vec![BudgetEvent::Spent {
+		let event = BudgetEvent::Spent {
 			id: self.id,
 			amount,
-		}])
-	}
-}
+		};
 
-impl Aggregate for Budget {
-	type Event = BudgetEvent;
-	type Id = BudgetId;
-}
-
-impl EventSourcable for Budget {
-	fn apply_event(self, event: &Self::Event) -> Self {
-		match event {
-			BudgetEvent::Created { id, .. } => Self {
-				id: *id,
-				allocated_amount: Decimal::ZERO,
-				spent_amount: Decimal::ZERO,
-			},
-			BudgetEvent::Allocated { id, amount, .. } => Self {
-				id: *id,
-				allocated_amount: self.allocated_amount + amount,
-				..self
-			},
-			BudgetEvent::Spent { amount, .. } => Self {
-				spent_amount: self.spent_amount + amount,
-				..self
-			},
-		}
+		Ok(self.with_pending_events(vec![event]))
 	}
 }
 
@@ -84,7 +53,7 @@ mod tests {
 	use uuid::Uuid;
 
 	use super::*;
-	use crate::*;
+	use crate::{currencies, EventSourcable};
 
 	#[fixture]
 	#[once]
@@ -142,8 +111,8 @@ mod tests {
 		budget_created_event: BudgetEvent,
 	) {
 		assert_eq!(
-			Budget::create(*budget_id, currency),
-			vec![budget_created_event]
+			Budget::create(*budget_id, currency).collect::<Vec<_>>(),
+			&[budget_created_event]
 		);
 	}
 
@@ -155,8 +124,8 @@ mod tests {
 	) {
 		let budget = Budget::from_events(&[budget_created_event]);
 		assert_eq!(
-			budget.allocate(amount, None),
-			Ok(vec![budget_allocated_event])
+			budget.allocate(amount, None).unwrap().collect::<Vec<_>>(),
+			&[budget_allocated_event]
 		);
 	}
 
@@ -168,7 +137,10 @@ mod tests {
 		budget_spent_event: BudgetEvent,
 	) {
 		let budget = Budget::from_events(&[budget_created_event, budget_allocated_event]);
-		assert_eq!(budget.spend(amount), Ok(vec![budget_spent_event]));
+		assert_eq!(
+			budget.spend(amount).unwrap().collect::<Vec<_>>(),
+			&[budget_spent_event]
+		);
 	}
 
 	#[rstest]
@@ -184,7 +156,10 @@ mod tests {
 			budget_allocated_event,
 			budget_spent_event,
 		]);
-		assert_eq!(budget.spend(-amount), Ok(vec![budget_refund_event]));
+		assert_eq!(
+			budget.spend(-amount).unwrap().collect::<Vec<_>>(),
+			&[budget_refund_event]
+		);
 	}
 
 	#[rstest]
@@ -210,13 +185,8 @@ mod tests {
 			budget_spent_event,
 		]);
 
-		// refill
-		let events = budget.allocate(amount, None).unwrap();
-		let budget = budget.apply_events(&events);
-
-		// start spending again !
-		let events = budget.spend(amount).unwrap();
-		let budget = budget.apply_events(&events);
+		// refill and start spending again !
+		let budget = budget.allocate(amount, None).unwrap().spend(amount).unwrap();
 
 		// no more budget !
 		assert_eq!(budget.spent_amount, budget.allocated_amount);
@@ -237,8 +207,7 @@ mod tests {
 		]);
 
 		// cut budget
-		let result = budget.allocate(-amount, None);
-		let budget = budget.apply_events(&result.unwrap());
+		let budget = budget.allocate(-amount, None).unwrap();
 
 		// no more budget !
 		assert_eq!(budget.spent_amount, budget.allocated_amount);
