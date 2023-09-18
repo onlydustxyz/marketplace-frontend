@@ -1,4 +1,4 @@
-use common_domain::{DomainError, ProjectId, ProjectVisibility};
+use common_domain::{BudgetId, DomainError, ProjectId, ProjectVisibility};
 use http_api_problem::{HttpApiProblem, StatusCode};
 use olog::IntoField;
 use presentation::http::guards::ApiKey;
@@ -12,6 +12,7 @@ use crate::{application, presentation::http::dto};
 #[serde(rename_all = "camelCase")]
 pub struct Response {
 	pub project_id: ProjectId,
+	pub budget_id: Option<BudgetId>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -54,7 +55,7 @@ pub async fn create_project(
 		None => (None, None),
 	};
 
-	let project_id = usecase
+	let (project_id, budget_id) = usecase
 		.create(
 			name.try_into().map_err(|e: DomainError| {
 				HttpApiProblem::new(StatusCode::BAD_REQUEST)
@@ -89,5 +90,8 @@ pub async fn create_project(
 				.title("Unable to process create_project request")
 				.detail(e.to_string())
 		})?;
-	Ok(Json(Response { project_id }))
+	Ok(Json(Response {
+		project_id,
+		budget_id,
+	}))
 }

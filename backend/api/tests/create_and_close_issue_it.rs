@@ -3,7 +3,10 @@ extern crate diesel;
 
 use anyhow::Result;
 use chrono::Utc;
-use domain::{currencies, BudgetEvent, BudgetId, GithubRepoId, ProjectEvent, ProjectId, UserId};
+use domain::{
+	currencies, Budget, BudgetEvent, BudgetId, GithubRepoId, Project, ProjectEvent, ProjectId,
+	UserId,
+};
 use olog::info;
 use rocket::http::{ContentType, Header, Status};
 use rstest::rstest;
@@ -45,7 +48,7 @@ impl<'a> Test<'a> {
 		let github_repo_id = GithubRepoId::from(1111u64);
 		let budget_id = BudgetId::new();
 
-		models::events::store(
+		models::events::store::<Project>(
 			&self.context,
 			vec![
 				ProjectEvent::Created { id },
@@ -63,7 +66,7 @@ impl<'a> Test<'a> {
 			],
 		)?;
 
-		models::events::store(
+		models::events::store::<Budget>(
 			&self.context,
 			vec![
 				BudgetEvent::Created {

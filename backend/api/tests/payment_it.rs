@@ -8,9 +8,9 @@ use api::presentation::http::routes::payment;
 use assert_matches::assert_matches;
 use chrono::{Duration, Utc};
 use domain::{
-	currencies, Amount, BudgetEvent, BudgetId, Event, GithubPullRequestId, GithubPullRequestNumber,
-	GithubRepoId, GithubUserId, PaymentEvent, PaymentId, PaymentReason, PaymentWorkItem,
-	ProjectEvent, ProjectId, UserId,
+	currencies, Amount, Budget, BudgetEvent, BudgetId, Event, GithubPullRequestId,
+	GithubPullRequestNumber, GithubRepoId, GithubUserId, Payment, PaymentEvent, PaymentId,
+	PaymentReason, PaymentWorkItem, Project, ProjectEvent, ProjectId, UserId,
 };
 use olog::info;
 use rocket::{
@@ -68,7 +68,7 @@ impl<'a> Test<'a> {
 		let budget_id = BudgetId::new();
 		let before = Utc::now().naive_utc();
 
-		models::events::store(
+		models::events::store::<Project>(
 			&self.context,
 			vec![
 				ProjectEvent::Created { id: project_id },
@@ -80,7 +80,7 @@ impl<'a> Test<'a> {
 			],
 		)?;
 
-		models::events::store(
+		models::events::store::<Budget>(
 			&self.context,
 			vec![
 				BudgetEvent::Created {
@@ -193,7 +193,7 @@ impl<'a> Test<'a> {
 		let project_id = ProjectId::new();
 		let budget_id = BudgetId::new();
 
-		models::events::store(
+		models::events::store::<Project>(
 			&self.context,
 			vec![
 				ProjectEvent::Created { id: project_id },
@@ -205,7 +205,7 @@ impl<'a> Test<'a> {
 			],
 		)?;
 
-		models::events::store(
+		models::events::store::<Budget>(
 			&self.context,
 			vec![
 				BudgetEvent::Created {
@@ -274,7 +274,7 @@ impl<'a> Test<'a> {
 		let project_id = ProjectId::new();
 		let budget_id = BudgetId::new();
 
-		models::events::store(
+		models::events::store::<Project>(
 			&self.context,
 			vec![
 				ProjectEvent::Created { id: project_id },
@@ -286,7 +286,7 @@ impl<'a> Test<'a> {
 			],
 		)?;
 
-		models::events::store(
+		models::events::store::<Budget>(
 			&self.context,
 			vec![
 				BudgetEvent::Created {
@@ -351,7 +351,7 @@ impl<'a> Test<'a> {
 		let budget_id = BudgetId::new();
 		let payment_id = PaymentId::new();
 
-		models::events::store(
+		models::events::store::<Project>(
 			&self.context,
 			vec![
 				ProjectEvent::Created { id: project_id },
@@ -363,7 +363,7 @@ impl<'a> Test<'a> {
 			],
 		)?;
 
-		models::events::store(
+		models::events::store::<Budget>(
 			&self.context,
 			vec![
 				BudgetEvent::Created {
@@ -378,7 +378,7 @@ impl<'a> Test<'a> {
 			],
 		)?;
 
-		models::events::store(
+		models::events::store::<Payment>(
 			&self.context,
 			vec![PaymentEvent::Requested {
 				id: payment_id,
@@ -426,7 +426,7 @@ impl<'a> Test<'a> {
 		let budget_id = BudgetId::new();
 		let payment_id = PaymentId::new();
 
-		models::events::store(
+		models::events::store::<Project>(
 			&self.context,
 			vec![
 				ProjectEvent::Created { id: project_id },
@@ -438,7 +438,7 @@ impl<'a> Test<'a> {
 			],
 		)?;
 
-		models::events::store(
+		models::events::store::<Budget>(
 			&self.context,
 			vec![
 				BudgetEvent::Created {
@@ -453,7 +453,7 @@ impl<'a> Test<'a> {
 			],
 		)?;
 
-		models::events::store(
+		models::events::store::<Payment>(
 			&self.context,
 			vec![PaymentEvent::Requested {
 				id: payment_id,
@@ -497,7 +497,7 @@ impl<'a> Test<'a> {
 		let budget_id = BudgetId::new();
 		let payment_id = PaymentId::new();
 
-		models::events::store(
+		models::events::store::<Project>(
 			&self.context,
 			vec![
 				ProjectEvent::Created { id: project_id },
@@ -509,7 +509,7 @@ impl<'a> Test<'a> {
 			],
 		)?;
 
-		models::events::store(
+		models::events::store::<Budget>(
 			&self.context,
 			vec![
 				BudgetEvent::Created {
@@ -524,7 +524,7 @@ impl<'a> Test<'a> {
 			],
 		)?;
 
-		models::events::store(
+		models::events::store::<Payment>(
 			&self.context,
 			vec![PaymentEvent::Requested {
 				id: payment_id,

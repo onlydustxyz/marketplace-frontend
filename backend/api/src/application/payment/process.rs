@@ -36,7 +36,6 @@ impl Usecase {
 			.find_by_id(&payment_id)?
 			.add_receipt(new_receipt_id, amount, receipt)
 			.map_err(|e| DomainError::InvalidInputs(e.into()))?
-			.into_iter()
 			.map(Event::from)
 			.map(UniqueMessage::new)
 			.collect::<Vec<_>>()

@@ -38,13 +38,14 @@ impl Usecase {
 		let budget_id = project.budgets_by_currency.get(currencies::USD.code).ok_or_else(|| {
 			DomainError::InvalidInputs(anyhow!("Project has no budget to spend from"))
 		})?;
-		let budget = self.budget_repository.find_by_id(budget_id)?;
 
-		let budget_events = budget
+		let budget = self
+			.budget_repository
+			.find_by_id(budget_id)?
 			.spend(Decimal::from(amount_in_usd))
 			.map_err(|e| DomainError::InvalidInputs(e.into()))?;
 
-		let payment_events = Payment::request(
+		let payment = Payment::request(
 			payment_id,
 			project_id,
 			requestor_id,
@@ -95,10 +96,9 @@ impl Usecase {
 
 		let command_id = CommandId::new();
 
-		budget_events
-			.into_iter()
+		budget
 			.map(Event::from)
-			.chain(payment_events.into_iter().map(Event::from))
+			.chain(payment.map(Event::from))
 			.map(|payload| CommandMessage::new(command_id, payload))
 			.collect::<Vec<_>>()
 			.publish(self.event_publisher.clone())

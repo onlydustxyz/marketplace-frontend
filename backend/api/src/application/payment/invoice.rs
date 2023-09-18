@@ -23,9 +23,8 @@ impl Usecase {
 		let mut events = Vec::new();
 
 		for payment_id in payments {
-			events.append(
-				&mut self
-					.payment_repository
+			events.extend(
+				self.payment_repository
 					.find_by_id(&payment_id)?
 					.mark_invoice_as_received()
 					.map_err(|e| DomainError::InvalidInputs(e.into()))?,
@@ -48,9 +47,8 @@ impl Usecase {
 		let mut events = Vec::new();
 
 		for payment_id in payments {
-			events.append(
-				&mut self
-					.payment_repository
+			events.extend(
+				self.payment_repository
 					.find_by_id(&payment_id)?
 					.reject_invoice()
 					.map_err(|e| DomainError::InvalidInputs(e.into()))?,

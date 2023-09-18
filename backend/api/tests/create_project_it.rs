@@ -3,9 +3,8 @@ mod models;
 
 use anyhow::Result;
 use api::{models::Sponsor, presentation::http::routes::projects};
-use assert_matches::assert_matches;
 use diesel::RunQueryDsl;
-use domain::{currencies, sponsor, BudgetEvent, BudgetId, Event, ProjectEvent};
+use domain::{currencies, sponsor, BudgetEvent, Event, ProjectEvent};
 use infrastructure::database::{schema::project_details, ImmutableRepository};
 use olog::info;
 use rocket::{
@@ -140,23 +139,21 @@ impl<'a> Test<'a> {
 		let project: projects::create::Response = response.into_json().await.unwrap();
 
 		let project_id = project.project_id;
+		let budget_id = project.budget_id.unwrap();
 
 		assert_eq!(
 			self.context.amqp.listen(event_store::bus::QUEUE_NAME).await,
 			Some(Event::Project(ProjectEvent::Created { id: project_id }))
 		);
 
-		let budget_id: BudgetId;
-
-		assert_matches!(
-		self.context.amqp.listen(event_store::bus::QUEUE_NAME).await.unwrap(),
-		Event::Project(event) => {
-			assert_matches!(event, ProjectEvent::BudgetLinked { budget_id: budget_id_, id, currency} => {
-				budget_id = budget_id_;
-				assert_eq!(id, project_id);
-				assert_eq!(currency, currencies::USD);
-			});
-		});
+		assert_eq!(
+			Event::Project(ProjectEvent::BudgetLinked {
+				budget_id,
+				id: project_id,
+				currency: currencies::USD
+			}),
+			self.context.amqp.listen(event_store::bus::QUEUE_NAME).await.unwrap(),
+		);
 
 		assert_eq!(
 			Event::Budget(BudgetEvent::Created {

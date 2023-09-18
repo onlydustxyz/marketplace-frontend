@@ -1,9 +1,9 @@
-use std::collections::{HashMap, HashSet};
-
 use chrono::Utc;
 use thiserror::Error;
 
 use crate::*;
+
+pub type Project = Aggregate<super::state::State>;
 
 #[derive(Debug, Error, PartialEq, Eq)]
 pub enum Error {
@@ -23,146 +23,89 @@ pub enum Error {
 
 type Result<T> = std::result::Result<T, Error>;
 
-#[derive(Default, Debug, Clone, PartialEq, Eq)]
-pub struct Project {
-	pub id: ProjectId,
-	pub leaders: HashSet<UserId>,
-	pub budgets_by_currency: HashMap<String, BudgetId>,
-	pub github_repos: HashSet<GithubRepoId>,
-	pub applicants: HashSet<UserId>,
-}
-
-impl Aggregate for Project {
-	type Event = ProjectEvent;
-	type Id = ProjectId;
-}
-
-impl From<ProjectEvent> for Event {
-	fn from(event: ProjectEvent) -> Self {
-		Event::Project(event)
-	}
-}
-
-impl EventSourcable for Project {
-	fn apply_event(mut self, event: &Self::Event) -> Self {
-		match event {
-			ProjectEvent::Created { id } => Project {
-				id: *id,
-				..Default::default()
-			},
-			ProjectEvent::LeaderAssigned { leader_id, .. } => {
-				self.leaders.insert(*leader_id);
-				self
-			},
-			ProjectEvent::LeaderUnassigned { leader_id, .. } => {
-				self.leaders.remove(leader_id);
-				self
-			},
-			ProjectEvent::BudgetLinked {
-				budget_id,
-				currency,
-				..
-			} => {
-				self.budgets_by_currency.insert(currency.code.to_owned(), *budget_id);
-				self
-			},
-			ProjectEvent::GithubRepoLinked { github_repo_id, .. } => {
-				self.github_repos.insert(*github_repo_id);
-				self
-			},
-			ProjectEvent::GithubRepoUnlinked { github_repo_id, .. } => {
-				self.github_repos.remove(github_repo_id);
-				self
-			},
-			ProjectEvent::Applied { applicant_id, .. } => {
-				self.applicants.insert(*applicant_id);
-				self
-			},
-		}
-	}
-}
-
 impl Project {
-	pub fn create(id: ProjectId) -> Vec<<Self as Aggregate>::Event> {
-		vec![ProjectEvent::Created { id }]
+	pub fn create(id: ProjectId) -> Self {
+		Self::default().with_pending_events(vec![ProjectEvent::Created { id }])
 	}
 
-	pub fn link_budget(
-		&self,
-		budget_id: BudgetId,
-		currency: &'static Currency,
-	) -> Result<Vec<<Self as Aggregate>::Event>> {
+	pub fn link_budget(self, budget_id: BudgetId, currency: &'static Currency) -> Result<Self> {
 		if self.budgets_by_currency.contains_key(currency.code) {
 			return Err(Error::BudgetAlreadyExists);
 		}
 
-		Ok(vec![ProjectEvent::BudgetLinked {
+		let event = ProjectEvent::BudgetLinked {
 			id: self.id,
 			budget_id,
 			currency,
-		}])
+		};
+
+		Ok(self.with_pending_events(vec![event]))
 	}
 
-	pub fn assign_leader(&self, leader_id: UserId) -> Result<Vec<<Self as Aggregate>::Event>> {
+	pub fn assign_leader(self, leader_id: UserId) -> Result<Self> {
 		if self.leaders.contains(&leader_id) {
 			return Err(Error::LeaderAlreadyAssigned);
 		}
 
-		Ok(vec![ProjectEvent::LeaderAssigned {
+		let event = ProjectEvent::LeaderAssigned {
 			id: self.id,
 			leader_id,
 			assigned_at: Utc::now().naive_utc(),
-		}])
+		};
+
+		Ok(self.with_pending_events(vec![event]))
 	}
 
-	pub fn unassign_leader(&self, leader_id: UserId) -> Result<Vec<<Self as Aggregate>::Event>> {
+	pub fn unassign_leader(self, leader_id: UserId) -> Result<Self> {
 		if !self.leaders.contains(&leader_id) {
 			return Err(Error::NotLeader);
 		}
 
-		Ok(vec![ProjectEvent::LeaderUnassigned {
+		let event = ProjectEvent::LeaderUnassigned {
 			id: self.id,
 			leader_id,
-		}])
+		};
+
+		Ok(self.with_pending_events(vec![event]))
 	}
 
-	pub fn link_github_repo(
-		&self,
-		github_repo_id: GithubRepoId,
-	) -> Result<Vec<<Self as Aggregate>::Event>> {
+	pub fn link_github_repo(self, github_repo_id: GithubRepoId) -> Result<Self> {
 		if self.github_repos.contains(&github_repo_id) {
 			return Err(Error::GithubRepoAlreadyLinked);
 		}
 
-		Ok(vec![ProjectEvent::GithubRepoLinked {
+		let event = ProjectEvent::GithubRepoLinked {
 			id: self.id,
 			github_repo_id,
-		}])
+		};
+
+		Ok(self.with_pending_events(vec![event]))
 	}
 
-	pub fn unlink_github_repo(
-		&self,
-		github_repo_id: GithubRepoId,
-	) -> Result<Vec<<Self as Aggregate>::Event>> {
+	pub fn unlink_github_repo(self, github_repo_id: GithubRepoId) -> Result<Self> {
 		if !self.github_repos.contains(&github_repo_id) {
 			return Err(Error::GithubRepoNotLinked);
 		}
 
-		Ok(vec![ProjectEvent::GithubRepoUnlinked {
+		let event = ProjectEvent::GithubRepoUnlinked {
 			id: self.id,
 			github_repo_id,
-		}])
+		};
+
+		Ok(self.with_pending_events(vec![event]))
 	}
 
-	pub fn apply(&self, applicant_id: UserId) -> Result<Vec<<Self as Aggregate>::Event>> {
+	pub fn apply(self, applicant_id: UserId) -> Result<Self> {
 		if self.applicants.contains(&applicant_id) {
 			return Err(Error::UserAlreadyApplied);
 		}
 
-		Ok(vec![ProjectEvent::Applied {
+		let event = ProjectEvent::Applied {
 			id: self.id,
 			applicant_id,
-		}])
+		};
+
+		Ok(self.with_pending_events(vec![event]))
 	}
 }
 
@@ -263,7 +206,10 @@ mod tests {
 
 	#[rstest]
 	fn create_project(project_id: ProjectId, project_created: ProjectEvent) {
-		assert_eq!(Project::create(project_id), vec![project_created]);
+		assert_eq!(
+			Project::create(project_id).collect::<Vec<_>>(),
+			[project_created]
+		);
 	}
 
 	#[rstest]
@@ -275,8 +221,8 @@ mod tests {
 	) {
 		let project = Project::from_events(&[project_created]);
 		assert_eq!(
-			project.link_budget(budget_id, currency),
-			Ok(vec![budget_linked])
+			project.link_budget(budget_id, currency).unwrap().collect::<Vec<_>>(),
+			[budget_linked]
 		);
 	}
 
@@ -308,7 +254,7 @@ mod tests {
 		let project = Project::from_events(&[project_created]);
 
 		let before = Utc::now().naive_utc();
-		let events = project.assign_leader(user_id.to_owned()).unwrap();
+		let events = project.assign_leader(user_id.to_owned()).unwrap().collect::<Vec<_>>();
 		let after = Utc::now().naive_utc();
 
 		assert_eq!(events.len(), 1);
@@ -338,8 +284,8 @@ mod tests {
 		let project = Project::from_events(&[project_created, leader_assigned]);
 
 		assert_eq!(
-			project.unassign_leader(user_id.to_owned()),
-			Ok(vec![leader_unassigned])
+			project.unassign_leader(user_id.to_owned()).unwrap().collect::<Vec<_>>(),
+			[leader_unassigned]
 		);
 	}
 
@@ -373,7 +319,10 @@ mod tests {
 		user_id: UserId,
 	) {
 		let project = Project::from_events(&[project_created]);
-		assert_eq!(project.apply(user_id), Ok(vec![user_applied]));
+		assert_eq!(
+			project.apply(user_id).unwrap().collect::<Vec<_>>(),
+			[user_applied]
+		);
 	}
 
 	#[rstest]
@@ -394,8 +343,8 @@ mod tests {
 	) {
 		let project = Project::from_events(&[project_created]);
 		assert_eq!(
-			project.link_github_repo(marketplace_id),
-			Ok(vec![marketplace_linked])
+			project.link_github_repo(marketplace_id).unwrap().collect::<Vec<_>>(),
+			[marketplace_linked]
 		);
 	}
 
@@ -408,8 +357,8 @@ mod tests {
 	) {
 		let project = Project::from_events(&[project_created, marketplace_linked]);
 		assert_eq!(
-			project.unlink_github_repo(marketplace_id),
-			Ok(vec![marketplace_unlinked])
+			project.unlink_github_repo(marketplace_id).unwrap().collect::<Vec<_>>(),
+			[marketplace_unlinked]
 		);
 	}
 
