@@ -22,6 +22,7 @@ pub struct Usecase {
 }
 
 impl Usecase {
+	#[allow(clippy::too_many_arguments)]
 	#[instrument(skip(self))]
 	pub async fn request(
 		&self,
