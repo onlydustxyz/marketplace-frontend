@@ -163,6 +163,7 @@ const config: Config = {
         "bottom-sm": "0px 8px 32px rgba(0, 0, 0, 0.16)",
       },
       borderWidth: {
+        "0.5": "0.5px",
         3: "3px",
       },
       opacity: {
