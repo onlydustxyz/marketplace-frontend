@@ -18,6 +18,16 @@ object_relationships:
         remote_table:
           name: github_repos
           schema: api
+array_relationships:
+  - name: closedByPullRequests
+    using:
+      manual_configuration:
+        column_mapping:
+          id: github_issue_id
+        insertion_order: null
+        remote_table:
+          name: closed_by_pull_requests
+          schema: api
 select_permissions:
   - role: public
     permission:

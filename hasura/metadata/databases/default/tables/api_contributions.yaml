@@ -9,6 +9,15 @@ configuration:
     select: contributions
     select_aggregate: contributionsAggregate
 object_relationships:
+  - name: githubCodeReview
+    using:
+      manual_configuration:
+        column_mapping:
+          github_code_review_id: id
+        insertion_order: null
+        remote_table:
+          name: github_pull_request_reviews
+          schema: api
   - name: githubIssue
     using:
       manual_configuration:
@@ -26,6 +35,24 @@ object_relationships:
         insertion_order: null
         remote_table:
           name: github_pull_requests
+          schema: api
+  - name: githubRepo
+    using:
+      manual_configuration:
+        column_mapping:
+          repo_id: id
+        insertion_order: null
+        remote_table:
+          name: github_repos
+          schema: api
+  - name: project
+    using:
+      manual_configuration:
+        column_mapping:
+          project_id: id
+        insertion_order: null
+        remote_table:
+          name: projects
           schema: api
 array_relationships:
   - name: rewardItems
