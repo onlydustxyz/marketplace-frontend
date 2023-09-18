@@ -98,7 +98,8 @@ impl<'a> Test<'a> {
 		let request = json!({
 			"projectId": project_id,
 			"recipientId": 595505,
-			"amountInUsd": 10,
+			"amount": 10,
+			"currency": "USD",
 			"hoursWorked": 1,
 			"reason": {
 				"workItems": [{
@@ -223,7 +224,8 @@ impl<'a> Test<'a> {
 		let request = json!({
 			"projectId": project_id,
 			"recipientId": 595505,
-			"amountInUsd": 10,
+			"amount": 10,
+			"currency": "USD",
 			"hoursWorked": 1,
 			"reason": {
 				"workItems": [{
@@ -304,7 +306,8 @@ impl<'a> Test<'a> {
 		let request = json!({
 			"projectId": project_id,
 			"recipientId": 595505,
-			"amountInUsd": 10,
+			"amount": 10,
+			"currency": "USD",
 			"hoursWorked": 1,
 			"reason": {
 				"workItems": [{

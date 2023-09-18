@@ -1,7 +1,10 @@
-use domain::{AggregateRepository, CommandId, GithubUserId, Payment, PaymentId, ProjectId};
+use domain::{
+	AggregateRepository, CommandId, Currency, GithubUserId, Payment, PaymentId, ProjectId,
+};
 use http_api_problem::{HttpApiProblem, StatusCode};
 use presentation::http::guards::{ApiKey, Claims, Role};
 use rocket::{serde::json::Json, State};
+use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
 
 use crate::{application, domain::permissions::IntoPermission, presentation::http::dto};
@@ -18,7 +21,8 @@ pub struct Response {
 pub struct Request {
 	project_id: ProjectId,
 	recipient_id: GithubUserId,
-	amount_in_usd: u32,
+	amount: Decimal,
+	currency: &'static Currency,
 	hours_worked: u32,
 	reason: dto::payment::Reason,
 }
@@ -35,7 +39,8 @@ pub async fn request_payment(
 	let Request {
 		project_id,
 		recipient_id,
-		amount_in_usd,
+		amount,
+		currency,
 		hours_worked,
 		reason,
 	} = request.into_inner();
@@ -59,7 +64,8 @@ pub async fn request_payment(
 			project_id,
 			caller_id,
 			recipient_id,
-			amount_in_usd,
+			amount,
+			currency,
 			hours_worked,
 			reason.try_into()?,
 		)
