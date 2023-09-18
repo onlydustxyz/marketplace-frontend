@@ -149,5 +149,10 @@ select_permissions:
         - more_info_link
         - name
         - short_description
+        - apt_budget_id
+        - eth_budget_id
         - id
+        - op_budget_id
+        - stark_budget_id
+        - usd_budget_id
       filter: {}
