@@ -10,7 +10,8 @@ pub enum Network {
 
 pub type TransactionHash = String;
 
-mod account_address;
+mod address;
+use address::Address;
 
 pub mod aptos;
 pub mod evm;

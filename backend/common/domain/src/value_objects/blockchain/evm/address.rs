@@ -2,17 +2,17 @@ use derive_more::{Display, From, FromStr, Into};
 use serde::{Deserialize, Serialize};
 use web3::types::H160;
 
-use crate::blockchain::account_address::AccountAddress;
+use crate::blockchain;
 
 #[derive(
 	Debug, Copy, Clone, PartialEq, Eq, Serialize, Deserialize, From, Into, FromStr, Display,
 )]
 #[serde(transparent)]
-pub struct Address(AccountAddress<20>);
+pub struct Address(blockchain::Address<20>);
 
 impl Default for Address {
 	fn default() -> Self {
-		Self(AccountAddress::<20>::ZERO)
+		Self(blockchain::Address::<20>::ZERO)
 	}
 }
 
