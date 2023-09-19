@@ -4,7 +4,6 @@ use infrastructure::{
 	contextualized_error::IntoContextualizedError,
 	database,
 	database::{
-		enums::ContributionStatus,
 		schema::{contributions, project_github_repos, projects_pending_contributors::dsl},
 		Result,
 	},
@@ -42,7 +41,6 @@ impl Repository for database::Client {
 					.select(contributions::dsl::user_id)
 					.distinct()
 					.filter(contributions::dsl::repo_id.eq_any(repos))
-					.filter(contributions::dsl::status.eq(ContributionStatus::InProgress))
 					.load(&mut *tx)?;
 
 				contributors.iter().try_for_each(|user_id| {

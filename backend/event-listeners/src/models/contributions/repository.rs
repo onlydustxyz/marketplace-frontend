@@ -172,7 +172,10 @@ fn refresh_contributions_from_reviews(
 				GithubCodeReviewStatus::Pending => ContributionStatus::InProgress,
 			},
 			pull_request.inner.created_at,
-			review.submitted_at,
+			match review.status {
+				GithubCodeReviewStatus::Completed => review.submitted_at,
+				GithubCodeReviewStatus::Pending => None,
+			},
 		);
 
 		contributions.insert(contribution);
