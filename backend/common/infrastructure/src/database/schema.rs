@@ -159,6 +159,17 @@ diesel::table! {
 }
 
 diesel::table! {
+    use diesel::sql_types::*;
+    use super::sql_types::Currency;
+
+    crypto_usd_quotes (currency) {
+        currency -> Currency,
+        price -> Numeric,
+        updated_at -> Timestamp,
+    }
+}
+
+diesel::table! {
     event_deduplications (deduplication_id) {
         deduplication_id -> Text,
         event_index -> Int4,
@@ -508,6 +519,7 @@ diesel::allow_tables_to_appear_in_same_query!(
     commands,
     contact_informations,
     contributions,
+    crypto_usd_quotes,
     event_deduplications,
     events,
     github_issues,

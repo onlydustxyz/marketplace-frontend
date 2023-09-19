@@ -1,3 +1,6 @@
+mod crypto_usd_quotes;
+pub use crypto_usd_quotes::CryptoUsdQuote;
+
 mod contact_informations;
 pub use contact_informations::{ContactInformation, Repository as ContactInformationsRepository};
 
