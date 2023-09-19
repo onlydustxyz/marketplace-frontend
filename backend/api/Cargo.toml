@@ -36,9 +36,6 @@ uuid08 = { package = "uuid", version = "0.8", default_features = false, features
 	"serde",
 ] }
 
-# Graphql client
-graphql_client = "0.12.0"
-
 # Github
 octocrab = { git = "https://github.com/onlydustxyz/octocrab.git", features = [
 	"stream",
@@ -76,15 +73,12 @@ serde_json = { version = "1.0.81" }
 chrono = "0.4"
 
 # Utils
-derive-getters = "0.2.0"
 derive_more = "0.99.17"
 derive_setters = "0.1.5"
 dotenv = "0.15.0"
-email_address = "0.2.4"
 infer = "0.12.0"
 rust_decimal = { version = "1.29.1", features = ["db-diesel2-postgres"] }
 rust_decimal_macros = "1.26"
-rusty-money = "0.4.1"
 tokio-retry = "0.3"
 
 # Local dependecies

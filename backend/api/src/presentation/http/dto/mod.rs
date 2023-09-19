@@ -7,14 +7,8 @@ pub use payout_settings::{BankAccount, PayoutSettings};
 mod amount;
 pub use amount::Allocation;
 
-mod ethereum;
-pub use ethereum::EthereumIdentityInput;
-
 mod non_empty_trimmed_string;
 pub use non_empty_trimmed_string::{NonEmptyTrimmedString, OptionalNonEmptyTrimmedString};
-
-mod payment_reference;
-pub use payment_reference::PaymentReference;
 
 mod language;
 pub use language::Language;
