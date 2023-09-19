@@ -43,14 +43,16 @@ export default function ContributorSelect({ projectId, contributor, setContribut
 
   const internalContributors: Contributor[] = contributors.map(c => {
     const completedUnpaidPullRequestCount = c.completedUnpaidPullRequestsAggregate.aggregate?.count || 0;
-    const completedUnpaidIssueCount = c.completedUnpaidIssuesAggregate.aggregate?.count || 0;
-    const completedUnpaidCodeReviewCount = c.completedUnpaidCodeReviewsAggregate.aggregate?.count || 0;
+    // const completedUnpaidIssueCount = c.completedUnpaidIssuesAggregate.aggregate?.count || 0;
+    // const completedUnpaidCodeReviewCount = c.completedUnpaidCodeReviewsAggregate.aggregate?.count || 0;
     return {
       githubUserId: c.githubUserId,
       login: c.login || "",
       avatarUrl: c.avatarUrl || "",
       unpaidCompletedContributions:
-        completedUnpaidPullRequestCount + completedUnpaidIssueCount + completedUnpaidCodeReviewCount,
+        //TODO: Uncomment when codeReviews are available
+        // completedUnpaidPullRequestCount + completedUnpaidIssueCount + completedUnpaidCodeReviewCount,
+        completedUnpaidPullRequestCount,
       userId: c.userId,
     };
   });

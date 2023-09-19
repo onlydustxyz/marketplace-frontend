@@ -26,7 +26,8 @@ export default function ContributorLine({
 }: Props) {
   const { T } = useIntl();
   const isSm = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.sm}px)`);
-  const contributionCount = contributor.contributionCount - contributor.unpaidCodeReviewCount;
+  const contributionCount =
+    contributor.contributionCount - contributor.unpaidCodeReviewCount - contributor.unpaidIssueCount;
 
   return (
     <Line key={contributor.login} className="h-10">
@@ -53,7 +54,7 @@ export default function ContributorLine({
               data-tooltip-id="to-reward-details"
               data-tooltip-content={JSON.stringify({
                 unpaidPullRequestCount: contributor.unpaidPullRequestCount,
-                unpaidIssueCount: contributor.unpaidIssueCount,
+                // unpaidIssueCount: contributor.unpaidIssueCount,
                 // unpaidCodeReviewCount: contributor.unpaidCodeReviewCount,
               })}
             >
@@ -62,7 +63,7 @@ export default function ContributorLine({
               {/*  TODO: Uncomment when Code Review availables */}
               {/* <span className="font-walsheim font-medium">{contributor.toRewardCount}</span>  */}
               <span className="font-walsheim font-medium">
-                {contributor.toRewardCount - contributor.unpaidCodeReviewCount}
+                {contributor.toRewardCount - contributor.unpaidCodeReviewCount - contributor.unpaidIssueCount}
               </span>
             </div>
           ) : (
