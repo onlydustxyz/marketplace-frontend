@@ -6,7 +6,7 @@ export function ContributionReward({ rewards }: { rewards: number }) {
     <ContributionAttribute>
       <div className="flex items-center gap-1 text-orange-400">
         <Medal2Fill className="flex h-3.5 items-center" />
-        {rewards ? <span className="text-sm leading-none">{rewards}</span> : null}
+        {rewards > 1 ? <span className="text-sm leading-none">{rewards}</span> : null}
       </div>
     </ContributionAttribute>
   );
