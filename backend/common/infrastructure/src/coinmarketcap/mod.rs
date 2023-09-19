@@ -72,6 +72,6 @@ impl Client {
 	}
 
 	fn get_currencies_ids(&self, currencies: &[String]) -> Result<Vec<String>> {
-		currencies.iter().map(|currency| self.get_currency_id(&currency)).collect()
+		currencies.iter().map(|currency| self.get_currency_id(currency)).collect()
 	}
 }

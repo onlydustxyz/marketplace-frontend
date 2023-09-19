@@ -9,7 +9,7 @@ impl quotes::Service for super::Client {
 		&self,
 		currencies: &[&'static Currency],
 	) -> Result<Vec<Decimal>> {
-		let currencies = currencies.into_iter().map(|c| c.code.to_owned()).collect();
+		let currencies = currencies.iter().map(|c| c.code.to_owned()).collect();
 		let details = self.fetch_crypto_currency_details(currencies).await?;
 
 		details
