@@ -6,9 +6,8 @@ use presentation::http;
 use rocket::local::asynchronous::Client;
 use rstest::fixture;
 use testcontainers::clients::Cli;
-use testing::context::{amqp, database, github};
+use testing::context::{amqp, coinmarketcap, database, github};
 
-pub mod coinmarketcap;
 pub mod environment;
 pub mod indexer;
 pub mod simple_storage;
