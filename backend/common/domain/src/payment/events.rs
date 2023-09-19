@@ -118,11 +118,10 @@ mod tests {
 			id: payment_id(),
 			receipt_id: payment_receipt_id(),
 			amount: Amount::from_decimal(dec!(500.45), currencies::USD),
-			receipt: PaymentReceipt::OnChainPayment {
-				network: Network::Ethereum,
+			receipt: PaymentReceipt::Ethereum {
 				recipient_address: recipient_address.parse().unwrap(),
 				recipient_ens: None,
-				transaction_hash: transaction_hash.clone(),
+				transaction_hash,
 			},
 			processed_at: NaiveDateTime::new(
 				NaiveDate::from_ymd_opt(2023, 3, 22).unwrap(),
@@ -141,10 +140,9 @@ mod tests {
 						"currency":"USD"
 					},
 					"receipt":{
-						"OnChainPayment":{
-							"network":"Ethereum",
+						"Ethereum":{
 							"recipient_address": recipient_address,
-							"recipient_ens": None::<evm::Name>,
+							"recipient_ens": null,
 							"transaction_hash": transaction_hash,
 						}
 					},

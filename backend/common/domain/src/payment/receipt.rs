@@ -6,13 +6,12 @@ create_new_id!(Id);
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Receipt {
-	OnChainPayment {
-		network: Network,
+	Ethereum {
 		recipient_address: evm::Address,
 		recipient_ens: Option<evm::Name>,
 		transaction_hash: TransactionHash,
 	},
-	FiatPayment {
+	Sepa {
 		recipient_iban: Iban,
 		transaction_reference: String,
 	},
