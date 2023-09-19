@@ -4,6 +4,7 @@ default:
     connection_retry_count: 100
   database:
     url: $DATABASE_URL
+    pool_max_size: 3
   github_api_client:
     base_url: $GITHUB_BASE_URL
     personal_access_tokens: $GITHUB_PAT
@@ -32,8 +33,6 @@ default:
     url: https://mainnet.infura.io/v3/$INFURA_API_KEY
 
 local:
-  database:
-    pool_max_size: 3
   amqp:
     url: $AMQP_URL
   tracer:
@@ -42,8 +41,6 @@ local:
     location: true
 
 production:
-  database:
-    pool_max_size: 3
   amqp:
     url: $CLOUDAMQP_URL
   tracer:

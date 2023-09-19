@@ -36,5 +36,8 @@ where
 	Self: Identifiable + Sized,
 {
 	fn update(self, conn: &mut C) -> Result<Self>;
+	fn update_all(conn: &mut C, values: Vec<Self>) -> Result<()> {
+		values.into_iter().try_for_each(|value| value.update(conn).map(|_| ()))
+	}
 	fn upsert(self, conn: &mut C) -> Result<Self>;
 }

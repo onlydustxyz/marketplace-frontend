@@ -40,6 +40,7 @@ pub fn jwt(project_leaded_id: Option<String>) -> String {
 	.expect("Invalid JWT")
 }
 
+#[allow(unused)]
 pub fn api_key_header() -> Header<'static> {
 	Header::new("Api-Key", API_KEY)
 }

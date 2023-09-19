@@ -104,7 +104,7 @@ const pendingPaymentsMock = {
             {
               __typename: "PaymentRequests",
               id: "payment-1",
-              amountInUsd: 100,
+              amount: 100,
               paymentsAggregate: { aggregate: { sum: { amount: null } } },
             },
           ],
@@ -140,7 +140,7 @@ const paymentRequestsMock = {
               currencyCode: "USD",
             },
           ],
-          amountInUsd: 200,
+          amount: 200,
           workItems: [
             {
               __typename: "WorkItems",

@@ -1,6 +1,6 @@
 fragment PaymentRequestDetails on PaymentRequests {
   id
-  amountInUsd
+  amount
   requestedAt
   payments(limit: 1) {
     processedAt
@@ -29,7 +29,7 @@ fragment PaymentRequestDetails on PaymentRequests {
 }
 
 query PaymentRequestDetails($id: uuid!) {
-  paymentRequestsByPk(id: $id) {
+  paymentRequests(where: { id: { _eq: $id } }) {
     ...PaymentRequestDetails
   }
 }

@@ -39,8 +39,11 @@ class Budgets {
    currency: String
    id: uuid
    initialAmount: numeric
+   initialAmountUsd: numeric
    remainingAmount: numeric
+   remainingAmountUsd: numeric
    spentAmount: numeric
+   spentAmountUsd: numeric
 }
 
 class Command {
@@ -225,25 +228,29 @@ class Onboardings {
 }
 
 class PaymentRequests {
-   amountInUsd: bigint!
+   amount: numeric
+   amountUsd: numeric
+   currency: currency
    githubRecipient: GithubUsers
-   hoursWorked: Int!
-   id: uuid!
+   hoursWorked: Int
+   id: uuid
    invoiceReceivedAt: timestamp
    payments: [Payments!]!
    project: Projects
-   projectId: uuid!
+   projectId: uuid
    recipient: RegisteredUsers
-   recipientId: bigint!
-   requestedAt: timestamp!
+   recipientId: bigint
+   requestedAt: timestamp
    requestor: RegisteredUsers
-   requestorId: uuid!
+   requestorId: uuid
    workItems: [WorkItems!]!
 }
 
 class PaymentStats {
+   currency: String
    githubUserId: bigint
    moneyGranted: numeric
+   moneyGrantedUsd: numeric
    projectId: uuid
 }
 

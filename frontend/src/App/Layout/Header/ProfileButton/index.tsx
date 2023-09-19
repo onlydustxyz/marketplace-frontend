@@ -25,7 +25,7 @@ const ProfileButton = () => {
   const pendingPaymentRequestsCount =
     data?.registeredUsers
       ?.at(0)
-      ?.paymentRequests.filter(p => p.paymentsAggregate.aggregate?.sum?.amount || 0 < p.amountInUsd).length || 0;
+      ?.paymentRequests.filter(p => p.paymentsAggregate.aggregate?.sum?.amount || 0 < p.amount).length || 0;
 
   const payoutSettingsInvalid = valid === false && pendingPaymentRequestsCount > 0;
 

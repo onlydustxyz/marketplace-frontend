@@ -70,7 +70,7 @@ const issues: GithubIssueFragment[] = range(1, 50).map(id => ({
 const payment: PaymentRequestDetailsFragment = {
   __typename: "PaymentRequests",
   id: "880819f1-2ab9-406d-9bf1-3012b6f565bc",
-  amountInUsd: 2500,
+  amount: 2500,
   githubRecipient: {
     id: 595505,
     login: "ofux",

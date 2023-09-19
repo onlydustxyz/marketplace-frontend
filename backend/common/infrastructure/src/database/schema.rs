@@ -6,7 +6,7 @@ pub mod sql_types {
     pub struct AllocatedTime;
 
     #[derive(diesel::query_builder::QueryId, diesel::sql_types::SqlType)]
-    #[diesel(postgres_type(name = "citext"))]
+    #[diesel(postgres_type(name = "citext", schema = "heroku_ext"))]
     pub struct Citext;
 
     #[derive(diesel::query_builder::QueryId, diesel::sql_types::SqlType)]
@@ -155,6 +155,17 @@ diesel::table! {
         created_at -> Timestamp,
         closed_at -> Nullable<Timestamp>,
         id -> Text,
+    }
+}
+
+diesel::table! {
+    use diesel::sql_types::*;
+    use super::sql_types::Currency;
+
+    crypto_usd_quotes (currency) {
+        currency -> Currency,
+        price -> Numeric,
+        updated_at -> Timestamp,
     }
 }
 
@@ -314,15 +325,19 @@ diesel::table! {
 }
 
 diesel::table! {
+    use diesel::sql_types::*;
+    use super::sql_types::Currency;
+
     payment_requests (id) {
         id -> Uuid,
         requestor_id -> Uuid,
         recipient_id -> Int8,
-        amount_in_usd -> Int8,
+        amount -> Numeric,
         requested_at -> Timestamp,
         invoice_received_at -> Nullable<Timestamp>,
         hours_worked -> Int4,
         project_id -> Uuid,
+        currency -> Currency,
     }
 }
 
@@ -508,6 +523,7 @@ diesel::allow_tables_to_appear_in_same_query!(
     commands,
     contact_informations,
     contributions,
+    crypto_usd_quotes,
     event_deduplications,
     events,
     github_issues,

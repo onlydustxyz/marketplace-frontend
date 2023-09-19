@@ -13,8 +13,11 @@ select_permissions:
     permission:
       columns:
         - initial_amount
+        - initial_amount_usd
         - remaining_amount
+        - remaining_amount_usd
         - spent_amount
+        - spent_amount_usd
         - currency
         - id
       filter: {}

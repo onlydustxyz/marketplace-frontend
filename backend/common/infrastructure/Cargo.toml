@@ -75,9 +75,12 @@ regex = "1.7.0"
 url = { version = "2.2.2", features = ["serde"] }
 lazy_static = "1.4.0"
 tokio-retry = "0.3"
+rust_decimal = "1.26.1"
 
 # Web3
 web3 = "0.18.0"
+# Waiting for https://github.com/Dzhegash/cmc/pull/1 to be merged
+cmc = { git = "https://github.com/onlydustxyz/cmc", features = ["async"] }
 
 # Local dependecies
 domain = { path = "../domain" }

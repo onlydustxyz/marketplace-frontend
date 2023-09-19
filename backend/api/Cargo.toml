@@ -82,7 +82,7 @@ derive_setters = "0.1.5"
 dotenv = "0.15.0"
 email_address = "0.2.4"
 infer = "0.12.0"
-rust_decimal = "1.26.1"
+rust_decimal = { version = "1.29.1", features = ["db-diesel2-postgres"] }
 rust_decimal_macros = "1.26"
 rusty-money = "0.4.1"
 tokio-retry = "0.3"

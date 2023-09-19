@@ -21,18 +21,18 @@ export default function RewardSidePanel({ rewardId, onRewardCancel, projectLeade
   });
 
   const status =
-    data?.paymentRequestsByPk?.paymentsAggregate.aggregate?.sum?.amount === data?.paymentRequestsByPk?.amountInUsd
+    data?.paymentRequests[0]?.paymentsAggregate.aggregate?.sum?.amount === data?.paymentRequests[0]?.amount
       ? PaymentStatus.ACCEPTED
       : PaymentStatus.WAITING_PAYMENT;
 
   const { invoiceNeeded, valid: payoutSettingsValid } = usePayoutSettings(
-    data?.paymentRequestsByPk?.githubRecipient?.id
+    data?.paymentRequests[0]?.githubRecipient?.id
   );
 
   return (
     <View
       loading={loading}
-      {...data?.paymentRequestsByPk}
+      {...data?.paymentRequests[0]}
       id={rewardId}
       userId={user?.id}
       githubUserId={githubUserId}

@@ -1,0 +1,198 @@
+{
+    "status": {
+        "timestamp": "2023-09-19T10:03:13.530Z",
+        "error_code": 0,
+        "error_message": null,
+        "elapsed": 22,
+        "credit_count": 1,
+        "notice": null
+    },
+    "data": {
+        "1027": {
+            "id": 1027,
+            "name": "Ethereum",
+            "symbol": "ETH",
+            "slug": "ethereum",
+            "num_market_pairs": 7404,
+            "date_added": "2015-08-07T00:00:00.000Z",
+            "tags": [
+                { "slug": "pos", "name": "PoS", "category": "ALGORITHM" },
+                {
+                    "slug": "smart-contracts",
+                    "name": "Smart Contracts",
+                    "category": "CATEGORY"
+                },
+                {
+                    "slug": "ethereum-ecosystem",
+                    "name": "Ethereum Ecosystem",
+                    "category": "PLATFORM"
+                },
+                {
+                    "slug": "coinbase-ventures-portfolio",
+                    "name": "Coinbase Ventures Portfolio",
+                    "category": "CATEGORY"
+                },
+                {
+                    "slug": "three-arrows-capital-portfolio",
+                    "name": "Three Arrows Capital Portfolio",
+                    "category": "CATEGORY"
+                },
+                {
+                    "slug": "polychain-capital-portfolio",
+                    "name": "Polychain Capital Portfolio",
+                    "category": "CATEGORY"
+                },
+                {
+                    "slug": "binance-labs-portfolio",
+                    "name": "Binance Labs Portfolio",
+                    "category": "CATEGORY"
+                },
+                {
+                    "slug": "blockchain-capital-portfolio",
+                    "name": "Blockchain Capital Portfolio",
+                    "category": "CATEGORY"
+                },
+                {
+                    "slug": "boostvc-portfolio",
+                    "name": "BoostVC Portfolio",
+                    "category": "CATEGORY"
+                },
+                {
+                    "slug": "cms-holdings-portfolio",
+                    "name": "CMS Holdings Portfolio",
+                    "category": "CATEGORY"
+                },
+                {
+                    "slug": "dcg-portfolio",
+                    "name": "DCG Portfolio",
+                    "category": "CATEGORY"
+                },
+                {
+                    "slug": "dragonfly-capital-portfolio",
+                    "name": "DragonFly Capital Portfolio",
+                    "category": "CATEGORY"
+                },
+                {
+                    "slug": "electric-capital-portfolio",
+                    "name": "Electric Capital Portfolio",
+                    "category": "CATEGORY"
+                },
+                {
+                    "slug": "fabric-ventures-portfolio",
+                    "name": "Fabric Ventures Portfolio",
+                    "category": "CATEGORY"
+                },
+                {
+                    "slug": "framework-ventures-portfolio",
+                    "name": "Framework Ventures Portfolio",
+                    "category": "CATEGORY"
+                },
+                {
+                    "slug": "hashkey-capital-portfolio",
+                    "name": "Hashkey Capital Portfolio",
+                    "category": "CATEGORY"
+                },
+                {
+                    "slug": "kenetic-capital-portfolio",
+                    "name": "Kenetic Capital Portfolio",
+                    "category": "CATEGORY"
+                },
+                {
+                    "slug": "huobi-capital-portfolio",
+                    "name": "Huobi Capital Portfolio",
+                    "category": "CATEGORY"
+                },
+                {
+                    "slug": "alameda-research-portfolio",
+                    "name": "Alameda Research Portfolio",
+                    "category": "CATEGORY"
+                },
+                {
+                    "slug": "a16z-portfolio",
+                    "name": "a16z Portfolio",
+                    "category": "CATEGORY"
+                },
+                {
+                    "slug": "1confirmation-portfolio",
+                    "name": "1Confirmation Portfolio",
+                    "category": "CATEGORY"
+                },
+                {
+                    "slug": "winklevoss-capital-portfolio",
+                    "name": "Winklevoss Capital Portfolio",
+                    "category": "CATEGORY"
+                },
+                {
+                    "slug": "usv-portfolio",
+                    "name": "USV Portfolio",
+                    "category": "CATEGORY"
+                },
+                {
+                    "slug": "placeholder-ventures-portfolio",
+                    "name": "Placeholder Ventures Portfolio",
+                    "category": "CATEGORY"
+                },
+                {
+                    "slug": "pantera-capital-portfolio",
+                    "name": "Pantera Capital Portfolio",
+                    "category": "CATEGORY"
+                },
+                {
+                    "slug": "multicoin-capital-portfolio",
+                    "name": "Multicoin Capital Portfolio",
+                    "category": "CATEGORY"
+                },
+                {
+                    "slug": "paradigm-portfolio",
+                    "name": "Paradigm Portfolio",
+                    "category": "CATEGORY"
+                },
+                {
+                    "slug": "injective-ecosystem",
+                    "name": "Injective Ecosystem",
+                    "category": "PLATFORM"
+                },
+                {
+                    "slug": "layer-1",
+                    "name": "Layer 1",
+                    "category": "CATEGORY"
+                },
+                {
+                    "slug": "ftx-bankruptcy-estate",
+                    "name": "FTX Bankruptcy Estate ",
+                    "category": "CATEGORY"
+                }
+            ],
+            "max_supply": null,
+            "circulating_supply": 120226214.38544136,
+            "total_supply": 120226214.38544136,
+            "is_active": 1,
+            "infinite_supply": true,
+            "platform": null,
+            "cmc_rank": 2,
+            "is_fiat": 0,
+            "self_reported_circulating_supply": null,
+            "self_reported_market_cap": null,
+            "tvl_ratio": null,
+            "last_updated": "2023-09-19T10:01:00.000Z",
+            "quote": {
+                "USD": {
+                    "price": 1654.3547270319648,
+                    "volume_24h": 5405998171.018126,
+                    "volume_change_24h": 36.6973,
+                    "percent_change_1h": 0.63099363,
+                    "percent_change_24h": 0.8919112,
+                    "percent_change_7d": 4.1271591,
+                    "percent_change_30d": -0.96221758,
+                    "percent_change_60d": -12.30748933,
+                    "percent_change_90d": -8.73788333,
+                    "market_cap": 198896806081.71332,
+                    "market_cap_dominance": 18.4133,
+                    "fully_diluted_market_cap": 198896806081.71,
+                    "tvl": null,
+                    "last_updated": "2023-09-19T10:01:00.000Z"
+                }
+            }
+        }
+    }
+}

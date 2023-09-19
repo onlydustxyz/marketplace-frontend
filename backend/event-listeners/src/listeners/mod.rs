@@ -3,16 +3,17 @@ pub mod budget;
 pub mod logger;
 pub mod payment;
 pub mod project;
+pub mod quote_syncer;
 pub mod webhook;
 
 use std::sync::Arc;
 
 use anyhow::Result;
 use async_trait::async_trait;
-use domain::{LogErr, MessagePayload, Subscriber, SubscriberCallbackError};
+use domain::{currencies, LogErr, MessagePayload, Subscriber, SubscriberCallbackError};
 use infrastructure::{
 	amqp::{CommandSubscriberDecorator, UniqueMessage},
-	database, event_bus,
+	coinmarketcap, database, event_bus,
 };
 use olog::IntoField;
 use tokio::task::JoinHandle;
@@ -29,8 +30,12 @@ pub async fn bootstrap(config: Config) -> Result<Vec<JoinHandle<()>>> {
 	let database = Arc::new(database::Client::new(database::init_pool(
 		config.database.clone(),
 	)?));
+	let coinmarketcap = Arc::new(coinmarketcap::Client::new(
+		config.coinmarketcap.clone(),
+		currencies::USD,
+	));
 
-	spawn_all(config, reqwest, database).await
+	spawn_all(config, reqwest, database, coinmarketcap).await
 }
 
 #[async_trait]
@@ -42,6 +47,7 @@ pub async fn spawn_all(
 	config: Config,
 	reqwest: reqwest::Client,
 	database: Arc<database::Client>,
+	coinmarketcap: Arc<coinmarketcap::Client>,
 ) -> Result<Vec<JoinHandle<()>>> {
 	let mut handles = vec![
 		Logger.spawn(event_bus::event_consumer(config.amqp.clone(), "logger").await?),
@@ -79,6 +85,11 @@ pub async fn spawn_all(
 		)
 		.spawn(
 			event_bus::event_consumer(config.amqp.clone(), "payments")
+				.await?
+				.into_command_subscriber(database.clone()),
+		),
+		quote_syncer::Projector::new(database.clone(), coinmarketcap).spawn(
+			event_bus::event_consumer(config.amqp.clone(), "quote_sync")
 				.await?
 				.into_command_subscriber(database.clone()),
 		),
