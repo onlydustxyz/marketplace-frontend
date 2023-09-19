@@ -15,8 +15,9 @@ export default function useFilteredContributions({ pattern = "", contributions }
 
   return filter(contributions, (contribution: ContributionFragment) => {
     if (!contribution.id) return;
-    // const contributionFullText = contribution.number.toString() + " " + contribution.title;
-    const contributionFullText = contribution.id;
+
+    const contributionType = contribution?.type === "ISSUE" ? contribution.githubIssue : contribution.githubPullRequest;
+    const contributionFullText = contributionType?.number?.toString() + " " + contributionType?.title;
     return searchRegExps.filter(regexp => !regexp.test(contributionFullText)).length === 0;
   });
 }

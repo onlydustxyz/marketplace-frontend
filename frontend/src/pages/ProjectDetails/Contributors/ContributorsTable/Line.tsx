@@ -8,6 +8,8 @@ import { Contributor as ContributorType } from "./View";
 import { formatMoneyAmount } from "src/utils/money";
 import Contributor from "src/components/Contributor";
 import StackLine from "src/icons/StackLine";
+import { useMediaQuery } from "usehooks-ts";
+import { viewportConfig } from "src/config";
 
 type Props = {
   contributor: ContributorType;
@@ -23,6 +25,8 @@ export default function ContributorLine({
   onRewardGranted,
 }: Props) {
   const { T } = useIntl();
+  const isSm = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.sm}px)`);
+  const contributionCount = contributor.contributionCount - contributor.unpaidCodeReviewCount;
 
   return (
     <Line key={contributor.login} className="h-10">
@@ -31,7 +35,7 @@ export default function ContributorLine({
       </Cell>
       <Cell height={CellHeight.Small} horizontalMargin={false}>
         {/*  TODO: Remove unpaid Code Reviews count when Code Review availables */}
-        {contributor.contributionCount - contributor.unpaidCodeReviewCount || "-"}
+        {contributionCount || "-"}
       </Cell>
       <Cell height={CellHeight.Small} horizontalMargin={false}>
         {contributor.rewardCount || "-"}
@@ -42,7 +46,7 @@ export default function ContributorLine({
       {isProjectLeader && (
         <Cell height={CellHeight.Small} horizontalMargin={false}>
           {/*  TODO: Uncomment when Code Review availables */}
-          {contributor.toRewardCount ? (
+          {contributor.toRewardCount - contributor.unpaidCodeReviewCount > 0 ? (
             <div
               id="to-reward-count"
               className="flex cursor-default items-center gap-1 rounded-full bg-spacePurple-900 px-1.5 py-1 text-spacePurple-400"
@@ -77,7 +81,9 @@ export default function ContributorLine({
               data-testid="give-reward-button"
             >
               <SendPlane2Line />
-              <div>{T("project.details.contributors.reward")}</div>
+              <div className="truncate">
+                {isSm ? T("project.details.contributors.reward.short") : T("project.details.contributors.reward.full")}
+              </div>
             </Button>
           </div>
         </Cell>
