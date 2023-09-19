@@ -5,32 +5,32 @@ import Check from "src/assets/icons/Check";
 import FileChange from "src/assets/icons/FileChange";
 import Hourglass from "src/assets/icons/Hourglass";
 
-export enum ContributionStatusEnum {
+export enum ContributionReviewStatus {
   PendingReviewer = "pendingReviewer",
   UnderReview = "underReview",
   Approved = "approved",
   ChangesRequested = "changesRequested",
 }
 
-export function ContributionStatus({ status }: { status: ContributionStatusEnum }) {
+export function ContributionReview({ status }: { status: ContributionReviewStatus }) {
   const { T } = useIntl();
 
   const dict: Record<string, { icon: React.ReactElement; text: string }> = {
-    [ContributionStatusEnum.PendingReviewer]: {
+    [ContributionReviewStatus.PendingReviewer]: {
       icon: <Hourglass />,
-      text: T("contribution.status.pendingReviewer"),
+      text: T("contribution.review.status.pendingReviewer"),
     },
-    [ContributionStatusEnum.UnderReview]: {
+    [ContributionReviewStatus.UnderReview]: {
       icon: <Hourglass />,
-      text: T("contribution.status.underReview"),
+      text: T("contribution.review.status.underReview"),
     },
-    [ContributionStatusEnum.Approved]: {
+    [ContributionReviewStatus.Approved]: {
       icon: <Check />,
-      text: T("contribution.status.approved"),
+      text: T("contribution.review.status.approved"),
     },
-    [ContributionStatusEnum.ChangesRequested]: {
+    [ContributionReviewStatus.ChangesRequested]: {
       icon: <FileChange />,
-      text: T("contribution.status.changesRequested"),
+      text: T("contribution.review.status.changesRequested"),
     },
   };
 

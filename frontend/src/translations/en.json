@@ -8,11 +8,13 @@
     "contactNeeded": "Please share at least one way to reach you out in case it's a match."
   },
   "contribution": {
-    "status": {
-      "pendingReviewer": "Pending reviewer",
-      "underReview": "Under review",
-      "approved": "Approved",
-      "changesRequested": "Changes requested"
+    "review": {
+      "status": {
+        "pendingReviewer": "Pending reviewer",
+        "underReview": "Under review",
+        "approved": "Approved",
+        "changesRequested": "Changes requested"
+      }
     }
   },
   "contributions": {
