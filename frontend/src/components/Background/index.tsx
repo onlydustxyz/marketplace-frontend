@@ -18,7 +18,7 @@ const Background = forwardRef(function Background(
     <div
       ref={ref}
       className={classNames(
-        "h-full w-full overflow-y-auto bg-space bg-no-repeat scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5",
+        "relative h-full w-full overflow-y-auto bg-space bg-no-repeat scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5",
         roundedBorders
       )}
     >
