@@ -13,9 +13,11 @@ import Card from "src/components/Card";
 import EyeOffLine from "src/icons/EyeOffLine";
 import EyeLine from "src/icons/EyeLine";
 import classNames from "classnames";
-import { withTooltip } from "src/components/Tooltip";
-import { GithubPullRequestFragment, GithubPullRequestStatus } from "src/__generated/graphql";
+import Tooltip, { withTooltip } from "src/components/Tooltip";
+import { GithubPullRequestStatus, GithubPullRequestWithCommitsFragment } from "src/__generated/graphql";
 import { GithubLink } from "src/components/GithubLink/GithubLink";
+import GitCommitLine from "src/icons/GitCommitLine";
+import { CommitsTooltip } from "./CommitsTooltip";
 
 export enum Action {
   Add = "add",
@@ -29,7 +31,7 @@ export type GithubPullRequestProps = {
   secondaryAction?: Action;
   onClick?: () => void;
   onSecondaryClick?: () => void;
-  pullRequest: GithubPullRequestFragment;
+  pullRequest: GithubPullRequestWithCommitsFragment;
   ignored?: boolean;
   addMarginTopForVirtuosoDisplay?: boolean;
 };
@@ -44,6 +46,8 @@ export default function GithubPullRequest({
   addMarginTopForVirtuosoDisplay = false,
 }: GithubPullRequestProps) {
   const { repoName } = parsePullRequestLink(pullRequest.htmlUrl || "");
+
+  const commitsCount = `${pullRequest?.userCommitsCount?.aggregate?.count}/${pullRequest?.commitsCount?.aggregate?.count}`;
 
   return (
     <Card
@@ -69,6 +73,14 @@ export default function GithubPullRequest({
           <div className="flex flex-row items-center gap-1">
             <GitRepositoryLine />
             {repoName}
+          </div>
+
+          <div id={pullRequest.id} className="flex flex-row items-center gap-1">
+            <GitCommitLine />
+            {commitsCount}
+            <Tooltip anchorId={pullRequest.id}>
+              <CommitsTooltip pullRequest={pullRequest} commitsCount={commitsCount} />
+            </Tooltip>
           </div>
         </div>
       </div>
@@ -106,7 +118,7 @@ function ActionButton({ action, ignored, onClick }: ActionButtonProps) {
   );
 }
 
-function PullRequestStatus({ pullrequest }: { pullrequest: GithubPullRequestFragment }) {
+function PullRequestStatus({ pullrequest }: { pullrequest: GithubPullRequestWithCommitsFragment }) {
   const { T } = useIntl();
 
   switch (pullrequest.status) {

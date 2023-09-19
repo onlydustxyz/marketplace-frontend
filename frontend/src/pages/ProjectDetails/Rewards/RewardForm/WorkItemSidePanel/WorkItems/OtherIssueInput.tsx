@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { useFormContext, useFormState } from "react-hook-form";
 import {
   GithubIssueFragment,
-  GithubPullRequestFragment,
+  GithubPullRequestWithCommitsFragment,
   LiveGithubIssueFragment,
   LiveGithubPullRequestFragment,
   WorkItemFragment,
@@ -159,14 +159,13 @@ export const liveIssueToCached = (issue: LiveGithubIssueFragment): GithubIssueFr
   commentsCount: 0,
 });
 
-export const livePullRequestToCached = (issue: LiveGithubPullRequestFragment): GithubPullRequestFragment => ({
+export const livePullRequestToCached = (
+  issue: LiveGithubPullRequestFragment
+): GithubPullRequestWithCommitsFragment => ({
   ...issue,
   __typename: "GithubPullRequests",
-  author: {
-    login: "stannislas",
-    avatarUrl: "https://gravatar.com/avatar/1f82b0492a0a938288c2d5b70534a1fb?s=400&d=robohash&r=x",
-    htmlUrl: "https://github.com/stannislas",
-    id: 123,
-    user: { id: 233 },
-  },
+  author: null,
+  commitsCount: { aggregate: { count: 0 } },
+  userCommitsCount: { aggregate: { count: 0 } },
+  contributorDetails: [],
 });

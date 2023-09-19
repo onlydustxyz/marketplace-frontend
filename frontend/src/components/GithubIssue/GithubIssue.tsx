@@ -16,6 +16,7 @@ import EyeLine from "src/icons/EyeLine";
 import classNames from "classnames";
 import { withTooltip } from "src/components/Tooltip";
 import { GithubIssueFragment, GithubIssueStatus } from "src/__generated/graphql";
+import GitCommentLine from "src/icons/GitCommentLine";
 
 export enum Action {
   Add = "add",
@@ -68,6 +69,10 @@ export default function GithubIssue({
           <div className="flex flex-row items-center gap-1">
             <GitRepositoryLine />
             {repoName}
+          </div>
+          <div className="flex flex-row items-center gap-1">
+            <GitCommentLine />
+            {issue.commentsCount}
           </div>
         </div>
       </div>

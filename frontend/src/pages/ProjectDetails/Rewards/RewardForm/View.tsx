@@ -23,6 +23,7 @@ import {
   ContributionFragment,
   GithubIssueStatus,
   GithubPullRequestStatus,
+  GithubPullRequestWithCommitsFragment,
   WorkItemFragment,
 } from "src/__generated/graphql";
 import pickContributorImg from "src/assets/img/pick-contributor.png";
@@ -179,7 +180,7 @@ const View: React.FC<Props> = ({
                       ) : workItem.githubPullRequest ? (
                         <GithubPullRequest
                           key={workItem.id}
-                          pullRequest={workItem.githubPullRequest}
+                          pullRequest={workItem.githubPullRequest as GithubPullRequestWithCommitsFragment}
                           action={GithubPRAction.Remove}
                           onClick={() => removeWorkItem(workItem)}
                         />

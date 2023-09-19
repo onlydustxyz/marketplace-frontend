@@ -9,7 +9,7 @@ import Time from "src/icons/TimeLine";
 import { PaymentStatus } from "src/types";
 import { pretty } from "src/utils/id";
 import { formatMoneyAmount } from "src/utils/money";
-import { PaymentRequestDetailsFragment } from "src/__generated/graphql";
+import { GithubPullRequestWithCommitsFragment, PaymentRequestDetailsFragment } from "src/__generated/graphql";
 import Button, { ButtonSize } from "src/components/Button";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import ConfirmationModal from "./ConfirmationModal";
@@ -59,7 +59,6 @@ export default function View({
   onRewardCancel,
 }: Props) {
   const { T } = useIntl();
-
   const formattedReceipt = formatReceipt(payments?.at(0)?.receipt);
 
   const shouldDisplayCancelButton = projectLeaderView && onRewardCancel && status === PaymentStatus.WAITING_PAYMENT;
@@ -184,7 +183,10 @@ export default function View({
               workItem.githubIssue ? (
                 <GithubIssue key={workItem.githubIssue?.id} issue={workItem.githubIssue} />
               ) : workItem.githubPullRequest ? (
-                <GithubPullRequest key={workItem.githubPullRequest?.id} pullRequest={workItem.githubPullRequest} />
+                <GithubPullRequest
+                  key={workItem.githubPullRequest?.id}
+                  pullRequest={workItem.githubPullRequest as GithubPullRequestWithCommitsFragment}
+                />
               ) : workItem.githubCodeReview ? (
                 <GithubCodeReview key={workItem.githubCodeReview?.id} codeReview={workItem.githubCodeReview} />
               ) : undefined

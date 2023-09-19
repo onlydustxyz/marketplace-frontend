@@ -4,7 +4,7 @@ import {
   ContributionFragment,
   GithubCodeReviewFragment,
   GithubIssueFragment,
-  GithubPullRequestFragment,
+  GithubPullRequestWithCommitsFragment,
   WorkItemFragment,
   WorkItemType,
   useUnrewardedContributionsQuery,
@@ -87,7 +87,7 @@ export const issueToWorkItem = (issue: GithubIssueFragment): WorkItemFragment =>
   githubCodeReview: null,
 });
 
-export const pullRequestToWorkItem = (pullRequest: GithubPullRequestFragment): WorkItemFragment => ({
+export const pullRequestToWorkItem = (pullRequest: GithubPullRequestWithCommitsFragment): WorkItemFragment => ({
   type: WorkItemType.PullRequest,
   id: pullRequest.id.toString(),
   githubIssue: null,

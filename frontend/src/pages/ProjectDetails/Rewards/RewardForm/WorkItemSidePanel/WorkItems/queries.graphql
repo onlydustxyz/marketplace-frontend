@@ -51,4 +51,9 @@ fragment GithubPullRequestWithCommits on GithubPullRequests {
       count
     }
   }
+  contributorDetails: commits(where: { authorId: { _eq: $githubUserId } }, limit: 1) {
+    author {
+      ...GithubUser
+    }
+  }
 }

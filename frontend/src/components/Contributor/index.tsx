@@ -16,7 +16,7 @@ export default function Contributor({ contributor, clickable }: Props) {
   const { open } = useContributorProfilePanel();
 
   return (
-    <div className="flex items-center gap-1.5 truncate">
+    <div className="flex items-center gap-1.5 truncate text-xs">
       <div
         className="flex flex-row items-center gap-2 truncate text-sm font-normal"
         onClick={e => {
@@ -30,7 +30,7 @@ export default function Contributor({ contributor, clickable }: Props) {
           <RoundedImage
             alt={contributor.githubUserId.toString()}
             rounding={Rounding.Circle}
-            size={ImageSize.Sm}
+            size={ImageSize.Xs}
             src={contributor.avatarUrl}
           />
         )}

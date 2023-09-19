@@ -121,6 +121,9 @@
       "pending": "Pending review",
       "approved": "Approved __submittedAt__",
       "changeRequested": "Change requested __submittedAt__"
+    },
+    "tooltip": {
+      "commits": "__user__ contributed to __commits__ commits"
     }
   },
   "images": {
@@ -246,7 +249,10 @@
           "tab": "Pull requests",
           "tabShort": "PR",
           "search": "Search",
-          "searchPlaceholder": "Search by name or #"
+          "searchPlaceholder": "Search by name or #",
+          "tooltip": {
+            "createdBy": "Pull request created by"
+          }
         },
         "issues": {
           "addedToaster": "Issue added",

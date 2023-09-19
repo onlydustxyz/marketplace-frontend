@@ -1,8 +1,8 @@
 import { daysFromNow } from "src/utils/date";
-import { GithubPullRequestFragment, GithubPullRequestStatus, WorkItemType } from "src/__generated/graphql";
+import { GithubPullRequestStatus, GithubPullRequestWithCommitsFragment, WorkItemType } from "src/__generated/graphql";
 import GithubPullRequest, { Action, GithubPullRequestProps } from "src/components/GithubPullRequest/GithubPullRequest";
 
-const pullRequests: Record<string, GithubPullRequestFragment> = {
+const pullRequests: Record<string, GithubPullRequestWithCommitsFragment> = {
   closed: {
     id: "1268051991",
     repoId: 123456,
@@ -20,6 +20,19 @@ const pullRequests: Record<string, GithubPullRequestFragment> = {
       id: 123,
       user: { id: 233 },
     },
+    commitsCount: { aggregate: { count: 3 } },
+    userCommitsCount: { aggregate: { count: 1 } },
+    contributorDetails: [
+      {
+        author: {
+          login: "ofux",
+          avatarUrl: "https://avatars.githubusercontent.com/u/43467246?v=4",
+          htmlUrl: "https://github.com/ofux",
+          id: 595505,
+          user: { id: 233 },
+        },
+      },
+    ],
   },
   closedWithLongLink: {
     id: "1268051991",
@@ -39,6 +52,19 @@ const pullRequests: Record<string, GithubPullRequestFragment> = {
       id: 123,
       user: { id: 233 },
     },
+    commitsCount: { aggregate: { count: 3 } },
+    userCommitsCount: { aggregate: { count: 1 } },
+    contributorDetails: [
+      {
+        author: {
+          login: "ofux",
+          avatarUrl: "https://avatars.githubusercontent.com/u/43467246?v=4",
+          htmlUrl: "https://github.com/ofux",
+          id: 595505,
+          user: { id: 233 },
+        },
+      },
+    ],
   },
   open: {
     id: "1268051991",
@@ -57,6 +83,19 @@ const pullRequests: Record<string, GithubPullRequestFragment> = {
       id: 123,
       user: { id: 233 },
     },
+    commitsCount: { aggregate: { count: 3 } },
+    userCommitsCount: { aggregate: { count: 1 } },
+    contributorDetails: [
+      {
+        author: {
+          login: "ofux",
+          avatarUrl: "https://avatars.githubusercontent.com/u/43467246?v=4",
+          htmlUrl: "https://github.com/ofux",
+          id: 595505,
+          user: { id: 233 },
+        },
+      },
+    ],
   },
   merged: {
     id: "1268051991",
@@ -75,6 +114,19 @@ const pullRequests: Record<string, GithubPullRequestFragment> = {
       id: 123,
       user: { id: 233 },
     },
+    commitsCount: { aggregate: { count: 3 } },
+    userCommitsCount: { aggregate: { count: 1 } },
+    contributorDetails: [
+      {
+        author: {
+          login: "ofux",
+          avatarUrl: "https://avatars.githubusercontent.com/u/43467246?v=4",
+          htmlUrl: "https://github.com/ofux",
+          id: 595505,
+          user: { id: 233 },
+        },
+      },
+    ],
   },
 };
 
