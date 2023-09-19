@@ -2,7 +2,7 @@ use async_trait::async_trait;
 
 use super::Result;
 use crate::{
-	GithubCodeReview, GithubCommit, GithubIssueNumber, GithubPullRequest, GithubPullRequestNumber,
+	GithubCodeReview, GithubCommit, GithubIssueId, GithubPullRequest, GithubPullRequestNumber,
 	GithubRepoId, GithubServicePullRequestFilters,
 };
 
@@ -43,5 +43,5 @@ pub trait Service: Send + Sync {
 		repo_owner: String,
 		repo_name: String,
 		pull_request_number: GithubPullRequestNumber,
-	) -> Result<Vec<GithubIssueNumber>>;
+	) -> Result<Vec<GithubIssueId>>;
 }

@@ -2,8 +2,10 @@ mod commit;
 pub use commit::GithubPullRequestCommit as Commit;
 
 mod review;
-use diesel_json::Json;
 pub use review::GithubPullRequestReview as Review;
+
+mod closing_issues;
+pub use closing_issues::ClosingIssue;
 
 mod pull_request;
 pub use pull_request::GithubPullRequest as Inner;
@@ -16,6 +18,7 @@ pub struct PullRequest {
 	pub inner: Inner,
 	pub commits: Option<Vec<Commit>>,
 	pub reviews: Option<Vec<Review>>,
+	pub closing_issues: Option<Vec<ClosingIssue>>,
 }
 
 impl From<domain::GithubPullRequest> for PullRequest {
@@ -34,10 +37,10 @@ impl From<domain::GithubPullRequest> for PullRequest {
 				closed_at: pull_request.closed_at.map(|date| date.naive_utc()),
 				draft: pull_request.draft,
 				ci_checks: None,
-				closing_issue_numbers: None,
 			},
 			commits: None,
 			reviews: None,
+			closing_issues: None,
 		}
 	}
 }
@@ -46,7 +49,6 @@ impl From<domain::GithubFullPullRequest> for PullRequest {
 	fn from(from: domain::GithubFullPullRequest) -> Self {
 		let mut pull_request = Self::from(from.inner);
 		pull_request.inner.ci_checks = from.ci_checks.map(Into::into);
-		pull_request.inner.closing_issue_numbers = from.closing_issue_numbers.map(Json::new);
 		pull_request.commits = from.commits.map(|commits| {
 			commits
 				.into_iter()
@@ -69,6 +71,16 @@ impl From<domain::GithubFullPullRequest> for PullRequest {
 					outcome: review.outcome.map(Into::into),
 					status: review.status.into(),
 					submitted_at: review.submitted_at.map(|date| date.naive_utc()),
+				})
+				.collect()
+		});
+
+		pull_request.closing_issues = from.closing_issue_ids.map(|closing_issue_ids| {
+			closing_issue_ids
+				.into_iter()
+				.map(|github_issue_id| ClosingIssue {
+					github_issue_id,
+					github_pull_request_id: pull_request.inner.id,
 				})
 				.collect()
 		});

@@ -1,1 +1,11 @@
-{ "data": { "repository": { "pullRequest": { "closingIssuesReferences": { "nodes": [{ "number": 1145 }] } } } } }
+{
+    "data": {
+        "repository": {
+            "pullRequest": {
+                "closingIssuesReferences": {
+                    "nodes": [{ "databaseId": 1828603947 }]
+                }
+            }
+        }
+    }
+}

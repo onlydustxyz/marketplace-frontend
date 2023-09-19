@@ -88,7 +88,7 @@ impl Crawler<GithubPullRequest, Option<GithubFullPullRequest>> for PullRequestCr
 			return Ok(None);
 		}
 
-		let (commits, reviews, ci_checks, closing_issue_numbers) = tokio::join!(
+		let (commits, reviews, ci_checks, closing_issue_ids) = tokio::join!(
 			self.try_get_commits(pull_request, &state),
 			self.github_fetch_service.pull_request_reviews(pull_request.clone()),
 			self.try_get_ci_checks(pull_request),
@@ -138,7 +138,7 @@ impl Crawler<GithubPullRequest, Option<GithubFullPullRequest>> for PullRequestCr
 			.ok()
 			.flatten();
 
-		let closing_issue_numbers = closing_issue_numbers
+		let closing_issue_ids = closing_issue_ids
 			.log_err(|e| {
 				warn!(
 					error = e.to_field(),
@@ -155,7 +155,7 @@ impl Crawler<GithubPullRequest, Option<GithubFullPullRequest>> for PullRequestCr
 			commits,
 			reviews,
 			ci_checks,
-			closing_issue_numbers,
+			closing_issue_ids,
 		}))
 	}
 
