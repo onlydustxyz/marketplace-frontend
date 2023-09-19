@@ -1,42 +1,50 @@
-import { Contribution } from "src/components/Contribution/Contribution";
+import {
+  Contribution,
+  ContributionType,
+  ContributionStatus,
+  ContributionReview,
+} from "src/components/Contribution/Contribution";
 
 export default {
   title: "Contribution",
   component: Contribution,
-  //   argTypes: {
-  //     size: {
-  //       control: { type: "select" },
-  //       options: [ButtonSize.Xs, ButtonSize.Sm, ButtonSize.Md, ButtonSize.Lg, ButtonSize.LgLowHeight],
-  //     },
-  //     type: {
-  //       options: [ButtonType.Primary, ButtonType.Secondary, ButtonType.Ternary],
-  //     },
-  //     width: {
-  //       options: [Width.Full, Width.Fit],
-  //     },
-  //     iconOnly: {
-  //       control: { type: "boolean" },
-  //     },
-  //   },
+  argTypes: {
+    type: {
+      control: { type: "select" },
+      options: [ContributionType.PR, ContributionType.Issue, ContributionType.CodeReview],
+    },
+    status: {
+      control: { type: "select" },
+      options: [
+        ContributionStatus.Open,
+        ContributionStatus.Merged,
+        ContributionStatus.Closed,
+        ContributionStatus.Draft,
+      ],
+    },
+    review: {
+      control: { type: "select" },
+      options: [
+        ContributionReview.PendingReviewer,
+        ContributionReview.UnderReview,
+        ContributionReview.Approved,
+        ContributionReview.ChangesRequested,
+      ],
+    },
+  },
+};
+
+const defaultProps: React.ComponentProps<typeof Contribution> = {
+  name: "Name of PR / Issue / Other work ",
+  url: "#",
+  id: "123",
+  type: ContributionType.PR,
+  status: ContributionStatus.Open,
+  review: ContributionReview.PendingReviewer,
+  rewards: 0,
+  external: false,
 };
 
 export const Default = {
-  render: (args: typeof Contribution) => <Contribution {...args} />,
+  render: (args: typeof Contribution) => <Contribution {...defaultProps} {...args} />,
 };
-
-// export const WithIcon = {
-//   render: (args: typeof Button) => (
-//     <Button {...args}>
-//       <i className="ri-send-plane-2-line" />
-//       {"Complete payment information"}
-//     </Button>
-//   ),
-// };
-
-// export const IconOnly = {
-//   render: (args: typeof Button) => (
-//     <Button iconOnly {...args}>
-//       <i className="ri-send-plane-2-line" />
-//     </Button>
-//   ),
-// };
