@@ -43,7 +43,12 @@ SET
         END
     ),
     created_at = pr.created_at,
-    closed_at = r.submitted_at
+    closed_at = (
+        CASE
+            WHEN r.status = 'pending'::github_code_review_status THEN NULL
+            WHEN r.status = 'completed'::github_code_review_status THEN r.submitted_at
+        END
+    )
 FROM
     github_pull_request_reviews r
     JOIN github_pull_requests pr ON pr.id = r.pull_request_id
