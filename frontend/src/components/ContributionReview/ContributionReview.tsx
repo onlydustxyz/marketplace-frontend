@@ -1,5 +1,5 @@
 import { useIntl } from "src/hooks/useIntl";
-import { ContributionAttribute } from "../ContributionAttribute/ContributionAttribute";
+import { ContributionAttribute } from "src/components/ContributionAttribute/ContributionAttribute";
 
 import Check from "src/assets/icons/Check";
 import FileChange from "src/assets/icons/FileChange";

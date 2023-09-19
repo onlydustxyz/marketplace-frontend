@@ -1,6 +1,6 @@
-import { ContributionBadge, ContributionBadgeStatus } from "../ContributionBadge/ContributionBadge";
-import { ContributionReward } from "../ContributionReward/ContributionReward";
-import { ContributionReview, ContributionReviewStatus } from "../ContributionReview/ContributionReview";
+import { ContributionBadge, ContributionBadgeStatus } from "src/components/ContributionBadge/ContributionBadge";
+import { ContributionReward } from "src/components/ContributionReward/ContributionReward";
+import { ContributionReview, ContributionReviewStatus } from "src/components/ContributionReview/ContributionReview";
 
 type Props = { name: string; url: string } & React.ComponentProps<typeof ContributionBadge> &
   React.ComponentProps<typeof ContributionReward> & { review: ContributionReviewStatus };

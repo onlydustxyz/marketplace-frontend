@@ -1,4 +1,4 @@
-import { ContributionAttribute } from "../ContributionAttribute/ContributionAttribute";
+import { ContributionAttribute } from "src/components/ContributionAttribute/ContributionAttribute";
 import Medal2Fill from "src/icons/Medal2Fill";
 
 export function ContributionReward({ rewards }: { rewards: number }) {
