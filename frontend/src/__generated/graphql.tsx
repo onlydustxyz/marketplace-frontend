@@ -29,6 +29,7 @@ export type Scalars = {
   contact_channel: any;
   contribution_status: any;
   contribution_type: any;
+  currency: any;
   float8: any;
   github_ci_checks: any;
   github_code_review_outcome: any;
@@ -717,8 +718,11 @@ export type Budgets = {
   currency: Maybe<Scalars['String']>;
   id: Maybe<Scalars['uuid']>;
   initialAmount: Maybe<Scalars['numeric']>;
+  initialAmountUsd: Maybe<Scalars['numeric']>;
   remainingAmount: Maybe<Scalars['numeric']>;
+  remainingAmountUsd: Maybe<Scalars['numeric']>;
   spentAmount: Maybe<Scalars['numeric']>;
+  spentAmountUsd: Maybe<Scalars['numeric']>;
 };
 
 /** aggregated selection of "api.budgets" */
@@ -755,8 +759,11 @@ export type BudgetsAggregateFieldsCountArgs = {
 export type BudgetsAvgFields = {
   __typename?: 'BudgetsAvgFields';
   initialAmount: Maybe<Scalars['Float']>;
+  initialAmountUsd: Maybe<Scalars['Float']>;
   remainingAmount: Maybe<Scalars['Float']>;
+  remainingAmountUsd: Maybe<Scalars['Float']>;
   spentAmount: Maybe<Scalars['Float']>;
+  spentAmountUsd: Maybe<Scalars['Float']>;
 };
 
 /** Boolean expression to filter rows from the table "api.budgets". All fields are combined with a logical 'AND'. */
@@ -767,15 +774,11 @@ export type BudgetsBoolExp = {
   currency: InputMaybe<StringComparisonExp>;
   id: InputMaybe<UuidComparisonExp>;
   initialAmount: InputMaybe<NumericComparisonExp>;
+  initialAmountUsd: InputMaybe<NumericComparisonExp>;
   remainingAmount: InputMaybe<NumericComparisonExp>;
+  remainingAmountUsd: InputMaybe<NumericComparisonExp>;
   spentAmount: InputMaybe<NumericComparisonExp>;
-};
-
-/** input type for incrementing numeric columns in table "api.budgets" */
-export type BudgetsIncInput = {
-  initialAmount: InputMaybe<Scalars['numeric']>;
-  remainingAmount: InputMaybe<Scalars['numeric']>;
-  spentAmount: InputMaybe<Scalars['numeric']>;
+  spentAmountUsd: InputMaybe<NumericComparisonExp>;
 };
 
 /** input type for inserting data into table "api.budgets" */
@@ -783,8 +786,11 @@ export type BudgetsInsertInput = {
   currency: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['uuid']>;
   initialAmount: InputMaybe<Scalars['numeric']>;
+  initialAmountUsd: InputMaybe<Scalars['numeric']>;
   remainingAmount: InputMaybe<Scalars['numeric']>;
+  remainingAmountUsd: InputMaybe<Scalars['numeric']>;
   spentAmount: InputMaybe<Scalars['numeric']>;
+  spentAmountUsd: InputMaybe<Scalars['numeric']>;
 };
 
 /** aggregate max on columns */
@@ -793,8 +799,11 @@ export type BudgetsMaxFields = {
   currency: Maybe<Scalars['String']>;
   id: Maybe<Scalars['uuid']>;
   initialAmount: Maybe<Scalars['numeric']>;
+  initialAmountUsd: Maybe<Scalars['numeric']>;
   remainingAmount: Maybe<Scalars['numeric']>;
+  remainingAmountUsd: Maybe<Scalars['numeric']>;
   spentAmount: Maybe<Scalars['numeric']>;
+  spentAmountUsd: Maybe<Scalars['numeric']>;
 };
 
 /** aggregate min on columns */
@@ -803,17 +812,11 @@ export type BudgetsMinFields = {
   currency: Maybe<Scalars['String']>;
   id: Maybe<Scalars['uuid']>;
   initialAmount: Maybe<Scalars['numeric']>;
+  initialAmountUsd: Maybe<Scalars['numeric']>;
   remainingAmount: Maybe<Scalars['numeric']>;
+  remainingAmountUsd: Maybe<Scalars['numeric']>;
   spentAmount: Maybe<Scalars['numeric']>;
-};
-
-/** response of any mutation on the table "api.budgets" */
-export type BudgetsMutationResponse = {
-  __typename?: 'BudgetsMutationResponse';
-  /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
-  /** data from the rows affected by the mutation */
-  returning: Array<Budgets>;
+  spentAmountUsd: Maybe<Scalars['numeric']>;
 };
 
 /** input type for inserting object relation for remote table "api.budgets" */
@@ -826,8 +829,11 @@ export type BudgetsOrderBy = {
   currency: InputMaybe<OrderBy>;
   id: InputMaybe<OrderBy>;
   initialAmount: InputMaybe<OrderBy>;
+  initialAmountUsd: InputMaybe<OrderBy>;
   remainingAmount: InputMaybe<OrderBy>;
+  remainingAmountUsd: InputMaybe<OrderBy>;
   spentAmount: InputMaybe<OrderBy>;
+  spentAmountUsd: InputMaybe<OrderBy>;
 };
 
 /** select columns of table "api.budgets" */
@@ -839,82 +845,92 @@ export enum BudgetsSelectColumn {
   /** column name */
   InitialAmount = 'initialAmount',
   /** column name */
+  InitialAmountUsd = 'initialAmountUsd',
+  /** column name */
   RemainingAmount = 'remainingAmount',
   /** column name */
-  SpentAmount = 'spentAmount'
+  RemainingAmountUsd = 'remainingAmountUsd',
+  /** column name */
+  SpentAmount = 'spentAmount',
+  /** column name */
+  SpentAmountUsd = 'spentAmountUsd'
 }
-
-/** input type for updating data in table "api.budgets" */
-export type BudgetsSetInput = {
-  currency: InputMaybe<Scalars['String']>;
-  id: InputMaybe<Scalars['uuid']>;
-  initialAmount: InputMaybe<Scalars['numeric']>;
-  remainingAmount: InputMaybe<Scalars['numeric']>;
-  spentAmount: InputMaybe<Scalars['numeric']>;
-};
 
 /** aggregate stddev on columns */
 export type BudgetsStddevFields = {
   __typename?: 'BudgetsStddevFields';
   initialAmount: Maybe<Scalars['Float']>;
+  initialAmountUsd: Maybe<Scalars['Float']>;
   remainingAmount: Maybe<Scalars['Float']>;
+  remainingAmountUsd: Maybe<Scalars['Float']>;
   spentAmount: Maybe<Scalars['Float']>;
+  spentAmountUsd: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_pop on columns */
 export type BudgetsStddev_PopFields = {
   __typename?: 'BudgetsStddev_popFields';
   initialAmount: Maybe<Scalars['Float']>;
+  initialAmountUsd: Maybe<Scalars['Float']>;
   remainingAmount: Maybe<Scalars['Float']>;
+  remainingAmountUsd: Maybe<Scalars['Float']>;
   spentAmount: Maybe<Scalars['Float']>;
+  spentAmountUsd: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_samp on columns */
 export type BudgetsStddev_SampFields = {
   __typename?: 'BudgetsStddev_sampFields';
   initialAmount: Maybe<Scalars['Float']>;
+  initialAmountUsd: Maybe<Scalars['Float']>;
   remainingAmount: Maybe<Scalars['Float']>;
+  remainingAmountUsd: Maybe<Scalars['Float']>;
   spentAmount: Maybe<Scalars['Float']>;
+  spentAmountUsd: Maybe<Scalars['Float']>;
 };
 
 /** aggregate sum on columns */
 export type BudgetsSumFields = {
   __typename?: 'BudgetsSumFields';
   initialAmount: Maybe<Scalars['numeric']>;
+  initialAmountUsd: Maybe<Scalars['numeric']>;
   remainingAmount: Maybe<Scalars['numeric']>;
+  remainingAmountUsd: Maybe<Scalars['numeric']>;
   spentAmount: Maybe<Scalars['numeric']>;
-};
-
-export type BudgetsUpdates = {
-  /** increments the numeric columns with given value of the filtered values */
-  _inc: InputMaybe<BudgetsIncInput>;
-  /** sets the columns of the filtered rows to the given values */
-  _set: InputMaybe<BudgetsSetInput>;
-  where: BudgetsBoolExp;
+  spentAmountUsd: Maybe<Scalars['numeric']>;
 };
 
 /** aggregate var_pop on columns */
 export type BudgetsVar_PopFields = {
   __typename?: 'BudgetsVar_popFields';
   initialAmount: Maybe<Scalars['Float']>;
+  initialAmountUsd: Maybe<Scalars['Float']>;
   remainingAmount: Maybe<Scalars['Float']>;
+  remainingAmountUsd: Maybe<Scalars['Float']>;
   spentAmount: Maybe<Scalars['Float']>;
+  spentAmountUsd: Maybe<Scalars['Float']>;
 };
 
 /** aggregate var_samp on columns */
 export type BudgetsVar_SampFields = {
   __typename?: 'BudgetsVar_sampFields';
   initialAmount: Maybe<Scalars['Float']>;
+  initialAmountUsd: Maybe<Scalars['Float']>;
   remainingAmount: Maybe<Scalars['Float']>;
+  remainingAmountUsd: Maybe<Scalars['Float']>;
   spentAmount: Maybe<Scalars['Float']>;
+  spentAmountUsd: Maybe<Scalars['Float']>;
 };
 
 /** aggregate variance on columns */
 export type BudgetsVarianceFields = {
   __typename?: 'BudgetsVarianceFields';
   initialAmount: Maybe<Scalars['Float']>;
+  initialAmountUsd: Maybe<Scalars['Float']>;
   remainingAmount: Maybe<Scalars['Float']>;
+  remainingAmountUsd: Maybe<Scalars['Float']>;
   spentAmount: Maybe<Scalars['Float']>;
+  spentAmountUsd: Maybe<Scalars['Float']>;
 };
 
 /** Streaming cursor of the table "Budgets" */
@@ -930,8 +946,11 @@ export type Budgets_StreamCursorValueInput = {
   currency: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['uuid']>;
   initialAmount: InputMaybe<Scalars['numeric']>;
+  initialAmountUsd: InputMaybe<Scalars['numeric']>;
   remainingAmount: InputMaybe<Scalars['numeric']>;
+  remainingAmountUsd: InputMaybe<Scalars['numeric']>;
   spentAmount: InputMaybe<Scalars['numeric']>;
+  spentAmountUsd: InputMaybe<Scalars['numeric']>;
 };
 
 /** Boolean expression to compare columns of type "bytea". All fields are combined with logical 'AND'. */
@@ -2778,6 +2797,19 @@ export type Contributions_Variance_Order_By = {
   repoId: InputMaybe<OrderBy>;
 };
 
+/** Boolean expression to compare columns of type "currency". All fields are combined with logical 'AND'. */
+export type CurrencyComparisonExp = {
+  _eq: InputMaybe<Scalars['currency']>;
+  _gt: InputMaybe<Scalars['currency']>;
+  _gte: InputMaybe<Scalars['currency']>;
+  _in: InputMaybe<Array<Scalars['currency']>>;
+  _isNull: InputMaybe<Scalars['Boolean']>;
+  _lt: InputMaybe<Scalars['currency']>;
+  _lte: InputMaybe<Scalars['currency']>;
+  _neq: InputMaybe<Scalars['currency']>;
+  _nin: InputMaybe<Array<Scalars['currency']>>;
+};
+
 /** ordering argument of a cursor */
 export enum CursorOrdering {
   /** ascending ordering of the cursor */
@@ -4322,7 +4354,7 @@ export type GithubUsersBoolExp = {
   location: InputMaybe<StringComparisonExp>;
   login: InputMaybe<StringComparisonExp>;
   paymentRequests: InputMaybe<PaymentRequestsBoolExp>;
-  paymentRequests_aggregate: InputMaybe<Payment_Requests_Aggregate_Bool_Exp>;
+  paymentRequests_aggregate: InputMaybe<PaymentRequests_Aggregate_Bool_Exp>;
   telegram: InputMaybe<StringComparisonExp>;
   twitter: InputMaybe<StringComparisonExp>;
   user: InputMaybe<RegisteredUsersBoolExp>;
@@ -4771,14 +4803,16 @@ export type PaymentRequestResponse = {
   paymentId: Scalars['Uuid'];
 };
 
-/** columns and relationships of "payment_requests" */
+/** columns and relationships of "api.payment_requests" */
 export type PaymentRequests = {
   __typename?: 'PaymentRequests';
-  amountInUsd: Scalars['bigint'];
+  amount: Maybe<Scalars['numeric']>;
+  amountUsd: Maybe<Scalars['numeric']>;
+  currency: Maybe<Scalars['currency']>;
   /** An object relationship */
   githubRecipient: Maybe<GithubUsers>;
-  hoursWorked: Scalars['Int'];
-  id: Scalars['uuid'];
+  hoursWorked: Maybe<Scalars['Int']>;
+  id: Maybe<Scalars['uuid']>;
   invoiceReceivedAt: Maybe<Scalars['timestamp']>;
   /** An array relationship */
   payments: Array<Payments>;
@@ -4786,14 +4820,14 @@ export type PaymentRequests = {
   paymentsAggregate: PaymentsAggregate;
   /** An object relationship */
   project: Maybe<Projects>;
-  projectId: Scalars['uuid'];
+  projectId: Maybe<Scalars['uuid']>;
   /** An object relationship */
   recipient: Maybe<RegisteredUsers>;
-  recipientId: Scalars['bigint'];
-  requestedAt: Scalars['timestamp'];
+  recipientId: Maybe<Scalars['bigint']>;
+  requestedAt: Maybe<Scalars['timestamp']>;
   /** An object relationship */
   requestor: Maybe<RegisteredUsers>;
-  requestorId: Scalars['uuid'];
+  requestorId: Maybe<Scalars['uuid']>;
   /** An array relationship */
   workItems: Array<WorkItems>;
   /** An aggregate relationship */
@@ -4801,7 +4835,7 @@ export type PaymentRequests = {
 };
 
 
-/** columns and relationships of "payment_requests" */
+/** columns and relationships of "api.payment_requests" */
 export type PaymentRequestsPaymentsArgs = {
   distinctOn: InputMaybe<Array<PaymentsSelectColumn>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -4811,7 +4845,7 @@ export type PaymentRequestsPaymentsArgs = {
 };
 
 
-/** columns and relationships of "payment_requests" */
+/** columns and relationships of "api.payment_requests" */
 export type PaymentRequestsPaymentsAggregateArgs = {
   distinctOn: InputMaybe<Array<PaymentsSelectColumn>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -4821,7 +4855,7 @@ export type PaymentRequestsPaymentsAggregateArgs = {
 };
 
 
-/** columns and relationships of "payment_requests" */
+/** columns and relationships of "api.payment_requests" */
 export type PaymentRequestsWorkItemsArgs = {
   distinctOn: InputMaybe<Array<WorkItemsSelectColumn>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -4831,7 +4865,7 @@ export type PaymentRequestsWorkItemsArgs = {
 };
 
 
-/** columns and relationships of "payment_requests" */
+/** columns and relationships of "api.payment_requests" */
 export type PaymentRequestsWorkItemsAggregateArgs = {
   distinctOn: InputMaybe<Array<WorkItemsSelectColumn>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -4840,14 +4874,14 @@ export type PaymentRequestsWorkItemsAggregateArgs = {
   where: InputMaybe<WorkItemsBoolExp>;
 };
 
-/** aggregated selection of "payment_requests" */
+/** aggregated selection of "api.payment_requests" */
 export type PaymentRequestsAggregate = {
   __typename?: 'PaymentRequestsAggregate';
   aggregate: Maybe<PaymentRequestsAggregateFields>;
   nodes: Array<PaymentRequests>;
 };
 
-/** aggregate fields of "payment_requests" */
+/** aggregate fields of "api.payment_requests" */
 export type PaymentRequestsAggregateFields = {
   __typename?: 'PaymentRequestsAggregateFields';
   avg: Maybe<PaymentRequestsAvgFields>;
@@ -4864,48 +4898,49 @@ export type PaymentRequestsAggregateFields = {
 };
 
 
-/** aggregate fields of "payment_requests" */
+/** aggregate fields of "api.payment_requests" */
 export type PaymentRequestsAggregateFieldsCountArgs = {
   columns: InputMaybe<Array<PaymentRequestsSelectColumn>>;
   distinct: InputMaybe<Scalars['Boolean']>;
 };
 
-/** order by aggregate values of table "payment_requests" */
+/** order by aggregate values of table "api.payment_requests" */
 export type PaymentRequestsAggregateOrderBy = {
-  avg: InputMaybe<Payment_Requests_Avg_Order_By>;
+  avg: InputMaybe<PaymentRequests_Avg_Order_By>;
   count: InputMaybe<OrderBy>;
-  max: InputMaybe<Payment_Requests_Max_Order_By>;
-  min: InputMaybe<Payment_Requests_Min_Order_By>;
-  stddev: InputMaybe<Payment_Requests_Stddev_Order_By>;
-  stddev_pop: InputMaybe<Payment_Requests_Stddev_Pop_Order_By>;
-  stddev_samp: InputMaybe<Payment_Requests_Stddev_Samp_Order_By>;
-  sum: InputMaybe<Payment_Requests_Sum_Order_By>;
-  var_pop: InputMaybe<Payment_Requests_Var_Pop_Order_By>;
-  var_samp: InputMaybe<Payment_Requests_Var_Samp_Order_By>;
-  variance: InputMaybe<Payment_Requests_Variance_Order_By>;
+  max: InputMaybe<PaymentRequests_Max_Order_By>;
+  min: InputMaybe<PaymentRequests_Min_Order_By>;
+  stddev: InputMaybe<PaymentRequests_Stddev_Order_By>;
+  stddev_pop: InputMaybe<PaymentRequests_Stddev_Pop_Order_By>;
+  stddev_samp: InputMaybe<PaymentRequests_Stddev_Samp_Order_By>;
+  sum: InputMaybe<PaymentRequests_Sum_Order_By>;
+  var_pop: InputMaybe<PaymentRequests_Var_Pop_Order_By>;
+  var_samp: InputMaybe<PaymentRequests_Var_Samp_Order_By>;
+  variance: InputMaybe<PaymentRequests_Variance_Order_By>;
 };
 
-/** input type for inserting array relation for remote table "payment_requests" */
+/** input type for inserting array relation for remote table "api.payment_requests" */
 export type PaymentRequestsArrRelInsertInput = {
   data: Array<PaymentRequestsInsertInput>;
-  /** upsert condition */
-  onConflict: InputMaybe<PaymentRequestsOnConflict>;
 };
 
 /** aggregate avg on columns */
 export type PaymentRequestsAvgFields = {
   __typename?: 'PaymentRequestsAvgFields';
-  amountInUsd: Maybe<Scalars['Float']>;
+  amount: Maybe<Scalars['Float']>;
+  amountUsd: Maybe<Scalars['Float']>;
   hoursWorked: Maybe<Scalars['Float']>;
   recipientId: Maybe<Scalars['Float']>;
 };
 
-/** Boolean expression to filter rows from the table "payment_requests". All fields are combined with a logical 'AND'. */
+/** Boolean expression to filter rows from the table "api.payment_requests". All fields are combined with a logical 'AND'. */
 export type PaymentRequestsBoolExp = {
   _and: InputMaybe<Array<PaymentRequestsBoolExp>>;
   _not: InputMaybe<PaymentRequestsBoolExp>;
   _or: InputMaybe<Array<PaymentRequestsBoolExp>>;
-  amountInUsd: InputMaybe<BigintComparisonExp>;
+  amount: InputMaybe<NumericComparisonExp>;
+  amountUsd: InputMaybe<NumericComparisonExp>;
+  currency: InputMaybe<CurrencyComparisonExp>;
   githubRecipient: InputMaybe<GithubUsersBoolExp>;
   hoursWorked: InputMaybe<IntComparisonExp>;
   id: InputMaybe<UuidComparisonExp>;
@@ -4923,24 +4958,11 @@ export type PaymentRequestsBoolExp = {
   workItems_aggregate: InputMaybe<WorkItems_Aggregate_Bool_Exp>;
 };
 
-/** unique or primary key constraints on table "payment_requests" */
-export enum PaymentRequestsConstraint {
-  /** unique or primary key constraint on columns "id" */
-  PaymentRequestsPkey1 = 'payment_requests_pkey1',
-  /** unique or primary key constraint on columns "project_id", "id" */
-  PaymentRequestsProjectIdIdx = 'payment_requests_project_id_idx'
-}
-
-/** input type for incrementing numeric columns in table "payment_requests" */
-export type PaymentRequestsIncInput = {
-  amountInUsd: InputMaybe<Scalars['bigint']>;
-  hoursWorked: InputMaybe<Scalars['Int']>;
-  recipientId: InputMaybe<Scalars['bigint']>;
-};
-
-/** input type for inserting data into table "payment_requests" */
+/** input type for inserting data into table "api.payment_requests" */
 export type PaymentRequestsInsertInput = {
-  amountInUsd: InputMaybe<Scalars['bigint']>;
+  amount: InputMaybe<Scalars['numeric']>;
+  amountUsd: InputMaybe<Scalars['numeric']>;
+  currency: InputMaybe<Scalars['currency']>;
   githubRecipient: InputMaybe<GithubUsersObjRelInsertInput>;
   hoursWorked: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['uuid']>;
@@ -4959,7 +4981,9 @@ export type PaymentRequestsInsertInput = {
 /** aggregate max on columns */
 export type PaymentRequestsMaxFields = {
   __typename?: 'PaymentRequestsMaxFields';
-  amountInUsd: Maybe<Scalars['bigint']>;
+  amount: Maybe<Scalars['numeric']>;
+  amountUsd: Maybe<Scalars['numeric']>;
+  currency: Maybe<Scalars['currency']>;
   hoursWorked: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['uuid']>;
   invoiceReceivedAt: Maybe<Scalars['timestamp']>;
@@ -4972,7 +4996,9 @@ export type PaymentRequestsMaxFields = {
 /** aggregate min on columns */
 export type PaymentRequestsMinFields = {
   __typename?: 'PaymentRequestsMinFields';
-  amountInUsd: Maybe<Scalars['bigint']>;
+  amount: Maybe<Scalars['numeric']>;
+  amountUsd: Maybe<Scalars['numeric']>;
+  currency: Maybe<Scalars['currency']>;
   hoursWorked: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['uuid']>;
   invoiceReceivedAt: Maybe<Scalars['timestamp']>;
@@ -4982,32 +5008,16 @@ export type PaymentRequestsMinFields = {
   requestorId: Maybe<Scalars['uuid']>;
 };
 
-/** response of any mutation on the table "payment_requests" */
-export type PaymentRequestsMutationResponse = {
-  __typename?: 'PaymentRequestsMutationResponse';
-  /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
-  /** data from the rows affected by the mutation */
-  returning: Array<PaymentRequests>;
-};
-
-/** input type for inserting object relation for remote table "payment_requests" */
+/** input type for inserting object relation for remote table "api.payment_requests" */
 export type PaymentRequestsObjRelInsertInput = {
   data: PaymentRequestsInsertInput;
-  /** upsert condition */
-  onConflict: InputMaybe<PaymentRequestsOnConflict>;
 };
 
-/** on_conflict condition type for table "payment_requests" */
-export type PaymentRequestsOnConflict = {
-  constraint: PaymentRequestsConstraint;
-  update_columns: Array<PaymentRequestsUpdateColumn>;
-  where: InputMaybe<PaymentRequestsBoolExp>;
-};
-
-/** Ordering options when selecting data from "payment_requests". */
+/** Ordering options when selecting data from "api.payment_requests". */
 export type PaymentRequestsOrderBy = {
-  amountInUsd: InputMaybe<OrderBy>;
+  amount: InputMaybe<OrderBy>;
+  amountUsd: InputMaybe<OrderBy>;
+  currency: InputMaybe<OrderBy>;
   githubRecipient: InputMaybe<GithubUsersOrderBy>;
   hoursWorked: InputMaybe<OrderBy>;
   id: InputMaybe<OrderBy>;
@@ -5023,15 +5033,14 @@ export type PaymentRequestsOrderBy = {
   workItemsAggregate: InputMaybe<WorkItemsAggregateOrderBy>;
 };
 
-/** primary key columns input for table: payment_requests */
-export type PaymentRequestsPkColumnsInput = {
-  id: Scalars['uuid'];
-};
-
-/** select columns of table "payment_requests" */
+/** select columns of table "api.payment_requests" */
 export enum PaymentRequestsSelectColumn {
   /** column name */
-  AmountInUsd = 'amountInUsd',
+  Amount = 'amount',
+  /** column name */
+  AmountUsd = 'amountUsd',
+  /** column name */
+  Currency = 'currency',
   /** column name */
   HoursWorked = 'hoursWorked',
   /** column name */
@@ -5048,9 +5057,153 @@ export enum PaymentRequestsSelectColumn {
   RequestorId = 'requestorId'
 }
 
-/** input type for updating data in table "payment_requests" */
-export type PaymentRequestsSetInput = {
-  amountInUsd: InputMaybe<Scalars['bigint']>;
+/** aggregate stddev on columns */
+export type PaymentRequestsStddevFields = {
+  __typename?: 'PaymentRequestsStddevFields';
+  amount: Maybe<Scalars['Float']>;
+  amountUsd: Maybe<Scalars['Float']>;
+  hoursWorked: Maybe<Scalars['Float']>;
+  recipientId: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type PaymentRequestsStddev_PopFields = {
+  __typename?: 'PaymentRequestsStddev_popFields';
+  amount: Maybe<Scalars['Float']>;
+  amountUsd: Maybe<Scalars['Float']>;
+  hoursWorked: Maybe<Scalars['Float']>;
+  recipientId: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type PaymentRequestsStddev_SampFields = {
+  __typename?: 'PaymentRequestsStddev_sampFields';
+  amount: Maybe<Scalars['Float']>;
+  amountUsd: Maybe<Scalars['Float']>;
+  hoursWorked: Maybe<Scalars['Float']>;
+  recipientId: Maybe<Scalars['Float']>;
+};
+
+/** aggregate sum on columns */
+export type PaymentRequestsSumFields = {
+  __typename?: 'PaymentRequestsSumFields';
+  amount: Maybe<Scalars['numeric']>;
+  amountUsd: Maybe<Scalars['numeric']>;
+  hoursWorked: Maybe<Scalars['Int']>;
+  recipientId: Maybe<Scalars['bigint']>;
+};
+
+/** aggregate var_pop on columns */
+export type PaymentRequestsVar_PopFields = {
+  __typename?: 'PaymentRequestsVar_popFields';
+  amount: Maybe<Scalars['Float']>;
+  amountUsd: Maybe<Scalars['Float']>;
+  hoursWorked: Maybe<Scalars['Float']>;
+  recipientId: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type PaymentRequestsVar_SampFields = {
+  __typename?: 'PaymentRequestsVar_sampFields';
+  amount: Maybe<Scalars['Float']>;
+  amountUsd: Maybe<Scalars['Float']>;
+  hoursWorked: Maybe<Scalars['Float']>;
+  recipientId: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type PaymentRequestsVarianceFields = {
+  __typename?: 'PaymentRequestsVarianceFields';
+  amount: Maybe<Scalars['Float']>;
+  amountUsd: Maybe<Scalars['Float']>;
+  hoursWorked: Maybe<Scalars['Float']>;
+  recipientId: Maybe<Scalars['Float']>;
+};
+
+export type PaymentRequests_Aggregate_Bool_Exp = {
+  count: InputMaybe<PaymentRequests_Aggregate_Bool_Exp_Count>;
+};
+
+export type PaymentRequests_Aggregate_Bool_Exp_Count = {
+  arguments: InputMaybe<Array<PaymentRequestsSelectColumn>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+  filter: InputMaybe<PaymentRequestsBoolExp>;
+  predicate: IntComparisonExp;
+};
+
+/** order by avg() on columns of table "api.payment_requests" */
+export type PaymentRequests_Avg_Order_By = {
+  amount: InputMaybe<OrderBy>;
+  amountUsd: InputMaybe<OrderBy>;
+  hoursWorked: InputMaybe<OrderBy>;
+  recipientId: InputMaybe<OrderBy>;
+};
+
+/** order by max() on columns of table "api.payment_requests" */
+export type PaymentRequests_Max_Order_By = {
+  amount: InputMaybe<OrderBy>;
+  amountUsd: InputMaybe<OrderBy>;
+  currency: InputMaybe<OrderBy>;
+  hoursWorked: InputMaybe<OrderBy>;
+  id: InputMaybe<OrderBy>;
+  invoiceReceivedAt: InputMaybe<OrderBy>;
+  projectId: InputMaybe<OrderBy>;
+  recipientId: InputMaybe<OrderBy>;
+  requestedAt: InputMaybe<OrderBy>;
+  requestorId: InputMaybe<OrderBy>;
+};
+
+/** order by min() on columns of table "api.payment_requests" */
+export type PaymentRequests_Min_Order_By = {
+  amount: InputMaybe<OrderBy>;
+  amountUsd: InputMaybe<OrderBy>;
+  currency: InputMaybe<OrderBy>;
+  hoursWorked: InputMaybe<OrderBy>;
+  id: InputMaybe<OrderBy>;
+  invoiceReceivedAt: InputMaybe<OrderBy>;
+  projectId: InputMaybe<OrderBy>;
+  recipientId: InputMaybe<OrderBy>;
+  requestedAt: InputMaybe<OrderBy>;
+  requestorId: InputMaybe<OrderBy>;
+};
+
+/** order by stddev() on columns of table "api.payment_requests" */
+export type PaymentRequests_Stddev_Order_By = {
+  amount: InputMaybe<OrderBy>;
+  amountUsd: InputMaybe<OrderBy>;
+  hoursWorked: InputMaybe<OrderBy>;
+  recipientId: InputMaybe<OrderBy>;
+};
+
+/** order by stddev_pop() on columns of table "api.payment_requests" */
+export type PaymentRequests_Stddev_Pop_Order_By = {
+  amount: InputMaybe<OrderBy>;
+  amountUsd: InputMaybe<OrderBy>;
+  hoursWorked: InputMaybe<OrderBy>;
+  recipientId: InputMaybe<OrderBy>;
+};
+
+/** order by stddev_samp() on columns of table "api.payment_requests" */
+export type PaymentRequests_Stddev_Samp_Order_By = {
+  amount: InputMaybe<OrderBy>;
+  amountUsd: InputMaybe<OrderBy>;
+  hoursWorked: InputMaybe<OrderBy>;
+  recipientId: InputMaybe<OrderBy>;
+};
+
+/** Streaming cursor of the table "PaymentRequests" */
+export type PaymentRequests_StreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: PaymentRequests_StreamCursorValueInput;
+  /** cursor ordering */
+  ordering: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type PaymentRequests_StreamCursorValueInput = {
+  amount: InputMaybe<Scalars['numeric']>;
+  amountUsd: InputMaybe<Scalars['numeric']>;
+  currency: InputMaybe<Scalars['currency']>;
   hoursWorked: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['uuid']>;
   invoiceReceivedAt: InputMaybe<Scalars['timestamp']>;
@@ -5060,95 +5213,45 @@ export type PaymentRequestsSetInput = {
   requestorId: InputMaybe<Scalars['uuid']>;
 };
 
-/** aggregate stddev on columns */
-export type PaymentRequestsStddevFields = {
-  __typename?: 'PaymentRequestsStddevFields';
-  amountInUsd: Maybe<Scalars['Float']>;
-  hoursWorked: Maybe<Scalars['Float']>;
-  recipientId: Maybe<Scalars['Float']>;
+/** order by sum() on columns of table "api.payment_requests" */
+export type PaymentRequests_Sum_Order_By = {
+  amount: InputMaybe<OrderBy>;
+  amountUsd: InputMaybe<OrderBy>;
+  hoursWorked: InputMaybe<OrderBy>;
+  recipientId: InputMaybe<OrderBy>;
 };
 
-/** aggregate stddev_pop on columns */
-export type PaymentRequestsStddev_PopFields = {
-  __typename?: 'PaymentRequestsStddev_popFields';
-  amountInUsd: Maybe<Scalars['Float']>;
-  hoursWorked: Maybe<Scalars['Float']>;
-  recipientId: Maybe<Scalars['Float']>;
+/** order by var_pop() on columns of table "api.payment_requests" */
+export type PaymentRequests_Var_Pop_Order_By = {
+  amount: InputMaybe<OrderBy>;
+  amountUsd: InputMaybe<OrderBy>;
+  hoursWorked: InputMaybe<OrderBy>;
+  recipientId: InputMaybe<OrderBy>;
 };
 
-/** aggregate stddev_samp on columns */
-export type PaymentRequestsStddev_SampFields = {
-  __typename?: 'PaymentRequestsStddev_sampFields';
-  amountInUsd: Maybe<Scalars['Float']>;
-  hoursWorked: Maybe<Scalars['Float']>;
-  recipientId: Maybe<Scalars['Float']>;
+/** order by var_samp() on columns of table "api.payment_requests" */
+export type PaymentRequests_Var_Samp_Order_By = {
+  amount: InputMaybe<OrderBy>;
+  amountUsd: InputMaybe<OrderBy>;
+  hoursWorked: InputMaybe<OrderBy>;
+  recipientId: InputMaybe<OrderBy>;
 };
 
-/** aggregate sum on columns */
-export type PaymentRequestsSumFields = {
-  __typename?: 'PaymentRequestsSumFields';
-  amountInUsd: Maybe<Scalars['bigint']>;
-  hoursWorked: Maybe<Scalars['Int']>;
-  recipientId: Maybe<Scalars['bigint']>;
-};
-
-/** update columns of table "payment_requests" */
-export enum PaymentRequestsUpdateColumn {
-  /** column name */
-  AmountInUsd = 'amountInUsd',
-  /** column name */
-  HoursWorked = 'hoursWorked',
-  /** column name */
-  Id = 'id',
-  /** column name */
-  InvoiceReceivedAt = 'invoiceReceivedAt',
-  /** column name */
-  ProjectId = 'projectId',
-  /** column name */
-  RecipientId = 'recipientId',
-  /** column name */
-  RequestedAt = 'requestedAt',
-  /** column name */
-  RequestorId = 'requestorId'
-}
-
-export type PaymentRequestsUpdates = {
-  /** increments the numeric columns with given value of the filtered values */
-  _inc: InputMaybe<PaymentRequestsIncInput>;
-  /** sets the columns of the filtered rows to the given values */
-  _set: InputMaybe<PaymentRequestsSetInput>;
-  where: PaymentRequestsBoolExp;
-};
-
-/** aggregate var_pop on columns */
-export type PaymentRequestsVar_PopFields = {
-  __typename?: 'PaymentRequestsVar_popFields';
-  amountInUsd: Maybe<Scalars['Float']>;
-  hoursWorked: Maybe<Scalars['Float']>;
-  recipientId: Maybe<Scalars['Float']>;
-};
-
-/** aggregate var_samp on columns */
-export type PaymentRequestsVar_SampFields = {
-  __typename?: 'PaymentRequestsVar_sampFields';
-  amountInUsd: Maybe<Scalars['Float']>;
-  hoursWorked: Maybe<Scalars['Float']>;
-  recipientId: Maybe<Scalars['Float']>;
-};
-
-/** aggregate variance on columns */
-export type PaymentRequestsVarianceFields = {
-  __typename?: 'PaymentRequestsVarianceFields';
-  amountInUsd: Maybe<Scalars['Float']>;
-  hoursWorked: Maybe<Scalars['Float']>;
-  recipientId: Maybe<Scalars['Float']>;
+/** order by variance() on columns of table "api.payment_requests" */
+export type PaymentRequests_Variance_Order_By = {
+  amount: InputMaybe<OrderBy>;
+  amountUsd: InputMaybe<OrderBy>;
+  hoursWorked: InputMaybe<OrderBy>;
+  recipientId: InputMaybe<OrderBy>;
 };
 
 /** columns and relationships of "api.payment_stats" */
 export type PaymentStats = {
   __typename?: 'PaymentStats';
+  currency: Maybe<Scalars['String']>;
   githubUserId: Maybe<Scalars['bigint']>;
   moneyGranted: Maybe<Scalars['numeric']>;
+  moneyGrantedUsd: Maybe<Scalars['numeric']>;
   projectId: Maybe<Scalars['uuid']>;
 };
 
@@ -5207,6 +5310,7 @@ export type PaymentStatsAvgFields = {
   __typename?: 'PaymentStatsAvgFields';
   githubUserId: Maybe<Scalars['Float']>;
   moneyGranted: Maybe<Scalars['Float']>;
+  moneyGrantedUsd: Maybe<Scalars['Float']>;
 };
 
 /** Boolean expression to filter rows from the table "api.payment_stats". All fields are combined with a logical 'AND'. */
@@ -5214,47 +5318,61 @@ export type PaymentStatsBoolExp = {
   _and: InputMaybe<Array<PaymentStatsBoolExp>>;
   _not: InputMaybe<PaymentStatsBoolExp>;
   _or: InputMaybe<Array<PaymentStatsBoolExp>>;
+  currency: InputMaybe<StringComparisonExp>;
   githubUserId: InputMaybe<BigintComparisonExp>;
   moneyGranted: InputMaybe<NumericComparisonExp>;
+  moneyGrantedUsd: InputMaybe<NumericComparisonExp>;
   projectId: InputMaybe<UuidComparisonExp>;
 };
 
 /** input type for inserting data into table "api.payment_stats" */
 export type PaymentStatsInsertInput = {
+  currency: InputMaybe<Scalars['String']>;
   githubUserId: InputMaybe<Scalars['bigint']>;
   moneyGranted: InputMaybe<Scalars['numeric']>;
+  moneyGrantedUsd: InputMaybe<Scalars['numeric']>;
   projectId: InputMaybe<Scalars['uuid']>;
 };
 
 /** aggregate max on columns */
 export type PaymentStatsMaxFields = {
   __typename?: 'PaymentStatsMaxFields';
+  currency: Maybe<Scalars['String']>;
   githubUserId: Maybe<Scalars['bigint']>;
   moneyGranted: Maybe<Scalars['numeric']>;
+  moneyGrantedUsd: Maybe<Scalars['numeric']>;
   projectId: Maybe<Scalars['uuid']>;
 };
 
 /** aggregate min on columns */
 export type PaymentStatsMinFields = {
   __typename?: 'PaymentStatsMinFields';
+  currency: Maybe<Scalars['String']>;
   githubUserId: Maybe<Scalars['bigint']>;
   moneyGranted: Maybe<Scalars['numeric']>;
+  moneyGrantedUsd: Maybe<Scalars['numeric']>;
   projectId: Maybe<Scalars['uuid']>;
 };
 
 /** Ordering options when selecting data from "api.payment_stats". */
 export type PaymentStatsOrderBy = {
+  currency: InputMaybe<OrderBy>;
   githubUserId: InputMaybe<OrderBy>;
   moneyGranted: InputMaybe<OrderBy>;
+  moneyGrantedUsd: InputMaybe<OrderBy>;
   projectId: InputMaybe<OrderBy>;
 };
 
 /** select columns of table "api.payment_stats" */
 export enum PaymentStatsSelectColumn {
   /** column name */
+  Currency = 'currency',
+  /** column name */
   GithubUserId = 'githubUserId',
   /** column name */
   MoneyGranted = 'moneyGranted',
+  /** column name */
+  MoneyGrantedUsd = 'moneyGrantedUsd',
   /** column name */
   ProjectId = 'projectId'
 }
@@ -5264,6 +5382,7 @@ export type PaymentStatsStddevFields = {
   __typename?: 'PaymentStatsStddevFields';
   githubUserId: Maybe<Scalars['Float']>;
   moneyGranted: Maybe<Scalars['Float']>;
+  moneyGrantedUsd: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_pop on columns */
@@ -5271,6 +5390,7 @@ export type PaymentStatsStddev_PopFields = {
   __typename?: 'PaymentStatsStddev_popFields';
   githubUserId: Maybe<Scalars['Float']>;
   moneyGranted: Maybe<Scalars['Float']>;
+  moneyGrantedUsd: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_samp on columns */
@@ -5278,6 +5398,7 @@ export type PaymentStatsStddev_SampFields = {
   __typename?: 'PaymentStatsStddev_sampFields';
   githubUserId: Maybe<Scalars['Float']>;
   moneyGranted: Maybe<Scalars['Float']>;
+  moneyGrantedUsd: Maybe<Scalars['Float']>;
 };
 
 /** aggregate sum on columns */
@@ -5285,6 +5406,7 @@ export type PaymentStatsSumFields = {
   __typename?: 'PaymentStatsSumFields';
   githubUserId: Maybe<Scalars['bigint']>;
   moneyGranted: Maybe<Scalars['numeric']>;
+  moneyGrantedUsd: Maybe<Scalars['numeric']>;
 };
 
 /** aggregate var_pop on columns */
@@ -5292,6 +5414,7 @@ export type PaymentStatsVar_PopFields = {
   __typename?: 'PaymentStatsVar_popFields';
   githubUserId: Maybe<Scalars['Float']>;
   moneyGranted: Maybe<Scalars['Float']>;
+  moneyGrantedUsd: Maybe<Scalars['Float']>;
 };
 
 /** aggregate var_samp on columns */
@@ -5299,6 +5422,7 @@ export type PaymentStatsVar_SampFields = {
   __typename?: 'PaymentStatsVar_sampFields';
   githubUserId: Maybe<Scalars['Float']>;
   moneyGranted: Maybe<Scalars['Float']>;
+  moneyGrantedUsd: Maybe<Scalars['Float']>;
 };
 
 /** aggregate variance on columns */
@@ -5306,6 +5430,7 @@ export type PaymentStatsVarianceFields = {
   __typename?: 'PaymentStatsVarianceFields';
   githubUserId: Maybe<Scalars['Float']>;
   moneyGranted: Maybe<Scalars['Float']>;
+  moneyGrantedUsd: Maybe<Scalars['Float']>;
 };
 
 export type PaymentStats_Aggregate_Bool_Exp = {
@@ -5323,19 +5448,24 @@ export type PaymentStats_Aggregate_Bool_Exp_Count = {
 export type PaymentStats_Avg_Order_By = {
   githubUserId: InputMaybe<OrderBy>;
   moneyGranted: InputMaybe<OrderBy>;
+  moneyGrantedUsd: InputMaybe<OrderBy>;
 };
 
 /** order by max() on columns of table "api.payment_stats" */
 export type PaymentStats_Max_Order_By = {
+  currency: InputMaybe<OrderBy>;
   githubUserId: InputMaybe<OrderBy>;
   moneyGranted: InputMaybe<OrderBy>;
+  moneyGrantedUsd: InputMaybe<OrderBy>;
   projectId: InputMaybe<OrderBy>;
 };
 
 /** order by min() on columns of table "api.payment_stats" */
 export type PaymentStats_Min_Order_By = {
+  currency: InputMaybe<OrderBy>;
   githubUserId: InputMaybe<OrderBy>;
   moneyGranted: InputMaybe<OrderBy>;
+  moneyGrantedUsd: InputMaybe<OrderBy>;
   projectId: InputMaybe<OrderBy>;
 };
 
@@ -5343,18 +5473,21 @@ export type PaymentStats_Min_Order_By = {
 export type PaymentStats_Stddev_Order_By = {
   githubUserId: InputMaybe<OrderBy>;
   moneyGranted: InputMaybe<OrderBy>;
+  moneyGrantedUsd: InputMaybe<OrderBy>;
 };
 
 /** order by stddev_pop() on columns of table "api.payment_stats" */
 export type PaymentStats_Stddev_Pop_Order_By = {
   githubUserId: InputMaybe<OrderBy>;
   moneyGranted: InputMaybe<OrderBy>;
+  moneyGrantedUsd: InputMaybe<OrderBy>;
 };
 
 /** order by stddev_samp() on columns of table "api.payment_stats" */
 export type PaymentStats_Stddev_Samp_Order_By = {
   githubUserId: InputMaybe<OrderBy>;
   moneyGranted: InputMaybe<OrderBy>;
+  moneyGrantedUsd: InputMaybe<OrderBy>;
 };
 
 /** Streaming cursor of the table "PaymentStats" */
@@ -5367,8 +5500,10 @@ export type PaymentStats_StreamCursorInput = {
 
 /** Initial value of the column from where the streaming should start */
 export type PaymentStats_StreamCursorValueInput = {
+  currency: InputMaybe<Scalars['String']>;
   githubUserId: InputMaybe<Scalars['bigint']>;
   moneyGranted: InputMaybe<Scalars['numeric']>;
+  moneyGrantedUsd: InputMaybe<Scalars['numeric']>;
   projectId: InputMaybe<Scalars['uuid']>;
 };
 
@@ -5376,24 +5511,28 @@ export type PaymentStats_StreamCursorValueInput = {
 export type PaymentStats_Sum_Order_By = {
   githubUserId: InputMaybe<OrderBy>;
   moneyGranted: InputMaybe<OrderBy>;
+  moneyGrantedUsd: InputMaybe<OrderBy>;
 };
 
 /** order by var_pop() on columns of table "api.payment_stats" */
 export type PaymentStats_Var_Pop_Order_By = {
   githubUserId: InputMaybe<OrderBy>;
   moneyGranted: InputMaybe<OrderBy>;
+  moneyGrantedUsd: InputMaybe<OrderBy>;
 };
 
 /** order by var_samp() on columns of table "api.payment_stats" */
 export type PaymentStats_Var_Samp_Order_By = {
   githubUserId: InputMaybe<OrderBy>;
   moneyGranted: InputMaybe<OrderBy>;
+  moneyGrantedUsd: InputMaybe<OrderBy>;
 };
 
 /** order by variance() on columns of table "api.payment_stats" */
 export type PaymentStats_Variance_Order_By = {
   githubUserId: InputMaybe<OrderBy>;
   moneyGranted: InputMaybe<OrderBy>;
+  moneyGrantedUsd: InputMaybe<OrderBy>;
 };
 
 /** columns and relationships of "payments" */
@@ -6674,7 +6813,7 @@ export type ProjectsBoolExp = {
   opBudgetId: InputMaybe<UuidComparisonExp>;
   optimismBudget: InputMaybe<BudgetsBoolExp>;
   payments: InputMaybe<PaymentRequestsBoolExp>;
-  payments_aggregate: InputMaybe<Payment_Requests_Aggregate_Bool_Exp>;
+  payments_aggregate: InputMaybe<PaymentRequests_Aggregate_Bool_Exp>;
   pendingContributors: InputMaybe<ProjectsPendingContributorsBoolExp>;
   pendingContributors_aggregate: InputMaybe<Projects_Pending_Contributors_Aggregate_Bool_Exp>;
   pendingInvitations: InputMaybe<PendingProjectLeaderInvitationsBoolExp>;
@@ -7816,7 +7955,7 @@ export type RegisteredUsersBoolExp = {
   lastSeen: InputMaybe<TimestampComparisonExp>;
   login: InputMaybe<StringComparisonExp>;
   paymentRequests: InputMaybe<PaymentRequestsBoolExp>;
-  paymentRequests_aggregate: InputMaybe<Payment_Requests_Aggregate_Bool_Exp>;
+  paymentRequests_aggregate: InputMaybe<PaymentRequests_Aggregate_Bool_Exp>;
   projectsLeaded: InputMaybe<ProjectLeadsBoolExp>;
   projectsLeaded_aggregate: InputMaybe<Project_Leads_Aggregate_Bool_Exp>;
   userPayoutInfo: InputMaybe<UserPayoutInfoBoolExp>;
@@ -11291,8 +11430,6 @@ export type Mutation_Root = {
   deleteAuthUserSecurityKey: Maybe<AuthUserSecurityKeys>;
   /** delete data from the table: "auth.user_security_keys" */
   deleteAuthUserSecurityKeys: Maybe<AuthUserSecurityKeysMutationResponse>;
-  /** delete data from the table: "api.budgets" */
-  deleteBudgets: Maybe<BudgetsMutationResponse>;
   /** delete data from the table: "api.github_issues" */
   deleteGithubIssues: Maybe<GithubIssuesMutationResponse>;
   /** delete data from the table: "api.github_pull_request_reviews" */
@@ -11307,10 +11444,6 @@ export type Mutation_Root = {
   deleteOnboardings: Maybe<OnboardingsMutationResponse>;
   /** delete single row from the table: "onboardings" */
   deleteOnboardingsByPk: Maybe<Onboardings>;
-  /** delete data from the table: "payment_requests" */
-  deletePaymentRequests: Maybe<PaymentRequestsMutationResponse>;
-  /** delete single row from the table: "payment_requests" */
-  deletePaymentRequestsByPk: Maybe<PaymentRequests>;
   /** delete data from the table: "payments" */
   deletePayments: Maybe<PaymentsMutationResponse>;
   /** delete single row from the table: "payments" */
@@ -11393,10 +11526,6 @@ export type Mutation_Root = {
   insertAuthUserSecurityKey: Maybe<AuthUserSecurityKeys>;
   /** insert data into the table: "auth.user_security_keys" */
   insertAuthUserSecurityKeys: Maybe<AuthUserSecurityKeysMutationResponse>;
-  /** insert data into the table: "api.budgets" */
-  insertBudgets: Maybe<BudgetsMutationResponse>;
-  /** insert a single row into the table: "api.budgets" */
-  insertBudgetsOne: Maybe<Budgets>;
   /** insert data into the table: "api.github_issues" */
   insertGithubIssues: Maybe<GithubIssuesMutationResponse>;
   /** insert a single row into the table: "api.github_issues" */
@@ -11417,10 +11546,6 @@ export type Mutation_Root = {
   insertOnboardings: Maybe<OnboardingsMutationResponse>;
   /** insert a single row into the table: "onboardings" */
   insertOnboardingsOne: Maybe<Onboardings>;
-  /** insert data into the table: "payment_requests" */
-  insertPaymentRequests: Maybe<PaymentRequestsMutationResponse>;
-  /** insert a single row into the table: "payment_requests" */
-  insertPaymentRequestsOne: Maybe<PaymentRequests>;
   /** insert data into the table: "payments" */
   insertPayments: Maybe<PaymentsMutationResponse>;
   /** insert a single row into the table: "payments" */
@@ -11534,10 +11659,6 @@ export type Mutation_Root = {
   updateAuthUserSecurityKeys: Maybe<AuthUserSecurityKeysMutationResponse>;
   /** update multiples rows of table: "auth.user_security_keys" */
   updateAuthUserSecurityKeysMany: Maybe<Array<Maybe<AuthUserSecurityKeysMutationResponse>>>;
-  /** update data of the table: "api.budgets" */
-  updateBudgets: Maybe<BudgetsMutationResponse>;
-  /** update multiples rows of table: "api.budgets" */
-  updateBudgetsMany: Maybe<Array<Maybe<BudgetsMutationResponse>>>;
   /** update data of the table: "api.github_issues" */
   updateGithubIssues: Maybe<GithubIssuesMutationResponse>;
   /** update multiples rows of table: "api.github_issues" */
@@ -11562,12 +11683,6 @@ export type Mutation_Root = {
   updateOnboardingsByPk: Maybe<Onboardings>;
   /** update multiples rows of table: "onboardings" */
   updateOnboardingsMany: Maybe<Array<Maybe<OnboardingsMutationResponse>>>;
-  /** update data of the table: "payment_requests" */
-  updatePaymentRequests: Maybe<PaymentRequestsMutationResponse>;
-  /** update single row of the table: "payment_requests" */
-  updatePaymentRequestsByPk: Maybe<PaymentRequests>;
-  /** update multiples rows of table: "payment_requests" */
-  updatePaymentRequestsMany: Maybe<Array<Maybe<PaymentRequestsMutationResponse>>>;
   /** update data of the table: "payments" */
   updatePayments: Maybe<PaymentsMutationResponse>;
   /** update single row of the table: "payments" */
@@ -11802,12 +11917,6 @@ export type Mutation_RootDeleteAuthUserSecurityKeysArgs = {
 
 
 /** mutation root */
-export type Mutation_RootDeleteBudgetsArgs = {
-  where: BudgetsBoolExp;
-};
-
-
-/** mutation root */
 export type Mutation_RootDeleteGithubIssuesArgs = {
   where: GithubIssuesBoolExp;
 };
@@ -11846,18 +11955,6 @@ export type Mutation_RootDeleteOnboardingsArgs = {
 /** mutation root */
 export type Mutation_RootDeleteOnboardingsByPkArgs = {
   userId: Scalars['uuid'];
-};
-
-
-/** mutation root */
-export type Mutation_RootDeletePaymentRequestsArgs = {
-  where: PaymentRequestsBoolExp;
-};
-
-
-/** mutation root */
-export type Mutation_RootDeletePaymentRequestsByPkArgs = {
-  id: Scalars['uuid'];
 };
 
 
@@ -12131,18 +12228,6 @@ export type Mutation_RootInsertAuthUserSecurityKeysArgs = {
 
 
 /** mutation root */
-export type Mutation_RootInsertBudgetsArgs = {
-  objects: Array<BudgetsInsertInput>;
-};
-
-
-/** mutation root */
-export type Mutation_RootInsertBudgetsOneArgs = {
-  object: BudgetsInsertInput;
-};
-
-
-/** mutation root */
 export type Mutation_RootInsertGithubIssuesArgs = {
   objects: Array<GithubIssuesInsertInput>;
 };
@@ -12203,20 +12288,6 @@ export type Mutation_RootInsertOnboardingsArgs = {
 export type Mutation_RootInsertOnboardingsOneArgs = {
   object: OnboardingsInsertInput;
   onConflict: InputMaybe<OnboardingsOnConflict>;
-};
-
-
-/** mutation root */
-export type Mutation_RootInsertPaymentRequestsArgs = {
-  objects: Array<PaymentRequestsInsertInput>;
-  onConflict: InputMaybe<PaymentRequestsOnConflict>;
-};
-
-
-/** mutation root */
-export type Mutation_RootInsertPaymentRequestsOneArgs = {
-  object: PaymentRequestsInsertInput;
-  onConflict: InputMaybe<PaymentRequestsOnConflict>;
 };
 
 
@@ -12642,20 +12713,6 @@ export type Mutation_RootUpdateAuthUserSecurityKeysManyArgs = {
 
 
 /** mutation root */
-export type Mutation_RootUpdateBudgetsArgs = {
-  _inc: InputMaybe<BudgetsIncInput>;
-  _set: InputMaybe<BudgetsSetInput>;
-  where: BudgetsBoolExp;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdateBudgetsManyArgs = {
-  updates: Array<BudgetsUpdates>;
-};
-
-
-/** mutation root */
 export type Mutation_RootUpdateGithubIssuesArgs = {
   _append: InputMaybe<GithubIssuesAppendInput>;
   _deleteAtPath: InputMaybe<GithubIssuesDeleteAtPathInput>;
@@ -12746,28 +12803,6 @@ export type Mutation_RootUpdateOnboardingsByPkArgs = {
 /** mutation root */
 export type Mutation_RootUpdateOnboardingsManyArgs = {
   updates: Array<OnboardingsUpdates>;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdatePaymentRequestsArgs = {
-  _inc: InputMaybe<PaymentRequestsIncInput>;
-  _set: InputMaybe<PaymentRequestsSetInput>;
-  where: PaymentRequestsBoolExp;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdatePaymentRequestsByPkArgs = {
-  _inc: InputMaybe<PaymentRequestsIncInput>;
-  _set: InputMaybe<PaymentRequestsSetInput>;
-  pk_columns: PaymentRequestsPkColumnsInput;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdatePaymentRequestsManyArgs = {
-  updates: Array<PaymentRequestsUpdates>;
 };
 
 
@@ -13077,117 +13112,6 @@ export type Onboardings_StreamCursorValueInput = {
   profileWizardDisplayDate: InputMaybe<Scalars['timestamp']>;
   termsAndConditionsAcceptanceDate: InputMaybe<Scalars['timestamp']>;
   userId: InputMaybe<Scalars['uuid']>;
-};
-
-export type Payment_Requests_Aggregate_Bool_Exp = {
-  count: InputMaybe<Payment_Requests_Aggregate_Bool_Exp_Count>;
-};
-
-export type Payment_Requests_Aggregate_Bool_Exp_Count = {
-  arguments: InputMaybe<Array<PaymentRequestsSelectColumn>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
-  filter: InputMaybe<PaymentRequestsBoolExp>;
-  predicate: IntComparisonExp;
-};
-
-/** order by avg() on columns of table "payment_requests" */
-export type Payment_Requests_Avg_Order_By = {
-  amountInUsd: InputMaybe<OrderBy>;
-  hoursWorked: InputMaybe<OrderBy>;
-  recipientId: InputMaybe<OrderBy>;
-};
-
-/** order by max() on columns of table "payment_requests" */
-export type Payment_Requests_Max_Order_By = {
-  amountInUsd: InputMaybe<OrderBy>;
-  hoursWorked: InputMaybe<OrderBy>;
-  id: InputMaybe<OrderBy>;
-  invoiceReceivedAt: InputMaybe<OrderBy>;
-  projectId: InputMaybe<OrderBy>;
-  recipientId: InputMaybe<OrderBy>;
-  requestedAt: InputMaybe<OrderBy>;
-  requestorId: InputMaybe<OrderBy>;
-};
-
-/** order by min() on columns of table "payment_requests" */
-export type Payment_Requests_Min_Order_By = {
-  amountInUsd: InputMaybe<OrderBy>;
-  hoursWorked: InputMaybe<OrderBy>;
-  id: InputMaybe<OrderBy>;
-  invoiceReceivedAt: InputMaybe<OrderBy>;
-  projectId: InputMaybe<OrderBy>;
-  recipientId: InputMaybe<OrderBy>;
-  requestedAt: InputMaybe<OrderBy>;
-  requestorId: InputMaybe<OrderBy>;
-};
-
-/** order by stddev() on columns of table "payment_requests" */
-export type Payment_Requests_Stddev_Order_By = {
-  amountInUsd: InputMaybe<OrderBy>;
-  hoursWorked: InputMaybe<OrderBy>;
-  recipientId: InputMaybe<OrderBy>;
-};
-
-/** order by stddev_pop() on columns of table "payment_requests" */
-export type Payment_Requests_Stddev_Pop_Order_By = {
-  amountInUsd: InputMaybe<OrderBy>;
-  hoursWorked: InputMaybe<OrderBy>;
-  recipientId: InputMaybe<OrderBy>;
-};
-
-/** order by stddev_samp() on columns of table "payment_requests" */
-export type Payment_Requests_Stddev_Samp_Order_By = {
-  amountInUsd: InputMaybe<OrderBy>;
-  hoursWorked: InputMaybe<OrderBy>;
-  recipientId: InputMaybe<OrderBy>;
-};
-
-/** Streaming cursor of the table "payment_requests" */
-export type Payment_Requests_StreamCursorInput = {
-  /** Stream column input with initial value */
-  initialValue: Payment_Requests_StreamCursorValueInput;
-  /** cursor ordering */
-  ordering: InputMaybe<CursorOrdering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type Payment_Requests_StreamCursorValueInput = {
-  amountInUsd: InputMaybe<Scalars['bigint']>;
-  hoursWorked: InputMaybe<Scalars['Int']>;
-  id: InputMaybe<Scalars['uuid']>;
-  invoiceReceivedAt: InputMaybe<Scalars['timestamp']>;
-  projectId: InputMaybe<Scalars['uuid']>;
-  recipientId: InputMaybe<Scalars['bigint']>;
-  requestedAt: InputMaybe<Scalars['timestamp']>;
-  requestorId: InputMaybe<Scalars['uuid']>;
-};
-
-/** order by sum() on columns of table "payment_requests" */
-export type Payment_Requests_Sum_Order_By = {
-  amountInUsd: InputMaybe<OrderBy>;
-  hoursWorked: InputMaybe<OrderBy>;
-  recipientId: InputMaybe<OrderBy>;
-};
-
-/** order by var_pop() on columns of table "payment_requests" */
-export type Payment_Requests_Var_Pop_Order_By = {
-  amountInUsd: InputMaybe<OrderBy>;
-  hoursWorked: InputMaybe<OrderBy>;
-  recipientId: InputMaybe<OrderBy>;
-};
-
-/** order by var_samp() on columns of table "payment_requests" */
-export type Payment_Requests_Var_Samp_Order_By = {
-  amountInUsd: InputMaybe<OrderBy>;
-  hoursWorked: InputMaybe<OrderBy>;
-  recipientId: InputMaybe<OrderBy>;
-};
-
-/** order by variance() on columns of table "payment_requests" */
-export type Payment_Requests_Variance_Order_By = {
-  amountInUsd: InputMaybe<OrderBy>;
-  hoursWorked: InputMaybe<OrderBy>;
-  recipientId: InputMaybe<OrderBy>;
 };
 
 export type Payments_Aggregate_Bool_Exp = {
@@ -13870,8 +13794,6 @@ export type Query_Root = {
   paymentRequests: Array<PaymentRequests>;
   /** An aggregate relationship */
   paymentRequestsAggregate: PaymentRequestsAggregate;
-  /** fetch data from the table: "payment_requests" using primary key columns */
-  paymentRequestsByPk: Maybe<PaymentRequests>;
   /** An array relationship */
   paymentStats: Array<PaymentStats>;
   /** An aggregate relationship */
@@ -14443,11 +14365,6 @@ export type Query_RootPaymentRequestsAggregateArgs = {
 };
 
 
-export type Query_RootPaymentRequestsByPkArgs = {
-  id: Scalars['uuid'];
-};
-
-
 export type Query_RootPaymentStatsArgs = {
   distinctOn: InputMaybe<Array<PaymentStatsSelectColumn>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -14876,6 +14793,8 @@ export type Subscription_Root = {
   GithubPullRequestsStream: Array<GithubPullRequests>;
   /** fetch data from the table in a streaming manner: "api.github_repos" */
   GithubReposStream: Array<GithubRepos>;
+  /** fetch data from the table in a streaming manner: "api.payment_requests" */
+  PaymentRequestsStream: Array<PaymentRequests>;
   /** fetch data from the table in a streaming manner: "api.payment_stats" */
   PaymentStatsStream: Array<PaymentStats>;
   /** fetch data from the table in a streaming manner: "api.projects" */
@@ -15024,10 +14943,6 @@ export type Subscription_Root = {
   paymentRequests: Array<PaymentRequests>;
   /** An aggregate relationship */
   paymentRequestsAggregate: PaymentRequestsAggregate;
-  /** fetch data from the table: "payment_requests" using primary key columns */
-  paymentRequestsByPk: Maybe<PaymentRequests>;
-  /** fetch data from the table in a streaming manner: "payment_requests" */
-  paymentRequestsStream: Array<PaymentRequests>;
   /** An array relationship */
   paymentStats: Array<PaymentStats>;
   /** An aggregate relationship */
@@ -15208,6 +15123,13 @@ export type Subscription_RootGithubReposStreamArgs = {
   batchSize: Scalars['Int'];
   cursor: Array<InputMaybe<GithubRepos_StreamCursorInput>>;
   where: InputMaybe<GithubReposBoolExp>;
+};
+
+
+export type Subscription_RootPaymentRequestsStreamArgs = {
+  batchSize: Scalars['Int'];
+  cursor: Array<InputMaybe<PaymentRequests_StreamCursorInput>>;
+  where: InputMaybe<PaymentRequestsBoolExp>;
 };
 
 
@@ -15797,18 +15719,6 @@ export type Subscription_RootPaymentRequestsAggregateArgs = {
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
   orderBy: InputMaybe<Array<PaymentRequestsOrderBy>>;
-  where: InputMaybe<PaymentRequestsBoolExp>;
-};
-
-
-export type Subscription_RootPaymentRequestsByPkArgs = {
-  id: Scalars['uuid'];
-};
-
-
-export type Subscription_RootPaymentRequestsStreamArgs = {
-  batchSize: Scalars['Int'];
-  cursor: Array<InputMaybe<Payment_Requests_StreamCursorInput>>;
   where: InputMaybe<PaymentRequestsBoolExp>;
 };
 
@@ -16961,7 +16871,7 @@ export type GetPaymentRequestIdsQueryVariables = Exact<{
 }>;
 
 
-export type GetPaymentRequestIdsQuery = { __typename?: 'query_root', githubUsersByPk: { __typename?: 'GithubUsers', id: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any }> } | null };
+export type GetPaymentRequestIdsQuery = { __typename?: 'query_root', githubUsersByPk: { __typename?: 'GithubUsers', id: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any | null }> } | null };
 
 export type GetOnboardingStateQueryVariables = Exact<{
   userId: Scalars['uuid'];
@@ -17008,14 +16918,14 @@ export type AllTechnologiesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type AllTechnologiesQuery = { __typename?: 'query_root', technologies: Array<{ __typename?: 'Technologies', technology: string | null }> };
 
-export type PaymentRequestDetailsFragment = { __typename?: 'PaymentRequests', id: any, amountInUsd: any, requestedAt: any, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', processedAt: any, receipt: any }>, requestor: { __typename?: 'RegisteredUsers', id: any | null, login: string | null, avatarUrl: string | null, githubUserId: any | null } | null, githubRecipient: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, workItems: Array<{ __typename?: 'WorkItems', type: any | null, id: string | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null } | null }>, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null } };
+export type PaymentRequestDetailsFragment = { __typename?: 'PaymentRequests', id: any | null, amount: any | null, requestedAt: any | null, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', processedAt: any, receipt: any }>, requestor: { __typename?: 'RegisteredUsers', id: any | null, login: string | null, avatarUrl: string | null, githubUserId: any | null } | null, githubRecipient: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, workItems: Array<{ __typename?: 'WorkItems', type: any | null, id: string | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null } | null }>, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null } };
 
 export type PaymentRequestDetailsQueryVariables = Exact<{
   id: Scalars['uuid'];
 }>;
 
 
-export type PaymentRequestDetailsQuery = { __typename?: 'query_root', paymentRequestsByPk: { __typename?: 'PaymentRequests', id: any, amountInUsd: any, requestedAt: any, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', processedAt: any, receipt: any }>, requestor: { __typename?: 'RegisteredUsers', id: any | null, login: string | null, avatarUrl: string | null, githubUserId: any | null } | null, githubRecipient: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, workItems: Array<{ __typename?: 'WorkItems', type: any | null, id: string | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null } | null }>, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null } } | null };
+export type PaymentRequestDetailsQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any | null, amount: any | null, requestedAt: any | null, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', processedAt: any, receipt: any }>, requestor: { __typename?: 'RegisteredUsers', id: any | null, login: string | null, avatarUrl: string | null, githubUserId: any | null } | null, githubRecipient: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, workItems: Array<{ __typename?: 'WorkItems', type: any | null, id: string | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null } | null }>, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null } }> };
 
 export type CancelPaymentRequestMutationVariables = Exact<{
   paymentId: Scalars['Uuid'];
@@ -17046,11 +16956,11 @@ export type GithubUserIdFragment = { __typename?: 'GithubUsers', id: any };
 
 export type GithubUserFragment = { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null };
 
-export type PaymentRequestIdFragment = { __typename?: 'PaymentRequests', id: any };
+export type PaymentRequestIdFragment = { __typename?: 'PaymentRequests', id: any | null };
 
-export type PaymentRequestFragment = { __typename?: 'PaymentRequests', recipientId: any, amountInUsd: any, requestedAt: any, id: any, workItemsAggregate: { __typename?: 'WorkItemsAggregate', aggregate: { __typename?: 'WorkItemsAggregateFields', count: number } | null } };
+export type PaymentRequestFragment = { __typename?: 'PaymentRequests', recipientId: any | null, amount: any | null, requestedAt: any | null, id: any | null, workItemsAggregate: { __typename?: 'WorkItemsAggregate', aggregate: { __typename?: 'WorkItemsAggregateFields', count: number } | null } };
 
-export type ExtendedPaymentRequestFragment = { __typename?: 'PaymentRequests', recipientId: any, amountInUsd: any, requestedAt: any, id: any, githubRecipient: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null }, workItemsAggregate: { __typename?: 'WorkItemsAggregate', aggregate: { __typename?: 'WorkItemsAggregateFields', count: number } | null } };
+export type ExtendedPaymentRequestFragment = { __typename?: 'PaymentRequests', recipientId: any | null, amount: any | null, requestedAt: any | null, id: any | null, githubRecipient: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null }, workItemsAggregate: { __typename?: 'WorkItemsAggregate', aggregate: { __typename?: 'WorkItemsAggregateFields', count: number } | null } };
 
 export type ProjectIdFragment = { __typename?: 'Projects', id: any | null, key: string | null };
 
@@ -17195,7 +17105,7 @@ export type PendingUserPaymentsQueryVariables = Exact<{
 }>;
 
 
-export type PendingUserPaymentsQuery = { __typename?: 'query_root', registeredUsers: Array<{ __typename?: 'RegisteredUsers', githubUserId: any | null, id: any | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', recipientId: any, amountInUsd: any, requestedAt: any, id: any, githubRecipient: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null }, workItemsAggregate: { __typename?: 'WorkItemsAggregate', aggregate: { __typename?: 'WorkItemsAggregateFields', count: number } | null } }> }> };
+export type PendingUserPaymentsQuery = { __typename?: 'query_root', registeredUsers: Array<{ __typename?: 'RegisteredUsers', githubUserId: any | null, id: any | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', recipientId: any | null, amount: any | null, requestedAt: any | null, id: any | null, githubRecipient: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null }, workItemsAggregate: { __typename?: 'WorkItemsAggregate', aggregate: { __typename?: 'WorkItemsAggregateFields', count: number } | null } }> }> };
 
 export type GetProjectDetailsQueryVariables = Exact<{
   projectId: Scalars['uuid'];
@@ -17322,7 +17232,7 @@ export type GetPaymentRequestsForProjectQueryVariables = Exact<{
 }>;
 
 
-export type GetPaymentRequestsForProjectQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', usdBudget: { __typename?: 'Budgets', initialAmount: any | null, remainingAmount: any | null } | null }>, paymentRequests: Array<{ __typename?: 'PaymentRequests', recipientId: any, amountInUsd: any, requestedAt: any, id: any, githubRecipient: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null }, workItemsAggregate: { __typename?: 'WorkItemsAggregate', aggregate: { __typename?: 'WorkItemsAggregateFields', count: number } | null } }> };
+export type GetPaymentRequestsForProjectQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', usdBudget: { __typename?: 'Budgets', initialAmount: any | null, remainingAmount: any | null } | null }>, paymentRequests: Array<{ __typename?: 'PaymentRequests', recipientId: any | null, amount: any | null, requestedAt: any | null, id: any | null, githubRecipient: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null }, workItemsAggregate: { __typename?: 'WorkItemsAggregate', aggregate: { __typename?: 'WorkItemsAggregateFields', count: number } | null } }> };
 
 export type RequestPaymentMutationVariables = Exact<{
   amount: Scalars['String'];
@@ -17380,14 +17290,14 @@ export type MarkInvoiceAsReceivedMutationVariables = Exact<{
 
 export type MarkInvoiceAsReceivedMutation = { __typename?: 'mutation_root', markInvoiceAsReceived: boolean };
 
-export type UserPaymentRequestFragment = { __typename?: 'PaymentRequests', id: any, requestedAt: any, amountInUsd: any, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, workItems: Array<{ __typename?: 'WorkItems', type: any | null, id: string | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null } | null }>, project: { __typename?: 'Projects', id: any | null, name: string | null, shortDescription: string | null, logoUrl: string | null } | null };
+export type UserPaymentRequestFragment = { __typename?: 'PaymentRequests', id: any | null, requestedAt: any | null, amount: any | null, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, workItems: Array<{ __typename?: 'WorkItems', type: any | null, id: string | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null } | null }>, project: { __typename?: 'Projects', id: any | null, name: string | null, shortDescription: string | null, logoUrl: string | null } | null };
 
 export type GetPaymentRequestsQueryVariables = Exact<{
   githubUserId: Scalars['bigint'];
 }>;
 
 
-export type GetPaymentRequestsQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, requestedAt: any, amountInUsd: any, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, workItems: Array<{ __typename?: 'WorkItems', type: any | null, id: string | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null } | null }>, project: { __typename?: 'Projects', id: any | null, name: string | null, shortDescription: string | null, logoUrl: string | null } | null }> };
+export type GetPaymentRequestsQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any | null, requestedAt: any | null, amount: any | null, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, workItems: Array<{ __typename?: 'WorkItems', type: any | null, id: string | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null } | null }>, project: { __typename?: 'Projects', id: any | null, name: string | null, shortDescription: string | null, logoUrl: string | null } | null }> };
 
 export type AcceptTermsAndConditionsMutationVariables = Exact<{ [key: string]: never; }>;
 
@@ -17590,7 +17500,7 @@ ${GithubPullRequestFragmentDoc}`;
 export const PaymentRequestDetailsFragmentDoc = gql`
     fragment PaymentRequestDetails on PaymentRequests {
   id
-  amountInUsd
+  amount
   requestedAt
   payments(limit: 1) {
     processedAt
@@ -17652,7 +17562,7 @@ export const PaymentRequestFragmentDoc = gql`
     fragment PaymentRequest on PaymentRequests {
   ...PaymentRequestId
   recipientId
-  amountInUsd
+  amount
   workItemsAggregate {
     aggregate {
       count
@@ -18016,7 +17926,7 @@ export const UserPaymentRequestFragmentDoc = gql`
     amount
     currencyCode
   }
-  amountInUsd
+  amount
   workItems {
     ...WorkItem
   }
@@ -18378,7 +18288,7 @@ export type AllTechnologiesLazyQueryHookResult = ReturnType<typeof useAllTechnol
 export type AllTechnologiesQueryResult = Apollo.QueryResult<AllTechnologiesQuery, AllTechnologiesQueryVariables>;
 export const PaymentRequestDetailsDocument = gql`
     query PaymentRequestDetails($id: uuid!) {
-  paymentRequestsByPk(id: $id) {
+  paymentRequests(where: {id: {_eq: $id}}) {
     ...PaymentRequestDetails
   }
 }
