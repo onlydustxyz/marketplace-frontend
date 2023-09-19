@@ -4,7 +4,7 @@ use anyhow::Result;
 use async_trait::async_trait;
 use chrono::Utc;
 use derive_more::Constructor;
-use domain::{services::quotes, BudgetEvent, Event, SubscriberCallbackError};
+use domain::{currencies, services::quotes, BudgetEvent, Event, SubscriberCallbackError};
 use infrastructure::database::Repository;
 use tracing::instrument;
 
@@ -22,22 +22,25 @@ impl EventListener<Event> for Projector {
 	#[instrument(name = "budget_projection", skip(self))]
 	async fn on_event(&self, event: Event) -> Result<(), SubscriberCallbackError> {
 		if let Event::Budget(event) = event {
-			if let BudgetEvent::Created { currency, .. } = event {
-				let code = currency.try_into()?;
+			match event {
+				BudgetEvent::Created { currency, .. } if currency != currencies::USD => {
+					let code = currency.try_into()?;
 
-				if !self.quotes_repository.exists(code)? {
-					let price = self
-						.quote_service
-						.fetch_conversion_rate(currency)
-						.await
-						.map_err(SubscriberCallbackError::Discard)?;
+					if !self.quotes_repository.exists(code)? {
+						let price = self
+							.quote_service
+							.fetch_conversion_rate(currency)
+							.await
+							.map_err(SubscriberCallbackError::Discard)?;
 
-					self.quotes_repository.insert(CryptoUsdQuote {
-						currency: code,
-						price,
-						updated_at: Utc::now().naive_utc(),
-					})?;
-				}
+						self.quotes_repository.insert(CryptoUsdQuote {
+							currency: code,
+							price,
+							updated_at: Utc::now().naive_utc(),
+						})?;
+					}
+				},
+				_ => (),
 			}
 		}
 		Ok(())
