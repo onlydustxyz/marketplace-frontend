@@ -6,7 +6,6 @@ import ProfileButton from "./ProfileButton";
 import MenuItem from "src/App/Layout/Header/MenuItem";
 import { Link } from "react-router-dom";
 import FeedbackButton from "./FeedbackButton";
-import classNames from "classnames";
 import { useIntl } from "src/hooks/useIntl";
 import CompletionBar from "src/components/CompletionBar";
 import axeCoin from "src/assets/img/axe-coin.webp";
@@ -44,10 +43,7 @@ export default function HeaderView({
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
   return (
-    <div
-      className={classNames("bg-black", "gap-3 px-6 py-4 xl:gap-8", "font-walsheim text-xl text-neutral-400")}
-      data-testid="header"
-    >
+    <div className="gap-3 bg-black px-6 py-4 font-walsheim text-xl text-neutral-400 xl:gap-8" data-testid="header">
       <div className="flex items-center justify-center gap-8 xl:justify-start">
         <Link to={RoutePaths.Projects} className="flex w-fit items-center gap-3 ">
           <OnlyDustLogo />
