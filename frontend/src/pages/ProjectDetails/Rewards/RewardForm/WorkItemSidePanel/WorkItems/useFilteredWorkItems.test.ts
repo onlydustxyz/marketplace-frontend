@@ -13,6 +13,7 @@ const workItems: ContributionFragment[] = [
     githubUserId: "123456",
     githubIssue: null,
     githubPullRequest: null,
+    githubCodeReview: null,
   },
   {
     id: "456",
@@ -25,6 +26,7 @@ const workItems: ContributionFragment[] = [
     githubUserId: "123456",
     githubIssue: null,
     githubPullRequest: null,
+    githubCodeReview: null,
   },
   {
     id: "789",
@@ -37,6 +39,7 @@ const workItems: ContributionFragment[] = [
     githubUserId: "123456",
     githubIssue: null,
     githubPullRequest: null,
+    githubCodeReview: null,
   },
 ];
 

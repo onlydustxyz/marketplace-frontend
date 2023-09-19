@@ -12,7 +12,7 @@ import EyeLine from "src/icons/EyeLine";
 import classNames from "classnames";
 import { withTooltip } from "src/components/Tooltip";
 import { GithubCodeReviewFragment } from "src/__generated/graphql";
-import { GithubLink } from "../GithubLink/GithubLink";
+import { GithubLink } from "src/components/GithubLink/GithubLink";
 import CodeReviewCheckIcon from "src/assets/icons/CodeReviewCheckIcon";
 import CodeReviewIcon from "src/assets/icons/CodeReviewIcon";
 

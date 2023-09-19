@@ -16,6 +16,7 @@ const paymentRequests: Reward[] = range(1, 4).map(id => ({
       type: WorkItemType.Issue,
       githubIssue: null,
       githubPullRequest: null,
+      githubCodeReview: null,
     },
   ],
   requestedAt: new Date(`December ${id + 10}, 2022`),

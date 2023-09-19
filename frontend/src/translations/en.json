@@ -114,7 +114,7 @@
       "closed": "Closed __closedAt__",
       "merged": "Merged __mergedAt__",
       "open": "Open"
-    } 
+    }
   },
   "githubCodeReview": {
     "status": {

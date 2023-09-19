@@ -15,7 +15,7 @@ import EyeLine from "src/icons/EyeLine";
 import classNames from "classnames";
 import { withTooltip } from "src/components/Tooltip";
 import { GithubPullRequestFragment, GithubPullRequestStatus } from "src/__generated/graphql";
-import { GithubLink } from "../GithubLink/GithubLink";
+import { GithubLink } from "src/components/GithubLink/GithubLink";
 
 export enum Action {
   Add = "add",

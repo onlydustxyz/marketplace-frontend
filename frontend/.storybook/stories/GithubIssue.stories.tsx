@@ -1,4 +1,4 @@
-import GithubIssue, { Action, Props } from "src/components/GithubIssue/GithubIssue";
+import GithubIssue, { Action, GithubIssueProps } from "src/components/GithubIssue/GithubIssue";
 import { daysFromNow } from "src/utils/date";
 import { GithubIssueFragment, GithubIssueStatus, WorkItemType } from "src/__generated/graphql";
 
@@ -74,23 +74,23 @@ export default {
   },
 };
 
-const defaultProps: Props = { issue: issues.closed };
-const longLinkProps: Props = { issue: issues.closedWithLongLink };
-const openProps: Props = { issue: issues.open };
-const completedProps: Props = { issue: issues.completed };
+const defaultProps: GithubIssueProps = { issue: issues.closed };
+const longLinkProps: GithubIssueProps = { issue: issues.closedWithLongLink };
+const openProps: GithubIssueProps = { issue: issues.open };
+const completedProps: GithubIssueProps = { issue: issues.completed };
 
 export const Default = {
-  render: (args: Props) => <GithubIssue {...defaultProps} {...args} />,
+  render: (args: GithubIssueProps) => <GithubIssue {...defaultProps} {...args} />,
 };
 
 export const LongLink = {
-  render: (args: Props) => <GithubIssue {...longLinkProps} {...args} />,
+  render: (args: GithubIssueProps) => <GithubIssue {...longLinkProps} {...args} />,
 };
 
 export const Open = {
-  render: (args: Props) => <GithubIssue {...openProps} {...args} />,
+  render: (args: GithubIssueProps) => <GithubIssue {...openProps} {...args} />,
 };
 
 export const Completed = {
-  render: (args: Props) => <GithubIssue {...completedProps} {...args} />,
+  render: (args: GithubIssueProps) => <GithubIssue {...completedProps} {...args} />,
 };

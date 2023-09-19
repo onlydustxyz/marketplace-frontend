@@ -1,6 +1,6 @@
 import { daysFromNow } from "src/utils/date";
 import { GithubPullRequestFragment, GithubPullRequestStatus, WorkItemType } from "src/__generated/graphql";
-import GithubPullRequest, { Action, Props } from "src/components/GithubPullRequest/GithubPullRequest";
+import GithubPullRequest, { Action, GithubPullRequestProps } from "src/components/GithubPullRequest/GithubPullRequest";
 
 const pullRequests: Record<string, GithubPullRequestFragment> = {
   closed: {
@@ -98,21 +98,21 @@ export default {
   },
 };
 
-const defaultProps: Props = { pullRequest: pullRequests.closed };
-const longLinkProps: Props = { pullRequest: pullRequests.closedWithLongLink };
-const openProps: Props = { pullRequest: pullRequests.open };
-const mergedProps: Props = { pullRequest: pullRequests.merged };
+const defaultProps: GithubPullRequestProps = { pullRequest: pullRequests.closed };
+const longLinkProps: GithubPullRequestProps = { pullRequest: pullRequests.closedWithLongLink };
+const openProps: GithubPullRequestProps = { pullRequest: pullRequests.open };
+const mergedProps: GithubPullRequestProps = { pullRequest: pullRequests.merged };
 
 export const Default = {
-  render: (args: Props) => <GithubPullRequest {...defaultProps} {...args} />,
+  render: (args: GithubPullRequestProps) => <GithubPullRequest {...defaultProps} {...args} />,
 };
 
 export const LongLink = {
-  render: (args: Props) => <GithubPullRequest {...longLinkProps} {...args} />,
+  render: (args: GithubPullRequestProps) => <GithubPullRequest {...longLinkProps} {...args} />,
 };
 export const Open = {
-  render: (args: Props) => <GithubPullRequest {...openProps} {...args} />,
+  render: (args: GithubPullRequestProps) => <GithubPullRequest {...openProps} {...args} />,
 };
 export const Merged = {
-  render: (args: Props) => <GithubPullRequest {...mergedProps} {...args} />,
+  render: (args: GithubPullRequestProps) => <GithubPullRequest {...mergedProps} {...args} />,
 };

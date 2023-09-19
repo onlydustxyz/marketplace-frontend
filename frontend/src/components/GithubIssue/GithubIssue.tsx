@@ -7,7 +7,7 @@ import displayRelativeDate from "src/utils/displayRelativeDate";
 import { parseIssueLink } from "src/utils/github";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import Card from "src/components/Card";
-import { GithubLink } from "../GithubLink/GithubLink";
+import { GithubLink } from "src/components/GithubLink/GithubLink";
 import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
 import IssueCancelled from "src/assets/icons/IssueCancelled";
 import IssueOpen from "src/assets/icons/IssueOpen";

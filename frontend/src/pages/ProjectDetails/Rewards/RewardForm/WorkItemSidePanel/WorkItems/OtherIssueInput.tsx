@@ -156,9 +156,17 @@ export const liveIssueToCached = (issue: LiveGithubIssueFragment): GithubIssueFr
   ...issue,
   __typename: "GithubIssues",
   assigneeIds: [],
+  commentsCount: 0,
 });
 
 export const livePullRequestToCached = (issue: LiveGithubPullRequestFragment): GithubPullRequestFragment => ({
   ...issue,
   __typename: "GithubPullRequests",
+  author: {
+    login: "stannislas",
+    avatarUrl: "https://gravatar.com/avatar/1f82b0492a0a938288c2d5b70534a1fb?s=400&d=robohash&r=x",
+    htmlUrl: "https://github.com/stannislas",
+    id: 123,
+    user: { id: 233 },
+  },
 });

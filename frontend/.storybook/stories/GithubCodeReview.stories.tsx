@@ -1,4 +1,4 @@
-import { Action, Props } from "src/components/GithubCodeReview/GithubCodeReview";
+import { Action, GithubCodeReviewProps } from "src/components/GithubCodeReview/GithubCodeReview";
 import { daysFromNow } from "src/utils/date";
 import { GithubCodeReviewFragment, GithubIssueStatus } from "src/__generated/graphql";
 import GithubCodeReview from "src/components/GithubCodeReview/GithubCodeReview";
@@ -125,23 +125,23 @@ export default {
   },
 };
 
-const defaultProps: Props = { codeReview: codeReviews.pending };
-const pendingProps: Props = { codeReview: codeReviews.pending };
-const approvedProps: Props = { codeReview: codeReviews.approved };
-const changeRequestedProps: Props = { codeReview: codeReviews.changeRequested };
+const defaultProps: GithubCodeReviewProps = { codeReview: codeReviews.pending };
+const pendingProps: GithubCodeReviewProps = { codeReview: codeReviews.pending };
+const approvedProps: GithubCodeReviewProps = { codeReview: codeReviews.approved };
+const changeRequestedProps: GithubCodeReviewProps = { codeReview: codeReviews.changeRequested };
 
 export const Default = {
-  render: (args: Props) => <GithubCodeReview {...defaultProps} {...args} />,
+  render: (args: GithubCodeReviewProps) => <GithubCodeReview {...defaultProps} {...args} />,
 };
 
 export const Pending = {
-  render: (args: Props) => <GithubCodeReview {...pendingProps} {...args} />,
+  render: (args: GithubCodeReviewProps) => <GithubCodeReview {...pendingProps} {...args} />,
 };
 
 export const Approved = {
-  render: (args: Props) => <GithubCodeReview {...approvedProps} {...args} />,
+  render: (args: GithubCodeReviewProps) => <GithubCodeReview {...approvedProps} {...args} />,
 };
 
 export const ChangeRequested = {
-  render: (args: Props) => <GithubCodeReview {...changeRequestedProps} {...args} />,
+  render: (args: GithubCodeReviewProps) => <GithubCodeReview {...changeRequestedProps} {...args} />,
 };

@@ -65,6 +65,7 @@ const issues: GithubIssueFragment[] = range(1, 50).map(id => ({
   ignoredForProjects: [],
   authorId: 595505,
   assigneeIds: [],
+  commentsCount: 0,
 }));
 
 const payment: PaymentRequestDetailsFragment = {
@@ -97,7 +98,9 @@ const payment: PaymentRequestDetailsFragment = {
     avatarUrl: "https://avatars.githubusercontent.com/u/43467246?v=4",
     githubUserId: 43467246,
   },
+
   workItems: issues.map(githubIssue => ({
+    commentsCount: 0,
     id: githubIssue.id,
     type: WorkItemType.Issue,
     paymentId: "880819f1-2ab9-406d-9bf1-3012b6f565bc",
@@ -105,6 +108,7 @@ const payment: PaymentRequestDetailsFragment = {
     number: githubIssue.number,
     githubIssue,
     githubPullRequest: null,
+    githubCodeReview: null,
   })),
 };
 
