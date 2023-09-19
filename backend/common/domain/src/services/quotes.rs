@@ -5,7 +5,9 @@ use rust_decimal::Decimal;
 use crate::Currency;
 
 #[async_trait]
-pub trait Service {
+pub trait Service: Send + Sync {
+	async fn fetch_conversion_rate(&self, currency: &'static Currency) -> Result<Decimal>;
+
 	async fn fetch_conversion_rates(
 		&self,
 		currencies: &[&'static Currency],

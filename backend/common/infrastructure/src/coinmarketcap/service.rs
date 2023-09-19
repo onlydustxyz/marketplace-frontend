@@ -20,4 +20,11 @@ impl quotes::Service for super::Client {
 			})
 			.collect()
 	}
+
+	async fn fetch_conversion_rate(&self, currency: &'static Currency) -> Result<Decimal> {
+		self.fetch_conversion_rates(&[currency])
+			.await?
+			.pop()
+			.ok_or_else(|| anyhow!("Invalid response received"))
+	}
 }

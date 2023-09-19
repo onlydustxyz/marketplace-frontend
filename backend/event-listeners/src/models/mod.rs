@@ -1,6 +1,7 @@
 mod applications;
 mod budgets;
 mod contributions;
+mod crypto_usd_quotes;
 mod github_issues;
 pub mod github_pull_request_indexes;
 pub mod github_pull_requests;
@@ -23,6 +24,7 @@ mod work_items;
 pub use applications::Application;
 pub use budgets::Budget;
 pub use contributions::{Contribution, Repository as ContributionsRepository};
+pub use crypto_usd_quotes::CryptoUsdQuote;
 pub use github_issues::GithubIssue;
 pub use github_pull_request_indexes::{
 	GithubPullRequestIndex, Repository as GithubPullRequestIndexRepository,
