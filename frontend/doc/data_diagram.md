@@ -3,6 +3,18 @@
 ```mermaid
 classDiagram
 
+class ApiClosedByPullRequests {
+   githubIssueId: bigint
+   githubPullRequest: GithubPullRequests
+   githubPullRequestId: bigint
+}
+
+class ApiClosingIssues {
+   githubIssue: GithubIssues
+   githubIssueId: bigint
+   githubPullRequestId: bigint
+}
+
 class ApiCompletedContributions {
    closedAt: timestamp
    createdAt: timestamp
@@ -99,9 +111,11 @@ class Contributions {
    githubIssueId: bigint
    githubPullRequest: GithubPullRequests
    githubPullRequestId: bigint
+   githubRepo: GithubRepos
    githubUserId: bigint
    id: String
    ignored: Boolean
+   project: Projects
    projectId: uuid
    repoId: bigint
    rewardItems: [WorkItems!]!
@@ -127,6 +141,7 @@ class GithubIssues {
    assigneeIds: jsonb
    authorId: bigint
    closedAt: timestamp
+   closedByPullRequests: [ApiClosedByPullRequests!]!
    commentsCount: bigint
    createdAt: timestamp
    htmlUrl: String
@@ -161,9 +176,9 @@ class GithubPullRequestCommits {
 }
 
 class GithubPullRequestReviews {
+   githubPullRequest: GithubPullRequests
    id: String
    outcome: github_code_review_outcome
-   pullRequest: GithubPullRequests
    pullRequestId: bigint
    reviewer: GithubUsers
    reviewerId: bigint
@@ -176,7 +191,7 @@ class GithubPullRequests {
    authorId: bigint
    ciChecks: github_ci_checks
    closedAt: timestamp
-   closingIssueNumbers: jsonb
+   closingIssues: [ApiClosingIssues!]!
    commits: [GithubPullRequestCommits!]!
    createdAt: timestamp
    draft: Boolean
@@ -518,6 +533,8 @@ class users {
    userProviders: [authUserProviders!]!
 }
 
+ApiClosedByPullRequests -- GithubPullRequests
+ApiClosingIssues -- GithubIssues
 ApiCompletedContributions --* WorkItems
 Budgets -- Projects
 Budgets --* PaymentRequests
@@ -525,15 +542,19 @@ Contacts -- ContactInformations
 Contributions -- GithubIssues
 Contributions -- GithubPullRequestReviews
 Contributions -- GithubPullRequests
+Contributions -- GithubRepos
+Contributions -- Projects
 Contributions --* WorkItems
 GithubIssue -- GithubUser
 GithubIssues -- GithubRepos
+GithubIssues --* ApiClosedByPullRequests
 GithubPullRequest -- GithubUser
 GithubPullRequestCommits -- GithubUsers
 GithubPullRequestReviews -- GithubPullRequests
 GithubPullRequestReviews -- GithubUsers
 GithubPullRequests -- GithubRepos
 GithubPullRequests -- GithubUsers
+GithubPullRequests --* ApiClosingIssues
 GithubPullRequests --* GithubPullRequestCommits
 GithubRepos --* ProjectGithubRepos
 GithubUser -- RegisteredUsers

@@ -62,6 +62,386 @@ export type AllocatedTimeComparisonExp = {
   _nin: InputMaybe<Array<Scalars['allocated_time']>>;
 };
 
+/** columns and relationships of "api.closed_by_pull_requests" */
+export type ApiClosedByPullRequests = {
+  __typename?: 'ApiClosedByPullRequests';
+  githubIssueId: Maybe<Scalars['bigint']>;
+  /** An object relationship */
+  githubPullRequest: Maybe<GithubPullRequests>;
+  githubPullRequestId: Maybe<Scalars['bigint']>;
+};
+
+/** aggregated selection of "api.closed_by_pull_requests" */
+export type ApiClosedByPullRequestsAggregate = {
+  __typename?: 'ApiClosedByPullRequestsAggregate';
+  aggregate: Maybe<ApiClosedByPullRequestsAggregateFields>;
+  nodes: Array<ApiClosedByPullRequests>;
+};
+
+/** aggregate fields of "api.closed_by_pull_requests" */
+export type ApiClosedByPullRequestsAggregateFields = {
+  __typename?: 'ApiClosedByPullRequestsAggregateFields';
+  avg: Maybe<ApiClosedByPullRequestsAvgFields>;
+  count: Scalars['Int'];
+  max: Maybe<ApiClosedByPullRequestsMaxFields>;
+  min: Maybe<ApiClosedByPullRequestsMinFields>;
+  stddev: Maybe<ApiClosedByPullRequestsStddevFields>;
+  stddevPop: Maybe<ApiClosedByPullRequestsStddev_PopFields>;
+  stddevSamp: Maybe<ApiClosedByPullRequestsStddev_SampFields>;
+  sum: Maybe<ApiClosedByPullRequestsSumFields>;
+  varPop: Maybe<ApiClosedByPullRequestsVar_PopFields>;
+  varSamp: Maybe<ApiClosedByPullRequestsVar_SampFields>;
+  variance: Maybe<ApiClosedByPullRequestsVarianceFields>;
+};
+
+
+/** aggregate fields of "api.closed_by_pull_requests" */
+export type ApiClosedByPullRequestsAggregateFieldsCountArgs = {
+  columns: InputMaybe<Array<ApiClosedByPullRequestsSelectColumn>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "api.closed_by_pull_requests" */
+export type ApiClosedByPullRequestsAggregateOrderBy = {
+  avg: InputMaybe<Api_Closed_By_Pull_Requests_Avg_Order_By>;
+  count: InputMaybe<OrderBy>;
+  max: InputMaybe<Api_Closed_By_Pull_Requests_Max_Order_By>;
+  min: InputMaybe<Api_Closed_By_Pull_Requests_Min_Order_By>;
+  stddev: InputMaybe<Api_Closed_By_Pull_Requests_Stddev_Order_By>;
+  stddev_pop: InputMaybe<Api_Closed_By_Pull_Requests_Stddev_Pop_Order_By>;
+  stddev_samp: InputMaybe<Api_Closed_By_Pull_Requests_Stddev_Samp_Order_By>;
+  sum: InputMaybe<Api_Closed_By_Pull_Requests_Sum_Order_By>;
+  var_pop: InputMaybe<Api_Closed_By_Pull_Requests_Var_Pop_Order_By>;
+  var_samp: InputMaybe<Api_Closed_By_Pull_Requests_Var_Samp_Order_By>;
+  variance: InputMaybe<Api_Closed_By_Pull_Requests_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "api.closed_by_pull_requests" */
+export type ApiClosedByPullRequestsArrRelInsertInput = {
+  data: Array<ApiClosedByPullRequestsInsertInput>;
+};
+
+/** aggregate avg on columns */
+export type ApiClosedByPullRequestsAvgFields = {
+  __typename?: 'ApiClosedByPullRequestsAvgFields';
+  githubIssueId: Maybe<Scalars['Float']>;
+  githubPullRequestId: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "api.closed_by_pull_requests". All fields are combined with a logical 'AND'. */
+export type ApiClosedByPullRequestsBoolExp = {
+  _and: InputMaybe<Array<ApiClosedByPullRequestsBoolExp>>;
+  _not: InputMaybe<ApiClosedByPullRequestsBoolExp>;
+  _or: InputMaybe<Array<ApiClosedByPullRequestsBoolExp>>;
+  githubIssueId: InputMaybe<BigintComparisonExp>;
+  githubPullRequest: InputMaybe<GithubPullRequestsBoolExp>;
+  githubPullRequestId: InputMaybe<BigintComparisonExp>;
+};
+
+/** input type for incrementing numeric columns in table "api.closed_by_pull_requests" */
+export type ApiClosedByPullRequestsIncInput = {
+  githubIssueId: InputMaybe<Scalars['bigint']>;
+  githubPullRequestId: InputMaybe<Scalars['bigint']>;
+};
+
+/** input type for inserting data into table "api.closed_by_pull_requests" */
+export type ApiClosedByPullRequestsInsertInput = {
+  githubIssueId: InputMaybe<Scalars['bigint']>;
+  githubPullRequest: InputMaybe<GithubPullRequestsObjRelInsertInput>;
+  githubPullRequestId: InputMaybe<Scalars['bigint']>;
+};
+
+/** aggregate max on columns */
+export type ApiClosedByPullRequestsMaxFields = {
+  __typename?: 'ApiClosedByPullRequestsMaxFields';
+  githubIssueId: Maybe<Scalars['bigint']>;
+  githubPullRequestId: Maybe<Scalars['bigint']>;
+};
+
+/** aggregate min on columns */
+export type ApiClosedByPullRequestsMinFields = {
+  __typename?: 'ApiClosedByPullRequestsMinFields';
+  githubIssueId: Maybe<Scalars['bigint']>;
+  githubPullRequestId: Maybe<Scalars['bigint']>;
+};
+
+/** response of any mutation on the table "api.closed_by_pull_requests" */
+export type ApiClosedByPullRequestsMutationResponse = {
+  __typename?: 'ApiClosedByPullRequestsMutationResponse';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<ApiClosedByPullRequests>;
+};
+
+/** Ordering options when selecting data from "api.closed_by_pull_requests". */
+export type ApiClosedByPullRequestsOrderBy = {
+  githubIssueId: InputMaybe<OrderBy>;
+  githubPullRequest: InputMaybe<GithubPullRequestsOrderBy>;
+  githubPullRequestId: InputMaybe<OrderBy>;
+};
+
+/** select columns of table "api.closed_by_pull_requests" */
+export enum ApiClosedByPullRequestsSelectColumn {
+  /** column name */
+  GithubIssueId = 'githubIssueId',
+  /** column name */
+  GithubPullRequestId = 'githubPullRequestId'
+}
+
+/** input type for updating data in table "api.closed_by_pull_requests" */
+export type ApiClosedByPullRequestsSetInput = {
+  githubIssueId: InputMaybe<Scalars['bigint']>;
+  githubPullRequestId: InputMaybe<Scalars['bigint']>;
+};
+
+/** aggregate stddev on columns */
+export type ApiClosedByPullRequestsStddevFields = {
+  __typename?: 'ApiClosedByPullRequestsStddevFields';
+  githubIssueId: Maybe<Scalars['Float']>;
+  githubPullRequestId: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type ApiClosedByPullRequestsStddev_PopFields = {
+  __typename?: 'ApiClosedByPullRequestsStddev_popFields';
+  githubIssueId: Maybe<Scalars['Float']>;
+  githubPullRequestId: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type ApiClosedByPullRequestsStddev_SampFields = {
+  __typename?: 'ApiClosedByPullRequestsStddev_sampFields';
+  githubIssueId: Maybe<Scalars['Float']>;
+  githubPullRequestId: Maybe<Scalars['Float']>;
+};
+
+/** aggregate sum on columns */
+export type ApiClosedByPullRequestsSumFields = {
+  __typename?: 'ApiClosedByPullRequestsSumFields';
+  githubIssueId: Maybe<Scalars['bigint']>;
+  githubPullRequestId: Maybe<Scalars['bigint']>;
+};
+
+export type ApiClosedByPullRequestsUpdates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<ApiClosedByPullRequestsIncInput>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<ApiClosedByPullRequestsSetInput>;
+  where: ApiClosedByPullRequestsBoolExp;
+};
+
+/** aggregate var_pop on columns */
+export type ApiClosedByPullRequestsVar_PopFields = {
+  __typename?: 'ApiClosedByPullRequestsVar_popFields';
+  githubIssueId: Maybe<Scalars['Float']>;
+  githubPullRequestId: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type ApiClosedByPullRequestsVar_SampFields = {
+  __typename?: 'ApiClosedByPullRequestsVar_sampFields';
+  githubIssueId: Maybe<Scalars['Float']>;
+  githubPullRequestId: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type ApiClosedByPullRequestsVarianceFields = {
+  __typename?: 'ApiClosedByPullRequestsVarianceFields';
+  githubIssueId: Maybe<Scalars['Float']>;
+  githubPullRequestId: Maybe<Scalars['Float']>;
+};
+
+/** columns and relationships of "api.closing_issues" */
+export type ApiClosingIssues = {
+  __typename?: 'ApiClosingIssues';
+  /** An object relationship */
+  githubIssue: Maybe<GithubIssues>;
+  githubIssueId: Maybe<Scalars['bigint']>;
+  githubPullRequestId: Maybe<Scalars['bigint']>;
+};
+
+/** aggregated selection of "api.closing_issues" */
+export type ApiClosingIssuesAggregate = {
+  __typename?: 'ApiClosingIssuesAggregate';
+  aggregate: Maybe<ApiClosingIssuesAggregateFields>;
+  nodes: Array<ApiClosingIssues>;
+};
+
+/** aggregate fields of "api.closing_issues" */
+export type ApiClosingIssuesAggregateFields = {
+  __typename?: 'ApiClosingIssuesAggregateFields';
+  avg: Maybe<ApiClosingIssuesAvgFields>;
+  count: Scalars['Int'];
+  max: Maybe<ApiClosingIssuesMaxFields>;
+  min: Maybe<ApiClosingIssuesMinFields>;
+  stddev: Maybe<ApiClosingIssuesStddevFields>;
+  stddevPop: Maybe<ApiClosingIssuesStddev_PopFields>;
+  stddevSamp: Maybe<ApiClosingIssuesStddev_SampFields>;
+  sum: Maybe<ApiClosingIssuesSumFields>;
+  varPop: Maybe<ApiClosingIssuesVar_PopFields>;
+  varSamp: Maybe<ApiClosingIssuesVar_SampFields>;
+  variance: Maybe<ApiClosingIssuesVarianceFields>;
+};
+
+
+/** aggregate fields of "api.closing_issues" */
+export type ApiClosingIssuesAggregateFieldsCountArgs = {
+  columns: InputMaybe<Array<ApiClosingIssuesSelectColumn>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "api.closing_issues" */
+export type ApiClosingIssuesAggregateOrderBy = {
+  avg: InputMaybe<Api_Closing_Issues_Avg_Order_By>;
+  count: InputMaybe<OrderBy>;
+  max: InputMaybe<Api_Closing_Issues_Max_Order_By>;
+  min: InputMaybe<Api_Closing_Issues_Min_Order_By>;
+  stddev: InputMaybe<Api_Closing_Issues_Stddev_Order_By>;
+  stddev_pop: InputMaybe<Api_Closing_Issues_Stddev_Pop_Order_By>;
+  stddev_samp: InputMaybe<Api_Closing_Issues_Stddev_Samp_Order_By>;
+  sum: InputMaybe<Api_Closing_Issues_Sum_Order_By>;
+  var_pop: InputMaybe<Api_Closing_Issues_Var_Pop_Order_By>;
+  var_samp: InputMaybe<Api_Closing_Issues_Var_Samp_Order_By>;
+  variance: InputMaybe<Api_Closing_Issues_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "api.closing_issues" */
+export type ApiClosingIssuesArrRelInsertInput = {
+  data: Array<ApiClosingIssuesInsertInput>;
+};
+
+/** aggregate avg on columns */
+export type ApiClosingIssuesAvgFields = {
+  __typename?: 'ApiClosingIssuesAvgFields';
+  githubIssueId: Maybe<Scalars['Float']>;
+  githubPullRequestId: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "api.closing_issues". All fields are combined with a logical 'AND'. */
+export type ApiClosingIssuesBoolExp = {
+  _and: InputMaybe<Array<ApiClosingIssuesBoolExp>>;
+  _not: InputMaybe<ApiClosingIssuesBoolExp>;
+  _or: InputMaybe<Array<ApiClosingIssuesBoolExp>>;
+  githubIssue: InputMaybe<GithubIssuesBoolExp>;
+  githubIssueId: InputMaybe<BigintComparisonExp>;
+  githubPullRequestId: InputMaybe<BigintComparisonExp>;
+};
+
+/** input type for incrementing numeric columns in table "api.closing_issues" */
+export type ApiClosingIssuesIncInput = {
+  githubIssueId: InputMaybe<Scalars['bigint']>;
+  githubPullRequestId: InputMaybe<Scalars['bigint']>;
+};
+
+/** input type for inserting data into table "api.closing_issues" */
+export type ApiClosingIssuesInsertInput = {
+  githubIssue: InputMaybe<GithubIssuesObjRelInsertInput>;
+  githubIssueId: InputMaybe<Scalars['bigint']>;
+  githubPullRequestId: InputMaybe<Scalars['bigint']>;
+};
+
+/** aggregate max on columns */
+export type ApiClosingIssuesMaxFields = {
+  __typename?: 'ApiClosingIssuesMaxFields';
+  githubIssueId: Maybe<Scalars['bigint']>;
+  githubPullRequestId: Maybe<Scalars['bigint']>;
+};
+
+/** aggregate min on columns */
+export type ApiClosingIssuesMinFields = {
+  __typename?: 'ApiClosingIssuesMinFields';
+  githubIssueId: Maybe<Scalars['bigint']>;
+  githubPullRequestId: Maybe<Scalars['bigint']>;
+};
+
+/** response of any mutation on the table "api.closing_issues" */
+export type ApiClosingIssuesMutationResponse = {
+  __typename?: 'ApiClosingIssuesMutationResponse';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<ApiClosingIssues>;
+};
+
+/** Ordering options when selecting data from "api.closing_issues". */
+export type ApiClosingIssuesOrderBy = {
+  githubIssue: InputMaybe<GithubIssuesOrderBy>;
+  githubIssueId: InputMaybe<OrderBy>;
+  githubPullRequestId: InputMaybe<OrderBy>;
+};
+
+/** select columns of table "api.closing_issues" */
+export enum ApiClosingIssuesSelectColumn {
+  /** column name */
+  GithubIssueId = 'githubIssueId',
+  /** column name */
+  GithubPullRequestId = 'githubPullRequestId'
+}
+
+/** input type for updating data in table "api.closing_issues" */
+export type ApiClosingIssuesSetInput = {
+  githubIssueId: InputMaybe<Scalars['bigint']>;
+  githubPullRequestId: InputMaybe<Scalars['bigint']>;
+};
+
+/** aggregate stddev on columns */
+export type ApiClosingIssuesStddevFields = {
+  __typename?: 'ApiClosingIssuesStddevFields';
+  githubIssueId: Maybe<Scalars['Float']>;
+  githubPullRequestId: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type ApiClosingIssuesStddev_PopFields = {
+  __typename?: 'ApiClosingIssuesStddev_popFields';
+  githubIssueId: Maybe<Scalars['Float']>;
+  githubPullRequestId: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type ApiClosingIssuesStddev_SampFields = {
+  __typename?: 'ApiClosingIssuesStddev_sampFields';
+  githubIssueId: Maybe<Scalars['Float']>;
+  githubPullRequestId: Maybe<Scalars['Float']>;
+};
+
+/** aggregate sum on columns */
+export type ApiClosingIssuesSumFields = {
+  __typename?: 'ApiClosingIssuesSumFields';
+  githubIssueId: Maybe<Scalars['bigint']>;
+  githubPullRequestId: Maybe<Scalars['bigint']>;
+};
+
+export type ApiClosingIssuesUpdates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<ApiClosingIssuesIncInput>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<ApiClosingIssuesSetInput>;
+  where: ApiClosingIssuesBoolExp;
+};
+
+/** aggregate var_pop on columns */
+export type ApiClosingIssuesVar_PopFields = {
+  __typename?: 'ApiClosingIssuesVar_popFields';
+  githubIssueId: Maybe<Scalars['Float']>;
+  githubPullRequestId: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type ApiClosingIssuesVar_SampFields = {
+  __typename?: 'ApiClosingIssuesVar_sampFields';
+  githubIssueId: Maybe<Scalars['Float']>;
+  githubPullRequestId: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type ApiClosingIssuesVarianceFields = {
+  __typename?: 'ApiClosingIssuesVarianceFields';
+  githubIssueId: Maybe<Scalars['Float']>;
+  githubPullRequestId: Maybe<Scalars['Float']>;
+};
+
 /** columns and relationships of "api.completed_contributions" */
 export type ApiCompletedContributions = {
   __typename?: 'ApiCompletedContributions';
@@ -2400,9 +2780,13 @@ export type Contributions = {
   /** An object relationship */
   githubPullRequest: Maybe<GithubPullRequests>;
   githubPullRequestId: Maybe<Scalars['bigint']>;
+  /** An object relationship */
+  githubRepo: Maybe<GithubRepos>;
   githubUserId: Maybe<Scalars['bigint']>;
   id: Maybe<Scalars['String']>;
   ignored: Maybe<Scalars['Boolean']>;
+  /** An object relationship */
+  project: Maybe<Projects>;
   projectId: Maybe<Scalars['uuid']>;
   repoId: Maybe<Scalars['bigint']>;
   /** An array relationship */
@@ -2506,9 +2890,11 @@ export type ContributionsBoolExp = {
   githubIssueId: InputMaybe<BigintComparisonExp>;
   githubPullRequest: InputMaybe<GithubPullRequestsBoolExp>;
   githubPullRequestId: InputMaybe<BigintComparisonExp>;
+  githubRepo: InputMaybe<GithubReposBoolExp>;
   githubUserId: InputMaybe<BigintComparisonExp>;
   id: InputMaybe<StringComparisonExp>;
   ignored: InputMaybe<BooleanComparisonExp>;
+  project: InputMaybe<ProjectsBoolExp>;
   projectId: InputMaybe<UuidComparisonExp>;
   repoId: InputMaybe<BigintComparisonExp>;
   rewardItems: InputMaybe<WorkItemsBoolExp>;
@@ -2528,9 +2914,11 @@ export type ContributionsInsertInput = {
   githubIssueId: InputMaybe<Scalars['bigint']>;
   githubPullRequest: InputMaybe<GithubPullRequestsObjRelInsertInput>;
   githubPullRequestId: InputMaybe<Scalars['bigint']>;
+  githubRepo: InputMaybe<GithubReposObjRelInsertInput>;
   githubUserId: InputMaybe<Scalars['bigint']>;
   id: InputMaybe<Scalars['String']>;
   ignored: InputMaybe<Scalars['Boolean']>;
+  project: InputMaybe<ProjectsObjRelInsertInput>;
   projectId: InputMaybe<Scalars['uuid']>;
   repoId: InputMaybe<Scalars['bigint']>;
   rewardItems: InputMaybe<WorkItemsArrRelInsertInput>;
@@ -2583,9 +2971,11 @@ export type ContributionsOrderBy = {
   githubIssueId: InputMaybe<OrderBy>;
   githubPullRequest: InputMaybe<GithubPullRequestsOrderBy>;
   githubPullRequestId: InputMaybe<OrderBy>;
+  githubRepo: InputMaybe<GithubReposOrderBy>;
   githubUserId: InputMaybe<OrderBy>;
   id: InputMaybe<OrderBy>;
   ignored: InputMaybe<OrderBy>;
+  project: InputMaybe<ProjectsOrderBy>;
   projectId: InputMaybe<OrderBy>;
   repoId: InputMaybe<OrderBy>;
   rewardItemsAggregate: InputMaybe<WorkItemsAggregateOrderBy>;
@@ -2931,6 +3321,10 @@ export type GithubIssues = {
   assigneeIds: Maybe<Scalars['jsonb']>;
   authorId: Maybe<Scalars['bigint']>;
   closedAt: Maybe<Scalars['timestamp']>;
+  /** An array relationship */
+  closedByPullRequests: Array<ApiClosedByPullRequests>;
+  /** An aggregate relationship */
+  closedByPullRequestsAggregate: ApiClosedByPullRequestsAggregate;
   commentsCount: Maybe<Scalars['bigint']>;
   createdAt: Maybe<Scalars['timestamp']>;
   htmlUrl: Maybe<Scalars['String']>;
@@ -2947,6 +3341,26 @@ export type GithubIssues = {
 /** columns and relationships of "api.github_issues" */
 export type GithubIssuesAssigneeIdsArgs = {
   path: InputMaybe<Scalars['String']>;
+};
+
+
+/** columns and relationships of "api.github_issues" */
+export type GithubIssuesClosedByPullRequestsArgs = {
+  distinctOn: InputMaybe<Array<ApiClosedByPullRequestsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ApiClosedByPullRequestsOrderBy>>;
+  where: InputMaybe<ApiClosedByPullRequestsBoolExp>;
+};
+
+
+/** columns and relationships of "api.github_issues" */
+export type GithubIssuesClosedByPullRequestsAggregateArgs = {
+  distinctOn: InputMaybe<Array<ApiClosedByPullRequestsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ApiClosedByPullRequestsOrderBy>>;
+  where: InputMaybe<ApiClosedByPullRequestsBoolExp>;
 };
 
 /** aggregated selection of "api.github_issues" */
@@ -3022,6 +3436,8 @@ export type GithubIssuesBoolExp = {
   assigneeIds: InputMaybe<JsonbComparisonExp>;
   authorId: InputMaybe<BigintComparisonExp>;
   closedAt: InputMaybe<TimestampComparisonExp>;
+  closedByPullRequests: InputMaybe<ApiClosedByPullRequestsBoolExp>;
+  closedByPullRequests_aggregate: InputMaybe<Api_Closed_By_Pull_Requests_Aggregate_Bool_Exp>;
   commentsCount: InputMaybe<BigintComparisonExp>;
   createdAt: InputMaybe<TimestampComparisonExp>;
   htmlUrl: InputMaybe<StringComparisonExp>;
@@ -3062,6 +3478,7 @@ export type GithubIssuesInsertInput = {
   assigneeIds: InputMaybe<Scalars['jsonb']>;
   authorId: InputMaybe<Scalars['bigint']>;
   closedAt: InputMaybe<Scalars['timestamp']>;
+  closedByPullRequests: InputMaybe<ApiClosedByPullRequestsArrRelInsertInput>;
   commentsCount: InputMaybe<Scalars['bigint']>;
   createdAt: InputMaybe<Scalars['timestamp']>;
   htmlUrl: InputMaybe<Scalars['String']>;
@@ -3122,6 +3539,7 @@ export type GithubIssuesOrderBy = {
   assigneeIds: InputMaybe<OrderBy>;
   authorId: InputMaybe<OrderBy>;
   closedAt: InputMaybe<OrderBy>;
+  closedByPullRequestsAggregate: InputMaybe<ApiClosedByPullRequestsAggregateOrderBy>;
   commentsCount: InputMaybe<OrderBy>;
   createdAt: InputMaybe<OrderBy>;
   htmlUrl: InputMaybe<OrderBy>;
@@ -3660,10 +4078,10 @@ export type GithubPullRequestCommitsVarianceFields = {
 /** columns and relationships of "api.github_pull_request_reviews" */
 export type GithubPullRequestReviews = {
   __typename?: 'GithubPullRequestReviews';
+  /** An object relationship */
+  githubPullRequest: Maybe<GithubPullRequests>;
   id: Maybe<Scalars['String']>;
   outcome: Maybe<Scalars['github_code_review_outcome']>;
-  /** An object relationship */
-  pullRequest: Maybe<GithubPullRequests>;
   pullRequestId: Maybe<Scalars['bigint']>;
   /** An object relationship */
   reviewer: Maybe<GithubUsers>;
@@ -3714,9 +4132,9 @@ export type GithubPullRequestReviewsBoolExp = {
   _and: InputMaybe<Array<GithubPullRequestReviewsBoolExp>>;
   _not: InputMaybe<GithubPullRequestReviewsBoolExp>;
   _or: InputMaybe<Array<GithubPullRequestReviewsBoolExp>>;
+  githubPullRequest: InputMaybe<GithubPullRequestsBoolExp>;
   id: InputMaybe<StringComparisonExp>;
   outcome: InputMaybe<GithubCodeReviewOutcomeComparisonExp>;
-  pullRequest: InputMaybe<GithubPullRequestsBoolExp>;
   pullRequestId: InputMaybe<BigintComparisonExp>;
   reviewer: InputMaybe<GithubUsersBoolExp>;
   reviewerId: InputMaybe<BigintComparisonExp>;
@@ -3732,9 +4150,9 @@ export type GithubPullRequestReviewsIncInput = {
 
 /** input type for inserting data into table "api.github_pull_request_reviews" */
 export type GithubPullRequestReviewsInsertInput = {
+  githubPullRequest: InputMaybe<GithubPullRequestsObjRelInsertInput>;
   id: InputMaybe<Scalars['String']>;
   outcome: InputMaybe<Scalars['github_code_review_outcome']>;
-  pullRequest: InputMaybe<GithubPullRequestsObjRelInsertInput>;
   pullRequestId: InputMaybe<Scalars['bigint']>;
   reviewer: InputMaybe<GithubUsersObjRelInsertInput>;
   reviewerId: InputMaybe<Scalars['bigint']>;
@@ -3780,9 +4198,9 @@ export type GithubPullRequestReviewsObjRelInsertInput = {
 
 /** Ordering options when selecting data from "api.github_pull_request_reviews". */
 export type GithubPullRequestReviewsOrderBy = {
+  githubPullRequest: InputMaybe<GithubPullRequestsOrderBy>;
   id: InputMaybe<OrderBy>;
   outcome: InputMaybe<OrderBy>;
-  pullRequest: InputMaybe<GithubPullRequestsOrderBy>;
   pullRequestId: InputMaybe<OrderBy>;
   reviewer: InputMaybe<GithubUsersOrderBy>;
   reviewerId: InputMaybe<OrderBy>;
@@ -3905,7 +4323,10 @@ export type GithubPullRequests = {
   authorId: Maybe<Scalars['bigint']>;
   ciChecks: Maybe<Scalars['github_ci_checks']>;
   closedAt: Maybe<Scalars['timestamp']>;
-  closingIssueNumbers: Maybe<Scalars['jsonb']>;
+  /** An array relationship */
+  closingIssues: Array<ApiClosingIssues>;
+  /** An aggregate relationship */
+  closingIssuesAggregate: ApiClosingIssuesAggregate;
   /** An array relationship */
   commits: Array<GithubPullRequestCommits>;
   /** An aggregate relationship */
@@ -3925,8 +4346,22 @@ export type GithubPullRequests = {
 
 
 /** columns and relationships of "api.github_pull_requests" */
-export type GithubPullRequestsClosingIssueNumbersArgs = {
-  path: InputMaybe<Scalars['String']>;
+export type GithubPullRequestsClosingIssuesArgs = {
+  distinctOn: InputMaybe<Array<ApiClosingIssuesSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ApiClosingIssuesOrderBy>>;
+  where: InputMaybe<ApiClosingIssuesBoolExp>;
+};
+
+
+/** columns and relationships of "api.github_pull_requests" */
+export type GithubPullRequestsClosingIssuesAggregateArgs = {
+  distinctOn: InputMaybe<Array<ApiClosingIssuesSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ApiClosingIssuesOrderBy>>;
+  where: InputMaybe<ApiClosingIssuesBoolExp>;
 };
 
 
@@ -3979,11 +4414,6 @@ export type GithubPullRequestsAggregateFieldsCountArgs = {
   distinct: InputMaybe<Scalars['Boolean']>;
 };
 
-/** append existing jsonb value of filtered columns with new jsonb value */
-export type GithubPullRequestsAppendInput = {
-  closingIssueNumbers: InputMaybe<Scalars['jsonb']>;
-};
-
 /** aggregate avg on columns */
 export type GithubPullRequestsAvgFields = {
   __typename?: 'GithubPullRequestsAvgFields';
@@ -4002,7 +4432,8 @@ export type GithubPullRequestsBoolExp = {
   authorId: InputMaybe<BigintComparisonExp>;
   ciChecks: InputMaybe<GithubCiChecksComparisonExp>;
   closedAt: InputMaybe<TimestampComparisonExp>;
-  closingIssueNumbers: InputMaybe<JsonbComparisonExp>;
+  closingIssues: InputMaybe<ApiClosingIssuesBoolExp>;
+  closingIssues_aggregate: InputMaybe<Api_Closing_Issues_Aggregate_Bool_Exp>;
   commits: InputMaybe<GithubPullRequestCommitsBoolExp>;
   commits_aggregate: InputMaybe<Github_Pull_Request_Commits_Aggregate_Bool_Exp>;
   createdAt: InputMaybe<TimestampComparisonExp>;
@@ -4015,21 +4446,6 @@ export type GithubPullRequestsBoolExp = {
   repoId: InputMaybe<BigintComparisonExp>;
   status: InputMaybe<StringComparisonExp>;
   title: InputMaybe<StringComparisonExp>;
-};
-
-/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
-export type GithubPullRequestsDeleteAtPathInput = {
-  closingIssueNumbers: InputMaybe<Array<Scalars['String']>>;
-};
-
-/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
-export type GithubPullRequestsDeleteElemInput = {
-  closingIssueNumbers: InputMaybe<Scalars['Int']>;
-};
-
-/** delete key/value pair or string element. key/value pairs are matched based on their key value */
-export type GithubPullRequestsDeleteKeyInput = {
-  closingIssueNumbers: InputMaybe<Scalars['String']>;
 };
 
 /** input type for incrementing numeric columns in table "api.github_pull_requests" */
@@ -4046,7 +4462,7 @@ export type GithubPullRequestsInsertInput = {
   authorId: InputMaybe<Scalars['bigint']>;
   ciChecks: InputMaybe<Scalars['github_ci_checks']>;
   closedAt: InputMaybe<Scalars['timestamp']>;
-  closingIssueNumbers: InputMaybe<Scalars['jsonb']>;
+  closingIssues: InputMaybe<ApiClosingIssuesArrRelInsertInput>;
   commits: InputMaybe<GithubPullRequestCommitsArrRelInsertInput>;
   createdAt: InputMaybe<Scalars['timestamp']>;
   draft: InputMaybe<Scalars['Boolean']>;
@@ -4112,7 +4528,7 @@ export type GithubPullRequestsOrderBy = {
   authorId: InputMaybe<OrderBy>;
   ciChecks: InputMaybe<OrderBy>;
   closedAt: InputMaybe<OrderBy>;
-  closingIssueNumbers: InputMaybe<OrderBy>;
+  closingIssuesAggregate: InputMaybe<ApiClosingIssuesAggregateOrderBy>;
   commitsAggregate: InputMaybe<GithubPullRequestCommitsAggregateOrderBy>;
   createdAt: InputMaybe<OrderBy>;
   draft: InputMaybe<OrderBy>;
@@ -4126,11 +4542,6 @@ export type GithubPullRequestsOrderBy = {
   title: InputMaybe<OrderBy>;
 };
 
-/** prepend existing jsonb value of filtered columns with new jsonb value */
-export type GithubPullRequestsPrependInput = {
-  closingIssueNumbers: InputMaybe<Scalars['jsonb']>;
-};
-
 /** select columns of table "api.github_pull_requests" */
 export enum GithubPullRequestsSelectColumn {
   /** column name */
@@ -4139,8 +4550,6 @@ export enum GithubPullRequestsSelectColumn {
   CiChecks = 'ciChecks',
   /** column name */
   ClosedAt = 'closedAt',
-  /** column name */
-  ClosingIssueNumbers = 'closingIssueNumbers',
   /** column name */
   CreatedAt = 'createdAt',
   /** column name */
@@ -4166,7 +4575,6 @@ export type GithubPullRequestsSetInput = {
   authorId: InputMaybe<Scalars['bigint']>;
   ciChecks: InputMaybe<Scalars['github_ci_checks']>;
   closedAt: InputMaybe<Scalars['timestamp']>;
-  closingIssueNumbers: InputMaybe<Scalars['jsonb']>;
   createdAt: InputMaybe<Scalars['timestamp']>;
   draft: InputMaybe<Scalars['Boolean']>;
   htmlUrl: InputMaybe<Scalars['String']>;
@@ -4215,18 +4623,8 @@ export type GithubPullRequestsSumFields = {
 };
 
 export type GithubPullRequestsUpdates = {
-  /** append existing jsonb value of filtered columns with new jsonb value */
-  _append: InputMaybe<GithubPullRequestsAppendInput>;
-  /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
-  _deleteAtPath: InputMaybe<GithubPullRequestsDeleteAtPathInput>;
-  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
-  _deleteElem: InputMaybe<GithubPullRequestsDeleteElemInput>;
-  /** delete key/value pair or string element. key/value pairs are matched based on their key value */
-  _deleteKey: InputMaybe<GithubPullRequestsDeleteKeyInput>;
   /** increments the numeric columns with given value of the filtered values */
   _inc: InputMaybe<GithubPullRequestsIncInput>;
-  /** prepend existing jsonb value of filtered columns with new jsonb value */
-  _prepend: InputMaybe<GithubPullRequestsPrependInput>;
   /** sets the columns of the filtered rows to the given values */
   _set: InputMaybe<GithubPullRequestsSetInput>;
   where: GithubPullRequestsBoolExp;
@@ -4272,7 +4670,6 @@ export type GithubPullRequests_StreamCursorValueInput = {
   authorId: InputMaybe<Scalars['bigint']>;
   ciChecks: InputMaybe<Scalars['github_ci_checks']>;
   closedAt: InputMaybe<Scalars['timestamp']>;
-  closingIssueNumbers: InputMaybe<Scalars['jsonb']>;
   createdAt: InputMaybe<Scalars['timestamp']>;
   draft: InputMaybe<Scalars['Boolean']>;
   htmlUrl: InputMaybe<Scalars['String']>;
@@ -9670,6 +10067,176 @@ export type WorkItems_Variance_Order_By = {
   repoId: InputMaybe<OrderBy>;
 };
 
+export type Api_Closed_By_Pull_Requests_Aggregate_Bool_Exp = {
+  count: InputMaybe<Api_Closed_By_Pull_Requests_Aggregate_Bool_Exp_Count>;
+};
+
+export type Api_Closed_By_Pull_Requests_Aggregate_Bool_Exp_Count = {
+  arguments: InputMaybe<Array<ApiClosedByPullRequestsSelectColumn>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+  filter: InputMaybe<ApiClosedByPullRequestsBoolExp>;
+  predicate: IntComparisonExp;
+};
+
+/** order by avg() on columns of table "api.closed_by_pull_requests" */
+export type Api_Closed_By_Pull_Requests_Avg_Order_By = {
+  githubIssueId: InputMaybe<OrderBy>;
+  githubPullRequestId: InputMaybe<OrderBy>;
+};
+
+/** order by max() on columns of table "api.closed_by_pull_requests" */
+export type Api_Closed_By_Pull_Requests_Max_Order_By = {
+  githubIssueId: InputMaybe<OrderBy>;
+  githubPullRequestId: InputMaybe<OrderBy>;
+};
+
+/** order by min() on columns of table "api.closed_by_pull_requests" */
+export type Api_Closed_By_Pull_Requests_Min_Order_By = {
+  githubIssueId: InputMaybe<OrderBy>;
+  githubPullRequestId: InputMaybe<OrderBy>;
+};
+
+/** order by stddev() on columns of table "api.closed_by_pull_requests" */
+export type Api_Closed_By_Pull_Requests_Stddev_Order_By = {
+  githubIssueId: InputMaybe<OrderBy>;
+  githubPullRequestId: InputMaybe<OrderBy>;
+};
+
+/** order by stddev_pop() on columns of table "api.closed_by_pull_requests" */
+export type Api_Closed_By_Pull_Requests_Stddev_Pop_Order_By = {
+  githubIssueId: InputMaybe<OrderBy>;
+  githubPullRequestId: InputMaybe<OrderBy>;
+};
+
+/** order by stddev_samp() on columns of table "api.closed_by_pull_requests" */
+export type Api_Closed_By_Pull_Requests_Stddev_Samp_Order_By = {
+  githubIssueId: InputMaybe<OrderBy>;
+  githubPullRequestId: InputMaybe<OrderBy>;
+};
+
+/** Streaming cursor of the table "api_closed_by_pull_requests" */
+export type Api_Closed_By_Pull_Requests_StreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: Api_Closed_By_Pull_Requests_StreamCursorValueInput;
+  /** cursor ordering */
+  ordering: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Api_Closed_By_Pull_Requests_StreamCursorValueInput = {
+  githubIssueId: InputMaybe<Scalars['bigint']>;
+  githubPullRequestId: InputMaybe<Scalars['bigint']>;
+};
+
+/** order by sum() on columns of table "api.closed_by_pull_requests" */
+export type Api_Closed_By_Pull_Requests_Sum_Order_By = {
+  githubIssueId: InputMaybe<OrderBy>;
+  githubPullRequestId: InputMaybe<OrderBy>;
+};
+
+/** order by var_pop() on columns of table "api.closed_by_pull_requests" */
+export type Api_Closed_By_Pull_Requests_Var_Pop_Order_By = {
+  githubIssueId: InputMaybe<OrderBy>;
+  githubPullRequestId: InputMaybe<OrderBy>;
+};
+
+/** order by var_samp() on columns of table "api.closed_by_pull_requests" */
+export type Api_Closed_By_Pull_Requests_Var_Samp_Order_By = {
+  githubIssueId: InputMaybe<OrderBy>;
+  githubPullRequestId: InputMaybe<OrderBy>;
+};
+
+/** order by variance() on columns of table "api.closed_by_pull_requests" */
+export type Api_Closed_By_Pull_Requests_Variance_Order_By = {
+  githubIssueId: InputMaybe<OrderBy>;
+  githubPullRequestId: InputMaybe<OrderBy>;
+};
+
+export type Api_Closing_Issues_Aggregate_Bool_Exp = {
+  count: InputMaybe<Api_Closing_Issues_Aggregate_Bool_Exp_Count>;
+};
+
+export type Api_Closing_Issues_Aggregate_Bool_Exp_Count = {
+  arguments: InputMaybe<Array<ApiClosingIssuesSelectColumn>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+  filter: InputMaybe<ApiClosingIssuesBoolExp>;
+  predicate: IntComparisonExp;
+};
+
+/** order by avg() on columns of table "api.closing_issues" */
+export type Api_Closing_Issues_Avg_Order_By = {
+  githubIssueId: InputMaybe<OrderBy>;
+  githubPullRequestId: InputMaybe<OrderBy>;
+};
+
+/** order by max() on columns of table "api.closing_issues" */
+export type Api_Closing_Issues_Max_Order_By = {
+  githubIssueId: InputMaybe<OrderBy>;
+  githubPullRequestId: InputMaybe<OrderBy>;
+};
+
+/** order by min() on columns of table "api.closing_issues" */
+export type Api_Closing_Issues_Min_Order_By = {
+  githubIssueId: InputMaybe<OrderBy>;
+  githubPullRequestId: InputMaybe<OrderBy>;
+};
+
+/** order by stddev() on columns of table "api.closing_issues" */
+export type Api_Closing_Issues_Stddev_Order_By = {
+  githubIssueId: InputMaybe<OrderBy>;
+  githubPullRequestId: InputMaybe<OrderBy>;
+};
+
+/** order by stddev_pop() on columns of table "api.closing_issues" */
+export type Api_Closing_Issues_Stddev_Pop_Order_By = {
+  githubIssueId: InputMaybe<OrderBy>;
+  githubPullRequestId: InputMaybe<OrderBy>;
+};
+
+/** order by stddev_samp() on columns of table "api.closing_issues" */
+export type Api_Closing_Issues_Stddev_Samp_Order_By = {
+  githubIssueId: InputMaybe<OrderBy>;
+  githubPullRequestId: InputMaybe<OrderBy>;
+};
+
+/** Streaming cursor of the table "api_closing_issues" */
+export type Api_Closing_Issues_StreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: Api_Closing_Issues_StreamCursorValueInput;
+  /** cursor ordering */
+  ordering: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Api_Closing_Issues_StreamCursorValueInput = {
+  githubIssueId: InputMaybe<Scalars['bigint']>;
+  githubPullRequestId: InputMaybe<Scalars['bigint']>;
+};
+
+/** order by sum() on columns of table "api.closing_issues" */
+export type Api_Closing_Issues_Sum_Order_By = {
+  githubIssueId: InputMaybe<OrderBy>;
+  githubPullRequestId: InputMaybe<OrderBy>;
+};
+
+/** order by var_pop() on columns of table "api.closing_issues" */
+export type Api_Closing_Issues_Var_Pop_Order_By = {
+  githubIssueId: InputMaybe<OrderBy>;
+  githubPullRequestId: InputMaybe<OrderBy>;
+};
+
+/** order by var_samp() on columns of table "api.closing_issues" */
+export type Api_Closing_Issues_Var_Samp_Order_By = {
+  githubIssueId: InputMaybe<OrderBy>;
+  githubPullRequestId: InputMaybe<OrderBy>;
+};
+
+/** order by variance() on columns of table "api.closing_issues" */
+export type Api_Closing_Issues_Variance_Order_By = {
+  githubIssueId: InputMaybe<OrderBy>;
+  githubPullRequestId: InputMaybe<OrderBy>;
+};
+
 export type Api_Completed_Contributions_Aggregate_Bool_Exp = {
   count: InputMaybe<Api_Completed_Contributions_Aggregate_Bool_Exp_Count>;
 };
@@ -11636,6 +12203,10 @@ export type Mutation_Root = {
   /** createProject */
   createProject: Scalars['Uuid'];
   createSponsor: Scalars['Uuid'];
+  /** delete data from the table: "api.closed_by_pull_requests" */
+  deleteApiClosedByPullRequests: Maybe<ApiClosedByPullRequestsMutationResponse>;
+  /** delete data from the table: "api.closing_issues" */
+  deleteApiClosingIssues: Maybe<ApiClosingIssuesMutationResponse>;
   /** delete data from the table: "applications" */
   deleteApplications: Maybe<ApplicationsMutationResponse>;
   /** delete single row from the table: "applications" */
@@ -11746,6 +12317,14 @@ export type Mutation_Root = {
   deleteWorkItems: Maybe<WorkItemsMutationResponse>;
   /** ignoreContribution */
   ignoreContribution: Scalars['Boolean'];
+  /** insert data into the table: "api.closed_by_pull_requests" */
+  insertApiClosedByPullRequests: Maybe<ApiClosedByPullRequestsMutationResponse>;
+  /** insert a single row into the table: "api.closed_by_pull_requests" */
+  insertApiClosedByPullRequestsOne: Maybe<ApiClosedByPullRequests>;
+  /** insert data into the table: "api.closing_issues" */
+  insertApiClosingIssues: Maybe<ApiClosingIssuesMutationResponse>;
+  /** insert a single row into the table: "api.closing_issues" */
+  insertApiClosingIssuesOne: Maybe<ApiClosingIssues>;
   /** insert data into the table: "applications" */
   insertApplications: Maybe<ApplicationsMutationResponse>;
   /** insert a single row into the table: "applications" */
@@ -11879,6 +12458,14 @@ export type Mutation_Root = {
   /** unignoreContribution */
   unignoreContribution: Scalars['Boolean'];
   unlinkGithubRepo: Scalars['Uuid'];
+  /** update data of the table: "api.closed_by_pull_requests" */
+  updateApiClosedByPullRequests: Maybe<ApiClosedByPullRequestsMutationResponse>;
+  /** update multiples rows of table: "api.closed_by_pull_requests" */
+  updateApiClosedByPullRequestsMany: Maybe<Array<Maybe<ApiClosedByPullRequestsMutationResponse>>>;
+  /** update data of the table: "api.closing_issues" */
+  updateApiClosingIssues: Maybe<ApiClosingIssuesMutationResponse>;
+  /** update multiples rows of table: "api.closing_issues" */
+  updateApiClosingIssuesMany: Maybe<Array<Maybe<ApiClosingIssuesMutationResponse>>>;
   /** update data of the table: "applications" */
   updateApplications: Maybe<ApplicationsMutationResponse>;
   /** update single row of the table: "applications" */
@@ -12132,6 +12719,18 @@ export type Mutation_RootCreateSponsorArgs = {
   logoUrl: Scalars['Url'];
   name: Scalars['String'];
   url: InputMaybe<Scalars['Url']>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteApiClosedByPullRequestsArgs = {
+  where: ApiClosedByPullRequestsBoolExp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteApiClosingIssuesArgs = {
+  where: ApiClosingIssuesBoolExp;
 };
 
 
@@ -12470,6 +13069,30 @@ export type Mutation_RootDeleteWorkItemsArgs = {
 export type Mutation_RootIgnoreContributionArgs = {
   contributionId: Scalars['String'];
   projectId: Scalars['Uuid'];
+};
+
+
+/** mutation root */
+export type Mutation_RootInsertApiClosedByPullRequestsArgs = {
+  objects: Array<ApiClosedByPullRequestsInsertInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsertApiClosedByPullRequestsOneArgs = {
+  object: ApiClosedByPullRequestsInsertInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsertApiClosingIssuesArgs = {
+  objects: Array<ApiClosingIssuesInsertInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsertApiClosingIssuesOneArgs = {
+  object: ApiClosingIssuesInsertInput;
 };
 
 
@@ -12952,6 +13575,34 @@ export type Mutation_RootUnlinkGithubRepoArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdateApiClosedByPullRequestsArgs = {
+  _inc: InputMaybe<ApiClosedByPullRequestsIncInput>;
+  _set: InputMaybe<ApiClosedByPullRequestsSetInput>;
+  where: ApiClosedByPullRequestsBoolExp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateApiClosedByPullRequestsManyArgs = {
+  updates: Array<ApiClosedByPullRequestsUpdates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateApiClosingIssuesArgs = {
+  _inc: InputMaybe<ApiClosingIssuesIncInput>;
+  _set: InputMaybe<ApiClosingIssuesSetInput>;
+  where: ApiClosingIssuesBoolExp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateApiClosingIssuesManyArgs = {
+  updates: Array<ApiClosingIssuesUpdates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdateApplicationsArgs = {
   _set: InputMaybe<ApplicationsSetInput>;
   where: ApplicationsBoolExp;
@@ -13223,12 +13874,7 @@ export type Mutation_RootUpdateGithubPullRequestReviewsManyArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdateGithubPullRequestsArgs = {
-  _append: InputMaybe<GithubPullRequestsAppendInput>;
-  _deleteAtPath: InputMaybe<GithubPullRequestsDeleteAtPathInput>;
-  _deleteElem: InputMaybe<GithubPullRequestsDeleteElemInput>;
-  _deleteKey: InputMaybe<GithubPullRequestsDeleteKeyInput>;
   _inc: InputMaybe<GithubPullRequestsIncInput>;
-  _prepend: InputMaybe<GithubPullRequestsPrependInput>;
   _set: InputMaybe<GithubPullRequestsSetInput>;
   where: GithubPullRequestsBoolExp;
 };
@@ -14415,6 +15061,14 @@ export type Projects_Sponsors_StreamCursorValueInput = {
 
 export type Query_Root = {
   __typename?: 'query_root';
+  /** fetch data from the table: "api.closed_by_pull_requests" */
+  apiClosedByPullRequests: Array<ApiClosedByPullRequests>;
+  /** fetch aggregated fields from the table: "api.closed_by_pull_requests" */
+  apiClosedByPullRequestsAggregate: ApiClosedByPullRequestsAggregate;
+  /** fetch data from the table: "api.closing_issues" */
+  apiClosingIssues: Array<ApiClosingIssues>;
+  /** fetch aggregated fields from the table: "api.closing_issues" */
+  apiClosingIssuesAggregate: ApiClosingIssuesAggregate;
   /** fetch data from the table: "api.completed_contributions" */
   apiCompletedContributions: Array<ApiCompletedContributions>;
   /** fetch aggregated fields from the table: "api.completed_contributions" */
@@ -14632,6 +15286,42 @@ export type Query_Root = {
   workItems: Array<WorkItems>;
   /** An aggregate relationship */
   workItemsAggregate: WorkItemsAggregate;
+};
+
+
+export type Query_RootApiClosedByPullRequestsArgs = {
+  distinctOn: InputMaybe<Array<ApiClosedByPullRequestsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ApiClosedByPullRequestsOrderBy>>;
+  where: InputMaybe<ApiClosedByPullRequestsBoolExp>;
+};
+
+
+export type Query_RootApiClosedByPullRequestsAggregateArgs = {
+  distinctOn: InputMaybe<Array<ApiClosedByPullRequestsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ApiClosedByPullRequestsOrderBy>>;
+  where: InputMaybe<ApiClosedByPullRequestsBoolExp>;
+};
+
+
+export type Query_RootApiClosingIssuesArgs = {
+  distinctOn: InputMaybe<Array<ApiClosingIssuesSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ApiClosingIssuesOrderBy>>;
+  where: InputMaybe<ApiClosingIssuesBoolExp>;
+};
+
+
+export type Query_RootApiClosingIssuesAggregateArgs = {
+  distinctOn: InputMaybe<Array<ApiClosingIssuesSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ApiClosingIssuesOrderBy>>;
+  where: InputMaybe<ApiClosingIssuesBoolExp>;
 };
 
 
@@ -15586,6 +16276,18 @@ export type Subscription_Root = {
   UserProfilesStream: Array<UserProfiles>;
   /** fetch data from the table in a streaming manner: "api.work_items" */
   WorkItemsStream: Array<WorkItems>;
+  /** fetch data from the table: "api.closed_by_pull_requests" */
+  apiClosedByPullRequests: Array<ApiClosedByPullRequests>;
+  /** fetch aggregated fields from the table: "api.closed_by_pull_requests" */
+  apiClosedByPullRequestsAggregate: ApiClosedByPullRequestsAggregate;
+  /** fetch data from the table in a streaming manner: "api.closed_by_pull_requests" */
+  apiClosedByPullRequestsStream: Array<ApiClosedByPullRequests>;
+  /** fetch data from the table: "api.closing_issues" */
+  apiClosingIssues: Array<ApiClosingIssues>;
+  /** fetch aggregated fields from the table: "api.closing_issues" */
+  apiClosingIssuesAggregate: ApiClosingIssuesAggregate;
+  /** fetch data from the table in a streaming manner: "api.closing_issues" */
+  apiClosingIssuesStream: Array<ApiClosingIssues>;
   /** fetch data from the table: "api.completed_contributions" */
   apiCompletedContributions: Array<ApiCompletedContributions>;
   /** fetch aggregated fields from the table: "api.completed_contributions" */
@@ -15945,6 +16647,56 @@ export type Subscription_RootWorkItemsStreamArgs = {
   batchSize: Scalars['Int'];
   cursor: Array<InputMaybe<WorkItems_StreamCursorInput>>;
   where: InputMaybe<WorkItemsBoolExp>;
+};
+
+
+export type Subscription_RootApiClosedByPullRequestsArgs = {
+  distinctOn: InputMaybe<Array<ApiClosedByPullRequestsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ApiClosedByPullRequestsOrderBy>>;
+  where: InputMaybe<ApiClosedByPullRequestsBoolExp>;
+};
+
+
+export type Subscription_RootApiClosedByPullRequestsAggregateArgs = {
+  distinctOn: InputMaybe<Array<ApiClosedByPullRequestsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ApiClosedByPullRequestsOrderBy>>;
+  where: InputMaybe<ApiClosedByPullRequestsBoolExp>;
+};
+
+
+export type Subscription_RootApiClosedByPullRequestsStreamArgs = {
+  batchSize: Scalars['Int'];
+  cursor: Array<InputMaybe<Api_Closed_By_Pull_Requests_StreamCursorInput>>;
+  where: InputMaybe<ApiClosedByPullRequestsBoolExp>;
+};
+
+
+export type Subscription_RootApiClosingIssuesArgs = {
+  distinctOn: InputMaybe<Array<ApiClosingIssuesSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ApiClosingIssuesOrderBy>>;
+  where: InputMaybe<ApiClosingIssuesBoolExp>;
+};
+
+
+export type Subscription_RootApiClosingIssuesAggregateArgs = {
+  distinctOn: InputMaybe<Array<ApiClosingIssuesSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ApiClosingIssuesOrderBy>>;
+  where: InputMaybe<ApiClosingIssuesBoolExp>;
+};
+
+
+export type Subscription_RootApiClosingIssuesStreamArgs = {
+  batchSize: Scalars['Int'];
+  cursor: Array<InputMaybe<Api_Closing_Issues_StreamCursorInput>>;
+  where: InputMaybe<ApiClosingIssuesBoolExp>;
 };
 
 
@@ -17995,14 +18747,14 @@ export type AllTechnologiesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type AllTechnologiesQuery = { __typename?: 'query_root', technologies: Array<{ __typename?: 'Technologies', technology: string | null }> };
 
-export type PaymentRequestDetailsFragment = { __typename?: 'PaymentRequests', id: any, amountInUsd: any, requestedAt: any, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', processedAt: any, receipt: any }>, requestor: { __typename?: 'RegisteredUsers', id: any | null, login: string | null, avatarUrl: string | null, githubUserId: any | null } | null, githubRecipient: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, workItems: Array<{ __typename?: 'WorkItems', type: any | null, id: string | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, commentsCount: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', status: string | null, outcome: any | null, submittedAt: any | null, id: string | null, reviewer: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, pullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null } | null }>, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null } };
+export type PaymentRequestDetailsFragment = { __typename?: 'PaymentRequests', id: any, amountInUsd: any, requestedAt: any, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', processedAt: any, receipt: any }>, requestor: { __typename?: 'RegisteredUsers', id: any | null, login: string | null, avatarUrl: string | null, githubUserId: any | null } | null, githubRecipient: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, workItems: Array<{ __typename?: 'WorkItems', type: any | null, id: string | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, commentsCount: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', status: string | null, outcome: any | null, submittedAt: any | null, id: string | null, reviewer: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null } | null }>, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null } };
 
 export type PaymentRequestDetailsQueryVariables = Exact<{
   id: Scalars['uuid'];
 }>;
 
 
-export type PaymentRequestDetailsQuery = { __typename?: 'query_root', paymentRequestsByPk: { __typename?: 'PaymentRequests', id: any, amountInUsd: any, requestedAt: any, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', processedAt: any, receipt: any }>, requestor: { __typename?: 'RegisteredUsers', id: any | null, login: string | null, avatarUrl: string | null, githubUserId: any | null } | null, githubRecipient: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, workItems: Array<{ __typename?: 'WorkItems', type: any | null, id: string | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, commentsCount: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', status: string | null, outcome: any | null, submittedAt: any | null, id: string | null, reviewer: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, pullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null } | null }>, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null } } | null };
+export type PaymentRequestDetailsQuery = { __typename?: 'query_root', paymentRequestsByPk: { __typename?: 'PaymentRequests', id: any, amountInUsd: any, requestedAt: any, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', processedAt: any, receipt: any }>, requestor: { __typename?: 'RegisteredUsers', id: any | null, login: string | null, avatarUrl: string | null, githubUserId: any | null } | null, githubRecipient: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, workItems: Array<{ __typename?: 'WorkItems', type: any | null, id: string | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, commentsCount: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', status: string | null, outcome: any | null, submittedAt: any | null, id: string | null, reviewer: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null } | null }>, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null } } | null };
 
 export type CancelPaymentRequestMutationVariables = Exact<{
   projectId: Scalars['Uuid'];
@@ -18018,7 +18770,7 @@ export type ApplicantFragment = { __typename?: 'Applications', applicantId: any,
 
 export type GithubCodeReviewIdFragment = { __typename?: 'GithubPullRequestReviews', id: string | null };
 
-export type GithubCodeReviewFragment = { __typename?: 'GithubPullRequestReviews', status: string | null, outcome: any | null, submittedAt: any | null, id: string | null, reviewer: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, pullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null };
+export type GithubCodeReviewFragment = { __typename?: 'GithubPullRequestReviews', status: string | null, outcome: any | null, submittedAt: any | null, id: string | null, reviewer: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null };
 
 export type GithubIssueIdFragment = { __typename?: 'GithubIssues', id: any | null };
 
@@ -18068,7 +18820,7 @@ export type OwnUserProfileDetailsFragment = { __typename?: 'UserProfiles', weekl
 
 export type WorkItemIdFragment = { __typename?: 'WorkItems', id: string | null };
 
-export type WorkItemFragment = { __typename?: 'WorkItems', type: any | null, id: string | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, commentsCount: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', status: string | null, outcome: any | null, submittedAt: any | null, id: string | null, reviewer: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, pullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null } | null };
+export type WorkItemFragment = { __typename?: 'WorkItems', type: any | null, id: string | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, commentsCount: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', status: string | null, outcome: any | null, submittedAt: any | null, id: string | null, reviewer: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null } | null };
 
 export type LiveGithubPullRequestIdFragment = { __typename?: 'GithubPullRequest', id: number };
 
@@ -18254,9 +19006,9 @@ export type UnrewardedContributionsQueryVariables = Exact<{
 }>;
 
 
-export type UnrewardedContributionsQuery = { __typename?: 'query_root', contributions: Array<{ __typename?: 'Contributions', type: string | null, status: any | null, repoId: any | null, projectId: any | null, id: string | null, detailsId: string | null, githubUserId: any | null, ignored: boolean | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, commentsCount: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, commitsCount: { __typename?: 'GithubPullRequestCommitsAggregate', aggregate: { __typename?: 'GithubPullRequestCommitsAggregateFields', count: number } | null }, userCommitsCount: { __typename?: 'GithubPullRequestCommitsAggregate', aggregate: { __typename?: 'GithubPullRequestCommitsAggregateFields', count: number } | null }, contributorDetails: Array<{ __typename?: 'GithubPullRequestCommits', author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null }>, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', status: string | null, outcome: any | null, submittedAt: any | null, id: string | null, reviewer: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, pullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null } | null }> };
+export type UnrewardedContributionsQuery = { __typename?: 'query_root', contributions: Array<{ __typename?: 'Contributions', type: string | null, status: any | null, repoId: any | null, projectId: any | null, id: string | null, detailsId: string | null, githubUserId: any | null, ignored: boolean | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, commentsCount: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, commitsCount: { __typename?: 'GithubPullRequestCommitsAggregate', aggregate: { __typename?: 'GithubPullRequestCommitsAggregateFields', count: number } | null }, userCommitsCount: { __typename?: 'GithubPullRequestCommitsAggregate', aggregate: { __typename?: 'GithubPullRequestCommitsAggregateFields', count: number } | null }, contributorDetails: Array<{ __typename?: 'GithubPullRequestCommits', author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null }>, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', status: string | null, outcome: any | null, submittedAt: any | null, id: string | null, reviewer: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null } | null }> };
 
-export type ContributionFragment = { __typename?: 'Contributions', type: string | null, status: any | null, repoId: any | null, projectId: any | null, id: string | null, detailsId: string | null, githubUserId: any | null, ignored: boolean | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, commentsCount: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, commitsCount: { __typename?: 'GithubPullRequestCommitsAggregate', aggregate: { __typename?: 'GithubPullRequestCommitsAggregateFields', count: number } | null }, userCommitsCount: { __typename?: 'GithubPullRequestCommitsAggregate', aggregate: { __typename?: 'GithubPullRequestCommitsAggregateFields', count: number } | null }, contributorDetails: Array<{ __typename?: 'GithubPullRequestCommits', author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null }>, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', status: string | null, outcome: any | null, submittedAt: any | null, id: string | null, reviewer: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, pullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null } | null };
+export type ContributionFragment = { __typename?: 'Contributions', type: string | null, status: any | null, repoId: any | null, projectId: any | null, id: string | null, detailsId: string | null, githubUserId: any | null, ignored: boolean | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, commentsCount: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, commitsCount: { __typename?: 'GithubPullRequestCommitsAggregate', aggregate: { __typename?: 'GithubPullRequestCommitsAggregateFields', count: number } | null }, userCommitsCount: { __typename?: 'GithubPullRequestCommitsAggregate', aggregate: { __typename?: 'GithubPullRequestCommitsAggregateFields', count: number } | null }, contributorDetails: Array<{ __typename?: 'GithubPullRequestCommits', author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null }>, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', status: string | null, outcome: any | null, submittedAt: any | null, id: string | null, reviewer: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null } | null };
 
 export type GithubPullRequestWithCommitsFragment = { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, commitsCount: { __typename?: 'GithubPullRequestCommitsAggregate', aggregate: { __typename?: 'GithubPullRequestCommitsAggregateFields', count: number } | null }, userCommitsCount: { __typename?: 'GithubPullRequestCommitsAggregate', aggregate: { __typename?: 'GithubPullRequestCommitsAggregateFields', count: number } | null }, contributorDetails: Array<{ __typename?: 'GithubPullRequestCommits', author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null }>, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null };
 
@@ -18366,14 +19118,14 @@ export type GetAllFilterOptionsQueryVariables = Exact<{ [key: string]: never; }>
 
 export type GetAllFilterOptionsQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', visibility: any | null, id: any | null, key: string | null, sponsors: Array<{ __typename?: 'ProjectsSponsors', sponsor: { __typename?: 'Sponsors', id: any, name: string } }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', projectId: any, githubRepoId: any, repo: { __typename?: 'GithubRepos', languages: any | null, id: any | null } | null }>, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributors', githubUserId: any }>, pendingContributors: Array<{ __typename?: 'ProjectsPendingContributors', githubUserId: any }>, rewardedUsers: Array<{ __typename?: 'ProjectsRewardedUsers', githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', count: number } | null }, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> }> };
 
-export type UserPaymentRequestFragment = { __typename?: 'PaymentRequests', id: any, requestedAt: any, amountInUsd: any, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, workItems: Array<{ __typename?: 'WorkItems', type: any | null, id: string | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, commentsCount: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', status: string | null, outcome: any | null, submittedAt: any | null, id: string | null, reviewer: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, pullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null } | null }>, budget: { __typename?: 'Budgets', id: any, project: { __typename?: 'Projects', id: any | null, name: string | null, shortDescription: string | null, logoUrl: string | null } | null } | null };
+export type UserPaymentRequestFragment = { __typename?: 'PaymentRequests', id: any, requestedAt: any, amountInUsd: any, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, workItems: Array<{ __typename?: 'WorkItems', type: any | null, id: string | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, commentsCount: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', status: string | null, outcome: any | null, submittedAt: any | null, id: string | null, reviewer: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null } | null }>, budget: { __typename?: 'Budgets', id: any, project: { __typename?: 'Projects', id: any | null, name: string | null, shortDescription: string | null, logoUrl: string | null } | null } | null };
 
 export type GetPaymentRequestsQueryVariables = Exact<{
   githubUserId: Scalars['bigint'];
 }>;
 
 
-export type GetPaymentRequestsQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, requestedAt: any, amountInUsd: any, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, workItems: Array<{ __typename?: 'WorkItems', type: any | null, id: string | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, commentsCount: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', status: string | null, outcome: any | null, submittedAt: any | null, id: string | null, reviewer: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, pullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null } | null }>, budget: { __typename?: 'Budgets', id: any, project: { __typename?: 'Projects', id: any | null, name: string | null, shortDescription: string | null, logoUrl: string | null } | null } | null }> };
+export type GetPaymentRequestsQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, requestedAt: any, amountInUsd: any, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, workItems: Array<{ __typename?: 'WorkItems', type: any | null, id: string | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, commentsCount: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', status: string | null, outcome: any | null, submittedAt: any | null, id: string | null, reviewer: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null } | null }>, budget: { __typename?: 'Budgets', id: any, project: { __typename?: 'Projects', id: any | null, name: string | null, shortDescription: string | null, logoUrl: string | null } | null } | null }> };
 
 export type AcceptTermsAndConditionsMutationVariables = Exact<{ [key: string]: never; }>;
 
@@ -18582,7 +19334,7 @@ export const GithubCodeReviewFragmentDoc = gql`
   reviewer {
     ...GithubUser
   }
-  pullRequest {
+  githubPullRequest {
     ...GithubPullRequest
   }
 }

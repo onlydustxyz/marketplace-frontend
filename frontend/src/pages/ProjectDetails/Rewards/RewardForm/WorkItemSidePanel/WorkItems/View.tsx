@@ -210,8 +210,6 @@ const VirtualizedIssueList = ({
         const workItem = contributionToWorkItem(contribution);
         if (!workItem) return;
 
-        console.log("@@@@", contribution);
-
         const sharedProps = {
           key: contribution.id,
           issue: workItem.githubIssue,

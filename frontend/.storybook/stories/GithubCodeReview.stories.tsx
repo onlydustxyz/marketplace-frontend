@@ -18,7 +18,7 @@ const codeReviews: Record<string, GithubCodeReviewFragment> = {
         id: 123,
       },
     },
-    pullRequest: {
+    githubPullRequest: {
       id: "1268051991",
       repoId: 123456,
       number: 541,
@@ -51,7 +51,7 @@ const codeReviews: Record<string, GithubCodeReviewFragment> = {
         id: 123,
       },
     },
-    pullRequest: {
+    githubPullRequest: {
       id: "1268051991",
       repoId: 123456,
       number: 541,
@@ -84,7 +84,7 @@ const codeReviews: Record<string, GithubCodeReviewFragment> = {
         id: 123,
       },
     },
-    pullRequest: {
+    githubPullRequest: {
       id: "1268051991",
       repoId: 123456,
       number: 541,

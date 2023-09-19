@@ -52,7 +52,7 @@ export default function GithubCodeReview({
   ignored = false,
   addMarginTopForVirtuosoDisplay = false,
 }: GithubCodeReviewProps) {
-  const { title, number, htmlUrl, createdAt } = codeReview?.pullRequest || {};
+  const { title, number, htmlUrl, createdAt } = codeReview?.githubPullRequest || {};
   const { repoName } = parsePullRequestLink(htmlUrl || "");
 
   return (
@@ -64,7 +64,7 @@ export default function GithubCodeReview({
       withBg={false}
     >
       {action && <ActionButton action={action} onClick={onClick} ignored={ignored} />}
-      <div className="flex w-full flex-col gap-2 font-walsheim">
+      <div className="flex w-full flex-col gap-2 truncate font-walsheim">
         <div className="flex text-sm font-medium text-greyscale-50">
           <GithubLink url={htmlUrl || ""} text={`#${number} · ${title}`} />
         </div>

@@ -10,7 +10,7 @@ fragment GithubCodeReview on GithubPullRequestReviews {
   reviewer {
     ...GithubUser
   }
-  pullRequest {
+  githubPullRequest {
     ...GithubPullRequest
   }
 }

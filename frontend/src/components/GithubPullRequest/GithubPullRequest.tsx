@@ -52,13 +52,13 @@ export default function GithubPullRequest({
   return (
     <Card
       padded={false}
-      className={classNames("flex flex-row gap-3 rounded-2xl p-4 hover:bg-noise-light hover:backdrop-blur-4xl ", {
+      className={classNames("flex flex-row gap-3 rounded-2xl p-4 hover:bg-noise-light hover:backdrop-blur-4xl", {
         "mt-1": addMarginTopForVirtuosoDisplay,
       })}
       withBg={false}
     >
       {action && <ActionButton action={action} onClick={onClick} ignored={ignored} />}
-      <div className="flex w-full flex-col gap-2 font-walsheim">
+      <div className="flex w-full flex-col gap-2 truncate font-walsheim">
         <div className="flex text-sm font-medium text-greyscale-50">
           <GithubLink url={pullRequest.htmlUrl || ""} text={`#${pullRequest.number} · ${pullRequest.title}`} />
         </div>
@@ -70,12 +70,11 @@ export default function GithubPullRequest({
           <div className="flex flex-row items-center gap-1">
             <PullRequestStatus pullrequest={pullRequest} />
           </div>
-          <div className="flex flex-row items-center gap-1">
+          <div className="inline-flex flex-row items-center gap-1">
             <GitRepositoryLine />
             {repoName}
           </div>
-
-          <div id={pullRequest.id} className="flex flex-row items-center gap-1">
+          <div id={pullRequest.id} className="flex flex-row items-center gap-1 ">
             <GitCommitLine />
             {commitsCount}
             <Tooltip anchorId={pullRequest.id}>
