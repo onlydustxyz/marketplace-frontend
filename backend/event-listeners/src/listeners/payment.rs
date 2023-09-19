@@ -1,11 +1,10 @@
 use std::{convert::TryFrom, sync::Arc};
 
-use anyhow::{anyhow, Result};
+use anyhow::Result;
 use async_trait::async_trait;
 use derive_more::Constructor;
 use domain::{Event, PaymentEvent, PaymentWorkItem, SubscriberCallbackError};
 use infrastructure::database::Repository;
-use rust_decimal::prelude::ToPrimitive;
 use tracing::instrument;
 
 use super::EventListener;
@@ -42,11 +41,8 @@ impl EventListener<Event> for Projector {
 						project_id,
 						requestor_id,
 						recipient_id,
-						amount_in_usd: amount.amount().to_i64().ok_or_else(|| {
-							SubscriberCallbackError::Discard(anyhow!(
-								"Failed to project invalid amount {amount}"
-							))
-						})?,
+						amount: *amount.amount(),
+						currency: amount.currency().try_into()?,
 						requested_at,
 						invoice_received_at: None,
 						hours_worked: i32::try_from(duration_worked.num_hours()).unwrap_or(0),
