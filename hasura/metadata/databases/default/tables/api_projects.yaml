@@ -90,7 +90,7 @@ array_relationships:
         insertion_order: null
         remote_table:
           name: payment_requests
-          schema: public
+          schema: api
   - name: pendingContributors
     using:
       manual_configuration:

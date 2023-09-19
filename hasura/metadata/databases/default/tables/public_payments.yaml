@@ -10,7 +10,7 @@ object_relationships:
         insertion_order: null
         remote_table:
           name: payment_requests
-          schema: public
+          schema: api
 select_permissions:
   - role: project_lead_specific
     permission:

@@ -14,6 +14,8 @@ select_permissions:
       columns:
         - github_user_id
         - money_granted
+        - money_granted_usd
+        - currency
         - project_id
       filter: {}
       allow_aggregations: true

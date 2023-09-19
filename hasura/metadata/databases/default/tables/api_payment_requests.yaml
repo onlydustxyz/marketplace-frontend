@@ -1,6 +1,13 @@
 table:
   name: payment_requests
-  schema: public
+  schema: api
+configuration:
+  column_config: {}
+  custom_column_names: {}
+  custom_name: PaymentRequests
+  custom_root_fields:
+    select: paymentRequests
+    select_aggregate: paymentRequestsAggregate
 object_relationships:
   - name: githubRecipient
     using:
@@ -61,12 +68,15 @@ select_permissions:
   - role: public
     permission:
       columns:
-        - amount_in_usd
-        - project_id
-        - id
-        - invoice_received_at
+        - currency
         - recipient_id
+        - hours_worked
+        - amount
+        - amount_usd
+        - invoice_received_at
         - requested_at
+        - id
+        - project_id
         - requestor_id
       filter: {}
       allow_aggregations: true
