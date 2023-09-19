@@ -4,7 +4,15 @@ use infrastructure::database::schema::closing_issues;
 use serde::{Deserialize, Serialize};
 
 #[derive(
-	Debug, Clone, Insertable, Identifiable, Queryable, Serialize, Deserialize, ImmutableModel,
+	Debug,
+	Clone,
+	Insertable,
+	Identifiable,
+	Queryable,
+	Serialize,
+	Deserialize,
+	ImmutableModel,
+	PartialEq,
 )]
 #[diesel(primary_key(github_issue_id, github_pull_request_id))]
 pub struct ClosingIssue {
