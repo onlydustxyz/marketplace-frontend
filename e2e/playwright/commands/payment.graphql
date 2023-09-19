@@ -39,7 +39,7 @@ mutation addFiatPaymentReceipt(
 }
 
 query paymentRequestsByPk($paymentId: uuid!) {
-  paymentRequestsByPk(id: $paymentId) {
+  paymentRequests(where: { id: { _eq: $paymentId } }) {
     id
   }
 }

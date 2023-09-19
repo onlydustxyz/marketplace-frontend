@@ -79,7 +79,7 @@ const Rewards = () => {
 };
 
 const mapApiPaymentsToProps = (apiPayment: UserPaymentRequestFragment): Reward => {
-  const amount = { value: apiPayment.amountInUsd, currency: Currency.USD };
+  const amount = { value: apiPayment.amount, currency: Currency.USD };
   const project = apiPayment.project;
   const requestedAt = apiPayment.requestedAt;
   const getPaidAmount = (payments: { amount: number }[]) =>
@@ -98,9 +98,7 @@ const mapApiPaymentsToProps = (apiPayment: UserPaymentRequestFragment): Reward =
       },
     invoiceReceived: !!apiPayment.invoiceReceivedAt,
     status:
-      getPaidAmount(apiPayment.payments) === apiPayment.amountInUsd
-        ? PaymentStatus.ACCEPTED
-        : PaymentStatus.WAITING_PAYMENT,
+      getPaidAmount(apiPayment.payments) === apiPayment.amount ? PaymentStatus.ACCEPTED : PaymentStatus.WAITING_PAYMENT,
   };
 };
 
@@ -112,7 +110,7 @@ gql`
       amount
       currencyCode
     }
-    amountInUsd
+    amount
     workItems {
       ...WorkItem
     }

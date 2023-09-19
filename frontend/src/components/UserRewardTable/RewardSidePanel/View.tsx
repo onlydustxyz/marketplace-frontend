@@ -45,7 +45,7 @@ export default function View({
   userId,
   githubUserId,
   status,
-  amountInUsd,
+  amount,
   githubRecipient,
   requestor,
   requestedAt,
@@ -81,7 +81,7 @@ export default function View({
             }}
           />
           <div className="font-belwe text-5xl font-normal text-greyscale-50">
-            {formatMoneyAmount({ amount: amountInUsd })}
+            {formatMoneyAmount({ amount: amount })}
           </div>
           {requestor?.login && (
             <Details>

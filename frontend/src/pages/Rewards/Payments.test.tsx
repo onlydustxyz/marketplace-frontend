@@ -42,7 +42,7 @@ const mockContribution: UserPaymentRequestFragment = {
       currencyCode: "USD",
     },
   ],
-  amountInUsd: 200,
+  amount: 200,
   workItems: [
     {
       __typename: "WorkItems",
