@@ -4,9 +4,12 @@ use anyhow::Result;
 use chrono::Utc;
 use derive_more::Constructor;
 use domain::{currencies, Currency};
-use infrastructure::database::Repository;
+use infrastructure::{
+	coinmarketcap,
+	database::{self, Repository},
+};
 
-use crate::{domain::services::quotes::Service as QuoteService, models::CryptoUsdQuote};
+use crate::{domain::services::quotes::Service as QuoteService, models::CryptoUsdQuote, Config};
 
 #[derive(Constructor)]
 pub struct Usecase {
@@ -40,5 +43,20 @@ impl Usecase {
 		}
 
 		Ok(count)
+	}
+
+	pub fn bootstrap(config: Config) -> Result<Self> {
+		info!("Bootstrapping quotes::sync usecase");
+
+		let database = Arc::new(database::Client::new(database::init_pool(
+			config.database.clone(),
+		)?));
+
+		let coinmarketcap = Arc::new(coinmarketcap::Client::new(
+			config.coinmarketcap,
+			currencies::USD,
+		));
+
+		Ok(Self::new(database, coinmarketcap))
 	}
 }

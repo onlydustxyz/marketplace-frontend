@@ -1,3 +1,4 @@
+mod coinmarketcap;
 mod dusty_bot;
 pub mod github;
 mod indexer;
