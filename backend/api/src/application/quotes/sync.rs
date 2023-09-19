@@ -3,13 +3,13 @@ use std::sync::Arc;
 use anyhow::Result;
 use chrono::Utc;
 use derive_more::Constructor;
-use domain::{currencies, Currency};
+use domain::{currencies, services::quotes::Service as QuoteService, Currency};
 use infrastructure::{
 	coinmarketcap,
 	database::{self, Repository},
 };
 
-use crate::{domain::services::quotes::Service as QuoteService, models::CryptoUsdQuote, Config};
+use crate::{models::CryptoUsdQuote, Config};
 
 #[derive(Constructor)]
 pub struct Usecase {

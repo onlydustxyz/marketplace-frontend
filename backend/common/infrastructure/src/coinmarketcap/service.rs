@@ -1,12 +1,10 @@
 use anyhow::{anyhow, Result};
-use domain::Currency;
-use infrastructure::coinmarketcap;
+use async_trait::async_trait;
+use domain::{services::quotes, Currency};
 use rust_decimal::{prelude::FromPrimitive, Decimal};
 
-use crate::domain::services::quotes;
-
 #[async_trait]
-impl quotes::Service for coinmarketcap::Client {
+impl quotes::Service for super::Client {
 	async fn fetch_conversion_rates(
 		&self,
 		currencies: &[&'static Currency],

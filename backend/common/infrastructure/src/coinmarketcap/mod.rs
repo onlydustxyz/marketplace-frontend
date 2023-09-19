@@ -1,4 +1,5 @@
 mod config;
+mod service;
 
 use std::collections::HashMap;
 

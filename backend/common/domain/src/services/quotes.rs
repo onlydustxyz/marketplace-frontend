@@ -1,6 +1,8 @@
 pub use anyhow::Result;
-use domain::Currency;
+use async_trait::async_trait;
 use rust_decimal::Decimal;
+
+use crate::Currency;
 
 #[async_trait]
 pub trait Service {

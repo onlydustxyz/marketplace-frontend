@@ -6,6 +6,8 @@ pub use value_objects::*;
 mod event;
 pub use event::Event;
 
+pub mod services;
+
 mod aggregate;
 #[cfg(test)]
 pub use aggregate::MockRepository as MockAggregateRepository;
