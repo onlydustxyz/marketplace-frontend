@@ -39,6 +39,7 @@ mod test {
 
 		impl Repository<Sponsor> for SponsorRepository {
 			fn update(&self, model: Sponsor) -> Result<Sponsor>;
+			fn update_all(&self, models: Vec<Sponsor>) -> Result<()>;
 			fn upsert(&self, model: Sponsor) -> Result<Sponsor>;
 		}
 	}

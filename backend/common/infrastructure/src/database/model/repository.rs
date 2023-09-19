@@ -83,6 +83,7 @@ where
 	M: Model<PgConnection>,
 {
 	fn update(&self, model: M) -> Result<M>;
+	fn update_all(&self, models: Vec<M>) -> Result<()>;
 	fn upsert(&self, model: M) -> Result<M>;
 }
 
@@ -93,6 +94,11 @@ where
 	fn update(&self, model: M) -> Result<M> {
 		let mut connection = self.connection()?;
 		model.update(&mut *connection)
+	}
+
+	fn update_all(&self, models: Vec<M>) -> Result<()> {
+		let mut connection = self.connection()?;
+		M::update_all(&mut *connection, models)
 	}
 
 	fn upsert(&self, model: M) -> Result<M> {

@@ -39,7 +39,7 @@ impl Usecase {
 				})
 				.collect();
 
-			self.crypto_usd_quote_repository.insert_all(quotes)?;
+			self.crypto_usd_quote_repository.update_all(quotes)?;
 		}
 
 		Ok(count)
