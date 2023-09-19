@@ -1,7 +1,9 @@
 use anyhow::Result;
 use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
 use domain::{GithubCodeReviewStatus, GithubIssueId, GithubPullRequestId};
-use event_listeners::models::{self, GithubRepoIndex, ProjectGithubRepo};
+use event_listeners::models::{
+	self, github_pull_requests::ClosingIssue, GithubRepoIndex, ProjectGithubRepo,
+};
 use fixtures::*;
 use infrastructure::database::{
 	enums::{ContributionStatus, ContributionType},
@@ -161,6 +163,14 @@ impl<'a> Test<'a> {
 				reviews::commented(pull_requests::x1152().id, GithubCodeReviewStatus::Pending),
 				reviews::approved(pull_requests::x1152().id, GithubCodeReviewStatus::Completed),
 			],
+		)?;
+
+		closing_issues::assert_indexed(
+			&mut self.context,
+			vec![ClosingIssue {
+				github_pull_request_id: pull_requests::x1152().id,
+				github_issue_id: issues::x1145().id,
+			}],
 		)?;
 
 		Ok(())

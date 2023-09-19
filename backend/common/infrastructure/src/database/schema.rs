@@ -86,6 +86,13 @@ diesel::table! {
 }
 
 diesel::table! {
+    closing_issues (github_issue_id, github_pull_request_id) {
+        github_issue_id -> Int8,
+        github_pull_request_id -> Int8,
+    }
+}
+
+diesel::table! {
     commands (id) {
         id -> Uuid,
         processing_count -> Int4,
@@ -212,7 +219,6 @@ diesel::table! {
         closed_at -> Nullable<Timestamp>,
         draft -> Bool,
         ci_checks -> Nullable<GithubCiChecks>,
-        closing_issue_numbers -> Nullable<Jsonb>,
     }
 }
 
@@ -448,6 +454,7 @@ diesel::allow_tables_to_appear_in_same_query!(
     applications,
     auth_users,
     budgets,
+    closing_issues,
     commands,
     contact_informations,
     contributions,

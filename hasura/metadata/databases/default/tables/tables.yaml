@@ -1,3 +1,5 @@
+- "!include api_closed_by_pull_requests.yaml"
+- "!include api_closing_issues.yaml"
 - "!include api_commands.yaml"
 - "!include api_completed_contributions.yaml"
 - "!include api_contact_informations.yaml"

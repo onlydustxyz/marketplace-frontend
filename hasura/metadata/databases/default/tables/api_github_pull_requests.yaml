@@ -18,18 +18,30 @@ object_relationships:
         remote_table:
           name: github_repos
           schema: api
+array_relationships:
+  - name: closingIssues
+    using:
+      manual_configuration:
+        column_mapping:
+          id: github_pull_request_id
+        insertion_order: null
+        remote_table:
+          name: closing_issues
+          schema: api
 select_permissions:
   - role: public
     permission:
       columns:
-        - id
-        - repo_id
-        - number
-        - created_at
         - author_id
+        - ci_checks
+        - closed_at
+        - created_at
+        - draft
+        - html_url
+        - id
         - merged_at
+        - number
+        - repo_id
         - status
         - title
-        - html_url
-        - closed_at
       filter: {}

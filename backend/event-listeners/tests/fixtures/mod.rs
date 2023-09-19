@@ -1,5 +1,6 @@
 #![allow(unused)]
 
+pub mod closing_issues;
 pub mod commits;
 pub mod issues;
 pub mod projects;
