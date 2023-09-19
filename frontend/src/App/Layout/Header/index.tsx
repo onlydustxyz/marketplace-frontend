@@ -27,14 +27,17 @@ export default function Header() {
 
   const hasRewards = paymentRequestIdsQueryData?.githubUsersByPk?.paymentRequests.length || 0 > 0;
 
-  const myContributionsMenuItem = hasRewards && !onboardingInProgress ? T("navbar.rewards") : undefined;
-  const projectsMenuItem = myContributionsMenuItem && !onboardingInProgress ? T("navbar.projects") : undefined;
+  const rewardsMenuItem = hasRewards && !onboardingInProgress ? T("navbar.rewards") : undefined;
+  const contributionsMenuItem = githubUserId && !onboardingInProgress ? T("navbar.contributions") : undefined;
+  const projectsMenuItem =
+    (rewardsMenuItem || contributionsMenuItem) && !onboardingInProgress ? T("navbar.projects") : undefined;
 
   return (
     <View
       menuItems={{
         [RoutePaths.Projects]: projectsMenuItem,
-        [RoutePaths.Rewards]: myContributionsMenuItem,
+        [RoutePaths.Contributions]: contributionsMenuItem,
+        [RoutePaths.Rewards]: rewardsMenuItem,
       }}
       isLoggedIn={isLoggedIn}
       selectedMenuItem={location.pathname}

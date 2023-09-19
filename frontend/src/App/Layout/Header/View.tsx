@@ -18,6 +18,7 @@ import { useMediaQuery } from "usehooks-ts";
 interface HeaderViewProps {
   menuItems: {
     [RoutePaths.Projects]?: string;
+    [RoutePaths.Contributions]?: string;
     [RoutePaths.Rewards]?: string;
   };
   selectedMenuItem: string;
@@ -61,6 +62,11 @@ export default function HeaderView({
                   activeRegex={new RegExp("^(/|/projects.+)$")}
                 >
                   {menuItems[RoutePaths.Projects]}
+                </MenuItem>
+              )}
+              {menuItems[RoutePaths.Contributions] && (
+                <MenuItem path={selectedMenuItem} link={RoutePaths.Contributions}>
+                  {menuItems[RoutePaths.Contributions]}
                 </MenuItem>
               )}
               {menuItems[RoutePaths.Rewards] && (
