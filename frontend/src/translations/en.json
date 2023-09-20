@@ -544,7 +544,10 @@
           "one": "1 contributor",
           "zero": "No contributor"
         },
-        "reward": "Reward contributor",
+        "reward": {
+          "full": "Reward contributor",
+          "short": "Reward"
+        },
         "title": "Contributors"
       },
       "githubRepos": {
