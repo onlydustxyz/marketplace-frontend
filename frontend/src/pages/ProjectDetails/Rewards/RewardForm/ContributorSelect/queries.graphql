@@ -3,3 +3,11 @@ query SearchGithubUsersByHandleSubstring($handleSubstringQuery: String!) {
     ...LiveGithubUser
   }
 }
+
+query GetProjectPendingContributors($projectId: uuid!) {
+  projectsPendingContributors(where: { projectId: { _eq: $projectId } }) {
+    user {
+      ...Contributor
+    }
+  }
+}
