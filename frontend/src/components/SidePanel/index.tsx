@@ -64,7 +64,9 @@ export default function SidePanel({
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog onClose={onClose} as="div">
-        {withBackdrop && <div className="fixed bottom-0 h-screen w-screen bg-black/40" aria-hidden="true" />}
+        {withBackdrop && (
+          <div className="fixed bottom-0 z-10 h-screen w-screen bg-black/40 backdrop-blur" aria-hidden="true" />
+        )}
         <Transition.Child
           as={Fragment}
           enter="transform transition ease-in-out duration-300"
