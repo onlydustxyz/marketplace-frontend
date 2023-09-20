@@ -18,7 +18,14 @@
     }
   },
   "contributions": {
-    "empty": "No contributions yet"
+    "empty": "No contributions yet",
+    "nav": {
+      "allContributions": "All contributions",
+      "applied": "Applied",
+      "inProgress": "In progress",
+      "completed": "Completed",
+      "canceled": "Canceled"
+    }
   },
   "contributionGraph": {
     "pullRequests": "Pull requests",
