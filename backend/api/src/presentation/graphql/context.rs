@@ -19,7 +19,6 @@ use crate::{
 pub struct Context {
 	pub caller_permissions: Box<dyn Permissions>,
 	caller_info: Option<Claims>,
-	pub process_payment_usecase: application::payment::process::Usecase,
 	pub invoice_usecase: application::payment::invoice::Usecase,
 	pub update_project_usecase: application::project::update::Usecase,
 	pub link_github_repo_usecase: application::project::link_github_repo::Usecase,
@@ -53,7 +52,6 @@ impl Context {
 		contact_informations_repository: Arc<dyn ContactInformationsRepository>,
 		onboarding_repository: Arc<dyn Repository<Onboarding>>,
 		github_api_client: Arc<github::Client>,
-		dusty_bot_api_client: Arc<github::Client>,
 		ens: Arc<ens::Client>,
 		simple_storage: Arc<dyn ImageStoreService>,
 		bus: Arc<amqp::Bus>,
@@ -61,14 +59,6 @@ impl Context {
 		Self {
 			caller_permissions,
 			caller_info,
-			process_payment_usecase: application::payment::process::Usecase::new(
-				bus.to_owned(),
-				payment_repository.clone(),
-				application::dusty_bot::close_issues::Usecase::new(
-					github_api_client.clone(),
-					dusty_bot_api_client,
-				),
-			),
 			invoice_usecase: application::payment::invoice::Usecase::new(
 				bus.to_owned(),
 				payment_repository,

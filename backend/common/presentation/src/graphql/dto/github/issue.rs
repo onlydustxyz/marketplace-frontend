@@ -1,11 +1,9 @@
 use chrono::{DateTime, Utc};
-use juniper::{GraphQLEnum, GraphQLObject};
 use url::Url;
 
 use super::{ToInt32, User};
 
-#[derive(Debug, GraphQLObject)]
-#[graphql(name = "GithubIssue")]
+#[derive(Debug)]
 pub struct Issue {
 	pub id: i32,
 	pub repo_id: i32,
@@ -21,8 +19,7 @@ pub struct Issue {
 	pub comments_count: i32,
 }
 
-#[derive(Debug, GraphQLEnum)]
-#[graphql(name = "GithubIssueStatus")]
+#[derive(Debug)]
 pub enum Status {
 	Open,
 	Completed,

@@ -1,16 +1,10 @@
 import { PaymentItem, PaymentFixture, Project, User, Uuid, PaymentReceipt, Payment } from "../../types";
 import {
-  AddEthPaymentReceiptDocument,
-  AddEthPaymentReceiptMutation,
-  AddEthPaymentReceiptMutationVariables,
-  AddFiatPaymentReceiptDocument,
-  AddFiatPaymentReceiptMutation,
-  AddFiatPaymentReceiptMutationVariables,
   RequestPaymentDocument,
   RequestPaymentMutation,
   RequestPaymentMutationVariables,
 } from "../../__generated/graphql";
-import { mutateAsAdmin, mutateAsRegisteredUser, waitEvents } from "../common";
+import { fetchAsAdmin, mutateAsAdmin, mutateAsRegisteredUser, waitEvents } from "../common";
 import { payments } from "../../fixtures/data/payments";
 
 export const populatePayments = async (users: Record<string, User>, projects: Record<string, Project>) => {
@@ -76,39 +70,17 @@ const populatePaymentItem = async (
   await waitEvents();
 
   if (paymentItem.receipts) {
-    await Promise.all(paymentItem.receipts.map(receipt => populateReceipt(paymentId, project, receipt)));
+    await Promise.all(paymentItem.receipts.map(receipt => populateReceipt(paymentId, receipt)));
   }
 
   return { ...payment, ...paymentItem, id: paymentId };
 };
 
-export const populateReceipt = async (paymentId: Uuid, project: Project, receipt: PaymentReceipt) => {
-  if (receipt.recipientETHIdentity) {
-    await mutateAsAdmin<AddEthPaymentReceiptMutation, AddEthPaymentReceiptMutationVariables>({
-      mutation: AddEthPaymentReceiptDocument,
-      variables: {
-        projectId: project.id,
-        paymentId,
-        amount: `${receipt.amount}`,
-        currencyCode: receipt.currencyCode,
-        recipientIdentity: receipt.recipientETHIdentity,
-        transactionHash: receipt.transactionHashOrReference,
-      },
-    });
-  } else if (receipt.recipientIBAN) {
-    await mutateAsAdmin<AddFiatPaymentReceiptMutation, AddFiatPaymentReceiptMutationVariables>({
-      mutation: AddFiatPaymentReceiptDocument,
-      variables: {
-        projectId: project.id,
-        paymentId,
-        amount: `${receipt.amount}`,
-        currencyCode: receipt.currencyCode,
-        recipientIban: receipt.recipientIBAN,
-        transactionReference: receipt.transactionHashOrReference,
-      },
-    });
-  } else {
-    throw new Error("Receipt must either has a recipientETHIdentity or a recipientIBAN");
-  }
-  return true;
-};
+export const populateReceipt = async (paymentId: Uuid, receipt: PaymentReceipt) =>
+  fetchAsAdmin(`/payments/${paymentId}/receipts`, "POST", {
+    amount: receipt.amount,
+    currency: receipt.currencyCode,
+    recipientWallet: receipt.recipientWallet,
+    recipientIban: receipt.recipientIBAN,
+    transactionReference: receipt.transactionReference,
+  });

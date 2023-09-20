@@ -18,3 +18,5 @@ impl Default for Wallet {
 		Self::Address(Default::default())
 	}
 }
+
+pub type TransactionHash = super::Address<32>;

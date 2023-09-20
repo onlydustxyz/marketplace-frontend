@@ -1,10 +1,8 @@
-use juniper::GraphQLObject;
 use url::Url;
 
 use super::ToInt32;
 
-#[derive(Debug, GraphQLObject)]
-#[graphql(name = "GithubUser")]
+#[derive(Debug)]
 pub struct User {
 	pub id: i32,
 	pub login: String,

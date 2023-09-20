@@ -2,42 +2,6 @@ mutation rejectInvoice($payments: [Uuid!]!) {
   rejectInvoice(payments: $payments)
 }
 
-mutation addEthPaymentReceipt(
-  $projectId: Uuid!
-  $paymentId: Uuid!
-  $amount: String!
-  $currencyCode: String!
-  $recipientIdentity: EthereumIdentityInput!
-  $transactionHash: String!
-) {
-  addEthPaymentReceipt(
-    projectId: $projectId
-    paymentId: $paymentId
-    amount: $amount
-    currencyCode: $currencyCode
-    recipientIdentity: $recipientIdentity
-    transactionHash: $transactionHash
-  )
-}
-
-mutation addFiatPaymentReceipt(
-  $projectId: Uuid!
-  $paymentId: Uuid!
-  $amount: String!
-  $currencyCode: String!
-  $recipientIban: Iban!
-  $transactionReference: String!
-) {
-  addFiatPaymentReceipt(
-    projectId: $projectId
-    paymentId: $paymentId
-    amount: $amount
-    currencyCode: $currencyCode
-    recipientIban: $recipientIban
-    transactionReference: $transactionReference
-  )
-}
-
 query paymentRequestsByPk($paymentId: uuid!) {
   paymentRequests(where: { id: { _eq: $paymentId } }) {
     id

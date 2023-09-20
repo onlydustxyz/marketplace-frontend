@@ -4,7 +4,7 @@ use anyhow::Result;
 use derive_more::Constructor;
 use domain::{
 	AggregateRepository, Amount, DomainError, Event, Payment, PaymentId, PaymentReceipt,
-	PaymentReceiptId, ProjectId, Publisher,
+	PaymentReceiptId, Publisher,
 };
 use infrastructure::amqp::UniqueMessage;
 use olog::IntoField;
@@ -23,7 +23,6 @@ impl Usecase {
 	#[instrument(skip(self))]
 	pub async fn add_payment_receipt(
 		&self,
-		project_id: &ProjectId,
 		payment_id: PaymentId,
 		amount: Amount,
 		receipt: PaymentReceipt,
