@@ -5,8 +5,8 @@ import withMockedProvider from "../decorators/withMockedProvider";
 import withFormProvider from "../decorators/withFormProvider";
 import {
   ContributorFragment,
-  GetProjectContributorsDocument,
-  GetProjectContributorsQueryResult,
+  GetProjectPendingContributorsDocument,
+  GetProjectPendingContributorsQueryResult,
 } from "src/__generated/graphql";
 import withSuspense from "../decorators/withSuspense";
 import withCommandProvider from "../decorators/withCommandProvider";
@@ -26,7 +26,7 @@ const BERNARDSTANISLAS: ContributorFragment = {
         issueCount: 0,
         codeReviewCount: 0,
         totalCount: 0,
-      }
+      },
     },
   },
   paymentStatsAggregate: { aggregate: { sum: { moneyGranted: 0 } } },
@@ -34,7 +34,6 @@ const BERNARDSTANISLAS: ContributorFragment = {
   completedUnpaidPullRequestsAggregate: { aggregate: { count: 0 } },
   completedUnpaidIssuesAggregate: { aggregate: { count: 0 } },
   completedUnpaidCodeReviewsAggregate: { aggregate: { count: 0 } },
-
 };
 const OSCARWROCHE: ContributorFragment = {
   login: "oscarwroche",
@@ -100,14 +99,14 @@ const TDELABRO: ContributorFragment = {
 const mocks = [
   {
     request: {
-      query: GetProjectContributorsDocument,
+      query: GetProjectPendingContributorsDocument,
       variables: {
         projectId,
       },
     },
     result: {
       data: {
-        projectsContributors: [
+        projectsPendingContributors: [
           BERNARDSTANISLAS,
           OSCARWROCHE,
           OFUX,
@@ -119,7 +118,7 @@ const mocks = [
           TDELABRO,
           BERNARDSTANISLAS,
         ].map(user => ({ user })),
-      } as GetProjectContributorsQueryResult["data"],
+      } as GetProjectPendingContributorsQueryResult["data"],
     },
   },
 ];
@@ -139,7 +138,7 @@ const args = {
   },
   unpaidPRs: [],
   requestNewPaymentMutationLoading: false,
-  unpaidContributions: null
+  unpaidContributions: null,
 };
 
 export default {
