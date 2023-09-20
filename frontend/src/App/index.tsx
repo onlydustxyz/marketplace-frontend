@@ -6,7 +6,7 @@ import ProtectedRoute from "src/App/ProtectedRoute";
 
 const Login = lazy(() => import("src/pages/Login"));
 const Projects = lazy(() => import("src/pages/Projects"));
-const Contributions = lazy(() => import("src/pages/Contributions"));
+const Contributions = lazy(() => import("src/pages/Contributions/Contributions"));
 const Rewards = lazy(() => import("src/pages/Rewards"));
 const ProjectDetails = lazy(() => import("src/pages/ProjectDetails"));
 const ProjectDetailsOverview = lazy(() => import("src/pages/ProjectDetails/Overview"));
