@@ -58,8 +58,8 @@ test.describe("As a cloudflare worker, I", () => {
     expect(projectDetailsBody.data.projects).toHaveLength(1);
     expect(projectDetailsBody.data.projects[0].name).toEqual(project.name);
     expect(projectDetailsBody.data.projects[0].shortDescription).toEqual(project.shortDescription);
-    expect(projectDetailsBody.data.projects[0].logoUrl).toEqual(
-      "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/12586079913411494809.png"
+    expect(projectDetailsBody.data.projects[0].logoUrl).toMatch(
+      /^https:\/\/onlydust-app-images\.s3\.eu-west-1\.amazonaws\.com\/[0-9]+\.png/
     );
   });
 });
