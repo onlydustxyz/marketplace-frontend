@@ -6,8 +6,8 @@ import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import ContributorSelect from ".";
 import {
   ContributorFragment,
-  GetProjectContributorsDocument,
-  GetProjectContributorsQueryResult,
+  GetProjectPendingContributorsDocument,
+  GetProjectPendingContributorsQueryResult,
 } from "src/__generated/graphql";
 import { Contributor } from "src/pages/ProjectDetails/Rewards/RewardForm/types";
 
@@ -48,15 +48,15 @@ const TEST_PROJECT_ID = "test-project-id";
 const graphQlMocks = [
   {
     request: {
-      query: GetProjectContributorsDocument,
+      query: GetProjectPendingContributorsDocument,
       variables: {
         projectId: TEST_PROJECT_ID,
       },
     },
     result: {
       data: {
-        projectsContributors: [TEST_USER, TEST_OTHER_USER].map(user => ({ user })),
-      } as GetProjectContributorsQueryResult["data"],
+        projectsPendingContributors: [TEST_USER, TEST_OTHER_USER].map(user => ({ user })),
+      } as GetProjectPendingContributorsQueryResult["data"],
     },
   },
 ];

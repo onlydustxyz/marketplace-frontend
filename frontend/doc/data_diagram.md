@@ -3,6 +3,18 @@
 ```mermaid
 classDiagram
 
+class ApiClosedByPullRequests {
+   githubIssueId: bigint
+   githubPullRequest: GithubPullRequests
+   githubPullRequestId: bigint
+}
+
+class ApiClosingIssues {
+   githubIssue: GithubIssues
+   githubIssueId: bigint
+   githubPullRequestId: bigint
+}
+
 class ApiCompletedContributions {
    closedAt: timestamp
    createdAt: timestamp
@@ -93,14 +105,17 @@ class Contributions {
    closedAt: timestamp
    createdAt: timestamp
    detailsId: String
+   githubCodeReview: GithubPullRequestReviews
    githubCodeReviewId: String
    githubIssue: GithubIssues
    githubIssueId: bigint
    githubPullRequest: GithubPullRequests
    githubPullRequestId: bigint
+   githubRepo: GithubRepos
    githubUserId: bigint
    id: String
    ignored: Boolean
+   project: Projects
    projectId: uuid
    repoId: bigint
    rewardItems: [WorkItems!]!
@@ -126,6 +141,7 @@ class GithubIssues {
    assigneeIds: jsonb
    authorId: bigint
    closedAt: timestamp
+   closedByPullRequests: [ApiClosedByPullRequests!]!
    commentsCount: bigint
    createdAt: timestamp
    htmlUrl: String
@@ -152,6 +168,7 @@ class GithubPullRequest {
 }
 
 class GithubPullRequestReviews {
+   githubPullRequest: GithubPullRequests
    id: String
    outcome: github_code_review_outcome
    pullRequestId: bigint
@@ -165,6 +182,7 @@ class GithubPullRequests {
    ciChecks: github_ci_checks
    closedAt: timestamp
    closingIssueNumbers: jsonb
+   closingIssues: [ApiClosingIssues!]!
    createdAt: timestamp
    draft: Boolean
    htmlUrl: String
@@ -317,8 +335,11 @@ class ProjectsContributors {
 }
 
 class ProjectsPendingContributors {
+   githubUser: GithubUsers
    githubUserId: bigint!
+   project: Projects
    projectId: uuid!
+   user: UserProfiles
 }
 
 class ProjectsRewardedUsers {
@@ -505,17 +526,25 @@ class users {
    userProviders: [authUserProviders!]!
 }
 
+ApiClosedByPullRequests -- GithubPullRequests
+ApiClosingIssues -- GithubIssues
 ApiCompletedContributions --* WorkItems
 Budgets -- Projects
 Budgets --* PaymentRequests
 Contacts -- ContactInformations
 Contributions -- GithubIssues
+Contributions -- GithubPullRequestReviews
 Contributions -- GithubPullRequests
+Contributions -- GithubRepos
+Contributions -- Projects
 Contributions --* WorkItems
 GithubIssue -- GithubUser
 GithubIssues -- GithubRepos
+GithubIssues --* ApiClosedByPullRequests
 GithubPullRequest -- GithubUser
+GithubPullRequestReviews -- GithubPullRequests
 GithubPullRequests -- GithubRepos
+GithubPullRequests --* ApiClosingIssues
 GithubRepos --* ProjectGithubRepos
 GithubUser -- RegisteredUsers
 GithubUsers -- RegisteredUsers
@@ -544,6 +573,9 @@ Projects --* ProjectsSponsors
 ProjectsContributors -- GithubUsers
 ProjectsContributors -- Projects
 ProjectsContributors -- UserProfiles
+ProjectsPendingContributors -- GithubUsers
+ProjectsPendingContributors -- Projects
+ProjectsPendingContributors -- UserProfiles
 ProjectsSponsors -- Sponsors
 RegisteredUsers -- UserPayoutInfo
 RegisteredUsers --* PaymentRequests
