@@ -1,10 +1,8 @@
 use diesel::{Connection, Identifiable, PgConnection};
 
 use super::{ImmutableModel, Model, Result};
-use crate::{
-	contextualized_error::ContextualizedError,
-	database::{self},
-};
+use crate::{contextualized_error::ContextualizedError, database};
+
 pub trait ImmutableRepository<M>: Send + Sync
 where
 	M: ImmutableModel<PgConnection>,

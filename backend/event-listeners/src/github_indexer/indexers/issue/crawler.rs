@@ -13,8 +13,8 @@ pub struct IssueCrawler {
 
 #[async_trait]
 impl Crawler<IssueId, GithubIssue> for IssueCrawler {
-	async fn fetch_modified_data(&self, id: &IssueId) -> Result<GithubIssue> {
-		let issue = self.github_fetch_service.issue_by_repo_id(id.repo_id, id.issue_number).await?;
+	async fn fetch_modified_data(&self, (repo_id, number): &IssueId) -> Result<GithubIssue> {
+		let issue = self.github_fetch_service.issue_by_repo_id(*repo_id, *number).await?;
 		Ok(issue)
 	}
 
