@@ -1,4 +1,4 @@
-use std::{fmt::Display, sync::Arc};
+use std::sync::Arc;
 
 use domain::{GithubFetchIssueService, GithubIssue, GithubIssueNumber, GithubRepoId};
 use infrastructure::database::Repository;
@@ -19,23 +19,4 @@ pub fn new(
 	}
 }
 
-#[derive(Debug, Clone, Copy)]
-pub struct IssueId {
-	repo_id: GithubRepoId,
-	issue_number: GithubIssueNumber,
-}
-
-impl Display for IssueId {
-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		write!(f, "{}/{}", self.repo_id, self.issue_number)
-	}
-}
-
-impl From<(GithubRepoId, GithubIssueNumber)> for IssueId {
-	fn from((repo_id, issue_number): (GithubRepoId, GithubIssueNumber)) -> Self {
-		Self {
-			repo_id,
-			issue_number,
-		}
-	}
-}
+type IssueId = (GithubRepoId, GithubIssueNumber);

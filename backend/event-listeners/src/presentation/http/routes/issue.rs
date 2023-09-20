@@ -6,7 +6,14 @@ use olog::{error, IntoField};
 use presentation::http::guards::ApiKey;
 use rocket::State;
 
-use crate::github_indexer::indexers::{self, Indexer};
+use crate::{
+	github_indexer::indexers::{
+		self,
+		optional::{self, Optional},
+		Indexer,
+	},
+	models::GithubIssue,
+};
 
 #[post("/repo/<repo_id>/issue/<issue_number>")]
 pub async fn index(
@@ -19,16 +26,16 @@ pub async fn index(
 	let database = (*database).clone();
 	let github = (*github).clone();
 
-	indexers::issue::new(github, database.clone())
-		.index(&(repo_id.into(), issue_number.into()).into())
-		.await
-		.map_err(|e| {
-			let error_message = "Error while indexing Github issue";
-			error!(error = e.to_field(), "{error_message}");
-			HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
-				.title(error_message.to_string())
-				.detail(e.to_string())
-		})?;
+	let indexer: optional::Indexer<_, _, GithubIssue> =
+		indexers::issue::new(github, database.clone()).optional(database);
+
+	indexer.index(&(repo_id.into(), issue_number.into())).await.map_err(|e| {
+		let error_message = "Error while indexing Github issue";
+		error!(error = e.to_field(), "{error_message}");
+		HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
+			.title(error_message.to_string())
+			.detail(e.to_string())
+	})?;
 
 	Ok(())
 }

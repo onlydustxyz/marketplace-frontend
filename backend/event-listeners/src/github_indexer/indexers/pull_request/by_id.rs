@@ -7,23 +7,7 @@ use domain::{
 
 use crate::github_indexer::indexers::{self, error::Result, IndexerImpl};
 
-#[derive(Debug, Clone, Copy)]
-pub struct PullRequestId {
-	repo_id: GithubRepoId,
-	pr_number: GithubPullRequestNumber,
-}
-
-impl fmt::Display for PullRequestId {
-	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-		write!(f, "{}/{}", self.repo_id, self.pr_number)
-	}
-}
-
-impl From<(GithubRepoId, GithubPullRequestNumber)> for PullRequestId {
-	fn from((repo_id, pr_number): (GithubRepoId, GithubPullRequestNumber)) -> Self {
-		Self { repo_id, pr_number }
-	}
-}
+pub type PullRequestId = (GithubRepoId, GithubPullRequestNumber);
 
 pub struct Indexer {
 	github_fetch_service: Arc<dyn GithubFetchService>,
@@ -32,11 +16,9 @@ pub struct Indexer {
 
 #[async_trait]
 impl indexers::Indexer<PullRequestId> for Indexer {
-	async fn index(&self, id: &PullRequestId) -> Result<()> {
-		let pull_request = self
-			.github_fetch_service
-			.pull_request_by_repo_id(id.repo_id, id.pr_number)
-			.await?;
+	async fn index(&self, (repo_id, number): &PullRequestId) -> Result<()> {
+		let pull_request =
+			self.github_fetch_service.pull_request_by_repo_id(*repo_id, *number).await?;
 
 		self.indexer.index(&pull_request).await
 	}

@@ -22,6 +22,7 @@ mod work_items;
 pub use applications::Application;
 pub use budgets::Budget;
 pub use contributions::{Contribution, Repository as ContributionsRepository};
+use diesel::PgConnection;
 pub use github_issues::GithubIssue;
 pub use github_pull_request_indexes::{
 	GithubPullRequestIndex, Repository as GithubPullRequestIndexRepository,
@@ -33,6 +34,7 @@ pub use github_repo_indexes::{GithubRepoIndex, Repository as GithubRepoIndexRepo
 pub use github_repos::GithubRepo;
 pub use github_user_indexes::{GithubUserIndex, Repository as GithubUserIndexRepository};
 pub use github_users::GithubUser;
+use infrastructure::database::{self, ImmutableModel, ImmutableRepository};
 pub use payment_requests::PaymentRequest;
 pub use payments::Payment;
 pub use project_github_repos::{ProjectGithubRepo, Repository as ProjectGithubRepoRepository};
@@ -47,3 +49,17 @@ pub use projects_rewarded_users::{
 };
 pub use technologies::Technology;
 pub use work_items::{Repository as WorkItemRepository, WorkItem};
+
+pub trait IdentifiableRepository<M, Id>: Send + Sync {
+	fn exists(&self, id: Id) -> database::Result<bool>;
+}
+
+impl<R, M> IdentifiableRepository<M, M::Id> for R
+where
+	R: ImmutableRepository<M>,
+	M: ImmutableModel<PgConnection>,
+{
+	fn exists(&self, id: M::Id) -> database::Result<bool> {
+		<Self as ImmutableRepository<M>>::exists(self, id)
+	}
+}
