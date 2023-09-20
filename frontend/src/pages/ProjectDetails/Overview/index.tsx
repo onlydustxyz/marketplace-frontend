@@ -287,7 +287,7 @@ function ApplyCallout({ isLoggedIn, profile, alreadyApplied, applyToProject, dis
     if (JSON.stringify(values) !== JSON.stringify(fromFragment(profile))) {
       reset(fromFragment(profile));
     }
-  });
+  }, []);
 
   const [updateUserProfileInfo, { loading }] = useUpdateUserProfileMutation({
     context: { graphqlErrorDisplay: "toaster" },
