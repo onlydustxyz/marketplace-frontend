@@ -6,7 +6,14 @@ use olog::{error, IntoField};
 use presentation::http::guards::ApiKey;
 use rocket::State;
 
-use crate::github_indexer::indexers::{self, Indexer};
+use crate::{
+	github_indexer::indexers::{
+		self,
+		optional::{self, Optional},
+		Indexer,
+	},
+	models::GithubUser,
+};
 
 #[post("/user/<user_id>")]
 pub async fn index(
@@ -18,7 +25,8 @@ pub async fn index(
 	let database = (*database).clone();
 	let github = (*github).clone();
 
-	let indexer = indexers::user::new(github, database.clone(), database);
+	let indexer: optional::Indexer<_, _, GithubUser> =
+		indexers::user::new(github, database.clone(), database.clone()).optional(database);
 
 	indexer.index(&user_id.into()).await.map_err(|e| {
 		let error_message = "Error while indexing Github user";

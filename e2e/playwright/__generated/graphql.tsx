@@ -4323,14 +4323,21 @@ export type GithubPullRequests = {
   authorId: Maybe<Scalars['bigint']>;
   ciChecks: Maybe<Scalars['github_ci_checks']>;
   closedAt: Maybe<Scalars['timestamp']>;
+<<<<<<< HEAD
+=======
+  closingIssueNumbers: Maybe<Scalars['jsonb']>;
+>>>>>>> origin/main
   /** An array relationship */
   closingIssues: Array<ApiClosingIssues>;
   /** An aggregate relationship */
   closingIssuesAggregate: ApiClosingIssuesAggregate;
+<<<<<<< HEAD
   /** An array relationship */
   commits: Array<GithubPullRequestCommits>;
   /** An aggregate relationship */
   commitsAggregate: GithubPullRequestCommitsAggregate;
+=======
+>>>>>>> origin/main
   createdAt: Maybe<Scalars['timestamp']>;
   draft: Maybe<Scalars['Boolean']>;
   htmlUrl: Maybe<Scalars['String']>;
@@ -4384,6 +4391,26 @@ export type GithubPullRequestsCommitsAggregateArgs = {
   where: InputMaybe<GithubPullRequestCommitsBoolExp>;
 };
 
+
+/** columns and relationships of "api.github_pull_requests" */
+export type GithubPullRequestsClosingIssuesArgs = {
+  distinctOn: InputMaybe<Array<ApiClosingIssuesSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ApiClosingIssuesOrderBy>>;
+  where: InputMaybe<ApiClosingIssuesBoolExp>;
+};
+
+
+/** columns and relationships of "api.github_pull_requests" */
+export type GithubPullRequestsClosingIssuesAggregateArgs = {
+  distinctOn: InputMaybe<Array<ApiClosingIssuesSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ApiClosingIssuesOrderBy>>;
+  where: InputMaybe<ApiClosingIssuesBoolExp>;
+};
+
 /** aggregated selection of "api.github_pull_requests" */
 export type GithubPullRequestsAggregate = {
   __typename?: 'GithubPullRequestsAggregate';
@@ -4432,10 +4459,16 @@ export type GithubPullRequestsBoolExp = {
   authorId: InputMaybe<BigintComparisonExp>;
   ciChecks: InputMaybe<GithubCiChecksComparisonExp>;
   closedAt: InputMaybe<TimestampComparisonExp>;
+<<<<<<< HEAD
   closingIssues: InputMaybe<ApiClosingIssuesBoolExp>;
   closingIssues_aggregate: InputMaybe<Api_Closing_Issues_Aggregate_Bool_Exp>;
   commits: InputMaybe<GithubPullRequestCommitsBoolExp>;
   commits_aggregate: InputMaybe<Github_Pull_Request_Commits_Aggregate_Bool_Exp>;
+=======
+  closingIssueNumbers: InputMaybe<JsonbComparisonExp>;
+  closingIssues: InputMaybe<ApiClosingIssuesBoolExp>;
+  closingIssues_aggregate: InputMaybe<Api_Closing_Issues_Aggregate_Bool_Exp>;
+>>>>>>> origin/main
   createdAt: InputMaybe<TimestampComparisonExp>;
   draft: InputMaybe<BooleanComparisonExp>;
   htmlUrl: InputMaybe<StringComparisonExp>;
@@ -4462,8 +4495,13 @@ export type GithubPullRequestsInsertInput = {
   authorId: InputMaybe<Scalars['bigint']>;
   ciChecks: InputMaybe<Scalars['github_ci_checks']>;
   closedAt: InputMaybe<Scalars['timestamp']>;
+<<<<<<< HEAD
   closingIssues: InputMaybe<ApiClosingIssuesArrRelInsertInput>;
   commits: InputMaybe<GithubPullRequestCommitsArrRelInsertInput>;
+=======
+  closingIssueNumbers: InputMaybe<Scalars['jsonb']>;
+  closingIssues: InputMaybe<ApiClosingIssuesArrRelInsertInput>;
+>>>>>>> origin/main
   createdAt: InputMaybe<Scalars['timestamp']>;
   draft: InputMaybe<Scalars['Boolean']>;
   htmlUrl: InputMaybe<Scalars['String']>;
@@ -4528,8 +4566,13 @@ export type GithubPullRequestsOrderBy = {
   authorId: InputMaybe<OrderBy>;
   ciChecks: InputMaybe<OrderBy>;
   closedAt: InputMaybe<OrderBy>;
+<<<<<<< HEAD
   closingIssuesAggregate: InputMaybe<ApiClosingIssuesAggregateOrderBy>;
   commitsAggregate: InputMaybe<GithubPullRequestCommitsAggregateOrderBy>;
+=======
+  closingIssueNumbers: InputMaybe<OrderBy>;
+  closingIssuesAggregate: InputMaybe<ApiClosingIssuesAggregateOrderBy>;
+>>>>>>> origin/main
   createdAt: InputMaybe<OrderBy>;
   draft: InputMaybe<OrderBy>;
   htmlUrl: InputMaybe<OrderBy>;
@@ -7644,8 +7687,14 @@ export type ProjectsOrderBy = {
 /** columns and relationships of "projects_pending_contributors" */
 export type ProjectsPendingContributors = {
   __typename?: 'ProjectsPendingContributors';
+  /** An object relationship */
+  githubUser: Maybe<GithubUsers>;
   githubUserId: Scalars['bigint'];
+  /** An object relationship */
+  project: Maybe<Projects>;
   projectId: Scalars['uuid'];
+  /** An object relationship */
+  user: Maybe<UserProfiles>;
 };
 
 /** aggregated selection of "projects_pending_contributors" */
@@ -7711,8 +7760,11 @@ export type ProjectsPendingContributorsBoolExp = {
   _and: InputMaybe<Array<ProjectsPendingContributorsBoolExp>>;
   _not: InputMaybe<ProjectsPendingContributorsBoolExp>;
   _or: InputMaybe<Array<ProjectsPendingContributorsBoolExp>>;
+  githubUser: InputMaybe<GithubUsersBoolExp>;
   githubUserId: InputMaybe<BigintComparisonExp>;
+  project: InputMaybe<ProjectsBoolExp>;
   projectId: InputMaybe<UuidComparisonExp>;
+  user: InputMaybe<UserProfilesBoolExp>;
 };
 
 /** unique or primary key constraints on table "projects_pending_contributors" */
@@ -7728,8 +7780,11 @@ export type ProjectsPendingContributorsIncInput = {
 
 /** input type for inserting data into table "projects_pending_contributors" */
 export type ProjectsPendingContributorsInsertInput = {
+  githubUser: InputMaybe<GithubUsersObjRelInsertInput>;
   githubUserId: InputMaybe<Scalars['bigint']>;
+  project: InputMaybe<ProjectsObjRelInsertInput>;
   projectId: InputMaybe<Scalars['uuid']>;
+  user: InputMaybe<UserProfilesObjRelInsertInput>;
 };
 
 /** aggregate max on columns */
@@ -7764,8 +7819,11 @@ export type ProjectsPendingContributorsOnConflict = {
 
 /** Ordering options when selecting data from "projects_pending_contributors". */
 export type ProjectsPendingContributorsOrderBy = {
+  githubUser: InputMaybe<GithubUsersOrderBy>;
   githubUserId: InputMaybe<OrderBy>;
+  project: InputMaybe<ProjectsOrderBy>;
   projectId: InputMaybe<OrderBy>;
+  user: InputMaybe<UserProfilesOrderBy>;
 };
 
 /** primary key columns input for table: projects_pending_contributors */
@@ -18983,6 +19041,13 @@ export type SearchGithubUsersByHandleSubstringQueryVariables = Exact<{
 
 export type SearchGithubUsersByHandleSubstringQuery = { __typename?: 'query_root', searchUsers: Array<{ __typename?: 'GithubUser', login: string, avatarUrl: any, htmlUrl: any, id: number, user: { __typename?: 'RegisteredUsers', id: any | null } | null }> | null };
 
+export type GetProjectPendingContributorsQueryVariables = Exact<{
+  projectId: Scalars['uuid'];
+}>;
+
+
+export type GetProjectPendingContributorsQuery = { __typename?: 'query_root', projectsPendingContributors: Array<{ __typename?: 'ProjectsPendingContributors', user: { __typename?: 'UserProfiles', login: string | null, avatarUrl: string | null, userId: any | null, githubUserId: any | null, contributionStatsAggregate: { __typename?: 'ContributionStatsAggregate', aggregate: { __typename?: 'ContributionStatsAggregateFields', sum: { __typename?: 'ContributionStatsSumFields', codeReviewCount: any | null, issueCount: any | null, pullRequestCount: any | null, totalCount: any | null } | null } | null }, paymentStatsAggregate: { __typename?: 'PaymentStatsAggregate', aggregate: { __typename?: 'PaymentStatsAggregateFields', sum: { __typename?: 'PaymentStatsSumFields', moneyGranted: any | null } | null } | null }, projectsRewardedAggregate: { __typename?: 'ProjectsRewardedUsersAggregate', aggregate: { __typename?: 'ProjectsRewardedUsersAggregateFields', sum: { __typename?: 'ProjectsRewardedUsersSumFields', rewardCount: number | null } | null } | null }, completedUnpaidPullRequestsAggregate: { __typename?: 'ApiCompletedContributionsAggregate', aggregate: { __typename?: 'ApiCompletedContributionsAggregateFields', count: number } | null }, completedUnpaidIssuesAggregate: { __typename?: 'ApiCompletedContributionsAggregate', aggregate: { __typename?: 'ApiCompletedContributionsAggregateFields', count: number } | null }, completedUnpaidCodeReviewsAggregate: { __typename?: 'ApiCompletedContributionsAggregate', aggregate: { __typename?: 'ApiCompletedContributionsAggregateFields', count: number } | null } } | null }> };
+
 export type IgnoreContributionMutationVariables = Exact<{
   contributionId: Scalars['String'];
   projectId: Scalars['Uuid'];
@@ -21891,6 +21956,43 @@ export function useSearchGithubUsersByHandleSubstringLazyQuery(baseOptions?: Apo
 export type SearchGithubUsersByHandleSubstringQueryHookResult = ReturnType<typeof useSearchGithubUsersByHandleSubstringQuery>;
 export type SearchGithubUsersByHandleSubstringLazyQueryHookResult = ReturnType<typeof useSearchGithubUsersByHandleSubstringLazyQuery>;
 export type SearchGithubUsersByHandleSubstringQueryResult = Apollo.QueryResult<SearchGithubUsersByHandleSubstringQuery, SearchGithubUsersByHandleSubstringQueryVariables>;
+export const GetProjectPendingContributorsDocument = gql`
+    query GetProjectPendingContributors($projectId: uuid!) {
+  projectsPendingContributors(where: {projectId: {_eq: $projectId}}) {
+    user {
+      ...Contributor
+    }
+  }
+}
+    ${ContributorFragmentDoc}`;
+
+/**
+ * __useGetProjectPendingContributorsQuery__
+ *
+ * To run a query within a React component, call `useGetProjectPendingContributorsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProjectPendingContributorsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetProjectPendingContributorsQuery({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *   },
+ * });
+ */
+export function useGetProjectPendingContributorsQuery(baseOptions: Apollo.QueryHookOptions<GetProjectPendingContributorsQuery, GetProjectPendingContributorsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetProjectPendingContributorsQuery, GetProjectPendingContributorsQueryVariables>(GetProjectPendingContributorsDocument, options);
+      }
+export function useGetProjectPendingContributorsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProjectPendingContributorsQuery, GetProjectPendingContributorsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetProjectPendingContributorsQuery, GetProjectPendingContributorsQueryVariables>(GetProjectPendingContributorsDocument, options);
+        }
+export type GetProjectPendingContributorsQueryHookResult = ReturnType<typeof useGetProjectPendingContributorsQuery>;
+export type GetProjectPendingContributorsLazyQueryHookResult = ReturnType<typeof useGetProjectPendingContributorsLazyQuery>;
+export type GetProjectPendingContributorsQueryResult = Apollo.QueryResult<GetProjectPendingContributorsQuery, GetProjectPendingContributorsQueryVariables>;
 export const IgnoreContributionDocument = gql`
     mutation IgnoreContribution($contributionId: String!, $projectId: Uuid!) {
   ignoreContribution(contributionId: $contributionId, projectId: $projectId)

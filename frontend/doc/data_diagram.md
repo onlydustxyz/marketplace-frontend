@@ -345,8 +345,11 @@ class ProjectsContributors {
 }
 
 class ProjectsPendingContributors {
+   githubUser: GithubUsers
    githubUserId: bigint!
+   project: Projects
    projectId: uuid!
+   user: UserProfiles
 }
 
 class ProjectsRewardedUsers {
@@ -584,6 +587,9 @@ Projects --* ProjectsSponsors
 ProjectsContributors -- GithubUsers
 ProjectsContributors -- Projects
 ProjectsContributors -- UserProfiles
+ProjectsPendingContributors -- GithubUsers
+ProjectsPendingContributors -- Projects
+ProjectsPendingContributors -- UserProfiles
 ProjectsSponsors -- Sponsors
 RegisteredUsers -- UserPayoutInfo
 RegisteredUsers --* PaymentRequests

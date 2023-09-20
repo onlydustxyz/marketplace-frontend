@@ -12,8 +12,38 @@ const workItems: ContributionFragment[] = [
     detailsId: "00000",
     githubUserId: "123456",
     githubIssue: null,
-    githubPullRequest: null,
     githubCodeReview: null,
+    githubPullRequest: {
+      number: 123,
+      repoId: 12345678,
+      title: "My pull Request",
+      htmlUrl: "",
+      status: GithubPullRequestStatus.Merged,
+      createdAt: null,
+      closedAt: null,
+      mergedAt: null,
+      id: "123",
+      commitsCount: { aggregate: { count: 0 } },
+      userCommitsCount: { aggregate: { count: 0 } },
+      contributorDetails: [
+        {
+          author: {
+            login: "ofux",
+            avatarUrl: "https://avatars.githubusercontent.com/u/43467246?v=4",
+            htmlUrl: "https://github.com/ofux",
+            id: 595505,
+            user: { id: 233 },
+          },
+        },
+      ],
+      author: {
+        login: "stannislas",
+        avatarUrl: "https://gravatar.com/avatar/1f82b0492a0a938288c2d5b70534a1fb?s=400&d=robohash&r=x",
+        htmlUrl: "https://github.com/stanislas",
+        id: 123,
+        user: { id: 233 },
+      },
+    },
   },
   {
     id: "456",
@@ -58,15 +88,21 @@ describe("Work items", () => {
     expect(filteredWorkItems[0].id).toEqual("123");
   });
 
-  // it("should be filtered by title", () => {
-  //   const filteredWorkItems = useFilteredWorkItems({ pattern: "456", contributions: workItems });
-  //   expect(filteredWorkItems).toHaveLength(1);
-  //   expect(filteredWorkItems[0].id).toEqual("456");
-  // });
+  it("should be filtered by title", () => {
+    const filteredWorkItems = useFilteredWorkItems({
+      pattern: "My pull Request",
+      contributions: workItems,
+    }) as ContributionFragment[];
+    expect(filteredWorkItems).toHaveLength(1);
+    expect(filteredWorkItems[0].githubPullRequest?.title).toEqual("My pull Request");
+  });
 
-  // it("should be filtered with logical AND", () => {
-  //   const filteredWorkItems = useFilteredWorkItems({ pattern: "foo 5", contributions: workItems });
-  //   expect(filteredWorkItems).toHaveLength(1);
-  //   expect(filteredWorkItems[0].id).toEqual("3");
-  // });
+  it("should be filtered with logical AND", () => {
+    const filteredWorkItems = useFilteredWorkItems({
+      pattern: "My pull 123",
+      contributions: workItems,
+    }) as ContributionFragment[];
+    expect(filteredWorkItems).toHaveLength(1);
+    expect(filteredWorkItems[0].id).toEqual("123");
+  });
 });

@@ -1,10 +1,16 @@
 import { useEffect, useState } from "react";
-import { useSearchGithubUsersByHandleSubstringQuery } from "src/__generated/graphql";
+import {
+  GetProjectPendingContributorsDocument,
+  GetProjectPendingContributorsQuery,
+  useSearchGithubUsersByHandleSubstringQuery,
+} from "src/__generated/graphql";
 import View from "./View";
 import { useLocation } from "react-router-dom";
-import useProjectContributors from "src/hooks/useProjectContributors";
 import { Contributor } from "src/pages/ProjectDetails/Rewards/RewardForm/types";
 import { useDebounce } from "usehooks-ts";
+import { contextWithCacheHeaders } from "src/utils/headers";
+import isDefined from "src/utils/isDefined";
+import { useSuspenseQuery_experimental as useSuspenseQuery } from "@apollo/client";
 
 const EXTERNAL_USER_QUERY_DEBOUNCE_TIME = 500;
 
@@ -24,7 +30,11 @@ export default function ContributorSelect({ projectId, contributor, setContribut
   const debouncedGithubHandleSubstring = useDebounce(githubHandleSubstring, EXTERNAL_USER_QUERY_DEBOUNCE_TIME);
   const handleSubstringQuery = `type:user ${debouncedGithubHandleSubstring} in:login`;
 
-  const { contributors } = useProjectContributors(projectId);
+  const { data } = useSuspenseQuery<GetProjectPendingContributorsQuery>(GetProjectPendingContributorsDocument, {
+    variables: { projectId },
+    ...contextWithCacheHeaders,
+  });
+  const contributors = data?.projectsPendingContributors.map(u => u.user).filter(isDefined);
 
   const searchGithubUsersByHandleSubstringQuery = useSearchGithubUsersByHandleSubstringQuery({
     variables: { handleSubstringQuery },
@@ -33,14 +43,16 @@ export default function ContributorSelect({ projectId, contributor, setContribut
 
   const internalContributors: Contributor[] = contributors.map(c => {
     const completedUnpaidPullRequestCount = c.completedUnpaidPullRequestsAggregate.aggregate?.count || 0;
-    const completedUnpaidIssueCount = c.completedUnpaidIssuesAggregate.aggregate?.count || 0;
-    const completedUnpaidCodeReviewCount = c.completedUnpaidCodeReviewsAggregate.aggregate?.count || 0;
+    // const completedUnpaidIssueCount = c.completedUnpaidIssuesAggregate.aggregate?.count || 0;
+    // const completedUnpaidCodeReviewCount = c.completedUnpaidCodeReviewsAggregate.aggregate?.count || 0;
     return {
       githubUserId: c.githubUserId,
       login: c.login || "",
       avatarUrl: c.avatarUrl || "",
       unpaidCompletedContributions:
-        completedUnpaidPullRequestCount + completedUnpaidIssueCount + completedUnpaidCodeReviewCount,
+        //TODO: Uncomment when codeReviews are available
+        // completedUnpaidPullRequestCount + completedUnpaidIssueCount + completedUnpaidCodeReviewCount,
+        completedUnpaidPullRequestCount,
       userId: c.userId,
     };
   });

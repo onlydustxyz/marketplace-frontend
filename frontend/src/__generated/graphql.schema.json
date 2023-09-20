@@ -31243,6 +31243,200 @@
             "deprecationReason": null
           },
           {
+            "name": "closingIssues",
+            "description": "An array relationship",
+            "args": [
+              {
+                "name": "distinctOn",
+                "description": "distinct select on columns",
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "ENUM",
+                      "name": "ApiClosingIssuesSelectColumn",
+                      "ofType": null
+                    }
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "limit",
+                "description": "limit the number of rows returned",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "offset",
+                "description": "skip the first n rows. Use only with order_by",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "orderBy",
+                "description": "sort the rows by one or more columns",
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "INPUT_OBJECT",
+                      "name": "ApiClosingIssuesOrderBy",
+                      "ofType": null
+                    }
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "where",
+                "description": "filter the rows returned",
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "ApiClosingIssuesBoolExp",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "ApiClosingIssues",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "closingIssuesAggregate",
+            "description": "An aggregate relationship",
+            "args": [
+              {
+                "name": "distinctOn",
+                "description": "distinct select on columns",
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "ENUM",
+                      "name": "ApiClosingIssuesSelectColumn",
+                      "ofType": null
+                    }
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "limit",
+                "description": "limit the number of rows returned",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "offset",
+                "description": "skip the first n rows. Use only with order_by",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "orderBy",
+                "description": "sort the rows by one or more columns",
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "INPUT_OBJECT",
+                      "name": "ApiClosingIssuesOrderBy",
+                      "ofType": null
+                    }
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "where",
+                "description": "filter the rows returned",
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "ApiClosingIssuesBoolExp",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "ApiClosingIssuesAggregate",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "createdAt",
             "description": null,
             "args": [],
@@ -31809,6 +32003,30 @@
             "deprecationReason": null
           },
           {
+            "name": "closingIssues",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "ApiClosingIssuesBoolExp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "closingIssues_aggregate",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "api_closing_issues_aggregate_bool_exp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "createdAt",
             "description": null,
             "type": {
@@ -32064,6 +32282,18 @@
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "GithubPullRequestCommitsArrRelInsertInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "closingIssues",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "ApiClosingIssuesArrRelInsertInput",
               "ofType": null
             },
             "defaultValue": null,
@@ -32631,6 +32861,18 @@
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "GithubPullRequestCommitsAggregateOrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "closingIssuesAggregate",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "ApiClosingIssuesAggregateOrderBy",
               "ofType": null
             },
             "defaultValue": null,
@@ -54258,6 +54500,18 @@
         "description": "columns and relationships of \"projects_pending_contributors\"",
         "fields": [
           {
+            "name": "githubUser",
+            "description": "An object relationship",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "GithubUsers",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "args": [],
@@ -54274,6 +54528,18 @@
             "deprecationReason": null
           },
           {
+            "name": "project",
+            "description": "An object relationship",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Projects",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "projectId",
             "description": null,
             "args": [],
@@ -54285,6 +54551,18 @@
                 "name": "uuid",
                 "ofType": null
               }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "user",
+            "description": "An object relationship",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "UserProfiles",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -54794,6 +55072,18 @@
             "deprecationReason": null
           },
           {
+            "name": "githubUser",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "GithubUsersBoolExp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "type": {
@@ -54806,11 +55096,35 @@
             "deprecationReason": null
           },
           {
+            "name": "project",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "ProjectsBoolExp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "projectId",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "UuidComparisonExp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "user",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "UserProfilesBoolExp",
               "ofType": null
             },
             "defaultValue": null,
@@ -54869,6 +55183,18 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "githubUser",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "GithubUsersObjRelInsertInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "type": {
@@ -54881,11 +55207,35 @@
             "deprecationReason": null
           },
           {
+            "name": "project",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "ProjectsObjRelInsertInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "projectId",
             "description": null,
             "type": {
               "kind": "SCALAR",
               "name": "uuid",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "user",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "UserProfilesObjRelInsertInput",
               "ofType": null
             },
             "defaultValue": null,
@@ -55088,6 +55438,18 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "githubUser",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "GithubUsersOrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "githubUserId",
             "description": null,
             "type": {
@@ -55100,11 +55462,35 @@
             "deprecationReason": null
           },
           {
+            "name": "project",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "ProjectsOrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "projectId",
             "description": null,
             "type": {
               "kind": "ENUM",
               "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "user",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "UserProfilesOrderBy",
               "ofType": null
             },
             "defaultValue": null,

@@ -34,7 +34,7 @@ impl<Id: Indexable> Controller<Id> {
 				.log_err(|error| {
 					error!(
 						error = error.to_field(),
-						indexed_item_id = id.to_string(),
+						indexed_item_id = format!("{id:?}"),
 						indexed_item_id_type = std::any::type_name::<Id>(),
 						indexer_type = indexer.as_ref().to_string(),
 						"An error occurred while indexing item. Continuing indexation..."
