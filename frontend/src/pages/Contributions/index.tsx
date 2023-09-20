@@ -1,5 +1,7 @@
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
+import { isIn } from "src/utils/isIn";
 import { Tabs } from "src/components/Tabs/Tabs";
 import { useIntl } from "src/hooks/useIntl";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
@@ -10,11 +12,15 @@ import ProgressCircle from "src/assets/icons/ProgressCircle";
 import SEO from "src/components/SEO";
 import StackLine from "src/assets/icons/StackLine";
 
-const TAB_ALL = "allContributions";
-const TAB_APPLIED = "applied";
-const TAB_IN_PROGRESS = "inProgress";
-const TAB_COMPLETED = "completed";
-const TAB_CANCELED = "canceled";
+const tabs = {
+  all: "allContributions",
+  applied: "applied",
+  inProgress: "inProgress",
+  completed: "completed",
+  canceled: "canceled",
+} as const;
+
+const tabValues = Object.values(tabs);
 
 function TabContents({ children }: { children: React.ReactNode }) {
   return <div className="flex items-center gap-2 md:gap-1.5">{children}</div>;
@@ -22,14 +28,22 @@ function TabContents({ children }: { children: React.ReactNode }) {
 
 export default function Contributions() {
   const { T } = useIntl();
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const [activeTab, setActiveTab] = useState(TAB_ALL);
+  const tab = searchParams.get("tab") as typeof tabValues[number] | null;
 
-  const tabs = [
+  const [activeTab, setActiveTab] = useState(isIn(tabValues, tab ?? "") ? tab : tabs.all);
+
+  function handleClick(tab: typeof tabValues[number]) {
+    setActiveTab(tab);
+    setSearchParams({ tab });
+  }
+
+  const items = [
     {
-      active: activeTab === TAB_ALL,
+      active: activeTab === tabs.all,
       onClick: () => {
-        setActiveTab(TAB_ALL);
+        handleClick(tabs.all);
       },
       testId: "contributions-all-contributions-tab",
       children: (
@@ -40,9 +54,9 @@ export default function Contributions() {
       ),
     },
     {
-      active: activeTab === TAB_APPLIED,
+      active: activeTab === tabs.applied,
       onClick: () => {
-        setActiveTab(TAB_APPLIED);
+        handleClick(tabs.applied);
       },
       testId: "contributions-applied-tab",
       children: (
@@ -53,9 +67,9 @@ export default function Contributions() {
       ),
     },
     {
-      active: activeTab === TAB_IN_PROGRESS,
+      active: activeTab === tabs.inProgress,
       onClick: () => {
-        setActiveTab(TAB_IN_PROGRESS);
+        handleClick(tabs.inProgress);
       },
       testId: "contributions-in-progress-tab",
       children: (
@@ -66,9 +80,9 @@ export default function Contributions() {
       ),
     },
     {
-      active: activeTab === TAB_COMPLETED,
+      active: activeTab === tabs.completed,
       onClick: () => {
-        setActiveTab(TAB_COMPLETED);
+        handleClick(tabs.completed);
       },
       testId: "contributions-completed-tab",
       children: (
@@ -79,9 +93,9 @@ export default function Contributions() {
       ),
     },
     {
-      active: activeTab === TAB_CANCELED,
+      active: activeTab === tabs.canceled,
       onClick: () => {
-        setActiveTab(TAB_CANCELED);
+        handleClick(tabs.canceled);
       },
       testId: "contributions-canceled-tab",
       children: (
@@ -101,7 +115,7 @@ export default function Contributions() {
           <div className="absolute inset-0 bg-gradient-to-b from-[#000113]/[0] to-[#0E0D2E]" />
           <div className="relative z-10">
             <header className="border-b border-greyscale-50/20 bg-white/8 px-4 pb-4 pt-7 shadow-2xl backdrop-blur-3xl md:px-8 md:pb-0 md:pt-8">
-              <Tabs tabs={tabs} variant="blue" mobileTitle={T("navbar.contributions")} />
+              <Tabs tabs={items} variant="blue" mobileTitle={T("navbar.contributions")} />
             </header>
             Contributions
           </div>
