@@ -8,4 +8,4 @@ coverage:
         informational: true
 
 ignore:
-  - "common/infrastructure/src/database/schema.rs"
+  - "backend/common/infrastructure/src/database/schema.rs"
