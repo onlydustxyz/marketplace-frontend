@@ -1,5 +1,5 @@
 import { escapeRegExp, filter } from "lodash";
-import { ContributionFragment } from "src/__generated/graphql";
+import { ContributionFragment, WorkItemType } from "src/__generated/graphql";
 
 type Props = {
   pattern?: string;
@@ -16,7 +16,8 @@ export default function useFilteredContributions({ pattern = "", contributions }
   return filter(contributions, (contribution: ContributionFragment) => {
     if (!contribution.id) return;
 
-    const contributionType = contribution?.type === "ISSUE" ? contribution.githubIssue : contribution.githubPullRequest;
+    const contributionType =
+      contribution?.type === WorkItemType.Issue ? contribution.githubIssue : contribution.githubPullRequest;
     const contributionFullText = contributionType?.number?.toString() + " " + contributionType?.title;
     return searchRegExps.filter(regexp => !regexp.test(contributionFullText)).length === 0;
   });
