@@ -24,6 +24,7 @@ const defaultProps: React.ComponentProps<typeof Tabs> = {
     },
   ],
   variant: "grey",
+  mobileTitle: "Mobile Title",
 };
 
 export const Default = {

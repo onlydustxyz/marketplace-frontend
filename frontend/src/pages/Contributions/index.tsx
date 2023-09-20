@@ -8,6 +8,7 @@ import IssueDraft from "src/assets/icons/IssueDraft";
 import IssueMerged from "src/assets/icons/IssueMerged";
 import ProgressCircle from "src/assets/icons/ProgressCircle";
 import SEO from "src/components/SEO";
+import StackLine from "src/assets/icons/StackLine";
 
 const TAB_ALL = "allContributions";
 const TAB_APPLIED = "applied";
@@ -16,7 +17,7 @@ const TAB_COMPLETED = "completed";
 const TAB_CANCELED = "canceled";
 
 function TabContents({ children }: { children: React.ReactNode }) {
-  return <div className="flex items-center gap-1.5">{children}</div>;
+  return <div className="flex items-center gap-2 md:gap-1.5">{children}</div>;
 }
 
 export default function Contributions() {
@@ -31,7 +32,12 @@ export default function Contributions() {
         setActiveTab(TAB_ALL);
       },
       testId: "contributions-all-contributions-tab",
-      children: T("contributions.nav.allContributions"),
+      children: (
+        <TabContents>
+          <StackLine className="h-5 w-5 md:hidden" />
+          {T("contributions.nav.allContributions")}
+        </TabContents>
+      ),
     },
     {
       active: activeTab === TAB_APPLIED,
@@ -41,7 +47,7 @@ export default function Contributions() {
       testId: "contributions-applied-tab",
       children: (
         <TabContents>
-          <IssueDraft />
+          <IssueDraft className="h-5 w-5 md:h-4 md:w-4" />
           {T("contributions.nav.applied")}
         </TabContents>
       ),
@@ -54,7 +60,7 @@ export default function Contributions() {
       testId: "contributions-in-progress-tab",
       children: (
         <TabContents>
-          <ProgressCircle />
+          <ProgressCircle className="h-5 w-5 md:h-4 md:w-4" />
           {T("contributions.nav.inProgress")}
         </TabContents>
       ),
@@ -67,7 +73,7 @@ export default function Contributions() {
       testId: "contributions-completed-tab",
       children: (
         <TabContents>
-          <IssueMerged />
+          <IssueMerged className="h-5 w-5 md:h-4 md:w-4" />
           {T("contributions.nav.completed")}
         </TabContents>
       ),
@@ -80,7 +86,7 @@ export default function Contributions() {
       testId: "contributions-canceled-tab",
       children: (
         <TabContents>
-          <CancelCircleLine />
+          <CancelCircleLine className="h-5 w-5 md:h-4 md:w-4" />
           {T("contributions.nav.canceled")}
         </TabContents>
       ),
@@ -94,8 +100,8 @@ export default function Contributions() {
         <Background roundedBorders={BackgroundRoundedBorders.Full}>
           <div className="absolute inset-0 bg-gradient-to-b from-[#000113]/[0] to-[#0E0D2E]" />
           <div className="relative z-10">
-            <header className="border-b border-greyscale-50/20 bg-white/8 px-8 pt-8 shadow-2xl backdrop-blur-3xl">
-              <Tabs tabs={tabs} variant="blue" />
+            <header className="border-b border-greyscale-50/20 bg-white/8 px-4 pb-4 pt-7 shadow-2xl backdrop-blur-3xl md:px-8 md:pb-0 md:pt-8">
+              <Tabs tabs={tabs} variant="blue" mobileTitle={T("navbar.contributions")} />
             </header>
             Contributions
           </div>
