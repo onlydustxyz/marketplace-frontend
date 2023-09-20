@@ -25,6 +25,30 @@
       "inProgress": "In progress",
       "completed": "Completed",
       "canceled": "Canceled"
+    },
+    "applied": {
+      "title": "Applied",
+      "description": "Unassigned issues you have applied to, from Only Dust or directly on Github."
+    },
+    "inProgress": {
+      "title": "In progress",
+      "description": "Open issues, PRs and code reviews you are currently working on."
+    },
+    "completed": {
+      "title": "Completed",
+      "description": "Closed issues, merged PRs and submitted code reviews you have worked on."
+    },
+    "canceled": {
+      "title": "Canceled",
+      "description": "Closed PRs and issues closed as “not planned” you have worked on."
+    },
+    "table": {
+      "date": "Date",
+      "projectRepo": "Project / Repository",
+      "contribution": "Contribution",
+      "comments": "Comments",
+      "linkedTo": "Linked to",
+      "empty": "Last synced with Github at __time__.\nIt can take up to 5 minutes before the next refresh."
     }
   },
   "contributionGraph": {

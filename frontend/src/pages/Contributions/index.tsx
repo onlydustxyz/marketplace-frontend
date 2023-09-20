@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { PropsWithChildren, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import { isIn } from "src/utils/isIn";
@@ -6,6 +6,7 @@ import { Tabs } from "src/components/Tabs/Tabs";
 import { useIntl } from "src/hooks/useIntl";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import CancelCircleLine from "src/assets/icons/CancelCircleLine";
+import ContributionTable from "src/components/ContributionTable/ContributionTable";
 import IssueDraft from "src/assets/icons/IssueDraft";
 import IssueMerged from "src/assets/icons/IssueMerged";
 import ProgressCircle from "src/assets/icons/ProgressCircle";
@@ -22,7 +23,7 @@ const tabs = {
 
 const tabValues = Object.values(tabs);
 
-function TabContents({ children }: { children: React.ReactNode }) {
+function TabContents({ children }: PropsWithChildren) {
   return <div className="flex items-center gap-2 md:gap-1.5">{children}</div>;
 }
 
@@ -34,16 +35,16 @@ export default function Contributions() {
 
   const [activeTab, setActiveTab] = useState(isIn(tabValues, tab ?? "") ? tab : tabs.all);
 
-  function handleClick(tab: typeof tabValues[number]) {
+  function updateActiveTab(tab: typeof tabValues[number]) {
     setActiveTab(tab);
     setSearchParams({ tab });
   }
 
-  const items = [
+  const tabItems = [
     {
       active: activeTab === tabs.all,
       onClick: () => {
-        handleClick(tabs.all);
+        updateActiveTab(tabs.all);
       },
       testId: "contributions-all-contributions-tab",
       children: (
@@ -56,7 +57,7 @@ export default function Contributions() {
     {
       active: activeTab === tabs.applied,
       onClick: () => {
-        handleClick(tabs.applied);
+        updateActiveTab(tabs.applied);
       },
       testId: "contributions-applied-tab",
       children: (
@@ -69,7 +70,7 @@ export default function Contributions() {
     {
       active: activeTab === tabs.inProgress,
       onClick: () => {
-        handleClick(tabs.inProgress);
+        updateActiveTab(tabs.inProgress);
       },
       testId: "contributions-in-progress-tab",
       children: (
@@ -82,7 +83,7 @@ export default function Contributions() {
     {
       active: activeTab === tabs.completed,
       onClick: () => {
-        handleClick(tabs.completed);
+        updateActiveTab(tabs.completed);
       },
       testId: "contributions-completed-tab",
       children: (
@@ -95,7 +96,7 @@ export default function Contributions() {
     {
       active: activeTab === tabs.canceled,
       onClick: () => {
-        handleClick(tabs.canceled);
+        updateActiveTab(tabs.canceled);
       },
       testId: "contributions-canceled-tab",
       children: (
@@ -115,9 +116,19 @@ export default function Contributions() {
           <div className="absolute inset-0 bg-gradient-to-b from-[#000113]/[0] to-[#0E0D2E]" />
           <div className="relative z-10">
             <header className="border-b border-greyscale-50/20 bg-white/8 px-4 pb-4 pt-7 shadow-2xl backdrop-blur-3xl md:px-8 md:pb-0 md:pt-8">
-              <Tabs tabs={items} variant="blue" mobileTitle={T("navbar.contributions")} />
+              <Tabs tabs={tabItems} variant="blue" mobileTitle={T("navbar.contributions")} />
             </header>
-            Contributions
+            <div className="flex flex-col gap-4 p-8">
+              <ContributionTable
+                id="applied_contributions_table"
+                title={T("contributions.applied.title")}
+                description={T("contributions.applied.description")}
+                icon={className => <IssueDraft className={className} />}
+                onHeaderClick={() => {
+                  updateActiveTab(tabs.applied);
+                }}
+              />
+            </div>
           </div>
         </Background>
       </div>
