@@ -1,5 +1,5 @@
-import classNames from "classnames";
 import { PropsWithChildren } from "react";
+import classNames from "classnames";
 
 export enum HeaderCellWidth {
   Sixth = "w-1/6",
@@ -9,26 +9,28 @@ export enum HeaderCellWidth {
   Half = "w-1/2",
 }
 
-interface Props extends PropsWithChildren {
+type Props = PropsWithChildren<{
   onClick?: () => void;
   horizontalMargin?: boolean;
   width?: HeaderCellWidth;
-}
+  className?: string;
+}>;
 
-export const HeaderCell: React.FC<Props> = ({ onClick, children, horizontalMargin, width }) => {
+export default function HeaderCell({ onClick, children, horizontalMargin, width, className }: Props) {
   return (
     <th
       scope="col"
-      className={classNames("h-full text-left", {
-        "px-3": horizontalMargin,
-        [`${width}`]: width,
-        "hover:cursor-pointer": onClick,
-      })}
+      className={classNames(
+        "h-full text-left",
+        {
+          "px-3": horizontalMargin,
+          "cursor-pointer": onClick,
+        },
+        width
+      )}
       onClick={onClick}
     >
-      <div className="mb-2 flex h-4 items-center gap-1 font-medium">{children}</div>
+      <div className={classNames("mb-2 flex h-4 items-center gap-1 font-medium", className)}>{children}</div>
     </th>
   );
-};
-
-export default HeaderCell;
+}
