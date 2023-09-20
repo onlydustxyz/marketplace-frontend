@@ -8,17 +8,30 @@ type Tab = {
   testId?: string;
 } & PropsWithChildren;
 
-export function Tabs({ tabs }: { tabs: Tab[] }) {
+const variants = {
+  blue: {
+    active: "fill-greyscale-50 text-greyscale-50",
+    inactive:
+      "fill-spaceBlue-200 text-spaceBlue-200 hover:border-spaceBlue-100 hover:fill-spaceBlue-100 hover:text-spaceBlue-100",
+  },
+  grey: {
+    active: "fill-greyscale-50 text-greyscale-50",
+    inactive:
+      "fill-greyscale-500 text-greyscale-500 hover:border-greyscale-500 hover:fill-greyscale-200 hover:text-greyscale-200",
+  },
+};
+
+export function Tabs({ tabs, variant = "grey" }: { tabs: Tab[]; variant: keyof typeof variants }) {
   return (
-    <div className="flex items-center gap-8 border-b border-greyscale-50/8">
+    <div className="flex items-center gap-8">
       {tabs.map(({ active, onClick, testId, children }, i) => {
         return (
           <button type="button" key={i} data-testid={testId} className="relative" onClick={onClick}>
             <div
               className={classNames("flex items-center gap-1.5 pb-2 font-walsheim text-base font-normal", {
-                "text-spaceBlue-200 hover:border-b-2 hover:border-spaceBlue-100 hover:pb-1.5 hover:text-spaceBlue-100":
-                  !active,
-                "text-greyscale-50": active,
+                "hover:border-b-2 hover:pb-1.5": !active,
+                [variants[variant].inactive]: !active,
+                [variants[variant].active]: active,
               })}
             >
               {children}
