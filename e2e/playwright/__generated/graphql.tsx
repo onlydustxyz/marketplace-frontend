@@ -16871,30 +16871,6 @@ export type RejectInvoiceMutationVariables = Exact<{
 
 export type RejectInvoiceMutation = { __typename?: 'mutation_root', rejectInvoice: boolean };
 
-export type AddEthPaymentReceiptMutationVariables = Exact<{
-  projectId: Scalars['Uuid'];
-  paymentId: Scalars['Uuid'];
-  amount: Scalars['String'];
-  currencyCode: Scalars['String'];
-  recipientIdentity: EthereumIdentityInput;
-  transactionHash: Scalars['String'];
-}>;
-
-
-export type AddEthPaymentReceiptMutation = { __typename?: 'mutation_root', addEthPaymentReceipt: any };
-
-export type AddFiatPaymentReceiptMutationVariables = Exact<{
-  projectId: Scalars['Uuid'];
-  paymentId: Scalars['Uuid'];
-  amount: Scalars['String'];
-  currencyCode: Scalars['String'];
-  recipientIban: Scalars['Iban'];
-  transactionReference: Scalars['String'];
-}>;
-
-
-export type AddFiatPaymentReceiptMutation = { __typename?: 'mutation_root', addFiatPaymentReceipt: any };
-
 export type PaymentRequestsByPkQueryVariables = Exact<{
   paymentId: Scalars['uuid'];
 }>;
@@ -18211,92 +18187,6 @@ export function useRejectInvoiceMutation(baseOptions?: Apollo.MutationHookOption
 export type RejectInvoiceMutationHookResult = ReturnType<typeof useRejectInvoiceMutation>;
 export type RejectInvoiceMutationResult = Apollo.MutationResult<RejectInvoiceMutation>;
 export type RejectInvoiceMutationOptions = Apollo.BaseMutationOptions<RejectInvoiceMutation, RejectInvoiceMutationVariables>;
-export const AddEthPaymentReceiptDocument = gql`
-    mutation addEthPaymentReceipt($projectId: Uuid!, $paymentId: Uuid!, $amount: String!, $currencyCode: String!, $recipientIdentity: EthereumIdentityInput!, $transactionHash: String!) {
-  addEthPaymentReceipt(
-    projectId: $projectId
-    paymentId: $paymentId
-    amount: $amount
-    currencyCode: $currencyCode
-    recipientIdentity: $recipientIdentity
-    transactionHash: $transactionHash
-  )
-}
-    `;
-export type AddEthPaymentReceiptMutationFn = Apollo.MutationFunction<AddEthPaymentReceiptMutation, AddEthPaymentReceiptMutationVariables>;
-
-/**
- * __useAddEthPaymentReceiptMutation__
- *
- * To run a mutation, you first call `useAddEthPaymentReceiptMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useAddEthPaymentReceiptMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [addEthPaymentReceiptMutation, { data, loading, error }] = useAddEthPaymentReceiptMutation({
- *   variables: {
- *      projectId: // value for 'projectId'
- *      paymentId: // value for 'paymentId'
- *      amount: // value for 'amount'
- *      currencyCode: // value for 'currencyCode'
- *      recipientIdentity: // value for 'recipientIdentity'
- *      transactionHash: // value for 'transactionHash'
- *   },
- * });
- */
-export function useAddEthPaymentReceiptMutation(baseOptions?: Apollo.MutationHookOptions<AddEthPaymentReceiptMutation, AddEthPaymentReceiptMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<AddEthPaymentReceiptMutation, AddEthPaymentReceiptMutationVariables>(AddEthPaymentReceiptDocument, options);
-      }
-export type AddEthPaymentReceiptMutationHookResult = ReturnType<typeof useAddEthPaymentReceiptMutation>;
-export type AddEthPaymentReceiptMutationResult = Apollo.MutationResult<AddEthPaymentReceiptMutation>;
-export type AddEthPaymentReceiptMutationOptions = Apollo.BaseMutationOptions<AddEthPaymentReceiptMutation, AddEthPaymentReceiptMutationVariables>;
-export const AddFiatPaymentReceiptDocument = gql`
-    mutation addFiatPaymentReceipt($projectId: Uuid!, $paymentId: Uuid!, $amount: String!, $currencyCode: String!, $recipientIban: Iban!, $transactionReference: String!) {
-  addFiatPaymentReceipt(
-    projectId: $projectId
-    paymentId: $paymentId
-    amount: $amount
-    currencyCode: $currencyCode
-    recipientIban: $recipientIban
-    transactionReference: $transactionReference
-  )
-}
-    `;
-export type AddFiatPaymentReceiptMutationFn = Apollo.MutationFunction<AddFiatPaymentReceiptMutation, AddFiatPaymentReceiptMutationVariables>;
-
-/**
- * __useAddFiatPaymentReceiptMutation__
- *
- * To run a mutation, you first call `useAddFiatPaymentReceiptMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useAddFiatPaymentReceiptMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [addFiatPaymentReceiptMutation, { data, loading, error }] = useAddFiatPaymentReceiptMutation({
- *   variables: {
- *      projectId: // value for 'projectId'
- *      paymentId: // value for 'paymentId'
- *      amount: // value for 'amount'
- *      currencyCode: // value for 'currencyCode'
- *      recipientIban: // value for 'recipientIban'
- *      transactionReference: // value for 'transactionReference'
- *   },
- * });
- */
-export function useAddFiatPaymentReceiptMutation(baseOptions?: Apollo.MutationHookOptions<AddFiatPaymentReceiptMutation, AddFiatPaymentReceiptMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<AddFiatPaymentReceiptMutation, AddFiatPaymentReceiptMutationVariables>(AddFiatPaymentReceiptDocument, options);
-      }
-export type AddFiatPaymentReceiptMutationHookResult = ReturnType<typeof useAddFiatPaymentReceiptMutation>;
-export type AddFiatPaymentReceiptMutationResult = Apollo.MutationResult<AddFiatPaymentReceiptMutation>;
-export type AddFiatPaymentReceiptMutationOptions = Apollo.BaseMutationOptions<AddFiatPaymentReceiptMutation, AddFiatPaymentReceiptMutationVariables>;
 export const PaymentRequestsByPkDocument = gql`
     query paymentRequestsByPk($paymentId: uuid!) {
   paymentRequests(where: {id: {_eq: $paymentId}}) {
