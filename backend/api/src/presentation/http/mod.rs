@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use ::domain::{AggregateRepository, Project};
-use domain::{Budget, Event, Payment, Publisher};
+use domain::{Budget, Event, GithubFetchService, Payment, Publisher};
 pub use http::Config;
 use infrastructure::{
 	amqp::{self, CommandMessage, UniqueMessage},
@@ -13,7 +13,7 @@ use rocket::{Build, Rocket};
 
 use crate::{
 	application,
-	domain::ImageStoreService,
+	domain::{DustyBotService, ImageStoreService},
 	infrastructure::web3::ens,
 	models::*,
 	presentation::{graphql, http::github_client_pat_factory::GithubClientPatFactory},
@@ -48,7 +48,9 @@ pub fn serve(
 	onboarding_repository: Arc<dyn Repository<Onboarding>>,
 	payout_info_repository: Arc<dyn PayoutInfoRepository>,
 	github_api_client: Arc<github::Client>,
+	github_fetch_service: Arc<dyn GithubFetchService>,
 	dusty_bot_api_client: Arc<github::Client>,
+	dusty_bot_service: Arc<dyn DustyBotService>,
 	ens: Arc<ens::Client>,
 	simple_storage: Arc<dyn ImageStoreService>,
 	bus: Arc<amqp::Bus>,
@@ -96,6 +98,8 @@ pub fn serve(
 		.manage(github_client_pat_factory)
 		.manage(cancel_payment_usecase)
 		.manage(payout_info_repository)
+		.manage(github_fetch_service)
+		.manage(dusty_bot_service)
 		.attach(http::guards::Cors)
 		.mount(
 			"/",
@@ -123,6 +127,7 @@ pub fn serve(
 				routes::pull_requests::fetch_pull_request,
 				routes::payment::request_payment,
 				routes::payment::cancel_payment,
+				routes::payment::receipts::create,
 				routes::sponsors::create_sponsor,
 				routes::sponsors::update_sponsor
 			],

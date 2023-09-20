@@ -2,6 +2,7 @@ use anyhow::{anyhow, Error};
 use rocket::{http::Status, request::Outcome, Orbit, Rocket};
 
 mod budget;
+mod dusty_bot;
 mod payment;
 mod project;
 mod sponsor;

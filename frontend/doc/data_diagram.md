@@ -186,7 +186,6 @@ class GithubPullRequests {
    authorId: bigint
    ciChecks: github_ci_checks
    closedAt: timestamp
-   closingIssueNumbers: jsonb
    closingIssues: [ApiClosingIssues!]!
    createdAt: timestamp
    draft: Boolean

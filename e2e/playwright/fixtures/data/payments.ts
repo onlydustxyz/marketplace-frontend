@@ -23,12 +23,8 @@ export const payments: PaymentFixture[] = [
           {
             amount: 100,
             currencyCode: "ETH",
-            recipientETHIdentity: {
-              type: EthereumIdentityType.EthereumAddress,
-              optEthAddress: "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
-              optEthName: null,
-            },
-            transactionHashOrReference: "0x5b48f0c340e70e63c011ca41495ff423b9a4fe6975c58df0f066d80fe4d2dcca",
+            recipientWallet: "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
+            transactionReference: "0x5b48f0c340e70e63c011ca41495ff423b9a4fe6975c58df0f066d80fe4d2dcca",
           },
         ],
       },

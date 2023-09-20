@@ -1,11 +1,9 @@
 use chrono::{DateTime, Utc};
-use juniper::{GraphQLEnum, GraphQLObject};
 use url::Url;
 
 use super::{ToInt32, User};
 
-#[derive(Debug, GraphQLObject)]
-#[graphql(name = "GithubPullRequest")]
+#[derive(Debug)]
 pub struct PullRequest {
 	pub id: i32,
 	pub repo_id: i32,
@@ -20,8 +18,7 @@ pub struct PullRequest {
 	pub closed_at: Option<DateTime<Utc>>,
 }
 
-#[derive(Debug, GraphQLEnum)]
-#[graphql(name = "GithubPullRequestStatus")]
+#[derive(Debug)]
 pub enum Status {
 	Open,
 	Closed,

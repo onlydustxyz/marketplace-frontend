@@ -11,16 +11,6 @@
     },
     "types": [
       {
-        "kind": "SCALAR",
-        "name": "Address",
-        "description": "A `0x` prefixed hexadecimal string representing 20 bytes of data",
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
         "kind": "ENUM",
         "name": "AllocatedTime",
         "description": null,
@@ -22873,80 +22863,6 @@
         "possibleTypes": null
       },
       {
-        "kind": "INPUT_OBJECT",
-        "name": "EthereumIdentityInput",
-        "description": null,
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "optEthAddress",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "Address",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "optEthName",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "Name",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "type",
-            "description": null,
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "ENUM",
-                "name": "EthereumIdentityType",
-                "ofType": null
-              }
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "ENUM",
-        "name": "EthereumIdentityType",
-        "description": null,
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": [
-          {
-            "name": "ETHEREUM_ADDRESS",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "ETHEREUM_NAME",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "possibleTypes": null
-      },
-      {
         "kind": "SCALAR",
         "name": "Float",
         "description": "The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](https://en.wikipedia.org/wiki/IEEE_floating_point).",
@@ -29215,31 +29131,6 @@
             "deprecationReason": null
           },
           {
-            "name": "closingIssueNumbers",
-            "description": null,
-            "args": [
-              {
-                "name": "path",
-                "description": "JSON select path",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              }
-            ],
-            "type": {
-              "kind": "SCALAR",
-              "name": "jsonb",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "closingIssues",
             "description": "An array relationship",
             "args": [
@@ -29787,29 +29678,6 @@
         "possibleTypes": null
       },
       {
-        "kind": "INPUT_OBJECT",
-        "name": "GithubPullRequestsAppendInput",
-        "description": "append existing jsonb value of filtered columns with new jsonb value",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "closingIssueNumbers",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "jsonb",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
         "kind": "OBJECT",
         "name": "GithubPullRequestsAvgFields",
         "description": "aggregate avg on columns",
@@ -29956,18 +29824,6 @@
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "TimestampComparisonExp",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "closingIssueNumbers",
-            "description": null,
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "JsonbComparisonExp",
               "ofType": null
             },
             "defaultValue": null,
@@ -30125,83 +29981,6 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "GithubPullRequestsDeleteAtPathInput",
-        "description": "delete the field or element with specified path (for JSON arrays, negative integers count from the end)",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "closingIssueNumbers",
-            "description": null,
-            "type": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                }
-              }
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "GithubPullRequestsDeleteElemInput",
-        "description": "delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "closingIssueNumbers",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "GithubPullRequestsDeleteKeyInput",
-        "description": "delete key/value pair or string element. key/value pairs are matched based on their key value",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "closingIssueNumbers",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
         "name": "GithubPullRequestsIncInput",
         "description": "input type for incrementing numeric columns in table \"api.github_pull_requests\"",
         "fields": null,
@@ -30295,18 +30074,6 @@
             "type": {
               "kind": "SCALAR",
               "name": "timestamp",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "closingIssueNumbers",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "jsonb",
               "ofType": null
             },
             "defaultValue": null,
@@ -30857,18 +30624,6 @@
             "deprecationReason": null
           },
           {
-            "name": "closingIssueNumbers",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "OrderBy",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "closingIssuesAggregate",
             "description": null,
             "type": {
@@ -31006,29 +30761,6 @@
         "possibleTypes": null
       },
       {
-        "kind": "INPUT_OBJECT",
-        "name": "GithubPullRequestsPrependInput",
-        "description": "prepend existing jsonb value of filtered columns with new jsonb value",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "closingIssueNumbers",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "jsonb",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
         "kind": "ENUM",
         "name": "GithubPullRequestsSelectColumn",
         "description": "select columns of table \"api.github_pull_requests\"",
@@ -31050,12 +30782,6 @@
           },
           {
             "name": "closedAt",
-            "description": "column name",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "closingIssueNumbers",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
@@ -31153,18 +30879,6 @@
             "type": {
               "kind": "SCALAR",
               "name": "timestamp",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "closingIssueNumbers",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "jsonb",
               "ofType": null
             },
             "defaultValue": null,
@@ -31527,71 +31241,11 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "_append",
-            "description": "append existing jsonb value of filtered columns with new jsonb value",
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "GithubPullRequestsAppendInput",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "_deleteAtPath",
-            "description": "delete the field or element with specified path (for JSON arrays, negative integers count from the end)",
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "GithubPullRequestsDeleteAtPathInput",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "_deleteElem",
-            "description": "delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array",
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "GithubPullRequestsDeleteElemInput",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "_deleteKey",
-            "description": "delete key/value pair or string element. key/value pairs are matched based on their key value",
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "GithubPullRequestsDeleteKeyInput",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "_inc",
             "description": "increments the numeric columns with given value of the filtered values",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "GithubPullRequestsIncInput",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "_prepend",
-            "description": "prepend existing jsonb value of filtered columns with new jsonb value",
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "GithubPullRequestsPrependInput",
               "ofType": null
             },
             "defaultValue": null,
@@ -31883,18 +31537,6 @@
             "type": {
               "kind": "SCALAR",
               "name": "timestamp",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "closingIssueNumbers",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "jsonb",
               "ofType": null
             },
             "defaultValue": null,
@@ -36393,16 +36035,6 @@
         "possibleTypes": null
       },
       {
-        "kind": "SCALAR",
-        "name": "Iban",
-        "description": null,
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
         "kind": "INPUT_OBJECT",
         "name": "Identity",
         "description": null,
@@ -36985,16 +36617,6 @@
             "deprecationReason": null
           }
         ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "SCALAR",
-        "name": "Name",
-        "description": "A ENS backed domain name",
-        "fields": null,
-        "inputFields": null,
         "interfaces": null,
         "enumValues": null,
         "possibleTypes": null
@@ -86208,232 +85830,6 @@
             "deprecationReason": null
           },
           {
-            "name": "addEthPaymentReceipt",
-            "description": null,
-            "args": [
-              {
-                "name": "amount",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "currencyCode",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "paymentId",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Uuid",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "projectId",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Uuid",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "recipientIdentity",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "INPUT_OBJECT",
-                    "name": "EthereumIdentityInput",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "transactionHash",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              }
-            ],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Uuid",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "addFiatPaymentReceipt",
-            "description": null,
-            "args": [
-              {
-                "name": "amount",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "currencyCode",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "paymentId",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Uuid",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "projectId",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Uuid",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "recipientIban",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Iban",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "transactionReference",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              }
-            ],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Uuid",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "addSponsorToProject",
             "description": null,
             "args": [
@@ -86625,6 +86021,64 @@
                 "name": "GithubIssue",
                 "ofType": null
               }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "deleteApiClosedByPullRequests",
+            "description": "delete data from the table: \"api.closed_by_pull_requests\"",
+            "args": [
+              {
+                "name": "where",
+                "description": "filter the rows which have to be deleted",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "ApiClosedByPullRequestsBoolExp",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "ApiClosedByPullRequestsMutationResponse",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "deleteApiClosingIssues",
+            "description": "delete data from the table: \"api.closing_issues\"",
+            "args": [
+              {
+                "name": "where",
+                "description": "filter the rows which have to be deleted",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "ApiClosingIssuesBoolExp",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "ApiClosingIssuesMutationResponse",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -92637,71 +92091,11 @@
             "description": "update data of the table: \"api.github_pull_requests\"",
             "args": [
               {
-                "name": "_append",
-                "description": "append existing jsonb value of filtered columns with new jsonb value",
-                "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "GithubPullRequestsAppendInput",
-                  "ofType": null
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "_deleteAtPath",
-                "description": "delete the field or element with specified path (for JSON arrays, negative integers count from the end)",
-                "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "GithubPullRequestsDeleteAtPathInput",
-                  "ofType": null
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "_deleteElem",
-                "description": "delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array",
-                "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "GithubPullRequestsDeleteElemInput",
-                  "ofType": null
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "_deleteKey",
-                "description": "delete key/value pair or string element. key/value pairs are matched based on their key value",
-                "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "GithubPullRequestsDeleteKeyInput",
-                  "ofType": null
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
                 "name": "_inc",
                 "description": "increments the numeric columns with given value of the filtered values",
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "GithubPullRequestsIncInput",
-                  "ofType": null
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "_prepend",
-                "description": "prepend existing jsonb value of filtered columns with new jsonb value",
-                "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "GithubPullRequestsPrependInput",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -125483,3 +124877,4 @@
       }
     ]
   }
+}
