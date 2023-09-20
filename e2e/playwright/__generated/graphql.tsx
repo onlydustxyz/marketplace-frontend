@@ -4323,21 +4323,14 @@ export type GithubPullRequests = {
   authorId: Maybe<Scalars['bigint']>;
   ciChecks: Maybe<Scalars['github_ci_checks']>;
   closedAt: Maybe<Scalars['timestamp']>;
-<<<<<<< HEAD
-=======
-  closingIssueNumbers: Maybe<Scalars['jsonb']>;
->>>>>>> origin/main
   /** An array relationship */
   closingIssues: Array<ApiClosingIssues>;
   /** An aggregate relationship */
   closingIssuesAggregate: ApiClosingIssuesAggregate;
-<<<<<<< HEAD
   /** An array relationship */
   commits: Array<GithubPullRequestCommits>;
   /** An aggregate relationship */
   commitsAggregate: GithubPullRequestCommitsAggregate;
-=======
->>>>>>> origin/main
   createdAt: Maybe<Scalars['timestamp']>;
   draft: Maybe<Scalars['Boolean']>;
   htmlUrl: Maybe<Scalars['String']>;
@@ -4391,26 +4384,6 @@ export type GithubPullRequestsCommitsAggregateArgs = {
   where: InputMaybe<GithubPullRequestCommitsBoolExp>;
 };
 
-
-/** columns and relationships of "api.github_pull_requests" */
-export type GithubPullRequestsClosingIssuesArgs = {
-  distinctOn: InputMaybe<Array<ApiClosingIssuesSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<ApiClosingIssuesOrderBy>>;
-  where: InputMaybe<ApiClosingIssuesBoolExp>;
-};
-
-
-/** columns and relationships of "api.github_pull_requests" */
-export type GithubPullRequestsClosingIssuesAggregateArgs = {
-  distinctOn: InputMaybe<Array<ApiClosingIssuesSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<ApiClosingIssuesOrderBy>>;
-  where: InputMaybe<ApiClosingIssuesBoolExp>;
-};
-
 /** aggregated selection of "api.github_pull_requests" */
 export type GithubPullRequestsAggregate = {
   __typename?: 'GithubPullRequestsAggregate';
@@ -4459,16 +4432,10 @@ export type GithubPullRequestsBoolExp = {
   authorId: InputMaybe<BigintComparisonExp>;
   ciChecks: InputMaybe<GithubCiChecksComparisonExp>;
   closedAt: InputMaybe<TimestampComparisonExp>;
-<<<<<<< HEAD
   closingIssues: InputMaybe<ApiClosingIssuesBoolExp>;
   closingIssues_aggregate: InputMaybe<Api_Closing_Issues_Aggregate_Bool_Exp>;
   commits: InputMaybe<GithubPullRequestCommitsBoolExp>;
   commits_aggregate: InputMaybe<Github_Pull_Request_Commits_Aggregate_Bool_Exp>;
-=======
-  closingIssueNumbers: InputMaybe<JsonbComparisonExp>;
-  closingIssues: InputMaybe<ApiClosingIssuesBoolExp>;
-  closingIssues_aggregate: InputMaybe<Api_Closing_Issues_Aggregate_Bool_Exp>;
->>>>>>> origin/main
   createdAt: InputMaybe<TimestampComparisonExp>;
   draft: InputMaybe<BooleanComparisonExp>;
   htmlUrl: InputMaybe<StringComparisonExp>;
@@ -4495,13 +4462,8 @@ export type GithubPullRequestsInsertInput = {
   authorId: InputMaybe<Scalars['bigint']>;
   ciChecks: InputMaybe<Scalars['github_ci_checks']>;
   closedAt: InputMaybe<Scalars['timestamp']>;
-<<<<<<< HEAD
   closingIssues: InputMaybe<ApiClosingIssuesArrRelInsertInput>;
   commits: InputMaybe<GithubPullRequestCommitsArrRelInsertInput>;
-=======
-  closingIssueNumbers: InputMaybe<Scalars['jsonb']>;
-  closingIssues: InputMaybe<ApiClosingIssuesArrRelInsertInput>;
->>>>>>> origin/main
   createdAt: InputMaybe<Scalars['timestamp']>;
   draft: InputMaybe<Scalars['Boolean']>;
   htmlUrl: InputMaybe<Scalars['String']>;
@@ -4566,13 +4528,8 @@ export type GithubPullRequestsOrderBy = {
   authorId: InputMaybe<OrderBy>;
   ciChecks: InputMaybe<OrderBy>;
   closedAt: InputMaybe<OrderBy>;
-<<<<<<< HEAD
   closingIssuesAggregate: InputMaybe<ApiClosingIssuesAggregateOrderBy>;
   commitsAggregate: InputMaybe<GithubPullRequestCommitsAggregateOrderBy>;
-=======
-  closingIssueNumbers: InputMaybe<OrderBy>;
-  closingIssuesAggregate: InputMaybe<ApiClosingIssuesAggregateOrderBy>;
->>>>>>> origin/main
   createdAt: InputMaybe<OrderBy>;
   draft: InputMaybe<OrderBy>;
   htmlUrl: InputMaybe<OrderBy>;
