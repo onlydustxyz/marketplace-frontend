@@ -1,7 +1,9 @@
 use std::sync::Arc;
 
 use anyhow::anyhow;
-use domain::{blockchain::evm, Amount, Currency, Iban, PaymentReceipt, PaymentReceiptId};
+use domain::{
+	blockchain::evm, currencies, Amount, Currency, Iban, PaymentReceipt, PaymentReceiptId,
+};
 use http_api_problem::HttpApiProblem;
 use presentation::http::guards::ApiKey;
 use reqwest::StatusCode;
@@ -50,14 +52,19 @@ pub async fn create(
 
 	let amount = Amount::from_decimal(amount, currency);
 
-	let receipt =
-		build_payment_receipt(ens, recipient_wallet, recipient_iban, transaction_reference)
-			.await
-			.map_err(|e| {
-				HttpApiProblem::new(StatusCode::BAD_REQUEST)
-					.title("Bad request")
-					.detail(e.to_string())
-			})?;
+	let receipt = build_payment_receipt(
+		ens,
+		currency,
+		recipient_wallet,
+		recipient_iban,
+		transaction_reference,
+	)
+	.await
+	.map_err(|e| {
+		HttpApiProblem::new(StatusCode::BAD_REQUEST)
+			.title("Bad request")
+			.detail(e.to_string())
+	})?;
 
 	let receipt_id = process_payment_usecase
 		.add_payment_receipt(payment_id.into(), amount, receipt)
@@ -69,34 +76,59 @@ pub async fn create(
 
 async fn build_payment_receipt(
 	ens: &ens::Client,
+	currency: &'static Currency,
 	recipient_wallet: Option<String>,
 	recipient_iban: Option<Iban>,
 	transaction_reference: String,
 ) -> anyhow::Result<PaymentReceipt> {
-	match (recipient_iban, recipient_wallet) {
-		(Some(recipient_iban), None) => Ok(PaymentReceipt::Sepa {
-			recipient_iban,
-			transaction_reference,
-		}),
-		(None, Some(wallet)) => {
-			let (recipient_address, recipient_ens) = if wallet.starts_with("0x") {
-				(wallet.parse()?, None)
-			} else {
-				let address = ens.eth_address(&wallet).await?;
-				(address, Some(evm::Name::new(wallet)))
-			};
+	match currency {
+		currencies::USD => match (recipient_iban, recipient_wallet) {
+			(Some(recipient_iban), None) => Ok(PaymentReceipt::Sepa {
+				recipient_iban,
+				transaction_reference,
+			}),
+			(None, Some(wallet)) => {
+				let (recipient_address, recipient_ens) = if wallet.starts_with("0x") {
+					(wallet.parse()?, None)
+				} else {
+					let address = ens.eth_address(&wallet).await?;
+					(address, Some(evm::Name::new(wallet)))
+				};
 
-			Ok(PaymentReceipt::Ethereum {
-				recipient_address,
-				recipient_ens,
-				transaction_hash: transaction_reference.parse()?,
-			})
+				Ok(PaymentReceipt::Ethereum {
+					recipient_address,
+					recipient_ens,
+					transaction_hash: transaction_reference.parse()?,
+				})
+			},
+			(Some(_), Some(_)) => Err(anyhow!(
+				"You cannot specify both the recipient iban and wallet"
+			)),
+			(None, None) => Err(anyhow!(
+				"You must provide at least the recipient iban or wallet"
+			)),
 		},
-		(Some(_), Some(_)) => Err(anyhow!(
-			"You cannot specify both the recipient iban and wallet"
-		)),
-		(None, None) => Err(anyhow!(
-			"You must provide at least the recipient iban or wallet"
-		)),
+		currencies::OPTIMISM => match recipient_wallet {
+			Some(recipient_address) => Ok(PaymentReceipt::Optimism {
+				recipient_address: recipient_address.parse()?,
+				transaction_hash: transaction_reference.parse()?,
+			}),
+			None => Err(anyhow!("You must provide the recipient wallet")),
+		},
+		currencies::APTOS => match recipient_wallet {
+			Some(recipient_address) => Ok(PaymentReceipt::Aptos {
+				recipient_address: recipient_address.parse()?,
+				transaction_hash: transaction_reference.parse()?,
+			}),
+			None => Err(anyhow!("You must provide the recipient wallet")),
+		},
+		currencies::STARK => match recipient_wallet {
+			Some(recipient_address) => Ok(PaymentReceipt::Starknet {
+				recipient_address: recipient_address.parse()?,
+				transaction_hash: transaction_reference.parse()?,
+			}),
+			None => Err(anyhow!("You must provide the recipient wallet")),
+		},
+		_ => Err(anyhow!("Currency {currency} is not supported")),
 	}
 }

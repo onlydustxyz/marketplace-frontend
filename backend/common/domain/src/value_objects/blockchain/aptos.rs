@@ -8,3 +8,5 @@ use crate::blockchain;
 )]
 #[serde(transparent)]
 pub struct Address(blockchain::Address<32>);
+
+pub type TransactionHash = super::Address<32>;
