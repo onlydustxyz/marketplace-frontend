@@ -7,6 +7,7 @@ use domain::{
 	AggregateRootRepository, Budget, CommandId, DomainError, Event, EventSourcable, GithubUserId,
 	Payment, PaymentId, PaymentReason, PaymentWorkItem, Project, ProjectId, Publisher, UserId,
 };
+use futures::future::try_join_all;
 use infrastructure::amqp::CommandMessage;
 use rusty_money::{crypto, Money};
 use tracing::instrument;
@@ -46,25 +47,17 @@ impl Usecase {
 			.await
 			.map_err(|e| DomainError::InvalidInputs(e.into()))?;
 
-		self.github_indexer_service
-			.index_user(recipient_id)
-			.await
-			.map_err(DomainError::InternalError)?;
-
-		for work_item in reason.work_items {
-			match work_item {
+		let mut handles: Vec<_> = reason
+			.work_items
+			.into_iter()
+			.flat_map(|work_item| match work_item {
 				PaymentWorkItem::Issue {
 					repo_id, number, ..
 				} => {
-					self.github_indexer_service
-						.index_repo(repo_id)
-						.await
-						.map_err(DomainError::InternalError)?;
-
-					self.github_indexer_service
-						.index_issue(repo_id, number)
-						.await
-						.map_err(DomainError::InternalError)?;
+					vec![
+						self.github_indexer_service.index_repo(repo_id),
+						self.github_indexer_service.index_issue(repo_id, number),
+					]
 				},
 				PaymentWorkItem::PullRequest {
 					repo_id, number, ..
@@ -72,18 +65,17 @@ impl Usecase {
 				| PaymentWorkItem::CodeReview {
 					repo_id, number, ..
 				} => {
-					self.github_indexer_service
-						.index_repo(repo_id)
-						.await
-						.map_err(DomainError::InternalError)?;
-
-					self.github_indexer_service
-						.index_pull_request(repo_id, number)
-						.await
-						.map_err(DomainError::InternalError)?;
+					vec![
+						self.github_indexer_service.index_repo(repo_id),
+						self.github_indexer_service.index_pull_request(repo_id, number),
+					]
 				},
-			}
-		}
+			})
+			.collect();
+
+		handles.push(self.github_indexer_service.index_user(recipient_id));
+
+		try_join_all(handles).await.map_err(DomainError::InternalError)?;
 
 		let project = project.apply_events(&events);
 		let budget = project.budget().clone().unwrap();
