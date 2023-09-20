@@ -13,12 +13,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  /** A `0x` prefixed hexadecimal string representing 20 bytes of data */
-  Address: any;
   DateTimeUtc: any;
-  Iban: any;
-  /** A ENS backed domain name */
-  Name: any;
   Url: any;
   /** Uuid */
   Uuid: any;
@@ -3213,17 +3208,6 @@ export enum CursorOrdering {
   Desc = 'DESC'
 }
 
-export type EthereumIdentityInput = {
-  optEthAddress: InputMaybe<Scalars['Address']>;
-  optEthName: InputMaybe<Scalars['Name']>;
-  type: EthereumIdentityType;
-};
-
-export enum EthereumIdentityType {
-  EthereumAddress = 'ETHEREUM_ADDRESS',
-  EthereumName = 'ETHEREUM_NAME'
-}
-
 /** Boolean expression to compare columns of type "float8". All fields are combined with logical 'AND'. */
 export type Float8ComparisonExp = {
   _eq: InputMaybe<Scalars['float8']>;
@@ -4044,7 +4028,6 @@ export type GithubPullRequests = {
   authorId: Maybe<Scalars['bigint']>;
   ciChecks: Maybe<Scalars['github_ci_checks']>;
   closedAt: Maybe<Scalars['timestamp']>;
-  closingIssueNumbers: Maybe<Scalars['jsonb']>;
   /** An array relationship */
   closingIssues: Array<ApiClosingIssues>;
   /** An aggregate relationship */
@@ -4060,12 +4043,6 @@ export type GithubPullRequests = {
   repoId: Maybe<Scalars['bigint']>;
   status: Maybe<Scalars['String']>;
   title: Maybe<Scalars['String']>;
-};
-
-
-/** columns and relationships of "api.github_pull_requests" */
-export type GithubPullRequestsClosingIssueNumbersArgs = {
-  path: InputMaybe<Scalars['String']>;
 };
 
 
@@ -4118,11 +4095,6 @@ export type GithubPullRequestsAggregateFieldsCountArgs = {
   distinct: InputMaybe<Scalars['Boolean']>;
 };
 
-/** append existing jsonb value of filtered columns with new jsonb value */
-export type GithubPullRequestsAppendInput = {
-  closingIssueNumbers: InputMaybe<Scalars['jsonb']>;
-};
-
 /** aggregate avg on columns */
 export type GithubPullRequestsAvgFields = {
   __typename?: 'GithubPullRequestsAvgFields';
@@ -4140,7 +4112,6 @@ export type GithubPullRequestsBoolExp = {
   authorId: InputMaybe<BigintComparisonExp>;
   ciChecks: InputMaybe<GithubCiChecksComparisonExp>;
   closedAt: InputMaybe<TimestampComparisonExp>;
-  closingIssueNumbers: InputMaybe<JsonbComparisonExp>;
   closingIssues: InputMaybe<ApiClosingIssuesBoolExp>;
   closingIssues_aggregate: InputMaybe<Api_Closing_Issues_Aggregate_Bool_Exp>;
   createdAt: InputMaybe<TimestampComparisonExp>;
@@ -4153,21 +4124,6 @@ export type GithubPullRequestsBoolExp = {
   repoId: InputMaybe<BigintComparisonExp>;
   status: InputMaybe<StringComparisonExp>;
   title: InputMaybe<StringComparisonExp>;
-};
-
-/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
-export type GithubPullRequestsDeleteAtPathInput = {
-  closingIssueNumbers: InputMaybe<Array<Scalars['String']>>;
-};
-
-/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
-export type GithubPullRequestsDeleteElemInput = {
-  closingIssueNumbers: InputMaybe<Scalars['Int']>;
-};
-
-/** delete key/value pair or string element. key/value pairs are matched based on their key value */
-export type GithubPullRequestsDeleteKeyInput = {
-  closingIssueNumbers: InputMaybe<Scalars['String']>;
 };
 
 /** input type for incrementing numeric columns in table "api.github_pull_requests" */
@@ -4183,7 +4139,6 @@ export type GithubPullRequestsInsertInput = {
   authorId: InputMaybe<Scalars['bigint']>;
   ciChecks: InputMaybe<Scalars['github_ci_checks']>;
   closedAt: InputMaybe<Scalars['timestamp']>;
-  closingIssueNumbers: InputMaybe<Scalars['jsonb']>;
   closingIssues: InputMaybe<ApiClosingIssuesArrRelInsertInput>;
   createdAt: InputMaybe<Scalars['timestamp']>;
   draft: InputMaybe<Scalars['Boolean']>;
@@ -4248,7 +4203,6 @@ export type GithubPullRequestsOrderBy = {
   authorId: InputMaybe<OrderBy>;
   ciChecks: InputMaybe<OrderBy>;
   closedAt: InputMaybe<OrderBy>;
-  closingIssueNumbers: InputMaybe<OrderBy>;
   closingIssuesAggregate: InputMaybe<ApiClosingIssuesAggregateOrderBy>;
   createdAt: InputMaybe<OrderBy>;
   draft: InputMaybe<OrderBy>;
@@ -4262,11 +4216,6 @@ export type GithubPullRequestsOrderBy = {
   title: InputMaybe<OrderBy>;
 };
 
-/** prepend existing jsonb value of filtered columns with new jsonb value */
-export type GithubPullRequestsPrependInput = {
-  closingIssueNumbers: InputMaybe<Scalars['jsonb']>;
-};
-
 /** select columns of table "api.github_pull_requests" */
 export enum GithubPullRequestsSelectColumn {
   /** column name */
@@ -4275,8 +4224,6 @@ export enum GithubPullRequestsSelectColumn {
   CiChecks = 'ciChecks',
   /** column name */
   ClosedAt = 'closedAt',
-  /** column name */
-  ClosingIssueNumbers = 'closingIssueNumbers',
   /** column name */
   CreatedAt = 'createdAt',
   /** column name */
@@ -4302,7 +4249,6 @@ export type GithubPullRequestsSetInput = {
   authorId: InputMaybe<Scalars['bigint']>;
   ciChecks: InputMaybe<Scalars['github_ci_checks']>;
   closedAt: InputMaybe<Scalars['timestamp']>;
-  closingIssueNumbers: InputMaybe<Scalars['jsonb']>;
   createdAt: InputMaybe<Scalars['timestamp']>;
   draft: InputMaybe<Scalars['Boolean']>;
   htmlUrl: InputMaybe<Scalars['String']>;
@@ -4351,18 +4297,8 @@ export type GithubPullRequestsSumFields = {
 };
 
 export type GithubPullRequestsUpdates = {
-  /** append existing jsonb value of filtered columns with new jsonb value */
-  _append: InputMaybe<GithubPullRequestsAppendInput>;
-  /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
-  _deleteAtPath: InputMaybe<GithubPullRequestsDeleteAtPathInput>;
-  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
-  _deleteElem: InputMaybe<GithubPullRequestsDeleteElemInput>;
-  /** delete key/value pair or string element. key/value pairs are matched based on their key value */
-  _deleteKey: InputMaybe<GithubPullRequestsDeleteKeyInput>;
   /** increments the numeric columns with given value of the filtered values */
   _inc: InputMaybe<GithubPullRequestsIncInput>;
-  /** prepend existing jsonb value of filtered columns with new jsonb value */
-  _prepend: InputMaybe<GithubPullRequestsPrependInput>;
   /** sets the columns of the filtered rows to the given values */
   _set: InputMaybe<GithubPullRequestsSetInput>;
   where: GithubPullRequestsBoolExp;
@@ -4408,7 +4344,6 @@ export type GithubPullRequests_StreamCursorValueInput = {
   authorId: InputMaybe<Scalars['bigint']>;
   ciChecks: InputMaybe<Scalars['github_ci_checks']>;
   closedAt: InputMaybe<Scalars['timestamp']>;
-  closingIssueNumbers: InputMaybe<Scalars['jsonb']>;
   createdAt: InputMaybe<Scalars['timestamp']>;
   draft: InputMaybe<Scalars['Boolean']>;
   htmlUrl: InputMaybe<Scalars['String']>;
@@ -12030,13 +11965,15 @@ export type Mutation_Root = {
   __typename?: 'mutation_root';
   acceptProjectLeaderInvitation: Scalars['Boolean'];
   acceptTermsAndConditions: Scalars['Uuid'];
-  addEthPaymentReceipt: Scalars['Uuid'];
-  addFiatPaymentReceipt: Scalars['Uuid'];
   addSponsorToProject: Scalars['Uuid'];
   applyToProject: Scalars['Uuid'];
   cancelPaymentRequest: Command;
   /** createAndCloseIssue */
   createAndCloseIssue: GithubIssue;
+  /** delete data from the table: "api.closed_by_pull_requests" */
+  deleteApiClosedByPullRequests: Maybe<ApiClosedByPullRequestsMutationResponse>;
+  /** delete data from the table: "api.closing_issues" */
+  deleteApiClosingIssues: Maybe<ApiClosingIssuesMutationResponse>;
   /** delete data from the table: "applications" */
   deleteApplications: Maybe<ApplicationsMutationResponse>;
   /** delete single row from the table: "applications" */
@@ -12422,28 +12359,6 @@ export type Mutation_RootAcceptProjectLeaderInvitationArgs = {
 
 
 /** mutation root */
-export type Mutation_RootAddEthPaymentReceiptArgs = {
-  amount: Scalars['String'];
-  currencyCode: Scalars['String'];
-  paymentId: Scalars['Uuid'];
-  projectId: Scalars['Uuid'];
-  recipientIdentity: EthereumIdentityInput;
-  transactionHash: Scalars['String'];
-};
-
-
-/** mutation root */
-export type Mutation_RootAddFiatPaymentReceiptArgs = {
-  amount: Scalars['String'];
-  currencyCode: Scalars['String'];
-  paymentId: Scalars['Uuid'];
-  projectId: Scalars['Uuid'];
-  recipientIban: Scalars['Iban'];
-  transactionReference: Scalars['String'];
-};
-
-
-/** mutation root */
 export type Mutation_RootAddSponsorToProjectArgs = {
   projectId: Scalars['Uuid'];
   sponsorId: Scalars['Uuid'];
@@ -12468,6 +12383,18 @@ export type Mutation_RootCreateAndCloseIssueArgs = {
   githubRepoId: Scalars['Int'];
   projectId: Scalars['Uuid'];
   title: Scalars['String'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteApiClosedByPullRequestsArgs = {
+  where: ApiClosedByPullRequestsBoolExp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteApiClosingIssuesArgs = {
+  where: ApiClosingIssuesBoolExp;
 };
 
 
@@ -13456,12 +13383,7 @@ export type Mutation_RootUpdateGithubPullRequestReviewsManyArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdateGithubPullRequestsArgs = {
-  _append: InputMaybe<GithubPullRequestsAppendInput>;
-  _deleteAtPath: InputMaybe<GithubPullRequestsDeleteAtPathInput>;
-  _deleteElem: InputMaybe<GithubPullRequestsDeleteElemInput>;
-  _deleteKey: InputMaybe<GithubPullRequestsDeleteKeyInput>;
   _inc: InputMaybe<GithubPullRequestsIncInput>;
-  _prepend: InputMaybe<GithubPullRequestsPrependInput>;
   _set: InputMaybe<GithubPullRequestsSetInput>;
   where: GithubPullRequestsBoolExp;
 };
@@ -17686,30 +17608,6 @@ export type RejectInvoiceMutationVariables = Exact<{
 
 export type RejectInvoiceMutation = { __typename?: 'mutation_root', rejectInvoice: boolean };
 
-export type AddEthPaymentReceiptMutationVariables = Exact<{
-  projectId: Scalars['Uuid'];
-  paymentId: Scalars['Uuid'];
-  amount: Scalars['String'];
-  currencyCode: Scalars['String'];
-  recipientIdentity: EthereumIdentityInput;
-  transactionHash: Scalars['String'];
-}>;
-
-
-export type AddEthPaymentReceiptMutation = { __typename?: 'mutation_root', addEthPaymentReceipt: any };
-
-export type AddFiatPaymentReceiptMutationVariables = Exact<{
-  projectId: Scalars['Uuid'];
-  paymentId: Scalars['Uuid'];
-  amount: Scalars['String'];
-  currencyCode: Scalars['String'];
-  recipientIban: Scalars['Iban'];
-  transactionReference: Scalars['String'];
-}>;
-
-
-export type AddFiatPaymentReceiptMutation = { __typename?: 'mutation_root', addFiatPaymentReceipt: any };
-
 export type PaymentRequestsByPkQueryVariables = Exact<{
   paymentId: Scalars['uuid'];
 }>;
@@ -19033,92 +18931,6 @@ export function useRejectInvoiceMutation(baseOptions?: Apollo.MutationHookOption
 export type RejectInvoiceMutationHookResult = ReturnType<typeof useRejectInvoiceMutation>;
 export type RejectInvoiceMutationResult = Apollo.MutationResult<RejectInvoiceMutation>;
 export type RejectInvoiceMutationOptions = Apollo.BaseMutationOptions<RejectInvoiceMutation, RejectInvoiceMutationVariables>;
-export const AddEthPaymentReceiptDocument = gql`
-    mutation addEthPaymentReceipt($projectId: Uuid!, $paymentId: Uuid!, $amount: String!, $currencyCode: String!, $recipientIdentity: EthereumIdentityInput!, $transactionHash: String!) {
-  addEthPaymentReceipt(
-    projectId: $projectId
-    paymentId: $paymentId
-    amount: $amount
-    currencyCode: $currencyCode
-    recipientIdentity: $recipientIdentity
-    transactionHash: $transactionHash
-  )
-}
-    `;
-export type AddEthPaymentReceiptMutationFn = Apollo.MutationFunction<AddEthPaymentReceiptMutation, AddEthPaymentReceiptMutationVariables>;
-
-/**
- * __useAddEthPaymentReceiptMutation__
- *
- * To run a mutation, you first call `useAddEthPaymentReceiptMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useAddEthPaymentReceiptMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [addEthPaymentReceiptMutation, { data, loading, error }] = useAddEthPaymentReceiptMutation({
- *   variables: {
- *      projectId: // value for 'projectId'
- *      paymentId: // value for 'paymentId'
- *      amount: // value for 'amount'
- *      currencyCode: // value for 'currencyCode'
- *      recipientIdentity: // value for 'recipientIdentity'
- *      transactionHash: // value for 'transactionHash'
- *   },
- * });
- */
-export function useAddEthPaymentReceiptMutation(baseOptions?: Apollo.MutationHookOptions<AddEthPaymentReceiptMutation, AddEthPaymentReceiptMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<AddEthPaymentReceiptMutation, AddEthPaymentReceiptMutationVariables>(AddEthPaymentReceiptDocument, options);
-      }
-export type AddEthPaymentReceiptMutationHookResult = ReturnType<typeof useAddEthPaymentReceiptMutation>;
-export type AddEthPaymentReceiptMutationResult = Apollo.MutationResult<AddEthPaymentReceiptMutation>;
-export type AddEthPaymentReceiptMutationOptions = Apollo.BaseMutationOptions<AddEthPaymentReceiptMutation, AddEthPaymentReceiptMutationVariables>;
-export const AddFiatPaymentReceiptDocument = gql`
-    mutation addFiatPaymentReceipt($projectId: Uuid!, $paymentId: Uuid!, $amount: String!, $currencyCode: String!, $recipientIban: Iban!, $transactionReference: String!) {
-  addFiatPaymentReceipt(
-    projectId: $projectId
-    paymentId: $paymentId
-    amount: $amount
-    currencyCode: $currencyCode
-    recipientIban: $recipientIban
-    transactionReference: $transactionReference
-  )
-}
-    `;
-export type AddFiatPaymentReceiptMutationFn = Apollo.MutationFunction<AddFiatPaymentReceiptMutation, AddFiatPaymentReceiptMutationVariables>;
-
-/**
- * __useAddFiatPaymentReceiptMutation__
- *
- * To run a mutation, you first call `useAddFiatPaymentReceiptMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useAddFiatPaymentReceiptMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [addFiatPaymentReceiptMutation, { data, loading, error }] = useAddFiatPaymentReceiptMutation({
- *   variables: {
- *      projectId: // value for 'projectId'
- *      paymentId: // value for 'paymentId'
- *      amount: // value for 'amount'
- *      currencyCode: // value for 'currencyCode'
- *      recipientIban: // value for 'recipientIban'
- *      transactionReference: // value for 'transactionReference'
- *   },
- * });
- */
-export function useAddFiatPaymentReceiptMutation(baseOptions?: Apollo.MutationHookOptions<AddFiatPaymentReceiptMutation, AddFiatPaymentReceiptMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<AddFiatPaymentReceiptMutation, AddFiatPaymentReceiptMutationVariables>(AddFiatPaymentReceiptDocument, options);
-      }
-export type AddFiatPaymentReceiptMutationHookResult = ReturnType<typeof useAddFiatPaymentReceiptMutation>;
-export type AddFiatPaymentReceiptMutationResult = Apollo.MutationResult<AddFiatPaymentReceiptMutation>;
-export type AddFiatPaymentReceiptMutationOptions = Apollo.BaseMutationOptions<AddFiatPaymentReceiptMutation, AddFiatPaymentReceiptMutationVariables>;
 export const PaymentRequestsByPkDocument = gql`
     query paymentRequestsByPk($paymentId: uuid!) {
   paymentRequests(where: {id: {_eq: $paymentId}}) {
@@ -21560,3 +21372,4 @@ export function useCountProcessingCommandsLazyQuery(baseOptions?: Apollo.LazyQue
         }
 export type CountProcessingCommandsQueryHookResult = ReturnType<typeof useCountProcessingCommandsQuery>;
 export type CountProcessingCommandsLazyQueryHookResult = ReturnType<typeof useCountProcessingCommandsLazyQuery>;
+export type CountProcessingCommandsQueryResult = Apollo.QueryResult<CountProcessingCommandsQuery, CountProcessingCommandsQueryVariables>;

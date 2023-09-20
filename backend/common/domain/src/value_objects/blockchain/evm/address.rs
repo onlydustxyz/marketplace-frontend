@@ -2,37 +2,17 @@ use derive_more::{Display, From, FromStr, Into};
 use serde::{Deserialize, Serialize};
 use web3::types::H160;
 
-use crate::blockchain::account_address::AccountAddress;
+use crate::blockchain;
 
 #[derive(
 	Debug, Copy, Clone, PartialEq, Eq, Serialize, Deserialize, From, Into, FromStr, Display,
 )]
 #[serde(transparent)]
-pub struct Address(AccountAddress<20>);
+pub struct Address(blockchain::Address<20>);
 
 impl Default for Address {
 	fn default() -> Self {
-		Self(AccountAddress::<20>::ZERO)
-	}
-}
-
-#[juniper::graphql_scalar(
-	description = "A `0x` prefixed hexadecimal string representing 20 bytes of data"
-)]
-impl<S> GraphQLScalar for Address
-where
-	S: juniper::ScalarValue,
-{
-	fn resolve(&self) -> juniper::Value {
-		juniper::Value::scalar(self.to_string())
-	}
-
-	fn from_input_value(value: &juniper::InputValue) -> Option<Self> {
-		value.as_string_value().and_then(|value| value.parse().ok()).map(Self)
-	}
-
-	fn from_str<'a>(value: juniper::ScalarToken<'a>) -> juniper::ParseScalarResult<'a, S> {
-		<String as juniper::ParseScalarValue<S>>::from_str(value)
+		Self(blockchain::Address::<20>::ZERO)
 	}
 }
 
@@ -44,32 +24,9 @@ impl From<H160> for Address {
 
 #[cfg(test)]
 mod test {
-	use juniper::{DefaultScalarValue, FromInputValue, InputValue};
 	use rstest::rstest;
 
 	use super::*;
-
-	#[rstest]
-	#[case(InputValue::Scalar(DefaultScalarValue::String("0x0".to_string())), true)]
-	#[case(InputValue::Scalar(DefaultScalarValue::String("0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045".to_string())), true)]
-	#[case(InputValue::Scalar(DefaultScalarValue::String("0xd8da6bf26964af9d7eed9e03e53415d37aa96045".to_string())), true)]
-	#[case(InputValue::Scalar(DefaultScalarValue::String("0Xd8da6bf26964af9d7eed9e03e53415d37aa96045".to_string())), true)]
-	#[case(InputValue::Scalar(DefaultScalarValue::String("0xd8dA6BF26964aF9D7".to_string())), true)]
-	#[case(InputValue::Scalar(DefaultScalarValue::String("d8da6bf26964af9d7eed9e03e53415d37aa96045".to_string())), false)]
-	#[case(InputValue::Scalar(DefaultScalarValue::String("0xfd8da6bf26964af9d7eed9e03e53415d37aa96045".to_string())), false)]
-	#[case(InputValue::Scalar(DefaultScalarValue::String("xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045".to_string())), false)]
-	#[case(InputValue::Scalar(DefaultScalarValue::String("0x1G".to_string())), false)]
-	#[case(InputValue::Scalar(DefaultScalarValue::Int(0x0)), false)]
-	#[case(InputValue::Scalar(DefaultScalarValue::Float(4.2)), false)]
-	#[case(InputValue::Scalar(DefaultScalarValue::Boolean(false)), false)]
-	#[case(InputValue::Null, false)]
-	#[case(InputValue::Enum("0x0".to_string()), false)]
-	#[case(InputValue::Variable("0x0".to_string()), false)]
-	#[case(InputValue::list(vec![InputValue::Scalar(DefaultScalarValue::String("0x0".to_string()))]), false)]
-	#[case(InputValue::<DefaultScalarValue>::Object(Default::default()), false)]
-	fn is_valid_ethereum_address(#[case] input: juniper::InputValue, #[case] expect: bool) {
-		assert_eq!(Address::from_input_value(&input).is_some(), expect)
-	}
 
 	#[rstest]
 	fn from_h160() {

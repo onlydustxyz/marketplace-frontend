@@ -135,7 +135,7 @@ mod tests {
 	use uuid::Uuid;
 
 	use super::*;
-	use crate::{blockchain::*, currencies, EventSourcable, PaymentReceiptId, UserId};
+	use crate::{currencies, EventSourcable, PaymentReceiptId, UserId};
 
 	pub const CONTRACT_ADDRESSES: [&str; 1] = ["0xd8da6bf26964af9d7eed9e03e53415d37aa96045"];
 
@@ -184,8 +184,7 @@ mod tests {
 
 	#[fixture]
 	fn receipt() -> PaymentReceipt {
-		PaymentReceipt::OnChainPayment {
-			network: Network::Ethereum,
+		PaymentReceipt::Ethereum {
 			recipient_address: CONTRACT_ADDRESSES[0].parse().unwrap(),
 			recipient_ens: None,
 			transaction_hash: TRANSACTION_HASHES[0].parse().unwrap(),

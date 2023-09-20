@@ -24,8 +24,8 @@ mod work_items;
 pub use applications::Application;
 pub use budgets::Budget;
 pub use contributions::{Contribution, Repository as ContributionsRepository};
-use diesel::PgConnection;
 pub use crypto_usd_quotes::CryptoUsdQuote;
+use diesel::PgConnection;
 pub use github_issues::GithubIssue;
 pub use github_pull_request_indexes::{
 	GithubPullRequestIndex, Repository as GithubPullRequestIndexRepository,

@@ -13,3 +13,13 @@ impl Display for Address {
 		write!(f, "{:#064x}", self.0)
 	}
 }
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, From, Into, FromStr)]
+#[serde(transparent)]
+pub struct TransactionHash(FieldElement);
+
+impl Display for TransactionHash {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(f, "{:#064x}", self.0)
+	}
+}

@@ -1,83 +1,15 @@
-use domain::{blockchain::*, Amount, Iban, PaymentReceipt, ProjectId, ProjectVisibility, UserId};
+use domain::{ProjectId, ProjectVisibility, UserId};
 use juniper::{graphql_object, DefaultScalarValue, Nullable};
 use url::Url;
 use uuid08::Uuid;
 
 use super::{Context, Error, Result};
-use crate::presentation::http::dto::{EthereumIdentityInput, OptionalNonEmptyTrimmedString};
+use crate::presentation::http::dto::OptionalNonEmptyTrimmedString;
 
 pub struct Mutation;
 
 #[graphql_object(context=Context, Scalar = DefaultScalarValue)]
 impl Mutation {
-	pub async fn add_eth_payment_receipt(
-		context: &Context,
-		project_id: Uuid,
-		payment_id: Uuid,
-		amount: String,
-		currency_code: String,
-		recipient_identity: EthereumIdentityInput,
-		transaction_hash: String,
-	) -> Result<Uuid> {
-		let amount = Amount::from_str(&amount, currency_code.parse()?)
-			.map_err(|e| Error::InvalidRequest(anyhow::Error::msg(e)))?;
-
-		let eth_identity = recipient_identity.try_into().map_err(Error::InvalidRequest)?;
-		let ethereum_address = match &eth_identity {
-			evm::Wallet::Address(addr) => *addr,
-			evm::Wallet::Name(name) => context.ens.eth_address(name.as_str()).await?,
-		};
-
-		let receipt_id = context
-			.process_payment_usecase
-			.add_payment_receipt(
-				&project_id.into(),
-				payment_id.into(),
-				Amount::from_decimal(*amount.amount(), currency_code.parse()?),
-				PaymentReceipt::OnChainPayment {
-					network: Network::Ethereum,
-					recipient_address: ethereum_address,
-					recipient_ens: match eth_identity {
-						evm::Wallet::Name(name) => Some(name),
-						_ => None,
-					},
-					transaction_hash,
-				},
-			)
-			.await?;
-
-		Ok(receipt_id.into())
-	}
-
-	pub async fn add_fiat_payment_receipt(
-		context: &Context,
-		project_id: Uuid,
-		payment_id: Uuid,
-		amount: String,
-		currency_code: String,
-		recipient_iban: Iban,
-		transaction_reference: String,
-	) -> Result<Uuid> {
-		let currency = currency_code.parse()?;
-		let amount = Amount::from_str(&amount, currency)
-			.map_err(|e| Error::InvalidRequest(anyhow::Error::msg(e)))?;
-
-		let receipt_id = context
-			.process_payment_usecase
-			.add_payment_receipt(
-				&project_id.into(),
-				payment_id.into(),
-				Amount::from_decimal(*amount.amount(), currency),
-				PaymentReceipt::FiatPayment {
-					recipient_iban,
-					transaction_reference,
-				},
-			)
-			.await?;
-
-		Ok(receipt_id.into())
-	}
-
 	pub async fn mark_invoice_as_received(context: &Context, payments: Vec<Uuid>) -> Result<bool> {
 		let caller_id = context.caller_info()?.user_id;
 		let payments: Vec<_> = payments.into_iter().map(Into::into).collect();

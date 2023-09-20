@@ -86,9 +86,9 @@ export type PaymentItem = {
 export type PaymentReceipt = {
   amount: number;
   currencyCode: string;
-  recipientETHIdentity?: EthereumIdentityInput;
+  recipientWallet?: string;
   recipientIBAN?: string;
-  transactionHashOrReference: string;
+  transactionReference: string;
 };
 
 export type Payment = Omit<PaymentFixture, "items"> &
