@@ -89,7 +89,7 @@ async fn build_payment_receipt(
 			Ok(PaymentReceipt::Ethereum {
 				recipient_address,
 				recipient_ens,
-				transaction_hash: transaction_reference,
+				transaction_hash: transaction_reference.parse()?,
 			})
 		},
 		(Some(_), Some(_)) => Err(anyhow!(

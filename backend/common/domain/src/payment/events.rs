@@ -108,12 +108,12 @@ mod tests {
 	}
 
 	#[fixture]
-	fn transaction_hash() -> TransactionHash {
+	fn transaction_hash() -> evm::TransactionHash {
 		TRANSACTION_HASHES[0].parse().unwrap()
 	}
 
 	#[rstest]
-	fn test_display(recipient_address: &'static str, transaction_hash: TransactionHash) {
+	fn test_display(recipient_address: &'static str, transaction_hash: evm::TransactionHash) {
 		let event = Event::Processed {
 			id: payment_id(),
 			receipt_id: payment_receipt_id(),

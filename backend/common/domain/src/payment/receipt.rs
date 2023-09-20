@@ -9,7 +9,7 @@ pub enum Receipt {
 	Ethereum {
 		recipient_address: evm::Address,
 		recipient_ens: Option<evm::Name>,
-		transaction_hash: TransactionHash,
+		transaction_hash: evm::TransactionHash,
 	},
 	Sepa {
 		recipient_iban: Iban,

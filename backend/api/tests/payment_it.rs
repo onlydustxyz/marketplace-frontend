@@ -876,7 +876,7 @@ impl<'a> Test<'a> {
 			"amount": 100,
 			"currency": "USD",
 			"recipientWallet": "vitalik.eth",
-			"transactionReference": "123456",
+			"transactionReference": "0xe81124e94cf8dad83553eb35f1e50821dba16d145d9c8e3cc43d7681c68e4b2b",
 		});
 
 		let before = Utc::now().naive_utc();
@@ -921,7 +921,7 @@ impl<'a> Test<'a> {
 					assert_eq!(receipt, PaymentReceipt::Ethereum {
 						recipient_address: "0xd8da6bf26964af9d7eed9e03e53415d37aa96045".parse().unwrap(),
 						recipient_ens: Some(evm::Name::new("vitalik.eth".to_string())),
-						transaction_hash: "123456".to_string()
+						transaction_hash: "0xe81124e94cf8dad83553eb35f1e50821dba16d145d9c8e3cc43d7681c68e4b2b".parse().unwrap()
 					});
 					assert!(processed_at > before);
 					assert!(processed_at < after);

@@ -8,8 +8,6 @@ pub enum Network {
 	Starknet,
 }
 
-pub type TransactionHash = String;
-
 mod address;
 use address::Address;
 
