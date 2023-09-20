@@ -8,8 +8,8 @@ import {
   ContributorFragment,
   GetPaymentRequestsForProjectDocument,
   GetPaymentRequestsForProjectQueryResult,
-  GetProjectContributorsDocument,
-  GetProjectContributorsQueryResult,
+  GetProjectPendingContributorsDocument,
+  GetProjectPendingContributorsQueryResult,
 } from "src/__generated/graphql";
 import { VirtuosoMockContext } from "react-virtuoso";
 import { ContributorProfilePanelProvider } from "src/hooks/useContributorProfilePanel";
@@ -51,15 +51,15 @@ const graphQlMocks = [
   },
   {
     request: {
-      query: GetProjectContributorsDocument,
+      query: GetProjectPendingContributorsDocument,
       variables: {
         projectId: TEST_PROJECT_ID,
       },
     },
     result: {
       data: {
-        projectsContributors: [{ user: TEST_CONTRIBUTOR }],
-      } as GetProjectContributorsQueryResult["data"],
+        projectsPendingContributors: [{ user: TEST_CONTRIBUTOR }],
+      } as GetProjectPendingContributorsQueryResult["data"],
     },
   },
 ];
