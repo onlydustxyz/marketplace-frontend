@@ -3,6 +3,7 @@ pub mod error;
 pub mod issue;
 pub mod issues;
 pub mod logged;
+pub mod optional;
 pub mod pull_request;
 pub mod pull_requests;
 pub mod rate_limited;
@@ -11,7 +12,7 @@ pub mod user;
 
 use std::{
 	collections::hash_map::DefaultHasher,
-	fmt::{self, Display},
+	fmt::{self, Debug},
 	hash::{Hash, Hasher},
 	sync::Arc,
 };
@@ -81,9 +82,9 @@ where
 	}
 }
 
-pub trait Indexable: Clone + Display + Send + Sync {}
+pub trait Indexable: Clone + Debug + Send + Sync {}
 
-impl<I: Clone + Display + Send + Sync> Indexable for I {}
+impl<I: Clone + Debug + Send + Sync> Indexable for I {}
 
 trait Named {
 	fn get_name(&self) -> &'static str {

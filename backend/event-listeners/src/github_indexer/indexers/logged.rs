@@ -25,7 +25,7 @@ where
 		match self.decorated.index(id).await {
 			Ok(_) => {
 				info!(
-					indexed_item_id = id.to_string(),
+					indexed_item_id = format!("{id:?}"),
 					indexed_item_id_type = std::any::type_name::<Id>(),
 					indexer_type = self.decorated.to_string(),
 					duration = start.elapsed().as_secs(),
@@ -36,7 +36,7 @@ where
 			Err(error) => {
 				error!(
 					error = error.to_field(),
-					indexed_item_id = id.to_string(),
+					indexed_item_id = format!("{id:?}"),
 					indexed_item_id_type = std::any::type_name::<Id>(),
 					indexer_type = self.decorated.to_string(),
 					"Failed to index item"

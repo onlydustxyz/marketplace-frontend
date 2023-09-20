@@ -5,6 +5,8 @@ use domain::{GithubIssueId, GithubIssueNumber, GithubRepoId, GithubUserId};
 use infrastructure::database::{enums::GithubIssueStatus, schema::github_issues};
 use serde::{Deserialize, Serialize};
 
+mod repository;
+
 #[derive(
 	Debug, Clone, Insertable, AsChangeset, Identifiable, Queryable, Serialize, Deserialize, Model,
 )]

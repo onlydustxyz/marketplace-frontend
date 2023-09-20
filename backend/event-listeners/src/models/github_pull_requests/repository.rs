@@ -1,4 +1,5 @@
 use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
+use domain::{GithubPullRequestNumber, GithubRepoId};
 use infrastructure::{
 	contextualized_error::IntoContextualizedError,
 	database,
@@ -12,7 +13,10 @@ use infrastructure::{
 };
 
 use super::PullRequest;
-use crate::diesel::Connection;
+use crate::{
+	diesel::Connection,
+	models::{GithubPullRequest, IdentifiableRepository},
+};
 
 pub trait Repository: Send + Sync {
 	fn upsert(&self, pull_request: PullRequest) -> Result<()>;
@@ -75,5 +79,26 @@ impl Repository for database::Client {
 			))?;
 
 		Ok(())
+	}
+}
+
+impl IdentifiableRepository<GithubPullRequest, (GithubRepoId, GithubPullRequestNumber)>
+	for database::Client
+{
+	fn exists(
+		&self,
+		(repo_id, number): (GithubRepoId, GithubPullRequestNumber),
+	) -> database::Result<bool> {
+		let mut connection = self.connection()?;
+		diesel::select(::diesel::dsl::exists(
+			github_pull_requests::table
+				.filter(github_pull_requests::repo_id.eq(repo_id))
+				.filter(github_pull_requests::number.eq(number)),
+		))
+		.get_result(&mut *connection)
+		.err_with_context(format!(
+			"exists github_pull_requests where repo_id={repo_id:?} and number={number:?}",
+		))
+		.map_err(Into::into)
 	}
 }
