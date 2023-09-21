@@ -78,6 +78,10 @@ WHERE
     payout_settings IS NOT NULL;
 
 
--- finally, drop payout_settings column
+-- finally, drop payout_settings columns
+ALTER TABLE user_payout_info
+DROP COLUMN are_payout_settings_valid;
+
+
 ALTER TABLE user_payout_info
 DROP COLUMN payout_settings;
