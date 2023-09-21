@@ -1,8 +1,5 @@
-pub mod application;
-pub mod budget;
 pub mod logger;
-pub mod payment;
-pub mod project;
+pub mod projections;
 pub mod quote_syncer;
 pub mod webhook;
 
@@ -51,7 +48,14 @@ pub async fn spawn_all(
 ) -> Result<Vec<JoinHandle<()>>> {
 	let mut handles = vec![
 		Logger.spawn(event_bus::event_consumer(config.amqp.clone(), "logger").await?),
-		project::Projector::new(
+		projections::Projector::new(
+			database.clone(),
+			database.clone(),
+			database.clone(),
+			database.clone(),
+			database.clone(),
+			database.clone(),
+			database.clone(),
 			database.clone(),
 			database.clone(),
 			database.clone(),
@@ -61,30 +65,7 @@ pub async fn spawn_all(
 			database.clone(),
 		)
 		.spawn(
-			event_bus::event_consumer(config.amqp.clone(), "projects")
-				.await?
-				.into_command_subscriber(database.clone()),
-		),
-		budget::Projector::new(database.clone()).spawn(
-			event_bus::event_consumer(config.amqp.clone(), "budgets")
-				.await?
-				.into_command_subscriber(database.clone()),
-		),
-		application::Projector::new(database.clone()).spawn(
-			event_bus::event_consumer(config.amqp.clone(), "applications")
-				.await?
-				.into_command_subscriber(database.clone()),
-		),
-		payment::Projector::new(
-			database.clone(),
-			database.clone(),
-			database.clone(),
-			database.clone(),
-			database.clone(),
-			database.clone(),
-		)
-		.spawn(
-			event_bus::event_consumer(config.amqp.clone(), "payments")
+			event_bus::event_consumer(config.amqp.clone(), "projections")
 				.await?
 				.into_command_subscriber(database.clone()),
 		),

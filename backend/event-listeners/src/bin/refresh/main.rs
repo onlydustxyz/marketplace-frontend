@@ -3,6 +3,7 @@ use std::sync::Arc;
 use ::infrastructure::config;
 use anyhow::{anyhow, Result};
 use clap::Parser;
+use domain::{Application, Budget, Payment, Project};
 use dotenv::dotenv;
 use event_listeners::Config;
 use futures::future::try_join_all;
@@ -22,10 +23,10 @@ async fn main() -> Result<()> {
 
 	let mut registry = Registry::new();
 
-	refresher::application::create(database.clone()).register(&mut registry, "Application")?;
-	refresher::budget::create(database.clone()).register(&mut registry, "Budget")?;
-	refresher::project::create(database.clone()).register(&mut registry, "Project")?;
-	refresher::payment::create(database.clone()).register(&mut registry, "Payment")?;
+	refresher::create::<Application>(database.clone()).register(&mut registry, "Application")?;
+	refresher::create::<Budget>(database.clone()).register(&mut registry, "Budget")?;
+	refresher::create::<Project>(database.clone()).register(&mut registry, "Project")?;
+	refresher::create::<Payment>(database.clone()).register(&mut registry, "Payment")?;
 
 	let (aggregate_name, aggregate_ids, all_ids) = cli::Args::parse().dissolve();
 

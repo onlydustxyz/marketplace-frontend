@@ -4,22 +4,18 @@ use anyhow::{anyhow, Result};
 use async_trait::async_trait;
 use derive_more::Constructor;
 use domain::{Event, EventSourcable, EventStore, Identified};
-
-mod registry;
-use event_listeners::listeners::EventListener;
+use event_listeners::listeners::{EventListener, *};
+use infrastructure::{database, event_store::Named};
 use itertools::Itertools;
 use olog::info;
 pub use registry::{Registrable, Registry};
 
-pub mod application;
-pub mod budget;
-pub mod payment;
-pub mod project;
+mod registry;
 
 #[derive(Constructor)]
 pub struct Refresher<A: EventSourcable> {
 	event_store: Arc<dyn EventStore<A>>,
-	projectors: Vec<Arc<dyn EventListener<Event>>>,
+	projector: Arc<dyn EventListener<Event>>,
 }
 
 #[async_trait]
@@ -60,11 +56,33 @@ where
 		}
 
 		for event in events {
-			let event: Event = event.into();
-			for projector in &self.projectors {
-				projector.on_event(event.clone()).await?;
-			}
+			self.projector.on_event(event.into()).await?;
 		}
 		Ok(())
 	}
+}
+
+pub fn create<A: EventSourcable + Named>(database: Arc<database::Client>) -> impl Refreshable
+where
+	Event: From<A::Event>,
+	A::Id: FromStr,
+{
+	let projector = projections::Projector::new(
+		database.clone(),
+		database.clone(),
+		database.clone(),
+		database.clone(),
+		database.clone(),
+		database.clone(),
+		database.clone(),
+		database.clone(),
+		database.clone(),
+		database.clone(),
+		database.clone(),
+		database.clone(),
+		database.clone(),
+		database.clone(),
+	);
+
+	Refresher::<A>::new(database, Arc::new(projector))
 }
