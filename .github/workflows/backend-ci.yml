@@ -48,7 +48,7 @@ jobs:
         run: yarn backend:fmt
 
       - name: Check codecov.yml file format
-        run: curl --data-binary @- https://codecov.io/validate < backend/codecov.yml
+        run: curl --data-binary @- https://codecov.io/validate < codecov.yml
 
   check:
     name: Check
