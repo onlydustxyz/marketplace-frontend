@@ -7,9 +7,8 @@ use tracing::instrument;
 use url::Url;
 
 mod event;
+use domain::EventListener;
 use event::Event as WebHookEvent;
-
-use super::EventListener;
 
 #[derive(new)]
 pub struct EventWebHook {

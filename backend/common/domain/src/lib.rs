@@ -4,7 +4,7 @@ mod value_objects;
 pub use value_objects::*;
 
 mod event;
-pub use event::Event;
+pub use event::{Event, Listener as EventListener};
 
 pub mod services;
 

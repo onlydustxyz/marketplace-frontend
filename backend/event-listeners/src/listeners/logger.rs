@@ -1,10 +1,8 @@
 use anyhow::Result;
 use async_trait::async_trait;
-use domain::SubscriberCallbackError;
+use domain::{EventListener, SubscriberCallbackError};
 use olog::info;
 use serde_json::Value;
-
-use super::EventListener;
 
 pub struct Logger;
 

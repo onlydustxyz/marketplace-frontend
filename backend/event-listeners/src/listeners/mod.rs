@@ -6,8 +6,9 @@ pub mod webhook;
 use std::sync::Arc;
 
 use anyhow::Result;
-use async_trait::async_trait;
-use domain::{currencies, LogErr, MessagePayload, Subscriber, SubscriberCallbackError};
+use domain::{
+	currencies, EventListener, LogErr, MessagePayload, Subscriber, SubscriberCallbackError,
+};
 use infrastructure::{
 	amqp::{CommandSubscriberDecorator, UniqueMessage},
 	coinmarketcap, database, event_bus,
@@ -31,11 +32,6 @@ pub async fn bootstrap(config: Config) -> Result<Vec<JoinHandle<()>>> {
 	));
 
 	spawn_all(config, reqwest, database, coinmarketcap).await
-}
-
-#[async_trait]
-pub trait EventListener<E>: Send + Sync {
-	async fn on_event(&self, event: E) -> Result<(), SubscriberCallbackError>;
 }
 
 pub async fn spawn_all(

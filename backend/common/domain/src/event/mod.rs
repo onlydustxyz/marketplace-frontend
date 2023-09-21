@@ -4,6 +4,9 @@ use serde::{Deserialize, Serialize};
 
 use crate::{ApplicationEvent, BudgetEvent, MessagePayload, PaymentEvent, ProjectEvent};
 
+mod listener;
+pub use listener::Listener;
+
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Event {
 	Application(ApplicationEvent),
