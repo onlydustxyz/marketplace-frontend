@@ -21,7 +21,8 @@ pub use error::*;
 
 mod messaging;
 pub use messaging::{
-	Message, Publisher, PublisherError, Subscriber, SubscriberCallbackError, SubscriberError,
+	CompositePublisher, Message, Publisher, PublisherError, Subscriber, SubscriberCallbackError,
+	SubscriberError,
 };
 
 mod project;

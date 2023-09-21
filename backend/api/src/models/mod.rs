@@ -4,6 +4,9 @@ pub use crypto_usd_quotes::CryptoUsdQuote;
 mod contact_informations;
 pub use contact_informations::{ContactInformation, Repository as ContactInformationsRepository};
 
+mod events;
+pub use events::{Event, Repository as EventRepository};
+
 mod ignored_contributions;
 pub use ignored_contributions::IgnoredContribution;
 

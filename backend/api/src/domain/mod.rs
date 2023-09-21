@@ -4,6 +4,8 @@ pub use publishable::Publishable;
 pub mod permissions;
 pub use permissions::Permissions;
 
+pub mod projectors;
+
 mod specifications;
 #[cfg(test)]
 pub use specifications::MockGithubRepoExists;

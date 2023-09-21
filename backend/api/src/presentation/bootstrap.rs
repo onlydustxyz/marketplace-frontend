@@ -1,12 +1,15 @@
 use std::sync::Arc;
 
 use anyhow::Result;
-use domain::AggregateRepository;
+use domain::{AggregateRepository, CompositePublisher};
 use event_store::bus::QUEUE_NAME as EVENT_STORE_QUEUE;
-use infrastructure::{amqp, amqp::CommandPublisherDecorator, database, github};
+use infrastructure::{
+	amqp, amqp::CommandPublisherDecorator, database, event_bus::EXCHANGE_NAME, github,
+};
 use rocket::{Build, Rocket};
 
 use crate::{
+	domain::projectors,
 	infrastructure::{simple_storage, web3::ens},
 	presentation::{graphql, http, http::github_client_pat_factory::GithubClientPatFactory},
 	Config,
@@ -26,6 +29,15 @@ pub async fn bootstrap(config: Config) -> Result<Rocket<Build>> {
 	let simple_storage = Arc::new(simple_storage::Client::new(config.s3.clone()).await?);
 	let github_client_pat_factory = GithubClientPatFactory::new(config.github_api_client.clone());
 
+	let event_publisher = CompositePublisher::new(vec![
+		Arc::new(projectors::event_store::Projector::new(database.clone())),
+		Arc::new(
+			amqp::Bus::new(config.amqp.clone())
+				.await?
+				.as_publisher(amqp::Destination::exchange(EXCHANGE_NAME)),
+		),
+	]);
+
 	let rocket_build = http::serve(
 		config.clone(),
 		graphql::create_schema(),
@@ -35,11 +47,7 @@ pub async fn bootstrap(config: Config) -> Result<Rocket<Build>> {
 				.as_publisher(amqp::Destination::queue(EVENT_STORE_QUEUE))
 				.into_command_publisher(database.clone(), expected_processing_count_per_event()),
 		),
-		Arc::new(
-			amqp::Bus::new(config.amqp.clone())
-				.await?
-				.as_publisher(amqp::Destination::queue(EVENT_STORE_QUEUE)),
-		),
+		Arc::new(event_publisher),
 		AggregateRepository::new(database.clone()),
 		AggregateRepository::new(database.clone()),
 		AggregateRepository::new(database.clone()),
