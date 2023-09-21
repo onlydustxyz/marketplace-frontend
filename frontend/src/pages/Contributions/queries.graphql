@@ -1,0 +1,41 @@
+query GetAllContributions($limit: Int!, $orderBy: [ContributionsOrderBy!], $githubUserId: bigint!) {
+  contributions(limit: $limit, orderBy: $orderBy, where: { githubUserId: { _eq: $githubUserId } }) {
+    createdAt
+    id
+    githubPullRequest {
+      ...ContributionGithubPullRequest
+      closingIssues {
+        githubIssue {
+          ...ContributionGithubIssue
+        }
+      }
+    }
+    githubIssue {
+      ...ContributionGithubIssue
+      closedByPullRequests {
+        githubPullRequest {
+          ...ContributionGithubPullRequest
+        }
+      }
+    }
+    githubCodeReview {
+      id
+      status
+      outcome
+      githubPullRequest {
+        ...ContributionGithubPullRequest
+      }
+    }
+    githubRepo {
+      name
+      id
+    }
+    project {
+      name
+      logoUrl
+      id
+    }
+    status
+    type
+  }
+}

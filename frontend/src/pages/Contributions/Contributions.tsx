@@ -3,6 +3,8 @@ import { useSearchParams } from "react-router-dom";
 
 import { isIn } from "src/utils/isIn";
 import { Tabs } from "src/components/Tabs/Tabs";
+import { useAuth } from "src/hooks/useAuth";
+import { useGetAllContributionsQuery, OrderBy, ContributionsOrderBy } from "src/__generated/graphql";
 import { useIntl } from "src/hooks/useIntl";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import CancelCircleLine from "src/assets/icons/CancelCircleLine";
@@ -29,11 +31,24 @@ function TabContents({ children }: PropsWithChildren) {
 
 export default function Contributions() {
   const { T } = useIntl();
+  const { githubUserId } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
 
   const tab = searchParams.get("tab") as typeof tabValues[number] | null;
 
   const [activeTab, setActiveTab] = useState(isIn(tabValues, tab ?? "") ? tab : tabs.all);
+
+  const { data, loading, error } = useGetAllContributionsQuery({
+    variables: {
+      limit: 20,
+      orderBy: { createdAt: OrderBy.Desc } as ContributionsOrderBy,
+      githubUserId,
+    },
+    skip: !githubUserId,
+    fetchPolicy: "network-only",
+  });
+
+  console.log({ data, loading, error });
 
   function updateActiveTab(tab: typeof tabValues[number]) {
     setActiveTab(tab);

@@ -1,0 +1,17 @@
+fragment ContributionGithubPullRequest on GithubPullRequests {
+  draft
+  htmlUrl
+  id
+  number
+  status
+  title
+}
+
+fragment ContributionGithubIssue on GithubIssues {
+  commentsCount
+  htmlUrl
+  id
+  number
+  status
+  title
+}

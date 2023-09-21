@@ -18318,7 +18318,11 @@ export type GithubUserIdFragment = { __typename?: 'GithubUsers', id: any };
 
 export type GithubUserFragment = { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null };
 
-export type PaymentRequestIdFragment = { __typename?: 'PaymentRequests', id: any | null };
+export type ContributionGithubPullRequestFragment = { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null };
+
+export type ContributionGithubIssueFragment = { __typename?: 'GithubIssues', commentsCount: any | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null };
+
+export type PaymentRequestIdFragment = { __typename?: 'PaymentRequests', id: any };
 
 export type PaymentRequestFragment = { __typename?: 'PaymentRequests', recipientId: any | null, amount: any | null, requestedAt: any | null, id: any | null, workItemsAggregate: { __typename?: 'WorkItemsAggregate', aggregate: { __typename?: 'WorkItemsAggregateFields', count: number } | null } };
 
@@ -18457,6 +18461,15 @@ export type GetProjectVisibilityDetailsQueryVariables = Exact<{
 
 
 export type GetProjectVisibilityDetailsQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', visibility: any | null, usdBudgetId: any | null, id: any | null, key: string | null, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributors', githubUserId: any }>, pendingContributors: Array<{ __typename?: 'ProjectsPendingContributors', githubUserId: any }>, rewardedUsers: Array<{ __typename?: 'ProjectsRewardedUsers', githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> }> };
+
+export type GetAllContributionsQueryVariables = Exact<{
+  limit: Scalars['Int'];
+  orderBy: InputMaybe<Array<ContributionsOrderBy> | ContributionsOrderBy>;
+  githubUserId: Scalars['bigint'];
+}>;
+
+
+export type GetAllContributionsQuery = { __typename?: 'query_root', contributions: Array<{ __typename?: 'Contributions', createdAt: any | null, id: string | null, status: any | null, type: string | null, githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, closingIssues: Array<{ __typename?: 'ApiClosingIssues', githubIssue: { __typename?: 'GithubIssues', commentsCount: any | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null } | null }> } | null, githubIssue: { __typename?: 'GithubIssues', commentsCount: any | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, closedByPullRequests: Array<{ __typename?: 'ApiClosedByPullRequests', githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null } | null }> } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', id: string | null, status: string | null, outcome: any | null, githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null } | null } | null, githubRepo: { __typename?: 'GithubRepos', name: string | null, id: any | null } | null, project: { __typename?: 'Projects', name: string | null, logoUrl: string | null, id: any | null } | null }> };
 
 export type PendingProjectLeaderInvitationsQueryVariables = Exact<{
   githubUserId: InputMaybe<Scalars['bigint']>;
@@ -18987,6 +19000,26 @@ export const GithubRepoFragmentDoc = gql`
   hasIssues
 }
     ${GithubRepoIdFragmentDoc}`;
+export const ContributionGithubPullRequestFragmentDoc = gql`
+    fragment ContributionGithubPullRequest on GithubPullRequests {
+  draft
+  htmlUrl
+  id
+  number
+  status
+  title
+}
+    `;
+export const ContributionGithubIssueFragmentDoc = gql`
+    fragment ContributionGithubIssue on GithubIssues {
+  commentsCount
+  htmlUrl
+  id
+  number
+  status
+  title
+}
+    `;
 export const PaymentRequestIdFragmentDoc = gql`
     fragment PaymentRequestId on PaymentRequests {
   id
@@ -20807,6 +20840,84 @@ export function useGetProjectVisibilityDetailsLazyQuery(baseOptions?: Apollo.Laz
 export type GetProjectVisibilityDetailsQueryHookResult = ReturnType<typeof useGetProjectVisibilityDetailsQuery>;
 export type GetProjectVisibilityDetailsLazyQueryHookResult = ReturnType<typeof useGetProjectVisibilityDetailsLazyQuery>;
 export type GetProjectVisibilityDetailsQueryResult = Apollo.QueryResult<GetProjectVisibilityDetailsQuery, GetProjectVisibilityDetailsQueryVariables>;
+export const GetAllContributionsDocument = gql`
+    query GetAllContributions($limit: Int!, $orderBy: [ContributionsOrderBy!], $githubUserId: bigint!) {
+  contributions(
+    limit: $limit
+    orderBy: $orderBy
+    where: {githubUserId: {_eq: $githubUserId}}
+  ) {
+    createdAt
+    id
+    githubPullRequest {
+      ...ContributionGithubPullRequest
+      closingIssues {
+        githubIssue {
+          ...ContributionGithubIssue
+        }
+      }
+    }
+    githubIssue {
+      ...ContributionGithubIssue
+      closedByPullRequests {
+        githubPullRequest {
+          ...ContributionGithubPullRequest
+        }
+      }
+    }
+    githubCodeReview {
+      id
+      status
+      outcome
+      githubPullRequest {
+        ...ContributionGithubPullRequest
+      }
+    }
+    githubRepo {
+      name
+      id
+    }
+    project {
+      name
+      logoUrl
+      id
+    }
+    status
+    type
+  }
+}
+    ${ContributionGithubPullRequestFragmentDoc}
+${ContributionGithubIssueFragmentDoc}`;
+
+/**
+ * __useGetAllContributionsQuery__
+ *
+ * To run a query within a React component, call `useGetAllContributionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllContributionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllContributionsQuery({
+ *   variables: {
+ *      limit: // value for 'limit'
+ *      orderBy: // value for 'orderBy'
+ *      githubUserId: // value for 'githubUserId'
+ *   },
+ * });
+ */
+export function useGetAllContributionsQuery(baseOptions: Apollo.QueryHookOptions<GetAllContributionsQuery, GetAllContributionsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllContributionsQuery, GetAllContributionsQueryVariables>(GetAllContributionsDocument, options);
+      }
+export function useGetAllContributionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllContributionsQuery, GetAllContributionsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllContributionsQuery, GetAllContributionsQueryVariables>(GetAllContributionsDocument, options);
+        }
+export type GetAllContributionsQueryHookResult = ReturnType<typeof useGetAllContributionsQuery>;
+export type GetAllContributionsLazyQueryHookResult = ReturnType<typeof useGetAllContributionsLazyQuery>;
+export type GetAllContributionsQueryResult = Apollo.QueryResult<GetAllContributionsQuery, GetAllContributionsQueryVariables>;
 export const PendingProjectLeaderInvitationsDocument = gql`
     query PendingProjectLeaderInvitations($githubUserId: bigint) {
   pendingProjectLeaderInvitations(where: {githubUserId: {_eq: $githubUserId}}) {
