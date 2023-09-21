@@ -1,11 +1,13 @@
+use std::fmt::Debug;
+
 use async_trait::async_trait;
+pub use message::Message;
 #[cfg(test)]
 use mockall::automock;
 use thiserror::Error;
 
-use super::Message;
-
 pub mod composite;
+mod message;
 
 #[derive(Debug, Error)]
 pub enum Error {
@@ -63,7 +65,6 @@ mod tests {
 			Vec::default()
 		}
 	}
-	impl Message for TestMessage {}
 
 	#[rstest]
 	async fn publish_many_messages() {

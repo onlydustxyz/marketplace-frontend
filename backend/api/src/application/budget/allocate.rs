@@ -6,14 +6,14 @@ use domain::{
 	sponsor, AggregateRepository, Amount, Budget, BudgetId, DomainError, Event, Project, ProjectId,
 	Publisher,
 };
-use infrastructure::{amqp::UniqueMessage, database::Repository};
+use infrastructure::database::Repository;
 use tracing::instrument;
 
 use crate::{domain::Publishable, models::Sponsor};
 
 #[derive(Constructor)]
 pub struct Usecase {
-	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
+	event_publisher: Arc<dyn Publisher<Event>>,
 	project_repository: AggregateRepository<Project>,
 	budget_repository: AggregateRepository<Budget>,
 	sponsor_repository: Arc<dyn Repository<Sponsor>>,
@@ -65,7 +65,6 @@ impl Usecase {
 		project
 			.map(Event::from)
 			.chain(budget.map(Event::from))
-			.map(UniqueMessage::new)
 			.collect::<Vec<_>>()
 			.publish(self.event_publisher.clone())
 			.await?;

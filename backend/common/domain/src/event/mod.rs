@@ -2,7 +2,7 @@ use std::fmt::Display;
 
 use serde::{Deserialize, Serialize};
 
-use crate::{ApplicationEvent, BudgetEvent, MessagePayload, PaymentEvent, ProjectEvent};
+use crate::{ApplicationEvent, BudgetEvent, PaymentEvent, ProjectEvent};
 
 mod listener;
 pub use listener::Listener;
@@ -24,8 +24,6 @@ impl Display for Event {
 		)
 	}
 }
-
-impl MessagePayload for Event {}
 
 #[cfg(test)]
 mod test {

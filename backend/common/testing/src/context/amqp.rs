@@ -2,7 +2,7 @@ use std::{collections::HashMap, sync::Arc};
 
 use anyhow::{anyhow, Result};
 use domain::{Event, Publisher, Subscriber, SubscriberCallbackError};
-use infrastructure::amqp::{self, Bus, BusError, ConsumableBus, Destination, UniqueMessage};
+use infrastructure::amqp::{self, Bus, BusError, ConsumableBus, Destination};
 use lapin::options::QueueDeclareOptions;
 use serde_json::Value;
 use testcontainers::{
@@ -15,7 +15,7 @@ pub struct Context<'docker> {
 	pub config: amqp::Config,
 	pub listeners: HashMap<String, UnboundedReceiver<Value>>,
 	kill_channels: Vec<UnboundedSender<()>>,
-	publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
+	publisher: Arc<dyn Publisher<Event>>,
 	_container: Container<'docker, GenericImage>,
 }
 
@@ -94,7 +94,7 @@ impl<'docker> Context<'docker> {
 	}
 
 	pub async fn publish<E: Into<Event>>(&self, event: E) -> Result<()> {
-		self.publisher.publish(&UniqueMessage::new(event.into())).await?;
+		self.publisher.publish(&event.into()).await?;
 		Ok(())
 	}
 }

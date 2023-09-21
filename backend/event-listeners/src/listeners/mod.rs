@@ -6,9 +6,7 @@ pub mod webhook;
 use std::sync::Arc;
 
 use anyhow::Result;
-use domain::{
-	currencies, EventListener, LogErr, MessagePayload, Subscriber, SubscriberCallbackError,
-};
+use domain::{currencies, EventListener, LogErr, Message, Subscriber, SubscriberCallbackError};
 use infrastructure::{
 	amqp::{CommandSubscriberDecorator, UniqueMessage},
 	coinmarketcap, database, event_bus,
@@ -82,13 +80,12 @@ pub async fn spawn_all(
 	Ok(handles)
 }
 
-pub trait Spawnable<E: MessagePayload + Send + Sync, S: Subscriber<UniqueMessage<E>> + Send + Sync>
-{
+pub trait Spawnable<E: Message + Send + Sync, S: Subscriber<UniqueMessage<E>> + Send + Sync> {
 	fn spawn(self, bus: S) -> JoinHandle<()>;
 }
 
 impl<
-	E: MessagePayload + Send + Sync,
+	E: Message + Send + Sync,
 	S: Subscriber<UniqueMessage<E>> + Send + Sync + 'static,
 	EL: EventListener<E> + 'static,
 > Spawnable<E, S> for EL

@@ -6,8 +6,8 @@ use std::sync::{
 };
 
 use anyhow::anyhow;
-use domain::{Message, Subscriber, SubscriberCallbackError, SubscriberError};
-use infrastructure::amqp::{Bus, ConsumableBus};
+use domain::{Subscriber, SubscriberCallbackError, SubscriberError};
+use infrastructure::amqp::{Bus, ConsumableBus, Unique};
 use lapin::options::QueueDeclareOptions;
 use mockall::lazy_static;
 use opentelemetry::propagation::Extractor;
@@ -33,7 +33,6 @@ impl Extractor for TestMessage {
 		Vec::default()
 	}
 }
-impl Message for TestMessage {}
 
 async fn init(bus: Bus, queue_name: &'static str) -> ConsumableBus {
 	bus.with_queue(
@@ -50,16 +49,14 @@ async fn init(bus: Bus, queue_name: &'static str) -> ConsumableBus {
 }
 
 async fn publish_message(bus: &Bus, queue_name: &'static str, message: TestMessage) {
-	let confirmation = bus
-		.publish("", queue_name, &serde_json::to_vec(&message).unwrap())
-		.await
-		.unwrap();
+	let confirmation = bus.publish("", queue_name, message.unique()).await.unwrap();
 
 	assert!(!confirmation.is_nack());
 }
 
 async fn publish_badly_formatted_message(bus: &Bus, queue_name: &'static str) {
-	let confirmation = bus.publish("", queue_name, "bad-message".as_bytes()).await.unwrap();
+	let confirmation =
+		bus.publish("", queue_name, String::from("bad-message").unique()).await.unwrap();
 
 	assert!(!confirmation.is_nack());
 }

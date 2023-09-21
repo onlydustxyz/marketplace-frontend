@@ -3,6 +3,7 @@ use async_trait::async_trait;
 use domain::{Message, Publisher, PublisherError};
 
 use super::{Destination, PublisherBus};
+use crate::amqp::unique_message::Unique;
 
 #[async_trait]
 impl<M: Message + Send + Sync> Publisher<M> for PublisherBus {
@@ -14,7 +15,7 @@ impl<M: Message + Send + Sync> Publisher<M> for PublisherBus {
 
 		let confirmation = self
 			.bus
-			.publish(&exchange_name, &routing_key, &serde_json::to_vec(message)?)
+			.publish(&exchange_name, &routing_key, message.clone().unique())
 			.await
 			.map_err(|e| PublisherError::Send(anyhow!(e)))?;
 

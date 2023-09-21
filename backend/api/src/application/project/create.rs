@@ -5,7 +5,7 @@ use derive_more::Constructor;
 use domain::{
 	sponsor, Amount, BudgetId, DomainError, Event, Project, ProjectId, ProjectVisibility, Publisher,
 };
-use infrastructure::{amqp::UniqueMessage, database::Repository};
+use infrastructure::database::Repository;
 use reqwest::Url;
 use tracing::instrument;
 
@@ -18,7 +18,7 @@ use crate::{
 
 #[derive(Constructor)]
 pub struct Usecase {
-	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
+	event_publisher: Arc<dyn Publisher<Event>>,
 	project_details_repository: Arc<dyn Repository<ProjectDetails>>,
 	image_store: Arc<dyn ImageStoreService>,
 	budget_allocation_usecase: application::budget::allocate::Usecase,
@@ -77,7 +77,6 @@ impl Usecase {
 		project
 			.map(Event::from)
 			.chain(budget.unwrap_or_default().map(Event::from))
-			.map(UniqueMessage::new)
 			.collect::<Vec<_>>()
 			.publish(self.event_publisher.clone())
 			.await?;

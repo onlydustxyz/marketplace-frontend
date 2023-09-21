@@ -4,7 +4,7 @@ use ::domain::{AggregateRepository, Project};
 use domain::{Budget, Event, GithubFetchService, Payment, Publisher};
 pub use http::Config;
 use infrastructure::{
-	amqp::{CommandMessage, UniqueMessage},
+	amqp::CommandMessage,
 	database::{ImmutableRepository, Repository},
 	github,
 };
@@ -31,7 +31,7 @@ pub fn serve(
 	config: crate::Config,
 	schema: graphql::Schema,
 	command_bus: Arc<dyn Publisher<CommandMessage<Event>>>,
-	event_bus: Arc<dyn Publisher<UniqueMessage<Event>>>,
+	event_bus: Arc<dyn Publisher<Event>>,
 	project_repository: AggregateRepository<Project>,
 	budget_repository: AggregateRepository<Budget>,
 	payment_repository: AggregateRepository<Payment>,

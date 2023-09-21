@@ -5,7 +5,7 @@ mod config;
 pub use config::Config;
 
 mod unique_message;
-pub use unique_message::UniqueMessage;
+pub use unique_message::{Unique, UniqueMessage};
 
 mod command;
 pub use command::{

@@ -5,7 +5,10 @@ use async_trait::async_trait;
 use domain::{Message, Subscriber, SubscriberCallbackError, SubscriberError};
 use lapin::{message::Delivery, options::BasicNackOptions};
 use olog::{error, IntoField};
-use opentelemetry::{propagation::TextMapPropagator, sdk::propagation::TraceContextPropagator};
+use opentelemetry::{
+	propagation::{Extractor, TextMapPropagator},
+	sdk::propagation::TraceContextPropagator,
+};
 use serde_json::Error;
 use tracing::{instrument, Span};
 use tracing_opentelemetry::OpenTelemetrySpanExt;
@@ -13,7 +16,7 @@ use tracing_opentelemetry::OpenTelemetrySpanExt;
 use super::ConsumableBus;
 
 #[async_trait]
-impl<M: Message + Send + Sync> Subscriber<M> for ConsumableBus {
+impl<M: Message + Extractor + Send + Sync> Subscriber<M> for ConsumableBus {
 	async fn subscribe<C, F>(&self, callback: C) -> Result<(), SubscriberError>
 	where
 		C: Fn(M) -> F + Send + Sync,
@@ -53,7 +56,7 @@ impl ConsumableBus {
 		delivery: Delivery,
 	) -> Result<(), SubscriberError>
 	where
-		M: Message + Send + Sync,
+		M: Message + Send + Sync + Extractor,
 		C: Fn(M) -> F + Send + Sync,
 		F: Future<Output = Result<(), SubscriberCallbackError>> + Send,
 	{

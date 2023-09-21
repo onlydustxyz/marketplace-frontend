@@ -4,19 +4,18 @@ use anyhow::Result;
 use domain::{
 	AggregateRepository, DomainError, Event, GithubRepoId, Project, ProjectId, Publisher,
 };
-use infrastructure::amqp::UniqueMessage;
 use tracing::instrument;
 
 use crate::domain::Publishable;
 
 pub struct Usecase {
-	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
+	event_publisher: Arc<dyn Publisher<Event>>,
 	project_repository: AggregateRepository<Project>,
 }
 
 impl Usecase {
 	pub fn new(
-		event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
+		event_publisher: Arc<dyn Publisher<Event>>,
 		project_repository: AggregateRepository<Project>,
 	) -> Self {
 		Self {
@@ -38,7 +37,6 @@ impl Usecase {
 			.unlink_github_repo(github_repo_id)
 			.map_err(|e| DomainError::InvalidInputs(e.into()))?
 			.map(Event::from)
-			.map(UniqueMessage::new)
 			.collect::<Vec<_>>()
 			.publish(self.event_publisher.clone())
 			.await?;

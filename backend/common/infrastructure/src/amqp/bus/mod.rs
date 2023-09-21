@@ -1,5 +1,6 @@
 use std::sync::{Arc, Weak};
 
+use domain::Message;
 use lapin::{
 	message::Delivery,
 	options::{BasicCancelOptions, ExchangeDeclareOptions, QueueDeclareOptions},
@@ -12,7 +13,7 @@ use tokio::sync::{Mutex, RwLock};
 use tokio_retry::{strategy::FixedInterval, Retry};
 use tokio_stream::StreamExt;
 
-use super::Config;
+use super::{Config, UniqueMessage};
 
 mod destination;
 mod publisher;
@@ -25,6 +26,8 @@ const DELIVERY_MODE_PERSISTENT: u8 = 2;
 pub enum Error {
 	#[error(transparent)]
 	Amqp(#[from] lapin::Error),
+	#[error(transparent)]
+	Serde(#[from] serde_json::Error),
 }
 
 pub struct Bus {
@@ -71,11 +74,11 @@ impl Bus {
 		ConsumableBus::new(self, queue_name).await
 	}
 
-	pub async fn publish(
+	pub async fn publish<M: Message>(
 		&self,
 		exchange_name: &str,
 		routing_key: &str,
-		data: &[u8],
+		message: UniqueMessage<M>,
 	) -> Result<Confirmation, Error> {
 		let confirmation = self
 			.channel
@@ -83,7 +86,7 @@ impl Bus {
 				exchange_name,
 				routing_key,
 				Default::default(),
-				data,
+				&serde_json::to_vec(&message)?,
 				BasicProperties::default().with_delivery_mode(DELIVERY_MODE_PERSISTENT),
 			)
 			.await?

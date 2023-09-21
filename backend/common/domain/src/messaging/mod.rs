@@ -1,9 +1,6 @@
-mod message;
-pub use message::{Message, Payload};
-
 mod publisher;
 pub use publisher::{
-	composite::Publisher as CompositePublisher, Error as PublisherError, Publisher,
+	composite::Publisher as CompositePublisher, Error as PublisherError, Message, Publisher,
 };
 
 mod subscriber;
