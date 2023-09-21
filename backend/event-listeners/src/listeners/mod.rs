@@ -20,8 +20,6 @@ use webhook::EventWebHook;
 use self::logger::Logger;
 use crate::Config;
 
-pub const GITHUB_EVENTS_EXCHANGE: &str = "github-events";
-
 pub async fn bootstrap(config: Config) -> Result<Vec<JoinHandle<()>>> {
 	let reqwest = reqwest::Client::new();
 	let database = Arc::new(database::Client::new(database::init_pool(
@@ -73,14 +71,6 @@ pub async fn spawn_all(
 			event_bus::event_consumer(config.amqp.clone(), "quote_sync")
 				.await?
 				.into_command_subscriber(database.clone()),
-		),
-		Logger.spawn(
-			event_bus::consumer_with_exchange(
-				config.amqp.clone(),
-				GITHUB_EVENTS_EXCHANGE,
-				"logger",
-			)
-			.await?,
 		),
 	];
 
