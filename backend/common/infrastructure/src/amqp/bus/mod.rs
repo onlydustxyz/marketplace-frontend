@@ -14,6 +14,11 @@ use tokio_stream::StreamExt;
 
 use super::Config;
 
+mod destination;
+mod publisher;
+mod subscriber;
+pub use destination::Destination;
+
 const DELIVERY_MODE_PERSISTENT: u8 = 2;
 
 #[derive(Debug, Error)]
@@ -48,6 +53,13 @@ impl Bus {
 			channel: connection.create_channel().await?,
 			_connection: connection,
 		})
+	}
+
+	pub fn as_publisher(self, destination: Destination) -> PublisherBus {
+		PublisherBus {
+			bus: self,
+			destination,
+		}
 	}
 
 	pub async fn with_queue(
@@ -154,6 +166,11 @@ impl ConsumableBus {
 			None => Ok(None),
 		}
 	}
+}
+
+pub struct PublisherBus {
+	bus: Bus,
+	destination: Destination,
 }
 
 lazy_static! {

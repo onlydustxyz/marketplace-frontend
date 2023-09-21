@@ -10,6 +10,3 @@ mod subscriber;
 pub use subscriber::{
 	CallbackError as SubscriberCallbackError, Error as SubscriberError, Subscriber,
 };
-
-mod destination;
-pub use destination::Destination;

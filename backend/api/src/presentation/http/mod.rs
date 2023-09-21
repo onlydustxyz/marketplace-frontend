@@ -4,7 +4,7 @@ use ::domain::{AggregateRepository, Project};
 use domain::{Budget, Event, GithubFetchService, Payment, Publisher};
 pub use http::Config;
 use infrastructure::{
-	amqp::{self, CommandMessage, UniqueMessage},
+	amqp::{CommandMessage, UniqueMessage},
 	database::{ImmutableRepository, Repository},
 	github,
 };
@@ -53,7 +53,6 @@ pub fn serve(
 	dusty_bot_service: Arc<dyn DustyBotService>,
 	ens: Arc<ens::Client>,
 	simple_storage: Arc<dyn ImageStoreService>,
-	bus: Arc<amqp::Bus>,
 	github_client_pat_factory: Arc<GithubClientPatFactory>,
 ) -> Rocket<Build> {
 	let update_user_profile_info_usecase = application::user::update_profile_info::Usecase::new(
@@ -69,7 +68,7 @@ pub fn serve(
 	);
 
 	let cancel_payment_usecase =
-		application::payment::cancel::Usecase::new(bus.clone(), payment_repository.clone());
+		application::payment::cancel::Usecase::new(command_bus.clone(), payment_repository.clone());
 
 	rocket::custom(http::config::rocket("backend/api/Rocket.toml"))
 		.manage(config.http.clone())
@@ -92,7 +91,6 @@ pub fn serve(
 		.manage(github_api_client)
 		.manage(ens)
 		.manage(simple_storage)
-		.manage(bus)
 		.manage(update_user_profile_info_usecase)
 		.manage(create_github_issue_usecase)
 		.manage(github_client_pat_factory)

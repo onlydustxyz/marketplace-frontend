@@ -1,8 +1,8 @@
 use std::{collections::HashMap, sync::Arc};
 
 use anyhow::{anyhow, Result};
-use domain::{Destination, Event, Publisher, Subscriber, SubscriberCallbackError};
-use infrastructure::amqp::{self, Bus, BusError, ConsumableBus, UniqueMessage};
+use domain::{Event, Publisher, Subscriber, SubscriberCallbackError};
+use infrastructure::amqp::{self, Bus, BusError, ConsumableBus, Destination, UniqueMessage};
 use lapin::options::QueueDeclareOptions;
 use serde_json::Value;
 use testcontainers::{
@@ -74,7 +74,9 @@ impl<'docker> Context<'docker> {
 			_container: container,
 			config: config.clone(),
 			listeners,
-			publisher: Arc::new(Bus::new(config).await?),
+			publisher: Arc::new(
+				Bus::new(config).await?.as_publisher(Destination::queue("quote_sync")),
+			),
 			kill_channels,
 		})
 	}
@@ -91,8 +93,8 @@ impl<'docker> Context<'docker> {
 			.map(|value| serde_json::from_value(value).expect("Unable to deserialize message"))
 	}
 
-	pub async fn publish<E: Into<Event>>(&self, destination: Destination, event: E) -> Result<()> {
-		self.publisher.publish(destination, &UniqueMessage::new(event.into())).await?;
+	pub async fn publish<E: Into<Event>>(&self, event: E) -> Result<()> {
+		self.publisher.publish(&UniqueMessage::new(event.into())).await?;
 		Ok(())
 	}
 }

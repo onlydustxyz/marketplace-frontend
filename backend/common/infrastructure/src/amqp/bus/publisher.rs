@@ -1,18 +1,19 @@
 use anyhow::anyhow;
 use async_trait::async_trait;
-use domain::{Destination, Message, Publisher, PublisherError};
+use domain::{Message, Publisher, PublisherError};
 
-use super::Bus;
+use super::{Destination, PublisherBus};
 
 #[async_trait]
-impl<M: Message + Send + Sync> Publisher<M> for Bus {
-	async fn publish(&self, destination: Destination, message: &M) -> Result<(), PublisherError> {
-		let (exchange_name, routing_key) = match destination {
+impl<M: Message + Send + Sync> Publisher<M> for PublisherBus {
+	async fn publish(&self, message: &M) -> Result<(), PublisherError> {
+		let (exchange_name, routing_key) = match self.destination.clone() {
 			Destination::Queue(name) => (String::new(), name),
 			Destination::Exchange(name) => (name, String::new()),
 		};
 
 		let confirmation = self
+			.bus
 			.publish(&exchange_name, &routing_key, &serde_json::to_vec(message)?)
 			.await
 			.map_err(|e| PublisherError::Send(anyhow!(e)))?;

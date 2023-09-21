@@ -1,6 +1,6 @@
 use anyhow::Result;
 use chrono::Utc;
-use domain::{currencies, BudgetId, Destination};
+use domain::{currencies, BudgetId};
 use event_listeners::models::CryptoUsdQuote;
 use fixtures::*;
 use infrastructure::database::{enums::Currency, ImmutableRepository};
@@ -40,13 +40,10 @@ impl<'a> Test<'a> {
 		// When
 		self.context
 			.amqp
-			.publish(
-				Destination::queue("quote_sync"),
-				domain::BudgetEvent::Created {
-					id: BudgetId::new(),
-					currency: currencies::ETH,
-				},
-			)
+			.publish(domain::BudgetEvent::Created {
+				id: BudgetId::new(),
+				currency: currencies::ETH,
+			})
 			.await?;
 
 		// Then

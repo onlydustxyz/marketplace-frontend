@@ -1,11 +1,8 @@
 mod bus;
-pub use bus::{Bus, ConsumableBus, Error as BusError};
+pub use bus::{Bus, ConsumableBus, Destination, Error as BusError};
 
 mod config;
 pub use config::Config;
-
-mod publisher;
-mod subscriber;
 
 mod unique_message;
 pub use unique_message::UniqueMessage;

@@ -1,8 +1,8 @@
 use std::sync::Arc;
 
-use domain::{AggregateRepository, GithubUserId, Payment, Project, UserId};
+use domain::{AggregateRepository, Event, GithubUserId, Payment, Project, Publisher, UserId};
 use infrastructure::{
-	amqp,
+	amqp::UniqueMessage,
 	database::{ImmutableRepository, Repository},
 	github,
 };
@@ -54,7 +54,7 @@ impl Context {
 		github_api_client: Arc<github::Client>,
 		ens: Arc<ens::Client>,
 		simple_storage: Arc<dyn ImageStoreService>,
-		bus: Arc<amqp::Bus>,
+		bus: Arc<dyn Publisher<UniqueMessage<Event>>>,
 	) -> Self {
 		Self {
 			caller_permissions,

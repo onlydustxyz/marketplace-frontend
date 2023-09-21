@@ -2,6 +2,7 @@ use std::sync::Arc;
 
 use anyhow::Result;
 use domain::AggregateRepository;
+use event_store::bus::QUEUE_NAME as EVENT_STORE_QUEUE;
 use infrastructure::{amqp, amqp::CommandPublisherDecorator, database, github};
 use rocket::{Build, Rocket};
 
@@ -31,9 +32,14 @@ pub async fn bootstrap(config: Config) -> Result<Rocket<Build>> {
 		Arc::new(
 			amqp::Bus::new(config.amqp.clone())
 				.await?
+				.as_publisher(amqp::Destination::queue(EVENT_STORE_QUEUE))
 				.into_command_publisher(database.clone(), expected_processing_count_per_event()),
 		),
-		Arc::new(amqp::Bus::new(config.amqp.clone()).await?),
+		Arc::new(
+			amqp::Bus::new(config.amqp.clone())
+				.await?
+				.as_publisher(amqp::Destination::queue(EVENT_STORE_QUEUE)),
+		),
 		AggregateRepository::new(database.clone()),
 		AggregateRepository::new(database.clone()),
 		AggregateRepository::new(database.clone()),
@@ -53,7 +59,6 @@ pub async fn bootstrap(config: Config) -> Result<Rocket<Build>> {
 		dusty_bot_api_client,
 		Arc::new(ens::Client::new(config.web3)?),
 		simple_storage,
-		Arc::new(amqp::Bus::new(config.amqp).await?),
 		Arc::new(github_client_pat_factory),
 	);
 	Ok(rocket_build)

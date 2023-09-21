@@ -3,7 +3,7 @@ use async_trait::async_trait;
 use mockall::automock;
 use thiserror::Error;
 
-use super::{Destination, Message};
+use super::Message;
 
 pub mod composite;
 
@@ -20,10 +20,10 @@ pub enum Error {
 #[async_trait]
 #[cfg_attr(test, automock)]
 pub trait Publisher<M: Message + Sync + Send>: Send + Sync {
-	async fn publish(&self, destination: Destination, message: &M) -> Result<(), Error>;
-	async fn publish_many(&self, destination: Destination, messages: &[M]) -> Result<(), Error> {
+	async fn publish(&self, message: &M) -> Result<(), Error>;
+	async fn publish_many(&self, messages: &[M]) -> Result<(), Error> {
 		for message in messages {
-			self.publish(destination.clone(), message).await?;
+			self.publish(message).await?;
 		}
 		Ok(())
 	}
@@ -50,12 +50,8 @@ mod tests {
 
 	#[async_trait]
 	impl Publisher<TestMessage> for TestPublisher {
-		async fn publish(
-			&self,
-			destination: Destination,
-			message: &TestMessage,
-		) -> Result<(), Error> {
-			self.0.publish(destination, message).await
+		async fn publish(&self, message: &TestMessage) -> Result<(), Error> {
+			self.0.publish(message).await
 		}
 	}
 	impl Extractor for TestMessage {
@@ -71,32 +67,28 @@ mod tests {
 
 	#[rstest]
 	async fn publish_many_messages() {
-		let destination = Destination::Queue("test_queue".to_string());
 		let mut publisher = MockPublisher::<TestMessage>::new();
 
 		publisher
 			.expect_publish()
-			.with(eq(destination.clone()), eq(TestMessage::Msg1))
+			.with(eq(TestMessage::Msg1))
 			.once()
-			.returning(|_, _| async { Ok(()) }.boxed());
+			.returning(|_| async { Ok(()) }.boxed());
 
 		publisher
 			.expect_publish()
-			.with(eq(destination.clone()), eq(TestMessage::Msg2))
+			.with(eq(TestMessage::Msg2))
 			.once()
-			.returning(|_, _| async { Ok(()) }.boxed());
+			.returning(|_| async { Ok(()) }.boxed());
 
 		publisher
 			.expect_publish()
-			.with(eq(destination.clone()), eq(TestMessage::Msg3))
+			.with(eq(TestMessage::Msg3))
 			.once()
-			.returning(|_, _| async { Ok(()) }.boxed());
+			.returning(|_| async { Ok(()) }.boxed());
 
 		let result = TestPublisher(publisher)
-			.publish_many(
-				destination,
-				&[TestMessage::Msg1, TestMessage::Msg2, TestMessage::Msg3],
-			)
+			.publish_many(&[TestMessage::Msg1, TestMessage::Msg2, TestMessage::Msg3])
 			.await;
 		assert!(result.is_ok(), "{}", result.err().unwrap());
 	}

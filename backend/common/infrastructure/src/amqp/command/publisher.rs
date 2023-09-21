@@ -1,9 +1,7 @@
 use std::sync::Arc;
 
 use async_trait::async_trait;
-use domain::{
-	CommandAggregateId, CommandId, CommandRepository, Destination, Event, Publisher, PublisherError,
-};
+use domain::{CommandAggregateId, CommandId, CommandRepository, Event, Publisher, PublisherError};
 use olog::IntoField;
 
 use super::CommandMessage;
@@ -58,16 +56,12 @@ impl<P> Publisher<CommandMessage<Event>> for CommandPublisher<P>
 where
 	P: Publisher<UniqueMessage<Event>>,
 {
-	async fn publish(
-		&self,
-		destination: Destination,
-		message: &CommandMessage<Event>,
-	) -> Result<(), PublisherError> {
+	async fn publish(&self, message: &CommandMessage<Event>) -> Result<(), PublisherError> {
 		self.upsert_command(
 			&message.command_id(),
 			message.inner().payload().clone().into(),
 		)?;
-		self.publisher.publish(destination, message.inner()).await.map_err(|error| {
+		self.publisher.publish(message.inner()).await.map_err(|error| {
 			self.cancel_command(&message.command_id());
 			error
 		})
