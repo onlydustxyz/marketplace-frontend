@@ -18322,7 +18322,7 @@ export type ContributionGithubPullRequestFragment = { __typename?: 'GithubPullRe
 
 export type ContributionGithubIssueFragment = { __typename?: 'GithubIssues', commentsCount: any | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null };
 
-export type PaymentRequestIdFragment = { __typename?: 'PaymentRequests', id: any };
+export type PaymentRequestIdFragment = { __typename?: 'PaymentRequests', id: any | null };
 
 export type PaymentRequestFragment = { __typename?: 'PaymentRequests', recipientId: any | null, amount: any | null, requestedAt: any | null, id: any | null, workItemsAggregate: { __typename?: 'WorkItemsAggregate', aggregate: { __typename?: 'WorkItemsAggregateFields', count: number } | null } };
 
