@@ -5,6 +5,8 @@ use thiserror::Error;
 
 use super::{Destination, Message};
 
+pub mod composite;
+
 #[derive(Debug, Error)]
 pub enum Error {
 	#[error("Failed while publishing message")]
