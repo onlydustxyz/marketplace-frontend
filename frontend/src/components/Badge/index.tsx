@@ -2,6 +2,7 @@ import classNames from "classnames";
 
 export enum BadgeIcon {
   GitMerge = "git-merge-line",
+  StackLine = "stack-line",
 }
 
 export enum BadgeSize {

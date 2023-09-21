@@ -47,7 +47,8 @@ export default function GithubPullRequest({
 }: GithubPullRequestProps) {
   const { repoName } = parsePullRequestLink(pullRequest.htmlUrl || "");
 
-  const commitsCount = `${pullRequest?.userCommitsCount?.aggregate?.count}/${pullRequest?.commitsCount?.aggregate?.count}`;
+  const userCommits = pullRequest?.userCommitsCount?.aggregate?.count;
+  const commitsCount = pullRequest?.commitsCount?.aggregate?.count;
 
   return (
     <Card
@@ -74,13 +75,16 @@ export default function GithubPullRequest({
             <GitRepositoryLine />
             {repoName}
           </div>
-          <div id={pullRequest.id} className="flex flex-row items-center gap-1 ">
-            <GitCommitLine />
-            {commitsCount}
-            <Tooltip anchorId={pullRequest.id}>
-              <CommitsTooltip pullRequest={pullRequest} commitsCount={commitsCount} />
-            </Tooltip>
-          </div>
+          {commitsCount ? (
+            <div id={pullRequest?.id} className="flex flex-row items-center gap-1 ">
+              <GitCommitLine />
+              {userCommits + "/" + commitsCount}
+
+              <Tooltip anchorId={pullRequest?.id}>
+                <CommitsTooltip pullRequest={pullRequest} commitsCount={userCommits + "/" + commitsCount} />
+              </Tooltip>
+            </div>
+          ) : null}
         </div>
       </div>
       {secondaryAction && <ActionButton action={secondaryAction} onClick={onSecondaryClick} ignored={ignored} />}

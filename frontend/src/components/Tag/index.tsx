@@ -1,5 +1,6 @@
 import classNames from "classnames";
-import { PropsWithChildren } from "react";
+import { ElementType, PropsWithChildren } from "react";
+import { MouseEvent } from "react";
 
 export enum TagSize {
   Small = "small",
@@ -13,24 +14,38 @@ export enum TagBorderColor {
 }
 
 export type TagProps = {
+  as?: ElementType;
   id?: string;
-  size: TagSize;
+  size?: TagSize;
   borderColor?: TagBorderColor;
   testid?: string;
   opaque?: boolean;
+  className?: string;
+  onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
 } & PropsWithChildren;
 
 export default function Tag({
+  as: Component,
   id,
-  size,
+  size = TagSize.Small,
   borderColor = TagBorderColor.Grey,
   testid,
   opaque,
   children,
+  className,
+  onClick,
   ...rest
 }: TagProps) {
+  const Wrapper = Component ?? "div";
+
   return (
-    <div data-testid={testid} id={id} className="w-fit shrink-0 overflow-hidden rounded-full p-px blur-0" {...rest}>
+    <Wrapper
+      data-testid={testid}
+      id={id}
+      className="w-fit shrink-0 overflow-hidden rounded-full p-px blur-0"
+      {...rest}
+      {...(onClick && { onClick })}
+    >
       <div
         className={classNames(
           "relative flex w-fit items-center justify-center gap-1 rounded-full font-walsheim font-normal text-white xl:h-7",
@@ -47,11 +62,12 @@ export default function Tag({
           {
             "bg-spaceBlue-900": borderColor === TagBorderColor.MultiColor || opaque,
             "bg-white/2": borderColor === TagBorderColor.Grey && !opaque,
-          }
+          },
+          className
         )}
       >
         {children}
       </div>
-    </div>
+    </Wrapper>
   );
 }

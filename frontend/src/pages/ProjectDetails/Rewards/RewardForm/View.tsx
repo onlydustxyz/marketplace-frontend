@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import CloseLine from "src/icons/CloseLine";
 import Title from "src/pages/ProjectDetails/Title";
 import Add from "src/icons/Add";
-import { ReactElement, ReactNode, useEffect, useState } from "react";
+import { ReactElement, ReactNode, useState } from "react";
 import WorkItemSidePanel from "./WorkItemSidePanel";
 import GithubIssue, { Action as GithubIssueAction } from "src/components/GithubIssue/GithubIssue";
 import GithubPullRequest, { Action as GithubPRAction } from "src/components/GithubPullRequest/GithubPullRequest";
@@ -28,11 +28,10 @@ import {
 } from "src/__generated/graphql";
 import pickContributorImg from "src/assets/img/pick-contributor.png";
 import addContributionImg from "src/assets/img/add-contribution.png";
-import {
-  issueToWorkItem,
-  pullRequestToWorkItem,
-} from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/WorkItems/WorkItems";
-import GithubCodeReview from "src/components/GithubCodeReview/GithubCodeReview";
+import { contributionToWorkItem } from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/WorkItems/WorkItems";
+import GithubCodeReview, { GithubCodeReviewStatus } from "src/components/GithubCodeReview/GithubCodeReview";
+import { AutoAdd } from "./AutoAdd/AutoAdd";
+import { GithubContributionType } from "src/types";
 
 interface Props {
   projectId: string;
@@ -74,36 +73,32 @@ const View: React.FC<Props> = ({
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
   const navigate = useNavigate();
   const [sidePanelOpen, setSidePanelOpen] = useState(false);
-  const [workItemsPrefilled, setWorkItemsPrefilled] = useState(false);
 
   const { workItems, add: addWorkItem, remove: removeWorkItem, clear: clearWorkItems } = useWorkItems();
 
-  const githubPullRequestFilter = { githubPullRequest: { status: GithubPullRequestStatus.Merged } };
-  const githubIssueFilter = { githubIssue: { status: GithubIssueStatus.Completed } };
-
-  useEffect(() => {
-    onWorkItemsChange(workItems);
-  }, [workItems, onWorkItemsChange]);
-
-  useEffect(() => {
-    if (!workItemsPrefilled && unpaidContributions) {
-      const filteredContributions = filter(unpaidContributions, {
-        ...(githubPullRequestFilter || githubIssueFilter),
-        ignored: false,
-      });
-
-      const workItems = filteredContributions.map(item =>
-        item.githubIssue ? issueToWorkItem(item.githubIssue) : pullRequestToWorkItem(item.githubPullRequest)
-      );
-
-      addWorkItem(workItems);
-      setWorkItemsPrefilled(true);
-    }
-  }, [unpaidContributions, contributor, addWorkItem, clearWorkItems, workItemsPrefilled, setWorkItemsPrefilled]);
-
-  useEffect(() => setWorkItemsPrefilled(false), [contributor]);
+  const filters = {
+    [GithubContributionType.Issue]: { githubIssue: { status: GithubIssueStatus.Completed } },
+    [GithubContributionType.PullRequest]: { githubPullRequest: { status: GithubPullRequestStatus.Merged } },
+    [GithubContributionType.CodeReview]: { githubCodeReview: { status: GithubCodeReviewStatus.Completed } },
+  };
 
   const displayCallout = contributor && !contributor.userId;
+
+  const handleAutoAdd = (type: GithubContributionType) => {
+    if (!unpaidContributions) return;
+
+    const filteredContributions = filter(unpaidContributions, {
+      ...filters[type],
+      ignored: false,
+    });
+
+    const workItems = filteredContributions.map(
+      contribution => contributionToWorkItem(contribution) as WorkItemFragment
+    );
+
+    addWorkItem(workItems);
+    onWorkItemsChange(workItems);
+  };
 
   return (
     <>
@@ -168,6 +163,8 @@ const View: React.FC<Props> = ({
                     <div className="text-sm text-greyscale-300 xl:text-base">
                       {T("reward.form.contributions.subTitle")}
                     </div>
+
+                    <AutoAdd contributor={contributor} onAutoAdd={handleAutoAdd} workItems={workItems} />
 
                     {workItems.map(workItem =>
                       workItem.githubIssue ? (

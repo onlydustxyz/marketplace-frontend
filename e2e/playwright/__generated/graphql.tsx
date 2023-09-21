@@ -19024,11 +19024,19 @@ export type UnignoreContributionMutation = { __typename?: 'mutation_root', unign
 export type UnrewardedContributionsQueryVariables = Exact<{
   githubUserId: Scalars['bigint'];
   projectId: Scalars['uuid'];
-  type: Scalars['String'];
 }>;
 
 
 export type UnrewardedContributionsQuery = { __typename?: 'query_root', contributions: Array<{ __typename?: 'Contributions', type: string | null, status: any | null, repoId: any | null, projectId: any | null, id: string | null, detailsId: string | null, githubUserId: any | null, ignored: boolean | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, commentsCount: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, commitsCount: { __typename?: 'GithubPullRequestCommitsAggregate', aggregate: { __typename?: 'GithubPullRequestCommitsAggregateFields', count: number } | null }, userCommitsCount: { __typename?: 'GithubPullRequestCommitsAggregate', aggregate: { __typename?: 'GithubPullRequestCommitsAggregateFields', count: number } | null }, contributorDetails: Array<{ __typename?: 'GithubPullRequestCommits', author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null }>, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', status: string | null, outcome: any | null, submittedAt: any | null, id: string | null, reviewer: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null } | null }> };
+
+export type UnrewardedContributionsByTypeQueryVariables = Exact<{
+  githubUserId: Scalars['bigint'];
+  projectId: Scalars['uuid'];
+  type: Scalars['String'];
+}>;
+
+
+export type UnrewardedContributionsByTypeQuery = { __typename?: 'query_root', contributions: Array<{ __typename?: 'Contributions', type: string | null, status: any | null, repoId: any | null, projectId: any | null, id: string | null, detailsId: string | null, githubUserId: any | null, ignored: boolean | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, commentsCount: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, commitsCount: { __typename?: 'GithubPullRequestCommitsAggregate', aggregate: { __typename?: 'GithubPullRequestCommitsAggregateFields', count: number } | null }, userCommitsCount: { __typename?: 'GithubPullRequestCommitsAggregate', aggregate: { __typename?: 'GithubPullRequestCommitsAggregateFields', count: number } | null }, contributorDetails: Array<{ __typename?: 'GithubPullRequestCommits', author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null }>, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', status: string | null, outcome: any | null, submittedAt: any | null, id: string | null, reviewer: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null } | null }> };
 
 export type ContributionFragment = { __typename?: 'Contributions', type: string | null, status: any | null, repoId: any | null, projectId: any | null, id: string | null, detailsId: string | null, githubUserId: any | null, ignored: boolean | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, commentsCount: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, commitsCount: { __typename?: 'GithubPullRequestCommitsAggregate', aggregate: { __typename?: 'GithubPullRequestCommitsAggregateFields', count: number } | null }, userCommitsCount: { __typename?: 'GithubPullRequestCommitsAggregate', aggregate: { __typename?: 'GithubPullRequestCommitsAggregateFields', count: number } | null }, contributorDetails: Array<{ __typename?: 'GithubPullRequestCommits', author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null }>, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', status: string | null, outcome: any | null, submittedAt: any | null, id: string | null, reviewer: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null } | null };
 
@@ -22015,9 +22023,9 @@ export type UnignoreContributionMutationHookResult = ReturnType<typeof useUnigno
 export type UnignoreContributionMutationResult = Apollo.MutationResult<UnignoreContributionMutation>;
 export type UnignoreContributionMutationOptions = Apollo.BaseMutationOptions<UnignoreContributionMutation, UnignoreContributionMutationVariables>;
 export const UnrewardedContributionsDocument = gql`
-    query UnrewardedContributions($githubUserId: bigint!, $projectId: uuid!, $type: String!) {
+    query UnrewardedContributions($githubUserId: bigint!, $projectId: uuid!) {
   contributions(
-    where: {githubUserId: {_eq: $githubUserId}, projectId: {_eq: $projectId}, type: {_eq: $type}, rewardItems_aggregate: {count: {predicate: {_eq: 0}}}}
+    where: {githubUserId: {_eq: $githubUserId}, projectId: {_eq: $projectId}, rewardItems_aggregate: {count: {predicate: {_eq: 0}}}}
   ) {
     ...Contribution
   }
@@ -22038,7 +22046,6 @@ export const UnrewardedContributionsDocument = gql`
  *   variables: {
  *      githubUserId: // value for 'githubUserId'
  *      projectId: // value for 'projectId'
- *      type: // value for 'type'
  *   },
  * });
  */
@@ -22053,6 +22060,45 @@ export function useUnrewardedContributionsLazyQuery(baseOptions?: Apollo.LazyQue
 export type UnrewardedContributionsQueryHookResult = ReturnType<typeof useUnrewardedContributionsQuery>;
 export type UnrewardedContributionsLazyQueryHookResult = ReturnType<typeof useUnrewardedContributionsLazyQuery>;
 export type UnrewardedContributionsQueryResult = Apollo.QueryResult<UnrewardedContributionsQuery, UnrewardedContributionsQueryVariables>;
+export const UnrewardedContributionsByTypeDocument = gql`
+    query UnrewardedContributionsByType($githubUserId: bigint!, $projectId: uuid!, $type: String!) {
+  contributions(
+    where: {githubUserId: {_eq: $githubUserId}, projectId: {_eq: $projectId}, type: {_eq: $type}, rewardItems_aggregate: {count: {predicate: {_eq: 0}}}}
+  ) {
+    ...Contribution
+  }
+}
+    ${ContributionFragmentDoc}`;
+
+/**
+ * __useUnrewardedContributionsByTypeQuery__
+ *
+ * To run a query within a React component, call `useUnrewardedContributionsByTypeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUnrewardedContributionsByTypeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUnrewardedContributionsByTypeQuery({
+ *   variables: {
+ *      githubUserId: // value for 'githubUserId'
+ *      projectId: // value for 'projectId'
+ *      type: // value for 'type'
+ *   },
+ * });
+ */
+export function useUnrewardedContributionsByTypeQuery(baseOptions: Apollo.QueryHookOptions<UnrewardedContributionsByTypeQuery, UnrewardedContributionsByTypeQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UnrewardedContributionsByTypeQuery, UnrewardedContributionsByTypeQueryVariables>(UnrewardedContributionsByTypeDocument, options);
+      }
+export function useUnrewardedContributionsByTypeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UnrewardedContributionsByTypeQuery, UnrewardedContributionsByTypeQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UnrewardedContributionsByTypeQuery, UnrewardedContributionsByTypeQueryVariables>(UnrewardedContributionsByTypeDocument, options);
+        }
+export type UnrewardedContributionsByTypeQueryHookResult = ReturnType<typeof useUnrewardedContributionsByTypeQuery>;
+export type UnrewardedContributionsByTypeLazyQueryHookResult = ReturnType<typeof useUnrewardedContributionsByTypeLazyQuery>;
+export type UnrewardedContributionsByTypeQueryResult = Apollo.QueryResult<UnrewardedContributionsByTypeQuery, UnrewardedContributionsByTypeQueryVariables>;
 export const SearchIssuesDocument = gql`
     query SearchIssues($projectId: uuid!, $githubUserId: jsonb!) {
   githubIssues(

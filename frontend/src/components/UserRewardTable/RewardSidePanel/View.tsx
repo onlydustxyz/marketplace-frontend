@@ -179,8 +179,8 @@ export default function View({
             {T("reward.table.detailsPanel.contributions")}
           </div>
           <div className="flex h-full flex-col gap-3 overflow-auto p-px pb-6 pr-4 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
-            {workItems?.map(workItem =>
-              workItem.githubIssue ? (
+            {workItems?.map(workItem => {
+              return workItem.githubIssue ? (
                 <GithubIssue key={workItem.githubIssue?.id} issue={workItem.githubIssue} />
               ) : workItem.githubPullRequest ? (
                 <GithubPullRequest
@@ -189,8 +189,8 @@ export default function View({
                 />
               ) : workItem.githubCodeReview ? (
                 <GithubCodeReview key={workItem.githubCodeReview?.id} codeReview={workItem.githubCodeReview} />
-              ) : undefined
-            )}
+              ) : undefined;
+            })}
           </div>
         </div>
       </div>

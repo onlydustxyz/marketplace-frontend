@@ -612,7 +612,10 @@
         "new": {
           "title": "Reward contributor"
         },
-        "title": "Rewards"
+        "title": "Rewards",
+        "autoAdd": {
+          "label": "AUTO-ADD"
+        }
       },
       "remainingBudget": {
         "leftToSpend": "left to spend",

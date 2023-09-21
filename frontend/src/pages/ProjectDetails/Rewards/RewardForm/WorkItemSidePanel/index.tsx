@@ -11,7 +11,6 @@ import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
 import { WorkItemFragment, WorkItemType } from "src/__generated/graphql";
 import CodeReviewIcon from "src/assets/icons/CodeReviewIcon";
-// import CodeReviewIcon from "src/assets/icons/CodeReviewCheckIcon";
 
 type Props = {
   projectId: string;
@@ -49,7 +48,7 @@ export default function WorkItemSidePanel({
         <div className="px-6 py-8 font-belwe text-2xl font-normal text-greyscale-50">
           {T("reward.form.contributions.addContribution")}
         </div>
-        <div className="flex flex-row items-center gap-4 border-b border-greyscale-50/8 px-6">
+        <div className="[2xl]:gap-6 flex flex-row items-center gap-5 border-b border-greyscale-50/8 px-6">
           <Tab
             testId="tab-pull-requests"
             active={selectedTab === Tabs.PullRequest}
