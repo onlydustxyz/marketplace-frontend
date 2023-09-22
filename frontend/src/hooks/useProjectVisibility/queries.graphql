@@ -1,5 +1,0 @@
-query GetProjectVisibilityDetails($projectId: uuid!) {
-  projects(where: { id: { _eq: $projectId } }) {
-    ...ProjectVisibilityDetails
-  }
-}

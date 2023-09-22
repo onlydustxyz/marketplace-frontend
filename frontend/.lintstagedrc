@@ -1,5 +1,0 @@
-{
-  "*.{js,jsx,json,ts,tsx}": [
-    "eslint"
-  ]
-}

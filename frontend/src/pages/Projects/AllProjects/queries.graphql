@@ -1,5 +1,0 @@
-query GetProjects($where: ProjectsBoolExp, $orderBy: [ProjectsOrderBy!]) {
-  projects(where: $where, orderBy: $orderBy) {
-    ...ProjectCardFields
-  }
-}
