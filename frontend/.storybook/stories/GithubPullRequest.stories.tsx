@@ -1,8 +1,11 @@
 import { daysFromNow } from "src/utils/date";
-import { GithubPullRequestFragment, GithubPullRequestStatus, WorkItemType } from "src/__generated/graphql";
-import GithubPullRequest, { Action, Props } from "src/components/GithubPullRequest";
+import { GithubPullRequestStatus, GithubPullRequestWithCommitsFragment } from "src/__generated/graphql";
+import GithubPullRequest, {
+  Action,
+  GithubPullRequestProps,
+} from "src/components/GithubCard/GithubPullRequest/GithubPullRequest";
 
-const pullRequests: Record<string, GithubPullRequestFragment> = {
+const pullRequests: Record<string, GithubPullRequestWithCommitsFragment> = {
   closed: {
     id: "1268051991",
     repoId: 123456,
@@ -13,6 +16,26 @@ const pullRequests: Record<string, GithubPullRequestFragment> = {
     createdAt: daysFromNow(6),
     closedAt: daysFromNow(6),
     mergedAt: undefined,
+    author: {
+      login: "stannislas",
+      avatarUrl: "https://gravatar.com/avatar/1f82b0492a0a938288c2d5b70534a1fb?s=400&d=robohash&r=x",
+      htmlUrl: "https://github.com/stanislas",
+      id: 123,
+      user: { id: 233 },
+    },
+    commitsCount: { aggregate: { count: 3 } },
+    userCommitsCount: { aggregate: { count: 1 } },
+    contributorDetails: [
+      {
+        author: {
+          login: "ofux",
+          avatarUrl: "https://avatars.githubusercontent.com/u/43467246?v=4",
+          htmlUrl: "https://github.com/ofux",
+          id: 595505,
+          user: { id: 233 },
+        },
+      },
+    ],
   },
   closedWithLongLink: {
     id: "1268051991",
@@ -25,6 +48,26 @@ const pullRequests: Record<string, GithubPullRequestFragment> = {
     createdAt: daysFromNow(6),
     closedAt: daysFromNow(6),
     mergedAt: undefined,
+    author: {
+      login: "stannislas",
+      avatarUrl: "https://gravatar.com/avatar/1f82b0492a0a938288c2d5b70534a1fb?s=400&d=robohash&r=x",
+      htmlUrl: "https://github.com/stanislas",
+      id: 123,
+      user: { id: 233 },
+    },
+    commitsCount: { aggregate: { count: 3 } },
+    userCommitsCount: { aggregate: { count: 1 } },
+    contributorDetails: [
+      {
+        author: {
+          login: "ofux",
+          avatarUrl: "https://avatars.githubusercontent.com/u/43467246?v=4",
+          htmlUrl: "https://github.com/ofux",
+          id: 595505,
+          user: { id: 233 },
+        },
+      },
+    ],
   },
   open: {
     id: "1268051991",
@@ -36,6 +79,26 @@ const pullRequests: Record<string, GithubPullRequestFragment> = {
     createdAt: daysFromNow(6),
     closedAt: null,
     mergedAt: null,
+    author: {
+      login: "stannislas",
+      avatarUrl: "https://gravatar.com/avatar/1f82b0492a0a938288c2d5b70534a1fb?s=400&d=robohash&r=x",
+      htmlUrl: "https://github.com/stanislas",
+      id: 123,
+      user: { id: 233 },
+    },
+    commitsCount: { aggregate: { count: 3 } },
+    userCommitsCount: { aggregate: { count: 1 } },
+    contributorDetails: [
+      {
+        author: {
+          login: "ofux",
+          avatarUrl: "https://avatars.githubusercontent.com/u/43467246?v=4",
+          htmlUrl: "https://github.com/ofux",
+          id: 595505,
+          user: { id: 233 },
+        },
+      },
+    ],
   },
   merged: {
     id: "1268051991",
@@ -47,6 +110,26 @@ const pullRequests: Record<string, GithubPullRequestFragment> = {
     createdAt: daysFromNow(6),
     mergedAt: daysFromNow(5),
     closedAt: daysFromNow(5),
+    author: {
+      login: "stannislas",
+      avatarUrl: "https://gravatar.com/avatar/1f82b0492a0a938288c2d5b70534a1fb?s=400&d=robohash&r=x",
+      htmlUrl: "https://github.com/stanislas",
+      id: 123,
+      user: { id: 233 },
+    },
+    commitsCount: { aggregate: { count: 3 } },
+    userCommitsCount: { aggregate: { count: 1 } },
+    contributorDetails: [
+      {
+        author: {
+          login: "ofux",
+          avatarUrl: "https://avatars.githubusercontent.com/u/43467246?v=4",
+          htmlUrl: "https://github.com/ofux",
+          id: 595505,
+          user: { id: 233 },
+        },
+      },
+    ],
   },
 };
 
@@ -70,21 +153,21 @@ export default {
   },
 };
 
-const defaultProps: Props = { pullRequest: pullRequests.closed };
-const longLinkProps: Props = { pullRequest: pullRequests.closedWithLongLink };
-const openProps: Props = { pullRequest: pullRequests.open };
-const mergedProps: Props = { pullRequest: pullRequests.merged };
+const defaultProps: GithubPullRequestProps = { pullRequest: pullRequests.closed };
+const longLinkProps: GithubPullRequestProps = { pullRequest: pullRequests.closedWithLongLink };
+const openProps: GithubPullRequestProps = { pullRequest: pullRequests.open };
+const mergedProps: GithubPullRequestProps = { pullRequest: pullRequests.merged };
 
 export const Default = {
-  render: (args: Props) => <GithubPullRequest {...defaultProps} {...args} />,
+  render: (args: GithubPullRequestProps) => <GithubPullRequest {...defaultProps} {...args} />,
 };
 
 export const LongLink = {
-  render: (args: Props) => <GithubPullRequest {...longLinkProps} {...args} />,
+  render: (args: GithubPullRequestProps) => <GithubPullRequest {...longLinkProps} {...args} />,
 };
 export const Open = {
-  render: (args: Props) => <GithubPullRequest {...openProps} {...args} />,
+  render: (args: GithubPullRequestProps) => <GithubPullRequest {...openProps} {...args} />,
 };
 export const Merged = {
-  render: (args: Props) => <GithubPullRequest {...mergedProps} {...args} />,
+  render: (args: GithubPullRequestProps) => <GithubPullRequest {...mergedProps} {...args} />,
 };

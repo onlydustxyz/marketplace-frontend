@@ -18,6 +18,15 @@ object_relationships:
         remote_table:
           name: github_pull_requests
           schema: api
+  - name: reviewer
+    using:
+      manual_configuration:
+        column_mapping:
+          reviewer_id: id
+        insertion_order: null
+        remote_table:
+          name: github_users
+          schema: public
 select_permissions:
   - role: public
     permission:

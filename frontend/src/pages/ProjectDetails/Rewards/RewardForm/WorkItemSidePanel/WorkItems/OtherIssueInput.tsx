@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { useFormContext, useFormState } from "react-hook-form";
 import {
   GithubIssueFragment,
-  GithubPullRequestFragment,
+  GithubPullRequestWithCommitsFragment,
   LiveGithubIssueFragment,
   LiveGithubPullRequestFragment,
   WorkItemFragment,
@@ -24,7 +24,7 @@ import {
 import {
   issueToWorkItem,
   pullRequestToWorkItem,
-} from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/Issues";
+} from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/WorkItems/WorkItems";
 
 type Props = {
   projectId: string;
@@ -156,9 +156,16 @@ export const liveIssueToCached = (issue: LiveGithubIssueFragment): GithubIssueFr
   ...issue,
   __typename: "GithubIssues",
   assigneeIds: [],
+  commentsCount: 0,
 });
 
-export const livePullRequestToCached = (issue: LiveGithubPullRequestFragment): GithubPullRequestFragment => ({
+export const livePullRequestToCached = (
+  issue: LiveGithubPullRequestFragment
+): GithubPullRequestWithCommitsFragment => ({
   ...issue,
   __typename: "GithubPullRequests",
+  author: null,
+  commitsCount: { aggregate: { count: 0 } },
+  userCommitsCount: { aggregate: { count: 0 } },
+  contributorDetails: [],
 });

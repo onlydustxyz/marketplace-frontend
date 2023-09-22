@@ -19,6 +19,7 @@ type CommonProps = {
 type TooltipProps = {
   id?: string;
   anchorSelect?: string;
+  anchorId?: string;
   [otherProp: string]: unknown;
 } & CommonProps &
   PropsWithChildren;
@@ -26,6 +27,7 @@ type TooltipProps = {
 export default function Tooltip({
   id = GLOBAL_TOOLTIP_ID,
   position = TooltipPosition.Bottom,
+  anchorId,
   anchorSelect,
   children,
   ...rest
@@ -34,6 +36,7 @@ export default function Tooltip({
     <ReactTooltip
       id={id}
       place={position}
+      anchorId={anchorId}
       anchorSelect={anchorSelect}
       style={{
         background: "#313030",

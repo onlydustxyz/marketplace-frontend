@@ -1,0 +1,71 @@
+mutation IgnoreContribution($contributionId: String!, $projectId: Uuid!) {
+  ignoreContribution(contributionId: $contributionId, projectId: $projectId)
+}
+
+mutation UnignoreContribution($contributionId: String!, $projectId: Uuid!) {
+  unignoreContribution(contributionId: $contributionId, projectId: $projectId)
+}
+
+query UnrewardedContributions($githubUserId: bigint!, $projectId: uuid!) {
+  contributions(
+    where: {
+      githubUserId: { _eq: $githubUserId }
+      projectId: { _eq: $projectId }
+      rewardItems_aggregate: { count: { predicate: { _eq: 0 } } }
+    }
+  ) {
+    ...Contribution
+  }
+}
+
+query UnrewardedContributionsByType($githubUserId: bigint!, $projectId: uuid!, $type: String!) {
+  contributions(
+    where: {
+      githubUserId: { _eq: $githubUserId }
+      projectId: { _eq: $projectId }
+      type: { _eq: $type }
+      rewardItems_aggregate: { count: { predicate: { _eq: 0 } } }
+    }
+  ) {
+    ...Contribution
+  }
+}
+
+fragment Contribution on Contributions {
+  type
+  status
+  repoId
+  projectId
+  id
+  detailsId
+  githubUserId
+  ignored
+  githubIssue {
+    ...GithubIssue
+  }
+  githubPullRequest {
+    ...GithubPullRequestWithCommits
+  }
+  githubCodeReview {
+    ...GithubCodeReview
+  }
+}
+
+fragment GithubPullRequestWithCommits on GithubPullRequests {
+  ...GithubPullRequest
+  commitsCount: commitsAggregate {
+    aggregate {
+      count
+    }
+  }
+  userCommitsCount: commitsAggregate(where: { authorId: { _eq: $githubUserId } }) {
+    aggregate {
+      count
+    }
+  }
+  contributorDetails: commits(where: { authorId: { _eq: $githubUserId } }, limit: 1) {
+    author {
+      ...GithubUser
+    }
+  }
+}

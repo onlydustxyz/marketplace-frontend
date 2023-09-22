@@ -50,6 +50,7 @@ const mockContribution: UserPaymentRequestFragment = {
       type: WorkItemType.Issue,
       githubIssue: null,
       githubPullRequest: null,
+      githubCodeReview: null,
     },
   ],
   project: {

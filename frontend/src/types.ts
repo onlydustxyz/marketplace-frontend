@@ -130,6 +130,7 @@ export enum GithubIssueType {
 }
 
 export enum GithubContributionType {
-  Issue,
-  PullRequest,
+  Issue = "ISSUE",
+  PullRequest = "PULL_REQUEST",
+  CodeReview = "CODE_REVIEW",
 }

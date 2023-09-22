@@ -4,6 +4,8 @@ import { Contributor as ContributorBase } from "src/types";
 export type Contributor = ContributorBase & {
   unpaidCompletedContributions: number;
   unpaidMergedPullsCount?: number;
+  unpaidCompletedIssuesCount?: number;
+  unpaidCompletedCodeReviewsCount?: number;
 };
 
 export type Inputs = {

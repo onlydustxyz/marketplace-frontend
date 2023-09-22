@@ -13,7 +13,7 @@ object_relationships:
     using:
       manual_configuration:
         column_mapping:
-          github_code_review_id: id
+          details_id: id
         insertion_order: null
         remote_table:
           name: github_pull_request_reviews

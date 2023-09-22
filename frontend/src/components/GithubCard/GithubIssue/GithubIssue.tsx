@@ -1,21 +1,17 @@
+import classNames from "classnames";
+import { GithubIssueFragment, GithubIssueStatus } from "src/__generated/graphql";
+import IssueCancelled from "src/assets/icons/IssueCancelled";
+import IssueOpen from "src/assets/icons/IssueOpen";
+import Card from "src/components/Card";
+import { GithubLink } from "src/components/GithubCard/GithubLink/GithubLink";
 import { useIntl } from "src/hooks/useIntl";
-import Add from "src/icons/Add";
+import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
+import GitCommentLine from "src/icons/GitCommentLine";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
-import Subtract from "src/icons/SubtractLine";
 import Time from "src/icons/TimeLine";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { parseIssueLink } from "src/utils/github";
-import Button, { ButtonSize, ButtonType } from "src/components/Button";
-import Card from "src/components/Card";
-import GithubIssueLink from "./GithubIssueLink";
-import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
-import IssueCancelled from "src/assets/icons/IssueCancelled";
-import IssueOpen from "src/assets/icons/IssueOpen";
-import EyeOffLine from "src/icons/EyeOffLine";
-import EyeLine from "src/icons/EyeLine";
-import classNames from "classnames";
-import { withTooltip } from "src/components/Tooltip";
-import { GithubIssueFragment, GithubIssueStatus } from "src/__generated/graphql";
+import { GithubActionButton } from "src/components/GithubCard/GithubActionButton/GithubActionButton";
 
 export enum Action {
   Add = "add",
@@ -23,7 +19,8 @@ export enum Action {
   Ignore = "ignore",
   UnIgnore = "unignore",
 }
-export type Props = {
+
+export type GithubIssueProps = {
   action?: Action;
   secondaryAction?: Action;
   onClick?: () => void;
@@ -33,7 +30,7 @@ export type Props = {
   addMarginTopForVirtuosoDisplay?: boolean;
 };
 
-export default function GithubPullRequest({
+export default function GithubIssue({
   action,
   secondaryAction,
   issue,
@@ -41,8 +38,8 @@ export default function GithubPullRequest({
   onSecondaryClick,
   ignored = false,
   addMarginTopForVirtuosoDisplay = false,
-}: Props) {
-  const { repoName } = parseIssueLink(issue.htmlUrl || "");
+}: GithubIssueProps) {
+  const { repoName } = parseIssueLink(issue.htmlUrl ?? "");
 
   return (
     <Card
@@ -52,10 +49,10 @@ export default function GithubPullRequest({
       })}
       withBg={false}
     >
-      {action && <ActionButton action={action} onClick={onClick} ignored={ignored} />}
-      <div className="flex w-full flex-col gap-2 font-walsheim">
+      {action && <GithubActionButton action={action} onClick={onClick} ignored={ignored} />}
+      <div className="flex w-full flex-col gap-2 truncate font-walsheim">
         <div className="flex text-sm font-medium text-greyscale-50">
-          <GithubIssueLink url={issue.htmlUrl || ""} text={`#${issue.number} · ${issue.title}`} />
+          <GithubLink url={issue.htmlUrl ?? ""} text={`#${issue.number} · ${issue.title}`} />
         </div>
         <div className="flex flex-row flex-wrap items-center gap-2 text-xs font-normal text-greyscale-300 xl:gap-3">
           <div className="flex flex-row items-center gap-1">
@@ -69,39 +66,14 @@ export default function GithubPullRequest({
             <GitRepositoryLine />
             {repoName}
           </div>
+          <div className="flex flex-row items-center gap-1">
+            <GitCommentLine />
+            {issue.commentsCount}
+          </div>
         </div>
       </div>
-      {secondaryAction && <ActionButton action={secondaryAction} onClick={onSecondaryClick} ignored={ignored} />}
+      {secondaryAction && <GithubActionButton action={secondaryAction} onClick={onSecondaryClick} ignored={ignored} />}
     </Card>
-  );
-}
-
-type ActionButtonProps = {
-  action: Action;
-  ignored: boolean;
-  onClick?: () => void;
-};
-
-function ActionButton({ action, ignored, onClick }: ActionButtonProps) {
-  const { T } = useIntl();
-
-  return (
-    <div className={classNames({ "opacity-70": ignored })}>
-      <Button
-        size={ButtonSize.Sm}
-        type={ButtonType.Secondary}
-        onClick={onClick}
-        iconOnly
-        {...withTooltip(action !== Action.Remove ? T(`githubIssue.tooltip.${action}`) : "", {
-          visible: action !== Action.Remove,
-        })}
-      >
-        {action === Action.Add && <Add />}
-        {action === Action.Remove && <Subtract />}
-        {action === Action.Ignore && <EyeOffLine />}
-        {action === Action.UnIgnore && <EyeLine />}
-      </Button>
-    </div>
   );
 }
 

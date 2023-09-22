@@ -1,6 +1,7 @@
-import GithubIssue, { Action, Props } from "src/components/GithubIssue";
+import GithubIssue, { Action } from "src/components/GithubCard/GithubIssue/GithubIssue";
 import { daysFromNow } from "src/utils/date";
-import { GithubIssueFragment, GithubIssueStatus, WorkItemType } from "src/__generated/graphql";
+import { GithubIssueFragment, GithubIssueStatus } from "src/__generated/graphql";
+import { ComponentProps } from "react";
 
 const issues: Record<string, GithubIssueFragment> = {
   closed: {
@@ -13,6 +14,7 @@ const issues: Record<string, GithubIssueFragment> = {
     createdAt: daysFromNow(6),
     closedAt: daysFromNow(5),
     assigneeIds: [],
+    commentsCount: null,
   },
   closedWithLongLink: {
     id: "1268051991",
@@ -25,6 +27,7 @@ const issues: Record<string, GithubIssueFragment> = {
     createdAt: daysFromNow(6),
     closedAt: daysFromNow(5),
     assigneeIds: [],
+    commentsCount: null,
   },
   open: {
     id: "1268051991",
@@ -36,6 +39,7 @@ const issues: Record<string, GithubIssueFragment> = {
     createdAt: daysFromNow(6),
     closedAt: daysFromNow(6),
     assigneeIds: [],
+    commentsCount: null,
   },
   completed: {
     id: "1268051991",
@@ -47,6 +51,7 @@ const issues: Record<string, GithubIssueFragment> = {
     createdAt: daysFromNow(6),
     closedAt: daysFromNow(5),
     assigneeIds: [],
+    commentsCount: null,
   },
 };
 
@@ -70,23 +75,23 @@ export default {
   },
 };
 
-const defaultProps: Props = { issue: issues.closed };
-const longLinkProps: Props = { issue: issues.closedWithLongLink };
-const openProps: Props = { issue: issues.open };
-const completedProps: Props = { issue: issues.completed };
+const defaultProps: ComponentProps<typeof GithubIssue> = { issue: issues.closed };
+const longLinkProps: ComponentProps<typeof GithubIssue> = { issue: issues.closedWithLongLink };
+const openProps: ComponentProps<typeof GithubIssue> = { issue: issues.open };
+const completedProps: ComponentProps<typeof GithubIssue> = { issue: issues.completed };
 
 export const Default = {
-  render: (args: Props) => <GithubIssue {...defaultProps} {...args} />,
+  render: (args: ComponentProps<typeof GithubIssue>) => <GithubIssue {...defaultProps} {...args} />,
 };
 
 export const LongLink = {
-  render: (args: Props) => <GithubIssue {...longLinkProps} {...args} />,
+  render: (args: ComponentProps<typeof GithubIssue>) => <GithubIssue {...longLinkProps} {...args} />,
 };
 
 export const Open = {
-  render: (args: Props) => <GithubIssue {...openProps} {...args} />,
+  render: (args: ComponentProps<typeof GithubIssue>) => <GithubIssue {...openProps} {...args} />,
 };
 
 export const Completed = {
-  render: (args: Props) => <GithubIssue {...completedProps} {...args} />,
+  render: (args: ComponentProps<typeof GithubIssue>) => <GithubIssue {...completedProps} {...args} />,
 };

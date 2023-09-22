@@ -9,7 +9,6 @@ import { ProjectRoutePaths, RoutePaths } from "src/App";
 import {
   ContributionFragment,
   WorkItemFragment,
-  WorkItemType,
   useRequestPaymentMutation,
   useUnrewardedContributionsQuery,
 } from "src/__generated/graphql";
@@ -53,7 +52,6 @@ const RewardForm: React.FC = () => {
     variables: {
       projectId,
       githubUserId: contributor?.githubUserId,
-      type: WorkItemType.PullRequest,
     },
     skip: !contributor?.githubUserId,
   });

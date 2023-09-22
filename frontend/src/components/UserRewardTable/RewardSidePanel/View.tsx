@@ -1,27 +1,28 @@
+import classNames from "classnames";
+import IBAN from "iban";
 import { PropsWithChildren, useState } from "react";
-import GithubIssue from "src/components/GithubIssue";
-import GithubPullRequest from "src/components/GithubPullRequest";
+import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import { GithubPullRequestWithCommitsFragment, PaymentRequestDetailsFragment } from "src/__generated/graphql";
+import Button, { ButtonSize } from "src/components/Button";
+import Contributor from "src/components/Contributor";
+import ExternalLink from "src/components/ExternalLink";
+import GithubCodeReview from "src/components/GithubCard/GithubCodeReview/GithubCodeReview";
+import GithubIssue from "src/components/GithubCard/GithubIssue/GithubIssue";
+import GithubPullRequest from "src/components/GithubCard/GithubPullRequest/GithubPullRequest";
 import PayoutStatus from "src/components/PayoutStatus";
 import QueryWrapper from "src/components/QueryWrapper";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
+import Tooltip, { withCustomTooltip } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
+import BankCardLine from "src/icons/BankCardLine";
+import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import Time from "src/icons/TimeLine";
 import { PaymentStatus } from "src/types";
-import { pretty } from "src/utils/id";
-import { formatMoneyAmount } from "src/utils/money";
-import { PaymentRequestDetailsFragment } from "src/__generated/graphql";
-import Button, { ButtonSize } from "src/components/Button";
-import ErrorWarningLine from "src/icons/ErrorWarningLine";
-import ConfirmationModal from "./ConfirmationModal";
-import classNames from "classnames";
 import { formatDateTime } from "src/utils/date";
-import BankCardLine from "src/icons/BankCardLine";
-import { ReactMarkdown } from "react-markdown/lib/react-markdown";
-import Tooltip, { withCustomTooltip } from "src/components/Tooltip";
-import IBAN from "iban";
-import ExternalLink from "src/components/ExternalLink";
+import { pretty } from "src/utils/id";
 import isDefined from "src/utils/isDefined";
-import Contributor from "src/components/Contributor";
+import { formatMoneyAmount } from "src/utils/money";
+import ConfirmationModal from "./ConfirmationModal";
 
 enum Align {
   Top = "top",
@@ -58,7 +59,6 @@ export default function View({
   onRewardCancel,
 }: Props) {
   const { T } = useIntl();
-
   const formattedReceipt = formatReceipt(payments?.at(0)?.receipt);
 
   const shouldDisplayCancelButton = projectLeaderView && onRewardCancel && status === PaymentStatus.WAITING_PAYMENT;
@@ -179,13 +179,18 @@ export default function View({
             {T("reward.table.detailsPanel.contributions")}
           </div>
           <div className="flex h-full flex-col gap-3 overflow-auto p-px pb-6 pr-4 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
-            {workItems?.map(workItem =>
-              workItem.githubIssue ? (
+            {workItems?.map(workItem => {
+              return workItem.githubIssue ? (
                 <GithubIssue key={workItem.githubIssue?.id} issue={workItem.githubIssue} />
               ) : workItem.githubPullRequest ? (
-                <GithubPullRequest key={workItem.githubPullRequest?.id} pullRequest={workItem.githubPullRequest} />
-              ) : undefined
-            )}
+                <GithubPullRequest
+                  key={workItem.githubPullRequest?.id}
+                  pullRequest={workItem.githubPullRequest as GithubPullRequestWithCommitsFragment}
+                />
+              ) : workItem.githubCodeReview ? (
+                <GithubCodeReview key={workItem.githubCodeReview?.id} codeReview={workItem.githubCodeReview} />
+              ) : undefined;
+            })}
           </div>
         </div>
       </div>
