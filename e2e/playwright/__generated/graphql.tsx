@@ -18466,6 +18466,7 @@ export type GetAllContributionsQueryVariables = Exact<{
   limit: Scalars['Int'];
   orderBy: InputMaybe<Array<ContributionsOrderBy> | ContributionsOrderBy>;
   githubUserId: Scalars['bigint'];
+  status: InputMaybe<Scalars['contribution_status']>;
 }>;
 
 
@@ -20841,11 +20842,11 @@ export type GetProjectVisibilityDetailsQueryHookResult = ReturnType<typeof useGe
 export type GetProjectVisibilityDetailsLazyQueryHookResult = ReturnType<typeof useGetProjectVisibilityDetailsLazyQuery>;
 export type GetProjectVisibilityDetailsQueryResult = Apollo.QueryResult<GetProjectVisibilityDetailsQuery, GetProjectVisibilityDetailsQueryVariables>;
 export const GetAllContributionsDocument = gql`
-    query GetAllContributions($limit: Int!, $orderBy: [ContributionsOrderBy!], $githubUserId: bigint!) {
+    query GetAllContributions($limit: Int!, $orderBy: [ContributionsOrderBy!], $githubUserId: bigint!, $status: contribution_status) {
   contributions(
     limit: $limit
     orderBy: $orderBy
-    where: {githubUserId: {_eq: $githubUserId}}
+    where: {githubUserId: {_eq: $githubUserId}, status: {_eq: $status}}
   ) {
     createdAt
     id
@@ -20904,6 +20905,7 @@ ${ContributionGithubIssueFragmentDoc}`;
  *      limit: // value for 'limit'
  *      orderBy: // value for 'orderBy'
  *      githubUserId: // value for 'githubUserId'
+ *      status: // value for 'status'
  *   },
  * });
  */

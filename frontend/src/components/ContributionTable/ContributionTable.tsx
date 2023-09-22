@@ -1,11 +1,12 @@
 import { ReactNode } from "react";
 
+import { GetAllContributionsQuery } from "src/__generated/graphql";
 import { useIntl } from "src/hooks/useIntl";
+import Cell, { CellHeight } from "src/components/Table/Cell";
 import HeaderCell, { HeaderCellWidth } from "src/components/Table/HeaderCell";
 import HeaderLine from "src/components/Table/HeaderLine";
-import Table from "src/components/Table";
 import Line from "src/components/Table/Line";
-import Cell, { CellHeight } from "src/components/Table/Cell";
+import Table from "src/components/Table";
 
 export default function ContributionTable({
   id,
@@ -13,12 +14,18 @@ export default function ContributionTable({
   description,
   icon,
   onHeaderClick,
+  data,
+  loading,
+  error,
 }: {
   id: string;
   title: string;
   description: string;
   icon(className: string): ReactNode;
   onHeaderClick: () => void;
+  data?: GetAllContributionsQuery;
+  loading: boolean;
+  error?: unknown;
 }) {
   const { T } = useIntl();
 
@@ -107,9 +114,11 @@ export default function ContributionTable({
           </Line>
         </Table>
 
-        <p className="whitespace-pre-line pt-6 text-center font-walsheim text-sm text-greyscale-50">
-          {T("contributions.table.empty", { time: "XX" })}
-        </p>
+        {data?.contributions?.length === 0 ? (
+          <p className="whitespace-pre-line pt-6 text-center font-walsheim text-sm text-greyscale-50">
+            {T("contributions.table.empty", { time: "XX" })}
+          </p>
+        ) : null}
       </div>
     </section>
   );

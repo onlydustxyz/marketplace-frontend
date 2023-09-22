@@ -1,4 +1,4 @@
-import { PropsWithChildren, useState } from "react";
+import { ComponentProps, PropsWithChildren, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import { isIn } from "src/utils/isIn";
@@ -9,7 +9,7 @@ import { useIntl } from "src/hooks/useIntl";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import CancelCircleLine from "src/assets/icons/CancelCircleLine";
 import ContributionTable from "src/components/ContributionTable/ContributionTable";
-import IssueDraft from "src/assets/icons/IssueDraft";
+// import IssueDraft from "src/assets/icons/IssueDraft";
 import IssueMerged from "src/assets/icons/IssueMerged";
 import ProgressCircle from "src/assets/icons/ProgressCircle";
 import SEO from "src/components/SEO";
@@ -38,17 +38,52 @@ export default function Contributions() {
 
   const [activeTab, setActiveTab] = useState(isIn(tabValues, tab ?? "") ? tab : tabs.all);
 
-  const { data, loading, error } = useGetAllContributionsQuery({
+  const {
+    data: inProgressData,
+    loading: inProgressLoading,
+    error: inProgressError,
+  } = useGetAllContributionsQuery({
     variables: {
       limit: 20,
       orderBy: { createdAt: OrderBy.Desc } as ContributionsOrderBy,
       githubUserId,
+      status: "in_progress", // TODO replace with enum/constant
     },
     skip: !githubUserId,
     fetchPolicy: "network-only",
   });
 
-  console.log({ data, loading, error });
+  const {
+    data: completedData,
+    loading: completedLoading,
+    error: completedError,
+  } = useGetAllContributionsQuery({
+    variables: {
+      limit: 20,
+      orderBy: { createdAt: OrderBy.Desc } as ContributionsOrderBy,
+      githubUserId,
+      status: "complete", // TODO replace with enum/constant
+    },
+    skip: !githubUserId,
+    fetchPolicy: "network-only",
+  });
+
+  const {
+    data: canceledData,
+    loading: canceledLoading,
+    error: canceledError,
+  } = useGetAllContributionsQuery({
+    variables: {
+      limit: 20,
+      orderBy: { createdAt: OrderBy.Desc } as ContributionsOrderBy,
+      githubUserId,
+      status: "canceled", // TODO replace with enum/constant
+    },
+    skip: !githubUserId,
+    fetchPolicy: "network-only",
+  });
+
+  console.log({ inProgressData, inProgressLoading, inProgressError });
 
   function updateActiveTab(tab: typeof tabValues[number]) {
     setActiveTab(tab);
@@ -69,19 +104,19 @@ export default function Contributions() {
         </TabContents>
       ),
     },
-    {
-      active: activeTab === tabs.applied,
-      onClick: () => {
-        updateActiveTab(tabs.applied);
-      },
-      testId: "contributions-applied-tab",
-      children: (
-        <TabContents>
-          <IssueDraft className="h-5 w-5 md:h-4 md:w-4" />
-          {T("contributions.nav.applied")}
-        </TabContents>
-      ),
-    },
+    // {
+    //   active: activeTab === tabs.applied,
+    //   onClick: () => {
+    //     updateActiveTab(tabs.applied);
+    //   },
+    //   testId: "contributions-applied-tab",
+    //   children: (
+    //     <TabContents>
+    //       <IssueDraft className="h-5 w-5 md:h-4 md:w-4" />
+    //       {T("contributions.nav.applied")}
+    //     </TabContents>
+    //   ),
+    // },
     {
       active: activeTab === tabs.inProgress,
       onClick: () => {
@@ -123,6 +158,54 @@ export default function Contributions() {
     },
   ];
 
+  const tableItems: ComponentProps<typeof ContributionTable>[] = [
+    // {
+    //   id: "applied_contributions_table",
+    //   title: T("contributions.applied.title"),
+    //   description: T("contributions.applied.description"),
+    //   icon: className => <IssueDraft className={className} />,
+    //   onHeaderClick: () => {
+    //     updateActiveTab(tabs.applied);
+    //   },
+    // },
+    {
+      id: "in_progress_contributions_table",
+      title: T("contributions.inProgress.title"),
+      description: T("contributions.inProgress.description"),
+      icon: className => <ProgressCircle className={className} />,
+      onHeaderClick: () => {
+        updateActiveTab(tabs.inProgress);
+      },
+      data: inProgressData,
+      loading: inProgressLoading,
+      error: inProgressError,
+    },
+    {
+      id: "completed_contributions_table",
+      title: T("contributions.completed.title"),
+      description: T("contributions.completed.description"),
+      icon: className => <IssueMerged className={className} />,
+      onHeaderClick: () => {
+        updateActiveTab(tabs.completed);
+      },
+      data: completedData,
+      loading: completedLoading,
+      error: completedError,
+    },
+    {
+      id: "canceled_contributions_table",
+      title: T("contributions.canceled.title"),
+      description: T("contributions.canceled.description"),
+      icon: className => <CancelCircleLine className={className} />,
+      onHeaderClick: () => {
+        updateActiveTab(tabs.canceled);
+      },
+      data: canceledData,
+      loading: canceledLoading,
+      error: canceledError,
+    },
+  ];
+
   return (
     <>
       <SEO />
@@ -134,15 +217,9 @@ export default function Contributions() {
               <Tabs tabs={tabItems} variant="blue" mobileTitle={T("navbar.contributions")} />
             </header>
             <div className="flex flex-col gap-4 p-8">
-              <ContributionTable
-                id="applied_contributions_table"
-                title={T("contributions.applied.title")}
-                description={T("contributions.applied.description")}
-                icon={className => <IssueDraft className={className} />}
-                onHeaderClick={() => {
-                  updateActiveTab(tabs.applied);
-                }}
-              />
+              {tableItems.map(props => (
+                <ContributionTable key={props.id} {...props} />
+              ))}
             </div>
           </div>
         </Background>
