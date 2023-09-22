@@ -113,7 +113,7 @@ export default function View({
             <div className="flex flex-row items-center gap-2 font-walsheim text-sm font-normal text-greyscale-50">
               <EyeOffLine />
 
-              <div className="sm:inline lg:hidden xl:flex">{T("reward.form.contributions.showIgnored")}</div>
+              <div className="inline lg:hidden xl:flex">{T("reward.form.contributions.showIgnored")}</div>
               <FormToggle name={showIgnoredItemsName} control={control} />
             </div>
           )}
