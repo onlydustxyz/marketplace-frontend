@@ -19,15 +19,15 @@ export default {
     },
     type: {
       control: { type: "select" },
-      options: [ContributionBadgeType.PR, ContributionBadgeType.Issue, ContributionBadgeType.CodeReview],
+      options: [ContributionBadgeType.PullRequest, ContributionBadgeType.Issue, ContributionBadgeType.CodeReview],
     },
   },
 };
 
 const defaultProps: React.ComponentProps<typeof ContributionBadge> = {
-  id: "123",
+  number: 123,
   status: ContributionBadgeStatus.Open,
-  type: ContributionBadgeType.PR,
+  type: ContributionBadgeType.PullRequest,
 };
 
 export const Default = {

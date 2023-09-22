@@ -13,55 +13,55 @@ import PrMerged from "src/assets/icons/PrMerged";
 import PrOpen from "src/assets/icons/PrOpen";
 
 export enum ContributionBadgeStatus {
-  Open = "open",
-  Closed = "closed",
-  Merged = "merged",
-  Draft = "draft",
+  Open = "OPEN",
+  Closed = "COMPLETED",
+  Merged = "MERGED",
+  Draft = "DRAFT",
 }
 
 export enum ContributionBadgeType {
-  PR = "pr",
-  Issue = "issue",
-  CodeReview = "codeReview",
+  PullRequest = "PULL_REQUEST",
+  Issue = "ISSUE",
+  CodeReview = "CODE_REVIEW",
 }
 
 const variants = {
   status: {
-    open: "text-github-green-light border-github-green",
-    closed: "text-github-red-light border-github-red",
-    merged: "text-github-purple-light border-github-purple",
-    draft: "text-github-grey-light border-github-grey",
+    [ContributionBadgeStatus.Open]: "text-github-green-light border-github-green",
+    [ContributionBadgeStatus.Closed]: "text-github-red-light border-github-red",
+    [ContributionBadgeStatus.Merged]: "text-github-purple-light border-github-purple",
+    [ContributionBadgeStatus.Draft]: "text-github-grey-light border-github-grey",
   },
 };
 
 const icons = {
-  pr: {
-    open: <PrOpen />,
-    closed: <PrClosed />,
-    merged: <PrMerged />,
-    draft: <PrDraft />,
+  [ContributionBadgeType.PullRequest]: {
+    [ContributionBadgeStatus.Open]: <PrOpen />,
+    [ContributionBadgeStatus.Closed]: <PrClosed />,
+    [ContributionBadgeStatus.Merged]: <PrMerged />,
+    [ContributionBadgeStatus.Draft]: <PrDraft />,
   },
-  issue: {
-    open: <IssueOpen />,
-    closed: <IssueCancelled />,
-    merged: <IssueMerged />,
-    draft: <IssueDraft />,
+  [ContributionBadgeType.Issue]: {
+    [ContributionBadgeStatus.Open]: <IssueOpen />,
+    [ContributionBadgeStatus.Closed]: <IssueCancelled />,
+    [ContributionBadgeStatus.Merged]: <IssueMerged />,
+    [ContributionBadgeStatus.Draft]: <IssueDraft />,
   },
-  codeReview: {
-    open: <CodeReviewOpen />,
-    closed: null,
-    merged: <CodeReviewMerged />,
-    draft: null,
+  [ContributionBadgeType.CodeReview]: {
+    [ContributionBadgeStatus.Open]: <CodeReviewOpen />,
+    [ContributionBadgeStatus.Closed]: null,
+    [ContributionBadgeStatus.Merged]: <CodeReviewMerged />,
+    [ContributionBadgeStatus.Draft]: null,
   },
 };
 
 export function ContributionBadge({
-  id,
+  number,
   type,
   status,
   external = false,
 }: {
-  id: string;
+  number: number;
   type: ContributionBadgeType;
   status: ContributionBadgeStatus;
   external?: boolean;
@@ -79,7 +79,7 @@ export function ContributionBadge({
     >
       {icons[type][status]}
       <div className="flex">
-        <span className="text-sm leading-none">{id}</span>
+        <span className="text-sm leading-none">{number}</span>
         {external ? <ExternalArrow className="mt-[3px]" /> : null}
       </div>
     </div>

@@ -2,13 +2,14 @@ query GetAllContributions(
   $limit: Int!
   $orderBy: [ContributionsOrderBy!]
   $githubUserId: bigint!
-  $status: contribution_status
+  $status: contribution_status!
 ) {
   contributions(
     limit: $limit
     orderBy: $orderBy
     where: { githubUserId: { _eq: $githubUserId }, status: { _eq: $status } }
   ) {
+    closedAt
     createdAt
     id
     githubPullRequest {
@@ -46,5 +47,8 @@ query GetAllContributions(
     }
     status
     type
+  }
+  githubRepos(orderBy: { indexedAt: ASC }, limit: 1) {
+    indexedAt
   }
 }

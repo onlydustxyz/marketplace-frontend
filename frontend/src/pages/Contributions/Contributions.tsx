@@ -1,29 +1,35 @@
 import { ComponentProps, PropsWithChildren, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
-import { isIn } from "src/utils/isIn";
+import CancelCircleLine from "src/assets/icons/CancelCircleLine";
+import Background, { BackgroundRoundedBorders } from "src/components/Background";
+import ContributionTable from "src/components/ContributionTable/ContributionTable";
 import { Tabs } from "src/components/Tabs/Tabs";
 import { useAuth } from "src/hooks/useAuth";
-import { useGetAllContributionsQuery, OrderBy, ContributionsOrderBy } from "src/__generated/graphql";
 import { useIntl } from "src/hooks/useIntl";
-import Background, { BackgroundRoundedBorders } from "src/components/Background";
-import CancelCircleLine from "src/assets/icons/CancelCircleLine";
-import ContributionTable from "src/components/ContributionTable/ContributionTable";
+import { isIn } from "src/utils/isIn";
+import { ContributionsOrderBy, OrderBy, useGetAllContributionsQuery } from "src/__generated/graphql";
 // import IssueDraft from "src/assets/icons/IssueDraft";
 import IssueMerged from "src/assets/icons/IssueMerged";
 import ProgressCircle from "src/assets/icons/ProgressCircle";
-import SEO from "src/components/SEO";
 import StackLine from "src/assets/icons/StackLine";
+import SEO from "src/components/SEO";
 
-const tabs = {
-  all: "allContributions",
-  applied: "applied",
-  inProgress: "inProgress",
-  completed: "completed",
-  canceled: "canceled",
-} as const;
+enum ContributionStatus {
+  InProgress = "in_progress",
+  Completed = "complete",
+  Canceled = "canceled",
+}
 
-const tabValues = Object.values(tabs);
+enum AllTabs {
+  All = "allContributions",
+  //   Applied = "applied",
+  InProgress = "inProgress",
+  Completed = "completed",
+  Canceled = "canceled",
+}
+
+const tabValues = Object.values(AllTabs);
 
 function TabContents({ children }: PropsWithChildren) {
   return <div className="flex items-center gap-2 md:gap-1.5">{children}</div>;
@@ -36,8 +42,9 @@ export default function Contributions() {
 
   const tab = searchParams.get("tab") as typeof tabValues[number] | null;
 
-  const [activeTab, setActiveTab] = useState(isIn(tabValues, tab ?? "") ? tab : tabs.all);
+  const [activeTab, setActiveTab] = useState(isIn(tabValues, tab ?? "") ? tab : AllTabs.All);
 
+  // TODO not refreshing ?
   const {
     data: inProgressData,
     loading: inProgressLoading,
@@ -47,9 +54,9 @@ export default function Contributions() {
       limit: 20,
       orderBy: { createdAt: OrderBy.Desc } as ContributionsOrderBy,
       githubUserId,
-      status: "in_progress", // TODO replace with enum/constant
+      status: ContributionStatus.InProgress,
     },
-    skip: !githubUserId,
+    skip: !githubUserId || (!isActiveTab(AllTabs.All) && !isActiveTab(AllTabs.InProgress)),
     fetchPolicy: "network-only",
   });
 
@@ -62,9 +69,9 @@ export default function Contributions() {
       limit: 20,
       orderBy: { createdAt: OrderBy.Desc } as ContributionsOrderBy,
       githubUserId,
-      status: "complete", // TODO replace with enum/constant
+      status: ContributionStatus.Completed,
     },
-    skip: !githubUserId,
+    skip: !githubUserId || (!isActiveTab(AllTabs.All) && !isActiveTab(AllTabs.Completed)),
     fetchPolicy: "network-only",
   });
 
@@ -77,24 +84,28 @@ export default function Contributions() {
       limit: 20,
       orderBy: { createdAt: OrderBy.Desc } as ContributionsOrderBy,
       githubUserId,
-      status: "canceled", // TODO replace with enum/constant
+      status: ContributionStatus.Canceled,
     },
-    skip: !githubUserId,
+    skip: !githubUserId || (!isActiveTab(AllTabs.All) && !isActiveTab(AllTabs.Canceled)),
     fetchPolicy: "network-only",
   });
 
   console.log({ inProgressData, inProgressLoading, inProgressError });
 
-  function updateActiveTab(tab: typeof tabValues[number]) {
+  function isActiveTab(tab: AllTabs) {
+    return activeTab === tab;
+  }
+
+  function updateActiveTab(tab: AllTabs) {
     setActiveTab(tab);
     setSearchParams({ tab });
   }
 
   const tabItems = [
     {
-      active: activeTab === tabs.all,
+      active: isActiveTab(AllTabs.All),
       onClick: () => {
-        updateActiveTab(tabs.all);
+        updateActiveTab(AllTabs.All);
       },
       testId: "contributions-all-contributions-tab",
       children: (
@@ -105,9 +116,9 @@ export default function Contributions() {
       ),
     },
     // {
-    //   active: activeTab === tabs.applied,
+    //   active: isActiveTab(AllTabs.Applied),
     //   onClick: () => {
-    //     updateActiveTab(tabs.applied);
+    //     updateActiveTab(AllTabs.Applied);
     //   },
     //   testId: "contributions-applied-tab",
     //   children: (
@@ -118,9 +129,9 @@ export default function Contributions() {
     //   ),
     // },
     {
-      active: activeTab === tabs.inProgress,
+      active: isActiveTab(AllTabs.InProgress),
       onClick: () => {
-        updateActiveTab(tabs.inProgress);
+        updateActiveTab(AllTabs.InProgress);
       },
       testId: "contributions-in-progress-tab",
       children: (
@@ -131,9 +142,9 @@ export default function Contributions() {
       ),
     },
     {
-      active: activeTab === tabs.completed,
+      active: isActiveTab(AllTabs.Completed),
       onClick: () => {
-        updateActiveTab(tabs.completed);
+        updateActiveTab(AllTabs.Completed);
       },
       testId: "contributions-completed-tab",
       children: (
@@ -144,9 +155,9 @@ export default function Contributions() {
       ),
     },
     {
-      active: activeTab === tabs.canceled,
+      active: isActiveTab(AllTabs.Canceled),
       onClick: () => {
-        updateActiveTab(tabs.canceled);
+        updateActiveTab(AllTabs.Canceled);
       },
       testId: "contributions-canceled-tab",
       children: (
@@ -158,14 +169,14 @@ export default function Contributions() {
     },
   ];
 
-  const tableItems: ComponentProps<typeof ContributionTable>[] = [
+  const tableItems: Array<ComponentProps<typeof ContributionTable> & { show: boolean }> = [
     // {
     //   id: "applied_contributions_table",
     //   title: T("contributions.applied.title"),
     //   description: T("contributions.applied.description"),
     //   icon: className => <IssueDraft className={className} />,
     //   onHeaderClick: () => {
-    //     updateActiveTab(tabs.applied);
+    //     updateActiveTab(AllTabs.Applied);
     //   },
     // },
     {
@@ -174,11 +185,12 @@ export default function Contributions() {
       description: T("contributions.inProgress.description"),
       icon: className => <ProgressCircle className={className} />,
       onHeaderClick: () => {
-        updateActiveTab(tabs.inProgress);
+        updateActiveTab(AllTabs.InProgress);
       },
       data: inProgressData,
       loading: inProgressLoading,
       error: inProgressError,
+      show: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.InProgress),
     },
     {
       id: "completed_contributions_table",
@@ -186,11 +198,12 @@ export default function Contributions() {
       description: T("contributions.completed.description"),
       icon: className => <IssueMerged className={className} />,
       onHeaderClick: () => {
-        updateActiveTab(tabs.completed);
+        updateActiveTab(AllTabs.Completed);
       },
       data: completedData,
       loading: completedLoading,
       error: completedError,
+      show: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Completed),
     },
     {
       id: "canceled_contributions_table",
@@ -198,11 +211,12 @@ export default function Contributions() {
       description: T("contributions.canceled.description"),
       icon: className => <CancelCircleLine className={className} />,
       onHeaderClick: () => {
-        updateActiveTab(tabs.canceled);
+        updateActiveTab(AllTabs.Canceled);
       },
       data: canceledData,
       loading: canceledLoading,
       error: canceledError,
+      show: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Canceled),
     },
   ];
 
@@ -217,9 +231,9 @@ export default function Contributions() {
               <Tabs tabs={tabItems} variant="blue" mobileTitle={T("navbar.contributions")} />
             </header>
             <div className="flex flex-col gap-4 p-8">
-              {tableItems.map(props => (
-                <ContributionTable key={props.id} {...props} />
-              ))}
+              {tableItems.map(({ show, ...restProps }) =>
+                show ? <ContributionTable key={restProps.id} {...restProps} /> : null
+              )}
             </div>
           </div>
         </Background>

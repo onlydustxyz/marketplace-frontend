@@ -18280,11 +18280,11 @@ export type GetAllContributionsQueryVariables = Exact<{
   limit: Scalars['Int'];
   orderBy: InputMaybe<Array<ContributionsOrderBy> | ContributionsOrderBy>;
   githubUserId: Scalars['bigint'];
-  status: InputMaybe<Scalars['contribution_status']>;
+  status: Scalars['contribution_status'];
 }>;
 
 
-export type GetAllContributionsQuery = { __typename?: 'query_root', contributions: Array<{ __typename?: 'Contributions', createdAt: any | null, id: string | null, status: any | null, type: string | null, githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, closingIssues: Array<{ __typename?: 'ApiClosingIssues', githubIssue: { __typename?: 'GithubIssues', commentsCount: any | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null } | null }> } | null, githubIssue: { __typename?: 'GithubIssues', commentsCount: any | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, closedByPullRequests: Array<{ __typename?: 'ApiClosedByPullRequests', githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null } | null }> } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', id: string | null, status: string | null, outcome: any | null, githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null } | null } | null, githubRepo: { __typename?: 'GithubRepos', name: string | null, id: any | null } | null, project: { __typename?: 'Projects', name: string | null, logoUrl: string | null, id: any | null } | null }> };
+export type GetAllContributionsQuery = { __typename?: 'query_root', contributions: Array<{ __typename?: 'Contributions', closedAt: any | null, createdAt: any | null, id: string | null, status: any | null, type: string | null, githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, closingIssues: Array<{ __typename?: 'ApiClosingIssues', githubIssue: { __typename?: 'GithubIssues', commentsCount: any | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null } | null }> } | null, githubIssue: { __typename?: 'GithubIssues', commentsCount: any | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, closedByPullRequests: Array<{ __typename?: 'ApiClosedByPullRequests', githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null } | null }> } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', id: string | null, status: string | null, outcome: any | null, githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null } | null } | null, githubRepo: { __typename?: 'GithubRepos', name: string | null, id: any | null } | null, project: { __typename?: 'Projects', name: string | null, logoUrl: string | null, id: any | null } | null }>, githubRepos: Array<{ __typename?: 'GithubRepos', indexedAt: any | null }> };
 
 export type PendingProjectLeaderInvitationsQueryVariables = Exact<{
   githubUserId: InputMaybe<Scalars['bigint']>;
@@ -19976,12 +19976,13 @@ export type GetProjectVisibilityDetailsQueryHookResult = ReturnType<typeof useGe
 export type GetProjectVisibilityDetailsLazyQueryHookResult = ReturnType<typeof useGetProjectVisibilityDetailsLazyQuery>;
 export type GetProjectVisibilityDetailsQueryResult = Apollo.QueryResult<GetProjectVisibilityDetailsQuery, GetProjectVisibilityDetailsQueryVariables>;
 export const GetAllContributionsDocument = gql`
-    query GetAllContributions($limit: Int!, $orderBy: [ContributionsOrderBy!], $githubUserId: bigint!, $status: contribution_status) {
+    query GetAllContributions($limit: Int!, $orderBy: [ContributionsOrderBy!], $githubUserId: bigint!, $status: contribution_status!) {
   contributions(
     limit: $limit
     orderBy: $orderBy
     where: {githubUserId: {_eq: $githubUserId}, status: {_eq: $status}}
   ) {
+    closedAt
     createdAt
     id
     githubPullRequest {
@@ -20019,6 +20020,9 @@ export const GetAllContributionsDocument = gql`
     }
     status
     type
+  }
+  githubRepos(orderBy: {indexedAt: ASC}, limit: 1) {
+    indexedAt
   }
 }
     ${ContributionGithubPullRequestFragmentDoc}

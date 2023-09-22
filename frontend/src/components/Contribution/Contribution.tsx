@@ -3,13 +3,13 @@ import { ContributionReward } from "src/components/ContributionReward/Contributi
 import { ContributionReview, ContributionReviewStatus } from "src/components/ContributionReview/ContributionReview";
 
 type Props = { name: string; url: string } & React.ComponentProps<typeof ContributionBadge> &
-  React.ComponentProps<typeof ContributionReward> & { review: ContributionReviewStatus };
+  React.ComponentProps<typeof ContributionReward> & { review?: ContributionReviewStatus };
 
-export function Contribution({ name, url, id, type, status, external = false, rewards = 0, review }: Props) {
+export function Contribution({ name, url, number, type, status, external = false, rewards, review }: Props) {
   return (
     <div className="inline-flex items-center gap-2">
       <div className="inline-flex items-center gap-1">
-        <ContributionBadge id={id} type={type} status={status} external={external} />
+        <ContributionBadge number={number} type={type} status={status} external={external} />
         <a
           href={url}
           target="_blank"
@@ -21,7 +21,7 @@ export function Contribution({ name, url, id, type, status, external = false, re
       </div>
       <div className="inline-flex items-center gap-1">
         {rewards ? <ContributionReward rewards={rewards} /> : null}
-        {status === ContributionBadgeStatus.Open ? <ContributionReview status={review} /> : null}
+        {review && status === ContributionBadgeStatus.Open ? <ContributionReview status={review} /> : null}
       </div>
     </div>
   );

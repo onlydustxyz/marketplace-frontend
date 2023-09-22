@@ -1,12 +1,34 @@
-import { ReactNode } from "react";
+import type { ApolloError } from "@apollo/client";
+import { PropsWithChildren, ReactNode } from "react";
 
-import { GetAllContributionsQuery } from "src/__generated/graphql";
-import { useIntl } from "src/hooks/useIntl";
+import IssueOpen from "src/assets/icons/IssueOpen";
+import { Contribution, ContributionType } from "src/components/Contribution/Contribution";
+import Loader from "src/components/Loader";
+import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
+import Table from "src/components/Table";
 import Cell, { CellHeight } from "src/components/Table/Cell";
 import HeaderCell, { HeaderCellWidth } from "src/components/Table/HeaderCell";
 import HeaderLine from "src/components/Table/HeaderLine";
 import Line from "src/components/Table/Line";
-import Table from "src/components/Table";
+import { useIntl } from "src/hooks/useIntl";
+import Folder3Line from "src/icons/Folder3Line";
+import StackLine from "src/icons/StackLine";
+import TimeLine from "src/icons/TimeLine";
+import SortingArrow from "src/pages/ProjectDetails/Contributors/ContributorsTable/SortingArrow";
+import displayRelativeDate from "src/utils/displayRelativeDate";
+import { GetAllContributionsQuery } from "src/__generated/graphql";
+import { ContributionBadgeStatus } from "../ContributionBadge/ContributionBadge";
+import { ContributionReviewStatus } from "../ContributionReview/ContributionReview";
+
+function TableText({ children }: PropsWithChildren) {
+  return (
+    <tr>
+      <td colSpan={4}>
+        <p className="whitespace-pre-line pt-6 text-center font-walsheim text-sm text-greyscale-50">{children}</p>
+      </td>
+    </tr>
+  );
+}
 
 export default function ContributionTable({
   id,
@@ -25,9 +47,118 @@ export default function ContributionTable({
   onHeaderClick: () => void;
   data?: GetAllContributionsQuery;
   loading: boolean;
-  error?: unknown;
+  error?: ApolloError;
 }) {
   const { T } = useIntl();
+
+  function renderContribution(contribution: GetAllContributionsQuery["contributions"][number]) {
+    switch (contribution.type) {
+      case ContributionType.Issue:
+        return (
+          <Contribution
+            name={contribution.githubIssue?.title ?? ""}
+            url={contribution.githubIssue?.htmlUrl ?? ""}
+            number={contribution.githubIssue?.number ?? ""}
+            type={ContributionType.Issue}
+            status={(contribution.githubIssue?.status as ContributionBadgeStatus) ?? ""}
+            //   external={contribution.external}}
+            //   rewards={contribution.rewards}
+            rewards={0}
+            //   review={contribution.review}
+          />
+        );
+      case ContributionType.PullRequest:
+        return (
+          <Contribution
+            name={contribution.githubPullRequest?.title ?? ""}
+            url={contribution.githubPullRequest?.htmlUrl ?? ""}
+            number={contribution.githubPullRequest?.number ?? ""}
+            type={ContributionType.PullRequest}
+            status={(contribution.githubPullRequest?.status as ContributionBadgeStatus) ?? ""}
+            // external={contribution.external}
+            // rewards={contribution.rewards}
+            rewards={0}
+            review={ContributionReviewStatus.PendingReviewer} // TODO
+          />
+        );
+      case ContributionType.CodeReview:
+        return (
+          <Contribution
+            name={contribution.githubCodeReview?.githubPullRequest?.title ?? ""}
+            url={contribution.githubCodeReview?.githubPullRequest?.htmlUrl ?? ""}
+            number={contribution.githubCodeReview?.githubPullRequest?.number ?? ""}
+            type={ContributionType.CodeReview}
+            status={(contribution.githubCodeReview?.githubPullRequest?.status as ContributionBadgeStatus) ?? ""}
+            // external={contribution.external}
+            // rewards={contribution.rewards}
+            rewards={0}
+          />
+        );
+      default:
+        return null;
+    }
+  }
+
+  function renderContent() {
+    if (loading) {
+      return (
+        <tr>
+          <td colSpan={4} className="pt-6">
+            <div className="md:py-24">
+              <Loader />
+            </div>
+          </td>
+        </tr>
+      );
+    }
+
+    if (error) {
+      return <TableText>{T("contributions.table.error")}</TableText>;
+    }
+
+    if (data?.contributions?.length === 0) {
+      return (
+        <TableText>
+          {T("contributions.table.empty", {
+            time: Intl.DateTimeFormat("en-US", {
+              hour: "numeric",
+              minute: "numeric",
+            }).format(new Date(data.githubRepos[0].indexedAt)),
+          })}
+        </TableText>
+      );
+    }
+
+    return data?.contributions.map(contribution => (
+      <Line
+        key={contribution.id}
+        //   onClick={onClick} selected={selected}
+      >
+        <Cell height={CellHeight.Medium} className="text-sm first-letter:uppercase">
+          {displayRelativeDate(contribution.createdAt)}
+        </Cell>
+        <Cell height={CellHeight.Medium} className="flex flex-row gap-3">
+          <div className="flex items-center gap-3">
+            {contribution.project?.logoUrl ? (
+              <RoundedImage
+                src={contribution.project?.logoUrl ?? ""}
+                alt={contribution.project?.name ?? ""}
+                rounding={Rounding.Corners}
+                size={ImageSize.Sm}
+              />
+            ) : null}
+            <p className="text-sm">
+              {contribution.project?.name} <span className="text-spaceBlue-300">/</span> {contribution.githubRepo?.name}
+            </p>
+          </div>
+        </Cell>
+        <Cell height={CellHeight.Medium}>{renderContribution(contribution)}</Cell>
+        <Cell className="justify-end" height={CellHeight.Medium}>
+          123
+        </Cell>
+      </Line>
+    ));
+  }
 
   return (
     <section className="rounded-2xl border border-white/5">
@@ -50,16 +181,21 @@ export default function ContributionTable({
                 horizontalMargin
                 // onClick={() => applySorting(Field.Date, false)}
               >
-                {/* <TimeLine className="pl-px font-normal" /> */}
+                <TimeLine />
                 <span>{T("contributions.table.date")}</span>
-                {/* <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.Date} /> */}
+                <SortingArrow
+                  direction="up"
+                  visible={true}
+                  // direction={sorting.ascending ? "up" : "down"}
+                  // visible={sorting.field === Field.Date}
+                />
               </HeaderCell>
               <HeaderCell
                 width={HeaderCellWidth.Quarter}
                 horizontalMargin
                 // onClick={() => applySorting(Field.RewardId, true)}
               >
-                {/* <Folder3Line className="pl-px font-normal" /> */}
+                <Folder3Line />
                 <span>{T("contributions.table.projectRepo")}</span>
                 {/* <SortingArrow
                   direction={sorting.ascending ? "up" : "down"}
@@ -71,7 +207,7 @@ export default function ContributionTable({
                 // onClick={() => applySorting(Field.Amount, false)}
                 horizontalMargin
               >
-                {/* <MoneyDollarCircleLine className="pl-px font-normal" /> */}
+                <StackLine />
                 <span>{T("contributions.table.contribution")}</span>
                 {/* <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.Amount} /> */}
               </HeaderCell>
@@ -80,45 +216,17 @@ export default function ContributionTable({
                 horizontalMargin
                 className="justify-end"
               >
-                {/* <FocusLine className="pl-0.5 font-normal" /> */}
-                <span>{T("contributions.table.comments")}</span>
+                <span>
+                  <IssueOpen className="h-3 w-3" />
+                </span>
+                <span>{T("contributions.table.linkedTo")}</span>
                 {/* <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.Status} /> */}
               </HeaderCell>
             </HeaderLine>
           }
         >
-          <Line
-          //   onClick={onClick} selected={selected}
-          >
-            <Cell height={CellHeight.Medium}>Requested at</Cell>
-            <Cell height={CellHeight.Medium} className="flex flex-row gap-3">
-              {/* <RoundedImage src={recipient.avatarUrl} alt={recipient.login} rounding={Rounding.Circle} />
-              <div className="flex flex-col justify-center truncate pb-0.5">
-                <div className="font-walsheim text-sm font-medium text-greyscale-50">{recipient.login}</div>
-                <div className="text-spaceBlue-200">
-                  {T("reward.table.reward", {
-                    id: pretty(reward.id),
-                    count: reward.workItemsAggregate.aggregate?.count,
-                  })}
-                </div>
-              </div> */}
-              Login
-            </Cell>
-            <Cell height={CellHeight.Medium}>
-              {/* <span className="font-walsheim">{formatMoneyAmount({ amount: reward.amountInUsd })}</span> */}
-              Amount in usd
-            </Cell>
-            <Cell className="justify-end" height={CellHeight.Medium}>
-              123
-            </Cell>
-          </Line>
+          {renderContent()}
         </Table>
-
-        {data?.contributions?.length === 0 ? (
-          <p className="whitespace-pre-line pt-6 text-center font-walsheim text-sm text-greyscale-50">
-            {T("contributions.table.empty", { time: "XX" })}
-          </p>
-        ) : null}
       </div>
     </section>
   );

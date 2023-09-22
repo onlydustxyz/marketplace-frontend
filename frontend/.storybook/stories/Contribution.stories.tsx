@@ -11,7 +11,7 @@ export default {
   argTypes: {
     type: {
       control: { type: "select" },
-      options: [ContributionType.PR, ContributionType.Issue, ContributionType.CodeReview],
+      options: [ContributionType.PullRequest, ContributionType.Issue, ContributionType.CodeReview],
     },
     status: {
       control: { type: "select" },
@@ -37,8 +37,8 @@ export default {
 const defaultProps: React.ComponentProps<typeof Contribution> = {
   name: "Name of PR / Issue / Other work ",
   url: "#",
-  id: "123",
-  type: ContributionType.PR,
+  number: 123,
+  type: ContributionType.PullRequest,
   status: ContributionStatus.Open,
   review: ContributionReview.PendingReviewer,
   rewards: 0,
