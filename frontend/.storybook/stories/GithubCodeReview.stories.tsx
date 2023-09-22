@@ -1,7 +1,7 @@
-import { Action, GithubCodeReviewProps } from "src/components/GithubCard/GithubCodeReview/GithubCodeReview";
 import { daysFromNow } from "src/utils/date";
-import { GithubCodeReviewFragment, GithubIssueStatus } from "src/__generated/graphql";
-import GithubCodeReview from "src/components/GithubCard/GithubCodeReview/GithubCodeReview";
+import { GithubCodeReviewFragment } from "src/__generated/graphql";
+import GithubCodeReview, { Action } from "src/components/GithubCard/GithubCodeReview/GithubCodeReview";
+import { ComponentProps } from "react";
 
 const codeReviews: Record<string, GithubCodeReviewFragment> = {
   pending: {
@@ -125,23 +125,23 @@ export default {
   },
 };
 
-const defaultProps: GithubCodeReviewProps = { codeReview: codeReviews.pending };
-const pendingProps: GithubCodeReviewProps = { codeReview: codeReviews.pending };
-const approvedProps: GithubCodeReviewProps = { codeReview: codeReviews.approved };
-const changeRequestedProps: GithubCodeReviewProps = { codeReview: codeReviews.changeRequested };
+const defaultProps: ComponentProps<typeof GithubCodeReview> = { codeReview: codeReviews.pending };
+const pendingProps: ComponentProps<typeof GithubCodeReview> = { codeReview: codeReviews.pending };
+const approvedProps: ComponentProps<typeof GithubCodeReview> = { codeReview: codeReviews.approved };
+const changeRequestedProps: ComponentProps<typeof GithubCodeReview> = { codeReview: codeReviews.changeRequested };
 
 export const Default = {
-  render: (args: GithubCodeReviewProps) => <GithubCodeReview {...defaultProps} {...args} />,
+  render: (args: ComponentProps<typeof GithubCodeReview>) => <GithubCodeReview {...defaultProps} {...args} />,
 };
 
 export const Pending = {
-  render: (args: GithubCodeReviewProps) => <GithubCodeReview {...pendingProps} {...args} />,
+  render: (args: ComponentProps<typeof GithubCodeReview>) => <GithubCodeReview {...pendingProps} {...args} />,
 };
 
 export const Approved = {
-  render: (args: GithubCodeReviewProps) => <GithubCodeReview {...approvedProps} {...args} />,
+  render: (args: ComponentProps<typeof GithubCodeReview>) => <GithubCodeReview {...approvedProps} {...args} />,
 };
 
 export const ChangeRequested = {
-  render: (args: GithubCodeReviewProps) => <GithubCodeReview {...changeRequestedProps} {...args} />,
+  render: (args: ComponentProps<typeof GithubCodeReview>) => <GithubCodeReview {...changeRequestedProps} {...args} />,
 };

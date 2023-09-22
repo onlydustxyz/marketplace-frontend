@@ -14,6 +14,13 @@ export enum Action {
   UnIgnore = "unignore",
 }
 
+const actionTypes = {
+  [Action.Add]: <Add />,
+  [Action.Remove]: <Subtract />,
+  [Action.Ignore]: <EyeOffLine />,
+  [Action.UnIgnore]: <EyeLine />,
+};
+
 type GithubActionButtonProps = {
   action: Action;
   ignored: boolean;
@@ -34,10 +41,7 @@ export function GithubActionButton({ action, ignored, onClick }: GithubActionBut
           visible: action !== Action.Remove,
         })}
       >
-        {action === Action.Add && <Add />}
-        {action === Action.Remove && <Subtract />}
-        {action === Action.Ignore && <EyeOffLine />}
-        {action === Action.UnIgnore && <EyeLine />}
+        {actionTypes[action]}
       </Button>
     </div>
   );

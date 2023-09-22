@@ -1,15 +1,11 @@
-import { PropsWithChildren } from "react";
+import { ButtonHTMLAttributes } from "react";
 import Tag from "src/components/Tag";
 import { MouseEvent } from "react";
 
-type TagButtonProps = {
-  onClick: () => void;
-} & PropsWithChildren;
-
-export default function TagButton({ children, onClick, ...rest }: TagButtonProps) {
-  const handleClick = (e: MouseEvent<HTMLButtonElement> | MouseEvent<HTMLDivElement>) => {
+export default function TagButton({ children, onClick, ...rest }: ButtonHTMLAttributes<HTMLButtonElement>) {
+  const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    onClick?.();
+    onClick?.(e);
   };
 
   return (

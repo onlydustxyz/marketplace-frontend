@@ -23,14 +23,11 @@ import GithubCodeReview, { GithubCodeReviewProps } from "src/components/GithubCa
 
 const THEORETICAL_MAX_SCREEN_HEIGHT = 2000;
 
-function getTabname(type: WorkItemType) {
-  const types = {
-    [WorkItemType.Issue]: "issues",
-    [WorkItemType.PullRequest]: "pullRequests",
-    [WorkItemType.CodeReview]: "codeReviews",
-  };
-  return types[type];
-}
+const tabNames = {
+  [WorkItemType.Issue]: "issues",
+  [WorkItemType.PullRequest]: "pullRequests",
+  [WorkItemType.CodeReview]: "codeReviews",
+};
 
 type Props = {
   projectId: string;
@@ -53,7 +50,7 @@ export default function View({
 }: Props) {
   const { T } = useIntl();
   const { watch, resetField } = useFormContext();
-  const tabName = getTabname(type);
+  const tabName = tabNames[type];
 
   const [addOtherIssueEnabled, setStateAddOtherIssueEnabled] = useState(false);
   const [searchEnabled, setStateSearchEnabled] = useState(false);

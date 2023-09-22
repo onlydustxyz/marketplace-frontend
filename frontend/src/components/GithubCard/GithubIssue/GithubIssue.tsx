@@ -19,6 +19,7 @@ export enum Action {
   Ignore = "ignore",
   UnIgnore = "unignore",
 }
+
 export type GithubIssueProps = {
   action?: Action;
   secondaryAction?: Action;
