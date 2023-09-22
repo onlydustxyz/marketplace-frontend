@@ -31940,7 +31940,6 @@
           },
           {
             "name": "closingIssues",
-<<<<<<< HEAD
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
@@ -31953,8 +31952,6 @@
           },
           {
             "name": "commits",
-=======
->>>>>>> origin/main
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
@@ -32510,7 +32507,6 @@
           },
           {
             "name": "closingIssuesAggregate",
-<<<<<<< HEAD
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
@@ -32523,8 +32519,6 @@
           },
           {
             "name": "commitsAggregate",
-=======
->>>>>>> origin/main
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",

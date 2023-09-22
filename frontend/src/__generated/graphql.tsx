@@ -12217,109 +12217,6 @@ export type Auth_User_Github_Provider_StreamCursorValueInput = {
   userId: InputMaybe<Scalars['uuid']>;
 };
 
-<<<<<<< HEAD
-export type Budgets_Aggregate_Bool_Exp = {
-  count: InputMaybe<Budgets_Aggregate_Bool_Exp_Count>;
-};
-
-export type Budgets_Aggregate_Bool_Exp_Count = {
-  arguments: InputMaybe<Array<BudgetsSelectColumn>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
-  filter: InputMaybe<BudgetsBoolExp>;
-  predicate: IntComparisonExp;
-};
-
-/** order by avg() on columns of table "budgets" */
-export type Budgets_Avg_Order_By = {
-  initialAmount: InputMaybe<OrderBy>;
-  remainingAmount: InputMaybe<OrderBy>;
-  spentAmount: InputMaybe<OrderBy>;
-};
-
-/** order by max() on columns of table "budgets" */
-export type Budgets_Max_Order_By = {
-  id: InputMaybe<OrderBy>;
-  initialAmount: InputMaybe<OrderBy>;
-  projectId: InputMaybe<OrderBy>;
-  remainingAmount: InputMaybe<OrderBy>;
-  spentAmount: InputMaybe<OrderBy>;
-};
-
-/** order by min() on columns of table "budgets" */
-export type Budgets_Min_Order_By = {
-  id: InputMaybe<OrderBy>;
-  initialAmount: InputMaybe<OrderBy>;
-  projectId: InputMaybe<OrderBy>;
-  remainingAmount: InputMaybe<OrderBy>;
-  spentAmount: InputMaybe<OrderBy>;
-};
-
-/** order by stddev() on columns of table "budgets" */
-export type Budgets_Stddev_Order_By = {
-  initialAmount: InputMaybe<OrderBy>;
-  remainingAmount: InputMaybe<OrderBy>;
-  spentAmount: InputMaybe<OrderBy>;
-};
-
-/** order by stddev_pop() on columns of table "budgets" */
-export type Budgets_Stddev_Pop_Order_By = {
-  initialAmount: InputMaybe<OrderBy>;
-  remainingAmount: InputMaybe<OrderBy>;
-  spentAmount: InputMaybe<OrderBy>;
-};
-
-/** order by stddev_samp() on columns of table "budgets" */
-export type Budgets_Stddev_Samp_Order_By = {
-  initialAmount: InputMaybe<OrderBy>;
-  remainingAmount: InputMaybe<OrderBy>;
-  spentAmount: InputMaybe<OrderBy>;
-};
-
-/** Streaming cursor of the table "budgets" */
-export type Budgets_StreamCursorInput = {
-  /** Stream column input with initial value */
-  initialValue: Budgets_StreamCursorValueInput;
-  /** cursor ordering */
-  ordering: InputMaybe<CursorOrdering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type Budgets_StreamCursorValueInput = {
-  id: InputMaybe<Scalars['uuid']>;
-  initialAmount: InputMaybe<Scalars['numeric']>;
-  projectId: InputMaybe<Scalars['uuid']>;
-  remainingAmount: InputMaybe<Scalars['numeric']>;
-  spentAmount: InputMaybe<Scalars['numeric']>;
-};
-
-/** order by sum() on columns of table "budgets" */
-export type Budgets_Sum_Order_By = {
-  initialAmount: InputMaybe<OrderBy>;
-  remainingAmount: InputMaybe<OrderBy>;
-  spentAmount: InputMaybe<OrderBy>;
-};
-
-/** order by var_pop() on columns of table "budgets" */
-export type Budgets_Var_Pop_Order_By = {
-  initialAmount: InputMaybe<OrderBy>;
-  remainingAmount: InputMaybe<OrderBy>;
-  spentAmount: InputMaybe<OrderBy>;
-};
-
-/** order by var_samp() on columns of table "budgets" */
-export type Budgets_Var_Samp_Order_By = {
-  initialAmount: InputMaybe<OrderBy>;
-  remainingAmount: InputMaybe<OrderBy>;
-  spentAmount: InputMaybe<OrderBy>;
-};
-
-/** order by variance() on columns of table "budgets" */
-export type Budgets_Variance_Order_By = {
-  initialAmount: InputMaybe<OrderBy>;
-  remainingAmount: InputMaybe<OrderBy>;
-  spentAmount: InputMaybe<OrderBy>;
-};
-
 export type Github_Pull_Request_Commits_Aggregate_Bool_Exp = {
   count: InputMaybe<Github_Pull_Request_Commits_Aggregate_Bool_Exp_Count>;
 };
@@ -12411,8 +12308,6 @@ export type Github_Pull_Request_Commits_Variance_Order_By = {
   pullRequestId: InputMaybe<OrderBy>;
 };
 
-=======
->>>>>>> origin/main
 /** Streaming cursor of the table "github_users" */
 export type Github_Users_StreamCursorInput = {
   /** Stream column input with initial value */
@@ -18262,22 +18157,14 @@ export type AllTechnologiesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type AllTechnologiesQuery = { __typename?: 'query_root', technologies: Array<{ __typename?: 'Technologies', technology: string | null }> };
 
-<<<<<<< HEAD
-export type PaymentRequestDetailsFragment = { __typename?: 'PaymentRequests', id: any, amountInUsd: any, requestedAt: any, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', processedAt: any, receipt: any }>, requestor: { __typename?: 'RegisteredUsers', id: any | null, login: string | null, avatarUrl: string | null, githubUserId: any | null } | null, githubRecipient: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, workItems: Array<{ __typename?: 'WorkItems', type: any | null, id: string | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, commentsCount: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', status: string | null, outcome: any | null, submittedAt: any | null, id: string | null, reviewer: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null } | null }>, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null } };
-=======
-export type PaymentRequestDetailsFragment = { __typename?: 'PaymentRequests', id: any | null, amount: any | null, requestedAt: any | null, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', processedAt: any, receipt: any }>, requestor: { __typename?: 'RegisteredUsers', id: any | null, login: string | null, avatarUrl: string | null, githubUserId: any | null } | null, githubRecipient: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, workItems: Array<{ __typename?: 'WorkItems', type: any | null, id: string | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null } | null }>, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null } };
->>>>>>> origin/main
+export type PaymentRequestDetailsFragment = { __typename?: 'PaymentRequests', id: any | null, amount: any | null, requestedAt: any | null, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', processedAt: any, receipt: any }>, requestor: { __typename?: 'RegisteredUsers', id: any | null, login: string | null, avatarUrl: string | null, githubUserId: any | null } | null, githubRecipient: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, workItems: Array<{ __typename?: 'WorkItems', type: any | null, id: string | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, commentsCount: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', status: string | null, outcome: any | null, submittedAt: any | null, id: string | null, reviewer: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null } | null }>, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null } };
 
 export type PaymentRequestDetailsQueryVariables = Exact<{
   id: Scalars['uuid'];
 }>;
 
 
-<<<<<<< HEAD
-export type PaymentRequestDetailsQuery = { __typename?: 'query_root', paymentRequestsByPk: { __typename?: 'PaymentRequests', id: any, amountInUsd: any, requestedAt: any, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', processedAt: any, receipt: any }>, requestor: { __typename?: 'RegisteredUsers', id: any | null, login: string | null, avatarUrl: string | null, githubUserId: any | null } | null, githubRecipient: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, workItems: Array<{ __typename?: 'WorkItems', type: any | null, id: string | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, commentsCount: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', status: string | null, outcome: any | null, submittedAt: any | null, id: string | null, reviewer: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null } | null }>, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null } } | null };
-=======
-export type PaymentRequestDetailsQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any | null, amount: any | null, requestedAt: any | null, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', processedAt: any, receipt: any }>, requestor: { __typename?: 'RegisteredUsers', id: any | null, login: string | null, avatarUrl: string | null, githubUserId: any | null } | null, githubRecipient: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, workItems: Array<{ __typename?: 'WorkItems', type: any | null, id: string | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null } | null }>, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null } }> };
->>>>>>> origin/main
+export type PaymentRequestDetailsQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any | null, amount: any | null, requestedAt: any | null, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', processedAt: any, receipt: any }>, requestor: { __typename?: 'RegisteredUsers', id: any | null, login: string | null, avatarUrl: string | null, githubUserId: any | null } | null, githubRecipient: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, workItems: Array<{ __typename?: 'WorkItems', type: any | null, id: string | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, commentsCount: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', status: string | null, outcome: any | null, submittedAt: any | null, id: string | null, reviewer: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null } | null }>, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null } }> };
 
 export type CancelPaymentRequestMutationVariables = Exact<{
   paymentId: Scalars['Uuid'];
@@ -18663,22 +18550,14 @@ export type MarkInvoiceAsReceivedMutationVariables = Exact<{
 
 export type MarkInvoiceAsReceivedMutation = { __typename?: 'mutation_root', markInvoiceAsReceived: boolean };
 
-<<<<<<< HEAD
-export type UserPaymentRequestFragment = { __typename?: 'PaymentRequests', id: any, requestedAt: any, amountInUsd: any, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, workItems: Array<{ __typename?: 'WorkItems', type: any | null, id: string | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, commentsCount: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', status: string | null, outcome: any | null, submittedAt: any | null, id: string | null, reviewer: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null } | null }>, budget: { __typename?: 'Budgets', id: any, project: { __typename?: 'Projects', id: any | null, name: string | null, shortDescription: string | null, logoUrl: string | null } | null } | null };
-=======
-export type UserPaymentRequestFragment = { __typename?: 'PaymentRequests', id: any | null, requestedAt: any | null, amount: any | null, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, workItems: Array<{ __typename?: 'WorkItems', type: any | null, id: string | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null } | null }>, project: { __typename?: 'Projects', id: any | null, name: string | null, shortDescription: string | null, logoUrl: string | null } | null };
->>>>>>> origin/main
+export type UserPaymentRequestFragment = { __typename?: 'PaymentRequests', id: any | null, requestedAt: any | null, amount: any | null, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, workItems: Array<{ __typename?: 'WorkItems', type: any | null, id: string | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, commentsCount: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', status: string | null, outcome: any | null, submittedAt: any | null, id: string | null, reviewer: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null } | null }>, project: { __typename?: 'Projects', id: any | null, name: string | null, shortDescription: string | null, logoUrl: string | null } | null };
 
 export type GetPaymentRequestsQueryVariables = Exact<{
   githubUserId: Scalars['bigint'];
 }>;
 
 
-<<<<<<< HEAD
-export type GetPaymentRequestsQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, requestedAt: any, amountInUsd: any, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, workItems: Array<{ __typename?: 'WorkItems', type: any | null, id: string | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, commentsCount: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', status: string | null, outcome: any | null, submittedAt: any | null, id: string | null, reviewer: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null } | null }>, budget: { __typename?: 'Budgets', id: any, project: { __typename?: 'Projects', id: any | null, name: string | null, shortDescription: string | null, logoUrl: string | null } | null } | null }> };
-=======
-export type GetPaymentRequestsQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any | null, requestedAt: any | null, amount: any | null, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, workItems: Array<{ __typename?: 'WorkItems', type: any | null, id: string | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null } | null }>, project: { __typename?: 'Projects', id: any | null, name: string | null, shortDescription: string | null, logoUrl: string | null } | null }> };
->>>>>>> origin/main
+export type GetPaymentRequestsQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any | null, requestedAt: any | null, amount: any | null, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, workItems: Array<{ __typename?: 'WorkItems', type: any | null, id: string | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, commentsCount: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', status: string | null, outcome: any | null, submittedAt: any | null, id: string | null, reviewer: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null } | null }>, project: { __typename?: 'Projects', id: any | null, name: string | null, shortDescription: string | null, logoUrl: string | null } | null }> };
 
 export type AcceptTermsAndConditionsMutationVariables = Exact<{ [key: string]: never; }>;
 
