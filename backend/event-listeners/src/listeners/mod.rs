@@ -1,5 +1,4 @@
 pub mod logger;
-pub mod projections;
 pub mod quote_syncer;
 pub mod webhook;
 
@@ -40,27 +39,6 @@ pub async fn spawn_all(
 ) -> Result<Vec<JoinHandle<()>>> {
 	let mut handles = vec![
 		Logger.spawn(event_bus::event_consumer(config.amqp.clone(), "logger").await?),
-		projections::Projector::new(
-			database.clone(),
-			database.clone(),
-			database.clone(),
-			database.clone(),
-			database.clone(),
-			database.clone(),
-			database.clone(),
-			database.clone(),
-			database.clone(),
-			database.clone(),
-			database.clone(),
-			database.clone(),
-			database.clone(),
-			database.clone(),
-		)
-		.spawn(
-			event_bus::event_consumer(config.amqp.clone(), "projections")
-				.await?
-				.into_command_subscriber(database.clone()),
-		),
 		quote_syncer::Projector::new(database.clone(), coinmarketcap).spawn(
 			event_bus::event_consumer(config.amqp.clone(), "quote_sync")
 				.await?

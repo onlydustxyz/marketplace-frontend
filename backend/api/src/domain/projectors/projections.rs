@@ -4,14 +4,13 @@ use anyhow::Result;
 use async_trait::async_trait;
 use derive_new::new;
 use domain::{
-	ApplicationEvent, BudgetEvent, Event, PaymentEvent, PaymentWorkItem, ProjectEvent,
-	SubscriberCallbackError,
+	ApplicationEvent, BudgetEvent, Event, EventListener, PaymentEvent, PaymentWorkItem,
+	ProjectEvent, SubscriberCallbackError,
 };
 use infrastructure::database::{ImmutableRepository, Repository};
 use rust_decimal::Decimal;
 use tracing::instrument;
 
-use super::EventListener;
 use crate::models::*;
 
 #[allow(clippy::too_many_arguments)]
