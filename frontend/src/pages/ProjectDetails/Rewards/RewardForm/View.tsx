@@ -5,7 +5,7 @@ import ContributorSelect from "src/pages/ProjectDetails/Rewards/RewardForm/Contr
 import WorkEstimation from "./WorkEstimation";
 
 import { filter } from "lodash";
-import { ReactElement, ReactNode, useState } from "react";
+import { ReactElement, ReactNode, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   ContributionFragment,
@@ -95,8 +95,11 @@ const View: React.FC<Props> = ({
     );
 
     addWorkItem(workItems);
-    onWorkItemsChange(workItems);
   };
+
+  useEffect(() => {
+    onWorkItemsChange(workItems);
+  }, [workItems]);
 
   return (
     <>
