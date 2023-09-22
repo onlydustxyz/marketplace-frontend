@@ -5,6 +5,7 @@ use reqwest::StatusCode;
 use serde::Deserialize;
 
 #[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Reason {
 	pub work_items: Vec<WorkItem>,
 }
@@ -31,6 +32,7 @@ pub enum WorkItemType {
 }
 
 #[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct WorkItem {
 	pub id: String,
 	pub r#type: WorkItemType,

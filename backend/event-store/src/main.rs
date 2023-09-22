@@ -3,7 +3,7 @@ use std::sync::Arc;
 use ::olog::info;
 use anyhow::Result;
 use backend_domain::{
-	AggregateEvent, Destination, Event, Publisher, Subscriber, SubscriberCallbackError,
+	Destination, Event, Identified, Publisher, Subscriber, SubscriberCallbackError,
 };
 use backend_infrastructure::{
 	amqp::{self, Bus, UniqueMessage},
@@ -50,7 +50,10 @@ async fn store(
 ) -> Result<UniqueMessage<Event>, SubscriberCallbackError> {
 	info!(message_content = message.to_string(), "📨 Received event");
 	store
-		.append(&message.payload().aggregate_id(), message.clone())
+		.append(
+			&IdentifiableAggregate::aggregate_id(message.payload()),
+			message.clone(),
+		)
 		.map_err(|e| SubscriberCallbackError::Fatal(e.into()))?;
 
 	Ok(message)
@@ -77,7 +80,10 @@ trait IdentifiableAggregate {
 impl IdentifiableAggregate for Event {
 	fn aggregate_id(&self) -> String {
 		match &self {
-			Event::Project(event) => event.aggregate_id().to_string(),
+			Event::Application(event) => event.id().to_string(),
+			Event::Budget(event) => event.id().to_string(),
+			Event::Payment(event) => event.id().to_string(),
+			Event::Project(event) => event.id().to_string(),
 		}
 	}
 }

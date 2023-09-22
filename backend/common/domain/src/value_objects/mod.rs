@@ -1,17 +1,10 @@
-mod blockchain;
-pub use blockchain::{Network as BlockchainNetwork, TransactionHash};
+pub mod amount;
+pub use amount::Amount;
 
-mod amount;
-pub use amount::{Amount, Currency};
+pub mod blockchain;
 
-mod ethereum_address;
-pub use ethereum_address::EthereumAddress;
-
-mod ethereum_name;
-pub use ethereum_name::EthereumName;
-
-mod ethereum_identity;
-pub use ethereum_identity::EthereumIdentity;
+pub mod currencies;
+pub use currencies::{Currency, ParseError as ParseCurrencyError};
 
 mod positive_count;
 pub use positive_count::Count as PositiveCount;

@@ -1,11 +1,4 @@
-import {
-  EthereumIdentityInput,
-  IdentityInput,
-  Location,
-  PayoutSettingsInput,
-  Reason,
-  Visibility,
-} from "./__generated/graphql";
+import { EthereumIdentityInput, Identity, Location, PayoutSettings, Reason, Visibility } from "./__generated/graphql";
 
 export type Url = string;
 export type Uuid = string;
@@ -25,9 +18,9 @@ export type UserFixture = {
 
 export type UserPayoutInfo = {
   populate?: boolean;
-  identity: IdentityInput | null;
+  identity: Identity | null;
   location: Location | null;
-  payoutSettings: PayoutSettingsInput | null;
+  payoutSettings: PayoutSettings | null;
 };
 
 export type User = UserFixture & {
@@ -37,13 +30,19 @@ export type User = UserFixture & {
   session: string;
 };
 
+export type Allocation = {
+  amount: number;
+  currency: string;
+  sponsor?: string;
+};
+
 export type ProjectFixture = {
   name: string;
   shortDescription: string;
   longDescription: string;
   telegramLink: Url | null;
   logoUrl: Url | null;
-  initialBudget: number | null;
+  initialBudget: Allocation | null;
   leaders?: string[];
   pendingLeaderInvitations?: string[];
   repos?: string[];
@@ -77,17 +76,19 @@ export type PaymentFixture = {
 };
 
 export type PaymentItem = {
-  amount: number;
+  amount: string;
+  currency: string;
   reason: Reason;
   receipts?: PaymentReceipt[];
+  hoursWorked: number;
 };
 
 export type PaymentReceipt = {
   amount: number;
   currencyCode: string;
-  recipientETHIdentity?: EthereumIdentityInput;
+  recipientWallet?: string;
   recipientIBAN?: string;
-  transactionHashOrReference: string;
+  transactionReference: string;
 };
 
 export type Payment = Omit<PaymentFixture, "items"> &

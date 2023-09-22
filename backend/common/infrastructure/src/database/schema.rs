@@ -6,7 +6,7 @@ pub mod sql_types {
     pub struct AllocatedTime;
 
     #[derive(diesel::query_builder::QueryId, diesel::sql_types::SqlType)]
-    #[diesel(postgres_type(name = "citext"))]
+    #[diesel(postgres_type(name = "citext", schema = "heroku_ext"))]
     pub struct Citext;
 
     #[derive(diesel::query_builder::QueryId, diesel::sql_types::SqlType)]
@@ -20,6 +20,10 @@ pub mod sql_types {
     #[derive(diesel::query_builder::QueryId, diesel::sql_types::SqlType)]
     #[diesel(postgres_type(name = "contribution_type"))]
     pub struct ContributionType;
+
+    #[derive(diesel::query_builder::QueryId, diesel::sql_types::SqlType)]
+    #[diesel(postgres_type(name = "currency"))]
+    pub struct Currency;
 
     #[derive(diesel::query_builder::QueryId, diesel::sql_types::SqlType)]
     #[diesel(postgres_type(name = "github_ci_checks"))]
@@ -42,12 +46,24 @@ pub mod sql_types {
     pub struct GithubPullRequestStatus;
 
     #[derive(diesel::query_builder::QueryId, diesel::sql_types::SqlType)]
+    #[diesel(postgres_type(name = "network"))]
+    pub struct Network;
+
+    #[derive(diesel::query_builder::QueryId, diesel::sql_types::SqlType)]
+    #[diesel(postgres_type(name = "preferred_method"))]
+    pub struct PreferredMethod;
+
+    #[derive(diesel::query_builder::QueryId, diesel::sql_types::SqlType)]
     #[diesel(postgres_type(name = "profile_cover"))]
     pub struct ProfileCover;
 
     #[derive(diesel::query_builder::QueryId, diesel::sql_types::SqlType)]
     #[diesel(postgres_type(name = "project_visibility"))]
     pub struct ProjectVisibility;
+
+    #[derive(diesel::query_builder::QueryId, diesel::sql_types::SqlType)]
+    #[diesel(postgres_type(name = "wallet_type"))]
+    pub struct WalletType;
 }
 
 diesel::table! {
@@ -76,12 +92,22 @@ diesel::table! {
 }
 
 diesel::table! {
+    bank_accounts (user_id) {
+        user_id -> Uuid,
+        bic -> Text,
+        iban -> Text,
+    }
+}
+
+diesel::table! {
+    use diesel::sql_types::*;
+    use super::sql_types::Currency;
+
     budgets (id) {
         id -> Uuid,
-        project_id -> Nullable<Uuid>,
         initial_amount -> Numeric,
         remaining_amount -> Numeric,
-        spent_amount -> Numeric,
+        currency -> Currency,
     }
 }
 
@@ -129,6 +155,17 @@ diesel::table! {
         created_at -> Timestamp,
         closed_at -> Nullable<Timestamp>,
         id -> Text,
+    }
+}
+
+diesel::table! {
+    use diesel::sql_types::*;
+    use super::sql_types::Currency;
+
+    crypto_usd_quotes (currency) {
+        currency -> Currency,
+        price -> Numeric,
+        updated_at -> Timestamp,
     }
 }
 
@@ -288,15 +325,19 @@ diesel::table! {
 }
 
 diesel::table! {
+    use diesel::sql_types::*;
+    use super::sql_types::Currency;
+
     payment_requests (id) {
         id -> Uuid,
-        budget_id -> Uuid,
         requestor_id -> Uuid,
         recipient_id -> Int8,
-        amount_in_usd -> Int8,
+        amount -> Numeric,
         requested_at -> Timestamp,
         invoice_received_at -> Nullable<Timestamp>,
         hours_worked -> Int4,
+        project_id -> Uuid,
+        currency -> Currency,
     }
 }
 
@@ -359,6 +400,13 @@ diesel::table! {
 }
 
 diesel::table! {
+    projects_budgets (project_id, budget_id) {
+        project_id -> Uuid,
+        budget_id -> Uuid,
+    }
+}
+
+diesel::table! {
     projects_contributors (project_id, github_user_id) {
         project_id -> Uuid,
         github_user_id -> Int8,
@@ -403,12 +451,14 @@ diesel::table! {
 }
 
 diesel::table! {
+    use diesel::sql_types::*;
+    use super::sql_types::PreferredMethod;
+
     user_payout_info (user_id) {
         user_id -> Uuid,
         identity -> Nullable<Jsonb>,
         location -> Nullable<Jsonb>,
-        payout_settings -> Nullable<Jsonb>,
-        are_payout_settings_valid -> Bool,
+        usd_preferred_method -> Nullable<PreferredMethod>,
     }
 }
 
@@ -427,6 +477,20 @@ diesel::table! {
         looking_for_a_job -> Bool,
         avatar_url -> Nullable<Text>,
         cover -> Nullable<ProfileCover>,
+    }
+}
+
+diesel::table! {
+    use diesel::sql_types::*;
+    use super::sql_types::Network;
+    use super::sql_types::WalletType;
+
+    wallets (user_id, network) {
+        user_id -> Uuid,
+        network -> Network,
+        #[sql_name = "type"]
+        type_ -> WalletType,
+        address -> Text,
     }
 }
 
@@ -453,11 +517,13 @@ diesel::joinable!(projects_sponsors -> sponsors (sponsor_id));
 diesel::allow_tables_to_appear_in_same_query!(
     applications,
     auth_users,
+    bank_accounts,
     budgets,
     closing_issues,
     commands,
     contact_informations,
     contributions,
+    crypto_usd_quotes,
     event_deduplications,
     events,
     github_issues,
@@ -478,6 +544,7 @@ diesel::allow_tables_to_appear_in_same_query!(
     project_github_repos,
     project_leads,
     projects,
+    projects_budgets,
     projects_contributors,
     projects_pending_contributors,
     projects_rewarded_users,
@@ -486,5 +553,6 @@ diesel::allow_tables_to_appear_in_same_query!(
     technologies,
     user_payout_info,
     user_profile_info,
+    wallets,
     work_items,
 );

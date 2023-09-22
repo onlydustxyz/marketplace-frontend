@@ -1,29 +1,24 @@
 use std::sync::Arc;
 
-use anyhow::{anyhow, Error};
-use domain::{AggregateRootRepository, Event, Project, Publisher};
-use infrastructure::{amqp::CommandMessage, http};
+use anyhow::Error;
+use infrastructure::http;
 use rocket::{
 	http::Status,
+	outcome::try_outcome,
 	request::{FromRequest, Outcome},
 	Request,
 };
 
-use crate::{application::payment::request::Usecase, Config};
+use crate::{
+	application::payment::request::Usecase, presentation::http::usecases::FromRocketState, Config,
+};
 
 #[async_trait]
 impl<'r> FromRequest<'r> for Usecase {
 	type Error = Error;
 
 	async fn from_request(request: &'r Request<'_>) -> Outcome<Usecase, Self::Error> {
-		let config = match request.rocket().state::<Config>() {
-			Some(config) => config,
-			None =>
-				return Outcome::Failure((
-					Status::InternalServerError,
-					anyhow!("Missing configuration"),
-				)),
-		};
+		let config = try_outcome!(Config::from_state(request.rocket()));
 
 		let headers = request
 			.headers()
@@ -31,34 +26,15 @@ impl<'r> FromRequest<'r> for Usecase {
 			.map(|value| (reqwest::header::AUTHORIZATION, value.parse().unwrap()))
 			.collect();
 
-		let http_client = match http::Client::new(config.indexer_client.clone(), headers) {
+		let http_client = match http::Client::new(config.indexer_client, headers) {
 			Ok(client) => client,
 			Err(e) => return Outcome::Failure((Status::InternalServerError, e)),
 		};
 
-		let event_publisher =
-			match request.rocket().state::<Arc<dyn Publisher<CommandMessage<Event>>>>() {
-				Some(publisher) => publisher,
-				None =>
-					return Outcome::Failure((
-						Status::InternalServerError,
-						anyhow!("Missing command publisher"),
-					)),
-			};
-
-		let project_repository = match request.rocket().state::<AggregateRootRepository<Project>>()
-		{
-			Some(repository) => repository,
-			None =>
-				return Outcome::Failure((
-					Status::InternalServerError,
-					anyhow!("Missing project repository"),
-				)),
-		};
-
 		Outcome::Success(Self::new(
-			event_publisher.clone(),
-			project_repository.clone(),
+			try_outcome!(FromRocketState::from_state(request.rocket())),
+			try_outcome!(FromRocketState::from_state(request.rocket())),
+			try_outcome!(FromRocketState::from_state(request.rocket())),
 			Arc::new(http_client),
 		))
 	}

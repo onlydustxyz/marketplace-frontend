@@ -1,0 +1,9 @@
+mutation rejectInvoice($payments: [Uuid!]!) {
+  rejectInvoice(payments: $payments)
+}
+
+query paymentRequestsByPk($paymentId: uuid!) {
+  paymentRequests(where: { id: { _eq: $paymentId } }) {
+    id
+  }
+}

@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use anyhow::Result;
-use domain::AggregateRootRepository;
+use domain::AggregateRepository;
 use infrastructure::{amqp, amqp::CommandPublisherDecorator, database, github};
 use rocket::{Build, Rocket};
 
@@ -33,7 +33,11 @@ pub async fn bootstrap(config: Config) -> Result<Rocket<Build>> {
 				.await?
 				.into_command_publisher(database.clone(), expected_processing_count_per_event()),
 		),
-		AggregateRootRepository::new(database.clone()),
+		Arc::new(amqp::Bus::new(config.amqp.clone()).await?),
+		AggregateRepository::new(database.clone()),
+		AggregateRepository::new(database.clone()),
+		AggregateRepository::new(database.clone()),
+		database.clone(),
 		database.clone(),
 		database.clone(),
 		database.clone(),
@@ -43,7 +47,9 @@ pub async fn bootstrap(config: Config) -> Result<Rocket<Build>> {
 		database.clone(),
 		database.clone(),
 		database,
+		github_api_client.clone(),
 		github_api_client,
+		dusty_bot_api_client.clone(),
 		dusty_bot_api_client,
 		Arc::new(ens::Client::new(config.web3)?),
 		simple_storage,

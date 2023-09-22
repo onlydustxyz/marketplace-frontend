@@ -8,13 +8,6 @@ actions:
         - name: Api-Key
           value_from_env: BACKEND_GRAPHQL_API_KEY
       request_transform:
-        body:
-          action: transform
-          template: |-
-            {
-              "project_id": {{$body.input.projectId}},
-              "payment_id": {{$body.input.paymentId}}
-            }
         method: DELETE
         query_params: {}
         template_engine: Kriti
@@ -46,17 +39,12 @@ actions:
       request_transform:
         body:
           action: transform
-          template: |-
-            {
-              "github_repo_id": {{ $body.input.githubRepoId }},
-              "description": {{ $body.input.description }},
-              "project_id": {{ $body.input.projectId }},
-              "title": {{ $body.input.title }}
-            }
+          template: '{{$body.input}}'
         method: POST
         query_params: {}
         template_engine: Kriti
         url: '{{$base_url}}/issues'
+<<<<<<< HEAD
         version: 2
       response_transform:
         body:
@@ -81,10 +69,13 @@ actions:
               "commentsCount": {{$body.comments_count}}
             }
         template_engine: Kriti
+=======
+>>>>>>> origin/main
         version: 2
     permissions:
       - role: registered_user
     comment: createAndCloseIssue
+<<<<<<< HEAD
   - name: createProject
     definition:
       kind: synchronous
@@ -122,6 +113,8 @@ actions:
         template_engine: Kriti
         version: 2
     comment: createProject
+=======
+>>>>>>> origin/main
   - name: fetchIssue
     definition:
       kind: ""
@@ -139,6 +132,7 @@ actions:
             - content-type
         template_engine: Kriti
         url: '{{$base_url}}/issues/{{$body.input.repoOwner}}/{{$body.input.repoName}}/{{$body.input.issueNumber}}'
+<<<<<<< HEAD
         version: 2
       response_transform:
         body:
@@ -164,6 +158,8 @@ actions:
               "updatedAt": {{$body.updated_at}}
             }
         template_engine: Kriti
+=======
+>>>>>>> origin/main
         version: 2
     permissions:
       - role: registered_user
@@ -184,6 +180,7 @@ actions:
             - content-type
         template_engine: Kriti
         url: '{{$base_url}}/pull_requests/{{$body.input.repoOwner}}/{{$body.input.repoName}}/{{$body.input.prNumber}}'
+<<<<<<< HEAD
         version: 2
       response_transform:
         body:
@@ -208,6 +205,8 @@ actions:
               "updatedAt": {{$body.updated_at}}
             }
         template_engine: Kriti
+=======
+>>>>>>> origin/main
         version: 2
     permissions:
       - role: registered_user
@@ -245,11 +244,12 @@ actions:
       request_transform:
         body:
           action: transform
-          template: "{\n    \"project_id\": {{ $body.input.projectId }},\n    \"recipient_id\": {{ $body.input.recipientId }},\n    \"amount_in_usd\": {{ $body.input.amountInUsd }},\n    \"hours_worked\": {{ $body.input.hoursWorked }},\n    \"reason\": {\n      \"work_items\": \n        {{ range _, w := $body.input.reason.workItems }}\n        {\n          \"id\": {{ w.id }},\n          \"type\": {{ w.type }},\n          \"repo_id\": {{ w.repoId }},\n          \"number\": {{ w.number }}\n        }\n        {{ end }}\n      \n    }\n}\n"
+          template: '{{$body.input}}'
         method: POST
         query_params: {}
         template_engine: Kriti
         url: '{{$base_url}}/payments'
+<<<<<<< HEAD
         version: 2
       response_transform:
         body:
@@ -263,6 +263,8 @@ actions:
               "amount": {{$body.amount}}
             }
         template_engine: Kriti
+=======
+>>>>>>> origin/main
         version: 2
     permissions:
       - role: registered_user
@@ -277,17 +279,26 @@ actions:
       request_transform:
         method: GET
         query_params:
+<<<<<<< HEAD
           order: '{{$body.input.order}}'
           page: '{{$body.input.page}}'
           per_page: '{{$body.input.perPage}}'
           query: '{{$body.input.query}}'
           sort: '{{$body.input.sort}}'
+=======
+          order: '{{$body.input.order }}'
+          page: '{{$body.input.page }}'
+          per_page: '{{$body.input.perPage }}'
+          query: '{{$body.input.query }}'
+          sort: '{{$body.input.sort }}'
+>>>>>>> origin/main
         request_headers:
           add_headers: {}
           remove_headers:
             - content-type
         template_engine: Kriti
         url: '{{$base_url}}/users/search'
+<<<<<<< HEAD
         version: 2
       response_transform:
         body:
@@ -302,6 +313,8 @@ actions:
               }
             {{ end }}
         template_engine: Kriti
+=======
+>>>>>>> origin/main
         version: 2
     permissions:
       - role: registered_user
@@ -354,6 +367,27 @@ actions:
     permissions:
       - role: registered_user
     comment: unignoreContribution
+  - name: updatePayoutInfo
+    definition:
+      kind: synchronous
+      handler: '{{BACKEND_REST_API_URL}}'
+      forward_client_headers: true
+      headers:
+        - name: Api-Key
+          value_from_env: BACKEND_GRAPHQL_API_KEY
+      request_transform:
+        body:
+          action: transform
+          template: '{{$body.input}}'
+        method: POST
+        query_params: {}
+        template_engine: Kriti
+<<<<<<< HEAD
+=======
+        url: '{{$base_url}}/users/profile/payout_info'
+        version: 2
+    permissions:
+      - role: registered_user
   - name: updateUserProfile
     definition:
       kind: synchronous
@@ -365,20 +399,11 @@ actions:
       request_transform:
         body:
           action: transform
-          template: |-
-            {
-            	"bio": {{ $body.input.bio }},
-            	"location":{{ $body.input.location }},
-            	"website": {{ $body.input.website }},
-            	"languages": {{ $body.input.languages }},
-            	"looking_for_a_job": {{ $body.input.lookingForAJob }},
-            	"contact_informations":{{ $body.input.contactInformations }},
-            	"weekly_allocated_time": {{ $body.input.weeklyAllocatedTime }},
-            	"cover": {{ $body.input.cover }}
-            }
+          template: '{{$body.input}}'
         method: POST
         query_params: {}
         template_engine: Kriti
+>>>>>>> origin/main
         url: '{{$base_url}}/users/profile'
         version: 2
       response_transform:
@@ -492,11 +517,45 @@ custom_types:
         - description: null
           is_deprecated: null
           value: CODE_REVIEW
+    - name: IdentityType
+      values:
+        - description: null
+          is_deprecated: null
+          value: COMPANY
+        - description: null
+          is_deprecated: null
+          value: PERSON
+    - name: PayoutSettingsType
+      values:
+        - description: null
+          is_deprecated: null
+          value: BANK_ADDRESS
+        - description: null
+          is_deprecated: null
+          value: ETHEREUM_ADDRESS
+        - description: null
+          is_deprecated: null
+          value: ETHEREUM_NAME
+    - name: PreferredMethod
+      values:
+        - description: null
+          is_deprecated: null
+          value: FIAT
+        - description: null
+          is_deprecated: null
+          value: CRYPTO
   input_objects:
     - name: Language
     - name: Information
     - name: WorkItem
     - name: Reason
+    - name: BankAddress
+    - name: CompanyIdentity
+    - name: Location
+    - name: PersonIdentity
+    - name: Identity
+    - name: PayoutSettings
+    - name: BankAccount
   objects:
     - name: GithubIssueCreatedAndClosed
     - name: GithubUserLinkedToIssue
@@ -513,9 +572,14 @@ custom_types:
     - name: GithubPullRequest
     - name: GithubIssue
     - name: Payment
+    - name: Command
+    - name: PaymentRequestResponse
   scalars:
     - name: Url
     - name: Uuid
     - name: DateTime
     - name: DateTimeUtc
     - name: Amount
+    - name: EthereumAddress
+    - name: EthereumName
+    - name: Iban

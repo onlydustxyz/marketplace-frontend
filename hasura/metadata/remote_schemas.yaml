@@ -24,62 +24,14 @@
             query: Query
             mutation: Mutation
           }
-          scalar EthereumAddress
-          scalar EthereumName
-          scalar Iban
-          scalar Url
           scalar Uuid
           type Mutation {
             acceptProjectLeaderInvitation(invitationId: Uuid!): Boolean!
             acceptTermsAndConditions: Uuid!
             applyToProject(projectId: Uuid!): Uuid!
-            markInvoiceAsReceived(paymentReferences: [PaymentReference!]!): Int!
+            markInvoiceAsReceived(payments: [Uuid!]!): Boolean!
             markProfileWizardAsDisplayed: Uuid!
-            updatePayoutInfo(location: Location, identity: IdentityInput, payoutSettings: PayoutSettingsInput): Uuid!
           }
           type Query {
             releaseDate: String!
-          }
-          enum IdentityType {
-            COMPANY
-            PERSON
-          }
-          enum PayoutSettingsType {
-            BANK_ADDRESS
-            ETHEREUM_ADDRESS
-            ETHEREUM_NAME
-          }
-          input BankAddress {
-            BIC: String!
-            IBAN: Iban!
-          }
-          input CompanyIdentity {
-            identificationNumber: String
-            name: String
-            owner: PersonIdentity
-          }
-          input IdentityInput {
-            optCompany: CompanyIdentity
-            optPerson: PersonIdentity
-            type: IdentityType!
-          }
-          input Location {
-            address: String
-            city: String
-            country: String
-            postCode: String
-          }
-          input PaymentReference {
-            paymentId: Uuid!
-            projectId: Uuid!
-          }
-          input PayoutSettingsInput {
-            optBankAddress: BankAddress
-            optEthAddress: EthereumAddress
-            optEthName: EthereumName
-            type: PayoutSettingsType!
-          }
-          input PersonIdentity {
-            firstname: String
-            lastname: String
           }

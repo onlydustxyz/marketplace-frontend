@@ -31,7 +31,7 @@ const config: CodegenConfig = {
         avoidOptionals: true,
         skipTypename: false,
       },
-      documents: ["../e2e/playwright/**/*.ts", "../e2e/playwright/**/*.graphql"],
+      documents: ["../e2e/playwright/**/*.graphql"],
     },
     "./doc/data_diagram.md": {
       plugins: [

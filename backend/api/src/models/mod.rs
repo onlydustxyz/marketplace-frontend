@@ -1,3 +1,6 @@
+mod crypto_usd_quotes;
+pub use crypto_usd_quotes::CryptoUsdQuote;
+
 mod contact_informations;
 pub use contact_informations::{ContactInformation, Repository as ContactInformationsRepository};
 
@@ -16,15 +19,15 @@ mod projects_sponsors;
 pub use projects_sponsors::ProjectsSponsor;
 
 mod sponsors;
-pub use sponsors::{Id as SponsorId, Sponsor};
+pub use sponsors::Sponsor;
 
 mod onboarding;
 pub use onboarding::Onboarding;
 
-mod user_payout_info;
-pub use user_payout_info::{
-	BankAddress, CompanyIdentity, Identity, Location, PayoutSettings, PersonIdentity,
-	UserPayoutInfo,
+mod payout_info;
+pub use payout_info::{
+	BankAccount, CompanyIdentity, Identity, Location, PersonIdentity,
+	Repository as PayoutInfoRepository, UserPayoutInfo, Wallet,
 };
 
 mod user_profile_info;

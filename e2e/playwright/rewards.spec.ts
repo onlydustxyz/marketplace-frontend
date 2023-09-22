@@ -3,13 +3,7 @@ import { expect } from "@playwright/test";
 import { restoreDB } from "./commands/db/db_utils";
 import { ProjectPage } from "./pages/project";
 import { User } from "./types";
-import { mutateAsAdmin, retry } from "./commands/common";
-import {
-  AddEthPaymentReceiptDocument,
-  AddEthPaymentReceiptMutation,
-  AddEthPaymentReceiptMutationVariables,
-  EthereumIdentityType,
-} from "./__generated/graphql";
+import { retry } from "./commands/common";
 import { ProjectRewardsPage } from "./pages/project/rewards";
 import { EditPayoutInfoPage } from "./pages/edit_payout_info_page";
 import { populateReceipt } from "./commands/populate/populate_payments";
@@ -179,15 +173,11 @@ test.describe("As a project lead, I", () => {
     const githubIssueUrl = githubIssuePage.url();
 
     const rewardId = await reward.rewardId();
-    await populateReceipt(rewardId || "not found", project, {
-      currencyCode: "USDC",
-      recipientETHIdentity: {
-        type: EthereumIdentityType.EthereumName,
-        optEthAddress: null,
-        optEthName: "vitalik.eth",
-      },
-      transactionHashOrReference: "0xb9db5477fc9c50bfbf2253c55d03724ebee12db8dacda22cc1add1605a5a6cba",
+    await populateReceipt(rewardId || "not found", {
       amount: 100,
+      recipientWallet: "vitalik.eth",
+      currencyCode: "USD",
+      transactionReference: "0xb9db5477fc9c50bfbf2253c55d03724ebee12db8dacda22cc1add1605a5a6cba",
     });
 
     const githubApiIssueUrl = githubIssueUrl.replace("github.com", "api.github.com/repos");
@@ -304,20 +294,11 @@ test.describe("As a project lead, I", () => {
     expect(processingStatus).toBe("Processing");
 
     // 3. Add receipt, payment is "complete"
-    await mutateAsAdmin<AddEthPaymentReceiptMutation, AddEthPaymentReceiptMutationVariables>({
-      mutation: AddEthPaymentReceiptDocument,
-      variables: {
-        projectId: project.id,
-        paymentId: await rewardRow.rewardId(),
-        amount: "1000",
-        currencyCode: "USDC",
-        recipientIdentity: {
-          type: EthereumIdentityType.EthereumName,
-          optEthName: "vitalik.eth",
-          optEthAddress: null,
-        },
-        transactionHash: "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
-      },
+    await populateReceipt((await rewardRow.rewardId()) || "not found", {
+      amount: 1000,
+      currencyCode: "USD",
+      recipientWallet: "vitalik.eth",
+      transactionReference: "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
     });
 
     const completeStatus = await retry(

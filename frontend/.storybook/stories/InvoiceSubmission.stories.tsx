@@ -1,7 +1,7 @@
 import { range } from "lodash";
 import { Reward } from "src/components/UserRewardTable/Line";
 import { Currency, PaymentStatus } from "src/types";
-import { UserPayoutInfo, WorkItemType } from "src/__generated/graphql";
+import { PreferredMethod, UserPayoutInfo, UserPayoutSettingsFragment, WorkItemType } from "src/__generated/graphql";
 import InvoiceSubmission from "src/pages/Rewards/InvoiceSubmission/View";
 import withToasterProvider from "../decorators/withToasterProvider";
 
@@ -34,24 +34,21 @@ const [payment1, payment2, payment3]: Reward[] = range(1, 4).map(id => ({
   invoiceReceived: id % 2 === 0,
 }));
 
-const userInfos: UserPayoutInfo = {
+const userInfos: UserPayoutSettingsFragment = {
   userId: "user-1",
-  identity: {
-    Company: {
-      name: "My Company",
-      identificationNumber: "1234567890",
-      owner: { firstname: "James", lastname: "Bond" },
-    },
-  },
-  location: {
-    address: "007 Big Ben Street",
-    post_code: "007GB",
-    city: "London",
-    country: "GB",
-  },
-  payoutSettings: {
-    EthTransfer: { Name: "007.eth" },
-  },
+  companyName: "My Company",
+  companyIdentificationNumber: "1234567890",
+  firstname: "James",
+  lastname: "Bond",
+  address: "007 Big Ben Street",
+  postCode: "007GB",
+  city: "London",
+  country: "GB",
+  usdPreferredMethod: PreferredMethod.Crypto,
+  ethWallet: "007.eth",
+  bic: null,
+  iban: null,
+  isCompany: true,
   arePayoutSettingsValid: true,
 };
 

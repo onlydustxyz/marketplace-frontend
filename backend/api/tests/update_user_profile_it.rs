@@ -58,12 +58,12 @@ impl<'a> Test<'a> {
 				{ "name": "Rust", "weight": 1 },
 				{ "name": "Typescript", "weight": 0 }
 			],
-			"looking_for_a_job": true,
-			"contact_informations": [
+			"lookingForAJob": true,
+			"contactInformations": [
 				{ "channel": "DISCORD", "contact": "Antho#1234", "public": true },
 				{ "channel": "WHATSAPP", "contact": "+33612345678", "public": false }
 			],
-			"weekly_allocated_time": "LESS_THAN_ONE_DAY",
+			"weeklyAllocatedTime": "LESS_THAN_ONE_DAY",
 			"cover": "CYAN"
 		});
 
@@ -94,7 +94,7 @@ impl<'a> Test<'a> {
 		assert_eq!(user_profiles.len(), 1);
 
 		let user_profile = user_profiles.pop().unwrap();
-		assert_eq!(user_profile.id, user_id);
+		assert_eq!(user_profile.id, user_id.into());
 		assert_eq!(user_profile.bio.unwrap(), "My biography");
 		assert_eq!(user_profile.location.unwrap(), "France");
 		assert_eq!(user_profile.website.unwrap(), "https://onlydust.xyz");

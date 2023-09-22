@@ -1,21 +1,21 @@
 use std::collections::HashMap;
 
-use domain::Languages;
+use domain::{Languages, UserId};
 use http_api_problem::{HttpApiProblem, StatusCode};
 use presentation::http::guards::{ApiKey, Claims};
 use rocket::{serde::json::Json, State};
 use serde::{Deserialize, Serialize};
-use uuid::Uuid;
 
 use crate::{application, models::ContactInformation, presentation::http::dto};
 
 #[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Response {
-	pub user_id: Uuid,
+	pub user_id: UserId,
 }
 
 #[derive(Debug, Deserialize)]
-#[serde(crate = "rocket::serde")]
+#[serde(rename_all = "camelCase")]
 pub struct Request {
 	bio: Option<String>,
 	location: Option<String>,
@@ -44,7 +44,7 @@ pub async fn update_user_profile(
 
 	update_user_profile_info_usecase
 		.update_user_profile_info(
-			caller_id.into(),
+			caller_id,
 			request.bio.clone(),
 			request.location,
 			request.website,
@@ -55,7 +55,7 @@ pub async fn update_user_profile(
 				.contact_informations
 				.into_iter()
 				.map(|info| ContactInformation {
-					user_id: caller_id.into(),
+					user_id: caller_id,
 					channel: info.channel.into(),
 					contact: info.contact,
 					public: info.public,

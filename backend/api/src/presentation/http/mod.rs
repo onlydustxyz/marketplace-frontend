@@ -1,10 +1,10 @@
 use std::sync::Arc;
 
-use ::domain::{AggregateRootRepository, Project};
-use domain::{Event, Publisher};
+use ::domain::{AggregateRepository, Project};
+use domain::{Budget, Event, GithubFetchService, Payment, Publisher};
 pub use http::Config;
 use infrastructure::{
-	amqp::{self, CommandMessage},
+	amqp::{self, CommandMessage, UniqueMessage},
 	database::{ImmutableRepository, Repository},
 	github,
 };
@@ -13,25 +13,28 @@ use rocket::{Build, Rocket};
 
 use crate::{
 	application,
-	infrastructure::{simple_storage, web3::ens},
+	domain::{DustyBotService, ImageStoreService},
+	infrastructure::web3::ens,
 	models::*,
 	presentation::{graphql, http::github_client_pat_factory::GithubClientPatFactory},
 };
-
-mod usecases;
 
 pub mod dto;
 mod error;
 pub mod github_client_pat_factory;
 pub mod roles;
 pub mod routes;
+mod usecases;
 
 #[allow(clippy::too_many_arguments)]
 pub fn serve(
 	config: crate::Config,
 	schema: graphql::Schema,
 	command_bus: Arc<dyn Publisher<CommandMessage<Event>>>,
-	project_repository: AggregateRootRepository<Project>,
+	event_bus: Arc<dyn Publisher<UniqueMessage<Event>>>,
+	project_repository: AggregateRepository<Project>,
+	budget_repository: AggregateRepository<Budget>,
+	payment_repository: AggregateRepository<Payment>,
 	project_details_repository: Arc<dyn Repository<ProjectDetails>>,
 	sponsor_repository: Arc<dyn Repository<Sponsor>>,
 	project_sponsor_repository: Arc<dyn ImmutableRepository<ProjectsSponsor>>,
@@ -43,19 +46,16 @@ pub fn serve(
 	user_profile_info_repository: Arc<dyn UserProfileInfoRepository>,
 	contact_informations_repository: Arc<dyn ContactInformationsRepository>,
 	onboarding_repository: Arc<dyn Repository<Onboarding>>,
+	payout_info_repository: Arc<dyn PayoutInfoRepository>,
 	github_api_client: Arc<github::Client>,
+	github_fetch_service: Arc<dyn GithubFetchService>,
 	dusty_bot_api_client: Arc<github::Client>,
+	dusty_bot_service: Arc<dyn DustyBotService>,
 	ens: Arc<ens::Client>,
-	simple_storage: Arc<simple_storage::Client>,
+	simple_storage: Arc<dyn ImageStoreService>,
 	bus: Arc<amqp::Bus>,
 	github_client_pat_factory: Arc<GithubClientPatFactory>,
 ) -> Rocket<Build> {
-	let create_project_usecase = application::project::create::Usecase::new(
-		bus.clone(),
-		project_details_repository.clone(),
-		simple_storage.clone(),
-	);
-
 	let update_user_profile_info_usecase = application::user::update_profile_info::Usecase::new(
 		user_profile_info_repository.clone(),
 		contact_informations_repository.clone(),
@@ -69,14 +69,17 @@ pub fn serve(
 	);
 
 	let cancel_payment_usecase =
-		application::payment::cancel::Usecase::new(bus.clone(), project_repository.clone());
+		application::payment::cancel::Usecase::new(bus.clone(), payment_repository.clone());
 
 	rocket::custom(http::config::rocket("backend/api/Rocket.toml"))
 		.manage(config.http.clone())
 		.manage(config)
 		.manage(schema)
 		.manage(command_bus)
+		.manage(event_bus)
 		.manage(project_repository)
+		.manage(budget_repository)
+		.manage(payment_repository)
 		.manage(project_details_repository)
 		.manage(sponsor_repository)
 		.manage(project_sponsor_repository)
@@ -90,11 +93,13 @@ pub fn serve(
 		.manage(ens)
 		.manage(simple_storage)
 		.manage(bus)
-		.manage(create_project_usecase)
 		.manage(update_user_profile_info_usecase)
 		.manage(create_github_issue_usecase)
 		.manage(github_client_pat_factory)
 		.manage(cancel_payment_usecase)
+		.manage(payout_info_repository)
+		.manage(github_fetch_service)
+		.manage(dusty_bot_service)
 		.attach(http::guards::Cors)
 		.mount(
 			"/",
@@ -111,15 +116,20 @@ pub fn serve(
 			routes![
 				routes::users::profile_picture,
 				routes::users::update_user_profile,
+				routes::users::update_user_payout_info,
 				routes::users::search_users,
 				routes::projects::create_project,
 				routes::projects::contributions::ignore,
 				routes::projects::contributions::unignore,
+				routes::projects::budgets::allocate,
 				routes::issues::create_and_close_issue,
 				routes::issues::fetch_issue_by_repo_owner_name_issue_number,
 				routes::pull_requests::fetch_pull_request,
 				routes::payment::request_payment,
 				routes::payment::cancel_payment,
+				routes::payment::receipts::create,
+				routes::sponsors::create_sponsor,
+				routes::sponsors::update_sponsor
 			],
 		)
 }

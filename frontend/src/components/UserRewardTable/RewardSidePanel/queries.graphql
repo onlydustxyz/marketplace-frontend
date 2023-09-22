@@ -1,6 +1,6 @@
 fragment PaymentRequestDetails on PaymentRequests {
   id
-  amountInUsd
+  amount
   requestedAt
   payments(limit: 1) {
     processedAt
@@ -29,16 +29,13 @@ fragment PaymentRequestDetails on PaymentRequests {
 }
 
 query PaymentRequestDetails($id: uuid!) {
-  paymentRequestsByPk(id: $id) {
+  paymentRequests(where: { id: { _eq: $id } }) {
     ...PaymentRequestDetails
   }
 }
 
-mutation CancelPaymentRequest($projectId: Uuid!, $paymentId: Uuid!) {
-  cancelPaymentRequest(projectId: $projectId, paymentId: $paymentId) {
-    projectId
-    budgetId
-    paymentId
-    amount
+mutation CancelPaymentRequest($paymentId: Uuid!) {
+  cancelPaymentRequest(paymentId: $paymentId) {
+    commandId
   }
 }

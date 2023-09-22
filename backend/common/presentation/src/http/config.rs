@@ -1,11 +1,10 @@
-use derive_getters::Getters;
 use rocket::figment::{
 	providers::{Env, Format, Toml},
 	Figment,
 };
 use serde::Deserialize;
 
-#[derive(Debug, Clone, Deserialize, Getters)]
+#[derive(Debug, Clone, Deserialize, Default)]
 pub struct Config {
 	pub api_keys: Vec<String>,
 }

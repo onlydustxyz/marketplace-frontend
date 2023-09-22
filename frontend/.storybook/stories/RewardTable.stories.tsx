@@ -4,6 +4,7 @@ import {
   UserPayoutSettingsFragment,
   GithubUserFragment,
   GetUserPayoutSettingsQueryResult,
+  PreferredMethod,
 } from "src/__generated/graphql";
 
 import RewardTable from "src/components/RewardTable";
@@ -35,7 +36,7 @@ const githubRecipient2: GithubUserFragment = {
 
 const mockPayments: ExtendedPaymentRequestFragment[] = [
   {
-    amountInUsd: 200,
+    amount: 200,
     id: "c0cfdf80-bbba-4512-b5ec-066dfa9529b1",
     recipientId: githubRecipient1.id,
     githubRecipient: githubRecipient1,
@@ -44,7 +45,7 @@ const mockPayments: ExtendedPaymentRequestFragment[] = [
     paymentsAggregate: { aggregate: { sum: { amount: 200 } } },
   },
   {
-    amountInUsd: 100,
+    amount: 100,
     id: "6397226d-0461-4451-962c-a61e36fd324b",
     recipientId: githubRecipient1.id,
     githubRecipient: githubRecipient1,
@@ -53,7 +54,7 @@ const mockPayments: ExtendedPaymentRequestFragment[] = [
     paymentsAggregate: { aggregate: { sum: { amount: 0 } } },
   },
   {
-    amountInUsd: 100,
+    amount: 100,
     id: "6397226d-0461-4451-962c-a61e36fd3sju",
     recipientId: githubRecipient2.id,
     githubRecipient: githubRecipient2,
@@ -77,11 +78,21 @@ const mocks = [
             id: "user-1",
             userPayoutInfo: {
               __typename: "UserPayoutInfo",
-              payoutSettings: { EthTransfer: { Name: "vitalik.eth" } },
-              arePayoutSettingsValid: true,
+              address: "avenue de la gare",
+              city: "Paris",
+              postCode: "75000",
+              country: "France",
+              firstname: "James",
+              lastname: "Bond",
+              isCompany: false,
+              companyIdentificationNumber: null,
+              companyName: null,
+              bic: null,
+              ethWallet: "007.eth",
+              iban: null,
+              usdPreferredMethod: PreferredMethod.Crypto,
               userId: "user-1",
-              identity: null,
-              location: null,
+              arePayoutSettingsValid: true,
             } as UserPayoutSettingsFragment,
           },
         ],

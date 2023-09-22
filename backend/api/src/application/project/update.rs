@@ -100,7 +100,7 @@ mod tests {
 			fn list(&self) -> Result<Vec<ProjectDetails>>;
 			fn insert(&self, model: ProjectDetails) -> Result<ProjectDetails>;
 			fn try_insert(&self, model: ProjectDetails) -> Result<Option<ProjectDetails>>;
-			fn delete(&self, id: ProjectId) -> Result<ProjectDetails>;
+			fn delete(&self, id: ProjectId) -> Result<Option<ProjectDetails>>;
 			fn clear(&self) -> Result<()>;
 			fn insert_all(&self, models: Vec<ProjectDetails>) -> Result<()>;
 			fn try_insert_all(&self, models: Vec<ProjectDetails>) -> Result<()>;
@@ -108,6 +108,7 @@ mod tests {
 
 		impl Repository<ProjectDetails> for ProjectDetailsRepository {
 			fn update(&self, model: ProjectDetails) -> Result<ProjectDetails>;
+			fn update_all(&self, models: Vec<ProjectDetails>) -> Result<()>;
 			fn upsert(&self, model: ProjectDetails) -> Result<ProjectDetails>;
 		}
 	}

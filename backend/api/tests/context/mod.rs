@@ -1,17 +1,18 @@
 use std::env;
 
 use anyhow::Result;
-use api::{presentation::bootstrap::bootstrap, Config};
+use api::{application::quotes, presentation::bootstrap::bootstrap, Config};
 use presentation::http;
 use rocket::local::asynchronous::Client;
 use rstest::fixture;
 use testcontainers::clients::Cli;
-use testing::context::{amqp, database, github};
+use testing::context::{amqp, coinmarketcap, database, github};
 
 pub mod environment;
 pub mod indexer;
 pub mod simple_storage;
 pub mod utils;
+pub mod web3;
 
 pub const API_KEY: &str = "test-api-key";
 
@@ -29,6 +30,9 @@ pub struct Context<'a> {
 	pub dusty_bot_github: github::Context<'a>,
 	pub github: github::Context<'a>,
 	pub indexer: indexer::Context<'a>,
+	pub web3: web3::Context<'a>,
+	pub coinmarketcap: coinmarketcap::Context<'a>,
+	pub quotes_syncer: quotes::sync::Usecase,
 	_environment: environment::Context,
 }
 
@@ -55,11 +59,26 @@ impl<'a> Context<'a> {
 			),
 			"github-pat".to_string(),
 		)?;
+		let web3 = web3::Context::new(
+			docker,
+			format!(
+				"{}/tests/resources/wiremock/infura",
+				env::current_dir().unwrap().display(),
+			),
+		)?;
 
 		let indexer = indexer::Context::new(
 			docker,
 			format!(
 				"{}/tests/resources/wiremock/indexer",
+				env::current_dir().unwrap().display(),
+			),
+		)?;
+
+		let coinmarketcap = coinmarketcap::Context::new(
+			docker,
+			format!(
+				"{}/tests/resources/wiremock/coinmarketcap",
 				env::current_dir().unwrap().display(),
 			),
 		)?;
@@ -75,13 +94,12 @@ impl<'a> Context<'a> {
 				json: true,
 				location: true,
 			},
-			web3: infrastructure::web3::Config {
-				url: "https://test.com".parse().unwrap(),
-			},
+			web3: web3.config.clone(),
 			s3: simple_storage.config.clone(),
 			github_api_client: github.config.clone(),
 			dusty_bot_api_client: dusty_bot_github.config.clone(),
 			indexer_client: indexer.config.clone(),
+			coinmarketcap: coinmarketcap.config.clone(),
 		};
 
 		Ok(Self {
@@ -92,6 +110,9 @@ impl<'a> Context<'a> {
 			dusty_bot_github,
 			github,
 			indexer,
+			web3,
+			coinmarketcap,
+			quotes_syncer: quotes::sync::Usecase::bootstrap(config.clone())?,
 			_environment: environment::Context::new(),
 		})
 	}

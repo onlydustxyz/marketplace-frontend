@@ -24,7 +24,7 @@ export default function RewardLine({ reward, setSortingFields, onClick, selected
 
   const recipient = reward.githubRecipient;
   const paidAmount = reward.paymentsAggregate.aggregate?.sum?.amount;
-  const paymentStatus = paidAmount === reward.amountInUsd ? PaymentStatus.ACCEPTED : PaymentStatus.WAITING_PAYMENT;
+  const paymentStatus = paidAmount === reward.amount ? PaymentStatus.ACCEPTED : PaymentStatus.WAITING_PAYMENT;
 
   const { T } = useIntl();
 
@@ -33,7 +33,7 @@ export default function RewardLine({ reward, setSortingFields, onClick, selected
       setSortingFields({
         [Field.Date]: new Date(reward.requestedAt),
         [Field.RewardId]: recipient.login.toLocaleLowerCase() + reward.id,
-        [Field.Amount]: reward.amountInUsd,
+        [Field.Amount]: reward.amount,
         [Field.Status]: getPaymentStatusOrder({
           status: paymentStatus,
           pendingPayoutInfo: !payoutSettingsValid,
@@ -60,7 +60,7 @@ export default function RewardLine({ reward, setSortingFields, onClick, selected
             </div>
           </Cell>
           <Cell height={CellHeight.Medium}>
-            <span className="font-walsheim">{formatMoneyAmount({ amount: reward.amountInUsd })}</span>
+            <span className="font-walsheim">{formatMoneyAmount({ amount: reward.amount })}</span>
           </Cell>
           <Cell height={CellHeight.Medium}>
             <PayoutStatus

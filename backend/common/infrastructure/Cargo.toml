@@ -72,12 +72,15 @@ derive-getters = "0.2.0"
 derive_more = "0.99.17"
 derive-new = "0.5.9"
 regex = "1.7.0"
-url = "2.2.2"
+url = { version = "2.2.2", features = ["serde"] }
 lazy_static = "1.4.0"
 tokio-retry = "0.3"
+rust_decimal = "1.26.1"
 
 # Web3
 web3 = "0.18.0"
+# Waiting for https://github.com/Dzhegash/cmc/pull/1 to be merged
+cmc = { git = "https://github.com/onlydustxyz/cmc", features = ["async"] }
 
 # Local dependecies
 domain = { path = "../domain" }

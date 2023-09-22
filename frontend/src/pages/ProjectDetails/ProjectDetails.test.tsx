@@ -95,13 +95,9 @@ const getProjectMock = {
           __typename: "Projects",
           id: TEST_PROJECT_ID,
           key: TEST_PROJECT_ID,
-          budgetsAggregate: {
-            aggregate: {
-              sum: {
-                spentAmount: 1000,
-                initialAmount: 1000,
-              },
-            },
+          usdBudget: {
+            spentAmount: 1000,
+            initialAmount: 1000,
           },
           contributors: [],
           name: TEST_PROJECT_NAME,
@@ -144,7 +140,7 @@ const getProjectVisibilityMock = (projectId: string) => ({
           __typename: "Projects",
           id: projectId,
           key: projectId,
-          budgetsAggregate: { aggregate: { count: 1 } },
+          usdBudgetId: "budget-id",
           contributors: [],
           pendingContributors: [],
           rewardedUsers: [],
@@ -172,13 +168,9 @@ const getLedProjectMock = {
           __typename: "Projects",
           id: TEST_LED_PROJECT_ID,
           key: TEST_LED_PROJECT_ID,
-          budgetsAggregate: {
-            aggregate: {
-              sum: {
-                spentAmount: 1000,
-                initialAmount: 1000,
-              },
-            },
+          usdBudget: {
+            spentAmount: 1000,
+            initialAmount: 1000,
           },
           contributors: [],
           contributorsAggregate: { aggregate: { count: 0 } },

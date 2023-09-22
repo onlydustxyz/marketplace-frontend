@@ -1,17 +1,14 @@
-mod identity;
-pub use identity::IdentityInput;
+pub mod identity;
+pub use identity::Identity;
 
 mod payout_settings;
-pub use payout_settings::PayoutSettingsInput;
+pub use payout_settings::{BankAccount, PayoutSettings};
 
-mod ethereum;
-pub use ethereum::EthereumIdentityInput;
+mod amount;
+pub use amount::Allocation;
 
 mod non_empty_trimmed_string;
 pub use non_empty_trimmed_string::{NonEmptyTrimmedString, OptionalNonEmptyTrimmedString};
-
-mod payment_reference;
-pub use payment_reference::PaymentReference;
 
 mod language;
 pub use language::Language;

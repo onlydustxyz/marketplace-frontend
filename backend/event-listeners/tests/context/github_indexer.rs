@@ -33,7 +33,6 @@ impl<'a> Context<'a> {
 		)?;
 
 		let config = Config {
-			amqp: Default::default(),
 			http: http::Config {
 				api_keys: vec![API_KEY.to_string()],
 			},
@@ -44,6 +43,7 @@ impl<'a> Context<'a> {
 				location: true,
 			},
 			github: github.config.clone(),
+			..Default::default()
 		};
 
 		Ok(Self {

@@ -48,13 +48,18 @@ class AuthUserGithubProvider {
 }
 
 class Budgets {
-   id: uuid!
-   initialAmount: numeric!
-   paymentRequests: [PaymentRequests!]!
-   project: Projects
-   projectId: uuid
-   remainingAmount: numeric!
-   spentAmount: numeric!
+   currency: String
+   id: uuid
+   initialAmount: numeric
+   initialAmountUsd: numeric
+   remainingAmount: numeric
+   remainingAmountUsd: numeric
+   spentAmount: numeric
+   spentAmountUsd: numeric
+}
+
+class Command {
+   commandId: Uuid!
 }
 
 class Commands {
@@ -250,34 +255,30 @@ class Onboardings {
    userId: uuid!
 }
 
-class Payment {
-   amount: Amount!
-   budgetId: Uuid!
-   commandId: Uuid!
-   paymentId: Uuid!
-   projectId: Uuid!
-}
-
 class PaymentRequests {
-   amountInUsd: bigint!
-   budget: Budgets
-   budgetId: uuid!
+   amount: numeric
+   amountUsd: numeric
+   currency: currency
    githubRecipient: GithubUsers
-   hoursWorked: Int!
-   id: uuid!
+   hoursWorked: Int
+   id: uuid
    invoiceReceivedAt: timestamp
    payments: [Payments!]!
+   project: Projects
+   projectId: uuid
    recipient: RegisteredUsers
-   recipientId: bigint!
-   requestedAt: timestamp!
+   recipientId: bigint
+   requestedAt: timestamp
    requestor: RegisteredUsers
-   requestorId: uuid!
+   requestorId: uuid
    workItems: [WorkItems!]!
 }
 
 class PaymentStats {
+   currency: String
    githubUserId: bigint
    moneyGranted: numeric
+   moneyGrantedUsd: numeric
    projectId: uuid
 }
 
@@ -316,8 +317,11 @@ class ProjectLeads {
 
 class Projects {
    applications: [Applications!]!
-   budgets: [Budgets!]!
+   aptBudgetId: uuid
+   aptosBudget: Budgets
    contributors: [ProjectsContributors!]!
+   ethBudget: Budgets
+   ethBudgetId: uuid
    githubRepos: [ProjectGithubRepos!]!
    hiring: Boolean
    id: uuid
@@ -326,6 +330,9 @@ class Projects {
    longDescription: String
    moreInfoLink: String
    name: String
+   opBudgetId: uuid
+   optimismBudget: Budgets
+   payments: [PaymentRequests!]!
    pendingContributors: [ProjectsPendingContributors!]!
    pendingInvitations: [PendingProjectLeaderInvitations!]!
    projectLeads: [ProjectLeads!]!
@@ -333,6 +340,10 @@ class Projects {
    rewardedUsers: [ProjectsRewardedUsers!]!
    shortDescription: String
    sponsors: [ProjectsSponsors!]!
+   starkBudget: Budgets
+   starkBudgetId: uuid
+   usdBudget: Budgets
+   usdBudgetId: uuid
    visibility: project_visibility
 }
 
@@ -391,11 +402,24 @@ class Technologies {
 }
 
 class UserPayoutInfo {
-   arePayoutSettingsValid: Boolean!
-   identity: jsonb
-   location: jsonb
-   payoutSettings: jsonb
-   userId: uuid!
+   address: String
+   aptosWallet: String
+   arePayoutSettingsValid: Boolean
+   bic: String
+   city: String
+   companyIdentificationNumber: String
+   companyName: String
+   country: String
+   ethWallet: String
+   firstname: String
+   iban: String
+   isCompany: Boolean
+   lastname: String
+   optimismWallet: String
+   postCode: String
+   starknetWallet: String
+   usdPreferredMethod: String
+   userId: uuid
 }
 
 class UserProfiles {
@@ -539,8 +563,6 @@ class users {
 ApiClosedByPullRequests -- GithubPullRequests
 ApiClosingIssues -- GithubIssues
 ApiCompletedContributions --* WorkItems
-Budgets -- Projects
-Budgets --* PaymentRequests
 Contacts -- ContactInformations
 Contributions -- GithubIssues
 Contributions -- GithubPullRequestReviews
@@ -563,8 +585,8 @@ GithubRepos --* ProjectGithubRepos
 GithubUser -- RegisteredUsers
 GithubUsers -- RegisteredUsers
 GithubUsers --* PaymentRequests
-PaymentRequests -- Budgets
 PaymentRequests -- GithubUsers
+PaymentRequests -- Projects
 PaymentRequests -- RegisteredUsers
 PaymentRequests --* Payments
 PaymentRequests --* WorkItems
@@ -575,8 +597,9 @@ ProjectGithubRepos -- GithubRepos
 ProjectGithubRepos --* GithubIssues
 ProjectLeads -- Projects
 ProjectLeads -- RegisteredUsers
+Projects -- Budgets
 Projects --* Applications
-Projects --* Budgets
+Projects --* PaymentRequests
 Projects --* PendingProjectLeaderInvitations
 Projects --* ProjectGithubRepos
 Projects --* ProjectLeads

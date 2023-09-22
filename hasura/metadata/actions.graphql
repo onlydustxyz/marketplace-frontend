@@ -1,8 +1,7 @@
 type Mutation {
   cancelPaymentRequest(
-    projectId: Uuid!
     paymentId: Uuid!
-  ): Payment!
+  ): Command!
 }
 
 type Mutation {
@@ -12,20 +11,6 @@ type Mutation {
     projectId: Uuid!
     title: String!
   ): GithubIssue!
-}
-
-type Mutation {
-  createProject(
-    name: String!
-    shortDescription: String!
-    longDescription: String!
-    telegramLink: Url
-    logoUrl: Url
-    initialBudget: Int
-    hiring: Boolean
-    rank: Int
-    visibility: Visibility
-  ): Uuid!
 }
 
 type Query {
@@ -55,19 +40,20 @@ type Mutation {
   requestPayment(
     projectId: Uuid!
     recipientId: Int!
-    amountInUsd: Int!
+    amount: String!
+    currency: String!
     hoursWorked: Int!
     reason: Reason!
-  ): Payment!
+  ): PaymentRequestResponse!
 }
 
 type Query {
   searchUsers(
     query: String!
-    sort: String
-    order: String
-    perPage: Int
-    page: Int
+    sort: String!
+    order: String!
+    perPage: Int!
+    page: Int!
   ): [GithubUser!]
 }
 
@@ -82,6 +68,14 @@ type Mutation {
     projectId: Uuid!
     contributionId: String!
   ): Boolean!
+}
+
+type Mutation {
+  updatePayoutInfo(
+    location: Location
+    identity: Identity
+    payoutSettings: PayoutSettings
+  ): Uuid!
 }
 
 type Mutation {
@@ -149,6 +143,22 @@ enum WorkItemType {
   CODE_REVIEW
 }
 
+enum IdentityType {
+  COMPANY
+  PERSON
+}
+
+enum PayoutSettingsType {
+  BANK_ADDRESS
+  ETHEREUM_ADDRESS
+  ETHEREUM_NAME
+}
+
+enum PreferredMethod {
+  FIAT
+  CRYPTO
+}
+
 input Language {
   name: String!
   weight: Int!
@@ -169,6 +179,49 @@ input WorkItem {
 
 input Reason {
   workItems: [WorkItem!]!
+}
+
+input BankAddress {
+  BIC: String!
+  IBAN: Iban!
+}
+
+input CompanyIdentity {
+  identificationNumber: String
+  name: String
+  owner: PersonIdentity
+}
+
+input Location {
+  address: String
+  city: String
+  country: String
+  postCode: String
+}
+
+input PersonIdentity {
+  firstname: String
+  lastname: String
+}
+
+input Identity {
+  company: CompanyIdentity
+  person: PersonIdentity
+}
+
+input PayoutSettings {
+  usdPreferredMethod: PreferredMethod!
+  bankAccount: BankAccount
+  ethAddress: String
+  ethName: String
+  optimismAddress: String
+  aptosAddress: String
+  starknetAddress: String
+}
+
+input BankAccount {
+  BIC: String!
+  IBAN: String!
 }
 
 type GithubIssueCreatedAndClosed {
@@ -235,6 +288,15 @@ type Payment {
   projectId: Uuid!
 }
 
+type Command {
+  commandId: Uuid!
+}
+
+type PaymentRequestResponse {
+  paymentId: Uuid!
+  commandId: Uuid!
+}
+
 scalar Url
 
 scalar Uuid
@@ -244,4 +306,10 @@ scalar DateTime
 scalar DateTimeUtc
 
 scalar Amount
+
+scalar EthereumAddress
+
+scalar EthereumName
+
+scalar Iban
 

@@ -6,8 +6,15 @@ pub use value_objects::*;
 mod event;
 pub use event::Event;
 
+pub mod services;
+
 mod aggregate;
-pub use aggregate::{Aggregate, Event as AggregateEvent, EventSourcable};
+#[cfg(test)]
+pub use aggregate::MockRepository as MockAggregateRepository;
+pub use aggregate::{
+	Aggregate, EventSourcable, Identified, Repository as AggregateRepository,
+	RepositoryError as AggregateRepositoryError,
+};
 
 mod error;
 pub use error::*;
@@ -37,7 +44,7 @@ pub use application::{Application, Event as ApplicationEvent, Id as ApplicationI
 mod user;
 pub use user::Id as UserId;
 
-mod budget;
+pub mod budget;
 pub use budget::{Budget, Error as BudgetError, Event as BudgetEvent, Id as BudgetId};
 
 mod github;
@@ -67,13 +74,6 @@ pub use command::{
 	Entity as Command, Id as CommandId,
 };
 
-pub mod aggregate_root;
-#[cfg(test)]
-pub use aggregate_root::MockRepository as MockAggregateRootRepository;
-pub use aggregate_root::{
-	AggregateRoot, Error as AggregateRootRepositoryError, Repository as AggregateRootRepository,
-};
-
 pub mod event_store;
 pub use event_store::{Error as EventStoreError, Store as EventStore};
 
@@ -81,3 +81,5 @@ pub mod specifications;
 pub use specifications::Error as SpecificationError;
 
 pub mod stream_filter;
+
+pub mod sponsor;

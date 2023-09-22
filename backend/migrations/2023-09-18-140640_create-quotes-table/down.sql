@@ -1,0 +1,1 @@
+DROP TABLE crypto_usd_quotes;

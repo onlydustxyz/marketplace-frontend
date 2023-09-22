@@ -48,7 +48,7 @@ jobs:
         run: yarn backend:fmt
 
       - name: Check codecov.yml file format
-        run: curl --data-binary @- https://codecov.io/validate < backend/codecov.yml
+        run: curl --data-binary @- https://codecov.io/validate < codecov.yml
 
   check:
     name: Check
@@ -124,7 +124,7 @@ jobs:
 
   api_integration_tests:
     name: Integration tests
-    runs-on: ubuntu-latest-4-cores
+    runs-on: ubuntu-latest-8-cores
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3

@@ -96,7 +96,7 @@ describe("useSignupRedirection", () => {
           {
             paymentRequests: [
               {
-                amountInUsd: 100,
+                amount: 100,
                 paymentsAggregate: { aggregate: { sum: { amount: null } } },
               },
             ],
@@ -111,8 +111,6 @@ describe("useSignupRedirection", () => {
           {
             userPayoutInfo: {
               __typename: "UserPayoutInfo",
-              payoutSettings: null,
-              arePayoutSettingsValid: false,
             } as UserPayoutSettingsFragment,
           },
         ],
@@ -135,7 +133,7 @@ describe("useSignupRedirection", () => {
           {
             paymentRequests: [
               {
-                amountInUsd: 100,
+                amount: 100,
                 paymentsAggregate: { aggregate: { sum: { amount: null } } },
               },
             ],
@@ -150,8 +148,6 @@ describe("useSignupRedirection", () => {
           {
             userPayoutInfo: {
               __typename: "UserPayoutInfo",
-              payoutSettings: null,
-              arePayoutSettingsValid: true,
             } as UserPayoutSettingsFragment,
           },
         ],
@@ -174,7 +170,7 @@ describe("useSignupRedirection", () => {
           {
             paymentRequests: [
               {
-                amountInUsd: 100,
+                amount: 100,
                 paymentsAggregate: { aggregate: { sum: { amount: 100 } } },
               },
             ],
@@ -189,8 +185,6 @@ describe("useSignupRedirection", () => {
           {
             userPayoutInfo: {
               __typename: "UserPayoutInfo",
-              payoutSettings: null,
-              arePayoutSettingsValid: false,
             } as UserPayoutSettingsFragment,
           },
         ],
@@ -213,7 +207,7 @@ describe("useSignupRedirection", () => {
           {
             paymentRequests: [
               {
-                amountInUsd: 100,
+                amount: 100,
                 paymentsAggregate: { aggregate: { sum: { amount: null } } },
               },
             ],
@@ -228,8 +222,6 @@ describe("useSignupRedirection", () => {
           {
             userPayoutInfo: {
               __typename: "UserPayoutInfo",
-              payoutSettings: null,
-              arePayoutSettingsValid: false,
             } as UserPayoutSettingsFragment,
           },
         ],

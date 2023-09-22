@@ -1,14 +1,14 @@
-use std::collections::{HashMap, HashSet};
-
-use chrono::{Duration, Utc};
-use derive_getters::{Dissolve, Getters};
-use derive_more::Constructor;
+use chrono::Utc;
 use thiserror::Error;
 
-use crate::{payment::Reason, *};
+use crate::*;
 
-#[derive(Debug, Error)]
+pub type Project = Aggregate<super::state::State>;
+
+#[derive(Debug, Error, PartialEq, Eq)]
 pub enum Error {
+	#[error("Budget already exists for the given currency")]
+	BudgetAlreadyExists,
 	#[error("Project lead already assigned to this project")]
 	LeaderAlreadyAssigned,
 	#[error("User is not a project leader")]
@@ -16,258 +16,96 @@ pub enum Error {
 	#[error("Github repository already linked to this project")]
 	GithubRepoAlreadyLinked,
 	#[error("Github repository is not linked to this project")]
-	NotLinked,
-	#[error("Budget must be created first")]
-	NoBudget,
-	#[error(transparent)]
-	Infrastructure(anyhow::Error),
-	#[error(transparent)]
-	Budget(#[from] BudgetError),
+	GithubRepoNotLinked,
 	#[error("User already applied to this project")]
 	UserAlreadyApplied,
 }
 
 type Result<T> = std::result::Result<T, Error>;
 
-#[derive(Default, Debug, Clone, PartialEq, Eq, Getters, Dissolve, Constructor)]
-pub struct Project {
-	id: ProjectId,
-	leaders: HashSet<UserId>,
-	budget: Option<Budget>,
-	github_repos: HashSet<GithubRepoId>,
-	applications: HashMap<ApplicationId, Application>,
-}
-
-impl Aggregate for Project {
-	type Event = ProjectEvent;
-	type Id = ProjectId;
-}
-
-impl AggregateRoot for Project {}
-
-impl From<ProjectEvent> for Event {
-	fn from(event: ProjectEvent) -> Self {
-		Event::Project(event)
-	}
-}
-
-impl EventSourcable for Project {
-	fn apply_event(mut self, event: &Self::Event) -> Self {
-		match event {
-			ProjectEvent::Created { id } => Project {
-				id: *id,
-				..Default::default()
-			},
-			ProjectEvent::LeaderAssigned { leader_id, .. } => {
-				self.leaders.insert(*leader_id);
-				self
-			},
-			ProjectEvent::LeaderUnassigned { leader_id, .. } => {
-				self.leaders.remove(leader_id);
-				self
-			},
-			ProjectEvent::Budget { event, .. } => Self {
-				budget: Some(self.budget.unwrap_or_default().apply_event(event)),
-				..self
-			},
-			ProjectEvent::GithubRepoLinked { github_repo_id, .. } => {
-				self.github_repos.insert(*github_repo_id);
-				self
-			},
-			ProjectEvent::GithubRepoUnlinked { github_repo_id, .. } => {
-				self.github_repos.remove(github_repo_id);
-				self
-			},
-			ProjectEvent::Application { event, .. } => {
-				self.applications.insert(
-					*event.aggregate_id(),
-					Application::from_events(&[event.clone()]),
-				);
-				self
-			},
-		}
-	}
-}
-
 impl Project {
-	pub fn create(id: ProjectId) -> Vec<<Self as Aggregate>::Event> {
-		vec![ProjectEvent::Created { id }]
+	pub fn create(id: ProjectId) -> Self {
+		Self::default().with_pending_events(vec![ProjectEvent::Created { id }])
 	}
 
-	pub fn allocate_budget(&self, diff: &Amount) -> Result<Vec<<Self as Aggregate>::Event>> {
-		let events = match self.budget.as_ref() {
-			Some(budget) => budget.allocate(*diff.amount())?,
-			None => {
-				let events = Budget::create(BudgetId::new(), diff.currency().clone());
-				let budget = Budget::from_events(&events);
-				events.into_iter().chain(budget.allocate(*diff.amount())?).collect()
-			},
+	pub fn link_budget(self, budget_id: BudgetId, currency: &'static Currency) -> Result<Self> {
+		if self.budgets_by_currency.contains_key(currency.code) {
+			return Err(Error::BudgetAlreadyExists);
+		}
+
+		let event = ProjectEvent::BudgetLinked {
+			id: self.id,
+			budget_id,
+			currency,
 		};
 
-		Ok(events
-			.into_iter()
-			.map(|event| ProjectEvent::Budget { id: self.id, event })
-			.collect())
+		Ok(self.with_pending_events(vec![event]))
 	}
 
-	pub fn assign_leader(&self, leader_id: UserId) -> Result<Vec<<Self as Aggregate>::Event>> {
+	pub fn assign_leader(self, leader_id: UserId) -> Result<Self> {
 		if self.leaders.contains(&leader_id) {
 			return Err(Error::LeaderAlreadyAssigned);
 		}
 
-		Ok(vec![ProjectEvent::LeaderAssigned {
+		let event = ProjectEvent::LeaderAssigned {
 			id: self.id,
 			leader_id,
 			assigned_at: Utc::now().naive_utc(),
-		}])
+		};
+
+		Ok(self.with_pending_events(vec![event]))
 	}
 
-	pub fn unassign_leader(&self, leader_id: UserId) -> Result<Vec<<Self as Aggregate>::Event>> {
+	pub fn unassign_leader(self, leader_id: UserId) -> Result<Self> {
 		if !self.leaders.contains(&leader_id) {
 			return Err(Error::NotLeader);
 		}
 
-		Ok(vec![ProjectEvent::LeaderUnassigned {
+		let event = ProjectEvent::LeaderUnassigned {
 			id: self.id,
 			leader_id,
-		}])
+		};
+
+		Ok(self.with_pending_events(vec![event]))
 	}
 
-	pub fn link_github_repo(
-		&self,
-		github_repo_id: GithubRepoId,
-	) -> Result<Vec<<Self as Aggregate>::Event>> {
+	pub fn link_github_repo(self, github_repo_id: GithubRepoId) -> Result<Self> {
 		if self.github_repos.contains(&github_repo_id) {
 			return Err(Error::GithubRepoAlreadyLinked);
 		}
 
-		Ok(vec![ProjectEvent::GithubRepoLinked {
+		let event = ProjectEvent::GithubRepoLinked {
 			id: self.id,
 			github_repo_id,
-		}])
+		};
+
+		Ok(self.with_pending_events(vec![event]))
 	}
 
-	pub fn unlink_github_repo(
-		&self,
-		github_repo_id: GithubRepoId,
-	) -> Result<Vec<<Self as Aggregate>::Event>> {
+	pub fn unlink_github_repo(self, github_repo_id: GithubRepoId) -> Result<Self> {
 		if !self.github_repos.contains(&github_repo_id) {
-			return Err(Error::NotLinked);
+			return Err(Error::GithubRepoNotLinked);
 		}
 
-		Ok(vec![ProjectEvent::GithubRepoUnlinked {
+		let event = ProjectEvent::GithubRepoUnlinked {
 			id: self.id,
 			github_repo_id,
-		}])
+		};
+
+		Ok(self.with_pending_events(vec![event]))
 	}
 
-	pub async fn request_payment(
-		&self,
-		payment_id: PaymentId,
-		requestor_id: UserId,
-		recipient_id: GithubUserId,
-		amount: Amount,
-		duration_worked: Duration,
-		reason: Reason,
-	) -> Result<Vec<<Self as Aggregate>::Event>> {
-		Ok(self
-			.budget
-			.as_ref()
-			.ok_or(Error::NoBudget)?
-			.request_payment(
-				payment_id,
-				requestor_id,
-				recipient_id,
-				amount,
-				duration_worked,
-				reason,
-			)?
-			.into_iter()
-			.map(|event| ProjectEvent::Budget { id: self.id, event })
-			.collect())
-	}
-
-	pub async fn cancel_payment_request(
-		&self,
-		payment_id: &PaymentId,
-	) -> Result<Vec<<Self as Aggregate>::Event>> {
-		Ok(self
-			.budget
-			.as_ref()
-			.ok_or(Error::NoBudget)?
-			.cancel_payment_request(payment_id)?
-			.into_iter()
-			.map(|event| ProjectEvent::Budget { id: self.id, event })
-			.collect())
-	}
-
-	pub async fn add_payment_receipt(
-		&self,
-		payment_id: &PaymentId,
-		receipt_id: PaymentReceiptId,
-		amount: Amount,
-		receipt: PaymentReceipt,
-	) -> Result<Vec<<Self as Aggregate>::Event>> {
-		Ok(self
-			.budget
-			.as_ref()
-			.ok_or(Error::NoBudget)?
-			.add_payment_receipt(payment_id, receipt_id, amount, receipt)
-			.await?
-			.into_iter()
-			.map(|event| ProjectEvent::Budget { id: self.id, event })
-			.collect())
-	}
-
-	pub async fn mark_invoice_as_received(
-		&self,
-		payment_id: &PaymentId,
-	) -> Result<Vec<<Self as Aggregate>::Event>> {
-		Ok(self
-			.budget
-			.as_ref()
-			.ok_or(Error::NoBudget)?
-			.mark_invoice_as_received(payment_id)?
-			.into_iter()
-			.map(|event| ProjectEvent::Budget { id: self.id, event })
-			.collect())
-	}
-
-	pub async fn reject_invoice(
-		&self,
-		payment_id: &PaymentId,
-	) -> Result<Vec<<Self as Aggregate>::Event>> {
-		Ok(self
-			.budget
-			.as_ref()
-			.ok_or(Error::NoBudget)?
-			.reject_invoice(payment_id)?
-			.into_iter()
-			.map(|event| ProjectEvent::Budget { id: self.id, event })
-			.collect())
-	}
-
-	pub fn apply(
-		&self,
-		applicant_id: UserId,
-		application_id: ApplicationId,
-	) -> Result<Vec<<Self as Aggregate>::Event>> {
-		if self
-			.applications()
-			.iter()
-			.any(|(_, application)| application.applicant_id() == &applicant_id)
-		{
+	pub fn apply(self, applicant_id: UserId) -> Result<Self> {
+		if self.applicants.contains(&applicant_id) {
 			return Err(Error::UserAlreadyApplied);
 		}
 
-		Ok(vec![ProjectEvent::Application {
+		let event = ProjectEvent::Applied {
 			id: self.id,
-			event: ApplicationEvent::Received {
-				id: application_id,
-				applicant_id,
-				received_at: Utc::now().naive_utc(),
-			},
-		}])
+			applicant_id,
+		};
+
+		Ok(self.with_pending_events(vec![event]))
 	}
 }
 
@@ -277,7 +115,6 @@ mod tests {
 
 	use assert_matches::assert_matches;
 	use rstest::{fixture, rstest};
-	use rust_decimal_macros::dec;
 	use uuid::Uuid;
 
 	use super::*;
@@ -299,8 +136,8 @@ mod tests {
 	}
 
 	#[fixture]
-	fn initial_budget() -> Amount {
-		Amount::new(dec!(1000), Currency::Crypto("USDC".to_string()))
+	fn marketplace_id() -> GithubRepoId {
+		498695724_u64.into()
 	}
 
 	#[fixture]
@@ -309,108 +146,241 @@ mod tests {
 	}
 
 	#[fixture]
-	fn budget_created(
+	fn currency() -> &'static Currency {
+		currencies::USD
+	}
+
+	#[fixture]
+	fn budget_linked(
 		project_id: ProjectId,
 		budget_id: BudgetId,
-		initial_budget: Amount,
+		currency: &'static Currency,
 	) -> ProjectEvent {
-		ProjectEvent::Budget {
+		ProjectEvent::BudgetLinked {
 			id: project_id,
-			event: BudgetEvent::Created {
-				id: budget_id,
-				currency: initial_budget.currency().clone(),
-			},
+			budget_id,
+			currency,
 		}
 	}
 
 	#[fixture]
-	fn budget_allocated(
-		project_id: ProjectId,
-		budget_id: BudgetId,
-		initial_budget: Amount,
-	) -> ProjectEvent {
-		ProjectEvent::Budget {
+	fn leader_assigned(project_id: ProjectId, user_id: UserId) -> ProjectEvent {
+		ProjectEvent::LeaderAssigned {
 			id: project_id,
-			event: BudgetEvent::Allocated {
-				id: budget_id,
-				amount: *initial_budget.amount(),
-			},
+			leader_id: user_id,
+			assigned_at: Utc::now().naive_utc(),
+		}
+	}
+
+	#[fixture]
+	fn leader_unassigned(project_id: ProjectId, user_id: UserId) -> ProjectEvent {
+		ProjectEvent::LeaderUnassigned {
+			id: project_id,
+			leader_id: user_id,
+		}
+	}
+
+	#[fixture]
+	fn marketplace_linked(project_id: ProjectId, marketplace_id: GithubRepoId) -> ProjectEvent {
+		ProjectEvent::GithubRepoLinked {
+			id: project_id,
+			github_repo_id: marketplace_id,
+		}
+	}
+
+	#[fixture]
+	fn marketplace_unlinked(project_id: ProjectId, marketplace_id: GithubRepoId) -> ProjectEvent {
+		ProjectEvent::GithubRepoUnlinked {
+			id: project_id,
+			github_repo_id: marketplace_id,
+		}
+	}
+
+	#[fixture]
+	fn user_applied(project_id: ProjectId, user_id: UserId) -> ProjectEvent {
+		ProjectEvent::Applied {
+			id: project_id,
+			applicant_id: user_id,
 		}
 	}
 
 	#[rstest]
-	async fn test_create(project_id: ProjectId) {
-		let events = Project::create(project_id);
-
-		assert_eq!(events.len(), 1);
-		assert_eq!(events[0], ProjectEvent::Created { id: project_id });
+	fn create_project(project_id: ProjectId, project_created: ProjectEvent) {
+		assert_eq!(
+			Project::create(project_id).collect::<Vec<_>>(),
+			[project_created]
+		);
 	}
 
 	#[rstest]
-	fn test_assign_leader(project_created: ProjectEvent, user_id: UserId, project_id: ProjectId) {
+	fn link_budget(
+		project_created: ProjectEvent,
+		budget_linked: ProjectEvent,
+		budget_id: BudgetId,
+		currency: &'static Currency,
+	) {
+		let project = Project::from_events(&[project_created]);
+		assert_eq!(
+			project.link_budget(budget_id, currency).unwrap().collect::<Vec<_>>(),
+			[budget_linked]
+		);
+	}
+
+	#[rstest]
+	fn link_multiple_budgets(project_created: ProjectEvent, budget_linked: ProjectEvent) {
+		let project = Project::from_events(&[project_created, budget_linked]);
+		assert!(project.link_budget(BudgetId::new(), currencies::ETH).is_ok());
+	}
+
+	#[rstest]
+	fn cannot_link_2_budgets_on_same_currency(
+		project_created: ProjectEvent,
+		budget_linked: ProjectEvent,
+		currency: &'static Currency,
+	) {
+		let project = Project::from_events(&[project_created, budget_linked]);
+		assert_eq!(
+			project.link_budget(BudgetId::new(), currency),
+			Err(Error::BudgetAlreadyExists)
+		);
+	}
+
+	#[rstest]
+	fn assign_leader_to_project(
+		project_created: ProjectEvent,
+		user_id: UserId,
+		project_id: ProjectId,
+	) {
 		let project = Project::from_events(&[project_created]);
 
-		let events = project.assign_leader(user_id.to_owned()).unwrap();
+		let before = Utc::now().naive_utc();
+		let events = project.assign_leader(user_id.to_owned()).unwrap().collect::<Vec<_>>();
+		let after = Utc::now().naive_utc();
 
 		assert_eq!(events.len(), 1);
+
 		assert_matches!(
 			events[0],
 			ProjectEvent::LeaderAssigned {
 				id,
 				leader_id,
-				..
+				assigned_at
 			} => {
 				assert_eq!(id, project_id);
 				assert_eq!(leader_id, user_id);
+				assert!(before <= assigned_at);
+				assert!(after >= assigned_at);
 			}
 		);
 	}
 
 	#[rstest]
-	fn test_assign_twice_the_same_leader(project_created: ProjectEvent, user_id: UserId) {
-		let project = Project::from_events(&[project_created]);
-		let events = project.assign_leader(user_id.to_owned()).unwrap();
-		let project = project.apply_events(&events);
+	fn unassign_leader_from_project(
+		project_created: ProjectEvent,
+		leader_assigned: ProjectEvent,
+		leader_unassigned: ProjectEvent,
+		user_id: UserId,
+	) {
+		let project = Project::from_events(&[project_created, leader_assigned]);
 
-		let result = project.assign_leader(user_id.to_owned());
-
-		assert!(result.is_err());
-		assert_matches!(result.unwrap_err(), Error::LeaderAlreadyAssigned);
-	}
-
-	#[rstest]
-	fn allocate_budget(project_created: ProjectEvent, initial_budget: Amount) {
-		let project = Project::from_events(&[project_created]);
-		let events = project
-			.allocate_budget(&initial_budget)
-			.expect("Failed while allocating budget");
-
-		assert_eq!(events.len(), 2);
-		assert_matches!(
-			events[0],
-			ProjectEvent::Budget {
-				id: _,
-				event: BudgetEvent::Created { .. }
-			}
-		);
-		assert_matches!(
-			events[1],
-			ProjectEvent::Budget {
-				id: _,
-				event: BudgetEvent::Allocated { .. }
-			}
+		assert_eq!(
+			project.unassign_leader(user_id.to_owned()).unwrap().collect::<Vec<_>>(),
+			[leader_unassigned]
 		);
 	}
 
 	#[rstest]
-	fn user_cannot_apply_twice(project_created: ProjectEvent, user_id: UserId) {
+	fn cannot_assign_twice_the_same_leader(
+		project_created: ProjectEvent,
+		leader_assigned: ProjectEvent,
+		user_id: UserId,
+	) {
+		let project = Project::from_events(&[project_created, leader_assigned]);
+
+		assert_eq!(
+			project.assign_leader(user_id.to_owned()),
+			Err(Error::LeaderAlreadyAssigned)
+		);
+	}
+
+	#[rstest]
+	fn cannot_unassign_non_leader(project_created: ProjectEvent, user_id: UserId) {
 		let project = Project::from_events(&[project_created]);
-		let events = project.apply(user_id, Uuid::new_v4().into()).unwrap();
-		let project = project.apply_events(&events);
+		assert_eq!(
+			project.unassign_leader(user_id.to_owned()),
+			Err(Error::NotLeader)
+		);
+	}
 
-		let result = project.apply(user_id, Uuid::new_v4().into());
+	#[rstest]
+	fn user_apply_to_project(
+		project_created: ProjectEvent,
+		user_applied: ProjectEvent,
+		user_id: UserId,
+	) {
+		let project = Project::from_events(&[project_created]);
+		assert_eq!(
+			project.apply(user_id).unwrap().collect::<Vec<_>>(),
+			[user_applied]
+		);
+	}
 
-		assert!(result.is_err());
-		assert_matches!(result.unwrap_err(), Error::UserAlreadyApplied);
+	#[rstest]
+	fn user_cannot_apply_twice(
+		project_created: ProjectEvent,
+		user_applied: ProjectEvent,
+		user_id: UserId,
+	) {
+		let project = Project::from_events(&[project_created, user_applied]);
+		assert_eq!(project.apply(user_id), Err(Error::UserAlreadyApplied));
+	}
+
+	#[rstest]
+	fn link_github_repo(
+		project_created: ProjectEvent,
+		marketplace_linked: ProjectEvent,
+		marketplace_id: GithubRepoId,
+	) {
+		let project = Project::from_events(&[project_created]);
+		assert_eq!(
+			project.link_github_repo(marketplace_id).unwrap().collect::<Vec<_>>(),
+			[marketplace_linked]
+		);
+	}
+
+	#[rstest]
+	fn unlink_github_repo(
+		project_created: ProjectEvent,
+		marketplace_linked: ProjectEvent,
+		marketplace_unlinked: ProjectEvent,
+		marketplace_id: GithubRepoId,
+	) {
+		let project = Project::from_events(&[project_created, marketplace_linked]);
+		assert_eq!(
+			project.unlink_github_repo(marketplace_id).unwrap().collect::<Vec<_>>(),
+			[marketplace_unlinked]
+		);
+	}
+
+	#[rstest]
+	fn cannot_link_twice_same_repo(
+		project_created: ProjectEvent,
+		marketplace_linked: ProjectEvent,
+		marketplace_id: GithubRepoId,
+	) {
+		let project = Project::from_events(&[project_created, marketplace_linked]);
+		assert_eq!(
+			project.link_github_repo(marketplace_id),
+			Err(Error::GithubRepoAlreadyLinked)
+		);
+	}
+
+	#[rstest]
+	fn cannot_unlink_unexisting_repo(project_created: ProjectEvent, marketplace_id: GithubRepoId) {
+		let project = Project::from_events(&[project_created]);
+		assert_eq!(
+			project.unlink_github_repo(marketplace_id),
+			Err(Error::GithubRepoNotLinked)
+		);
 	}
 }

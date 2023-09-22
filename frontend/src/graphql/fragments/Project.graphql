@@ -34,11 +34,7 @@ fragment ProjectVisibilityDetails on Projects {
   projectLeads(orderBy: { user: { githubUserId: ASC } }) {
     userId
   }
-  budgetsAggregate {
-    aggregate {
-      count
-    }
-  }
+  usdBudgetId
   pendingInvitations {
     id
     githubUserId
