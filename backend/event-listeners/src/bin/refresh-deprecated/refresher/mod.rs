@@ -4,8 +4,6 @@ use anyhow::{anyhow, Result};
 use async_trait::async_trait;
 use derive_more::Constructor;
 use domain::{Event, EventListener, EventSourcable, EventStore, Identified};
-use event_listeners::listeners::*;
-use infrastructure::{database, event_store::Named};
 use itertools::Itertools;
 use olog::info;
 pub use registry::{Registrable, Registry};
@@ -60,29 +58,4 @@ where
 		}
 		Ok(())
 	}
-}
-
-pub fn create<A: EventSourcable + Named>(database: Arc<database::Client>) -> impl Refreshable
-where
-	Event: From<A::Event>,
-	A::Id: FromStr,
-{
-	let projector = projections::Projector::new(
-		database.clone(),
-		database.clone(),
-		database.clone(),
-		database.clone(),
-		database.clone(),
-		database.clone(),
-		database.clone(),
-		database.clone(),
-		database.clone(),
-		database.clone(),
-		database.clone(),
-		database.clone(),
-		database.clone(),
-		database.clone(),
-	);
-
-	Refresher::<A>::new(database, Arc::new(projector))
 }

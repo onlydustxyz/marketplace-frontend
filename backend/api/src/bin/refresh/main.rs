@@ -2,10 +2,10 @@ use std::sync::Arc;
 
 use ::infrastructure::config;
 use anyhow::{anyhow, Result};
+use api::Config;
 use clap::Parser;
 use domain::{Application, Budget, Payment, Project};
 use dotenv::dotenv;
-use event_listeners::Config;
 use futures::future::try_join_all;
 use infrastructure::{database, tracing::Tracer};
 
@@ -28,7 +28,11 @@ async fn main() -> Result<()> {
 	refresher::create::<Project>(database.clone()).register(&mut registry, "Project")?;
 	refresher::create::<Payment>(database.clone()).register(&mut registry, "Payment")?;
 
-	let (aggregate_name, aggregate_ids, all_ids) = cli::Args::parse().dissolve();
+	let cli::Args {
+		name: aggregate_name,
+		id: aggregate_ids,
+		all: all_ids,
+	} = cli::Args::parse();
 
 	let refresher = registry.get(&aggregate_name).ok_or_else(|| anyhow!("Aggregate not found"))?;
 

@@ -1,4 +1,4 @@
 event-listeners: ./backend/target/release/listeners
-refresh: RUST_LOG=info ./backend/target/release/refresh
+refresh: RUST_LOG=info ./backend/target/release/refresh_deprecated
 github-indexer: ./backend/target/release/github-indexer
 web: ROCKET_PORT=$PORT ./backend/target/release/event-listeners
