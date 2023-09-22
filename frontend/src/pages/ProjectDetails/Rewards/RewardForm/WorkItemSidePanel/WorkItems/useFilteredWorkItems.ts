@@ -16,8 +16,14 @@ export default function useFilteredContributions({ pattern = "", contributions }
   return filter(contributions, (contribution: ContributionFragment) => {
     if (!contribution.id) return;
 
-    const contributionType =
-      contribution?.type === WorkItemType.Issue ? contribution.githubIssue : contribution.githubPullRequest;
+    const types = {
+      [WorkItemType.Issue]: contribution.githubIssue,
+      [WorkItemType.PullRequest]: contribution.githubPullRequest,
+      [WorkItemType.CodeReview]: contribution.githubCodeReview?.githubPullRequest,
+    };
+
+    const contributionType = types[contribution?.type as WorkItemType];
+
     const contributionFullText = contributionType?.number?.toString() + " " + contributionType?.title;
     return searchRegExps.filter(regexp => !regexp.test(contributionFullText)).length === 0;
   });
