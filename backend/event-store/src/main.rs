@@ -2,11 +2,9 @@ use std::sync::Arc;
 
 use ::olog::info;
 use anyhow::Result;
-use backend_domain::{
-	Destination, Event, Identified, Publisher, Subscriber, SubscriberCallbackError,
-};
+use backend_domain::{Event, Identified, Publisher, Subscriber, SubscriberCallbackError};
 use backend_infrastructure::{
-	amqp::{self, Bus, UniqueMessage},
+	amqp::{self, Bus, Destination, UniqueMessage},
 	config,
 	database::{self, init_pool, Client as DatabaseClient},
 	event_bus::EXCHANGE_NAME,
@@ -31,7 +29,8 @@ async fn main() -> Result<()> {
 	let _tracer = Tracer::init(config.tracer, "event_store")?;
 
 	let inbound_event_bus = bus::consumer(config.amqp.clone()).await?;
-	let outbound_event_bus = Arc::new(Bus::new(config.amqp).await?);
+	let outbound_event_bus =
+		Arc::new(Bus::new(config.amqp).await?.as_publisher(Destination::exchange(EXCHANGE_NAME)));
 	let database = Arc::new(DatabaseClient::new(init_pool(config.database)?));
 
 	inbound_event_bus
@@ -67,7 +66,7 @@ async fn publish(
 	let message = message.copy();
 
 	publisher
-		.publish(Destination::exchange(EXCHANGE_NAME), &message)
+		.publish(&message)
 		.await
 		.map_err(|e| SubscriberCallbackError::Fatal(e.into()))?;
 	Ok(())

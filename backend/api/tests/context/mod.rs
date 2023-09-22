@@ -1,7 +1,14 @@
-use std::env;
+use std::{env, sync::Arc};
 
 use anyhow::Result;
-use api::{application::quotes, presentation::bootstrap::bootstrap, Config};
+use api::{
+	application::quotes,
+	domain::projectors::{self, projections},
+	presentation::bootstrap::bootstrap,
+	Config,
+};
+use domain::{CompositePublisher, Event, EventPublisher, Publisher};
+use infrastructure::event_bus::EXCHANGE_NAME;
 use presentation::http;
 use rocket::local::asynchronous::Client;
 use rstest::fixture;
@@ -33,6 +40,7 @@ pub struct Context<'a> {
 	pub web3: web3::Context<'a>,
 	pub coinmarketcap: coinmarketcap::Context<'a>,
 	pub quotes_syncer: quotes::sync::Usecase,
+	pub event_publisher: Arc<dyn Publisher<Event>>,
 	_environment: environment::Context,
 }
 
@@ -41,7 +49,7 @@ impl<'a> Context<'a> {
 		tracing_subscriber::fmt::init();
 
 		let database = database::Context::new(docker)?;
-		let amqp = amqp::Context::new(docker, vec![event_store::bus::QUEUE_NAME], vec![]).await?;
+		let amqp = amqp::Context::new(docker, vec![], vec![EXCHANGE_NAME]).await?;
 		let simple_storage = simple_storage::Context::new(docker)?;
 		let dusty_bot_github = github::Context::new(
 			docker,
@@ -102,6 +110,28 @@ impl<'a> Context<'a> {
 			coinmarketcap: coinmarketcap.config.clone(),
 		};
 
+		let event_publisher = CompositePublisher::new(vec![
+			Arc::new(EventPublisher::new(
+				projectors::event_store::Projector::new(database.client.clone()),
+			)),
+			Arc::new(EventPublisher::new(projections::Projector::new(
+				database.client.clone(),
+				database.client.clone(),
+				database.client.clone(),
+				database.client.clone(),
+				database.client.clone(),
+				database.client.clone(),
+				database.client.clone(),
+				database.client.clone(),
+				database.client.clone(),
+				database.client.clone(),
+				database.client.clone(),
+				database.client.clone(),
+				database.client.clone(),
+				database.client.clone(),
+			))),
+		]);
+
 		Ok(Self {
 			http_client: Client::tracked(bootstrap(config.clone()).await?).await?,
 			database,
@@ -113,6 +143,7 @@ impl<'a> Context<'a> {
 			web3,
 			coinmarketcap,
 			quotes_syncer: quotes::sync::Usecase::bootstrap(config.clone())?,
+			event_publisher: Arc::new(event_publisher),
 			_environment: environment::Context::new(),
 		})
 	}

@@ -1,8 +1,7 @@
 use std::sync::Arc;
 
-use domain::{AggregateRepository, Payment, Project};
+use domain::{AggregateRepository, Event, Payment, Project, Publisher};
 use infrastructure::{
-	amqp::{self},
 	database::{ImmutableRepository, Repository},
 	github,
 };
@@ -43,7 +42,7 @@ pub async fn get_graphql_handler(
 	onboarding_repository: &State<Arc<dyn Repository<Onboarding>>>,
 	contact_informations_repository: &State<Arc<dyn ContactInformationsRepository>>,
 	github_api_client: &State<Arc<github::Client>>,
-	bus: &State<Arc<amqp::Bus>>,
+	bus: &State<Arc<dyn Publisher<Event>>>,
 	ens: &State<Arc<ens::Client>>,
 	simple_storage: &State<Arc<dyn ImageStoreService>>,
 ) -> GraphQLResponse {
@@ -86,7 +85,7 @@ pub async fn post_graphql_handler(
 	onboarding_repository: &State<Arc<dyn Repository<Onboarding>>>,
 	contact_informations_repository: &State<Arc<dyn ContactInformationsRepository>>,
 	github_api_client: &State<Arc<github::Client>>,
-	bus: &State<Arc<amqp::Bus>>,
+	bus: &State<Arc<dyn Publisher<Event>>>,
 	ens: &State<Arc<ens::Client>>,
 	simple_storage: &State<Arc<dyn ImageStoreService>>,
 ) -> GraphQLResponse {

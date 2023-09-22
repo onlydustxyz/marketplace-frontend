@@ -8,7 +8,6 @@ use domain::{
 	Payment, PaymentId, PaymentReason, PaymentWorkItem, Project, ProjectId, Publisher, UserId,
 };
 use futures::future::try_join_all;
-use infrastructure::amqp::CommandMessage;
 use rust_decimal::Decimal;
 use tracing::instrument;
 
@@ -16,7 +15,7 @@ use crate::domain::{services::indexer, Publishable};
 
 #[derive(Constructor)]
 pub struct Usecase {
-	event_publisher: Arc<dyn Publisher<CommandMessage<Event>>>,
+	event_publisher: Arc<dyn Publisher<Event>>,
 	project_repository: AggregateRepository<Project>,
 	budget_repository: AggregateRepository<Budget>,
 	github_indexer_service: Arc<dyn indexer::Service>,
@@ -93,7 +92,6 @@ impl Usecase {
 		budget
 			.map(Event::from)
 			.chain(payment.map(Event::from))
-			.map(|payload| CommandMessage::new(command_id, payload))
 			.collect::<Vec<_>>()
 			.publish(self.event_publisher.clone())
 			.await?;

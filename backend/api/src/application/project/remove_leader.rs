@@ -1,20 +1,18 @@
 use std::sync::Arc;
 
-use domain::{
-	AggregateRepository, Destination, DomainError, Event, Project, ProjectId, Publisher, UserId,
-};
-use event_store::bus::QUEUE_NAME as EVENT_STORE_QUEUE;
-use infrastructure::amqp::UniqueMessage;
+use domain::{AggregateRepository, DomainError, Event, Project, ProjectId, Publisher, UserId};
 use tracing::instrument;
 
+use crate::domain::Publishable;
+
 pub struct Usecase {
-	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
+	event_publisher: Arc<dyn Publisher<Event>>,
 	project_repository: AggregateRepository<Project>,
 }
 
 impl Usecase {
 	pub fn new(
-		event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
+		event_publisher: Arc<dyn Publisher<Event>>,
 		project_repository: AggregateRepository<Project>,
 	) -> Self {
 		Self {
@@ -31,15 +29,12 @@ impl Usecase {
 	) -> Result<(), DomainError> {
 		let project = self.project_repository.find_by_id(project_id)?;
 
-		let events = project
+		project
 			.unassign_leader(*user_id)
 			.map_err(|e| DomainError::InvalidInputs(e.into()))?
 			.map(Event::from)
-			.map(UniqueMessage::new)
-			.collect::<Vec<_>>();
-
-		self.event_publisher
-			.publish_many(Destination::queue(EVENT_STORE_QUEUE), &events)
+			.collect::<Vec<_>>()
+			.publish(self.event_publisher.clone())
 			.await?;
 
 		Ok(())

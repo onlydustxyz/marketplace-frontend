@@ -1,6 +1,6 @@
 use std::fmt::Debug;
 
-use domain::{CommandId, Message, MessagePayload};
+use domain::{CommandId, Message};
 use olog::opentelemetry::propagation::Extractor;
 use serde::{Deserialize, Serialize};
 
@@ -19,9 +19,7 @@ impl<P> Extractor for Decorator<P> {
 	}
 }
 
-impl<P: MessagePayload> Message for Decorator<P> {}
-
-impl<P: MessagePayload> Decorator<P> {
+impl<P: Message> Decorator<P> {
 	pub fn new(command_id: CommandId, payload: P) -> Self {
 		Self(UniqueMessage::new(payload).with_command(command_id))
 	}

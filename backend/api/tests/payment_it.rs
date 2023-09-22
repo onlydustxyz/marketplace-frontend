@@ -8,10 +8,11 @@ use api::presentation::http::routes::payment;
 use assert_matches::assert_matches;
 use chrono::{Duration, Utc};
 use domain::{
-	blockchain::evm, currencies, Amount, Budget, BudgetEvent, BudgetId, Event, GithubPullRequestId,
-	GithubPullRequestNumber, GithubRepoId, GithubUserId, Payment, PaymentEvent, PaymentId,
-	PaymentReason, PaymentReceipt, PaymentWorkItem, Project, ProjectEvent, ProjectId, UserId,
+	blockchain::evm, currencies, Amount, BudgetEvent, BudgetId, Event, GithubPullRequestId,
+	GithubPullRequestNumber, GithubRepoId, GithubUserId, PaymentEvent, PaymentId, PaymentReason,
+	PaymentReceipt, PaymentWorkItem, ProjectEvent, ProjectId, UserId,
 };
+use infrastructure::event_bus::EXCHANGE_NAME;
 use olog::info;
 use rocket::{
 	http::{ContentType, Header, Status},
@@ -77,32 +78,29 @@ impl<'a> Test<'a> {
 		let budget_id = BudgetId::new();
 		let before = Utc::now().naive_utc();
 
-		models::events::store::<Project>(
-			&self.context,
-			vec![
-				ProjectEvent::Created { id: project_id },
+		self.context
+			.event_publisher
+			.publish_many(&[
+				ProjectEvent::Created { id: project_id }.into(),
 				ProjectEvent::BudgetLinked {
 					id: project_id,
 					budget_id,
 					currency: currencies::USD,
-				},
-			],
-		)?;
-
-		models::events::store::<Budget>(
-			&self.context,
-			vec![
+				}
+				.into(),
 				BudgetEvent::Created {
 					id: budget_id,
 					currency: currencies::USD,
-				},
+				}
+				.into(),
 				BudgetEvent::Allocated {
 					id: budget_id,
 					amount: Decimal::from(1_000),
 					sponsor_id: None,
-				},
-			],
-		)?;
+				}
+				.into(),
+			])
+			.await?;
 
 		let request = json!({
 			"projectId": project_id,
@@ -154,11 +152,11 @@ impl<'a> Test<'a> {
 				id: budget_id,
 				amount: dec!(10)
 			}),
-			self.context.amqp.listen(event_store::bus::QUEUE_NAME).await.unwrap(),
+			self.context.amqp.listen(EXCHANGE_NAME).await.unwrap(),
 		);
 
 		assert_matches!(
-			self.context.amqp.listen(event_store::bus::QUEUE_NAME).await.unwrap(),
+			self.context.amqp.listen(EXCHANGE_NAME).await.unwrap(),
 			Event::Payment(event) => {
 				assert_matches!(event, PaymentEvent::Requested {
 					id,
@@ -204,32 +202,29 @@ impl<'a> Test<'a> {
 		let budget_id = BudgetId::new();
 		let before = Utc::now().naive_utc();
 
-		models::events::store::<Project>(
-			&self.context,
-			vec![
-				ProjectEvent::Created { id: project_id },
+		self.context
+			.event_publisher
+			.publish_many(&[
+				ProjectEvent::Created { id: project_id }.into(),
 				ProjectEvent::BudgetLinked {
 					id: project_id,
 					budget_id,
 					currency: currencies::ETH,
-				},
-			],
-		)?;
-
-		models::events::store::<Budget>(
-			&self.context,
-			vec![
+				}
+				.into(),
 				BudgetEvent::Created {
 					id: budget_id,
 					currency: currencies::ETH,
-				},
+				}
+				.into(),
 				BudgetEvent::Allocated {
 					id: budget_id,
 					amount: Decimal::from(1),
 					sponsor_id: None,
-				},
-			],
-		)?;
+				}
+				.into(),
+			])
+			.await?;
 
 		let request = json!({
 			"projectId": project_id,
@@ -281,11 +276,11 @@ impl<'a> Test<'a> {
 				id: budget_id,
 				amount: dec!(0.00001)
 			}),
-			self.context.amqp.listen(event_store::bus::QUEUE_NAME).await.unwrap(),
+			self.context.amqp.listen(EXCHANGE_NAME).await.unwrap(),
 		);
 
 		assert_matches!(
-			self.context.amqp.listen(event_store::bus::QUEUE_NAME).await.unwrap(),
+			self.context.amqp.listen(EXCHANGE_NAME).await.unwrap(),
 			Event::Payment(event) => {
 				assert_matches!(event, PaymentEvent::Requested {
 					id,
@@ -330,32 +325,29 @@ impl<'a> Test<'a> {
 		let project_id = ProjectId::new();
 		let budget_id = BudgetId::new();
 
-		models::events::store::<Project>(
-			&self.context,
-			vec![
-				ProjectEvent::Created { id: project_id },
+		self.context
+			.event_publisher
+			.publish_many(&[
+				ProjectEvent::Created { id: project_id }.into(),
 				ProjectEvent::BudgetLinked {
 					id: project_id,
 					budget_id,
 					currency: currencies::USD,
-				},
-			],
-		)?;
-
-		models::events::store::<Budget>(
-			&self.context,
-			vec![
+				}
+				.into(),
 				BudgetEvent::Created {
 					id: budget_id,
 					currency: currencies::USD,
-				},
+				}
+				.into(),
 				BudgetEvent::Allocated {
 					id: budget_id,
 					amount: Decimal::from(1_000),
 					sponsor_id: None,
-				},
-			],
-		)?;
+				}
+				.into(),
+			])
+			.await?;
 
 		let request = json!({
 			"projectId": project_id,
@@ -369,7 +361,8 @@ impl<'a> Test<'a> {
 					"id": "123456",
 					"repoId": 498695724,
 					"number": 111
-				},{
+				},
+				{
 					"type": "PULL_REQUEST",
 					"id": "123456",
 					"repoId": 1181927,
@@ -412,32 +405,29 @@ impl<'a> Test<'a> {
 		let project_id = ProjectId::new();
 		let budget_id = BudgetId::new();
 
-		models::events::store::<Project>(
-			&self.context,
-			vec![
-				ProjectEvent::Created { id: project_id },
+		self.context
+			.event_publisher
+			.publish_many(&[
+				ProjectEvent::Created { id: project_id }.into(),
 				ProjectEvent::BudgetLinked {
 					id: project_id,
 					budget_id,
 					currency: currencies::USD,
-				},
-			],
-		)?;
-
-		models::events::store::<Budget>(
-			&self.context,
-			vec![
+				}
+				.into(),
 				BudgetEvent::Created {
 					id: budget_id,
 					currency: currencies::USD,
-				},
+				}
+				.into(),
 				BudgetEvent::Allocated {
 					id: budget_id,
 					amount: Decimal::from(1_000),
 					sponsor_id: None,
-				},
-			],
-		)?;
+				}
+				.into(),
+			])
+			.await?;
 
 		let request = json!({
 			"projectId": project_id,
@@ -490,46 +480,40 @@ impl<'a> Test<'a> {
 		let budget_id = BudgetId::new();
 		let payment_id = PaymentId::new();
 
-		models::events::store::<Project>(
-			&self.context,
-			vec![
-				ProjectEvent::Created { id: project_id },
+		self.context
+			.event_publisher
+			.publish_many(&[
+				ProjectEvent::Created { id: project_id }.into(),
 				ProjectEvent::BudgetLinked {
 					id: project_id,
 					budget_id,
 					currency: currencies::USD,
-				},
-			],
-		)?;
-
-		models::events::store::<Budget>(
-			&self.context,
-			vec![
+				}
+				.into(),
 				BudgetEvent::Created {
 					id: budget_id,
 					currency: currencies::USD,
-				},
+				}
+				.into(),
 				BudgetEvent::Allocated {
 					id: budget_id,
 					amount: Decimal::from(1_000),
 					sponsor_id: None,
-				},
-			],
-		)?;
-
-		models::events::store::<Payment>(
-			&self.context,
-			vec![PaymentEvent::Requested {
-				id: payment_id,
-				project_id,
-				requestor_id: UserId::new(),
-				recipient_id: GithubUserId::from(595505u64),
-				amount: Amount::from_decimal(Decimal::from(100), currencies::USD),
-				duration_worked: Duration::hours(2),
-				reason: PaymentReason { work_items: vec![] },
-				requested_at: Utc::now().naive_utc(),
-			}],
-		)?;
+				}
+				.into(),
+				PaymentEvent::Requested {
+					id: payment_id,
+					project_id,
+					requestor_id: UserId::new(),
+					recipient_id: GithubUserId::from(595505u64),
+					amount: Amount::from_decimal(Decimal::from(100), currencies::USD),
+					duration_worked: Duration::hours(2),
+					reason: PaymentReason { work_items: vec![] },
+					requested_at: Utc::now().naive_utc(),
+				}
+				.into(),
+			])
+			.await?;
 
 		// When
 		let response = self
@@ -555,7 +539,7 @@ impl<'a> Test<'a> {
 		);
 
 		assert_matches!(
-			self.context.amqp.listen(event_store::bus::QUEUE_NAME).await.unwrap(),
+			self.context.amqp.listen(EXCHANGE_NAME).await.unwrap(),
 			Event::Payment(_)
 		);
 
@@ -570,46 +554,40 @@ impl<'a> Test<'a> {
 		let budget_id = BudgetId::new();
 		let payment_id = PaymentId::new();
 
-		models::events::store::<Project>(
-			&self.context,
-			vec![
-				ProjectEvent::Created { id: project_id },
+		self.context
+			.event_publisher
+			.publish_many(&[
+				ProjectEvent::Created { id: project_id }.into(),
 				ProjectEvent::BudgetLinked {
 					id: project_id,
 					budget_id,
 					currency: currencies::USD,
-				},
-			],
-		)?;
-
-		models::events::store::<Budget>(
-			&self.context,
-			vec![
+				}
+				.into(),
 				BudgetEvent::Created {
 					id: budget_id,
 					currency: currencies::USD,
-				},
+				}
+				.into(),
 				BudgetEvent::Allocated {
 					id: budget_id,
 					amount: Decimal::from(1_000),
 					sponsor_id: None,
-				},
-			],
-		)?;
-
-		models::events::store::<Payment>(
-			&self.context,
-			vec![PaymentEvent::Requested {
-				id: payment_id,
-				project_id,
-				requestor_id: UserId::new(),
-				recipient_id: GithubUserId::from(595505u64),
-				amount: Amount::from_decimal(Decimal::from(100), currencies::USD),
-				duration_worked: Duration::hours(2),
-				reason: PaymentReason { work_items: vec![] },
-				requested_at: Utc::now().naive_utc(),
-			}],
-		)?;
+				}
+				.into(),
+				PaymentEvent::Requested {
+					id: payment_id,
+					project_id,
+					requestor_id: UserId::new(),
+					recipient_id: GithubUserId::from(595505u64),
+					amount: Amount::from_decimal(Decimal::from(100), currencies::USD),
+					duration_worked: Duration::hours(2),
+					reason: PaymentReason { work_items: vec![] },
+					requested_at: Utc::now().naive_utc(),
+				}
+				.into(),
+			])
+			.await?;
 
 		// When
 		let response = self
@@ -631,7 +609,7 @@ impl<'a> Test<'a> {
 		);
 
 		assert_matches!(
-			self.context.amqp.listen(event_store::bus::QUEUE_NAME).await.unwrap(),
+			self.context.amqp.listen(EXCHANGE_NAME).await.unwrap(),
 			Event::Payment(_)
 		);
 
@@ -646,46 +624,40 @@ impl<'a> Test<'a> {
 		let budget_id = BudgetId::new();
 		let payment_id = PaymentId::new();
 
-		models::events::store::<Project>(
-			&self.context,
-			vec![
-				ProjectEvent::Created { id: project_id },
+		self.context
+			.event_publisher
+			.publish_many(&[
+				ProjectEvent::Created { id: project_id }.into(),
 				ProjectEvent::BudgetLinked {
 					id: project_id,
 					budget_id,
 					currency: currencies::USD,
-				},
-			],
-		)?;
-
-		models::events::store::<Budget>(
-			&self.context,
-			vec![
+				}
+				.into(),
 				BudgetEvent::Created {
 					id: budget_id,
 					currency: currencies::USD,
-				},
+				}
+				.into(),
 				BudgetEvent::Allocated {
 					id: budget_id,
 					amount: Decimal::from(1_000),
 					sponsor_id: None,
-				},
-			],
-		)?;
-
-		models::events::store::<Payment>(
-			&self.context,
-			vec![PaymentEvent::Requested {
-				id: payment_id,
-				project_id,
-				requestor_id: UserId::new(),
-				recipient_id: GithubUserId::from(595505u64),
-				amount: Amount::from_decimal(Decimal::from(100), currencies::USD),
-				duration_worked: Duration::hours(2),
-				reason: PaymentReason { work_items: vec![] },
-				requested_at: Utc::now().naive_utc(),
-			}],
-		)?;
+				}
+				.into(),
+				PaymentEvent::Requested {
+					id: payment_id,
+					project_id,
+					requestor_id: UserId::new(),
+					recipient_id: GithubUserId::from(595505u64),
+					amount: Amount::from_decimal(Decimal::from(100), currencies::USD),
+					duration_worked: Duration::hours(2),
+					reason: PaymentReason { work_items: vec![] },
+					requested_at: Utc::now().naive_utc(),
+				}
+				.into(),
+			])
+			.await?;
 
 		// When
 		let response = self
@@ -721,50 +693,45 @@ impl<'a> Test<'a> {
 		let budget_id = BudgetId::new();
 		let payment_id = PaymentId::new();
 
-		models::events::store::<Project>(
-			&self.context,
-			vec![
-				ProjectEvent::Created { id: project_id },
+		self.context
+			.event_publisher
+			.publish_many(&[
+				ProjectEvent::Created { id: project_id }.into(),
 				ProjectEvent::BudgetLinked {
 					id: project_id,
 					budget_id,
 					currency: currencies::USD,
-				},
-			],
-		)?;
-
-		models::events::store::<Budget>(
-			&self.context,
-			vec![
+				}
+				.into(),
 				BudgetEvent::Created {
 					id: budget_id,
 					currency: currencies::USD,
-				},
+				}
+				.into(),
 				BudgetEvent::Allocated {
 					id: budget_id,
 					amount: Decimal::from(1_000),
 					sponsor_id: None,
-				},
+				}
+				.into(),
 				BudgetEvent::Spent {
 					id: budget_id,
 					amount: Decimal::from(100),
-				},
-			],
-		)?;
-
-		models::events::store::<Payment>(
-			&self.context,
-			vec![PaymentEvent::Requested {
-				id: payment_id,
-				project_id,
-				requestor_id: UserId::new(),
-				recipient_id: GithubUserId::from(595505u64),
-				amount: Amount::from_decimal(Decimal::from(100), currencies::USD),
-				duration_worked: Duration::hours(2),
-				reason: PaymentReason { work_items: vec![] },
-				requested_at: Utc::now().naive_utc(),
-			}],
-		)?;
+				}
+				.into(),
+				PaymentEvent::Requested {
+					id: payment_id,
+					project_id,
+					requestor_id: UserId::new(),
+					recipient_id: GithubUserId::from(595505u64),
+					amount: Amount::from_decimal(Decimal::from(100), currencies::USD),
+					duration_worked: Duration::hours(2),
+					reason: PaymentReason { work_items: vec![] },
+					requested_at: Utc::now().naive_utc(),
+				}
+				.into(),
+			])
+			.await?;
 
 		let request = json!({
 			"amount": 100,
@@ -800,7 +767,7 @@ impl<'a> Test<'a> {
 		let response: payment::receipts::Response = response.into_json().await.unwrap();
 
 		assert_matches!(
-			self.context.amqp.listen(event_store::bus::QUEUE_NAME).await.unwrap(),
+			self.context.amqp.listen(EXCHANGE_NAME).await.unwrap(),
 			Event::Payment(event) => {
 				assert_matches!(event, PaymentEvent::Processed {
 					id,
@@ -830,50 +797,45 @@ impl<'a> Test<'a> {
 		let budget_id = BudgetId::new();
 		let payment_id = PaymentId::new();
 
-		models::events::store::<Project>(
-			&self.context,
-			vec![
-				ProjectEvent::Created { id: project_id },
+		self.context
+			.event_publisher
+			.publish_many(&[
+				ProjectEvent::Created { id: project_id }.into(),
 				ProjectEvent::BudgetLinked {
 					id: project_id,
 					budget_id,
 					currency: currencies::USD,
-				},
-			],
-		)?;
-
-		models::events::store::<Budget>(
-			&self.context,
-			vec![
+				}
+				.into(),
 				BudgetEvent::Created {
 					id: budget_id,
 					currency: currencies::USD,
-				},
+				}
+				.into(),
 				BudgetEvent::Allocated {
 					id: budget_id,
 					amount: Decimal::from(1_000),
 					sponsor_id: None,
-				},
+				}
+				.into(),
 				BudgetEvent::Spent {
 					id: budget_id,
 					amount: Decimal::from(100),
-				},
-			],
-		)?;
-
-		models::events::store::<Payment>(
-			&self.context,
-			vec![PaymentEvent::Requested {
-				id: payment_id,
-				project_id,
-				requestor_id: UserId::new(),
-				recipient_id: GithubUserId::from(595505u64),
-				amount: Amount::from_decimal(Decimal::from(100), currencies::USD),
-				duration_worked: Duration::hours(2),
-				reason: PaymentReason { work_items: vec![] },
-				requested_at: Utc::now().naive_utc(),
-			}],
-		)?;
+				}
+				.into(),
+				PaymentEvent::Requested {
+					id: payment_id,
+					project_id,
+					requestor_id: UserId::new(),
+					recipient_id: GithubUserId::from(595505u64),
+					amount: Amount::from_decimal(Decimal::from(100), currencies::USD),
+					duration_worked: Duration::hours(2),
+					reason: PaymentReason { work_items: vec![] },
+					requested_at: Utc::now().naive_utc(),
+				}
+				.into(),
+			])
+			.await?;
 
 		let request = json!({
 			"amount": 100,
@@ -909,7 +871,7 @@ impl<'a> Test<'a> {
 		let response: payment::receipts::Response = response.into_json().await.unwrap();
 
 		assert_matches!(
-			self.context.amqp.listen(event_store::bus::QUEUE_NAME).await.unwrap(),
+			self.context.amqp.listen(EXCHANGE_NAME).await.unwrap(),
 			Event::Payment(event) => {
 				assert_matches!(event, PaymentEvent::Processed {
 					id,
@@ -943,50 +905,45 @@ impl<'a> Test<'a> {
 		let budget_id = BudgetId::new();
 		let payment_id = PaymentId::new();
 
-		models::events::store::<Project>(
-			&self.context,
-			vec![
-				ProjectEvent::Created { id: project_id },
+		self.context
+			.event_publisher
+			.publish_many(&[
+				ProjectEvent::Created { id: project_id }.into(),
 				ProjectEvent::BudgetLinked {
 					id: project_id,
 					budget_id,
 					currency: currencies::STARK,
-				},
-			],
-		)?;
-
-		models::events::store::<Budget>(
-			&self.context,
-			vec![
+				}
+				.into(),
 				BudgetEvent::Created {
 					id: budget_id,
 					currency: currencies::STARK,
-				},
+				}
+				.into(),
 				BudgetEvent::Allocated {
 					id: budget_id,
 					amount: Decimal::from(1_000),
 					sponsor_id: None,
-				},
+				}
+				.into(),
 				BudgetEvent::Spent {
 					id: budget_id,
 					amount: Decimal::from(100),
-				},
-			],
-		)?;
-
-		models::events::store::<Payment>(
-			&self.context,
-			vec![PaymentEvent::Requested {
-				id: payment_id,
-				project_id,
-				requestor_id: UserId::new(),
-				recipient_id: GithubUserId::from(595505u64),
-				amount: Amount::from_decimal(Decimal::from(100), currencies::STARK),
-				duration_worked: Duration::hours(2),
-				reason: PaymentReason { work_items: vec![] },
-				requested_at: Utc::now().naive_utc(),
-			}],
-		)?;
+				}
+				.into(),
+				PaymentEvent::Requested {
+					id: payment_id,
+					project_id,
+					requestor_id: UserId::new(),
+					recipient_id: GithubUserId::from(595505u64),
+					amount: Amount::from_decimal(Decimal::from(100), currencies::STARK),
+					duration_worked: Duration::hours(2),
+					reason: PaymentReason { work_items: vec![] },
+					requested_at: Utc::now().naive_utc(),
+				}
+				.into(),
+			])
+			.await?;
 
 		let request = json!({
 			"amount": 100,
@@ -1022,7 +979,7 @@ impl<'a> Test<'a> {
 		let response: payment::receipts::Response = response.into_json().await.unwrap();
 
 		assert_matches!(
-			self.context.amqp.listen(event_store::bus::QUEUE_NAME).await.unwrap(),
+			self.context.amqp.listen(EXCHANGE_NAME).await.unwrap(),
 			Event::Payment(event) => {
 				assert_matches!(event, PaymentEvent::Processed {
 					id,

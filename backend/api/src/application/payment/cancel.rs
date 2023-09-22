@@ -3,14 +3,13 @@ use std::sync::Arc;
 use anyhow::Result;
 use derive_more::Constructor;
 use domain::{AggregateRepository, CommandId, DomainError, Event, Payment, PaymentId, Publisher};
-use infrastructure::amqp::CommandMessage;
 use tracing::instrument;
 
 use crate::domain::Publishable;
 
 #[derive(Constructor)]
 pub struct Usecase {
-	event_publisher: Arc<dyn Publisher<CommandMessage<Event>>>,
+	event_publisher: Arc<dyn Publisher<Event>>,
 	payment_repository: AggregateRepository<Payment>,
 }
 
@@ -25,7 +24,6 @@ impl Usecase {
 			.cancel()
 			.map_err(|e| DomainError::InvalidInputs(e.into()))?
 			.map(Event::from)
-			.map(|payload| CommandMessage::new(command_id, payload))
 			.collect::<Vec<_>>()
 			.publish(self.event_publisher.clone())
 			.await?;

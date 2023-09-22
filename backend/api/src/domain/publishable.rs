@@ -1,7 +1,6 @@
 use std::sync::Arc;
 
-use domain::{Destination, Message, Publisher, PublisherError};
-use event_store::bus::QUEUE_NAME as EVENT_STORE_QUEUE;
+use domain::{Message, Publisher, PublisherError};
 
 #[async_trait]
 pub trait Publishable<M: Message> {
@@ -11,7 +10,7 @@ pub trait Publishable<M: Message> {
 #[async_trait]
 impl<M: Message + Sync + Send> Publishable<M> for Vec<M> {
 	async fn publish(&self, publisher: Arc<dyn Publisher<M>>) -> Result<(), PublisherError> {
-		publisher.publish_many(Destination::queue(EVENT_STORE_QUEUE), self).await?;
+		publisher.publish_many(self).await?;
 		Ok(())
 	}
 }

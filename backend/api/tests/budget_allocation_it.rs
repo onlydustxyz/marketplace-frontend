@@ -2,11 +2,12 @@ mod context;
 mod models;
 
 use anyhow::Result;
-use api::{models::Sponsor, presentation::http::routes::projects::budgets::Response};
-use domain::{
-	currencies, sponsor, Budget, BudgetEvent, BudgetId, Event, Project, ProjectEvent, ProjectId,
+use api::{models as api_models, presentation::http::routes::projects::budgets::Response};
+use domain::{currencies, sponsor, BudgetEvent, BudgetId, Event, ProjectEvent, ProjectId};
+use infrastructure::{
+	database::{enums::Currency, ImmutableRepository},
+	event_bus::EXCHANGE_NAME,
 };
-use infrastructure::database::ImmutableRepository;
 use olog::info;
 use rocket::{
 	http::{ContentType, Status},
@@ -57,12 +58,12 @@ impl<'a> Test<'a> {
 		let project_id = ProjectId::new();
 		let sponsor_id = sponsor::Id::new();
 
-		models::events::store::<Project>(
-			&self.context,
-			vec![ProjectEvent::Created { id: project_id }],
-		)?;
+		self.context
+			.event_publisher
+			.publish_many(&[ProjectEvent::Created { id: project_id }.into()])
+			.await?;
 
-		self.context.database.client.insert(Sponsor {
+		self.context.database.client.insert(api_models::Sponsor {
 			id: sponsor_id,
 			..Default::default()
 		})?;
@@ -102,7 +103,7 @@ impl<'a> Test<'a> {
 				budget_id,
 				currency: currencies::USD
 			}),
-			self.context.amqp.listen(event_store::bus::QUEUE_NAME).await.unwrap(),
+			self.context.amqp.listen(EXCHANGE_NAME).await.unwrap(),
 		);
 
 		assert_eq!(
@@ -110,7 +111,7 @@ impl<'a> Test<'a> {
 				id: budget_id,
 				currency: currencies::USD
 			}),
-			self.context.amqp.listen(event_store::bus::QUEUE_NAME).await.unwrap(),
+			self.context.amqp.listen(EXCHANGE_NAME).await.unwrap(),
 		);
 
 		assert_eq!(
@@ -119,7 +120,17 @@ impl<'a> Test<'a> {
 				amount: dec!(1523),
 				sponsor_id: Some(sponsor_id)
 			}),
-			self.context.amqp.listen(event_store::bus::QUEUE_NAME).await.unwrap(),
+			self.context.amqp.listen(EXCHANGE_NAME).await.unwrap(),
+		);
+
+		assert_eq!(
+			vec![api_models::Budget {
+				id: budget_id,
+				currency: Currency::Usd,
+				initial_amount: dec!(1523),
+				remaining_amount: dec!(1523)
+			}],
+			self.context.database.client.list().unwrap()
 		);
 
 		Ok(())
@@ -132,32 +143,29 @@ impl<'a> Test<'a> {
 		let project_id = ProjectId::new();
 		let budget_id = BudgetId::new();
 
-		models::events::store::<Project>(
-			&self.context,
-			vec![
-				ProjectEvent::Created { id: project_id },
+		self.context
+			.event_publisher
+			.publish_many(&[
+				ProjectEvent::Created { id: project_id }.into(),
 				ProjectEvent::BudgetLinked {
 					id: project_id,
 					budget_id,
 					currency: currencies::USD,
-				},
-			],
-		)?;
-
-		models::events::store::<Budget>(
-			&self.context,
-			vec![
+				}
+				.into(),
 				BudgetEvent::Created {
 					id: budget_id,
 					currency: currencies::USD,
-				},
+				}
+				.into(),
 				BudgetEvent::Allocated {
 					id: budget_id,
 					amount: dec!(1_000),
 					sponsor_id: None,
-				},
-			],
-		)?;
+				}
+				.into(),
+			])
+			.await?;
 
 		let request = json!({
 			"amount":523,
@@ -189,7 +197,7 @@ impl<'a> Test<'a> {
 				amount: dec!(523),
 				sponsor_id: None
 			}),
-			self.context.amqp.listen(event_store::bus::QUEUE_NAME).await.unwrap(),
+			self.context.amqp.listen(EXCHANGE_NAME).await.unwrap(),
 		);
 
 		Ok(())
@@ -202,32 +210,29 @@ impl<'a> Test<'a> {
 		let project_id = ProjectId::new();
 		let usd_budget_id = BudgetId::new();
 
-		models::events::store::<Project>(
-			&self.context,
-			vec![
-				ProjectEvent::Created { id: project_id },
+		self.context
+			.event_publisher
+			.publish_many(&[
+				ProjectEvent::Created { id: project_id }.into(),
 				ProjectEvent::BudgetLinked {
 					id: project_id,
 					budget_id: usd_budget_id,
 					currency: currencies::USD,
-				},
-			],
-		)?;
-
-		models::events::store::<Budget>(
-			&self.context,
-			vec![
+				}
+				.into(),
 				BudgetEvent::Created {
 					id: usd_budget_id,
 					currency: currencies::USD,
-				},
+				}
+				.into(),
 				BudgetEvent::Allocated {
 					id: usd_budget_id,
 					amount: dec!(1_000),
 					sponsor_id: None,
-				},
-			],
-		)?;
+				}
+				.into(),
+			])
+			.await?;
 
 		let request = json!({
 			"amount": 1,
@@ -262,7 +267,7 @@ impl<'a> Test<'a> {
 				budget_id: eth_budget_id,
 				currency: currencies::ETH
 			}),
-			self.context.amqp.listen(event_store::bus::QUEUE_NAME).await.unwrap(),
+			self.context.amqp.listen(EXCHANGE_NAME).await.unwrap(),
 		);
 
 		assert_eq!(
@@ -270,7 +275,7 @@ impl<'a> Test<'a> {
 				id: eth_budget_id,
 				currency: currencies::ETH
 			}),
-			self.context.amqp.listen(event_store::bus::QUEUE_NAME).await.unwrap(),
+			self.context.amqp.listen(EXCHANGE_NAME).await.unwrap(),
 		);
 
 		assert_eq!(
@@ -279,7 +284,7 @@ impl<'a> Test<'a> {
 				amount: dec!(1),
 				sponsor_id: None
 			}),
-			self.context.amqp.listen(event_store::bus::QUEUE_NAME).await.unwrap(),
+			self.context.amqp.listen(EXCHANGE_NAME).await.unwrap(),
 		);
 
 		Ok(())
@@ -292,10 +297,10 @@ impl<'a> Test<'a> {
 		let project_id = ProjectId::new();
 		let sponsor_id = sponsor::Id::new();
 
-		models::events::store::<Project>(
-			&self.context,
-			vec![ProjectEvent::Created { id: project_id }],
-		)?;
+		self.context
+			.event_publisher
+			.publish_many(&[ProjectEvent::Created { id: project_id }.into()])
+			.await?;
 
 		let request = json!({
 			"amount": 1523,

@@ -3,10 +3,7 @@ extern crate diesel;
 
 use anyhow::Result;
 use chrono::Utc;
-use domain::{
-	currencies, Budget, BudgetEvent, BudgetId, GithubRepoId, Project, ProjectEvent, ProjectId,
-	UserId,
-};
+use domain::{currencies, BudgetEvent, BudgetId, GithubRepoId, ProjectEvent, ProjectId, UserId};
 use olog::info;
 use rocket::http::{ContentType, Header, Status};
 use rstest::rstest;
@@ -48,38 +45,36 @@ impl<'a> Test<'a> {
 		let github_repo_id = GithubRepoId::from(1111u64);
 		let budget_id = BudgetId::new();
 
-		models::events::store::<Project>(
-			&self.context,
-			vec![
-				ProjectEvent::Created { id },
+		self.context
+			.event_publisher
+			.publish_many(&[
+				ProjectEvent::Created { id }.into(),
 				ProjectEvent::BudgetLinked {
 					id,
 					budget_id,
 					currency: currencies::USD,
-				},
-				ProjectEvent::GithubRepoLinked { id, github_repo_id },
+				}
+				.into(),
+				ProjectEvent::GithubRepoLinked { id, github_repo_id }.into(),
 				ProjectEvent::LeaderAssigned {
 					id,
 					leader_id: UserId::new(),
 					assigned_at: Utc::now().naive_utc(),
-				},
-			],
-		)?;
-
-		models::events::store::<Budget>(
-			&self.context,
-			vec![
+				}
+				.into(),
 				BudgetEvent::Created {
 					id: budget_id,
 					currency: currencies::USD,
-				},
+				}
+				.into(),
 				BudgetEvent::Allocated {
 					id: budget_id,
 					amount: Decimal::from(10),
 					sponsor_id: None,
-				},
-			],
-		)?;
+				}
+				.into(),
+			])
+			.await?;
 
 		let request = json!({
 			"projectId": id.to_string(),

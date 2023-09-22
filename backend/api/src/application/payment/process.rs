@@ -6,7 +6,6 @@ use domain::{
 	AggregateRepository, Amount, DomainError, Event, Payment, PaymentId, PaymentReceipt,
 	PaymentReceiptId, Publisher,
 };
-use infrastructure::amqp::UniqueMessage;
 use olog::IntoField;
 use tracing::instrument;
 
@@ -14,7 +13,7 @@ use crate::{application::dusty_bot, domain::Publishable};
 
 #[derive(Constructor)]
 pub struct Usecase {
-	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
+	event_publisher: Arc<dyn Publisher<Event>>,
 	payment_repository: AggregateRepository<Payment>,
 	close_issues_usecase: dusty_bot::close_issues::Usecase,
 }
@@ -36,7 +35,6 @@ impl Usecase {
 			.add_receipt(new_receipt_id, amount, receipt)
 			.map_err(|e| DomainError::InvalidInputs(e.into()))?
 			.map(Event::from)
-			.map(UniqueMessage::new)
 			.collect::<Vec<_>>()
 			.publish(self.event_publisher.clone())
 			.await?;

@@ -5,7 +5,10 @@ use anyhow::Result;
 use api::{models::Sponsor, presentation::http::routes::projects};
 use diesel::RunQueryDsl;
 use domain::{currencies, sponsor, BudgetEvent, Event, ProjectEvent};
-use infrastructure::database::{schema::project_details, ImmutableRepository};
+use infrastructure::{
+	database::{schema::project_details, ImmutableRepository},
+	event_bus::EXCHANGE_NAME,
+};
 use olog::info;
 use rocket::{
 	http::{ContentType, Status},
@@ -70,7 +73,7 @@ impl<'a> Test<'a> {
 		let project_id = project.project_id;
 
 		assert_eq!(
-			self.context.amqp.listen(event_store::bus::QUEUE_NAME).await,
+			self.context.amqp.listen(EXCHANGE_NAME).await,
 			Some(Event::Project(domain::ProjectEvent::Created {
 				id: project_id
 			}))
@@ -142,7 +145,7 @@ impl<'a> Test<'a> {
 		let budget_id = project.budget_id.unwrap();
 
 		assert_eq!(
-			self.context.amqp.listen(event_store::bus::QUEUE_NAME).await,
+			self.context.amqp.listen(EXCHANGE_NAME).await,
 			Some(Event::Project(ProjectEvent::Created { id: project_id }))
 		);
 
@@ -152,7 +155,7 @@ impl<'a> Test<'a> {
 				id: project_id,
 				currency: currencies::USD
 			}),
-			self.context.amqp.listen(event_store::bus::QUEUE_NAME).await.unwrap(),
+			self.context.amqp.listen(EXCHANGE_NAME).await.unwrap(),
 		);
 
 		assert_eq!(
@@ -160,7 +163,7 @@ impl<'a> Test<'a> {
 				id: budget_id,
 				currency: currencies::USD
 			}),
-			self.context.amqp.listen(event_store::bus::QUEUE_NAME).await.unwrap(),
+			self.context.amqp.listen(EXCHANGE_NAME).await.unwrap(),
 		);
 
 		assert_eq!(
@@ -169,7 +172,7 @@ impl<'a> Test<'a> {
 				amount: dec!(1000),
 				sponsor_id: Some(sponsor_id)
 			}),
-			self.context.amqp.listen(event_store::bus::QUEUE_NAME).await.unwrap(),
+			self.context.amqp.listen(EXCHANGE_NAME).await.unwrap(),
 		);
 
 		Ok(())

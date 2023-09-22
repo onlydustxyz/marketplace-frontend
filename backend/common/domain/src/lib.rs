@@ -4,7 +4,7 @@ mod value_objects;
 pub use value_objects::*;
 
 mod event;
-pub use event::Event;
+pub use event::{Event, Listener as EventListener, Publisher as EventPublisher};
 
 pub mod services;
 
@@ -21,8 +21,8 @@ pub use error::*;
 
 mod messaging;
 pub use messaging::{
-	Destination, Message, Payload as MessagePayload, Publisher, PublisherError, Subscriber,
-	SubscriberCallbackError, SubscriberError,
+	CompositePublisher, Message, Publisher, PublisherError, Subscriber, SubscriberCallbackError,
+	SubscriberError,
 };
 
 mod project;

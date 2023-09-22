@@ -51,6 +51,9 @@ juniper = "0.15.11"
 juniper_rocket = "0.8.2"
 rocket = { version = "0.5.0-rc.2", features = ["json", "uuid"] }
 
+# CLI
+clap = { version = "4.1.4", features = ["derive"] }
+
 # AWS
 rusoto_core = "0.48.0"
 rusoto_s3 = "0.48.0"
@@ -74,9 +77,12 @@ chrono = "0.4"
 
 # Utils
 derive_more = "0.99.17"
+derive-new = "0.5.9"
 derive_setters = "0.1.5"
 dotenv = "0.15.0"
 infer = "0.12.0"
+itertools = "0.10.5"
+sha2 = "0.10.7"
 rust_decimal = { version = "1.29.1", features = ["db-diesel2-postgres"] }
 rust_decimal_macros = "1.26"
 tokio-retry = "0.3"

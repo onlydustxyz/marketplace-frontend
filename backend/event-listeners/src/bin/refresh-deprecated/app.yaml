@@ -1,0 +1,28 @@
+default:
+  github:
+    base_url: $GITHUB_BASE_URL
+    personal_access_tokens: $GITHUB_PAT
+    max_calls_per_request: $GITHUB_MAX_CALLS_PER_REQUEST
+  tracer:
+    json: false
+    ansi: true
+    location: false
+  amqp:
+    connection_retry_interval_ms: 6000
+    connection_retry_count: 1
+  http:
+    api_keys: []
+
+local:
+  database:
+    url: postgres://postgres:postgres@localhost/marketplace_db
+    pool_max_size: 3
+  amqp:
+    url: "amqp://127.0.0.1:5672/%2f"
+
+production:
+  database:
+    url: $DATABASE_URL
+    pool_max_size: 3
+  amqp:
+    url: $CLOUDAMQP_URL

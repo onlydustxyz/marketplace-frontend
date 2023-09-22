@@ -4,7 +4,6 @@ use ::domain::{AggregateRepository, Project};
 use domain::{Budget, Event, GithubFetchService, Payment, Publisher};
 pub use http::Config;
 use infrastructure::{
-	amqp::{self, CommandMessage, UniqueMessage},
 	database::{ImmutableRepository, Repository},
 	github,
 };
@@ -30,8 +29,7 @@ mod usecases;
 pub fn serve(
 	config: crate::Config,
 	schema: graphql::Schema,
-	command_bus: Arc<dyn Publisher<CommandMessage<Event>>>,
-	event_bus: Arc<dyn Publisher<UniqueMessage<Event>>>,
+	event_bus: Arc<dyn Publisher<Event>>,
 	project_repository: AggregateRepository<Project>,
 	budget_repository: AggregateRepository<Budget>,
 	payment_repository: AggregateRepository<Payment>,
@@ -53,7 +51,6 @@ pub fn serve(
 	dusty_bot_service: Arc<dyn DustyBotService>,
 	ens: Arc<ens::Client>,
 	simple_storage: Arc<dyn ImageStoreService>,
-	bus: Arc<amqp::Bus>,
 	github_client_pat_factory: Arc<GithubClientPatFactory>,
 ) -> Rocket<Build> {
 	let update_user_profile_info_usecase = application::user::update_profile_info::Usecase::new(
@@ -69,13 +66,12 @@ pub fn serve(
 	);
 
 	let cancel_payment_usecase =
-		application::payment::cancel::Usecase::new(bus.clone(), payment_repository.clone());
+		application::payment::cancel::Usecase::new(event_bus.clone(), payment_repository.clone());
 
 	rocket::custom(http::config::rocket("backend/api/Rocket.toml"))
 		.manage(config.http.clone())
 		.manage(config)
 		.manage(schema)
-		.manage(command_bus)
 		.manage(event_bus)
 		.manage(project_repository)
 		.manage(budget_repository)
@@ -92,7 +88,6 @@ pub fn serve(
 		.manage(github_api_client)
 		.manage(ens)
 		.manage(simple_storage)
-		.manage(bus)
 		.manage(update_user_profile_info_usecase)
 		.manage(create_github_issue_usecase)
 		.manage(github_client_pat_factory)

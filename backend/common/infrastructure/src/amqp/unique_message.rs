@@ -5,7 +5,7 @@ use std::{
 
 use chrono::{NaiveDateTime, Utc};
 use derive_getters::Getters;
-use domain::{CommandId, Message, MessagePayload};
+use domain::CommandId;
 use olog::{
 	opentelemetry::{
 		propagation::{Extractor, TextMapPropagator},
@@ -37,8 +37,6 @@ impl<P> Extractor for UniqueMessage<P> {
 		Extractor::keys(&self.trace_context)
 	}
 }
-
-impl<P: MessagePayload> Message for UniqueMessage<P> {}
 
 impl<P> UniqueMessage<P> {
 	pub fn new(payload: P) -> Self {
@@ -79,5 +77,18 @@ impl<P: Serialize> Display for UniqueMessage<P> {
 			serde_json::to_string(self).map_err(|_| std::fmt::Error)?
 		)?;
 		Ok(())
+	}
+}
+
+pub trait Unique
+where
+	Self: Sized,
+{
+	fn unique(self) -> UniqueMessage<Self>;
+}
+
+impl<P> Unique for P {
+	fn unique(self) -> UniqueMessage<Self> {
+		UniqueMessage::new(self)
 	}
 }
