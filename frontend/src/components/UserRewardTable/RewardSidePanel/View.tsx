@@ -1,6 +1,6 @@
 import { PropsWithChildren, useState } from "react";
-import GithubIssue from "src/components/GithubIssue/GithubIssue";
-import GithubPullRequest from "src/components/GithubPullRequest/GithubPullRequest";
+import GithubIssue from "src/components/GithubCard/GithubIssue/GithubIssue";
+import GithubPullRequest from "src/components/GithubCard/GithubPullRequest/GithubPullRequest";
 import PayoutStatus from "src/components/PayoutStatus";
 import QueryWrapper from "src/components/QueryWrapper";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
@@ -22,7 +22,7 @@ import IBAN from "iban";
 import ExternalLink from "src/components/ExternalLink";
 import isDefined from "src/utils/isDefined";
 import Contributor from "src/components/Contributor";
-import GithubCodeReview from "src/components/GithubCodeReview/GithubCodeReview";
+import GithubCodeReview from "src/components/GithubCard/GithubCodeReview/GithubCodeReview";
 
 enum Align {
   Top = "top",

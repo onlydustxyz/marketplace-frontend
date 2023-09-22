@@ -1,4 +1,4 @@
-import GithubIssue, { Action, GithubIssueProps } from "src/components/GithubIssue/GithubIssue";
+import GithubIssue, { Action, GithubIssueProps } from "src/components/GithubCard/GithubIssue/GithubIssue";
 import { daysFromNow } from "src/utils/date";
 import { GithubIssueFragment, GithubIssueStatus, WorkItemType } from "src/__generated/graphql";
 

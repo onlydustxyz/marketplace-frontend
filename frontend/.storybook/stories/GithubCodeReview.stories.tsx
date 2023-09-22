@@ -1,7 +1,7 @@
-import { Action, GithubCodeReviewProps } from "src/components/GithubCodeReview/GithubCodeReview";
+import { Action, GithubCodeReviewProps } from "src/components/GithubCard/GithubCodeReview/GithubCodeReview";
 import { daysFromNow } from "src/utils/date";
 import { GithubCodeReviewFragment, GithubIssueStatus } from "src/__generated/graphql";
-import GithubCodeReview from "src/components/GithubCodeReview/GithubCodeReview";
+import GithubCodeReview from "src/components/GithubCard/GithubCodeReview/GithubCodeReview";
 
 const codeReviews: Record<string, GithubCodeReviewFragment> = {
   pending: {

@@ -1,6 +1,9 @@
 import { daysFromNow } from "src/utils/date";
 import { GithubPullRequestStatus, GithubPullRequestWithCommitsFragment } from "src/__generated/graphql";
-import GithubPullRequest, { Action, GithubPullRequestProps } from "src/components/GithubPullRequest/GithubPullRequest";
+import GithubPullRequest, {
+  Action,
+  GithubPullRequestProps,
+} from "src/components/GithubCard/GithubPullRequest/GithubPullRequest";
 
 const pullRequests: Record<string, GithubPullRequestWithCommitsFragment> = {
   closed: {

@@ -1,20 +1,15 @@
+import classNames from "classnames";
+import { GithubCodeReviewFragment } from "src/__generated/graphql";
+import CodeReviewCheckIcon from "src/assets/icons/CodeReviewCheckIcon";
+import CodeReviewIcon from "src/assets/icons/CodeReviewIcon";
+import Card from "src/components/Card";
+import { GithubLink } from "src/components/GithubCard/GithubLink/GithubLink";
 import { useIntl } from "src/hooks/useIntl";
-import Add from "src/icons/Add";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
-import Subtract from "src/icons/SubtractLine";
 import Time from "src/icons/TimeLine";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { parsePullRequestLink } from "src/utils/github";
-import Button, { ButtonSize, ButtonType } from "src/components/Button";
-import Card from "src/components/Card";
-import EyeOffLine from "src/icons/EyeOffLine";
-import EyeLine from "src/icons/EyeLine";
-import classNames from "classnames";
-import { withTooltip } from "src/components/Tooltip";
-import { GithubCodeReviewFragment } from "src/__generated/graphql";
-import { GithubLink } from "src/components/GithubLink/GithubLink";
-import CodeReviewCheckIcon from "src/assets/icons/CodeReviewCheckIcon";
-import CodeReviewIcon from "src/assets/icons/CodeReviewIcon";
+import { GithubActionButton } from "src/components/GithubCard/GithubActionButton/GithubActionButton";
 
 export enum Action {
   Add = "add",
@@ -53,7 +48,7 @@ export default function GithubCodeReview({
   addMarginTopForVirtuosoDisplay = false,
 }: GithubCodeReviewProps) {
   const { title, number, htmlUrl, createdAt } = codeReview?.githubPullRequest || {};
-  const { repoName } = parsePullRequestLink(htmlUrl || "");
+  const { repoName } = parsePullRequestLink(htmlUrl ?? "");
 
   return (
     <Card
@@ -63,10 +58,10 @@ export default function GithubCodeReview({
       })}
       withBg={false}
     >
-      {action && <ActionButton action={action} onClick={onClick} ignored={ignored} />}
+      {action && <GithubActionButton action={action} onClick={onClick} ignored={ignored} />}
       <div className="flex w-full flex-col gap-2 truncate font-walsheim">
         <div className="flex text-sm font-medium text-greyscale-50">
-          <GithubLink url={htmlUrl || ""} text={`#${number} · ${title}`} />
+          <GithubLink url={htmlUrl ?? ""} text={`#${number} · ${title}`} />
         </div>
         <div className="flex flex-row flex-wrap items-center gap-2 text-xs font-normal text-greyscale-300 xl:gap-3">
           <div className="flex flex-row items-center gap-1">
@@ -80,37 +75,8 @@ export default function GithubCodeReview({
           </div>
         </div>
       </div>
-      {secondaryAction && <ActionButton action={secondaryAction} onClick={onSecondaryClick} ignored={ignored} />}
+      {secondaryAction && <GithubActionButton action={secondaryAction} onClick={onSecondaryClick} ignored={ignored} />}
     </Card>
-  );
-}
-
-type ActionButtonProps = {
-  action: Action;
-  ignored: boolean;
-  onClick?: () => void;
-};
-
-function ActionButton({ action, ignored, onClick }: ActionButtonProps) {
-  const { T } = useIntl();
-
-  return (
-    <div className={classNames({ "opacity-70": ignored })}>
-      <Button
-        size={ButtonSize.Sm}
-        type={ButtonType.Secondary}
-        onClick={onClick}
-        iconOnly
-        {...withTooltip(action !== Action.Remove ? T(`githubIssue.tooltip.${action}`) : "", {
-          visible: action !== Action.Remove,
-        })}
-      >
-        {action === Action.Add && <Add />}
-        {action === Action.Remove && <Subtract />}
-        {action === Action.Ignore && <EyeOffLine />}
-        {action === Action.UnIgnore && <EyeLine />}
-      </Button>
-    </div>
   );
 }
 
@@ -123,23 +89,23 @@ function CodeReviewStatus({ codeReview }: { codeReview: GithubCodeReviewFragment
     case GithubCodeReviewStatus.Completed:
       return codeReview.outcome.toUpperCase() === GithubCodeReviewOutcome.ChangeRequested ? (
         <>
-          <CodeReviewCheckIcon size={12} className="-my-1 text-base text-github-purple" />
+          <CodeReviewCheckIcon className="-my-1 text-base text-github-purple" />
           {T("githubCodeReview.status.changeRequested", { submittedAt: displayRelativeDate(codeReview.submittedAt) })}
         </>
       ) : (
         <>
-          <CodeReviewCheckIcon size={12} className="-my-1 text-base text-github-purple" />
+          <CodeReviewCheckIcon className="-my-1 text-base text-github-purple" />
           {T("githubCodeReview.status.approved", { submittedAt: displayRelativeDate(codeReview.submittedAt) })}
         </>
       );
     case GithubCodeReviewStatus.Pending:
       return (
         <>
-          <CodeReviewIcon size={12} className="-my-1 text-base text-github-green" />
+          <CodeReviewIcon className="-my-1 text-base text-github-green" />
           {T("githubCodeReview.status.pending")}
         </>
       );
     default:
-      return <div />;
+      return null;
   }
 }

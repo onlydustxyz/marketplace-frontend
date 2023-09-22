@@ -1,11 +1,12 @@
+import classNames from "classnames";
+
 interface LoaderProps {
   className?: string;
-  size?: number;
 }
 
-export default function CodeReviewCheckIcon({ className, size = 12 }: LoaderProps) {
+export default function CodeReviewCheckIcon({ className }: LoaderProps) {
   return (
-    <svg className={className} viewBox="0 0 12 12" height={size} width={size}>
+    <svg className={classNames("h-3 w-3", className)} viewBox="0 0 12 12">
       <path
         d="M5.99983 1.5C8.69583 1.5 10.9388 3.44 11.4093 6C11.3648 6.24274 11.3043 6.4799 11.2289 6.71036C10.9144 6.51938 10.5277 6.49369 10.1937 6.63328C10.2737 6.42825 10.3389 6.21665 10.3883 6C10.1604 5.00665 9.6023 4.12 8.80514 3.48501C8.00799 2.85002 7.01898 2.50426 5.99983 2.50426C4.98068 2.50426 3.99168 2.85002 3.19452 3.48501C2.39736 4.12 1.83922 5.00665 1.61133 6C1.83838 6.99414 2.39617 7.88176 3.1934 8.51758C3.95504 9.12502 4.89211 9.46827 5.86341 9.4979C5.91786 9.67449 6.01477 9.83695 6.14783 9.97002L6.64086 10.463C6.43057 10.4875 6.21666 10.5 5.99983 10.5C3.30383 10.5 1.06083 8.56 0.590332 6C1.06033 3.44 3.30383 1.5 5.99983 1.5Z"
         fill="currentColor"

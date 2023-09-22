@@ -5,8 +5,10 @@ import { Virtuoso } from "react-virtuoso";
 import { ContributionFragment, WorkItemFragment, WorkItemType } from "src/__generated/graphql";
 import FormInput from "src/components/FormInput";
 import FormToggle from "src/components/FormToggle";
-import GithubIssue, { Action, GithubIssueProps } from "src/components/GithubIssue/GithubIssue";
-import GithubPullRequest, { GithubPullRequestProps } from "src/components/GithubPullRequest/GithubPullRequest";
+import GithubIssue, { Action, GithubIssueProps } from "src/components/GithubCard/GithubIssue/GithubIssue";
+import GithubPullRequest, {
+  GithubPullRequestProps,
+} from "src/components/GithubCard/GithubPullRequest/GithubPullRequest";
 import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
 import EyeOffLine from "src/icons/EyeOffLine";
@@ -17,7 +19,7 @@ import Toggle from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePane
 import OtherIssueInput from "./OtherIssueInput";
 import useFilteredContributions from "./useFilteredWorkItems";
 import { contributionToWorkItem } from "./WorkItems";
-import GithubCodeReview, { GithubCodeReviewProps } from "src/components/GithubCodeReview/GithubCodeReview";
+import GithubCodeReview, { GithubCodeReviewProps } from "src/components/GithubCard/GithubCodeReview/GithubCodeReview";
 
 const THEORETICAL_MAX_SCREEN_HEIGHT = 2000;
 

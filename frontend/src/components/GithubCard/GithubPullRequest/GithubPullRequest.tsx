@@ -1,22 +1,18 @@
+import classNames from "classnames";
+import { GithubPullRequestStatus, GithubPullRequestWithCommitsFragment } from "src/__generated/graphql";
 import IssueClosed from "src/assets/icons/IssueClosed";
+import Card from "src/components/Card";
+import { GithubLink } from "src/components/GithubCard/GithubLink/GithubLink";
+import Tooltip from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
-import Add from "src/icons/Add";
+import GitCommitLine from "src/icons/GitCommitLine";
 import GitMergeLine from "src/icons/GitMergeLine";
 import GitPullRequestLine from "src/icons/GitPullRequestLine";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
-import Subtract from "src/icons/SubtractLine";
 import Time from "src/icons/TimeLine";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { parsePullRequestLink } from "src/utils/github";
-import Button, { ButtonSize, ButtonType } from "src/components/Button";
-import Card from "src/components/Card";
-import EyeOffLine from "src/icons/EyeOffLine";
-import EyeLine from "src/icons/EyeLine";
-import classNames from "classnames";
-import Tooltip, { withTooltip } from "src/components/Tooltip";
-import { GithubPullRequestStatus, GithubPullRequestWithCommitsFragment } from "src/__generated/graphql";
-import { GithubLink } from "src/components/GithubLink/GithubLink";
-import GitCommitLine from "src/icons/GitCommitLine";
+import { GithubActionButton } from "src/components/GithubCard/GithubActionButton/GithubActionButton";
 import { CommitsTooltip } from "./CommitsTooltip";
 
 export enum Action {
@@ -45,7 +41,7 @@ export default function GithubPullRequest({
   ignored = false,
   addMarginTopForVirtuosoDisplay = false,
 }: GithubPullRequestProps) {
-  const { repoName } = parsePullRequestLink(pullRequest.htmlUrl || "");
+  const { repoName } = parsePullRequestLink(pullRequest.htmlUrl ?? "");
 
   const userCommits = pullRequest?.userCommitsCount?.aggregate?.count;
   const commitsCount = pullRequest?.commitsCount?.aggregate?.count;
@@ -58,10 +54,10 @@ export default function GithubPullRequest({
       })}
       withBg={false}
     >
-      {action && <ActionButton action={action} onClick={onClick} ignored={ignored} />}
+      {action && <GithubActionButton action={action} onClick={onClick} ignored={ignored} />}
       <div className="flex w-full flex-col gap-2 truncate font-walsheim">
         <div className="flex text-sm font-medium text-greyscale-50">
-          <GithubLink url={pullRequest.htmlUrl || ""} text={`#${pullRequest.number} · ${pullRequest.title}`} />
+          <GithubLink url={pullRequest.htmlUrl ?? ""} text={`#${pullRequest.number} · ${pullRequest.title}`} />
         </div>
         <div className="flex flex-row flex-wrap items-center gap-2 text-xs font-normal text-greyscale-300 xl:gap-3">
           <div className="flex flex-row items-center gap-1">
@@ -87,37 +83,8 @@ export default function GithubPullRequest({
           ) : null}
         </div>
       </div>
-      {secondaryAction && <ActionButton action={secondaryAction} onClick={onSecondaryClick} ignored={ignored} />}
+      {secondaryAction && <GithubActionButton action={secondaryAction} onClick={onSecondaryClick} ignored={ignored} />}
     </Card>
-  );
-}
-
-type ActionButtonProps = {
-  action: Action;
-  ignored: boolean;
-  onClick?: () => void;
-};
-
-function ActionButton({ action, ignored, onClick }: ActionButtonProps) {
-  const { T } = useIntl();
-
-  return (
-    <div className={classNames({ "opacity-70": ignored })}>
-      <Button
-        size={ButtonSize.Sm}
-        type={ButtonType.Secondary}
-        onClick={onClick}
-        iconOnly
-        {...withTooltip(action !== Action.Remove ? T(`githubIssue.tooltip.${action}`) : "", {
-          visible: action !== Action.Remove,
-        })}
-      >
-        {action === Action.Add && <Add />}
-        {action === Action.Remove && <Subtract />}
-        {action === Action.Ignore && <EyeOffLine />}
-        {action === Action.UnIgnore && <EyeLine />}
-      </Button>
-    </div>
   );
 }
 

@@ -95,7 +95,7 @@ export const pullRequestToWorkItem = (pullRequest: GithubPullRequestWithCommitsF
 
 export const codeReviewToWorkItem = (codeReview: GithubCodeReviewFragment | null): WorkItemFragment => ({
   type: WorkItemType.CodeReview,
-  id: codeReview?.id,
+  id: codeReview?.id || null,
   githubIssue: null,
   githubPullRequest: null,
   githubCodeReview: codeReview,
