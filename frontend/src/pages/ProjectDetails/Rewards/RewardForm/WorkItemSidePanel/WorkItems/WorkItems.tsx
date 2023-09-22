@@ -2,11 +2,12 @@ import { chain } from "lodash";
 import { useMemo } from "react";
 import {
   ContributionFragment,
+  GithubCodeReviewFragment,
   GithubIssueFragment,
-  GithubPullRequestFragment,
+  GithubPullRequestWithCommitsFragment,
   WorkItemFragment,
   WorkItemType,
-  useUnrewardedContributionsQuery,
+  useUnrewardedContributionsByTypeQuery,
 } from "src/__generated/graphql";
 import View from "./View";
 import { useIgnoredContributions } from "./useIgnoredContributions";
@@ -19,7 +20,7 @@ type Props = {
   addWorkItem: (workItem: WorkItemFragment) => void;
 };
 
-export default function Issues({ type, projectId, contributorId, workItems, addWorkItem }: Props) {
+export function WorkItems({ type, projectId, contributorId, workItems, addWorkItem }: Props) {
   const { ignore: ignoreContribution, unignore: unignoreContribution } = useIgnoredContributions();
 
   const addAndUnignoreContribution = (contribution: ContributionFragment) => {
@@ -28,7 +29,7 @@ export default function Issues({ type, projectId, contributorId, workItems, addW
     workItem && addWorkItem(workItem);
   };
 
-  const { data } = useUnrewardedContributionsQuery({
+  const { data } = useUnrewardedContributionsByTypeQuery({
     variables: {
       projectId,
       githubUserId: contributorId,
@@ -61,24 +62,41 @@ export default function Issues({ type, projectId, contributorId, workItems, addW
   );
 }
 
-export const contributionToWorkItem = (contribution: ContributionFragment): WorkItemFragment | undefined => {
-  return contribution.githubIssue
-    ? issueToWorkItem(contribution.githubIssue)
-    : contribution.githubPullRequest
-    ? pullRequestToWorkItem(contribution.githubPullRequest)
-    : undefined;
+export const contributionToWorkItem = ({
+  githubIssue,
+  githubPullRequest,
+  githubCodeReview,
+}: ContributionFragment): WorkItemFragment | undefined => {
+  switch (true) {
+    case !!githubIssue:
+      return issueToWorkItem(githubIssue);
+    case !!githubPullRequest:
+      return pullRequestToWorkItem(githubPullRequest);
+    case !!githubCodeReview:
+      return codeReviewToWorkItem(githubCodeReview);
+  }
 };
 
-export const issueToWorkItem = (issue: GithubIssueFragment): WorkItemFragment => ({
+export const issueToWorkItem = (issue: GithubIssueFragment | null): WorkItemFragment => ({
   type: WorkItemType.Issue,
-  id: issue.id.toString(),
+  id: issue?.id.toString(),
   githubIssue: issue,
   githubPullRequest: null,
+  githubCodeReview: null,
 });
 
-export const pullRequestToWorkItem = (pullRequest: GithubPullRequestFragment): WorkItemFragment => ({
+export const pullRequestToWorkItem = (pullRequest: GithubPullRequestWithCommitsFragment | null): WorkItemFragment => ({
   type: WorkItemType.PullRequest,
-  id: pullRequest.id.toString(),
+  id: pullRequest?.id.toString(),
   githubIssue: null,
   githubPullRequest: pullRequest,
+  githubCodeReview: null,
+});
+
+export const codeReviewToWorkItem = (codeReview: GithubCodeReviewFragment | null): WorkItemFragment => ({
+  type: WorkItemType.CodeReview,
+  id: codeReview?.id || null,
+  githubIssue: null,
+  githubPullRequest: null,
+  githubCodeReview: codeReview,
 });

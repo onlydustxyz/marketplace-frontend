@@ -12,4 +12,5 @@ fragment GithubIssue on GithubIssues {
   status
   createdAt
   closedAt
+  commentsCount
 }

@@ -6,7 +6,7 @@ type Props = {
   url: string;
 };
 
-export default function GithubPullRequestLink({ text, url }: Props) {
+export function GithubLink({ text, url }: Props) {
   return (
     <span className={"group/link hover:cursor-pointer"}>
       <span className={"align-top group-hover/link:underline"} onClick={linkClickHandlerFactory(url)}>

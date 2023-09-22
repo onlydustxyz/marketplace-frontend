@@ -70,6 +70,6 @@ export default function ContributorsTable({
       }}
     />
   ) : (
-    <ViewMobile contributors={contributors} />
+    <ViewMobile isProjectLeader={isProjectLeader} contributors={contributors} />
   );
 }

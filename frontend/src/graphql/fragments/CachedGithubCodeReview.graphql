@@ -1,0 +1,16 @@
+fragment GithubCodeReviewId on GithubPullRequestReviews {
+  id
+}
+
+fragment GithubCodeReview on GithubPullRequestReviews {
+  ...GithubCodeReviewId
+  status
+  outcome
+  submittedAt
+  reviewer {
+    ...GithubUser
+  }
+  githubPullRequest {
+    ...GithubPullRequest
+  }
+}

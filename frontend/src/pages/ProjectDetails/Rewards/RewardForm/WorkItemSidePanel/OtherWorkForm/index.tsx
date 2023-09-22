@@ -16,7 +16,7 @@ import {
 import Description from "./Description";
 import RepoSelect from "./RepoSelect";
 import Title from "./Title";
-import { issueToWorkItem } from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/Issues";
+import { issueToWorkItem } from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/WorkItems/WorkItems";
 import DraftLine from "src/icons/DraftLine";
 import TeamLine from "src/icons/TeamLine";
 import ExchangeDollarLine from "src/icons/ExchangeDollarLine";
@@ -26,7 +26,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { OtherWork } from "./types";
 import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
-import { liveIssueToCached } from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/Issues/OtherIssueInput";
+import { liveIssueToCached } from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/WorkItems/OtherIssueInput";
 
 type Props = {
   projectId: string;

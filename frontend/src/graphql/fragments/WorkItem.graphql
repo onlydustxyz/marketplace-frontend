@@ -11,4 +11,7 @@ fragment WorkItem on WorkItems {
   githubPullRequest {
     ...GithubPullRequest
   }
+  githubCodeReview {
+    ...GithubCodeReview
+  }
 }

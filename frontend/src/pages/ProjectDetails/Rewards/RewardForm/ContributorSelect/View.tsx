@@ -6,11 +6,11 @@ import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import onlyDustLogo from "assets/img/onlydust-logo.png";
 import { useIntl } from "src/hooks/useIntl";
 import Badge, { BadgeIcon, BadgeSize } from "src/components/Badge";
-import { withTooltip } from "src/components/Tooltip";
 import Contributor from "src/components/Contributor";
 import { Virtuoso } from "react-virtuoso";
 import { forwardRef } from "react";
 import { Contributor as ContributorType } from "src/pages/ProjectDetails/Rewards/RewardForm/types";
+import { ToRewardDetailsTooltip } from "src/pages/ProjectDetails/Tooltips/ToRewardDetailsTooltip";
 
 const MAX_CONTRIBUTOR_SELECT_SCROLLER_HEIGHT_PX = 240;
 const CONTRIBUTOR_SELECT_LINE_HEIGHT_PX = 36;
@@ -246,12 +246,22 @@ function VirtualizedContributorSubList({ lines }: ContributorSubListProps) {
             >
               <Contributor contributor={contributor} />
               {contributor.unpaidCompletedContributions > 0 && (
-                <Badge
-                  value={contributor.unpaidCompletedContributions}
-                  icon={BadgeIcon.GitMerge}
-                  size={BadgeSize.Small}
-                  {...withTooltip(T("reward.form.contributor.unpaidMergedPrCountTooltip"))}
-                />
+                <>
+                  <Badge
+                    value={contributor.unpaidCompletedContributions}
+                    icon={BadgeIcon.StackLine}
+                    size={BadgeSize.Small}
+                    data-tooltip-id="to-reward-details"
+                    data-tooltip-content={JSON.stringify({
+                      unpaidCompletedContributions: contributor.unpaidCompletedContributions,
+                      unpaidIssueCount: contributor.unpaidCompletedIssuesCount,
+                      unpaidPullRequestCount: contributor.unpaidMergedPullsCount,
+                      unpaidCodeReviewCount: contributor.unpaidCompletedCodeReviewsCount,
+                    })}
+                  />
+
+                  <ToRewardDetailsTooltip />
+                </>
               )}
             </Combobox.Option>
           );

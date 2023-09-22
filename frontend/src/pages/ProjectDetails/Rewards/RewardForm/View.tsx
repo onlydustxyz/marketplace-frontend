@@ -1,36 +1,35 @@
-import { useIntl } from "src/hooks/useIntl";
 import Card from "src/components/Card";
-import WorkEstimation from "./WorkEstimation";
+import { useIntl } from "src/hooks/useIntl";
 import { Budget } from "src/hooks/useWorkEstimation";
 import ContributorSelect from "src/pages/ProjectDetails/Rewards/RewardForm/ContributorSelect";
+import WorkEstimation from "./WorkEstimation";
 
-import Button, { ButtonSize, ButtonType, Width } from "src/components/Button";
-import { useNavigate } from "react-router-dom";
-import CloseLine from "src/icons/CloseLine";
-import Title from "src/pages/ProjectDetails/Title";
-import Add from "src/icons/Add";
-import { ReactElement, ReactNode, useEffect, useState } from "react";
-import WorkItemSidePanel from "./WorkItemSidePanel";
-import GithubIssue, { Action as GithubIssueAction } from "src/components/GithubIssue";
-import GithubPullRequest, { Action as GithubPRAction } from "src/components/GithubPullRequest";
-import Callout from "src/components/Callout";
-import useWorkItems from "./useWorkItems";
 import { filter } from "lodash";
-import { Contributor } from "./types";
-import { viewportConfig } from "src/config";
-import { useMediaQuery } from "usehooks-ts";
+import { ReactElement, ReactNode, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   ContributionFragment,
   GithubIssueStatus,
   GithubPullRequestStatus,
   WorkItemFragment,
 } from "src/__generated/graphql";
-import pickContributorImg from "src/assets/img/pick-contributor.png";
 import addContributionImg from "src/assets/img/add-contribution.png";
-import {
-  issueToWorkItem,
-  pullRequestToWorkItem,
-} from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/Issues";
+import pickContributorImg from "src/assets/img/pick-contributor.png";
+import Button, { ButtonSize, ButtonType, Width } from "src/components/Button";
+import Callout from "src/components/Callout";
+import { GithubCodeReviewStatus } from "src/components/GithubCard/GithubCodeReview/GithubCodeReview";
+import { viewportConfig } from "src/config";
+import Add from "src/icons/Add";
+import CloseLine from "src/icons/CloseLine";
+import { contributionToWorkItem } from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/WorkItems/WorkItems";
+import Title from "src/pages/ProjectDetails/Title";
+import { GithubContributionType } from "src/types";
+import { useMediaQuery } from "usehooks-ts";
+import { AutoAdd } from "./AutoAdd/AutoAdd";
+import { WorkItem } from "./WorkItem";
+import WorkItemSidePanel from "./WorkItemSidePanel";
+import { Contributor } from "./types";
+import useWorkItems from "./useWorkItems";
 
 interface Props {
   projectId: string;
@@ -72,36 +71,35 @@ const View: React.FC<Props> = ({
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
   const navigate = useNavigate();
   const [sidePanelOpen, setSidePanelOpen] = useState(false);
-  const [workItemsPrefilled, setWorkItemsPrefilled] = useState(false);
 
   const { workItems, add: addWorkItem, remove: removeWorkItem, clear: clearWorkItems } = useWorkItems();
 
-  const githubPullRequestFilter = { githubPullRequest: { status: GithubPullRequestStatus.Merged } };
-  const githubIssueFilter = { githubIssue: { status: GithubIssueStatus.Completed } };
+  const filters = {
+    [GithubContributionType.Issue]: { githubIssue: { status: GithubIssueStatus.Completed } },
+    [GithubContributionType.PullRequest]: { githubPullRequest: { status: GithubPullRequestStatus.Merged } },
+    [GithubContributionType.CodeReview]: { githubCodeReview: { status: GithubCodeReviewStatus.Completed } },
+  };
+
+  const displayCallout = contributor && !contributor.userId;
+
+  const handleAutoAdd = (type: GithubContributionType) => {
+    if (!unpaidContributions) return;
+
+    const filteredContributions = filter(unpaidContributions, {
+      ...filters[type],
+      ignored: false,
+    });
+
+    const workItems = filteredContributions.map(
+      contribution => contributionToWorkItem(contribution) as WorkItemFragment
+    );
+
+    addWorkItem(workItems);
+  };
 
   useEffect(() => {
     onWorkItemsChange(workItems);
-  }, [workItems, onWorkItemsChange]);
-
-  useEffect(() => {
-    if (!workItemsPrefilled && unpaidContributions) {
-      const filteredContributions = filter(unpaidContributions, {
-        ...(githubPullRequestFilter || githubIssueFilter),
-        ignored: false,
-      });
-
-      const workItems = filteredContributions.map(item =>
-        item.githubIssue ? issueToWorkItem(item.githubIssue) : pullRequestToWorkItem(item.githubPullRequest)
-      );
-
-      addWorkItem(workItems);
-      setWorkItemsPrefilled(true);
-    }
-  }, [unpaidContributions, contributor, addWorkItem, clearWorkItems, workItemsPrefilled, setWorkItemsPrefilled]);
-
-  useEffect(() => setWorkItemsPrefilled(false), [contributor]);
-
-  const displayCallout = contributor && !contributor.userId;
+  }, [workItems]);
 
   return (
     <>
@@ -167,23 +165,11 @@ const View: React.FC<Props> = ({
                       {T("reward.form.contributions.subTitle")}
                     </div>
 
-                    {workItems.map(workItem =>
-                      workItem.githubPullRequest ? (
-                        <GithubPullRequest
-                          key={workItem.id}
-                          pullRequest={workItem.githubPullRequest}
-                          action={GithubPRAction.Remove}
-                          onClick={() => removeWorkItem(workItem)}
-                        />
-                      ) : workItem.githubIssue ? (
-                        <GithubIssue
-                          key={workItem.id}
-                          issue={workItem.githubIssue}
-                          action={GithubIssueAction.Remove}
-                          onClick={() => removeWorkItem(workItem)}
-                        />
-                      ) : undefined
-                    )}
+                    <AutoAdd contributor={contributor} onAutoAdd={handleAutoAdd} workItems={workItems} />
+
+                    {workItems.map(workItem => (
+                      <WorkItem key={workItem.id} workItem={workItem} action={() => removeWorkItem(workItem)} />
+                    ))}
                   </div>
                   <div onClick={() => setSidePanelOpen(true)} data-testid="add-work-item-btn" className="mx-4 pt-8">
                     <Button size={ButtonSize.Md} type={ButtonType.Secondary} width={Width.Full}>

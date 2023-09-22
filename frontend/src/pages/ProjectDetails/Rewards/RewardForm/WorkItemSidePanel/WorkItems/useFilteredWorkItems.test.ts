@@ -12,6 +12,7 @@ const workItems: ContributionFragment[] = [
     detailsId: "00000",
     githubUserId: "123456",
     githubIssue: null,
+    githubCodeReview: null,
     githubPullRequest: {
       number: 123,
       repoId: 12345678,
@@ -22,6 +23,26 @@ const workItems: ContributionFragment[] = [
       closedAt: null,
       mergedAt: null,
       id: "123",
+      commitsCount: { aggregate: { count: 0 } },
+      userCommitsCount: { aggregate: { count: 0 } },
+      contributorDetails: [
+        {
+          author: {
+            login: "ofux",
+            avatarUrl: "https://avatars.githubusercontent.com/u/43467246?v=4",
+            htmlUrl: "https://github.com/ofux",
+            id: 595505,
+            user: { id: 233 },
+          },
+        },
+      ],
+      author: {
+        login: "stannislas",
+        avatarUrl: "https://gravatar.com/avatar/1f82b0492a0a938288c2d5b70534a1fb?s=400&d=robohash&r=x",
+        htmlUrl: "https://github.com/stanislas",
+        id: 123,
+        user: { id: 233 },
+      },
     },
   },
   {
@@ -35,6 +56,7 @@ const workItems: ContributionFragment[] = [
     githubUserId: "123456",
     githubIssue: null,
     githubPullRequest: null,
+    githubCodeReview: null,
   },
   {
     id: "789",
@@ -47,6 +69,7 @@ const workItems: ContributionFragment[] = [
     githubUserId: "123456",
     githubIssue: null,
     githubPullRequest: null,
+    githubCodeReview: null,
   },
 ];
 

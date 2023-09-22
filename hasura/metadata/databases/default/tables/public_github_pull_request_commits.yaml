@@ -1,0 +1,23 @@
+table:
+  name: github_pull_request_commits
+  schema: public
+object_relationships:
+  - name: author
+    using:
+      manual_configuration:
+        column_mapping:
+          author_id: id
+        insertion_order: null
+        remote_table:
+          name: github_users
+          schema: public
+select_permissions:
+  - role: public
+    permission:
+      columns:
+        - sha
+        - pull_request_id
+        - html_url
+        - author_id
+      filter: {}
+      allow_aggregations: true

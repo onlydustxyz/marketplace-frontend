@@ -6,43 +6,45 @@ import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import Medal2Fill from "src/icons/Medal2Fill";
 import StackLine from "src/icons/StackLine";
 
-export function ViewMobile({ contributors }: { contributors: ContributorType[] }) {
+type ViewMobileProps = {
+  contributors: ContributorType[];
+  isProjectLeader: boolean;
+};
+
+export function ViewMobile({ contributors, isProjectLeader }: ViewMobileProps) {
   return (
     <Card className="divide-y divide-greyscale-50/8 bg-whiteFakeOpacity-5" padded={false}>
       {contributors
         .sort((contributorA, contributorB) => contributorB.contributionCount - contributorA.contributionCount)
         .map(contributor => {
-          const toRewardCount =
-            contributor.toRewardCount - contributor.unpaidCodeReviewCount - contributor.unpaidIssueCount;
-          const contributionCount =
-            contributor.contributionCount - contributor.unpaidCodeReviewCount - contributor.unpaidIssueCount;
+          const { contributionCount, toRewardCount, rewardCount, login, totalEarned } = contributor || {};
+          const hasNothing = toRewardCount === 0 && contributionCount === 0;
 
-          const hasNothing = toRewardCount === 0 && contributionCount === 0 && contributor.rewardCount === 0;
           return (
-            <div className="flex items-center justify-between gap-1 p-3" key={contributor.login}>
+            <div className="flex items-center justify-between gap-1 p-3" key={login}>
               <Contributor contributor={contributor} clickable />
               {!hasNothing ? (
                 <div className="flex items-center gap-3">
-                  {contributionCount ? (
+                  {contributionCount > 0 && contributionCount !== toRewardCount ? (
                     <div className="flex items-center gap-1 text-sm">
                       <StackLine className="text-base font-medium text-spaceBlue-200" />
                       {contributionCount}
                     </div>
                   ) : null}
-                  {contributor.rewardCount ? (
+                  {rewardCount ? (
                     <>
                       <div className="flex items-center gap-1 text-sm">
                         <Medal2Fill className="text-base font-medium text-spaceBlue-200" />
-                        {contributor.rewardCount}
+                        {rewardCount}
                       </div>
                       <div className="flex items-center gap-1 text-sm">
                         <MoneyDollarCircleLine className="text-base font-medium text-spaceBlue-200" />
-                        {`${contributor?.totalEarned ? formatMoneyAmount({ amount: contributor.totalEarned }) : "-"}`}
+                        {`${totalEarned ? formatMoneyAmount({ amount: totalEarned }) : "-"}`}
                       </div>
                     </>
                   ) : null}
 
-                  {toRewardCount ? (
+                  {isProjectLeader && toRewardCount ? (
                     <div className="flex items-center gap-1 rounded-full bg-spacePurple-900 px-1.5 py-0.5 text-sm font-medium text-spacePurple-400">
                       <StackLine className="text-base" />
                       {toRewardCount}

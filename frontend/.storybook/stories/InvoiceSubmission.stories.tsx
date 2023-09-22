@@ -25,6 +25,7 @@ const [payment1, payment2, payment3]: Reward[] = range(1, 4).map(id => ({
       number: 123,
       githubIssue: null,
       githubPullRequest: null,
+      githubCodeReview: null,
       type: WorkItemType.Issue,
     },
   ],
