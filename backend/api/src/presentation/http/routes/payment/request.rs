@@ -2,6 +2,7 @@ use domain::{
 	AggregateRepository, CommandId, Currency, GithubUserId, Payment, PaymentId, ProjectId,
 };
 use http_api_problem::{HttpApiProblem, StatusCode};
+use olog::IntoField;
 use presentation::http::guards::{ApiKey, Claims, Role};
 use rocket::{serde::json::Json, State};
 use rust_decimal::Decimal;
@@ -71,11 +72,13 @@ pub async fn request_payment(
 		)
 		.await
 		.map_err(|e| {
-			{
-				HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
-					.title("Unable to process request_payment request")
-					.detail(e.to_string())
-			}
+			olog::error!(
+				error = e.to_field(),
+				"Unable to process request payment request"
+			);
+			HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
+				.title("Unable to process request payment request")
+				.detail(e.to_string())
 		})?;
 
 	Ok(Json(Response {
