@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use derive_more::Constructor;
-use domain::{Event, Publisher, PublisherError};
+use domain::{Event, EventListener, SubscriberCallbackError};
 
 use crate::models::EventRepository;
 
@@ -11,11 +11,11 @@ pub struct Projector {
 }
 
 #[async_trait]
-impl Publisher<Event> for Projector {
-	async fn publish(&self, event: &Event) -> Result<(), PublisherError> {
+impl EventListener<Event> for Projector {
+	async fn on_event(&self, event: Event) -> Result<(), SubscriberCallbackError> {
 		self.events_repository
-			.append(event.clone().try_into()?)
-			.map_err(|e| PublisherError::Send(e.into()))?;
+			.append(event.try_into().map_err(SubscriberCallbackError::Fatal)?)
+			.map_err(|e| SubscriberCallbackError::Fatal(e.into()))?;
 		Ok(())
 	}
 }

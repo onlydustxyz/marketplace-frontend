@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use anyhow::Result;
-use domain::{AggregateRepository, CompositePublisher};
+use domain::{AggregateRepository, CompositePublisher, EventPublisher};
 use event_store::bus::QUEUE_NAME as EVENT_STORE_QUEUE;
 use infrastructure::{
 	amqp, amqp::CommandPublisherDecorator, database, event_bus::EXCHANGE_NAME, github,
@@ -30,7 +30,9 @@ pub async fn bootstrap(config: Config) -> Result<Rocket<Build>> {
 	let github_client_pat_factory = GithubClientPatFactory::new(config.github_api_client.clone());
 
 	let event_publisher = CompositePublisher::new(vec![
-		Arc::new(projectors::event_store::Projector::new(database.clone())),
+		Arc::new(EventPublisher::new(
+			projectors::event_store::Projector::new(database.clone()),
+		)),
 		Arc::new(
 			amqp::Bus::new(config.amqp.clone())
 				.await?
