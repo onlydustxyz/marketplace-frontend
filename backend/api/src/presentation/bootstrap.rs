@@ -9,7 +9,7 @@ use infrastructure::{
 use rocket::{Build, Rocket};
 
 use crate::{
-	domain::projectors,
+	domain::projectors::{self, projections},
 	infrastructure::{simple_storage, web3::ens},
 	presentation::{graphql, http, http::github_client_pat_factory::GithubClientPatFactory},
 	Config,
@@ -33,6 +33,22 @@ pub async fn bootstrap(config: Config) -> Result<Rocket<Build>> {
 		Arc::new(EventPublisher::new(
 			projectors::event_store::Projector::new(database.clone()),
 		)),
+		Arc::new(EventPublisher::new(projections::Projector::new(
+			database.clone(),
+			database.clone(),
+			database.clone(),
+			database.clone(),
+			database.clone(),
+			database.clone(),
+			database.clone(),
+			database.clone(),
+			database.clone(),
+			database.clone(),
+			database.clone(),
+			database.clone(),
+			database.clone(),
+			database.clone(),
+		))),
 		Arc::new(
 			amqp::Bus::new(config.amqp.clone())
 				.await?
