@@ -41,7 +41,10 @@ export default function RoundedImage({
           "pseudo-outline-4": size === ImageSize.Xl,
         },
         {
-          "rounded-xl": rounding === Rounding.Corners,
+          "rounded-lg":
+            rounding === Rounding.Corners && (size === ImageSize.Xxs || size === ImageSize.Xs || size === ImageSize.Sm),
+          "rounded-xl":
+            rounding === Rounding.Corners && (size === ImageSize.Md || size === ImageSize.Lg || size === ImageSize.Xl),
           "rounded-full": rounding === Rounding.Circle,
         },
         className
