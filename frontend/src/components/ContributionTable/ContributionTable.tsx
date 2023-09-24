@@ -17,7 +17,7 @@ import TimeLine from "src/icons/TimeLine";
 import SortingArrow from "src/pages/ProjectDetails/Contributors/ContributorsTable/SortingArrow";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { GetAllContributionsQuery } from "src/__generated/graphql";
-import { ContributionBadgeStatus } from "../ContributionBadge/ContributionBadge";
+import { ContributionBadge, ContributionBadgeStatusType } from "../ContributionBadge/ContributionBadge";
 import { ContributionReviewStatus } from "../ContributionReview/ContributionReview";
 
 function TableText({ children }: PropsWithChildren) {
@@ -39,6 +39,7 @@ export default function ContributionTable({
   data,
   loading,
   error,
+  showHeader = true,
 }: {
   id: string;
   title: string;
@@ -48,6 +49,7 @@ export default function ContributionTable({
   data?: GetAllContributionsQuery;
   loading: boolean;
   error?: ApolloError;
+  showHeader?: boolean;
 }) {
   const { T } = useIntl();
 
@@ -60,7 +62,7 @@ export default function ContributionTable({
             url={contribution.githubIssue?.htmlUrl ?? ""}
             number={contribution.githubIssue?.number ?? ""}
             type={ContributionType.Issue}
-            status={(contribution.githubIssue?.status as ContributionBadgeStatus) ?? ""}
+            status={(contribution.githubIssue?.status as ContributionBadgeStatusType) ?? ""}
             //   external={contribution.external}}
             //   rewards={contribution.rewards}
             rewards={0}
@@ -74,7 +76,7 @@ export default function ContributionTable({
             url={contribution.githubPullRequest?.htmlUrl ?? ""}
             number={contribution.githubPullRequest?.number ?? ""}
             type={ContributionType.PullRequest}
-            status={(contribution.githubPullRequest?.status as ContributionBadgeStatus) ?? ""}
+            status={(contribution.githubPullRequest?.status as ContributionBadgeStatusType) ?? ""}
             // external={contribution.external}
             // rewards={contribution.rewards}
             rewards={0}
@@ -88,7 +90,7 @@ export default function ContributionTable({
             url={contribution.githubCodeReview?.githubPullRequest?.htmlUrl ?? ""}
             number={contribution.githubCodeReview?.githubPullRequest?.number ?? ""}
             type={ContributionType.CodeReview}
-            status={(contribution.githubCodeReview?.githubPullRequest?.status as ContributionBadgeStatus) ?? ""}
+            status={(contribution.githubCodeReview?.githubPullRequest?.status as ContributionBadgeStatusType) ?? ""}
             // external={contribution.external}
             // rewards={contribution.rewards}
             rewards={0}
@@ -96,6 +98,49 @@ export default function ContributionTable({
         );
       default:
         return null;
+    }
+  }
+
+  function renderLinkedContributions(contribution: GetAllContributionsQuery["contributions"][number]) {
+    switch (contribution.type) {
+      case ContributionType.Issue:
+        return contribution.githubIssue?.closedByPullRequests?.map(({ githubPullRequest }) => {
+          const { id, number, status, draft } = githubPullRequest ?? {};
+          return (
+            <ContributionBadge
+              key={id}
+              number={number}
+              type={ContributionType.PullRequest}
+              status={status as ContributionBadgeStatusType}
+              draft={draft}
+            />
+          );
+        });
+      case ContributionType.PullRequest:
+        return contribution.githubPullRequest?.closingIssues?.map(({ githubIssue }) => {
+          const { id, number, status } = githubIssue ?? {};
+          return (
+            <ContributionBadge
+              key={id}
+              number={number}
+              type={ContributionType.Issue}
+              status={status as ContributionBadgeStatusType}
+            />
+          );
+        });
+      case ContributionType.CodeReview: {
+        const { number, status, draft } = contribution.githubCodeReview?.githubPullRequest ?? {};
+        return (
+          <ContributionBadge
+            number={number}
+            type={ContributionType.PullRequest}
+            status={status as ContributionBadgeStatusType}
+            draft={draft}
+          />
+        );
+      }
+      default:
+        return "-";
     }
   }
 
@@ -134,8 +179,8 @@ export default function ContributionTable({
         key={contribution.id}
         //   onClick={onClick} selected={selected}
       >
-        <Cell height={CellHeight.Medium} className="text-sm first-letter:uppercase">
-          {displayRelativeDate(contribution.createdAt)}
+        <Cell height={CellHeight.Medium}>
+          <span className="text-sm first-letter:uppercase">{displayRelativeDate(contribution.createdAt)}</span>
         </Cell>
         <Cell height={CellHeight.Medium} className="flex flex-row gap-3">
           <div className="flex items-center gap-3">
@@ -154,7 +199,7 @@ export default function ContributionTable({
         </Cell>
         <Cell height={CellHeight.Medium}>{renderContribution(contribution)}</Cell>
         <Cell className="justify-end" height={CellHeight.Medium}>
-          123
+          {renderLinkedContributions(contribution)}
         </Cell>
       </Line>
     ));
@@ -162,16 +207,18 @@ export default function ContributionTable({
 
   return (
     <section className="rounded-2xl border border-white/5">
-      <header
-        className="flex cursor-pointer items-start gap-3 border-b border-greyscale-50/8 bg-white/2 px-6 py-4"
-        onClick={onHeaderClick}
-      >
-        <div className="rounded-lg bg-white/5 p-3 text-greyscale-50">{icon("h-5 w-5")}</div>
-        <div className="font-walsheim">
-          <p className="text-base font-medium text-greyscale-50">{title}</p>
-          <p className="text-sm text-spaceBlue-200">{description}</p>
-        </div>
-      </header>
+      {showHeader ? (
+        <header
+          className="flex cursor-pointer items-start gap-3 border-b border-greyscale-50/8 bg-white/2 px-6 py-4"
+          onClick={onHeaderClick}
+        >
+          <div className="rounded-lg bg-white/5 p-3 text-greyscale-50">{icon("h-5 w-5")}</div>
+          <div className="font-walsheim">
+            <p className="text-base font-medium text-greyscale-50">{title}</p>
+            <p className="text-sm text-spaceBlue-200">{description}</p>
+          </div>
+        </header>
+      ) : null}
       <div className="px-4 py-6">
         <Table
           id={id}
