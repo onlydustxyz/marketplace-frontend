@@ -1,0 +1,41 @@
+version: "3.8"
+services:
+  db:
+    container_name: db
+    image: postgres:14.3-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: marketplace_db
+    ports:
+      - 5432:5432
+    volumes:
+      - db:/var/lib/postgresql/data
+      - ./scripts/initdb.d:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD", "pg_isready", "-d", "marketplace_db", "-U", "postgres"]
+      interval: 2s
+      timeout: 1s
+      retries: 20
+
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3.11-management
+    restart: unless-stopped
+    volumes:
+      - rabbitmq:/var/lib/rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+    healthcheck:
+      test: bash -c ':> /dev/tcp/127.0.0.1/5672' || exit 1
+      interval: 2s
+      timeout: 1s
+      retries: 10
+      start_period: 5s
+
+volumes:
+  rabbitmq:
+  db:
+    driver: local

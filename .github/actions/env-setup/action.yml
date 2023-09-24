@@ -7,4 +7,4 @@ runs:
   steps:
     - name: Run docker-compose
       shell: bash
-      run: yarn infra:up
+      run: make infra/up

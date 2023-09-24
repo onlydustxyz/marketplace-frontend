@@ -7,6 +7,6 @@ runs:
   steps:
     - uses: Swatinem/rust-cache@v2
 
-    - name: Install toolchain
+    - name: Install toolchain and dependencies
       shell: bash
-      run: rustup toolchain install 1.70 --profile minimal
+      run: make install

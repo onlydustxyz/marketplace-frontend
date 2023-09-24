@@ -21,9 +21,6 @@ env:
   GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
   DATABASE_URL: postgres://postgres:postgres@localhost/marketplace_db
   RUST_LOG: info
-  HASURA_GRAPHQL_JWT_SECRET: '{"type":"HS256","key":"5152fa850c02dc222631cca898ed1485821a70912a6e3649c49076912daa3b62182ba013315915d64f40cddfbb8b58eb5bd11ba225336a6af45bbae07ca873f3","issuer":"hasura-auth"}'
-  HASURA_GRAPHQL_EXPERIMENTAL_FEATURES: naming_convention
-  HASURA_GRAPHQL_DEFAULT_NAMING_CONVENTION: graphql-default
   INFURA_API_KEY: ${{ secrets.INFURA_API_KEY }}
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -37,15 +34,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Install nightly toolchain
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: nightly
-          components: rustfmt
-          override: true
+      - name: Setup cargo
+        uses: ./.github/actions/cargo-setup
 
       - name: Check code formatting
-        run: yarn backend:fmt
+        run: make fmt
 
       - name: Check codecov.yml file format
         run: curl --data-binary @- https://codecov.io/validate < codecov.yml
@@ -61,7 +54,7 @@ jobs:
         uses: ./.github/actions/cargo-setup
 
       - name: Check application
-        run: yarn backend:check
+        run: make check
 
   build:
     name: Compile
@@ -74,7 +67,7 @@ jobs:
         uses: ./.github/actions/cargo-setup
 
       - name: Compile application
-        run: yarn backend:build
+        run: make
 
   lint:
     name: Clippy checks
@@ -86,11 +79,8 @@ jobs:
       - name: Setup cargo
         uses: ./.github/actions/cargo-setup
 
-      - name: Setup clippy
-        run: rustup component add clippy
-
       - name: Run clippy
-        run: yarn backend:clippy
+        run: make clippy
 
   unit_tests:
     name: Unit tests
@@ -102,14 +92,8 @@ jobs:
       - name: Setup cargo
         uses: ./.github/actions/cargo-setup
 
-      - name: Setup environment
-        uses: ./.github/actions/env-setup
-
-      - name: Install Tarpaulin
-        run: cargo install cargo-tarpaulin
-
       - name: Run tests
-        run: yarn backend:unit-tests-with-coverage
+        run: make coverage/unit-tests
 
       - name: Setup tmate session for debugging
         uses: mxschmitt/action-tmate@v3
@@ -120,7 +104,7 @@ jobs:
         with:
           codecov_token: ${{ secrets.CODECOV_TOKEN }}
           codecov_flag: unittest
-          file: backend/cobertura.xml
+          file: lcov.info
 
   api_integration_tests:
     name: Integration tests
@@ -132,11 +116,8 @@ jobs:
       - name: Setup cargo
         uses: ./.github/actions/cargo-setup
 
-      - name: Install Tarpaulin
-        run: cargo install cargo-tarpaulin
-
       - name: Run tests
-        run: yarn backend:integration-tests-with-coverage
+        run: make coverage/integration-tests
 
       - name: Setup tmate session for debugging
         uses: mxschmitt/action-tmate@v3
@@ -147,4 +128,4 @@ jobs:
         with:
           codecov_token: ${{ secrets.CODECOV_TOKEN }}
           codecov_flag: integration_tests
-          file: backend/cobertura.xml
+          file: lcov.info

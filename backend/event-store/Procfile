@@ -1,1 +1,0 @@
-event-store: ./backend/target/release/event-store

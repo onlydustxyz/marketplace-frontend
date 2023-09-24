@@ -16,7 +16,7 @@
     <img src="https://github.com/onlydustxyz/marketplace/actions/workflows/install.yml/badge.svg" />
   </p>
   
-  <h3 align="center">Marketplace monorepo</h3>
+  <h3 align="center">Marketplace backend</h3>
 
 </h3>
 </div>
@@ -42,92 +42,64 @@
 
 ## 🎗️ Prerequisites
 
-- [rust](https://www.rust-lang.org/tools/install)
-- [yarn](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable)
-- [docker](https://docs.docker.com/get-docker/)
+-   [docker](https://docs.docker.com/get-docker/)
 
-Make sure Rust 1.70 is used:
+Install rust and the dependencies:
 
 ```sh
-rustup default 1.70
+make install
 ```
 
 ## Usage
 
-First, prepare your local environment by configuring your `.env`. Copy the `.env.e2e` file and replace the values tagged with `REPLACE_AT_INSTALLATION` according to your personal accounts.
+First, prepare your local environment by configuring your `.env`. Copy the `.env.example` file and replace the values tagged with `REPLACE_AT_INSTALLATION` according to your personal accounts.
 
 ```sh
-cp .env.e2e .env
+cp .env.example .env
 ```
 
-To run the whole stack:
+The [Makefile](./Makefile) contains all commands you may need. Please check it.
+
+Examples:
 
 ```sh
-yarn e2e:env:up
+make fmt                # Check code formatting
+make check              # Check for compile errors
+make clippy             # Run the linter
+make                    # build the application
+make unit-tests         # Run the unit tests
+make integration-tests  # Run the integration tests
 ```
 
-To execute e2e tests:
+Or run the backend in local, each in a dedicated terminal:
 
 ```sh
-yarn e2e:run
-```
-
-To reset the whole stack (including clearing DB data):
-
-```sh
-yarn e2e:env:reset
-```
-
-To run / shutdown the backend (including infra):
-
-```sh
-yarn backend:up
-yarn backend:down
-```
-
-Many other commands are available in the [package.json](./package.json) file. Please check it.
-
-### 📚 Storybook
-
-To view components in isolation using [Storybook](https://storybook.js.org/)
-
-```bash
-yarn --cwd ./frontend storybook
-```
-
-### 🕸 GraphQL codegen
-
-To generate types from the Hasura GraphQL schema during development
-
-```bash
-yarn --cwd ./frontend generate
-```
-
-### 📚 Update list of supported languages
-
-You'll need `yq` and `jq`
-
-```bash
-brew install yq jq
-```
-
-To update the list of supported languages (taken from Github) used to autocomplete technologies
-in the profile edit form
-
-```bash
-yarn --cwd ./frontend update-languages
+make api
+make event-listeners
+make quotes-syncer
+make github-indexer
+make github-indexer-api
 ```
 
 ## Migrate database
 
-- To create a new migration, start running
+First install diesel CLI
+
+```sh
+brew install libpq
+brew link --force libpq
+PQ_LIB_DIR="$(brew --prefix libpq)/lib"
+cargo install diesel_cli --no-default-features --features postgres
+```
+
+-   To create a new migration, start running
 
 ```
 diesel migration generate <your-migration-name>
 ```
 
-- Edit the generated files with your SQL code for `up.sql` and `down.sql`
-- Test your migration up and down by running
+-   Edit the generated files with your SQL code for `up.sql` and `down.sql`
+-   Test your migration up and down by running
 
 ```
 diesel migration run
@@ -135,14 +107,14 @@ diesel migration revert
 diesel migration run
 ```
 
-- The file `schema.rs` should be then automatically updated
+-   The file `schema.rs` should be then automatically updated
 
 ## Security
 
-To activate the GitGuardian pre-commit, you need first to connect to GitGuardian : 
+To activate the GitGuardian pre-commit, you need first to connect to GitGuardian :
 
-* follow the GitGuardian documentation to install their CLI : https://docs.gitguardian.com/ggshield-docs/getting-started
-* authenticate to GitGuardian by running `ggshield auth login`
+-   follow the GitGuardian documentation to install their CLI : https://docs.gitguardian.com/ggshield-docs/getting-started
+-   authenticate to GitGuardian by running `ggshield auth login`
 
 Then, install GitGuardian pre-commit hook to check if some secrets are leaked inside the code base :
 
