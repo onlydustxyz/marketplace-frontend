@@ -11,13 +11,7 @@ import PrClosed from "src/assets/icons/PrClosed";
 import PrDraft from "src/assets/icons/PrDraft";
 import PrMerged from "src/assets/icons/PrMerged";
 import PrOpen from "src/assets/icons/PrOpen";
-
-export enum ContributionBadgeStatus {
-  Open = "OPEN",
-  Closed = "COMPLETED",
-  Merged = "MERGED",
-  Draft = "DRAFT",
-}
+import { GithubPullRequestStatus, GithubIssueStatus, Maybe } from "src/__generated/graphql";
 
 export enum ContributionBadgeType {
   PullRequest = "PULL_REQUEST",
@@ -25,12 +19,18 @@ export enum ContributionBadgeType {
   CodeReview = "CODE_REVIEW",
 }
 
+export const ContributionBadgeStatus = { ...GithubPullRequestStatus, ...GithubIssueStatus };
+
+export type ContributionBadgeStatusType = typeof ContributionBadgeStatus[keyof typeof ContributionBadgeStatus];
+
 const variants = {
   status: {
     [ContributionBadgeStatus.Open]: "text-github-green-light border-github-green",
     [ContributionBadgeStatus.Closed]: "text-github-red-light border-github-red",
+    [ContributionBadgeStatus.Cancelled]: "text-github-red-light border-github-red",
     [ContributionBadgeStatus.Merged]: "text-github-purple-light border-github-purple",
-    [ContributionBadgeStatus.Draft]: "text-github-grey-light border-github-grey",
+    [ContributionBadgeStatus.Completed]: "text-github-purple-light border-github-purple",
+    draft: "text-github-grey-light border-github-grey",
   },
 };
 
@@ -38,20 +38,26 @@ const icons = {
   [ContributionBadgeType.PullRequest]: {
     [ContributionBadgeStatus.Open]: <PrOpen />,
     [ContributionBadgeStatus.Closed]: <PrClosed />,
+    [ContributionBadgeStatus.Cancelled]: <PrClosed />,
     [ContributionBadgeStatus.Merged]: <PrMerged />,
-    [ContributionBadgeStatus.Draft]: <PrDraft />,
+    [ContributionBadgeStatus.Completed]: <PrMerged />,
+    draft: <PrDraft />,
   },
   [ContributionBadgeType.Issue]: {
     [ContributionBadgeStatus.Open]: <IssueOpen />,
     [ContributionBadgeStatus.Closed]: <IssueCancelled />,
+    [ContributionBadgeStatus.Cancelled]: <IssueCancelled />,
     [ContributionBadgeStatus.Merged]: <IssueMerged />,
-    [ContributionBadgeStatus.Draft]: <IssueDraft />,
+    [ContributionBadgeStatus.Completed]: <IssueMerged />,
+    draft: <IssueDraft />,
   },
   [ContributionBadgeType.CodeReview]: {
     [ContributionBadgeStatus.Open]: <CodeReviewOpen />,
     [ContributionBadgeStatus.Closed]: null,
+    [ContributionBadgeStatus.Cancelled]: null,
     [ContributionBadgeStatus.Merged]: <CodeReviewMerged />,
-    [ContributionBadgeStatus.Draft]: null,
+    [ContributionBadgeStatus.Completed]: <CodeReviewMerged />,
+    draft: null,
   },
 };
 
@@ -59,11 +65,13 @@ export function ContributionBadge({
   number,
   type,
   status,
+  draft = false,
   external = false,
 }: {
   number: number;
   type: ContributionBadgeType;
-  status: ContributionBadgeStatus;
+  status: ContributionBadgeStatusType;
+  draft?: Maybe<boolean>; // Matches graphql type
   external?: boolean;
 }) {
   return (
@@ -74,10 +82,10 @@ export function ContributionBadge({
           "border border-dashed": external,
           "border-0.5 border-solid": !external,
         },
-        variants.status[status]
+        variants.status[draft ? "draft" : status]
       )}
     >
-      {icons[type][status]}
+      {icons[type][draft ? "draft" : status]}
       <div className="flex">
         <span className="text-sm leading-none">{number}</span>
         {external ? <ExternalArrow className="mt-[3px]" /> : null}

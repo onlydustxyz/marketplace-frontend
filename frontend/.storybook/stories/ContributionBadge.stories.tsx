@@ -10,17 +10,14 @@ export default {
   argTypes: {
     status: {
       control: { type: "select" },
-      options: [
-        ContributionBadgeStatus.Open,
-        ContributionBadgeStatus.Merged,
-        ContributionBadgeStatus.Closed,
-        ContributionBadgeStatus.Draft,
-      ],
+      options: [ContributionBadgeStatus.Open, ContributionBadgeStatus.Merged, ContributionBadgeStatus.Closed],
     },
     type: {
       control: { type: "select" },
       options: [ContributionBadgeType.PullRequest, ContributionBadgeType.Issue, ContributionBadgeType.CodeReview],
     },
+    draft: "boolean",
+    external: "boolean",
   },
 };
 
