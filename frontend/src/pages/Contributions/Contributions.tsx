@@ -232,7 +232,9 @@ export default function Contributions() {
             </header>
             <div className="flex flex-col gap-4 p-8">
               {tableItems.map(({ show, ...restProps }) =>
-                show ? <ContributionTable key={restProps.id} {...restProps} /> : null
+                show ? (
+                  <ContributionTable key={restProps.id} {...restProps} showHeader={isActiveTab(AllTabs.All)} />
+                ) : null
               )}
             </div>
           </div>
