@@ -19,7 +19,7 @@ query GetAllContributions(
           ...ContributionGithubIssue
         }
       }
-      codeReviews(orderBy: { submittedAt: DESC }) {
+      codeReviews(orderBy: { submittedAt: DESC }, limit: 1) {
         outcome
         id
       }

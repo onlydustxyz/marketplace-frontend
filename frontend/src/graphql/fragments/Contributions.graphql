@@ -1,4 +1,9 @@
 fragment ContributionGithubPullRequest on GithubPullRequests {
+  author {
+    avatarUrl
+    htmlUrl
+    login
+  }
   draft
   htmlUrl
   id
