@@ -1,6 +1,9 @@
 import type { ApolloError } from "@apollo/client";
 import { PropsWithChildren, ReactNode } from "react";
+import { Link, generatePath } from "react-router-dom";
 
+import { RoutePaths } from "src/App";
+import { GetAllContributionsQuery } from "src/__generated/graphql";
 import IssueOpen from "src/assets/icons/IssueOpen";
 import { Contribution, ContributionType } from "src/components/Contribution/Contribution";
 import Loader from "src/components/Loader";
@@ -16,7 +19,6 @@ import StackLine from "src/icons/StackLine";
 import TimeLine from "src/icons/TimeLine";
 import SortingArrow from "src/pages/ProjectDetails/Contributors/ContributorsTable/SortingArrow";
 import displayRelativeDate from "src/utils/displayRelativeDate";
-import { GetAllContributionsQuery } from "src/__generated/graphql";
 import { ContributionBadge, ContributionBadgeStatusType } from "../ContributionBadge/ContributionBadge";
 import { ContributionReviewStatus } from "../ContributionReview/ContributionReview";
 
@@ -195,10 +197,7 @@ export default function ContributionTable({
     }
 
     return data?.contributions.map(contribution => (
-      <Line
-        key={contribution.id}
-        //   onClick={onClick} selected={selected}
-      >
+      <Line key={contribution.id}>
         <Cell height={CellHeight.Medium}>
           <span className="text-sm first-letter:uppercase">{displayRelativeDate(contribution.createdAt)}</span>
         </Cell>
@@ -213,7 +212,23 @@ export default function ContributionTable({
               />
             ) : null}
             <p className="text-sm">
-              {contribution.project?.name} <span className="text-spaceBlue-300">/</span> {contribution.githubRepo?.name}
+              <Link
+                to={generatePath(RoutePaths.ProjectDetails, {
+                  projectKey: contribution.project?.key ?? "",
+                })}
+                className="hover:underline"
+              >
+                {contribution.project?.name}
+              </Link>
+              <span className="text-spaceBlue-300">/</span>{" "}
+              <a
+                href={contribution.githubRepo?.htmlUrl ?? ""}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:underline"
+              >
+                {contribution.githubRepo?.name}
+              </a>
             </p>
           </div>
         </Cell>

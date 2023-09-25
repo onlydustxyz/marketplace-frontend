@@ -37,6 +37,7 @@ query GetAllContributions(
       }
     }
     githubRepo {
+      htmlUrl
       name
       id
     }
@@ -44,6 +45,7 @@ query GetAllContributions(
       name
       logoUrl
       id
+      key
     }
     status
     type

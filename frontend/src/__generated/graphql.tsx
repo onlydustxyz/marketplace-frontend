@@ -4035,6 +4035,8 @@ export type GithubPullRequestReviews = {
   id: Maybe<Scalars['String']>;
   outcome: Maybe<Scalars['github_code_review_outcome']>;
   pullRequestId: Maybe<Scalars['bigint']>;
+  /** An object relationship */
+  reviewer: Maybe<GithubUsers>;
   reviewerId: Maybe<Scalars['bigint']>;
   status: Maybe<Scalars['String']>;
   submittedAt: Maybe<Scalars['timestamp']>;
@@ -4104,6 +4106,7 @@ export type GithubPullRequestReviewsInsertInput = {
   id: InputMaybe<Scalars['String']>;
   outcome: InputMaybe<Scalars['github_code_review_outcome']>;
   pullRequestId: InputMaybe<Scalars['bigint']>;
+  reviewer: InputMaybe<GithubUsersObjRelInsertInput>;
   reviewerId: InputMaybe<Scalars['bigint']>;
   status: InputMaybe<Scalars['String']>;
   submittedAt: InputMaybe<Scalars['timestamp']>;
@@ -4267,6 +4270,8 @@ export enum GithubPullRequestStatus {
 /** columns and relationships of "api.github_pull_requests" */
 export type GithubPullRequests = {
   __typename?: 'GithubPullRequests';
+  /** An object relationship */
+  author: Maybe<GithubUsers>;
   authorId: Maybe<Scalars['bigint']>;
   ciChecks: Maybe<Scalars['github_ci_checks']>;
   closedAt: Maybe<Scalars['timestamp']>;
@@ -4274,6 +4279,10 @@ export type GithubPullRequests = {
   closingIssues: Array<ApiClosingIssues>;
   /** An aggregate relationship */
   closingIssuesAggregate: ApiClosingIssuesAggregate;
+  /** An array relationship */
+  commits: Array<GithubPullRequestCommits>;
+  /** An aggregate relationship */
+  commitsAggregate: GithubPullRequestCommitsAggregate;
   createdAt: Maybe<Scalars['timestamp']>;
   draft: Maybe<Scalars['Boolean']>;
   htmlUrl: Maybe<Scalars['String']>;
@@ -4399,10 +4408,12 @@ export type GithubPullRequestsIncInput = {
 
 /** input type for inserting data into table "api.github_pull_requests" */
 export type GithubPullRequestsInsertInput = {
+  author: InputMaybe<GithubUsersObjRelInsertInput>;
   authorId: InputMaybe<Scalars['bigint']>;
   ciChecks: InputMaybe<Scalars['github_ci_checks']>;
   closedAt: InputMaybe<Scalars['timestamp']>;
   closingIssues: InputMaybe<ApiClosingIssuesArrRelInsertInput>;
+  commits: InputMaybe<GithubPullRequestCommitsArrRelInsertInput>;
   createdAt: InputMaybe<Scalars['timestamp']>;
   draft: InputMaybe<Scalars['Boolean']>;
   htmlUrl: InputMaybe<Scalars['String']>;
@@ -15340,6 +15351,30 @@ export type Query_RootGithubIssuesAggregateArgs = {
 };
 
 
+export type Query_RootGithubPullRequestCommitsArgs = {
+  distinctOn: InputMaybe<Array<GithubPullRequestCommitsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<GithubPullRequestCommitsOrderBy>>;
+  where: InputMaybe<GithubPullRequestCommitsBoolExp>;
+};
+
+
+export type Query_RootGithubPullRequestCommitsAggregateArgs = {
+  distinctOn: InputMaybe<Array<GithubPullRequestCommitsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<GithubPullRequestCommitsOrderBy>>;
+  where: InputMaybe<GithubPullRequestCommitsBoolExp>;
+};
+
+
+export type Query_RootGithubPullRequestCommitsByPkArgs = {
+  pullRequestId: Scalars['bigint'];
+  sha: Scalars['String'];
+};
+
+
 export type Query_RootGithubPullRequestReviewsArgs = {
   distinctOn: InputMaybe<Array<GithubPullRequestReviewsSelectColumn>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -16754,6 +16789,37 @@ export type Subscription_RootGithubIssuesAggregateArgs = {
 };
 
 
+export type Subscription_RootGithubPullRequestCommitsArgs = {
+  distinctOn: InputMaybe<Array<GithubPullRequestCommitsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<GithubPullRequestCommitsOrderBy>>;
+  where: InputMaybe<GithubPullRequestCommitsBoolExp>;
+};
+
+
+export type Subscription_RootGithubPullRequestCommitsAggregateArgs = {
+  distinctOn: InputMaybe<Array<GithubPullRequestCommitsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<GithubPullRequestCommitsOrderBy>>;
+  where: InputMaybe<GithubPullRequestCommitsBoolExp>;
+};
+
+
+export type Subscription_RootGithubPullRequestCommitsByPkArgs = {
+  pullRequestId: Scalars['bigint'];
+  sha: Scalars['String'];
+};
+
+
+export type Subscription_RootGithubPullRequestCommitsStreamArgs = {
+  batchSize: Scalars['Int'];
+  cursor: Array<InputMaybe<Github_Pull_Request_Commits_StreamCursorInput>>;
+  where: InputMaybe<GithubPullRequestCommitsBoolExp>;
+};
+
+
 export type Subscription_RootGithubPullRequestReviewsArgs = {
   distinctOn: InputMaybe<Array<GithubPullRequestReviewsSelectColumn>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -18081,14 +18147,14 @@ export type AllTechnologiesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type AllTechnologiesQuery = { __typename?: 'query_root', technologies: Array<{ __typename?: 'Technologies', technology: string | null }> };
 
-export type PaymentRequestDetailsFragment = { __typename?: 'PaymentRequests', id: any | null, amount: any | null, requestedAt: any | null, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', processedAt: any, receipt: any }>, requestor: { __typename?: 'RegisteredUsers', id: any | null, login: string | null, avatarUrl: string | null, githubUserId: any | null } | null, githubRecipient: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, workItems: Array<{ __typename?: 'WorkItems', type: any | null, id: string | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null } | null }>, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null } };
+export type PaymentRequestDetailsFragment = { __typename?: 'PaymentRequests', id: any | null, amount: any | null, requestedAt: any | null, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', processedAt: any, receipt: any }>, requestor: { __typename?: 'RegisteredUsers', id: any | null, login: string | null, avatarUrl: string | null, githubUserId: any | null } | null, githubRecipient: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, workItems: Array<{ __typename?: 'WorkItems', type: any | null, id: string | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, commentsCount: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', status: string | null, outcome: any | null, submittedAt: any | null, id: string | null, reviewer: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null } | null }>, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null } };
 
 export type PaymentRequestDetailsQueryVariables = Exact<{
   id: Scalars['uuid'];
 }>;
 
 
-export type PaymentRequestDetailsQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any | null, amount: any | null, requestedAt: any | null, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', processedAt: any, receipt: any }>, requestor: { __typename?: 'RegisteredUsers', id: any | null, login: string | null, avatarUrl: string | null, githubUserId: any | null } | null, githubRecipient: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, workItems: Array<{ __typename?: 'WorkItems', type: any | null, id: string | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null } | null }>, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null } }> };
+export type PaymentRequestDetailsQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any | null, amount: any | null, requestedAt: any | null, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', processedAt: any, receipt: any }>, requestor: { __typename?: 'RegisteredUsers', id: any | null, login: string | null, avatarUrl: string | null, githubUserId: any | null } | null, githubRecipient: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, workItems: Array<{ __typename?: 'WorkItems', type: any | null, id: string | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, commentsCount: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', status: string | null, outcome: any | null, submittedAt: any | null, id: string | null, reviewer: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null } | null }>, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null } }> };
 
 export type CancelPaymentRequestMutationVariables = Exact<{
   paymentId: Scalars['Uuid'];
@@ -18101,13 +18167,17 @@ export type ApplicationIdFragment = { __typename?: 'Applications', id: any };
 
 export type ApplicantFragment = { __typename?: 'Applications', applicantId: any, id: any };
 
+export type GithubCodeReviewIdFragment = { __typename?: 'GithubPullRequestReviews', id: string | null };
+
+export type GithubCodeReviewFragment = { __typename?: 'GithubPullRequestReviews', status: string | null, outcome: any | null, submittedAt: any | null, id: string | null, reviewer: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null };
+
 export type GithubIssueIdFragment = { __typename?: 'GithubIssues', id: any | null };
 
-export type GithubIssueFragment = { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, id: any | null };
+export type GithubIssueFragment = { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, commentsCount: any | null, id: any | null };
 
 export type GithubPullRequestIdFragment = { __typename?: 'GithubPullRequests', id: any | null };
 
-export type GithubPullRequestFragment = { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null };
+export type GithubPullRequestFragment = { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null };
 
 export type GithubRepoIdFragment = { __typename?: 'GithubRepos', id: any | null };
 
@@ -18131,7 +18201,7 @@ export type ExtendedPaymentRequestFragment = { __typename?: 'PaymentRequests', r
 
 export type ProjectIdFragment = { __typename?: 'Projects', id: any | null, key: string | null };
 
-export type LastProjectMergedPullRequestsFragment = { __typename?: 'Projects', githubRepos: Array<{ __typename?: 'ProjectGithubRepos', projectId: any, githubRepoId: any, repoIssues: Array<{ __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, id: any | null }> }> };
+export type LastProjectMergedPullRequestsFragment = { __typename?: 'Projects', githubRepos: Array<{ __typename?: 'ProjectGithubRepos', projectId: any, githubRepoId: any, repoIssues: Array<{ __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, commentsCount: any | null, id: any | null }> }> };
 
 export type ProjectVisibilityDetailsFragment = { __typename?: 'Projects', visibility: any | null, usdBudgetId: any | null, id: any | null, key: string | null, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributors', githubUserId: any }>, pendingContributors: Array<{ __typename?: 'ProjectsPendingContributors', githubUserId: any }>, rewardedUsers: Array<{ __typename?: 'ProjectsRewardedUsers', githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> };
 
@@ -18155,7 +18225,7 @@ export type OwnUserProfileDetailsFragment = { __typename?: 'UserProfiles', weekl
 
 export type WorkItemIdFragment = { __typename?: 'WorkItems', id: string | null };
 
-export type WorkItemFragment = { __typename?: 'WorkItems', type: any | null, id: string | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null } | null };
+export type WorkItemFragment = { __typename?: 'WorkItems', type: any | null, id: string | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, commentsCount: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', status: string | null, outcome: any | null, submittedAt: any | null, id: string | null, reviewer: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null } | null };
 
 export type LiveGithubPullRequestIdFragment = { __typename?: 'GithubPullRequest', id: number };
 
@@ -18284,7 +18354,7 @@ export type GetAllContributionsQueryVariables = Exact<{
 }>;
 
 
-export type GetAllContributionsQuery = { __typename?: 'query_root', contributions: Array<{ __typename?: 'Contributions', closedAt: any | null, createdAt: any | null, id: string | null, status: any | null, type: string | null, githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, closingIssues: Array<{ __typename?: 'ApiClosingIssues', githubIssue: { __typename?: 'GithubIssues', commentsCount: any | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null } | null }> } | null, githubIssue: { __typename?: 'GithubIssues', commentsCount: any | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, closedByPullRequests: Array<{ __typename?: 'ApiClosedByPullRequests', githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null } | null }> } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', id: string | null, status: string | null, outcome: any | null, githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null } | null } | null, githubRepo: { __typename?: 'GithubRepos', name: string | null, id: any | null } | null, project: { __typename?: 'Projects', name: string | null, logoUrl: string | null, id: any | null } | null }>, githubRepos: Array<{ __typename?: 'GithubRepos', indexedAt: any | null }> };
+export type GetAllContributionsQuery = { __typename?: 'query_root', contributions: Array<{ __typename?: 'Contributions', closedAt: any | null, createdAt: any | null, id: string | null, status: any | null, type: string | null, githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, closingIssues: Array<{ __typename?: 'ApiClosingIssues', githubIssue: { __typename?: 'GithubIssues', commentsCount: any | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null } | null }> } | null, githubIssue: { __typename?: 'GithubIssues', commentsCount: any | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, closedByPullRequests: Array<{ __typename?: 'ApiClosedByPullRequests', githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null } | null }> } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', id: string | null, status: string | null, outcome: any | null, githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null } | null } | null, githubRepo: { __typename?: 'GithubRepos', htmlUrl: string | null, name: string | null, id: any | null } | null, project: { __typename?: 'Projects', name: string | null, logoUrl: string | null, id: any | null, key: string | null } | null }>, githubRepos: Array<{ __typename?: 'GithubRepos', indexedAt: any | null }> };
 
 export type PendingProjectLeaderInvitationsQueryVariables = Exact<{
   githubUserId: InputMaybe<Scalars['bigint']>;
@@ -18368,13 +18438,23 @@ export type UnignoreContributionMutation = { __typename?: 'mutation_root', unign
 export type UnrewardedContributionsQueryVariables = Exact<{
   githubUserId: Scalars['bigint'];
   projectId: Scalars['uuid'];
+}>;
+
+
+export type UnrewardedContributionsQuery = { __typename?: 'query_root', contributions: Array<{ __typename?: 'Contributions', type: string | null, status: any | null, repoId: any | null, projectId: any | null, id: string | null, detailsId: string | null, githubUserId: any | null, ignored: boolean | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, commentsCount: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, commitsCount: { __typename?: 'GithubPullRequestCommitsAggregate', aggregate: { __typename?: 'GithubPullRequestCommitsAggregateFields', count: number } | null }, userCommitsCount: { __typename?: 'GithubPullRequestCommitsAggregate', aggregate: { __typename?: 'GithubPullRequestCommitsAggregateFields', count: number } | null }, contributorDetails: Array<{ __typename?: 'GithubPullRequestCommits', author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null }>, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', status: string | null, outcome: any | null, submittedAt: any | null, id: string | null, reviewer: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null } | null }> };
+
+export type UnrewardedContributionsByTypeQueryVariables = Exact<{
+  githubUserId: Scalars['bigint'];
+  projectId: Scalars['uuid'];
   type: Scalars['String'];
 }>;
 
 
-export type UnrewardedContributionsQuery = { __typename?: 'query_root', contributions: Array<{ __typename?: 'Contributions', type: string | null, status: any | null, repoId: any | null, projectId: any | null, id: string | null, detailsId: string | null, githubUserId: any | null, ignored: boolean | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null } | null }> };
+export type UnrewardedContributionsByTypeQuery = { __typename?: 'query_root', contributions: Array<{ __typename?: 'Contributions', type: string | null, status: any | null, repoId: any | null, projectId: any | null, id: string | null, detailsId: string | null, githubUserId: any | null, ignored: boolean | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, commentsCount: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, commitsCount: { __typename?: 'GithubPullRequestCommitsAggregate', aggregate: { __typename?: 'GithubPullRequestCommitsAggregateFields', count: number } | null }, userCommitsCount: { __typename?: 'GithubPullRequestCommitsAggregate', aggregate: { __typename?: 'GithubPullRequestCommitsAggregateFields', count: number } | null }, contributorDetails: Array<{ __typename?: 'GithubPullRequestCommits', author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null }>, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', status: string | null, outcome: any | null, submittedAt: any | null, id: string | null, reviewer: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null } | null }> };
 
-export type ContributionFragment = { __typename?: 'Contributions', type: string | null, status: any | null, repoId: any | null, projectId: any | null, id: string | null, detailsId: string | null, githubUserId: any | null, ignored: boolean | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null } | null };
+export type ContributionFragment = { __typename?: 'Contributions', type: string | null, status: any | null, repoId: any | null, projectId: any | null, id: string | null, detailsId: string | null, githubUserId: any | null, ignored: boolean | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, commentsCount: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, commitsCount: { __typename?: 'GithubPullRequestCommitsAggregate', aggregate: { __typename?: 'GithubPullRequestCommitsAggregateFields', count: number } | null }, userCommitsCount: { __typename?: 'GithubPullRequestCommitsAggregate', aggregate: { __typename?: 'GithubPullRequestCommitsAggregateFields', count: number } | null }, contributorDetails: Array<{ __typename?: 'GithubPullRequestCommits', author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null }>, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', status: string | null, outcome: any | null, submittedAt: any | null, id: string | null, reviewer: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null } | null };
+
+export type GithubPullRequestWithCommitsFragment = { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, commitsCount: { __typename?: 'GithubPullRequestCommitsAggregate', aggregate: { __typename?: 'GithubPullRequestCommitsAggregateFields', count: number } | null }, userCommitsCount: { __typename?: 'GithubPullRequestCommitsAggregate', aggregate: { __typename?: 'GithubPullRequestCommitsAggregateFields', count: number } | null }, contributorDetails: Array<{ __typename?: 'GithubPullRequestCommits', author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null }>, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null };
 
 export type SearchIssuesQueryVariables = Exact<{
   projectId: Scalars['uuid'];
@@ -18382,7 +18462,7 @@ export type SearchIssuesQueryVariables = Exact<{
 }>;
 
 
-export type SearchIssuesQuery = { __typename?: 'query_root', githubIssues: Array<{ __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, id: any | null }> };
+export type SearchIssuesQuery = { __typename?: 'query_root', githubIssues: Array<{ __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, commentsCount: any | null, id: any | null }> };
 
 export type SearchPullRequestsQueryVariables = Exact<{
   projectId: Scalars['uuid'];
@@ -18390,7 +18470,7 @@ export type SearchPullRequestsQueryVariables = Exact<{
 }>;
 
 
-export type SearchPullRequestsQuery = { __typename?: 'query_root', githubPullRequests: Array<{ __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null }> };
+export type SearchPullRequestsQuery = { __typename?: 'query_root', githubPullRequests: Array<{ __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null }> };
 
 export type FetchIssueQueryVariables = Exact<{
   repoOwner: Scalars['String'];
@@ -18490,14 +18570,14 @@ export type MarkInvoiceAsReceivedMutationVariables = Exact<{
 
 export type MarkInvoiceAsReceivedMutation = { __typename?: 'mutation_root', markInvoiceAsReceived: boolean };
 
-export type UserPaymentRequestFragment = { __typename?: 'PaymentRequests', id: any | null, requestedAt: any | null, amount: any | null, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, workItems: Array<{ __typename?: 'WorkItems', type: any | null, id: string | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null } | null }>, project: { __typename?: 'Projects', id: any | null, name: string | null, shortDescription: string | null, logoUrl: string | null } | null };
+export type UserPaymentRequestFragment = { __typename?: 'PaymentRequests', id: any | null, requestedAt: any | null, amount: any | null, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, workItems: Array<{ __typename?: 'WorkItems', type: any | null, id: string | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, commentsCount: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', status: string | null, outcome: any | null, submittedAt: any | null, id: string | null, reviewer: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null } | null }>, project: { __typename?: 'Projects', id: any | null, name: string | null, shortDescription: string | null, logoUrl: string | null } | null };
 
 export type GetPaymentRequestsQueryVariables = Exact<{
   githubUserId: Scalars['bigint'];
 }>;
 
 
-export type GetPaymentRequestsQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any | null, requestedAt: any | null, amount: any | null, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, workItems: Array<{ __typename?: 'WorkItems', type: any | null, id: string | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null } | null }>, project: { __typename?: 'Projects', id: any | null, name: string | null, shortDescription: string | null, logoUrl: string | null } | null }> };
+export type GetPaymentRequestsQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any | null, requestedAt: any | null, amount: any | null, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, workItems: Array<{ __typename?: 'WorkItems', type: any | null, id: string | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, commentsCount: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', status: string | null, outcome: any | null, submittedAt: any | null, id: string | null, reviewer: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null } | null }>, project: { __typename?: 'Projects', id: any | null, name: string | null, shortDescription: string | null, logoUrl: string | null } | null }> };
 
 export type AcceptTermsAndConditionsMutationVariables = Exact<{ [key: string]: never; }>;
 
@@ -18663,6 +18743,7 @@ export const GithubIssueFragmentDoc = gql`
   status
   createdAt
   closedAt
+  commentsCount
 }
     ${GithubIssueIdFragmentDoc}`;
 export const GithubPullRequestIdFragmentDoc = gql`
@@ -18681,8 +18762,33 @@ export const GithubPullRequestFragmentDoc = gql`
   createdAt
   closedAt
   mergedAt
+  author {
+    ...GithubUser
+  }
 }
-    ${GithubPullRequestIdFragmentDoc}`;
+    ${GithubPullRequestIdFragmentDoc}
+${GithubUserFragmentDoc}`;
+export const GithubCodeReviewIdFragmentDoc = gql`
+    fragment GithubCodeReviewId on GithubPullRequestReviews {
+  id
+}
+    `;
+export const GithubCodeReviewFragmentDoc = gql`
+    fragment GithubCodeReview on GithubPullRequestReviews {
+  ...GithubCodeReviewId
+  status
+  outcome
+  submittedAt
+  reviewer {
+    ...GithubUser
+  }
+  githubPullRequest {
+    ...GithubPullRequest
+  }
+}
+    ${GithubCodeReviewIdFragmentDoc}
+${GithubUserFragmentDoc}
+${GithubPullRequestFragmentDoc}`;
 export const WorkItemFragmentDoc = gql`
     fragment WorkItem on WorkItems {
   ...WorkItemId
@@ -18693,10 +18799,14 @@ export const WorkItemFragmentDoc = gql`
   githubPullRequest {
     ...GithubPullRequest
   }
+  githubCodeReview {
+    ...GithubCodeReview
+  }
 }
     ${WorkItemIdFragmentDoc}
 ${GithubIssueFragmentDoc}
-${GithubPullRequestFragmentDoc}`;
+${GithubPullRequestFragmentDoc}
+${GithubCodeReviewFragmentDoc}`;
 export const PaymentRequestDetailsFragmentDoc = gql`
     fragment PaymentRequestDetails on PaymentRequests {
   id
@@ -19103,6 +19213,27 @@ export const ContributorFragmentDoc = gql`
   }
 }
     ${MinimalUserProfileFragmentDoc}`;
+export const GithubPullRequestWithCommitsFragmentDoc = gql`
+    fragment GithubPullRequestWithCommits on GithubPullRequests {
+  ...GithubPullRequest
+  commitsCount: commitsAggregate {
+    aggregate {
+      count
+    }
+  }
+  userCommitsCount: commitsAggregate(where: {authorId: {_eq: $githubUserId}}) {
+    aggregate {
+      count
+    }
+  }
+  contributorDetails: commits(where: {authorId: {_eq: $githubUserId}}, limit: 1) {
+    author {
+      ...GithubUser
+    }
+  }
+}
+    ${GithubPullRequestFragmentDoc}
+${GithubUserFragmentDoc}`;
 export const ContributionFragmentDoc = gql`
     fragment Contribution on Contributions {
   type
@@ -19117,11 +19248,15 @@ export const ContributionFragmentDoc = gql`
     ...GithubIssue
   }
   githubPullRequest {
-    ...GithubPullRequest
+    ...GithubPullRequestWithCommits
+  }
+  githubCodeReview {
+    ...GithubCodeReview
   }
 }
     ${GithubIssueFragmentDoc}
-${GithubPullRequestFragmentDoc}`;
+${GithubPullRequestWithCommitsFragmentDoc}
+${GithubCodeReviewFragmentDoc}`;
 export const SidebarProjectDetailsFragmentDoc = gql`
     fragment SidebarProjectDetails on Projects {
   ...ProjectId
@@ -20010,6 +20145,7 @@ export const GetAllContributionsDocument = gql`
       }
     }
     githubRepo {
+      htmlUrl
       name
       id
     }
@@ -20017,6 +20153,7 @@ export const GetAllContributionsDocument = gql`
       name
       logoUrl
       id
+      key
     }
     status
     type
@@ -20502,9 +20639,9 @@ export type UnignoreContributionMutationHookResult = ReturnType<typeof useUnigno
 export type UnignoreContributionMutationResult = Apollo.MutationResult<UnignoreContributionMutation>;
 export type UnignoreContributionMutationOptions = Apollo.BaseMutationOptions<UnignoreContributionMutation, UnignoreContributionMutationVariables>;
 export const UnrewardedContributionsDocument = gql`
-    query UnrewardedContributions($githubUserId: bigint!, $projectId: uuid!, $type: String!) {
+    query UnrewardedContributions($githubUserId: bigint!, $projectId: uuid!) {
   contributions(
-    where: {githubUserId: {_eq: $githubUserId}, projectId: {_eq: $projectId}, type: {_eq: $type}, rewardItems_aggregate: {count: {predicate: {_eq: 0}}}}
+    where: {githubUserId: {_eq: $githubUserId}, projectId: {_eq: $projectId}, rewardItems_aggregate: {count: {predicate: {_eq: 0}}}}
   ) {
     ...Contribution
   }
@@ -20539,6 +20676,45 @@ export function useUnrewardedContributionsLazyQuery(baseOptions?: Apollo.LazyQue
 export type UnrewardedContributionsQueryHookResult = ReturnType<typeof useUnrewardedContributionsQuery>;
 export type UnrewardedContributionsLazyQueryHookResult = ReturnType<typeof useUnrewardedContributionsLazyQuery>;
 export type UnrewardedContributionsQueryResult = Apollo.QueryResult<UnrewardedContributionsQuery, UnrewardedContributionsQueryVariables>;
+export const UnrewardedContributionsByTypeDocument = gql`
+    query UnrewardedContributionsByType($githubUserId: bigint!, $projectId: uuid!, $type: String!) {
+  contributions(
+    where: {githubUserId: {_eq: $githubUserId}, projectId: {_eq: $projectId}, type: {_eq: $type}, rewardItems_aggregate: {count: {predicate: {_eq: 0}}}}
+  ) {
+    ...Contribution
+  }
+}
+    ${ContributionFragmentDoc}`;
+
+/**
+ * __useUnrewardedContributionsByTypeQuery__
+ *
+ * To run a query within a React component, call `useUnrewardedContributionsByTypeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUnrewardedContributionsByTypeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUnrewardedContributionsByTypeQuery({
+ *   variables: {
+ *      githubUserId: // value for 'githubUserId'
+ *      projectId: // value for 'projectId'
+ *      type: // value for 'type'
+ *   },
+ * });
+ */
+export function useUnrewardedContributionsByTypeQuery(baseOptions: Apollo.QueryHookOptions<UnrewardedContributionsByTypeQuery, UnrewardedContributionsByTypeQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UnrewardedContributionsByTypeQuery, UnrewardedContributionsByTypeQueryVariables>(UnrewardedContributionsByTypeDocument, options);
+      }
+export function useUnrewardedContributionsByTypeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UnrewardedContributionsByTypeQuery, UnrewardedContributionsByTypeQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UnrewardedContributionsByTypeQuery, UnrewardedContributionsByTypeQueryVariables>(UnrewardedContributionsByTypeDocument, options);
+        }
+export type UnrewardedContributionsByTypeQueryHookResult = ReturnType<typeof useUnrewardedContributionsByTypeQuery>;
+export type UnrewardedContributionsByTypeLazyQueryHookResult = ReturnType<typeof useUnrewardedContributionsByTypeLazyQuery>;
+export type UnrewardedContributionsByTypeQueryResult = Apollo.QueryResult<UnrewardedContributionsByTypeQuery, UnrewardedContributionsByTypeQueryVariables>;
 export const SearchIssuesDocument = gql`
     query SearchIssues($projectId: uuid!, $githubUserId: jsonb!) {
   githubIssues(
