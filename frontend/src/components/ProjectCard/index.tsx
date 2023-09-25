@@ -25,9 +25,10 @@ export type Project = ArrayElement<GetProjectsQuery["projects"]>;
 
 type ProjectCardProps = {
   project: Project;
+  isFirst?: boolean;
 };
 
-export default function ProjectCard({ project }: ProjectCardProps) {
+export default function ProjectCard({ project, isFirst }: ProjectCardProps) {
   const {
     id,
     key,
@@ -54,15 +55,17 @@ export default function ProjectCard({ project }: ProjectCardProps) {
 
   const card = (
     <Card
-      className={classNames("relative bg-noise-light hover:bg-right", {
-        "xl:bg-orange-500/8 xl:hover:bg-orange-500/12": pendingInvitations?.length > 0,
+      className={classNames("relative hover:bg-right", {
+        "bg-noise-light": pendingInvitations?.length === 0,
+        "xl:bg-orange-900 xl:hover:bg-noise-light ": pendingInvitations?.length > 0,
+        "mt-3": isFirst && pendingInvitations?.length > 0,
       })}
       border={CardBorder.Medium}
       dataTestId="project-card"
     >
       {hiring && (
         <div className="absolute -top-3.5 right-3.5">
-          <Tag size={TagSize.Small} opaque>
+          <Tag className="bg-orange-800" size={TagSize.Small} opaque>
             <RecordCircleLine />
             {T("project.hiring")}
           </Tag>
@@ -137,7 +140,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
           </div>
         </div>
         {pendingInvitations?.length > 0 && (
-          <div className="flex flex-col flex-wrap items-center justify-between gap-2 rounded-xl bg-orange-500/8 px-4 py-4 text-center font-medium sm:flex-row xl:px-6 xl:py-4">
+          <div className="flex flex-col flex-wrap items-center justify-between gap-2 rounded-xl bg-orange-800 px-4 py-4 text-center font-medium sm:flex-row xl:px-6 xl:py-4">
             <div className="text-sm text-white md:text-base">{T("project.projectLeadInvitation.prompt")}</div>
             <Button size={ButtonSize.Sm}>{T("project.projectLeadInvitation.view")}</Button>
           </div>
