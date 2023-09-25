@@ -93,10 +93,11 @@ function OwnershipTypeButton({ selected, onClick, children }: OwnershipTypeButto
   return (
     <div
       className={classNames(
-        "flex w-fit flex-row items-center rounded-lg border border-greyscale-50/8 bg-white/8 px-2 font-walsheim text-xs font-normal text-neutral-100",
+        "flex w-fit flex-row items-center rounded-lg border border-greyscale-50/8  px-2 font-walsheim text-xs font-normal text-neutral-100",
         "hover:cursor-pointer",
         {
-          "border-transparent bg-spacePurple-900 outline outline-2 outline-spacePurple-500": selected,
+          "border-transparent bg-spacePurple-900 outline outline-2 outline-spacePurple-500 ": selected,
+          "bg-whiteFakeOpacity-10": !selected,
         }
       )}
       onClick={onClick}
