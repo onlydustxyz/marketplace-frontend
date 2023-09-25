@@ -103,41 +103,61 @@ export default function ContributionTable({
 
   function renderLinkedContributions(contribution: GetAllContributionsQuery["contributions"][number]) {
     switch (contribution.type) {
-      case ContributionType.Issue:
-        return contribution.githubIssue?.closedByPullRequests?.map(({ githubPullRequest }) => {
-          const { id, number, status, draft } = githubPullRequest ?? {};
+      case ContributionType.Issue: {
+        const closedByPullRequests = contribution.githubIssue?.closedByPullRequests;
+
+        if (closedByPullRequests?.length) {
+          return contribution.githubIssue?.closedByPullRequests?.map(({ githubPullRequest }) => {
+            const { id, number, status, draft } = githubPullRequest ?? {};
+            return (
+              <ContributionBadge
+                key={id}
+                number={number}
+                type={ContributionType.PullRequest}
+                status={status as ContributionBadgeStatusType}
+                draft={draft}
+              />
+            );
+          });
+        }
+
+        return "-";
+      }
+      case ContributionType.PullRequest: {
+        const closingIssues = contribution.githubPullRequest?.closingIssues;
+
+        if (closingIssues?.length) {
+          return closingIssues.map(({ githubIssue }) => {
+            const { id, number, status } = githubIssue ?? {};
+            return (
+              <ContributionBadge
+                key={id}
+                number={number}
+                type={ContributionType.Issue}
+                status={status as ContributionBadgeStatusType}
+              />
+            );
+          });
+        }
+
+        return "-";
+      }
+      case ContributionType.CodeReview: {
+        const pr = contribution.githubCodeReview?.githubPullRequest;
+
+        if (pr) {
+          const { number, status, draft } = pr;
           return (
             <ContributionBadge
-              key={id}
               number={number}
               type={ContributionType.PullRequest}
               status={status as ContributionBadgeStatusType}
               draft={draft}
             />
           );
-        });
-      case ContributionType.PullRequest:
-        return contribution.githubPullRequest?.closingIssues?.map(({ githubIssue }) => {
-          const { id, number, status } = githubIssue ?? {};
-          return (
-            <ContributionBadge
-              key={id}
-              number={number}
-              type={ContributionType.Issue}
-              status={status as ContributionBadgeStatusType}
-            />
-          );
-        });
-      case ContributionType.CodeReview: {
-        const { number, status, draft } = contribution.githubCodeReview?.githubPullRequest ?? {};
-        return (
-          <ContributionBadge
-            number={number}
-            type={ContributionType.PullRequest}
-            status={status as ContributionBadgeStatusType}
-            draft={draft}
-          />
-        );
+        }
+
+        return "-";
       }
       default:
         return "-";
