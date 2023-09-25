@@ -1,8 +1,5 @@
-import {
-  ContributionBadge,
-  ContributionBadgeStatus,
-  ContributionBadgeType,
-} from "src/components/ContributionBadge/ContributionBadge";
+import { ContributionIconStatus, ContributionIconType } from "src/components/ContributionIcon/ContributionIcon";
+import { ContributionBadge } from "src/components/ContributionBadge/ContributionBadge";
 
 export default {
   title: "ContributionBadge",
@@ -10,11 +7,11 @@ export default {
   argTypes: {
     status: {
       control: { type: "select" },
-      options: [ContributionBadgeStatus.Open, ContributionBadgeStatus.Merged, ContributionBadgeStatus.Closed],
+      options: [ContributionIconStatus.Open, ContributionIconStatus.Merged, ContributionIconStatus.Closed],
     },
     type: {
       control: { type: "select" },
-      options: [ContributionBadgeType.PullRequest, ContributionBadgeType.Issue, ContributionBadgeType.CodeReview],
+      options: [ContributionIconType.PullRequest, ContributionIconType.Issue, ContributionIconType.CodeReview],
     },
     draft: "boolean",
     external: "boolean",
@@ -23,8 +20,8 @@ export default {
 
 const defaultProps: React.ComponentProps<typeof ContributionBadge> = {
   number: 123,
-  status: ContributionBadgeStatus.Open,
-  type: ContributionBadgeType.PullRequest,
+  status: ContributionIconStatus.Open,
+  type: ContributionIconType.PullRequest,
 };
 
 export const Default = {
