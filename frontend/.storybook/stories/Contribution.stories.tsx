@@ -35,7 +35,8 @@ export default {
 };
 
 const defaultProps: React.ComponentProps<typeof Contribution> = {
-  name: "Name of PR / Issue / Other work ",
+  id: "123",
+  title: "Name of PR / Issue / Other work ",
   url: "#",
   number: 123,
   type: ContributionType.PullRequest,

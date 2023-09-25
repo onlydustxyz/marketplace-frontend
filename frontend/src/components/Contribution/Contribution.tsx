@@ -1,13 +1,15 @@
 import { ContributionBadge } from "src/components/ContributionBadge/ContributionBadge";
-import { ContributionIconStatus } from "src/components/ContributionIcon/ContributionIcon";
+import { ContributionIconStatus, ContributionIconStatusType } from "src/components/ContributionIcon/ContributionIcon";
 import { ContributionReview, ContributionReviewStatus } from "src/components/ContributionReview/ContributionReview";
 import { ContributionReward } from "src/components/ContributionReward/ContributionReward";
+import { ContributionBadgeTooltip } from "src/components/ContributionBadgeTooltip/ContributionBadgeTooltip";
 
-type Props = { name: string; url: string } & React.ComponentProps<typeof ContributionBadge> &
+type Props = { id: string; title: string; url: string } & React.ComponentProps<typeof ContributionBadge> &
   React.ComponentProps<typeof ContributionReward> & { review?: ContributionReviewStatus };
 
 export function Contribution({
-  name,
+  id,
+  title,
   url,
   number,
   type,
@@ -20,14 +22,23 @@ export function Contribution({
   return (
     <div className="inline-flex items-center gap-2">
       <div className="inline-flex items-center gap-1">
-        <ContributionBadge number={number} type={type} status={status} external={external} draft={draft} />
+        <ContributionBadgeTooltip
+          id={`${id}-${type}-contribution-badge-tooltip`}
+          type={type}
+          status={status as ContributionIconStatusType}
+          number={number}
+          title={title ?? ""}
+        />
+        <div id={`${id}-${type}-contribution-badge-tooltip`}>
+          <ContributionBadge number={number} type={type} status={status} external={external} draft={draft} />
+        </div>
         <a
           href={url}
           target="_blank"
           rel="noopener noreferrer"
           className="block truncate font-walsheim text-greyscale-50"
         >
-          {name}
+          {title}
         </a>
       </div>
       <div className="inline-flex items-center gap-1">

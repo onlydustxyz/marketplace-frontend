@@ -3,10 +3,11 @@ import { PropsWithChildren, ReactNode } from "react";
 import { Link, generatePath } from "react-router-dom";
 
 import { RoutePaths } from "src/App";
-import { GetAllContributionsQuery } from "src/__generated/graphql";
+import { GetAllContributionsQuery, GithubUser } from "src/__generated/graphql";
 import IssueOpen from "src/assets/icons/IssueOpen";
 import { Contribution, ContributionType } from "src/components/Contribution/Contribution";
 import { ContributionBadge } from "src/components/ContributionBadge/ContributionBadge";
+import { ContributionBadgeTooltip } from "src/components/ContributionBadgeTooltip/ContributionBadgeTooltip";
 import { ContributionDateTooltip } from "src/components/ContributionDateTooltip/ContributionDateTooltip";
 import {
   ContributionIconStatus,
@@ -69,7 +70,8 @@ export default function ContributionTable({
       case ContributionType.Issue:
         return (
           <Contribution
-            name={contribution.githubIssue?.title ?? ""}
+            id={contribution.githubIssue?.id ?? ""}
+            title={contribution.githubIssue?.title ?? ""}
             url={contribution.githubIssue?.htmlUrl ?? ""}
             number={contribution.githubIssue?.number ?? ""}
             type={ContributionType.Issue}
@@ -103,7 +105,8 @@ export default function ContributionTable({
 
         return (
           <Contribution
-            name={contribution.githubPullRequest?.title ?? ""}
+            id={contribution.githubPullRequest?.id}
+            title={contribution.githubPullRequest?.title ?? ""}
             url={contribution.githubPullRequest?.htmlUrl ?? ""}
             number={contribution.githubPullRequest?.number ?? ""}
             type={ContributionType.PullRequest}
@@ -118,7 +121,8 @@ export default function ContributionTable({
       case ContributionType.CodeReview:
         return (
           <Contribution
-            name={contribution.githubCodeReview?.githubPullRequest?.title ?? ""}
+            id={contribution.githubCodeReview?.githubPullRequest?.id}
+            title={contribution.githubCodeReview?.githubPullRequest?.title ?? ""}
             url={contribution.githubCodeReview?.githubPullRequest?.htmlUrl ?? ""}
             number={contribution.githubCodeReview?.githubPullRequest?.number ?? ""}
             type={ContributionType.CodeReview}
@@ -177,14 +181,27 @@ export default function ContributionTable({
         const pr = contribution.githubCodeReview?.githubPullRequest;
 
         if (pr) {
-          const { number, status, draft } = pr;
+          const { number, status, draft, author, title } = pr;
           return (
-            <ContributionBadge
-              number={number}
-              type={ContributionType.PullRequest}
-              status={status as ContributionIconStatusType}
-              draft={draft}
-            />
+            <>
+              <ContributionBadgeTooltip
+                id={`${id}-linked-pr-badge-tooltip`}
+                type={ContributionType.PullRequest}
+                status={status as ContributionIconStatusType}
+                number={number}
+                title={title ?? ""}
+                author={author as GithubUser}
+              />
+
+              <div id={`${id}-linked-pr-badge-tooltip`}>
+                <ContributionBadge
+                  number={number}
+                  type={ContributionType.PullRequest}
+                  status={status as ContributionIconStatusType}
+                  draft={draft}
+                />
+              </div>
+            </>
           );
         }
 
