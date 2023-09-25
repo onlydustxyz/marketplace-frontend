@@ -93,8 +93,18 @@ export default function AllProjects({
         </div>
       </div>
       <div className="flex grow flex-col gap-5">
-        {projects && projects.length > 0 ? (
-          projects.map((project, index) => <ProjectCard key={project.id} project={project} isFirst={index === 0} />)
+        {projects?.length > 0 ? (
+          projects.map((project, index) => {
+            const isFirstPendingInvitationProject = index === 0 && project.pendingInvitations?.length > 0;
+
+            return (
+              <ProjectCard
+                className={isFirstPendingInvitationProject ? "mt-3" : undefined}
+                key={project.id}
+                project={project}
+              />
+            );
+          })
         ) : (
           <AllProjectsFallback
             clearFilters={() => {

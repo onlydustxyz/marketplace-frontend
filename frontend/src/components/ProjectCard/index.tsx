@@ -25,10 +25,10 @@ export type Project = ArrayElement<GetProjectsQuery["projects"]>;
 
 type ProjectCardProps = {
   project: Project;
-  isFirst?: boolean;
+  className?: string;
 };
 
-export default function ProjectCard({ project, isFirst }: ProjectCardProps) {
+export default function ProjectCard({ project, className }: ProjectCardProps) {
   const {
     id,
     key,
@@ -55,11 +55,14 @@ export default function ProjectCard({ project, isFirst }: ProjectCardProps) {
 
   const card = (
     <Card
-      className={classNames("relative hover:bg-right", {
-        "bg-noise-light": pendingInvitations?.length === 0,
-        "xl:bg-orange-900 xl:hover:bg-noise-light ": pendingInvitations?.length > 0,
-        "mt-3": isFirst && pendingInvitations?.length > 0,
-      })}
+      className={classNames(
+        "relative hover:bg-right",
+        {
+          "bg-noise-light": pendingInvitations?.length === 0,
+          "xl:bg-orange-900 xl:hover:bg-noise-light ": pendingInvitations?.length > 0,
+        },
+        className
+      )}
       border={CardBorder.Medium}
       dataTestId="project-card"
     >
