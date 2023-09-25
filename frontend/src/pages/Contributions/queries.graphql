@@ -19,6 +19,10 @@ query GetAllContributions(
           ...ContributionGithubIssue
         }
       }
+      codeReviews(orderBy: { submittedAt: DESC }) {
+        outcome
+        id
+      }
     }
     githubIssue {
       ...ContributionGithubIssue

@@ -4072,6 +4072,26 @@ export type GithubPullRequestReviewsAggregateFieldsCountArgs = {
   distinct: InputMaybe<Scalars['Boolean']>;
 };
 
+/** order by aggregate values of table "api.github_pull_request_reviews" */
+export type GithubPullRequestReviewsAggregateOrderBy = {
+  avg: InputMaybe<GithubPullRequestReviews_Avg_Order_By>;
+  count: InputMaybe<OrderBy>;
+  max: InputMaybe<GithubPullRequestReviews_Max_Order_By>;
+  min: InputMaybe<GithubPullRequestReviews_Min_Order_By>;
+  stddev: InputMaybe<GithubPullRequestReviews_Stddev_Order_By>;
+  stddev_pop: InputMaybe<GithubPullRequestReviews_Stddev_Pop_Order_By>;
+  stddev_samp: InputMaybe<GithubPullRequestReviews_Stddev_Samp_Order_By>;
+  sum: InputMaybe<GithubPullRequestReviews_Sum_Order_By>;
+  var_pop: InputMaybe<GithubPullRequestReviews_Var_Pop_Order_By>;
+  var_samp: InputMaybe<GithubPullRequestReviews_Var_Samp_Order_By>;
+  variance: InputMaybe<GithubPullRequestReviews_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "api.github_pull_request_reviews" */
+export type GithubPullRequestReviewsArrRelInsertInput = {
+  data: Array<GithubPullRequestReviewsInsertInput>;
+};
+
 /** aggregate avg on columns */
 export type GithubPullRequestReviewsAvgFields = {
   __typename?: 'GithubPullRequestReviewsAvgFields';
@@ -4243,6 +4263,61 @@ export type GithubPullRequestReviewsVarianceFields = {
   reviewerId: Maybe<Scalars['Float']>;
 };
 
+export type GithubPullRequestReviews_Aggregate_Bool_Exp = {
+  count: InputMaybe<GithubPullRequestReviews_Aggregate_Bool_Exp_Count>;
+};
+
+export type GithubPullRequestReviews_Aggregate_Bool_Exp_Count = {
+  arguments: InputMaybe<Array<GithubPullRequestReviewsSelectColumn>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+  filter: InputMaybe<GithubPullRequestReviewsBoolExp>;
+  predicate: IntComparisonExp;
+};
+
+/** order by avg() on columns of table "api.github_pull_request_reviews" */
+export type GithubPullRequestReviews_Avg_Order_By = {
+  pullRequestId: InputMaybe<OrderBy>;
+  reviewerId: InputMaybe<OrderBy>;
+};
+
+/** order by max() on columns of table "api.github_pull_request_reviews" */
+export type GithubPullRequestReviews_Max_Order_By = {
+  id: InputMaybe<OrderBy>;
+  outcome: InputMaybe<OrderBy>;
+  pullRequestId: InputMaybe<OrderBy>;
+  reviewerId: InputMaybe<OrderBy>;
+  status: InputMaybe<OrderBy>;
+  submittedAt: InputMaybe<OrderBy>;
+};
+
+/** order by min() on columns of table "api.github_pull_request_reviews" */
+export type GithubPullRequestReviews_Min_Order_By = {
+  id: InputMaybe<OrderBy>;
+  outcome: InputMaybe<OrderBy>;
+  pullRequestId: InputMaybe<OrderBy>;
+  reviewerId: InputMaybe<OrderBy>;
+  status: InputMaybe<OrderBy>;
+  submittedAt: InputMaybe<OrderBy>;
+};
+
+/** order by stddev() on columns of table "api.github_pull_request_reviews" */
+export type GithubPullRequestReviews_Stddev_Order_By = {
+  pullRequestId: InputMaybe<OrderBy>;
+  reviewerId: InputMaybe<OrderBy>;
+};
+
+/** order by stddev_pop() on columns of table "api.github_pull_request_reviews" */
+export type GithubPullRequestReviews_Stddev_Pop_Order_By = {
+  pullRequestId: InputMaybe<OrderBy>;
+  reviewerId: InputMaybe<OrderBy>;
+};
+
+/** order by stddev_samp() on columns of table "api.github_pull_request_reviews" */
+export type GithubPullRequestReviews_Stddev_Samp_Order_By = {
+  pullRequestId: InputMaybe<OrderBy>;
+  reviewerId: InputMaybe<OrderBy>;
+};
+
 /** Streaming cursor of the table "GithubPullRequestReviews" */
 export type GithubPullRequestReviews_StreamCursorInput = {
   /** Stream column input with initial value */
@@ -4259,6 +4334,30 @@ export type GithubPullRequestReviews_StreamCursorValueInput = {
   reviewerId: InputMaybe<Scalars['bigint']>;
   status: InputMaybe<Scalars['String']>;
   submittedAt: InputMaybe<Scalars['timestamp']>;
+};
+
+/** order by sum() on columns of table "api.github_pull_request_reviews" */
+export type GithubPullRequestReviews_Sum_Order_By = {
+  pullRequestId: InputMaybe<OrderBy>;
+  reviewerId: InputMaybe<OrderBy>;
+};
+
+/** order by var_pop() on columns of table "api.github_pull_request_reviews" */
+export type GithubPullRequestReviews_Var_Pop_Order_By = {
+  pullRequestId: InputMaybe<OrderBy>;
+  reviewerId: InputMaybe<OrderBy>;
+};
+
+/** order by var_samp() on columns of table "api.github_pull_request_reviews" */
+export type GithubPullRequestReviews_Var_Samp_Order_By = {
+  pullRequestId: InputMaybe<OrderBy>;
+  reviewerId: InputMaybe<OrderBy>;
+};
+
+/** order by variance() on columns of table "api.github_pull_request_reviews" */
+export type GithubPullRequestReviews_Variance_Order_By = {
+  pullRequestId: InputMaybe<OrderBy>;
+  reviewerId: InputMaybe<OrderBy>;
 };
 
 export enum GithubPullRequestStatus {
@@ -4279,6 +4378,10 @@ export type GithubPullRequests = {
   closingIssues: Array<ApiClosingIssues>;
   /** An aggregate relationship */
   closingIssuesAggregate: ApiClosingIssuesAggregate;
+  /** An array relationship */
+  codeReviews: Array<GithubPullRequestReviews>;
+  /** An aggregate relationship */
+  codeReviewsAggregate: GithubPullRequestReviewsAggregate;
   /** An array relationship */
   commits: Array<GithubPullRequestCommits>;
   /** An aggregate relationship */
@@ -4315,6 +4418,26 @@ export type GithubPullRequestsClosingIssuesAggregateArgs = {
   orderBy: InputMaybe<Array<ApiClosingIssuesOrderBy>>;
   where: InputMaybe<ApiClosingIssuesBoolExp>;
 };
+
+/** columns and relationships of "api.github_pull_requests" */
+export type GithubPullRequestsCodeReviewsArgs = {
+  distinctOn: InputMaybe<Array<GithubPullRequestReviewsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<GithubPullRequestReviewsOrderBy>>;
+  where: InputMaybe<GithubPullRequestReviewsBoolExp>;
+};
+
+
+/** columns and relationships of "api.github_pull_requests" */
+export type GithubPullRequestsCodeReviewsAggregateArgs = {
+  distinctOn: InputMaybe<Array<GithubPullRequestReviewsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<GithubPullRequestReviewsOrderBy>>;
+  where: InputMaybe<GithubPullRequestReviewsBoolExp>;
+};
+
 
 /** columns and relationships of "api.github_pull_requests" */
 export type GithubPullRequestsCommitsArgs = {
@@ -4384,6 +4507,8 @@ export type GithubPullRequestsBoolExp = {
   closedAt: InputMaybe<TimestampComparisonExp>;
   closingIssues: InputMaybe<ApiClosingIssuesBoolExp>;
   closingIssues_aggregate: InputMaybe<Api_Closing_Issues_Aggregate_Bool_Exp>;
+  codeReviews: InputMaybe<GithubPullRequestReviewsBoolExp>;
+  codeReviews_aggregate: InputMaybe<GithubPullRequestReviews_Aggregate_Bool_Exp>;
   commits: InputMaybe<GithubPullRequestCommitsBoolExp>;
   commits_aggregate: InputMaybe<Github_Pull_Request_Commits_Aggregate_Bool_Exp>;
   createdAt: InputMaybe<TimestampComparisonExp>;
@@ -4413,6 +4538,7 @@ export type GithubPullRequestsInsertInput = {
   ciChecks: InputMaybe<Scalars['github_ci_checks']>;
   closedAt: InputMaybe<Scalars['timestamp']>;
   closingIssues: InputMaybe<ApiClosingIssuesArrRelInsertInput>;
+  codeReviews: InputMaybe<GithubPullRequestReviewsArrRelInsertInput>;
   commits: InputMaybe<GithubPullRequestCommitsArrRelInsertInput>;
   createdAt: InputMaybe<Scalars['timestamp']>;
   draft: InputMaybe<Scalars['Boolean']>;
@@ -4479,6 +4605,7 @@ export type GithubPullRequestsOrderBy = {
   ciChecks: InputMaybe<OrderBy>;
   closedAt: InputMaybe<OrderBy>;
   closingIssuesAggregate: InputMaybe<ApiClosingIssuesAggregateOrderBy>;
+  codeReviewsAggregate: InputMaybe<GithubPullRequestReviewsAggregateOrderBy>;
   commitsAggregate: InputMaybe<GithubPullRequestCommitsAggregateOrderBy>;
   createdAt: InputMaybe<OrderBy>;
   draft: InputMaybe<OrderBy>;
@@ -18354,7 +18481,7 @@ export type GetAllContributionsQueryVariables = Exact<{
 }>;
 
 
-export type GetAllContributionsQuery = { __typename?: 'query_root', contributions: Array<{ __typename?: 'Contributions', closedAt: any | null, createdAt: any | null, id: string | null, status: any | null, type: string | null, githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, closingIssues: Array<{ __typename?: 'ApiClosingIssues', githubIssue: { __typename?: 'GithubIssues', commentsCount: any | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null } | null }> } | null, githubIssue: { __typename?: 'GithubIssues', commentsCount: any | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, closedByPullRequests: Array<{ __typename?: 'ApiClosedByPullRequests', githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null } | null }> } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', id: string | null, status: string | null, outcome: any | null, githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null } | null } | null, githubRepo: { __typename?: 'GithubRepos', htmlUrl: string | null, name: string | null, id: any | null } | null, project: { __typename?: 'Projects', name: string | null, logoUrl: string | null, id: any | null, key: string | null } | null, rewardItemsAggregate: { __typename?: 'WorkItemsAggregate', aggregate: { __typename?: 'WorkItemsAggregateFields', count: number } | null } }>, githubRepos: Array<{ __typename?: 'GithubRepos', indexedAt: any | null }> };
+export type GetAllContributionsQuery = { __typename?: 'query_root', contributions: Array<{ __typename?: 'Contributions', closedAt: any | null, createdAt: any | null, id: string | null, status: any | null, type: string | null, githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, closingIssues: Array<{ __typename?: 'ApiClosingIssues', githubIssue: { __typename?: 'GithubIssues', commentsCount: any | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null } | null }>, codeReviews: Array<{ __typename?: 'GithubPullRequestReviews', outcome: any | null, id: string | null }> } | null, githubIssue: { __typename?: 'GithubIssues', commentsCount: any | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, closedByPullRequests: Array<{ __typename?: 'ApiClosedByPullRequests', githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null } | null }> } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', id: string | null, status: string | null, outcome: any | null, githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null } | null } | null, githubRepo: { __typename?: 'GithubRepos', htmlUrl: string | null, name: string | null, id: any | null } | null, project: { __typename?: 'Projects', name: string | null, logoUrl: string | null, id: any | null, key: string | null } | null, rewardItemsAggregate: { __typename?: 'WorkItemsAggregate', aggregate: { __typename?: 'WorkItemsAggregateFields', count: number } | null } }>, githubRepos: Array<{ __typename?: 'GithubRepos', indexedAt: any | null }> };
 
 export type PendingProjectLeaderInvitationsQueryVariables = Exact<{
   githubUserId: InputMaybe<Scalars['bigint']>;
@@ -20126,6 +20253,10 @@ export const GetAllContributionsDocument = gql`
         githubIssue {
           ...ContributionGithubIssue
         }
+      }
+      codeReviews(orderBy: {submittedAt: DESC}) {
+        outcome
+        id
       }
     }
     githubIssue {

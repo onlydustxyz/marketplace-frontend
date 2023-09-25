@@ -188,6 +188,7 @@ class GithubPullRequests {
    ciChecks: github_ci_checks
    closedAt: timestamp
    closingIssues: [ApiClosingIssues!]!
+   codeReviews: [GithubPullRequestReviews!]!
    commits: [GithubPullRequestCommits!]!
    createdAt: timestamp
    draft: Boolean
@@ -572,6 +573,7 @@ GithubPullRequests -- GithubRepos
 GithubPullRequests -- GithubUsers
 GithubPullRequests --* ApiClosingIssues
 GithubPullRequests --* GithubPullRequestCommits
+GithubPullRequests --* GithubPullRequestReviews
 GithubRepos --* ProjectGithubRepos
 GithubUser -- RegisteredUsers
 GithubUsers -- RegisteredUsers

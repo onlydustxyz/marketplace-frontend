@@ -72,7 +72,29 @@ export default function ContributionTable({
             rewards={contribution?.rewardItemsAggregate.aggregate?.count ?? 0}
           />
         );
-      case ContributionType.PullRequest:
+      case ContributionType.PullRequest: {
+        let review: ContributionReviewStatus;
+        const codeReviews = contribution?.githubPullRequest?.codeReviews;
+
+        if (codeReviews?.length) {
+          switch (codeReviews[0].outcome) {
+            case null:
+              review = ContributionReviewStatus.UnderReview;
+              break;
+            case "changes_requested":
+              review = ContributionReviewStatus.ChangesRequested;
+              break;
+            case "approved":
+              review = ContributionReviewStatus.Approved;
+              break;
+            default:
+              review = ContributionReviewStatus.PendingReviewer;
+              break;
+          }
+        } else {
+          review = ContributionReviewStatus.PendingReviewer;
+        }
+
         return (
           <Contribution
             name={contribution.githubPullRequest?.title ?? ""}
@@ -83,9 +105,10 @@ export default function ContributionTable({
             draft={contribution.githubPullRequest?.draft}
             // external={contribution.external}
             rewards={contribution?.rewardItemsAggregate.aggregate?.count ?? 0}
-            review={ContributionReviewStatus.PendingReviewer}
+            review={review}
           />
         );
+      }
       case ContributionType.CodeReview:
         return (
           <Contribution
