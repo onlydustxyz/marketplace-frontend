@@ -4,7 +4,7 @@ import {
   ContributionIconStatusType,
   ContributionIconType,
 } from "src/components/ContributionIcon/ContributionIcon";
-import Tooltip, { TooltipPosition } from "src/components/Tooltip";
+import Tooltip, { BackgroundVariant, TooltipPosition } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 
 export function ContributionDateTooltip({
@@ -24,7 +24,7 @@ export function ContributionDateTooltip({
   const formattedTime = new Intl.DateTimeFormat("en-US", { timeStyle: "short" }).format(date);
 
   return (
-    <Tooltip anchorId={id} clickable position={TooltipPosition.Top}>
+    <Tooltip anchorId={id} clickable position={TooltipPosition.Top} variant={BackgroundVariant.Blue}>
       <div className="flex items-center gap-2 px-1 py-2">
         <ContributionIcon type={type} status={status} />
         <p className="text-sm">

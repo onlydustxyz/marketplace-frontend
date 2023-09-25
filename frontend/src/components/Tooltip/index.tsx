@@ -20,9 +20,15 @@ type TooltipProps = {
   id?: string;
   anchorSelect?: string;
   anchorId?: string;
+  variant?: BackgroundVariant;
   [otherProp: string]: unknown;
 } & CommonProps &
   PropsWithChildren;
+
+export enum BackgroundVariant {
+  Default = "#313030",
+  Blue = "#2c2c3e",
+}
 
 export default function Tooltip({
   id = GLOBAL_TOOLTIP_ID,
@@ -30,6 +36,7 @@ export default function Tooltip({
   anchorId,
   anchorSelect,
   children,
+  variant = BackgroundVariant.Default,
   ...rest
 }: TooltipProps) {
   return createPortal(
@@ -39,7 +46,7 @@ export default function Tooltip({
       anchorId={anchorId}
       anchorSelect={anchorSelect}
       style={{
-        background: "#313030",
+        background: variant,
         fontFamily: "GT Walsheim",
         fontWeight: 400,
         textAlign: "center",
