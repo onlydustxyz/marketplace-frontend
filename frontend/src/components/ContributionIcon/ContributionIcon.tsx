@@ -1,0 +1,63 @@
+import CodeReviewMerged from "src/assets/icons/CodeReviewMerged";
+import CodeReviewOpen from "src/assets/icons/CodeReviewOpen";
+import IssueCancelled from "src/assets/icons/IssueCancelled";
+import IssueDraft from "src/assets/icons/IssueDraft";
+import IssueMerged from "src/assets/icons/IssueMerged";
+import IssueOpen from "src/assets/icons/IssueOpen";
+import PrClosed from "src/assets/icons/PrClosed";
+import PrDraft from "src/assets/icons/PrDraft";
+import PrMerged from "src/assets/icons/PrMerged";
+import PrOpen from "src/assets/icons/PrOpen";
+import { GithubIssueStatus, GithubPullRequestStatus } from "src/__generated/graphql";
+
+export enum ContributionIconType {
+  PullRequest = "PULL_REQUEST",
+  Issue = "ISSUE",
+  CodeReview = "CODE_REVIEW",
+}
+
+export const ContributionIconStatus = { ...GithubPullRequestStatus, ...GithubIssueStatus, Draft: "DRAFT" } as const;
+
+export type ContributionIconStatusType = typeof ContributionIconStatus[keyof typeof ContributionIconStatus];
+
+export const variants = {
+  status: {
+    [ContributionIconStatus.Open]: "text-github-green-light border-github-green",
+    [ContributionIconStatus.Closed]: "text-github-red-light border-github-red",
+    [ContributionIconStatus.Cancelled]: "text-github-red-light border-github-red",
+    [ContributionIconStatus.Merged]: "text-github-purple-light border-github-purple",
+    [ContributionIconStatus.Completed]: "text-github-purple-light border-github-purple",
+    [ContributionIconStatus.Draft]: "text-github-grey-light border-github-grey",
+  },
+};
+
+const icons = {
+  [ContributionIconType.PullRequest]: {
+    [ContributionIconStatus.Open]: <PrOpen />,
+    [ContributionIconStatus.Closed]: <PrClosed />,
+    [ContributionIconStatus.Cancelled]: <PrClosed />,
+    [ContributionIconStatus.Merged]: <PrMerged />,
+    [ContributionIconStatus.Completed]: <PrMerged />,
+    [ContributionIconStatus.Draft]: <PrDraft />,
+  },
+  [ContributionIconType.Issue]: {
+    [ContributionIconStatus.Open]: <IssueOpen />,
+    [ContributionIconStatus.Closed]: <IssueCancelled />,
+    [ContributionIconStatus.Cancelled]: <IssueCancelled />,
+    [ContributionIconStatus.Merged]: <IssueMerged />,
+    [ContributionIconStatus.Completed]: <IssueMerged />,
+    [ContributionIconStatus.Draft]: <IssueDraft />,
+  },
+  [ContributionIconType.CodeReview]: {
+    [ContributionIconStatus.Open]: <CodeReviewOpen />,
+    [ContributionIconStatus.Closed]: null,
+    [ContributionIconStatus.Cancelled]: null,
+    [ContributionIconStatus.Merged]: <CodeReviewMerged />,
+    [ContributionIconStatus.Completed]: <CodeReviewMerged />,
+    [ContributionIconStatus.Draft]: null,
+  },
+};
+
+export function ContributionIcon({ type, status }: { type: ContributionIconType; status: ContributionIconStatusType }) {
+  return <div className={variants.status[status]}>{icons[type][status]}</div>;
+}

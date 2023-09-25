@@ -1,6 +1,7 @@
-import { ContributionBadge, ContributionBadgeStatus } from "src/components/ContributionBadge/ContributionBadge";
-import { ContributionReward } from "src/components/ContributionReward/ContributionReward";
+import { ContributionBadge } from "src/components/ContributionBadge/ContributionBadge";
+import { ContributionIconStatus } from "src/components/ContributionIcon/ContributionIcon";
 import { ContributionReview, ContributionReviewStatus } from "src/components/ContributionReview/ContributionReview";
+import { ContributionReward } from "src/components/ContributionReward/ContributionReward";
 
 type Props = { name: string; url: string } & React.ComponentProps<typeof ContributionBadge> &
   React.ComponentProps<typeof ContributionReward> & { review?: ContributionReviewStatus };
@@ -31,15 +32,15 @@ export function Contribution({
       </div>
       <div className="inline-flex items-center gap-1">
         {rewards ? <ContributionReward rewards={rewards} /> : null}
-        {review && status === ContributionBadgeStatus.Open ? <ContributionReview status={review} /> : null}
+        {review && status === ContributionIconStatus.Open ? <ContributionReview status={review} /> : null}
       </div>
     </div>
   );
 }
 
 export {
-  ContributionBadgeStatus as ContributionStatus,
-  ContributionBadgeType as ContributionType,
-} from "../ContributionBadge/ContributionBadge";
+  ContributionIconStatus as ContributionStatus,
+  ContributionIconType as ContributionType,
+} from "src/components/ContributionIcon/ContributionIcon";
 
 export { ContributionReviewStatus as ContributionReview } from "../ContributionReview/ContributionReview";

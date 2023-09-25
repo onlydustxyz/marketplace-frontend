@@ -6,6 +6,9 @@ import { RoutePaths } from "src/App";
 import { GetAllContributionsQuery } from "src/__generated/graphql";
 import IssueOpen from "src/assets/icons/IssueOpen";
 import { Contribution, ContributionType } from "src/components/Contribution/Contribution";
+import { ContributionBadge } from "src/components/ContributionBadge/ContributionBadge";
+import { ContributionIconStatusType } from "src/components/ContributionIcon/ContributionIcon";
+import { ContributionReviewStatus } from "src/components/ContributionReview/ContributionReview";
 import Loader from "src/components/Loader";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import Table from "src/components/Table";
@@ -20,8 +23,6 @@ import TimeLine from "src/icons/TimeLine";
 import { ContributionTableStatus } from "src/pages/Contributions/Contributions";
 import SortingArrow from "src/pages/ProjectDetails/Contributors/ContributorsTable/SortingArrow";
 import displayRelativeDate from "src/utils/displayRelativeDate";
-import { ContributionBadge, ContributionBadgeStatusType } from "../ContributionBadge/ContributionBadge";
-import { ContributionReviewStatus } from "../ContributionReview/ContributionReview";
 
 function TableText({ children }: PropsWithChildren) {
   return (
@@ -67,7 +68,7 @@ export default function ContributionTable({
             url={contribution.githubIssue?.htmlUrl ?? ""}
             number={contribution.githubIssue?.number ?? ""}
             type={ContributionType.Issue}
-            status={(contribution.githubIssue?.status as ContributionBadgeStatusType) ?? ""}
+            status={(contribution.githubIssue?.status as ContributionIconStatusType) ?? ""}
             //   external={contribution.external}}
             rewards={contribution?.rewardItemsAggregate.aggregate?.count ?? 0}
           />
@@ -101,7 +102,7 @@ export default function ContributionTable({
             url={contribution.githubPullRequest?.htmlUrl ?? ""}
             number={contribution.githubPullRequest?.number ?? ""}
             type={ContributionType.PullRequest}
-            status={(contribution.githubPullRequest?.status as ContributionBadgeStatusType) ?? ""}
+            status={(contribution.githubPullRequest?.status as ContributionIconStatusType) ?? ""}
             draft={contribution.githubPullRequest?.draft}
             // external={contribution.external}
             rewards={contribution?.rewardItemsAggregate.aggregate?.count ?? 0}
@@ -116,7 +117,7 @@ export default function ContributionTable({
             url={contribution.githubCodeReview?.githubPullRequest?.htmlUrl ?? ""}
             number={contribution.githubCodeReview?.githubPullRequest?.number ?? ""}
             type={ContributionType.CodeReview}
-            status={(contribution.githubCodeReview?.githubPullRequest?.status as ContributionBadgeStatusType) ?? ""}
+            status={(contribution.githubCodeReview?.githubPullRequest?.status as ContributionIconStatusType) ?? ""}
             // external={contribution.external}
             rewards={contribution?.rewardItemsAggregate.aggregate?.count ?? 0}
           />
@@ -139,7 +140,7 @@ export default function ContributionTable({
                 key={id}
                 number={number}
                 type={ContributionType.PullRequest}
-                status={status as ContributionBadgeStatusType}
+                status={status as ContributionIconStatusType}
                 draft={draft}
               />
             );
@@ -159,7 +160,7 @@ export default function ContributionTable({
                 key={id}
                 number={number}
                 type={ContributionType.Issue}
-                status={status as ContributionBadgeStatusType}
+                status={status as ContributionIconStatusType}
               />
             );
           });
@@ -176,7 +177,7 @@ export default function ContributionTable({
             <ContributionBadge
               number={number}
               type={ContributionType.PullRequest}
-              status={status as ContributionBadgeStatusType}
+              status={status as ContributionIconStatusType}
               draft={draft}
             />
           );
