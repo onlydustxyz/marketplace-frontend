@@ -55,6 +55,7 @@ const config: Config = {
         },
         orange: {
           500: "#FF9000",
+          800: "#663A00",
           900: "#331D00",
         },
         pink: {
