@@ -9,7 +9,7 @@ use olog::{error, info, IntoField};
 #[tokio::main]
 async fn main() -> Result<()> {
 	dotenv().ok();
-	let config: Config = config::load("backend/api/src/bin/quotes_syncer/app.yaml")?;
+	let config: Config = config::load("api/src/bin/quotes_syncer/app.yaml")?;
 	let _tracer = Tracer::init(config.tracer.clone(), "quotes_syncer")?;
 
 	let usecase = Usecase::bootstrap(config)?;
