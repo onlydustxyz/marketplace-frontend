@@ -49,6 +49,11 @@ query GetAllContributions(
     }
     status
     type
+    rewardItemsAggregate {
+      aggregate {
+        count
+      }
+    }
   }
   githubRepos(orderBy: { indexedAt: ASC }, limit: 1) {
     indexedAt
