@@ -44,7 +44,6 @@ export default function Contributions() {
 
   const [activeTab, setActiveTab] = useState(isIn(tabValues, tab ?? "") ? tab : AllTabs.All);
 
-  // TODO not refreshing ?
   const {
     data: inProgressData,
     loading: inProgressLoading,
@@ -89,8 +88,6 @@ export default function Contributions() {
     skip: !githubUserId || (!isActiveTab(AllTabs.All) && !isActiveTab(AllTabs.Canceled)),
     fetchPolicy: "network-only",
   });
-
-  console.log({ inProgressData, inProgressLoading, inProgressError });
 
   function isActiveTab(tab: AllTabs) {
     return activeTab === tab;

@@ -85,7 +85,7 @@ export default function ContributionTable({
             // external={contribution.external}
             // rewards={contribution.rewards}
             rewards={0}
-            review={ContributionReviewStatus.PendingReviewer} // TODO
+            review={ContributionReviewStatus.PendingReviewer}
           />
         );
       case ContributionType.CodeReview:
