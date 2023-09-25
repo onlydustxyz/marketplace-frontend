@@ -1,13 +1,15 @@
 [workspace]
 
+resolver = "2"
+
 members = [
-  "api",
-  "common/derive",
-  "common/domain",
-  "common/infrastructure",
-  "common/presentation",
-  "common/testing",
-  "common/olog",
-  "event-listeners",
-  "event-store",
+	"api",
+	"common/derive",
+	"common/domain",
+	"common/infrastructure",
+	"common/presentation",
+	"common/testing",
+	"common/olog",
+	"event-listeners",
+	"event-store",
 ]
