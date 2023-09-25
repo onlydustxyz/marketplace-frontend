@@ -17,6 +17,7 @@ import { useIntl } from "src/hooks/useIntl";
 import Folder3Line from "src/icons/Folder3Line";
 import StackLine from "src/icons/StackLine";
 import TimeLine from "src/icons/TimeLine";
+import { ContributionTableStatus } from "src/pages/Contributions/Contributions";
 import SortingArrow from "src/pages/ProjectDetails/Contributors/ContributorsTable/SortingArrow";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { ContributionBadge, ContributionBadgeStatusType } from "../ContributionBadge/ContributionBadge";
@@ -42,6 +43,7 @@ export default function ContributionTable({
   loading,
   error,
   showHeader = true,
+  status,
 }: {
   id: string;
   title: string;
@@ -52,6 +54,7 @@ export default function ContributionTable({
   loading: boolean;
   error?: ApolloError;
   showHeader?: boolean;
+  status: ContributionTableStatus;
 }) {
   const { T } = useIntl();
 
@@ -199,7 +202,11 @@ export default function ContributionTable({
     return data?.contributions.map(contribution => (
       <Line key={contribution.id}>
         <Cell height={CellHeight.Medium}>
-          <span className="text-sm first-letter:uppercase">{displayRelativeDate(contribution.createdAt)}</span>
+          <span className="text-sm first-letter:uppercase">
+            {displayRelativeDate(
+              status === ContributionTableStatus.InProgress ? contribution.createdAt : contribution.closedAt
+            )}
+          </span>
         </Cell>
         <Cell height={CellHeight.Medium} className="flex flex-row gap-3">
           <div className="flex items-center gap-3">
