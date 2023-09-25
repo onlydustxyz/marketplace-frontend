@@ -14,7 +14,7 @@ mod cli;
 #[tokio::main]
 async fn main() -> Result<()> {
 	dotenv().ok();
-	let config: Config = config::load("backend/event-listeners/src/bin/refresh/app.yaml")?;
+	let config: Config = config::load("event-listeners/src/bin/refresh/app.yaml")?;
 	let _tracer = Tracer::init(config.tracer, "refresh")?;
 
 	let registry = Registry::new();

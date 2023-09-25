@@ -38,7 +38,7 @@ fn image(wiremock_path: String) -> RunnableImage<GenericImage> {
 	/* To record traffic, use the following command and change the port to 8080 in the config.base_url above
 	   docker run \
 	   -p 8080:8080 \
-	   -v $PWD/backend/api/tests/resources/wiremock/coinmarketcap:/home/wiremock \
+	   -v $PWD/api/tests/resources/wiremock/coinmarketcap:/home/wiremock \
 	   wiremock/wiremock \
 	   --proxy-all="https://pro-api.coinmarketcap.com" \
 	   --record-mappings --verbose
