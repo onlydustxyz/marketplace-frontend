@@ -7,7 +7,12 @@ import { GetAllContributionsQuery } from "src/__generated/graphql";
 import IssueOpen from "src/assets/icons/IssueOpen";
 import { Contribution, ContributionType } from "src/components/Contribution/Contribution";
 import { ContributionBadge } from "src/components/ContributionBadge/ContributionBadge";
-import { ContributionIconStatusType } from "src/components/ContributionIcon/ContributionIcon";
+import { ContributionDateTooltip } from "src/components/ContributionDateTooltip/ContributionDateTooltip";
+import {
+  ContributionIconStatus,
+  ContributionIconStatusType,
+  ContributionIconType,
+} from "src/components/ContributionIcon/ContributionIcon";
 import { ContributionReviewStatus } from "src/components/ContributionReview/ContributionReview";
 import Loader from "src/components/Loader";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
@@ -220,52 +225,65 @@ export default function ContributionTable({
       );
     }
 
-    return data?.contributions.map(contribution => (
-      <Line key={contribution.id}>
-        <Cell height={CellHeight.Medium}>
-          <span className="text-sm first-letter:uppercase">
-            {displayRelativeDate(
-              status === ContributionTableStatus.InProgress ? contribution.createdAt : contribution.closedAt
-            )}
-          </span>
-        </Cell>
-        <Cell height={CellHeight.Medium} className="flex flex-row gap-3">
-          <div className="flex items-center gap-3">
-            {contribution.project?.logoUrl ? (
-              <RoundedImage
-                src={contribution.project?.logoUrl ?? ""}
-                alt={contribution.project?.name ?? ""}
-                rounding={Rounding.Corners}
-                size={ImageSize.Sm}
-              />
-            ) : null}
-            <p className="text-sm">
-              <Link
-                to={generatePath(RoutePaths.ProjectDetails, {
-                  projectKey: contribution.project?.key ?? "",
-                })}
-                className="hover:underline"
-              >
-                {contribution.project?.name}
-              </Link>
-              <span className="text-spaceBlue-300">/</span>{" "}
-              <a
-                href={contribution.githubRepo?.htmlUrl ?? ""}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:underline"
-              >
-                {contribution.githubRepo?.name}
-              </a>
-            </p>
-          </div>
-        </Cell>
-        <Cell height={CellHeight.Medium}>{renderContribution(contribution)}</Cell>
-        <Cell className="justify-end" height={CellHeight.Medium}>
-          {renderLinkedContributions(contribution)}
-        </Cell>
-      </Line>
-    ));
+    return data?.contributions.map(contribution => {
+      const lineDate = status === ContributionTableStatus.InProgress ? contribution.createdAt : contribution.closedAt;
+
+      const { status: contributionStatus } = contribution.githubPullRequest ??
+        contribution.githubIssue ??
+        contribution.githubCodeReview ?? { status: ContributionIconStatus.Open };
+      const { draft } = contribution?.githubPullRequest ?? {};
+
+      return (
+        <Line key={contribution.id}>
+          <Cell height={CellHeight.Medium}>
+            <ContributionDateTooltip
+              id={`${contribution.id}-date-tooltip`}
+              type={contribution.type as ContributionIconType}
+              status={draft ? ContributionIconStatus.Draft : (contributionStatus as ContributionIconStatusType)}
+              date={new Date(lineDate)}
+            />
+            <span id={`${contribution.id}-date-tooltip`} className="text-sm first-letter:uppercase">
+              {displayRelativeDate(lineDate)}
+            </span>
+          </Cell>
+          <Cell height={CellHeight.Medium} className="flex flex-row gap-3">
+            <div className="flex items-center gap-3">
+              {contribution.project?.logoUrl ? (
+                <RoundedImage
+                  src={contribution.project?.logoUrl ?? ""}
+                  alt={contribution.project?.name ?? ""}
+                  rounding={Rounding.Corners}
+                  size={ImageSize.Sm}
+                />
+              ) : null}
+              <p className="text-sm">
+                <Link
+                  to={generatePath(RoutePaths.ProjectDetails, {
+                    projectKey: contribution.project?.key ?? "",
+                  })}
+                  className="hover:underline"
+                >
+                  {contribution.project?.name}
+                </Link>
+                <span className="text-spaceBlue-300">/</span>{" "}
+                <a
+                  href={contribution.githubRepo?.htmlUrl ?? ""}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:underline"
+                >
+                  {contribution.githubRepo?.name}
+                </a>
+              </p>
+            </div>
+          </Cell>
+          <Cell height={CellHeight.Medium}>{renderContribution(contribution)}</Cell>
+          <Cell className="justify-end" height={CellHeight.Medium}>
+            {renderLinkedContributions(contribution)}
+          </Cell>
+        </Line>
+      );
+    });
   }
 
   return (

@@ -50,6 +50,10 @@
       "linkedTo": "Linked to",
       "empty": "Last synced with Github at __time__.\nIt can take up to 5 minutes before the next refresh.",
       "error": "An error occurred, please try again later."
+    },
+    "tooltip": {
+      "dateOpen": "Opened on __date__ at __time__",
+      "dateClosed": "Closed on __date__ at __time__"
     }
   },
   "contributionGraph": {
