@@ -82,6 +82,7 @@ export default function ContributionTable({
             number={contribution.githubPullRequest?.number ?? ""}
             type={ContributionType.PullRequest}
             status={(contribution.githubPullRequest?.status as ContributionBadgeStatusType) ?? ""}
+            draft={contribution.githubPullRequest?.draft}
             // external={contribution.external}
             // rewards={contribution.rewards}
             rewards={0}

@@ -5,11 +5,21 @@ import { ContributionReview, ContributionReviewStatus } from "src/components/Con
 type Props = { name: string; url: string } & React.ComponentProps<typeof ContributionBadge> &
   React.ComponentProps<typeof ContributionReward> & { review?: ContributionReviewStatus };
 
-export function Contribution({ name, url, number, type, status, external = false, rewards, review }: Props) {
+export function Contribution({
+  name,
+  url,
+  number,
+  type,
+  status,
+  external = false,
+  draft = false,
+  rewards,
+  review,
+}: Props) {
   return (
     <div className="inline-flex items-center gap-2">
       <div className="inline-flex items-center gap-1">
-        <ContributionBadge number={number} type={type} status={status} external={external} />
+        <ContributionBadge number={number} type={type} status={status} external={external} draft={draft} />
         <a
           href={url}
           target="_blank"
