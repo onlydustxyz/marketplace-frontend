@@ -21,7 +21,7 @@ export function ContributionBadge({
   return (
     <div
       className={classNames(
-        "inline-flex w-auto items-center gap-1 rounded-full px-1 py-0.5 font-walsheim",
+        "inline-flex w-auto items-center gap-1 rounded-full px-1 py-0.5 font-walsheim hover:bg-whiteFakeOpacity-8",
         {
           "border border-dashed": external,
           "border-0.5 border-solid": !external,
