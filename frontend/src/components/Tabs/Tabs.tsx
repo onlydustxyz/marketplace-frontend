@@ -1,13 +1,14 @@
+import { PropsWithChildren } from "react";
 import classNames from "classnames";
 
 import { DesktopView, type Variants } from "src/components/Tabs/DesktopView";
 import { MobileView } from "src/components/Tabs/MobileView";
 
-export type Tab = {
+export type Tab = PropsWithChildren<{
   active: boolean;
   onClick: () => void;
   testId?: string;
-} & React.PropsWithChildren;
+}>;
 
 export function Tabs({
   tabs,

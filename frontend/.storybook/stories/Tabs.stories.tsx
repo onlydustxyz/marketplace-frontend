@@ -1,3 +1,5 @@
+import { ComponentProps } from "react";
+
 import { Tabs } from "src/components/Tabs/Tabs";
 
 export default {
@@ -5,7 +7,7 @@ export default {
   component: Tabs,
 };
 
-const defaultProps: React.ComponentProps<typeof Tabs> = {
+const defaultProps: ComponentProps<typeof Tabs> = {
   tabs: [
     {
       active: true,

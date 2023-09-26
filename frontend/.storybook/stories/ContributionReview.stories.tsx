@@ -1,3 +1,5 @@
+import { ComponentProps } from "react";
+
 import { ContributionReview, ContributionReviewStatus } from "src/components/ContributionReview/ContributionReview";
 
 export default {
@@ -16,7 +18,7 @@ export default {
   },
 };
 
-const defaultProps: React.ComponentProps<typeof ContributionReview> = {
+const defaultProps: ComponentProps<typeof ContributionReview> = {
   status: ContributionReviewStatus.PendingReviewer,
 };
 

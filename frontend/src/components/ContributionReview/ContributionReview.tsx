@@ -1,9 +1,10 @@
-import { useIntl } from "src/hooks/useIntl";
-import { ContributionAttribute } from "src/components/ContributionAttribute/ContributionAttribute";
+import { ReactElement } from "react";
 
 import Check from "src/assets/icons/Check";
 import FileChange from "src/assets/icons/FileChange";
 import Hourglass from "src/assets/icons/Hourglass";
+import { ContributionAttribute } from "src/components/ContributionAttribute/ContributionAttribute";
+import { useIntl } from "src/hooks/useIntl";
 
 export enum ContributionReviewStatus {
   PendingReviewer = "pendingReviewer",
@@ -15,7 +16,7 @@ export enum ContributionReviewStatus {
 export function ContributionReview({ status }: { status: ContributionReviewStatus }) {
   const { T } = useIntl();
 
-  const dict: Record<string, { icon: React.ReactElement; text: string }> = {
+  const dict: Record<string, { icon: ReactElement; text: string }> = {
     [ContributionReviewStatus.PendingReviewer]: {
       icon: <Hourglass />,
       text: T("contribution.review.status.pendingReviewer"),

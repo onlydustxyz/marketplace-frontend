@@ -1,11 +1,13 @@
+import { ComponentProps } from "react";
+
 import { ContributionBadge } from "src/components/ContributionBadge/ContributionBadge";
+import { ContributionBadgeTooltip } from "src/components/ContributionBadgeTooltip/ContributionBadgeTooltip";
 import { ContributionIconStatus, ContributionIconStatusType } from "src/components/ContributionIcon/ContributionIcon";
 import { ContributionReview, ContributionReviewStatus } from "src/components/ContributionReview/ContributionReview";
 import { ContributionReward } from "src/components/ContributionReward/ContributionReward";
-import { ContributionBadgeTooltip } from "src/components/ContributionBadgeTooltip/ContributionBadgeTooltip";
 
-type Props = { id: string; title: string; url: string } & React.ComponentProps<typeof ContributionBadge> &
-  React.ComponentProps<typeof ContributionReward> & { review?: ContributionReviewStatus };
+type Props = { id: string; title: string; url: string } & ComponentProps<typeof ContributionBadge> &
+  ComponentProps<typeof ContributionReward> & { review?: ContributionReviewStatus };
 
 export function Contribution({
   id,

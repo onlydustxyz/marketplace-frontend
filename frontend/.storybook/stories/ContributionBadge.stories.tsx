@@ -1,3 +1,5 @@
+import { ComponentProps } from "react";
+
 import { ContributionIconStatus, ContributionIconType } from "src/components/ContributionIcon/ContributionIcon";
 import { ContributionBadge } from "src/components/ContributionBadge/ContributionBadge";
 
@@ -18,7 +20,7 @@ export default {
   },
 };
 
-const defaultProps: React.ComponentProps<typeof ContributionBadge> = {
+const defaultProps: ComponentProps<typeof ContributionBadge> = {
   number: 123,
   status: ContributionIconStatus.Open,
   type: ContributionIconType.PullRequest,
@@ -28,7 +30,7 @@ export const Default = {
   render: (args: typeof ContributionBadge) => <ContributionBadge {...defaultProps} {...args} />,
 };
 
-const externalProps: React.ComponentProps<typeof ContributionBadge> = {
+const externalProps: ComponentProps<typeof ContributionBadge> = {
   ...defaultProps,
   external: true,
 };

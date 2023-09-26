@@ -1,3 +1,5 @@
+import { ComponentProps } from "react";
+
 import {
   Contribution,
   ContributionType,
@@ -34,7 +36,7 @@ export default {
   },
 };
 
-const defaultProps: React.ComponentProps<typeof Contribution> = {
+const defaultProps: ComponentProps<typeof Contribution> = {
   id: "123",
   title: "Name of PR / Issue / Other work ",
   url: "#",
