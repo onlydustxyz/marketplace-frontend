@@ -55,7 +55,7 @@ export default function GithubPullRequest({
       withBg={false}
     >
       {action && <GithubActionButton action={action} onClick={onClick} ignored={ignored} />}
-      <div className="flex w-full flex-col gap-2 truncate font-walsheim">
+      <div className="flex w-full flex-col gap-2 font-walsheim">
         <div className="flex text-sm font-medium text-greyscale-50">
           <GithubLink url={pullRequest.htmlUrl ?? ""} text={`#${pullRequest.number} · ${pullRequest.title}`} />
         </div>

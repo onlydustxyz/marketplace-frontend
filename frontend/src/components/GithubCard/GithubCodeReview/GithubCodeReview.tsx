@@ -59,7 +59,7 @@ export default function GithubCodeReview({
       withBg={false}
     >
       {action && <GithubActionButton action={action} onClick={onClick} ignored={ignored} />}
-      <div className="flex w-full flex-col gap-3 truncate font-walsheim">
+      <div className="flex w-full flex-col gap-3 font-walsheim">
         <div className="flex text-sm font-medium text-greyscale-50">
           <GithubLink url={htmlUrl ?? ""} text={`#${number} · ${title}`} />
         </div>
