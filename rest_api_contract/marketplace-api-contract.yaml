@@ -1,0 +1,1569 @@
+openapi: 3.0.3
+info:
+  title: OnlyDust Marketplace API
+  description: OnlyDust Marketplace API
+  version: 1.0.0
+servers:
+  - url: 'http://localhost:8000'
+    description: Local
+  - url: 'https://develop-api.onlydust.xyz'
+    description: Develop
+  - url: 'https://staging-api.onlydust.xyz'
+    description: Staging
+  - url: 'https://api.onlydust.xyz'
+    description: Production
+
+paths:
+  /api/v1/version:
+    get:
+      tags:
+        - Version
+      summary: Get API version information
+      operationId: getAPIVersion
+      responses:
+        "200":
+          description: 'API Version'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  releaseDate:
+                    type: string
+                    format: date-time
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/me:
+    get:
+      security:
+        - bearerAuth: [ ]
+      tags:
+        - Me
+      summary: Get caller profile
+      operationId: getMyProfile
+      description: |
+        Get the whole user profile (including private data)
+      responses:
+        "200":
+          description: 'Profile'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfileResponse'
+        "401":
+          $ref: '#/components/responses/UnauthorizedError'
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+    put:
+      tags:
+        - Me
+      summary: Update caller profile
+      operationId: setMyProfile
+      description: |
+        Set the whole user profile (including private data)
+      requestBody:
+        description: 'User profile'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserProfileRequest'
+      responses:
+        "200":
+          description: 'User profile'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfileResponse'
+        "401":
+          $ref: '#/components/responses/UnauthorizedError'
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/me/payout-info:
+    get:
+      security:
+        - bearerAuth: [ ]
+      tags:
+        - Me
+      summary: Caller payout info
+      operationId: getMyPayoutInfo
+      description: |
+        Get payout info of the caller
+      responses:
+        "200":
+          description: 'Payout information'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPayoutInformation'
+        "401":
+          $ref: '#/components/responses/UnauthorizedError'
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+    put:
+      security:
+        - bearerAuth: [ ]
+      tags:
+        - Me
+      summary: Update caller payout info
+      operationId: setMyPayoutInfo
+      description: |
+        Set payout info of the caller
+      requestBody:
+        description: 'Payout information'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPayoutInformation'
+      responses:
+        "200":
+          description: 'Payout information'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPayoutInformation'
+        "401":
+          $ref: '#/components/responses/UnauthorizedError'
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/me/leaded-projects:
+    get:
+      security:
+        - bearerAuth: [ ]
+      tags:
+        - Me
+      summary: Get projects leaded by the caller
+      operationId: getMyLeadedProjects
+      description: |
+        Get the list of all projects leaded by the caller.
+      parameters:
+        - in: query
+          name: sort
+          description: Sort order
+          schema:
+            type: string
+            enum:
+              - RANK
+              - NAME
+              - REPO_COUNT
+              - CONTRIBUTOR_COUNT
+      responses:
+        "200":
+          description: 'List of projects'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectListResponse'
+        "401":
+          $ref: '#/components/responses/UnauthorizedError'
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/me/rewards:
+    get:
+      security:
+        - bearerAuth: [ ]
+      tags:
+        - Me
+      summary: Get caller's rewards
+      operationId: getMyRewards
+      description: |
+        Get the list of all rewards where the recipient is the caller
+      responses:
+        "200":
+          description: 'List of rewards'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RewardListResponse'
+        "401":
+          $ref: '#/components/responses/UnauthorizedError'
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/me/contributions:
+    get:
+      security:
+        - bearerAuth: [ ]
+      tags:
+        - Me
+      summary: Get caller's contributions
+      operationId: getMyContributions
+      description: |
+        Get contributions of the caller.
+      responses:
+        "200":
+          description: 'Contribution list'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContributionListResponse'
+        "401":
+          $ref: '#/components/responses/UnauthorizedError'
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/technologies:
+    get:
+      tags:
+        - Technologies
+      summary: Technologies referenced by OnlyDust
+      operationId: getTechnologies
+      description: |
+        Get the list of all technologies (languages, frameworks, tools, etc.) referenced by OnlyDust
+      responses:
+        "200":
+          description: 'Technologies'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Technologies'
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/rewards/{rewardId}:
+    get:
+      security:
+        - bearerAuth: [ ]
+      tags:
+        - Rewards
+      summary: Get reward details
+      operationId: getReward
+      description: |
+        Get all reward data. The caller must either be the recipient of the reward, or a leader of the reward's project.
+      parameters:
+        - in: path
+          name: rewardId
+          required: true
+          schema:
+            $ref: '#/components/schemas/RewardId'
+      responses:
+        "200":
+          description: 'Reward'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RewardResponse'
+        "401":
+          $ref: '#/components/responses/UnauthorizedError'
+        "403":
+          $ref: '#/components/responses/RewardForbiddenError'
+        "404":
+          $ref: '#/components/responses/RewardNotFoundError'
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+    put:
+      security:
+        - bearerAuth: [ ]
+      tags:
+        - Rewards
+      summary: Update reward
+      operationId: updateReward
+      description: |
+        Update reward content. The caller must be a leader of the reward's project and the reward must not have been processed yet.
+      parameters:
+        - in: path
+          name: rewardId
+          required: true
+          schema:
+            $ref: '#/components/schemas/RewardId'
+      requestBody:
+        description: 'Updated reward'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RewardRequest'
+      responses:
+        "200":
+          description: 'Reward'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RewardResponse'
+        "401":
+          $ref: '#/components/responses/UnauthorizedError'
+        "403":
+          $ref: '#/components/responses/RewardForbiddenError'
+        "404":
+          $ref: '#/components/responses/RewardNotFoundError'
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      security:
+        - bearerAuth: [ ]
+      tags:
+        - Rewards
+      summary: Cancel reward
+      operationId: cancelReward
+      description: |
+        Cancel the reward. The caller must be a leader of the reward's project and the reward must not have been processed yet.
+      parameters:
+        - in: path
+          name: rewardId
+          required: true
+          schema:
+            $ref: '#/components/schemas/RewardId'
+      responses:
+        "204":
+          description: 'The reward was cancelled successfully.'
+        "401":
+          $ref: '#/components/responses/UnauthorizedError'
+        "403":
+          $ref: '#/components/responses/RewardForbiddenError'
+        "404":
+          $ref: '#/components/responses/RewardNotFoundError'
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/users/{userId}:
+    get:
+      tags:
+        - Users
+      summary: Get user profile
+      operationId: getUserProfile
+      description: |
+        Get the publicly available user profile (ie. all data except private data)
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            $ref: '#/components/schemas/UserId'
+      responses:
+        "200":
+          description: 'User profile'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfileResponse'
+        "404":
+          $ref: '#/components/responses/UserNotFoundError'
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/projects:
+    get:
+      security:
+        - {}
+        - bearerAuth: [ ]
+      tags:
+        - Projects
+      summary: Get all projects
+      operationId: getProjects
+      description: |
+        Get the (soon to be paginated) list of all projects on the platform that are visible to the caller.
+      parameters:
+        - in: query
+          name: sort
+          description: Sort order
+          schema:
+            type: string
+            enum:
+              - RANK
+              - NAME
+              - REPO_COUNT
+              - CONTRIBUTOR_COUNT
+      responses:
+        "200":
+          description: 'List of projects'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectListResponse'
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+
+
+  /api/v1/projects/{projectId}:
+    get:
+      security:
+        - {}
+        - bearerAuth: [ ]
+      tags:
+        - Projects
+      summary: Get project details
+      operationId: getProject
+      description: |
+        Get the project if it is visible to the caller.
+      parameters:
+        - in: path
+          name: projectId
+          required: true
+          schema:
+            $ref: '#/components/schemas/ProjectId'
+      responses:
+        "200":
+          description: 'The project'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectResponse'
+        "403":
+          $ref: '#/components/responses/ProjectForbiddenError'
+        "404":
+          $ref: '#/components/responses/ProjectNotFoundError'
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/projects/{projectId}/contributors:
+    get:
+      security:
+        - {}
+        - bearerAuth: [ ]
+      tags:
+        - Projects
+      summary: Get all project contributors
+      operationId: getProjectContributors
+      description: |
+        Get the (soon to be paginated) list of all contributors of the project.
+      parameters:
+        - in: path
+          name: projectId
+          required: true
+          schema:
+            $ref: '#/components/schemas/ProjectId'
+        - in: query
+          name: sort
+          description: Sort order
+          schema:
+            type: string
+            enum:
+              - LOGIN
+              - CONTRIBUTION_COUNT
+              - REWARD_COUNT
+              - EARNED
+        - in: query
+          name: includePending
+          description: Set to true to include pending contributors in the response
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: 'List of project contributors'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContributorListResponse'
+        "403":
+          $ref: '#/components/responses/ProjectForbiddenError'
+        "404":
+          $ref: '#/components/responses/ProjectNotFoundError'
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+
+
+  /api/v1/projects/{projectId}/rewards:
+    get:
+      security:
+        - bearerAuth: [ ]
+      tags:
+        - Projects
+      summary: Get project rewards
+      operationId: getProjectRewards
+      description: |
+        Get the list of all rewards granted from this project. Only project leaders can access this information.
+      parameters:
+        - in: path
+          name: projectId
+          required: true
+          schema:
+            $ref: '#/components/schemas/ProjectId'
+      responses:
+        "200":
+          description: 'List of rewards'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RewardListResponse'
+        "401":
+          $ref: '#/components/responses/UnauthorizedError'
+        "403":
+          $ref: '#/components/responses/ProjectForbiddenError'
+        "404":
+          $ref: '#/components/responses/ProjectNotFoundError'
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      security:
+        - bearerAuth: [ ]
+      tags:
+        - Projects
+      summary: Create reward
+      operationId: createReward
+      description: |
+        Create new reward. The caller must be a leader of the project.
+      parameters:
+        - in: path
+          name: projectId
+          required: true
+          schema:
+            $ref: '#/components/schemas/ProjectId'
+      requestBody:
+        description: 'New reward'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RewardRequest'
+      responses:
+        "200":
+          description: 'Reward'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RewardResponse'
+        "401":
+          $ref: '#/components/responses/UnauthorizedError'
+        "403":
+          $ref: '#/components/responses/ProjectForbiddenError'
+        "404":
+          $ref: '#/components/responses/ProjectNotFoundError'
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+
+
+  /api/v1/projects/{projectId}/contributions:
+    get:
+      security:
+        - bearerAuth: [ ]
+      tags:
+        - Projects
+      summary: Get contributions of a user within the project
+      operationId: getProjectContributions
+      description: |
+        Get contributions of a user on a given project. The caller must be a leader of the project.
+      parameters:
+        - in: path
+          name: projectId
+          required: true
+          schema:
+            $ref: '#/components/schemas/ProjectId'
+        - in: query
+          name: githubUserId
+          required: true
+          schema:
+            $ref: '#/components/schemas/GithubUserId'
+      responses:
+        "200":
+          description: 'Contribution list'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContributionListResponse'
+        "401":
+          $ref: '#/components/responses/UnauthorizedError'
+        "403":
+          $ref: '#/components/responses/ProjectForbiddenError'
+        "404":
+          $ref: '#/components/responses/ProjectNotFoundError'
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  responses:
+    InternalServerError:
+      description: Internal Server Error
+      content:
+        application/problem+json:
+          example:
+            type: GITHUB_NOT_RESPONDING
+            title: Github API is not responding
+            status: 500
+          schema:
+            $ref: '#/components/schemas/OnlyDustError'
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/problem+json:
+          example:
+            type: NOT_AUTHENTICATED
+            title: You must be authenticated to make this call
+            status: 401
+          schema:
+            $ref: '#/components/schemas/OnlyDustError'
+    ProjectNotFoundError:
+      description: Project not found
+      content:
+        application/problem+json:
+          example:
+            type: PROJECT_NOT_FOUND
+            title: Project not found
+            details: Project 497f6eca-6276-4993-bfeb-53cbbbba6f08 does not exist
+            status: 404
+          schema:
+            $ref: '#/components/schemas/OnlyDustError'
+    ProjectForbiddenError:
+      description: Forbidden. The project is not visible to the caller.
+      content:
+        application/problem+json:
+          example:
+            type: PROJECT_ACCESS_FORBIDDEN
+            title: Access to this project is forbidden
+            details: You do not have the right to access the project 497f6eca-6276-4993-bfeb-53cbbbba6f08.
+            status: 403
+          schema:
+            $ref: '#/components/schemas/OnlyDustError'
+    RewardNotFoundError:
+      description: Reward not found
+      content:
+        application/problem+json:
+          example:
+            type: REWARD_NOT_FOUND
+            title: Reward not found
+            details: Reward 497f6eca-6276-4993-bfeb-53cbbbba6f08 does not exist
+            status: 404
+          schema:
+            $ref: '#/components/schemas/OnlyDustError'
+    RewardForbiddenError:
+      description: Forbidden. The reward is not visible to the caller.
+      content:
+        application/problem+json:
+          example:
+            type: REWARD_ACCESS_FORBIDDEN
+            title: Access to this reward is forbidden
+            details: You do not have the right to access the reward 497f6eca-6276-4993-bfeb-53cbbbba6f08.
+            status: 403
+          schema:
+            $ref: '#/components/schemas/OnlyDustError'
+    UserNotFoundError:
+      description: User not found
+      content:
+        application/problem+json:
+          example:
+            type: USER_NOT_FOUND
+            title: User not found
+            details: User 497f6eca-6276-4993-bfeb-53cbbbba6f08 (could also be a githubUserId here, like 595505) does not exist
+            status: 404
+          schema:
+            $ref: '#/components/schemas/OnlyDustError'
+
+  schemas:
+    # ERRORS ==================================================================
+    OnlyDustError:
+      type: object
+      description: Error contract strongly inspired by JSON problem (rfc7807) specification
+      required:
+        - type
+        - title
+        - status
+      properties:
+        type:
+          type: string
+          description: A code that identifies the problem type.
+          example: F.OUT_OF_CREDIT
+        title:
+          type: string
+          description: A short, human-readable summary of the problem type. It SHOULD NOT change from occurrence to occurrence of the problem.
+          example: Not enough credit.
+        status:
+          type: integer
+          description: The HTTP status code generated by the origin server for this occurrence of the problem.
+          example: 400
+        details:
+          type: string
+          description: A human-readable explanation specific to this occurrence of the problem.
+          example: Budget current balance is $300, but a payment of $500 was requested.
+        instance:
+          type: object
+          description: Arbitrary data that is useful to identifies the specific occurrence of the problem.
+          example:
+            - traceId: '19049023845982314'
+              budgetId: '497f6eca-6276-4993-bfeb-53cbbbba6f08'
+              balance: 300
+
+
+    # VALUE OBJECTS ==================================================================
+    UserId:
+      type: string
+      format: uuid
+      description: OnlyDust user ID
+
+    GithubUserId:
+      type: integer
+      description: Github user ID (databaseId)
+      example: 595505
+
+    GithubRepoId:
+      type: integer
+      description: Github repo ID (databaseId)
+      example: 650626566
+
+    PullRequestId:
+      type: string
+      description: Github pull request ID (databaseId)
+      example: 27218542
+
+    IssueId:
+      type: string
+      description: Github issue ID (databaseId)
+      example: 1678794252
+
+    CodeReviewId:
+      type: integer
+      description: Code review ID (databaseId)
+      example: 2189e8dc91876fa1686e81b09de33ca7bdca08e80854d4cada02c8288cf03739
+
+    ProjectId:
+      type: string
+      format: uuid
+      description: OnlyDust project ID
+
+    ProjectPrettyId:
+      type: string
+      description: OnlyDust project pretty ID that is computed from its name. This ID CAN change over time.
+      example: my-awesome-project
+
+    SponsorId:
+      type: string
+      format: uuid
+      description: OnlyDust sponsor ID
+
+    RewardId:
+      type: string
+      format: uuid
+      description: OnlyDust reward ID
+
+    # RESPONSES ==================================================================
+    UserMinimalistResponse:
+      type: object
+      required:
+        - githubUserId
+        - login
+        - htmlUrl
+        - avatarUrl
+      properties:
+        id:
+          $ref: '#/components/schemas/UserId'
+        githubUserId:
+          $ref: '#/components/schemas/GithubUserId'
+        login:
+          type: string
+          description: User's Github login
+          example: ofux
+        htmlUrl:
+          type: string
+          format: uri
+        avatarUrl:
+          type: string
+          format: url
+          description: Direct URL to user's avatar image
+          example: 'https://avatars.githubusercontent.com/u/595505?v=4'
+
+    RegisteredUserMinimalistResponse:
+      required:
+        - id
+      allOf:
+        - $ref: '#/components/schemas/UserMinimalistResponse'
+
+    PersonIdentity:
+      type: object
+      properties:
+        lastname:
+          type: string
+          example: Smith
+        firstname:
+          type: string
+          example: John
+
+    CompanyIdentity:
+      type: object
+      properties:
+        name:
+          type: string
+          example: OnlyDust
+        identificationNumber:
+          type: string
+          description: SIRET or equivalent
+          example: 1873-4987-41234
+        owner:
+          $ref: '#/components/schemas/PersonIdentity'
+
+    UserPayoutInformation:
+      type: object
+      properties:
+        identity:
+          oneOf:
+            - $ref: '#/components/schemas/PersonIdentity'
+            - $ref: '#/components/schemas/CompanyIdentity'
+        location:
+          type: object
+          properties:
+            country:
+              type: string
+              example: France
+            city:
+              type: string
+              example: Paris
+            postalCode:
+              type: string
+              example: 75001
+            address:
+              type: string
+              example: 33 rue de Rivoli
+        payoutSettings:
+          type: object
+          properties:
+            usdPreferredMethod:
+              type: string
+              enum:
+                - SEPA
+                - USDC
+            sepaAccount:
+              type: object
+              properties:
+                bic:
+                  type: string
+                  example: DAAEFRPPCCT
+                iban:
+                  type: string
+                  example: FR5417569000301995586997O41
+            ethAddress:
+              type: string
+              example: 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045
+            ethName:
+              type: string
+              example: vitalik.eth
+            optimismAddress:
+              type: string
+              example: 0x72c30fcd1e7bd691ce206cd36bbd87c4c7099545
+            aptosAddress:
+              type: string
+              example: 0xa645c3bdd0dfd0c3628803075b3b133e8426061dc915ef996cc5ed4cece6d4e5
+            starknetAddress:
+              type: string
+              example: 0x056471aa79e3daebb62185cebee14fb0088b462b04ccf6e60ec9386044bec798
+
+    UserProfileRequest:
+      type: object
+      properties:
+        location:
+          type: string
+          description: User location as in Github profile
+          example: Paris, France
+        bio:
+          type: string
+          description: User bio as in Github profile
+          example: Contributing to awesome open source projects.
+        website:
+          type: string
+          description: User website as in Github profile
+        technologies:
+          $ref: '#/components/schemas/Technologies'
+        cover:
+          type: string
+          enum:
+            - MAGENTA
+            - CYAN
+            - BLUE
+            - YELLOW
+          description: The cover color chosen by the user
+        contacts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactInformation'
+
+    UserProfileResponse:
+      allOf:
+        - $ref: '#/components/schemas/UserMinimalistResponse'
+        - type: object
+          properties:
+            location:
+              type: string
+              description: User location as in Github profile
+              example: Paris, France
+            bio:
+              type: string
+              description: User bio as in Github profile
+              example: Contributing to awesome open source projects.
+            website:
+              type: string
+              description: User website as in Github profile
+            technologies:
+              $ref: '#/components/schemas/Technologies'
+            createdAt:
+              type: string
+              format: date-time
+              description: When the user signed up on OnlyDust
+            updatedAt:
+              type: string
+              format: date-time
+              description: When user profile was last updated
+            lastSeenAt:
+              type: string
+              format: date-time
+              description: The last time the user signed in on OnlyDust
+            cover:
+              type: string
+              enum:
+                - MAGENTA
+                - CYAN
+                - BLUE
+                - YELLOW
+              description: The cover color chosen by the user
+            contacts:
+              type: array
+              items:
+                $ref: '#/components/schemas/ContactInformation'
+            projects:
+              type: array
+              items:
+                properties:
+                  id:
+                    $ref: '#/components/schemas/ProjectId'
+                  name:
+                    type: string
+                    example: Verkle Tries
+                  logoUrl:
+                    type: string
+                    format: url
+                    description: Direct URL to project's logo image
+                    example: 'https://onlydust-app-images.s3.eu-west-1.amazonaws.com/2529199823275297272.jpg'
+                  contributorCount:
+                    type: integer
+                    description: Total number of contributors within the project
+                    example: 163
+                  totalGranted:
+                    type: number
+                    description: Total USD-equivalent amount of all rewards granted on this project
+                    example: 25400
+                  userContributionCount:
+                    type: integer
+                    description: Number of contributions made by the user on this project
+                    example: 34
+                  userLastContributedAt:
+                    type: string
+                    format: date-time
+                    description: The last time the user contributed to this project
+            stats:
+              type: object
+              properties:
+                contributedProjectCount:
+                  type: integer
+                  description: Number of projects on which the user contributed
+                  example: 2
+                leadedProjectCount:
+                  type: integer
+                  description: Number of projects the user leads
+                  example: 1
+                totalEarned:
+                  type: number
+                  description: Total USD-equivalent amount the user earned from rewards
+                  example: 4000
+                contributionCount:
+                  type: integer
+                  description: Total number of contributions made by the user within OnlyDust projects
+                  example: 104
+                contributionCountPerWeeks:
+                  type: array
+                  items:
+                    properties:
+                      year:
+                        type: integer
+                        example: 2023
+                      week:
+                        type: integer
+                        example: 34
+                      codeReviewCount:
+                        type: integer
+                      issueCount:
+                        type: integer
+                      pullRequestCount:
+                        type: integer
+
+    ContactInformation:
+      type: object
+      required:
+        - channel
+        - contact
+        - visibility
+      properties:
+        channel:
+          type: string
+          example: email
+        contact:
+          type: string
+          example: foobar@gmail.com
+        visibility:
+          type: string
+          enum:
+            - public
+            - private
+
+
+    ContributorListResponse:
+      type: object
+      required:
+        - contributors
+      properties:
+        contributors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContributorListItemResponse'
+
+    ContributorListItemResponse:
+      type: object
+      required:
+        - id
+        - githubUserId
+        - login
+        - avatarUrl
+        - contributionCount
+        - rewardCount
+        - earned
+      properties:
+        id:
+          $ref: '#/components/schemas/UserId'
+        githubUserId:
+          $ref: '#/components/schemas/GithubUserId'
+        login:
+          type: string
+          description: User's Github login
+          example: ofux
+        avatarUrl:
+          type: string
+          format: url
+          description: Direct URL to user's avatar image
+          example: 'https://avatars.githubusercontent.com/u/595505?v=4'
+        contributionCount:
+          type: integer
+          description: Total number of contributions the contributor made on this project.
+          example: 22
+        rewardCount:
+          type: integer
+          description: Total number of rewards the contributor got on this project.
+          example: 10
+        earned:
+          type: number
+          description: Total money amount the contributor earned on this project.
+          example: 3500
+        contributionToRewardCount:
+          type: integer
+          description: Total number of contributions the contributor was not rewarded for on this project.
+          example: 9
+
+    SponsorResponse:
+      type: object
+      required:
+        - id
+        - name
+        - url
+        - logoUrl
+      properties:
+        id:
+          $ref: '#/components/schemas/SponsorId'
+        name:
+          type: string
+          description: Sponsor name
+          example: Ethereum Foundation
+        url:
+          type: string
+          format: url
+          description: URL of sponsor's website
+          example: 'https://ethereum.org'
+        logoUrl:
+          type: string
+          format: url
+          description: Direct URL to sponsor's logo image
+          example: 'https://onlydust-app-images.s3.eu-west-1.amazonaws.com/8506434858363286425.png'
+
+    ProjectListResponse:
+      type: object
+      required:
+        - projects
+      properties:
+        projects:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProjectListItemResponse'
+
+    ProjectListItemResponse:
+      type: object
+      required:
+        - id
+        - prettyId
+        - name
+        - shortDescription
+        - logoUrl
+        - hiring
+        - visibility
+        - repoCount
+        - contributorCount
+        - leaders
+        - sponsors
+        - technologies
+      properties:
+        id:
+          $ref: '#/components/schemas/ProjectId'
+        prettyId:
+          $ref: '#/components/schemas/ProjectPrettyId'
+        name:
+          type: string
+          example: Verkle Tries
+        shortDescription:
+          type: string
+          example: A short project description
+        logoUrl:
+          type: string
+          format: url
+          description: Direct URL to project's logo image
+          example: 'https://onlydust-app-images.s3.eu-west-1.amazonaws.com/2529199823275297272.jpg'
+        hiring:
+          type: boolean
+          description: Is the project currently hiring?
+        visibility:
+          type: string
+          enum:
+            - public
+            - private
+          description: Is the project visible to anyone?
+        repoCount:
+          type: integer
+          description: Number of github repositories included in the project
+          example: 2
+        contributorCount:
+          type: integer
+          description: Total number of contributors within the project
+          example: 163
+        leaders:
+          type: array
+          items:
+            $ref: '#/components/schemas/RegisteredUserMinimalistResponse'
+        sponsors:
+          type: array
+          items:
+            $ref: '#/components/schemas/SponsorResponse'
+        technologies:
+          $ref: '#/components/schemas/Technologies'
+
+
+    ProjectResponse:
+      type: object
+      required:
+        - id
+        - prettyId
+        - name
+        - shortDescription
+        - longDescription
+        - logoUrl
+        - moreInfoUrl
+        - hiring
+        - visibility
+        - contributorCount
+        - topContributors
+        - leaders
+        - sponsors
+        - technologies
+      properties:
+        id:
+          $ref: '#/components/schemas/ProjectId'
+        prettyId:
+          $ref: '#/components/schemas/ProjectPrettyId'
+        name:
+          type: string
+          example: Verkle Tries
+        shortDescription:
+          type: string
+          example: A short project description
+        longDescription:
+          type: string
+          example: A lonnnnnnnnnnnnng project description
+        logoUrl:
+          type: string
+          format: url
+          description: Direct URL to project's logo image
+          example: 'https://onlydust-app-images.s3.eu-west-1.amazonaws.com/2529199823275297272.jpg'
+        moreInfoUrl:
+          type: string
+          format: url
+          description: External link to get more information about the project
+          example: 'https://t.me/my-super-project'
+        hiring:
+          type: boolean
+          description: Is the project currently hiring?
+        visibility:
+          type: string
+          enum:
+            - public
+            - private
+          description: Is the project visible to anyone?
+        contributorCount:
+          type: integer
+          description: Total number of contributors within the project
+          example: 163
+        topContributors:
+          type: array
+          description: The top 3 contributors (by contribution count) of this project
+          maxItems: 3
+          items:
+            $ref: '#/components/schemas/ContributorListItemResponse'
+        repos:
+          type: array
+          items:
+            $ref: '#/components/schemas/GithubRepoResponse'
+        leaders:
+          type: array
+          items:
+            $ref: '#/components/schemas/RegisteredUserMinimalistResponse'
+        sponsors:
+          type: array
+          items:
+            $ref: '#/components/schemas/SponsorResponse'
+        technologies:
+          $ref: '#/components/schemas/Technologies'
+
+    ProjectMinimalistResponse:
+      type: object
+      required:
+        - id
+        - prettyId
+        - name
+        - shortDescription
+        - logoUrl
+        - visibility
+      properties:
+        id:
+          $ref: '#/components/schemas/ProjectId'
+        prettyId:
+          $ref: '#/components/schemas/ProjectPrettyId'
+        name:
+          type: string
+          example: Verkle Tries
+        shortDescription:
+          type: string
+          example: A short project description
+        logoUrl:
+          type: string
+          format: url
+          description: Direct URL to project's logo image
+          example: 'https://onlydust-app-images.s3.eu-west-1.amazonaws.com/2529199823275297272.jpg'
+        visibility:
+          type: string
+          enum:
+            - public
+            - private
+          description: Is the project visible to anyone?
+
+    GithubRepoResponse:
+      type: object
+      required:
+        - id
+        - owner
+        - name
+        - stars
+        - forkCount
+        - htmlUrl
+        - hasIssues
+      properties:
+        id:
+          $ref: '#/components/schemas/GithubRepoId'
+        owner:
+          type: string
+          description: Repo owner on Github
+          example: onlydustxyz
+        name:
+          type: string
+          description: Repo name on Github
+          example: marketplace-backend
+        description:
+          type: string
+          description: Repo description on Github
+          example: Awesome repo
+        stars:
+          type: integer
+          description: Number of stars on Github
+          example: 625
+        forkCount:
+          type: integer
+          description: Fork count on Github
+          example: 3
+        htmlUrl:
+          type: string
+          format: url
+          description: The public Github URL of the repo
+          example: https://github.com/onlydustxyz/marketplace-backend
+        hasIssues:
+          type: boolean
+          description: Are issues enabled on Github for this repo
+
+    Technologies:
+      type: object
+      description: List fo technologies ordered by mastering level (the higher the better) or usage (ie. line count of a language)
+      additionalProperties:
+        type: integer
+      example:
+        Rust: 91283
+        Go: 12388
+        Java: 1233
+
+    RewardListResponse:
+      type: object
+      required:
+        - rewards
+      properties:
+        rewards:
+          type: array
+          items:
+            $ref: '#/components/schemas/RewardResponse'
+
+    RewardResponse:
+      type: object
+      required:
+        - id
+        - requestedAt
+        - amount
+        - currency
+        - items
+      properties:
+        id:
+          $ref: '#/components/schemas/RewardId'
+        requestedAt:
+          type: string
+          format: date-time
+          example: 2023-07-21T12:45:04.750174
+        amount:
+          type: number
+          description: Currency amount
+        currency:
+          $ref: '#/components/schemas/Currency'
+        items:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/RewardItemResponse'
+
+    RewardType:
+      type: string
+      enum:
+        - ISSUE
+        - PULL_REQUEST
+        - CODE_REVIEW
+
+    RewardRequest:
+      type: object
+      required:
+        - amount
+        - currency
+        - items
+      properties:
+        amount:
+          type: number
+          description: Currency amount
+        currency:
+          $ref: '#/components/schemas/Currency'
+        items:
+          type: array
+          maxItems: 1
+          items:
+            $ref: '#/components/schemas/RewardItemRequest'
+
+    RewardItemRequest:
+      type: object
+      required:
+        - type
+        - purposeId
+      properties:
+        type:
+          $ref: '#/components/schemas/RewardType'
+        purposeId:
+          oneOf:
+            - $ref: '#/components/schemas/PullRequestId'
+            - $ref: '#/components/schemas/IssueId'
+            - $ref: '#/components/schemas/CodeReviewId'
+
+    RewardItemResponse:
+      type: object
+      required:
+        - type
+        - purpose
+      properties:
+        type:
+          $ref: '#/components/schemas/RewardType'
+        purpose:
+          oneOf:
+            - $ref: '#/components/schemas/PullRequest'
+            - $ref: '#/components/schemas/Issue'
+            - $ref: '#/components/schemas/CodeReview'
+
+    PullRequest:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/PullRequestId'
+        number:
+          type: integer
+          description: Pull request number on Github
+          example: 6
+        title:
+          type: string
+        htmlUrl:
+          type: string
+        status:
+          $ref: '#/components/schemas/PullRequestStatus'
+        draft:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        mergedAt:
+          type: string
+          format: date-time
+        closedAt:
+          type: string
+          format: date-time
+        author:
+          $ref: '#/components/schemas/UserMinimalistResponse'
+        repo:
+          $ref: '#/components/schemas/GithubRepoResponse'
+
+    Issue:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/IssueId'
+        number:
+          type: integer
+          description: Issue number on Github
+          example: 6
+        title:
+          type: string
+        htmlUrl:
+          type: string
+        status:
+          $ref: '#/components/schemas/IssueStatus'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        closedAt:
+          type: string
+          format: date-time
+        commentCount:
+          type: integer
+        author:
+          $ref: '#/components/schemas/UserMinimalistResponse'
+        repo:
+          $ref: '#/components/schemas/GithubRepoResponse'
+
+    CodeReview:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/CodeReviewId'
+        pullRequestId:
+          $ref: '#/components/schemas/PullRequestId'
+        reviewer:
+          $ref: '#/components/schemas/UserMinimalistResponse'
+        status:
+          $ref: '#/components/schemas/CodeReviewStatus'
+        outcome:
+          $ref: '#/components/schemas/CodeReviewOutcome'
+        submittedAt:
+          type: string
+          format: date-time
+        repo:
+          $ref: '#/components/schemas/GithubRepoResponse'
+
+
+    PullRequestStatus:
+      type: string
+      enum:
+        - OPEN
+        - MERGED
+        - CLOSED
+
+    IssueStatus:
+      type: string
+      enum:
+        - OPEN
+        - COMPLETED
+        - CANCELLED
+
+    CodeReviewStatus:
+      type: string
+      enum:
+        - PENDING
+        - COMPLETED
+
+    CodeReviewOutcome:
+      type: string
+      enum:
+        - CHANGE_REQUESTED
+        - APPROVED
+
+    CIChecks:
+      type: string
+      enum:
+        - PASSED
+        - FAILED
+
+    Currency:
+      type: string
+      description: Currency
+      example: USD, ETH, etc.
+
+    ContributionListResponse:
+      type: object
+      required:
+        - contributions
+      properties:
+        contributions:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContributionResponse'
+
+    ContributionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The contribution ID is determined from its content's ID (ie PR / issue / code review ID)
+        createdAt:
+          type: string
+          format: date-time
+        closedAt:
+          type: string
+          format: date-time
+        status:
+          $ref: '#/components/schemas/ContributionStatus'
+        type:
+          $ref: '#/components/schemas/ContributionType'
+        content:
+          oneOf:
+            - $ref: '#/components/schemas/Issue'
+            - $ref: '#/components/schemas/PullRequest'
+            - $ref: '#/components/schemas/CodeReview'
+        project:
+          $ref: '#/components/schemas/ProjectMinimalistResponse'
+        contributor:
+          $ref: '#/components/schemas/UserMinimalistResponse'
+        linkedRewardCount:
+          type: number
+          description: Number of reward items where the purpose matches the content of this contribution.
+
+
+    ContributionType:
+      type: string
+      enum:
+        - ISSUE
+        - PULL_REQUEST
+        - CODE_REVIEW
+        -
+    ContributionStatus:
+      type: string
+      enum:
+        - IN_PROGRESS
+        - COMPLETED
+        - CANCELLED
+
+
+
