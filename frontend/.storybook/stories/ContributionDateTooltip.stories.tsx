@@ -1,7 +1,7 @@
 import { ComponentProps } from "react";
 
-import { ContributionIconType, ContributionIconStatus } from "src/components/ContributionIcon/ContributionIcon";
-import { ContributionDateTooltip } from "src/components/ContributionDateTooltip/ContributionDateTooltip";
+import { ContributionDateTooltip } from "src/components/Contribution/ContributionDateTooltip";
+import { GithubContributionIconStatus, GithubContributionType } from "src/types";
 
 export default {
   title: "ContributionDateTooltip",
@@ -9,15 +9,15 @@ export default {
   argTypes: {
     type: {
       control: { type: "select" },
-      options: [ContributionIconType.PullRequest, ContributionIconType.Issue, ContributionIconType.CodeReview],
+      options: [GithubContributionType.PullRequest, GithubContributionType.Issue, GithubContributionType.CodeReview],
     },
     status: {
       control: { type: "select" },
       options: [
-        ContributionIconStatus.Open,
-        ContributionIconStatus.Merged,
-        ContributionIconStatus.Closed,
-        ContributionIconStatus.Draft,
+        GithubContributionIconStatus.Open,
+        GithubContributionIconStatus.Merged,
+        GithubContributionIconStatus.Closed,
+        GithubContributionIconStatus.Draft,
       ],
     },
   },
@@ -25,8 +25,8 @@ export default {
 
 const defaultProps: ComponentProps<typeof ContributionDateTooltip> = {
   id: "test",
-  type: ContributionIconType.PullRequest,
-  status: ContributionIconStatus.Open,
+  type: GithubContributionType.PullRequest,
+  status: GithubContributionIconStatus.Open,
   date: new Date("2021-08-01T00:00:00.000Z"),
 };
 

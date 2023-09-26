@@ -1,6 +1,6 @@
 import { ComponentProps } from "react";
 
-import { ContributionReward } from "src/components/ContributionReward/ContributionReward";
+import { ContributionReward } from "src/components/Contribution/ContributionReward";
 
 export default {
   title: "ContributionReward",
@@ -13,7 +13,7 @@ export default {
 };
 
 const defaultProps: ComponentProps<typeof ContributionReward> = {
-  rewards: 0,
+  rewards: [],
 };
 
 export const Default = {

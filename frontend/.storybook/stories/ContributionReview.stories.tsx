@@ -1,6 +1,7 @@
 import { ComponentProps } from "react";
 
-import { ContributionReview, ContributionReviewStatus } from "src/components/ContributionReview/ContributionReview";
+import { ContributionReview } from "src/components/Contribution/ContributionReview";
+import { GithubContributionReviewStatus } from "src/types";
 
 export default {
   title: "ContributionReview",
@@ -9,17 +10,17 @@ export default {
     status: {
       control: { type: "select" },
       options: [
-        ContributionReviewStatus.PendingReviewer,
-        ContributionReviewStatus.UnderReview,
-        ContributionReviewStatus.Approved,
-        ContributionReviewStatus.ChangesRequested,
+        GithubContributionReviewStatus.PendingReviewer,
+        GithubContributionReviewStatus.UnderReview,
+        GithubContributionReviewStatus.Approved,
+        GithubContributionReviewStatus.ChangesRequested,
       ],
     },
   },
 };
 
 const defaultProps: ComponentProps<typeof ContributionReview> = {
-  status: ContributionReviewStatus.PendingReviewer,
+  status: GithubContributionReviewStatus.PendingReviewer,
 };
 
 export const Default = {

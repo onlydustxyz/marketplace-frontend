@@ -1,11 +1,7 @@
 import { ComponentProps } from "react";
 
-import {
-  Contribution,
-  ContributionType,
-  ContributionStatus,
-  ContributionReview,
-} from "src/components/Contribution/Contribution";
+import { Contribution } from "src/components/Contribution/Contribution";
+import { GithubContributionType, GithubContributionReviewStatus, GithubContributionIconStatus } from "src/types";
 
 export default {
   title: "Contribution",
@@ -13,39 +9,37 @@ export default {
   argTypes: {
     type: {
       control: { type: "select" },
-      options: [ContributionType.PullRequest, ContributionType.Issue, ContributionType.CodeReview],
+      options: [GithubContributionType.PullRequest, GithubContributionType.Issue, GithubContributionType.CodeReview],
     },
     status: {
       control: { type: "select" },
       options: [
-        ContributionStatus.Open,
-        ContributionStatus.Merged,
-        ContributionStatus.Closed,
-        ContributionStatus.Draft,
+        GithubContributionIconStatus.Open,
+        GithubContributionIconStatus.Merged,
+        GithubContributionIconStatus.Closed,
+        GithubContributionIconStatus.Draft,
       ],
     },
     review: {
       control: { type: "select" },
       options: [
-        ContributionReview.PendingReviewer,
-        ContributionReview.UnderReview,
-        ContributionReview.Approved,
-        ContributionReview.ChangesRequested,
+        GithubContributionReviewStatus.PendingReviewer,
+        GithubContributionReviewStatus.UnderReview,
+        GithubContributionReviewStatus.Approved,
+        GithubContributionReviewStatus.ChangesRequested,
       ],
     },
   },
 };
 
 const defaultProps: ComponentProps<typeof Contribution> = {
-  id: "123",
   title: "Name of PR / Issue / Other work ",
   url: "#",
   number: 123,
-  type: ContributionType.PullRequest,
-  status: ContributionStatus.Open,
-  review: ContributionReview.PendingReviewer,
-  rewards: 0,
-  external: false,
+  type: GithubContributionType.PullRequest,
+  status: GithubContributionIconStatus.Open,
+  review: GithubContributionReviewStatus.PendingReviewer,
+  rewards: [],
 };
 
 export const Default = {
