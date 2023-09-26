@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import { PropsWithChildren } from "react";
 import { createPortal } from "react-dom";
 import { Tooltip as ReactTooltip } from "react-tooltip";
@@ -20,15 +21,20 @@ type TooltipProps = {
   id?: string;
   anchorSelect?: string;
   anchorId?: string;
-  variant?: BackgroundVariant;
+  variant?: Variant;
   [otherProp: string]: unknown;
 } & CommonProps &
   PropsWithChildren;
 
-export enum BackgroundVariant {
-  Default = "#313030",
-  Blue = "#2c2c3e",
+export enum Variant {
+  Default,
+  Blue,
 }
+
+const variants = {
+  [Variant.Default]: "bg-greyscale-800",
+  [Variant.Blue]: "bg-whiteFakeOpacity-8",
+};
 
 export default function Tooltip({
   id = GLOBAL_TOOLTIP_ID,
@@ -36,7 +42,7 @@ export default function Tooltip({
   anchorId,
   anchorSelect,
   children,
-  variant = BackgroundVariant.Default,
+  variant = Variant.Default,
   ...rest
 }: TooltipProps) {
   return createPortal(
@@ -45,19 +51,10 @@ export default function Tooltip({
       place={position}
       anchorId={anchorId}
       anchorSelect={anchorSelect}
-      style={{
-        background: variant,
-        fontFamily: "GT Walsheim",
-        fontWeight: 400,
-        textAlign: "center",
-        fontSize: "0.75rem",
-        lineHeight: "1rem",
-        color: "#F3F0EE",
-        borderRadius: 8,
-        padding: "12 8",
-        opacity: 100,
-        zIndex: 10000,
-      }}
+      className={classNames(
+        "z-50 rounded-lg px-3 py-2 text-center font-walsheim text-xs font-normal text-greyscale-50 opacity-100",
+        variants[variant]
+      )}
       render={({ content, activeAnchor }) =>
         content ? (
           <div className={activeAnchor?.getAttribute("data-tooltip-classname") || undefined}>{content}</div>
