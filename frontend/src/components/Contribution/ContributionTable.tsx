@@ -2,6 +2,7 @@ import type { ApolloError } from "@apollo/client";
 import { PropsWithChildren, ReactNode } from "react";
 import { Link, generatePath } from "react-router-dom";
 
+import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 import { RoutePaths } from "src/App";
 import { GetAllContributionsQuery, GithubUser } from "src/__generated/graphql";
 import IssueOpen from "src/assets/icons/IssueOpen";
@@ -270,14 +271,13 @@ export default function ContributionTable({
           </Cell>
           <Cell height={CellHeight.Medium} className="flex flex-row gap-3">
             <div className="flex items-center gap-3">
-              {contribution.project?.logoUrl ? (
-                <RoundedImage
-                  src={contribution.project?.logoUrl ?? ""}
-                  alt={contribution.project?.name ?? ""}
-                  rounding={Rounding.Corners}
-                  size={ImageSize.Sm}
-                />
-              ) : null}
+              <RoundedImage
+                src={contribution.project?.logoUrl ?? onlyDustLogo}
+                alt={contribution.project?.name ?? ""}
+                rounding={Rounding.Corners}
+                size={ImageSize.Sm}
+              />
+
               <p className="text-sm">
                 <Link
                   to={generatePath(RoutePaths.ProjectDetails, {
