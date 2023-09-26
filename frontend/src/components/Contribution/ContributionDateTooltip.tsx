@@ -16,7 +16,9 @@ export function ContributionDateTooltip({
 }) {
   const { T } = useIntl();
 
-  const formattedDate = new Intl.DateTimeFormat("en-US", { dateStyle: "short" }).format(date);
+  // British date format DD/MM/YYYY
+  const formattedDate = new Intl.DateTimeFormat("en-GB", { dateStyle: "short" }).format(date);
+  // American time format HH:MM AM/PM
   const formattedTime = new Intl.DateTimeFormat("en-US", { timeStyle: "short" }).format(date);
 
   const tokens = {
