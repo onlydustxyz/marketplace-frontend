@@ -1,13 +1,13 @@
 import classNames from "classnames";
 
-import { GithubUser, Maybe } from "src/__generated/graphql";
+import { GithubUser } from "src/__generated/graphql";
 import ExternalArrow from "src/assets/icons/ExternalArrow";
 import { ContributionIcon, variants as contributionIconVariants } from "src/components/Contribution/ContributionIcon";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
 import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
-import { GithubContributionIconStatus, GithubContributionIconStatusType, GithubContributionType } from "src/types";
+import { GithubContributionIconStatusType, GithubContributionType } from "src/types";
 
 export function ContributionBadge({
   id,
@@ -18,7 +18,6 @@ export function ContributionBadge({
   description,
   author,
   url,
-  draft = false,
 }: {
   id: string;
   number: number;
@@ -28,7 +27,6 @@ export function ContributionBadge({
   description?: string;
   author?: GithubUser;
   url: string;
-  draft?: Maybe<boolean>; // Matches graphql type
 }) {
   const { T } = useIntl();
   const { githubUserId } = useAuth();
@@ -81,10 +79,10 @@ export function ContributionBadge({
             "border border-dashed": isExternal,
             "border-0.5 border-solid": !isExternal,
           },
-          contributionIconVariants.status[draft ? GithubContributionIconStatus.Draft : status]
+          contributionIconVariants.status[status]
         )}
       >
-        <ContributionIcon type={type} status={draft ? GithubContributionIconStatus.Draft : status} />
+        <ContributionIcon type={type} status={status} />
         <div className="flex">
           <span className="text-sm leading-none">{number}</span>
           {isExternal ? <ExternalArrow className="mt-[3px]" /> : null}

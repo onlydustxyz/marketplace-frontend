@@ -8,7 +8,7 @@ import { GithubContributionIconStatus, GithubContributionReviewStatus } from "sr
 type Props = ComponentProps<typeof ContributionBadge> &
   ComponentProps<typeof ContributionReward> & { review?: GithubContributionReviewStatus };
 
-export function Contribution({ id, title, url, number, type, status, author, draft = false, rewards, review }: Props) {
+export function Contribution({ id, title, url, number, type, status, author, rewards, review }: Props) {
   return (
     <div className="inline-flex items-center gap-2">
       <div className="inline-flex items-center gap-1">
@@ -20,7 +20,6 @@ export function Contribution({ id, title, url, number, type, status, author, dra
           title={title}
           author={author}
           url={url}
-          draft={draft}
         />
         <a
           href={url}

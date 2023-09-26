@@ -111,8 +111,11 @@ export default function ContributionTable({
             url={githubPullRequest.htmlUrl ?? ""}
             number={githubPullRequest.number}
             type={GithubContributionType.PullRequest}
-            status={githubPullRequest.status as GithubContributionIconStatusType}
-            draft={githubPullRequest.draft}
+            status={
+              githubPullRequest.draft
+                ? GithubContributionIconStatus.Draft
+                : (githubPullRequest.status as GithubContributionIconStatusType)
+            }
             rewards={contribution?.rewardItems ?? []}
             review={review}
           />
@@ -149,11 +152,10 @@ export default function ContributionTable({
                 id={id}
                 number={number}
                 type={GithubContributionType.PullRequest}
-                status={status as GithubContributionIconStatusType}
+                status={draft ? GithubContributionIconStatus.Draft : (status as GithubContributionIconStatusType)}
                 title={title ?? ""}
                 author={author as GithubUser}
                 url={htmlUrl ?? ""}
-                draft={draft}
               />
             );
           });
@@ -200,11 +202,10 @@ export default function ContributionTable({
               id={id}
               number={number}
               type={GithubContributionType.PullRequest}
-              status={status as GithubContributionIconStatusType}
+              status={draft ? GithubContributionIconStatus.Draft : (status as GithubContributionIconStatusType)}
               title={title ?? ""}
               author={author as GithubUser}
               url={htmlUrl ?? ""}
-              draft={draft}
             />
           );
         }
