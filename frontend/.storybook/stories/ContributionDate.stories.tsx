@@ -1,11 +1,11 @@
 import { ComponentProps } from "react";
 
-import { ContributionDateTooltip } from "src/components/Contribution/ContributionDateTooltip";
+import { ContributionDate } from "src/components/Contribution/ContributionDate";
 import { GithubContributionIconStatus, GithubContributionType } from "src/types";
 
 export default {
-  title: "ContributionDateTooltip",
-  component: ContributionDateTooltip,
+  title: "ContributionDate",
+  component: ContributionDate,
   argTypes: {
     type: {
       control: { type: "select" },
@@ -23,7 +23,7 @@ export default {
   },
 };
 
-const defaultProps: ComponentProps<typeof ContributionDateTooltip> = {
+const defaultProps: ComponentProps<typeof ContributionDate> = {
   id: "test",
   type: GithubContributionType.PullRequest,
   status: GithubContributionIconStatus.Open,
@@ -31,12 +31,12 @@ const defaultProps: ComponentProps<typeof ContributionDateTooltip> = {
 };
 
 export const Default = {
-  render: (args: typeof ContributionDateTooltip) => (
+  render: (args: typeof ContributionDate) => (
     <div className="flex h-64 items-center justify-center">
       <p id="test" className="inline-block">
         Hello world
       </p>
-      <ContributionDateTooltip {...defaultProps} {...args} />
+      <ContributionDate {...defaultProps} {...args} />
     </div>
   ),
 };

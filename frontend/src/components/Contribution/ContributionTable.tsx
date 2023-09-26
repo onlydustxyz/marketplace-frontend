@@ -8,7 +8,7 @@ import { GetAllContributionsQuery, GithubUser } from "src/__generated/graphql";
 import IssueOpen from "src/assets/icons/IssueOpen";
 import { Contribution } from "src/components/Contribution/Contribution";
 import { ContributionBadge } from "src/components/Contribution/ContributionBadge";
-import { ContributionDateTooltip } from "src/components/Contribution/ContributionDateTooltip";
+import { ContributionDate } from "src/components/Contribution/ContributionDate";
 import Loader from "src/components/Loader";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import Table from "src/components/Table";
@@ -29,7 +29,6 @@ import {
   GithubContributionStatus,
   GithubContributionType,
 } from "src/types";
-import displayRelativeDate from "src/utils/displayRelativeDate";
 
 function TableText({ children }: PropsWithChildren) {
   return (
@@ -259,17 +258,14 @@ export default function ContributionTable({
       return (
         <Line key={contribution.id}>
           <Cell height={CellHeight.Medium}>
-            <ContributionDateTooltip
-              id={`${contribution.id}-date-tooltip`}
+            <ContributionDate
+              id={contribution.id ?? ""}
               type={contribution.type as GithubContributionType}
               status={
                 draft ? GithubContributionIconStatus.Draft : (contributionStatus as GithubContributionIconStatusType)
               }
               date={new Date(lineDate)}
             />
-            <span id={`${contribution.id}-date-tooltip`} className="text-sm first-letter:uppercase">
-              {displayRelativeDate(lineDate)}
-            </span>
           </Cell>
           <Cell height={CellHeight.Medium} className="flex flex-row gap-3">
             <div className="flex items-center gap-3">
