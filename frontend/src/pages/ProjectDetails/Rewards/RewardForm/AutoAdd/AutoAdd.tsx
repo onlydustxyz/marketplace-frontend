@@ -30,21 +30,17 @@ export function AutoAdd({ contributor, workItems, onAutoAdd }: AutoAddProps) {
   const remainingPullRequests = unpaidMergedPullsCount - getWorkItemsCount(WorkItemType.PullRequest);
   const remainingIssues = unpaidCompletedIssuesCount - getWorkItemsCount(WorkItemType.Issue);
   const remainingCodeReviews = unpaidCompletedCodeReviewsCount - getWorkItemsCount(WorkItemType.CodeReview);
+  const hasItems = remainingPullRequests || remainingIssues || remainingCodeReviews;
 
-  return (
+  return hasItems ? (
     <Card className="flex items-center justify-between bg-whiteFakeOpacity-10 px-4 py-3" padded={false}>
-      <div className="flex items-center text-sm font-medium text-spaceBlue-200">
+      <div className="flex min-w-[90px] items-center text-sm font-medium  text-spaceBlue-200">
         <MagicIcon className="mr-1" />
+
         {T("project.details.rewards.autoAdd.label")}
       </div>
 
-      <div className="flex h-2 items-center">
-        {remainingIssues > 0 ? (
-          <TagButton onClick={() => onAutoAdd(GithubContributionType.Issue)}>
-            <CheckboxCircleLine className="text-spacePurple-500" />
-            {T("contributor.table.tooltip.issues", { count: remainingIssues })}
-          </TagButton>
-        ) : null}
+      <div className="min-h-2 flex grow flex-wrap items-center justify-end gap-1">
         {remainingPullRequests > 0 ? (
           <TagButton onClick={() => onAutoAdd(GithubContributionType.PullRequest)}>
             <GitMergeLine className="text-spacePurple-500" />
@@ -52,13 +48,24 @@ export function AutoAdd({ contributor, workItems, onAutoAdd }: AutoAddProps) {
           </TagButton>
         ) : null}
 
+        {remainingIssues > 0 ? (
+          <TagButton onClick={() => onAutoAdd(GithubContributionType.Issue)}>
+            <CheckboxCircleLine className="text-spacePurple-500" />
+            {T("contributor.table.tooltip.issues", { count: remainingIssues })}
+          </TagButton>
+        ) : null}
         {remainingCodeReviews ? (
           <TagButton onClick={() => onAutoAdd(GithubContributionType.CodeReview)}>
-            <CodeReviewIcon className="text-spacePurple-500" />
-            {T("contributor.table.tooltip.codeReviews", { count: remainingCodeReviews })}
+            <CodeReviewIcon className="h-3 w-3 text-spacePurple-500" />
+            <div className="hidden sm:inline">
+              {T("contributor.table.tooltip.codeReviews.long", { count: remainingCodeReviews })}
+            </div>
+            <div className="visible sm:hidden">
+              {T("contributor.table.tooltip.codeReviews.short", { count: remainingCodeReviews })}
+            </div>
           </TagButton>
         ) : null}
       </div>
     </Card>
-  );
+  ) : null;
 }
