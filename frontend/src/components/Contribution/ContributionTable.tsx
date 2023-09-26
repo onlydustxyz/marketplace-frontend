@@ -67,23 +67,25 @@ export default function ContributionTable({
   const { T } = useIntl();
 
   function renderContribution(contribution: GetAllContributionsQuery["contributions"][number]) {
+    const { githubIssue, githubPullRequest, githubCodeReview } = contribution;
+
     switch (contribution.type) {
       case GithubContributionType.Issue:
-        return (
+        return githubIssue ? (
           <Contribution
-            id={contribution.githubIssue?.id ?? ""}
-            title={contribution.githubIssue?.title ?? ""}
-            url={contribution.githubIssue?.htmlUrl ?? ""}
-            number={contribution.githubIssue?.number ?? ""}
+            id={githubIssue.id}
+            title={githubIssue.title ?? ""}
+            url={githubIssue.htmlUrl ?? ""}
+            number={githubIssue.number}
             type={GithubContributionType.Issue}
-            status={(contribution.githubIssue?.status as GithubContributionIconStatusType) ?? ""}
+            status={githubIssue.status as GithubContributionIconStatusType}
             //   external={contribution.external}}
             rewards={contribution?.rewardItemsAggregate.aggregate?.count ?? 0}
           />
-        );
+        ) : null;
       case GithubContributionType.PullRequest: {
         let review: GithubContributionReviewStatus;
-        const codeReviews = contribution?.githubPullRequest?.codeReviews;
+        const codeReviews = githubPullRequest?.codeReviews;
 
         if (codeReviews?.length) {
           switch (codeReviews[0].outcome) {
@@ -104,36 +106,34 @@ export default function ContributionTable({
           review = GithubContributionReviewStatus.PendingReviewer;
         }
 
-        return (
+        return githubPullRequest ? (
           <Contribution
-            id={contribution.githubPullRequest?.id}
-            title={contribution.githubPullRequest?.title ?? ""}
-            url={contribution.githubPullRequest?.htmlUrl ?? ""}
-            number={contribution.githubPullRequest?.number ?? ""}
+            id={githubPullRequest.id}
+            title={githubPullRequest.title ?? ""}
+            url={githubPullRequest.htmlUrl ?? ""}
+            number={githubPullRequest.number}
             type={GithubContributionType.PullRequest}
-            status={(contribution.githubPullRequest?.status as GithubContributionIconStatusType) ?? ""}
-            draft={contribution.githubPullRequest?.draft}
+            status={githubPullRequest.status as GithubContributionIconStatusType}
+            draft={githubPullRequest.draft}
             // external={contribution.external}
             rewards={contribution?.rewardItemsAggregate.aggregate?.count ?? 0}
             review={review}
           />
-        );
+        ) : null;
       }
       case GithubContributionType.CodeReview:
-        return (
+        return githubCodeReview ? (
           <Contribution
-            id={contribution.githubCodeReview?.githubPullRequest?.id}
-            title={contribution.githubCodeReview?.githubPullRequest?.title ?? ""}
-            url={contribution.githubCodeReview?.githubPullRequest?.htmlUrl ?? ""}
-            number={contribution.githubCodeReview?.githubPullRequest?.number ?? ""}
+            id={githubCodeReview.githubPullRequest?.id}
+            title={githubCodeReview.githubPullRequest?.title ?? ""}
+            url={githubCodeReview.githubPullRequest?.htmlUrl ?? ""}
+            number={githubCodeReview.githubPullRequest?.number}
             type={GithubContributionType.CodeReview}
-            status={
-              (contribution.githubCodeReview?.githubPullRequest?.status as GithubContributionIconStatusType) ?? ""
-            }
+            status={githubCodeReview.githubPullRequest?.status as GithubContributionIconStatusType}
             // external={contribution.external}
             rewards={contribution?.rewardItemsAggregate.aggregate?.count ?? 0}
           />
-        );
+        ) : null;
       default:
         return null;
     }
