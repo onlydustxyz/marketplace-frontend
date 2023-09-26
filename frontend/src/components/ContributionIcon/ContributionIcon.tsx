@@ -38,6 +38,14 @@ export const variants = {
   },
 };
 
+function IssueOpenIcon() {
+  return (
+    <div className="flex h-4 w-4 items-center justify-center">
+      <IssueOpen className="h-3.5 w-3.5" />
+    </div>
+  );
+}
+
 const icons = {
   [ContributionIconType.PullRequest]: {
     [ContributionIconStatus.Open]: <PrOpen />,
@@ -49,8 +57,8 @@ const icons = {
     [ContributionIconStatus.Draft]: <PrDraft />,
   },
   [ContributionIconType.Issue]: {
-    [ContributionIconStatus.Open]: <IssueOpen />,
-    [ContributionIconStatus.Pending]: <IssueOpen />,
+    [ContributionIconStatus.Open]: <IssueOpenIcon />,
+    [ContributionIconStatus.Pending]: <IssueOpenIcon />,
     [ContributionIconStatus.Closed]: <IssueCancelled />,
     [ContributionIconStatus.Cancelled]: <IssueCancelled />,
     [ContributionIconStatus.Merged]: <IssueMerged />,
