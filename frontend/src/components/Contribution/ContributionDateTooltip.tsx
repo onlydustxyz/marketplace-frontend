@@ -1,11 +1,7 @@
-import {
-  ContributionIcon,
-  ContributionIconStatus,
-  ContributionIconStatusType,
-  ContributionIconType,
-} from "src/components/Contribution/ContributionIcon";
+import { ContributionIcon } from "src/components/Contribution/ContributionIcon";
 import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
+import { GithubContributionIconStatus, GithubContributionIconStatusType, GithubContributionType } from "src/types";
 
 export function ContributionDateTooltip({
   id,
@@ -14,8 +10,8 @@ export function ContributionDateTooltip({
   date,
 }: {
   id: string;
-  type: ContributionIconType;
-  status: ContributionIconStatusType;
+  type: GithubContributionType;
+  status: GithubContributionIconStatusType;
   date: Date;
 }) {
   const { T } = useIntl();
@@ -24,32 +20,32 @@ export function ContributionDateTooltip({
   const formattedTime = new Intl.DateTimeFormat("en-US", { timeStyle: "short" }).format(date);
 
   const tokens = {
-    [ContributionIconType.PullRequest]: {
-      [ContributionIconStatus.Cancelled]: "",
-      [ContributionIconStatus.Closed]: "contributions.tooltip.dateClosed",
-      [ContributionIconStatus.Completed]: "",
-      [ContributionIconStatus.Draft]: "contributions.tooltip.dateOpened",
-      [ContributionIconStatus.Merged]: "contributions.tooltip.dateMerged",
-      [ContributionIconStatus.Open]: "contributions.tooltip.dateOpened",
-      [ContributionIconStatus.Pending]: "",
+    [GithubContributionType.PullRequest]: {
+      [GithubContributionIconStatus.Cancelled]: "",
+      [GithubContributionIconStatus.Closed]: "contributions.tooltip.dateClosed",
+      [GithubContributionIconStatus.Completed]: "",
+      [GithubContributionIconStatus.Draft]: "contributions.tooltip.dateOpened",
+      [GithubContributionIconStatus.Merged]: "contributions.tooltip.dateMerged",
+      [GithubContributionIconStatus.Open]: "contributions.tooltip.dateOpened",
+      [GithubContributionIconStatus.Pending]: "",
     },
-    [ContributionIconType.Issue]: {
-      [ContributionIconStatus.Cancelled]: "contributions.tooltip.dateClosed",
-      [ContributionIconStatus.Closed]: "",
-      [ContributionIconStatus.Completed]: "contributions.tooltip.dateClosed",
-      [ContributionIconStatus.Draft]: "contributions.tooltip.dateAssigned",
-      [ContributionIconStatus.Merged]: "",
-      [ContributionIconStatus.Open]: "contributions.tooltip.dateAssigned",
-      [ContributionIconStatus.Pending]: "",
+    [GithubContributionType.Issue]: {
+      [GithubContributionIconStatus.Cancelled]: "contributions.tooltip.dateClosed",
+      [GithubContributionIconStatus.Closed]: "",
+      [GithubContributionIconStatus.Completed]: "contributions.tooltip.dateClosed",
+      [GithubContributionIconStatus.Draft]: "contributions.tooltip.dateAssigned",
+      [GithubContributionIconStatus.Merged]: "",
+      [GithubContributionIconStatus.Open]: "contributions.tooltip.dateAssigned",
+      [GithubContributionIconStatus.Pending]: "",
     },
-    [ContributionIconType.CodeReview]: {
-      [ContributionIconStatus.Cancelled]: "",
-      [ContributionIconStatus.Closed]: "",
-      [ContributionIconStatus.Completed]: "contributions.tooltip.dateClosed",
-      [ContributionIconStatus.Draft]: "",
-      [ContributionIconStatus.Merged]: "",
-      [ContributionIconStatus.Open]: "",
-      [ContributionIconStatus.Pending]: "contributions.tooltip.dateOpened",
+    [GithubContributionType.CodeReview]: {
+      [GithubContributionIconStatus.Cancelled]: "",
+      [GithubContributionIconStatus.Closed]: "",
+      [GithubContributionIconStatus.Completed]: "contributions.tooltip.dateClosed",
+      [GithubContributionIconStatus.Draft]: "",
+      [GithubContributionIconStatus.Merged]: "",
+      [GithubContributionIconStatus.Open]: "",
+      [GithubContributionIconStatus.Pending]: "contributions.tooltip.dateOpened",
     },
   };
 

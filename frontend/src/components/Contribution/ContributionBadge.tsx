@@ -2,19 +2,8 @@ import classNames from "classnames";
 
 import { Maybe } from "src/__generated/graphql";
 import ExternalArrow from "src/assets/icons/ExternalArrow";
-import {
-  ContributionIcon,
-  ContributionIconStatus,
-  ContributionIconStatusType,
-  ContributionIconType,
-  variants as contributionIconVariants,
-} from "src/components/Contribution/ContributionIcon";
-
-export enum ContributionBadgeType {
-  PullRequest = "PULL_REQUEST",
-  Issue = "ISSUE",
-  CodeReview = "CODE_REVIEW",
-}
+import { ContributionIcon, variants as contributionIconVariants } from "src/components/Contribution/ContributionIcon";
+import { GithubContributionIconStatus, GithubContributionIconStatusType, GithubContributionType } from "src/types";
 
 export function ContributionBadge({
   number,
@@ -24,8 +13,8 @@ export function ContributionBadge({
   external = false,
 }: {
   number: number;
-  type: ContributionIconType;
-  status: ContributionIconStatusType;
+  type: GithubContributionType;
+  status: GithubContributionIconStatusType;
   draft?: Maybe<boolean>; // Matches graphql type
   external?: boolean;
 }) {
@@ -37,10 +26,10 @@ export function ContributionBadge({
           "border border-dashed": external,
           "border-0.5 border-solid": !external,
         },
-        contributionIconVariants.status[draft ? ContributionIconStatus.Draft : status]
+        contributionIconVariants.status[draft ? GithubContributionIconStatus.Draft : status]
       )}
     >
-      <ContributionIcon type={type} status={draft ? ContributionIconStatus.Draft : status} />
+      <ContributionIcon type={type} status={draft ? GithubContributionIconStatus.Draft : status} />
       <div className="flex">
         <span className="text-sm leading-none">{number}</span>
         {external ? <ExternalArrow className="mt-[3px]" /> : null}

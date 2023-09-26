@@ -1,3 +1,4 @@
+import { GithubIssueStatus, GithubPullRequestStatus } from "src/__generated/graphql";
 import { SortingFields } from "./hooks/useRewardSorting";
 
 export type Branded<T, B> = T & { __brand: B };
@@ -129,8 +130,41 @@ export enum GithubIssueType {
   PullRequest,
 }
 
+export enum GithubCodeReviewStatus {
+  Pending = "PENDING",
+  Completed = "COMPLETED",
+}
+
+export enum GithubCodeReviewOutcome {
+  Approved = "approved",
+  ChangesRequested = "changes_requested",
+}
+
 export enum GithubContributionType {
   Issue = "ISSUE",
   PullRequest = "PULL_REQUEST",
   CodeReview = "CODE_REVIEW",
 }
+
+export enum GithubContributionStatus {
+  InProgress = "in_progress",
+  Completed = "complete",
+  Canceled = "canceled",
+}
+
+export enum GithubContributionReviewStatus {
+  PendingReviewer = "pendingReviewer",
+  UnderReview = "underReview",
+  Approved = "approved",
+  ChangesRequested = "changesRequested",
+}
+
+export const GithubContributionIconStatus = {
+  ...GithubPullRequestStatus,
+  ...GithubIssueStatus,
+  ...GithubCodeReviewStatus,
+  Draft: "DRAFT",
+} as const;
+
+export type GithubContributionIconStatusType =
+  typeof GithubContributionIconStatus[keyof typeof GithubContributionIconStatus];

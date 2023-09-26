@@ -1,12 +1,9 @@
 import { GithubUser } from "src/__generated/graphql";
-import {
-  ContributionIcon,
-  ContributionIconStatusType,
-  ContributionIconType,
-} from "src/components/Contribution/ContributionIcon";
+import { ContributionIcon } from "src/components/Contribution/ContributionIcon";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
+import { GithubContributionIconStatusType, GithubContributionType } from "src/types";
 
 export function ContributionBadgeTooltip({
   id,
@@ -18,8 +15,8 @@ export function ContributionBadgeTooltip({
   author,
 }: {
   id: string;
-  type: ContributionIconType;
-  status: ContributionIconStatusType;
+  type: GithubContributionType;
+  status: GithubContributionIconStatusType;
   number: number;
   title: string;
   description?: string;

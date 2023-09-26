@@ -14,12 +14,7 @@ import IssueMerged from "src/assets/icons/IssueMerged";
 import ProgressCircle from "src/assets/icons/ProgressCircle";
 import StackLine from "src/assets/icons/StackLine";
 import SEO from "src/components/SEO";
-
-export enum ContributionTableStatus {
-  InProgress = "in_progress",
-  Completed = "complete",
-  Canceled = "canceled",
-}
+import { GithubContributionStatus } from "src/types";
 
 enum AllTabs {
   All = "allContributions",
@@ -53,7 +48,7 @@ export default function Contributions() {
       limit: 20,
       orderBy: { createdAt: OrderBy.Desc } as ContributionsOrderBy,
       githubUserId,
-      status: ContributionTableStatus.InProgress,
+      status: GithubContributionStatus.InProgress,
     },
     skip: !githubUserId || (!isActiveTab(AllTabs.All) && !isActiveTab(AllTabs.InProgress)),
     fetchPolicy: "network-only",
@@ -68,7 +63,7 @@ export default function Contributions() {
       limit: 20,
       orderBy: { createdAt: OrderBy.Desc } as ContributionsOrderBy,
       githubUserId,
-      status: ContributionTableStatus.Completed,
+      status: GithubContributionStatus.Completed,
     },
     skip: !githubUserId || (!isActiveTab(AllTabs.All) && !isActiveTab(AllTabs.Completed)),
     fetchPolicy: "network-only",
@@ -83,7 +78,7 @@ export default function Contributions() {
       limit: 20,
       orderBy: { createdAt: OrderBy.Desc } as ContributionsOrderBy,
       githubUserId,
-      status: ContributionTableStatus.Canceled,
+      status: GithubContributionStatus.Canceled,
     },
     skip: !githubUserId || (!isActiveTab(AllTabs.All) && !isActiveTab(AllTabs.Canceled)),
     fetchPolicy: "network-only",
@@ -187,7 +182,7 @@ export default function Contributions() {
       data: inProgressData,
       loading: inProgressLoading,
       error: inProgressError,
-      status: ContributionTableStatus.InProgress,
+      status: GithubContributionStatus.InProgress,
       show: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.InProgress),
     },
     {
@@ -201,7 +196,7 @@ export default function Contributions() {
       data: completedData,
       loading: completedLoading,
       error: completedError,
-      status: ContributionTableStatus.Completed,
+      status: GithubContributionStatus.Completed,
       show: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Completed),
     },
     {
@@ -215,7 +210,7 @@ export default function Contributions() {
       data: canceledData,
       loading: canceledLoading,
       error: canceledError,
-      status: ContributionTableStatus.Canceled,
+      status: GithubContributionStatus.Canceled,
       show: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Canceled),
     },
   ];

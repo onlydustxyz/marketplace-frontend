@@ -2,12 +2,16 @@ import { ComponentProps } from "react";
 
 import { ContributionBadge } from "src/components/Contribution/ContributionBadge";
 import { ContributionBadgeTooltip } from "src/components/Contribution/ContributionBadgeTooltip";
-import { ContributionIconStatus, ContributionIconStatusType } from "src/components/Contribution/ContributionIcon";
-import { ContributionReview, ContributionReviewStatus } from "src/components/Contribution/ContributionReview";
+import { ContributionReview } from "src/components/Contribution/ContributionReview";
 import { ContributionReward } from "src/components/Contribution/ContributionReward";
+import {
+  GithubContributionIconStatus,
+  GithubContributionIconStatusType,
+  GithubContributionReviewStatus,
+} from "src/types";
 
 type Props = { id: string; title: string; url: string } & ComponentProps<typeof ContributionBadge> &
-  ComponentProps<typeof ContributionReward> & { review?: ContributionReviewStatus };
+  ComponentProps<typeof ContributionReward> & { review?: GithubContributionReviewStatus };
 
 export function Contribution({
   id,
@@ -27,7 +31,7 @@ export function Contribution({
         <ContributionBadgeTooltip
           id={`${id}-${type}-contribution-badge-tooltip`}
           type={type}
-          status={status as ContributionIconStatusType}
+          status={status as GithubContributionIconStatusType}
           number={number}
           title={title ?? ""}
         />
@@ -45,15 +49,8 @@ export function Contribution({
       </div>
       <div className="inline-flex items-center gap-1">
         {rewards ? <ContributionReward rewards={rewards} /> : null}
-        {review && status === ContributionIconStatus.Open ? <ContributionReview status={review} /> : null}
+        {review && status === GithubContributionIconStatus.Open ? <ContributionReview status={review} /> : null}
       </div>
     </div>
   );
 }
-
-export {
-  ContributionIconStatus as ContributionStatus,
-  ContributionIconType as ContributionType,
-} from "src/components/Contribution/ContributionIcon";
-
-export { ContributionReviewStatus as ContributionReview } from "src/components/Contribution/ContributionReview";

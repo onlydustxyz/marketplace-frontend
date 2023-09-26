@@ -5,31 +5,25 @@ import FileChange from "src/assets/icons/FileChange";
 import Hourglass from "src/assets/icons/Hourglass";
 import { ContributionAttribute } from "src/components/Contribution/ContributionAttribute";
 import { useIntl } from "src/hooks/useIntl";
+import { GithubContributionReviewStatus } from "src/types";
 
-export enum ContributionReviewStatus {
-  PendingReviewer = "pendingReviewer",
-  UnderReview = "underReview",
-  Approved = "approved",
-  ChangesRequested = "changesRequested",
-}
-
-export function ContributionReview({ status }: { status: ContributionReviewStatus }) {
+export function ContributionReview({ status }: { status: GithubContributionReviewStatus }) {
   const { T } = useIntl();
 
   const dict: Record<string, { icon: ReactElement; text: string }> = {
-    [ContributionReviewStatus.PendingReviewer]: {
+    [GithubContributionReviewStatus.PendingReviewer]: {
       icon: <Hourglass />,
       text: T("contribution.review.status.pendingReviewer"),
     },
-    [ContributionReviewStatus.UnderReview]: {
+    [GithubContributionReviewStatus.UnderReview]: {
       icon: <Hourglass />,
       text: T("contribution.review.status.underReview"),
     },
-    [ContributionReviewStatus.Approved]: {
+    [GithubContributionReviewStatus.Approved]: {
       icon: <Check />,
       text: T("contribution.review.status.approved"),
     },
-    [ContributionReviewStatus.ChangesRequested]: {
+    [GithubContributionReviewStatus.ChangesRequested]: {
       icon: <FileChange />,
       text: T("contribution.review.status.changesRequested"),
     },

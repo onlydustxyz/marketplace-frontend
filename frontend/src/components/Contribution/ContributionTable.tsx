@@ -5,16 +5,10 @@ import { Link, generatePath } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import { GetAllContributionsQuery, GithubUser } from "src/__generated/graphql";
 import IssueOpen from "src/assets/icons/IssueOpen";
-import { Contribution, ContributionType } from "src/components/Contribution/Contribution";
+import { Contribution } from "src/components/Contribution/Contribution";
 import { ContributionBadge } from "src/components/Contribution/ContributionBadge";
 import { ContributionBadgeTooltip } from "src/components/Contribution/ContributionBadgeTooltip";
 import { ContributionDateTooltip } from "src/components/Contribution/ContributionDateTooltip";
-import {
-  ContributionIconStatus,
-  ContributionIconStatusType,
-  ContributionIconType,
-} from "src/components/Contribution/ContributionIcon";
-import { ContributionReviewStatus } from "src/components/Contribution/ContributionReview";
 import Loader from "src/components/Loader";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import Table from "src/components/Table";
@@ -26,8 +20,15 @@ import { useIntl } from "src/hooks/useIntl";
 import Folder3Line from "src/icons/Folder3Line";
 import StackLine from "src/icons/StackLine";
 import TimeLine from "src/icons/TimeLine";
-import { ContributionTableStatus } from "src/pages/Contributions/Contributions";
 import SortingArrow from "src/pages/ProjectDetails/Contributors/ContributorsTable/SortingArrow";
+import {
+  GithubCodeReviewOutcome,
+  GithubContributionIconStatus,
+  GithubContributionIconStatusType,
+  GithubContributionReviewStatus,
+  GithubContributionStatus,
+  GithubContributionType,
+} from "src/types";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 
 function TableText({ children }: PropsWithChildren) {
@@ -61,46 +62,46 @@ export default function ContributionTable({
   loading: boolean;
   error?: ApolloError;
   showHeader?: boolean;
-  status: ContributionTableStatus;
+  status: GithubContributionStatus;
 }) {
   const { T } = useIntl();
 
   function renderContribution(contribution: GetAllContributionsQuery["contributions"][number]) {
     switch (contribution.type) {
-      case ContributionType.Issue:
+      case GithubContributionType.Issue:
         return (
           <Contribution
             id={contribution.githubIssue?.id ?? ""}
             title={contribution.githubIssue?.title ?? ""}
             url={contribution.githubIssue?.htmlUrl ?? ""}
             number={contribution.githubIssue?.number ?? ""}
-            type={ContributionType.Issue}
-            status={(contribution.githubIssue?.status as ContributionIconStatusType) ?? ""}
+            type={GithubContributionType.Issue}
+            status={(contribution.githubIssue?.status as GithubContributionIconStatusType) ?? ""}
             //   external={contribution.external}}
             rewards={contribution?.rewardItemsAggregate.aggregate?.count ?? 0}
           />
         );
-      case ContributionType.PullRequest: {
-        let review: ContributionReviewStatus;
+      case GithubContributionType.PullRequest: {
+        let review: GithubContributionReviewStatus;
         const codeReviews = contribution?.githubPullRequest?.codeReviews;
 
         if (codeReviews?.length) {
           switch (codeReviews[0].outcome) {
             case null:
-              review = ContributionReviewStatus.UnderReview;
+              review = GithubContributionReviewStatus.UnderReview;
               break;
-            case "changes_requested":
-              review = ContributionReviewStatus.ChangesRequested;
+            case GithubCodeReviewOutcome.ChangesRequested:
+              review = GithubContributionReviewStatus.ChangesRequested;
               break;
-            case "approved":
-              review = ContributionReviewStatus.Approved;
+            case GithubCodeReviewOutcome.Approved:
+              review = GithubContributionReviewStatus.Approved;
               break;
             default:
-              review = ContributionReviewStatus.PendingReviewer;
+              review = GithubContributionReviewStatus.PendingReviewer;
               break;
           }
         } else {
-          review = ContributionReviewStatus.PendingReviewer;
+          review = GithubContributionReviewStatus.PendingReviewer;
         }
 
         return (
@@ -109,8 +110,8 @@ export default function ContributionTable({
             title={contribution.githubPullRequest?.title ?? ""}
             url={contribution.githubPullRequest?.htmlUrl ?? ""}
             number={contribution.githubPullRequest?.number ?? ""}
-            type={ContributionType.PullRequest}
-            status={(contribution.githubPullRequest?.status as ContributionIconStatusType) ?? ""}
+            type={GithubContributionType.PullRequest}
+            status={(contribution.githubPullRequest?.status as GithubContributionIconStatusType) ?? ""}
             draft={contribution.githubPullRequest?.draft}
             // external={contribution.external}
             rewards={contribution?.rewardItemsAggregate.aggregate?.count ?? 0}
@@ -118,15 +119,17 @@ export default function ContributionTable({
           />
         );
       }
-      case ContributionType.CodeReview:
+      case GithubContributionType.CodeReview:
         return (
           <Contribution
             id={contribution.githubCodeReview?.githubPullRequest?.id}
             title={contribution.githubCodeReview?.githubPullRequest?.title ?? ""}
             url={contribution.githubCodeReview?.githubPullRequest?.htmlUrl ?? ""}
             number={contribution.githubCodeReview?.githubPullRequest?.number ?? ""}
-            type={ContributionType.CodeReview}
-            status={(contribution.githubCodeReview?.githubPullRequest?.status as ContributionIconStatusType) ?? ""}
+            type={GithubContributionType.CodeReview}
+            status={
+              (contribution.githubCodeReview?.githubPullRequest?.status as GithubContributionIconStatusType) ?? ""
+            }
             // external={contribution.external}
             rewards={contribution?.rewardItemsAggregate.aggregate?.count ?? 0}
           />
@@ -138,7 +141,7 @@ export default function ContributionTable({
 
   function renderLinkedContributions(contribution: GetAllContributionsQuery["contributions"][number]) {
     switch (contribution.type) {
-      case ContributionType.Issue: {
+      case GithubContributionType.Issue: {
         const closedByPullRequests = contribution.githubIssue?.closedByPullRequests;
 
         if (closedByPullRequests?.length) {
@@ -148,8 +151,8 @@ export default function ContributionTable({
               <ContributionBadge
                 key={id}
                 number={number}
-                type={ContributionType.PullRequest}
-                status={status as ContributionIconStatusType}
+                type={GithubContributionType.PullRequest}
+                status={status as GithubContributionIconStatusType}
                 draft={draft}
               />
             );
@@ -158,7 +161,7 @@ export default function ContributionTable({
 
         return "-";
       }
-      case ContributionType.PullRequest: {
+      case GithubContributionType.PullRequest: {
         const closingIssues = contribution.githubPullRequest?.closingIssues;
 
         if (closingIssues?.length) {
@@ -168,8 +171,8 @@ export default function ContributionTable({
               <ContributionBadge
                 key={id}
                 number={number}
-                type={ContributionType.Issue}
-                status={status as ContributionIconStatusType}
+                type={GithubContributionType.Issue}
+                status={status as GithubContributionIconStatusType}
               />
             );
           });
@@ -177,7 +180,7 @@ export default function ContributionTable({
 
         return "-";
       }
-      case ContributionType.CodeReview: {
+      case GithubContributionType.CodeReview: {
         const pr = contribution.githubCodeReview?.githubPullRequest;
 
         if (pr) {
@@ -186,8 +189,8 @@ export default function ContributionTable({
             <>
               <ContributionBadgeTooltip
                 id={`${id}-linked-pr-badge-tooltip`}
-                type={ContributionType.PullRequest}
-                status={status as ContributionIconStatusType}
+                type={GithubContributionType.PullRequest}
+                status={status as GithubContributionIconStatusType}
                 number={number}
                 title={title ?? ""}
                 author={author as GithubUser}
@@ -196,8 +199,8 @@ export default function ContributionTable({
               <div id={`${id}-linked-pr-badge-tooltip`}>
                 <ContributionBadge
                   number={number}
-                  type={ContributionType.PullRequest}
-                  status={status as ContributionIconStatusType}
+                  type={GithubContributionType.PullRequest}
+                  status={status as GithubContributionIconStatusType}
                   draft={draft}
                 />
               </div>
@@ -243,11 +246,11 @@ export default function ContributionTable({
     }
 
     return data?.contributions.map(contribution => {
-      const lineDate = status === ContributionTableStatus.InProgress ? contribution.createdAt : contribution.closedAt;
+      const lineDate = status === GithubContributionStatus.InProgress ? contribution.createdAt : contribution.closedAt;
 
       const { status: contributionStatus } = contribution.githubPullRequest ??
         contribution.githubIssue ??
-        contribution.githubCodeReview ?? { status: ContributionIconStatus.Open };
+        contribution.githubCodeReview ?? { status: GithubContributionIconStatus.Open };
       const { draft } = contribution?.githubPullRequest ?? {};
 
       return (
@@ -255,8 +258,10 @@ export default function ContributionTable({
           <Cell height={CellHeight.Medium}>
             <ContributionDateTooltip
               id={`${contribution.id}-date-tooltip`}
-              type={contribution.type as ContributionIconType}
-              status={draft ? ContributionIconStatus.Draft : (contributionStatus as ContributionIconStatusType)}
+              type={contribution.type as GithubContributionType}
+              status={
+                draft ? GithubContributionIconStatus.Draft : (contributionStatus as GithubContributionIconStatusType)
+              }
               date={new Date(lineDate)}
             />
             <span id={`${contribution.id}-date-tooltip`} className="text-sm first-letter:uppercase">
