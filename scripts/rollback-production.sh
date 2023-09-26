@@ -9,12 +9,12 @@ ALL_DB_CONNECTED_APPS=(
     od-hasura-$ENVIRONMENT
     od-hasura-auth-$ENVIRONMENT
     od-api-$ENVIRONMENT
-    od-event-listeners-$ENVIRONMENT
+    od-github-indexer-$ENVIRONMENT
 )
 
 ALL_BACKENDS=(
     od-api-$ENVIRONMENT
-    od-event-listeners-$ENVIRONMENT
+    od-github-indexer-$ENVIRONMENT
 )
 
 manage_apps() {

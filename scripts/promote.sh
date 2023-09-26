@@ -76,8 +76,8 @@ backup_database() {
 promote_heroku() {
     # The order of the apps matters:
     # 1. api: to apply DB migrations and hasura metadata
-    # 2. event-listeners: to start any new consumer
-    for app in api event-listeners
+    # 2. github-indexer: to start any new consumer
+    for app in api github-indexer
     do
         execute heroku pipelines:promote --app od-$app-$FROM_ENV --to od-$app-$TO_ENV
     done

@@ -14,7 +14,7 @@ pub fn serve(
 	database: Arc<database::Client>,
 	github: Arc<github::Client>,
 ) -> Rocket<Build> {
-	rocket::custom(http::config::rocket("event-listeners/Rocket.toml"))
+	rocket::custom(http::config::rocket("github-indexer/Rocket.toml"))
 		.manage(config)
 		.manage(database)
 		.manage(github)

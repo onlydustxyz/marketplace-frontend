@@ -8,8 +8,8 @@ use tokio::join;
 #[tokio::main]
 async fn main() -> Result<()> {
 	dotenv().ok();
-	let config: Config = config::load("event-listeners/app.yaml")?;
-	let _tracer = Tracer::init(config.tracer.clone(), "event-queue-worker")?;
+	let config: Config = config::load("github-indexer/app.yaml")?;
+	let _tracer = Tracer::init(config.tracer.clone(), "github-indexer")?;
 
 	let (http_server, cron) = bootstrap(config).await.context("App bootstrap")?;
 

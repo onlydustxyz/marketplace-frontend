@@ -75,10 +75,7 @@ Or run the backend in local, each in a dedicated terminal:
 
 ```sh
 make api
-make event-listeners
-make quotes-syncer
 make github-indexer
-make github-indexer-api
 ```
 
 ## Migrate database
