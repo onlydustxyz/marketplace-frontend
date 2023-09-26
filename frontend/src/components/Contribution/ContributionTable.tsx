@@ -307,7 +307,7 @@ export default function ContributionTable({
   }
 
   return (
-    <section className="rounded-2xl border border-white/5">
+    <section className="overflow-hidden rounded-2xl border border-greyscale-50/8 bg-whiteFakeOpacity-5/95 shadow-2xl">
       {showHeader ? (
         <header
           className="flex cursor-pointer items-start gap-3 border-b border-greyscale-50/8 bg-white/2 px-6 py-4"

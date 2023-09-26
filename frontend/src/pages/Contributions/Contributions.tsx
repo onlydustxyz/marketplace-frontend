@@ -3,7 +3,6 @@ import { useSearchParams } from "react-router-dom";
 
 import { ContributionsOrderBy, OrderBy, useGetAllContributionsQuery } from "src/__generated/graphql";
 import CancelCircleLine from "src/assets/icons/CancelCircleLine";
-import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import ContributionTable from "src/components/Contribution/ContributionTable";
 import { Tabs } from "src/components/Tabs/Tabs";
 import { useAuth } from "src/hooks/useAuth";
@@ -215,22 +214,24 @@ export default function Contributions() {
   return (
     <>
       <SEO />
-      <div className="h-full bg-black px-6 pb-6">
-        <Background roundedBorders={BackgroundRoundedBorders.Full}>
-          <div className="absolute inset-0 bg-gradient-to-b from-[#000113]/[0] to-[#0E0D2E]" />
-          <div className="relative z-10">
-            <header className="border-b border-greyscale-50/20 bg-white/8 px-4 pb-4 pt-7 shadow-2xl backdrop-blur-3xl md:px-8 md:pb-0 md:pt-8">
-              <Tabs tabs={tabItems} variant="blue" mobileTitle={T("navbar.contributions")} />
-            </header>
-            <div className="flex flex-col gap-4 p-8">
-              {tableItems.map(({ show, ...restProps }) =>
-                show ? (
-                  <ContributionTable key={restProps.id} {...restProps} showHeader={isActiveTab(AllTabs.All)} />
-                ) : null
-              )}
+      <div className="h-full overflow-y-auto px-6 pb-6">
+        <div className="h-full w-full overflow-y-auto rounded-3xl bg-contributions bg-right-top bg-no-repeat scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
+          <div className="relative">
+            <div className="absolute inset-0 bg-gradient-to-b from-[#000113]/[0] to-[#0E0D2E]" />
+            <div className="relative z-10">
+              <header className="sticky top-0 border-b border-greyscale-50/20 bg-whiteFakeOpacity-8 px-4 pb-4 pt-7 shadow-2xl backdrop-blur-3xl md:px-8 md:pb-0 md:pt-8">
+                <Tabs tabs={tabItems} variant="blue" mobileTitle={T("navbar.contributions")} />
+              </header>
+              <div className="flex flex-col gap-4 p-8">
+                {tableItems.map(({ show, ...restProps }) =>
+                  show ? (
+                    <ContributionTable key={restProps.id} {...restProps} showHeader={isActiveTab(AllTabs.All)} />
+                  ) : null
+                )}
+              </div>
             </div>
           </div>
-        </Background>
+        </div>
       </div>
     </>
   );

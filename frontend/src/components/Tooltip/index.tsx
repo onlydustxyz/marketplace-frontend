@@ -33,7 +33,7 @@ export enum Variant {
 
 const variants = {
   [Variant.Default]: "bg-greyscale-800",
-  [Variant.Blue]: "bg-whiteFakeOpacity-8",
+  [Variant.Blue]: "bg-tooltip-blue",
 };
 
 export default function Tooltip({

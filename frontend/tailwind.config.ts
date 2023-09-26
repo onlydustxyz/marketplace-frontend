@@ -94,11 +94,14 @@ const config: Config = {
           1: "#232323",
           2: "#0C0C23",
           5: "#111127",
-          8: "#2c2c3e",
+          8: "#151526",
           10: "#18182F",
           12: "#4C4B58",
         },
         spaceGrey: "#141414",
+        tooltip: {
+          blue: "#2c2c3e",
+        },
       },
       animation: {
         "spin-invert-slow": "spin-invert 4s linear infinite",
@@ -146,6 +149,7 @@ const config: Config = {
         mosaic: "url('src/assets/img/mosaic.png')",
         "completion-gradient":
           "linear-gradient(90deg, #5935BF 0%, #45279B 8.85%, #340D87 31.77%, #421083 66.15%, #3A0A8C 100%);",
+        contributions: "url('src/assets/img/contributions-bg.png')",
       },
       backgroundPosition: {
         space: "right top, bottom left",
