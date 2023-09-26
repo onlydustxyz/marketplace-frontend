@@ -127,8 +127,7 @@ export default function ContributionTable({
             number={githubCodeReview.githubPullRequest?.number}
             type={GithubContributionType.CodeReview}
             status={githubCodeReview.githubPullRequest?.status as GithubContributionIconStatusType}
-            rewards={[{ paymentId: "1234123412412342341234133124" }, { paymentId: "R67564745666457" }]}
-            // rewards={contribution?.rewardItems ?? []}
+            rewards={contribution?.rewardItems ?? []}
           />
         ) : null;
       default:
