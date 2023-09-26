@@ -1,10 +1,10 @@
 import { ComponentProps } from "react";
 
-import { ContributionBadge } from "src/components/ContributionBadge/ContributionBadge";
-import { ContributionBadgeTooltip } from "src/components/ContributionBadgeTooltip/ContributionBadgeTooltip";
-import { ContributionIconStatus, ContributionIconStatusType } from "src/components/ContributionIcon/ContributionIcon";
-import { ContributionReview, ContributionReviewStatus } from "src/components/ContributionReview/ContributionReview";
-import { ContributionReward } from "src/components/ContributionReward/ContributionReward";
+import { ContributionBadge } from "src/components/Contribution/ContributionBadge";
+import { ContributionBadgeTooltip } from "src/components/Contribution/ContributionBadgeTooltip";
+import { ContributionIconStatus, ContributionIconStatusType } from "src/components/Contribution/ContributionIcon";
+import { ContributionReview, ContributionReviewStatus } from "src/components/Contribution/ContributionReview";
+import { ContributionReward } from "src/components/Contribution/ContributionReward";
 
 type Props = { id: string; title: string; url: string } & ComponentProps<typeof ContributionBadge> &
   ComponentProps<typeof ContributionReward> & { review?: ContributionReviewStatus };
@@ -54,6 +54,6 @@ export function Contribution({
 export {
   ContributionIconStatus as ContributionStatus,
   ContributionIconType as ContributionType,
-} from "src/components/ContributionIcon/ContributionIcon";
+} from "src/components/Contribution/ContributionIcon";
 
-export { ContributionReviewStatus as ContributionReview } from "../ContributionReview/ContributionReview";
+export { ContributionReviewStatus as ContributionReview } from "src/components/Contribution/ContributionReview";

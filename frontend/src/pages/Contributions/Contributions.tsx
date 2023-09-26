@@ -1,14 +1,14 @@
 import { ComponentProps, PropsWithChildren, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
+import { ContributionsOrderBy, OrderBy, useGetAllContributionsQuery } from "src/__generated/graphql";
 import CancelCircleLine from "src/assets/icons/CancelCircleLine";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
-import ContributionTable from "src/components/ContributionTable/ContributionTable";
+import ContributionTable from "src/components/Contribution/ContributionTable";
 import { Tabs } from "src/components/Tabs/Tabs";
 import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
 import { isInArray } from "src/utils/isInArray";
-import { ContributionsOrderBy, OrderBy, useGetAllContributionsQuery } from "src/__generated/graphql";
 // import IssueDraft from "src/assets/icons/IssueDraft";
 import IssueMerged from "src/assets/icons/IssueMerged";
 import ProgressCircle from "src/assets/icons/ProgressCircle";

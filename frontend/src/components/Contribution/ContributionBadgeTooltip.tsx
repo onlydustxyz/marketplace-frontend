@@ -3,9 +3,9 @@ import {
   ContributionIcon,
   ContributionIconStatusType,
   ContributionIconType,
-} from "src/components/ContributionIcon/ContributionIcon";
+} from "src/components/Contribution/ContributionIcon";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
-import Tooltip, { Variant, TooltipPosition } from "src/components/Tooltip";
+import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 
 export function ContributionBadgeTooltip({

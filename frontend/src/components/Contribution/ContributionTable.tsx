@@ -6,15 +6,15 @@ import { RoutePaths } from "src/App";
 import { GetAllContributionsQuery, GithubUser } from "src/__generated/graphql";
 import IssueOpen from "src/assets/icons/IssueOpen";
 import { Contribution, ContributionType } from "src/components/Contribution/Contribution";
-import { ContributionBadge } from "src/components/ContributionBadge/ContributionBadge";
-import { ContributionBadgeTooltip } from "src/components/ContributionBadgeTooltip/ContributionBadgeTooltip";
-import { ContributionDateTooltip } from "src/components/ContributionDateTooltip/ContributionDateTooltip";
+import { ContributionBadge } from "src/components/Contribution/ContributionBadge";
+import { ContributionBadgeTooltip } from "src/components/Contribution/ContributionBadgeTooltip";
+import { ContributionDateTooltip } from "src/components/Contribution/ContributionDateTooltip";
 import {
   ContributionIconStatus,
   ContributionIconStatusType,
   ContributionIconType,
-} from "src/components/ContributionIcon/ContributionIcon";
-import { ContributionReviewStatus } from "src/components/ContributionReview/ContributionReview";
+} from "src/components/Contribution/ContributionIcon";
+import { ContributionReviewStatus } from "src/components/Contribution/ContributionReview";
 import Loader from "src/components/Loader";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import Table from "src/components/Table";

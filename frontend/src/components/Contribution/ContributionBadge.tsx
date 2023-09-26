@@ -8,7 +8,7 @@ import {
   ContributionIconStatusType,
   ContributionIconType,
   variants as contributionIconVariants,
-} from "src/components/ContributionIcon/ContributionIcon";
+} from "src/components/Contribution/ContributionIcon";
 
 export enum ContributionBadgeType {
   PullRequest = "PULL_REQUEST",

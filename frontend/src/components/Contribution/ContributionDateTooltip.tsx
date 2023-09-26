@@ -3,8 +3,8 @@ import {
   ContributionIconStatus,
   ContributionIconStatusType,
   ContributionIconType,
-} from "src/components/ContributionIcon/ContributionIcon";
-import Tooltip, { Variant, TooltipPosition } from "src/components/Tooltip";
+} from "src/components/Contribution/ContributionIcon";
+import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 
 export function ContributionDateTooltip({
