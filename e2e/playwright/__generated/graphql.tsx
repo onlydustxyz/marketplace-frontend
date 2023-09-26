@@ -19467,10 +19467,7 @@ export type GetAllContributionsQuery = {
       id: any | null;
       key: string | null;
     } | null;
-    rewardItemsAggregate: {
-      __typename?: "WorkItemsAggregate";
-      aggregate: { __typename?: "WorkItemsAggregateFields"; count: number } | null;
-    };
+    rewardItems: Array<{ __typename?: "WorkItems"; paymentId: any | null }>;
   }>;
   githubRepos: Array<{ __typename?: "GithubRepos"; indexedAt: any | null }>;
 };
@@ -23500,8 +23497,21 @@ export const GetAllContributionsDocument = gql`
         }
       }
     }
-    githubRepos(orderBy: { indexedAt: ASC }, limit: 1) {
-      indexedAt
+    githubRepo {
+      htmlUrl
+      name
+      id
+    }
+    project {
+      name
+      logoUrl
+      id
+      key
+    }
+    status
+    type
+    rewardItems {
+      paymentId
     }
   }
   ${ContributionGithubPullRequestFragmentDoc}

@@ -81,7 +81,7 @@ export default function ContributionTable({
             type={GithubContributionType.Issue}
             status={githubIssue.status as GithubContributionIconStatusType}
             //   external={contribution.external}}
-            rewards={contribution?.rewardItemsAggregate.aggregate?.count ?? 0}
+            rewards={contribution?.rewardItems ?? []}
           />
         ) : null;
       case GithubContributionType.PullRequest: {
@@ -117,7 +117,7 @@ export default function ContributionTable({
             status={githubPullRequest.status as GithubContributionIconStatusType}
             draft={githubPullRequest.draft}
             // external={contribution.external}
-            rewards={contribution?.rewardItemsAggregate.aggregate?.count ?? 0}
+            rewards={contribution?.rewardItems ?? []}
             review={review}
           />
         ) : null;
@@ -132,7 +132,7 @@ export default function ContributionTable({
             type={GithubContributionType.CodeReview}
             status={githubCodeReview.githubPullRequest?.status as GithubContributionIconStatusType}
             // external={contribution.external}
-            rewards={contribution?.rewardItemsAggregate.aggregate?.count ?? 0}
+            rewards={contribution?.rewardItems ?? []}
           />
         ) : null;
       default:

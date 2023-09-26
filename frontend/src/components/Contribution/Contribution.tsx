@@ -48,7 +48,7 @@ export function Contribution({
         </a>
       </div>
       <div className="inline-flex items-center gap-1">
-        {rewards ? <ContributionReward rewards={rewards} /> : null}
+        {rewards.length ? <ContributionReward rewards={rewards} /> : null}
         {review && status === GithubContributionIconStatus.Open ? <ContributionReview status={review} /> : null}
       </div>
     </div>
