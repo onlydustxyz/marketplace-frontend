@@ -45,7 +45,6 @@ export default function Contributions() {
     error: inProgressError,
   } = useGetAllContributionsQuery({
     variables: {
-      limit: 20,
       orderBy: { createdAt: OrderBy.Desc } as ContributionsOrderBy,
       githubUserId,
       status: GithubContributionStatus.InProgress,
@@ -60,7 +59,6 @@ export default function Contributions() {
     error: completedError,
   } = useGetAllContributionsQuery({
     variables: {
-      limit: 20,
       orderBy: { createdAt: OrderBy.Desc } as ContributionsOrderBy,
       githubUserId,
       status: GithubContributionStatus.Completed,
@@ -75,7 +73,6 @@ export default function Contributions() {
     error: canceledError,
   } = useGetAllContributionsQuery({
     variables: {
-      limit: 20,
       orderBy: { createdAt: OrderBy.Desc } as ContributionsOrderBy,
       githubUserId,
       status: GithubContributionStatus.Canceled,

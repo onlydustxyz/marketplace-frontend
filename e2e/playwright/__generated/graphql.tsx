@@ -18305,19 +18305,16 @@ export type ContributionGithubPullRequestFragment = {
   title: string | null;
 };
 
-<<<<<<< HEAD
-export type ContributionGithubIssueFragment = {
-  __typename?: "GithubIssues";
-  commentsCount: any | null;
+export type ContributionGithubPullRequestFragment = {
+  __typename?: "GithubPullRequests";
+  draft: boolean | null;
   htmlUrl: string | null;
   id: any | null;
   number: any | null;
   status: string | null;
   title: string | null;
+  author: { __typename?: "GithubUsers"; avatarUrl: string; htmlUrl: string; login: string } | null;
 };
-=======
-export type ContributionGithubPullRequestFragment = { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, author: { __typename?: 'GithubUsers', avatarUrl: string, htmlUrl: string, login: string } | null };
->>>>>>> 62bc0be5 (feat: updated contributions query)
 
 export type PaymentRequestIdFragment = { __typename?: "PaymentRequests"; id: any | null };
 
@@ -19387,13 +19384,11 @@ export type GetProjectVisibilityDetailsQuery = {
 };
 
 export type GetAllContributionsQueryVariables = Exact<{
-  limit: Scalars["Int"];
   orderBy: InputMaybe<Array<ContributionsOrderBy> | ContributionsOrderBy>;
   githubUserId: Scalars["bigint"];
   status: Scalars["contribution_status"];
 }>;
 
-<<<<<<< HEAD
 export type GetAllContributionsQuery = {
   __typename?: "query_root";
   contributions: Array<{
@@ -19424,6 +19419,7 @@ export type GetAllContributionsQuery = {
         } | null;
       }>;
       codeReviews: Array<{ __typename?: "GithubPullRequestReviews"; outcome: any | null; id: string | null }>;
+      author: { __typename?: "GithubUsers"; avatarUrl: string; htmlUrl: string; login: string } | null;
     } | null;
     githubIssue: {
       __typename?: "GithubIssues";
@@ -19443,6 +19439,7 @@ export type GetAllContributionsQuery = {
           number: any | null;
           status: string | null;
           title: string | null;
+          author: { __typename?: "GithubUsers"; avatarUrl: string; htmlUrl: string; login: string } | null;
         } | null;
       }>;
     } | null;
@@ -19459,6 +19456,7 @@ export type GetAllContributionsQuery = {
         number: any | null;
         status: string | null;
         title: string | null;
+        author: { __typename?: "GithubUsers"; avatarUrl: string; htmlUrl: string; login: string } | null;
       } | null;
     } | null;
     githubRepo: { __typename?: "GithubRepos"; htmlUrl: string | null; name: string | null; id: any | null } | null;
@@ -19476,10 +19474,6 @@ export type GetAllContributionsQuery = {
   }>;
   githubRepos: Array<{ __typename?: "GithubRepos"; indexedAt: any | null }>;
 };
-=======
-
-export type GetAllContributionsQuery = { __typename?: 'query_root', contributions: Array<{ __typename?: 'Contributions', closedAt: any | null, createdAt: any | null, id: string | null, status: any | null, type: string | null, githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, closingIssues: Array<{ __typename?: 'ApiClosingIssues', githubIssue: { __typename?: 'GithubIssues', commentsCount: any | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null } | null }>, codeReviews: Array<{ __typename?: 'GithubPullRequestReviews', outcome: any | null, id: string | null }>, author: { __typename?: 'GithubUsers', avatarUrl: string, htmlUrl: string, login: string } | null } | null, githubIssue: { __typename?: 'GithubIssues', commentsCount: any | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, closedByPullRequests: Array<{ __typename?: 'ApiClosedByPullRequests', githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, author: { __typename?: 'GithubUsers', avatarUrl: string, htmlUrl: string, login: string } | null } | null }> } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', id: string | null, status: string | null, outcome: any | null, githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, author: { __typename?: 'GithubUsers', avatarUrl: string, htmlUrl: string, login: string } | null } | null } | null, githubRepo: { __typename?: 'GithubRepos', htmlUrl: string | null, name: string | null, id: any | null } | null, project: { __typename?: 'Projects', name: string | null, logoUrl: string | null, id: any | null, key: string | null } | null, rewardItemsAggregate: { __typename?: 'WorkItemsAggregate', aggregate: { __typename?: 'WorkItemsAggregateFields', count: number } | null } }>, githubRepos: Array<{ __typename?: 'GithubRepos', indexedAt: any | null }> };
->>>>>>> 62bc0be5 (feat: updated contributions query)
 
 export type PendingProjectLeaderInvitationsQueryVariables = Exact<{
   githubUserId: InputMaybe<Scalars["bigint"]>;
@@ -20780,12 +20774,6 @@ export const ProjectLeadFragmentDoc = gql`
     avatarUrl
     githubUserId
   }
-<<<<<<< HEAD
-  ${UserIdFragmentDoc}
-`;
-export const GithubRepoIdFragmentDoc = gql`
-  fragment GithubRepoId on GithubRepos {
-=======
   githubRecipient {
     ...GithubUser
   }
@@ -20803,130 +20791,135 @@ export const GithubRepoIdFragmentDoc = gql`
     ${GithubUserFragmentDoc}
 ${WorkItemFragmentDoc}`;
 export const ApplicationIdFragmentDoc = gql`
-    fragment ApplicationId on Applications {
-  id
-}
-    `;
+  fragment ApplicationId on Applications {
+    id
+  }
+`;
 export const ApplicantFragmentDoc = gql`
-    fragment Applicant on Applications {
-  ...ApplicationId
-  applicantId
-}
-    ${ApplicationIdFragmentDoc}`;
+  fragment Applicant on Applications {
+    ...ApplicationId
+    applicantId
+  }
+  ${ApplicationIdFragmentDoc}
+`;
 export const GithubRepoFragmentDoc = gql`
-    fragment GithubRepo on GithubRepos {
-  ...GithubRepoId
-  owner
-  name
-  description
-  stars
-  forkCount
-  htmlUrl
-  languages
-  hasIssues
-}
-    ${GithubRepoIdFragmentDoc}`;
-export const ContributionGithubPullRequestFragmentDoc = gql`
-    fragment ContributionGithubPullRequest on GithubPullRequests {
-  author {
-    avatarUrl
+  fragment GithubRepo on GithubRepos {
+    ...GithubRepoId
+    owner
+    name
+    description
+    stars
+    forkCount
     htmlUrl
-    login
+    languages
+    hasIssues
   }
-  draft
-  htmlUrl
-  id
-  number
-  status
-  title
-}
-    `;
-export const ContributionGithubIssueFragmentDoc = gql`
-    fragment ContributionGithubIssue on GithubIssues {
-  commentsCount
-  htmlUrl
-  id
-  number
-  status
-  title
-}
-    `;
-export const PaymentRequestIdFragmentDoc = gql`
-    fragment PaymentRequestId on PaymentRequests {
-  id
-}
-    `;
-export const PaymentRequestFragmentDoc = gql`
-    fragment PaymentRequest on PaymentRequests {
-  ...PaymentRequestId
-  recipientId
-  amount
-  workItemsAggregate {
-    aggregate {
-      count
+  ${GithubRepoIdFragmentDoc}
+`;
+export const ContributionGithubPullRequestFragmentDoc = gql`
+  fragment ContributionGithubPullRequest on GithubPullRequests {
+    author {
+      avatarUrl
+      htmlUrl
+      login
     }
+    draft
+    htmlUrl
+    id
+    number
+    status
+    title
   }
-  requestedAt
-}
-    ${PaymentRequestIdFragmentDoc}`;
+`;
+export const ContributionGithubIssueFragmentDoc = gql`
+  fragment ContributionGithubIssue on GithubIssues {
+    commentsCount
+    htmlUrl
+    id
+    number
+    status
+    title
+  }
+`;
+export const PaymentRequestIdFragmentDoc = gql`
+  fragment PaymentRequestId on PaymentRequests {
+    id
+  }
+`;
+export const PaymentRequestFragmentDoc = gql`
+  fragment PaymentRequest on PaymentRequests {
+    ...PaymentRequestId
+    recipientId
+    amount
+    workItemsAggregate {
+      aggregate {
+        count
+      }
+    }
+    requestedAt
+  }
+  ${PaymentRequestIdFragmentDoc}
+`;
 export const ExtendedPaymentRequestFragmentDoc = gql`
-    fragment ExtendedPaymentRequest on PaymentRequests {
-  ...PaymentRequest
-  githubRecipient {
-    ...GithubUser
-  }
-  paymentsAggregate {
-    aggregate {
-      sum {
-        amount
+  fragment ExtendedPaymentRequest on PaymentRequests {
+    ...PaymentRequest
+    githubRecipient {
+      ...GithubUser
+    }
+    paymentsAggregate {
+      aggregate {
+        sum {
+          amount
+        }
       }
     }
   }
-}
-    ${PaymentRequestFragmentDoc}
-${GithubUserFragmentDoc}`;
+  ${PaymentRequestFragmentDoc}
+  ${GithubUserFragmentDoc}
+`;
 export const LastProjectMergedPullRequestsFragmentDoc = gql`
-    fragment LastProjectMergedPullRequests on Projects {
-  githubRepos {
-    projectId
-    githubRepoId
-    repoIssues(where: {status: {_eq: "Merged"}}) {
-      ...GithubIssue
+  fragment LastProjectMergedPullRequests on Projects {
+    githubRepos {
+      projectId
+      githubRepoId
+      repoIssues(where: { status: { _eq: "Merged" } }) {
+        ...GithubIssue
+      }
     }
   }
-}
-    ${GithubIssueFragmentDoc}`;
+  ${GithubIssueFragmentDoc}
+`;
 export const UserPayoutSettingsFragmentDoc = gql`
-    fragment UserPayoutSettings on UserPayoutInfo {
-  userId
-  firstname
-  lastname
-  address
-  city
-  postCode
-  country
-  isCompany
-  companyName
-  companyIdentificationNumber
-  usdPreferredMethod
-  ethWallet
-  bic
-  iban
-  arePayoutSettingsValid
-}
-    `;
+  fragment UserPayoutSettings on UserPayoutInfo {
+    userId
+    firstname
+    lastname
+    address
+    city
+    postCode
+    country
+    isCompany
+    companyName
+    companyIdentificationNumber
+    usdPreferredMethod
+    ethWallet
+    bic
+    iban
+    arePayoutSettingsValid
+  }
+`;
 export const OwnUserProfileDetailsFragmentDoc = gql`
-    fragment OwnUserProfileDetails on UserProfiles {
-  weeklyAllocatedTime
-  lookingForAJob
-  completionScore @client
-}
-    `;
+  fragment OwnUserProfileDetails on UserProfiles {
+    weeklyAllocatedTime
+    lookingForAJob
+    completionScore @client
+  }
+`;
 export const LiveGithubPullRequestIdFragmentDoc = gql`
-    fragment LiveGithubPullRequestId on GithubPullRequest {
-  id
-}
-    `;
+  fragment LiveGithubPullRequestId on GithubPullRequest {
+    id
+  }
+`;
 export const LiveGithubPullRequestFragmentDoc = gql`
     fragment LiveGithubPullRequest on GithubPullRequest {
   ...LiveGithubPullRequestId
@@ -20939,7 +20932,6 @@ export const LiveGithubPullRequestFragmentDoc = gql`
   closedAt
   mergedAt
   author {
->>>>>>> 62bc0be5 (feat: updated contributions query)
     id
   }
 `;
@@ -23452,11 +23444,10 @@ export type GetProjectVisibilityDetailsQueryResult = Apollo.QueryResult<
   GetProjectVisibilityDetailsQueryVariables
 >;
 export const GetAllContributionsDocument = gql`
-  query GetAllContributions(
-    $limit: Int!
-    $orderBy: [ContributionsOrderBy!]
-    $githubUserId: bigint!
-    $status: contribution_status!
+    query GetAllContributions($orderBy: [ContributionsOrderBy!], $githubUserId: bigint!, $status: contribution_status!) {
+  contributions(
+    orderBy: $orderBy
+    where: {githubUserId: {_eq: $githubUserId}, status: {_eq: $status}}
   ) {
     contributions(
       limit: $limit
@@ -23478,19 +23469,9 @@ export const GetAllContributionsDocument = gql`
           id
         }
       }
-<<<<<<< HEAD
-      githubIssue {
-        ...ContributionGithubIssue
-        closedByPullRequests {
-          githubPullRequest {
-            ...ContributionGithubPullRequest
-          }
-        }
-=======
       codeReviews(orderBy: {submittedAt: DESC}, limit: 1) {
         outcome
         id
->>>>>>> 62bc0be5 (feat: updated contributions query)
       }
       githubCodeReview {
         id
@@ -23539,7 +23520,6 @@ export const GetAllContributionsDocument = gql`
  * @example
  * const { data, loading, error } = useGetAllContributionsQuery({
  *   variables: {
- *      limit: // value for 'limit'
  *      orderBy: // value for 'orderBy'
  *      githubUserId: // value for 'githubUserId'
  *      status: // value for 'status'
