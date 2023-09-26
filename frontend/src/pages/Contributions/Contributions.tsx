@@ -216,7 +216,7 @@ export default function Contributions() {
       <SEO />
       <div className="h-full overflow-y-auto px-6 pb-6">
         <div className="h-full w-full overflow-y-auto rounded-3xl bg-contributions bg-right-top bg-no-repeat scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
-          <div className="relative">
+          <div className="relative min-h-full">
             <div className="absolute inset-0 bg-gradient-to-b from-[#000113]/[0] to-[#0E0D2E]" />
             <div className="relative z-10">
               <header className="sticky top-0 border-b border-greyscale-50/20 bg-whiteFakeOpacity-8 px-4 pb-4 pt-7 shadow-2xl backdrop-blur-3xl md:px-8 md:pb-0 md:pt-8">
