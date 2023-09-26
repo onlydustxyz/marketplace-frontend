@@ -89,12 +89,12 @@ function CodeReviewStatus({ codeReview }: { codeReview: GithubCodeReviewFragment
     case GithubCodeReviewStatus.Completed:
       return codeReview.outcome.toUpperCase() === GithubCodeReviewOutcome.ChangeRequested ? (
         <>
-          <CodeReviewCheckIcon className="-my-1 text-base text-github-purple" />
+          <CodeReviewCheckIcon className="-my-1 h-4 w-4 text-base text-github-purple" />
           {T("githubCodeReview.status.changeRequested", { submittedAt: displayRelativeDate(codeReview.submittedAt) })}
         </>
       ) : (
         <>
-          <CodeReviewCheckIcon className="-my-1 text-base text-github-purple" />
+          <CodeReviewCheckIcon className="-my-1 h-4 w-4 text-base text-github-purple" />
           {T("githubCodeReview.status.approved", { submittedAt: displayRelativeDate(codeReview.submittedAt) })}
         </>
       );
