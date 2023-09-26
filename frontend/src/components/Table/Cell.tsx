@@ -3,6 +3,7 @@ import classNames from "classnames";
 
 export enum CellHeight {
   Small = "Small",
+  Compact = "Compact",
   Medium = "Medium",
   Tall = "Tall",
 }
@@ -22,6 +23,7 @@ export default function Cell({ height = CellHeight.Tall, horizontalMargin = true
           {
             "py-4": height === CellHeight.Tall,
             "py-3": height === CellHeight.Medium,
+            "py-1.5": height === CellHeight.Compact,
             "py-px": height === CellHeight.Small,
             "px-3": horizontalMargin,
           },

@@ -257,7 +257,7 @@ export default function ContributionTable({
 
       return (
         <Line key={contribution.id}>
-          <Cell height={CellHeight.Medium}>
+          <Cell height={CellHeight.Compact}>
             <ContributionDate
               id={contribution.id ?? ""}
               type={contribution.type as GithubContributionType}
@@ -267,7 +267,7 @@ export default function ContributionTable({
               date={new Date(lineDate)}
             />
           </Cell>
-          <Cell height={CellHeight.Medium} className="flex flex-row gap-3">
+          <Cell height={CellHeight.Compact} className="flex flex-row gap-3">
             <div className="flex items-center gap-3">
               <RoundedImage
                 src={contribution.project?.logoUrl ?? onlyDustLogo}
@@ -297,8 +297,8 @@ export default function ContributionTable({
               </p>
             </div>
           </Cell>
-          <Cell height={CellHeight.Medium}>{renderContribution(contribution)}</Cell>
-          <Cell className="justify-end" height={CellHeight.Medium}>
+          <Cell height={CellHeight.Compact}>{renderContribution(contribution)}</Cell>
+          <Cell className="justify-end" height={CellHeight.Compact}>
             {renderLinkedContributions(contribution)}
           </Cell>
         </Line>
