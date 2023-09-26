@@ -33,6 +33,7 @@ export default {
 };
 
 const defaultProps: ComponentProps<typeof Contribution> = {
+  id: "123",
   title: "Name of PR / Issue / Other work ",
   url: "#",
   number: 123,

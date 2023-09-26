@@ -8,7 +8,6 @@ import { GetAllContributionsQuery, GithubUser } from "src/__generated/graphql";
 import IssueOpen from "src/assets/icons/IssueOpen";
 import { Contribution } from "src/components/Contribution/Contribution";
 import { ContributionBadge } from "src/components/Contribution/ContributionBadge";
-import { ContributionBadgeTooltip } from "src/components/Contribution/ContributionBadgeTooltip";
 import { ContributionDateTooltip } from "src/components/Contribution/ContributionDateTooltip";
 import Loader from "src/components/Loader";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
@@ -80,7 +79,6 @@ export default function ContributionTable({
             number={githubIssue.number}
             type={GithubContributionType.Issue}
             status={githubIssue.status as GithubContributionIconStatusType}
-            //   external={contribution.external}}
             rewards={contribution?.rewardItems ?? []}
           />
         ) : null;
@@ -116,7 +114,6 @@ export default function ContributionTable({
             type={GithubContributionType.PullRequest}
             status={githubPullRequest.status as GithubContributionIconStatusType}
             draft={githubPullRequest.draft}
-            // external={contribution.external}
             rewards={contribution?.rewardItems ?? []}
             review={review}
           />
@@ -131,8 +128,8 @@ export default function ContributionTable({
             number={githubCodeReview.githubPullRequest?.number}
             type={GithubContributionType.CodeReview}
             status={githubCodeReview.githubPullRequest?.status as GithubContributionIconStatusType}
-            // external={contribution.external}
-            rewards={contribution?.rewardItems ?? []}
+            rewards={[{ paymentId: "1234123412412342341234133124" }, { paymentId: "R67564745666457" }]}
+            // rewards={contribution?.rewardItems ?? []}
           />
         ) : null;
       default:
@@ -147,13 +144,17 @@ export default function ContributionTable({
 
         if (closedByPullRequests?.length) {
           return contribution.githubIssue?.closedByPullRequests?.map(({ githubPullRequest }) => {
-            const { id, number, status, draft } = githubPullRequest ?? {};
+            const { id, number, status, title, author, htmlUrl, draft } = githubPullRequest ?? {};
             return (
               <ContributionBadge
                 key={id}
+                id={id}
                 number={number}
                 type={GithubContributionType.PullRequest}
                 status={status as GithubContributionIconStatusType}
+                title={title ?? ""}
+                author={author as GithubUser}
+                url={htmlUrl ?? ""}
                 draft={draft}
               />
             );
@@ -167,13 +168,23 @@ export default function ContributionTable({
 
         if (closingIssues?.length) {
           return closingIssues.map(({ githubIssue }) => {
-            const { id, number, status } = githubIssue ?? {};
+            const {
+              id,
+              number,
+              status,
+              title,
+              // author,
+              htmlUrl,
+            } = githubIssue ?? {};
             return (
               <ContributionBadge
                 key={id}
+                id={id}
                 number={number}
                 type={GithubContributionType.Issue}
                 status={status as GithubContributionIconStatusType}
+                title={title ?? ""}
+                url={htmlUrl ?? ""}
               />
             );
           });
@@ -185,27 +196,18 @@ export default function ContributionTable({
         const pr = contribution.githubCodeReview?.githubPullRequest;
 
         if (pr) {
-          const { number, status, draft, author, title } = pr;
+          const { id, number, status, draft, author, title, htmlUrl } = pr;
           return (
-            <>
-              <ContributionBadgeTooltip
-                id={`${id}-linked-pr-badge-tooltip`}
-                type={GithubContributionType.PullRequest}
-                status={status as GithubContributionIconStatusType}
-                number={number}
-                title={title ?? ""}
-                author={author as GithubUser}
-              />
-
-              <div id={`${id}-linked-pr-badge-tooltip`}>
-                <ContributionBadge
-                  number={number}
-                  type={GithubContributionType.PullRequest}
-                  status={status as GithubContributionIconStatusType}
-                  draft={draft}
-                />
-              </div>
-            </>
+            <ContributionBadge
+              id={id}
+              number={number}
+              type={GithubContributionType.PullRequest}
+              status={status as GithubContributionIconStatusType}
+              title={title ?? ""}
+              author={author as GithubUser}
+              url={htmlUrl ?? ""}
+              draft={draft}
+            />
           );
         }
 

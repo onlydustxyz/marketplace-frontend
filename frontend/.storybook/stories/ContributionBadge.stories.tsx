@@ -1,7 +1,7 @@
 import { ComponentProps } from "react";
 
-import { ContributionIconStatus, ContributionIconType } from "src/components/ContributionIcon/ContributionIcon";
-import { ContributionBadge } from "src/components/ContributionBadge/ContributionBadge";
+import { ContributionBadge } from "src/components/Contribution/ContributionBadge";
+import { GithubContributionIconStatus, GithubContributionType } from "src/types";
 
 export default {
   title: "ContributionBadge",
@@ -9,11 +9,15 @@ export default {
   argTypes: {
     status: {
       control: { type: "select" },
-      options: [ContributionIconStatus.Open, ContributionIconStatus.Merged, ContributionIconStatus.Closed],
+      options: [
+        GithubContributionIconStatus.Open,
+        GithubContributionIconStatus.Merged,
+        GithubContributionIconStatus.Closed,
+      ],
     },
     type: {
       control: { type: "select" },
-      options: [ContributionIconType.PullRequest, ContributionIconType.Issue, ContributionIconType.CodeReview],
+      options: [GithubContributionType.PullRequest, GithubContributionType.Issue, GithubContributionType.CodeReview],
     },
     draft: "boolean",
     external: "boolean",
@@ -21,20 +25,14 @@ export default {
 };
 
 const defaultProps: ComponentProps<typeof ContributionBadge> = {
+  id: "123",
   number: 123,
-  status: ContributionIconStatus.Open,
-  type: ContributionIconType.PullRequest,
+  status: GithubContributionIconStatus.Open,
+  type: GithubContributionType.PullRequest,
+  title: "Contribution Badge",
+  url: "",
 };
 
 export const Default = {
   render: (args: typeof ContributionBadge) => <ContributionBadge {...defaultProps} {...args} />,
-};
-
-const externalProps: ComponentProps<typeof ContributionBadge> = {
-  ...defaultProps,
-  external: true,
-};
-
-export const AsExternal = {
-  render: (args: typeof ContributionBadge) => <ContributionBadge {...externalProps} {...args} />,
 };

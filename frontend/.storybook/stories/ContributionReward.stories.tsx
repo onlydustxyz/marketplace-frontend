@@ -13,6 +13,7 @@ export default {
 };
 
 const defaultProps: ComponentProps<typeof ContributionReward> = {
+  id: "123",
   rewards: [],
 };
 
