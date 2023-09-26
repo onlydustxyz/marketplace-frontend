@@ -7,7 +7,7 @@ import ContributionTable from "src/components/ContributionTable/ContributionTabl
 import { Tabs } from "src/components/Tabs/Tabs";
 import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
-import { isIn } from "src/utils/isIn";
+import { isInArray } from "src/utils/isInArray";
 import { ContributionsOrderBy, OrderBy, useGetAllContributionsQuery } from "src/__generated/graphql";
 // import IssueDraft from "src/assets/icons/IssueDraft";
 import IssueMerged from "src/assets/icons/IssueMerged";
@@ -42,7 +42,7 @@ export default function Contributions() {
 
   const tab = searchParams.get("tab") as typeof tabValues[number] | null;
 
-  const [activeTab, setActiveTab] = useState(isIn(tabValues, tab ?? "") ? tab : AllTabs.All);
+  const [activeTab, setActiveTab] = useState(isInArray(tabValues, tab ?? "") ? tab : AllTabs.All);
 
   const {
     data: inProgressData,
