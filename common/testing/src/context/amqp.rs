@@ -2,7 +2,10 @@ use std::{collections::HashMap, sync::Arc};
 
 use anyhow::{anyhow, Result};
 use domain::{Event, Publisher, Subscriber, SubscriberCallbackError};
-use infrastructure::amqp::{self, Bus, BusError, ConsumableBus, Destination};
+use infrastructure::{
+	amqp::{self, Bus, BusError, ConsumableBus, Destination},
+	event_bus::EXCHANGE_NAME,
+};
 use lapin::options::QueueDeclareOptions;
 use serde_json::Value;
 use testcontainers::{
@@ -75,7 +78,7 @@ impl<'docker> Context<'docker> {
 			config: config.clone(),
 			listeners,
 			publisher: Arc::new(
-				Bus::new(config).await?.as_publisher(Destination::queue("quote_sync")),
+				Bus::new(config).await?.as_publisher(Destination::exchange(EXCHANGE_NAME)),
 			),
 			kill_channels,
 		})

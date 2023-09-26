@@ -1,4 +1,5 @@
 pub mod graphql;
+pub mod internal;
 pub mod issues;
 pub mod payment;
 pub mod projects;

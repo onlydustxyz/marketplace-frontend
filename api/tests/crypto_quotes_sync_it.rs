@@ -58,7 +58,7 @@ impl<'a> Test<'a> {
 
 		// When
 		let before = Utc::now().naive_utc();
-		self.context.quotes_syncer.sync_quotes().await?;
+		self.context.quotes_syncer.run_once().await;
 		let after = Utc::now().naive_utc();
 
 		// Then

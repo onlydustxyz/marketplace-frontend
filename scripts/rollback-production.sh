@@ -9,13 +9,11 @@ ALL_DB_CONNECTED_APPS=(
     od-hasura-$ENVIRONMENT
     od-hasura-auth-$ENVIRONMENT
     od-api-$ENVIRONMENT
-    od-event-store-$ENVIRONMENT
     od-event-listeners-$ENVIRONMENT
 )
 
 ALL_BACKENDS=(
     od-api-$ENVIRONMENT
-    od-event-store-$ENVIRONMENT
     od-event-listeners-$ENVIRONMENT
 )
 

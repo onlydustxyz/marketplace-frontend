@@ -1,0 +1,13 @@
+table:
+  name: onboardings
+  schema: public
+select_permissions:
+  - role: registered_user_specific
+    permission:
+      columns:
+        - profile_wizard_display_date
+        - terms_and_conditions_acceptance_date
+        - user_id
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id

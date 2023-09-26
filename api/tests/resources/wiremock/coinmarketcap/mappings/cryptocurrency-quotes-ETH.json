@@ -1,0 +1,15 @@
+{
+    "request": {
+        "url": "/v2/cryptocurrency/quotes/latest?id=1027&convert=USD",
+        "method": "GET",
+        "headers": {
+            "X-CMC_PRO_API_KEY": {
+                "contains": "CMC-API-KEY"
+            }
+        }
+    },
+    "response": {
+        "status": 200,
+        "bodyFileName": "body-cryptocurrency-quotes-ETH.json"
+    }
+}

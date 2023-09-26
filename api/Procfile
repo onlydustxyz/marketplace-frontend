@@ -1,5 +1,2 @@
 web: ROCKET_PORT=$PORT ./target/release/api
-events_sanity_checks: RUST_LOG=info ./target/release/events_sanity_checks
-quotes_syncer: RUST_LOG=info ./target/release/quotes_syncer
 hasura: ./hasura/hasura.sh
-refresh: RUST_LOG=info ./target/release/refresh

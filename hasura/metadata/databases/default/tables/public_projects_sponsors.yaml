@@ -1,0 +1,14 @@
+table:
+  name: projects_sponsors
+  schema: public
+object_relationships:
+  - name: sponsor
+    using:
+      foreign_key_constraint_on: sponsor_id
+select_permissions:
+  - role: public
+    permission:
+      columns:
+        - project_id
+        - sponsor_id
+      filter: {}

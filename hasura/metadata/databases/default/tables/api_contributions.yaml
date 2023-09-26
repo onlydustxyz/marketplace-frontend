@@ -1,0 +1,84 @@
+table:
+  name: contributions
+  schema: api
+configuration:
+  column_config: {}
+  custom_column_names: {}
+  custom_name: Contributions
+  custom_root_fields:
+    select: contributions
+    select_aggregate: contributionsAggregate
+object_relationships:
+  - name: githubCodeReview
+    using:
+      manual_configuration:
+        column_mapping:
+          github_code_review_id: id
+        insertion_order: null
+        remote_table:
+          name: github_pull_request_reviews
+          schema: api
+  - name: githubIssue
+    using:
+      manual_configuration:
+        column_mapping:
+          github_issue_id: id
+        insertion_order: null
+        remote_table:
+          name: github_issues
+          schema: api
+  - name: githubPullRequest
+    using:
+      manual_configuration:
+        column_mapping:
+          github_pull_request_id: id
+        insertion_order: null
+        remote_table:
+          name: github_pull_requests
+          schema: api
+  - name: githubRepo
+    using:
+      manual_configuration:
+        column_mapping:
+          repo_id: id
+        insertion_order: null
+        remote_table:
+          name: github_repos
+          schema: api
+  - name: project
+    using:
+      manual_configuration:
+        column_mapping:
+          project_id: id
+        insertion_order: null
+        remote_table:
+          name: projects
+          schema: api
+array_relationships:
+  - name: rewardItems
+    using:
+      manual_configuration:
+        column_mapping:
+          details_id: id
+          github_user_id: recipient_id
+          project_id: project_id
+        insertion_order: null
+        remote_table:
+          name: work_items
+          schema: api
+select_permissions:
+  - role: public
+    permission:
+      columns:
+        - status
+        - type
+        - github_user_id
+        - repo_id
+        - ignored
+        - details_id
+        - id
+        - closed_at
+        - created_at
+        - project_id
+      filter: {}
+      allow_aggregations: true

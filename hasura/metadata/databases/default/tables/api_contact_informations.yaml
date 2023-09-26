@@ -1,0 +1,32 @@
+table:
+  name: contact_informations
+  schema: api
+configuration:
+  column_config: {}
+  custom_column_names: {}
+  custom_name: ContactInformations
+  custom_root_fields:
+    select: contactInformations
+    select_aggregate: contactInformationsAggregate
+select_permissions:
+  - role: public
+    permission:
+      columns:
+        - channel
+        - contact
+        - github_user_id
+        - public
+      filter:
+        public:
+          _eq: true
+      allow_aggregations: true
+  - role: registered_user_specific
+    permission:
+      columns:
+        - channel
+        - github_user_id
+        - public
+        - contact
+      filter:
+        github_user_id:
+          _eq: X-Hasura-githubUserId

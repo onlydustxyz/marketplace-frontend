@@ -14,7 +14,7 @@ use tracing::instrument;
 use crate::models::*;
 
 #[allow(clippy::too_many_arguments)]
-#[derive(new)]
+#[derive(new, Clone)]
 pub struct Projector {
 	project_repository: Arc<dyn ImmutableRepository<Project>>,
 	project_lead_repository: Arc<dyn ImmutableRepository<ProjectLead>>,

@@ -40,7 +40,7 @@ coverage/unit-tests:
 coverage/integration-tests:
 	cargo llvm-cov nextest --workspace --no-clean --lcov --output-path lcov.info  --test '*'
 
-ci: clean fmt check clippy build unit-tests integration-tests
+ci: fmt check clippy build unit-tests integration-tests
 
 ### Docker
 infra/down:
@@ -50,7 +50,7 @@ infra/clean:
 	docker compose down -v
 
 infra/up:
-	docker compose up
+	docker compose up -d
 
 infra/re: clean up
 
@@ -64,13 +64,7 @@ quotes-syncer:
 events-sanity-checks:
 	cargo run -p api --bin events_sanity_checks
 
-event-listeners:
-	cargo run -p event-listeners --bin listeners
-
 github-indexer:
-	cargo run -p event-listeners --bin github-indexer
+	cargo run -p github-indexer
 
-github-indexer-api:
-	cargo run -p event-listeners
-
-.PHONY: install clean fmt check clippy build unit-tests integration-tests ci api quotes-syncer events-sanity-check event-listeners github-indexer github-indexer-api
+.PHONY: install clean fmt check clippy build unit-tests integration-tests ci api quotes-syncer events-sanity-check github-indexer

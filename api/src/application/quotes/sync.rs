@@ -3,13 +3,10 @@ use std::sync::Arc;
 use anyhow::Result;
 use chrono::Utc;
 use derive_more::Constructor;
-use domain::{currencies, services::quotes::Service as QuoteService, Currency};
-use infrastructure::{
-	coinmarketcap,
-	database::{self, Repository},
-};
+use domain::{services::quotes::Service as QuoteService, Currency};
+use infrastructure::database::Repository;
 
-use crate::{models::CryptoUsdQuote, Config};
+use crate::models::CryptoUsdQuote;
 
 #[derive(Constructor)]
 pub struct Usecase {
@@ -43,20 +40,5 @@ impl Usecase {
 		}
 
 		Ok(count)
-	}
-
-	pub fn bootstrap(config: Config) -> Result<Self> {
-		info!("Bootstrapping quotes::sync usecase");
-
-		let database = Arc::new(database::Client::new(database::init_pool(
-			config.database.clone(),
-		)?));
-
-		let coinmarketcap = Arc::new(coinmarketcap::Client::new(
-			config.coinmarketcap,
-			currencies::USD,
-		));
-
-		Ok(Self::new(database, coinmarketcap))
 	}
 }

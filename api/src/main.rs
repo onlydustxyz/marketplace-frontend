@@ -1,9 +1,11 @@
 use anyhow::{Context, Error, Result};
-use api::{presentation::bootstrap::bootstrap, Config};
+use api::{presentation::bootstrap, Config};
 use domain::LogErr;
 use dotenv::dotenv;
+use futures::future::try_join_all;
 use infrastructure::{config, tracing::Tracer};
 use olog::{error, info, IntoField};
+use tokio::join;
 
 #[tokio::main]
 async fn main() -> Result<()> {
@@ -14,12 +16,17 @@ async fn main() -> Result<()> {
 		let _tracer =
 			Tracer::init(config.tracer.clone(), "api").context("Tracer initialization")?;
 
-		let _ = bootstrap(config)
-			.await
-			.context("App bootstrap")?
-			.launch()
-			.await
-			.context("App run")?;
+		let (http_server, event_listeners, cron) =
+			bootstrap(config).await.context("App bootstrap")?;
+
+		let (http_server, event_listeners, _) = join!(
+			http_server.launch(),
+			try_join_all(event_listeners),
+			cron.run()
+		);
+
+		let _ = http_server.context("App run")?;
+		event_listeners.context("event-listeners")?;
 
 		info!("👋 Gracefully shut down");
 

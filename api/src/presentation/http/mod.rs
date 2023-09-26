@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use ::domain::{AggregateRepository, Project};
-use domain::{Budget, Event, GithubFetchService, Payment, Publisher};
+use domain::{Application, Budget, Event, EventStore, GithubFetchService, Payment, Publisher};
 pub use http::Config;
 use infrastructure::{
 	database::{ImmutableRepository, Repository},
@@ -12,18 +12,20 @@ use rocket::{Build, Rocket};
 
 use crate::{
 	application,
-	domain::{DustyBotService, ImageStoreService},
+	domain::{projectors::projections::Projector, DustyBotService, ImageStoreService},
 	infrastructure::web3::ens,
 	models::*,
 	presentation::{graphql, http::github_client_pat_factory::GithubClientPatFactory},
 };
 
+mod bootstrap;
 pub mod dto;
 mod error;
 pub mod github_client_pat_factory;
 pub mod roles;
 pub mod routes;
 mod usecases;
+pub use bootstrap::bootstrap;
 
 #[allow(clippy::too_many_arguments)]
 pub fn serve(
@@ -52,6 +54,11 @@ pub fn serve(
 	ens: Arc<ens::Client>,
 	simple_storage: Arc<dyn ImageStoreService>,
 	github_client_pat_factory: Arc<GithubClientPatFactory>,
+	project_event_store: Arc<dyn EventStore<Project>>,
+	application_event_store: Arc<dyn EventStore<Application>>,
+	budget_event_store: Arc<dyn EventStore<Budget>>,
+	payment_event_store: Arc<dyn EventStore<Payment>>,
+	projector: Projector,
 ) -> Rocket<Build> {
 	let update_user_profile_info_usecase = application::user::update_profile_info::Usecase::new(
 		user_profile_info_repository.clone(),
@@ -95,6 +102,11 @@ pub fn serve(
 		.manage(payout_info_repository)
 		.manage(github_fetch_service)
 		.manage(dusty_bot_service)
+		.manage(project_event_store)
+		.manage(application_event_store)
+		.manage(budget_event_store)
+		.manage(payment_event_store)
+		.manage(projector)
 		.attach(http::guards::Cors)
 		.mount(
 			"/",
@@ -125,6 +137,13 @@ pub fn serve(
 				routes::payment::receipts::create,
 				routes::sponsors::create_sponsor,
 				routes::sponsors::update_sponsor
+			],
+		)
+		.mount(
+			"/internal",
+			routes![
+				routes::internal::events::checks::check,
+				routes::internal::events::refresh::refresh
 			],
 		)
 }

@@ -1,0 +1,43 @@
+table:
+  name: payments
+  schema: public
+object_relationships:
+  - name: paymentRequest
+    using:
+      manual_configuration:
+        column_mapping:
+          request_id: id
+        insertion_order: null
+        remote_table:
+          name: payment_requests
+          schema: api
+select_permissions:
+  - role: project_lead_specific
+    permission:
+      columns:
+        - amount
+        - currency_code
+        - id
+        - processed_at
+        - request_id
+      filter:
+        paymentRequest:
+          project:
+            projectLeads:
+              user:
+                id:
+                  _eq: X-Hasura-User-Id
+  - role: registered_user_specific
+    permission:
+      columns:
+        - amount
+        - currency_code
+        - id
+        - processed_at
+        - receipt
+        - request_id
+      filter:
+        paymentRequest:
+          recipient_id:
+            _eq: X-Hasura-githubUserId
+      allow_aggregations: true

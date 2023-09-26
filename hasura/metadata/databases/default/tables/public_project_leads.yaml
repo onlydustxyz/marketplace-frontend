@@ -1,0 +1,30 @@
+table:
+  name: project_leads
+  schema: public
+object_relationships:
+  - name: project
+    using:
+      manual_configuration:
+        column_mapping:
+          project_id: id
+        insertion_order: null
+        remote_table:
+          name: projects
+          schema: api
+  - name: user
+    using:
+      manual_configuration:
+        column_mapping:
+          user_id: id
+        insertion_order: null
+        remote_table:
+          name: registered_users
+          schema: public
+select_permissions:
+  - role: public
+    permission:
+      columns:
+        - assigned_at
+        - project_id
+        - user_id
+      filter: {}

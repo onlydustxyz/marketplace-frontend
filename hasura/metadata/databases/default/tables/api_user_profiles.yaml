@@ -1,0 +1,129 @@
+table:
+  name: user_profiles
+  schema: api
+configuration:
+  column_config: {}
+  custom_column_names: {}
+  custom_name: UserProfiles
+  custom_root_fields:
+    select: userProfiles
+    select_aggregate: userProfilesAggregate
+array_relationships:
+  - name: completedContributions
+    using:
+      manual_configuration:
+        column_mapping:
+          github_user_id: github_user_id
+        insertion_order: null
+        remote_table:
+          name: completed_contributions
+          schema: api
+  - name: contactInformations
+    using:
+      manual_configuration:
+        column_mapping:
+          github_user_id: github_user_id
+        insertion_order: null
+        remote_table:
+          name: contact_informations
+          schema: api
+  - name: contributionCounts
+    using:
+      manual_configuration:
+        column_mapping:
+          github_user_id: github_user_id
+        insertion_order: null
+        remote_table:
+          name: contribution_counts
+          schema: api
+  - name: contributionStats
+    using:
+      manual_configuration:
+        column_mapping:
+          github_user_id: github_user_id
+        insertion_order: null
+        remote_table:
+          name: contribution_stats
+          schema: api
+  - name: contributions
+    using:
+      manual_configuration:
+        column_mapping:
+          github_user_id: github_user_id
+        insertion_order: null
+        remote_table:
+          name: contributions
+          schema: api
+  - name: paymentStats
+    using:
+      manual_configuration:
+        column_mapping:
+          github_user_id: github_user_id
+        insertion_order: null
+        remote_table:
+          name: payment_stats
+          schema: api
+  - name: projectsContributed
+    using:
+      manual_configuration:
+        column_mapping:
+          github_user_id: github_user_id
+        insertion_order: null
+        remote_table:
+          name: projects_contributors
+          schema: public
+  - name: projectsLeaded
+    using:
+      manual_configuration:
+        column_mapping:
+          user_id: user_id
+        insertion_order: null
+        remote_table:
+          name: project_leads
+          schema: public
+  - name: projectsRewarded
+    using:
+      manual_configuration:
+        column_mapping:
+          github_user_id: github_user_id
+        insertion_order: null
+        remote_table:
+          name: projects_rewarded_users
+          schema: public
+select_permissions:
+  - role: public
+    permission:
+      columns:
+        - avatar_url
+        - bio
+        - cover
+        - created_at
+        - github_user_id
+        - html_url
+        - languages
+        - last_seen
+        - location
+        - login
+        - user_id
+        - website
+      filter: {}
+  - role: registered_user_specific
+    permission:
+      columns:
+        - avatar_url
+        - bio
+        - cover
+        - created_at
+        - github_user_id
+        - html_url
+        - languages
+        - last_seen
+        - location
+        - login
+        - looking_for_a_job
+        - user_id
+        - website
+        - weekly_allocated_time
+      filter:
+        github_user_id:
+          _eq: X-Hasura-githubUserId

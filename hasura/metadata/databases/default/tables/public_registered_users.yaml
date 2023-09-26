@@ -1,0 +1,55 @@
+table:
+  name: registered_users
+  schema: public
+object_relationships:
+  - name: userPayoutInfo
+    using:
+      manual_configuration:
+        column_mapping:
+          id: user_id
+        insertion_order: null
+        remote_table:
+          name: user_payout_info
+          schema: api
+array_relationships:
+  - name: paymentRequests
+    using:
+      manual_configuration:
+        column_mapping:
+          github_user_id: recipient_id
+        insertion_order: null
+        remote_table:
+          name: payment_requests
+          schema: api
+  - name: projectsLeaded
+    using:
+      manual_configuration:
+        column_mapping:
+          id: user_id
+        insertion_order: null
+        remote_table:
+          name: project_leads
+          schema: public
+select_permissions:
+  - role: public
+    permission:
+      columns:
+        - avatar_url
+        - github_user_id
+        - html_url
+        - id
+        - login
+      filter: {}
+  - role: registered_user_specific
+    permission:
+      columns:
+        - email
+        - github_user_id
+        - avatar_url
+        - html_url
+        - login
+        - last_seen
+        - id
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
