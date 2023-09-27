@@ -3,6 +3,7 @@ import classNames from "classnames";
 export enum CardBorder {
   Light = "light",
   Medium = "medium",
+  MultiColor = "multiColor",
 }
 interface CardProps extends React.PropsWithChildren {
   selectable?: boolean;
@@ -27,7 +28,7 @@ export default function Card({
   return (
     <div
       className={classNames(
-        "rounded-2xl border font-walsheim",
+        "rounded-2xl font-walsheim",
         {
           "bg-whiteFakeOpacity-2": withBg,
           "w-full": fullWidth,
@@ -35,8 +36,9 @@ export default function Card({
           "cursor-pointer": selectable,
         },
         {
-          "border-greyscale-50/8": border === CardBorder.Light,
-          "border-greyscale-50/12": border === CardBorder.Medium,
+          "border border-greyscale-50/8": border === CardBorder.Light,
+          "border border-greyscale-50/12": border === CardBorder.Medium,
+          "border-multicolored before:rounded-2xl": border === CardBorder.MultiColor,
         },
         className
       )}

@@ -1,8 +1,9 @@
 import { MockedResponse } from "@apollo/client/testing";
-import ProjectLeadInvitation from "src/components/ProjectLeadInvitation";
 import { GetProjectLeadInvitationsDocument, GetProjectLeadInvitationsQueryResult } from "src/__generated/graphql";
 import withAuthProvider from "../decorators/withAuthProvider";
 import withMockedProvider from "../decorators/withMockedProvider";
+import ProjectLeadInvitation from "src/components/ProjectLeadInvitation/ProjectLeadInvitation";
+import { CalloutSizes } from "src/components/ProjectLeadInvitation/ProjectLeadInvitationView";
 
 const PROJECT_ID = "project-id";
 const GITHUB_USER_ID = 123456;
@@ -35,4 +36,12 @@ export default {
 
 export const Default = {
   render: () => <ProjectLeadInvitation projectId={PROJECT_ID} />,
+};
+
+export const Medium = {
+  render: () => <ProjectLeadInvitation projectId={PROJECT_ID} size={CalloutSizes.Medium} />,
+};
+
+export const Large = {
+  render: () => <ProjectLeadInvitation projectId={PROJECT_ID} size={CalloutSizes.Large} />,
 };

@@ -32,7 +32,6 @@ import { withTooltip } from "src/components/Tooltip";
 import useApplications from "./useApplications";
 import LockFill from "src/icons/LockFill";
 import useProjectVisibility from "src/hooks/useProjectVisibility";
-import ProjectLeadInvitation from "src/components/ProjectLeadInvitation";
 import { useSuspenseQuery_experimental } from "@apollo/client";
 import { Dispatch, useEffect, useState } from "react";
 import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
@@ -46,6 +45,8 @@ import {
   toVariables,
 } from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/EditView/types";
 import useUserProfile from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/useUserProfile";
+import ProjectLeadInvitation from "src/components/ProjectLeadInvitation/ProjectLeadInvitation";
+import { CalloutSizes } from "src/components/ProjectLeadInvitation/ProjectLeadInvitationView";
 
 type OutletContext = {
   projectId: string;
@@ -120,7 +121,7 @@ export default function Overview() {
           )}
         </div>
       </Title>
-      <ProjectLeadInvitation projectId={projectId} />
+      <ProjectLeadInvitation projectId={projectId} size={CalloutSizes.Large} />
       <div className="flex flex-col gap-6 md:flex-row">
         <div className="flex grow flex-col gap-4">
           <ProjectDescriptionCard
