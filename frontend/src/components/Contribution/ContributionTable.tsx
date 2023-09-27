@@ -160,7 +160,7 @@ export default function ContributionTable({
             <Contribution contribution={contribution} />
           </Cell>
           <Cell className="justify-end gap-1" height={CellHeight.Compact}>
-            <ContributionLinked contribution={contribution} />
+            {ContributionLinked({ contribution }) ? <ContributionLinked contribution={contribution} /> : "-"}
           </Cell>
         </Line>
       );

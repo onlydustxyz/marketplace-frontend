@@ -2,10 +2,6 @@ import { GetAllContributionsQuery, GithubUser } from "src/__generated/graphql";
 import { ContributionBadge } from "src/components/Contribution/ContributionBadge";
 import { GithubContributionIconStatus, GithubContributionIconStatusType, GithubContributionType } from "src/types";
 
-function Default() {
-  return <span>-</span>;
-}
-
 export function ContributionLinked({
   contribution,
 }: {
@@ -43,7 +39,7 @@ export function ContributionLinked({
         );
       }
 
-      return <Default />;
+      return null;
     }
 
     case GithubContributionType.PullRequest: {
@@ -72,7 +68,7 @@ export function ContributionLinked({
         );
       }
 
-      return <Default />;
+      return null;
     }
 
     case GithubContributionType.CodeReview: {
@@ -94,9 +90,9 @@ export function ContributionLinked({
         );
       }
 
-      return <Default />;
+      return null;
     }
   }
 
-  return <Default />;
+  return null;
 }

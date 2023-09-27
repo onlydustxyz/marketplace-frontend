@@ -33,15 +33,17 @@ export function ContributionCard({
           <span className="text-xs leading-none">{displayRelativeDate(date)}</span>
         </div>
 
-        <div className="flex items-center gap-1">
-          <div className="flex items-center gap-1 text-spaceBlue-200">
-            <ArrowRightUpLine className="flex h-4 items-center" />
-            <span className="text-xs leading-none">{T("contributions.table.linkedTo")}</span>
-          </div>
+        {ContributionLinked({ contribution }) ? (
           <div className="flex items-center gap-1">
-            <ContributionLinked contribution={contribution} />
+            <div className="flex items-center gap-1 text-spaceBlue-200">
+              <ArrowRightUpLine className="flex h-4 items-center" />
+              <span className="text-xs leading-none">{T("contributions.table.linkedTo")}</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <ContributionLinked contribution={contribution} />
+            </div>
           </div>
-        </div>
+        ) : null}
       </div>
     </article>
   );
