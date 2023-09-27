@@ -61,8 +61,14 @@
           "many": "__count__ issues"
         },
         "codeReviews": {
-          "one": "1 code review",
-          "many": "__count__ code reviews"
+          "long": {
+            "one": "1 code review",
+            "many": "__count__ code reviews"
+          },
+          "short": {
+            "one": "1 review",
+            "many": "__count__ reviews"
+          }
         }
       }
     },

@@ -36,7 +36,7 @@ export function ToRewardDetailsTooltip() {
             {unpaidCodeReviewCount > 0 && (
               <Tag size={TagSize.Small}>
                 <CodeReviewIcon />
-                {T("contributor.table.tooltip.codeReviews", { count: unpaidCodeReviewCount })}
+                {T("contributor.table.tooltip.codeReviews.long", { count: unpaidCodeReviewCount })}
               </Tag>
             )}
           </div>

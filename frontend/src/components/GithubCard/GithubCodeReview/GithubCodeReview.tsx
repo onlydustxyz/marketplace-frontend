@@ -59,7 +59,7 @@ export default function GithubCodeReview({
       withBg={false}
     >
       {action && <GithubActionButton action={action} onClick={onClick} ignored={ignored} />}
-      <div className="flex w-full flex-col gap-3 truncate font-walsheim">
+      <div className="flex w-full flex-col gap-3 font-walsheim">
         <div className="flex text-sm font-medium text-greyscale-50">
           <GithubLink url={htmlUrl ?? ""} text={`#${number} · ${title}`} />
         </div>
@@ -89,12 +89,12 @@ function CodeReviewStatus({ codeReview }: { codeReview: GithubCodeReviewFragment
     case GithubCodeReviewStatus.Completed:
       return codeReview.outcome.toUpperCase() === GithubCodeReviewOutcome.ChangeRequested ? (
         <>
-          <CodeReviewCheckIcon className="-my-1 text-base text-github-purple" />
+          <CodeReviewCheckIcon className="-my-1 h-4 w-4 text-base text-github-purple" />
           {T("githubCodeReview.status.changeRequested", { submittedAt: displayRelativeDate(codeReview.submittedAt) })}
         </>
       ) : (
         <>
-          <CodeReviewCheckIcon className="-my-1 text-base text-github-purple" />
+          <CodeReviewCheckIcon className="-my-1 h-4 w-4 text-base text-github-purple" />
           {T("githubCodeReview.status.approved", { submittedAt: displayRelativeDate(codeReview.submittedAt) })}
         </>
       );
