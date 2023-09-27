@@ -1,12 +1,12 @@
 import type { ApolloError } from "@apollo/client";
 import { ComponentProps, PropsWithChildren, ReactNode } from "react";
 
-import { GetAllContributionsQuery, GithubUser } from "src/__generated/graphql";
+import { GetAllContributionsQuery } from "src/__generated/graphql";
 import IssueOpen from "src/assets/icons/IssueOpen";
 import { Contribution } from "src/components/Contribution/Contribution";
-import { ContributionBadge } from "src/components/Contribution/ContributionBadge";
 import { ContributionCard } from "src/components/Contribution/ContributionCard";
 import { ContributionDate } from "src/components/Contribution/ContributionDate";
+import { ContributionLinked } from "src/components/Contribution/ContributionLinked";
 import { ContributionProjectRepo } from "src/components/Contribution/ContributionProjectRepo";
 import Loader from "src/components/Loader";
 import Table from "src/components/Table";
@@ -66,79 +66,6 @@ export default function ContributionTable({
   status: GithubContributionStatus;
 }) {
   const { T } = useIntl();
-
-  function renderLinkedContributions(contribution: GetAllContributionsQuery["contributions"][number]) {
-    switch (contribution.type) {
-      case GithubContributionType.Issue: {
-        const closedByPullRequests = contribution.githubIssue?.closedByPullRequests;
-
-        if (closedByPullRequests?.length) {
-          return contribution.githubIssue?.closedByPullRequests?.map(({ githubPullRequest }) => {
-            const { id, number, status, title, author, htmlUrl, draft } = githubPullRequest ?? {};
-            return (
-              <ContributionBadge
-                key={id}
-                id={id}
-                number={number}
-                type={GithubContributionType.PullRequest}
-                status={draft ? GithubContributionIconStatus.Draft : (status as GithubContributionIconStatusType)}
-                title={title ?? ""}
-                author={author as GithubUser}
-                url={htmlUrl ?? ""}
-              />
-            );
-          });
-        }
-
-        return "-";
-      }
-      case GithubContributionType.PullRequest: {
-        const closingIssues = contribution.githubPullRequest?.closingIssues;
-
-        if (closingIssues?.length) {
-          return closingIssues.map(({ githubIssue }) => {
-            const { id, number, status, title, author, htmlUrl } = githubIssue ?? {};
-            return (
-              <ContributionBadge
-                key={id}
-                id={id}
-                number={number}
-                type={GithubContributionType.Issue}
-                status={status as GithubContributionIconStatusType}
-                title={title ?? ""}
-                url={htmlUrl ?? ""}
-                author={author as GithubUser}
-              />
-            );
-          });
-        }
-
-        return "-";
-      }
-      case GithubContributionType.CodeReview: {
-        const pr = contribution.githubCodeReview?.githubPullRequest;
-
-        if (pr) {
-          const { id, number, status, draft, author, title, htmlUrl } = pr;
-          return (
-            <ContributionBadge
-              id={id}
-              number={number}
-              type={GithubContributionType.PullRequest}
-              status={draft ? GithubContributionIconStatus.Draft : (status as GithubContributionIconStatusType)}
-              title={title ?? ""}
-              author={author as GithubUser}
-              url={htmlUrl ?? ""}
-            />
-          );
-        }
-
-        return "-";
-      }
-      default:
-        return "-";
-    }
-  }
 
   function renderMobileContent() {
     if (loading) {
@@ -232,8 +159,8 @@ export default function ContributionTable({
           <Cell height={CellHeight.Compact}>
             <Contribution contribution={contribution} />
           </Cell>
-          <Cell className="justify-end" height={CellHeight.Compact}>
-            {renderLinkedContributions(contribution)}
+          <Cell className="justify-end gap-1" height={CellHeight.Compact}>
+            <ContributionLinked contribution={contribution} />
           </Cell>
         </Line>
       );
