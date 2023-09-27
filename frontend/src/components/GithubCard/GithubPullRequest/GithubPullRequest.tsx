@@ -71,13 +71,13 @@ export default function GithubPullRequest({
             <GitRepositoryLine />
             {repoName}
           </div>
-          {commitsCount ? (
+          {userCommits && commitsCount ? (
             <div id={pullRequest?.id} className="flex flex-row items-center gap-1 ">
               <GitCommitLine />
               {userCommits + "/" + commitsCount}
 
               <Tooltip anchorId={pullRequest?.id}>
-                <CommitsTooltip pullRequest={pullRequest} commitsCount={userCommits + "/" + commitsCount} />
+                <CommitsTooltip pullRequest={pullRequest} userCommits={userCommits} commitsCount={commitsCount} />
               </Tooltip>
             </div>
           ) : null}

@@ -5,12 +5,17 @@ import { useIntl } from "src/hooks/useIntl";
 import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
 import GitMergeLine from "src/icons/GitMergeLine";
 
-export function ToRewardDetailsTooltip() {
+type ToRewardDetailsTooltipProps = {
+  positionStrategy?: "absolute" | "fixed";
+};
+
+export function ToRewardDetailsTooltip({ positionStrategy }: ToRewardDetailsTooltipProps) {
   const { T } = useIntl();
 
   return (
     <ReactTooltip
       id="to-reward-details"
+      positionStrategy={positionStrategy}
       style={{
         backgroundColor: "#27243A",
         opacity: 1,
@@ -35,7 +40,7 @@ export function ToRewardDetailsTooltip() {
             )}
             {unpaidCodeReviewCount > 0 && (
               <Tag size={TagSize.Small}>
-                <CodeReviewIcon />
+                <CodeReviewIcon className="h-3 w-3" />
                 {T("contributor.table.tooltip.codeReviews.long", { count: unpaidCodeReviewCount })}
               </Tag>
             )}

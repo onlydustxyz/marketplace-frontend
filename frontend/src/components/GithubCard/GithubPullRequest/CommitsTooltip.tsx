@@ -4,10 +4,11 @@ import { GithubPullRequestWithCommitsFragment } from "src/__generated/graphql";
 
 type CommitsTooltipProps = {
   pullRequest: GithubPullRequestWithCommitsFragment;
-  commitsCount: string;
+  userCommits: number;
+  commitsCount: number;
 };
 
-export function CommitsTooltip({ pullRequest, commitsCount }: CommitsTooltipProps) {
+export function CommitsTooltip({ pullRequest, userCommits, commitsCount }: CommitsTooltipProps) {
   const { T } = useIntl();
 
   return (
@@ -31,7 +32,8 @@ export function CommitsTooltip({ pullRequest, commitsCount }: CommitsTooltipProp
       <span className="text-sm">
         {T("githubCodeReview.tooltip.commits", {
           user: pullRequest.contributorDetails[0].author?.login,
-          commits: commitsCount,
+          commits: userCommits + "/" + commitsCount,
+          count: commitsCount,
         })}
       </span>
     </div>

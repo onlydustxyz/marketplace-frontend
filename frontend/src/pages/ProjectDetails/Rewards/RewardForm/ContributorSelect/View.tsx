@@ -259,8 +259,7 @@ function VirtualizedContributorSubList({ lines }: ContributorSubListProps) {
                       unpaidCodeReviewCount: contributor.unpaidCompletedCodeReviewsCount,
                     })}
                   />
-
-                  <ToRewardDetailsTooltip />
+                  <ToRewardDetailsTooltip positionStrategy="fixed" />
                 </>
               )}
             </Combobox.Option>
