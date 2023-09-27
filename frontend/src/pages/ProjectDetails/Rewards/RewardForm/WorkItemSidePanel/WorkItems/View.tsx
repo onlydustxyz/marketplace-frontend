@@ -118,7 +118,9 @@ export default function View({
             </div>
           )}
         </div>
-        {addOtherIssueEnabled && <OtherIssueInput projectId={projectId} type={type} addWorkItem={addWorkItem} />}
+        {addOtherIssueEnabled && type !== WorkItemType.CodeReview && (
+          <OtherIssueInput projectId={projectId} type={type} addWorkItem={addWorkItem} />
+        )}
         {searchEnabled && (
           <FormInput
             name={`search-${tabName}`}

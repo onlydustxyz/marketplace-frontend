@@ -25,6 +25,7 @@ import {
   issueToWorkItem,
   pullRequestToWorkItem,
 } from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/WorkItems/WorkItems";
+import ErrorWarningLine from "src/icons/ErrorWarningLine";
 
 type Props = {
   projectId: string;
@@ -84,7 +85,7 @@ export default function OtherIssueInput({ type, addWorkItem }: Props) {
   const { watch, setError, resetField } = useFormContext();
   const { errors } = useFormState({ name: inputName });
   const otherIssueLink = watch(inputName);
-  const otherIssueLinkError = errors[inputName];
+  const error = errors[inputName];
 
   const { repoOwner, repoName, issueNumber } = useMemo(
     () => (type === WorkItemType.Issue ? parseIssueLink(otherIssueLink) : parsePullRequestLink(otherIssueLink)),
@@ -113,7 +114,9 @@ export default function OtherIssueInput({ type, addWorkItem }: Props) {
       <div className="font-walsheim text-base font-medium text-greyscale-50">
         {T(`reward.form.contributions.${tKey}.addOther.label`)}
       </div>
+
       <Input
+        showValidationErrors={false}
         name={inputName}
         placeholder={T(`reward.form.contributions.${tKey}.addOther.placeholder`)}
         withMargin={false}
@@ -130,8 +133,8 @@ export default function OtherIssueInput({ type, addWorkItem }: Props) {
             <Link
               className={classNames("text-xl", {
                 "text-spaceBlue-200": !otherIssueLink,
-                "text-greyscale-50": otherIssueLink && !otherIssueLinkError,
-                "text-orange-500": otherIssueLinkError,
+                "text-greyscale-50": otherIssueLink && !error,
+                "text-orange-500": error,
               })}
             />
           </div>
@@ -139,15 +142,16 @@ export default function OtherIssueInput({ type, addWorkItem }: Props) {
         inputProps={{ autoFocus: true }}
       >
         <div onClick={validateOtherIssue} data-testid={`add-other-${tKey}-btn`}>
-          <Button
-            size={ButtonSize.LgLowHeight}
-            type={ButtonType.Secondary}
-            disabled={!otherIssueLink || !!otherIssueLinkError}
-          >
+          <Button size={ButtonSize.LgLowHeight} type={ButtonType.Secondary} disabled={!otherIssueLink || !!error}>
             {T("reward.form.contributions.add")}
           </Button>
         </div>
       </Input>
+      {error && (
+        <div className="text-md text-orange-500">
+          <ErrorWarningLine /> {error?.message?.toString()}
+        </div>
+      )}
     </div>
   );
 }

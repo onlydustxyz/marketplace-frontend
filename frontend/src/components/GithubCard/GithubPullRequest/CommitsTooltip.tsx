@@ -15,18 +15,26 @@ export function CommitsTooltip({ pullRequest, userCommits, commitsCount }: Commi
     <div className="flex flex-col">
       <span className="text-xs text-greyscale-200">
         {T("reward.form.contributions.pullRequests.tooltip.createdBy")}
-        <div className="inline-flex text-xs text-spacePurple-400">
-          <span className="px-1">{pullRequest.author?.login}</span>
 
-          {pullRequest.author?.avatarUrl ? (
-            <RoundedImage
-              alt={pullRequest.author.id.toString()}
-              rounding={Rounding.Circle}
-              size={ImageSize.Xxs}
-              src={pullRequest.author?.avatarUrl}
-            />
-          ) : null}
-        </div>
+        {pullRequest.htmlUrl ? (
+          <a
+            className="inline-flex text-xs text-spacePurple-400 hover:text-spacePurple-200"
+            href={pullRequest?.author?.htmlUrl ?? ""}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <span className="px-1">{pullRequest.author?.login}</span>
+
+            {pullRequest.author?.avatarUrl ? (
+              <RoundedImage
+                alt={pullRequest.author.id.toString()}
+                rounding={Rounding.Circle}
+                size={ImageSize.Xxs}
+                src={pullRequest.author?.avatarUrl}
+              />
+            ) : null}
+          </a>
+        ) : null}
       </span>
 
       <span className="text-sm">

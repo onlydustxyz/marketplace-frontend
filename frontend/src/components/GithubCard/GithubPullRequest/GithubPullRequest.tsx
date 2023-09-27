@@ -76,7 +76,7 @@ export default function GithubPullRequest({
               <GitCommitLine />
               {userCommits + "/" + commitsCount}
 
-              <Tooltip anchorId={pullRequest?.id}>
+              <Tooltip anchorId={pullRequest?.id} clickable>
                 <CommitsTooltip pullRequest={pullRequest} userCommits={userCommits} commitsCount={commitsCount} />
               </Tooltip>
             </div>
