@@ -2,6 +2,7 @@ import type { ApolloError } from "@apollo/client";
 import classNames from "classnames";
 import { ComponentProps, PropsWithChildren, ReactNode, useState } from "react";
 
+import atomLogo from "assets/img/atom.png";
 import { GetAllContributionsQuery } from "src/__generated/graphql";
 import IssueOpen from "src/assets/icons/IssueOpen";
 import { Contribution } from "src/components/Contribution/Contribution";
@@ -9,7 +10,6 @@ import { ContributionCard } from "src/components/Contribution/ContributionCard";
 import { ContributionDate } from "src/components/Contribution/ContributionDate";
 import { ContributionLinked } from "src/components/Contribution/ContributionLinked";
 import { ContributionProjectRepo } from "src/components/Contribution/ContributionProjectRepo";
-import Loader from "src/components/Loader";
 import Table from "src/components/Table";
 import Cell, { CellHeight } from "src/components/Table/Cell";
 import HeaderCell, { HeaderCellWidth } from "src/components/Table/HeaderCell";
@@ -41,6 +41,16 @@ function TableText({ children }: PropsWithChildren) {
         </div>
       </td>
     </tr>
+  );
+}
+
+function Loader() {
+  const { T } = useIntl();
+
+  return (
+    <div className="flex justify-center py-24">
+      <img src={atomLogo} alt={T("state.loading")} className="animate-spin-medium" />
+    </div>
   );
 }
 
@@ -139,9 +149,7 @@ export default function ContributionTable({
       return (
         <tr>
           <td colSpan={4} className="pt-6">
-            <div className="md:py-24">
-              <Loader />
-            </div>
+            <Loader />
           </td>
         </tr>
       );
