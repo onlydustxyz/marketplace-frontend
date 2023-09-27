@@ -27,10 +27,12 @@ export function Contribution({ contribution, isMobile = false }: Props) {
   const htmlUrl =
     githubIssue?.htmlUrl ?? githubPullRequest?.htmlUrl ?? githubCodeReview?.githubPullRequest?.htmlUrl ?? "";
   const number = githubIssue?.number ?? githubPullRequest?.number ?? githubCodeReview?.githubPullRequest?.number ?? "";
-  const status = (githubIssue?.status ??
-    githubPullRequest?.status ??
-    githubCodeReview?.githubPullRequest?.status ??
-    "") as GithubContributionIconStatusType;
+  const status = githubPullRequest?.draft
+    ? GithubContributionIconStatus.Draft
+    : ((githubIssue?.status ??
+        githubPullRequest?.status ??
+        githubCodeReview?.githubPullRequest?.status ??
+        "") as GithubContributionIconStatusType);
   const author = (githubIssue?.author ??
     githubPullRequest?.author ??
     githubCodeReview?.githubPullRequest?.author ??
@@ -67,8 +69,9 @@ export function Contribution({ contribution, isMobile = false }: Props) {
 
   return (
     <div
-      className={classNames("inline-flex items-center gap-2", {
-        "flex-col": isMobile,
+      className={classNames("inline-flex gap-2", {
+        "flex-col items-start": isMobile,
+        "items-center": !isMobile,
       })}
     >
       <div className="inline-flex items-center gap-1">
