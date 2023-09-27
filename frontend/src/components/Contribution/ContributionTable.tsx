@@ -169,7 +169,7 @@ export default function ContributionTable({
     }
 
     return data?.contributions.map(contribution => {
-      return <ContributionCard key={contribution.id} contribution={contribution} />;
+      return <ContributionCard key={contribution.id} contribution={contribution} status={status} />;
     });
   }
 
