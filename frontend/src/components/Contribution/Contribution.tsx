@@ -88,12 +88,14 @@ export function Contribution({ contribution, isMobile = false }: Props) {
           href={htmlUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="block truncate font-walsheim text-greyscale-50 hover:underline"
+          className={classNames("block truncate font-walsheim text-greyscale-50 hover:underline", {
+            "text-sm": isMobile,
+          })}
         >
           {title}
         </a>
       </div>
-      <div className="inline-flex items-center gap-1">
+      <div className="inline-flex items-center gap-1 empty:hidden">
         {rewardItems?.length ? <ContributionReward id={id ?? ""} rewards={rewardItems} /> : null}
         {renderReview()}
       </div>
