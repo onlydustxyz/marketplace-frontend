@@ -31,6 +31,11 @@ const defaultProps: ComponentProps<typeof ContributionBadge> = {
   type: GithubContributionType.PullRequest,
   title: "Contribution Badge",
   url: "",
+  author: {
+    avatarUrl: "#",
+    login: "test-account",
+    id: 123,
+  },
 };
 
 export const Default = {

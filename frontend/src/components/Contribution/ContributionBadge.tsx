@@ -26,7 +26,7 @@ export function ContributionBadge({
   status: GithubContributionIconStatusType;
   title: string;
   description?: string;
-  author: GithubUser;
+  author: Pick<GithubUser, "id" | "login" | "avatarUrl">;
   url: string;
 }) {
   const { T } = useIntl();
