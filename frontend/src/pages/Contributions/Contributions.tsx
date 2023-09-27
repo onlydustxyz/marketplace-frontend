@@ -222,10 +222,10 @@ export default function Contributions() {
               <header className="sticky top-0 z-10 border-b border-greyscale-50/20 bg-whiteFakeOpacity-8 px-4 pb-4 pt-7 shadow-2xl backdrop-blur-3xl md:px-8 md:pb-0 md:pt-8">
                 <Tabs tabs={tabItems} variant="blue" mobileTitle={T("navbar.contributions")} />
               </header>
-              <div className="flex flex-col gap-4 p-5 sm:py-7 md:px-8 md:py-6">
+              <div className="flex flex-col gap-4 px-2 py-3 md:px-4 md:py-6 lg:px-8">
                 {tableItems.map(({ show, ...restProps }) =>
                   show ? (
-                    <ContributionTable key={restProps.id} {...restProps} showHeader={isActiveTab(AllTabs.All)} />
+                    <ContributionTable key={restProps.id} {...restProps} showAll={isActiveTab(AllTabs.All)} />
                   ) : null
                 )}
               </div>

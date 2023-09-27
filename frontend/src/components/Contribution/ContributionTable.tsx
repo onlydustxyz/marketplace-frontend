@@ -1,4 +1,5 @@
 import type { ApolloError } from "@apollo/client";
+import classNames from "classnames";
 import { ComponentProps, PropsWithChildren, ReactNode } from "react";
 
 import { GetAllContributionsQuery } from "src/__generated/graphql";
@@ -43,27 +44,27 @@ function TableText({ children }: PropsWithChildren) {
 }
 
 export default function ContributionTable({
-  id,
-  title,
-  description,
-  icon,
-  onHeaderClick,
   data,
-  loading,
+  description,
   error,
-  showHeader = true,
+  icon,
+  id,
+  loading,
+  onHeaderClick,
+  showAll = true,
   status,
+  title,
 }: {
-  id: string;
-  title: string;
-  description: string;
-  icon(className: string): ReactNode;
-  onHeaderClick: () => void;
   data?: GetAllContributionsQuery;
-  loading: boolean;
+  description: string;
   error?: ApolloError;
-  showHeader?: boolean;
+  icon(className: string): ReactNode;
+  id: string;
+  loading: boolean;
+  onHeaderClick: () => void;
+  showAll?: boolean;
   status: GithubContributionStatus;
+  title: string;
 }) {
   const { T } = useIntl();
 
@@ -96,7 +97,16 @@ export default function ContributionTable({
     }
 
     return data?.contributions.map(contribution => {
-      return <ContributionCard key={contribution.id} contribution={contribution} status={status} />;
+      return (
+        <div
+          key={contribution.id}
+          className={classNames("rounded-xl", {
+            "bg-whiteFakeOpacity-5/95 lg:bg-none": !showAll,
+          })}
+        >
+          <ContributionCard contribution={contribution} status={status} />
+        </div>
+      );
     });
   }
 
@@ -168,8 +178,13 @@ export default function ContributionTable({
   }
 
   return (
-    <section className="overflow-hidden rounded-2xl border border-greyscale-50/8 bg-whiteFakeOpacity-5/95 shadow-2xl">
-      {showHeader ? (
+    <section
+      className={classNames("overflow-hidden rounded-2xl border-greyscale-50/8", {
+        "border bg-whiteFakeOpacity-5/95 shadow-2xl": showAll,
+        "lg:border lg:bg-whiteFakeOpacity-5/95 lg:shadow-2xl": !showAll,
+      })}
+    >
+      {showAll ? (
         <header
           className="flex cursor-pointer items-start gap-3 border-b border-greyscale-50/8 bg-white/2 px-6 py-4"
           onClick={onHeaderClick}
