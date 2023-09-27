@@ -2,7 +2,6 @@ import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 import { generatePath, Link } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import classNames from "classnames";
-import Button, { ButtonSize } from "src/components/Button";
 import Card, { CardBorder } from "src/components/Card";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import { useIntl } from "src/hooks/useIntl";
@@ -20,6 +19,7 @@ import RecordCircleLine from "src/icons/RecordCircleLine";
 import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
 import config from "src/config";
+import ProjectLeadInvitationView from "src/components/ProjectLeadInvitation/ProjectLeadInvitationView";
 
 export type Project = ArrayElement<GetProjectsQuery["projects"]>;
 
@@ -52,18 +52,12 @@ export default function ProjectCard({ project, className }: ProjectCardProps) {
   const topSponsors = sponsors?.map(projectSponsor => projectSponsor.sponsor).slice(0, 3) || [];
   const languages = getMostUsedLanguages(getDeduplicatedAggregatedLanguages(githubRepos.map(r => r.repo)));
   const contributorsCount = contributorsAggregate.aggregate?.count || 0;
+  const hasPendingInvitation = pendingInvitations?.length > 0;
 
   const card = (
     <Card
-      className={classNames(
-        "relative hover:bg-right",
-        {
-          "bg-noise-light": pendingInvitations?.length === 0,
-          "xl:bg-orange-900 xl:hover:bg-noise-light ": pendingInvitations?.length > 0,
-        },
-        className
-      )}
-      border={CardBorder.Medium}
+      className={classNames("relative bg-noise-light hover:bg-right", className)}
+      border={hasPendingInvitation ? CardBorder.MultiColor : CardBorder.Medium}
       dataTestId="project-card"
     >
       {hiring && (
@@ -142,12 +136,7 @@ export default function ProjectCard({ project, className }: ProjectCardProps) {
             </div>
           </div>
         </div>
-        {pendingInvitations?.length > 0 && (
-          <div className="flex flex-col flex-wrap items-center justify-between gap-2 rounded-xl bg-orange-800 px-4 py-4 text-center font-medium sm:flex-row xl:px-6 xl:py-4">
-            <div className="text-sm text-white md:text-base">{T("project.projectLeadInvitation.prompt")}</div>
-            <Button size={ButtonSize.Sm}>{T("project.projectLeadInvitation.view")}</Button>
-          </div>
-        )}
+        {hasPendingInvitation && <ProjectLeadInvitationView btnLabel={T("project.projectLeadInvitation.view")} />}
       </div>
     </Card>
   );

@@ -74,4 +74,20 @@
   .rounded-full[class*=" pseudo-outline"]::before {
     border-radius: 9999px;
   }
+  .border-multicolored::before {
+    position: absolute;
+    border: "none";
+    content: "";
+    inset: 0;
+    padding: 1px;
+    border: unset;
+    background: linear-gradient(to right, #6808ad, #b612a5, #dd6a37, #3107b6);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+
+  .bg-rainbow {
+    background: linear-gradient(90deg, #6808ad 25%, #dd6a37 50% 52%, #3107b6 75%);
+  }
 }
