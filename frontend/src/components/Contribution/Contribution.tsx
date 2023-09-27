@@ -65,12 +65,12 @@ export function Contribution({ contribution, isMobile = false }: Props) {
 
   return (
     <div
-      className={classNames("inline-flex gap-2", {
+      className={classNames("flex w-full gap-2", {
         "flex-col items-start": isMobile,
         "items-center": !isMobile,
       })}
     >
-      <div className="inline-flex items-center gap-1">
+      <div className="flex min-w-0 items-center gap-1">
         <ContributionBadge
           id={id ?? ""}
           number={number}
@@ -84,7 +84,7 @@ export function Contribution({ contribution, isMobile = false }: Props) {
           href={htmlUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className={classNames("block truncate font-walsheim text-greyscale-50 hover:underline", {
+          className={classNames("truncate hover:underline", {
             "text-sm": isMobile,
           })}
         >

@@ -33,7 +33,7 @@ export function ContributionReview({ status }: { status: GithubContributionRevie
     <ContributionAttribute>
       <div className="flex items-center gap-1 font-walsheim text-spaceBlue-100">
         <span>{dict[status].icon}</span>
-        <span className="text-sm leading-none">{dict[status].text}</span>
+        <span className="whitespace-nowrap text-sm leading-none">{dict[status].text}</span>
       </div>
     </ContributionAttribute>
   );
