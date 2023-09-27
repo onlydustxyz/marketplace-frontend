@@ -1,16 +1,14 @@
 import type { ApolloError } from "@apollo/client";
-import { PropsWithChildren, ReactNode } from "react";
-import { Link, generatePath } from "react-router-dom";
+import { ComponentProps, PropsWithChildren, ReactNode } from "react";
 
-import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
-import { RoutePaths } from "src/App";
 import { GetAllContributionsQuery, GithubUser } from "src/__generated/graphql";
 import IssueOpen from "src/assets/icons/IssueOpen";
 import { Contribution } from "src/components/Contribution/Contribution";
 import { ContributionBadge } from "src/components/Contribution/ContributionBadge";
+import { ContributionCard } from "src/components/Contribution/ContributionCard";
 import { ContributionDate } from "src/components/Contribution/ContributionDate";
+import { ContributionProjectRepo } from "src/components/Contribution/ContributionProjectRepo";
 import Loader from "src/components/Loader";
-import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import Table from "src/components/Table";
 import Cell, { CellHeight } from "src/components/Table/Cell";
 import HeaderCell, { HeaderCellWidth } from "src/components/Table/HeaderCell";
@@ -22,19 +20,23 @@ import StackLine from "src/icons/StackLine";
 import TimeLine from "src/icons/TimeLine";
 import SortingArrow from "src/pages/ProjectDetails/Contributors/ContributorsTable/SortingArrow";
 import {
-  GithubCodeReviewOutcome,
   GithubContributionIconStatus,
   GithubContributionIconStatusType,
-  GithubContributionReviewStatus,
   GithubContributionStatus,
   GithubContributionType,
 } from "src/types";
+
+function Message({ children }: PropsWithChildren) {
+  return <p className="whitespace-pre-line text-center font-walsheim text-sm text-greyscale-50">{children}</p>;
+}
 
 function TableText({ children }: PropsWithChildren) {
   return (
     <tr>
       <td colSpan={4}>
-        <p className="whitespace-pre-line pt-6 text-center font-walsheim text-sm text-greyscale-50">{children}</p>
+        <div className="pt-6">
+          <Message>{children}</Message>
+        </div>
       </td>
     </tr>
   );
@@ -64,82 +66,6 @@ export default function ContributionTable({
   status: GithubContributionStatus;
 }) {
   const { T } = useIntl();
-
-  function renderContribution(contribution: GetAllContributionsQuery["contributions"][number]) {
-    const { githubIssue, githubPullRequest, githubCodeReview } = contribution;
-
-    switch (contribution.type) {
-      case GithubContributionType.Issue:
-        return githubIssue ? (
-          <Contribution
-            id={githubIssue.id}
-            title={githubIssue.title ?? ""}
-            url={githubIssue.htmlUrl ?? ""}
-            number={githubIssue.number}
-            type={GithubContributionType.Issue}
-            status={githubIssue.status as GithubContributionIconStatusType}
-            rewards={contribution?.rewardItems ?? []}
-            author={githubIssue.author as GithubUser}
-          />
-        ) : null;
-      case GithubContributionType.PullRequest: {
-        let review: GithubContributionReviewStatus;
-        const codeReviews = githubPullRequest?.codeReviews;
-
-        if (codeReviews?.length) {
-          switch (codeReviews[0].outcome) {
-            case null:
-              review = GithubContributionReviewStatus.UnderReview;
-              break;
-            case GithubCodeReviewOutcome.ChangesRequested:
-              review = GithubContributionReviewStatus.ChangesRequested;
-              break;
-            case GithubCodeReviewOutcome.Approved:
-              review = GithubContributionReviewStatus.Approved;
-              break;
-            default:
-              review = GithubContributionReviewStatus.PendingReviewer;
-              break;
-          }
-        } else {
-          review = GithubContributionReviewStatus.PendingReviewer;
-        }
-
-        return githubPullRequest ? (
-          <Contribution
-            id={githubPullRequest.id}
-            title={githubPullRequest.title ?? ""}
-            url={githubPullRequest.htmlUrl ?? ""}
-            number={githubPullRequest.number}
-            type={GithubContributionType.PullRequest}
-            status={
-              githubPullRequest.draft
-                ? GithubContributionIconStatus.Draft
-                : (githubPullRequest.status as GithubContributionIconStatusType)
-            }
-            rewards={contribution?.rewardItems ?? []}
-            review={review}
-            author={githubPullRequest.author as GithubUser}
-          />
-        ) : null;
-      }
-      case GithubContributionType.CodeReview:
-        return githubCodeReview ? (
-          <Contribution
-            id={githubCodeReview.githubPullRequest?.id}
-            title={githubCodeReview.githubPullRequest?.title ?? ""}
-            url={githubCodeReview.githubPullRequest?.htmlUrl ?? ""}
-            number={githubCodeReview.githubPullRequest?.number}
-            type={GithubContributionType.CodeReview}
-            status={githubCodeReview.githubPullRequest?.status as GithubContributionIconStatusType}
-            rewards={contribution?.rewardItems ?? []}
-            author={githubCodeReview.reviewer as GithubUser}
-          />
-        ) : null;
-      default:
-        return null;
-    }
-  }
 
   function renderLinkedContributions(contribution: GetAllContributionsQuery["contributions"][number]) {
     switch (contribution.type) {
@@ -214,7 +140,40 @@ export default function ContributionTable({
     }
   }
 
-  function renderContent() {
+  function renderMobileContent() {
+    if (loading) {
+      return <Loader />;
+    }
+
+    if (error) {
+      return (
+        <div className="py-6">
+          <Message>{T("contributions.table.error")}</Message>
+        </div>
+      );
+    }
+
+    if (data?.contributions?.length === 0) {
+      return (
+        <div className="py-6">
+          <Message>
+            {T("contributions.table.empty", {
+              time: Intl.DateTimeFormat("en-US", {
+                hour: "numeric",
+                minute: "numeric",
+              }).format(new Date(data.githubRepos[0].indexedAt)),
+            })}
+          </Message>
+        </div>
+      );
+    }
+
+    return data?.contributions.map(contribution => {
+      return <ContributionCard key={contribution.id} contribution={contribution} />;
+    });
+  }
+
+  function renderDesktopContent() {
     if (loading) {
       return (
         <tr>
@@ -264,37 +223,15 @@ export default function ContributionTable({
               date={new Date(lineDate)}
             />
           </Cell>
-          <Cell height={CellHeight.Compact} className="flex flex-row gap-3">
-            <div className="flex items-center gap-3">
-              <RoundedImage
-                src={contribution.project?.logoUrl ?? onlyDustLogo}
-                alt={contribution.project?.name ?? ""}
-                rounding={Rounding.Corners}
-                size={ImageSize.Sm}
-              />
-
-              <p className="text-sm">
-                <Link
-                  to={generatePath(RoutePaths.ProjectDetails, {
-                    projectKey: contribution.project?.key ?? "",
-                  })}
-                  className="hover:underline"
-                >
-                  {contribution.project?.name}
-                </Link>
-                <span className="text-spaceBlue-300">/</span>{" "}
-                <a
-                  href={contribution.githubRepo?.htmlUrl ?? ""}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:underline"
-                >
-                  {contribution.githubRepo?.name}
-                </a>
-              </p>
-            </div>
+          <Cell height={CellHeight.Compact}>
+            <ContributionProjectRepo
+              project={contribution.project as ComponentProps<typeof ContributionProjectRepo>["project"]}
+              repo={contribution.githubRepo as ComponentProps<typeof ContributionProjectRepo>["repo"]}
+            />
           </Cell>
-          <Cell height={CellHeight.Compact}>{renderContribution(contribution)}</Cell>
+          <Cell height={CellHeight.Compact}>
+            <Contribution contribution={contribution} />
+          </Cell>
           <Cell className="justify-end" height={CellHeight.Compact}>
             {renderLinkedContributions(contribution)}
           </Cell>
@@ -317,7 +254,9 @@ export default function ContributionTable({
           </div>
         </header>
       ) : null}
-      <div className="px-4 py-6">
+      <div className="flex flex-col gap-2 p-3 lg:hidden">{renderMobileContent()}</div>
+
+      <div className="hidden px-4 py-6 lg:block">
         <Table
           id={id}
           headers={
@@ -370,7 +309,7 @@ export default function ContributionTable({
             </HeaderLine>
           }
         >
-          {renderContent()}
+          {renderDesktopContent()}
         </Table>
       </div>
     </section>
