@@ -39,11 +39,7 @@ export function Contribution({ contribution, isMobile = false }: Props) {
     "") as GithubUser;
 
   function renderReview() {
-    if (
-      type === GithubContributionType.PullRequest &&
-      githubPullRequest &&
-      status === GithubContributionIconStatus.Open
-    ) {
+    if (githubPullRequest && status === GithubContributionIconStatus.Open) {
       let review = GithubContributionReviewStatus.PendingReviewer;
       const {
         codeReviews: [codeReview],
