@@ -15,6 +15,7 @@ import Cell, { CellHeight } from "src/components/Table/Cell";
 import HeaderCell, { HeaderCellWidth } from "src/components/Table/HeaderCell";
 import HeaderLine from "src/components/Table/HeaderLine";
 import Line from "src/components/Table/Line";
+import { viewportConfig } from "src/config";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import Folder3Line from "src/icons/Folder3Line";
@@ -27,6 +28,7 @@ import {
   GithubContributionStatus,
   GithubContributionType,
 } from "src/types";
+import { useMediaQuery } from "usehooks-ts";
 
 function Message({ children }: PropsWithChildren) {
   return <p className="whitespace-pre-line text-center font-walsheim text-sm text-greyscale-50">{children}</p>;
@@ -79,6 +81,9 @@ export default function ContributionTable({
 }) {
   const { T } = useIntl();
   const [showAll, setShowAll] = useState(false);
+
+  // Used for performance optimization, avoid rendering large invisible DOM
+  const isLg = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.lg}px)`);
 
   function renderMobileContent() {
     if (loading) {
@@ -228,7 +233,7 @@ export default function ContributionTable({
           </div>
         </header>
       ) : null}
-      <div className="p-3 lg:hidden">{renderMobileContent()}</div>
+      <div className="p-3 lg:hidden">{!isLg ? renderMobileContent() : null}</div>
 
       <div className="hidden px-4 py-6 lg:block">
         <Table
@@ -283,7 +288,7 @@ export default function ContributionTable({
             </HeaderLine>
           }
         >
-          {renderDesktopContent()}
+          {isLg ? renderDesktopContent() : null}
         </Table>
       </div>
     </section>
