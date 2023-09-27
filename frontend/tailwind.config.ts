@@ -96,12 +96,27 @@ const config: Config = {
       },
       animation: {
         "spin-invert-slow": "spin-invert 4s linear infinite",
-        "spin-medium": "spin 2s linear infinite",
+        "spin-medium": "spin 2s ease-in-out infinite",
+        wave: "wave 20s ease infinite",
       },
       keyframes: {
         "spin-invert": {
           from: { transform: "rotate(0.0deg)" },
           to: { transform: "rotate(-360.0deg)" },
+        },
+        wave: {
+          "0%": {
+            "background-size": "100%",
+            "background-position": "0% 50%",
+          },
+          "50%": {
+            "background-size": "300%",
+            "background-position": "100% 50%",
+          },
+          "100%": {
+            "background-size": "100%",
+            "background-position": "0% 50%",
+          },
         },
       },
       backgroundImage: {
