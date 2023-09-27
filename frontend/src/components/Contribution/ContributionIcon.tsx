@@ -12,13 +12,22 @@ import { GithubContributionIconStatus, GithubContributionIconStatusType, GithubC
 
 export const variants = {
   status: {
-    [GithubContributionIconStatus.Open]: "text-github-green-light border-github-green",
-    [GithubContributionIconStatus.Pending]: "text-github-green-light border-github-green",
+    // Pull request
     [GithubContributionIconStatus.Closed]: "text-github-red-light border-github-red",
-    [GithubContributionIconStatus.Cancelled]: "text-github-red-light border-github-red",
     [GithubContributionIconStatus.Merged]: "text-github-purple-light border-github-purple",
-    [GithubContributionIconStatus.Completed]: "text-github-purple-light border-github-purple",
     [GithubContributionIconStatus.Draft]: "text-github-grey-light border-github-grey",
+
+    // Pull request & Issue
+    [GithubContributionIconStatus.Open]: "text-github-green-light border-github-green",
+
+    // Issue
+    [GithubContributionIconStatus.Cancelled]: "text-github-grey-light border-github-grey",
+
+    // Issue & Code review
+    [GithubContributionIconStatus.Completed]: "text-github-purple-light border-github-purple",
+
+    // Code review
+    [GithubContributionIconStatus.Pending]: "text-github-green-light border-github-green",
   },
 };
 
