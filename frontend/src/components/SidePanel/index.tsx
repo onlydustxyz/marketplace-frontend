@@ -83,7 +83,8 @@ export default function SidePanel({
               },
               "fixed w-full bg-greyscale-900 blur-0"
             )}
-            style={{ zIndex: 10 + panelIndex }}
+            // z-index needs to start at 50 to show above tooltips on the page behind
+            style={{ zIndex: 50 + panelIndex }}
           >
             <div onClick={handleClick} className="h-full overflow-y-auto">
               {hasCloseButton && (

@@ -18316,9 +18316,11 @@ export type GithubUserIdFragment = { __typename?: 'GithubUsers', id: any };
 
 export type GithubUserFragment = { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null };
 
-export type ContributionGithubPullRequestFragment = { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, author: { __typename?: 'GithubUsers', avatarUrl: string, htmlUrl: string, login: string } | null };
+export type ContributionGithubPullRequestFragment = { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, author: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null };
 
 export type ContributionGithubIssueFragment = { __typename?: 'GithubIssues', commentsCount: any | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null };
+
+export type ContributionGithubCodeReviewFragment = { __typename?: 'GithubPullRequestReviews', id: string | null, outcome: any | null, status: string | null, reviewer: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null };
 
 export type PaymentRequestIdFragment = { __typename?: 'PaymentRequests', id: any | null };
 
@@ -18480,7 +18482,7 @@ export type GetAllContributionsQueryVariables = Exact<{
 }>;
 
 
-export type GetAllContributionsQuery = { __typename?: 'query_root', contributions: Array<{ __typename?: 'Contributions', closedAt: any | null, createdAt: any | null, id: string | null, status: any | null, type: string | null, githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, closingIssues: Array<{ __typename?: 'ApiClosingIssues', githubIssue: { __typename?: 'GithubIssues', commentsCount: any | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null } | null }>, codeReviews: Array<{ __typename?: 'GithubPullRequestReviews', outcome: any | null, id: string | null }>, author: { __typename?: 'GithubUsers', avatarUrl: string, htmlUrl: string, login: string } | null } | null, githubIssue: { __typename?: 'GithubIssues', commentsCount: any | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, closedByPullRequests: Array<{ __typename?: 'ApiClosedByPullRequests', githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, author: { __typename?: 'GithubUsers', avatarUrl: string, htmlUrl: string, login: string } | null } | null }> } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', id: string | null, status: string | null, outcome: any | null, githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, author: { __typename?: 'GithubUsers', avatarUrl: string, htmlUrl: string, login: string } | null } | null } | null, githubRepo: { __typename?: 'GithubRepos', htmlUrl: string | null, name: string | null, id: any | null } | null, project: { __typename?: 'Projects', name: string | null, logoUrl: string | null, id: any | null, key: string | null } | null, rewardItems: Array<{ __typename?: 'WorkItems', paymentId: any | null }> }>, githubRepos: Array<{ __typename?: 'GithubRepos', indexedAt: any | null }> };
+export type GetAllContributionsQuery = { __typename?: 'query_root', contributions: Array<{ __typename?: 'Contributions', closedAt: any | null, createdAt: any | null, id: string | null, status: any | null, type: string | null, githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, closingIssues: Array<{ __typename?: 'ApiClosingIssues', githubIssue: { __typename?: 'GithubIssues', commentsCount: any | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null } | null }>, codeReviews: Array<{ __typename?: 'GithubPullRequestReviews', id: string | null, outcome: any | null, status: string | null, reviewer: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null }>, author: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null } | null, githubIssue: { __typename?: 'GithubIssues', commentsCount: any | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, closedByPullRequests: Array<{ __typename?: 'ApiClosedByPullRequests', githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, author: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null } | null }> } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', id: string | null, outcome: any | null, status: string | null, githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, author: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null } | null, reviewer: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null } | null, githubRepo: { __typename?: 'GithubRepos', htmlUrl: string | null, name: string | null, id: any | null } | null, project: { __typename?: 'Projects', name: string | null, logoUrl: string | null, id: any | null, key: string | null } | null, rewardItems: Array<{ __typename?: 'WorkItems', paymentId: any | null }> }>, githubRepos: Array<{ __typename?: 'GithubRepos', indexedAt: any | null }> };
 
 export type PendingProjectLeaderInvitationsQueryVariables = Exact<{
   githubUserId: InputMaybe<Scalars['bigint']>;
@@ -18993,8 +18995,8 @@ export const ContributionGithubPullRequestFragmentDoc = gql`
     fragment ContributionGithubPullRequest on GithubPullRequests {
   author {
     avatarUrl
-    htmlUrl
     login
+    id
   }
   draft
   htmlUrl
@@ -19012,6 +19014,18 @@ export const ContributionGithubIssueFragmentDoc = gql`
   number
   status
   title
+}
+    `;
+export const ContributionGithubCodeReviewFragmentDoc = gql`
+    fragment ContributionGithubCodeReview on GithubPullRequestReviews {
+  id
+  outcome
+  reviewer {
+    avatarUrl
+    login
+    id
+  }
+  status
 }
     `;
 export const PaymentRequestIdFragmentDoc = gql`
@@ -20258,8 +20272,7 @@ export const GetAllContributionsDocument = gql`
         }
       }
       codeReviews(orderBy: {submittedAt: DESC}, limit: 1) {
-        outcome
-        id
+        ...ContributionGithubCodeReview
       }
     }
     githubIssue {
@@ -20271,9 +20284,7 @@ export const GetAllContributionsDocument = gql`
       }
     }
     githubCodeReview {
-      id
-      status
-      outcome
+      ...ContributionGithubCodeReview
       githubPullRequest {
         ...ContributionGithubPullRequest
       }
@@ -20300,7 +20311,8 @@ export const GetAllContributionsDocument = gql`
   }
 }
     ${ContributionGithubPullRequestFragmentDoc}
-${ContributionGithubIssueFragmentDoc}`;
+${ContributionGithubIssueFragmentDoc}
+${ContributionGithubCodeReviewFragmentDoc}`;
 
 /**
  * __useGetAllContributionsQuery__

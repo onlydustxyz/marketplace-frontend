@@ -57,6 +57,8 @@
       "dateMerged": "Merged on __date__ at __time__ GMT",
       "dateAssigned": "Assigned on __date__ at __time__ GMT",
       "badgePullRequest": "Pull request from",
+      "badgeCodeReview": "Code review from",
+      "badgeIssue": "Issue from",
       "rewards": "Rewarded in"
     }
   },

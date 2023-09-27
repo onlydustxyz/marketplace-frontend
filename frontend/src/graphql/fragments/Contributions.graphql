@@ -1,8 +1,8 @@
 fragment ContributionGithubPullRequest on GithubPullRequests {
   author {
     avatarUrl
-    htmlUrl
     login
+    id
   }
   draft
   htmlUrl
@@ -19,4 +19,15 @@ fragment ContributionGithubIssue on GithubIssues {
   number
   status
   title
+}
+
+fragment ContributionGithubCodeReview on GithubPullRequestReviews {
+  id
+  outcome
+  reviewer {
+    avatarUrl
+    login
+    id
+  }
+  status
 }

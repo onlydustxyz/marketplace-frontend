@@ -11,8 +11,7 @@ query GetAllContributions($orderBy: [ContributionsOrderBy!], $githubUserId: bigi
         }
       }
       codeReviews(orderBy: { submittedAt: DESC }, limit: 1) {
-        outcome
-        id
+        ...ContributionGithubCodeReview
       }
     }
     githubIssue {
@@ -24,9 +23,7 @@ query GetAllContributions($orderBy: [ContributionsOrderBy!], $githubUserId: bigi
       }
     }
     githubCodeReview {
-      id
-      status
-      outcome
+      ...ContributionGithubCodeReview
       githubPullRequest {
         ...ContributionGithubPullRequest
       }

@@ -79,6 +79,7 @@ export default function ContributionTable({
             type={GithubContributionType.Issue}
             status={githubIssue.status as GithubContributionIconStatusType}
             rewards={contribution?.rewardItems ?? []}
+            // TODO get github issue author
           />
         ) : null;
       case GithubContributionType.PullRequest: {
@@ -118,6 +119,7 @@ export default function ContributionTable({
             }
             rewards={contribution?.rewardItems ?? []}
             review={review}
+            author={githubPullRequest.author as GithubUser}
           />
         ) : null;
       }
@@ -131,6 +133,7 @@ export default function ContributionTable({
             type={GithubContributionType.CodeReview}
             status={githubCodeReview.githubPullRequest?.status as GithubContributionIconStatusType}
             rewards={contribution?.rewardItems ?? []}
+            author={githubCodeReview.reviewer as GithubUser}
           />
         ) : null;
       default:

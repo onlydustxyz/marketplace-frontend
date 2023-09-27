@@ -6,6 +6,7 @@ import { ContributionIcon, variants as contributionIconVariants } from "src/comp
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
 import { useAuth } from "src/hooks/useAuth";
+import { useContributorProfilePanel } from "src/hooks/useContributorProfilePanel";
 import { useIntl } from "src/hooks/useIntl";
 import { GithubContributionIconStatusType, GithubContributionType } from "src/types";
 
@@ -30,9 +31,16 @@ export function ContributionBadge({
 }) {
   const { T } = useIntl();
   const { githubUserId } = useAuth();
+  const { open: openProfilePanel } = useContributorProfilePanel();
 
-  const isExternal = githubUserId === author?.id;
+  const isExternal = githubUserId !== author?.id;
   const tooltipId = `${id}-${number}-${type}-${status}`;
+
+  const tokens = {
+    [GithubContributionType.PullRequest]: T("contributions.tooltip.badgePullRequest"),
+    [GithubContributionType.CodeReview]: T("contributions.tooltip.badgeCodeReview"),
+    [GithubContributionType.Issue]: T("contributions.tooltip.badgeIssue"),
+  };
 
   return (
     <>
@@ -41,15 +49,20 @@ export function ContributionBadge({
           {isExternal && author ? (
             <div className="flex gap-1 text-xs font-medium text-spaceBlue-200">
               <span>
-                {T("contributions.tooltip.badgePullRequest")}{" "}
-                <a
-                  href={author.htmlUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                {tokens[type]}{" "}
+                <button
+                  type="button"
                   className="text-spacePurple-300 hover:underline"
+                  onClick={
+                    author
+                      ? () => {
+                          openProfilePanel(author.id);
+                        }
+                      : undefined
+                  }
                 >
                   {author.login}
-                </a>
+                </button>
               </span>
               <RoundedImage src={author.avatarUrl} alt={author.login} rounding={Rounding.Circle} size={ImageSize.Xxs} />
             </div>
