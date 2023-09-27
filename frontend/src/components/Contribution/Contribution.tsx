@@ -25,7 +25,7 @@ export function Contribution({ id, title, url, number, type, status, author, rew
           href={url}
           target="_blank"
           rel="noopener noreferrer"
-          className="block truncate font-walsheim text-greyscale-50"
+          className="block truncate font-walsheim text-greyscale-50 hover:underline"
         >
           {title}
         </a>
