@@ -4,19 +4,19 @@ import { GithubPullRequestWithCommitsFragment } from "src/__generated/graphql";
 
 type CommitsTooltipProps = {
   pullRequest: GithubPullRequestWithCommitsFragment;
-  userCommits: number;
-  commitsCount: number;
+  userCommits?: number;
+  commitsCount?: number;
 };
 
-export function CommitsTooltip({ pullRequest, userCommits, commitsCount }: CommitsTooltipProps) {
+export function CommitsTooltip({ pullRequest, userCommits = 0, commitsCount = 0 }: CommitsTooltipProps) {
   const { T } = useIntl();
 
   return (
     <div className="flex flex-col">
-      <span className="text-xs text-greyscale-200">
-        {T("reward.form.contributions.pullRequests.tooltip.createdBy")}
+      <>
+        <span className="text-xs text-greyscale-200">
+          {T("reward.form.contributions.pullRequests.tooltip.createdBy")}
 
-        {pullRequest.htmlUrl ? (
           <a
             className="inline-flex text-xs text-spacePurple-400 hover:text-spacePurple-200"
             href={pullRequest?.author?.htmlUrl ?? ""}
@@ -34,16 +34,16 @@ export function CommitsTooltip({ pullRequest, userCommits, commitsCount }: Commi
               />
             ) : null}
           </a>
-        ) : null}
-      </span>
+        </span>
 
-      <span className="text-sm">
-        {T("githubCodeReview.tooltip.commits", {
-          user: pullRequest.contributorDetails[0].author?.login,
-          commits: userCommits + "/" + commitsCount,
-          count: commitsCount,
-        })}
-      </span>
+        <span className="text-sm">
+          {T("githubCodeReview.tooltip.commits", {
+            user: pullRequest.contributorDetails[0].author?.login,
+            commits: userCommits + "/" + commitsCount,
+            count: commitsCount,
+          })}
+        </span>
+      </>
     </div>
   );
 }
