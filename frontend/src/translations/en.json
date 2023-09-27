@@ -49,7 +49,8 @@
       "comments": "Comments",
       "linkedTo": "Linked to",
       "empty": "Last synced with Github at __time__.\nIt can take up to 5 minutes before the next refresh.",
-      "error": "An error occurred, please try again later."
+      "error": "An error occurred, please try again later.",
+      "showAll": "Show all __count__"
     },
     "tooltip": {
       "dateOpened": "Opened on __date__ at __time__ GMT",

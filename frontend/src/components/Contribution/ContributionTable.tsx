@@ -1,6 +1,6 @@
 import type { ApolloError } from "@apollo/client";
 import classNames from "classnames";
-import { ComponentProps, PropsWithChildren, ReactNode } from "react";
+import { ComponentProps, PropsWithChildren, ReactNode, useState } from "react";
 
 import { GetAllContributionsQuery } from "src/__generated/graphql";
 import IssueOpen from "src/assets/icons/IssueOpen";
@@ -16,6 +16,7 @@ import HeaderCell, { HeaderCellWidth } from "src/components/Table/HeaderCell";
 import HeaderLine from "src/components/Table/HeaderLine";
 import Line from "src/components/Table/Line";
 import { useIntl } from "src/hooks/useIntl";
+import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import Folder3Line from "src/icons/Folder3Line";
 import StackLine from "src/icons/StackLine";
 import TimeLine from "src/icons/TimeLine";
@@ -51,7 +52,7 @@ export default function ContributionTable({
   id,
   loading,
   onHeaderClick,
-  showAll = true,
+  fullTable = true,
   status,
   title,
 }: {
@@ -62,11 +63,12 @@ export default function ContributionTable({
   id: string;
   loading: boolean;
   onHeaderClick: () => void;
-  showAll?: boolean;
+  fullTable?: boolean;
   status: GithubContributionStatus;
   title: string;
 }) {
   const { T } = useIntl();
+  const [showAll, setShowAll] = useState(false);
 
   function renderMobileContent() {
     if (loading) {
@@ -96,18 +98,40 @@ export default function ContributionTable({
       );
     }
 
-    return data?.contributions.map(contribution => {
-      return (
-        <div
-          key={contribution.id}
-          className={classNames("rounded-xl", {
-            "bg-whiteFakeOpacity-5/95 lg:bg-none": !showAll,
-          })}
-        >
-          <ContributionCard contribution={contribution} status={status} />
-        </div>
-      );
-    });
+    const nbContributions = data?.contributions?.length ?? 0;
+    const maxContributions = 2;
+    const showAllContributions = nbContributions > maxContributions;
+    const contributions = showAll ? data?.contributions : data?.contributions?.slice(0, maxContributions);
+
+    return (
+      <div className="flex flex-col gap-2">
+        {contributions?.map(contribution => {
+          return (
+            <div
+              key={contribution.id}
+              className={classNames("rounded-xl", {
+                "bg-whiteFakeOpacity-5/95 lg:bg-none": !fullTable,
+              })}
+            >
+              <ContributionCard contribution={contribution} status={status} />
+            </div>
+          );
+        })}
+
+        {showAllContributions && !showAll ? (
+          <div className="px-3 py-3.5">
+            <button
+              type="button"
+              className="flex w-full items-center justify-center gap-2 rounded-xl border border-greyscale-50 bg-white/5 px-4 py-3.5 font-walsheim font-medium leading-none text-greyscale-50 shadow-lg"
+              onClick={() => setShowAll(true)}
+            >
+              <ArrowDownSLine className="flex h-4 items-center justify-center text-xl" />
+              {T("contributions.table.showAll", { count: nbContributions })}
+            </button>
+          </div>
+        ) : null}
+      </div>
+    );
   }
 
   function renderDesktopContent() {
@@ -180,11 +204,11 @@ export default function ContributionTable({
   return (
     <section
       className={classNames("overflow-hidden rounded-2xl border-greyscale-50/8", {
-        "border bg-whiteFakeOpacity-5/95 shadow-2xl": showAll,
-        "lg:border lg:bg-whiteFakeOpacity-5/95 lg:shadow-2xl": !showAll,
+        "border bg-whiteFakeOpacity-5/95 shadow-2xl": fullTable,
+        "lg:border lg:bg-whiteFakeOpacity-5/95 lg:shadow-2xl": !fullTable,
       })}
     >
-      {showAll ? (
+      {fullTable ? (
         <header
           className="flex cursor-pointer items-start gap-3 border-b border-greyscale-50/8 bg-white/2 px-6 py-4"
           onClick={onHeaderClick}
@@ -196,7 +220,7 @@ export default function ContributionTable({
           </div>
         </header>
       ) : null}
-      <div className="flex flex-col gap-2 p-3 lg:hidden">{renderMobileContent()}</div>
+      <div className="p-3 lg:hidden">{renderMobileContent()}</div>
 
       <div className="hidden px-4 py-6 lg:block">
         <Table

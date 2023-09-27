@@ -225,7 +225,7 @@ export default function Contributions() {
               <div className="flex flex-col gap-4 px-2 py-3 md:px-4 md:py-6 lg:px-8">
                 {tableItems.map(({ show, ...restProps }) =>
                   show ? (
-                    <ContributionTable key={restProps.id} {...restProps} showAll={isActiveTab(AllTabs.All)} />
+                    <ContributionTable key={restProps.id} {...restProps} fullTable={isActiveTab(AllTabs.All)} />
                   ) : null
                 )}
               </div>
