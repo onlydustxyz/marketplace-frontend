@@ -13,6 +13,11 @@ fragment ContributionGithubPullRequest on GithubPullRequests {
 }
 
 fragment ContributionGithubIssue on GithubIssues {
+  author {
+    avatarUrl
+    login
+    id
+  }
   commentsCount
   htmlUrl
   id

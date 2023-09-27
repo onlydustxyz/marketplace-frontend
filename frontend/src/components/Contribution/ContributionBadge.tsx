@@ -26,14 +26,14 @@ export function ContributionBadge({
   status: GithubContributionIconStatusType;
   title: string;
   description?: string;
-  author?: GithubUser;
+  author: GithubUser;
   url: string;
 }) {
   const { T } = useIntl();
   const { githubUserId } = useAuth();
   const { open: openProfilePanel } = useContributorProfilePanel();
 
-  const isExternal = githubUserId !== author?.id;
+  const isExternal = githubUserId !== author.id;
   const tooltipId = `${id}-${number}-${type}-${status}`;
 
   const tokens = {
@@ -46,7 +46,7 @@ export function ContributionBadge({
     <>
       <Tooltip id={tooltipId} clickable position={TooltipPosition.Top} variant={Variant.Blue}>
         <div className="flex flex-col gap-4 px-1 py-2">
-          {isExternal && author ? (
+          {isExternal ? (
             <div className="flex gap-1 text-xs font-medium text-spaceBlue-200">
               <span>
                 {tokens[type]}{" "}

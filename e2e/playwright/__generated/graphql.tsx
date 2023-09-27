@@ -3257,6 +3257,8 @@ export enum GithubIssueStatus {
 export type GithubIssues = {
   __typename?: "GithubIssues";
   assigneeIds: Maybe<Scalars["jsonb"]>;
+  /** An object relationship */
+  author: Maybe<GithubUsers>;
   authorId: Maybe<Scalars["bigint"]>;
   closedAt: Maybe<Scalars["timestamp"]>;
   /** An array relationship */
@@ -3368,6 +3370,7 @@ export type GithubIssuesBoolExp = {
   _not: InputMaybe<GithubIssuesBoolExp>;
   _or: InputMaybe<Array<GithubIssuesBoolExp>>;
   assigneeIds: InputMaybe<JsonbComparisonExp>;
+  author: InputMaybe<GithubUsersBoolExp>;
   authorId: InputMaybe<BigintComparisonExp>;
   closedAt: InputMaybe<TimestampComparisonExp>;
   closedByPullRequests: InputMaybe<ApiClosedByPullRequestsBoolExp>;
@@ -3410,6 +3413,7 @@ export type GithubIssuesIncInput = {
 /** input type for inserting data into table "api.github_issues" */
 export type GithubIssuesInsertInput = {
   assigneeIds: InputMaybe<Scalars["jsonb"]>;
+  author: InputMaybe<GithubUsersObjRelInsertInput>;
   authorId: InputMaybe<Scalars["bigint"]>;
   closedAt: InputMaybe<Scalars["timestamp"]>;
   closedByPullRequests: InputMaybe<ApiClosedByPullRequestsArrRelInsertInput>;
@@ -3471,6 +3475,7 @@ export type GithubIssuesObjRelInsertInput = {
 /** Ordering options when selecting data from "api.github_issues". */
 export type GithubIssuesOrderBy = {
   assigneeIds: InputMaybe<OrderBy>;
+  author: InputMaybe<GithubUsersOrderBy>;
   authorId: InputMaybe<OrderBy>;
   closedAt: InputMaybe<OrderBy>;
   closedByPullRequestsAggregate: InputMaybe<ApiClosedByPullRequestsAggregateOrderBy>;
@@ -18316,7 +18321,16 @@ export type ContributionGithubPullRequestFragment = {
   author: { __typename?: "GithubUsers"; avatarUrl: string; login: string; id: any } | null;
 };
 
-export type PaymentRequestIdFragment = { __typename?: "PaymentRequests"; id: any | null };
+export type ContributionGithubIssueFragment = {
+  __typename?: "GithubIssues";
+  commentsCount: any | null;
+  htmlUrl: string | null;
+  id: any | null;
+  number: any | null;
+  status: string | null;
+  title: string | null;
+  author: { __typename?: "GithubUsers"; avatarUrl: string; login: string; id: any } | null;
+};
 
 export type ContributionGithubCodeReviewFragment = {
   __typename?: "GithubPullRequestReviews";
@@ -19414,6 +19428,7 @@ export type GetAllContributionsQuery = {
           number: any | null;
           status: string | null;
           title: string | null;
+          author: { __typename?: "GithubUsers"; avatarUrl: string; login: string; id: any } | null;
         } | null;
       }>;
       codeReviews: Array<{
@@ -19446,6 +19461,7 @@ export type GetAllContributionsQuery = {
           author: { __typename?: "GithubUsers"; avatarUrl: string; login: string; id: any } | null;
         } | null;
       }>;
+      author: { __typename?: "GithubUsers"; avatarUrl: string; login: string; id: any } | null;
     } | null;
     githubCodeReview: {
       __typename?: "GithubPullRequestReviews";
@@ -20835,6 +20851,11 @@ export const ContributionGithubPullRequestFragmentDoc = gql`
 `;
 export const ContributionGithubIssueFragmentDoc = gql`
   fragment ContributionGithubIssue on GithubIssues {
+    author {
+      avatarUrl
+      login
+      id
+    }
     commentsCount
     htmlUrl
     id

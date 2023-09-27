@@ -144,6 +144,7 @@ class GithubIssue {
 
 class GithubIssues {
    assigneeIds: jsonb
+   author: GithubUsers
    authorId: bigint
    closedAt: timestamp
    closedByPullRequests: [ApiClosedByPullRequests!]!
@@ -564,6 +565,7 @@ Contributions -- Projects
 Contributions --* WorkItems
 GithubIssue -- GithubUser
 GithubIssues -- GithubRepos
+GithubIssues -- GithubUsers
 GithubIssues --* ApiClosedByPullRequests
 GithubPullRequest -- GithubPullRequests
 GithubPullRequestCommits -- GithubUsers

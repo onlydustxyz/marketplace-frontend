@@ -79,7 +79,7 @@ export default function ContributionTable({
             type={GithubContributionType.Issue}
             status={githubIssue.status as GithubContributionIconStatusType}
             rewards={contribution?.rewardItems ?? []}
-            // TODO get github issue author
+            author={githubIssue.author as GithubUser}
           />
         ) : null;
       case GithubContributionType.PullRequest: {
@@ -171,14 +171,7 @@ export default function ContributionTable({
 
         if (closingIssues?.length) {
           return closingIssues.map(({ githubIssue }) => {
-            const {
-              id,
-              number,
-              status,
-              title,
-              // author,
-              htmlUrl,
-            } = githubIssue ?? {};
+            const { id, number, status, title, author, htmlUrl } = githubIssue ?? {};
             return (
               <ContributionBadge
                 key={id}
@@ -188,6 +181,7 @@ export default function ContributionTable({
                 status={status as GithubContributionIconStatusType}
                 title={title ?? ""}
                 url={htmlUrl ?? ""}
+                author={author as GithubUser}
               />
             );
           });

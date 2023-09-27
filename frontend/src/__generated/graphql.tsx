@@ -3272,6 +3272,8 @@ export enum GithubIssueStatus {
 export type GithubIssues = {
   __typename?: 'GithubIssues';
   assigneeIds: Maybe<Scalars['jsonb']>;
+  /** An object relationship */
+  author: Maybe<GithubUsers>;
   authorId: Maybe<Scalars['bigint']>;
   closedAt: Maybe<Scalars['timestamp']>;
   /** An array relationship */
@@ -3387,6 +3389,7 @@ export type GithubIssuesBoolExp = {
   _not: InputMaybe<GithubIssuesBoolExp>;
   _or: InputMaybe<Array<GithubIssuesBoolExp>>;
   assigneeIds: InputMaybe<JsonbComparisonExp>;
+  author: InputMaybe<GithubUsersBoolExp>;
   authorId: InputMaybe<BigintComparisonExp>;
   closedAt: InputMaybe<TimestampComparisonExp>;
   closedByPullRequests: InputMaybe<ApiClosedByPullRequestsBoolExp>;
@@ -3429,6 +3432,7 @@ export type GithubIssuesIncInput = {
 /** input type for inserting data into table "api.github_issues" */
 export type GithubIssuesInsertInput = {
   assigneeIds: InputMaybe<Scalars['jsonb']>;
+  author: InputMaybe<GithubUsersObjRelInsertInput>;
   authorId: InputMaybe<Scalars['bigint']>;
   closedAt: InputMaybe<Scalars['timestamp']>;
   closedByPullRequests: InputMaybe<ApiClosedByPullRequestsArrRelInsertInput>;
@@ -3490,6 +3494,7 @@ export type GithubIssuesObjRelInsertInput = {
 /** Ordering options when selecting data from "api.github_issues". */
 export type GithubIssuesOrderBy = {
   assigneeIds: InputMaybe<OrderBy>;
+  author: InputMaybe<GithubUsersOrderBy>;
   authorId: InputMaybe<OrderBy>;
   closedAt: InputMaybe<OrderBy>;
   closedByPullRequestsAggregate: InputMaybe<ApiClosedByPullRequestsAggregateOrderBy>;
@@ -18318,7 +18323,7 @@ export type GithubUserFragment = { __typename?: 'GithubUsers', login: string, av
 
 export type ContributionGithubPullRequestFragment = { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, author: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null };
 
-export type ContributionGithubIssueFragment = { __typename?: 'GithubIssues', commentsCount: any | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null };
+export type ContributionGithubIssueFragment = { __typename?: 'GithubIssues', commentsCount: any | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, author: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null };
 
 export type ContributionGithubCodeReviewFragment = { __typename?: 'GithubPullRequestReviews', id: string | null, outcome: any | null, status: string | null, reviewer: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null };
 
@@ -18482,7 +18487,7 @@ export type GetAllContributionsQueryVariables = Exact<{
 }>;
 
 
-export type GetAllContributionsQuery = { __typename?: 'query_root', contributions: Array<{ __typename?: 'Contributions', closedAt: any | null, createdAt: any | null, id: string | null, status: any | null, type: string | null, githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, closingIssues: Array<{ __typename?: 'ApiClosingIssues', githubIssue: { __typename?: 'GithubIssues', commentsCount: any | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null } | null }>, codeReviews: Array<{ __typename?: 'GithubPullRequestReviews', id: string | null, outcome: any | null, status: string | null, reviewer: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null }>, author: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null } | null, githubIssue: { __typename?: 'GithubIssues', commentsCount: any | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, closedByPullRequests: Array<{ __typename?: 'ApiClosedByPullRequests', githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, author: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null } | null }> } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', id: string | null, outcome: any | null, status: string | null, githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, author: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null } | null, reviewer: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null } | null, githubRepo: { __typename?: 'GithubRepos', htmlUrl: string | null, name: string | null, id: any | null } | null, project: { __typename?: 'Projects', name: string | null, logoUrl: string | null, id: any | null, key: string | null } | null, rewardItems: Array<{ __typename?: 'WorkItems', paymentId: any | null }> }>, githubRepos: Array<{ __typename?: 'GithubRepos', indexedAt: any | null }> };
+export type GetAllContributionsQuery = { __typename?: 'query_root', contributions: Array<{ __typename?: 'Contributions', closedAt: any | null, createdAt: any | null, id: string | null, status: any | null, type: string | null, githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, closingIssues: Array<{ __typename?: 'ApiClosingIssues', githubIssue: { __typename?: 'GithubIssues', commentsCount: any | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, author: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null } | null }>, codeReviews: Array<{ __typename?: 'GithubPullRequestReviews', id: string | null, outcome: any | null, status: string | null, reviewer: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null }>, author: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null } | null, githubIssue: { __typename?: 'GithubIssues', commentsCount: any | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, closedByPullRequests: Array<{ __typename?: 'ApiClosedByPullRequests', githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, author: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null } | null }>, author: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', id: string | null, outcome: any | null, status: string | null, githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, author: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null } | null, reviewer: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null } | null, githubRepo: { __typename?: 'GithubRepos', htmlUrl: string | null, name: string | null, id: any | null } | null, project: { __typename?: 'Projects', name: string | null, logoUrl: string | null, id: any | null, key: string | null } | null, rewardItems: Array<{ __typename?: 'WorkItems', paymentId: any | null }> }>, githubRepos: Array<{ __typename?: 'GithubRepos', indexedAt: any | null }> };
 
 export type PendingProjectLeaderInvitationsQueryVariables = Exact<{
   githubUserId: InputMaybe<Scalars['bigint']>;
@@ -19008,6 +19013,11 @@ export const ContributionGithubPullRequestFragmentDoc = gql`
     `;
 export const ContributionGithubIssueFragmentDoc = gql`
     fragment ContributionGithubIssue on GithubIssues {
+  author {
+    avatarUrl
+    login
+    id
+  }
   commentsCount
   htmlUrl
   id
