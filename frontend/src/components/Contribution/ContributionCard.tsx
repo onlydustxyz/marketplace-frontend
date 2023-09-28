@@ -1,20 +1,19 @@
 import { ComponentProps } from "react";
 
-import { GetAllContributionsQuery } from "src/__generated/graphql";
 import { Contribution } from "src/components/Contribution/Contribution";
 import { ContributionLinked } from "src/components/Contribution/ContributionLinked";
 import { ContributionProjectRepo } from "src/components/Contribution/ContributionProjectRepo";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowRightUpLine from "src/icons/ArrowRightUpLine";
 import TimeLine from "src/icons/TimeLine";
-import { GithubContributionStatus } from "src/types";
+import { GithubContributionStatus, QueryContribution } from "src/types";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 
 export function ContributionCard({
   contribution,
   status,
 }: {
-  contribution: GetAllContributionsQuery["contributions"][number];
+  contribution: QueryContribution;
   status: GithubContributionStatus;
 }) {
   const { T } = useIntl();

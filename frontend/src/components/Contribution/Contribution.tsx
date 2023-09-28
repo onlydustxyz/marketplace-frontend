@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { GetAllContributionsQuery, GithubUser } from "src/__generated/graphql";
+import { GithubUser } from "src/__generated/graphql";
 
 import { ContributionBadge } from "src/components/Contribution/ContributionBadge";
 import { ContributionReview } from "src/components/Contribution/ContributionReview";
@@ -10,11 +10,12 @@ import {
   GithubContributionIconStatusType,
   GithubContributionReviewStatus,
   GithubContributionType,
+  QueryContribution,
 } from "src/types";
 
 type Props = {
   contribution: Pick<
-    GetAllContributionsQuery["contributions"][number],
+    QueryContribution,
     "githubCodeReview" | "githubIssue" | "githubPullRequest" | "id" | "rewardItems" | "type"
   >;
   isMobile?: boolean;

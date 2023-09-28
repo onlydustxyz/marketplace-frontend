@@ -1,14 +1,16 @@
-import { GetAllContributionsQuery, GithubUser } from "src/__generated/graphql";
+import { GithubUser } from "src/__generated/graphql";
 import { ContributionBadge } from "src/components/Contribution/ContributionBadge";
-import { GithubContributionIconStatus, GithubContributionIconStatusType, GithubContributionType } from "src/types";
+import {
+  GithubContributionIconStatus,
+  GithubContributionIconStatusType,
+  GithubContributionType,
+  QueryContribution,
+} from "src/types";
 
 export function ContributionLinked({
   contribution,
 }: {
-  contribution: Pick<
-    GetAllContributionsQuery["contributions"][number],
-    "githubCodeReview" | "githubIssue" | "githubPullRequest" | "type"
-  >;
+  contribution: Pick<QueryContribution, "githubCodeReview" | "githubIssue" | "githubPullRequest" | "type">;
 }) {
   const { type, githubCodeReview, githubIssue, githubPullRequest } = contribution;
 
