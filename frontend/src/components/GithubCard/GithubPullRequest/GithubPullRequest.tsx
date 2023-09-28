@@ -71,16 +71,17 @@ export default function GithubPullRequest({
             <GitRepositoryLine />
             {repoName}
           </div>
-          {commitsCount ? (
-            <div id={pullRequest?.id} className="flex flex-row items-center gap-1 ">
-              <GitCommitLine />
-              {userCommits + "/" + commitsCount}
 
-              <Tooltip anchorId={pullRequest?.id}>
-                <CommitsTooltip pullRequest={pullRequest} commitsCount={userCommits + "/" + commitsCount} />
+          <div id={pullRequest?.id} className="flex flex-row items-center gap-1 ">
+            <GitCommitLine />
+            {userCommits + "/" + commitsCount}
+
+            {pullRequest?.author ? (
+              <Tooltip anchorId={pullRequest?.id} clickable>
+                <CommitsTooltip pullRequest={pullRequest} userCommits={userCommits} commitsCount={commitsCount} />
               </Tooltip>
-            </div>
-          ) : null}
+            ) : null}
+          </div>
         </div>
       </div>
       {secondaryAction && <GithubActionButton action={secondaryAction} onClick={onSecondaryClick} ignored={ignored} />}
@@ -90,6 +91,8 @@ export default function GithubPullRequest({
 
 function PullRequestStatus({ pullrequest }: { pullrequest: GithubPullRequestWithCommitsFragment }) {
   const { T } = useIntl();
+
+  console.log(pullrequest);
 
   switch (pullrequest.status) {
     case GithubPullRequestStatus.Closed:

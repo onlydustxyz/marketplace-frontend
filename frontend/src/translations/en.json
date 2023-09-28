@@ -129,7 +129,11 @@
       "changeRequested": "Change requested __submittedAt__"
     },
     "tooltip": {
-      "commits": "__user__ contributed to __commits__ commits"
+      "commits": {
+        "zero": "__user__ contributed to 0 commits",
+        "one": "__user__ contributed to __commits__ commit",
+        "many": "__user__ contributed to __commits__ commits"
+      }
     }
   },
   "images": {
