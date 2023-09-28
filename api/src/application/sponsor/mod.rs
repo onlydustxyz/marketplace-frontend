@@ -28,6 +28,7 @@ mod test {
 		impl ImmutableRepository<Sponsor> for SponsorRepository {
 			fn exists(&self, id: Id) -> Result<bool>;
 			fn find_by_id(&self, id: Id) -> Result<Sponsor>;
+			fn try_find_by_id(&self, id: Id) -> Result<Option<Sponsor>>;
 			fn list(&self) -> Result<Vec<Sponsor>>;
 			fn insert(&self, model: Sponsor) -> Result<Sponsor>;
 			fn try_insert(&self, model: Sponsor) -> Result<Option<Sponsor>>;

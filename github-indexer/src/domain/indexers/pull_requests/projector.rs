@@ -9,7 +9,7 @@ use crate::domain::indexers::Indexer;
 
 #[derive(new)]
 pub struct PullRequestsProjector {
-	pull_request_indexer: Arc<dyn Indexer<GithubPullRequest>>,
+	pull_request_indexer: Arc<dyn Indexer<GithubPullRequest, Output = ()>>,
 }
 
 #[async_trait]

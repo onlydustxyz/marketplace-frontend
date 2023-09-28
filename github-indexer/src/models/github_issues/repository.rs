@@ -1,4 +1,4 @@
-use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
+use diesel::{ExpressionMethods, OptionalExtension, QueryDsl, RunQueryDsl};
 use domain::{GithubIssueNumber, GithubRepoId};
 use infrastructure::{
 	contextualized_error::IntoContextualizedError,
@@ -8,20 +8,19 @@ use infrastructure::{
 use crate::models::{GithubIssue, IdentifiableRepository};
 
 impl IdentifiableRepository<GithubIssue, (GithubRepoId, GithubIssueNumber)> for database::Client {
-	fn exists(
+	fn find(
 		&self,
 		(repo_id, number): (GithubRepoId, GithubIssueNumber),
-	) -> database::Result<bool> {
+	) -> database::Result<Option<GithubIssue>> {
 		let mut connection = self.connection()?;
-		diesel::select(::diesel::dsl::exists(
-			github_issues::table
-				.filter(github_issues::repo_id.eq(repo_id))
-				.filter(github_issues::number.eq(number)),
-		))
-		.get_result(&mut *connection)
-		.err_with_context(format!(
-			"exists github_issues where repo_id={repo_id:?} and number={number:?}",
-		))
-		.map_err(Into::into)
+		github_issues::table
+			.filter(github_issues::repo_id.eq(repo_id))
+			.filter(github_issues::number.eq(number))
+			.get_result(&mut *connection)
+			.optional()
+			.err_with_context(format!(
+				"exists github_issues where repo_id={repo_id:?} and number={number:?}",
+			))
+			.map_err(Into::into)
 	}
 }

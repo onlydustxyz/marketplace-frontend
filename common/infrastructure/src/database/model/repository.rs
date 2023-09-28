@@ -9,6 +9,7 @@ where
 {
 	fn exists(&self, id: <M as Identifiable>::Id) -> Result<bool>;
 	fn find_by_id(&self, id: <M as Identifiable>::Id) -> Result<M>;
+	fn try_find_by_id(&self, id: <M as Identifiable>::Id) -> Result<Option<M>>;
 	fn list(&self) -> Result<Vec<M>>;
 	fn insert(&self, model: M) -> Result<M>;
 	fn try_insert(&self, model: M) -> Result<Option<M>>;
@@ -31,6 +32,11 @@ where
 	fn find_by_id(&self, id: <M as Identifiable>::Id) -> Result<M> {
 		let mut connection = self.connection()?;
 		M::find_by_id(&mut *connection, id)
+	}
+
+	fn try_find_by_id(&self, id: <M as Identifiable>::Id) -> Result<Option<M>> {
+		let mut connection = self.connection()?;
+		M::try_find_by_id(&mut *connection, id)
 	}
 
 	fn list(&self) -> Result<Vec<M>> {

@@ -16,7 +16,12 @@ pub struct Indexer {
 
 #[async_trait]
 impl indexers::Indexer<PullRequestId> for Indexer {
-	async fn index(&self, (repo_id, number): &PullRequestId) -> Result<()> {
+	type Output = Option<GithubFullPullRequest>;
+
+	async fn index(
+		&self,
+		(repo_id, number): &PullRequestId,
+	) -> Result<Option<GithubFullPullRequest>> {
 		let pull_request =
 			self.github_fetch_service.pull_request_by_repo_id(*repo_id, *number).await?;
 
@@ -30,12 +35,12 @@ impl fmt::Display for Indexer {
 	}
 }
 
-pub trait ById {
-	fn by_id(self, github_fetch_service: Arc<dyn GithubFetchService>) -> Indexer;
+pub trait ByRepoId {
+	fn by_repo_id(self, github_fetch_service: Arc<dyn GithubFetchService>) -> Indexer;
 }
 
-impl ById for IndexerImpl<GithubPullRequest, Option<GithubFullPullRequest>> {
-	fn by_id(self, github_fetch_service: Arc<dyn GithubFetchService>) -> Indexer {
+impl ByRepoId for IndexerImpl<GithubPullRequest, Option<GithubFullPullRequest>> {
+	fn by_repo_id(self, github_fetch_service: Arc<dyn GithubFetchService>) -> Indexer {
 		Indexer {
 			github_fetch_service,
 			indexer: self,

@@ -1,29 +1,26 @@
-use std::{fmt, marker::PhantomData, time::Instant};
+use std::{fmt, time::Instant};
 
 use async_trait::async_trait;
 use olog::{error, info, IntoField};
 
 use super::{error::Result, Indexable, Indexer};
 
-pub struct LoggerIndexer<Id, I>
-where
-	Id: Indexable,
-	I: Indexer<Id>,
-{
+pub struct LoggerIndexer<I> {
 	pub decorated: I,
-	pub _phantom: PhantomData<Id>,
 }
 
 #[async_trait]
-impl<Id, I> Indexer<Id> for LoggerIndexer<Id, I>
+impl<Id, I> Indexer<Id> for LoggerIndexer<I>
 where
 	Id: Indexable,
 	I: Indexer<Id>,
 {
-	async fn index(&self, id: &Id) -> Result<()> {
+	type Output = I::Output;
+
+	async fn index(&self, id: &Id) -> Result<Self::Output> {
 		let start = Instant::now();
 		match self.decorated.index(id).await {
-			Ok(_) => {
+			Ok(output) => {
 				info!(
 					indexed_item_id = format!("{id:?}"),
 					indexed_item_id_type = std::any::type_name::<Id>(),
@@ -31,7 +28,7 @@ where
 					duration = start.elapsed().as_secs(),
 					"Successfully indexed item"
 				);
-				Ok(())
+				Ok(output)
 			},
 			Err(error) => {
 				error!(
@@ -47,25 +44,18 @@ where
 	}
 }
 
-impl<Id, I> fmt::Display for LoggerIndexer<Id, I>
-where
-	Id: Indexable,
-	I: Indexer<Id>,
-{
+impl<I: fmt::Display> fmt::Display for LoggerIndexer<I> {
 	fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
 		write!(f, "{}", self.decorated)
 	}
 }
 
-pub trait Logged<Id: Indexable, I: super::Indexer<Id>> {
-	fn logged(self) -> LoggerIndexer<Id, I>;
+pub trait Logged<I> {
+	fn logged(self) -> LoggerIndexer<I>;
 }
 
-impl<Id: Indexable, I: super::Indexer<Id>> Logged<Id, I> for I {
-	fn logged(self) -> LoggerIndexer<Id, I> {
-		LoggerIndexer {
-			decorated: self,
-			_phantom: Default::default(),
-		}
+impl<I> Logged<I> for I {
+	fn logged(self) -> LoggerIndexer<I> {
+		LoggerIndexer { decorated: self }
 	}
 }

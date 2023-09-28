@@ -13,7 +13,7 @@ use super::{
 #[derive(new)]
 pub struct Controller<Id: Indexable> {
 	repository: Arc<dyn Repository<Id>>,
-	indexers: Vec<Arc<dyn indexers::Indexer<Id>>>,
+	indexers: Vec<Arc<dyn indexers::Indexer<Id, Output = ()>>>,
 }
 
 impl<Id: Indexable> Controller<Id> {

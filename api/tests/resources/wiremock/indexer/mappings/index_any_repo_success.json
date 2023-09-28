@@ -1,17 +1,18 @@
 {
-  "request": {
-    "urlPattern": "/indexer/repo/[0-9]*",
-    "method": "POST",
-    "headers": {
-      "Authorization": {
-        "contains": "Bearer "
-      },
-      "Api-Key": {
-        "contains": "test-api-key"
-      }
+    "request": {
+        "urlPattern": "/indexer/repo/[0-9]*",
+        "method": "POST",
+        "headers": {
+            "Authorization": {
+                "contains": "Bearer "
+            },
+            "Api-Key": {
+                "contains": "test-api-key"
+            }
+        }
+    },
+    "response": {
+        "status": 200,
+        "bodyFileName": "indexer-generic-response.json"
     }
-  },
-  "response": {
-    "status": 200
-  }
 }

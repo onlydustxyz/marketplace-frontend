@@ -96,6 +96,7 @@ mod tests {
 
 		impl ImmutableRepository<ProjectDetails> for ProjectDetailsRepository {
 			fn exists(&self, id: ProjectId) -> Result<bool>;
+			fn try_find_by_id(&self, id: ProjectId) -> Result<Option<ProjectDetails>>;
 			fn find_by_id(&self, id: ProjectId) -> Result<ProjectDetails>;
 			fn list(&self) -> Result<Vec<ProjectDetails>>;
 			fn insert(&self, model: ProjectDetails) -> Result<ProjectDetails>;

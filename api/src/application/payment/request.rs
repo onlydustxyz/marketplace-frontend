@@ -77,7 +77,7 @@ impl Usecase {
 				} => {
 					vec![
 						self.github_indexer_service.index_repo(repo_id),
-						self.github_indexer_service.index_pull_request(repo_id, number),
+						self.github_indexer_service.index_pull_request_by_repo_id(repo_id, number),
 					]
 				},
 			})

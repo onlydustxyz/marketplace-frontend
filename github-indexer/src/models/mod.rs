@@ -33,7 +33,7 @@ pub use projects_pending_contributors::{
 pub use technologies::Technology;
 
 pub trait IdentifiableRepository<M, Id>: Send + Sync {
-	fn exists(&self, id: Id) -> database::Result<bool>;
+	fn find(&self, id: Id) -> database::Result<Option<M>>;
 }
 
 impl<R, M> IdentifiableRepository<M, M::Id> for R
@@ -41,7 +41,7 @@ where
 	R: ImmutableRepository<M>,
 	M: ImmutableModel<PgConnection>,
 {
-	fn exists(&self, id: M::Id) -> database::Result<bool> {
-		<Self as ImmutableRepository<M>>::exists(self, id)
+	fn find(&self, id: M::Id) -> database::Result<Option<M>> {
+		<Self as ImmutableRepository<M>>::try_find_by_id(self, id)
 	}
 }

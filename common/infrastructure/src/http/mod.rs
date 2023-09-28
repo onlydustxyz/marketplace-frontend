@@ -3,6 +3,7 @@ use anyhow::Result;
 mod config;
 pub use config::Config;
 use reqwest::header::{HeaderMap, HeaderName};
+use serde::de::DeserializeOwned;
 use url::Url;
 
 pub struct Client {
@@ -27,8 +28,9 @@ impl Client {
 		Ok(url)
 	}
 
-	pub async fn post(&self, path: String) -> Result<()> {
-		self.client.post(self.url(path)?).send().await?.error_for_status()?;
-		Ok(())
+	pub async fn post<R: DeserializeOwned>(&self, path: String) -> Result<R> {
+		let response = self.client.post(self.url(path)?).send().await?.error_for_status()?;
+		let json = response.json().await?;
+		Ok(json)
 	}
 }

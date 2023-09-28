@@ -16,23 +16,35 @@ where
 	pub _phantom: PhantomData<Id>,
 }
 
+pub enum Output<C, F> {
+	Cached(C),
+	Fresh(F),
+}
+
 #[async_trait]
 impl<Id, I, M> super::Indexer<Id> for Indexer<Id, I, M>
 where
 	Id: Indexable,
 	I: super::Indexer<Id>,
+	M: Send,
 {
-	async fn index(&self, id: &Id) -> Result<()> {
-		if !self.repository.exists(id.clone())? {
-			self.decorated.index(id).await
-		} else {
-			info!(
-				indexed_item_id = format!("{id:?}"),
-				indexed_item_id_type = std::any::type_name::<Id>(),
-				indexer_type = self.decorated.to_string(),
-				"Item already indexed"
-			);
-			Ok(())
+	type Output = Output<M, I::Output>;
+
+	async fn index(&self, id: &Id) -> Result<Self::Output> {
+		match self.repository.find(id.clone())? {
+			Some(model) => {
+				info!(
+					indexed_item_id = format!("{id:?}"),
+					indexed_item_id_type = std::any::type_name::<Id>(),
+					indexer_type = self.decorated.to_string(),
+					"Item already indexed"
+				);
+				Ok(Output::Cached(model))
+			},
+			None => {
+				let data = self.decorated.index(id).await?;
+				Ok(Output::Fresh(data))
+			},
 		}
 	}
 }

@@ -17,6 +17,7 @@ where
 {
 	fn exists(conn: &mut C, id: <Self as Identifiable>::Id) -> Result<bool>;
 	fn find_by_id(conn: &mut C, id: <Self as Identifiable>::Id) -> Result<Self>;
+	fn try_find_by_id(conn: &mut C, id: <Self as Identifiable>::Id) -> Result<Option<Self>>;
 	fn list(conn: &mut C) -> Result<Vec<Self>>;
 	fn insert(self, conn: &mut C) -> Result<Self>;
 	fn insert_all(conn: &mut C, values: Vec<Self>) -> Result<usize>;

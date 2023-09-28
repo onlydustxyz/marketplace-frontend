@@ -13,9 +13,9 @@ mod projector;
 
 #[derive(Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct IndexedRepo {
-	repo: domain::GithubRepo,
-	languages: Languages,
-	parent: Option<Box<IndexedRepo>>,
+	pub repo: domain::GithubRepo,
+	pub languages: Languages,
+	pub parent: Option<Box<IndexedRepo>>,
 }
 
 pub fn new(

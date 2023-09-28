@@ -1,18 +1,19 @@
 {
-  "priority": 1,
-  "request": {
-    "url": "/indexer/repo/1181927",
-    "method": "POST",
-    "headers": {
-      "Authorization": {
-        "contains": "Bearer "
-      },
-      "Api-Key": {
-        "contains": "test-api-key"
-      }
+    "priority": 1,
+    "request": {
+        "url": "/indexer/repo/1181927",
+        "method": "POST",
+        "headers": {
+            "Authorization": {
+                "contains": "Bearer "
+            },
+            "Api-Key": {
+                "contains": "test-api-key"
+            }
+        }
+    },
+    "response": {
+        "status": 500,
+        "bodyFileName": "indexer-generic-response.json"
     }
-  },
-  "response": {
-    "status": 500
-  }
 }

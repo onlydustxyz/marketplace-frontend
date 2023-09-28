@@ -16,11 +16,11 @@ pub struct RateLimitConf {
 }
 
 pub trait RateLimited<Id: Indexable, I: super::Indexer<Id>> {
-	fn rate_limited(self, guard: &RateLimitConf) -> RateLimitedIndexer<Id, I>;
+	fn rate_limited(self, guard: &RateLimitConf) -> RateLimitedIndexer<I>;
 }
 
 impl<Id: Indexable, I: super::Indexer<Id>> RateLimited<Id, I> for I {
-	fn rate_limited(self, guard: &RateLimitConf) -> RateLimitedIndexer<Id, I> {
+	fn rate_limited(self, guard: &RateLimitConf) -> RateLimitedIndexer<I> {
 		RateLimitedIndexer {
 			decorated: self,
 			rate_limit_service: guard.github.clone(),
@@ -28,7 +28,6 @@ impl<Id: Indexable, I: super::Indexer<Id>> RateLimited<Id, I> for I {
 			github_rate_limit_retry_delay: Duration::from_secs(
 				guard.github_rate_limit_retry_delay as u64,
 			),
-			_phantom: Default::default(),
 		}
 	}
 }

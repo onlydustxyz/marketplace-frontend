@@ -30,7 +30,10 @@ pub fn docker() -> Cli {
 }
 
 pub struct Context<'a> {
+	pub event_publisher: Arc<dyn Publisher<Event>>,
+	_event_listeners: Vec<JoinHandle<()>>,
 	pub http_client: Client,
+	pub quotes_syncer: Job,
 	pub database: database::Context<'a>,
 	pub amqp: amqp::Context<'a>,
 	pub simple_storage: simple_storage::Context<'a>,
@@ -39,9 +42,6 @@ pub struct Context<'a> {
 	pub indexer: indexer::Context<'a>,
 	pub web3: web3::Context<'a>,
 	pub coinmarketcap: coinmarketcap::Context<'a>,
-	pub quotes_syncer: Job,
-	pub event_publisher: Arc<dyn Publisher<Event>>,
-	_event_listeners: JoinHandle<Result<()>>,
 	_environment: environment::Context,
 }
 
@@ -113,9 +113,7 @@ impl<'a> Context<'a> {
 			coinmarketcap: coinmarketcap.config.clone(),
 		};
 
-		let event_listeners = tokio::spawn(api::presentation::event_listeners::_bootstrap(
-			config.clone(),
-		));
+		let event_listeners = api::presentation::event_listeners::spawn_all(config.clone()).await?;
 
 		let event_publisher = CompositePublisher::new(vec![
 			Arc::new(EventPublisher::new(
@@ -161,6 +159,6 @@ impl<'a> Context<'a> {
 
 impl<'a> Drop for Context<'a> {
 	fn drop(&mut self) {
-		self._event_listeners.abort();
+		self._event_listeners.iter().for_each(JoinHandle::abort);
 	}
 }

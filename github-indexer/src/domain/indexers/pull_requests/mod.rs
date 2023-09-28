@@ -12,7 +12,7 @@ mod projector;
 pub fn new(
 	github_fetch_service: Arc<dyn GithubFetchPullRequestService>,
 	github_repo_index_repository: Arc<dyn GithubRepoIndexRepository>,
-	pull_request_indexer: Arc<dyn Indexer<GithubPullRequest>>,
+	pull_request_indexer: Arc<dyn Indexer<GithubPullRequest, Output = ()>>,
 ) -> IndexerImpl<GithubRepoId, Vec<GithubPullRequest>> {
 	IndexerImpl {
 		crawler: Arc::new(PullRequestsCrawler::new(

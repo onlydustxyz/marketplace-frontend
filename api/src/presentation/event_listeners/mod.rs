@@ -36,8 +36,14 @@ pub async fn bootstrap(config: Config) -> Result<Job> {
 	)?)
 }
 
-pub async fn _bootstrap(config: Config) -> Result<()> {
+async fn _bootstrap(config: Config) -> Result<()> {
 	info!("Bootstrapping event listeners");
+	let listeners = spawn_all(config.clone()).await?;
+	try_join_all(listeners).await?;
+	Ok(())
+}
+
+pub async fn spawn_all(config: Config) -> Result<Vec<JoinHandle<()>>> {
 	let reqwest = reqwest::Client::new();
 	let database = Arc::new(database::Client::new(database::init_pool(
 		config.database.clone(),
@@ -47,17 +53,6 @@ pub async fn _bootstrap(config: Config) -> Result<()> {
 		currencies::USD,
 	));
 
-	let listeners = spawn_all(config.clone(), reqwest, database, coinmarketcap).await?;
-	try_join_all(listeners).await?;
-	Ok(())
-}
-
-pub async fn spawn_all(
-	config: Config,
-	reqwest: reqwest::Client,
-	database: Arc<database::Client>,
-	coinmarketcap: Arc<coinmarketcap::Client>,
-) -> Result<Vec<JoinHandle<()>>> {
 	let mut handles = vec![
 		Logger.spawn(event_bus::event_consumer(config.amqp.clone(), "logger").await?),
 		quote_syncer::Projector::new(database.clone(), coinmarketcap)

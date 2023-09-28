@@ -1,4 +1,4 @@
-use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
+use diesel::{ExpressionMethods, JoinOnDsl, OptionalExtension, QueryDsl, RunQueryDsl};
 use domain::{GithubPullRequestNumber, GithubRepoId};
 use infrastructure::{
 	contextualized_error::IntoContextualizedError,
@@ -6,24 +6,21 @@ use infrastructure::{
 	database::{
 		schema::{
 			closing_issues, github_pull_request_commits, github_pull_request_reviews,
-			github_pull_requests,
+			github_pull_requests, github_repos,
 		},
 		Result,
 	},
 };
 
-use super::PullRequest;
-use crate::{
-	diesel::Connection,
-	models::{GithubPullRequest, IdentifiableRepository},
-};
+use super::{pull_request::GithubPullRequest, PullRequest as GithubFullPullRequest};
+use crate::{diesel::Connection, models::IdentifiableRepository};
 
 pub trait Repository: Send + Sync {
-	fn upsert(&self, pull_request: PullRequest) -> Result<()>;
+	fn upsert(&self, pull_request: GithubFullPullRequest) -> Result<()>;
 }
 
 impl Repository for database::Client {
-	fn upsert(&self, pull_request: PullRequest) -> Result<()> {
+	fn upsert(&self, pull_request: GithubFullPullRequest) -> Result<()> {
 		let mut connection = self.connection()?;
 
 		connection
@@ -85,20 +82,44 @@ impl Repository for database::Client {
 impl IdentifiableRepository<GithubPullRequest, (GithubRepoId, GithubPullRequestNumber)>
 	for database::Client
 {
-	fn exists(
+	fn find(
 		&self,
 		(repo_id, number): (GithubRepoId, GithubPullRequestNumber),
-	) -> database::Result<bool> {
+	) -> database::Result<Option<GithubPullRequest>> {
 		let mut connection = self.connection()?;
-		diesel::select(::diesel::dsl::exists(
-			github_pull_requests::table
-				.filter(github_pull_requests::repo_id.eq(repo_id))
-				.filter(github_pull_requests::number.eq(number)),
-		))
-		.get_result(&mut *connection)
-		.err_with_context(format!(
-			"exists github_pull_requests where repo_id={repo_id:?} and number={number:?}",
-		))
-		.map_err(Into::into)
+		github_pull_requests::table
+			.filter(github_pull_requests::repo_id.eq(repo_id))
+			.filter(github_pull_requests::number.eq(number))
+			.get_result(&mut *connection)
+			.optional()
+			.err_with_context(format!(
+				"exists github_pull_requests where repo_id={repo_id:?} and number={number:?}",
+			))
+			.map_err(Into::into)
+	}
+}
+
+impl IdentifiableRepository<GithubPullRequest, (String, String, GithubPullRequestNumber)>
+	for database::Client
+{
+	fn find(
+		&self,
+		(repo_owner, repo_name, number): (String, String, GithubPullRequestNumber),
+	) -> database::Result<Option<GithubPullRequest>> {
+		let mut connection = self.connection()?;
+		github_pull_requests::table
+			.inner_join(
+				github_repos::table.on(github_repos::id.eq(github_pull_requests::repo_id)),
+			)
+			.filter(github_repos::owner.eq(&repo_owner))
+			.filter(github_repos::name.eq(&repo_name))
+			.filter(github_pull_requests::number.eq(number))
+			.select(github_pull_requests::all_columns)
+			.get_result(&mut *connection)
+			.optional()
+			.err_with_context(format!(
+				"exists github_pull_requests join github_repos where repo_owner={repo_owner}, repo_name={repo_name} and number={number}",
+			))
+			.map_err(Into::into)
 	}
 }

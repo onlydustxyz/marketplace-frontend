@@ -26,7 +26,8 @@ pub trait Indexer<Id>: Send + Sync + fmt::Display
 where
 	Id: Indexable,
 {
-	async fn index(&self, id: &Id) -> Result<()>;
+	type Output;
+	async fn index(&self, id: &Id) -> Result<Self::Output>;
 }
 
 #[async_trait]
@@ -59,11 +60,13 @@ where
 	Id: Indexable,
 	T: Clone + Send + Sync,
 {
-	async fn index(&self, id: &Id) -> Result<()> {
+	type Output = T;
+
+	async fn index(&self, id: &Id) -> Result<Self::Output> {
 		let data = self.crawler.fetch_modified_data(id).await?;
 		self.projector.perform_projections(data.clone()).await?;
-		self.crawler.ack(id, data)?;
-		Ok(())
+		self.crawler.ack(id, data.clone())?;
+		Ok(data)
 	}
 }
 

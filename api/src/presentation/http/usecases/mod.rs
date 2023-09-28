@@ -3,6 +3,7 @@ use rocket::{http::Status, request::Outcome, Orbit, Rocket};
 
 mod budget;
 mod dusty_bot;
+pub mod indexer;
 mod payment;
 mod project;
 mod sponsor;

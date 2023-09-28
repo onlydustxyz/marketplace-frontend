@@ -30,6 +30,20 @@ pub fn impl_derive(derive_input: syn::DeriveInput) -> TokenStream {
 					.map_err(Into::into)
 			}
 
+
+			fn try_find_by_id(
+				connection: &mut ::diesel::pg::PgConnection,
+				id: <Self as ::diesel::associations::Identifiable>::Id,
+			) -> ::infrastructure::database::Result<Option<Self>> {
+				use ::diesel::{associations::HasTable, QueryDsl, RunQueryDsl, OptionalExtension};
+				use infrastructure::contextualized_error::IntoContextualizedError;
+				<Self as HasTable>::table().find(id.clone()).first(&mut *connection)
+					.optional()
+					.err_with_context(format!("find {} where id={id:?}", stringify!(#name)))
+					.map_err(Into::into)
+			}
+
+
 			fn list(
 				connection: &mut ::diesel::pg::PgConnection,
 			) -> ::infrastructure::database::Result<Vec<Self>> {

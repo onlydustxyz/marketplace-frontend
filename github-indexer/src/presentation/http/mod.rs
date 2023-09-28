@@ -24,7 +24,8 @@ pub fn serve(
 			routes![
 				routes::repo::index,
 				routes::issue::index,
-				routes::pull_request::index,
+				routes::pull_request::index_by_repo_id,
+				routes::pull_request::index_by_repo_owner_name,
 				routes::user::index
 			],
 		)
