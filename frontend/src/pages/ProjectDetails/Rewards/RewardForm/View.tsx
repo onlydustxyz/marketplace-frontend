@@ -7,12 +7,7 @@ import WorkEstimation from "./WorkEstimation";
 import { filter } from "lodash";
 import { ReactElement, ReactNode, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  ContributionFragment,
-  GithubIssueStatus,
-  GithubPullRequestStatus,
-  WorkItemFragment,
-} from "src/__generated/graphql";
+import { ContributionFragment, GithubIssueStatus, WorkItemFragment } from "src/__generated/graphql";
 import addContributionImg from "src/assets/img/add-contribution.png";
 import pickContributorImg from "src/assets/img/pick-contributor.png";
 import Button, { ButtonSize, ButtonType, Width } from "src/components/Button";
@@ -30,6 +25,7 @@ import { WorkItem } from "./WorkItem";
 import WorkItemSidePanel from "./WorkItemSidePanel";
 import { Contributor } from "./types";
 import useWorkItems from "./useWorkItems";
+import { GithubPullRequestStatus } from "src/components/GithubCard/GithubPullRequest/GithubPullRequest";
 
 interface Props {
   projectId: string;

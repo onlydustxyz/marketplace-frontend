@@ -37,6 +37,7 @@ type Props = {
   addContribution: (contribution: ContributionFragment) => void;
   ignoreContribution: (contribution: ContributionFragment) => void;
   unignoreContribution: (contribution: ContributionFragment) => void;
+  contributorId: number;
 };
 
 export default function View({
@@ -47,6 +48,7 @@ export default function View({
   addContribution,
   ignoreContribution,
   unignoreContribution,
+  contributorId,
 }: Props) {
   const { T } = useIntl();
   const { watch, resetField } = useFormContext();
@@ -119,7 +121,7 @@ export default function View({
           )}
         </div>
         {addOtherIssueEnabled && type !== WorkItemType.CodeReview && (
-          <OtherIssueInput projectId={projectId} type={type} addWorkItem={addWorkItem} />
+          <OtherIssueInput projectId={projectId} type={type} addWorkItem={addWorkItem} contributorId={contributorId} />
         )}
         {searchEnabled && (
           <FormInput

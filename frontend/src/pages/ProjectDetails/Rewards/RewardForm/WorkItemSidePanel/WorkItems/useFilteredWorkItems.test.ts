@@ -1,5 +1,6 @@
-import { ContributionFragment, GithubPullRequestStatus, WorkItemType } from "src/__generated/graphql";
+import { ContributionFragment, WorkItemType } from "src/__generated/graphql";
 import useFilteredWorkItems from "./useFilteredWorkItems";
+import { GithubPullRequestStatus } from "src/components/GithubCard/GithubPullRequest/GithubPullRequest";
 
 const workItems: ContributionFragment[] = [
   {

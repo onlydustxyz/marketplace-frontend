@@ -159,17 +159,8 @@ class GithubIssues {
 }
 
 class GithubPullRequest {
-   author: GithubUser!
-   closedAt: DateTimeUtc
-   createdAt: DateTimeUtc!
-   htmlUrl: Url!
+   githubPullRequest: GithubPullRequests
    id: Int!
-   mergedAt: DateTimeUtc
-   number: Int!
-   repoId: Int!
-   status: GithubPullRequestStatus!
-   title: String!
-   updatedAt: DateTimeUtc!
 }
 
 class GithubPullRequestCommits {
@@ -573,7 +564,7 @@ Contributions --* WorkItems
 GithubIssue -- GithubUser
 GithubIssues -- GithubRepos
 GithubIssues --* ApiClosedByPullRequests
-GithubPullRequest -- GithubUser
+GithubPullRequest -- GithubPullRequests
 GithubPullRequestCommits -- GithubUsers
 GithubPullRequestReviews -- GithubPullRequests
 GithubPullRequestReviews -- GithubUsers

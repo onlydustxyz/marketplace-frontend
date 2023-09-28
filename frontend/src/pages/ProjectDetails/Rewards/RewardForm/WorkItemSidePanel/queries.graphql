@@ -20,9 +20,11 @@ query fetchIssue($repoOwner: String!, $repoName: String!, $issueNumber: Int!) {
   }
 }
 
-query fetchPullRequest($repoOwner: String!, $repoName: String!, $prNumber: Int!) {
+query fetchPullRequest($repoOwner: String!, $repoName: String!, $prNumber: Int!, $githubUserId: bigint!) {
   fetchPullRequest(repoOwner: $repoOwner, repoName: $repoName, prNumber: $prNumber) {
-    ...LiveGithubPullRequest
+    githubPullRequest {
+      ...GithubPullRequestWithCommits
+    }
   }
 }
 
