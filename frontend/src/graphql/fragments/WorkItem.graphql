@@ -9,7 +9,7 @@ fragment WorkItem on WorkItems {
     ...GithubIssue
   }
   githubPullRequest {
-    ...GithubPullRequest
+    ...GithubPullRequestWithCommits
   }
   githubCodeReview {
     ...GithubCodeReview

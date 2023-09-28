@@ -28,7 +28,7 @@ fragment PaymentRequestDetails on PaymentRequests {
   }
 }
 
-query PaymentRequestDetails($id: uuid!) {
+query PaymentRequestDetails($id: uuid!, $githubUserId: bigint!) {
   paymentRequests(where: { id: { _eq: $id } }) {
     ...PaymentRequestDetails
   }
