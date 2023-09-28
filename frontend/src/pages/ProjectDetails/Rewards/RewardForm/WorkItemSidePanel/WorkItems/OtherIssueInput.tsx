@@ -3,9 +3,7 @@ import { useMemo } from "react";
 import { useFormContext, useFormState } from "react-hook-form";
 import {
   GithubIssueFragment,
-  GithubPullRequestWithCommitsFragment,
   LiveGithubIssueFragment,
-  LiveGithubPullRequestFragment,
   WorkItemFragment,
   WorkItemType,
   useFetchIssueLazyQuery,
@@ -31,9 +29,10 @@ type Props = {
   projectId: string;
   type: WorkItemType;
   addWorkItem: (workItem: WorkItemFragment) => void;
+  contributorId: number;
 };
 
-export default function OtherIssueInput({ type, addWorkItem }: Props) {
+export default function OtherIssueInput({ type, addWorkItem, contributorId }: Props) {
   const { T } = useIntl();
   const inputName = type === WorkItemType.Issue ? "otherIssueLink" : "otherPullRequestLink";
   const tKey = type === WorkItemType.Issue ? "issues" : "pullRequests";
@@ -63,7 +62,7 @@ export default function OtherIssueInput({ type, addWorkItem }: Props) {
   const [fetchPullRequest] = useFetchPullRequestLazyQuery({
     onCompleted: data => {
       if (data.fetchPullRequest) {
-        addWorkItem(pullRequestToWorkItem(livePullRequestToCached(data.fetchPullRequest)));
+        addWorkItem(pullRequestToWorkItem(data.fetchPullRequest.githubPullRequest));
         resetField(inputName);
       } else {
         setError(inputName, {
@@ -106,6 +105,7 @@ export default function OtherIssueInput({ type, addWorkItem }: Props) {
             repoOwner,
             repoName,
             prNumber: issueNumber,
+            githubUserId: contributorId,
           },
         });
 
@@ -161,15 +161,4 @@ export const liveIssueToCached = (issue: LiveGithubIssueFragment): GithubIssueFr
   __typename: "GithubIssues",
   assigneeIds: [],
   commentsCount: 0,
-});
-
-export const livePullRequestToCached = (
-  issue: LiveGithubPullRequestFragment
-): GithubPullRequestWithCommitsFragment => ({
-  ...issue,
-  __typename: "GithubPullRequests",
-  author: null,
-  commitsCount: { aggregate: { count: 0 } },
-  userCommitsCount: { aggregate: { count: 0 } },
-  contributorDetails: [],
 });

@@ -52,6 +52,7 @@ export function WorkItems({ type, projectId, contributorId, workItems, addWorkIt
       type={type}
       addWorkItem={addWorkItem}
       addContribution={addAndUnignoreContribution}
+      contributorId={contributorId}
       ignoreContribution={(contribution: ContributionFragment) =>
         contribution.id && ignoreContribution(projectId, contribution.id)
       }

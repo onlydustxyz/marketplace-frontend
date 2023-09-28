@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { GithubPullRequestStatus, GithubPullRequestWithCommitsFragment } from "src/__generated/graphql";
+import { GithubPullRequestWithCommitsFragment } from "src/__generated/graphql";
 import IssueClosed from "src/assets/icons/IssueClosed";
 import Card from "src/components/Card";
 import { GithubLink } from "src/components/GithubCard/GithubLink/GithubLink";
@@ -14,6 +14,12 @@ import displayRelativeDate from "src/utils/displayRelativeDate";
 import { parsePullRequestLink } from "src/utils/github";
 import { GithubActionButton } from "src/components/GithubCard/GithubActionButton/GithubActionButton";
 import { CommitsTooltip } from "./CommitsTooltip";
+
+export enum GithubPullRequestStatus {
+  Merged = "MERGED",
+  Open = "OPEN",
+  Closed = "CLOSED",
+}
 
 export enum Action {
   Add = "add",
@@ -91,8 +97,6 @@ export default function GithubPullRequest({
 
 function PullRequestStatus({ pullrequest }: { pullrequest: GithubPullRequestWithCommitsFragment }) {
   const { T } = useIntl();
-
-  console.log(pullrequest);
 
   switch (pullrequest.status) {
     case GithubPullRequestStatus.Closed:
