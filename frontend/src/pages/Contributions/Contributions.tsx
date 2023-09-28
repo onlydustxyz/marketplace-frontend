@@ -9,6 +9,7 @@ import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
 import { isInArray } from "src/utils/isInArray";
 // import IssueDraft from "src/assets/icons/IssueDraft";
+import { useLocalStorage } from "react-use";
 import IssueMerged from "src/assets/icons/IssueMerged";
 import ProgressCircle from "src/assets/icons/ProgressCircle";
 import StackLine from "src/assets/icons/StackLine";
@@ -29,27 +30,30 @@ function TabContents({ children }: PropsWithChildren) {
   return <div className="flex items-center gap-2 md:gap-1.5">{children}</div>;
 }
 
+const initialSort: Record<GithubContributionStatus, TableSort> = {
+  [GithubContributionStatus.InProgress]: {
+    column: TableColumns.Date,
+    direction: OrderBy.Desc,
+    orderBy: { createdAt: OrderBy.Desc },
+  },
+  [GithubContributionStatus.Completed]: {
+    column: TableColumns.Date,
+    direction: OrderBy.Desc,
+    orderBy: { closedAt: OrderBy.Desc },
+  },
+  [GithubContributionStatus.Canceled]: {
+    column: TableColumns.Date,
+    direction: OrderBy.Desc,
+    orderBy: { closedAt: OrderBy.Desc },
+  },
+};
+
 export default function Contributions() {
   const { T } = useIntl();
   const { githubUserId } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [sort, setSort] = useState<Record<GithubContributionStatus, TableSort>>({
-    [GithubContributionStatus.InProgress]: {
-      column: TableColumns.Date,
-      direction: OrderBy.Desc,
-      orderBy: { createdAt: OrderBy.Desc },
-    },
-    [GithubContributionStatus.Completed]: {
-      column: TableColumns.Date,
-      direction: OrderBy.Desc,
-      orderBy: { closedAt: OrderBy.Desc },
-    },
-    [GithubContributionStatus.Canceled]: {
-      column: TableColumns.Date,
-      direction: OrderBy.Desc,
-      orderBy: { closedAt: OrderBy.Desc },
-    },
-  });
+  const [sortStorage, setSortStorage] = useLocalStorage("contributions-table-sort", JSON.stringify(initialSort));
+  const [sort, setSort] = useState(sortStorage ? (JSON.parse(sortStorage) as typeof initialSort) : initialSort);
 
   const tab = searchParams.get("tab") as typeof tabValues[number] | null;
 
@@ -199,7 +203,13 @@ export default function Contributions() {
       show: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.InProgress),
       sort: sort[GithubContributionStatus.InProgress],
       onSort: sort => {
-        setSort(prevState => ({ ...prevState, [GithubContributionStatus.InProgress]: sort }));
+        setSort(prevState => {
+          const state = { ...prevState, [GithubContributionStatus.InProgress]: sort };
+
+          setSortStorage(JSON.stringify(state));
+
+          return state;
+        });
       },
     },
     {
@@ -216,7 +226,13 @@ export default function Contributions() {
       status: GithubContributionStatus.Completed,
       sort: sort[GithubContributionStatus.Completed],
       onSort: sort => {
-        setSort(prevState => ({ ...prevState, [GithubContributionStatus.Completed]: sort }));
+        setSort(prevState => {
+          const state = { ...prevState, [GithubContributionStatus.Completed]: sort };
+
+          setSortStorage(JSON.stringify(state));
+
+          return state;
+        });
       },
       show: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Completed),
     },
@@ -234,7 +250,13 @@ export default function Contributions() {
       status: GithubContributionStatus.Canceled,
       sort: sort[GithubContributionStatus.Canceled],
       onSort: sort => {
-        setSort(prevState => ({ ...prevState, [GithubContributionStatus.Canceled]: sort }));
+        setSort(prevState => {
+          const state = { ...prevState, [GithubContributionStatus.Canceled]: sort };
+
+          setSortStorage(JSON.stringify(state));
+
+          return state;
+        });
       },
       show: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Canceled),
     },
