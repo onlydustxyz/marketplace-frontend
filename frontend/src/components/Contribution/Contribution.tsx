@@ -31,12 +31,9 @@ export function Contribution({ contribution, isMobile = false }: Props) {
     ? GithubContributionIconStatus.Draft
     : ((githubIssue?.status ??
         githubPullRequest?.status ??
-        githubCodeReview?.githubPullRequest?.status ??
+        githubCodeReview?.status ??
         "") as GithubContributionIconStatusType);
-  const author = (githubIssue?.author ??
-    githubPullRequest?.author ??
-    githubCodeReview?.githubPullRequest?.author ??
-    "") as GithubUser;
+  const author = (githubIssue?.author ?? githubPullRequest?.author ?? githubCodeReview?.reviewer ?? "") as GithubUser;
 
   function renderReview() {
     if (githubPullRequest && status === GithubContributionIconStatus.Open) {
