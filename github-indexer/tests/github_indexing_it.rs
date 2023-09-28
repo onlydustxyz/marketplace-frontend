@@ -115,7 +115,7 @@ impl<'a> Test<'a> {
 				// Actual reviews
 				reviews::change_requested(
 					pull_requests::x1152().id,
-					GithubCodeReviewStatus::Pending,
+					GithubCodeReviewStatus::Completed,
 				),
 				reviews::commented(pull_requests::x1152().id, GithubCodeReviewStatus::Pending),
 				reviews::approved(pull_requests::x1152().id, GithubCodeReviewStatus::Completed),
@@ -158,7 +158,7 @@ impl<'a> Test<'a> {
 				// Actual reviews
 				reviews::change_requested(
 					pull_requests::x1152().id,
-					GithubCodeReviewStatus::Pending,
+					GithubCodeReviewStatus::Completed,
 				),
 				reviews::commented(pull_requests::x1152().id, GithubCodeReviewStatus::Pending),
 				reviews::approved(pull_requests::x1152().id, GithubCodeReviewStatus::Completed),
@@ -276,7 +276,7 @@ impl<'a> Test<'a> {
 				assert_eq!(contribution.repo_id, repos::marketplace().id);
 				assert_eq!(contribution.type_, ContributionType::CodeReview);
 				assert_eq!(contribution.user_id, users::ofux().id);
-				assert_eq!(contribution.status, ContributionStatus::InProgress);
+				assert_eq!(contribution.status, ContributionStatus::Complete);
 			}
 
 			// Code review by anthony (not approved)

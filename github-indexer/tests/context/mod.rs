@@ -53,7 +53,6 @@ impl<'a> Context<'a> {
 				location: true,
 			},
 			github: github.config.clone(),
-			..Default::default()
 		};
 
 		let (http_server, cron) = bootstrap(config.clone()).await?;

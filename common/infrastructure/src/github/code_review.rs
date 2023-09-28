@@ -40,6 +40,7 @@ impl TryIntoReview for (GithubPullRequestId, Review) {
 			}),
 			status: match review.state {
 				Some(ReviewState::Approved) => GithubCodeReviewStatus::Completed,
+				Some(ReviewState::ChangesRequested) => GithubCodeReviewStatus::Completed,
 				_ => GithubCodeReviewStatus::Pending,
 			},
 			submitted_at: review.submitted_at,

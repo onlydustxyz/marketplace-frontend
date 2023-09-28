@@ -80,8 +80,8 @@ pub fn assert_indexed(context: &mut Context, expected: Vec<GithubCodeReview>) ->
 	let mut reviews: Vec<models::github_pull_requests::Review> = github_pull_request_reviews::table
 		.order((
 			github_pull_request_reviews::dsl::pull_request_id.asc(),
-			github_pull_request_reviews::dsl::status.asc(),
 			github_pull_request_reviews::dsl::reviewer_id.asc(),
+			github_pull_request_reviews::dsl::status.asc(),
 		))
 		.load(&mut *connection)?;
 
