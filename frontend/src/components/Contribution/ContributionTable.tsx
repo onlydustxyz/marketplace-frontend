@@ -3,7 +3,7 @@ import classNames from "classnames";
 import { ComponentProps, PropsWithChildren, ReactNode, useState } from "react";
 
 import atomLogo from "assets/img/atom.png";
-import { GetAllContributionsQuery } from "src/__generated/graphql";
+import { ContributionsOrderBy, GetAllContributionsQuery, OrderBy } from "src/__generated/graphql";
 import IssueOpen from "src/assets/icons/IssueOpen";
 import { Contribution } from "src/components/Contribution/Contribution";
 import { ContributionCard } from "src/components/Contribution/ContributionCard";
@@ -23,12 +23,26 @@ import StackLine from "src/icons/StackLine";
 import TimeLine from "src/icons/TimeLine";
 import SortingArrow from "src/pages/ProjectDetails/Contributors/ContributorsTable/SortingArrow";
 import {
+  DeepPartial,
   GithubContributionIconStatus,
   GithubContributionIconStatusType,
   GithubContributionStatus,
   GithubContributionType,
 } from "src/types";
 import { useMediaQuery } from "usehooks-ts";
+
+export enum TableColumns {
+  Date = "date",
+  Project = "project",
+  Id = "id",
+  Linked = "linked",
+}
+
+export type TableSort = {
+  column: TableColumns;
+  direction: OrderBy;
+  orderBy: { [K in keyof Partial<ContributionsOrderBy>]: DeepPartial<ContributionsOrderBy[K]> };
+};
 
 function Message({ children }: PropsWithChildren) {
   return <p className="whitespace-pre-line text-center font-walsheim text-sm text-greyscale-50">{children}</p>;
@@ -56,7 +70,7 @@ function Loader() {
   );
 }
 
-export default function ContributionTable({
+export function ContributionTable({
   data,
   description,
   error,
@@ -67,6 +81,8 @@ export default function ContributionTable({
   fullTable = true,
   status,
   title,
+  sort,
+  onSort,
 }: {
   data?: GetAllContributionsQuery;
   description: string;
@@ -78,12 +94,17 @@ export default function ContributionTable({
   fullTable?: boolean;
   status: GithubContributionStatus;
   title: string;
+  sort: TableSort;
+  onSort: (sort: TableSort) => void;
 }) {
   const { T } = useIntl();
   const [showAll, setShowAll] = useState(false);
 
   // Used for performance optimization, avoid rendering large invisible DOM
   const isLg = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.lg}px)`);
+
+  const sortDirection = sort.direction === OrderBy.Asc ? "up" : "down";
+  const newSortDirection = sort.direction === OrderBy.Asc ? OrderBy.Desc : OrderBy.Asc;
 
   function renderMobileContent() {
     if (loading) {
@@ -242,48 +263,84 @@ export default function ContributionTable({
             <HeaderLine>
               <HeaderCell
                 horizontalMargin
-                // onClick={() => applySorting(Field.Date, false)}
+                onClick={() => {
+                  const field = status === GithubContributionStatus.InProgress ? "createdAt" : "closedAt";
+
+                  onSort({
+                    column: TableColumns.Date,
+                    direction: newSortDirection,
+                    orderBy: { [field]: newSortDirection },
+                  });
+                }}
               >
                 <TimeLine />
                 <span>{T("contributions.table.date")}</span>
-                <SortingArrow
-                  direction="up"
-                  visible={true}
-                  // direction={sorting.ascending ? "up" : "down"}
-                  // visible={sorting.field === Field.Date}
-                />
+                <SortingArrow direction={sortDirection} visible={sort.column === TableColumns.Date} />
               </HeaderCell>
               <HeaderCell
                 width={HeaderCellWidth.Quarter}
                 horizontalMargin
-                // onClick={() => applySorting(Field.RewardId, true)}
+                onClick={() => {
+                  onSort({
+                    column: TableColumns.Project,
+                    direction: newSortDirection,
+                    orderBy: { project: { name: newSortDirection }, githubRepo: { name: newSortDirection } },
+                  });
+                }}
               >
                 <Folder3Line />
                 <span>{T("contributions.table.projectRepo")}</span>
-                {/* <SortingArrow
-                  direction={sorting.ascending ? "up" : "down"}
-                  visible={sorting.field === Field.RewardId}
-                /> */}
+                <SortingArrow direction={sortDirection} visible={sort.column === TableColumns.Project} />
               </HeaderCell>
               <HeaderCell
                 width={HeaderCellWidth.Half}
-                // onClick={() => applySorting(Field.Amount, false)}
                 horizontalMargin
+                onClick={() => {
+                  // TODO: handle client side
+                  onSort({
+                    column: TableColumns.Id,
+                    direction: newSortDirection,
+                    orderBy: {
+                      githubCodeReview: { githubPullRequest: { number: newSortDirection } },
+                      githubIssue: { number: newSortDirection },
+                      githubPullRequest: { number: newSortDirection },
+                    },
+                  });
+                }}
               >
                 <StackLine />
                 <span>{T("contributions.table.contribution")}</span>
-                {/* <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.Amount} /> */}
+                <SortingArrow direction={sortDirection} visible={sort.column === TableColumns.Id} />
               </HeaderCell>
               <HeaderCell
-                // onClick={() => applySorting(Field.Status, true)}
                 horizontalMargin
                 className="justify-end"
+                onClick={() => {
+                  // TODO: handle client side
+                  //   onSort({
+                  //     column: TableColumns.Linked,
+                  //     direction: newSortDirection,
+                  //     orderBy: {
+                  //       githubCodeReview: {
+                  //         githubPullRequest: {
+                  //           closingIssuesAggregate: { count: newSortDirection },
+                  //           codeReviewsAggregate: { count: newSortDirection },
+                  //         },
+                  //       },
+                  //       githubIssue: { closedByPullRequestsAggregate: { count: newSortDirection } },
+                  //       githubPullRequest: {
+                  //         closingIssuesAggregate: { count: newSortDirection },
+                  //         codeReviewsAggregate: { count: newSortDirection },
+                  //       },
+                  //     },
+                  //   });
+                }}
               >
                 <span>
                   <IssueOpen className="h-3 w-3" />
                 </span>
                 <span>{T("contributions.table.linkedTo")}</span>
-                {/* <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.Status} /> */}
+                <SortingArrow direction={sortDirection} visible={sort.column === TableColumns.Linked} />
               </HeaderCell>
             </HeaderLine>
           }

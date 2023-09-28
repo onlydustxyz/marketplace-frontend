@@ -1,4 +1,4 @@
-import { GithubIssueStatus, GithubPullRequestStatus } from "src/__generated/graphql";
+import { GetAllContributionsQuery, GithubIssueStatus, GithubPullRequestStatus } from "src/__generated/graphql";
 import { SortingFields } from "./hooks/useRewardSorting";
 
 export type Branded<T, B> = T & { __brand: B };
@@ -7,6 +7,11 @@ export type Branded<T, B> = T & { __brand: B };
 export type ArrayElement<ArrayType extends readonly unknown[]> = ArrayType extends readonly (infer ElementType)[]
   ? ElementType
   : never;
+
+//https://stackoverflow.com/a/47914631
+export type DeepPartial<T> = {
+  [P in keyof T]?: DeepPartial<T[P]>;
+};
 
 export enum HasuraUserRole {
   Public = "public",
@@ -168,3 +173,5 @@ export const GithubContributionIconStatus = {
 
 export type GithubContributionIconStatusType =
   typeof GithubContributionIconStatus[keyof typeof GithubContributionIconStatus];
+
+export type QueryContribution = GetAllContributionsQuery["contributions"][number];

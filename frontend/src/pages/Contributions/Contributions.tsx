@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 
 import { ContributionsOrderBy, OrderBy, useGetAllContributionsQuery } from "src/__generated/graphql";
 import CancelCircleLine from "src/assets/icons/CancelCircleLine";
-import ContributionTable from "src/components/Contribution/ContributionTable";
+import { ContributionTable, TableColumns, type TableSort } from "src/components/Contribution/ContributionTable";
 import { Tabs } from "src/components/Tabs/Tabs";
 import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
@@ -33,6 +33,23 @@ export default function Contributions() {
   const { T } = useIntl();
   const { githubUserId } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
+  const [sort, setSort] = useState<Record<GithubContributionStatus, TableSort>>({
+    [GithubContributionStatus.InProgress]: {
+      column: TableColumns.Date,
+      direction: OrderBy.Desc,
+      orderBy: { createdAt: OrderBy.Desc },
+    },
+    [GithubContributionStatus.Completed]: {
+      column: TableColumns.Date,
+      direction: OrderBy.Desc,
+      orderBy: { closedAt: OrderBy.Desc },
+    },
+    [GithubContributionStatus.Canceled]: {
+      column: TableColumns.Date,
+      direction: OrderBy.Desc,
+      orderBy: { closedAt: OrderBy.Desc },
+    },
+  });
 
   const tab = searchParams.get("tab") as typeof tabValues[number] | null;
 
@@ -44,7 +61,7 @@ export default function Contributions() {
     error: inProgressError,
   } = useGetAllContributionsQuery({
     variables: {
-      orderBy: { createdAt: OrderBy.Desc } as ContributionsOrderBy,
+      orderBy: sort[GithubContributionStatus.InProgress].orderBy as ContributionsOrderBy,
       githubUserId,
       status: GithubContributionStatus.InProgress,
     },
@@ -58,7 +75,7 @@ export default function Contributions() {
     error: completedError,
   } = useGetAllContributionsQuery({
     variables: {
-      orderBy: { createdAt: OrderBy.Desc } as ContributionsOrderBy,
+      orderBy: sort[GithubContributionStatus.Completed].orderBy as ContributionsOrderBy,
       githubUserId,
       status: GithubContributionStatus.Completed,
     },
@@ -72,7 +89,7 @@ export default function Contributions() {
     error: canceledError,
   } = useGetAllContributionsQuery({
     variables: {
-      orderBy: { createdAt: OrderBy.Desc } as ContributionsOrderBy,
+      orderBy: sort[GithubContributionStatus.Canceled].orderBy as ContributionsOrderBy,
       githubUserId,
       status: GithubContributionStatus.Canceled,
     },
@@ -180,6 +197,10 @@ export default function Contributions() {
       error: inProgressError,
       status: GithubContributionStatus.InProgress,
       show: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.InProgress),
+      sort: sort[GithubContributionStatus.InProgress],
+      onSort: sort => {
+        setSort(prevState => ({ ...prevState, [GithubContributionStatus.InProgress]: sort }));
+      },
     },
     {
       id: "completed_contributions_table",
@@ -193,6 +214,10 @@ export default function Contributions() {
       loading: completedLoading,
       error: completedError,
       status: GithubContributionStatus.Completed,
+      sort: sort[GithubContributionStatus.Completed],
+      onSort: sort => {
+        setSort(prevState => ({ ...prevState, [GithubContributionStatus.Completed]: sort }));
+      },
       show: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Completed),
     },
     {
@@ -207,6 +232,10 @@ export default function Contributions() {
       loading: canceledLoading,
       error: canceledError,
       status: GithubContributionStatus.Canceled,
+      sort: sort[GithubContributionStatus.Canceled],
+      onSort: sort => {
+        setSort(prevState => ({ ...prevState, [GithubContributionStatus.Canceled]: sort }));
+      },
       show: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Canceled),
     },
   ];
