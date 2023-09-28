@@ -43,12 +43,12 @@ export function ContributionLinked({
     }
 
     case GithubContributionType.PullRequest: {
-      const { closingIssues } = githubPullRequest ?? {};
+      const { closingIssues, codeReviews } = githubPullRequest ?? {};
 
-      if (closingIssues?.length) {
+      if (closingIssues?.length || codeReviews?.length) {
         return (
           <>
-            {closingIssues.map(({ githubIssue }) => {
+            {closingIssues?.map(({ githubIssue }) => {
               const { id, number, status, title, author, htmlUrl } = githubIssue ?? {};
 
               return (
@@ -61,6 +61,24 @@ export function ContributionLinked({
                   title={title ?? ""}
                   url={htmlUrl ?? ""}
                   author={author as GithubUser}
+                />
+              );
+            })}
+
+            {codeReviews?.map(codeReview => {
+              const { id, reviewer, status } = codeReview ?? {};
+              const { number, title, htmlUrl } = githubPullRequest ?? {};
+
+              return (
+                <ContributionBadge
+                  key={id}
+                  id={id ?? ""}
+                  number={number}
+                  type={GithubContributionType.CodeReview}
+                  status={status as GithubContributionIconStatusType}
+                  title={title ?? ""}
+                  url={htmlUrl ?? ""}
+                  author={reviewer as GithubUser}
                 />
               );
             })}
