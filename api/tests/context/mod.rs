@@ -3,7 +3,6 @@ use std::{env, sync::Arc};
 use anyhow::Result;
 use api::{
 	domain::projectors::{self, projections},
-	presentation::bootstrap,
 	Config,
 };
 use domain::{CompositePublisher, Event, EventPublisher, Publisher};
@@ -14,6 +13,7 @@ use rstest::fixture;
 use testcontainers::clients::Cli;
 use testing::context::{amqp, coinmarketcap, database, github};
 use tokio::task::JoinHandle;
+use tokio_cron_scheduler::Job;
 
 pub mod environment;
 pub mod indexer;
@@ -39,15 +39,17 @@ pub struct Context<'a> {
 	pub indexer: indexer::Context<'a>,
 	pub web3: web3::Context<'a>,
 	pub coinmarketcap: coinmarketcap::Context<'a>,
-	pub quotes_syncer: api::presentation::cron::quotes_syncer::Cron,
+	pub quotes_syncer: Job,
 	pub event_publisher: Arc<dyn Publisher<Event>>,
-	_event_listeners: Vec<JoinHandle<()>>,
+	_event_listeners: JoinHandle<Result<()>>,
 	_environment: environment::Context,
 }
 
 impl<'a> Context<'a> {
 	pub async fn new(docker: &'a Cli) -> Result<Context<'a>> {
 		tracing_subscriber::fmt::init();
+
+		let environment = environment::Context::new();
 
 		let database = database::Context::new(docker)?;
 		let amqp = amqp::Context::new(docker, vec![], vec![EXCHANGE_NAME]).await?;
@@ -111,6 +113,10 @@ impl<'a> Context<'a> {
 			coinmarketcap: coinmarketcap.config.clone(),
 		};
 
+		let event_listeners = tokio::spawn(api::presentation::event_listeners::_bootstrap(
+			config.clone(),
+		));
+
 		let event_publisher = CompositePublisher::new(vec![
 			Arc::new(EventPublisher::new(
 				projectors::event_store::Projector::new(database.client.clone()),
@@ -133,10 +139,9 @@ impl<'a> Context<'a> {
 			))),
 		]);
 
-		let (http_server, event_listeners, cron) = bootstrap(config.clone()).await?;
-
 		Ok(Self {
-			http_client: Client::tracked(http_server).await?,
+			http_client: Client::tracked(api::presentation::http::bootstrap(config.clone()).await?)
+				.await?,
 			database,
 			amqp,
 			simple_storage,
@@ -145,16 +150,17 @@ impl<'a> Context<'a> {
 			indexer,
 			web3,
 			coinmarketcap,
-			quotes_syncer: cron,
+			quotes_syncer: api::presentation::cron::quotes_syncer::bootstrap(config.clone())
+				.await?,
 			event_publisher: Arc::new(event_publisher),
 			_event_listeners: event_listeners,
-			_environment: environment::Context::new(),
+			_environment: environment,
 		})
 	}
 }
 
 impl<'a> Drop for Context<'a> {
 	fn drop(&mut self) {
-		self._event_listeners.iter().for_each(JoinHandle::abort);
+		self._event_listeners.abort();
 	}
 }

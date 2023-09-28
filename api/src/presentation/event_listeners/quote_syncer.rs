@@ -31,7 +31,7 @@ impl EventListener<Event> for Projector {
 							.quote_service
 							.fetch_conversion_rate(currency)
 							.await
-							.map_err(SubscriberCallbackError::Discard)?;
+							.map_err(SubscriberCallbackError::Fatal)?;
 
 						self.quotes_repository.insert(CryptoUsdQuote {
 							currency: code,

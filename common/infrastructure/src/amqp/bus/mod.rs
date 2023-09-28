@@ -7,10 +7,9 @@ use lapin::{
 	publisher_confirm::Confirmation,
 	BasicProperties, Channel, Connection, Consumer,
 };
-use olog::{error, IntoField};
+use olog::error;
 use thiserror::Error;
 use tokio::sync::{Mutex, RwLock};
-use tokio_retry::{strategy::FixedInterval, Retry};
 use tokio_stream::StreamExt;
 
 use super::{Config, UniqueMessage};
@@ -184,8 +183,8 @@ lazy_static! {
 async fn connect(config: Config) -> Result<Arc<Connection>, Error> {
 	let mut guard = CONNECTION.lock().await;
 	match guard.as_ref().and_then(Weak::upgrade) {
-		Some(connection) => Ok(connection),
-		None => {
+		Some(connection) if connection.status().connected() => Ok(connection),
+		_ => {
 			let connection = Arc::new(_do_connect(config).await?);
 			*guard = Some(Arc::downgrade(&connection));
 			Ok(connection)
@@ -195,25 +194,6 @@ async fn connect(config: Config) -> Result<Arc<Connection>, Error> {
 
 /// This function actually connects to RabbitMQ and must be called only once
 async fn _do_connect(config: Config) -> Result<Connection, Error> {
-	let retry_strategy = FixedInterval::from_millis(config.connection_retry_interval_ms)
-		.take(config.connection_retry_count);
-
-	let connection = Retry::spawn(retry_strategy, || async {
-		Connection::connect(&config.url, Default::default()).await.map_err(|error| {
-			error!(
-				error = error.to_field(),
-				"Failed to connect to RabbitMQ. Retrying in {}ms for a maximum of {} attempts.",
-				config.connection_retry_interval_ms,
-				config.connection_retry_count
-			);
-			error
-		})
-	})
-	.await?;
-	connection.on_error(|error| {
-		error!(error = error.to_field(), "Lost connection to RabbitMQ");
-		std::process::exit(1);
-	});
-
+	let connection = Connection::connect(&config.url, Default::default()).await?;
 	Ok(connection)
 }

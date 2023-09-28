@@ -2,20 +2,41 @@ pub mod logger;
 pub mod quote_syncer;
 pub mod webhook;
 
-use std::sync::Arc;
+use std::{sync::Arc, time::Duration};
 
 use anyhow::Result;
 use domain::{currencies, EventListener, LogErr, Message, Subscriber, SubscriberCallbackError};
+use futures::future::try_join_all;
 use infrastructure::{amqp::UniqueMessage, coinmarketcap, database, event_bus};
-use olog::IntoField;
+use olog::{error, IntoField};
 use tokio::task::JoinHandle;
+use tokio_cron_scheduler::Job;
+use tokio_retry::{strategy::FixedInterval, Retry};
 use url::{ParseError, Url};
 use webhook::EventWebHook;
 
 use self::logger::Logger;
 use crate::Config;
 
-pub async fn bootstrap(config: Config) -> Result<Vec<JoinHandle<()>>> {
+pub async fn bootstrap(config: Config) -> Result<Job> {
+	Ok(Job::new_one_shot_async(
+		Duration::ZERO,
+		move |_id, _lock| {
+			let cloned_config = config.clone();
+			Box::pin(async move {
+				Retry::spawn(FixedInterval::from_millis(5000), || async {
+					_bootstrap(cloned_config.clone()).await.log_err(|e| {
+						error!(error = e.to_field(), "Error in event listeners bootstrap")
+					})
+				})
+				.await
+				.unwrap()
+			})
+		},
+	)?)
+}
+
+pub async fn _bootstrap(config: Config) -> Result<()> {
 	info!("Bootstrapping event listeners");
 	let reqwest = reqwest::Client::new();
 	let database = Arc::new(database::Client::new(database::init_pool(
@@ -26,7 +47,9 @@ pub async fn bootstrap(config: Config) -> Result<Vec<JoinHandle<()>>> {
 		currencies::USD,
 	));
 
-	spawn_all(config, reqwest, database, coinmarketcap).await
+	let listeners = spawn_all(config.clone(), reqwest, database, coinmarketcap).await?;
+	try_join_all(listeners).await?;
+	Ok(())
 }
 
 pub async fn spawn_all(

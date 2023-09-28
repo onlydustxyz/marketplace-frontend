@@ -1,4 +1,5 @@
 mod context;
+mod fixtures;
 mod models;
 
 use anyhow::Result;
@@ -12,7 +13,10 @@ use rust_decimal::Decimal;
 use rust_decimal_macros::dec;
 use testcontainers::clients::Cli;
 
-use crate::context::{docker, Context};
+use crate::{
+	context::{docker, Context},
+	fixtures::job::Runnable,
+};
 
 #[macro_use]
 extern crate diesel;
@@ -58,7 +62,7 @@ impl<'a> Test<'a> {
 
 		// When
 		let before = Utc::now().naive_utc();
-		self.context.quotes_syncer.run_once().await;
+		self.context.quotes_syncer.run().await?;
 		let after = Utc::now().naive_utc();
 
 		// Then

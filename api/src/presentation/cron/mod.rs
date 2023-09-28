@@ -1,8 +1,13 @@
 use anyhow::Result;
+use tokio_cron_scheduler::JobScheduler;
 
-use crate::Config;
+use crate::{presentation::event_listeners, Config};
+
 pub mod quotes_syncer;
 
-pub fn bootstrap(config: Config) -> Result<quotes_syncer::Cron> {
-	quotes_syncer::bootstrap(config)
+pub async fn bootstrap(config: Config) -> Result<JobScheduler> {
+	let scheduler = JobScheduler::new().await?;
+	scheduler.add(quotes_syncer::bootstrap(config.clone()).await?).await?;
+	scheduler.add(event_listeners::bootstrap(config.clone()).await?).await?;
+	Ok(scheduler)
 }

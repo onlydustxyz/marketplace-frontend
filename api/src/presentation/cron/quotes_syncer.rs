@@ -1,18 +1,24 @@
-use std::{
-	sync::Arc,
-	time::{Duration, Instant},
-};
+use std::{sync::Arc, time::Duration};
 
 use anyhow::Result;
 use domain::currencies;
 use infrastructure::{coinmarketcap, database};
-use olog::{error, info, IntoField};
+use olog::info;
+use tokio::time::Instant;
+use tokio_cron_scheduler::Job;
 
 use crate::{application::quotes::sync::Usecase, Config};
 
-pub fn bootstrap(config: Config) -> Result<Cron> {
-	info!("Bootstrapping quotes_syncer");
+pub async fn bootstrap(config: Config) -> Result<Job> {
+	let job = Job::new_repeated_async(sleep_duration(), move |_id, _lock| {
+		let cloned_config = config.clone();
+		Box::pin(async move { _bootstrap(cloned_config.clone()).await.unwrap() })
+	})?;
 
+	Ok(job)
+}
+
+async fn _bootstrap(config: Config) -> Result<()> {
 	let database = Arc::new(database::Client::new(database::init_pool(
 		config.database.clone(),
 	)?));
@@ -22,37 +28,17 @@ pub fn bootstrap(config: Config) -> Result<Cron> {
 		currencies::USD,
 	));
 
-	Ok(Cron {
-		usecase: Usecase::new(database, coinmarketcap),
-	})
-}
+	let start = Instant::now();
 
-pub struct Cron {
-	usecase: Usecase,
-}
+	let count = Usecase::new(database, coinmarketcap).sync_quotes().await?;
 
-impl Cron {
-	pub async fn run_once(&self) {
-		let start = Instant::now();
-		match self.usecase.sync_quotes().await {
-			Ok(count) => info!(
-				duration = start.elapsed().as_secs(),
-				count = count,
-				"💸 Crypto currencies prices synced"
-			),
-			Err(error) => error!(
-				error = error.to_field(),
-				"Failed while syncing crypto currencies prices"
-			),
-		}
-	}
+	info!(
+		duration = start.elapsed().as_secs(),
+		count = count,
+		"💸 Crypto currencies prices synced"
+	);
 
-	pub async fn run(&self) {
-		loop {
-			self.run_once().await;
-			tokio::time::sleep(sleep_duration()).await;
-		}
-	}
+	Ok(())
 }
 
 fn sleep_duration() -> Duration {
