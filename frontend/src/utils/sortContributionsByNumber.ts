@@ -3,7 +3,7 @@ import { QueryContribution } from "src/types";
 
 export function sortContributionsByNumber(
   [a, b]: [QueryContribution, QueryContribution],
-  order: OrderBy.Asc | OrderBy.Desc = OrderBy.Asc
+  order: OrderBy.Asc | OrderBy.Desc = OrderBy.Desc
 ) {
   const { githubPullRequest: githubPullRequestA, githubIssue: githubIssueA, githubCodeReview: githubCodeReviewA } = a;
   const numberA =
