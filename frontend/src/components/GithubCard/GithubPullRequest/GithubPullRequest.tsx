@@ -92,6 +92,8 @@ export default function GithubPullRequest({
 function PullRequestStatus({ pullrequest }: { pullrequest: GithubPullRequestWithCommitsFragment }) {
   const { T } = useIntl();
 
+  console.log(pullrequest);
+
   switch (pullrequest.status) {
     case GithubPullRequestStatus.Closed:
       return pullrequest.closedAt ? (
