@@ -1,6 +1,6 @@
 import { isInArray } from "./isInArray";
 
-describe("isIn", () => {
+describe("isInArray", () => {
   it("should find item", () => {
     expect(isInArray([1, 2, 3], 1)).toBe(true);
   });
