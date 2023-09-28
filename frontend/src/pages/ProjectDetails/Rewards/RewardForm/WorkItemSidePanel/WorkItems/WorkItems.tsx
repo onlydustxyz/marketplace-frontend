@@ -1,5 +1,5 @@
 import { chain } from "lodash";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import {
   ContributionFragment,
   GithubCodeReviewFragment,
@@ -44,10 +44,6 @@ export function WorkItems({ type, projectId, contributorId, workItems, addWorkIt
         .value(),
     [data?.contributions, workItems]
   );
-
-  // useEffect(() => {
-  //   refetch();
-  // }, [ignoreContribution, unignoreContribution]);
 
   return (
     <View

@@ -105,7 +105,7 @@ const RewardForm: React.FC = () => {
             onWorkItemsChange={onWorkItemsChange}
             contributor={contributor}
             setContributor={setContributor}
-            unpaidContributions={data?.contributions as ContributionFragment | null | undefined}
+            unpaidContributions={data?.contributions as ContributionFragment[] | null | undefined}
             requestNewPaymentMutationLoading={requestNewPaymentMutationLoading}
           />
         </form>
