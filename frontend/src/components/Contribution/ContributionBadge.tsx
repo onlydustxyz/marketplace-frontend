@@ -1,4 +1,5 @@
 import classNames from "classnames";
+import { ElementType } from "react";
 
 import { GithubUser } from "src/__generated/graphql";
 import ExternalArrow from "src/assets/icons/ExternalArrow";
@@ -19,6 +20,8 @@ export function ContributionBadge({
   description,
   author,
   url,
+  withTooltip = true,
+  asAnchor = false,
 }: {
   id: string;
   number: number;
@@ -28,7 +31,11 @@ export function ContributionBadge({
   description?: string;
   author: Pick<GithubUser, "id" | "login" | "avatarUrl">;
   url: string;
+  withTooltip?: boolean;
+  asAnchor?: boolean;
 }) {
+  const Component = asAnchor ? "a" : "div";
+  const ComponentProps = asAnchor ? { href: url, target: "_blank", rel: "noopener noreferrer" } : {};
   const { T } = useIntl();
   const { githubUserId } = useAuth();
   const { open: openProfilePanel } = useContributorProfilePanel();
@@ -44,47 +51,54 @@ export function ContributionBadge({
 
   return (
     <>
-      <Tooltip id={tooltipId} clickable position={TooltipPosition.Top} variant={Variant.Blue}>
-        <div className="flex flex-col gap-4 px-1 py-2">
-          {isExternal ? (
-            <div className="flex gap-1 text-xs font-medium text-spaceBlue-200">
-              <span>
-                {tokens[type]}{" "}
-                <button
-                  type="button"
-                  className="text-spacePurple-300 hover:underline"
-                  onClick={
-                    author
-                      ? () => {
-                          openProfilePanel(author.id);
-                        }
-                      : undefined
-                  }
+      {withTooltip ? (
+        <Tooltip id={tooltipId} clickable position={TooltipPosition.Top} variant={Variant.Blue}>
+          <div className="flex flex-col gap-4 px-1 py-2">
+            {isExternal ? (
+              <div className="flex gap-1 text-xs font-medium text-spaceBlue-200">
+                <span>
+                  {tokens[type]}{" "}
+                  <button
+                    type="button"
+                    className="text-spacePurple-300 hover:underline"
+                    onClick={
+                      author
+                        ? () => {
+                            openProfilePanel(author.id);
+                          }
+                        : undefined
+                    }
+                  >
+                    {author.login}
+                  </button>
+                </span>
+                <RoundedImage
+                  src={author.avatarUrl}
+                  alt={author.login}
+                  rounding={Rounding.Circle}
+                  size={ImageSize.Xxs}
+                />
+              </div>
+            ) : null}
+            <div className="flex gap-2">
+              <ContributionIcon type={type} status={status} />
+              <div className="flex flex-col items-start gap-2">
+                <a
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm font-semibold leading-4 text-greyscale-50 hover:underline"
                 >
-                  {author.login}
-                </button>
-              </span>
-              <RoundedImage src={author.avatarUrl} alt={author.login} rounding={Rounding.Circle} size={ImageSize.Xxs} />
-            </div>
-          ) : null}
-          <div className="flex gap-2">
-            <ContributionIcon type={type} status={status} />
-            <div className="flex flex-col items-start gap-2">
-              <a
-                href={url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm font-semibold leading-4 text-greyscale-50 hover:underline"
-              >
-                <span>#{number}</span> • <span>{title}</span>
-              </a>
-              {description ? <p className="text-xs text-spaceBlue-200">{description}</p> : null}
+                  <span>#{number}</span> • <span>{title}</span>
+                </a>
+                {description ? <p className="text-xs text-spaceBlue-200">{description}</p> : null}
+              </div>
             </div>
           </div>
-        </div>
-      </Tooltip>
+        </Tooltip>
+      ) : null}
 
-      <div
+      <Component
         data-tooltip-id={tooltipId}
         className={classNames(
           "inline-flex w-auto items-center gap-1 rounded-full px-1 py-0.5 font-walsheim hover:bg-whiteFakeOpacity-8",
@@ -94,13 +108,14 @@ export function ContributionBadge({
           },
           contributionIconVariants.status[status]
         )}
+        {...ComponentProps}
       >
         <ContributionIcon type={type} status={status} />
         <div className="flex">
           <span className="text-sm leading-none">{number}</span>
           {isExternal ? <ExternalArrow className="mt-[3px]" /> : null}
         </div>
-      </div>
+      </Component>
     </>
   );
 }
