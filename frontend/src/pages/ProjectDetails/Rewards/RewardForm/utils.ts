@@ -9,17 +9,6 @@ const filters = {
   [GithubContributionType.CodeReview]: { githubCodeReview: { status: GithubCodeReviewStatus.Completed } },
 };
 
-export const filterUnpaidContributions = (contributions: ContributionFragment[]): ContributionFragment[] => {
-  return contributions.filter(({ ignored, githubIssue, githubPullRequest, githubCodeReview }) => {
-    const allTypes =
-      githubIssue?.status === GithubIssueStatus.Completed ||
-      githubPullRequest?.status === GithubPullRequestStatus.Merged ||
-      githubCodeReview?.status === GithubCodeReviewStatus.Completed;
-
-    return !ignored && allTypes;
-  });
-};
-
 export const filterUnpaidContributionsByType = (
   type: GithubContributionType,
   contributions: ContributionFragment[]
