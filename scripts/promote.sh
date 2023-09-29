@@ -7,6 +7,8 @@ FROM_ENV=
 FROM_BRANCH=
 TO_ENV=
 TO_BRANCH=
+FORCE=0
+SKIP_DB_DUMP=0
 
 REMOTE=promote-origin
 
@@ -123,7 +125,10 @@ deploy() {
     ask "OK to continue"
 
     if [ $? -eq 0 ]; then
-        backup_database
+        if [ $SKIP_DB_DUMP -eq 0 ]
+        then
+            backup_database
+        fi
         git_push
         promote_heroku
     fi
@@ -152,6 +157,14 @@ while [[ $# -gt 0 ]]; do
       TO_BRANCH=production
       shift
       ;;
+    --force)
+      FORCE=1
+      shift
+      ;;
+    --skip-db-dump)
+      SKIP_DB_DUMP=1
+      shift
+      ;;
     --help | -h)
       usage
       exit 0
@@ -167,7 +180,11 @@ check_command git
 check_command heroku
 check_cwd
 create_remote
-check_commits
+
+if [ $FORCE -eq 0 ]
+then
+    check_commits
+fi
 
 deploy
 
