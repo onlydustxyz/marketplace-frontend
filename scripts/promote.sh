@@ -28,7 +28,7 @@ delete_remote() {
 
 create_remote() {
     delete_remote
-    git remote add $REMOTE https://github.com/onlydustxyz/marketplace.git -f
+    git remote add $REMOTE https://github.com/onlydustxyz/marketplace-backend.git -f
     [ $? -ne 0 ] && exit_error "Unable add remote."
 }
 
