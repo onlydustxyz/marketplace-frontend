@@ -24,33 +24,39 @@ fragment Contributor on UserProfiles {
       }
     }
   }
-  completedUnpaidPullRequestsAggregate: completedContributionsAggregate(
+  completedUnpaidPullRequestsAggregate: contributionsAggregate(
     where: {
       projectId: { _eq: $projectId }
-      type: { _eq: "pull_request" }
+      type: { _eq: "PULL_REQUEST" }
       rewardItems_aggregate: { count: { predicate: { _eq: 0 } } }
+      status: { _eq: "complete" }
+      ignored: { _eq: false }
     }
   ) {
     aggregate {
       count
     }
   }
-  completedUnpaidIssuesAggregate: completedContributionsAggregate(
+  completedUnpaidIssuesAggregate: contributionsAggregate(
     where: {
       projectId: { _eq: $projectId }
-      type: { _eq: "issue" }
+      type: { _eq: "ISSUE" }
       rewardItems_aggregate: { count: { predicate: { _eq: 0 } } }
+      status: { _eq: "complete" }
+      ignored: { _eq: false }
     }
   ) {
     aggregate {
       count
     }
   }
-  completedUnpaidCodeReviewsAggregate: completedContributionsAggregate(
+  completedUnpaidCodeReviewsAggregate: contributionsAggregate(
     where: {
       projectId: { _eq: $projectId }
-      type: { _eq: "code_review" }
+      type: { _eq: "CODE_REVIEW" }
       rewardItems_aggregate: { count: { predicate: { _eq: 0 } } }
+      status: { _eq: "complete" }
+      ignored: { _eq: false }
     }
   ) {
     aggregate {
@@ -58,7 +64,6 @@ fragment Contributor on UserProfiles {
     }
   }
 }
-
 query GetProjectContributors($projectId: uuid!) {
   projectsContributors(where: { projectId: { _eq: $projectId } }) {
     user {

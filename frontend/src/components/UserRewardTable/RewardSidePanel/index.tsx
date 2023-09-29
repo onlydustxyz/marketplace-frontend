@@ -11,12 +11,13 @@ type Props = {
   rewardId: string;
   onRewardCancel?: () => void;
   projectLeaderView?: boolean;
+  recipientId?: number;
 };
 
-export default function RewardSidePanel({ rewardId, onRewardCancel, projectLeaderView }: Props) {
+export default function RewardSidePanel({ rewardId, onRewardCancel, projectLeaderView, recipientId }: Props) {
   const { user, githubUserId } = useAuth();
   const { data, loading } = usePaymentRequestDetailsQuery({
-    variables: { id: rewardId },
+    variables: { id: rewardId, githubUserId: recipientId },
     skip: !githubUserId || !user,
   });
 
@@ -49,10 +50,12 @@ export function RewardSidePanelAsLeader({
   projectId,
   rewardId,
   setOpen,
+  recipientId,
 }: {
   projectId: string;
   rewardId: string;
   setOpen: (value: boolean) => void;
+  recipientId: number;
 }) {
   const showToaster = useShowToaster();
   const { T } = useIntl();
@@ -68,5 +71,12 @@ export function RewardSidePanelAsLeader({
     },
   });
 
-  return <RewardSidePanel projectLeaderView rewardId={rewardId} onRewardCancel={cancelPaymentRequest} />;
+  return (
+    <RewardSidePanel
+      projectLeaderView
+      rewardId={rewardId}
+      onRewardCancel={cancelPaymentRequest}
+      recipientId={recipientId}
+    />
+  );
 }

@@ -3,16 +3,13 @@ import { useIntl } from "src/hooks/useIntl";
 import { Budget } from "src/hooks/useWorkEstimation";
 import ContributorSelect from "src/pages/ProjectDetails/Rewards/RewardForm/ContributorSelect";
 import WorkEstimation from "./WorkEstimation";
-
-import { filter } from "lodash";
 import { ReactElement, ReactNode, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ContributionFragment, GithubIssueStatus, WorkItemFragment } from "src/__generated/graphql";
+import { ContributionFragment, WorkItemFragment } from "src/__generated/graphql";
 import addContributionImg from "src/assets/img/add-contribution.png";
 import pickContributorImg from "src/assets/img/pick-contributor.png";
 import Button, { ButtonSize, ButtonType, Width } from "src/components/Button";
 import Callout from "src/components/Callout";
-import { GithubCodeReviewStatus } from "src/components/GithubCard/GithubCodeReview/GithubCodeReview";
 import { viewportConfig } from "src/config";
 import Add from "src/icons/Add";
 import CloseLine from "src/icons/CloseLine";
@@ -25,7 +22,7 @@ import { WorkItem } from "./WorkItem";
 import WorkItemSidePanel from "./WorkItemSidePanel";
 import { Contributor } from "./types";
 import useWorkItems from "./useWorkItems";
-import { GithubPullRequestStatus } from "src/components/GithubCard/GithubPullRequest/GithubPullRequest";
+import { filterUnpaidContributionsByType } from "./utils";
 
 interface Props {
   projectId: string;
@@ -34,7 +31,7 @@ interface Props {
   onWorkItemsChange: (workItems: WorkItemFragment[]) => void;
   contributor: Contributor | null | undefined;
   setContributor: (contributor: Contributor | null | undefined) => void;
-  unpaidContributions: ContributionFragment | null | undefined;
+  unpaidContributions: ContributionFragment[] | null | undefined;
   requestNewPaymentMutationLoading: boolean;
 }
 
@@ -69,24 +66,13 @@ const View: React.FC<Props> = ({
   const [sidePanelOpen, setSidePanelOpen] = useState(false);
 
   const { workItems, add: addWorkItem, remove: removeWorkItem, clear: clearWorkItems } = useWorkItems();
-
-  const filters = {
-    [GithubContributionType.Issue]: { githubIssue: { status: GithubIssueStatus.Completed } },
-    [GithubContributionType.PullRequest]: { githubPullRequest: { status: GithubPullRequestStatus.Merged } },
-    [GithubContributionType.CodeReview]: { githubCodeReview: { status: GithubCodeReviewStatus.Completed } },
-  };
-
   const displayCallout = contributor && !contributor.userId;
 
   const handleAutoAdd = (type: GithubContributionType) => {
     if (!unpaidContributions) return;
 
-    const filteredContributions = filter(unpaidContributions, {
-      ...filters[type],
-      ignored: false,
-    });
-
-    const workItems = filteredContributions.map(
+    const filteredTypedContributions = filterUnpaidContributionsByType(type, unpaidContributions);
+    const workItems = filteredTypedContributions.map(
       contribution => contributionToWorkItem(contribution) as WorkItemFragment
     );
 
@@ -95,7 +81,7 @@ const View: React.FC<Props> = ({
 
   useEffect(() => {
     onWorkItemsChange(workItems);
-  }, [workItems]);
+  }, [workItems, contributor]);
 
   return (
     <>
@@ -161,7 +147,13 @@ const View: React.FC<Props> = ({
                       {T("reward.form.contributions.subTitle")}
                     </div>
 
-                    <AutoAdd contributor={contributor} onAutoAdd={handleAutoAdd} workItems={workItems} />
+                    {unpaidContributions?.length ? (
+                      <AutoAdd
+                        unpaidContributions={unpaidContributions}
+                        onAutoAdd={handleAutoAdd}
+                        workItems={workItems}
+                      />
+                    ) : null}
 
                     {workItems.map(workItem => (
                       <WorkItem key={workItem.id} workItem={workItem} action={() => removeWorkItem(workItem)} />

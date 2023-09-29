@@ -3,33 +3,36 @@ import { MagicIcon } from "src/assets/icons/MagicIcon";
 import Card from "src/components/Card";
 import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
 import GitMergeLine from "src/icons/GitMergeLine";
-import { Contributor } from "src/pages/ProjectDetails/Rewards/RewardForm/types";
 import { useIntl } from "src/hooks/useIntl";
 import { GithubContributionType } from "src/types";
 import TagButton from "src/components/TagButton/TagButton";
-import { WorkItemFragment, WorkItemType } from "src/__generated/graphql";
+import { ContributionFragment, WorkItemFragment, WorkItemType } from "src/__generated/graphql";
+import { filterUnpaidContributionsByType } from "src/pages/ProjectDetails/Rewards/RewardForm/utils";
 
 type AutoAddProps = {
-  contributor: Contributor;
+  unpaidContributions: ContributionFragment[];
   workItems: WorkItemFragment[];
   onAutoAdd: (type: GithubContributionType) => void;
 };
 
-export function AutoAdd({ contributor, workItems, onAutoAdd }: AutoAddProps) {
+export function AutoAdd({ unpaidContributions, workItems, onAutoAdd }: AutoAddProps) {
   const { T } = useIntl();
-
-  const {
-    unpaidMergedPullsCount = 0,
-    unpaidCompletedIssuesCount = 0,
-    unpaidCompletedCodeReviewsCount = 0,
-  } = contributor;
 
   const getWorkItemsCount = (workItemType: WorkItemType) =>
     workItems.filter(({ type }: { type: WorkItemType }) => type === workItemType).length;
 
-  const remainingPullRequests = unpaidMergedPullsCount - getWorkItemsCount(WorkItemType.PullRequest);
-  const remainingIssues = unpaidCompletedIssuesCount - getWorkItemsCount(WorkItemType.Issue);
-  const remainingCodeReviews = unpaidCompletedCodeReviewsCount - getWorkItemsCount(WorkItemType.CodeReview);
+  const remainingPullRequests =
+    filterUnpaidContributionsByType(GithubContributionType.PullRequest, unpaidContributions).length -
+    getWorkItemsCount(WorkItemType.PullRequest);
+
+  const remainingIssues =
+    filterUnpaidContributionsByType(GithubContributionType.Issue, unpaidContributions).length -
+    getWorkItemsCount(WorkItemType.Issue);
+
+  const remainingCodeReviews =
+    filterUnpaidContributionsByType(GithubContributionType.CodeReview, unpaidContributions).length -
+    getWorkItemsCount(WorkItemType.CodeReview);
+
   const hasItems = remainingPullRequests || remainingIssues || remainingCodeReviews;
 
   return hasItems ? (
