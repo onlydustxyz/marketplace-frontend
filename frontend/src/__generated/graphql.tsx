@@ -3774,17 +3774,8 @@ export type GithubIssues_Variance_Order_By = {
 
 export type GithubPullRequest = {
   __typename?: 'GithubPullRequest';
-  author: GithubUser;
-  closedAt: Maybe<Scalars['DateTimeUtc']>;
-  createdAt: Scalars['DateTimeUtc'];
-  htmlUrl: Scalars['Url'];
+  githubPullRequest: Maybe<GithubPullRequests>;
   id: Scalars['Int'];
-  mergedAt: Maybe<Scalars['DateTimeUtc']>;
-  number: Scalars['Int'];
-  repoId: Scalars['Int'];
-  status: GithubPullRequestStatus;
-  title: Scalars['String'];
-  updatedAt: Scalars['DateTimeUtc'];
 };
 
 /** columns and relationships of "github_pull_request_commits" */
@@ -4261,12 +4252,6 @@ export type GithubPullRequestReviews_StreamCursorValueInput = {
   status: InputMaybe<Scalars['String']>;
   submittedAt: InputMaybe<Scalars['timestamp']>;
 };
-
-export enum GithubPullRequestStatus {
-  Closed = 'CLOSED',
-  Merged = 'MERGED',
-  Open = 'OPEN'
-}
 
 /** columns and relationships of "api.github_pull_requests" */
 export type GithubPullRequests = {
@@ -18234,10 +18219,6 @@ export type WorkItemIdFragment = { __typename?: 'WorkItems', id: string | null }
 
 export type WorkItemFragment = { __typename?: 'WorkItems', type: any | null, id: string | null, githubIssue: { __typename?: 'GithubIssues', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, assigneeIds: any | null, status: string | null, createdAt: any | null, closedAt: any | null, commentsCount: any | null, id: any | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, commitsCount: { __typename?: 'GithubPullRequestCommitsAggregate', aggregate: { __typename?: 'GithubPullRequestCommitsAggregateFields', count: number } | null }, userCommitsCount: { __typename?: 'GithubPullRequestCommitsAggregate', aggregate: { __typename?: 'GithubPullRequestCommitsAggregateFields', count: number } | null }, contributorDetails: Array<{ __typename?: 'GithubPullRequestCommits', author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null }>, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', status: string | null, outcome: any | null, submittedAt: any | null, id: string | null, reviewer: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null } | null };
 
-export type LiveGithubPullRequestIdFragment = { __typename?: 'GithubPullRequest', id: number };
-
-export type LiveGithubPullRequestFragment = { __typename?: 'GithubPullRequest', repoId: number, number: number, status: GithubPullRequestStatus, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null, id: number, author: { __typename?: 'GithubUser', id: number } };
-
 export type LiveGithubIssueIdFragment = { __typename?: 'GithubIssue', id: number };
 
 export type LiveGithubIssueFragment = { __typename?: 'GithubIssue', repoId: number, number: number, status: GithubIssueStatus, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, id: number, author: { __typename?: 'GithubUser', id: number } };
@@ -18466,10 +18447,11 @@ export type FetchPullRequestQueryVariables = Exact<{
   repoOwner: Scalars['String'];
   repoName: Scalars['String'];
   prNumber: Scalars['Int'];
+  githubUserId: Scalars['bigint'];
 }>;
 
 
-export type FetchPullRequestQuery = { __typename?: 'query_root', fetchPullRequest: { __typename?: 'GithubPullRequest', repoId: number, number: number, status: GithubPullRequestStatus, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null, id: number, author: { __typename?: 'GithubUser', id: number } } | null };
+export type FetchPullRequestQuery = { __typename?: 'query_root', fetchPullRequest: { __typename?: 'GithubPullRequest', githubPullRequest: { __typename?: 'GithubPullRequests', repoId: any | null, number: any | null, title: string | null, htmlUrl: string | null, status: string | null, createdAt: any | null, closedAt: any | null, mergedAt: any | null, id: any | null, commitsCount: { __typename?: 'GithubPullRequestCommitsAggregate', aggregate: { __typename?: 'GithubPullRequestCommitsAggregateFields', count: number } | null }, userCommitsCount: { __typename?: 'GithubPullRequestCommitsAggregate', aggregate: { __typename?: 'GithubPullRequestCommitsAggregateFields', count: number } | null }, contributorDetails: Array<{ __typename?: 'GithubPullRequestCommits', author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null }>, author: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null } | null } | null };
 
 export type GetProjectReposQueryVariables = Exact<{
   projectId: Scalars['uuid'];
@@ -18936,27 +18918,6 @@ export const OwnUserProfileDetailsFragmentDoc = gql`
   completionScore @client
 }
     `;
-export const LiveGithubPullRequestIdFragmentDoc = gql`
-    fragment LiveGithubPullRequestId on GithubPullRequest {
-  id
-}
-    `;
-export const LiveGithubPullRequestFragmentDoc = gql`
-    fragment LiveGithubPullRequest on GithubPullRequest {
-  ...LiveGithubPullRequestId
-  repoId
-  number
-  status
-  title
-  htmlUrl
-  createdAt
-  closedAt
-  mergedAt
-  author {
-    id
-  }
-}
-    ${LiveGithubPullRequestIdFragmentDoc}`;
 export const LiveGithubIssueIdFragmentDoc = gql`
     fragment LiveGithubIssueId on GithubIssue {
   id
@@ -20709,16 +20670,18 @@ export type FetchIssueQueryHookResult = ReturnType<typeof useFetchIssueQuery>;
 export type FetchIssueLazyQueryHookResult = ReturnType<typeof useFetchIssueLazyQuery>;
 export type FetchIssueQueryResult = Apollo.QueryResult<FetchIssueQuery, FetchIssueQueryVariables>;
 export const FetchPullRequestDocument = gql`
-    query fetchPullRequest($repoOwner: String!, $repoName: String!, $prNumber: Int!) {
+    query fetchPullRequest($repoOwner: String!, $repoName: String!, $prNumber: Int!, $githubUserId: bigint!) {
   fetchPullRequest(
     repoOwner: $repoOwner
     repoName: $repoName
     prNumber: $prNumber
   ) {
-    ...LiveGithubPullRequest
+    githubPullRequest {
+      ...GithubPullRequestWithCommits
+    }
   }
 }
-    ${LiveGithubPullRequestFragmentDoc}`;
+    ${GithubPullRequestWithCommitsFragmentDoc}`;
 
 /**
  * __useFetchPullRequestQuery__
@@ -20735,6 +20698,7 @@ export const FetchPullRequestDocument = gql`
  *      repoOwner: // value for 'repoOwner'
  *      repoName: // value for 'repoName'
  *      prNumber: // value for 'prNumber'
+ *      githubUserId: // value for 'githubUserId'
  *   },
  * });
  */
