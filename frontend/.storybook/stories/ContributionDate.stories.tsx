@@ -1,7 +1,6 @@
 import { ComponentProps } from "react";
-import { GithubPullRequestStatus } from "src/__generated/graphql";
 import { ContributionDate } from "src/components/Contribution/ContributionDate";
-import { GithubContributionType } from "src/types";
+import { GithubContributionType, GithubPullRequestStatus } from "src/types";
 
 export default {
   title: "ContributionDate",

@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { GithubPullRequestStatus, GithubUser } from "src/__generated/graphql";
+import { GithubUser } from "src/__generated/graphql";
 
 import { ContributionBadge } from "src/components/Contribution/ContributionBadge";
 import { ContributionReview } from "src/components/Contribution/ContributionReview";
@@ -10,6 +10,7 @@ import {
   GithubContributionType,
   GithubItemStatus,
   GithubPullRequestDraft,
+  GithubPullRequestStatus,
   QueryContribution,
 } from "src/types";
 

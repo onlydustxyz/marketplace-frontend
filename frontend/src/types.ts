@@ -1,4 +1,4 @@
-import { GetAllContributionsQuery, GithubIssueStatus, GithubPullRequestStatus } from "src/__generated/graphql";
+import { GetAllContributionsQuery, GithubIssueStatus } from "src/__generated/graphql";
 import { SortingFields } from "./hooks/useRewardSorting";
 
 export type Branded<T, B> = T & { __brand: B };
@@ -133,6 +133,12 @@ export type Contributor = {
 export enum GithubIssueType {
   Issue,
   PullRequest,
+}
+
+export enum GithubPullRequestStatus {
+  Merged = "MERGED",
+  Open = "OPEN",
+  Closed = "CLOSED",
 }
 
 export enum GithubCodeReviewStatus {

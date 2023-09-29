@@ -1,7 +1,7 @@
 import { ComponentProps } from "react";
-import { GithubPullRequestStatus, UserIdentityDocument } from "src/__generated/graphql";
+import { UserIdentityDocument } from "src/__generated/graphql";
 import { ContributionBadge } from "src/components/Contribution/ContributionBadge";
-import { GithubContributionType } from "src/types";
+import { GithubContributionType, GithubPullRequestStatus } from "src/types";
 import withAuthProvider from "../decorators/withAuthProvider";
 import withContributorProfilePanelProvider from "../decorators/withContributorProfilePanelProvider";
 import withMockedProvider from "../decorators/withMockedProvider";

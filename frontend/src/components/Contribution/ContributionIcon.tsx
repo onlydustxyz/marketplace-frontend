@@ -1,4 +1,4 @@
-import { GithubIssueStatus, GithubPullRequestStatus } from "src/__generated/graphql";
+import { GithubIssueStatus } from "src/__generated/graphql";
 import CodeReviewMerged from "src/assets/icons/CodeReviewMerged";
 import CodeReviewOpen from "src/assets/icons/CodeReviewOpen";
 import IssueCancelled from "src/assets/icons/IssueCancelled";
@@ -13,6 +13,7 @@ import {
   GithubContributionType,
   GithubItemStatus,
   GithubPullRequestDraft,
+  GithubPullRequestStatus,
   GithubTypeStatusDict,
 } from "src/types";
 

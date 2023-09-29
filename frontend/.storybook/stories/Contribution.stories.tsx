@@ -1,9 +1,9 @@
 import { ComponentProps } from "react";
 import { withRouter } from "storybook-addon-react-router-v6";
 
-import { GithubPullRequestStatus, UserIdentityDocument } from "src/__generated/graphql";
+import { UserIdentityDocument } from "src/__generated/graphql";
 import { Contribution } from "src/components/Contribution/Contribution";
-import { GithubContributionType } from "src/types";
+import { GithubContributionType, GithubPullRequestStatus } from "src/types";
 import withAuthProvider from "../decorators/withAuthProvider";
 import withContributorProfilePanelProvider from "../decorators/withContributorProfilePanelProvider";
 import withMockedProvider from "../decorators/withMockedProvider";

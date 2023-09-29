@@ -1,4 +1,4 @@
-import { GithubIssueStatus, GithubPullRequestStatus } from "src/__generated/graphql";
+import { GithubIssueStatus } from "src/__generated/graphql";
 import { ContributionIcon } from "src/components/Contribution/ContributionIcon";
 import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
@@ -7,6 +7,7 @@ import {
   GithubContributionType,
   GithubItemStatus,
   GithubPullRequestDraft,
+  GithubPullRequestStatus,
   GithubTypeStatusDict,
 } from "src/types";
 import displayRelativeDate from "src/utils/displayRelativeDate";

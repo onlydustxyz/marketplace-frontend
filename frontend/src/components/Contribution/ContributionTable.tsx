@@ -3,12 +3,7 @@ import classNames from "classnames";
 import { ComponentProps, PropsWithChildren, ReactNode, useMemo, useState } from "react";
 
 import atomLogo from "assets/img/atom.png";
-import {
-  ContributionsOrderBy,
-  GetAllContributionsQuery,
-  GithubPullRequestStatus,
-  OrderBy,
-} from "src/__generated/graphql";
+import { ContributionsOrderBy, GetAllContributionsQuery, OrderBy } from "src/__generated/graphql";
 import IssueOpen from "src/assets/icons/IssueOpen";
 import { Contribution } from "src/components/Contribution/Contribution";
 import { ContributionCard } from "src/components/Contribution/ContributionCard";
@@ -33,6 +28,7 @@ import {
   GithubContributionType,
   GithubItemStatus,
   GithubPullRequestDraft,
+  GithubPullRequestStatus,
 } from "src/types";
 import { sortContributionsByLinked } from "src/utils/sortContributionsByLinked";
 import { sortContributionsByNumber } from "src/utils/sortContributionsByNumber";

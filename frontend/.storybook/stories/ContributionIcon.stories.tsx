@@ -1,7 +1,6 @@
 import { ComponentProps } from "react";
-import { GithubPullRequestStatus } from "src/__generated/graphql";
 import { ContributionIcon } from "src/components/Contribution/ContributionIcon";
-import { GithubContributionType } from "src/types";
+import { GithubContributionType, GithubPullRequestStatus } from "src/types";
 
 export default {
   title: "ContributionIcon",
