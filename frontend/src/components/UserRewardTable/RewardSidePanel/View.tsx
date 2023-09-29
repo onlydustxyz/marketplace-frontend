@@ -183,7 +183,11 @@ export default function View({
               return workItem.githubIssue ? (
                 <GithubIssue key={workItem.githubIssue?.id} issue={workItem.githubIssue} />
               ) : workItem.githubPullRequest ? (
-                <GithubPullRequest key={workItem.githubPullRequest?.id} pullRequest={workItem.githubPullRequest} />
+                <GithubPullRequest
+                  key={workItem.githubPullRequest?.id}
+                  pullRequest={workItem.githubPullRequest}
+                  contributor={githubRecipient as PaymentRequestDetailsFragment["githubRecipient"]}
+                />
               ) : workItem.githubCodeReview ? (
                 <GithubCodeReview key={workItem.githubCodeReview?.id} codeReview={workItem.githubCodeReview} />
               ) : undefined;

@@ -156,7 +156,12 @@ const View: React.FC<Props> = ({
                     ) : null}
 
                     {workItems.map(workItem => (
-                      <WorkItem key={workItem.id} workItem={workItem} action={() => removeWorkItem(workItem)} />
+                      <WorkItem
+                        key={workItem.id}
+                        workItem={workItem}
+                        action={() => removeWorkItem(workItem)}
+                        contributor={contributor}
+                      />
                     ))}
                   </div>
                   <div onClick={() => setSidePanelOpen(true)} data-testid="add-work-item-btn" className="mx-4 pt-8">

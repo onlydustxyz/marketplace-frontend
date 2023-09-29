@@ -18227,6 +18227,13 @@ export type LiveGithubUserIdFragment = { __typename?: 'GithubUser', id: number }
 
 export type LiveGithubUserFragment = { __typename?: 'GithubUser', login: string, avatarUrl: any, htmlUrl: any, id: number, user: { __typename?: 'RegisteredUsers', id: any | null } | null };
 
+export type GithubUserByIdQueryVariables = Exact<{
+  githubUserId: Scalars['bigint'];
+}>;
+
+
+export type GithubUserByIdQuery = { __typename?: 'query_root', githubUsersByPk: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null };
+
 export type ImpersonatedUserQueryVariables = Exact<{
   id: Scalars['uuid'];
 }>;
@@ -19632,6 +19639,41 @@ export function useCancelPaymentRequestMutation(baseOptions?: Apollo.MutationHoo
 export type CancelPaymentRequestMutationHookResult = ReturnType<typeof useCancelPaymentRequestMutation>;
 export type CancelPaymentRequestMutationResult = Apollo.MutationResult<CancelPaymentRequestMutation>;
 export type CancelPaymentRequestMutationOptions = Apollo.BaseMutationOptions<CancelPaymentRequestMutation, CancelPaymentRequestMutationVariables>;
+export const GithubUserByIdDocument = gql`
+    query GithubUserById($githubUserId: bigint!) {
+  githubUsersByPk(id: $githubUserId) {
+    ...GithubUser
+  }
+}
+    ${GithubUserFragmentDoc}`;
+
+/**
+ * __useGithubUserByIdQuery__
+ *
+ * To run a query within a React component, call `useGithubUserByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGithubUserByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGithubUserByIdQuery({
+ *   variables: {
+ *      githubUserId: // value for 'githubUserId'
+ *   },
+ * });
+ */
+export function useGithubUserByIdQuery(baseOptions: Apollo.QueryHookOptions<GithubUserByIdQuery, GithubUserByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GithubUserByIdQuery, GithubUserByIdQueryVariables>(GithubUserByIdDocument, options);
+      }
+export function useGithubUserByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GithubUserByIdQuery, GithubUserByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GithubUserByIdQuery, GithubUserByIdQueryVariables>(GithubUserByIdDocument, options);
+        }
+export type GithubUserByIdQueryHookResult = ReturnType<typeof useGithubUserByIdQuery>;
+export type GithubUserByIdLazyQueryHookResult = ReturnType<typeof useGithubUserByIdLazyQuery>;
+export type GithubUserByIdQueryResult = Apollo.QueryResult<GithubUserByIdQuery, GithubUserByIdQueryVariables>;
 export const ImpersonatedUserDocument = gql`
     query ImpersonatedUser($id: uuid!) {
   user(id: $id) {

@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { GithubPullRequestWithCommitsFragment } from "src/__generated/graphql";
+import { GithubPullRequestWithCommitsFragment, PaymentRequestDetailsFragment } from "src/__generated/graphql";
 import IssueClosed from "src/assets/icons/IssueClosed";
 import Card from "src/components/Card";
 import { GithubLink } from "src/components/GithubCard/GithubLink/GithubLink";
@@ -36,6 +36,7 @@ export type GithubPullRequestProps = {
   pullRequest: GithubPullRequestWithCommitsFragment;
   ignored?: boolean;
   addMarginTopForVirtuosoDisplay?: boolean;
+  contributor?: PaymentRequestDetailsFragment["githubRecipient"] | null;
 };
 
 export default function GithubPullRequest({
@@ -46,6 +47,7 @@ export default function GithubPullRequest({
   onSecondaryClick,
   ignored = false,
   addMarginTopForVirtuosoDisplay = false,
+  contributor,
 }: GithubPullRequestProps) {
   const { repoName } = parsePullRequestLink(pullRequest.htmlUrl ?? "");
 
@@ -84,7 +86,12 @@ export default function GithubPullRequest({
 
             {pullRequest?.author ? (
               <Tooltip anchorId={pullRequest?.id} clickable>
-                <CommitsTooltip pullRequest={pullRequest} userCommits={userCommits} commitsCount={commitsCount} />
+                <CommitsTooltip
+                  pullRequest={pullRequest}
+                  userCommits={userCommits}
+                  commitsCount={commitsCount}
+                  contributorLogin={contributor?.login ?? ""}
+                />
               </Tooltip>
             ) : null}
           </div>

@@ -6,11 +6,16 @@ type CommitsTooltipProps = {
   pullRequest: GithubPullRequestWithCommitsFragment;
   userCommits?: number;
   commitsCount?: number;
+  contributorLogin: string;
 };
 
-export function CommitsTooltip({ pullRequest, userCommits = 0, commitsCount = 0 }: CommitsTooltipProps) {
+export function CommitsTooltip({
+  pullRequest,
+  userCommits = 0,
+  commitsCount = 0,
+  contributorLogin,
+}: CommitsTooltipProps) {
   const { T } = useIntl();
-
   return (
     <div className="flex flex-col">
       <>
@@ -38,7 +43,7 @@ export function CommitsTooltip({ pullRequest, userCommits = 0, commitsCount = 0 
 
         <span className="text-sm">
           {T("githubCodeReview.tooltip.commits", {
-            user: pullRequest.contributorDetails[0].author?.login,
+            user: contributorLogin || T("reward.form.contributions.pullRequests.tooltip.contributorPlaceholder"),
             commits: userCommits + "/" + commitsCount,
             count: commitsCount,
           })}
