@@ -33,6 +33,11 @@ const mocks = [
 export default {
   title: "Contribution",
   component: Contribution,
+  argTypes: {
+    isMobile: {
+      control: { type: "boolean" },
+    },
+  },
   decorators: [
     withRouter,
     withMockedProvider(mocks),

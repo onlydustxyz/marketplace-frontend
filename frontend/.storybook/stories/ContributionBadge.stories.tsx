@@ -1,8 +1,32 @@
 import { ComponentProps } from "react";
-import { GithubPullRequestStatus } from "src/__generated/graphql";
-
+import { GithubIssueStatus, GithubPullRequestStatus, UserIdentityDocument } from "src/__generated/graphql";
 import { ContributionBadge } from "src/components/Contribution/ContributionBadge";
-import { GithubContributionType } from "src/types";
+import { GithubCodeReviewStatus, GithubContributionType, GithubPullRequestDraft } from "src/types";
+import withAuthProvider from "../decorators/withAuthProvider";
+import withContributorProfilePanelProvider from "../decorators/withContributorProfilePanelProvider";
+import withMockedProvider from "../decorators/withMockedProvider";
+
+const USER_ID = "e2ee731a-2697-4306-bf4b-c807f6fda0d7";
+
+const mocks = [
+  {
+    request: {
+      query: UserIdentityDocument,
+      variables: { userId: USER_ID },
+    },
+    result: {
+      data: {
+        userPayoutInfo: [
+          {
+            userId: USER_ID,
+            lastname: "Bar",
+            firstname: "Foo",
+          },
+        ],
+      },
+    },
+  },
+];
 
 export default {
   title: "ContributionBadge",
@@ -10,15 +34,19 @@ export default {
   argTypes: {
     status: {
       control: { type: "select" },
-      options: [GithubPullRequestStatus.Open, GithubPullRequestStatus.Merged, GithubPullRequestStatus.Closed],
+      options: [
+        ...Object.values(GithubPullRequestStatus),
+        ...Object.values(GithubIssueStatus),
+        ...Object.values(GithubCodeReviewStatus),
+        GithubPullRequestDraft.Draft,
+      ],
     },
     type: {
       control: { type: "select" },
-      options: [GithubContributionType.PullRequest, GithubContributionType.Issue, GithubContributionType.CodeReview],
+      options: [...Object.values(GithubContributionType)],
     },
-    draft: "boolean",
-    external: "boolean",
   },
+  decorators: [withMockedProvider(mocks), withAuthProvider({ userId: USER_ID }), withContributorProfilePanelProvider],
 };
 
 const defaultProps: ComponentProps<typeof ContributionBadge> = {

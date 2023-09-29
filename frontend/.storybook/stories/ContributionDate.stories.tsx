@@ -34,9 +34,6 @@ const defaultProps: ComponentProps<typeof ContributionDate> = {
 export const Default = {
   render: (args: typeof ContributionDate) => (
     <div className="flex h-64 items-center justify-center">
-      <p id="test" className="inline-block">
-        Hello world
-      </p>
       <ContributionDate {...defaultProps} {...args} />
     </div>
   ),

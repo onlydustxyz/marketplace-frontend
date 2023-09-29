@@ -75,14 +75,7 @@ export function Contribution({ contribution, isMobile = false }: Props) {
           author={author}
           url={htmlUrl}
         />
-        <a
-          href={htmlUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={classNames("truncate hover:underline", {
-            "text-sm": isMobile,
-          })}
-        >
+        <a href={htmlUrl} target="_blank" rel="noopener noreferrer" className="truncate text-sm hover:underline">
           {title}
         </a>
       </div>
