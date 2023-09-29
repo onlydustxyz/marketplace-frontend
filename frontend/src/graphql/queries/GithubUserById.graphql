@@ -1,0 +1,5 @@
+query GithubUserById($githubUserId: bigint!) {
+  githubUsersByPk(id: $githubUserId) {
+    ...GithubUser
+  }
+}

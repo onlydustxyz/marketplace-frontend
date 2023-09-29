@@ -3,8 +3,17 @@ import { WorkItemFragment, WorkItemType } from "src/__generated/graphql";
 import GithubCodeReview from "src/components/GithubCard/GithubCodeReview/GithubCodeReview";
 import GithubIssue, { Action as GithubIssueAction } from "src/components/GithubCard/GithubIssue/GithubIssue";
 import GithubPullRequest from "src/components/GithubCard/GithubPullRequest/GithubPullRequest";
+import { Contributor } from "./types";
 
-export function WorkItem({ workItem, action }: { workItem: WorkItemFragment; action: () => void }) {
+export function WorkItem({
+  workItem,
+  contributor,
+  action,
+}: {
+  workItem: WorkItemFragment;
+  contributor: Contributor;
+  action: () => void;
+}) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const components: Record<WorkItemType, ComponentType<any>> = {
     [WorkItemType.Issue]: GithubIssue,
@@ -26,6 +35,7 @@ export function WorkItem({ workItem, action }: { workItem: WorkItemFragment; act
       key={workItem.id}
       action={GithubIssueAction.Remove}
       onClick={action}
+      contributor={contributor}
       {...githubProp[workItem.type as WorkItemType]}
     />
   );

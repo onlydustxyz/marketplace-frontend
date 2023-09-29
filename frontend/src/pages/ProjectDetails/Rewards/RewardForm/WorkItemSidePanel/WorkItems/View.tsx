@@ -2,7 +2,13 @@ import { filter, some } from "lodash";
 import { ReactElement, forwardRef, useEffect, useState } from "react";
 import { useForm, useFormContext, useWatch } from "react-hook-form";
 import { Virtuoso } from "react-virtuoso";
-import { ContributionFragment, WorkItemFragment, WorkItemType } from "src/__generated/graphql";
+import {
+  ContributionFragment,
+  GithubUserFragment,
+  WorkItemFragment,
+  WorkItemType,
+  useGithubUserByIdQuery,
+} from "src/__generated/graphql";
 import FormInput from "src/components/FormInput";
 import FormToggle from "src/components/FormToggle";
 import GithubIssue, { Action, GithubIssueProps } from "src/components/GithubCard/GithubIssue/GithubIssue";
@@ -52,6 +58,12 @@ export default function View({
 }: Props) {
   const { T } = useIntl();
   const { watch, resetField } = useFormContext();
+  const { data } = useGithubUserByIdQuery({
+    variables: {
+      githubUserId: contributorId,
+    },
+  });
+
   const tabName = tabNames[type];
 
   const [addOtherIssueEnabled, setStateAddOtherIssueEnabled] = useState(false);
@@ -139,13 +151,14 @@ export default function View({
         )}
       </div>
 
-      {filteredContributions.length > 0 ? (
+      {filteredContributions.length > 0 && data?.githubUsersByPk ? (
         <VirtualizedIssueList
           {...{
             contributions: filteredContributions as ContributionFragment[],
             addContribution: addContributionWithToast,
             ignoreContribution,
             unignoreContribution,
+            contributor: data?.githubUsersByPk,
             tabName,
           }}
         />
@@ -191,6 +204,7 @@ function getWorkItem(type: WorkItemType, props: RewardItemType): ReactElement | 
 
 interface VirtualizedIssueListProps {
   contributions: ContributionFragment[];
+  contributor: GithubUserFragment;
   addContribution: (contribution: ContributionFragment) => void;
   ignoreContribution: (contribution: ContributionFragment) => void;
   unignoreContribution: (contribution: ContributionFragment) => void;
@@ -199,6 +213,7 @@ interface VirtualizedIssueListProps {
 
 const VirtualizedIssueList = ({
   contributions,
+  contributor,
   addContribution,
   ignoreContribution,
   unignoreContribution,
@@ -225,6 +240,7 @@ const VirtualizedIssueList = ({
             contribution.ignored ? unignoreContribution(contribution) : ignoreContribution(contribution),
           ignored: !!contribution.ignored,
           addMarginTopForVirtuosoDisplay: true,
+          contributor,
         };
 
         return getWorkItem(workItem.type, sharedProps as RewardItemType);
