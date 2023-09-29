@@ -31291,35 +31291,6 @@
         "possibleTypes": null
       },
       {
-        "kind": "ENUM",
-        "name": "GithubPullRequestStatus",
-        "description": null,
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": [
-          {
-            "name": "CLOSED",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "MERGED",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "OPEN",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "possibleTypes": null
-      },
-      {
         "kind": "OBJECT",
         "name": "GithubPullRequests",
         "description": "columns and relationships of \"api.github_pull_requests\"",
@@ -57903,6 +57874,12 @@
         "interfaces": null,
         "enumValues": [
           {
+            "name": "projects_pending_contributors_github_user_id_project_id_idx",
+            "description": "unique or primary key constraint on columns \"project_id\", \"github_user_id\"",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "projects_pending_contributors_pkey",
             "description": "unique or primary key constraint on columns \"project_id\", \"github_user_id\"",
             "isDeprecated": false,
@@ -59214,6 +59191,12 @@
         "inputFields": null,
         "interfaces": null,
         "enumValues": [
+          {
+            "name": "projects_rewarded_users_github_user_id_project_id_idx",
+            "description": "unique or primary key constraint on columns \"project_id\", \"github_user_id\"",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "projects_rewarded_users_pkey",
             "description": "unique or primary key constraint on columns \"project_id\", \"github_user_id\"",
@@ -128944,7 +128927,9 @@
         "name": "cached",
         "description": "whether this query should be cached (Hasura Cloud only)",
         "isRepeatable": false,
-        "locations": ["QUERY"],
+        "locations": [
+          "QUERY"
+        ],
         "args": [
           {
             "name": "refresh",
@@ -128984,7 +128969,12 @@
         "name": "deprecated",
         "description": "Marks an element of a GraphQL schema as no longer supported.",
         "isRepeatable": false,
-        "locations": ["ARGUMENT_DEFINITION", "ENUM_VALUE", "FIELD_DEFINITION", "INPUT_FIELD_DEFINITION"],
+        "locations": [
+          "ARGUMENT_DEFINITION",
+          "ENUM_VALUE",
+          "FIELD_DEFINITION",
+          "INPUT_FIELD_DEFINITION"
+        ],
         "args": [
           {
             "name": "reason",
@@ -129004,7 +128994,11 @@
         "name": "include",
         "description": "Directs the executor to include this field or fragment only when the `if` argument is true.",
         "isRepeatable": false,
-        "locations": ["FIELD", "FRAGMENT_SPREAD", "INLINE_FRAGMENT"],
+        "locations": [
+          "FIELD",
+          "FRAGMENT_SPREAD",
+          "INLINE_FRAGMENT"
+        ],
         "args": [
           {
             "name": "if",
@@ -129028,7 +129022,11 @@
         "name": "skip",
         "description": "Directs the executor to skip this field or fragment when the `if` argument is true.",
         "isRepeatable": false,
-        "locations": ["FIELD", "FRAGMENT_SPREAD", "INLINE_FRAGMENT"],
+        "locations": [
+          "FIELD",
+          "FRAGMENT_SPREAD",
+          "INLINE_FRAGMENT"
+        ],
         "args": [
           {
             "name": "if",
@@ -129052,7 +129050,9 @@
         "name": "specifiedBy",
         "description": "Exposes a URL that specifies the behavior of this scalar.",
         "isRepeatable": false,
-        "locations": ["SCALAR"],
+        "locations": [
+          "SCALAR"
+        ],
         "args": [
           {
             "name": "url",
