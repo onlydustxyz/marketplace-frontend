@@ -189,7 +189,7 @@ impl<'a> Test<'a> {
 				.load(&mut *connection)?;
 			assert_eq!(
 				contributions.len(),
-				if cycle == 1 { 10 } else { 11 },
+				if cycle == 1 { 11 } else { 12 },
 				"Invalid contribution count"
 			);
 
@@ -236,6 +236,18 @@ impl<'a> Test<'a> {
 				assert_eq!(contribution.repo_id, repos::marketplace().id);
 				assert_eq!(contribution.type_, ContributionType::PullRequest);
 				assert_eq!(contribution.user_id, users::ofux().id);
+				assert_eq!(
+					contribution.details_id,
+					GithubPullRequestId::from(1455874031u64).into()
+				);
+				assert_eq!(contribution.status, ContributionStatus::Complete);
+			}
+
+			{
+				let contribution = contributions.pop().unwrap();
+				assert_eq!(contribution.repo_id, repos::marketplace().id);
+				assert_eq!(contribution.type_, ContributionType::PullRequest);
+				assert_eq!(contribution.user_id, users::alex().id);
 				assert_eq!(
 					contribution.details_id,
 					GithubPullRequestId::from(1455874031u64).into()
@@ -361,12 +373,18 @@ impl<'a> Test<'a> {
 		{
 			let mut contributors: Vec<models::ProjectsContributor> =
 				projects_contributors::table.load(&mut *connection)?;
-			assert_eq!(contributors.len(), 2, "Invalid contributors count");
+			assert_eq!(contributors.len(), 3, "Invalid contributors count");
 
 			{
 				let contributor = contributors.pop().unwrap();
 				assert_eq!(contributor.project_id, projects::project_id());
 				assert_eq!(contributor.github_user_id, users::anthony().id);
+			}
+
+			{
+				let contributor = contributors.pop().unwrap();
+				assert_eq!(contributor.project_id, projects::project_id());
+				assert_eq!(contributor.github_user_id, users::alex().id);
 			}
 
 			{

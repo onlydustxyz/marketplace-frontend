@@ -107,6 +107,15 @@ fn refresh_contributions_from_commits(
 				pull_request.inner.closed_at,
 			)
 		})
+		.chain(std::iter::once(Contribution::new(
+			pull_request.inner.repo_id,
+			pull_request.inner.author_id,
+			ContributionType::PullRequest,
+			pull_request.inner.id.into(),
+			pull_request.inner.status.into(),
+			pull_request.inner.created_at,
+			pull_request.inner.closed_at,
+		)))
 		.collect::<HashSet<_>>()
 		.into_iter()
 		.collect();

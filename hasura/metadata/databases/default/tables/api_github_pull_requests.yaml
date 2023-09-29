@@ -9,6 +9,15 @@ configuration:
     select: githubPullRequests
     select_aggregate: githubPullRequestsAggregate
 object_relationships:
+  - name: author
+    using:
+      manual_configuration:
+        column_mapping:
+          author_id: id
+        insertion_order: null
+        remote_table:
+          name: github_users
+          schema: public
   - name: repo
     using:
       manual_configuration:
@@ -28,6 +37,15 @@ array_relationships:
         remote_table:
           name: closing_issues
           schema: api
+  - name: commits
+    using:
+      manual_configuration:
+        column_mapping:
+          id: pull_request_id
+        insertion_order: null
+        remote_table:
+          name: github_pull_request_commits
+          schema: public
 select_permissions:
   - role: public
     permission:
