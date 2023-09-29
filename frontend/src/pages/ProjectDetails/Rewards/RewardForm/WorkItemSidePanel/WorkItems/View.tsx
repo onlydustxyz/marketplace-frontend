@@ -205,7 +205,6 @@ function getWorkItem(type: WorkItemType, props: RewardItemType): ReactElement | 
 interface VirtualizedIssueListProps {
   contributions: ContributionFragment[];
   contributor: PaymentRequestDetailsFragment["githubRecipient"];
-  // contributor: Contributor;
   addContribution: (contribution: ContributionFragment) => void;
   ignoreContribution: (contribution: ContributionFragment) => void;
   unignoreContribution: (contribution: ContributionFragment) => void;
