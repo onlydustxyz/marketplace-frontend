@@ -87,6 +87,7 @@ const mapApiPaymentsToProps = (apiPayment: UserPaymentRequestFragment): Reward =
 
   return {
     id: apiPayment.id,
+    recipientId: apiPayment.recipientId,
     requestedAt,
     amount,
     workItems: apiPayment.workItems,
@@ -105,6 +106,7 @@ const mapApiPaymentsToProps = (apiPayment: UserPaymentRequestFragment): Reward =
 gql`
   fragment UserPaymentRequest on PaymentRequests {
     id
+    recipientId
     requestedAt
     payments {
       amount

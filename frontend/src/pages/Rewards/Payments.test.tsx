@@ -35,6 +35,7 @@ vi.mock("src/hooks/useAuth/useRoles");
 const mockContribution: UserPaymentRequestFragment = {
   __typename: "PaymentRequests",
   id: "705e6b37-d0ee-4e87-b681-7009dd691965",
+  recipientId: 123,
   requestedAt: "2023-01-10T19:10:27.802657",
   payments: [
     {
