@@ -8,6 +8,7 @@ pub mod pull_request;
 pub mod pull_requests;
 pub mod rate_limited;
 pub mod repo;
+pub mod simple_repo;
 pub mod user;
 
 use std::{
