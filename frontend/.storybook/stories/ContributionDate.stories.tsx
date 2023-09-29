@@ -1,27 +1,11 @@
 import { ComponentProps } from "react";
 import { GithubPullRequestStatus } from "src/__generated/graphql";
-
 import { ContributionDate } from "src/components/Contribution/ContributionDate";
-import { GithubContributionType, GithubPullRequestDraft } from "src/types";
+import { GithubContributionType } from "src/types";
 
 export default {
   title: "ContributionDate",
   component: ContributionDate,
-  argTypes: {
-    type: {
-      control: { type: "select" },
-      options: [GithubContributionType.PullRequest, GithubContributionType.Issue, GithubContributionType.CodeReview],
-    },
-    status: {
-      control: { type: "select" },
-      options: [
-        GithubPullRequestStatus.Open,
-        GithubPullRequestStatus.Merged,
-        GithubPullRequestStatus.Closed,
-        GithubPullRequestDraft.Draft,
-      ],
-    },
-  },
 };
 
 const defaultProps: ComponentProps<typeof ContributionDate> = {

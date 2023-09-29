@@ -1,22 +1,10 @@
 import { ComponentProps } from "react";
-
 import { ContributionReview } from "src/components/Contribution/ContributionReview";
 import { GithubContributionReviewStatus } from "src/types";
 
 export default {
   title: "ContributionReview",
   component: ContributionReview,
-  argTypes: {
-    status: {
-      control: { type: "select" },
-      options: [
-        GithubContributionReviewStatus.PendingReviewer,
-        GithubContributionReviewStatus.UnderReview,
-        GithubContributionReviewStatus.Approved,
-        GithubContributionReviewStatus.ChangesRequested,
-      ],
-    },
-  },
 };
 
 const defaultProps: ComponentProps<typeof ContributionReview> = {

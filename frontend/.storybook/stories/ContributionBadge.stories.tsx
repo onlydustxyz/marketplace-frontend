@@ -1,7 +1,7 @@
 import { ComponentProps } from "react";
-import { GithubIssueStatus, GithubPullRequestStatus, UserIdentityDocument } from "src/__generated/graphql";
+import { GithubPullRequestStatus, UserIdentityDocument } from "src/__generated/graphql";
 import { ContributionBadge } from "src/components/Contribution/ContributionBadge";
-import { GithubCodeReviewStatus, GithubContributionType, GithubPullRequestDraft } from "src/types";
+import { GithubContributionType } from "src/types";
 import withAuthProvider from "../decorators/withAuthProvider";
 import withContributorProfilePanelProvider from "../decorators/withContributorProfilePanelProvider";
 import withMockedProvider from "../decorators/withMockedProvider";
@@ -31,21 +31,6 @@ const mocks = [
 export default {
   title: "ContributionBadge",
   component: ContributionBadge,
-  argTypes: {
-    status: {
-      control: { type: "select" },
-      options: [
-        ...Object.values(GithubPullRequestStatus),
-        ...Object.values(GithubIssueStatus),
-        ...Object.values(GithubCodeReviewStatus),
-        GithubPullRequestDraft.Draft,
-      ],
-    },
-    type: {
-      control: { type: "select" },
-      options: [...Object.values(GithubContributionType)],
-    },
-  },
   decorators: [withMockedProvider(mocks), withAuthProvider({ userId: USER_ID }), withContributorProfilePanelProvider],
 };
 

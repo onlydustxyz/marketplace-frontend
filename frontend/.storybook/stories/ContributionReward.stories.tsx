@@ -1,5 +1,4 @@
 import { ComponentProps } from "react";
-
 import { ContributionReward } from "src/components/Contribution/ContributionReward";
 
 export default {
