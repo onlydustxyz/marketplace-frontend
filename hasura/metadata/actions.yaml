@@ -209,6 +209,12 @@ actions:
         template_engine: Kriti
         url: '{{$base_url}}/users/profile'
         version: 2
+      response_transform:
+        body:
+          action: transform
+          template: "true"
+        template_engine: Kriti
+        version: 2
     permissions:
       - role: registered_user
     comment: updateUserProfile
