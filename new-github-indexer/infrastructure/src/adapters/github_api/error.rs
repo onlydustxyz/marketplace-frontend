@@ -10,6 +10,7 @@ impl From<Error> for github_api::Error {
 					Self::NotFound(error.into()),
 				_ => Self::Other(error.into()),
 			},
+			Error::InvalidUri => Self::Other(error.into()),
 		}
 	}
 }

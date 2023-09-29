@@ -1,6 +1,9 @@
 use thiserror::Error;
 
-use crate::ports::output::{clean_storage, github_api};
+use crate::{
+	models::RepositoryId,
+	ports::output::{clean_storage, github_api},
+};
 
 #[derive(Debug, Error)]
 pub enum Error {
@@ -14,5 +17,5 @@ pub type Result<T> = std::result::Result<T, Error>;
 
 #[async_trait]
 pub trait IndexingFacadePort: Send + Sync {
-	async fn index_repo(&self, repo_id: u64) -> Result<()>;
+	async fn index_repo(&self, repo_id: RepositoryId) -> Result<()>;
 }
