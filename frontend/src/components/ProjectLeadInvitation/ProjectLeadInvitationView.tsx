@@ -46,7 +46,7 @@ export default function ProjectLeadInvitationView({
       )}
     >
       <div
-        className={classNames("text-left font-walsheim text-base", {
+        className={classNames("flex text-left font-walsheim text-base", "flex-1 sm:flex-auto", {
           "text-sm": size === CalloutSizes.Small,
           "text-md": size === CalloutSizes.Medium,
           "text-lg": size === CalloutSizes.Large,
@@ -54,7 +54,7 @@ export default function ProjectLeadInvitationView({
       >
         {projectName ? T("projectLeadInvitation.prompt", { projectName }) : T("project.projectLeadInvitation.prompt")}
       </div>
-      <Button size={ButtonsSizes[size]} onClick={onClick} data-testid="accept-invite-button">
+      <Button size={ButtonsSizes[size]} onClick={onClick} data-testid="accept-invite-button flex-1 sm:flex-auto">
         {size === CalloutSizes.Large ? <CheckLine className="text-xl font-normal text-black" /> : null}
         {btnLabel ? (
           btnLabel
