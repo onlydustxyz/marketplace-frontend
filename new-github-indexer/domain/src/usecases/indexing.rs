@@ -1,14 +1,12 @@
 use std::sync::Arc;
 
-use async_trait::async_trait;
-
 use crate::ports::{
 	input::indexing_facade_port::IndexingFacadePort,
-	output::{clean_storage::CleanStoragePort, github_api::GithubApiPort},
+	output::{clean_storage::CleanStoragePort, github_api},
 };
 
 pub struct Usecase {
-	github_api: Arc<dyn GithubApiPort>,
+	github_api: Arc<dyn github_api::Port>,
 	clean_storage: Arc<dyn CleanStoragePort>,
 }
 

@@ -1,4 +1,4 @@
 [print_schema]
-file = "new-github-indexer/infrastructure/src/adapters/postgres_clean_storage/schema.rs"
+file = "src/adapters/postgres_clean_storage/schema.rs"
 schema = "indexer_clean"
 custom_type_derives = ["diesel::query_builder::QueryId"]
