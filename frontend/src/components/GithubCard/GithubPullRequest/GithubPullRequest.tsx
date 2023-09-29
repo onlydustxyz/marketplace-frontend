@@ -36,7 +36,7 @@ export type GithubPullRequestProps = {
   pullRequest: GithubPullRequestWithCommitsFragment;
   ignored?: boolean;
   addMarginTopForVirtuosoDisplay?: boolean;
-  contributor: GithubUserFragment;
+  contributor?: GithubUserFragment;
 };
 
 export default function GithubPullRequest({
