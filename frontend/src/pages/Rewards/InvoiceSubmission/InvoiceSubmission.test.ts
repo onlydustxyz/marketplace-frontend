@@ -6,6 +6,7 @@ import { buildHiddenFields } from "./View";
 
 const paymentRequests: Reward[] = range(1, 4).map(id => ({
   id: `abc${id}${id}${id}${id}${id}${id}${id}`,
+  recipientId: 123,
   amount: {
     value: 2000 + id * 100,
     currency: Currency.USD,

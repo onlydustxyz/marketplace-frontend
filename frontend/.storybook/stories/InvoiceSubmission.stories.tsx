@@ -13,6 +13,7 @@ export default {
 
 const [payment1, payment2, payment3]: Reward[] = range(1, 4).map(id => ({
   id: `payment-${id}`,
+  recipientId: 123,
   amount: {
     value: id * 100,
     currency: Currency.USD,

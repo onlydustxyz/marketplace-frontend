@@ -21,7 +21,7 @@ export type Reward = {
     currency: Currency;
   };
   status: PaymentStatus;
-  recipientId?: number;
+  recipientId: number;
   invoiceReceived: boolean;
   recipientPayoutSettings?: PayoutSettings;
   project?: {
