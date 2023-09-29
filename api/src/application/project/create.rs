@@ -5,7 +5,7 @@ use derive_more::Constructor;
 use domain::{
 	sponsor, Amount, BudgetId, DomainError, Event, Project, ProjectId, ProjectVisibility, Publisher,
 };
-use infrastructure::database::Repository;
+use infrastructure::dbclient::Repository;
 use reqwest::Url;
 use tracing::instrument;
 

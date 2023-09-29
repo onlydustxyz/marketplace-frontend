@@ -3,7 +3,7 @@ use std::sync::Arc;
 use async_trait::async_trait;
 use chrono::Utc;
 use derive_new::new;
-use infrastructure::database::Repository;
+use infrastructure::dbclient::Repository;
 use serde_json::json;
 
 use super::super::error::Result;

@@ -5,12 +5,12 @@ pub fn impl_derive(derive_input: syn::DeriveInput) -> TokenStream {
 	let name = &derive_input.ident;
 
 	let expanded = quote!(
-		impl ::infrastructure::database::ImmutableModel<::diesel::pg::PgConnection> for #name
+		impl ::infrastructure::dbclient::ImmutableModel<::diesel::pg::PgConnection> for #name
 		{
 			fn exists(
 				connection: &mut ::diesel::pg::PgConnection,
 				id: <Self as ::diesel::associations::Identifiable>::Id,
-			) -> ::infrastructure::database::Result<bool> {
+			) -> ::infrastructure::dbclient::Result<bool> {
 				use ::diesel::{associations::HasTable, QueryDsl, RunQueryDsl};
 				use infrastructure::contextualized_error::IntoContextualizedError;
 				::diesel::select(::diesel::dsl::exists(<Self as HasTable>::table().find(id.clone())))
@@ -22,7 +22,7 @@ pub fn impl_derive(derive_input: syn::DeriveInput) -> TokenStream {
 			fn find_by_id(
 				connection: &mut ::diesel::pg::PgConnection,
 				id: <Self as ::diesel::associations::Identifiable>::Id,
-			) -> ::infrastructure::database::Result<Self> {
+			) -> ::infrastructure::dbclient::Result<Self> {
 				use ::diesel::{associations::HasTable, QueryDsl, RunQueryDsl};
 				use infrastructure::contextualized_error::IntoContextualizedError;
 				<Self as HasTable>::table().find(id.clone()).first(&mut *connection)
@@ -34,7 +34,7 @@ pub fn impl_derive(derive_input: syn::DeriveInput) -> TokenStream {
 			fn try_find_by_id(
 				connection: &mut ::diesel::pg::PgConnection,
 				id: <Self as ::diesel::associations::Identifiable>::Id,
-			) -> ::infrastructure::database::Result<Option<Self>> {
+			) -> ::infrastructure::dbclient::Result<Option<Self>> {
 				use ::diesel::{associations::HasTable, QueryDsl, RunQueryDsl, OptionalExtension};
 				use infrastructure::contextualized_error::IntoContextualizedError;
 				<Self as HasTable>::table().find(id.clone()).first(&mut *connection)
@@ -46,7 +46,7 @@ pub fn impl_derive(derive_input: syn::DeriveInput) -> TokenStream {
 
 			fn list(
 				connection: &mut ::diesel::pg::PgConnection,
-			) -> ::infrastructure::database::Result<Vec<Self>> {
+			) -> ::infrastructure::dbclient::Result<Vec<Self>> {
 				use ::diesel::{associations::HasTable, RunQueryDsl};
 				use infrastructure::contextualized_error::IntoContextualizedError;
 				<Self as HasTable>::table().load(connection)
@@ -57,7 +57,7 @@ pub fn impl_derive(derive_input: syn::DeriveInput) -> TokenStream {
 			fn insert(
 				self,
 				connection: &mut ::diesel::pg::PgConnection,
-			) -> ::infrastructure::database::Result<Self> {
+			) -> ::infrastructure::dbclient::Result<Self> {
 				use ::diesel::{associations::HasTable, RunQueryDsl};
 				use infrastructure::contextualized_error::IntoContextualizedError;
 				::diesel::insert_into(<Self as HasTable>::table())
@@ -70,7 +70,7 @@ pub fn impl_derive(derive_input: syn::DeriveInput) -> TokenStream {
 			fn insert_all(
 				connection: &mut ::diesel::pg::PgConnection,
 				values: Vec<Self>,
-			) -> ::infrastructure::database::Result<usize> {
+			) -> ::infrastructure::dbclient::Result<usize> {
 				use ::diesel::{associations::HasTable, RunQueryDsl};
 				use infrastructure::contextualized_error::IntoContextualizedError;
 				::diesel::insert_into(<Self as HasTable>::table())
@@ -83,7 +83,7 @@ pub fn impl_derive(derive_input: syn::DeriveInput) -> TokenStream {
 			fn try_insert(
 				self,
 				connection: &mut ::diesel::pg::PgConnection,
-			) -> ::infrastructure::database::Result<Option<Self>> {
+			) -> ::infrastructure::dbclient::Result<Option<Self>> {
 				use ::diesel::{associations::HasTable, OptionalExtension, RunQueryDsl};
 				use infrastructure::contextualized_error::IntoContextualizedError;
 				::diesel::insert_into(<Self as HasTable>::table())
@@ -98,7 +98,7 @@ pub fn impl_derive(derive_input: syn::DeriveInput) -> TokenStream {
 			fn delete(
 				connection: &mut ::diesel::pg::PgConnection,
 				id: <Self as ::diesel::associations::Identifiable>::Id,
-			) -> ::infrastructure::database::Result<Option<Self>> {
+			) -> ::infrastructure::dbclient::Result<Option<Self>> {
 				use ::diesel::{associations::HasTable, OptionalExtension, EqAll, RunQueryDsl, Table};
 				use infrastructure::contextualized_error::IntoContextualizedError;
 				diesel::delete(<Self as HasTable>::table())
@@ -112,7 +112,7 @@ pub fn impl_derive(derive_input: syn::DeriveInput) -> TokenStream {
 			fn delete_all<P>(
 				connection: &mut ::diesel::pg::PgConnection,
 				predicate: P,
-			) -> ::infrastructure::database::Result<usize>
+			) -> ::infrastructure::dbclient::Result<usize>
 			where
 				::diesel::query_builder::DeleteStatement<Self::Table, Self::WhereClause>:
 					::diesel::query_dsl::methods::FilterDsl<P>,
@@ -130,7 +130,7 @@ pub fn impl_derive(derive_input: syn::DeriveInput) -> TokenStream {
 
 			fn clear(
 				connection: &mut ::diesel::pg::PgConnection,
-			) -> ::infrastructure::database::Result<()> {
+			) -> ::infrastructure::dbclient::Result<()> {
 				use ::diesel::{associations::HasTable, RunQueryDsl};
 				use infrastructure::contextualized_error::IntoContextualizedError;
 				diesel::delete(<Self as HasTable>::table())

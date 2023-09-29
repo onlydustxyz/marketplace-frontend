@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use chrono::Utc;
 use domain::UserId;
-use infrastructure::database::{DatabaseError, Repository};
+use infrastructure::dbclient::{DatabaseError, Repository};
 use thiserror::Error;
 
 use crate::models::*;

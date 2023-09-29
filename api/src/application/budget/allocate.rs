@@ -6,7 +6,7 @@ use domain::{
 	sponsor, AggregateRepository, Amount, Budget, BudgetId, DomainError, Event, Project, ProjectId,
 	Publisher,
 };
-use infrastructure::database::Repository;
+use infrastructure::dbclient::Repository;
 use tracing::instrument;
 
 use crate::{domain::Publishable, models::Sponsor};

@@ -1,5 +1,8 @@
 use diesel::{Connection, ExpressionMethods};
-use infrastructure::database::{self, schema::wallets, ImmutableModel, Model, Result};
+use infrastructure::{
+	database::schema::wallets,
+	dbclient::{self, ImmutableModel, Model, Result},
+};
 
 use super::{BankAccount, UserPayoutInfo, Wallet};
 
@@ -12,7 +15,7 @@ pub trait Repository: Send + Sync {
 	) -> Result<()>;
 }
 
-impl Repository for database::Client {
+impl Repository for dbclient::Client {
 	fn upsert(
 		&self,
 		user_info: UserPayoutInfo,

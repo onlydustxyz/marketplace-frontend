@@ -1,7 +1,7 @@
 use diesel::{Connection, Identifiable, PgConnection};
 
 use super::{ImmutableModel, Model, Result};
-use crate::{contextualized_error::ContextualizedError, database};
+use crate::{contextualized_error::ContextualizedError, dbclient};
 
 pub trait ImmutableRepository<M>: Send + Sync
 where
@@ -20,7 +20,7 @@ where
 	fn try_insert_all(&self, models: Vec<M>) -> Result<()>;
 }
 
-impl<M> ImmutableRepository<M> for database::Client
+impl<M> ImmutableRepository<M> for dbclient::Client
 where
 	M: ImmutableModel<PgConnection>,
 {
@@ -72,7 +72,7 @@ where
 
 	fn try_insert_all(&self, models: Vec<M>) -> Result<()> {
 		let mut connection = self.connection()?;
-		connection.transaction::<(), database::error::Error, _>(|tx| {
+		connection.transaction::<(), dbclient::error::Error, _>(|tx| {
 			for model in models {
 				model.try_insert(&mut *tx)?;
 			}
@@ -91,7 +91,7 @@ where
 	fn upsert(&self, model: M) -> Result<M>;
 }
 
-impl<M> Repository<M> for database::Client
+impl<M> Repository<M> for dbclient::Client
 where
 	M: Model<PgConnection>,
 {
@@ -111,10 +111,10 @@ where
 	}
 }
 
-// Useful to make transaction::<(), database::error::Error, _> transactions
-impl From<diesel::result::Error> for database::error::Error {
+// Useful to make transaction::<(), dbclient::error::Error, _> transactions
+impl From<diesel::result::Error> for dbclient::error::Error {
 	fn from(error: diesel::result::Error) -> Self {
-		database::error::Error::Transaction(ContextualizedError::new(
+		dbclient::error::Error::Transaction(ContextualizedError::new(
 			"Error in transaction".to_string(),
 			error,
 		))

@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use anyhow::{anyhow, Result};
 use domain::{AggregateRepository, DomainError, Event, GithubUserId, Project, Publisher, UserId};
-use infrastructure::database::ImmutableRepository;
+use infrastructure::dbclient::ImmutableRepository;
 use tracing::instrument;
 
 use crate::{domain::Publishable, models::*};

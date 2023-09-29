@@ -1,5 +1,5 @@
 use domain::GithubServiceError;
-use infrastructure::database::DatabaseError;
+use infrastructure::dbclient::DatabaseError;
 use olog::warn;
 use thiserror::Error;
 

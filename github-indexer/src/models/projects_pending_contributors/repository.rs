@@ -2,23 +2,21 @@ use diesel::{Connection, ExpressionMethods, QueryDsl, RunQueryDsl};
 use domain::{GithubRepoId, GithubUserId, ProjectId};
 use infrastructure::{
 	contextualized_error::IntoContextualizedError,
-	database,
-	database::{
-		schema::{contributions, project_github_repos, projects_pending_contributors::dsl},
-		Result,
-	},
+	database::schema::{contributions, project_github_repos, projects_pending_contributors::dsl},
+	dbclient,
+	dbclient::Result,
 };
 
 use super::ProjectsPendingContributor;
 
-pub trait Repository: database::ImmutableRepository<ProjectsPendingContributor> {
+pub trait Repository: dbclient::ImmutableRepository<ProjectsPendingContributor> {
 	fn refresh_project_pending_contributor_list(
 		&self,
 		project_id: &ProjectId,
 	) -> Result<Vec<GithubUserId>>;
 }
 
-impl Repository for database::Client {
+impl Repository for dbclient::Client {
 	fn refresh_project_pending_contributor_list(
 		&self,
 		project_id: &ProjectId,

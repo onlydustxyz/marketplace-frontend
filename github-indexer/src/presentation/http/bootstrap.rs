@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use anyhow::Result;
-use infrastructure::{database, github};
+use infrastructure::{dbclient, github};
 use olog::info;
 use rocket::{Build, Rocket};
 
@@ -10,7 +10,7 @@ use crate::{presentation::http, Config};
 pub async fn bootstrap(config: Config) -> Result<Rocket<Build>> {
 	info!("Bootstrapping backend event-listeners api");
 
-	let database = Arc::new(database::Client::new(database::init_pool(
+	let database = Arc::new(dbclient::Client::new(dbclient::init_pool(
 		config.database.clone(),
 	)?));
 

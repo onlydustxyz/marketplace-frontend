@@ -1,15 +1,14 @@
 use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
 use domain::GithubRepoId;
 use infrastructure::{
-	contextualized_error::IntoContextualizedError,
-	database,
-	database::{schema::github_repo_indexes::dsl, Result},
+	contextualized_error::IntoContextualizedError, database::schema::github_repo_indexes::dsl,
+	dbclient, dbclient::Result,
 };
 
 use super::GithubRepoIndex;
 use crate::diesel::OptionalExtension;
 
-pub trait Repository: database::Repository<GithubRepoIndex> {
+pub trait Repository: dbclient::Repository<GithubRepoIndex> {
 	fn select_repo_indexer_state(
 		&self,
 		repo_id: &GithubRepoId,
@@ -43,7 +42,7 @@ pub trait Repository: database::Repository<GithubRepoIndex> {
 	fn start_indexing(&self, repo_id: GithubRepoId) -> Result<()>;
 }
 
-impl Repository for database::Client {
+impl Repository for dbclient::Client {
 	fn select_repo_indexer_state(
 		&self,
 		repo_id: &GithubRepoId,

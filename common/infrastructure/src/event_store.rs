@@ -4,7 +4,7 @@ use olog::{error, IntoField};
 use serde_json::Value;
 use tracing::instrument;
 
-use crate::database::{schema::events, Client};
+use crate::{database::schema::events, dbclient::Client};
 
 pub trait Named {
 	fn name() -> String;

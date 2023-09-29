@@ -3,7 +3,7 @@ use api::models::CryptoUsdQuote;
 use chrono::Utc;
 use domain::{currencies, BudgetEvent, BudgetId};
 use fixtures::*;
-use infrastructure::database::{enums::Currency, ImmutableRepository};
+use infrastructure::{database::enums::Currency, dbclient::ImmutableRepository};
 use olog::info;
 use rstest::rstest;
 use rust_decimal_macros::dec;

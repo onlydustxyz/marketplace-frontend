@@ -5,10 +5,12 @@ use fixtures::*;
 use github_indexer::models::{
 	self, github_pull_requests::ClosingIssue, GithubRepoIndex, ProjectGithubRepo,
 };
-use infrastructure::database::{
-	enums::{ContributionStatus, ContributionType},
-	schema::{contributions, projects_contributors, projects_pending_contributors},
-	ImmutableRepository,
+use infrastructure::{
+	database::{
+		enums::{ContributionStatus, ContributionType},
+		schema::{contributions, projects_contributors, projects_pending_contributors},
+	},
+	dbclient::ImmutableRepository,
 };
 use olog::info;
 use rstest::rstest;

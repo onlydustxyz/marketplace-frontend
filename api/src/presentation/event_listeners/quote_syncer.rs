@@ -5,7 +5,7 @@ use async_trait::async_trait;
 use chrono::Utc;
 use derive_more::Constructor;
 use domain::{currencies, services::quotes, BudgetEvent, Event, SubscriberCallbackError};
-use infrastructure::database::Repository;
+use infrastructure::dbclient::Repository;
 use tracing::instrument;
 
 use super::EventListener;

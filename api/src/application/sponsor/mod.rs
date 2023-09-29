@@ -1,4 +1,4 @@
-use infrastructure::database::DatabaseError;
+use infrastructure::dbclient::DatabaseError;
 use thiserror::Error;
 
 use crate::domain::ImageStoreServiceError;
@@ -17,7 +17,7 @@ pub enum Error {
 #[cfg(test)]
 mod test {
 	use domain::sponsor::Id;
-	use infrastructure::database::{ImmutableRepository, Repository, Result};
+	use infrastructure::dbclient::{ImmutableRepository, Repository, Result};
 	use mockall::mock;
 
 	use crate::models::Sponsor;

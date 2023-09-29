@@ -3,7 +3,7 @@ use std::sync::Arc;
 use async_trait::async_trait;
 use chrono::Utc;
 use derive_new::new;
-use infrastructure::database::{ImmutableRepository, Repository};
+use infrastructure::dbclient::{ImmutableRepository, Repository};
 
 use super::{super::error::Result, IndexedRepo};
 use crate::{

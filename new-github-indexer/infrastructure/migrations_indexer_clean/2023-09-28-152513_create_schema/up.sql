@@ -1,0 +1,1 @@
+create schema indexer_clean;

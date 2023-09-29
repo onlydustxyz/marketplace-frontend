@@ -7,7 +7,7 @@ use domain::{
 	ApplicationEvent, BudgetEvent, Event, EventListener, PaymentEvent, PaymentWorkItem,
 	ProjectEvent, SubscriberCallbackError,
 };
-use infrastructure::database::{ImmutableRepository, Repository};
+use infrastructure::dbclient::{ImmutableRepository, Repository};
 use rust_decimal::Decimal;
 use tracing::instrument;
 

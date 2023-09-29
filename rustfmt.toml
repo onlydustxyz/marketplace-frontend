@@ -30,4 +30,5 @@ use_field_init_shorthand = true
 # Ignore generated files
 ignore = [
   "common/infrastructure/src/database/schema.rs",
+  "new-github-indexer/infrastructure/src/adapters/postgres_clean_storage/schema.rs"
 ]

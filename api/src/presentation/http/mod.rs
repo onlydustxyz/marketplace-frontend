@@ -4,7 +4,7 @@ use ::domain::{AggregateRepository, Project};
 use domain::{Application, Budget, Event, EventStore, GithubFetchService, Payment, Publisher};
 pub use http::Config;
 use infrastructure::{
-	database::{ImmutableRepository, Repository},
+	dbclient::{ImmutableRepository, Repository},
 	github,
 };
 use presentation::http;

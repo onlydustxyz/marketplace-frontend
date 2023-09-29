@@ -1,17 +1,16 @@
 use diesel::{ExpressionMethods, OptionalExtension, QueryDsl, RunQueryDsl};
 use domain::{GithubIssueNumber, GithubRepoId};
 use infrastructure::{
-	contextualized_error::IntoContextualizedError,
-	database::{self, schema::github_issues},
+	contextualized_error::IntoContextualizedError, database::schema::github_issues, dbclient,
 };
 
 use crate::models::{GithubIssue, IdentifiableRepository};
 
-impl IdentifiableRepository<GithubIssue, (GithubRepoId, GithubIssueNumber)> for database::Client {
+impl IdentifiableRepository<GithubIssue, (GithubRepoId, GithubIssueNumber)> for dbclient::Client {
 	fn find(
 		&self,
 		(repo_id, number): (GithubRepoId, GithubIssueNumber),
-	) -> database::Result<Option<GithubIssue>> {
+	) -> dbclient::Result<Option<GithubIssue>> {
 		let mut connection = self.connection()?;
 		github_issues::table
 			.filter(github_issues::repo_id.eq(repo_id))

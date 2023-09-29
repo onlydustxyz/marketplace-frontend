@@ -1,0 +1,59 @@
+[package]
+name = "indexer-infrastructure"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+
+octocrab_indexer = { package = "octocrab", version = "0.30.1", features = ["stream"] }
+
+# Async
+async-trait = "0.1.56"
+futures = { version = "0.3.21", features = ["alloc"] }
+
+# Database
+diesel = { version = "2.1.0", default-features = false, features = [
+    "postgres",
+    "extras",
+    "serde_json",
+] }
+diesel_json = "0.2.0"
+diesel-derive-newtype = "2.1.0"
+
+
+# Core types
+uuid = { version = "1.3.3", default_features = false, features = [
+    "v4",
+    "serde",
+] }
+
+# Crypto
+sha2 = "0.10.7"
+
+# Http client
+reqwest = { version = "0.11", default-features = false }
+url = { version = "2.2.2", features = ["serde"] }
+
+# Errors
+anyhow = "1.0.72"
+thiserror = "1.0.43"
+
+# Serde
+serde = { version = "1.0.137", features = ["derive"] }
+serde_json = { version = "1.0.81" }
+
+# Utils
+derive-getters = "0.2.0"
+derive_more = "0.99.17"
+derive-new = "0.5.9"
+dotenv = "0.15.0"
+chrono = { version = "0.4", features = ["serde"] }
+itertools = "0.10.5"
+
+# Local dependecies
+domain = { package = "indexer-domain", path = "../domain" }
+infrastructure = { path = "../../common/infrastructure" }
+derive = { path = "../../common/derive" }
+olog = { path = "../../common/olog" }

@@ -1,8 +1,9 @@
 use std::sync::Arc;
 
 use anyhow::Result;
+use diesel_migrations::{embed_migrations, EmbeddedMigrations};
 use domain::{AggregateRepository, CompositePublisher, EventPublisher};
-use infrastructure::{amqp, database, event_bus::EXCHANGE_NAME, github};
+use infrastructure::{amqp, dbclient, event_bus::EXCHANGE_NAME, github};
 use rocket::{Build, Rocket};
 
 use crate::{
@@ -12,12 +13,14 @@ use crate::{
 	Config,
 };
 
+pub const MIGRATIONS: EmbeddedMigrations = embed_migrations!("../migrations");
+
 pub async fn bootstrap(config: Config) -> Result<Rocket<Build>> {
 	info!("Bootstrapping api http server");
-	let database = Arc::new(database::Client::new(database::init_pool(
+	let database = Arc::new(dbclient::Client::new(dbclient::init_pool(
 		config.database.clone(),
 	)?));
-	database.run_migrations()?;
+	database.run_migrations(MIGRATIONS)?;
 
 	let github_api_client: Arc<github::Client> =
 		github::RoundRobinClient::new(config.github_api_client.clone())?.into();

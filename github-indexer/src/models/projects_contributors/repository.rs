@@ -3,21 +3,20 @@ use domain::{GithubRepoId, GithubUserId, ProjectId};
 use infrastructure::{
 	contextualized_error::IntoContextualizedError,
 	database::{
-		self,
 		enums::ContributionStatus,
 		schema::{contributions, project_github_repos, projects_contributors::dsl},
-		Result,
 	},
+	dbclient::{self, Result},
 };
 
 use super::ProjectsContributor;
 
-pub trait Repository: database::ImmutableRepository<ProjectsContributor> {
+pub trait Repository: dbclient::ImmutableRepository<ProjectsContributor> {
 	fn refresh_project_contributor_list(&self, project_id: &ProjectId)
 	-> Result<Vec<GithubUserId>>;
 }
 
-impl Repository for database::Client {
+impl Repository for dbclient::Client {
 	fn refresh_project_contributor_list(
 		&self,
 		project_id: &ProjectId,

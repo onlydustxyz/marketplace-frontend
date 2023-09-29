@@ -6,7 +6,7 @@ use anyhow::Result;
 use api::models::CryptoUsdQuote;
 use assert_matches::assert_matches;
 use chrono::Utc;
-use infrastructure::database::{enums::Currency, ImmutableRepository};
+use infrastructure::{database::enums::Currency, dbclient::ImmutableRepository};
 use olog::info;
 use rstest::rstest;
 use rust_decimal::Decimal;

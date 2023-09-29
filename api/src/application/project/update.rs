@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use anyhow::Result;
 use domain::{DomainError, ProjectId, ProjectVisibility};
-use infrastructure::database::Repository;
+use infrastructure::dbclient::Repository;
 use juniper::Nullable;
 use tracing::instrument;
 use url::Url;
@@ -82,8 +82,9 @@ impl Usecase {
 mod tests {
 
 	use ::url::Url;
-	use infrastructure::database::{
-		enums::ProjectVisibility as ProjectVisibilityEnum, ImmutableRepository, Result,
+	use infrastructure::{
+		database::enums::ProjectVisibility as ProjectVisibilityEnum,
+		dbclient::{ImmutableRepository, Result},
 	};
 	use mockall::{mock, predicate::eq};
 	use rstest::{fixture, rstest};

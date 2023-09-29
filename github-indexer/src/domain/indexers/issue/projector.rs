@@ -3,7 +3,7 @@ use std::sync::Arc;
 use async_trait::async_trait;
 use derive_new::new;
 use domain::GithubIssue;
-use infrastructure::database::Repository;
+use infrastructure::dbclient::Repository;
 
 use super::{super::error::Result, Projector};
 

@@ -5,13 +5,13 @@ use std::sync::Arc;
 
 pub use bootstrap::bootstrap;
 pub use http::Config;
-use infrastructure::{database, github};
+use infrastructure::{dbclient, github};
 use presentation::http;
 use rocket::{Build, Rocket};
 
 pub fn serve(
 	config: Config,
-	database: Arc<database::Client>,
+	database: Arc<dbclient::Client>,
 	github: Arc<github::Client>,
 ) -> Rocket<Build> {
 	rocket::custom(http::config::rocket("github-indexer/Rocket.toml"))

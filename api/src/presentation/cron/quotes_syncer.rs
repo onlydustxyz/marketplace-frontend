@@ -2,7 +2,7 @@ use std::{sync::Arc, time::Duration};
 
 use anyhow::Result;
 use domain::currencies;
-use infrastructure::{coinmarketcap, database};
+use infrastructure::{coinmarketcap, dbclient};
 use olog::info;
 use tokio::time::Instant;
 use tokio_cron_scheduler::Job;
@@ -19,7 +19,7 @@ pub async fn bootstrap(config: Config) -> Result<Job> {
 }
 
 async fn _bootstrap(config: Config) -> Result<()> {
-	let database = Arc::new(database::Client::new(database::init_pool(
+	let database = Arc::new(dbclient::Client::new(dbclient::init_pool(
 		config.database.clone(),
 	)?));
 

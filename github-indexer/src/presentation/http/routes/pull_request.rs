@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use domain::GithubPullRequestId;
 use http_api_problem::{HttpApiProblem, StatusCode};
-use infrastructure::{database, github};
+use infrastructure::{dbclient, github};
 use olog::{error, IntoField};
 use presentation::http::guards::ApiKey;
 use rocket::{serde::json::Json, State};
@@ -29,7 +29,7 @@ pub async fn index_by_repo_id(
 	_api_key: ApiKey,
 	repo_id: i64,
 	pr_number: i64,
-	database: &State<Arc<database::Client>>,
+	database: &State<Arc<dbclient::Client>>,
 	github: &State<Arc<github::Client>>,
 ) -> Result<Json<Response>, HttpApiProblem> {
 	let database = (*database).clone();
@@ -75,7 +75,7 @@ pub async fn index_by_repo_owner_name(
 	repo_owner: String,
 	repo_name: String,
 	pr_number: i64,
-	database: &State<Arc<database::Client>>,
+	database: &State<Arc<dbclient::Client>>,
 	github: &State<Arc<github::Client>>,
 ) -> Result<Json<Response>, HttpApiProblem> {
 	let database = (*database).clone();

@@ -2,13 +2,12 @@ use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
 use domain::GithubPullRequestId;
 use infrastructure::{
 	contextualized_error::IntoContextualizedError,
-	database,
-	database::{schema::github_pull_request_indexes::dsl, Result},
+	database::schema::github_pull_request_indexes::dsl, dbclient, dbclient::Result,
 };
 
 use super::GithubPullRequestIndex;
 
-pub trait Repository: database::Repository<GithubPullRequestIndex> {
+pub trait Repository: dbclient::Repository<GithubPullRequestIndex> {
 	fn select_pull_request_indexer_state(
 		&self,
 		pull_request_id: &GithubPullRequestId,
@@ -20,7 +19,7 @@ pub trait Repository: database::Repository<GithubPullRequestIndex> {
 	) -> Result<()>;
 }
 
-impl Repository for database::Client {
+impl Repository for dbclient::Client {
 	fn select_pull_request_indexer_state(
 		&self,
 		pull_request_id: &GithubPullRequestId,

@@ -1,18 +1,18 @@
 use diesel::{ExpressionMethods, RunQueryDsl};
 use domain::UserId;
 use infrastructure::{
-	contextualized_error::IntoContextualizedError, database,
-	database::schema::user_profile_info::dsl,
+	contextualized_error::IntoContextualizedError, database::schema::user_profile_info::dsl,
+	dbclient,
 };
 
 use super::UserProfileInfo;
 
-pub trait Repository: database::Repository<UserProfileInfo> {
-	fn upsert_user_avatar(&self, id: UserId, avatar_url: String) -> database::Result<()>;
+pub trait Repository: dbclient::Repository<UserProfileInfo> {
+	fn upsert_user_avatar(&self, id: UserId, avatar_url: String) -> dbclient::Result<()>;
 }
 
-impl Repository for database::Client {
-	fn upsert_user_avatar(&self, id: UserId, avatar_url: String) -> database::Result<()> {
+impl Repository for dbclient::Client {
+	fn upsert_user_avatar(&self, id: UserId, avatar_url: String) -> dbclient::Result<()> {
 		let mut connection = self.connection()?;
 		diesel::insert_into(dsl::user_profile_info)
 			.values((dsl::id.eq(id), dsl::avatar_url.eq(avatar_url.clone())))

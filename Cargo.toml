@@ -11,4 +11,6 @@ members = [
 	"common/testing",
 	"common/olog",
 	"github-indexer",
+	"new-github-indexer/domain",
+	"new-github-indexer/infrastructure"
 ]

@@ -3,10 +3,8 @@ use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
 use domain::{GithubRepoId, GithubUserId};
 use infrastructure::{
 	contextualized_error::IntoContextualizedError,
-	database::{
-		schema::{github_repo_indexes, github_user_indexes},
-		Client, Result,
-	},
+	database::schema::{github_repo_indexes, github_user_indexes},
+	dbclient::{Client, Result},
 };
 
 use crate::models::GithubUserIndex;

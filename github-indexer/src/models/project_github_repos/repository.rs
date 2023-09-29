@@ -1,18 +1,17 @@
 use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
 use domain::{GithubRepoId, ProjectId};
 use infrastructure::{
-	contextualized_error::IntoContextualizedError,
-	database,
-	database::{schema::project_github_repos::dsl, Result},
+	contextualized_error::IntoContextualizedError, database::schema::project_github_repos::dsl,
+	dbclient, dbclient::Result,
 };
 
 use super::ProjectGithubRepo;
 
-pub trait Repository: database::ImmutableRepository<ProjectGithubRepo> {
+pub trait Repository: dbclient::ImmutableRepository<ProjectGithubRepo> {
 	fn find_projects_of_repo(&self, github_repo_id: &GithubRepoId) -> Result<Vec<ProjectId>>;
 }
 
-impl Repository for database::Client {
+impl Repository for dbclient::Client {
 	fn find_projects_of_repo(&self, github_repo_id: &GithubRepoId) -> Result<Vec<ProjectId>> {
 		let mut connection = self.connection()?;
 		let projects = dsl::project_github_repos

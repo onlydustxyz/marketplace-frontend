@@ -5,12 +5,12 @@ pub fn impl_derive(derive_input: syn::DeriveInput) -> TokenStream {
 	let name = &derive_input.ident;
 
 	let expanded = quote!(
-		impl ::infrastructure::database::Model<::diesel::pg::PgConnection> for #name
+		impl ::infrastructure::dbclient::Model<::diesel::pg::PgConnection> for #name
 		{
 			fn update(
 				self,
 				connection: &mut ::diesel::pg::PgConnection,
-			) -> ::infrastructure::database::Result<Self> {
+			) -> ::infrastructure::dbclient::Result<Self> {
 				use ::diesel::{associations::HasTable, RunQueryDsl, Table};
 				use infrastructure::contextualized_error::IntoContextualizedError;
 				diesel::update(&self).set(&self).get_result(connection)
@@ -21,7 +21,7 @@ pub fn impl_derive(derive_input: syn::DeriveInput) -> TokenStream {
 			fn upsert(
 				self,
 				connection: &mut ::diesel::pg::PgConnection,
-			) -> ::infrastructure::database::Result<Self> {
+			) -> ::infrastructure::dbclient::Result<Self> {
 				use ::diesel::{associations::HasTable, RunQueryDsl, Table};
 				use infrastructure::contextualized_error::IntoContextualizedError;
 				diesel::insert_into(<Self as HasTable>::table())

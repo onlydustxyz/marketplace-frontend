@@ -7,7 +7,7 @@ use std::{sync::Arc, time::Duration};
 use anyhow::Result;
 use domain::{currencies, EventListener, LogErr, Message, Subscriber, SubscriberCallbackError};
 use futures::future::try_join_all;
-use infrastructure::{amqp::UniqueMessage, coinmarketcap, database, event_bus};
+use infrastructure::{amqp::UniqueMessage, coinmarketcap, dbclient, event_bus};
 use olog::{error, IntoField};
 use tokio::task::JoinHandle;
 use tokio_cron_scheduler::Job;
@@ -45,7 +45,7 @@ async fn _bootstrap(config: Config) -> Result<()> {
 
 pub async fn spawn_all(config: Config) -> Result<Vec<JoinHandle<()>>> {
 	let reqwest = reqwest::Client::new();
-	let database = Arc::new(database::Client::new(database::init_pool(
+	let database = Arc::new(dbclient::Client::new(dbclient::init_pool(
 		config.database.clone(),
 	)?));
 	let coinmarketcap = Arc::new(coinmarketcap::Client::new(

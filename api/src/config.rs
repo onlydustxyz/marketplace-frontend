@@ -1,4 +1,4 @@
-use infrastructure::{amqp, coinmarketcap, database, github, http as http_client, tracing, web3};
+use infrastructure::{amqp, coinmarketcap, dbclient, github, http as http_client, tracing, web3};
 use presentation::http as http_server;
 use serde::Deserialize;
 
@@ -9,7 +9,7 @@ pub struct Config {
 	#[serde(default)]
 	pub http: http_server::Config,
 	#[serde(default)]
-	pub database: database::Config,
+	pub database: dbclient::Config,
 	#[serde(default)]
 	pub amqp: amqp::Config,
 	#[serde(default)]

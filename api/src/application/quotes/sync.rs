@@ -4,7 +4,7 @@ use anyhow::Result;
 use chrono::Utc;
 use derive_more::Constructor;
 use domain::{services::quotes::Service as QuoteService, Currency};
-use infrastructure::database::Repository;
+use infrastructure::dbclient::Repository;
 
 use crate::models::CryptoUsdQuote;
 

@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use domain::{GithubFetchIssueService, GithubIssue, GithubIssueNumber, GithubRepoId};
-use infrastructure::database::Repository;
+use infrastructure::dbclient::Repository;
 
 use self::{crawler::IssueCrawler, projector::IssueProjector};
 use super::{Crawler, IndexerImpl, Projector};

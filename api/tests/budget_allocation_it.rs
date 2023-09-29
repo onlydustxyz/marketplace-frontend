@@ -5,8 +5,7 @@ use anyhow::Result;
 use api::{models as api_models, presentation::http::routes::projects::budgets::Response};
 use domain::{currencies, sponsor, BudgetEvent, BudgetId, Event, ProjectEvent, ProjectId};
 use infrastructure::{
-	database::{enums::Currency, ImmutableRepository},
-	event_bus::EXCHANGE_NAME,
+	database::enums::Currency, dbclient::ImmutableRepository, event_bus::EXCHANGE_NAME,
 };
 use olog::info;
 use rocket::{

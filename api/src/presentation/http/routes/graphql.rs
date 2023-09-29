@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use domain::{AggregateRepository, Event, Payment, Project, Publisher};
 use infrastructure::{
-	database::{ImmutableRepository, Repository},
+	dbclient::{ImmutableRepository, Repository},
 	github,
 };
 use juniper_rocket::{GraphQLRequest, GraphQLResponse};

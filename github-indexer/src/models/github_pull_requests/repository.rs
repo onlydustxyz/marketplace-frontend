@@ -2,14 +2,12 @@ use diesel::{ExpressionMethods, JoinOnDsl, OptionalExtension, QueryDsl, RunQuery
 use domain::{GithubPullRequestNumber, GithubRepoId};
 use infrastructure::{
 	contextualized_error::IntoContextualizedError,
-	database,
-	database::{
-		schema::{
-			closing_issues, github_pull_request_commits, github_pull_request_reviews,
-			github_pull_requests, github_repos,
-		},
-		Result,
+	database::schema::{
+		closing_issues, github_pull_request_commits, github_pull_request_reviews,
+		github_pull_requests, github_repos,
 	},
+	dbclient,
+	dbclient::Result,
 };
 
 use super::{pull_request::GithubPullRequest, PullRequest as GithubFullPullRequest};
@@ -19,7 +17,7 @@ pub trait Repository: Send + Sync {
 	fn upsert(&self, pull_request: GithubFullPullRequest) -> Result<()>;
 }
 
-impl Repository for database::Client {
+impl Repository for dbclient::Client {
 	fn upsert(&self, pull_request: GithubFullPullRequest) -> Result<()> {
 		let mut connection = self.connection()?;
 
@@ -80,12 +78,12 @@ impl Repository for database::Client {
 }
 
 impl IdentifiableRepository<GithubPullRequest, (GithubRepoId, GithubPullRequestNumber)>
-	for database::Client
+	for dbclient::Client
 {
 	fn find(
 		&self,
 		(repo_id, number): (GithubRepoId, GithubPullRequestNumber),
-	) -> database::Result<Option<GithubPullRequest>> {
+	) -> dbclient::Result<Option<GithubPullRequest>> {
 		let mut connection = self.connection()?;
 		github_pull_requests::table
 			.filter(github_pull_requests::repo_id.eq(repo_id))
@@ -100,12 +98,12 @@ impl IdentifiableRepository<GithubPullRequest, (GithubRepoId, GithubPullRequestN
 }
 
 impl IdentifiableRepository<GithubPullRequest, (String, String, GithubPullRequestNumber)>
-	for database::Client
+	for dbclient::Client
 {
 	fn find(
 		&self,
 		(repo_owner, repo_name, number): (String, String, GithubPullRequestNumber),
-	) -> database::Result<Option<GithubPullRequest>> {
+	) -> dbclient::Result<Option<GithubPullRequest>> {
 		let mut connection = self.connection()?;
 		github_pull_requests::table
 			.inner_join(

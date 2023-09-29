@@ -3,7 +3,7 @@ use std::sync::Arc;
 use anyhow::anyhow;
 use derive_more::Constructor;
 use domain::blockchain::{aptos, evm, starknet, Network};
-use infrastructure::database::DatabaseError;
+use infrastructure::dbclient::DatabaseError;
 use thiserror::Error;
 
 use crate::{domain::IsEnsValid, models::*};
@@ -72,7 +72,7 @@ impl Usecase {
 #[cfg(test)]
 mod tests {
 	use domain::{blockchain::evm, UserId};
-	use infrastructure::database::Result;
+	use infrastructure::dbclient::Result;
 	use mockall::{mock, predicate::eq};
 	use rstest::{fixture, rstest};
 

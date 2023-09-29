@@ -8,11 +8,10 @@ use domain::GithubCodeReviewId;
 use infrastructure::{
 	contextualized_error::IntoContextualizedError,
 	database::{
-		self,
 		enums::{ContributionStatus, ContributionType, GithubCodeReviewStatus, GithubIssueStatus},
 		schema::{contributions, github_pull_request_reviews},
-		DatabaseError, Result,
 	},
+	dbclient::{self, DatabaseError, Result},
 };
 
 use super::{Contribution, DetailsId};
@@ -26,7 +25,7 @@ pub trait Repository: Sync + Send {
 	fn upsert_from_github_pull_request(&self, pull_request: GithubPullRequest) -> Result<()>;
 }
 
-impl Repository for database::Client {
+impl Repository for dbclient::Client {
 	fn upsert_from_github_issue(&self, issue: GithubIssue) -> Result<()> {
 		let contributions: Vec<_> = issue
 			.assignee_ids

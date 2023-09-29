@@ -1,0 +1,331 @@
+openapi: 3.0.3
+info:
+  title: OnlyDust Indexer API
+  description: OnlyDust Indexer API
+  version: 1.0.0
+servers:
+  - url: 'http://localhost:8001'
+    description: Local
+  - url: 'https://develop-indexer.onlydust.xyz'
+    description: Develop
+  - url: 'https://staging-indexer.onlydust.xyz'
+    description: Staging
+  - url: 'https://indexer.onlydust.xyz'
+    description: Production
+
+paths:
+  /api/v1/indexes/repos/{repoId}:
+    put:
+      security:
+        - apiKey: [ ]
+      tags:
+        - Indexes
+      summary: Add repo to the list of repos to index
+      operationId: addRepoToIndex
+      description: |
+        Add repo to the list of repos to index. Does nothing if the repo is already in the list of repos to indexed.
+      parameters:
+        - in: path
+          name: repoId
+          required: true
+          description: The ID of the repo to add
+          schema:
+            $ref: '#/components/schemas/RepoId'
+      responses:
+        "204":
+          description: 'The repo will be indexed soon'
+        "401":
+          $ref: '#/components/responses/UnauthorizedError'
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/indexes/users/{userId}:
+    put:
+      security:
+        - apiKey: [ ]
+      tags:
+        - Indexes
+      summary: Add user to the list of users to index
+      operationId: addUserToIndex
+      description: |
+        Add user to the list of users to index. Does nothing if the user is already in the list of users to index.
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          description: The ID of the user to add
+          schema:
+            $ref: '#/components/schemas/UserId'
+      responses:
+        "204":
+          description: 'The user will be indexed soon'
+        "401":
+          $ref: '#/components/responses/UnauthorizedError'
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+
+
+  /api/v1/users/{userId}:
+    put:
+      security:
+        - apiKey: [ ]
+      tags:
+        - Users
+      summary: Immediately indexes the user (if necessary).
+      operationId: indexUser
+      description: |
+        Immediately indexes the user if it is not indexed yet. Does nothing if the user is already indexed.
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          description: The ID of the user to add
+          schema:
+            $ref: '#/components/schemas/UserId'
+      responses:
+        "204":
+          description: 'User indexed successfully'
+        "401":
+          $ref: '#/components/responses/UnauthorizedError'
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/issues/{issueId}:
+    put:
+      security:
+        - apiKey: [ ]
+      tags:
+        - Issues
+      summary: Immediately indexes the issue (if necessary).
+      operationId: indexIssue
+      description: |
+        Immediately indexes the issue if it is not indexed yet. Does nothing if the issue is already indexed.
+      parameters:
+        - in: path
+          name: issueId
+          required: true
+          description: The ID of the issue to add
+          schema:
+            $ref: '#/components/schemas/IssueId'
+      responses:
+        "204":
+          description: 'Issue indexed successfully'
+        "401":
+          $ref: '#/components/responses/UnauthorizedError'
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/pull-requests/{pullRequestId}:
+    put:
+      security:
+        - apiKey: [ ]
+      tags:
+        - Pull request
+      summary: Immediately indexes the pull request (if necessary).
+      operationId: indexPullRequest
+      description: |
+        Immediately indexes the pull request if it is not indexed yet. Does nothing if the pull request is already indexed.
+      parameters:
+        - in: path
+          name: pullRequestId
+          required: true
+          description: The ID of the pull request to add
+          schema:
+            $ref: '#/components/schemas/PullRequestId'
+      responses:
+        "204":
+          description: 'Pull request indexed successfully'
+        "401":
+          $ref: '#/components/responses/UnauthorizedError'
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/repos:
+    get:
+      security:
+        - apiKey: [ ]
+      tags:
+        - Repos
+      summary: Get a list of repos from an installation ID
+      operationId: getRepos
+      parameters:
+        - in: query
+          name: installationId
+          required: true
+          description: The (external) installation ID
+          schema:
+            $ref: '#/components/schemas/AppInstallationId'
+      responses:
+        "200":
+          description: 'Repos'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RepoListResponse'
+        "401":
+          $ref: '#/components/responses/UnauthorizedError'
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/app-installations:
+    get:
+      security:
+        - apiKey: [ ]
+      tags:
+        - Github App installations
+      summary: Get a list of installations from a repo ID or an organization ID
+      operationId: getAppInstallations
+      parameters:
+        - in: query
+          name: repoId
+          description: The repo ID
+          schema:
+            $ref: '#/components/schemas/RepoId'
+        - in: query
+          name: organizationId
+          description: The organization ID
+          schema:
+            $ref: '#/components/schemas/OrganizationId'
+      responses:
+        "200":
+          description: 'Github App installations'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppInstallationListResponse'
+        "401":
+          $ref: '#/components/responses/UnauthorizedError'
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+
+components:
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: Api-Key
+
+  responses:
+    InternalServerError:
+      description: Internal Server Error
+      content:
+        application/problem+json:
+          example:
+            type: GITHUB_NOT_RESPONDING
+            title: Github API is not responding
+            status: 500
+          schema:
+            $ref: '#/components/schemas/OnlyDustError'
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/problem+json:
+          example:
+            type: NOT_AUTHENTICATED
+            title: You must be authenticated to make this call
+            status: 401
+          schema:
+            $ref: '#/components/schemas/OnlyDustError'
+
+  schemas:
+    # ERRORS ==================================================================
+    OnlyDustError:
+      type: object
+      description: Error contract strongly inspired by JSON problem (rfc7807) specification
+      required:
+        - type
+        - title
+        - status
+      properties:
+        type:
+          type: string
+          description: A code that identifies the problem type.
+          example: F.OUT_OF_CREDIT
+        title:
+          type: string
+          description: A short, human-readable summary of the problem type. It SHOULD NOT change from occurrence to occurrence of the problem.
+          example: Not enough credit.
+        status:
+          type: integer
+          description: The HTTP status code generated by the origin server for this occurrence of the problem.
+          example: 400
+        details:
+          type: string
+          description: A human-readable explanation specific to this occurrence of the problem.
+          example: Budget current balance is $300, but a payment of $500 was requested.
+        instance:
+          type: object
+          description: Arbitrary data that is useful to identifies the specific occurrence of the problem.
+          example:
+            - traceId: '19049023845982314'
+              budgetId: '497f6eca-6276-4993-bfeb-53cbbbba6f08'
+              balance: 300
+
+
+    UserId:
+      type: integer
+      description: Github user ID (databaseId)
+      example: 595505
+
+    RepoId:
+      type: integer
+      description: Github repo ID (databaseId)
+      example: 650626566
+
+    PullRequestId:
+      type: string
+      description: Github pull request ID (databaseId)
+      example: 27218542
+
+    IssueId:
+      type: string
+      description: Github issue ID (databaseId)
+      example: 1678794252
+
+    AppInstallationId:
+      type: integer
+      description: Github app installation ID
+      example: 9827589
+
+    OrganizationId:
+      type: integer
+      description: Github organization ID
+      example: 1983274
+
+    RepoListResponse:
+      type: object
+      properties:
+        repos:
+          type: array
+          items:
+            $ref: '#/components/schemas/RepoResponse'
+
+    RepoResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/RepoId'
+        organizationId:
+          $ref: '#/components/schemas/OrganizationId'
+        appInstallationId:
+          $ref: '#/components/schemas/AppInstallationId'
+
+    AppInstallationListResponse:
+      type: object
+      properties:
+        installations:
+          type: array
+          items:
+            $ref: '#/components/schemas/AppInstallationResponse'
+
+    AppInstallationResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/AppInstallationId'
+        organizationId:
+          $ref: '#/components/schemas/OrganizationId'
+        repos:
+          type: array
+          items:
+            $ref: '#/components/schemas/RepoId'

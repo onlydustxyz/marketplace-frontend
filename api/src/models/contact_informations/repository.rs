@@ -1,13 +1,13 @@
 use diesel::{Connection, ExpressionMethods, QueryDsl, RunQueryDsl};
 use domain::UserId;
 use infrastructure::{
-	contextualized_error::IntoContextualizedError,
-	database::{self, schema::contact_informations::dsl, Result},
+	contextualized_error::IntoContextualizedError, database::schema::contact_informations::dsl,
+	dbclient, dbclient::Result,
 };
 
 use super::ContactInformation;
 
-pub trait Repository: database::Repository<ContactInformation> {
+pub trait Repository: dbclient::Repository<ContactInformation> {
 	fn replace_all_for_user(
 		&self,
 		user_id: &UserId,
@@ -15,7 +15,7 @@ pub trait Repository: database::Repository<ContactInformation> {
 	) -> Result<()>;
 }
 
-impl Repository for database::Client {
+impl Repository for dbclient::Client {
 	fn replace_all_for_user(
 		&self,
 		user_id: &UserId,

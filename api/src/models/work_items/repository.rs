@@ -2,12 +2,13 @@ use diesel::{ExpressionMethods, RunQueryDsl};
 use domain::PaymentId;
 use infrastructure::{
 	contextualized_error::IntoContextualizedError,
-	database::{self, schema::work_items::dsl, Client, Result},
+	database::schema::work_items::dsl,
+	dbclient::{self, Client, Result},
 };
 
 use super::WorkItem;
 
-pub trait Repository: database::ImmutableRepository<WorkItem> {
+pub trait Repository: dbclient::ImmutableRepository<WorkItem> {
 	fn delete_by_payment_id(&self, payment_id: PaymentId) -> Result<()>;
 }
 

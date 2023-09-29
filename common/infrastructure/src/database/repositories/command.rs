@@ -3,9 +3,9 @@ use diesel::{ExpressionMethods, OptionalExtension, QueryDsl, RunQueryDsl};
 use domain::{CommandId, CommandRepository};
 use serde::{Deserialize, Serialize};
 
-use crate::database::{
-	schema::{commands, commands::dsl},
-	Client,
+use crate::{
+	database::schema::{commands, commands::dsl},
+	dbclient::Client,
 };
 
 #[derive(

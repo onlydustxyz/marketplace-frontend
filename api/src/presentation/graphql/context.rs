@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use domain::{AggregateRepository, Event, GithubUserId, Payment, Project, Publisher, UserId};
 use infrastructure::{
-	database::{ImmutableRepository, Repository},
+	dbclient::{ImmutableRepository, Repository},
 	github,
 };
 use presentation::http::guards::Claims;

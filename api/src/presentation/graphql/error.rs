@@ -1,5 +1,5 @@
 use domain::{DomainError, ParseCurrencyError, UserId};
-use infrastructure::{database::DatabaseError, web3::ens};
+use infrastructure::{dbclient::DatabaseError, web3::ens};
 use juniper::{graphql_value, DefaultScalarValue, FieldError, IntoFieldError};
 use olog::{error, IntoField};
 use thiserror::Error;

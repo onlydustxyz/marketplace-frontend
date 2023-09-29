@@ -24,7 +24,7 @@ pub use github_repo_indexes::{GithubRepoIndex, Repository as GithubRepoIndexRepo
 pub use github_repos::GithubRepo;
 pub use github_user_indexes::{GithubUserIndex, Repository as GithubUserIndexRepository};
 pub use github_users::GithubUser;
-use infrastructure::database::{self, ImmutableModel, ImmutableRepository};
+use infrastructure::dbclient::{self, ImmutableModel, ImmutableRepository};
 pub use project_github_repos::{ProjectGithubRepo, Repository as ProjectGithubRepoRepository};
 pub use projects_contributors::{ProjectsContributor, Repository as ProjectsContributorRepository};
 pub use projects_pending_contributors::{
@@ -33,7 +33,7 @@ pub use projects_pending_contributors::{
 pub use technologies::Technology;
 
 pub trait IdentifiableRepository<M, Id>: Send + Sync {
-	fn find(&self, id: Id) -> database::Result<Option<M>>;
+	fn find(&self, id: Id) -> dbclient::Result<Option<M>>;
 }
 
 impl<R, M> IdentifiableRepository<M, M::Id> for R
@@ -41,7 +41,7 @@ where
 	R: ImmutableRepository<M>,
 	M: ImmutableModel<PgConnection>,
 {
-	fn find(&self, id: M::Id) -> database::Result<Option<M>> {
+	fn find(&self, id: M::Id) -> dbclient::Result<Option<M>> {
 		<Self as ImmutableRepository<M>>::try_find_by_id(self, id)
 	}
 }

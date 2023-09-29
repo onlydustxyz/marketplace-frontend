@@ -1,14 +1,13 @@
 use diesel::{Connection, ExpressionMethods, RunQueryDsl};
 use domain::{GithubUserId, ProjectId};
 use infrastructure::{
-	contextualized_error::IntoContextualizedError,
-	database,
-	database::{schema::projects_rewarded_users::dsl, Result},
+	contextualized_error::IntoContextualizedError, database::schema::projects_rewarded_users::dsl,
+	dbclient, dbclient::Result,
 };
 
 use super::ProjectsRewardedUser;
 
-pub trait Repository: database::ImmutableRepository<ProjectsRewardedUser> {
+pub trait Repository: dbclient::ImmutableRepository<ProjectsRewardedUser> {
 	fn increase_user_reward_count_for_project(
 		&self,
 		project_id: &ProjectId,
@@ -22,7 +21,7 @@ pub trait Repository: database::ImmutableRepository<ProjectsRewardedUser> {
 	) -> Result<()>;
 }
 
-impl Repository for database::Client {
+impl Repository for dbclient::Client {
 	fn increase_user_reward_count_for_project(
 		&self,
 		project_id: &ProjectId,

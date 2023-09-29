@@ -6,8 +6,7 @@ use api::{models::Sponsor, presentation::http::routes::projects};
 use diesel::RunQueryDsl;
 use domain::{currencies, sponsor, BudgetEvent, Event, ProjectEvent};
 use infrastructure::{
-	database::{schema::project_details, ImmutableRepository},
-	event_bus::EXCHANGE_NAME,
+	database::schema::project_details, dbclient::ImmutableRepository, event_bus::EXCHANGE_NAME,
 };
 use olog::info;
 use rocket::{

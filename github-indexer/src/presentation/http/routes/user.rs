@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use domain::GithubUserId;
 use http_api_problem::{HttpApiProblem, StatusCode};
-use infrastructure::{database, github};
+use infrastructure::{dbclient, github};
 use olog::{error, IntoField};
 use presentation::http::guards::ApiKey;
 use rocket::{serde::json::Json, State};
@@ -26,7 +26,7 @@ pub struct Response {
 pub async fn index(
 	_api_key: ApiKey,
 	user_id: i64,
-	database: &State<Arc<database::Client>>,
+	database: &State<Arc<dbclient::Client>>,
 	github: &State<Arc<github::Client>>,
 ) -> Result<Json<Response>, HttpApiProblem> {
 	let database = (*database).clone();

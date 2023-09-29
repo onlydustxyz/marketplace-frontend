@@ -1,14 +1,13 @@
 use diesel::{ExpressionMethods, OptionalExtension, QueryDsl, RunQueryDsl};
 use domain::GithubUserId;
 use infrastructure::{
-	contextualized_error::IntoContextualizedError,
-	database,
-	database::{schema::github_user_indexes::dsl, Result},
+	contextualized_error::IntoContextualizedError, database::schema::github_user_indexes::dsl,
+	dbclient, dbclient::Result,
 };
 
 use super::GithubUserIndex;
 
-pub trait Repository: database::ImmutableRepository<GithubUserIndex> {
+pub trait Repository: dbclient::ImmutableRepository<GithubUserIndex> {
 	fn select_user_indexer_state(
 		&self,
 		user_id: &GithubUserId,
@@ -20,7 +19,7 @@ pub trait Repository: database::ImmutableRepository<GithubUserIndex> {
 	) -> Result<()>;
 }
 
-impl Repository for database::Client {
+impl Repository for dbclient::Client {
 	fn select_user_indexer_state(
 		&self,
 		user_id: &GithubUserId,

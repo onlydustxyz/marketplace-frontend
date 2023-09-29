@@ -3,7 +3,7 @@ use std::sync::Arc;
 use anyhow::Result;
 use derive_more::Constructor;
 use domain::sponsor;
-use infrastructure::database::Repository;
+use infrastructure::dbclient::Repository;
 use reqwest::Url;
 use tracing::instrument;
 

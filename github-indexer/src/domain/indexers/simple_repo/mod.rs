@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use domain::{GithubFetchRepoService, GithubRepo, GithubRepoId};
-use infrastructure::database::Repository;
+use infrastructure::dbclient::Repository;
 
 use self::{crawler::RepoCrawler, projector::RepoProjector};
 use super::IndexerImpl;

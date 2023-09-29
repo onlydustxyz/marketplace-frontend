@@ -2,7 +2,7 @@ use std::{sync::Arc, time::Duration};
 
 use anyhow::Result;
 use domain::{GithubRepoId, GithubUserId};
-use infrastructure::{database, github};
+use infrastructure::{dbclient, github};
 use olog::info;
 
 use crate::{
@@ -26,7 +26,7 @@ pub struct Scheduler {
 impl Scheduler {
 	pub fn new(config: Config) -> Result<Self> {
 		let github: Arc<github::Client> = github::RoundRobinClient::new(config.github)?.into();
-		let database = Arc::new(database::Client::new(database::init_pool(config.database)?));
+		let database = Arc::new(dbclient::Client::new(dbclient::init_pool(config.database)?));
 
 		let single_rate_limit_conf = rate_limited::RateLimitConf::new(
 			github.clone(),

@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use domain::{GithubFetchRepoService, GithubRepoId, Languages};
-use infrastructure::database::{ImmutableRepository, Repository};
+use infrastructure::dbclient::{ImmutableRepository, Repository};
 use serde::{Deserialize, Serialize};
 
 use self::{crawler::RepoCrawler, projector::RepoProjector};

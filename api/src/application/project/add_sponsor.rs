@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use anyhow::Result;
 use domain::{sponsor, DomainError, ProjectId};
-use infrastructure::database::ImmutableRepository;
+use infrastructure::dbclient::ImmutableRepository;
 use tracing::instrument;
 
 use crate::models::*;
