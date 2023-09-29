@@ -2,7 +2,7 @@ import classNames from "classnames";
 import IBAN from "iban";
 import { PropsWithChildren, useState } from "react";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
-import { PaymentRequestDetailsFragment } from "src/__generated/graphql";
+import { GithubUserFragment, PaymentRequestDetailsFragment } from "src/__generated/graphql";
 import Button, { ButtonSize } from "src/components/Button";
 import Contributor from "src/components/Contributor";
 import ExternalLink from "src/components/ExternalLink";
@@ -186,7 +186,7 @@ export default function View({
                 <GithubPullRequest
                   key={workItem.githubPullRequest?.id}
                   pullRequest={workItem.githubPullRequest}
-                  contributor={githubRecipient as PaymentRequestDetailsFragment["githubRecipient"]}
+                  contributor={githubRecipient as GithubUserFragment}
                 />
               ) : workItem.githubCodeReview ? (
                 <GithubCodeReview key={workItem.githubCodeReview?.id} codeReview={workItem.githubCodeReview} />

@@ -261,8 +261,7 @@
           "search": "Search",
           "searchPlaceholder": "Search by name or #",
           "tooltip": {
-            "createdBy": "Pull request created by",
-            "contributorPlaceholder": "contributor"
+            "createdBy": "Pull request created by"
           }
         },
         "issues": {

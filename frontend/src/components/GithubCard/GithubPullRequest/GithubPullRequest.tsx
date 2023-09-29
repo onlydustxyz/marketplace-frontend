@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { GithubPullRequestWithCommitsFragment, PaymentRequestDetailsFragment } from "src/__generated/graphql";
+import { GithubPullRequestWithCommitsFragment, GithubUserFragment } from "src/__generated/graphql";
 import IssueClosed from "src/assets/icons/IssueClosed";
 import Card from "src/components/Card";
 import { GithubLink } from "src/components/GithubCard/GithubLink/GithubLink";
@@ -36,7 +36,7 @@ export type GithubPullRequestProps = {
   pullRequest: GithubPullRequestWithCommitsFragment;
   ignored?: boolean;
   addMarginTopForVirtuosoDisplay?: boolean;
-  contributor?: PaymentRequestDetailsFragment["githubRecipient"] | null;
+  contributor: GithubUserFragment;
 };
 
 export default function GithubPullRequest({

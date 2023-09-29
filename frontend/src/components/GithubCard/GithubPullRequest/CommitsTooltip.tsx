@@ -43,7 +43,7 @@ export function CommitsTooltip({
 
         <span className="text-sm">
           {T("githubCodeReview.tooltip.commits", {
-            user: contributorLogin || T("reward.form.contributions.pullRequests.tooltip.contributorPlaceholder"),
+            user: contributorLogin ?? "",
             commits: userCommits + "/" + commitsCount,
             count: commitsCount,
           })}

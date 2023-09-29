@@ -4,7 +4,7 @@ import { useForm, useFormContext, useWatch } from "react-hook-form";
 import { Virtuoso } from "react-virtuoso";
 import {
   ContributionFragment,
-  PaymentRequestDetailsFragment,
+  GithubUserFragment,
   WorkItemFragment,
   WorkItemType,
   useGithubUserByIdQuery,
@@ -151,14 +151,14 @@ export default function View({
         )}
       </div>
 
-      {filteredContributions.length > 0 ? (
+      {filteredContributions.length > 0 && data?.githubUsersByPk ? (
         <VirtualizedIssueList
           {...{
             contributions: filteredContributions as ContributionFragment[],
             addContribution: addContributionWithToast,
             ignoreContribution,
             unignoreContribution,
-            contributor: data?.githubUsersByPk as PaymentRequestDetailsFragment["githubRecipient"],
+            contributor: data?.githubUsersByPk,
             tabName,
           }}
         />
@@ -204,7 +204,7 @@ function getWorkItem(type: WorkItemType, props: RewardItemType): ReactElement | 
 
 interface VirtualizedIssueListProps {
   contributions: ContributionFragment[];
-  contributor: PaymentRequestDetailsFragment["githubRecipient"];
+  contributor: GithubUserFragment;
   addContribution: (contribution: ContributionFragment) => void;
   ignoreContribution: (contribution: ContributionFragment) => void;
   unignoreContribution: (contribution: ContributionFragment) => void;
