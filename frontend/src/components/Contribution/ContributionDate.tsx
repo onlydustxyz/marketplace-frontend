@@ -1,7 +1,14 @@
+import { GithubIssueStatus, GithubPullRequestStatus } from "src/__generated/graphql";
 import { ContributionIcon } from "src/components/Contribution/ContributionIcon";
 import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
-import { GithubContributionIconStatus, GithubContributionIconStatusType, GithubContributionType } from "src/types";
+import {
+  GithubCodeReviewStatus,
+  GithubContributionType,
+  GithubItemStatus,
+  GithubPullRequestDraft,
+  GithubTypeStatusDict,
+} from "src/types";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 
 export function ContributionDate({
@@ -12,7 +19,7 @@ export function ContributionDate({
 }: {
   id: string;
   type: GithubContributionType;
-  status: GithubContributionIconStatusType;
+  status: GithubItemStatus;
   date: Date;
 }) {
   const { T } = useIntl();
@@ -24,33 +31,21 @@ export function ContributionDate({
   // American time format HH:MM AM/PM
   const formattedTime = new Intl.DateTimeFormat("en-US", { timeStyle: "short" }).format(date);
 
-  const tokens = {
+  const tokens: GithubTypeStatusDict<string> = {
     [GithubContributionType.PullRequest]: {
-      [GithubContributionIconStatus.Cancelled]: "",
-      [GithubContributionIconStatus.Closed]: "contributions.tooltip.dateClosed",
-      [GithubContributionIconStatus.Completed]: "",
-      [GithubContributionIconStatus.Draft]: "contributions.tooltip.dateOpened",
-      [GithubContributionIconStatus.Merged]: "contributions.tooltip.dateMerged",
-      [GithubContributionIconStatus.Open]: "contributions.tooltip.dateOpened",
-      [GithubContributionIconStatus.Pending]: "",
+      [GithubPullRequestStatus.Open]: "contributions.tooltip.dateOpened",
+      [GithubPullRequestStatus.Closed]: "contributions.tooltip.dateClosed",
+      [GithubPullRequestStatus.Merged]: "contributions.tooltip.dateMerged",
+      [GithubPullRequestDraft.Draft]: "contributions.tooltip.dateOpened",
     },
     [GithubContributionType.Issue]: {
-      [GithubContributionIconStatus.Cancelled]: "contributions.tooltip.dateClosed",
-      [GithubContributionIconStatus.Closed]: "",
-      [GithubContributionIconStatus.Completed]: "contributions.tooltip.dateClosed",
-      [GithubContributionIconStatus.Draft]: "contributions.tooltip.dateAssigned",
-      [GithubContributionIconStatus.Merged]: "",
-      [GithubContributionIconStatus.Open]: "contributions.tooltip.dateAssigned",
-      [GithubContributionIconStatus.Pending]: "",
+      [GithubIssueStatus.Open]: "contributions.tooltip.dateAssigned",
+      [GithubIssueStatus.Completed]: "contributions.tooltip.dateClosed",
+      [GithubIssueStatus.Cancelled]: "contributions.tooltip.dateClosed",
     },
     [GithubContributionType.CodeReview]: {
-      [GithubContributionIconStatus.Cancelled]: "",
-      [GithubContributionIconStatus.Closed]: "",
-      [GithubContributionIconStatus.Completed]: "contributions.tooltip.dateClosed",
-      [GithubContributionIconStatus.Draft]: "",
-      [GithubContributionIconStatus.Merged]: "",
-      [GithubContributionIconStatus.Open]: "",
-      [GithubContributionIconStatus.Pending]: "contributions.tooltip.dateOpened",
+      [GithubCodeReviewStatus.Pending]: "contributions.tooltip.dateOpened",
+      [GithubCodeReviewStatus.Completed]: "contributions.tooltip.dateClosed",
     },
   };
 
@@ -59,7 +54,12 @@ export function ContributionDate({
       <Tooltip id={tooltipId} clickable position={TooltipPosition.Top} variant={Variant.Blue}>
         <div className="flex items-center gap-2 px-1 py-2">
           <ContributionIcon type={type} status={status} />
-          <p className="text-sm">{T(tokens[type][status], { date: formattedDate, time: formattedTime })}</p>
+          <p className="text-sm">
+            {T(tokens[type][status as keyof typeof tokens[GithubContributionType]], {
+              date: formattedDate,
+              time: formattedTime,
+            })}
+          </p>
         </div>
       </Tooltip>
 

@@ -1,7 +1,8 @@
 import { ComponentProps } from "react";
+import { GithubPullRequestStatus } from "src/__generated/graphql";
 
 import { ContributionDate } from "src/components/Contribution/ContributionDate";
-import { GithubContributionIconStatus, GithubContributionType } from "src/types";
+import { GithubContributionType, GithubPullRequestDraft } from "src/types";
 
 export default {
   title: "ContributionDate",
@@ -14,10 +15,10 @@ export default {
     status: {
       control: { type: "select" },
       options: [
-        GithubContributionIconStatus.Open,
-        GithubContributionIconStatus.Merged,
-        GithubContributionIconStatus.Closed,
-        GithubContributionIconStatus.Draft,
+        GithubPullRequestStatus.Open,
+        GithubPullRequestStatus.Merged,
+        GithubPullRequestStatus.Closed,
+        GithubPullRequestDraft.Draft,
       ],
     },
   },
@@ -26,7 +27,7 @@ export default {
 const defaultProps: ComponentProps<typeof ContributionDate> = {
   id: "test",
   type: GithubContributionType.PullRequest,
-  status: GithubContributionIconStatus.Open,
+  status: GithubPullRequestStatus.Open,
   date: new Date("2021-08-01T00:00:00.000Z"),
 };
 

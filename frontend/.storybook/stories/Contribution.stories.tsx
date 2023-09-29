@@ -1,9 +1,9 @@
 import { ComponentProps } from "react";
 import { withRouter } from "storybook-addon-react-router-v6";
 
-import { UserIdentityDocument } from "src/__generated/graphql";
+import { GithubPullRequestStatus, UserIdentityDocument } from "src/__generated/graphql";
 import { Contribution } from "src/components/Contribution/Contribution";
-import { GithubContributionIconStatus, GithubContributionType } from "src/types";
+import { GithubContributionType } from "src/types";
 import withAuthProvider from "../decorators/withAuthProvider";
 import withContributorProfilePanelProvider from "../decorators/withContributorProfilePanelProvider";
 import withMockedProvider from "../decorators/withMockedProvider";
@@ -50,7 +50,7 @@ const mockContribution = {
     title: "Example Pull Request",
     htmlUrl: "https://github.com/example/repo/pull/123",
     number: 123,
-    status: GithubContributionIconStatus.Open,
+    status: GithubPullRequestStatus.Open,
     author: {
       login: "example-user",
       avatarUrl: "https://avatars.githubusercontent.com/u/12345678?v=4",

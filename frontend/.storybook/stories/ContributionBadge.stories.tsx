@@ -1,7 +1,8 @@
 import { ComponentProps } from "react";
+import { GithubPullRequestStatus } from "src/__generated/graphql";
 
 import { ContributionBadge } from "src/components/Contribution/ContributionBadge";
-import { GithubContributionIconStatus, GithubContributionType } from "src/types";
+import { GithubContributionType } from "src/types";
 
 export default {
   title: "ContributionBadge",
@@ -9,11 +10,7 @@ export default {
   argTypes: {
     status: {
       control: { type: "select" },
-      options: [
-        GithubContributionIconStatus.Open,
-        GithubContributionIconStatus.Merged,
-        GithubContributionIconStatus.Closed,
-      ],
+      options: [GithubPullRequestStatus.Open, GithubPullRequestStatus.Merged, GithubPullRequestStatus.Closed],
     },
     type: {
       control: { type: "select" },
@@ -27,7 +24,7 @@ export default {
 const defaultProps: ComponentProps<typeof ContributionBadge> = {
   id: "123",
   number: 123,
-  status: GithubContributionIconStatus.Open,
+  status: GithubPullRequestStatus.Open,
   type: GithubContributionType.PullRequest,
   title: "Contribution Badge",
   url: "",

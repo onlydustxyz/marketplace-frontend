@@ -3,7 +3,12 @@ import classNames from "classnames";
 import { ComponentProps, PropsWithChildren, ReactNode, useMemo, useState } from "react";
 
 import atomLogo from "assets/img/atom.png";
-import { ContributionsOrderBy, GetAllContributionsQuery, OrderBy } from "src/__generated/graphql";
+import {
+  ContributionsOrderBy,
+  GetAllContributionsQuery,
+  GithubPullRequestStatus,
+  OrderBy,
+} from "src/__generated/graphql";
 import IssueOpen from "src/assets/icons/IssueOpen";
 import { Contribution } from "src/components/Contribution/Contribution";
 import { ContributionCard } from "src/components/Contribution/ContributionCard";
@@ -24,10 +29,10 @@ import TimeLine from "src/icons/TimeLine";
 import SortingArrow from "src/pages/ProjectDetails/Contributors/ContributorsTable/SortingArrow";
 import {
   DeepPartial,
-  GithubContributionIconStatus,
-  GithubContributionIconStatusType,
   GithubContributionStatus,
   GithubContributionType,
+  GithubItemStatus,
+  GithubPullRequestDraft,
 } from "src/types";
 import { sortContributionsByLinked } from "src/utils/sortContributionsByLinked";
 import { sortContributionsByNumber } from "src/utils/sortContributionsByNumber";
@@ -219,7 +224,7 @@ export function ContributionTable({
 
       const { status: contributionStatus } = contribution.githubPullRequest ??
         contribution.githubIssue ??
-        contribution.githubCodeReview ?? { status: GithubContributionIconStatus.Open };
+        contribution.githubCodeReview ?? { status: GithubPullRequestStatus.Open };
       const { draft } = contribution?.githubPullRequest ?? {};
 
       return (
@@ -228,9 +233,7 @@ export function ContributionTable({
             <ContributionDate
               id={contribution.id ?? ""}
               type={contribution.type as GithubContributionType}
-              status={
-                draft ? GithubContributionIconStatus.Draft : (contributionStatus as GithubContributionIconStatusType)
-              }
+              status={draft ? GithubPullRequestDraft.Draft : (contributionStatus as GithubItemStatus)}
               date={new Date(lineDate)}
             />
           </Cell>

@@ -164,14 +164,27 @@ export enum GithubContributionReviewStatus {
   ChangesRequested = "changesRequested",
 }
 
-export const GithubContributionIconStatus = {
-  ...GithubPullRequestStatus,
-  ...GithubIssueStatus,
-  ...GithubCodeReviewStatus,
-  Draft: "DRAFT",
-} as const;
+export enum GithubPullRequestDraft {
+  Draft = "DRAFT",
+}
 
-export type GithubContributionIconStatusType =
-  typeof GithubContributionIconStatus[keyof typeof GithubContributionIconStatus];
+export type GithubItemStatus =
+  | GithubPullRequestStatus
+  | GithubIssueStatus
+  | GithubCodeReviewStatus
+  | GithubPullRequestDraft;
+
+type GithubPullRequestTypeStatusDict<T> = Record<
+  GithubContributionType.PullRequest,
+  Record<GithubPullRequestStatus | GithubPullRequestDraft, T>
+>;
+
+type GithubIssueTypeStatusDict<T> = Record<GithubContributionType.Issue, Record<GithubIssueStatus, T>>;
+
+type GithubCodeReviewTypeStatusDict<T> = Record<GithubContributionType.CodeReview, Record<GithubCodeReviewStatus, T>>;
+
+export type GithubTypeStatusDict<T> = GithubPullRequestTypeStatusDict<T> &
+  GithubIssueTypeStatusDict<T> &
+  GithubCodeReviewTypeStatusDict<T>;
 
 export type QueryContribution = GetAllContributionsQuery["contributions"][number];

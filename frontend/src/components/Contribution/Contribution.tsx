@@ -1,15 +1,15 @@
 import classNames from "classnames";
-import { GithubUser } from "src/__generated/graphql";
+import { GithubPullRequestStatus, GithubUser } from "src/__generated/graphql";
 
 import { ContributionBadge } from "src/components/Contribution/ContributionBadge";
 import { ContributionReview } from "src/components/Contribution/ContributionReview";
 import { ContributionReward } from "src/components/Contribution/ContributionReward";
 import {
   GithubCodeReviewOutcome,
-  GithubContributionIconStatus,
-  GithubContributionIconStatusType,
   GithubContributionReviewStatus,
   GithubContributionType,
+  GithubItemStatus,
+  GithubPullRequestDraft,
   QueryContribution,
 } from "src/types";
 
@@ -29,15 +29,12 @@ export function Contribution({ contribution, isMobile = false }: Props) {
     githubIssue?.htmlUrl ?? githubPullRequest?.htmlUrl ?? githubCodeReview?.githubPullRequest?.htmlUrl ?? "";
   const number = githubIssue?.number ?? githubPullRequest?.number ?? githubCodeReview?.githubPullRequest?.number ?? "";
   const status = githubPullRequest?.draft
-    ? GithubContributionIconStatus.Draft
-    : ((githubIssue?.status ??
-        githubPullRequest?.status ??
-        githubCodeReview?.status ??
-        "") as GithubContributionIconStatusType);
+    ? GithubPullRequestDraft.Draft
+    : ((githubIssue?.status ?? githubPullRequest?.status ?? githubCodeReview?.status ?? "") as GithubItemStatus);
   const author = (githubIssue?.author ?? githubPullRequest?.author ?? githubCodeReview?.reviewer ?? "") as GithubUser;
 
   function renderReview() {
-    if (githubPullRequest && status === GithubContributionIconStatus.Open) {
+    if (githubPullRequest && status === GithubPullRequestStatus.Open) {
       let review = GithubContributionReviewStatus.PendingReviewer;
       const {
         codeReviews: [codeReview],

@@ -1,5 +1,4 @@
 import classNames from "classnames";
-import { ElementType } from "react";
 
 import { GithubUser } from "src/__generated/graphql";
 import ExternalArrow from "src/assets/icons/ExternalArrow";
@@ -9,7 +8,7 @@ import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
 import { useAuth } from "src/hooks/useAuth";
 import { useContributorProfilePanel } from "src/hooks/useContributorProfilePanel";
 import { useIntl } from "src/hooks/useIntl";
-import { GithubContributionIconStatusType, GithubContributionType } from "src/types";
+import { GithubContributionType, GithubItemStatus } from "src/types";
 
 export function ContributionBadge({
   id,
@@ -26,7 +25,7 @@ export function ContributionBadge({
   id: string;
   number: number;
   type: GithubContributionType;
-  status: GithubContributionIconStatusType;
+  status: GithubItemStatus;
   title: string;
   description?: string;
   author: Pick<GithubUser, "id" | "login" | "avatarUrl">;

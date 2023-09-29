@@ -2,12 +2,7 @@ import { GithubUser } from "src/__generated/graphql";
 import { ContributionBadge } from "src/components/Contribution/ContributionBadge";
 import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
 import StackLine from "src/icons/StackLine";
-import {
-  GithubContributionIconStatus,
-  GithubContributionIconStatusType,
-  GithubContributionType,
-  QueryContribution,
-} from "src/types";
+import { GithubContributionType, GithubItemStatus, GithubPullRequestDraft, QueryContribution } from "src/types";
 import { getNbLinkedContributions } from "src/utils/getNbLinkedContributions";
 
 export function ContributionLinked({
@@ -34,7 +29,7 @@ export function ContributionLinked({
                     id={id}
                     number={number}
                     type={GithubContributionType.PullRequest}
-                    status={draft ? GithubContributionIconStatus.Draft : (status as GithubContributionIconStatusType)}
+                    status={draft ? GithubPullRequestDraft.Draft : (status as GithubItemStatus)}
                     title={title ?? ""}
                     author={author as GithubUser}
                     url={htmlUrl ?? ""}
@@ -65,7 +60,7 @@ export function ContributionLinked({
                     id={id}
                     number={number}
                     type={GithubContributionType.Issue}
-                    status={status as GithubContributionIconStatusType}
+                    status={status as GithubItemStatus}
                     title={title ?? ""}
                     url={htmlUrl ?? ""}
                     author={author as GithubUser}
@@ -85,7 +80,7 @@ export function ContributionLinked({
                     id={id ?? ""}
                     number={number}
                     type={GithubContributionType.CodeReview}
-                    status={status as GithubContributionIconStatusType}
+                    status={status as GithubItemStatus}
                     title={title ?? ""}
                     url={htmlUrl ?? ""}
                     author={reviewer as GithubUser}
@@ -112,7 +107,7 @@ export function ContributionLinked({
               id={id}
               number={number}
               type={GithubContributionType.PullRequest}
-              status={draft ? GithubContributionIconStatus.Draft : (status as GithubContributionIconStatusType)}
+              status={draft ? GithubPullRequestDraft.Draft : (status as GithubItemStatus)}
               title={title ?? ""}
               author={author as GithubUser}
               url={htmlUrl ?? ""}
