@@ -1,6 +1,7 @@
 import { OrderBy } from "src/__generated/graphql";
 import { QueryContribution } from "src/types";
-import { sortContributionsByNumber } from "./sortContributionsByNumber";
+import { sortContributionsByLinked } from "./sortContributionsByLinked";
+import { getNbLinkedContributions } from "./getNbLinkedContributions";
 
 const mockContributions: QueryContribution[] = [
   {
@@ -166,6 +167,16 @@ const mockContributions: QueryContribution[] = [
           },
           status: "PENDING",
         },
+        {
+          id: "5479ba16370883d09f5928dd4b1eb188ec5c9935112eac6f73bcd150344d6ee53453245234543",
+          outcome: "change_requested",
+          reviewer: {
+            avatarUrl: "https://avatars.githubusercontent.com/u/31901905?v=4",
+            login: "kaelsky",
+            id: 31901905,
+          },
+          status: "PENDING",
+        },
       ],
     },
     githubRepo: {
@@ -307,26 +318,20 @@ const mockContributions: QueryContribution[] = [
   },
 ];
 
-describe("sortContributionsByNumber", () => {
+describe("sortContributionsByLinked", () => {
   it("should sort by ascending", () => {
-    const sorted = mockContributions.sort((a, b) => sortContributionsByNumber([a, b], OrderBy.Asc));
+    const sorted = mockContributions.sort((a, b) => sortContributionsByLinked([a, b], OrderBy.Asc));
 
-    const numbers = sorted.map(
-      ({ githubCodeReview, githubIssue, githubPullRequest }) =>
-        githubCodeReview?.githubPullRequest?.number ?? githubIssue?.number ?? githubPullRequest?.number ?? 0
-    );
+    const nbLinked = sorted.map(contribution => getNbLinkedContributions(contribution));
 
-    expect(numbers).toEqual([0, 0, 4, 5, 8, 8, 11, 11]);
+    expect(nbLinked).toEqual([0, 0, 0, 0, 1, 1, 1, 2]);
   });
 
   it("should sort by descending", () => {
-    const sorted = mockContributions.sort((a, b) => sortContributionsByNumber([a, b], OrderBy.Desc));
+    const sorted = mockContributions.sort((a, b) => sortContributionsByLinked([a, b], OrderBy.Desc));
 
-    const numbers = sorted.map(
-      ({ githubCodeReview, githubIssue, githubPullRequest }) =>
-        githubCodeReview?.githubPullRequest?.number ?? githubIssue?.number ?? githubPullRequest?.number ?? 0
-    );
+    const nbLinked = sorted.map(contribution => getNbLinkedContributions(contribution));
 
-    expect(numbers).toEqual([11, 11, 8, 8, 5, 4, 0, 0]);
+    expect(nbLinked).toEqual([2, 1, 1, 1, 0, 0, 0, 0]);
   });
 });

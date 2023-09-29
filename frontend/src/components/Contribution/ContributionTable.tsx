@@ -1,6 +1,6 @@
 import type { ApolloError } from "@apollo/client";
 import classNames from "classnames";
-import { ComponentProps, PropsWithChildren, ReactNode, useState } from "react";
+import { ComponentProps, PropsWithChildren, ReactNode, useMemo, useState } from "react";
 
 import atomLogo from "assets/img/atom.png";
 import { ContributionsOrderBy, GetAllContributionsQuery, OrderBy } from "src/__generated/graphql";
@@ -29,6 +29,8 @@ import {
   GithubContributionStatus,
   GithubContributionType,
 } from "src/types";
+import { sortContributionsByLinked } from "src/utils/sortContributionsByLinked";
+import { sortContributionsByNumber } from "src/utils/sortContributionsByNumber";
 import { useMediaQuery } from "usehooks-ts";
 
 export enum TableColumns {
@@ -40,8 +42,8 @@ export enum TableColumns {
 
 export type TableSort = {
   column: TableColumns;
-  direction: OrderBy;
-  orderBy: { [K in keyof Partial<ContributionsOrderBy>]: DeepPartial<ContributionsOrderBy[K]> };
+  direction: OrderBy.Asc | OrderBy.Desc;
+  orderBy?: { [K in keyof Partial<ContributionsOrderBy>]: DeepPartial<ContributionsOrderBy[K]> };
 };
 
 function Message({ children }: PropsWithChildren) {
@@ -106,6 +108,20 @@ export function ContributionTable({
   const sortDirection = sort.direction === OrderBy.Asc ? "up" : "down";
   const newSortDirection = sort.direction === OrderBy.Asc ? OrderBy.Desc : OrderBy.Asc;
 
+  const { contributions } = data ?? {};
+
+  const memoizedContributions = useMemo(() => {
+    if (sort.column === TableColumns.Id) {
+      return contributions?.sort((a, b) => sortContributionsByNumber([a, b], sort.direction));
+    }
+
+    if (sort.column === TableColumns.Linked) {
+      return contributions?.sort((a, b) => sortContributionsByLinked([a, b], sort.direction));
+    }
+
+    return contributions;
+  }, [contributions, sort]);
+
   function renderMobileContent() {
     if (loading) {
       return <Loader />;
@@ -119,7 +135,7 @@ export function ContributionTable({
       );
     }
 
-    if (data?.contributions?.length === 0) {
+    if (memoizedContributions?.length === 0) {
       return (
         <div className="py-6">
           <Message>
@@ -127,17 +143,17 @@ export function ContributionTable({
               time: Intl.DateTimeFormat("en-US", {
                 hour: "numeric",
                 minute: "numeric",
-              }).format(new Date(data.githubRepos[0].indexedAt)),
+              }).format(new Date(data?.githubRepos[0].indexedAt)),
             })}
           </Message>
         </div>
       );
     }
 
-    const nbContributions = data?.contributions?.length ?? 0;
+    const nbContributions = memoizedContributions?.length ?? 0;
     const maxContributions = 2;
     const showAllContributions = nbContributions > maxContributions;
-    const contributions = showAll ? data?.contributions : data?.contributions?.slice(0, maxContributions);
+    const contributions = showAll ? memoizedContributions : memoizedContributions?.slice(0, maxContributions);
 
     return (
       <div className="flex flex-col gap-2">
@@ -185,20 +201,20 @@ export function ContributionTable({
       return <TableText>{T("contributions.table.error")}</TableText>;
     }
 
-    if (data?.contributions?.length === 0) {
+    if (memoizedContributions?.length === 0) {
       return (
         <TableText>
           {T("contributions.table.empty", {
             time: Intl.DateTimeFormat("en-US", {
               hour: "numeric",
               minute: "numeric",
-            }).format(new Date(data.githubRepos[0].indexedAt)),
+            }).format(new Date(data?.githubRepos[0].indexedAt)),
           })}
         </TableText>
       );
     }
 
-    return data?.contributions.map(contribution => {
+    return memoizedContributions?.map(contribution => {
       const lineDate = status === GithubContributionStatus.InProgress ? contribution.createdAt : contribution.closedAt;
 
       const { status: contributionStatus } = contribution.githubPullRequest ??
@@ -296,15 +312,9 @@ export function ContributionTable({
                 width={HeaderCellWidth.Half}
                 horizontalMargin
                 onClick={() => {
-                  // TODO: handle client side
                   onSort({
                     column: TableColumns.Id,
                     direction: newSortDirection,
-                    orderBy: {
-                      githubCodeReview: { githubPullRequest: { number: newSortDirection } },
-                      githubIssue: { number: newSortDirection },
-                      githubPullRequest: { number: newSortDirection },
-                    },
                   });
                 }}
               >
@@ -316,24 +326,10 @@ export function ContributionTable({
                 horizontalMargin
                 className="justify-end"
                 onClick={() => {
-                  // TODO: handle client side
-                  //   onSort({
-                  //     column: TableColumns.Linked,
-                  //     direction: newSortDirection,
-                  //     orderBy: {
-                  //       githubCodeReview: {
-                  //         githubPullRequest: {
-                  //           closingIssuesAggregate: { count: newSortDirection },
-                  //           codeReviewsAggregate: { count: newSortDirection },
-                  //         },
-                  //       },
-                  //       githubIssue: { closedByPullRequestsAggregate: { count: newSortDirection } },
-                  //       githubPullRequest: {
-                  //         closingIssuesAggregate: { count: newSortDirection },
-                  //         codeReviewsAggregate: { count: newSortDirection },
-                  //       },
-                  //     },
-                  //   });
+                  onSort({
+                    column: TableColumns.Linked,
+                    direction: newSortDirection,
+                  });
                 }}
               >
                 <span>
