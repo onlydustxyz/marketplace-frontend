@@ -12,7 +12,7 @@ export function ContributionLinked({
 }) {
   const { id, type, githubCodeReview, githubIssue, githubPullRequest } = contribution;
 
-  function renderBadges({ withTooltip, asAnchor }: { withTooltip: boolean; asAnchor: boolean }) {
+  function renderBadges({ withTooltip, asLink }: { withTooltip: boolean; asLink: boolean }) {
     switch (type) {
       case GithubContributionType.Issue: {
         const { closedByPullRequests } = githubIssue ?? {};
@@ -34,7 +34,7 @@ export function ContributionLinked({
                     author={author as GithubUser}
                     url={htmlUrl ?? ""}
                     withTooltip={withTooltip}
-                    asAnchor={asAnchor}
+                    asLink={asLink}
                   />
                 );
               })}
@@ -65,7 +65,7 @@ export function ContributionLinked({
                     url={htmlUrl ?? ""}
                     author={author as GithubUser}
                     withTooltip={withTooltip}
-                    asAnchor={asAnchor}
+                    asLink={asLink}
                   />
                 );
               })}
@@ -85,7 +85,7 @@ export function ContributionLinked({
                     url={htmlUrl ?? ""}
                     author={reviewer as GithubUser}
                     withTooltip={withTooltip}
-                    asAnchor={asAnchor}
+                    asLink={asLink}
                   />
                 );
               })}
@@ -112,7 +112,7 @@ export function ContributionLinked({
               author={author as GithubUser}
               url={htmlUrl ?? ""}
               withTooltip={withTooltip}
-              asAnchor={asAnchor}
+              asLink={asLink}
             />
           );
         }
@@ -131,7 +131,7 @@ export function ContributionLinked({
     return (
       <>
         <Tooltip id={tooltipId} clickable position={TooltipPosition.Top} variant={Variant.Blue}>
-          <div className="flex items-center gap-1">{renderBadges({ withTooltip: false, asAnchor: true })}</div>
+          <div className="flex items-center gap-1">{renderBadges({ withTooltip: false, asLink: true })}</div>
         </Tooltip>
         <div
           data-tooltip-id={tooltipId}
@@ -144,5 +144,5 @@ export function ContributionLinked({
     );
   }
 
-  return renderBadges({ withTooltip: true, asAnchor: false });
+  return renderBadges({ withTooltip: true, asLink: false });
 }

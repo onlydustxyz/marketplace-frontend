@@ -20,7 +20,7 @@ export function ContributionBadge({
   author,
   url,
   withTooltip = true,
-  asAnchor = false,
+  asLink = false,
 }: {
   id: string;
   number: number;
@@ -31,10 +31,10 @@ export function ContributionBadge({
   author: Pick<GithubUser, "id" | "login" | "avatarUrl">;
   url: string;
   withTooltip?: boolean;
-  asAnchor?: boolean;
+  asLink?: boolean;
 }) {
-  const Component = asAnchor ? "a" : "div";
-  const ComponentProps = asAnchor ? { href: url, target: "_blank", rel: "noopener noreferrer" } : {};
+  const Component = asLink ? "a" : "div";
+  const ComponentProps = asLink ? { href: url, target: "_blank", rel: "noopener noreferrer" } : {};
   const { T } = useIntl();
   const { githubUserId } = useAuth();
   const { open: openProfilePanel } = useContributorProfilePanel();
