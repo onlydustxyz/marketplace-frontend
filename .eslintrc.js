@@ -54,14 +54,12 @@ module.exports = {
   ignorePatterns: [
     "dist/*",
     "test/*",
-    "src/__generated",
     "src/assets/animations/*.json",
     "cypress/*",
-    "backend/common/infrastructure/src/graphql/__generated",
-    "playwright/__generated",
-    "playwright/fixtures/__generated",
     "app.json",
     "scripts/*",
-    "dist/*",
+    "**/node_modules/*",
+    "**/__generated/*",
+    "**/e2e/*",
   ],
 };

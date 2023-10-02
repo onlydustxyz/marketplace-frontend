@@ -3,6 +3,18 @@
 ```mermaid
 classDiagram
 
+class ApiClosedByPullRequests {
+   githubIssueId: bigint
+   githubPullRequest: GithubPullRequests
+   githubPullRequestId: bigint
+}
+
+class ApiClosingIssues {
+   githubIssue: GithubIssues
+   githubIssueId: bigint
+   githubPullRequestId: bigint
+}
+
 class ApiCompletedContributions {
    closedAt: timestamp
    createdAt: timestamp
@@ -36,13 +48,18 @@ class AuthUserGithubProvider {
 }
 
 class Budgets {
-   id: uuid!
-   initialAmount: numeric!
-   paymentRequests: [PaymentRequests!]!
-   project: Projects
-   projectId: uuid
-   remainingAmount: numeric!
-   spentAmount: numeric!
+   currency: String
+   id: uuid
+   initialAmount: numeric
+   initialAmountUsd: numeric
+   remainingAmount: numeric
+   remainingAmountUsd: numeric
+   spentAmount: numeric
+   spentAmountUsd: numeric
+}
+
+class Command {
+   commandId: Uuid!
 }
 
 class Commands {
@@ -93,14 +110,22 @@ class Contributions {
    closedAt: timestamp
    createdAt: timestamp
    detailsId: String
+   githubCodeReview: GithubPullRequestReviews
+   githubCodeReviewId: String
+   githubIssue: GithubIssues
+   githubIssueId: bigint
+   githubPullRequest: GithubPullRequests
+   githubPullRequestId: bigint
+   githubRepo: GithubRepos
    githubUserId: bigint
    id: String
    ignored: Boolean
+   project: Projects
    projectId: uuid
    repoId: bigint
    rewardItems: [WorkItems!]!
    status: contribution_status
-   type: contribution_type
+   type: String
 }
 
 class GithubIssue {
@@ -117,87 +142,80 @@ class GithubIssue {
    updatedAt: DateTimeUtc!
 }
 
-class GithubIssueCreatedAndClosed {
-   author: GithubUserLinkedToIssue!
-   closedAt: DateTime
-   commentsCount: Int!
-   createdAt: DateTime!
-   htmlUrl: Url!
-   id: Int!
-   number: Int!
-   repoId: Int!
-   status: GithubIssueCreatedAndClosedStatus!
-   title: String!
-   updatedAt: DateTime!
-}
-
 class GithubIssues {
-   assigneeIds: jsonb!
-   authorId: bigint!
+   assigneeIds: jsonb
+   author: GithubUsers
+   authorId: bigint
    closedAt: timestamp
-   commentsCount: bigint!
-   createdAt: timestamp!
-   htmlUrl: String!
-   id: bigint!
-   number: bigint!
+   closedByPullRequests: [ApiClosedByPullRequests!]!
+   commentsCount: bigint
+   createdAt: timestamp
+   htmlUrl: String
+   id: bigint
+   number: bigint
    repo: GithubRepos
-   repoId: bigint!
-   status: github_issue_status!
-   title: String!
+   repoId: bigint
+   status: String
+   title: String
 }
 
 class GithubPullRequest {
-   author: GithubUser!
-   closedAt: DateTimeUtc
-   createdAt: DateTimeUtc!
-   htmlUrl: Url!
+   githubPullRequest: GithubPullRequests
    id: Int!
-   mergedAt: DateTimeUtc
-   number: Int!
-   repoId: Int!
-   status: GithubPullRequestStatus!
-   title: String!
-   updatedAt: DateTimeUtc!
+}
+
+class GithubPullRequestCommits {
+   author: GithubUsers
+   authorId: bigint!
+   htmlUrl: String!
+   pullRequestId: bigint!
+   sha: String!
 }
 
 class GithubPullRequestReviews {
-   id: String!
+   githubPullRequest: GithubPullRequests
+   id: String
    outcome: github_code_review_outcome
-   pullRequestId: bigint!
-   reviewerId: bigint!
-   status: github_code_review_status!
+   pullRequestId: bigint
+   reviewer: GithubUsers
+   reviewerId: bigint
+   status: String
    submittedAt: timestamp
 }
 
 class GithubPullRequests {
-   authorId: bigint!
+   author: GithubUsers
+   authorId: bigint
    ciChecks: github_ci_checks
    closedAt: timestamp
-   closingIssueNumbers: jsonb
-   createdAt: timestamp!
-   draft: Boolean!
-   htmlUrl: String!
-   id: bigint!
+   closingIssues: [ApiClosingIssues!]!
+   codeReviews: [GithubPullRequestReviews!]!
+   commits: [GithubPullRequestCommits!]!
+   createdAt: timestamp
+   draft: Boolean
+   htmlUrl: String
+   id: bigint
    mergedAt: timestamp
-   number: bigint!
+   number: bigint
    repo: GithubRepos
-   repoId: bigint!
-   status: github_pull_request_status!
-   title: String!
+   repoId: bigint
+   status: String
+   title: String
 }
 
 class GithubRepos {
-   description: String!
-   forkCount: Int!
-   hasIssues: Boolean!
-   htmlUrl: String!
-   id: bigint!
-   languages: jsonb!
-   name: String!
-   owner: String!
+   description: String
+   forkCount: Int
+   hasIssues: Boolean
+   htmlUrl: String
+   id: bigint
+   indexedAt: timestamp
+   languages: jsonb
+   name: String
+   owner: String
    parentId: bigint
    projects: [ProjectGithubRepos!]!
-   stars: Int!
+   stars: Int
    updatedAt: timestamp
 }
 
@@ -207,13 +225,6 @@ class GithubUser {
    id: Int!
    login: String!
    user: RegisteredUsers
-}
-
-class GithubUserLinkedToIssue {
-   avatarUrl: Url!
-   htmlUrl: Url!
-   id: Int!
-   login: String!
 }
 
 class GithubUsers {
@@ -237,34 +248,30 @@ class Onboardings {
    userId: uuid!
 }
 
-class Payment {
-   amount: Amount!
-   budgetId: Uuid!
-   commandId: Uuid!
-   paymentId: Uuid!
-   projectId: Uuid!
-}
-
 class PaymentRequests {
-   amountInUsd: bigint!
-   budget: Budgets
-   budgetId: uuid!
+   amount: numeric
+   amountUsd: numeric
+   currency: currency
    githubRecipient: GithubUsers
-   hoursWorked: Int!
-   id: uuid!
+   hoursWorked: Int
+   id: uuid
    invoiceReceivedAt: timestamp
    payments: [Payments!]!
+   project: Projects
+   projectId: uuid
    recipient: RegisteredUsers
-   recipientId: bigint!
-   requestedAt: timestamp!
+   recipientId: bigint
+   requestedAt: timestamp
    requestor: RegisteredUsers
-   requestorId: uuid!
+   requestorId: uuid
    workItems: [WorkItems!]!
 }
 
 class PaymentStats {
+   currency: String
    githubUserId: bigint
    moneyGranted: numeric
+   moneyGrantedUsd: numeric
    projectId: uuid
 }
 
@@ -303,8 +310,11 @@ class ProjectLeads {
 
 class Projects {
    applications: [Applications!]!
-   budgets: [Budgets!]!
+   aptBudgetId: uuid
+   aptosBudget: Budgets
    contributors: [ProjectsContributors!]!
+   ethBudget: Budgets
+   ethBudgetId: uuid
    githubRepos: [ProjectGithubRepos!]!
    hiring: Boolean
    id: uuid
@@ -313,6 +323,9 @@ class Projects {
    longDescription: String
    moreInfoLink: String
    name: String
+   opBudgetId: uuid
+   optimismBudget: Budgets
+   payments: [PaymentRequests!]!
    pendingContributors: [ProjectsPendingContributors!]!
    pendingInvitations: [PendingProjectLeaderInvitations!]!
    projectLeads: [ProjectLeads!]!
@@ -320,6 +333,10 @@ class Projects {
    rewardedUsers: [ProjectsRewardedUsers!]!
    shortDescription: String
    sponsors: [ProjectsSponsors!]!
+   starkBudget: Budgets
+   starkBudgetId: uuid
+   usdBudget: Budgets
+   usdBudgetId: uuid
    visibility: project_visibility
 }
 
@@ -332,8 +349,11 @@ class ProjectsContributors {
 }
 
 class ProjectsPendingContributors {
+   githubUser: GithubUsers
    githubUserId: bigint!
+   project: Projects
    projectId: uuid!
+   user: UserProfiles
 }
 
 class ProjectsRewardedUsers {
@@ -375,11 +395,24 @@ class Technologies {
 }
 
 class UserPayoutInfo {
-   arePayoutSettingsValid: Boolean!
-   identity: jsonb
-   location: jsonb
-   payoutSettings: jsonb
-   userId: uuid!
+   address: String
+   aptosWallet: String
+   arePayoutSettingsValid: Boolean
+   bic: String
+   city: String
+   companyIdentificationNumber: String
+   companyName: String
+   country: String
+   ethWallet: String
+   firstname: String
+   iban: String
+   isCompany: Boolean
+   lastname: String
+   optimismWallet: String
+   postCode: String
+   starknetWallet: String
+   usdPreferredMethod: String
+   userId: uuid
 }
 
 class UserProfiles {
@@ -412,16 +445,19 @@ class UserProfiles {
 
 class WorkItems {
    githubCodeReview: GithubPullRequestReviews
+   githubCodeReviewId: String
    githubIssue: GithubIssues
+   githubIssueId: bigint
    githubPullRequest: GithubPullRequests
-   id: String!
-   number: bigint!
-   paymentId: uuid!
+   githubPullRequestId: bigint
+   id: String
+   number: bigint
+   paymentId: uuid
    paymentRequest: PaymentRequests
-   projectId: uuid!
-   recipientId: bigint!
-   repoId: bigint!
-   type: contribution_type!
+   projectId: uuid
+   recipientId: bigint
+   repoId: bigint
+   type: contribution_type
 }
 
 class authProviderRequests {
@@ -517,22 +553,35 @@ class users {
    userProviders: [authUserProviders!]!
 }
 
+ApiClosedByPullRequests -- GithubPullRequests
+ApiClosingIssues -- GithubIssues
 ApiCompletedContributions --* WorkItems
-Budgets -- Projects
-Budgets --* PaymentRequests
 Contacts -- ContactInformations
+Contributions -- GithubIssues
+Contributions -- GithubPullRequestReviews
+Contributions -- GithubPullRequests
+Contributions -- GithubRepos
+Contributions -- Projects
 Contributions --* WorkItems
 GithubIssue -- GithubUser
-GithubIssueCreatedAndClosed -- GithubUserLinkedToIssue
 GithubIssues -- GithubRepos
-GithubPullRequest -- GithubUser
+GithubIssues -- GithubUsers
+GithubIssues --* ApiClosedByPullRequests
+GithubPullRequest -- GithubPullRequests
+GithubPullRequestCommits -- GithubUsers
+GithubPullRequestReviews -- GithubPullRequests
+GithubPullRequestReviews -- GithubUsers
 GithubPullRequests -- GithubRepos
+GithubPullRequests -- GithubUsers
+GithubPullRequests --* ApiClosingIssues
+GithubPullRequests --* GithubPullRequestCommits
+GithubPullRequests --* GithubPullRequestReviews
 GithubRepos --* ProjectGithubRepos
 GithubUser -- RegisteredUsers
 GithubUsers -- RegisteredUsers
 GithubUsers --* PaymentRequests
-PaymentRequests -- Budgets
 PaymentRequests -- GithubUsers
+PaymentRequests -- Projects
 PaymentRequests -- RegisteredUsers
 PaymentRequests --* Payments
 PaymentRequests --* WorkItems
@@ -543,8 +592,9 @@ ProjectGithubRepos -- GithubRepos
 ProjectGithubRepos --* GithubIssues
 ProjectLeads -- Projects
 ProjectLeads -- RegisteredUsers
+Projects -- Budgets
 Projects --* Applications
-Projects --* Budgets
+Projects --* PaymentRequests
 Projects --* PendingProjectLeaderInvitations
 Projects --* ProjectGithubRepos
 Projects --* ProjectLeads
@@ -555,6 +605,9 @@ Projects --* ProjectsSponsors
 ProjectsContributors -- GithubUsers
 ProjectsContributors -- Projects
 ProjectsContributors -- UserProfiles
+ProjectsPendingContributors -- GithubUsers
+ProjectsPendingContributors -- Projects
+ProjectsPendingContributors -- UserProfiles
 ProjectsSponsors -- Sponsors
 RegisteredUsers -- UserPayoutInfo
 RegisteredUsers --* PaymentRequests
