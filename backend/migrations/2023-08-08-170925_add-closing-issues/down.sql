@@ -1,2 +1,0 @@
-ALTER TABLE github_pull_requests
-DROP COLUMN closing_issue_numbers;

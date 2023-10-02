@@ -1,0 +1,781 @@
+{
+  "applications": {
+    "notYetAppliedTooltip": "Increase your chance of being contacted by filling out your Telegram on your profile",
+    "appliedTooltip": "Thanks for showing your interest!",
+    "applyButton": "Show interest",
+    "connectToApplyButton": "Connect to show interest",
+    "confirmationToaster": "Thank you! If we need a profile like yours, you'll be contacted shortly",
+    "contactNeeded": "Please share at least one way to reach you out in case it's a match."
+  },
+  "contribution": {
+    "review": {
+      "status": {
+        "pendingReviewer": "Pending reviewer",
+        "underReview": "Under review",
+        "approved": "Approved",
+        "changesRequested": "Changes requested"
+      }
+    }
+  },
+  "contributions": {
+    "empty": "No contributions yet",
+    "nav": {
+      "allContributions": "All contributions",
+      "applied": "Applied",
+      "inProgress": "In progress",
+      "completed": "Completed",
+      "canceled": "Canceled"
+    },
+    "applied": {
+      "title": "Applied",
+      "description": "Unassigned issues you have applied to, from Only Dust or directly on Github."
+    },
+    "inProgress": {
+      "title": "In progress",
+      "description": "Open issues, PRs and code reviews you are currently working on."
+    },
+    "completed": {
+      "title": "Completed",
+      "description": "Closed issues, merged PRs and submitted code reviews you have worked on."
+    },
+    "canceled": {
+      "title": "Canceled",
+      "description": "Closed PRs and issues closed as “not planned” you have worked on."
+    },
+    "table": {
+      "date": "Date",
+      "projectRepo": "Project / Repository",
+      "contribution": "Contribution",
+      "comments": "Comments",
+      "linkedTo": "Linked to",
+      "empty": "Last synced with Github at __time__.\nIt can take up to 5 minutes before the next refresh.",
+      "error": "An error occurred, please try again later.",
+      "showAll": "Show all __count__"
+    },
+    "tooltip": {
+      "dateOpened": "Opened on __date__ at __time__ GMT",
+      "dateClosed": "Closed on __date__ at __time__ GMT",
+      "dateMerged": "Merged on __date__ at __time__ GMT",
+      "dateAssigned": "Assigned on __date__ at __time__ GMT",
+      "badgePullRequest": "Pull request from",
+      "badgeCodeReview": "Code review from",
+      "badgeIssue": "Issue from",
+      "rewards": "Rewarded in"
+    }
+  },
+  "contributionGraph": {
+    "pullRequests": "Pull requests",
+    "issues": "Issues",
+    "codeReviews": "Code reviews",
+    "tooltip": {
+      "contributionCount": {
+        "total": {
+          "zero": "No contribution",
+          "one": "1 contribution",
+          "many": "__count__ contributions"
+        }
+      },
+      "pullRequests": {
+        "zero": "0 Pull requests",
+        "one": "1 Pull request",
+        "many": "__count__ Pull requests"
+      },
+      "issues": {
+        "zero": "0 Issues",
+        "one": "1 Issue",
+        "many": "__count__ Issues"
+      },
+      "codeReviews": {
+        "zero": "0 Code reviews",
+        "one": "1 Code review",
+        "many": "__count__ Code reviews"
+      },
+      "date": "__from__ → __to__"
+    },
+    "progressionTooltip": "Variation since last week"
+  },
+  "contributor": {
+    "table": {
+      "contributor": "Contributor",
+      "leftToPay": "Left to Pay",
+      "noBudgetLeft": "There's no more budget for this project, please contact OnlyDust to ask for a refill.",
+      "contributions": "Contributions",
+      "totalEarned": "Earned",
+      "rewards": "Rewards",
+      "toReward": "To Reward",
+      "userRegisteredTooltip": "User has linked their OnlyDust profile",
+      "tooltip": {
+        "pullRequests": {
+          "one": "1 PR",
+          "many": "__count__ PRs"
+        },
+        "issues": {
+          "one": "1 issue",
+          "many": "__count__ issues"
+        },
+        "codeReviews": {
+          "long": {
+            "one": "1 code review",
+            "many": "__count__ code reviews"
+          },
+          "short": {
+            "one": "1 review",
+            "many": "__count__ reviews"
+          }
+        }
+      }
+    },
+    "tableFallback": {
+      "noContributor": "No one has contributed to __projectName__ yet",
+      "relevantProfiles": "Relevant profiles will appear here."
+    },
+    "totalEarnings": "Total earnings"
+  },
+  "filter": {
+    "clearButton": "Clear all",
+    "ownership": {
+      "all": "All projects",
+      "mine": "Mine only"
+    },
+    "sponsors": {
+      "all": "All sponsors",
+      "some": "Sponsors"
+    },
+    "technologies": {
+      "all": "All technologies",
+      "some": "Technologies"
+    },
+    "title": "Filter",
+    "mobileButton": {
+      "zero": "Filter",
+      "one": "Filter (__count__)",
+      "many": "Filters (__count__)"
+    }
+  },
+  "searchBar": {
+    "placeholder": "Search project title & description",
+    "placeholderShort": "Search projects"
+  },
+  "form": {
+    "required": "Required"
+  },
+  "github": {
+    "invalidLogin": "Invalid Github login",
+    "loggingIn": "Logging in..."
+  },
+  "githubIssue": {
+    "tooltip": {
+      "add": "Add contribution",
+      "ignore": "Ignore",
+      "unignore": "Stop ignoring"
+    },
+    "status": {
+      "closed": "Closed __closedAt__",
+      "merged": "Merged __mergedAt__",
+      "open": "Open"
+    }
+  },
+  "githubCodeReview": {
+    "status": {
+      "pending": "Pending review",
+      "approved": "Approved __submittedAt__",
+      "changeRequested": "Change requested __submittedAt__"
+    },
+    "tooltip": {
+      "commits": {
+        "zero": "__user__ contributed to 0 commits",
+        "one": "__user__ contributed to __commits__ commit",
+        "many": "__user__ contributed to __commits__ commits"
+      }
+    }
+  },
+  "images": {
+    "githubLogo": "Github logo",
+    "onlyDustLogo": "OnlyDust logo",
+    "onlyDustTitle": "OnlyDust title"
+  },
+  "impersonation": {
+    "form": {
+      "title": "This is a restricted area",
+      "password": {
+        "label": "Password",
+        "missing": "Please provide a password"
+      },
+      "notice": "With great power comes great responsibility (Ben Parker's uncle).",
+      "errors": {
+        "unknownUser": "Unknown user __userId__"
+      }
+    },
+    "banner": "Impersonation in progress!"
+  },
+  "invoiceSubmission": {
+    "sidePanel": {
+      "title": "Send invoice"
+    },
+    "submitButton": "Add invoice",
+    "toaster": {
+      "success": "Invoice successfully sent",
+      "error": "We were unable to send the invoice, please try again later"
+    },
+    "text": {
+      "many": "Please send us an invoice for your __count__ pending payments",
+      "one": "Please send us an invoice for your pending payment"
+    },
+    "title": "Invoice needed"
+  },
+  "navbar": {
+    "feedback": {
+      "button": "Feedback",
+      "popupTitle": "Feedback form"
+    },
+    "logout": "Log out",
+    "profile": {
+      "title": "Your account",
+      "publicProfile": "Public profile",
+      "payoutInfo": "Payout information"
+    },
+    "rewards": "Rewards",
+    "projects": "Projects",
+    "contributions": "Contributions",
+    "signInWithGithub": "Connect",
+    "separator": "·",
+    "termsAndConditions": "Terms",
+    "privacyPolicy": "Privacy"
+  },
+  "onboarding": {
+    "intro": {
+      "title": "Build your contributor profile",
+      "description": "We have 3 questions to ask you\nin order to match you with the most relevant projects.",
+      "acceptButton": "Set up profile (⏱️ 1:17 min)",
+      "skip": "Skip for now"
+    },
+    "technologies": {
+      "title": "What are your favorite technologies?",
+      "description": "Rank the ones you most work with, from most to least proficient."
+    },
+    "timeAllocation": {
+      "title": "How much time are you willing to allocate to open source projects?",
+      "description": "If you're not sure yet, pick your best guess. You can always change it later!",
+      "none": "None",
+      "lessThan1Day": "Less than 1 day / week",
+      "1to3days": "1 to 3 days / week",
+      "moreThan3days": "More than 3 days / week",
+      "lookingForAJob": "I'm looking for a job"
+    },
+    "contact": {
+      "title": "What's your favorite contact method?",
+      "description": "So we can match you with projects you are interested in, nothing else."
+    },
+    "privateNotice": "These are private information, only visible to you",
+    "backButton": "Back",
+    "nextButton": "Next",
+    "submitButton": "Submit"
+  },
+  "reward": {
+    "form": {
+      "confirm": "Reward contributor",
+      "contributor": {
+        "needsToSignup": {
+          "details": "You can still reward them. They'll need to create an account and sync it with their GitHub handle to claim it.",
+          "title": "__contributor__ isn't on OnlyDust"
+        },
+        "placeholder": "Search by Github handle",
+        "select": {
+          "externalUsers": "EXTERNAL USERS",
+          "fallback": {
+            "noUser": "No user found",
+            "typeMoreCharacters": "Type 3 or more characters to display external users"
+          },
+          "placeholder": "Search by Github handle"
+        },
+        "title": "Contributor",
+        "unpaidMergedPrCountTooltip": "Unpaid merged pull requests"
+      },
+      "days": "days",
+      "missingContributor": "Pick a contributor to get started",
+      "missingContribution": "Add some contributions",
+      "estimate": "Estimate time spent",
+      "contributions": {
+        "addContribution": "Add contribution",
+        "add": "Add",
+        "clear": "Clear selection",
+        "clearShort": "Clear",
+        "showIgnored": "Show ignored",
+        "pullRequests": {
+          "addedToaster": "Pull request added",
+          "addOther": {
+            "toggle": "Add other PR",
+            "notALink": "Oops, this doesn't look like a pull request",
+            "invalidLink": "Hmm... we can't find this PR. Check the link and try again",
+            "placeholder": "github.com/example/repo/pull/472",
+            "label": "Add specific PR using URL"
+          },
+          "tab": "Pull requests",
+          "tabShort": "PR",
+          "search": "Search",
+          "searchPlaceholder": "Search by name or #",
+          "tooltip": {
+            "createdBy": "Pull request created by"
+          }
+        },
+        "issues": {
+          "addedToaster": "Issue added",
+          "addOther": {
+            "toggle": "Add other issue",
+            "notALink": "Oops, this doesn't look like an issue",
+            "invalidLink": "Hmm... we can't find this issue. Check the link and try again",
+            "placeholder": "github.com/example/repo/issues/472",
+            "label": "Add specific issue using URL"
+          },
+          "tab": "Issues",
+          "search": "Search",
+          "searchPlaceholder": "Search by name or #"
+        },
+        "codeReviews": {
+          "addedToaster": "Code review added",
+          "tab": "Code reviews",
+          "addOther": {
+            "toggle": "Add other Code Review",
+            "notALink": "Oops, this doesn't look like a code review",
+            "invalidLink": "Hmm... we can't find this Code Review. Check the link and try again",
+            "placeholder": "github.com/example/repo/pull/472",
+            "label": "Add specific Code Review using URL"
+          },
+          "search": "Search",
+          "searchPlaceholder": "Search by name or #"
+        },
+        "other": {
+          "attachments": {
+            "addButton": "Add file",
+            "title": "Attachments"
+          },
+          "callout": "For tracking purposes, we will create the corresponding issue on GitHub.",
+          "issue": {
+            "defaultTitle": "__kind__ by __author__",
+            "descriptionPlaceholder": "Add details about the work being paid"
+          },
+          "footer": {
+            "repository": "Create issue in",
+            "submitButton": "Create issue",
+            "noIssues": "This repository does not allow creating issues, please change this setting on Github to add other work."
+          },
+          "success": "Issue created and contribution added",
+          "tab": "Other work",
+          "tabShort": "Other",
+          "title": "Describe the work",
+          "kinds": {
+            "documentation": "Documentation",
+            "meeting": "Meeting",
+            "other": "Other",
+            "subscription": "Subscription"
+          },
+          "inputs": {
+            "title": "Title",
+            "description": "Description"
+          },
+          "toggleDescriptionPreview": "Toggle preview"
+        },
+        "subTitle": "Add contributions that should be part of this reward",
+        "title": "Contributions",
+        "emptyState": {
+          "title": "Nothing to show",
+          "subtitle": "We constantly look at updates on Github but it can take some time before refresh"
+        }
+      },
+      "leftToSpend": "Left to spend",
+      "remainingBudget": "Remaining budget",
+      "cancelled": "Reward cancelled",
+      "sent": "Reward successfully granted",
+      "steps": {
+        "days": {
+          "many": "days",
+          "one": "day"
+        },
+        "hours": {
+          "many": "hours",
+          "one": "hour",
+          "zero": "No budget left"
+        }
+      },
+      "submit": "Submit reward",
+      "thisReward": "This reward"
+    },
+    "list": "List rewards",
+    "status": {
+      "complete": "Complete",
+      "invoicePending": "Pending invoice",
+      "payoutInfoMissing": "Payout info missing",
+      "pending": "Pending",
+      "processing": "Processing",
+      "tooltip": {
+        "complete": "Payment successful",
+        "invoicePending": "An invoice is required to process your payment. Please wait up to 5 days if you already sent it.",
+        "payoutInfoMissing": "Fill in your payment information to get paid",
+        "pending": "Contributor needs to sign up on OnlyDust and to complete payout info to get paid",
+        "processing": "Payment is being processed by our team, usually within 2 weeks"
+      }
+    },
+    "table": {
+      "amount": "Amount",
+      "contributor": "Contributor",
+      "project": "Project",
+      "date": "Date",
+      "githubLink": "#__pullRequestNumber__ · Github",
+      "reward": {
+        "many": "#__id__ · __count__ contributions",
+        "one": "#__id__ · 1 contribution",
+        "zero": "#__id__ · No contributions"
+      },
+      "detailsPanel": {
+        "cancelReward": {
+          "button": "Cancel reward",
+          "modal": {
+            "confirmButton": "Confirm",
+            "cancelButton": "Go back",
+            "description": "Once cancelled, you won't be able to restore this reward",
+            "title": "Are you sure?"
+          }
+        },
+        "from": "from",
+        "requestedAt": "Created on __requestedAt__",
+        "processedAt": "Processed on __processedAt__",
+        "processedVia": {
+          "crypto": "via **Crypto Wire** on __recipient__",
+          "fiat": "via **Bank Wire** on account __recipient__"
+        },
+        "processedTooltip": {
+          "crypto": {
+            "recipient": "Address: __recipient__",
+            "reference": "Transaction hash: __reference__"
+          },
+          "fiat": {
+            "recipient": "IBAN: __recipient__",
+            "reference": "Reference: __reference__"
+          }
+        },
+        "title": "Reward #__id__",
+        "to": "to",
+        "you": "(you)",
+        "contributions": "Included in reward"
+      },
+      "status": "Status"
+    },
+    "tableFallback": {
+      "browseProjects": "Browse projects",
+      "contribute": "Contribute to get your first one!",
+      "noRewards": "No rewards received yet"
+    }
+  },
+  "profile": {
+    "editButton": "Edit profile",
+    "error": {
+      "notFound": "This user does not exist"
+    },
+    "joinedAt": "Joined in __joinedAt__",
+    "firstContributedAt": "Contributed first on __firstContributedAt__",
+    "valueCopiedToClipboard": "__valueName__ copied to clipboard",
+    "completion": "__completion__% profile completion",
+    "email": "Email address",
+    "discord": "Discord username",
+    "sections": {
+      "technologies": {
+        "title": "Technologies",
+        "subtitle": "Rank from most to least proficient.",
+        "searchPlaceholder": "Search technologies"
+      },
+      "stats": {
+        "contributions": "Contributions",
+        "contributorOn": "Contributor on",
+        "leadOn": "Lead on",
+        "earned": "Total earned",
+        "title": "Stats",
+        "projects": {
+          "zero": "project",
+          "one": "project",
+          "many": "projects"
+        }
+      },
+      "projects": {
+        "contributionCount": {
+          "zero": "No contribution",
+          "one": "1 contribution",
+          "many": "__count__ contributions"
+        },
+        "projectLead": "Project lead",
+        "lastContribution": "Latest __lastContribution__",
+        "projectLeadSince": "Since __since__",
+        "title": "Projects",
+        "contributorCount": "Number of contributors",
+        "moneyGranted": "Total granted"
+      }
+    },
+    "button": {
+      "payoutSettingsInvalidTooltip": "You're unable to receive payments. Click to fill up required info"
+    },
+    "form": {
+      "address": "Street address",
+      "bankWire": "Bank wire",
+      "bio": "Bio",
+      "bic": "BIC",
+      "bicInvalid": "Please enter a valid BIC",
+      "bicRequired": "Your BIC is required",
+      "cancel": "Cancel",
+      "city": "City",
+      "companyName": "Company name",
+      "companyNeedsInvoiceCallout": "As a company, you'll need to share an invoice for each payment in order to receive the funds.",
+      "companyOwnerFirstName": "First name",
+      "companyOwnerLastName": "Last name",
+      "completion": "__completion__% completed",
+      "contactInfo": {
+        "title": "Contact information",
+        "subtitle": "Please enter only your social networks handle (no links, no @ needed).",
+        "error": "Please enter your __channel__ handle",
+        "telegram": "Telegram",
+        "twitter": "Twitter",
+        "discord": "Discord",
+        "linkedin": "LinkedIn",
+        "hiddenTootlip": "Hidden on public profile",
+        "visibleTootlip": "Shown on public profile",
+        "whatsapp": "Whatsapp",
+        "invalidePhoneNumber": "Invalid phone number",
+        "invalidUsername": "Handle is invalid. Please enter a valid username."
+      },
+      "country": "Country",
+      "cryptoWire": "Crypto wire",
+      "discord": "Discord",
+      "discordPlaceholder": "Discord",
+      "email": "Email address",
+      "emailPlaceholder": "example@onlydust.co",
+      "ethIdentity": "ETH address or ENS name",
+      "ethIdentityPlaceholder": "ETH address or ENS name",
+      "firstname": "First name",
+      "iban": "IBAN",
+      "ibanInvalid": "Please enter a valid IBAN",
+      "ibanRequired": "Your IBAN is required",
+      "identificationNumber": "Identification number",
+      "invalidCryptoSettings": "Please enter a valid ETH address or ENS domain",
+      "lastname": "Last name",
+      "location": "Location",
+      "number": "N.",
+      "payoutInformation": "Payout information",
+      "payoutSettings": "Payout information",
+      "payoutSettingsRequiredTag": "* required to receive payments",
+      "payoutSettingsType": "Preferred payment method",
+      "payoutSettingsValidTag": "You're able to receive payments",
+      "pictureUploadError": "We were not able to upload your profile picture, please try again.",
+      "postCode": "Zip code",
+      "profileType": "Account type",
+      "profileTypeCompany": "Company",
+      "profileTypeIndividual": "Individual",
+      "send": "Save payout info",
+      "done": "Done",
+      "success": "Changes saved",
+      "technologies": {
+        "supportedTooltip": "Increase your chance of matching a project by choosing featured technologies.",
+        "suggestion": {
+          "suggest": "Suggest '__technology__'",
+          "disclaimer": "Oops! We do our best to maintain a list of relevant technologies, help us doing so by pointing out missing ones. Thank you",
+          "success": "Thanks for suggesting '__technology__'! We will add it to the list after review."
+        }
+      },
+      "telegram": "Telegram",
+      "telegramPlaceholder": "Telegram",
+      "twitter": "Twitter",
+      "twitterPlaceholder": "Twitter",
+      "typeOfProfile": "Profile type",
+      "privacyNotice": "Your info remains private.\n We'll only use it to process payments.",
+      "weeklyAllocatedTime": {
+        "title": "Weekly allocated time",
+        "none": "None",
+        "lessThan1Day": "Less than 1 day",
+        "1to3days": "1 to 3 days",
+        "moreThan3days": "More than 3 days",
+        "lookingForAJob": "I'm looking for a job",
+        "privacyNotice": "Private information"
+      },
+      "whatsapp": "Whatsapp",
+      "saveStatus": {
+        "unsaved": "Unsaved changes",
+        "saved": "All changes saved",
+        "invalid": "The form has errors"
+      },
+      "website": "Website"
+    },
+    "missing": {
+      "button": "Complete payout information",
+      "subtitle": "We won't be able to issue any payment until your payout information is completed",
+      "title": "Payout information missing"
+    }
+  },
+  "publicProfile": {
+    "goToApp": "Go to App",
+    "copyUrl": "Copy URL",
+    "urlCopied": "URL copied",
+    "copyright": "© 2022 OnlyDust",
+    "separator": "·",
+    "termsAndConditions": "Terms & Conditions",
+    "privacyPolicy": "Privacy Policy",
+    "terms": "Terms",
+    "privacy": "Privacy"
+  },
+  "project": {
+    "amountGranted": "Granted: __granted__ / __total__",
+    "hiring": "Looking for contributors",
+    "visibility": {
+      "private": {
+        "tooltip": "Private project · only visible to you",
+        "name": "Private"
+      }
+    },
+    "details": {
+      "contributors": {
+        "count": {
+          "many": "__count__ contributors",
+          "one": "1 contributor",
+          "zero": "No contributor"
+        },
+        "reward": {
+          "full": "Reward contributor",
+          "short": "Reward"
+        },
+        "title": "Contributors"
+      },
+      "githubRepos": {
+        "count": {
+          "many": "__count__ repositories",
+          "one": "1 repository",
+          "zero": "No repository"
+        }
+      },
+      "overview": {
+        "contributors": {
+          "many": "Contributors",
+          "one": "Contributor"
+        },
+        "githubLinkContent": "Link",
+        "githubLinkTitle": "GitHub",
+        "moreInfo": "More info",
+        "projectLeader": {
+          "many": "Project leads",
+          "one": "Project lead"
+        },
+        "repositories": {
+          "descriptionPlaceholder": "This repository has no description",
+          "title": "Repositories"
+        },
+        "sponsors": {
+          "many": "Sponsors",
+          "one": "Sponsor"
+        },
+        "technologies": "Technologies",
+        "title": "Overview",
+        "totalSpentAmountInUsd": "GRANTED",
+        "amountGranted": "__granted__ / __total__ — __leftToSpend__ left to spend"
+      },
+      "rewards": {
+        "new": {
+          "title": "Reward contributor"
+        },
+        "title": "Rewards",
+        "autoAdd": {
+          "label": "AUTO-ADD"
+        }
+      },
+      "remainingBudget": {
+        "leftToSpend": "left to spend",
+        "newReward": "Reward contributor",
+        "title": "Remaining budget"
+      },
+      "sidebar": {
+        "backToProjects": "All projects",
+        "contributors": {
+          "many": "__count__ contributors",
+          "one": "1 contributor",
+          "zero": "No contributor"
+        },
+        "newInvite": "NEW",
+        "overview": "Overview"
+      },
+      "tableFallback": {
+        "disabledButtonTooltip": "There's no more budget for this project, please contact OnlyDust to ask for a refill.",
+        "newReward": "Reward contributor",
+        "noRewards": "No rewards so far",
+        "send": "Give your first one!"
+      }
+    },
+    "error": {
+      "notFound": "This project does not exist"
+    },
+    "fundedBy": "Funded by __topSponsorsString__",
+    "rewardButton": {
+      "full": "Reward contributor",
+      "short": "Reward"
+    },
+    "sponsorsCount": "__count__ sponsors",
+    "ledBy": {
+      "many": "__count__ project leads",
+      "one": "Led by"
+    },
+    "projectLeadInvitation": {
+      "prompt": "You've been promoted to Project Lead",
+      "view": "View invite"
+    }
+  },
+  "projectLeadInvitation": {
+    "accept": "Accept invite",
+    "acceptShort": "Accept",
+    "prompt": "You've been promoted to Project Lead on __projectName__"
+  },
+  "projects": {
+    "count": {
+      "many": "__count__ PROJECTS",
+      "one": "1 PROJECT",
+      "zero": "0 PROJECTS"
+    },
+    "fallback": {
+      "clearFiltersButton": "Clear query",
+      "subTitle": "Try changing your query",
+      "title": "Nothing to show"
+    },
+    "sorting": {
+      "button": "Sort",
+      "label": "Sort by ",
+      "projectName": "Project name",
+      "reposCount": "Number of repositories",
+      "contributorsCount": "Number of contributors",
+      "trending": "Trending projects"
+    }
+  },
+  "seniority": {
+    "levels": {
+      "advanced": "Advanced",
+      "expert": "Expert",
+      "junior": "Junior",
+      "senior": "Senior"
+    },
+    "title": "Seniority"
+  },
+  "state": {
+    "error": {
+      "back": "Go back home",
+      "description": "Please try again or _contact us_ if the problem persists",
+      "refresh": "Refresh page",
+      "title": "We've just crashed"
+    },
+    "maintenance": {
+      "description": "We're hard at work to make OnlyDust better. Check back later!",
+      "visitButton": "Visit onlydust.xyz",
+      "title": "We're under maintenance"
+    },
+    "errorOccured": "An error just occurred, please try again. Contact us at contact@onlydust.xyz if the problem persists",
+    "loading": "Loading...",
+    "success": "Success !"
+  },
+  "tryToRefresh": "Try to refresh the page",
+  "notFound": {
+    "title1": "Page not found.",
+    "title2": "Are you lost in space?",
+    "text": "Looks like you've ventured a bit too far into the cosmic code-space and hit a pixel asteroid.",
+    "button": "Go back to Homepage"
+  }
+}

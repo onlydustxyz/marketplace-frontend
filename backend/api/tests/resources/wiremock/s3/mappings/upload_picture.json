@@ -1,9 +1,0 @@
-{
-    "request": {
-        "urlPattern": "/onlydust-app-images/([0-9]+).png",
-        "method": "PUT"
-    },
-    "response": {
-        "status": 200
-    }
-}

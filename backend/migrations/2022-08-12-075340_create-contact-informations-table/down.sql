@@ -1,2 +1,0 @@
-DROP INDEX contact_informations_contributor_id_idx;
-DROP TABLE contact_informations;

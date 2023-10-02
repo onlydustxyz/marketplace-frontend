@@ -1,2 +1,0 @@
-ALTER TABLE project_details
-    ADD hiring BOOLEAN NOT NULL DEFAULT FALSE;

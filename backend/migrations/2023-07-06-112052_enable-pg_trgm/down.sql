@@ -1,2 +1,0 @@
-DROP INDEX project_details_name_trgm_idx,
-project_details_short_description_trgm_idx;

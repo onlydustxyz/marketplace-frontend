@@ -5,8 +5,8 @@
             "destination": "/"
         }
     ],
-    "buildCommand": "yarn frontend:build",
-    "installCommand": "yarn frontend:install",
-    "outputDirectory": "frontend/dist",
-    "devCommand": "yarn frontend:dev"
+    "buildCommand": "yarn build",
+    "installCommand": "yarn install",
+    "outputDirectory": "dist",
+    "devCommand": "yarn dev"
 }

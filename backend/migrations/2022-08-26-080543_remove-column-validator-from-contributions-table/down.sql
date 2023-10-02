@@ -1,2 +1,0 @@
-ALTER TABLE contributions
-ADD validator VARCHAR NOT NULL DEFAULT '0x00'

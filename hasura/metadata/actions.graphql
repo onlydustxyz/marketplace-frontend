@@ -253,7 +253,17 @@ type GithubUser {
 }
 
 type GithubPullRequest {
+  author: GithubUser!
+  closedAt: DateTimeUtc
+  createdAt: DateTimeUtc!
+  htmlUrl: Url!
   id: Int!
+  mergedAt: DateTimeUtc
+  number: Int!
+  repoId: Int!
+  status: GithubPullRequestStatus!
+  title: String!
+  updatedAt: DateTimeUtc!
 }
 
 type GithubIssue {
