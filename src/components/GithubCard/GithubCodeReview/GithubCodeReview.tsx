@@ -12,6 +12,7 @@ import { parsePullRequestLink } from "src/utils/github";
 import { GithubActionButton } from "src/components/GithubCard/GithubActionButton/GithubActionButton";
 import { ContributionDate } from "src/components/Contribution/ContributionDate";
 import { GithubContributionType } from "src/types";
+import { Variant } from "src/components/Tooltip";
 
 export enum Action {
   Add = "add",
@@ -73,6 +74,7 @@ export default function GithubCodeReview({
               type={GithubContributionType.CodeReview}
               status={codeReview.status as GithubCodeReviewStatus}
               date={new Date(codeReview.submittedAt)}
+              tooltipVariant={Variant.Default}
             />
           </div>
           <div className="flex flex-row items-center gap-1">{<CodeReviewStatus codeReview={codeReview} />}</div>

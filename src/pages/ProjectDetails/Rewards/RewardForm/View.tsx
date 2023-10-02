@@ -81,7 +81,11 @@ const View: React.FC<Props> = ({
 
   useEffect(() => {
     onWorkItemsChange(workItems);
-  }, [workItems, contributor]);
+  }, [workItems]);
+
+  useEffect(() => {
+    clearWorkItems();
+  }, [contributor]);
 
   return (
     <>

@@ -14,6 +14,7 @@ import { parseIssueLink } from "src/utils/github";
 import { GithubActionButton } from "src/components/GithubCard/GithubActionButton/GithubActionButton";
 import { GithubContributionType } from "src/types";
 import { ContributionDate } from "src/components/Contribution/ContributionDate";
+import { Variant } from "src/components/Tooltip";
 
 export enum Action {
   Add = "add",
@@ -64,6 +65,7 @@ export default function GithubIssue({
               type={GithubContributionType.Issue}
               status={issue.status as GithubIssueStatus}
               date={new Date(issue.createdAt)}
+              tooltipVariant={Variant.Default}
             />
           </div>
           <div className="flex flex-row items-center gap-1">

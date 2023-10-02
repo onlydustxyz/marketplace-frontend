@@ -3,7 +3,7 @@ import { GithubPullRequestWithCommitsFragment, GithubUserFragment } from "src/__
 import IssueClosed from "src/assets/icons/IssueClosed";
 import Card from "src/components/Card";
 import { GithubLink } from "src/components/GithubCard/GithubLink/GithubLink";
-import Tooltip from "src/components/Tooltip";
+import Tooltip, { Variant } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 import GitCommitLine from "src/icons/GitCommitLine";
 import GitMergeLine from "src/icons/GitMergeLine";
@@ -79,6 +79,7 @@ export default function GithubPullRequest({
               type={GithubContributionType.PullRequest}
               status={pullRequest.status as GithubPullRequestStatus}
               date={new Date(pullRequest.createdAt)}
+              tooltipVariant={Variant.Default}
             />
           </div>
           <div className="flex flex-row items-center gap-1">
