@@ -144,6 +144,7 @@ class GithubIssue {
 
 class GithubIssues {
    assigneeIds: jsonb
+   author: GithubUsers
    authorId: bigint
    closedAt: timestamp
    closedByPullRequests: [ApiClosedByPullRequests!]!
@@ -188,6 +189,7 @@ class GithubPullRequests {
    ciChecks: github_ci_checks
    closedAt: timestamp
    closingIssues: [ApiClosingIssues!]!
+   codeReviews: [GithubPullRequestReviews!]!
    commits: [GithubPullRequestCommits!]!
    createdAt: timestamp
    draft: Boolean
@@ -563,6 +565,7 @@ Contributions -- Projects
 Contributions --* WorkItems
 GithubIssue -- GithubUser
 GithubIssues -- GithubRepos
+GithubIssues -- GithubUsers
 GithubIssues --* ApiClosedByPullRequests
 GithubPullRequest -- GithubPullRequests
 GithubPullRequestCommits -- GithubUsers
@@ -572,6 +575,7 @@ GithubPullRequests -- GithubRepos
 GithubPullRequests -- GithubUsers
 GithubPullRequests --* ApiClosingIssues
 GithubPullRequests --* GithubPullRequestCommits
+GithubPullRequests --* GithubPullRequestReviews
 GithubRepos --* ProjectGithubRepos
 GithubUser -- RegisteredUsers
 GithubUsers -- RegisteredUsers

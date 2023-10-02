@@ -3272,6 +3272,8 @@ export enum GithubIssueStatus {
 export type GithubIssues = {
   __typename?: 'GithubIssues';
   assigneeIds: Maybe<Scalars['jsonb']>;
+  /** An object relationship */
+  author: Maybe<GithubUsers>;
   authorId: Maybe<Scalars['bigint']>;
   closedAt: Maybe<Scalars['timestamp']>;
   /** An array relationship */
@@ -3387,6 +3389,7 @@ export type GithubIssuesBoolExp = {
   _not: InputMaybe<GithubIssuesBoolExp>;
   _or: InputMaybe<Array<GithubIssuesBoolExp>>;
   assigneeIds: InputMaybe<JsonbComparisonExp>;
+  author: InputMaybe<GithubUsersBoolExp>;
   authorId: InputMaybe<BigintComparisonExp>;
   closedAt: InputMaybe<TimestampComparisonExp>;
   closedByPullRequests: InputMaybe<ApiClosedByPullRequestsBoolExp>;
@@ -3429,6 +3432,7 @@ export type GithubIssuesIncInput = {
 /** input type for inserting data into table "api.github_issues" */
 export type GithubIssuesInsertInput = {
   assigneeIds: InputMaybe<Scalars['jsonb']>;
+  author: InputMaybe<GithubUsersObjRelInsertInput>;
   authorId: InputMaybe<Scalars['bigint']>;
   closedAt: InputMaybe<Scalars['timestamp']>;
   closedByPullRequests: InputMaybe<ApiClosedByPullRequestsArrRelInsertInput>;
@@ -3490,6 +3494,7 @@ export type GithubIssuesObjRelInsertInput = {
 /** Ordering options when selecting data from "api.github_issues". */
 export type GithubIssuesOrderBy = {
   assigneeIds: InputMaybe<OrderBy>;
+  author: InputMaybe<GithubUsersOrderBy>;
   authorId: InputMaybe<OrderBy>;
   closedAt: InputMaybe<OrderBy>;
   closedByPullRequestsAggregate: InputMaybe<ApiClosedByPullRequestsAggregateOrderBy>;
@@ -4064,6 +4069,26 @@ export type GithubPullRequestReviewsAggregateFieldsCountArgs = {
   distinct: InputMaybe<Scalars['Boolean']>;
 };
 
+/** order by aggregate values of table "api.github_pull_request_reviews" */
+export type GithubPullRequestReviewsAggregateOrderBy = {
+  avg: InputMaybe<GithubPullRequestReviews_Avg_Order_By>;
+  count: InputMaybe<OrderBy>;
+  max: InputMaybe<GithubPullRequestReviews_Max_Order_By>;
+  min: InputMaybe<GithubPullRequestReviews_Min_Order_By>;
+  stddev: InputMaybe<GithubPullRequestReviews_Stddev_Order_By>;
+  stddev_pop: InputMaybe<GithubPullRequestReviews_Stddev_Pop_Order_By>;
+  stddev_samp: InputMaybe<GithubPullRequestReviews_Stddev_Samp_Order_By>;
+  sum: InputMaybe<GithubPullRequestReviews_Sum_Order_By>;
+  var_pop: InputMaybe<GithubPullRequestReviews_Var_Pop_Order_By>;
+  var_samp: InputMaybe<GithubPullRequestReviews_Var_Samp_Order_By>;
+  variance: InputMaybe<GithubPullRequestReviews_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "api.github_pull_request_reviews" */
+export type GithubPullRequestReviewsArrRelInsertInput = {
+  data: Array<GithubPullRequestReviewsInsertInput>;
+};
+
 /** aggregate avg on columns */
 export type GithubPullRequestReviewsAvgFields = {
   __typename?: 'GithubPullRequestReviewsAvgFields';
@@ -4235,6 +4260,61 @@ export type GithubPullRequestReviewsVarianceFields = {
   reviewerId: Maybe<Scalars['Float']>;
 };
 
+export type GithubPullRequestReviews_Aggregate_Bool_Exp = {
+  count: InputMaybe<GithubPullRequestReviews_Aggregate_Bool_Exp_Count>;
+};
+
+export type GithubPullRequestReviews_Aggregate_Bool_Exp_Count = {
+  arguments: InputMaybe<Array<GithubPullRequestReviewsSelectColumn>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+  filter: InputMaybe<GithubPullRequestReviewsBoolExp>;
+  predicate: IntComparisonExp;
+};
+
+/** order by avg() on columns of table "api.github_pull_request_reviews" */
+export type GithubPullRequestReviews_Avg_Order_By = {
+  pullRequestId: InputMaybe<OrderBy>;
+  reviewerId: InputMaybe<OrderBy>;
+};
+
+/** order by max() on columns of table "api.github_pull_request_reviews" */
+export type GithubPullRequestReviews_Max_Order_By = {
+  id: InputMaybe<OrderBy>;
+  outcome: InputMaybe<OrderBy>;
+  pullRequestId: InputMaybe<OrderBy>;
+  reviewerId: InputMaybe<OrderBy>;
+  status: InputMaybe<OrderBy>;
+  submittedAt: InputMaybe<OrderBy>;
+};
+
+/** order by min() on columns of table "api.github_pull_request_reviews" */
+export type GithubPullRequestReviews_Min_Order_By = {
+  id: InputMaybe<OrderBy>;
+  outcome: InputMaybe<OrderBy>;
+  pullRequestId: InputMaybe<OrderBy>;
+  reviewerId: InputMaybe<OrderBy>;
+  status: InputMaybe<OrderBy>;
+  submittedAt: InputMaybe<OrderBy>;
+};
+
+/** order by stddev() on columns of table "api.github_pull_request_reviews" */
+export type GithubPullRequestReviews_Stddev_Order_By = {
+  pullRequestId: InputMaybe<OrderBy>;
+  reviewerId: InputMaybe<OrderBy>;
+};
+
+/** order by stddev_pop() on columns of table "api.github_pull_request_reviews" */
+export type GithubPullRequestReviews_Stddev_Pop_Order_By = {
+  pullRequestId: InputMaybe<OrderBy>;
+  reviewerId: InputMaybe<OrderBy>;
+};
+
+/** order by stddev_samp() on columns of table "api.github_pull_request_reviews" */
+export type GithubPullRequestReviews_Stddev_Samp_Order_By = {
+  pullRequestId: InputMaybe<OrderBy>;
+  reviewerId: InputMaybe<OrderBy>;
+};
+
 /** Streaming cursor of the table "GithubPullRequestReviews" */
 export type GithubPullRequestReviews_StreamCursorInput = {
   /** Stream column input with initial value */
@@ -4253,6 +4333,30 @@ export type GithubPullRequestReviews_StreamCursorValueInput = {
   submittedAt: InputMaybe<Scalars['timestamp']>;
 };
 
+/** order by sum() on columns of table "api.github_pull_request_reviews" */
+export type GithubPullRequestReviews_Sum_Order_By = {
+  pullRequestId: InputMaybe<OrderBy>;
+  reviewerId: InputMaybe<OrderBy>;
+};
+
+/** order by var_pop() on columns of table "api.github_pull_request_reviews" */
+export type GithubPullRequestReviews_Var_Pop_Order_By = {
+  pullRequestId: InputMaybe<OrderBy>;
+  reviewerId: InputMaybe<OrderBy>;
+};
+
+/** order by var_samp() on columns of table "api.github_pull_request_reviews" */
+export type GithubPullRequestReviews_Var_Samp_Order_By = {
+  pullRequestId: InputMaybe<OrderBy>;
+  reviewerId: InputMaybe<OrderBy>;
+};
+
+/** order by variance() on columns of table "api.github_pull_request_reviews" */
+export type GithubPullRequestReviews_Variance_Order_By = {
+  pullRequestId: InputMaybe<OrderBy>;
+  reviewerId: InputMaybe<OrderBy>;
+};
+
 /** columns and relationships of "api.github_pull_requests" */
 export type GithubPullRequests = {
   __typename?: 'GithubPullRequests';
@@ -4265,6 +4369,10 @@ export type GithubPullRequests = {
   closingIssues: Array<ApiClosingIssues>;
   /** An aggregate relationship */
   closingIssuesAggregate: ApiClosingIssuesAggregate;
+  /** An array relationship */
+  codeReviews: Array<GithubPullRequestReviews>;
+  /** An aggregate relationship */
+  codeReviewsAggregate: GithubPullRequestReviewsAggregate;
   /** An array relationship */
   commits: Array<GithubPullRequestCommits>;
   /** An aggregate relationship */
@@ -4300,6 +4408,26 @@ export type GithubPullRequestsClosingIssuesAggregateArgs = {
   offset: InputMaybe<Scalars['Int']>;
   orderBy: InputMaybe<Array<ApiClosingIssuesOrderBy>>;
   where: InputMaybe<ApiClosingIssuesBoolExp>;
+};
+
+
+/** columns and relationships of "api.github_pull_requests" */
+export type GithubPullRequestsCodeReviewsArgs = {
+  distinctOn: InputMaybe<Array<GithubPullRequestReviewsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<GithubPullRequestReviewsOrderBy>>;
+  where: InputMaybe<GithubPullRequestReviewsBoolExp>;
+};
+
+
+/** columns and relationships of "api.github_pull_requests" */
+export type GithubPullRequestsCodeReviewsAggregateArgs = {
+  distinctOn: InputMaybe<Array<GithubPullRequestReviewsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<GithubPullRequestReviewsOrderBy>>;
+  where: InputMaybe<GithubPullRequestReviewsBoolExp>;
 };
 
 
@@ -4372,6 +4500,8 @@ export type GithubPullRequestsBoolExp = {
   closedAt: InputMaybe<TimestampComparisonExp>;
   closingIssues: InputMaybe<ApiClosingIssuesBoolExp>;
   closingIssues_aggregate: InputMaybe<Api_Closing_Issues_Aggregate_Bool_Exp>;
+  codeReviews: InputMaybe<GithubPullRequestReviewsBoolExp>;
+  codeReviews_aggregate: InputMaybe<GithubPullRequestReviews_Aggregate_Bool_Exp>;
   commits: InputMaybe<GithubPullRequestCommitsBoolExp>;
   commits_aggregate: InputMaybe<Github_Pull_Request_Commits_Aggregate_Bool_Exp>;
   createdAt: InputMaybe<TimestampComparisonExp>;
@@ -4401,6 +4531,7 @@ export type GithubPullRequestsInsertInput = {
   ciChecks: InputMaybe<Scalars['github_ci_checks']>;
   closedAt: InputMaybe<Scalars['timestamp']>;
   closingIssues: InputMaybe<ApiClosingIssuesArrRelInsertInput>;
+  codeReviews: InputMaybe<GithubPullRequestReviewsArrRelInsertInput>;
   commits: InputMaybe<GithubPullRequestCommitsArrRelInsertInput>;
   createdAt: InputMaybe<Scalars['timestamp']>;
   draft: InputMaybe<Scalars['Boolean']>;
@@ -4467,6 +4598,7 @@ export type GithubPullRequestsOrderBy = {
   ciChecks: InputMaybe<OrderBy>;
   closedAt: InputMaybe<OrderBy>;
   closingIssuesAggregate: InputMaybe<ApiClosingIssuesAggregateOrderBy>;
+  codeReviewsAggregate: InputMaybe<GithubPullRequestReviewsAggregateOrderBy>;
   commitsAggregate: InputMaybe<GithubPullRequestCommitsAggregateOrderBy>;
   createdAt: InputMaybe<OrderBy>;
   draft: InputMaybe<OrderBy>;
@@ -7905,6 +8037,8 @@ export type ProjectsPendingContributorsBoolExp = {
 /** unique or primary key constraints on table "projects_pending_contributors" */
 export enum ProjectsPendingContributorsConstraint {
   /** unique or primary key constraint on columns "project_id", "github_user_id" */
+  ProjectsPendingContributorsGithubUserIdProjectIdIdx = 'projects_pending_contributors_github_user_id_project_id_idx',
+  /** unique or primary key constraint on columns "project_id", "github_user_id" */
   ProjectsPendingContributorsPkey = 'projects_pending_contributors_pkey'
 }
 
@@ -8118,6 +8252,8 @@ export type ProjectsRewardedUsersBoolExp = {
 
 /** unique or primary key constraints on table "projects_rewarded_users" */
 export enum ProjectsRewardedUsersConstraint {
+  /** unique or primary key constraint on columns "project_id", "github_user_id" */
+  ProjectsRewardedUsersGithubUserIdProjectIdIdx = 'projects_rewarded_users_github_user_id_project_id_idx',
   /** unique or primary key constraint on columns "project_id", "github_user_id" */
   ProjectsRewardedUsersPkey = 'projects_rewarded_users_pkey'
 }
@@ -18318,6 +18454,12 @@ export type GithubUserIdFragment = { __typename?: 'GithubUsers', id: any };
 
 export type GithubUserFragment = { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null };
 
+export type ContributionGithubPullRequestFragment = { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, author: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null };
+
+export type ContributionGithubIssueFragment = { __typename?: 'GithubIssues', commentsCount: any | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, author: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null };
+
+export type ContributionGithubCodeReviewFragment = { __typename?: 'GithubPullRequestReviews', id: string | null, outcome: any | null, status: string | null, reviewer: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null };
+
 export type PaymentRequestIdFragment = { __typename?: 'PaymentRequests', id: any | null };
 
 export type PaymentRequestFragment = { __typename?: 'PaymentRequests', recipientId: any | null, amount: any | null, requestedAt: any | null, id: any | null, workItemsAggregate: { __typename?: 'WorkItemsAggregate', aggregate: { __typename?: 'WorkItemsAggregateFields', count: number } | null } };
@@ -18457,6 +18599,15 @@ export type GetProjectVisibilityDetailsQueryVariables = Exact<{
 
 
 export type GetProjectVisibilityDetailsQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', visibility: any | null, usdBudgetId: any | null, id: any | null, key: string | null, githubReposAggregate: { __typename?: 'ProjectGithubReposAggregate', aggregate: { __typename?: 'ProjectGithubReposAggregateFields', count: number } | null }, contributors: Array<{ __typename?: 'ProjectsContributors', githubUserId: any }>, pendingContributors: Array<{ __typename?: 'ProjectsPendingContributors', githubUserId: any }>, rewardedUsers: Array<{ __typename?: 'ProjectsRewardedUsers', githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> }> };
+
+export type GetAllContributionsQueryVariables = Exact<{
+  orderBy: InputMaybe<Array<ContributionsOrderBy> | ContributionsOrderBy>;
+  githubUserId: Scalars['bigint'];
+  status: Scalars['contribution_status'];
+}>;
+
+
+export type GetAllContributionsQuery = { __typename?: 'query_root', contributions: Array<{ __typename?: 'Contributions', closedAt: any | null, createdAt: any | null, id: string | null, status: any | null, type: string | null, githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, closingIssues: Array<{ __typename?: 'ApiClosingIssues', githubIssue: { __typename?: 'GithubIssues', commentsCount: any | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, author: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null } | null }>, codeReviews: Array<{ __typename?: 'GithubPullRequestReviews', id: string | null, outcome: any | null, status: string | null, reviewer: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null }>, author: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null } | null, githubIssue: { __typename?: 'GithubIssues', commentsCount: any | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, closedByPullRequests: Array<{ __typename?: 'ApiClosedByPullRequests', githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, author: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null } | null }>, author: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', id: string | null, outcome: any | null, status: string | null, githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, author: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null } | null, reviewer: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null } | null, githubRepo: { __typename?: 'GithubRepos', htmlUrl: string | null, name: string | null, id: any | null } | null, project: { __typename?: 'Projects', name: string | null, logoUrl: string | null, id: any | null, key: string | null } | null, rewardItems: Array<{ __typename?: 'WorkItems', paymentId: any | null }> }>, githubRepos: Array<{ __typename?: 'GithubRepos', indexedAt: any | null }> };
 
 export type PendingProjectLeaderInvitationsQueryVariables = Exact<{
   githubUserId: InputMaybe<Scalars['bigint']>;
@@ -18987,6 +19138,48 @@ export const GithubRepoFragmentDoc = gql`
   hasIssues
 }
     ${GithubRepoIdFragmentDoc}`;
+export const ContributionGithubPullRequestFragmentDoc = gql`
+    fragment ContributionGithubPullRequest on GithubPullRequests {
+  author {
+    avatarUrl
+    login
+    id
+  }
+  draft
+  htmlUrl
+  id
+  number
+  status
+  title
+}
+    `;
+export const ContributionGithubIssueFragmentDoc = gql`
+    fragment ContributionGithubIssue on GithubIssues {
+  author {
+    avatarUrl
+    login
+    id
+  }
+  commentsCount
+  htmlUrl
+  id
+  number
+  status
+  title
+}
+    `;
+export const ContributionGithubCodeReviewFragmentDoc = gql`
+    fragment ContributionGithubCodeReview on GithubPullRequestReviews {
+  id
+  outcome
+  reviewer {
+    avatarUrl
+    login
+    id
+  }
+  status
+}
+    `;
 export const PaymentRequestIdFragmentDoc = gql`
     fragment PaymentRequestId on PaymentRequests {
   id
@@ -20807,6 +21000,94 @@ export function useGetProjectVisibilityDetailsLazyQuery(baseOptions?: Apollo.Laz
 export type GetProjectVisibilityDetailsQueryHookResult = ReturnType<typeof useGetProjectVisibilityDetailsQuery>;
 export type GetProjectVisibilityDetailsLazyQueryHookResult = ReturnType<typeof useGetProjectVisibilityDetailsLazyQuery>;
 export type GetProjectVisibilityDetailsQueryResult = Apollo.QueryResult<GetProjectVisibilityDetailsQuery, GetProjectVisibilityDetailsQueryVariables>;
+export const GetAllContributionsDocument = gql`
+    query GetAllContributions($orderBy: [ContributionsOrderBy!], $githubUserId: bigint!, $status: contribution_status!) {
+  contributions(
+    orderBy: $orderBy
+    where: {githubUserId: {_eq: $githubUserId}, status: {_eq: $status}}
+  ) {
+    closedAt
+    createdAt
+    id
+    githubPullRequest {
+      ...ContributionGithubPullRequest
+      closingIssues {
+        githubIssue {
+          ...ContributionGithubIssue
+        }
+      }
+      codeReviews(orderBy: {submittedAt: DESC}, limit: 1) {
+        ...ContributionGithubCodeReview
+      }
+    }
+    githubIssue {
+      ...ContributionGithubIssue
+      closedByPullRequests {
+        githubPullRequest {
+          ...ContributionGithubPullRequest
+        }
+      }
+    }
+    githubCodeReview {
+      ...ContributionGithubCodeReview
+      githubPullRequest {
+        ...ContributionGithubPullRequest
+      }
+    }
+    githubRepo {
+      htmlUrl
+      name
+      id
+    }
+    project {
+      name
+      logoUrl
+      id
+      key
+    }
+    status
+    type
+    rewardItems {
+      paymentId
+    }
+  }
+  githubRepos(orderBy: {indexedAt: ASC}, limit: 1) {
+    indexedAt
+  }
+}
+    ${ContributionGithubPullRequestFragmentDoc}
+${ContributionGithubIssueFragmentDoc}
+${ContributionGithubCodeReviewFragmentDoc}`;
+
+/**
+ * __useGetAllContributionsQuery__
+ *
+ * To run a query within a React component, call `useGetAllContributionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllContributionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllContributionsQuery({
+ *   variables: {
+ *      orderBy: // value for 'orderBy'
+ *      githubUserId: // value for 'githubUserId'
+ *      status: // value for 'status'
+ *   },
+ * });
+ */
+export function useGetAllContributionsQuery(baseOptions: Apollo.QueryHookOptions<GetAllContributionsQuery, GetAllContributionsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllContributionsQuery, GetAllContributionsQueryVariables>(GetAllContributionsDocument, options);
+      }
+export function useGetAllContributionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllContributionsQuery, GetAllContributionsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllContributionsQuery, GetAllContributionsQueryVariables>(GetAllContributionsDocument, options);
+        }
+export type GetAllContributionsQueryHookResult = ReturnType<typeof useGetAllContributionsQuery>;
+export type GetAllContributionsLazyQueryHookResult = ReturnType<typeof useGetAllContributionsLazyQuery>;
+export type GetAllContributionsQueryResult = Apollo.QueryResult<GetAllContributionsQuery, GetAllContributionsQueryVariables>;
 export const PendingProjectLeaderInvitationsDocument = gql`
     query PendingProjectLeaderInvitations($githubUserId: bigint) {
   pendingProjectLeaderInvitations(where: {githubUserId: {_eq: $githubUserId}}) {

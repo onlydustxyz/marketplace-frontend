@@ -1,0 +1,51 @@
+query GetAllContributions($orderBy: [ContributionsOrderBy!], $githubUserId: bigint!, $status: contribution_status!) {
+  contributions(orderBy: $orderBy, where: { githubUserId: { _eq: $githubUserId }, status: { _eq: $status } }) {
+    closedAt
+    createdAt
+    id
+    githubPullRequest {
+      ...ContributionGithubPullRequest
+      closingIssues {
+        githubIssue {
+          ...ContributionGithubIssue
+        }
+      }
+      codeReviews(orderBy: { submittedAt: DESC }, limit: 1) {
+        ...ContributionGithubCodeReview
+      }
+    }
+    githubIssue {
+      ...ContributionGithubIssue
+      closedByPullRequests {
+        githubPullRequest {
+          ...ContributionGithubPullRequest
+        }
+      }
+    }
+    githubCodeReview {
+      ...ContributionGithubCodeReview
+      githubPullRequest {
+        ...ContributionGithubPullRequest
+      }
+    }
+    githubRepo {
+      htmlUrl
+      name
+      id
+    }
+    project {
+      name
+      logoUrl
+      id
+      key
+    }
+    status
+    type
+    rewardItems {
+      paymentId
+    }
+  }
+  githubRepos(orderBy: { indexedAt: ASC }, limit: 1) {
+    indexedAt
+  }
+}

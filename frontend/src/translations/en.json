@@ -7,8 +7,61 @@
     "confirmationToaster": "Thank you! If we need a profile like yours, you'll be contacted shortly",
     "contactNeeded": "Please share at least one way to reach you out in case it's a match."
   },
+  "contribution": {
+    "review": {
+      "status": {
+        "pendingReviewer": "Pending reviewer",
+        "underReview": "Under review",
+        "approved": "Approved",
+        "changesRequested": "Changes requested"
+      }
+    }
+  },
   "contributions": {
-    "empty": "No contributions yet"
+    "empty": "No contributions yet",
+    "nav": {
+      "allContributions": "All contributions",
+      "applied": "Applied",
+      "inProgress": "In progress",
+      "completed": "Completed",
+      "canceled": "Canceled"
+    },
+    "applied": {
+      "title": "Applied",
+      "description": "Unassigned issues you have applied to, from Only Dust or directly on Github."
+    },
+    "inProgress": {
+      "title": "In progress",
+      "description": "Open issues, PRs and code reviews you are currently working on."
+    },
+    "completed": {
+      "title": "Completed",
+      "description": "Closed issues, merged PRs and submitted code reviews you have worked on."
+    },
+    "canceled": {
+      "title": "Canceled",
+      "description": "Closed PRs and issues closed as “not planned” you have worked on."
+    },
+    "table": {
+      "date": "Date",
+      "projectRepo": "Project / Repository",
+      "contribution": "Contribution",
+      "comments": "Comments",
+      "linkedTo": "Linked to",
+      "empty": "Last synced with Github at __time__.\nIt can take up to 5 minutes before the next refresh.",
+      "error": "An error occurred, please try again later.",
+      "showAll": "Show all __count__"
+    },
+    "tooltip": {
+      "dateOpened": "Opened on __date__ at __time__ GMT",
+      "dateClosed": "Closed on __date__ at __time__ GMT",
+      "dateMerged": "Merged on __date__ at __time__ GMT",
+      "dateAssigned": "Assigned on __date__ at __time__ GMT",
+      "badgePullRequest": "Pull request from",
+      "badgeCodeReview": "Code review from",
+      "badgeIssue": "Issue from",
+      "rewards": "Rewarded in"
+    }
   },
   "contributionGraph": {
     "pullRequests": "Pull requests",
@@ -183,6 +236,7 @@
     },
     "rewards": "Rewards",
     "projects": "Projects",
+    "contributions": "Contributions",
     "signInWithGithub": "Connect",
     "separator": "·",
     "termsAndConditions": "Terms",

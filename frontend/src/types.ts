@@ -1,3 +1,4 @@
+import { GetAllContributionsQuery, GithubIssueStatus } from "src/__generated/graphql";
 import { SortingFields } from "./hooks/useRewardSorting";
 
 export type Branded<T, B> = T & { __brand: B };
@@ -6,6 +7,11 @@ export type Branded<T, B> = T & { __brand: B };
 export type ArrayElement<ArrayType extends readonly unknown[]> = ArrayType extends readonly (infer ElementType)[]
   ? ElementType
   : never;
+
+//https://stackoverflow.com/a/47914631
+export type DeepPartial<T> = {
+  [P in keyof T]?: DeepPartial<T[P]>;
+};
 
 export enum HasuraUserRole {
   Public = "public",
@@ -129,8 +135,62 @@ export enum GithubIssueType {
   PullRequest,
 }
 
+export enum GithubPullRequestStatus {
+  Merged = "MERGED",
+  Open = "OPEN",
+  Closed = "CLOSED",
+}
+
+export enum GithubCodeReviewStatus {
+  Pending = "PENDING",
+  Completed = "COMPLETED",
+}
+
+export enum GithubCodeReviewOutcome {
+  Approved = "approved",
+  ChangesRequested = "changes_requested",
+}
+
 export enum GithubContributionType {
   Issue = "ISSUE",
   PullRequest = "PULL_REQUEST",
   CodeReview = "CODE_REVIEW",
 }
+
+export enum GithubContributionStatus {
+  InProgress = "in_progress",
+  Completed = "complete",
+  Canceled = "canceled",
+}
+
+export enum GithubContributionReviewStatus {
+  PendingReviewer = "pendingReviewer",
+  UnderReview = "underReview",
+  Approved = "approved",
+  ChangesRequested = "changesRequested",
+}
+
+export enum GithubPullRequestDraft {
+  Draft = "DRAFT",
+}
+
+export type GithubItemStatus =
+  | GithubPullRequestStatus
+  | GithubIssueStatus
+  | GithubCodeReviewStatus
+  | GithubPullRequestDraft;
+
+type GithubPullRequestTypeStatusDict<T> = Record<
+  GithubContributionType.PullRequest,
+  Record<GithubPullRequestStatus | GithubPullRequestDraft, T>
+>;
+
+type GithubIssueTypeStatusDict<T> = Record<GithubContributionType.Issue, Record<GithubIssueStatus, T>>;
+
+type GithubCodeReviewTypeStatusDict<T> = Record<GithubContributionType.CodeReview, Record<GithubCodeReviewStatus, T>>;
+
+export type GithubTypeStatusDict<T> = GithubPullRequestTypeStatusDict<T> &
+  GithubIssueTypeStatusDict<T> &
+  GithubCodeReviewTypeStatusDict<T>;
+
+export type QueryContribution = GetAllContributionsQuery["contributions"][number];

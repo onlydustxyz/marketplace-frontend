@@ -64,7 +64,9 @@ export default function SidePanel({
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog onClose={onClose} as="div">
-        {withBackdrop && <div className="fixed bottom-0 h-screen w-screen bg-black/40" aria-hidden="true" />}
+        {withBackdrop && (
+          <div className="fixed bottom-0 z-10 h-screen w-screen bg-black/40 backdrop-blur" aria-hidden="true" />
+        )}
         <Transition.Child
           as={Fragment}
           enter="transform transition ease-in-out duration-300"
@@ -81,7 +83,8 @@ export default function SidePanel({
               },
               "fixed w-full bg-greyscale-900 blur-0"
             )}
-            style={{ zIndex: 10 + panelIndex }}
+            // z-index needs to start at 50 to show above tooltips on the page behind
+            style={{ zIndex: 50 + panelIndex }}
           >
             <div onClick={handleClick} className="h-full overflow-y-auto">
               {hasCloseButton && (

@@ -1,0 +1,38 @@
+fragment ContributionGithubPullRequest on GithubPullRequests {
+  author {
+    avatarUrl
+    login
+    id
+  }
+  draft
+  htmlUrl
+  id
+  number
+  status
+  title
+}
+
+fragment ContributionGithubIssue on GithubIssues {
+  author {
+    avatarUrl
+    login
+    id
+  }
+  commentsCount
+  htmlUrl
+  id
+  number
+  status
+  title
+}
+
+fragment ContributionGithubCodeReview on GithubPullRequestReviews {
+  id
+  outcome
+  reviewer {
+    avatarUrl
+    login
+    id
+  }
+  status
+}

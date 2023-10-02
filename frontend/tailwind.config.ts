@@ -25,9 +25,13 @@ const config: Config = {
         chineseBlack: "#110C1F",
         github: {
           grey: "#828893",
+          "grey-light": "#92908F",
           red: "#C03837",
+          "red-light": "#C64C4B",
           green: "#3C8343",
+          "green-light": "#639C69",
           purple: "#684ABB",
+          "purple-light": "#866EC9",
         },
         greyscale: {
           50: "#F3F0EE",
@@ -54,6 +58,7 @@ const config: Config = {
           900: "#000113",
         },
         orange: {
+          400: "#FFBC66",
           500: "#FF9000",
           800: "#663A00",
           900: "#331D00",
@@ -89,10 +94,14 @@ const config: Config = {
           1: "#232323",
           2: "#0C0C23",
           5: "#111127",
+          8: "#151526",
           10: "#18182F",
           12: "#4C4B58",
         },
         spaceGrey: "#141414",
+        tooltip: {
+          blue: "#2c2c3e",
+        },
       },
       animation: {
         "spin-invert-slow": "spin-invert 4s linear infinite",
@@ -140,6 +149,7 @@ const config: Config = {
         mosaic: "url('src/assets/img/mosaic.png')",
         "completion-gradient":
           "linear-gradient(90deg, #5935BF 0%, #45279B 8.85%, #340D87 31.77%, #421083 66.15%, #3A0A8C 100%);",
+        contributions: "url('src/assets/img/contributions-bg.png')",
       },
       backgroundPosition: {
         space: "right top, bottom left",
@@ -159,6 +169,7 @@ const config: Config = {
         "bottom-sm": "0px 8px 32px rgba(0, 0, 0, 0.16)",
       },
       borderWidth: {
+        "0.5": "0.5px",
         3: "3px",
       },
       opacity: {

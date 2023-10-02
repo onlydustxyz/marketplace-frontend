@@ -14,6 +14,7 @@ import { NavLink } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import Folder3Line from "src/icons/Folder3Line";
 import ExchangeDollarLine from "src/icons/ExchangeDollarLine";
+import StackLine from "src/icons/StackLine";
 import SidePanel from "src/components/SidePanel";
 import { useContributorProfilePanel } from "src/hooks/useContributorProfilePanel";
 
@@ -66,7 +67,7 @@ export default function ViewMobile({
         <div className="flex flex-col divide-y divide-greyscale-50/8 bg-whiteFakeOpacity-5 p-3 font-walsheim text-sm">
           {!hideProfileItems && (
             <>
-              {hasRewards && (
+              {githubUserId || hasRewards ? (
                 <div className="flex flex-col">
                   <NavLink
                     to={RoutePaths.Projects}
@@ -77,17 +78,33 @@ export default function ViewMobile({
                   >
                     <Folder3Line className="text-xl" /> {T("navbar.projects")}
                   </NavLink>
-                  <NavLink
-                    to={RoutePaths.Rewards}
-                    onClick={() => setPanelOpen(false)}
-                    className={({ isActive }) =>
-                      classNames("flex items-center gap-3 rounded-xl p-4", { "bg-white/8": isActive })
-                    }
-                  >
-                    <ExchangeDollarLine className="text-xl" /> {T("navbar.rewards")}
-                  </NavLink>
+
+                  {githubUserId ? (
+                    <NavLink
+                      to={RoutePaths.Contributions}
+                      onClick={() => setPanelOpen(false)}
+                      className={({ isActive }) =>
+                        classNames("flex items-center gap-3 rounded-xl p-4", { "bg-white/8": isActive })
+                      }
+                    >
+                      <StackLine className="text-xl" /> {T("navbar.contributions")}
+                    </NavLink>
+                  ) : null}
+
+                  {hasRewards ? (
+                    <NavLink
+                      to={RoutePaths.Rewards}
+                      onClick={() => setPanelOpen(false)}
+                      className={({ isActive }) =>
+                        classNames("flex items-center gap-3 rounded-xl p-4", { "bg-white/8": isActive })
+                      }
+                    >
+                      <ExchangeDollarLine className="text-xl" /> {T("navbar.rewards")}
+                    </NavLink>
+                  ) : null}
                 </div>
-              )}
+              ) : null}
+
               <>
                 {githubUserId && (
                   <button
