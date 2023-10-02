@@ -9,6 +9,15 @@ configuration:
     select: githubIssues
     select_aggregate: githubIssuesAggregate
 object_relationships:
+  - name: author
+    using:
+      manual_configuration:
+        column_mapping:
+          author_id: id
+        insertion_order: null
+        remote_table:
+          name: github_users
+          schema: public
   - name: repo
     using:
       manual_configuration:
