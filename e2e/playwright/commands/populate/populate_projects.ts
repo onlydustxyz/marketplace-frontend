@@ -1,4 +1,4 @@
-import { projects as projectFixtures, projects } from "../../fixtures/data/projects";
+import { projects as projectFixtures } from "../../fixtures/data/projects";
 import { create as createProject } from "../project";
 import { repos } from "../../fixtures/data/repos";
 import { zip } from "lodash";

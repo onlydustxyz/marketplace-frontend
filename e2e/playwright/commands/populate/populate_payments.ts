@@ -4,7 +4,7 @@ import {
   RequestPaymentMutation,
   RequestPaymentMutationVariables,
 } from "../../__generated/graphql";
-import { fetchAsAdmin, mutateAsAdmin, mutateAsRegisteredUser, waitEvents } from "../common";
+import { fetchAsAdmin, mutateAsRegisteredUser, waitEvents } from "../common";
 import { payments } from "../../fixtures/data/payments";
 
 export const populatePayments = async (users: Record<string, User>, projects: Record<string, Project>) => {
