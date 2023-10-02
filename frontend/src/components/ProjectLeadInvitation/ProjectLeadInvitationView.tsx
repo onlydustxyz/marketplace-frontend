@@ -46,7 +46,7 @@ export default function ProjectLeadInvitationView({
       )}
     >
       <div
-        className={classNames("flex text-left font-walsheim text-base", "flex-1 sm:flex-auto", {
+        className={classNames("flex flex-1 text-left font-walsheim text-base sm:flex-auto", {
           "text-sm": size === CalloutSizes.Small,
           "text-md": size === CalloutSizes.Medium,
           "text-lg": size === CalloutSizes.Large,
