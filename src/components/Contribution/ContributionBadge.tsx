@@ -56,7 +56,7 @@ export function ContributionBadge({
             {isExternal ? (
               <div className="flex gap-1 text-xs font-medium text-spaceBlue-200">
                 <span>
-                  {tokens[type]}{" "}
+                  {tokens[type]}&nbsp;
                   <button
                     type="button"
                     className="text-spacePurple-300 hover:underline"

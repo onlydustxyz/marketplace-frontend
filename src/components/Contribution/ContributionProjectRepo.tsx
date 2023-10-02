@@ -30,7 +30,7 @@ export function ContributionProjectRepo({
         >
           {project.name}
         </Link>
-        <span className="text-spaceBlue-300">/</span>{" "}
+        <span className="text-spaceBlue-300">/</span>&nbsp;
         <a href={repo.htmlUrl ?? ""} target="_blank" rel="noopener noreferrer" className="hover:underline">
           {repo.name}
         </a>

@@ -14,7 +14,7 @@ export function ContributionReward({ id, rewards }: { id: string; rewards: { pay
         <div className="flex items-center gap-2 px-1 py-2">
           <Medal2Fill className="text-sm leading-none text-orange-400" />
           <p className="text-sm font-medium leading-none">
-            {T("contributions.tooltip.rewards")}{" "}
+            {T("contributions.tooltip.rewards")}&nbsp;
             {rewards.map(({ paymentId }) => `#${paymentId}`.slice(0, 6)).join(", ")}
           </p>
         </div>
