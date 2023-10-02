@@ -5,7 +5,7 @@ import { ComponentProps } from "react";
 
 const codeReviews: Record<string, GithubCodeReviewFragment> = {
   pending: {
-    id: "1268051991",
+    id: "123",
     status: "PENDING",
     outcome: null,
     submittedAt: daysFromNow(6),
@@ -38,7 +38,7 @@ const codeReviews: Record<string, GithubCodeReviewFragment> = {
     },
   },
   longLink: {
-    id: "1268051991",
+    id: "456",
     status: "PENDING",
     outcome: null,
     submittedAt: daysFromNow(6),
@@ -72,7 +72,7 @@ const codeReviews: Record<string, GithubCodeReviewFragment> = {
     },
   },
   approved: {
-    id: "1268051991",
+    id: "789",
     status: "COMPLETED",
     outcome: "APPROVED",
     submittedAt: daysFromNow(3),
@@ -105,7 +105,7 @@ const codeReviews: Record<string, GithubCodeReviewFragment> = {
     },
   },
   changeRequested: {
-    id: "1268051991",
+    id: "000",
     status: "COMPLETED",
     outcome: "CHANGE_REQUESTED",
     submittedAt: daysFromNow(1),

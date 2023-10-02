@@ -8,7 +8,7 @@ import GithubPullRequest, {
 
 const pullRequests: Record<string, GithubPullRequestWithCommitsFragment> = {
   closed: {
-    id: "1268051991",
+    id: "123",
     repoId: 123456,
     number: 541,
     status: GithubPullRequestStatus.Closed,
@@ -39,7 +39,7 @@ const pullRequests: Record<string, GithubPullRequestWithCommitsFragment> = {
     ],
   },
   closedWithLongLink: {
-    id: "1268051991",
+    id: "456",
     repoId: 123456,
     number: 541,
     status: GithubPullRequestStatus.Closed,
@@ -71,7 +71,7 @@ const pullRequests: Record<string, GithubPullRequestWithCommitsFragment> = {
     ],
   },
   open: {
-    id: "1268051991",
+    id: "789",
     repoId: 123456,
     number: 541,
     status: GithubPullRequestStatus.Open,
@@ -102,7 +102,7 @@ const pullRequests: Record<string, GithubPullRequestWithCommitsFragment> = {
     ],
   },
   merged: {
-    id: "1268051991",
+    id: "000",
     repoId: 123456,
     number: 541,
     status: GithubPullRequestStatus.Merged,

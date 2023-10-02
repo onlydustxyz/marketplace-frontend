@@ -14,6 +14,8 @@ import displayRelativeDate from "src/utils/displayRelativeDate";
 import { parsePullRequestLink } from "src/utils/github";
 import { GithubActionButton } from "src/components/GithubCard/GithubActionButton/GithubActionButton";
 import { CommitsTooltip } from "./CommitsTooltip";
+import { ContributionDate } from "src/components/Contribution/ContributionDate";
+import { GithubContributionType } from "src/types";
 
 export enum GithubPullRequestStatus {
   Merged = "MERGED",
@@ -54,7 +56,9 @@ export default function GithubPullRequest({
   const userCommits = pullRequest?.userCommitsCount?.aggregate?.count;
   const commitsCount = pullRequest?.commitsCount?.aggregate?.count;
 
-  return (
+  console.log(pullRequest);
+
+  return pullRequest ? (
     <Card
       padded={false}
       className={classNames("flex flex-row gap-3 rounded-2xl p-4 hover:bg-noise-light hover:backdrop-blur-4xl", {
@@ -70,7 +74,12 @@ export default function GithubPullRequest({
         <div className="flex flex-row flex-wrap items-center gap-2 text-xs font-normal text-greyscale-300 xl:gap-3">
           <div className="flex flex-row items-center gap-1">
             <Time />
-            {displayRelativeDate(pullRequest.createdAt)}
+            <ContributionDate
+              id={pullRequest.id}
+              type={GithubContributionType.PullRequest}
+              status={pullRequest.status as GithubPullRequestStatus}
+              date={new Date(pullRequest.createdAt)}
+            />
           </div>
           <div className="flex flex-row items-center gap-1">
             <PullRequestStatus pullrequest={pullRequest} />
@@ -99,7 +108,7 @@ export default function GithubPullRequest({
       </div>
       {secondaryAction && <GithubActionButton action={secondaryAction} onClick={onSecondaryClick} ignored={ignored} />}
     </Card>
-  );
+  ) : null;
 }
 
 function PullRequestStatus({ pullrequest }: { pullrequest: GithubPullRequestWithCommitsFragment }) {

@@ -5,7 +5,7 @@ import { ComponentProps } from "react";
 
 const issues: Record<string, GithubIssueFragment> = {
   closed: {
-    id: "1268051991",
+    id: "123",
     repoId: 123456,
     number: 541,
     status: GithubIssueStatus.Cancelled,
@@ -17,7 +17,7 @@ const issues: Record<string, GithubIssueFragment> = {
     commentsCount: null,
   },
   closedWithLongLink: {
-    id: "1268051991",
+    id: "456",
     repoId: 123456,
     number: 541,
     status: GithubIssueStatus.Cancelled,
@@ -30,7 +30,7 @@ const issues: Record<string, GithubIssueFragment> = {
     commentsCount: null,
   },
   open: {
-    id: "1268051991",
+    id: "789",
     repoId: 123456,
     number: 541,
     status: GithubIssueStatus.Open,
@@ -42,7 +42,7 @@ const issues: Record<string, GithubIssueFragment> = {
     commentsCount: null,
   },
   completed: {
-    id: "1268051991",
+    id: "0000",
     repoId: 123456,
     number: 541,
     status: GithubIssueStatus.Completed,
