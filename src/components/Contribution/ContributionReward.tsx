@@ -2,6 +2,7 @@ import { ContributionAttribute } from "src/components/Contribution/ContributionA
 import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 import Medal2Fill from "src/icons/Medal2Fill";
+import { formatPaymentId } from "src/utils/formatPaymentId";
 
 export function ContributionReward({ id, rewards }: { id: string; rewards: { paymentId: string }[] }) {
   const { T } = useIntl();
@@ -15,7 +16,7 @@ export function ContributionReward({ id, rewards }: { id: string; rewards: { pay
           <Medal2Fill className="text-sm leading-none text-orange-400" />
           <p className="text-sm font-medium leading-none">
             {T("contributions.tooltip.rewards")}&nbsp;
-            {rewards.map(({ paymentId }) => `#${paymentId}`.slice(0, 6)).join(", ")}
+            {rewards.map(({ paymentId }) => formatPaymentId(paymentId)).join(", ")}
           </p>
         </div>
       </Tooltip>
