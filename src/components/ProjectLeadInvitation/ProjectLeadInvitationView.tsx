@@ -14,7 +14,7 @@ export enum CalloutSizes {
 const ButtonsSizes = {
   [CalloutSizes.Small]: ButtonSize.Sm,
   [CalloutSizes.Medium]: ButtonSize.Md,
-  [CalloutSizes.Large]: ButtonSize.Lg,
+  [CalloutSizes.Large]: ButtonSize.LgLowHeight,
 };
 
 interface ProjectLeadInvitationProps {
@@ -39,9 +39,9 @@ export default function ProjectLeadInvitationView({
         "relative flex flex-row items-center justify-between gap-5 overflow-hidden rounded-xl text-center font-medium sm:flex-row",
         "bg-rainbow animate-wave after:pointer-events-none after:absolute after:h-full after:w-full after:bg-noise-light",
         {
-          "mh-[60px] p-3": size === CalloutSizes.Small,
-          "mh-[80px] p-4": size === CalloutSizes.Medium,
-          "mh-[96px] p-6": size === CalloutSizes.Large,
+          "min-h-[60px] p-3": size === CalloutSizes.Small,
+          "min-h-[80px] p-4": size === CalloutSizes.Medium,
+          "min-h-[96px] p-5": size === CalloutSizes.Large,
         }
       )}
     >

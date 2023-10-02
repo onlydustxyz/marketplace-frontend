@@ -47,7 +47,7 @@ export default function Button({
   return (
     <button
       className={classNames(
-        "flex flex-row items-center justify-center leading-none",
+        "flex flex-row items-center justify-center",
         "font-walsheim font-medium drop-shadow-bottom-sm",
         {
           "cursor-pointer": !disabled,
