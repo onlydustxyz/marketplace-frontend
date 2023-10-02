@@ -54,7 +54,7 @@ export default function HeaderView({
         <div className="flex-1 items-center gap-8 xl:flex">
           {isXl && (
             <>
-              {menuItems[RoutePaths.Projects] && (
+              {menuItems[RoutePaths.Projects] ? (
                 <MenuItem
                   path={selectedMenuItem}
                   link={RoutePaths.Projects}
@@ -63,50 +63,50 @@ export default function HeaderView({
                 >
                   {menuItems[RoutePaths.Projects]}
                 </MenuItem>
-              )}
-              {menuItems[RoutePaths.Contributions] && (
+              ) : null}
+              {menuItems[RoutePaths.Contributions] ? (
                 <MenuItem path={selectedMenuItem} link={RoutePaths.Contributions}>
                   {menuItems[RoutePaths.Contributions]}
                 </MenuItem>
-              )}
-              {menuItems[RoutePaths.Rewards] && (
+              ) : null}
+              {menuItems[RoutePaths.Rewards] ? (
                 <MenuItem path={selectedMenuItem} link={RoutePaths.Rewards}>
                   {menuItems[RoutePaths.Rewards]}
                 </MenuItem>
-              )}
+              ) : null}
               <div className="flex flex-1 justify-center">
-                {impersonating && (
+                {impersonating ? (
                   <div
                     className="rounded-xl bg-orange-500 px-4 py-2 text-sm font-bold uppercase text-white"
                     data-testid="impersonation-banner"
                   >
                     {T("impersonation.banner")}
                   </div>
-                )}
+                ) : null}
               </div>
             </>
           )}
           <div className="flex flex-row items-center justify-end gap-4">
-            {isXl && (
+            {isXl ? (
               <>
-                {isLoggedIn && !testing && <FeedbackButton />}
+                {isLoggedIn && !testing ? <FeedbackButton /> : null}
                 {!onboardingInProgress &&
-                  profileCompletionScore !== undefined &&
-                  profileCompletionScore < 95 &&
-                  githubUserId && (
-                    <div
-                      className="flex w-48 cursor-pointer flex-col gap-2"
-                      onClick={() => openContributorProfilePanel(githubUserId)}
-                    >
-                      <div className="flex flex-row items-center gap-1 font-walsheim text-sm font-medium text-greyscale-50">
-                        <img src={axeCoin} className="h-4 w-4" />
-                        {T("profile.completion", { completion: profileCompletionScore.toString() })}
-                      </div>
-                      <CompletionBar completionScore={profileCompletionScore} />
+                profileCompletionScore !== undefined &&
+                profileCompletionScore < 95 &&
+                githubUserId ? (
+                  <div
+                    className="flex w-48 cursor-pointer flex-col gap-2"
+                    onClick={() => openContributorProfilePanel(githubUserId)}
+                  >
+                    <div className="flex flex-row items-center gap-1 font-walsheim text-sm font-medium text-greyscale-50">
+                      <img src={axeCoin} className="h-4 w-4" />
+                      {T("profile.completion", { completion: profileCompletionScore.toString() })}
                     </div>
-                  )}
+                    <CompletionBar completionScore={profileCompletionScore} />
+                  </div>
+                ) : null}
               </>
-            )}
+            ) : null}
             <div className="flex text-base text-white">
               {!isLoggedIn ? <GithubLink onClick={onLogin} /> : <ProfileButton />}
             </div>
