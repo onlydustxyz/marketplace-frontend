@@ -1,10 +1,12 @@
 import { ComponentProps } from "react";
 
 import { ContributionProjectRepo } from "src/components/Contribution/ContributionProjectRepo";
+import { withRouter } from "storybook-addon-react-router-v6";
 
 export default {
   title: "ContributionProjectRepo",
   component: ContributionProjectRepo,
+  decorators: [withRouter],
 };
 
 const defaultProps: ComponentProps<typeof ContributionProjectRepo> = {
