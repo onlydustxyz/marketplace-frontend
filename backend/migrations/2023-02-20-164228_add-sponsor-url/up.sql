@@ -1,3 +1,0 @@
-ALTER TABLE sponsors
-    ALTER COLUMN name SET NOT NULL,
-    ADD url TEXT;

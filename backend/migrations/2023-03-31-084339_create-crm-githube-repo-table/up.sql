@@ -1,5 +1,0 @@
-CREATE TABLE IF NOT EXISTS crm_github_repos (
-	id BIGINT PRIMARY KEY,
-	owner TEXT NOT NULL,
-	name TEXT NOT NULL
-);

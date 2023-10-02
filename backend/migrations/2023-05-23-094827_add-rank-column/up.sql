@@ -1,2 +1,0 @@
-ALTER TABLE project_details
-    ADD rank INTEGER NOT NULL DEFAULT 0;

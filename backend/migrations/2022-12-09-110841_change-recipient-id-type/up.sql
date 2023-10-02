@@ -1,2 +1,0 @@
-ALTER TABLE payment_requests
-ALTER COLUMN recipient_id SET DATA TYPE BIGINT USING (0);

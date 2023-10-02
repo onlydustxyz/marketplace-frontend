@@ -1,2 +1,0 @@
-ALTER TABLE applications DROP CONSTRAINT applications_contribution_id_fkey1;
-ALTER TABLE contributions DROP CONSTRAINT contributions_project_id_fkey1;

@@ -1,2 +1,0 @@
-ALTER TABLE github_issues
-ADD COLUMN comments_count BIGINT NOT NULL DEFAULT 0;
