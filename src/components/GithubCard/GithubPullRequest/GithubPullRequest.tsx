@@ -56,8 +56,6 @@ export default function GithubPullRequest({
   const userCommits = pullRequest?.userCommitsCount?.aggregate?.count;
   const commitsCount = pullRequest?.commitsCount?.aggregate?.count;
 
-  console.log(pullRequest);
-
   return pullRequest ? (
     <Card
       padded={false}
