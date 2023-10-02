@@ -46,7 +46,7 @@ export default function View({
   remainingBudget,
   onRewardGranted: onPaymentRequested,
 }: Props) {
-  const isSendingNewPaymentDisabled = remainingBudget < rates.hours;
+  const isSendingNewPaymentDisabled = remainingBudget < rates.hours || remainingBudget === 0;
 
   const [sorting, setSorting] = useState({
     field: isProjectLeader ? Field.ToRewardCount : Field.ContributionCount,

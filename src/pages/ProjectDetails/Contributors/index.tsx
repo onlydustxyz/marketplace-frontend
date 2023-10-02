@@ -12,6 +12,8 @@ import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App
 import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
 import ProjectLeadInvitation from "src/components/ProjectLeadInvitation/ProjectLeadInvitation";
+import { withTooltip } from "src/components/Tooltip";
+import { rates } from "src/hooks/useWorkEstimation";
 
 export default function Contributors() {
   const { T } = useIntl();
@@ -26,6 +28,7 @@ export default function Contributors() {
   const { data: projectDetails } = useGetProjectDetailsQuery({ variables: { projectId }, ...contextWithCacheHeaders });
 
   const remainingBudget = projectDetails?.projects[0]?.usdBudget?.remainingAmount;
+  const isRewardDisabled = remainingBudget < rates.hours || remainingBudget === 0;
 
   return (
     <>
@@ -35,6 +38,7 @@ export default function Contributors() {
           {isProjectLeader && (
             <Button
               size={ButtonSize.Sm}
+              disabled={isRewardDisabled}
               onClick={() =>
                 navigate(
                   generatePath(
@@ -45,6 +49,9 @@ export default function Contributors() {
                   )
                 )
               }
+              {...withTooltip(T("contributor.table.noBudgetLeft"), {
+                visible: isRewardDisabled,
+              })}
             >
               {isSm ? T("project.rewardButton.full") : T("project.rewardButton.short")}
             </Button>

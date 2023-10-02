@@ -1,6 +1,7 @@
 import Button, { ButtonSize, ButtonType, Width } from "src/components/Button";
 import Card from "src/components/Card";
-import { Steps } from "src/hooks/useWorkEstimation";
+import { withTooltip } from "src/components/Tooltip";
+import { Steps, rates } from "src/hooks/useWorkEstimation";
 import Add from "src/icons/Add";
 import Subtract from "src/icons/Subtract";
 import BudgetBar from "src/pages/ProjectDetails/Rewards/RewardForm/WorkEstimation/BudgetBar";
@@ -31,6 +32,7 @@ export default function WorkEstimation({
   steps,
 }: Props) {
   const { T } = useT();
+  const isRewardDisbled = budget.remainingAmount < rates.hours || budget.remainingAmount === 0;
 
   return (
     <Card padded={false}>
@@ -81,8 +83,11 @@ export default function WorkEstimation({
           <Button
             htmlType="submit"
             width={Width.Full}
-            disabled={requestNewPaymentMutationLoading}
+            disabled={requestNewPaymentMutationLoading || isRewardDisbled}
             data-testid="give-reward-button"
+            {...withTooltip(T("project.details.tableFallback.disabledButtonTooltip"), {
+              visible: isRewardDisbled,
+            })}
           >
             <span>{T("reward.form.confirm")}</span>
           </Button>
