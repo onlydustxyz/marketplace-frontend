@@ -14,7 +14,7 @@ export enum CalloutSizes {
 const ButtonsSizes = {
   [CalloutSizes.Small]: ButtonSize.Sm,
   [CalloutSizes.Medium]: ButtonSize.Md,
-  [CalloutSizes.Large]: ButtonSize.Lg,
+  [CalloutSizes.Large]: ButtonSize.LgLowHeight,
 };
 
 interface ProjectLeadInvitationProps {
@@ -39,14 +39,14 @@ export default function ProjectLeadInvitationView({
         "relative flex flex-row items-center justify-between gap-5 overflow-hidden rounded-xl text-center font-medium sm:flex-row",
         "bg-rainbow animate-wave after:pointer-events-none after:absolute after:h-full after:w-full after:bg-noise-light",
         {
-          "mh-[60px] p-3": size === CalloutSizes.Small,
-          "mh-[80px] p-4": size === CalloutSizes.Medium,
-          "mh-[96px] p-6": size === CalloutSizes.Large,
+          "min-h-[60px] p-3": size === CalloutSizes.Small,
+          "min-h-[80px] p-4": size === CalloutSizes.Medium,
+          "min-h-[96px] p-5": size === CalloutSizes.Large,
         }
       )}
     >
       <div
-        className={classNames("text-left font-walsheim text-base", {
+        className={classNames("flex flex-1 text-left font-walsheim text-base sm:flex-auto", {
           "text-sm": size === CalloutSizes.Small,
           "text-md": size === CalloutSizes.Medium,
           "text-lg": size === CalloutSizes.Large,
@@ -54,7 +54,7 @@ export default function ProjectLeadInvitationView({
       >
         {projectName ? T("projectLeadInvitation.prompt", { projectName }) : T("project.projectLeadInvitation.prompt")}
       </div>
-      <Button size={ButtonsSizes[size]} onClick={onClick} data-testid="accept-invite-button">
+      <Button size={ButtonsSizes[size]} onClick={onClick} data-testid="accept-invite-button flex-1 sm:flex-auto">
         {size === CalloutSizes.Large ? <CheckLine className="text-xl font-normal text-black" /> : null}
         {btnLabel ? (
           btnLabel
