@@ -7,7 +7,7 @@ services:
     image: node:18-bullseye
     volumes:
       - .:/app
-    command: bash -c "cd /app && yarn frontend:install && yarn frontend:dev --host"
+    command: bash -c "cd /app && yarn install && yarn dev --host"
     ports:
       - 5173:5173
     healthcheck:
