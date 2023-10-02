@@ -8,7 +8,6 @@ import { Tabs } from "src/components/Tabs/Tabs";
 import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
 import { isInArray } from "src/utils/isInArray";
-// import IssueDraft from "src/assets/icons/IssueDraft";
 import { useLocalStorage } from "react-use";
 import IssueMerged from "src/assets/icons/IssueMerged";
 import ProgressCircle from "src/assets/icons/ProgressCircle";
@@ -18,7 +17,6 @@ import { GithubContributionStatus } from "src/types";
 
 enum AllTabs {
   All = "allContributions",
-  //   Applied = "applied",
   InProgress = "inProgress",
   Completed = "completed",
   Canceled = "canceled",
@@ -124,19 +122,6 @@ export default function Contributions() {
         </TabContents>
       ),
     },
-    // {
-    //   active: isActiveTab(AllTabs.Applied),
-    //   onClick: () => {
-    //     updateActiveTab(AllTabs.Applied);
-    //   },
-    //   testId: "contributions-applied-tab",
-    //   children: (
-    //     <TabContents>
-    //       <IssueDraft className="h-5 w-5 md:h-4 md:w-4" />
-    //       {T("contributions.nav.applied")}
-    //     </TabContents>
-    //   ),
-    // },
     {
       active: isActiveTab(AllTabs.InProgress),
       onClick: () => {
@@ -179,15 +164,6 @@ export default function Contributions() {
   ];
 
   const tableItems: Array<ComponentProps<typeof ContributionTable> & { show: boolean }> = [
-    // {
-    //   id: "applied_contributions_table",
-    //   title: T("contributions.applied.title"),
-    //   description: T("contributions.applied.description"),
-    //   icon: className => <IssueDraft className={className} />,
-    //   onHeaderClick: () => {
-    //     updateActiveTab(AllTabs.Applied);
-    //   },
-    // },
     {
       id: "in_progress_contributions_table",
       title: T("contributions.inProgress.title"),
