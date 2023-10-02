@@ -68,7 +68,8 @@ export default function Contributions() {
       status: GithubContributionStatus.InProgress,
     },
     skip: !githubUserId || (!isActiveTab(AllTabs.All) && !isActiveTab(AllTabs.InProgress)),
-    fetchPolicy: "network-only",
+    fetchPolicy: "network-only", // Used for first execution
+    nextFetchPolicy: "cache-first", // Used for subsequent executions
   });
 
   const {
@@ -82,7 +83,8 @@ export default function Contributions() {
       status: GithubContributionStatus.Completed,
     },
     skip: !githubUserId || (!isActiveTab(AllTabs.All) && !isActiveTab(AllTabs.Completed)),
-    fetchPolicy: "network-only",
+    fetchPolicy: "network-only", // Used for first execution
+    nextFetchPolicy: "cache-first", // Used for subsequent executions
   });
 
   const {
@@ -96,7 +98,8 @@ export default function Contributions() {
       status: GithubContributionStatus.Canceled,
     },
     skip: !githubUserId || (!isActiveTab(AllTabs.All) && !isActiveTab(AllTabs.Canceled)),
-    fetchPolicy: "network-only",
+    fetchPolicy: "network-only", // Used for first execution
+    nextFetchPolicy: "cache-first", // Used for subsequent executions
   });
 
   function isActiveTab(tab: AllTabs) {
