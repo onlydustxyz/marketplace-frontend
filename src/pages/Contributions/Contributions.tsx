@@ -1,19 +1,19 @@
 import { ComponentProps, PropsWithChildren, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
+import { useLocalStorage } from "react-use";
 import { ContributionsOrderBy, OrderBy, useGetAllContributionsQuery } from "src/__generated/graphql";
 import CancelCircleLine from "src/assets/icons/CancelCircleLine";
+import ProgressCircle from "src/assets/icons/ProgressCircle";
+import StackLine from "src/assets/icons/StackLine";
 import { ContributionTable, TableColumns, type TableSort } from "src/components/Contribution/ContributionTable";
+import SEO from "src/components/SEO";
 import { Tabs } from "src/components/Tabs/Tabs";
 import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
-import { isInArray } from "src/utils/isInArray";
-import { useLocalStorage } from "react-use";
-import IssueMerged from "src/assets/icons/IssueMerged";
-import ProgressCircle from "src/assets/icons/ProgressCircle";
-import StackLine from "src/assets/icons/StackLine";
-import SEO from "src/components/SEO";
+import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
 import { GithubContributionStatus } from "src/types";
+import { isInArray } from "src/utils/isInArray";
 
 enum AllTabs {
   All = "allContributions",
@@ -146,7 +146,7 @@ export default function Contributions() {
       testId: "contributions-completed-tab",
       children: (
         <TabContents>
-          <IssueMerged className="h-5 w-5 md:h-4 md:w-4" />
+          <CheckboxCircleLine className="text-xl leading-none md:text-base" />
           {T("contributions.nav.completed")}
         </TabContents>
       ),
@@ -195,7 +195,7 @@ export default function Contributions() {
       id: "completed_contributions_table",
       title: T("contributions.completed.title"),
       description: T("contributions.completed.description"),
-      icon: className => <IssueMerged className={className} />,
+      icon: className => <CheckboxCircleLine className={className} />,
       onHeaderClick: () => {
         updateActiveTab(AllTabs.Completed);
       },

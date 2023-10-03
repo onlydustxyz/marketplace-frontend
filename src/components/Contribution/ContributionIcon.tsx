@@ -3,10 +3,10 @@ import { GithubIssueStatus } from "src/__generated/graphql";
 import CodeReviewMerged from "src/assets/icons/CodeReviewMerged";
 import CodeReviewOpen from "src/assets/icons/CodeReviewOpen";
 import IssueCancelled from "src/assets/icons/IssueCancelled";
-import IssueMerged from "src/assets/icons/IssueMerged";
 import IssueOpen from "src/assets/icons/IssueOpen";
 import PrClosed from "src/assets/icons/PrClosed";
 import PrDraft from "src/assets/icons/PrDraft";
+import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
 import GitMergeLine from "src/icons/GitMergeLine";
 import GitPullRequestLine from "src/icons/GitPullRequestLine";
 import {
@@ -49,14 +49,14 @@ function IssueOpenIcon() {
 
 const icons: GithubTypeStatusDict<JSX.Element> = {
   [GithubContributionType.PullRequest]: {
-    [GithubPullRequestStatus.Open]: <GitPullRequestLine className="flex h-4 items-center" />,
+    [GithubPullRequestStatus.Open]: <GitPullRequestLine className="text-base leading-none" />,
     [GithubPullRequestStatus.Closed]: <PrClosed />,
-    [GithubPullRequestStatus.Merged]: <GitMergeLine className="flex h-4 items-center" />,
+    [GithubPullRequestStatus.Merged]: <GitMergeLine className="text-base leading-none" />,
     [GithubPullRequestDraft.Draft]: <PrDraft />,
   },
   [GithubContributionType.Issue]: {
     [GithubIssueStatus.Open]: <IssueOpenIcon />,
-    [GithubIssueStatus.Completed]: <IssueMerged />,
+    [GithubIssueStatus.Completed]: <CheckboxCircleLine className="text-base leading-none" />,
     [GithubIssueStatus.Cancelled]: <IssueCancelled />,
   },
   [GithubContributionType.CodeReview]: {

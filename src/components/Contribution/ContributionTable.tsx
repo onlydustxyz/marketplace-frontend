@@ -262,7 +262,9 @@ export function ContributionTable({
           className="flex cursor-pointer items-start gap-3 border-b border-greyscale-50/8 bg-white/2 px-6 py-4"
           onClick={onHeaderClick}
         >
-          <div className="rounded-lg bg-white/5 p-3 text-greyscale-50">{icon("h-5 w-5")}</div>
+          <div className="rounded-lg bg-white/5 p-3 leading-none text-greyscale-50">
+            {icon("h-5 w-5 text-xl leading-none text-base")}
+          </div>
           <div className="font-walsheim">
             <p className="text-base font-medium text-greyscale-50">{title}</p>
             <p className="text-sm text-spaceBlue-200">{description}</p>
