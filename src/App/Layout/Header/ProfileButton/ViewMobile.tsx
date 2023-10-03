@@ -1,22 +1,23 @@
 import classNames from "classnames";
 import { useState } from "react";
+import { NavLink } from "react-router-dom";
+import { RoutePaths } from "src/App";
+import { useGetPaymentRequestIdsQuery } from "src/__generated/graphql";
 import Dot from "src/assets/icons/Dot";
-import Button, { ButtonType, ButtonSize } from "src/components/Button";
+import Button, { ButtonSize, ButtonType } from "src/components/Button";
+import SidePanel from "src/components/SidePanel";
+import { useContributorProfilePanel } from "src/hooks/useContributorProfilePanel";
 import { useIntl } from "src/hooks/useIntl";
 import { useSidePanel } from "src/hooks/useSidePanel";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
+import ExchangeDollarLine from "src/icons/ExchangeDollarLine";
+import Folder3Line from "src/icons/Folder3Line";
 import LogoutBoxRLine from "src/icons/LogoutBoxRLine";
 import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
-import User3Line from "src/icons/User3Line";
-import PayoutInfoSidePanel from "./PayoutInfoSidePanel";
-import { useGetPaymentRequestIdsQuery } from "src/__generated/graphql";
-import { NavLink } from "react-router-dom";
-import { RoutePaths } from "src/App";
-import Folder3Line from "src/icons/Folder3Line";
-import ExchangeDollarLine from "src/icons/ExchangeDollarLine";
 import StackLine from "src/icons/StackLine";
-import SidePanel from "src/components/SidePanel";
-import { useContributorProfilePanel } from "src/hooks/useContributorProfilePanel";
+import User3Line from "src/icons/User3Line";
+import { parseFlag } from "src/utils/parseFlag";
+import PayoutInfoSidePanel from "./PayoutInfoSidePanel";
 
 type Props = {
   avatarUrl: string | null;
@@ -79,7 +80,7 @@ export default function ViewMobile({
                     <Folder3Line className="text-xl" /> {T("navbar.projects")}
                   </NavLink>
 
-                  {githubUserId ? (
+                  {parseFlag("VITE_FLAG_ALLOW_CONTRIBUTIONS_LIST") && githubUserId ? (
                     <NavLink
                       to={RoutePaths.Contributions}
                       onClick={() => setPanelOpen(false)}

@@ -8,6 +8,7 @@ import { useGetPaymentRequestIdsQuery, useOwnUserProfileQuery } from "src/__gene
 import View from "./View";
 import { useImpersonationClaims } from "src/hooks/useImpersonationClaims";
 import { useOnboarding } from "src/App/OnboardingProvider";
+import { parseFlag } from "src/utils/parseFlag";
 
 export default function Header() {
   const location = useLocation();
@@ -28,7 +29,10 @@ export default function Header() {
   const hasRewards = paymentRequestIdsQueryData?.githubUsersByPk?.paymentRequests.length || 0 > 0;
 
   const rewardsMenuItem = hasRewards && !onboardingInProgress ? T("navbar.rewards") : undefined;
-  const contributionsMenuItem = githubUserId && !onboardingInProgress ? T("navbar.contributions") : undefined;
+  const contributionsMenuItem =
+    parseFlag("VITE_FLAG_ALLOW_CONTRIBUTIONS_LIST") && githubUserId && !onboardingInProgress
+      ? T("navbar.contributions")
+      : undefined;
   const projectsMenuItem =
     (rewardsMenuItem || contributionsMenuItem) && !onboardingInProgress ? T("navbar.projects") : undefined;
 
