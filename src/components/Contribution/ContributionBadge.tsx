@@ -2,6 +2,7 @@ import classNames from "classnames";
 
 import { GithubUser } from "src/__generated/graphql";
 import { ContributionIcon, variants as contributionIconVariants } from "src/components/Contribution/ContributionIcon";
+import { Link } from "src/components/Link/Link";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
 import { useAuth } from "src/hooks/useAuth";
@@ -82,14 +83,9 @@ export function ContributionBadge({
             <div className="flex gap-2">
               <ContributionIcon type={type} status={status} />
               <div className="flex flex-col items-start gap-2">
-                <a
-                  href={url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm font-semibold leading-4 text-greyscale-50 hover:underline"
-                >
+                <Link href={url} className="text-sm font-semibold leading-4 text-greyscale-50 hover:underline">
                   <span>#{number}</span> • <span>{title}</span>
-                </a>
+                </Link>
                 {description ? <p className="text-xs text-spaceBlue-200">{description}</p> : null}
               </div>
             </div>

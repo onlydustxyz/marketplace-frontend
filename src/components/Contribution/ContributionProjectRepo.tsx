@@ -3,6 +3,7 @@ import { Link, generatePath } from "react-router-dom";
 import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 import { RoutePaths } from "src/App";
 import { GithubRepos, Projects } from "src/__generated/graphql";
+import { Link as Anchor } from "src/components/Link/Link";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 
 export function ContributionProjectRepo({
@@ -31,9 +32,9 @@ export function ContributionProjectRepo({
           {project.name}
         </Link>
         <span className="text-spaceBlue-300">/</span>&nbsp;
-        <a href={repo.htmlUrl ?? ""} target="_blank" rel="noopener noreferrer" className="hover:underline">
+        <Anchor href={repo.htmlUrl ?? ""} className="hover:underline">
           {repo.name}
-        </a>
+        </Anchor>
       </p>
     </div>
   );

@@ -3,6 +3,7 @@ import classNames from "classnames";
 import { ContributionBadge } from "src/components/Contribution/ContributionBadge";
 import { ContributionReview } from "src/components/Contribution/ContributionReview";
 import { ContributionReward } from "src/components/Contribution/ContributionReward";
+import { Link } from "src/components/Link/Link";
 import {
   GithubCodeReviewOutcome,
   GithubContributionReviewStatus,
@@ -66,9 +67,9 @@ export function Contribution({ contribution, isMobile = false }: Props) {
           author={author}
           url={htmlUrl}
         />
-        <a href={htmlUrl} target="_blank" rel="noopener noreferrer" className="truncate text-sm hover:underline">
+        <Link href={htmlUrl} className="truncate text-sm hover:underline">
           {title}
-        </a>
+        </Link>
       </div>
       <div className="inline-flex items-center gap-1 empty:hidden">
         {rewardItems?.length ? <ContributionReward id={id ?? ""} rewards={rewardItems} /> : null}
