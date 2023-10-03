@@ -1,6 +1,7 @@
 import React, { ReactNode } from "react";
 import { Navigate } from "react-router-dom";
 import { RoutePaths } from "src/App";
+import { DataContext } from "./DataContext";
 
 interface Project {
   name: string | null;
@@ -16,16 +17,16 @@ interface DataDisplayProps {
   error?: null | unknown;
   children: ReactNode;
 }
-
 export default function DataDisplay({ projectKey, data, isLoading, error, children }: DataDisplayProps) {
   if (!data && !isLoading) {
     return <Navigate to={RoutePaths.NotFound} />;
   }
+
+  const contextValue = { projectKey, data, isLoading, error };
+
   return data ? (
-    <div>
-      {React.Children.map(children, child =>
-        React.isValidElement(child) ? React.cloneElement(child, { projectKey, data, isLoading, error }) : child
-      )}
-    </div>
+    <DataContext.Provider value={contextValue}>
+      <div>{children}</div>
+    </DataContext.Provider>
   ) : null;
 }

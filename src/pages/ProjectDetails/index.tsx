@@ -8,6 +8,8 @@ import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
 import SEO from "src/components/SEO";
 import DataSwitch from "src/App/DataWrapper/DataSwitch";
+import { useContext } from "react";
+import { DataContext } from "src/App/DataWrapper/DataContext";
 
 type ProjectDetailsParams = {
   projectKey: string;
@@ -26,33 +28,24 @@ export interface ProjectDetails {
   sponsors: SponsorFragment[];
 }
 
-interface Project {
-  name: string | null;
-  shortDescription: string | null;
-  id: string;
-  key: string | null;
-}
-
-interface ProjectPresentDetailsProps {
-  projectKey: string;
-  data: Project;
-  isLoading: boolean;
-  error: null | unknown;
-}
-
 export default function ProjectDetails() {
   const { projectKey = "" } = useParams<ProjectDetailsParams>();
 
   return (
     <DataSwitch projectKey={projectKey}>
-      {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-      {/* @ts-ignore */}
       <ProjectPresentDetails />
     </DataSwitch>
   );
 }
 
-function ProjectPresentDetails({ projectKey, data, isLoading, error }: ProjectPresentDetailsProps) {
+function ProjectPresentDetails() {
+  const dataContext = useContext(DataContext);
+
+  if (!dataContext) {
+    throw new Error("ProjectPresentDetails must be used within a DataSwitch component");
+  }
+
+  const { projectKey, data, isLoading, error } = dataContext;
   const { id, name } = data;
 
   const { visibleToCurrentUser } = useProjectVisibility(id);
