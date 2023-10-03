@@ -73,7 +73,7 @@ export default function GithubCodeReview({
               id={codeReview.id ?? ""}
               type={GithubContributionType.CodeReview}
               status={codeReview.status as GithubCodeReviewStatus}
-              date={new Date(codeReview.submittedAt)}
+              date={new Date(createdAt)}
               tooltipVariant={Variant.Default}
             />
           </div>
