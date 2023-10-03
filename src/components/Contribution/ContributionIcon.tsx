@@ -7,7 +7,7 @@ import IssueMerged from "src/assets/icons/IssueMerged";
 import IssueOpen from "src/assets/icons/IssueOpen";
 import PrClosed from "src/assets/icons/PrClosed";
 import PrDraft from "src/assets/icons/PrDraft";
-import PrMerged from "src/assets/icons/PrMerged";
+import GitMergeLine from "src/icons/GitMergeLine";
 import GitPullRequestLine from "src/icons/GitPullRequestLine";
 import {
   GithubCodeReviewStatus,
@@ -49,9 +49,9 @@ function IssueOpenIcon() {
 
 const icons: GithubTypeStatusDict<JSX.Element> = {
   [GithubContributionType.PullRequest]: {
-    [GithubPullRequestStatus.Open]: <GitPullRequestLine className="flex h-4 items-center justify-center" />,
+    [GithubPullRequestStatus.Open]: <GitPullRequestLine className="flex h-4 items-center" />,
     [GithubPullRequestStatus.Closed]: <PrClosed />,
-    [GithubPullRequestStatus.Merged]: <PrMerged />,
+    [GithubPullRequestStatus.Merged]: <GitMergeLine className="flex h-4 items-center" />,
     [GithubPullRequestDraft.Draft]: <PrDraft />,
   },
   [GithubContributionType.Issue]: {
