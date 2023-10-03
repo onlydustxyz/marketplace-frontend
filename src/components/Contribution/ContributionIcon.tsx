@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import { GithubIssueStatus } from "src/__generated/graphql";
-import CodeReviewMerged from "src/assets/icons/CodeReviewMerged";
+import CodeReviewCheckIcon from "src/assets/icons/CodeReviewCheckIcon";
 import IssueCancelled from "src/assets/icons/IssueCancelled";
 import IssueOpen from "src/assets/icons/IssueOpen";
 import PrClosed from "src/assets/icons/PrClosed";
@@ -61,7 +61,7 @@ const icons: GithubTypeStatusDict<JSX.Element> = {
   },
   [GithubContributionType.CodeReview]: {
     [GithubCodeReviewStatus.Pending]: <EyeLine className="text-base leading-none" />,
-    [GithubCodeReviewStatus.Completed]: <CodeReviewMerged />,
+    [GithubCodeReviewStatus.Completed]: <CodeReviewCheckIcon className="h-4 w-4" />,
   },
 };
 
