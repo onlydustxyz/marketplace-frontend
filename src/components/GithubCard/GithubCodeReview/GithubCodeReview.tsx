@@ -10,6 +10,9 @@ import Time from "src/icons/TimeLine";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { parsePullRequestLink } from "src/utils/github";
 import { GithubActionButton } from "src/components/GithubCard/GithubActionButton/GithubActionButton";
+import { ContributionDate } from "src/components/Contribution/ContributionDate";
+import { GithubContributionType } from "src/types";
+import { Variant } from "src/components/Tooltip";
 
 export enum Action {
   Add = "add",
@@ -66,7 +69,13 @@ export default function GithubCodeReview({
         <div className="flex flex-row flex-wrap items-center gap-2 text-xs font-normal text-greyscale-300 xl:gap-3">
           <div className="flex flex-row items-center gap-1">
             <Time />
-            {displayRelativeDate(createdAt)}
+            <ContributionDate
+              id={codeReview.id ?? ""}
+              type={GithubContributionType.CodeReview}
+              status={codeReview.status as GithubCodeReviewStatus}
+              date={new Date(createdAt)}
+              tooltipVariant={Variant.Default}
+            />
           </div>
           <div className="flex flex-row items-center gap-1">{<CodeReviewStatus codeReview={codeReview} />}</div>
           <div className="flex flex-row items-center gap-1">
@@ -94,7 +103,7 @@ function CodeReviewStatus({ codeReview }: { codeReview: GithubCodeReviewFragment
         </>
       ) : (
         <>
-          <CodeReviewCheckIcon className="-my-1 h-4 w-4 text-base text-github-purple" />
+          <CodeReviewCheckIcon className="-my-1 h-4 w-4 text-base text-github-green" />
           {T("githubCodeReview.status.approved", { submittedAt: displayRelativeDate(codeReview.submittedAt) })}
         </>
       );

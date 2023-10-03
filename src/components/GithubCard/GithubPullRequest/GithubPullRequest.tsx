@@ -3,7 +3,7 @@ import { GithubPullRequestWithCommitsFragment, GithubUserFragment } from "src/__
 import IssueClosed from "src/assets/icons/IssueClosed";
 import Card from "src/components/Card";
 import { GithubLink } from "src/components/GithubCard/GithubLink/GithubLink";
-import Tooltip from "src/components/Tooltip";
+import Tooltip, { Variant } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 import GitCommitLine from "src/icons/GitCommitLine";
 import GitMergeLine from "src/icons/GitMergeLine";
@@ -14,6 +14,8 @@ import displayRelativeDate from "src/utils/displayRelativeDate";
 import { parsePullRequestLink } from "src/utils/github";
 import { GithubActionButton } from "src/components/GithubCard/GithubActionButton/GithubActionButton";
 import { CommitsTooltip } from "./CommitsTooltip";
+import { ContributionDate } from "src/components/Contribution/ContributionDate";
+import { GithubContributionType } from "src/types";
 
 export enum GithubPullRequestStatus {
   Merged = "MERGED",
@@ -54,7 +56,7 @@ export default function GithubPullRequest({
   const userCommits = pullRequest?.userCommitsCount?.aggregate?.count;
   const commitsCount = pullRequest?.commitsCount?.aggregate?.count;
 
-  return (
+  return pullRequest ? (
     <Card
       padded={false}
       className={classNames("flex flex-row gap-3 rounded-2xl p-4 hover:bg-noise-light hover:backdrop-blur-4xl", {
@@ -70,7 +72,13 @@ export default function GithubPullRequest({
         <div className="flex flex-row flex-wrap items-center gap-2 text-xs font-normal text-greyscale-300 xl:gap-3">
           <div className="flex flex-row items-center gap-1">
             <Time />
-            {displayRelativeDate(pullRequest.createdAt)}
+            <ContributionDate
+              id={pullRequest.id}
+              type={GithubContributionType.PullRequest}
+              status={pullRequest.status as GithubPullRequestStatus}
+              date={new Date(pullRequest.createdAt)}
+              tooltipVariant={Variant.Default}
+            />
           </div>
           <div className="flex flex-row items-center gap-1">
             <PullRequestStatus pullrequest={pullRequest} />
@@ -99,7 +107,7 @@ export default function GithubPullRequest({
       </div>
       {secondaryAction && <GithubActionButton action={secondaryAction} onClick={onSecondaryClick} ignored={ignored} />}
     </Card>
-  );
+  ) : null;
 }
 
 function PullRequestStatus({ pullrequest }: { pullrequest: GithubPullRequestWithCommitsFragment }) {
