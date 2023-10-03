@@ -66,7 +66,7 @@ export function ContributionDate({
         </div>
       </Tooltip>
 
-      <span data-tooltip-id={tooltipId} className="text-sm first-letter:uppercase">
+      <span data-tooltip-id={tooltipId} className="first-letter:uppercase">
         {displayRelativeDate(date)}
       </span>
     </>
