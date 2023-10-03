@@ -1,5 +1,4 @@
 import classNames from "classnames";
-import { GithubUser } from "src/__generated/graphql";
 
 import { ContributionBadge } from "src/components/Contribution/ContributionBadge";
 import { ContributionReview } from "src/components/Contribution/ContributionReview";
@@ -7,12 +6,10 @@ import { ContributionReward } from "src/components/Contribution/ContributionRewa
 import {
   GithubCodeReviewOutcome,
   GithubContributionReviewStatus,
-  GithubContributionType,
-  GithubItemStatus,
-  GithubPullRequestDraft,
   GithubPullRequestStatus,
   QueryContribution,
 } from "src/types";
+import { getContributionInfo } from "src/utils/getContributionInfo";
 
 type Props = {
   contribution: Pick<
@@ -23,16 +20,9 @@ type Props = {
 };
 
 export function Contribution({ contribution, isMobile = false }: Props) {
-  const { githubIssue, githubPullRequest, githubCodeReview, id, rewardItems, type } = contribution;
+  const { githubPullRequest, id, rewardItems } = contribution;
 
-  const title = githubIssue?.title ?? githubPullRequest?.title ?? githubCodeReview?.githubPullRequest?.title ?? "";
-  const htmlUrl =
-    githubIssue?.htmlUrl ?? githubPullRequest?.htmlUrl ?? githubCodeReview?.githubPullRequest?.htmlUrl ?? "";
-  const number = githubIssue?.number ?? githubPullRequest?.number ?? githubCodeReview?.githubPullRequest?.number ?? "";
-  const status = githubPullRequest?.draft
-    ? GithubPullRequestDraft.Draft
-    : ((githubIssue?.status ?? githubPullRequest?.status ?? githubCodeReview?.status ?? "") as GithubItemStatus);
-  const author = (githubIssue?.author ?? githubPullRequest?.author ?? githubCodeReview?.reviewer ?? "") as GithubUser;
+  const { type, title, htmlUrl, author, status, number } = getContributionInfo(contribution);
 
   function renderReview() {
     if (githubPullRequest && status === GithubPullRequestStatus.Open) {
@@ -70,7 +60,7 @@ export function Contribution({ contribution, isMobile = false }: Props) {
         <ContributionBadge
           id={id ?? ""}
           number={number}
-          type={type as GithubContributionType}
+          type={type}
           status={status}
           title={title}
           author={author}
