@@ -1,13 +1,13 @@
 import classNames from "classnames";
 
 import { GithubUser } from "src/__generated/graphql";
-import ExternalArrow from "src/assets/icons/ExternalArrow";
 import { ContributionIcon, variants as contributionIconVariants } from "src/components/Contribution/ContributionIcon";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
 import { useAuth } from "src/hooks/useAuth";
 import { useContributorProfilePanel } from "src/hooks/useContributorProfilePanel";
 import { useIntl } from "src/hooks/useIntl";
+import ArrowRightUpLine from "src/icons/ArrowRightUpLine";
 import { GithubContributionType, GithubItemStatus } from "src/types";
 
 export function ContributionBadge({
@@ -112,7 +112,7 @@ export function ContributionBadge({
         <ContributionIcon type={type} status={status} />
         <div className="flex">
           <span className="text-sm leading-none">{number}</span>
-          {isExternal ? <ExternalArrow className="mt-[3px]" /> : null}
+          {isExternal ? <ArrowRightUpLine className="text-xs leading-none" /> : null}
         </div>
       </Component>
     </>
