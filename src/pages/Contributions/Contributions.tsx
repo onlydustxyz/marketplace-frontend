@@ -5,7 +5,7 @@ import { useLocalStorage } from "react-use";
 import { ContributionsOrderBy, OrderBy, useGetAllContributionsQuery } from "src/__generated/graphql";
 import CancelCircleLine from "src/assets/icons/CancelCircleLine";
 import ProgressCircle from "src/assets/icons/ProgressCircle";
-import StackLine from "src/assets/icons/StackLine";
+import StackLine from "src/icons/StackLine";
 import { ContributionTable, TableColumns, type TableSort } from "src/components/Contribution/ContributionTable";
 import SEO from "src/components/SEO";
 import { Tabs } from "src/components/Tabs/Tabs";
@@ -120,7 +120,7 @@ export default function Contributions() {
       testId: "contributions-all-contributions-tab",
       children: (
         <TabContents>
-          <StackLine className="h-5 w-5 md:hidden" />
+          <StackLine className="text-xl leading-none md:hidden" />
           {T("contributions.nav.allContributions")}
         </TabContents>
       ),
