@@ -101,13 +101,13 @@ export default function Button({
           "w-fit": width === Width.Fit && !iconOnly,
         },
         {
-          "min-h-14 gap-3 rounded-xl": size === ButtonSize.Lg,
-          "min-h-12 gap-3 rounded-xl": size === ButtonSize.LgLowHeight,
-          "min-h-11 gap-3 rounded-full": size === ButtonSize.LgRounded,
-          "min-h-12 gap-2 rounded-xl text-base": size === ButtonSize.Md,
-          "min-h-11 gap-2 rounded-full": size === ButtonSize.MdRounded,
-          "min-h-8 gap-2 rounded-large text-sm": size === ButtonSize.Sm,
-          "min-h-6 gap-1 rounded-lg text-xs": size === ButtonSize.Xs,
+          "h-14 gap-3 rounded-xl": size === ButtonSize.Lg,
+          "h-12 gap-3 rounded-xl": size === ButtonSize.LgLowHeight,
+          "h-11 gap-3 rounded-full": size === ButtonSize.LgRounded,
+          "h-12 gap-2 rounded-xl text-base": size === ButtonSize.Md,
+          "h-11 gap-2 rounded-full": size === ButtonSize.MdRounded,
+          "h-8 gap-2 rounded-large text-sm": size === ButtonSize.Sm,
+          "h-6 gap-1 rounded-lg text-xs": size === ButtonSize.Xs,
         },
         !iconOnly && {
           "px-6 py-4": size === ButtonSize.Lg,
@@ -118,10 +118,10 @@ export default function Button({
           "px-2 py-1": size === ButtonSize.Xs,
         },
         iconOnly && {
-          "min-h-14 w-14 p-4": size === ButtonSize.Lg,
-          "min-h-12 w-12 p-3.5": size === ButtonSize.LgLowHeight || size === ButtonSize.Md,
-          "min-h-8 w-8 p-2": size === ButtonSize.Sm,
-          "min-h-6 w-6 p-1": size === ButtonSize.Xs,
+          "h-14 w-14 p-4": size === ButtonSize.Lg,
+          "h-12 w-12 p-3.5": size === ButtonSize.LgLowHeight || size === ButtonSize.Md,
+          "h-8 w-8 p-2": size === ButtonSize.Sm,
+          "h-6 w-6 p-1": size === ButtonSize.Xs,
         }
       )}
       type={htmlType}

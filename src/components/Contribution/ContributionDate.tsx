@@ -17,11 +17,13 @@ export function ContributionDate({
   type,
   status,
   date,
+  tooltipVariant = Variant.Blue,
 }: {
   id: string;
   type: GithubContributionType;
   status: GithubItemStatus;
   date: Date;
+  tooltipVariant?: Variant;
 }) {
   const { T } = useIntl();
 
@@ -52,7 +54,7 @@ export function ContributionDate({
 
   return (
     <>
-      <Tooltip id={tooltipId} clickable position={TooltipPosition.Top} variant={Variant.Blue}>
+      <Tooltip id={tooltipId} clickable position={TooltipPosition.Top} variant={tooltipVariant}>
         <div className="flex items-center gap-2 px-1 py-2">
           <ContributionIcon type={type} status={status} />
           <p className="text-sm">
@@ -64,7 +66,7 @@ export function ContributionDate({
         </div>
       </Tooltip>
 
-      <span data-tooltip-id={tooltipId} className="text-sm first-letter:uppercase">
+      <span data-tooltip-id={tooltipId} className="first-letter:uppercase">
         {displayRelativeDate(date)}
       </span>
     </>

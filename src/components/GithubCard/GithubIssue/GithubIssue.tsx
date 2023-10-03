@@ -12,6 +12,9 @@ import Time from "src/icons/TimeLine";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { parseIssueLink } from "src/utils/github";
 import { GithubActionButton } from "src/components/GithubCard/GithubActionButton/GithubActionButton";
+import { GithubContributionType } from "src/types";
+import { ContributionDate } from "src/components/Contribution/ContributionDate";
+import { Variant } from "src/components/Tooltip";
 
 export enum Action {
   Add = "add",
@@ -57,7 +60,13 @@ export default function GithubIssue({
         <div className="flex flex-row flex-wrap items-center gap-2 text-xs font-normal text-greyscale-300 xl:gap-3">
           <div className="flex flex-row items-center gap-1">
             <Time />
-            {displayRelativeDate(issue.createdAt)}
+            <ContributionDate
+              id={issue.id}
+              type={GithubContributionType.Issue}
+              status={issue.status as GithubIssueStatus}
+              date={new Date(issue.createdAt)}
+              tooltipVariant={Variant.Default}
+            />
           </div>
           <div className="flex flex-row items-center gap-1">
             <IssueStatus issue={issue} />
