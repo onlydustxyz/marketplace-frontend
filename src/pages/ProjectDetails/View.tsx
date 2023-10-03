@@ -9,6 +9,8 @@ import { useMediaQuery } from "usehooks-ts";
 interface Props {
   projectId: string;
   projectKey: string;
+  isLoading: boolean;
+  error: null | unknown;
 }
 
 export default function View({ projectId, projectKey }: Props) {
