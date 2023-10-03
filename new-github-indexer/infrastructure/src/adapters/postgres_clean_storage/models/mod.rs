@@ -8,3 +8,14 @@ mod repo_languages;
 mod repos;
 mod user_social_accounts;
 mod users;
+
+pub use issues::Issue;
+pub use pull_request_closing_issues::PullRequestClosingIssue;
+pub use pull_request_commits::PullRequestCommit;
+pub use pull_request_reviews::PullRequestReview;
+pub use pull_requests::PullRequest;
+pub use repo_check_runs::RepoCheckRuns;
+pub use repo_languages::RepoLanguages;
+pub use repos::Repo;
+pub use user_social_accounts::UserSocialAccounts;
+pub use users::User;

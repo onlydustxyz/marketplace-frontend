@@ -41,4 +41,7 @@ where
 		values.into_iter().try_for_each(|value| value.update(conn).map(|_| ()))
 	}
 	fn upsert(self, conn: &mut C) -> Result<Self>;
+	fn upsert_all(conn: &mut C, values: Vec<Self>) -> Result<()> {
+		values.into_iter().try_for_each(|value| value.upsert(conn).map(|_| ()))
+	}
 }

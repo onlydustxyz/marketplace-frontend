@@ -1,1 +1,1 @@
-pub mod indexing_facade_port;
+pub mod indexing_facade;

@@ -3,6 +3,8 @@ use std::collections::HashMap;
 pub use octocrab_indexer::models::{Author as User, *};
 use url::Url;
 
+pub mod indexed;
+
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Languages(HashMap<String, i32>);
 

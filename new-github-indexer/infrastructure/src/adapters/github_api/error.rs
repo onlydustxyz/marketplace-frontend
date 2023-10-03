@@ -1,8 +1,8 @@
-use domain::ports::output::github_api;
+use domain::ports::output::raw_storage;
 
 use super::Error;
 
-impl From<Error> for github_api::Error {
+impl From<Error> for raw_storage::Error {
 	fn from(error: Error) -> Self {
 		match &error {
 			Error::Octocrab(e) => match e {

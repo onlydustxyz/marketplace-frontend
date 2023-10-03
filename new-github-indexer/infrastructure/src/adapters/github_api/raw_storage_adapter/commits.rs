@@ -1,6 +1,6 @@
 use domain::{
 	models::{CheckRuns, RepositoryId},
-	ports::output::github_api::*,
+	ports::output::raw_storage::*,
 };
 
 use crate::adapters::github_api::Client;

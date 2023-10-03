@@ -1,7 +1,10 @@
-use chrono::NaiveDateTime;
+use chrono::{NaiveDateTime, Utc};
 use diesel::Identifiable;
+use domain::models;
 
-use crate::adapters::postgres_clean_storage::schema::indexer_clean::pull_request_closing_issues;
+use crate::adapters::postgres_clean_storage::{
+	schema::indexer_clean::pull_request_closing_issues, Error,
+};
 
 #[derive(Debug, Insertable, Identifiable, Queryable, AsChangeset, Model, PartialEq, Eq)]
 #[diesel(primary_key(pull_request_id, issue_id))]
@@ -16,5 +19,19 @@ impl Identifiable for PullRequestClosingIssue {
 
 	fn id(self) -> Self::Id {
 		(self.pull_request_id, self.issue_id)
+	}
+}
+
+impl TryFrom<(models::PullRequestId, models::IssueId)> for PullRequestClosingIssue {
+	type Error = Error;
+
+	fn try_from(
+		(pull_request_id, issue_id): (models::PullRequestId, models::IssueId),
+	) -> Result<Self, Self::Error> {
+		Ok(Self {
+			pull_request_id: pull_request_id.0 as i64,
+			issue_id: issue_id.0 as i64,
+			indexed_at: Utc::now().naive_utc(),
+		})
 	}
 }

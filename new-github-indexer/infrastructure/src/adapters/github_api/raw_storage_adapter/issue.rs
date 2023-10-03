@@ -1,6 +1,6 @@
 use domain::{
 	models::{issues::Issue, *},
-	ports::output::github_api::*,
+	ports::output::raw_storage::*,
 };
 
 use crate::adapters::github_api::Client;

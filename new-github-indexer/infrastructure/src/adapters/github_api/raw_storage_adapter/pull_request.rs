@@ -1,6 +1,6 @@
 use domain::{
 	models::{pulls::PullRequest, *},
-	ports::output::github_api::*,
+	ports::output::raw_storage::*,
 };
 use serde_json::json;
 

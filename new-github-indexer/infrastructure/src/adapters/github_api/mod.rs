@@ -1,5 +1,5 @@
-mod adapters;
 mod error;
+mod raw_storage_adapter;
 
 use std::fmt::Debug;
 

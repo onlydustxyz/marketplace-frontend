@@ -1,4 +1,4 @@
-use domain::{models::*, ports::output::github_api::*};
+use domain::{models::*, ports::output::raw_storage::*};
 
 use crate::adapters::github_api::Client;
 
