@@ -1,12 +1,12 @@
 import classNames from "classnames";
 import { GithubIssueStatus } from "src/__generated/graphql";
 import CodeReviewMerged from "src/assets/icons/CodeReviewMerged";
-import CodeReviewOpen from "src/assets/icons/CodeReviewOpen";
 import IssueCancelled from "src/assets/icons/IssueCancelled";
 import IssueOpen from "src/assets/icons/IssueOpen";
 import PrClosed from "src/assets/icons/PrClosed";
 import PrDraft from "src/assets/icons/PrDraft";
 import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
+import EyeLine from "src/icons/EyeLine";
 import GitMergeLine from "src/icons/GitMergeLine";
 import GitPullRequestLine from "src/icons/GitPullRequestLine";
 import {
@@ -60,7 +60,7 @@ const icons: GithubTypeStatusDict<JSX.Element> = {
     [GithubIssueStatus.Cancelled]: <IssueCancelled />,
   },
   [GithubContributionType.CodeReview]: {
-    [GithubCodeReviewStatus.Pending]: <CodeReviewOpen />,
+    [GithubCodeReviewStatus.Pending]: <EyeLine className="text-base leading-none" />,
     [GithubCodeReviewStatus.Completed]: <CodeReviewMerged />,
   },
 };
