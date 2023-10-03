@@ -178,7 +178,7 @@ export function ContributionTable({
               className="flex w-full items-center justify-center gap-2 rounded-xl border border-greyscale-50 bg-white/5 px-4 py-3.5 font-walsheim font-medium leading-none text-greyscale-50 shadow-lg"
               onClick={() => setShowAll(true)}
             >
-              <ArrowDownSLine className="flex h-4 items-center justify-center text-xl" />
+              <ArrowDownSLine className="text-xl leading-none" />
               {T("contributions.table.showAll", { count: nbContributions })}
             </button>
           </div>
