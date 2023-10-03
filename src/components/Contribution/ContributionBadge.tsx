@@ -2,6 +2,7 @@ import classNames from "classnames";
 
 import { GithubUser } from "src/__generated/graphql";
 import { ContributionIcon, variants as contributionIconVariants } from "src/components/Contribution/ContributionIcon";
+import { GithubLoginLink } from "src/components/GithubLoginLink/GithubLoginLink";
 import { Link } from "src/components/Link/Link";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
@@ -55,29 +56,17 @@ export function ContributionBadge({
         <Tooltip id={tooltipId} clickable position={TooltipPosition.Top} variant={Variant.Blue}>
           <div className="flex flex-col gap-4 px-1 py-2">
             {isExternal ? (
-              <div className="flex gap-1 text-xs font-medium text-spaceBlue-200">
-                <span>
-                  {tokens[type]}&nbsp;
-                  <button
-                    type="button"
-                    className="text-spacePurple-300 hover:underline"
-                    onClick={
-                      author
-                        ? () => {
-                            openProfilePanel(author.id);
-                          }
-                        : undefined
-                    }
-                  >
-                    {author.login}
-                  </button>
-                </span>
-                <RoundedImage
-                  src={author.avatarUrl}
-                  alt={author.login}
-                  rounding={Rounding.Circle}
-                  size={ImageSize.Xxs}
-                />
+              <div className="flex font-medium">
+                <span className="text-spaceBlue-200">{tokens[type]}</span>
+                &nbsp;
+                <button
+                  type="button"
+                  onClick={() => {
+                    openProfilePanel(author.id);
+                  }}
+                >
+                  <GithubLoginLink author={author} />
+                </button>
               </div>
             ) : null}
             <div className="flex gap-2">
