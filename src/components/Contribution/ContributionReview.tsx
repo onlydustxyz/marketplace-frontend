@@ -1,10 +1,10 @@
 import { ReactElement } from "react";
 
-import Check from "src/assets/icons/Check";
 import FileChange from "src/assets/icons/FileChange";
 import Hourglass from "src/assets/icons/Hourglass";
 import { ContributionAttribute } from "src/components/Contribution/ContributionAttribute";
 import { useIntl } from "src/hooks/useIntl";
+import CheckLine from "src/icons/CheckLine";
 import { GithubContributionReviewStatus } from "src/types";
 
 export function ContributionReview({ status }: { status: GithubContributionReviewStatus }) {
@@ -20,7 +20,7 @@ export function ContributionReview({ status }: { status: GithubContributionRevie
       text: T("contribution.review.status.underReview"),
     },
     [GithubContributionReviewStatus.Approved]: {
-      icon: <Check />,
+      icon: <CheckLine className="flex" />,
       text: T("contribution.review.status.approved"),
     },
     [GithubContributionReviewStatus.ChangesRequested]: {
@@ -32,7 +32,7 @@ export function ContributionReview({ status }: { status: GithubContributionRevie
   return (
     <ContributionAttribute>
       <div className="flex items-center gap-1 font-walsheim text-spaceBlue-100">
-        <span>{dict[status].icon}</span>
+        <span className="text-xs leading-none">{dict[status].icon}</span>
         <span className="whitespace-nowrap text-sm leading-none">{dict[status].text}</span>
       </div>
     </ContributionAttribute>
