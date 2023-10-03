@@ -4,7 +4,6 @@ import { GithubUser } from "src/__generated/graphql";
 import { ContributionIcon, variants as contributionIconVariants } from "src/components/Contribution/ContributionIcon";
 import { GithubLoginLink } from "src/components/GithubLoginLink/GithubLoginLink";
 import { Link } from "src/components/Link/Link";
-import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
 import { useAuth } from "src/hooks/useAuth";
 import { useContributorProfilePanel } from "src/hooks/useContributorProfilePanel";
