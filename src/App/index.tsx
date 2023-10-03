@@ -15,15 +15,16 @@ const ProjectDetailsRewards = lazy(() => import("src/pages/ProjectDetails/Reward
 const ProjectDetailsRewardsList = lazy(() => import("src/pages/ProjectDetails/Rewards/List"));
 const ProjectDetailsRewardForm = lazy(() => import("src/pages/ProjectDetails/Rewards/RewardForm"));
 
-import { CustomUserRole, HasuraUserRole } from "src/types";
 import LoaderFallback from "src/components/Loader";
+import { NotFound } from "src/components/NotFound";
 import ErrorTrigger from "src/pages/ErrorTrigger";
 import ImpersonationPage from "src/pages/Impersonation";
-import TermsAndConditions from "src/pages/TermsAndConditions";
 import Onboarding from "src/pages/Onboarding";
-import useReloadOnNewRelease from "./useReloadOnNewRelease";
 import PublicProfilePage from "src/pages/PublicProfile";
-import { NotFound } from "src/components/NotFound";
+import TermsAndConditions from "src/pages/TermsAndConditions";
+import { CustomUserRole, HasuraUserRole } from "src/types";
+import { parseFlag } from "src/utils/parseFlag";
+import useReloadOnNewRelease from "./useReloadOnNewRelease";
 
 export enum RoutePaths {
   Home = "/",
@@ -121,14 +122,16 @@ function App() {
             </ProtectedRoute>
           ),
         },
-        {
-          path: RoutePaths.Contributions,
-          element: (
-            <ProtectedRoute requiredRole={HasuraUserRole.RegisteredUser}>
-              <Contributions />
-            </ProtectedRoute>
-          ),
-        },
+        parseFlag("VITE_FLAG_ALLOW_CONTRIBUTIONS_LIST")
+          ? {
+              path: RoutePaths.Contributions,
+              element: (
+                <ProtectedRoute requiredRole={HasuraUserRole.RegisteredUser}>
+                  <Contributions />
+                </ProtectedRoute>
+              ),
+            }
+          : {},
         {
           path: RoutePaths.Login,
           element: <Login />,
