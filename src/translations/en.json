@@ -474,6 +474,11 @@
       "noRewards": "No rewards received yet"
     }
   },
+  "rewards": {
+    "panel": {
+      "title": "Details"
+    }
+  },
   "profile": {
     "editButton": "Edit profile",
     "error": {
