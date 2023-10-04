@@ -1,12 +1,11 @@
-import { ComponentProps } from "react";
 import { withRouter } from "storybook-addon-react-router-v6";
 
 import { UserIdentityDocument } from "src/__generated/graphql";
 import { Contribution } from "src/components/Contribution/Contribution";
-import { GithubContributionType, GithubPullRequestStatus } from "src/types";
 import withAuthProvider from "../decorators/withAuthProvider";
 import withContributorProfilePanelProvider from "../decorators/withContributorProfilePanelProvider";
 import withMockedProvider from "../decorators/withMockedProvider";
+import { contribution } from "../mocks/contribution";
 
 const USER_ID = "e2ee731a-2697-4306-bf4b-c807f6fda0d7";
 
@@ -46,30 +45,12 @@ export default {
   ],
 };
 
-const mockContribution = {
-  id: "123",
-  type: GithubContributionType.PullRequest,
-  githubIssue: null,
-  githubCodeReview: null,
-  githubPullRequest: {
-    title: "Example Pull Request",
-    htmlUrl: "https://github.com/example/repo/pull/123",
-    number: 123,
-    status: GithubPullRequestStatus.Open,
-    author: {
-      login: "example-user",
-      avatarUrl: "https://avatars.githubusercontent.com/u/12345678?v=4",
-    },
-    codeReviews: [],
-  },
-  rewardItems: [{ paymentId: "123" }],
-} as any;
-
-const defaultProps: ComponentProps<typeof Contribution> = {
-  contribution: mockContribution,
-  isMobile: false,
+export const Default = {
+  render: (args: typeof Contribution) => <Contribution contribution={contribution} {...args} />,
 };
 
-export const Default = {
-  render: (args: typeof Contribution) => <Contribution {...defaultProps} {...args} />,
+export const HasReward = {
+  render: (args: typeof Contribution) => (
+    <Contribution contribution={{ ...contribution, rewardItems: [{ paymentId: "123" }] }} {...args} />
+  ),
 };

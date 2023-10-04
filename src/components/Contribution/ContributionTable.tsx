@@ -112,12 +112,15 @@ export function ContributionTable({
   const { contributions } = data ?? {};
 
   const memoizedContributions = useMemo(() => {
+    // Need to clone the array because Array.sort() mutates the original
+    const sortArr = contributions ? [...contributions] : [];
+
     if (sort.column === TableColumns.Id) {
-      return contributions?.sort((a, b) => sortContributionsByNumber([a, b], sort.direction));
+      return sortArr.sort((a, b) => sortContributionsByNumber([a, b], sort.direction));
     }
 
     if (sort.column === TableColumns.Linked) {
-      return contributions?.sort((a, b) => sortContributionsByLinked([a, b], sort.direction));
+      return sortArr.sort((a, b) => sortContributionsByLinked([a, b], sort.direction));
     }
 
     return contributions;
