@@ -47,6 +47,7 @@ import {
 import useUserProfile from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/useUserProfile";
 import ProjectLeadInvitation from "src/components/ProjectLeadInvitation/ProjectLeadInvitation";
 import { CalloutSizes } from "src/components/ProjectLeadInvitation/ProjectLeadInvitationView";
+import { rates } from "src/hooks/useWorkEstimation";
 
 type OutletContext = {
   projectId: string;
@@ -97,6 +98,9 @@ export default function Overview() {
 
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
 
+  const remainingBudget = data?.projects[0]?.usdBudget?.initialAmount - data?.projects[0]?.usdBudget?.spentAmount;
+  const isRewardDisabled = remainingBudget < rates.hours || remainingBudget === 0;
+
   return (
     <>
       <Title>
@@ -104,7 +108,11 @@ export default function Overview() {
           {T("project.details.overview.title")}
           {isProjectLeader && (
             <Button
+              disabled={isRewardDisabled}
               size={ButtonSize.Sm}
+              {...withTooltip(T("contributor.table.noBudgetLeft"), {
+                visible: isRewardDisabled,
+              })}
               onClick={() =>
                 navigate(
                   generatePath(

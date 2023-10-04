@@ -25,7 +25,10 @@ export default function Contributors() {
   const isProjectLeader = ledProjectIds.includes(projectId);
 
   const { contributors } = useProjectContributors(projectId);
-  const { data: projectDetails } = useGetProjectDetailsQuery({ variables: { projectId }, ...contextWithCacheHeaders });
+  const { data: projectDetails, loading } = useGetProjectDetailsQuery({
+    variables: { projectId },
+    ...contextWithCacheHeaders,
+  });
 
   const remainingBudget = projectDetails?.projects[0]?.usdBudget?.remainingAmount;
   const isRewardDisabled = remainingBudget < rates.hours || remainingBudget === 0;
@@ -35,7 +38,7 @@ export default function Contributors() {
       <Title>
         <div className="flex flex-row items-center justify-between gap-2">
           {T("project.details.contributors.title")}
-          {isProjectLeader && (
+          {isProjectLeader && !loading && (
             <Button
               size={ButtonSize.Sm}
               disabled={isRewardDisabled}
