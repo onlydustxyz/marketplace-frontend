@@ -11,18 +11,18 @@ interface Project {
 }
 
 interface DataDisplayProps {
-  projectKey: string;
+  param: string;
   data: Project;
   isLoading?: boolean;
   error?: null | unknown;
   children: ReactNode;
 }
-export default function DataDisplay({ projectKey, data, isLoading, error, children }: DataDisplayProps) {
+export default function DataDisplay({ param, data, isLoading, error, children }: DataDisplayProps) {
   if (!data && !isLoading) {
     return <Navigate to={RoutePaths.NotFound} />;
   }
 
-  const contextValue = { projectKey, data, isLoading, error };
+  const contextValue = { param, data, isLoading, error };
 
   return data ? <DataContext.Provider value={contextValue}>{children}</DataContext.Provider> : null;
 }

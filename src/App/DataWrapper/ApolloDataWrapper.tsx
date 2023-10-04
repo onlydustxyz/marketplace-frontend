@@ -6,17 +6,17 @@ import DataDisplay from "./DataDisplay";
 
 interface ApolloDataWrapperProps {
   children: ReactNode;
-  projectKey: string;
+  param: string;
 }
 
-export default function ApolloDataWrapper({ children, projectKey }: ApolloDataWrapperProps) {
+export default function ApolloDataWrapper({ children, param }: ApolloDataWrapperProps) {
   const projectIdQuery = useSuspenseQuery<GetProjectIdFromKeyQuery>(GetProjectIdFromKeyDocument, {
-    variables: { projectKey },
+    variables: { projectKey: param },
     ...contextWithCacheHeaders,
   });
 
   return (
-    <DataDisplay projectKey={projectKey} data={projectIdQuery.data?.projects[0]}>
+    <DataDisplay param={param} data={projectIdQuery.data?.projects[0]}>
       {children}
     </DataDisplay>
   );

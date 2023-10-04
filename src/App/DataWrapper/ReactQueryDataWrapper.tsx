@@ -5,15 +5,14 @@ import DataDisplay from "./DataDisplay";
 
 export interface ReactQueryDataWrapperProps {
   children: ReactNode;
-  projectKey: string;
+  param: string;
 }
 
 // this component will evolve soon to take API basepath, params and other inputs as props to be fully reusable
-export default function ReactQueryDataWrapper({ children, projectKey }: ReactQueryDataWrapperProps) {
+export default function ReactQueryDataWrapper({ children, param }: ReactQueryDataWrapperProps) {
   const { tokenSet } = useTokenSet();
   const apiBasepath = import.meta.env.VITE_ONLYDUST_API_BASEPATH;
   const resource = "/api/v1/projects/slug/";
-  const param = projectKey;
   const url = `${apiBasepath}${resource}${param}`;
   const option = tokenSet?.accessToken
     ? {
@@ -29,7 +28,7 @@ export default function ReactQueryDataWrapper({ children, projectKey }: ReactQue
   });
 
   return (
-    <DataDisplay projectKey={projectKey} data={data} isLoading={isLoading} error={error}>
+    <DataDisplay param={param} data={data} isLoading={isLoading} error={error}>
       {children}
     </DataDisplay>
   );

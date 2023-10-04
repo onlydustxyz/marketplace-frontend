@@ -1,15 +1,25 @@
-import { ReactQueryDataWrapperProps } from "./ReactQueryDataWrapper";
-import ReactQueryDataWrapper from "./ReactQueryDataWrapper";
-import ApolloDataWrapper from "./ApolloDataWrapper";
+import { ComponentType, ReactNode } from "react";
 
-type DataSwitchProps = ReactQueryDataWrapperProps;
+interface WrapperProps {
+  children: ReactNode;
+  param: string;
+}
 
-export default function DataSwitch({ children, projectKey }: DataSwitchProps) {
+type DataSwitchProps = {
+  children: ReactNode;
+  param: string;
+  ApolloDataWrapper: ComponentType<WrapperProps>;
+  ReactQueryDataWrapper: ComponentType<WrapperProps>;
+};
+
+export default function DataSwitch({ children, param, ApolloDataWrapper, ReactQueryDataWrapper }: DataSwitchProps) {
   const useApollo = import.meta.env.VITE_USE_APOLLO === "true";
 
+  const projectKey = param;
+
   return useApollo ? (
-    <ApolloDataWrapper projectKey={projectKey}>{children}</ApolloDataWrapper>
+    <ApolloDataWrapper param={projectKey}>{children}</ApolloDataWrapper>
   ) : (
-    <ReactQueryDataWrapper projectKey={projectKey}>{children}</ReactQueryDataWrapper>
+    <ReactQueryDataWrapper param={projectKey}>{children}</ReactQueryDataWrapper>
   );
 }

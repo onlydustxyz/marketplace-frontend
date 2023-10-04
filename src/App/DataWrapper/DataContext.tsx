@@ -8,7 +8,7 @@ interface Project {
 }
 
 interface DataContextProps {
-  projectKey: string;
+  param: string;
   data: Project;
   isLoading?: boolean;
   error?: null | unknown;

@@ -10,6 +10,8 @@ import SEO from "src/components/SEO";
 import DataSwitch from "src/App/DataWrapper/DataSwitch";
 import { useContext } from "react";
 import { DataContext } from "src/App/DataWrapper/DataContext";
+import ApolloDataWrapper from "src/App/DataWrapper/ApolloDataWrapper";
+import ReactQueryDataWrapper from "src/App/DataWrapper/ReactQueryDataWrapper";
 
 type ProjectDetailsParams = {
   projectKey: string;
@@ -32,7 +34,7 @@ export default function ProjectDetails() {
   const { projectKey = "" } = useParams<ProjectDetailsParams>();
 
   return (
-    <DataSwitch projectKey={projectKey}>
+    <DataSwitch param={projectKey} ApolloDataWrapper={ApolloDataWrapper} ReactQueryDataWrapper={ReactQueryDataWrapper}>
       <ProjectPresentDetails />
     </DataSwitch>
   );
@@ -46,7 +48,8 @@ function ProjectPresentDetails() {
     throw new Error(T("dataFetching.dataContext"));
   }
 
-  const { projectKey, data, isLoading, error } = dataContext;
+  const { param, data, isLoading, error } = dataContext;
+  const projectKey = param;
   const { id, name } = data;
 
   const { visibleToCurrentUser } = useProjectVisibility(id);
