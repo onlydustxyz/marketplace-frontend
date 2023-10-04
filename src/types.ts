@@ -143,6 +143,7 @@ export enum GithubPullRequestStatus {
 
 export enum GithubCodeReviewStatus {
   Pending = "PENDING",
+  ChangeRequested = "CHANGE_REQUESTED",
   Completed = "COMPLETED",
 }
 

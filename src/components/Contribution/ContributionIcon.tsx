@@ -9,6 +9,7 @@ import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
 import EyeLine from "src/icons/EyeLine";
 import GitMergeLine from "src/icons/GitMergeLine";
 import GitPullRequestLine from "src/icons/GitPullRequestLine";
+
 import {
   GithubCodeReviewStatus,
   GithubContributionType,
@@ -17,6 +18,12 @@ import {
   GithubPullRequestStatus,
   GithubTypeStatusDict,
 } from "src/types";
+
+export enum Sizes {
+  xs = "w-3 h-3 text-xs leading-none",
+  sm = "w-3.5 h-3.5 text-sm leading-none",
+  md = "w-4 h-4 text-base leading-none",
+}
 
 export const variants = {
   status: {
@@ -33,39 +40,57 @@ export const variants = {
 
     // Issue & Code review
     [GithubIssueStatus.Completed]: "text-github-purple-light border-github-purple",
+    [GithubCodeReviewStatus.ChangeRequested]: "text-github-purple-light border-github-purple",
 
     // Code review
     [GithubCodeReviewStatus.Pending]: "text-github-green-light border-github-green",
   },
 };
 
-function IssueOpenIcon() {
+function IssueOpenIcon({ size }: { size: Sizes }) {
   return (
-    <div className="flex h-4 w-4 items-center justify-center">
-      <IssueOpen className="h-3.5 w-3.5" />
+    <div className={classNames("flex items-center justify-center", size)}>
+      <IssueOpen className={size === Sizes.md ? Sizes.sm : size} />
     </div>
   );
 }
 
-const icons: GithubTypeStatusDict<JSX.Element> = {
-  [GithubContributionType.PullRequest]: {
-    [GithubPullRequestStatus.Open]: <GitPullRequestLine className="text-base leading-none" />,
-    [GithubPullRequestStatus.Closed]: <PrClosed />,
-    [GithubPullRequestStatus.Merged]: <GitMergeLine className="text-base leading-none" />,
-    [GithubPullRequestDraft.Draft]: <PrDraft />,
-  },
-  [GithubContributionType.Issue]: {
-    [GithubIssueStatus.Open]: <IssueOpenIcon />,
-    [GithubIssueStatus.Completed]: <CheckboxCircleLine className="text-base leading-none" />,
-    [GithubIssueStatus.Cancelled]: <IssueCancelled />,
-  },
-  [GithubContributionType.CodeReview]: {
-    [GithubCodeReviewStatus.Pending]: <EyeLine className="text-base leading-none" />,
-    [GithubCodeReviewStatus.Completed]: <CodeReviewCheckIcon className="h-4 w-4" />,
-  },
-};
+function IssueClosedIcon({ size }: { size: Sizes }) {
+  return (
+    <div className={classNames("flex items-center justify-center", size)}>
+      <CheckboxCircleLine className={size === Sizes.xs ? Sizes.sm : size} />
+    </div>
+  );
+}
 
-export function ContributionIcon({ type, status }: { type: GithubContributionType; status: GithubItemStatus }) {
+export function ContributionIcon({
+  type,
+  status,
+  size = Sizes.md,
+}: {
+  type: GithubContributionType;
+  status: GithubItemStatus;
+  size?: Sizes;
+}) {
+  const icons: GithubTypeStatusDict<JSX.Element> = {
+    [GithubContributionType.PullRequest]: {
+      [GithubPullRequestStatus.Open]: <GitPullRequestLine className={size} />,
+      [GithubPullRequestStatus.Closed]: <PrClosed className={size} />,
+      [GithubPullRequestStatus.Merged]: <GitMergeLine className={size} />,
+      [GithubPullRequestDraft.Draft]: <PrDraft className={size} />,
+    },
+    [GithubContributionType.Issue]: {
+      [GithubIssueStatus.Open]: <IssueOpenIcon size={size} />,
+      [GithubIssueStatus.Completed]: <IssueClosedIcon size={size} />,
+      [GithubIssueStatus.Cancelled]: <IssueCancelled className={size} />,
+    },
+    [GithubContributionType.CodeReview]: {
+      [GithubCodeReviewStatus.Pending]: <EyeLine className={size} />,
+      [GithubCodeReviewStatus.Completed]: <CodeReviewCheckIcon className={size} />,
+      [GithubCodeReviewStatus.ChangeRequested]: <CodeReviewCheckIcon className={size} />,
+    },
+  };
+
   return (
     <div className={classNames("leading-none", variants.status[status])}>
       {icons[type][status as keyof typeof icons[GithubContributionType]]}

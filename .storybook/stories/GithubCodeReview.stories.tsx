@@ -8,7 +8,7 @@ const codeReviews: Record<string, GithubCodeReviewFragment> = {
     id: "123",
     status: "PENDING",
     outcome: null,
-    submittedAt: daysFromNow(6),
+    submittedAt: daysFromNow(1),
     reviewer: {
       id: 123,
       login: "stannislas",
@@ -25,7 +25,7 @@ const codeReviews: Record<string, GithubCodeReviewFragment> = {
       status: "pending",
       htmlUrl: "https://github.com/sayajin-labs/kakarot/pull/541",
       title: "Disable RPC json validation in devnet",
-      createdAt: daysFromNow(6),
+      createdAt: daysFromNow(2),
       closedAt: null,
       mergedAt: null,
       author: {
@@ -41,7 +41,7 @@ const codeReviews: Record<string, GithubCodeReviewFragment> = {
     id: "456",
     status: "PENDING",
     outcome: null,
-    submittedAt: daysFromNow(6),
+    submittedAt: daysFromNow(1),
     reviewer: {
       id: 123,
       login: "stannislas",
@@ -59,7 +59,7 @@ const codeReviews: Record<string, GithubCodeReviewFragment> = {
       htmlUrl: "https://github.com/sayajin-labs/kakarot/pull/541",
       title:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-      createdAt: daysFromNow(6),
+      createdAt: daysFromNow(2),
       closedAt: null,
       mergedAt: null,
       author: {
@@ -75,7 +75,7 @@ const codeReviews: Record<string, GithubCodeReviewFragment> = {
     id: "789",
     status: "COMPLETED",
     outcome: "APPROVED",
-    submittedAt: daysFromNow(3),
+    submittedAt: daysFromNow(1),
     reviewer: {
       id: 123,
       login: "stannislas",
@@ -92,7 +92,7 @@ const codeReviews: Record<string, GithubCodeReviewFragment> = {
       status: "pending",
       htmlUrl: "https://github.com/sayajin-labs/kakarot/pull/541",
       title: "Disable RPC json validation in devnet",
-      createdAt: daysFromNow(6),
+      createdAt: daysFromNow(2),
       closedAt: null,
       mergedAt: null,
       author: {
@@ -125,7 +125,7 @@ const codeReviews: Record<string, GithubCodeReviewFragment> = {
       status: "pending",
       htmlUrl: "https://github.com/sayajin-labs/kakarot/pull/541",
       title: "Disable RPC json validation in devnet",
-      createdAt: daysFromNow(6),
+      createdAt: daysFromNow(2),
       closedAt: null,
       mergedAt: null,
       author: {

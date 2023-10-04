@@ -1,8 +1,7 @@
 import { filter } from "lodash";
 import { ContributionFragment, GithubIssueStatus } from "src/__generated/graphql";
-import { GithubCodeReviewStatus } from "src/components/GithubCard/GithubCodeReview/GithubCodeReview";
 import { GithubPullRequestStatus } from "src/components/GithubCard/GithubPullRequest/GithubPullRequest";
-import { GithubContributionType } from "src/types";
+import { GithubCodeReviewStatus, GithubContributionType } from "src/types";
 
 const filters = {
   [GithubContributionType.Issue]: { githubIssue: { status: GithubIssueStatus.Completed } },

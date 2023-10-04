@@ -1,26 +1,32 @@
 import classNames from "classnames";
 import { GithubIssueFragment, GithubIssueStatus } from "src/__generated/graphql";
-import IssueCancelled from "src/assets/icons/IssueCancelled";
-import IssueOpen from "src/assets/icons/IssueOpen";
 import Card from "src/components/Card";
+import { ContributionDate } from "src/components/Contribution/ContributionDate";
+import { ContributionCreationDate } from "src/components/GithubCard/ContributionCreationDate";
+import { GithubActionButton } from "src/components/GithubCard/GithubActionButton/GithubActionButton";
 import { GithubLink } from "src/components/GithubCard/GithubLink/GithubLink";
-import { useIntl } from "src/hooks/useIntl";
-import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
+import { Variant } from "src/components/Tooltip";
 import GitCommentLine from "src/icons/GitCommentLine";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
-import Time from "src/icons/TimeLine";
-import displayRelativeDate from "src/utils/displayRelativeDate";
-import { parseIssueLink } from "src/utils/github";
-import { GithubActionButton } from "src/components/GithubCard/GithubActionButton/GithubActionButton";
 import { GithubContributionType } from "src/types";
-import { ContributionDate } from "src/components/Contribution/ContributionDate";
-import { Variant } from "src/components/Tooltip";
+import { parseIssueLink } from "src/utils/github";
 
 export enum Action {
   Add = "add",
   Remove = "remove",
   Ignore = "ignore",
   UnIgnore = "unignore",
+}
+
+function getIssueStatusDate(issue: GithubIssueFragment) {
+  switch (issue.status) {
+    case GithubIssueStatus.Cancelled:
+    case GithubIssueStatus.Completed:
+      return new Date(issue.closedAt);
+    case GithubIssueStatus.Open:
+    default:
+      return new Date(issue.createdAt);
+  }
 }
 
 export type GithubIssueProps = {
@@ -59,17 +65,21 @@ export default function GithubIssue({
         </div>
         <div className="flex flex-row flex-wrap items-center gap-2 text-xs font-normal text-greyscale-300 xl:gap-3">
           <div className="flex flex-row items-center gap-1">
-            <Time />
+            <ContributionCreationDate
+              id={issue.id}
+              type={GithubContributionType.Issue}
+              date={new Date(issue.createdAt)}
+            />
+          </div>
+          <div className="flex flex-row items-center gap-1">
             <ContributionDate
               id={issue.id}
               type={GithubContributionType.Issue}
               status={issue.status as GithubIssueStatus}
-              date={new Date(issue.createdAt)}
-              tooltipVariant={Variant.Default}
+              date={getIssueStatusDate(issue)}
+              tooltipProps={{ variant: Variant.Default }}
+              withIcon
             />
-          </div>
-          <div className="flex flex-row items-center gap-1">
-            <IssueStatus issue={issue} />
           </div>
           <div className="flex flex-row items-center gap-1">
             <GitRepositoryLine />
@@ -84,34 +94,4 @@ export default function GithubIssue({
       {secondaryAction && <GithubActionButton action={secondaryAction} onClick={onSecondaryClick} ignored={ignored} />}
     </Card>
   );
-}
-
-function IssueStatus({ issue }: { issue: GithubIssueFragment }) {
-  const { T } = useIntl();
-
-  switch (issue.status) {
-    case GithubIssueStatus.Cancelled:
-      return issue.closedAt ? (
-        <>
-          <IssueCancelled className="fill-github-grey p-0.5" />
-          {T("githubIssue.status.closed", { closedAt: displayRelativeDate(issue.closedAt) })}
-        </>
-      ) : null;
-    case GithubIssueStatus.Completed:
-      return issue.closedAt ? (
-        <>
-          <CheckboxCircleLine className="-my-1 text-base text-github-purple" />
-          {T("githubIssue.status.closed", { closedAt: displayRelativeDate(issue.closedAt) })}
-        </>
-      ) : null;
-    case GithubIssueStatus.Open:
-      return (
-        <>
-          <IssueOpen className="fill-github-green p-0.5" />
-          {T("githubIssue.status.open")}
-        </>
-      );
-    default:
-      return <div />;
-  }
 }
