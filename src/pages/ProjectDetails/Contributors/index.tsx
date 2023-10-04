@@ -14,6 +14,7 @@ import { useMediaQuery } from "usehooks-ts";
 import ProjectLeadInvitation from "src/components/ProjectLeadInvitation/ProjectLeadInvitation";
 import { withTooltip } from "src/components/Tooltip";
 import { rates } from "src/hooks/useWorkEstimation";
+import { CalloutSizes } from "src/components/ProjectLeadInvitation/ProjectLeadInvitationView";
 
 export default function Contributors() {
   const { T } = useIntl();
@@ -58,7 +59,7 @@ export default function Contributors() {
           )}
         </div>
       </Title>
-      <ProjectLeadInvitation projectId={projectId} />
+      <ProjectLeadInvitation projectId={projectId} size={CalloutSizes.Large} />
       {contributors?.length > 0 ? (
         <ContributorsTable {...{ contributors, isProjectLeader, remainingBudget, projectId, projectKey }} />
       ) : (
