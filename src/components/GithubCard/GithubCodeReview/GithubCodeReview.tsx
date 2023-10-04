@@ -1,17 +1,13 @@
 import classNames from "classnames";
 import { GithubCodeReviewFragment } from "src/__generated/graphql";
-import CodeReviewCheckIcon from "src/assets/icons/CodeReviewCheckIcon";
-import CodeReviewIcon from "src/assets/icons/CodeReviewIcon";
 import Card from "src/components/Card";
 import { GithubLink } from "src/components/GithubCard/GithubLink/GithubLink";
-import { useIntl } from "src/hooks/useIntl";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
-import Time from "src/icons/TimeLine";
-import displayRelativeDate from "src/utils/displayRelativeDate";
 import { parsePullRequestLink } from "src/utils/github";
 import { GithubActionButton } from "src/components/GithubCard/GithubActionButton/GithubActionButton";
 import { ContributionDate } from "src/components/Contribution/ContributionDate";
-import { GithubContributionType } from "src/types";
+import { GithubCodeReviewStatus, GithubContributionType } from "src/types";
+import { ContributionCreationDate } from "src/components/GithubCard/ContributionCreationDate";
 import { Variant } from "src/components/Tooltip";
 
 export enum Action {
@@ -21,14 +17,34 @@ export enum Action {
   UnIgnore = "unignore",
 }
 
-export enum GithubCodeReviewStatus {
-  Pending = "PENDING",
-  Completed = "COMPLETED",
-}
-
 export enum GithubCodeReviewOutcome {
   Approved = "APPROVED",
   ChangeRequested = "CHANGE_REQUESTED",
+}
+
+function getCodeReviewStatusDate(codeReview: GithubCodeReviewFragment) {
+  const status = codeReview?.status?.toUpperCase();
+
+  switch (status) {
+    case GithubCodeReviewStatus.Completed:
+      return new Date(codeReview.submittedAt);
+    case GithubCodeReviewStatus.Pending:
+      return new Date(codeReview.githubPullRequest?.createdAt);
+  }
+}
+
+function getStatus(codeReview: GithubCodeReviewFragment) {
+  const status = codeReview.status?.toUpperCase();
+  const outcome = codeReview.outcome?.toUpperCase();
+
+  switch (status) {
+    case GithubCodeReviewStatus.Completed:
+      return outcome === GithubCodeReviewOutcome.ChangeRequested
+        ? GithubCodeReviewStatus.ChangeRequested
+        : GithubCodeReviewStatus.Completed;
+    case GithubCodeReviewStatus.Pending:
+      return GithubCodeReviewStatus.Pending;
+  }
 }
 
 export type GithubCodeReviewProps = {
@@ -68,16 +84,24 @@ export default function GithubCodeReview({
         </div>
         <div className="flex flex-row flex-wrap items-center gap-2 text-xs font-normal text-greyscale-300 xl:gap-3">
           <div className="flex flex-row items-center gap-1">
-            <Time />
-            <ContributionDate
-              id={codeReview.id ?? ""}
+            <ContributionCreationDate
+              id={codeReview.id as string}
               type={GithubContributionType.CodeReview}
-              status={codeReview.status as GithubCodeReviewStatus}
               date={new Date(createdAt)}
-              tooltipVariant={Variant.Default}
             />
           </div>
-          <div className="flex flex-row items-center gap-1">{<CodeReviewStatus codeReview={codeReview} />}</div>
+          <div className="flex flex-row items-center gap-1">
+            {
+              <ContributionDate
+                id={codeReview.id as string}
+                type={GithubContributionType.CodeReview}
+                status={getStatus(codeReview) as GithubCodeReviewStatus}
+                date={getCodeReviewStatusDate(codeReview)}
+                tooltipVariant={Variant.Default}
+                withIcon
+              />
+            }
+          </div>
           <div className="flex flex-row items-center gap-1">
             <GitRepositoryLine />
             {repoName}
@@ -87,34 +111,4 @@ export default function GithubCodeReview({
       {secondaryAction && <GithubActionButton action={secondaryAction} onClick={onSecondaryClick} ignored={ignored} />}
     </Card>
   );
-}
-
-function CodeReviewStatus({ codeReview }: { codeReview: GithubCodeReviewFragment }) {
-  const { T } = useIntl();
-
-  const status = codeReview?.status?.toUpperCase();
-
-  switch (status) {
-    case GithubCodeReviewStatus.Completed:
-      return codeReview.outcome.toUpperCase() === GithubCodeReviewOutcome.ChangeRequested ? (
-        <>
-          <CodeReviewCheckIcon className="-my-1 h-4 w-4 text-base text-github-purple" />
-          {T("githubCodeReview.status.changeRequested", { submittedAt: displayRelativeDate(codeReview.submittedAt) })}
-        </>
-      ) : (
-        <>
-          <CodeReviewCheckIcon className="-my-1 h-4 w-4 text-base text-github-green" />
-          {T("githubCodeReview.status.approved", { submittedAt: displayRelativeDate(codeReview.submittedAt) })}
-        </>
-      );
-    case GithubCodeReviewStatus.Pending:
-      return (
-        <>
-          <CodeReviewIcon className="-my-1 text-base text-github-green" />
-          {T("githubCodeReview.status.pending")}
-        </>
-      );
-    default:
-      return null;
-  }
 }

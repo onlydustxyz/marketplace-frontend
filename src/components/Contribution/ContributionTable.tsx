@@ -33,6 +33,7 @@ import {
 import { sortContributionsByLinked } from "src/utils/sortContributionsByLinked";
 import { sortContributionsByNumber } from "src/utils/sortContributionsByNumber";
 import { useMediaQuery } from "usehooks-ts";
+import { Variant } from "src/components/Tooltip";
 
 export enum TableColumns {
   Date = "date",
@@ -231,6 +232,7 @@ export function ContributionTable({
               type={contribution.type as GithubContributionType}
               status={draft ? GithubPullRequestDraft.Draft : (contributionStatus as GithubItemStatus)}
               date={new Date(lineDate)}
+              tooltipVariant={Variant.Default}
             />
           </Cell>
           <Cell height={CellHeight.Compact}>

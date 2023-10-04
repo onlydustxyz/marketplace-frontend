@@ -14,8 +14,8 @@ const pullRequests: Record<string, GithubPullRequestWithCommitsFragment> = {
     status: GithubPullRequestStatus.Closed,
     htmlUrl: "https://github.com/sayajin-labs/kakarot/pull/541",
     title: "Disable RPC json validation in devnet",
-    createdAt: daysFromNow(6),
-    closedAt: daysFromNow(6),
+    createdAt: daysFromNow(2),
+    closedAt: daysFromNow(1),
     mergedAt: undefined,
     author: {
       login: "stannislas",
@@ -46,8 +46,8 @@ const pullRequests: Record<string, GithubPullRequestWithCommitsFragment> = {
     htmlUrl: "https://github.com/sayajin-labs/kakarot/pull/541",
     title:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    createdAt: daysFromNow(6),
-    closedAt: daysFromNow(6),
+    createdAt: daysFromNow(2),
+    closedAt: daysFromNow(1),
     mergedAt: undefined,
     author: {
       login: "stannislas",
@@ -77,7 +77,7 @@ const pullRequests: Record<string, GithubPullRequestWithCommitsFragment> = {
     status: GithubPullRequestStatus.Open,
     htmlUrl: "https://github.com/sayajin-labs/kakarot/pull/541",
     title: "Disable RPC json validation in devnet",
-    createdAt: daysFromNow(6),
+    createdAt: daysFromNow(2),
     closedAt: null,
     mergedAt: null,
     author: {
@@ -108,9 +108,9 @@ const pullRequests: Record<string, GithubPullRequestWithCommitsFragment> = {
     status: GithubPullRequestStatus.Merged,
     htmlUrl: "https://github.com/sayajin-labs/kakarot/pull/541",
     title: "Disable RPC json validation in devnet",
-    createdAt: daysFromNow(6),
-    mergedAt: daysFromNow(5),
-    closedAt: daysFromNow(5),
+    createdAt: daysFromNow(2),
+    mergedAt: daysFromNow(2),
+    closedAt: daysFromNow(2),
     author: {
       login: "stannislas",
       avatarUrl: "https://gravatar.com/avatar/1f82b0492a0a938288c2d5b70534a1fb?s=400&d=robohash&r=x",

@@ -33,6 +33,7 @@ export const variants = {
 
     // Issue & Code review
     [GithubIssueStatus.Completed]: "text-github-purple-light border-github-purple",
+    [GithubCodeReviewStatus.ChangeRequested]: "text-github-purple-light border-github-purple",
 
     // Code review
     [GithubCodeReviewStatus.Pending]: "text-github-green-light border-github-green",
@@ -62,6 +63,7 @@ const icons: GithubTypeStatusDict<JSX.Element> = {
   [GithubContributionType.CodeReview]: {
     [GithubCodeReviewStatus.Pending]: <EyeLine className="text-base leading-none" />,
     [GithubCodeReviewStatus.Completed]: <CodeReviewCheckIcon className="h-4 w-4" />,
+    [GithubCodeReviewStatus.ChangeRequested]: <CodeReviewCheckIcon />,
   },
 };
 

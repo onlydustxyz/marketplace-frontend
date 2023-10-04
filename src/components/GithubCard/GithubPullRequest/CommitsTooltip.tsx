@@ -21,12 +21,12 @@ export function CommitsTooltip({
   return (
     <div className="flex flex-col">
       <>
-        <span className="text-xs text-greyscale-200">
+        <span className="text-sm text-greyscale-200">
           {T("reward.form.contributions.pullRequests.tooltip.createdBy")}
 
           {pullRequest?.author?.login ? (
             <Link
-              className="inline-flex text-xs text-spacePurple-400 hover:text-spacePurple-200"
+              className="inline-flex text-spacePurple-400 hover:text-spacePurple-200"
               to={generatePath(RoutePaths.PublicProfile, {
                 userLogin: pullRequest?.author?.login,
               })}
