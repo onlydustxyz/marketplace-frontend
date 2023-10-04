@@ -39,17 +39,18 @@ export default function ProjectDetails() {
 }
 
 function ProjectPresentDetails() {
+  const { T } = useIntl();
   const dataContext = useContext(DataContext);
 
   if (!dataContext) {
-    throw new Error("ProjectPresentDetails must be used within a DataSwitch component");
+    throw new Error(T("dataFetching.dataContext"));
   }
 
   const { projectKey, data, isLoading, error } = dataContext;
   const { id, name } = data;
 
   const { visibleToCurrentUser } = useProjectVisibility(id);
-  const { T } = useIntl();
+
   const showToaster = useShowToaster();
   const navigate = useNavigate();
 

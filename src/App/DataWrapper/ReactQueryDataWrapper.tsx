@@ -8,10 +8,13 @@ export interface ReactQueryDataWrapperProps {
   projectKey: string;
 }
 
-// this component will evolve soon to take API basepath, params and other inputs to be fully reusable
+// this component will evolve soon to take API basepath, params and other inputs as props to be fully reusable
 export default function ReactQueryDataWrapper({ children, projectKey }: ReactQueryDataWrapperProps) {
   const { tokenSet } = useTokenSet();
-
+  const apiBasepath = import.meta.env.VITE_ONLYDUST_API_BASEPATH;
+  const resource = "/api/v1/projects/slug/";
+  const param = projectKey;
+  const url = `${apiBasepath}${resource}${param}`;
   const option = tokenSet?.accessToken
     ? {
         headers: {
@@ -19,12 +22,10 @@ export default function ReactQueryDataWrapper({ children, projectKey }: ReactQue
         },
       }
     : {};
+
   const { isLoading, error, data } = useQuery({
     queryKey: ["repoData"],
-    queryFn: () =>
-      fetch(`https://develop-new-api.onlydust.xyz:443/api/v1/projects/slug/${projectKey}`, option).then(res =>
-        res.json()
-      ),
+    queryFn: () => fetch(`https://${url}`, option).then(res => res.json()),
   });
 
   return (
