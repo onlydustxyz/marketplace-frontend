@@ -1,4 +1,5 @@
 import { GithubUser, useGetContributionRewardsQuery } from "src/__generated/graphql";
+import { SpinningLogo } from "src/components/Loader/SpinningLogo";
 import { useIntl } from "src/hooks/useIntl";
 
 export function RewardDetail({
@@ -21,15 +22,27 @@ export function RewardDetail({
 
   function renderContent() {
     if (loading) {
-      return <div>Loading...</div>;
+      return (
+        <div className="flex h-full items-center justify-center">
+          <SpinningLogo />
+        </div>
+      );
     }
 
     if (error) {
-      return <div>Error...</div>;
+      return (
+        <div className="flex h-full items-center justify-center">
+          <p>{T("rewards.panel.error")}</p>
+        </div>
+      );
     }
 
     if (!data) {
-      return <div>No data...</div>;
+      return (
+        <div className="flex h-full items-center justify-center">
+          <p>{T("rewards.panel.empty")}</p>
+        </div>
+      );
     }
 
     return (
@@ -42,5 +55,5 @@ export function RewardDetail({
     );
   }
 
-  return <div className="px-6 py-8">{renderContent()}</div>;
+  return <div className="h-full px-6 py-8">{renderContent()}</div>;
 }
