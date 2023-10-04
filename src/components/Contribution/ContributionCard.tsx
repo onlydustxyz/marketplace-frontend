@@ -28,14 +28,14 @@ export function ContributionCard({
       <Contribution contribution={contribution} isMobile />
       <div className="flex items-center gap-2">
         <div className="flex items-center gap-1 text-spaceBlue-200">
-          <TimeLine className="flex h-4 items-center" />
+          <TimeLine className="text-base leading-none" />
           <span className="text-xs leading-none">{displayRelativeDate(date)}</span>
         </div>
 
         {ContributionLinked({ contribution }) ? (
           <div className="flex items-center gap-1">
             <div className="flex items-center gap-1 text-spaceBlue-200">
-              <ArrowRightUpLine className="flex h-4 items-center" />
+              <ArrowRightUpLine className="text-base leading-none" />
               <span className="text-xs leading-none">{T("contributions.table.linkedTo")}</span>
             </div>
             <div className="flex items-center gap-1">

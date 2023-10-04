@@ -137,7 +137,7 @@ export function ContributionLinked({
           data-tooltip-id={tooltipId}
           className="flex items-center gap-1 rounded-full border-0.5 border-spaceBlue-400 px-1 py-0.5 text-spaceBlue-200"
         >
-          <StackLine className="flex h-4 items-center justify-center" />
+          <StackLine className="text-base leading-none" />
           <span className="text-sm leading-none">{nbLinkedContributions}</span>
         </div>
       </>

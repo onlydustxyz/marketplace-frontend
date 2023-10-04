@@ -178,7 +178,7 @@ export function ContributionTable({
               className="flex w-full items-center justify-center gap-2 rounded-xl border border-greyscale-50 bg-white/5 px-4 py-3.5 font-walsheim font-medium leading-none text-greyscale-50 shadow-lg"
               onClick={() => setShowAll(true)}
             >
-              <ArrowDownSLine className="flex h-4 items-center justify-center text-xl" />
+              <ArrowDownSLine className="text-xl leading-none" />
               {T("contributions.table.showAll", { count: nbContributions })}
             </button>
           </div>
@@ -262,7 +262,9 @@ export function ContributionTable({
           className="flex cursor-pointer items-start gap-3 border-b border-greyscale-50/8 bg-white/2 px-6 py-4"
           onClick={onHeaderClick}
         >
-          <div className="rounded-lg bg-white/5 p-3 text-greyscale-50">{icon("h-5 w-5")}</div>
+          <div className="rounded-lg bg-white/5 p-3 leading-none text-greyscale-50">
+            {icon("h-5 w-5 text-xl leading-none text-base")}
+          </div>
           <div className="font-walsheim">
             <p className="text-base font-medium text-greyscale-50">{title}</p>
             <p className="text-sm text-spaceBlue-200">{description}</p>

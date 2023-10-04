@@ -1,13 +1,14 @@
+import classNames from "classnames";
 import { GithubIssueStatus } from "src/__generated/graphql";
-import CodeReviewMerged from "src/assets/icons/CodeReviewMerged";
-import CodeReviewOpen from "src/assets/icons/CodeReviewOpen";
+import CodeReviewCheckIcon from "src/assets/icons/CodeReviewCheckIcon";
 import IssueCancelled from "src/assets/icons/IssueCancelled";
-import IssueMerged from "src/assets/icons/IssueMerged";
 import IssueOpen from "src/assets/icons/IssueOpen";
 import PrClosed from "src/assets/icons/PrClosed";
 import PrDraft from "src/assets/icons/PrDraft";
-import PrMerged from "src/assets/icons/PrMerged";
-import PrOpen from "src/assets/icons/PrOpen";
+import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
+import EyeLine from "src/icons/EyeLine";
+import GitMergeLine from "src/icons/GitMergeLine";
+import GitPullRequestLine from "src/icons/GitPullRequestLine";
 import {
   GithubCodeReviewStatus,
   GithubContributionType,
@@ -48,24 +49,26 @@ function IssueOpenIcon() {
 
 const icons: GithubTypeStatusDict<JSX.Element> = {
   [GithubContributionType.PullRequest]: {
-    [GithubPullRequestStatus.Open]: <PrOpen />,
+    [GithubPullRequestStatus.Open]: <GitPullRequestLine className="text-base leading-none" />,
     [GithubPullRequestStatus.Closed]: <PrClosed />,
-    [GithubPullRequestStatus.Merged]: <PrMerged />,
+    [GithubPullRequestStatus.Merged]: <GitMergeLine className="text-base leading-none" />,
     [GithubPullRequestDraft.Draft]: <PrDraft />,
   },
   [GithubContributionType.Issue]: {
     [GithubIssueStatus.Open]: <IssueOpenIcon />,
-    [GithubIssueStatus.Completed]: <IssueMerged />,
+    [GithubIssueStatus.Completed]: <CheckboxCircleLine className="text-base leading-none" />,
     [GithubIssueStatus.Cancelled]: <IssueCancelled />,
   },
   [GithubContributionType.CodeReview]: {
-    [GithubCodeReviewStatus.Pending]: <CodeReviewOpen />,
-    [GithubCodeReviewStatus.Completed]: <CodeReviewMerged />,
+    [GithubCodeReviewStatus.Pending]: <EyeLine className="text-base leading-none" />,
+    [GithubCodeReviewStatus.Completed]: <CodeReviewCheckIcon className="h-4 w-4" />,
   },
 };
 
 export function ContributionIcon({ type, status }: { type: GithubContributionType; status: GithubItemStatus }) {
   return (
-    <div className={variants.status[status]}>{icons[type][status as keyof typeof icons[GithubContributionType]]}</div>
+    <div className={classNames("leading-none", variants.status[status])}>
+      {icons[type][status as keyof typeof icons[GithubContributionType]]}
+    </div>
   );
 }
