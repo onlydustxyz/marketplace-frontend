@@ -11,6 +11,12 @@ import { useIntl } from "src/hooks/useIntl";
 import ArrowRightUpLine from "src/icons/ArrowRightUpLine";
 import { GithubContributionType, GithubItemStatus } from "src/types";
 
+export enum ContributionBadgeSizes {
+  Xs = "text-xs",
+  Sm = "text-sm",
+  Md = "text-base",
+}
+
 export function ContributionBadge({
   id,
   number,
@@ -22,6 +28,7 @@ export function ContributionBadge({
   url,
   withTooltip = true,
   asLink = false,
+  size = ContributionBadgeSizes.Sm,
 }: {
   id: string;
   number: number;
@@ -33,6 +40,7 @@ export function ContributionBadge({
   url: string;
   withTooltip?: boolean;
   asLink?: boolean;
+  size?: ContributionBadgeSizes;
 }) {
   const Component = asLink ? "a" : "div";
   const ComponentProps = asLink ? { href: url, target: "_blank", rel: "noopener noreferrer" } : {};
@@ -95,7 +103,7 @@ export function ContributionBadge({
       >
         <ContributionIcon type={type} status={status} />
         <div className="flex">
-          <span className="text-sm leading-none">{number}</span>
+          <span className={classNames("leading-none", size)}>{number}</span>
           {isExternal ? <ArrowRightUpLine className="text-xs leading-none" /> : null}
         </div>
       </Component>
