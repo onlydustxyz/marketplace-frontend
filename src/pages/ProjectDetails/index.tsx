@@ -1,19 +1,15 @@
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { LanguageMap } from "src/types";
-import {
-  GetProjectIdFromKeyDocument,
-  GetProjectIdFromKeyQuery,
-  ProjectLeadFragment,
-  SponsorFragment,
-} from "src/__generated/graphql";
+import { ProjectLeadFragment, SponsorFragment } from "src/__generated/graphql";
 import View from "./View";
 import { RoutePaths } from "src/App";
 import useProjectVisibility from "src/hooks/useProjectVisibility";
-import { useSuspenseQuery_experimental as useSuspenseQuery } from "@apollo/client";
 import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
-import { contextWithCacheHeaders } from "src/utils/headers";
 import SEO from "src/components/SEO";
+import DataSwitch from "src/App/DataWrapper/DataSwitch";
+import { useContext } from "react";
+import { DataContext } from "src/App/DataWrapper/DataContext";
 
 type ProjectDetailsParams = {
   projectKey: string;
@@ -35,35 +31,30 @@ export interface ProjectDetails {
 export default function ProjectDetails() {
   const { projectKey = "" } = useParams<ProjectDetailsParams>();
 
-  const projectIdQuery = useSuspenseQuery<GetProjectIdFromKeyQuery>(GetProjectIdFromKeyDocument, {
-    variables: { projectKey },
-    ...contextWithCacheHeaders,
-  });
-  const project = projectIdQuery.data.projects[0];
-
-  if (!project) {
-    return <Navigate to={RoutePaths.NotFound} />;
-  }
-
-  return <ProjectPresentDetails projectKey={projectKey} {...project} />;
+  return (
+    <DataSwitch projectKey={projectKey}>
+      <ProjectPresentDetails />
+    </DataSwitch>
+  );
 }
 
-function ProjectPresentDetails({
-  projectKey,
-  id: projectId,
-  name,
-}: {
-  projectKey: string;
-  id: string;
-  name: string | null;
-  shortDescription: string | null;
-}) {
-  const { visibleToCurrentUser } = useProjectVisibility(projectId);
+function ProjectPresentDetails() {
   const { T } = useIntl();
+  const dataContext = useContext(DataContext);
+
+  if (!dataContext) {
+    throw new Error(T("dataFetching.dataContext"));
+  }
+
+  const { projectKey, data, isLoading, error } = dataContext;
+  const { id, name } = data;
+
+  const { visibleToCurrentUser } = useProjectVisibility(id);
+
   const showToaster = useShowToaster();
   const navigate = useNavigate();
 
-  if (!projectId || visibleToCurrentUser === false) {
+  if (!id || visibleToCurrentUser === false) {
     showToaster(T("project.error.notFound"), { isError: true });
     navigate(RoutePaths.Projects);
   }
@@ -71,7 +62,7 @@ function ProjectPresentDetails({
   return (
     <>
       <SEO title={`${name} — OnlyDust`} />
-      <View projectId={projectId} projectKey={projectKey} />
+      <View projectId={id} projectKey={projectKey} isLoading={isLoading} error={error} />
     </>
   );
 }
