@@ -24,6 +24,7 @@ function getIssueStatusDate(issue: GithubIssueFragment) {
     case GithubIssueStatus.Completed:
       return new Date(issue.closedAt);
     case GithubIssueStatus.Open:
+    default:
       return new Date(issue.createdAt);
   }
 }

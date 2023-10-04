@@ -31,6 +31,7 @@ function getPullRequestStatusDate(pullRequest: GithubPullRequestWithCommitsFragm
       return new Date(pullRequest.closedAt);
     case GithubPullRequestStatus.Merged:
       return new Date(pullRequest.mergedAt);
+    default:
     case GithubPullRequestStatus.Open:
       return new Date(pullRequest.createdAt);
   }

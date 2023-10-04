@@ -29,6 +29,7 @@ function getCodeReviewStatusDate(codeReview: GithubCodeReviewFragment) {
     case GithubCodeReviewStatus.Completed:
       return new Date(codeReview.submittedAt);
     case GithubCodeReviewStatus.Pending:
+    default:
       return new Date(codeReview.githubPullRequest?.createdAt);
   }
 }
@@ -42,7 +43,9 @@ function getStatus(codeReview: GithubCodeReviewFragment) {
       return outcome === GithubCodeReviewOutcome.ChangeRequested
         ? GithubCodeReviewStatus.ChangeRequested
         : GithubCodeReviewStatus.Completed;
+
     case GithubCodeReviewStatus.Pending:
+    default:
       return GithubCodeReviewStatus.Pending;
   }
 }

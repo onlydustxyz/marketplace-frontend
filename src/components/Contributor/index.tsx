@@ -9,39 +9,39 @@ import { useContributorProfilePanel } from "src/hooks/useContributorProfilePanel
 type Props = {
   contributor: ContributorType;
   clickable?: boolean;
+  className?: string;
 };
 
-export default function Contributor({ contributor, clickable }: Props) {
+export default function Contributor({ className, contributor, clickable }: Props) {
   const { T } = useIntl();
   const { open } = useContributorProfilePanel();
 
   return (
-    <div className="flex items-center gap-1.5 truncate text-xs">
+    <div
+      className={classNames("inline-flex flex-row items-center gap-2 truncate text-sm font-normal", className)}
+      onClick={e => {
+        if (clickable) {
+          e.preventDefault();
+          open(contributor.githubUserId);
+        }
+      }}
+    >
+      {contributor.avatarUrl && (
+        <RoundedImage
+          alt={contributor.githubUserId.toString()}
+          rounding={Rounding.Circle}
+          size={ImageSize.Xs}
+          src={contributor.avatarUrl}
+        />
+      )}
       <div
-        className="flex flex-row items-center gap-2 truncate text-sm font-normal"
-        onClick={e => {
-          if (clickable) {
-            e.preventDefault();
-            open(contributor.githubUserId);
-          }
-        }}
+        className={classNames({
+          "truncate text-spacePurple-300 hover:cursor-pointer hover:underline": clickable,
+        })}
       >
-        {contributor.avatarUrl && (
-          <RoundedImage
-            alt={contributor.githubUserId.toString()}
-            rounding={Rounding.Circle}
-            size={ImageSize.Xs}
-            src={contributor.avatarUrl}
-          />
-        )}
-        <div
-          className={classNames({
-            "truncate text-spacePurple-300 hover:cursor-pointer hover:underline": clickable,
-          })}
-        >
-          {contributor.login}
-        </div>
+        {contributor.login}
       </div>
+
       {contributor.userId && (
         <>
           <img

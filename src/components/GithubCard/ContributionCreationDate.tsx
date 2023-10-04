@@ -1,12 +1,11 @@
-import CodeReviewIcon from "src/assets/icons/CodeReviewIcon";
-import IssueOpen from "src/assets/icons/IssueOpen";
 import Tooltip, { TooltipPosition } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
-import GitPullRequestLine from "src/icons/GitPullRequestLine";
+import { GithubIssueStatus } from "src/__generated/graphql";
 import Time from "src/icons/TimeLine";
-import { GithubContributionType } from "src/types";
+import { GithubCodeReviewStatus, GithubContributionType, GithubPullRequestStatus } from "src/types";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { getFormattedDate, getFormattedTime } from "./utils";
+import { ContributionIcon } from "src/components/Contribution/ContributionIcon";
 
 const creationTokens = {
   [GithubContributionType.PullRequest]: "contributions.tooltip.dateOpened",
@@ -14,10 +13,10 @@ const creationTokens = {
   [GithubContributionType.CodeReview]: "contributions.tooltip.dateAssigned",
 };
 
-export const icons = {
-  [GithubContributionType.PullRequest]: <GitPullRequestLine className="-my-1 text-base text-github-green" />,
-  [GithubContributionType.Issue]: <IssueOpen className="fill-github-green p-0.5" />,
-  [GithubContributionType.CodeReview]: <CodeReviewIcon className="-my-1 text-base text-github-green" />,
+export const iconsStatus = {
+  [GithubContributionType.PullRequest]: GithubPullRequestStatus.Open,
+  [GithubContributionType.Issue]: GithubIssueStatus.Open,
+  [GithubContributionType.CodeReview]: GithubCodeReviewStatus.Pending,
 };
 
 type ContributionCreationDateProps = {
@@ -27,7 +26,6 @@ type ContributionCreationDateProps = {
 };
 
 export function ContributionCreationDate({ id, type, date }: ContributionCreationDateProps) {
-  console.log("RENDER");
   const { T } = useIntl();
 
   const tooltipId = `${id}-created-at-tooltip`;
@@ -41,12 +39,12 @@ export function ContributionCreationDate({ id, type, date }: ContributionCreatio
     <>
       <Tooltip id={tooltipId} clickable position={TooltipPosition.Top}>
         <div className="flex items-center gap-2 px-1 py-2">
-          {icons[type]}
+          <ContributionIcon type={type} status={iconsStatus[type]} />
           <p>{creationDate}</p>
         </div>
       </Tooltip>
 
-      <div data-tooltip-id={tooltipId} className="flex gap-1 first-letter:uppercase">
+      <div data-tooltip-id={tooltipId} className="flex items-center gap-1 first-letter:uppercase">
         <Time />
         {creationDateShort}
       </div>

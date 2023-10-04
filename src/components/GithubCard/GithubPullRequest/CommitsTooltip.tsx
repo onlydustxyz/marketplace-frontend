@@ -1,8 +1,6 @@
 import { useIntl } from "src/hooks/useIntl";
-import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import { GithubPullRequestWithCommitsFragment } from "src/__generated/graphql";
-import { Link, generatePath } from "react-router-dom";
-import { RoutePaths } from "src/App";
+import Contributor from "src/components/Contributor";
 
 type CommitsTooltipProps = {
   pullRequest: GithubPullRequestWithCommitsFragment;
@@ -18,31 +16,23 @@ export function CommitsTooltip({
   contributorLogin,
 }: CommitsTooltipProps) {
   const { T } = useIntl();
+
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col gap-1">
       <>
-        <span className="text-sm text-greyscale-200">
+        <span className="gap-1 text-sm text-greyscale-200">
           {T("reward.form.contributions.pullRequests.tooltip.createdBy")}
 
-          {pullRequest?.author?.login ? (
-            <Link
-              className="inline-flex text-spacePurple-400 hover:text-spacePurple-200"
-              to={generatePath(RoutePaths.PublicProfile, {
-                userLogin: pullRequest?.author?.login,
-              })}
-              target="_blank"
-            >
-              <span className="px-1">{pullRequest.author?.login}</span>
-              {pullRequest.author?.avatarUrl ? (
-                <RoundedImage
-                  alt={pullRequest.author.id.toString()}
-                  rounding={Rounding.Circle}
-                  size={ImageSize.Xxs}
-                  src={pullRequest.author?.avatarUrl}
-                />
-              ) : null}
-            </Link>
-          ) : null}
+          <Contributor
+            className="ml-1 flex-row-reverse"
+            key={pullRequest?.author?.id}
+            contributor={{
+              login: pullRequest?.author?.login ?? "",
+              avatarUrl: pullRequest?.author?.avatarUrl ?? "",
+              githubUserId: pullRequest?.author?.id,
+            }}
+            clickable
+          />
         </span>
 
         <span className="text-sm">

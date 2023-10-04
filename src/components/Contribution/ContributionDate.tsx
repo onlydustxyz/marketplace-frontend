@@ -10,9 +10,9 @@ import {
   GithubTypeStatusDict,
 } from "src/types";
 import displayRelativeDate from "src/utils/displayRelativeDate";
-import { ContributionIcon } from "./ContributionIcon";
+import { ContributionIcon, Sizes } from "./ContributionIcon";
 
-const statuses: GithubTypeStatusDict<string> = {
+const tokens: GithubTypeStatusDict<string> = {
   [GithubContributionType.PullRequest]: {
     [GithubPullRequestStatus.Open]: "contributions.tooltip.dateOpened",
     [GithubPullRequestStatus.Closed]: "contributions.tooltip.dateClosed",
@@ -31,7 +31,7 @@ const statuses: GithubTypeStatusDict<string> = {
   },
 };
 
-const statusesShort: GithubTypeStatusDict<string> = {
+const tokensShort: GithubTypeStatusDict<string> = {
   [GithubContributionType.PullRequest]: {
     [GithubPullRequestStatus.Open]: "githubPullRequest.status.merged",
     [GithubPullRequestStatus.Closed]: "githubPullRequest.status.closed",
@@ -80,7 +80,7 @@ export function ContributionDate({
         <div className="flex items-center gap-2 px-1 py-2">
           <ContributionIcon type={type} status={status} />
           <p>
-            {T(statuses[type][status as keyof typeof statuses[GithubContributionType]], {
+            {T(tokens[type][status as keyof typeof tokens[GithubContributionType]], {
               date: formattedDate,
               time: formattedTime,
             })}
@@ -91,8 +91,8 @@ export function ContributionDate({
       <div data-tooltip-id={tooltipId} className="flex items-center gap-1 first-letter:uppercase">
         {withIcon ? (
           <>
-            <ContributionIcon type={type} status={status} />
-            {T(statusesShort[type][status as keyof typeof statusesShort[GithubContributionType]], {
+            <ContributionIcon type={type} status={status} size={withIcon ? Sizes.xs : undefined} />
+            {T(tokensShort[type][status as keyof typeof tokensShort[GithubContributionType]], {
               date: displayRelativeDate(date),
             })}
           </>
