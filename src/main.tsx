@@ -2,6 +2,7 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import TagManager from "react-gtm-module";
 import { ErrorBoundary } from "react-error-boundary";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 import ApolloWrapper from "src/providers/ApolloWrapper";
 import OnboardingProvider from "./App/OnboardingProvider";
@@ -34,6 +35,9 @@ if (config.GTM_ID) {
   });
 }
 
+// Create a client
+const queryClient = new QueryClient();
+
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <IntlProvider>
     <BrowserRouter>
@@ -44,23 +48,25 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
             <TokenSetProvider>
               <ToasterProvider>
                 <ApolloWrapper>
-                  <CommandsProvider>
-                    <AuthProvider>
-                      <SidePanelStackProvider>
-                        <SidePanelProvider>
-                          <ContributorProfilePanelProvider>
-                            {config.MAINTENANCE ? (
-                              <Maintenance />
-                            ) : (
-                              <OnboardingProvider>
-                                <App />
-                              </OnboardingProvider>
-                            )}
-                          </ContributorProfilePanelProvider>
-                        </SidePanelProvider>
-                      </SidePanelStackProvider>
-                    </AuthProvider>
-                  </CommandsProvider>
+                  <QueryClientProvider client={queryClient}>
+                    <CommandsProvider>
+                      <AuthProvider>
+                        <SidePanelStackProvider>
+                          <SidePanelProvider>
+                            <ContributorProfilePanelProvider>
+                              {config.MAINTENANCE ? (
+                                <Maintenance />
+                              ) : (
+                                <OnboardingProvider>
+                                  <App />
+                                </OnboardingProvider>
+                              )}
+                            </ContributorProfilePanelProvider>
+                          </SidePanelProvider>
+                        </SidePanelStackProvider>
+                      </AuthProvider>
+                    </CommandsProvider>
+                  </QueryClientProvider>
                 </ApolloWrapper>
               </ToasterProvider>
             </TokenSetProvider>

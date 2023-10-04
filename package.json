@@ -46,6 +46,7 @@
     "react-hotkeys-hook": "^4.4.1",
     "react-lottie": "^1.2.3",
     "react-markdown": "^8.0.4",
+    "react-query": "^3.39.3",
     "react-router-dom": "^6.4.3",
     "react-tooltip": "^5.13.1",
     "react-use": "^17.4.0",
@@ -60,6 +61,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.2",
+    "@faker-js/faker": "^8.0.2",
     "@graphql-codegen/cli": "^2.16.1",
     "@graphql-codegen/introspection": "^2.2.3",
     "@graphql-codegen/typescript": "^2.8.5",
@@ -113,7 +115,6 @@
     "vite": "^3.2.3",
     "vite-plugin-istanbul": "^3.0.4",
     "vitest": "^0.25.1",
-    "vitest-canvas-mock": "^0.2.2",
-    "@faker-js/faker": "^8.0.2"
+    "vitest-canvas-mock": "^0.2.2"
   }
 }

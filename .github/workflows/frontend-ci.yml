@@ -20,6 +20,7 @@ env:
   VITE_ENV: local
   VITE_LANGUAGES_FILTER: CSS,Dockerfile,Handlebars,HTML,Jupyter Notebook,Makefile,Nix,SCSS,Shell
   NODE_OPTIONS: --max_old_space_size=4096
+  VITE_USE_APOLLO: "true"
 
 jobs:
   build:
