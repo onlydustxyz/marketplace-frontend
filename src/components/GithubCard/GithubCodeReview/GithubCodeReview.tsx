@@ -100,7 +100,7 @@ export default function GithubCodeReview({
                 type={GithubContributionType.CodeReview}
                 status={getStatus(codeReview) as GithubCodeReviewStatus}
                 date={getCodeReviewStatusDate(codeReview)}
-                tooltipVariant={Variant.Default}
+                tooltipProps={{ variant: Variant.Default }}
                 withIcon
               />
             }

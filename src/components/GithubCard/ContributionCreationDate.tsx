@@ -4,8 +4,8 @@ import { GithubIssueStatus } from "src/__generated/graphql";
 import Time from "src/icons/TimeLine";
 import { GithubCodeReviewStatus, GithubContributionType, GithubPullRequestStatus } from "src/types";
 import displayRelativeDate from "src/utils/displayRelativeDate";
-import { getFormattedDate, getFormattedTime } from "./utils";
 import { ContributionIcon } from "src/components/Contribution/ContributionIcon";
+import { getFormattedDateGB, getFormattedTimeUS } from "src/utils/date";
 
 const creationTokens = {
   [GithubContributionType.PullRequest]: "contributions.tooltip.dateOpened",
@@ -31,8 +31,8 @@ export function ContributionCreationDate({ id, type, date }: ContributionCreatio
   const tooltipId = `${id}-created-at-tooltip`;
   const creationDateShort = displayRelativeDate(date);
   const creationDate = T(creationTokens[type], {
-    date: getFormattedDate(date),
-    time: getFormattedTime(date),
+    date: getFormattedDateGB(date),
+    time: getFormattedTimeUS(date),
   });
 
   return (

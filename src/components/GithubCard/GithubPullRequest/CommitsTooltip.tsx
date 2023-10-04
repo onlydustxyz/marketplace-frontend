@@ -19,30 +19,28 @@ export function CommitsTooltip({
 
   return (
     <div className="flex flex-col gap-1">
-      <>
-        <span className="gap-1 text-sm text-greyscale-200">
-          {T("reward.form.contributions.pullRequests.tooltip.createdBy")}
+      <span className="gap-1 text-sm text-greyscale-200">
+        {T("reward.form.contributions.pullRequests.tooltip.createdBy")}
 
-          <Contributor
-            className="ml-1 flex-row-reverse"
-            key={pullRequest?.author?.id}
-            contributor={{
-              login: pullRequest?.author?.login ?? "",
-              avatarUrl: pullRequest?.author?.avatarUrl ?? "",
-              githubUserId: pullRequest?.author?.id,
-            }}
-            clickable
-          />
-        </span>
+        <Contributor
+          className="ml-1 flex-row-reverse"
+          key={pullRequest?.author?.id}
+          contributor={{
+            login: pullRequest?.author?.login ?? "",
+            avatarUrl: pullRequest?.author?.avatarUrl ?? "",
+            githubUserId: pullRequest?.author?.id,
+          }}
+          clickable
+        />
+      </span>
 
-        <span className="text-sm">
-          {T("githubCodeReview.tooltip.commits", {
-            user: contributorLogin ?? "",
-            commits: userCommits + "/" + commitsCount,
-            count: commitsCount,
-          })}
-        </span>
-      </>
+      <span className="text-sm">
+        {T("githubCodeReview.tooltip.commits", {
+          user: contributorLogin ?? "",
+          commits: userCommits + "/" + commitsCount,
+          count: commitsCount,
+        })}
+      </span>
     </div>
   );
 }

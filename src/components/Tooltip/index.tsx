@@ -2,6 +2,7 @@ import classNames from "classnames";
 import { PropsWithChildren } from "react";
 import { createPortal } from "react-dom";
 import { Tooltip as ReactTooltip } from "react-tooltip";
+import { twMerge } from "tailwind-merge";
 
 export enum TooltipPosition {
   Top = "top",
@@ -23,6 +24,7 @@ type TooltipProps = {
   anchorId?: string;
   variant?: Variant;
   [otherProp: string]: unknown;
+  className?: string;
 } & CommonProps &
   PropsWithChildren;
 
@@ -43,6 +45,7 @@ export default function Tooltip({
   anchorSelect,
   children,
   variant = Variant.Default,
+  className,
   ...rest
 }: TooltipProps) {
   return createPortal(
@@ -51,9 +54,12 @@ export default function Tooltip({
       place={position}
       anchorId={anchorId}
       anchorSelect={anchorSelect}
-      className={classNames(
-        "z-50 rounded-lg px-3 py-2 text-center font-walsheim text-xs font-normal text-greyscale-50 opacity-100",
-        variants[variant]
+      className={twMerge(
+        classNames(
+          "z-50 rounded-lg px-3 py-2 text-center font-walsheim text-xs font-normal text-greyscale-50 opacity-100",
+          variants[variant],
+          className
+        )
       )}
       render={({ content, activeAnchor }) =>
         content ? (

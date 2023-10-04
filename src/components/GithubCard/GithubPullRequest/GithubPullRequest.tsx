@@ -31,8 +31,8 @@ function getPullRequestStatusDate(pullRequest: GithubPullRequestWithCommitsFragm
       return new Date(pullRequest.closedAt);
     case GithubPullRequestStatus.Merged:
       return new Date(pullRequest.mergedAt);
-    default:
     case GithubPullRequestStatus.Open:
+    default:
       return new Date(pullRequest.createdAt);
   }
 }
@@ -90,7 +90,7 @@ export default function GithubPullRequest({
               type={GithubContributionType.PullRequest}
               status={pullRequest.status as GithubPullRequestStatus}
               date={getPullRequestStatusDate(pullRequest)}
-              tooltipVariant={Variant.Default}
+              tooltipProps={{ variant: Variant.Default }}
               withIcon
             />
           </div>

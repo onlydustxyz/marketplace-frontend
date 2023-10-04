@@ -77,7 +77,7 @@ export default function GithubIssue({
               type={GithubContributionType.Issue}
               status={issue.status as GithubIssueStatus}
               date={getIssueStatusDate(issue)}
-              tooltipVariant={Variant.Default}
+              tooltipProps={{ variant: Variant.Default }}
               withIcon
             />
           </div>

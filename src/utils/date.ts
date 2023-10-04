@@ -15,3 +15,8 @@ dayjs.extend(weekOfYear);
 dayjs.extend(utc);
 
 export const weekNumber = (date: Date) => dayjs.utc(date).week();
+
+// British date format DD/MM/YYYY
+export const getFormattedDateGB = (date: Date) => new Intl.DateTimeFormat("en-GB", { dateStyle: "short" }).format(date);
+// American time format HH:MM AM/PM
+export const getFormattedTimeUS = (date: Date) => new Intl.DateTimeFormat("en-US", { timeStyle: "short" }).format(date);
