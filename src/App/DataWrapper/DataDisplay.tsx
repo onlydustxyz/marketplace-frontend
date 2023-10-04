@@ -24,9 +24,5 @@ export default function DataDisplay({ projectKey, data, isLoading, error, childr
 
   const contextValue = { projectKey, data, isLoading, error };
 
-  return data ? (
-    <DataContext.Provider value={contextValue}>
-      <div>{children}</div>
-    </DataContext.Provider>
-  ) : null;
+  return data ? <DataContext.Provider value={contextValue}>{children}</DataContext.Provider> : null;
 }
