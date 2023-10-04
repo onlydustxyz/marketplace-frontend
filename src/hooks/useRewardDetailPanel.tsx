@@ -3,17 +3,19 @@ import SidePanel from "src/components/SidePanel";
 import { RewardDetail } from "src/components/RewardDetail/RewardDetail";
 
 type RewardDetailPanel = {
-  open: (githubUserId: number) => void;
+  open: (githubUserId: number, contributionId: string) => void;
 };
 
 const RewardDetailPanelContext = createContext<RewardDetailPanel | null>(null);
 
 export function RewardDetailPanelProvider({ children }: PropsWithChildren) {
   const [githubUserId, setGithubUserId] = useState<number>();
+  const [contributionId, setContributionId] = useState<string>();
   const [open, setOpen] = useState(false);
 
-  const openSidePanel = useCallback((githubUserId: number) => {
+  const openSidePanel = useCallback((githubUserId: number, contributionId: string) => {
     setGithubUserId(githubUserId);
+    setContributionId(contributionId);
     setOpen(true);
   }, []);
 
@@ -21,7 +23,9 @@ export function RewardDetailPanelProvider({ children }: PropsWithChildren) {
     <RewardDetailPanelContext.Provider value={{ open: openSidePanel }}>
       {children}
       <SidePanel open={open} setOpen={setOpen}>
-        {githubUserId && <RewardDetail githubUserId={githubUserId} />}
+        {githubUserId && contributionId ? (
+          <RewardDetail githubUserId={githubUserId} contributionId={contributionId} />
+        ) : null}
       </SidePanel>
     </RewardDetailPanelContext.Provider>
   );

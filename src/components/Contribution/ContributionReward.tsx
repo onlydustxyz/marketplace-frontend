@@ -1,5 +1,6 @@
 import { ContributionAttribute } from "src/components/Contribution/ContributionAttribute";
 import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
+import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
 import { useRewardDetailPanel } from "src/hooks/useRewardDetailPanel";
 import Medal2Fill from "src/icons/Medal2Fill";
@@ -7,6 +8,7 @@ import { formatPaymentId } from "src/utils/formatPaymentId";
 
 export function ContributionReward({ id, rewards }: { id: string; rewards: { paymentId: string }[] }) {
   const { T } = useIntl();
+  const { githubUserId } = useAuth();
   const count = rewards.length;
   const tooltipId = `${id}-${rewards?.[0].paymentId ?? "rewards"}`;
 
@@ -27,7 +29,7 @@ export function ContributionReward({ id, rewards }: { id: string; rewards: { pay
         type="button"
         data-tooltip-id={tooltipId}
         onClick={() => {
-          open(123);
+          if (githubUserId) open(githubUserId, id);
         }}
       >
         <ContributionAttribute className="hover:border-greyscale-50/20 hover:bg-orange-900">
