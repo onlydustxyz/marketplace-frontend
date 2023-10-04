@@ -7,6 +7,11 @@
     "confirmationToaster": "Thank you! If we need a profile like yours, you'll be contacted shortly",
     "contactNeeded": "Please share at least one way to reach you out in case it's a match."
   },
+  "comments": {
+    "zero": "No comments",
+    "one": "1 comment",
+    "many": "__count__ comments"
+  },
   "contribution": {
     "review": {
       "status": {
@@ -478,7 +483,9 @@
     "panel": {
       "title": "Details",
       "error": "We were unable to fetch the data for this contribution's rewards, please try again later.",
-      "empty": "Nothing here, this contribution may not have any rewards."
+      "empty": "Nothing here, this contribution may not have any rewards.",
+      "contributionFor": "For",
+      "contributionCreated": "Created __date__"
     }
   },
   "profile": {
