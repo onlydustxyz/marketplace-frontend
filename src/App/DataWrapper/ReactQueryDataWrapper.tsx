@@ -3,17 +3,32 @@ import { useQuery } from "react-query";
 import { useTokenSet } from "src/hooks/useTokenSet";
 import DataDisplay from "./DataDisplay";
 
+type QueryParam = {
+  key: string;
+  value: string;
+};
 export interface ReactQueryDataWrapperProps {
   children: ReactNode;
   param: string;
+  resourcePath?: string;
+  queryParams?: QueryParam[];
 }
 
-// this component will evolve soon to take API basepath, params and other inputs as props to be fully reusable
-export default function ReactQueryDataWrapper({ children, param }: ReactQueryDataWrapperProps) {
+function buildQueryString(queryParams: QueryParam[]): string {
+  return queryParams.map(param => `${encodeURIComponent(param.key)}=${encodeURIComponent(param.value)}`).join("&");
+}
+
+export default function ReactQueryDataWrapper({
+  children,
+  param,
+  resourcePath,
+  queryParams = [],
+}: ReactQueryDataWrapperProps) {
   const { tokenSet } = useTokenSet();
+  const scheme = "https://";
   const apiBasepath = import.meta.env.VITE_ONLYDUST_API_BASEPATH;
-  const resource = "/api/v1/projects/slug/";
-  const url = `${apiBasepath}${resource}${param}`;
+  const queryString = buildQueryString(queryParams);
+  const url = `${scheme}${apiBasepath}${resourcePath}${param}${queryString ? `?${queryString}` : ""}`;
   const option = tokenSet?.accessToken
     ? {
         headers: {
@@ -24,7 +39,7 @@ export default function ReactQueryDataWrapper({ children, param }: ReactQueryDat
 
   const { isLoading, error, data } = useQuery({
     queryKey: ["repoData"],
-    queryFn: () => fetch(`https://${url}`, option).then(res => res.json()),
+    queryFn: () => fetch(url, option).then(res => res.json()),
   });
 
   return (

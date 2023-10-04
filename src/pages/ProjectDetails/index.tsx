@@ -8,10 +8,12 @@ import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
 import SEO from "src/components/SEO";
 import DataSwitch from "src/App/DataWrapper/DataSwitch";
-import { useContext } from "react";
+import { ReactNode, useContext } from "react";
 import { DataContext } from "src/App/DataWrapper/DataContext";
-import ApolloDataWrapper from "src/App/DataWrapper/ApolloDataWrapper";
-import ReactQueryDataWrapper from "src/App/DataWrapper/ReactQueryDataWrapper";
+import { useSuspenseQuery_experimental as useSuspenseQuery } from "@apollo/client";
+import { GetProjectIdFromKeyDocument, GetProjectIdFromKeyQuery } from "src/__generated/graphql";
+import { contextWithCacheHeaders } from "src/utils/headers";
+import DataDisplay from "src/App/DataWrapper/DataDisplay";
 
 type ProjectDetailsParams = {
   projectKey: string;
@@ -30,11 +32,29 @@ export interface ProjectDetails {
   sponsors: SponsorFragment[];
 }
 
+interface ProjectDetailsDataWrapperProps {
+  children: ReactNode;
+  param: string;
+}
+
+function ProjectDetailsDataWrapper({ children, param }: ProjectDetailsDataWrapperProps) {
+  const projectIdQuery = useSuspenseQuery<GetProjectIdFromKeyQuery>(GetProjectIdFromKeyDocument, {
+    variables: { projectKey: param },
+    ...contextWithCacheHeaders,
+  });
+
+  return (
+    <DataDisplay param={param} data={projectIdQuery.data?.projects[0]}>
+      {children}
+    </DataDisplay>
+  );
+}
+
 export default function ProjectDetails() {
   const { projectKey = "" } = useParams<ProjectDetailsParams>();
 
   return (
-    <DataSwitch param={projectKey} ApolloDataWrapper={ApolloDataWrapper} ReactQueryDataWrapper={ReactQueryDataWrapper}>
+    <DataSwitch param={projectKey} ApolloDataWrapper={ProjectDetailsDataWrapper} resourcePath="/api/v1/projects/slug/">
       <ProjectPresentDetails />
     </DataSwitch>
   );
