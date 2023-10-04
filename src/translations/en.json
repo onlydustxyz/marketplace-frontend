@@ -778,7 +778,7 @@
     "text": "Looks like you've ventured a bit too far into the cosmic code-space and hit a pixel asteroid.",
     "button": "Go back to Homepage"
   },
-  "dataFetching":{
+  "dataFetching": {
     "dataContext": "This component must be used within a DataSwitch component"
   }
 }
