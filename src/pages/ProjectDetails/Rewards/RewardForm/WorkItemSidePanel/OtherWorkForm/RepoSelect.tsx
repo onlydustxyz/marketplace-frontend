@@ -1,5 +1,5 @@
 import { Listbox } from "@headlessui/react";
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
@@ -24,7 +24,7 @@ export default function RepoSelect({ repos, repo, setRepo }: Props) {
         <Listbox.Button
           data-testid="select-repo-button"
           as="div"
-          className={classNames(
+          className={cn(
             "relative flex flex-row items-center gap-2 rounded-lg border border-greyscale-50/8 bg-white/5 px-2.5 py-1.5 font-walsheim text-sm font-medium",
             {
               "text-greyscale-50": repo.hasIssues,
@@ -55,7 +55,7 @@ export default function RepoSelect({ repos, repo, setRepo }: Props) {
               key={`${repo?.owner}-${repo?.name}`}
               value={repo}
               as="div"
-              className={classNames(
+              className={cn(
                 "flex cursor-pointer flex-row items-center gap-2 px-3 py-2 font-walsheim text-sm font-medium ",
                 {
                   "text-greyscale-50 hover:bg-white/5": repo.hasIssues,

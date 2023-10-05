@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import { Switch } from "@headlessui/react";
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 
 type Props = {
   testId?: string;
@@ -16,7 +16,7 @@ const Toggle: React.FC<Props> = ({ testId, label, icon, enabled, setEnabled }) =
       data-testid={testId}
       checked={enabled}
       onChange={setEnabled}
-      className={classNames(
+      className={cn(
         "flex w-fit shrink-0 flex-row items-center justify-center",
         "font-walsheim font-medium text-greyscale-50 drop-shadow-bottom-sm",
         "drop-shadow-bottom-sm",

@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 import { GithubCodeReviewFragment } from "src/__generated/graphql";
 import Card from "src/components/Card";
 import { GithubLink } from "src/components/GithubCard/GithubLink/GithubLink";
@@ -75,7 +75,7 @@ export default function GithubCodeReview({
   return (
     <Card
       padded={false}
-      className={classNames("flex flex-row gap-3 rounded-2xl p-4 hover:bg-noise-light", {
+      className={cn("flex flex-row gap-3 rounded-2xl p-4 hover:bg-noise-light", {
         "mt-1": addMarginTopForVirtuosoDisplay,
       })}
       withBg={false}

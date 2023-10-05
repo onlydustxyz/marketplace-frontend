@@ -1,7 +1,7 @@
 import { Listbox, Transition } from "@headlessui/react";
 import technologyIcon from "assets/img/technology.svg";
 import sponsorIcon from "assets/img/circle.png";
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 import { useState } from "react";
 import ArrowLeftSLine from "src/icons/ArrowLeftSLine";
 import Badge, { BadgeSize } from "src/components/Badge";
@@ -55,7 +55,7 @@ export default function FilterDropDown({
             <div className="flex items-center gap-2">
               {value.length > 0 && <Badge size={BadgeSize.Medium} value={value.length} />}
               <div
-                className={classNames("transition duration-300", {
+                className={cn("transition duration-300", {
                   "-rotate-180": !open,
                   "-rotate-90": open,
                 })}
@@ -79,7 +79,7 @@ export default function FilterDropDown({
                   key={option}
                   as="div"
                   value={option}
-                  className={classNames(
+                  className={cn(
                     "w-fit rounded-lg border border-greyscale-50/8  bg-whiteFakeOpacity-10 px-2 py-1 font-walsheim text-xs font-normal text-neutral-100",
                     "hover:cursor-pointer",
                     "ui-selected:pseudo-outline-2",

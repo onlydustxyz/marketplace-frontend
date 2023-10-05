@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 
 export enum Size {
   Medium = "Medium",
@@ -9,5 +9,5 @@ interface Props {
 }
 
 export default function Subtract({ size = Size.Medium }: Props) {
-  return <i role="add" className={classNames("ri-subtract-line", { "text-base": size === Size.Medium })} />;
+  return <i role="add" className={cn("ri-subtract-line", { "text-base": size === Size.Medium })} />;
 }

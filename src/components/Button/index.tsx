@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 import { PropsWithChildren } from "react";
 
 export enum ButtonSize {
@@ -46,7 +46,7 @@ export default function Button({
 }: ButtonProps) {
   return (
     <button
-      className={classNames(
+      className={cn(
         "flex flex-row items-center justify-center",
         "font-walsheim font-medium drop-shadow-bottom-sm",
         {

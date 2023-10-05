@@ -3,7 +3,7 @@ import CheckLine from "src/icons/CheckLine";
 import { useT } from "talkr";
 import { useMediaQuery } from "usehooks-ts";
 import Button, { ButtonSize } from "src/components/Button";
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 
 export enum CalloutSizes {
   Small,
@@ -35,7 +35,7 @@ export default function ProjectLeadInvitationView({
 
   return (
     <div
-      className={classNames(
+      className={cn(
         "relative flex flex-row items-center justify-between gap-5 overflow-hidden rounded-xl text-center font-medium sm:flex-row",
         "bg-rainbow animate-wave after:pointer-events-none after:absolute after:h-full after:w-full after:bg-noise-light",
         {
@@ -46,7 +46,7 @@ export default function ProjectLeadInvitationView({
       )}
     >
       <div
-        className={classNames("flex flex-1 text-left font-walsheim text-base sm:flex-auto", {
+        className={cn("flex flex-1 text-left font-walsheim text-base sm:flex-auto", {
           "text-sm": size === CalloutSizes.Small,
           "text-md": size === CalloutSizes.Medium,
           "text-lg": size === CalloutSizes.Large,

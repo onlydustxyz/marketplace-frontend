@@ -6,7 +6,7 @@ import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import { useIntl } from "src/hooks/useIntl";
 import { ProjectDetailsTab } from ".";
 import { generatePath, NavLink, useNavigate } from "react-router-dom";
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 import ProjectOption from "./ProjectOption";
 import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
@@ -85,7 +85,7 @@ export default function View({ expandable, currentProject, allProjects, availabl
               to={tab.path}
               onClick={onLinkClick}
               className={({ isActive }) =>
-                classNames("rounded-xl px-4 py-2.5 text-base hover:cursor-pointer", {
+                cn("rounded-xl px-4 py-2.5 text-base hover:cursor-pointer", {
                   "bg-white/8 text-white": isActive,
                   "text-neutral-400": !isActive,
                 })

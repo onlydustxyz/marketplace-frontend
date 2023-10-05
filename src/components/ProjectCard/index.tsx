@@ -1,7 +1,7 @@
 import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 import { generatePath, Link } from "react-router-dom";
 import { RoutePaths } from "src/App";
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 import Card, { CardBorder } from "src/components/Card";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import { useIntl } from "src/hooks/useIntl";
@@ -56,7 +56,7 @@ export default function ProjectCard({ project, className }: ProjectCardProps) {
 
   const card = (
     <Card
-      className={classNames("relative bg-noise-light hover:bg-right", className)}
+      className={cn("relative bg-noise-light hover:bg-right", className)}
       border={hasPendingInvitation ? CardBorder.MultiColor : CardBorder.Medium}
       dataTestId="project-card"
     >

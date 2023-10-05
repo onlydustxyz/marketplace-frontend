@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 
 export enum Size {
   Default = "Default",
@@ -11,7 +11,5 @@ interface Props {
 }
 
 export default function GithubLogo({ className, size = Size.Default }: Props) {
-  return (
-    <i role="githubLogo" className={classNames(`ri-github-fill ${className}`, { ["text-3xl"]: size === Size.Large })} />
-  );
+  return <i role="githubLogo" className={cn(`ri-github-fill ${className}`, { ["text-3xl"]: size === Size.Large })} />;
 }

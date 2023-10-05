@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 import { useMemo } from "react";
 import { useFormContext, useFormState } from "react-hook-form";
 import {
@@ -131,7 +131,7 @@ export default function OtherIssueInput({ type, addWorkItem, contributorId }: Pr
         prefixComponent={
           <div className="mt-0.5">
             <Link
-              className={classNames("text-xl", {
+              className={cn("text-xl", {
                 "text-spaceBlue-200": !otherIssueLink,
                 "text-greyscale-50": otherIssueLink && !error,
                 "text-orange-500": error,

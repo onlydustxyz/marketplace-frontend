@@ -28,7 +28,7 @@ import CompletionBar from "src/components/CompletionBar";
 import { useState } from "react";
 import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 
 type Props = {
   profile: UserProfileFragment & OwnUserProfileDetailsFragment;
@@ -205,7 +205,7 @@ export default function EditView({ profile, setEditMode }: Props) {
             <Tag size={TagSize.Medium} testid="dirtyTag">
               {isDirty || !isValid ? (
                 <div
-                  className={classNames("flex flex-row items-center gap-1", {
+                  className={cn("flex flex-row items-center gap-1", {
                     "text-orange-500": !isValid,
                     "text-spacePurple-300": isValid,
                   })}

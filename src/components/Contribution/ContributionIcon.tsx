@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 import { GithubIssueStatus } from "src/__generated/graphql";
 import CodeReviewCheckIcon from "src/assets/icons/CodeReviewCheckIcon";
 import IssueCancelled from "src/assets/icons/IssueCancelled";
@@ -49,7 +49,7 @@ export const variants = {
 
 function IssueOpenIcon({ size }: { size: Sizes }) {
   return (
-    <div className={classNames("flex items-center justify-center", size)}>
+    <div className={cn("flex items-center justify-center", size)}>
       <IssueOpen className={size === Sizes.md ? Sizes.sm : size} />
     </div>
   );
@@ -57,7 +57,7 @@ function IssueOpenIcon({ size }: { size: Sizes }) {
 
 function IssueClosedIcon({ size }: { size: Sizes }) {
   return (
-    <div className={classNames("flex items-center justify-center", size)}>
+    <div className={cn("flex items-center justify-center", size)}>
       <CheckboxCircleLine className={size === Sizes.xs ? Sizes.sm : size} />
     </div>
   );
@@ -92,7 +92,7 @@ export function ContributionIcon({
   };
 
   return (
-    <div className={classNames("leading-none", variants.status[status])}>
+    <div className={cn("leading-none", variants.status[status])}>
       {icons[type][status as keyof typeof icons[GithubContributionType]]}
     </div>
   );

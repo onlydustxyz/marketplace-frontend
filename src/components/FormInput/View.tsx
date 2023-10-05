@@ -3,7 +3,7 @@ import { UseFormRegisterReturn } from "react-hook-form";
 import LoaderIcon from "src/assets/icons/Loader";
 import ImageCard, { BackgroundNoise, BackgroundPosition, BackgroundSize } from "src/components/ImageCard";
 import headerElementBackground from "src/assets/img/alert-bg.png";
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import { Size } from ".";
 import { withTooltip } from "src/components/Tooltip";
@@ -74,7 +74,7 @@ const View: React.FC<PropsType> = ({
   return (
     <label
       htmlFor={register.name}
-      className={classNames("flex flex-grow flex-col gap-2 font-walsheim text-greyscale-300", {
+      className={cn("flex flex-grow flex-col gap-2 font-walsheim text-greyscale-300", {
         "mb-6": withMargin,
       })}
     >
@@ -85,7 +85,7 @@ const View: React.FC<PropsType> = ({
         </div>
       )}
       <div
-        className={classNames("flex flex-col", {
+        className={cn("flex flex-col", {
           "gap-8": errorDisplay === InputErrorDisplay.Banner,
         })}
       >
@@ -95,7 +95,7 @@ const View: React.FC<PropsType> = ({
             id: register.name,
             placeholder,
             type,
-            className: classNames(
+            className: cn(
               "w-full bg-white/5 rounded-xl font-walsheim font-normal",
               { "text-greyscale-50": !disabled, "text-greyscale-600": disabled },
               "border border-greyscale-50/[0.08]",

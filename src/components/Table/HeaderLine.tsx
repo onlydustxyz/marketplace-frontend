@@ -1,10 +1,10 @@
 import { PropsWithChildren } from "react";
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 
 type Props = PropsWithChildren<{
   className?: string;
 }>;
 
 export default function HeaderLine({ className, children }: Props) {
-  return <tr className={classNames("uppercase", className)}>{children}</tr>;
+  return <tr className={cn("uppercase", className)}>{children}</tr>;
 }

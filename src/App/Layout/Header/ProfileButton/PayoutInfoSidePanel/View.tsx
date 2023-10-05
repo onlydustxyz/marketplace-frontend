@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 import Button from "src/components/Button";
 import { ButtonSize } from "src/components/Button";
 import Tag, { TagSize } from "src/components/Tag";
@@ -49,7 +49,7 @@ export default function View({ payoutSettingsValid, saveButtonDisabled, unsavedC
       <div className="mx-2 mb-1 flex min-h-0 flex-col gap-6 px-4 pt-4 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
         <Tag size={TagSize.Medium}>
           <div
-            className={classNames({
+            className={cn({
               "text-orange-500": !payoutSettingsValid,
             })}
           >

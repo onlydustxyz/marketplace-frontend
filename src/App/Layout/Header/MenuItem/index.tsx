@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import underline from "assets/img/underline.png";
 import { Link } from "react-router-dom";
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 
 interface MenuItemProps {
   path: string;
@@ -14,7 +14,7 @@ export default function MenuItem({ path, link, state, children, activeRegex }: M
   const active = (activeRegex || new RegExp(`^${link}.*`)).test(path);
   return (
     <div
-      className={classNames(
+      className={cn(
         "align-center relative flex justify-center pb-0.5 text-base outline-4 drop-shadow-lg saturate-200",
         {
           "font-bold text-white": active,

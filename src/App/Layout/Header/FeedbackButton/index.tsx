@@ -1,5 +1,5 @@
 import { SliderButton } from "@typeform/embed-react";
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
 import DiscussLine from "src/icons/DiscussLine";
@@ -35,7 +35,7 @@ export default function FeedbackButton() {
           transitiveSearchParams={true}
         >
           <div
-            className={classNames(
+            className={cn(
               "flex flex-row items-center justify-center gap-2 rounded-xl font-walsheim",
               "w-fit font-medium drop-shadow-bottom-sm hover:shadow-none",
               "h-8 border border-greyscale-50 bg-white/5 px-4 py-2 text-sm text-greyscale-50",

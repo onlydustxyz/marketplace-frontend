@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { RoutePaths } from "src/App";
@@ -53,7 +53,7 @@ export default function ViewMobile({
     <>
       <button
         onClick={() => setPanelOpen(true)}
-        className={classNames(
+        className={cn(
           "border-1 flex items-center justify-center gap-2 rounded-full border px-2 py-1.5 font-walsheim text-sm",
           {
             "border-greyscale-50/12": !showMissingPayoutSettingsState,
@@ -74,7 +74,7 @@ export default function ViewMobile({
                     to={RoutePaths.Projects}
                     onClick={() => setPanelOpen(false)}
                     className={({ isActive }) =>
-                      classNames("flex items-center gap-3 rounded-xl p-4", { "bg-white/8": isActive })
+                      cn("flex items-center gap-3 rounded-xl p-4", { "bg-white/8": isActive })
                     }
                   >
                     <Folder3Line className="text-xl" /> {T("navbar.projects")}
@@ -85,7 +85,7 @@ export default function ViewMobile({
                       to={RoutePaths.Contributions}
                       onClick={() => setPanelOpen(false)}
                       className={({ isActive }) =>
-                        classNames("flex items-center gap-3 rounded-xl p-4", { "bg-white/8": isActive })
+                        cn("flex items-center gap-3 rounded-xl p-4", { "bg-white/8": isActive })
                       }
                     >
                       <StackLine className="text-xl" /> {T("navbar.contributions")}
@@ -97,7 +97,7 @@ export default function ViewMobile({
                       to={RoutePaths.Rewards}
                       onClick={() => setPanelOpen(false)}
                       className={({ isActive }) =>
-                        classNames("flex items-center gap-3 rounded-xl p-4", { "bg-white/8": isActive })
+                        cn("flex items-center gap-3 rounded-xl p-4", { "bg-white/8": isActive })
                       }
                     >
                       <ExchangeDollarLine className="text-xl" /> {T("navbar.rewards")}

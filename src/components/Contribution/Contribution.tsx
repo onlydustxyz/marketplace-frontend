@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 
 import { ContributionBadge } from "src/components/Contribution/ContributionBadge";
 import { ContributionReview } from "src/components/Contribution/ContributionReview";
@@ -52,7 +52,7 @@ export function Contribution({ contribution, isMobile = false }: Props) {
 
   return (
     <div
-      className={classNames("flex w-full gap-2", {
+      className={cn("flex w-full gap-2", {
         "flex-col items-start": isMobile,
         "items-center": !isMobile,
       })}

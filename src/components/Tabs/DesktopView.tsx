@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 
 import underline from "assets/img/underline.png";
 import type { Tab } from "src/components/Tabs/Tabs";
@@ -25,7 +25,7 @@ export function DesktopView({ tabs, variant = "grey" }: { tabs: Tab[]; variant: 
         return (
           <button type="button" key={i} data-testid={testId} className="relative" onClick={onClick}>
             <div
-              className={classNames("flex items-center gap-1.5 pb-2 font-walsheim text-base font-normal", {
+              className={cn("flex items-center gap-1.5 pb-2 font-walsheim text-base font-normal", {
                 "hover:border-b-2 hover:pb-1.5": !active,
                 [variants[variant].inactive]: !active,
                 [variants[variant].active]: active,

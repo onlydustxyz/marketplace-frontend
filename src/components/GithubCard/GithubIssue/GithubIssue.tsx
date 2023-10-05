@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 import { GithubIssueFragment, GithubIssueStatus } from "src/__generated/graphql";
 import Card from "src/components/Card";
 import { ContributionDate } from "src/components/Contribution/ContributionDate";
@@ -53,7 +53,7 @@ export default function GithubIssue({
   return (
     <Card
       padded={false}
-      className={classNames("flex flex-row gap-3 rounded-2xl p-4 hover:bg-noise-light", {
+      className={cn("flex flex-row gap-3 rounded-2xl p-4 hover:bg-noise-light", {
         "mt-1": addMarginTopForVirtuosoDisplay,
       })}
       withBg={false}

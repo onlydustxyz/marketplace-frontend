@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 
 export enum BadgeIcon {
   GitMerge = "git-merge-line",
@@ -22,7 +22,7 @@ export default function Badge({ id, icon, size, value, ...rest }: Props) {
   return (
     <div
       id={id}
-      className={classNames(
+      className={cn(
         "flex min-w-min items-center justify-center rounded-full bg-spacePurple-900 font-walsheim font-medium text-spacePurple-500",
         {
           "h-5 w-5 gap-0.5 px-1.5": size === BadgeSize.Small,
@@ -34,14 +34,14 @@ export default function Badge({ id, icon, size, value, ...rest }: Props) {
     >
       {icon && (
         <i
-          className={classNames(`ri-${icon}`, {
+          className={cn(`ri-${icon}`, {
             "text-xs": size === BadgeSize.Small,
             "text-base": [BadgeSize.Medium, BadgeSize.Large].includes(size),
           })}
         ></i>
       )}
       <span
-        className={classNames({
+        className={cn({
           "text-sm": size === BadgeSize.Small,
           "text-base": size === BadgeSize.Medium,
           "text-lg": size === BadgeSize.Large,

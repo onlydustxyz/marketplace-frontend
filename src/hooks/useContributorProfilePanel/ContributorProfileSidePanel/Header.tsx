@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 import { useRef, useState } from "react";
 import { ProfileCover, UserProfileFragment } from "src/__generated/graphql";
 import PencilLine from "src/icons/PencilLine";
@@ -47,7 +47,7 @@ export default function Header({ profile, editable, onChange, rounded }: Props) 
   return (
     <div className="z-10">
       <div
-        className={classNames(
+        className={cn(
           "h-24 w-full shrink-0 bg-cover",
           {
             "bg-profile-blue": cover === ProfileCover.Blue,
@@ -82,7 +82,7 @@ export default function Header({ profile, editable, onChange, rounded }: Props) 
 
       {avatarUrl && (
         <div
-          className={classNames("relative w-fit", { "cursor-pointer": editable })}
+          className={cn("relative w-fit", { "cursor-pointer": editable })}
           onClick={() => fileInputRef.current?.click()}
         >
           {uploading && (
@@ -92,7 +92,7 @@ export default function Header({ profile, editable, onChange, rounded }: Props) 
           )}
           <img
             src={avatarUrl}
-            className={classNames("-mt-12 ml-8 h-24 w-24 rounded-full", {
+            className={cn("-mt-12 ml-8 h-24 w-24 rounded-full", {
               "outline outline-4 outline-greyscale-50/12": isXl,
             })}
             data-testid="avatarUrl"

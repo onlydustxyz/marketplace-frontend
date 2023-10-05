@@ -3,7 +3,7 @@ import { withTooltip } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 import { Contributor as ContributorType } from "src/types";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 import { useContributorProfilePanel } from "src/hooks/useContributorProfilePanel";
 
 type Props = {
@@ -18,7 +18,7 @@ export default function Contributor({ className, contributor, clickable }: Props
 
   return (
     <div
-      className={classNames("inline-flex flex-row items-center gap-2 truncate text-sm font-normal", className)}
+      className={cn("inline-flex flex-row items-center gap-2 truncate text-sm font-normal", className)}
       onClick={e => {
         if (clickable) {
           e.preventDefault();
@@ -35,7 +35,7 @@ export default function Contributor({ className, contributor, clickable }: Props
         />
       )}
       <div
-        className={classNames({
+        className={cn({
           "truncate text-spacePurple-300 hover:cursor-pointer hover:underline": clickable,
         })}
       >

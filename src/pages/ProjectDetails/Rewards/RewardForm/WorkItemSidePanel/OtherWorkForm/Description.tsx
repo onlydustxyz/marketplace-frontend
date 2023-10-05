@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 import { useForm, useWatch } from "react-hook-form";
 import Input from "src/components/FormInput";
 import FormToggle from "src/components/FormToggle";
@@ -21,7 +21,7 @@ export default function Description({ description, setDescription }: Props) {
   });
 
   return (
-    <label htmlFor={name} className={classNames("flex flex-grow flex-col gap-2 font-walsheim text-greyscale-300")}>
+    <label htmlFor={name} className={cn("flex flex-grow flex-col gap-2 font-walsheim text-greyscale-300")}>
       <div className="flex items-center justify-between text-sm font-medium">
         <div className="tracking-tight">{T("reward.form.contributions.other.inputs.description")}</div>
         <FormToggle

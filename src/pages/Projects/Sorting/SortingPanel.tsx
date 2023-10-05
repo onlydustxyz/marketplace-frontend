@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 import { useIntl } from "src/hooks/useIntl";
 import { Sorting } from "src/pages/Projects/sorting";
 
@@ -17,7 +17,7 @@ export function SortingPanel({ all, current, onChange }: Props) {
         {all.map(value => (
           <button
             key={value}
-            className={classNames("rounded-lg border px-2 py-1 font-walsheim text-xs", {
+            className={cn("rounded-lg border px-2 py-1 font-walsheim text-xs", {
               "border-fuchsia-500 bg-slate-900 text-fuchsia-300": value === current,
               "border-stone-100 border-opacity-8 bg-white bg-opacity-8": value !== current,
             })}

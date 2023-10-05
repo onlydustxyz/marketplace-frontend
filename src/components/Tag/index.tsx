@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 import { ElementType, PropsWithChildren } from "react";
 import { MouseEvent } from "react";
 
@@ -47,7 +47,7 @@ export default function Tag({
       {...(onClick && { onClick })}
     >
       <div
-        className={classNames(
+        className={cn(
           "relative flex w-fit items-center justify-center gap-1 rounded-full font-walsheim font-normal text-white xl:h-7",
           {
             "px-2 py-1 text-xs": size === TagSize.Small,

@@ -1,5 +1,5 @@
 import { PropsWithChildren } from "react";
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 
 import { DesktopView, type Variants } from "src/components/Tabs/DesktopView";
 import { MobileView } from "src/components/Tabs/MobileView";
@@ -24,7 +24,7 @@ export function Tabs({
   return (
     <>
       <div
-        className={classNames({
+        className={cn({
           "hidden md:block": showMobile,
         })}
       >

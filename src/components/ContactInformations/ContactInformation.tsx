@@ -2,7 +2,7 @@ import Input, { Size } from "src/components/FormInput";
 import { RegisterOptions, useFormContext } from "react-hook-form";
 import { ReactElement } from "react";
 import CloseLine from "src/icons/CloseLine";
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 import EyeLine from "src/icons/EyeLine";
 import EyeOffLine from "src/icons/EyeOffLine";
 import { useIntl } from "src/hooks/useIntl";
@@ -66,7 +66,7 @@ function ClearFieldButton({ name, disabled }: CloseButtonProps) {
   const { setValue } = useFormContext();
   return (
     <CloseLine
-      className={classNames({
+      className={cn({
         "text-greyscale-600": disabled,
         "cursor-pointer": !disabled,
       })}
@@ -91,7 +91,7 @@ function VisibilityButton({ name, disabled }: VisibilityButtonProps) {
 
   return visible ? (
     <EyeLine
-      className={classNames({
+      className={cn({
         "text-spacePurple-200/50": disabled,
         "cursor-pointer text-spacePurple-200": !disabled,
       })}
@@ -106,7 +106,7 @@ function VisibilityButton({ name, disabled }: VisibilityButtonProps) {
     />
   ) : (
     <EyeOffLine
-      className={classNames({
+      className={cn({
         "text-greyscale-600": disabled,
         "cursor-pointer": !disabled,
       })}

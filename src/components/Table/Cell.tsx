@@ -1,5 +1,5 @@
 import { PropsWithChildren } from "react";
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 
 export enum CellHeight {
   Small = "Small",
@@ -18,7 +18,7 @@ export default function Cell({ height = CellHeight.Tall, horizontalMargin = true
   return (
     <td>
       <div
-        className={classNames(
+        className={cn(
           "flex items-center font-normal text-greyscale-50",
           {
             "py-4": height === CellHeight.Tall,
