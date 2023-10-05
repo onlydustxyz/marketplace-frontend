@@ -4,9 +4,11 @@ import { RoutePaths } from "src/App";
 import { GithubUser, useGetContributionRewardsQuery } from "src/__generated/graphql";
 import { ContributionBadge, ContributionBadgeSizes } from "src/components/Contribution/ContributionBadge";
 import { ContributionIcon } from "src/components/Contribution/ContributionIcon";
+import { ContributionLinked } from "src/components/Contribution/ContributionLinked";
 import { SpinningLogo } from "src/components/Loader/SpinningLogo";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import { useIntl } from "src/hooks/useIntl";
+import ArrowRightUpLine from "src/icons/ArrowRightUpLine";
 import DiscussLine from "src/icons/DiscussLine";
 import TimeLine from "src/icons/TimeLine";
 import displayRelativeDate from "src/utils/displayRelativeDate";
@@ -90,7 +92,7 @@ export function RewardDetail({
               <div className="flex items-center gap-2">
                 <RoundedImage src={project?.logoUrl ?? onlyDustLogo} alt={project?.name ?? ""} size={ImageSize.Xxs} />
                 <div className="text-sm text-greyscale-300">
-                  {T("rewards.panel.contributionFor")}&nbsp;
+                  {T("rewards.panel.contribution.forProject")}&nbsp;
                   <Link
                     to={generatePath(RoutePaths.ProjectDetails, {
                       projectKey: project?.key ?? "",
@@ -105,7 +107,7 @@ export function RewardDetail({
               <div className="flex items-center gap-1 text-sm leading-none text-greyscale-300">
                 <div className="flex items-center gap-1">
                   <TimeLine className="text-base leading-none" />
-                  <span>{T("rewards.panel.contributionCreated", { date: displayRelativeDate(createdAt) })}</span>
+                  <span>{T("rewards.panel.contribution.createdOn", { date: displayRelativeDate(createdAt) })}</span>
                 </div>
                 <div>|</div>
                 <div className="flex items-center gap-1">
@@ -120,8 +122,11 @@ export function RewardDetail({
                     {T("comments", { count: commentsCount })}
                   </div>
                   <div>|</div>
-                  {/* TODO */}
-                  <div>Linked to</div>
+                  <div className="flex items-center gap-1">
+                    <ArrowRightUpLine className="text-base leading-none" />
+                    {T("rewards.panel.contribution.linkedTo")}
+                  </div>
+                  <ContributionLinked contribution={contribution} />
                 </div>
               </div>
             </div>

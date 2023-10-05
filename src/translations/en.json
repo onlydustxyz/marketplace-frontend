@@ -484,8 +484,11 @@
       "title": "Details",
       "error": "We were unable to fetch the data for this contribution's rewards, please try again later.",
       "empty": "Nothing here, this contribution may not have any rewards.",
-      "contributionFor": "For",
-      "contributionCreated": "Created __date__"
+      "contribution": {
+        "forProject": "For",
+        "createdOn": "Created __date__",
+        "linkedTo": "Linked to"
+      }
     }
   },
   "profile": {
