@@ -2,7 +2,9 @@ import { GetContributionRewardsQuery } from "src/__generated/graphql";
 import { Dollar } from "src/assets/icons/Dollar";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import Tag, { TagBorderColor, TagSize } from "src/components/Tag";
+import { useContributorProfilePanel } from "src/hooks/useContributorProfilePanel";
 import { useIntl } from "src/hooks/useIntl";
+import { useRewardDetailPanel } from "src/hooks/useRewardDetailPanel";
 import { useRewardTimeWorked } from "src/hooks/useRewardTimeWorked";
 import CalendarEventLine from "src/icons/CalendarEventLine";
 import CheckLine from "src/icons/CheckLine";
@@ -16,6 +18,9 @@ export function RewardCard({
   reward: GetContributionRewardsQuery["contributions"][number]["rewardItems"][number];
 }) {
   const { T } = useIntl();
+
+  const { close: closeRewardPanel } = useRewardDetailPanel();
+  const { open: openProfilePanel } = useContributorProfilePanel();
 
   const {
     paymentId,
@@ -60,10 +65,16 @@ export function RewardCard({
         <RoundedImage src={requestor.avatarUrl} alt={requestor.login} rounding={Rounding.Circle} size={ImageSize.Xxs} />
         <p className="text-sm leading-none text-greyscale-300">
           {T("rewards.panel.rewards.fromUser")}&nbsp;
-          {/* TODO behaviour */}
-          <a href="" className="text-spacePurple-300 hover:text-spacePurple-200">
+          <button
+            type="button"
+            className="text-spacePurple-300 hover:text-spacePurple-200"
+            onClick={() => {
+              closeRewardPanel();
+              openProfilePanel(requestor.githubUserId);
+            }}
+          >
             {requestor.login}
-          </a>
+          </button>
         </p>
       </div>
 

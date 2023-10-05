@@ -1,13 +1,14 @@
 import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 import { Link, generatePath } from "react-router-dom";
 import { RoutePaths } from "src/App";
-import { GithubUser, WorkItem, useGetContributionRewardsQuery } from "src/__generated/graphql";
+import { GithubUser, useGetContributionRewardsQuery } from "src/__generated/graphql";
 import { ContributionBadge, ContributionBadgeSizes } from "src/components/Contribution/ContributionBadge";
 import { ContributionIcon } from "src/components/Contribution/ContributionIcon";
 import { ContributionLinked } from "src/components/Contribution/ContributionLinked";
 import { SpinningLogo } from "src/components/Loader/SpinningLogo";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import { useIntl } from "src/hooks/useIntl";
+import { useRewardDetailPanel } from "src/hooks/useRewardDetailPanel";
 import ArrowRightUpLine from "src/icons/ArrowRightUpLine";
 import DiscussLine from "src/icons/DiscussLine";
 import Medal2Fill from "src/icons/Medal2Fill";
@@ -32,6 +33,8 @@ export function RewardDetail({
     fetchPolicy: "network-only", // Used for first execution
     nextFetchPolicy: "cache-first", // Used for subsequent executions
   });
+
+  const { close: closeRewardPanel } = useRewardDetailPanel();
 
   console.log(data);
 
@@ -102,6 +105,7 @@ export function RewardDetail({
                         projectKey: project?.key ?? "",
                       })}
                       className="text-spacePurple-400 hover:text-spacePurple-300"
+                      onClick={closeRewardPanel}
                     >
                       {project?.name}
                     </Link>
