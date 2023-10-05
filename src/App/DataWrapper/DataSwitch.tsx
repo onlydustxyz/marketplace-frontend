@@ -3,7 +3,7 @@ import ReactQueryDataWrapper from "src/App/DataWrapper/ReactQueryDataWrapper";
 
 type QueryParam = {
   key: string;
-  value: string;
+  value: string[];
 };
 interface WrapperProps {
   children: ReactNode;

@@ -42,6 +42,8 @@ export default function ProjectCard({ project, className }: ProjectCardProps) {
     logoUrl,
     visibility,
     shortDescription,
+    // New REST API Fields
+    contributorCount,
   } = project;
 
   const projectUrl = logoUrl ? config.CLOUDFLARE_RESIZE_W_100_PREFIX + logoUrl : logoUrl;
@@ -49,9 +51,9 @@ export default function ProjectCard({ project, className }: ProjectCardProps) {
   const { T } = useIntl();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
-  const topSponsors = sponsors?.map(projectSponsor => projectSponsor.sponsor).slice(0, 3) || [];
-  const languages = getMostUsedLanguages(getDeduplicatedAggregatedLanguages(githubRepos.map(r => r.repo)));
-  const contributorsCount = contributorsAggregate.aggregate?.count || 0;
+  const topSponsors = sponsors?.map(projectSponsor => projectSponsor.sponsor || projectSponsor ).slice(0, 3) || [];
+  const languages = getMostUsedLanguages(getDeduplicatedAggregatedLanguages(githubRepos?.map(r => r.repo)));
+  const contributorsCount = contributorsAggregate?.aggregate?.count || contributorCount || 0;
   const hasPendingInvitation = pendingInvitations?.length > 0;
 
   const card = (

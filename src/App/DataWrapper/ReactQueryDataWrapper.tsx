@@ -5,7 +5,7 @@ import DataDisplay from "./DataDisplay";
 
 type QueryParam = {
   key: string;
-  value: string;
+  value: string[];
 };
 export interface ReactQueryDataWrapperProps {
   children: ReactNode;
@@ -15,7 +15,9 @@ export interface ReactQueryDataWrapperProps {
 }
 
 function buildQueryString(queryParams: QueryParam[]): string {
-  return queryParams.map(param => `${encodeURIComponent(param.key)}=${encodeURIComponent(param.value)}`).join("&");
+  return queryParams
+    .map(param => `${encodeURIComponent(param.key)}=${encodeURIComponent(param.value.join(","))}`)
+    .join("&");
 }
 
 export default function ReactQueryDataWrapper({
@@ -38,7 +40,7 @@ export default function ReactQueryDataWrapper({
     : {};
 
   const { isLoading, error, data } = useQuery({
-    queryKey: ["repoData"],
+    queryKey: ["repoData", queryString],
     queryFn: () => fetch(url, option).then(res => res.json()),
   });
 

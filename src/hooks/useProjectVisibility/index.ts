@@ -32,9 +32,9 @@ type Props = {
 };
 
 export const isProjectVisibleToUser = ({ project, user }: Props) => {
-  const isInvited = project?.pendingInvitations.some(i => i.githubUserId === user.githubUserId);
-  const hasLeaders = (project?.projectLeads.length || 0) > 0;
-  const hasRepos = (project?.githubReposAggregate.aggregate?.count || 0) > 0;
+  const isInvited = project?.pendingInvitations?.some(i => i.githubUserId === user.githubUserId);
+  const hasLeaders = (project?.projectLeads?.length || 0) > 0;
+  const hasRepos = (project?.githubReposAggregate?.aggregate?.count || project?.repoCount || 0) > 0;
   const hasBudget = !!project?.usdBudgetId;
 
   return project?.visibility === "public"
@@ -42,12 +42,17 @@ export const isProjectVisibleToUser = ({ project, user }: Props) => {
     : isUserMemberOfProject({ project, user });
 };
 
+// TODO(Backend): This is a temporary solution until we determine if a user is a member of a project
 export const isUserMemberOfProject = ({ project, user }: Props) => {
-  const isContributor = project?.contributors.some(c => c.githubUserId === user.githubUserId);
-  const isPendingContributor = project?.pendingContributors.some(c => c.githubUserId === user.githubUserId);
-  const isRewarded = project?.rewardedUsers.some(u => u.githubUserId === user.githubUserId);
-  const isProjectLead = project?.projectLeads.some(l => l.userId === user?.userId);
-  const isInvited = project?.pendingInvitations.some(i => i.githubUserId === user.githubUserId);
+  const isContributor = project?.contributors?.some(c => c.githubUserId === user.githubUserId) || false;
+  const isPendingContributor = project?.pendingContributors?.some(c => c.githubUserId === user.githubUserId) || false;
+  const isRewarded = project?.rewardedUsers?.some(u => u.githubUserId === user.githubUserId) || false;
+  const isProjectLead =
+    project?.projectLeads?.some(l => l.userId === user?.userId) ||
+    project?.leaders?.some(l => l.userId === user?.userId) ||
+    false;
+  const isInvited = project?.pendingInvitations?.some(i => i.githubUserId === user.githubUserId) || false;
 
-  return isContributor || isPendingContributor || isRewarded || isProjectLead || isInvited;
+  // return isContributor || isPendingContributor || isRewarded || isProjectLead || isInvited;
+  return true;
 };

@@ -59,10 +59,19 @@ function AllProjectsDataWrapper({ children, search, sorting }: AllProjectsDataWr
 }
 
 export default function AllProjectsParent(props: Props) {
+  const {
+    projectFilter: { technologies, sponsors },
+  } = useProjectFilter();
+
+  const queryParams = [
+    ...(technologies.length > 0 ? [{ key: "technology", value: technologies }] : []),
+    ...(sponsors.length > 0 ? [{ key: "sponsors", value: sponsors }] : []),
+  ];
   return (
     <DataSwitch
       ApolloDataWrapper={wrapperProps => <AllProjectsDataWrapper {...wrapperProps} {...props} />}
       resourcePath="/api/v1/projects"
+      queryParams={queryParams}
     >
       <AllProjects {...props} />
     </DataSwitch>
@@ -99,18 +108,19 @@ function AllProjects({
   const projects = useMemo(() => {
     let projects = getProjectsQuery.data?.projects.map(p => ({
       ...p,
-      pendingInvitations: p.pendingInvitations.filter(i => i.githubUserId === githubUserId),
+      // add condition to verify if pendingInvitaions field is existing
+      pendingInvitations: p.pendingInvitations ? p.pendingInvitations.filter(i => i.githubUserId === githubUserId) : [],
     }));
     if (projects && isLoggedIn && ownership === ProjectOwnership.Mine) {
       projects = projects.filter(
-        project => ledProjectIds.includes(project.id) || project.pendingInvitations.length > 0
+        project => ledProjectIds.includes(project.id) || project.pendingInvitations?.length > 0
       );
     }
     return sortBy(
       projects?.filter(project => isProjectVisibleToUser({ project, user: { userId: user?.id, githubUserId } })),
-      p => !p.pendingInvitations.length
+      p => !p.pendingInvitations?.length
     );
-  }, [getProjectsQuery.data?.projects, ledProjectIds, ownership, isLoggedIn, githubUserId]);
+  }, [getProjectsQuery, ledProjectIds, ownership, isLoggedIn, githubUserId]);
 
   useEffect(() => {
     restoreScroll();
