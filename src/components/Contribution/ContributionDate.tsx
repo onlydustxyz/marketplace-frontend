@@ -35,10 +35,10 @@ const tokens: GithubTypeStatusDict<string> = {
 
 const tokensShort: GithubTypeStatusDict<string> = {
   [GithubContributionType.PullRequest]: {
-    [GithubPullRequestStatus.Open]: "githubPullRequest.status.merged",
+    [GithubPullRequestStatus.Open]: "githubPullRequest.status.open",
     [GithubPullRequestStatus.Closed]: "githubPullRequest.status.closed",
     [GithubPullRequestStatus.Merged]: "githubPullRequest.status.merged",
-    [GithubPullRequestDraft.Draft]: "githubPullRequest.status.merged",
+    [GithubPullRequestDraft.Draft]: "githubPullRequest.status.open",
   },
   [GithubContributionType.Issue]: {
     [GithubIssueStatus.Open]: "githubIssue.status.open",
