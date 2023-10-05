@@ -63,10 +63,15 @@ export default function AllProjectsParent(props: Props) {
     projectFilter: { technologies, sponsors },
   } = useProjectFilter();
 
+  const { search, sorting } = props;
+
   const queryParams = [
     ...(technologies.length > 0 ? [{ key: "technology", value: technologies }] : []),
     ...(sponsors.length > 0 ? [{ key: "sponsors", value: sponsors }] : []),
+    ...(search ? [{ key: "search", value: [search] }] : []),
+    ...(sorting ? [{ key: "sort", value: [sorting] }] : []),
   ];
+
   return (
     <DataSwitch
       ApolloDataWrapper={wrapperProps => <AllProjectsDataWrapper {...wrapperProps} {...props} />}
@@ -79,7 +84,6 @@ export default function AllProjectsParent(props: Props) {
 }
 
 function AllProjects({
-  search,
   clearSearch,
   sorting,
   setSorting,

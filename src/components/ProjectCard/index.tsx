@@ -20,6 +20,7 @@ import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
 import config from "src/config";
 import ProjectLeadInvitationView from "src/components/ProjectLeadInvitation/ProjectLeadInvitationView";
+import { getTopTechnologies } from "src/utils/technologies";
 
 export type Project = ArrayElement<GetProjectsQuery["projects"]>;
 
@@ -44,6 +45,7 @@ export default function ProjectCard({ project, className }: ProjectCardProps) {
     shortDescription,
     // New REST API Fields
     contributorCount,
+    technologies,
   } = project;
 
   const projectUrl = logoUrl ? config.CLOUDFLARE_RESIZE_W_100_PREFIX + logoUrl : logoUrl;
@@ -51,8 +53,13 @@ export default function ProjectCard({ project, className }: ProjectCardProps) {
   const { T } = useIntl();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
-  const topSponsors = sponsors?.map(projectSponsor => projectSponsor.sponsor || projectSponsor ).slice(0, 3) || [];
-  const languages = getMostUsedLanguages(getDeduplicatedAggregatedLanguages(githubRepos?.map(r => r.repo)));
+  const topSponsors = sponsors?.map(projectSponsor => projectSponsor.sponsor || projectSponsor).slice(0, 3) || [];
+  const languages = githubRepos
+    ? getMostUsedLanguages(getDeduplicatedAggregatedLanguages(githubRepos?.map(r => r.repo)))
+    : technologies
+    ? getTopTechnologies(technologies)
+    : [];
+  console.log(languages);
   const contributorsCount = contributorsAggregate?.aggregate?.count || contributorCount || 0;
   const hasPendingInvitation = pendingInvitations?.length > 0;
 
