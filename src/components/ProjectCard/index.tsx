@@ -62,7 +62,7 @@ export default function ProjectCard({ project, className }: ProjectCardProps) {
     >
       {hiring && (
         <div className="absolute -top-3.5 right-3.5">
-          <Tag className="bg-orange-800" size={TagSize.Small} opaque>
+          <Tag size={TagSize.Small} opaque>
             <RecordCircleLine />
             {T("project.hiring")}
           </Tag>

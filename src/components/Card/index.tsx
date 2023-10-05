@@ -1,4 +1,4 @@
-import { cn } from "src/utils/cn";
+import classNames from "classnames";
 
 export enum CardBorder {
   Light = "light",
@@ -27,7 +27,7 @@ export default function Card({
 }: CardProps) {
   return (
     <div
-      className={cn(
+      className={classNames(
         "rounded-2xl font-walsheim",
         {
           "bg-whiteFakeOpacity-2": withBg,
