@@ -95,14 +95,10 @@ export default function AllProjects({
       <div className="flex grow flex-col gap-5">
         {projects?.length > 0 ? (
           projects.map((project, index) => {
-            const isFirstPendingInvitationProject = index === 0 && project.pendingInvitations?.length > 0;
+            const isFirstHiringProject = index === 0 && project.hiring;
 
             return (
-              <ProjectCard
-                className={isFirstPendingInvitationProject ? "mt-3" : undefined}
-                key={project.id}
-                project={project}
-              />
+              <ProjectCard className={isFirstHiringProject ? "mt-3" : undefined} key={project.id} project={project} />
             );
           })
         ) : (
