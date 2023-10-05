@@ -104,8 +104,12 @@ query GetContributionRewards($githubUserId: bigint!, $contributionId: String!) {
           htmlUrl
           login
         }
-        invoiceReceivedAt
         hoursWorked
+        requestedAt
+        # Get the most recent payment to show processed date
+        payments(orderBy: { processedAt: DESC }, limit: 1) {
+          processedAt
+        }
       }
     }
   }

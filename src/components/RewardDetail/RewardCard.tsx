@@ -10,6 +10,7 @@ import CalendarEventLine from "src/icons/CalendarEventLine";
 import CheckLine from "src/icons/CheckLine";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import TimeLine from "src/icons/TimeLine";
+import displayRelativeDate from "src/utils/displayRelativeDate";
 import { formatPaymentId } from "src/utils/formatPaymentId";
 
 export function RewardCard({
@@ -25,8 +26,10 @@ export function RewardCard({
   const {
     paymentId,
     // TODO fix types
-    paymentRequest: { amount, requestor, hoursWorked },
+    paymentRequest: { amount, requestor, hoursWorked, requestedAt, payments },
   } = reward;
+
+  const [{ processedAt }] = payments.length ? payments : [{}];
 
   const timeWorked = useRewardTimeWorked(hoursWorked);
 
@@ -36,18 +39,20 @@ export function RewardCard({
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-1 text-xs leading-none text-greyscale-300">
             <TimeLine className="text-base leading-none" />
-            {/* TODO calculation */}
-            {/* <span>{T("rewards.panel.contribution.createdOn", { date: displayRelativeDate(createdAt) })}</span> */}
-            <span>3 days ago</span>
-            &nbsp;&bull;&nbsp;
-            {/* TODO calculation */}
-            <span>Processed today</span>
+            <span>{displayRelativeDate(requestedAt)}</span>
+            {processedAt ? (
+              <>
+                &nbsp;&bull;&nbsp;
+                <span>{T("rewards.panel.rewards.processedAt", { date: displayRelativeDate(processedAt) })}</span>
+              </>
+            ) : null}
           </div>
           <p className="text-base font-semibold leading-none text-greyscale-50">
             {T("rewards.panel.rewards.id", { id: formatPaymentId(paymentId) })}
           </p>
         </div>
-        <Tag size={TagSize.Medium}>
+        {/* TODO handle status */}
+        {/* <Tag size={TagSize.Medium}>
           <CheckLine className="text-base leading-none" />
           {T("reward.status.complete")}
         </Tag>
@@ -58,7 +63,7 @@ export function RewardCard({
         <Tag borderColor={TagBorderColor.MultiColor} size={TagSize.Medium}>
           <ErrorWarningLine className="text-base leading-none text-pink-500" />
           {T("reward.status.invoicePending")}
-        </Tag>
+        </Tag> */}
       </div>
 
       <div className="flex items-center gap-2">

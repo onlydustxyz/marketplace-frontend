@@ -504,7 +504,8 @@
       "rewards": {
         "title": "Rewarded in",
         "id": "Reward __id__",
-        "fromUser": "from"
+        "fromUser": "from",
+        "processedAt": "Processed __date__"
       }
     }
   },
