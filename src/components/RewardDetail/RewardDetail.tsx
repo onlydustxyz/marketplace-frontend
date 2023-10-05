@@ -3,6 +3,7 @@ import { Link, generatePath } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import { GithubUser, useGetContributionRewardsQuery } from "src/__generated/graphql";
 import { ContributionBadge, ContributionBadgeSizes } from "src/components/Contribution/ContributionBadge";
+import { ContributionIcon } from "src/components/Contribution/ContributionIcon";
 import { SpinningLogo } from "src/components/Loader/SpinningLogo";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import { useIntl } from "src/hooks/useIntl";
@@ -10,6 +11,7 @@ import DiscussLine from "src/icons/DiscussLine";
 import TimeLine from "src/icons/TimeLine";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { getContributionInfo } from "src/utils/getContributionInfo";
+import { getGithubStatusToken } from "src/utils/getGithubStatusToken";
 
 export function RewardDetail({
   githubUserId,
@@ -58,7 +60,7 @@ export function RewardDetail({
       contributions: [contribution],
     } = data;
 
-    const { createdAt, project, githubRepo } = contribution ?? {};
+    const { createdAt, closedAt, project, githubRepo } = contribution ?? {};
 
     const { number, type, status, title, author, htmlUrl, commentsCount } = getContributionInfo(contribution);
 
@@ -106,8 +108,10 @@ export function RewardDetail({
                   <span>{T("rewards.panel.contributionCreated", { date: displayRelativeDate(createdAt) })}</span>
                 </div>
                 <div>|</div>
-                {/* TODO */}
-                <div>Merged</div>
+                <div className="flex items-center gap-1">
+                  <ContributionIcon type={type} status={status} />
+                  <span>{T(getGithubStatusToken(type, status), { date: displayRelativeDate(closedAt) })}</span>
+                </div>
               </div>
               <div>
                 <div className="flex items-center gap-1 text-sm leading-none text-greyscale-300">
