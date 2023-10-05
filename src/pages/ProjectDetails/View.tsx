@@ -8,7 +8,7 @@ import { useMediaQuery } from "usehooks-ts";
 
 interface Props {
   projectId: string;
-  projectKey: string;
+  projectKey: string | undefined;
   isLoading: boolean | undefined;
   error: null | unknown;
 }

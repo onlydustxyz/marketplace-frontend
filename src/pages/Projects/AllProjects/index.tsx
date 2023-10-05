@@ -1,6 +1,6 @@
 import { useSuspenseQuery_experimental as useSuspenseQuery } from "@apollo/client";
 import { merge, sortBy } from "lodash";
-import { useMemo, useEffect } from "react";
+import { useMemo, useEffect, ReactNode, useContext } from "react";
 import ProjectCard from "src/components/ProjectCard";
 import { useAuth } from "src/hooks/useAuth";
 import { Ownership as ProjectOwnership, useProjectFilter } from "src/pages/Projects/useProjectFilter";
@@ -18,6 +18,9 @@ import SortingDropdown, { PROJECT_SORTINGS, Sorting } from "src/pages/Projects/S
 import { useIntl } from "src/hooks/useIntl";
 import { FilterButton } from "src/pages/Projects/FilterPanel/FilterButton";
 import { SortButton } from "src/pages/Projects/Sorting/SortButton";
+import DataDisplay from "src/App/DataWrapper/DataDisplay";
+import DataSwitch from "src/App/DataWrapper/DataSwitch";
+import { DataContext } from "src/App/DataWrapper/DataContext";
 
 export const DEFAULT_SORTING = Sorting.Trending;
 
@@ -33,7 +36,40 @@ type Props = {
   setSortingPanelOpen: (open: boolean) => void;
 };
 
-export default function AllProjects({
+interface AllProjectsDataWrapperProps {
+  children: ReactNode;
+  search: string;
+  sorting?: Sorting;
+}
+
+function AllProjectsDataWrapper({ children, search, sorting }: AllProjectsDataWrapperProps) {
+  const {
+    projectFilter: { technologies, sponsors },
+  } = useProjectFilter();
+
+  const getProjectsQuery = useSuspenseQuery<GetProjectsQuery>(GetProjectsDocument, {
+    variables: {
+      where: buildQueryFilters(search, technologies, sponsors),
+      orderBy: buildQuerySorting(sorting || DEFAULT_SORTING),
+    },
+    ...contextWithCacheHeaders,
+  });
+
+  return <DataDisplay data={getProjectsQuery.data}>{children}</DataDisplay>;
+}
+
+export default function AllProjectsParent(props: Props) {
+  return (
+    <DataSwitch
+      ApolloDataWrapper={wrapperProps => <AllProjectsDataWrapper {...wrapperProps} {...props} />}
+      resourcePath="/api/v1/projects"
+    >
+      <AllProjects {...props} />
+    </DataSwitch>
+  );
+}
+
+function AllProjects({
   search,
   clearSearch,
   sorting,
@@ -48,17 +84,17 @@ export default function AllProjects({
 
   const { ledProjectIds, githubUserId, isLoggedIn, user } = useAuth();
   const {
-    projectFilter: { technologies, sponsors, ownership },
+    projectFilter: { ownership },
     clear: clearFilters,
   } = useProjectFilter();
 
-  const getProjectsQuery = useSuspenseQuery<GetProjectsQuery>(GetProjectsDocument, {
-    variables: {
-      where: buildQueryFilters(search, technologies, sponsors),
-      orderBy: buildQuerySorting(sorting || DEFAULT_SORTING),
-    },
-    ...contextWithCacheHeaders,
-  });
+  const dataContext = useContext(DataContext);
+
+  if (!dataContext) {
+    throw new Error(T("dataFetching.dataContext"));
+  }
+
+  const getProjectsQuery = dataContext;
 
   const projects = useMemo(() => {
     let projects = getProjectsQuery.data?.projects.map(p => ({

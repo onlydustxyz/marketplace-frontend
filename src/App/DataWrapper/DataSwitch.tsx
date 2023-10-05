@@ -7,16 +7,16 @@ type QueryParam = {
 };
 interface WrapperProps {
   children: ReactNode;
-  param: string;
+  param?: string;
   resourcePath?: string;
   queryParams?: QueryParam[];
 }
 
 type DataSwitchProps = {
   children: ReactNode;
-  param: string;
+  param?: string;
   ApolloDataWrapper: ComponentType<WrapperProps>;
-  resourcePath: string;
+  resourcePath?: string;
   queryParams?: QueryParam[];
 };
 

@@ -34,7 +34,7 @@ export interface ProjectDetails {
 
 interface ProjectDetailsDataWrapperProps {
   children: ReactNode;
-  param: string;
+  param?: string;
 }
 
 function ProjectDetailsDataWrapper({ children, param }: ProjectDetailsDataWrapperProps) {

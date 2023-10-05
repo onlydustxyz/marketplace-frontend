@@ -1,4 +1,5 @@
 import { createContext } from "react";
+import { GetProjectsQuery } from "src/__generated/graphql";
 
 interface Project {
   name: string | null;
@@ -8,8 +9,8 @@ interface Project {
 }
 
 interface DataContextProps {
-  param: string;
-  data: Project;
+  param?: string;
+  data: Project | GetProjectsQuery;
   isLoading?: boolean;
   error?: null | unknown;
 }

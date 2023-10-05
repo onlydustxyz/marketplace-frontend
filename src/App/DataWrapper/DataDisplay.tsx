@@ -2,6 +2,7 @@ import React, { ReactNode } from "react";
 import { Navigate } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import { DataContext } from "./DataContext";
+import { GetProjectsQuery } from "src/__generated/graphql";
 
 interface Project {
   name: string | null;
@@ -11,8 +12,8 @@ interface Project {
 }
 
 interface DataDisplayProps {
-  param: string;
-  data: Project;
+  param?: string;
+  data: Project | GetProjectsQuery;
   isLoading?: boolean;
   error?: null | unknown;
   children: ReactNode;

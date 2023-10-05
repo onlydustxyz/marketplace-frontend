@@ -1,6 +1,6 @@
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import { useAuth } from "src/hooks/useAuth";
-import AllProjects, { DEFAULT_SORTING } from "./AllProjects";
+import AllProjectsParent, { DEFAULT_SORTING } from "./AllProjects";
 import FilterPanel from "./FilterPanel";
 import { ProjectFilterProvider } from "./useProjectFilter";
 import useScrollRestoration from "./AllProjects/useScrollRestoration";
@@ -52,7 +52,7 @@ export default function Projects() {
             </div>
             <div className="min-w-0 grow">
               <Suspense fallback={<Loader />}>
-                <AllProjects
+                <AllProjectsParent
                   search={searchQuery}
                   clearSearch={() => setSearch("")}
                   sorting={sorting}

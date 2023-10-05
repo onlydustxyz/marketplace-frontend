@@ -9,7 +9,7 @@ type QueryParam = {
 };
 export interface ReactQueryDataWrapperProps {
   children: ReactNode;
-  param: string;
+  param?: string;
   resourcePath?: string;
   queryParams?: QueryParam[];
 }
@@ -28,7 +28,7 @@ export default function ReactQueryDataWrapper({
   const scheme = "https://";
   const apiBasepath = import.meta.env.VITE_ONLYDUST_API_BASEPATH;
   const queryString = buildQueryString(queryParams);
-  const url = `${scheme}${apiBasepath}${resourcePath}${param}${queryString ? `?${queryString}` : ""}`;
+  const url = `${scheme}${apiBasepath}${resourcePath}${param ? `${param}` : ""}${queryString ? `?${queryString}` : ""}`;
   const option = tokenSet?.accessToken
     ? {
         headers: {
