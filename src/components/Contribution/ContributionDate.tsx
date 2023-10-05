@@ -1,5 +1,6 @@
 import { ComponentProps } from "react";
 import { GithubIssueStatus } from "src/__generated/graphql";
+import { ContributionIcon, Sizes } from "src/components/Contribution/ContributionIcon";
 import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 import {
@@ -13,7 +14,7 @@ import {
 import { cn } from "src/utils/cn";
 import { getFormattedDateGB, getFormattedTimeUS } from "src/utils/date";
 import displayRelativeDate from "src/utils/displayRelativeDate";
-import { ContributionIcon, Sizes } from "./ContributionIcon";
+import { getGithubStatusToken } from "src/utils/getGithubStatusToken";
 
 const tokens: GithubTypeStatusDict<string> = {
   [GithubContributionType.PullRequest]: {
@@ -31,25 +32,6 @@ const tokens: GithubTypeStatusDict<string> = {
     [GithubCodeReviewStatus.Pending]: "contributions.tooltip.dateAssigned",
     [GithubCodeReviewStatus.Completed]: "contributions.tooltip.dateApproved",
     [GithubCodeReviewStatus.ChangeRequested]: "contributions.tooltip.dateChangeRequested",
-  },
-};
-
-const tokensShort: GithubTypeStatusDict<string> = {
-  [GithubContributionType.PullRequest]: {
-    [GithubPullRequestStatus.Open]: "githubPullRequest.status.open",
-    [GithubPullRequestStatus.Closed]: "githubPullRequest.status.closed",
-    [GithubPullRequestStatus.Merged]: "githubPullRequest.status.merged",
-    [GithubPullRequestDraft.Draft]: "githubPullRequest.status.open",
-  },
-  [GithubContributionType.Issue]: {
-    [GithubIssueStatus.Open]: "githubIssue.status.open",
-    [GithubIssueStatus.Completed]: "githubIssue.status.closed",
-    [GithubIssueStatus.Cancelled]: "githubIssue.status.closed",
-  },
-  [GithubContributionType.CodeReview]: {
-    [GithubCodeReviewStatus.Pending]: "githubCodeReview.status.pending",
-    [GithubCodeReviewStatus.Completed]: "githubCodeReview.status.approved",
-    [GithubCodeReviewStatus.ChangeRequested]: "githubCodeReview.status.changeRequested",
   },
 };
 
@@ -94,9 +76,7 @@ export function ContributionDate({
         {withIcon ? (
           <>
             <ContributionIcon type={type} status={status} size={withIcon ? Sizes.xs : undefined} />
-            {T(tokensShort[type][status as keyof typeof tokensShort[GithubContributionType]] ?? "", {
-              date: displayRelativeDate(date),
-            })}
+            {T(getGithubStatusToken(type, status), { date: displayRelativeDate(date) })}
           </>
         ) : (
           displayRelativeDate(date)
