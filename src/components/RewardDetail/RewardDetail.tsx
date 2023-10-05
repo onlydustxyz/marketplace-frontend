@@ -10,10 +10,12 @@ import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowRightUpLine from "src/icons/ArrowRightUpLine";
 import DiscussLine from "src/icons/DiscussLine";
+import Medal2Fill from "src/icons/Medal2Fill";
 import TimeLine from "src/icons/TimeLine";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { getContributionInfo } from "src/utils/getContributionInfo";
 import { getGithubStatusToken } from "src/utils/getGithubStatusToken";
+import { RewardCard } from "./RewardCard";
 
 export function RewardDetail({
   githubUserId,
@@ -62,75 +64,93 @@ export function RewardDetail({
       contributions: [contribution],
     } = data;
 
-    const { createdAt, closedAt, project, githubRepo } = contribution ?? {};
+    const { id, createdAt, closedAt, project, githubRepo, rewardItems } = contribution ?? {};
 
     const { number, type, status, title, author, htmlUrl, commentsCount } = getContributionInfo(contribution);
 
     return (
       <div className="font-walsheim">
-        <div className="flex flex-col gap-8">
-          <h5 className="font-belwe text-2xl">{T("rewards.panel.title")}</h5>
-          <div className="flex flex-col gap-6">
-            <div className="flex flex-col gap-2">
-              <div>
-                <ContributionBadge
-                  id={contribution?.id ?? ""}
-                  number={number}
-                  type={type}
-                  status={status}
-                  title={title}
-                  author={author}
-                  url={htmlUrl}
-                  size={ContributionBadgeSizes.Md}
-                />
+        <h5 className="font-belwe text-2xl">{T("rewards.panel.title")}</h5>
+
+        <div className="divide-y divide-greyscale-50/12">
+          <div className="py-8">
+            <div className="flex flex-col gap-6">
+              <div className="flex flex-col gap-2">
+                <div>
+                  <ContributionBadge
+                    id={id ?? ""}
+                    number={number}
+                    type={type}
+                    status={status}
+                    title={title}
+                    author={author}
+                    url={htmlUrl}
+                    size={ContributionBadgeSizes.Md}
+                  />
+                </div>
+
+                <h6 className="text-lg font-semibold">{title}</h6>
               </div>
 
-              <h6 className="text-lg font-semibold">{title}</h6>
-            </div>
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center gap-2">
+                  <RoundedImage src={project?.logoUrl ?? onlyDustLogo} alt={project?.name ?? ""} size={ImageSize.Xxs} />
+                  <div className="text-sm text-greyscale-300">
+                    {T("rewards.panel.contribution.forProject")}&nbsp;
+                    <Link
+                      to={generatePath(RoutePaths.ProjectDetails, {
+                        projectKey: project?.key ?? "",
+                      })}
+                      className="text-spacePurple-400 hover:text-spacePurple-300"
+                    >
+                      {project?.name}
+                    </Link>
+                    &nbsp;/&nbsp;{githubRepo?.name}
+                  </div>
+                </div>
 
-            <div className="flex flex-col gap-2">
-              <div className="flex items-center gap-2">
-                <RoundedImage src={project?.logoUrl ?? onlyDustLogo} alt={project?.name ?? ""} size={ImageSize.Xxs} />
-                <div className="text-sm text-greyscale-300">
-                  {T("rewards.panel.contribution.forProject")}&nbsp;
-                  <Link
-                    to={generatePath(RoutePaths.ProjectDetails, {
-                      projectKey: project?.key ?? "",
-                    })}
-                    className="text-spacePurple-400 hover:text-spacePurple-300"
-                  >
-                    {project?.name}
-                  </Link>
-                  &nbsp;/&nbsp;{githubRepo?.name}
-                </div>
-              </div>
-              <div className="flex items-center gap-1 text-sm leading-none text-greyscale-300">
-                <div className="flex items-center gap-1">
-                  <TimeLine className="text-base leading-none" />
-                  <span>{T("rewards.panel.contribution.createdOn", { date: displayRelativeDate(createdAt) })}</span>
-                </div>
-                <div>|</div>
-                <div className="flex items-center gap-1">
-                  <ContributionIcon type={type} status={status} />
-                  <span>{T(getGithubStatusToken(type, status), { date: displayRelativeDate(closedAt) })}</span>
-                </div>
-              </div>
-              <div>
                 <div className="flex items-center gap-1 text-sm leading-none text-greyscale-300">
                   <div className="flex items-center gap-1">
-                    <DiscussLine className="text-base leading-none" />
-                    {T("comments", { count: commentsCount })}
+                    <TimeLine className="text-base leading-none" />
+                    <span>{T("rewards.panel.contribution.createdOn", { date: displayRelativeDate(createdAt) })}</span>
                   </div>
                   <div>|</div>
                   <div className="flex items-center gap-1">
-                    <ArrowRightUpLine className="text-base leading-none" />
-                    {T("rewards.panel.contribution.linkedTo")}
+                    <ContributionIcon type={type} status={status} />
+                    <span>{T(getGithubStatusToken(type, status), { date: displayRelativeDate(closedAt) })}</span>
                   </div>
-                  <ContributionLinked contribution={contribution} />
+                </div>
+
+                <div>
+                  <div className="flex items-center gap-1 text-sm leading-none text-greyscale-300">
+                    <div className="flex items-center gap-1">
+                      <DiscussLine className="text-base leading-none" />
+                      {T("comments", { count: commentsCount })}
+                    </div>
+                    <div>|</div>
+                    <div className="flex items-center gap-1">
+                      <ArrowRightUpLine className="text-base leading-none" />
+                      {T("rewards.panel.contribution.linkedTo")}
+                    </div>
+                    <ContributionLinked contribution={contribution} />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+
+          {rewardItems.length ? (
+            <div className="flex flex-col gap-4 py-8">
+              <div className="flex items-center gap-2">
+                <Medal2Fill className="text-xl leading-none text-orange-400" />
+                <span className="font-belwe text-base leading-none">{T("rewards.panel.rewards.title")}</span>
+              </div>
+
+              {rewardItems.map(rewardItem => {
+                return <RewardCard key={rewardItem.paymentId} />;
+              })}
+            </div>
+          ) : null}
         </div>
       </div>
     );

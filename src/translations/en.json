@@ -488,6 +488,9 @@
         "forProject": "For",
         "createdOn": "Created __date__",
         "linkedTo": "Linked to"
+      },
+      "rewards": {
+        "title": "Rewarded in"
       }
     }
   },
