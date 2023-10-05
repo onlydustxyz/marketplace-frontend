@@ -52,11 +52,7 @@ export default function SearchBar({ search, setSearch }: Props) {
             })}
           >
             <SearchLine
-              className={cn(
-                "text-2xl",
-                { "text-spaceBlue-200": !inputFocus },
-                { "text-greyscale-50": inputFocus }
-              )}
+              className={cn("text-2xl", { "text-spaceBlue-200": !inputFocus }, { "text-greyscale-50": inputFocus })}
             />
             <input
               placeholder={T("searchBar.placeholderShort")}

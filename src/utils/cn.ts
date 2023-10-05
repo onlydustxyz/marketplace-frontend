@@ -3,5 +3,5 @@ import { twMerge } from "tailwind-merge";
 
 /* classNames featuring tailwind-merge features */
 export function cn(...args: ArgumentArray) {
-  return twMerge(cn(args));
+  return twMerge(classNames(args));
 }
