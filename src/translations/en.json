@@ -477,6 +477,18 @@
       "browseProjects": "Browse projects",
       "contribute": "Contribute to get your first one!",
       "noRewards": "No rewards received yet"
+    },
+    "time": {
+      "hours": {
+        "zero": "hours",
+        "one": "hour",
+        "many": "hours"
+      },
+      "days": {
+        "zero": "days",
+        "one": "day",
+        "many": "days"
+      }
     }
   },
   "rewards": {
@@ -490,7 +502,9 @@
         "linkedTo": "Linked to"
       },
       "rewards": {
-        "title": "Rewarded in"
+        "title": "Rewarded in",
+        "id": "Reward __id__",
+        "fromUser": "from"
       }
     }
   },

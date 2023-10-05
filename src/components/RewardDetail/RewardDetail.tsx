@@ -1,7 +1,7 @@
 import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 import { Link, generatePath } from "react-router-dom";
 import { RoutePaths } from "src/App";
-import { GithubUser, useGetContributionRewardsQuery } from "src/__generated/graphql";
+import { GithubUser, WorkItem, useGetContributionRewardsQuery } from "src/__generated/graphql";
 import { ContributionBadge, ContributionBadgeSizes } from "src/components/Contribution/ContributionBadge";
 import { ContributionIcon } from "src/components/Contribution/ContributionIcon";
 import { ContributionLinked } from "src/components/Contribution/ContributionLinked";
@@ -147,7 +147,7 @@ export function RewardDetail({
               </div>
 
               {rewardItems.map(rewardItem => {
-                return <RewardCard key={rewardItem.paymentId} />;
+                return <RewardCard key={rewardItem.paymentId} reward={rewardItem} />;
               })}
             </div>
           ) : null}
