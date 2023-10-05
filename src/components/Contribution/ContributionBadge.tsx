@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 
 import { GithubUser } from "src/__generated/graphql";
 import { ContributionIcon, variants as contributionIconVariants } from "src/components/Contribution/ContributionIcon";
@@ -83,7 +83,7 @@ export function ContributionBadge({
 
       <Component
         data-tooltip-id={tooltipId}
-        className={classNames(
+        className={cn(
           "inline-flex w-auto items-center gap-1 rounded-full px-1 py-0.5 font-walsheim hover:bg-whiteFakeOpacity-8",
           {
             "border border-dashed": isExternal,

@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 import IBAN from "iban";
 import { PropsWithChildren, useState } from "react";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
@@ -201,7 +201,7 @@ export default function View({
 
 const Details = ({ align = Align.Center, children }: PropsWithChildren & { align?: Align }) => (
   <div
-    className={classNames("flex flex-row gap-2 font-walsheim text-sm font-normal text-greyscale-300", {
+    className={cn("flex flex-row gap-2 font-walsheim text-sm font-normal text-greyscale-300", {
       "items-center": align === Align.Center,
       "items-start": align === Align.Top,
     })}
@@ -263,7 +263,7 @@ function CancelRewardButton({ onRewardCancel }: CancelRewardButtonProps) {
         {T("reward.table.detailsPanel.cancelReward.button")}
       </Button>
       <div
-        className={classNames("absolute top-10 z-10 xl:-inset-x-10", {
+        className={cn("absolute top-10 z-10 xl:-inset-x-10", {
           hidden: !modalOpened,
         })}
       >

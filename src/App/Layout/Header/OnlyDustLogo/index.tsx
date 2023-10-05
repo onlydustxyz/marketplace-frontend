@@ -1,5 +1,5 @@
 import onlyDustLogo from "assets/img/onlydust-logo.png";
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 import { useIntl } from "src/hooks/useIntl";
 
 export enum OnlyDustLogoWidth {
@@ -15,7 +15,7 @@ export default function OnlyDustLogo({ width = OnlyDustLogoWidth.Medium }: OnlyD
   const { T } = useIntl();
   return (
     <img
-      className={classNames({
+      className={cn({
         "w-10": width === OnlyDustLogoWidth.Medium,
         "w-20": width === OnlyDustLogoWidth.Large,
       })}

@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 import { GithubPullRequestWithCommitsFragment, GithubUserFragment } from "src/__generated/graphql";
 import Card from "src/components/Card";
 import { ContributionDate } from "src/components/Contribution/ContributionDate";
@@ -66,7 +66,7 @@ export default function GithubPullRequest({
   return pullRequest ? (
     <Card
       padded={false}
-      className={classNames("flex flex-row gap-3 rounded-2xl p-4 hover:bg-noise-light hover:backdrop-blur-4xl", {
+      className={cn("flex flex-row gap-3 rounded-2xl p-4 hover:bg-noise-light hover:backdrop-blur-4xl", {
         "mt-1": addMarginTopForVirtuosoDisplay,
       })}
       withBg={false}

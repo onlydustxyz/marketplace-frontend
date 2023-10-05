@@ -1,6 +1,6 @@
 import { Combobox } from "@headlessui/react";
 import { PropsWithChildren, useState } from "react";
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 import SearchLine from "src/icons/SearchLine";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import { Virtuoso } from "react-virtuoso";
@@ -68,7 +68,7 @@ export default function StylizedCombobox<T extends Option>({
     <div>
       <Combobox.Button as="div" data-testid={testId}>
         <div
-          className={classNames(
+          className={cn(
             "flex h-8 w-full flex-row items-center justify-between rounded-lg border border-greyscale-50/8 bg-white/5 px-1.5 text-greyscale-400",
             {
               "ring-solid bg-spacePurple-900 text-spacePurple-500 ring-2 ring-spacePurple-500": open,
@@ -81,7 +81,7 @@ export default function StylizedCombobox<T extends Option>({
             </div>
             <Combobox.Input
               onChange={event => setQuery(event.target.value)}
-              className={classNames("w-full border-none bg-transparent text-sm font-normal outline-none")}
+              className={cn("w-full border-none bg-transparent text-sm font-normal outline-none")}
               placeholder={open ? "" : placeholder}
               autoComplete="off"
               value={query}
@@ -172,7 +172,7 @@ type ComboboxOptionProps = {
 const ComboboxOption = ({ option, last, children }: ComboboxOptionProps) => (
   <Combobox.Option
     value={option}
-    className={classNames(
+    className={cn(
       "flex bg-greyscale-800 px-4 py-2 font-walsheim text-sm leading-4 text-greyscale-50 ui-active:bg-greyscale-600",
       {
         "border-b border-greyscale-50/8": !last,

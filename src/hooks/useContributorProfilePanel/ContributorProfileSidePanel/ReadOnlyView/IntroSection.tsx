@@ -16,7 +16,7 @@ import PencilLine from "src/icons/PencilLine";
 import ExternalLink from "src/components/ExternalLink";
 import { parseWebsite } from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/utils";
 import MarkdownPreview from "src/components/MarkdownPreview";
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 import ExternalLinkLine from "src/icons/ExternalLinkLine";
 import { Link, generatePath } from "react-router-dom";
 import { RoutePaths } from "src/App";
@@ -66,7 +66,7 @@ export default function IntroSection({ isOwn, isPublic, profile, setEditMode }: 
         </div>
       )}
       <div
-        className={classNames("flex flex-col gap-2", {
+        className={cn("flex flex-col gap-2", {
           "mt-6": isPublic,
         })}
       >

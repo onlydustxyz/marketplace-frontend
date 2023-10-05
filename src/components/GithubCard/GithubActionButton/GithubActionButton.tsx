@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 import { useIntl } from "src/hooks/useIntl";
 import Add from "src/icons/Add";
 import Subtract from "src/icons/SubtractLine";
@@ -31,7 +31,7 @@ export function GithubActionButton({ action, ignored, onClick }: GithubActionBut
   const { T } = useIntl();
 
   return (
-    <div className={classNames({ "opacity-70": ignored })}>
+    <div className={cn({ "opacity-70": ignored })}>
       <Button
         size={ButtonSize.Sm}
         type={ButtonType.Secondary}

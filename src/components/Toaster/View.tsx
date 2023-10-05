@@ -1,5 +1,5 @@
 import { Transition } from "@headlessui/react";
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 import { viewportConfig } from "src/config";
 import CheckLine from "src/icons/CheckLine";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
@@ -35,7 +35,7 @@ export default function View({ message, visible, isError, setVisible }: Props) {
       >
         {isXl ? (
           <div
-            className={classNames(
+            className={cn(
               "relative flex items-center justify-center rounded-[15px] before:absolute before:-z-10 before:h-[calc(100dvh)] before:w-screen",
               {
                 "bg-orange-900 before:bg-orange-500": isError,
@@ -50,7 +50,7 @@ export default function View({ message, visible, isError, setVisible }: Props) {
           </div>
         ) : (
           <div
-            className={classNames(
+            className={cn(
               "relative flex items-center justify-center overflow-hidden rounded-[15px] p-px before:absolute before:-z-10 before:h-[calc(100dvh)] before:w-screen",
               {
                 "before:bg-orange-500": isError,
@@ -60,7 +60,7 @@ export default function View({ message, visible, isError, setVisible }: Props) {
           >
             <div className="border-1 w-full rounded-[15px] border border-transparent">
               <div
-                className={classNames("rounded-[15px]", {
+                className={cn("rounded-[15px]", {
                   "bg-orange-900": isError,
                   "bg-spaceBlue-900": !isError,
                 })}

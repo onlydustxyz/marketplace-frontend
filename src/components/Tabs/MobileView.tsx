@@ -1,5 +1,5 @@
 import { useState } from "react";
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 
 import ChevronDown from "src/assets/icons/ChevronDown";
 import SidePanel from "src/components/SidePanel";
@@ -26,7 +26,7 @@ export function MobileView({ tabs, title }: { tabs: Tab[]; title?: string }) {
               <button
                 key={i}
                 type="button"
-                className={classNames("flex items-center gap-3 p-4", {
+                className={cn("flex items-center gap-3 p-4", {
                   "is-active rounded-xl bg-white/8": tab.active,
                 })}
                 onClick={() => {

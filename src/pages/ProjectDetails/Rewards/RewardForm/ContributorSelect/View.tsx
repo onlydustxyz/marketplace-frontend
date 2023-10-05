@@ -1,5 +1,5 @@
 import { Combobox } from "@headlessui/react";
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import User3Line from "src/icons/User3Line";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
@@ -49,16 +49,16 @@ export default function ContributorSelectView({
   return (
     <Combobox value={selectedGithubHandle} onChange={setSelectedGithubHandle}>
       {({ open }) => (
-        <div className={classNames("absolute top-0 w-full", { "rounded-2xl bg-whiteFakeOpacity-5": open })}>
+        <div className={cn("absolute top-0 w-full", { "rounded-2xl bg-whiteFakeOpacity-5": open })}>
           <div
-            className={classNames("flex flex-col gap-3", {
+            className={cn("flex flex-col gap-3", {
               "overflow-hidden rounded-2xl outline outline-1 outline-whiteFakeOpacity-12": open,
             })}
           >
             <Combobox.Button className="px-3 pt-4" as="div">
               {!open && (
                 <div
-                  className={classNames(
+                  className={cn(
                     "flex h-12 w-full cursor-pointer flex-row items-center justify-between rounded-2xl border border-greyscale-50/8 px-4",
                     {
                       "text-spaceBlue-200": !selectedGithubHandle,
@@ -96,7 +96,7 @@ export default function ContributorSelectView({
               )}
               {open && (
                 <div
-                  className={classNames(
+                  className={cn(
                     "flex h-12 w-full flex-row items-center justify-between rounded-2xl border border-greyscale-50/8 px-4",
                     {
                       "bg-white/5 text-greyscale-50": githubHandleSubstring,
@@ -111,7 +111,7 @@ export default function ContributorSelectView({
                     </div>
                     <Combobox.Input
                       onChange={event => setGithubHandleSubstring(event.target.value)}
-                      className={classNames("w-full border-none bg-transparent text-base font-medium outline-none")}
+                      className={cn("w-full border-none bg-transparent text-base font-medium outline-none")}
                       onFocus={() => {
                         setGithubHandleSubstring("");
                       }}

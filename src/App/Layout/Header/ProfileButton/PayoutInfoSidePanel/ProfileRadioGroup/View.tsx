@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 import { ReactElement } from "react";
 import { UseFormRegisterReturn } from "react-hook-form";
 import { viewportConfig } from "src/config";
@@ -32,7 +32,7 @@ export default function View({ label, options, register, requiredForPayment }: P
             <label
               data-testid={option.value}
               htmlFor={option.value}
-              className={classNames(
+              className={cn(
                 "flex h-9 w-fit cursor-pointer select-none items-center gap-1 rounded-xl border border-greyscale-50/[0.08] px-3 py-2 text-sm font-normal text-neutral-100 peer-checked:border-spacePurple-500 peer-checked:bg-spacePurple-900 ",
                 { "peer-checked:outline-double peer-checked:outline-1 peer-checked:outline-spacePurple-500": isXl }
               )}

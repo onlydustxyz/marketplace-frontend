@@ -15,7 +15,7 @@ import StylizedCombobox, { EMPTY_OPTION_ID, Option, RenderProps } from "src/comp
 import { SortableList, SortableItemProps, SortableItem } from "@thaddeusjiang/react-sortable-list";
 import Draggable from "src/icons/Draggable";
 import CloseLine from "src/icons/CloseLine";
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 import { useShowToaster } from "src/hooks/useToaster";
 import Add from "src/icons/Add";
 import { useAllTechnologiesQuery, useSuggestTechnologyMutation } from "src/__generated/graphql";
@@ -103,7 +103,7 @@ export default function TechnologiesSelect({ technologies = {}, setTechnologies 
   ) => (
     <div
       {...props}
-      className={classNames(
+      className={cn(
         "flex w-fit items-center justify-center gap-1 pl-2 pr-1",
         "rounded-full rounded-r-none border border-r-0 border-greyscale-50/8 bg-white/2",
         "cursor-grab text-base active:cursor-grabbing"
@@ -142,7 +142,7 @@ export default function TechnologiesSelect({ technologies = {}, setTechnologies 
                     className="flex h-7 font-walsheim text-greyscale-50"
                   >
                     <div
-                      className={classNames(
+                      className={cn(
                         "flex w-fit items-center justify-center gap-1 pr-2",
                         "rounded-full rounded-l-none border border-l-0 border-greyscale-50/8 bg-white/2 text-sm"
                       )}

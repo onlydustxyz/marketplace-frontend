@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { useIntl } from "src/hooks/useIntl";
 import Refresh from "src/icons/Refresh";
@@ -92,7 +92,7 @@ interface OwnershipTypeButtonProps extends React.PropsWithChildren {
 function OwnershipTypeButton({ selected, onClick, children }: OwnershipTypeButtonProps) {
   return (
     <div
-      className={classNames(
+      className={cn(
         "flex w-fit flex-row items-center rounded-lg border border-greyscale-50/8  px-2 font-walsheim text-xs font-normal text-neutral-100",
         "hover:cursor-pointer",
         {

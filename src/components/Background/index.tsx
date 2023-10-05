@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 import { ForwardedRef, PropsWithChildren, forwardRef } from "react";
 
 export enum BackgroundRoundedBorders {
@@ -17,7 +17,7 @@ const Background = forwardRef(function Background(
   return (
     <div
       ref={ref}
-      className={classNames(
+      className={cn(
         "h-full w-full overflow-y-auto bg-space bg-no-repeat scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5",
         roundedBorders
       )}

@@ -1,5 +1,5 @@
 import { Menu, Transition } from "@headlessui/react";
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 import { Fragment, PropsWithChildren, useState } from "react";
 import Dot from "src/assets/icons/Dot";
 import { withTooltip } from "src/components/Tooltip";
@@ -40,7 +40,7 @@ const View = ({ githubUserId, avatarUrl, login, logout, showMissingPayoutSetting
             id="profile-button"
             onMouseEnter={() => setTooltipVisible(true)}
             onMouseLeave={() => setTooltipVisible(false)}
-            className={classNames(
+            className={cn(
               "flex items-center justify-center gap-2 rounded-full px-2 py-1.5 font-belwe text-sm outline outline-1 ui-open:bg-noise-medium ui-open:outline-2 hover:bg-noise-medium hover:outline-2",
               {
                 "outline-greyscale-50/12": !showMissingPayoutSettingsState,
@@ -53,7 +53,7 @@ const View = ({ githubUserId, avatarUrl, login, logout, showMissingPayoutSetting
             })}
           >
             {avatarUrl && <img className="h-8 w-8 rounded-full" src={avatarUrl} />}
-            <div className={classNames({ "mr-1": !showMissingPayoutSettingsState })}>{login}</div>
+            <div className={cn({ "mr-1": !showMissingPayoutSettingsState })}>{login}</div>
             {showMissingPayoutSettingsState && <ErrorWarningLine className="text-xl text-orange-500" />}
           </Menu.Button>
         </div>
@@ -130,7 +130,7 @@ const MenuItem = ({ disabled = false, onClick, secondary = false, children, ...r
     {...rest}
     disabled={disabled}
     as="div"
-    className={classNames("flex flex-row items-center gap-3 px-4 py-2 font-walsheim text-sm", {
+    className={cn("flex flex-row items-center gap-3 px-4 py-2 font-walsheim text-sm", {
       "cursor-pointer ui-active:bg-white/4": !disabled,
       "cursor-default": disabled,
       "text-greyscale-50": !secondary,

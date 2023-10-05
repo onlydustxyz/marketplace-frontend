@@ -1,5 +1,5 @@
 import { PropsWithChildren } from "react";
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 
 export enum HeaderCellWidth {
   Sixth = "w-1/6",
@@ -20,7 +20,7 @@ export default function HeaderCell({ onClick, children, horizontalMargin, width,
   return (
     <th
       scope="col"
-      className={classNames(
+      className={cn(
         "h-full text-left",
         {
           "px-3": horizontalMargin,
@@ -30,7 +30,7 @@ export default function HeaderCell({ onClick, children, horizontalMargin, width,
       )}
       onClick={onClick}
     >
-      <div className={classNames("mb-2 flex h-4 items-center gap-1 font-medium", className)}>{children}</div>
+      <div className={cn("mb-2 flex h-4 items-center gap-1 font-medium", className)}>{children}</div>
     </th>
   );
 }

@@ -3,7 +3,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import CloseLine from "src/icons/CloseLine";
 import { useSidePanelStack } from "src/hooks/useSidePanelStack";
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 
 type Props = {
   open: boolean;
@@ -74,7 +74,7 @@ export default function SidePanel({
           {...transitionProps}
         >
           <Dialog.Panel
-            className={classNames(
+            className={cn(
               {
                 "inset-y-0 right-0 h-[calc(100dvh)] lg:w-2/5 2xl:w-[600px]": placement === "right",
                 "-translate-x-10 cursor-pointer blur-sm transition duration-300":

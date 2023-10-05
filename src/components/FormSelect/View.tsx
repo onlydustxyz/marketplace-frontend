@@ -1,5 +1,5 @@
 import { Listbox } from "@headlessui/react";
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 import { Option } from "./types";
 import { Size } from ".";
 
@@ -19,7 +19,7 @@ export default function View({ options, size, ...props }: Props) {
             key={index}
             as="div"
             value={value.value ?? value.label}
-            className={classNames(
+            className={cn(
               "flex flex-row items-center gap-1",
               "w-fit border border-greyscale-50/8 bg-white/8 font-walsheim text-sm font-normal text-neutral-100",
               "hover:cursor-pointer",

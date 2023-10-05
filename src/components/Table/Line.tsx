@@ -1,5 +1,5 @@
 import { PropsWithChildren } from "react";
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 
 type Props = PropsWithChildren<{
   className?: string;
@@ -13,7 +13,7 @@ export default function Line({ className, children, onClick, selected, rewardId 
     <tr
       data-reward-id={rewardId}
       data-testid="reward-line"
-      className={classNames(
+      className={cn(
         "border-b border-gray-800 outline-offset-0 transition duration-200 hover:bg-white/5 hover:outline-2",
         {
           "cursor-pointer": !!onClick,

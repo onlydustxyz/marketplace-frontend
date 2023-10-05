@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 
 export enum ImageSize {
   Xxs = "Xxs",
@@ -31,7 +31,7 @@ export default function RoundedImage({
 }: RoundedImageProps) {
   return (
     <div
-      className={classNames(
+      className={cn(
         "before:border-greyscale-50/20",
         "h-fit w-fit min-w-max shrink-0",
         {
@@ -51,7 +51,7 @@ export default function RoundedImage({
       )}
     >
       <img
-        className={classNames(
+        className={cn(
           "object-cover",
           {
             "rounded-xl": rounding === Rounding.Corners,

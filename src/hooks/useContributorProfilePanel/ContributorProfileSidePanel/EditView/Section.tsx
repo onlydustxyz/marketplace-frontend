@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 import { PropsWithChildren, ReactElement, ReactNode } from "react";
 
 type Props = {
@@ -10,7 +10,7 @@ type Props = {
 export function Section({ title, subtitle, gap = "wide", children }: Props) {
   return (
     <div
-      className={classNames("flex flex-col", {
+      className={cn("flex flex-col", {
         "gap-2": gap === "narrow",
         "gap-4": gap === "wide",
       })}

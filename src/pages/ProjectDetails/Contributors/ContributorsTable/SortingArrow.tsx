@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 
 type PropsType = {
   direction: "up" | "down";
@@ -7,7 +7,7 @@ type PropsType = {
 
 const SortingArrow: React.FC<PropsType> = ({ direction, visible }) => (
   <i
-    className={classNames(`ri-arrow-${direction}-line text-base font-medium text-spacePurple-500`, {
+    className={cn(`ri-arrow-${direction}-line text-base font-medium text-spacePurple-500`, {
       invisible: !visible,
     })}
   />

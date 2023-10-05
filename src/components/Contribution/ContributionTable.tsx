@@ -1,5 +1,5 @@
 import type { ApolloError } from "@apollo/client";
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 import { ComponentProps, PropsWithChildren, ReactNode, useMemo, useState } from "react";
 
 import atomLogo from "assets/img/atom.png";
@@ -165,7 +165,7 @@ export function ContributionTable({
           return (
             <div
               key={contribution.id}
-              className={classNames("rounded-xl", {
+              className={cn("rounded-xl", {
                 "bg-whiteFakeOpacity-5/95 lg:bg-none": !fullTable,
               })}
             >
@@ -255,7 +255,7 @@ export function ContributionTable({
 
   return (
     <section
-      className={classNames("overflow-hidden rounded-2xl border-greyscale-50/8", {
+      className={cn("overflow-hidden rounded-2xl border-greyscale-50/8", {
         "border bg-whiteFakeOpacity-5/95 shadow-2xl": fullTable,
         "lg:border lg:bg-whiteFakeOpacity-5/95 lg:shadow-2xl": !fullTable,
       })}

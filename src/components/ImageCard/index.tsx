@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 
 export enum BackgroundPosition {
   Center = "center",
@@ -50,7 +50,7 @@ export default function ImageCard({
 }: ImageCardProps) {
   return (
     <div
-      className={classNames(
+      className={cn(
         "rounded-2xl",
         {
           "w-fit": width === Width.Fit,
@@ -69,7 +69,7 @@ export default function ImageCard({
       data-testid={dataTestId}
     >
       <div
-        className={classNames(
+        className={cn(
           "rounded-2xl font-walsheim",
           {
             "w-fit": width === Width.Fit,

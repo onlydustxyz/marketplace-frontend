@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import { cn } from "src/utils/cn";
 import { PropsWithChildren, useRef, useState } from "react";
 import { viewportConfig } from "src/config";
 import { useIntl } from "src/hooks/useIntl";
@@ -33,12 +33,12 @@ export default function SearchBar({ search, setSearch }: Props) {
 
   return (
     <div
-      className={classNames("overflow-hidden rounded-full p-0.5", {
+      className={cn("overflow-hidden rounded-full p-0.5", {
         "bg-spacePurple-500": inputFocus,
       })}
     >
       <div
-        className={classNames("relative z-10 flex items-center justify-center rounded-full", {
+        className={cn("relative z-10 flex items-center justify-center rounded-full", {
           "before:absolute before:-z-10 before:h-screen before:w-screen before:scale-x-[8] before:bg-multi-color-gradient before:md:scale-x-[30]":
             !inputFocus,
           "overflow-hidden": !isXl,
@@ -46,17 +46,13 @@ export default function SearchBar({ search, setSearch }: Props) {
       >
         <ResponsiveOutlineWrapper>
           <div
-            className={classNames("flex h-12 w-full flex-row items-center gap-2 rounded-full px-4", {
+            className={cn("flex h-12 w-full flex-row items-center gap-2 rounded-full px-4", {
               "bg-spaceBlue-900": !inputFocus,
               "bg-spacePurple-900": inputFocus,
             })}
           >
             <SearchLine
-              className={classNames(
-                "text-2xl",
-                { "text-spaceBlue-200": !inputFocus },
-                { "text-greyscale-50": inputFocus }
-              )}
+              className={cn("text-2xl", { "text-spaceBlue-200": !inputFocus }, { "text-greyscale-50": inputFocus })}
             />
             <input
               placeholder={T("searchBar.placeholderShort")}
@@ -69,7 +65,7 @@ export default function SearchBar({ search, setSearch }: Props) {
             />
             <button data-testid="clear-searchbar-button">
               <CloseLine
-                className={classNames(
+                className={cn(
                   "text-2xl",
                   { hidden: !inputFocus && !search },
                   { "text-greyscale-50": !inputFocus && search },
