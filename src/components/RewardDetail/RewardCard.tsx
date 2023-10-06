@@ -1,4 +1,3 @@
-import { GetContributionRewardsQuery } from "src/__generated/graphql";
 import { Dollar } from "src/assets/icons/Dollar";
 import PayoutStatus from "src/components/PayoutStatus";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
