@@ -229,3 +229,30 @@ export interface Project {
   sponsors: Sponsor[];
   technologies: Technologies;
 }
+export type Reward = {
+  paymentId: string;
+  paymentRequest: {
+    amount: number;
+    currency: string;
+    hoursWorked: number;
+    invoiceReceivedAt: Date | null;
+    payments: {
+      processedAt: Date;
+    }[];
+    paymentsAggregate: {
+      aggregate: {
+        sum: {
+          amount: number | null;
+        };
+      };
+    };
+    recipientId: number;
+    requestedAt: Date;
+    requestor: {
+      avatarUrl: string;
+      githubUserId: number;
+      htmlUrl: string;
+      login: string;
+    };
+  };
+};

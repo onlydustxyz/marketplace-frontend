@@ -97,17 +97,26 @@ query GetContributionRewards($githubUserId: bigint!, $contributionId: String!) {
       paymentId
       paymentRequest {
         amount
+        hoursWorked
+        invoiceReceivedAt
+        # Get the most recent payment to show processed date
+        payments(orderBy: { processedAt: DESC }, limit: 1) {
+          processedAt
+        }
+        paymentsAggregate {
+          aggregate {
+            sum {
+              amount
+            }
+          }
+        }
+        recipientId
+        requestedAt
         requestor {
           avatarUrl
           githubUserId
           htmlUrl
           login
-        }
-        hoursWorked
-        requestedAt
-        # Get the most recent payment to show processed date
-        payments(orderBy: { processedAt: DESC }, limit: 1) {
-          processedAt
         }
       }
     }

@@ -17,6 +17,7 @@ import displayRelativeDate from "src/utils/displayRelativeDate";
 import { getContributionInfo } from "src/utils/getContributionInfo";
 import { getGithubStatusToken } from "src/utils/getGithubStatusToken";
 import { RewardCard } from "./RewardCard";
+import { ComponentProps } from "react";
 
 export function RewardDetail({
   githubUserId,
@@ -35,8 +36,6 @@ export function RewardDetail({
   });
 
   const { close: closeRewardPanel } = useRewardDetailPanel();
-
-  console.log(data);
 
   function renderContent() {
     if (loading) {
@@ -153,7 +152,12 @@ export function RewardDetail({
 
               <div className="flex flex-col gap-4 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
                 {rewardItems.map(rewardItem => {
-                  return <RewardCard key={rewardItem.paymentId} reward={rewardItem} />;
+                  return (
+                    <RewardCard
+                      key={rewardItem.paymentId}
+                      reward={rewardItem as ComponentProps<typeof RewardCard>["reward"]}
+                    />
+                  );
                 })}
               </div>
             </div>

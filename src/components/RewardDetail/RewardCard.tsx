@@ -1,42 +1,20 @@
 import { GetContributionRewardsQuery } from "src/__generated/graphql";
 import { Dollar } from "src/assets/icons/Dollar";
+import PayoutStatus from "src/components/PayoutStatus";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
-import Tag, { TagBorderColor, TagSize } from "src/components/Tag";
+import Tag from "src/components/Tag";
 import { useContributorProfilePanel } from "src/hooks/useContributorProfilePanel";
 import { useIntl } from "src/hooks/useIntl";
+import { usePayoutStatus } from "src/hooks/usePayoutStatus";
 import { useRewardDetailPanel } from "src/hooks/useRewardDetailPanel";
 import { useRewardTimeWorked } from "src/hooks/useRewardTimeWorked";
 import CalendarEventLine from "src/icons/CalendarEventLine";
-import CheckLine from "src/icons/CheckLine";
-import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import TimeLine from "src/icons/TimeLine";
+import { Reward } from "src/types";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { formatPaymentId } from "src/utils/formatPaymentId";
 
-type Reward = {
-  paymentId: string;
-  paymentRequest: {
-    amount: number;
-    currency: string;
-    requestor: {
-      avatarUrl: string;
-      htmlUrl: string;
-      login: string;
-      githubUserId: number;
-    };
-    hoursWorked: number;
-    requestedAt: Date;
-    payments: {
-      processedAt: Date;
-    }[];
-  };
-};
-
-export function RewardCard({
-  reward,
-}: {
-  reward: GetContributionRewardsQuery["contributions"][number]["rewardItems"][number];
-}) {
+export function RewardCard({ reward }: { reward: Reward }) {
   const { T } = useIntl();
 
   const { close: closeRewardPanel } = useRewardDetailPanel();
@@ -50,6 +28,8 @@ export function RewardCard({
   const processedAt = payments.length ? payments[0].processedAt : null;
 
   const timeWorked = useRewardTimeWorked(hoursWorked);
+
+  const { status: payoutStatus, invoiceNeeded, payoutInfoMissing } = usePayoutStatus(reward);
 
   return (
     <article className="flex flex-col gap-3 rounded-xl border border-greyscale-50/8 bg-white/2 p-4 font-walsheim shadow-lg">
@@ -69,19 +49,13 @@ export function RewardCard({
             {T("rewards.panel.rewards.id", { id: formatPaymentId(paymentId) })}
           </p>
         </div>
-        {/* TODO handle status */}
-        {/* <Tag size={TagSize.Medium}>
-          <CheckLine className="text-base leading-none" />
-          {T("reward.status.complete")}
-        </Tag>
-        <Tag size={TagSize.Medium}>
-          <TimeLine className="text-base leading-none" />
-          {T("reward.status.processing")}
-        </Tag>
-        <Tag borderColor={TagBorderColor.MultiColor} size={TagSize.Medium}>
-          <ErrorWarningLine className="text-base leading-none text-pink-500" />
-          {T("reward.status.invoicePending")}
-        </Tag> */}
+
+        <PayoutStatus
+          id={`payment-status-${paymentId}`}
+          status={payoutStatus}
+          invoiceNeeded={invoiceNeeded}
+          payoutInfoMissing={payoutInfoMissing}
+        />
       </div>
 
       <div className="flex items-center gap-2">
