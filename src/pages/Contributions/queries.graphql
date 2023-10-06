@@ -97,7 +97,6 @@ query GetContributionRewards($githubUserId: bigint!, $contributionId: String!) {
       paymentId
       paymentRequest {
         amount
-        currency
         requestor {
           avatarUrl
           githubUserId

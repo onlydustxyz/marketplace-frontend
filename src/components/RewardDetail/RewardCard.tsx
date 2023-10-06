@@ -13,6 +13,25 @@ import TimeLine from "src/icons/TimeLine";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { formatPaymentId } from "src/utils/formatPaymentId";
 
+type Reward = {
+  paymentId: string;
+  paymentRequest: {
+    amount: number;
+    currency: string;
+    requestor: {
+      avatarUrl: string;
+      htmlUrl: string;
+      login: string;
+      githubUserId: number;
+    };
+    hoursWorked: number;
+    requestedAt: Date;
+    payments: {
+      processedAt: Date;
+    }[];
+  };
+};
+
 export function RewardCard({
   reward,
 }: {
@@ -25,11 +44,10 @@ export function RewardCard({
 
   const {
     paymentId,
-    // TODO fix types
     paymentRequest: { amount, requestor, hoursWorked, requestedAt, payments },
-  } = reward;
+  } = reward as unknown as Reward; // Cast required as generated type is full of anys
 
-  const [{ processedAt }] = payments.length ? payments : [{}];
+  const processedAt = payments.length ? payments[0].processedAt : null;
 
   const timeWorked = useRewardTimeWorked(hoursWorked);
 
