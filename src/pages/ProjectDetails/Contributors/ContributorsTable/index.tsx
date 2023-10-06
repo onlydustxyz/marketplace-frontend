@@ -1,7 +1,7 @@
 import { rates } from "src/hooks/useWorkEstimation";
 import { generatePath, useNavigate } from "react-router-dom";
 import View, { Contributor } from "./View";
-import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
+import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/components/App";
 import { ContributorFragment } from "src/__generated/graphql";
 import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";

@@ -8,7 +8,7 @@ import {
 import { useAuth } from "src/hooks/useAuth";
 import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 import { chain } from "lodash";
-import { ProjectRoutePaths } from "src/App";
+import { ProjectRoutePaths } from "src/components/App";
 import { useIntl } from "src/hooks/useIntl";
 import { isProjectVisibleToUser } from "src/hooks/useProjectVisibility";
 import { contextWithCacheHeaders } from "src/utils/headers";

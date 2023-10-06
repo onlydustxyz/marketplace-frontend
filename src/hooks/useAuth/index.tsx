@@ -1,7 +1,7 @@
 import axios from "axios";
 import { createContext, PropsWithChildren, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { RoutePaths } from "src/App";
+import { RoutePaths } from "src/components/App";
 import config from "src/config";
 import { useRoles } from "src/hooks/useAuth/useRoles";
 import { accessTokenExpired, useTokenSet } from "src/hooks/useTokenSet";

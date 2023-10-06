@@ -25,7 +25,7 @@ import {
 import { useAuth } from "src/hooks/useAuth";
 import BaseCard from "src/components/Card";
 import { useNavigate } from "react-router-dom";
-import { RoutePaths } from "src/App";
+import { RoutePaths } from "src/components/App";
 import SEO from "src/components/SEO";
 
 const MAX_STEP = 3;

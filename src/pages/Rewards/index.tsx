@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 import { Navigate } from "react-router-dom";
-import { RoutePaths } from "src/App";
+import { RoutePaths } from "src/components/App";
 import Card from "src/components/Card";
 import UserRewardTable from "src/components/UserRewardTable";
 import QueryWrapper from "src/components/QueryWrapper";

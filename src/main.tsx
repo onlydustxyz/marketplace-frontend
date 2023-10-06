@@ -5,9 +5,9 @@ import { ErrorBoundary } from "react-error-boundary";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 import ApolloWrapper from "src/providers/ApolloWrapper";
-import OnboardingProvider from "./App/OnboardingProvider";
+import OnboardingProvider from "./components/App/OnboardingProvider";
 import { AuthProvider } from "src/hooks/useAuth";
-import App from "./App";
+import App from "./components/App";
 import "./datadog";
 
 import "src/assets/css/index.css";

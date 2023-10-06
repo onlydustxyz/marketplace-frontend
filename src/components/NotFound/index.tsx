@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { RoutePaths } from "src/App";
+import { RoutePaths } from "src/components/App";
 import Button, { ButtonSize } from "src/components/Button";
 import { useIntl } from "src/hooks/useIntl";
 import logo from "src/assets/img/onlydust-logo-white.svg";

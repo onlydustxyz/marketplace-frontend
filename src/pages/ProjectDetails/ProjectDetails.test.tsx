@@ -5,7 +5,7 @@ import matchers from "@testing-library/jest-dom/matchers";
 expect.extend(matchers);
 
 import { generatePath, Route, Routes } from "react-router-dom";
-import { RoutePaths } from "src/App";
+import { RoutePaths } from "src/components/App";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import ProjectDetails from ".";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";

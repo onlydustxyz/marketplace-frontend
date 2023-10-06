@@ -56,8 +56,7 @@ export default function PayoutInfoSidePanel({ payoutSettingsValid, saveButtonDis
   return (
     <div className="flex h-full min-h-0 flex-col justify-between overflow-y-auto">
       <div className="mx-2 mb-1 flex min-h-0 flex-col gap-6 px-4 pt-4 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
-<<<<<<<< HEAD:src/App/Layout/Header/ProfileButton/PayoutInfoSidePanel/View.tsx
-        <Tag size={TagSize.Medium}>
+        {/* <Tag size={TagSize.Medium}>
           <div
             className={cn({
               "text-orange-500": !payoutSettingsValid,
@@ -71,9 +70,7 @@ export default function PayoutInfoSidePanel({ payoutSettingsValid, saveButtonDis
               T("profile.form.payoutSettingsRequiredTag")
             )}
           </div>
-        </Tag>
-========
->>>>>>>> a09db0d1c (feat: payout side panel ui):src/App/Layout/Header/ProfileButton/PayoutInfoSidePanel/PayoutInfoSidePanelView.tsx
+        </Tag> */}
         <ProfileRadioGroup
           name="profileType"
           label={T("profile.form.profileType")}
@@ -95,7 +92,7 @@ export default function PayoutInfoSidePanel({ payoutSettingsValid, saveButtonDis
           <Box className="pb-6">
             <Tag size={TagSize.Medium}>
               <div
-                className={classNames({
+                className={cn({
                   "text-orange-500": !payoutSettingsValid,
                 })}
               >
@@ -294,7 +291,7 @@ export default function PayoutInfoSidePanel({ payoutSettingsValid, saveButtonDis
           <Box className="pb-6">
             <Tag size={TagSize.Medium}>
               <div
-                className={classNames({
+                className={cn({
                   "text-orange-500": !payoutSettingsValid,
                 })}
               >

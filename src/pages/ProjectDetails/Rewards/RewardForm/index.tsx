@@ -5,7 +5,7 @@ import { useIntl } from "src/hooks/useIntl";
 import View from "./View";
 import { useShowToaster } from "src/hooks/useToaster";
 import { generatePath, useNavigate, useOutletContext } from "react-router-dom";
-import { ProjectRoutePaths, RoutePaths } from "src/App";
+import { ProjectRoutePaths, RoutePaths } from "src/components/App";
 import {
   ContributionFragment,
   WorkItemFragment,

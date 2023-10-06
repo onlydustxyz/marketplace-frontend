@@ -2,7 +2,7 @@ import { renderHook } from "@testing-library/react-hooks";
 import useSignupRedirection, { User } from ".";
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import { MockedProvider, MockedResponse } from "@apollo/client/testing";
-import { RoutePaths } from "src/App";
+import { RoutePaths } from "src/components/App";
 import { generatePath } from "react-router-dom";
 import { waitFor } from "@testing-library/react";
 import {

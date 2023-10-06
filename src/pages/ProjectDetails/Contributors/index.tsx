@@ -8,7 +8,7 @@ import useProjectContributors from "src/hooks/useProjectContributors";
 import { useGetProjectDetailsQuery } from "src/__generated/graphql";
 import { contextWithCacheHeaders } from "src/utils/headers";
 import Button, { ButtonSize } from "src/components/Button";
-import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
+import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/components/App";
 import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
 import ProjectLeadInvitation from "src/components/ProjectLeadInvitation/ProjectLeadInvitation";

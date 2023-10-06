@@ -5,7 +5,7 @@ import Header from "./Header";
 import Footer from "./Footer";
 import Profile from "./Profile";
 import useUserProfile from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/useUserProfile";
-import { RoutePaths } from "src/App";
+import { RoutePaths } from "src/components/App";
 import { useShowToaster } from "src/hooks/useToaster";
 import { useIntl } from "src/hooks/useIntl";
 import SEO from "src/components/SEO";

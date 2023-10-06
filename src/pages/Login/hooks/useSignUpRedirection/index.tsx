@@ -1,5 +1,5 @@
 import { generatePath } from "react-router-dom";
-import { RoutePaths } from "src/App";
+import { RoutePaths } from "src/components/App";
 import usePayoutSettings from "src/hooks/usePayoutSettings";
 import {
   PendingProjectLeaderInvitationsQueryHookResult,

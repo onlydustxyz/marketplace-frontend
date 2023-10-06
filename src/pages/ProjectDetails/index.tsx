@@ -2,14 +2,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import { LanguageMap } from "src/types";
 import { ProjectLeadFragment, SponsorFragment } from "src/__generated/graphql";
 import View from "./View";
-import { RoutePaths } from "src/App";
+import { RoutePaths } from "src/components/App";
 import useProjectVisibility from "src/hooks/useProjectVisibility";
 import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
 import SEO from "src/components/SEO";
-import DataSwitch from "src/App/DataWrapper/DataSwitch";
+import DataSwitch from "src/components/App/DataWrapper/DataSwitch";
 import { useContext } from "react";
-import { DataContext } from "src/App/DataWrapper/DataContext";
+import { DataContext } from "src/components/App/DataWrapper/DataContext";
 
 type ProjectDetailsParams = {
   projectKey: string;

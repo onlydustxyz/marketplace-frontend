@@ -1,6 +1,6 @@
 import { withRouter } from "storybook-addon-react-router-v6";
 
-import FeedbackButton from "src/App/Layout/Header/FeedbackButton";
+import FeedbackButton from "src/components/App/Layout/Header/FeedbackButton";
 import { UserIdentityDocument } from "src/__generated/graphql";
 import withMockedProvider from "../decorators/withMockedProvider";
 import withAuthProvider from "../decorators/withAuthProvider";

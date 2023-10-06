@@ -20,7 +20,7 @@ import {
   UserPayoutSettingsFragment,
   WorkItemType,
 } from "src/__generated/graphql";
-import { RoutePaths } from "src/App";
+import { RoutePaths } from "src/components/App";
 import { MockedResponse } from "@apollo/client/testing";
 import { screen } from "@testing-library/react";
 

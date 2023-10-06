@@ -1,6 +1,6 @@
 import onlyDustLogoWhite from "assets/img/onlydust-logo-white.svg";
 import onlyDustTitle from "assets/img/onlydust-title.svg";
-import { RoutePaths } from "src/App";
+import { RoutePaths } from "src/components/App";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { useIntl } from "src/hooks/useIntl";
 import LinkIcon from "src/icons/Link";

@@ -19,7 +19,7 @@ import MarkdownPreview from "src/components/MarkdownPreview";
 import { cn } from "src/utils/cn";
 import ExternalLinkLine from "src/icons/ExternalLinkLine";
 import { Link, generatePath } from "react-router-dom";
-import { RoutePaths } from "src/App";
+import { RoutePaths } from "src/components/App";
 import CompletionBar from "src/components/CompletionBar";
 import WhatsappFill from "src/icons/WhatsappFill";
 

@@ -1,6 +1,6 @@
 import { Listbox } from "@headlessui/react";
 import UpDownChevrons from "src/assets/icons/UpDownChevrons";
-import { RoutePaths } from "src/App";
+import { RoutePaths } from "src/components/App";
 import BackLink from "./BackLink";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import { useIntl } from "src/hooks/useIntl";
