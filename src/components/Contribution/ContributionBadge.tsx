@@ -29,7 +29,7 @@ export function ContributionBadge({
   status: GithubItemStatus;
   title: string;
   description?: string;
-  author: Pick<GithubUser, "id" | "login" | "avatarUrl">;
+  author: Pick<GithubUser, "id" | "login" | "avatarUrl"> | null;
   url: string;
   withTooltip?: boolean;
   asLink?: boolean;
@@ -40,7 +40,7 @@ export function ContributionBadge({
   const { githubUserId } = useAuth();
   const { open: openProfilePanel } = useContributorProfilePanel();
 
-  const isExternal = githubUserId !== author.id;
+  const isExternal = author && githubUserId !== author.id;
   const tooltipId = `${id}-${number}-${type}-${status}`;
 
   const tokens = {

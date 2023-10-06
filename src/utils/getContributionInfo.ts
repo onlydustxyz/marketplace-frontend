@@ -12,14 +12,14 @@ function getDefaultInfo(
     htmlUrl: htmlUrl ?? "",
     number: number ?? 0,
     status: status ?? "",
-    author: author ?? {},
+    author: author ?? null,
   } as {
     type: GithubContributionType;
     title: string;
     htmlUrl: string;
     number: number;
     status: GithubItemStatus;
-    author: GithubUser;
+    author: GithubUser | null;
   };
 }
 
