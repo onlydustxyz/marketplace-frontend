@@ -36,6 +36,9 @@ export default function Projects() {
   const [filterPanelOpen, setFilterPanelOpen] = useState(false);
   const [sortingPanelOpen, setSortingPanelOpen] = useState(false);
 
+  const [technologies, setTechnologies] = useState<string[]>([]);
+  const [sponsors, setSponsors] = useState<string[]>([]);
+
   const { ref, restoreScroll } = useScrollRestoration();
 
   return (
@@ -48,7 +51,7 @@ export default function Projects() {
           </div>
           <div className="flex h-full gap-6">
             <div className="sticky top-0 hidden shrink-0 basis-80 xl:block">
-              <FilterPanel isProjectLeader={isProjectLeader} />
+              <FilterPanel isProjectLeader={isProjectLeader} technologies={technologies} sponsors={sponsors} />
             </div>
             <div className="min-w-0 grow">
               <Suspense fallback={<Loader />}>
@@ -62,6 +65,8 @@ export default function Projects() {
                   setFilterPanelOpen={setFilterPanelOpen}
                   sortingPanelOpen={sortingPanelOpen}
                   setSortingPanelOpen={setSortingPanelOpen}
+                  setTechnologies={setTechnologies}
+                  setSponsors={setSponsors}
                 />
               </Suspense>
             </div>
@@ -69,7 +74,7 @@ export default function Projects() {
         </div>
       </Background>
       <SidePanel withBackdrop open={filterPanelOpen} setOpen={setFilterPanelOpen} placement="bottom">
-        <FilterPanel isProjectLeader={isProjectLeader} fromSidePanel />
+        <FilterPanel isProjectLeader={isProjectLeader} fromSidePanel technologies={technologies} sponsors={sponsors} />
       </SidePanel>
       <SidePanel withBackdrop open={sortingPanelOpen} setOpen={setSortingPanelOpen} placement="bottom">
         <SortingPanel all={PROJECT_SORTINGS} current={sorting || DEFAULT_SORTING} onChange={setSorting} />

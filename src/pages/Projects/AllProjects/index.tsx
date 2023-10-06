@@ -20,7 +20,7 @@ import { FilterButton } from "src/pages/Projects/FilterPanel/FilterButton";
 import { SortButton } from "src/pages/Projects/Sorting/SortButton";
 import DataDisplay from "src/App/DataWrapper/DataDisplay";
 import DataSwitch from "src/App/DataWrapper/DataSwitch";
-import { DataContext } from "src/App/DataWrapper/DataContext";
+import { DataContext, isExtendedGetProjectsQuery } from "src/App/DataWrapper/DataContext";
 
 export const DEFAULT_SORTING = Sorting.Trending;
 
@@ -34,6 +34,8 @@ type Props = {
   setFilterPanelOpen: (open: boolean) => void;
   sortingPanelOpen: boolean;
   setSortingPanelOpen: (open: boolean) => void;
+  setTechnologies: (technologies: string[]) => void;
+  setSponsors: (sponsors: string[]) => void;
 };
 
 interface AllProjectsDataWrapperProps {
@@ -92,6 +94,8 @@ function AllProjects({
   setFilterPanelOpen,
   sortingPanelOpen,
   setSortingPanelOpen,
+  setTechnologies,
+  setSponsors,
 }: Props) {
   const { T } = useIntl();
 
@@ -105,6 +109,11 @@ function AllProjects({
 
   if (!dataContext) {
     throw new Error(T("dataFetching.dataContext"));
+  }
+
+  if (import.meta.env.VITE_USE_APOLLO === "false" && isExtendedGetProjectsQuery(dataContext.data)) {
+    setTechnologies(dataContext.data.technologies || []);
+    setSponsors(dataContext.data.sponsors || []);
   }
 
   const getProjectsQuery = dataContext;

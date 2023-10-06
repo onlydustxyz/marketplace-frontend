@@ -5,9 +5,13 @@ import { DataContext } from "./DataContext";
 import { GetProjectsQuery } from "src/__generated/graphql";
 import { ProjectDetailsRESTfull } from "src/pages/ProjectDetails";
 
+type ExtendedGetProjectsQuery = GetProjectsQuery & {
+  technologies?: string[];
+  sponsors?: string[];
+};
 interface DataDisplayProps {
   param?: string;
-  data: ProjectDetailsRESTfull | GetProjectsQuery;
+  data: ProjectDetailsRESTfull | ExtendedGetProjectsQuery;
   isLoading?: boolean;
   error?: null | unknown;
   children: ReactNode;

@@ -169,7 +169,7 @@ vi.mock("usehooks-ts", async () => {
 const render = (isProjectLeader: boolean, { isCleared, mocks }: { isCleared?: boolean; mocks: MockedResponse[] }) =>
   renderWithIntl(
     <MockedProjectFilterProvider isCleared={isCleared}>
-      <FilterPanel isProjectLeader={isProjectLeader} />
+      <FilterPanel isProjectLeader={isProjectLeader} technologies={["Procfile", "C"]} sponsors={["OnlyDust"]} />
     </MockedProjectFilterProvider>,
     {
       wrapper: MemoryRouterProviderFactory({ mocks }),
