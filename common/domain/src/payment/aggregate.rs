@@ -52,14 +52,14 @@ impl Payment {
 		self.only_active()?;
 
 		// TODO: Handle currency conversion when needed
-		if self.paid_usd_amount + amount.amount() > self.requested_usd_amount {
+		if self.paid_amount + amount.amount() > self.requested_amount {
 			return Err(Error::Overspent);
 		}
 
 		info!(
 			amount = amount.amount().to_string(),
-			already_paid = self.paid_usd_amount.to_string(),
-			requested_amount = self.requested_usd_amount.to_string(),
+			already_paid = self.paid_amount.to_string(),
+			requested_amount = self.requested_amount.to_string(),
 			"New payment receipt added",
 		);
 
@@ -116,7 +116,7 @@ impl Payment {
 	}
 
 	fn only_cancellable(&self) -> Result<(), Error> {
-		if self.paid_usd_amount.is_zero() {
+		if self.paid_amount.is_zero() {
 			Ok(())
 		} else {
 			Err(Error::NotCancellable)

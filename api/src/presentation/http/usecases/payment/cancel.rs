@@ -15,6 +15,8 @@ impl<'r> FromRequest<'r> for Usecase {
 		Outcome::Success(Self::new(
 			try_outcome!(FromRocketState::from_state(request.rocket())),
 			try_outcome!(FromRocketState::from_state(request.rocket())),
+			try_outcome!(FromRocketState::from_state(request.rocket())),
+			try_outcome!(FromRocketState::from_state(request.rocket())),
 		))
 	}
 }

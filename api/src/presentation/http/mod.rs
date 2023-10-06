@@ -72,9 +72,6 @@ pub fn serve(
 		github_api_client.clone(),
 	);
 
-	let cancel_payment_usecase =
-		application::payment::cancel::Usecase::new(event_bus.clone(), payment_repository.clone());
-
 	rocket::custom(http::config::rocket("api/Rocket.toml"))
 		.manage(config.http.clone())
 		.manage(config)
@@ -98,7 +95,6 @@ pub fn serve(
 		.manage(update_user_profile_info_usecase)
 		.manage(create_github_issue_usecase)
 		.manage(github_client_pat_factory)
-		.manage(cancel_payment_usecase)
 		.manage(payout_info_repository)
 		.manage(github_fetch_service)
 		.manage(dusty_bot_service)

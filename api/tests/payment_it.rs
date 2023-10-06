@@ -538,9 +538,17 @@ impl<'a> Test<'a> {
 			response.into_string().await.unwrap_or_default()
 		);
 
-		assert_matches!(
+		assert_eq!(
+			Event::Payment(PaymentEvent::Cancelled { id: payment_id }),
 			self.context.amqp.listen(EXCHANGE_NAME).await.unwrap(),
-			Event::Payment(_)
+		);
+
+		assert_eq!(
+			Event::Budget(BudgetEvent::Spent {
+				id: budget_id,
+				amount: dec!(-100)
+			}),
+			self.context.amqp.listen(EXCHANGE_NAME).await.unwrap(),
 		);
 
 		Ok(())
@@ -608,9 +616,17 @@ impl<'a> Test<'a> {
 			response.into_string().await.unwrap_or_default()
 		);
 
-		assert_matches!(
+		assert_eq!(
+			Event::Payment(PaymentEvent::Cancelled { id: payment_id }),
 			self.context.amqp.listen(EXCHANGE_NAME).await.unwrap(),
-			Event::Payment(_)
+		);
+
+		assert_eq!(
+			Event::Budget(BudgetEvent::Spent {
+				id: budget_id,
+				amount: dec!(-100)
+			}),
+			self.context.amqp.listen(EXCHANGE_NAME).await.unwrap(),
 		);
 
 		Ok(())

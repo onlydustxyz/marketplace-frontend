@@ -4,7 +4,8 @@ use serde::{Deserialize, Serialize};
 use serde_with::{serde_as, DurationSeconds};
 
 use crate::{
-	EventSourcable, GithubUserId, PaymentEvent, PaymentId, PaymentWorkItem, ProjectId, UserId,
+	Currency, EventSourcable, GithubUserId, PaymentEvent, PaymentId, PaymentWorkItem, ProjectId,
+	UserId,
 };
 
 #[derive(Debug, Default, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -19,8 +20,9 @@ pub enum Status {
 pub struct State {
 	pub id: PaymentId,
 	pub project_id: ProjectId,
-	pub requested_usd_amount: Decimal,
-	pub paid_usd_amount: Decimal,
+	pub requested_amount: Decimal,
+	pub paid_amount: Decimal,
+	pub currency: &'static Currency,
 	pub status: Status,
 	pub recipient_id: GithubUserId,
 	pub requestor_id: UserId,
@@ -35,8 +37,9 @@ impl Default for State {
 			duration_worked: Duration::seconds(0),
 			id: Default::default(),
 			project_id: Default::default(),
-			requested_usd_amount: Default::default(),
-			paid_usd_amount: Default::default(),
+			requested_amount: Default::default(),
+			paid_amount: Default::default(),
+			currency: Default::default(),
 			status: Default::default(),
 			recipient_id: Default::default(),
 			requestor_id: Default::default(),
@@ -63,7 +66,8 @@ impl EventSourcable for State {
 			} => Self {
 				id: *id,
 				project_id: *project_id,
-				requested_usd_amount: *amount.amount(), // TODO: handle currencies
+				requested_amount: *amount.amount(),
+				currency: amount.currency(),
 				recipient_id: *recipient_id,
 				work_items: reason.work_items.clone(),
 				requestor_id: *requestor_id,
@@ -75,7 +79,7 @@ impl EventSourcable for State {
 				..self
 			},
 			PaymentEvent::Processed { amount, .. } => Self {
-				paid_usd_amount: self.paid_usd_amount + amount.amount(), // TODO: handle currencies
+				paid_amount: self.paid_amount + amount.amount(),
 				..self
 			},
 			PaymentEvent::InvoiceReceived { .. } | PaymentEvent::InvoiceRejected { .. } => self,
