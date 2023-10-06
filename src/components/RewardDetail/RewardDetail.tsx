@@ -72,10 +72,10 @@ export function RewardDetail({
     const { number, type, status, title, author, htmlUrl, commentsCount } = getContributionInfo(contribution);
 
     return (
-      <div className="font-walsheim">
+      <div className="h-full font-walsheim">
         <h5 className="font-belwe text-2xl">{T("rewards.panel.title")}</h5>
 
-        <div className="divide-y divide-greyscale-50/12">
+        <div className="flex h-full flex-col divide-y divide-greyscale-50/12">
           <div className="py-8">
             <div className="flex flex-col gap-6">
               <div className="flex flex-col gap-2">
@@ -144,15 +144,17 @@ export function RewardDetail({
           </div>
 
           {rewardItems.length ? (
-            <div className="flex flex-col gap-4 py-8">
+            <div className="flex flex-col gap-4 overflow-hidden py-8">
               <div className="flex items-center gap-2">
                 <Medal2Fill className="text-xl leading-none text-orange-400" />
                 <span className="font-belwe text-base leading-none">{T("rewards.panel.rewards.title")}</span>
               </div>
 
-              {rewardItems.map(rewardItem => {
-                return <RewardCard key={rewardItem.paymentId} reward={rewardItem} />;
-              })}
+              <div className="flex flex-col gap-4 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
+                {rewardItems.map(rewardItem => {
+                  return <RewardCard key={rewardItem.paymentId} reward={rewardItem} />;
+                })}
+              </div>
             </div>
           ) : null}
         </div>
