@@ -195,15 +195,3 @@ export type GithubTypeStatusDict<T> = GithubPullRequestTypeStatusDict<T> &
   GithubCodeReviewTypeStatusDict<T>;
 
 export type QueryContribution = GetAllContributionsQuery["contributions"][number];
-
-export type UserPayout =
-  | {
-      __typename?: "UserPayoutInfo" | undefined;
-      userId: string;
-      identity: string;
-      location: string;
-      payoutSettings: string;
-      arePayoutSettingsValid: boolean;
-    }
-  | undefined
-  | null;

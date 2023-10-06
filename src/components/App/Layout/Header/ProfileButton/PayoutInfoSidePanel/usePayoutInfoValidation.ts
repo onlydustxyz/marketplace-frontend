@@ -1,7 +1,7 @@
-import { UserPayout } from "src/types";
+import { UserPayoutInfo } from "./types";
 
 // Contact & payout informations validation hook
-export function usePayoutInfoValidation(user: UserPayout): {
+export function usePayoutInfoValidation(user: UserPayoutInfo): {
   isContactInfoValid: boolean;
   isPaymentInfoValid: boolean;
 } {

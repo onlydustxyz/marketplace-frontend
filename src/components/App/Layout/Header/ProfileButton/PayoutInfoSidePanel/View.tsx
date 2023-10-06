@@ -291,7 +291,7 @@ export default function PayoutInfoSidePanel({ payoutSettingsValid, saveButtonDis
           <Box className="pb-6">
             <Tag size={TagSize.Medium}>
               <div
-                className={classNames({
+                className={cn({
                   "text-orange-500": !payoutSettingsValid,
                 })}
               >

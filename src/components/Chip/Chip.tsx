@@ -1,5 +1,5 @@
-import classNames from "classnames";
 import { ReactElement } from "react";
+import { cn } from "src/utils/cn";
 
 type ChipProps = {
   content: ReactElement;
@@ -9,7 +9,7 @@ type ChipProps = {
 export default function Chip({ content }: ChipProps) {
   return (
     <span
-      className={classNames(
+      className={cn(
         `border-1 border-1 flex h-4 w-4 items-center justify-center overflow-hidden rounded-full  
         border border-greyscale-50/[0.08] bg-white/8 text-center `
       )}

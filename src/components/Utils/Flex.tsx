@@ -1,5 +1,5 @@
-import classNames from "classnames";
 import { ReactNode } from "react";
+import { cn } from "src/utils/cn";
 
 type FlexProps = {
   className?: string;
@@ -8,7 +8,7 @@ type FlexProps = {
 
 export default function Flex({ className, children, ...rest }: FlexProps) {
   return (
-    <div className={classNames("flex", className)} {...rest}>
+    <div className={cn("flex", className)} {...rest}>
       {children}
     </div>
   );

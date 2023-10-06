@@ -2,12 +2,7 @@ import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
 import IBANParser from "iban";
 
 import { useIntl } from "src/hooks/useIntl";
-import {
-  Maybe,
-  PreferredMethod,
-  UpdatePayoutSettingsMutationVariables,
-  UserPayoutSettingsFragment,
-} from "src/__generated/graphql";
+import { Maybe, UpdatePayoutSettingsMutationVariables, UserPayoutSettingsFragment } from "src/__generated/graphql";
 import { useEffect } from "react";
 import PayoutInfoSidePanelView from "./PayoutInfoSidePanelView";
 import usePayoutSettings from "src/hooks/usePayoutSettings";
@@ -134,12 +129,12 @@ const mapFormDataToSchema = ({
 
   const payoutType =
     payoutSettingsType === PayoutSettingsDisplayType.BankAddress
-      ? PayoutSettingsType.BankAddress
+      ? PayoutSettingsDisplayType.BankAddress
       : ethWallet?.match(ENS_DOMAIN_REGEXP)
-      ? PayoutSettingsType.EthereumName
-      : PayoutSettingsType.EthereumAddress;
+      ? PayoutSettingsDisplayType.EthereumName
+      : PayoutSettingsDisplayType.EthereumAddress;
 
-  if (payoutType === PayoutSettingsType.EthereumAddress && ethWallet) {
+  if (payoutType === PayoutSettingsDisplayType.EthereumAddress && ethWallet) {
     variables.payoutSettings = {
       optEthAddress: ethWallet,
       optBankAddress: null,
@@ -147,21 +142,21 @@ const mapFormDataToSchema = ({
       type: PayoutSettingsType.EthereumAddress,
     };
   }
-  if (payoutType === PayoutSettingsType.EthereumName && ethWallet) {
+  if (payoutType === PayoutSettingsDisplayType.EthereumName && ethWallet) {
     variables.payoutSettings = {
       optEthAddress: null,
       optBankAddress: null,
       optEthName: ethWallet,
-      type: PayoutSettingsType.EthereumName,
+      type: PayoutSettingsDisplayType.EthereumName,
     };
   }
 
-  if (payoutType === PayoutSettingsType.BankAddress && IBAN && BIC) {
+  if (payoutType === PayoutSettingsDisplayType.BankAddress && IBAN && BIC) {
     variables.payoutSettings = {
       optEthAddress: null,
       optBankAddress: { IBAN: IBANParser.electronicFormat(IBAN), BIC },
       optEthName: null,
-      type: PayoutSettingsType.BankAddress,
+      type: PayoutSettingsDisplayType.BankAddress,
     };
   }
 

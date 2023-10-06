@@ -1,5 +1,5 @@
-import classNames from "classnames";
 import { ReactNode } from "react";
+import { cn } from "src/utils/cn";
 
 type CenterProps = {
   className?: string;
@@ -8,7 +8,7 @@ type CenterProps = {
 
 export default function Center({ className, children, ...rest }: CenterProps) {
   return (
-    <div className={classNames("flex items-center justify-center", className)} {...rest}>
+    <div className={cn("flex items-center justify-center", className)} {...rest}>
       {children}
     </div>
   );

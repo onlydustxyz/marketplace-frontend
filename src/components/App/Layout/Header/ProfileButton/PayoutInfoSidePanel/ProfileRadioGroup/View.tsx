@@ -22,7 +22,7 @@ export default function View({ label, options, withMargin, register, requiredFor
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
   return (
     <label
-      className={classNames("flex flex-col", {
+      className={cn("flex flex-col", {
         "gap-2": withMargin,
       })}
     >
