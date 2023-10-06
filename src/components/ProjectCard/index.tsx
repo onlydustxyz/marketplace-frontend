@@ -43,24 +43,36 @@ export default function ProjectCard({ project, className }: ProjectCardProps) {
     logoUrl,
     visibility,
     shortDescription,
+    // TODO(Backend):
     // New REST API Fields
     contributorCount,
     technologies,
+    prettyId,
+    leaders,
+    repoCount,
   } = project;
 
   const projectUrl = logoUrl ? config.CLOUDFLARE_RESIZE_W_100_PREFIX + logoUrl : logoUrl;
 
+  // TODO(Backend): This is a temporary solution until we delete graphql fields
+  const repositoryCount = githubRepos?.length || repoCount || 0;
+
   const { T } = useIntl();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
+  // TODO(Backend): This is a temporary solution until we delete graphql fields
   const topSponsors = sponsors?.map(projectSponsor => projectSponsor.sponsor || projectSponsor).slice(0, 3) || [];
+
+  // TODO(Backend): This is a temporary solution until we delete graphql fields
   const languages = githubRepos
     ? getMostUsedLanguages(getDeduplicatedAggregatedLanguages(githubRepos?.map(r => r.repo)))
     : technologies
     ? getTopTechnologies(technologies)
     : [];
-  console.log(languages);
+
+  // TODO(Backend): This is a temporary solution until we delete graphql fields
   const contributorsCount = contributorsAggregate?.aggregate?.count || contributorCount || 0;
+
   const hasPendingInvitation = pendingInvitations?.length > 0;
 
   const card = (
@@ -83,7 +95,7 @@ export default function ProjectCard({ project, className }: ProjectCardProps) {
             <ProjectTitle
               projectId={id}
               projectName={name || ""}
-              projectLeads={projectLeads?.map(lead => lead.user).filter(isDefined) || []}
+              projectLeads={projectLeads?.map(lead => lead.user).filter(isDefined) || leaders || []}
               logoUrl={projectUrl || onlyDustLogo}
               private={visibility === "private"}
             />
@@ -99,10 +111,10 @@ export default function ProjectCard({ project, className }: ProjectCardProps) {
           <div className="flex basis-2/3 flex-col justify-center gap-4 lg:gap-4 lg:pl-6">
             <div className="ml-px line-clamp-2 text-sm xl:text-base">{shortDescription}</div>
             <div className="flex flex-row flex-wrap gap-1 xl:gap-2">
-              {githubRepos && githubRepos.length > 0 && (
+              {repositoryCount && (
                 <Tag testid={`github-repo-count-${id}`} size={TagSize.Small}>
                   <GitRepositoryLine />
-                  {isXl ? T("project.details.githubRepos.count", { count: githubRepos.length }) : githubRepos.length}
+                  {isXl ? T("project.details.githubRepos.count", { count: repositoryCount }) : repositoryCount}
                 </Tag>
               )}
               {contributorsCount > 0 && (
@@ -152,7 +164,8 @@ export default function ProjectCard({ project, className }: ProjectCardProps) {
   return (
     <Link
       to={generatePath(RoutePaths.ProjectDetails, {
-        projectKey: key || "",
+        // TODO(Backend): This is a temporary solution until we delete graphql fields
+        projectKey: key || prettyId || "",
       })}
     >
       {card}
