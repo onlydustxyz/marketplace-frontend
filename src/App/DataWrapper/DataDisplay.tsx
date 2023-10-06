@@ -3,17 +3,11 @@ import { Navigate } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import { DataContext } from "./DataContext";
 import { GetProjectsQuery } from "src/__generated/graphql";
-
-interface Project {
-  name: string | null;
-  shortDescription: string | null;
-  id: string;
-  key: string | null;
-}
+import { ProjectDetailsRESTfull } from "src/pages/ProjectDetails";
 
 interface DataDisplayProps {
   param?: string;
-  data: Project | GetProjectsQuery;
+  data: ProjectDetailsRESTfull | GetProjectsQuery;
   isLoading?: boolean;
   error?: null | unknown;
   children: ReactNode;

@@ -32,6 +32,13 @@ export interface ProjectDetails {
   sponsors: SponsorFragment[];
 }
 
+export interface ProjectDetailsRESTfull {
+  name: string | null;
+  shortDescription: string | null;
+  id: string;
+  key: string | null;
+}
+
 interface ProjectDetailsDataWrapperProps {
   children: ReactNode;
   param?: string;
@@ -70,7 +77,7 @@ function ProjectPresentDetails() {
 
   const { param, data, isLoading, error } = dataContext;
   const projectKey = param;
-  const { id, name } = data;
+  const { id, name } = data as ProjectDetailsRESTfull;
 
   const { visibleToCurrentUser } = useProjectVisibility(id);
 

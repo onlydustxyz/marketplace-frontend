@@ -14,6 +14,7 @@ type Props = {
 export default function FilterPanel({ isProjectLeader, fromSidePanel }: Props) {
   const { user, githubUserId } = useAuth();
   const filterOptionsQuery = useGetAllFilterOptionsQuery(contextWithCacheHeaders);
+  console.log(filterOptionsQuery);
 
   const visibleProjects = chain(filterOptionsQuery.data?.projects).filter(
     project =>
