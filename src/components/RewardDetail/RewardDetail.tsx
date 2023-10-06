@@ -81,7 +81,7 @@ export function RewardDetail({
               <div className="flex flex-col gap-2">
                 <div>
                   <ContributionBadge
-                    id={id ?? ""}
+                    id={`reward-detail-${id}` ?? ""}
                     number={number}
                     type={type}
                     status={status}
@@ -89,6 +89,7 @@ export function RewardDetail({
                     author={author}
                     url={htmlUrl}
                     size={ContributionBadgeSizes.Md}
+                    withTooltip={false}
                   />
                 </div>
 
