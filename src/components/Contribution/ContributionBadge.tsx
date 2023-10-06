@@ -90,7 +90,7 @@ export function ContributionBadge({
       ) : null}
 
       <Component
-        data-tooltip-id={tooltipId}
+        data-tooltip-id={withTooltip ? tooltipId : undefined}
         className={cn(
           "inline-flex w-auto items-center gap-1 rounded-full px-1 py-0.5 font-walsheim",
           {

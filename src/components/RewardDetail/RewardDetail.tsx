@@ -136,7 +136,7 @@ export function RewardDetail({
                       <ArrowRightUpLine className="text-base leading-none" />
                       {T("rewards.panel.contribution.linkedTo")}
                     </div>
-                    <ContributionLinked contribution={contribution} />
+                    <ContributionLinked contribution={contribution} withTooltip={false} asLink />
                   </div>
                 </div>
               </div>
