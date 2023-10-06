@@ -38,7 +38,7 @@ export function getContributionInfo(
         return getDefaultInfo({ type, title, htmlUrl, number, status, author });
       }
 
-      return getDefaultInfo();
+      return getDefaultInfo({ type });
     }
 
     case GithubContributionType.PullRequest: {
@@ -57,7 +57,7 @@ export function getContributionInfo(
         });
       }
 
-      return getDefaultInfo();
+      return getDefaultInfo({ type });
     }
 
     case GithubContributionType.CodeReview: {
@@ -75,7 +75,7 @@ export function getContributionInfo(
         return getDefaultInfo({ type, status, author });
       }
 
-      return getDefaultInfo();
+      return getDefaultInfo({ type });
     }
 
     default:

@@ -29,12 +29,11 @@ export function ContributionReview({ status }: { status: GithubContributionRevie
     },
   };
 
-  // Even though a type and status should always be defined, in development sometimes they aren't and makes the component crash.
   return (
     <ContributionAttribute>
       <div className="flex items-center gap-1 font-walsheim text-spaceBlue-100">
-        <span className="text-xs leading-none">{status ? dict[status].icon : null}</span>
-        <span className="whitespace-nowrap text-sm leading-none">{status ? dict[status].text : null}</span>
+        <span className="text-xs leading-none">{dict[status]?.icon}</span>
+        <span className="whitespace-nowrap text-sm leading-none">{dict[status]?.text}</span>
       </div>
     </ContributionAttribute>
   );
