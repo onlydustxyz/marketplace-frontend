@@ -78,16 +78,19 @@ export function ContributionDate({
   const tooltipId = `${id}-date-tooltip`;
   const { className, ...rest } = tooltipProps;
 
+  // Even though a type and status should always be defined, in development sometimes they aren't and makes the component crash.
   return (
     <>
       <Tooltip id={tooltipId} clickable {...rest}>
         <div className={cn("flex items-center gap-2 px-1 py-2", className)}>
           <ContributionIcon type={type} status={status} />
 
-          {T(tokens[type][status as keyof typeof tokens[GithubContributionType]], {
-            date: getFormattedDateGB(date),
-            time: getFormattedTimeUS(date),
-          })}
+          {type && status
+            ? T(tokens[type][status as keyof typeof tokens[GithubContributionType]], {
+                date: getFormattedDateGB(date),
+                time: getFormattedTimeUS(date),
+              })
+            : null}
         </div>
       </Tooltip>
 
@@ -95,9 +98,11 @@ export function ContributionDate({
         {withIcon ? (
           <>
             <ContributionIcon type={type} status={status} size={withIcon ? Sizes.xs : undefined} />
-            {T(tokensShort[type][status as keyof typeof tokensShort[GithubContributionType]], {
-              date: displayRelativeDate(date),
-            })}
+            {type && status
+              ? T(tokensShort[type][status as keyof typeof tokensShort[GithubContributionType]], {
+                  date: displayRelativeDate(date),
+                })
+              : null}
           </>
         ) : (
           displayRelativeDate(date)

@@ -56,7 +56,7 @@ export function ContributionBadge({
           <div className="flex flex-col gap-4 px-1 py-2">
             {isExternal ? (
               <div className="flex font-medium">
-                <span className="text-spaceBlue-200">{tokens[type]}</span>
+                <span className="text-spaceBlue-200">{type ? tokens[type] : null}</span>
                 &nbsp;
                 <button
                   type="button"
