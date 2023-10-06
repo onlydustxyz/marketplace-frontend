@@ -103,7 +103,7 @@ export function ContributionBadge({
       >
         <ContributionIcon type={type} status={status} />
         <div className="flex">
-          <span className={classNames("leading-none", size)}>{number}</span>
+          <span className={cn("leading-none", size)}>{number}</span>
           {isExternal ? <ArrowRightUpLine className="text-xs leading-none" /> : null}
         </div>
       </Component>
