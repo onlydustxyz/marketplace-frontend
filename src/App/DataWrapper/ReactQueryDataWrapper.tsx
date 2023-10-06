@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { useTokenSet } from "src/hooks/useTokenSet";
 import DataDisplay from "./DataDisplay";
@@ -44,8 +44,14 @@ export default function ReactQueryDataWrapper({
     queryFn: () => fetch(url, option).then(res => res.json()),
   });
 
+  const [onLoad, setOnload] = useState(false);
+
+  useEffect(() => {
+    setOnload(isLoading);
+  }, [isLoading]);
+
   return (
-    <DataDisplay param={param} data={data} isLoading={isLoading} error={error}>
+    <DataDisplay param={param} data={data} loading={onLoad} queryLoading={isLoading} error={error}>
       {children}
     </DataDisplay>
   );

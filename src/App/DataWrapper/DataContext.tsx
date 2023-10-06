@@ -9,7 +9,7 @@ export type ExtendedGetProjectsQuery = GetProjectsQuery & {
 interface DataContextProps {
   param?: string;
   data: ProjectDetailsRESTfull | ExtendedGetProjectsQuery;
-  isLoading?: boolean;
+  loading?: boolean;
   error?: null | unknown;
 }
 

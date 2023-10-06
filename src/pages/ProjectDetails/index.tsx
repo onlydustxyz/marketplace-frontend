@@ -75,7 +75,7 @@ function ProjectPresentDetails() {
     throw new Error(T("dataFetching.dataContext"));
   }
 
-  const { param, data, isLoading, error } = dataContext;
+  const { param, data, loading, error } = dataContext;
   const projectKey = param;
   const { id, name } = data as ProjectDetailsRESTfull;
 
@@ -92,7 +92,7 @@ function ProjectPresentDetails() {
   return (
     <>
       <SEO title={`${name} — OnlyDust`} />
-      <View projectId={id} projectKey={projectKey} isLoading={isLoading} error={error} />
+      <View projectId={id} projectKey={projectKey} loading={loading} error={error} />
     </>
   );
 }

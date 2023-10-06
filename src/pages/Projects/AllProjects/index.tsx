@@ -111,6 +111,10 @@ function AllProjects({
     throw new Error(T("dataFetching.dataContext"));
   }
 
+  const { loading } = dataContext;
+
+  console.log("loading", loading);
+
   if (import.meta.env.VITE_USE_APOLLO === "false" && isExtendedGetProjectsQuery(dataContext.data)) {
     setTechnologies(dataContext.data.technologies || []);
     setSponsors(dataContext.data.sponsors || []);

@@ -12,16 +12,17 @@ type ExtendedGetProjectsQuery = GetProjectsQuery & {
 interface DataDisplayProps {
   param?: string;
   data: ProjectDetailsRESTfull | ExtendedGetProjectsQuery;
-  isLoading?: boolean;
+  loading?: boolean;
+  queryLoading?: boolean;
   error?: null | unknown;
   children: ReactNode;
 }
-export default function DataDisplay({ param, data, isLoading, error, children }: DataDisplayProps) {
-  if (!data && !isLoading) {
+export default function DataDisplay({ param, data, loading, queryLoading, error, children }: DataDisplayProps) {
+  if (!data && !queryLoading) {
     return <Navigate to={RoutePaths.NotFound} />;
   }
 
-  const contextValue = { param, data, isLoading, error };
+  const contextValue = { param, data, loading, error };
 
   return data ? <DataContext.Provider value={contextValue}>{children}</DataContext.Provider> : null;
 }
