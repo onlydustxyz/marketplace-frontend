@@ -110,8 +110,9 @@ function AllProjects({
   const getProjectsQuery = dataContext;
 
   const projects = useMemo(() => {
-    let projects = getProjectsQuery.data?.projects.map(p => ({
+    let projects = (getProjectsQuery.data as GetProjectsQuery)?.projects.map(p => ({
       ...p,
+      // TODO(Backend): This is a temporary solution until we delete graphql fields
       // add condition to verify if pendingInvitaions field is existing
       pendingInvitations: p.pendingInvitations ? p.pendingInvitations.filter(i => i.githubUserId === githubUserId) : [],
     }));

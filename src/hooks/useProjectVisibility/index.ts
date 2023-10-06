@@ -1,5 +1,6 @@
 import { Maybe, ProjectVisibilityDetailsFragment, useGetProjectVisibilityDetailsQuery } from "src/__generated/graphql";
 import { useAuth } from "src/hooks/useAuth";
+import { Leader } from "src/types";
 import { contextWithCacheHeaders } from "src/utils/headers";
 
 export default function useProjectVisibility(projectId?: string) {
@@ -23,8 +24,14 @@ export default function useProjectVisibility(projectId?: string) {
   };
 }
 
+// TODO(Backend): This is a temporary solution until we determine if a user is a member of a project
+type ExtendedProjectVisibilityDetailsFragment = ProjectVisibilityDetailsFragment & {
+  leaders?: Leader[];
+  repoCount?: number;
+};
+
 type Props = {
-  project?: Maybe<ProjectVisibilityDetailsFragment>;
+  project?: Maybe<ExtendedProjectVisibilityDetailsFragment>;
   user: {
     userId?: string;
     githubUserId?: number;
@@ -49,7 +56,7 @@ export const isUserMemberOfProject = ({ project, user }: Props) => {
   const isRewarded = project?.rewardedUsers?.some(u => u.githubUserId === user.githubUserId) || false;
   const isProjectLead =
     project?.projectLeads?.some(l => l.userId === user?.userId) ||
-    project?.leaders?.some(l => l.userId === user?.userId) ||
+    project?.leaders?.some(l => l.id === user?.userId) ||
     false;
   const isInvited = project?.pendingInvitations?.some(i => i.githubUserId === user.githubUserId) || false;
   // Dirty hack to make sure that the project is visible to the user, soon the backend will handle this

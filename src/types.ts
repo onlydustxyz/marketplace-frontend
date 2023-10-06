@@ -194,3 +194,37 @@ export type GithubTypeStatusDict<T> = GithubPullRequestTypeStatusDict<T> &
   GithubCodeReviewTypeStatusDict<T>;
 
 export type QueryContribution = GetAllContributionsQuery["contributions"][number];
+
+export interface Leader {
+  id: string;
+  githubUserId: string | null;
+  login: string;
+  htmlUrl: string | null;
+  avatarUrl: string;
+}
+
+interface Sponsor {
+  id: string | null;
+  name: string | null;
+  url: string | null;
+  logoUrl: string | null;
+}
+
+export interface Technologies {
+  [key: string]: number;
+}
+
+export interface Project {
+  id: string;
+  prettyId: string;
+  name: string;
+  shortDescription: string;
+  logoUrl: string;
+  hiring: boolean;
+  visibility: boolean | null;
+  repoCount: number;
+  contributorCount: number;
+  leaders: Leader[];
+  sponsors: Sponsor[];
+  technologies: Technologies;
+}

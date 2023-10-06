@@ -13,7 +13,7 @@ import ProjectTitle from "./ProjectTitle";
 import isDefined from "src/utils/isDefined";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import Tag, { TagSize } from "src/components/Tag";
-import { ArrayElement } from "src/types";
+import { ArrayElement, Leader, Technologies } from "src/types";
 import { GetProjectsQuery } from "src/__generated/graphql";
 import RecordCircleLine from "src/icons/RecordCircleLine";
 import { viewportConfig } from "src/config";
@@ -24,8 +24,17 @@ import { getTopTechnologies } from "src/utils/technologies";
 
 export type Project = ArrayElement<GetProjectsQuery["projects"]>;
 
+// TODO(Backend): This is a temporary solution until we delete graphql fields
+type ExtendedProject = Project & {
+  contributorCount?: number;
+  technologies?: Technologies;
+  prettyId?: string;
+  leaders?: Leader[];
+  repoCount?: number;
+};
+
 type ProjectCardProps = {
-  project: Project;
+  project: ExtendedProject;
   className?: string;
 };
 
