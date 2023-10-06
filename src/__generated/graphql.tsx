@@ -18374,7 +18374,7 @@ export type GithubUserByIdQueryVariables = Exact<{
 }>;
 
 
-export type GithubUserByIdQuery = { __typename?: 'query_root', githubUsersByPk: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null };
+export type GithubUserByIdQuery = { __typename?: 'query_root', githubUsersByPk: { __typename?: 'GithubUsers', login: string, avatarUrl: string, htmlUrl: string, id: any, user: { __typename?: 'RegisteredUsers', id: any | null } | null } | null, githubRepos: Array<{ __typename?: 'GithubRepos', indexedAt: any | null }> };
 
 export type ImpersonatedUserQueryVariables = Exact<{
   id: Scalars['uuid'];
@@ -19837,6 +19837,9 @@ export const GithubUserByIdDocument = gql`
     query GithubUserById($githubUserId: bigint!) {
   githubUsersByPk(id: $githubUserId) {
     ...GithubUser
+  }
+  githubRepos(orderBy: {indexedAt: ASC}, limit: 1) {
+    indexedAt
   }
 }
     ${GithubUserFragmentDoc}`;

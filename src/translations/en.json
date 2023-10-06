@@ -387,7 +387,7 @@
         "title": "Contributions",
         "emptyState": {
           "title": "Nothing to show",
-          "subtitle": "We constantly look at updates on Github but it can take some time before refresh"
+          "subtitle": "Last synced with Github at __time__.\nIt can take up to 5 minutes before the next refresh."
         }
       },
       "leftToSpend": "Left to spend",

@@ -2,4 +2,7 @@ query GithubUserById($githubUserId: bigint!) {
   githubUsersByPk(id: $githubUserId) {
     ...GithubUser
   }
+  githubRepos(orderBy: { indexedAt: ASC }, limit: 1) {
+    indexedAt
+  }
 }
