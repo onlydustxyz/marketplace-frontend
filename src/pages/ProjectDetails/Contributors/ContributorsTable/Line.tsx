@@ -28,7 +28,7 @@ export default function ContributorLine({
   const { T } = useIntl();
 
   return (
-    <Line key={contributor.login} className="h-10">
+    <Line key={contributor.login} className="group h-10">
       <Cell height={CellHeight.Small} horizontalMargin={false} className="-ml-px">
         <Contributor contributor={contributor} clickable />
       </Cell>
@@ -64,7 +64,7 @@ export default function ContributorLine({
         </Cell>
       )}
       {isProjectLeader ? (
-        <Cell height={CellHeight.Small} horizontalMargin={false} className="invisible group-hover/line:visible">
+        <Cell height={CellHeight.Small} horizontalMargin={false} className="invisible group-hover:visible">
           <div {...withTooltip(T("contributor.table.noBudgetLeft"), { visible: isGivingRewardDisabled })}>
             <Button
               type={ButtonType.Secondary}
