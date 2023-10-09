@@ -28,7 +28,7 @@ export type Project = ArrayElement<GetProjectsQuery["projects"]>;
 type ExtendedProject = Project & {
   contributorCount?: number;
   technologies?: Technologies;
-  prettyId?: string;
+  slug?: string;
   leaders?: Leader[];
   repoCount?: number;
 };
