@@ -8,8 +8,6 @@ import { Contributor as ContributorType } from "./View";
 import { formatMoneyAmount } from "src/utils/money";
 import Contributor from "src/components/Contributor";
 import StackLine from "src/icons/StackLine";
-import { useMediaQuery } from "usehooks-ts";
-import { viewportConfig } from "src/config";
 
 type Props = {
   contributor: ContributorType;
@@ -24,7 +22,6 @@ export default function ContributorLine({
   isGivingRewardDisabled,
   onRewardGranted,
 }: Props) {
-  const is2Xl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints["2xl"]}px)`);
   const { T } = useIntl();
 
   return (
