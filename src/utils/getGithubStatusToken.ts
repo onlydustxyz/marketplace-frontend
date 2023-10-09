@@ -28,5 +28,5 @@ const tokens: GithubTypeStatusDict<string> = {
 };
 
 export function getGithubStatusToken(type: GithubContributionType, status: GithubItemStatus): string {
-  return tokens[type][status as keyof typeof tokens[GithubContributionType]];
+  return tokens[type]?.[status as keyof typeof tokens[GithubContributionType]] ?? "";
 }

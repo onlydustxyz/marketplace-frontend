@@ -65,4 +65,14 @@ describe("getGithubStatusToken", () => {
       "githubCodeReview.status.changeRequested"
     );
   });
+
+  it("should return empty string if unknown status", () => {
+    // @ts-expect-error test is an invalid status
+    expect(getGithubStatusToken(GithubContributionType.PullRequest, "test")).toBe("");
+  });
+
+  it("should return empty string if unknown type", () => {
+    // @ts-expect-error test is an invalid type
+    expect(getGithubStatusToken("test", GithubPullRequestStatus.Open)).toBe("");
+  });
 });
