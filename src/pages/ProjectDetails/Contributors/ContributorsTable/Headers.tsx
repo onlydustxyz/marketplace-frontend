@@ -1,6 +1,6 @@
 import { useIntl } from "src/hooks/useIntl";
 import HeaderLine from "src/components/Table/HeaderLine";
-import HeaderCell from "src/components/Table/HeaderCell";
+import HeaderCell, { HeaderCellWidth } from "src/components/Table/HeaderCell";
 import SortingArrow from "./SortingArrow";
 import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import User3Line from "src/icons/User3Line";
@@ -20,12 +20,12 @@ export default function Headers({ sorting, applySorting, isProjectLeader }: Prop
 
   return (
     <HeaderLine className="text-sm text-spaceBlue-200">
-      <HeaderCell onClick={() => applySorting(Field.Login, true)}>
+      <HeaderCell onClick={() => applySorting(Field.Login, true)} width={HeaderCellWidth.Full}>
         <User3Line />
         {T("contributor.table.contributor")}
         <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.Login} />
       </HeaderCell>
-      <HeaderCell onClick={() => applySorting(Field.ContributionCount, false)}>
+      <HeaderCell onClick={() => applySorting(Field.ContributionCount, false)} width={HeaderCellWidth.Full}>
         <StackLine className="text-base" />
         {T("contributor.table.contributions")}
         <SortingArrow
@@ -33,18 +33,18 @@ export default function Headers({ sorting, applySorting, isProjectLeader }: Prop
           visible={sorting.field === Field.ContributionCount}
         />
       </HeaderCell>
-      <HeaderCell onClick={() => applySorting(Field.RewardCount, false)}>
+      <HeaderCell onClick={() => applySorting(Field.RewardCount, false)} width={HeaderCellWidth.Full}>
         <Medal2Fill className="text-base" />
         {T("contributor.table.rewards")}
         <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.RewardCount} />
       </HeaderCell>
-      <HeaderCell onClick={() => applySorting(Field.TotalEarned, false)}>
+      <HeaderCell onClick={() => applySorting(Field.TotalEarned, false)} width={HeaderCellWidth.Full}>
         <MoneyDollarCircleLine className="text-base" />
         {T("contributor.table.totalEarned")}
         <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.TotalEarned} />
       </HeaderCell>
       {isProjectLeader && (
-        <HeaderCell onClick={() => applySorting(Field.ToRewardCount, false)}>
+        <HeaderCell onClick={() => applySorting(Field.ToRewardCount, false)} width={HeaderCellWidth.Full}>
           <HandCoinLine className="text-base" />
           {T("contributor.table.toReward")}
           <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.ToRewardCount} />

@@ -7,6 +7,7 @@ export enum HeaderCellWidth {
   Quarter = "w-1/4",
   Third = "w-1/3",
   Half = "w-1/2",
+  Full = "w-full",
 }
 
 type Props = PropsWithChildren<{
