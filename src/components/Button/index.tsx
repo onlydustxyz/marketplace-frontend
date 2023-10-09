@@ -45,6 +45,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       iconOnly = false,
       pressed = false,
       children,
+      className,
       ...otherButtonProps
     },
     ref
@@ -53,8 +54,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       <button
         ref={ref}
         className={cn(
-          "flex flex-row items-center justify-center",
-          "font-walsheim font-medium drop-shadow-bottom-sm",
+          "flex flex-row items-center justify-center font-walsheim font-medium outline-none drop-shadow-bottom-sm",
           {
             "cursor-pointer": !disabled,
             "cursor-not-allowed": disabled,
@@ -67,7 +67,8 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
             "bg-greyscale-700 text-greyscale-500": type === ButtonType.Primary && disabled && !pressed,
 
-            "hover:bg-spacePurple-50 hover:text-spacePurple-900": type === ButtonType.Primary && !disabled && !pressed,
+            "focus:bg-spacePurple-50 focus:text-spacePurple-900 hover:bg-spacePurple-50 hover:text-spacePurple-900":
+              type === ButtonType.Primary && !disabled && !pressed,
 
             "active:bg-spacePurple-50 active:text-spacePurple-900 active:shadow-none active:outline active:outline-4 active:outline-spacePurple-800":
               type === ButtonType.Primary && !disabled,
@@ -83,7 +84,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             "border-greyscale-50/8 bg-white/2 text-greyscale-50/8":
               type === ButtonType.Secondary && disabled && !pressed,
 
-            "hover:border-spacePurple-200 hover:text-spacePurple-100":
+            "focus:border-spacePurple-200 focus:text-spacePurple-100 hover:border-spacePurple-200 hover:text-spacePurple-100":
               type === ButtonType.Secondary && !disabled && !pressed,
 
             "active:border-spacePurple-400 active:bg-spacePurple-900 active:text-spacePurple-200":
@@ -97,7 +98,8 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
             "text-greyscale-600": type === ButtonType.Ternary && disabled && !pressed,
 
-            "hover:bg-white/5 hover:text-spacePurple-400": type === ButtonType.Ternary && !disabled && !pressed,
+            "focus:bg-white/5 focus:text-spacePurple-400 hover:bg-white/5 hover:text-spacePurple-400":
+              type === ButtonType.Ternary && !disabled && !pressed,
 
             "active:bg-spacePurple-900 active:text-spacePurple-400": type === ButtonType.Ternary && !disabled,
             "bg-spacePurple-900 text-spacePurple-400": type === ButtonType.Ternary && !disabled && pressed,
@@ -129,7 +131,8 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             "h-12 w-12 p-3.5": size === ButtonSize.LgLowHeight || size === ButtonSize.Md,
             "h-8 w-8 p-2": size === ButtonSize.Sm,
             "h-6 w-6 p-1": size === ButtonSize.Xs,
-          }
+          },
+          className
         )}
         type={htmlType}
         disabled={disabled}
