@@ -157,6 +157,20 @@
       "zero": "Filter",
       "one": "Filter (__count__)",
       "many": "Filters (__count__)"
+    },
+    "type": {
+      "title": "Type",
+      "pullRequest": "Pull request",
+      "issue": "Issue",
+      "codeReview": "Code review"
+    },
+    "project": {
+      "title": "Project",
+      "all": "All projects"
+    },
+    "repository": {
+      "title": "Repository",
+      "all": "All repositories"
     }
   },
   "searchBar": {

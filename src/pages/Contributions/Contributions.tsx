@@ -250,11 +250,13 @@ export default function Contributions() {
           <div className="relative min-h-full">
             <div className="absolute inset-0 bg-gradient-to-b from-[#000113]/[0] to-[#0E0D2E]" />
             <div className="relative z-10">
-              <header className="sticky top-0 z-10 flex items-center justify-between border-b border-greyscale-50/20 bg-whiteFakeOpacity-8 px-4 pb-4 pt-7 shadow-2xl backdrop-blur-3xl md:px-8 md:pb-0 md:pt-8">
-                <Tabs tabs={tabItems} variant="blue" mobileTitle={T("navbar.contributions")} />
+              <header className="sticky top-0 z-10 border-b border-greyscale-50/20 bg-whiteFakeOpacity-8 px-4 pb-4 pt-7 shadow-2xl backdrop-blur-3xl md:px-8 md:pb-0 md:pt-8">
+                <div className="flex items-center justify-between md:px-4">
+                  <Tabs tabs={tabItems} variant="blue" mobileTitle={T("navbar.contributions")} />
 
-                <div className="hidden -translate-y-3 lg:block">
-                  <ContributionFilter />
+                  <div className="hidden -translate-y-3 lg:block">
+                    <ContributionFilter />
+                  </div>
                 </div>
               </header>
               <div className="flex flex-col gap-4 px-2 py-3 md:px-4 md:py-6 lg:px-8">
