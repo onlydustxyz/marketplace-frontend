@@ -24,6 +24,7 @@ type TooltipProps = {
   variant?: Variant;
   [otherProp: string]: unknown;
   className?: string;
+  delayShow?: number;
 } & CommonProps &
   PropsWithChildren;
 
@@ -45,6 +46,7 @@ export default function Tooltip({
   children,
   variant = Variant.Default,
   className,
+  delayShow = 100,
   ...rest
 }: TooltipProps) {
   return createPortal(
@@ -53,6 +55,7 @@ export default function Tooltip({
       place={position}
       anchorId={anchorId}
       anchorSelect={anchorSelect}
+      delayShow={delayShow}
       className={cn(
         "z-50 rounded-lg px-3 py-2 text-center font-walsheim text-xs font-normal text-greyscale-50 opacity-100",
         variants[variant],

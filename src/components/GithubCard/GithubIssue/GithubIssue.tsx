@@ -5,7 +5,7 @@ import { ContributionDate } from "src/components/Contribution/ContributionDate";
 import { ContributionCreationDate } from "src/components/GithubCard/ContributionCreationDate";
 import { GithubActionButton } from "src/components/GithubCard/GithubActionButton/GithubActionButton";
 import { GithubLink } from "src/components/GithubCard/GithubLink/GithubLink";
-import { Variant } from "src/components/Tooltip";
+import { TooltipPosition, Variant } from "src/components/Tooltip";
 import GitCommentLine from "src/icons/GitCommentLine";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import { GithubContributionType } from "src/types";
@@ -69,6 +69,11 @@ export default function GithubIssue({
               id={issue.id}
               type={GithubContributionType.Issue}
               date={new Date(issue.createdAt)}
+              tooltipProps={{
+                variant: Variant.Default,
+                position: TooltipPosition.Bottom,
+                className: "p-0",
+              }}
             />
           </div>
           <div className="flex flex-row items-center gap-1">
@@ -77,7 +82,11 @@ export default function GithubIssue({
               type={GithubContributionType.Issue}
               status={issue.status as GithubIssueStatus}
               date={getIssueStatusDate(issue)}
-              tooltipProps={{ variant: Variant.Default }}
+              tooltipProps={{
+                variant: Variant.Default,
+                position: TooltipPosition.Bottom,
+                className: "p-0",
+              }}
               withIcon
             />
           </div>

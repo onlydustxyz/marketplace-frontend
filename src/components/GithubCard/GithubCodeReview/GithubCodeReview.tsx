@@ -8,7 +8,7 @@ import { GithubActionButton } from "src/components/GithubCard/GithubActionButton
 import { ContributionDate } from "src/components/Contribution/ContributionDate";
 import { GithubCodeReviewStatus, GithubContributionType } from "src/types";
 import { ContributionCreationDate } from "src/components/GithubCard/ContributionCreationDate";
-import { Variant } from "src/components/Tooltip";
+import { TooltipPosition, Variant } from "src/components/Tooltip";
 
 export enum Action {
   Add = "add",
@@ -91,6 +91,11 @@ export default function GithubCodeReview({
               id={codeReview.id as string}
               type={GithubContributionType.CodeReview}
               date={new Date(createdAt)}
+              tooltipProps={{
+                variant: Variant.Default,
+                position: TooltipPosition.Bottom,
+                className: "p-0",
+              }}
             />
           </div>
           <div className="flex flex-row items-center gap-1">
@@ -100,7 +105,11 @@ export default function GithubCodeReview({
                 type={GithubContributionType.CodeReview}
                 status={getStatus(codeReview) as GithubCodeReviewStatus}
                 date={getCodeReviewStatusDate(codeReview)}
-                tooltipProps={{ variant: Variant.Default }}
+                tooltipProps={{
+                  variant: Variant.Default,
+                  position: TooltipPosition.Bottom,
+                  className: "p-0",
+                }}
                 withIcon
               />
             }
