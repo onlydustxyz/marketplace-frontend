@@ -44,14 +44,14 @@ export default function ReactQueryDataWrapper({
     queryFn: () => fetch(url, option).then(res => res.json()),
   });
 
-  const [onLoad, setOnload] = useState(false);
+  const [loading, setloading] = useState(false);
 
   useEffect(() => {
-    setOnload(isLoading);
+    setloading(isLoading);
   }, [isLoading]);
 
   return (
-    <DataDisplay param={param} data={data} loading={onLoad} queryLoading={isLoading} error={error}>
+    <DataDisplay param={param} data={data} loading={loading} queryLoading={isLoading} error={error}>
       {children}
     </DataDisplay>
   );

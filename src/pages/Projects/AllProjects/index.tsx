@@ -21,6 +21,7 @@ import { SortButton } from "src/pages/Projects/Sorting/SortButton";
 import DataDisplay from "src/App/DataWrapper/DataDisplay";
 import DataSwitch from "src/App/DataWrapper/DataSwitch";
 import { DataContext, isExtendedGetProjectsQuery } from "src/App/DataWrapper/DataContext";
+import { ApiResourcePaths } from "src/App/DataWrapper/config";
 
 export const DEFAULT_SORTING = Sorting.Trending;
 
@@ -78,7 +79,7 @@ export default function AllProjectsParent(props: Props) {
   return (
     <DataSwitch
       ApolloDataWrapper={wrapperProps => <AllProjectsDataWrapper {...wrapperProps} {...props} />}
-      resourcePath="/api/v1/projects"
+      resourcePath={ApiResourcePaths.GET_ALL_PROJECTS}
       queryParams={queryParams}
     >
       <AllProjects {...props} />

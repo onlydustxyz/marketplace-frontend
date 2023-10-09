@@ -14,6 +14,7 @@ import { useSuspenseQuery_experimental as useSuspenseQuery } from "@apollo/clien
 import { GetProjectIdFromKeyDocument, GetProjectIdFromKeyQuery } from "src/__generated/graphql";
 import { contextWithCacheHeaders } from "src/utils/headers";
 import DataDisplay from "src/App/DataWrapper/DataDisplay";
+import { ApiResourcePaths } from "src/App/DataWrapper/config";
 
 type ProjectDetailsParams = {
   projectKey: string;
@@ -61,7 +62,11 @@ export default function ProjectDetails() {
   const { projectKey = "" } = useParams<ProjectDetailsParams>();
 
   return (
-    <DataSwitch param={projectKey} ApolloDataWrapper={ProjectDetailsDataWrapper} resourcePath="/api/v1/projects/slug/">
+    <DataSwitch
+      param={projectKey}
+      ApolloDataWrapper={ProjectDetailsDataWrapper}
+      resourcePath={ApiResourcePaths.GET_PROJECT_DETAILS}
+    >
       <ProjectPresentDetails />
     </DataSwitch>
   );
