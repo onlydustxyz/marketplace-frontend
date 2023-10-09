@@ -8,8 +8,6 @@ import { Contributor as ContributorType } from "./View";
 import { formatMoneyAmount } from "src/utils/money";
 import Contributor from "src/components/Contributor";
 import StackLine from "src/icons/StackLine";
-import { useMediaQuery } from "usehooks-ts";
-import { viewportConfig } from "src/config";
 
 type Props = {
   contributor: ContributorType;
@@ -24,7 +22,6 @@ export default function ContributorLine({
   isGivingRewardDisabled,
   onRewardGranted,
 }: Props) {
-  const is2Xl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints["2xl"]}px)`);
   const { T } = useIntl();
 
   return (
@@ -64,21 +61,22 @@ export default function ContributorLine({
         </Cell>
       )}
       {isProjectLeader ? (
-        <Cell height={CellHeight.Small} horizontalMargin={false} className="invisible group-hover:visible">
-          <div {...withTooltip(T("contributor.table.noBudgetLeft"), { visible: isGivingRewardDisabled })}>
-            <Button
-              type={ButtonType.Secondary}
-              size={ButtonSize.Sm}
-              disabled={isGivingRewardDisabled}
-              onClick={() => onRewardGranted(contributor)}
-              data-testid="give-reward-button"
-            >
-              <SendPlane2Line />
-              <div>
-                {is2Xl ? T("project.details.contributors.reward.full") : T("project.details.contributors.reward.short")}
-              </div>
-            </Button>
-          </div>
+        <Cell
+          height={CellHeight.Small}
+          horizontalMargin={false}
+          className="invisible flex justify-end group-hover:visible"
+          {...withTooltip(T("contributor.table.noBudgetLeft"), { visible: isGivingRewardDisabled })}
+        >
+          <Button
+            type={ButtonType.Secondary}
+            size={ButtonSize.Sm}
+            disabled={isGivingRewardDisabled}
+            onClick={() => onRewardGranted(contributor)}
+            data-testid="give-reward-button"
+          >
+            <SendPlane2Line />
+            {T("project.details.contributors.reward")}
+          </Button>
         </Cell>
       ) : (
         <Cell />
