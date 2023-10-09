@@ -2,14 +2,12 @@ import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
 import IBANParser from "iban";
 
 import { useIntl } from "src/hooks/useIntl";
-import { Maybe, UpdatePayoutSettingsMutationVariables, UserPayoutSettingsFragment } from "src/__generated/graphql";
-import { useEffect } from "react";
+import { Maybe, PreferredMethod, UserPayoutInfo, UserPayoutSettingsFragment } from "src/__generated/graphql";
 import PayoutInfoSidePanelView from "./PayoutInfoSidePanelView";
 import usePayoutSettings from "src/hooks/usePayoutSettings";
-import { PayoutSettingsDisplayType, ProfileType, UserPayoutInfo } from "./types";
+import { ProfileType } from "./types";
 import SidePanel from "src/components/SidePanel";
 import { usePayoutInfoValidation } from "./usePayoutInfoValidation";
-import { ENS_DOMAIN_REGEXP } from "src/utils/regex";
 
 type Props = {
   githubUserId?: number;
@@ -23,31 +21,34 @@ export default function PayoutInfoSidePanel({ githubUserId, open, setOpen }: Pro
   const { data: user, updatePayoutSettings, updatePayoutSettingsLoading } = usePayoutSettings(githubUserId);
   const { isContactInfoValid, isPaymentInfoValid } = usePayoutInfoValidation(user);
 
+  console.log("DATA", user);
+
   const formMethods = useForm<UserPayoutInfo>({
     mode: "onBlur",
     reValidateMode: "onBlur",
     shouldFocusError: true,
+    defaultValues: decodeQuery(user),
   });
 
   const { watch, handleSubmit, setValue, formState, reset } = formMethods;
   const { isDirty } = formState;
 
-  useEffect(() => reset(decodeQuery(user)), [user]);
+  // useEffect(() => reset(decodeQuery(user)), [user]);
 
   const onSubmit: SubmitHandler<UserPayoutInfo> = formData => {
-    console.log(formData);
-    updatePayoutSettings(mapFormDataToSchema(formData));
+    // updatePayoutSettings(mapFormDataToSchema(formData));
     // optimisticly set form's defaultValues to submitted form data to avoid flickering related to isDirty
     reset(formData);
   };
 
-  const profileType = watch("profileType");
+  // const isUsdPreferredMethod = watch("usdPreferredMethod");
 
-  useEffect(() => {
-    if (profileType === ProfileType.Individual) {
-      setValue("payoutSettingsType", PayoutSettingsDisplayType.EthereumIdentity);
-    }
-  }, [profileType]);
+  // useEffect(() => {
+  //   if (profileType === ProfileType.Individual) {
+  //     // setValue("payoutSettingsType", PayoutSettingsDisplayType.EthereumIdentity);
+  //     setValue("profileType", ProfileType.Individual);
+  //   }
+  // }, [profileType]);
 
   return (
     <SidePanel open={open} setOpen={setOpen}>
@@ -71,124 +72,145 @@ export default function PayoutInfoSidePanel({ githubUserId, open, setOpen }: Pro
   );
 }
 
-const mapFormDataToSchema = ({
-  profileType,
-  lastname,
-  firstname,
-  address,
-  companyName,
-  city,
-  country,
-  postCode,
-  payoutSettingsType,
-  ethWallet,
-  // starknetWallet,
-  // optimismWallet,
-  // aptosWallet,
-  IBAN,
-  BIC,
-  identificationNumber,
-}: UserPayoutInfo) => {
-  const variables: UpdatePayoutSettingsMutationVariables = {
-    identity: null,
-    location: null,
-    payoutSettings: null,
-  };
+// const mapFormDataToSchema = ({
+//   profileType,
+//   lastname,
+//   firstname,
+//   address,
+//   companyName,
+//   city,
+//   country,
+//   postCode,
+//   payoutSettingsType,
 
-  if (profileType === ProfileType.Individual && (firstname || lastname)) {
-    variables.identity = {
-      person: {
-        firstname: firstname || null,
-        lastname: lastname || null,
-      },
-      company: null,
-    };
-  }
-  if (profileType === ProfileType.Company && (firstname || lastname || companyName || identificationNumber)) {
-    variables.identity = {
-      company: {
-        name: companyName || null,
-        identificationNumber: identificationNumber || null,
-        owner: {
-          firstname: firstname || null,
-          lastname: lastname || null,
-        },
-      },
-      person: null,
-    };
-  }
+//   identificationNumber,
+//   IBAN,
+//   BIC,
+//   ethWallet,
+//   starknetWallet,
+//   optimismWallet,
+//   aptosWallet,
+// }: UserPayoutInfo) => {
+//   const variables: UpdatePayoutSettingsMutationVariables = {
+//     identity: null,
+//     location: null,
+//     payoutSettings: null,
+//   };
 
-  if (address || postCode || city || country) {
-    variables.location = {
-      address: address || null,
-      postCode: postCode || null,
-      city: city || null,
-      country: country || null,
-    };
-  }
+//   if (profileType === ProfileType.Individual && (firstname || lastname)) {
+//     variables.identity = {
+//       person: {
+//         firstname: firstname || null,
+//         lastname: lastname || null,
+//       },
+//       company: null,
+//     };
+//   }
+//   if (profileType === ProfileType.Company && (firstname || lastname || companyName || identificationNumber)) {
+//     variables.identity = {
+//       company: {
+//         name: companyName || null,
+//         identificationNumber: identificationNumber || null,
+//         owner: {
+//           firstname: firstname || null,
+//           lastname: lastname || null,
+//         },
+//       },
+//       person: null,
+//     };
+//   }
 
-  const payoutType =
-    payoutSettingsType === PayoutSettingsDisplayType.BankAddress
-      ? PayoutSettingsDisplayType.BankAddress
-      : ethWallet?.match(ENS_DOMAIN_REGEXP)
-      ? PayoutSettingsDisplayType.EthereumName
-      : PayoutSettingsDisplayType.EthereumAddress;
+//   if (address || postCode || city || country) {
+//     variables.location = {
+//       address: address || null,
+//       postCode: postCode || null,
+//       city: city || null,
+//       country: country || null,
+//     };
+//   }
 
-  if (payoutType === PayoutSettingsDisplayType.EthereumAddress && ethWallet) {
-    variables.payoutSettings = {
-      optEthAddress: ethWallet,
-      optBankAddress: null,
-      optEthName: null,
-      type: PayoutSettingsType.EthereumAddress,
-    };
-  }
-  if (payoutType === PayoutSettingsDisplayType.EthereumName && ethWallet) {
-    variables.payoutSettings = {
-      optEthAddress: null,
-      optBankAddress: null,
-      optEthName: ethWallet,
-      type: PayoutSettingsDisplayType.EthereumName,
-    };
-  }
+//   const payoutType =
+//     payoutSettingsType === PayoutSettingsDisplayType.BankAddress
+//       ? PayoutSettingsDisplayType.BankAddress
+//       : ethWallet?.match(ENS_DOMAIN_REGEXP)
+//       ? PayoutSettingsDisplayType.EthereumIdentity
+//       : PayoutSettingsDisplayType.EthereumAddress;
 
-  if (payoutType === PayoutSettingsDisplayType.BankAddress && IBAN && BIC) {
-    variables.payoutSettings = {
-      optEthAddress: null,
-      optBankAddress: { IBAN: IBANParser.electronicFormat(IBAN), BIC },
-      optEthName: null,
-      type: PayoutSettingsDisplayType.BankAddress,
-    };
-  }
+//   if (payoutType === PayoutSettingsDisplayType.EthereumAddress && ethWallet) {
+//     variables.payoutSettings = {
+//       optEthAddress: ethWallet,
+//       optBankAddress: null,
+//       optEthName: null,
+//       type: PayoutSettingsType.EthereumAddress,
+//     };
+//   }
+//   if (payoutType === PayoutSettingsDisplayType.EthereumName && ethWallet) {
+//     variables.payoutSettings = {
+//       optEthAddress: null,
+//       optBankAddress: null,
+//       optEthName: ethWallet,
+//       type: PayoutSettingsDisplayType.EthereumName,
+//     };
+//   }
 
-  return { variables };
-};
+//   if (payoutType === PayoutSettingsDisplayType.BankAddress && IBAN && BIC) {
+//     variables.payoutSettings = {
+//       optEthAddress: null,
+//       optBankAddress: { IBAN: IBANParser.electronicFormat(IBAN), BIC },
+//       optEthName: null,
+//       type: PayoutSettingsDisplayType.BankAddress,
+//     };
+//   }
+
+//   return { variables };
+// };
+
+// const mapFormDataToSchema = ({
+//   profileType,
+//   lastname,
+//   firstname,
+//   address,
+//   companyName,
+//   city,
+//   country,
+//   postCode,
+//   payoutSettingsType,
+
+//   identificationNumber,
+//   IBAN,
+//   BIC,
+//   ethWallet,
+//   starknetWallet,
+//   optimismWallet,
+//   aptosWallet,
+// }: UserPayoutInfo) => {
+//   const variables: UpdatePayoutSettingsMutationVariables = {
+//     identity: null,
+//     location: null,
+//     payoutSettings: null,
+//   };
+
+//   return { variables };
+// };
 
 // Setting empty strings instead of undefined is required to make isDirty work properly
-const decodeQuery = (user?: Maybe<UserPayoutSettingsFragment>): UserPayoutInfo => ({
-  profileType: user?.identity?.Company ? ProfileType.Company : ProfileType.Individual,
-  firstname:
-    (user?.identity?.Company ? user?.identity?.Company?.owner?.firstname : user?.identity?.Person?.firstname) || "",
-  lastname:
-    (user?.identity?.Company ? user?.identity?.Company?.owner?.lastname : user?.identity?.Person?.lastname) || "",
-  companyName: user?.identity?.Company?.name || "",
-  identificationNumber: user?.identity?.Company?.identification_number || "",
-  address: user?.location?.address || "",
-  postCode: user?.location?.post_code || "",
-  city: user?.location?.city || "",
-  country: user?.location?.country || "",
-  payoutSettingsType: user?.payoutSettings?.EthTransfer?.Address
-    ? PayoutSettingsDisplayType.EthereumIdentity
-    : user?.payoutSettings?.EthTransfer?.Domain
-    ? PayoutSettingsDisplayType.EthereumIdentity
-    : user?.payoutSettings?.WireTransfer
-    ? PayoutSettingsDisplayType.BankAddress
-    : PayoutSettingsDisplayType.EthereumIdentity,
-  ethWallet: user?.payoutSettings?.EthTransfer?.Address || user?.payoutSettings?.EthTransfer?.Name || "",
-  starknetWallet: user?.payoutSettings.starknetWallet,
-  optimismWallet: user?.payoutSettings.optimismWallet,
-  aptosWallet: user?.payoutSettings.aptosWallet,
-  IBAN: user?.payoutSettings?.WireTransfer?.IBAN
-    ? IBANParser.printFormat(user?.payoutSettings?.WireTransfer?.IBAN)
-    : "",
-  BIC: user?.payoutSettings?.WireTransfer?.BIC || "",
+const decodeQuery = (
+  user?: Maybe<UserPayoutSettingsFragment>
+): Omit<UserPayoutInfo, "userId" | "arePayoutSettingsValid" | "isCompany"> & { profileType: ProfileType } => ({
+  firstname: user?.firstname ?? "",
+  lastname: user?.lastname ?? "",
+  companyName: user?.companyName ?? "",
+  companyIdentificationNumber: user?.companyIdentificationNumber ?? "",
+  address: user?.address ?? "",
+  postCode: user?.postCode ?? "",
+  city: user?.city ?? "",
+  country: user?.country ?? "",
+  ethWallet: user?.ethWallet ?? "",
+  starknetWallet: user?.starknetWallet ?? "",
+  optimismWallet: user?.optimismWallet ?? "",
+  aptosWallet: user?.aptosWallet ?? "",
+  iban: user?.iban ? IBANParser.printFormat(user?.iban) : "",
+  bic: user?.bic ?? "",
+  usdPreferredMethod: user?.usdPreferredMethod ?? PreferredMethod.Crypto,
+  profileType: user?.isCompany ? ProfileType.Company : ProfileType.Individual,
 });

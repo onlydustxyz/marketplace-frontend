@@ -10,8 +10,11 @@ fragment UserPayoutSettings on UserPayoutInfo {
   companyName
   companyIdentificationNumber
   usdPreferredMethod
-  ethWallet
+  arePayoutSettingsValid
   bic
   iban
-  arePayoutSettingsValid
+  ethWallet
+  aptosWallet
+  optimismWallet
+  starknetWallet
 }

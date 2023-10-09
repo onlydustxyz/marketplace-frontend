@@ -5,7 +5,7 @@ import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
 
 type Option = {
-  value: string;
+  value: string | boolean;
   label: string;
   icon?: ReactElement;
 };

@@ -1,4 +1,4 @@
-import { UserPayoutInfo } from "./types";
+// import { UserPayoutInfo } from "./types";
 
 // Contact & payout informations validation hook
 export function usePayoutInfoValidation(user: UserPayoutInfo): {

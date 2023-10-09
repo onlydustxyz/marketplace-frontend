@@ -6,7 +6,7 @@ import { useIntl } from "src/hooks/useIntl";
 import BuildingLine from "src/icons/BuildingLine";
 import CheckLine from "src/icons/CheckLine";
 import User3Line from "src/icons/User3Line";
-import { PayoutSettingsDisplayType, ProfileType } from "./types";
+import { ProfileType } from "./types";
 import Callout from "src/components/Callout";
 import Input from "src/components/FormInput";
 import { Controller, useFormContext } from "react-hook-form";
@@ -35,6 +35,7 @@ import {
   ZIPCODE_VALIDATOR,
 } from "src/utils/regex";
 import ProfileContent from "./ProfileContent";
+import { PreferredMethod } from "src/__generated/graphql";
 
 type Props = {
   isContactInfoValid?: boolean;
@@ -60,29 +61,14 @@ export default function PayoutInfoSidePanel({
     register,
   } = useFormContext();
 
-  const profileType = watch("profileType");
-  const payoutSettingsType = watch("payoutSettingsType");
-  const IBANValue = watch("IBAN");
-  const BICValue = watch("BIC");
+  console.log("TEST", { isContactInfoValid, isPaymentInfoValid });
+  const [profileType, usdPreferredMethod, iban, bic] = watch(["profileType", "usdPreferredMethod", "iban", "bic"]);
+
+  console.log(usdPreferredMethod);
 
   return (
     <div className="flex h-full min-h-0 flex-col justify-between overflow-y-auto">
       <div className="mx-2 mb-1 flex min-h-0 flex-col gap-6 px-4 pt-4 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
-        {/* <Tag size={TagSize.Medium}>
-          <div
-            className={cn({
-              "text-orange-500": !payoutSettingsValid,
-            })}
-          >
-            {payoutSettingsValid ? (
-              <div className="flex flex-row items-center gap-1">
-                <CheckLine /> {T("profile.form.payoutSettingsValidTag")}
-              </div>
-            ) : (
-              T("profile.form.payoutSettingsRequiredTag")
-            )}
-          </div>
-        </Tag> */}
         <ProfileRadioGroup
           name="profileType"
           label={T("profile.form.profileType")}
@@ -135,7 +121,7 @@ export default function PayoutInfoSidePanel({
                 <Input
                   label={T("profile.form.identificationNumber")}
                   placeholder={T("profile.form.identificationNumber")}
-                  {...register("identificationNumber", {
+                  {...register("companyIdentificationNumber", {
                     required: { value: true, message: T("profile.form.payoutFieldRequired") },
                   })}
                 />
@@ -245,18 +231,18 @@ export default function PayoutInfoSidePanel({
 
           <ProfileContent title={T("profile.form.payoutSettingsType")} isCard={profileType === ProfileType.Company}>
             {profileType === ProfileType.Company && (
-              <div className="mb-6 flex w-fit flex-row gap-3 font-medium text-neutral-300">
+              <div className="mb-4 flex w-fit flex-row gap-3 font-medium text-neutral-300">
                 <ProfileRadioGroup
-                  name="payoutSettingsType"
+                  name="usdPreferredMethod"
                   withMargin={false}
                   options={[
                     {
-                      value: PayoutSettingsDisplayType.BankAddress,
+                      value: PreferredMethod.Fiat,
                       label: T("profile.form.bankWire"),
                       icon: <BankLine className="text-xl" />,
                     },
                     {
-                      value: PayoutSettingsDisplayType.EthereumIdentity,
+                      value: PreferredMethod.Crypto,
                       label: T("profile.form.cryptoWire"),
                       icon: <BitcoinLine className="text-xl" />,
                     },
@@ -265,20 +251,20 @@ export default function PayoutInfoSidePanel({
               </div>
             )}
 
-            {payoutSettingsType === PayoutSettingsDisplayType.BankAddress && (
+            {usdPreferredMethod === PreferredMethod.Fiat && profileType === ProfileType.Company && (
               <div className="flex flex-row gap-5">
                 <Controller
                   control={control}
-                  name="IBAN"
+                  name="iban"
                   render={({ field: { onChange, value, onBlur } }) => {
                     return (
                       <Input
                         withMargin={false}
                         label={T("profile.form.iban")}
-                        name="IBAN"
+                        name="iban"
                         placeholder={T("profile.form.iban")}
                         options={{
-                          required: { value: !!BICValue, message: T("profile.form.ibanRequired") },
+                          required: { value: !!bic, message: T("profile.form.ibanRequired") },
                           validate: value => {
                             return !value?.trim() || IBANParser.isValid(value) || T("profile.form.ibanInvalid");
                           },
@@ -288,11 +274,11 @@ export default function PayoutInfoSidePanel({
                         onChange={onChange}
                         onBlur={() => {
                           if (touchedFields.BIC) {
-                            trigger("BIC");
+                            trigger("bic");
                           }
                           onBlur();
                         }}
-                        onFocus={() => clearErrors("IBAN")}
+                        onFocus={() => clearErrors("iban")}
                       />
                     );
                   }}
@@ -300,18 +286,18 @@ export default function PayoutInfoSidePanel({
 
                 <Controller
                   control={control}
-                  name="BIC"
+                  name="bic"
                   render={({ field: { onChange, value, onBlur } }) => {
                     return (
                       <Input
                         withMargin={false}
                         label={T("profile.form.bic")}
-                        name="BIC"
+                        name="bic"
                         placeholder={T("profile.form.bic")}
                         options={{
                           pattern: { value: BIC_REGEXP, message: T("profile.form.bicInvalid") },
                           required: {
-                            value: !!IBANValue?.trim(),
+                            value: !!iban?.trim(),
                             message: T("profile.form.bicRequired"),
                           },
                         }}
@@ -320,11 +306,11 @@ export default function PayoutInfoSidePanel({
                         onChange={onChange}
                         onBlur={() => {
                           if (touchedFields.IBAN) {
-                            trigger("IBAN");
+                            trigger("iban");
                           }
                           onBlur();
                         }}
-                        onFocus={() => clearErrors("BIC")}
+                        onFocus={() => clearErrors("bic")}
                       />
                     );
                   }}
@@ -332,7 +318,7 @@ export default function PayoutInfoSidePanel({
               </div>
             )}
 
-            {payoutSettingsType === PayoutSettingsDisplayType.EthereumIdentity && (
+            {(usdPreferredMethod === PreferredMethod.Crypto || profileType === ProfileType.Individual) && (
               <Input
                 withMargin={profileType === ProfileType.Individual}
                 label={

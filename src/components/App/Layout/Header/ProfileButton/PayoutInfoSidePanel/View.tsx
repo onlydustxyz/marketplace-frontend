@@ -50,8 +50,8 @@ export default function PayoutInfoSidePanel({ payoutSettingsValid, saveButtonDis
 
   const profileType = watch("profileType");
   const payoutSettingsType = watch("payoutSettingsType");
-  const IBANValue = watch("IBAN");
-  const BICValue = watch("BIC");
+  const IBANValue = watch("iban");
+  const BICValue = watch("bic");
 
   return (
     <div className="flex h-full min-h-0 flex-col justify-between overflow-y-auto">

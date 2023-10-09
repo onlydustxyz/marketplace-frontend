@@ -3,7 +3,7 @@ import { useFormContext } from "react-hook-form";
 import View from "./View";
 
 type Option = {
-  value: string;
+  value: string | boolean;
   label: string;
   icon: ReactElement;
 };
