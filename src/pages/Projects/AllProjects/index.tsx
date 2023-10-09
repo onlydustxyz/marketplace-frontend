@@ -36,6 +36,7 @@ type Props = {
   setSortingPanelOpen: (open: boolean) => void;
   setTechnologies: (technologies: string[]) => void;
   setSponsors: (sponsors: string[]) => void;
+  setLoading: (loading: boolean) => void;
 };
 
 interface AllProjectsDataWrapperProps {
@@ -96,6 +97,7 @@ function AllProjects({
   setSortingPanelOpen,
   setTechnologies,
   setSponsors,
+  setLoading,
 }: Props) {
   const { T } = useIntl();
 
@@ -111,9 +113,10 @@ function AllProjects({
     throw new Error(T("dataFetching.dataContext"));
   }
 
+  // TODO(Backend): This is a temporary solution until we delete graphql Query
+  // This loading will be the only one to use when we will be full React Query
   const { loading } = dataContext;
-
-  console.log("loading", loading);
+  useEffect(() => setLoading(loading || false), [loading]);
 
   if (import.meta.env.VITE_USE_APOLLO === "false" && isExtendedGetProjectsQuery(dataContext.data)) {
     setTechnologies(dataContext.data.technologies || []);

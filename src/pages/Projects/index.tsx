@@ -5,13 +5,13 @@ import FilterPanel from "./FilterPanel";
 import { ProjectFilterProvider } from "./useProjectFilter";
 import useScrollRestoration from "./AllProjects/useScrollRestoration";
 import { Suspense, useEffect, useState } from "react";
-import Loader from "src/components/Loader";
 import SearchBar from "./SearchBar";
 import { useDebounce } from "usehooks-ts";
 import SidePanel from "src/components/SidePanel";
 import { SortingPanel } from "./Sorting/SortingPanel";
 import { useLocalStorage } from "react-use";
 import SEO from "src/components/SEO";
+import AllProjectLoading from "./AllProjects/AllProjectsLoading";
 
 export enum Sorting {
   Trending = "trending",
@@ -39,6 +39,8 @@ export default function Projects() {
   const [technologies, setTechnologies] = useState<string[]>([]);
   const [sponsors, setSponsors] = useState<string[]>([]);
 
+  const [loading, setLoading] = useState(false);
+
   const { ref, restoreScroll } = useScrollRestoration();
 
   return (
@@ -54,7 +56,10 @@ export default function Projects() {
               <FilterPanel isProjectLeader={isProjectLeader} technologies={technologies} sponsors={sponsors} />
             </div>
             <div className="min-w-0 grow">
-              <Suspense fallback={<Loader />}>
+              {/* TODO(Backend): This is a temporary solution until we delete graphql Query
+              At this moment we wont use the double loading anymore */}
+              {loading && <AllProjectLoading />}
+              <Suspense fallback={<AllProjectLoading />}>
                 <AllProjectsParent
                   search={searchQuery}
                   clearSearch={() => setSearch("")}
@@ -67,6 +72,7 @@ export default function Projects() {
                   setSortingPanelOpen={setSortingPanelOpen}
                   setTechnologies={setTechnologies}
                   setSponsors={setSponsors}
+                  setLoading={setLoading}
                 />
               </Suspense>
             </div>
