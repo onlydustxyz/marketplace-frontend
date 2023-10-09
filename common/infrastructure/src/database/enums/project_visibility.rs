@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize, DbEnum)]
 #[ExistingTypePath = "crate::database::schema::sql_types::ProjectVisibility"]
+#[DbValueStyle = "SCREAMING_SNAKE_CASE"]
 pub enum ProjectVisibility {
 	Public,
 	Private,

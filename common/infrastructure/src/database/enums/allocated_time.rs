@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 #[ExistingTypePath = "crate::database::schema::sql_types::AllocatedTime"]
 pub enum AllocatedTime {
 	None,
-	Lt1day,
-	_1to3days,
-	Gt3days,
+	LessThanOneDay,
+	OneToThreeDays,
+	GreaterThanThreeDays,
 }

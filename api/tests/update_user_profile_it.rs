@@ -105,7 +105,10 @@ impl<'a> Test<'a> {
 				(String::from("Typescript"), 0)
 			]))
 		);
-		assert_eq!(user_profile.weekly_allocated_time, AllocatedTime::Lt1day);
+		assert_eq!(
+			user_profile.weekly_allocated_time,
+			AllocatedTime::LessThanOneDay
+		);
 		assert_eq!(user_profile.avatar_url, None);
 		assert_eq!(user_profile.cover.unwrap(), ProfileCover::Cyan);
 
