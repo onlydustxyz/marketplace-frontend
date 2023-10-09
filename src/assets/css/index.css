@@ -90,4 +90,8 @@
   .bg-rainbow {
     background: linear-gradient(90deg, #6808ad 25%, #dd6a37 50% 52%, #3107b6 75%);
   }
+
+  .opaque {
+    opacity: 1 !important;
+  }
 }
