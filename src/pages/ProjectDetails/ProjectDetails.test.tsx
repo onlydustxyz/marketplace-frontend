@@ -107,7 +107,7 @@ const getProjectMock = {
           hiring: false,
           visibility: "public",
           contributorsAggregate: { aggregate: { count: 0 } },
-          pendingInvitations: [{ id: "test-invitation-id", githubUserId: TEST_GITHUB_USER_ID }],
+          pendingInvitations: [{ id: "test-project-id", githubUserId: TEST_GITHUB_USER_ID }],
           projectLeads: [
             {
               user: {
@@ -278,7 +278,9 @@ describe('"ProjectDetails" page', () => {
         }),
       }
     );
-    await screen.findByText("You've been promoted to Project Lead on test-project-name");
+    await waitFor(() => {
+      screen.findByText("You've been promoted to Project Lead on test-project-name");
+    });
   });
 
   it("should store the project id if it is a project led by the user", async () => {

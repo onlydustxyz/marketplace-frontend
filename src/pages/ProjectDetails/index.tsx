@@ -8,8 +8,13 @@ import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
 import SEO from "src/components/SEO";
 import DataSwitch from "src/App/DataWrapper/DataSwitch";
-import { useContext } from "react";
+import { ReactNode, useContext } from "react";
 import { DataContext } from "src/App/DataWrapper/DataContext";
+import { useSuspenseQuery_experimental as useSuspenseQuery } from "@apollo/client";
+import { GetProjectIdFromKeyDocument, GetProjectIdFromKeyQuery } from "src/__generated/graphql";
+import { contextWithCacheHeaders } from "src/utils/headers";
+import DataDisplay from "src/App/DataWrapper/DataDisplay";
+import { ApiResourcePaths } from "src/App/DataWrapper/config";
 
 type ProjectDetailsParams = {
   projectKey: string;
@@ -28,11 +33,40 @@ export interface ProjectDetails {
   sponsors: SponsorFragment[];
 }
 
+export interface ProjectDetailsRESTfull {
+  name: string | null;
+  shortDescription: string | null;
+  id: string;
+  key: string | null;
+}
+
+interface ProjectDetailsDataWrapperProps {
+  children: ReactNode;
+  param?: string;
+}
+
+function ProjectDetailsDataWrapper({ children, param }: ProjectDetailsDataWrapperProps) {
+  const projectIdQuery = useSuspenseQuery<GetProjectIdFromKeyQuery>(GetProjectIdFromKeyDocument, {
+    variables: { projectKey: param },
+    ...contextWithCacheHeaders,
+  });
+
+  return (
+    <DataDisplay param={param} data={projectIdQuery.data?.projects[0]}>
+      {children}
+    </DataDisplay>
+  );
+}
+
 export default function ProjectDetails() {
   const { projectKey = "" } = useParams<ProjectDetailsParams>();
 
   return (
-    <DataSwitch projectKey={projectKey}>
+    <DataSwitch
+      param={projectKey}
+      ApolloDataWrapper={ProjectDetailsDataWrapper}
+      resourcePath={ApiResourcePaths.GET_PROJECT_DETAILS}
+    >
       <ProjectPresentDetails />
     </DataSwitch>
   );
@@ -46,8 +80,9 @@ function ProjectPresentDetails() {
     throw new Error(T("dataFetching.dataContext"));
   }
 
-  const { projectKey, data, isLoading, error } = dataContext;
-  const { id, name } = data;
+  const { param, data, loading, error } = dataContext;
+  const projectKey = param;
+  const { id, name } = data as ProjectDetailsRESTfull;
 
   const { visibleToCurrentUser } = useProjectVisibility(id);
 
@@ -62,7 +97,7 @@ function ProjectPresentDetails() {
   return (
     <>
       <SEO title={`${name} — OnlyDust`} />
-      <View projectId={id} projectKey={projectKey} isLoading={isLoading} error={error} />
+      <View projectId={id} projectKey={projectKey} loading={loading} error={error} />
     </>
   );
 }

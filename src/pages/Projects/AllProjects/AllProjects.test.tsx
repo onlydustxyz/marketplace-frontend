@@ -384,6 +384,15 @@ const render = ({ projectFilter, mocks }: { projectFilter?: ProjectFilter; mocks
         setSortingPanelOpen={() => {
           return;
         }}
+        setTechnologies={() => {
+          return;
+        }}
+        setSponsors={() => {
+          return;
+        }}
+        setLoading={() => {
+          return;
+        }}
       />
     </MockedProjectFilterProvider>,
     {
