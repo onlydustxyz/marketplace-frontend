@@ -89,7 +89,7 @@ export default function GithubCodeReview({
           <div className="flex flex-row items-center gap-1">
             <ContributionCreationDate
               id={codeReview.id as string}
-              type={GithubContributionType.PullRequest}
+              type={GithubContributionType.CodeReview}
               date={new Date(createdAt)}
               tooltipProps={{
                 variant: Variant.Default,
