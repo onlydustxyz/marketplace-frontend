@@ -390,6 +390,9 @@ const render = ({ projectFilter, mocks }: { projectFilter?: ProjectFilter; mocks
         setSponsors={() => {
           return;
         }}
+        setLoading={() => {
+          return;
+        }}
       />
     </MockedProjectFilterProvider>,
     {
