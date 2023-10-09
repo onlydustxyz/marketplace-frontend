@@ -13,6 +13,7 @@ import displayRelativeDate from "src/utils/displayRelativeDate";
 import { ContributionIcon, Sizes } from "./ContributionIcon";
 import { getFormattedDateGB, getFormattedTimeUS } from "src/utils/date";
 import { ComponentProps } from "react";
+import { cn } from "src/utils/cn";
 
 const tokens: GithubTypeStatusDict<string> = {
   [GithubContributionType.PullRequest]: {
@@ -52,29 +53,35 @@ const tokensShort: GithubTypeStatusDict<string> = {
   },
 };
 
-export function ContributionDate({
-  id,
-  type,
-  status,
-  date,
-  withIcon = false,
-  tooltipProps = { variant: Variant.Blue },
-}: {
+type ContributionDateProps = {
   id: string;
   type: GithubContributionType;
   status: GithubItemStatus;
   date: Date;
   withIcon?: boolean;
   tooltipProps?: ComponentProps<typeof Tooltip>;
-}) {
+};
+
+export function ContributionDate({
+  id,
+  type,
+  status,
+  date,
+  withIcon = false,
+  tooltipProps = {
+    position: TooltipPosition.Top,
+    variant: Variant.Blue,
+  },
+}: ContributionDateProps) {
   const { T } = useIntl();
 
   const tooltipId = `${id}-date-tooltip`;
+  const { className, ...rest } = tooltipProps;
 
   return (
     <>
-      <Tooltip id={tooltipId} clickable position={TooltipPosition.Top} {...tooltipProps}>
-        <div className="flex items-center gap-2 px-1 py-2">
+      <Tooltip id={tooltipId} clickable {...rest}>
+        <div className={cn("flex items-center gap-2 px-1 py-2", className)}>
           <ContributionIcon type={type} status={status} />
 
           {T(tokens[type][status as keyof typeof tokens[GithubContributionType]], {

@@ -19,11 +19,11 @@ export function CommitsTooltip({
 
   return (
     <div className="flex flex-col gap-1">
-      <span className="gap-1 text-sm text-greyscale-200">
+      <span className="gap-1 text-xs text-greyscale-200">
         {T("reward.form.contributions.pullRequests.tooltip.createdBy")}
 
         <Contributor
-          className="ml-1 flex-row-reverse"
+          className="ml-1 flex-row-reverse text-xs"
           key={pullRequest?.author?.id}
           contributor={{
             login: pullRequest?.author?.login ?? "",
@@ -34,7 +34,7 @@ export function CommitsTooltip({
         />
       </span>
 
-      <span className="text-sm">
+      <span className="text-xs">
         {T("githubCodeReview.tooltip.commits", {
           user: contributorLogin ?? "",
           commits: userCommits + "/" + commitsCount,
