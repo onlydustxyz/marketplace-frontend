@@ -7,6 +7,11 @@
     "confirmationToaster": "Thank you! If we need a profile like yours, you'll be contacted shortly",
     "contactNeeded": "Please share at least one way to reach you out in case it's a match."
   },
+  "comments": {
+    "zero": "No comments",
+    "one": "1 comment",
+    "many": "__count__ comments"
+  },
   "contribution": {
     "review": {
       "status": {
@@ -472,6 +477,36 @@
       "browseProjects": "Browse projects",
       "contribute": "Contribute to get your first one!",
       "noRewards": "No rewards received yet"
+    },
+    "time": {
+      "hours": {
+        "zero": "hours",
+        "one": "hour",
+        "many": "hours"
+      },
+      "days": {
+        "zero": "days",
+        "one": "day",
+        "many": "days"
+      }
+    }
+  },
+  "rewards": {
+    "panel": {
+      "title": "Details",
+      "error": "We were unable to fetch the data for this contribution's rewards, please try again later.",
+      "empty": "Nothing here, this contribution may not have any rewards.",
+      "contribution": {
+        "forProject": "For",
+        "createdOn": "Created __date__",
+        "linkedTo": "Linked to"
+      },
+      "rewards": {
+        "title": "Rewarded in",
+        "id": "Reward __id__",
+        "fromUser": "from",
+        "processedAt": "Processed __date__"
+      }
     }
   },
   "profile": {

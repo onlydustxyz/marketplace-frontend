@@ -34,6 +34,9 @@
 }
 
 @layer components {
+  .rounded-md.pseudo-outline::before {
+    border-radius: 7px;
+  }
   .rounded-lg.pseudo-outline::before {
     border-radius: 9px;
   }
@@ -42,6 +45,9 @@
   }
   .rounded-2xl.pseudo-outline::before {
     border-radius: 17px;
+  }
+  .rounded-md.pseudo-outline-2::before {
+    border-radius: 8px;
   }
   .rounded-lg.pseudo-outline-2::before {
     border-radius: 10px;
@@ -52,6 +58,9 @@
   .rounded-2xl.pseudo-outline-2::before {
     border-radius: 18px;
   }
+  .rounded-md.pseudo-outline-3::before {
+    border-radius: 9px;
+  }
   .rounded-lg.pseudo-outline-3::before {
     border-radius: 11px;
   }
@@ -60,6 +69,9 @@
   }
   .rounded-2xl.pseudo-outline-3::before {
     border-radius: 19px;
+  }
+  .rounded-md.pseudo-outline-4::before {
+    border-radius: 10px;
   }
   .rounded-lg.pseudo-outline-4::before {
     border-radius: 12px;
