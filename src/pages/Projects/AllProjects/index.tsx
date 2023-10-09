@@ -118,11 +118,12 @@ function AllProjects({
   const { loading } = dataContext;
   useEffect(() => setLoading(loading || false), [loading]);
 
-  if (import.meta.env.VITE_USE_APOLLO === "false" && isExtendedGetProjectsQuery(dataContext.data)) {
-    setTechnologies(dataContext.data.technologies || []);
-    setSponsors(dataContext.data.sponsors || []);
-  }
-
+  useEffect(() => {
+    if (import.meta.env.VITE_USE_APOLLO === "false" && isExtendedGetProjectsQuery(dataContext.data)) {
+      setTechnologies(dataContext.data.technologies || []);
+      setSponsors(dataContext.data.sponsors || []);
+    }
+  }, [dataContext.data, setTechnologies, setSponsors]);
   const getProjectsQuery = dataContext;
 
   const projects = useMemo(() => {

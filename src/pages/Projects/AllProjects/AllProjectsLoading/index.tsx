@@ -5,6 +5,8 @@ export default function AllProjectLoading() {
     <div className="flex flex-col space-y-4">
       <Skeleton variant="header" />
       <Skeleton variant="card" />
+      <Skeleton variant="card" />
+      <Skeleton variant="card" />
     </div>
   );
 }
