@@ -56,7 +56,7 @@ export default function ProjectCard({ project, className }: ProjectCardProps) {
     // New REST API Fields
     contributorCount,
     technologies,
-    prettyId,
+    slug,
     leaders,
     repoCount,
   } = project;
@@ -174,7 +174,7 @@ export default function ProjectCard({ project, className }: ProjectCardProps) {
     <Link
       to={generatePath(RoutePaths.ProjectDetails, {
         // TODO(Backend): This is a temporary solution until we delete graphql fields
-        projectKey: key || prettyId || "",
+        projectKey: key || slug || "",
       })}
     >
       {card}

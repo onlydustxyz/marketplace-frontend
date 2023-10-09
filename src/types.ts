@@ -216,7 +216,7 @@ export interface Technologies {
 
 export interface Project {
   id: string;
-  prettyId: string;
+  slug: string;
   name: string;
   shortDescription: string;
   logoUrl: string;
