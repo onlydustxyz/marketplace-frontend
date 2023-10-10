@@ -166,11 +166,17 @@
     },
     "project": {
       "title": "Project",
-      "all": "All projects"
+      "all": "All projects",
+      "zero": "projects",
+      "one": "__count__ project",
+      "many": "__count__ projects"
     },
     "repository": {
       "title": "Repository",
-      "all": "All repositories"
+      "all": "All repositories",
+      "zero": "repositories",
+      "one": "__count__ repository",
+      "many": "__count__ repositories"
     }
   },
   "searchBar": {

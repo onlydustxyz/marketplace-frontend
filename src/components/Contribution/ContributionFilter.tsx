@@ -1,27 +1,17 @@
-import { Listbox, Popover, Transition } from "@headlessui/react";
-import { useState } from "react";
+import { Popover, Transition } from "@headlessui/react";
 import FilterIcon from "src/assets/icons/FilterIcon";
 import IssueOpen from "src/assets/icons/IssueOpen";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
+import { FilterSelect } from "src/components/FilterSelect/FilterSelect";
 import { useIntl } from "src/hooks/useIntl";
-import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import EyeLine from "src/icons/EyeLine";
 import FolderLine from "src/icons/FolderLine";
 import GitMergeLine from "src/icons/GitMergeLine";
+import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import Refresh from "src/icons/Refresh";
-import { cn } from "src/utils/cn";
-
-const people = [
-  { id: 1, name: "Durward Reynolds", unavailable: false },
-  { id: 2, name: "Kenton Towne", unavailable: false },
-  { id: 3, name: "Therese Wunsch", unavailable: false },
-  { id: 4, name: "Benedict Kessler", unavailable: true },
-  { id: 5, name: "Katelyn Rohan", unavailable: false },
-];
 
 export function ContributionFilter() {
   const { T } = useIntl();
-  const [selectedPerson, setSelectedPerson] = useState([people[0]]);
 
   const typeOptions = [
     {
@@ -56,6 +46,7 @@ export function ContributionFilter() {
             leave="transition duration-75 ease-out"
             leaveFrom="transform scale-100 opacity-100"
             leaveTo="transform scale-95 opacity-0"
+            className="origin-top-left"
           >
             <Popover.Panel
               static
@@ -80,7 +71,7 @@ export function ContributionFilter() {
                         <input type="checkbox" id={option.value} className="peer hidden" value={option.value} />
                         <label
                           htmlFor={option.value}
-                          className="flex cursor-pointer select-none items-center gap-1 whitespace-nowrap rounded-lg border border-greyscale-50/8 bg-white/8 px-2 py-1 font-walsheim text-xs font-normal leading-none text-neutral-100 peer-checked:border-spacePurple-500 peer-checked:bg-spacePurple-900 peer-checked:text-snow peer-checked:outline-double peer-checked:outline-1 peer-checked:outline-spacePurple-500"
+                          className="flex cursor-pointer select-none items-center gap-1 whitespace-nowrap rounded-lg border border-greyscale-50/8 bg-white/8 px-2 py-1 font-walsheim text-xs font-normal leading-none text-snow peer-checked:border-spacePurple-500 peer-checked:bg-spacePurple-900 peer-checked:outline-double peer-checked:outline-1 peer-checked:outline-spacePurple-500"
                         >
                           <span className="text-base leading-none">{option.icon}</span>
                           {option.label}
@@ -91,61 +82,34 @@ export function ContributionFilter() {
                 </div>
               </div>
               <div className="px-6 py-3">
-                <div className="flex flex-col gap-2">
-                  <label className="font-walsheim text-sm font-medium uppercase text-spaceBlue-200">
-                    {T("filter.project.title")}
-                  </label>
-                  <div className="relative">
-                    <Listbox value={selectedPerson} onChange={setSelectedPerson} multiple>
-                      {({ open }) => (
-                        <>
-                          <Listbox.Button
-                            className={cn(
-                              "flex items-center gap-6 rounded-lg border border-greyscale-50/8 bg-white/5 px-2.5 py-1.5 text-greyscale-50 shadow-lg",
-                              {
-                                "border-2 border-spacePurple-500 bg-spacePurple-900 text-spacePurple-200": open,
-                              }
-                            )}
-                          >
-                            <span className="flex items-center gap-2">
-                              <FolderLine
-                                className={cn("text-base leading-none", {
-                                  "text-spacePurple-500": open,
-                                })}
-                              />
-                              <span className="font-walsheim text-sm leading-none">
-                                {selectedPerson.length} selected
-                              </span>
-                            </span>
-                            <ArrowDownSLine className="text-xl leading-none text-spaceBlue-200" />
-                          </Listbox.Button>
-                          <Listbox.Options className="absolute">
-                            {people.map(person => (
-                              <Listbox.Option key={person.id} value={person} disabled={person.unavailable}>
-                                {({ selected, active }) => (
-                                  <>
-                                    {
-                                      // HTML char check mark if selected
-                                      selected ? <>&#10003;</> : null
-                                    }
-                                    {person.name}
-                                  </>
-                                )}
-                              </Listbox.Option>
-                            ))}
-                          </Listbox.Options>
-                        </>
-                      )}
-                    </Listbox>
-                  </div>
-                </div>
+                <FilterSelect
+                  label={T("filter.project.title")}
+                  icon={className => <FolderLine className={className} />}
+                  tokens={{ zero: "filter.project.all", other: "filter.project" }}
+                  items={[
+                    { id: 1, label: "Durward Reynolds", image: null },
+                    { id: 2, label: "Kenton Towne", image: null },
+                    { id: 3, label: "Therese Wunsch", image: null },
+                    { id: 4, label: "Benedict Kessler", image: null },
+                    { id: 5, label: "Katelyn Rohan", image: null },
+                  ]}
+                  multiple
+                />
               </div>
               <div className="px-6 py-3">
-                <div className="flex flex-col gap-2">
-                  <label className="font-walsheim text-sm font-medium uppercase text-spaceBlue-200">
-                    {T("filter.repository.title")}
-                  </label>
-                </div>
+                <FilterSelect
+                  label={T("filter.repository.title")}
+                  icon={className => <GitRepositoryLine className={className} />}
+                  tokens={{ zero: "filter.repository.all", other: "filter.repository" }}
+                  items={[
+                    { id: 10, label: "Durward Reynolds" },
+                    { id: 20, label: "Kenton Towne" },
+                    { id: 30, label: "Therese Wunsch" },
+                    { id: 40, label: "Benedict Kessler" },
+                    { id: 50, label: "Katelyn Rohan" },
+                  ]}
+                  multiple
+                />
               </div>
             </Popover.Panel>
           </Transition>
