@@ -3,8 +3,8 @@ import { UserIdentityDocument } from "src/__generated/graphql";
 import { ContributionBadge } from "src/components/Contribution/ContributionBadge";
 import { GithubContributionType, GithubPullRequestStatus } from "src/types";
 import withAuthProvider from "../decorators/withAuthProvider";
-import withContributorProfilePanelProvider from "../decorators/withContributorProfilePanelProvider";
 import withMockedProvider from "../decorators/withMockedProvider";
+import withContributorProfilePanelProvider from "../decorators/withContributorProfilePanelProvider";
 
 const USER_ID = "e2ee731a-2697-4306-bf4b-c807f6fda0d7";
 
