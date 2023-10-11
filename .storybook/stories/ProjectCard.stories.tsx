@@ -203,6 +203,6 @@ const args = {
   projectLeadsCount: 1,
   hiring: false,
   rank: 0,
-  visibility: "public",
+  visibility: "PUBLIC",
   sponsorsCount: 3,
 };

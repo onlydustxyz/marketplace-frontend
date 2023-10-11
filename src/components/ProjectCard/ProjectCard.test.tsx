@@ -34,7 +34,7 @@ const PROJECT: Project = {
   logoUrl: "https://avatars.githubusercontent.com/u/115809607?v=4",
   hiring: false,
   rank: 0,
-  visibility: "public",
+  visibility: "PUBLIC",
   projectLeads: [
     {
       userId: "user-1",
