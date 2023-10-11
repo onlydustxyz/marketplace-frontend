@@ -6,7 +6,7 @@ import { contextWithCacheHeaders } from "src/utils/headers";
 export default function useProjectVisibility(projectId?: string) {
   const { user, githubUserId } = useAuth();
 
-  const { data } = useGetProjectVisibilityDetailsQuery({
+  const { data, loading } = useGetProjectVisibilityDetailsQuery({
     variables: { projectId },
     skip: !projectId,
     ...contextWithCacheHeaders,
@@ -21,6 +21,7 @@ export default function useProjectVisibility(projectId?: string) {
       project: data?.projects[0],
       user: { userId: user?.id, githubUserId },
     }),
+    loading,
   };
 }
 
