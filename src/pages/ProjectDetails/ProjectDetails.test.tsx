@@ -105,7 +105,7 @@ const getProjectMock = {
           longDescription: TEST_DESCRIPTION,
           logoUrl: null,
           hiring: false,
-          visibility: "public",
+          visibility: "PUBLIC",
           contributorsAggregate: { aggregate: { count: 0 } },
           pendingInvitations: [{ id: "test-project-id", githubUserId: TEST_GITHUB_USER_ID }],
           projectLeads: [
@@ -147,7 +147,7 @@ const getProjectVisibilityMock = (projectId: string) => ({
           githubReposAggregate: { aggregate: { count: 1 } },
           pendingInvitations: [],
           projectLeads: [{ userId: "user-1" }],
-          visibility: "public",
+          visibility: "PUBLIC",
         },
       ],
     } as GetProjectVisibilityDetailsQueryResult["data"],
@@ -179,7 +179,7 @@ const getLedProjectMock = {
           longDescription: TEST_DESCRIPTION,
           logoUrl: null,
           hiring: false,
-          visibility: "public",
+          visibility: "PUBLIC",
           pendingInvitations: [],
           projectLeads: [
             {
