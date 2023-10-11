@@ -80,16 +80,18 @@ function ProjectPresentDetails() {
     throw new Error(T("dataFetching.dataContext"));
   }
 
-  const { param, data, loading, error } = dataContext;
+  const { param, data, loading: isContexteLoading, error } = dataContext;
   const projectKey = param;
   const { id, name } = data as ProjectDetailsRESTfull;
 
-  const { visibleToCurrentUser } = useProjectVisibility(id);
+  const { visibleToCurrentUser, loading: isProjectVisibilityLoading } = useProjectVisibility(id);
 
   const showToaster = useShowToaster();
   const navigate = useNavigate();
 
-  if (!id || visibleToCurrentUser === false) {
+  const isLoading = isContexteLoading || isProjectVisibilityLoading;
+
+  if (!isLoading && (!id || visibleToCurrentUser === false)) {
     showToaster(T("project.error.notFound"), { isError: true });
     navigate(RoutePaths.Projects);
   }
@@ -97,7 +99,7 @@ function ProjectPresentDetails() {
   return (
     <>
       <SEO title={`${name} — OnlyDust`} />
-      <View projectId={id} projectKey={projectKey} loading={loading} error={error} />
+      <View projectId={id} projectKey={projectKey} loading={isContexteLoading} error={error} />
     </>
   );
 }
