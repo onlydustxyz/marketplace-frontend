@@ -2,9 +2,9 @@ import { GithubUser } from "src/__generated/graphql";
 import { GithubContributionType, GithubItemStatus, GithubPullRequestDraft, QueryContribution } from "src/types";
 
 function getDefaultInfo(
-  info?: Partial<Record<"type" | "title" | "htmlUrl" | "number" | "status" | "author", unknown>>
+  info?: Partial<Record<"type" | "title" | "htmlUrl" | "number" | "status" | "author" | "commentsCount", unknown>>
 ) {
-  const { type, title, htmlUrl, number, status, author } = info ?? {};
+  const { type, title, htmlUrl, number, status, author, commentsCount } = info ?? {};
 
   return {
     type: type ?? "",
@@ -13,6 +13,7 @@ function getDefaultInfo(
     number: number ?? 0,
     status: status ?? "",
     author: author ?? null,
+    commentsCount: commentsCount ?? 0,
   } as {
     type: GithubContributionType;
     title: string;
@@ -20,6 +21,7 @@ function getDefaultInfo(
     number: number;
     status: GithubItemStatus;
     author: GithubUser | null;
+    commentsCount: number;
   };
 }
 
@@ -33,12 +35,12 @@ export function getContributionInfo(
       const { githubIssue } = contribution;
 
       if (githubIssue) {
-        const { title, htmlUrl, number, status, author } = githubIssue;
+        const { title, htmlUrl, number, status, author, commentsCount } = githubIssue;
 
-        return getDefaultInfo({ type, title, htmlUrl, number, status, author });
+        return getDefaultInfo({ type, title, htmlUrl, number, status, author, commentsCount });
       }
 
-      return getDefaultInfo();
+      return getDefaultInfo({ type });
     }
 
     case GithubContributionType.PullRequest: {
@@ -57,7 +59,7 @@ export function getContributionInfo(
         });
       }
 
-      return getDefaultInfo();
+      return getDefaultInfo({ type });
     }
 
     case GithubContributionType.CodeReview: {
@@ -75,7 +77,7 @@ export function getContributionInfo(
         return getDefaultInfo({ type, status, author });
       }
 
-      return getDefaultInfo();
+      return getDefaultInfo({ type });
     }
 
     default:

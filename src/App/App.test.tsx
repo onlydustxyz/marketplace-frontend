@@ -93,7 +93,7 @@ const ALL_PROJECTS_RESULT: { data: GetProjectsQueryResult["data"] } = {
         logoUrl: null,
         hiring: false,
         rank: 0,
-        visibility: "public",
+        visibility: "PUBLIC",
         projectLeads: [
           {
             __typename: "ProjectLeads",
@@ -159,7 +159,7 @@ const PROJECT_OVERVIEW_DETAILS_RESULT: { data: GetProjectOverviewDetailsQueryRes
         longDescription: "This is the long description",
         moreInfoLink: TEST_TELEGRAM_LINK,
         hiring: false,
-        visibility: "public",
+        visibility: "PUBLIC",
         pendingInvitations: [],
         usdBudget: { initialAmount: 0, spentAmount: 0 },
         contributors: [
@@ -220,7 +220,7 @@ const graphQlMocks = [
             name: TEST_PROJECT_NAME,
             key: TEST_PROJECT_NAME,
             logoUrl: null,
-            visibility: "public",
+            visibility: "PUBLIC",
             pendingInvitations: [],
             projectLeads: [],
             contributorsAggregate: { aggregate: { count: 0 } },

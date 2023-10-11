@@ -49,3 +49,76 @@ query GetAllContributions($orderBy: [ContributionsOrderBy!], $githubUserId: bigi
     indexedAt
   }
 }
+
+query GetContributionRewards($githubUserId: bigint!, $contributionId: String!) {
+  contributions(where: { githubUserId: { _eq: $githubUserId }, id: { _eq: $contributionId } }) {
+    closedAt
+    createdAt
+    id
+    githubPullRequest {
+      ...ContributionGithubPullRequest
+      closingIssues {
+        githubIssue {
+          ...ContributionGithubIssue
+        }
+      }
+      codeReviews(orderBy: { submittedAt: DESC }, limit: 1) {
+        ...ContributionGithubCodeReview
+      }
+    }
+    githubIssue {
+      ...ContributionGithubIssue
+      closedByPullRequests {
+        githubPullRequest {
+          ...ContributionGithubPullRequest
+        }
+      }
+    }
+    githubCodeReview {
+      ...ContributionGithubCodeReview
+      githubPullRequest {
+        ...ContributionGithubPullRequest
+      }
+    }
+    githubRepo {
+      htmlUrl
+      name
+      id
+    }
+    project {
+      name
+      logoUrl
+      id
+      key
+    }
+    status
+    type
+    rewardItems {
+      paymentId
+      paymentRequest {
+        amount
+        hoursWorked
+        invoiceReceivedAt
+        # Get the most recent payment to show processed date
+        payments(orderBy: { processedAt: DESC }, limit: 1) {
+          processedAt
+        }
+        paymentsAggregate {
+          aggregate {
+            sum {
+              amount
+            }
+          }
+        }
+        recipientId
+        requestedAt
+        requestor {
+          avatarUrl
+          githubUserId
+          htmlUrl
+          login
+        }
+      }
+    }
+  }
+}

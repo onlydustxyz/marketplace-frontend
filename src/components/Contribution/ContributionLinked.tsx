@@ -7,8 +7,12 @@ import { getNbLinkedContributions } from "src/utils/getNbLinkedContributions";
 
 export function ContributionLinked({
   contribution,
+  withTooltip = true,
+  asLink = false,
 }: {
   contribution: Pick<QueryContribution, "githubCodeReview" | "githubIssue" | "githubPullRequest" | "type" | "id">;
+  withTooltip?: boolean;
+  asLink?: boolean;
 }) {
   const { id, type, githubCodeReview, githubIssue, githubPullRequest } = contribution;
 
@@ -144,5 +148,5 @@ export function ContributionLinked({
     );
   }
 
-  return renderBadges({ withTooltip: true, asLink: false });
+  return renderBadges({ withTooltip, asLink });
 }

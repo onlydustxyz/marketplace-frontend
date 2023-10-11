@@ -13,18 +13,28 @@ import ProjectTitle from "./ProjectTitle";
 import isDefined from "src/utils/isDefined";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import Tag, { TagSize } from "src/components/Tag";
-import { ArrayElement } from "src/types";
+import { ArrayElement, Leader, Technologies } from "src/types";
 import { GetProjectsQuery } from "src/__generated/graphql";
 import RecordCircleLine from "src/icons/RecordCircleLine";
 import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
 import config from "src/config";
 import ProjectLeadInvitationView from "src/components/ProjectLeadInvitation/ProjectLeadInvitationView";
+import { getTopTechnologies } from "src/utils/technologies";
 
 export type Project = ArrayElement<GetProjectsQuery["projects"]>;
 
+// TODO(Backend): This is a temporary solution until we delete graphql fields
+type ExtendedProject = Project & {
+  contributorCount?: number;
+  technologies?: Technologies;
+  slug?: string;
+  leaders?: Leader[];
+  repoCount?: number;
+};
+
 type ProjectCardProps = {
-  project: Project;
+  project: ExtendedProject;
   className?: string;
 };
 
@@ -42,16 +52,36 @@ export default function ProjectCard({ project, className }: ProjectCardProps) {
     logoUrl,
     visibility,
     shortDescription,
+    // TODO(Backend):
+    // New REST API Fields
+    contributorCount,
+    technologies,
+    slug,
+    leaders,
+    repoCount,
   } = project;
 
   const projectUrl = logoUrl ? config.CLOUDFLARE_RESIZE_W_100_PREFIX + logoUrl : logoUrl;
 
+  // TODO(Backend): This is a temporary solution until we delete graphql fields
+  const repositoryCount = githubRepos?.length || repoCount || 0;
+
   const { T } = useIntl();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
-  const topSponsors = sponsors?.map(projectSponsor => projectSponsor.sponsor).slice(0, 3) || [];
-  const languages = getMostUsedLanguages(getDeduplicatedAggregatedLanguages(githubRepos.map(r => r.repo)));
-  const contributorsCount = contributorsAggregate.aggregate?.count || 0;
+  // TODO(Backend): This is a temporary solution until we delete graphql fields
+  const topSponsors = sponsors?.map(projectSponsor => projectSponsor.sponsor || projectSponsor).slice(0, 3) || [];
+
+  // TODO(Backend): This is a temporary solution until we delete graphql fields
+  const languages = githubRepos
+    ? getMostUsedLanguages(getDeduplicatedAggregatedLanguages(githubRepos?.map(r => r.repo)))
+    : technologies
+    ? getTopTechnologies(technologies)
+    : [];
+
+  // TODO(Backend): This is a temporary solution until we delete graphql fields
+  const contributorsCount = contributorsAggregate?.aggregate?.count || contributorCount || 0;
+
   const hasPendingInvitation = pendingInvitations?.length > 0;
 
   const card = (
@@ -74,9 +104,9 @@ export default function ProjectCard({ project, className }: ProjectCardProps) {
             <ProjectTitle
               projectId={id}
               projectName={name || ""}
-              projectLeads={projectLeads?.map(lead => lead.user).filter(isDefined) || []}
+              projectLeads={projectLeads?.map(lead => lead.user).filter(isDefined) || leaders || []}
               logoUrl={projectUrl || onlyDustLogo}
-              private={visibility === "private"}
+              private={visibility === "PRIVATE"}
             />
             {languages.length > 0 && (
               <div className="hidden lg:block">
@@ -90,10 +120,10 @@ export default function ProjectCard({ project, className }: ProjectCardProps) {
           <div className="flex basis-2/3 flex-col justify-center gap-4 lg:gap-4 lg:pl-6">
             <div className="ml-px line-clamp-2 text-sm xl:text-base">{shortDescription}</div>
             <div className="flex flex-row flex-wrap gap-1 xl:gap-2">
-              {githubRepos && githubRepos.length > 0 && (
+              {repositoryCount && (
                 <Tag testid={`github-repo-count-${id}`} size={TagSize.Small}>
                   <GitRepositoryLine />
-                  {isXl ? T("project.details.githubRepos.count", { count: githubRepos.length }) : githubRepos.length}
+                  {isXl ? T("project.details.githubRepos.count", { count: repositoryCount }) : repositoryCount}
                 </Tag>
               )}
               {contributorsCount > 0 && (
@@ -143,7 +173,8 @@ export default function ProjectCard({ project, className }: ProjectCardProps) {
   return (
     <Link
       to={generatePath(RoutePaths.ProjectDetails, {
-        projectKey: key || "",
+        // TODO(Backend): This is a temporary solution until we delete graphql fields
+        projectKey: key || slug || "",
       })}
     >
       {card}

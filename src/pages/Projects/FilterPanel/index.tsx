@@ -9,34 +9,44 @@ import { isProjectVisibleToUser } from "src/hooks/useProjectVisibility";
 type Props = {
   isProjectLeader: boolean;
   fromSidePanel?: boolean;
+  technologies: string[];
+  sponsors: string[];
 };
 
-export default function FilterPanel({ isProjectLeader, fromSidePanel }: Props) {
+export default function FilterPanel({ isProjectLeader, fromSidePanel, technologies, sponsors }: Props) {
   const { user, githubUserId } = useAuth();
   const filterOptionsQuery = useGetAllFilterOptionsQuery(contextWithCacheHeaders);
 
-  const visibleProjects = chain(filterOptionsQuery.data?.projects).filter(
-    project =>
-      isProjectVisibleToUser({
-        project,
-        user: {
-          userId: user?.id,
-          githubUserId,
-        },
-      }) !== false
-  );
+  let availableTechnologies: string[] = [];
+  let availableSponsors: string[] = [];
 
-  const availableTechnologies = visibleProjects
-    .flatMap(p => getMostUsedLanguages(getDeduplicatedAggregatedLanguages(p.githubRepos.map(r => r.repo))))
-    .sort((t1: string, t2: string) => t1.localeCompare(t2))
-    .uniq()
-    .value();
+  if (import.meta.env.VITE_USE_APOLLO === "true") {
+    const visibleProjects = chain(filterOptionsQuery.data?.projects).filter(
+      project =>
+        isProjectVisibleToUser({
+          project,
+          user: {
+            userId: user?.id,
+            githubUserId,
+          },
+        }) !== false
+    );
 
-  const availableSponsors = visibleProjects
-    .flatMap(p => p.sponsors.map(s => s.sponsor.name))
-    .sort()
-    .uniq()
-    .value();
+    availableTechnologies = visibleProjects
+      .flatMap(p => getMostUsedLanguages(getDeduplicatedAggregatedLanguages(p.githubRepos.map(r => r.repo))))
+      .sort((t1: string, t2: string) => t1.localeCompare(t2))
+      .uniq()
+      .value();
+
+    availableSponsors = visibleProjects
+      .flatMap(p => p.sponsors.map(s => s.sponsor.name))
+      .sort()
+      .uniq()
+      .value();
+  } else {
+    availableTechnologies = technologies;
+    availableSponsors = sponsors;
+  }
 
   return (
     <View

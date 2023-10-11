@@ -2,7 +2,6 @@ import type { ApolloError } from "@apollo/client";
 import { cn } from "src/utils/cn";
 import { ComponentProps, PropsWithChildren, ReactNode, useMemo, useState } from "react";
 
-import atomLogo from "assets/img/atom.png";
 import { ContributionsOrderBy, GetAllContributionsQuery, OrderBy } from "src/__generated/graphql";
 import IssueOpen from "src/assets/icons/IssueOpen";
 import { Contribution } from "src/components/Contribution/Contribution";
@@ -10,6 +9,7 @@ import { ContributionCard } from "src/components/Contribution/ContributionCard";
 import { ContributionDate } from "src/components/Contribution/ContributionDate";
 import { ContributionLinked } from "src/components/Contribution/ContributionLinked";
 import { ContributionProjectRepo } from "src/components/Contribution/ContributionProjectRepo";
+import { SpinningLogo } from "src/components/Loader/SpinningLogo";
 import Table from "src/components/Table";
 import Cell, { CellHeight } from "src/components/Table/Cell";
 import HeaderCell, { HeaderCellWidth } from "src/components/Table/HeaderCell";
@@ -64,11 +64,9 @@ function TableText({ children }: PropsWithChildren) {
 }
 
 function Loader() {
-  const { T } = useIntl();
-
   return (
     <div className="flex justify-center py-24">
-      <img src={atomLogo} alt={T("state.loading")} className="animate-spin-medium" />
+      <SpinningLogo />
     </div>
   );
 }

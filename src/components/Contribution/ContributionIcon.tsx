@@ -91,9 +91,10 @@ export function ContributionIcon({
     },
   };
 
+  // Even though a type and status should always be defined, in development sometimes they aren't and makes the component crash.
   return (
-    <div className={cn("leading-none", variants.status[status])}>
-      {icons[type][status as keyof typeof icons[GithubContributionType]]}
+    <div className={cn("leading-none", status ? variants.status[status] : undefined)}>
+      {type && status ? icons[type][status as keyof typeof icons[GithubContributionType]] : null}
     </div>
   );
 }

@@ -1,17 +1,17 @@
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import { useAuth } from "src/hooks/useAuth";
-import AllProjects, { DEFAULT_SORTING } from "./AllProjects";
+import AllProjectsParent, { DEFAULT_SORTING } from "./AllProjects";
 import FilterPanel from "./FilterPanel";
 import { ProjectFilterProvider } from "./useProjectFilter";
 import useScrollRestoration from "./AllProjects/useScrollRestoration";
 import { Suspense, useEffect, useState } from "react";
-import Loader from "src/components/Loader";
 import SearchBar from "./SearchBar";
 import { useDebounce } from "usehooks-ts";
 import SidePanel from "src/components/SidePanel";
 import { SortingPanel } from "./Sorting/SortingPanel";
 import { useLocalStorage } from "react-use";
 import SEO from "src/components/SEO";
+import AllProjectLoading from "./AllProjects/AllProjectsLoading";
 
 export enum Sorting {
   Trending = "trending",
@@ -36,6 +36,11 @@ export default function Projects() {
   const [filterPanelOpen, setFilterPanelOpen] = useState(false);
   const [sortingPanelOpen, setSortingPanelOpen] = useState(false);
 
+  const [technologies, setTechnologies] = useState<string[]>([]);
+  const [sponsors, setSponsors] = useState<string[]>([]);
+
+  const [loading, setLoading] = useState(false);
+
   const { ref, restoreScroll } = useScrollRestoration();
 
   return (
@@ -48,11 +53,14 @@ export default function Projects() {
           </div>
           <div className="flex h-full gap-6">
             <div className="sticky top-0 hidden shrink-0 basis-80 xl:block">
-              <FilterPanel isProjectLeader={isProjectLeader} />
+              <FilterPanel isProjectLeader={isProjectLeader} technologies={technologies} sponsors={sponsors} />
             </div>
             <div className="min-w-0 grow">
-              <Suspense fallback={<Loader />}>
-                <AllProjects
+              {/* TODO(Backend): This is a temporary solution until we delete graphql Query
+              At this moment we wont use the double loading anymore */}
+              {loading && <AllProjectLoading />}
+              <Suspense fallback={<AllProjectLoading />}>
+                <AllProjectsParent
                   search={searchQuery}
                   clearSearch={() => setSearch("")}
                   sorting={sorting}
@@ -62,6 +70,9 @@ export default function Projects() {
                   setFilterPanelOpen={setFilterPanelOpen}
                   sortingPanelOpen={sortingPanelOpen}
                   setSortingPanelOpen={setSortingPanelOpen}
+                  setTechnologies={setTechnologies}
+                  setSponsors={setSponsors}
+                  setLoading={setLoading}
                 />
               </Suspense>
             </div>
@@ -69,7 +80,7 @@ export default function Projects() {
         </div>
       </Background>
       <SidePanel withBackdrop open={filterPanelOpen} setOpen={setFilterPanelOpen} placement="bottom">
-        <FilterPanel isProjectLeader={isProjectLeader} fromSidePanel />
+        <FilterPanel isProjectLeader={isProjectLeader} fromSidePanel technologies={technologies} sponsors={sponsors} />
       </SidePanel>
       <SidePanel withBackdrop open={sortingPanelOpen} setOpen={setSortingPanelOpen} placement="bottom">
         <SortingPanel all={PROJECT_SORTINGS} current={sorting || DEFAULT_SORTING} onChange={setSorting} />
