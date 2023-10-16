@@ -46,7 +46,7 @@ export function FilterSelect<T extends Item>({
   return (
     <FilterField label={label}>
       <div className={cn("relative", { "opacity-50": disabled })}>
-        <Listbox value={selected} onChange={onChange} multiple={multiple} disabled={disabled}>
+        <Listbox value={selected} onChange={onChange} multiple={multiple} disabled={disabled} by="id">
           {({ open }) => (
             <>
               <Listbox.Button
