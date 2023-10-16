@@ -11,11 +11,10 @@ import FolderLine from "src/icons/FolderLine";
 import GitMergeLine from "src/icons/GitMergeLine";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import Refresh from "src/icons/Refresh";
-
-type Type = "pull_request" | "issue" | "code_review";
+import { GithubContributionType } from "src/types";
 
 export type Filters = {
-  types: Type[];
+  types: GithubContributionType[];
   projects: Item[];
   repos: Item[];
 };
@@ -30,25 +29,25 @@ export function ContributionFilter({ state }: { state: [Filters, Dispatch<SetSta
     setShowClear(Boolean(filters.types.length || filters.projects.length || filters.repos.length));
   }, [filters, setShowClear]);
 
-  const typeOptions: { value: Type; icon: JSX.Element; label: string }[] = [
+  const typeOptions: { value: GithubContributionType; icon: JSX.Element; label: string }[] = [
     {
-      value: "pull_request",
+      value: GithubContributionType.PullRequest,
       icon: <GitMergeLine />,
       label: T("filter.type.pullRequest"),
     },
     {
-      value: "issue",
+      value: GithubContributionType.Issue,
       icon: <IssueOpen className="h-3.5 w-3.5" />,
       label: T("filter.type.issue"),
     },
     {
-      value: "code_review",
+      value: GithubContributionType.CodeReview,
       icon: <EyeLine />,
       label: T("filter.type.codeReview"),
     },
   ];
 
-  function updateType(value: Type) {
+  function updateType(value: GithubContributionType) {
     setFilters(prevState => {
       const newState = { ...prevState };
       const index = newState.types.indexOf(value);
