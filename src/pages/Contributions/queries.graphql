@@ -1,5 +1,5 @@
-query GetAllContributions($orderBy: [ContributionsOrderBy!], $githubUserId: bigint!, $status: contribution_status!) {
-  contributions(orderBy: $orderBy, where: { githubUserId: { _eq: $githubUserId }, status: { _eq: $status } }) {
+query GetAllContributions($orderBy: [ContributionsOrderBy!], $where: ContributionsBoolExp) {
+  contributions(orderBy: $orderBy, where: $where) {
     closedAt
     createdAt
     id

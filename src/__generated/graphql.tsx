@@ -18469,8 +18469,7 @@ export type GetProjectVisibilityDetailsQuery = { __typename?: 'query_root', proj
 
 export type GetAllContributionsQueryVariables = Exact<{
   orderBy: InputMaybe<Array<ContributionsOrderBy> | ContributionsOrderBy>;
-  githubUserId: Scalars['bigint'];
-  status: Scalars['contribution_status'];
+  where: InputMaybe<ContributionsBoolExp>;
 }>;
 
 
@@ -20280,11 +20279,8 @@ export type GetProjectVisibilityDetailsQueryHookResult = ReturnType<typeof useGe
 export type GetProjectVisibilityDetailsLazyQueryHookResult = ReturnType<typeof useGetProjectVisibilityDetailsLazyQuery>;
 export type GetProjectVisibilityDetailsQueryResult = Apollo.QueryResult<GetProjectVisibilityDetailsQuery, GetProjectVisibilityDetailsQueryVariables>;
 export const GetAllContributionsDocument = gql`
-    query GetAllContributions($orderBy: [ContributionsOrderBy!], $githubUserId: bigint!, $status: contribution_status!) {
-  contributions(
-    orderBy: $orderBy
-    where: {githubUserId: {_eq: $githubUserId}, status: {_eq: $status}}
-  ) {
+    query GetAllContributions($orderBy: [ContributionsOrderBy!], $where: ContributionsBoolExp) {
+  contributions(orderBy: $orderBy, where: $where) {
     closedAt
     createdAt
     id
@@ -20351,12 +20347,11 @@ ${ContributionGithubCodeReviewFragmentDoc}`;
  * const { data, loading, error } = useGetAllContributionsQuery({
  *   variables: {
  *      orderBy: // value for 'orderBy'
- *      githubUserId: // value for 'githubUserId'
- *      status: // value for 'status'
+ *      where: // value for 'where'
  *   },
  * });
  */
-export function useGetAllContributionsQuery(baseOptions: Apollo.QueryHookOptions<GetAllContributionsQuery, GetAllContributionsQueryVariables>) {
+export function useGetAllContributionsQuery(baseOptions?: Apollo.QueryHookOptions<GetAllContributionsQuery, GetAllContributionsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetAllContributionsQuery, GetAllContributionsQueryVariables>(GetAllContributionsDocument, options);
       }

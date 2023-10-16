@@ -1,7 +1,12 @@
 import { ComponentProps, PropsWithChildren, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useLocalStorage } from "react-use";
-import { ContributionsOrderBy, OrderBy, useGetAllContributionsQuery } from "src/__generated/graphql";
+import {
+  ContributionsBoolExp,
+  ContributionsOrderBy,
+  OrderBy,
+  useGetAllContributionsQuery,
+} from "src/__generated/graphql";
 import CancelCircleLine from "src/assets/icons/CancelCircleLine";
 import ProgressCircle from "src/assets/icons/ProgressCircle";
 import { ContributionFilter, Filters } from "src/components/Contribution/ContributionFilter";
@@ -52,11 +57,25 @@ export default function Contributions() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [sortStorage, setSortStorage] = useLocalStorage("contributions-table-sort", JSON.stringify(initialSort));
   const [sort, setSort] = useState(sortStorage ? (JSON.parse(sortStorage) as typeof initialSort) : initialSort);
+
   const filtersState = useState<Filters>({ types: [], projects: [], repos: [] });
+  const [{ types, projects, repos }] = filtersState;
+  const projectIds = projects.map(({ id }) => id);
+  const repoIds = repos.map(({ id }) => id);
 
   const tab = searchParams.get("tab") as typeof tabValues[number] | null;
 
   const [activeTab, setActiveTab] = useState(isInArray(tabValues, tab ?? "") ? tab : AllTabs.All);
+
+  function where({ status }: { status: GithubContributionStatus }) {
+    return {
+      githubUserId: { _eq: githubUserId },
+      projectId: { _in: projectIds.length ? projectIds : undefined },
+      repoId: { _in: repoIds.length ? repoIds : undefined },
+      status: { _eq: status },
+      type: { _in: types.length ? types : undefined },
+    };
+  }
 
   const {
     data: inProgressData,
@@ -65,8 +84,7 @@ export default function Contributions() {
   } = useGetAllContributionsQuery({
     variables: {
       orderBy: sort[GithubContributionStatus.InProgress].orderBy as ContributionsOrderBy,
-      githubUserId,
-      status: GithubContributionStatus.InProgress,
+      where: where({ status: GithubContributionStatus.InProgress }) as ContributionsBoolExp,
     },
     skip: !githubUserId || (!isActiveTab(AllTabs.All) && !isActiveTab(AllTabs.InProgress)),
     fetchPolicy: "network-only", // Used for first execution
@@ -80,8 +98,7 @@ export default function Contributions() {
   } = useGetAllContributionsQuery({
     variables: {
       orderBy: sort[GithubContributionStatus.Completed].orderBy as ContributionsOrderBy,
-      githubUserId,
-      status: GithubContributionStatus.Completed,
+      where: where({ status: GithubContributionStatus.Completed }) as ContributionsBoolExp,
     },
     skip: !githubUserId || (!isActiveTab(AllTabs.All) && !isActiveTab(AllTabs.Completed)),
     fetchPolicy: "network-only", // Used for first execution
@@ -95,8 +112,7 @@ export default function Contributions() {
   } = useGetAllContributionsQuery({
     variables: {
       orderBy: sort[GithubContributionStatus.Canceled].orderBy as ContributionsOrderBy,
-      githubUserId,
-      status: GithubContributionStatus.Canceled,
+      where: where({ status: GithubContributionStatus.Canceled }) as ContributionsBoolExp,
     },
     skip: !githubUserId || (!isActiveTab(AllTabs.All) && !isActiveTab(AllTabs.Canceled)),
     fetchPolicy: "network-only", // Used for first execution
