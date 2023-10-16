@@ -78,13 +78,13 @@ function OverviewDataWrapper({ children, param }: OverviewDataWrapperProps) {
 }
 
 export default function Overview() {
-  const { projectKey } = useOutletContext<OutletContext>();
+  const { projectId } = useOutletContext<OutletContext>();
 
   return (
     <DataSwitch
-      param={projectKey}
+      param={projectId}
       ApolloDataWrapper={OverviewDataWrapper}
-      resourcePath={ApiResourcePaths.GET_PROJECT_DETAILS}
+      resourcePath={ApiResourcePaths.GET_PROJECT_OVERVIEW}
     >
       <PresentOverview />
     </DataSwitch>
@@ -151,8 +151,6 @@ function PresentOverview() {
   const remainingBudget = data?.usdBudget?.initialAmount - data?.usdBudget?.spentAmount;
   const isRewardDisabled = remainingBudget < rates.hours || remainingBudget === 0;
 
-  console.log("githubRepos", data?.githubRepos)
-
   return (
     <>
       <Title>
@@ -196,7 +194,7 @@ function PresentOverview() {
               }}
             />
           )}
-          <GithubRepositoriesCard githubRepos={githubRepos || data?.repos} />
+          <GithubRepositoriesCard githubRepos={githubRepos.length > 0 ? githubRepos : data?.repos} />
         </div>
         <div className="flex shrink-0 flex-col gap-4 md:w-72 xl:w-80">
           {hiring && !isCurrentUserMember && profile && (
@@ -304,6 +302,8 @@ function GithubRepositoriesCard({ githubRepos }: GithubRepositoriesCardProps) {
         {githubRepos?.map(githubRepo =>
           githubRepo.repo?.id ? (
             <GithubRepoDetails key={githubRepo.repo?.id} githubRepoId={githubRepo.repo?.id} />
+          ) : import.meta.env.VITE_USE_APOLLO === "false" ? (
+            <GithubRepoDetails key={githubRepo?.id} githubRepoId={githubRepo?.id} repo={githubRepo} />
           ) : null
         )}
       </div>
