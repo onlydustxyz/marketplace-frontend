@@ -33,7 +33,7 @@ import useApplications from "./useApplications";
 import LockFill from "src/icons/LockFill";
 import useProjectVisibility from "src/hooks/useProjectVisibility";
 import { useSuspenseQuery_experimental } from "@apollo/client";
-import { Dispatch, useEffect, useState } from "react";
+import { Dispatch, ReactNode, useContext, useEffect, useState } from "react";
 import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
 import { useMediaQuery } from "usehooks-ts";
 import { viewportConfig } from "src/config";
@@ -48,13 +48,50 @@ import useUserProfile from "src/hooks/useContributorProfilePanel/ContributorProf
 import ProjectLeadInvitation from "src/components/ProjectLeadInvitation/ProjectLeadInvitation";
 import { CalloutSizes } from "src/components/ProjectLeadInvitation/ProjectLeadInvitationView";
 import { rates } from "src/hooks/useWorkEstimation";
+import DataDisplay from "src/App/DataWrapper/DataDisplay";
+import DataSwitch from "src/App/DataWrapper/DataSwitch";
+import { ApiResourcePaths } from "src/App/DataWrapper/config";
+import { DataContext } from "src/App/DataWrapper/DataContext";
+import { getTopTechnologies } from "src/utils/technologies";
 
 type OutletContext = {
   projectId: string;
   projectKey: string;
 };
 
+interface OverviewDataWrapperProps {
+  children: ReactNode;
+  param?: string;
+}
+
+function OverviewDataWrapper({ children, param }: OverviewDataWrapperProps) {
+  const { data } = useSuspenseQuery_experimental<GetProjectOverviewDetailsQuery>(GetProjectOverviewDetailsDocument, {
+    variables: { projectId: param },
+    ...contextWithCacheHeaders,
+  });
+
+  return (
+    <DataDisplay param={param} data={data?.projects[0]}>
+      {children}
+    </DataDisplay>
+  );
+}
+
 export default function Overview() {
+  const { projectKey } = useOutletContext<OutletContext>();
+
+  return (
+    <DataSwitch
+      param={projectKey}
+      ApolloDataWrapper={OverviewDataWrapper}
+      resourcePath={ApiResourcePaths.GET_PROJECT_DETAILS}
+    >
+      <PresentOverview />
+    </DataSwitch>
+  );
+}
+
+function PresentOverview() {
   const { T } = useIntl();
   const { projectId, projectKey } = useOutletContext<OutletContext>();
   const { isLoggedIn, githubUserId } = useAuth();
@@ -63,25 +100,38 @@ export default function Overview() {
   const navigate = useNavigate();
   const dispatchSession = useSessionDispatch();
 
-  const { data } = useSuspenseQuery_experimental<GetProjectOverviewDetailsQuery>(GetProjectOverviewDetailsDocument, {
-    variables: { projectId },
-    ...contextWithCacheHeaders,
-  });
+  const dataContext = useContext(DataContext);
 
-  const projectName = data?.projects[0]?.name;
-  const logoUrl = data?.projects[0]?.logoUrl || onlyDustLogo;
-  const description = data?.projects[0]?.longDescription || LOREM_IPSUM;
-  const githubRepos = sortBy(data?.projects[0]?.githubRepos, "repo.stars")
+  if (!dataContext) {
+    throw new Error(T("dataFetching.dataContext"));
+  }
+
+  const { param, data, loading, error } = dataContext;
+
+  const projectName = data?.name;
+  const logoUrl = data?.logoUrl || onlyDustLogo;
+  const description = data?.longDescription || LOREM_IPSUM;
+  const githubRepos = sortBy(data?.githubRepos, "repo.stars")
     .reverse()
     .filter(r => r.repo);
-  const sponsors = data?.projects[0]?.sponsors.map(s => s.sponsor) || [];
-  const moreInfoLink = data?.projects[0]?.moreInfoLink || null;
-  const topContributors = data?.projects[0]?.contributors.map(c => c.githubUser).filter(isDefined) || [];
-  const totalContributorsCount = data?.projects[0]?.contributorsAggregate.aggregate?.count || 0;
-  const leads = data?.projects[0]?.projectLeads.map(u => u.user).filter(isDefined);
-  const languages = getMostUsedLanguages(getDeduplicatedAggregatedLanguages(githubRepos.map(r => r.repo)));
-  const hiring = data?.projects[0]?.hiring;
-  const invitationId = data?.projects[0]?.pendingInvitations.find(i => i.githubUserId === githubUserId)?.id;
+  // TODO(Backend): This is a temporary solution until we delete graphql fields
+  const sponsors = data?.sponsors.map(s => s.sponsor || s) || [];
+  const moreInfoLink = data?.moreInfoLink || null;
+  const topContributors = data?.contributors?.map(c => c.githubUser).filter(isDefined) || data?.topContributors || [];
+  const totalContributorsCount = data?.contributorsAggregate?.aggregate?.count || data?.contributorCount || 0;
+  const leads =
+    data?.projectLeads?.map(u => u.user).filter(isDefined) || data?.leaders?.map(u => u).filter(isDefined) || [];
+
+  // TODO(Backend): This is a temporary solution until we delete graphql fields
+  const languages =
+    githubRepos.length > 0
+      ? getMostUsedLanguages(getDeduplicatedAggregatedLanguages(githubRepos?.map(r => r.repo)))
+      : data?.technologies
+      ? getTopTechnologies(data?.technologies)
+      : [];
+
+  const hiring = data?.hiring;
+  const invitationId = data?.pendingInvitations?.find(i => i.githubUserId === githubUserId)?.id || undefined;
   const isProjectLeader = ledProjectIds.includes(projectId);
 
   const { alreadyApplied, applyToProject } = useApplications(projectId);
@@ -98,8 +148,10 @@ export default function Overview() {
 
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
 
-  const remainingBudget = data?.projects[0]?.usdBudget?.initialAmount - data?.projects[0]?.usdBudget?.spentAmount;
+  const remainingBudget = data?.usdBudget?.initialAmount - data?.usdBudget?.spentAmount;
   const isRewardDisabled = remainingBudget < rates.hours || remainingBudget === 0;
+
+  console.log("githubRepos", data?.githubRepos)
 
   return (
     <>
@@ -132,9 +184,7 @@ export default function Overview() {
       <ProjectLeadInvitation projectId={projectId} size={CalloutSizes.Large} />
       <div className="flex flex-col gap-6 md:flex-row">
         <div className="flex grow flex-col gap-4">
-          <ProjectDescriptionCard
-            {...{ projectName, logoUrl, visibility: data?.projects[0]?.visibility, languages, description }}
-          />
+          <ProjectDescriptionCard {...{ projectName, logoUrl, visibility: data?.visibility, languages, description }} />
           {!isMd && (
             <OverviewPanel
               {...{
@@ -146,7 +196,7 @@ export default function Overview() {
               }}
             />
           )}
-          <GithubRepositoriesCard githubRepos={githubRepos} />
+          <GithubRepositoriesCard githubRepos={githubRepos || data?.repos} />
         </div>
         <div className="flex shrink-0 flex-col gap-4 md:w-72 xl:w-80">
           {hiring && !isCurrentUserMember && profile && (
@@ -217,7 +267,7 @@ function ProjectDescriptionCard({
         <div className="flex w-full flex-col gap-1">
           <div className="flex flex-row items-center justify-between font-belwe text-2xl font-normal text-greyscale-50">
             {projectName}
-            {visibility === "private" && <PrivateTag />}
+            {visibility === "PRIVATE" && <PrivateTag />}
           </div>
           {languages.length > 0 && (
             <Tag size={TagSize.Small}>
