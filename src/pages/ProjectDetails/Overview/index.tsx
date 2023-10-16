@@ -51,9 +51,8 @@ import { rates } from "src/hooks/useWorkEstimation";
 import DataDisplay from "src/App/DataWrapper/DataDisplay";
 import DataSwitch from "src/App/DataWrapper/DataSwitch";
 import { ApiResourcePaths } from "src/App/DataWrapper/config";
-import { DataContext, isExtendedGetProjectsQuery } from "src/App/DataWrapper/DataContext";
+import { DataContext } from "src/App/DataWrapper/DataContext";
 import { getTopTechnologies } from "src/utils/technologies";
-import { ProjectDetailsRESTfull } from "..";
 import { Project, Repo } from "src/types";
 
 type OutletContext = {
@@ -313,7 +312,7 @@ function GithubRepositoriesCard({ githubRepos }: GithubRepositoriesCardProps & R
           <GitRepositoryLine className="text-2xl text-white" />
           {T("project.details.overview.repositories.title")}
         </div>
-        <Badge value={githubRepos.length} size={BadgeSize.Small} />
+        <Badge value={githubRepos?.length || 0} size={BadgeSize.Small} />
       </div>
       <div className="grid grid-cols-1 gap-3 xl:grid-cols-2">
         {githubRepos?.map(githubRepo => {
