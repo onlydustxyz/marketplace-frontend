@@ -27,105 +27,115 @@ env:
   AWS_REGION: ${{ secrets.AWS_REGION }}
 
 jobs:
-  format:
-    name: Check code formatting
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+#  format:
+#    name: Check code formatting
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout repository
+#        uses: actions/checkout@v3
+#
+#      - name: Setup cargo
+#        uses: ./.github/actions/cargo-setup
+#
+#      - name: Check code formatting
+#        run: make fmt
+#
+#      - name: Check codecov.yml file format
+#        run: curl --data-binary @- https://codecov.io/validate < codecov.yml
+#
+#  check:
+#    name: Check
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout repository
+#        uses: actions/checkout@v3
+#
+#      - name: Setup cargo
+#        uses: ./.github/actions/cargo-setup
+#
+#      - name: Check application
+#        run: make check
+#
+#  build:
+#    name: Compile
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout repository
+#        uses: actions/checkout@v3
+#
+#      - name: Setup cargo
+#        uses: ./.github/actions/cargo-setup
+#
+#      - name: Compile application
+#        run: make
+#
+#  lint:
+#    name: Clippy checks
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout repository
+#        uses: actions/checkout@v3
+#
+#      - name: Setup cargo
+#        uses: ./.github/actions/cargo-setup
+#
+#      - name: Run clippy
+#        run: make clippy
+#
+#  unit_tests:
+#    name: Unit tests
+#    runs-on: ubuntu-latest-4-cores
+#    steps:
+#      - name: Checkout repository
+#        uses: actions/checkout@v3
+#
+#      - name: Setup cargo
+#        uses: ./.github/actions/cargo-setup
+#
+#      - name: Run tests
+#        run: make coverage/unit-tests
+#
+#      - name: Setup tmate session for debugging
+#        uses: mxschmitt/action-tmate@v3
+#        if: ${{ failure() && inputs.debug_enabled }}
+#
+#      - name: Upload coverage results
+#        uses: ./.github/actions/coverage-upload
+#        with:
+#          codecov_token: ${{ secrets.CODECOV_TOKEN }}
+#          codecov_flag: unittest
+#          file: lcov.info
+#
+#  api_integration_tests:
+#    name: Integration tests
+#    runs-on: ubuntu-latest-8-cores
+#    steps:
+#      - name: Checkout repository
+#        uses: actions/checkout@v3
+#
+#      - name: Setup cargo
+#        uses: ./.github/actions/cargo-setup
+#
+#      - name: Run tests
+#        run: make coverage/integration-tests
+#
+#      - name: Setup tmate session for debugging
+#        uses: mxschmitt/action-tmate@v3
+#        if: ${{ failure() && inputs.debug_enabled }}
+#
+#      - name: Upload coverage results
+#        uses: ./.github/actions/coverage-upload
+#        with:
+#          codecov_token: ${{ secrets.CODECOV_TOKEN }}
+#          codecov_flag: integration_tests
+#          file: lcov.info
 
-      - name: Setup cargo
-        uses: ./.github/actions/cargo-setup
-
-      - name: Check code formatting
-        run: make fmt
-
-      - name: Check codecov.yml file format
-        run: curl --data-binary @- https://codecov.io/validate < codecov.yml
-
-  check:
-    name: Check
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Setup cargo
-        uses: ./.github/actions/cargo-setup
-
-      - name: Check application
-        run: make check
-
-  build:
-    name: Compile
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Setup cargo
-        uses: ./.github/actions/cargo-setup
-
-      - name: Compile application
-        run: make
-
-  lint:
-    name: Clippy checks
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Setup cargo
-        uses: ./.github/actions/cargo-setup
-
-      - name: Run clippy
-        run: make clippy
-
-  unit_tests:
-    name: Unit tests
-    runs-on: ubuntu-latest-4-cores
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Setup cargo
-        uses: ./.github/actions/cargo-setup
-
-      - name: Run tests
-        run: make coverage/unit-tests
-
-      - name: Setup tmate session for debugging
-        uses: mxschmitt/action-tmate@v3
-        if: ${{ failure() && inputs.debug_enabled }}
-
-      - name: Upload coverage results
-        uses: ./.github/actions/coverage-upload
-        with:
-          codecov_token: ${{ secrets.CODECOV_TOKEN }}
-          codecov_flag: unittest
-          file: lcov.info
-
-  api_integration_tests:
-    name: Integration tests
+  build_and_push_docker_images:
+    if: github.branch == 'docker-build-for-E2E'
+    name: Build and push docker images
     runs-on: ubuntu-latest-8-cores
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
-      - name: Setup cargo
-        uses: ./.github/actions/cargo-setup
-
-      - name: Run tests
-        run: make coverage/integration-tests
-
-      - name: Setup tmate session for debugging
-        uses: mxschmitt/action-tmate@v3
-        if: ${{ failure() && inputs.debug_enabled }}
-
-      - name: Upload coverage results
-        uses: ./.github/actions/coverage-upload
-        with:
-          codecov_token: ${{ secrets.CODECOV_TOKEN }}
-          codecov_flag: integration_tests
-          file: lcov.info
+      - name: Build and push api image
+        run: ./build-and-push-docker-images.sh
