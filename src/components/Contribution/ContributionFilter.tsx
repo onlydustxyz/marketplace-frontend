@@ -1,5 +1,6 @@
 import { Popover, Transition } from "@headlessui/react";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { GithubRepos, Projects } from "src/__generated/graphql";
 import FilterIcon from "src/assets/icons/FilterIcon";
 import IssueOpen from "src/assets/icons/IssueOpen";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
@@ -19,7 +20,17 @@ export type Filters = {
   repos: Item[];
 };
 
-export function ContributionFilter({ state }: { state: [Filters, Dispatch<SetStateAction<Filters>>] }) {
+export function ContributionFilter({
+  state,
+  loading,
+  projects,
+  repos,
+}: {
+  state: [Filters, Dispatch<SetStateAction<Filters>>];
+  loading: boolean;
+  projects: Projects[];
+  repos: GithubRepos[];
+}) {
   const [filters, setFilters] = state;
 
   const { T } = useIntl();
@@ -99,6 +110,7 @@ export function ContributionFilter({ state }: { state: [Filters, Dispatch<SetSta
               static
               className="absolute right-0 z-10 flex translate-y-1.5 flex-col divide-y divide-greyscale-50/8 rounded-2xl border border-greyscale-50/12 bg-whiteFakeOpacity-8 shadow-xl"
             >
+              {loading ? <div className="absolute inset-0 z-10 cursor-progress" /> : null}
               <div className="flex justify-between px-6 py-3">
                 <p className="font-belwe text-base text-greyscale-50">{T("filter.title")}</p>
                 {showClear ? (
@@ -138,13 +150,9 @@ export function ContributionFilter({ state }: { state: [Filters, Dispatch<SetSta
                   label={T("filter.project.title")}
                   icon={className => <FolderLine className={className} />}
                   tokens={{ zero: "filter.project.all", other: "filter.project" }}
-                  items={[
-                    { id: 1, label: "Durward Reynolds", image: null },
-                    { id: 2, label: "Kenton Towne", image: null },
-                    { id: 3, label: "Therese Wunsch", image: null },
-                    { id: 4, label: "Benedict Kessler", image: null },
-                    { id: 5, label: "Katelyn Rohan", image: null },
-                  ]}
+                  items={projects.map(
+                    project => ({ id: project.id, label: project.name, image: project.logoUrl } as Item)
+                  )}
                   multiple
                   selected={filters.projects}
                   onChange={value => {
@@ -158,13 +166,7 @@ export function ContributionFilter({ state }: { state: [Filters, Dispatch<SetSta
                   label={T("filter.repository.title")}
                   icon={className => <GitRepositoryLine className={className} />}
                   tokens={{ zero: "filter.repository.all", other: "filter.repository" }}
-                  items={[
-                    { id: 10, label: "Durward Reynolds" },
-                    { id: 20, label: "Kenton Towne" },
-                    { id: 30, label: "Therese Wunsch" },
-                    { id: 40, label: "Benedict Kessler" },
-                    { id: 50, label: "Katelyn Rohan" },
-                  ]}
+                  items={repos.map(repo => ({ id: repo.id, label: repo.name } as Item))}
                   multiple
                   selected={filters.repos}
                   onChange={value => {

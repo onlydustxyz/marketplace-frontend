@@ -4,7 +4,10 @@ import { useLocalStorage } from "react-use";
 import {
   ContributionsBoolExp,
   ContributionsOrderBy,
+  GetAllContributionsQuery,
+  GithubRepos,
   OrderBy,
+  Projects,
   useGetAllContributionsQuery,
 } from "src/__generated/graphql";
 import CancelCircleLine from "src/assets/icons/CancelCircleLine";
@@ -258,6 +261,40 @@ export default function Contributions() {
     },
   ];
 
+  // TODO make this more performant
+  // TODO move to utils and add unit test
+  function format(data: (GetAllContributionsQuery | undefined)[]) {
+    // Remove any undefined values
+    const filtered = data.filter(Boolean) as GetAllContributionsQuery[];
+
+    // Merge all contributions
+    const contributions = filtered.map(({ contributions }) => contributions).flat();
+
+    // TODO move to utils and add unit test
+    const projects = [
+      ...new Map(
+        contributions
+          .map(({ project }) => project)
+          .flat()
+          .map(project => [project?.id, project])
+      ).values(),
+    ];
+
+    const repos = [
+      ...new Map(
+        contributions
+          .map(({ githubRepo }) => githubRepo)
+          .flat()
+          .map(githubRepo => [githubRepo?.id, githubRepo])
+      ).values(),
+    ];
+
+    return {
+      projects,
+      repos,
+    } as { projects: Projects[]; repos: GithubRepos[] };
+  }
+
   return (
     <>
       <SEO />
@@ -271,7 +308,12 @@ export default function Contributions() {
                   <Tabs tabs={tabItems} variant="blue" mobileTitle={T("navbar.contributions")} />
 
                   <div className="hidden -translate-y-3 lg:block">
-                    <ContributionFilter state={filtersState} />
+                    <ContributionFilter
+                      state={filtersState}
+                      projects={format([inProgressData, completedData, canceledData]).projects}
+                      repos={format([inProgressData, completedData, canceledData]).repos}
+                      loading={inProgressLoading || completedLoading || canceledLoading}
+                    />
                   </div>
                 </div>
               </header>
