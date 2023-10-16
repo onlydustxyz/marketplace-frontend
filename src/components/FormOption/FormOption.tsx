@@ -7,20 +7,26 @@ export enum Size {
   Lg = "lg",
 }
 
+export enum Variant {
+  Default = "default",
+  Active = "active",
+}
+
 export function FormOption<T extends ElementType = "div">({
   as,
   children,
   className,
   size,
+  variant = Variant.Default,
   ...restProps
-}: PropsWithChildren<{ as?: T; className?: string; size: Size } & ComponentPropsWithoutRef<T>>) {
+}: PropsWithChildren<{ as?: T; className?: string; size: Size; variant?: Variant } & ComponentPropsWithoutRef<T>>) {
   const Component = as ?? "div";
 
   return (
     <Component
       className={cn(
         // Base styles
-        "flex cursor-pointer select-none items-center gap-1 whitespace-nowrap border border-greyscale-50/8 bg-white/8 font-walsheim font-normal leading-none text-snow",
+        "flex cursor-pointer select-none items-center gap-1 whitespace-nowrap border font-walsheim font-normal leading-none text-snow",
 
         // ProfileRadioGroup styles
         "peer-checked:border-spacePurple-500 peer-checked:bg-spacePurple-900 peer-checked:outline-double peer-checked:outline-1 peer-checked:outline-spacePurple-500",
@@ -32,6 +38,12 @@ export function FormOption<T extends ElementType = "div">({
           "rounded-lg px-2 py-1 text-xs": size === Size.Sm,
           "rounded-xl px-3 py-2 text-sm": size === Size.Md,
           "rounded-2xl px-4 py-3 text-sm": size === Size.Lg,
+        },
+
+        {
+          "border-greyscale-50/8 bg-white/8": variant === Variant.Default,
+          "border-spacePurple-500 bg-spacePurple-900 outline-double outline-1 outline-spacePurple-500":
+            variant === Variant.Active,
         },
         className
       )}

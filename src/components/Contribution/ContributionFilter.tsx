@@ -1,9 +1,10 @@
 import { Popover, Transition } from "@headlessui/react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import FilterIcon from "src/assets/icons/FilterIcon";
 import IssueOpen from "src/assets/icons/IssueOpen";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
-import { FilterSelect } from "src/components/FilterSelect/FilterSelect";
-import { FormOption, Size as FormOptionSize } from "src/components/FormOption/FormOption";
+import { FilterSelect, Item } from "src/components/FilterSelect/FilterSelect";
+import { FormOption, Size as FormOptionSize, Variant } from "src/components/FormOption/FormOption";
 import { useIntl } from "src/hooks/useIntl";
 import EyeLine from "src/icons/EyeLine";
 import FolderLine from "src/icons/FolderLine";
@@ -11,10 +12,25 @@ import GitMergeLine from "src/icons/GitMergeLine";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import Refresh from "src/icons/Refresh";
 
-export function ContributionFilter() {
-  const { T } = useIntl();
+type Type = "pull_request" | "issue" | "code_review";
 
-  const typeOptions = [
+export type Filters = {
+  types: Type[];
+  projects: Item[];
+  repos: Item[];
+};
+
+export function ContributionFilter({ state }: { state: [Filters, Dispatch<SetStateAction<Filters>>] }) {
+  const [filters, setFilters] = state;
+
+  const { T } = useIntl();
+  const [showClear, setShowClear] = useState(false);
+
+  useEffect(() => {
+    setShowClear(Boolean(filters.types.length || filters.projects.length || filters.repos.length));
+  }, [filters, setShowClear]);
+
+  const typeOptions: { value: Type; icon: JSX.Element; label: string }[] = [
     {
       value: "pull_request",
       icon: <GitMergeLine />,
@@ -31,6 +47,37 @@ export function ContributionFilter() {
       label: T("filter.type.codeReview"),
     },
   ];
+
+  function updateType(value: Type) {
+    setFilters(prevState => {
+      const newState = { ...prevState };
+      const index = newState.types.indexOf(value);
+
+      if (index === -1) {
+        newState.types.push(value);
+      } else {
+        newState.types.splice(index, 1);
+      }
+
+      return newState;
+    });
+  }
+
+  function updateProjects(projects: Item[]) {
+    setFilters(prevState => ({ ...prevState, projects }));
+  }
+
+  function updateRepos(repos: Item[]) {
+    setFilters(prevState => ({ ...prevState, repos }));
+  }
+
+  function resetFilters() {
+    setFilters({
+      types: [],
+      projects: [],
+      repos: [],
+    });
+  }
 
   return (
     <Popover className="relative">
@@ -55,11 +102,12 @@ export function ContributionFilter() {
             >
               <div className="flex justify-between px-6 py-3">
                 <p className="font-belwe text-base text-greyscale-50">{T("filter.title")}</p>
-                {/* TODO only show when filter selected */}
-                <Button type={ButtonType.Ternary} size={ButtonSize.Xs}>
-                  <Refresh />
-                  {T("filter.clearButton")}
-                </Button>
+                {showClear ? (
+                  <Button type={ButtonType.Ternary} size={ButtonSize.Xs} onClick={resetFilters}>
+                    <Refresh />
+                    {T("filter.clearButton")}
+                  </Button>
+                ) : null}
               </div>
               <div className="px-6 py-3">
                 <div className="flex flex-col gap-2">
@@ -69,8 +117,15 @@ export function ContributionFilter() {
                   <div className="flex gap-2">
                     {typeOptions.map(option => (
                       <div className="flex" key={option.value}>
-                        <input type="checkbox" id={option.value} className="peer hidden" value={option.value} />
-                        <FormOption as="label" htmlFor={option.value} size={FormOptionSize.Sm}>
+                        <FormOption
+                          as="label"
+                          htmlFor={option.value}
+                          size={FormOptionSize.Sm}
+                          variant={filters.types.includes(option.value) ? Variant.Active : Variant.Default}
+                          onClick={() => {
+                            updateType(option.value);
+                          }}
+                        >
                           <span className="text-base leading-none">{option.icon}</span>
                           {option.label}
                         </FormOption>
@@ -92,6 +147,11 @@ export function ContributionFilter() {
                     { id: 5, label: "Katelyn Rohan", image: null },
                   ]}
                   multiple
+                  selected={filters.projects}
+                  onChange={value => {
+                    const projects = Array.isArray(value) ? value : [value];
+                    updateProjects(projects);
+                  }}
                 />
               </div>
               <div className="px-6 py-3">
@@ -107,6 +167,11 @@ export function ContributionFilter() {
                     { id: 50, label: "Katelyn Rohan" },
                   ]}
                   multiple
+                  selected={filters.repos}
+                  onChange={value => {
+                    const repos = Array.isArray(value) ? value : [value];
+                    updateRepos(repos);
+                  }}
                 />
               </div>
             </Popover.Panel>

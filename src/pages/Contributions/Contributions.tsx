@@ -1,11 +1,10 @@
 import { ComponentProps, PropsWithChildren, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-
 import { useLocalStorage } from "react-use";
 import { ContributionsOrderBy, OrderBy, useGetAllContributionsQuery } from "src/__generated/graphql";
 import CancelCircleLine from "src/assets/icons/CancelCircleLine";
 import ProgressCircle from "src/assets/icons/ProgressCircle";
-import { ContributionFilter } from "src/components/Contribution/ContributionFilter";
+import { ContributionFilter, Filters } from "src/components/Contribution/ContributionFilter";
 import { ContributionTable, TableColumns, type TableSort } from "src/components/Contribution/ContributionTable";
 import SEO from "src/components/SEO";
 import { Tabs } from "src/components/Tabs/Tabs";
@@ -53,6 +52,7 @@ export default function Contributions() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [sortStorage, setSortStorage] = useLocalStorage("contributions-table-sort", JSON.stringify(initialSort));
   const [sort, setSort] = useState(sortStorage ? (JSON.parse(sortStorage) as typeof initialSort) : initialSort);
+  const filtersState = useState<Filters>({ types: [], projects: [], repos: [] });
 
   const tab = searchParams.get("tab") as typeof tabValues[number] | null;
 
@@ -255,7 +255,7 @@ export default function Contributions() {
                   <Tabs tabs={tabItems} variant="blue" mobileTitle={T("navbar.contributions")} />
 
                   <div className="hidden -translate-y-3 lg:block">
-                    <ContributionFilter />
+                    <ContributionFilter state={filtersState} />
                   </div>
                 </div>
               </header>

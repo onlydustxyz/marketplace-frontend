@@ -1,6 +1,6 @@
 import { Listbox, Transition } from "@headlessui/react";
 import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
-import { ReactElement, useState } from "react";
+import { ReactElement } from "react";
 import { FilterField } from "src/components/FilterField/FilterField";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import { useIntl } from "src/hooks/useIntl";
@@ -8,29 +8,32 @@ import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import CheckLine from "src/icons/CheckLine";
 import { cn } from "src/utils/cn";
 
-type Item = {
+export type Item = {
   id: number | string;
   label: string;
   image?: string | null;
-} & Record<string, unknown>;
+};
 
-export function FilterSelect({
-  label,
-  icon,
-  tokens,
-  items,
-  multiple = false,
+export function FilterSelect<T extends Item>({
   disabled = false,
+  icon,
+  items,
+  label,
+  multiple = false,
+  onChange,
+  selected,
+  tokens,
 }: {
-  label: string;
-  icon?: (className: string) => ReactElement;
-  tokens: Record<"zero" | "other", string>;
-  items: Item[];
-  multiple?: boolean;
   disabled?: boolean;
+  icon?: (className: string) => ReactElement;
+  items: T[];
+  label: string;
+  multiple?: boolean;
+  onChange?: (value: T | T[]) => void;
+  selected: T | T[];
+  tokens: Record<"zero" | "other", string>;
 }) {
   const { T } = useIntl();
-  const [selected, setSelected] = useState<Item | Item[] | null>(multiple ? [] : null);
 
   function renderToken() {
     if (Array.isArray(selected)) {
@@ -43,7 +46,7 @@ export function FilterSelect({
   return (
     <FilterField label={label}>
       <div className={cn("relative", { "opacity-50": disabled })}>
-        <Listbox value={selected} onChange={setSelected} multiple={multiple} disabled={disabled}>
+        <Listbox value={selected} onChange={onChange} multiple={multiple} disabled={disabled}>
           {({ open }) => (
             <>
               <Listbox.Button
