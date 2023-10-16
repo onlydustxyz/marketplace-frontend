@@ -58,18 +58,13 @@ export function ContributionFilter({
     },
   ];
 
-  function updateType(value: GithubContributionType) {
+  function updateType(type: GithubContributionType) {
     setFilters(prevState => {
-      const newState = { ...prevState };
-      const index = newState.types.indexOf(value);
+      const types = prevState.types.includes(type)
+        ? prevState.types.filter(t => t !== type)
+        : [...prevState.types, type];
 
-      if (index === -1) {
-        newState.types.push(value);
-      } else {
-        newState.types.splice(index, 1);
-      }
-
-      return newState;
+      return { ...prevState, types };
     });
   }
 
