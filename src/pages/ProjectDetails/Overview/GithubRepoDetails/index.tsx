@@ -2,16 +2,7 @@ import { gql } from "@apollo/client";
 import { useGetGithubRepositoryDetailsQuery } from "src/__generated/graphql";
 import View from "./View";
 import { contextWithCacheHeaders } from "src/utils/headers";
-interface Repo {
-  id: number;
-  owner: string;
-  name: string;
-  description: string;
-  stars: number;
-  forkCount: number;
-  htmlUrl: string;
-  hasIssues: boolean;
-}
+import { Repo } from "src/types";
 
 type Props = {
   githubRepoId?: number;

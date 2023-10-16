@@ -51,8 +51,10 @@ import { rates } from "src/hooks/useWorkEstimation";
 import DataDisplay from "src/App/DataWrapper/DataDisplay";
 import DataSwitch from "src/App/DataWrapper/DataSwitch";
 import { ApiResourcePaths } from "src/App/DataWrapper/config";
-import { DataContext } from "src/App/DataWrapper/DataContext";
+import { DataContext, isExtendedGetProjectsQuery } from "src/App/DataWrapper/DataContext";
 import { getTopTechnologies } from "src/utils/technologies";
+import { ProjectDetailsRESTfull } from "..";
+import { Project, Repo } from "src/types";
 
 type OutletContext = {
   projectId: string;
@@ -71,7 +73,7 @@ function OverviewDataWrapper({ children, param }: OverviewDataWrapperProps) {
   });
 
   return (
-    <DataDisplay param={param} data={data?.projects[0]}>
+    <DataDisplay param={param} data={data?.projects[0] as Project & GetProjectOverviewDetailsQuery["projects"][0]}>
       {children}
     </DataDisplay>
   );
@@ -106,32 +108,36 @@ function PresentOverview() {
     throw new Error(T("dataFetching.dataContext"));
   }
 
-  const { param, data, loading, error } = dataContext;
+  const { data } = dataContext;
+  const project = data as Project & GetProjectOverviewDetailsQuery["projects"][0];
 
-  const projectName = data?.name;
-  const logoUrl = data?.logoUrl || onlyDustLogo;
-  const description = data?.longDescription || LOREM_IPSUM;
-  const githubRepos = sortBy(data?.githubRepos, "repo.stars")
+  const projectName = project?.name;
+  const logoUrl = project?.logoUrl || onlyDustLogo;
+  const description = project?.longDescription || LOREM_IPSUM;
+  const githubRepos = sortBy(project?.githubRepos, "repo.stars")
     .reverse()
     .filter(r => r.repo);
   // TODO(Backend): This is a temporary solution until we delete graphql fields
-  const sponsors = data?.sponsors.map(s => s.sponsor || s) || [];
-  const moreInfoLink = data?.moreInfoLink || null;
-  const topContributors = data?.contributors?.map(c => c.githubUser).filter(isDefined) || data?.topContributors || [];
-  const totalContributorsCount = data?.contributorsAggregate?.aggregate?.count || data?.contributorCount || 0;
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const sponsors = project?.sponsors.map(s => s.sponsor || s) || [];
+  const moreInfoLink = project?.moreInfoLink || project?.moreInfoUrl || null;
+  const topContributors =
+    project?.contributors?.map(c => c.githubUser).filter(isDefined) || project?.topContributors || [];
+  const totalContributorsCount = project?.contributorsAggregate?.aggregate?.count || project?.contributorCount || 0;
   const leads =
-    data?.projectLeads?.map(u => u.user).filter(isDefined) || data?.leaders?.map(u => u).filter(isDefined) || [];
+    project?.projectLeads?.map(u => u.user).filter(isDefined) || project?.leaders?.map(u => u).filter(isDefined) || [];
 
   // TODO(Backend): This is a temporary solution until we delete graphql fields
   const languages =
     githubRepos.length > 0
       ? getMostUsedLanguages(getDeduplicatedAggregatedLanguages(githubRepos?.map(r => r.repo)))
-      : data?.technologies
-      ? getTopTechnologies(data?.technologies)
+      : project?.technologies
+      ? getTopTechnologies(project?.technologies)
       : [];
 
-  const hiring = data?.hiring;
-  const invitationId = data?.pendingInvitations?.find(i => i.githubUserId === githubUserId)?.id || undefined;
+  const hiring = project?.hiring;
+  const invitationId = project?.pendingInvitations?.find(i => i.githubUserId === githubUserId)?.id || undefined;
   const isProjectLeader = ledProjectIds.includes(projectId);
 
   const { alreadyApplied, applyToProject } = useApplications(projectId);
@@ -148,7 +154,7 @@ function PresentOverview() {
 
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
 
-  const remainingBudget = data?.usdBudget?.initialAmount - data?.usdBudget?.spentAmount;
+  const remainingBudget = project?.usdBudget?.initialAmount - project?.usdBudget?.spentAmount;
   const isRewardDisabled = remainingBudget < rates.hours || remainingBudget === 0;
 
   return (
@@ -182,7 +188,9 @@ function PresentOverview() {
       <ProjectLeadInvitation projectId={projectId} size={CalloutSizes.Large} />
       <div className="flex flex-col gap-6 md:flex-row">
         <div className="flex grow flex-col gap-4">
-          <ProjectDescriptionCard {...{ projectName, logoUrl, visibility: data?.visibility, languages, description }} />
+          <ProjectDescriptionCard
+            {...{ projectName, logoUrl, visibility: project?.visibility, languages, description }}
+          />
           {!isMd && (
             <OverviewPanel
               {...{
@@ -194,7 +202,9 @@ function PresentOverview() {
               }}
             />
           )}
-          <GithubRepositoriesCard githubRepos={githubRepos.length > 0 ? githubRepos : data?.repos} />
+          {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+          {/* @ts-ignore */}
+          <GithubRepositoriesCard githubRepos={githubRepos.length > 0 ? githubRepos : project?.repos} />
         </div>
         <div className="flex shrink-0 flex-col gap-4 md:w-72 xl:w-80">
           {hiring && !isCurrentUserMember && profile && (
@@ -280,14 +290,21 @@ function ProjectDescriptionCard({
   );
 }
 
-interface GithubRepositoriesCardProps {
-  githubRepos: {
-    __typename?: "ProjectGithubRepos" | undefined;
-    repo: { __typename?: "GithubRepos"; stars: number | null; id: number | null } | null;
-  }[];
+interface GithubRepo {
+  __typename?: "ProjectGithubRepos" | undefined;
+  repo: Repo | null;
+  id?: number | null;
 }
 
-function GithubRepositoriesCard({ githubRepos }: GithubRepositoriesCardProps) {
+interface GithubRepositoriesCardProps {
+  githubRepos: GithubRepo[];
+}
+
+interface ReposRESTfull {
+  repos?: Repo[];
+}
+
+function GithubRepositoriesCard({ githubRepos }: GithubRepositoriesCardProps & ReposRESTfull) {
   const { T } = useIntl();
   return (
     <Card className="flex flex-col gap-4">
@@ -299,13 +316,18 @@ function GithubRepositoriesCard({ githubRepos }: GithubRepositoriesCardProps) {
         <Badge value={githubRepos.length} size={BadgeSize.Small} />
       </div>
       <div className="grid grid-cols-1 gap-3 xl:grid-cols-2">
-        {githubRepos?.map(githubRepo =>
-          githubRepo.repo?.id ? (
-            <GithubRepoDetails key={githubRepo.repo?.id} githubRepoId={githubRepo.repo?.id} />
-          ) : import.meta.env.VITE_USE_APOLLO === "false" ? (
-            <GithubRepoDetails key={githubRepo?.id} githubRepoId={githubRepo?.id} repo={githubRepo} />
-          ) : null
-        )}
+        {githubRepos?.map(githubRepo => {
+          if (githubRepo.repo && githubRepo.repo?.id) {
+            return <GithubRepoDetails key={githubRepo.repo?.id} githubRepoId={githubRepo.repo?.id} />;
+          } else if (githubRepo?.id) {
+            // TODO(Backend): This is a temporary solution until we delete graphql fields
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            return <GithubRepoDetails key={githubRepo?.id} githubRepoId={githubRepo?.id} repo={githubRepo} />;
+          } else {
+            return null;
+          }
+        })}
       </div>
     </Card>
   );

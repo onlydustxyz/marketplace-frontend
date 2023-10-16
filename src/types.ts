@@ -215,12 +215,36 @@ export interface Technologies {
   [key: string]: number;
 }
 
+export interface TopContributor {
+  githubUserId: number;
+  login: string;
+  htmlUrl: string;
+  avatarUrl: string;
+}
+
+interface Languages {
+  [key: string]: number;
+}
+
+export interface Repo {
+  id: number;
+  owner: string;
+  name: string;
+  description: string;
+  stars: number;
+  forkCount: number;
+  htmlUrl: string;
+  hasIssues: boolean;
+  languages: Languages;
+}
+
 export interface Project {
   id: string;
   slug: string;
   name: string;
   shortDescription: string;
   logoUrl: string;
+  moreInfoUrl: string;
   hiring: boolean;
   visibility: boolean | null;
   repoCount: number;
@@ -228,7 +252,10 @@ export interface Project {
   leaders: Leader[];
   sponsors: Sponsor[];
   technologies: Technologies;
+  topContributors: TopContributor[];
+  repos: Repo[];
 }
+
 export type Reward = {
   paymentId: string;
   paymentRequest: {
