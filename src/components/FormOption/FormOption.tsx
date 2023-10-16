@@ -1,0 +1,43 @@
+import { ComponentPropsWithoutRef, ElementType, PropsWithChildren } from "react";
+import { cn } from "src/utils/cn";
+
+export enum Size {
+  Sm = "sm",
+  Md = "md",
+  Lg = "lg",
+}
+
+export function FormOption<T extends ElementType = "div">({
+  as,
+  children,
+  className,
+  size,
+  ...restProps
+}: PropsWithChildren<{ as?: T; className?: string; size: Size } & ComponentPropsWithoutRef<T>>) {
+  const Component = as ?? "div";
+
+  return (
+    <Component
+      className={cn(
+        // Base styles
+        "flex cursor-pointer select-none items-center gap-1 whitespace-nowrap border border-greyscale-50/8 bg-white/8 font-walsheim font-normal leading-none text-snow",
+
+        // ProfileRadioGroup styles
+        "peer-checked:border-spacePurple-500 peer-checked:bg-spacePurple-900 peer-checked:outline-double peer-checked:outline-1 peer-checked:outline-spacePurple-500",
+
+        // FormSelect styles
+        "ui-selected:pseudo-outline-2 ui-selected:border-transparent ui-selected:bg-spacePurple-900 ui-selected:before:z-10 ui-selected:before:border-spacePurple-500",
+
+        {
+          "rounded-lg px-2 py-1 text-xs": size === Size.Sm,
+          "rounded-xl px-3 py-2 text-sm": size === Size.Md,
+          "rounded-2xl px-4 py-3 text-sm": size === Size.Lg,
+        },
+        className
+      )}
+      {...restProps}
+    >
+      {children}
+    </Component>
+  );
+}

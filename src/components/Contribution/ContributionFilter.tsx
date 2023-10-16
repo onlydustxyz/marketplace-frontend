@@ -3,6 +3,7 @@ import FilterIcon from "src/assets/icons/FilterIcon";
 import IssueOpen from "src/assets/icons/IssueOpen";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { FilterSelect } from "src/components/FilterSelect/FilterSelect";
+import { FormOption, Size as FormOptionSize } from "src/components/FormOption/FormOption";
 import { useIntl } from "src/hooks/useIntl";
 import EyeLine from "src/icons/EyeLine";
 import FolderLine from "src/icons/FolderLine";
@@ -69,13 +70,10 @@ export function ContributionFilter() {
                     {typeOptions.map(option => (
                       <div className="flex" key={option.value}>
                         <input type="checkbox" id={option.value} className="peer hidden" value={option.value} />
-                        <label
-                          htmlFor={option.value}
-                          className="flex cursor-pointer select-none items-center gap-1 whitespace-nowrap rounded-lg border border-greyscale-50/8 bg-white/8 px-2 py-1 font-walsheim text-xs font-normal leading-none text-snow peer-checked:border-spacePurple-500 peer-checked:bg-spacePurple-900 peer-checked:outline-double peer-checked:outline-1 peer-checked:outline-spacePurple-500"
-                        >
+                        <FormOption as="label" htmlFor={option.value} size={FormOptionSize.Sm}>
                           <span className="text-base leading-none">{option.icon}</span>
                           {option.label}
-                        </label>
+                        </FormOption>
                       </div>
                     ))}
                   </div>
