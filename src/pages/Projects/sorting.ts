@@ -1,8 +1,8 @@
 export enum Sorting {
-  Trending = "trending",
-  ProjectName = "projectName",
-  ReposCount = "reposCount",
-  ContributorsCount = "contributorsCount",
+  Trending = "RANK",
+  ProjectName = "NAME",
+  ReposCount = "REPO_COUNT",
+  ContributorsCount = "CONTRIBUTOR_COUNT",
 }
 
 export const PROJECT_SORTINGS = [Sorting.Trending, Sorting.ProjectName, Sorting.ReposCount, Sorting.ContributorsCount];

@@ -780,10 +780,10 @@
     "sorting": {
       "button": "Sort",
       "label": "Sort by ",
-      "projectName": "Project name",
-      "reposCount": "Number of repositories",
-      "contributorsCount": "Number of contributors",
-      "trending": "Trending projects"
+      "NAME": "Project name",
+      "REPO_COUNT": "Number of repositories",
+      "CONTRIBUTOR_COUNT": "Number of contributors",
+      "RANK": "Trending projects"
     }
   },
   "seniority": {
