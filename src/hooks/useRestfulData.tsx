@@ -1,4 +1,4 @@
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useTokenSet } from "src/hooks/useTokenSet";
 
 type QueryParam = {
@@ -43,7 +43,7 @@ export function useRestfulData({
   const { isLoading, isError, data } = useQuery({
     queryKey: [resourcePath, pathParam, queryString, method],
     queryFn: () => fetch(url, option).then(res => res.json()),
-    cacheTime: 0,
+    staleTime: 0,
   });
 
   return { data, isLoading, isError };

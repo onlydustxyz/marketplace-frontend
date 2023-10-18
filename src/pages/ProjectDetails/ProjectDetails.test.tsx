@@ -1,6 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
 import matchers from "@testing-library/jest-dom/matchers";
+import { TokenSetProvider } from "src/hooks/useTokenSet";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 expect.extend(matchers);
 
@@ -33,6 +35,9 @@ const TEST_TELEGRAM_LINK = "test-link";
 const TEST_DESCRIPTION = "test-description";
 const TEST_PROJECT_LEAD_DISPLAY_NAME = "test-project-lead-display-name";
 const TEST_PROJECT_LEAD_AVATAR_URL = "http://foo.bar/plop.png";
+
+// Create a client
+const queryClient = new QueryClient();
 
 const TEST_ACCESS_TOKEN = {
   user: {
@@ -268,7 +273,16 @@ describe('"ProjectDetails" page', () => {
     renderWithIntl(
       <Routes>
         <Route path="/p/:projectKey" element={<ProjectDetails />}>
-          <Route index element={<Overview />} />
+          <Route
+            index
+            element={
+              <TokenSetProvider>
+                <QueryClientProvider client={queryClient}>
+                  <Overview />
+                </QueryClientProvider>
+              </TokenSetProvider>
+            }
+          />
         </Route>
       </Routes>,
       {

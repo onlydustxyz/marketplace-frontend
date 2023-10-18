@@ -2,7 +2,7 @@ import React from "react";
 import { render } from "@testing-library/react";
 import AllProjects from "."; // Adjust the import to your file structure
 import { BrowserRouter as Router } from "react-router-dom";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { TokenSetProvider } from "src/hooks/useTokenSet";
 import { ProjectFilterProvider } from "src/pages/Projects/useProjectFilter";
 

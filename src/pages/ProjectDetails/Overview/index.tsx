@@ -2,8 +2,6 @@ import { useIntl } from "src/hooks/useIntl";
 import OverviewPanel from "./OverviewPanel";
 import { generatePath, useNavigate, useOutletContext } from "react-router-dom";
 import {
-  GetProjectOverviewDetailsDocument,
-  GetProjectOverviewDetailsQuery,
   OwnUserProfileDetailsFragment,
   OwnUserProfileDocument,
   UserProfileFragment,
@@ -16,10 +14,8 @@ import Badge, { BadgeSize } from "src/components/Badge";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import Title from "src/pages/ProjectDetails/Title";
 import MarkdownPreview from "src/components/MarkdownPreview";
-import { contextWithCacheHeaders } from "src/utils/headers";
 import { sortBy } from "lodash";
-import isDefined from "src/utils/isDefined";
-import { buildLanguageString, getDeduplicatedAggregatedLanguages, getMostUsedLanguages } from "src/utils/languages";
+import { buildLanguageString } from "src/utils/languages";
 import Tag, { TagSize } from "src/components/Tag";
 import CodeSSlashLine from "src/icons/CodeSSlashLine";
 import Callout from "src/components/Callout";
@@ -32,7 +28,6 @@ import { withTooltip } from "src/components/Tooltip";
 import useApplications from "./useApplications";
 import LockFill from "src/icons/LockFill";
 import useProjectVisibility from "src/hooks/useProjectVisibility";
-import { useSuspenseQuery_experimental } from "@apollo/client";
 import { Dispatch, useEffect, useState } from "react";
 import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
 import { useMediaQuery } from "usehooks-ts";
@@ -48,40 +43,38 @@ import useUserProfile from "src/hooks/useContributorProfilePanel/ContributorProf
 import ProjectLeadInvitation from "src/components/ProjectLeadInvitation/ProjectLeadInvitation";
 import { CalloutSizes } from "src/components/ProjectLeadInvitation/ProjectLeadInvitationView";
 import { rates } from "src/hooks/useWorkEstimation";
+import { Project, Repo } from "src/types";
+import { getTopTechnologies } from "src/utils/technologies";
 
 type OutletContext = {
-  projectId: string;
-  projectKey: string;
+  project: Project;
 };
 
 export default function Overview() {
   const { T } = useIntl();
-  const { projectId, projectKey } = useOutletContext<OutletContext>();
+  const { project } = useOutletContext<OutletContext>();
   const { isLoggedIn, githubUserId } = useAuth();
   const { ledProjectIds } = useAuth();
   const { lastVisitedProjectId } = useSession();
   const navigate = useNavigate();
   const dispatchSession = useSessionDispatch();
 
-  const { data } = useSuspenseQuery_experimental<GetProjectOverviewDetailsQuery>(GetProjectOverviewDetailsDocument, {
-    variables: { projectId },
-    ...contextWithCacheHeaders,
-  });
-
-  const projectName = data?.projects[0]?.name;
-  const logoUrl = data?.projects[0]?.logoUrl || onlyDustLogo;
-  const description = data?.projects[0]?.longDescription || LOREM_IPSUM;
-  const githubRepos = sortBy(data?.projects[0]?.githubRepos, "repo.stars")
+  const projectId = project?.id;
+  const projectName = project?.name;
+  const projectSlug = project?.slug;
+  const logoUrl = project?.logoUrl || onlyDustLogo;
+  const description = project?.longDescription || LOREM_IPSUM;
+  const githubRepos = sortBy(project?.repos, "stars")
     .reverse()
-    .filter(r => r.repo);
-  const sponsors = data?.projects[0]?.sponsors.map(s => s.sponsor) || [];
-  const moreInfoLink = data?.projects[0]?.moreInfoLink || null;
-  const topContributors = data?.projects[0]?.contributors.map(c => c.githubUser).filter(isDefined) || [];
-  const totalContributorsCount = data?.projects[0]?.contributorsAggregate.aggregate?.count || 0;
-  const leads = data?.projects[0]?.projectLeads.map(u => u.user).filter(isDefined);
-  const languages = getMostUsedLanguages(getDeduplicatedAggregatedLanguages(githubRepos.map(r => r.repo)));
-  const hiring = data?.projects[0]?.hiring;
-  const invitationId = data?.projects[0]?.pendingInvitations.find(i => i.githubUserId === githubUserId)?.id;
+    .filter(r => r);
+  const sponsors = project?.sponsors || [];
+  const moreInfoLink = project?.moreInfoUrl || null;
+  const topContributors = project?.topContributors || [];
+  const totalContributorsCount = project?.contributorCount || 0;
+  const leads = project?.leaders;
+  const languages = getTopTechnologies(project?.technologies);
+  const hiring = project?.hiring;
+  const isInvitedAsProjectLead = project?.isInvitedAsProjectLead;
   const isProjectLeader = ledProjectIds.includes(projectId);
 
   const { alreadyApplied, applyToProject } = useApplications(projectId);
@@ -91,14 +84,17 @@ export default function Overview() {
   const profile = userProfileData?.profile;
 
   useEffect(() => {
-    if (projectId && ((projectId !== lastVisitedProjectId && ledProjectIds.includes(projectId)) || !!invitationId)) {
+    if (
+      projectId &&
+      ((projectId !== lastVisitedProjectId && ledProjectIds.includes(projectId)) || !isInvitedAsProjectLead)
+    ) {
       dispatchSession({ method: SessionMethod.SetLastVisitedProjectId, value: projectId });
     }
   }, [projectId, ledProjectIds]);
 
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
 
-  const remainingBudget = data?.projects[0]?.usdBudget?.initialAmount - data?.projects[0]?.usdBudget?.spentAmount;
+  const remainingBudget = project?.usdBudget?.initialAmount - project?.usdBudget?.spentAmount;
   const isRewardDisabled = remainingBudget < rates.hours || remainingBudget === 0;
 
   return (
@@ -118,7 +114,7 @@ export default function Overview() {
                   generatePath(
                     `${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Rewards}/${ProjectRewardsRoutePaths.New}`,
                     {
-                      projectKey,
+                      projectKey: projectSlug,
                     }
                   )
                 )
@@ -133,7 +129,7 @@ export default function Overview() {
       <div className="flex flex-col gap-6 md:flex-row">
         <div className="flex grow flex-col gap-4">
           <ProjectDescriptionCard
-            {...{ projectName, logoUrl, visibility: data?.projects[0]?.visibility, languages, description }}
+            {...{ projectName, logoUrl, visibility: project?.visibility, languages, description }}
           />
           {!isMd && (
             <OverviewPanel
@@ -233,10 +229,7 @@ function ProjectDescriptionCard({
 }
 
 interface GithubRepositoriesCardProps {
-  githubRepos: {
-    __typename?: "ProjectGithubRepos" | undefined;
-    repo: { __typename?: "GithubRepos"; stars: number | null; id: number | null } | null;
-  }[];
+  githubRepos: Repo[];
 }
 
 function GithubRepositoriesCard({ githubRepos }: GithubRepositoriesCardProps) {
@@ -252,9 +245,7 @@ function GithubRepositoriesCard({ githubRepos }: GithubRepositoriesCardProps) {
       </div>
       <div className="grid grid-cols-1 gap-3 xl:grid-cols-2">
         {githubRepos?.map(githubRepo =>
-          githubRepo.repo?.id ? (
-            <GithubRepoDetails key={githubRepo.repo?.id} githubRepoId={githubRepo.repo?.id} />
-          ) : null
+          githubRepo?.id ? <GithubRepoDetails key={githubRepo?.id} githubRepoId={githubRepo?.id} /> : null
         )}
       </div>
     </Card>

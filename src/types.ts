@@ -198,12 +198,12 @@ export type QueryContribution = GetAllContributionsQuery["contributions"][number
 
 export interface Leader {
   id: string;
-  githubUserId: string | null;
+  githubUserId: number;
   login: string;
   htmlUrl: string | null;
   avatarUrl: string;
 }
-interface Sponsor {
+export interface Sponsor {
   id: string | null;
   name: string | null;
   url: string | null;
@@ -241,6 +241,7 @@ export interface Project {
   slug: string;
   name: string;
   shortDescription: string;
+  longDescription?: string;
   logoUrl: string;
   moreInfoUrl: string;
   hiring: boolean;

@@ -16,7 +16,7 @@ export default function ProjectDetails() {
   const { projectKey = "" } = useParams<ProjectDetailsParams>();
 
   const { data, isLoading, isError } = useRestfulData({
-    resourcePath: ApiResourcePaths.GET_PROJECT_DETAILS,
+    resourcePath: ApiResourcePaths.GET_PROJECT_DETAILS_SLUG,
     pathParam: projectKey,
     method: "GET",
   });
@@ -30,7 +30,7 @@ export default function ProjectDetails() {
     return <ErrorFallback />;
   }
 
-  const { id, name } = data as Project;
+  const { name } = data as Project;
 
   if (!data) {
     return <Navigate to={RoutePaths.NotFound} />;
@@ -39,7 +39,7 @@ export default function ProjectDetails() {
   return (
     <>
       <SEO title={`${name} — OnlyDust`} />
-      <View projectId={id} projectKey={projectKey} loading={isLoading} error={isError} />
+      <View project={data} loading={isLoading} error={isError} />
     </>
   );
 }
