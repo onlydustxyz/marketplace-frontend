@@ -1,9 +1,12 @@
 import { responsiveChromatic } from "src/test/utils";
 import { withRouter } from "storybook-addon-react-router-v6";
 
-import ProjectCard, { Project } from "src/components/ProjectCard";
+import ProjectCard from "src/components/ProjectCard";
 import withContributorProfilePanelProvider from "../decorators/withContributorProfilePanelProvider";
 import Tooltip from "src/components/Tooltip";
+import { GetProjectsQuery } from "src/__generated/graphql";
+import { ArrayElement, Project } from "src/types";
+
 
 export default {
   title: "ProjectCard",
@@ -15,7 +18,7 @@ export const Default = {
   render: () => (
     <>
       <ProjectCard
-        project={{ ...props(args), pendingInvitations: args.withInvitation ? props(args).pendingInvitations : [] }}
+        project={{ ...props(args),  }}
       />
       <Tooltip />
     </>
@@ -35,7 +38,6 @@ export const Hiring = {
             hiring: true,
             sponsorsCount: 1,
           }),
-          pendingInvitations: args.withInvitation ? props(args).pendingInvitations : [],
         }}
       />
       <Tooltip />
@@ -51,8 +53,7 @@ export const Private = {
     <>
       <ProjectCard
         project={{
-          ...props({ ...args, visibility: "private", sponsorsCount: 0 }),
-          pendingInvitations: args.withInvitation ? props(args).pendingInvitations : [],
+          ...props({ ...args, visibility: "PRIVATE", sponsorsCount: 0 }),
         }}
       />
       <Tooltip />
@@ -71,128 +72,117 @@ const props = (args: {
   visibility: string;
   sponsorsCount: number;
 }): Project => ({
-  id: 123,
-  contributors: [],
-  pendingContributors: [],
-  rewardedUsers: [],
-  githubReposAggregate: { aggregate: { count: 4 } },
-  contributorsAggregate: { aggregate: { count: 4 } },
+  id: "cdb45d97-13a6-4f71-8c8c-78917fc02649",
+  slug: "performance-test-with-a-very-long-name",
   name: args.name,
-  key: args.name,
-  moreInfoLink: "https://app.onlydust.xyz/projects/92f022a9-dbd8-446f-a2a5-b161ccb4541c",
   shortDescription: args.shortDescription,
-  logoUrl: "https://avatars.githubusercontent.com/u/115809607?v=4",
+  logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/1409408835957028656.png",
   hiring: args.hiring,
-  rank: 0,
   visibility: args.visibility,
-  projectLeads: [
+  repoCount: 2,
+  contributorCount: 3,
+  moreInfoUrl: "www.onlydust.xyz",
+  leaders: [
     {
-      userId: "user-1",
-      projectId: "123",
-      user: {
-        id: "user-1",
-        login: "oscarwroche",
-        avatarUrl: "https://avatars.githubusercontent.com/u/21149076?v=4",
-        githubUserId: 21149076,
-      },
+      githubUserId: null,
+      login: "AnthonyBuisset",
+      htmlUrl: null,
+      avatarUrl: "https://avatars.githubusercontent.com/u/43467246?v=4",
+      id: "adcb11a6-92cf-4a1e-bace-79f7bdbc54e7",
     },
     {
-      userId: "user-2",
-      projectId: "123",
-      user: {
-        id: "user-2",
-        login: "AnthonyBuisset",
-        avatarUrl: "https://avatars.githubusercontent.com/u/43467246?v=4",
-        githubUserId: 43467246,
-      },
-    },
-    {
-      userId: "user-3",
-      projectId: "123",
-      user: {
-        id: "user-3",
-        login: "ofux",
-        avatarUrl: "https://avatars.githubusercontent.com/u/595505?v=4",
-        githubUserId: 595505,
-      },
-    },
-    {
-      userId: "user-4",
-      projectId: "123",
-      user: {
-        id: "user-4",
-        login: "tdelabro",
-        avatarUrl: "https://avatars.githubusercontent.com/u/34384633?v=4",
-        githubUserId: 34384633,
-      },
-    },
-    {
-      userId: "user-5",
-      projectId: "123",
-      user: {
-        id: "user-5",
-        login: "BernardStanislas",
-        avatarUrl: "https://avatars.githubusercontent.com/u/4435377?v=4",
-        githubUserId: 4435377,
-      },
-    },
-    {
-      userId: "user-6",
-      projectId: "123",
-      user: {
-        id: "user-6",
-        login: "gregcha",
-        avatarUrl: "https://avatars.githubusercontent.com/u/8642470?v=4",
-        githubUserId: 8642470,
-      },
+      githubUserId: null,
+      login: "ofux",
+      htmlUrl: null,
+      avatarUrl: "https://avatars.githubusercontent.com/u/595505?v=4",
+      id: "bd365490-dd23-4a24-ad23-7853fbd853c2",
     },
   ].slice(0, args.projectLeadsCount),
-  githubRepos: [
+  repos: [
     {
-      githubRepoId: 12345,
-      projectId: "123",
-      repo: {
-        id: 12345,
-        languages: { Ejs: 2200, Rust: 1000 },
-      },
+      id: 566371874,
+      owner: "onlydustxyz",
+      name: "hasura-auth",
+      description: "Authentication for Hasura.",
+      stars: 0,
+      forkCount: 1,
+      htmlUrl: "https://github.com/onlydustxyz/hasura-auth",
+      hasIssues: false,
     },
     {
-      githubRepoId: 666,
-      projectId: "123",
-      repo: {
-        id: 666,
-        languages: { Pascal: 1000000, Rust: 3000 },
-      },
+      id: 498695724,
+      owner: "onlydustxyz",
+      name: "marketplace-frontend",
+      description: "Contributions marketplace backend services",
+      stars: 15,
+      forkCount: 10,
+      htmlUrl: "https://github.com/onlydustxyz/marketplace-frontend",
+      hasIssues: true,
     },
   ],
-  usdBudgetId: "budget-id",
-  pendingInvitations: [{ id: "croute", githubUserId: "github-user-id" }],
+  topContributors: [
+    {
+      githubUserId: 698957,
+      login: "ltoussaint",
+      htmlUrl: "https://github.com/ltoussaint",
+      avatarUrl: "https://avatars.githubusercontent.com/u/698957?v=4",
+    },
+    {
+      githubUserId: 595505,
+      login: "ofux",
+      htmlUrl: "https://github.com/ofux",
+      avatarUrl: "https://avatars.githubusercontent.com/u/595505?v=4",
+    },
+    {
+      githubUserId: 4435377,
+      login: "Bernardstanislas",
+      htmlUrl: "https://github.com/Bernardstanislas",
+      avatarUrl: "https://avatars.githubusercontent.com/u/4435377?v=4",
+    },
+  ],
   sponsors: [
     {
-      sponsor: {
-        id: 1,
-        name: "Starknet",
-        logoUrl: "https://starkware.co/wp-content/uploads/2021/07/Group-177.svg",
-        url: "https://starkware.co/starknet/",
-      },
+      id: "ce038af0-9f8d-4948-bd5a-1c86cf983041",
+      name: "OnlyDust",
+      url: null,
+      logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/13878645251970159319.jpg",
     },
     {
-      sponsor: {
-        id: 2,
-        name: "Ethereum Foundation",
-        logoUrl: "https://logotyp.us/files/ethereum-foundation.svg",
-        url: "https://ethereum.org/en/foundation/",
-      },
+      id: "ce038af0-9f8d-4948-bd5a-1c86cf983042",
+      name: "OnlyFast",
+      url: null,
+      logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/13878645251970159319.jpg",
     },
     {
-      sponsor: {
-        id: 3,
-        name: "Theodo",
-        logoUrl: "https://upload.wikimedia.org/wikipedia/fr/thumb/d/dd/Logo-theodo.png/280px-Logo-theodo.png",
-        url: "https://www.theodo.fr/",
-      },
+      id: "ce038af0-9f8d-4948-bd5a-1c86cf983043",
+      name: "OnlyRust",
+      url: null,
+      logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/13878645251970159319.jpg",
     },
   ].slice(0, args.sponsorsCount),
+  technologies: {
+    Java: 1082,
+    CPlusPlus: 22688656,
+    CSS: 128024,
+    C: 3655312,
+    Scheme: 50648,
+    CMake: 115552,
+    ObjectiveCPlusPlus: 10994,
+    QMake: 876,
+    Makefile: 298032,
+    M4: 435994,
+    HTML: 285238,
+    Sage: 118798,
+    TypeScript: 42942,
+    Dockerfile: 9068,
+    Shell: 367042,
+    CoffeeScript: 34960,
+    CapnProto: 2512,
+    JavaScript: 8236948,
+    Assembly: 56732,
+    Python: 6840986,
+  },
+  isInvitedAsProjectLead: false,
 });
 
 const args = {
