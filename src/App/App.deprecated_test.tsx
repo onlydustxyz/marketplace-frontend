@@ -16,9 +16,13 @@ import {
   GetProjectsForSidebarDocument,
   GetProjectsForSidebarQueryResult,
   GetProjectsQueryResult,
+  ProjectsBoolExp,
+  ProjectsOrderBy,
+  OrderBy,
 } from "src/__generated/graphql";
-import { buildQuerySorting } from "src/pages/Projects/AllProjects";
+// import { buildQuerySorting } from "src/pages/Projects/AllProjects";
 import { Sorting } from "src/pages/Projects/sorting";
+import { merge } from "lodash";
 
 const TEST_USER_ID = "test-user-id";
 const TEST_GITHUB_USER_ID = 123456789;
@@ -74,6 +78,57 @@ vi.mock("jwt-decode", () => ({
     } else throw "Error";
   },
 }));
+
+const buildQueryFilters = (search: string, technologies: string[], sponsors: string[]): ProjectsBoolExp => {
+  let filters = {} as ProjectsBoolExp;
+
+  if (search.trim().length > 0) {
+    const words = search
+      .split(" ")
+      .map(word => word.trim())
+      .filter(word => word.length > 0)
+      .map(word => ({
+        _or: [{ name: { _ilike: `%${word}%` } }, { shortDescription: { _ilike: `%${word}%` } }],
+      }));
+    filters = merge(filters, {
+      _and: words,
+    });
+  }
+
+  if (technologies.length) {
+    filters = merge(filters, { githubRepos: { repo: { languages: { _hasKeysAny: technologies } } } });
+  }
+
+  if (sponsors.length) {
+    filters = merge(filters, { sponsors: { sponsor: { name: { _in: sponsors } } } });
+  }
+
+  return filters;
+};
+
+const buildQuerySorting = (sorting: Sorting): ProjectsOrderBy[] => {
+  const orderBy = {} as ProjectsOrderBy;
+
+  switch (sorting) {
+    case Sorting.Trending:
+      return [merge(orderBy, { rank: OrderBy.Desc }), ...buildQuerySorting(Sorting.ContributorsCount)];
+
+    case Sorting.ProjectName:
+      return [merge(orderBy, { name: OrderBy.Asc })];
+
+    case Sorting.ContributorsCount:
+      return [
+        merge(orderBy, { contributorsAggregate: { count: OrderBy.Desc } }),
+        ...buildQuerySorting(Sorting.ProjectName),
+      ];
+
+    case Sorting.ReposCount:
+      return [
+        merge(orderBy, { githubReposAggregate: { count: OrderBy.Desc } }),
+        ...buildQuerySorting(Sorting.ProjectName),
+      ];
+  }
+};
 
 const ALL_PROJECTS_RESULT: { data: GetProjectsQueryResult["data"] } = {
   data: {

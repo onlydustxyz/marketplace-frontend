@@ -137,6 +137,7 @@ describe("getContributionInfo", () => {
         login: "haydencleary",
         id: 5160414,
       },
+      commentsCount: 0,
     });
   });
 
@@ -154,6 +155,7 @@ describe("getContributionInfo", () => {
         login: "haydencleary",
         id: 5160414,
       },
+      commentsCount: 0,
     });
   });
 
@@ -171,6 +173,7 @@ describe("getContributionInfo", () => {
         login: "haydencleary",
         id: 5160414,
       },
+      commentsCount: 0,
     });
   });
 });

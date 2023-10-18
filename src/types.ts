@@ -233,7 +233,7 @@ export interface Repo {
   forkCount: number;
   htmlUrl: string;
   hasIssues: boolean;
-  languages: Languages;
+  languages?: Languages;
 }
 
 export interface Project {

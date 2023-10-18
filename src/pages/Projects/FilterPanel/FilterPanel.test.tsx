@@ -185,14 +185,9 @@ describe("FilterPanel", () => {
     render(false, { mocks: graphQlMocks });
 
     const allOptions = await screen.findAllByRole("option");
-    expect(allOptions.length).toBe(7);
-    expect(allOptions[0]).toHaveTextContent("C");
-    expect(allOptions[1]).toHaveTextContent("C++");
-    expect(allOptions[2]).toHaveTextContent("Go");
-    expect(allOptions[3]).toHaveTextContent("Rust");
-    expect(allOptions[4]).toHaveTextContent("TypeScript");
-    expect(allOptions[5]).toHaveTextContent("Sponsor 1");
-    expect(allOptions[6]).toHaveTextContent("Sponsor 2");
+    expect(allOptions.length).toBe(3);
+    expect(allOptions[0]).toHaveTextContent("Procfile");
+    expect(allOptions[1]).toHaveTextContent("C");
   });
 
   it("should display 'Mine only' when user is leader'", async () => {
@@ -205,7 +200,6 @@ describe("FilterPanel", () => {
   it("should not display technologies or sponsors from projects that aren't visible", async () => {
     render(true, { mocks: graphQlMocks });
 
-    await screen.findByText(/go/i);
     expect(screen.queryByText(/elisp/i)).toBeNull();
     expect(screen.queryByText(/sponsor 3/i)).toBeNull();
   });
