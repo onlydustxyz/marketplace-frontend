@@ -122,3 +122,17 @@ query GetContributionRewards($githubUserId: bigint!, $contributionId: String!) {
     }
   }
 }
+
+query GetContributionProjectsAndRepos($where: ContributionsBoolExp) {
+  contributions(where: $where) {
+    project {
+      name
+      logoUrl
+      id
+    }
+    githubRepo {
+      id
+      name
+    }
+  }
+}

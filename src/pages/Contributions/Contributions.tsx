@@ -4,11 +4,11 @@ import { useLocalStorage } from "react-use";
 import {
   ContributionsBoolExp,
   ContributionsOrderBy,
-  GetAllContributionsQuery,
   GithubRepos,
   OrderBy,
   Projects,
   useGetAllContributionsQuery,
+  useGetContributionProjectsAndReposQuery,
 } from "src/__generated/graphql";
 import CancelCircleLine from "src/assets/icons/CancelCircleLine";
 import ProgressCircle from "src/assets/icons/ProgressCircle";
@@ -70,13 +70,21 @@ export default function Contributions() {
 
   const [activeTab, setActiveTab] = useState(isInArray(tabValues, tab ?? "") ? tab : AllTabs.All);
 
-  function where({ status }: { status: GithubContributionStatus }) {
+  function tableWhere({ status }: { status: GithubContributionStatus }) {
     return {
       githubUserId: { _eq: githubUserId },
       projectId: { _in: projectIds.length ? projectIds : undefined },
       repoId: { _in: repoIds.length ? repoIds : undefined },
       status: { _eq: status },
       type: { _in: types.length ? types : undefined },
+    };
+  }
+
+  function filterWhere() {
+    return {
+      githubUserId: { _eq: githubUserId },
+      projectId: { _in: projects.length ? projects.map(({ id }) => id) : undefined },
+      repoId: { _in: repos.length ? repos.map(({ id }) => id) : undefined },
     };
   }
 
@@ -87,7 +95,7 @@ export default function Contributions() {
   } = useGetAllContributionsQuery({
     variables: {
       orderBy: sort[GithubContributionStatus.InProgress].orderBy as ContributionsOrderBy,
-      where: where({ status: GithubContributionStatus.InProgress }) as ContributionsBoolExp,
+      where: tableWhere({ status: GithubContributionStatus.InProgress }) as ContributionsBoolExp,
     },
     skip: !githubUserId || (!isActiveTab(AllTabs.All) && !isActiveTab(AllTabs.InProgress)),
     fetchPolicy: "network-only", // Used for first execution
@@ -101,7 +109,7 @@ export default function Contributions() {
   } = useGetAllContributionsQuery({
     variables: {
       orderBy: sort[GithubContributionStatus.Completed].orderBy as ContributionsOrderBy,
-      where: where({ status: GithubContributionStatus.Completed }) as ContributionsBoolExp,
+      where: tableWhere({ status: GithubContributionStatus.Completed }) as ContributionsBoolExp,
     },
     skip: !githubUserId || (!isActiveTab(AllTabs.All) && !isActiveTab(AllTabs.Completed)),
     fetchPolicy: "network-only", // Used for first execution
@@ -115,11 +123,16 @@ export default function Contributions() {
   } = useGetAllContributionsQuery({
     variables: {
       orderBy: sort[GithubContributionStatus.Canceled].orderBy as ContributionsOrderBy,
-      where: where({ status: GithubContributionStatus.Canceled }) as ContributionsBoolExp,
+      where: tableWhere({ status: GithubContributionStatus.Canceled }) as ContributionsBoolExp,
     },
     skip: !githubUserId || (!isActiveTab(AllTabs.All) && !isActiveTab(AllTabs.Canceled)),
     fetchPolicy: "network-only", // Used for first execution
     nextFetchPolicy: "cache-first", // Used for subsequent executions
+  });
+
+  const { data: projectsAndReposData } = useGetContributionProjectsAndReposQuery({
+    variables: { where: filterWhere() as ContributionsBoolExp },
+    skip: !githubUserId,
   });
 
   function isActiveTab(tab: AllTabs) {
@@ -261,26 +274,16 @@ export default function Contributions() {
     },
   ];
 
-  function getProjectsAndRepos(
-    data: [
-      GetAllContributionsQuery | undefined,
-      GetAllContributionsQuery | undefined,
-      GetAllContributionsQuery | undefined
-    ]
-  ) {
+  const filterProjectsAndRepos = useMemo(() => {
     let projects: Projects[] = [];
     let repos: GithubRepos[] = [];
 
-    // Remove any undefined values
-    const filtered = data.filter(Boolean) as GetAllContributionsQuery[];
-
-    // We don't want to do expensive manipulation if all the data isn't here
-    if (filtered.length < 3) {
+    if (!projectsAndReposData) {
       return { projects, repos };
     }
 
     // Merge all contributions
-    const flatContributions = filtered.map(({ contributions }) => contributions).flat();
+    const flatContributions = projectsAndReposData.contributions.flat();
 
     // All unique projects
     projects = [
@@ -295,12 +298,7 @@ export default function Contributions() {
     ] as GithubRepos[];
 
     return { projects, repos };
-  }
-
-  const formattedData = useMemo(
-    () => getProjectsAndRepos([inProgressData, completedData, canceledData]),
-    [inProgressData, completedData, canceledData]
-  );
+  }, [projectsAndReposData]);
 
   return (
     <>
@@ -317,8 +315,8 @@ export default function Contributions() {
                   <div className="hidden -translate-y-3 lg:block">
                     <ContributionFilter
                       state={filtersState}
-                      projects={formattedData.projects}
-                      repos={formattedData.repos}
+                      projects={filterProjectsAndRepos.projects}
+                      repos={filterProjectsAndRepos.repos}
                       loading={inProgressLoading || completedLoading || canceledLoading}
                     />
                   </div>
