@@ -72,7 +72,7 @@ export default function AllProjects({
   useEffect(() => {
     if (data && !isLoading) {
       const { technologies, sponsors } = data;
-      setTechnologies(technologies || []);
+      setTechnologies(replaceApostrophes(technologies) || []);
       setSponsors(sponsors || []);
     }
   }, [data]);
@@ -122,4 +122,8 @@ export default function AllProjects({
       </div>
     </div>
   );
+}
+
+function replaceApostrophes(array: string[]): string[] {
+  return array.map(item => item.replace(/'/g, " "));
 }
