@@ -161,22 +161,24 @@ export function ContributionFilter({
                   </div>
                 </div>
               </div>
-              <div className="px-6 py-3">
-                <FilterSelect
-                  label={T("filter.project.title")}
-                  icon={className => <FolderLine className={className} />}
-                  tokens={{ zero: "filter.project.all", other: "filter.project" }}
-                  items={projects.map(
-                    project => ({ id: project.id, label: project.name, image: project.logoUrl } as Item)
-                  )}
-                  multiple
-                  selected={filters.projects}
-                  onChange={value => {
-                    const projects = Array.isArray(value) ? value : [value];
-                    updateProjects(projects);
-                  }}
-                />
-              </div>
+              {projects.length > 1 ? (
+                <div className="px-6 py-3">
+                  <FilterSelect
+                    label={T("filter.project.title")}
+                    icon={className => <FolderLine className={className} />}
+                    tokens={{ zero: "filter.project.all", other: "filter.project" }}
+                    items={projects.map(
+                      project => ({ id: project.id, label: project.name, image: project.logoUrl } as Item)
+                    )}
+                    multiple
+                    selected={filters.projects}
+                    onChange={value => {
+                      const projects = Array.isArray(value) ? value : [value];
+                      updateProjects(projects);
+                    }}
+                  />
+                </div>
+              ) : null}
               <div className="px-6 py-3">
                 <FilterSelect
                   label={T("filter.repository.title")}

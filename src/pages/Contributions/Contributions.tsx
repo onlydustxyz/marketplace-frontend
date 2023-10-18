@@ -95,8 +95,8 @@ export default function Contributions() {
   function filterWhere() {
     return {
       githubUserId: { _eq: githubUserId },
-      projectId: { _in: projects.length ? projects.map(({ id }) => id) : undefined },
-      repoId: { _in: repos.length ? repos.map(({ id }) => id) : undefined },
+      projectId: { _in: projectIds.length > 1 ? projectIds : undefined },
+      repoId: { _in: repoIds.length ? repoIds : undefined },
     };
   }
 
