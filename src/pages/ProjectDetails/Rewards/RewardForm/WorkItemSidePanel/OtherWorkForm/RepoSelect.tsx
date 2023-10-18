@@ -16,7 +16,7 @@ export default function RepoSelect({ repos, repo, setRepo }: Props) {
   const { T } = useIntl();
 
   return (
-    <div className="relative flex flex-col gap-2">
+    <div className="relative flex max-w-sm flex-col gap-2">
       <div className="font-walsheim text-sm font-normal text-white">
         {T("reward.form.contributions.other.footer.repository")}
       </div>
