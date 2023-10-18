@@ -102,6 +102,7 @@ const config: Config = {
         tooltip: {
           blue: "#2c2c3e",
         },
+        snow: "#F4F4F4",
       },
       animation: {
         "spin-invert-slow": "spin-invert 4s linear infinite",
