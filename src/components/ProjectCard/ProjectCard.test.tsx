@@ -3,24 +3,6 @@ import ProjectCard from ".";
 import { Project } from "src/types";
 import { screen } from "@testing-library/react";
 
-const githubRepo1 = {
-  githubRepoId: 1000,
-  projectId: "123",
-  repo: {
-    id: 1000,
-    languages: { Cairo: 1000, Rust: 100, HTML: 150 },
-  },
-};
-
-const githubRepo2 = {
-  githubRepoId: 1001,
-  projectId: "123",
-  repo: {
-    id: 1001,
-    languages: { Rust: 80, Go: 40, Cairo: 2000 },
-  },
-};
-
 const PROJECT: Project = {
   id: "cdb45d97-13a6-4f71-8c8c-78917fc02649",
   slug: "performance-test-with-a-very-long-name",
