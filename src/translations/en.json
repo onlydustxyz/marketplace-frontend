@@ -411,8 +411,7 @@
         "subTitle": "Add contributions that should be part of this reward",
         "title": "Contributions",
         "emptyState": {
-          "title": "Nothing to show",
-          "subtitle": "Last synced with Github at __time__.\nIt can take up to 5 minutes before the next refresh."
+          "title": "Nothing to show"
         }
       },
       "leftToSpend": "Left to spend",

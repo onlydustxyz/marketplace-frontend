@@ -163,7 +163,7 @@ export default function View({
           }}
         />
       ) : (
-        <EmptyState indexedAt={data?.githubRepos[0].indexedAt} />
+        <EmptyState />
       )}
     </div>
   );
