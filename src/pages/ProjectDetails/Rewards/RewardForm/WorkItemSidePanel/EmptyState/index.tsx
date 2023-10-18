@@ -8,6 +8,7 @@ type EmptyStateProps = {
 
 export default function EmptyState({ indexedAt }: EmptyStateProps) {
   const { T } = useIntl();
+  const isoDate = new Date(indexedAt + "Z");
 
   return indexedAt ? (
     <div className="flex flex-col items-center gap-2 rounded-2xl bg-white/2 p-12">
@@ -19,7 +20,7 @@ export default function EmptyState({ indexedAt }: EmptyStateProps) {
       </div>
       <div className="text-center font-walsheim text-base font-normal text-greyscale-50">
         {T("reward.form.contributions.emptyState.subtitle", {
-          time: getFormattedTimeUS(new Date(indexedAt)),
+          time: getFormattedTimeUS(isoDate),
         })}
       </div>
     </div>

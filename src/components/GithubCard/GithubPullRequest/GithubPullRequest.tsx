@@ -5,7 +5,7 @@ import { ContributionDate } from "src/components/Contribution/ContributionDate";
 import { ContributionCreationDate } from "src/components/GithubCard/ContributionCreationDate";
 import { GithubActionButton } from "src/components/GithubCard/GithubActionButton/GithubActionButton";
 import { GithubLink } from "src/components/GithubCard/GithubLink/GithubLink";
-import Tooltip, { Variant } from "src/components/Tooltip";
+import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
 import GitCommitLine from "src/icons/GitCommitLine";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import { GithubContributionType } from "src/types";
@@ -82,6 +82,11 @@ export default function GithubPullRequest({
               id={pullRequest.id}
               type={GithubContributionType.PullRequest}
               date={new Date(pullRequest.createdAt)}
+              tooltipProps={{
+                variant: Variant.Default,
+                position: TooltipPosition.Bottom,
+                className: "p-0",
+              }}
             />
           </div>
           <div className="flex flex-row items-center gap-1">
@@ -90,7 +95,11 @@ export default function GithubPullRequest({
               type={GithubContributionType.PullRequest}
               status={pullRequest.status as GithubPullRequestStatus}
               date={getPullRequestStatusDate(pullRequest)}
-              tooltipProps={{ variant: Variant.Default }}
+              tooltipProps={{
+                variant: Variant.Default,
+                position: TooltipPosition.Bottom,
+                className: "p-0",
+              }}
               withIcon
             />
           </div>

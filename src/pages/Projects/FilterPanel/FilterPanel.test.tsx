@@ -33,7 +33,7 @@ const projects1: GetAllFilterOptionsQuery["projects"][number] = {
   pendingContributors: [],
   rewardedUsers: [],
   githubReposAggregate: { aggregate: { count: 1 } },
-  visibility: "public",
+  visibility: "PUBLIC",
 };
 
 const projects2: GetAllFilterOptionsQuery["projects"][number] = {
@@ -60,7 +60,7 @@ const projects2: GetAllFilterOptionsQuery["projects"][number] = {
   pendingContributors: [],
   rewardedUsers: [],
   githubReposAggregate: { aggregate: { count: 1 } },
-  visibility: "public",
+  visibility: "PUBLIC",
 };
 
 const projects3: GetAllFilterOptionsQuery["projects"][number] = {
@@ -87,7 +87,7 @@ const projects3: GetAllFilterOptionsQuery["projects"][number] = {
   pendingContributors: [],
   rewardedUsers: [],
   githubReposAggregate: { aggregate: { count: 1 } },
-  visibility: "public",
+  visibility: "PUBLIC",
 };
 
 const projects4: GetAllFilterOptionsQuery["projects"][number] = {
@@ -115,7 +115,7 @@ const projects4: GetAllFilterOptionsQuery["projects"][number] = {
   pendingContributors: [],
   rewardedUsers: [],
   githubReposAggregate: { aggregate: { count: 1 } },
-  visibility: "public",
+  visibility: "PUBLIC",
 };
 
 const projects5: GetAllFilterOptionsQuery["projects"][number] = {
@@ -142,7 +142,7 @@ const projects5: GetAllFilterOptionsQuery["projects"][number] = {
   pendingContributors: [],
   rewardedUsers: [],
   githubReposAggregate: { aggregate: { count: 1 } },
-  visibility: "public",
+  visibility: "PUBLIC",
 };
 
 const graphQlMocks = [
@@ -169,7 +169,7 @@ vi.mock("usehooks-ts", async () => {
 const render = (isProjectLeader: boolean, { isCleared, mocks }: { isCleared?: boolean; mocks: MockedResponse[] }) =>
   renderWithIntl(
     <MockedProjectFilterProvider isCleared={isCleared}>
-      <FilterPanel isProjectLeader={isProjectLeader} />
+      <FilterPanel isProjectLeader={isProjectLeader} technologies={["Procfile", "C"]} sponsors={["OnlyDust"]} />
     </MockedProjectFilterProvider>,
     {
       wrapper: MemoryRouterProviderFactory({ mocks }),

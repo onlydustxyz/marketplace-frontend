@@ -1,6 +1,6 @@
 import { useSuspenseQuery_experimental as useSuspenseQuery } from "@apollo/client";
 import { merge, sortBy } from "lodash";
-import { useMemo, useEffect } from "react";
+import { useMemo, useEffect, ReactNode, useContext } from "react";
 import ProjectCard from "src/components/ProjectCard";
 import { useAuth } from "src/hooks/useAuth";
 import { Ownership as ProjectOwnership, useProjectFilter } from "src/pages/Projects/useProjectFilter";
@@ -18,6 +18,10 @@ import SortingDropdown, { PROJECT_SORTINGS, Sorting } from "src/pages/Projects/S
 import { useIntl } from "src/hooks/useIntl";
 import { FilterButton } from "src/pages/Projects/FilterPanel/FilterButton";
 import { SortButton } from "src/pages/Projects/Sorting/SortButton";
+import DataDisplay from "src/App/DataWrapper/DataDisplay";
+import DataSwitch from "src/App/DataWrapper/DataSwitch";
+import { DataContext, isExtendedGetProjectsQuery } from "src/App/DataWrapper/DataContext";
+import { ApiResourcePaths } from "src/App/DataWrapper/config";
 
 export const DEFAULT_SORTING = Sorting.Trending;
 
@@ -31,25 +35,20 @@ type Props = {
   setFilterPanelOpen: (open: boolean) => void;
   sortingPanelOpen: boolean;
   setSortingPanelOpen: (open: boolean) => void;
+  setTechnologies: (technologies: string[]) => void;
+  setSponsors: (sponsors: string[]) => void;
+  setLoading: (loading: boolean) => void;
 };
 
-export default function AllProjects({
-  search,
-  clearSearch,
-  sorting,
-  setSorting,
-  restoreScroll,
-  filterPanelOpen,
-  setFilterPanelOpen,
-  sortingPanelOpen,
-  setSortingPanelOpen,
-}: Props) {
-  const { T } = useIntl();
+interface AllProjectsDataWrapperProps {
+  children: ReactNode;
+  search: string;
+  sorting?: Sorting;
+}
 
-  const { ledProjectIds, githubUserId, isLoggedIn, user } = useAuth();
+function AllProjectsDataWrapper({ children, search, sorting }: AllProjectsDataWrapperProps) {
   const {
-    projectFilter: { technologies, sponsors, ownership },
-    clear: clearFilters,
+    projectFilter: { technologies, sponsors },
   } = useProjectFilter();
 
   const getProjectsQuery = useSuspenseQuery<GetProjectsQuery>(GetProjectsDocument, {
@@ -60,21 +59,91 @@ export default function AllProjects({
     ...contextWithCacheHeaders,
   });
 
+  return <DataDisplay data={getProjectsQuery.data}>{children}</DataDisplay>;
+}
+
+export default function AllProjectsParent(props: Props) {
+  const {
+    projectFilter: { technologies, sponsors },
+  } = useProjectFilter();
+
+  const { search, sorting } = props;
+
+  const queryParams = [
+    ...(technologies.length > 0 ? [{ key: "technology", value: technologies }] : []),
+    ...(sponsors.length > 0 ? [{ key: "sponsors", value: sponsors }] : []),
+    ...(search ? [{ key: "search", value: [search] }] : []),
+    ...(sorting ? [{ key: "sort", value: [sorting] }] : []),
+  ];
+
+  return (
+    <DataSwitch
+      ApolloDataWrapper={wrapperProps => <AllProjectsDataWrapper {...wrapperProps} {...props} />}
+      resourcePath={ApiResourcePaths.GET_ALL_PROJECTS}
+      queryParams={queryParams}
+    >
+      <AllProjects {...props} />
+    </DataSwitch>
+  );
+}
+
+function AllProjects({
+  clearSearch,
+  sorting,
+  setSorting,
+  restoreScroll,
+  filterPanelOpen,
+  setFilterPanelOpen,
+  sortingPanelOpen,
+  setSortingPanelOpen,
+  setTechnologies,
+  setSponsors,
+  setLoading,
+}: Props) {
+  const { T } = useIntl();
+
+  const { ledProjectIds, githubUserId, isLoggedIn, user } = useAuth();
+  const {
+    projectFilter: { ownership },
+    clear: clearFilters,
+  } = useProjectFilter();
+
+  const dataContext = useContext(DataContext);
+
+  if (!dataContext) {
+    throw new Error(T("dataFetching.dataContext"));
+  }
+
+  // TODO(Backend): This is a temporary solution until we delete graphql Query
+  // This loading will be the only one to use when we will be full React Query
+  const { loading } = dataContext;
+  useEffect(() => setLoading(loading || false), [loading]);
+
+  useEffect(() => {
+    if (import.meta.env.VITE_USE_APOLLO === "false" && isExtendedGetProjectsQuery(dataContext.data)) {
+      setTechnologies(dataContext.data.technologies || []);
+      setSponsors(dataContext.data.sponsors || []);
+    }
+  }, [dataContext.data, setTechnologies, setSponsors]);
+  const getProjectsQuery = dataContext;
+
   const projects = useMemo(() => {
-    let projects = getProjectsQuery.data?.projects.map(p => ({
+    let projects = (getProjectsQuery.data as GetProjectsQuery)?.projects.map(p => ({
       ...p,
-      pendingInvitations: p.pendingInvitations.filter(i => i.githubUserId === githubUserId),
+      // TODO(Backend): This is a temporary solution until we delete graphql fields
+      // add condition to verify if pendingInvitaions field is existing
+      pendingInvitations: p.pendingInvitations ? p.pendingInvitations.filter(i => i.githubUserId === githubUserId) : [],
     }));
     if (projects && isLoggedIn && ownership === ProjectOwnership.Mine) {
       projects = projects.filter(
-        project => ledProjectIds.includes(project.id) || project.pendingInvitations.length > 0
+        project => ledProjectIds.includes(project.id) || project.pendingInvitations?.length > 0
       );
     }
     return sortBy(
       projects?.filter(project => isProjectVisibleToUser({ project, user: { userId: user?.id, githubUserId } })),
-      p => !p.pendingInvitations.length
+      p => !p.pendingInvitations?.length
     );
-  }, [getProjectsQuery.data?.projects, ledProjectIds, ownership, isLoggedIn, githubUserId]);
+  }, [getProjectsQuery, ledProjectIds, ownership, isLoggedIn, githubUserId]);
 
   useEffect(() => {
     restoreScroll();

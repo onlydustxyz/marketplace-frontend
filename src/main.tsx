@@ -1,33 +1,32 @@
 import ReactDOM from "react-dom/client";
-import { BrowserRouter } from "react-router-dom";
-import TagManager from "react-gtm-module";
 import { ErrorBoundary } from "react-error-boundary";
 import { QueryClient, QueryClientProvider } from "react-query";
-
-import ApolloWrapper from "src/providers/ApolloWrapper";
-import OnboardingProvider from "./components/App/OnboardingProvider";
+import TagManager from "react-gtm-module";
+import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "src/hooks/useAuth";
-import App from "./components/App";
+import ApolloWrapper from "src/providers/ApolloWrapper";
+import App from "./App";
+import OnboardingProvider from "./App/OnboardingProvider";
 import "./datadog";
-
-import "src/assets/css/index.css";
 import "remixicon/fonts/remixicon.css";
+import "src/assets/css/index.css";
 import "src/assets/fonts/Alfreda/stylesheet.css";
-import "src/assets/fonts/GTWalsheimPro/stylesheet.css";
 import "src/assets/fonts/Belwe/stylesheet.css";
-import { IntlProvider } from "src/hooks/useIntl";
-import { TokenSetProvider } from "src/hooks/useTokenSet";
-import { SessionProvider } from "./hooks/useSession";
-import { ToasterProvider } from "./hooks/useToaster";
+import "src/assets/fonts/GTWalsheimPro/stylesheet.css";
 import { ImpersonationClaimsProvider } from "src/hooks/useImpersonationClaims";
+import { IntlProvider } from "src/hooks/useIntl";
+import { RewardDetailPanelProvider } from "src/hooks/useRewardDetailPanel";
+import { TokenSetProvider } from "src/hooks/useTokenSet";
 import ErrorFallback from "./ErrorFallback";
-import config from "./config";
 import Maintenance from "./Maintenance";
-import { ContributorProfilePanelProvider } from "./hooks/useContributorProfilePanel";
-import { SidePanelStackProvider } from "./hooks/useSidePanelStack";
-import { CommandsProvider } from "./providers/Commands";
-import { SidePanelProvider } from "./hooks/useSidePanel";
 import SEO from "./components/SEO";
+import config from "./config";
+import { ContributorProfilePanelProvider } from "./hooks/useContributorProfilePanel";
+import { SessionProvider } from "./hooks/useSession";
+import { SidePanelProvider } from "./hooks/useSidePanel";
+import { SidePanelStackProvider } from "./hooks/useSidePanelStack";
+import { ToasterProvider } from "./hooks/useToaster";
+import { CommandsProvider } from "./providers/Commands";
 
 if (config.GTM_ID) {
   TagManager.initialize({
@@ -54,13 +53,15 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
                         <SidePanelStackProvider>
                           <SidePanelProvider>
                             <ContributorProfilePanelProvider>
-                              {config.MAINTENANCE ? (
-                                <Maintenance />
-                              ) : (
-                                <OnboardingProvider>
-                                  <App />
-                                </OnboardingProvider>
-                              )}
+                              <RewardDetailPanelProvider>
+                                {config.MAINTENANCE ? (
+                                  <Maintenance />
+                                ) : (
+                                  <OnboardingProvider>
+                                    <App />
+                                  </OnboardingProvider>
+                                )}
+                              </RewardDetailPanelProvider>
                             </ContributorProfilePanelProvider>
                           </SidePanelProvider>
                         </SidePanelStackProvider>

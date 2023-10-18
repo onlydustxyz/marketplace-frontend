@@ -1,17 +1,25 @@
 import { createContext } from "react";
+import { GetProjectsQuery } from "src/__generated/graphql";
+import { ProjectDetailsRESTfull } from "src/pages/ProjectDetails";
 
-interface Project {
-  name: string | null;
-  shortDescription: string | null;
-  id: string;
-  key: string | null;
+export type ExtendedGetProjectsQuery = GetProjectsQuery & {
+  technologies?: string[];
+  sponsors?: string[];
+};
+interface DataContextProps {
+  param?: string;
+  data: ProjectDetailsRESTfull | ExtendedGetProjectsQuery;
+  loading?: boolean;
+  error?: null | unknown;
 }
 
-interface DataContextProps {
-  projectKey: string;
-  data: Project;
-  isLoading?: boolean;
-  error?: null | unknown;
+export function isExtendedGetProjectsQuery(
+  data: ProjectDetailsRESTfull | ExtendedGetProjectsQuery
+): data is ExtendedGetProjectsQuery {
+  return (
+    (data as ExtendedGetProjectsQuery).technologies !== undefined &&
+    (data as ExtendedGetProjectsQuery).sponsors !== undefined
+  );
 }
 
 export const DataContext = createContext<DataContextProps | undefined>(undefined);

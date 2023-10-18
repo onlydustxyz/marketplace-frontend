@@ -80,12 +80,21 @@ const RewardForm: React.FC = () => {
     (workItems: WorkItemFragment[]) =>
       formMethods.setValue(
         "workItems",
-        workItems.map(workItem => ({
-          id: workItem.id?.toString() || "",
-          repoId: workItem.githubIssue?.repoId || workItem.githubPullRequest?.repoId,
-          number: workItem.githubIssue?.number || workItem.githubPullRequest?.number,
-          type: workItem.type,
-        }))
+        workItems.map(workItem => {
+          return {
+            id: workItem.id?.toString() || "",
+            repoId:
+              workItem.githubIssue?.repoId ||
+              workItem.githubPullRequest?.repoId ||
+              workItem.githubCodeReview?.githubPullRequest?.repoId,
+            number:
+              workItem.githubIssue?.number ||
+              workItem.githubPullRequest?.number ||
+              workItem.githubCodeReview?.githubPullRequest?.number,
+
+            type: workItem.type,
+          };
+        })
       ),
     [formMethods]
   );
