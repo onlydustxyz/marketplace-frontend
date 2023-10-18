@@ -37,14 +37,14 @@ describe.each([
       Go: 10000,
       Dart: 10000,
     },
-    count: 9,
+    count: 5,
     expected: ["Dart", "Go", "Javascript", "Rust", "Cairo"],
   },
   {
     languages: {
       Cairo: 100,
-      html: 100,
-      css: 100,
+      html: 10,
+      css: 10,
       Rust: 100,
       Javascript: 100,
     },
