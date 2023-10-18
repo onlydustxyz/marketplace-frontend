@@ -25,11 +25,13 @@ export function ContributionFilter({
   loading,
   projects,
   repos,
+  onChange,
 }: {
   state: [Filters, Dispatch<SetStateAction<Filters>>];
   loading: boolean;
   projects: Projects[];
   repos: GithubRepos[];
+  onChange?: (newState: Filters) => void;
 }) {
   const [filters, setFilters] = state;
 
@@ -64,24 +66,43 @@ export function ContributionFilter({
         ? prevState.types.filter(t => t !== type)
         : [...prevState.types, type];
 
-      return { ...prevState, types };
+      const newState = { ...prevState, types };
+
+      onChange?.(newState);
+
+      return newState;
     });
   }
 
   function updateProjects(projects: Item[]) {
-    setFilters(prevState => ({ ...prevState, projects }));
+    setFilters(prevState => {
+      const newState = { ...prevState, projects };
+
+      onChange?.(newState);
+
+      return newState;
+    });
   }
 
   function updateRepos(repos: Item[]) {
-    setFilters(prevState => ({ ...prevState, repos }));
+    setFilters(prevState => {
+      const newState = { ...prevState, repos };
+
+      onChange?.(newState);
+
+      return newState;
+    });
   }
 
   function resetFilters() {
-    setFilters({
+    const newState = {
       types: [],
       projects: [],
       repos: [],
-    });
+    };
+
+    setFilters(newState);
+    onChange?.(newState);
   }
 
   return (

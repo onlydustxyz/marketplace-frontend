@@ -54,15 +54,27 @@ const initialSort: Record<GithubContributionStatus, TableSort> = {
   },
 };
 
+const initialFilters: Filters = {
+  types: [],
+  projects: [],
+  repos: [],
+};
+
 export default function Contributions() {
   const { T } = useIntl();
   const { githubUserId } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [sortStorage, setSortStorage] = useLocalStorage("contributions-table-sort", JSON.stringify(initialSort));
-  const [sort, setSort] = useState(sortStorage ? (JSON.parse(sortStorage) as typeof initialSort) : initialSort);
 
-  const filtersState = useState<Filters>({ types: [], projects: [], repos: [] });
+  const [sortStorage, setSortStorage] = useLocalStorage("contributions-table-sort", JSON.stringify(initialSort));
+  const [sort, setSort] = useState<typeof initialSort>(sortStorage ? JSON.parse(sortStorage) : initialSort);
+
+  const [filtersStorage, setFiltersStorage] = useLocalStorage(
+    "contributions-table-filters",
+    JSON.stringify(initialFilters)
+  );
+  const filtersState = useState<Filters>(filtersStorage ? JSON.parse(filtersStorage) : initialFilters);
   const [{ types, projects, repos }] = filtersState;
+
   const projectIds = projects.map(({ id }) => id);
   const repoIds = repos.map(({ id }) => id);
 
@@ -318,6 +330,9 @@ export default function Contributions() {
                       projects={filterProjectsAndRepos.projects}
                       repos={filterProjectsAndRepos.repos}
                       loading={inProgressLoading || completedLoading || canceledLoading}
+                      onChange={newState => {
+                        setFiltersStorage(JSON.stringify(newState));
+                      }}
                     />
                   </div>
                 </div>
