@@ -1,5 +1,5 @@
 import BankLine from "src/icons/BankLine";
-import ProfileRadioGroup from "src/components/App/Layout/Header/ProfileButton/PayoutInfoSidePanel/ProfileRadioGroup/View";
+import ProfileRadioGroup from "src/App/Layout/Header/ProfileButton/PayoutInfoSidePanel/ProfileRadioGroup/View";
 
 export default {
   title: "ProfileRadioGroup",

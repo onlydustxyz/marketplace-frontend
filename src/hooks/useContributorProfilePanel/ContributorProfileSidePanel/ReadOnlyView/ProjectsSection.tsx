@@ -2,7 +2,7 @@ import { useIntl } from "src/hooks/useIntl";
 import { Section } from "./Section";
 import ProjectCard, { Project } from "./ProjectCard";
 import { Link, generatePath } from "react-router-dom";
-import { RoutePaths } from "src/components/App";
+import { RoutePaths } from "src/App";
 import { useMediaQuery } from "usehooks-ts";
 import { viewportConfig } from "src/config";
 

@@ -1,5 +1,5 @@
 import withMockedProvider from "../decorators/withMockedProvider";
-import PayoutInfoSidePanel from "src/components/App/Layout/Header/ProfileButton/PayoutInfoSidePanel/PayoutInfoSidePanel";
+import PayoutInfoSidePanel from "src/App/Layout/Header/ProfileButton/PayoutInfoSidePanel/PayoutInfoSidePanel";
 import withToasterProvider from "../decorators/withToasterProvider";
 import withSidePanelStackProvider from "../decorators/withSidePanelStackProvider";
 

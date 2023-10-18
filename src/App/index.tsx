@@ -1,8 +1,8 @@
 import { lazy, Suspense, useEffect } from "react";
 import { Navigate, RouteObject, useLocation, useRoutes } from "react-router-dom";
 
-import Layout from "src/components/App/Layout";
-import ProtectedRoute from "src/components/App/ProtectedRoute";
+import Layout from "src/App/Layout";
+import ProtectedRoute from "src/App/ProtectedRoute";
 
 const Login = lazy(() => import("src/pages/Login"));
 const Projects = lazy(() => import("src/pages/Projects"));

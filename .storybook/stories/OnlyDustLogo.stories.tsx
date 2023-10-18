@@ -1,6 +1,6 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import OnlyDustLogo from "src/components/App/Layout/Header/OnlyDustLogo";
+import OnlyDustLogo from "src/App/Layout/Header/OnlyDustLogo";
 
 export default {
   title: "OnlyDustLogo",

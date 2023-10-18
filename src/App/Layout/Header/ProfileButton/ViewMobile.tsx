@@ -1,7 +1,7 @@
 import { cn } from "src/utils/cn";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { RoutePaths } from "src/components/App";
+import { RoutePaths } from "src/App";
 import { useGetPaymentRequestIdsQuery } from "src/__generated/graphql";
 import Dot from "src/assets/icons/Dot";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";

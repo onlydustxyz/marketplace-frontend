@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { RoutePaths } from "src/components/App";
+import { RoutePaths } from "src/App";
 import { useErrorBoundary } from "react-error-boundary";
 import View from "./View";
 

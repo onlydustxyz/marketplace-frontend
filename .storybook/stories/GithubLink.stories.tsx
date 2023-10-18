@@ -1,6 +1,6 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import GithubLink from "src/components/App/Layout/Header/GithubLink";
+import GithubLink from "src/App/Layout/Header/GithubLink";
 
 export default {
   title: "GithubLink",

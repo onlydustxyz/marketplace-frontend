@@ -1,6 +1,6 @@
 import paymentLogo from "assets/img/payment.png";
 import { Link } from "react-router-dom";
-import { ProjectRewardsRoutePaths } from "src/components/App";
+import { ProjectRewardsRoutePaths } from "src/App";
 import CurrencyLine from "src/icons/CurrencyLine";
 import { useT } from "talkr";
 import Button, { ButtonSize, Width } from "src/components/Button";

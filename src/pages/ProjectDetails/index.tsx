@@ -7,11 +7,6 @@ import useProjectVisibility from "src/hooks/useProjectVisibility";
 import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
 import SEO from "src/components/SEO";
-<<<<<<< HEAD
-import DataSwitch from "src/App/DataWrapper/DataSwitch";
-import { useContext } from "react";
-import { DataContext } from "src/App/DataWrapper/DataContext";
-=======
 import DataSwitch from "src/App/DataWrapper/DataSwitch";
 import { ReactNode, useContext } from "react";
 import { DataContext } from "src/App/DataWrapper/DataContext";
@@ -20,7 +15,6 @@ import { GetProjectIdFromKeyDocument, GetProjectIdFromKeyQuery } from "src/__gen
 import { contextWithCacheHeaders } from "src/utils/headers";
 import DataDisplay from "src/App/DataWrapper/DataDisplay";
 import { ApiResourcePaths } from "src/App/DataWrapper/config";
->>>>>>> origin/main
 
 type ProjectDetailsParams = {
   projectKey: string;

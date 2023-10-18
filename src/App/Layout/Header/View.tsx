@@ -1,15 +1,15 @@
-import { RoutePaths } from "src/components/App";
+import { RoutePaths } from "src/App";
 import GithubLink from "./GithubLink";
 import OnlyDustLogo from "./OnlyDustLogo";
 import OnlyDustTitle from "./OnlyDustTitle";
 import ProfileButton from "./ProfileButton";
-import MenuItem from "src/components/App/Layout/Header/MenuItem";
+import MenuItem from "src/App/Layout/Header/MenuItem";
 import { Link } from "react-router-dom";
 import FeedbackButton from "./FeedbackButton";
 import { useIntl } from "src/hooks/useIntl";
 import CompletionBar from "src/components/CompletionBar";
 import axeCoin from "src/assets/img/axe-coin.webp";
-import { useOnboarding } from "src/components/App/OnboardingProvider";
+import { useOnboarding } from "src/App/OnboardingProvider";
 import { useContributorProfilePanel } from "src/hooks/useContributorProfilePanel";
 import { useAuth } from "src/hooks/useAuth";
 import { viewportConfig } from "src/config";

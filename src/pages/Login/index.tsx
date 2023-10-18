@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Navigate, useNavigate, useSearchParams } from "react-router-dom";
-import { RoutePaths } from "src/components/App";
+import { RoutePaths } from "src/App";
 import { useAuth } from "src/hooks/useAuth";
 import { SessionMethod, useSession, useSessionDispatch } from "src/hooks/useSession";
 import { RefreshToken } from "src/types";

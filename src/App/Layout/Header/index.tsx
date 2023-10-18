@@ -1,13 +1,13 @@
 import { gql } from "@apollo/client";
 import { useLocation } from "react-router-dom";
-import { RoutePaths } from "src/components/App";
+import { RoutePaths } from "src/App";
 import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
 import { SessionMethod, useSessionDispatch } from "src/hooks/useSession";
 import { useGetPaymentRequestIdsQuery, useOwnUserProfileQuery } from "src/__generated/graphql";
 import View from "./View";
 import { useImpersonationClaims } from "src/hooks/useImpersonationClaims";
-import { useOnboarding } from "src/components/App/OnboardingProvider";
+import { useOnboarding } from "src/App/OnboardingProvider";
 import { parseFlag } from "src/utils/parseFlag";
 
 export default function Header() {

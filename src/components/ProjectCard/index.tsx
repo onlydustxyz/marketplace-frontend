@@ -1,6 +1,6 @@
 import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 import { generatePath, Link } from "react-router-dom";
-import { RoutePaths } from "src/components/App";
+import { RoutePaths } from "src/App";
 import { cn } from "src/utils/cn";
 import Card, { CardBorder } from "src/components/Card";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";

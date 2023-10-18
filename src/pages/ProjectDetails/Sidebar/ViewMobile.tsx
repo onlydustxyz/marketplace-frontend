@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { RoutePaths } from "src/components/App";
+import { RoutePaths } from "src/App";
 import BurgerIcon from "src/assets/icons/BurgerIcon";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import { ProjectDetailsTab } from ".";

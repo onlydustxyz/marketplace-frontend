@@ -1,6 +1,6 @@
 import { PropsWithChildren } from "react";
 import { generatePath, Navigate, useParams } from "react-router-dom";
-import { RoutePaths } from "src/components/App";
+import { RoutePaths } from "src/App";
 import { useGetProjectIdFromKeyQuery } from "src/__generated/graphql";
 import { useAuth } from "src/hooks/useAuth";
 import { CustomUserRole, HasuraUserRole, UserRole } from "src/types";

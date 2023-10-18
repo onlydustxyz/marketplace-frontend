@@ -1,6 +1,6 @@
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import { Navigate } from "react-router-dom";
-import { RoutePaths } from "src/components/App";
+import { RoutePaths } from "src/App";
 import { DataContext } from "./DataContext";
 import { GetProjectsQuery } from "src/__generated/graphql";
 import { ProjectDetailsRESTfull } from "src/pages/ProjectDetails";

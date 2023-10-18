@@ -1,7 +1,7 @@
 import { Link, generatePath } from "react-router-dom";
 
 import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
-import { RoutePaths } from "src/components/App";
+import { RoutePaths } from "src/App";
 import { GithubRepos, Projects } from "src/__generated/graphql";
 import { Link as Anchor } from "src/components/Link/Link";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";

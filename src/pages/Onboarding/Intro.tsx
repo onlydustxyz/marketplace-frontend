@@ -1,4 +1,4 @@
-import OnlyDustLogo, { OnlyDustLogoWidth } from "src/components/App/Layout/Header/OnlyDustLogo";
+import OnlyDustLogo, { OnlyDustLogoWidth } from "src/App/Layout/Header/OnlyDustLogo";
 import Button, { ButtonSize } from "src/components/Button";
 import Card from "src/components/Card";
 import { useIntl } from "src/hooks/useIntl";

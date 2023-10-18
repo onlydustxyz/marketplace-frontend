@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ProjectRewardsRoutePaths } from "src/components/App";
+import { ProjectRewardsRoutePaths } from "src/App";
 import Button, { ButtonSize, Width } from "src/components/Button";
 import Card from "src/components/Card";
 import CurrencyLine from "src/icons/CurrencyLine";

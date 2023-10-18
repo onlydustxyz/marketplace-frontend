@@ -2,7 +2,7 @@ import { createContext, PropsWithChildren, useContext } from "react";
 import { useGetOnboardingStateQuery } from "src/__generated/graphql";
 import { useAuth } from "src/hooks/useAuth";
 import { generatePath, Navigate, useLocation } from "react-router-dom";
-import { RoutePaths } from "src/components/App";
+import { RoutePaths } from "src/App";
 
 export const TERMS_AND_CONDITIONS_LAST_REDACTION_DATE = "2023-06-01";
 

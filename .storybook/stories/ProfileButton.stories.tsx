@@ -1,5 +1,5 @@
 import withMockedProvider from "../decorators/withMockedProvider";
-import ProfileButton from "src/components/App/Layout/Header/ProfileButton/View";
+import ProfileButton from "src/App/Layout/Header/ProfileButton/View";
 import withToasterProvider from "../decorators/withToasterProvider";
 import withSidePanelStackProvider from "../decorators/withSidePanelStackProvider";
 import withContributorProfilePanelProvider from "../decorators/withContributorProfilePanelProvider";

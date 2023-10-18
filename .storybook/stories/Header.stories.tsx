@@ -1,7 +1,7 @@
-import { RoutePaths } from "src/components/App";
+import { RoutePaths } from "src/App";
 import { withRouter } from "storybook-addon-react-router-v6";
 
-import Header from "src/components/App/Layout/Header/View";
+import Header from "src/App/Layout/Header/View";
 import { responsiveChromatic } from "src/test/utils";
 import { UserIdentityDocument } from "src/__generated/graphql";
 import withMockedProvider from "../decorators/withMockedProvider";
