@@ -1,4 +1,4 @@
-import { ComponentProps, PropsWithChildren, useState } from "react";
+import { ComponentProps, PropsWithChildren, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useLocalStorage } from "react-use";
 import {
@@ -261,39 +261,46 @@ export default function Contributions() {
     },
   ];
 
-  // TODO make this more performant
-  // TODO move to utils and add unit test
-  function format(data: (GetAllContributionsQuery | undefined)[]) {
+  function getProjectsAndRepos(
+    data: [
+      GetAllContributionsQuery | undefined,
+      GetAllContributionsQuery | undefined,
+      GetAllContributionsQuery | undefined
+    ]
+  ) {
+    let projects: Projects[] = [];
+    let repos: GithubRepos[] = [];
+
     // Remove any undefined values
     const filtered = data.filter(Boolean) as GetAllContributionsQuery[];
 
+    // We don't want to do expensive manipulation if all the data isn't here
+    if (filtered.length < 3) {
+      return { projects, repos };
+    }
+
     // Merge all contributions
-    const contributions = filtered.map(({ contributions }) => contributions).flat();
+    const flatContributions = filtered.map(({ contributions }) => contributions).flat();
 
-    // TODO move to utils and add unit test
-    const projects = [
+    // All unique projects
+    projects = [
+      ...new Map(flatContributions.map(({ project }) => project).map(project => [project?.id, project])).values(),
+    ] as Projects[];
+
+    // All unique repos
+    repos = [
       ...new Map(
-        contributions
-          .map(({ project }) => project)
-          .flat()
-          .map(project => [project?.id, project])
+        flatContributions.map(({ githubRepo }) => githubRepo).map(githubRepo => [githubRepo?.id, githubRepo])
       ).values(),
-    ];
+    ] as GithubRepos[];
 
-    const repos = [
-      ...new Map(
-        contributions
-          .map(({ githubRepo }) => githubRepo)
-          .flat()
-          .map(githubRepo => [githubRepo?.id, githubRepo])
-      ).values(),
-    ];
-
-    return {
-      projects,
-      repos,
-    } as { projects: Projects[]; repos: GithubRepos[] };
+    return { projects, repos };
   }
+
+  const formattedData = useMemo(
+    () => getProjectsAndRepos([inProgressData, completedData, canceledData]),
+    [inProgressData, completedData, canceledData]
+  );
 
   return (
     <>
@@ -310,8 +317,8 @@ export default function Contributions() {
                   <div className="hidden -translate-y-3 lg:block">
                     <ContributionFilter
                       state={filtersState}
-                      projects={format([inProgressData, completedData, canceledData]).projects}
-                      repos={format([inProgressData, completedData, canceledData]).repos}
+                      projects={formattedData.projects}
+                      repos={formattedData.repos}
                       loading={inProgressLoading || completedLoading || canceledLoading}
                     />
                   </div>
