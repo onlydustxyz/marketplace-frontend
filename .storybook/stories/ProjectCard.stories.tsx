@@ -53,7 +53,7 @@ export const Private = {
     <>
       <ProjectCard
         project={{
-          ...props({ ...args, visibility: "private", sponsorsCount: 0 }),
+          ...props({ ...args, visibility: "PRIVATE", sponsorsCount: 0 }),
         }}
       />
       <Tooltip />
