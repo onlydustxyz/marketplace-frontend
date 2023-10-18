@@ -1,4 +1,4 @@
-import { ComponentPropsWithoutRef, PropsWithChildren, forwardRef } from "react";
+import { ButtonHTMLAttributes, ComponentPropsWithoutRef, PropsWithChildren, forwardRef } from "react";
 import { cn } from "src/utils/cn";
 
 export enum ButtonSize {
@@ -26,7 +26,7 @@ type ButtonProps = PropsWithChildren<
   {
     size?: ButtonSize;
     type?: ButtonType;
-    htmlType?: HTMLButtonElement["type"];
+    htmlType?: ButtonHTMLAttributes<HTMLButtonElement>["type"];
     width?: Width;
     disabled?: boolean;
     iconOnly?: boolean;
