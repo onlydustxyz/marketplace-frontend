@@ -1,9 +1,7 @@
 import { ReactElement } from "react";
 import { UseFormRegisterReturn } from "react-hook-form";
 import { FormOption, Size as FormOptionSize } from "src/components/FormOption/FormOption";
-import { viewportConfig } from "src/config";
 import { cn } from "src/utils/cn";
-import { useMediaQuery } from "usehooks-ts";
 
 type Option = {
   value: string;
@@ -20,7 +18,6 @@ type PropsType = {
 };
 
 export default function View({ label, options, withMargin = true, register, requiredForPayment }: PropsType) {
-  const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
   return (
     <label
       className={cn("flex flex-col", {

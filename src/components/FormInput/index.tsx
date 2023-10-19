@@ -6,11 +6,11 @@ import {
   KeyboardEventHandler,
   PropsWithChildren,
   ReactNode,
+  forwardRef,
 } from "react";
 import { useFormContext, useFormState, RegisterOptions } from "react-hook-form";
 import { InputErrorDisplay } from "./types";
 import View from "./View";
-import { forwardRef } from "react";
 
 export enum Size {
   Sm = "sm",

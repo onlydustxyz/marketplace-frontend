@@ -1,12 +1,11 @@
-import { ReactElement } from "react";
+import { PropsWithChildren } from "react";
 import { cn } from "src/utils/cn";
 
 type ChipProps = {
-  content: ReactElement;
   className?: string;
-};
+} & PropsWithChildren;
 
-export default function Chip({ content }: ChipProps) {
+export function Chip({ children }: ChipProps) {
   return (
     <span
       className={cn(
@@ -14,7 +13,7 @@ export default function Chip({ content }: ChipProps) {
         border border-greyscale-50/[0.08] bg-white/8 text-center`
       )}
     >
-      {content}
+      {children}
     </span>
   );
 }

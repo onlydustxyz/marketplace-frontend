@@ -22,7 +22,6 @@ import StarknetIcon from "src/assets/icons/Starknet";
 import EthereumIcon from "src/assets/icons/Ethereum";
 import OptimismIcon from "src/assets/icons/Optimism";
 import AptosIcon from "src/assets/icons/Aptos";
-import Chip from "src/components/Chip/Chip";
 import Flex from "src/components/Utils/Flex";
 import Box from "src/components/Utils/Box";
 import {
@@ -36,6 +35,8 @@ import {
 } from "src/utils/regex";
 import ProfileContent from "./ProfileContent";
 import { PreferredMethod } from "src/__generated/graphql";
+import { Chip } from "src/components/Chip/Chip";
+import Center from "src/components/Utils/Center";
 
 type Props = {
   isContactInfoValid?: boolean;
@@ -64,8 +65,8 @@ export default function PayoutInfoSidePanel({
   const [profileType, usdPreferredMethod, iban, bic] = watch(["profileType", "usdPreferredMethod", "iban", "bic"]);
 
   return (
-    <div className="flex h-full min-h-0 flex-col justify-between overflow-y-auto">
-      <div className="mx-2 mb-1 flex min-h-0 flex-col gap-6 px-4 pt-4 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
+    <Flex className="h-full min-h-0 flex-col justify-between overflow-y-auto">
+      <Flex className="mx-2 mb-1 min-h-0 flex-col gap-6 px-4 pt-4 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
         <ProfileRadioGroup
           name="profileType"
           label={T("profile.form.profileType")}
@@ -104,8 +105,8 @@ export default function PayoutInfoSidePanel({
             </Tag>
           </Box>
 
-          {profileType === ProfileType.Company && (
-            <div className="flex flex-col">
+          {profileType === ProfileType.Company ? (
+            <Flex className="flex-col">
               <Callout>{T("profile.form.companyNeedsInvoiceCallout")}</Callout>
               <div className="flex w-full flex-row gap-5 pt-5">
                 <Input
@@ -141,10 +142,11 @@ export default function PayoutInfoSidePanel({
                   })}
                 />
               </div>
-            </div>
-          )}
-          {profileType === ProfileType.Individual && (
-            <div className="flex w-full flex-row gap-5">
+            </Flex>
+          ) : null}
+
+          {profileType === ProfileType.Individual ? (
+            <Flex className="w-full flex-row gap-5">
               <Input
                 label={T("profile.form.firstname")}
                 placeholder={T("profile.form.firstname")}
@@ -161,9 +163,10 @@ export default function PayoutInfoSidePanel({
                   required: { value: true, message: T("profile.form.payoutFieldRequired") },
                 })}
               />
-            </div>
-          )}
-          <div>
+            </Flex>
+          ) : null}
+
+          <>
             <Input
               label={T("profile.form.address")}
               placeholder={T("profile.form.address")}
@@ -201,13 +204,13 @@ export default function PayoutInfoSidePanel({
                 })}
               />
             </div>
-          </div>
+          </>
         </Card>
 
         <Card padded={false} className="p-6" withBg={false}>
           <Box className="pb-6">
             <Tag size={TagSize.Medium}>
-              <div
+              <Box
                 className={cn({
                   "text-orange-500": !isPaymentInfoValid,
                 })}
@@ -222,13 +225,13 @@ export default function PayoutInfoSidePanel({
                     {T("profile.missing.payment")}
                   </>
                 )}
-              </div>
+              </Box>
             </Tag>
           </Box>
 
           <ProfileContent title={T("profile.form.payoutSettingsType")} isCard={profileType === ProfileType.Company}>
             {profileType === ProfileType.Company && (
-              <div className="mb-4 flex w-fit flex-row gap-3 font-medium text-neutral-300">
+              <Flex className="mb-4 w-fit flex-row gap-3 font-medium text-neutral-300">
                 <ProfileRadioGroup
                   name="usdPreferredMethod"
                   withMargin={false}
@@ -245,11 +248,11 @@ export default function PayoutInfoSidePanel({
                     },
                   ]}
                 />
-              </div>
+              </Flex>
             )}
 
             {usdPreferredMethod === PreferredMethod.Fiat && profileType === ProfileType.Company && (
-              <div className="flex flex-row gap-5">
+              <Flex className="flex-row gap-5">
                 <Controller
                   control={control}
                   name="iban"
@@ -312,7 +315,7 @@ export default function PayoutInfoSidePanel({
                     );
                   }}
                 />
-              </div>
+              </Flex>
             )}
 
             {(usdPreferredMethod === PreferredMethod.Crypto || profileType === ProfileType.Individual) && (
@@ -320,7 +323,9 @@ export default function PayoutInfoSidePanel({
                 withMargin={profileType === ProfileType.Individual}
                 label={
                   <Flex className="items-center gap-1">
-                    <Chip content={<EthereumIcon className="h-3" />} />
+                    <Chip>
+                      <EthereumIcon className="h-3" />
+                    </Chip>
                     {T("profile.form.ethIdentity")}
                   </Flex>
                 }
@@ -339,7 +344,9 @@ export default function PayoutInfoSidePanel({
             <Input
               label={
                 <Flex className="items-center gap-1">
-                  <Chip content={<StarknetIcon className="h-4" />} />
+                  <Chip>
+                    <StarknetIcon className="h-4" />
+                  </Chip>
                   {T("profile.form.starkIdentity")}
                 </Flex>
               }
@@ -354,7 +361,9 @@ export default function PayoutInfoSidePanel({
             <Input
               label={
                 <Flex className="items-center gap-1">
-                  <Chip content={<OptimismIcon className="h-4" />} />
+                  <Chip>
+                    <OptimismIcon className="h-4" />
+                  </Chip>
                   {T("profile.form.optimismIdentity")}
                 </Flex>
               }
@@ -369,7 +378,9 @@ export default function PayoutInfoSidePanel({
             <Input
               label={
                 <Flex className="items-center gap-1">
-                  <Chip content={<AptosIcon className="h-4 bg-white" />} />
+                  <Chip>
+                    <AptosIcon className="h-4 bg-white" />
+                  </Chip>
                   {T("profile.form.aptosIdentity")}
                 </Flex>
               }
@@ -384,19 +395,19 @@ export default function PayoutInfoSidePanel({
           </ProfileContent>
         </Card>
 
-        <div className="flex flex-col items-center gap-4 p-4 text-center font-walsheim text-greyscale-400">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/8 text-xl leading-5">
+        <Flex className="flex-col items-center gap-4 p-4 text-center font-walsheim text-greyscale-400">
+          <Center className="h-9 w-9 rounded-lg bg-white/8 text-xl leading-5">
             <LockFill />
-          </div>
+          </Center>
           <ReactMarkdown className="whitespace-pre-wrap text-sm">{T("profile.form.privacyNotice")}</ReactMarkdown>
-        </div>
-      </div>
-      <div className="flex flex-row items-center justify-between border-t border-greyscale-50/8 bg-white/2 px-8 py-5">
+        </Flex>
+      </Flex>
+      <Flex className="flex-row items-center justify-between border-t border-greyscale-50/8 bg-white/2 px-8 py-5">
         <Tag size={TagSize.Medium}>
           {unsavedChanges ? (
-            <div className="flex flex-row items-center gap-1 text-spacePurple-300">
+            <Flex className="flex-row items-center gap-1 text-spacePurple-300">
               <ErrorWarningLine /> {T("profile.form.saveStatus.unsaved")}
-            </div>
+            </Flex>
           ) : (
             <>
               <CheckLine />
@@ -412,7 +423,7 @@ export default function PayoutInfoSidePanel({
         >
           {T("profile.form.send")}
         </Button>
-      </div>
-    </div>
+      </Flex>
+    </Flex>
   );
 }
