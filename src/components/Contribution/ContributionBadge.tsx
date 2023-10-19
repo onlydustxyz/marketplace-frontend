@@ -60,7 +60,7 @@ export function ContributionBadge({
   return (
     <>
       {withTooltip ? (
-        <Tooltip id={tooltipId} clickable position={TooltipPosition.Top} variant={Variant.Blue}>
+        <Tooltip id={tooltipId} clickable position={TooltipPosition.TopEnd} variant={Variant.Blue}>
           <div className="flex flex-col gap-4 px-1 py-2">
             {isExternal ? (
               <div className="flex font-medium">

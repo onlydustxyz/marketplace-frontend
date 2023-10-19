@@ -5,6 +5,8 @@ import { cn } from "src/utils/cn";
 
 export enum TooltipPosition {
   Top = "top",
+  TopStart = "top-start",
+  TopEnd = "top-end",
   Bottom = "bottom",
   Left = "left",
   Right = "right",
