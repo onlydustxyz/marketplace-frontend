@@ -16,7 +16,7 @@ export default function RepoSelect({ repos, repo, setRepo }: Props) {
   const { T } = useIntl();
 
   return (
-    <div className="relative flex w-48 flex-col gap-2">
+    <div className="relative flex max-w-sm flex-1 flex-col gap-2">
       <div className="font-walsheim text-sm font-normal text-white">
         {T("reward.form.contributions.other.footer.repository")}
       </div>
@@ -48,7 +48,7 @@ export default function RepoSelect({ repos, repo, setRepo }: Props) {
         <Listbox.Options
           data-testid="select-repo-options"
           as="div"
-          className="absolute bottom-10 w-full divide-y divide-greyscale-50/8 rounded-lg border border-greyscale-50/8"
+          className="absolute bottom-10 w-full divide-y divide-greyscale-50/8 rounded-lg border border-greyscale-50/8 bg-greyscale-900"
         >
           {repos.map(repo => (
             <Listbox.Option
