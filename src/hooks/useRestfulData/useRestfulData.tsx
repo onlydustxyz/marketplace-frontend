@@ -44,6 +44,7 @@ export function useRestfulData({
     queryKey: [resourcePath, pathParam, queryString, method],
     queryFn: () => fetch(url, option).then(res => res.json()),
     staleTime: 0,
+    gcTime: 0,
   });
 
   return { data, isLoading, isError };
