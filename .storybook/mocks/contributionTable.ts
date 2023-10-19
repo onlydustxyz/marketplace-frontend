@@ -413,4 +413,5 @@ export const contributionTable: GetAllContributionsQuery = {
       __typename: "Contributions",
     },
   ],
+  githubRepos: [{ indexedAt: "2023-09-29T10:16:01.096235", __typename: "GithubRepos" }],
 };
