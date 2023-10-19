@@ -157,6 +157,26 @@
       "zero": "Filter",
       "one": "Filter (__count__)",
       "many": "Filters (__count__)"
+    },
+    "type": {
+      "title": "Type",
+      "pullRequest": "Pull request",
+      "issue": "Issue",
+      "codeReview": "Code review"
+    },
+    "project": {
+      "title": "Project",
+      "all": "All projects",
+      "zero": "projects",
+      "one": "__count__ project",
+      "many": "__count__ projects"
+    },
+    "repository": {
+      "title": "Repository",
+      "all": "All repositories",
+      "zero": "repositories",
+      "one": "__count__ repository",
+      "many": "__count__ repositories"
     }
   },
   "searchBar": {
@@ -797,10 +817,10 @@
     "sorting": {
       "button": "Sort",
       "label": "Sort by ",
-      "projectName": "Project name",
-      "reposCount": "Number of repositories",
-      "contributorsCount": "Number of contributors",
-      "trending": "Trending projects"
+      "NAME": "Project name",
+      "REPO_COUNT": "Number of repositories",
+      "CONTRIBUTOR_COUNT": "Number of contributors",
+      "RANK": "Trending projects"
     }
   },
   "seniority": {

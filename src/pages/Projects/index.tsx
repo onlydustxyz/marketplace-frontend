@@ -1,6 +1,6 @@
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import { useAuth } from "src/hooks/useAuth";
-import AllProjectsParent, { DEFAULT_SORTING } from "./AllProjects";
+import { DEFAULT_SORTING } from "./AllProjects";
 import FilterPanel from "./FilterPanel";
 import { ProjectFilterProvider } from "./useProjectFilter";
 import useScrollRestoration from "./AllProjects/useScrollRestoration";
@@ -12,12 +12,13 @@ import { SortingPanel } from "./Sorting/SortingPanel";
 import { useLocalStorage } from "react-use";
 import SEO from "src/components/SEO";
 import AllProjectLoading from "./AllProjects/AllProjectsLoading";
+import AllProjects from "./AllProjects";
 
 export enum Sorting {
-  Trending = "trending",
-  ProjectName = "projectName",
-  ReposCount = "reposCount",
-  ContributorsCount = "contributorsCount",
+  Trending = "RANK",
+  ProjectName = "NAME",
+  ReposCount = "REPO_COUNT",
+  ContributorsCount = "CONTRIBUTOR_COUNT",
 }
 
 export const PROJECT_SORTINGS = [Sorting.Trending, Sorting.ProjectName, Sorting.ReposCount, Sorting.ContributorsCount];
@@ -39,8 +40,6 @@ export default function Projects() {
   const [technologies, setTechnologies] = useState<string[]>([]);
   const [sponsors, setSponsors] = useState<string[]>([]);
 
-  const [loading, setLoading] = useState(false);
-
   const { ref, restoreScroll } = useScrollRestoration();
 
   return (
@@ -56,11 +55,8 @@ export default function Projects() {
               <FilterPanel isProjectLeader={isProjectLeader} technologies={technologies} sponsors={sponsors} />
             </div>
             <div className="min-w-0 grow">
-              {/* TODO(Backend): This is a temporary solution until we delete graphql Query
-              At this moment we wont use the double loading anymore */}
-              {loading && <AllProjectLoading />}
               <Suspense fallback={<AllProjectLoading />}>
-                <AllProjectsParent
+                <AllProjects
                   search={searchQuery}
                   clearSearch={() => setSearch("")}
                   sorting={sorting}
@@ -72,7 +68,6 @@ export default function Projects() {
                   setSortingPanelOpen={setSortingPanelOpen}
                   setTechnologies={setTechnologies}
                   setSponsors={setSponsors}
-                  setLoading={setLoading}
                 />
               </Suspense>
             </div>

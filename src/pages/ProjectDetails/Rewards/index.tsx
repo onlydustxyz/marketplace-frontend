@@ -2,9 +2,16 @@ import { useSuspenseQuery_experimental as useSuspenseQuery } from "@apollo/clien
 import { Outlet, useOutletContext } from "react-router-dom";
 import { GetPaymentRequestsForProjectDocument, GetPaymentRequestsForProjectQuery } from "src/__generated/graphql";
 import { useOnProjectChange } from "src/providers/Commands";
+import { Project } from "src/types";
+
+type OutletContext = {
+  project: Project;
+};
 
 export default function Rewards() {
-  const { projectId, projectKey } = useOutletContext<{ projectId: string; projectKey: string }>();
+  const { project } = useOutletContext<OutletContext>();
+  const { id: projectId, slug: projectKey } = project;
+
   const { data, refetch } = useSuspenseQuery<GetPaymentRequestsForProjectQuery>(GetPaymentRequestsForProjectDocument, {
     variables: { projectId },
   });

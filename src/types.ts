@@ -198,21 +198,42 @@ export type QueryContribution = GetAllContributionsQuery["contributions"][number
 
 export interface Leader {
   id: string;
-  githubUserId: string | null;
+  githubUserId: number;
   login: string;
   htmlUrl: string | null;
   avatarUrl: string;
 }
-
-interface Sponsor {
+export interface Sponsor {
   id: string | null;
   name: string | null;
   url: string | null;
   logoUrl: string | null;
 }
-
 export interface Technologies {
   [key: string]: number;
+}
+
+export interface TopContributor {
+  githubUserId: number;
+  login: string;
+  htmlUrl: string;
+  avatarUrl: string;
+}
+
+interface Languages {
+  [key: string]: number;
+}
+
+export interface Repo {
+  id: number;
+  owner: string;
+  name: string;
+  description: string;
+  stars: number;
+  forkCount: number;
+  htmlUrl: string;
+  hasIssues: boolean;
+  languages?: Languages;
 }
 
 export interface Project {
@@ -220,15 +241,22 @@ export interface Project {
   slug: string;
   name: string;
   shortDescription: string;
+  longDescription?: string;
   logoUrl: string;
+  moreInfoUrl: string;
   hiring: boolean;
-  visibility: boolean | null;
+  visibility: string;
   repoCount: number;
   contributorCount: number;
   leaders: Leader[];
   sponsors: Sponsor[];
   technologies: Technologies;
+  topContributors: TopContributor[];
+  repos: Repo[];
+  isInvitedAsProjectLead: boolean;
+  remainingUsdBudget: number;
 }
+
 export type Reward = {
   paymentId: string;
   paymentRequest: {

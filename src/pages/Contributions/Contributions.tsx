@@ -1,17 +1,25 @@
-import { ComponentProps, PropsWithChildren, useState } from "react";
+import { ComponentProps, PropsWithChildren, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-
 import { useLocalStorage } from "react-use";
-import { ContributionsOrderBy, OrderBy, useGetAllContributionsQuery } from "src/__generated/graphql";
+import {
+  ContributionsBoolExp,
+  ContributionsOrderBy,
+  GithubRepos,
+  OrderBy,
+  Projects,
+  useGetAllContributionsQuery,
+  useGetContributionProjectsAndReposQuery,
+} from "src/__generated/graphql";
 import CancelCircleLine from "src/assets/icons/CancelCircleLine";
 import ProgressCircle from "src/assets/icons/ProgressCircle";
-import StackLine from "src/icons/StackLine";
+import { ContributionFilter, Filters } from "src/components/Contribution/ContributionFilter";
 import { ContributionTable, TableColumns, type TableSort } from "src/components/Contribution/ContributionTable";
 import SEO from "src/components/SEO";
 import { Tabs } from "src/components/Tabs/Tabs";
 import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
 import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
+import StackLine from "src/icons/StackLine";
 import { GithubContributionStatus } from "src/types";
 import { isInArray } from "src/utils/isInArray";
 
@@ -46,16 +54,51 @@ const initialSort: Record<GithubContributionStatus, TableSort> = {
   },
 };
 
+const initialFilters: Filters = {
+  types: [],
+  projects: [],
+  repos: [],
+};
+
 export default function Contributions() {
   const { T } = useIntl();
   const { githubUserId } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
+
   const [sortStorage, setSortStorage] = useLocalStorage("contributions-table-sort", JSON.stringify(initialSort));
-  const [sort, setSort] = useState(sortStorage ? (JSON.parse(sortStorage) as typeof initialSort) : initialSort);
+  const [sort, setSort] = useState<typeof initialSort>(sortStorage ? JSON.parse(sortStorage) : initialSort);
+
+  const [filtersStorage, setFiltersStorage] = useLocalStorage(
+    "contributions-table-filters",
+    JSON.stringify(initialFilters)
+  );
+  const filtersState = useState<Filters>(filtersStorage ? JSON.parse(filtersStorage) : initialFilters);
+  const [{ types, projects, repos }] = filtersState;
+
+  const projectIds = projects.map(({ id }) => id);
+  const repoIds = repos.map(({ id }) => id);
 
   const tab = searchParams.get("tab") as typeof tabValues[number] | null;
 
   const [activeTab, setActiveTab] = useState(isInArray(tabValues, tab ?? "") ? tab : AllTabs.All);
+
+  function tableWhere({ status }: { status: GithubContributionStatus }) {
+    return {
+      githubUserId: { _eq: githubUserId },
+      projectId: { _in: projectIds.length ? projectIds : undefined },
+      repoId: { _in: repoIds.length ? repoIds : undefined },
+      status: { _eq: status },
+      type: { _in: types.length ? types : undefined },
+    };
+  }
+
+  function filterWhere() {
+    return {
+      githubUserId: { _eq: githubUserId },
+      projectId: { _in: projectIds.length > 1 ? projectIds : undefined },
+      repoId: { _in: repoIds.length ? repoIds : undefined },
+    };
+  }
 
   const {
     data: inProgressData,
@@ -64,8 +107,7 @@ export default function Contributions() {
   } = useGetAllContributionsQuery({
     variables: {
       orderBy: sort[GithubContributionStatus.InProgress].orderBy as ContributionsOrderBy,
-      githubUserId,
-      status: GithubContributionStatus.InProgress,
+      where: tableWhere({ status: GithubContributionStatus.InProgress }) as ContributionsBoolExp,
     },
     skip: !githubUserId || (!isActiveTab(AllTabs.All) && !isActiveTab(AllTabs.InProgress)),
     fetchPolicy: "network-only", // Used for first execution
@@ -79,8 +121,7 @@ export default function Contributions() {
   } = useGetAllContributionsQuery({
     variables: {
       orderBy: sort[GithubContributionStatus.Completed].orderBy as ContributionsOrderBy,
-      githubUserId,
-      status: GithubContributionStatus.Completed,
+      where: tableWhere({ status: GithubContributionStatus.Completed }) as ContributionsBoolExp,
     },
     skip: !githubUserId || (!isActiveTab(AllTabs.All) && !isActiveTab(AllTabs.Completed)),
     fetchPolicy: "network-only", // Used for first execution
@@ -94,12 +135,16 @@ export default function Contributions() {
   } = useGetAllContributionsQuery({
     variables: {
       orderBy: sort[GithubContributionStatus.Canceled].orderBy as ContributionsOrderBy,
-      githubUserId,
-      status: GithubContributionStatus.Canceled,
+      where: tableWhere({ status: GithubContributionStatus.Canceled }) as ContributionsBoolExp,
     },
     skip: !githubUserId || (!isActiveTab(AllTabs.All) && !isActiveTab(AllTabs.Canceled)),
     fetchPolicy: "network-only", // Used for first execution
     nextFetchPolicy: "cache-first", // Used for subsequent executions
+  });
+
+  const { data: projectsAndReposData } = useGetContributionProjectsAndReposQuery({
+    variables: { where: filterWhere() as ContributionsBoolExp },
+    skip: !githubUserId,
   });
 
   function isActiveTab(tab: AllTabs) {
@@ -241,6 +286,32 @@ export default function Contributions() {
     },
   ];
 
+  const filterProjectsAndRepos = useMemo(() => {
+    let projects: Projects[] = [];
+    let repos: GithubRepos[] = [];
+
+    if (!projectsAndReposData) {
+      return { projects, repos };
+    }
+
+    // Merge all contributions
+    const flatContributions = projectsAndReposData.contributions.flat();
+
+    // All unique projects
+    projects = [
+      ...new Map(flatContributions.map(({ project }) => project).map(project => [project?.id, project])).values(),
+    ] as Projects[];
+
+    // All unique repos
+    repos = [
+      ...new Map(
+        flatContributions.map(({ githubRepo }) => githubRepo).map(githubRepo => [githubRepo?.id, githubRepo])
+      ).values(),
+    ] as GithubRepos[];
+
+    return { projects, repos };
+  }, [projectsAndReposData]);
+
   return (
     <>
       <SEO />
@@ -250,7 +321,21 @@ export default function Contributions() {
             <div className="absolute inset-0 bg-gradient-to-b from-[#000113]/[0] to-[#0E0D2E]" />
             <div className="relative z-10">
               <header className="sticky top-0 z-10 border-b border-greyscale-50/20 bg-whiteFakeOpacity-8 px-4 pb-4 pt-7 shadow-2xl backdrop-blur-3xl md:px-8 md:pb-0 md:pt-8">
-                <Tabs tabs={tabItems} variant="blue" mobileTitle={T("navbar.contributions")} />
+                <div className="flex items-center justify-between md:px-4">
+                  <Tabs tabs={tabItems} variant="blue" mobileTitle={T("navbar.contributions")} />
+
+                  <div className="hidden -translate-y-3 lg:block">
+                    <ContributionFilter
+                      state={filtersState}
+                      projects={filterProjectsAndRepos.projects}
+                      repos={filterProjectsAndRepos.repos}
+                      loading={inProgressLoading || completedLoading || canceledLoading}
+                      onChange={newState => {
+                        setFiltersStorage(JSON.stringify(newState));
+                      }}
+                    />
+                  </div>
+                </div>
               </header>
               <div className="flex flex-col gap-4 px-2 py-3 md:px-4 md:py-6 lg:px-8">
                 {tableItems.map(({ show, ...restProps }) =>

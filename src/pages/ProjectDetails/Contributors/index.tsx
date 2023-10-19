@@ -15,13 +15,20 @@ import ProjectLeadInvitation from "src/components/ProjectLeadInvitation/ProjectL
 import { withTooltip } from "src/components/Tooltip";
 import { rates } from "src/hooks/useWorkEstimation";
 import { CalloutSizes } from "src/components/ProjectLeadInvitation/ProjectLeadInvitationView";
+import { Project } from "src/types";
+
+type OutletContext = {
+  project: Project;
+};
 
 export default function Contributors() {
   const { T } = useIntl();
   const { ledProjectIds } = useAuth();
   const navigate = useNavigate();
   const isSm = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.sm}px)`);
-  const { projectId, projectKey } = useOutletContext<{ projectId: string; projectKey: string }>();
+  const { project } = useOutletContext<OutletContext>();
+
+  const { id: projectId, slug: projectKey } = project;
 
   const isProjectLeader = ledProjectIds.includes(projectId);
 

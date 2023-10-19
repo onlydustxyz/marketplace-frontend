@@ -3,4 +3,5 @@ export const ai = {
   "Deep Learning": true,
   LLM: true,
   "Machine Learning": true,
+  Tensorflow: true,
 };

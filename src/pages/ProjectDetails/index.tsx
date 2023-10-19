@@ -1,105 +1,45 @@
-import { useNavigate, useParams } from "react-router-dom";
-import { LanguageMap } from "src/types";
-import { ProjectLeadFragment, SponsorFragment } from "src/__generated/graphql";
+import { Navigate, useParams } from "react-router-dom";
+import { Project } from "src/types";
 import View from "./View";
 import { RoutePaths } from "src/App";
-import useProjectVisibility from "src/hooks/useProjectVisibility";
-import { useIntl } from "src/hooks/useIntl";
-import { useShowToaster } from "src/hooks/useToaster";
 import SEO from "src/components/SEO";
-import DataSwitch from "src/App/DataWrapper/DataSwitch";
-import { ReactNode, useContext } from "react";
-import { DataContext } from "src/App/DataWrapper/DataContext";
-import { useSuspenseQuery_experimental as useSuspenseQuery } from "@apollo/client";
-import { GetProjectIdFromKeyDocument, GetProjectIdFromKeyQuery } from "src/__generated/graphql";
-import { contextWithCacheHeaders } from "src/utils/headers";
-import DataDisplay from "src/App/DataWrapper/DataDisplay";
-import { ApiResourcePaths } from "src/App/DataWrapper/config";
+import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
+import { useRestfulData } from "src/hooks/useRestfulData/useRestfulData";
+import ErrorFallback from "src/ErrorFallback";
+import Loader from "src/components/Loader";
 
 type ProjectDetailsParams = {
   projectKey: string;
 };
 
-export interface ProjectDetails {
-  id: string;
-  name?: string;
-  logoUrl: string;
-  moreInfoLink?: string | null;
-  leads: ({ id: string } & Partial<ProjectLeadFragment>)[];
-  invitationId?: string;
-  totalSpentamount?: number;
-  totalInitialamount?: number;
-  languages: LanguageMap;
-  sponsors: SponsorFragment[];
-}
-
-export interface ProjectDetailsRESTfull {
-  name: string | null;
-  shortDescription: string | null;
-  id: string;
-  key: string | null;
-}
-
-interface ProjectDetailsDataWrapperProps {
-  children: ReactNode;
-  param?: string;
-}
-
-function ProjectDetailsDataWrapper({ children, param }: ProjectDetailsDataWrapperProps) {
-  const projectIdQuery = useSuspenseQuery<GetProjectIdFromKeyQuery>(GetProjectIdFromKeyDocument, {
-    variables: { projectKey: param },
-    ...contextWithCacheHeaders,
-  });
-
-  return (
-    <DataDisplay param={param} data={projectIdQuery.data?.projects[0]}>
-      {children}
-    </DataDisplay>
-  );
-}
-
 export default function ProjectDetails() {
   const { projectKey = "" } = useParams<ProjectDetailsParams>();
 
-  return (
-    <DataSwitch
-      param={projectKey}
-      ApolloDataWrapper={ProjectDetailsDataWrapper}
-      resourcePath={ApiResourcePaths.GET_PROJECT_DETAILS}
-    >
-      <ProjectPresentDetails />
-    </DataSwitch>
-  );
-}
+  const { data, isLoading, isError } = useRestfulData({
+    resourcePath: ApiResourcePaths.GET_PROJECT_DETAILS_SLUG,
+    pathParam: projectKey,
+    method: "GET",
+  });
 
-function ProjectPresentDetails() {
-  const { T } = useIntl();
-  const dataContext = useContext(DataContext);
-
-  if (!dataContext) {
-    throw new Error(T("dataFetching.dataContext"));
+  if (isLoading) {
+    // TODO Replace with skeleton component
+    return <Loader />;
   }
 
-  const { param, data, loading: isContexteLoading, error } = dataContext;
-  const projectKey = param;
-  const { id, name } = data as ProjectDetailsRESTfull;
+  if (isError) {
+    return <ErrorFallback />;
+  }
 
-  const { visibleToCurrentUser, loading: isProjectVisibilityLoading } = useProjectVisibility(id);
+  const { name } = data as Project;
 
-  const showToaster = useShowToaster();
-  const navigate = useNavigate();
-
-  const isLoading = isContexteLoading || isProjectVisibilityLoading;
-
-  if (!isLoading && (!id || visibleToCurrentUser === false)) {
-    showToaster(T("project.error.notFound"), { isError: true });
-    navigate(RoutePaths.Projects);
+  if (!data) {
+    return <Navigate to={RoutePaths.NotFound} />;
   }
 
   return (
     <>
       <SEO title={`${name} — OnlyDust`} />
-      <View projectId={id} projectKey={projectKey} loading={isContexteLoading} error={error} />
+      <View project={data} loading={isLoading} error={isError} />
     </>
   );
 }

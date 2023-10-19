@@ -6,15 +6,13 @@ import Card, { CardBorder } from "src/components/Card";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import { useIntl } from "src/hooks/useIntl";
 import CodeSSlashLine from "src/icons/CodeSSlashLine";
-import { buildLanguageString, getDeduplicatedAggregatedLanguages, getMostUsedLanguages } from "src/utils/languages";
+import { buildLanguageString } from "src/utils/languages";
 import User3Line from "src/icons/User3Line";
 import { TooltipPosition, withTooltip } from "src/components/Tooltip";
 import ProjectTitle from "./ProjectTitle";
-import isDefined from "src/utils/isDefined";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import Tag, { TagSize } from "src/components/Tag";
-import { ArrayElement, Leader, Technologies } from "src/types";
-import { GetProjectsQuery } from "src/__generated/graphql";
+import { Project } from "src/types";
 import RecordCircleLine from "src/icons/RecordCircleLine";
 import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
@@ -22,67 +20,42 @@ import config from "src/config";
 import ProjectLeadInvitationView from "src/components/ProjectLeadInvitation/ProjectLeadInvitationView";
 import { getTopTechnologies } from "src/utils/technologies";
 
-export type Project = ArrayElement<GetProjectsQuery["projects"]>;
-
-// TODO(Backend): This is a temporary solution until we delete graphql fields
-type ExtendedProject = Project & {
-  contributorCount?: number;
-  technologies?: Technologies;
-  slug?: string;
-  leaders?: Leader[];
-  repoCount?: number;
-};
-
 type ProjectCardProps = {
-  project: ExtendedProject;
+  project: Project;
   className?: string;
 };
 
 export default function ProjectCard({ project, className }: ProjectCardProps) {
   const {
     id,
-    key,
-    pendingInvitations,
-    githubRepos,
-    projectLeads,
-    contributorsAggregate,
     sponsors,
     hiring,
     name,
     logoUrl,
     visibility,
     shortDescription,
-    // TODO(Backend):
-    // New REST API Fields
     contributorCount,
     technologies,
     slug,
     leaders,
     repoCount,
+    isInvitedAsProjectLead,
   } = project;
-
-  const projectUrl = logoUrl ? config.CLOUDFLARE_RESIZE_W_100_PREFIX + logoUrl : logoUrl;
-
-  // TODO(Backend): This is a temporary solution until we delete graphql fields
-  const repositoryCount = githubRepos?.length || repoCount || 0;
 
   const { T } = useIntl();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
-  // TODO(Backend): This is a temporary solution until we delete graphql fields
-  const topSponsors = sponsors?.map(projectSponsor => projectSponsor.sponsor || projectSponsor).slice(0, 3) || [];
+  const projectUrl = logoUrl ? config.CLOUDFLARE_RESIZE_W_100_PREFIX + logoUrl : logoUrl;
 
-  // TODO(Backend): This is a temporary solution until we delete graphql fields
-  const languages = githubRepos
-    ? getMostUsedLanguages(getDeduplicatedAggregatedLanguages(githubRepos?.map(r => r.repo)))
-    : technologies
-    ? getTopTechnologies(technologies)
-    : [];
+  const repositoryCount = repoCount || 0;
 
-  // TODO(Backend): This is a temporary solution until we delete graphql fields
-  const contributorsCount = contributorsAggregate?.aggregate?.count || contributorCount || 0;
+  const topSponsors = sponsors?.map(sponsor => sponsor).slice(0, 3) || [];
 
-  const hasPendingInvitation = pendingInvitations?.length > 0;
+  const languages = technologies ? getTopTechnologies(technologies) : [];
+
+  const contributorsCount = contributorCount || 0;
+
+  const hasPendingInvitation = isInvitedAsProjectLead;
 
   const card = (
     <Card
@@ -104,7 +77,7 @@ export default function ProjectCard({ project, className }: ProjectCardProps) {
             <ProjectTitle
               projectId={id}
               projectName={name || ""}
-              projectLeads={projectLeads?.map(lead => lead.user).filter(isDefined) || leaders || []}
+              projectLeads={leaders || []}
               logoUrl={projectUrl || onlyDustLogo}
               private={visibility === "PRIVATE"}
             />
@@ -150,9 +123,11 @@ export default function ProjectCard({ project, className }: ProjectCardProps) {
                       <RoundedImage
                         key={sponsor.id}
                         src={
-                          sponsor.logoUrl ? config.CLOUDFLARE_RESIZE_W_100_PREFIX + sponsor.logoUrl : sponsor.logoUrl
+                          sponsor.logoUrl
+                            ? config.CLOUDFLARE_RESIZE_W_100_PREFIX + sponsor.logoUrl
+                            : sponsor.logoUrl || ""
                         }
-                        alt={sponsor.name}
+                        alt={sponsor.name || ""}
                         size={ImageSize.Xxs}
                         rounding={Rounding.Circle}
                       />
@@ -173,8 +148,7 @@ export default function ProjectCard({ project, className }: ProjectCardProps) {
   return (
     <Link
       to={generatePath(RoutePaths.ProjectDetails, {
-        // TODO(Backend): This is a temporary solution until we delete graphql fields
-        projectKey: key || slug || "",
+        projectKey: slug || "",
       })}
     >
       {card}
