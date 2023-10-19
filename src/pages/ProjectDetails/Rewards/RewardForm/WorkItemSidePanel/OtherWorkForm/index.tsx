@@ -118,11 +118,7 @@ export default function OtherWorkForm({ projectId, contributorHandle, addWorkIte
           </div>
         </div>
         <div className="flex flex-row justify-between gap-8 border-t border-greyscale-50/8 bg-white/2 p-4 xl:px-6 xl:py-8">
-          {selectedRepo && (
-            <div className="flex-1">
-              <RepoSelect repos={repos} repo={selectedRepo} setRepo={setSelectedRepo} />
-            </div>
-          )}
+          {selectedRepo && <RepoSelect repos={repos} repo={selectedRepo} setRepo={setSelectedRepo} />}
           <Button
             width={Width.Fit}
             disabled={!workKind || !description || loading || !selectedRepo?.hasIssues}
