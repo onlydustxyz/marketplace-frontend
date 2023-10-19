@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useTokenSet } from "src/hooks/useTokenSet";
-import { useAuth } from "../useAuth";
+import { useAuth } from "src/hooks/useAuth";
 
 type QueryParam = {
   key: string;
