@@ -1,44 +1,46 @@
-// import { UserPayoutInfo } from "./types";
+import { UserPayoutSettingsFragment } from "src/__generated/graphql";
+import { PreferredMethod } from "src/__generated/graphql";
 
 // Contact & payout informations validation hook
-export function usePayoutInfoValidation(user: UserPayoutInfo): {
+export function usePayoutInfoValidation(user?: UserPayoutSettingsFragment | null): {
   isContactInfoValid: boolean;
   isPaymentInfoValid: boolean;
 } {
-  const { identity, location, payoutSettings } = user || {};
-  const { Person, Company } = identity || {};
+  const {
+    firstname,
+    lastname,
+    address,
+    city,
+    postCode,
+    country,
+    isCompany,
+    companyName,
+    companyIdentificationNumber,
+    usdPreferredMethod,
+    ethWallet,
+    starknetWallet,
+    optimismWallet,
+    aptosWallet,
+    iban,
+    bic,
+  } = user || {};
 
   let isContactInfoValid = false;
   let isPaymentInfoValid = false;
 
-  if (location) {
-    if (location.address && location.city && location.country && location.post_code) {
-      if (Person) {
-        isContactInfoValid = !!(Person.firstname && Person.lastname);
-      }
-
-      if (Company) {
-        isContactInfoValid =
-          !!(Company.name && Company.identification_number) && !!(Company.owner.firstname && Company.owner.lastname);
-      }
+  if (address && city && country && postCode && firstname && lastname) {
+    if (isCompany) {
+      isContactInfoValid = Boolean(companyName && companyIdentificationNumber);
     }
+
+    isContactInfoValid = true;
   }
 
-  if (payoutSettings) {
-    const isUsd = !!payoutSettings.usd_preferred_method;
-
-    if (isUsd) {
-      isPaymentInfoValid = !!(payoutSettings.bankAddress.BIC || payoutSettings.bankAddress.IBAN);
-    } else {
-      const conditionsArray = [
-        !!(payoutSettings.ethName && payoutSettings.ethAddress),
-        !!(payoutSettings.starknetName && payoutSettings.starknetAddress),
-        !!(payoutSettings.optimismName && payoutSettings.optimismAddress),
-        !!(payoutSettings.aptosmName && payoutSettings.aptosAddress),
-      ];
-
-      isPaymentInfoValid = conditionsArray.includes(true);
-    }
+  if (usdPreferredMethod === PreferredMethod.Fiat) {
+    isPaymentInfoValid = Boolean(bic && iban);
+  } else {
+    const conditionsArray = [!!ethWallet, !!starknetWallet, !!optimismWallet, !!aptosWallet];
+    isPaymentInfoValid = conditionsArray.includes(true);
   }
 
   return { isContactInfoValid, isPaymentInfoValid };

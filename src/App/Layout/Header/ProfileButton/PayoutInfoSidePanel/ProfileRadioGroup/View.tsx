@@ -5,7 +5,7 @@ import { viewportConfig } from "src/config";
 import { useMediaQuery } from "usehooks-ts";
 
 type Option = {
-  value: string | boolean;
+  value: string;
   label: string;
   icon?: ReactElement;
 };
@@ -13,12 +13,12 @@ type Option = {
 type PropsType = {
   label?: string;
   options: Option[];
-  withMargin: boolean;
+  withMargin?: boolean;
   register?: UseFormRegisterReturn;
   requiredForPayment: boolean;
 };
 
-export default function View({ label, options, withMargin, register, requiredForPayment }: PropsType) {
+export default function View({ label, options, withMargin = true, register, requiredForPayment }: PropsType) {
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
   return (
     <label

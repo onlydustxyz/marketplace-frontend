@@ -61,10 +61,7 @@ export default function PayoutInfoSidePanel({
     register,
   } = useFormContext();
 
-  console.log("TEST", { isContactInfoValid, isPaymentInfoValid });
   const [profileType, usdPreferredMethod, iban, bic] = watch(["profileType", "usdPreferredMethod", "iban", "bic"]);
-
-  console.log(usdPreferredMethod);
 
   return (
     <div className="flex h-full min-h-0 flex-col justify-between overflow-y-auto">

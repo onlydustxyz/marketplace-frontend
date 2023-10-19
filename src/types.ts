@@ -1,4 +1,4 @@
-import { GetAllContributionsQuery, GithubIssueStatus, UnrewardedContributionsQuery } from "src/__generated/graphql";
+import { GetAllContributionsQuery, GithubIssueStatus } from "src/__generated/graphql";
 import { SortingFields } from "./hooks/useRewardSorting";
 
 export type Branded<T, B> = T & { __brand: B };
