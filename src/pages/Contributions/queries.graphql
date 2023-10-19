@@ -45,6 +45,9 @@ query GetAllContributions($orderBy: [ContributionsOrderBy!], $where: Contributio
       paymentId
     }
   }
+  githubRepos(orderBy: { indexedAt: ASC }, limit: 1) {
+    indexedAt
+  }
 }
 
 query GetContributionRewards($githubUserId: bigint!, $contributionId: String!) {

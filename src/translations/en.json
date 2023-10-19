@@ -53,7 +53,7 @@
       "contribution": "Contribution",
       "comments": "Comments",
       "linkedTo": "Linked to",
-      "empty": "No contributions here",
+      "empty": "Last synced with Github at __time__.\nIt can take up to 5 minutes before the next refresh.",
       "error": "An error occurred, please try again later.",
       "showAll": "Show all __count__"
     },

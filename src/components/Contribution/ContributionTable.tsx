@@ -140,7 +140,14 @@ export function ContributionTable({
     if (memoizedContributions?.length === 0) {
       return (
         <div className="py-6">
-          <Message>{T("contributions.table.empty")}</Message>
+          <Message>
+            {T("contributions.table.empty", {
+              time: Intl.DateTimeFormat("en-US", {
+                hour: "numeric",
+                minute: "numeric",
+              }).format(new Date(data?.githubRepos[0].indexedAt)),
+            })}
+          </Message>
         </div>
       );
     }
@@ -197,7 +204,16 @@ export function ContributionTable({
     }
 
     if (memoizedContributions?.length === 0) {
-      return <TableText>{T("contributions.table.empty")}</TableText>;
+      return (
+        <TableText>
+          {T("contributions.table.empty", {
+            time: Intl.DateTimeFormat("en-US", {
+              hour: "numeric",
+              minute: "numeric",
+            }).format(new Date(data?.githubRepos[0].indexedAt)),
+          })}
+        </TableText>
+      );
     }
 
     return memoizedContributions?.map(contribution => {
