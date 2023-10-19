@@ -371,6 +371,7 @@ const PROJECT: Project = {
     Python: 6840986,
   },
   isInvitedAsProjectLead: false,
+  remainingUsdBudget: 99250.0,
 };
 
 describe('"ProjectDetails" page', () => {

@@ -254,6 +254,7 @@ export interface Project {
   topContributors: TopContributor[];
   repos: Repo[];
   isInvitedAsProjectLead: boolean;
+  remainingUsdBudget: number;
 }
 
 export type Reward = {

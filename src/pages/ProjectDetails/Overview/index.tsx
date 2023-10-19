@@ -94,7 +94,7 @@ export default function Overview() {
 
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
 
-  const remainingBudget = project?.usdBudget?.initialAmount - project?.usdBudget?.spentAmount;
+  const remainingBudget = project?.remainingUsdBudget;
   const isRewardDisabled = remainingBudget < rates.hours || remainingBudget === 0;
 
   return (

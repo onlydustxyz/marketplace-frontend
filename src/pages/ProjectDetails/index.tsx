@@ -3,8 +3,8 @@ import { Project } from "src/types";
 import View from "./View";
 import { RoutePaths } from "src/App";
 import SEO from "src/components/SEO";
-import { ApiResourcePaths } from "src/App/DataWrapper/config";
-import { useRestfulData } from "src/hooks/useRestfulData";
+import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
+import { useRestfulData } from "src/hooks/useRestfulData/useRestfulData";
 import ErrorFallback from "src/ErrorFallback";
 import Loader from "src/components/Loader";
 

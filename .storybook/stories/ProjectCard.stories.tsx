@@ -84,14 +84,14 @@ const props = (args: {
   moreInfoUrl: "www.onlydust.xyz",
   leaders: [
     {
-      githubUserId: null,
+      githubUserId: 98735421,
       login: "AnthonyBuisset",
       htmlUrl: null,
       avatarUrl: "https://avatars.githubusercontent.com/u/43467246?v=4",
       id: "adcb11a6-92cf-4a1e-bace-79f7bdbc54e7",
     },
     {
-      githubUserId: null,
+      githubUserId: 98735421,
       login: "ofux",
       htmlUrl: null,
       avatarUrl: "https://avatars.githubusercontent.com/u/595505?v=4",
@@ -183,6 +183,7 @@ const props = (args: {
     Python: 6840986,
   },
   isInvitedAsProjectLead: false,
+  remainingUsdBudget: 99250.00
 });
 
 const args = {

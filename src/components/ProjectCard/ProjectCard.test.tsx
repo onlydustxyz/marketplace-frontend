@@ -16,14 +16,14 @@ const PROJECT: Project = {
   moreInfoUrl: "www.onlydust.xyz",
   leaders: [
     {
-      githubUserId: null,
+      githubUserId: 74653697,
       login: "AnthonyBuisset",
       htmlUrl: null,
       avatarUrl: "https://avatars.githubusercontent.com/u/43467246?v=4",
       id: "adcb11a6-92cf-4a1e-bace-79f7bdbc54e7",
     },
     {
-      githubUserId: null,
+      githubUserId: 8642470,
       login: "ofux",
       htmlUrl: null,
       avatarUrl: "https://avatars.githubusercontent.com/u/595505?v=4",
@@ -115,6 +115,7 @@ const PROJECT: Project = {
     Python: 6840986,
   },
   isInvitedAsProjectLead: false,
+  remainingUsdBudget: 99250.0,
 };
 
 describe("'ProjectCard' component", () => {
