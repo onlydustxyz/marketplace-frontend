@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useTokenSet } from "src/hooks/useTokenSet";
+import { useAuth } from "../useAuth";
 
 type QueryParam = {
   key: string;
@@ -25,6 +26,7 @@ export function useRestfulData({
   queryParams = [],
   method = "GET",
 }: UseRestfulDataProps) {
+  const { isLoggedIn } = useAuth();
   const { tokenSet } = useTokenSet();
   const scheme = "https://";
   const apiBasepath = import.meta.env.VITE_ONLYDUST_API_BASEPATH;
@@ -41,7 +43,7 @@ export function useRestfulData({
   };
 
   const { isLoading, isError, data } = useQuery({
-    queryKey: [resourcePath, pathParam, queryString, method],
+    queryKey: [resourcePath, pathParam, queryString, method, isLoggedIn],
     queryFn: () => fetch(url, option).then(res => res.json()),
     staleTime: 0,
     gcTime: 0,
