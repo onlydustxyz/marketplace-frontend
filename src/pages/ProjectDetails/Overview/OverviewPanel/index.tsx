@@ -3,16 +3,16 @@ import ExternalLink from "src/components/ExternalLink";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import { useIntl } from "src/hooks/useIntl";
 import isDefined from "src/utils/isDefined";
-import { GithubUserFragment, ProjectLeadFragment, SponsorFragment } from "src/__generated/graphql";
 import Section, { SectionIcon } from "./Section";
 import Contributor from "src/components/Contributor";
 import Sponsor from "./Sponsor";
+import { Leader, Sponsor as SponsorType, TopContributor } from "src/types";
 
 interface Props {
-  leads?: ProjectLeadFragment[];
-  sponsors: SponsorFragment[];
+  leads?: Leader[];
+  sponsors: SponsorType[];
   moreInfoLink: string | null;
-  topContributors: Pick<GithubUserFragment, "login" | "avatarUrl">[];
+  topContributors: TopContributor[];
   totalContributorsCount: number;
 }
 

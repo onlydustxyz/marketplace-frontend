@@ -15,8 +15,8 @@ export enum Rounding {
 }
 
 interface RoundedImageProps {
-  src: string;
-  alt: string;
+  src: string | null;
+  alt: string | null;
   size?: ImageSize;
   className?: string;
   rounding?: Rounding;
@@ -58,8 +58,8 @@ export default function RoundedImage({
           "h-10 w-10": size === ImageSize.Lg,
           "h-12 w-12": size === ImageSize.Xl,
         })}
-        alt={alt}
-        src={src}
+        alt={alt || ""}
+        src={src || ""}
       />
     </div>
   );

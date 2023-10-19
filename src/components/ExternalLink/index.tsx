@@ -2,7 +2,7 @@ import ExternalLinkLine from "src/icons/ExternalLinkLine";
 import { linkClickHandlerFactory } from "src/utils/clickHandler";
 
 type Props = {
-  text?: string;
+  text?: string | null;
   url: string;
 };
 

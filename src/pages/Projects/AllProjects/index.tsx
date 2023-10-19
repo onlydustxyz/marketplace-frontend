@@ -6,8 +6,8 @@ import SortingDropdown, { PROJECT_SORTINGS, Sorting } from "src/pages/Projects/S
 import { useIntl } from "src/hooks/useIntl";
 import { FilterButton } from "src/pages/Projects/FilterPanel/FilterButton";
 import { SortButton } from "src/pages/Projects/Sorting/SortButton";
-import { ApiResourcePaths } from "src/App/DataWrapper/config";
-import { useRestfulData } from "src/hooks/useRestfulData";
+import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
+import { useRestfulData } from "src/hooks/useRestfulData/useRestfulData";
 import ErrorFallback from "src/ErrorFallback";
 import AllProjectLoading from "./AllProjectsLoading";
 import { Project } from "src/types";

@@ -1,6 +1,6 @@
 import ReactDOM from "react-dom/client";
 import { ErrorBoundary } from "react-error-boundary";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import TagManager from "react-gtm-module";
 import { BrowserRouter } from "react-router-dom";
 
