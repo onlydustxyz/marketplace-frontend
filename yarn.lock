@@ -10888,10 +10888,10 @@ react-smooth@^2.0.2:
     fast-equals "^5.0.0"
     react-transition-group "2.9.0"
 
-react-tooltip@^5.13.1:
-  version "5.13.1"
-  resolved "https://registry.yarnpkg.com/react-tooltip/-/react-tooltip-5.13.1.tgz#d0b64d6c783301fa87248b45c662299a0a1276f9"
-  integrity sha512-9NstDFdjyy6cIH9zjeT70zXTHlW/TIGCOWQmhkAyqLFeQioLg1FXvb9ec7AxSpn0zyFUkFSLdFYxZRuewti3Aw==
+react-tooltip@^5.21.5:
+  version "5.21.5"
+  resolved "https://registry.yarnpkg.com/react-tooltip/-/react-tooltip-5.21.5.tgz#3e1bc02a0e674369dea81bb201d6106724dd60cf"
+  integrity sha512-ey70qf6pBGi4U6xpyNlZAHobAhlo2dfxmImR2Bzd/DbLTsAYWz3TEaK+RMFuUZMq6hSPRbUHQSkP2rHBq4uFVg==
   dependencies:
     "@floating-ui/dom" "^1.0.0"
     classnames "^2.3.0"

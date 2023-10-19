@@ -7,6 +7,7 @@ import { withRouter } from "storybook-addon-react-router-v6";
 import withAuthProvider from "../decorators/withAuthProvider";
 import withContributorProfilePanelProvider from "../decorators/withContributorProfilePanelProvider";
 import withMockedProvider from "../decorators/withMockedProvider";
+import withRewardDetailPanelProvider from "../decorators/withRewardDetailPanelProvider";
 import { contributionTable } from "../mocks/contributionTable";
 
 const USER_ID = "e2ee731a-2697-4306-bf4b-c807f6fda0d7";
@@ -39,6 +40,7 @@ export default {
     withMockedProvider(mocks),
     withAuthProvider({ userId: USER_ID }),
     withContributorProfilePanelProvider,
+    withRewardDetailPanelProvider,
   ],
 };
 

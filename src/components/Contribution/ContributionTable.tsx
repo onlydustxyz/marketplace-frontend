@@ -1,6 +1,6 @@
 import type { ApolloError } from "@apollo/client";
-import { cn } from "src/utils/cn";
 import { ComponentProps, PropsWithChildren, ReactNode, useMemo, useState } from "react";
+import { cn } from "src/utils/cn";
 
 import { ContributionsOrderBy, GetAllContributionsQuery, OrderBy } from "src/__generated/graphql";
 import IssueOpen from "src/assets/icons/IssueOpen";
@@ -15,6 +15,7 @@ import Cell, { CellHeight } from "src/components/Table/Cell";
 import HeaderCell, { HeaderCellWidth } from "src/components/Table/HeaderCell";
 import HeaderLine from "src/components/Table/HeaderLine";
 import Line from "src/components/Table/Line";
+import { TooltipPosition, Variant as TooltipVariant } from "src/components/Tooltip";
 import { viewportConfig } from "src/config";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
@@ -232,6 +233,7 @@ export function ContributionTable({
               type={contribution.type as GithubContributionType}
               status={draft ? GithubPullRequestDraft.Draft : (contributionStatus as GithubItemStatus)}
               date={new Date(lineDate)}
+              tooltipProps={{ variant: TooltipVariant.Blue, position: TooltipPosition.TopStart, className: "text-sm" }}
             />
           </Cell>
           <Cell height={CellHeight.Compact}>
