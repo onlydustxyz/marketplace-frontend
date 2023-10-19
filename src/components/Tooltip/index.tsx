@@ -1,6 +1,6 @@
 import { PropsWithChildren } from "react";
 import { createPortal } from "react-dom";
-import { PlacesType, Tooltip as ReactTooltip } from "react-tooltip";
+import { Tooltip as ReactTooltip } from "react-tooltip";
 import { cn } from "src/utils/cn";
 
 export enum TooltipPosition {
@@ -54,7 +54,7 @@ export default function Tooltip({
   return createPortal(
     <ReactTooltip
       id={id}
-      place={position as PlacesType}
+      place={position}
       anchorId={anchorId}
       anchorSelect={anchorSelect}
       delayShow={delayShow}
