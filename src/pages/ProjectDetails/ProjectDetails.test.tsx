@@ -1,7 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
 import matchers from "@testing-library/jest-dom/matchers";
-import { TokenSetProvider } from "src/hooks/useTokenSet";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 expect.extend(matchers);
