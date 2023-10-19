@@ -1,76 +1,121 @@
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
-import ProjectCard, { Project } from ".";
+import ProjectCard from ".";
+import { Project } from "src/types";
 import { screen } from "@testing-library/react";
 
-const githubRepo1 = {
-  githubRepoId: 1000,
-  projectId: "123",
-  repo: {
-    id: 1000,
-    languages: { Cairo: 1000, Rust: 100, HTML: 150 },
-  },
-};
-
-const githubRepo2 = {
-  githubRepoId: 1001,
-  projectId: "123",
-  repo: {
-    id: 1001,
-    languages: { Rust: 80, Go: 40, Cairo: 2000 },
-  },
-};
-
 const PROJECT: Project = {
-  id: 123,
-  contributors: [],
-  pendingContributors: [],
-  rewardedUsers: [],
-  githubReposAggregate: { aggregate: { count: 2 } },
-  contributorsAggregate: { aggregate: { count: 3 } },
-  name: "ZeroSync",
-  key: "zerosync",
-  moreInfoLink: "https://app.onlydust.xyz/projects/92f022a9-dbd8-446f-a2a5-b161ccb4541c",
-  shortDescription: "A short description",
-  logoUrl: "https://avatars.githubusercontent.com/u/115809607?v=4",
+  id: "cdb45d97-13a6-4f71-8c8c-78917fc02649",
+  slug: "performance-test-with-a-very-long-name",
+  name: "Performance test with a very long name",
+  shortDescription: "Do not create issue on this one as it is linked with real projects !",
+  logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/1409408835957028656.png",
   hiring: false,
-  rank: 0,
   visibility: "PUBLIC",
-  projectLeads: [
+  repoCount: 2,
+  contributorCount: 3,
+  moreInfoUrl: "www.onlydust.xyz",
+  leaders: [
     {
-      userId: "user-1",
-      projectId: "123",
-      user: {
-        id: "user-1",
-        login: "oscarwroche",
-        avatarUrl: "https://avatars.githubusercontent.com/u/21149076?v=4",
-        githubUserId: 21149076,
-      },
+      githubUserId: 74653697,
+      login: "AnthonyBuisset",
+      htmlUrl: null,
+      avatarUrl: "https://avatars.githubusercontent.com/u/43467246?v=4",
+      id: "adcb11a6-92cf-4a1e-bace-79f7bdbc54e7",
+    },
+    {
+      githubUserId: 8642470,
+      login: "ofux",
+      htmlUrl: null,
+      avatarUrl: "https://avatars.githubusercontent.com/u/595505?v=4",
+      id: "bd365490-dd23-4a24-ad23-7853fbd853c2",
     },
   ],
-  githubRepos: [
-    { __typename: "ProjectGithubRepos", ...githubRepo1 },
-    { __typename: "ProjectGithubRepos", ...githubRepo2 },
+  repos: [
+    {
+      id: 566371874,
+      owner: "onlydustxyz",
+      name: "hasura-auth",
+      description: "Authentication for Hasura.",
+      stars: 0,
+      forkCount: 1,
+      htmlUrl: "https://github.com/onlydustxyz/hasura-auth",
+      hasIssues: false,
+    },
+    {
+      id: 498695724,
+      owner: "onlydustxyz",
+      name: "marketplace-frontend",
+      description: "Contributions marketplace backend services",
+      stars: 15,
+      forkCount: 10,
+      htmlUrl: "https://github.com/onlydustxyz/marketplace-frontend",
+      hasIssues: true,
+    },
   ],
-  usdBudgetId: "budget-id",
-  pendingInvitations: [{ id: "croute", githubUserId: "github-user-id" }],
+  topContributors: [
+    {
+      githubUserId: 698957,
+      login: "ltoussaint",
+      htmlUrl: "https://github.com/ltoussaint",
+      avatarUrl: "https://avatars.githubusercontent.com/u/698957?v=4",
+    },
+    {
+      githubUserId: 595505,
+      login: "ofux",
+      htmlUrl: "https://github.com/ofux",
+      avatarUrl: "https://avatars.githubusercontent.com/u/595505?v=4",
+    },
+    {
+      githubUserId: 4435377,
+      login: "Bernardstanislas",
+      htmlUrl: "https://github.com/Bernardstanislas",
+      avatarUrl: "https://avatars.githubusercontent.com/u/4435377?v=4",
+    },
+  ],
   sponsors: [
     {
-      sponsor: {
-        id: 1,
-        name: "Starknet",
-        logoUrl: "https://starkware.co/wp-content/uploads/2021/07/Group-177.svg",
-        url: "https://starkware.co/starknet/",
-      },
+      id: "ce038af0-9f8d-4948-bd5a-1c86cf983041",
+      name: "OnlyDust",
+      url: null,
+      logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/13878645251970159319.jpg",
     },
     {
-      sponsor: {
-        id: 2,
-        name: "Ethereum Foundation",
-        logoUrl: "https://logotyp.us/files/ethereum-foundation.svg",
-        url: "https://ethereum.org/en/foundation/",
-      },
+      id: "ce038af0-9f8d-4948-bd5a-1c86cf983042",
+      name: "OnlyFast",
+      url: null,
+      logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/13878645251970159319.jpg",
+    },
+    {
+      id: "ce038af0-9f8d-4948-bd5a-1c86cf983043",
+      name: "OnlyRust",
+      url: null,
+      logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/13878645251970159319.jpg",
     },
   ],
+  technologies: {
+    Java: 1082,
+    CPlusPlus: 22688656,
+    CSS: 128024,
+    C: 3655312,
+    Scheme: 50648,
+    CMake: 115552,
+    ObjectiveCPlusPlus: 10994,
+    QMake: 876,
+    Makefile: 298032,
+    M4: 435994,
+    HTML: 285238,
+    Sage: 118798,
+    TypeScript: 42942,
+    Dockerfile: 9068,
+    Shell: 367042,
+    CoffeeScript: 34960,
+    CapnProto: 2512,
+    JavaScript: 8236948,
+    Assembly: 56732,
+    Python: 6840986,
+  },
+  isInvitedAsProjectLead: false,
+  remainingUsdBudget: 99250.0,
 };
 
 describe("'ProjectCard' component", () => {
@@ -80,7 +125,7 @@ describe("'ProjectCard' component", () => {
     });
 
     const sponsorsLogo = screen.getByTestId(`sponsor-list-${PROJECT.id}`).getElementsByTagName("img");
-    expect(sponsorsLogo).toHaveLength(2);
+    expect(sponsorsLogo).toHaveLength(3);
   });
 
   it("should display at most 3 sponsors logos", () => {
@@ -116,6 +161,6 @@ describe("'ProjectCard' component", () => {
     });
 
     const languagesString = screen.getByTestId(`languages-${PROJECT.id}`);
-    expect(languagesString.textContent).toContain("cairo, rust, go");
+    expect(languagesString.textContent).toContain("cplusplus, javascript, python");
   });
 });

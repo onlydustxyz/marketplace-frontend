@@ -1,7 +1,7 @@
 import { Listbox } from "@headlessui/react";
-import { cn } from "src/utils/cn";
-import { Option } from "./types";
+import { FormOption } from "src/components/FormOption/FormOption";
 import { Size } from ".";
+import { Option } from "./types";
 
 type Props = {
   options: Option[];
@@ -15,24 +15,7 @@ export default function View({ options, size, ...props }: Props) {
     <Listbox {...props}>
       <Listbox.Options static as="div" className="flex flex-wrap gap-x-2 gap-y-3">
         {options.map((value, index) => (
-          <Listbox.Option
-            key={index}
-            as="div"
-            value={value.value ?? value.label}
-            className={cn(
-              "flex flex-row items-center gap-1",
-              "w-fit border border-greyscale-50/8 bg-white/8 font-walsheim text-sm font-normal text-neutral-100",
-              "hover:cursor-pointer",
-              "ui-selected:pseudo-outline-2",
-              "ui-selected:before:z-10",
-              "ui-selected:before:border-spacePurple-500",
-              "ui-selected:border-transparent ui-selected:bg-spacePurple-900",
-              {
-                "rounded-xl px-3 py-2": size === Size.Md,
-                "rounded-2xl px-4 py-3": size === Size.Lg,
-              }
-            )}
-          >
+          <Listbox.Option key={index} as={FormOption} value={value.value ?? value.label} size={size} className="w-fit">
             {value.icon}
             {value.label}
           </Listbox.Option>

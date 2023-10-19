@@ -7,6 +7,7 @@ export default function AllProjectLoading() {
       <Skeleton variant="card" />
       <Skeleton variant="card" />
       <Skeleton variant="card" />
+      <Skeleton variant="card" />
     </div>
   );
 }

@@ -3,8 +3,8 @@ import ExternalLink from "src/components/ExternalLink";
 import { Maybe } from "src/__generated/graphql";
 
 type Props = {
-  name: string;
-  logoUrl: string;
+  name: string | null;
+  logoUrl: string | null;
   externalUrl: Maybe<string>;
 };
 
