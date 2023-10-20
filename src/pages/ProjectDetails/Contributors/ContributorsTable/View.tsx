@@ -52,7 +52,7 @@ export default function View({
 
   const sortedContributors = useMemo(() => {
     const sorted = sortBy([...contributors], contributor => {
-      const f = contributor[sorting.field] || 0;
+      const f = contributor[sorting.field as keyof ContributorT] || 0;
       return typeof f === "string" ? f.toLocaleLowerCase() : f;
     });
     return sorting.ascending ? sorted : sorted.reverse();

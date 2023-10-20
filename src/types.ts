@@ -305,3 +305,16 @@ export type Contributors = {
   nextPageIndex: number;
   hasMore: boolean;
 };
+
+export type PageData = {
+  totalPageNumber: number;
+  totalItemNumber: number;
+  hasMore: boolean;
+  nextPageIndex: number;
+  contributors: ContributorT[];
+};
+
+export type PagesData = {
+  pages: PageData[];
+  pageParams: number[];
+};

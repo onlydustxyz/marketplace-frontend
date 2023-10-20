@@ -3,19 +3,27 @@ type QueryParam = {
   value: Array<string | number | boolean>;
 };
 
+interface EndpointUrlParams {
+  resourcePath: string;
+  pathParam?: string;
+  queryParams?: QueryParam[];
+  pageParam?: number;
+  pageSize?: number;
+}
+
 function buildQueryString(queryParams: QueryParam[]): string {
   return queryParams
     .map(param => `${encodeURIComponent(param.key)}=${encodeURIComponent(param.value.join(","))}`)
     .join("&");
 }
 
-export function getEndpointUrl(
-  resourcePath: string,
+export function getEndpointUrl({
+  resourcePath,
   pathParam = "",
-  queryParams: QueryParam[] = [],
-  pageParam?: number,
-  pageSize = 15
-): string {
+  queryParams = [],
+  pageParam,
+  pageSize = 15,
+}: EndpointUrlParams): string {
   const scheme = "https://";
   const apiBasepath = import.meta.env.VITE_ONLYDUST_API_BASEPATH as string;
   const basePath = `${scheme}${apiBasepath}`;

@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useTokenSet } from "src/hooks/useTokenSet";
 import { useAuth } from "src/hooks/useAuth";
 import { getEndpointUrl } from "src/utils/getEndpointUrl";
+import { useHttpOptions } from "src/hooks/useHttpOptions";
 
 type QueryParam = {
   key: string;
@@ -22,18 +23,12 @@ export function useRestfulData({
   method = "GET",
 }: UseRestfulDataProps) {
   const { isLoggedIn } = useAuth();
-  const { tokenSet } = useTokenSet();
 
-  const option = {
-    method,
-    headers: {
-      ...(tokenSet?.accessToken ? { Authorization: `Bearer ${tokenSet.accessToken}` } : {}),
-    },
-  };
+  const options = useHttpOptions(method);
 
   const { isLoading, isError, data } = useQuery({
     queryKey: [resourcePath, pathParam, queryParams, method, isLoggedIn],
-    queryFn: () => fetch(getEndpointUrl(resourcePath, pathParam, queryParams), option).then(res => res.json()),
+    queryFn: () => fetch(getEndpointUrl({ resourcePath, pathParam, queryParams }), options).then(res => res.json()),
     staleTime: 0,
     gcTime: 0,
   });

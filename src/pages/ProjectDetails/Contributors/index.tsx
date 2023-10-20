@@ -39,18 +39,16 @@ export default function Contributors() {
 
   const isProjectLeader = ledProjectIds.includes(projectId);
 
+  const remainingBudget = project?.remainingUsdBudget;
+  const isRewardDisabled = remainingBudget < rates.hours || remainingBudget === 0;
+
   const { status, data, error, isFetching, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteContributors({
     projectId,
   });
 
-  const remainingBudget = project?.remainingUsdBudget;
-  const isRewardDisabled = remainingBudget < rates.hours || remainingBudget === 0;
+  const contributors = data?.pages.flatMap(page => page.contributors) || [];
 
-  // console.log({ status, data, error, isFetching, isFetchingNextPage, fetchNextPage, hasNextPage });
-
-  const contributors = data?.pages.flatMap(page => page.contributors);
-
-  console.log({ contributors });
+  console.log(data);
 
   // return (
   //   <div>
