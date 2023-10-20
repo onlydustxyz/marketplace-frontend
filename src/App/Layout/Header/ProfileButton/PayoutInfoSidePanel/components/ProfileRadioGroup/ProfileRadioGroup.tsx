@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import { useFormContext } from "react-hook-form";
-import View from "./View";
+import View from "./ProfileRadioGroupView";
 
 type Option = {
   value: string;

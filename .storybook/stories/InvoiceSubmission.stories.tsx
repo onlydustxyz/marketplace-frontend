@@ -51,6 +51,9 @@ const userInfos: UserPayoutSettingsFragment = {
   iban: null,
   isCompany: true,
   arePayoutSettingsValid: true,
+  aptosWallet: null,
+  optimismWallet: null,
+  starknetWallet: null,
 };
 
 export const Default = {

@@ -18,10 +18,12 @@ type PropsType = {
 export default function View({ label, options, register, requiredForPayment }: PropsType) {
   return (
     <label className="flex flex-col gap-2">
-      <div className="text-sm font-medium tracking-tight text-greyscale-300">
-        {label}
-        {requiredForPayment && <span className="pl-0.5 text-orange-500">{"*"}</span>}
-      </div>
+      {label ? (
+        <div className="text-sm font-medium tracking-tight text-greyscale-300">
+          {label}
+          {requiredForPayment && <span className="pl-0.5 text-orange-500">{"*"}</span>}
+        </div>
+      ) : null}
       <div className="flex flex-row items-center gap-2">
         {options.map(option => (
           <div className="flex" key={option.value}>

@@ -1,4 +1,4 @@
-import React, { FocusEventHandler, KeyboardEventHandler, memo, PropsWithChildren } from "react";
+import React, { FocusEventHandler, KeyboardEventHandler, memo, PropsWithChildren, ReactNode } from "react";
 import { UseFormRegisterReturn } from "react-hook-form";
 import LoaderIcon from "src/assets/icons/Loader";
 import ImageCard, { BackgroundNoise, BackgroundPosition, BackgroundSize } from "src/components/ImageCard";
@@ -12,7 +12,7 @@ import { viewportConfig } from "src/config";
 import { InputErrorDisplay } from "./types";
 
 type PropsType = {
-  label?: string;
+  label?: ReactNode;
   type: string;
   placeholder?: string;
   value?: string | number;
@@ -42,7 +42,6 @@ enum InputErrorType {
   Pattern = "pattern",
   Validate = "validate",
 }
-
 const View: React.FC<PropsType> = ({
   label,
   type = "text",
@@ -58,7 +57,6 @@ const View: React.FC<PropsType> = ({
   suffixComponent,
   inputClassName,
   showValidationErrors,
-  requiredForPayment,
   withMargin,
   children,
   negativeZIndex = false,
@@ -78,12 +76,7 @@ const View: React.FC<PropsType> = ({
         "mb-6": withMargin,
       })}
     >
-      {label && (
-        <div className="text-sm font-medium tracking-tight">
-          {label}
-          {requiredForPayment && <span className="pl-0.5 text-orange-500">{"*"}</span>}
-        </div>
-      )}
+      {label && <div className="flex justify-between text-sm font-medium tracking-tight">{label}</div>}
       <div
         className={cn("flex flex-col", {
           "gap-8": errorDisplay === InputErrorDisplay.Banner,
@@ -143,7 +136,6 @@ const View: React.FC<PropsType> = ({
             >
               <div className="flex flex-row justify-between px-6 py-5">
                 <div className="flex flex-row items-center justify-start gap-4 font-medium text-white">
-                  <ErrorWarningLine className="rounded-2xl bg-white/10 px-3 py-2.5 text-3xl" />
                   <div className="flex flex-col ">
                     <div className="text-lg">{error.message.toString()}</div>
                   </div>
