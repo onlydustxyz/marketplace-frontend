@@ -2,8 +2,8 @@ import { cn } from "src/utils/cn";
 
 import { GithubUser } from "src/__generated/graphql";
 import { ContributionIcon, variants as contributionIconVariants } from "src/components/Contribution/ContributionIcon";
+import ExternalLink from "src/components/ExternalLink";
 import { GithubLoginLink } from "src/components/GithubLoginLink/GithubLoginLink";
-import { Link } from "src/components/Link/Link";
 import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
 import { useAuth } from "src/hooks/useAuth";
 import { useContributorProfilePanel } from "src/hooks/useContributorProfilePanel";
@@ -79,9 +79,9 @@ export function ContributionBadge({
             <div className="flex gap-2">
               <ContributionIcon type={type} status={status} />
               <div className="flex flex-col items-start gap-2">
-                <Link href={url} className="text-sm font-medium leading-4 text-greyscale-50 hover:underline">
-                  <span>#{number}</span> • <span>{title}</span>
-                </Link>
+                <span className="text-sm font-medium leading-4">
+                  <ExternalLink url={url} text={`#${number} • ${title}`} />
+                </span>
                 {description ? <p className="text-xs text-spaceBlue-200">{description}</p> : null}
               </div>
             </div>
