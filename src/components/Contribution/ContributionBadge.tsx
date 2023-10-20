@@ -79,7 +79,7 @@ export function ContributionBadge({
             <div className="flex gap-2">
               <ContributionIcon type={type} status={status} />
               <div className="flex flex-col items-start gap-2">
-                <Link href={url} className="text-sm font-semibold leading-4 text-greyscale-50 hover:underline">
+                <Link href={url} className="text-sm font-medium leading-4 text-greyscale-50 hover:underline">
                   <span>#{number}</span> • <span>{title}</span>
                 </Link>
                 {description ? <p className="text-xs text-spaceBlue-200">{description}</p> : null}
