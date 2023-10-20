@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import { useFormContext } from "react-hook-form";
-import View from "./View";
+import View from "./ProfileRadioGroupView";
 
 type Option = {
   value: string;
@@ -12,17 +12,10 @@ type Props = {
   name: string;
   label?: string;
   options: Option[];
-  withMargin?: boolean;
   requiredForPayment?: boolean;
 };
 
-export default function ProfileRadioGroup({
-  name,
-  label,
-  options,
-  withMargin = true,
-  requiredForPayment = false,
-}: Props) {
+export default function ProfileRadioGroup({ name, label, options, requiredForPayment = false }: Props) {
   const { register } = useFormContext();
-  return <View {...{ options, withMargin, label, register: register(name), requiredForPayment }} />;
+  return <View {...{ options, label, register: register(name), requiredForPayment }} />;
 }

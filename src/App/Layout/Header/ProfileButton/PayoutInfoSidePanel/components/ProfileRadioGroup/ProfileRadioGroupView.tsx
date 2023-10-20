@@ -1,7 +1,6 @@
 import { ReactElement } from "react";
 import { UseFormRegisterReturn } from "react-hook-form";
 import { FormOption, Size as FormOptionSize } from "src/components/FormOption/FormOption";
-import { cn } from "src/utils/cn";
 
 type Option = {
   value: string;
@@ -12,22 +11,19 @@ type Option = {
 type PropsType = {
   label?: string;
   options: Option[];
-  withMargin?: boolean;
   register?: UseFormRegisterReturn;
   requiredForPayment: boolean;
 };
 
-export default function View({ label, options, withMargin = true, register, requiredForPayment }: PropsType) {
+export default function View({ label, options, register, requiredForPayment }: PropsType) {
   return (
-    <label
-      className={cn("flex flex-col", {
-        "gap-2": withMargin,
-      })}
-    >
-      <div className="text-sm font-medium tracking-tight text-greyscale-300">
-        {label}
-        {requiredForPayment && <span className="pl-0.5 text-orange-500">{"*"}</span>}
-      </div>
+    <label className="flex flex-col gap-2">
+      {label ? (
+        <div className="text-sm font-medium tracking-tight text-greyscale-300">
+          {label}
+          {requiredForPayment && <span className="pl-0.5 text-orange-500">{"*"}</span>}
+        </div>
+      ) : null}
       <div className="flex flex-row items-center gap-2">
         {options.map(option => (
           <div className="flex" key={option.value}>
