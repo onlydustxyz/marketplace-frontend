@@ -29,6 +29,10 @@ export function ContributionBadge({
   withTooltip = true,
   asLink = false,
   size = ContributionBadgeSizes.Sm,
+  tooltipProps = {
+    position: TooltipPosition.TopEnd,
+    variant: Variant.Blue,
+  },
 }: {
   id: string;
   number: number;
@@ -41,6 +45,7 @@ export function ContributionBadge({
   withTooltip?: boolean;
   asLink?: boolean;
   size?: ContributionBadgeSizes;
+  tooltipProps?: React.ComponentProps<typeof Tooltip>;
 }) {
   const Component = asLink ? "a" : "div";
   const ComponentProps = asLink ? { href: url, target: "_blank", rel: "noopener noreferrer" } : {};
@@ -60,7 +65,7 @@ export function ContributionBadge({
   return (
     <>
       {withTooltip ? (
-        <Tooltip id={tooltipId} clickable position={TooltipPosition.TopEnd} variant={Variant.Blue}>
+        <Tooltip id={tooltipId} clickable {...tooltipProps}>
           <div className="flex flex-col gap-4 px-1 py-2">
             {isExternal ? (
               <div className="flex font-medium">

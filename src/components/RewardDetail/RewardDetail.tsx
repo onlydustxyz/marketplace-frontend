@@ -8,6 +8,7 @@ import { ContributionIcon } from "src/components/Contribution/ContributionIcon";
 import { ContributionLinked } from "src/components/Contribution/ContributionLinked";
 import { SpinningLogo } from "src/components/Loader/SpinningLogo";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
+import { TooltipPosition, Variant } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowRightUpLine from "src/icons/ArrowRightUpLine";
 import DiscussLine from "src/icons/DiscussLine";
@@ -133,7 +134,13 @@ export function RewardDetail({
                       <ArrowRightUpLine className="text-base leading-none" />
                       {T("rewards.panel.contribution.linkedTo")}
                     </div>
-                    <ContributionLinked contribution={contribution} withTooltip={false} asLink />
+                    <ContributionLinked
+                      contribution={contribution}
+                      tooltipProps={{
+                        position: TooltipPosition.TopEnd,
+                        variant: Variant.Default,
+                      }}
+                    />
                   </div>
                 </div>
               </div>

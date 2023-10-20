@@ -9,10 +9,15 @@ export function ContributionLinked({
   contribution,
   withTooltip = true,
   asLink = false,
+  tooltipProps = {
+    position: TooltipPosition.TopEnd,
+    variant: Variant.Blue,
+  },
 }: {
   contribution: Pick<QueryContribution, "githubCodeReview" | "githubIssue" | "githubPullRequest" | "type" | "id">;
   withTooltip?: boolean;
   asLink?: boolean;
+  tooltipProps?: React.ComponentProps<typeof Tooltip>;
 }) {
   const { id, type, githubCodeReview, githubIssue, githubPullRequest } = contribution;
 
@@ -39,6 +44,7 @@ export function ContributionLinked({
                     url={htmlUrl ?? ""}
                     withTooltip={withTooltip}
                     asLink={asLink}
+                    tooltipProps={tooltipProps}
                   />
                 );
               })}
@@ -70,6 +76,7 @@ export function ContributionLinked({
                     author={author as GithubUser}
                     withTooltip={withTooltip}
                     asLink={asLink}
+                    tooltipProps={tooltipProps}
                   />
                 );
               })}
@@ -90,6 +97,7 @@ export function ContributionLinked({
                     author={reviewer as GithubUser}
                     withTooltip={withTooltip}
                     asLink={asLink}
+                    tooltipProps={tooltipProps}
                   />
                 );
               })}
@@ -117,6 +125,7 @@ export function ContributionLinked({
               url={htmlUrl ?? ""}
               withTooltip={withTooltip}
               asLink={asLink}
+              tooltipProps={tooltipProps}
             />
           );
         }
@@ -134,7 +143,7 @@ export function ContributionLinked({
     const tooltipId = `${id}-linked-tooltip`;
     return (
       <>
-        <Tooltip id={tooltipId} clickable position={TooltipPosition.Top} variant={Variant.Blue}>
+        <Tooltip id={tooltipId} clickable {...tooltipProps}>
           <div className="flex items-center gap-1">{renderBadges({ withTooltip: false, asLink: true })}</div>
         </Tooltip>
         <div
