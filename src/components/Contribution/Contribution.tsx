@@ -57,7 +57,7 @@ export function Contribution({ contribution, isMobile = false }: Props) {
         "items-center": !isMobile,
       })}
     >
-      <div className="flex min-w-0 items-center gap-1">
+      <div className="flex min-w-0 items-center gap-2">
         <ContributionBadge
           id={id ?? ""}
           number={number}
