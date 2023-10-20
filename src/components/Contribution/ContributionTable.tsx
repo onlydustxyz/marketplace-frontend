@@ -163,7 +163,7 @@ export function ContributionTable({
         {contributions?.map(contribution => {
           return (
             <div
-              key={contribution.id}
+              key={`${contribution.id}-${contribution.project?.id}`}
               className={cn("rounded-xl", {
                 "bg-whiteFakeOpacity-5/95 lg:bg-none": !fullTable,
               })}
@@ -218,18 +218,18 @@ export function ContributionTable({
     }
 
     return memoizedContributions?.map(contribution => {
+      const lineId = `${contribution.id}-${contribution.project?.id}`;
       const lineDate = status === GithubContributionStatus.InProgress ? contribution.createdAt : contribution.closedAt;
-
       const { status: contributionStatus } = contribution.githubPullRequest ??
         contribution.githubIssue ??
         contribution.githubCodeReview ?? { status: GithubPullRequestStatus.Open };
       const { draft } = contribution?.githubPullRequest ?? {};
 
       return (
-        <Line key={contribution.id}>
+        <Line key={lineId}>
           <Cell height={CellHeight.Compact}>
             <ContributionDate
-              id={contribution.id ?? ""}
+              id={lineId}
               type={contribution.type as GithubContributionType}
               status={draft ? GithubPullRequestDraft.Draft : (contributionStatus as GithubItemStatus)}
               date={new Date(lineDate)}
