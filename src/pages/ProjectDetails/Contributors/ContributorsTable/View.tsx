@@ -23,6 +23,9 @@ export type Sorting = {
 
 type Props = {
   contributors: ContributorT[];
+  fetchNextPage: () => void;
+  hasNextPage: boolean;
+  isFetchingNextPage: boolean;
   isProjectLeader: boolean;
   remainingBudget: number;
   onRewardGranted: (contributor: ContributorT) => void;
@@ -30,6 +33,9 @@ type Props = {
 
 export default function View({
   contributors,
+  fetchNextPage,
+  hasNextPage,
+  isFetchingNextPage,
   isProjectLeader,
   remainingBudget,
   onRewardGranted: onPaymentRequested,
@@ -52,6 +58,8 @@ export default function View({
     return sorting.ascending ? sorted : sorted.reverse();
   }, [sorting, contributors]);
 
+  console.log({ sortedContributors });
+
   return (
     <Card className="h-full">
       <Table
@@ -70,6 +78,11 @@ export default function View({
           />
         ))}
       </Table>
+      <div>
+        <button onClick={() => fetchNextPage()} disabled={!hasNextPage || isFetchingNextPage}>
+          {isFetchingNextPage ? "Loading more..." : hasNextPage ? "Load More" : "Nothing more to load"}
+        </button>
+      </div>
       <ToRewardDetailsTooltip />
     </Card>
   );

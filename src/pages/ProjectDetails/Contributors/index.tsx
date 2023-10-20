@@ -43,112 +43,86 @@ export default function Contributors() {
     projectId,
   });
 
-  console.log({ status, data, error, isFetching, isFetchingNextPage, fetchNextPage, hasNextPage });
+  const remainingBudget = project?.remainingUsdBudget;
+  const isRewardDisabled = remainingBudget < rates.hours || remainingBudget === 0;
+
+  // console.log({ status, data, error, isFetching, isFetchingNextPage, fetchNextPage, hasNextPage });
+
+  const contributors = data?.pages.flatMap(page => page.contributors);
+
+  console.log({ contributors });
+
+  // return (
+  //   <div>
+  //     {status === "pending" ? (
+  //       <p>Loading...</p>
+  //     ) : status === "error" ? (
+  //       <span>Error: {error.message}</span>
+  //     ) : (
+  //       <>
+  //         {data?.pages.map((page, index) => (
+  //           <React.Fragment key={index}>
+  //             {page?.contributors.map(contributor => (
+  //               <div key={contributor.githubUserId}>{contributor.githubUserId}</div>
+  //             ))}
+  //           </React.Fragment>
+  //         ))}
+  //         <div>
+  //           <button onClick={() => fetchNextPage()} disabled={!hasNextPage || isFetchingNextPage}>
+  //             {isFetchingNextPage ? "Loading more..." : hasNextPage ? "Load More" : "Nothing more to load"}
+  //           </button>
+  //         </div>
+  //         <div>{isFetching && !isFetchingNextPage ? "Background Updating..." : null}</div>
+  //       </>
+  //     )}
+  //   </div>
+  // );
 
   return (
-    <div>
-      {status === "pending" ? (
-        <p>Loading...</p>
-      ) : status === "error" ? (
-        <span>Error: {error.message}</span>
+    <>
+      <Title>
+        <div className="flex flex-row items-center justify-between gap-2">
+          {T("project.details.contributors.title")}
+          {isProjectLeader && !isFetching && (
+            <Button
+              size={ButtonSize.Sm}
+              disabled={isRewardDisabled}
+              onClick={() =>
+                navigate(
+                  generatePath(
+                    `${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Rewards}/${ProjectRewardsRoutePaths.New}`,
+                    {
+                      projectKey,
+                    }
+                  )
+                )
+              }
+              {...withTooltip(T("contributor.table.noBudgetLeft"), {
+                visible: isRewardDisabled,
+              })}
+            >
+              {isSm ? T("project.rewardButton.full") : T("project.rewardButton.short")}
+            </Button>
+          )}
+        </div>
+      </Title>
+      <ProjectLeadInvitation projectId={projectId} size={CalloutSizes.Large} />
+      {contributors?.length > 0 ? (
+        <ContributorsTable
+          {...{
+            contributors,
+            fetchNextPage,
+            hasNextPage,
+            isFetchingNextPage,
+            isProjectLeader,
+            remainingBudget,
+            projectId,
+            projectKey,
+          }}
+        />
       ) : (
-        <>
-          {data?.pages.map((page, index) => (
-            <React.Fragment key={index}>
-              {page?.contributors.map(contributor => (
-                <div key={contributor.githubUserId}>{contributor.githubUserId}</div>
-              ))}
-            </React.Fragment>
-          ))}
-          <div>
-            <button onClick={() => fetchNextPage()} disabled={!hasNextPage || isFetchingNextPage}>
-              {isFetchingNextPage ? "Loading more..." : hasNextPage ? "Load More" : "Nothing more to load"}
-            </button>
-          </div>
-          <div>{isFetching && !isFetchingNextPage ? "Background Updating..." : null}</div>
-        </>
+        <ContributorsTableFallback projectName={project?.name} />
       )}
-    </div>
+    </>
   );
-
-  // const [pageIndex, setPageIndex] = useState(0);
-  // const [pageSize, setPageSize] = useState(10);
-
-  // const queryParams = useMemo(
-  //   () => [
-  //     { key: "page_index", value: [pageIndex] },
-  //     { key: "page_size", value: [pageSize] },
-  //   ],
-  //   [pageIndex, pageSize]
-  // );
-
-  // const { data, isLoading, isError } = useRestfulData({
-  //   resourcePath: ApiResourcePaths.GET_PROJECT_CONTRIBUTORS,
-  //   pathParam: projectId,
-  //   queryParams,
-  //   method: "GET",
-  // });
-
-  // if (isLoading) return <div>Loading...</div>;
-
-  // if (isError) return <div>Error...</div>;
-
-  // if (!data) return <div>No data</div>;
-
-  // const { contributors, totalPageNumber, totalItemNumber, hasMore } = data as ContributorsT;
-
-  // const remainingBudget = project?.remainingUsdBudget;
-  // const isRewardDisabled = remainingBudget < rates.hours || remainingBudget === 0;
-
-  // return (
-  //   <>
-  //     <ul>
-  //       {data?.contributors?.map((contributor: ContributorT) => (
-  //         <li key={contributor.githubUserId}>
-  //           <span>githubUserId: {contributor.githubUserId}</span>
-  //           <span>login: {contributor.login}</span>
-  //           <span>earned: {contributor.earned}</span>
-  //         </li>
-  //       ))}
-  //     </ul>
-  //     {hasMore && <button onClick={() => setPageIndex(pageIndex + 1)}>Show More</button>}
-  //   </>
-  // );
-
-  // return (
-  //   <>
-  //     <Title>
-  //       <div className="flex flex-row items-center justify-between gap-2">
-  //         {T("project.details.contributors.title")}
-  //         {isProjectLeader && !isLoading && (
-  //           <Button
-  //             size={ButtonSize.Sm}
-  //             disabled={isRewardDisabled}
-  //             onClick={() =>
-  //               navigate(
-  //                 generatePath(
-  //                   `${RoutePaths.ProjectDetails}/${ProjectRoutePaths.Rewards}/${ProjectRewardsRoutePaths.New}`,
-  //                   {
-  //                     projectKey,
-  //                   }
-  //                 )
-  //               )
-  //             }
-  //             {...withTooltip(T("contributor.table.noBudgetLeft"), {
-  //               visible: isRewardDisabled,
-  //             })}
-  //           >
-  //             {isSm ? T("project.rewardButton.full") : T("project.rewardButton.short")}
-  //           </Button>
-  //         )}
-  //       </div>
-  //     </Title>
-  //     <ProjectLeadInvitation projectId={projectId} size={CalloutSizes.Large} />
-  //     {contributors?.length > 0 ? (
-  //       <ContributorsTable {...{ contributors, isProjectLeader, remainingBudget, projectId, projectKey }} />
-  //     ) : (
-  //       <ContributorsTableFallback projectName={project?.name} />
-  //     )}
-  //   </>
-  // );
 }

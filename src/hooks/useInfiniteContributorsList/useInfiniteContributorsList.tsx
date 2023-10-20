@@ -21,6 +21,9 @@ export function useInfiniteContributors({
     },
   };
 
+  function getEndpointUrl() {}
+  function getOptions() {}
+
   return useInfiniteQuery({
     queryKey: ["contributors"],
     queryFn: ({ pageParam }) => fetch(`${url}?page_index=${pageParam}&page_size=15`, option).then(res => res.json()),

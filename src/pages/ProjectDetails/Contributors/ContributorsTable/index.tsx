@@ -10,12 +10,23 @@ import { ContributorT } from "src/types";
 
 type Props = {
   contributors: ContributorT[];
+  fetchNextPage: () => void;
+  hasNextPage: boolean;
+  isFetchingNextPage: boolean;
   isProjectLeader: boolean;
   remainingBudget: number;
   projectKey: string;
 };
 
-export default function ContributorsTable({ contributors, isProjectLeader, remainingBudget, projectKey }: Props) {
+export default function ContributorsTable({
+  contributors,
+  fetchNextPage,
+  hasNextPage,
+  isFetchingNextPage,
+  isProjectLeader,
+  remainingBudget,
+  projectKey,
+}: Props) {
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
   const navigate = useNavigate();
@@ -41,6 +52,9 @@ export default function ContributorsTable({ contributors, isProjectLeader, remai
     <View
       {...{
         contributors,
+        fetchNextPage,
+        hasNextPage,
+        isFetchingNextPage,
         isProjectLeader,
         remainingBudget,
         onRewardGranted: onPaymentRequested,
