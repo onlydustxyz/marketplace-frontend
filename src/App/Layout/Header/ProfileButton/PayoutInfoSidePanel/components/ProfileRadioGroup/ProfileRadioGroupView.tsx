@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import { UseFormRegisterReturn } from "react-hook-form";
-import { FormOption, Size as FormOptionSize } from "src/components/FormOption/FormOption";
+import { FormOption, Size as FormOptionSize, Variant } from "src/components/FormOption/FormOption";
 
 type Option = {
   value: string;
@@ -34,6 +34,7 @@ export default function View({ label, options, register, requiredForPayment }: P
               data-testid={option.value}
               htmlFor={option.value}
               size={FormOptionSize.Md}
+              variant={Variant.Transparent}
             >
               {option.icon}
               {option.label}

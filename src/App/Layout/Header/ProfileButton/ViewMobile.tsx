@@ -69,7 +69,7 @@ export default function ViewMobile({
           {!hideProfileItems && (
             <>
               {githubUserId || hasRewards ? (
-                <div className="flex flex-col">
+                <>
                   <NavLink
                     to={RoutePaths.Projects}
                     onClick={() => setPanelOpen(false)}
@@ -103,7 +103,7 @@ export default function ViewMobile({
                       <ExchangeDollarLine className="text-xl" /> {T("navbar.rewards")}
                     </NavLink>
                   ) : null}
-                </div>
+                </>
               ) : null}
 
               <>

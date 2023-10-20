@@ -5,6 +5,8 @@ import { cn } from "src/utils/cn";
 
 export enum TooltipPosition {
   Top = "top",
+  TopStart = "top-start",
+  TopEnd = "top-end",
   Bottom = "bottom",
   Left = "left",
   Right = "right",
@@ -57,7 +59,7 @@ export default function Tooltip({
       anchorSelect={anchorSelect}
       delayShow={delayShow}
       className={cn(
-        "z-50 rounded-lg px-3 py-2 text-center font-walsheim text-xs font-normal text-greyscale-50 opacity-100",
+        "opaque z-50 rounded-lg px-3 py-2 text-center font-walsheim text-sm font-normal text-greyscale-50",
         variants[variant],
         className
       )}

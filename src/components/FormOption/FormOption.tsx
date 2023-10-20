@@ -9,6 +9,7 @@ export enum Size {
 
 export enum Variant {
   Default = "default",
+  Transparent = "transparent",
   Active = "active",
 }
 
@@ -42,6 +43,7 @@ export function FormOption<T extends ElementType = "div">({
 
         {
           "border-greyscale-50/8 bg-white/8": variant === Variant.Default,
+          "border-greyscale-50/8": variant === Variant.Transparent,
           "border-spacePurple-500 bg-spacePurple-900 outline-double outline-1 outline-spacePurple-500":
             variant === Variant.Active,
         },
