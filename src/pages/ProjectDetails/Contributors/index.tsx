@@ -23,6 +23,8 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { useTokenSet } from "src/hooks/useTokenSet";
 import React from "react";
 import { useInfiniteContributors } from "src/hooks/useInfiniteContributorsList/useInfiniteContributorsList";
+import { e } from "vitest/dist/index-5aad25c1";
+import ErrorFallback from "src/ErrorFallback";
 
 type OutletContext = {
   project: Project;
@@ -42,39 +44,15 @@ export default function Contributors() {
   const remainingBudget = project?.remainingUsdBudget;
   const isRewardDisabled = remainingBudget < rates.hours || remainingBudget === 0;
 
-  const { status, data, error, isFetching, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteContributors({
+  const { data, error, isFetching, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteContributors({
     projectId,
   });
 
+  if (error) {
+    return <ErrorFallback />;
+  }
+
   const contributors = data?.pages.flatMap(page => page.contributors) || [];
-
-  console.log(data);
-
-  // return (
-  //   <div>
-  //     {status === "pending" ? (
-  //       <p>Loading...</p>
-  //     ) : status === "error" ? (
-  //       <span>Error: {error.message}</span>
-  //     ) : (
-  //       <>
-  //         {data?.pages.map((page, index) => (
-  //           <React.Fragment key={index}>
-  //             {page?.contributors.map(contributor => (
-  //               <div key={contributor.githubUserId}>{contributor.githubUserId}</div>
-  //             ))}
-  //           </React.Fragment>
-  //         ))}
-  //         <div>
-  //           <button onClick={() => fetchNextPage()} disabled={!hasNextPage || isFetchingNextPage}>
-  //             {isFetchingNextPage ? "Loading more..." : hasNextPage ? "Load More" : "Nothing more to load"}
-  //           </button>
-  //         </div>
-  //         <div>{isFetching && !isFetchingNextPage ? "Background Updating..." : null}</div>
-  //       </>
-  //     )}
-  //   </div>
-  // );
 
   return (
     <>
@@ -105,7 +83,7 @@ export default function Contributors() {
         </div>
       </Title>
       <ProjectLeadInvitation projectId={projectId} size={CalloutSizes.Large} />
-      {contributors?.length > 0 ? (
+      {contributors?.length > 0 && (
         <ContributorsTable
           {...{
             contributors,
@@ -118,9 +96,8 @@ export default function Contributors() {
             projectKey,
           }}
         />
-      ) : (
-        <ContributorsTableFallback projectName={project?.name} />
       )}
+      {!isFetching && contributors?.length === 0 && <ContributorsTableFallback />}
     </>
   );
 }

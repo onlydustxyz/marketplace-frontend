@@ -58,8 +58,6 @@ export default function View({
     return sorting.ascending ? sorted : sorted.reverse();
   }, [sorting, contributors]);
 
-  console.log({ sortedContributors });
-
   return (
     <Card className="h-full">
       <Table
