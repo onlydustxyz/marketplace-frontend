@@ -29,7 +29,7 @@ export function getEndpointUrl({
   const basePath = `${scheme}${apiBasepath}`;
   const queryString = buildQueryString(queryParams);
   const finalResourcePath = resourcePath.replace("{{id}}", pathParam);
-  const pageQuery = pageParam ? `page_index=${pageParam}&page_size=${pageSize}` : "";
+  const pageQuery = pageParam != null ? `page_index=${pageParam}&page_size=${pageSize}` : "";
   const separator = queryString || pageQuery ? "?" : "";
   const ampersand = queryString && pageQuery ? "&" : "";
   return `${basePath}${finalResourcePath}${separator}${queryString}${ampersand}${pageQuery}`;

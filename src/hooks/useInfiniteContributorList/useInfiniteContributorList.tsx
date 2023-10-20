@@ -8,7 +8,7 @@ interface UseInfiniteContributorsProps {
   projectId: string;
 }
 
-export function useInfiniteContributors({
+export default function useInfiniteContributorList({
   projectId,
 }: UseInfiniteContributorsProps): UseInfiniteQueryResult<PagesData, unknown> {
   const options = useHttpOptions("GET");
@@ -25,7 +25,7 @@ export function useInfiniteContributors({
         }),
         options
       ).then(res => res.json()),
-    initialPageParam: 1,
+    initialPageParam: 0,
     getNextPageParam: lastPage => (lastPage?.hasMore ? lastPage.nextPageIndex : undefined),
   });
 }

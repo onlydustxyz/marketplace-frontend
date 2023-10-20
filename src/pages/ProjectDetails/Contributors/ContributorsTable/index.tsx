@@ -60,6 +60,14 @@ export default function ContributorsTable({
       }}
     />
   ) : (
-    <ViewMobile isProjectLeader={isProjectLeader} contributors={contributors} />
+    <ViewMobile
+      {...{
+        contributors,
+        fetchNextPage,
+        hasNextPage,
+        isFetchingNextPage,
+        isProjectLeader,
+      }}
+    />
   );
 }

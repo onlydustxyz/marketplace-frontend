@@ -7,6 +7,7 @@ import ContributorLine from "./Line";
 import { ContributorT } from "src/types";
 import Card from "src/components/Card";
 import { ToRewardDetailsTooltip } from "src/pages/ProjectDetails/Tooltips/ToRewardDetailsTooltip";
+import { ShowMore } from "src/components/Table/ShowMore";
 
 export enum Field {
   Login = "login",
@@ -76,11 +77,11 @@ export default function View({
           />
         ))}
       </Table>
-      <div>
-        <button onClick={() => fetchNextPage()} disabled={!hasNextPage || isFetchingNextPage}>
-          {isFetchingNextPage ? "Loading more..." : hasNextPage ? "Load More" : "Nothing more to load"}
-        </button>
-      </div>
+      {hasNextPage && (
+        <div className="pt-6">
+          <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} />
+        </div>
+      )}
       <ToRewardDetailsTooltip />
     </Card>
   );

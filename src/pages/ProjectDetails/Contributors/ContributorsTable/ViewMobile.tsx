@@ -5,13 +5,24 @@ import { Contributor as ContributorType } from "./View";
 import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import Medal2Fill from "src/icons/Medal2Fill";
 import StackLine from "src/icons/StackLine";
+import { ContributorT } from "src/types";
 
 type ViewMobileProps = {
-  contributors: ContributorType[];
+  contributors: ContributorT[];
+  fetchNextPage: () => void;
+  hasNextPage: boolean;
+  isFetchingNextPage: boolean;
+  isProjectLeader: boolean;
   isProjectLeader: boolean;
 };
 
-export function ViewMobile({ contributors, isProjectLeader }: ViewMobileProps) {
+export function ViewMobile({ 
+  contributors,
+  fetchNextPage,
+  hasNextPage,
+  isFetchingNextPage,
+  isProjectLeader,
+ }: ViewMobileProps) {
   return (
     <Card className="divide-y divide-greyscale-50/8 bg-whiteFakeOpacity-5" padded={false}>
       {contributors

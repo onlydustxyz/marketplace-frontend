@@ -4,16 +4,16 @@ import Cell, { CellHeight } from "src/components/Table/Cell";
 import { withTooltip } from "src/components/Tooltip";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import SendPlane2Line from "src/icons/SendPlane2Line";
-import { Contributor as ContributorType } from "./View";
 import { formatMoneyAmount } from "src/utils/money";
 import Contributor from "src/components/Contributor";
 import StackLine from "src/icons/StackLine";
+import { ContributorT } from "src/types";
 
 type Props = {
-  contributor: ContributorType;
+  contributor: ContributorT;
   isProjectLeader: boolean;
   isGivingRewardDisabled: boolean;
-  onRewardGranted: (contributor: ContributorType) => void;
+  onRewardGranted: (contributor: ContributorT) => void;
 };
 
 export default function ContributorLine({
@@ -36,24 +36,24 @@ export default function ContributorLine({
         {contributor.rewardCount || "-"}
       </Cell>
       <Cell height={CellHeight.Small} horizontalMargin={false}>{`${
-        contributor?.totalEarned ? formatMoneyAmount({ amount: contributor.totalEarned }) : "-"
+        contributor?.earned ? formatMoneyAmount({ amount: contributor.earned }) : "-"
       }`}</Cell>
       {isProjectLeader && (
         <Cell height={CellHeight.Small} horizontalMargin={false}>
-          {contributor.toRewardCount > 0 ? (
+          {contributor.contributionToRewardCount > 0 ? (
             <div
               id="to-reward-count"
               className="flex cursor-default items-center gap-1 rounded-full bg-spacePurple-900 px-1.5 py-1 text-spacePurple-400"
               data-tooltip-id="to-reward-details"
               data-tooltip-content={JSON.stringify({
-                unpaidPullRequestCount: contributor.unpaidPullRequestCount,
-                unpaidIssueCount: contributor.unpaidIssueCount,
-                unpaidCodeReviewCount: contributor.unpaidCodeReviewCount,
+                unpaidPullRequestCount: contributor.pullRequestToReward,
+                unpaidIssueCount: contributor.issueToReward,
+                unpaidCodeReviewCount: contributor.codeReviewToReward,
               })}
             >
               <StackLine />
 
-              <span className="font-walsheim font-medium">{contributor.toRewardCount}</span>
+              <span className="font-walsheim font-medium">{contributor.contributionToRewardCount}</span>
             </div>
           ) : (
             "-"

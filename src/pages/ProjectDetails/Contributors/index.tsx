@@ -22,7 +22,7 @@ import { useMemo, useState } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useTokenSet } from "src/hooks/useTokenSet";
 import React from "react";
-import { useInfiniteContributors } from "src/hooks/useInfiniteContributorsList/useInfiniteContributorsList";
+import useInfiniteContributorList from "src/hooks/useInfiniteContributorList/useInfiniteContributorList";
 import { e } from "vitest/dist/index-5aad25c1";
 import ErrorFallback from "src/ErrorFallback";
 
@@ -44,7 +44,7 @@ export default function Contributors() {
   const remainingBudget = project?.remainingUsdBudget;
   const isRewardDisabled = remainingBudget < rates.hours || remainingBudget === 0;
 
-  const { data, error, isFetching, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteContributors({
+  const { data, error, isFetching, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteContributorList({
     projectId,
   });
 
