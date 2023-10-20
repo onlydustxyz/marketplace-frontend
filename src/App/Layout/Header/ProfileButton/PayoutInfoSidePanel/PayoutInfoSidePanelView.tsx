@@ -20,7 +20,7 @@ import User3Line from "src/icons/User3Line";
 import { ETH_WALLET_OR_ENS_ADDRESS } from "src/utils/regex";
 import { CompanyFields } from "./components/FormFields/CompanyFields";
 import { FiatFields } from "./components/FormFields/FiatFields";
-import { IndividualFields } from "./components/FormFields/IndivualFields";
+import { IndividualFields } from "./components/FormFields/IndividualFields";
 import { LocationFields } from "./components/FormFields/LocationFields";
 import { OtherCryptoFields } from "./components/FormFields/OtherCryptoFields";
 import ProfileContent from "./components/ProfileContent";
