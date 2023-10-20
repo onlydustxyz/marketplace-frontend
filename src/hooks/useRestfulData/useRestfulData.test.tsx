@@ -4,6 +4,11 @@ import { TokenSetProvider } from "src/hooks/useTokenSet";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useRestfulData } from "./useRestfulData"; // Adjust the import path
 import React from "react";
+import { AuthProvider } from "src/hooks/useAuth";
+import { BrowserRouter as Router } from "react-router-dom";
+import { ImpersonationClaimsProvider } from "src/hooks/useImpersonationClaims";
+import { ToasterProvider } from "src/hooks/useToaster";
+import ApolloWrapper from "src/providers/ApolloWrapper";
 
 global.fetch = jest.fn(() =>
   Promise.resolve({
@@ -23,9 +28,19 @@ describe("useRestfulData", () => {
     (global.fetch as jest.Mock).mockClear();
 
     const wrapper: React.FC<WrapperProps> = ({ children }) => (
-      <TokenSetProvider>
-        <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-      </TokenSetProvider>
+      <Router>
+        <ImpersonationClaimsProvider>
+          <TokenSetProvider>
+            <ToasterProvider>
+              <ApolloWrapper>
+                <AuthProvider>
+                  <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+                </AuthProvider>
+              </ApolloWrapper>
+            </ToasterProvider>
+          </TokenSetProvider>
+        </ImpersonationClaimsProvider>
+      </Router>
     );
 
     const { result, waitFor } = renderHook(
@@ -52,9 +67,19 @@ describe("useRestfulData", () => {
     (global.fetch as jest.Mock).mockClear();
 
     const wrapper: React.FC<WrapperProps> = ({ children }) => (
-      <TokenSetProvider>
-        <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-      </TokenSetProvider>
+      <Router>
+        <ImpersonationClaimsProvider>
+          <TokenSetProvider>
+            <ToasterProvider>
+              <ApolloWrapper>
+                <AuthProvider>
+                  <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+                </AuthProvider>
+              </ApolloWrapper>
+            </ToasterProvider>
+          </TokenSetProvider>
+        </ImpersonationClaimsProvider>
+      </Router>
     );
 
     const { result, waitFor } = renderHook(

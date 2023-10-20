@@ -4,21 +4,9 @@ import { useMemo, useState } from "react";
 import { sortBy } from "lodash";
 import Headers from "./Headers";
 import ContributorLine from "./Line";
-import { Contributor as ContributorBase } from "src/types";
+import { ContributorT } from "src/types";
 import Card from "src/components/Card";
 import { ToRewardDetailsTooltip } from "src/pages/ProjectDetails/Tooltips/ToRewardDetailsTooltip";
-
-export type Contributor = ContributorBase & {
-  totalEarned: number;
-  contributionCount: number;
-  rewardCount: number;
-  unpaidPullRequestCount: number;
-  unpaidIssueCount: number;
-  unpaidCodeReviewCount: number;
-  paidContributionsCount: number;
-  toRewardCount: number;
-  unpaidMergedPullsCount: number;
-};
 
 export enum Field {
   Login = "login",
@@ -34,10 +22,10 @@ export type Sorting = {
 };
 
 type Props = {
-  contributors: Contributor[];
+  contributors: ContributorT[];
   isProjectLeader: boolean;
   remainingBudget: number;
-  onRewardGranted: (contributor: Contributor) => void;
+  onRewardGranted: (contributor: ContributorT) => void;
 };
 
 export default function View({

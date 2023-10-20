@@ -284,3 +284,24 @@ export type Reward = {
     };
   };
 };
+
+export type ContributorT = {
+  avatarUrl: string;
+  codeReviewToReward: number;
+  contributionCount: number;
+  contributionToRewardCount: number;
+  earned: number;
+  githubUserId: number;
+  issueToReward: number;
+  login: string;
+  pullRequestToReward: number;
+  rewardCount: number;
+};
+
+export type Contributors = {
+  contributors: ContributorT[];
+  totalItemNumber: number;
+  totalPageNumber: number;
+  nextPageIndex: number;
+  hasMore: boolean;
+};

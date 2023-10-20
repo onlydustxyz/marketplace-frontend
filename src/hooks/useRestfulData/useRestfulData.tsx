@@ -28,12 +28,12 @@ export function useRestfulData({
 }: UseRestfulDataProps) {
   const { isLoggedIn } = useAuth();
   const { tokenSet } = useTokenSet();
+
   const scheme = "https://";
   const apiBasepath = import.meta.env.VITE_ONLYDUST_API_BASEPATH;
   const queryString = buildQueryString(queryParams);
-  const url = `${scheme}${apiBasepath}${resourcePath}${pathParam ? `/${pathParam}` : ""}${
-    queryString ? `?${queryString}` : ""
-  }`;
+  const finalResourcePath = resourcePath.replace("{{id}}", pathParam);
+  const url = `${scheme}${apiBasepath}${finalResourcePath}${queryString ? `?${queryString}` : ""}`;
 
   const option = {
     method,
