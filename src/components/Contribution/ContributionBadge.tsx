@@ -2,11 +2,10 @@ import { cn } from "src/utils/cn";
 
 import { GithubUser } from "src/__generated/graphql";
 import { ContributionIcon, variants as contributionIconVariants } from "src/components/Contribution/ContributionIcon";
+import Contributor from "src/components/Contributor";
 import ExternalLink from "src/components/ExternalLink";
-import { GithubLoginLink } from "src/components/GithubLoginLink/GithubLoginLink";
 import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
 import { useAuth } from "src/hooks/useAuth";
-import { useContributorProfilePanel } from "src/hooks/useContributorProfilePanel";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowRightUpLine from "src/icons/ArrowRightUpLine";
 import { GithubContributionType, GithubItemStatus } from "src/types";
@@ -51,7 +50,6 @@ export function ContributionBadge({
   const ComponentProps = asLink ? { href: url, target: "_blank", rel: "noopener noreferrer" } : {};
   const { T } = useIntl();
   const { githubUserId } = useAuth();
-  const { open: openProfilePanel } = useContributorProfilePanel();
 
   const isExternal = author && githubUserId !== author.id;
   const tooltipId = `${id}-${number}-${type}-${status}`;
@@ -66,19 +64,20 @@ export function ContributionBadge({
     <>
       {withTooltip ? (
         <Tooltip id={tooltipId} clickable {...tooltipProps}>
-          <div className="flex flex-col gap-4 px-1 py-2">
+          <div className="flex flex-col gap-1">
             {isExternal ? (
-              <div className="flex font-medium">
+              <div className="flex items-center justify-center text-sm">
                 <span className="text-spaceBlue-200">{tokens[type]}</span>
-                &nbsp;
-                <button
-                  type="button"
-                  onClick={() => {
-                    openProfilePanel(author.id);
+
+                <Contributor
+                  className="ml-1 flex-row-reverse"
+                  contributor={{
+                    login: author?.login ?? "",
+                    avatarUrl: author?.avatarUrl ?? "",
+                    githubUserId: author?.id,
                   }}
-                >
-                  <GithubLoginLink author={author} />
-                </button>
+                  clickable
+                />
               </div>
             ) : null}
             <div className="flex gap-2">

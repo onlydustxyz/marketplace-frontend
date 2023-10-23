@@ -17,7 +17,7 @@ export function ContributionReward({ id, rewards }: { id: string; rewards: { pay
   return (
     <>
       <Tooltip id={tooltipId} clickable position={TooltipPosition.Top} variant={Variant.Blue}>
-        <div className="flex items-center gap-2 px-1 py-2">
+        <div className="flex items-center gap-2">
           <Medal2Fill className="text-sm leading-none text-orange-400" />
           <p className="text-sm font-medium leading-none">
             {T("contributions.tooltip.rewards")}&nbsp;

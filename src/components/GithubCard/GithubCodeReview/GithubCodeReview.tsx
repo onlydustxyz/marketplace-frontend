@@ -94,25 +94,21 @@ export default function GithubCodeReview({
               tooltipProps={{
                 variant: Variant.Default,
                 position: TooltipPosition.Bottom,
-                className: "p-0",
               }}
             />
           </div>
           <div className="flex flex-row items-center gap-1">
-            {
-              <ContributionDate
-                id={codeReview.id as string}
-                type={GithubContributionType.CodeReview}
-                status={getStatus(codeReview) as GithubCodeReviewStatus}
-                date={getCodeReviewStatusDate(codeReview)}
-                tooltipProps={{
-                  variant: Variant.Default,
-                  position: TooltipPosition.Bottom,
-                  className: "p-0",
-                }}
-                withIcon
-              />
-            }
+            <ContributionDate
+              id={codeReview.id as string}
+              type={GithubContributionType.CodeReview}
+              status={getStatus(codeReview) as GithubCodeReviewStatus}
+              date={getCodeReviewStatusDate(codeReview)}
+              tooltipProps={{
+                variant: Variant.Default,
+                position: TooltipPosition.Bottom,
+              }}
+              withIcon
+            />
           </div>
           <div className="flex flex-row items-center gap-1">
             <GitRepositoryLine />
