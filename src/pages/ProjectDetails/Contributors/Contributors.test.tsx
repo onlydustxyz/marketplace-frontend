@@ -1,14 +1,13 @@
-
-import { render, screen } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
-import Contributors from ".";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { TokenSetProvider } from "src/hooks/useTokenSet";
 import { AuthProvider } from "src/hooks/useAuth";
 import { ImpersonationClaimsProvider } from "src/hooks/useImpersonationClaims";
 import { ToasterProvider } from "src/hooks/useToaster";
 import ApolloWrapper from "src/providers/ApolloWrapper";
-import { useOutletContext } from "react-router-dom";
+import View from "src/pages/ProjectDetails/View";
+import { renderWithIntl } from "src/test/utils";
 
 const project = {
   id: "cdb45d97-13a6-4f71-8c8c-78917fc02649",
@@ -125,31 +124,30 @@ const project = {
   remainingUsdBudget: 99250.0,
 };
 
-// Create a client
 const queryClient = new QueryClient();
 
+describe("Contributors page", () => {
+  it("renders Contributors component", async () => {
+    renderWithIntl(
+      <MemoryRouter>
+        <ImpersonationClaimsProvider>
+          <ToasterProvider>
+            <TokenSetProvider>
+              <ApolloWrapper>
+                <AuthProvider>
+                  <QueryClientProvider client={queryClient}>
+                    <View project={project} loading={false} error={null} />
+                  </QueryClientProvider>
+                </AuthProvider>
+              </ApolloWrapper>
+            </TokenSetProvider>
+          </ToasterProvider>
+        </ImpersonationClaimsProvider>
+      </MemoryRouter>
+    );
 
-
-test("renders Contributors component", () => {
-  render(
-    <MemoryRouter>
-      <ImpersonationClaimsProvider>
-        <ToasterProvider>
-          <TokenSetProvider>
-            <ApolloWrapper>
-              <AuthProvider>
-                <QueryClientProvider client={queryClient}>
-                  <Contributors />
-                </QueryClientProvider>
-              </AuthProvider>
-            </ApolloWrapper>
-          </TokenSetProvider>
-        </ToasterProvider>
-      </ImpersonationClaimsProvider>
-    </MemoryRouter>
-  );
-
-  // Assuming "Contributors" is a text that should appear in your component
-  const linkElement = screen.getByText(/Contributors/i);
-  expect(linkElement).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.findByText("Contributors"));
+    });
+  });
 });
