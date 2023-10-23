@@ -15,9 +15,23 @@ import { CalloutSizes } from "src/components/ProjectLeadInvitation/ProjectLeadIn
 import { Project } from "src/types";
 import useInfiniteContributorList from "src/hooks/useInfiniteContributorList/useInfiniteContributorList";
 import ErrorFallback from "src/ErrorFallback";
+import { useMemo, useState } from "react";
 
 type OutletContext = {
   project: Project;
+};
+
+export enum Field {
+  ContributionCount = "CONTRIBUTION_COUNT",
+  TotalEarned = "EARNED",
+  Login = "LOGIN",
+  RewardCount = "REWARD_COUNT",
+  ToRewardCount = "TO_REWARD_COUNT",
+}
+
+export type Sorting = {
+  field: Field;
+  ascending: boolean;
 };
 
 export default function Contributors() {
@@ -34,8 +48,29 @@ export default function Contributors() {
   const remainingBudget = project?.remainingUsdBudget;
   const isRewardDisabled = remainingBudget < rates.hours || remainingBudget === 0;
 
+  const [sorting, setSorting] = useState({
+    field: isProjectLeader ? Field.ToRewardCount : Field.ContributionCount,
+    ascending: false,
+  });
+
+  const applySorting = (field: Field, ascending: boolean) =>
+    setSorting({ field, ascending: sorting.field === field ? !sorting.ascending : ascending });
+
+  const queryParams = useMemo(
+    () => [
+      ...(sorting
+        ? [
+            { key: "sort", value: [sorting.field] },
+            { key: "direction", value: [sorting.ascending ? "ASC" : "DESC"] },
+          ]
+        : []),
+    ],
+    [sorting]
+  );
+
   const { data, error, isFetching, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteContributorList({
     projectId,
+    queryParams,
   });
 
   if (error) {
@@ -84,6 +119,8 @@ export default function Contributors() {
             remainingBudget,
             projectId,
             projectKey,
+            sorting,
+            applySorting,
           }}
         />
       )}
