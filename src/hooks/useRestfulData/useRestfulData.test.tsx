@@ -2,7 +2,7 @@ import { renderHook } from "@testing-library/react-hooks";
 import { describe, expect, it } from "vitest";
 import { TokenSetProvider } from "src/hooks/useTokenSet";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useRestfulData } from "./useRestfulData"; // Adjust the import path
+import { useRestfulData } from "./useRestfulData";
 import React from "react";
 import { AuthProvider } from "src/hooks/useAuth";
 import { BrowserRouter as Router } from "react-router-dom";

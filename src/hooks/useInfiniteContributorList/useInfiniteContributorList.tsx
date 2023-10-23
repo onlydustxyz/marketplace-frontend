@@ -2,7 +2,7 @@ import { useInfiniteQuery, UseInfiniteQueryResult } from "@tanstack/react-query"
 import { PagesData } from "src/types";
 import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
 import { getEndpointUrl } from "src/utils/getEndpointUrl";
-import { useHttpOptions } from "src/hooks/useHttpOptions";
+import { useHttpOptions } from "src/hooks/useHttpOptions/useHttpOptions";
 
 interface UseInfiniteContributorsProps {
   projectId: string;

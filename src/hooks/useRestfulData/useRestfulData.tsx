@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useTokenSet } from "src/hooks/useTokenSet";
 import { useAuth } from "src/hooks/useAuth";
 import { getEndpointUrl } from "src/utils/getEndpointUrl";
-import { useHttpOptions } from "src/hooks/useHttpOptions";
+import { useHttpOptions } from "src/hooks/useHttpOptions/useHttpOptions";
 
 type QueryParam = {
   key: string;
