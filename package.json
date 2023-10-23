@@ -13,6 +13,7 @@
     "build-storybook": "storybook build",
     "chromatic": "npx chromatic --project-token=2118ca8bdd40",
     "generate": "graphql-codegen --config codegen/config.ts",
+    "gen:types": "openapi-typescript https://develop-api.onlydust.com/v3/api-docs --output ./src/__generated/api.d.ts",
     "postbuild": "scripts/upload-sourcemaps.sh",
     "dependency-cruiser": "depcruise --config .dependency-cruiser.js src",
     "update-languages": "scripts/generate-github-languages-file.sh"
@@ -106,6 +107,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-storybook": "^0.6.12",
     "jsdom": "^20.0.2",
+    "openapi-typescript": "^6.7.0",
     "postcss": "^8.4.21",
     "prettier": "^2.7.1",
     "prettier-plugin-tailwindcss": "^0.3.0",
