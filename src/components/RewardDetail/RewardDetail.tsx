@@ -7,6 +7,7 @@ import { ContributionBadge, ContributionBadgeSizes } from "src/components/Contri
 import { ContributionIcon } from "src/components/Contribution/ContributionIcon";
 import { ContributionLinked } from "src/components/Contribution/ContributionLinked";
 import { SpinningLogo } from "src/components/Loader/SpinningLogo";
+import { RewardCard } from "src/components/RewardDetail/RewardCard";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import { TooltipPosition, Variant } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
@@ -17,7 +18,7 @@ import TimeLine from "src/icons/TimeLine";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { getContributionInfo } from "src/utils/getContributionInfo";
 import { getGithubStatusToken } from "src/utils/getGithubStatusToken";
-import { RewardCard } from "./RewardCard";
+import { getNbLinkedContributions } from "src/utils/getNbLinkedContributions";
 
 export function RewardDetail({
   githubUserId,
@@ -67,6 +68,8 @@ export function RewardDetail({
     const { id, createdAt, closedAt, project, githubRepo, rewardItems } = contribution ?? {};
 
     const { number, type, status, title, author, htmlUrl, commentsCount } = getContributionInfo(contribution);
+
+    const nbLinkedContributions = getNbLinkedContributions(contribution);
 
     return (
       <div className="h-full font-walsheim">
@@ -129,18 +132,22 @@ export function RewardDetail({
                       <DiscussLine className="text-base leading-none" />
                       {T("comments", { count: commentsCount })}
                     </div>
-                    <div>|</div>
-                    <div className="flex items-center gap-1">
-                      <ArrowRightUpLine className="text-base leading-none" />
-                      {T("rewards.panel.contribution.linkedTo")}
-                    </div>
-                    <ContributionLinked
-                      contribution={contribution}
-                      tooltipProps={{
-                        position: TooltipPosition.TopEnd,
-                        variant: Variant.Default,
-                      }}
-                    />
+                    {nbLinkedContributions ? (
+                      <>
+                        <div>|</div>
+                        <div className="flex items-center gap-1">
+                          <ArrowRightUpLine className="text-base leading-none" />
+                          {T("rewards.panel.contribution.linkedTo")}
+                        </div>
+                        <ContributionLinked
+                          contribution={contribution}
+                          tooltipProps={{
+                            position: TooltipPosition.TopEnd,
+                            variant: Variant.Default,
+                          }}
+                        />
+                      </>
+                    ) : null}
                   </div>
                 </div>
               </div>
