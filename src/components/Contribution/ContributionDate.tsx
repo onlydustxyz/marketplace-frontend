@@ -72,14 +72,16 @@ export function ContributionDate({
         </div>
       </Tooltip>
 
-      <div data-tooltip-id={tooltipId} className="flex items-center gap-1 first-letter:uppercase">
+      <div data-tooltip-id={tooltipId} className="flex items-center gap-1">
         {withIcon ? (
           <>
             <ContributionIcon type={type} status={status} size={withIcon ? Sizes.xs : undefined} />
-            {T(getGithubStatusToken(type, status), { date: displayRelativeDate(date) })}
+            <span className="first-letter:uppercase">
+              {T(getGithubStatusToken(type, status), { date: displayRelativeDate(date) })}
+            </span>
           </>
         ) : (
-          displayRelativeDate(date)
+          <span className="first-letter:uppercase">{displayRelativeDate(date)}</span>
         )}
       </div>
     </>
