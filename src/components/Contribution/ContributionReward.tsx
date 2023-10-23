@@ -2,7 +2,7 @@ import { ContributionAttribute } from "src/components/Contribution/ContributionA
 import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
 import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
-import { useRewardDetailPanel } from "src/hooks/useRewardDetailPanel";
+import { useContributionDetailPanel } from "src/hooks/useContributionDetailPanel";
 import Medal2Fill from "src/icons/Medal2Fill";
 import { formatPaymentId } from "src/utils/formatPaymentId";
 
@@ -12,7 +12,7 @@ export function ContributionReward({ id, rewards }: { id: string; rewards: { pay
   const count = rewards.length;
   const tooltipId = `${id}-${rewards?.[0].paymentId ?? "rewards"}`;
 
-  const { open } = useRewardDetailPanel();
+  const { open } = useContributionDetailPanel();
 
   return (
     <>

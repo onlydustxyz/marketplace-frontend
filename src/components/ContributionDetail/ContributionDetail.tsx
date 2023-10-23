@@ -1,26 +1,27 @@
 import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
-import { ComponentProps } from "react";
 import { Link, generatePath } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import { GithubUser, useGetContributionRewardsQuery } from "src/__generated/graphql";
 import { ContributionBadge, ContributionBadgeSizes } from "src/components/Contribution/ContributionBadge";
 import { ContributionIcon } from "src/components/Contribution/ContributionIcon";
 import { ContributionLinked } from "src/components/Contribution/ContributionLinked";
+import { RewardCard } from "src/components/ContributionDetail/RewardCard";
 import { SpinningLogo } from "src/components/Loader/SpinningLogo";
-import { RewardCard } from "src/components/RewardDetail/RewardCard";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import { TooltipPosition, Variant } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
+import { useRewardDetailPanel } from "src/hooks/useRewardDetailPanel";
 import ArrowRightUpLine from "src/icons/ArrowRightUpLine";
 import DiscussLine from "src/icons/DiscussLine";
 import Medal2Fill from "src/icons/Medal2Fill";
 import TimeLine from "src/icons/TimeLine";
+import type { Reward } from "src/types";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { getContributionInfo } from "src/utils/getContributionInfo";
 import { getGithubStatusToken } from "src/utils/getGithubStatusToken";
 import { getNbLinkedContributions } from "src/utils/getNbLinkedContributions";
 
-export function RewardDetail({
+export function ContributionDetail({
   githubUserId,
   contributionId,
 }: {
@@ -28,6 +29,7 @@ export function RewardDetail({
   contributionId: string;
 }) {
   const { T } = useIntl();
+  const { open: openRewardPanel } = useRewardDetailPanel();
 
   const { data, loading, error } = useGetContributionRewardsQuery({
     variables: { githubUserId, contributionId },
@@ -166,7 +168,15 @@ export function RewardDetail({
                   return (
                     <RewardCard
                       key={rewardItem.paymentId}
-                      reward={rewardItem as ComponentProps<typeof RewardCard>["reward"]}
+                      reward={rewardItem as Reward}
+                      onClick={() => {
+                        if (rewardItem.paymentId) {
+                          openRewardPanel({
+                            rewardId: rewardItem.paymentId,
+                            recipientId: rewardItem.paymentRequest?.recipientId,
+                          });
+                        }
+                      }}
                     />
                   );
                 })}

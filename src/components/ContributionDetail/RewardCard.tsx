@@ -9,10 +9,11 @@ import { useRewardTimeWorked } from "src/hooks/useRewardTimeWorked";
 import CalendarEventLine from "src/icons/CalendarEventLine";
 import TimeLine from "src/icons/TimeLine";
 import { Reward } from "src/types";
+import { cn } from "src/utils/cn";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { formatPaymentId } from "src/utils/formatPaymentId";
 
-export function RewardCard({ reward }: { reward: Reward }) {
+export function RewardCard({ reward, onClick }: { reward: Reward; onClick?: () => void }) {
   const { T } = useIntl();
 
   const { open: openProfilePanel } = useContributorProfilePanel();
@@ -29,7 +30,13 @@ export function RewardCard({ reward }: { reward: Reward }) {
   const { status: payoutStatus, invoiceNeeded, payoutInfoMissing } = usePayoutStatus(reward);
 
   return (
-    <article className="flex flex-col gap-3 rounded-xl border border-greyscale-50/8 bg-white/2 p-4 font-walsheim shadow-lg">
+    <article
+      className={cn(
+        "flex flex-col gap-3 rounded-xl border border-greyscale-50/8 bg-white/2 p-4 font-walsheim shadow-lg",
+        onClick ? "cursor-pointer hover:bg-white/5" : ""
+      )}
+      onClick={onClick}
+    >
       <div className="flex items-start justify-between">
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-1 text-xs leading-none text-greyscale-300">
@@ -62,7 +69,8 @@ export function RewardCard({ reward }: { reward: Reward }) {
           <button
             type="button"
             className="text-spacePurple-300 hover:text-spacePurple-200"
-            onClick={() => {
+            onClick={e => {
+              e.stopPropagation();
               openProfilePanel(requestor.githubUserId);
             }}
           >
