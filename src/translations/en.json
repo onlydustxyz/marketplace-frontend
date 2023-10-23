@@ -841,6 +841,5 @@
   "dataFetching": {
     "dataContext": "This component must be used within a DataSwitch component"
   },
-  "showMore": "Show more",
-  "nothingMoreToSHow": "Nothing more to show"
+  "showMore": "Show more"
 }
