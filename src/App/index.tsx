@@ -25,11 +25,18 @@ import TermsAndConditions from "src/pages/TermsAndConditions";
 import { CustomUserRole, HasuraUserRole } from "src/types";
 import { parseFlag } from "src/utils/parseFlag";
 import useReloadOnNewRelease from "./useReloadOnNewRelease";
+import {
+  ProjectCreationPage,
+  GithubOrganizationPage,
+  GithubRepositoryPage,
+  ProjectInformationsPage,
+} from "src/pages/ProjectCreation";
 
 export enum RoutePaths {
   Home = "/",
   Projects = "/",
   Login = "/login",
+  ProjectCreation = "/p/create",
   ProjectDetails = "/p/:projectKey",
   Rewards = "/rewards",
   CatchAll = "*",
@@ -134,6 +141,27 @@ function App() {
         {
           path: RoutePaths.Login,
           element: <Login />,
+        },
+        {
+          path: RoutePaths.ProjectCreation,
+          children: [
+            {
+              index: true,
+              element: <ProjectCreationPage />,
+            },
+            {
+              path: "organizations",
+              element: <GithubOrganizationPage />,
+            },
+            {
+              path: "repository",
+              element: <GithubRepositoryPage />,
+            },
+            {
+              path: "informations",
+              element: <ProjectInformationsPage />,
+            },
+          ],
         },
         {
           path: RoutePaths.ProjectDetails,
