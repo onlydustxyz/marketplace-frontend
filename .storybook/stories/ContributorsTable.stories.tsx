@@ -1,6 +1,7 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import ContributorsTable, { Contributor } from "src/pages/ProjectDetails/Contributors/ContributorsTable/View";
+import ContributorsTable from "src/pages/ProjectDetails/Contributors/ContributorsTable/View";
 import withContributorProfilePanelProvider from "../decorators/withContributorProfilePanelProvider";
+import { ContributorT } from "src/types";
 
 export default {
   title: "ContributorsTable",
@@ -8,50 +9,42 @@ export default {
   decorators: [withContributorProfilePanelProvider],
 } as ComponentMeta<typeof ContributorsTable>;
 
-const mockContributors: Contributor[] = [
+const mockContributors: ContributorT[] = [
   {
-    githubUserId: 595505,
-    login: "ofux",
-    avatarUrl: "https://avatars.githubusercontent.com/u/595505?v=4",
-    userId: "user-1",
-    paidContributionsCount: 3,
-    totalEarned: 2000,
-    unpaidMergedPullsCount: 3,
-    contributionCount: 6,
-    rewardCount: 3,
-    unpaidPullRequestCount: 0,
-    unpaidIssueCount: 0,
-    unpaidCodeReviewCount: 0,
-    toRewardCount: 3,
-  },
-  {
-    githubUserId: 43467246,
-    login: "AnthonyBuisset",
-    avatarUrl: "https://avatars.githubusercontent.com/u/43467246?v=4",
-    userId: "user-2",
-    paidContributionsCount: 1,
-    totalEarned: 500,
-    unpaidMergedPullsCount: 10,
-    contributionCount: 11,
-    rewardCount: 10,
-    unpaidPullRequestCount: 0,
-    unpaidIssueCount: 0,
-    unpaidCodeReviewCount: 0,
-    toRewardCount: 3,
-  },
-  {
-    githubUserId: 34384633,
-    login: "tdelabro",
-    avatarUrl: "https://avatars.githubusercontent.com/u/34384633?v=4",
-    paidContributionsCount: 0,
-    totalEarned: 0,
-    unpaidMergedPullsCount: 0,
-    contributionCount: 0,
+    githubUserId: 33089347,
+    login: "97joseph",
+    avatarUrl: "https://avatars.githubusercontent.com/u/33089347?v=4",
+    contributionCount: 1,
     rewardCount: 0,
-    unpaidPullRequestCount: 0,
-    unpaidIssueCount: 0,
-    unpaidCodeReviewCount: 0,
-    toRewardCount: 0,
+    earned: null,
+    contributionToRewardCount: null,
+    pullRequestToReward: null,
+    issueToReward: null,
+    codeReviewToReward: null
+  },
+  {
+    githubUserId: 786640,
+    login: "aackerman",
+    avatarUrl: "https://avatars.githubusercontent.com/u/786640?v=4",
+    contributionCount: 1,
+    rewardCount: 0,
+    earned: 456,
+    contributionToRewardCount: 21,
+    pullRequestToReward: 10,
+    issueToReward: 3,
+    codeReviewToReward: 8
+  },
+  {
+    githubUserId: 4391003,
+    login: "aalness",
+    avatarUrl: "https://avatars.githubusercontent.com/u/4391003?v=4",
+    contributionCount: 1,
+    rewardCount: 0,
+    earned: 30,
+    contributionToRewardCount: null,
+    pullRequestToReward: null,
+    issueToReward: null,
+    codeReviewToReward: null
   },
 ];
 
@@ -61,6 +54,9 @@ const Template: ComponentStory<typeof ContributorsTable> = args => (
     isProjectLeader={args.isProjectLeader}
     remainingBudget={args.remainingBudget}
     onRewardGranted={Function.prototype()}
+    fetchNextPage={Function.prototype()}
+    hasNextPage={false}
+    isFetchingNextPage={false}
   />
 );
 

@@ -286,15 +286,15 @@ export type Reward = {
 };
 
 export type ContributorT = {
-  avatarUrl: string;
-  codeReviewToReward: number;
+  avatarUrl: string | null;
+  codeReviewToReward: number | null;
   contributionCount: number;
-  contributionToRewardCount: number; // not rewarded yet
-  earned: number;
+  contributionToRewardCount: number | null; // not rewarded yet
+  earned: number | null;
   githubUserId: number;
-  issueToReward: number;
+  issueToReward: number | null;
   login: string;
-  pullRequestToReward: number;
+  pullRequestToReward: number | null;
   rewardCount: number; // already rewarded
 };
 

@@ -7,7 +7,7 @@ import { cn } from "src/utils/cn";
 import { useContributorProfilePanel } from "src/hooks/useContributorProfilePanel";
 
 type Props = {
-  contributor: ContributorT;
+  contributor: Pick<ContributorT, "login" | "avatarUrl" | "githubUserId">;
   clickable?: boolean;
   className?: string;
 };

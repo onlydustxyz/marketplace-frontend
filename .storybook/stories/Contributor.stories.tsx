@@ -1,6 +1,6 @@
 import withContributorProfilePanelProvider from "../decorators/withContributorProfilePanelProvider";
 import Contributor from "src/components/Contributor";
-import { Contributor as ContributorType } from "src/types";
+import { ContributorT } from "src/types";
 
 export default {
   title: "Contributor",
@@ -8,10 +8,9 @@ export default {
   decorators: [withContributorProfilePanelProvider],
 };
 
-const contributor: ContributorType = {
+const contributor: Pick<ContributorT, "login" | "avatarUrl" | "githubUserId"> = {
   login: "ofux",
   avatarUrl: "https://avatars.githubusercontent.com/u/595505?v=4",
-  userId: "user-1",
   githubUserId: 595505,
 };
 

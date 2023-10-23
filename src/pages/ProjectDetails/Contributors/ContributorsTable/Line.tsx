@@ -40,7 +40,7 @@ export default function ContributorLine({
       }`}</Cell>
       {isProjectLeader && (
         <Cell height={CellHeight.Small} horizontalMargin={false}>
-          {contributor.contributionToRewardCount > 0 ? (
+          {contributor?.contributionToRewardCount && contributor?.contributionToRewardCount > 0 ? (
             <div
               id="to-reward-count"
               className="flex cursor-default items-center gap-1 rounded-full bg-spacePurple-900 px-1.5 py-1 text-spacePurple-400"
