@@ -5,7 +5,6 @@ import Tag from "src/components/Tag";
 import { useContributorProfilePanel } from "src/hooks/useContributorProfilePanel";
 import { useIntl } from "src/hooks/useIntl";
 import { usePayoutStatus } from "src/hooks/usePayoutStatus";
-import { useRewardDetailPanel } from "src/hooks/useRewardDetailPanel";
 import { useRewardTimeWorked } from "src/hooks/useRewardTimeWorked";
 import CalendarEventLine from "src/icons/CalendarEventLine";
 import TimeLine from "src/icons/TimeLine";
@@ -16,7 +15,6 @@ import { formatPaymentId } from "src/utils/formatPaymentId";
 export function RewardCard({ reward }: { reward: Reward }) {
   const { T } = useIntl();
 
-  const { close: closeRewardPanel } = useRewardDetailPanel();
   const { open: openProfilePanel } = useContributorProfilePanel();
 
   const {
@@ -65,7 +63,6 @@ export function RewardCard({ reward }: { reward: Reward }) {
             type="button"
             className="text-spacePurple-300 hover:text-spacePurple-200"
             onClick={() => {
-              closeRewardPanel();
               openProfilePanel(requestor.githubUserId);
             }}
           >
