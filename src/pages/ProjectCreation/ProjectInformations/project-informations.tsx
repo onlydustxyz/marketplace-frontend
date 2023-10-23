@@ -1,5 +1,6 @@
 import { Controller, useForm } from "react-hook-form";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
+import { FieldImage } from "src/components/New/Field/File";
 import { FieldInput } from "src/components/New/Field/Input";
 import { FieldTextarea } from "src/components/New/Field/Textarea";
 import InformationLine from "src/icons/InformationLine";
@@ -11,6 +12,7 @@ interface createProjectInformation {
   isLookingForContributors: string;
   longDescription: string;
   name: string;
+  image?: string;
   shortDescription: string;
 }
 
@@ -57,6 +59,11 @@ export const ProjectInformationsPage = () => {
                 name="longDescription"
                 control={control}
                 render={props => <FieldTextarea {...props.field} {...props.fieldState} label="Long description" />}
+              />
+              <Controller
+                name="image"
+                control={control}
+                render={props => <FieldImage {...props.field} {...props.fieldState} label="Long description" />}
               />
             </div>
           </div>
