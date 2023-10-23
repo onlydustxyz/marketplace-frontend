@@ -34,6 +34,7 @@ import {
 import { sortContributionsByLinked } from "src/utils/sortContributionsByLinked";
 import { sortContributionsByNumber } from "src/utils/sortContributionsByNumber";
 import { useMediaQuery } from "usehooks-ts";
+import { ContributionTableSkeleton } from "./ContributionTableSkeleton";
 
 export enum TableColumns {
   Date = "date",
@@ -253,7 +254,9 @@ export function ContributionTable({
     });
   }
 
-  return (
+  return loading ? (
+    <ContributionTableSkeleton />
+  ) : (
     <section
       className={cn("overflow-hidden rounded-2xl border-greyscale-50/8", {
         "border bg-whiteFakeOpacity-5/95 shadow-2xl": fullTable,
