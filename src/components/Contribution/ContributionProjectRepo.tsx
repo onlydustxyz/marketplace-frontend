@@ -21,7 +21,7 @@ export function ContributionProjectRepo({
         size={ImageSize.Sm}
       />
 
-      <p className="text-sm">
+      <div className="text-sm">
         <Link
           to={generatePath(RoutePaths.ProjectDetails, {
             projectKey: project.key ?? "",
@@ -34,7 +34,7 @@ export function ContributionProjectRepo({
         <span className="inline-flex">
           <ExternalLink url={repo?.htmlUrl ?? ""} text={repo.name} />
         </span>
-      </p>
+      </div>
     </div>
   );
 }

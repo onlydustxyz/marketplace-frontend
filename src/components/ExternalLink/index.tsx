@@ -1,5 +1,4 @@
 import ExternalLinkLine from "src/icons/ExternalLinkLine";
-import { linkClickHandlerFactory } from "src/utils/clickHandler";
 
 type Props = {
   text?: string | null;
@@ -8,10 +7,10 @@ type Props = {
 
 export default function ExternalLink({ text, url }: Props) {
   return (
-    <div className={"group/link flex flex-row items-center gap-1 truncate hover:cursor-pointer"}>
-      <div className={"truncate group-hover/link:underline"} onClick={linkClickHandlerFactory(url)}>
+    <div className="group/link flex items-center gap-1 truncate">
+      <a href={url} target="_blank" className="truncate group-hover/link:underline" rel="noopener noreferrer">
         {text || url}
-      </div>
+      </a>
       <ExternalLinkLine className="invisible text-spacePurple-500 group-hover/link:visible" />
     </div>
   );
