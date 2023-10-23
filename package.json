@@ -13,7 +13,7 @@
     "build-storybook": "storybook build",
     "chromatic": "npx chromatic --project-token=2118ca8bdd40",
     "generate": "graphql-codegen --config codegen/config.ts",
-    "gen:types": "openapi-typescript https://develop-api.onlydust.com/v3/api-docs --output ./src/__generated/api.d.ts",
+    "gen:types": "scripts/generate-api-types.sh",
     "postbuild": "scripts/upload-sourcemaps.sh",
     "dependency-cruiser": "depcruise --config .dependency-cruiser.js src",
     "update-languages": "scripts/generate-github-languages-file.sh"
