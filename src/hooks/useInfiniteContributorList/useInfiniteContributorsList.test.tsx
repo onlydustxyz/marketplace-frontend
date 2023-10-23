@@ -70,7 +70,7 @@ describe("useInfiniteContributorList", () => {
     };
 
     expect(global.fetch).toHaveBeenCalledWith(
-      "https://undefined/api/v1/projects/123/contributors?page_index=0&page_size=15",
+      "https://develop-api.onlydust.com/api/v1/projects/123/contributors?page_index=0&page_size=15",
       options
     );
   });

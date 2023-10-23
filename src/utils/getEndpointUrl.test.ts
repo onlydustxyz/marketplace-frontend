@@ -9,6 +9,8 @@ describe("getEndpointUrl", () => {
       pageParam: 2,
       pageSize: 10,
     });
-    expect(url).toBe("https://undefined/api/v1/projects/123/contributors?status=active&page_index=2&page_size=10");
+    expect(url).toBe(
+      "https://develop-api.onlydust.com/api/v1/projects/123/contributors?status=active&page_index=2&page_size=10"
+    );
   });
 });

@@ -57,7 +57,7 @@ describe("useRestfulData", () => {
 
     expect(result.current.data).toEqual({ data: "mockData" });
 
-    expect(global.fetch).toHaveBeenCalledWith("https://undefined/test", {
+    expect(global.fetch).toHaveBeenCalledWith("https://develop-api.onlydust.com/test", {
       method: "GET",
       headers: {},
     });
@@ -95,7 +95,7 @@ describe("useRestfulData", () => {
 
     await waitFor(() => expect(result.current.isLoading).toBe(false));
 
-    expect(global.fetch).toHaveBeenCalledWith("https://undefined/test", {
+    expect(global.fetch).toHaveBeenCalledWith("https://develop-api.onlydust.com/test", {
       method: "DELETE",
       headers: {},
     });
