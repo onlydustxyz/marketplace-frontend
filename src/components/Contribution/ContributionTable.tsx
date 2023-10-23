@@ -9,7 +9,6 @@ import { ContributionCard } from "src/components/Contribution/ContributionCard";
 import { ContributionDate } from "src/components/Contribution/ContributionDate";
 import { ContributionLinked } from "src/components/Contribution/ContributionLinked";
 import { ContributionProjectRepo } from "src/components/Contribution/ContributionProjectRepo";
-import { SpinningLogo } from "src/components/Loader/SpinningLogo";
 import Table from "src/components/Table";
 import Cell, { CellHeight } from "src/components/Table/Cell";
 import HeaderCell, { HeaderCellWidth } from "src/components/Table/HeaderCell";
@@ -62,14 +61,6 @@ function TableText({ children }: PropsWithChildren) {
         </div>
       </td>
     </tr>
-  );
-}
-
-function Loader() {
-  return (
-    <div className="flex justify-center py-24">
-      <SpinningLogo />
-    </div>
   );
 }
 
@@ -127,10 +118,6 @@ export function ContributionTable({
   }, [contributions, sort]);
 
   function renderMobileContent() {
-    if (loading) {
-      return <Loader />;
-    }
-
     if (error) {
       return (
         <div className="py-6">
@@ -191,16 +178,6 @@ export function ContributionTable({
   }
 
   function renderDesktopContent() {
-    if (loading) {
-      return (
-        <tr>
-          <td colSpan={4} className="pt-6">
-            <Loader />
-          </td>
-        </tr>
-      );
-    }
-
     if (error) {
       return <TableText>{T("contributions.table.error")}</TableText>;
     }
