@@ -1,11 +1,11 @@
 import Card from "src/components/Card";
 import Contributor from "src/components/Contributor";
 import { formatMoneyAmount } from "src/utils/money";
-import { Contributor as ContributorType } from "./View";
 import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import Medal2Fill from "src/icons/Medal2Fill";
 import StackLine from "src/icons/StackLine";
 import { ContributorT } from "src/types";
+import { ShowMore } from "src/components/Table/ShowMore";
 
 type ViewMobileProps = {
   contributors: ContributorT[];
@@ -13,30 +13,29 @@ type ViewMobileProps = {
   hasNextPage: boolean;
   isFetchingNextPage: boolean;
   isProjectLeader: boolean;
-  isProjectLeader: boolean;
 };
 
-export function ViewMobile({ 
+export function ViewMobile({
   contributors,
   fetchNextPage,
   hasNextPage,
   isFetchingNextPage,
   isProjectLeader,
- }: ViewMobileProps) {
+}: ViewMobileProps) {
   return (
     <Card className="divide-y divide-greyscale-50/8 bg-whiteFakeOpacity-5" padded={false}>
       {contributors
         .sort((contributorA, contributorB) => contributorB.contributionCount - contributorA.contributionCount)
         .map(contributor => {
-          const { contributionCount, toRewardCount, rewardCount, login, totalEarned } = contributor || {};
-          const hasNothing = toRewardCount === 0 && contributionCount === 0;
+          const { contributionCount, contributionToRewardCount, rewardCount, login, earned } = contributor || {};
+          const hasNothing = contributionToRewardCount === 0 && contributionCount === 0;
 
           return (
             <div className="flex items-center justify-between gap-1 p-3" key={login}>
               <Contributor contributor={contributor} clickable />
               {!hasNothing ? (
                 <div className="flex items-center gap-3">
-                  {contributionCount > 0 && contributionCount !== toRewardCount ? (
+                  {contributionCount > 0 && contributionCount !== contributionToRewardCount ? (
                     <div className="flex items-center gap-1 text-sm">
                       <StackLine className="text-base font-medium text-spaceBlue-200" />
                       {contributionCount}
@@ -50,15 +49,15 @@ export function ViewMobile({
                       </div>
                       <div className="flex items-center gap-1 text-sm">
                         <MoneyDollarCircleLine className="text-base font-medium text-spaceBlue-200" />
-                        {`${totalEarned ? formatMoneyAmount({ amount: totalEarned }) : "-"}`}
+                        {`${earned ? formatMoneyAmount({ amount: earned }) : "-"}`}
                       </div>
                     </>
                   ) : null}
 
-                  {isProjectLeader && toRewardCount ? (
+                  {isProjectLeader && contributionToRewardCount ? (
                     <div className="flex items-center gap-1 rounded-full bg-spacePurple-900 px-1.5 py-0.5 text-sm font-medium text-spacePurple-400">
                       <StackLine className="text-base" />
-                      {toRewardCount}
+                      {contributionToRewardCount}
                     </div>
                   ) : null}
                 </div>
@@ -68,6 +67,11 @@ export function ViewMobile({
             </div>
           );
         })}
+      {hasNextPage && (
+        <div className="py-6">
+          <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} />
+        </div>
+      )}
     </Card>
   );
 }

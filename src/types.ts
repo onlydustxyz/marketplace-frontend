@@ -289,13 +289,13 @@ export type ContributorT = {
   avatarUrl: string;
   codeReviewToReward: number;
   contributionCount: number;
-  contributionToRewardCount: number;
+  contributionToRewardCount: number; // not rewarded yet
   earned: number;
   githubUserId: number;
   issueToReward: number;
   login: string;
   pullRequestToReward: number;
-  rewardCount: number;
+  rewardCount: number; // already rewarded
 };
 
 export type Contributors = {

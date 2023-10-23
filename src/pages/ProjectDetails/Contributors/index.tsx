@@ -4,9 +4,6 @@ import { useIntl } from "src/hooks/useIntl";
 import { useAuth } from "src/hooks/useAuth";
 import { generatePath, useNavigate, useOutletContext } from "react-router-dom";
 import Title from "src/pages/ProjectDetails/Title";
-import useProjectContributors from "src/hooks/useProjectContributors";
-import { useGetProjectDetailsQuery } from "src/__generated/graphql";
-import { contextWithCacheHeaders } from "src/utils/headers";
 import Button, { ButtonSize } from "src/components/Button";
 import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
 import { viewportConfig } from "src/config";
@@ -15,15 +12,8 @@ import ProjectLeadInvitation from "src/components/ProjectLeadInvitation/ProjectL
 import { withTooltip } from "src/components/Tooltip";
 import { rates } from "src/hooks/useWorkEstimation";
 import { CalloutSizes } from "src/components/ProjectLeadInvitation/ProjectLeadInvitationView";
-import { Project, Contributors as ContributorsT, ContributorT } from "src/types";
-import { useRestfulData } from "src/hooks/useRestfulData/useRestfulData";
-import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
-import { useMemo, useState } from "react";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { useTokenSet } from "src/hooks/useTokenSet";
-import React from "react";
+import { Project } from "src/types";
 import useInfiniteContributorList from "src/hooks/useInfiniteContributorList/useInfiniteContributorList";
-import { e } from "vitest/dist/index-5aad25c1";
 import ErrorFallback from "src/ErrorFallback";
 
 type OutletContext = {
