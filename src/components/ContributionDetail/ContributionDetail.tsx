@@ -6,7 +6,6 @@ import { ContributionBadge, ContributionBadgeSizes } from "src/components/Contri
 import { ContributionIcon } from "src/components/Contribution/ContributionIcon";
 import { ContributionLinked } from "src/components/Contribution/ContributionLinked";
 import { RewardCard } from "src/components/ContributionDetail/RewardCard";
-import { SpinningLogo } from "src/components/Loader/SpinningLogo";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import { TooltipPosition, Variant } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
@@ -20,6 +19,7 @@ import displayRelativeDate from "src/utils/displayRelativeDate";
 import { getContributionInfo } from "src/utils/getContributionInfo";
 import { getGithubStatusToken } from "src/utils/getGithubStatusToken";
 import { getNbLinkedContributions } from "src/utils/getNbLinkedContributions";
+import { ContributionDetailSkeleton } from "./ContributionDetailSkeleton";
 
 export function ContributionDetail({
   githubUserId,
@@ -41,8 +41,8 @@ export function ContributionDetail({
   function renderContent() {
     if (loading) {
       return (
-        <div className="flex h-full items-center justify-center">
-          <SpinningLogo />
+        <div className="absolute inset-0">
+          <ContributionDetailSkeleton />;
         </div>
       );
     }
