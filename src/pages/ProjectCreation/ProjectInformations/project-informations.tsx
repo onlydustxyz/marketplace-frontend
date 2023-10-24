@@ -4,6 +4,7 @@ import { FieldCombined } from "src/components/New/Field/Combined";
 import { FieldProjectLead } from "src/components/New/Field/Custom/ProjectLead/ProjectLead";
 import { FieldImage } from "src/components/New/Field/File";
 import { FieldInput } from "src/components/New/Field/Input";
+import { FieldSwitch } from "src/components/New/Field/Switch";
 import { FieldTextarea } from "src/components/New/Field/Textarea";
 import { Flex } from "src/components/New/Layout/Flex";
 import InformationLine from "src/icons/InformationLine";
@@ -14,7 +15,7 @@ interface createProjectInformation {
   githubRepoIds: string;
   projectLead: { invited: number[] };
   inviteGithubUserIdsAsProjectLeads: number[];
-  isLookingForContributors: string;
+  isLookingForContributors: boolean;
   longDescription: string;
   name: string;
   image?: string;
@@ -35,6 +36,7 @@ export const ProjectInformationsPage = () => {
         url: "test url",
         value: "test value",
       },
+      isLookingForContributors: true,
       projectLead: {
         invited: [456, 789],
       },
@@ -115,13 +117,25 @@ export const ProjectInformationsPage = () => {
               <Controller
                 name="projectLead"
                 control={control}
-                render={({ field: { onChange, value, name } }) => (
+                render={({ field: { value, name } }) => (
                   <FieldProjectLead
                     onChange={({ invited }) => {
                       setValue("inviteGithubUserIdsAsProjectLeads", invited, { shouldDirty: true });
                     }}
                     id={name}
                     value={value}
+                  />
+                )}
+              />
+              <Controller
+                name="isLookingForContributors"
+                control={control}
+                render={props => (
+                  <FieldSwitch
+                    {...props.field}
+                    {...props.fieldState}
+                    label="Accept new applications"
+                    switchLabel="Looking for contributors"
                   />
                 )}
               />
