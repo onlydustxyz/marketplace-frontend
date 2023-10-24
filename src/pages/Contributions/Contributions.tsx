@@ -110,8 +110,7 @@ export default function Contributions() {
       where: tableWhere({ status: GithubContributionStatus.InProgress }) as ContributionsBoolExp,
     },
     skip: !githubUserId || (!isActiveTab(AllTabs.All) && !isActiveTab(AllTabs.InProgress)),
-    fetchPolicy: "network-only", // Used for first execution
-    nextFetchPolicy: "cache-first", // Used for subsequent executions
+    fetchPolicy: "no-cache", // Can't use cache or Apollo messes up the returned data
   });
 
   const {
@@ -124,8 +123,7 @@ export default function Contributions() {
       where: tableWhere({ status: GithubContributionStatus.Completed }) as ContributionsBoolExp,
     },
     skip: !githubUserId || (!isActiveTab(AllTabs.All) && !isActiveTab(AllTabs.Completed)),
-    fetchPolicy: "network-only", // Used for first execution
-    nextFetchPolicy: "cache-first", // Used for subsequent executions
+    fetchPolicy: "no-cache", // Can't use cache or Apollo messes up the returned data
   });
 
   const {
@@ -138,8 +136,7 @@ export default function Contributions() {
       where: tableWhere({ status: GithubContributionStatus.Canceled }) as ContributionsBoolExp,
     },
     skip: !githubUserId || (!isActiveTab(AllTabs.All) && !isActiveTab(AllTabs.Canceled)),
-    fetchPolicy: "network-only", // Used for first execution
-    nextFetchPolicy: "cache-first", // Used for subsequent executions
+    fetchPolicy: "no-cache", // Can't use cache or Apollo messes up the returned data
   });
 
   const { data: projectsAndReposData } = useGetContributionProjectsAndReposQuery({
