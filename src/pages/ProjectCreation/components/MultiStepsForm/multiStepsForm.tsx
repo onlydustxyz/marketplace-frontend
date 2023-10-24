@@ -28,14 +28,6 @@ export const MultiStepsForm: FC<MultiStepsFormProps> = ({
         <div className="flex flex-col gap-8 px-8 pb-28 pt-16 xl:px-12 xl:pb-0">
           <div className="flex flex-col gap-4 xl:w-[600px]">
             <div className="font-walsheim text-base font-normal text-spaceBlue-100">{`${step}/${stepCount}`}</div>
-            {/* {_private && (
-              <Tag size={TagSize.Small}>
-                <div className="flex flex-row items-center gap-2 text-orange-400">
-                  <LockFill />
-                  PRIVATE NOTICE
-                </div>
-              </Tag>
-            )} */}
             <div className="font-belwe text-2xl font-normal text-greyscale-50">{title}</div>
             {description ? (
               <div className="font-walsheim text-base font-normal text-spaceBlue-100">{description}</div>
@@ -62,7 +54,7 @@ export const MultiStepsForm: FC<MultiStepsFormProps> = ({
           )}
           {submit && (
             <Button htmlType="submit" disabled={submitDisabled}>
-              <CheckLine className="-ml-1 text-2xl" /> Submit
+              <CheckLine className="-ml-1 text-2xl" /> Publish
             </Button>
           )}
         </div>

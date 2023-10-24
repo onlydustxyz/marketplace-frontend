@@ -74,7 +74,7 @@ export const ProjectInformationsPage = () => {
 
   return (
     <Background roundedBorders={BackgroundRoundedBorders.Full}>
-      <form className="flex h-screen items-center justify-center" onSubmit={handleSubmit(onSubmit)}>
+      <form className="flex items-center justify-center p-4 pt-[72px]" onSubmit={handleSubmit(onSubmit)}>
         <MultiStepsForm
           title="Tell us about your project!"
           description="Please install the github app on the desired github organisation(s) containing the repositories you want to add."
