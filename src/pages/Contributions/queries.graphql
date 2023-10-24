@@ -53,8 +53,10 @@ query GetAllContributions($orderBy: [ContributionsOrderBy!], $where: Contributio
   }
 }
 
-query GetContributionRewards($githubUserId: bigint!, $contributionId: String!) {
-  contributions(where: { githubUserId: { _eq: $githubUserId }, id: { _eq: $contributionId } }) {
+query GetContributionDetails($githubUserId: bigint!, $contributionId: String!, $projectId: uuid!) {
+  contributions(
+    where: { githubUserId: { _eq: $githubUserId }, id: { _eq: $contributionId }, projectId: { _eq: $projectId } }
+  ) {
     closedAt
     createdAt
     id

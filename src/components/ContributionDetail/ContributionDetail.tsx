@@ -1,7 +1,7 @@
 import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 import { Link, generatePath } from "react-router-dom";
 import { RoutePaths } from "src/App";
-import { GithubUser, useGetContributionRewardsQuery } from "src/__generated/graphql";
+import { GithubUser, useGetContributionDetailsQuery } from "src/__generated/graphql";
 import { ContributionBadge, ContributionBadgeSizes } from "src/components/Contribution/ContributionBadge";
 import { ContributionIcon } from "src/components/Contribution/ContributionIcon";
 import { ContributionLinked } from "src/components/Contribution/ContributionLinked";
@@ -24,18 +24,19 @@ import { ContributionDetailSkeleton } from "./ContributionDetailSkeleton";
 export function ContributionDetail({
   githubUserId,
   contributionId,
+  projectId,
 }: {
   githubUserId: GithubUser["id"];
   contributionId: string;
+  projectId: string;
 }) {
   const { T } = useIntl();
   const { open: openRewardPanel } = useRewardDetailPanel();
 
-  const { data, loading, error } = useGetContributionRewardsQuery({
-    variables: { githubUserId, contributionId },
+  const { data, loading, error } = useGetContributionDetailsQuery({
+    variables: { githubUserId, contributionId, projectId },
     skip: !githubUserId && !contributionId,
-    fetchPolicy: "network-only", // Used for first execution
-    nextFetchPolicy: "cache-first", // Used for subsequent executions
+    fetchPolicy: "no-cache", // Can't use cache or Apollo messes up the returned data
   });
 
   function renderContent() {

@@ -17,7 +17,7 @@ import { getContributionInfo } from "src/utils/getContributionInfo";
 type Props = {
   contribution: Pick<
     QueryContribution,
-    "githubCodeReview" | "githubIssue" | "githubPullRequest" | "id" | "rewardItems" | "type"
+    "githubCodeReview" | "githubIssue" | "githubPullRequest" | "id" | "rewardItems" | "type" | "project"
   >;
   isMobile?: boolean;
 };
@@ -75,7 +75,8 @@ export function Contribution({ contribution, isMobile = false }: Props) {
         <button
           className="hover:underline"
           onClick={() => {
-            if (githubUserId) open(githubUserId, id ?? "");
+            if (githubUserId && id && contribution.project?.id)
+              open({ githubUserId, contributionId: id, projectId: contribution.project.id }, htmlUrl);
           }}
         >
           {title}
