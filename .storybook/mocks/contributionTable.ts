@@ -287,7 +287,15 @@ export const contributionTable: GetAllContributionsQuery = {
       },
       status: "in_progress",
       type: "PULL_REQUEST",
-      rewardItems: [{ paymentId: "05413939-dc82-4d55-8804-b5df29630bec", __typename: "WorkItems" }],
+      rewardItems: [
+        {
+          paymentId: "05413939-dc82-4d55-8804-b5df29630bec",
+          paymentRequest: {
+            recipientId: 43467246,
+          },
+          __typename: "WorkItems",
+        },
+      ],
       __typename: "Contributions",
     },
     {

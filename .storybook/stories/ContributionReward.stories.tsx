@@ -16,6 +16,9 @@ const defaultProps: ComponentProps<typeof ContributionReward> = {
   rewards: [
     {
       paymentId: "880819f1-2ab9-406d-9bf1-3012b6f565bc",
+      paymentRequest: {
+        recipientId: 43467246,
+      },
     },
   ],
 };
@@ -33,9 +36,15 @@ const multipleProps: ComponentProps<typeof ContributionReward> = {
   rewards: [
     {
       paymentId: "880819f1-2ab9-406d-9bf1-3012b6f565bc",
+      paymentRequest: {
+        recipientId: 43467246,
+      },
     },
     {
       paymentId: "35234563456345-2ab9-406d-9bf1-3012b6f565bc",
+      paymentRequest: {
+        recipientId: 43467247,
+      },
     },
   ],
 };
