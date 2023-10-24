@@ -1,27 +1,50 @@
 import { Suspense } from "react";
 import { useOutletContext } from "react-router-dom";
+import { ExtendedPaymentRequestFragment } from "src/__generated/graphql";
+import Button, { ButtonSize, Width } from "src/components/Button";
 import Card from "src/components/Card";
 import Loader from "src/components/Loader";
-import RewardTable from "src/components/RewardTable";
 import ProjectRewardTableFallback from "src/components/ProjectRewardTableFallback";
+import RewardTable from "src/components/RewardTable/RewardTable";
+import { withTooltip } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
-import RemainingBudget from "src/pages/ProjectDetails/Rewards/RemainingBudget";
 import { Sortable } from "src/types";
-import { ExtendedPaymentRequestFragment } from "src/__generated/graphql";
 import Title from "src/pages/ProjectDetails/Title";
+import { useRestfulData } from "src/hooks/useRestfulData/useRestfulData";
+import { RemainingBudget } from "./RemainingBudget/RemainingBudget";
 
 const RewardList: React.FC = () => {
-  const { projectId, rewards, budget } = useOutletContext<{
+  const { T } = useIntl();
+
+  const { projectId, rewards } = useOutletContext<{
     projectId: string;
     rewards: (ExtendedPaymentRequestFragment & Sortable)[];
-    budget: { initialAmount: number; remainingAmount: number };
   }>();
 
-  const { T } = useIntl();
+  const { data: projectBudget, isLoading } = useRestfulData({
+    resourcePath: `/api/v1/projects/${projectId}/budgets`,
+    method: "GET",
+  });
+
+  const isRewardDisabled = projectBudget?.remainingDollarsEquivalent === 0 || rewards.length === 0;
 
   return (
     <>
-      <Title>{T("project.details.rewards.title")}</Title>
+      <div className="flex items-center justify-between">
+        <Title>{T("project.details.rewards.title")}</Title>
+        <Button
+          width={Width.Fit}
+          size={ButtonSize.Sm}
+          className="m-w-[200px]"
+          disabled={isRewardDisabled}
+          {...withTooltip(T("contributor.table.noBudgetLeft"), {
+            visible: isRewardDisabled,
+          })}
+        >
+          <span>{T("project.details.remainingBudget.newReward")}</span>
+        </Button>
+      </div>
+      {!isLoading && projectBudget ? <RemainingBudget projectBudget={projectBudget} /> : null}
       <div className="flex h-full flex-col-reverse items-start gap-4 xl:flex-row">
         <div className="w-full">
           {rewards.length > 0 ? (
@@ -32,12 +55,13 @@ const RewardList: React.FC = () => {
             </Card>
           ) : (
             <Card className="p-16">
-              <ProjectRewardTableFallback disabled={budget.initialAmount === 0 || budget.remainingAmount === 0} />
+              <ProjectRewardTableFallback
+                disabled={
+                  projectBudget.initialDollarsEquivalent === 0 || projectBudget.remainingDollarsEquivalent === 0
+                }
+              />
             </Card>
           )}
-        </div>
-        <div className="flex w-full shrink-0 xl:w-80">
-          <RemainingBudget budget={budget} disabled={budget.remainingAmount === 0 || rewards.length === 0} />
         </div>
       </div>
     </>

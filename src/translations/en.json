@@ -759,9 +759,19 @@
         }
       },
       "remainingBudget": {
-        "leftToSpend": "left to spend",
+        "leftToSpend": "left",
         "newReward": "Reward contributor",
-        "title": "Remaining budget"
+        "title": "Remaining budget",
+        "usdInfoBudgets": "Dollar equivalent at today's date across all your budgets",
+        "usdInfo": "Dollar equivalent at today's date",
+        "budget": {
+          "total": "Total budget",
+          "dollars": "Dollars budget",
+          "ether": "Ether budget",
+          "stark": "Stark budget",
+          "aptos": "Aptos budget",
+          "optimism": "Optimism budget"
+        }
       },
       "sidebar": {
         "backToProjects": "All projects",

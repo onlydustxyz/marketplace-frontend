@@ -151,6 +151,9 @@ const config: Config = {
         "completion-gradient":
           "linear-gradient(90deg, #5935BF 0%, #45279B 8.85%, #340D87 31.77%, #421083 66.15%, #3A0A8C 100%);",
         contributions: "url('src/assets/img/contributions-bg.png')",
+        budget: `radial-gradient(at 64% 0%, rgba(221, 106, 55, 0.6) -5%, transparent 40%),
+        radial-gradient(at 48% 0%, #e504a2 1%, transparent 80%),
+        linear-gradient(60deg, rgba(40, 3, 155, 1), rgba(100, 42, 229, 1));`,
       },
       backgroundPosition: {
         space: "right top, bottom left",

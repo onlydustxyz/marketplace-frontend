@@ -14,6 +14,7 @@ export default function Aptos({ className }: Props) {
       y="0px"
       viewBox="0 0 479.3 481.2"
       xmlSpace="preserve"
+      fill="#FFFFFF"
     >
       <path
         d="M371.2,161h-42.4c-4.9,0-9.6-2.1-12.9-5.8l-17.2-19.4c-2.6-2.9-6.2-4.6-10.1-4.6s-7.5,1.7-10.1,4.6l-14.8,16.7

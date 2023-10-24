@@ -1,8 +1,11 @@
+import { components } from "src/__generated/api";
 import { Currency } from "src/types";
+
+export type BugetCurrencyType = components["schemas"]["BudgetResponse"]["currency"];
 
 type Params = {
   amount: number;
-  currency?: Currency;
+  currency?: BugetCurrencyType;
   notation?: "standard" | "scientific" | "engineering" | "compact";
 };
 
@@ -17,9 +20,8 @@ export const formatMoneyAmount = ({ amount, currency = Currency.USD, notation = 
       })
         .format(amount)
         .replace("K", "k");
-    case Currency.USDC:
-    case Currency.ETH:
-      return `${currency} ${Intl.NumberFormat("en-US", {
+    default:
+      return `${Intl.NumberFormat("en-US", {
         maximumFractionDigits: maximumFractionDigits({ amount, notation }),
         notation,
       })
