@@ -8,10 +8,11 @@ export default {
   decorators: [withContributorProfilePanelProvider],
 };
 
-const contributor: Pick<ContributorT, "login" | "avatarUrl" | "githubUserId"> = {
+const contributor: Pick<ContributorT, "login" | "avatarUrl" | "githubUserId" | "isRegistered"> = {
   login: "ofux",
   avatarUrl: "https://avatars.githubusercontent.com/u/595505?v=4",
   githubUserId: 595505,
+  isRegistered: false,
 };
 
 export const Default = {

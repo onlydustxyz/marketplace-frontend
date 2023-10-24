@@ -7,7 +7,7 @@ import { cn } from "src/utils/cn";
 import { useContributorProfilePanel } from "src/hooks/useContributorProfilePanel";
 
 type Props = {
-  contributor: Pick<ContributorT, "login" | "avatarUrl" | "githubUserId">;
+  contributor: Pick<ContributorT, "login" | "avatarUrl" | "githubUserId" | "isRegistered">;
   clickable?: boolean;
   className?: string;
 };
@@ -42,7 +42,7 @@ export default function Contributor({ className, contributor, clickable }: Props
         {contributor.login}
       </div>
 
-      {contributor.githubUserId && (
+      {contributor.isRegistered && (
         <>
           <img
             id={`od-logo-${contributor.login}`}

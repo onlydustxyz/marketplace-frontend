@@ -21,7 +21,8 @@ const mockContributors: ContributorT[] = [
     contributionToRewardCount: null,
     pullRequestToReward: null,
     issueToReward: null,
-    codeReviewToReward: null
+    codeReviewToReward: null,
+    isRegistered: false
   },
   {
     githubUserId: 786640,
@@ -33,7 +34,8 @@ const mockContributors: ContributorT[] = [
     contributionToRewardCount: 21,
     pullRequestToReward: 10,
     issueToReward: 3,
-    codeReviewToReward: 8
+    codeReviewToReward: 8,
+    isRegistered: true
   },
   {
     githubUserId: 4391003,
@@ -45,7 +47,8 @@ const mockContributors: ContributorT[] = [
     contributionToRewardCount: null,
     pullRequestToReward: null,
     issueToReward: null,
-    codeReviewToReward: null
+    codeReviewToReward: null,
+    isRegistered: true
   },
 ];
 

@@ -296,6 +296,7 @@ export type ContributorT = {
   login: string;
   pullRequestToReward: number | null;
   rewardCount: number; // already rewarded
+  isRegistered?: boolean;
 };
 
 export type Contributors = {
