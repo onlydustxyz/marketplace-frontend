@@ -1,9 +1,11 @@
 import { cn } from "src/utils/cn";
 
+import { ComponentProps } from "react";
 import { ContributionBadge } from "src/components/Contribution/ContributionBadge";
 import { ContributionReview } from "src/components/Contribution/ContributionReview";
 import { ContributionReward } from "src/components/Contribution/ContributionReward";
-import ExternalLink from "src/components/ExternalLink";
+import { useAuth } from "src/hooks/useAuth";
+import { useContributionDetailPanel } from "src/hooks/useContributionDetailPanel";
 import {
   GithubCodeReviewOutcome,
   GithubContributionReviewStatus,
@@ -24,6 +26,9 @@ export function Contribution({ contribution, isMobile = false }: Props) {
   const { githubPullRequest, id, rewardItems } = contribution;
 
   const { type, title, htmlUrl, author, status, number } = getContributionInfo(contribution);
+
+  const { githubUserId } = useAuth();
+  const { open } = useContributionDetailPanel();
 
   function renderReview() {
     if (githubPullRequest && status === GithubPullRequestStatus.Open) {
@@ -67,10 +72,22 @@ export function Contribution({ contribution, isMobile = false }: Props) {
           author={author}
           url={htmlUrl}
         />
-        <ExternalLink url={htmlUrl} text={title} />
+        <button
+          className="hover:underline"
+          onClick={() => {
+            if (githubUserId) open(githubUserId, id ?? "");
+          }}
+        >
+          {title}
+        </button>
       </div>
       <div className="inline-flex items-center gap-1 empty:hidden">
-        {rewardItems?.length ? <ContributionReward id={id ?? ""} rewards={rewardItems} /> : null}
+        {rewardItems?.length ? (
+          <ContributionReward
+            id={id ?? ""}
+            rewards={rewardItems as ComponentProps<typeof ContributionReward>["rewards"]}
+          />
+        ) : null}
         {renderReview()}
       </div>
     </div>

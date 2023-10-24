@@ -41,16 +41,16 @@ export function RewardCard({ reward, onClick }: { reward: Reward; onClick?: () =
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-1 text-xs leading-none text-greyscale-300">
             <TimeLine className="text-base leading-none" />
-            <span>{displayRelativeDate(requestedAt)}</span>
+            <span className="first-letter:uppercase">{displayRelativeDate(requestedAt)}</span>
             {processedAt ? (
               <>
                 &nbsp;&bull;&nbsp;
-                <span>{T("rewards.panel.rewards.processedAt", { date: displayRelativeDate(processedAt) })}</span>
+                <span>{T("contributions.panel.rewards.processedAt", { date: displayRelativeDate(processedAt) })}</span>
               </>
             ) : null}
           </div>
           <p className="text-base font-semibold leading-none text-greyscale-50">
-            {T("rewards.panel.rewards.id", { id: formatPaymentId(paymentId) })}
+            {T("contributions.panel.rewards.id", { id: formatPaymentId(paymentId) })}
           </p>
         </div>
 
@@ -65,7 +65,7 @@ export function RewardCard({ reward, onClick }: { reward: Reward; onClick?: () =
       <div className="flex items-center gap-2">
         <RoundedImage src={requestor.avatarUrl} alt={requestor.login} rounding={Rounding.Circle} size={ImageSize.Xxs} />
         <p className="text-sm leading-none text-greyscale-300">
-          {T("rewards.panel.rewards.fromUser")}&nbsp;
+          {T("contributions.panel.rewards.fromUser")}&nbsp;
           <button
             type="button"
             className="text-spacePurple-300 hover:text-spacePurple-200"

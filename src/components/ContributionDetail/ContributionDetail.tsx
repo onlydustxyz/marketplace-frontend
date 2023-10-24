@@ -50,7 +50,7 @@ export function ContributionDetail({
     if (error) {
       return (
         <div className="flex h-full items-center justify-center">
-          <p>{T("rewards.panel.error")}</p>
+          <p>{T("contributions.panel.error")}</p>
         </div>
       );
     }
@@ -58,7 +58,7 @@ export function ContributionDetail({
     if (!data) {
       return (
         <div className="flex h-full items-center justify-center">
-          <p>{T("rewards.panel.empty")}</p>
+          <p>{T("contributions.panel.empty")}</p>
         </div>
       );
     }
@@ -75,7 +75,7 @@ export function ContributionDetail({
 
     return (
       <div className="h-full font-walsheim">
-        <h5 className="font-belwe text-2xl">{T("rewards.panel.title")}</h5>
+        <h5 className="font-belwe text-2xl">{T("contributions.panel.title")}</h5>
 
         <div className="flex h-full flex-col divide-y divide-greyscale-50/12">
           <div className="py-8">
@@ -102,7 +102,7 @@ export function ContributionDetail({
                 <div className="flex items-center gap-2">
                   <RoundedImage src={project?.logoUrl ?? onlyDustLogo} alt={project?.name ?? ""} size={ImageSize.Xxs} />
                   <div className="text-sm text-greyscale-300">
-                    {T("rewards.panel.contribution.forProject")}&nbsp;
+                    {T("contributions.panel.contribution.forProject")}&nbsp;
                     <Link
                       to={generatePath(RoutePaths.ProjectDetails, {
                         projectKey: project?.key ?? "",
@@ -119,7 +119,9 @@ export function ContributionDetail({
                 <div className="flex items-center gap-1 text-sm leading-none text-greyscale-300">
                   <div className="flex items-center gap-1">
                     <TimeLine className="text-base leading-none" />
-                    <span>{T("rewards.panel.contribution.createdOn", { date: displayRelativeDate(createdAt) })}</span>
+                    <span>
+                      {T("contributions.panel.contribution.createdOn", { date: displayRelativeDate(createdAt) })}
+                    </span>
                   </div>
                   <div>|</div>
                   <div className="flex items-center gap-1">
@@ -139,7 +141,7 @@ export function ContributionDetail({
                         <div>|</div>
                         <div className="flex items-center gap-1">
                           <ArrowRightUpLine className="text-base leading-none" />
-                          {T("rewards.panel.contribution.linkedTo")}
+                          {T("contributions.panel.contribution.linkedTo")}
                         </div>
                         <ContributionLinked
                           contribution={contribution}
@@ -160,7 +162,7 @@ export function ContributionDetail({
             <div className="flex flex-col gap-4 overflow-hidden py-8">
               <div className="flex items-center gap-2">
                 <Medal2Fill className="text-xl leading-none text-orange-400" />
-                <span className="font-belwe text-base leading-none">{T("rewards.panel.rewards.title")}</span>
+                <span className="font-belwe text-base leading-none">{T("contributions.panel.rewards.title")}</span>
               </div>
 
               <div className="flex flex-col gap-4 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">

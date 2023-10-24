@@ -68,6 +68,22 @@
       "badgeCodeReview": "Code review from",
       "badgeIssue": "Issue from",
       "rewards": "Rewarded in"
+    },
+    "panel": {
+      "title": "Contribution details",
+      "error": "We were unable to fetch the data for this contribution's rewards, please try again later.",
+      "empty": "Nothing here, this contribution may not have any rewards.",
+      "contribution": {
+        "forProject": "For",
+        "createdOn": "Created __date__",
+        "linkedTo": "Linked to"
+      },
+      "rewards": {
+        "title": "Rewarded in",
+        "id": "Reward __id__",
+        "fromUser": "from",
+        "processedAt": "Processed __date__"
+      }
     }
   },
   "contributionGraph": {
@@ -508,24 +524,6 @@
         "zero": "days",
         "one": "day",
         "many": "days"
-      }
-    }
-  },
-  "rewards": {
-    "panel": {
-      "title": "Details",
-      "error": "We were unable to fetch the data for this contribution's rewards, please try again later.",
-      "empty": "Nothing here, this contribution may not have any rewards.",
-      "contribution": {
-        "forProject": "For",
-        "createdOn": "Created __date__",
-        "linkedTo": "Linked to"
-      },
-      "rewards": {
-        "title": "Rewarded in",
-        "id": "Reward __id__",
-        "fromUser": "from",
-        "processedAt": "Processed __date__"
       }
     }
   },

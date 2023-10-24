@@ -43,6 +43,9 @@ query GetAllContributions($orderBy: [ContributionsOrderBy!], $where: Contributio
     type
     rewardItems {
       paymentId
+      paymentRequest {
+        recipientId
+      }
     }
   }
   githubRepos(orderBy: { indexedAt: ASC }, limit: 1) {
