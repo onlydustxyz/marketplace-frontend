@@ -4,9 +4,6 @@ import { useIntl } from "src/hooks/useIntl";
 import { useAuth } from "src/hooks/useAuth";
 import { generatePath, useNavigate, useOutletContext } from "react-router-dom";
 import Title from "src/pages/ProjectDetails/Title";
-import useProjectContributors from "src/hooks/useProjectContributors";
-import { useGetProjectDetailsQuery } from "src/__generated/graphql";
-import { contextWithCacheHeaders } from "src/utils/headers";
 import Button, { ButtonSize } from "src/components/Button";
 import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
 import { viewportConfig } from "src/config";
@@ -16,9 +13,26 @@ import { withTooltip } from "src/components/Tooltip";
 import { rates } from "src/hooks/useWorkEstimation";
 import { CalloutSizes } from "src/components/ProjectLeadInvitation/ProjectLeadInvitationView";
 import { Project } from "src/types";
+import useInfiniteContributorList from "src/hooks/useInfiniteContributorList/useInfiniteContributorList";
+import ErrorFallback from "src/ErrorFallback";
+import { useMemo, useState } from "react";
+import Skeleton from "src/components/Skeleton";
 
 type OutletContext = {
   project: Project;
+};
+
+export enum Field {
+  ContributionCount = "CONTRIBUTION_COUNT",
+  TotalEarned = "EARNED",
+  Login = "LOGIN",
+  RewardCount = "REWARD_COUNT",
+  ToRewardCount = "TO_REWARD_COUNT",
+}
+
+export type Sorting = {
+  field: Field;
+  ascending: boolean;
 };
 
 export default function Contributors() {
@@ -32,21 +46,57 @@ export default function Contributors() {
 
   const isProjectLeader = ledProjectIds.includes(projectId);
 
-  const { contributors } = useProjectContributors(projectId);
-  const { data: projectDetails, loading } = useGetProjectDetailsQuery({
-    variables: { projectId },
-    ...contextWithCacheHeaders,
+  const remainingBudget = project?.remainingUsdBudget;
+  const isRewardDisabled = remainingBudget < rates.hours || remainingBudget === 0;
+
+  const [sorting, setSorting] = useState({
+    field: isProjectLeader ? Field.ToRewardCount : Field.ContributionCount,
+    ascending: false,
   });
 
-  const remainingBudget = projectDetails?.projects[0]?.usdBudget?.remainingAmount;
-  const isRewardDisabled = remainingBudget < rates.hours || remainingBudget === 0;
+  const applySorting = (field: Field, ascending: boolean) =>
+    setSorting({ field, ascending: sorting.field === field ? !sorting.ascending : ascending });
+
+  const queryParams = useMemo(
+    () => [
+      ...(sorting
+        ? [
+            { key: "sort", value: [sorting.field] },
+            { key: "direction", value: [sorting.ascending ? "ASC" : "DESC"] },
+          ]
+        : []),
+    ],
+    [sorting]
+  );
+
+  const { data, error, isFetching, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteContributorList({
+    projectId,
+    queryParams,
+  });
+
+  if (isFetching && !isFetchingNextPage) {
+    return (
+      <>
+        <div className="max-w-[15%]">
+          <Skeleton variant="counter" />
+        </div>
+        <Skeleton variant="contributorList" />
+      </>
+    );
+  }
+
+  if (error) {
+    return <ErrorFallback />;
+  }
+
+  const contributors = data?.pages.flatMap(page => page.contributors) || [];
 
   return (
     <>
       <Title>
         <div className="flex flex-row items-center justify-between gap-2">
           {T("project.details.contributors.title")}
-          {isProjectLeader && !loading && (
+          {isProjectLeader && !isFetching && (
             <Button
               size={ButtonSize.Sm}
               disabled={isRewardDisabled}
@@ -70,11 +120,23 @@ export default function Contributors() {
         </div>
       </Title>
       <ProjectLeadInvitation projectId={projectId} size={CalloutSizes.Large} />
-      {contributors?.length > 0 ? (
-        <ContributorsTable {...{ contributors, isProjectLeader, remainingBudget, projectId, projectKey }} />
-      ) : (
-        <ContributorsTableFallback projectName={projectDetails?.projects[0]?.name} />
+      {contributors?.length > 0 && (
+        <ContributorsTable
+          {...{
+            contributors,
+            fetchNextPage,
+            hasNextPage,
+            isFetchingNextPage,
+            isProjectLeader,
+            remainingBudget,
+            projectId,
+            projectKey,
+            sorting,
+            applySorting,
+          }}
+        />
       )}
+      {!isFetching && contributors?.length === 0 && <ContributorsTableFallback />}
     </>
   );
 }

@@ -21,6 +21,7 @@ env:
   VITE_LANGUAGES_FILTER: CSS,Dockerfile,Handlebars,HTML,Jupyter Notebook,Makefile,Nix,SCSS,Shell
   NODE_OPTIONS: --max_old_space_size=4096
   VITE_USE_APOLLO: "true"
+  VITE_ONLYDUST_API_BASEPATH: "develop-api.onlydust.com"
 
 jobs:
   build:

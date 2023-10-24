@@ -1,13 +1,13 @@
 import onlyDustLogo from "assets/img/onlydust-logo.png";
 import { withTooltip } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
-import { Contributor as ContributorType } from "src/types";
+import { ContributorT } from "src/types";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import { cn } from "src/utils/cn";
 import { useContributorProfilePanel } from "src/hooks/useContributorProfilePanel";
 
 type Props = {
-  contributor: ContributorType;
+  contributor: Pick<ContributorT, "login" | "avatarUrl" | "githubUserId" | "isRegistered">;
   clickable?: boolean;
   className?: string;
 };
@@ -42,7 +42,7 @@ export default function Contributor({ className, contributor, clickable }: Props
         {contributor.login}
       </div>
 
-      {contributor.userId && (
+      {contributor.isRegistered && (
         <>
           <img
             id={`od-logo-${contributor.login}`}

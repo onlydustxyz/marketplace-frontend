@@ -2,8 +2,13 @@ import { renderHook } from "@testing-library/react-hooks";
 import { describe, expect, it } from "vitest";
 import { TokenSetProvider } from "src/hooks/useTokenSet";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useRestfulData } from "./useRestfulData"; // Adjust the import path
+import { useRestfulData } from "./useRestfulData";
 import React from "react";
+import { AuthProvider } from "src/hooks/useAuth";
+import { BrowserRouter as Router } from "react-router-dom";
+import { ImpersonationClaimsProvider } from "src/hooks/useImpersonationClaims";
+import { ToasterProvider } from "src/hooks/useToaster";
+import ApolloWrapper from "src/providers/ApolloWrapper";
 
 global.fetch = jest.fn(() =>
   Promise.resolve({
@@ -23,9 +28,19 @@ describe("useRestfulData", () => {
     (global.fetch as jest.Mock).mockClear();
 
     const wrapper: React.FC<WrapperProps> = ({ children }) => (
-      <TokenSetProvider>
-        <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-      </TokenSetProvider>
+      <Router>
+        <ImpersonationClaimsProvider>
+          <TokenSetProvider>
+            <ToasterProvider>
+              <ApolloWrapper>
+                <AuthProvider>
+                  <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+                </AuthProvider>
+              </ApolloWrapper>
+            </ToasterProvider>
+          </TokenSetProvider>
+        </ImpersonationClaimsProvider>
+      </Router>
     );
 
     const { result, waitFor } = renderHook(
@@ -42,7 +57,7 @@ describe("useRestfulData", () => {
 
     expect(result.current.data).toEqual({ data: "mockData" });
 
-    expect(global.fetch).toHaveBeenCalledWith("https://undefined/test", {
+    expect(global.fetch).toHaveBeenCalledWith("https://develop-api.onlydust.com/test", {
       method: "GET",
       headers: {},
     });
@@ -52,9 +67,19 @@ describe("useRestfulData", () => {
     (global.fetch as jest.Mock).mockClear();
 
     const wrapper: React.FC<WrapperProps> = ({ children }) => (
-      <TokenSetProvider>
-        <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-      </TokenSetProvider>
+      <Router>
+        <ImpersonationClaimsProvider>
+          <TokenSetProvider>
+            <ToasterProvider>
+              <ApolloWrapper>
+                <AuthProvider>
+                  <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+                </AuthProvider>
+              </ApolloWrapper>
+            </ToasterProvider>
+          </TokenSetProvider>
+        </ImpersonationClaimsProvider>
+      </Router>
     );
 
     const { result, waitFor } = renderHook(
@@ -70,7 +95,7 @@ describe("useRestfulData", () => {
 
     await waitFor(() => expect(result.current.isLoading).toBe(false));
 
-    expect(global.fetch).toHaveBeenCalledWith("https://undefined/test", {
+    expect(global.fetch).toHaveBeenCalledWith("https://develop-api.onlydust.com/test", {
       method: "DELETE",
       headers: {},
     });
