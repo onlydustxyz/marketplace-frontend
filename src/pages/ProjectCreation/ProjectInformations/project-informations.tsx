@@ -10,9 +10,25 @@ import { Flex } from "src/components/New/Layout/Flex";
 import InformationLine from "src/icons/InformationLine";
 import Link from "src/icons/Link";
 import { MultiStepsForm } from "src/pages/ProjectCreation/components/MultiStepsForm";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
+const validationSchema = z.object({
+  githubRepoIds: z.array(z.number()),
+  image: z.instanceof(File),
+  inviteGithubUserIdsAsProjectLeads: z.array(z.number()),
+  isLookingForContributors: z.boolean(),
+  longDescription: z.string().min(1),
+  moreInfo: z.object({
+    url: z.string().min(1),
+    value: z.string().min(1),
+  }),
+  name: z.string().min(1),
+  shortDescription: z.string().min(1),
+});
 
 interface createProjectInformation {
-  githubRepoIds: string;
+  githubRepoIds: number[];
   projectLead: { invited: number[] };
   inviteGithubUserIdsAsProjectLeads: number[];
   isLookingForContributors: boolean;
@@ -27,11 +43,16 @@ interface createProjectInformation {
 }
 
 export const ProjectInformationsPage = () => {
-  const { control, handleSubmit, setValue } = useForm<createProjectInformation>({
-    mode: "onBlur",
-    reValidateMode: "onBlur",
-    shouldFocusError: true,
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    formState: { errors, isValidating, isValid },
+  } = useForm<createProjectInformation>({
+    mode: "all",
+    resolver: zodResolver(validationSchema),
     defaultValues: {
+      githubRepoIds: [1],
       moreInfo: {
         url: "test url",
         value: "test value",
@@ -42,6 +63,10 @@ export const ProjectInformationsPage = () => {
       },
     },
   });
+
+  console.log("isValid", isValid);
+  console.log("isValidating", isValidating);
+  console.log("errors", errors);
 
   const onSubmit = (formData: createProjectInformation) => {
     console.log("formData", formData);
@@ -56,6 +81,7 @@ export const ProjectInformationsPage = () => {
           step={3}
           stepCount={3}
           submit
+          submitDisabled={!isValid}
         >
           <Flex direction="col" gap={8}>
             <Flex direction="col" gap={6}>

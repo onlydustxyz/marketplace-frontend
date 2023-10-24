@@ -9,4 +9,5 @@ export type MultiStepsFormProps = {
   prev?: string;
   next?: string;
   submit?: boolean;
+  submitDisabled?: boolean;
 } & PropsWithChildren;

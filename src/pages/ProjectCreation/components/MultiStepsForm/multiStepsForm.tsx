@@ -15,6 +15,7 @@ export const MultiStepsForm: FC<MultiStepsFormProps> = ({
   prev,
   next,
   submit,
+  submitDisabled,
   children,
 }) => {
   return (
@@ -60,7 +61,7 @@ export const MultiStepsForm: FC<MultiStepsFormProps> = ({
             </Link>
           )}
           {submit && (
-            <Button htmlType="submit">
+            <Button htmlType="submit" disabled={submitDisabled}>
               <CheckLine className="-ml-1 text-2xl" /> Submit
             </Button>
           )}
