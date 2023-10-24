@@ -12,6 +12,8 @@ import Link from "src/icons/Link";
 import { MultiStepsForm } from "src/pages/ProjectCreation/components/MultiStepsForm";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useSessionStorage } from "src/hooks/useSessionStorage/useSessionStorage";
+import { useEffect } from "react";
 
 const validationSchema = z.object({
   githubRepoIds: z.array(z.number()),
@@ -47,7 +49,9 @@ export const ProjectInformationsPage = () => {
     control,
     handleSubmit,
     setValue,
-    formState: { errors, isValidating, isValid },
+    reset,
+    getValues,
+    formState: { isValid },
   } = useForm<createProjectInformation>({
     mode: "all",
     resolver: zodResolver(validationSchema),
@@ -64,13 +68,25 @@ export const ProjectInformationsPage = () => {
     },
   });
 
-  console.log("isValid", isValid);
-  console.log("isValidating", isValidating);
-  console.log("errors", errors);
+  const [savedFormData, setSavedFormData, savedFormDataStatus] = useSessionStorage<
+    createProjectInformation | undefined
+  >("createProjectInformation", undefined);
+
+  useEffect(() => {
+    if (savedFormDataStatus === "getted") {
+      reset(savedFormData);
+    }
+  }, [savedFormDataStatus]);
 
   const onSubmit = (formData: createProjectInformation) => {
     console.log("formData", formData);
   };
+
+  useEffect(() => {
+    return () => {
+      setSavedFormData(getValues());
+    };
+  }, []);
 
   return (
     <Background roundedBorders={BackgroundRoundedBorders.Full}>
@@ -82,6 +98,7 @@ export const ProjectInformationsPage = () => {
           stepCount={3}
           submit
           submitDisabled={!isValid}
+          prev="../repository"
         >
           <Flex direction="col" gap={8}>
             <Flex direction="col" gap={6}>

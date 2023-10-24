@@ -17,6 +17,8 @@ export type UseSessionStorageOptions = {
   deserialize: (value: string) => unknown;
 };
 
+export type UseSessionStorageStatus = "idle" | "getted" | "error";
+
 /**
  * Modified `useState` hook that syncs with useSessionStorage.
  *
@@ -30,7 +32,8 @@ export function useSessionStorage<T>(
   key: string,
   initialValue: T,
   options?: UseSessionStorageOptions
-): [T, (value: T) => void] {
+): [T, (value: T) => void, UseSessionStorageStatus] {
+  const [status, setStatus] = useState<UseSessionStorageStatus>("idle");
   const [storedValue, setStoredValue] = useState(initialValue);
   const { deserialize = JSON.parse, serialize = JSON.stringify } = options || {};
 
@@ -38,7 +41,9 @@ export function useSessionStorage<T>(
     try {
       const item = sessionStorage.getItem(key);
       item && setStoredValue(deserialize(item));
+      setStatus("getted");
     } catch (error) {
+      setStatus("error");
       console.error(error);
     }
   }, []);
@@ -55,5 +60,5 @@ export function useSessionStorage<T>(
     [key, serialize]
   );
 
-  return [storedValue, setValue];
+  return [storedValue, setValue, status];
 }
