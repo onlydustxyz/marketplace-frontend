@@ -830,6 +830,10 @@
         "newReward": "Reward contributor",
         "noRewards": "No rewards so far",
         "send": "Give your first one!"
+      },
+      "submit": {
+        "description": "Managing an open source project ?",
+        "button": "Submit"
       }
     },
     "error": {
