@@ -12,7 +12,8 @@ import { MultiStepsForm } from "src/pages/ProjectCreation/components/MultiStepsF
 
 interface createProjectInformation {
   githubRepoIds: string;
-  inviteGithubUserIdsAsProjectLeads: string;
+  projectLead: { invited: number[] };
+  inviteGithubUserIdsAsProjectLeads: number[];
   isLookingForContributors: string;
   longDescription: string;
   name: string;
@@ -25,7 +26,7 @@ interface createProjectInformation {
 }
 
 export const ProjectInformationsPage = () => {
-  const { control, handleSubmit } = useForm<createProjectInformation>({
+  const { control, handleSubmit, setValue } = useForm<createProjectInformation>({
     mode: "onBlur",
     reValidateMode: "onBlur",
     shouldFocusError: true,
@@ -33,6 +34,9 @@ export const ProjectInformationsPage = () => {
       moreInfo: {
         url: "test url",
         value: "test value",
+      },
+      projectLead: {
+        invited: [456, 789],
       },
     },
   });
@@ -108,7 +112,19 @@ export const ProjectInformationsPage = () => {
                   </FieldCombined>
                 )}
               />
-              <FieldProjectLead />
+              <Controller
+                name="projectLead"
+                control={control}
+                render={({ field: { onChange, value, name } }) => (
+                  <FieldProjectLead
+                    onChange={({ invited }) => {
+                      setValue("inviteGithubUserIdsAsProjectLeads", invited, { shouldDirty: true });
+                    }}
+                    id={name}
+                    value={value}
+                  />
+                )}
+              />
             </Flex>
           </Flex>
         </MultiStepsForm>

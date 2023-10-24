@@ -41,17 +41,13 @@ export function Combobox<T extends Item>({
   // TODO handle loading state
 
   return (
-    <HeadlessCombobox
-      value={selected}
-      onChange={onChange}
-      // Some type trouble with the library here
-      multiple={multiple as false}
-    >
+    <HeadlessCombobox value={selected} onChange={onChange} multiple={multiple as false}>
       {({ open }) => (
         <div className="relative">
-          <div
+          <HeadlessCombobox.Button
+            as="div"
             className={cn(
-              "relative z-30 flex items-center gap-3 overflow-hidden rounded-lg border px-2.5 py-1.5",
+              "group relative z-30 flex items-center gap-3 overflow-hidden rounded-lg border px-2.5 py-1.5",
               open
                 ? "border-spacePurple-500 bg-spacePurple-900 ring-1 ring-spacePurple-500"
                 : "border-greyscale-50/8 bg-white/5 focus-within:border-spacePurple-500 focus-within:bg-spacePurple-900 focus-within:ring-1 focus-within:ring-spacePurple-500"
@@ -61,28 +57,24 @@ export function Combobox<T extends Item>({
               className="peer w-full border-none bg-transparent text-sm text-greyscale-50 outline-none placeholder:text-spaceBlue-200"
               placeholder={placeholder}
               onChange={event => onQuery(event.target.value)}
-              // displayValue={(people) => people.map((person) => person.name).join(", ")}
               autoComplete="off"
             />
             <User3Line
               className={cn(
-                "order-first h-4 w-4",
+                "order-first",
                 open ? "text-greyscale-50" : "text-spaceBlue-200 peer-focus:text-greyscale-50"
               )}
               aria-hidden="true"
             />
-            {
-              // TODO button style on input focus
-              !open ? (
-                <HeadlessCombobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
-                  <ArrowDownSLine
-                    className="h-5 w-5 text-spaceBlue-200 peer-focus:text-spacePurple-300"
-                    aria-hidden="true"
-                  />
-                </HeadlessCombobox.Button>
-              ) : null
-            }
-          </div>
+            {!open ? (
+              <div className="absolute inset-y-0 right-0 flex items-center pr-2">
+                <ArrowDownSLine
+                  className=" group-focus-within:text-red h-5 w-5 text-spaceBlue-200  peer-focus:text-spacePurple-300 peer-focus:opacity-0"
+                  aria-hidden="true"
+                />
+              </div>
+            ) : null}
+          </HeadlessCombobox.Button>
           <Transition
             leave="transition ease-in duration-100"
             leaveFrom="opacity-100"
@@ -90,10 +82,7 @@ export function Combobox<T extends Item>({
             afterLeave={() => onQuery("")}
             className="absolute -left-4 -right-4 -top-4 z-20 flex flex-col gap-4 rounded-2xl border border-greyscale-50/12 bg-spaceBlue-900 p-4 shadow-heavy"
           >
-            <div
-              // This is just a ghost element to make space where the input will be
-              className="h-9"
-            />
+            <div className="h-9" />
             <HeadlessCombobox.Options className="max-h-60 w-full divide-y divide-greyscale-50/8 overflow-auto py-1 text-sm text-greyscale-50 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5 focus:outline-none">
               {items.length === 0 && query !== "" ? (
                 <div className="select-none text-greyscale-50">Nothing here.</div>

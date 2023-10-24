@@ -1,4 +1,5 @@
 import { FC, useState } from "react";
+import { Avatar } from "src/components/New/Avatar";
 import CloseLine from "src/icons/CloseLine";
 
 export interface FieldProjectLeadItemProps {
@@ -12,7 +13,7 @@ export const FieldProjectLeadItem: FC<FieldProjectLeadItemProps> = ({ isYou = fa
   return (
     <div className="flex items-center">
       <div className="flex items-center gap-2">
-        {/* <Avatar src={avatar} alt={label} shape="circle" size="6" /> */}
+        <Avatar src={avatar} alt={label} shape="circle" size="6" />
         {/* <Avatar src={onlydustLogo} alt={label} shape="circle" size="6" /> */}
         <span className="text-sm text-spacePurple-300">{label}</span>
       </div>
