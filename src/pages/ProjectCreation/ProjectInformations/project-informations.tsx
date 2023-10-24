@@ -3,6 +3,7 @@ import Background, { BackgroundRoundedBorders } from "src/components/Background"
 import { FieldImage } from "src/components/New/Field/File";
 import { FieldInput } from "src/components/New/Field/Input";
 import { FieldTextarea } from "src/components/New/Field/Textarea";
+import { Flex } from "src/components/New/Layout/Flex";
 import InformationLine from "src/icons/InformationLine";
 import { MultiStepsForm } from "src/pages/ProjectCreation/components/MultiStepsForm";
 
@@ -33,8 +34,8 @@ export const ProjectInformationsPage = () => {
           stepCount={3}
           next="/create-project/select-repos"
         >
-          <div className="flex flex-col gap-8">
-            <div className="flex flex-col gap-6">
+          <Flex direction="col" gap={8}>
+            <Flex direction="col" gap={6}>
               <Controller
                 name="name"
                 control={control}
@@ -63,10 +64,10 @@ export const ProjectInformationsPage = () => {
               <Controller
                 name="image"
                 control={control}
-                render={props => <FieldImage {...props.field} {...props.fieldState} label="Long description" />}
+                render={props => <FieldImage {...props.field} {...props.fieldState} label="Project visual" />}
               />
-            </div>
-          </div>
+            </Flex>
+          </Flex>
         </MultiStepsForm>
       </form>
     </Background>
