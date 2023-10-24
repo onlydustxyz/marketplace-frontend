@@ -16,6 +16,7 @@ import { Project } from "src/types";
 import useInfiniteContributorList from "src/hooks/useInfiniteContributorList/useInfiniteContributorList";
 import ErrorFallback from "src/ErrorFallback";
 import { useMemo, useState } from "react";
+import Skeleton from "src/components/Skeleton";
 
 type OutletContext = {
   project: Project;
@@ -72,6 +73,17 @@ export default function Contributors() {
     projectId,
     queryParams,
   });
+
+  if (isFetching && !isFetchingNextPage) {
+    return (
+      <>
+        <div className="max-w-[15%]">
+          <Skeleton variant="counter" />
+        </div>
+        <Skeleton variant="contributorList" />
+      </>
+    );
+  }
 
   if (error) {
     return <ErrorFallback />;
