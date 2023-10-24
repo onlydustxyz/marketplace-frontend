@@ -5,12 +5,21 @@ import { cn } from "src/utils/cn";
 export interface FieldTextareaProps extends Omit<FieldProps, "children"> {
   rows?: number;
   className?: string;
+  value?: string | number | readonly string[] | undefined;
   onChange?: ChangeEventHandler<HTMLTextAreaElement>;
   onFocus?: FocusEventHandler<HTMLTextAreaElement>;
   onBlur?: FocusEventHandler<HTMLTextAreaElement>;
 }
 
-export const FieldTextarea: FC<FieldTextareaProps> = ({ onBlur, rows, onFocus, onChange, className, ...rest }) => {
+export const FieldTextarea: FC<FieldTextareaProps> = ({
+  onBlur,
+  rows,
+  onFocus,
+  onChange,
+  className,
+  value,
+  ...rest
+}) => {
   return (
     <Field {...rest}>
       <div
@@ -20,6 +29,7 @@ export const FieldTextarea: FC<FieldTextareaProps> = ({ onBlur, rows, onFocus, o
         )}
       >
         <textarea
+          value={value}
           onBlur={onBlur}
           onChange={onChange}
           onFocus={onFocus}
