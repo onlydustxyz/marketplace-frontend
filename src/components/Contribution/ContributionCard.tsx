@@ -20,7 +20,7 @@ export function ContributionCard({
   const date = status === GithubContributionStatus.InProgress ? contribution.createdAt : contribution.closedAt;
 
   return (
-    <article className="flex flex-col gap-2 rounded-xl border border-greyscale-50/8 bg-white/2 p-4">
+    <article className="flex flex-col gap-2 rounded-xl border border-greyscale-50/8 bg-white/2 p-4 font-walsheim">
       <ContributionProjectRepo
         project={contribution.project as ComponentProps<typeof ContributionProjectRepo>["project"]}
         repo={contribution.githubRepo as ComponentProps<typeof ContributionProjectRepo>["repo"]}

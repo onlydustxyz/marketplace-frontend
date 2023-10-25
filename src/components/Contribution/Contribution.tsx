@@ -73,7 +73,7 @@ export function Contribution({ contribution, isMobile = false }: Props) {
           url={htmlUrl}
         />
         <button
-          className="hover:underline"
+          className="text-left hover:underline"
           onClick={() => {
             if (githubUserId && id && contribution.project?.id)
               open({ githubUserId, contributionId: id, projectId: contribution.project.id }, htmlUrl);
