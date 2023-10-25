@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { useTokenSet } from "src/hooks/useTokenSet";
-import { useAuth } from "../useAuth";
+import { useAuth } from "src/hooks/useAuth";
+import { getEndpointUrl } from "src/utils/getEndpointUrl";
+import { useHttpOptions } from "src/hooks/useHttpOptions/useHttpOptions";
 
 type QueryParam = {
   key: string;
@@ -14,12 +15,6 @@ interface UseRestfulDataProps {
   method?: "GET" | "POST" | "PUT" | "DELETE";
 }
 
-function buildQueryString(queryParams: QueryParam[]): string {
-  return queryParams
-    .map(param => `${encodeURIComponent(param.key)}=${encodeURIComponent(param.value.join(","))}`)
-    .join("&");
-}
-
 export function useRestfulData({
   resourcePath,
   pathParam = "",
@@ -27,24 +22,12 @@ export function useRestfulData({
   method = "GET",
 }: UseRestfulDataProps) {
   const { isLoggedIn } = useAuth();
-  const { tokenSet } = useTokenSet();
-  const scheme = "https://";
-  const apiBasepath = import.meta.env.VITE_ONLYDUST_API_BASEPATH;
-  const queryString = buildQueryString(queryParams);
-  const url = `${scheme}${apiBasepath}${resourcePath}${pathParam ? `/${pathParam}` : ""}${
-    queryString ? `?${queryString}` : ""
-  }`;
 
-  const option = {
-    method,
-    headers: {
-      ...(tokenSet?.accessToken ? { Authorization: `Bearer ${tokenSet.accessToken}` } : {}),
-    },
-  };
+  const options = useHttpOptions(method);
 
   const { isLoading, isError, data } = useQuery({
-    queryKey: [resourcePath, pathParam, queryString, method, isLoggedIn],
-    queryFn: () => fetch(url, option).then(res => res.json()),
+    queryKey: [resourcePath, pathParam, queryParams, method, isLoggedIn],
+    queryFn: () => fetch(getEndpointUrl({ resourcePath, pathParam, queryParams }), options).then(res => res.json()),
     staleTime: 0,
     gcTime: 0,
   });

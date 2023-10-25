@@ -284,3 +284,38 @@ export type Reward = {
     };
   };
 };
+
+export type ContributorT = {
+  avatarUrl: string | null;
+  codeReviewToReward: number | null;
+  contributionCount: number;
+  contributionToRewardCount: number | null; // not rewarded yet
+  earned: number | null;
+  githubUserId: number;
+  issueToReward: number | null;
+  login: string;
+  pullRequestToReward: number | null;
+  rewardCount: number; // already rewarded
+  isRegistered?: boolean;
+};
+
+export type Contributors = {
+  contributors: ContributorT[];
+  totalItemNumber: number;
+  totalPageNumber: number;
+  nextPageIndex: number;
+  hasMore: boolean;
+};
+
+export type PageData = {
+  totalPageNumber: number;
+  totalItemNumber: number;
+  hasMore: boolean;
+  nextPageIndex: number;
+  contributors: ContributorT[];
+};
+
+export type PagesData = {
+  pages: PageData[];
+  pageParams: number[];
+};

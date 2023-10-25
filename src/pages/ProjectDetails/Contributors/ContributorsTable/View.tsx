@@ -1,68 +1,37 @@
 import Table from "src/components/Table";
 import { rates } from "src/hooks/useWorkEstimation";
-import { useMemo, useState } from "react";
-import { sortBy } from "lodash";
 import Headers from "./Headers";
 import ContributorLine from "./Line";
-import { Contributor as ContributorBase } from "src/types";
+import { ContributorT } from "src/types";
 import Card from "src/components/Card";
 import { ToRewardDetailsTooltip } from "src/pages/ProjectDetails/Tooltips/ToRewardDetailsTooltip";
-
-export type Contributor = ContributorBase & {
-  totalEarned: number;
-  contributionCount: number;
-  rewardCount: number;
-  unpaidPullRequestCount: number;
-  unpaidIssueCount: number;
-  unpaidCodeReviewCount: number;
-  paidContributionsCount: number;
-  toRewardCount: number;
-  unpaidMergedPullsCount: number;
-};
-
-export enum Field {
-  Login = "login",
-  TotalEarned = "totalEarned",
-  ContributionCount = "contributionCount",
-  RewardCount = "rewardCount",
-  ToRewardCount = "toRewardCount",
-}
-
-export type Sorting = {
-  field: Field;
-  ascending: boolean;
-};
+import { ShowMore } from "src/components/Table/ShowMore";
+import { Field, Sorting } from "..";
 
 type Props = {
-  contributors: Contributor[];
+  contributors: ContributorT[];
+  fetchNextPage: () => void;
+  hasNextPage: boolean;
+  isFetchingNextPage: boolean;
   isProjectLeader: boolean;
   remainingBudget: number;
-  onRewardGranted: (contributor: Contributor) => void;
+  onRewardGranted: (contributor: ContributorT) => void;
+  sorting: Sorting;
+  applySorting: (field: Field, ascending: boolean) => void;
 };
 
 export default function View({
   contributors,
+  fetchNextPage,
+  hasNextPage,
+  isFetchingNextPage,
   isProjectLeader,
   remainingBudget,
   onRewardGranted: onPaymentRequested,
+  sorting,
+  applySorting,
 }: Props) {
   const isSendingNewPaymentDisabled = remainingBudget < rates.hours || remainingBudget === 0;
-
-  const [sorting, setSorting] = useState({
-    field: isProjectLeader ? Field.ToRewardCount : Field.ContributionCount,
-    ascending: false,
-  });
-
-  const applySorting = (field: Field, ascending: boolean) =>
-    setSorting({ field, ascending: sorting.field === field ? !sorting.ascending : ascending });
-
-  const sortedContributors = useMemo(() => {
-    const sorted = sortBy([...contributors], contributor => {
-      const f = contributor[sorting.field] || 0;
-      return typeof f === "string" ? f.toLocaleLowerCase() : f;
-    });
-    return sorting.ascending ? sorted : sorted.reverse();
-  }, [sorting, contributors]);
 
   return (
     <Card className="h-full">
@@ -70,7 +39,7 @@ export default function View({
         id="contributors_table"
         headers={<Headers sorting={sorting} applySorting={applySorting} isProjectLeader={isProjectLeader} />}
       >
-        {sortedContributors.map(contributor => (
+        {contributors.map(contributor => (
           <ContributorLine
             key={contributor.login}
             {...{
@@ -82,6 +51,11 @@ export default function View({
           />
         ))}
       </Table>
+      {hasNextPage && (
+        <div className="pt-6">
+          <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} />
+        </div>
+      )}
       <ToRewardDetailsTooltip />
     </Card>
   );

@@ -4,10 +4,10 @@ import HeaderCell, { HeaderCellWidth } from "src/components/Table/HeaderCell";
 import SortingArrow from "./SortingArrow";
 import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import User3Line from "src/icons/User3Line";
-import { Field, Sorting } from "./View";
 import StackLine from "src/icons/StackLine";
 import Medal2Fill from "src/icons/Medal2Fill";
 import HandCoinLine from "src/icons/HandCoinLine";
+import { Field, Sorting } from "..";
 
 type Props = {
   sorting: Sorting;

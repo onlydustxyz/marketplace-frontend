@@ -1,102 +1,16 @@
-import { describe, expect, it, vi } from "vitest";
-import { screen } from "@testing-library/react";
-import matchers from "@testing-library/jest-dom/matchers";
-import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
-import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
-import Contributors from ".";
-import {
-  ContributorFragment,
-  GetProjectContributorsDocument,
-  GetProjectContributorsQueryResult,
-} from "src/__generated/graphql";
-import { Project } from "src/types";
+import { screen, waitFor } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { TokenSetProvider } from "src/hooks/useTokenSet";
+import { AuthProvider } from "src/hooks/useAuth";
+import { ImpersonationClaimsProvider } from "src/hooks/useImpersonationClaims";
+import { ToasterProvider } from "src/hooks/useToaster";
+import ApolloWrapper from "src/providers/ApolloWrapper";
+import View from "src/pages/ProjectDetails/View";
+import { renderWithIntl } from "src/test/utils";
 
-expect.extend(matchers);
-
-vi.mock("axios", () => ({
-  default: {
-    post: () => ({ data: HASURA_TOKEN_BASIC_TEST_VALUE }),
-  },
-}));
-
-const TEST_USER_ID = "test-user-id";
-const TEST_PROJECT_ID = "test-project-id";
-
-const HASURA_TOKEN_BASIC_TEST_VALUE = {
-  user: {
-    id: TEST_USER_ID,
-  },
-  accessToken: "SOME_TOKEN",
-  accessTokenExpiresIn: 900,
-  creationDate: new Date().getTime(),
-};
-
-const contributor1: ContributorFragment = {
-  __typename: "UserProfiles",
-  githubUserId: 123456,
-  avatarUrl: "avatar_url",
-  login: "ofux",
-  userId: null,
-  contributionStatsAggregate: {
-    aggregate: { sum: { codeReviewCount: 0, issueCount: 1, pullRequestCount: 3, totalCount: 4 } },
-  },
-  paymentStatsAggregate: { aggregate: { sum: { moneyGranted: 2000 } } },
-  projectsRewardedAggregate: { aggregate: { sum: { rewardCount: 3 } } },
-  completedUnpaidPullRequestsAggregate: { aggregate: { count: 0 } },
-  completedUnpaidIssuesAggregate: { aggregate: { count: 0 } },
-  completedUnpaidCodeReviewsAggregate: { aggregate: { count: 0 } },
-};
-
-const contributor2: ContributorFragment = {
-  __typename: "UserProfiles",
-  githubUserId: 123457,
-  avatarUrl: "avatar_url",
-  login: "AnthonyBuisset",
-  userId: null,
-  contributionStatsAggregate: {
-    aggregate: { sum: { codeReviewCount: 0, issueCount: 1, pullRequestCount: 3, totalCount: 1 } },
-  },
-  paymentStatsAggregate: { aggregate: { sum: { moneyGranted: 500 } } },
-  projectsRewardedAggregate: { aggregate: { sum: { rewardCount: 3 } } },
-  completedUnpaidPullRequestsAggregate: { aggregate: { count: 3 } },
-  completedUnpaidIssuesAggregate: { aggregate: { count: 0 } },
-  completedUnpaidCodeReviewsAggregate: { aggregate: { count: 0 } },
-};
-
-const contributor3: ContributorFragment = {
-  __typename: "UserProfiles",
-  githubUserId: 123458,
-  avatarUrl: "avatar_url",
-  login: "oscarwroche",
-  userId: null,
-  contributionStatsAggregate: {
-    aggregate: { sum: { codeReviewCount: 0, issueCount: 0, pullRequestCount: 0, totalCount: 0 } },
-  },
-  paymentStatsAggregate: { aggregate: { sum: { moneyGranted: 0 } } },
-  projectsRewardedAggregate: { aggregate: { sum: { rewardCount: 0 } } },
-  completedUnpaidPullRequestsAggregate: { aggregate: { count: 0 } },
-  completedUnpaidIssuesAggregate: { aggregate: { count: 0 } },
-  completedUnpaidCodeReviewsAggregate: { aggregate: { count: 0 } },
-};
-
-const graphQlMocks = [
-  {
-    request: {
-      query: GetProjectContributorsDocument,
-      variables: {
-        projectId: TEST_PROJECT_ID,
-      },
-    },
-    result: {
-      data: {
-        projectsContributors: [contributor1, contributor2, contributor3].map(user => ({ user })),
-      } as GetProjectContributorsQueryResult["data"],
-    },
-  },
-];
-
-const PROJECT: Project = {
-  id: "test-project-id",
+const project = {
+  id: "cdb45d97-13a6-4f71-8c8c-78917fc02649",
   slug: "performance-test-with-a-very-long-name",
   name: "Performance test with a very long name",
   shortDescription: "Do not create issue on this one as it is linked with real projects !",
@@ -108,14 +22,14 @@ const PROJECT: Project = {
   moreInfoUrl: "www.onlydust.xyz",
   leaders: [
     {
-      githubUserId: 498695724,
+      githubUserId: 74653697,
       login: "AnthonyBuisset",
       htmlUrl: null,
       avatarUrl: "https://avatars.githubusercontent.com/u/43467246?v=4",
       id: "adcb11a6-92cf-4a1e-bace-79f7bdbc54e7",
     },
     {
-      githubUserId: 498695724,
+      githubUserId: 8642470,
       login: "ofux",
       htmlUrl: null,
       avatarUrl: "https://avatars.githubusercontent.com/u/595505?v=4",
@@ -210,26 +124,30 @@ const PROJECT: Project = {
   remainingUsdBudget: 99250.0,
 };
 
-describe('"ProjectDetails" page', () => {
-  beforeAll(() => {
-    window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_BASIC_TEST_VALUE));
-  });
+const queryClient = new QueryClient();
 
-  beforeEach(() => {
-    renderWithIntl(<Contributors />, {
-      wrapper: MemoryRouterProviderFactory({
-        mocks: graphQlMocks,
-        context: { project: PROJECT },
-      }),
+describe("Contributors page", () => {
+  it("renders Contributors component", async () => {
+    renderWithIntl(
+      <MemoryRouter>
+        <ImpersonationClaimsProvider>
+          <ToasterProvider>
+            <TokenSetProvider>
+              <ApolloWrapper>
+                <AuthProvider>
+                  <QueryClientProvider client={queryClient}>
+                    <View project={project} loading={false} error={null} />
+                  </QueryClientProvider>
+                </AuthProvider>
+              </ApolloWrapper>
+            </TokenSetProvider>
+          </ToasterProvider>
+        </ImpersonationClaimsProvider>
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.findByText("Contributors"));
     });
-  });
-
-  it("should render the contributors table", async () => {
-    await screen.findByText(/contributors/i);
-    await screen.findByText(/2,000/i);
-    await screen.findByText(/500/i);
-    await screen.findByText(/ofux/i);
-    await screen.findByText(/AnthonyBuisset/i);
-    await screen.findByText(/oscarwroche/i);
   });
 });

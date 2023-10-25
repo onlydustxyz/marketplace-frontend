@@ -4,26 +4,26 @@ import SkeletonFilters from "./SkeletonFilters";
 import SkeletonHeader from "./SkeletonHeader";
 import SkeletonSearch from "./SkeletonSearch";
 import SkeletonSort from "./SkeletonSort";
+import SkeletonCounter from "./SkeletonCounter";
+import SkeletonContributorList from "./SkeletonContributorList";
 
-type SkeletonVariant = "card" | "filters" | "header" | "search" | "sort";
+type SkeletonVariant = "card" | "filters" | "header" | "search" | "sort" | "counter" | "contributorList";
 
 interface SkeletonProps {
   variant: SkeletonVariant;
 }
 
+const VARIANT_COMPONENTS = {
+  card: SkeletonCard,
+  filters: SkeletonFilters,
+  header: SkeletonHeader,
+  search: SkeletonSearch,
+  sort: SkeletonSort,
+  counter: SkeletonCounter,
+  contributorList: SkeletonContributorList,
+};
+
 export default function Skeleton({ variant }: SkeletonProps) {
-  switch (variant) {
-    case "card":
-      return <SkeletonCard />;
-    case "filters":
-      return <SkeletonFilters />;
-    case "header":
-      return <SkeletonHeader />;
-    case "search":
-      return <SkeletonSearch />;
-    case "sort":
-      return <SkeletonSort />;
-    default:
-      return null;
-  }
+  const Component = VARIANT_COMPONENTS[variant];
+  return Component ? <Component /> : null;
 }
