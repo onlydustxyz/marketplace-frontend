@@ -5,13 +5,13 @@ import Button, { ButtonSize, Width } from "src/components/Button";
 import Card from "src/components/Card";
 import Loader from "src/components/Loader";
 import ProjectRewardTableFallback from "src/components/ProjectRewardTableFallback";
-import RewardTable from "src/components/RewardTable/RewardTable";
 import { withTooltip } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 import { Sortable } from "src/types";
 import Title from "src/pages/ProjectDetails/Title";
 import { useRestfulData } from "src/hooks/useRestfulData/useRestfulData";
 import { RemainingBudget } from "./RemainingBudget/RemainingBudget";
+import RewardTable from "src/components/RewardTable";
 
 const RewardList: React.FC = () => {
   const { T } = useIntl();
