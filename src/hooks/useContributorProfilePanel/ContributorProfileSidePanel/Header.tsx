@@ -39,6 +39,8 @@ export default function Header({ profile, editable, onChange, rounded }: Props) 
     });
   };
 
+  console.log("profile", profile);
+
   const handleClick = (value: ProfileCover) => {
     onChange && onChange(value);
   };

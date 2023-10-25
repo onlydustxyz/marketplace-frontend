@@ -20,7 +20,7 @@ export default function ReadOnlyView({ userProfile, isOwn, setOpen, setEditMode 
   const languages = useMemo(() => Object.keys(userProfile.technologies || {}), [userProfile]);
   return (
     <div className="flex h-full flex-col">
-      <Header profile={{ ...userProfile, cover: translateProfileCover(userProfile.cover ?? ProfileCover.Blue) }} />
+      <Header profile={userProfile} />
 
       <div className="-mt-12 ml-8 mr-2 flex flex-col gap-12 pb-12 pr-6 pt-4 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
         <IntroSection profile={userProfile} isOwn={isOwn} setEditMode={setEditMode} />
