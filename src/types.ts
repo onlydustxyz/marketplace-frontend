@@ -83,7 +83,6 @@ export enum PaymentStatus {
   PENDING_SIGNUP = "PENDING_SIGNUP",
   PROCESSING = "PROCESSING",
 }
-
 export function getPaymentStatusOrder({
   status,
   pendingPayoutInfo,
