@@ -100,6 +100,11 @@ export default function Rewards() {
                   rewards={rewards}
                   payoutInfoMissing={isPayoutSettingsInvalid}
                   invoiceNeeded={paymentRequestsNeedingInvoice.length > 0}
+                  fetchNextPage={fetchNextPage}
+                  hasNextPage={hasNextPage}
+                  isFetchingNextPage={isFetchingNextPage}
+                  sorting={sorting}
+                  applySorting={applySorting}
                 />
               )}
             </Card>

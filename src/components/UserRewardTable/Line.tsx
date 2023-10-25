@@ -5,7 +5,7 @@ import RoundedImage from "src/components/RoundedImage";
 import PayoutStatus from "src/components/PayoutStatus";
 import { formatMoneyAmount } from "src/utils/money";
 import displayRelativeDate from "src/utils/displayRelativeDate";
-import { Currency, getPaymentStatusOrder, PaymentStatus, PayoutSettings } from "src/types";
+import { getPaymentStatusOrder, PaymentStatus, PayoutSettings } from "src/types";
 import { Field, SortingFields } from "src/hooks/useRewardSorting";
 import { useEffect } from "react";
 import { WorkItemFragment } from "src/__generated/graphql";
@@ -15,30 +15,11 @@ import { components } from "src/__generated/api";
 
 export type MyRewardType = components["schemas"]["MyRewardPageItemResponse"];
 
-// export type Reward = {
-//   id: string;
-//   requestedAt: Date;
-//   workItems: WorkItemFragment[];
-//   amount: {
-//     value: number;
-//     currency: Currency;
-//   };
-//   status: PaymentStatus;
-//   recipientId: number;
-//   invoiceReceived: boolean;
-//   recipientPayoutSettings?: PayoutSettings;
-//   project?: {
-//     id: string;
-//     title: string | null;
-//     logoUrl?: string | null;
-//   } | null;
-// };
-
 type Props = {
   reward: MyRewardType;
   payoutInfoMissing: boolean;
   invoiceNeeded: boolean;
-  setSortingFields: (sortingFields: SortingFields) => void;
+  // setSortingFields: (sortingFields: SortingFields) => void;
   onClick: () => void;
   selected: boolean;
 };
@@ -47,22 +28,22 @@ export default function RewardLine({
   reward,
   payoutInfoMissing,
   invoiceNeeded,
-  setSortingFields,
+  // setSortingFields,
   onClick,
   selected,
 }: Props) {
-  useEffect(() => {
-    setSortingFields({
-      [Field.Date]: reward.requestedAt,
-      [Field.RewardId]: reward.rewardedOnProjectName?.toLocaleLowerCase() + reward.id,
-      [Field.Amount]: reward.amount.total,
-      [Field.Status]: getPaymentStatusOrder({
-        status: reward.status,
-        pendingPayoutInfo: payoutInfoMissing,
-        pendingInvoice: invoiceNeeded,
-      }),
-    });
-  }, [reward.status, payoutInfoMissing, invoiceNeeded]);
+  // useEffect(() => {
+  //   setSortingFields({
+  //     [Field.Date]: reward.requestedAt,
+  //     [Field.RewardId]: reward.rewardedOnProjectName?.toLocaleLowerCase() + reward.id,
+  //     [Field.Amount]: reward.amount.total,
+  //     [Field.Status]: getPaymentStatusOrder({
+  //       status: reward.status,
+  //       pendingPayoutInfo: payoutInfoMissing,
+  //       pendingInvoice: invoiceNeeded,
+  //     }),
+  //   });
+  // }, [reward.status, payoutInfoMissing, invoiceNeeded]);
 
   const { T } = useIntl();
 

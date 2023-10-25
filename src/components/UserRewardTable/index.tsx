@@ -9,34 +9,50 @@ import { viewportConfig } from "src/config";
 import MobileUserRewardList from "./MobileUserRewardList";
 import { useMediaQuery } from "usehooks-ts";
 import SidePanel from "src/components/SidePanel";
+import { Field, Sorting } from "src/pages/Rewards";
+import { ShowMore } from "src/components/Table/ShowMore";
 
 type PropsType = {
   rewards: MyRewardType[];
   payoutInfoMissing: boolean;
   invoiceNeeded: boolean;
+  fetchNextPage: () => void;
+  hasNextPage: boolean;
+  isFetchingNextPage: boolean;
+  sorting: Sorting;
+  applySorting: (field: Field, ascending: boolean) => void;
 };
 
-const UserRewardTable: React.FC<PropsType> = ({ rewards, payoutInfoMissing, invoiceNeeded }) => {
+const UserRewardTable: React.FC<PropsType> = ({
+  rewards,
+  payoutInfoMissing,
+  invoiceNeeded,
+  fetchNextPage,
+  hasNextPage,
+  isFetchingNextPage,
+  sorting,
+  applySorting,
+}) => {
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
-  const [rewardSortingFields, setRewardSortingFields] = useState<Record<string, SortingFields>>({});
-  const { sort, sorting, applySorting } = useRewardSorting();
+  // const [rewardSortingFields, setRewardSortingFields] = useState<Record<string, SortingFields>>({});
+  // const { sort, sorting, applySorting } = useRewardSorting();
 
-  const sortableRewards = useMemo(
-    () => rewards.map(p => ({ ...p, sortingFields: rewardSortingFields[p.id] })),
-    [rewardSortingFields, rewards]
-  );
+  // const sortableRewards = useMemo(
+  //   () => rewards.map(p => ({ ...p, sortingFields: rewardSortingFields[p.id] })),
+  //   [rewardSortingFields, rewards]
+  // );
 
-  const sortedRewards = useMemo(() => sort(sortableRewards), [sort, sortableRewards]);
+  // const sortedRewards = useMemo(() => sort(sortableRewards), [sort, sortableRewards]);
+
+  // const setSortingFields = useCallback(
+  //   (p: MyRewardType) => (fields: SortingFields) =>
+  //     setRewardSortingFields(existing => ({ ...existing, [p.id]: fields })),
+  //   []
+  // );
 
   const [selectedReward, setSelectedReward] = useState<MyRewardType | null>(null);
   const [sidePanelOpen, setSidePanelOpen] = useState(false);
-
-  const setSortingFields = useCallback(
-    (p: MyRewardType) => (fields: SortingFields) =>
-      setRewardSortingFields(existing => ({ ...existing, [p.id]: fields })),
-    []
-  );
 
   const onRewardClick = (reward: MyRewardType) => {
     setSelectedReward(reward);
@@ -46,22 +62,29 @@ const UserRewardTable: React.FC<PropsType> = ({ rewards, payoutInfoMissing, invo
   return (
     <>
       {isXl ? (
-        <Table id="reward_table" headers={<Headers sorting={sorting} applySorting={applySorting} />}>
-          {sortedRewards.map(p => (
-            <RewardLine
-              key={p.id}
-              reward={p}
-              payoutInfoMissing={payoutInfoMissing}
-              invoiceNeeded={invoiceNeeded}
-              setSortingFields={setSortingFields(p)}
-              onClick={() => onRewardClick(p)}
-              selected={p.id === selectedReward?.id}
-            />
-          ))}
-        </Table>
+        <div>
+          <Table id="reward_table" headers={<Headers sorting={sorting} applySorting={applySorting} />}>
+            {rewards.map(p => (
+              <RewardLine
+                key={p.id}
+                reward={p}
+                payoutInfoMissing={payoutInfoMissing}
+                invoiceNeeded={invoiceNeeded}
+                // setSortingFields={setSortingFields(p)}
+                onClick={() => onRewardClick(p)}
+                selected={p.id === selectedReward?.id}
+              />
+            ))}
+          </Table>
+          {hasNextPage && (
+            <div className="pt-6">
+              <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} />
+            </div>
+          )}
+        </div>
       ) : (
         <MobileUserRewardList
-          rewards={sortedRewards}
+          rewards={rewards}
           payoutInfoMissing={payoutInfoMissing}
           invoiceNeeded={invoiceNeeded}
           onRewardClick={onRewardClick}
