@@ -3,43 +3,89 @@ import { Navigate } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import Card from "src/components/Card";
 import UserRewardTable from "src/components/UserRewardTable";
-import QueryWrapper from "src/components/QueryWrapper";
 import { useAuth } from "src/hooks/useAuth";
-import { Currency, PaymentStatus } from "src/types";
-import { UserPaymentRequestFragment, useGetPaymentRequestsQuery } from "src/__generated/graphql";
 import { useT } from "talkr";
 import TotalEarnings from "./TotalEarnings";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
-import usePayoutSettings from "src/hooks/usePayoutSettings";
-import { Reward } from "src/components/UserRewardTable/Line";
-import InvoiceSubmission from "./InvoiceSubmission";
 import SEO from "src/components/SEO";
+import { useMemo, useState } from "react";
+import useInfiniteMyRewardList from "src/hooks/useInfiniteMyRewardList/useInfiniteMyRewardList";
+import Skeleton from "src/components/Skeleton";
+import ErrorFallback from "src/ErrorFallback";
 
-const Rewards = () => {
-  const { githubUserId } = useAuth();
+export enum Field {
+  Date = "REQUESTED_AT",
+  RewardId = "CONTRIBUTION",
+  Amount = "AMOUNT",
+  Status = "STATUS",
+}
+
+export enum RewardStatus {
+  COMPLETE = "COMPLETE",
+  PENDING_INVOICE = "PENDING_INVOICE",
+  PENDING_SIGNUP = "PENDING_SIGNUP",
+  PROCESSING = "PROCESSING",
+}
+
+export type Sorting = {
+  field: Field;
+  ascending: boolean;
+};
+
+export default function Rewards() {
+  const { githubUserId, user } = useAuth();
   const { T } = useT();
 
-  const getPaymentRequestsQuery = useGetPaymentRequestsQuery({
-    variables: { githubUserId },
-    skip: !githubUserId,
-    fetchPolicy: "network-only",
+  const [sorting, setSorting] = useState({
+    field: Field.Amount,
+    ascending: false,
   });
 
-  const { valid: payoutSettingsValid, invoiceNeeded, data: userInfos } = usePayoutSettings(githubUserId);
+  const applySorting = (field: Field, ascending: boolean) =>
+    setSorting({ field, ascending: sorting.field === field ? !sorting.ascending : ascending });
 
-  const { data: paymentRequestsQueryData } = getPaymentRequestsQuery;
-  const rewards = paymentRequestsQueryData?.paymentRequests?.map(mapApiPaymentsToProps);
+  const queryParams = useMemo(
+    () => [
+      ...(sorting
+        ? [
+            { key: "sort", value: [sorting.field] },
+            { key: "direction", value: [sorting.ascending ? "ASC" : "DESC"] },
+          ]
+        : []),
+    ],
+    [sorting]
+  );
+
+  const { data, error, isFetching, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteMyRewardList({
+    queryParams,
+  });
+
+  if (isFetching && !isFetchingNextPage) {
+    return (
+      <>
+        {/* TODO add a specific skeleton */}
+        <div className="max-w-[15%]">
+          <Skeleton variant="counter" />
+        </div>
+        <Skeleton variant="contributorList" />
+      </>
+    );
+  }
+
+  if (error) {
+    return <ErrorFallback />;
+  }
+
+  const rewards = data?.pages.flatMap(page => page.rewards) || [];
+
   const hasRewards = rewards && rewards.length > 0;
-  const paymentRequestsNeedingInvoice =
-    rewards?.filter(p => p.status === PaymentStatus.WAITING_PAYMENT && !p.invoiceReceived) || [];
-
+  const paymentRequestsNeedingInvoice = rewards?.filter(p => p.status === RewardStatus.PENDING_INVOICE) || [];
+  const isPayoutSettingsInvalid = rewards?.filter(p => p.status !== RewardStatus.COMPLETE).length > 0;
   if (hasRewards === false) {
     return <Navigate to={RoutePaths.Projects} />;
   }
 
-  const totalEarnings = hasRewards && rewards.reduce((acc, p) => acc + p.amount.value, 0);
-  const invoiceSubmissionNeeded =
-    paymentRequestsNeedingInvoice.length > 0 && invoiceNeeded && githubUserId && userInfos && payoutSettingsValid;
+  const totalEarnings = hasRewards && rewards.reduce((acc, p) => acc + p.amount.total, 0);
 
   return (
     <>
@@ -47,89 +93,31 @@ const Rewards = () => {
       <Background roundedBorders={BackgroundRoundedBorders.Full}>
         <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-4 xl:p-8">
           <div className="font-belwe text-3xl xl:text-5xl">{T("navbar.rewards")}</div>
-          <QueryWrapper query={getPaymentRequestsQuery}>
-            <div className="mb-10 flex flex-col-reverse items-start gap-4 xl:flex-row">
-              <Card>
-                {rewards && (
-                  <UserRewardTable
-                    rewards={rewards}
-                    payoutInfoMissing={!payoutSettingsValid}
-                    invoiceNeeded={invoiceNeeded}
+          <div className="mb-10 flex flex-col-reverse items-start gap-4 xl:flex-row">
+            <Card>
+              {rewards && (
+                <UserRewardTable
+                  rewards={rewards}
+                  payoutInfoMissing={isPayoutSettingsInvalid}
+                  invoiceNeeded={paymentRequestsNeedingInvoice.length > 0}
+                />
+              )}
+            </Card>
+            <div>
+              <div className="sticky top-4 flex flex-col gap-4">
+                {totalEarnings && <TotalEarnings amount={totalEarnings} />}
+                {/* {paymentRequestsNeedingInvoice.length > 0 && (
+                  <InvoiceSubmission
+                    paymentRequests={paymentRequestsNeedingInvoice}
+                    githubUserId={githubUserId || 0}
+                    userInfos={user}
                   />
-                )}
-              </Card>
-              <div>
-                <div className="sticky top-4 flex flex-col gap-4">
-                  {totalEarnings && <TotalEarnings amount={totalEarnings} />}
-                  {invoiceSubmissionNeeded && (
-                    <InvoiceSubmission
-                      paymentRequests={paymentRequestsNeedingInvoice}
-                      githubUserId={githubUserId}
-                      userInfos={userInfos}
-                    />
-                  )}
-                </div>
+                )} */}
               </div>
             </div>
-          </QueryWrapper>
+          </div>
         </div>
       </Background>
     </>
   );
-};
-
-const mapApiPaymentsToProps = (apiPayment: UserPaymentRequestFragment): Reward => {
-  const amount = { value: apiPayment.amount, currency: Currency.USD };
-  const project = apiPayment.project;
-  const requestedAt = apiPayment.requestedAt;
-  const getPaidAmount = (payments: { amount: number }[]) =>
-    payments?.reduce((total: number, payment: { amount: number }) => total + payment.amount, 0);
-
-  return {
-    id: apiPayment.id,
-    recipientId: apiPayment.recipientId,
-    requestedAt,
-    amount,
-    workItems: apiPayment.workItems,
-    project: project &&
-      project && {
-        id: project.id,
-        title: project.name,
-        logoUrl: project.logoUrl,
-      },
-    invoiceReceived: !!apiPayment.invoiceReceivedAt,
-    status:
-      getPaidAmount(apiPayment.payments) === apiPayment.amount ? PaymentStatus.ACCEPTED : PaymentStatus.WAITING_PAYMENT,
-  };
-};
-
-gql`
-  fragment UserPaymentRequest on PaymentRequests {
-    id
-    recipientId
-    requestedAt
-    payments {
-      amount
-      currencyCode
-    }
-    amount
-    workItems {
-      ...WorkItem
-    }
-    invoiceReceivedAt
-    project {
-      id
-      name
-      shortDescription
-      logoUrl
-    }
-  }
-
-  query GetPaymentRequests($githubUserId: bigint!) {
-    paymentRequests(where: { recipientId: { _eq: $githubUserId } }) {
-      ...UserPaymentRequest
-    }
-  }
-`;
-
-export default Rewards;
+}

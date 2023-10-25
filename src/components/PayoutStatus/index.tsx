@@ -3,12 +3,15 @@ import { useIntl } from "src/hooks/useIntl";
 import CheckLine from "src/icons/CheckLine";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import Time from "src/icons/TimeLine";
-import { PaymentStatus } from "src/types";
 import { withTooltip } from "src/components/Tooltip";
+import { RewardStatus } from "src/pages/Rewards";
+import { d } from "vitest/dist/index-5aad25c1";
+
+type RewardStatusType = "COMPLETE" | "PENDING_INVOICE" | "PENDING_SIGNUP" | "PROCESSING";
 
 type Props = {
   id: string;
-  status: PaymentStatus;
+  status: RewardStatusType;
   payoutInfoMissing: boolean;
   invoiceNeeded?: boolean;
   isProjectLeaderView?: boolean;
@@ -19,20 +22,24 @@ export default function PayoutStatus({ status, payoutInfoMissing, isProjectLeade
 }
 
 const buildTag = (
-  status: PaymentStatus,
+  status: RewardStatusType,
   payoutInfoMissing: boolean,
   isProjectLeaderView: boolean,
   invoiceNeeded: boolean
 ) => {
   switch (status) {
-    case PaymentStatus.WAITING_PAYMENT:
+    case RewardStatus.PENDING_INVOICE:
+    case RewardStatus.PENDING_SIGNUP:
+    case RewardStatus.PROCESSING:
       return payoutInfoMissing
         ? PayoutInfoMissingTag(isProjectLeaderView)
         : invoiceNeeded && !isProjectLeaderView
         ? InvoiceNeededTag()
         : ProcessingTag();
-    case PaymentStatus.ACCEPTED:
+    case RewardStatus.COMPLETE:
       return CompleteTag();
+    default:
+      return ProcessingTag();
   }
 };
 

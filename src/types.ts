@@ -72,7 +72,9 @@ export type Sortable = {
 export enum Currency {
   USD = "USD",
   ETH = "ETH",
-  USDC = "USDC",
+  STARK = "STARK",
+  APT = "APT",
+  OP = "OP",
 }
 
 export enum PaymentStatus {

@@ -1,7 +1,7 @@
 import { Sortable } from "src/types";
 import Table from "src/components/Table";
 import useRewardSorting, { SortingFields } from "src/hooks/useRewardSorting";
-import RewardLine, { Reward } from "./Line";
+import RewardLine, { MyRewardType } from "./Line";
 import Headers from "./Headers";
 import { useCallback, useMemo, useState } from "react";
 import RewardSidePanel from "./RewardSidePanel";
@@ -11,7 +11,7 @@ import { useMediaQuery } from "usehooks-ts";
 import SidePanel from "src/components/SidePanel";
 
 type PropsType = {
-  rewards: (Reward & Sortable)[];
+  rewards: MyRewardType[];
   payoutInfoMissing: boolean;
   invoiceNeeded: boolean;
 };
@@ -29,15 +29,16 @@ const UserRewardTable: React.FC<PropsType> = ({ rewards, payoutInfoMissing, invo
 
   const sortedRewards = useMemo(() => sort(sortableRewards), [sort, sortableRewards]);
 
-  const [selectedReward, setSelectedReward] = useState<Reward | null>(null);
+  const [selectedReward, setSelectedReward] = useState<MyRewardType | null>(null);
   const [sidePanelOpen, setSidePanelOpen] = useState(false);
 
   const setSortingFields = useCallback(
-    (p: Reward) => (fields: SortingFields) => setRewardSortingFields(existing => ({ ...existing, [p.id]: fields })),
+    (p: MyRewardType) => (fields: SortingFields) =>
+      setRewardSortingFields(existing => ({ ...existing, [p.id]: fields })),
     []
   );
 
-  const onRewardClick = (reward: Reward) => {
+  const onRewardClick = (reward: MyRewardType) => {
     setSelectedReward(reward);
     setSidePanelOpen(true);
   };
@@ -67,7 +68,7 @@ const UserRewardTable: React.FC<PropsType> = ({ rewards, payoutInfoMissing, invo
         />
       )}
       <SidePanel open={sidePanelOpen} setOpen={setSidePanelOpen}>
-        {selectedReward && <RewardSidePanel rewardId={selectedReward.id} recipientId={selectedReward.recipientId} />}
+        {selectedReward && <RewardSidePanel rewardId={selectedReward.id} recipientId={selectedReward.id} />}
       </SidePanel>
     </>
   );

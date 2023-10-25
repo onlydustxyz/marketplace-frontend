@@ -11,7 +11,7 @@ type Props = {
   rewardId: string;
   onRewardCancel?: () => void;
   projectLeaderView?: boolean;
-  recipientId?: number;
+  recipientId?: string;
 };
 
 export default function RewardSidePanel({ rewardId, onRewardCancel, projectLeaderView, recipientId }: Props) {
@@ -55,7 +55,7 @@ export function RewardSidePanelAsLeader({
   projectId: string;
   rewardId: string;
   setOpen: (value: boolean) => void;
-  recipientId: number;
+  recipientId: string;
 }) {
   const showToaster = useShowToaster();
   const { T } = useIntl();
