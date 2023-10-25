@@ -18484,12 +18484,19 @@ export type GetContributionDetailsQueryVariables = Exact<{
 
 export type GetContributionDetailsQuery = { __typename?: 'query_root', contributions: Array<{ __typename?: 'Contributions', closedAt: any | null, createdAt: any | null, id: string | null, status: any | null, type: string | null, githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, closingIssues: Array<{ __typename?: 'ApiClosingIssues', githubIssue: { __typename?: 'GithubIssues', commentsCount: any | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, author: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null } | null }>, codeReviews: Array<{ __typename?: 'GithubPullRequestReviews', id: string | null, outcome: any | null, status: string | null, reviewer: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null }>, author: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null } | null, githubIssue: { __typename?: 'GithubIssues', commentsCount: any | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, closedByPullRequests: Array<{ __typename?: 'ApiClosedByPullRequests', githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, author: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null } | null }>, author: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null } | null, githubCodeReview: { __typename?: 'GithubPullRequestReviews', id: string | null, outcome: any | null, status: string | null, githubPullRequest: { __typename?: 'GithubPullRequests', draft: boolean | null, htmlUrl: string | null, id: any | null, number: any | null, status: string | null, title: string | null, author: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null } | null, reviewer: { __typename?: 'GithubUsers', avatarUrl: string, login: string, id: any } | null } | null, githubRepo: { __typename?: 'GithubRepos', htmlUrl: string | null, name: string | null, id: any | null } | null, project: { __typename?: 'Projects', name: string | null, logoUrl: string | null, id: any | null, key: string | null } | null, rewardItems: Array<{ __typename?: 'WorkItems', paymentId: any | null, paymentRequest: { __typename?: 'PaymentRequests', amount: any | null, hoursWorked: number | null, invoiceReceivedAt: any | null, recipientId: any | null, requestedAt: any | null, payments: Array<{ __typename?: 'Payments', processedAt: any }>, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null }, requestor: { __typename?: 'RegisteredUsers', avatarUrl: string | null, githubUserId: any | null, htmlUrl: string | null, login: string | null } | null } | null }> }> };
 
-export type GetContributionProjectsAndReposQueryVariables = Exact<{
+export type GetContributionProjectsQueryVariables = Exact<{
   where: InputMaybe<ContributionsBoolExp>;
 }>;
 
 
-export type GetContributionProjectsAndReposQuery = { __typename?: 'query_root', contributions: Array<{ __typename?: 'Contributions', project: { __typename?: 'Projects', name: string | null, logoUrl: string | null, id: any | null } | null, githubRepo: { __typename?: 'GithubRepos', id: any | null, name: string | null } | null }> };
+export type GetContributionProjectsQuery = { __typename?: 'query_root', contributions: Array<{ __typename?: 'Contributions', project: { __typename?: 'Projects', name: string | null, logoUrl: string | null, id: any | null } | null }> };
+
+export type GetContributionReposQueryVariables = Exact<{
+  where: InputMaybe<ContributionsBoolExp>;
+}>;
+
+
+export type GetContributionReposQuery = { __typename?: 'query_root', contributions: Array<{ __typename?: 'Contributions', githubRepo: { __typename?: 'GithubRepos', id: any | null, name: string | null } | null }> };
 
 export type PendingProjectLeaderInvitationsQueryVariables = Exact<{
   githubUserId: InputMaybe<Scalars['bigint']>;
@@ -20480,14 +20487,48 @@ export function useGetContributionDetailsLazyQuery(baseOptions?: Apollo.LazyQuer
 export type GetContributionDetailsQueryHookResult = ReturnType<typeof useGetContributionDetailsQuery>;
 export type GetContributionDetailsLazyQueryHookResult = ReturnType<typeof useGetContributionDetailsLazyQuery>;
 export type GetContributionDetailsQueryResult = Apollo.QueryResult<GetContributionDetailsQuery, GetContributionDetailsQueryVariables>;
-export const GetContributionProjectsAndReposDocument = gql`
-    query GetContributionProjectsAndRepos($where: ContributionsBoolExp) {
-  contributions(where: $where) {
+export const GetContributionProjectsDocument = gql`
+    query GetContributionProjects($where: ContributionsBoolExp) {
+  contributions(where: $where, distinctOn: [projectId]) {
     project {
       name
       logoUrl
       id
     }
+  }
+}
+    `;
+
+/**
+ * __useGetContributionProjectsQuery__
+ *
+ * To run a query within a React component, call `useGetContributionProjectsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetContributionProjectsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetContributionProjectsQuery({
+ *   variables: {
+ *      where: // value for 'where'
+ *   },
+ * });
+ */
+export function useGetContributionProjectsQuery(baseOptions?: Apollo.QueryHookOptions<GetContributionProjectsQuery, GetContributionProjectsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetContributionProjectsQuery, GetContributionProjectsQueryVariables>(GetContributionProjectsDocument, options);
+      }
+export function useGetContributionProjectsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetContributionProjectsQuery, GetContributionProjectsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetContributionProjectsQuery, GetContributionProjectsQueryVariables>(GetContributionProjectsDocument, options);
+        }
+export type GetContributionProjectsQueryHookResult = ReturnType<typeof useGetContributionProjectsQuery>;
+export type GetContributionProjectsLazyQueryHookResult = ReturnType<typeof useGetContributionProjectsLazyQuery>;
+export type GetContributionProjectsQueryResult = Apollo.QueryResult<GetContributionProjectsQuery, GetContributionProjectsQueryVariables>;
+export const GetContributionReposDocument = gql`
+    query GetContributionRepos($where: ContributionsBoolExp) {
+  contributions(where: $where, distinctOn: [repoId]) {
     githubRepo {
       id
       name
@@ -20497,32 +20538,32 @@ export const GetContributionProjectsAndReposDocument = gql`
     `;
 
 /**
- * __useGetContributionProjectsAndReposQuery__
+ * __useGetContributionReposQuery__
  *
- * To run a query within a React component, call `useGetContributionProjectsAndReposQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetContributionProjectsAndReposQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetContributionReposQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetContributionReposQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetContributionProjectsAndReposQuery({
+ * const { data, loading, error } = useGetContributionReposQuery({
  *   variables: {
  *      where: // value for 'where'
  *   },
  * });
  */
-export function useGetContributionProjectsAndReposQuery(baseOptions?: Apollo.QueryHookOptions<GetContributionProjectsAndReposQuery, GetContributionProjectsAndReposQueryVariables>) {
+export function useGetContributionReposQuery(baseOptions?: Apollo.QueryHookOptions<GetContributionReposQuery, GetContributionReposQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetContributionProjectsAndReposQuery, GetContributionProjectsAndReposQueryVariables>(GetContributionProjectsAndReposDocument, options);
+        return Apollo.useQuery<GetContributionReposQuery, GetContributionReposQueryVariables>(GetContributionReposDocument, options);
       }
-export function useGetContributionProjectsAndReposLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetContributionProjectsAndReposQuery, GetContributionProjectsAndReposQueryVariables>) {
+export function useGetContributionReposLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetContributionReposQuery, GetContributionReposQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetContributionProjectsAndReposQuery, GetContributionProjectsAndReposQueryVariables>(GetContributionProjectsAndReposDocument, options);
+          return Apollo.useLazyQuery<GetContributionReposQuery, GetContributionReposQueryVariables>(GetContributionReposDocument, options);
         }
-export type GetContributionProjectsAndReposQueryHookResult = ReturnType<typeof useGetContributionProjectsAndReposQuery>;
-export type GetContributionProjectsAndReposLazyQueryHookResult = ReturnType<typeof useGetContributionProjectsAndReposLazyQuery>;
-export type GetContributionProjectsAndReposQueryResult = Apollo.QueryResult<GetContributionProjectsAndReposQuery, GetContributionProjectsAndReposQueryVariables>;
+export type GetContributionReposQueryHookResult = ReturnType<typeof useGetContributionReposQuery>;
+export type GetContributionReposLazyQueryHookResult = ReturnType<typeof useGetContributionReposLazyQuery>;
+export type GetContributionReposQueryResult = Apollo.QueryResult<GetContributionReposQuery, GetContributionReposQueryVariables>;
 export const PendingProjectLeaderInvitationsDocument = gql`
     query PendingProjectLeaderInvitations($githubUserId: bigint) {
   pendingProjectLeaderInvitations(where: {githubUserId: {_eq: $githubUserId}}) {

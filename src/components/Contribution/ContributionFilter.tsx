@@ -192,6 +192,7 @@ export function ContributionFilter({
                     const repos = Array.isArray(value) ? value : [value];
                     updateRepos(repos);
                   }}
+                  disabled={repos.length <= 1}
                 />
               </div>
             </Popover.Panel>
