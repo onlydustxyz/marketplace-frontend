@@ -1,8 +1,8 @@
-import { cn } from "src/utils/cn";
 import IBAN from "iban";
 import { PropsWithChildren, useState } from "react";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import { GithubUserFragment, PaymentRequestDetailsFragment } from "src/__generated/graphql";
+import InfoIcon from "src/assets/icons/InfoIcon";
 import Button, { ButtonSize } from "src/components/Button";
 import Contributor from "src/components/Contributor";
 import ExternalLink from "src/components/ExternalLink";
@@ -13,17 +13,18 @@ import PayoutStatus from "src/components/PayoutStatus/PayoutStatus";
 import QueryWrapper from "src/components/QueryWrapper";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import Tooltip, { TooltipPosition, withCustomTooltip } from "src/components/Tooltip";
+import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
 import BankCardLine from "src/icons/BankCardLine";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import Time from "src/icons/TimeLine";
 import { PaymentStatus } from "src/types";
+import { cn } from "src/utils/cn";
 import { formatDateTime } from "src/utils/date";
 import { pretty } from "src/utils/id";
 import isDefined from "src/utils/isDefined";
 import { formatMoneyAmount } from "src/utils/money";
 import ConfirmationModal from "./ConfirmationModal";
-import InfoIcon from "src/assets/icons/InfoIcon";
 
 enum Align {
   Top = "top",
@@ -33,8 +34,6 @@ enum Align {
 export type Props = {
   loading: boolean;
   status: PaymentStatus;
-  userId?: string;
-  githubUserId?: number;
   payoutInfoMissing: boolean;
   invoiceNeeded?: boolean;
   projectLeaderView?: boolean;
@@ -44,8 +43,6 @@ export type Props = {
 export default function View({
   id,
   loading,
-  userId,
-  githubUserId,
   status,
   amount,
   githubRecipient,
@@ -60,8 +57,9 @@ export default function View({
   onRewardCancel,
 }: Props) {
   const { T } = useIntl();
+  const { user, githubUserId } = useAuth();
+  const { id: userId } = user ?? {};
   const formattedReceipt = formatReceipt(payments?.at(0)?.receipt);
-
   const shouldDisplayCancelButton = projectLeaderView && onRewardCancel && status === PaymentStatus.WAITING_PAYMENT;
 
   return (
