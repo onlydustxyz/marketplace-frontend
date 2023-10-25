@@ -13,10 +13,10 @@ import { useIntl } from "src/hooks/useIntl";
  * Used in https://www.figma.com/file/8PqNt4K2uKLu3DvxF3rVDX/%F0%9F%A7%AA-Only-Dust-%E2%80%A2-[…]ype=design&node-id=8306-28771&mode=design&t=zDkHPxvit6rCDHmj-4
  */
 
-interface AvailableConversionCurrency {
+export interface AvailableConversionCurrency {
   currency: BugetCurrencyType;
   amount: number;
-  dollar: number | null;
+  dollar: number | undefined;
 }
 
 export interface AvailableConversion {

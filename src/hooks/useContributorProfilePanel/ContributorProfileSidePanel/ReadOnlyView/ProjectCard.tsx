@@ -12,7 +12,7 @@ import PrivateTag from "src/components/PrivateTag";
 
 export type Project = {
   id: string;
-  key: string;
+  slug: string;
   logoUrl: string;
   name: string;
   contributorCount: number;

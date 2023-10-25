@@ -22,25 +22,43 @@ import { Link, generatePath } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import CompletionBar from "src/components/CompletionBar";
 import WhatsappFill from "src/icons/WhatsappFill";
+import { Profile } from "src/hooks/useProfile/useProfile";
+import { components } from "src/__generated/api";
 
 type Props = {
-  profile: UserProfileFragment & OwnUserProfileDetailsFragment;
+  profile: Profile;
   setEditMode: (value: boolean) => void;
   isOwn?: boolean;
   isPublic?: boolean;
 };
+
+type ContactChannelType = components["schemas"]["ContactInformation"]["channel"];
 
 export default function IntroSection({ isOwn, isPublic, profile, setEditMode }: Props) {
   const { T } = useIntl();
 
   const website = parseWebsite(profile.website);
 
-  const email = profile.contacts.email?.public && profile.contacts.email?.contact;
-  const telegram = profile.contacts.telegram?.public && profile.contacts.telegram?.contact;
-  const twitter = profile.contacts.twitter?.public && profile.contacts.twitter?.contact;
-  const discord = profile.contacts.discord?.public && profile.contacts.discord?.contact;
-  const linkedin = profile.contacts.linkedin?.public && profile.contacts.linkedin?.contact;
-  const whatsapp = profile.contacts.whatsapp?.public && profile.contacts.whatsapp?.contact;
+  const findContact = (key: ContactChannelType) => {
+    const find = profile?.contacts?.find(contact => contact.channel === key);
+
+    if (!find) {
+      return undefined;
+    }
+
+    if (find.visibility === "private") {
+      return undefined;
+    }
+
+    return find.contact;
+  };
+
+  const email = findContact("EMAIL");
+  const telegram = findContact("TELEGRAM");
+  const twitter = findContact("TWITTER");
+  const discord = findContact("DISCORD");
+  const linkedin = findContact("LINKEDIN");
+  const whatsapp = findContact("WHATSAPP");
 
   return (
     <div className="flex flex-col gap-6">
@@ -83,16 +101,15 @@ export default function IntroSection({ isOwn, isPublic, profile, setEditMode }: 
           </div>
         )}
       </div>
-
-      {profile.completionScore !== undefined && profile.completionScore < 95 && (
+      {/* // TODO REST : completion score */}
+      {/* {profile.completionScore !== undefined && profile.completionScore < 95 && (
         <div className="flex w-full flex-col gap-2 rounded-2xl bg-completion-gradient px-5 py-4">
           <div className="font-walsheim text-sm font-medium text-greyscale-50">
             {T("profile.completion", { completion: profile.completionScore.toString() })}
           </div>
           <CompletionBar completionScore={profile.completionScore} />
         </div>
-      )}
-
+      )} */}
       {(profile.bio || profile.location || profile.createdAt) && (
         <div className="flex flex-col gap-4 font-walsheim font-normal">
           {profile.bio && (
@@ -106,8 +123,8 @@ export default function IntroSection({ isOwn, isPublic, profile, setEditMode }: 
               <ExternalLink url={website.url} text={website.hostname} />
             </div>
           )}
-
-          {profile.createdAt ? (
+          {/* // TODO REST : firstContributedAt - when a user don't have a created_at add the first contribution date */}
+          {/* {profile.createdAt ? (
             <div className="flex flex-row items-center gap-2 text-base text-greyscale-300">
               <img id={`od-logo-${profile.login}`} src={onlyDustLogo} className="h-3.5" />
               {T("profile.joinedAt", {
@@ -124,7 +141,7 @@ export default function IntroSection({ isOwn, isPublic, profile, setEditMode }: 
                 })}
               </div>
             )
-          )}
+          )} */}
         </div>
       )}
       <div className="flex flex-row items-center gap-2">

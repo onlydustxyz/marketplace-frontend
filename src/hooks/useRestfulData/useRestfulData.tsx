@@ -8,7 +8,7 @@ type QueryParam = {
   value: Array<string | number | boolean>;
 };
 
-interface UseRestfulDataProps {
+export interface UseRestfulDataProps {
   resourcePath: string;
   pathParam?: string | Record<string, string>;
   queryParams?: QueryParam[];

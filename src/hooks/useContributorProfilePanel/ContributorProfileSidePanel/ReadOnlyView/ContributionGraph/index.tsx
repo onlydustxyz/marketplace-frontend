@@ -10,13 +10,20 @@ import YTick from "./YTick";
 import { useState } from "react";
 
 type Props = {
-  entries: ContributionCountFragment[];
+  entries: {
+    year?: number | undefined;
+    week?: number | undefined;
+    codeReviewCount?: number | undefined;
+    issueCount?: number | undefined;
+    pullRequestCount?: number | undefined;
+  }[];
 };
 
 export default function ContributionGraph({ entries }: Props) {
   const { T } = useIntl();
 
-  const maxCount = max(entries.map(e => e.codeReviewCount + e.issueCount + e.pullRequestCount)) || 0;
+  const maxCount =
+    max(entries.map(e => (e.codeReviewCount || 0) + (e.issueCount || 0) + (e.pullRequestCount || 0))) || 0;
   const tickStep = maxCount <= 5 ? 1 : maxCount <= 10 ? 2 : maxCount <= 20 ? 5 : 10;
   const ticks = range(0, round(maxCount / tickStep) + 1).map(t => t * tickStep);
   const [hoveredBarIndex, setHoveredBarIndex] = useState<number>();

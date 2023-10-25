@@ -12,10 +12,6 @@ export default function ContributorProfileSidePanel({ githubUserId, setOpen }: P
   const { data: userProfile } = useUserProfile({ githubUserId });
 
   return userProfile ? (
-    <View
-      isOwn={currentUserGithubId === userProfile.profile.githubUserId}
-      userProfile={userProfile}
-      setOpen={setOpen}
-    />
+    <View isOwn={currentUserGithubId === userProfile.githubUserId} userProfile={userProfile} setOpen={setOpen} />
   ) : null;
 }

@@ -17,6 +17,7 @@ import { isProjectVisibleToUser } from "src/hooks/useProjectVisibility";
 import isDefined from "src/utils/isDefined";
 import { daysFromNow, weekNumber } from "src/utils/date";
 import { Project } from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/ReadOnlyView/ProjectCard";
+import useProfile from "src/hooks/useProfile/useProfile";
 
 export type UserProfile = {
   profile: UserProfileFragment & OwnUserProfileDetailsFragment;
@@ -49,6 +50,7 @@ export default function useUserProfile({
   githubUserId?: number;
   githubUserLogin?: string;
 }) {
+  const newProfile = useProfile({ githubUserLogin, githubUserId });
   const { user: currentUser, githubUserId: currentUserGithubId } = useAuth();
 
   const { data: dataFromUserId, loading: loadingFromUserId } = useQuery<UserProfileQuery>(
@@ -94,7 +96,7 @@ export default function useUserProfile({
       project =>
         ({
           id: project.id,
-          key: project.key,
+          slug: project.key,
           name: project.name,
           logoUrl: project.logoUrl || onlyDustLogo,
           leadSince: project.leadSince,
@@ -129,14 +131,15 @@ export default function useUserProfile({
         (lastWeek.pullRequestCount + lastWeek.codeReviewCount + lastWeek.issueCount)
       : 0;
 
-  return {
-    data: profile && {
-      profile: profile as UserProfileFragment & OwnUserProfileDetailsFragment,
-      projects,
-      languages,
-      contributionCounts,
-      contributionCountVariationSinceLastWeek: variationSinceLastWeek,
-    },
-    loading: loadingFromUserId || loadingFromUserLogin,
-  };
+  return newProfile;
+  // return {
+  //   data: profile && {
+  //     profile: profile as UserProfileFragment & OwnUserProfileDetailsFragment,
+  //     projects,
+  //     languages,
+  //     contributionCounts,
+  //     contributionCountVariationSinceLastWeek: variationSinceLastWeek,
+  //   },
+  //   loading: loadingFromUserId || loadingFromUserLogin,
+  // };
 }

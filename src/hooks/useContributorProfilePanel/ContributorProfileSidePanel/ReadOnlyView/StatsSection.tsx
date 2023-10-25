@@ -9,70 +9,50 @@ import Tooltip, { TooltipPosition, Variant, withTooltip } from "src/components/T
 import ArrowRightDownLine from "src/icons/ArrowRightDownLine";
 import ArrowRightLine from "src/icons/ArrowRightLine";
 import { ContributionCountFragment, UserProfileFragment } from "src/__generated/graphql";
-import { AvailableConversion } from "src/components/Currency/AvailableConversion";
+import { AvailableConversion, AvailableConversionCurrency } from "src/components/Currency/AvailableConversion";
 import { Currency } from "src/types";
+import { Profile } from "src/hooks/useProfile/useProfile";
+import { useMemo } from "react";
 
 type Props = {
-  profile: UserProfileFragment;
-  contributionCounts: ContributionCountFragment[];
-  contributionCountVariationSinceLastWeek: number;
+  profile: Profile;
 };
 
-export default function StatsSection({ profile, contributionCounts, contributionCountVariationSinceLastWeek }: Props) {
+export default function StatsSection({ profile }: Props) {
   const { T } = useIntl();
+
+  const currenciesStats: AvailableConversionCurrency[] = useMemo(
+    () =>
+      (profile.stats?.totalsEarned?.details || []).map(currencies => ({
+        currency: currencies.currency,
+        amount: currencies.totalAmount,
+        dollar: currencies.totalDollarsEquivalent,
+      })),
+    [profile]
+  );
 
   return (
     <Section title={T("profile.sections.stats.title")}>
       <div className="flex grid-cols-3 flex-col gap-4 md:grid">
         <StatCard
           title={T("profile.sections.stats.contributorOn")}
-          counter={profile.projectsContributedAggregate.aggregate?.count + ""}
+          counter={profile.stats?.contributedProjectCount}
           description={T("profile.sections.stats.projects", {
-            count: profile.projectsContributedAggregate.aggregate?.count,
+            count: profile.stats?.contributedProjectCount || 0,
           })}
         />
         <StatCard
           title={T("profile.sections.stats.leadOn")}
-          counter={profile.projectsLeaded.length.toString()}
-          description={T("profile.sections.stats.projects", { count: profile.projectsLeaded.length })}
+          counter={profile.stats?.leadedProjectCount}
+          description={T("profile.sections.stats.projects", { count: profile.stats?.leadedProjectCount })}
         />
         <StatCard
           title={T("profile.sections.stats.earned")}
-          // topLeftComponent={<div {...withTooltip(T("contributionGraph.progressionTooltip"))}>cououc</div>}
           topLeftComponent={
-            <AvailableConversion
-              tooltipId="couocuo"
-              currencies={[
-                {
-                  currency: Currency.USD,
-                  amount: 13500,
-                  dollar: 12000,
-                },
-                {
-                  currency: Currency.ETH,
-                  amount: 13500,
-                  dollar: 12000,
-                },
-                {
-                  currency: Currency.OP,
-                  amount: 13500,
-                  dollar: 12000,
-                },
-                {
-                  currency: Currency.STARK,
-                  amount: 13500,
-                  dollar: null,
-                },
-                {
-                  currency: Currency.APT,
-                  amount: 13500,
-                  dollar: 12000,
-                },
-              ]}
-            />
+            <AvailableConversion tooltipId={`${profile.githubUserId}-earned-details`} currencies={currenciesStats} />
           }
           counter={formatMoneyAmount({
-            amount: profile.paymentStatsAggregate.aggregate?.sum?.moneyGranted || 0,
+            amount: profile.stats?.totalsEarned?.totalAmount || 0,
             notation: "compact",
           })}
         />
@@ -86,27 +66,28 @@ export default function StatsSection({ profile, contributionCounts, contribution
               {T("profile.sections.stats.contributions")}
             </div>
             <div className="pb-1 font-belwe text-4xl font-normal text-greyscale-50">
-              {profile.contributionStatsAggregate.aggregate?.sum?.totalCount || 0}
+              {profile.stats?.contributionCount || 0}
             </div>
             <div
               className="flex flex-row items-center gap-0.5 rounded-full border border-greyscale-50/12 bg-white/5 px-2 py-0.5 text-sm shadow-heavy"
               {...withTooltip(T("contributionGraph.progressionTooltip"))}
             >
-              {contributionCountVariationSinceLastWeek < 0 ? (
+              {/* // TODO REST : contributionCountVariationSinceLastWeek */}
+              {/* {contributionCountVariationSinceLastWeek < 0 ? (
                 <ArrowRightDownLine className="text-orange-300" />
               ) : contributionCountVariationSinceLastWeek === 0 ? (
                 <ArrowRightLine className="text-spacePurple-200" />
               ) : (
                 <ArrowRightUpLine className="text-spacePurple-500" />
-              )}
-              <div className="text-greyscale-200">
+              )} */}
+              {/* <div className="text-greyscale-200">
                 {new Intl.NumberFormat("en-US", {
                   signDisplay: "always",
                 }).format(contributionCountVariationSinceLastWeek)}
-              </div>
+              </div> */}
             </div>
           </div>
-          <ContributionGraph entries={contributionCounts} />
+          <ContributionGraph entries={profile.stats?.contributionCountPerWeeks || []} />
         </Card>
       </div>
     </Section>
