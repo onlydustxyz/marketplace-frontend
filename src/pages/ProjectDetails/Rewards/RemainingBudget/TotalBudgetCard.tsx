@@ -5,8 +5,8 @@ import BudgetBar from "src/pages/ProjectDetails/Rewards/RewardForm/WorkEstimatio
 import { Currency } from "src/types";
 import { cn } from "src/utils/cn";
 import { formatMoneyAmount } from "src/utils/money";
-import { useT } from "talkr";
 import { LeftToSpend } from "./LeftToSpend";
+import { useIntl } from "src/hooks/useIntl";
 
 interface Props {
   budget: { initialAmount: number; remaining: number };
@@ -14,7 +14,7 @@ interface Props {
 }
 
 export function TotalBudgetCard({ budget, className }: Props) {
-  const { T } = useT();
+  const { T } = useIntl();
 
   return (
     <Card className={cn("bg-budget bg-origin-border p-8", className)}>
@@ -26,7 +26,7 @@ export function TotalBudgetCard({ budget, className }: Props) {
 
           {T("project.details.remainingBudget.budget.total")}
         </div>
-        <div id="remainingBudget" className="flex flex-wrap items-center font-belwe text-2xl text-greyscale-50">
+        <div className="flex flex-wrap items-center font-belwe text-2xl text-greyscale-50">
           {formatMoneyAmount({ amount: budget.initialAmount, currency: Currency.USD })}
         </div>
         <div className="flex items-center gap-2">

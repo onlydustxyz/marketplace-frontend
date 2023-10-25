@@ -10,10 +10,11 @@ import BudgetBar from "src/pages/ProjectDetails/Rewards/RewardForm/WorkEstimatio
 import { Currency } from "src/types";
 import { cn } from "src/utils/cn";
 import { BugetCurrencyType, formatMoneyAmount } from "src/utils/money";
-import { useT } from "talkr";
 import { LeftToSpend } from "./LeftToSpend";
+import { ReactElement } from "react";
+import { useIntl } from "src/hooks/useIntl";
 
-const budgetName = {
+const budgetName: Record<Currency, string> = {
   [Currency.USD]: "project.details.remainingBudget.budget.dollars",
   [Currency.ETH]: "project.details.remainingBudget.budget.ether",
   [Currency.STARK]: "project.details.remainingBudget.budget.stark",
@@ -21,7 +22,7 @@ const budgetName = {
   [Currency.APT]: "project.details.remainingBudget.budget.aptos",
 };
 
-const budgetIcons = {
+const budgetIcons: Record<Currency, ReactElement> = {
   [Currency.USD]: <DollarCurrency />,
   [Currency.ETH]: <Ethereum className="h-4 w-4" />,
   [Currency.STARK]: <Starknet />,
@@ -42,7 +43,7 @@ interface Props {
 }
 
 export function BudgetCard({ budget, className }: Props) {
-  const { T } = useT();
+  const { T } = useIntl();
   const hasUsdEquivalent = usdEquivalent.includes(budget.currency as Currency);
   const isUsd = budget.currency === Currency.USD;
 
@@ -50,7 +51,7 @@ export function BudgetCard({ budget, className }: Props) {
     <Card className={cn("p-8", className)}>
       <div className="flex flex-col gap-2">
         <div className="flex items-center text-sm text-white">{T(budgetName[budget.currency])}</div>
-        <div id="remainingBudget" className="flex flex-wrap items-center font-belwe text-2xl text-greyscale-50">
+        <div className="flex flex-wrap items-center font-belwe text-2xl text-greyscale-50">
           <Chip className="mr-1 h-5 w-5">{budgetIcons[budget.currency]}</Chip>
           {formatMoneyAmount({ amount: budget.initialAmount, currency: budget.currency })}
           {!isUsd ? <div className="ml-1 mt-2 text-sm">{budget.currency}</div> : null}
