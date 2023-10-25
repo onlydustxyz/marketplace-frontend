@@ -5,9 +5,10 @@ import Optimism from "src/assets/icons/Optimism";
 import Starknet from "src/assets/icons/Starknet";
 import Aptos from "src/assets/icons/Aptos";
 import { DollarCurrency } from "src/assets/icons/DollarCurrency";
+import { BugetCurrencyType } from "src/utils/money";
 
 export interface CurrencyIconsProps {
-  currency?: Currency;
+  currency?: BugetCurrencyType;
   className?: string;
 }
 

@@ -45,28 +45,28 @@ export default function StatsSection({ profile, contributionCounts, contribution
               currencies={[
                 {
                   currency: Currency.USD,
-                  amount: 100,
-                  dollar: 1000,
+                  amount: 13500,
+                  dollar: 12000,
                 },
                 {
                   currency: Currency.ETH,
-                  amount: 100,
-                  dollar: 1000,
+                  amount: 13500,
+                  dollar: 12000,
                 },
                 {
                   currency: Currency.OP,
-                  amount: 100,
-                  dollar: 1000,
+                  amount: 13500,
+                  dollar: 12000,
                 },
                 {
                   currency: Currency.STARK,
-                  amount: 100,
+                  amount: 13500,
                   dollar: null,
                 },
                 {
                   currency: Currency.APT,
-                  amount: 100,
-                  dollar: 1000,
+                  amount: 13500,
+                  dollar: 12000,
                 },
               ]}
             />

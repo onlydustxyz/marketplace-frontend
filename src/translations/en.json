@@ -7,6 +7,12 @@
     "confirmationToaster": "Thank you! If we need a profile like yours, you'll be contacted shortly",
     "contactNeeded": "Please share at least one way to reach you out in case it's a match."
   },
+  "availableConversion": {
+    "tooltip": {
+      "title": "Dollars equivalent at today’s date.",
+      "na": "N/A"
+    }
+  },
   "comments": {
     "zero": "No comments",
     "one": "1 comment",
@@ -617,7 +623,6 @@
       "emailPlaceholder": "example@onlydust.co",
       "ethIdentity": "Ethereum wallet address or ENS name",
       "ethIdentityPlaceholder": "Ethereum wallet address or ENS name",
-
       "firstname": "First name",
       "iban": "IBAN",
       "ibanInvalid": "Please enter a valid IBAN",
