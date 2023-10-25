@@ -28,7 +28,7 @@ impl Payment {
 		requestor_id: UserId,
 		recipient_id: GithubUserId,
 		amount: Amount,
-		duration_worked: Duration,
+		duration_worked: Option<Duration>,
 		reason: Reason,
 	) -> Self {
 		Self::default().with_pending_events(vec![PaymentEvent::Requested {
@@ -212,7 +212,7 @@ mod tests {
 			requestor_id,
 			recipient_id,
 			amount,
-			duration_worked,
+			duration_worked: Some(duration_worked),
 			reason,
 			requested_at: Utc::now().naive_utc(),
 		}])
@@ -354,7 +354,7 @@ mod tests {
 			requestor_id,
 			recipient_id,
 			amount.clone(),
-			duration_worked,
+			Some(duration_worked),
 			reason.clone(),
 		)
 		.collect::<Vec<_>>();
@@ -377,7 +377,7 @@ mod tests {
 				requestor_id,
 				recipient_id,
 				amount,
-				duration_worked,
+				duration_worked: Some(duration_worked),
 				reason,
 				requested_at,
 			}
@@ -392,7 +392,7 @@ mod tests {
 			requestor_id: Default::default(),
 			recipient_id: Default::default(),
 			amount: Amount::from_decimal(Decimal::ZERO, Default::default()),
-			duration_worked: Duration::hours(0),
+			duration_worked: None,
 			reason: Default::default(),
 			requested_at: Default::default(),
 		};

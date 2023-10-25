@@ -23,7 +23,7 @@ pub struct Request {
 	recipient_id: GithubUserId,
 	amount: Decimal,
 	currency: &'static Currency,
-	hours_worked: u32,
+	hours_worked: Option<u32>,
 	reason: dto::payment::Reason,
 }
 

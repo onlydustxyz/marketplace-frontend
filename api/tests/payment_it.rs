@@ -176,7 +176,7 @@ impl<'a> Test<'a> {
 						Decimal::from(10),
 						currencies::USD
 					));
-					assert_eq!(duration_worked, Duration::hours(1));
+					assert_eq!(duration_worked, Some(Duration::hours(1)));
 					assert_eq!(reason, PaymentReason {
 						work_items: vec![PaymentWorkItem::PullRequest {
 							id: GithubPullRequestId::from(1012167246u64),
@@ -231,7 +231,6 @@ impl<'a> Test<'a> {
 			"recipientId": 595505,
 			"amount": 0.00001,
 			"currency": "ETH",
-			"hoursWorked": 1,
 			"reason": {
 				"workItems": [{
 					"type": "PULL_REQUEST",
@@ -300,7 +299,7 @@ impl<'a> Test<'a> {
 						Decimal::from_str("0.00001").unwrap(),
 						currencies::ETH
 					));
-					assert_eq!(duration_worked, Duration::hours(1));
+					assert_eq!(duration_worked, None);
 					assert_eq!(reason, PaymentReason {
 						work_items: vec![PaymentWorkItem::PullRequest {
 							id: GithubPullRequestId::from(1012167246u64),
@@ -507,7 +506,7 @@ impl<'a> Test<'a> {
 					requestor_id: UserId::new(),
 					recipient_id: GithubUserId::from(595505u64),
 					amount: Amount::from_decimal(Decimal::from(100), currencies::USD),
-					duration_worked: Duration::hours(2),
+					duration_worked: Some(Duration::hours(2)),
 					reason: PaymentReason { work_items: vec![] },
 					requested_at: Utc::now().naive_utc(),
 				}
@@ -589,7 +588,7 @@ impl<'a> Test<'a> {
 					requestor_id: UserId::new(),
 					recipient_id: GithubUserId::from(595505u64),
 					amount: Amount::from_decimal(Decimal::from(100), currencies::USD),
-					duration_worked: Duration::hours(2),
+					duration_worked: Some(Duration::hours(2)),
 					reason: PaymentReason { work_items: vec![] },
 					requested_at: Utc::now().naive_utc(),
 				}
@@ -667,7 +666,7 @@ impl<'a> Test<'a> {
 					requestor_id: UserId::new(),
 					recipient_id: GithubUserId::from(595505u64),
 					amount: Amount::from_decimal(Decimal::from(100), currencies::USD),
-					duration_worked: Duration::hours(2),
+					duration_worked: Some(Duration::hours(2)),
 					reason: PaymentReason { work_items: vec![] },
 					requested_at: Utc::now().naive_utc(),
 				}
@@ -741,7 +740,7 @@ impl<'a> Test<'a> {
 					requestor_id: UserId::new(),
 					recipient_id: GithubUserId::from(595505u64),
 					amount: Amount::from_decimal(Decimal::from(100), currencies::USD),
-					duration_worked: Duration::hours(2),
+					duration_worked: Some(Duration::hours(2)),
 					reason: PaymentReason { work_items: vec![] },
 					requested_at: Utc::now().naive_utc(),
 				}
@@ -845,7 +844,7 @@ impl<'a> Test<'a> {
 					requestor_id: UserId::new(),
 					recipient_id: GithubUserId::from(595505u64),
 					amount: Amount::from_decimal(Decimal::from(100), currencies::USD),
-					duration_worked: Duration::hours(2),
+					duration_worked: Some(Duration::hours(2)),
 					reason: PaymentReason { work_items: vec![] },
 					requested_at: Utc::now().naive_utc(),
 				}
@@ -953,7 +952,7 @@ impl<'a> Test<'a> {
 					requestor_id: UserId::new(),
 					recipient_id: GithubUserId::from(595505u64),
 					amount: Amount::from_decimal(Decimal::from(100), currencies::STARK),
-					duration_worked: Duration::hours(2),
+					duration_worked: Some(Duration::hours(2)),
 					reason: PaymentReason { work_items: vec![] },
 					requested_at: Utc::now().naive_utc(),
 				}

@@ -94,7 +94,11 @@ impl EventListener<Event> for Projector {
 						currency: amount.currency().try_into()?,
 						requested_at,
 						invoice_received_at: None,
-						hours_worked: i32::try_from(duration_worked.num_hours()).unwrap_or(0),
+						hours_worked: duration_worked
+							.and_then(|duration_worked| {
+								i32::try_from(duration_worked.num_hours()).ok()
+							})
+							.unwrap_or(0),
 					})?;
 
 					reason.work_items.into_iter().try_for_each(

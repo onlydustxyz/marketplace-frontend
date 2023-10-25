@@ -16,7 +16,7 @@ pub enum Status {
 }
 
 #[serde_as]
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct State {
 	pub id: PaymentId,
 	pub project_id: ProjectId,
@@ -27,25 +27,8 @@ pub struct State {
 	pub recipient_id: GithubUserId,
 	pub requestor_id: UserId,
 	pub work_items: Vec<PaymentWorkItem>,
-	#[serde_as(as = "DurationSeconds<i64>")]
-	pub duration_worked: Duration,
-}
-
-impl Default for State {
-	fn default() -> Self {
-		Self {
-			duration_worked: Duration::seconds(0),
-			id: Default::default(),
-			project_id: Default::default(),
-			requested_amount: Default::default(),
-			paid_amount: Default::default(),
-			currency: Default::default(),
-			status: Default::default(),
-			recipient_id: Default::default(),
-			requestor_id: Default::default(),
-			work_items: Default::default(),
-		}
-	}
+	#[serde_as(as = "Option<DurationSeconds<i64>>")]
+	pub duration_worked: Option<Duration>,
 }
 
 impl EventSourcable for State {

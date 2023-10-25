@@ -31,7 +31,7 @@ impl Usecase {
 		recipient_id: GithubUserId,
 		amount: Decimal,
 		currency: &'static Currency,
-		hours_worked: u32,
+		hours_worked: Option<u32>,
 		reason: PaymentReason,
 	) -> Result<(PaymentId, CommandId), DomainError> {
 		let payment_id = PaymentId::new();
@@ -53,7 +53,7 @@ impl Usecase {
 			requestor_id,
 			recipient_id,
 			Amount::from_decimal(amount, currency),
-			Duration::hours(hours_worked as i64),
+			hours_worked.map(|hours_worked| Duration::hours(hours_worked as i64)),
 			reason.clone(),
 		);
 

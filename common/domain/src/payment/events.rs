@@ -20,8 +20,8 @@ pub enum Event {
 		recipient_id: GithubUserId,
 		#[serde(with = "crate::amount::serde")]
 		amount: Amount,
-		#[serde_as(as = "DurationSeconds<i64>")]
-		duration_worked: Duration,
+		#[serde_as(as = "Option<DurationSeconds<i64>>")]
+		duration_worked: Option<Duration>,
 		reason: Reason,
 		requested_at: NaiveDateTime,
 	},
