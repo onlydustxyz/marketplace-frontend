@@ -1,5 +1,5 @@
 type Props = {
-  budget: { initialAmount: number; remainingAmount: number };
+  budget: { initialAmount: number; remaining: number };
   pendingSpending: number;
 };
 
@@ -10,14 +10,14 @@ const BudgetBar = ({ budget, pendingSpending }: Props) => {
         className="absolute inset-y-0 left-0 h-2 rounded-full bg-stripe-pattern"
         style={{
           width: `${Math.floor(
-            ((budget.initialAmount - budget.remainingAmount + pendingSpending) * 100) / budget.initialAmount
+            ((budget.initialAmount - budget.remaining + pendingSpending) * 100) / budget.initialAmount
           )}%`,
         }}
       />
       <div
         className="absolute inset-y-0 left-0 h-2 rounded-full bg-spacePurple-500"
         style={{
-          width: `${Math.floor(((budget.initialAmount - budget.remainingAmount) * 100) / budget.initialAmount)}%`,
+          width: `${Math.floor(((budget.initialAmount - budget.remaining) * 100) / budget.initialAmount)}%`,
         }}
       />
     </div>

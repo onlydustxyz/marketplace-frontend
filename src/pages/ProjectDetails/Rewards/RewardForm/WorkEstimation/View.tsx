@@ -63,7 +63,7 @@ export default function WorkEstimation({
               </div>
             </div>
           </div>
-          <BudgetBar budget={budget} pendingSpending={amountToPay} />
+          <BudgetBar budget={{ ...budget, remaining: budget.remainingAmount }} pendingSpending={amountToPay} />
           <div className="flex flex-col text-sm font-medium">
             <div className="flex flex-row justify-between">
               <div className="text-greyscale-300">{T("reward.form.remainingBudget")}</div>
