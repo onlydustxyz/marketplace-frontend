@@ -1,10 +1,10 @@
 import { StoryFn } from "@storybook/react";
-import { ContributionDetailPanelProvider } from "src/hooks/useContributionDetailPanel";
+import { RewardDetailPanelProvider } from "src/hooks/useRewardDetailPanel";
 
 export default function withRewardDetailPanelProvider(Story: StoryFn) {
   return (
-    <ContributionDetailPanelProvider>
+    <RewardDetailPanelProvider>
       <Story />
-    </ContributionDetailPanelProvider>
+    </RewardDetailPanelProvider>
   );
 }

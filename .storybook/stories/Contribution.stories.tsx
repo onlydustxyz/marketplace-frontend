@@ -3,6 +3,7 @@ import { withRouter } from "storybook-addon-react-router-v6";
 import { UserIdentityDocument } from "src/__generated/graphql";
 import { Contribution } from "src/components/Contribution/Contribution";
 import withAuthProvider from "../decorators/withAuthProvider";
+import withContributionDetailPanelProvider from "../decorators/withContributionDetailPanelProvider";
 import withContributorProfilePanelProvider from "../decorators/withContributorProfilePanelProvider";
 import withMockedProvider from "../decorators/withMockedProvider";
 import withRewardDetailPanelProvider from "../decorators/withRewardDetailPanelProvider";
@@ -43,6 +44,7 @@ export default {
     withMockedProvider(mocks),
     withAuthProvider({ userId: USER_ID }),
     withContributorProfilePanelProvider,
+    withContributionDetailPanelProvider,
     withRewardDetailPanelProvider,
   ],
 };
