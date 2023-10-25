@@ -12,7 +12,7 @@ import GithubPullRequest from "src/components/GithubCard/GithubPullRequest/Githu
 import PayoutStatus from "src/components/PayoutStatus/PayoutStatus";
 import QueryWrapper from "src/components/QueryWrapper";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
-import Tooltip, { withCustomTooltip } from "src/components/Tooltip";
+import Tooltip, { TooltipPosition, withCustomTooltip } from "src/components/Tooltip";
 import { useIntl } from "src/hooks/useIntl";
 import BankCardLine from "src/icons/BankCardLine";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
@@ -23,6 +23,7 @@ import { pretty } from "src/utils/id";
 import isDefined from "src/utils/isDefined";
 import { formatMoneyAmount } from "src/utils/money";
 import ConfirmationModal from "./ConfirmationModal";
+import InfoIcon from "src/assets/icons/InfoIcon";
 
 enum Align {
   Top = "top",
@@ -71,17 +72,42 @@ export default function View({
           {shouldDisplayCancelButton && <CancelRewardButton onRewardCancel={onRewardCancel} />}
         </div>
         <div className="flex flex-col gap-2 px-6">
-          <PayoutStatus
-            {...{
-              id: "details-payout-status",
-              status: status,
-              payoutInfoMissing,
-              invoiceNeeded: invoiceNeeded && !invoiceReceivedAt,
-              isProjectLeaderView: projectLeaderView,
-            }}
-          />
-          <div className="font-belwe text-5xl font-normal text-greyscale-50">
-            {formatMoneyAmount({ amount: amount })}
+          <div className="flex flex-wrap items-center gap-2">
+            <PayoutStatus
+              {...{
+                id: "details-payout-status",
+                status: status,
+                payoutInfoMissing,
+                invoiceNeeded: invoiceNeeded && !invoiceReceivedAt,
+                isProjectLeaderView: projectLeaderView,
+              }}
+            />
+            <div className="flex items-center gap-1 font-walsheim text-xs text-spaceBlue-200">
+              <InfoIcon className="h-4 w-3" />
+              <span>
+                {
+                  // TODO
+                  T("reward.table.detailsPanel.rewardGrantedOnNetwork", { network: "TEST" })
+                }
+              </span>
+            </div>
+          </div>
+          <div className="flex items-baseline gap-2">
+            <div className="flex items-baseline gap-1 font-belwe text-5xl font-normal text-greyscale-50">
+              {/* TODO */}
+              <span>{formatMoneyAmount({ amount: amount })}</span>
+              <span className="text-3xl">OP</span>
+            </div>
+            <Tooltip id="reward-detail-usd-est" position={TooltipPosition.Top}>
+              {T("reward.table.detailsPanel.usdEstimateTooltip")}
+            </Tooltip>
+            <span className="font-walsheim text-xl text-spaceBlue-200" data-tooltip-id="reward-detail-usd-est">
+              ~
+              {
+                // TODO
+                formatMoneyAmount({ amount: 10000 })
+              }
+            </span>
           </div>
           {requestor?.login && (
             <Details>
