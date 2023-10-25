@@ -10,6 +10,10 @@ import { FieldInfoMessage } from "src/components/New/Field/InfoMessage";
 import InformationLine from "src/icons/InformationLine";
 import { FieldProjectLeadSelectItem } from "./ProjectLeadISelectItem";
 
+// TODO : Doc
+/**
+ * used in https://www.figma.com/file/8PqNt4K2uKLu3DvxF3rVDX/%F0%9F%A7%AA-Only-Dust-%E2%80%A2-Venus?type=design&node-id=10797-233325&mode=design&t=ES631NUQNvE41TSD-4
+ */
 // TODO : when a project id is pass to the component use the layout for edition and fetch another API route
 interface GithubUser {
   id: number;

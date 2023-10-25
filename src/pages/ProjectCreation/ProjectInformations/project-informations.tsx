@@ -57,14 +57,6 @@ export const ProjectInformationsPage = () => {
     resolver: zodResolver(validationSchema),
     defaultValues: {
       githubRepoIds: [1],
-      moreInfo: {
-        url: "test url",
-        value: "test value",
-      },
-      isLookingForContributors: true,
-      projectLead: {
-        invited: [456, 789],
-      },
     },
   });
 
