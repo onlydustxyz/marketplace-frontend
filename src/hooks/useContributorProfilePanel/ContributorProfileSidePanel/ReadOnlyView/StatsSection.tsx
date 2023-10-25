@@ -5,10 +5,12 @@ import { formatMoneyAmount } from "src/utils/money";
 import Card from "src/components/Card";
 import ArrowRightUpLine from "src/icons/ArrowRightUpLine";
 import ContributionGraph from "./ContributionGraph";
-import { withTooltip } from "src/components/Tooltip";
+import Tooltip, { TooltipPosition, Variant, withTooltip } from "src/components/Tooltip";
 import ArrowRightDownLine from "src/icons/ArrowRightDownLine";
 import ArrowRightLine from "src/icons/ArrowRightLine";
 import { ContributionCountFragment, UserProfileFragment } from "src/__generated/graphql";
+import { AvailableConversion } from "src/components/Currency/AvailableConversion";
+import { Currency } from "src/types";
 
 type Props = {
   profile: UserProfileFragment;
@@ -36,6 +38,39 @@ export default function StatsSection({ profile, contributionCounts, contribution
         />
         <StatCard
           title={T("profile.sections.stats.earned")}
+          // topLeftComponent={<div {...withTooltip(T("contributionGraph.progressionTooltip"))}>cououc</div>}
+          topLeftComponent={
+            <AvailableConversion
+              tooltipId="couocuo"
+              currencies={[
+                {
+                  currency: Currency.APT,
+                  amount: 100,
+                  dollar: 1000,
+                },
+                {
+                  currency: Currency.ETH,
+                  amount: 100,
+                  dollar: 1000,
+                },
+                {
+                  currency: Currency.OP,
+                  amount: 100,
+                  dollar: 1000,
+                },
+                {
+                  currency: Currency.STARK,
+                  amount: 100,
+                  dollar: null,
+                },
+                {
+                  currency: Currency.USD,
+                  amount: 100,
+                  dollar: 1000,
+                },
+              ]}
+            />
+          }
           counter={formatMoneyAmount({
             amount: profile.paymentStatsAggregate.aggregate?.sum?.moneyGranted || 0,
             notation: "compact",
