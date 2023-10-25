@@ -1,7 +1,4 @@
 import { FC } from "react";
-import { FieldLabel } from "src/components/New/Field/Label";
-import { FieldInfoMessage } from "src/components/New/Field/InfoMessage";
-import InformationLine from "src/icons/InformationLine";
 import { FieldRepositoryGrid } from "./RepositorySelectorGrid";
 
 // TODO : Doc
