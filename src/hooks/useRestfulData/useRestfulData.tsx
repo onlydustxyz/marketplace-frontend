@@ -10,7 +10,7 @@ type QueryParam = {
 
 interface UseRestfulDataProps {
   resourcePath: string;
-  pathParam?: string;
+  pathParam?: string | Record<string, string>;
   queryParams?: QueryParam[];
   method?: "GET" | "POST" | "PUT" | "DELETE";
 }

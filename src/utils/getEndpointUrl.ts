@@ -5,7 +5,7 @@ type QueryParam = {
 
 interface EndpointUrlParams {
   resourcePath: string;
-  pathParam?: string;
+  pathParam?: string | Record<string, string>;
   queryParams?: QueryParam[];
   pageParam?: number;
   pageSize?: number;
@@ -28,9 +28,20 @@ export function getEndpointUrl({
   const apiBasepath = import.meta.env.VITE_ONLYDUST_API_BASEPATH as string;
   const basePath = `${scheme}${apiBasepath}`;
   const queryString = buildQueryString(queryParams);
-  const finalResourcePath = resourcePath.replace("{{id}}", pathParam);
   const pageQuery = pageParam != null ? `page_index=${pageParam}&page_size=${pageSize}` : "";
   const separator = queryString || pageQuery ? "?" : "";
   const ampersand = queryString && pageQuery ? "&" : "";
+
+  let finalResourcePath = "";
+
+  if (typeof pathParam === "string") {
+    finalResourcePath = resourcePath.replace("{{id}}", pathParam);
+  } else {
+    finalResourcePath = Object.entries(pathParam).reduce(
+      (acc, [key, value]) => acc.replace(`{{${key}}}`, value),
+      resourcePath
+    );
+  }
+
   return `${basePath}${finalResourcePath}${separator}${queryString}${ampersand}${pageQuery}`;
 }
