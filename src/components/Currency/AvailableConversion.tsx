@@ -27,10 +27,10 @@ export const AvailableConversion: FC<AvailableConversion> = ({ tooltipId, curren
   return (
     <>
       <div {...tooltipIdProps}>
-        <Chips number={3}>
+        <Chips number={4}>
           {currencies.map(currency => (
             <div key={currency.currency}>
-              <Chip>
+              <Chip solid>
                 <CurrencyIcons currency={currency.currency} className="h-4 w-4" />
               </Chip>
             </div>

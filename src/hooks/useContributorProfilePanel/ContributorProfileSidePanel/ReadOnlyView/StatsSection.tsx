@@ -44,7 +44,7 @@ export default function StatsSection({ profile, contributionCounts, contribution
               tooltipId="couocuo"
               currencies={[
                 {
-                  currency: Currency.APT,
+                  currency: Currency.USD,
                   amount: 100,
                   dollar: 1000,
                 },
@@ -64,7 +64,7 @@ export default function StatsSection({ profile, contributionCounts, contribution
                   dollar: null,
                 },
                 {
-                  currency: Currency.USD,
+                  currency: Currency.APT,
                   amount: 100,
                   dollar: 1000,
                 },
