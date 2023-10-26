@@ -22,7 +22,7 @@ export default function useInfiniteProjectRewardItems({
   const options = useHttpOptions("GET");
 
   return useInfiniteQuery({
-    queryKey: ["project-reward-items", queryParams],
+    queryKey: ["project-reward-items", projectId, rewardId, queryParams],
     queryFn: ({ pageParam }) =>
       fetch(
         getEndpointUrl({
