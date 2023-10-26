@@ -15,6 +15,7 @@ import QueryWrapper from "src/components/QueryWrapper";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import Tooltip, { TooltipPosition, withCustomTooltip } from "src/components/Tooltip";
 import { useAuth } from "src/hooks/useAuth";
+import useInfiniteProjectRewardItems from "src/hooks/useInfiniteProjectRewardItems";
 import { useIntl } from "src/hooks/useIntl";
 import BankCardLine from "src/icons/BankCardLine";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
@@ -45,6 +46,8 @@ export type Props = {
   //   invoiceNeeded?: boolean;
   projectLeaderView?: boolean;
   onRewardCancel?: () => void;
+  projectId: string;
+  rewardId: string;
 } & Partial<PaymentRequestDetailsFragment>;
 
 export default function View({
@@ -63,6 +66,8 @@ export default function View({
   payments,
   projectLeaderView,
   onRewardCancel,
+  projectId,
+  rewardId,
 }: Props) {
   const { T } = useIntl();
   const { githubUserId } = useAuth();
@@ -71,167 +76,214 @@ export default function View({
   const shouldDisplayCancelButton = projectLeaderView && onRewardCancel && data?.status !== PaymentStatus.COMPLETE;
   const isCurrencyUSD = data?.currency === Currency.USD;
 
-  function renderRewardItem(item: components["schemas"]["RewardItemResponse"]) {
-    switch (item.type) {
-      case GithubContributionType.PullRequest: {
-        return (
-          <GithubPullRequest
-            pullRequest={formatRewardItemToGithubPullRequest(item)}
-            // TODO contributor = {login : string;}
-            contributor={githubRecipient as GithubUserFragment}
-          />
-        );
-      }
-      case GithubContributionType.Issue: {
-        return <GithubIssue issue={formatRewardItemToGithubIssue(item)} />;
-      }
-      case GithubContributionType.CodeReview: {
-        return <GithubCodeReview codeReview={formatRewardItemToGithubCodeReview(item)} />;
-      }
-      default: {
-        return null;
-      }
+  const {
+    data: rewardItemsData,
+    isLoading,
+    fetchNextPage,
+    hasNextPage,
+    error,
+    isFetchingNextPage,
+  } = useInfiniteProjectRewardItems({
+    projectId,
+    rewardId,
+    // queryParams: {
+    //   pageIndex: 1,
+    // },
+  });
+
+  const rewardItems = rewardItemsData?.pages.flatMap(page => page.rewardItems) || [];
+
+  function renderRewardItems() {
+    if (isLoading) {
+      // TODO
+      return "LOADING";
     }
+
+    if (error) {
+      // TODO
+      return "ERROR";
+    }
+
+    if (rewardItems.length) {
+      return (
+        <div className="flex h-full flex-col gap-3 overflow-hidden pt-8">
+          <div className="font-belwe text-base font-normal text-greyscale-50">
+            {T("reward.table.detailsPanel.contributions")}
+          </div>
+          <div className="flex h-full flex-col gap-3 overflow-auto p-px pb-6 pr-4 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
+            {rewardItems.map(item => {
+              console.log({ item });
+
+              switch (item.type) {
+                case GithubContributionType.PullRequest: {
+                  return (
+                    <GithubPullRequest
+                      key={item.id}
+                      pullRequest={formatRewardItemToGithubPullRequest(item)}
+                      // TODO contributor = {login : string;}
+                      contributor={githubRecipient as GithubUserFragment}
+                    />
+                  );
+                }
+                case GithubContributionType.Issue: {
+                  return <GithubIssue key={item.id} issue={formatRewardItemToGithubIssue(item)} />;
+                }
+                case GithubContributionType.CodeReview: {
+                  return <GithubCodeReview key={item.id} codeReview={formatRewardItemToGithubCodeReview(item)} />;
+                }
+                default: {
+                  return null;
+                }
+              }
+            })}
+          </div>
+        </div>
+      );
+    }
+
+    // TODO
+    return null;
   }
 
   return (
     <QueryWrapper query={{ loading, data }}>
       {data ? (
-        <div className="flex h-full flex-col gap-8">
-          <div className="flex flex-wrap items-center gap-3 px-6 pt-8 font-belwe text-2xl font-normal text-greyscale-50">
+        <div className="flex h-full flex-col gap-8 px-6">
+          <div className="flex flex-wrap items-center gap-3 pt-8 font-belwe text-2xl font-normal text-greyscale-50">
             {T("reward.table.detailsPanel.title", { id: pretty(id) })}
             {shouldDisplayCancelButton && <CancelRewardButton onRewardCancel={onRewardCancel} />}
           </div>
-          <div className="flex flex-col gap-2 px-6">
-            <div className="flex flex-wrap items-center gap-2">
-              <PayoutStatus status={data.status} />
-              <div className="flex items-center gap-1 font-walsheim text-xs text-spaceBlue-200">
-                <InfoIcon className="h-4 w-3" />
-                <span>
-                  {T("reward.table.detailsPanel.rewardGrantedOnNetwork", { network: currencyToNetwork(data.currency) })}
-                </span>
+          <div className="flex flex-col gap-8 divide-y divide-greyscale-50/12">
+            <div className="flex flex-col gap-2">
+              <div className="flex flex-wrap items-center gap-2">
+                <PayoutStatus status={data.status} />
+                {!isCurrencyUSD ? (
+                  <div className="flex items-center gap-1 font-walsheim text-xs text-spaceBlue-200">
+                    <InfoIcon className="h-4 w-3" />
+                    <span>
+                      {T("reward.table.detailsPanel.rewardGrantedOnNetwork", {
+                        network: currencyToNetwork(data.currency),
+                      })}
+                    </span>
+                  </div>
+                ) : null}
               </div>
-            </div>
-            <div className="flex items-baseline gap-2">
-              <div className="flex items-baseline gap-1 font-belwe text-5xl font-normal text-greyscale-50">
-                <span>{formatMoneyAmount({ amount: data.amount, currency: data.currency, showCurrency: false })}</span>
-                {!isCurrencyUSD ? <span className="text-3xl">{data.currency}</span> : null}
-              </div>
-              {!isCurrencyUSD && data.dollarsEquivalent ? (
-                <>
-                  <Tooltip id="reward-detail-usd-est" position={TooltipPosition.Top}>
-                    {T("reward.table.detailsPanel.usdEstimateTooltip")}
-                  </Tooltip>
-                  <span className="font-walsheim text-xl text-spaceBlue-200" data-tooltip-id="reward-detail-usd-est">
-                    ~{formatMoneyAmount({ amount: data.dollarsEquivalent })}
+              <div className="flex items-baseline gap-2">
+                <div className="flex items-baseline gap-1 font-belwe text-5xl font-normal text-greyscale-50">
+                  {/* TODO add CurrencyIcon */}
+                  <span>
+                    {formatMoneyAmount({ amount: data.amount, currency: data.currency, showCurrency: false })}
                   </span>
-                </>
+                  {!isCurrencyUSD ? <span className="text-3xl">{data.currency}</span> : null}
+                </div>
+                {!isCurrencyUSD && data.dollarsEquivalent ? (
+                  <>
+                    <Tooltip id="reward-detail-usd-est" position={TooltipPosition.Top}>
+                      {T("reward.table.detailsPanel.usdEstimateTooltip")}
+                    </Tooltip>
+                    <span className="font-walsheim text-xl text-spaceBlue-200" data-tooltip-id="reward-detail-usd-est">
+                      ~{formatMoneyAmount({ amount: data.dollarsEquivalent })}
+                    </span>
+                  </>
+                ) : null}
+              </div>
+              {data.from ? (
+                <Details>
+                  <RoundedImage alt={data.from.login ?? ""} src={data.from.avatarUrl ?? ""} size={ImageSize.Xxs} />
+                  <div className="flex flex-row items-center gap-1">
+                    {T("reward.table.detailsPanel.from")}
+                    <Contributor
+                      contributor={{
+                        login: data.from.login ?? "",
+                        githubUserId: data.from.id ?? 0,
+                        avatarUrl: null,
+                      }}
+                      clickable
+                    />
+                    {data.from.id === githubUserId && T("reward.table.detailsPanel.you")}
+                  </div>
+                </Details>
               ) : null}
-            </div>
-            {data.from ? (
-              <Details>
-                <RoundedImage alt={data.from.login ?? ""} src={data.from.avatarUrl ?? ""} size={ImageSize.Xxs} />
-                <div className="flex flex-row items-center gap-1">
-                  {T("reward.table.detailsPanel.from")}
-                  <Contributor
-                    contributor={{
-                      login: data.from.login ?? "",
-                      githubUserId: data.from.id ?? 0,
-                      avatarUrl: null,
-                    }}
-                    clickable
-                  />
-                  {data.from.id === githubUserId && T("reward.table.detailsPanel.you")}
-                </div>
-              </Details>
-            ) : null}
-            {data.to ? (
-              <Details>
-                <RoundedImage alt={data.to.login ?? ""} src={data.to.avatarUrl ?? ""} size={ImageSize.Xxs} />
-                <div className="flex flex-row items-center gap-1">
-                  {T("reward.table.detailsPanel.to")}
-                  <Contributor
-                    contributor={{
-                      login: data.to.login ?? "",
-                      githubUserId: data.to.id ?? 0,
-                      avatarUrl: null,
-                    }}
-                    clickable
-                  />
-                  {data.to.id === githubUserId && T("reward.table.detailsPanel.you")}
-                </div>
-              </Details>
-            ) : null}
-            {data.createdAt && (
-              <Details>
-                <Time className="text-base" />
-                {T("reward.table.detailsPanel.requestedAt", { requestedAt: formatDateTime(new Date(data.createdAt)) })}
-              </Details>
-            )}
-            {data.status === PaymentStatus.COMPLETE && data.processedAt ? (
-              <Details align={formattedReceipt ? Align.Top : Align.Center}>
-                <BankCardLine className="text-base" />
-                <ReactMarkdown
-                  className="payment-receipt whitespace-pre-wrap"
-                  {...withCustomTooltip("payment-receipt-tooltip")}
-                >
-                  {[
-                    T("reward.table.detailsPanel.processedAt", {
-                      processedAt: formatDateTime(new Date(data.processedAt)),
-                    }),
-                    formattedReceipt &&
-                      T(`reward.table.detailsPanel.processedVia.${formattedReceipt?.type}`, {
-                        recipient: formattedReceipt?.shortDetails,
+              {data.to ? (
+                <Details>
+                  <RoundedImage alt={data.to.login ?? ""} src={data.to.avatarUrl ?? ""} size={ImageSize.Xxs} />
+                  <div className="flex flex-row items-center gap-1">
+                    {T("reward.table.detailsPanel.to")}
+                    <Contributor
+                      contributor={{
+                        login: data.to.login ?? "",
+                        githubUserId: data.to.id ?? 0,
+                        avatarUrl: null,
+                      }}
+                      clickable
+                    />
+                    {data.to.id === githubUserId && T("reward.table.detailsPanel.you")}
+                  </div>
+                </Details>
+              ) : null}
+              {data.createdAt && (
+                <Details>
+                  <Time className="text-base" />
+                  {T("reward.table.detailsPanel.requestedAt", {
+                    requestedAt: formatDateTime(new Date(data.createdAt)),
+                  })}
+                </Details>
+              )}
+              {data.status === PaymentStatus.COMPLETE && data.processedAt ? (
+                <Details align={formattedReceipt ? Align.Top : Align.Center}>
+                  <BankCardLine className="text-base" />
+                  <ReactMarkdown
+                    className="payment-receipt whitespace-pre-wrap"
+                    {...withCustomTooltip("payment-receipt-tooltip")}
+                  >
+                    {[
+                      T("reward.table.detailsPanel.processedAt", {
+                        processedAt: formatDateTime(new Date(data.processedAt)),
                       }),
-                  ]
-                    .filter(isDefined)
-                    .join("\n")}
-                </ReactMarkdown>
-                {
-                  // TODO
-                  formattedReceipt && (
-                    <Tooltip anchorSelect=".payment-receipt" clickable>
-                      <div className="flex flex-col items-start">
-                        <div>
-                          {T(`reward.table.detailsPanel.processedTooltip.${formattedReceipt?.type}.recipient`, {
-                            recipient: formattedReceipt?.fullDetails,
-                          })}
-                        </div>
-
-                        {formattedReceipt?.type === "crypto" ? (
-                          <ExternalLink
-                            url={`https://etherscan.io/tx/${formattedReceipt?.reference}`}
-                            text={T(`reward.table.detailsPanel.processedTooltip.${formattedReceipt?.type}.reference`, {
-                              reference: formattedReceipt?.reference,
-                            })}
-                          />
-                        ) : (
+                      formattedReceipt &&
+                        T(`reward.table.detailsPanel.processedVia.${formattedReceipt?.type}`, {
+                          recipient: formattedReceipt?.shortDetails,
+                        }),
+                    ]
+                      .filter(isDefined)
+                      .join("\n")}
+                  </ReactMarkdown>
+                  {
+                    // TODO
+                    formattedReceipt && (
+                      <Tooltip anchorSelect=".payment-receipt" clickable>
+                        <div className="flex flex-col items-start">
                           <div>
-                            {T(`reward.table.detailsPanel.processedTooltip.${formattedReceipt?.type}.reference`, {
-                              reference: formattedReceipt?.reference,
+                            {T(`reward.table.detailsPanel.processedTooltip.${formattedReceipt?.type}.recipient`, {
+                              recipient: formattedReceipt?.fullDetails,
                             })}
                           </div>
-                        )}
-                      </div>
-                    </Tooltip>
-                  )
-                }
-              </Details>
-            ) : null}
-          </div>
-          <div className="px-6">
-            <div className="border-t border-greyscale-50/12" />
-          </div>
-          <div className="flex h-full flex-col gap-3 overflow-hidden px-6">
-            <div className="font-belwe text-base font-normal text-greyscale-50">
-              {T("reward.table.detailsPanel.contributions")}
+
+                          {formattedReceipt?.type === "crypto" ? (
+                            <ExternalLink
+                              url={`https://etherscan.io/tx/${formattedReceipt?.reference}`}
+                              text={T(
+                                `reward.table.detailsPanel.processedTooltip.${formattedReceipt?.type}.reference`,
+                                {
+                                  reference: formattedReceipt?.reference,
+                                }
+                              )}
+                            />
+                          ) : (
+                            <div>
+                              {T(`reward.table.detailsPanel.processedTooltip.${formattedReceipt?.type}.reference`, {
+                                reference: formattedReceipt?.reference,
+                              })}
+                            </div>
+                          )}
+                        </div>
+                      </Tooltip>
+                    )
+                  }
+                </Details>
+              ) : null}
             </div>
-            <div className="flex h-full flex-col gap-3 overflow-auto p-px pb-6 pr-4 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
-              {
-                // TODO
-                /* {data.rewardItems.map(item => renderRewardItem(item))} */
-              }
-            </div>
+            {renderRewardItems()}
           </div>
         </div>
       ) : null}

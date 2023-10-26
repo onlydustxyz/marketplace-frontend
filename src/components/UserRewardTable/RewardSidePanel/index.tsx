@@ -50,6 +50,8 @@ export default function RewardSidePanel({ rewardId, onRewardCancel, projectLeade
     <View
       data={data}
       loading={loading}
+      projectId={projectId}
+      rewardId={rewardId}
       //   {...data?.paymentRequests[0]}
       id={rewardId} // TODO get id from response
       //   status={status}
