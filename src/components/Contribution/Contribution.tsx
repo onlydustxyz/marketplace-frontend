@@ -1,9 +1,11 @@
 import { cn } from "src/utils/cn";
 
+import { ComponentProps } from "react";
 import { ContributionBadge } from "src/components/Contribution/ContributionBadge";
 import { ContributionReview } from "src/components/Contribution/ContributionReview";
 import { ContributionReward } from "src/components/Contribution/ContributionReward";
-import { Link } from "src/components/Link/Link";
+import { useAuth } from "src/hooks/useAuth";
+import { useContributionDetailPanel } from "src/hooks/useContributionDetailPanel";
 import {
   GithubCodeReviewOutcome,
   GithubContributionReviewStatus,
@@ -15,7 +17,7 @@ import { getContributionInfo } from "src/utils/getContributionInfo";
 type Props = {
   contribution: Pick<
     QueryContribution,
-    "githubCodeReview" | "githubIssue" | "githubPullRequest" | "id" | "rewardItems" | "type"
+    "githubCodeReview" | "githubIssue" | "githubPullRequest" | "id" | "rewardItems" | "type" | "project"
   >;
   isMobile?: boolean;
 };
@@ -24,6 +26,9 @@ export function Contribution({ contribution, isMobile = false }: Props) {
   const { githubPullRequest, id, rewardItems } = contribution;
 
   const { type, title, htmlUrl, author, status, number } = getContributionInfo(contribution);
+
+  const { githubUserId } = useAuth();
+  const { open } = useContributionDetailPanel();
 
   function renderReview() {
     if (githubPullRequest && status === GithubPullRequestStatus.Open) {
@@ -57,7 +62,7 @@ export function Contribution({ contribution, isMobile = false }: Props) {
         "items-center": !isMobile,
       })}
     >
-      <div className="flex min-w-0 items-center gap-1">
+      <div className="flex min-w-0 items-center gap-2 font-walsheim">
         <ContributionBadge
           id={id ?? ""}
           number={number}
@@ -67,12 +72,23 @@ export function Contribution({ contribution, isMobile = false }: Props) {
           author={author}
           url={htmlUrl}
         />
-        <Link href={htmlUrl} className="truncate text-sm hover:underline">
+        <button
+          className="text-left hover:underline"
+          onClick={() => {
+            if (githubUserId && id && contribution.project?.id)
+              open({ githubUserId, contributionId: id, projectId: contribution.project.id }, htmlUrl);
+          }}
+        >
           {title}
-        </Link>
+        </button>
       </div>
       <div className="inline-flex items-center gap-1 empty:hidden">
-        {rewardItems?.length ? <ContributionReward id={id ?? ""} rewards={rewardItems} /> : null}
+        {rewardItems?.length ? (
+          <ContributionReward
+            id={id ?? ""}
+            rewards={rewardItems as ComponentProps<typeof ContributionReward>["rewards"]}
+          />
+        ) : null}
         {renderReview()}
       </div>
     </div>

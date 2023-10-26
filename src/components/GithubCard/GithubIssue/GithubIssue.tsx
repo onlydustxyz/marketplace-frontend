@@ -72,7 +72,6 @@ export default function GithubIssue({
               tooltipProps={{
                 variant: Variant.Default,
                 position: TooltipPosition.Bottom,
-                className: "p-0",
               }}
             />
           </div>
@@ -85,7 +84,6 @@ export default function GithubIssue({
               tooltipProps={{
                 variant: Variant.Default,
                 position: TooltipPosition.Bottom,
-                className: "p-0",
               }}
               withIcon
             />

@@ -161,24 +161,25 @@ export function ContributionFilter({
                   </div>
                 </div>
               </div>
-              {projects.length > 1 ? (
-                <div className="px-6 py-3">
-                  <FilterSelect
-                    label={T("filter.project.title")}
-                    icon={className => <FolderLine className={className} />}
-                    tokens={{ zero: "filter.project.all", other: "filter.project" }}
-                    items={projects.map(
-                      project => ({ id: project.id, label: project.name, image: project.logoUrl } as Item)
-                    )}
-                    multiple
-                    selected={filters.projects}
-                    onChange={value => {
-                      const projects = Array.isArray(value) ? value : [value];
-                      updateProjects(projects);
-                    }}
-                  />
-                </div>
-              ) : null}
+
+              <div className="px-6 py-3">
+                <FilterSelect
+                  label={T("filter.project.title")}
+                  icon={className => <FolderLine className={className} />}
+                  tokens={{ zero: "filter.project.all", other: "filter.project" }}
+                  items={projects.map(
+                    project => ({ id: project.id, label: project.name, image: project.logoUrl } as Item)
+                  )}
+                  multiple
+                  selected={filters.projects}
+                  onChange={value => {
+                    const projects = Array.isArray(value) ? value : [value];
+                    updateProjects(projects);
+                  }}
+                  disabled={projects.length <= 1}
+                />
+              </div>
+
               <div className="px-6 py-3">
                 <FilterSelect
                   label={T("filter.repository.title")}
@@ -191,6 +192,7 @@ export function ContributionFilter({
                     const repos = Array.isArray(value) ? value : [value];
                     updateRepos(repos);
                   }}
+                  disabled={repos.length <= 1}
                 />
               </div>
             </Popover.Panel>

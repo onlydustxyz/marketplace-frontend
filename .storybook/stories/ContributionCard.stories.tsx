@@ -4,6 +4,7 @@ import { ContributionCard } from "src/components/Contribution/ContributionCard";
 import { GithubContributionStatus } from "src/types";
 import { withRouter } from "storybook-addon-react-router-v6";
 import withAuthProvider from "../decorators/withAuthProvider";
+import withContributionDetailPanelProvider from "../decorators/withContributionDetailPanelProvider";
 import withContributorProfilePanelProvider from "../decorators/withContributorProfilePanelProvider";
 import withMockedProvider from "../decorators/withMockedProvider";
 import { contribution } from "../mocks/contribution";
@@ -38,6 +39,7 @@ export default {
     withMockedProvider(mocks),
     withAuthProvider({ userId: USER_ID }),
     withContributorProfilePanelProvider,
+    withContributionDetailPanelProvider,
   ],
 };
 

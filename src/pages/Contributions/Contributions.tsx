@@ -8,7 +8,8 @@ import {
   OrderBy,
   Projects,
   useGetAllContributionsQuery,
-  useGetContributionProjectsAndReposQuery,
+  useGetContributionProjectsQuery,
+  useGetContributionReposQuery,
 } from "src/__generated/graphql";
 import CancelCircleLine from "src/assets/icons/CancelCircleLine";
 import ProgressCircle from "src/assets/icons/ProgressCircle";
@@ -92,11 +93,17 @@ export default function Contributions() {
     };
   }
 
-  function filterWhere() {
+  function projectsWhere() {
     return {
       githubUserId: { _eq: githubUserId },
-      projectId: { _in: projectIds.length > 1 ? projectIds : undefined },
       repoId: { _in: repoIds.length ? repoIds : undefined },
+    };
+  }
+
+  function reposWhere() {
+    return {
+      githubUserId: { _eq: githubUserId },
+      projectId: { _in: projectIds.length ? projectIds : undefined },
     };
   }
 
@@ -110,8 +117,7 @@ export default function Contributions() {
       where: tableWhere({ status: GithubContributionStatus.InProgress }) as ContributionsBoolExp,
     },
     skip: !githubUserId || (!isActiveTab(AllTabs.All) && !isActiveTab(AllTabs.InProgress)),
-    fetchPolicy: "network-only", // Used for first execution
-    nextFetchPolicy: "cache-first", // Used for subsequent executions
+    fetchPolicy: "no-cache", // Can't use cache or Apollo messes up the returned data
   });
 
   const {
@@ -124,8 +130,7 @@ export default function Contributions() {
       where: tableWhere({ status: GithubContributionStatus.Completed }) as ContributionsBoolExp,
     },
     skip: !githubUserId || (!isActiveTab(AllTabs.All) && !isActiveTab(AllTabs.Completed)),
-    fetchPolicy: "network-only", // Used for first execution
-    nextFetchPolicy: "cache-first", // Used for subsequent executions
+    fetchPolicy: "no-cache", // Can't use cache or Apollo messes up the returned data
   });
 
   const {
@@ -138,13 +143,19 @@ export default function Contributions() {
       where: tableWhere({ status: GithubContributionStatus.Canceled }) as ContributionsBoolExp,
     },
     skip: !githubUserId || (!isActiveTab(AllTabs.All) && !isActiveTab(AllTabs.Canceled)),
-    fetchPolicy: "network-only", // Used for first execution
-    nextFetchPolicy: "cache-first", // Used for subsequent executions
+    fetchPolicy: "no-cache", // Can't use cache or Apollo messes up the returned data
   });
 
-  const { data: projectsAndReposData } = useGetContributionProjectsAndReposQuery({
-    variables: { where: filterWhere() as ContributionsBoolExp },
+  const { data: projectsData } = useGetContributionProjectsQuery({
+    variables: { where: projectsWhere() as ContributionsBoolExp },
     skip: !githubUserId,
+    fetchPolicy: "no-cache", // Can't use cache or Apollo messes up the returned data
+  });
+
+  const { data: reposData } = useGetContributionReposQuery({
+    variables: { where: reposWhere() as ContributionsBoolExp },
+    skip: !githubUserId,
+    fetchPolicy: "no-cache", // Can't use cache or Apollo messes up the returned data
   });
 
   function isActiveTab(tab: AllTabs) {
@@ -286,31 +297,19 @@ export default function Contributions() {
     },
   ];
 
-  const filterProjectsAndRepos = useMemo(() => {
+  const filterProjectsAndRepos = useMemo((): { projects: Projects[]; repos: GithubRepos[] } => {
     let projects: Projects[] = [];
     let repos: GithubRepos[] = [];
 
-    if (!projectsAndReposData) {
+    if (!projectsData || !reposData) {
       return { projects, repos };
     }
 
-    // Merge all contributions
-    const flatContributions = projectsAndReposData.contributions.flat();
-
-    // All unique projects
-    projects = [
-      ...new Map(flatContributions.map(({ project }) => project).map(project => [project?.id, project])).values(),
-    ] as Projects[];
-
-    // All unique repos
-    repos = [
-      ...new Map(
-        flatContributions.map(({ githubRepo }) => githubRepo).map(githubRepo => [githubRepo?.id, githubRepo])
-      ).values(),
-    ] as GithubRepos[];
+    projects = projectsData.contributions.flat().map(({ project }) => project) as Projects[];
+    repos = reposData.contributions.flat().map(({ githubRepo }) => githubRepo) as GithubRepos[];
 
     return { projects, repos };
-  }, [projectsAndReposData]);
+  }, [projectsData, reposData]);
 
   return (
     <>

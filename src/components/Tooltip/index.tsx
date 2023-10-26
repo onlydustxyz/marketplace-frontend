@@ -36,8 +36,8 @@ export enum Variant {
 }
 
 const variants = {
-  [Variant.Default]: "bg-greyscale-800",
-  [Variant.Blue]: "bg-tooltip-blue",
+  [Variant.Default]: "!bg-greyscale-800",
+  [Variant.Blue]: "!bg-tooltip-blue",
 };
 
 export default function Tooltip({
@@ -59,7 +59,8 @@ export default function Tooltip({
       anchorSelect={anchorSelect}
       delayShow={delayShow}
       className={cn(
-        "opaque z-50 rounded-lg px-3 py-2 text-center font-walsheim text-sm font-normal text-greyscale-50",
+        "!text-xs", // !important class is required to override react-tooltip font-size
+        "opaque z-50 rounded-lg px-3 py-2 text-center font-walsheim font-normal text-greyscale-50",
         variants[variant],
         className
       )}
