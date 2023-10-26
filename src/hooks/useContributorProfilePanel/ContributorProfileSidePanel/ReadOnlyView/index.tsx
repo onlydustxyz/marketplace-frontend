@@ -1,12 +1,9 @@
-import { ProfileCover } from "src/__generated/graphql";
 import Header from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/Header";
-import { translateProfileCover } from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/utils";
 import IntroSection from "./IntroSection";
-import { UserProfile } from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/useUserProfile";
 import TechnologiesSection from "./TechnologiesSection";
 import StatsSection from "./StatsSection";
 import ProjectsSection from "./ProjectsSection";
-import { Profile } from "src/hooks/useProfile/useProfile";
+import { Profile } from "src/hooks/useRestfulProfile/useRestfulProfile";
 import { useMemo } from "react";
 
 type Props = {

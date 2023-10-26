@@ -9,7 +9,7 @@ import { useApolloClient } from "@apollo/client";
 import Loader from "src/assets/icons/Loader";
 import { useMediaQuery } from "usehooks-ts";
 import { viewportConfig } from "src/config";
-import { Profile } from "src/hooks/useProfile/useProfile";
+import { Profile } from "src/hooks/useRestfulProfile/useRestfulProfile";
 
 type Props = {
   profile: Profile;

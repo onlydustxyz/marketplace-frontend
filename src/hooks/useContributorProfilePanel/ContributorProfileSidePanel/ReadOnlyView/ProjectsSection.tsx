@@ -23,7 +23,7 @@ export default function ProjectsSection({ projects, setOpen }: Props) {
             <Link
               onClick={() => setOpen(false)}
               key={project.id}
-              to={generatePath(RoutePaths.ProjectDetails, { projectKey: project.slug })}
+              to={generatePath(RoutePaths.ProjectDetails, { projectKey: project.slug || "" })} // TODO REST PROJECT SLUG
             >
               <ProjectCard project={project} />
             </Link>

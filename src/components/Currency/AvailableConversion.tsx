@@ -1,13 +1,12 @@
 import { FC } from "react";
 import { Chip } from "src/components/Chip/Chip";
 import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
-import { cn } from "src/utils/cn";
-import StarknetIcon from "src/assets/icons/Starknet";
 import { Currency } from "src/types";
 import { CurrencyIcons } from "./CurrencyIcon";
 import { Chips } from "src/components/Chips/Chips";
 import { BugetCurrencyType, formatMoneyAmount } from "src/utils/money";
 import { useIntl } from "src/hooks/useIntl";
+
 // TODO : doc
 /**
  * Used in https://www.figma.com/file/8PqNt4K2uKLu3DvxF3rVDX/%F0%9F%A7%AA-Only-Dust-%E2%80%A2-[…]ype=design&node-id=8306-28771&mode=design&t=zDkHPxvit6rCDHmj-4
@@ -30,7 +29,7 @@ export const AvailableConversion: FC<AvailableConversion> = ({ tooltipId, curren
   return (
     <>
       <div {...tooltipIdProps}>
-        <Chips number={4}>
+        <Chips number={2}>
           {currencies.map(currency => (
             <div key={currency.currency}>
               <Chip solid>

@@ -22,7 +22,7 @@ import { Link, generatePath } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import CompletionBar from "src/components/CompletionBar";
 import WhatsappFill from "src/icons/WhatsappFill";
-import { Profile } from "src/hooks/useProfile/useProfile";
+import { Profile } from "src/hooks/useRestfulProfile/useRestfulProfile";
 import { components } from "src/__generated/api";
 
 type Props = {
@@ -123,8 +123,7 @@ export default function IntroSection({ isOwn, isPublic, profile, setEditMode }: 
               <ExternalLink url={website.url} text={website.hostname} />
             </div>
           )}
-          {/* // TODO REST : firstContributedAt - when a user don't have a created_at add the first contribution date */}
-          {/* {profile.createdAt ? (
+          {profile.createdAt ? (
             <div className="flex flex-row items-center gap-2 text-base text-greyscale-300">
               <img id={`od-logo-${profile.login}`} src={onlyDustLogo} className="h-3.5" />
               {T("profile.joinedAt", {
@@ -132,16 +131,14 @@ export default function IntroSection({ isOwn, isPublic, profile, setEditMode }: 
               })}
             </div>
           ) : (
-            profile.contributionStatsAggregate.aggregate?.min?.minDate && (
+            profile.firstContributedAt && (
               <div className="text-base text-greyscale-300">
                 {T("profile.firstContributedAt", {
-                  firstContributedAt: formatDateShort(
-                    new Date(profile.contributionStatsAggregate.aggregate?.min?.minDate)
-                  ),
+                  firstContributedAt: formatDateShort(new Date(profile.firstContributedAt)),
                 })}
               </div>
             )
-          )} */}
+          )}
         </div>
       )}
       <div className="flex flex-row items-center gap-2">

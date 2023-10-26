@@ -1,6 +1,7 @@
 import View from "./View";
 import { useAuth } from "src/hooks/useAuth";
 import useUserProfile from "./useUserProfile";
+import useRestfulProfile from "src/hooks/useRestfulProfile/useRestfulProfile";
 
 type Props = {
   githubUserId: number;
@@ -9,9 +10,15 @@ type Props = {
 
 export default function ContributorProfileSidePanel({ githubUserId, setOpen }: Props) {
   const { githubUserId: currentUserGithubId } = useAuth();
-  const { data: userProfile } = useUserProfile({ githubUserId });
+  const { data: gqlProfile } = useUserProfile({ githubUserId });
+  const { data: restFulProfile } = useRestfulProfile({ githubUserId });
 
-  return userProfile ? (
-    <View isOwn={currentUserGithubId === userProfile.githubUserId} userProfile={userProfile} setOpen={setOpen} />
+  return gqlProfile && restFulProfile ? (
+    <View
+      isOwn={currentUserGithubId === restFulProfile.githubUserId}
+      restFulProfile={restFulProfile}
+      gqlProfile={gqlProfile.profile}
+      setOpen={setOpen}
+    />
   ) : null;
 }
