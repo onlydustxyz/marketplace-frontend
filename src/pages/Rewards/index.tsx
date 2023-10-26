@@ -60,10 +60,6 @@ export default function Rewards() {
     queryParams,
   });
 
-  if (isFetching && !isFetchingNextPage) {
-    return <RewardSkeleton />;
-  }
-
   if (error) {
     return <ErrorFallback />;
   }
@@ -71,7 +67,7 @@ export default function Rewards() {
   const rewards = data?.pages.flatMap(page => page.rewards) || [];
 
   const hasRewards = rewards && rewards.length > 0;
-  if (!hasRewards) {
+  if (!hasRewards && !isFetching && !isFetchingNextPage) {
     return <Navigate to={RoutePaths.Projects} />;
   }
 
@@ -84,18 +80,22 @@ export default function Rewards() {
         <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-4 xl:p-8">
           <div className="font-belwe text-3xl xl:text-5xl">{T("navbar.rewards")}</div>
           <EarningWrapper />
-          <Card>
-            {rewards && (
-              <UserRewardTable
-                rewards={rewards}
-                fetchNextPage={fetchNextPage}
-                hasNextPage={hasNextPage}
-                isFetchingNextPage={isFetchingNextPage}
-                sorting={sorting}
-                applySorting={applySorting}
-              />
-            )}
-          </Card>
+          {isFetching ? (
+            <Skeleton variant="rewards" />
+          ) : (
+            <Card>
+              {rewards && (
+                <UserRewardTable
+                  rewards={rewards}
+                  fetchNextPage={fetchNextPage}
+                  hasNextPage={hasNextPage}
+                  isFetchingNextPage={isFetchingNextPage}
+                  sorting={sorting}
+                  applySorting={applySorting}
+                />
+              )}
+            </Card>
+          )}
 
           {/* <div className="mb-10 flex flex-col-reverse items-start gap-4 xl:flex-row">
             
@@ -116,26 +116,5 @@ export default function Rewards() {
         </div>
       </Background>
     </>
-  );
-}
-
-function RewardSkeleton() {
-  return (
-    <div className="h-full w-full overflow-y-auto rounded-3xl bg-space bg-no-repeat scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
-      <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-4 xl:p-8">
-        <div className="font-belwe text-3xl xl:text-5xl">
-          <div className="max-w-[18%]">
-            <Skeleton variant="counter" />
-          </div>
-        </div>
-
-        <div className="mb-10 flex flex-col-reverse items-start gap-4 xl:flex-row">
-          <div className="w-full">
-            <Skeleton variant="rewards" />
-          </div>
-          <Skeleton variant="earnedRewards" />
-        </div>
-      </div>
-    </div>
   );
 }

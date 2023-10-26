@@ -18,7 +18,12 @@ export function EarningWrapper() {
   });
 
   if (isLoading) {
-    return <Skeleton variant="earnedRewards" />;
+    return (
+      <div className="grid w-full gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <Skeleton variant="earnedRewards" />
+        <Skeleton variant="earnedRewards" />
+      </div>
+    );
   }
 
   if (isError) {
