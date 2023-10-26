@@ -44,6 +44,12 @@ export const variants = {
 
     // Code review
     [GithubCodeReviewStatus.Pending]: "text-github-green-light border-github-green",
+
+    // TODO REST statuses
+    // use dict model, be careful as variants are exported
+    // IN_PROGRESS: "text-github-green-light border-github-green",
+    // COMPLETED: "",
+    // CANCELLED: "",
   },
 };
 
@@ -78,16 +84,22 @@ export function ContributionIcon({
       [GithubPullRequestStatus.Closed]: <PrClosed className={size} />,
       [GithubPullRequestStatus.Merged]: <GitMergeLine className={size} />,
       [GithubPullRequestDraft.Draft]: <PrDraft className={size} />,
+      IN_PROGRESS: <GitPullRequestLine className={size} />,
+      COMPLETED: <GitMergeLine className={size} />,
+      CANCELLED: <PrClosed className={size} />,
     },
     [GithubContributionType.Issue]: {
       [GithubIssueStatus.Open]: <IssueOpenIcon size={size} />,
       [GithubIssueStatus.Completed]: <IssueClosedIcon size={size} />,
       [GithubIssueStatus.Cancelled]: <IssueCancelled className={size} />,
+      IN_PROGRESS: <IssueOpenIcon size={size} />,
     },
     [GithubContributionType.CodeReview]: {
       [GithubCodeReviewStatus.Pending]: <EyeLine className={size} />,
       [GithubCodeReviewStatus.Completed]: <CodeReviewCheckIcon className={size} />,
       [GithubCodeReviewStatus.ChangeRequested]: <CodeReviewCheckIcon className={size} />,
+      IN_PROGRESS: <EyeLine className={size} />,
+      CANCELLED: <CodeReviewCheckIcon className={size} />,
     },
   };
 
