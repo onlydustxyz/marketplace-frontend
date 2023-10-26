@@ -537,6 +537,16 @@
         "one": "day",
         "many": "days"
       }
+    },
+    "earning":{
+      "totalEarnings": "Total earnings",
+      "dolarEarnings": "Dollar earnings",
+      "etherEarnings": "Ether earnings",
+      "starkEarnings": "Stark earnings",
+      "optimismEarnings": "Optimism earnings",
+      "aptosEarnings": "Aptos earnings",
+      "usdInfoEarnings": "Dollar equivalent at today's date across all your earnings",
+      "error": "Unable to retrieve Earnings Amounts. Please try again."
     }
   },
   "profile": {

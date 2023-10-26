@@ -1,11 +1,9 @@
-import { gql } from "@apollo/client";
 import { Navigate } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import Card from "src/components/Card";
 import UserRewardTable from "src/components/UserRewardTable";
 import { useAuth } from "src/hooks/useAuth";
 import { useT } from "talkr";
-import TotalEarnings from "./TotalEarnings";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import SEO from "src/components/SEO";
 import { useMemo, useState } from "react";
@@ -13,6 +11,7 @@ import useInfiniteMyRewardList from "src/hooks/useInfiniteMyRewardList/useInfini
 import Skeleton from "src/components/Skeleton";
 import ErrorFallback from "src/ErrorFallback";
 import InvoiceSubmission from "./InvoiceSubmission";
+import { EarningWrapper } from "./Earning/EarningWrapper";
 
 export enum Field {
   Date = "REQUESTED_AT",
@@ -78,40 +77,42 @@ export default function Rewards() {
 
   const paymentRequestsNeedingInvoice = rewards?.filter(p => p.status === RewardStatus.PENDING_INVOICE) || [];
 
-  const totalEarnings = hasRewards && rewards.reduce((acc, p) => acc + p.amount.total, 0);
-
   return (
     <>
       <SEO />
       <Background roundedBorders={BackgroundRoundedBorders.Full}>
         <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-4 xl:p-8">
           <div className="font-belwe text-3xl xl:text-5xl">{T("navbar.rewards")}</div>
-          <div className="mb-10 flex flex-col-reverse items-start gap-4 xl:flex-row">
-            <Card>
-              {rewards && (
-                <UserRewardTable
-                  rewards={rewards}
-                  fetchNextPage={fetchNextPage}
-                  hasNextPage={hasNextPage}
-                  isFetchingNextPage={isFetchingNextPage}
-                  sorting={sorting}
-                  applySorting={applySorting}
-                />
-              )}
-            </Card>
+          <EarningWrapper />
+          <Card>
+            {rewards && (
+              <UserRewardTable
+                rewards={rewards}
+                fetchNextPage={fetchNextPage}
+                hasNextPage={hasNextPage}
+                isFetchingNextPage={isFetchingNextPage}
+                sorting={sorting}
+                applySorting={applySorting}
+              />
+            )}
+          </Card>
+
+          {/* <div className="mb-10 flex flex-col-reverse items-start gap-4 xl:flex-row">
+            
             <div>
               <div className="sticky top-4 flex flex-col gap-4">
-                {totalEarnings && <TotalEarnings amount={totalEarnings} />}
-                {/* {paymentRequestsNeedingInvoice.length > 0 && (
+                
+
+                {paymentRequestsNeedingInvoice.length > 0 && (
                   <InvoiceSubmission
                     paymentRequests={paymentRequestsNeedingInvoice}
                     githubUserId={githubUserId || 0}
                     userInfos={user}
                   />
-                )} */}
+                )}
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </Background>
     </>

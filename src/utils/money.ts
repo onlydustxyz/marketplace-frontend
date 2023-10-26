@@ -2,6 +2,7 @@ import { components } from "src/__generated/api";
 import { Currency } from "src/types";
 
 export type BudgetCurrencyType = components["schemas"]["BudgetResponse"]["currency"];
+export type EarningCurrencyType = components["schemas"]["MyRewardAmountResponse"]["currency"];
 
 type Params = {
   amount: number;
