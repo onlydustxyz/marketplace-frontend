@@ -97,12 +97,9 @@ export default function Rewards() {
             </Card>
           )}
 
-          {/* <div className="mb-10 flex flex-col-reverse items-start gap-4 xl:flex-row">
-            
+          <div className="mb-10 flex flex-col-reverse items-start gap-4 xl:flex-row">
             <div>
               <div className="sticky top-4 flex flex-col gap-4">
-                
-
                 {paymentRequestsNeedingInvoice.length > 0 && (
                   <InvoiceSubmission
                     paymentRequests={paymentRequestsNeedingInvoice}
@@ -112,7 +109,7 @@ export default function Rewards() {
                 )}
               </div>
             </div>
-          </div> */}
+          </div>
         </div>
       </Background>
     </>

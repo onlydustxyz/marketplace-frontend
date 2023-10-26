@@ -6,6 +6,7 @@ import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
 import Skeleton from "src/components/Skeleton";
 import { useShowToaster } from "src/hooks/useToaster";
 import { useIntl } from "src/hooks/useIntl";
+import { Currency } from "src/types";
 
 export type EarningAmountType = components["schemas"]["MyRewardTotalAmountsResponse"];
 
@@ -33,13 +34,40 @@ export function EarningWrapper() {
 
   const { totalAmount, details } = data as EarningAmountType;
 
+  const usdEarnings = details?.find(detail => detail.currency === "USD") || {
+    currency: Currency.USD,
+    totalAmount: 0,
+    totalDollarsEquivalent: 0,
+  };
+  const etherEarningDetails = details?.find(detail => detail.currency === "ETH") || {
+    currency: Currency.ETH,
+    totalAmount: 0,
+    totalDollarsEquivalent: 0,
+  };
+  const starkEarnings = details?.find(detail => detail.currency === "STARK") || {
+    currency: Currency.STARK,
+    totalAmount: 0,
+    totalDollarsEquivalent: 0,
+  };
+  const optimismEarnings = details?.find(detail => detail.currency === "OP") || {
+    currency: Currency.OP,
+    totalAmount: 0,
+    totalDollarsEquivalent: 0,
+  };
+  const aptosEarnings = details?.find(detail => detail.currency === "APT") || {
+    currency: Currency.APT,
+    totalAmount: 0,
+    totalDollarsEquivalent: 0,
+  };
+
   return (
     <div className="grid w-full gap-4 md:grid-cols-2 lg:grid-cols-4">
       <TotalEarningCard amount={totalAmount || 0} />
-
-      {details?.map(amount => {
-        return <EarningCard key={amount.currency} amount={amount} />;
-      })}
+      <EarningCard key={usdEarnings.currency} amount={usdEarnings} />
+      <EarningCard key={etherEarningDetails.currency} amount={etherEarningDetails} />
+      <EarningCard key={starkEarnings.currency} amount={starkEarnings} />
+      <EarningCard key={optimismEarnings.currency} amount={optimismEarnings} />
+      <EarningCard key={aptosEarnings.currency} amount={aptosEarnings} />
     </div>
   );
 }
