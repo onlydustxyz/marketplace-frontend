@@ -29,7 +29,6 @@ const RewardList: React.FC = () => {
   const {
     data,
     isLoading: isRewardsLoading,
-    isFetching,
     fetchNextPage,
     hasNextPage,
     error,
@@ -45,7 +44,7 @@ const RewardList: React.FC = () => {
     return <ErrorFallback />;
   }
 
-  if (isFetching) {
+  if (isRewardsLoading) {
     return (
       <>
         <div className="max-w-[15%]">
