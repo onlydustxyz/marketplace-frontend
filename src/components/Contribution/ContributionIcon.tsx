@@ -25,31 +25,30 @@ export enum Sizes {
   md = "w-4 h-4 text-base leading-none",
 }
 
-export const variants = {
+export const variants: { status: GithubTypeStatusDict<string> } = {
   status: {
-    // Pull request
-    [GithubPullRequestStatus.Closed]: "text-github-red-light border-github-red",
-    [GithubPullRequestStatus.Merged]: "text-github-purple-light border-github-purple",
-    [GithubPullRequestDraft.Draft]: "text-github-grey-light border-github-grey",
-
-    // Pull request & Issue
-    [GithubPullRequestStatus.Open]: "text-github-green-light border-github-green",
-
-    // Issue
-    [GithubIssueStatus.Cancelled]: "text-github-grey-light border-github-grey",
-
-    // Issue & Code review
-    [GithubIssueStatus.Completed]: "text-github-purple-light border-github-purple",
-    [GithubCodeReviewStatus.ChangeRequested]: "text-github-purple-light border-github-purple",
-
-    // Code review
-    [GithubCodeReviewStatus.Pending]: "text-github-green-light border-github-green",
-
-    // TODO REST statuses
-    // use dict model, be careful as variants are exported
-    // IN_PROGRESS: "text-github-green-light border-github-green",
-    // COMPLETED: "",
-    // CANCELLED: "",
+    [GithubContributionType.PullRequest]: {
+      [GithubPullRequestStatus.Open]: "text-github-green-light border-github-green",
+      [GithubPullRequestStatus.Closed]: "text-github-red-light border-github-red",
+      [GithubPullRequestStatus.Merged]: "text-github-purple-light border-github-purple",
+      [GithubPullRequestDraft.Draft]: "text-github-grey-light border-github-grey",
+      IN_PROGRESS: "text-github-green-light border-github-green",
+      COMPLETED: "text-github-purple-light border-github-purple",
+      CANCELLED: "text-github-red-light border-github-red",
+    },
+    [GithubContributionType.Issue]: {
+      [GithubIssueStatus.Open]: "text-github-green-light border-github-green",
+      [GithubIssueStatus.Completed]: "text-github-purple-light border-github-purple",
+      [GithubIssueStatus.Cancelled]: "text-github-grey-light border-github-grey",
+      IN_PROGRESS: "text-github-green-light border-github-green",
+    },
+    [GithubContributionType.CodeReview]: {
+      [GithubCodeReviewStatus.Pending]: "text-github-green-light border-github-green",
+      [GithubCodeReviewStatus.Completed]: "text-github-purple-light border-github-purple",
+      [GithubCodeReviewStatus.ChangeRequested]: "text-github-purple-light border-github-purple",
+      IN_PROGRESS: "text-github-green-light border-github-green",
+      CANCELLED: "text-github-purple-light border-github-purple",
+    },
   },
 };
 
@@ -105,7 +104,14 @@ export function ContributionIcon({
 
   // Even though a type and status should always be defined, in development sometimes they aren't and makes the component crash.
   return (
-    <div className={cn("leading-none", status ? variants.status[status] : undefined)}>
+    <div
+      className={cn(
+        "leading-none",
+        type && status
+          ? variants.status[type][status as keyof typeof variants.status[GithubContributionType]]
+          : undefined
+      )}
+    >
       {type && status ? icons[type][status as keyof typeof icons[GithubContributionType]] : null}
     </div>
   );

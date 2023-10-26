@@ -162,7 +162,8 @@ export type GithubItemStatus =
   | GithubPullRequestStatus
   | GithubIssueStatus
   | GithubCodeReviewStatus
-  | GithubPullRequestDraft;
+  | GithubPullRequestDraft
+  | RewardItemStatus;
 
 type RewardItemStatus = components["schemas"]["RewardItemResponse"]["status"];
 
