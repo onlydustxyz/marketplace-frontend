@@ -144,11 +144,10 @@ export default function useRestfulProfile({
 }) {
   const { user: currentUser, githubUserId: currentUserGithubId } = useAuth();
 
-  const { data, isLoading, isError } = useRestfulMockData({
+  const { data, isLoading, isError } = useRestfulData({
     resourcePath: ApiResourcePaths.GET_PUBLIC_USER_PROFILE,
     pathParam: `${githubUserId}`,
     method: "GET",
-    mock,
   });
 
   return {
