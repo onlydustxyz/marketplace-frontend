@@ -55,7 +55,6 @@ const maximumFractionDigits = ({ amount, notation }: Params) => {
   }
 };
 
-// TODO check with Grégoire
 const networkDict: Record<BudgetCurrencyType, string> = {
   APT: "Aptos",
   ETH: "Ethereum",
@@ -65,5 +64,5 @@ const networkDict: Record<BudgetCurrencyType, string> = {
 };
 
 export function currencyToNetwork(currency: BudgetCurrencyType) {
-  return networkDict[currency];
+  return networkDict[currency] ?? "";
 }
