@@ -2,13 +2,7 @@ import IBAN from "iban";
 import { PropsWithChildren, useState } from "react";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import { components } from "src/__generated/api";
-import {
-  GithubCodeReviewFragment,
-  GithubIssueFragment,
-  GithubPullRequestWithCommitsFragment,
-  GithubUserFragment,
-  PaymentRequestDetailsFragment,
-} from "src/__generated/graphql";
+import { GithubUserFragment, PaymentRequestDetailsFragment } from "src/__generated/graphql";
 import InfoIcon from "src/assets/icons/InfoIcon";
 import Button, { ButtonSize } from "src/components/Button";
 import Contributor from "src/components/Contributor";
@@ -25,14 +19,18 @@ import { useIntl } from "src/hooks/useIntl";
 import BankCardLine from "src/icons/BankCardLine";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import Time from "src/icons/TimeLine";
-import { PaymentStatus } from "src/types";
+import { GithubContributionType, PaymentStatus } from "src/types";
+import {
+  formatRewardItemToGithubCodeReview,
+  formatRewardItemToGithubIssue,
+  formatRewardItemToGithubPullRequest,
+} from "src/utils/api";
 import { cn } from "src/utils/cn";
 import { formatDateTime } from "src/utils/date";
 import { pretty } from "src/utils/id";
 import isDefined from "src/utils/isDefined";
 import { currencyToNetwork, formatMoneyAmount } from "src/utils/money";
 import ConfirmationModal from "./ConfirmationModal";
-import { GithubContributionType } from "src/types";
 
 enum Align {
   Top = "top",
@@ -72,82 +70,6 @@ export default function View({
   const formattedReceipt = formatReceipt(payments?.at(0)?.receipt);
   // TODO which status ?
   const shouldDisplayCancelButton = projectLeaderView && onRewardCancel && status === PaymentStatus.WAITING_PAYMENT;
-
-  function formatRewardItemToGithubPullRequest(item: components["schemas"]["RewardItemResponse"]) {
-    return {
-      id: item.id,
-      number: item.number,
-      title: item.title,
-      createdAt: item.createdAt,
-      // TODO lastUpdatedAt ?
-      closedAt: item.closedAt,
-      mergedAt: item.mergedAt,
-      status: item.status,
-      htmlUrl: item.githubUrl,
-      // TODO
-      userCommitsCount: {
-        aggregate: {
-          count: item.userCommitsCount,
-        },
-      },
-      commitsCount: {
-        aggregate: {
-          count: item.commitsCount,
-        },
-      },
-      repoId: null,
-      author: {
-        id: item.author.id,
-        login: item.author.login,
-        avatarUrl: item.author.avatarUrl,
-        htmlUrl: "",
-        user: null,
-      },
-    } as GithubPullRequestWithCommitsFragment;
-  }
-
-  function formatRewardItemToGithubIssue(item: components["schemas"]["RewardItemResponse"]) {
-    return {
-      id: item.id,
-      createdAt: item.createdAt,
-      // TODO lastUpdatedAt ?
-      closedAt: item.closedAt,
-      number: item.number,
-      title: item.title,
-      htmlUrl: item.githubUrl,
-      status: item.status,
-      commentsCount: item.commentsCount,
-      repoId: null,
-    } as GithubIssueFragment;
-  }
-
-  function formatRewardItemToGithubCodeReview(item: components["schemas"]["RewardItemResponse"]) {
-    return {
-      id: item.id,
-      githubPullRequest: {
-        number: item.number,
-        title: item.title,
-        htmlUrl: item.githubUrl,
-        createdAt: item.createdAt,
-        repoId: null,
-        status: null,
-        closedAt: null,
-        mergedAt: null,
-        id: null,
-        author: {
-          id: null,
-          htmlUrl: "",
-          avatarUrl: "",
-          login: "",
-          user: null,
-        },
-      },
-      status: item.status,
-      submittedAt: item.createdAt,
-      // TODO
-      outcome: item.status,
-    } as GithubCodeReviewFragment;
-  }
 
   function renderRewardItem(item: components["schemas"]["RewardItemResponse"]) {
     return null;
@@ -193,7 +115,7 @@ export default function View({
             </div>
             <div className="flex items-baseline gap-2">
               <div className="flex items-baseline gap-1 font-belwe text-5xl font-normal text-greyscale-50">
-                <span>{formatMoneyAmount({ amount: data.amount, currency: data.currency })}</span>
+                <span>{formatMoneyAmount({ amount: data.amount, currency: data.currency, showCurrency: false })}</span>
                 <span className="text-3xl">{data.currency}</span>
               </div>
               {data.dollarsEquivalent ? (
