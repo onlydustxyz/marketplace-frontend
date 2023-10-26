@@ -19,7 +19,7 @@ import { useIntl } from "src/hooks/useIntl";
 import BankCardLine from "src/icons/BankCardLine";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import Time from "src/icons/TimeLine";
-import { GithubContributionType, PaymentStatus } from "src/types";
+import { Currency, GithubContributionType, PaymentStatus } from "src/types";
 import {
   formatRewardItemToGithubCodeReview,
   formatRewardItemToGithubIssue,
@@ -68,11 +68,10 @@ export default function View({
   const { githubUserId } = useAuth();
   // TODO get from response
   const formattedReceipt = formatReceipt(payments?.at(0)?.receipt);
-  // TODO which status ?
-  const shouldDisplayCancelButton = projectLeaderView && onRewardCancel && status === PaymentStatus.WAITING_PAYMENT;
+  const shouldDisplayCancelButton = projectLeaderView && onRewardCancel && data?.status !== PaymentStatus.COMPLETE;
+  const isCurrencyUSD = data?.currency === Currency.USD;
 
   function renderRewardItem(item: components["schemas"]["RewardItemResponse"]) {
-    return null;
     switch (item.type) {
       case GithubContributionType.PullRequest: {
         return (
@@ -116,9 +115,9 @@ export default function View({
             <div className="flex items-baseline gap-2">
               <div className="flex items-baseline gap-1 font-belwe text-5xl font-normal text-greyscale-50">
                 <span>{formatMoneyAmount({ amount: data.amount, currency: data.currency, showCurrency: false })}</span>
-                <span className="text-3xl">{data.currency}</span>
+                {!isCurrencyUSD ? <span className="text-3xl">{data.currency}</span> : null}
               </div>
-              {data.dollarsEquivalent ? (
+              {!isCurrencyUSD && data.dollarsEquivalent ? (
                 <>
                   <Tooltip id="reward-detail-usd-est" position={TooltipPosition.Top}>
                     {T("reward.table.detailsPanel.usdEstimateTooltip")}
@@ -178,7 +177,7 @@ export default function View({
                 >
                   {[
                     T("reward.table.detailsPanel.processedAt", {
-                      processedAt: formatDateTime(new Date(payments?.at(0)?.processedAt)),
+                      processedAt: formatDateTime(new Date(data.processedAt)),
                     }),
                     formattedReceipt &&
                       T(`reward.table.detailsPanel.processedVia.${formattedReceipt?.type}`, {
@@ -228,7 +227,10 @@ export default function View({
               {T("reward.table.detailsPanel.contributions")}
             </div>
             <div className="flex h-full flex-col gap-3 overflow-auto p-px pb-6 pr-4 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
-              {data.rewardItems.map(item => renderRewardItem(item))}
+              {
+                // TODO
+                /* {data.rewardItems.map(item => renderRewardItem(item))} */
+              }
             </div>
           </div>
         </div>
