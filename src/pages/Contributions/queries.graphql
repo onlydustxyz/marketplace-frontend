@@ -43,6 +43,9 @@ query GetAllContributions($orderBy: [ContributionsOrderBy!], $where: Contributio
     type
     rewardItems {
       paymentId
+      paymentRequest {
+        recipientId
+      }
     }
   }
   githubRepos(orderBy: { indexedAt: ASC }, limit: 1) {
@@ -50,8 +53,10 @@ query GetAllContributions($orderBy: [ContributionsOrderBy!], $where: Contributio
   }
 }
 
-query GetContributionRewards($githubUserId: bigint!, $contributionId: String!) {
-  contributions(where: { githubUserId: { _eq: $githubUserId }, id: { _eq: $contributionId } }) {
+query GetContributionDetails($githubUserId: bigint!, $contributionId: String!, $projectId: uuid!) {
+  contributions(
+    where: { githubUserId: { _eq: $githubUserId }, id: { _eq: $contributionId }, projectId: { _eq: $projectId } }
+  ) {
     closedAt
     createdAt
     id
@@ -123,13 +128,18 @@ query GetContributionRewards($githubUserId: bigint!, $contributionId: String!) {
   }
 }
 
-query GetContributionProjectsAndRepos($where: ContributionsBoolExp) {
-  contributions(where: $where) {
+query GetContributionProjects($where: ContributionsBoolExp) {
+  contributions(where: $where, distinctOn: [projectId]) {
     project {
       name
       logoUrl
       id
     }
+  }
+}
+
+query GetContributionRepos($where: ContributionsBoolExp) {
+  contributions(where: $where, distinctOn: [repoId]) {
     githubRepo {
       id
       name

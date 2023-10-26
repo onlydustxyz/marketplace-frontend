@@ -2,11 +2,10 @@ import { cn } from "src/utils/cn";
 
 import { GithubUser } from "src/__generated/graphql";
 import { ContributionIcon, variants as contributionIconVariants } from "src/components/Contribution/ContributionIcon";
-import { GithubLoginLink } from "src/components/GithubLoginLink/GithubLoginLink";
-import { Link } from "src/components/Link/Link";
+import Contributor from "src/components/Contributor";
+import ExternalLink from "src/components/ExternalLink";
 import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
 import { useAuth } from "src/hooks/useAuth";
-import { useContributorProfilePanel } from "src/hooks/useContributorProfilePanel";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowRightUpLine from "src/icons/ArrowRightUpLine";
 import { GithubContributionType, GithubItemStatus } from "src/types";
@@ -29,6 +28,10 @@ export function ContributionBadge({
   withTooltip = true,
   asLink = false,
   size = ContributionBadgeSizes.Sm,
+  tooltipProps = {
+    position: TooltipPosition.TopEnd,
+    variant: Variant.Blue,
+  },
 }: {
   id: string;
   number: number;
@@ -41,12 +44,12 @@ export function ContributionBadge({
   withTooltip?: boolean;
   asLink?: boolean;
   size?: ContributionBadgeSizes;
+  tooltipProps?: React.ComponentProps<typeof Tooltip>;
 }) {
   const Component = asLink ? "a" : "div";
   const ComponentProps = asLink ? { href: url, target: "_blank", rel: "noopener noreferrer" } : {};
   const { T } = useIntl();
   const { githubUserId } = useAuth();
-  const { open: openProfilePanel } = useContributorProfilePanel();
 
   const isExternal = author && githubUserId !== author.id;
   const tooltipId = `${id}-${number}-${type}-${status}`;
@@ -60,28 +63,29 @@ export function ContributionBadge({
   return (
     <>
       {withTooltip ? (
-        <Tooltip id={tooltipId} clickable position={TooltipPosition.TopEnd} variant={Variant.Blue}>
-          <div className="flex flex-col gap-4 px-1 py-2">
+        <Tooltip id={tooltipId} clickable {...tooltipProps}>
+          <div className="flex flex-col gap-1">
             {isExternal ? (
-              <div className="flex font-medium">
+              <div className="flex items-center justify-center text-sm">
                 <span className="text-spaceBlue-200">{tokens[type]}</span>
-                &nbsp;
-                <button
-                  type="button"
-                  onClick={() => {
-                    openProfilePanel(author.id);
+
+                <Contributor
+                  className="ml-1 flex-row-reverse"
+                  contributor={{
+                    login: author?.login ?? "",
+                    avatarUrl: author?.avatarUrl ?? "",
+                    githubUserId: author?.id,
                   }}
-                >
-                  <GithubLoginLink author={author} />
-                </button>
+                  clickable
+                />
               </div>
             ) : null}
             <div className="flex gap-2">
               <ContributionIcon type={type} status={status} />
               <div className="flex flex-col items-start gap-2">
-                <Link href={url} className="text-sm font-semibold leading-4 text-greyscale-50 hover:underline">
-                  <span>#{number}</span> • <span>{title}</span>
-                </Link>
+                <span className="text-sm font-medium leading-4">
+                  <ExternalLink url={url} text={`#${number} • ${title}`} />
+                </span>
                 {description ? <p className="text-xs text-spaceBlue-200">{description}</p> : null}
               </div>
             </div>

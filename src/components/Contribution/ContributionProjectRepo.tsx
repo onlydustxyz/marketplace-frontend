@@ -1,9 +1,8 @@
-import { Link, generatePath } from "react-router-dom";
-
 import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
+import { Link, generatePath } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import { GithubRepos, Projects } from "src/__generated/graphql";
-import { Link as Anchor } from "src/components/Link/Link";
+import ExternalLink from "src/components/ExternalLink";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 
 export function ContributionProjectRepo({
@@ -22,7 +21,7 @@ export function ContributionProjectRepo({
         size={ImageSize.Sm}
       />
 
-      <p className="text-sm">
+      <div className="text-sm">
         <Link
           to={generatePath(RoutePaths.ProjectDetails, {
             projectKey: project.key ?? "",
@@ -31,11 +30,11 @@ export function ContributionProjectRepo({
         >
           {project.name}
         </Link>
-        <span className="text-spaceBlue-300">/</span>&nbsp;
-        <Anchor href={repo.htmlUrl ?? ""} className="hover:underline">
-          {repo.name}
-        </Anchor>
-      </p>
+        &nbsp;<span className="text-spaceBlue-300">/</span>&nbsp;
+        <span className="inline-flex">
+          <ExternalLink url={repo?.htmlUrl ?? ""} text={repo.name} />
+        </span>
+      </div>
     </div>
   );
 }
