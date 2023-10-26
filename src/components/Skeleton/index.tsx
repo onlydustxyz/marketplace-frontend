@@ -11,19 +11,12 @@ import SkeletonEarnedRewards from "./SkeletonEarnedRewards";
 import SkeletonRewardsList from "./SkeletonRewardsList";
 
 type SkeletonVariant =
-  |
   | "card"
- 
   | "filters"
- 
   | "header"
- 
   | "search"
- 
   | "sort"
- 
   | "counter"
- 
   | "contributorList"
   | "rewards"
   | "earnedRewards"
