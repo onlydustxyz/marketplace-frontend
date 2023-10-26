@@ -9,19 +9,22 @@ import TimeLine from "src/icons/TimeLine";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { pretty } from "src/utils/id";
 import { formatMoneyAmount } from "src/utils/money";
-import { Reward as Reward } from "./Line";
+import { MyRewardType } from "./Line";
 import { ReactNode } from "react";
+import { ShowMore } from "src/components/Table/ShowMore";
 
 export default function MobileUserRewardList({
   rewards,
-  payoutInfoMissing,
-  invoiceNeeded,
   onRewardClick,
+  fetchNextPage,
+  hasNextPage,
+  isFetchingNextPage,
 }: {
-  rewards: Reward[];
-  payoutInfoMissing: boolean;
-  invoiceNeeded: boolean;
-  onRewardClick: (reward: Reward) => void;
+  rewards: MyRewardType[];
+  onRewardClick: (reward: MyRewardType) => void;
+  fetchNextPage: () => void;
+  hasNextPage: boolean;
+  isFetchingNextPage: boolean;
 }) {
   const { T } = useIntl();
 
@@ -30,24 +33,32 @@ export default function MobileUserRewardList({
       {rewards.map(reward => (
         <button onClick={() => onRewardClick(reward)} key={reward.id}>
           <MobileUserRewardItem
-            title={reward?.project?.title}
-            image={<RoundedImage src={reward?.project?.logoUrl || onlyDustLogo} alt={reward?.project?.title || ""} />}
-            request={T("reward.table.reward", { id: pretty(reward.id), count: reward.workItems.length })}
-            amount={formatMoneyAmount({ amount: reward.amount.value, currency: reward.amount.currency })}
-            date={reward.requestedAt}
+            title={reward?.rewardedOnProjectName}
+            image={
+              <RoundedImage
+                src={reward?.rewardedOnProjectLogoUrl || onlyDustLogo}
+                alt={reward?.rewardedOnProjectName || ""}
+              />
+            }
+            request={T("reward.table.reward", { id: pretty(reward.id), count: reward.numberOfRewardedContributions })}
+            amount={formatMoneyAmount({ amount: reward.amount.total, currency: reward.amount.currency })}
+            date={new Date(reward.requestedAt)}
             payoutStatus={
               <PayoutStatus
                 {...{
                   id: `payout-status-${reward.id}`,
                   status: reward.status,
-                  payoutInfoMissing,
-                  invoiceNeeded: invoiceNeeded && !reward.invoiceReceived,
                 }}
               />
             }
           />
         </button>
       ))}
+      {hasNextPage && (
+        <div className="py-6">
+          <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} />
+        </div>
+      )}
     </div>
   );
 }

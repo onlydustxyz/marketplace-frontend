@@ -6,6 +6,8 @@ import SkeletonSearch from "./SkeletonSearch";
 import SkeletonSort from "./SkeletonSort";
 import SkeletonCounter from "./SkeletonCounter";
 import SkeletonContributorList from "./SkeletonContributorList";
+import SkeletonRewards from "./SkeletonRewards";
+import SkeletonEarnedRewards from "./SkeletonEarnedRewards";
 import SkeletonRewardsList from "./SkeletonRewardsList";
 
 type SkeletonVariant =
@@ -16,6 +18,8 @@ type SkeletonVariant =
   | "sort"
   | "counter"
   | "contributorList"
+  | "rewards"
+  | "earnedRewards"
   | "rewardsList";
 
 interface SkeletonProps {
@@ -30,6 +34,8 @@ const VARIANT_COMPONENTS = {
   sort: SkeletonSort,
   counter: SkeletonCounter,
   contributorList: SkeletonContributorList,
+  rewards: SkeletonRewards,
+  earnedRewards: SkeletonEarnedRewards,
   rewardsList: SkeletonRewardsList,
 };
 

@@ -1,43 +1,40 @@
-import { Sortable } from "src/types";
 import Table from "src/components/Table";
-import useRewardSorting, { SortingFields } from "src/hooks/useRewardSorting";
-import RewardLine, { Reward } from "./Line";
+import RewardLine, { MyRewardType } from "./Line";
 import Headers from "./Headers";
-import { useCallback, useMemo, useState } from "react";
+import { useState } from "react";
 import RewardSidePanel from "./RewardSidePanel";
 import { viewportConfig } from "src/config";
 import MobileUserRewardList from "./MobileUserRewardList";
 import { useMediaQuery } from "usehooks-ts";
 import SidePanel from "src/components/SidePanel";
+import { Field, Sorting } from "src/pages/Rewards";
+import { ShowMore } from "src/components/Table/ShowMore";
 
 type PropsType = {
-  rewards: (Reward & Sortable)[];
-  payoutInfoMissing: boolean;
-  invoiceNeeded: boolean;
+  rewards: MyRewardType[];
+  // payoutInfoMissing: boolean;
+  fetchNextPage: () => void;
+  hasNextPage: boolean;
+  isFetchingNextPage: boolean;
+  sorting: Sorting;
+  applySorting: (field: Field, ascending: boolean) => void;
 };
 
-const UserRewardTable: React.FC<PropsType> = ({ rewards, payoutInfoMissing, invoiceNeeded }) => {
+const UserRewardTable: React.FC<PropsType> = ({
+  rewards,
+  // payoutInfoMissing,
+  fetchNextPage,
+  hasNextPage,
+  isFetchingNextPage,
+  sorting,
+  applySorting,
+}) => {
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
-  const [rewardSortingFields, setRewardSortingFields] = useState<Record<string, SortingFields>>({});
-  const { sort, sorting, applySorting } = useRewardSorting();
-
-  const sortableRewards = useMemo(
-    () => rewards.map(p => ({ ...p, sortingFields: rewardSortingFields[p.id] })),
-    [rewardSortingFields, rewards]
-  );
-
-  const sortedRewards = useMemo(() => sort(sortableRewards), [sort, sortableRewards]);
-
-  const [selectedReward, setSelectedReward] = useState<Reward | null>(null);
+  const [selectedReward, setSelectedReward] = useState<MyRewardType | null>(null);
   const [sidePanelOpen, setSidePanelOpen] = useState(false);
 
-  const setSortingFields = useCallback(
-    (p: Reward) => (fields: SortingFields) => setRewardSortingFields(existing => ({ ...existing, [p.id]: fields })),
-    []
-  );
-
-  const onRewardClick = (reward: Reward) => {
+  const onRewardClick = (reward: MyRewardType) => {
     setSelectedReward(reward);
     setSidePanelOpen(true);
   };
@@ -45,29 +42,34 @@ const UserRewardTable: React.FC<PropsType> = ({ rewards, payoutInfoMissing, invo
   return (
     <>
       {isXl ? (
-        <Table id="reward_table" headers={<Headers sorting={sorting} applySorting={applySorting} />}>
-          {sortedRewards.map(p => (
-            <RewardLine
-              key={p.id}
-              reward={p}
-              payoutInfoMissing={payoutInfoMissing}
-              invoiceNeeded={invoiceNeeded}
-              setSortingFields={setSortingFields(p)}
-              onClick={() => onRewardClick(p)}
-              selected={p.id === selectedReward?.id}
-            />
-          ))}
-        </Table>
+        <div>
+          <Table id="reward_table" headers={<Headers sorting={sorting} applySorting={applySorting} />}>
+            {rewards.map(p => (
+              <RewardLine
+                key={p.id}
+                reward={p}
+                onClick={() => onRewardClick(p)}
+                selected={p.id === selectedReward?.id}
+              />
+            ))}
+          </Table>
+          {hasNextPage && (
+            <div className="pt-6">
+              <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} />
+            </div>
+          )}
+        </div>
       ) : (
         <MobileUserRewardList
-          rewards={sortedRewards}
-          payoutInfoMissing={payoutInfoMissing}
-          invoiceNeeded={invoiceNeeded}
+          rewards={rewards}
           onRewardClick={onRewardClick}
+          fetchNextPage={fetchNextPage}
+          hasNextPage={hasNextPage}
+          isFetchingNextPage={isFetchingNextPage}
         />
       )}
       <SidePanel open={sidePanelOpen} setOpen={setSidePanelOpen}>
-        {selectedReward && <RewardSidePanel rewardId={selectedReward.id} recipientId={selectedReward.recipientId} />}
+        {selectedReward && <RewardSidePanel rewardId={selectedReward.id} recipientId={selectedReward.id} />}
       </SidePanel>
     </>
   );

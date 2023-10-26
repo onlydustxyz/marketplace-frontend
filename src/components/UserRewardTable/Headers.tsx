@@ -6,7 +6,7 @@ import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import FocusLine from "src/icons/FocusLine";
 import FolderLine from "src/icons/FolderLine";
 import TimeLine from "src/icons/TimeLine";
-import { Field, Sorting } from "src/hooks/useRewardSorting";
+import { Field, Sorting } from "src/pages/Rewards";
 
 type Props = {
   sorting: Sorting;
