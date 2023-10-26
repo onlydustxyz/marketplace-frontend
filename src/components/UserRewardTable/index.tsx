@@ -1,9 +1,7 @@
-import { Sortable } from "src/types";
 import Table from "src/components/Table";
-import useRewardSorting, { SortingFields } from "src/hooks/useRewardSorting";
 import RewardLine, { MyRewardType } from "./Line";
 import Headers from "./Headers";
-import { useCallback, useMemo, useState } from "react";
+import { useState } from "react";
 import RewardSidePanel from "./RewardSidePanel";
 import { viewportConfig } from "src/config";
 import MobileUserRewardList from "./MobileUserRewardList";
@@ -71,6 +69,9 @@ const UserRewardTable: React.FC<PropsType> = ({
           payoutInfoMissing={payoutInfoMissing}
           invoiceNeeded={invoiceNeeded}
           onRewardClick={onRewardClick}
+          fetchNextPage={fetchNextPage}
+          hasNextPage={hasNextPage}
+          isFetchingNextPage={isFetchingNextPage}
         />
       )}
       <SidePanel open={sidePanelOpen} setOpen={setSidePanelOpen}>
