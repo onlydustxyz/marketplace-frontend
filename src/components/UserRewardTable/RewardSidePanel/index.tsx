@@ -1,11 +1,18 @@
-import { useAuth } from "src/hooks/useAuth";
-import usePayoutSettings from "src/hooks/usePayoutSettings";
-import { PaymentStatus } from "src/types";
+import { useOutletContext } from "react-router-dom";
 import { useCancelPaymentRequestMutation, usePaymentRequestDetailsQuery } from "src/__generated/graphql";
-import View from "./View";
-import { useShowToaster } from "src/hooks/useToaster";
+import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
+import usePayoutSettings from "src/hooks/usePayoutSettings";
+import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
+import { useRestfulData } from "src/hooks/useRestfulData/useRestfulData";
+import { useShowToaster } from "src/hooks/useToaster";
 import { useCommands } from "src/providers/Commands";
+import { PaymentStatus, Project } from "src/types";
+import View from "./View";
+
+type OutletContext = {
+  projectId: Project["id"];
+};
 
 type Props = {
   rewardId: string;
@@ -15,31 +22,39 @@ type Props = {
 };
 
 export default function RewardSidePanel({ rewardId, onRewardCancel, projectLeaderView, recipientId }: Props) {
-  const { user, githubUserId } = useAuth();
-  const { data, loading } = usePaymentRequestDetailsQuery({
-    variables: { id: rewardId, githubUserId: recipientId },
-    skip: !githubUserId || !user,
+  //   const { user, githubUserId } = useAuth();
+  //   const { data, loading } = usePaymentRequestDetailsQuery({
+  //     variables: { id: rewardId, githubUserId: recipientId },
+  //     skip: !githubUserId || !user,
+  //   });
+
+  const { projectId } = useOutletContext<OutletContext>();
+  const { data, isLoading: loading } = useRestfulData({
+    resourcePath: ApiResourcePaths.GET_PROJECT_REWARD,
+    pathParam: { projectId, rewardId },
+    method: "GET",
   });
 
-  const status =
-    data?.paymentRequests[0]?.paymentsAggregate.aggregate?.sum?.amount === data?.paymentRequests[0]?.amount
-      ? PaymentStatus.ACCEPTED
-      : PaymentStatus.WAITING_PAYMENT;
+  console.log({ data });
 
-  const { invoiceNeeded, valid: payoutSettingsValid } = usePayoutSettings(
-    data?.paymentRequests[0]?.githubRecipient?.id
-  );
+  //   const status =
+  //     data?.paymentRequests[0]?.paymentsAggregate.aggregate?.sum?.amount === data?.paymentRequests[0]?.amount
+  //       ? PaymentStatus.ACCEPTED
+  //       : PaymentStatus.WAITING_PAYMENT;
+
+  //   const { invoiceNeeded, valid: payoutSettingsValid } = usePayoutSettings(
+  //     data?.paymentRequests[0]?.githubRecipient?.id
+  //   );
 
   return (
     <View
+      data={data}
       loading={loading}
-      {...data?.paymentRequests[0]}
-      id={rewardId}
-      userId={user?.id}
-      githubUserId={githubUserId}
-      status={status}
-      invoiceNeeded={invoiceNeeded}
-      payoutInfoMissing={!payoutSettingsValid}
+      //   {...data?.paymentRequests[0]}
+      id={rewardId} // TODO get id from response
+      //   status={status}
+      //   invoiceNeeded={invoiceNeeded}
+      //   payoutInfoMissing={!payoutSettingsValid}
       onRewardCancel={onRewardCancel}
       projectLeaderView={projectLeaderView}
     />

@@ -509,7 +509,9 @@
         "title": "Reward #__id__",
         "to": "to",
         "you": "(you)",
-        "contributions": "Included in reward"
+        "contributions": "Included in reward",
+        "rewardGrantedOnNetwork": "Reward granted on __network__ network.",
+        "usdEstimateTooltip": "Dollars equivalent at today’s date."
       },
       "status": "Status"
     },

@@ -1,8 +1,15 @@
-import { cn } from "src/utils/cn";
 import IBAN from "iban";
 import { PropsWithChildren, useState } from "react";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
-import { GithubUserFragment, PaymentRequestDetailsFragment } from "src/__generated/graphql";
+import { components } from "src/__generated/api";
+import {
+  GithubCodeReviewFragment,
+  GithubIssueFragment,
+  GithubPullRequestWithCommitsFragment,
+  GithubUserFragment,
+  PaymentRequestDetailsFragment,
+} from "src/__generated/graphql";
+import InfoIcon from "src/assets/icons/InfoIcon";
 import Button, { ButtonSize } from "src/components/Button";
 import Contributor from "src/components/Contributor";
 import ExternalLink from "src/components/ExternalLink";
@@ -12,17 +19,20 @@ import GithubPullRequest from "src/components/GithubCard/GithubPullRequest/Githu
 import PayoutStatus from "src/components/PayoutStatus/PayoutStatus";
 import QueryWrapper from "src/components/QueryWrapper";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
-import Tooltip, { withCustomTooltip } from "src/components/Tooltip";
+import Tooltip, { TooltipPosition, withCustomTooltip } from "src/components/Tooltip";
+import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
 import BankCardLine from "src/icons/BankCardLine";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import Time from "src/icons/TimeLine";
 import { PaymentStatus } from "src/types";
+import { cn } from "src/utils/cn";
 import { formatDateTime } from "src/utils/date";
 import { pretty } from "src/utils/id";
 import isDefined from "src/utils/isDefined";
-import { formatMoneyAmount } from "src/utils/money";
+import { currencyToNetwork, formatMoneyAmount } from "src/utils/money";
 import ConfirmationModal from "./ConfirmationModal";
+import { GithubContributionType } from "src/types";
 
 enum Align {
   Top = "top",
@@ -30,171 +40,277 @@ enum Align {
 }
 
 export type Props = {
+  data: components["schemas"]["ProjectRewardResponse"];
   loading: boolean;
-  status: PaymentStatus;
-  userId?: string;
-  githubUserId?: number;
-  payoutInfoMissing: boolean;
-  invoiceNeeded?: boolean;
+  //   status: PaymentStatus;
+  //   payoutInfoMissing: boolean;
+  //   invoiceNeeded?: boolean;
   projectLeaderView?: boolean;
   onRewardCancel?: () => void;
 } & Partial<PaymentRequestDetailsFragment>;
 
 export default function View({
   id,
+  data,
   loading,
-  userId,
-  githubUserId,
-  status,
+  //   status,
   amount,
   githubRecipient,
   requestor,
   requestedAt,
   workItems,
-  payoutInfoMissing,
-  invoiceNeeded,
+  //   payoutInfoMissing,
+  //   invoiceNeeded,
   invoiceReceivedAt,
   payments,
   projectLeaderView,
   onRewardCancel,
 }: Props) {
   const { T } = useIntl();
+  const { githubUserId } = useAuth();
+  // TODO get from response
   const formattedReceipt = formatReceipt(payments?.at(0)?.receipt);
-
+  // TODO which status ?
   const shouldDisplayCancelButton = projectLeaderView && onRewardCancel && status === PaymentStatus.WAITING_PAYMENT;
 
-  return (
-    <QueryWrapper query={{ loading, data: requestedAt }}>
-      <div className="flex h-full flex-col gap-8">
-        <div className="flex flex-wrap items-center gap-3 px-6 pt-8 font-belwe text-2xl font-normal text-greyscale-50">
-          {T("reward.table.detailsPanel.title", { id: pretty(id) })}
-          {shouldDisplayCancelButton && <CancelRewardButton onRewardCancel={onRewardCancel} />}
-        </div>
-        <div className="flex flex-col gap-2 px-6">
-          <PayoutStatus
-            {...{
-              id: "details-payout-status",
-              status: status,
-              payoutInfoMissing,
-              invoiceNeeded: invoiceNeeded && !invoiceReceivedAt,
-              isProjectLeaderView: projectLeaderView,
-            }}
-          />
-          <div className="font-belwe text-5xl font-normal text-greyscale-50">
-            {formatMoneyAmount({ amount: amount })}
-          </div>
-          {requestor?.login && (
-            <Details>
-              <RoundedImage alt={requestor.login || ""} src={requestor.avatarUrl || ""} size={ImageSize.Xxs} />
-              <div className="flex flex-row items-center gap-1">
-                {T("reward.table.detailsPanel.from")}
-                <Contributor
-                  contributor={{
-                    login: requestor.login || "",
-                    githubUserId: requestor.githubUserId,
-                    avatarUrl: null,
-                  }}
-                  clickable
-                />
-                {requestor.id === userId && T("reward.table.detailsPanel.you")}
-              </div>
-            </Details>
-          )}
-          {githubRecipient && (
-            <Details>
-              <RoundedImage alt={githubRecipient.login} src={githubRecipient.avatarUrl} size={ImageSize.Xxs} />
-              <div className="flex flex-row items-center gap-1">
-                {T("reward.table.detailsPanel.to")}
-                <Contributor
-                  contributor={{
-                    login: githubRecipient.login,
-                    githubUserId: githubRecipient.id,
-                    avatarUrl: null,
-                  }}
-                  clickable
-                />
-                {githubRecipient.id === githubUserId && T("reward.table.detailsPanel.you")}
-              </div>
-            </Details>
-          )}
-          {requestedAt && (
-            <Details>
-              <Time className="text-base" />
-              {T("reward.table.detailsPanel.requestedAt", { requestedAt: formatDateTime(new Date(requestedAt)) })}
-            </Details>
-          )}
-          {status === PaymentStatus.ACCEPTED && payments?.at(0)?.processedAt && (
-            <Details align={formattedReceipt ? Align.Top : Align.Center}>
-              <BankCardLine className="text-base" />
-              <ReactMarkdown
-                className="payment-receipt whitespace-pre-wrap"
-                {...withCustomTooltip("payment-receipt-tooltip")}
-              >
-                {[
-                  T("reward.table.detailsPanel.processedAt", {
-                    processedAt: formatDateTime(new Date(payments?.at(0)?.processedAt)),
-                  }),
-                  formattedReceipt &&
-                    T(`reward.table.detailsPanel.processedVia.${formattedReceipt?.type}`, {
-                      recipient: formattedReceipt?.shortDetails,
-                    }),
-                ]
-                  .filter(isDefined)
-                  .join("\n")}
-              </ReactMarkdown>
-              {formattedReceipt && (
-                <Tooltip anchorSelect=".payment-receipt" clickable>
-                  <div className="flex flex-col items-start">
-                    <div>
-                      {T(`reward.table.detailsPanel.processedTooltip.${formattedReceipt?.type}.recipient`, {
-                        recipient: formattedReceipt?.fullDetails,
-                      })}
-                    </div>
+  function formatRewardItemToGithubPullRequest(item: components["schemas"]["RewardItemResponse"]) {
+    return {
+      id: item.id,
+      number: item.number,
+      title: item.title,
+      createdAt: item.createdAt,
+      // TODO lastUpdatedAt ?
+      closedAt: item.closedAt,
+      mergedAt: item.mergedAt,
+      status: item.status,
+      htmlUrl: item.githubUrl,
+      // TODO
+      userCommitsCount: {
+        aggregate: {
+          count: item.userCommitsCount,
+        },
+      },
+      commitsCount: {
+        aggregate: {
+          count: item.commitsCount,
+        },
+      },
+      repoId: null,
+      author: {
+        id: item.author.id,
+        login: item.author.login,
+        avatarUrl: item.author.avatarUrl,
+        htmlUrl: "",
+        user: null,
+      },
+    } as GithubPullRequestWithCommitsFragment;
+  }
 
-                    {formattedReceipt?.type === "crypto" ? (
-                      <ExternalLink
-                        url={`https://etherscan.io/tx/${formattedReceipt?.reference}`}
-                        text={T(`reward.table.detailsPanel.processedTooltip.${formattedReceipt?.type}.reference`, {
-                          reference: formattedReceipt?.reference,
-                        })}
-                      />
-                    ) : (
-                      <div>
-                        {T(`reward.table.detailsPanel.processedTooltip.${formattedReceipt?.type}.reference`, {
-                          reference: formattedReceipt?.reference,
-                        })}
+  function formatRewardItemToGithubIssue(item: components["schemas"]["RewardItemResponse"]) {
+    return {
+      id: item.id,
+      createdAt: item.createdAt,
+      // TODO lastUpdatedAt ?
+      closedAt: item.closedAt,
+      number: item.number,
+      title: item.title,
+      htmlUrl: item.githubUrl,
+      status: item.status,
+      commentsCount: item.commentsCount,
+      repoId: null,
+    } as GithubIssueFragment;
+  }
+
+  function formatRewardItemToGithubCodeReview(item: components["schemas"]["RewardItemResponse"]) {
+    return {
+      id: item.id,
+      githubPullRequest: {
+        number: item.number,
+        title: item.title,
+        htmlUrl: item.githubUrl,
+        createdAt: item.createdAt,
+        repoId: null,
+        status: null,
+        closedAt: null,
+        mergedAt: null,
+        id: null,
+        author: {
+          id: null,
+          htmlUrl: "",
+          avatarUrl: "",
+          login: "",
+          user: null,
+        },
+      },
+      status: item.status,
+      submittedAt: item.createdAt,
+      // TODO
+      outcome: item.status,
+    } as GithubCodeReviewFragment;
+  }
+
+  function renderRewardItem(item: components["schemas"]["RewardItemResponse"]) {
+    return null;
+    switch (item.type) {
+      case GithubContributionType.PullRequest: {
+        return (
+          <GithubPullRequest
+            pullRequest={formatRewardItemToGithubPullRequest(item)}
+            // TODO contributor = {login : string;}
+            contributor={githubRecipient as GithubUserFragment}
+          />
+        );
+      }
+      case GithubContributionType.Issue: {
+        return <GithubIssue issue={formatRewardItemToGithubIssue(item)} />;
+      }
+      case GithubContributionType.CodeReview: {
+        return <GithubCodeReview codeReview={formatRewardItemToGithubCodeReview(item)} />;
+      }
+      default: {
+        return null;
+      }
+    }
+  }
+
+  return (
+    <QueryWrapper query={{ loading, data }}>
+      {data ? (
+        <div className="flex h-full flex-col gap-8">
+          <div className="flex flex-wrap items-center gap-3 px-6 pt-8 font-belwe text-2xl font-normal text-greyscale-50">
+            {T("reward.table.detailsPanel.title", { id: pretty(id) })}
+            {shouldDisplayCancelButton && <CancelRewardButton onRewardCancel={onRewardCancel} />}
+          </div>
+          <div className="flex flex-col gap-2 px-6">
+            <div className="flex flex-wrap items-center gap-2">
+              <PayoutStatus status={data.status} />
+              <div className="flex items-center gap-1 font-walsheim text-xs text-spaceBlue-200">
+                <InfoIcon className="h-4 w-3" />
+                <span>
+                  {T("reward.table.detailsPanel.rewardGrantedOnNetwork", { network: currencyToNetwork(data.currency) })}
+                </span>
+              </div>
+            </div>
+            <div className="flex items-baseline gap-2">
+              <div className="flex items-baseline gap-1 font-belwe text-5xl font-normal text-greyscale-50">
+                <span>{formatMoneyAmount({ amount: data.amount, currency: data.currency })}</span>
+                <span className="text-3xl">{data.currency}</span>
+              </div>
+              {data.dollarsEquivalent ? (
+                <>
+                  <Tooltip id="reward-detail-usd-est" position={TooltipPosition.Top}>
+                    {T("reward.table.detailsPanel.usdEstimateTooltip")}
+                  </Tooltip>
+                  <span className="font-walsheim text-xl text-spaceBlue-200" data-tooltip-id="reward-detail-usd-est">
+                    ~{formatMoneyAmount({ amount: data.dollarsEquivalent })}
+                  </span>
+                </>
+              ) : null}
+            </div>
+            {data.from ? (
+              <Details>
+                <RoundedImage alt={data.from.login ?? ""} src={data.from.avatarUrl ?? ""} size={ImageSize.Xxs} />
+                <div className="flex flex-row items-center gap-1">
+                  {T("reward.table.detailsPanel.from")}
+                  <Contributor
+                    contributor={{
+                      login: data.from.login ?? "",
+                      githubUserId: data.from.id ?? 0,
+                      avatarUrl: null,
+                    }}
+                    clickable
+                  />
+                  {data.from.id === githubUserId && T("reward.table.detailsPanel.you")}
+                </div>
+              </Details>
+            ) : null}
+            {data.to ? (
+              <Details>
+                <RoundedImage alt={data.to.login ?? ""} src={data.to.avatarUrl ?? ""} size={ImageSize.Xxs} />
+                <div className="flex flex-row items-center gap-1">
+                  {T("reward.table.detailsPanel.to")}
+                  <Contributor
+                    contributor={{
+                      login: data.to.login ?? "",
+                      githubUserId: data.to.id ?? 0,
+                      avatarUrl: null,
+                    }}
+                    clickable
+                  />
+                  {data.to.id === githubUserId && T("reward.table.detailsPanel.you")}
+                </div>
+              </Details>
+            ) : null}
+            {data.createdAt && (
+              <Details>
+                <Time className="text-base" />
+                {T("reward.table.detailsPanel.requestedAt", { requestedAt: formatDateTime(new Date(data.createdAt)) })}
+              </Details>
+            )}
+            {data.status === PaymentStatus.COMPLETE && data.processedAt ? (
+              <Details align={formattedReceipt ? Align.Top : Align.Center}>
+                <BankCardLine className="text-base" />
+                <ReactMarkdown
+                  className="payment-receipt whitespace-pre-wrap"
+                  {...withCustomTooltip("payment-receipt-tooltip")}
+                >
+                  {[
+                    T("reward.table.detailsPanel.processedAt", {
+                      processedAt: formatDateTime(new Date(payments?.at(0)?.processedAt)),
+                    }),
+                    formattedReceipt &&
+                      T(`reward.table.detailsPanel.processedVia.${formattedReceipt?.type}`, {
+                        recipient: formattedReceipt?.shortDetails,
+                      }),
+                  ]
+                    .filter(isDefined)
+                    .join("\n")}
+                </ReactMarkdown>
+                {
+                  // TODO
+                  formattedReceipt && (
+                    <Tooltip anchorSelect=".payment-receipt" clickable>
+                      <div className="flex flex-col items-start">
+                        <div>
+                          {T(`reward.table.detailsPanel.processedTooltip.${formattedReceipt?.type}.recipient`, {
+                            recipient: formattedReceipt?.fullDetails,
+                          })}
+                        </div>
+
+                        {formattedReceipt?.type === "crypto" ? (
+                          <ExternalLink
+                            url={`https://etherscan.io/tx/${formattedReceipt?.reference}`}
+                            text={T(`reward.table.detailsPanel.processedTooltip.${formattedReceipt?.type}.reference`, {
+                              reference: formattedReceipt?.reference,
+                            })}
+                          />
+                        ) : (
+                          <div>
+                            {T(`reward.table.detailsPanel.processedTooltip.${formattedReceipt?.type}.reference`, {
+                              reference: formattedReceipt?.reference,
+                            })}
+                          </div>
+                        )}
                       </div>
-                    )}
-                  </div>
-                </Tooltip>
-              )}
-            </Details>
-          )}
-        </div>
-        <div className="px-6">
-          <div className="border-t border-greyscale-50/12" />
-        </div>
-        <div className="flex h-full flex-col gap-3 overflow-hidden px-6">
-          <div className="font-belwe text-base font-normal text-greyscale-50">
-            {T("reward.table.detailsPanel.contributions")}
+                    </Tooltip>
+                  )
+                }
+              </Details>
+            ) : null}
           </div>
-          <div className="flex h-full flex-col gap-3 overflow-auto p-px pb-6 pr-4 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
-            {workItems?.map(workItem => {
-              return workItem.githubIssue ? (
-                <GithubIssue key={workItem.githubIssue?.id} issue={workItem.githubIssue} />
-              ) : workItem.githubPullRequest ? (
-                <GithubPullRequest
-                  key={workItem.githubPullRequest?.id}
-                  pullRequest={workItem.githubPullRequest}
-                  contributor={githubRecipient as GithubUserFragment}
-                />
-              ) : workItem.githubCodeReview ? (
-                <GithubCodeReview key={workItem.githubCodeReview?.id} codeReview={workItem.githubCodeReview} />
-              ) : undefined;
-            })}
+          <div className="px-6">
+            <div className="border-t border-greyscale-50/12" />
+          </div>
+          <div className="flex h-full flex-col gap-3 overflow-hidden px-6">
+            <div className="font-belwe text-base font-normal text-greyscale-50">
+              {T("reward.table.detailsPanel.contributions")}
+            </div>
+            <div className="flex h-full flex-col gap-3 overflow-auto p-px pb-6 pr-4 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
+              {data.rewardItems.map(item => renderRewardItem(item))}
+            </div>
           </div>
         </div>
-      </div>
+      ) : null}
     </QueryWrapper>
   );
 }

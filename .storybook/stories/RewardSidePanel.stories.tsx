@@ -1,16 +1,17 @@
 import { range } from "lodash";
-import { PaymentStatus } from "src/types";
 import {
   GithubIssueFragment,
   GithubIssueStatus,
   PaymentRequestDetailsFragment,
   WorkItemType,
 } from "src/__generated/graphql";
-import View, { Props } from "src/components/UserRewardTable/RewardSidePanel/View";
-import { daysFromNow } from "src/utils/date";
-import withSidePanelStackProvider from "../decorators/withSidePanelStackProvider";
-import withContributorProfilePanelProvider from "../decorators/withContributorProfilePanelProvider";
 import SidePanel from "src/components/SidePanel";
+import View, { Props } from "src/components/UserRewardTable/RewardSidePanel/View";
+import { PaymentStatus } from "src/types";
+import { daysFromNow } from "src/utils/date";
+import withAuthProvider from "../decorators/withAuthProvider";
+import withContributorProfilePanelProvider from "../decorators/withContributorProfilePanelProvider";
+import withSidePanelStackProvider from "../decorators/withSidePanelStackProvider";
 
 const statuses = {
   payoutInfoMissingAsLeader: {
@@ -27,7 +28,7 @@ const statuses = {
 export default {
   title: "RewardSidePanel",
   component: View,
-  decorators: [withSidePanelStackProvider, withContributorProfilePanelProvider],
+  decorators: [withSidePanelStackProvider, withContributorProfilePanelProvider, withAuthProvider],
   argTypes: {
     payoutStatus: {
       options: Object.keys(statuses),
@@ -119,8 +120,6 @@ const args = {
 };
 
 type CustomArgs = {
-  requestorIsYou: boolean;
-  recipientIsYou: boolean;
   workItemsCount: number;
   payoutStatus: {
     payoutInfoMissing?: boolean;
@@ -137,14 +136,7 @@ export const Default = {
         return;
       }}
     >
-      <View
-        {...args}
-        {...props}
-        {...props.payoutStatus}
-        userId={props.requestorIsYou ? payment.requestor?.id : "other"}
-        githubUserId={(props.recipientIsYou && payment.githubRecipient?.id) || 0}
-        workItems={payment.workItems.slice(0, props.workItemsCount)}
-      />
+      <View {...args} {...props} {...props.payoutStatus} workItems={payment.workItems.slice(0, props.workItemsCount)} />
     </SidePanel>
   ),
 };
