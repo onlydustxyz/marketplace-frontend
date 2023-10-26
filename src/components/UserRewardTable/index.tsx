@@ -12,8 +12,7 @@ import { ShowMore } from "src/components/Table/ShowMore";
 
 type PropsType = {
   rewards: MyRewardType[];
-  payoutInfoMissing: boolean;
-  invoiceNeeded: boolean;
+  // payoutInfoMissing: boolean;
   fetchNextPage: () => void;
   hasNextPage: boolean;
   isFetchingNextPage: boolean;
@@ -23,8 +22,7 @@ type PropsType = {
 
 const UserRewardTable: React.FC<PropsType> = ({
   rewards,
-  payoutInfoMissing,
-  invoiceNeeded,
+  // payoutInfoMissing,
   fetchNextPage,
   hasNextPage,
   isFetchingNextPage,
@@ -50,8 +48,6 @@ const UserRewardTable: React.FC<PropsType> = ({
               <RewardLine
                 key={p.id}
                 reward={p}
-                payoutInfoMissing={payoutInfoMissing}
-                invoiceNeeded={invoiceNeeded}
                 onClick={() => onRewardClick(p)}
                 selected={p.id === selectedReward?.id}
               />
@@ -66,8 +62,6 @@ const UserRewardTable: React.FC<PropsType> = ({
       ) : (
         <MobileUserRewardList
           rewards={rewards}
-          payoutInfoMissing={payoutInfoMissing}
-          invoiceNeeded={invoiceNeeded}
           onRewardClick={onRewardClick}
           fetchNextPage={fetchNextPage}
           hasNextPage={hasNextPage}

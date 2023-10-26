@@ -13,14 +13,11 @@ export type MyRewardType = components["schemas"]["MyRewardPageItemResponse"];
 
 type Props = {
   reward: MyRewardType;
-  payoutInfoMissing: boolean;
-  invoiceNeeded: boolean;
-  // setSortingFields: (sortingFields: SortingFields) => void;
   onClick: () => void;
   selected: boolean;
 };
 
-export default function RewardLine({ reward, payoutInfoMissing, invoiceNeeded, onClick, selected }: Props) {
+export default function RewardLine({ reward, onClick, selected }: Props) {
   const { T } = useIntl();
 
   return (
@@ -44,8 +41,6 @@ export default function RewardLine({ reward, payoutInfoMissing, invoiceNeeded, o
           {...{
             id: `payout-status-${reward.id}`,
             status: reward.status,
-            payoutInfoMissing,
-            invoiceNeeded,
           }}
         />
       </Cell>

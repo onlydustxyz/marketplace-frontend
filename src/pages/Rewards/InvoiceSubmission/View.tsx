@@ -2,7 +2,7 @@ import { SliderButton } from "@typeform/embed-react";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import Button, { Width } from "src/components/Button";
 import Card from "src/components/Card";
-import { Reward } from "src/components/UserRewardTable/Line";
+import { MyRewardType } from "src/components/UserRewardTable/Line";
 import config from "src/config";
 import { useIntl } from "src/hooks/useIntl";
 import Attachment2 from "src/icons/Attachment2";
@@ -14,7 +14,7 @@ import { UserPayoutSettingsFragment } from "src/__generated/graphql";
 
 type Props = {
   githubUserId: number;
-  paymentRequests: Reward[];
+  paymentRequests: MyRewardType[];
   markInvoiceAsReceived: () => void;
   userInfos: UserPayoutSettingsFragment;
 };
@@ -99,7 +99,7 @@ export function buildHiddenFields({
       paymentRequests.map(
         p =>
           `#${pretty(p.id)} - ${formatDate(new Date(p.requestedAt))} (${formatMoneyAmount({
-            amount: p.amount.value,
+            amount: p.amount.total,
             currency: p.amount.currency,
           })})`
       )
@@ -118,7 +118,7 @@ export function buildHiddenFields({
       ? `ENS Domain: ${userInfos.ethWallet}`
       : formatList([`IBAN: ${userInfos.iban}`, `BIC: ${userInfos.bic}`]),
     total_amount: formatMoneyAmount({
-      amount: paymentRequests.map(p => p.amount.value).reduce((acc, amount) => acc + amount, 0),
+      amount: paymentRequests.map(p => p.amount.total).reduce((acc, amount) => acc + amount, 0),
       currency: paymentRequests.at(0)?.amount.currency,
     }),
     env: config.ENVIRONMENT,

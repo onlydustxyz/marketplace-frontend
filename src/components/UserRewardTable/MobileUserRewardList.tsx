@@ -15,16 +15,12 @@ import { ShowMore } from "src/components/Table/ShowMore";
 
 export default function MobileUserRewardList({
   rewards,
-  payoutInfoMissing,
-  invoiceNeeded,
   onRewardClick,
   fetchNextPage,
   hasNextPage,
   isFetchingNextPage,
 }: {
   rewards: MyRewardType[];
-  payoutInfoMissing: boolean;
-  invoiceNeeded: boolean;
   onRewardClick: (reward: MyRewardType) => void;
   fetchNextPage: () => void;
   hasNextPage: boolean;
@@ -52,8 +48,6 @@ export default function MobileUserRewardList({
                 {...{
                   id: `payout-status-${reward.id}`,
                   status: reward.status,
-                  payoutInfoMissing,
-                  invoiceNeeded: invoiceNeeded,
                 }}
               />
             }

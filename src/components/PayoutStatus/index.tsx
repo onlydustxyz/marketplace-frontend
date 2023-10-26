@@ -12,32 +12,26 @@ type RewardStatusType = "COMPLETE" | "PENDING_INVOICE" | "PENDING_SIGNUP" | "PRO
 type Props = {
   id: string;
   status: RewardStatusType;
-  payoutInfoMissing: boolean;
-  invoiceNeeded?: boolean;
   isProjectLeaderView?: boolean;
 };
 
-export default function PayoutStatus({ status, payoutInfoMissing, isProjectLeaderView = false, invoiceNeeded }: Props) {
-  return buildTag(status, payoutInfoMissing, isProjectLeaderView, !!invoiceNeeded);
+export default function PayoutStatus({ status, isProjectLeaderView = false }: Props) {
+  return buildTag(status, isProjectLeaderView);
 }
 
-const buildTag = (
-  status: RewardStatusType,
-  payoutInfoMissing: boolean,
-  isProjectLeaderView: boolean,
-  invoiceNeeded: boolean
-) => {
+const buildTag = (status: RewardStatusType, isProjectLeaderView: boolean) => {
   switch (status) {
     case RewardStatus.PENDING_INVOICE:
+      return InvoiceNeededTag();
     case RewardStatus.PENDING_SIGNUP:
+      return PendingSignupTag();
     case RewardStatus.PROCESSING:
-      return payoutInfoMissing
-        ? PayoutInfoMissingTag(isProjectLeaderView)
-        : invoiceNeeded && !isProjectLeaderView
-        ? InvoiceNeededTag()
-        : ProcessingTag();
+      return ProcessingTag();
     case RewardStatus.COMPLETE:
       return CompleteTag();
+    // TODO WAITNING FOR API TO ADD THIS TYPE
+    // case RewardStatus.PAYOUT_INFO_MISSING:
+    //   return PayoutInfoMissingTag(isProjectLeaderView);
     default:
       return ProcessingTag();
   }
@@ -96,6 +90,21 @@ const InvoiceNeededTag = () => {
     >
       <ErrorWarningLine className="text-pink-500" />
       <span className="whitespace-nowrap font-normal text-greyscale-50">{T("reward.status.invoicePending")}</span>
+    </Tag>
+  );
+};
+
+const PendingSignupTag = () => {
+  const { T } = useIntl();
+
+  return (
+    <Tag
+      size={TagSize.Medium}
+      borderColor={TagBorderColor.MultiColor}
+      {...withTooltip(T("reward.status.tooltip.signupPending"), { className: "w-64" })}
+    >
+      <ErrorWarningLine className="text-pink-500" />
+      <span className="whitespace-nowrap font-normal text-greyscale-50">{T("reward.status.signupPending")}</span>
     </Tag>
   );
 };

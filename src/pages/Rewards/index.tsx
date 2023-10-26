@@ -12,6 +12,7 @@ import { useMemo, useState } from "react";
 import useInfiniteMyRewardList from "src/hooks/useInfiniteMyRewardList/useInfiniteMyRewardList";
 import Skeleton from "src/components/Skeleton";
 import ErrorFallback from "src/ErrorFallback";
+import InvoiceSubmission from "./InvoiceSubmission";
 
 export enum Field {
   Date = "REQUESTED_AT",
@@ -71,11 +72,11 @@ export default function Rewards() {
   const rewards = data?.pages.flatMap(page => page.rewards) || [];
 
   const hasRewards = rewards && rewards.length > 0;
-  const paymentRequestsNeedingInvoice = rewards?.filter(p => p.status === RewardStatus.PENDING_INVOICE) || [];
-  const isPayoutSettingsInvalid = rewards?.filter(p => p.status !== RewardStatus.COMPLETE).length > 0;
-  if (hasRewards === false) {
+  if (!hasRewards) {
     return <Navigate to={RoutePaths.Projects} />;
   }
+
+  const paymentRequestsNeedingInvoice = rewards?.filter(p => p.status === RewardStatus.PENDING_INVOICE) || [];
 
   const totalEarnings = hasRewards && rewards.reduce((acc, p) => acc + p.amount.total, 0);
 
@@ -90,8 +91,6 @@ export default function Rewards() {
               {rewards && (
                 <UserRewardTable
                   rewards={rewards}
-                  payoutInfoMissing={isPayoutSettingsInvalid}
-                  invoiceNeeded={paymentRequestsNeedingInvoice.length > 0}
                   fetchNextPage={fetchNextPage}
                   hasNextPage={hasNextPage}
                   isFetchingNextPage={isFetchingNextPage}
