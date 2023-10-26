@@ -12,7 +12,6 @@ import { ShowMore } from "src/components/Table/ShowMore";
 
 type PropsType = {
   rewards: MyRewardType[];
-  // payoutInfoMissing: boolean;
   fetchNextPage: () => void;
   hasNextPage: boolean;
   isFetchingNextPage: boolean;
@@ -22,7 +21,6 @@ type PropsType = {
 
 const UserRewardTable: React.FC<PropsType> = ({
   rewards,
-  // payoutInfoMissing,
   fetchNextPage,
   hasNextPage,
   isFetchingNextPage,
