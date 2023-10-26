@@ -17,12 +17,12 @@ type Props = {
   avatarUrl: string | null;
   login: string;
   logout: () => void;
-  showMissingPayoutSettingsState: boolean;
+  isMissingPayoutSettingsInfo: boolean;
   githubUserId?: number;
   hideProfileItems?: boolean;
 };
 
-const View = ({ githubUserId, avatarUrl, login, logout, showMissingPayoutSettingsState, hideProfileItems }: Props) => {
+const View = ({ githubUserId, avatarUrl, login, logout, isMissingPayoutSettingsInfo, hideProfileItems }: Props) => {
   const { T } = useIntl();
 
   const [menuItemsVisible, setMenuItemsVisible] = useState(false);
@@ -43,18 +43,18 @@ const View = ({ githubUserId, avatarUrl, login, logout, showMissingPayoutSetting
             className={cn(
               "flex items-center justify-center gap-2 rounded-full px-2 py-1.5 font-belwe text-sm outline outline-1 ui-open:bg-noise-medium ui-open:outline-2 hover:bg-noise-medium hover:outline-2",
               {
-                "outline-greyscale-50/12": !showMissingPayoutSettingsState,
-                "outline-orange-500": showMissingPayoutSettingsState,
+                "outline-greyscale-50/12": !isMissingPayoutSettingsInfo,
+                "outline-orange-500": isMissingPayoutSettingsInfo,
               }
             )}
             data-testid="profile-button"
             {...withTooltip(T("profile.button.payoutSettingsInvalidTooltip"), {
-              visible: showMissingPayoutSettingsState && tooltipVisible && !menuItemsVisible,
+              visible: isMissingPayoutSettingsInfo && tooltipVisible && !menuItemsVisible,
             })}
           >
             {avatarUrl && <img className="h-8 w-8 rounded-full" src={avatarUrl} />}
-            <div className={cn({ "mr-1": !showMissingPayoutSettingsState })}>{login}</div>
-            {showMissingPayoutSettingsState && <ErrorWarningLine className="text-xl text-orange-500" />}
+            <div className={cn({ "mr-1": !isMissingPayoutSettingsInfo })}>{login}</div>
+            {isMissingPayoutSettingsInfo && <ErrorWarningLine className="text-xl text-orange-500" />}
           </Menu.Button>
         </div>
         <Transition
@@ -85,7 +85,7 @@ const View = ({ githubUserId, avatarUrl, login, logout, showMissingPayoutSetting
                 <MenuItem onClick={() => setPayoutInfoSidePanelOpen(true)}>
                   <MoneyDollarCircleLine className="text-xl" />
                   <div className="grow">{T("navbar.profile.payoutInfo")}</div>
-                  {showMissingPayoutSettingsState && <Dot className="w-1.5 fill-orange-500" />}
+                  {isMissingPayoutSettingsInfo && <Dot className="w-1.5 fill-orange-500" />}
                 </MenuItem>
               </div>
             )}
