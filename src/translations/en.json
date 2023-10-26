@@ -576,6 +576,8 @@
     },
     "form": {
       "address": "Street address",
+      "aptosIdentity": "Aptos wallet address",
+      "aptosIdentityPlaceholder": "Aptos wallet address",
       "bankWire": "Bank wire",
       "bio": "Bio",
       "bic": "BIC",
@@ -608,22 +610,33 @@
       "discordPlaceholder": "Discord",
       "email": "Email address",
       "emailPlaceholder": "example@onlydust.co",
-      "ethIdentity": "ETH address or ENS name",
-      "ethIdentityPlaceholder": "ETH address or ENS name",
+      "ethIdentity": "Ethereum wallet address or ENS name",
+      "ethIdentityPlaceholder": "Ethereum wallet address or ENS name",
+
       "firstname": "First name",
       "iban": "IBAN",
       "ibanInvalid": "Please enter a valid IBAN",
       "ibanRequired": "Your IBAN is required",
+      "invalidZipcode": "Please enter a valid international Zip Code",
+      "payoutFieldRequired": "This field is required to receive payments",
+      "alphabeticallyInvalid": "Please enter alphabetic only characters",
       "identificationNumber": "Identification number",
-      "invalidCryptoSettings": "Please enter a valid ETH address or ENS domain",
+      "invalidEthWallet": "Please enter a valid ETH address or ENS domain",
+      "invalidStarknetWallet": "Please enter a valid Starknet wallet address",
+      "invalidAptosWallet": "Please enter a valid Aptos wallet address",
+      "invalidOptimismWallet": "Please enter a valid Optimism wallet address",
       "lastname": "Last name",
       "location": "Location",
       "number": "N.",
+      "optimismIdentity": "Optimism wallet address",
+      "optimismIdentityPlaceholder": "Optimism wallet address",
       "payoutInformation": "Payout information",
       "payoutSettings": "Payout information",
       "payoutSettingsRequiredTag": "* required to receive payments",
       "payoutSettingsType": "Preferred payment method",
-      "payoutSettingsValidTag": "You're able to receive payments",
+      "payoutCurrenciesType": "Other currencies",
+      "contactSettingsValidTag": "You're able to receive payments",
+      "payoutSettingsValidTag": "You're able to receive payments on all networks",
       "pictureUploadError": "We were not able to upload your profile picture, please try again.",
       "postCode": "Zip code",
       "profileType": "Account type",
@@ -661,12 +674,16 @@
         "saved": "All changes saved",
         "invalid": "The form has errors"
       },
+      "starkIdentity": "Starknet wallet address",
+      "starkIdentityPlaceholder": "Starknet adress",
       "website": "Website"
     },
     "missing": {
       "button": "Complete payout information",
       "subtitle": "We won't be able to issue any payment until your payout information is completed",
-      "title": "Payout information missing"
+      "title": "Payout information missing",
+      "contact": "Missing information to receive payments",
+      "payment": "Missing addresses to receive payments on any network"
     }
   },
   "publicProfile": {
@@ -741,9 +758,19 @@
         }
       },
       "remainingBudget": {
-        "leftToSpend": "left to spend",
+        "leftToSpend": "left",
         "newReward": "Reward contributor",
-        "title": "Remaining budget"
+        "title": "Remaining budget",
+        "usdInfoBudgets": "Dollar equivalent at today's date across all your budgets",
+        "usdInfo": "Dollar equivalent at today's date",
+        "budget": {
+          "total": "Total budget",
+          "dollars": "Dollars budget",
+          "ether": "Ether budget",
+          "stark": "Stark budget",
+          "aptos": "Aptos budget",
+          "optimism": "Optimism budget"
+        }
       },
       "sidebar": {
         "backToProjects": "All projects",

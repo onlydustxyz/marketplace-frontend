@@ -13,13 +13,13 @@ describe("Money", () => {
     expect(formatMoneyAmount({ amount: 12010, notation: "compact" })).toBe("$12k");
   });
 
-  it("should be formatted in USDC", () => {
-    expect(formatMoneyAmount({ amount: 12345, currency: Currency.USDC })).toBe("USDC 12,345");
+  it("should be formatted in Optimism", () => {
+    expect(formatMoneyAmount({ amount: 12345, currency: Currency.OP })).toBe("12,345");
   });
 
-  it("should be formatted in compact mode in USDC", () => {
-    expect(formatMoneyAmount({ amount: 123, currency: Currency.USDC, notation: "compact" })).toBe("USDC 123");
-    expect(formatMoneyAmount({ amount: 12345, currency: Currency.USDC, notation: "compact" })).toBe("USDC 12.3k");
-    expect(formatMoneyAmount({ amount: 12010, currency: Currency.USDC, notation: "compact" })).toBe("USDC 12k");
+  it("should be formatted in compact mode in correct Cryptos format", () => {
+    expect(formatMoneyAmount({ amount: 123, currency: Currency.APT, notation: "compact" })).toBe("123");
+    expect(formatMoneyAmount({ amount: 12345, currency: Currency.ETH, notation: "compact" })).toBe("12.3k");
+    expect(formatMoneyAmount({ amount: 12010, currency: Currency.STARK, notation: "compact" })).toBe("12k");
   });
 });

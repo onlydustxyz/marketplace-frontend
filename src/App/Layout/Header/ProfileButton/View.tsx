@@ -7,7 +7,7 @@ import { useIntl } from "src/hooks/useIntl";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import LogoutBoxRLine from "src/icons/LogoutBoxRLine";
 import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
-import PayoutInfoSidePanel from "./PayoutInfoSidePanel";
+import PayoutInfoSidePanel from "./PayoutInfoSidePanel/PayoutInfoSidePanel";
 import User3Line from "src/icons/User3Line";
 import { useContributorProfilePanel } from "src/hooks/useContributorProfilePanel";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
@@ -89,7 +89,6 @@ const View = ({ githubUserId, avatarUrl, login, logout, showMissingPayoutSetting
                 </MenuItem>
               </div>
             )}
-
             <MenuItem secondary disabled>
               <div className="flex w-full flex-row items-center justify-between py-1">
                 <div className="flex flex-row gap-1 font-walsheim text-sm font-normal text-spaceBlue-200">

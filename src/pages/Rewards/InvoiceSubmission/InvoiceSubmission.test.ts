@@ -41,6 +41,9 @@ const userInfos: UserPayoutSettingsFragment = {
   isCompany: null,
   usdPreferredMethod: null,
   arePayoutSettingsValid: true,
+  aptosWallet: null,
+  optimismWallet: null,
+  starknetWallet: null,
 };
 
 const ens = {

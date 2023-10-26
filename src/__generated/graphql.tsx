@@ -18347,7 +18347,7 @@ export type UserIdFragment = { __typename?: 'RegisteredUsers', id: any | null };
 
 export type ProjectLeadFragment = { __typename?: 'RegisteredUsers', login: string | null, avatarUrl: string | null, githubUserId: any | null, id: any | null };
 
-export type UserPayoutSettingsFragment = { __typename?: 'UserPayoutInfo', userId: any | null, firstname: string | null, lastname: string | null, address: string | null, city: string | null, postCode: string | null, country: string | null, isCompany: boolean | null, companyName: string | null, companyIdentificationNumber: string | null, usdPreferredMethod: string | null, ethWallet: string | null, bic: string | null, iban: string | null, arePayoutSettingsValid: boolean | null };
+export type UserPayoutSettingsFragment = { __typename?: 'UserPayoutInfo', userId: any | null, firstname: string | null, lastname: string | null, address: string | null, city: string | null, postCode: string | null, country: string | null, isCompany: boolean | null, companyName: string | null, companyIdentificationNumber: string | null, usdPreferredMethod: string | null, arePayoutSettingsValid: boolean | null, bic: string | null, iban: string | null, ethWallet: string | null, aptosWallet: string | null, optimismWallet: string | null, starknetWallet: string | null };
 
 export type UserProfileIdFragment = { __typename?: 'UserProfiles', githubUserId: any | null };
 
@@ -18440,7 +18440,7 @@ export type GetUserPayoutSettingsQueryVariables = Exact<{
 }>;
 
 
-export type GetUserPayoutSettingsQuery = { __typename?: 'query_root', registeredUsers: Array<{ __typename?: 'RegisteredUsers', githubUserId: any | null, id: any | null, userPayoutInfo: { __typename?: 'UserPayoutInfo', userId: any | null, firstname: string | null, lastname: string | null, address: string | null, city: string | null, postCode: string | null, country: string | null, isCompany: boolean | null, companyName: string | null, companyIdentificationNumber: string | null, usdPreferredMethod: string | null, ethWallet: string | null, bic: string | null, iban: string | null, arePayoutSettingsValid: boolean | null } | null }> };
+export type GetUserPayoutSettingsQuery = { __typename?: 'query_root', registeredUsers: Array<{ __typename?: 'RegisteredUsers', githubUserId: any | null, id: any | null, userPayoutInfo: { __typename?: 'UserPayoutInfo', userId: any | null, firstname: string | null, lastname: string | null, address: string | null, city: string | null, postCode: string | null, country: string | null, isCompany: boolean | null, companyName: string | null, companyIdentificationNumber: string | null, usdPreferredMethod: string | null, arePayoutSettingsValid: boolean | null, bic: string | null, iban: string | null, ethWallet: string | null, aptosWallet: string | null, optimismWallet: string | null, starknetWallet: string | null } | null }> };
 
 export type UpdatePayoutSettingsMutationVariables = Exact<{
   identity: InputMaybe<Identity>;
@@ -19127,10 +19127,13 @@ export const UserPayoutSettingsFragmentDoc = gql`
   companyName
   companyIdentificationNumber
   usdPreferredMethod
-  ethWallet
+  arePayoutSettingsValid
   bic
   iban
-  arePayoutSettingsValid
+  ethWallet
+  aptosWallet
+  optimismWallet
+  starknetWallet
 }
     `;
 export const OwnUserProfileDetailsFragmentDoc = gql`

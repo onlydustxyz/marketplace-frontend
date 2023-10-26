@@ -17,7 +17,7 @@ import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import StackLine from "src/icons/StackLine";
 import User3Line from "src/icons/User3Line";
 import { parseFlag } from "src/utils/parseFlag";
-import PayoutInfoSidePanel from "./PayoutInfoSidePanel";
+import PayoutInfoSidePanel from "./PayoutInfoSidePanel/PayoutInfoSidePanel";
 
 type Props = {
   avatarUrl: string | null;

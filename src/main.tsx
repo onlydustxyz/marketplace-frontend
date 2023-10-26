@@ -3,13 +3,11 @@ import ReactDOM from "react-dom/client";
 import { ErrorBoundary } from "react-error-boundary";
 import TagManager from "react-gtm-module";
 import { BrowserRouter } from "react-router-dom";
-
 import { AuthProvider } from "src/hooks/useAuth";
 import ApolloWrapper from "src/providers/ApolloWrapper";
 import App from "./App";
 import OnboardingProvider from "./App/OnboardingProvider";
 import "./datadog";
-
 import "remixicon/fonts/remixicon.css";
 import "src/assets/css/index.css";
 import "src/assets/fonts/Alfreda/stylesheet.css";
