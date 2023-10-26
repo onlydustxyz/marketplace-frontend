@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import Table from "src/components/Table";
 import { viewportConfig } from "src/config";
 import { RewardPageItemType } from "src/hooks/useInfiniteRewardsList";
@@ -7,6 +6,7 @@ import { useMediaQuery } from "usehooks-ts";
 import Headers from "./Headers";
 import { RewardLine } from "./Line";
 import MobileRewardList from "./MobileRewardList";
+import { ShowMore } from "src/components/Table/ShowMore";
 
 type RewardTableProps = {
   rewards: RewardPageItemType[];
@@ -17,6 +17,7 @@ type RewardTableProps = {
       field: string | undefined;
       isAscending: boolean | undefined;
     };
+    isFetchingNextPage: boolean;
     sortField: (field: string) => void;
   };
 };
@@ -25,7 +26,7 @@ export default function RewardTable({ rewards, options }: RewardTableProps) {
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
   const [selectedReward, setSelectedReward] = useState<RewardPageItemType | null>(null);
 
-  const { fetchNextPage, hasNextPage, sorting, sortField } = options;
+  const { fetchNextPage, hasNextPage, sorting, sortField, isFetchingNextPage } = options;
 
   const onRewardClick = (reward: RewardPageItemType) => {
     setSelectedReward(reward);
@@ -44,13 +45,11 @@ export default function RewardTable({ rewards, options }: RewardTableProps) {
       ) : (
         <MobileRewardList rewards={rewards} onRewardClick={onRewardClick} />
       )}
-      {hasNextPage ? (
-        <div className="flex items-center justify-center py-4">
-          <Button type={ButtonType.Secondary} size={ButtonSize.Sm} onClick={fetchNextPage}>
-            See more
-          </Button>
+      {hasNextPage && (
+        <div className="pt-6">
+          <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} />
         </div>
-      ) : null}
+      )}
 
       {
         // TODO: when side pannel API is ready, uncomment this

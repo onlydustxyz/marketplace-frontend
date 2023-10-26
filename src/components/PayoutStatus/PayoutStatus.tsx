@@ -19,6 +19,8 @@ export default function PayoutStatus({ status }: Props) {
     [PaymentStatus.PENDING_INVOICE]: <InvoiceNeededTag />,
     [PaymentStatus.PENDING_SIGNUP]: <PendingSignup />,
     [PaymentStatus.PROCESSING]: <ProcessingTag />,
+    //TODO: uncomment this when API is ready
+    // [PaymentStatus.PAYMENT_INFO_MISSING]: <PayoutInfoMissingTag />,
   };
   return statuses[status];
 }
@@ -71,7 +73,7 @@ const InvoiceNeededTag = () => {
   );
 };
 
-//TODO: uncomment this when payoutInfo status is added to the API
+// TODO: uncomment this when API is ready
 // const PayoutInfoMissingTag = (isProjectLeaderView: boolean) => {
 //   const { T } = useIntl();
 

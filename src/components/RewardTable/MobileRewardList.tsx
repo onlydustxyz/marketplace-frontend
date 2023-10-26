@@ -2,11 +2,11 @@ import { useIntl } from "src/hooks/useIntl";
 
 import { pretty } from "src/utils/id";
 import { formatMoneyAmount } from "src/utils/money";
-import PayoutStatus from "src/components/PayoutStatus";
 import { MobileUserRewardItem } from "src/components/UserRewardTable/MobileUserRewardList";
 import RoundedImage, { Rounding } from "src/components/RoundedImage";
 import { RewardPageItemType } from "src/hooks/useInfiniteRewardsList";
 import { PaymentStatus } from "src/types";
+import PayoutStatus from "src/components/PayoutStatus/PayoutStatus";
 
 export default function MobileRewardList({
   rewards,

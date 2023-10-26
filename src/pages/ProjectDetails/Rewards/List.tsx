@@ -32,6 +32,7 @@ const RewardList: React.FC = () => {
     fetchNextPage,
     hasNextPage,
     error,
+    isFetchingNextPage,
   } = useInfiniteRewardsList({
     projectId,
     queryParams,
@@ -85,7 +86,10 @@ const RewardList: React.FC = () => {
         <div className="w-full">
           {rewards.length > 0 ? (
             <Card>
-              <RewardTable rewards={rewards} options={{ fetchNextPage, hasNextPage, sorting, sortField }} />
+              <RewardTable
+                rewards={rewards}
+                options={{ fetchNextPage, hasNextPage, sorting, sortField, isFetchingNextPage }}
+              />
             </Card>
           ) : (
             !isRewardsLoading && (

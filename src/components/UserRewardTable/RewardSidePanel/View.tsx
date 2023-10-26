@@ -9,7 +9,7 @@ import ExternalLink from "src/components/ExternalLink";
 import GithubCodeReview from "src/components/GithubCard/GithubCodeReview/GithubCodeReview";
 import GithubIssue from "src/components/GithubCard/GithubIssue/GithubIssue";
 import GithubPullRequest from "src/components/GithubCard/GithubPullRequest/GithubPullRequest";
-import PayoutStatus from "src/components/PayoutStatus";
+import PayoutStatus from "src/components/PayoutStatus/PayoutStatus";
 import QueryWrapper from "src/components/QueryWrapper";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import Tooltip, { withCustomTooltip } from "src/components/Tooltip";

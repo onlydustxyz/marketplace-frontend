@@ -1,4 +1,4 @@
-import PayoutStatus from "src/components/PayoutStatus";
+import PayoutStatus from "src/components/PayoutStatus/PayoutStatus";
 import RoundedImage, { Rounding } from "src/components/RoundedImage";
 import Cell, { CellHeight } from "src/components/Table/Cell";
 import Line from "src/components/Table/Line";
@@ -40,7 +40,6 @@ export function RewardLine({ reward, onClick, selected }: Props) {
           <span className="font-walsheim">{formatMoneyAmount({ amount: amount.total })}</span>
         </Cell>
         <Cell height={CellHeight.Medium}>
-          {/* <PayoutStatus status={status} payoutInfoMissing={false} isProjectLeaderView={isProjectLeaderView} /> */}
           <PayoutStatus status={status} />
         </Cell>
       </Line>

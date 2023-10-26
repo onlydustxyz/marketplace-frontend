@@ -1,5 +1,5 @@
 import { PaymentStatus } from "src/types";
-import PayoutStatus from "src/components/PayoutStatus";
+import PayoutStatus from "src/components/PayoutStatus/PayoutStatus";
 
 export default {
   title: "PayoutStatus",
@@ -9,10 +9,10 @@ export default {
         type: "select",
       },
       options: [
-        PaymentStatus.Complete,
-        PaymentStatus.PendingInvoice,
-        PaymentStatus.PendingSignup,
-        PaymentStatus.Processing,
+        PaymentStatus.COMPLETE,
+        PaymentStatus.PENDING_INVOICE,
+        PaymentStatus.PENDING_SIGNUP,
+        PaymentStatus.PROCESSING,
       ],
     },
   },
@@ -23,7 +23,7 @@ type Props = {
 };
 
 const props = {
-  status: PaymentStatus.Complete,
+  status: PaymentStatus.COMPLETE,
 };
 
 export const Default = {
@@ -34,21 +34,21 @@ export const Default = {
 };
 
 export const PendingSignup = {
-  render: (args: Props) => <PayoutStatus {...props} {...{ status: PaymentStatus.PendingSignup }} {...args} />,
+  render: (args: Props) => <PayoutStatus {...props} {...{ status: PaymentStatus.PENDING_SIGNUP }} {...args} />,
   parameters: {
     backgrounds: { default: "space" },
   },
 };
 
 export const Processing = {
-  render: (args: Props) => <PayoutStatus {...props} {...{ status: PaymentStatus.Processing }} {...args} />,
+  render: (args: Props) => <PayoutStatus {...props} {...{ status: PaymentStatus.PROCESSING }} {...args} />,
   parameters: {
     backgrounds: { default: "space" },
   },
 };
 
 export const PendingInvoice = {
-  render: (args: Props) => <PayoutStatus {...props} {...{ status: PaymentStatus.PendingInvoice }} {...args} />,
+  render: (args: Props) => <PayoutStatus {...props} {...{ status: PaymentStatus.PENDING_INVOICE }} {...args} />,
   parameters: {
     backgrounds: { default: "space" },
   },

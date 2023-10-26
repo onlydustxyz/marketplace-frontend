@@ -1,5 +1,4 @@
 import { Dollar } from "src/assets/icons/Dollar";
-import PayoutStatus from "src/components/PayoutStatus";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import Tag from "src/components/Tag";
 import { useContributorProfilePanel } from "src/hooks/useContributorProfilePanel";

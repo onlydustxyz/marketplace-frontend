@@ -2,7 +2,7 @@ import Line from "src/components/Table/Line";
 import Cell from "src/components/Table/Cell";
 import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 import RoundedImage from "src/components/RoundedImage";
-import PayoutStatus from "src/components/PayoutStatus";
+import PayoutStatus from "src/components/PayoutStatus/PayoutStatus";
 import { formatMoneyAmount } from "src/utils/money";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { Currency, getPaymentStatusOrder, PaymentStatus, PayoutSettings } from "src/types";
