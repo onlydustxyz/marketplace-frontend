@@ -8,6 +8,7 @@ import { formatMoneyAmount } from "src/utils/money";
 import Contributor from "src/components/Contributor";
 import StackLine from "src/icons/StackLine";
 import { ContributorT } from "src/types";
+import { AvailableConversion } from "src/components/Currency/AvailableConversion";
 
 type Props = {
   contributor: ContributorT;
@@ -35,9 +36,38 @@ export default function ContributorLine({
       <Cell height={CellHeight.Small} horizontalMargin={false}>
         {contributor.rewardCount || "-"}
       </Cell>
-      <Cell height={CellHeight.Small} horizontalMargin={false}>{`${
+      {/* <Cell height={CellHeight.Small} horizontalMargin={false}>{`${
         contributor?.earned ? formatMoneyAmount({ amount: contributor.earned }) : "-"
-      }`}</Cell>
+      }`}</Cell> */}
+      <Cell height={CellHeight.Small} horizontalMargin={false}>
+        <div
+          className="rounded-full border border-white/8 bg-white/2 px-3 py-[6px]"
+          data-tooltip-id={`${contributor.login}-contributors-earned-details`}
+        >
+          <AvailableConversion
+            tooltipId={`${contributor.login}-contributors-earned-details`}
+            totalAmount={12000}
+            withWrapper
+            currencies={[
+              {
+                currency: "OP",
+                amount: 12000,
+                dollar: 1200,
+              },
+              {
+                currency: "ETH",
+                amount: 12000,
+                dollar: 1200,
+              },
+              {
+                currency: "APT",
+                amount: 12000,
+                dollar: 1200,
+              },
+            ]}
+          />
+        </div>
+      </Cell>
       {isProjectLeader && (
         <Cell height={CellHeight.Small} horizontalMargin={false}>
           {contributor?.contributionToRewardCount && contributor?.contributionToRewardCount > 0 ? (

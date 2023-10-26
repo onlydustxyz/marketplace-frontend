@@ -4,7 +4,7 @@ import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
 import { Currency } from "src/types";
 import { CurrencyIcons } from "./CurrencyIcon";
 import { Chips } from "src/components/Chips/Chips";
-import { BugetCurrencyType, formatMoneyAmount } from "src/utils/money";
+import { BudgetCurrencyType, formatMoneyAmount } from "src/utils/money";
 import { useIntl } from "src/hooks/useIntl";
 
 // TODO : doc
@@ -13,7 +13,7 @@ import { useIntl } from "src/hooks/useIntl";
  */
 
 export interface AvailableConversionCurrency {
-  currency: BugetCurrencyType;
+  currency: BudgetCurrencyType;
   amount: number;
   dollar: number | undefined;
 }
@@ -21,14 +21,16 @@ export interface AvailableConversionCurrency {
 export interface AvailableConversion {
   tooltipId?: string;
   currencies: AvailableConversionCurrency[];
+  totalAmount?: number;
+  withWrapper?: boolean;
 }
 
-export const AvailableConversion: FC<AvailableConversion> = ({ tooltipId, currencies }) => {
+export const AvailableConversion: FC<AvailableConversion> = ({ tooltipId, currencies, withWrapper, totalAmount }) => {
   const { T } = useIntl();
-  const tooltipIdProps = tooltipId ? { "data-tooltip-id": tooltipId } : {};
+  const tooltipIdProps = tooltipId && !withWrapper ? { "data-tooltip-id": tooltipId } : {};
   return (
     <>
-      <div {...tooltipIdProps}>
+      <div {...tooltipIdProps} className="flex flex-row items-center justify-start gap-1">
         <Chips number={2}>
           {currencies.map(currency => (
             <div key={currency.currency}>
@@ -38,6 +40,11 @@ export const AvailableConversion: FC<AvailableConversion> = ({ tooltipId, curren
             </div>
           ))}
         </Chips>
+        {totalAmount ? (
+          <p className="font-walsheim text-sm font-bold leading-[14px]">
+            {formatMoneyAmount({ amount: totalAmount, currency: Currency.USD })}
+          </p>
+        ) : null}
       </div>
       {tooltipId && (
         <Tooltip id={tooltipId} clickable position={TooltipPosition.Top} variant={Variant.Blue}>

@@ -44,3 +44,24 @@ export const WithoutTooltips = {
     </div>
   ),
 };
+
+export const WithAmount = {
+  render: (args: ComponentProps<typeof AvailableConversion>) => (
+    <div className="inline-flex">
+      <AvailableConversion {...defaultProps} {...args} totalAmount={1200} tooltipId="availableConversion-stories" />
+      <Tooltip />
+    </div>
+  ),
+};
+
+export const WithWrapper = {
+  render: (args: ComponentProps<typeof AvailableConversion>) => (
+    <div
+      className="inline-flex rounded-full border border-white/25 bg-white/8 px-3 py-[6px]"
+      data-tooltip-id="availableConversion-stories"
+    >
+      <AvailableConversion {...defaultProps} {...args} totalAmount={1200} withWrapper />
+      <Tooltip />
+    </div>
+  ),
+};
