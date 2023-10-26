@@ -8,17 +8,26 @@ import SkeletonCounter from "./SkeletonCounter";
 import SkeletonContributorList from "./SkeletonContributorList";
 import SkeletonRewards from "./SkeletonRewards";
 import SkeletonEarnedRewards from "./SkeletonEarnedRewards";
+import SkeletonRewardsList from "./SkeletonRewardsList";
 
 type SkeletonVariant =
+  |
   | "card"
+ 
   | "filters"
+ 
   | "header"
+ 
   | "search"
+ 
   | "sort"
+ 
   | "counter"
+ 
   | "contributorList"
   | "rewards"
-  | "earnedRewards";
+  | "earnedRewards"
+  | "rewardsList";
 
 interface SkeletonProps {
   variant: SkeletonVariant;
@@ -34,6 +43,7 @@ const VARIANT_COMPONENTS = {
   contributorList: SkeletonContributorList,
   rewards: SkeletonRewards,
   earnedRewards: SkeletonEarnedRewards,
+  rewardsList: SkeletonRewardsList,
 };
 
 export default function Skeleton({ variant }: SkeletonProps) {

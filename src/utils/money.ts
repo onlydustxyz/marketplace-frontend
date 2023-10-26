@@ -7,9 +7,15 @@ type Params = {
   amount: number;
   currency?: BugetCurrencyType;
   notation?: "standard" | "scientific" | "engineering" | "compact";
+  showCurrency?: boolean;
 };
 
-export const formatMoneyAmount = ({ amount, currency = Currency.USD, notation = "standard" }: Params) => {
+export const formatMoneyAmount = ({
+  amount,
+  currency = Currency.USD,
+  notation = "standard",
+  showCurrency = true,
+}: Params) => {
   switch (currency) {
     case Currency.USD:
       return Intl.NumberFormat("en-US", {
@@ -26,7 +32,7 @@ export const formatMoneyAmount = ({ amount, currency = Currency.USD, notation = 
         notation,
       })
         .format(amount)
-        .replace("K", "k")} ${currency}`;
+        .replace("K", "k")}${showCurrency ? ` ${currency}` : ""}`;
   }
 };
 
