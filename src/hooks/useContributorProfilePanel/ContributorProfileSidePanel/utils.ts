@@ -24,7 +24,6 @@ export const parseWebsite = (website: string | undefined) => {
 };
 
 export const translateProfileCover = (cover: string): ProfileCover | undefined => {
-  console.log("cover", cover);
   switch (cover) {
     case "cyan":
       return ProfileCover.Cyan;

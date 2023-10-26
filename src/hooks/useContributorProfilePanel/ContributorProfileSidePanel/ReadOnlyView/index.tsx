@@ -25,7 +25,7 @@ export default function ReadOnlyView({ userProfile, isOwn, setOpen, setEditMode 
         <div className="flex flex-col gap-8">
           {languages.length > 0 && <TechnologiesSection languages={languages} />}
           <StatsSection profile={userProfile} />
-          {userProfile?.projects?.length && <ProjectsSection projects={userProfile.projects} setOpen={setOpen} />}
+          {userProfile?.projects?.length ? <ProjectsSection projects={userProfile.projects} setOpen={setOpen} /> : null}
         </div>
       </div>
     </div>

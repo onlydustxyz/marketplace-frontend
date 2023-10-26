@@ -11,9 +11,7 @@ export function Chips({ children, number }: ChipsProps) {
   return (
     <div className="flex">
       {children.map((child, key) =>
-        number && key >= number ? (
-          <></>
-        ) : (
+        number && key >= number ? null : (
           <div key={key} className={cn(key > 0 && "-ml-2", ` z-[${key + 1}]`)}>
             {child}
           </div>

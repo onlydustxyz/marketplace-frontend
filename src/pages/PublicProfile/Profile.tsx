@@ -32,14 +32,14 @@ export default function Profile({ userProfile }: Props) {
         </div>
         <div className="flex flex-col gap-12 px-px py-4 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5 lg:basis-1/2 lg:overflow-y-auto lg:pl-8 lg:pr-4">
           <StatsSection profile={userProfile} />
-          {userProfile?.projects?.length && (
+          {userProfile?.projects?.length ? (
             <ProjectsSection
               projects={userProfile?.projects}
               setOpen={() => {
                 return;
               }}
             />
-          )}
+          ) : null}
         </div>
       </div>
     </div>

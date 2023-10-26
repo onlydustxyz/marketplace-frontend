@@ -12,7 +12,7 @@ export function Chip({ children, className, solid }: ChipProps) {
       className={cn(
         `border-1 flex h-4 w-4 items-center justify-center overflow-hidden rounded-full
         border border-greyscale-50/[0.08] bg-white/8 text-center`,
-        solid && "border border-greyscale-50/[0.08] bg-white/8 shadow backdrop-blur-[268px]",
+        solid && "shadow backdrop-blur-[268px]", // using px as figma because of the transparency
         className
       )}
     >
