@@ -1,7 +1,6 @@
 import IBAN from "iban";
 import { PropsWithChildren, useState } from "react";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
-import { components } from "src/__generated/api";
 import { GithubUserFragment, PaymentRequestDetailsFragment } from "src/__generated/graphql";
 import InfoIcon from "src/assets/icons/InfoIcon";
 import Button, { ButtonSize } from "src/components/Button";
@@ -17,6 +16,8 @@ import Tooltip, { TooltipPosition, withCustomTooltip } from "src/components/Tool
 import { useAuth } from "src/hooks/useAuth";
 import useInfiniteProjectRewardItems from "src/hooks/useInfiniteProjectRewardItems";
 import { useIntl } from "src/hooks/useIntl";
+import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
+import { useRestfulData } from "src/hooks/useRestfulData/useRestfulData";
 import BankCardLine from "src/icons/BankCardLine";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import Time from "src/icons/TimeLine";
@@ -39,49 +40,39 @@ enum Align {
 }
 
 export type Props = {
-  data: components["schemas"]["ProjectRewardResponse"];
-  loading: boolean;
-  //   status: PaymentStatus;
-  //   payoutInfoMissing: boolean;
-  //   invoiceNeeded?: boolean;
-  projectLeaderView?: boolean;
-  onRewardCancel?: () => void;
   projectId: string;
   rewardId: string;
-} & Partial<PaymentRequestDetailsFragment>;
+  projectLeaderView?: boolean;
+  onRewardCancel?: () => void;
+
+  // TODO remove
+  payments?: PaymentRequestDetailsFragment["payments"];
+};
 
 export default function View({
-  id,
-  data,
-  loading,
-  //   status,
-  amount,
-  githubRecipient,
-  requestor,
-  requestedAt,
-  workItems,
-  //   payoutInfoMissing,
-  //   invoiceNeeded,
-  invoiceReceivedAt,
-  payments,
-  projectLeaderView,
-  onRewardCancel,
   projectId,
   rewardId,
+  onRewardCancel,
+  projectLeaderView,
+
+  // TODO remove
+  payments,
 }: Props) {
   const { T } = useIntl();
   const { githubUserId } = useAuth();
-  // TODO get from response
-  const formattedReceipt = formatReceipt(payments?.at(0)?.receipt);
-  const shouldDisplayCancelButton = projectLeaderView && onRewardCancel && data?.status !== PaymentStatus.COMPLETE;
-  const isCurrencyUSD = data?.currency === Currency.USD;
+
+  const { data, isLoading: loading } = useRestfulData({
+    resourcePath: ApiResourcePaths.GET_PROJECT_REWARD,
+    pathParam: { projectId, rewardId },
+    method: "GET",
+  });
 
   const {
     data: rewardItemsData,
-    isLoading,
+    error: rewardItemsError,
+    isLoading: rewardItemsLoading,
     fetchNextPage,
     hasNextPage,
-    error,
     isFetchingNextPage,
   } = useInfiniteProjectRewardItems({
     projectId,
@@ -91,11 +82,15 @@ export default function View({
     //   pageIndex: 1,
     // },
   });
-
   const rewardItems = rewardItemsData?.pages.flatMap(page => page.rewardItems) || [];
 
+  // TODO get from response
+  const formattedReceipt = formatReceipt(payments?.at(0)?.receipt);
+  const shouldDisplayCancelButton = projectLeaderView && onRewardCancel && data?.status !== PaymentStatus.COMPLETE;
+  const isCurrencyUSD = data?.currency === Currency.USD;
+
   function renderRewardItems() {
-    if (isLoading) {
+    if (rewardItemsLoading) {
       return (
         <div className="flex h-full flex-col gap-3 pt-8">
           <div className="h-6 w-1/3 animate-pulse rounded-lg bg-greyscale-800" />
@@ -106,7 +101,7 @@ export default function View({
       );
     }
 
-    if (error) {
+    if (rewardItemsError) {
       return (
         <p className="whitespace-pre-line py-24 text-center font-walsheim text-sm text-greyscale-50">
           {T("reward.table.detailsPanel.rewardItems.error")}
@@ -128,8 +123,7 @@ export default function View({
                     <GithubPullRequest
                       key={item.id}
                       pullRequest={formatRewardItemToGithubPullRequest(item)}
-                      // TODO contributor = {login : string;}
-                      contributor={githubRecipient as GithubUserFragment}
+                      contributor={data.to as GithubUserFragment}
                     />
                   );
                 }
@@ -157,7 +151,7 @@ export default function View({
       {data ? (
         <div className="flex h-full flex-col gap-8 px-6">
           <div className="flex flex-wrap items-center gap-3 pt-8 font-belwe text-2xl font-normal text-greyscale-50">
-            {T("reward.table.detailsPanel.title", { id: pretty(id) })}
+            {T("reward.table.detailsPanel.title", { id: pretty(data.id) })}
             {shouldDisplayCancelButton && <CancelRewardButton onRewardCancel={onRewardCancel} />}
           </div>
           <div className="flex flex-col gap-8 divide-y divide-greyscale-50/12">
