@@ -8,28 +8,22 @@ export default {
       control: {
         type: "select",
       },
-      options: [PaymentStatus.WAITING_PAYMENT, PaymentStatus.ACCEPTED],
+      options: [
+        PaymentStatus.Complete,
+        PaymentStatus.PendingInvoice,
+        PaymentStatus.PendingSignup,
+        PaymentStatus.Processing,
+      ],
     },
-    payoutInfoMissing: { control: { type: "boolean" } },
-    invoiceNeeded: { control: { type: "boolean" } },
-    isProjectLeaderView: { control: { type: "boolean" } },
   },
 };
 
 type Props = {
-  id: string;
   status: PaymentStatus;
-  payoutInfoMissing: boolean;
-  invoiceNeeded: boolean;
-  isProjectLeaderView: boolean;
 };
 
 const props = {
-  id: "status-id",
-  status: PaymentStatus.WAITING_PAYMENT,
-  payoutInfoMissing: false,
-  invoiceNeeded: false,
-  isProjectLeaderView: false,
+  status: PaymentStatus.Complete,
 };
 
 export const Default = {
@@ -39,15 +33,22 @@ export const Default = {
   },
 };
 
-export const PayoutInfoMissing = {
-  render: (args: Props) => <PayoutStatus {...props} {...{ payoutInfoMissing: true }} {...args} />,
+export const PendingSignup = {
+  render: (args: Props) => <PayoutStatus {...props} {...{ status: PaymentStatus.PendingSignup }} {...args} />,
+  parameters: {
+    backgrounds: { default: "space" },
+  },
+};
+
+export const Processing = {
+  render: (args: Props) => <PayoutStatus {...props} {...{ status: PaymentStatus.Processing }} {...args} />,
   parameters: {
     backgrounds: { default: "space" },
   },
 };
 
 export const PendingInvoice = {
-  render: (args: Props) => <PayoutStatus {...props} {...{ invoiceNeeded: true }} {...args} />,
+  render: (args: Props) => <PayoutStatus {...props} {...{ status: PaymentStatus.PendingInvoice }} {...args} />,
   parameters: {
     backgrounds: { default: "space" },
   },

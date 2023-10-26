@@ -63,7 +63,7 @@ export function MobileUserRewardItem({
   image: ReactNode;
   title?: string | null;
   request: string;
-  amount: string;
+  amount: string | null;
   date: Date;
   payoutStatus: ReactNode;
 }) {

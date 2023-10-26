@@ -1,19 +1,19 @@
-import { ExtendedPaymentRequestFragment } from "src/__generated/graphql";
 import { useIntl } from "src/hooks/useIntl";
-import usePayoutSettings from "src/hooks/usePayoutSettings";
-import { PaymentStatus } from "src/types";
+
 import { pretty } from "src/utils/id";
 import { formatMoneyAmount } from "src/utils/money";
 import PayoutStatus from "src/components/PayoutStatus";
 import { MobileUserRewardItem } from "src/components/UserRewardTable/MobileUserRewardList";
 import RoundedImage, { Rounding } from "src/components/RoundedImage";
+import { RewardPageItemType } from "src/hooks/useInfiniteRewardsList";
+import { PaymentStatus } from "src/types";
 
 export default function MobileRewardList({
   rewards,
   onRewardClick,
 }: {
-  rewards: ExtendedPaymentRequestFragment[];
-  onRewardClick: (reward: ExtendedPaymentRequestFragment) => void;
+  rewards: RewardPageItemType[];
+  onRewardClick: (reward: RewardPageItemType) => void;
 }) {
   return (
     <div className="flex flex-col gap-4">
@@ -26,38 +26,20 @@ export default function MobileRewardList({
   );
 }
 
-function MobileRewardItemContainer({ reward }: { reward: ExtendedPaymentRequestFragment }) {
+function MobileRewardItemContainer({ reward }: { reward: RewardPageItemType }) {
   const { T } = useIntl();
 
-  const { valid: payoutSettingsValid } = usePayoutSettings(reward.recipientId);
-
-  const recipient = reward.githubRecipient;
-  const paidAmount = reward.paymentsAggregate.aggregate?.sum?.amount;
-  const paymentStatus = paidAmount === reward.amount ? PaymentStatus.ACCEPTED : PaymentStatus.WAITING_PAYMENT;
-
   return (
-    reward &&
-    recipient && (
-      <MobileUserRewardItem
-        image={<RoundedImage src={recipient.avatarUrl} alt={recipient.login} rounding={Rounding.Circle} />}
-        title={recipient.login}
-        request={T("reward.table.reward", {
-          id: pretty(reward.id),
-          count: reward.workItemsAggregate.aggregate?.count,
-        })}
-        amount={formatMoneyAmount({ amount: reward.amount })}
-        date={reward.requestedAt}
-        payoutStatus={
-          <PayoutStatus
-            {...{
-              id: `payment-status-${reward.id}`,
-              status: paymentStatus,
-              payoutInfoMissing: !payoutSettingsValid,
-            }}
-            isProjectLeaderView
-          />
-        }
-      />
-    )
+    <MobileUserRewardItem
+      image={<RoundedImage src={reward.rewardedUserAvatar} alt={reward.rewardedUserLogin} rounding={Rounding.Circle} />}
+      title={reward.rewardedUserLogin}
+      request={T("reward.table.reward", {
+        id: pretty(reward.id),
+        count: reward.numberOfRewardedContributions,
+      })}
+      amount={formatMoneyAmount({ amount: reward.amount.total })}
+      date={new Date(reward.requestedAt)}
+      payoutStatus={<PayoutStatus status={PaymentStatus[reward.status]} />}
+    />
   );
 }

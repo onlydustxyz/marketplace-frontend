@@ -27,7 +27,7 @@ export function RewardCard({ reward, onClick }: { reward: Reward; onClick?: () =
 
   const timeWorked = useRewardTimeWorked(hoursWorked);
 
-  const { status: payoutStatus, invoiceNeeded, payoutInfoMissing } = usePayoutStatus(reward);
+  const { status: payoutStatus } = usePayoutStatus(reward);
 
   return (
     <article
@@ -54,12 +54,7 @@ export function RewardCard({ reward, onClick }: { reward: Reward; onClick?: () =
           </p>
         </div>
 
-        <PayoutStatus
-          id={`payment-status-${paymentId}`}
-          status={payoutStatus}
-          invoiceNeeded={invoiceNeeded}
-          payoutInfoMissing={payoutInfoMissing}
-        />
+        <PayoutStatus status={payoutStatus} />
       </div>
 
       <div className="flex items-center gap-2">

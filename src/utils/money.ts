@@ -7,6 +7,7 @@ type Params = {
   amount: number;
   currency?: BugetCurrencyType;
   notation?: "standard" | "scientific" | "engineering" | "compact";
+  showCurrency?: boolean;
 };
 
 export const formatMoneyAmount = ({ amount, currency = Currency.USD, notation = "standard" }: Params) => {
