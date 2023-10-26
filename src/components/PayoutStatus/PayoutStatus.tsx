@@ -8,13 +8,14 @@ import { withTooltip } from "src/components/Tooltip";
 import { components } from "src/__generated/api";
 
 type Props = {
-  status: PaymentStatus;
+  status: PaymentStatusUnion;
 };
 
 export type PaymentStatusType = components["schemas"]["RewardPageItemResponse"]["status"];
+type PaymentStatusUnion = `${PaymentStatus}`;
 
 export default function PayoutStatus({ status }: Props) {
-  const statuses: Record<PaymentStatusType, JSX.Element> = {
+  const statuses: Record<PaymentStatusUnion, JSX.Element> = {
     [PaymentStatus.COMPLETE]: <CompleteTag />,
     [PaymentStatus.PENDING_INVOICE]: <InvoiceNeededTag />,
     [PaymentStatus.PENDING_SIGNUP]: <PendingSignup />,
