@@ -15,7 +15,6 @@ export function formatRewardItemToGithubPullRequest(item: components["schemas"][
     mergedAt: item.lastUpdateAt,
     status: item.status,
     htmlUrl: item.githubUrl,
-    // TODO
     userCommitsCount: {
       aggregate: {
         count: item.userCommitsCount,

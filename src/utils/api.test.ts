@@ -6,17 +6,22 @@ import {
 } from "./api";
 
 const mockRewardItem: components["schemas"]["RewardItemResponse"] = {
+  authorAvatarUrl: "string",
+  authorGithubUrl: "string",
+  authorLogin: "string",
   commentsCount: 0,
   commitsCount: 0,
-  createdAt: "2023-10-26T13:03:40.688Z",
+  createdAt: "2023-10-26T13:56:28.717Z",
+  githubAuthorId: 0,
   githubUrl: "string",
   id: "string",
-  lastUpdateAt: "2023-10-26T13:03:40.688Z",
+  lastUpdateAt: "2023-10-26T13:56:28.717Z",
   number: 0,
   repoName: "string",
   status: "CANCELLED",
   title: "string",
   type: "CODE_REVIEW",
+  userCommitsCount: 0,
 };
 
 describe("formatDate", () => {
