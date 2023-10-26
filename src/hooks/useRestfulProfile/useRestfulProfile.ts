@@ -114,21 +114,21 @@ const mock = {
       details: [
         {
           currency: "OP",
-          totalAmount: 0,
-          totalDollarsEquivalent: 0,
+          totalAmount: 12000,
+          totalDollarsEquivalent: 1200,
         },
         {
           currency: "ETH",
-          totalAmount: 0,
-          totalDollarsEquivalent: 0,
+          totalAmount: 12000,
+          totalDollarsEquivalent: 1200,
         },
         {
           currency: "APT",
-          totalAmount: 0,
-          totalDollarsEquivalent: 0,
+          totalAmount: 12000,
+          totalDollarsEquivalent: 1200,
         },
       ],
-      totalAmount: 0,
+      totalAmount: 12000,
     },
   },
   technologies: { Rust: 91283, Go: 12388, Java: 1233 },
