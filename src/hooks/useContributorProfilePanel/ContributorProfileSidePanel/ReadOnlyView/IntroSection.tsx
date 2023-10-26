@@ -1,4 +1,3 @@
-import { OwnUserProfileDetailsFragment, UserProfileFragment } from "src/__generated/graphql";
 import { useIntl } from "src/hooks/useIntl";
 import MapPinLine from "src/icons/MapPinLine";
 import { formatDateShort } from "src/utils/date";

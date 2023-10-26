@@ -1,6 +1,6 @@
 import { cn } from "src/utils/cn";
 import { useRef, useState } from "react";
-import { ProfileCover, UserProfileFragment } from "src/__generated/graphql";
+import { ProfileCover } from "src/__generated/graphql";
 import PencilLine from "src/icons/PencilLine";
 import HeaderCoverButton from "./EditView/HeaderCoverButton";
 import FileInput from "./EditView/FileInput";
@@ -38,8 +38,6 @@ export default function Header({ profile, editable, onChange, rounded }: Props) 
       },
     });
   };
-
-  console.log("profile", profile);
 
   const handleClick = (value: ProfileCover) => {
     onChange && onChange(value);

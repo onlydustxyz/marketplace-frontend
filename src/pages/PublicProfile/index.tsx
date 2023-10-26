@@ -9,13 +9,16 @@ import { RoutePaths } from "src/App";
 import { useShowToaster } from "src/hooks/useToaster";
 import { useIntl } from "src/hooks/useIntl";
 import SEO from "src/components/SEO";
+import useRestfulProfile from "src/hooks/useRestfulProfile/useRestfulProfile";
 
 const PublicProfilePage = () => {
   const { userLogin } = useParams();
   const { T } = useIntl();
   const showToaster = useShowToaster();
   const navigate = useNavigate();
-  const { data: userProfile, loading } = useUserProfile({ githubUserLogin: userLogin });
+  // const { data: userProfile, loading } = useUserProfile({ githubUserLogin: userLogin });
+  // const { data: userProfile, loading } = useRestfulProfile({ githubUserLogin: userLogin });
+  const { data: userProfile, loading } = useRestfulProfile({ githubUserId: 123 });
 
   if (!userProfile && !loading) {
     showToaster(T("profile.error.notFound"), { isError: true });
@@ -24,7 +27,7 @@ const PublicProfilePage = () => {
 
   return userProfile && userLogin ? (
     <>
-      <SEO title={`${userProfile.profile.login} — OnlyDust`} />
+      <SEO title={`${userProfile.login} — OnlyDust`} />
       <div className="bg-public-profile lg:h-[calc(100dvh)] lg:w-screen">
         <div className="mx-auto flex h-full max-w-7xl flex-col justify-between md:px-4">
           <Header userLogin={userLogin} />

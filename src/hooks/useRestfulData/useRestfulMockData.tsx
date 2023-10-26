@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 export function useRestfulMockData({ mock }: UseRestfulDataProps & { mock?: unknown }) {
   const [data, setData] = useState<unknown>(undefined);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     setIsLoading(true);

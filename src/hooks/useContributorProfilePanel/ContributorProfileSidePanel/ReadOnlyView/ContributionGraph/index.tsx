@@ -1,13 +1,13 @@
 import { max, range, round } from "lodash";
 import { Bar, BarChart, Legend, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import XTick from "./XTick";
-import { ContributionCountFragment } from "src/__generated/graphql";
 import CustomBar from "./Bar";
 import CustomTooltip from "./Tootip";
 import CustomLegend from "./Legend";
 import { useIntl } from "src/hooks/useIntl";
 import YTick from "./YTick";
 import { useState } from "react";
+import { components } from "src/__generated/api";
 
 type Props = {
   entries: {
@@ -18,6 +18,8 @@ type Props = {
     pullRequestCount?: number | undefined;
   }[];
 };
+
+type ContributionCount = components["schemas"]["UserContributionStats"];
 
 export default function ContributionGraph({ entries }: Props) {
   const { T } = useIntl();
@@ -93,7 +95,8 @@ export default function ContributionGraph({ entries }: Props) {
   );
 }
 
-export const formatDate = (contributionCount: ContributionCountFragment) =>
-  new Intl.DateTimeFormat("en-US", { day: "numeric", month: "short" }).format(dateFromWeek(contributionCount));
+export const formatDate = (contributionCount: ContributionCount) => {
+  return new Intl.DateTimeFormat("en-US", { day: "numeric", month: "short" }).format(dateFromWeek(contributionCount));
+};
 
-const dateFromWeek = ({ year, week }: ContributionCountFragment) => new Date(year, 0, 1 + 7 * (week - 1));
+const dateFromWeek = ({ year, week }: ContributionCount) => new Date(year, 0, 1 + 7 * (week - 1));
