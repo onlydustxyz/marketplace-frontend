@@ -50,7 +50,7 @@ export const AvailableConversion: FC<AvailableConversion> = ({ tooltipId, curren
         <Tooltip id={tooltipId} clickable position={TooltipPosition.Top} variant={Variant.Blue}>
           <div className="flex flex-col gap-2">
             <p className="font-walsheim text-sm font-medium text-white">{T("availableConversion.tooltip.title")}</p>
-            <div>
+            <div className="flex flex-col gap-1">
               {currencies.map(currency => (
                 <div key={currency.currency} className="flex items-center justify-start gap-1">
                   <Chip>
