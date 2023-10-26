@@ -1,6 +1,4 @@
 import { GetAllContributionsQuery, GithubIssueStatus } from "src/__generated/graphql";
-import { SortingFields } from "./hooks/useRewardSorting";
-import { components } from "./__generated/api";
 
 export type Branded<T, B> = T & { __brand: B };
 
@@ -65,10 +63,6 @@ type Url = string;
 type Uuid = string;
 export type Email = string;
 export type PhoneNumber = string;
-
-export type Sortable = {
-  sortingFields?: SortingFields;
-};
 
 export enum Currency {
   USD = "USD",
