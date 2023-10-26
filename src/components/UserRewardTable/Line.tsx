@@ -24,27 +24,7 @@ type Props = {
   selected: boolean;
 };
 
-export default function RewardLine({
-  reward,
-  payoutInfoMissing,
-  invoiceNeeded,
-  // setSortingFields,
-  onClick,
-  selected,
-}: Props) {
-  // useEffect(() => {
-  //   setSortingFields({
-  //     [Field.Date]: reward.requestedAt,
-  //     [Field.RewardId]: reward.rewardedOnProjectName?.toLocaleLowerCase() + reward.id,
-  //     [Field.Amount]: reward.amount.total,
-  //     [Field.Status]: getPaymentStatusOrder({
-  //       status: reward.status,
-  //       pendingPayoutInfo: payoutInfoMissing,
-  //       pendingInvoice: invoiceNeeded,
-  //     }),
-  //   });
-  // }, [reward.status, payoutInfoMissing, invoiceNeeded]);
-
+export default function RewardLine({ reward, payoutInfoMissing, invoiceNeeded, onClick, selected }: Props) {
   const { T } = useIntl();
 
   return (

@@ -6,8 +6,19 @@ import SkeletonSearch from "./SkeletonSearch";
 import SkeletonSort from "./SkeletonSort";
 import SkeletonCounter from "./SkeletonCounter";
 import SkeletonContributorList from "./SkeletonContributorList";
+import SkeletonRewards from "./SkeletonRewards";
+import SkeletonEarnedRewards from "./SkeletonEarnedRewards";
 
-type SkeletonVariant = "card" | "filters" | "header" | "search" | "sort" | "counter" | "contributorList";
+type SkeletonVariant =
+  | "card"
+  | "filters"
+  | "header"
+  | "search"
+  | "sort"
+  | "counter"
+  | "contributorList"
+  | "rewards"
+  | "earnedRewards";
 
 interface SkeletonProps {
   variant: SkeletonVariant;
@@ -21,6 +32,8 @@ const VARIANT_COMPONENTS = {
   sort: SkeletonSort,
   counter: SkeletonCounter,
   contributorList: SkeletonContributorList,
+  rewards: SkeletonRewards,
+  earnedRewards: SkeletonEarnedRewards,
 };
 
 export default function Skeleton({ variant }: SkeletonProps) {

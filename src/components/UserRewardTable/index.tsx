@@ -35,22 +35,6 @@ const UserRewardTable: React.FC<PropsType> = ({
 }) => {
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
-  // const [rewardSortingFields, setRewardSortingFields] = useState<Record<string, SortingFields>>({});
-  // const { sort, sorting, applySorting } = useRewardSorting();
-
-  // const sortableRewards = useMemo(
-  //   () => rewards.map(p => ({ ...p, sortingFields: rewardSortingFields[p.id] })),
-  //   [rewardSortingFields, rewards]
-  // );
-
-  // const sortedRewards = useMemo(() => sort(sortableRewards), [sort, sortableRewards]);
-
-  // const setSortingFields = useCallback(
-  //   (p: MyRewardType) => (fields: SortingFields) =>
-  //     setRewardSortingFields(existing => ({ ...existing, [p.id]: fields })),
-  //   []
-  // );
-
   const [selectedReward, setSelectedReward] = useState<MyRewardType | null>(null);
   const [sidePanelOpen, setSidePanelOpen] = useState(false);
 
@@ -70,7 +54,6 @@ const UserRewardTable: React.FC<PropsType> = ({
                 reward={p}
                 payoutInfoMissing={payoutInfoMissing}
                 invoiceNeeded={invoiceNeeded}
-                // setSortingFields={setSortingFields(p)}
                 onClick={() => onRewardClick(p)}
                 selected={p.id === selectedReward?.id}
               />
