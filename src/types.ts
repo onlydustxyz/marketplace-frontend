@@ -78,22 +78,6 @@ export enum PaymentStatus {
   PENDING_SIGNUP = "PENDING_SIGNUP",
   PROCESSING = "PROCESSING",
 }
-export function getPaymentStatusOrder({
-  status,
-  pendingPayoutInfo,
-  pendingInvoice,
-}: {
-  status: PaymentStatus;
-  pendingPayoutInfo: boolean;
-  pendingInvoice?: boolean;
-}): number {
-  switch (status) {
-    case PaymentStatus.WAITING_PAYMENT:
-      return pendingPayoutInfo || pendingInvoice ? -1 : 0;
-    case PaymentStatus.ACCEPTED:
-      return 1;
-  }
-}
 
 export type Locale = "en" | "fr";
 
