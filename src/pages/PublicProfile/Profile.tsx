@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { OwnUserProfileDetailsFragment, UserProfileFragment } from "src/__generated/graphql";
 import Header from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/Header";
 import IntroSection from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/ReadOnlyView/IntroSection";
 import ProjectsSection from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/ReadOnlyView/ProjectsSection";
@@ -8,9 +9,10 @@ import { Profile as ProfileType } from "src/hooks/useRestfulProfile/useRestfulPr
 
 type Props = {
   userProfile: ProfileType;
+  gqlProfile?: UserProfileFragment & OwnUserProfileDetailsFragment; // use this for the completion score, should be revamp when we revamp the edit profile
 };
 
-export default function Profile({ userProfile }: Props) {
+export default function Profile({ userProfile, gqlProfile }: Props) {
   const languages = useMemo(() => Object.keys(userProfile.technologies || {}), [userProfile]);
 
   return (
@@ -20,6 +22,7 @@ export default function Profile({ userProfile }: Props) {
           <Header profile={{ ...userProfile }} rounded={true} />
           <div className="flex flex-col gap-12 px-px lg:ml-8">
             <IntroSection
+              gqlProfile={gqlProfile}
               profile={userProfile}
               isOwn={false}
               isPublic={true}

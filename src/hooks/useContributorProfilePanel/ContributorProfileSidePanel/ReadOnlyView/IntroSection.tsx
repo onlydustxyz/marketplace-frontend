@@ -23,9 +23,11 @@ import CompletionBar from "src/components/CompletionBar";
 import WhatsappFill from "src/icons/WhatsappFill";
 import { Profile } from "src/hooks/useRestfulProfile/useRestfulProfile";
 import { components } from "src/__generated/api";
+import { OwnUserProfileDetailsFragment, UserProfileFragment } from "src/__generated/graphql";
 
 type Props = {
   profile: Profile;
+  gqlProfile?: UserProfileFragment & OwnUserProfileDetailsFragment; // use this for the completion score, should be revamp when we revamp the edit profile
   setEditMode: (value: boolean) => void;
   isOwn?: boolean;
   isPublic?: boolean;
@@ -33,7 +35,7 @@ type Props = {
 
 type ContactChannelType = components["schemas"]["ContactInformation"]["channel"];
 
-export default function IntroSection({ isOwn, isPublic, profile, setEditMode }: Props) {
+export default function IntroSection({ isOwn, isPublic, profile, setEditMode, gqlProfile }: Props) {
   const { T } = useIntl();
 
   const website = parseWebsite(profile.website);
@@ -59,6 +61,7 @@ export default function IntroSection({ isOwn, isPublic, profile, setEditMode }: 
   const linkedin = findContact("LINKEDIN");
   const whatsapp = findContact("WHATSAPP");
 
+  console.log("gqlProfile", gqlProfile);
   return (
     <div className="flex flex-col gap-6">
       {!isPublic && (
@@ -100,15 +103,14 @@ export default function IntroSection({ isOwn, isPublic, profile, setEditMode }: 
           </div>
         )}
       </div>
-      {/* // TODO REST : completion score */}
-      {/* {profile.completionScore !== undefined && profile.completionScore < 95 && (
+      {gqlProfile && gqlProfile?.completionScore !== undefined && gqlProfile.completionScore < 95 ? (
         <div className="flex w-full flex-col gap-2 rounded-2xl bg-completion-gradient px-5 py-4">
           <div className="font-walsheim text-sm font-medium text-greyscale-50">
-            {T("profile.completion", { completion: profile.completionScore.toString() })}
+            {T("profile.completion", { completion: gqlProfile.completionScore.toString() })}
           </div>
-          <CompletionBar completionScore={profile.completionScore} />
+          <CompletionBar completionScore={gqlProfile.completionScore} />
         </div>
-      )} */}
+      ) : null}
       {(profile.bio || profile.location || profile.createdAt) && (
         <div className="flex flex-col gap-4 font-walsheim font-normal">
           {profile.bio && (

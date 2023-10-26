@@ -4,7 +4,6 @@ import Tooltip from "src/components/Tooltip";
 import Header from "./Header";
 import Footer from "./Footer";
 import Profile from "./Profile";
-import useUserProfile from "src/hooks/useContributorProfilePanel/ContributorProfileSidePanel/useUserProfile";
 import { RoutePaths } from "src/App";
 import { useShowToaster } from "src/hooks/useToaster";
 import { useIntl } from "src/hooks/useIntl";
@@ -16,9 +15,7 @@ const PublicProfilePage = () => {
   const { T } = useIntl();
   const showToaster = useShowToaster();
   const navigate = useNavigate();
-  // const { data: userProfile, loading } = useUserProfile({ githubUserLogin: userLogin });
-  // const { data: userProfile, loading } = useRestfulProfile({ githubUserLogin: userLogin });
-  const { data: userProfile, loading } = useRestfulProfile({ githubUserId: 123 });
+  const { data: userProfile, loading } = useRestfulProfile({ githubUserLogin: userLogin });
 
   if (!userProfile && !loading) {
     showToaster(T("profile.error.notFound"), { isError: true });

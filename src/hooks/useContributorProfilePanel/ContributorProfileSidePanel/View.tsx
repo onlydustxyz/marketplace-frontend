@@ -19,6 +19,12 @@ export default function View({ isOwn, restFulProfile, gqlProfile, setOpen }: Pro
   return editMode ? (
     <EditView profile={gqlProfile} restFulProfile={restFulProfile} setEditMode={setEditMode} />
   ) : (
-    <ReadOnlyView setOpen={setOpen} userProfile={restFulProfile} setEditMode={setEditMode} isOwn={isOwn} />
+    <ReadOnlyView
+      setOpen={setOpen}
+      userProfile={restFulProfile}
+      setEditMode={setEditMode}
+      isOwn={isOwn}
+      gqlProfile={gqlProfile}
+    />
   );
 }

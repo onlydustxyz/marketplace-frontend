@@ -144,14 +144,18 @@ export default function useRestfulProfile({
 }) {
   const { user: currentUser, githubUserId: currentUserGithubId } = useAuth();
 
-  const { data, isLoading, isError } = useRestfulData({
-    resourcePath: ApiResourcePaths.GET_PUBLIC_USER_PROFILE,
-    pathParam: `${githubUserId}`,
+  const { data, isLoading, isError } = useRestfulData<Profile>({
+    resourcePath: githubUserLogin
+      ? ApiResourcePaths.GET_PUBLIC_USER_PROFILE_BY_LOGIN
+      : ApiResourcePaths.GET_PUBLIC_USER_PROFILE,
+    pathParam: `${githubUserId || githubUserLogin}`,
     method: "GET",
+    enabled: !!githubUserId || !!githubUserLogin,
   });
 
   return {
-    data: data as Profile,
+    data: data,
     loading: isLoading,
+    isError: isError,
   };
 }
