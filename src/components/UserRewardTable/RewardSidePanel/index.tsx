@@ -35,8 +35,6 @@ export default function RewardSidePanel({ rewardId, onRewardCancel, projectLeade
     method: "GET",
   });
 
-  console.log({ data });
-
   //   const status =
   //     data?.paymentRequests[0]?.paymentsAggregate.aggregate?.sum?.amount === data?.paymentRequests[0]?.amount
   //       ? PaymentStatus.ACCEPTED

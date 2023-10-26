@@ -517,7 +517,10 @@
         "you": "(you)",
         "contributions": "Included in reward",
         "rewardGrantedOnNetwork": "Reward granted on __network__ network.",
-        "usdEstimateTooltip": "Dollars equivalent at today’s date."
+        "usdEstimateTooltip": "Dollars equivalent at today’s date.",
+        "rewardItems": {
+          "error": "An error occurred, please try again later."
+        }
       },
       "status": "Status"
     },
@@ -538,7 +541,7 @@
         "many": "days"
       }
     },
-    "earning":{
+    "earning": {
       "totalEarnings": "Total earnings",
       "dolarEarnings": "Dollar earnings",
       "etherEarnings": "Ether earnings",

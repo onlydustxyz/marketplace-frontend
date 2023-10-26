@@ -86,6 +86,7 @@ export default function View({
   } = useInfiniteProjectRewardItems({
     projectId,
     rewardId,
+    // TODO
     // queryParams: {
     //   pageIndex: 1,
     // },
@@ -95,13 +96,22 @@ export default function View({
 
   function renderRewardItems() {
     if (isLoading) {
-      // TODO
-      return "LOADING";
+      return (
+        <div className="flex h-full flex-col gap-3 pt-8">
+          <div className="h-6 w-1/3 animate-pulse rounded-lg bg-greyscale-800" />
+          <div className="h-20 w-full animate-pulse rounded-2xl bg-greyscale-800 animation-delay-150" />
+          <div className="h-20 w-full animate-pulse rounded-2xl bg-greyscale-800 animation-delay-300" />
+          <div className="animation-delay[600ms] h-20 w-full animate-pulse rounded-2xl bg-greyscale-800" />
+        </div>
+      );
     }
 
     if (error) {
-      // TODO
-      return "ERROR";
+      return (
+        <p className="whitespace-pre-line py-24 text-center font-walsheim text-sm text-greyscale-50">
+          {T("reward.table.detailsPanel.rewardItems.error")}
+        </p>
+      );
     }
 
     if (rewardItems.length) {
@@ -112,8 +122,6 @@ export default function View({
           </div>
           <div className="flex h-full flex-col gap-3 overflow-auto p-px pb-6 pr-4 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
             {rewardItems.map(item => {
-              console.log({ item });
-
               switch (item.type) {
                 case GithubContributionType.PullRequest: {
                   return (
@@ -141,7 +149,6 @@ export default function View({
       );
     }
 
-    // TODO
     return null;
   }
 
