@@ -455,6 +455,7 @@
       "complete": "Complete",
       "invoicePending": "Pending invoice",
       "payoutInfoMissing": "Payout info missing",
+      "pendingSignup": "Pending signup",
       "pending": "Pending",
       "processing": "Processing",
       "tooltip": {
@@ -467,9 +468,9 @@
     },
     "table": {
       "amount": "Amount",
-      "contributor": "Contributor",
+      "contributor": "Contribution",
       "project": "Project",
-      "date": "Date",
+      "date": "Sent",
       "githubLink": "#__pullRequestNumber__ · Github",
       "reward": {
         "many": "#__id__ · __count__ contributions",

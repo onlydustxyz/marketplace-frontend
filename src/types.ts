@@ -78,9 +78,12 @@ export enum Currency {
 }
 
 export enum PaymentStatus {
-  ACCEPTED = "ACCEPTED",
-  WAITING_PAYMENT = "WAITING_PAYMENT",
+  COMPLETE = "COMPLETE",
+  PENDING_INVOICE = "PENDING_INVOICE",
+  PENDING_SIGNUP = "PENDING_SIGNUP",
+  PROCESSING = "PROCESSING",
 }
+
 export function getPaymentStatusOrder({
   status,
   pendingPayoutInfo,

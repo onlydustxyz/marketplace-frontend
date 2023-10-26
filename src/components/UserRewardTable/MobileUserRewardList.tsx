@@ -1,7 +1,7 @@
 import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 import Card from "src/components//Card";
 import RoundedImage from "src/components//RoundedImage";
-import PayoutStatus from "src/components/PayoutStatus";
+import PayoutStatus from "src/components/PayoutStatus/PayoutStatus";
 import { useIntl } from "src/hooks/useIntl";
 import ArrowRightSLine from "src/icons/ArrowRightSLine";
 import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
@@ -63,7 +63,7 @@ export function MobileUserRewardItem({
   image: ReactNode;
   title?: string | null;
   request: string;
-  amount: string;
+  amount: string | null;
   date: Date;
   payoutStatus: ReactNode;
 }) {
