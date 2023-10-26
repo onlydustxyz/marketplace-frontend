@@ -1,11 +1,11 @@
 import { components } from "src/__generated/api";
 import { Currency } from "src/types";
 
-export type BugetCurrencyType = components["schemas"]["BudgetResponse"]["currency"];
+export type BudgetCurrencyType = components["schemas"]["BudgetResponse"]["currency"];
 
 type Params = {
   amount: number;
-  currency?: BugetCurrencyType;
+  currency?: BudgetCurrencyType;
   notation?: "standard" | "scientific" | "engineering" | "compact";
   showCurrency?: boolean;
 };
@@ -53,3 +53,16 @@ const maximumFractionDigits = ({ amount, notation }: Params) => {
       return 0;
   }
 };
+
+// TODO check with Grégoire
+const networkDict: Record<BudgetCurrencyType, string> = {
+  APT: "Aptos",
+  ETH: "Ethereum",
+  OP: "Optimism",
+  STARK: "Stark chain",
+  USD: "IBAN/BIC",
+};
+
+export function currencyToNetwork(currency: BudgetCurrencyType) {
+  return networkDict[currency];
+}

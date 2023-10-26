@@ -9,7 +9,7 @@ import { withTooltip } from "src/components/Tooltip";
 import BudgetBar from "src/pages/ProjectDetails/Rewards/RewardForm/WorkEstimation/BudgetBar";
 import { Currency } from "src/types";
 import { cn } from "src/utils/cn";
-import { BugetCurrencyType, formatMoneyAmount } from "src/utils/money";
+import { BudgetCurrencyType, formatMoneyAmount } from "src/utils/money";
 import { LeftToSpend } from "./LeftToSpend";
 import { ReactElement } from "react";
 import { useIntl } from "src/hooks/useIntl";
@@ -36,7 +36,7 @@ interface Props {
   budget: {
     initialAmount: number;
     remaining: number;
-    currency: BugetCurrencyType;
+    currency: BudgetCurrencyType;
     initialDollarsEquivalent?: number;
   };
   className?: string;

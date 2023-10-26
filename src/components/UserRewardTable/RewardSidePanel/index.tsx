@@ -22,36 +22,39 @@ type Props = {
 };
 
 export default function RewardSidePanel({ rewardId, onRewardCancel, projectLeaderView, recipientId }: Props) {
-  const { user, githubUserId } = useAuth();
-  const { data, loading } = usePaymentRequestDetailsQuery({
-    variables: { id: rewardId, githubUserId: recipientId },
-    skip: !githubUserId || !user,
-  });
-
-  //   const { projectId } = useOutletContext<OutletContext>();
-  //   const { data, isLoading, isError } = useRestfulData({
-  //     resourcePath: ApiResourcePaths.GET_PROJECT_REWARD,
-  //     pathParam: { projectId, rewardId },
-  //     method: "GET",
+  //   const { user, githubUserId } = useAuth();
+  //   const { data, loading } = usePaymentRequestDetailsQuery({
+  //     variables: { id: rewardId, githubUserId: recipientId },
+  //     skip: !githubUserId || !user,
   //   });
 
-  const status =
-    data?.paymentRequests[0]?.paymentsAggregate.aggregate?.sum?.amount === data?.paymentRequests[0]?.amount
-      ? PaymentStatus.ACCEPTED
-      : PaymentStatus.WAITING_PAYMENT;
+  const { projectId } = useOutletContext<OutletContext>();
+  const { data, isLoading: loading } = useRestfulData({
+    resourcePath: ApiResourcePaths.GET_PROJECT_REWARD,
+    pathParam: { projectId, rewardId },
+    method: "GET",
+  });
 
-  const { invoiceNeeded, valid: payoutSettingsValid } = usePayoutSettings(
-    data?.paymentRequests[0]?.githubRecipient?.id
-  );
+  console.log({ data });
+
+  //   const status =
+  //     data?.paymentRequests[0]?.paymentsAggregate.aggregate?.sum?.amount === data?.paymentRequests[0]?.amount
+  //       ? PaymentStatus.ACCEPTED
+  //       : PaymentStatus.WAITING_PAYMENT;
+
+  //   const { invoiceNeeded, valid: payoutSettingsValid } = usePayoutSettings(
+  //     data?.paymentRequests[0]?.githubRecipient?.id
+  //   );
 
   return (
     <View
+      data={data}
       loading={loading}
-      {...data?.paymentRequests[0]}
-      id={rewardId}
-      status={status}
-      invoiceNeeded={invoiceNeeded}
-      payoutInfoMissing={!payoutSettingsValid}
+      //   {...data?.paymentRequests[0]}
+      id={rewardId} // TODO get id from response
+      //   status={status}
+      //   invoiceNeeded={invoiceNeeded}
+      //   payoutInfoMissing={!payoutSettingsValid}
       onRewardCancel={onRewardCancel}
       projectLeaderView={projectLeaderView}
     />
