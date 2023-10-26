@@ -38,8 +38,6 @@ type AvailableConversionLight = {
   type: "light";
 };
 
-// export type AvailableConversion = AvailableConversionCompact | AvailableConversionLight | AvailableConversionFull;
-
 export const AvailableConversion: FC<AvailableConversion> = ({
   tooltipId,
   currencies,
