@@ -7,13 +7,8 @@ import { PageData, PagesData } from "src/types";
 
 export type RewardPageItemType = components["schemas"]["RewardPageItemResponse"];
 
-type RewardPageData = {
-  rewards: RewardPageItemType[];
-} & PageData;
-
-type RewardsPagesData = {
-  pages: RewardPageData[];
-} & PagesData;
+type RewardPageData = PageData<{ rewards: RewardPageItemType[] }>;
+type RewardsPagesData = PagesData<RewardPageData>;
 
 interface useInfiniteRewardsListProps {
   projectId: string;

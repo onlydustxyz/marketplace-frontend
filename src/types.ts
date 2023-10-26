@@ -296,15 +296,14 @@ export type Contributors = {
   hasMore: boolean;
 };
 
-export type PageData = {
+export type PageData<T = unknown> = T & {
   totalPageNumber: number;
   totalItemNumber: number;
   hasMore: boolean;
   nextPageIndex: number;
-  contributors: ContributorT[];
 };
 
-export type PagesData = {
-  pages: PageData[];
+export type PagesData<T extends PageData> = {
+  pages: T[];
   pageParams: number[];
 };
