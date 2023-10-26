@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useAuth } from "src/hooks/useAuth";
 import { getEndpointUrl } from "src/utils/getEndpointUrl";
 import { useHttpOptions } from "src/hooks/useHttpOptions/useHttpOptions";
@@ -33,4 +33,27 @@ export function useRestfulData({
   });
 
   return { data, isLoading, isError };
+}
+
+export function useMutationRestfulData({
+  resourcePath,
+  pathParam = "",
+  queryParams = [],
+  method = "PUT",
+  onSuccess,
+  onError,
+}: UseRestfulDataProps & { onSuccess?: () => void; onError?: () => void }) {
+  const options = useHttpOptions(method);
+  const { mutate, isPending, error } = useMutation({
+    mutationFn: (data: unknown): Promise<unknown> => {
+      return fetch(getEndpointUrl({ resourcePath, pathParam, queryParams }), {
+        ...options,
+        body: JSON.stringify(data),
+      }).then(res => res.json());
+    },
+    onSuccess,
+    onError,
+  });
+
+  return { mutate, isPending, error };
 }

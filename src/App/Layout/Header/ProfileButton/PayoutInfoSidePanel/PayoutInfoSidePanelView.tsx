@@ -29,19 +29,12 @@ import { StatusTag, StatusType } from "./components/StatusTag";
 import { ProfileType } from "./types";
 
 type Props = {
-  isContactInfoValid: boolean;
-  isPaymentInfoValid: boolean;
   payoutSettingsValid?: boolean;
   saveButtonDisabled: boolean;
   unsavedChanges: boolean;
 };
 
-export default function PayoutInfoSidePanel({
-  isContactInfoValid,
-  isPaymentInfoValid,
-  saveButtonDisabled,
-  unsavedChanges,
-}: Props) {
+export default function PayoutInfoSidePanel({ saveButtonDisabled, unsavedChanges }: Props) {
   const { T } = useIntl();
   const {
     watch,
@@ -49,7 +42,12 @@ export default function PayoutInfoSidePanel({
     formState: { isValid },
   } = useFormContext();
 
-  const [profileType, usdPreferredMethod] = watch(["profileType", "usdPreferredMethod"]);
+  const [profileType, usdPreferredMethod, hasValidContactInfo, hasValidPayoutSettings] = watch([
+    "profileType",
+    "usdPreferredMethod",
+    "hasValidContactInfo",
+    "hasValidPayoutSettings",
+  ]);
 
   return (
     <Flex className="h-full min-h-0 flex-col justify-between overflow-y-auto">
@@ -71,7 +69,7 @@ export default function PayoutInfoSidePanel({
           ]}
         />
         <Card padded={false} className="p-6" withBg={false}>
-          <StatusTag isValid={isContactInfoValid} type={StatusType.Contact} />
+          <StatusTag isValid={hasValidContactInfo} type={StatusType.Contact} />
 
           {profileType === ProfileType.Company ? <CompanyFields /> : null}
           {profileType === ProfileType.Individual ? <IndividualFields /> : null}
@@ -79,7 +77,7 @@ export default function PayoutInfoSidePanel({
         </Card>
 
         <Card padded={false} className="p-6" withBg={false}>
-          <StatusTag isValid={isPaymentInfoValid} type={StatusType.Payment} />
+          <StatusTag isValid={hasValidPayoutSettings} type={StatusType.Payment} />
 
           <ProfileContent title={T("profile.form.payoutSettingsType")} isCard={profileType === ProfileType.Company}>
             {profileType === ProfileType.Company && (
@@ -104,7 +102,7 @@ export default function PayoutInfoSidePanel({
 
             {usdPreferredMethod === PreferredMethod.Fiat && profileType === ProfileType.Company && <FiatFields />}
 
-            {(usdPreferredMethod === PreferredMethod.Crypto || profileType === ProfileType.Individual) && (
+            {usdPreferredMethod === PreferredMethod.Crypto && profileType === ProfileType.Company && (
               <Input
                 withMargin={profileType === ProfileType.Individual}
                 label={
@@ -127,7 +125,9 @@ export default function PayoutInfoSidePanel({
           </ProfileContent>
 
           <ProfileContent title={T("profile.form.payoutCurrenciesType")} isCard={profileType === ProfileType.Company}>
-            <OtherCryptoFields />
+            <OtherCryptoFields
+              isEtherDisabled={usdPreferredMethod === PreferredMethod.Crypto && profileType === ProfileType.Company}
+            />
           </ProfileContent>
         </Card>
 

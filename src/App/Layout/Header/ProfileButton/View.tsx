@@ -109,11 +109,7 @@ const View = ({ githubUserId, avatarUrl, login, logout, showMissingPayoutSetting
           </Menu.Items>
         </Transition>
       </Menu>
-      <PayoutInfoSidePanel
-        githubUserId={githubUserId}
-        open={payoutInfoSidePanelOpen}
-        setOpen={setPayoutInfoSidePanelOpen}
-      />
+      <PayoutInfoSidePanel open={payoutInfoSidePanelOpen} setOpen={setPayoutInfoSidePanelOpen} />
     </div>
   );
 };

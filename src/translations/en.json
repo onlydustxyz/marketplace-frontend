@@ -617,7 +617,6 @@
       "emailPlaceholder": "example@onlydust.co",
       "ethIdentity": "Ethereum wallet address or ENS name",
       "ethIdentityPlaceholder": "Ethereum wallet address or ENS name",
-
       "firstname": "First name",
       "iban": "IBAN",
       "ibanInvalid": "Please enter a valid IBAN",
@@ -650,6 +649,7 @@
       "send": "Save payout info",
       "done": "Done",
       "success": "Changes saved",
+      "disabledEther": "Edit the address above if you want to perform changes",
       "technologies": {
         "supportedTooltip": "Increase your chance of matching a project by choosing featured technologies.",
         "suggestion": {
