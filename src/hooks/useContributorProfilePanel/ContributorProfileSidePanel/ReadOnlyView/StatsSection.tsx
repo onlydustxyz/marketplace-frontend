@@ -54,7 +54,11 @@ export default function StatsSection({ profile }: Props) {
         <StatCard
           title={T("profile.sections.stats.earned")}
           topLeftComponent={
-            <AvailableConversion tooltipId={`${profile.githubUserId}-earned-details`} currencies={currenciesStats} />
+            <AvailableConversion
+              type="light"
+              tooltipId={`${profile.githubUserId}-earned-details`}
+              currencies={currenciesStats}
+            />
           }
           counter={formatMoneyAmount({
             amount: stats?.totalsEarned?.totalAmount || 0,

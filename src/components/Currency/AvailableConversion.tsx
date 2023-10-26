@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useMemo } from "react";
 import { Chip } from "src/components/Chip/Chip";
 import Tooltip, { TooltipPosition, Variant } from "src/components/Tooltip";
 import { Currency } from "src/types";
@@ -18,20 +18,42 @@ export interface AvailableConversionCurrency {
   dollar: number | undefined;
 }
 
-export interface AvailableConversion {
+export type AvailableConversion = {
   tooltipId?: string;
   currencies: AvailableConversionCurrency[];
-  totalAmount?: number;
   withWrapper?: boolean;
-}
+  numberCurencyToShow?: number;
+} & (AvailableConversionCompact | AvailableConversionFull | AvailableConversionLight);
 
-export const AvailableConversion: FC<AvailableConversion> = ({ tooltipId, currencies, withWrapper, totalAmount }) => {
+type AvailableConversionCompact = {
+  type: "compact";
+  totalAmount: number;
+};
+type AvailableConversionFull = {
+  type: "full";
+  totalAmount: number;
+  dollar: number;
+};
+type AvailableConversionLight = {
+  type: "light";
+};
+
+// export type AvailableConversion = AvailableConversionCompact | AvailableConversionLight | AvailableConversionFull;
+
+export const AvailableConversion: FC<AvailableConversion> = ({
+  tooltipId,
+  currencies,
+  withWrapper,
+  numberCurencyToShow = 3,
+  ...variant
+}) => {
   const { T } = useIntl();
   const tooltipIdProps = tooltipId && !withWrapper ? { "data-tooltip-id": tooltipId } : {};
+
   return (
     <>
       <div {...tooltipIdProps} className="flex flex-row items-center justify-start gap-1">
-        <Chips number={2}>
+        <Chips number={numberCurencyToShow}>
           {currencies.map(currency => (
             <div key={currency.currency}>
               <Chip solid>
@@ -40,9 +62,14 @@ export const AvailableConversion: FC<AvailableConversion> = ({ tooltipId, curren
             </div>
           ))}
         </Chips>
-        {totalAmount ? (
+        {(variant.type === "full" || variant.type === "compact") && variant.totalAmount ? (
           <p className="font-walsheim text-sm font-bold leading-[14px]">
-            {formatMoneyAmount({ amount: totalAmount, currency: Currency.USD })}
+            {formatMoneyAmount({ amount: variant.totalAmount, currency: Currency.USD })}
+          </p>
+        ) : null}
+        {variant.type === "full" && variant.dollar ? (
+          <p className="font-walsheim text-[10px] text-spaceBlue-200">
+            {`~${formatMoneyAmount({ amount: variant.dollar, currency: Currency.USD })}`}
           </p>
         ) : null}
       </div>

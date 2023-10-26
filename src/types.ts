@@ -1,5 +1,6 @@
 import { GetAllContributionsQuery, GithubIssueStatus } from "src/__generated/graphql";
 import { SortingFields } from "./hooks/useRewardSorting";
+import { components } from "./__generated/api";
 
 export type Branded<T, B> = T & { __brand: B };
 
@@ -288,19 +289,7 @@ export type Reward = {
   };
 };
 
-export type ContributorT = {
-  avatarUrl: string | null;
-  codeReviewToReward: number | null;
-  contributionCount: number;
-  contributionToRewardCount: number | null; // not rewarded yet
-  earned: number | null;
-  githubUserId: number;
-  issueToReward: number | null;
-  login: string;
-  pullRequestToReward: number | null;
-  rewardCount: number; // already rewarded
-  isRegistered?: boolean;
-};
+export type ContributorT = components["schemas"]["ContributorPageItemResponse"];
 
 export type Contributors = {
   contributors: ContributorT[];

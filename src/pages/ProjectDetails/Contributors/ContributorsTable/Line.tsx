@@ -8,7 +8,8 @@ import { formatMoneyAmount } from "src/utils/money";
 import Contributor from "src/components/Contributor";
 import StackLine from "src/icons/StackLine";
 import { ContributorT } from "src/types";
-import { AvailableConversion } from "src/components/Currency/AvailableConversion";
+import { AvailableConversion, AvailableConversionCurrency } from "src/components/Currency/AvailableConversion";
+import { useMemo } from "react";
 
 type Props = {
   contributor: ContributorT;
@@ -25,6 +26,16 @@ export default function ContributorLine({
 }: Props) {
   const { T } = useIntl();
 
+  const currencies: AvailableConversionCurrency[] = useMemo(
+    () =>
+      (contributor.earned.details || []).map(currencies => ({
+        currency: currencies.currency,
+        amount: currencies.totalAmount,
+        dollar: currencies.totalDollarsEquivalent,
+      })),
+    [contributor]
+  );
+
   return (
     <Line key={contributor.login} className="group h-10">
       <Cell height={CellHeight.Small} horizontalMargin={false} className="-ml-px">
@@ -40,33 +51,23 @@ export default function ContributorLine({
         contributor?.earned ? formatMoneyAmount({ amount: contributor.earned }) : "-"
       }`}</Cell> */}
       <Cell height={CellHeight.Small} horizontalMargin={false}>
-        <div
-          className="rounded-full border border-white/8 bg-white/2 px-3 py-[6px]"
-          data-tooltip-id={`${contributor.login}-contributors-earned-details`}
-        >
-          <AvailableConversion
-            tooltipId={`${contributor.login}-contributors-earned-details`}
-            totalAmount={12000}
-            withWrapper
-            currencies={[
-              {
-                currency: "OP",
-                amount: 12000,
-                dollar: 1200,
-              },
-              {
-                currency: "ETH",
-                amount: 12000,
-                dollar: 1200,
-              },
-              {
-                currency: "APT",
-                amount: 12000,
-                dollar: 1200,
-              },
-            ]}
-          />
-        </div>
+        {contributor?.earned.totalAmount ? (
+          <div
+            className="rounded-full border border-white/8 bg-white/2 px-3 py-[6px]"
+            data-tooltip-id={`${contributor.login}-contributors-earned-details`}
+          >
+            <AvailableConversion
+              type="compact"
+              tooltipId={`${contributor.login}-contributors-earned-details`}
+              totalAmount={contributor.earned.totalAmount}
+              withWrapper
+              currencies={[currencies[0]]}
+              numberCurencyToShow={1}
+            />
+          </div>
+        ) : (
+          "-"
+        )}
       </Cell>
       {isProjectLeader && (
         <Cell height={CellHeight.Small} horizontalMargin={false}>
