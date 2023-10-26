@@ -68,6 +68,23 @@
       "badgeCodeReview": "Code review from",
       "badgeIssue": "Issue from",
       "rewards": "Rewarded in"
+    },
+    "panel": {
+      "title": "Contribution details",
+      "error": "We were unable to fetch the data for this contribution's rewards, please try again later.",
+      "empty": "Nothing here, this contribution may not have any rewards.",
+      "githubLink": "See on Github",
+      "contribution": {
+        "forProject": "For",
+        "createdOn": "Created __date__",
+        "linkedTo": "Linked to"
+      },
+      "rewards": {
+        "title": "Rewarded in",
+        "id": "Reward __id__",
+        "fromUser": "from",
+        "processedAt": "Processed __date__"
+      }
     }
   },
   "contributionGraph": {
@@ -513,24 +530,6 @@
       }
     }
   },
-  "rewards": {
-    "panel": {
-      "title": "Details",
-      "error": "We were unable to fetch the data for this contribution's rewards, please try again later.",
-      "empty": "Nothing here, this contribution may not have any rewards.",
-      "contribution": {
-        "forProject": "For",
-        "createdOn": "Created __date__",
-        "linkedTo": "Linked to"
-      },
-      "rewards": {
-        "title": "Rewarded in",
-        "id": "Reward __id__",
-        "fromUser": "from",
-        "processedAt": "Processed __date__"
-      }
-    }
-  },
   "profile": {
     "editButton": "Edit profile",
     "error": {
@@ -761,9 +760,19 @@
         }
       },
       "remainingBudget": {
-        "leftToSpend": "left to spend",
+        "leftToSpend": "left",
         "newReward": "Reward contributor",
-        "title": "Remaining budget"
+        "title": "Remaining budget",
+        "usdInfoBudgets": "Dollar equivalent at today's date across all your budgets",
+        "usdInfo": "Dollar equivalent at today's date",
+        "budget": {
+          "total": "Total budget",
+          "dollars": "Dollars budget",
+          "ether": "Ether budget",
+          "stark": "Stark budget",
+          "aptos": "Aptos budget",
+          "optimism": "Optimism budget"
+        }
       },
       "sidebar": {
         "backToProjects": "All projects",

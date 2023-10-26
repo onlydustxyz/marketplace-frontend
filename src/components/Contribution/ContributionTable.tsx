@@ -9,7 +9,6 @@ import { ContributionCard } from "src/components/Contribution/ContributionCard";
 import { ContributionDate } from "src/components/Contribution/ContributionDate";
 import { ContributionLinked } from "src/components/Contribution/ContributionLinked";
 import { ContributionProjectRepo } from "src/components/Contribution/ContributionProjectRepo";
-import { SpinningLogo } from "src/components/Loader/SpinningLogo";
 import Table from "src/components/Table";
 import Cell, { CellHeight } from "src/components/Table/Cell";
 import HeaderCell, { HeaderCellWidth } from "src/components/Table/HeaderCell";
@@ -34,6 +33,7 @@ import {
 import { sortContributionsByLinked } from "src/utils/sortContributionsByLinked";
 import { sortContributionsByNumber } from "src/utils/sortContributionsByNumber";
 import { useMediaQuery } from "usehooks-ts";
+import { ContributionTableSkeleton } from "./ContributionTableSkeleton";
 
 export enum TableColumns {
   Date = "date",
@@ -61,14 +61,6 @@ function TableText({ children }: PropsWithChildren) {
         </div>
       </td>
     </tr>
-  );
-}
-
-function Loader() {
-  return (
-    <div className="flex justify-center py-24">
-      <SpinningLogo />
-    </div>
   );
 }
 
@@ -126,10 +118,6 @@ export function ContributionTable({
   }, [contributions, sort]);
 
   function renderMobileContent() {
-    if (loading) {
-      return <Loader />;
-    }
-
     if (error) {
       return (
         <div className="py-6">
@@ -163,7 +151,7 @@ export function ContributionTable({
         {contributions?.map(contribution => {
           return (
             <div
-              key={contribution.id}
+              key={`${contribution.id}-${contribution.project?.id}`}
               className={cn("rounded-xl", {
                 "bg-whiteFakeOpacity-5/95 lg:bg-none": !fullTable,
               })}
@@ -190,16 +178,6 @@ export function ContributionTable({
   }
 
   function renderDesktopContent() {
-    if (loading) {
-      return (
-        <tr>
-          <td colSpan={4} className="pt-6">
-            <Loader />
-          </td>
-        </tr>
-      );
-    }
-
     if (error) {
       return <TableText>{T("contributions.table.error")}</TableText>;
     }
@@ -218,22 +196,22 @@ export function ContributionTable({
     }
 
     return memoizedContributions?.map(contribution => {
+      const lineId = `${contribution.id}-${contribution.project?.id}`;
       const lineDate = status === GithubContributionStatus.InProgress ? contribution.createdAt : contribution.closedAt;
-
       const { status: contributionStatus } = contribution.githubPullRequest ??
         contribution.githubIssue ??
         contribution.githubCodeReview ?? { status: GithubPullRequestStatus.Open };
       const { draft } = contribution?.githubPullRequest ?? {};
 
       return (
-        <Line key={contribution.id}>
+        <Line key={lineId}>
           <Cell height={CellHeight.Compact}>
             <ContributionDate
-              id={contribution.id ?? ""}
+              id={lineId}
               type={contribution.type as GithubContributionType}
               status={draft ? GithubPullRequestDraft.Draft : (contributionStatus as GithubItemStatus)}
               date={new Date(lineDate)}
-              tooltipProps={{ variant: TooltipVariant.Blue, position: TooltipPosition.TopStart, className: "text-sm" }}
+              tooltipProps={{ variant: TooltipVariant.Blue, position: TooltipPosition.TopStart }}
             />
           </Cell>
           <Cell height={CellHeight.Compact}>
@@ -253,7 +231,9 @@ export function ContributionTable({
     });
   }
 
-  return (
+  return loading ? (
+    <ContributionTableSkeleton />
+  ) : (
     <section
       className={cn("overflow-hidden rounded-2xl border-greyscale-50/8", {
         "border bg-whiteFakeOpacity-5/95 shadow-2xl": fullTable,

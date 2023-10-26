@@ -81,7 +81,6 @@ export enum PaymentStatus {
   ACCEPTED = "ACCEPTED",
   WAITING_PAYMENT = "WAITING_PAYMENT",
 }
-
 export function getPaymentStatusOrder({
   status,
   pendingPayoutInfo,

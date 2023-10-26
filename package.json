@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "vite --host",
     "dev:develop": "yarn dev --mode develop",
-    "build": "tsc && vite build",
+    "build": "scripts/generate-api-types.sh && tsc && vite build",
     "preview": "vite preview",
     "test": "vitest",
     "lint": "eslint '**/*.{js,jsx,json,ts,tsx}' --max-warnings=0 --fix",
