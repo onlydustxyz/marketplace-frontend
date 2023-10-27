@@ -289,7 +289,26 @@ export type Reward = {
   };
 };
 
-export type ContributorT = components["schemas"]["ContributorPageItemResponse"];
+export type ContributorT = {
+  avatarUrl: string | null;
+  codeReviewToReward: number | null;
+  contributionCount: number;
+  contributionToRewardCount: number | null; // not rewarded yet
+  earned: {
+    details?: {
+      currency: "APT" | "ETH" | "OP" | "STARK" | "USD";
+      totalAmount: number;
+      totalDollarsEquivalent?: number;
+    };
+    totalAmount?: number;
+  };
+  githubUserId: number;
+  issueToReward: number | null;
+  login: string;
+  pullRequestToReward: number | null;
+  rewardCount: number; // already rewarded
+  isRegistered?: boolean;
+};
 
 export type Contributors = {
   contributors: ContributorT[];
