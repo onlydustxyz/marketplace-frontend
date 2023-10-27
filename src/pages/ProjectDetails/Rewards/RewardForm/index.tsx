@@ -13,21 +13,27 @@ import {
   useUnrewardedContributionsQuery,
 } from "src/__generated/graphql";
 import { useCommands } from "src/providers/Commands";
+import { ProjectBudgetType } from "src/pages/ProjectDetails/Rewards/RemainingBudget/RemainingBudget";
+import { useRestfulData } from "src/hooks/useRestfulData/useRestfulData";
+import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
+import Loader from "src/components/Loader";
 
 const RewardForm: React.FC = () => {
   const { T } = useIntl();
   const showToaster = useShowToaster();
   const navigate = useNavigate();
-  const { projectId, projectKey, budget } = useOutletContext<{
+  const { projectId, projectKey } = useOutletContext<{
     projectId: string;
     projectKey: string;
-    budget: {
-      remainingAmount: number;
-      initialAmount: number;
-    };
   }>();
 
   const { notify } = useCommands();
+
+  const { data: projectBudget, isLoading: isBudgetLoading } = useRestfulData<ProjectBudgetType>({
+    resourcePath: ApiResourcePaths.GET_PROJECT_BUDGETS,
+    pathParam: { projectId },
+    method: "GET",
+  });
 
   const [requestNewPayment, { loading: requestNewPaymentMutationLoading }] = useRequestPaymentMutation({
     context: { graphqlErrorDisplay: "toaster" },
@@ -40,7 +46,7 @@ const RewardForm: React.FC = () => {
 
   const formMethods = useForm<Inputs>({
     defaultValues: {
-      remainingBudget: budget?.remainingAmount,
+      remainingBudget: projectBudget?.remainingDollarsEquivalent,
       contributorHandle: null,
     },
     mode: "all",
@@ -107,16 +113,23 @@ const RewardForm: React.FC = () => {
           onSubmit={handleSubmit(onValidSubmit)}
           className="flex w-full flex-col justify-between gap-6"
         >
-          <View
-            budget={budget}
-            projectId={projectId}
-            onWorkEstimationChange={onWorkEstimationChange}
-            onWorkItemsChange={onWorkItemsChange}
-            contributor={contributor}
-            setContributor={setContributor}
-            unpaidContributions={data?.contributions as ContributionFragment[] | null | undefined}
-            requestNewPaymentMutationLoading={requestNewPaymentMutationLoading}
-          />
+          {!isBudgetLoading ? (
+            <View
+              budget={{
+                remainingAmount: projectBudget?.remainingDollarsEquivalent,
+                initialAmount: projectBudget?.initialDollarsEquivalent,
+              }}
+              projectId={projectId}
+              onWorkEstimationChange={onWorkEstimationChange}
+              onWorkItemsChange={onWorkItemsChange}
+              contributor={contributor}
+              setContributor={setContributor}
+              unpaidContributions={data?.contributions as ContributionFragment[] | null | undefined}
+              requestNewPaymentMutationLoading={requestNewPaymentMutationLoading}
+            />
+          ) : (
+            <Loader />
+          )}
         </form>
       </FormProvider>
     </>

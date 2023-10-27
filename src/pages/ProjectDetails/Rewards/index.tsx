@@ -1,4 +1,5 @@
 import { Outlet, useOutletContext } from "react-router-dom";
+import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
 import { useRestfulData } from "src/hooks/useRestfulData/useRestfulData";
 
 import { Project } from "src/types";
@@ -12,7 +13,8 @@ export default function Rewards() {
   const { id: projectId, slug: projectKey } = project;
 
   const { data: projectBudget, isLoading: isBudgetLoading } = useRestfulData({
-    resourcePath: `/api/v1/projects/${projectId}/budgets`,
+    resourcePath: ApiResourcePaths.GET_PROJECT_BUDGETS,
+    pathParam: { projectId },
     method: "GET",
   });
 
