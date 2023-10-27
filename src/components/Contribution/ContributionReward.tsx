@@ -11,7 +11,7 @@ export function ContributionReward({
   rewards,
 }: {
   id: string;
-  rewards: { paymentId: string; paymentRequest: { recipientId: number } }[];
+  rewards: { paymentId: string; paymentRequest: { projectId: string } }[];
 }) {
   const { T } = useIntl();
   const count = rewards.length;
@@ -33,7 +33,7 @@ export function ContributionReward({
                   type="button"
                   className="hover:underline"
                   onClick={() => {
-                    open({ rewardId: reward.paymentId, recipientId: reward.paymentRequest.recipientId });
+                    open({ rewardId: reward.paymentId, projectId: reward.paymentRequest.projectId });
                   }}
                 >
                   {formatPaymentId(reward.paymentId)}
@@ -50,7 +50,7 @@ export function ContributionReward({
         onClick={() => {
           if (count === 1) {
             const [reward] = rewards;
-            open({ rewardId: reward.paymentId, recipientId: reward.paymentRequest.recipientId });
+            open({ rewardId: reward.paymentId, projectId: reward.paymentRequest.projectId });
           }
         }}
       >

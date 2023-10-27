@@ -44,7 +44,7 @@ query GetAllContributions($orderBy: [ContributionsOrderBy!], $where: Contributio
     rewardItems {
       paymentId
       paymentRequest {
-        recipientId
+        projectId
       }
     }
   }
