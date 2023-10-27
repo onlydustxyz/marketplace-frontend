@@ -20,39 +20,118 @@ export interface AvailableConversionCurrency {
 
 export type AvailableConversion = {
   tooltipId?: string;
-  currencies: AvailableConversionCurrency[];
-  withWrapper?: boolean;
+  currencies?: AvailableConversionCurrency[];
+  currency?: AvailableConversionCurrency;
+  totalAmount?: number;
   numberCurencyToShow?: number;
-} & (AvailableConversionCompact | AvailableConversionFull | AvailableConversionLight);
+};
 
-type AvailableConversionCompact = {
-  type: "compact";
-  totalAmount: number;
+const ConversionAmount = ({ amount }: { amount: number | undefined }) => {
+  if (!amount) {
+    return null;
+  }
+
+  return (
+    <p className="font-walsheim text-sm font-bold leading-[14px]">
+      {formatMoneyAmount({ amount: amount, currency: Currency.USD })}
+    </p>
+  );
 };
-type AvailableConversionFull = {
-  type: "full";
-  totalAmount: number;
-  dollar: number;
+
+const ConversionDollar = ({ dollar }: { dollar: number | undefined }) => {
+  if (!dollar) {
+    return null;
+  }
+
+  return (
+    <p className="font-walsheim text-[10px] text-spaceBlue-200">
+      {`~${formatMoneyAmount({ amount: dollar, currency: Currency.USD })}`}
+    </p>
+  );
 };
-type AvailableConversionLight = {
-  type: "light";
+
+const ConversionTooltip = ({
+  tooltipId,
+  currencies,
+}: {
+  tooltipId: string | undefined;
+  currencies?: AvailableConversionCurrency[];
+}) => {
+  const { T } = useIntl();
+
+  if (!tooltipId) {
+    return null;
+  }
+
+  return (
+    <Tooltip id={tooltipId} clickable position={TooltipPosition.Top} variant={Variant.Blue}>
+      <div className="flex flex-col gap-2">
+        <p className="font-walsheim text-sm font-medium text-white">{T("availableConversion.tooltip.title")}</p>
+        {currencies && (
+          <div className="flex flex-col gap-1">
+            {currencies.map(currency => (
+              <div key={currency.currency} className="flex items-center justify-start gap-1">
+                <Chip>
+                  <CurrencyIcons currency={currency.currency} className="h-4 w-4" />
+                </Chip>
+                <div key={currency.currency} className="flex items-center justify-start gap-[2px]">
+                  <p className="font-walsheim text-xs text-white">
+                    {formatMoneyAmount({ amount: currency.amount, currency: currency.currency })}
+                  </p>
+                  {currency.currency !== Currency.USD && (
+                    <p className="font-walsheim text-[10px] text-spaceBlue-200">
+                      {currency.dollar
+                        ? `~${formatMoneyAmount({ amount: currency.dollar, currency: Currency.USD })}`
+                        : T("availableConversion.tooltip.na")}
+                    </p>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </Tooltip>
+  );
 };
 
 export const AvailableConversion: FC<AvailableConversion> = ({
   tooltipId,
   currencies,
-  withWrapper,
   numberCurencyToShow = 3,
-  ...variant
+  currency,
+  totalAmount,
 }) => {
-  const { T } = useIntl();
-  const tooltipIdProps = tooltipId && !withWrapper ? { "data-tooltip-id": tooltipId } : {};
+  const tooltipIdProps = useMemo(() => {
+    const props: { "data-tooltip-id"?: string; "data-tooltip-hidden"?: boolean } = {};
+
+    if (tooltipId) {
+      props["data-tooltip-id"] = tooltipId;
+    }
+
+    /** if we have only one currency and the she is USD don't show the tooltips */
+    if (!currencies && currency) {
+      props["data-tooltip-hidden"] = currency.currency === Currency.USD;
+    }
+
+    return props;
+  }, []);
+
+  const currencyArray = useMemo(() => {
+    if (currencies) return currencies;
+
+    if (currency) {
+      return [currency];
+    }
+
+    return [];
+  }, [currencies]);
 
   return (
     <>
       <div {...tooltipIdProps} className="flex flex-row items-center justify-start gap-1">
         <Chips number={numberCurencyToShow}>
-          {currencies.map(currency => (
+          {currencyArray?.map(currency => (
             <div key={currency.currency}>
               <Chip solid>
                 <CurrencyIcons currency={currency.currency} className="h-4 w-4" />
@@ -60,45 +139,10 @@ export const AvailableConversion: FC<AvailableConversion> = ({
             </div>
           ))}
         </Chips>
-        {(variant.type === "full" || variant.type === "compact") && variant.totalAmount ? (
-          <p className="font-walsheim text-sm font-bold leading-[14px]">
-            {formatMoneyAmount({ amount: variant.totalAmount, currency: Currency.USD })}
-          </p>
-        ) : null}
-        {variant.type === "full" && variant.dollar ? (
-          <p className="font-walsheim text-[10px] text-spaceBlue-200">
-            {`~${formatMoneyAmount({ amount: variant.dollar, currency: Currency.USD })}`}
-          </p>
-        ) : null}
+        <ConversionAmount amount={totalAmount || currency?.amount} />
+        <ConversionDollar dollar={currency?.currency !== Currency.USD ? currency?.dollar : undefined} />
       </div>
-      {tooltipId && (
-        <Tooltip id={tooltipId} clickable position={TooltipPosition.Top} variant={Variant.Blue}>
-          <div className="flex flex-col gap-2">
-            <p className="font-walsheim text-sm font-medium text-white">{T("availableConversion.tooltip.title")}</p>
-            <div className="flex flex-col gap-1">
-              {currencies.map(currency => (
-                <div key={currency.currency} className="flex items-center justify-start gap-1">
-                  <Chip>
-                    <CurrencyIcons currency={currency.currency} className="h-4 w-4" />
-                  </Chip>
-                  <div key={currency.currency} className="flex items-center justify-start gap-[2px]">
-                    <p className="font-walsheim text-xs text-white">
-                      {formatMoneyAmount({ amount: currency.amount, currency: currency.currency })}
-                    </p>
-                    {currency.currency !== Currency.USD && (
-                      <p className="font-walsheim text-[10px] text-spaceBlue-200">
-                        {currency.dollar
-                          ? `~${formatMoneyAmount({ amount: currency.dollar, currency: Currency.USD })}`
-                          : T("availableConversion.tooltip.na")}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </Tooltip>
-      )}
+      <ConversionTooltip tooltipId={tooltipId} currencies={currencies} />
     </>
   );
 };

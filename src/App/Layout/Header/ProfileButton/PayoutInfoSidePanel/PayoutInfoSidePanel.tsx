@@ -47,10 +47,6 @@ export default function PayoutInfoSidePanel({ open, setOpen }: Props) {
     reset(formData);
   };
 
-  if (isError) {
-    return <ErrorFallback />;
-  }
-
   return (
     <SidePanel open={open} setOpen={setOpen}>
       <div className="flex h-full flex-col">

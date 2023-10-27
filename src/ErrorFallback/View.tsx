@@ -3,19 +3,26 @@ import { useIntl } from "src/hooks/useIntl";
 import Button, { ButtonType } from "src/components/Button";
 import ArrowLeftSLine from "src/icons/ArrowLeftSLine";
 import Refresh from "src/icons/Refresh";
+import { cn } from "src/utils/cn";
 
 type Props = {
+  isFixed?: boolean;
   onBackClicked?: () => void;
   onRefreshClicked?: () => void;
 };
 
-export default function View({ onBackClicked, onRefreshClicked }: Props) {
+export default function View({ onBackClicked, onRefreshClicked, isFixed }: Props) {
   const { T } = useIntl();
 
   const [begin, link, end] = T("state.error.description").split("_");
 
   return (
-    <div className="flex min-h-[calc(100dvh)] flex-col items-center justify-center gap-12 text-center">
+    <div
+      className={cn(
+        "flex min-h-[calc(100dvh)] flex-col items-center justify-center gap-12 text-center",
+        isFixed && "fixed left-0 top-0 min-w-[calc(100dvw)] bg-black"
+      )}
+    >
       <OnlyDustCrashedLogo />
       <div className="flex w-72 flex-col gap-6">
         <div className="font-belwe text-3xl font-normal text-greyscale-50">{T("state.error.title")}</div>

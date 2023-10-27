@@ -4,11 +4,11 @@ import Cell, { CellHeight } from "src/components/Table/Cell";
 import { withTooltip } from "src/components/Tooltip";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import SendPlane2Line from "src/icons/SendPlane2Line";
-import { formatMoneyAmount } from "src/utils/money";
 import Contributor from "src/components/Contributor";
 import StackLine from "src/icons/StackLine";
-import { ContributorT } from "src/types";
-import { AvailableConversion, AvailableConversionCurrency } from "src/components/Currency/AvailableConversion";
+import { ContributorT, Currency } from "src/types";
+import { AvailableConversionCurrency } from "src/components/Currency/AvailableConversion";
+import { AvailableConversion } from "src/components/Currency/AvailableConversion";
 import { useMemo } from "react";
 
 type Props = {
@@ -28,10 +28,10 @@ export default function ContributorLine({
 
   const currencies: AvailableConversionCurrency[] = useMemo(
     () =>
-      (contributor.earned.details || []).map(currencies => ({
-        currency: currencies.currency,
-        amount: currencies.totalAmount,
-        dollar: currencies.totalDollarsEquivalent,
+      (contributor.earned.details || []).map(currency => ({
+        currency: currency.currency,
+        amount: currency.totalAmount,
+        dollar: currency.totalDollarsEquivalent,
       })),
     [contributor]
   );
@@ -47,9 +47,6 @@ export default function ContributorLine({
       <Cell height={CellHeight.Small} horizontalMargin={false}>
         {contributor.rewardCount || "-"}
       </Cell>
-      {/* <Cell height={CellHeight.Small} horizontalMargin={false}>{`${
-        contributor?.earned ? formatMoneyAmount({ amount: contributor.earned }) : "-"
-      }`}</Cell> */}
       <Cell height={CellHeight.Small} horizontalMargin={false}>
         {contributor?.earned.totalAmount ? (
           <div
@@ -57,12 +54,9 @@ export default function ContributorLine({
             data-tooltip-id={`${contributor.login}-contributors-earned-details`}
           >
             <AvailableConversion
-              type="compact"
               tooltipId={`${contributor.login}-contributors-earned-details`}
               totalAmount={contributor.earned.totalAmount}
-              withWrapper
-              currencies={[currencies[0]]}
-              numberCurencyToShow={1}
+              currencies={currencies}
             />
           </div>
         ) : (

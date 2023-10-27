@@ -8,7 +8,8 @@ import ContributionGraph from "./ContributionGraph";
 import { withTooltip } from "src/components/Tooltip";
 import ArrowRightDownLine from "src/icons/ArrowRightDownLine";
 import ArrowRightLine from "src/icons/ArrowRightLine";
-import { AvailableConversion, AvailableConversionCurrency } from "src/components/Currency/AvailableConversion";
+import { AvailableConversionCurrency } from "src/components/Currency/AvailableConversion";
+import { AvailableConversion } from "src/components/Currency/AvailableConversion";
 import { Profile } from "src/hooks/useRestfulProfile/useRestfulProfile";
 import { useMemo } from "react";
 
