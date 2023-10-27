@@ -1,5 +1,6 @@
 import { ComponentProps } from "react";
 import { RewardBudget } from "src/components/RewardBudget/RewardBudget";
+import Tooltip from "src/components/Tooltip";
 
 export default {
   title: "RewardBudget",
@@ -19,23 +20,23 @@ const defaultProps: ComponentProps<typeof RewardBudget> = {
     {
       currency: "APT",
       initialAmount: 20,
-      initialDollarsEquivalent: 20,
+      initialDollarsEquivalent: 2000,
       remaining: 20,
-      remainingDollarsEquivalent: 20,
+      remainingDollarsEquivalent: 2000,
     },
     {
       currency: "ETH",
       initialAmount: 20,
-      initialDollarsEquivalent: 20,
+      initialDollarsEquivalent: 2000,
       remaining: 20,
-      remainingDollarsEquivalent: 20,
+      remainingDollarsEquivalent: 2000,
     },
     {
       currency: "USD",
       initialAmount: 20,
-      initialDollarsEquivalent: 20,
+      initialDollarsEquivalent: 2000,
       remaining: 20,
-      remainingDollarsEquivalent: 20,
+      remainingDollarsEquivalent: 2000,
     },
   ],
 };
@@ -44,6 +45,7 @@ export const Default = {
   render: (args: ComponentProps<typeof RewardBudget>) => (
     <div style={{ width: 384 }}>
       <RewardBudget {...defaultProps} {...args} />
+      <Tooltip />
     </div>
   ),
 };

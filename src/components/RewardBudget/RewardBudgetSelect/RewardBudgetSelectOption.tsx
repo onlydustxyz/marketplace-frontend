@@ -5,6 +5,7 @@ import { formatMoneyAmount } from "src/utils/money";
 import { Currency } from "src/types";
 import { cn } from "src/utils/cn";
 import { WorkEstimationBudgetDetails } from "src/components/RewardBudget/RewardBudget.type";
+import { Chip } from "src/components/Chip/Chip";
 
 export interface RewardBudgetSelectOptionProps {
   budget: WorkEstimationBudgetDetails;
@@ -25,7 +26,9 @@ export const RewardBudgetSelectOption = ({ budget, last }: RewardBudgetSelectOpt
     >
       <div className="flex w-full flex-row items-center justify-between gap-2">
         <div className="flex flex-row items-center justify-start gap-3">
-          <CurrencyIcons currency={budget.currency} className="h-4 w-4" />
+          <Chip solid>
+            <CurrencyIcons currency={budget.currency} className="h-4 w-4" />
+          </Chip>
           <p>
             <span className="font-walsheim text-sm font-normal">{T(`currencies.currency.${budget.currency}`)}</span>
             &nbsp;

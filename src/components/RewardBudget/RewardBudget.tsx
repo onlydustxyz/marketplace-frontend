@@ -6,6 +6,9 @@ import { FieldInfoMessage } from "src/components/New/Field/InfoMessage";
 import { useIntl } from "src/hooks/useIntl";
 import InformationLine from "src/icons/InformationLine";
 import RewardBudgetDetails from "./Details/RewardBudgetDetails";
+import Button from "src/components/Button";
+import { Width } from "src/components/Button";
+import CheckLine from "src/icons/CheckLine";
 
 // default value order (1) Dollars, (2) Ether, (3) Stark, (4) Optimism, (5) Aptos
 // If project has only 1 currency left with non-zero amount, disable the select behaviour and display budget / currency as a non editable input
@@ -19,7 +22,7 @@ import RewardBudgetDetails from "./Details/RewardBudgetDetails";
 
 export const RewardBudget: FC<RewardBudgetProps> = props => {
   const { T } = useIntl();
-
+  const disabledButton = false;
   const [selectedBudget, setSelectedBudget] = useState<WorkEstimationBudgetDetails>(props.budgets[0]);
   const [amount, setAmount] = useState<number>(0);
 
@@ -66,7 +69,12 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
           remainingDollarsEquivalent={props.remainingDollarsEquivalent}
         />
       </div>
-      <div className="flex w-full flex-col px-6 pb-6 pt-4">Section 3</div>
+      <div className="flex w-full flex-col px-6 pb-6 pt-4">
+        <Button width={Width.Full} disabled={disabledButton}>
+          <CheckLine />
+          {T("rewardBudget.submit")}
+        </Button>
+      </div>
     </div>
   );
 };

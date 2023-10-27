@@ -877,10 +877,13 @@
     }
   },
   "rewardBudget": {
+    "submit": "Confirm reward",
     "detail": {
       "remaining": "Remaining budget",
       "this": "This reward",
-      "Left": "Left to spend"
+      "left": "Left to spend",
+      "exceedsBudgetTooltip": "Not enough budget",
+      "dollarTooltip": "Dollars equivalent at today’s date."
     }
   },
   "seniority": {
