@@ -10,6 +10,7 @@ import { pretty } from "src/utils/id";
 import { formatList } from "src/utils/list";
 import { formatMoneyAmount } from "src/utils/money";
 import { MyPayoutInfoType, MyRewardsPendingInvoiceType } from ".";
+import InfoIcon from "src/assets/icons/InfoIcon";
 
 type Props = {
   githubUserId: number;
@@ -42,12 +43,18 @@ export default function InvoiceSubmission({ paymentRequests, githubUserId, markI
   }, [isClosed, isSubmitted, markInvoiceAsReceived]);
 
   return (
-    <Card padded={false} className="px-6 py-5">
+    <Card padded={false} className="bg-noise-light px-6 py-5 hover:bg-right">
       <div className="flex flex-row gap-6">
         <div className="flex flex-1 flex-col gap-1 font-walsheim text-white">
-          <span className="text-lg font-semibold">{T("invoiceSubmission.title")}</span>
+          <span className="text-lg font-semibold">
+            <span className="mr-2 inline-flex text-orange-500">
+              <InfoIcon />
+            </span>
+            {T("invoiceSubmission.title")}
+          </span>
           <span className="text-sm font-normal">{T("invoiceSubmission.text", { count: paymentRequests.length })}</span>
         </div>
+
         <MemoizedSlider onSubmit={onSliderSubmit} onClose={onSliderClose} hiddenFields={hiddenFields} />
       </div>
     </Card>
