@@ -9,11 +9,11 @@ import { useIntl } from "src/hooks/useIntl";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { withTooltip } from "src/components/Tooltip";
 import PrivateTag from "src/components/PrivateTag";
-
+import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 export type Project = {
   id: string;
-  key: string;
-  logoUrl: string;
+  slug: string;
+  logoUrl: string | undefined;
   name: string;
   contributorCount: number;
   totalGranted: number;
@@ -41,7 +41,7 @@ export default function ProjectCard({ project }: { project: Project }) {
     <Card selectable padded={false} withBg={false} className="flex h-full flex-col bg-noise-light">
       <div className="flex h-full flex-col gap-3 p-4">
         <div className="relative w-fit">
-          <RoundedImage src={logoUrl} alt={name} />
+          <RoundedImage src={logoUrl || onlyDustLogo} alt={name} />
           {private_ && (
             <div className="absolute -bottom-2.5 -right-2.5">
               <PrivateTag />

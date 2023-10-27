@@ -1,5 +1,6 @@
 import { GetAllContributionsQuery, GithubIssueStatus } from "src/__generated/graphql";
 import { SortingFields } from "./hooks/useRewardSorting";
+import { components } from "./__generated/api";
 
 export type Branded<T, B> = T & { __brand: B };
 
@@ -83,7 +84,6 @@ export enum PaymentStatus {
   PENDING_SIGNUP = "PENDING_SIGNUP",
   PROCESSING = "PROCESSING",
 }
-
 export function getPaymentStatusOrder({
   status,
   pendingPayoutInfo,
@@ -294,7 +294,14 @@ export type ContributorT = {
   codeReviewToReward: number | null;
   contributionCount: number;
   contributionToRewardCount: number | null; // not rewarded yet
-  earned: number | null;
+  earned: {
+    details?: {
+      currency: "APT" | "ETH" | "OP" | "STARK" | "USD";
+      totalAmount: number;
+      totalDollarsEquivalent?: number;
+    };
+    totalAmount?: number;
+  };
   githubUserId: number;
   issueToReward: number | null;
   login: string;
