@@ -1,4 +1,4 @@
-type QueryParam = {
+export type QueryParam = {
   key: string;
   value: Array<string | number | boolean>;
 };

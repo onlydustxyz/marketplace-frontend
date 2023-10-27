@@ -6,6 +6,8 @@ export enum ApiResourcePaths {
   GET_PROJECT_CONTRIBUTORS = "/api/v1/projects/{{id}}/contributors",
   GET_MY_PAYOUT_INFO = "/api/v1/me/payout-info",
   GET_MY_REWARDS = "/api/v1/me/rewards",
+  GET_MY_REWARD_BY_ID = "/api/v1/me/rewards/{{id}}",
+  GET_MY_REWARD_ITEMS_BY_ID = "/api/v1/me/rewards/{{id}}/reward-items",
   GET_MY_REWARDS_AMOUNTS = "/api/v1/me/rewards/amounts",
   GET_MY_REWARDS_PENDING_INVOICE = "/api/v1/me/rewards/pending-invoice",
   GET_PROJECT_REWARDS_LIST = "/api/v1/projects/{{id}}/rewards",

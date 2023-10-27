@@ -2,36 +2,53 @@ import { useInfiniteQuery, UseInfiniteQueryResult } from "@tanstack/react-query"
 import { components } from "src/__generated/api";
 import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
 import { PageData, PagesData } from "src/types";
-import { getEndpointUrl, QueryParam } from "src/utils/getEndpointsUrl";
+import { getEndpointUrl, QueryParam } from "src/utils/getEndpointUrl";
 import { useHttpOptions } from "./useHttpOptions";
 
 type RewardPageData = PageData<{ rewardItems: components["schemas"]["RewardItemResponse"][] }>;
 type RewardsPagesData = PagesData<RewardPageData>;
 
 type Props = {
-  projectId: string;
   rewardId: string;
   queryParams?: QueryParam[];
   enabled?: boolean;
 };
 
-export default function useInfiniteProjectRewardItems({
+type ProjectProps = {
+  projectId: string;
+  isMine?: never;
+} & Props;
+
+type MyProps = {
+  projectId?: never;
+  isMine: true;
+} & Props;
+
+export default function useInfiniteRewardItems({
   projectId,
   rewardId,
   queryParams,
   enabled,
-}: Props): UseInfiniteQueryResult<RewardsPagesData, unknown> {
+  isMine,
+}: ProjectProps | MyProps): UseInfiniteQueryResult<RewardsPagesData, unknown> {
   const options = useHttpOptions("GET");
 
+  const queryKey = isMine
+    ? ["my-reward-items", rewardId, queryParams]
+    : ["project-reward-items", projectId, rewardId, queryParams];
+
+  const resourcePath = isMine ? ApiResourcePaths.GET_MY_REWARD_ITEMS_BY_ID : ApiResourcePaths.GET_PROJECT_REWARD_ITEMS;
+  const pathParam = isMine ? rewardId : { projectId, rewardId };
+
   return useInfiniteQuery({
-    queryKey: ["project-reward-items", projectId, rewardId, queryParams],
+    queryKey,
     queryFn: ({ pageParam }) =>
       fetch(
         getEndpointUrl({
-          resourcePath: ApiResourcePaths.GET_PROJECT_REWARD_ITEMS,
+          resourcePath,
           pageParam,
           pageSize: 10,
-          pathParam: { projectId, rewardId },
+          pathParam,
           queryParams,
         }),
         options

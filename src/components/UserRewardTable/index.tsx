@@ -67,7 +67,7 @@ const UserRewardTable: React.FC<PropsType> = ({
         />
       )}
       <SidePanel open={sidePanelOpen} setOpen={setSidePanelOpen}>
-        {selectedReward && <RewardSidePanel rewardId={selectedReward.id} projectId={selectedReward.projectId} />}
+        {selectedReward && <RewardSidePanel rewardId={selectedReward.id} isMine />}
       </SidePanel>
     </>
   );
