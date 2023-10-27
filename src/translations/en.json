@@ -215,7 +215,9 @@
       "ETH": "Ethereum",
       "OP": "Optimism",
       "STARK": "Starknet",
-      "USD": "Dollars"
+      "USD": "Dollars",
+      "label": "Reward granted on __currency__ network.",
+      "label_dollar": "Reward granted on the Ethereum network or regular banking system depending on user preferences"
     }
   },
   "searchBar": {
@@ -872,6 +874,13 @@
       "REPO_COUNT": "Number of repositories",
       "CONTRIBUTOR_COUNT": "Number of contributors",
       "RANK": "Trending projects"
+    }
+  },
+  "rewardBudget": {
+    "detail": {
+      "remaining": "Remaining budget",
+      "this": "This reward",
+      "Left": "Left to spend"
     }
   },
   "seniority": {

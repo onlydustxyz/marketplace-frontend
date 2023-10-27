@@ -14,10 +14,12 @@ export const RewardBudgetSelectValue = ({ value }: RewardBudgetSelectValueProps)
   return (
     <Listbox.Button className="flex w-full flex-row items-center justify-between gap-2 rounded-2xl border border-greyscale-50/8 bg-white/5 px-4 py-[12px] shadow-light">
       <div className="flex flex-row items-center justify-start gap-2">
-        <CurrencyIcons currency={value.currency} className=" h-4 w-4" />
-        <label className="font-walsheim text-base font-bold">{T(`currencies.currency.${value.currency}`)}</label>
+        <CurrencyIcons currency={value.currency} className="h-4 w-4" />
+        <label className="font-walsheim text-base font-bold leading-[16px]">
+          {T(`currencies.currency.${value.currency}`)}
+        </label>
       </div>
-      <ArrowDownSLine className="text-2xl text-spaceBlue-200" />
+      <ArrowDownSLine className="text-2xl leading-[24px] text-spaceBlue-200" />
     </Listbox.Button>
   );
 };

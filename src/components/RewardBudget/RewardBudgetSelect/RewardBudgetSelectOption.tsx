@@ -34,14 +34,20 @@ export const RewardBudgetSelectOption = ({ budget, last }: RewardBudgetSelectOpt
             </span>
           </p>
         </div>
-        {budget.remainingDollarsEquivalent && budget.currency !== Currency.USD ? (
-          <p className="font-walsheim text-sm font-normal">
-            {`(${formatMoneyAmount({
-              amount: budget.remainingDollarsEquivalent,
-              currency: Currency.USD,
-            })})`}
-          </p>
-        ) : null}
+        {budget.currency !== Currency.USD && (
+          <>
+            {budget.remainingDollarsEquivalent ? (
+              <p className="font-walsheim text-sm font-normal">
+                {`(${formatMoneyAmount({
+                  amount: budget.remainingDollarsEquivalent,
+                  currency: Currency.USD,
+                })})`}
+              </p>
+            ) : (
+              T("availableConversion.tooltip.na")
+            )}
+          </>
+        )}
       </div>
     </Listbox.Option>
   );

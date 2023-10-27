@@ -42,7 +42,7 @@ const defaultProps: ComponentProps<typeof RewardBudget> = {
 
 export const Default = {
   render: (args: ComponentProps<typeof RewardBudget>) => (
-    <div style={{ width: 320 }}>
+    <div style={{ width: 384 }}>
       <RewardBudget {...defaultProps} {...args} />
     </div>
   ),
