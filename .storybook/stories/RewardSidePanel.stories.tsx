@@ -118,7 +118,7 @@ export const Default = {
         return;
       }}
     >
-      <View {...args} {...props} {...props.payoutStatus} />
+      <View {...args} {...props} {...props.payoutStatus} isMine />
     </SidePanel>
   ),
 };
