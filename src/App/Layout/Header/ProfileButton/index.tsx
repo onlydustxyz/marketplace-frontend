@@ -7,6 +7,7 @@ import { useMediaQuery } from "usehooks-ts";
 import ViewMobile from "./ViewMobile";
 import { useRestfulData } from "src/hooks/useRestfulData/useRestfulData";
 import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
+import { components } from "src/__generated/api";
 
 const ProfileButton = () => {
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
@@ -19,7 +20,7 @@ const ProfileButton = () => {
   });
   const avatarUrl = profile?.userProfiles.at(0)?.avatarUrl || "";
 
-  const { data: userInfo } = useRestfulData({
+  const { data: userInfo } = useRestfulData<components["schemas"]["GetMeResponse"]>({
     resourcePath: ApiResourcePaths.GET_USER,
     method: "GET",
   });
