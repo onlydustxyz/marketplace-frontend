@@ -20,7 +20,8 @@ export function EarningWrapper() {
 
   if (isLoading) {
     return (
-      <div className="grid w-full gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid w-full gap-4 md:grid-cols-2 lg:grid-cols-6">
+        <Skeleton variant="earnedRewards" />
         <Skeleton variant="earnedRewards" />
         <Skeleton variant="earnedRewards" />
         <Skeleton variant="earnedRewards" />

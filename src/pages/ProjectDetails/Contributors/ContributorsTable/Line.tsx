@@ -35,8 +35,6 @@ export default function ContributorLine<C extends components["schemas"]["Contrib
     [contributor]
   );
 
-  console.log({ currencies });
-
   return (
     <Line key={contributor.login} className="group h-10">
       <Cell height={CellHeight.Small} horizontalMargin={false} className="-ml-px">
@@ -50,10 +48,7 @@ export default function ContributorLine<C extends components["schemas"]["Contrib
       </Cell>
       <Cell height={CellHeight.Small} horizontalMargin={false}>
         {contributor?.earned.totalAmount ? (
-          <div
-            className="rounded-full border border-white/8 bg-white/2 px-3 py-[6px]"
-            data-tooltip-id={`${contributor.login}-contributors-earned-details`}
-          >
+          <div className="rounded-full border border-white/8 bg-white/2 px-3 py-[6px]">
             <AvailableConversion
               tooltipId={`${contributor.login}-contributors-earned-details`}
               totalAmount={contributor.earned.totalAmount}

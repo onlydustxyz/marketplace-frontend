@@ -58,9 +58,8 @@ export function EarningCard({ amount, className }: Props) {
               className="ml-1 mt-2 font-walsheim text-xs text-spaceBlue-200"
               {...withTooltip(T("project.details.remainingBudget.usdInfo"))}
             >
-              ~
               {amount.totalDollarsEquivalent
-                ? formatMoneyAmount({ amount: amount.totalDollarsEquivalent, currency: Currency.USD })
+                ? `~${formatMoneyAmount({ amount: amount.totalDollarsEquivalent, currency: Currency.USD })}`
                 : null}
             </div>
           ) : null}
