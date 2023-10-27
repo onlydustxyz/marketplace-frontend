@@ -202,6 +202,22 @@
       "many": "__count__ repositories"
     }
   },
+  "currencies": {
+    "currency": {
+      "APT": "Aptos",
+      "ETH": "Ether",
+      "OP": "Optimism",
+      "STARK": "Stark",
+      "USD": "Dollars"
+    },
+    "network": {
+      "APT": "Aptos",
+      "ETH": "Ethereum",
+      "OP": "Optimism",
+      "STARK": "Starknet",
+      "USD": "Dollars"
+    }
+  },
   "searchBar": {
     "placeholder": "Search project title & description",
     "placeholderShort": "Search projects"

@@ -27,7 +27,7 @@ module.exports = {
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
   ],
-  plugins: ["@typescript-eslint", "prettier", "no-relative-import-paths"],
+  plugins: ["@typescript-eslint", "prettier", "no-relative-import-paths", "unused-imports"],
   rules: {
     quotes: [
       "warn",
@@ -55,6 +55,7 @@ module.exports = {
     "react/prop-types": "off",
     "react-hooks/exhaustive-deps": "off",
     "no-relative-import-paths/no-relative-import-paths": ["error", { allowSameFolder: true, rootDir: "src" }],
+    "unused-imports/no-unused-imports": "error",
   },
   ignorePatterns: [
     "dist/*",
