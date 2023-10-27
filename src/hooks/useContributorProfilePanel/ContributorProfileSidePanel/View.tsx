@@ -3,7 +3,6 @@ import { OwnUserProfileDetailsFragment, UserProfileFragment } from "src/__genera
 import ReadOnlyView from "./ReadOnlyView";
 import { useState } from "react";
 import EditView from "./EditView";
-import { UserProfile } from "./useUserProfile";
 import { Profile } from "src/hooks/useRestfulProfile/useRestfulProfile";
 
 type Props = {

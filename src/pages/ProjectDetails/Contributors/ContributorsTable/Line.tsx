@@ -4,11 +4,11 @@ import Cell, { CellHeight } from "src/components/Table/Cell";
 import { withTooltip } from "src/components/Tooltip";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import SendPlane2Line from "src/icons/SendPlane2Line";
-import { formatMoneyAmount } from "src/utils/money";
 import Contributor from "src/components/Contributor";
 import StackLine from "src/icons/StackLine";
 import { ContributorT } from "src/types";
-import { AvailableConversion, AvailableConversionCurrency } from "src/components/Currency/AvailableConversion";
+import { AvailableConversionCurrency } from "src/components/Currency/AvailableConversion";
+import { AvailableConversion } from "src/components/Currency/AvailableConversion";
 import { useMemo } from "react";
 
 type Props = {

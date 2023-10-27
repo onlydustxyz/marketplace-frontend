@@ -6,7 +6,7 @@ import { RewardPageItemType } from "src/hooks/useInfiniteRewardsList";
 import { useIntl } from "src/hooks/useIntl";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { pretty } from "src/utils/id";
-import { formatMoneyAmount } from "src/utils/money";
+import { AvailableConversion } from "src/components/Currency/AvailableConversion";
 
 type Props = {
   reward: RewardPageItemType;
@@ -37,7 +37,18 @@ export function RewardLine({ reward, onClick, selected }: Props) {
           </div>
         </Cell>
         <Cell height={CellHeight.Medium}>
-          <span className="font-walsheim">{formatMoneyAmount({ amount: amount.total })}</span>
+          <div
+            className="rounded-full border border-white/8 bg-white/2 px-3 py-[6px]"
+            data-tooltip-id={`${reward.id}-reward-conversion`}
+          >
+            <AvailableConversion
+              tooltipId={`${reward.id}-reward-conversion`}
+              type="full"
+              dollar={amount.dollarsEquivalent}
+              totalAmount={amount.total}
+              currency={amount.currency}
+            />
+          </div>
         </Cell>
         <Cell height={CellHeight.Medium}>
           <PayoutStatus status={status} />
