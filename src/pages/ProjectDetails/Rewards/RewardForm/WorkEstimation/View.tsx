@@ -10,7 +10,7 @@ import { useT } from "talkr";
 import { ProjectBudgetType } from "src/pages/ProjectDetails/Rewards/RemainingBudget/RemainingBudget";
 
 interface Props {
-  budget: ProjectBudgetType;
+  budget: ProjectBudgetType["budgets"][number];
   requestNewPaymentMutationLoading: boolean;
   canIncrease: boolean;
   canDecrease: boolean;
@@ -34,6 +34,8 @@ export default function WorkEstimation({
 }: Props) {
   const { T } = useT();
   const isRewardDisbled = budget.remainingDollarsEquivalent === 0;
+
+  console.log("@", budget);
 
   return (
     <Card padded={false}>

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useReducer } from "react";
+import { BudgetCurrencyType } from "src/utils/money";
 
 export const DAY_RATE_USD = 500;
 export const DEFAULT_NUMBER_OF_DAYS = 2;
@@ -7,9 +8,17 @@ export enum Steps {
   Hours = "hours",
 }
 
+// export type Budget = {
+//   initialAmount: number;
+//   remainingAmount: number;
+// };
+
 export type Budget = {
+  currency: BudgetCurrencyType;
   initialAmount: number;
-  remainingAmount: number;
+  initialDollarsEquivalent?: number;
+  remaining: number;
+  remainingDollarsEquivalent?: number;
 };
 
 type State = {
@@ -99,7 +108,14 @@ export const getReducer = (budget: Budget) => (state: State, action: Action) => 
 
 export const useWorkEstimation = (
   onChange: (amountToPay: number, hoursWorked: number) => void,
-  budget: { initialAmount: number; remainingAmount: number }
+  // budget: { initialAmount: number; remainingAmount: number }
+  budget: {
+    currency: BudgetCurrencyType;
+    initialAmount: number;
+    initialDollarsEquivalent?: number;
+    remaining: number;
+    remainingDollarsEquivalent?: number;
+  }
 ) => {
   const reducer = useMemo(() => getReducer(budget), [budget]);
   const initialStep = useMemo(() => getInitialStep(budget), [budget]);

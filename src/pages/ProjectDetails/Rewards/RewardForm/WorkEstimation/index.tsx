@@ -10,8 +10,10 @@ interface Props {
 
 export default function WorkEstimation({ onChange, budget, requestNewPaymentMutationLoading }: Props) {
   //TODO: currency handling logic here
+  const [selectedBudget] = budget.budgets;
+
   const { amountToPay, stepNumber, steps, tryDecreaseNumberOfDays, tryIncreaseNumberOfDays, canDecrease, canIncrease } =
-    useWorkEstimation(onChange, budget);
+    useWorkEstimation(onChange, selectedBudget);
 
   return (
     <View
@@ -23,7 +25,7 @@ export default function WorkEstimation({ onChange, budget, requestNewPaymentMuta
         steps,
         tryDecreaseNumberOfDays,
         tryIncreaseNumberOfDays,
-        budget,
+        budget: selectedBudget,
         requestNewPaymentMutationLoading,
       }}
     />
