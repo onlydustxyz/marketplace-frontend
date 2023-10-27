@@ -40,8 +40,14 @@ const mockContributors: ComponentProps<typeof ContributorsTable>["contributors"]
     contributionCount: 1,
     rewardCount: 0,
     earned: {
-      details: undefined,
-      totalAmount: undefined,
+      totalAmount: 2000,
+      details: [
+        {
+          totalAmount: 2000,
+          totalDollarsEquivalent: 2000,
+          currency: "USD",
+        },
+      ],
     },
     contributionToRewardCount: undefined,
     pullRequestToReward: undefined,
@@ -56,8 +62,14 @@ const mockContributors: ComponentProps<typeof ContributorsTable>["contributors"]
     contributionCount: 1,
     rewardCount: 0,
     earned: {
-      details: undefined,
-      totalAmount: 456,
+      totalAmount: 2000,
+      details: [
+        {
+          totalAmount: 2000,
+          totalDollarsEquivalent: 2000,
+          currency: "USD",
+        },
+      ],
     },
     contributionToRewardCount: 21,
     pullRequestToReward: 10,
@@ -72,8 +84,14 @@ const mockContributors: ComponentProps<typeof ContributorsTable>["contributors"]
     contributionCount: 1,
     rewardCount: 0,
     earned: {
-      details: undefined,
-      totalAmount: 30,
+      totalAmount: 2000,
+      details: [
+        {
+          totalAmount: 2000,
+          totalDollarsEquivalent: 2000,
+          currency: "USD",
+        },
+      ],
     },
     contributionToRewardCount: undefined,
     pullRequestToReward: undefined,

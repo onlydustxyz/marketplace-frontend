@@ -155,7 +155,7 @@ const profileMinimalist: UserProfileFragment = {
 
 const kakarot: Project = {
   id: "project-1",
-  key: "kakarot",
+  slug: "kakarot",
   name: "Kakarot",
   logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/8091241668368846468.jpg",
   contributorCount: 30,
@@ -167,7 +167,7 @@ const kakarot: Project = {
 
 const wtf: Project = {
   id: "project-2",
-  key: "wtf-academy",
+  slug: "wtf-academy",
   name: "WTF Academy",
   logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/14124244604398090162.png",
   contributorCount: 16,
@@ -178,7 +178,7 @@ const wtf: Project = {
 
 const checkpoint: Project = {
   id: "project-3",
-  key: "checkpoint",
+  slug: "checkpoint",
   name: "Checkpoint",
   logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/9843934077283658210.png",
   contributorCount: 7,
@@ -189,7 +189,7 @@ const checkpoint: Project = {
 
 const poseidon: Project = {
   id: "project-4",
-  key: "poseidon",
+  slug: "poseidon",
   name: "Poseidon",
   logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/6390638290266552080.png",
   contributorCount: 5,
