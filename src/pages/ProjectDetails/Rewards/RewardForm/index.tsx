@@ -7,11 +7,13 @@ import { useShowToaster } from "src/hooks/useToaster";
 import { generatePath, useNavigate, useOutletContext } from "react-router-dom";
 import { ProjectRoutePaths, RoutePaths } from "src/App";
 import { ContributionFragment, WorkItemFragment, useUnrewardedContributionsQuery } from "src/__generated/graphql";
-import { useCommands } from "src/providers/Commands";
 import { ProjectBudgetType } from "src/pages/ProjectDetails/Rewards/RemainingBudget/RemainingBudget";
 import { useMutationRestfulData, useRestfulData } from "src/hooks/useRestfulData/useRestfulData";
 import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
 import Loader from "src/components/Loader";
+import { Currency } from "src/types";
+import { useLocalStorage } from "usehooks-ts";
+import { reorderBudgets } from "./utils";
 
 const RewardForm: React.FC = () => {
   const { T } = useIntl();
@@ -52,6 +54,7 @@ const RewardForm: React.FC = () => {
   });
 
   const [contributor, setContributor] = useState<Contributor | null | undefined>(null);
+  const [preferredCurrency, setPreferredCurrency] = useLocalStorage<Currency | null>("preferredCurrency", null);
 
   const { data } = useUnrewardedContributionsQuery({
     variables: {
@@ -65,8 +68,6 @@ const RewardForm: React.FC = () => {
 
   const onValidSubmit: SubmitHandler<Inputs> = useCallback(
     formData => {
-      console.log("formData", formData);
-
       if (contributor) {
         console.log(mapFormDataToVariables({ ...formData, contributor }));
         mutateProjectBudget(mapFormDataToVariables({ ...formData, contributor }));
@@ -76,9 +77,10 @@ const RewardForm: React.FC = () => {
   );
 
   const onWorkEstimationChange = useCallback(
-    (amountToPay: number, hoursWorked: number) => {
+    (amountToPay: number, currency?: Currency) => {
       formMethods.setValue("amountToWire", amountToPay);
-      formMethods.setValue("hoursWorked", hoursWorked);
+      formMethods.setValue("currency", currency || Currency.USD);
+      setPreferredCurrency(currency as Currency);
     },
     [formMethods]
   );
@@ -116,10 +118,7 @@ const RewardForm: React.FC = () => {
         >
           {!isBudgetLoading && projectBudget?.remainingDollarsEquivalent && projectBudget?.initialDollarsEquivalent ? (
             <View
-              budget={{
-                remainingAmount: projectBudget?.remainingDollarsEquivalent,
-                initialAmount: projectBudget?.initialDollarsEquivalent,
-              }}
+              budget={reorderBudgets(projectBudget as ProjectBudgetType)}
               projectId={projectId}
               onWorkEstimationChange={onWorkEstimationChange}
               onWorkItemsChange={onWorkItemsChange}
@@ -137,7 +136,7 @@ const RewardForm: React.FC = () => {
   );
 };
 
-const mapFormDataToVariables = ({ workItems, amountToWire, contributor }: Inputs) => {
+const mapFormDataToVariables = ({ workItems, amountToWire, currency, contributor }: Inputs) => {
   return {
     amount: amountToWire,
     currency: "USD",

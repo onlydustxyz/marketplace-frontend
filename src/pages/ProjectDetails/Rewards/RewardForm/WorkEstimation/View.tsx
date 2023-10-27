@@ -1,15 +1,16 @@
 import Button, { ButtonSize, ButtonType, Width } from "src/components/Button";
 import Card from "src/components/Card";
 import { withTooltip } from "src/components/Tooltip";
-import { Steps, rates } from "src/hooks/useWorkEstimation";
+import { Steps } from "src/hooks/useWorkEstimation";
 import Add from "src/icons/Add";
 import Subtract from "src/icons/Subtract";
 import BudgetBar from "src/pages/ProjectDetails/Rewards/RewardForm/WorkEstimation/BudgetBar";
 import { formatMoneyAmount } from "src/utils/money";
 import { useT } from "talkr";
+import { ProjectBudgetType } from "src/pages/ProjectDetails/Rewards/RemainingBudget/RemainingBudget";
 
 interface Props {
-  budget: { initialAmount: number; remainingAmount: number };
+  budget: ProjectBudgetType;
   requestNewPaymentMutationLoading: boolean;
   canIncrease: boolean;
   canDecrease: boolean;
@@ -32,7 +33,7 @@ export default function WorkEstimation({
   steps,
 }: Props) {
   const { T } = useT();
-  const isRewardDisbled = budget?.remainingAmount < rates.hours || budget?.remainingAmount === 0;
+  const isRewardDisbled = budget.remainingDollarsEquivalent === 0;
 
   return (
     <Card padded={false}>
@@ -63,11 +64,14 @@ export default function WorkEstimation({
               </div>
             </div>
           </div>
-          <BudgetBar budget={{ ...budget, remaining: budget?.remainingAmount }} pendingSpending={amountToPay} />
+          <BudgetBar
+            budget={{ ...budget, remaining: budget?.remainingDollarsEquivalent }}
+            pendingSpending={amountToPay}
+          />
           <div className="flex flex-col text-sm font-medium">
             <div className="flex flex-row justify-between">
               <div className="text-greyscale-300">{T("reward.form.remainingBudget")}</div>
-              <div className="font-semibold">{formatMoneyAmount({ amount: budget?.remainingAmount })}</div>
+              <div className="font-semibold">{formatMoneyAmount({ amount: budget?.remainingDollarsEquivalent })}</div>
             </div>
             <div className="flex flex-row justify-between">
               <div className="text-greyscale-300">{T("reward.form.thisReward")}</div>
@@ -76,7 +80,7 @@ export default function WorkEstimation({
             <div className="flex flex-row justify-between">
               <div className="text-greyscale-300">{T("reward.form.leftToSpend")}</div>
               <div className="font-semibold">
-                {formatMoneyAmount({ amount: budget?.remainingAmount - amountToPay })}
+                {formatMoneyAmount({ amount: budget?.remainingDollarsEquivalent - amountToPay })}
               </div>
             </div>
           </div>

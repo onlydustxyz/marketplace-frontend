@@ -1,8 +1,6 @@
 import Card from "src/components/Card";
 import { useIntl } from "src/hooks/useIntl";
-import { Budget } from "src/hooks/useWorkEstimation";
 import ContributorSelect from "src/pages/ProjectDetails/Rewards/RewardForm/ContributorSelect";
-import WorkEstimation from "./WorkEstimation";
 import { ReactElement, ReactNode, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ContributionFragment, WorkItemFragment } from "src/__generated/graphql";
@@ -15,7 +13,7 @@ import Add from "src/icons/Add";
 import CloseLine from "src/icons/CloseLine";
 import { contributionToWorkItem } from "src/pages/ProjectDetails/Rewards/RewardForm/WorkItemSidePanel/WorkItems/WorkItems";
 import Title from "src/pages/ProjectDetails/Title";
-import { GithubContributionType } from "src/types";
+import { Currency, GithubContributionType } from "src/types";
 import { useMediaQuery } from "usehooks-ts";
 import { AutoAdd } from "./AutoAdd/AutoAdd";
 import { WorkItem } from "./WorkItem";
@@ -23,11 +21,13 @@ import WorkItemSidePanel from "./WorkItemSidePanel";
 import { Contributor } from "./types";
 import useWorkItems from "./useWorkItems";
 import { filterUnpaidContributionsByType } from "./utils";
+import { ProjectBudgetType } from "src/pages/ProjectDetails/Rewards/RemainingBudget/RemainingBudget";
+import WorkEstimation from "./WorkEstimation";
 
 interface Props {
   projectId: string;
-  budget: Budget;
-  onWorkEstimationChange: (amountToPay: number, hoursWorked: number) => void;
+  budget: ProjectBudgetType;
+  onWorkEstimationChange: (amountToPay: number, currency: Currency) => void;
   onWorkItemsChange: (workItems: WorkItemFragment[]) => void;
   contributor: Contributor | null | undefined;
   setContributor: (contributor: Contributor | null | undefined) => void;
