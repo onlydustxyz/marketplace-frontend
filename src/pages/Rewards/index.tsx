@@ -33,7 +33,6 @@ export type Sorting = {
 };
 
 export default function Rewards() {
-  const { githubUserId, user } = useAuth();
   const { T } = useT();
 
   const [sorting, setSorting] = useState({
@@ -71,14 +70,13 @@ export default function Rewards() {
     return <Navigate to={RoutePaths.Projects} />;
   }
 
-  const paymentRequestsNeedingInvoice = rewards?.filter(p => p.status === RewardStatus.PENDING_INVOICE) || [];
-
   return (
     <>
       <SEO />
       <Background roundedBorders={BackgroundRoundedBorders.Full}>
         <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-4 xl:p-8">
           <div className="font-belwe text-3xl xl:text-5xl">{T("navbar.rewards")}</div>
+          <InvoiceSubmission />
           <EarningWrapper />
           {isFetching ? (
             <Skeleton variant="rewards" />
@@ -96,20 +94,6 @@ export default function Rewards() {
               )}
             </Card>
           )}
-
-          <div className="mb-10 flex flex-col-reverse items-start gap-4 xl:flex-row">
-            <div>
-              <div className="sticky top-4 flex flex-col gap-4">
-                {paymentRequestsNeedingInvoice.length > 0 && (
-                  <InvoiceSubmission
-                    paymentRequests={paymentRequestsNeedingInvoice}
-                    githubUserId={githubUserId || 0}
-                    userInfos={user}
-                  />
-                )}
-              </div>
-            </div>
-          </div>
         </div>
       </Background>
     </>

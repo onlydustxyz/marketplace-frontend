@@ -8,7 +8,7 @@ import { useShowToaster } from "src/hooks/useToaster";
 import { useIntl } from "src/hooks/useIntl";
 import { Currency } from "src/types";
 
-export type EarningAmountType = components["schemas"]["MyRewardTotalAmountsResponse"];
+export type EarningAmountType = components["schemas"]["RewardTotalAmountsResponse"];
 
 export function EarningWrapper() {
   const showToaster = useShowToaster();
@@ -23,12 +23,15 @@ export function EarningWrapper() {
       <div className="grid w-full gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Skeleton variant="earnedRewards" />
         <Skeleton variant="earnedRewards" />
+        <Skeleton variant="earnedRewards" />
+        <Skeleton variant="earnedRewards" />
+        <Skeleton variant="earnedRewards" />
       </div>
     );
   }
 
   if (isError) {
-    showToaster(T("reward.details.earning.error"));
+    showToaster(T("reward.details.earning.earningsError"), { isError: true });
     return null;
   }
 
@@ -61,7 +64,7 @@ export function EarningWrapper() {
   };
 
   return (
-    <div className="grid w-full gap-4 md:grid-cols-2 lg:grid-cols-4">
+    <div className="grid w-full gap-4 md:grid-cols-2 lg:grid-cols-6">
       <TotalEarningCard amount={totalAmount || 0} />
       <EarningCard key={usdEarnings.currency} amount={usdEarnings} />
       <EarningCard key={etherEarningDetails.currency} amount={etherEarningDetails} />

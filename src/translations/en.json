@@ -549,7 +549,8 @@
       "optimismEarnings": "Optimism earnings",
       "aptosEarnings": "Aptos earnings",
       "usdInfoEarnings": "Dollar equivalent at today's date across all your earnings",
-      "error": "Unable to retrieve Earnings Amounts. Please try again."
+      "earningsError": "Unable to retrieve Earnings Amounts. Please try again.",
+      "invoiceError": "Unable to retrieve Invoice informations. Please try again."
     }
   },
   "profile": {
