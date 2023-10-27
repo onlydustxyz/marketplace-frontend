@@ -174,10 +174,7 @@ export function ContributionDetail({
                       reward={rewardItem as Reward}
                       onClick={() => {
                         if (rewardItem.paymentId) {
-                          openRewardPanel({
-                            rewardId: rewardItem.paymentId,
-                            recipientId: rewardItem.paymentRequest?.recipientId,
-                          });
+                          openRewardPanel({ rewardId: rewardItem.paymentId, projectId });
                         }
                       }}
                     />

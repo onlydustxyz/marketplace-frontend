@@ -17,7 +17,7 @@ const defaultProps: ComponentProps<typeof ContributionReward> = {
     {
       paymentId: "880819f1-2ab9-406d-9bf1-3012b6f565bc",
       paymentRequest: {
-        recipientId: 43467246,
+        projectId: "3073ac50-5ff5-4b71-9cb2-56097d3ee8e5",
       },
     },
   ],
@@ -37,13 +37,13 @@ const multipleProps: ComponentProps<typeof ContributionReward> = {
     {
       paymentId: "880819f1-2ab9-406d-9bf1-3012b6f565bc",
       paymentRequest: {
-        recipientId: 43467246,
+        projectId: "3073ac50-5ff5-4b71-9cb2-56097d3ee8e5",
       },
     },
     {
       paymentId: "35234563456345-2ab9-406d-9bf1-3012b6f565bc",
       paymentRequest: {
-        recipientId: 43467247,
+        projectId: "3073ac50-5ff5-4b71-9cb2-56097d3ee8e5",
       },
     },
   ],

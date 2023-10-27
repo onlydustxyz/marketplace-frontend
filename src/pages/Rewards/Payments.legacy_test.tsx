@@ -1,11 +1,14 @@
-import { describe, expect, it, Mock, vi } from "vitest";
-import { screen, waitFor } from "@testing-library/react";
 import matchers from "@testing-library/jest-dom/matchers";
+import { screen, waitFor } from "@testing-library/react";
+import { describe, expect, it, Mock, vi } from "vitest";
 
-import RewardsPage from ".";
-import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
+import { GetPaymentRequestsDocument, UserPaymentRequestFragment } from "e2e/playwright/__generated/graphql";
+import { WorkItemType } from "src/__generated/graphql";
 import { useRoles } from "src/hooks/useAuth/useRoles";
-import { GetPaymentRequestsDocument, UserPaymentRequestFragment, WorkItemType } from "src/__generated/graphql";
+import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
+import RewardsPage from ".";
+
+// TODO delete or fix test after multitoken
 
 expect.extend(matchers);
 

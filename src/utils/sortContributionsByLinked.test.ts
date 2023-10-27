@@ -196,7 +196,7 @@ const mockContributions: QueryContribution[] = [
       {
         paymentId: "05413939-dc82-4d55-8804-b5df29630bec",
         paymentRequest: {
-          recipientId: 43467246,
+          projectId: "3073ac50-5ff5-4b71-9cb2-56097d3ee8e5",
         },
       },
     ],

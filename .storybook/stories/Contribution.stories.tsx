@@ -62,7 +62,7 @@ export const HasReward = {
           {
             paymentId: "123",
             paymentRequest: {
-              recipientId: 43467246,
+              projectId: "3073ac50-5ff5-4b71-9cb2-56097d3ee8e5",
             },
           },
         ],

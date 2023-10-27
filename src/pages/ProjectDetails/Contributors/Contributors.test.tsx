@@ -1,37 +1,38 @@
-import { screen, waitFor } from "@testing-library/react";
-import { MemoryRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { TokenSetProvider } from "src/hooks/useTokenSet";
+import { screen, waitFor } from "@testing-library/react";
+import { ComponentProps } from "react";
+import { MemoryRouter } from "react-router-dom";
 import { AuthProvider } from "src/hooks/useAuth";
 import { ImpersonationClaimsProvider } from "src/hooks/useImpersonationClaims";
 import { ToasterProvider } from "src/hooks/useToaster";
-import ApolloWrapper from "src/providers/ApolloWrapper";
+import { TokenSetProvider } from "src/hooks/useTokenSet";
 import View from "src/pages/ProjectDetails/View";
+import ApolloWrapper from "src/providers/ApolloWrapper";
 import { renderWithIntl } from "src/test/utils";
 
-const project = {
+const project: ComponentProps<typeof View>["project"] = {
   id: "cdb45d97-13a6-4f71-8c8c-78917fc02649",
   slug: "performance-test-with-a-very-long-name",
   name: "Performance test with a very long name",
   shortDescription: "Do not create issue on this one as it is linked with real projects !",
+  longDescription: "Do not create issue on this one as it is linked with real projects !",
   logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/1409408835957028656.png",
   hiring: false,
   visibility: "PUBLIC",
-  repoCount: 2,
   contributorCount: 3,
   moreInfoUrl: "www.onlydust.xyz",
   leaders: [
     {
       githubUserId: 74653697,
       login: "AnthonyBuisset",
-      htmlUrl: null,
+      htmlUrl: "",
       avatarUrl: "https://avatars.githubusercontent.com/u/43467246?v=4",
       id: "adcb11a6-92cf-4a1e-bace-79f7bdbc54e7",
     },
     {
       githubUserId: 8642470,
       login: "ofux",
-      htmlUrl: null,
+      htmlUrl: "",
       avatarUrl: "https://avatars.githubusercontent.com/u/595505?v=4",
       id: "bd365490-dd23-4a24-ad23-7853fbd853c2",
     },
@@ -82,19 +83,19 @@ const project = {
     {
       id: "ce038af0-9f8d-4948-bd5a-1c86cf983041",
       name: "OnlyDust",
-      url: null,
+      url: "",
       logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/13878645251970159319.jpg",
     },
     {
       id: "ce038af0-9f8d-4948-bd5a-1c86cf983042",
       name: "OnlyFast",
-      url: null,
+      url: "",
       logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/13878645251970159319.jpg",
     },
     {
       id: "ce038af0-9f8d-4948-bd5a-1c86cf983043",
       name: "OnlyRust",
-      url: null,
+      url: "",
       logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/13878645251970159319.jpg",
     },
   ],
@@ -120,7 +121,6 @@ const project = {
     Assembly: 56732,
     Python: 6840986,
   },
-  isInvitedAsProjectLead: false,
   remainingUsdBudget: 99250.0,
 };
 

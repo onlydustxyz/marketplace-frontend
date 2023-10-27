@@ -1,14 +1,15 @@
 import { useNavigate } from "react-router-dom";
 import { RoutePaths } from "src/App";
-import { useErrorBoundary } from "react-error-boundary";
+import { FallbackProps, useErrorBoundary } from "react-error-boundary";
 import View from "./View";
 import { createPortal } from "react-dom";
 
 type Props = {
   isFixed?: boolean;
-};
+} & Partial<FallbackProps>;
 
-export default function ErrorFallback({ isFixed }: Props) {
+export default function ErrorFallback(props?: Props) {
+  const { isFixed = false } = props ?? {};
   const { resetBoundary } = useErrorBoundary();
   const navigate = useNavigate();
 

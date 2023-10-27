@@ -134,11 +134,7 @@ export default function ViewMobile({
             </Button>
           </div>
         </div>
-        <PayoutInfoSidePanel
-          githubUserId={githubUserId}
-          open={payoutInfoSidePanelOpen}
-          setOpen={setPayoutInfoSidePanelOpen}
-        />
+        <PayoutInfoSidePanel open={payoutInfoSidePanelOpen} setOpen={setPayoutInfoSidePanelOpen} />
       </SidePanel>
     </>
   );

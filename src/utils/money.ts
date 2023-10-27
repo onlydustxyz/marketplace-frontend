@@ -2,6 +2,7 @@ import { components } from "src/__generated/api";
 import { Currency } from "src/types";
 
 export type BudgetCurrencyType = components["schemas"]["BudgetResponse"]["currency"];
+export type EarningCurrencyType = components["schemas"]["MyRewardAmountResponse"]["currency"];
 
 type Params = {
   amount: number;
@@ -54,7 +55,6 @@ const maximumFractionDigits = ({ amount, notation }: Params) => {
   }
 };
 
-// TODO check with Grégoire
 const networkDict: Record<BudgetCurrencyType, string> = {
   APT: "Aptos",
   ETH: "Ethereum",
@@ -64,5 +64,5 @@ const networkDict: Record<BudgetCurrencyType, string> = {
 };
 
 export function currencyToNetwork(currency: BudgetCurrencyType) {
-  return networkDict[currency];
+  return networkDict[currency] ?? "";
 }

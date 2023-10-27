@@ -12,7 +12,6 @@ import { ShowMore } from "src/components/Table/ShowMore";
 
 type PropsType = {
   rewards: MyRewardType[];
-  // payoutInfoMissing: boolean;
   fetchNextPage: () => void;
   hasNextPage: boolean;
   isFetchingNextPage: boolean;
@@ -22,7 +21,6 @@ type PropsType = {
 
 const UserRewardTable: React.FC<PropsType> = ({
   rewards,
-  // payoutInfoMissing,
   fetchNextPage,
   hasNextPage,
   isFetchingNextPage,
@@ -46,10 +44,10 @@ const UserRewardTable: React.FC<PropsType> = ({
           <Table id="reward_table" headers={<Headers sorting={sorting} applySorting={applySorting} />}>
             {rewards.map(p => (
               <RewardLine
-                key={p.id}
+                key={p?.id}
                 reward={p}
                 onClick={() => onRewardClick(p)}
-                selected={p.id === selectedReward?.id}
+                selected={p?.id === selectedReward?.id}
               />
             ))}
           </Table>
@@ -69,7 +67,7 @@ const UserRewardTable: React.FC<PropsType> = ({
         />
       )}
       <SidePanel open={sidePanelOpen} setOpen={setSidePanelOpen}>
-        {selectedReward && <RewardSidePanel rewardId={selectedReward.id} recipientId={selectedReward.id} />}
+        {selectedReward && <RewardSidePanel rewardId={selectedReward.id} projectId={selectedReward.projectId} />}
       </SidePanel>
     </>
   );

@@ -1,16 +1,16 @@
-import { useMemo, useEffect } from "react";
+import { useEffect, useMemo } from "react";
+import ErrorFallback from "src/ErrorFallback";
+import { components } from "src/__generated/api";
 import ProjectCard from "src/components/ProjectCard";
-import { useProjectFilter } from "src/pages/Projects/useProjectFilter";
-import AllProjectsFallback from "./AllProjectsFallback";
-import SortingDropdown, { PROJECT_SORTINGS, Sorting } from "src/pages/Projects/Sorting/SortingDropdown";
 import { useIntl } from "src/hooks/useIntl";
-import { FilterButton } from "src/pages/Projects/FilterPanel/FilterButton";
-import { SortButton } from "src/pages/Projects/Sorting/SortButton";
 import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
 import { useRestfulData } from "src/hooks/useRestfulData/useRestfulData";
-import ErrorFallback from "src/ErrorFallback";
+import { FilterButton } from "src/pages/Projects/FilterPanel/FilterButton";
+import { SortButton } from "src/pages/Projects/Sorting/SortButton";
+import SortingDropdown, { PROJECT_SORTINGS, Sorting } from "src/pages/Projects/Sorting/SortingDropdown";
+import { useProjectFilter } from "src/pages/Projects/useProjectFilter";
+import AllProjectsFallback from "./AllProjectsFallback";
 import AllProjectLoading from "./AllProjectsLoading";
-import { Project } from "src/types";
 
 export const DEFAULT_SORTING = Sorting.Trending;
 
@@ -59,7 +59,7 @@ export default function AllProjects({
     [technologies, sponsors, search, sorting, ownership]
   );
 
-  const { data, isLoading, isError } = useRestfulData({
+  const { data, isLoading, isError } = useRestfulData<components["schemas"]["ProjectListResponse"]>({
     resourcePath: ApiResourcePaths.GET_ALL_PROJECTS,
     queryParams,
     method: "GET",
@@ -72,7 +72,7 @@ export default function AllProjects({
   useEffect(() => {
     if (data && !isLoading) {
       const { technologies, sponsors } = data;
-      setTechnologies(replaceApostrophes(technologies) || []);
+      setTechnologies(technologies ? replaceApostrophes(technologies) : []);
       setSponsors(sponsors || []);
     }
   }, [data]);
@@ -113,7 +113,7 @@ export default function AllProjects({
         </div>
       </div>
       <div className="flex grow flex-col gap-5">
-        {projects.map((project: Project, index: number) => {
+        {projects.map((project, index) => {
           const isFirstHiringProject = index === 0 && project.hiring;
           return (
             <ProjectCard className={isFirstHiringProject ? "mt-3" : undefined} key={project.id} project={project} />

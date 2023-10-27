@@ -1,8 +1,12 @@
 import { useInfiniteQuery, UseInfiniteQueryResult } from "@tanstack/react-query";
-import { PagesData } from "src/types";
+import { PageData, PagesData } from "src/types";
 import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
 import { getEndpointUrl } from "src/utils/getEndpointUrl";
 import { useHttpOptions } from "src/hooks/useHttpOptions/useHttpOptions";
+import { components } from "src/__generated/api";
+
+type ContributorsPageData = PageData<{ contributors: components["schemas"]["ContributorPageItemResponse"][] }>;
+type ContributorsPagesData = PagesData<ContributorsPageData>;
 
 type QueryParam = {
   key: string;
@@ -17,7 +21,7 @@ interface UseInfiniteContributorsProps {
 export default function useInfiniteContributorList({
   projectId,
   queryParams,
-}: UseInfiniteContributorsProps): UseInfiniteQueryResult<PagesData, unknown> {
+}: UseInfiniteContributorsProps): UseInfiniteQueryResult<ContributorsPagesData, unknown> {
   const options = useHttpOptions("GET");
 
   return useInfiniteQuery({

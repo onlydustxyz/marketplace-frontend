@@ -1,9 +1,9 @@
+import { screen } from "@testing-library/react";
+import { components } from "src/__generated/api";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import ProjectCard from ".";
-import { Project } from "src/types";
-import { screen } from "@testing-library/react";
 
-const PROJECT: Project = {
+const PROJECT: components["schemas"]["ProjectListItemResponse"] = {
   id: "cdb45d97-13a6-4f71-8c8c-78917fc02649",
   slug: "performance-test-with-a-very-long-name",
   name: "Performance test with a very long name",
@@ -13,82 +13,39 @@ const PROJECT: Project = {
   visibility: "PUBLIC",
   repoCount: 2,
   contributorCount: 3,
-  moreInfoUrl: "www.onlydust.xyz",
   leaders: [
     {
       githubUserId: 74653697,
       login: "AnthonyBuisset",
-      htmlUrl: null,
+      htmlUrl: "",
       avatarUrl: "https://avatars.githubusercontent.com/u/43467246?v=4",
       id: "adcb11a6-92cf-4a1e-bace-79f7bdbc54e7",
     },
     {
       githubUserId: 8642470,
       login: "ofux",
-      htmlUrl: null,
+      htmlUrl: "",
       avatarUrl: "https://avatars.githubusercontent.com/u/595505?v=4",
       id: "bd365490-dd23-4a24-ad23-7853fbd853c2",
-    },
-  ],
-  repos: [
-    {
-      id: 566371874,
-      owner: "onlydustxyz",
-      name: "hasura-auth",
-      description: "Authentication for Hasura.",
-      stars: 0,
-      forkCount: 1,
-      htmlUrl: "https://github.com/onlydustxyz/hasura-auth",
-      hasIssues: false,
-    },
-    {
-      id: 498695724,
-      owner: "onlydustxyz",
-      name: "marketplace-frontend",
-      description: "Contributions marketplace backend services",
-      stars: 15,
-      forkCount: 10,
-      htmlUrl: "https://github.com/onlydustxyz/marketplace-frontend",
-      hasIssues: true,
-    },
-  ],
-  topContributors: [
-    {
-      githubUserId: 698957,
-      login: "ltoussaint",
-      htmlUrl: "https://github.com/ltoussaint",
-      avatarUrl: "https://avatars.githubusercontent.com/u/698957?v=4",
-    },
-    {
-      githubUserId: 595505,
-      login: "ofux",
-      htmlUrl: "https://github.com/ofux",
-      avatarUrl: "https://avatars.githubusercontent.com/u/595505?v=4",
-    },
-    {
-      githubUserId: 4435377,
-      login: "Bernardstanislas",
-      htmlUrl: "https://github.com/Bernardstanislas",
-      avatarUrl: "https://avatars.githubusercontent.com/u/4435377?v=4",
     },
   ],
   sponsors: [
     {
       id: "ce038af0-9f8d-4948-bd5a-1c86cf983041",
       name: "OnlyDust",
-      url: null,
+      url: "",
       logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/13878645251970159319.jpg",
     },
     {
       id: "ce038af0-9f8d-4948-bd5a-1c86cf983042",
       name: "OnlyFast",
-      url: null,
+      url: "",
       logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/13878645251970159319.jpg",
     },
     {
       id: "ce038af0-9f8d-4948-bd5a-1c86cf983043",
       name: "OnlyRust",
-      url: null,
+      url: "",
       logoUrl: "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/13878645251970159319.jpg",
     },
   ],
@@ -115,7 +72,6 @@ const PROJECT: Project = {
     Python: 6840986,
   },
   isInvitedAsProjectLead: false,
-  remainingUsdBudget: 99250.0,
 };
 
 describe("'ProjectCard' component", () => {

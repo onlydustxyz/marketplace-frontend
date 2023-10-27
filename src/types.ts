@@ -1,5 +1,4 @@
 import { GetAllContributionsQuery, GithubIssueStatus } from "src/__generated/graphql";
-import { SortingFields } from "./hooks/useRewardSorting";
 import { components } from "./__generated/api";
 
 export type Branded<T, B> = T & { __brand: B };
@@ -66,10 +65,6 @@ type Uuid = string;
 export type Email = string;
 export type PhoneNumber = string;
 
-export type Sortable = {
-  sortingFields?: SortingFields;
-};
-
 export enum Currency {
   USD = "USD",
   ETH = "ETH",
@@ -83,22 +78,6 @@ export enum PaymentStatus {
   PENDING_INVOICE = "PENDING_INVOICE",
   PENDING_SIGNUP = "PENDING_SIGNUP",
   PROCESSING = "PROCESSING",
-}
-export function getPaymentStatusOrder({
-  status,
-  pendingPayoutInfo,
-  pendingInvoice,
-}: {
-  status: PaymentStatus;
-  pendingPayoutInfo: boolean;
-  pendingInvoice?: boolean;
-}): number {
-  switch (status) {
-    case PaymentStatus.WAITING_PAYMENT:
-      return pendingPayoutInfo || pendingInvoice ? -1 : 0;
-    case PaymentStatus.ACCEPTED:
-      return 1;
-  }
 }
 
 export type Locale = "en" | "fr";
@@ -183,16 +162,25 @@ export type GithubItemStatus =
   | GithubPullRequestStatus
   | GithubIssueStatus
   | GithubCodeReviewStatus
-  | GithubPullRequestDraft;
+  | GithubPullRequestDraft
+  | RewardItemStatus;
+
+type RewardItemStatus = components["schemas"]["RewardItemResponse"]["status"];
 
 type GithubPullRequestTypeStatusDict<T> = Record<
   GithubContributionType.PullRequest,
-  Record<GithubPullRequestStatus | GithubPullRequestDraft, T>
+  Record<GithubPullRequestStatus | GithubPullRequestDraft | RewardItemStatus, T>
 >;
 
-type GithubIssueTypeStatusDict<T> = Record<GithubContributionType.Issue, Record<GithubIssueStatus, T>>;
+type GithubIssueTypeStatusDict<T> = Record<
+  GithubContributionType.Issue,
+  Record<GithubIssueStatus | RewardItemStatus, T>
+>;
 
-type GithubCodeReviewTypeStatusDict<T> = Record<GithubContributionType.CodeReview, Record<GithubCodeReviewStatus, T>>;
+type GithubCodeReviewTypeStatusDict<T> = Record<
+  GithubContributionType.CodeReview,
+  Record<GithubCodeReviewStatus | RewardItemStatus, T>
+>;
 
 export type GithubTypeStatusDict<T> = GithubPullRequestTypeStatusDict<T> &
   GithubIssueTypeStatusDict<T> &
@@ -318,15 +306,14 @@ export type Contributors = {
   hasMore: boolean;
 };
 
-export type PageData = {
+export type PageData<T = unknown> = T & {
   totalPageNumber: number;
   totalItemNumber: number;
   hasMore: boolean;
   nextPageIndex: number;
-  contributors: ContributorT[];
 };
 
-export type PagesData = {
-  pages: PageData[];
+export type PagesData<T extends PageData> = {
+  pages: T[];
   pageParams: number[];
 };

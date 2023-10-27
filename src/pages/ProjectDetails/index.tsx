@@ -1,12 +1,13 @@
 import { Navigate, useParams } from "react-router-dom";
-import { Project } from "src/types";
-import View from "./View";
 import { RoutePaths } from "src/App";
+import ErrorFallback from "src/ErrorFallback";
+import { components } from "src/__generated/api";
+import Loader from "src/components/Loader";
 import SEO from "src/components/SEO";
 import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
 import { useRestfulData } from "src/hooks/useRestfulData/useRestfulData";
-import ErrorFallback from "src/ErrorFallback";
-import Loader from "src/components/Loader";
+import { Project } from "src/types";
+import View from "./View";
 
 type ProjectDetailsParams = {
   projectKey: string;
@@ -15,7 +16,7 @@ type ProjectDetailsParams = {
 export default function ProjectDetails() {
   const { projectKey = "" } = useParams<ProjectDetailsParams>();
 
-  const { data, isLoading, isError } = useRestfulData({
+  const { data, isLoading, isError } = useRestfulData<components["schemas"]["ProjectResponse"]>({
     resourcePath: ApiResourcePaths.GET_PROJECT_DETAILS_SLUG,
     pathParam: projectKey,
     method: "GET",

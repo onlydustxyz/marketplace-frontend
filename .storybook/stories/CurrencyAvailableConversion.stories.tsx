@@ -8,7 +8,6 @@ export default {
 };
 
 const defaultProps: ComponentProps<typeof AvailableConversion> = {
-  type: "light",
   currencies: [
     {
       amount: 1200,
@@ -49,13 +48,7 @@ export const WithoutTooltips = {
 export const Compact = {
   render: (args: ComponentProps<typeof AvailableConversion>) => (
     <div className="inline-flex">
-      <AvailableConversion
-        {...defaultProps}
-        {...args}
-        type="compact"
-        totalAmount={1200}
-        tooltipId="availableConversion-stories"
-      />
+      <AvailableConversion {...defaultProps} {...args} totalAmount={1200} tooltipId="availableConversion-stories" />
       <Tooltip />
     </div>
   ),
@@ -64,14 +57,7 @@ export const Compact = {
 export const Full = {
   render: (args: ComponentProps<typeof AvailableConversion>) => (
     <div className="inline-flex">
-      <AvailableConversion
-        {...defaultProps}
-        {...args}
-        type="full"
-        dollar={1200}
-        totalAmount={1200}
-        tooltipId="availableConversion-stories"
-      />
+      <AvailableConversion {...defaultProps} {...args} totalAmount={1200} tooltipId="availableConversion-stories" />
       <Tooltip />
     </div>
   ),
@@ -83,11 +69,8 @@ export const OneCurrency = {
       <AvailableConversion
         {...defaultProps}
         {...args}
-        type="full"
-        dollar={1200}
         totalAmount={1200}
         tooltipId="availableConversion-stories"
-        numberCurencyToShow={1}
         currencies={[
           {
             amount: 1200,
@@ -107,7 +90,6 @@ export const WithWrapper = {
       className="inline-flex rounded-full border border-white/25 bg-white/8 px-3 py-[6px]"
       data-tooltip-id="availableConversion-stories"
     >
-      <AvailableConversion {...defaultProps} {...args} type="compact" totalAmount={1200} withWrapper />
       <Tooltip />
     </div>
   ),

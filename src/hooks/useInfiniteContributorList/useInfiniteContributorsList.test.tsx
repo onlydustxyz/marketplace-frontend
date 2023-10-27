@@ -66,7 +66,10 @@ describe("useInfiniteContributorList", () => {
 
     const options = {
       method: "GET",
-      headers: {},
+      headers: {
+        "Content-Type": "application/json",
+        accept: "application/json",
+      },
     };
 
     expect(global.fetch).toHaveBeenCalledWith(

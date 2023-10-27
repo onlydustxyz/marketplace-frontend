@@ -1,4 +1,4 @@
-import { Maybe, ProfileCover } from "src/__generated/graphql";
+import { ProfileCover } from "src/__generated/graphql";
 
 export const parseWebsite = (website: string | undefined) => {
   try {

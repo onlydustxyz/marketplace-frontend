@@ -2,7 +2,6 @@ import { SliderButton } from "@typeform/embed-react";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import Button, { Width } from "src/components/Button";
 import Card from "src/components/Card";
-import { MyRewardType } from "src/components/UserRewardTable/Line";
 import config from "src/config";
 import { useIntl } from "src/hooks/useIntl";
 import Attachment2 from "src/icons/Attachment2";
@@ -10,16 +9,16 @@ import { formatDate } from "src/utils/date";
 import { pretty } from "src/utils/id";
 import { formatList } from "src/utils/list";
 import { formatMoneyAmount } from "src/utils/money";
-import { UserPayoutSettingsFragment } from "src/__generated/graphql";
+import { MyPayoutInfoType, MyRewardsPendingInvoiceType } from ".";
 
 type Props = {
   githubUserId: number;
-  paymentRequests: MyRewardType[];
+  paymentRequests: MyRewardsPendingInvoiceType["rewards"];
   markInvoiceAsReceived: () => void;
-  userInfos: UserPayoutSettingsFragment;
+  payoutInfo: MyPayoutInfoType;
 };
 
-export default function InvoiceSubmission({ paymentRequests, githubUserId, markInvoiceAsReceived, userInfos }: Props) {
+export default function InvoiceSubmission({ paymentRequests, githubUserId, markInvoiceAsReceived, payoutInfo }: Props) {
   const { T } = useIntl();
 
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -30,8 +29,8 @@ export default function InvoiceSubmission({ paymentRequests, githubUserId, markI
     setIsClosed(true);
   }, []);
   const hiddenFields = useMemo(
-    () => buildHiddenFields({ paymentRequests: paymentRequests, githubUserId, userInfos }),
-    [paymentRequests, githubUserId, userInfos]
+    () => buildHiddenFields({ paymentRequests: paymentRequests, githubUserId, payoutInfo }),
+    [paymentRequests, githubUserId, payoutInfo]
   );
 
   useEffect(() => {
@@ -44,9 +43,9 @@ export default function InvoiceSubmission({ paymentRequests, githubUserId, markI
 
   return (
     <Card padded={false} className="px-6 py-5">
-      <div className="flex flex-col gap-6">
-        <div className="flex flex-col gap-1 font-walsheim text-white">
-          <span className="text-lg font-medium">{T("invoiceSubmission.title")}</span>
+      <div className="flex flex-row gap-6">
+        <div className="flex flex-1 flex-col gap-1 font-walsheim text-white">
+          <span className="text-lg font-semibold">{T("invoiceSubmission.title")}</span>
           <span className="text-sm font-normal">{T("invoiceSubmission.text", { count: paymentRequests.length })}</span>
         </div>
         <MemoizedSlider onSubmit={onSliderSubmit} onClose={onSliderClose} hiddenFields={hiddenFields} />
@@ -90,8 +89,8 @@ const MemoizedSlider = memo(Slider);
 export function buildHiddenFields({
   githubUserId,
   paymentRequests: paymentRequests,
-  userInfos,
-}: Omit<Props, "projectId" | "markInvoiceAsReceived">): Record<string, string> {
+  payoutInfo,
+}: Omit<Props, "markInvoiceAsReceived">): Record<string, string> {
   return {
     github_id: githubUserId.toString(),
     request_ids: paymentRequests.map(p => p.id).join(","),
@@ -104,19 +103,22 @@ export function buildHiddenFields({
           })})`
       )
     ),
-    company_name: userInfos.companyName || "",
-    company_number: userInfos.companyIdentificationNumber || "",
-    first_name: userInfos.firstname || "",
-    last_name: userInfos.lastname || "",
-    street_address: userInfos.address || "",
-    zip_code: userInfos.postCode || "",
-    city: userInfos.city || "",
-    country: userInfos.country || "",
-    payout_info: userInfos.ethWallet?.startsWith("0x")
-      ? `ETH Address: ${userInfos.ethWallet}`
-      : userInfos.ethWallet
-      ? `ENS Domain: ${userInfos.ethWallet}`
-      : formatList([`IBAN: ${userInfos.iban}`, `BIC: ${userInfos.bic}`]),
+    company_name: payoutInfo?.company?.name || "",
+    company_number: payoutInfo?.company?.identificationNumber || "",
+    first_name: payoutInfo?.company?.owner?.firstname || "",
+    last_name: payoutInfo?.company?.owner?.lastname || "",
+    street_address: payoutInfo?.location?.address || "",
+    zip_code: payoutInfo?.location?.postalCode || "",
+    city: payoutInfo?.location?.city || "",
+    country: payoutInfo?.location?.country || "",
+    payout_info: payoutInfo?.payoutSettings?.ethAddress?.startsWith("0x")
+      ? `ETH Address: ${payoutInfo?.payoutSettings?.ethAddress}`
+      : payoutInfo?.payoutSettings?.ethAddress
+      ? `ENS Domain: ${payoutInfo?.payoutSettings?.ethAddress}`
+      : formatList([
+          `IBAN: ${payoutInfo?.payoutSettings?.sepaAccount?.iban}`,
+          `BIC: ${payoutInfo?.payoutSettings?.sepaAccount?.bic}`,
+        ]),
     total_amount: formatMoneyAmount({
       amount: paymentRequests.map(p => p.amount.total).reduce((acc, amount) => acc + amount, 0),
       currency: paymentRequests.at(0)?.amount.currency,

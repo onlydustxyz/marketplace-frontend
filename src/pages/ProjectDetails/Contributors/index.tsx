@@ -1,22 +1,22 @@
-import ContributorsTableFallback from "src/components/ContributorsTableFallback";
-import ContributorsTable from "src/pages/ProjectDetails/Contributors/ContributorsTable";
-import { useIntl } from "src/hooks/useIntl";
-import { useAuth } from "src/hooks/useAuth";
-import { generatePath, useNavigate, useOutletContext } from "react-router-dom";
-import Title from "src/pages/ProjectDetails/Title";
-import Button, { ButtonSize } from "src/components/Button";
-import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
-import { viewportConfig } from "src/config";
-import { useMediaQuery } from "usehooks-ts";
-import ProjectLeadInvitation from "src/components/ProjectLeadInvitation/ProjectLeadInvitation";
-import { withTooltip } from "src/components/Tooltip";
-import { rates } from "src/hooks/useWorkEstimation";
-import { CalloutSizes } from "src/components/ProjectLeadInvitation/ProjectLeadInvitationView";
-import { Project } from "src/types";
-import useInfiniteContributorList from "src/hooks/useInfiniteContributorList/useInfiniteContributorList";
-import ErrorFallback from "src/ErrorFallback";
 import { useMemo, useState } from "react";
+import { generatePath, useNavigate, useOutletContext } from "react-router-dom";
+import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
+import ErrorFallback from "src/ErrorFallback";
+import Button, { ButtonSize } from "src/components/Button";
+import ContributorsTableFallback from "src/components/ContributorsTableFallback";
+import ProjectLeadInvitation from "src/components/ProjectLeadInvitation/ProjectLeadInvitation";
+import { CalloutSizes } from "src/components/ProjectLeadInvitation/ProjectLeadInvitationView";
 import Skeleton from "src/components/Skeleton";
+import { withTooltip } from "src/components/Tooltip";
+import { viewportConfig } from "src/config";
+import { useAuth } from "src/hooks/useAuth";
+import useInfiniteContributorList from "src/hooks/useInfiniteContributorList/useInfiniteContributorList";
+import { useIntl } from "src/hooks/useIntl";
+import { rates } from "src/hooks/useWorkEstimation";
+import ContributorsTable from "src/pages/ProjectDetails/Contributors/ContributorsTable";
+import Title from "src/pages/ProjectDetails/Title";
+import { Project } from "src/types";
+import { useMediaQuery } from "usehooks-ts";
 
 type OutletContext = {
   project: Project;
@@ -89,7 +89,7 @@ export default function Contributors() {
     return <ErrorFallback />;
   }
 
-  const contributors = data?.pages.flatMap(page => page.contributors) || [];
+  const contributors = data?.pages.flatMap(page => page.contributors) ?? [];
 
   return (
     <>

@@ -1,15 +1,15 @@
-import { rates } from "src/hooks/useWorkEstimation";
 import { generatePath, useNavigate } from "react-router-dom";
-import View from "./View";
 import { ProjectRewardsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
+import { components } from "src/__generated/api";
 import { viewportConfig } from "src/config";
+import { rates } from "src/hooks/useWorkEstimation";
 import { useMediaQuery } from "usehooks-ts";
-import { ViewMobile } from "./ViewMobile";
-import { ContributorT } from "src/types";
 import { Field, Sorting } from "..";
+import View from "./View";
+import { ViewMobile } from "./ViewMobile";
 
-type Props = {
-  contributors: ContributorT[];
+type Props<C> = {
+  contributors: C[];
   fetchNextPage: () => void;
   hasNextPage: boolean;
   isFetchingNextPage: boolean;
@@ -20,7 +20,7 @@ type Props = {
   applySorting: (field: Field, ascending: boolean) => void;
 };
 
-export default function ContributorsTable({
+export default function ContributorsTable<C extends components["schemas"]["ContributorPageItemResponse"]>({
   contributors,
   fetchNextPage,
   hasNextPage,
@@ -30,14 +30,14 @@ export default function ContributorsTable({
   projectKey,
   sorting,
   applySorting,
-}: Props) {
+}: Props<C>) {
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
 
   const navigate = useNavigate();
 
   const isSendingNewPaymentDisabled = remainingBudget < rates.hours;
 
-  const onPaymentRequested = (contributor: ContributorT) => {
+  const onPaymentRequested = (contributor: C) => {
     if (!isSendingNewPaymentDisabled) {
       navigate(
         generatePath(RoutePaths.ProjectDetails, { projectKey }) +

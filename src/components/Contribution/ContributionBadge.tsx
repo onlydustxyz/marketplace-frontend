@@ -102,7 +102,9 @@ export function ContributionBadge({
             "border border-dashed": isExternal,
             "border-0.5 border-solid": !isExternal,
           },
-          contributionIconVariants.status[status]
+          contributionIconVariants.status[type][
+            status as keyof typeof contributionIconVariants.status[GithubContributionType]
+          ]
         )}
         {...ComponentProps}
       >

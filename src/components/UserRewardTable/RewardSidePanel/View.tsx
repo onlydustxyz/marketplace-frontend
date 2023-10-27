@@ -2,13 +2,7 @@ import IBAN from "iban";
 import { PropsWithChildren, useState } from "react";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import { components } from "src/__generated/api";
-import {
-  GithubCodeReviewFragment,
-  GithubIssueFragment,
-  GithubPullRequestWithCommitsFragment,
-  GithubUserFragment,
-  PaymentRequestDetailsFragment,
-} from "src/__generated/graphql";
+import { GithubUserFragment } from "src/__generated/graphql";
 import InfoIcon from "src/assets/icons/InfoIcon";
 import Button, { ButtonSize } from "src/components/Button";
 import Contributor from "src/components/Contributor";
@@ -21,18 +15,26 @@ import QueryWrapper from "src/components/QueryWrapper";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import Tooltip, { TooltipPosition, withCustomTooltip } from "src/components/Tooltip";
 import { useAuth } from "src/hooks/useAuth";
+import useInfiniteProjectRewardItems from "src/hooks/useInfiniteProjectRewardItems";
 import { useIntl } from "src/hooks/useIntl";
+import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
+import { useRestfulData } from "src/hooks/useRestfulData/useRestfulData";
 import BankCardLine from "src/icons/BankCardLine";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import Time from "src/icons/TimeLine";
-import { PaymentStatus } from "src/types";
+import { Currency, GithubContributionType, PaymentStatus } from "src/types";
+import {
+  formatRewardItemToGithubCodeReview,
+  formatRewardItemToGithubIssue,
+  formatRewardItemToGithubPullRequest,
+} from "src/utils/api";
 import { cn } from "src/utils/cn";
 import { formatDateTime } from "src/utils/date";
 import { pretty } from "src/utils/id";
 import isDefined from "src/utils/isDefined";
 import { currencyToNetwork, formatMoneyAmount } from "src/utils/money";
 import ConfirmationModal from "./ConfirmationModal";
-import { GithubContributionType } from "src/types";
+import { ShowMore } from "src/components/Table/ShowMore";
 
 enum Align {
   Top = "top",
@@ -40,274 +42,237 @@ enum Align {
 }
 
 export type Props = {
-  data: components["schemas"]["ProjectRewardResponse"];
-  loading: boolean;
-  //   status: PaymentStatus;
-  //   payoutInfoMissing: boolean;
-  //   invoiceNeeded?: boolean;
+  projectId: string;
+  rewardId: string;
   projectLeaderView?: boolean;
   onRewardCancel?: () => void;
-} & Partial<PaymentRequestDetailsFragment>;
+};
 
-export default function View({
-  id,
-  data,
-  loading,
-  //   status,
-  amount,
-  githubRecipient,
-  requestor,
-  requestedAt,
-  workItems,
-  //   payoutInfoMissing,
-  //   invoiceNeeded,
-  invoiceReceivedAt,
-  payments,
-  projectLeaderView,
-  onRewardCancel,
-}: Props) {
+export default function View({ projectId, rewardId, onRewardCancel, projectLeaderView }: Props) {
   const { T } = useIntl();
   const { githubUserId } = useAuth();
-  // TODO get from response
-  const formattedReceipt = formatReceipt(payments?.at(0)?.receipt);
-  // TODO which status ?
-  const shouldDisplayCancelButton = projectLeaderView && onRewardCancel && status === PaymentStatus.WAITING_PAYMENT;
 
-  function formatRewardItemToGithubPullRequest(item: components["schemas"]["RewardItemResponse"]) {
-    return {
-      id: item.id,
-      number: item.number,
-      title: item.title,
-      createdAt: item.createdAt,
-      // TODO lastUpdatedAt ?
-      closedAt: item.closedAt,
-      mergedAt: item.mergedAt,
-      status: item.status,
-      htmlUrl: item.githubUrl,
-      // TODO
-      userCommitsCount: {
-        aggregate: {
-          count: item.userCommitsCount,
-        },
-      },
-      commitsCount: {
-        aggregate: {
-          count: item.commitsCount,
-        },
-      },
-      repoId: null,
-      author: {
-        id: item.author.id,
-        login: item.author.login,
-        avatarUrl: item.author.avatarUrl,
-        htmlUrl: "",
-        user: null,
-      },
-    } as GithubPullRequestWithCommitsFragment;
-  }
+  const { data, isLoading: loading } = useRestfulData<components["schemas"]["RewardResponse"]>({
+    resourcePath: ApiResourcePaths.GET_PROJECT_REWARD,
+    pathParam: { projectId, rewardId },
+    method: "GET",
+  });
 
-  function formatRewardItemToGithubIssue(item: components["schemas"]["RewardItemResponse"]) {
-    return {
-      id: item.id,
-      createdAt: item.createdAt,
-      // TODO lastUpdatedAt ?
-      closedAt: item.closedAt,
-      number: item.number,
-      title: item.title,
-      htmlUrl: item.githubUrl,
-      status: item.status,
-      commentsCount: item.commentsCount,
-      repoId: null,
-    } as GithubIssueFragment;
-  }
+  const {
+    data: rewardItemsData,
+    error: rewardItemsError,
+    isLoading: rewardItemsLoading,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteProjectRewardItems({
+    projectId,
+    rewardId,
+    enabled: Boolean(data),
+  });
+  const rewardItems = rewardItemsData?.pages.flatMap(page => page.rewardItems) || [];
 
-  function formatRewardItemToGithubCodeReview(item: components["schemas"]["RewardItemResponse"]) {
-    return {
-      id: item.id,
-      githubPullRequest: {
-        number: item.number,
-        title: item.title,
-        htmlUrl: item.githubUrl,
-        createdAt: item.createdAt,
-        repoId: null,
-        status: null,
-        closedAt: null,
-        mergedAt: null,
-        id: null,
-        author: {
-          id: null,
-          htmlUrl: "",
-          avatarUrl: "",
-          login: "",
-          user: null,
-        },
-      },
-      status: item.status,
-      submittedAt: item.createdAt,
-      // TODO
-      outcome: item.status,
-    } as GithubCodeReviewFragment;
-  }
+  const formattedReceipt = formatReceipt(data?.receipt);
+  const shouldDisplayCancelButton = projectLeaderView && onRewardCancel && data?.status !== PaymentStatus.COMPLETE;
+  const isCurrencyUSD = data?.currency === Currency.USD;
 
-  function renderRewardItem(item: components["schemas"]["RewardItemResponse"]) {
-    return null;
-    switch (item.type) {
-      case GithubContributionType.PullRequest: {
-        return (
-          <GithubPullRequest
-            pullRequest={formatRewardItemToGithubPullRequest(item)}
-            // TODO contributor = {login : string;}
-            contributor={githubRecipient as GithubUserFragment}
-          />
-        );
-      }
-      case GithubContributionType.Issue: {
-        return <GithubIssue issue={formatRewardItemToGithubIssue(item)} />;
-      }
-      case GithubContributionType.CodeReview: {
-        return <GithubCodeReview codeReview={formatRewardItemToGithubCodeReview(item)} />;
-      }
-      default: {
-        return null;
-      }
+  function renderRewardItems() {
+    if (rewardItemsLoading) {
+      return (
+        <div className="flex h-full flex-col gap-3 pt-8">
+          <div className="h-6 w-1/3 animate-pulse rounded-lg bg-greyscale-800" />
+          <div className="h-20 w-full animate-pulse rounded-2xl bg-greyscale-800 animation-delay-150" />
+          <div className="h-20 w-full animate-pulse rounded-2xl bg-greyscale-800 animation-delay-300" />
+          <div className="animation-delay[600ms] h-20 w-full animate-pulse rounded-2xl bg-greyscale-800" />
+        </div>
+      );
     }
+
+    if (rewardItemsError) {
+      return (
+        <p className="whitespace-pre-line py-24 text-center font-walsheim text-sm text-greyscale-50">
+          {T("reward.table.detailsPanel.rewardItems.error")}
+        </p>
+      );
+    }
+
+    if (rewardItems.length) {
+      return (
+        <div className="flex h-full flex-col gap-3 overflow-hidden pt-8">
+          <div className="font-belwe text-base font-normal text-greyscale-50">
+            {T("reward.table.detailsPanel.contributions")}
+          </div>
+          <div className="flex h-full flex-col gap-3 overflow-auto p-px pb-6 pr-4 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
+            {rewardItems.map(item => {
+              switch (item.type) {
+                case GithubContributionType.PullRequest: {
+                  return (
+                    <GithubPullRequest
+                      key={item.id}
+                      pullRequest={formatRewardItemToGithubPullRequest(item)}
+                      contributor={data?.to as GithubUserFragment}
+                    />
+                  );
+                }
+                case GithubContributionType.Issue: {
+                  return <GithubIssue key={item.id} issue={formatRewardItemToGithubIssue(item)} />;
+                }
+                case GithubContributionType.CodeReview: {
+                  return <GithubCodeReview key={item.id} codeReview={formatRewardItemToGithubCodeReview(item)} />;
+                }
+                default: {
+                  return null;
+                }
+              }
+            })}
+          </div>
+          {hasNextPage ? (
+            <div className="pt-6">
+              <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} />
+            </div>
+          ) : null}
+        </div>
+      );
+    }
+
+    return null;
   }
 
   return (
     <QueryWrapper query={{ loading, data }}>
       {data ? (
-        <div className="flex h-full flex-col gap-8">
-          <div className="flex flex-wrap items-center gap-3 px-6 pt-8 font-belwe text-2xl font-normal text-greyscale-50">
-            {T("reward.table.detailsPanel.title", { id: pretty(id) })}
+        <div className="flex h-full flex-col gap-8 px-6">
+          <div className="flex flex-wrap items-center gap-3 pt-8 font-belwe text-2xl font-normal text-greyscale-50">
+            {T("reward.table.detailsPanel.title", { id: pretty(data.id) })}
             {shouldDisplayCancelButton && <CancelRewardButton onRewardCancel={onRewardCancel} />}
           </div>
-          <div className="flex flex-col gap-2 px-6">
-            <div className="flex flex-wrap items-center gap-2">
-              <PayoutStatus status={data.status} />
-              <div className="flex items-center gap-1 font-walsheim text-xs text-spaceBlue-200">
-                <InfoIcon className="h-4 w-3" />
-                <span>
-                  {T("reward.table.detailsPanel.rewardGrantedOnNetwork", { network: currencyToNetwork(data.currency) })}
-                </span>
+          <div className="flex flex-col gap-8 divide-y divide-greyscale-50/12">
+            <div className="flex flex-col gap-2">
+              <div className="flex flex-wrap items-center gap-2">
+                <PayoutStatus status={data.status} />
+                {!isCurrencyUSD ? (
+                  <div className="flex items-center gap-1 font-walsheim text-xs text-spaceBlue-200">
+                    <InfoIcon className="h-4 w-3" />
+                    <span>
+                      {T("reward.table.detailsPanel.rewardGrantedOnNetwork", {
+                        network: currencyToNetwork(data.currency),
+                      })}
+                    </span>
+                  </div>
+                ) : null}
               </div>
-            </div>
-            <div className="flex items-baseline gap-2">
-              <div className="flex items-baseline gap-1 font-belwe text-5xl font-normal text-greyscale-50">
-                <span>{formatMoneyAmount({ amount: data.amount, currency: data.currency })}</span>
-                <span className="text-3xl">{data.currency}</span>
-              </div>
-              {data.dollarsEquivalent ? (
-                <>
-                  <Tooltip id="reward-detail-usd-est" position={TooltipPosition.Top}>
-                    {T("reward.table.detailsPanel.usdEstimateTooltip")}
-                  </Tooltip>
-                  <span className="font-walsheim text-xl text-spaceBlue-200" data-tooltip-id="reward-detail-usd-est">
-                    ~{formatMoneyAmount({ amount: data.dollarsEquivalent })}
+              <div className="flex items-baseline gap-2">
+                <div className="flex items-baseline gap-1 font-belwe text-5xl font-normal text-greyscale-50">
+                  {/* TODO add CurrencyIcon */}
+                  <span>
+                    {formatMoneyAmount({ amount: data.amount, currency: data.currency, showCurrency: false })}
                   </span>
-                </>
+                  {!isCurrencyUSD ? <span className="text-3xl">{data.currency}</span> : null}
+                </div>
+                {!isCurrencyUSD && data.dollarsEquivalent ? (
+                  <>
+                    <Tooltip id="reward-detail-usd-est" position={TooltipPosition.Top}>
+                      {T("reward.table.detailsPanel.usdEstimateTooltip")}
+                    </Tooltip>
+                    <span className="font-walsheim text-xl text-spaceBlue-200" data-tooltip-id="reward-detail-usd-est">
+                      ~{formatMoneyAmount({ amount: data.dollarsEquivalent })}
+                    </span>
+                  </>
+                ) : null}
+              </div>
+              {data.from ? (
+                <Details>
+                  <RoundedImage alt={data.from.login ?? ""} src={data.from.avatarUrl ?? ""} size={ImageSize.Xxs} />
+                  <div className="flex flex-row items-center gap-1">
+                    {T("reward.table.detailsPanel.from")}
+                    <Contributor
+                      contributor={{
+                        login: data.from.login ?? "",
+                        githubUserId: data.from.id ?? 0,
+                        avatarUrl: null,
+                      }}
+                      clickable
+                    />
+                    {data.from.id === githubUserId && T("reward.table.detailsPanel.you")}
+                  </div>
+                </Details>
               ) : null}
-            </div>
-            {data.from ? (
-              <Details>
-                <RoundedImage alt={data.from.login ?? ""} src={data.from.avatarUrl ?? ""} size={ImageSize.Xxs} />
-                <div className="flex flex-row items-center gap-1">
-                  {T("reward.table.detailsPanel.from")}
-                  <Contributor
-                    contributor={{
-                      login: data.from.login ?? "",
-                      githubUserId: data.from.id ?? 0,
-                      avatarUrl: null,
-                    }}
-                    clickable
-                  />
-                  {data.from.id === githubUserId && T("reward.table.detailsPanel.you")}
-                </div>
-              </Details>
-            ) : null}
-            {data.to ? (
-              <Details>
-                <RoundedImage alt={data.to.login ?? ""} src={data.to.avatarUrl ?? ""} size={ImageSize.Xxs} />
-                <div className="flex flex-row items-center gap-1">
-                  {T("reward.table.detailsPanel.to")}
-                  <Contributor
-                    contributor={{
-                      login: data.to.login ?? "",
-                      githubUserId: data.to.id ?? 0,
-                      avatarUrl: null,
-                    }}
-                    clickable
-                  />
-                  {data.to.id === githubUserId && T("reward.table.detailsPanel.you")}
-                </div>
-              </Details>
-            ) : null}
-            {data.createdAt && (
-              <Details>
-                <Time className="text-base" />
-                {T("reward.table.detailsPanel.requestedAt", { requestedAt: formatDateTime(new Date(data.createdAt)) })}
-              </Details>
-            )}
-            {data.status === PaymentStatus.COMPLETE && data.processedAt ? (
-              <Details align={formattedReceipt ? Align.Top : Align.Center}>
-                <BankCardLine className="text-base" />
-                <ReactMarkdown
-                  className="payment-receipt whitespace-pre-wrap"
-                  {...withCustomTooltip("payment-receipt-tooltip")}
-                >
-                  {[
-                    T("reward.table.detailsPanel.processedAt", {
-                      processedAt: formatDateTime(new Date(payments?.at(0)?.processedAt)),
-                    }),
-                    formattedReceipt &&
-                      T(`reward.table.detailsPanel.processedVia.${formattedReceipt?.type}`, {
-                        recipient: formattedReceipt?.shortDetails,
+              {data.to ? (
+                <Details>
+                  <RoundedImage alt={data.to.login ?? ""} src={data.to.avatarUrl ?? ""} size={ImageSize.Xxs} />
+                  <div className="flex flex-row items-center gap-1">
+                    {T("reward.table.detailsPanel.to")}
+                    <Contributor
+                      contributor={{
+                        login: data.to.login ?? "",
+                        githubUserId: data.to.id ?? 0,
+                        avatarUrl: null,
+                      }}
+                      clickable
+                    />
+                    {data.to.id === githubUserId && T("reward.table.detailsPanel.you")}
+                  </div>
+                </Details>
+              ) : null}
+              {data.createdAt && (
+                <Details>
+                  <Time className="text-base" />
+                  {T("reward.table.detailsPanel.requestedAt", {
+                    requestedAt: formatDateTime(new Date(data.createdAt)),
+                  })}
+                </Details>
+              )}
+              {data.status === PaymentStatus.COMPLETE && data.processedAt ? (
+                <Details align={formattedReceipt ? Align.Top : Align.Center}>
+                  <BankCardLine className="text-base" />
+                  <ReactMarkdown
+                    className="payment-receipt whitespace-pre-wrap"
+                    {...withCustomTooltip("payment-receipt-tooltip")}
+                  >
+                    {[
+                      T("reward.table.detailsPanel.processedAt", {
+                        processedAt: formatDateTime(new Date(data.processedAt)),
                       }),
-                  ]
-                    .filter(isDefined)
-                    .join("\n")}
-                </ReactMarkdown>
-                {
-                  // TODO
-                  formattedReceipt && (
+                      formattedReceipt
+                        ? T(`reward.table.detailsPanel.processedVia.${formattedReceipt.type}`, {
+                            recipient: formattedReceipt.shortDetails,
+                          })
+                        : null,
+                    ]
+                      .filter(isDefined)
+                      .join("\n")}
+                  </ReactMarkdown>
+
+                  {formattedReceipt ? (
                     <Tooltip anchorSelect=".payment-receipt" clickable>
                       <div className="flex flex-col items-start">
                         <div>
-                          {T(`reward.table.detailsPanel.processedTooltip.${formattedReceipt?.type}.recipient`, {
-                            recipient: formattedReceipt?.fullDetails,
+                          {T(`reward.table.detailsPanel.processedTooltip.${formattedReceipt.type}.recipient`, {
+                            recipient: formattedReceipt.fullDetails,
                           })}
                         </div>
 
-                        {formattedReceipt?.type === "crypto" ? (
+                        {formattedReceipt.type === "crypto" ? (
                           <ExternalLink
-                            url={`https://etherscan.io/tx/${formattedReceipt?.reference}`}
-                            text={T(`reward.table.detailsPanel.processedTooltip.${formattedReceipt?.type}.reference`, {
-                              reference: formattedReceipt?.reference,
+                            url={`https://etherscan.io/tx/${formattedReceipt.reference}`}
+                            text={T(`reward.table.detailsPanel.processedTooltip.${formattedReceipt.type}.reference`, {
+                              reference: formattedReceipt.reference,
                             })}
                           />
                         ) : (
                           <div>
-                            {T(`reward.table.detailsPanel.processedTooltip.${formattedReceipt?.type}.reference`, {
-                              reference: formattedReceipt?.reference,
+                            {T(`reward.table.detailsPanel.processedTooltip.${formattedReceipt.type}.reference`, {
+                              reference: formattedReceipt.reference,
                             })}
                           </div>
                         )}
                       </div>
                     </Tooltip>
-                  )
-                }
-              </Details>
-            ) : null}
-          </div>
-          <div className="px-6">
-            <div className="border-t border-greyscale-50/12" />
-          </div>
-          <div className="flex h-full flex-col gap-3 overflow-hidden px-6">
-            <div className="font-belwe text-base font-normal text-greyscale-50">
-              {T("reward.table.detailsPanel.contributions")}
+                  ) : null}
+                </Details>
+              ) : null}
             </div>
-            <div className="flex h-full flex-col gap-3 overflow-auto p-px pb-6 pr-4 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
-              {data.rewardItems.map(item => renderRewardItem(item))}
-            </div>
+            {renderRewardItems()}
           </div>
         </div>
       ) : null}
@@ -326,11 +291,6 @@ const Details = ({ align = Align.Center, children }: PropsWithChildren & { align
   </div>
 );
 
-type Receipt = {
-  OnChainPayment?: { recipient_address: string; recipient_ens?: string; transaction_hash: string };
-  FiatPayment?: { recipient_iban: string; transaction_reference: string };
-};
-
 type FormattedReceipt = {
   type: "crypto" | "fiat";
   shortDetails: string;
@@ -338,24 +298,26 @@ type FormattedReceipt = {
   reference: string;
 };
 
-const formatReceipt = (receipt?: Receipt): FormattedReceipt | undefined => {
-  if (receipt?.OnChainPayment) {
-    const address = receipt?.OnChainPayment.recipient_address;
-    const ens = receipt?.OnChainPayment.recipient_ens;
+const formatReceipt = (receipt?: components["schemas"]["ReceiptResponse"]): FormattedReceipt | undefined => {
+  if (receipt?.type === "CRYPTO") {
+    const { ens, walletAddress: address = "", transactionReference: reference } = receipt;
 
     return {
       type: "crypto",
       shortDetails: ens ?? `0x...${address.substring(address.length - 5)}`,
       fullDetails: address,
-      reference: receipt?.OnChainPayment.transaction_hash,
+      reference,
     };
-  } else if (receipt?.FiatPayment) {
-    const iban = receipt?.FiatPayment.recipient_iban;
+  }
+
+  if (receipt?.type === "FIAT") {
+    const { iban = "", transactionReference: reference } = receipt;
+
     return {
       type: "fiat",
       shortDetails: `**** ${iban.substring(iban.length - 3)}`,
       fullDetails: IBAN.printFormat(iban),
-      reference: receipt?.FiatPayment.transaction_reference,
+      reference,
     };
   }
 };

@@ -1,12 +1,14 @@
 import { useState } from "react";
+import SidePanel from "src/components/SidePanel";
 import Table from "src/components/Table";
+import { ShowMore } from "src/components/Table/ShowMore";
+import { RewardSidePanelAsLeader } from "src/components/UserRewardTable/RewardSidePanel";
 import { viewportConfig } from "src/config";
 import { RewardPageItemType } from "src/hooks/useInfiniteRewardsList";
 import { useMediaQuery } from "usehooks-ts";
 import Headers from "./Headers";
 import { RewardLine } from "./Line";
 import MobileRewardList from "./MobileRewardList";
-import { ShowMore } from "src/components/Table/ShowMore";
 
 type RewardTableProps = {
   rewards: RewardPageItemType[];
@@ -20,18 +22,19 @@ type RewardTableProps = {
     isFetchingNextPage: boolean;
     sortField: (field: string) => void;
   };
+  projectId: string;
 };
 
-export default function RewardTable({ rewards, options }: RewardTableProps) {
+export default function RewardTable({ rewards, options, projectId }: RewardTableProps) {
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
   const [selectedReward, setSelectedReward] = useState<RewardPageItemType | null>(null);
+  const [sidePanelOpen, setSidePanelOpen] = useState(false);
 
   const { fetchNextPage, hasNextPage, sorting, sortField, isFetchingNextPage } = options;
 
   const onRewardClick = (reward: RewardPageItemType) => {
     setSelectedReward(reward);
-    //TODO: uncomment when setSidePanelOpen API is ready
-    // setSidePanelOpen(true);
+    setSidePanelOpen(true);
   };
 
   return (
@@ -51,19 +54,11 @@ export default function RewardTable({ rewards, options }: RewardTableProps) {
         </div>
       )}
 
-      {
-        // TODO: when side pannel API is ready, uncomment this
-        /* <SidePanel open={sidePanelOpen} setOpen={setSidePanelOpen}>
+      <SidePanel open={sidePanelOpen} setOpen={setSidePanelOpen}>
         {selectedReward && (
-          <RewardSidePanelAsLeader
-            projectId={projectId}
-            rewardId={selectedReward.id}
-            setOpen={setSidePanelOpen}
-            recipientId={selectedReward.id}
-          />
+          <RewardSidePanelAsLeader projectId={projectId} rewardId={selectedReward.id} setOpen={setSidePanelOpen} />
         )}
-      </SidePanel> */
-      }
+      </SidePanel>
     </>
   );
 }

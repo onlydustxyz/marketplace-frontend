@@ -1,26 +1,26 @@
+import { components } from "src/__generated/api";
+import Card from "src/components/Card";
 import Table from "src/components/Table";
+import { ShowMore } from "src/components/Table/ShowMore";
 import { rates } from "src/hooks/useWorkEstimation";
+import { ToRewardDetailsTooltip } from "src/pages/ProjectDetails/Tooltips/ToRewardDetailsTooltip";
+import { Field, Sorting } from "..";
 import Headers from "./Headers";
 import ContributorLine from "./Line";
-import { ContributorT } from "src/types";
-import Card from "src/components/Card";
-import { ToRewardDetailsTooltip } from "src/pages/ProjectDetails/Tooltips/ToRewardDetailsTooltip";
-import { ShowMore } from "src/components/Table/ShowMore";
-import { Field, Sorting } from "..";
 
-type Props = {
-  contributors: ContributorT[];
+type Props<C> = {
+  contributors: C[];
   fetchNextPage: () => void;
   hasNextPage: boolean;
   isFetchingNextPage: boolean;
   isProjectLeader: boolean;
   remainingBudget: number;
-  onRewardGranted: (contributor: ContributorT) => void;
+  onRewardGranted: (contributor: C) => void;
   sorting: Sorting;
   applySorting: (field: Field, ascending: boolean) => void;
 };
 
-export default function View({
+export default function View<C extends components["schemas"]["ContributorPageItemResponse"]>({
   contributors,
   fetchNextPage,
   hasNextPage,
@@ -30,7 +30,7 @@ export default function View({
   onRewardGranted: onPaymentRequested,
   sorting,
   applySorting,
-}: Props) {
+}: Props<C>) {
   const isSendingNewPaymentDisabled = remainingBudget < rates.hours || remainingBudget === 0;
 
   return (
