@@ -19,7 +19,7 @@ export default function useInfiniteProjectRewardItems({
   projectId,
   rewardId,
   queryParams,
-  enabled = true,
+  enabled,
 }: Props): UseInfiniteQueryResult<RewardsPagesData, unknown> {
   const options = useHttpOptions("GET");
 

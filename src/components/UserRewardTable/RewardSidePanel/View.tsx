@@ -34,6 +34,7 @@ import { pretty } from "src/utils/id";
 import isDefined from "src/utils/isDefined";
 import { currencyToNetwork, formatMoneyAmount } from "src/utils/money";
 import ConfirmationModal from "./ConfirmationModal";
+import { ShowMore } from "src/components/Table/ShowMore";
 
 enum Align {
   Top = "top",
@@ -67,10 +68,6 @@ export default function View({ projectId, rewardId, onRewardCancel, projectLeade
   } = useInfiniteProjectRewardItems({
     projectId,
     rewardId,
-    // TODO
-    // queryParams: {
-    //   pageIndex: 1,
-    // },
     enabled: Boolean(data),
   });
   const rewardItems = rewardItemsData?.pages.flatMap(page => page.rewardItems) || [];
@@ -129,6 +126,11 @@ export default function View({ projectId, rewardId, onRewardCancel, projectLeade
               }
             })}
           </div>
+          {hasNextPage ? (
+            <div className="pt-6">
+              <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} />
+            </div>
+          ) : null}
         </div>
       );
     }

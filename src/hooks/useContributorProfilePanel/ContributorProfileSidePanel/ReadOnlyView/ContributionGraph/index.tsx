@@ -1,14 +1,14 @@
-import { Bar, BarChart, Legend, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import XTick from "./XTick";
-import CustomBar from "./Bar";
-import CustomTooltip from "./Tootip";
-import CustomLegend from "./Legend";
-import { useIntl } from "src/hooks/useIntl";
-import YTick from "./YTick";
+import { chain, max, range, round } from "lodash";
 import { useMemo, useState } from "react";
+import { Bar, BarChart, Legend, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { components } from "src/__generated/api";
-import { chain, max, round, find, range, slice, sortBy, unionBy } from "lodash";
+import { useIntl } from "src/hooks/useIntl";
 import { daysFromNow, weekNumber } from "src/utils/date";
+import CustomBar from "./Bar";
+import CustomLegend from "./Legend";
+import CustomTooltip from "./Tootip";
+import XTick from "./XTick";
+import YTick from "./YTick";
 
 type ContributionCount = components["schemas"]["UserContributionStats"];
 
